@@ -9,19 +9,45 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.Gallery;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.content.Context;
+import java.util.Random;
 
 
 public class MainActivity extends ActionBarActivity {
+
+    protected Object[][] getQuestionSet(int size){
+        // Just to be able to work, I need a question simulator, in order to emulate the DB entries
+        Random r = new Random();
+        int questionNumber = size;
+        String optionSet [] = {"Asked", "Done", "Yesno", "YesNoNA", "YesNoAsked", "YesNoUnkasked",
+                "Gender", "Officer", "MAL Results", "MAL Diagnose", "MAL Species",
+                "Result"};
+
+        Object questionSimulator [][] = new Object [questionNumber][];
+        for (int i=0; i<questionNumber; i++){
+            // The text of the question will be fixed
+            String questionText = "Question number " + new Integer(i).toString();
+            // Te OptionSet will be randomized
+            String optionSetNum = optionSet[r.nextInt(optionSet.length)];
+            // We finally add both to the question array
+            questionSimulator[i] = new String[2];
+            questionSimulator[i][1] = questionText;
+            questionSimulator[i][2] = optionSetNum;
+        }
+        return questionSimulator;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //setContentView(R.layout.activity_main);
+        setContentView(R.layout.main_layout);
 
-        MalariaCareDbHelper malariaCareDb = new MalariaCareDbHelper(this);
+        /*MalariaCareDbHelper malariaCareDb = new MalariaCareDbHelper(this);
 
         //Query Database
         SQLiteDatabase db = malariaCareDb.getReadableDatabase();
@@ -51,30 +77,41 @@ public class MainActivity extends ActionBarActivity {
         c.moveToFirst();
         String dataElementTitle = c.getString(
                 c.getColumnIndexOrThrow(MalariaCareDb.DataElements.COLUMN_NAME_TITLE)
-        );
+        );*/
 
-        // Creating a new LinearLayout
-        LinearLayout linearLayout = new LinearLayout(this);
-        linearLayout.setOrientation(LinearLayout.VERTICAL);
 
-        ActionBar.LayoutParams layoutParams = new ActionBar.LayoutParams(ActionBar.LayoutParams.MATCH_PARENT, ActionBar.LayoutParams.MATCH_PARENT);
+        // We get a set of questions for our layout
+        Object questions [][] = getQuestionSet(500);
 
-        linearLayout.setWeightSum(6f);
-        linearLayout.setLayoutParams(layoutParams);
+        // We take the Layouts for adding the content
+        LinearLayout header = (LinearLayout) findViewById(R.id.Header);
+        LinearLayout body = (LinearLayout) findViewById(R.id.Body);
+        LinearLayout footer = (LinearLayout) findViewById(R.id.Footer);
+
+        // We add the questions
+        for(int i=0;i<questions.length;i++){
+            TextView tv = new TextView(this);
+            tv.setText(questions[i][0].toString());
+            body.addView(tv);
+        }
+
+        //ActionBar.LayoutParams layoutParams = new ActionBar.LayoutParams(ActionBar.LayoutParams.MATCH_PARENT, ActionBar.LayoutParams.MATCH_PARENT);
+        //linearLayout.setWeightSum(6f);
+        //linearLayout.setLayoutParams(layoutParams);
 
         // Creating a new TextView
-        TextView tv = new TextView(this);
-        tv.setText(dataElementTitle);
-        tv.setLayoutParams(layoutParams);
-        linearLayout.addView(tv);
+        //TextView tv = new TextView(this);
+        //tv.setText(dataElementTitle);
+        //tv.setLayoutParams(layoutParams);
+        //linearLayout.addView(tv);
 
 
         // Creating a new EditText
-        EditText et=new EditText(this);
-        et.setLayoutParams(layoutParams);
-        linearLayout.addView(et);
+        //EditText et=new EditText(this);
+        //et.setLayoutParams(layoutParams);
+        //linearLayout.addView(et);
 
-        setContentView(linearLayout, layoutParams);
+        //setContentView(linearLayout, layoutParams);
     }
 
 
