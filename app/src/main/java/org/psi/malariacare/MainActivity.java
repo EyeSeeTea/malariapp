@@ -44,7 +44,6 @@ public class MainActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //setContentView(R.layout.activity_main);
         setContentView(R.layout.main_layout);
 
         /*MalariaCareDbHelper malariaCareDb = new MalariaCareDbHelper(this);
@@ -95,7 +94,7 @@ public class MainActivity extends ActionBarActivity {
             body.addView(tv);
         }
 
-        //ActionBar.LayoutParams layoutParams = new ActionBar.LayoutParams(ActionBar.LayoutParams.MATCH_PARENT, ActionBar.LayoutParams.MATCH_PARENT);
+        ActionBar.LayoutParams layoutParams = new ActionBar.LayoutParams(ActionBar.LayoutParams.MATCH_PARENT, ActionBar.LayoutParams.MATCH_PARENT);
         //linearLayout.setWeightSum(6f);
         //linearLayout.setLayoutParams(layoutParams);
 
