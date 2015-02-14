@@ -12,8 +12,11 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import org.psi.malariacare.data.Question;
 import org.psi.malariacare.database.MalariaCareTables;
-import org.psi.malariacare.database.MalariaCareDbHelper;
+
+import java.util.List;
+//import org.psi.malariacare.database.MalariaCareDbHelper;
 
 
 public class MainActivity extends ActionBarActivity {
@@ -23,37 +26,48 @@ public class MainActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         //setContentView(R.layout.activity_main);
 
-        MalariaCareDbHelper malariaCareDb = new MalariaCareDbHelper(this);
+//        MalariaCareDbHelper malariaCareDb = new MalariaCareDbHelper(this);
+//
+//        //Query Database
+//        SQLiteDatabase db = malariaCareDb.getReadableDatabase();
+//        // Define a projection that specifies which columns from the database
+//        // you will actually use after this query.
+//        String[] projection = {
+//                MalariaCareTables.DataElements._ID,
+//                MalariaCareTables.DataElements.NAME_TITLE,
+//                MalariaCareTables.DataElements.NAME_TAB,
+//                MalariaCareTables.DataElements.NAME_OPTION_SET
+//        };
+//
+//        // How you want the results sorted in the resulting Cursor
+//        String sortOrder =
+//                MalariaCareTables.DataElements._ID + " DESC";
+//
+//        Cursor c = db.query(
+//                MalariaCareTables.DataElements.TABLE_NAME,  // The table to query
+//                projection,                               // The columns to return
+//                null,                                // The columns for the WHERE clause
+//                null,                            // The values for the WHERE clause
+//                null,                                     // don't group the rows
+//                null,                                     // don't filter by row groups
+//                sortOrder                                 // The sort order
+//        );
+//
+//        c.moveToFirst();
+//        String dataElementTitle = c.getString(
+//                c.getColumnIndexOrThrow(MalariaCareTables.DataElements.NAME_TITLE)
+//        );
 
-        //Query Database
-        SQLiteDatabase db = malariaCareDb.getReadableDatabase();
-        // Define a projection that specifies which columns from the database
-        // you will actually use after this query.
-        String[] projection = {
-                MalariaCareTables.DataElements._ID,
-                MalariaCareTables.DataElements.NAME_TITLE,
-                MalariaCareTables.DataElements.NAME_TAB,
-                MalariaCareTables.DataElements.NAME_OPTION_SET
-        };
+        Question question = new Question("", "", "patient sex", "patient sex", "", 1, 2F, 2F, null, null, 0, null);
+        question.save();
 
-        // How you want the results sorted in the resulting Cursor
-        String sortOrder =
-                MalariaCareTables.DataElements._ID + " DESC";
 
-        Cursor c = db.query(
-                MalariaCareTables.DataElements.TABLE_NAME,  // The table to query
-                projection,                               // The columns to return
-                null,                                // The columns for the WHERE clause
-                null,                            // The values for the WHERE clause
-                null,                                     // don't group the rows
-                null,                                     // don't filter by row groups
-                sortOrder                                 // The sort order
-        );
 
-        c.moveToFirst();
-        String dataElementTitle = c.getString(
-                c.getColumnIndexOrThrow(MalariaCareTables.DataElements.NAME_TITLE)
-        );
+        List<Question> questionList = Question.listAll(Question.class);
+        Question question2 = questionList.get(0);
+        System.out.println("taka");
+        System.out.println(question2.getForm_name());
+
 
         // Creating a new LinearLayout
         LinearLayout linearLayout = new LinearLayout(this);
@@ -66,7 +80,8 @@ public class MainActivity extends ActionBarActivity {
 
         // Creating a new TextView
         TextView tv = new TextView(this);
-        tv.setText(dataElementTitle);
+//        tv.setText(dataElementTitle);
+        tv.setText("taka");
         tv.setLayoutParams(layoutParams);
         linearLayout.addView(tv);
 
