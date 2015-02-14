@@ -55,42 +55,9 @@ public class MainActivity extends ActionBarActivity {
         Log.i(".MainActivity", "App started");
         setContentView(R.layout.main_layout);
 
-        /*MalariaCareDbHelper malariaCareDb = new MalariaCareDbHelper(this);
-
-        //Query Database
-        SQLiteDatabase db = malariaCareDb.getReadableDatabase();
-        // Define a projection that specifies which columns from the database
-        // you will actually use after this query.
-        String[] projection = {
-                MalariaCareDb.DataElements._ID,
-                MalariaCareDb.DataElements.COLUMN_NAME_TITLE,
-                MalariaCareDb.DataElements.COLUMN_NAME_TAB,
-                MalariaCareDb.DataElements.COLUMN_NAME_OPTION_SET
-        };
-
-        // How you want the results sorted in the resulting Cursor
-        String sortOrder =
-                MalariaCareDb.DataElements._ID + " DESC";
-
-        Cursor c = db.query(
-                MalariaCareDb.DataElements.TABLE_NAME,  // The table to query
-                projection,                               // The columns to return
-                null,                                // The columns for the WHERE clause
-                null,                            // The values for the WHERE clause
-                null,                                     // don't group the rows
-                null,                                     // don't filter by row groups
-                sortOrder                                 // The sort order
-        );
-
-        c.moveToFirst();
-        String dataElementTitle = c.getString(
-                c.getColumnIndexOrThrow(MalariaCareDb.DataElements.COLUMN_NAME_TITLE)
-        );*/
-
-
         // We get a set of questions for our layout
-        List<Question> questions;
-        questions = getQuestionSet(500);
+        //List<Question> questions;
+        //questions = getQuestionSet(2);
 
         // We take the Layouts for adding the content
         ScrollView bodyGNR = (ScrollView) findViewById(R.id.BodyGNR);
@@ -98,30 +65,15 @@ public class MainActivity extends ActionBarActivity {
         ActionBar.LayoutParams layoutParams = new ActionBar.LayoutParams(ActionBar.LayoutParams.MATCH_PARENT, ActionBar.LayoutParams.MATCH_PARENT);
         // We add the questions
         //for(Object[] questions)
-        for(Question question: questions){
-            Log.i(".MainActivity", question.toString());
+        //for(Question question: questions){
+        for (int i=0; i<3; i++){
+            //Log.i(".MainActivity", question.toString());
             TextView tv = new TextView(this);
             tv.setLayoutParams(layoutParams);
-            tv.setText(questions.toString());
+            //tv.setText(questions.toString());
+            tv.setText("probando");
             bodyGNR.addView(tv);
         }
-
-        //linearLayout.setWeightSum(6f);
-        //linearLayout.setLayoutParams(layoutParams);
-
-        // Creating a new TextView
-        //TextView tv = new TextView(this);
-        //tv.setText(dataElementTitle);
-        //tv.setLayoutParams(layoutParams);
-        //linearLayout.addView(tv);
-
-
-        // Creating a new EditText
-        //EditText et=new EditText(this);
-        //et.setLayoutParams(layoutParams);
-        //linearLayout.addView(et);
-
-        //setContentView(linearLayout, layoutParams);
     }
 
 
