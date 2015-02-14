@@ -10,13 +10,13 @@ public class Question {
 
     public Question(){
         this.statement = "";
-        this.optionSet = "Asked";
+        this.optionSet = "asked";
         this.answer = "NOT ANSWERED";
     }
 
     public Question(String statement){
         this.statement = statement;
-        this.optionSet = "Asked";
+        this.optionSet = "asked";
         this.answer = "NOT ANSWERED";
     }
 

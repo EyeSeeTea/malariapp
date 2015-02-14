@@ -29,10 +29,6 @@
         android:id="@+id/Body"
         android:layout_weight="1">
 
-        <ScrollView
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:id="@+id/BodyGNR" />
     </LinearLayout>
 
     <LinearLayout
