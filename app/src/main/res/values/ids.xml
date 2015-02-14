@@ -3,5 +3,6 @@
     <item name="Grid" type="id"/>
     <item name="Header" type="id"/>
     <item name="Body" type="id"/>
+    <item name="BodyGNR" type="id"/>
     <item name="Footer" type="id"/>
 </resources>

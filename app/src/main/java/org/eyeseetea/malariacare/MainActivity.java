@@ -1,20 +1,15 @@
-package org.psi.malariacare;
+package org.eyeseetea.malariacare;
 
 import android.app.ActionBar;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.EditText;
-import android.widget.FrameLayout;
-import android.widget.Gallery;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
-import android.content.Context;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -98,20 +93,19 @@ public class MainActivity extends ActionBarActivity {
         questions = getQuestionSet(500);
 
         // We take the Layouts for adding the content
-        LinearLayout header = (LinearLayout) findViewById(R.id.Header);
-        LinearLayout body = (LinearLayout) findViewById(R.id.Body);
-        LinearLayout footer = (LinearLayout) findViewById(R.id.Footer);
+        ScrollView bodyGNR = (ScrollView) findViewById(R.id.BodyGNR);
 
+        ActionBar.LayoutParams layoutParams = new ActionBar.LayoutParams(ActionBar.LayoutParams.MATCH_PARENT, ActionBar.LayoutParams.MATCH_PARENT);
         // We add the questions
         //for(Object[] questions)
         for(Question question: questions){
             Log.i(".MainActivity", question.toString());
             TextView tv = new TextView(this);
+            tv.setLayoutParams(layoutParams);
             tv.setText(questions.toString());
-            body.addView(tv);
+            bodyGNR.addView(tv);
         }
 
-        ActionBar.LayoutParams layoutParams = new ActionBar.LayoutParams(ActionBar.LayoutParams.MATCH_PARENT, ActionBar.LayoutParams.MATCH_PARENT);
         //linearLayout.setWeightSum(6f);
         //linearLayout.setLayoutParams(layoutParams);
 

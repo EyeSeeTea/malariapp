@@ -1,4 +1,4 @@
-package org.psi.malariacare;
+package org.eyeseetea.malariacare;
 
 import android.provider.BaseColumns;
 
