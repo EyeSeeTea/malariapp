@@ -19,13 +19,13 @@ public class MalariaCareDb {
         public static final String COLUMN_NAME_OPTION_SET = "optionset";
     }
 
-    /* Inner class that defines the table contents */
+    /* Inner class that defines the table contents
     public static abstract class DataValue implements BaseColumns {
         public static final String TABLE_NAME = "DataValue";
         public static final String COLUMN_NAME_TITLE = "title";
         public static final String COLUMN_NAME_TAB = "tab";
         public static final String COLUMN_NAME_OPTION_SET = "optionset";
-    }
+    }*/
 
 
 }

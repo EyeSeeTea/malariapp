@@ -5,6 +5,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -14,36 +15,49 @@ import android.widget.Gallery;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.content.Context;
+
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 
 public class MainActivity extends ActionBarActivity {
 
-    protected Object[][] getQuestionSet(int size){
+    protected List<Question> getQuestionSet(int size){
         // Just to be able to work, I need a question simulator, in order to emulate the DB entries
         Random r = new Random();
-        int questionNumber = size;
-        String optionSet [] = {"Asked", "Done", "Yesno", "YesNoNA", "YesNoAsked", "YesNoUnkasked",
-                "Gender", "Officer", "MAL Results", "MAL Diagnose", "MAL Species",
-                "Result"};
-
-        Object questionSimulator [][] = new Object [questionNumber][];
-        for (int i=0; i<questionNumber; i++){
+        String optionSets [] = {
+                "Asked",
+                "Done",
+                "Yesno",
+                "YesNoNA",
+                "YesNoAsked",
+                "YesNoUnkasked",
+                "Gender",
+                "Officer",
+                "MAL Results",
+                "MAL Diagnose",
+                "MAL Species",
+                "Result"
+        };
+        Log.i(".MainActivity","optionSet created");
+        List<Question> questionSimulator = new ArrayList<>();
+        for (int i=0; i<size; i++){
             // The text of the question will be fixed
-            String questionText = "Question number " + new Integer(i).toString();
+            String statement = "Question number " + Integer.toString(i);
             // Te OptionSet will be randomized
-            String optionSetNum = optionSet[r.nextInt(optionSet.length)];
+            String optionSet = optionSets[r.nextInt(optionSets.length)];
             // We finally add both to the question array
-            questionSimulator[i] = new String[2];
-            questionSimulator[i][1] = questionText;
-            questionSimulator[i][2] = optionSetNum;
+            questionSimulator.add(new Question(statement, optionSet));
         }
+        Log.i(".MainActivity","questions simulated");
         return questionSimulator;
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.i(".MainActivity", "App started");
         setContentView(R.layout.main_layout);
 
         /*MalariaCareDbHelper malariaCareDb = new MalariaCareDbHelper(this);
@@ -80,7 +94,8 @@ public class MainActivity extends ActionBarActivity {
 
 
         // We get a set of questions for our layout
-        Object questions [][] = getQuestionSet(500);
+        List<Question> questions;
+        questions = getQuestionSet(500);
 
         // We take the Layouts for adding the content
         LinearLayout header = (LinearLayout) findViewById(R.id.Header);
@@ -88,9 +103,11 @@ public class MainActivity extends ActionBarActivity {
         LinearLayout footer = (LinearLayout) findViewById(R.id.Footer);
 
         // We add the questions
-        for(int i=0;i<questions.length;i++){
+        //for(Object[] questions)
+        for(Question question: questions){
+            Log.i(".MainActivity", question.toString());
             TextView tv = new TextView(this);
-            tv.setText(questions[i][0].toString());
+            tv.setText(questions.toString());
             body.addView(tv);
         }
 
@@ -138,6 +155,6 @@ public class MainActivity extends ActionBarActivity {
     }
 
     public void sendMessage(View view) {
-        System.out.println("taka");
+        Log.i(".MainActivity", "Button pressed");
     }
 }
