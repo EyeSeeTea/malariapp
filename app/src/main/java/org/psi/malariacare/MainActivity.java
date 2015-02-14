@@ -9,9 +9,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.Gallery;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import org.psi.malariacare.database.MalariaCareTables;
+import org.psi.malariacare.database.MalariaCareDbHelper;
 
 
 public class MainActivity extends ActionBarActivity {
@@ -28,18 +30,18 @@ public class MainActivity extends ActionBarActivity {
         // Define a projection that specifies which columns from the database
         // you will actually use after this query.
         String[] projection = {
-                MalariaCareDb.DataElements._ID,
-                MalariaCareDb.DataElements.COLUMN_NAME_TITLE,
-                MalariaCareDb.DataElements.COLUMN_NAME_TAB,
-                MalariaCareDb.DataElements.COLUMN_NAME_OPTION_SET
+                MalariaCareTables.DataElements._ID,
+                MalariaCareTables.DataElements.NAME_TITLE,
+                MalariaCareTables.DataElements.NAME_TAB,
+                MalariaCareTables.DataElements.NAME_OPTION_SET
         };
 
         // How you want the results sorted in the resulting Cursor
         String sortOrder =
-                MalariaCareDb.DataElements._ID + " DESC";
+                MalariaCareTables.DataElements._ID + " DESC";
 
         Cursor c = db.query(
-                MalariaCareDb.DataElements.TABLE_NAME,  // The table to query
+                MalariaCareTables.DataElements.TABLE_NAME,  // The table to query
                 projection,                               // The columns to return
                 null,                                // The columns for the WHERE clause
                 null,                            // The values for the WHERE clause
@@ -50,7 +52,7 @@ public class MainActivity extends ActionBarActivity {
 
         c.moveToFirst();
         String dataElementTitle = c.getString(
-                c.getColumnIndexOrThrow(MalariaCareDb.DataElements.COLUMN_NAME_TITLE)
+                c.getColumnIndexOrThrow(MalariaCareTables.DataElements.NAME_TITLE)
         );
 
         // Creating a new LinearLayout

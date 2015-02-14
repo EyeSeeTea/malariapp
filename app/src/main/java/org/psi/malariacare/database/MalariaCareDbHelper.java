@@ -1,4 +1,4 @@
-package org.psi.malariacare;
+package org.psi.malariacare.database;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
@@ -14,22 +14,22 @@ public class MalariaCareDbHelper extends SQLiteOpenHelper {
     private static final String TEXT_TYPE = " TEXT";
     private static final String COMMA_SEP = ",";
     private static final String SQL_CREATE_DATAELEMENTS =
-            "CREATE TABLE " + MalariaCareDb.DataElements.TABLE_NAME + " (" +
-                    MalariaCareDb.DataElements._ID + " INTEGER PRIMARY KEY," +
-                    MalariaCareDb.DataElements.COLUMN_NAME_TITLE + TEXT_TYPE + COMMA_SEP +
-                    MalariaCareDb.DataElements.COLUMN_NAME_TAB + TEXT_TYPE + COMMA_SEP +
-                    MalariaCareDb.DataElements.COLUMN_NAME_OPTION_SET + TEXT_TYPE +
+            "CREATE TABLE " + MalariaCareTables.DataElements.TABLE_NAME + " (" +
+                    MalariaCareTables.DataElements._ID + " INTEGER PRIMARY KEY," +
+                    MalariaCareTables.DataElements.NAME_TITLE + TEXT_TYPE + COMMA_SEP +
+                    MalariaCareTables.DataElements.NAME_TAB + TEXT_TYPE + COMMA_SEP +
+                    MalariaCareTables.DataElements.NAME_OPTION_SET + TEXT_TYPE +
             " )";
 
     private static final String SQL_DELETE_DATAELEMENTS =
-            "DROP TABLE IF EXISTS " + MalariaCareDb.DataElements.TABLE_NAME;
+            "DROP TABLE IF EXISTS " + MalariaCareTables.DataElements.TABLE_NAME;
 
     public MalariaCareDbHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(SQL_CREATE_DATAELEMENTS);
-        db.execSQL("insert into " + MalariaCareDb.DataElements.TABLE_NAME + "(" + MalariaCareDb.DataElements.COLUMN_NAME_TITLE + "," + MalariaCareDb.DataElements.COLUMN_NAME_TAB + "," + MalariaCareDb.DataElements.COLUMN_NAME_OPTION_SET + ") values ('Patient sex','GNR','GENDER')");
+        db.execSQL("insert into " + MalariaCareTables.DataElements.TABLE_NAME + "(" + MalariaCareTables.DataElements.NAME_TITLE + "," + MalariaCareTables.DataElements.NAME_TAB + "," + MalariaCareTables.DataElements.NAME_OPTION_SET + ") values ('Patient sex','GNR','GENDER')");
 
     }
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
