@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.GridLayout;
 import android.widget.GridView;
 import android.widget.LinearLayout;
@@ -56,74 +57,59 @@ public class MainActivity extends ActionBarActivity {
         return questionSimulator;
     }
 
-    protected int insertLayout(String layout, GridLayout parent){
+    protected int insertLayout(Question question, GridLayout parent){
+        String layout = question.getOptionSet();
         LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View v;
-        int child;
+        TextView statement;
+        int child = -1;
         switch(layout){
             case "asked":
                 child = R.layout.asked;
-                v = inflater.inflate(child, parent, false);
-                parent.addView(v);
-                return child;
+                break;
             case "done":
                 child = R.layout.done;
-                v = inflater.inflate(child, parent, false);
-                parent.addView(v);
-                return child;
+                break;
             case "yesno":
                 child = R.layout.yesno;
-                v = inflater.inflate(child, parent, false);
-                parent.addView(v);
-                return child;
+                break;
             case "yesNoNA":
                 child = R.layout.yesnona;
-                v = inflater.inflate(child, parent, false);
-                parent.addView(v);
-                return child;
+                break;
             case "yesNoAsked":
                 child = R.layout.yesnonotanswered;
-                v = inflater.inflate(child, parent, false);
-                parent.addView(v);
-                return child;
+                break;
             case "yesNoUnkasked":
                 child = R.layout.yesnounkasked;
-                v = inflater.inflate(child, parent, false);
-                parent.addView(v);
-                return child;
+                break;
             case "gender":
                 child = R.layout.gender;
-                v = inflater.inflate(child, parent, false);
-                parent.addView(v);
-                return child;
+                break;
             case "officer":
                 child = R.layout.officer;
-                v = inflater.inflate(child, parent, false);
-                parent.addView(v);
-                return child;
+                break;
             case "malResults":
                 child = R.layout.malresults;
-                v = inflater.inflate(child, parent, false);
-                parent.addView(v);
-                return child;
+                break;
             case "malDiagnose":
                 child = R.layout.maldiagnose;
-                v = inflater.inflate(child, parent, false);
-                parent.addView(v);
-                return child;
+                break;
             case "malSpecies":
                 child = R.layout.malspecies;
-                v = inflater.inflate(child, parent, false);
-                parent.addView(v);
-                return child;
+                break;
             case "result":
                 child = R.layout.result;
-                v = inflater.inflate(child, parent, false);
-                parent.addView(v);
-                return child;
+                break;
         }
-        // For not found layout
-        return -1;
+        Log.i(".MainActivity", "question statement: " + question.getStatement());
+        v = inflater.inflate(child, parent, false);
+        statement = (TextView) v.findViewById(R.id.statement);
+        Log.i(".MainActivity", "previous statement: " + statement.getText());
+        statement.setText(question.getStatement());
+        Log.i(".MainActivity", "later statement: " + statement.getText());
+        parent.addView(v);
+        // For not found layout, child will be -1
+        return child;
     }
 
     @Override
@@ -145,10 +131,7 @@ public class MainActivity extends ActionBarActivity {
                With the insertLayout function, we're trying to insert the question layout into the
                 parent layout. The function returns the question layout. We assert is always != -1
              */
-            assertTrue(insertLayout(question.getOptionSet(), body)!=-1);
-
-
-            //getLayoutInflater().inflate(layoutholder, placeholder);
+            assertTrue(insertLayout(question, body)!=-1);
         }
 
     }
