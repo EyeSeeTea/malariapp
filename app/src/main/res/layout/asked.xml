@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent" android:layout_height="match_parent"
-    android:rowCount="1"
-    android:columnCount="2">
+    android:orientation="horizontal">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/emptyStatement"
-        android:id="@+id/statement" />
+        android:id="@+id/statement"
+        android:layout_row="0" />
 
     <RadioGroup
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:id="@+id/answer">
 
         <RadioButton
@@ -27,4 +27,5 @@
             android:text="@string/notAsked"
             android:id="@+id/no" />
     </RadioGroup>
-</GridLayout>
+
+</LinearLayout>
