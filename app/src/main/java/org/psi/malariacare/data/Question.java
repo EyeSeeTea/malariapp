@@ -126,6 +126,10 @@ public class Question extends SugarRecord<Tab> {
         this.question = question;
     }
 
+    public List<Question> getQuestionChildren() {
+        return Question.find(Question.class, "question = ?", String.valueOf(this.getId()));
+    }
+
     public List<Value> getValues(){
         return Value.find(Value.class, "question = ?", String.valueOf(this.getId()));
     }
