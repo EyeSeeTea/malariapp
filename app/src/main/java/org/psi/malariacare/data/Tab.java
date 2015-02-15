@@ -40,6 +40,10 @@ public class Tab extends SugarRecord<Tab> {
         return Header.find(Header.class, "tab = ?", String.valueOf(this.getId()));
     }
 
+    public List<Score> getScores(){
+        return Score.find(Score.class, "tab = ?", String.valueOf(this.getId()));
+    }
+
     @Override
     public String toString() {
         return "Tab{" +

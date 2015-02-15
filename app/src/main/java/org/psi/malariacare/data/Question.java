@@ -19,13 +19,12 @@ public class Question extends SugarRecord<Tab> {
     Float denominator_w;
     Header header;
     Answer answer;
-    Integer master;
     Question question;
 
     public Question() {
     }
 
-    public Question(String code, String de_name, String short_name, String form_name, String uid, Integer order_question, Float numerator_w, Float denominator_w, Header header, Answer answer, Integer master, Question question) {
+    public Question(String code, String de_name, String short_name, String form_name, String uid, Integer order_question, Float numerator_w, Float denominator_w, Header header, Answer answer, Question question) {
         this.code = code;
         this.de_name = de_name;
         this.short_name = short_name;
@@ -36,7 +35,6 @@ public class Question extends SugarRecord<Tab> {
         this.denominator_w = denominator_w;
         this.header = header;
         this.answer = answer;
-        this.master = master;
         this.question = question;
     }
 
@@ -120,14 +118,6 @@ public class Question extends SugarRecord<Tab> {
         this.answer = answer;
     }
 
-    public Integer getMaster() {
-        return master;
-    }
-
-    public void setMaster(Integer master) {
-        this.master = master;
-    }
-
     public Question getQuestion() {
         return question;
     }
@@ -154,7 +144,6 @@ public class Question extends SugarRecord<Tab> {
                 ", denominator_w=" + denominator_w +
                 ", header=" + header +
                 ", answer=" + answer +
-                ", master=" + master +
                 ", question=" + question +
                 '}';
     }
