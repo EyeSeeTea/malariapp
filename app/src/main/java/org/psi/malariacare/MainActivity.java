@@ -1,6 +1,7 @@
 package org.psi.malariacare;
 
 import android.app.ActionBar;
+import android.content.res.AssetManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.ActionBarActivity;
@@ -9,9 +10,27 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.Gallery;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.orm.SugarRecord;
+
+import org.psi.malariacare.data.Header;
+import org.psi.malariacare.data.Question;
+import org.psi.malariacare.data.Tab;
+import org.psi.malariacare.database.MalariaCareTables;
+import org.psi.malariacare.utils.PopulateDB;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
+
+import static com.orm.SugarApp.getSugarContext;
+//import org.psi.malariacare.database.MalariaCareDbHelper;
 
 
 public class MainActivity extends ActionBarActivity {
@@ -19,39 +38,23 @@ public class MainActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //setContentView(R.layout.activity_main);
 
-        MalariaCareDbHelper malariaCareDb = new MalariaCareDbHelper(this);
+//        File dbFile = getDatabasePath("malariacare.db");
+//        adb pull /data/data/org.psi.malariacare/databases/malariacare.db ~/malariacare.db
 
-        //Query Database
-        SQLiteDatabase db = malariaCareDb.getReadableDatabase();
-        // Define a projection that specifies which columns from the database
-        // you will actually use after this query.
-        String[] projection = {
-                MalariaCareDb.DataElements._ID,
-                MalariaCareDb.DataElements.COLUMN_NAME_TITLE,
-                MalariaCareDb.DataElements.COLUMN_NAME_TAB,
-                MalariaCareDb.DataElements.COLUMN_NAME_OPTION_SET
-        };
+        if (Tab.count(Tab.class, null, null)==0) {
+            AssetManager assetManager = getAssets();
+            PopulateDB.populateDB(assetManager);
+        }
 
-        // How you want the results sorted in the resulting Cursor
-        String sortOrder =
-                MalariaCareDb.DataElements._ID + " DESC";
+        List<Tab> tabList2 = Tab.listAll(Tab.class);
+        for (Tab tabItem : tabList2){
+            //codigo
+            System.out.println(tabItem.toString());
+        }
 
-        Cursor c = db.query(
-                MalariaCareDb.DataElements.TABLE_NAME,  // The table to query
-                projection,                               // The columns to return
-                null,                                // The columns for the WHERE clause
-                null,                            // The values for the WHERE clause
-                null,                                     // don't group the rows
-                null,                                     // don't filter by row groups
-                sortOrder                                 // The sort order
-        );
 
-        c.moveToFirst();
-        String dataElementTitle = c.getString(
-                c.getColumnIndexOrThrow(MalariaCareDb.DataElements.COLUMN_NAME_TITLE)
-        );
+
 
         // Creating a new LinearLayout
         LinearLayout linearLayout = new LinearLayout(this);
@@ -62,11 +65,29 @@ public class MainActivity extends ActionBarActivity {
         linearLayout.setWeightSum(6f);
         linearLayout.setLayoutParams(layoutParams);
 
-        // Creating a new TextView
-        TextView tv = new TextView(this);
-        tv.setText(dataElementTitle);
-        tv.setLayoutParams(layoutParams);
-        linearLayout.addView(tv);
+
+        TextView tv;
+
+        //"Profile"
+        Tab currentTab = Tab.findById(Tab.class, 10L);
+        List<Header> headerList = currentTab.getHeaders();
+        for (Header header : headerList){
+            //codigo
+            System.out.println(header.toString());
+            List<Question> questionList = header.getQuestions();
+            for (Question question : questionList){
+                //codigo
+
+                System.out.println(question.toString());
+                System.out.println("Hijos");
+                System.out.println(question.getQuestion());
+                // Creating a new TextView
+                tv = new TextView(this);
+                tv.setText(question.getForm_name());
+                tv.setLayoutParams(layoutParams);
+                linearLayout.addView(tv);
+            }
+        }
 
 
         // Creating a new EditText
