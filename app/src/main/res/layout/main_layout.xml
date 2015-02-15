@@ -10,7 +10,7 @@
         android:layout_height="0dp"
         android:id="@+id/Header"
         android:gravity="center_vertical|center_horizontal"
-        android:layout_weight="0.1">
+        android:layout_weight="0.05">
 
         <TextView
             android:layout_width="wrap_content"
@@ -27,29 +27,94 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:id="@+id/GeneralBody"
-        android:layout_weight="1">
+        android:layout_weight="0.8">
 
-        <ScrollView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/Scroll" >
+        <TabHost
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:id="@+id/tabHost">
 
-            <GridLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:rowCount="1"
-                android:columnCount="1"
-                android:id="@+id/Body"></GridLayout>
-        </ScrollView>
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:orientation="vertical">
+
+                <TabWidget
+                    android:id="@android:id/tabs"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"></TabWidget>
+
+                <FrameLayout
+                    android:id="@android:id/tabcontent"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent">
+
+                    <LinearLayout
+                        android:id="@+id/tab1"
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:orientation="vertical">
+
+                        <ScrollView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/Scroll" >
+
+                            <GridLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:rowCount="1"
+                                android:columnCount="1"
+                                android:id="@+id/Body"></GridLayout>
+                        </ScrollView>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/tab2"
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:orientation="vertical"></LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/tab3"
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:orientation="vertical"></LinearLayout>
+                </FrameLayout>
+            </LinearLayout>
+        </TabHost>
+
     </LinearLayout>
 
     <LinearLayout
-        android:orientation="horizontal"
+        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:id="@+id/Footer"
         android:gravity="center_vertical|center_horizontal"
-        android:layout_weight="0.1">
+        android:layout_weight="0.15"
+        android:weightSum="1">
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/buttons"
+            android:layout_weight="0.2">
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/save"
+                android:id="@+id/save" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/clear"
+                android:id="@+id/button" />
+
+        </LinearLayout>
 
         <TextView
             android:layout_width="wrap_content"
@@ -58,7 +123,9 @@
             android:text="@string/developers"
             android:id="@+id/FooterTitle"
             android:hint="@string/developers"
-            android:layout_gravity="bottom|center_horizontal" />
+            android:layout_gravity="center_horizontal"
+            android:layout_weight="0.50" />
+
     </LinearLayout>
 
 </LinearLayout>

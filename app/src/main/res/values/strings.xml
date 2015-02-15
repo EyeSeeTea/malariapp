@@ -39,5 +39,7 @@
     <string name="po">Po</string>
     <string name="abnormal">Abnormal</string>
     <string name="normal">Normal</string>
+    <string name="save">Save</string>
+    <string name="clear">Clear</string>
 
 </resources>

@@ -57,6 +57,36 @@ public class MainActivity extends ActionBarActivity {
         return questionSimulator;
     }
 
+    protected List<Tab> getTabSet(int size){
+        // Just to be able to work, I need a question simulator, in order to emulate the DB entries
+        Random r = new Random();
+        String tabTypes [] = {
+                "Score",
+                "GNR1",
+                "Microscopy1",
+                "RDT1",
+                "GNR2",
+                "Microscopy2",
+                "RDT2",
+                "GNR3",
+                "Microscopy3",
+                "GNR3"
+        };
+        Log.i(".MainActivity","tabSet created");
+        List<Tab> tabSimulator = new ArrayList<>();
+        for (int i=0; i<size; i++){
+            Log.i(".MainActivity","creating tab " + i);
+            // Te OptionSet will be randomized
+            String tabType = tabTypes[r.nextInt(tabTypes.length)];
+            Log.i(".MainActivity","tabType " + tabType);
+            // We finally add both to the question array
+            tabSimulator.add(new Tab(tabType));
+            Log.i(".MainActivity","tab finished");
+        }
+        Log.i(".MainActivity","tabs simulated");
+        return tabSimulator;
+    }
+
     protected int insertLayout(Question question, GridLayout parent){
         String layout = question.getOptionSet();
         LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -120,7 +150,11 @@ public class MainActivity extends ActionBarActivity {
 
         // We get a set of questions for our layout
         List<Question> questions;
-        questions = getQuestionSet(10);
+        questions = getQuestionSet(100);
+
+        // We get a set of tabs
+        List<Tab> tabs;
+        tabs = getTabSet(3);
 
         // We take the Layouts for adding the content
         GridLayout body = (GridLayout) this.findViewById(R.id.Body);
