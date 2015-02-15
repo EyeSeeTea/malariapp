@@ -1,0 +1,858 @@
+1;'MAL-SUP-Environment-Q1';'MAL-SUP-Environment-Q1 Have you had any disruptions in water supply lasting more than a day in the last two weeks?';0;'Have you had any disruptions in water supply lasting more than a day in the last two weeks?';0;1;5.00;5.00;139;4;0;
+2;'MAL-SUP-Environment-Q2';'MAL-SUP-Environment-Q2 What is your usual water supply? (choose one)';0;'What is your usual water supply? (choose one)';0;2;0.00;0.00;139;26;0;
+3;'MAL-SUP-Environment-Q3';'MAL-SUP-Environment-Q3 Running tap water';0;'Running tap water';0;3;3.00;3.00;139;3;0;
+4;'MAL-SUP-Environment-Q4';'MAL-SUP-Environment-Q4 Rain water';0;'Rain water';0;4;1.00;3.00;139;3;0;
+5;'MAL-SUP-Environment-Q5';'MAL-SUP-Environment-Q5 Well';0;'Well';0;5;3.00;3.00;139;3;0;
+6;'MAL-SUP-Environment-Q6';'MAL-SUP-Environment-Q6 Bore hole';0;'Bore hole';0;6;3.00;3.00;139;3;0;
+7;'MAL-SUP-Environment-Q7';'MAL-SUP-Environment-Q7 Stream/river';0;'Stream/river';0;7;1.00;3.00;139;3;0;
+8;'MAL-SUP-Environment-Q8';'MAL-SUP-Environment-Q8 Bottled water';0;'Bottled water';0;8;3.00;3.00;139;3;0;
+9;'MAL-SUP-Environment-Q9';'MAL-SUP-Environment-Q9 Externally filled water tank';0;'Externally filled water tank';0;9;3.00;3.00;139;3;0;
+10;'MAL-SUP-Environment-Q10';'MAL-SUP-Environment-Q10 Have you had any disruptions in power supply lasting more than a day in the last two weeks?';0;'Have you had any disruptions in power supply lasting more than a day in the last two weeks?';0;10;5.00;5.00;140;4;0;
+11;'MAL-SUP-Environment-Q11';'MAL-SUP-Environment-Q11 What is your usual water supply?';0;'What is your usual water supply?';0;11;0.00;0.00;140;26;0;
+12;'MAL-SUP-Environment-Q12';'MAL-SUP-Environment-Q12 Main power supply';0;'Main power supply';0;12;0.00;0.00;140;3;0;
+13;'MAL-SUP-Environment-Q13';'MAL-SUP-Environment-Q13 Generator';0;'Generator';0;13;0.00;0.00;140;3;0;
+14;'MAL-SUP-Environment-Q14';'MAL-SUP-Environment-Q14 Solar';0;'Solar';0;14;0.00;0.00;140;3;0;
+15;'MAL-SUP-Environment-Q15';'MAL-SUP-Environment-Q15 Equipment found in the clinic';0;'Equipment found in the clinic';0;15;0.00;7.00;141;3;1;
+16;'MAL-SUP-Environment-Q28';'MAL-SUP-Environment-Q28 Was there a stock out of any of the following in the last 3 months?';0;'Was there a stock out of any of the following in the last 3 months?';0;28;0.00;0.00;142;25;0;
+17;'MAL-SUP-Environment-Q29';'MAL-SUP-Environment-Q29 Artemether-Lumefantrine*';0;'Artemether-Lumefantrine*';0;29;3.00;3.00;142;4;0;
+18;'MAL-SUP-Environment-Q30';'MAL-SUP-Environment-Q30 Artesunate-Amodiaquine*';0;'Artesunate-Amodiaquine*';0;30;3.00;3.00;142;4;0;
+19;'MAL-SUP-Environment-Q31';'MAL-SUP-Environment-Q31 Dihydroartemisinin-piperaquine*';0;'Dihydroartemisinin-piperaquine*';0;31;3.00;3.00;142;4;0;
+20;'MAL-SUP-Environment-Q32';'MAL-SUP-Environment-Q32 Artesunate suppository++';0;'Artesunate suppository++';0;32;1.00;1.00;142;4;0;
+21;'MAL-SUP-Environment-Q33';'MAL-SUP-Environment-Q33 Artemether (injectable)++';0;'Artemether (injectable)++';0;33;1.00;1.00;142;4;0;
+22;'MAL-SUP-Environment-Q34';'MAL-SUP-Environment-Q34 Quinine (injectable)';0;'Quinine (injectable)';0;34;1.00;1.00;142;4;0;
+23;'MAL-SUP-Environment-Q35';'MAL-SUP-Environment-Q35 Quinine (oral)';0;'Quinine (oral)';0;35;1.00;1.00;142;4;0;
+24;'MAL-SUP-Environment-Q36';'MAL-SUP-Environment-Q36 Doxycycline';0;'Doxycycline';0;36;1.00;1.00;142;4;0;
+25;'MAL-SUP-Environment-Q37';'MAL-SUP-Environment-Q37 Paracetamol';0;'Paracetamol';0;37;2.00;2.00;142;4;0;
+26;'MAL-SUP-Environment-Q38';'MAL-SUP-Environment-Q38 Ibuprofen';0;'Ibuprofen';0;38;1.00;1.00;142;4;0;
+27;'MAL-SUP-Environment-Q39';'MAL-SUP-Environment-Q39 Cotrimoxazole';0;'Cotrimoxazole';0;39;1.00;1.00;142;4;0;
+28;'MAL-SUP-Environment-Q40';'MAL-SUP-Environment-Q40 Amoxicillin';0;'Amoxicillin';0;40;3.00;3.00;142;4;0;
+29;'MAL-SUP-Environment-Q41';'MAL-SUP-Environment-Q41 Ceftriaxone';0;'Ceftriaxone';0;41;1.00;1.00;142;4;0;
+30;'MAL-SUP-Environment-Q42';'MAL-SUP-Environment-Q42 Other antibiotics drugs (list below)';0;'Other antibiotics drugs (list below)';0;42;1.00;1.00;142;4;0;
+31;'MAL-SUP-Environment-Q43';'MAL-SUP-Environment-Q43 Does this facility have inpatient services?';0;'Does this facility have inpatient services?';0;43;0.00;21.00;143;3;1;
+32;'MAL-SUP-Environment-Q58';'MAL-SUP-Environment-Q58 Was there a stock out of any of the following in the last 3 months?';0;'Was there a stock out of any of the following in the last 3 months?';0;58;0.00;0.00;144;25;0;
+33;'MAL-SUP-Environment-Q59';'MAL-SUP-Environment-Q59 Microscopes';0;'Microscopes';0;59;3.00;3.00;144;4;0;
+34;'MAL-SUP-Environment-Q60';'MAL-SUP-Environment-Q60 Lancets/needles & syringes';0;'Lancets/needles & syringes';0;60;1.00;1.00;144;4;0;
+35;'MAL-SUP-Environment-Q61';'MAL-SUP-Environment-Q61 Methylated spirits ';0;'Methylated spirits ';0;61;1.00;1.00;144;4;0;
+36;'MAL-SUP-Environment-Q62';'MAL-SUP-Environment-Q62 Glycerol';0;'Glycerol';0;62;1.00;1.00;144;4;0;
+37;'MAL-SUP-Environment-Q63';'MAL-SUP-Environment-Q63 Giemsa stain and/or field stain';0;'Giemsa stain and/or field stain';0;63;1.00;1.00;144;4;0;
+38;'MAL-SUP-Environment-Q64';'MAL-SUP-Environment-Q64 Buffer solution/tabs ';0;'Buffer solution/tabs ';0;64;1.00;1.00;144;4;0;
+39;'MAL-SUP-Environment-Q65';'MAL-SUP-Environment-Q65 Microscope slides';0;'Microscope slides';0;65;1.00;1.00;144;4;0;
+40;'MAL-SUP-Environment-Q66';'MAL-SUP-Environment-Q66 Immersion oil';0;'Immersion oil';0;66;1.00;1.00;144;4;0;
+41;'MAL-SUP-Environment-Q67';'MAL-SUP-Environment-Q67 pH paper/meter';0;'pH paper/meter';0;67;1.00;1.00;144;4;0;
+42;'MAL-SUP-Environment-Q68';'MAL-SUP-Environment-Q68 RDTs';0;'RDTs';0;68;3.00;3.00;144;4;0;
+43;'MAL-SUP-Environment-Q69';'MAL-SUP-Environment-Q69 Are any of the reference materials below physically available? (copy shown)';0;'Are any of the reference materials below physically available? (copy shown)';0;69;0.00;0.00;145;25;0;
+44;'MAL-SUP-Environment-Q70';'MAL-SUP-Environment-Q70 MOH guidelines for case management (diagnosis and treatment)';0;'MOH guidelines for case management (diagnosis and treatment)';0;70;0.00;0.00;145;3;0;
+45;'MAL-SUP-Environment-Q71';'MAL-SUP-Environment-Q71 If yes, most recent version?';0;'If yes, most recent version?';0;71;1.00;1.00;145;3;0;
+46;'MAL-SUP-Environment-Q72';'MAL-SUP-Environment-Q72 Algorithms for case management';0;'Algorithms for case management';0;72;0.00;0.00;145;3;0;
+47;'MAL-SUP-Environment-Q73';'MAL-SUP-Environment-Q73 If yes, most recent version?';0;'If yes, most recent version?';0;73;1.00;1.00;145;3;0;
+48;'MAL-SUP-Environment-Q74';'MAL-SUP-Environment-Q74 SOP:  use of RDTs';0;'SOP:  use of RDTs';0;74;0.00;0.00;145;3;0;
+49;'MAL-SUP-Environment-Q75';'MAL-SUP-Environment-Q75 If yes, most recent version?';0;'If yes, most recent version?';0;75;1.00;1.00;145;3;0;
+50;'MAL-SUP-Environment-Q76';'MAL-SUP-Environment-Q76 Bench aid:  use of RDTs';0;'Bench aid:  use of RDTs';0;76;0.00;0.00;145;3;0;
+51;'MAL-SUP-Environment-Q77';'MAL-SUP-Environment-Q77 If yes, most recent version?';0;'If yes, most recent version?';0;77;1.00;1.00;145;3;0;
+52;'MAL-SUP-Environment-Q78';'MAL-SUP-Environment-Q78 MOH guidelines for microscopy';0;'MOH guidelines for microscopy';0;78;0.00;0.00;146;3;0;
+53;'MAL-SUP-Environment-Q79';'MAL-SUP-Environment-Q79 If yes, most recent version?';0;'If yes, most recent version?';0;79;1.00;1.00;146;3;0;
+54;'MAL-SUP-Environment-Q80';'MAL-SUP-Environment-Q80 Technical guides for microscopy';0;'Technical guides for microscopy';0;80;0.00;0.00;146;3;0;
+55;'MAL-SUP-Environment-Q81';'MAL-SUP-Environment-Q81 If yes, most recent version?';0;'If yes, most recent version?';0;81;1.00;1.00;146;3;0;
+56;'MAL-SUP-Environment-Q82';'MAL-SUP-Environment-Q82 SOP:  use of RDTs';0;'SOP:  use of RDTs';0;82;0.00;0.00;146;3;0;
+57;'MAL-SUP-Environment-Q83';'MAL-SUP-Environment-Q83 If yes, most recent version?';0;'If yes, most recent version?';0;83;1.00;1.00;146;3;0;
+58;'MAL-SUP-Environment-Q84';'MAL-SUP-Environment-Q84 SOP:  microscopy';0;'SOP:  microscopy';0;84;0.00;0.00;146;3;0;
+59;'MAL-SUP-Environment-Q85';'MAL-SUP-Environment-Q85 If yes, most recent version?';0;'If yes, most recent version?';0;85;1.00;1.00;146;3;0;
+60;'MAL-SUP-Environment-Q86';'MAL-SUP-Environment-Q86 Bench aid:  use of RDTs';0;'Bench aid:  use of RDTs';0;86;0.00;0.00;146;3;0;
+61;'MAL-SUP-Environment-Q87';'MAL-SUP-Environment-Q87 If yes, most recent version?';0;'If yes, most recent version?';0;87;1.00;1.00;146;3;0;
+62;'MAL-SUP-Environment-Q88';'MAL-SUP-Environment-Q88 Bench aid:  microscopy';0;'Bench aid:  microscopy';0;88;0.00;0.00;146;3;0;
+63;'MAL-SUP-Environment-Q89';'MAL-SUP-Environment-Q89 If yes, most recent version?';0;'If yes, most recent version?';0;89;1.00;0.00;146;3;0;
+64;'MAL-SUP-Environment-Q90';'MAL-SUP-Environment-Q90 Functional microscopes at the health facility';0;'Functional microscopes at the health facility';0;90;1.00;1.00;147;3;0;
+65;'MAL-SUP-Environment-Q91';'MAL-SUP-Environment-Q91 Non-functional microscopes at the health facility';0;'Non-functional microscopes at the health facility';0;91;1.00;1.00;147;3;0;
+66;'MAL-SUP-Environment-Q92';'MAL-SUP-Environment-Q92 Standard microscope repair kits';0;'Standard microscope repair kits';0;92;1.00;1.00;147;3;0;
+67;'MAL-SUP-Environment-Q93';'MAL-SUP-Environment-Q93 Spare bulbs in stock';0;'Spare bulbs in stock';0;93;1.00;1.00;147;3;0;
+68;'MAL-SUP-Environment-Q94';'MAL-SUP-Environment-Q94 Fuses in stock';0;'Fuses in stock';0;94;1.00;1.00;147;3;0;
+69;'MAL-SUP-Environment-Q95';'MAL-SUP-Environment-Q95 Does the laboratory staff conduct routine cleaning/maintenance of the microscope?';0;'Does the laboratory staff conduct routine cleaning/maintenance of the microscope?';0;95;1.00;1.00;147;3;0;
+70;'MAL-SUP-Environment-Q96';'MAL-SUP-Environment-Q96 Are maintenance engineers or contractors available to complete microscope repair OR is someone in the facility trained in microcopy repair?';0;'Are maintenance engineers or contractors available to complete microscope repair OR is someone in the facility trained in microcopy repair?';0;96;1.00;1.00;147;3;0;
+71;'MAL-SUP-Environment-Q97';'MAL-SUP-Environment-Q97 Are the following equipment available?';0;'Are the following equipment available?';0;97;0.00;0.00;148;25;0;
+72;'MAL-SUP-Environment-Q98';'MAL-SUP-Environment-Q98 Lab Coats / Aprons ';0;'Lab Coats / Aprons ';0;98;1.00;1.00;148;9;0;
+73;'MAL-SUP-Environment-Q99';'MAL-SUP-Environment-Q99 Hemoglobin Meter ';0;'Hemoglobin Meter ';0;99;1.00;1.00;148;9;0;
+74;'MAL-SUP-Environment-Q100';'MAL-SUP-Environment-Q100 Glucometer ';0;'Glucometer ';0;100;1.00;1.00;148;9;0;
+75;'MAL-SUP-Environment-Q101';'MAL-SUP-Environment-Q101 Urine Strips';0;'Urine Strips';0;101;1.00;1.00;148;9;0;
+76;'MAL-SUP-Environment-Q102';'MAL-SUP-Environment-Q102 Staining Racks';0;'Staining Racks';0;102;1.00;1.00;148;9;0;
+77;'MAL-SUP-Environment-Q103';'MAL-SUP-Environment-Q103 Staining Vessels';0;'Staining Vessels';0;103;1.00;1.00;148;9;0;
+78;'MAL-SUP-Environment-Q104';'MAL-SUP-Environment-Q104 Glass Staining Dishes';0;'Glass Staining Dishes';0;104;1.00;1.00;148;9;0;
+79;'MAL-SUP-Environment-Q105';'MAL-SUP-Environment-Q105 Slide Drying Racks';0;'Slide Drying Racks';0;105;1.00;1.00;148;9;0;
+80;'MAL-SUP-Environment-Q106';'MAL-SUP-Environment-Q106 Serological Pipets and Pipet Bulbs or Automated Pippetor';0;'Serological Pipets and Pipet Bulbs or Automated Pippetor';0;106;1.00;1.00;148;9;0;
+81;'MAL-SUP-Environment-Q107';'MAL-SUP-Environment-Q107 Timers';0;'Timers';0;107;1.00;1.00;148;9;0;
+82;'MAL-SUP-Environment-Q108';'MAL-SUP-Environment-Q108 Tally Counters';0;'Tally Counters';0;108;1.00;1.00;148;9;0;
+83;'MAL-SUP-Environment-Q109';'MAL-SUP-Environment-Q109 Slide Storage Boxes';0;'Slide Storage Boxes';0;109;1.00;1.00;148;9;0;
+84;'MAL-SUP-Environment-Q110';'MAL-SUP-Environment-Q110 Graduated Cylinder (50 mL)';0;'Graduated Cylinder (50 mL)';0;110;1.00;1.00;148;9;0;
+85;'MAL-SUP-Environment-Q111';'MAL-SUP-Environment-Q111 Graduated Cylinder (250 mL)';0;'Graduated Cylinder (250 mL)';0;111;1.00;1.00;148;9;0;
+86;'MAL-SUP-Environment-Q112';'MAL-SUP-Environment-Q112 Graduated Cylinder (500 mL)';0;'Graduated Cylinder (500 mL)';0;112;1.00;1.00;148;9;0;
+87;'MAL-SUP-Environment-Q113';'MAL-SUP-Environment-Q113 Weighing Scale';0;'Weighing Scale';0;113;1.00;1.00;148;9;0;
+88;'MAL-SUP-Environment-Q114';'MAL-SUP-Environment-Q114 Funnel';0;'Funnel';0;114;1.00;1.00;148;9;0;
+89;'MAL-SUP-Environment-Q115';'MAL-SUP-Environment-Q115 Blood Tube Roller/Mixer';0;'Blood Tube Roller/Mixer';0;115;1.00;1.00;148;9;0;
+90;'MAL-SUP-Environment-Q116';'MAL-SUP-Environment-Q116 Are there malaria monthly reports available at this facility for the last three months?';0;'Are there malaria monthly reports available at this facility for the last three months?';0;116;0.00;0.00;149;3;0;
+91;'MAL-SUP-Environment-Q117';'MAL-SUP-Environment-Q117 Is there a staff member assigned to conduct monthly tallies';0;'Is there a staff member assigned to conduct monthly tallies';0;117;1.00;1.00;149;3;0;
+92;'MAL-SUP-Environment-Q118';'MAL-SUP-Environment-Q118 Has any staff member been trained in monthly reporting?';0;'Has any staff member been trained in monthly reporting?';0;118;1.00;1.00;149;3;0;
+93;'MAL-SUP-Environment-Q119';'MAL-SUP-Environment-Q119 Are monthly reports verified by a second person before submission?';0;'Are monthly reports verified by a second person before submission?';0;119;1.00;1.00;149;3;0;
+94;'MAL-SUP-Environment-Q120';'MAL-SUP-Environment-Q120 What is the format for monthly reporting?';0;'What is the format for monthly reporting?';0;120;0.00;0.00;149;20;0;
+95;'MAL-SUP-Environment-Q121';'MAL-SUP-Environment-Q121 Do the monthly reports submitted include:';0;'Do the monthly reports submitted include:';0;121;0.00;0.00;149;3;0;
+96;'MAL-SUP-Environment-Q122';'MAL-SUP-Environment-Q122 Separate columns for patients under 5 and over 5?';0;'Separate columns for patients under 5 and over 5?';0;122;1.00;1.00;149;3;0;
+97;'MAL-SUP-Environment-Q123';'MAL-SUP-Environment-Q123 Separate columns for male and female?';0;'Separate columns for male and female?';0;123;1.00;1.00;149;3;0;
+98;'MAL-SUP-Environment-Q124';'MAL-SUP-Environment-Q124 Column or row for the total number of patients seen at the facility/department?';0;'Column or row for the total number of patients seen at the facility/department?';0;124;1.00;1.00;149;3;0;
+99;'MAL-SUP-Environment-Q125';'MAL-SUP-Environment-Q125 Column or row for the total number of suspected malaria patients?';0;'Column or row for the total number of suspected malaria patients?';0;125;1.00;1.00;149;3;0;
+100;'MAL-SUP-Environment-Q126';'MAL-SUP-Environment-Q126 Column or row for the total number of patients tested for malaria?';0;'Column or row for the total number of patients tested for malaria?';0;126;1.00;1.00;149;3;0;
+101;'MAL-SUP-Environment-Q127';'MAL-SUP-Environment-Q127 Column or row for the total number of patients who received ACTs?';0;'Column or row for the total number of patients who received ACTs?';0;127;1.00;1.00;149;3;0;
+102;'MAL-SUP-Environment-Q128';'MAL-SUP-Environment-Q128 Column or row for the total number of patients referred or admitted with suspected severe malaria?';0;'Column or row for the total number of patients referred or admitted with suspected severe malaria?';0;128;1.00;1.00;149;3;0;
+103;'MAL-SUP-Environment-Q129';'MAL-SUP-Environment-Q129 Has this facility received feedback reports in the last three months on timeliness, completeness and accuracy of the data submitted?';0;'Has this facility received feedback reports in the last three months on timeliness, completeness and accuracy of the data submitted?';0;129;1.00;1.00;149;3;0;
+104;'MAL-SUP-Environment-Q130';'MAL-SUP-Environment-Q130 Has this facility received feedback on service delivery in the last 3 months?';0;'Has this facility received feedback on service delivery in the last 3 months?';0;130;1.00;1.00;149;3;0;
+105;'MAL-SUP-Environment-Q131';'MAL-SUP-Environment-Q131 Are there outpatient registers available in this facility?';0;'Are there outpatient registers available in this facility?';0;131;10.00;10.00;150;3;0;
+106;'MAL-SUP-Environment-Q132';'MAL-SUP-Environment-Q132 If no, where is the patient information being recorded?';0;'If no, where is the patient information being recorded?';0;132;0.00;0.00;150;23;0;
+107;'MAL-SUP-Environment-Q133';'MAL-SUP-Environment-Q133 Is there a space to record?';0;'Is there a space to record?';0;133;1.00;1.00;150;3;0;
+108;'MAL-SUP-Environment-Q134';'MAL-SUP-Environment-Q134 Age of the patient';0;'Age of the patient';0;134;1.00;1.00;150;3;0;
+109;'MAL-SUP-Environment-Q135';'MAL-SUP-Environment-Q135 Sex of the patient';0;'Sex of the patient';0;135;1.00;1.00;150;3;0;
+110;'MAL-SUP-Environment-Q136';'MAL-SUP-Environment-Q136 Presumptive diagnosis';0;'Presumptive diagnosis';0;136;1.00;1.00;150;3;0;
+111;'MAL-SUP-Environment-Q137';'MAL-SUP-Environment-Q137 Diagnostic test results';0;'Diagnostic test results';0;137;1.00;1.00;150;3;0;
+112;'MAL-SUP-Environment-Q138';'MAL-SUP-Environment-Q138 Final diagnosis';0;'Final diagnosis';0;138;1.00;1.00;150;3;0;
+113;'MAL-SUP-Environment-Q139';'MAL-SUP-Environment-Q139 Prescriptions';0;'Prescriptions';0;139;1.00;1.00;150;3;0;
+114;'MAL-SUP-Environment-Q140';'MAL-SUP-Environment-Q140 Are all the columns filled for each patient';0;'Are all the columns filled for each patient';0;140;1.00;1.00;150;3;0;
+115;'MAL-SUP-Environment-Q141';'MAL-SUP-Environment-Q141 Laboratory and clinical registers are linked by identification number';0;'Laboratory and clinical registers are linked by identification number';0;141;1.00;1.00;150;3;0;
+116;'MAL-SUP-Environment-Q142';'MAL-SUP-Environment-Q142 HMIS reports submitted';0;'HMIS reports submitted';0;142;1.00;1.00;150;3;0;
+117;'MAL-SUP-Environment-Q143';'MAL-SUP-Environment-Q143 Does this facility have a microscopy slide IQA program?';0;'Does this facility have a microscopy slide IQA program?';0;143;2.00;2.00;151;3;0;
+118;'MAL-SUP-Environment-Q144';'MAL-SUP-Environment-Q144 Are positive control slides available for testing new batches of stain?';0;'Are positive control slides available for testing new batches of stain?';0;144;1.00;1.00;151;3;0;
+119;'MAL-SUP-Environment-Q145';'MAL-SUP-Environment-Q145 Are standards used to calibrate the pH meter?';0;'Are standards used to calibrate the pH meter?';0;145;1.00;1.00;151;3;0;
+120;'MAL-SUP-Environment-Q146';'MAL-SUP-Environment-Q146 Are stained slides cross-checked by another laboratory staff member?';0;'Are stained slides cross-checked by another laboratory staff member?';0;146;1.00;1.00;151;3;0;
+121;'MAL-SUP-Environment-Q147';'MAL-SUP-Environment-Q147 Are results from IQA exercises recorded in a dedicated IQA register?';0;'Are results from IQA exercises recorded in a dedicated IQA register?';0;147;1.00;1.00;151;3;0;
+122;'MAL-SUP-Environment-Q148';'MAL-SUP-Environment-Q148 Are slides stored for rereading?';0;'Are slides stored for rereading?';0;148;1.00;1.00;151;3;0;
+123;'MAL-SUP-Environment-Q149';'MAL-SUP-Environment-Q149 Are slides stored in slide boxes?';0;'Are slides stored in slide boxes?';0;149;1.00;1.00;151;3;0;
+124;'MAL-SUP-Environment-Q150';'MAL-SUP-Environment-Q150 Is malaria species identification routinely performed?';0;'Is malaria species identification routinely performed?';0;150;1.00;1.00;151;3;0;
+125;'MAL-SUP-Environment-Q151';'MAL-SUP-Environment-Q151 Is parasite counting performed?';0;'Is parasite counting performed?';0;151;1.00;1.00;151;3;0;
+126;'MAL-SUP-Environment-Q152';'MAL-SUP-Environment-Q152 If yes, which method of counting is performed?';0;'If yes, which method of counting is performed?';0;152;0.00;0.00;151;21;0;
+127;'MAL-SUP-Environment-Q153';'MAL-SUP-Environment-Q153  Does the laboratory participate in a malaria EQA scheme outside of OTSS?    ';0;' Does the laboratory participate in a malaria EQA scheme outside of OTSS?    ';0;153;2.00;2.00;152;3;0;
+128;'MAL-SUP-Environment-Q154';'MAL-SUP-Environment-Q154 1) Name/Affiliation of Monitors:';0;'1) Name/Affiliation of Monitors:';0;154;0.00;0.00;152;26;0;
+129;'MAL-SUP-Environment-Q155';'MAL-SUP-Environment-Q155 2) Date of last validation (mm/yyyy):   ';0;'2) Date of last validation (mm/yyyy):   ';0;155;0.00;0.00;152;27;0;
+130;'MAL-SUP-Environment-Q156';'MAL-SUP-Environment-Q156 Does the laboratory participate in any other EQA schemes (HIV/TB or others)?';0;'Does the laboratory participate in any other EQA schemes (HIV/TB or others)?';0;156;0.00;0.00;152;3;0;
+131;'MAL-SUP-Environment-Q157';'MAL-SUP-Environment-Q157 1) Name/Affiliation of Monitors:';0;'1) Name/Affiliation of Monitors:';0;157;0.00;0.00;152;26;0;
+132;'MAL-SUP-Environment-Q158';'MAL-SUP-Environment-Q158 2) Date of last validation (mm/yyyy):   ';0;'2) Date of last validation (mm/yyyy):   ';0;158;0.00;0.00;152;27;0;
+133;'MAL-SUP-Environment-Q159';'MAL-SUP-Environment-Q159 Does the laboratory conduct RDT validation exercises?';0;'Does the laboratory conduct RDT validation exercises?';0;159;2.00;2.00;152;3;0;
+134;'MAL-SUP-Environment-Q160';'MAL-SUP-Environment-Q160 2) Date of last validation (mm/yyyy):   ';0;'2) Date of last validation (mm/yyyy):   ';0;160;0.00;0.00;152;27;0;
+135;'MAL-SUP-Environment-Q161';'MAL-SUP-Environment-Q161 Were a minimum of 30 slides set aside for EQA rechecking';0;'Were a minimum of 30 slides set aside for EQA rechecking';0;161;2.00;2.00;152;3;0;
+136;'MAL-SUP-Environment-Q162';'MAL-SUP-Environment-Q162 Turnaround time for slide preparation and reading documented in the register';0;'Turnaround time for slide preparation and reading documented in the register';0;162;1.00;1.00;153;5;0;
+137;'MAL-SUP-Environment-Q163';'MAL-SUP-Environment-Q163 If yes, what is the average turnaround time for the last week?';0;'If yes, what is the average turnaround time for the last week?';0;163;0.00;0.00;153;26;0;
+138;'MAL-SUP-Environment-Q164';'MAL-SUP-Environment-Q164 Turnaround time for RDT preparation and reading documented in the register';0;'Turnaround time for RDT preparation and reading documented in the register';0;164;1.00;1.00;153;5;0;
+139;'MAL-SUP-Environment-Q165';'MAL-SUP-Environment-Q165 If yes, what is the average turnaround time for the last week?';0;'If yes, what is the average turnaround time for the last week?';0;165;0.00;0.00;153;26;0;
+140;'MAL-SUP-Profile-Q1';'MAL-SUP-Profile-Q1 Date of Visit (DD/MM/YYYY)';0;'Date of Visit (DD/MM/YYYY)';0;1;0.00;0.00;1;28;0;
+141;'MAL-SUP-Profile-Q2';'MAL-SUP-Profile-Q2 Supervisor ID';0;'Supervisor ID';0;2;0.00;0.00;1;26;0;
+142;'MAL-SUP-Profile-Q3';'MAL-SUP-Profile-Q3 Supervisor Name';0;'Supervisor Name';0;3;0.00;0.00;1;26;0;
+143;'MAL-SUP-Profile-Q4';'MAL-SUP-Profile-Q4  Clinical Officers, Full-Time today';0;' Clinical Officers, Full-Time today';0;4;0.00;0.00;2;24;0;
+144;'MAL-SUP-Profile-Q5';'MAL-SUP-Profile-Q5  Clinical Officers, Full-Time usual';0;' Clinical Officers, Full-Time usual';0;5;0.00;0.00;2;24;0;
+145;'MAL-SUP-Profile-Q6';'MAL-SUP-Profile-Q6  Clinical Officers, Part-Time today';0;' Clinical Officers, Part-Time today';0;6;0.00;0.00;2;24;0;
+146;'MAL-SUP-Profile-Q7';'MAL-SUP-Profile-Q7  Clinical Officers, Part-Time usual';0;' Clinical Officers, Part-Time usual';0;7;0.00;0.00;2;24;0;
+147;'MAL-SUP-Profile-Q8';'MAL-SUP-Profile-Q8  Medical Officers, Full-Time today';0;' Medical Officers, Full-Time today';0;8;0.00;0.00;3;24;0;
+148;'MAL-SUP-Profile-Q9';'MAL-SUP-Profile-Q9  Medical Officers, Full-Time usual';0;' Medical Officers, Full-Time usual';0;9;0.00;0.00;3;24;0;
+149;'MAL-SUP-Profile-Q10';'MAL-SUP-Profile-Q10  Medical Officers, Part-Time today';0;' Medical Officers, Part-Time today';0;10;0.00;0.00;3;24;0;
+150;'MAL-SUP-Profile-Q11';'MAL-SUP-Profile-Q11  Medical Officers, Part-Time usual';0;' Medical Officers, Part-Time usual';0;11;0.00;0.00;3;24;0;
+151;'MAL-SUP-Profile-Q12';'MAL-SUP-Profile-Q12  Nurses, Full-Time today';0;' Nurses, Full-Time today';0;12;0.00;0.00;4;24;0;
+152;'MAL-SUP-Profile-Q13';'MAL-SUP-Profile-Q13  Nurses, Full-Time usual';0;' Nurses, Full-Time usual';0;13;0.00;0.00;4;24;0;
+153;'MAL-SUP-Profile-Q14';'MAL-SUP-Profile-Q14  Nurses, Part-Time today';0;' Nurses, Part-Time today';0;14;0.00;0.00;4;24;0;
+154;'MAL-SUP-Profile-Q15';'MAL-SUP-Profile-Q15  Nurses, Part-Time usual';0;' Nurses, Part-Time usual';0;15;0.00;0.00;4;24;0;
+155;'MAL-SUP-Profile-Q16';'MAL-SUP-Profile-Q16  Medical Interns, Full-Time today';0;' Medical Interns, Full-Time today';0;16;0.00;0.00;5;24;0;
+156;'MAL-SUP-Profile-Q17';'MAL-SUP-Profile-Q17  Medical Interns, Full-Time usual';0;' Medical Interns, Full-Time usual';0;17;0.00;0.00;5;24;0;
+157;'MAL-SUP-Profile-Q18';'MAL-SUP-Profile-Q18  Medical Interns, Part-Time today';0;' Medical Interns, Part-Time today';0;18;0.00;0.00;5;24;0;
+158;'MAL-SUP-Profile-Q19';'MAL-SUP-Profile-Q19  Medical Interns, Part-Time usual';0;' Medical Interns, Part-Time usual';0;19;0.00;0.00;5;24;0;
+159;'MAL-SUP-Profile-Q20';'MAL-SUP-Profile-Q20  Students, Full-Time today';0;' Students, Full-Time today';0;20;0.00;0.00;6;24;0;
+160;'MAL-SUP-Profile-Q21';'MAL-SUP-Profile-Q21  Students, Full-Time usual';0;' Students, Full-Time usual';0;21;0.00;0.00;6;24;0;
+161;'MAL-SUP-Profile-Q22';'MAL-SUP-Profile-Q22  Students, Part-Time today';0;' Students, Part-Time today';0;22;0.00;0.00;6;24;0;
+162;'MAL-SUP-Profile-Q23';'MAL-SUP-Profile-Q23  Students, Part-Time usual';0;' Students, Part-Time usual';0;23;0.00;0.00;6;24;0;
+163;'MAL-SUP-Profile-Q24';'MAL-SUP-Profile-Q24  Other, Full-Time today';0;' Other, Full-Time today';0;24;0.00;0.00;7;24;0;
+164;'MAL-SUP-Profile-Q25';'MAL-SUP-Profile-Q25  Other, Full-Time usual';0;' Other, Full-Time usual';0;25;0.00;0.00;7;24;0;
+165;'MAL-SUP-Profile-Q26';'MAL-SUP-Profile-Q26  Other, Part-Time today';0;' Other, Part-Time today';0;26;0.00;0.00;7;24;0;
+166;'MAL-SUP-Profile-Q27';'MAL-SUP-Profile-Q27  Other, Part-Time usual';0;' Other, Part-Time usual';0;27;0.00;0.00;7;24;0;
+167;'MAL-SUP-Profile-Q28';'MAL-SUP-Profile-Q28  Staff above, Full-Time today';0;' Staff above, Full-Time today';0;28;0.00;0.00;8;24;0;
+168;'MAL-SUP-Profile-Q29';'MAL-SUP-Profile-Q29  Staff above, Full-Time usual';0;' Staff above, Full-Time usual';0;29;0.00;0.00;8;24;0;
+169;'MAL-SUP-Profile-Q30';'MAL-SUP-Profile-Q30  Staff above, Part-Time today';0;' Staff above, Part-Time today';0;30;0.00;0.00;8;24;0;
+170;'MAL-SUP-Profile-Q31';'MAL-SUP-Profile-Q31  Staff above, Part-Time usual';0;' Staff above, Part-Time usual';0;31;0.00;0.00;8;24;0;
+171;'MAL-SUP-Profile-Q32';'MAL-SUP-Profile-Q32  Staff above trained, Full-Time today';0;' Staff above trained, Full-Time today';0;32;0.00;0.00;9;24;0;
+172;'MAL-SUP-Profile-Q33';'MAL-SUP-Profile-Q33  Staff above trained, Full-Time usual';0;' Staff above trained, Full-Time usual';0;33;0.00;0.00;9;24;0;
+173;'MAL-SUP-Profile-Q34';'MAL-SUP-Profile-Q34  Staff above trained, Part-Time today';0;' Staff above trained, Part-Time today';0;34;0.00;0.00;9;24;0;
+174;'MAL-SUP-Profile-Q35';'MAL-SUP-Profile-Q35  Staff above trained, Part-Time usual';0;' Staff above trained, Part-Time usual';0;35;0.00;0.00;9;24;0;
+175;'MAL-SUP-Profile-Q36';'MAL-SUP-Profile-Q36 Is there laboratory staff formally trained in RDTs in the last two years?';0;'Is there laboratory staff formally trained in RDTs in the last two years?';0;36;10.00;10.00;10;3;0;
+176;'MAL-SUP-Profile-Q37';'MAL-SUP-Profile-Q37 Is there laboratory staff formally trained in malaria microscopy in the last two years?';0;'Is there laboratory staff formally trained in malaria microscopy in the last two years?';0;37;10.00;10.00;10;3;0;
+177;'MAL-SUP-Profile-Q38';'MAL-SUP-Profile-Q38 Does this health Health Centre provide antenatal care services?  ';0;'Does this health Health Centre provide antenatal care services?  ';0;38;5.00;5.00;11;3;0;
+178;'MAL-SUP-Profile-Q39';'MAL-SUP-Profile-Q39 If yes, where are these services provided?  ';0;'If yes, where are these services provided?  ';0;39;0.00;0.00;11;19;0;
+179;'MAL-SUP-Profile-Q40';'MAL-SUP-Profile-Q40 Do you have a protocol for testing and treating pregnant women?';0;'Do you have a protocol for testing and treating pregnant women?';0;40;1.00;1.00;11;3;0;
+180;'MAL-SUP-Profile-Q41';'MAL-SUP-Profile-Q41 Do you provide antimalarial prophylaxis?';0;'Do you provide antimalarial prophylaxis?';0;41;1.00;1.00;11;3;0;
+181;'MAL-SUP-Profile-Q42';'MAL-SUP-Profile-Q42 Do you provide prophylaxis greater than two times during pregnancy?';0;'Do you provide prophylaxis greater than two times during pregnancy?';0;42;1.00;1.00;11;3;0;
+182;'MAL-SUP-Profile-Q43';'MAL-SUP-Profile-Q43 Do you test pregnant women for HIV?';0;'Do you test pregnant women for HIV?';0;43;1.00;1.00;11;3;0;
+183;'MAL-SUP-Profile-Q44';'MAL-SUP-Profile-Q44 Do you test pregnant women for anemia? ';0;'Do you test pregnant women for anemia? ';0;44;1.00;1.00;11;3;0;
+184;'MAL-SUP-Profile-Q45';'MAL-SUP-Profile-Q45 Does this health Health Centre generally refer patients with severe malaria to a higher level Health Centre?  ';0;'Does this health Health Centre generally refer patients with severe malaria to a higher level Health Centre?  ';0;45;5.00;5.00;12;3;0;
+185;'MAL-SUP-Profile-Q46';'MAL-SUP-Profile-Q46 If yes, what level of HF?  ';0;'If yes, what level of HF?  ';0;46;0.00;0.00;12;17;0;
+186;'MAL-SUP-Profile-Q47';'MAL-SUP-Profile-Q47 Do you have a contact phone number for the referral HF?';0;'Do you have a contact phone number for the referral HF?';0;47;5.00;5.00;12;3;0;
+187;'MAL-SUP-Profile-Q48';'MAL-SUP-Profile-Q48 Do you normally give a verbal report or travel with a severely ill patient to the referral Health Centre?';0;'Do you normally give a verbal report or travel with a severely ill patient to the referral Health Centre?';0;48;5.00;5.00;12;3;0;
+188;'MAL-SUP-Profile-Q49';'MAL-SUP-Profile-Q49 Do you give written report to the referral Health Centre?';0;'Do you give written report to the referral Health Centre?';0;49;5.00;5.00;12;3;0;
+189;'MAL-SUP-Profile-Q50';'MAL-SUP-Profile-Q50 Is there a readily available transport system (ambulance) for severely ill patients?';0;'Is there a readily available transport system (ambulance) for severely ill patients?';0;50;5.00;5.00;12;3;0;
+190;'MAL-SUP-Profile-Q51';'MAL-SUP-Profile-Q51 Do you usually get any feedback on patients transported to a higher level Health Centre? ';0;'Do you usually get any feedback on patients transported to a higher level Health Centre? ';0;51;5.00;5.00;12;3;0;
+191;'MAL-SUP-Profile-Q52';'MAL-SUP-Profile-Q52 Name of Health Health Centre';0;'Name of Health Health Centre';0;52;0.00;0.00;13;25;0;
+192;'MAL-SUP-Profile-Q53';'MAL-SUP-Profile-Q53 Province/Region';0;'Province/Region';0;53;0.00;0.00;13;26;0;
+193;'MAL-SUP-Profile-Q54';'MAL-SUP-Profile-Q54 District';0;'District';0;54;0.00;0.00;13;26;0;
+194;'MAL-SUP-Profile-Q55';'MAL-SUP-Profile-Q55 Level of Health Health Centre';0;'Level of Health Health Centre';0;55;0.00;0.00;13;18;0;
+195;'MAL-SUP-Profile-Q56';'MAL-SUP-Profile-Q56 Ownership';0;'Ownership';0;56;0.00;0.00;13;22;0;
+196;'MAL-SUP-Profile-Q57';'MAL-SUP-Profile-Q57 Address (P.O. Box)';0;'Address (P.O. Box)';0;57;0.00;0.00;13;25;0;
+197;'MAL-SUP-Profile-Q58';'MAL-SUP-Profile-Q58 General/Health Centre Telephone';0;'General/Health Centre Telephone';0;58;0.00;0.00;13;26;0;
+198;'MAL-SUP-Profile-Q59';'MAL-SUP-Profile-Q59 General/Health Centre E-mail';0;'General/Health Centre E-mail';0;59;0.00;0.00;13;26;0;
+199;'MAL-SUP-Profile-Q60';'MAL-SUP-Profile-Q60 Head of Health Health Centre';0;'Head of Health Health Centre';0;60;0.00;0.00;13;26;0;
+200;'MAL-SUP-Profile-Q61';'MAL-SUP-Profile-Q61 Telephone';0;'Telephone';0;61;0.00;0.00;13;26;0;
+201;'MAL-SUP-Profile-Q62';'MAL-SUP-Profile-Q62 E-mail';0;'E-mail';0;62;0.00;0.00;13;26;0;
+202;'MAL-SUP-Profile-Q63';'MAL-SUP-Profile-Q63 District Health Officer';0;'District Health Officer';0;63;0.00;0.00;13;26;0;
+203;'MAL-SUP-Profile-Q64';'MAL-SUP-Profile-Q64 Telephone';0;'Telephone';0;64;0.00;0.00;13;26;0;
+204;'MAL-SUP-Profile-Q65';'MAL-SUP-Profile-Q65 E-mail';0;'E-mail';0;65;0.00;0.00;13;26;0;
+205;'MAL-SUP-Profile-Q66';'MAL-SUP-Profile-Q66 Hours of Operation � Weekdays';0;'Hours of Operation � Weekdays';0;66;0.00;0.00;13;26;0;
+206;'MAL-SUP-Profile-Q67';'MAL-SUP-Profile-Q67 Hours of Operation - Weekend';0;'Hours of Operation - Weekend';0;67;0.00;0.00;13;26;0;
+207;'MAL-SUP-Feedback-Q1';'MAL-SUP-Feedback-Q1 Problem 1:';0;'Problem 1:';0;1;0.00;3.00;14;25;0;
+208;'MAL-SUP-Feedback-Q2';'MAL-SUP-Feedback-Q2 Was this problem addressed?';0;'Was this problem addressed?';0;2;3.00;0.00;14;3;0;
+209;'MAL-SUP-Feedback-Q3';'MAL-SUP-Feedback-Q3    If no, describe the action plan to address the problem:';0;'   If no, describe the action plan to address the problem:';0;3;0.00;0.00;14;25;0;
+210;'MAL-SUP-Feedback-Q4';'MAL-SUP-Feedback-Q4 Problem 2:';0;'Problem 2:';0;4;0.00;3.00;14;25;0;
+211;'MAL-SUP-Feedback-Q5';'MAL-SUP-Feedback-Q5 Was this problem addressed?';0;'Was this problem addressed?';0;5;3.00;0.00;14;3;0;
+212;'MAL-SUP-Feedback-Q6';'MAL-SUP-Feedback-Q6    If no, describe the action plan to address the problem:';0;'   If no, describe the action plan to address the problem:';0;6;0.00;0.00;14;25;0;
+213;'MAL-SUP-Feedback-Q7';'MAL-SUP-Feedback-Q7 Problem 3:';0;'Problem 3:';0;7;0.00;3.00;14;25;0;
+214;'MAL-SUP-Feedback-Q8';'MAL-SUP-Feedback-Q8 Was this problem addressed?';0;'Was this problem addressed?';0;8;3.00;0.00;14;3;0;
+215;'MAL-SUP-Feedback-Q9';'MAL-SUP-Feedback-Q9    If no, describe the action plan to address the problem:';0;'   If no, describe the action plan to address the problem:';0;9;0.00;0.00;14;25;0;
+216;'MAL-SUP-Feedback-Q10';'MAL-SUP-Feedback-Q10 Was immediate feedback provided? ';0;'Was immediate feedback provided? ';0;10;0.00;0.00;15;3;0;
+217;'MAL-SUP-Feedback-Q11';'MAL-SUP-Feedback-Q11 If yes, how was the feedback provided?';0;'If yes, how was the feedback provided?';0;11;0.00;0.00;15;16;0;
+218;'MAL-SUP-Feedback-Q12';'MAL-SUP-Feedback-Q12 What is the action plan for assessing whether the problem has been addressed?';0;'What is the action plan for assessing whether the problem has been addressed?';0;12;0.00;0.00;15;26;0;
+219;'MAL-SUP-Feedback-Q13';'MAL-SUP-Feedback-Q13 Problem 2:';0;'Problem 2:';0;13;0.00;0.00;15;25;0;
+220;'MAL-SUP-Feedback-Q14';'MAL-SUP-Feedback-Q14 Was immediate feedback provided? ';0;'Was immediate feedback provided? ';0;14;0.00;0.00;15;3;0;
+221;'MAL-SUP-Feedback-Q15';'MAL-SUP-Feedback-Q15 If yes, how was the feedback provided?';0;'If yes, how was the feedback provided?';0;15;0.00;0.00;15;16;0;
+222;'MAL-SUP-Feedback-Q16';'MAL-SUP-Feedback-Q16 What is the action plan for assessing whether the problem has been addressed?';0;'What is the action plan for assessing whether the problem has been addressed?';0;16;0.00;0.00;15;25;0;
+223;'MAL-SUP-Feedback-Q17';'MAL-SUP-Feedback-Q17 Problem 3:';0;'Problem 3:';0;17;0.00;0.00;15;25;0;
+224;'MAL-SUP-Feedback-Q18';'MAL-SUP-Feedback-Q18 Was immediate feedback provided? ';0;'Was immediate feedback provided? ';0;18;0.00;0.00;15;3;0;
+225;'MAL-SUP-Feedback-Q19';'MAL-SUP-Feedback-Q19 If yes, how was the feedback provided?';0;'If yes, how was the feedback provided?';0;19;0.00;0.00;15;16;0;
+226;'MAL-SUP-Feedback-Q20';'MAL-SUP-Feedback-Q20 What is the action plan for assessing whether the problem has been addressed?';0;'What is the action plan for assessing whether the problem has been addressed?';0;20;0.00;0.00;15;25;0;
+227;'MAL-SUP-General-C1-Q1';'MAL-SUP-General-C1-Q1 Health Worker Name';0;'Health Worker Name';0;1;0.00;0.00;16;26;0;
+228;'MAL-SUP-General-C1-Q2';'MAL-SUP-General-C1-Q2 Health Worker Gender';0;'Health Worker Gender';0;2;0.00;0.00;16;10;0;
+229;'MAL-SUP-General-C1-Q3';'MAL-SUP-General-C1-Q3 Health Worker Type';0;'Health Worker Type';0;3;0.00;0.00;16;11;0;
+230;'MAL-SUP-General-C1-Q4';'MAL-SUP-General-C1-Q4 Patient and care giver welcomed  ';0;'Patient and care giver welcomed  ';0;4;0.00;0.00;17;3;0;
+231;'MAL-SUP-General-C1-Q5';'MAL-SUP-General-C1-Q5 Ask if Referred from another Health Centre';0;'Ask if Referred from another Health Centre';0;5;0.00;0.00;17;6;0;
+232;'MAL-SUP-General-C1-Q6';'MAL-SUP-General-C1-Q6 Age of patient determined  ';0;'Age of patient determined  ';0;6;1.00;1.00;17;3;0;
+233;'MAL-SUP-General-C1-Q7';'MAL-SUP-General-C1-Q7 Age';0;'Age';0;7;0.00;0.00;17;24;0;
+234;'MAL-SUP-General-C1-Q8';'MAL-SUP-General-C1-Q8 Weight of patient determined ';0;'Weight of patient determined ';0;8;1.00;1.00;17;3;0;
+235;'MAL-SUP-General-C1-Q9';'MAL-SUP-General-C1-Q9 Weight';0;'Weight';0;9;0.00;0.00;17;24;0;
+236;'MAL-SUP-General-C1-Q10';'MAL-SUP-General-C1-Q10 Patient sex';0;'Patient sex';0;10;0.00;0.00;17;10;0;
+237;'MAL-SUP-General-C1-Q11';'MAL-SUP-General-C1-Q11 Is patient pregnant?';0;'Is patient pregnant?';0;11;1.00;1.00;17;6;0;
+238;'MAL-SUP-General-C1-Q12';'MAL-SUP-General-C1-Q12 Change in behavior, altered consciousness or coma     ';0;'Change in behavior, altered consciousness or coma     ';0;12;1.00;1.00;18;6;0;
+239;'MAL-SUP-General-C1-Q13';'MAL-SUP-General-C1-Q13 Convulsions';0;'Convulsions';0;13;1.00;1.00;18;6;0;
+240;'MAL-SUP-General-C1-Q14';'MAL-SUP-General-C1-Q14 Reduced urinary output or dark urine    ';0;'Reduced urinary output or dark urine    ';0;14;1.00;1.00;18;6;0;
+241;'MAL-SUP-General-C1-Q15';'MAL-SUP-General-C1-Q15 Spontaneous bleeding      ';0;'Spontaneous bleeding      ';0;15;1.00;1.00;18;6;0;
+242;'MAL-SUP-General-C1-Q16';'MAL-SUP-General-C1-Q16 Prostration/generalized weakness';0;'Prostration/generalized weakness';0;16;1.00;1.00;18;6;0;
+243;'MAL-SUP-General-C1-Q17';'MAL-SUP-General-C1-Q17 Inability to drink     ';0;'Inability to drink     ';0;17;1.00;1.00;18;6;0;
+244;'MAL-SUP-General-C1-Q18';'MAL-SUP-General-C1-Q18 Deep breathing/respiratory distress';0;'Deep breathing/respiratory distress';0;18;1.00;1.00;18;6;0;
+245;'MAL-SUP-General-C1-Q19';'MAL-SUP-General-C1-Q19 Jaundice (yellow eyes or skin)';0;'Jaundice (yellow eyes or skin)';0;19;1.00;1.00;18;6;0;
+246;'MAL-SUP-General-C1-Q20';'MAL-SUP-General-C1-Q20 Patient is assessed by clinician to have signs of severe malaria';0;'Patient is assessed by clinician to have signs of severe malaria';0;20;0.00;5.00;19;3;1;
+247;'MAL-SUP-General-C1-Q22';'MAL-SUP-General-C1-Q22 Presence and duration of fever ';0;'Presence and duration of fever ';0;22;1.00;1.00;20;6;0;
+248;'MAL-SUP-General-C1-Q23';'MAL-SUP-General-C1-Q23    If yes, duration greater than a day?';0;'   If yes, duration greater than a day?';0;23;0.00;0.00;20;3;0;
+249;'MAL-SUP-General-C1-Q24';'MAL-SUP-General-C1-Q24 Diarrhea';0;'Diarrhea';0;24;1.00;1.00;20;6;0;
+250;'MAL-SUP-General-C1-Q25';'MAL-SUP-General-C1-Q25    If yes, bloody:';0;'   If yes, bloody:';0;25;0.00;0.00;20;3;0;
+251;'MAL-SUP-General-C1-Q26';'MAL-SUP-General-C1-Q26 Vomiting';0;'Vomiting';0;26;1.00;1.00;20;6;0;
+252;'MAL-SUP-General-C1-Q27';'MAL-SUP-General-C1-Q27 Cough';0;'Cough';0;27;1.00;1.00;20;6;0;
+253;'MAL-SUP-General-C1-Q28';'MAL-SUP-General-C1-Q28    If yes, duration greater than 2 weeks:';0;'   If yes, duration greater than 2 weeks:';0;28;0.00;0.00;20;3;0;
+254;'MAL-SUP-General-C1-Q29';'MAL-SUP-General-C1-Q29 Difficult breathing';0;'Difficult breathing';0;29;1.00;1.00;20;6;0;
+255;'MAL-SUP-General-C1-Q30';'MAL-SUP-General-C1-Q30 Any other symptoms';0;'Any other symptoms';0;30;1.00;1.00;20;6;0;
+256;'MAL-SUP-General-C1-Q31';'MAL-SUP-General-C1-Q31 Was patient asked if diagnosed and treated at HOME OR another Health Centre?';0;'Was patient asked if diagnosed and treated at HOME OR another Health Centre?';0;31;1.00;1.00;21;3;0;
+257;'MAL-SUP-General-C1-Q32';'MAL-SUP-General-C1-Q32 Malaria test with heel stick or finger prick in last two weeks?';0;'Malaria test with heel stick or finger prick in last two weeks?';0;32;1.00;1.00;21;7;0;
+258;'MAL-SUP-General-C1-Q33';'MAL-SUP-General-C1-Q33    If yes, did the clinician ask about which treatment was given?';0;'   If yes, did the clinician ask about which treatment was given?';0;33;1.00;1.00;21;7;0;
+259;'MAL-SUP-General-C1-Q34';'MAL-SUP-General-C1-Q34 Was temperature taken?';0;'Was temperature taken?';0;34;1.00;1.00;22;3;0;
+260;'MAL-SUP-General-C1-Q35';'MAL-SUP-General-C1-Q35 Eye, ear, nose, and throat exam';0;'Eye, ear, nose, and throat exam';0;35;1.00;1.00;22;3;0;
+261;'MAL-SUP-General-C1-Q36';'MAL-SUP-General-C1-Q36 Neck exam';0;'Neck exam';0;36;1.00;1.00;22;3;0;
+262;'MAL-SUP-General-C1-Q37';'MAL-SUP-General-C1-Q37 Lung exam (Was fast breathing or chest indrawing assessed?)';0;'Lung exam (Was fast breathing or chest indrawing assessed?)';0;37;1.00;1.00;22;3;0;
+263;'MAL-SUP-General-C1-Q38';'MAL-SUP-General-C1-Q38 Heart exam';0;'Heart exam';0;38;1.00;1.00;22;3;0;
+264;'MAL-SUP-General-C1-Q39';'MAL-SUP-General-C1-Q39 Abdominal exam';0;'Abdominal exam';0;39;1.00;1.00;22;3;0;
+265;'MAL-SUP-General-C1-Q40';'MAL-SUP-General-C1-Q40 Extremities exam';0;'Extremities exam';0;40;1.00;1.00;22;3;0;
+266;'MAL-SUP-General-C1-Q41';'MAL-SUP-General-C1-Q41 Skin exam';0;'Skin exam';0;41;1.00;1.00;22;3;0;
+267;'MAL-SUP-General-C1-Q42';'MAL-SUP-General-C1-Q42 Was evidence of anemia, jaundice and hemolysis assessed?';0;'Was evidence of anemia, jaundice and hemolysis assessed?';0;42;1.00;1.00;22;3;0;
+268;'MAL-SUP-General-C1-Q43';'MAL-SUP-General-C1-Q43 Neurological exam';0;'Neurological exam';0;43;1.00;1.00;22;3;0;
+269;'MAL-SUP-General-C1-Q44';'MAL-SUP-General-C1-Q44 Neck stiffness';0;'Neck stiffness';0;44;0.00;0.00;22;3;0;
+270;'MAL-SUP-General-C1-Q45';'MAL-SUP-General-C1-Q45 Dehydration assestment';0;'Dehydration assestment';0;45;0.00;0.00;22;3;0;
+271;'MAL-SUP-General-C1-Q46';'MAL-SUP-General-C1-Q46 Abdominal tenderness';0;'Abdominal tenderness';0;46;0.00;0.00;22;3;0;
+272;'MAL-SUP-General-C1-Q47';'MAL-SUP-General-C1-Q47 Evidence of papilledema on eye exam';0;'Evidence of papilledema on eye exam';0;47;0.00;0.00;22;3;0;
+273;'MAL-SUP-General-C1-Q48';'MAL-SUP-General-C1-Q48 Systolic blood pressure <50mm Hg in children and <80mm Hg in adults';0;'Systolic blood pressure <50mm Hg in children and <80mm Hg in adults';0;48;0.00;0.00;22;3;0;
+274;'MAL-SUP-General-C1-Q49';'MAL-SUP-General-C1-Q49 Altered consciousness assesed?';0;'Altered consciousness assesed?';0;49;1.00;1.00;22;3;0;
+275;'MAL-SUP-General-C1-Q50';'MAL-SUP-General-C1-Q50 Other';0;'Other';0;50;0.00;0.00;22;3;0;
+276;'MAL-SUP-General-C1-Q51';'MAL-SUP-General-C1-Q51 Did the clinician order a malaria test?';0;'Did the clinician order a malaria test?';0;51;0.00;0.00;23;3;0;
+277;'MAL-SUP-General-C1-Q52';'MAL-SUP-General-C1-Q52 Malaria parasitological test result:';0;'Malaria parasitological test result:';0;52;0.00;0.00;24;12;0;
+278;'MAL-SUP-General-C1-Q53';'MAL-SUP-General-C1-Q53 Hemoglobin/hematocrit result(s) ';0;'Hemoglobin/hematocrit result(s) ';0;53;0.00;0.00;24;15;0;
+279;'MAL-SUP-General-C1-Q54';'MAL-SUP-General-C1-Q54 Blood glucose results ';0;'Blood glucose results ';0;54;0.00;0.00;24;15;0;
+280;'MAL-SUP-General-C1-Q55';'MAL-SUP-General-C1-Q55 Urinalysis';0;'Urinalysis';0;55;0.00;0.00;24;15;0;
+281;'MAL-SUP-General-C1-Q56';'MAL-SUP-General-C1-Q56 Lumbar puncture';0;'Lumbar puncture';0;56;0.00;0.00;24;15;0;
+282;'MAL-SUP-General-C1-Q57';'MAL-SUP-General-C1-Q57 Abnormalities diagnosed?';0;'Abnormalities diagnosed?';0;57;0.00;5.00;24;3;1;
+283;'MAL-SUP-General-C1-Q59';'MAL-SUP-General-C1-Q59 Final diagnosis';0;'Final diagnosis';0;59;0.00;0.00;25;13;0;
+284;'MAL-SUP-General-C1-Q60';'MAL-SUP-General-C1-Q60 RDT+';0;'RDT+';0;60;0.33;0.33;25;3;0;
+285;'MAL-SUP-General-C1-Q61';'MAL-SUP-General-C1-Q61 Microscopy +';0;'Microscopy +';0;61;0.33;0.33;25;3;0;
+286;'MAL-SUP-General-C1-Q62';'MAL-SUP-General-C1-Q62 Clinical diagnosis without a test (test not available)';0;'Clinical diagnosis without a test (test not available)';0;62;0.33;0.33;25;3;0;
+287;'MAL-SUP-General-C1-Q63';'MAL-SUP-General-C1-Q63 Clinical diagnosis with negative test';0;'Clinical diagnosis with negative test';0;63;0.00;0.00;25;3;0;
+288;'MAL-SUP-General-C1-Q64';'MAL-SUP-General-C1-Q64 Clinical diagnosis without a test (test not ordered)';0;'Clinical diagnosis without a test (test not ordered)';0;64;0.00;0.00;25;3;0;
+289;'MAL-SUP-General-C1-Q65';'MAL-SUP-General-C1-Q65 Acute respiratory infection (ARI';0;'Acute respiratory infection (ARI';0;65;0.00;0.00;25;3;0;
+290;'MAL-SUP-General-C1-Q66';'MAL-SUP-General-C1-Q66 Enteritis/diarrhoea';0;'Enteritis/diarrhoea';0;66;0.00;0.00;25;3;0;
+291;'MAL-SUP-General-C1-Q67';'MAL-SUP-General-C1-Q67 other severe illness';0;'other severe illness';0;67;0.00;0.00;25;3;0;
+292;'MAL-SUP-General-C1-Q68';'MAL-SUP-General-C1-Q68 Other mild illness';0;'Other mild illness';0;68;0.00;0.00;25;3;0;
+293;'MAL-SUP-General-C1-Q69';'MAL-SUP-General-C1-Q69 Anti-malarial treatment prescribed';0;'Anti-malarial treatment prescribed';0;69;0.00;5.00;26;5;1;
+294;'MAL-SUP-General-C1-Q80';'MAL-SUP-General-C1-Q80 Antibiotics prescribed';0;'Antibiotics prescribed';0;80;0.00;0.00;26;3;1;
+295;'MAL-SUP-General-C1-Q84';'MAL-SUP-General-C1-Q84 Antidiarrheal prescribed';0;'Antidiarrheal prescribed';0;84;0.00;0.00;26;3;1;
+296;'MAL-SUP-General-C1-Q88';'MAL-SUP-General-C1-Q88 Other medications prescribed';0;'Other medications prescribed';0;88;0.00;0.00;26;3;1;
+297;'MAL-SUP-General-C1-Q92';'MAL-SUP-General-C1-Q92 Caregiver informed on what is wrong with the patient';0;'Caregiver informed on what is wrong with the patient';0;92;0.66;0.66;27;3;0;
+298;'MAL-SUP-General-C1-Q93';'MAL-SUP-General-C1-Q93 Advice given on how to take the prescribed medications';0;'Advice given on how to take the prescribed medications';0;93;0.66;0.66;27;3;0;
+299;'MAL-SUP-General-C1-Q94';'MAL-SUP-General-C1-Q94 Advice given on when to return for follow-up evaluation';0;'Advice given on when to return for follow-up evaluation';0;94;0.66;0.66;27;3;0;
+300;'MAL-SUP-General-C1-Q95';'MAL-SUP-General-C1-Q95 Advice given on malaria prevention measures';0;'Advice given on malaria prevention measures';0;95;0.66;0.66;27;3;0;
+301;'MAL-SUP-General-C1-Q96';'MAL-SUP-General-C1-Q96 Caregiver and/or patient asked if they have any questions';0;'Caregiver and/or patient asked if they have any questions';0;96;0.66;0.66;27;3;0;
+302;'MAL-SUP-General-C1-Q97';'MAL-SUP-General-C1-Q97 Was the patient found to have severe disease?';0;'Was the patient found to have severe disease?';0;97;0.00;15.00;28;3;1;
+303;'MAL-SUP-General-C1-Q104';'MAL-SUP-General-C1-Q104 Caregiver informed on what is wrong with the patient';0;'Caregiver informed on what is wrong with the patient';0;104;0.66;0.66;29;3;0;
+304;'MAL-SUP-General-C1-Q105';'MAL-SUP-General-C1-Q105 Caregiver informed of transfer';0;'Caregiver informed of transfer';0;105;0.66;0.66;29;3;0;
+305;'MAL-SUP-General-C1-Q106';'MAL-SUP-General-C1-Q106 Caregiver given reason for transfer';0;'Caregiver given reason for transfer';0;106;0.66;0.66;29;3;0;
+306;'MAL-SUP-General-C1-Q107';'MAL-SUP-General-C1-Q107 Caregiver informed about what will be done';0;'Caregiver informed about what will be done';0;107;0.66;0.66;29;3;0;
+307;'MAL-SUP-General-C1-Q108';'MAL-SUP-General-C1-Q108 Caregiver and/or patient asked if there are questions';0;'Caregiver and/or patient asked if there are questions';0;108;0.66;0.66;29;3;0;
+308;'MAL-SUP-RDT-C1-Q1';'MAL-SUP-RDT-C1-Q1 Health Worker Name';0;'Health Worker Name';0;1;0.00;0.00;156;26;0;
+309;'MAL-SUP-RDT-C1-Q2';'MAL-SUP-RDT-C1-Q2 Health Worker Gender';0;'Health Worker Gender';0;2;0.00;0.00;156;10;0;
+310;'MAL-SUP-RDT-C1-Q3';'MAL-SUP-RDT-C1-Q3 Health Worker Type';0;'Health Worker Type';0;3;0.00;0.00;156;11;0;
+311;'MAL-SUP-RDT-C1-Q4';'MAL-SUP-RDT-C1-Q4 Type of RDT';0;'Type of RDT';0;4;0.00;0.00;30;26;0;
+312;'MAL-SUP-RDT-C1-Q5';'MAL-SUP-RDT-C1-Q5 Was the expiry date checked?  ';0;'Was the expiry date checked?  ';0;5;1.00;1.00;30;3;0;
+313;'MAL-SUP-RDT-C1-Q6';'MAL-SUP-RDT-C1-Q6 Did the worker label the cassette?  ';0;'Did the worker label the cassette?  ';0;6;1.00;1.00;30;3;0;
+314;'MAL-SUP-RDT-C1-Q7';'MAL-SUP-RDT-C1-Q7 Patient identified and identification information recorded in register';0;'Patient identified and identification information recorded in register';0;7;1.00;1.00;31;3;0;
+315;'MAL-SUP-RDT-C1-Q8';'MAL-SUP-RDT-C1-Q8 Procedure explained to patient      ';0;'Procedure explained to patient      ';0;8;1.00;1.00;31;3;0;
+316;'MAL-SUP-RDT-C1-Q9';'MAL-SUP-RDT-C1-Q9 New gloves';0;'New gloves';0;9;1.00;1.00;31;3;0;
+317;'MAL-SUP-RDT-C1-Q10';'MAL-SUP-RDT-C1-Q10 Gloves worn                        ';0;'Gloves worn                        ';0;10;1.00;1.00;31;3;0;
+318;'MAL-SUP-RDT-C1-Q11';'MAL-SUP-RDT-C1-Q11 use a sterile/new blood collection device?';0;'use a sterile/new blood collection device?';0;11;1.00;1.00;31;3;0;
+319;'MAL-SUP-RDT-C1-Q12';'MAL-SUP-RDT-C1-Q12 Puncture site cleaned with alcohol and allowed to air dry';0;'Puncture site cleaned with alcohol and allowed to air dry';0;12;1.00;1.00;31;3;0;
+320;'MAL-SUP-RDT-C1-Q13';'MAL-SUP-RDT-C1-Q13 Blood dispensed correctly';0;'Blood dispensed correctly';0;13;1.00;1.00;32;3;0;
+321;'MAL-SUP-RDT-C1-Q14';'MAL-SUP-RDT-C1-Q14 Blood dispensed in correct well of RDT device';0;'Blood dispensed in correct well of RDT device';0;14;1.00;1.00;32;3;0;
+322;'MAL-SUP-RDT-C1-Q15';'MAL-SUP-RDT-C1-Q15 Buffer applied to correct well  of RDT device      ';0;'Buffer applied to correct well  of RDT device      ';0;15;1.00;1.00;33;3;0;
+323;'MAL-SUP-RDT-C1-Q16';'MAL-SUP-RDT-C1-Q16 Appropriate amount of buffer dispensed into well   ';0;'Appropriate amount of buffer dispensed into well   ';0;16;1.00;1.00;33;3;0;
+324;'MAL-SUP-RDT-C1-Q17';'MAL-SUP-RDT-C1-Q17 Did worker wait for correct amount of time according to manufacturer�s instruction)   ';0;'Did worker wait for correct amount of time according to manufacturer�s instruction)   ';0;17;2.00;2.00;33;3;0;
+325;'MAL-SUP-RDT-C1-Q18';'MAL-SUP-RDT-C1-Q18 Was the result of the control line Positive?';0;'Was the result of the control line Positive?';0;18;0.00;0.00;33;3;0;
+326;'MAL-SUP-RDT-C1-Q19';'MAL-SUP-RDT-C1-Q19 Reads test result correctly (supervisor verifies results)';0;'Reads test result correctly (supervisor verifies results)';0;19;2.00;2.00;33;3;0;
+327;'MAL-SUP-RDT-C1-Q20';'MAL-SUP-RDT-C1-Q20 Records results correctly in register';0;'Records results correctly in register';0;20;2.00;2.00;33;3;0;
+328;'MAL-SUP-RDT-C1-Q21';'MAL-SUP-RDT-C1-Q21 Used tests, transfer devices and other blood-contaminated material disposed into plastic-lined bin';0;'Used tests, transfer devices and other blood-contaminated material disposed into plastic-lined bin';0;21;1.00;1.00;34;3;0;
+329;'MAL-SUP-RDT-C1-Q22';'MAL-SUP-RDT-C1-Q22 Used lancet disposed in sharps container  ';0;'Used lancet disposed in sharps container  ';0;22;1.00;1.00;34;3;0;
+330;'MAL-SUP-Microscopy-C1-Q1';'MAL-SUP-Microscopy-C1-Q1 Health Worker Name';0;'Health Worker Name';0;1;0.00;0.00;159;26;0;
+331;'MAL-SUP-Microscopy-C1-Q2';'MAL-SUP-Microscopy-C1-Q2 Health Worker Gender';0;'Health Worker Gender';0;2;0.00;0.00;159;10;0;
+332;'MAL-SUP-Microscopy-C1-Q3';'MAL-SUP-Microscopy-C1-Q3 Health Worker Type';0;'Health Worker Type';0;3;0.00;0.00;159;11;0;
+333;'MAL-SUP-Microscopy-C1-Q4';'MAL-SUP-Microscopy-C1-Q4 Patient identified and identification information recorded in register';0;'Patient identified and identification information recorded in register';0;4;1.00;1.00;35;3;0;
+334;'MAL-SUP-Microscopy-C1-Q5';'MAL-SUP-Microscopy-C1-Q5 Procedure explained to patient    ';0;'Procedure explained to patient    ';0;5;1.00;1.00;35;3;0;
+335;'MAL-SUP-Microscopy-C1-Q6';'MAL-SUP-Microscopy-C1-Q6 Gloves worn   ';0;'Gloves worn   ';0;6;1.00;1.00;35;3;0;
+336;'MAL-SUP-Microscopy-C1-Q7';'MAL-SUP-Microscopy-C1-Q7 Slide cleaned   ';0;'Slide cleaned   ';0;7;1.00;1.00;35;3;0;
+337;'MAL-SUP-Microscopy-C1-Q8';'MAL-SUP-Microscopy-C1-Q8 Slide labelled with date and patient�s name and/or number  ';0;'Slide labelled with date and patient�s name and/or number  ';0;8;1.00;1.00;35;3;0;
+338;'MAL-SUP-Microscopy-C1-Q9';'MAL-SUP-Microscopy-C1-Q9 Was collection via finger prick?';0;'Was collection via finger prick?';0;9;0.00;0.00;36;3;1;
+339;'MAL-SUP-Microscopy-C1-Q12';'MAL-SUP-Microscopy-C1-Q12 Was collection via venipuncture?';0;'Was collection via venipuncture?';0;12;0.00;4.00;37;3;1;
+340;'MAL-SUP-Microscopy-C1-Q17';'MAL-SUP-Microscopy-C1-Q17 Blood from only one patient applied to each slide  ';0;'Blood from only one patient applied to each slide  ';0;17;1.00;1.00;38;3;0;
+341;'MAL-SUP-Microscopy-C1-Q18';'MAL-SUP-Microscopy-C1-Q18 Blood sample spread into 1-2 cm diameter circle � can read print placed under the slide (supervisor should verify to answer this question) ';0;'Blood sample spread into 1-2 cm diameter circle � can read print placed under the slide (supervisor should verify to answer this question) ';0;18;1.00;1.00;38;3;0;
+342;'MAL-SUP-Microscopy-C1-Q19';'MAL-SUP-Microscopy-C1-Q19 Slide air dried before staining     ';0;'Slide air dried before staining     ';0;19;1.00;1.00;38;3;0;
+343;'MAL-SUP-Microscopy-C1-Q20';'MAL-SUP-Microscopy-C1-Q20 Blood from only one patient applied to each slide   ';0;'Blood from only one patient applied to each slide   ';0;20;1.00;1.00;39;3;0;
+344;'MAL-SUP-Microscopy-C1-Q21';'MAL-SUP-Microscopy-C1-Q21 Thin film spread out in feathered pattern (thins out towards end, dispersed and dome shaped in appearance)   ';0;'Thin film spread out in feathered pattern (thins out towards end, dispersed and dome shaped in appearance)   ';0;21;1.00;1.00;39;3;0;
+345;'MAL-SUP-Microscopy-C1-Q22';'MAL-SUP-Microscopy-C1-Q22 Slide air dried before staining    ';0;'Slide air dried before staining    ';0;22;1.00;1.00;39;3;0;
+346;'MAL-SUP-Microscopy-C1-Q23';'MAL-SUP-Microscopy-C1-Q23 Giemsa Stain';0;'Giemsa Stain';0;23;0.00;18.00;40;3;1;
+347;'MAL-SUP-Microscopy-C1-Q39';'MAL-SUP-Microscopy-C1-Q39 Field Stain';0;'Field Stain';0;39;0.00;19.00;46;3;1;
+348;'MAL-SUP-Microscopy-C1-Q56';'MAL-SUP-Microscopy-C1-Q56 Thin Slide Prepared';0;'Thin Slide Prepared';0;56;0.00;0.00;52;3;0;
+349;'MAL-SUP-Microscopy-C1-Q57';'MAL-SUP-Microscopy-C1-Q57 Thick Slide Prepared';0;'Thick Slide Prepared';0;57;0.00;1.00;52;3;1;
+350;'MAL-SUP-Microscopy-C1-Q59';'MAL-SUP-Microscopy-C1-Q59 Report slide as positive for parasites           ';0;'Report slide as positive for parasites           ';0;59;0.00;0.00;54;3;0;
+351;'MAL-SUP-Microscopy-C1-Q60';'MAL-SUP-Microscopy-C1-Q60 Was speciation performed?';0;'Was speciation performed?';0;60;0.00;0.00;54;3;0;
+352;'MAL-SUP-Microscopy-C1-Q61';'MAL-SUP-Microscopy-C1-Q61    If yes, report species';0;'   If yes, report species';0;61;0.00;0.00;54;14;0;
+353;'MAL-SUP-Microscopy-C1-Q62';'MAL-SUP-Microscopy-C1-Q62 Was quantification performed?';0;'Was quantification performed?';0;62;1.00;1.00;54;3;0;
+354;'MAL-SUP-Microscopy-C1-Q63';'MAL-SUP-Microscopy-C1-Q63   Quantification  - Plus System';0;'  Quantification  - Plus System';0;63;0.00;0.00;54;3;0;
+355;'MAL-SUP-Microscopy-C1-Q64';'MAL-SUP-Microscopy-C1-Q64   Quantification  - WBC';0;'  Quantification  - WBC';0;64;0.00;0.00;54;3;0;
+356;'MAL-SUP-Microscopy-C1-Q65';'MAL-SUP-Microscopy-C1-Q65   Quantification  - Parasites/uL';0;'  Quantification  - Parasites/uL';0;65;0.00;0.00;54;3;0;
+357;'MAL-SUP-Microscopy-C1-Q66';'MAL-SUP-Microscopy-C1-Q66 Report quantification';0;'Report quantification';0;66;0.00;0.00;54;26;0;
+358;'MAL-SUP-Microscopy-C1-Q67';'MAL-SUP-Microscopy-C1-Q67 Report slide as positive for parasites           ';0;'Report slide as positive for parasites           ';0;67;15.00;15.00;55;3;0;
+359;'MAL-SUP-Microscopy-C1-Q68';'MAL-SUP-Microscopy-C1-Q68 Evaluation (if done) for parasite species';0;'Evaluation (if done) for parasite species';0;68;0.00;0.00;55;3;0;
+360;'MAL-SUP-Microscopy-C1-Q69';'MAL-SUP-Microscopy-C1-Q69 Report parasite species';0;'Report parasite species';0;69;0.00;0.00;55;14;0;
+361;'MAL-SUP-Microscopy-C1-Q70';'MAL-SUP-Microscopy-C1-Q70 Was there agreement on quantification?';0;'Was there agreement on quantification?';0;70;5.00;5.00;55;3;0;
+362;'MAL-SUP-Microscopy-C1-Q71';'MAL-SUP-Microscopy-C1-Q71 Is the quality of stain adequate (adequate= did NOT require filtering due to heavy precipidate AND was NOT too pink or too blue in appearance due to inappropriate pH)?';0;'Is the quality of stain adequate (adequate= did NOT require filtering due to heavy precipidate AND was NOT too pink or too blue in appearance due to inappropriate pH)?';0;71;0.00;0.00;55;3;0;
+363;'MAL-SUP-Microscopy-C1-Q72';'MAL-SUP-Microscopy-C1-Q72 Were the slides recycled?     ';0;'Were the slides recycled?     ';0;72;1.00;1.00;56;3;0;
+364;'MAL-SUP-General-C2-Q1';'MAL-SUP-General-C2-Q1 Health Worker Name';0;'Health Worker Name';0;1;0.00;0.00;57;26;0;
+365;'MAL-SUP-General-C2-Q2';'MAL-SUP-General-C2-Q2 Health Worker Gender';0;'Health Worker Gender';0;2;0.00;0.00;57;10;0;
+366;'MAL-SUP-General-C2-Q3';'MAL-SUP-General-C2-Q3 Health Worker Type';0;'Health Worker Type';0;3;0.00;0.00;57;11;0;
+367;'MAL-SUP-General-C2-Q4';'MAL-SUP-General-C2-Q4 Patient and care giver welcomed  ';0;'Patient and care giver welcomed  ';0;4;0.00;0.00;58;3;0;
+368;'MAL-SUP-General-C2-Q5';'MAL-SUP-General-C2-Q5 Ask if Referred from another Health Centre';0;'Ask if Referred from another Health Centre';0;5;0.00;0.00;58;6;0;
+369;'MAL-SUP-General-C2-Q6';'MAL-SUP-General-C2-Q6 Age of patient determined  ';0;'Age of patient determined  ';0;6;1.00;1.00;58;3;0;
+370;'MAL-SUP-General-C2-Q7';'MAL-SUP-General-C2-Q7 Age';0;'Age';0;7;0.00;0.00;58;24;0;
+371;'MAL-SUP-General-C2-Q8';'MAL-SUP-General-C2-Q8 Weight of patient determined ';0;'Weight of patient determined ';0;8;1.00;1.00;58;3;0;
+372;'MAL-SUP-General-C2-Q9';'MAL-SUP-General-C2-Q9 Weight';0;'Weight';0;9;0.00;0.00;58;24;0;
+373;'MAL-SUP-General-C2-Q10';'MAL-SUP-General-C2-Q10 Patient sex';0;'Patient sex';0;10;0.00;0.00;58;10;0;
+374;'MAL-SUP-General-C2-Q11';'MAL-SUP-General-C2-Q11 Is patient pregnant?';0;'Is patient pregnant?';0;11;1.00;1.00;58;6;0;
+375;'MAL-SUP-General-C2-Q12';'MAL-SUP-General-C2-Q12 Change in behavior, altered consciousness or coma     ';0;'Change in behavior, altered consciousness or coma     ';0;12;1.00;1.00;59;6;0;
+376;'MAL-SUP-General-C2-Q13';'MAL-SUP-General-C2-Q13 Convulsions';0;'Convulsions';0;13;1.00;1.00;59;6;0;
+377;'MAL-SUP-General-C2-Q14';'MAL-SUP-General-C2-Q14 Reduced urinary output or dark urine    ';0;'Reduced urinary output or dark urine    ';0;14;1.00;1.00;59;6;0;
+378;'MAL-SUP-General-C2-Q15';'MAL-SUP-General-C2-Q15 Spontaneous bleeding      ';0;'Spontaneous bleeding      ';0;15;1.00;1.00;59;6;0;
+379;'MAL-SUP-General-C2-Q16';'MAL-SUP-General-C2-Q16 Prostration/generalized weakness';0;'Prostration/generalized weakness';0;16;1.00;1.00;59;6;0;
+380;'MAL-SUP-General-C2-Q17';'MAL-SUP-General-C2-Q17 Inability to drink     ';0;'Inability to drink     ';0;17;1.00;1.00;59;6;0;
+381;'MAL-SUP-General-C2-Q18';'MAL-SUP-General-C2-Q18 Deep breathing/respiratory distress';0;'Deep breathing/respiratory distress';0;18;1.00;1.00;59;6;0;
+382;'MAL-SUP-General-C2-Q19';'MAL-SUP-General-C2-Q19 Jaundice (yellow eyes or skin)';0;'Jaundice (yellow eyes or skin)';0;19;1.00;1.00;59;6;0;
+383;'MAL-SUP-General-C2-Q20';'MAL-SUP-General-C2-Q20 Patient is assessed by clinician to have signs of severe malaria';0;'Patient is assessed by clinician to have signs of severe malaria';0;20;0.00;5.00;60;3;1;
+384;'MAL-SUP-General-C2-Q22';'MAL-SUP-General-C2-Q22 Presence and duration of fever ';0;'Presence and duration of fever ';0;22;1.00;1.00;61;6;0;
+385;'MAL-SUP-General-C2-Q23';'MAL-SUP-General-C2-Q23    If yes, duration greater than a day?';0;'   If yes, duration greater than a day?';0;23;0.00;0.00;61;3;0;
+386;'MAL-SUP-General-C2-Q24';'MAL-SUP-General-C2-Q24 Diarrhea';0;'Diarrhea';0;24;1.00;1.00;61;6;0;
+387;'MAL-SUP-General-C2-Q25';'MAL-SUP-General-C2-Q25    If yes, bloody:';0;'   If yes, bloody:';0;25;0.00;0.00;61;3;0;
+388;'MAL-SUP-General-C2-Q26';'MAL-SUP-General-C2-Q26 Vomiting';0;'Vomiting';0;26;1.00;1.00;61;6;0;
+389;'MAL-SUP-General-C2-Q27';'MAL-SUP-General-C2-Q27 Cough';0;'Cough';0;27;1.00;1.00;61;6;0;
+390;'MAL-SUP-General-C2-Q28';'MAL-SUP-General-C2-Q28    If yes, duration greater than 2 weeks:';0;'   If yes, duration greater than 2 weeks:';0;28;0.00;0.00;61;3;0;
+391;'MAL-SUP-General-C2-Q29';'MAL-SUP-General-C2-Q29 Difficult breathing';0;'Difficult breathing';0;29;1.00;1.00;61;6;0;
+392;'MAL-SUP-General-C2-Q30';'MAL-SUP-General-C2-Q30 Any other symptoms';0;'Any other symptoms';0;30;1.00;1.00;61;6;0;
+393;'MAL-SUP-General-C2-Q31';'MAL-SUP-General-C2-Q31 Was patient asked if diagnosed and treated at HOME OR another Health Centre?';0;'Was patient asked if diagnosed and treated at HOME OR another Health Centre?';0;31;1.00;1.00;62;3;0;
+394;'MAL-SUP-General-C2-Q32';'MAL-SUP-General-C2-Q32 Malaria test with heel stick or finger prick in last two weeks?';0;'Malaria test with heel stick or finger prick in last two weeks?';0;32;1.00;1.00;62;7;0;
+395;'MAL-SUP-General-C2-Q33';'MAL-SUP-General-C2-Q33    If yes, did the clinician ask about which treatment was given?';0;'   If yes, did the clinician ask about which treatment was given?';0;33;1.00;1.00;62;7;0;
+396;'MAL-SUP-General-C2-Q34';'MAL-SUP-General-C2-Q34 Was temperature taken?';0;'Was temperature taken?';0;34;1.00;1.00;63;3;0;
+397;'MAL-SUP-General-C2-Q35';'MAL-SUP-General-C2-Q35 Eye, ear, nose, and throat exam';0;'Eye, ear, nose, and throat exam';0;35;1.00;1.00;63;3;0;
+398;'MAL-SUP-General-C2-Q36';'MAL-SUP-General-C2-Q36 Neck exam';0;'Neck exam';0;36;1.00;1.00;63;3;0;
+399;'MAL-SUP-General-C2-Q37';'MAL-SUP-General-C2-Q37 Lung exam (Was fast breathing or chest indrawing assessed?)';0;'Lung exam (Was fast breathing or chest indrawing assessed?)';0;37;1.00;1.00;63;3;0;
+400;'MAL-SUP-General-C2-Q38';'MAL-SUP-General-C2-Q38 Heart exam';0;'Heart exam';0;38;1.00;1.00;63;3;0;
+401;'MAL-SUP-General-C2-Q39';'MAL-SUP-General-C2-Q39 Abdominal exam';0;'Abdominal exam';0;39;1.00;1.00;63;3;0;
+402;'MAL-SUP-General-C2-Q40';'MAL-SUP-General-C2-Q40 Extremities exam';0;'Extremities exam';0;40;1.00;1.00;63;3;0;
+403;'MAL-SUP-General-C2-Q41';'MAL-SUP-General-C2-Q41 Skin exam';0;'Skin exam';0;41;1.00;1.00;63;3;0;
+404;'MAL-SUP-General-C2-Q42';'MAL-SUP-General-C2-Q42 Was evidence of anemia, jaundice and hemolysis assessed?';0;'Was evidence of anemia, jaundice and hemolysis assessed?';0;42;1.00;1.00;63;3;0;
+405;'MAL-SUP-General-C2-Q43';'MAL-SUP-General-C2-Q43 Neurological exam';0;'Neurological exam';0;43;1.00;1.00;63;3;0;
+406;'MAL-SUP-General-C2-Q44';'MAL-SUP-General-C2-Q44 Neck stiffness';0;'Neck stiffness';0;44;0.00;0.00;63;3;0;
+407;'MAL-SUP-General-C2-Q45';'MAL-SUP-General-C2-Q45 Dehydration assestment';0;'Dehydration assestment';0;45;0.00;0.00;63;3;0;
+408;'MAL-SUP-General-C2-Q46';'MAL-SUP-General-C2-Q46 Abdominal tenderness';0;'Abdominal tenderness';0;46;0.00;0.00;63;3;0;
+409;'MAL-SUP-General-C2-Q47';'MAL-SUP-General-C2-Q47 Evidence of papilledema on eye exam';0;'Evidence of papilledema on eye exam';0;47;0.00;0.00;63;3;0;
+410;'MAL-SUP-General-C2-Q48';'MAL-SUP-General-C2-Q48 Systolic blood pressure <50mm Hg in children and <80mm Hg in adults';0;'Systolic blood pressure <50mm Hg in children and <80mm Hg in adults';0;48;0.00;0.00;63;3;0;
+411;'MAL-SUP-General-C2-Q49';'MAL-SUP-General-C2-Q49 Altered consciousness assesed?';0;'Altered consciousness assesed?';0;49;1.00;1.00;63;3;0;
+412;'MAL-SUP-General-C2-Q50';'MAL-SUP-General-C2-Q50 Other';0;'Other';0;50;0.00;0.00;63;3;0;
+413;'MAL-SUP-General-C2-Q51';'MAL-SUP-General-C2-Q51 Did the clinician order a malaria test?';0;'Did the clinician order a malaria test?';0;51;0.00;0.00;64;3;0;
+414;'MAL-SUP-General-C2-Q52';'MAL-SUP-General-C2-Q52 Malaria parasitological test result:';0;'Malaria parasitological test result:';0;52;0.00;0.00;65;12;0;
+415;'MAL-SUP-General-C2-Q53';'MAL-SUP-General-C2-Q53 Hemoglobin/hematocrit result(s) ';0;'Hemoglobin/hematocrit result(s) ';0;53;0.00;0.00;65;15;0;
+416;'MAL-SUP-General-C2-Q54';'MAL-SUP-General-C2-Q54 Blood glucose results ';0;'Blood glucose results ';0;54;0.00;0.00;65;15;0;
+417;'MAL-SUP-General-C2-Q55';'MAL-SUP-General-C2-Q55 Urinalysis';0;'Urinalysis';0;55;0.00;0.00;65;15;0;
+418;'MAL-SUP-General-C2-Q56';'MAL-SUP-General-C2-Q56 Lumbar puncture';0;'Lumbar puncture';0;56;0.00;0.00;65;15;0;
+419;'MAL-SUP-General-C2-Q57';'MAL-SUP-General-C2-Q57 Abnormalities diagnosed?';0;'Abnormalities diagnosed?';0;57;0.00;5.00;65;3;1;
+420;'MAL-SUP-General-C2-Q59';'MAL-SUP-General-C2-Q59 Final diagnosis';0;'Final diagnosis';0;59;0.00;0.00;66;13;0;
+421;'MAL-SUP-General-C2-Q60';'MAL-SUP-General-C2-Q60 RDT+';0;'RDT+';0;60;0.33;0.33;66;3;0;
+422;'MAL-SUP-General-C2-Q61';'MAL-SUP-General-C2-Q61 Microscopy +';0;'Microscopy +';0;61;0.33;0.33;66;3;0;
+423;'MAL-SUP-General-C2-Q62';'MAL-SUP-General-C2-Q62 Clinical diagnosis without a test (test not available)';0;'Clinical diagnosis without a test (test not available)';0;62;0.33;0.33;66;3;0;
+424;'MAL-SUP-General-C2-Q63';'MAL-SUP-General-C2-Q63 Clinical diagnosis with negative test';0;'Clinical diagnosis with negative test';0;63;0.00;0.00;66;3;0;
+425;'MAL-SUP-General-C2-Q64';'MAL-SUP-General-C2-Q64 Clinical diagnosis without a test (test not ordered)';0;'Clinical diagnosis without a test (test not ordered)';0;64;0.00;0.00;66;3;0;
+426;'MAL-SUP-General-C2-Q65';'MAL-SUP-General-C2-Q65 Acute respiratory infection (ARI';0;'Acute respiratory infection (ARI';0;65;0.00;0.00;66;3;0;
+427;'MAL-SUP-General-C2-Q66';'MAL-SUP-General-C2-Q66 Enteritis/diarrhoea';0;'Enteritis/diarrhoea';0;66;0.00;0.00;66;3;0;
+428;'MAL-SUP-General-C2-Q67';'MAL-SUP-General-C2-Q67 other severe illness';0;'other severe illness';0;67;0.00;0.00;66;3;0;
+429;'MAL-SUP-General-C2-Q68';'MAL-SUP-General-C2-Q68 Other mild illness';0;'Other mild illness';0;68;0.00;0.00;66;3;0;
+430;'MAL-SUP-General-C2-Q69';'MAL-SUP-General-C2-Q69 Anti-malarial treatment prescribed';0;'Anti-malarial treatment prescribed';0;69;0.00;5.00;67;5;1;
+431;'MAL-SUP-General-C2-Q80';'MAL-SUP-General-C2-Q80 Antibiotics prescribed';0;'Antibiotics prescribed';0;80;0.00;0.00;67;3;1;
+432;'MAL-SUP-General-C2-Q84';'MAL-SUP-General-C2-Q84 Antidiarrheal prescribed';0;'Antidiarrheal prescribed';0;84;0.00;0.00;67;3;1;
+433;'MAL-SUP-General-C2-Q88';'MAL-SUP-General-C2-Q88 Other medications prescribed';0;'Other medications prescribed';0;88;0.00;0.00;67;3;1;
+434;'MAL-SUP-General-C2-Q92';'MAL-SUP-General-C2-Q92 Caregiver informed on what is wrong with the patient';0;'Caregiver informed on what is wrong with the patient';0;92;0.66;0.66;68;3;0;
+435;'MAL-SUP-General-C2-Q93';'MAL-SUP-General-C2-Q93 Advice given on how to take the prescribed medications';0;'Advice given on how to take the prescribed medications';0;93;0.66;0.66;68;3;0;
+436;'MAL-SUP-General-C2-Q94';'MAL-SUP-General-C2-Q94 Advice given on when to return for follow-up evaluation';0;'Advice given on when to return for follow-up evaluation';0;94;0.66;0.66;68;3;0;
+437;'MAL-SUP-General-C2-Q95';'MAL-SUP-General-C2-Q95 Advice given on malaria prevention measures';0;'Advice given on malaria prevention measures';0;95;0.66;0.66;68;3;0;
+438;'MAL-SUP-General-C2-Q96';'MAL-SUP-General-C2-Q96 Caregiver and/or patient asked if they have any questions';0;'Caregiver and/or patient asked if they have any questions';0;96;0.66;0.66;68;3;0;
+439;'MAL-SUP-General-C2-Q97';'MAL-SUP-General-C2-Q97 Was the patient found to have severe disease?';0;'Was the patient found to have severe disease?';0;97;0.00;15.00;69;3;1;
+440;'MAL-SUP-General-C2-Q104';'MAL-SUP-General-C2-Q104 Caregiver informed on what is wrong with the patient';0;'Caregiver informed on what is wrong with the patient';0;104;0.66;0.66;70;3;0;
+441;'MAL-SUP-General-C2-Q105';'MAL-SUP-General-C2-Q105 Caregiver informed of transfer';0;'Caregiver informed of transfer';0;105;0.66;0.66;70;3;0;
+442;'MAL-SUP-General-C2-Q106';'MAL-SUP-General-C2-Q106 Caregiver given reason for transfer';0;'Caregiver given reason for transfer';0;106;0.66;0.66;70;3;0;
+443;'MAL-SUP-General-C2-Q107';'MAL-SUP-General-C2-Q107 Caregiver informed about what will be done';0;'Caregiver informed about what will be done';0;107;0.66;0.66;70;3;0;
+444;'MAL-SUP-General-C2-Q108';'MAL-SUP-General-C2-Q108 Caregiver and/or patient asked if there are questions';0;'Caregiver and/or patient asked if there are questions';0;108;0.66;0.66;70;3;0;
+445;'MAL-SUP-RDT-C2-Q1';'MAL-SUP-RDT-C2-Q1 Health Worker Name';0;'Health Worker Name';0;1;0.00;0.00;157;26;0;
+446;'MAL-SUP-RDT-C2-Q2';'MAL-SUP-RDT-C2-Q2 Health Worker Gender';0;'Health Worker Gender';0;2;0.00;0.00;157;10;0;
+447;'MAL-SUP-RDT-C2-Q3';'MAL-SUP-RDT-C2-Q3 Health Worker Type';0;'Health Worker Type';0;3;0.00;0.00;157;11;0;
+448;'MAL-SUP-RDT-C2-Q4';'MAL-SUP-RDT-C2-Q4 Type of RDT';0;'Type of RDT';0;4;0.00;0.00;71;26;0;
+449;'MAL-SUP-RDT-C2-Q5';'MAL-SUP-RDT-C2-Q5 Was the expiry date checked?  ';0;'Was the expiry date checked?  ';0;5;1.00;1.00;71;3;0;
+450;'MAL-SUP-RDT-C2-Q6';'MAL-SUP-RDT-C2-Q6 Did the worker label the cassette?  ';0;'Did the worker label the cassette?  ';0;6;1.00;1.00;71;3;0;
+451;'MAL-SUP-RDT-C2-Q7';'MAL-SUP-RDT-C2-Q7 Patient identified and identification information recorded in register';0;'Patient identified and identification information recorded in register';0;7;1.00;1.00;72;3;0;
+452;'MAL-SUP-RDT-C2-Q8';'MAL-SUP-RDT-C2-Q8 Procedure explained to patient      ';0;'Procedure explained to patient      ';0;8;1.00;1.00;72;3;0;
+453;'MAL-SUP-RDT-C2-Q9';'MAL-SUP-RDT-C2-Q9 New gloves';0;'New gloves';0;9;1.00;1.00;72;3;0;
+454;'MAL-SUP-RDT-C2-Q10';'MAL-SUP-RDT-C2-Q10 Gloves worn                        ';0;'Gloves worn                        ';0;10;1.00;1.00;72;3;0;
+455;'MAL-SUP-RDT-C2-Q11';'MAL-SUP-RDT-C2-Q11 use a sterile/new blood collection device?';0;'use a sterile/new blood collection device?';0;11;1.00;1.00;72;3;0;
+456;'MAL-SUP-RDT-C2-Q12';'MAL-SUP-RDT-C2-Q12 Puncture site cleaned with alcohol and allowed to air dry';0;'Puncture site cleaned with alcohol and allowed to air dry';0;12;1.00;1.00;72;3;0;
+457;'MAL-SUP-RDT-C2-Q13';'MAL-SUP-RDT-C2-Q13 Blood dispensed correctly';0;'Blood dispensed correctly';0;13;1.00;1.00;73;3;0;
+458;'MAL-SUP-RDT-C2-Q14';'MAL-SUP-RDT-C2-Q14 Blood dispensed in correct well of RDT device';0;'Blood dispensed in correct well of RDT device';0;14;1.00;1.00;73;3;0;
+459;'MAL-SUP-RDT-C2-Q15';'MAL-SUP-RDT-C2-Q15 Buffer applied to correct well  of RDT device      ';0;'Buffer applied to correct well  of RDT device      ';0;15;1.00;1.00;74;3;0;
+460;'MAL-SUP-RDT-C2-Q16';'MAL-SUP-RDT-C2-Q16 Appropriate amount of buffer dispensed into well   ';0;'Appropriate amount of buffer dispensed into well   ';0;16;1.00;1.00;74;3;0;
+461;'MAL-SUP-RDT-C2-Q17';'MAL-SUP-RDT-C2-Q17 Did worker wait for correct amount of time according to manufacturer�s instruction)   ';0;'Did worker wait for correct amount of time according to manufacturer�s instruction)   ';0;17;2.00;2.00;74;3;0;
+462;'MAL-SUP-RDT-C2-Q18';'MAL-SUP-RDT-C2-Q18 Was the result of the control line Positive?';0;'Was the result of the control line Positive?';0;18;0.00;0.00;74;3;0;
+463;'MAL-SUP-RDT-C2-Q19';'MAL-SUP-RDT-C2-Q19 Reads test result correctly (supervisor verifies results)';0;'Reads test result correctly (supervisor verifies results)';0;19;2.00;2.00;74;3;0;
+464;'MAL-SUP-RDT-C2-Q20';'MAL-SUP-RDT-C2-Q20 Records results correctly in register';0;'Records results correctly in register';0;20;2.00;2.00;74;3;0;
+465;'MAL-SUP-RDT-C2-Q21';'MAL-SUP-RDT-C2-Q21 Used tests, transfer devices and other blood-contaminated material disposed into plastic-lined bin';0;'Used tests, transfer devices and other blood-contaminated material disposed into plastic-lined bin';0;21;1.00;1.00;75;3;0;
+466;'MAL-SUP-RDT-C2-Q22';'MAL-SUP-RDT-C2-Q22 Used lancet disposed in sharps container  ';0;'Used lancet disposed in sharps container  ';0;22;1.00;1.00;75;3;0;
+467;'MAL-SUP-Microscopy-C2-Q1';'MAL-SUP-Microscopy-C2-Q1 Health Worker Name';0;'Health Worker Name';0;1;0.00;0.00;160;26;0;
+468;'MAL-SUP-Microscopy-C2-Q2';'MAL-SUP-Microscopy-C2-Q2 Health Worker Gender';0;'Health Worker Gender';0;2;0.00;0.00;160;10;0;
+469;'MAL-SUP-Microscopy-C2-Q3';'MAL-SUP-Microscopy-C2-Q3 Health Worker Type';0;'Health Worker Type';0;3;0.00;0.00;160;11;0;
+470;'MAL-SUP-Microscopy-C2-Q4';'MAL-SUP-Microscopy-C2-Q4 Patient identified and identification information recorded in register';0;'Patient identified and identification information recorded in register';0;4;1.00;1.00;76;3;0;
+471;'MAL-SUP-Microscopy-C2-Q5';'MAL-SUP-Microscopy-C2-Q5 Procedure explained to patient    ';0;'Procedure explained to patient    ';0;5;1.00;1.00;76;3;0;
+472;'MAL-SUP-Microscopy-C2-Q6';'MAL-SUP-Microscopy-C2-Q6 Gloves worn   ';0;'Gloves worn   ';0;6;1.00;1.00;76;3;0;
+473;'MAL-SUP-Microscopy-C2-Q7';'MAL-SUP-Microscopy-C2-Q7 Slide cleaned   ';0;'Slide cleaned   ';0;7;1.00;1.00;76;3;0;
+474;'MAL-SUP-Microscopy-C2-Q8';'MAL-SUP-Microscopy-C2-Q8 Slide labelled with date and patient�s name and/or number  ';0;'Slide labelled with date and patient�s name and/or number  ';0;8;1.00;1.00;76;3;0;
+475;'MAL-SUP-Microscopy-C2-Q9';'MAL-SUP-Microscopy-C2-Q9 Was collection via finger prick?';0;'Was collection via finger prick?';0;9;0.00;0.00;77;3;1;
+476;'MAL-SUP-Microscopy-C2-Q12';'MAL-SUP-Microscopy-C2-Q12 Was collection via venipuncture?';0;'Was collection via venipuncture?';0;12;0.00;4.00;78;3;1;
+477;'MAL-SUP-Microscopy-C2-Q17';'MAL-SUP-Microscopy-C2-Q17 Blood from only one patient applied to each slide  ';0;'Blood from only one patient applied to each slide  ';0;17;1.00;1.00;79;3;0;
+478;'MAL-SUP-Microscopy-C2-Q18';'MAL-SUP-Microscopy-C2-Q18 Blood sample spread into 1-2 cm diameter circle � can read print placed under the slide (supervisor should verify to answer this question) ';0;'Blood sample spread into 1-2 cm diameter circle � can read print placed under the slide (supervisor should verify to answer this question) ';0;18;1.00;1.00;79;3;0;
+479;'MAL-SUP-Microscopy-C2-Q19';'MAL-SUP-Microscopy-C2-Q19 Slide air dried before staining     ';0;'Slide air dried before staining     ';0;19;1.00;1.00;79;3;0;
+480;'MAL-SUP-Microscopy-C2-Q20';'MAL-SUP-Microscopy-C2-Q20 Blood from only one patient applied to each slide   ';0;'Blood from only one patient applied to each slide   ';0;20;1.00;1.00;80;3;0;
+481;'MAL-SUP-Microscopy-C2-Q21';'MAL-SUP-Microscopy-C2-Q21 Thin film spread out in feathered pattern (thins out towards end, dispersed and dome shaped in appearance)   ';0;'Thin film spread out in feathered pattern (thins out towards end, dispersed and dome shaped in appearance)   ';0;21;1.00;1.00;80;3;0;
+482;'MAL-SUP-Microscopy-C2-Q22';'MAL-SUP-Microscopy-C2-Q22 Slide air dried before staining    ';0;'Slide air dried before staining    ';0;22;1.00;1.00;80;3;0;
+483;'MAL-SUP-Microscopy-C2-Q23';'MAL-SUP-Microscopy-C2-Q23 Giemsa Stain';0;'Giemsa Stain';0;23;0.00;18.00;81;3;1;
+484;'MAL-SUP-Microscopy-C2-Q39';'MAL-SUP-Microscopy-C2-Q39 Field Stain';0;'Field Stain';0;39;0.00;19.00;87;3;1;
+485;'MAL-SUP-Microscopy-C2-Q56';'MAL-SUP-Microscopy-C2-Q56 Thin Slide Prepared';0;'Thin Slide Prepared';0;56;0.00;0.00;93;3;0;
+486;'MAL-SUP-Microscopy-C2-Q57';'MAL-SUP-Microscopy-C2-Q57 Thick Slide Prepared';0;'Thick Slide Prepared';0;57;0.00;1.00;93;3;1;
+487;'MAL-SUP-Microscopy-C2-Q59';'MAL-SUP-Microscopy-C2-Q59 Report slide as positive for parasites           ';0;'Report slide as positive for parasites           ';0;59;0.00;0.00;95;3;0;
+488;'MAL-SUP-Microscopy-C2-Q60';'MAL-SUP-Microscopy-C2-Q60 Was speciation performed?';0;'Was speciation performed?';0;60;0.00;0.00;95;3;0;
+489;'MAL-SUP-Microscopy-C2-Q61';'MAL-SUP-Microscopy-C2-Q61    If yes, report species';0;'   If yes, report species';0;61;0.00;0.00;95;14;0;
+490;'MAL-SUP-Microscopy-C2-Q62';'MAL-SUP-Microscopy-C2-Q62 Was quantification performed?';0;'Was quantification performed?';0;62;1.00;1.00;95;3;0;
+491;'MAL-SUP-Microscopy-C2-Q63';'MAL-SUP-Microscopy-C2-Q63   Quantification  - Plus System';0;'  Quantification  - Plus System';0;63;0.00;0.00;95;3;0;
+492;'MAL-SUP-Microscopy-C2-Q64';'MAL-SUP-Microscopy-C2-Q64   Quantification  - WBC';0;'  Quantification  - WBC';0;64;0.00;0.00;95;3;0;
+493;'MAL-SUP-Microscopy-C2-Q65';'MAL-SUP-Microscopy-C2-Q65   Quantification  - Parasites/uL';0;'  Quantification  - Parasites/uL';0;65;0.00;0.00;95;3;0;
+494;'MAL-SUP-Microscopy-C2-Q66';'MAL-SUP-Microscopy-C2-Q66 Report quantification';0;'Report quantification';0;66;0.00;0.00;95;26;0;
+495;'MAL-SUP-Microscopy-C2-Q67';'MAL-SUP-Microscopy-C2-Q67 Report slide as positive for parasites           ';0;'Report slide as positive for parasites           ';0;67;15.00;15.00;96;3;0;
+496;'MAL-SUP-Microscopy-C2-Q68';'MAL-SUP-Microscopy-C2-Q68 Evaluation (if done) for parasite species';0;'Evaluation (if done) for parasite species';0;68;0.00;0.00;96;3;0;
+497;'MAL-SUP-Microscopy-C2-Q69';'MAL-SUP-Microscopy-C2-Q69 Report parasite species';0;'Report parasite species';0;69;0.00;0.00;96;14;0;
+498;'MAL-SUP-Microscopy-C2-Q70';'MAL-SUP-Microscopy-C2-Q70 Was there agreement on quantification?';0;'Was there agreement on quantification?';0;70;5.00;5.00;96;3;0;
+499;'MAL-SUP-Microscopy-C2-Q71';'MAL-SUP-Microscopy-C2-Q71 Is the quality of stain adequate (adequate= did NOT require filtering due to heavy precipidate AND was NOT too pink or too blue in appearance due to inappropriate pH)?';0;'Is the quality of stain adequate (adequate= did NOT require filtering due to heavy precipidate AND was NOT too pink or too blue in appearance due to inappropriate pH)?';0;71;0.00;0.00;96;3;0;
+500;'MAL-SUP-Microscopy-C2-Q72';'MAL-SUP-Microscopy-C2-Q72 Were the slides recycled?     ';0;'Were the slides recycled?     ';0;72;1.00;1.00;97;3;0;
+501;'MAL-SUP-General-C3-Q1';'MAL-SUP-General-C3-Q1 Health Worker Name';0;'Health Worker Name';0;1;0.00;0.00;98;26;0;
+502;'MAL-SUP-General-C3-Q2';'MAL-SUP-General-C3-Q2 Health Worker Gender';0;'Health Worker Gender';0;2;0.00;0.00;98;10;0;
+503;'MAL-SUP-General-C3-Q3';'MAL-SUP-General-C3-Q3 Health Worker Type';0;'Health Worker Type';0;3;0.00;0.00;98;11;0;
+504;'MAL-SUP-General-C3-Q4';'MAL-SUP-General-C3-Q4 Patient and care giver welcomed  ';0;'Patient and care giver welcomed  ';0;4;0.00;0.00;99;3;0;
+505;'MAL-SUP-General-C3-Q5';'MAL-SUP-General-C3-Q5 Ask if Referred from another Health Centre';0;'Ask if Referred from another Health Centre';0;5;0.00;0.00;99;6;0;
+506;'MAL-SUP-General-C3-Q6';'MAL-SUP-General-C3-Q6 Age of patient determined  ';0;'Age of patient determined  ';0;6;1.00;1.00;99;3;0;
+507;'MAL-SUP-General-C3-Q7';'MAL-SUP-General-C3-Q7 Age';0;'Age';0;7;0.00;0.00;99;24;0;
+508;'MAL-SUP-General-C3-Q8';'MAL-SUP-General-C3-Q8 Weight of patient determined ';0;'Weight of patient determined ';0;8;1.00;1.00;99;3;0;
+509;'MAL-SUP-General-C3-Q9';'MAL-SUP-General-C3-Q9 Weight';0;'Weight';0;9;0.00;0.00;99;24;0;
+510;'MAL-SUP-General-C3-Q10';'MAL-SUP-General-C3-Q10 Patient sex';0;'Patient sex';0;10;0.00;0.00;99;10;0;
+511;'MAL-SUP-General-C3-Q11';'MAL-SUP-General-C3-Q11 Is patient pregnant?';0;'Is patient pregnant?';0;11;1.00;1.00;99;6;0;
+512;'MAL-SUP-General-C3-Q12';'MAL-SUP-General-C3-Q12 Change in behavior, altered consciousness or coma     ';0;'Change in behavior, altered consciousness or coma     ';0;12;1.00;1.00;100;6;0;
+513;'MAL-SUP-General-C3-Q13';'MAL-SUP-General-C3-Q13 Convulsions';0;'Convulsions';0;13;1.00;1.00;100;6;0;
+514;'MAL-SUP-General-C3-Q14';'MAL-SUP-General-C3-Q14 Reduced urinary output or dark urine    ';0;'Reduced urinary output or dark urine    ';0;14;1.00;1.00;100;6;0;
+515;'MAL-SUP-General-C3-Q15';'MAL-SUP-General-C3-Q15 Spontaneous bleeding      ';0;'Spontaneous bleeding      ';0;15;1.00;1.00;100;6;0;
+516;'MAL-SUP-General-C3-Q16';'MAL-SUP-General-C3-Q16 Prostration/generalized weakness';0;'Prostration/generalized weakness';0;16;1.00;1.00;100;6;0;
+517;'MAL-SUP-General-C3-Q17';'MAL-SUP-General-C3-Q17 Inability to drink     ';0;'Inability to drink     ';0;17;1.00;1.00;100;6;0;
+518;'MAL-SUP-General-C3-Q18';'MAL-SUP-General-C3-Q18 Deep breathing/respiratory distress';0;'Deep breathing/respiratory distress';0;18;1.00;1.00;100;6;0;
+519;'MAL-SUP-General-C3-Q19';'MAL-SUP-General-C3-Q19 Jaundice (yellow eyes or skin)';0;'Jaundice (yellow eyes or skin)';0;19;1.00;1.00;100;6;0;
+520;'MAL-SUP-General-C3-Q20';'MAL-SUP-General-C3-Q20 Patient is assessed by clinician to have signs of severe malaria';0;'Patient is assessed by clinician to have signs of severe malaria';0;20;0.00;5.00;101;3;1;
+521;'MAL-SUP-General-C3-Q22';'MAL-SUP-General-C3-Q22 Presence and duration of fever ';0;'Presence and duration of fever ';0;22;1.00;1.00;102;6;0;
+522;'MAL-SUP-General-C3-Q23';'MAL-SUP-General-C3-Q23    If yes, duration greater than a day?';0;'   If yes, duration greater than a day?';0;23;0.00;0.00;102;3;0;
+523;'MAL-SUP-General-C3-Q24';'MAL-SUP-General-C3-Q24 Diarrhea';0;'Diarrhea';0;24;1.00;1.00;102;6;0;
+524;'MAL-SUP-General-C3-Q25';'MAL-SUP-General-C3-Q25    If yes, bloody:';0;'   If yes, bloody:';0;25;0.00;0.00;102;3;0;
+525;'MAL-SUP-General-C3-Q26';'MAL-SUP-General-C3-Q26 Vomiting';0;'Vomiting';0;26;1.00;1.00;102;6;0;
+526;'MAL-SUP-General-C3-Q27';'MAL-SUP-General-C3-Q27 Cough';0;'Cough';0;27;1.00;1.00;102;6;0;
+527;'MAL-SUP-General-C3-Q28';'MAL-SUP-General-C3-Q28    If yes, duration greater than 2 weeks:';0;'   If yes, duration greater than 2 weeks:';0;28;0.00;0.00;102;3;0;
+528;'MAL-SUP-General-C3-Q29';'MAL-SUP-General-C3-Q29 Difficult breathing';0;'Difficult breathing';0;29;1.00;1.00;102;6;0;
+529;'MAL-SUP-General-C3-Q30';'MAL-SUP-General-C3-Q30 Any other symptoms';0;'Any other symptoms';0;30;1.00;1.00;102;6;0;
+530;'MAL-SUP-General-C3-Q31';'MAL-SUP-General-C3-Q31 Was patient asked if diagnosed and treated at HOME OR another Health Centre?';0;'Was patient asked if diagnosed and treated at HOME OR another Health Centre?';0;31;1.00;1.00;103;3;0;
+531;'MAL-SUP-General-C3-Q32';'MAL-SUP-General-C3-Q32 Malaria test with heel stick or finger prick in last two weeks?';0;'Malaria test with heel stick or finger prick in last two weeks?';0;32;1.00;1.00;103;7;0;
+532;'MAL-SUP-General-C3-Q33';'MAL-SUP-General-C3-Q33    If yes, did the clinician ask about which treatment was given?';0;'   If yes, did the clinician ask about which treatment was given?';0;33;1.00;1.00;103;7;0;
+533;'MAL-SUP-General-C3-Q34';'MAL-SUP-General-C3-Q34 Was temperature taken?';0;'Was temperature taken?';0;34;1.00;1.00;104;3;0;
+534;'MAL-SUP-General-C3-Q35';'MAL-SUP-General-C3-Q35 Eye, ear, nose, and throat exam';0;'Eye, ear, nose, and throat exam';0;35;1.00;1.00;104;3;0;
+535;'MAL-SUP-General-C3-Q36';'MAL-SUP-General-C3-Q36 Neck exam';0;'Neck exam';0;36;1.00;1.00;104;3;0;
+536;'MAL-SUP-General-C3-Q37';'MAL-SUP-General-C3-Q37 Lung exam (Was fast breathing or chest indrawing assessed?)';0;'Lung exam (Was fast breathing or chest indrawing assessed?)';0;37;1.00;1.00;104;3;0;
+537;'MAL-SUP-General-C3-Q38';'MAL-SUP-General-C3-Q38 Heart exam';0;'Heart exam';0;38;1.00;1.00;104;3;0;
+538;'MAL-SUP-General-C3-Q39';'MAL-SUP-General-C3-Q39 Abdominal exam';0;'Abdominal exam';0;39;1.00;1.00;104;3;0;
+539;'MAL-SUP-General-C3-Q40';'MAL-SUP-General-C3-Q40 Extremities exam';0;'Extremities exam';0;40;1.00;1.00;104;3;0;
+540;'MAL-SUP-General-C3-Q41';'MAL-SUP-General-C3-Q41 Skin exam';0;'Skin exam';0;41;1.00;1.00;104;3;0;
+541;'MAL-SUP-General-C3-Q42';'MAL-SUP-General-C3-Q42 Was evidence of anemia, jaundice and hemolysis assessed?';0;'Was evidence of anemia, jaundice and hemolysis assessed?';0;42;1.00;1.00;104;3;0;
+542;'MAL-SUP-General-C3-Q43';'MAL-SUP-General-C3-Q43 Neurological exam';0;'Neurological exam';0;43;1.00;1.00;104;3;0;
+543;'MAL-SUP-General-C3-Q44';'MAL-SUP-General-C3-Q44 Neck stiffness';0;'Neck stiffness';0;44;0.00;0.00;104;3;0;
+544;'MAL-SUP-General-C3-Q45';'MAL-SUP-General-C3-Q45 Dehydration assestment';0;'Dehydration assestment';0;45;0.00;0.00;104;3;0;
+545;'MAL-SUP-General-C3-Q46';'MAL-SUP-General-C3-Q46 Abdominal tenderness';0;'Abdominal tenderness';0;46;0.00;0.00;104;3;0;
+546;'MAL-SUP-General-C3-Q47';'MAL-SUP-General-C3-Q47 Evidence of papilledema on eye exam';0;'Evidence of papilledema on eye exam';0;47;0.00;0.00;104;3;0;
+547;'MAL-SUP-General-C3-Q48';'MAL-SUP-General-C3-Q48 Systolic blood pressure <50mm Hg in children and <80mm Hg in adults';0;'Systolic blood pressure <50mm Hg in children and <80mm Hg in adults';0;48;0.00;0.00;104;3;0;
+548;'MAL-SUP-General-C3-Q49';'MAL-SUP-General-C3-Q49 Altered consciousness assesed?';0;'Altered consciousness assesed?';0;49;1.00;1.00;104;3;0;
+549;'MAL-SUP-General-C3-Q50';'MAL-SUP-General-C3-Q50 Other';0;'Other';0;50;0.00;0.00;104;3;0;
+550;'MAL-SUP-General-C3-Q51';'MAL-SUP-General-C3-Q51 Did the clinician order a malaria test?';0;'Did the clinician order a malaria test?';0;51;0.00;0.00;105;3;0;
+551;'MAL-SUP-General-C3-Q52';'MAL-SUP-General-C3-Q52 Malaria parasitological test result:';0;'Malaria parasitological test result:';0;52;0.00;0.00;106;12;0;
+552;'MAL-SUP-General-C3-Q53';'MAL-SUP-General-C3-Q53 Hemoglobin/hematocrit result(s) ';0;'Hemoglobin/hematocrit result(s) ';0;53;0.00;0.00;106;15;0;
+553;'MAL-SUP-General-C3-Q54';'MAL-SUP-General-C3-Q54 Blood glucose results ';0;'Blood glucose results ';0;54;0.00;0.00;106;15;0;
+554;'MAL-SUP-General-C3-Q55';'MAL-SUP-General-C3-Q55 Urinalysis';0;'Urinalysis';0;55;0.00;0.00;106;15;0;
+555;'MAL-SUP-General-C3-Q56';'MAL-SUP-General-C3-Q56 Lumbar puncture';0;'Lumbar puncture';0;56;0.00;0.00;106;15;0;
+556;'MAL-SUP-General-C3-Q57';'MAL-SUP-General-C3-Q57 Abnormalities diagnosed?';0;'Abnormalities diagnosed?';0;57;0.00;5.00;106;3;1;
+557;'MAL-SUP-General-C3-Q59';'MAL-SUP-General-C3-Q59 Final diagnosis';0;'Final diagnosis';0;59;0.00;0.00;107;13;0;
+558;'MAL-SUP-General-C3-Q60';'MAL-SUP-General-C3-Q60 RDT+';0;'RDT+';0;60;0.33;0.33;107;3;0;
+559;'MAL-SUP-General-C3-Q61';'MAL-SUP-General-C3-Q61 Microscopy +';0;'Microscopy +';0;61;0.33;0.33;107;3;0;
+560;'MAL-SUP-General-C3-Q62';'MAL-SUP-General-C3-Q62 Clinical diagnosis without a test (test not available)';0;'Clinical diagnosis without a test (test not available)';0;62;0.33;0.33;107;3;0;
+561;'MAL-SUP-General-C3-Q63';'MAL-SUP-General-C3-Q63 Clinical diagnosis with negative test';0;'Clinical diagnosis with negative test';0;63;0.00;0.00;107;3;0;
+562;'MAL-SUP-General-C3-Q64';'MAL-SUP-General-C3-Q64 Clinical diagnosis without a test (test not ordered)';0;'Clinical diagnosis without a test (test not ordered)';0;64;0.00;0.00;107;3;0;
+563;'MAL-SUP-General-C3-Q65';'MAL-SUP-General-C3-Q65 Acute respiratory infection (ARI';0;'Acute respiratory infection (ARI';0;65;0.00;0.00;107;3;0;
+564;'MAL-SUP-General-C3-Q66';'MAL-SUP-General-C3-Q66 Enteritis/diarrhoea';0;'Enteritis/diarrhoea';0;66;0.00;0.00;107;3;0;
+565;'MAL-SUP-General-C3-Q67';'MAL-SUP-General-C3-Q67 other severe illness';0;'other severe illness';0;67;0.00;0.00;107;3;0;
+566;'MAL-SUP-General-C3-Q68';'MAL-SUP-General-C3-Q68 Other mild illness';0;'Other mild illness';0;68;0.00;0.00;107;3;0;
+567;'MAL-SUP-General-C3-Q69';'MAL-SUP-General-C3-Q69 Anti-malarial treatment prescribed';0;'Anti-malarial treatment prescribed';0;69;0.00;5.00;108;5;1;
+568;'MAL-SUP-General-C3-Q80';'MAL-SUP-General-C3-Q80 Antibiotics prescribed';0;'Antibiotics prescribed';0;80;0.00;0.00;108;3;1;
+569;'MAL-SUP-General-C3-Q84';'MAL-SUP-General-C3-Q84 Antidiarrheal prescribed';0;'Antidiarrheal prescribed';0;84;0.00;0.00;108;3;1;
+570;'MAL-SUP-General-C3-Q88';'MAL-SUP-General-C3-Q88 Other medications prescribed';0;'Other medications prescribed';0;88;0.00;0.00;108;3;1;
+571;'MAL-SUP-General-C3-Q92';'MAL-SUP-General-C3-Q92 Caregiver informed on what is wrong with the patient';0;'Caregiver informed on what is wrong with the patient';0;92;0.66;0.66;109;3;0;
+572;'MAL-SUP-General-C3-Q93';'MAL-SUP-General-C3-Q93 Advice given on how to take the prescribed medications';0;'Advice given on how to take the prescribed medications';0;93;0.66;0.66;109;3;0;
+573;'MAL-SUP-General-C3-Q94';'MAL-SUP-General-C3-Q94 Advice given on when to return for follow-up evaluation';0;'Advice given on when to return for follow-up evaluation';0;94;0.66;0.66;109;3;0;
+574;'MAL-SUP-General-C3-Q95';'MAL-SUP-General-C3-Q95 Advice given on malaria prevention measures';0;'Advice given on malaria prevention measures';0;95;0.66;0.66;109;3;0;
+575;'MAL-SUP-General-C3-Q96';'MAL-SUP-General-C3-Q96 Caregiver and/or patient asked if they have any questions';0;'Caregiver and/or patient asked if they have any questions';0;96;0.66;0.66;109;3;0;
+576;'MAL-SUP-General-C3-Q97';'MAL-SUP-General-C3-Q97 Was the patient found to have severe disease?';0;'Was the patient found to have severe disease?';0;97;0.00;15.00;110;3;1;
+577;'MAL-SUP-General-C3-Q104';'MAL-SUP-General-C3-Q104 Caregiver informed on what is wrong with the patient';0;'Caregiver informed on what is wrong with the patient';0;104;0.66;0.66;111;3;0;
+578;'MAL-SUP-General-C3-Q105';'MAL-SUP-General-C3-Q105 Caregiver informed of transfer';0;'Caregiver informed of transfer';0;105;0.66;0.66;111;3;0;
+579;'MAL-SUP-General-C3-Q106';'MAL-SUP-General-C3-Q106 Caregiver given reason for transfer';0;'Caregiver given reason for transfer';0;106;0.66;0.66;111;3;0;
+580;'MAL-SUP-General-C3-Q107';'MAL-SUP-General-C3-Q107 Caregiver informed about what will be done';0;'Caregiver informed about what will be done';0;107;0.66;0.66;111;3;0;
+581;'MAL-SUP-General-C3-Q108';'MAL-SUP-General-C3-Q108 Caregiver and/or patient asked if there are questions';0;'Caregiver and/or patient asked if there are questions';0;108;0.66;0.66;111;3;0;
+582;'MAL-SUP-RDT-C3-Q1';'MAL-SUP-RDT-C3-Q1 Health Worker Name';0;'Health Worker Name';0;1;0.00;0.00;158;26;0;
+583;'MAL-SUP-RDT-C3-Q2';'MAL-SUP-RDT-C3-Q2 Health Worker Gender';0;'Health Worker Gender';0;2;0.00;0.00;158;10;0;
+584;'MAL-SUP-RDT-C3-Q3';'MAL-SUP-RDT-C3-Q3 Health Worker Type';0;'Health Worker Type';0;3;0.00;0.00;158;11;0;
+585;'MAL-SUP-RDT-C3-Q4';'MAL-SUP-RDT-C3-Q4 Type of RDT';0;'Type of RDT';0;4;0.00;0.00;112;26;0;
+586;'MAL-SUP-RDT-C3-Q5';'MAL-SUP-RDT-C3-Q5 Was the expiry date checked?  ';0;'Was the expiry date checked?  ';0;5;1.00;1.00;112;3;0;
+587;'MAL-SUP-RDT-C3-Q6';'MAL-SUP-RDT-C3-Q6 Did the worker label the cassette?  ';0;'Did the worker label the cassette?  ';0;6;1.00;1.00;112;3;0;
+588;'MAL-SUP-RDT-C3-Q7';'MAL-SUP-RDT-C3-Q7 Patient identified and identification information recorded in register';0;'Patient identified and identification information recorded in register';0;7;1.00;1.00;113;3;0;
+589;'MAL-SUP-RDT-C3-Q8';'MAL-SUP-RDT-C3-Q8 Procedure explained to patient      ';0;'Procedure explained to patient      ';0;8;1.00;1.00;113;3;0;
+590;'MAL-SUP-RDT-C3-Q9';'MAL-SUP-RDT-C3-Q9 New gloves';0;'New gloves';0;9;1.00;1.00;113;3;0;
+591;'MAL-SUP-RDT-C3-Q10';'MAL-SUP-RDT-C3-Q10 Gloves worn                        ';0;'Gloves worn                        ';0;10;1.00;1.00;113;3;0;
+592;'MAL-SUP-RDT-C3-Q11';'MAL-SUP-RDT-C3-Q11 use a sterile/new blood collection device?';0;'use a sterile/new blood collection device?';0;11;1.00;1.00;113;3;0;
+593;'MAL-SUP-RDT-C3-Q12';'MAL-SUP-RDT-C3-Q12 Puncture site cleaned with alcohol and allowed to air dry';0;'Puncture site cleaned with alcohol and allowed to air dry';0;12;1.00;1.00;113;3;0;
+594;'MAL-SUP-RDT-C3-Q13';'MAL-SUP-RDT-C3-Q13 Blood dispensed correctly';0;'Blood dispensed correctly';0;13;1.00;1.00;114;3;0;
+595;'MAL-SUP-RDT-C3-Q14';'MAL-SUP-RDT-C3-Q14 Blood dispensed in correct well of RDT device';0;'Blood dispensed in correct well of RDT device';0;14;1.00;1.00;114;3;0;
+596;'MAL-SUP-RDT-C3-Q15';'MAL-SUP-RDT-C3-Q15 Buffer applied to correct well  of RDT device      ';0;'Buffer applied to correct well  of RDT device      ';0;15;1.00;1.00;115;3;0;
+597;'MAL-SUP-RDT-C3-Q16';'MAL-SUP-RDT-C3-Q16 Appropriate amount of buffer dispensed into well   ';0;'Appropriate amount of buffer dispensed into well   ';0;16;1.00;1.00;115;3;0;
+598;'MAL-SUP-RDT-C3-Q17';'MAL-SUP-RDT-C3-Q17 Did worker wait for correct amount of time according to manufacturer�s instruction)   ';0;'Did worker wait for correct amount of time according to manufacturer�s instruction)   ';0;17;2.00;2.00;115;3;0;
+599;'MAL-SUP-RDT-C3-Q18';'MAL-SUP-RDT-C3-Q18 Was the result of the control line Positive?';0;'Was the result of the control line Positive?';0;18;0.00;0.00;115;3;0;
+600;'MAL-SUP-RDT-C3-Q19';'MAL-SUP-RDT-C3-Q19 Reads test result correctly (supervisor verifies results)';0;'Reads test result correctly (supervisor verifies results)';0;19;2.00;2.00;115;3;0;
+601;'MAL-SUP-RDT-C3-Q20';'MAL-SUP-RDT-C3-Q20 Records results correctly in register';0;'Records results correctly in register';0;20;2.00;2.00;115;3;0;
+602;'MAL-SUP-RDT-C3-Q21';'MAL-SUP-RDT-C3-Q21 Used tests, transfer devices and other blood-contaminated material disposed into plastic-lined bin';0;'Used tests, transfer devices and other blood-contaminated material disposed into plastic-lined bin';0;21;1.00;1.00;116;3;0;
+603;'MAL-SUP-RDT-C3-Q22';'MAL-SUP-RDT-C3-Q22 Used lancet disposed in sharps container  ';0;'Used lancet disposed in sharps container  ';0;22;1.00;1.00;116;3;0;
+604;'MAL-SUP-Microscopy-C3-Q1';'MAL-SUP-Microscopy-C3-Q1 Health Worker Name';0;'Health Worker Name';0;1;0.00;0.00;161;26;0;
+605;'MAL-SUP-Microscopy-C3-Q2';'MAL-SUP-Microscopy-C3-Q2 Health Worker Gender';0;'Health Worker Gender';0;2;0.00;0.00;161;10;0;
+606;'MAL-SUP-Microscopy-C3-Q3';'MAL-SUP-Microscopy-C3-Q3 Health Worker Type';0;'Health Worker Type';0;3;0.00;0.00;161;11;0;
+607;'MAL-SUP-Microscopy-C3-Q4';'MAL-SUP-Microscopy-C3-Q4 Patient identified and identification information recorded in register';0;'Patient identified and identification information recorded in register';0;4;1.00;1.00;117;3;0;
+608;'MAL-SUP-Microscopy-C3-Q5';'MAL-SUP-Microscopy-C3-Q5 Procedure explained to patient    ';0;'Procedure explained to patient    ';0;5;1.00;1.00;117;3;0;
+609;'MAL-SUP-Microscopy-C3-Q6';'MAL-SUP-Microscopy-C3-Q6 Gloves worn   ';0;'Gloves worn   ';0;6;1.00;1.00;117;3;0;
+610;'MAL-SUP-Microscopy-C3-Q7';'MAL-SUP-Microscopy-C3-Q7 Slide cleaned   ';0;'Slide cleaned   ';0;7;1.00;1.00;117;3;0;
+611;'MAL-SUP-Microscopy-C3-Q8';'MAL-SUP-Microscopy-C3-Q8 Slide labelled with date and patient�s name and/or number  ';0;'Slide labelled with date and patient�s name and/or number  ';0;8;1.00;1.00;117;3;0;
+612;'MAL-SUP-Microscopy-C3-Q9';'MAL-SUP-Microscopy-C3-Q9 Was collection via finger prick?';0;'Was collection via finger prick?';0;9;0.00;0.00;118;3;1;
+613;'MAL-SUP-Microscopy-C3-Q12';'MAL-SUP-Microscopy-C3-Q12 Was collection via venipuncture?';0;'Was collection via venipuncture?';0;12;0.00;4.00;119;3;1;
+614;'MAL-SUP-Microscopy-C3-Q17';'MAL-SUP-Microscopy-C3-Q17 Blood from only one patient applied to each slide  ';0;'Blood from only one patient applied to each slide  ';0;17;1.00;1.00;120;3;0;
+615;'MAL-SUP-Microscopy-C3-Q18';'MAL-SUP-Microscopy-C3-Q18 Blood sample spread into 1-2 cm diameter circle � can read print placed under the slide (supervisor should verify to answer this question) ';0;'Blood sample spread into 1-2 cm diameter circle � can read print placed under the slide (supervisor should verify to answer this question) ';0;18;1.00;1.00;120;3;0;
+616;'MAL-SUP-Microscopy-C3-Q19';'MAL-SUP-Microscopy-C3-Q19 Slide air dried before staining     ';0;'Slide air dried before staining     ';0;19;1.00;1.00;120;3;0;
+617;'MAL-SUP-Microscopy-C3-Q20';'MAL-SUP-Microscopy-C3-Q20 Blood from only one patient applied to each slide   ';0;'Blood from only one patient applied to each slide   ';0;20;1.00;1.00;121;3;0;
+618;'MAL-SUP-Microscopy-C3-Q21';'MAL-SUP-Microscopy-C3-Q21 Thin film spread out in feathered pattern (thins out towards end, dispersed and dome shaped in appearance)   ';0;'Thin film spread out in feathered pattern (thins out towards end, dispersed and dome shaped in appearance)   ';0;21;1.00;1.00;121;3;0;
+619;'MAL-SUP-Microscopy-C3-Q22';'MAL-SUP-Microscopy-C3-Q22 Slide air dried before staining    ';0;'Slide air dried before staining    ';0;22;1.00;1.00;121;3;0;
+620;'MAL-SUP-Microscopy-C3-Q23';'MAL-SUP-Microscopy-C3-Q23 Giemsa Stain';0;'Giemsa Stain';0;23;0.00;18.00;122;3;1;
+621;'MAL-SUP-Microscopy-C3-Q39';'MAL-SUP-Microscopy-C3-Q39 Field Stain';0;'Field Stain';0;39;0.00;19.00;128;3;1;
+622;'MAL-SUP-Microscopy-C3-Q56';'MAL-SUP-Microscopy-C3-Q56 Thin Slide Prepared';0;'Thin Slide Prepared';0;56;0.00;0.00;134;3;0;
+623;'MAL-SUP-Microscopy-C3-Q57';'MAL-SUP-Microscopy-C3-Q57 Thick Slide Prepared';0;'Thick Slide Prepared';0;57;0.00;1.00;134;3;1;
+624;'MAL-SUP-Microscopy-C3-Q59';'MAL-SUP-Microscopy-C3-Q59 Report slide as positive for parasites           ';0;'Report slide as positive for parasites           ';0;59;0.00;0.00;136;3;0;
+625;'MAL-SUP-Microscopy-C3-Q60';'MAL-SUP-Microscopy-C3-Q60 Was speciation performed?';0;'Was speciation performed?';0;60;0.00;0.00;136;3;0;
+626;'MAL-SUP-Microscopy-C3-Q61';'MAL-SUP-Microscopy-C3-Q61    If yes, report species';0;'   If yes, report species';0;61;0.00;0.00;136;14;0;
+627;'MAL-SUP-Microscopy-C3-Q62';'MAL-SUP-Microscopy-C3-Q62 Was quantification performed?';0;'Was quantification performed?';0;62;1.00;1.00;136;3;0;
+628;'MAL-SUP-Microscopy-C3-Q63';'MAL-SUP-Microscopy-C3-Q63   Quantification  - Plus System';0;'  Quantification  - Plus System';0;63;0.00;0.00;136;3;0;
+629;'MAL-SUP-Microscopy-C3-Q64';'MAL-SUP-Microscopy-C3-Q64   Quantification  - WBC';0;'  Quantification  - WBC';0;64;0.00;0.00;136;3;0;
+630;'MAL-SUP-Microscopy-C3-Q65';'MAL-SUP-Microscopy-C3-Q65   Quantification  - Parasites/uL';0;'  Quantification  - Parasites/uL';0;65;0.00;0.00;136;3;0;
+631;'MAL-SUP-Microscopy-C3-Q66';'MAL-SUP-Microscopy-C3-Q66 Report quantification';0;'Report quantification';0;66;0.00;0.00;136;26;0;
+632;'MAL-SUP-Microscopy-C3-Q67';'MAL-SUP-Microscopy-C3-Q67 Report slide as positive for parasites           ';0;'Report slide as positive for parasites           ';0;67;15.00;15.00;137;3;0;
+633;'MAL-SUP-Microscopy-C3-Q68';'MAL-SUP-Microscopy-C3-Q68 Evaluation (if done) for parasite species';0;'Evaluation (if done) for parasite species';0;68;0.00;0.00;137;3;0;
+634;'MAL-SUP-Microscopy-C3-Q69';'MAL-SUP-Microscopy-C3-Q69 Report parasite species';0;'Report parasite species';0;69;0.00;0.00;137;14;0;
+635;'MAL-SUP-Microscopy-C3-Q70';'MAL-SUP-Microscopy-C3-Q70 Was there agreement on quantification?';0;'Was there agreement on quantification?';0;70;5.00;5.00;137;3;0;
+636;'MAL-SUP-Microscopy-C3-Q71';'MAL-SUP-Microscopy-C3-Q71 Is the quality of stain adequate (adequate= did NOT require filtering due to heavy precipidate AND was NOT too pink or too blue in appearance due to inappropriate pH)?';0;'Is the quality of stain adequate (adequate= did NOT require filtering due to heavy precipidate AND was NOT too pink or too blue in appearance due to inappropriate pH)?';0;71;0.00;0.00;137;3;0;
+637;'MAL-SUP-Microscopy-C3-Q72';'MAL-SUP-Microscopy-C3-Q72 Were the slides recycled?     ';0;'Were the slides recycled?     ';0;72;1.00;1.00;138;3;0;
+638;'MAL-SUP-Environment-Q16';'MAL-SUP-Environment-Q16 Stethoscopes';0;'Stethoscopes';0;16;1.00;0.00;141;9;0;15
+639;'MAL-SUP-Environment-Q17';'MAL-SUP-Environment-Q17 Fetoscopes';0;'Fetoscopes';0;17;0.00;0.00;141;9;0;15
+640;'MAL-SUP-Environment-Q18';'MAL-SUP-Environment-Q18 Otoscopes';0;'Otoscopes';0;18;1.00;0.00;141;9;0;15
+641;'MAL-SUP-Environment-Q19';'MAL-SUP-Environment-Q19 Ophthalmoscopes';0;'Ophthalmoscopes';0;19;0.00;0.00;141;9;0;15
+642;'MAL-SUP-Environment-Q20';'MAL-SUP-Environment-Q20 Thermometers';0;'Thermometers';0;20;2.00;0.00;141;9;0;15
+643;'MAL-SUP-Environment-Q21';'MAL-SUP-Environment-Q21 Torches';0;'Torches';0;21;1.00;0.00;141;9;0;15
+644;'MAL-SUP-Environment-Q22';'MAL-SUP-Environment-Q22 Vaginal specula';0;'Vaginal specula';0;22;0.00;0.00;141;9;0;15
+645;'MAL-SUP-Environment-Q23';'MAL-SUP-Environment-Q23 Patella hammers';0;'Patella hammers';0;23;0.00;0.00;141;9;0;15
+646;'MAL-SUP-Environment-Q24';'MAL-SUP-Environment-Q24 Tape measures';0;'Tape measures';0;24;0.00;0.00;141;9;0;15
+647;'MAL-SUP-Environment-Q25';'MAL-SUP-Environment-Q25 Adult weighing scales';0;'Adult weighing scales';0;25;0.00;0.00;141;9;0;15
+648;'MAL-SUP-Environment-Q26';'MAL-SUP-Environment-Q26 Child weighing scales';0;'Child weighing scales';0;26;1.00;0.00;141;9;0;15
+649;'MAL-SUP-Environment-Q27';'MAL-SUP-Environment-Q27 Infant weighing scales';0;'Infant weighing scales';0;27;1.00;0.00;141;9;0;15
+650;'MAL-SUP-Environment-Q44';'MAL-SUP-Environment-Q44 Was there a stock out of any of the following in the last 3 months?';0;'Was there a stock out of any of the following in the last 3 months?';0;44;0.00;0.00;143;25;0;31
+651;'MAL-SUP-Environment-Q45';'MAL-SUP-Environment-Q45 Artesunate (injectable)';0;'Artesunate (injectable)';0;45;2.00;0.00;143;4;0;31
+652;'MAL-SUP-Environment-Q46';'MAL-SUP-Environment-Q46 Artemether (injectable)';0;'Artemether (injectable)';0;46;1.00;0.00;143;4;0;31
+653;'MAL-SUP-Environment-Q47';'MAL-SUP-Environment-Q47 Quinine (injectable)';0;'Quinine (injectable)';0;47;2.00;0.00;143;4;0;31
+654;'MAL-SUP-Environment-Q48';'MAL-SUP-Environment-Q48 5% Glucose Solution';0;'5% Glucose Solution';0;48;2.00;0.00;143;4;0;31
+655;'MAL-SUP-Environment-Q49';'MAL-SUP-Environment-Q49 10% Glucose Solution';0;'10% Glucose Solution';0;49;2.00;0.00;143;4;0;31
+656;'MAL-SUP-Environment-Q50';'MAL-SUP-Environment-Q50 50% Glucose Solution';0;'50% Glucose Solution';0;50;2.00;0.00;143;4;0;31
+657;'MAL-SUP-Environment-Q51';'MAL-SUP-Environment-Q51 Injectable Diazepam';0;'Injectable Diazepam';0;51;1.00;0.00;143;4;0;31
+658;'MAL-SUP-Environment-Q52';'MAL-SUP-Environment-Q52 Paracetamol';0;'Paracetamol';0;52;2.00;0.00;143;4;0;31
+659;'MAL-SUP-Environment-Q53';'MAL-SUP-Environment-Q53 Ibuprofen';0;'Ibuprofen';0;53;1.00;0.00;143;4;0;31
+660;'MAL-SUP-Environment-Q54';'MAL-SUP-Environment-Q54 Cotrimoxazole';0;'Cotrimoxazole';0;54;1.00;0.00;143;4;0;31
+661;'MAL-SUP-Environment-Q55';'MAL-SUP-Environment-Q55 Amoxicillin';0;'Amoxicillin';0;55;3.00;0.00;143;4;0;31
+662;'MAL-SUP-Environment-Q56';'MAL-SUP-Environment-Q56 Ceftriaxone';0;'Ceftriaxone';0;56;1.00;0.00;143;4;0;31
+663;'MAL-SUP-Environment-Q57';'MAL-SUP-Environment-Q57 Other antibiotics drugs (list below)';0;'Other antibiotics drugs (list below)';0;57;1.00;0.00;143;4;0;31
+664;'MAL-SUP-General-C1-Q21';'MAL-SUP-General-C1-Q21 Does the supervisor agree with this assessment? ';0;'Does the supervisor agree with this assessment? ';0;21;5.00;0.00;19;3;0;246
+665;'MAL-SUP-General-C1-Q58';'MAL-SUP-General-C1-Q58 If any abnormal, treated appropriately?';0;'If any abnormal, treated appropriately?';0;58;5.00;0.00;24;5;0;282
+666;'MAL-SUP-General-C1-Q70';'MAL-SUP-General-C1-Q70 Treatment, ACT';0;'Treatment, ACT';0;70;0.00;0.00;26;3;0;293
+667;'MAL-SUP-General-C1-Q71';'MAL-SUP-General-C1-Q71 Treatment, Artemisinin (intramuscular monotherapy)';0;'Treatment, Artemisinin (intramuscular monotherapy)';0;71;0.00;0.00;26;3;0;293
+668;'MAL-SUP-General-C1-Q72';'MAL-SUP-General-C1-Q72 Artemisinin (intravenous)';0;'Artemisinin (intravenous)';0;72;0.00;0.00;26;3;0;293
+669;'MAL-SUP-General-C1-Q73';'MAL-SUP-General-C1-Q73 Artemisinin (oral monotherapy)*';0;'Artemisinin (oral monotherapy)*';0;73;0.00;0.00;26;3;0;293
+670;'MAL-SUP-General-C1-Q74';'MAL-SUP-General-C1-Q74 Quinine oral)';0;'Quinine oral)';0;74;0.00;0.00;26;3;0;293
+671;'MAL-SUP-General-C1-Q75';'MAL-SUP-General-C1-Q75 Quinine (intravenous)';0;'Quinine (intravenous)';0;75;0.00;0.00;26;3;0;293
+672;'MAL-SUP-General-C1-Q76';'MAL-SUP-General-C1-Q76 Chloroquine*';0;'Chloroquine*';0;76;0.00;0.00;26;3;0;293
+673;'MAL-SUP-General-C1-Q77';'MAL-SUP-General-C1-Q77 SP';0;'SP';0;77;0.00;0.00;26;3;0;293
+674;'MAL-SUP-General-C1-Q78';'MAL-SUP-General-C1-Q78 Other treatment';0;'Other treatment';0;78;0.00;0.00;26;3;0;293
+675;'MAL-SUP-General-C1-Q79';'MAL-SUP-General-C1-Q79 Antimalarial drug prescribed in correct dosage and duration (as specified in national guidelines and described in dosing table)';0;'Antimalarial drug prescribed in correct dosage and duration (as specified in national guidelines and described in dosing table)';0;79;5.00;0.00;26;5;0;293
+676;'MAL-SUP-General-C1-Q81';'MAL-SUP-General-C1-Q81 Trimethoprim-sulfamethoxazole (cotrimoxazole)';0;'Trimethoprim-sulfamethoxazole (cotrimoxazole)';0;81;0.00;0.00;26;3;0;294
+677;'MAL-SUP-General-C1-Q82';'MAL-SUP-General-C1-Q82 Amoxicillin';0;'Amoxicillin';0;82;0.00;0.00;26;3;0;294
+678;'MAL-SUP-General-C1-Q83';'MAL-SUP-General-C1-Q83 Other antibiotics';0;'Other antibiotics';0;83;0.00;0.00;26;3;0;294
+679;'MAL-SUP-General-C1-Q85';'MAL-SUP-General-C1-Q85 Antidiarrheal,ORS';0;'Antidiarrheal,ORS';0;85;0.00;0.00;26;3;0;295
+680;'MAL-SUP-General-C1-Q86';'MAL-SUP-General-C1-Q86 Antidiarrheal, Zinc';0;'Antidiarrheal, Zinc';0;86;0.00;0.00;26;3;0;295
+681;'MAL-SUP-General-C1-Q87';'MAL-SUP-General-C1-Q87 Antidiarrheal, Other';0;'Antidiarrheal, Other';0;87;0.00;0.00;26;3;0;295
+682;'MAL-SUP-General-C1-Q89';'MAL-SUP-General-C1-Q89 Other medications, Paracetamol';0;'Other medications, Paracetamol';0;89;0.00;0.00;26;3;0;296
+683;'MAL-SUP-General-C1-Q90';'MAL-SUP-General-C1-Q90 Other medications, Vitamins';0;'Other medications, Vitamins';0;90;0.00;0.00;26;3;0;296
+684;'MAL-SUP-General-C1-Q91';'MAL-SUP-General-C1-Q91 Other medications, Other';0;'Other medications, Other';0;91;0.00;0.00;26;3;0;296
+685;'MAL-SUP-General-C1-Q98';'MAL-SUP-General-C1-Q98  Patient refered to a higher level Health Centre';0;' Patient refered to a higher level Health Centre';0;98;0.00;0.00;28;5;0;302
+686;'MAL-SUP-General-C1-Q99';'MAL-SUP-General-C1-Q99  In-patient hospitalization';0;' In-patient hospitalization';0;99;0.00;0.00;28;5;0;302
+687;'MAL-SUP-General-C1-Q100';'MAL-SUP-General-C1-Q100 if yes, was it properly referred?';0;'if yes, was it properly referred?';0;100;5.00;0.00;28;3;0;302
+688;'MAL-SUP-General-C1-Q101';'MAL-SUP-General-C1-Q101 Was pre-referral antimalarial treatment given';0;'Was pre-referral antimalarial treatment given';0;101;5.00;0.00;28;3;0;302
+689;'MAL-SUP-General-C1-Q102';'MAL-SUP-General-C1-Q102 Was pre-referral antibiotic treatment given?';0;'Was pre-referral antibiotic treatment given?';0;102;5.00;0.00;28;3;0;302
+690;'MAL-SUP-General-C1-Q103';'MAL-SUP-General-C1-Q103 Was other pre-referral medication given?';0;'Was other pre-referral medication given?';0;103;0.00;0.00;28;3;0;302
+691;'MAL-SUP-Microscopy-C1-Q10';'MAL-SUP-Microscopy-C1-Q10 Finger cleaned with alcohol and allowed to dry  ';0;'Finger cleaned with alcohol and allowed to dry  ';0;10;0.00;0.00;36;3;0;338
+692;'MAL-SUP-Microscopy-C1-Q11';'MAL-SUP-Microscopy-C1-Q11 Finger pricked, first drop of blood wiped off, and subsequent drop placed on slide without touching finger   ';0;'Finger pricked, first drop of blood wiped off, and subsequent drop placed on slide without touching finger   ';0;11;0.00;0.00;36;3;0;338
+693;'MAL-SUP-Microscopy-C1-Q13';'MAL-SUP-Microscopy-C1-Q13 Label EDTA collection tube with date and patient�s name and/or number';0;'Label EDTA collection tube with date and patient�s name and/or number';0;13;1.00;0.00;37;3;0;339
+694;'MAL-SUP-Microscopy-C1-Q14';'MAL-SUP-Microscopy-C1-Q14 Puncture site cleaned with alcohol and allowed to dry  ';0;'Puncture site cleaned with alcohol and allowed to dry  ';0;14;1.00;0.00;37;3;0;339
+695;'MAL-SUP-Microscopy-C1-Q15';'MAL-SUP-Microscopy-C1-Q15 Sterile needle and syringe or vacutainer assembled';0;'Sterile needle and syringe or vacutainer assembled';0;15;1.00;0.00;37;3;0;339
+696;'MAL-SUP-Microscopy-C1-Q16';'MAL-SUP-Microscopy-C1-Q16 Venous blood sample successfully collected and gently mixed  ';0;'Venous blood sample successfully collected and gently mixed  ';0;16;1.00;0.00;37;3;0;339
+697;'MAL-SUP-Microscopy-C1-Q24';'MAL-SUP-Microscopy-C1-Q24 Is a standard 10% Giemsa solution used?';0;'Is a standard 10% Giemsa solution used?';0;24;1.00;0.00;41;3;0;346
+698;'MAL-SUP-Microscopy-C1-Q25';'MAL-SUP-Microscopy-C1-Q25 If no, record %';0;'If no, record %';0;25;0.00;0.00;41;24;0;346
+699;'MAL-SUP-Microscopy-C1-Q26';'MAL-SUP-Microscopy-C1-Q26 Was the  preparation of fresh Giemsa staining solution Done properly or prepared on the day of  observation';0;'Was the  preparation of fresh Giemsa staining solution Done properly or prepared on the day of  observation';0;26;2.00;0.00;41;3;0;346
+700;'MAL-SUP-Microscopy-C1-Q27';'MAL-SUP-Microscopy-C1-Q27 Were you (supervisor) Able to check pH with pH paper or pH meter';0;'Were you (supervisor) Able to check pH with pH paper or pH meter';0;27;0.00;1.00;41;3;0;346
+701;'MAL-SUP-Microscopy-C1-Q28';'MAL-SUP-Microscopy-C1-Q28 Was the pH of staining solution and record if pH is between 7.2 and 7.4:';0;'Was the pH of staining solution and record if pH is between 7.2 and 7.4:';0;28;1.00;0.00;41;3;0;346
+702;'MAL-SUP-Microscopy-C1-Q29';'MAL-SUP-Microscopy-C1-Q29 Stain is filtered prior to use';0;'Stain is filtered prior to use';0;29;1.00;0.00;41;3;0;346
+703;'MAL-SUP-Microscopy-C1-Q30';'MAL-SUP-Microscopy-C1-Q30 Slide immersed in 10% Giemsa stain for 10-15 minutes  ';0;'Slide immersed in 10% Giemsa stain for 10-15 minutes  ';0;30;2.00;0.00;42;3;0;346
+704;'MAL-SUP-Microscopy-C1-Q31';'MAL-SUP-Microscopy-C1-Q31 Slide rinsed carefully with water (caution with thick smears since not fixed)';0;'Slide rinsed carefully with water (caution with thick smears since not fixed)';0;31;2.00;0.00;42;3;0;346
+705;'MAL-SUP-Microscopy-C1-Q32';'MAL-SUP-Microscopy-C1-Q32 Slide fixed with absolute methanol (2-3 seconds) and allowed to air dry  ';0;'Slide fixed with absolute methanol (2-3 seconds) and allowed to air dry  ';0;32;2.00;0.00;43;3;0;346
+706;'MAL-SUP-Microscopy-C1-Q33';'MAL-SUP-Microscopy-C1-Q33 Slide immersed in 10% Giemsa stain for 10-15 minutes   ';0;'Slide immersed in 10% Giemsa stain for 10-15 minutes   ';0;33;2.00;0.00;43;3;0;346
+707;'MAL-SUP-Microscopy-C1-Q34';'MAL-SUP-Microscopy-C1-Q34 Slide rinsed carefully with water   ';0;'Slide rinsed carefully with water   ';0;34;2.00;0.00;43;3;0;346
+708;'MAL-SUP-Microscopy-C1-Q35';'MAL-SUP-Microscopy-C1-Q35 Slide drained and air dried (avoid applying external heat)';0;'Slide drained and air dried (avoid applying external heat)';0;35;1.00;0.00;44;3;0;346
+709;'MAL-SUP-Microscopy-C1-Q36';'MAL-SUP-Microscopy-C1-Q36 Sharps waste segregated and safely disposed in a safety box';0;'Sharps waste segregated and safely disposed in a safety box';0;36;1.00;0.00;45;3;0;346
+710;'MAL-SUP-Microscopy-C1-Q37';'MAL-SUP-Microscopy-C1-Q37 Infectious waste disposed of in appropriate waste containers';0;'Infectious waste disposed of in appropriate waste containers';0;37;1.00;0.00;45;3;0;346
+711;'MAL-SUP-Microscopy-C1-Q38';'MAL-SUP-Microscopy-C1-Q38 Liquid waste appropriately washed off/disinfected';0;'Liquid waste appropriately washed off/disinfected';0;38;1.00;0.00;45;3;0;346
+712;'MAL-SUP-Microscopy-C1-Q40';'MAL-SUP-Microscopy-C1-Q40 preparation of fresh Field stain A (methylene blue)  done properly OR prepared on day of observation';0;'preparation of fresh Field stain A (methylene blue)  done properly OR prepared on day of observation';0;40;2.00;0.00;47;3;0;347
+713;'MAL-SUP-Microscopy-C1-Q41';'MAL-SUP-Microscopy-C1-Q41 preparation of fresh Field stain B (eosin) done properly OR prepared on day of observation';0;'preparation of fresh Field stain B (eosin) done properly OR prepared on day of observation';0;41;2.00;0.00;47;3;0;347
+714;'MAL-SUP-Microscopy-C1-Q42';'MAL-SUP-Microscopy-C1-Q42 Stain is filtered prior to use';0;'Stain is filtered prior to use';0;42;1.00;0.00;47;3;0;347
+715;'MAL-SUP-Microscopy-C1-Q43';'MAL-SUP-Microscopy-C1-Q43 Slide immersed in Field stain A for 3 seconds  ';0;'Slide immersed in Field stain A for 3 seconds  ';0;43;1.00;0.00;48;3;0;347
+716;'MAL-SUP-Microscopy-C1-Q44';'MAL-SUP-Microscopy-C1-Q44 Slide rinsed carefully with water (caution with thick smears since not fixed)';0;'Slide rinsed carefully with water (caution with thick smears since not fixed)';0;44;1.00;0.00;48;3;0;347
+717;'MAL-SUP-Microscopy-C1-Q45';'MAL-SUP-Microscopy-C1-Q45 Slide immersed in Field stain B for 5 seconds   ';0;'Slide immersed in Field stain B for 5 seconds   ';0;45;1.00;0.00;48;3;0;347
+718;'MAL-SUP-Microscopy-C1-Q46';'MAL-SUP-Microscopy-C1-Q46 Slide rinsed carefully with water     ';0;'Slide rinsed carefully with water     ';0;46;1.00;0.00;48;3;0;347
+719;'MAL-SUP-Microscopy-C1-Q47';'MAL-SUP-Microscopy-C1-Q47 Slide fixed with absolute methanol (2-3 seconds) and allowed to air dry';0;'Slide fixed with absolute methanol (2-3 seconds) and allowed to air dry';0;47;2.00;0.00;49;3;0;347
+720;'MAL-SUP-Microscopy-C1-Q48';'MAL-SUP-Microscopy-C1-Q48 Slide immersed in Field stain A for 3 seconds';0;'Slide immersed in Field stain A for 3 seconds';0;48;1.00;0.00;49;3;0;347
+721;'MAL-SUP-Microscopy-C1-Q49';'MAL-SUP-Microscopy-C1-Q49 Slide rinsed carefully with water                               ';0;'Slide rinsed carefully with water                               ';0;49;1.00;0.00;49;3;0;347
+722;'MAL-SUP-Microscopy-C1-Q50';'MAL-SUP-Microscopy-C1-Q50 Slide immersed in Field stain B for 5 seconds          ';0;'Slide immersed in Field stain B for 5 seconds          ';0;50;1.00;0.00;49;3;0;347
+723;'MAL-SUP-Microscopy-C1-Q51';'MAL-SUP-Microscopy-C1-Q51 Slide rinsed carefully with water                                ';0;'Slide rinsed carefully with water                                ';0;51;1.00;0.00;49;3;0;347
+724;'MAL-SUP-Microscopy-C1-Q52';'MAL-SUP-Microscopy-C1-Q52 Slide drained and air dried (avoid applying external heat)     ';0;'Slide drained and air dried (avoid applying external heat)     ';0;52;1.00;0.00;50;3;0;347
+725;'MAL-SUP-Microscopy-C1-Q53';'MAL-SUP-Microscopy-C1-Q53 Sharps waste segregated and safely disposed in a safety box';0;'Sharps waste segregated and safely disposed in a safety box';0;53;1.00;0.00;50;3;0;347
+726;'MAL-SUP-Microscopy-C1-Q54';'MAL-SUP-Microscopy-C1-Q54 Infectious waste disposed of in appropriate waste containers';0;'Infectious waste disposed of in appropriate waste containers';0;54;1.00;0.00;50;3;0;347
+727;'MAL-SUP-Microscopy-C1-Q55';'MAL-SUP-Microscopy-C1-Q55 Liquid waste appropriately washed off/disinfected';0;'Liquid waste appropriately washed off/disinfected';0;55;1.00;0.00;50;3;0;347
+728;'MAL-SUP-Microscopy-C1-Q58';'MAL-SUP-Microscopy-C1-Q58 Was the examination done properly, including > 100 high power fields before declaring slides negative (takes about 10 minutes)?';0;'Was the examination done properly, including > 100 high power fields before declaring slides negative (takes about 10 minutes)?';0;58;1.00;0.00;53;3;0;349
+729;'MAL-SUP-General-C2-Q21';'MAL-SUP-General-C2-Q21 Does the supervisor agree with this assessment? ';0;'Does the supervisor agree with this assessment? ';0;21;5.00;0.00;60;3;0;383
+730;'MAL-SUP-General-C2-Q58';'MAL-SUP-General-C2-Q58 If any abnormal, treated appropriately?';0;'If any abnormal, treated appropriately?';0;58;5.00;0.00;65;5;0;419
+731;'MAL-SUP-General-C2-Q70';'MAL-SUP-General-C2-Q70 Treatment, ACT';0;'Treatment, ACT';0;70;0.00;0.00;67;3;0;430
+732;'MAL-SUP-General-C2-Q71';'MAL-SUP-General-C2-Q71 Treatment, Artemisinin (intramuscular monotherapy)';0;'Treatment, Artemisinin (intramuscular monotherapy)';0;71;0.00;0.00;67;3;0;430
+733;'MAL-SUP-General-C2-Q72';'MAL-SUP-General-C2-Q72 Artemisinin (intravenous)';0;'Artemisinin (intravenous)';0;72;0.00;0.00;67;3;0;430
+734;'MAL-SUP-General-C2-Q73';'MAL-SUP-General-C2-Q73 Artemisinin (oral monotherapy)*';0;'Artemisinin (oral monotherapy)*';0;73;0.00;0.00;67;3;0;430
+735;'MAL-SUP-General-C2-Q74';'MAL-SUP-General-C2-Q74 Quinine oral)';0;'Quinine oral)';0;74;0.00;0.00;67;3;0;430
+736;'MAL-SUP-General-C2-Q75';'MAL-SUP-General-C2-Q75 Quinine (intravenous)';0;'Quinine (intravenous)';0;75;0.00;0.00;67;3;0;430
+737;'MAL-SUP-General-C2-Q76';'MAL-SUP-General-C2-Q76 Chloroquine*';0;'Chloroquine*';0;76;0.00;0.00;67;3;0;430
+738;'MAL-SUP-General-C2-Q77';'MAL-SUP-General-C2-Q77 SP';0;'SP';0;77;0.00;0.00;67;3;0;430
+739;'MAL-SUP-General-C2-Q78';'MAL-SUP-General-C2-Q78 Other treatment';0;'Other treatment';0;78;0.00;0.00;67;3;0;430
+740;'MAL-SUP-General-C2-Q79';'MAL-SUP-General-C2-Q79 Antimalarial drug prescribed in correct dosage and duration (as specified in national guidelines and described in dosing table)';0;'Antimalarial drug prescribed in correct dosage and duration (as specified in national guidelines and described in dosing table)';0;79;5.00;0.00;67;5;0;430
+741;'MAL-SUP-General-C2-Q81';'MAL-SUP-General-C2-Q81 Trimethoprim-sulfamethoxazole (cotrimoxazole)';0;'Trimethoprim-sulfamethoxazole (cotrimoxazole)';0;81;0.00;0.00;67;3;0;431
+742;'MAL-SUP-General-C2-Q82';'MAL-SUP-General-C2-Q82 Amoxicillin';0;'Amoxicillin';0;82;0.00;0.00;67;3;0;431
+743;'MAL-SUP-General-C2-Q83';'MAL-SUP-General-C2-Q83 Other antibiotics';0;'Other antibiotics';0;83;0.00;0.00;67;3;0;431
+744;'MAL-SUP-General-C2-Q85';'MAL-SUP-General-C2-Q85 Antidiarrheal,ORS';0;'Antidiarrheal,ORS';0;85;0.00;0.00;67;3;0;432
+745;'MAL-SUP-General-C2-Q86';'MAL-SUP-General-C2-Q86 Antidiarrheal, Zinc';0;'Antidiarrheal, Zinc';0;86;0.00;0.00;67;3;0;432
+746;'MAL-SUP-General-C2-Q87';'MAL-SUP-General-C2-Q87 Antidiarrheal, Other';0;'Antidiarrheal, Other';0;87;0.00;0.00;67;3;0;432
+747;'MAL-SUP-General-C2-Q89';'MAL-SUP-General-C2-Q89 Other medications, Paracetamol';0;'Other medications, Paracetamol';0;89;0.00;0.00;67;3;0;433
+748;'MAL-SUP-General-C2-Q90';'MAL-SUP-General-C2-Q90 Other medications, Vitamins';0;'Other medications, Vitamins';0;90;0.00;0.00;67;3;0;433
+749;'MAL-SUP-General-C2-Q91';'MAL-SUP-General-C2-Q91 Other medications, Other';0;'Other medications, Other';0;91;0.00;0.00;67;3;0;433
+750;'MAL-SUP-General-C2-Q98';'MAL-SUP-General-C2-Q98  Patient refered to a higher level Health Centre';0;' Patient refered to a higher level Health Centre';0;98;0.00;0.00;69;5;0;439
+751;'MAL-SUP-General-C2-Q99';'MAL-SUP-General-C2-Q99  In-patient hospitalization';0;' In-patient hospitalization';0;99;0.00;0.00;69;5;0;439
+752;'MAL-SUP-General-C2-Q100';'MAL-SUP-General-C2-Q100 if yes, was it properly referred?';0;'if yes, was it properly referred?';0;100;5.00;0.00;69;3;0;439
+753;'MAL-SUP-General-C2-Q101';'MAL-SUP-General-C2-Q101 Was pre-referral antimalarial treatment given';0;'Was pre-referral antimalarial treatment given';0;101;5.00;0.00;69;3;0;439
+754;'MAL-SUP-General-C2-Q102';'MAL-SUP-General-C2-Q102 Was pre-referral antibiotic treatment given?';0;'Was pre-referral antibiotic treatment given?';0;102;5.00;0.00;69;3;0;439
+755;'MAL-SUP-General-C2-Q103';'MAL-SUP-General-C2-Q103 Was other pre-referral medication given?';0;'Was other pre-referral medication given?';0;103;0.00;0.00;69;3;0;439
+756;'MAL-SUP-Microscopy-C2-Q10';'MAL-SUP-Microscopy-C2-Q10 Finger cleaned with alcohol and allowed to dry  ';0;'Finger cleaned with alcohol and allowed to dry  ';0;10;0.00;0.00;77;3;0;475
+757;'MAL-SUP-Microscopy-C2-Q11';'MAL-SUP-Microscopy-C2-Q11 Finger pricked, first drop of blood wiped off, and subsequent drop placed on slide without touching finger   ';0;'Finger pricked, first drop of blood wiped off, and subsequent drop placed on slide without touching finger   ';0;11;0.00;0.00;77;3;0;475
+758;'MAL-SUP-Microscopy-C2-Q13';'MAL-SUP-Microscopy-C2-Q13 Label EDTA collection tube with date and patient�s name and/or number';0;'Label EDTA collection tube with date and patient�s name and/or number';0;13;1.00;0.00;78;3;0;476
+759;'MAL-SUP-Microscopy-C2-Q14';'MAL-SUP-Microscopy-C2-Q14 Puncture site cleaned with alcohol and allowed to dry  ';0;'Puncture site cleaned with alcohol and allowed to dry  ';0;14;1.00;0.00;78;3;0;476
+760;'MAL-SUP-Microscopy-C2-Q15';'MAL-SUP-Microscopy-C2-Q15 Sterile needle and syringe or vacutainer assembled';0;'Sterile needle and syringe or vacutainer assembled';0;15;1.00;0.00;78;3;0;476
+761;'MAL-SUP-Microscopy-C2-Q16';'MAL-SUP-Microscopy-C2-Q16 Venous blood sample successfully collected and gently mixed  ';0;'Venous blood sample successfully collected and gently mixed  ';0;16;1.00;0.00;78;3;0;476
+762;'MAL-SUP-Microscopy-C2-Q24';'MAL-SUP-Microscopy-C2-Q24 Is a standard 10% Giemsa solution used?';0;'Is a standard 10% Giemsa solution used?';0;24;1.00;0.00;82;3;0;483
+763;'MAL-SUP-Microscopy-C2-Q25';'MAL-SUP-Microscopy-C2-Q25 If no, record %';0;'If no, record %';0;25;0.00;0.00;82;24;0;483
+764;'MAL-SUP-Microscopy-C2-Q26';'MAL-SUP-Microscopy-C2-Q26 Was the  preparation of fresh Giemsa staining solution Done properly or prepared on the day of  observation';0;'Was the  preparation of fresh Giemsa staining solution Done properly or prepared on the day of  observation';0;26;2.00;0.00;82;3;0;483
+765;'MAL-SUP-Microscopy-C2-Q27';'MAL-SUP-Microscopy-C2-Q27 Were you (supervisor) Able to check pH with pH paper or pH meter';0;'Were you (supervisor) Able to check pH with pH paper or pH meter';0;27;0.00;1.00;82;3;0;483
+766;'MAL-SUP-Microscopy-C2-Q28';'MAL-SUP-Microscopy-C2-Q28 Was the pH of staining solution and record if pH is between 7.2 and 7.4:';0;'Was the pH of staining solution and record if pH is between 7.2 and 7.4:';0;28;1.00;0.00;82;3;0;483
+767;'MAL-SUP-Microscopy-C2-Q29';'MAL-SUP-Microscopy-C2-Q29 Stain is filtered prior to use';0;'Stain is filtered prior to use';0;29;1.00;0.00;82;3;0;483
+768;'MAL-SUP-Microscopy-C2-Q30';'MAL-SUP-Microscopy-C2-Q30 Slide immersed in 10% Giemsa stain for 10-15 minutes  ';0;'Slide immersed in 10% Giemsa stain for 10-15 minutes  ';0;30;2.00;0.00;83;3;0;483
+769;'MAL-SUP-Microscopy-C2-Q31';'MAL-SUP-Microscopy-C2-Q31 Slide rinsed carefully with water (caution with thick smears since not fixed)';0;'Slide rinsed carefully with water (caution with thick smears since not fixed)';0;31;2.00;0.00;83;3;0;483
+770;'MAL-SUP-Microscopy-C2-Q32';'MAL-SUP-Microscopy-C2-Q32 Slide fixed with absolute methanol (2-3 seconds) and allowed to air dry  ';0;'Slide fixed with absolute methanol (2-3 seconds) and allowed to air dry  ';0;32;2.00;0.00;84;3;0;483
+771;'MAL-SUP-Microscopy-C2-Q33';'MAL-SUP-Microscopy-C2-Q33 Slide immersed in 10% Giemsa stain for 10-15 minutes   ';0;'Slide immersed in 10% Giemsa stain for 10-15 minutes   ';0;33;2.00;0.00;84;3;0;483
+772;'MAL-SUP-Microscopy-C2-Q34';'MAL-SUP-Microscopy-C2-Q34 Slide rinsed carefully with water   ';0;'Slide rinsed carefully with water   ';0;34;2.00;0.00;84;3;0;483
+773;'MAL-SUP-Microscopy-C2-Q35';'MAL-SUP-Microscopy-C2-Q35 Slide drained and air dried (avoid applying external heat)';0;'Slide drained and air dried (avoid applying external heat)';0;35;1.00;0.00;85;3;0;483
+774;'MAL-SUP-Microscopy-C2-Q36';'MAL-SUP-Microscopy-C2-Q36 Sharps waste segregated and safely disposed in a safety box';0;'Sharps waste segregated and safely disposed in a safety box';0;36;1.00;0.00;86;3;0;483
+775;'MAL-SUP-Microscopy-C2-Q37';'MAL-SUP-Microscopy-C2-Q37 Infectious waste disposed of in appropriate waste containers';0;'Infectious waste disposed of in appropriate waste containers';0;37;1.00;0.00;86;3;0;483
+776;'MAL-SUP-Microscopy-C2-Q38';'MAL-SUP-Microscopy-C2-Q38 Liquid waste appropriately washed off/disinfected';0;'Liquid waste appropriately washed off/disinfected';0;38;1.00;0.00;86;3;0;483
+777;'MAL-SUP-Microscopy-C2-Q40';'MAL-SUP-Microscopy-C2-Q40 preparation of fresh Field stain A (methylene blue)  done properly OR prepared on day of observation';0;'preparation of fresh Field stain A (methylene blue)  done properly OR prepared on day of observation';0;40;2.00;0.00;88;3;0;484
+778;'MAL-SUP-Microscopy-C2-Q41';'MAL-SUP-Microscopy-C2-Q41 preparation of fresh Field stain B (eosin) done properly OR prepared on day of observation';0;'preparation of fresh Field stain B (eosin) done properly OR prepared on day of observation';0;41;2.00;0.00;88;3;0;484
+779;'MAL-SUP-Microscopy-C2-Q42';'MAL-SUP-Microscopy-C2-Q42 Stain is filtered prior to use';0;'Stain is filtered prior to use';0;42;1.00;0.00;88;3;0;484
+780;'MAL-SUP-Microscopy-C2-Q43';'MAL-SUP-Microscopy-C2-Q43 Slide immersed in Field stain A for 3 seconds  ';0;'Slide immersed in Field stain A for 3 seconds  ';0;43;1.00;0.00;89;3;0;484
+781;'MAL-SUP-Microscopy-C2-Q44';'MAL-SUP-Microscopy-C2-Q44 Slide rinsed carefully with water (caution with thick smears since not fixed)';0;'Slide rinsed carefully with water (caution with thick smears since not fixed)';0;44;1.00;0.00;89;3;0;484
+782;'MAL-SUP-Microscopy-C2-Q45';'MAL-SUP-Microscopy-C2-Q45 Slide immersed in Field stain B for 5 seconds   ';0;'Slide immersed in Field stain B for 5 seconds   ';0;45;1.00;0.00;89;3;0;484
+783;'MAL-SUP-Microscopy-C2-Q46';'MAL-SUP-Microscopy-C2-Q46 Slide rinsed carefully with water     ';0;'Slide rinsed carefully with water     ';0;46;1.00;0.00;89;3;0;484
+784;'MAL-SUP-Microscopy-C2-Q47';'MAL-SUP-Microscopy-C2-Q47 Slide fixed with absolute methanol (2-3 seconds) and allowed to air dry';0;'Slide fixed with absolute methanol (2-3 seconds) and allowed to air dry';0;47;2.00;0.00;90;3;0;484
+785;'MAL-SUP-Microscopy-C2-Q48';'MAL-SUP-Microscopy-C2-Q48 Slide immersed in Field stain A for 3 seconds';0;'Slide immersed in Field stain A for 3 seconds';0;48;1.00;0.00;90;3;0;484
+786;'MAL-SUP-Microscopy-C2-Q49';'MAL-SUP-Microscopy-C2-Q49 Slide rinsed carefully with water                               ';0;'Slide rinsed carefully with water                               ';0;49;1.00;0.00;90;3;0;484
+787;'MAL-SUP-Microscopy-C2-Q50';'MAL-SUP-Microscopy-C2-Q50 Slide immersed in Field stain B for 5 seconds          ';0;'Slide immersed in Field stain B for 5 seconds          ';0;50;1.00;0.00;90;3;0;484
+788;'MAL-SUP-Microscopy-C2-Q51';'MAL-SUP-Microscopy-C2-Q51 Slide rinsed carefully with water                                ';0;'Slide rinsed carefully with water                                ';0;51;1.00;0.00;90;3;0;484
+789;'MAL-SUP-Microscopy-C2-Q52';'MAL-SUP-Microscopy-C2-Q52 Slide drained and air dried (avoid applying external heat)     ';0;'Slide drained and air dried (avoid applying external heat)     ';0;52;1.00;0.00;91;3;0;484
+790;'MAL-SUP-Microscopy-C2-Q53';'MAL-SUP-Microscopy-C2-Q53 Sharps waste segregated and safely disposed in a safety box';0;'Sharps waste segregated and safely disposed in a safety box';0;53;1.00;0.00;91;3;0;484
+791;'MAL-SUP-Microscopy-C2-Q54';'MAL-SUP-Microscopy-C2-Q54 Infectious waste disposed of in appropriate waste containers';0;'Infectious waste disposed of in appropriate waste containers';0;54;1.00;0.00;91;3;0;484
+792;'MAL-SUP-Microscopy-C2-Q55';'MAL-SUP-Microscopy-C2-Q55 Liquid waste appropriately washed off/disinfected';0;'Liquid waste appropriately washed off/disinfected';0;55;1.00;0.00;91;3;0;484
+793;'MAL-SUP-Microscopy-C2-Q58';'MAL-SUP-Microscopy-C2-Q58 Was the examination done properly, including > 100 high power fields before declaring slides negative (takes about 10 minutes)?';0;'Was the examination done properly, including > 100 high power fields before declaring slides negative (takes about 10 minutes)?';0;58;1.00;0.00;94;3;0;486
+794;'MAL-SUP-General-C3-Q21';'MAL-SUP-General-C3-Q21 Does the supervisor agree with this assessment? ';0;'Does the supervisor agree with this assessment? ';0;21;5.00;0.00;101;3;0;520
+795;'MAL-SUP-General-C3-Q58';'MAL-SUP-General-C3-Q58 If any abnormal, treated appropriately?';0;'If any abnormal, treated appropriately?';0;58;5.00;0.00;106;5;0;556
+796;'MAL-SUP-General-C3-Q70';'MAL-SUP-General-C3-Q70 Treatment, ACT';0;'Treatment, ACT';0;70;0.00;0.00;108;3;0;567
+797;'MAL-SUP-General-C3-Q71';'MAL-SUP-General-C3-Q71 Treatment, Artemisinin (intramuscular monotherapy)';0;'Treatment, Artemisinin (intramuscular monotherapy)';0;71;0.00;0.00;108;3;0;567
+798;'MAL-SUP-General-C3-Q72';'MAL-SUP-General-C3-Q72 Artemisinin (intravenous)';0;'Artemisinin (intravenous)';0;72;0.00;0.00;108;3;0;567
+799;'MAL-SUP-General-C3-Q73';'MAL-SUP-General-C3-Q73 Artemisinin (oral monotherapy)*';0;'Artemisinin (oral monotherapy)*';0;73;0.00;0.00;108;3;0;567
+800;'MAL-SUP-General-C3-Q74';'MAL-SUP-General-C3-Q74 Quinine oral)';0;'Quinine oral)';0;74;0.00;0.00;108;3;0;567
+801;'MAL-SUP-General-C3-Q75';'MAL-SUP-General-C3-Q75 Quinine (intravenous)';0;'Quinine (intravenous)';0;75;0.00;0.00;108;3;0;567
+802;'MAL-SUP-General-C3-Q76';'MAL-SUP-General-C3-Q76 Chloroquine*';0;'Chloroquine*';0;76;0.00;0.00;108;3;0;567
+803;'MAL-SUP-General-C3-Q77';'MAL-SUP-General-C3-Q77 SP';0;'SP';0;77;0.00;0.00;108;3;0;567
+804;'MAL-SUP-General-C3-Q78';'MAL-SUP-General-C3-Q78 Other treatment';0;'Other treatment';0;78;0.00;0.00;108;3;0;567
+805;'MAL-SUP-General-C3-Q79';'MAL-SUP-General-C3-Q79 Antimalarial drug prescribed in correct dosage and duration (as specified in national guidelines and described in dosing table)';0;'Antimalarial drug prescribed in correct dosage and duration (as specified in national guidelines and described in dosing table)';0;79;5.00;0.00;108;5;0;567
+806;'MAL-SUP-General-C3-Q81';'MAL-SUP-General-C3-Q81 Trimethoprim-sulfamethoxazole (cotrimoxazole)';0;'Trimethoprim-sulfamethoxazole (cotrimoxazole)';0;81;0.00;0.00;108;3;0;568
+807;'MAL-SUP-General-C3-Q82';'MAL-SUP-General-C3-Q82 Amoxicillin';0;'Amoxicillin';0;82;0.00;0.00;108;3;0;568
+808;'MAL-SUP-General-C3-Q83';'MAL-SUP-General-C3-Q83 Other antibiotics';0;'Other antibiotics';0;83;0.00;0.00;108;3;0;568
+809;'MAL-SUP-General-C3-Q85';'MAL-SUP-General-C3-Q85 Antidiarrheal,ORS';0;'Antidiarrheal,ORS';0;85;0.00;0.00;108;3;0;569
+810;'MAL-SUP-General-C3-Q86';'MAL-SUP-General-C3-Q86 Antidiarrheal, Zinc';0;'Antidiarrheal, Zinc';0;86;0.00;0.00;108;3;0;569
+811;'MAL-SUP-General-C3-Q87';'MAL-SUP-General-C3-Q87 Antidiarrheal, Other';0;'Antidiarrheal, Other';0;87;0.00;0.00;108;3;0;569
+812;'MAL-SUP-General-C3-Q89';'MAL-SUP-General-C3-Q89 Other medications, Paracetamol';0;'Other medications, Paracetamol';0;89;0.00;0.00;108;3;0;570
+813;'MAL-SUP-General-C3-Q90';'MAL-SUP-General-C3-Q90 Other medications, Vitamins';0;'Other medications, Vitamins';0;90;0.00;0.00;108;3;0;570
+814;'MAL-SUP-General-C3-Q91';'MAL-SUP-General-C3-Q91 Other medications, Other';0;'Other medications, Other';0;91;0.00;0.00;108;3;0;570
+815;'MAL-SUP-General-C3-Q98';'MAL-SUP-General-C3-Q98  Patient refered to a higher level Health Centre';0;' Patient refered to a higher level Health Centre';0;98;0.00;0.00;110;5;0;576
+816;'MAL-SUP-General-C3-Q99';'MAL-SUP-General-C3-Q99  In-patient hospitalization';0;' In-patient hospitalization';0;99;0.00;0.00;110;5;0;576
+817;'MAL-SUP-General-C3-Q100';'MAL-SUP-General-C3-Q100 if yes, was it properly referred?';0;'if yes, was it properly referred?';0;100;5.00;0.00;110;3;0;576
+818;'MAL-SUP-General-C3-Q101';'MAL-SUP-General-C3-Q101 Was pre-referral antimalarial treatment given';0;'Was pre-referral antimalarial treatment given';0;101;5.00;0.00;110;3;0;576
+819;'MAL-SUP-General-C3-Q102';'MAL-SUP-General-C3-Q102 Was pre-referral antibiotic treatment given?';0;'Was pre-referral antibiotic treatment given?';0;102;5.00;0.00;110;3;0;576
+820;'MAL-SUP-General-C3-Q103';'MAL-SUP-General-C3-Q103 Was other pre-referral medication given?';0;'Was other pre-referral medication given?';0;103;0.00;0.00;110;3;0;576
+821;'MAL-SUP-Microscopy-C3-Q10';'MAL-SUP-Microscopy-C3-Q10 Finger cleaned with alcohol and allowed to dry  ';0;'Finger cleaned with alcohol and allowed to dry  ';0;10;0.00;0.00;118;3;0;612
+822;'MAL-SUP-Microscopy-C3-Q11';'MAL-SUP-Microscopy-C3-Q11 Finger pricked, first drop of blood wiped off, and subsequent drop placed on slide without touching finger   ';0;'Finger pricked, first drop of blood wiped off, and subsequent drop placed on slide without touching finger   ';0;11;0.00;0.00;118;3;0;612
+823;'MAL-SUP-Microscopy-C3-Q13';'MAL-SUP-Microscopy-C3-Q13 Label EDTA collection tube with date and patient�s name and/or number';0;'Label EDTA collection tube with date and patient�s name and/or number';0;13;1.00;0.00;119;3;0;613
+824;'MAL-SUP-Microscopy-C3-Q14';'MAL-SUP-Microscopy-C3-Q14 Puncture site cleaned with alcohol and allowed to dry  ';0;'Puncture site cleaned with alcohol and allowed to dry  ';0;14;1.00;0.00;119;3;0;613
+825;'MAL-SUP-Microscopy-C3-Q15';'MAL-SUP-Microscopy-C3-Q15 Sterile needle and syringe or vacutainer assembled';0;'Sterile needle and syringe or vacutainer assembled';0;15;1.00;0.00;119;3;0;613
+826;'MAL-SUP-Microscopy-C3-Q16';'MAL-SUP-Microscopy-C3-Q16 Venous blood sample successfully collected and gently mixed  ';0;'Venous blood sample successfully collected and gently mixed  ';0;16;1.00;0.00;119;3;0;613
+827;'MAL-SUP-Microscopy-C3-Q24';'MAL-SUP-Microscopy-C3-Q24 Is a standard 10% Giemsa solution used?';0;'Is a standard 10% Giemsa solution used?';0;24;1.00;0.00;123;3;0;620
+828;'MAL-SUP-Microscopy-C3-Q25';'MAL-SUP-Microscopy-C3-Q25 If no, record %';0;'If no, record %';0;25;0.00;0.00;123;24;0;620
+829;'MAL-SUP-Microscopy-C3-Q26';'MAL-SUP-Microscopy-C3-Q26 Was the  preparation of fresh Giemsa staining solution Done properly or prepared on the day of  observation';0;'Was the  preparation of fresh Giemsa staining solution Done properly or prepared on the day of  observation';0;26;2.00;0.00;123;3;0;620
+830;'MAL-SUP-Microscopy-C3-Q27';'MAL-SUP-Microscopy-C3-Q27 Were you (supervisor) Able to check pH with pH paper or pH meter';0;'Were you (supervisor) Able to check pH with pH paper or pH meter';0;27;0.00;1.00;123;3;0;620
+831;'MAL-SUP-Microscopy-C3-Q28';'MAL-SUP-Microscopy-C3-Q28 Was the pH of staining solution and record if pH is between 7.2 and 7.4:';0;'Was the pH of staining solution and record if pH is between 7.2 and 7.4:';0;28;1.00;0.00;123;3;0;620
+832;'MAL-SUP-Microscopy-C3-Q29';'MAL-SUP-Microscopy-C3-Q29 Stain is filtered prior to use';0;'Stain is filtered prior to use';0;29;1.00;0.00;123;3;0;620
+833;'MAL-SUP-Microscopy-C3-Q30';'MAL-SUP-Microscopy-C3-Q30 Slide immersed in 10% Giemsa stain for 10-15 minutes  ';0;'Slide immersed in 10% Giemsa stain for 10-15 minutes  ';0;30;2.00;0.00;124;3;0;620
+834;'MAL-SUP-Microscopy-C3-Q31';'MAL-SUP-Microscopy-C3-Q31 Slide rinsed carefully with water (caution with thick smears since not fixed)';0;'Slide rinsed carefully with water (caution with thick smears since not fixed)';0;31;2.00;0.00;124;3;0;620
+835;'MAL-SUP-Microscopy-C3-Q32';'MAL-SUP-Microscopy-C3-Q32 Slide fixed with absolute methanol (2-3 seconds) and allowed to air dry  ';0;'Slide fixed with absolute methanol (2-3 seconds) and allowed to air dry  ';0;32;2.00;0.00;125;3;0;620
+836;'MAL-SUP-Microscopy-C3-Q33';'MAL-SUP-Microscopy-C3-Q33 Slide immersed in 10% Giemsa stain for 10-15 minutes   ';0;'Slide immersed in 10% Giemsa stain for 10-15 minutes   ';0;33;2.00;0.00;125;3;0;620
+837;'MAL-SUP-Microscopy-C3-Q34';'MAL-SUP-Microscopy-C3-Q34 Slide rinsed carefully with water   ';0;'Slide rinsed carefully with water   ';0;34;2.00;0.00;125;3;0;620
+838;'MAL-SUP-Microscopy-C3-Q35';'MAL-SUP-Microscopy-C3-Q35 Slide drained and air dried (avoid applying external heat)';0;'Slide drained and air dried (avoid applying external heat)';0;35;1.00;0.00;126;3;0;620
+839;'MAL-SUP-Microscopy-C3-Q36';'MAL-SUP-Microscopy-C3-Q36 Sharps waste segregated and safely disposed in a safety box';0;'Sharps waste segregated and safely disposed in a safety box';0;36;1.00;0.00;127;3;0;620
+840;'MAL-SUP-Microscopy-C3-Q37';'MAL-SUP-Microscopy-C3-Q37 Infectious waste disposed of in appropriate waste containers';0;'Infectious waste disposed of in appropriate waste containers';0;37;1.00;0.00;127;3;0;620
+841;'MAL-SUP-Microscopy-C3-Q38';'MAL-SUP-Microscopy-C3-Q38 Liquid waste appropriately washed off/disinfected';0;'Liquid waste appropriately washed off/disinfected';0;38;1.00;0.00;127;3;0;620
+842;'MAL-SUP-Microscopy-C3-Q40';'MAL-SUP-Microscopy-C3-Q40 preparation of fresh Field stain A (methylene blue)  done properly OR prepared on day of observation';0;'preparation of fresh Field stain A (methylene blue)  done properly OR prepared on day of observation';0;40;2.00;0.00;129;3;0;621
+843;'MAL-SUP-Microscopy-C3-Q41';'MAL-SUP-Microscopy-C3-Q41 preparation of fresh Field stain B (eosin) done properly OR prepared on day of observation';0;'preparation of fresh Field stain B (eosin) done properly OR prepared on day of observation';0;41;2.00;0.00;129;3;0;621
+844;'MAL-SUP-Microscopy-C3-Q42';'MAL-SUP-Microscopy-C3-Q42 Stain is filtered prior to use';0;'Stain is filtered prior to use';0;42;1.00;0.00;129;3;0;621
+845;'MAL-SUP-Microscopy-C3-Q43';'MAL-SUP-Microscopy-C3-Q43 Slide immersed in Field stain A for 3 seconds  ';0;'Slide immersed in Field stain A for 3 seconds  ';0;43;1.00;0.00;130;3;0;621
+846;'MAL-SUP-Microscopy-C3-Q44';'MAL-SUP-Microscopy-C3-Q44 Slide rinsed carefully with water (caution with thick smears since not fixed)';0;'Slide rinsed carefully with water (caution with thick smears since not fixed)';0;44;1.00;0.00;130;3;0;621
+847;'MAL-SUP-Microscopy-C3-Q45';'MAL-SUP-Microscopy-C3-Q45 Slide immersed in Field stain B for 5 seconds   ';0;'Slide immersed in Field stain B for 5 seconds   ';0;45;1.00;0.00;130;3;0;621
+848;'MAL-SUP-Microscopy-C3-Q46';'MAL-SUP-Microscopy-C3-Q46 Slide rinsed carefully with water     ';0;'Slide rinsed carefully with water     ';0;46;1.00;0.00;130;3;0;621
+849;'MAL-SUP-Microscopy-C3-Q47';'MAL-SUP-Microscopy-C3-Q47 Slide fixed with absolute methanol (2-3 seconds) and allowed to air dry';0;'Slide fixed with absolute methanol (2-3 seconds) and allowed to air dry';0;47;2.00;0.00;131;3;0;621
+850;'MAL-SUP-Microscopy-C3-Q48';'MAL-SUP-Microscopy-C3-Q48 Slide immersed in Field stain A for 3 seconds';0;'Slide immersed in Field stain A for 3 seconds';0;48;1.00;0.00;131;3;0;621
+851;'MAL-SUP-Microscopy-C3-Q49';'MAL-SUP-Microscopy-C3-Q49 Slide rinsed carefully with water                               ';0;'Slide rinsed carefully with water                               ';0;49;1.00;0.00;131;3;0;621
+852;'MAL-SUP-Microscopy-C3-Q50';'MAL-SUP-Microscopy-C3-Q50 Slide immersed in Field stain B for 5 seconds          ';0;'Slide immersed in Field stain B for 5 seconds          ';0;50;1.00;0.00;131;3;0;621
+853;'MAL-SUP-Microscopy-C3-Q51';'MAL-SUP-Microscopy-C3-Q51 Slide rinsed carefully with water                                ';0;'Slide rinsed carefully with water                                ';0;51;1.00;0.00;131;3;0;621
+854;'MAL-SUP-Microscopy-C3-Q52';'MAL-SUP-Microscopy-C3-Q52 Slide drained and air dried (avoid applying external heat)     ';0;'Slide drained and air dried (avoid applying external heat)     ';0;52;1.00;0.00;132;3;0;621
+855;'MAL-SUP-Microscopy-C3-Q53';'MAL-SUP-Microscopy-C3-Q53 Sharps waste segregated and safely disposed in a safety box';0;'Sharps waste segregated and safely disposed in a safety box';0;53;1.00;0.00;132;3;0;621
+856;'MAL-SUP-Microscopy-C3-Q54';'MAL-SUP-Microscopy-C3-Q54 Infectious waste disposed of in appropriate waste containers';0;'Infectious waste disposed of in appropriate waste containers';0;54;1.00;0.00;132;3;0;621
+857;'MAL-SUP-Microscopy-C3-Q55';'MAL-SUP-Microscopy-C3-Q55 Liquid waste appropriately washed off/disinfected';0;'Liquid waste appropriately washed off/disinfected';0;55;1.00;0.00;132;3;0;621
+858;'MAL-SUP-Microscopy-C3-Q58';'MAL-SUP-Microscopy-C3-Q58 Was the examination done properly, including > 100 high power fields before declaring slides negative (takes about 10 minutes)?';0;'Was the examination done properly, including > 100 high power fields before declaring slides negative (takes about 10 minutes)?';0;58;1.00;0.00;135;3;0;623

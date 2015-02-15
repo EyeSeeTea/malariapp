@@ -17,4 +17,29 @@ public class Value extends SugarRecord<Tab> {
         this.option = option;
         this.question = question;
     }
+
+    public Option getOption() {
+        return option;
+    }
+
+    public void setOption(Option option) {
+        this.option = option;
+    }
+
+    public Question getQuestion() {
+        return question;
+    }
+
+    public void setQuestion(Question question) {
+        this.question = question;
+    }
+
+    @Override
+    public String toString() {
+        return "Value{" +
+                "id='" + id + '\'' +
+                ", option=" + option +
+                ", question=" + question +
+                '}';
+    }
 }

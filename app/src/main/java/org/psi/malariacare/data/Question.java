@@ -2,6 +2,8 @@ package org.psi.malariacare.data;
 
 import com.orm.SugarRecord;
 
+import java.util.List;
+
 /**
  * Created by adrian on 14/02/15.
  */
@@ -132,5 +134,28 @@ public class Question extends SugarRecord<Tab> {
 
     public void setQuestion(Question question) {
         this.question = question;
+    }
+
+    public List<Value> getValues(){
+        return Value.find(Value.class, "question = ?", String.valueOf(this.getId()));
+    }
+
+    @Override
+    public String toString() {
+        return "Question{" +
+                "id='" + id + '\'' +
+                ", code='" + code + '\'' +
+                ", de_name='" + de_name + '\'' +
+                ", short_name='" + short_name + '\'' +
+                ", form_name='" + form_name + '\'' +
+                ", uid='" + uid + '\'' +
+                ", order_question=" + order_question +
+                ", numerator_w=" + numerator_w +
+                ", denominator_w=" + denominator_w +
+                ", header=" + header +
+                ", answer=" + answer +
+                ", master=" + master +
+                ", question=" + question +
+                '}';
     }
 }

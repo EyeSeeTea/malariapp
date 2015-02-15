@@ -17,4 +17,29 @@ public class Score extends SugarRecord<Tab> {
         this.real = real;
         this.tab = tab;
     }
+
+    public Float getReal() {
+        return real;
+    }
+
+    public void setReal(Float real) {
+        this.real = real;
+    }
+
+    public Tab getTab() {
+        return tab;
+    }
+
+    public void setTab(Tab tab) {
+        this.tab = tab;
+    }
+
+    @Override
+    public String toString() {
+        return "Score{" +
+                "id='" + id + '\'' +
+                "real=" + real +
+                ", tab=" + tab +
+                '}';
+    }
 }
