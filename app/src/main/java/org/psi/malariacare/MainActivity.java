@@ -53,9 +53,6 @@ public class MainActivity extends ActionBarActivity {
             System.out.println(tabItem.toString());
         }
 
-
-
-
         // Creating a new LinearLayout
         LinearLayout linearLayout = new LinearLayout(this);
         linearLayout.setOrientation(LinearLayout.VERTICAL);
