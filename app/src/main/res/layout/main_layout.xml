@@ -1,0 +1,299 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:id="@+id/Grid">
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:id="@+id/Header"
+        android:gravity="center_vertical|center_horizontal"
+        android:layout_weight="0.05">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="@string/app_name"
+            android:id="@+id/HeaderTitle"
+            android:hint="@string/app_name"
+            android:gravity="center_vertical|center_horizontal" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:id="@+id/GeneralBody"
+        android:layout_weight="0.8">
+
+        <TabHost
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:id="@+id/tabHost">
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:orientation="vertical">
+
+                <TabWidget
+                    android:id="@android:id/tabs"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"></TabWidget>
+
+                <FrameLayout
+                    android:id="@android:id/tabcontent"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent">
+
+                    <LinearLayout
+                        android:id="@+id/tab1parent"
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:orientation="vertical">
+
+                        <ScrollView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/Scroll1" >
+
+                            <GridLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:rowCount="1"
+                                android:columnCount="1"
+                                android:id="@+id/tab1"></GridLayout>
+                        </ScrollView>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/tab2parent"
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:orientation="vertical">
+
+                        <ScrollView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/Scroll2" >
+
+                            <GridLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:rowCount="1"
+                                android:columnCount="1"
+                                android:id="@+id/tab2" />
+                        </ScrollView>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/tab3parent"
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:orientation="vertical">
+
+                        <ScrollView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/Scroll3" >
+
+                            <GridLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:rowCount="1"
+                                android:columnCount="1"
+                                android:id="@+id/tab3" />
+                        </ScrollView>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/tab4parent"
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:orientation="vertical" >
+
+                        <ScrollView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/Scroll4" >
+
+                            <GridLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:rowCount="1"
+                                android:columnCount="1"
+                                android:id="@+id/tab4" />
+                        </ScrollView>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/tab5parent"
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:orientation="vertical" >
+
+                        <ScrollView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/Scroll5" >
+
+                            <GridLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:rowCount="1"
+                                android:columnCount="1"
+                                android:id="@+id/tab5" />
+                        </ScrollView>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/tab6parent"
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:orientation="vertical" >
+
+                        <ScrollView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/Scroll6" >
+
+                            <GridLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:rowCount="1"
+                                android:columnCount="1"
+                                android:id="@+id/tab6" />
+                        </ScrollView>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/tab7parent"
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:orientation="vertical" >
+
+                        <ScrollView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/Scroll7" >
+
+                            <GridLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:rowCount="1"
+                                android:columnCount="1"
+                                android:id="@+id/tab7" />
+                        </ScrollView>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/tab8parent"
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:orientation="vertical" >
+
+                        <ScrollView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/Scroll8" >
+
+                            <GridLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:rowCount="1"
+                                android:columnCount="1"
+                                android:id="@+id/tab8" />
+                        </ScrollView>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/tab9parent"
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:orientation="vertical" >
+
+                        <ScrollView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/Scroll9" >
+
+                            <GridLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:rowCount="1"
+                                android:columnCount="1"
+                                android:id="@+id/tab9" />
+                        </ScrollView>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/tab10parent"
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:orientation="vertical" >
+
+                        <ScrollView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/Scroll10" >
+
+                            <GridLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:rowCount="1"
+                                android:columnCount="1"
+                                android:id="@+id/tab10" />
+                        </ScrollView>
+                    </LinearLayout>
+                </FrameLayout>
+            </LinearLayout>
+        </TabHost>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:id="@+id/Footer"
+        android:gravity="center_vertical|center_horizontal"
+        android:layout_weight="0.12"
+        android:weightSum="1">
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/buttons"
+            android:layout_weight="0.2">
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/save"
+                android:id="@+id/save" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/clear"
+                android:id="@+id/button" />
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="@string/developers"
+            android:id="@+id/FooterTitle"
+            android:hint="@string/developers"
+            android:layout_gravity="center_horizontal"
+            android:layout_weight="0.50" />
+
+    </LinearLayout>
+
+</LinearLayout>
