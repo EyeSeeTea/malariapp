@@ -157,10 +157,9 @@ public class MainActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-/*      //-------NACHO STUFF---------//
         Log.i(".MainActivity", "App started");
         setContentView(R.layout.main_layout);
-
+/*
         // We get a set of questions for our layout
         List<TestQuestion> questions;
         questions = getQuestionSet(100);
@@ -185,6 +184,7 @@ public class MainActivity extends ActionBarActivity {
 //        File dbFile = getDatabasePath("malariacare.db");
 //        adb pull /data/data/org.eyeseetea.malariacare/databases/malariacare.db ~/malariacare.db
 
+        // FIXME: This is failing because first time Tab table is checked, the table doesn't exists, so the query cannot be performed
         if (Tab.count(Tab.class, null, null)==0) {
             AssetManager assetManager = getAssets();
             PopulateDB.populateDB(assetManager);
@@ -193,7 +193,7 @@ public class MainActivity extends ActionBarActivity {
         List<Tab> tabList2 = Tab.listAll(Tab.class);
         for (Tab tabItem : tabList2){
             //codigo
-            System.out.println(tabItem.toString());
+            Log.i(".MainActivity", tabItem.toString());
         }
 
         // Creating a new LinearLayout
