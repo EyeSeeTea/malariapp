@@ -1,0 +1,161 @@
+1;'Assessment visit details';'Assessment visit details';1;1;1
+2;'HR - Clinical Officers';'HR - Clinical Officers';2;1;1
+3;'HR - Medical Officers';'HR - Medical Officers';3;1;1
+4;'HR - Nurses';'HR - Nurses';4;1;1
+5;'HR - Medical Interns';'HR - Medical Interns';5;1;1
+6;'HR - Students';'HR - Students on Attachment';6;1;1
+7;'HR - Other';'HR - Other Medical Staff (specify below):';7;1;1
+8;'HR - Staff above';'HR - Staff above that perform RDTs';8;1;1
+9;'HR - Staff above trained';'HR - Staff above formally trained in case management';9;1;1
+10;'Training';'RDT/ Microscopy training';10;1;1
+11;'ANC Services';'ANC Services';11;1;1
+12;'Referral systems';'Referral systems';12;1;1
+13;'General Info';'Health Centre General Information - complete for changes only';13;1;1
+14;'Last Visit';'What were the three biggest problems noted at the last Health Centre visit?';14;1;1
+15;'This Visit';'What were the three biggest problems noted today?';15;1;1
+16;'Worker';'Health Worker';1;1;2
+17;'Reception';'Reception';2;1;2
+18;'Inquire';'Signs of severe malaria INQUIRED by the clinician (check all that apply)';3;1;2
+19;'Triage';'Triage';4;1;2
+20;'ClinicalRecord';'PROVIDER INQUIRED clinical history   (clinician must ask each question)';5;1;2
+21;'PriorDiagnosis';'PROVIDER INQUIRED FOR  Prior Diagnosis and Treatment';6;1;2
+22;'GeneralExam';'General examination PROVIDER EXAMINED';7;1;2
+23;'Test';'Malaria Test';8;1;2
+24;'TestResults';'Diagnostic test results';9;1;2
+25;'Diagnosis';'Diagnosis. If malaria, diagnosis based on';10;1;2
+26;'Treatment';'Treatment';11;1;2
+27;'Communication';'Provider communication with the patient and caregiver for uncomplicated disease';12;1;2
+28;'AdmissionRef';'Admission or Referral';13;1;2
+29;'Severe';'Provider communication with the patient and caregiver for severe disease/referral';14;1;2
+30;'Preparation';'RDT Preparation';2;1;3
+31;'Patient Preparation';'Patient Preparation';3;1;3
+32;'Blood Collection';'Blood Collection';4;1;3
+33;'Procedure';'RDT Procedure';5;1;3
+34;'Waste Disposal';'RDT Waste Disposal';6;1;3
+35;'Preparation Films';'Preparation of thick and thin blood films';2;1;4
+36;'Finger Prick';'Specimen collection – finger prick';3;1;4
+37;'Venipuncture';'Specimen collection - venipuncture';4;1;4
+38;'ThickFilm';'Spreading thick films';5;1;4
+39;'ThinFilm';'Spreading thin films (if this lab doesn’t do thin films, mark N/A in this section)';6;1;4
+40;'Giemsa';'Procedure for staining of thick and thin blood films in this laboratory (Giemsa Stain)';7;1;4
+41;'GiemsaPrep';'Preparation of Giemsa staining solution';8;0;4
+42;'StainingThick';'Staining procedure thick films';9;0;4
+43;'StainingThin';'Staining procedure thin films (if not done in this laboratory, mark N/A in this section)';10;0;4
+44;'Dying';'Dying';11;0;4
+45;'Waste';'Waste management';12;0;4
+46;'FieldStain';'Procedure for staining of thick and thin blood films in this laboratory (Field Stain)';13;1;4
+47;'FieldStainPrep';'Preparation of Field staining solutions';14;0;4
+48;'FieldStainThick';'Staining procedure thick films';15;0;4
+49;'FieldStainThin';'Staining procedure thin films (if commonly done in this laboratory – if not done, mark N/A in this section)';16;0;4
+50;'FieldStainDrying';'Drying';17;0;4
+51;'FieldStainThin';'Waste management';18;0;4
+52;'Reading';'Reading of thick and thin blood films';19;1;4
+53;'Screening';'Initial screening for parasites ';20;1;4
+54;'ReadingSlide';'Reading slide ';21;1;4
+55;'Confirmation';'Supervisor confirmation (must be done independently using method lab staff used above)';22;1;4
+56;'SlideWaste';'Waste management';23;1;4
+57;'Worker';'Health Worker';1;1;5
+58;'Reception';'Reception';2;1;5
+59;'Inquire';'Signs of severe malaria INQUIRED by the clinician (check all that apply)';3;1;5
+60;'Triage';'Triage';4;1;5
+61;'ClinicalRecord';'PROVIDER INQUIRED clinical history   (clinician must ask each question)';5;1;5
+62;'PriorDiagnosis';'PROVIDER INQUIRED FOR  Prior Diagnosis and Treatment';6;1;5
+63;'GeneralExam';'General examination PROVIDER EXAMINED';7;1;5
+64;'Test';'Malaria Test';8;1;5
+65;'TestResults';'Diagnostic test results';9;1;5
+66;'Diagnosis';'Diagnosis. If malaria, diagnosis based on';10;1;5
+67;'Treatment';'Treatment';11;1;5
+68;'Communication';'Provider communication with the patient and caregiver for uncomplicated disease';12;1;5
+69;'AdmissionRef';'Admission or Referral';13;1;5
+70;'Severe';'Provider communication with the patient and caregiver for severe disease/referral';14;1;5
+71;'Preparation';'RDT Preparation';2;1;6
+72;'Patient Preparation';'Patient Preparation';3;1;6
+73;'Blood Collection';'Blood Collection';4;1;6
+74;'Procedure';'RDT Procedure';5;1;6
+75;'Waste Disposal';'RDT Waste Disposal';6;1;6
+76;'Preparation Films';'Preparation of thick and thin blood films';2;1;7
+77;'Finger Prick';'Specimen collection – finger prick';3;1;7
+78;'Venipuncture';'Specimen collection - venipuncture';4;1;7
+79;'ThickFilm';'Spreading thick films';5;1;7
+80;'ThinFilm';'Spreading thin films (if this lab doesn’t do thin films, mark N/A in this section)';6;1;7
+81;'Giemsa';'Procedure for staining of thick and thin blood films in this laboratory (Giemsa Stain)';7;1;7
+82;'GiemsaPrep';'Preparation of Giemsa staining solution';8;0;7
+83;'StainingThick';'Staining procedure thick films';9;0;7
+84;'StainingThin';'Staining procedure thin films (if not done in this laboratory, mark N/A in this section)';10;0;7
+85;'Dying';'Dying';11;0;7
+86;'Waste';'Waste management';12;0;7
+87;'FieldStain';'Procedure for staining of thick and thin blood films in this laboratory (Field Stain)';13;1;7
+88;'FieldStainPrep';'Preparation of Field staining solutions';14;0;7
+89;'FieldStainThick';'Staining procedure thick films';15;0;7
+90;'FieldStainThin';'Staining procedure thin films (if commonly done in this laboratory – if not done, mark N/A in this section)';16;0;7
+91;'FieldStainDrying';'Drying';17;0;7
+92;'FieldStainThin';'Waste management';18;0;7
+93;'Reading';'Reading of thick and thin blood films';19;1;7
+94;'Screening';'Initial screening for parasites ';20;1;7
+95;'ReadingSlide';'Reading slide ';21;1;7
+96;'Confirmation';'Supervisor confirmation (must be done independently using method lab staff used above)';22;1;7
+97;'SlideWaste';'Waste management';23;1;7
+98;'Worker';'Health Worker';1;1;8
+99;'Reception';'Reception';2;1;8
+100;'Inquire';'Signs of severe malaria INQUIRED by the clinician (check all that apply)';3;1;8
+101;'Triage';'Triage';4;1;8
+102;'ClinicalRecord';'PROVIDER INQUIRED clinical history   (clinician must ask each question)';5;1;8
+103;'PriorDiagnosis';'PROVIDER INQUIRED FOR  Prior Diagnosis and Treatment';6;1;8
+104;'GeneralExam';'General examination PROVIDER EXAMINED';7;1;8
+105;'Test';'Malaria Test';8;1;8
+106;'TestResults';'Diagnostic test results';9;1;8
+107;'Diagnosis';'Diagnosis. If malaria, diagnosis based on';10;1;8
+108;'Treatment';'Treatment';11;1;8
+109;'Communication';'Provider communication with the patient and caregiver for uncomplicated disease';12;1;8
+110;'AdmissionRef';'Admission or Referral';13;1;8
+111;'Severe';'Provider communication with the patient and caregiver for severe disease/referral';14;1;8
+112;'Preparation';'RDT Preparation';2;1;9
+113;'Patient Preparation';'Patient Preparation';3;1;9
+114;'Blood Collection';'Blood Collection';4;1;9
+115;'Procedure';'RDT Procedure';5;1;9
+116;'Waste Disposal';'RDT Waste Disposal';6;1;9
+117;'Preparation Films';'Preparation of thick and thin blood films';2;1;10
+118;'Finger Prick';'Specimen collection – finger prick';3;1;10
+119;'Venipuncture';'Specimen collection - venipuncture';4;1;10
+120;'ThickFilm';'Spreading thick films';5;1;10
+121;'ThinFilm';'Spreading thin films (if this lab doesn’t do thin films, mark N/A in this section)';6;1;10
+122;'Giemsa';'Procedure for staining of thick and thin blood films in this laboratory (Giemsa Stain)';7;1;10
+123;'GiemsaPrep';'Preparation of Giemsa staining solution';8;0;10
+124;'StainingThick';'Staining procedure thick films';9;0;10
+125;'StainingThin';'Staining procedure thin films (if not done in this laboratory, mark N/A in this section)';10;0;10
+126;'Dying';'Dying';11;0;10
+127;'Waste';'Waste management';12;0;10
+128;'FieldStain';'Procedure for staining of thick and thin blood films in this laboratory (Field Stain)';13;1;10
+129;'FieldStainPrep';'Preparation of Field staining solutions';14;0;10
+130;'FieldStainThick';'Staining procedure thick films';15;0;10
+131;'FieldStainThin';'Staining procedure thin films (if commonly done in this laboratory – if not done, mark N/A in this section)';16;0;10
+132;'FieldStainDrying';'Drying';17;0;10
+133;'FieldStainThin';'Waste management';18;0;10
+134;'Reading';'Reading of thick and thin blood films';19;1;10
+135;'Screening';'Initial screening for parasites ';20;1;10
+136;'ReadingSlide';'Reading slide ';21;1;10
+137;'Confirmation';'Supervisor confirmation (must be done independently using method lab staff used above)';22;1;10
+138;'SlideWaste';'Waste management';23;1;10
+139;'Water supply';'Water supply';1;1;13
+140;'Power Supply';'Power Supply';2;1;13
+141;'Clinical Equipment';'Clinical Equipment';3;1;13
+142;'Out-patient drugs stockout';' Outpatient Supplies of ACTs and other Essential Drugs';4;1;13
+143;'In-patient drugs stockout';'Inpatient Supplies of ACTs and Other Essential Drugs';5;1;13
+144;'Microscope/RDTs stockout';'Microscope/RDTs stockout';6;1;13
+145;'Malaria Reference Materials';'Malaria Reference Materials';7;1;13
+146;'Lab Reference Material';'Laboratory Malaria Reference Material';8;1;13
+147;'Main lab equipment';'Microscopes, Spare Parts, and Maintenance';9;1;13
+148;' Minor Laboratory Equipment';' Minor Laboratory Equipment';10;1;13
+149;'Malaria reporting';'Malaria reporting';11;1;13
+150;'Malaria registers';'Malaria Information in Register';12;1;13
+151;'IQA Lab';'Internal Quality Assurance (IQA) Lab';13;1;13
+152;'EQA Lab';'External Quality Assurance (EQA) Lab';14;1;13
+153;'Malaria test results timing';' Use of Malaria Diagnostic Tests and Turnaround Time for Test Results';15;1;13
+154;'Last Visit';'What were the three biggest problems noted at the last Health Centre visit?';1;1;12
+155;'This Visit';'What were the three biggest problems noted today?';2;1;12
+156;'Worker';'Worker RDT';1;1;3
+157;'Worker';'Worker RDT';1;1;6
+158;'Worker';'Worker RDT';1;1;9
+159;'Worker';'Worker Microscopy';1;1;4
+160;'Worker';'Worker Microscopy';1;1;7
+161;'Worker';'Worker Microscopy';1;1;10
