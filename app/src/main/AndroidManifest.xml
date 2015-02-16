@@ -12,7 +12,7 @@
         <meta-data android:name="DATABASE" android:value="malariacare.db" />
         <meta-data android:name="VERSION" android:value="1" />
         <meta-data android:name="QUERY_LOG" android:value="true" />
-        <meta-data android:name="DOMAIN_PACKAGE_NAME" android:value="org.psi.malariacare.data" />
+        <meta-data android:name="DOMAIN_PACKAGE_NAME" android:value="org.eyeseetea.malariacare.data" />
 
         <activity
             android:name="org.eyeseetea.malariacare.MainActivity"

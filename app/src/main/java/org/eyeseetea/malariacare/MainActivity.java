@@ -17,7 +17,7 @@ import org.eyeseetea.malariacare.data.Tab;
 import org.eyeseetea.malariacare.utils.PopulateDB;
 
 import java.util.List;
-//import org.psi.malariacare.database.MalariaCareDbHelper;
+//import org.eyeseetea.malariacare.database.MalariaCareDbHelper;
 
 
 public class MainActivity extends ActionBarActivity {
@@ -27,7 +27,7 @@ public class MainActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
 
 //        File dbFile = getDatabasePath("malariacare.db");
-//        adb pull /data/data/org.psi.malariacare/databases/malariacare.db ~/malariacare.db
+//        adb pull /data/data/org.eyeseetea.malariacare/databases/malariacare.db ~/malariacare.db
 
         if (Tab.count(Tab.class, null, null)==0) {
             AssetManager assetManager = getAssets();
