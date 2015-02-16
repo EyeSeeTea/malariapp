@@ -1,6 +1,4 @@
-package org.psi.malariacare.database;
-
-import android.provider.BaseColumns;
+package org.eyeseetea.malariacare.database;
 
 /**
  * Created by adrian on 10/02/15.

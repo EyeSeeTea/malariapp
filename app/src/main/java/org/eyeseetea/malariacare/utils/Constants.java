@@ -1,4 +1,4 @@
-package org.psi.malariacare.utils;
+package org.eyeseetea.malariacare.utils;
 
 /**
  * Created by adrian on 15/02/15.

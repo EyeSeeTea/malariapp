@@ -1,4 +1,4 @@
-package org.psi.malariacare.data;
+package org.eyeseetea.malariacare.data;
 
 import com.orm.SugarRecord;
 

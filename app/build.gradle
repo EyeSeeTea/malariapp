@@ -5,7 +5,7 @@ android {
     buildToolsVersion "21.1.2"
 
     defaultConfig {
-        applicationId "org.psi.malariacare"
+        applicationId "org.eyeseetea.malariacare"
         minSdkVersion 15
         targetSdkVersion 21
         versionCode 1

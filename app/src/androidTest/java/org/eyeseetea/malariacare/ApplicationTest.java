@@ -1,4 +1,4 @@
-package org.psi.malariacare;
+package org.eyeseetea.malariacare;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;

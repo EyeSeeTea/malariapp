@@ -1,9 +1,7 @@
-package org.psi.malariacare;
+package org.eyeseetea.malariacare;
 
 import android.app.ActionBar;
 import android.content.res.AssetManager;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -13,23 +11,12 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.orm.SugarRecord;
+import org.eyeseetea.malariacare.data.Header;
+import org.eyeseetea.malariacare.data.Question;
+import org.eyeseetea.malariacare.data.Tab;
+import org.eyeseetea.malariacare.utils.PopulateDB;
 
-import org.psi.malariacare.data.Header;
-import org.psi.malariacare.data.Question;
-import org.psi.malariacare.data.Tab;
-import org.psi.malariacare.database.MalariaCareTables;
-import org.psi.malariacare.utils.PopulateDB;
-
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
 import java.util.List;
-
-import static com.orm.SugarApp.getSugarContext;
 //import org.psi.malariacare.database.MalariaCareDbHelper;
 
 

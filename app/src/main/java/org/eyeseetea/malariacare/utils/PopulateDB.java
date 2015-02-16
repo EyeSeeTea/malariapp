@@ -1,12 +1,12 @@
-package org.psi.malariacare.utils;
+package org.eyeseetea.malariacare.utils;
 
 import android.content.res.AssetManager;
 
-import org.psi.malariacare.data.Answer;
-import org.psi.malariacare.data.Header;
-import org.psi.malariacare.data.Option;
-import org.psi.malariacare.data.Question;
-import org.psi.malariacare.data.Tab;
+import org.eyeseetea.malariacare.data.Answer;
+import org.eyeseetea.malariacare.data.Header;
+import org.eyeseetea.malariacare.data.Option;
+import org.eyeseetea.malariacare.data.Question;
+import org.eyeseetea.malariacare.data.Tab;
 
 import java.io.BufferedReader;
 import java.io.IOException;
