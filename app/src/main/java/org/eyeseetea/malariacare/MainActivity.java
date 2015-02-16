@@ -10,20 +10,20 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.view.ViewGroup;
 import android.widget.GridLayout;
-import android.widget.GridView;
+
 import java.util.ArrayList;
 import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
 
 import org.eyeseetea.malariacare.data.Header;
-//import org.eyeseetea.malariacare.data.Question;
-//import org.eyeseetea.malariacare.data.Tab;
+import org.eyeseetea.malariacare.data.Question;
+import org.eyeseetea.malariacare.data.Tab;
+import org.eyeseetea.malariacare.testing.TestQuestion;
+import org.eyeseetea.malariacare.testing.TestTab;
 import org.eyeseetea.malariacare.utils.PopulateDB;
 import java.util.Random;
-import static junit.framework.Assert.*;
 
 
 import java.util.List;
@@ -32,7 +32,7 @@ import java.util.List;
 
 public class MainActivity extends ActionBarActivity {
 
-    protected List<Question> getQuestionSet(int size) {
+    protected List<TestQuestion> getQuestionSet(int size) {
         // Just to be able to work, I need a question simulator, in order to emulate the DB entries
         Random r = new Random();
         String optionSets[] = {
@@ -50,7 +50,7 @@ public class MainActivity extends ActionBarActivity {
                 "result"
         };
         Log.i(".MainActivity", "optionSet created");
-        List<Question> questionSimulator = new ArrayList<>();
+        List<TestQuestion> testQuestionSimulator = new ArrayList<>();
         for (int i = 0; i < size; i++) {
             Log.i(".MainActivity", "creating question " + i);
             // The text of the question will be fixed
@@ -59,14 +59,14 @@ public class MainActivity extends ActionBarActivity {
             String optionSet = optionSets[r.nextInt(optionSets.length)];
             Log.i(".MainActivity", "optionSet " + optionSet);
             // We finally add both to the question array
-            questionSimulator.add(new Question(statement, optionSet));
+            testQuestionSimulator.add(new TestQuestion(statement, optionSet));
             Log.i(".MainActivity", "question finished");
         }
         Log.i(".MainActivity", "questions simulated");
-        return questionSimulator;
+        return testQuestionSimulator;
     }
 
-    protected List<Tab> getTabSet(int size){
+    protected List<TestTab> getTabSet(int size){
         // Just to be able to work, I need a question simulator, in order to emulate the DB entries
         Random r = new Random();
         String tabTypes [] = {
@@ -82,22 +82,22 @@ public class MainActivity extends ActionBarActivity {
                 "GNR3"
         };
         Log.i(".MainActivity","tabSet created");
-        List<Tab> tabSimulator = new ArrayList<>();
+        List<TestTab> tabSimulator = new ArrayList<>();
         for (int i=0; i<size; i++) {
             Log.i(".MainActivity", "creating tab " + i);
             // Te OptionSet will be randomized
             String tabType = tabTypes[r.nextInt(tabTypes.length)];
             Log.i(".MainActivity", "tabType " + tabType);
             // We finally add both to the question array
-            tabSimulator.add(new Tab(tabType));
+            tabSimulator.add(new TestTab(tabType));
             Log.i(".MainActivity", "tab finished");
         }
         Log.i(".MainActivity","tabs simulated");
         return tabSimulator;
     }
 
-    protected int insertLayout(Question question, GridLayout parent){
-        String layout = question.getOptionSet();
+    protected int insertLayout(TestQuestion testQuestion, GridLayout parent){
+        String layout = testQuestion.getOptionSet();
         LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View v;
         TextView statement;
@@ -140,11 +140,11 @@ public class MainActivity extends ActionBarActivity {
                 child = R.layout.result;
                 break;
          }
-        Log.i(".MainActivity", "question statement: " + question.getStatement());
+        Log.i(".MainActivity", "question statement: " + testQuestion.getStatement());
         v = inflater.inflate(child, parent, false);
         statement = (TextView) v.findViewById(R.id.statement);
         Log.i(".MainActivity", "previous statement: " + statement.getText());
-        statement.setText(question.getStatement());
+        statement.setText(testQuestion.getStatement());
         Log.i(".MainActivity", "later statement: " + statement.getText());
         parent.addView(v);
         // For not found layout, child will be -1
@@ -157,15 +157,16 @@ public class MainActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+/*      //-------NACHO STUFF---------//
         Log.i(".MainActivity", "App started");
         setContentView(R.layout.main_layout);
 
         // We get a set of questions for our layout
-        List<Question> questions;
+        List<TestQuestion> questions;
         questions = getQuestionSet(100);
 
         // We get a set of tabs
-        List<Tab> tabs;
+        List<TestTab> tabs;
         tabs = getTabSet(3);
 
         // We take the Layouts for adding the content
@@ -173,17 +174,17 @@ public class MainActivity extends ActionBarActivity {
 
         // We add the questions
         for (Question question : questions) {
-            /* Each optionSet has its own layout defined by <optionSetString>.xml
-               With the insertLayout function, we're trying to insert the question layout into the
-                parent layout. The function returns the question layout. We assert is always != -1
-             */
+            // Each optionSet has its own layout defined by <optionSetString>.xml
+            //   With the insertLayout function, we're trying to insert the question layout into the
+            //    parent layout. The function returns the question layout. We assert is always != -1
+
             assertTrue(insertLayout(question, body) != -1);
         }
-
-
+*/
+        //-------ADRI STUFF---------//
 //        File dbFile = getDatabasePath("malariacare.db");
 //        adb pull /data/data/org.eyeseetea.malariacare/databases/malariacare.db ~/malariacare.db
-/*
+
         if (Tab.count(Tab.class, null, null)==0) {
             AssetManager assetManager = getAssets();
             PopulateDB.populateDB(assetManager);
@@ -234,7 +235,7 @@ public class MainActivity extends ActionBarActivity {
         et.setLayoutParams(layoutParams);
         linearLayout.addView(et);
 
-        setContentView(linearLayout, layoutParams);*/
+        setContentView(linearLayout, layoutParams);
     }
 
 

@@ -1,32 +1,32 @@
-package org.eyeseetea.malariacare;
+package org.eyeseetea.malariacare.testing;
 
 /**
  * Created by ignacio on 2/14/15.
  */
-public class Question {
+public class TestQuestion {
     private String statement;
     private String optionSet;
     private String answer;
 
-    public Question(){
+    public TestQuestion(){
         this.statement = "";
         this.optionSet = "asked";
         this.answer = "NOT ANSWERED";
     }
 
-    public Question(String statement){
+    public TestQuestion(String statement){
         this.statement = statement;
         this.optionSet = "asked";
         this.answer = "NOT ANSWERED";
     }
 
-    public Question(String statement, String optionSet){
+    public TestQuestion(String statement, String optionSet){
         this.statement = statement;
         this.optionSet = optionSet;
         this.answer = "NOT ANSWERED";
     }
 
-    public Question(String statement, String optionSet, String defaultAnser){
+    public TestQuestion(String statement, String optionSet, String defaultAnser){
         this.statement = statement;
         this.optionSet = optionSet;
         this.answer = defaultAnser;
