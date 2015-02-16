@@ -1,6 +1,7 @@
 package org.eyeseetea.malariacare;
 
 import android.app.ActionBar;
+import android.content.Intent;
 import android.content.res.AssetManager;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -9,6 +10,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.TabHost;
 import android.widget.TextView;
 import android.widget.GridLayout;
 
@@ -23,7 +25,11 @@ import org.eyeseetea.malariacare.data.Tab;
 import org.eyeseetea.malariacare.testing.TestQuestion;
 import org.eyeseetea.malariacare.testing.TestTab;
 import org.eyeseetea.malariacare.utils.PopulateDB;
+
+import java.util.Arrays;
+import java.util.Iterator;
 import java.util.Random;
+import junit.framework.Assert;
 
 
 import java.util.List;
@@ -96,61 +102,38 @@ public class MainActivity extends ActionBarActivity {
         return tabSimulator;
     }
 
-    protected int insertLayout(TestQuestion testQuestion, GridLayout parent){
-        String layout = testQuestion.getOptionSet();
+    protected int insertTab(Tab tab, int parent) {
+        GridLayout layoutParent = (GridLayout) this.findViewById(parent);
         LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View v;
         TextView statement;
         int child = -1;
-        switch(layout) {
-            case "asked":
-                child = R.layout.asked;
-                break;
-            case "done":
-                child = R.layout.done;
-                break;
-            case "yesno":
-                child = R.layout.yesno;
-                break;
-            case "yesNoNA":
-                child = R.layout.yesnona;
-                break;
-            case "yesNoAsked":
-                child = R.layout.yesnonotanswered;
-                break;
-            case "yesNoUnkasked":
-                child = R.layout.yesnounkasked;
-                break;
-            case "gender":
-                child = R.layout.gender;
-                break;
-            case "officer":
-                child = R.layout.officer;
-                break;
-            case "malResults":
-                child = R.layout.malresults;
-                break;
-            case "malDiagnose":
-                child = R.layout.maldiagnose;
-                break;
-            case "malSpecies":
-                child = R.layout.malspecies;
-                break;
-            case "result":
-                child = R.layout.result;
-                break;
-         }
+
+        Log.i(".MainActivity", "before getting tab");
+        String name = tab.getName();
+        Log.i(".MainActivity", "got name, before finding tabhost");
+        TabHost tabHost = (TabHost)findViewById(R.id.tabHost);
+        Log.i(".MainActivity", "found tabhost, before creating tabSpec");
+        TabHost.TabSpec tabSpec = tabHost.newTabSpec("Question tab");
+        Log.i(".MainActivity", "tabSpec created, before setting indicator");
+        tabSpec.setIndicator(name);
+        Log.i(".MainActivity", "indicator set, before establishing content");
+        tabSpec.setContent(new Intent(this, TabActivity.class));
+        Log.i(".MainActivity", "content established, before adding tab "  + tabSpec.toString() + " to tabHost " + tabHost.toString());
+        tabHost.addTab(tabSpec);
+        Log.i(".MainActivity", "after adding tab " + tabSpec.toString());
+
+/*        // select the layout and put it in child
         Log.i(".MainActivity", "question statement: " + testQuestion.getStatement());
-        v = inflater.inflate(child, parent, false);
+        v = inflater.inflate(child, layoutParent, false);
         statement = (TextView) v.findViewById(R.id.statement);
         Log.i(".MainActivity", "previous statement: " + statement.getText());
-        statement.setText(testQuestion.getStatement());
+        statement.setText("question statement");
         Log.i(".MainActivity", "later statement: " + statement.getText());
-        parent.addView(v);
-        // For not found layout, child will be -1
+        layoutParent.addView(v);
+        // For not found layout, child will be -1*/
         return child;
     }
-
 
 
 
@@ -159,55 +142,43 @@ public class MainActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         Log.i(".MainActivity", "App started");
         setContentView(R.layout.main_layout);
-/*
-        // We get a set of questions for our layout
-        List<TestQuestion> questions;
-        questions = getQuestionSet(100);
+        final ActionBar actionBar = getActionBar();
 
-        // We get a set of tabs
-        List<TestTab> tabs;
-        tabs = getTabSet(3);
 
-        // We take the Layouts for adding the content
-        GridLayout body = (GridLayout) this.findViewById(R.id.Body);
-
-        // We add the questions
-        for (Question question : questions) {
-            // Each optionSet has its own layout defined by <optionSetString>.xml
-            //   With the insertLayout function, we're trying to insert the question layout into the
-            //    parent layout. The function returns the question layout. We assert is always != -1
-
-            assertTrue(insertLayout(question, body) != -1);
-        }
-*/
-        //-------ADRI STUFF---------//
 //        File dbFile = getDatabasePath("malariacare.db");
 //        adb pull /data/data/org.eyeseetea.malariacare/databases/malariacare.db ~/malariacare.db
 
-        // FIXME: This is failing because first time Tab table is checked, the table doesn't exists, so the query cannot be performed
+        Integer tabsLayouts [] = {new Integer(R.id.tab1),
+                                  new Integer(R.id.tab2),
+                                  new Integer(R.id.tab3),
+                                  new Integer(R.id.tab4),
+                                  new Integer(R.id.tab5),
+                                  new Integer(R.id.tab6),
+                                  new Integer(R.id.tab7),
+                                  new Integer(R.id.tab8),
+                                  new Integer(R.id.tab9),
+                                  new Integer(R.id.tab10)};
+        List<Integer> tabLayoutList = Arrays.asList(tabsLayouts);
+
+
+        // We import the initial data in case it has been done yet
         if (Tab.count(Tab.class, null, null)==0) {
             AssetManager assetManager = getAssets();
             PopulateDB.populateDB(assetManager);
         }
 
+        // We get all tabs and insert their content in their layout
+        Iterator<Integer> tabLayoutIterator = tabLayoutList.iterator();
         List<Tab> tabList2 = Tab.listAll(Tab.class);
+        int tabLayout;
         for (Tab tabItem : tabList2){
-            //codigo
             Log.i(".MainActivity", tabItem.toString());
+            Assert.assertTrue(tabLayoutIterator.hasNext());
+            tabLayout = tabLayoutIterator.next().intValue();
+            insertTab(tabItem, tabLayout);
         }
 
-        // Creating a new LinearLayout
-        LinearLayout linearLayout = new LinearLayout(this);
-        linearLayout.setOrientation(LinearLayout.VERTICAL);
-
-        ActionBar.LayoutParams layoutParams = new ActionBar.LayoutParams(ActionBar.LayoutParams.MATCH_PARENT, ActionBar.LayoutParams.MATCH_PARENT);
-
-        linearLayout.setWeightSum(6f);
-        linearLayout.setLayoutParams(layoutParams);
-
-
-        TextView tv;
-
+        /*
         //"Profile"
         Tab currentTab = Tab.findById(Tab.class, 10L);
         List<Header> headerList = currentTab.getHeaders();
@@ -235,7 +206,7 @@ public class MainActivity extends ActionBarActivity {
         et.setLayoutParams(layoutParams);
         linearLayout.addView(et);
 
-        setContentView(linearLayout, layoutParams);
+        setContentView(linearLayout, layoutParams);*/
     }
 
 
