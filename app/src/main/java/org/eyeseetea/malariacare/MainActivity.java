@@ -22,8 +22,6 @@ import android.view.LayoutInflater;
 import org.eyeseetea.malariacare.data.Header;
 import org.eyeseetea.malariacare.data.Question;
 import org.eyeseetea.malariacare.data.Tab;
-import org.eyeseetea.malariacare.testing.TestQuestion;
-import org.eyeseetea.malariacare.testing.TestTab;
 import org.eyeseetea.malariacare.utils.PopulateDB;
 
 import java.util.Arrays;
@@ -35,78 +33,20 @@ import junit.framework.Assert;
 import java.util.List;
 //import org.eyeseetea.malariacare.database.MalariaCareDbHelper;
 
-
 public class MainActivity extends ActionBarActivity {
-
-    protected List<TestQuestion> getQuestionSet(int size) {
-        // Just to be able to work, I need a question simulator, in order to emulate the DB entries
-        Random r = new Random();
-        String optionSets[] = {
-                "asked",
-                "done",
-                "yesno",
-                "yesNoNA",
-                "yesNoAsked",
-                "yesNoUnkasked",
-                "gender",
-                "officer",
-                "malResults",
-                "malDiagnose",
-                "malSpecies",
-                "result"
-        };
-        Log.i(".MainActivity", "optionSet created");
-        List<TestQuestion> testQuestionSimulator = new ArrayList<>();
-        for (int i = 0; i < size; i++) {
-            Log.i(".MainActivity", "creating question " + i);
-            // The text of the question will be fixed
-            String statement = "Question number " + Integer.toString(i);
-            // Te OptionSet will be randomized
-            String optionSet = optionSets[r.nextInt(optionSets.length)];
-            Log.i(".MainActivity", "optionSet " + optionSet);
-            // We finally add both to the question array
-            testQuestionSimulator.add(new TestQuestion(statement, optionSet));
-            Log.i(".MainActivity", "question finished");
-        }
-        Log.i(".MainActivity", "questions simulated");
-        return testQuestionSimulator;
-    }
-
-    protected List<TestTab> getTabSet(int size){
-        // Just to be able to work, I need a question simulator, in order to emulate the DB entries
-        Random r = new Random();
-        String tabTypes [] = {
-                "Score",
-                "GNR1",
-                "Microscopy1",
-                "RDT1",
-                "GNR2",
-                "Microscopy2",
-                "RDT2",
-                "GNR3",
-                "Microscopy3",
-                "GNR3"
-        };
-        Log.i(".MainActivity","tabSet created");
-        List<TestTab> tabSimulator = new ArrayList<>();
-        for (int i=0; i<size; i++) {
-            Log.i(".MainActivity", "creating tab " + i);
-            // Te OptionSet will be randomized
-            String tabType = tabTypes[r.nextInt(tabTypes.length)];
-            Log.i(".MainActivity", "tabType " + tabType);
-            // We finally add both to the question array
-            tabSimulator.add(new TestTab(tabType));
-            Log.i(".MainActivity", "tab finished");
-        }
-        Log.i(".MainActivity","tabs simulated");
-        return tabSimulator;
-    }
+    // Some constants
+    public static final int DROPDOWN_LIST = 1,
+                            INT = 2,
+                            LONG_TEXT = 3,
+                            SHORT_TEXT = 4,
+                            SHORT_DATE = 5,
+                            LONG_DATE = 6;
 
     protected int insertTab(Tab tab, int parent) {
         GridLayout layoutParent = (GridLayout) this.findViewById(parent);
         LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View v;
-        TextView statement;
+
         int child = -1;
 
         Log.i(".MainActivity", "before getting tab");
@@ -122,7 +62,32 @@ public class MainActivity extends ActionBarActivity {
 
         List<Header> headers = tab.getHeaders();
         for (Header header: headers){
+            child = R.layout.headers;
+            Log.i(".MainActivity", "reading header " + header.toString());
+            View headerView = inflater.inflate(child, layoutParent, false);
+            TextView headerText = (TextView) headerView.findViewById(R.id.headerName);
+            headerText.setText(header.getName());
+            layoutParent.addView(headerView);
+            Log.i(".MainActivity", "header " + header.toString() + " added");
+            List<Question> questionList = header.getQuestions();
+            for (Question question : questionList){
+                // We first introduce the Header Text
 
+                // The statement is present in every kind of question
+                TextView statement;
+                switch(question.getAnswer().getOutput()){
+                    case DROPDOWN_LIST:
+                        break;
+                    case INT:
+                        break;
+                    case LONG_TEXT:
+                        break;
+                    case SHORT_TEXT:
+                        break;
+                    case SHORT_DATE: case LONG_DATE:
+                        break;
+                }
+            }
         }
 /*      // select the layout and put it in child
         Log.i(".MainActivity", "question statement: " + testQuestion.getStatement());
