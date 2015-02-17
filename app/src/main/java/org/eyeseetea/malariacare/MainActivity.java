@@ -111,17 +111,14 @@ public class MainActivity extends ActionBarActivity {
 
         Log.i(".MainActivity", "before getting tab");
         String name = tab.getName();
-        Log.i(".MainActivity", "got name, before finding tabhost");
         TabHost tabHost = (TabHost)findViewById(R.id.tabHost);
-        Log.i(".MainActivity", "found tabhost, before creating tabSpec");
+        tabHost.setup();
+
         TabHost.TabSpec tabSpec = tabHost.newTabSpec("Question tab");
-        Log.i(".MainActivity", "tabSpec created, before setting indicator");
         tabSpec.setIndicator(name);
-        Log.i(".MainActivity", "indicator set, before establishing content");
-        tabSpec.setContent(new Intent(this, TabActivity.class));
-        Log.i(".MainActivity", "content established, before adding tab "  + tabSpec.toString() + " to tabHost " + tabHost.toString());
+        tabSpec.setContent(parent);
         tabHost.addTab(tabSpec);
-        Log.i(".MainActivity", "after adding tab " + tabSpec.toString());
+        Log.i(".MainActivity", "after adding tab ");
 
 /*        // select the layout and put it in child
         Log.i(".MainActivity", "question statement: " + testQuestion.getStatement());
