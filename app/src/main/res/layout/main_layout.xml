@@ -39,10 +39,21 @@
                 android:layout_height="fill_parent"
                 android:orientation="vertical">
 
+                <HorizontalScrollView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:fillViewport="true"
+                    android:scrollbars="none" >
+
                 <TabWidget
                     android:id="@android:id/tabs"
                     android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"></TabWidget>
+                    android:layout_height="wrap_content"
+                    android:textAlignment="center"
+                    android:tabStripEnabled="true"
+                    android:nestedScrollingEnabled="true"></TabWidget>
+
+                </HorizontalScrollView>
 
                 <FrameLayout
                     android:id="@android:id/tabcontent"
@@ -65,7 +76,9 @@
                                 android:layout_height="wrap_content"
                                 android:rowCount="1"
                                 android:columnCount="1"
-                                android:id="@+id/tab1"></GridLayout>
+                                android:id="@+id/tab1">
+
+                            </GridLayout>
                         </ScrollView>
                     </LinearLayout>
 
@@ -248,6 +261,126 @@
                                 android:id="@+id/tab10" />
                         </ScrollView>
                     </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/tab11parent"
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:orientation="vertical" >
+
+                        <ScrollView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/Scroll11" >
+
+                            <GridLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:rowCount="1"
+                                android:columnCount="1"
+                                android:id="@+id/tab11" />
+                        </ScrollView>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/tab12parent"
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:orientation="vertical" >
+
+                        <ScrollView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/Scroll12" >
+
+                            <GridLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:rowCount="1"
+                                android:columnCount="1"
+                                android:id="@+id/tab12" />
+                        </ScrollView>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/tab13parent"
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:orientation="vertical" >
+
+                        <ScrollView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/Scroll13" >
+
+                            <GridLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:rowCount="1"
+                                android:columnCount="1"
+                                android:id="@+id/tab13" />
+                        </ScrollView>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/tab14parent"
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:orientation="vertical" >
+
+                        <ScrollView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/Scroll14" >
+
+                            <GridLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:rowCount="1"
+                                android:columnCount="1"
+                                android:id="@+id/tab14" />
+                        </ScrollView>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/tab15parent"
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:orientation="vertical" >
+
+                        <ScrollView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/Scroll15" >
+
+                            <GridLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:rowCount="1"
+                                android:columnCount="1"
+                                android:id="@+id/tab15" />
+                        </ScrollView>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/tab16parent"
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:orientation="vertical" >
+
+                        <ScrollView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/Scroll16" >
+
+                            <GridLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:rowCount="1"
+                                android:columnCount="1"
+                                android:id="@+id/tab16" />
+                        </ScrollView>
+                    </LinearLayout>
                 </FrameLayout>
             </LinearLayout>
         </TabHost>
@@ -274,13 +407,15 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/save"
-                android:id="@+id/save" />
+                android:id="@+id/save"
+                android:onClick="saveClearResults" />
 
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/clear"
-                android:id="@+id/button" />
+                android:id="@+id/clear"
+                android:onClick="saveClearResults" />
 
         </LinearLayout>
 
