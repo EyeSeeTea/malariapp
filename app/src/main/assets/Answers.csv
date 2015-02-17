@@ -7,22 +7,22 @@
 7;'YesNoUnkAsked';1
 8;'YesNoAsked';1
 9;'PresentFunctional';1
-10;'Gender';2
-11;'Officer';2
-12;'MAL Results';2
-13;'MAL Diagnose';2
-14;'MAL Species';2
-15;'Result';2
-16;'Feedback Type';2
-17;'Facility Type';2
-18;'Health Center Level';2
-19;'ANC services located';2
-20;'MAL Reporting';2
-21;'Counting method';2
-22;'Ownership';2
-23;'MAL Registers';2
-24;'Integer';3
-25;'Text_Long';4
-26;'Text_Short';5
-27;'Date_Short';6
-28;'Date';7
+10;'Gender';1
+11;'Officer';1
+12;'MAL Results';1
+13;'MAL Diagnose';1
+14;'MAL Species';1
+15;'Result';1
+16;'Feedback Type';1
+17;'Facility Type';1
+18;'Health Center Level';1
+19;'ANC services located';1
+20;'MAL Reporting';1
+21;'Counting method';1
+22;'Ownership';1
+23;'MAL Registers';1
+24;'Integer';2
+25;'Text_Long';3
+26;'Text_Short';4
+27;'Date_Short';5
+28;'Date';6
