@@ -49,14 +49,14 @@ public class PopulateDB {
                     switch (table) {
                         case "Tabs.csv":
                             Tab tab = new Tab();
-                            tab.setName(RowData[1]);
+                            tab.setName(trimText(RowData[1]));
                             tab.setOrder_tab(Integer.valueOf(RowData[2]));
                             tabList.add(tab);
                             break;
                         case "Headers.csv":
                             Header header = new Header();
-                            header.setShort_name(RowData[1]);
-                            header.setName(RowData[2]);
+                            header.setShort_name(trimText(RowData[1]));
+                            header.setName(trimText(RowData[2]));
                             header.setOrder_header(Integer.valueOf(RowData[3]));
                             header.setMaster(Integer.valueOf(RowData[4]));
                             header.setTab(tabList.get(Integer.valueOf(RowData[5])-1));
@@ -70,7 +70,7 @@ public class PopulateDB {
                             break;
                         case "Options.csv":
                             Option option = new Option();
-                            option.setName(RowData[1]);
+                            option.setName(trimText(RowData[1]));
                             option.setFactor(Float.valueOf(RowData[2]));
                             option.setAnswer(answerList.get(Integer.valueOf(RowData[3]) - 1));
                             optionList.add(option);
@@ -80,7 +80,7 @@ public class PopulateDB {
                             question.setCode(RowData[1]);
                             question.setDe_name(RowData[2]);
                             question.setShort_name(RowData[3]);
-                            question.setForm_name(RowData[4]);
+                            question.setForm_name(trimText(RowData[4]));
                             question.setUid(RowData[5]);
                             question.setOrder_question(Integer.valueOf(RowData[6]));
                             question.setNumerator_w(Float.valueOf(RowData[7]));
@@ -112,5 +112,9 @@ public class PopulateDB {
         Option.saveInTx(optionList);
         Question.saveInTx(questionList);
 
+    }
+
+    public static String trimText(String text){
+        return text.replaceAll("^'|'$", "");
     }
 }
