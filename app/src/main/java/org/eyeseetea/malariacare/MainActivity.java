@@ -88,6 +88,7 @@ public class MainActivity extends ActionBarActivity {
                         //dropdown.setTag(0, question.getId());
                         List<String> spinnerArray =  new ArrayList<String>();
                         List<Option> options = question.getAnswer().getOptions();
+                        spinnerArray.add("");
                         for(Option option: options){
                             spinnerArray.add(option.getName());
                         }
