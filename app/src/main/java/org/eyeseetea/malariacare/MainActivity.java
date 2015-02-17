@@ -120,7 +120,11 @@ public class MainActivity extends ActionBarActivity {
         tabHost.addTab(tabSpec);
         Log.i(".MainActivity", "after adding tab ");
 
-/*        // select the layout and put it in child
+        List<Header> headers = tab.getHeaders();
+        for (Header header: headers){
+
+        }
+/*      // select the layout and put it in child
         Log.i(".MainActivity", "question statement: " + testQuestion.getStatement());
         v = inflater.inflate(child, layoutParent, false);
         statement = (TextView) v.findViewById(R.id.statement);
@@ -174,11 +178,10 @@ public class MainActivity extends ActionBarActivity {
         Iterator<Integer> tabLayoutIterator = tabLayoutList.iterator();
         List<Tab> tabList2 = Tab.listAll(Tab.class);
         int tabLayout;
-        for (Tab tabItem : tabList2){
+        for (int i = 0; i< tabLayoutList.size(); i++){
+            Tab tabItem = tabList2.get(i);
             Log.i(".MainActivity", tabItem.toString());
-            Assert.assertTrue(tabLayoutIterator.hasNext());
-            tabLayout = tabLayoutIterator.next().intValue();
-            insertTab(tabItem, tabLayout);
+            insertTab(tabItem, tabLayoutList.get(i));
         }
 
         /*
