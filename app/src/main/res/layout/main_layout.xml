@@ -39,6 +39,12 @@
                 android:layout_height="fill_parent"
                 android:orientation="vertical">
 
+                <HorizontalScrollView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:fillViewport="true"
+                    android:scrollbars="none" >
+
                 <TabWidget
                     android:id="@android:id/tabs"
                     android:layout_width="fill_parent"
@@ -46,6 +52,8 @@
                     android:textAlignment="center"
                     android:tabStripEnabled="true"
                     android:nestedScrollingEnabled="true"></TabWidget>
+
+                </HorizontalScrollView>
 
                 <FrameLayout
                     android:id="@android:id/tabcontent"
@@ -398,13 +406,14 @@
                 android:layout_height="wrap_content"
                 android:text="@string/save"
                 android:id="@+id/save"
-                android:onClick="saveResults" />
+                android:onClick="saveClearResults" />
 
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/clear"
-                android:id="@+id/button" />
+                android:id="@+id/clear"
+                android:onClick="saveClearResults" />
 
         </LinearLayout>
 

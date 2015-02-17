@@ -229,14 +229,22 @@ public class MainActivity extends ActionBarActivity {
         Log.i(".MainActivity", "Button pressed");
     }
 
-    public void saveResults(View view) {
-        Log.i(".MainActivity", "Button pressed222222222");
+    public void saveClearResults(View view) {
 
+        if (view.getId() == R.id.save) {
+            Log.i(".MainActivity", "Button save pressed");
+        }
+        else if (view.getId() == R.id.clear) {
+            Log.i(".MainActivity", "Button clear pressed");
+        }
         ArrayList<View> allViewsWithinMyTopView = getAllChildren(view);
         for (View child : allViewsWithinMyTopView) {
             if (child instanceof TextView) {
                 TextView childTextView = (TextView) child;
                 System.out.println(childTextView.getText().toString());
+            }
+            else if(child instanceof Spinner){
+
             }
         }
 
