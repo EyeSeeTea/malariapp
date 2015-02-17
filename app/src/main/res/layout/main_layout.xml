@@ -398,13 +398,14 @@
                 android:layout_height="wrap_content"
                 android:text="@string/save"
                 android:id="@+id/save"
-                android:onClick="saveResults" />
+                android:onClick="saveClearResults" />
 
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/clear"
-                android:id="@+id/button" />
+                android:id="@+id/clear"
+                android:onClick="saveClearResults" />
 
         </LinearLayout>
 
