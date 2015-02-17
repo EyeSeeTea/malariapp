@@ -82,7 +82,7 @@ public class MainActivity extends ActionBarActivity {
                     case DROPDOWN_LIST:
                         child = R.layout.ddl;
                         View questionView = inflater.inflate(child, layoutParent, false);
-                        Spinner dropdown = (Spinner)findViewById(R.id.answer);
+                        Spinner dropdown = (Spinner)questionView.findViewById(R.id.answer);
                         //dropdown.setTag(0, question.getId());
                         List<String> spinnerArray =  new ArrayList<String>();
                         List<Option> options = question.getAnswer().getOptions();
@@ -92,7 +92,7 @@ public class MainActivity extends ActionBarActivity {
                         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, spinnerArray);
                         //adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                         dropdown.setAdapter(adapter);
-
+                        layoutParent.addView(questionView);
                         break;
                     case INT:
                         child = R.layout.integer;
