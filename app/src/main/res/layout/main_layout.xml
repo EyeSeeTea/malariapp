@@ -76,7 +76,9 @@
                                 android:layout_height="wrap_content"
                                 android:rowCount="1"
                                 android:columnCount="1"
-                                android:id="@+id/tab1"></GridLayout>
+                                android:id="@+id/tab1">
+
+                            </GridLayout>
                         </ScrollView>
                     </LinearLayout>
 

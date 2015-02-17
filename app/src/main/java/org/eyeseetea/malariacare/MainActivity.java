@@ -82,6 +82,8 @@ public class MainActivity extends ActionBarActivity {
                     case DROPDOWN_LIST:
                         child = R.layout.ddl;
                         View questionView = inflater.inflate(child, layoutParent, false);
+                        statement = (TextView) questionView.findViewById(R.id.statement);
+                        statement.setText(question.getForm_name());
                         Spinner dropdown = (Spinner)questionView.findViewById(R.id.answer);
                         //dropdown.setTag(0, question.getId());
                         List<String> spinnerArray =  new ArrayList<String>();
@@ -96,15 +98,35 @@ public class MainActivity extends ActionBarActivity {
                         break;
                     case INT:
                         child = R.layout.integer;
+                        View questionIntView = inflater.inflate(child, layoutParent, false);
+                        statement = (TextView) questionIntView.findViewById(R.id.statement);
+                        statement.setText(question.getForm_name());
+                        EditText answerI = (EditText) questionIntView.findViewById(R.id.answer);
+                        layoutParent.addView(questionIntView);
                         break;
                     case LONG_TEXT:
                         child = R.layout.longtext;
+                        View questionLTView = inflater.inflate(child, layoutParent, false);
+                        statement = (TextView) questionLTView.findViewById(R.id.statement);
+                        statement.setText(question.getForm_name());
+                        EditText answerLT = (EditText) questionLTView.findViewById(R.id.answer);
+                        layoutParent.addView(questionLTView);
                         break;
                     case SHORT_TEXT:
                         child = R.layout.shorttext;
+                        View questionSTView = inflater.inflate(child, layoutParent, false);
+                        statement = (TextView) questionSTView.findViewById(R.id.statement);
+                        statement.setText(question.getForm_name());
+                        EditText answerST = (EditText) questionSTView.findViewById(R.id.answer);
+                        layoutParent.addView(questionSTView);
                         break;
                     case SHORT_DATE: case LONG_DATE:
                         child = R.layout.date;
+                        View questionSDView = inflater.inflate(child, layoutParent, false);
+                        statement = (TextView) questionSDView.findViewById(R.id.statement);
+                        statement.setText(question.getForm_name());
+                        EditText answerSD = (EditText) questionSDView.findViewById(R.id.answer);
+                        layoutParent.addView(questionSDView);
                         break;
                 }
 
