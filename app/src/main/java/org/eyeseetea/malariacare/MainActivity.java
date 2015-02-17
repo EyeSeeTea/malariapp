@@ -9,8 +9,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.TabHost;
 import android.widget.TextView;
 import android.widget.GridLayout;
@@ -21,6 +23,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 
 import org.eyeseetea.malariacare.data.Header;
+import org.eyeseetea.malariacare.data.Option;
 import org.eyeseetea.malariacare.data.Question;
 import org.eyeseetea.malariacare.data.Tab;
 import org.eyeseetea.malariacare.utils.PopulateDB;
@@ -63,6 +66,7 @@ public class MainActivity extends ActionBarActivity {
 
         List<Header> headers = tab.getHeaders();
         for (Header header: headers){
+            // First we introduce header text according to the template
             child = R.layout.headers;
             Log.i(".MainActivity", "reading header " + header.toString());
             View headerView = inflater.inflate(child, layoutParent, false);
@@ -72,22 +76,38 @@ public class MainActivity extends ActionBarActivity {
             Log.i(".MainActivity", "header " + header.toString() + " added");
             List<Question> questionList = header.getQuestions();
             for (Question question : questionList){
-                // We first introduce the Header Text
-
                 // The statement is present in every kind of question
                 TextView statement;
                 switch(question.getAnswer().getOutput()){
                     case DROPDOWN_LIST:
+                        child = R.layout.ddl;
+                        View questionView = inflater.inflate(child, layoutParent, false);
+                        Spinner dropdown = (Spinner)findViewById(R.id.answer);
+                        //dropdown.setTag(0, question.getId());
+                        List<String> spinnerArray =  new ArrayList<String>();
+                        List<Option> options = question.getAnswer().getOptions();
+                        for(Option option: options){
+                            spinnerArray.add(option.getName());
+                        }
+                        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, spinnerArray);
+                        //adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        dropdown.setAdapter(adapter);
+
                         break;
                     case INT:
+                        child = R.layout.integer;
                         break;
                     case LONG_TEXT:
+                        child = R.layout.longtext;
                         break;
                     case SHORT_TEXT:
+                        child = R.layout.shorttext;
                         break;
                     case SHORT_DATE: case LONG_DATE:
+                        child = R.layout.date;
                         break;
                 }
+
             }
         }
 /*      // select the layout and put it in child
