@@ -30,12 +30,10 @@ import org.eyeseetea.malariacare.utils.PopulateDB;
 
 import java.util.Arrays;
 import java.util.Iterator;
-import java.util.Random;
 import junit.framework.Assert;
 
 
 import java.util.List;
-//import org.eyeseetea.malariacare.database.MalariaCareDbHelper;
 
 public class MainActivity extends ActionBarActivity {
     // Some constants
@@ -45,6 +43,7 @@ public class MainActivity extends ActionBarActivity {
                             SHORT_TEXT = 4,
                             SHORT_DATE = 5,
                             LONG_DATE = 6;
+    public static final boolean DEBUGGING = false;
 
     protected int insertTab(Tab tab, int parent) {
         GridLayout layoutParent = (GridLayout) this.findViewById(parent);
@@ -53,7 +52,7 @@ public class MainActivity extends ActionBarActivity {
 
         int child = -1;
 
-        Log.i(".MainActivity", "before getting tab");
+        if (DEBUGGING) Log.i(".MainActivity", "before getting tab");
         String name = tab.getName();
         TabHost tabHost = (TabHost)findViewById(R.id.tabHost);
         tabHost.setup();
@@ -62,18 +61,18 @@ public class MainActivity extends ActionBarActivity {
         tabSpec.setIndicator(name);
         tabSpec.setContent(parent);
         tabHost.addTab(tabSpec);
-        Log.i(".MainActivity", "after adding tab ");
+        if (DEBUGGING) Log.i(".MainActivity", "after adding tab ");
 
         List<Header> headers = tab.getHeaders();
         for (Header header: headers){
             // First we introduce header text according to the template
             child = R.layout.headers;
-            Log.i(".MainActivity", "reading header " + header.toString());
+            if (DEBUGGING) Log.i(".MainActivity", "reading header " + header.toString());
             View headerView = inflater.inflate(child, layoutParent, false);
             TextView headerText = (TextView) headerView.findViewById(R.id.headerName);
             headerText.setText(header.getName());
             layoutParent.addView(headerView);
-            Log.i(".MainActivity", "header " + header.toString() + " added");
+            if (DEBUGGING) Log.i(".MainActivity", "header " + header.toString() + " added");
             List<Question> questionList = header.getQuestions();
             for (Question question : questionList){
                 // The statement is present in every kind of question
@@ -133,15 +132,7 @@ public class MainActivity extends ActionBarActivity {
 
             }
         }
-/*      // select the layout and put it in child
-        Log.i(".MainActivity", "question statement: " + testQuestion.getStatement());
-        v = inflater.inflate(child, layoutParent, false);
-        statement = (TextView) v.findViewById(R.id.statement);
-        Log.i(".MainActivity", "previous statement: " + statement.getText());
-        statement.setText("question statement");
-        Log.i(".MainActivity", "later statement: " + statement.getText());
-        layoutParent.addView(v);
-        // For not found layout, child will be -1*/
+        // For not found layout, child will be -1
         return child;
     }
 
@@ -150,7 +141,7 @@ public class MainActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.i(".MainActivity", "App started");
+        if (DEBUGGING) Log.i(".MainActivity", "App started");
         setContentView(R.layout.main_layout);
         final ActionBar actionBar = getActionBar();
 
@@ -189,39 +180,9 @@ public class MainActivity extends ActionBarActivity {
         int tabLayout;
         for (int i = 0; i< tabLayoutList.size(); i++){
             Tab tabItem = tabList2.get(i);
-            Log.i(".MainActivity", tabItem.toString());
+            if (DEBUGGING) Log.i(".MainActivity", tabItem.toString());
             insertTab(tabItem, tabLayoutList.get(i));
         }
-
-        /*
-        //"Profile"
-        Tab currentTab = Tab.findById(Tab.class, 10L);
-        List<Header> headerList = currentTab.getHeaders();
-        for (Header header : headerList){
-            //codigo
-            System.out.println(header.toString());
-            List<Question> questionList = header.getQuestions();
-            for (Question question : questionList){
-                //codigo
-
-                System.out.println(question.toString());
-                System.out.println("Hijos");
-                System.out.println(question.getQuestion());
-                // Creating a new TextView
-                tv = new TextView(this);
-                tv.setText(question.getForm_name());
-                tv.setLayoutParams(layoutParams);
-                linearLayout.addView(tv);
-            }
-        }
-
-
-        // Creating a new EditText
-        EditText et=new EditText(this);
-        et.setLayoutParams(layoutParams);
-        linearLayout.addView(et);
-
-        setContentView(linearLayout, layoutParams);*/
     }
 
 
@@ -249,16 +210,16 @@ public class MainActivity extends ActionBarActivity {
     }
 
     public void sendMessage(View view) {
-        Log.i(".MainActivity", "Button pressed");
+        if (DEBUGGING) Log.i(".MainActivity", "Button pressed");
     }
 
     public void saveClearResults(View view) {
 
         if (view.getId() == R.id.save) {
-            Log.i(".MainActivity", "Button save pressed");
+            if (DEBUGGING) Log.i(".MainActivity", "Button save pressed");
         }
         else if (view.getId() == R.id.clear) {
-            Log.i(".MainActivity", "Button clear pressed");
+            if (DEBUGGING) Log.i(".MainActivity", "Button clear pressed");
         }
         ArrayList<View> allViewsWithinMyTopView = getAllChildren(view);
         for (View child : allViewsWithinMyTopView) {
