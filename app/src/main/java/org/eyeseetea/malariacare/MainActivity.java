@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TabHost;
@@ -241,5 +242,42 @@ public class MainActivity extends ActionBarActivity {
 
     public void sendMessage(View view) {
         Log.i(".MainActivity", "Button pressed");
+    }
+
+    public void saveResults(View view) {
+        Log.i(".MainActivity", "Button pressed222222222");
+
+        ArrayList<View> allViewsWithinMyTopView = getAllChildren(view);
+        for (View child : allViewsWithinMyTopView) {
+            if (child instanceof TextView) {
+                TextView childTextView = (TextView) child;
+                System.out.println(childTextView.getText().toString());
+            }
+        }
+
+    }
+
+    private ArrayList<View> getAllChildren(View v) {
+
+        if (!(v instanceof ViewGroup)) {
+            ArrayList<View> viewArrayList = new ArrayList<View>();
+            viewArrayList.add(v);
+            return viewArrayList;
+        }
+
+        ArrayList<View> result = new ArrayList<View>();
+
+        ViewGroup vg = (ViewGroup) v;
+        for (int i = 0; i < vg.getChildCount(); i++) {
+
+            View child = vg.getChildAt(i);
+
+            ArrayList<View> viewArrayList = new ArrayList<View>();
+            viewArrayList.add(v);
+            viewArrayList.addAll(getAllChildren(child));
+
+            result.addAll(viewArrayList);
+        }
+        return result;
     }
 }
