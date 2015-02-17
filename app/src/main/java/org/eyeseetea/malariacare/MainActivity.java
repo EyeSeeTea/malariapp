@@ -154,7 +154,13 @@ public class MainActivity extends ActionBarActivity {
                                   new Integer(R.id.tab7),
                                   new Integer(R.id.tab8),
                                   new Integer(R.id.tab9),
-                                  new Integer(R.id.tab10)};
+                                  new Integer(R.id.tab10),
+                                  new Integer(R.id.tab11),
+                                  new Integer(R.id.tab12),
+                                  new Integer(R.id.tab13),
+                                  new Integer(R.id.tab14),
+                                  new Integer(R.id.tab15),
+                                  new Integer(R.id.tab16)};
         List<Integer> tabLayoutList = Arrays.asList(tabsLayouts);
 
 
