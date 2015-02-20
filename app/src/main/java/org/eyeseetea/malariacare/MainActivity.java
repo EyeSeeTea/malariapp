@@ -39,6 +39,7 @@ public class MainActivity extends ActionBarActivity {
         }
 
         // We get all tabs and insert their content in their layout
+
         Integer tabsLayouts [] = {new Integer(R.id.tab1),
                 new Integer(R.id.tab2),
                 new Integer(R.id.tab3),
@@ -55,6 +56,28 @@ public class MainActivity extends ActionBarActivity {
                 new Integer(R.id.tab14),
                 new Integer(R.id.tab15),
                 new Integer(R.id.tab16)};
+
+        //Esto hay que modificarlo y usaar solo un array
+
+        Integer scoreTabs [] = {new Integer(R.id.scoretab1),
+                new Integer(R.id.scoretab2),
+                new Integer(R.id.scoretab3),
+                new Integer(R.id.scoretab4),
+                new Integer(R.id.scoretab5),
+                new Integer(R.id.scoretab6),
+                new Integer(R.id.scoretab7),
+                new Integer(R.id.scoretab8),
+                new Integer(R.id.scoretab9),
+                new Integer(R.id.scoretab10),
+                new Integer(R.id.scoretab11),
+                new Integer(R.id.scoretab12),
+                new Integer(R.id.scoretab13),
+                new Integer(R.id.scoretab14),
+                new Integer(R.id.scoretab15),
+                new Integer(R.id.scoretab16)};
+
+
+
         List<Integer> tabLayoutList = Arrays.asList(tabsLayouts);
         List<Tab> tabList2 = Tab.listAll(Tab.class);
         int tabLayout;
@@ -62,7 +85,8 @@ public class MainActivity extends ActionBarActivity {
             Tab tabItem = tabList2.get(i);
             Log.i(".MainActivity", tabItem.toString());
 
-            Layout.insertTab(this, tabItem, tabLayoutList.get(i));
+            Layout.insertTab(this, tabItem, tabLayoutList.get(i),scoreTabs[i]);
+
         }
     }
 

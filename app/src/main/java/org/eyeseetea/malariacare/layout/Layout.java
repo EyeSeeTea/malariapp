@@ -8,6 +8,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.GridLayout;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TabHost;
 import android.widget.TextView;
@@ -26,11 +27,13 @@ import java.util.List;
  * Created by adrian on 19/02/15.
  */
 public class Layout {
-    public static int insertTab(MainActivity mainActivity, Tab tab, int parent) {
+    public static int insertTab(MainActivity mainActivity, Tab tab, int parent, int scoreTab) {
         GridLayout layoutParent = (GridLayout) mainActivity.findViewById(parent);
+        LinearLayout layoutScoreTab = (LinearLayout) mainActivity.findViewById(scoreTab);
         LayoutInflater inflater = (LayoutInflater) mainActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         int child = -1;
+        int total_denum = 0;
         // We do this to have a default value in the ddl
         Option defaultOption = new Option(Constants.DEFAULT_SELECT_OPTION);
 
@@ -71,16 +74,34 @@ public class Layout {
 
                         Spinner dropdown = (Spinner)questionView.findViewById(R.id.answer);
                         dropdown.setTag(question);
+
                         dropdown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
+
                             @Override
                             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+
                                 Spinner spinner = (Spinner)parentView;
                                 Option triggeredOption = (Option)spinner.getItemAtPosition(position);
                                 Question triggeredQuestion = (Question)spinner.getTag();
 
+
                                 if (triggeredOption.getName() != null && triggeredOption.getName() != Constants.DEFAULT_SELECT_OPTION) {
                                     Float numerator = triggeredOption.getFactor() * triggeredQuestion.getNumerator_w();
-                                    Float denominator = triggeredOption.getFactor() * triggeredQuestion.getDenominator_w();
+
+                                    ((TextView)((View)spinner.getParent().getParent().getParent().getParent().getParent()).findViewById(R.id.total_num)).setText("10");
+
+
+
+                                    //String text= ((TextView)((View)spinner.getParent().getParent().getParent().getParent().getParent()).findViewById(R.id.total_num)).getText().toString();
+
+                                    Float denominator=new Float(0);
+
+                                    if (triggeredQuestion.getNumerator_w().compareTo(triggeredQuestion.getDenominator_w())==0)
+                                        denominator=triggeredQuestion.getDenominator_w();
+                                    else
+                                        if (triggeredQuestion.getNumerator_w().compareTo(new Float(0))==0 && triggeredQuestion.getDenominator_w().compareTo(new Float(0))!=0)
+                                            denominator = triggeredOption.getFactor() * triggeredQuestion.getDenominator_w();
 
                                     ((TextView) ((View) spinner.getParent().getParent()).findViewById(R.id.num)).setText(Float.toString(numerator));
                                     ((TextView) ((View) spinner.getParent().getParent()).findViewById(R.id.den)).setText(Float.toString(denominator));
@@ -89,6 +110,9 @@ public class Layout {
                                     ((TextView) ((View) spinner.getParent().getParent()).findViewById(R.id.num)).setText(Float.toString(0.0F));
                                     ((TextView) ((View) spinner.getParent().getParent()).findViewById(R.id.den)).setText(Float.toString(0.0F));
                                 }
+
+
+
                             }
 
                             @Override
@@ -142,6 +166,14 @@ public class Layout {
 
             }
         }
+
+        child = R.layout.totalscore_tab;
+        View totalscoreView = inflater.inflate(child,layoutScoreTab,false);
+        //TextView numValue = (TextView) totalscoreView.findViewById(R.id.total_num);
+        //TextView denValue = (TextView) totalscoreView.findViewById(R.id.total_den);
+        layoutScoreTab.addView(totalscoreView);
+
+
         return child;
     }
 

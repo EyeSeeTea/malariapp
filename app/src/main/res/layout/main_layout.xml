@@ -80,6 +80,13 @@
 
                             </GridLayout>
                         </ScrollView>
+
+                        <LinearLayout
+                            android:id="@+id/scoretab1"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="horizontal"></LinearLayout>
+
                     </LinearLayout>
 
                     <LinearLayout
@@ -100,6 +107,13 @@
                                 android:columnCount="1"
                                 android:id="@+id/tab2" />
                         </ScrollView>
+
+                        <LinearLayout
+                            android:id="@+id/scoretab2"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="horizontal"></LinearLayout>
+
                     </LinearLayout>
 
                     <LinearLayout
@@ -120,6 +134,13 @@
                                 android:columnCount="1"
                                 android:id="@+id/tab3" />
                         </ScrollView>
+
+                        <LinearLayout
+                            android:id="@+id/scoretab3"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="horizontal"></LinearLayout>
+
                     </LinearLayout>
 
                     <LinearLayout
@@ -140,6 +161,13 @@
                                 android:columnCount="1"
                                 android:id="@+id/tab4" />
                         </ScrollView>
+
+                        <LinearLayout
+                            android:id="@+id/scoretab4"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="horizontal"></LinearLayout>
+
                     </LinearLayout>
 
                     <LinearLayout
@@ -160,6 +188,13 @@
                                 android:columnCount="1"
                                 android:id="@+id/tab5" />
                         </ScrollView>
+
+                        <LinearLayout
+                            android:id="@+id/scoretab5"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="horizontal"></LinearLayout>
+
                     </LinearLayout>
 
                     <LinearLayout
@@ -180,6 +215,13 @@
                                 android:columnCount="1"
                                 android:id="@+id/tab6" />
                         </ScrollView>
+
+                        <LinearLayout
+                            android:id="@+id/scoretab6"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="horizontal"></LinearLayout>
+
                     </LinearLayout>
 
                     <LinearLayout
@@ -200,6 +242,13 @@
                                 android:columnCount="1"
                                 android:id="@+id/tab7" />
                         </ScrollView>
+
+                        <LinearLayout
+                            android:id="@+id/scoretab7"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="horizontal"></LinearLayout>
+
                     </LinearLayout>
 
                     <LinearLayout
@@ -220,6 +269,13 @@
                                 android:columnCount="1"
                                 android:id="@+id/tab8" />
                         </ScrollView>
+
+                        <LinearLayout
+                            android:id="@+id/scoretab8"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="horizontal"></LinearLayout>
+
                     </LinearLayout>
 
                     <LinearLayout
@@ -240,6 +296,13 @@
                                 android:columnCount="1"
                                 android:id="@+id/tab9" />
                         </ScrollView>
+
+                        <LinearLayout
+                            android:id="@+id/scoretab9"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="horizontal"></LinearLayout>
+
                     </LinearLayout>
 
                     <LinearLayout
@@ -260,6 +323,13 @@
                                 android:columnCount="1"
                                 android:id="@+id/tab10" />
                         </ScrollView>
+
+                        <LinearLayout
+                            android:id="@+id/scoretab10"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="horizontal"></LinearLayout>
+
                     </LinearLayout>
 
                     <LinearLayout
@@ -280,6 +350,13 @@
                                 android:columnCount="1"
                                 android:id="@+id/tab11" />
                         </ScrollView>
+
+                        <LinearLayout
+                            android:id="@+id/scoretab11"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="horizontal"></LinearLayout>
+
                     </LinearLayout>
 
                     <LinearLayout
@@ -300,6 +377,13 @@
                                 android:columnCount="1"
                                 android:id="@+id/tab12" />
                         </ScrollView>
+
+                        <LinearLayout
+                            android:id="@+id/scoretab12"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="horizontal"></LinearLayout>
+
                     </LinearLayout>
 
                     <LinearLayout
@@ -320,6 +404,13 @@
                                 android:columnCount="1"
                                 android:id="@+id/tab13" />
                         </ScrollView>
+
+                        <LinearLayout
+                            android:id="@+id/scoretab13"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="horizontal"></LinearLayout>
+
                     </LinearLayout>
 
                     <LinearLayout
@@ -340,6 +431,13 @@
                                 android:columnCount="1"
                                 android:id="@+id/tab14" />
                         </ScrollView>
+
+                        <LinearLayout
+                            android:id="@+id/scoretab14"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="horizontal"></LinearLayout>
+
                     </LinearLayout>
 
                     <LinearLayout
@@ -360,6 +458,13 @@
                                 android:columnCount="1"
                                 android:id="@+id/tab15" />
                         </ScrollView>
+
+                        <LinearLayout
+                            android:id="@+id/scoretab15"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="horizontal"></LinearLayout>
+
                     </LinearLayout>
 
                     <LinearLayout
@@ -380,12 +485,20 @@
                                 android:columnCount="1"
                                 android:id="@+id/tab16" />
                         </ScrollView>
+
+                        <LinearLayout
+                            android:id="@+id/scoretab16"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="horizontal"></LinearLayout>
+
                     </LinearLayout>
                 </FrameLayout>
             </LinearLayout>
         </TabHost>
 
     </LinearLayout>
+
 
     <LinearLayout
         android:orientation="vertical"
@@ -395,6 +508,8 @@
         android:gravity="center_vertical|center_horizontal"
         android:layout_weight="0.12"
         android:weightSum="1">
+
+
 
         <LinearLayout
             android:orientation="horizontal"
@@ -418,6 +533,74 @@
                 android:onClick="saveClearResults" />
 
         </LinearLayout>
+
+
+
+
+
+     <!--   <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.50">
+
+
+            <RelativeLayout
+                android:layout_width="0dip"
+                android:layout_height="match_parent"
+                android:layout_weight="0.4"></RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="0dip"
+                android:layout_height="match_parent"
+                android:layout_weight="0.8">
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/buttons"
+                    android:layout_weight="0.2">
+
+                    <Button
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/save"
+                        android:id="@+id/save"
+                        android:onClick="saveClearResults" />
+
+                    <Button
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/clear"
+                        android:id="@+id/clear"
+                        android:onClick="saveClearResults" />
+
+                </LinearLayout>
+
+                </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="0dip"
+                android:layout_height="match_parent"
+                android:layout_weight="0.4">
+
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="0"
+                    android:id="@+id/num_total" />
+
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="0"
+                    android:id="@+id/denum_total" />
+
+
+            </RelativeLayout>
+
+        </LinearLayout> -->
 
         <TextView
             android:layout_width="wrap_content"
