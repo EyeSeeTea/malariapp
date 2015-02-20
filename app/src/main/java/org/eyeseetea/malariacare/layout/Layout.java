@@ -89,11 +89,9 @@ public class Layout {
                                 if (triggeredOption.getName() != null && triggeredOption.getName() != Constants.DEFAULT_SELECT_OPTION) {
                                     Float numerator = triggeredOption.getFactor() * triggeredQuestion.getNumerator_w();
 
-                                    ((TextView)((View)spinner.getParent().getParent().getParent().getParent().getParent()).findViewById(R.id.total_num)).setText("10");
 
-
-
-                                    //String text= ((TextView)((View)spinner.getParent().getParent().getParent().getParent().getParent()).findViewById(R.id.total_num)).getText().toString();
+                                    //No actualiza el valor en la pantalla!!!
+                                    //((TextView)((View)spinner.getParent().getParent().getParent().getParent().getParent()).findViewById(R.id.total_num)).setText("10");
 
                                     Float denominator=new Float(0);
 
