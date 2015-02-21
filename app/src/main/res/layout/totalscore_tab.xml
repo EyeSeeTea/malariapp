@@ -7,21 +7,11 @@
         android:layout_width="0dip"
         android:layout_height="fill_parent"
         android:layout_weight="0.5">
-        <TextView
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/emptyStatement"
-            android:id="@+id/statement" />
     </RelativeLayout>
     <RelativeLayout
         android:layout_width="0dip"
         android:layout_height="fill_parent"
         android:layout_weight="0.5">
-        <Spinner
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/answer"
-            android:spinnerMode="dropdown" />
     </RelativeLayout>
     <RelativeLayout
         android:layout_width="0dip"
@@ -31,7 +21,7 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:text="0"
-            android:id="@+id/num" />
+            android:id="@+id/total_num" />
     </RelativeLayout>
     <RelativeLayout
         android:layout_width="0dip"
@@ -41,7 +31,8 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:text="0"
-            android:id="@+id/den" />
+            android:id="@+id/total_den" />
     </RelativeLayout>
+
 
 </LinearLayout>

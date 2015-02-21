@@ -20,6 +20,10 @@ public class Option extends SugarRecord<Tab> {
         this.answer = answer;
     }
 
+    public Option(String name) {
+        this.name = name;
+    }
+
     public String getName() {
         return name;
     }
@@ -44,13 +48,9 @@ public class Option extends SugarRecord<Tab> {
         this.answer = answer;
     }
 
+    //This is not a standard to string method as this is going to be used for ddl
     @Override
     public String toString() {
-        return "Option{" +
-                "id='" + id + '\'' +
-                ", name='" + name + '\'' +
-                ", factor=" + factor +
-                ", answer=" + answer +
-                '}';
+        return name;
     }
 }
