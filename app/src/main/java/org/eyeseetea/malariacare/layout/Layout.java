@@ -22,6 +22,7 @@ import org.eyeseetea.malariacare.data.Option;
 import org.eyeseetea.malariacare.data.Question;
 import org.eyeseetea.malariacare.data.Tab;
 import org.eyeseetea.malariacare.utils.Constants;
+import org.eyeseetea.malariacare.utils.Score;
 import org.eyeseetea.malariacare.utils.Utils;
 
 import java.util.List;
@@ -30,6 +31,10 @@ import java.util.List;
  * Created by adrian on 19/02/15.
  */
 public class Layout {
+
+    static final Score scores=new Score();
+
+
     public static int insertTab(MainActivity mainActivity, Tab tab, int parent, boolean withScore) {
         // This layout inflater is for joining other layouts
         LayoutInflater inflater = (LayoutInflater) mainActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -37,7 +42,11 @@ public class Layout {
         // This layout is for the tab content (questions)
         LinearLayout layoutGrandParent = (LinearLayout) mainActivity.findViewById(parent);
         ScrollView layoutParentScroll = (ScrollView) layoutGrandParent.getChildAt(0);
+        LinearLayout layoutScoreTab = (LinearLayout) layoutGrandParent.getChildAt(1);
         GridLayout layoutParent = (GridLayout) layoutParentScroll.getChildAt(0);
+
+        scores.addTabScore(parent);
+
 
         int child = -1;
         int total_denum = 0;
@@ -78,6 +87,7 @@ public class Layout {
 
                         statement = (TextView) questionView.findViewById(R.id.statement);
                         statement.setText(question.getForm_name());
+                        statement.setTag(parent);
 
                         Spinner dropdown = (Spinner)questionView.findViewById(R.id.answer);
                         dropdown.setTag(question);
@@ -87,22 +97,19 @@ public class Layout {
                             @Override
                             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
 
-
-
                                 Spinner spinner = (Spinner)parentView;
                                 Option triggeredOption = (Option)spinner.getItemAtPosition(position);
                                 Question triggeredQuestion = (Question)spinner.getTag();
                                 TextView numerator_widget = (TextView) Utils.findParentRecursively(spinner,R.id.ddl).findViewById(R.id.num);
                                 TextView denominator_widget = (TextView) Utils.findParentRecursively(spinner,R.id.ddl).findViewById(R.id.den);
+                                TextView statement_widget=(TextView) Utils.findParentRecursively(spinner,R.id.ddl).findViewById(R.id.statement);
 
                                 if (triggeredOption.getName() != null && triggeredOption.getName() != Constants.DEFAULT_SELECT_OPTION) {
                                     Float numerator = triggeredOption.getFactor() * triggeredQuestion.getNumerator_w();
-
-
-                                    //No actualiza el valor en la pantalla!!!
-                                    //((TextView)((View)spinner.getParent().getParent().getParent().getParent().getParent()).findViewById(R.id.total_num)).setText("10");
-
                                     Float denominator=new Float(0);
+                                    Float old_numerator=new Float(0.0);
+                                    Float old_denominator=new Float(0.0);
+
 
                                     if (triggeredQuestion.getNumerator_w().compareTo(triggeredQuestion.getDenominator_w())==0)
                                         denominator=triggeredQuestion.getDenominator_w();
@@ -110,18 +117,23 @@ public class Layout {
                                         if (triggeredQuestion.getNumerator_w().compareTo(new Float(0))==0 && triggeredQuestion.getDenominator_w().compareTo(new Float(0))!=0)
                                             denominator = triggeredOption.getFactor() * triggeredQuestion.getDenominator_w();
 
-                                    //((TextView) ((View) spinner.getParent().getParent()).findViewById(R.id.num)).setText(Float.toString(numerator));
+
+                                    if (numerator_widget.getText().toString()!="") old_numerator = Float.parseFloat(numerator_widget.getText().toString());
+                                    if (denominator_widget.getText().toString()!="") old_denominator = Float.parseFloat(denominator_widget.getText().toString());
+
+
+                                    scores.resetValuesNumDenum((Integer)statement_widget.getTag(),old_numerator,old_denominator);
+                                    scores.addValuesNumDenum((Integer)statement_widget.getTag(),numerator,denominator);
+
                                     numerator_widget.setText(Float.toString(numerator));
-                                    //((TextView) ((View) spinner.getParent().getParent()).findViewById(R.id.den)).setText(Float.toString(denominator));
                                     denominator_widget.setText(Float.toString(denominator));
+
                                 }
                                 else{
-                                    //((TextView) ((View) spinner.getParent().getParent()).findViewById(R.id.num)).setText(Float.toString(0.0F));
                                     numerator_widget.setText(Float.toString(0.0F));
-                                    //((TextView) ((View) spinner.getParent().getParent()).findViewById(R.id.den)).setText(Float.toString(0.0F));
                                     denominator_widget.setText(Float.toString(0.0F));
                                 }
-                            }
+                             }
 
                             @Override
                             public void onNothingSelected(AdapterView<?> parentView) {
@@ -175,13 +187,12 @@ public class Layout {
             }
         }
 
-        if (withScore) {
-            // This layout is for showing the accumulated score
-            LinearLayout layoutScoreTab = (LinearLayout) layoutGrandParent.getChildAt(1);
-            child = R.layout.totalscore_tab;
-            View totalscoreView = inflater.inflate(child, layoutScoreTab, false);
-            layoutScoreTab.addView(totalscoreView);
-        }
+        // This layout is for showing the accumulated score
+        //LinearLayout layoutScoreTab = (LinearLayout) mainActivity.findViewById(R.id.scoretab1);
+
+        child = R.layout.totalscore_tab;
+        View totalscoreView = inflater.inflate(child, layoutScoreTab, false);
+        layoutScoreTab.addView(totalscoreView);
 
         return child;
     }

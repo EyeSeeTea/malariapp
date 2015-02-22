@@ -10,7 +10,7 @@ import java.util.List;
 public class Score {
 
     public static final int NUMERATOR=0;
-    public static final int DENOMINATOR=0;
+    public static final int DENOMINATOR=1;
 
     Hashtable<Integer, float[]> scores;
 
@@ -27,6 +27,11 @@ public class Score {
         }
     }
 
+    public void addTabScore(Integer tab)
+    {
+        scores.put(tab, new float[2]);
+    }
+
     public void addValueNumerator(Integer tab, float value)
     {
         scores.get(tab)[NUMERATOR]+=value;
@@ -35,6 +40,18 @@ public class Score {
     public void addValueDenominator(Integer tab, float value)
     {
         scores.get(tab)[DENOMINATOR]+=value;
+    }
+
+    public void addValuesNumDenum(Integer tab, float num, float denum)
+    {
+        scores.get(tab)[NUMERATOR]+=num;
+        scores.get(tab)[DENOMINATOR]+=denum;
+    }
+
+    public void resetValuesNumDenum(Integer tab, float num, float denum)
+    {
+        scores.get(tab)[NUMERATOR]-=num;
+        scores.get(tab)[DENOMINATOR]-=denum;
     }
 
     public void resetValueDenominator(Integer tab, float value)
