@@ -33,7 +33,7 @@ import java.util.List;
  */
 public class Layout {
 
-static final Score scores=new Score();
+    static final Score scores=new Score();
 
 
     public static int insertTab(MainActivity mainActivity, Tab tab, int parent, boolean withScore) {
@@ -104,6 +104,7 @@ static final Score scores=new Score();
                                 TextView numerator_widget = (TextView) Utils.findParentRecursively(spinner,R.id.ddl).findViewById(R.id.num);
                                 TextView denominator_widget = (TextView) Utils.findParentRecursively(spinner,R.id.ddl).findViewById(R.id.den);
                                 TextView statement_widget=(TextView) Utils.findParentRecursively(spinner,R.id.ddl).findViewById(R.id.statement);
+                                TextView partial_score_wdiget = (TextView) Utils.findParentRecursively(spinner,R.id.Grid).findViewById(R.id.score);
 
                                 if (triggeredOption.getName() != null && triggeredOption.getName() != Constants.DEFAULT_SELECT_OPTION) {
                                     // First we do the calculus
@@ -142,6 +143,10 @@ static final Score scores=new Score();
                                     denominator_widget.setText(Float.toString(0.0F));
                                 }
                                 //Log.i(".MainActivity", "id: " + toPrint.getId());
+
+                                partial_score_wdiget.setText(Float.toString(scores.getPercent((Integer)statement_widget.getTag())));
+
+
 
                                 // Then we set the score in the Score tab
                             }
@@ -211,6 +216,7 @@ static final Score scores=new Score();
 
 
     public void updateScore(float value){
+
 
     }
 
