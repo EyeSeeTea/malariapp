@@ -41,5 +41,6 @@
     <string name="normal">Normal</string>
     <string name="save">Save</string>
     <string name="clear">Clear</string>
+    <string name="emptyString"></string>
 
 </resources>

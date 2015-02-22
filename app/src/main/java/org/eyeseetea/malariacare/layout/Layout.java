@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -28,6 +29,11 @@ import java.util.List;
  * Created by adrian on 19/02/15.
  */
 public class Layout {
+
+    public void updateScore(float value){
+
+    }
+
     public static int insertTab(MainActivity mainActivity, Tab tab, int parent, boolean withScore) {
         // This layout inflater is for joining other layouts
         LayoutInflater inflater = (LayoutInflater) mainActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -92,27 +98,37 @@ public class Layout {
 
 
                                 if (triggeredOption.getName() != null && triggeredOption.getName() != Constants.DEFAULT_SELECT_OPTION) {
+                                    // First we do the calculus
                                     Float numerator = triggeredOption.getFactor() * triggeredQuestion.getNumerator_w();
-
-
-                                    //No actualiza el valor en la pantalla!!!
-                                    //((TextView)((View)spinner.getParent().getParent().getParent().getParent().getParent()).findViewById(R.id.total_num)).setText("10");
-
+                                    Log.i(".MainActivity", "numerator: " + numerator);
                                     Float denominator=new Float(0);
-
-                                    if (triggeredQuestion.getNumerator_w().compareTo(triggeredQuestion.getDenominator_w())==0)
+                                    if (triggeredQuestion.getNumerator_w().compareTo(triggeredQuestion.getDenominator_w())==0) {
                                         denominator=triggeredQuestion.getDenominator_w();
-                                    else
-                                        if (triggeredQuestion.getNumerator_w().compareTo(new Float(0))==0 && triggeredQuestion.getDenominator_w().compareTo(new Float(0))!=0)
+                                        Log.i(".MainActivity", "denominator: " + denominator);
+                                    }
+                                    else {
+                                        if (triggeredQuestion.getNumerator_w().compareTo(new Float(0))==0 && triggeredQuestion.getDenominator_w().compareTo(new Float(0))!=0) {
                                             denominator = triggeredOption.getFactor() * triggeredQuestion.getDenominator_w();
+                                            Log.i(".MainActivity", "denominator: " + denominator);
+                                        }
+                                    }
 
-                                    ((TextView) ((View) spinner.getParent().getParent()).findViewById(R.id.num)).setText(Float.toString(numerator));
-                                    ((TextView) ((View) spinner.getParent().getParent()).findViewById(R.id.den)).setText(Float.toString(denominator));
+                                    ((TextView) ((View)((ViewGroup)((ViewGroup)(spinner.getParent())).getParent())).findViewById(R.id.num)).setText(Float.toString(numerator));
+                                    ((TextView) ((View)((ViewGroup)((ViewGroup)(spinner.getParent())).getParent())).findViewById(R.id.den)).setText(Float.toString(denominator));
                                 }
                                 else{
-                                    ((TextView) ((View) spinner.getParent().getParent()).findViewById(R.id.num)).setText(Float.toString(0.0F));
-                                    ((TextView) ((View) spinner.getParent().getParent()).findViewById(R.id.den)).setText(Float.toString(0.0F));
+                                    ((TextView) ((View)((ViewGroup)((ViewGroup)(spinner.getParent())).getParent())).findViewById(R.id.num)).setText(Float.toString(0.0F));
+                                    ((TextView) ((View)((ViewGroup)((ViewGroup)(spinner.getParent())).getParent())).findViewById(R.id.den)).setText(Float.toString(0.0F));
                                 }
+                                // Then we print it on the per-tab total scores
+                                //((TextView)((View) ((ViewGroup)((ViewGroup)((ViewGroup)spinner.getParent()).getParent()).getParent()).getParent().getParent()).findViewById(R.id.total_num)).setText("10");
+                                //((TextView) ((View)((ViewGroup)((ViewGroup)((ViewGroup)((ViewGroup)spinner.getParent()).getParent()).getParent()).getParent())).findViewById(R.id.total_num)).setText("10");
+                                //View toPrint = ((View)((ViewGroup)((ViewGroup)((ViewGroup)((ViewGroup)((ViewGroup)(spinner.getParent())).getParent())).getParent())).getParent()).findViewById(R.id.total_num);
+                                //View toPrint;
+                                //toPrint = ((View)(spinner.getParent().getParent().getParent().getParent())).findViewById(R.id.total_num);
+                                //Log.i(".MainActivity", "id: " + toPrint.getId());
+
+                                // Then we set the score in the Score tab
                             }
 
                             @Override
