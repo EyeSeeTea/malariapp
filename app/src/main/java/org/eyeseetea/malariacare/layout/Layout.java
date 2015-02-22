@@ -92,7 +92,6 @@ public class Layout {
 
                         dropdown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 
-
                             @Override
                             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
 
@@ -203,27 +202,19 @@ public class Layout {
 
         if (withScore) {
             // This layout is for showing the accumulated score
-            for (int i=0; i<4; i++) {
-                LinearLayout layoutScoreTab = (LinearLayout) layoutGrandParent.getChildAt(1);
-                child = R.layout.subtotal_num_dem;
-                View subtotalView = inflater.inflate(child, layoutParent, false);
-                TextView total_num_text = (TextView) subtotalView.findViewById(R.id.total_num);
-                total_num_text.setText("--------->");
-                TextView total_dem_text = (TextView) subtotalView.findViewById(R.id.total_den);
-                total_dem_text.setText("--------->");
-                layoutScoreTab.addView(subtotalView);
-            }
+            GridLayout layoutParentScore = (GridLayout) layoutGrandParent.getChildAt(1);
+            Log.i(".Layout", "Grandpa layout children: " + layoutGrandParent.getChildCount());
+            child = R.layout.subtotal_num_dem;
+            View subtotalView = inflater.inflate(child, layoutParentScore, false);
+            TextView total_num_text = (TextView) subtotalView.findViewById(R.id.total_num);
+            total_num_text.setText("0");
+            TextView total_dem_text = (TextView) subtotalView.findViewById(R.id.total_den);
+            total_dem_text.setText("0");
+            layoutParentScore.addView(subtotalView);
         }
 
         return child;
     }
-
-
-    public void updateScore(float value){
-
-
-    }
-
 }
 
 

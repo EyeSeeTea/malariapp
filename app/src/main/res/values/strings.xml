@@ -42,5 +42,6 @@
     <string name="save">Save</string>
     <string name="clear">Clear</string>
     <string name="emptyString"></string>
+    <string name="accumulated">Tab num/dem</string>
 
 </resources>
