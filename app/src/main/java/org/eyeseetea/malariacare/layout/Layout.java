@@ -43,7 +43,6 @@ static final Score scores=new Score();
         // This layout is for the tab content (questions)
         LinearLayout layoutGrandParent = (LinearLayout) mainActivity.findViewById(parent);
         ScrollView layoutParentScroll = (ScrollView) layoutGrandParent.getChildAt(0);
-        LinearLayout layoutScoreTab = (LinearLayout) layoutGrandParent.getChildAt(1);
         GridLayout layoutParent = (GridLayout) layoutParentScroll.getChildAt(0);
 
         scores.addTabScore(parent);

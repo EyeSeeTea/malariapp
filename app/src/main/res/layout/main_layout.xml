@@ -538,76 +538,7 @@
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:id="@+id/score"
                 android:text="@string/emptyString" />
-
         </LinearLayout>
-
-
-
-
-
-     <!--   <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.50">
-
-
-            <RelativeLayout
-                android:layout_width="0dip"
-                android:layout_height="match_parent"
-                android:layout_weight="0.4"></RelativeLayout>
-
-            <RelativeLayout
-                android:layout_width="0dip"
-                android:layout_height="match_parent"
-                android:layout_weight="0.8">
-
-                <LinearLayout
-                    android:orientation="horizontal"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/buttons"
-                    android:layout_weight="0.2">
-
-                    <Button
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/save"
-                        android:id="@+id/save"
-                        android:onClick="saveClearResults" />
-
-                    <Button
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/clear"
-                        android:id="@+id/clear"
-                        android:onClick="saveClearResults" />
-
-                </LinearLayout>
-
-                </RelativeLayout>
-
-            <RelativeLayout
-                android:layout_width="0dip"
-                android:layout_height="match_parent"
-                android:layout_weight="0.4">
-
-                <TextView
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:text="0"
-                    android:id="@+id/num_total" />
-
-                <TextView
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:text="0"
-                    android:id="@+id/denum_total" />
-
-
-            </RelativeLayout>
-
-        </LinearLayout> -->
 
         <TextView
             android:layout_width="wrap_content"
