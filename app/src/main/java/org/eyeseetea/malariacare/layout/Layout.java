@@ -100,16 +100,16 @@ public class Layout {
                                 if (triggeredOption.getName() != null && triggeredOption.getName() != Constants.DEFAULT_SELECT_OPTION) {
                                     // First we do the calculus
                                     Float numerator = triggeredOption.getFactor() * triggeredQuestion.getNumerator_w();
-                                    Log.i(".MainActivity", "numerator: " + numerator);
+                                    Log.i(".Layout", "numerator: " + numerator);
                                     Float denominator=new Float(0);
                                     if (triggeredQuestion.getNumerator_w().compareTo(triggeredQuestion.getDenominator_w())==0) {
                                         denominator=triggeredQuestion.getDenominator_w();
-                                        Log.i(".MainActivity", "denominator: " + denominator);
+                                        Log.i(".Layout", "denominator: " + denominator);
                                     }
                                     else {
                                         if (triggeredQuestion.getNumerator_w().compareTo(new Float(0))==0 && triggeredQuestion.getDenominator_w().compareTo(new Float(0))!=0) {
                                             denominator = triggeredOption.getFactor() * triggeredQuestion.getDenominator_w();
-                                            Log.i(".MainActivity", "denominator: " + denominator);
+                                            Log.i(".Layout", "denominator: " + denominator);
                                         }
                                     }
 
@@ -190,11 +190,8 @@ public class Layout {
             View totalscoreView = inflater.inflate(child, layoutScoreTab, false);
             layoutScoreTab.addView(totalscoreView);
         }
-
         return child;
     }
-
-
 }
 
 
