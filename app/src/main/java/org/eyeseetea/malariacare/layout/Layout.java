@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewParent;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -21,6 +22,7 @@ import org.eyeseetea.malariacare.data.Option;
 import org.eyeseetea.malariacare.data.Question;
 import org.eyeseetea.malariacare.data.Tab;
 import org.eyeseetea.malariacare.utils.Constants;
+import org.eyeseetea.malariacare.utils.Utils;
 
 import java.util.List;
 
@@ -82,14 +84,16 @@ public class Layout {
 
                         dropdown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 
-
                             @Override
                             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+
+
 
                                 Spinner spinner = (Spinner)parentView;
                                 Option triggeredOption = (Option)spinner.getItemAtPosition(position);
                                 Question triggeredQuestion = (Question)spinner.getTag();
-
+                                TextView numerator_widget = (TextView) Utils.findParentRecursively(spinner,R.id.ddl).findViewById(R.id.num);
+                                TextView denominator_widget = (TextView) Utils.findParentRecursively(spinner,R.id.ddl).findViewById(R.id.den);
 
                                 if (triggeredOption.getName() != null && triggeredOption.getName() != Constants.DEFAULT_SELECT_OPTION) {
                                     Float numerator = triggeredOption.getFactor() * triggeredQuestion.getNumerator_w();
@@ -106,12 +110,16 @@ public class Layout {
                                         if (triggeredQuestion.getNumerator_w().compareTo(new Float(0))==0 && triggeredQuestion.getDenominator_w().compareTo(new Float(0))!=0)
                                             denominator = triggeredOption.getFactor() * triggeredQuestion.getDenominator_w();
 
-                                    ((TextView) ((View) spinner.getParent().getParent()).findViewById(R.id.num)).setText(Float.toString(numerator));
-                                    ((TextView) ((View) spinner.getParent().getParent()).findViewById(R.id.den)).setText(Float.toString(denominator));
+                                    //((TextView) ((View) spinner.getParent().getParent()).findViewById(R.id.num)).setText(Float.toString(numerator));
+                                    numerator_widget.setText(Float.toString(numerator));
+                                    //((TextView) ((View) spinner.getParent().getParent()).findViewById(R.id.den)).setText(Float.toString(denominator));
+                                    denominator_widget.setText(Float.toString(denominator));
                                 }
                                 else{
-                                    ((TextView) ((View) spinner.getParent().getParent()).findViewById(R.id.num)).setText(Float.toString(0.0F));
-                                    ((TextView) ((View) spinner.getParent().getParent()).findViewById(R.id.den)).setText(Float.toString(0.0F));
+                                    //((TextView) ((View) spinner.getParent().getParent()).findViewById(R.id.num)).setText(Float.toString(0.0F));
+                                    numerator_widget.setText(Float.toString(0.0F));
+                                    //((TextView) ((View) spinner.getParent().getParent()).findViewById(R.id.den)).setText(Float.toString(0.0F));
+                                    denominator_widget.setText(Float.toString(0.0F));
                                 }
                             }
 
