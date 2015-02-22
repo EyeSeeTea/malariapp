@@ -22,12 +22,11 @@ import java.util.List;
 
 
 public class MainActivity extends ActionBarActivity {
-    public static final boolean DEBUGGING = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (DEBUGGING) Log.i(".MainActivity", "App started");
+        Log.i(".MainActivity", "App started");
         setContentView(R.layout.main_layout);
         final ActionBar actionBar = getActionBar();
 
@@ -39,55 +38,35 @@ public class MainActivity extends ActionBarActivity {
             PopulateDB.populateDB(assetManager);
         }
 
+        Object tabsLayouts [][] = {
+                {new Integer(R.id.tab1parent), new Boolean(true)},   // PROFILE
+                {new Integer(R.id.tab2parent), new Boolean(true)},   // C1-GENERAL
+                {new Integer(R.id.tab3parent), new Boolean(true)},   // C1-RDT
+                {new Integer(R.id.tab4parent), new Boolean(true)},   // C1-MICROSCOPY
+                {new Integer(R.id.tab5parent), new Boolean(true)},   // C2-GENERAL
+                {new Integer(R.id.tab6parent), new Boolean(true)},   // C2-RDT
+                {new Integer(R.id.tab7parent), new Boolean(true)},   // C2-MICROSCOPY
+                {new Integer(R.id.tab8parent), new Boolean(true)},   // C3-GENERAL
+                {new Integer(R.id.tab9parent), new Boolean(true)},   // C3-RDT
+                {new Integer(R.id.tab10parent), new Boolean(true)},  // C3-MICROSCOPY
+                {new Integer(R.id.tab11parent), new Boolean(false)}, // ADHERENCE
+                {new Integer(R.id.tab12parent), new Boolean(false)}, // FEEDBACK
+                {new Integer(R.id.tab13parent), new Boolean(true)},  // ENVIRONMENT & MATERIALS
+                {new Integer(R.id.tab14parent), new Boolean(false)}, // REPORTING
+                {new Integer(R.id.tab15parent), new Boolean(false)}, // IQA EQA
+                {new Integer(R.id.tab16parent), new Boolean(false)}  // SCORE
+        };
+
+
+
         // We get all tabs and insert their content in their layout
-
-        Integer tabsLayouts [] = {new Integer(R.id.tab1),
-                new Integer(R.id.tab2),
-                new Integer(R.id.tab3),
-                new Integer(R.id.tab4),
-                new Integer(R.id.tab5),
-                new Integer(R.id.tab6),
-                new Integer(R.id.tab7),
-                new Integer(R.id.tab8),
-                new Integer(R.id.tab9),
-                new Integer(R.id.tab10),
-                new Integer(R.id.tab11),
-                new Integer(R.id.tab12),
-                new Integer(R.id.tab13),
-                new Integer(R.id.tab14),
-                new Integer(R.id.tab15),
-                new Integer(R.id.tab16)};
-
-        //Esto hay que modificarlo y usaar solo un array
-
-        Integer scoreTabs [] = {new Integer(R.id.scoretab1),
-                new Integer(R.id.scoretab2),
-                new Integer(R.id.scoretab3),
-                new Integer(R.id.scoretab4),
-                new Integer(R.id.scoretab5),
-                new Integer(R.id.scoretab6),
-                new Integer(R.id.scoretab7),
-                new Integer(R.id.scoretab8),
-                new Integer(R.id.scoretab9),
-                new Integer(R.id.scoretab10),
-                new Integer(R.id.scoretab11),
-                new Integer(R.id.scoretab12),
-                new Integer(R.id.scoretab13),
-                new Integer(R.id.scoretab14),
-                new Integer(R.id.scoretab15),
-                new Integer(R.id.scoretab16)};
-
-
-
-        List<Integer> tabLayoutList = Arrays.asList(tabsLayouts);
+        List<Object[]> tabLayoutList = Arrays.asList(tabsLayouts);
         List<Tab> tabList2 = Tab.listAll(Tab.class);
         int tabLayout;
         for (int i = 0; i< tabLayoutList.size(); i++){
             Tab tabItem = tabList2.get(i);
-            if (DEBUGGING) Log.i(".MainActivity", tabItem.toString());
-
-            Layout.insertTab(this, tabItem, tabLayoutList.get(i),scoreTabs[i]);
-
+            Log.d(".MainActivity", tabItem.toString());
+            Layout.insertTab(this, tabItem, ((Integer)tabLayoutList.get(i)[0]).intValue(), ((Boolean)tabLayoutList.get(i)[1]).booleanValue());
         }
     }
 
@@ -116,10 +95,10 @@ public class MainActivity extends ActionBarActivity {
     public void saveClearResults(View view) {
 
         if (view.getId() == R.id.save) {
-            if (DEBUGGING) Log.i(".MainActivity", "Button save pressed");
+            Log.d(".MainActivity", "Button save pressed");
         }
         else if (view.getId() == R.id.clear) {
-            if (DEBUGGING) Log.i(".MainActivity", "Button clear pressed");
+            Log.d(".MainActivity", "Button clear pressed");
         }
         ArrayList<View> allViewsWithinMyTopView = getAllChildren(view);
         for (View child : allViewsWithinMyTopView) {
