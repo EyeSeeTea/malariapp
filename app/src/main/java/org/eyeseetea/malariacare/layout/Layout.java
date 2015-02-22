@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewParent;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -32,7 +33,7 @@ import java.util.List;
  */
 public class Layout {
 
-    static final Score scores=new Score();
+static final Score scores=new Score();
 
 
     public static int insertTab(MainActivity mainActivity, Tab tab, int parent, boolean withScore) {
@@ -94,6 +95,7 @@ public class Layout {
 
                         dropdown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 
+
                             @Override
                             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
 
@@ -105,17 +107,24 @@ public class Layout {
                                 TextView statement_widget=(TextView) Utils.findParentRecursively(spinner,R.id.ddl).findViewById(R.id.statement);
 
                                 if (triggeredOption.getName() != null && triggeredOption.getName() != Constants.DEFAULT_SELECT_OPTION) {
+                                    // First we do the calculus
                                     Float numerator = triggeredOption.getFactor() * triggeredQuestion.getNumerator_w();
+                                    Log.i(".Layout", "numerator: " + numerator);
                                     Float denominator=new Float(0);
                                     Float old_numerator=new Float(0.0);
                                     Float old_denominator=new Float(0.0);
 
 
-                                    if (triggeredQuestion.getNumerator_w().compareTo(triggeredQuestion.getDenominator_w())==0)
+                                    if (triggeredQuestion.getNumerator_w().compareTo(triggeredQuestion.getDenominator_w())==0) {
                                         denominator=triggeredQuestion.getDenominator_w();
-                                    else
-                                        if (triggeredQuestion.getNumerator_w().compareTo(new Float(0))==0 && triggeredQuestion.getDenominator_w().compareTo(new Float(0))!=0)
+                                        Log.i(".Layout", "denominator: " + denominator);
+                                    }
+                                    else {
+                                        if (triggeredQuestion.getNumerator_w().compareTo(new Float(0))==0 && triggeredQuestion.getDenominator_w().compareTo(new Float(0))!=0) {
                                             denominator = triggeredOption.getFactor() * triggeredQuestion.getDenominator_w();
+                                            Log.i(".Layout", "denominator: " + denominator);
+                                        }
+                                    }
 
 
                                     if (numerator_widget.getText().toString()!="") old_numerator = Float.parseFloat(numerator_widget.getText().toString());
@@ -133,7 +142,10 @@ public class Layout {
                                     numerator_widget.setText(Float.toString(0.0F));
                                     denominator_widget.setText(Float.toString(0.0F));
                                 }
-                             }
+                                //Log.i(".MainActivity", "id: " + toPrint.getId());
+
+                                // Then we set the score in the Score tab
+                            }
 
                             @Override
                             public void onNothingSelected(AdapterView<?> parentView) {
@@ -187,16 +199,21 @@ public class Layout {
             }
         }
 
-        // This layout is for showing the accumulated score
-        //LinearLayout layoutScoreTab = (LinearLayout) mainActivity.findViewById(R.id.scoretab1);
-
-        child = R.layout.totalscore_tab;
-        View totalscoreView = inflater.inflate(child, layoutScoreTab, false);
-        layoutScoreTab.addView(totalscoreView);
+        if (withScore) {
+            // This layout is for showing the accumulated score
+            LinearLayout layoutScoreTab = (LinearLayout) layoutGrandParent.getChildAt(1);
+            child = R.layout.totalscore_tab;
+            View totalscoreView = inflater.inflate(child, layoutScoreTab, false);
+            layoutScoreTab.addView(totalscoreView);
+        }
 
         return child;
     }
 
+
+    public void updateScore(float value){
+
+    }
 
 }
 

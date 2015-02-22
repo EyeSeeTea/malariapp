@@ -104,7 +104,7 @@ public class MainActivity extends ActionBarActivity {
         for (View child : allViewsWithinMyTopView) {
             if (child instanceof TextView) {
                 TextView childTextView = (TextView) child;
-                System.out.println(childTextView.getText().toString());
+                Log.d(".MainActivity", childTextView.getText().toString());
             }
             else if(child instanceof Spinner){
 
