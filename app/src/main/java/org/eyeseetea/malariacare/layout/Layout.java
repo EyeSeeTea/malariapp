@@ -4,8 +4,6 @@ import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewParent;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -205,10 +203,16 @@ public class Layout {
 
         if (withScore) {
             // This layout is for showing the accumulated score
-            LinearLayout layoutScoreTab = (LinearLayout) layoutGrandParent.getChildAt(1);
-            child = R.layout.totalscore_tab;
-            View totalscoreView = inflater.inflate(child, layoutScoreTab, false);
-            layoutScoreTab.addView(totalscoreView);
+            for (int i=0; i<4; i++) {
+                LinearLayout layoutScoreTab = (LinearLayout) layoutGrandParent.getChildAt(1);
+                child = R.layout.subtotal_num_dem;
+                View subtotalView = inflater.inflate(child, layoutParent, false);
+                TextView total_num_text = (TextView) subtotalView.findViewById(R.id.total_num);
+                total_num_text.setText("--------->");
+                TextView total_dem_text = (TextView) subtotalView.findViewById(R.id.total_den);
+                total_dem_text.setText("--------->");
+                layoutScoreTab.addView(subtotalView);
+            }
         }
 
         return child;

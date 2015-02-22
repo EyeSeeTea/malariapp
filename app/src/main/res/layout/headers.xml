@@ -7,7 +7,12 @@
     <TextView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="New Text"
+        android:text="@string/emptyString"
         android:id="@+id/headerName"
-        android:background="#ff639533" />
+        android:background="#ff639533"
+        android:textColor="#ffffff"
+        android:shadowColor="#407015"
+        android:typeface="sans"
+        android:textStyle="bold"
+        android:textSize="18sp" />
 </LinearLayout>

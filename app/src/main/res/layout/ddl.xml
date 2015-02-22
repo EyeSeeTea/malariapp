@@ -4,9 +4,9 @@
     android:layout_height="match_parent" android:id="@+id/ddl">
 
     <RelativeLayout
-        android:layout_width="0dip"
+        android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:layout_weight="0.5">
+        android:layout_weight="0.16">
         <TextView
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
@@ -14,9 +14,9 @@
             android:id="@+id/statement" />
     </RelativeLayout>
     <RelativeLayout
-        android:layout_width="0dip"
+        android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:layout_weight="0.5">
+        android:layout_weight="0.26">
         <Spinner
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
@@ -24,24 +24,28 @@
             android:spinnerMode="dropdown" />
     </RelativeLayout>
     <RelativeLayout
-        android:layout_width="0dip"
+        android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:layout_weight="0.7">
+        android:layout_weight="0.29"
+        android:gravity="center_vertical|center_horizontal">
         <TextView
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:text="0"
-            android:id="@+id/num" />
+            android:id="@+id/num"
+            android:gravity="center_vertical|center_horizontal" />
     </RelativeLayout>
     <RelativeLayout
-        android:layout_width="0dip"
+        android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:layout_weight="0.7">
+        android:layout_weight="0.29"
+        android:gravity="center_vertical|center_horizontal">
         <TextView
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:text="0"
-            android:id="@+id/den" />
+            android:id="@+id/den"
+            android:gravity="center_vertical|center_horizontal" />
     </RelativeLayout>
 
 </LinearLayout>

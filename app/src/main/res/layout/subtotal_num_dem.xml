@@ -4,28 +4,40 @@
     android:layout_height="match_parent">
 
     <RelativeLayout
-        android:layout_width="fill_parent"
+        android:layout_width="0dip"
         android:layout_height="fill_parent"
-        android:layout_weight="0.5"></RelativeLayout>
+        android:layout_weight="0.5"
+        android:gravity="top|left">
+
+        <Space
+            android:layout_width="20dp"
+            android:layout_height="20dp" />
+    </RelativeLayout>
 
     <RelativeLayout
-        android:layout_width="wrap_content"
+        android:layout_width="0dip"
         android:layout_height="fill_parent"
-        android:layout_weight="0.25">
+        android:layout_weight="0.25"
+        android:gravity="top|left">
+
         <TextView
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:text="0"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Medium Text"
             android:id="@+id/total_num" />
     </RelativeLayout>
     <RelativeLayout
-        android:layout_width="wrap_content"
+        android:layout_width="0dip"
         android:layout_height="fill_parent"
-        android:layout_weight="0.25">
+        android:layout_weight="0.25"
+        android:gravity="top|left">
+
         <TextView
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:text="0"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Medium Text"
             android:id="@+id/total_den" />
     </RelativeLayout>
 
