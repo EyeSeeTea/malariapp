@@ -74,5 +74,10 @@ public class Score {
         return scores.get(tab)[DENOMINATOR];
     }
 
+    public float getPercent(Integer tab)
+    {
+        return ( getNumerator(tab)/getDenominator(tab))*100;
+    }
+
 
 }
