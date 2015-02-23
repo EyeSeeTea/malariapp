@@ -101,7 +101,10 @@ public class Layout {
                                 TextView numerator_widget = (TextView) Utils.findParentRecursively(spinner,R.id.ddl).findViewById(R.id.num);
                                 TextView denominator_widget = (TextView) Utils.findParentRecursively(spinner,R.id.ddl).findViewById(R.id.den);
                                 TextView statement_widget=(TextView) Utils.findParentRecursively(spinner,R.id.ddl).findViewById(R.id.statement);
-                                TextView partial_score_wdiget = (TextView) Utils.findParentRecursively(spinner,R.id.Grid).findViewById(R.id.score);
+                                TextView partial_score_widget = (TextView) Utils.findParentRecursively(spinner,R.id.Grid).findViewById(R.id.score);
+                                TextView numSubtotal = (TextView)((LinearLayout) Utils.findParentRecursively(spinner,MainActivity.getLayoutIds())).findViewById(R.id.total_num);
+                                TextView denSubtotal = (TextView)((LinearLayout) Utils.findParentRecursively(spinner,MainActivity.getLayoutIds())).findViewById(R.id.total_den);
+
 
                                 if (triggeredOption.getName() != null && triggeredOption.getName() != Constants.DEFAULT_SELECT_OPTION) {
                                     // First we do the calculus
@@ -139,11 +142,11 @@ public class Layout {
                                     numerator_widget.setText(Float.toString(0.0F));
                                     denominator_widget.setText(Float.toString(0.0F));
                                 }
-                                //Log.i(".MainActivity", "id: " + toPrint.getId());
 
-                                partial_score_wdiget.setText(Float.toString(scores.getPercent((Integer)statement_widget.getTag())));
-
-
+                                // We update the score in the per tab subtotal (num/dem) and in the tab percentage
+                                partial_score_widget.setText(Float.toString(scores.getPercent((Integer)statement_widget.getTag())));
+                                numSubtotal.setText(Float.toString(scores.getNumerator((Integer)statement_widget.getTag())));
+                                denSubtotal.setText(Float.toString(scores.getDenominator((Integer)statement_widget.getTag())));
 
                                 // Then we set the score in the Score tab
                             }

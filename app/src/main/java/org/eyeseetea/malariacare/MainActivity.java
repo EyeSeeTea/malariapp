@@ -23,8 +23,28 @@ import java.util.List;
 
 public class MainActivity extends ActionBarActivity {
 
+    private static Object tabsLayouts [][] = {
+            {new Integer(R.id.tab1parent), new Boolean(true)},   // PROFILE
+            {new Integer(R.id.tab2parent), new Boolean(true)},   // C1-GENERAL
+            {new Integer(R.id.tab3parent), new Boolean(true)},   // C1-RDT
+            {new Integer(R.id.tab4parent), new Boolean(true)},   // C1-MICROSCOPY
+            {new Integer(R.id.tab5parent), new Boolean(true)},   // C2-GENERAL
+            {new Integer(R.id.tab6parent), new Boolean(true)},   // C2-RDT
+            {new Integer(R.id.tab7parent), new Boolean(true)},   // C2-MICROSCOPY
+            {new Integer(R.id.tab8parent), new Boolean(true)},   // C3-GENERAL
+            {new Integer(R.id.tab9parent), new Boolean(true)},   // C3-RDT
+            {new Integer(R.id.tab10parent), new Boolean(true)},  // C3-MICROSCOPY
+            {new Integer(R.id.tab11parent), new Boolean(false)}, // ADHERENCE
+            {new Integer(R.id.tab12parent), new Boolean(false)}, // FEEDBACK
+            {new Integer(R.id.tab13parent), new Boolean(true)},  // ENVIRONMENT & MATERIALS
+            {new Integer(R.id.tab14parent), new Boolean(false)}, // REPORTING
+            {new Integer(R.id.tab15parent), new Boolean(false)}, // IQA EQA
+            {new Integer(R.id.tab16parent), new Boolean(false)}  // SCORE
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         Log.i(".MainActivity", "App started");
         setContentView(R.layout.main_layout);
@@ -38,24 +58,6 @@ public class MainActivity extends ActionBarActivity {
             PopulateDB.populateDB(assetManager);
         }
 
-        Object tabsLayouts [][] = {
-                {new Integer(R.id.tab1parent), new Boolean(true)},   // PROFILE
-                {new Integer(R.id.tab2parent), new Boolean(true)},   // C1-GENERAL
-                {new Integer(R.id.tab3parent), new Boolean(true)},   // C1-RDT
-                {new Integer(R.id.tab4parent), new Boolean(true)},   // C1-MICROSCOPY
-                {new Integer(R.id.tab5parent), new Boolean(true)},   // C2-GENERAL
-                {new Integer(R.id.tab6parent), new Boolean(true)},   // C2-RDT
-                {new Integer(R.id.tab7parent), new Boolean(true)},   // C2-MICROSCOPY
-                {new Integer(R.id.tab8parent), new Boolean(true)},   // C3-GENERAL
-                {new Integer(R.id.tab9parent), new Boolean(true)},   // C3-RDT
-                {new Integer(R.id.tab10parent), new Boolean(true)},  // C3-MICROSCOPY
-                {new Integer(R.id.tab11parent), new Boolean(false)}, // ADHERENCE
-                {new Integer(R.id.tab12parent), new Boolean(false)}, // FEEDBACK
-                {new Integer(R.id.tab13parent), new Boolean(true)},  // ENVIRONMENT & MATERIALS
-                {new Integer(R.id.tab14parent), new Boolean(false)}, // REPORTING
-                {new Integer(R.id.tab15parent), new Boolean(false)}, // IQA EQA
-                {new Integer(R.id.tab16parent), new Boolean(false)}  // SCORE
-        };
 
 
 
@@ -135,5 +137,13 @@ public class MainActivity extends ActionBarActivity {
             result.addAll(viewArrayList);
         }
         return result;
+    }
+
+    public static List<Integer> getLayoutIds(){
+        List<Integer> ids = new ArrayList<Integer>();
+        for(int i=0; i<tabsLayouts.length; i++){
+            ids.add((Integer) tabsLayouts[i][0]);
+        }
+        return ids;
     }
 }
