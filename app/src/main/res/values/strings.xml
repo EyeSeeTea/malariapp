@@ -43,5 +43,14 @@
     <string name="clear">Clear</string>
     <string name="emptyString"></string>
     <string name="accumulated">Tab num/dem</string>
+    <string name="case1">Case 1</string>
+    <string name="case2">Case 2</string>
+    <string name="case3">Case 3</string>
+    <string name="case4">Case 4</string>
+    <string name="generalTitle">General</string>
+    <string name="rdtTitle">RDT</string>
+    <string name="microscopyTitle">Microscopy</string>
+    <string name="avgTitle">AVG</string>
+    <string name="overall">Overall</string>
 
 </resources>

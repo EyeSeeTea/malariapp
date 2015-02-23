@@ -533,9 +533,10 @@
                             <GridLayout
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:rowCount="1"
+                                android:id="@+id/tab16"
                                 android:columnCount="1"
-                                android:id="@+id/tab16" />
+                                android:rowCount="1">
+                            </GridLayout>
                         </ScrollView>
 
                         <GridLayout
@@ -544,9 +545,10 @@
                             android:columnCount="2"
                             android:rowCount="1"
                             android:id="@+id/scoretab16"
-                            android:layout_weight="0.91"></GridLayout>
+                            android:layout_weight="0.91" />
 
                     </LinearLayout>
+
                 </FrameLayout>
             </LinearLayout>
         </TabHost>

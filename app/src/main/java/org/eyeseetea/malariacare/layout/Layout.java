@@ -33,8 +33,10 @@ public class Layout {
 
     static final Score scores=new Score();
 
+    // This method fill in a tab layout
+    public static int insertTab(MainActivity mainActivity, Tab tab, int parent, boolean withScore, int childlayout) {
 
-    public static int insertTab(MainActivity mainActivity, Tab tab, int parent, boolean withScore) {
+        int child = -1;
         // This layout inflater is for joining other layouts
         LayoutInflater inflater = (LayoutInflater) mainActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
@@ -43,10 +45,16 @@ public class Layout {
         ScrollView layoutParentScroll = (ScrollView) layoutGrandParent.getChildAt(0);
         GridLayout layoutParent = (GridLayout) layoutParentScroll.getChildAt(0);
 
+        if (childlayout != -1){
+            child = childlayout;
+            View scoreView = inflater.inflate(child, layoutParent, false);
+            layoutParent.addView(scoreView);
+            return childlayout;
+        }
+
         scores.addTabScore(parent);
 
 
-        int child = -1;
         int total_denum = 0;
         // We do this to have a default value in the ddl
         Option defaultOption = new Option(Constants.DEFAULT_SELECT_OPTION);
@@ -98,10 +106,10 @@ public class Layout {
                                 Spinner spinner = (Spinner)parentView;
                                 Option triggeredOption = (Option)spinner.getItemAtPosition(position);
                                 Question triggeredQuestion = (Question)spinner.getTag();
-                                TextView numerator_widget = (TextView) Utils.findParentRecursively(spinner,R.id.ddl).findViewById(R.id.num);
-                                TextView denominator_widget = (TextView) Utils.findParentRecursively(spinner,R.id.ddl).findViewById(R.id.den);
-                                TextView statement_widget=(TextView) Utils.findParentRecursively(spinner,R.id.ddl).findViewById(R.id.statement);
-                                TextView partial_score_widget = (TextView) Utils.findParentRecursively(spinner,R.id.Grid).findViewById(R.id.score);
+                                TextView numeratorView = (TextView) Utils.findParentRecursively(spinner,R.id.ddl).findViewById(R.id.num);
+                                TextView denominatorView = (TextView) Utils.findParentRecursively(spinner,R.id.ddl).findViewById(R.id.den);
+                                TextView statementView=(TextView) Utils.findParentRecursively(spinner,R.id.ddl).findViewById(R.id.statement);
+                                TextView partialScoreView = (TextView) Utils.findParentRecursively(spinner,R.id.Grid).findViewById(R.id.score);
                                 TextView numSubtotal = (TextView)((LinearLayout) Utils.findParentRecursively(spinner,MainActivity.getLayoutIds())).findViewById(R.id.total_num);
                                 TextView denSubtotal = (TextView)((LinearLayout) Utils.findParentRecursively(spinner,MainActivity.getLayoutIds())).findViewById(R.id.total_den);
 
@@ -111,8 +119,8 @@ public class Layout {
                                     Float numerator = triggeredOption.getFactor() * triggeredQuestion.getNumerator_w();
                                     Log.i(".Layout", "numerator: " + numerator);
                                     Float denominator=new Float(0);
-                                    Float old_numerator=new Float(0.0);
-                                    Float old_denominator=new Float(0.0);
+                                    Float oldNumerator=new Float(0.0);
+                                    Float oldDenominator=new Float(0.0);
 
 
                                     if (triggeredQuestion.getNumerator_w().compareTo(triggeredQuestion.getDenominator_w())==0) {
@@ -127,26 +135,27 @@ public class Layout {
                                     }
 
 
-                                    if (numerator_widget.getText().toString()!="") old_numerator = Float.parseFloat(numerator_widget.getText().toString());
-                                    if (denominator_widget.getText().toString()!="") old_denominator = Float.parseFloat(denominator_widget.getText().toString());
+                                    if (numeratorView.getText().toString()!="") oldNumerator = Float.parseFloat(numeratorView.getText().toString());
+                                    if (denominatorView.getText().toString()!="") oldDenominator = Float.parseFloat(denominatorView.getText().toString());
 
 
-                                    scores.resetValuesNumDenum((Integer)statement_widget.getTag(),old_numerator,old_denominator);
-                                    scores.addValuesNumDenum((Integer)statement_widget.getTag(),numerator,denominator);
+                                    scores.resetValuesNumDenum((Integer)statementView.getTag(),oldNumerator,oldDenominator);
+                                    scores.addValuesNumDenum((Integer)statementView.getTag(), numerator, denominator);
 
-                                    numerator_widget.setText(Float.toString(numerator));
-                                    denominator_widget.setText(Float.toString(denominator));
+                                    numeratorView.setText(Float.toString(numerator));
+                                    denominatorView.setText(Float.toString(denominator));
 
                                 }
                                 else{
-                                    numerator_widget.setText(Float.toString(0.0F));
-                                    denominator_widget.setText(Float.toString(0.0F));
+                                    numeratorView.setText(Float.toString(0.0F));
+                                    denominatorView.setText(Float.toString(0.0F));
                                 }
-
+                                View tabView;
+                                Log.i(".Layout", "Statement view: " + (Integer)statementView.getTag());
                                 // We update the score in the per tab subtotal (num/dem) and in the tab percentage
-                                partial_score_widget.setText(Float.toString(scores.getPercent((Integer)statement_widget.getTag())));
-                                numSubtotal.setText(Float.toString(scores.getNumerator((Integer)statement_widget.getTag())));
-                                denSubtotal.setText(Float.toString(scores.getDenominator((Integer)statement_widget.getTag())));
+                                partialScoreView.setText(Float.toString(scores.getPercent((Integer) statementView.getTag())));
+                                numSubtotal.setText(Float.toString(scores.getNumerator((Integer) statementView.getTag())));
+                                denSubtotal.setText(Float.toString(scores.getDenominator((Integer) statementView.getTag())));
 
                                 // Then we set the score in the Score tab
                             }

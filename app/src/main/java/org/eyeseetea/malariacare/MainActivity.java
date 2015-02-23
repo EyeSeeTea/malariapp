@@ -23,23 +23,26 @@ import java.util.List;
 
 public class MainActivity extends ActionBarActivity {
 
+    // layouts array configuration
+    //      { Tab parent Layout ID     || add num/den layout || Child layout to include (-1 Integer for generate it programmaticaly)}
     private static Object tabsLayouts [][] = {
-            {new Integer(R.id.tab1parent), new Boolean(true)},   // PROFILE
-            {new Integer(R.id.tab2parent), new Boolean(true)},   // C1-GENERAL
-            {new Integer(R.id.tab3parent), new Boolean(true)},   // C1-RDT
-            {new Integer(R.id.tab4parent), new Boolean(true)},   // C1-MICROSCOPY
-            {new Integer(R.id.tab5parent), new Boolean(true)},   // C2-GENERAL
-            {new Integer(R.id.tab6parent), new Boolean(true)},   // C2-RDT
-            {new Integer(R.id.tab7parent), new Boolean(true)},   // C2-MICROSCOPY
-            {new Integer(R.id.tab8parent), new Boolean(true)},   // C3-GENERAL
-            {new Integer(R.id.tab9parent), new Boolean(true)},   // C3-RDT
-            {new Integer(R.id.tab10parent), new Boolean(true)},  // C3-MICROSCOPY
-            {new Integer(R.id.tab11parent), new Boolean(false)}, // ADHERENCE
-            {new Integer(R.id.tab12parent), new Boolean(false)}, // FEEDBACK
-            {new Integer(R.id.tab13parent), new Boolean(true)},  // ENVIRONMENT & MATERIALS
-            {new Integer(R.id.tab14parent), new Boolean(false)}, // REPORTING
-            {new Integer(R.id.tab15parent), new Boolean(false)}, // IQA EQA
-            {new Integer(R.id.tab16parent), new Boolean(false)}  // SCORE
+            {new Integer(R.id.tab1parent), new Boolean(true), new Integer(-1)},     // PROFILE
+            {new Integer(R.id.tab2parent), new Boolean(true), new Integer(-1)},     // C1-GENERAL
+            {new Integer(R.id.tab3parent), new Boolean(true), new Integer(-1)},     // C1-RDT
+            {new Integer(R.id.tab4parent), new Boolean(true), new Integer(-1)},     // C1-MICROSCOPY
+            {new Integer(R.id.tab5parent), new Boolean(true), new Integer(-1)},     // C2-GENERAL
+            {new Integer(R.id.tab6parent), new Boolean(true), new Integer(-1)},     // C2-RDT
+            {new Integer(R.id.tab7parent), new Boolean(true), new Integer(-1)},     // C2-MICROSCOPY
+            {new Integer(R.id.tab8parent), new Boolean(true), new Integer(-1)},     // C3-GENERAL
+            {new Integer(R.id.tab9parent), new Boolean(true), new Integer(-1)},     // C3-RDT
+            {new Integer(R.id.tab10parent), new Boolean(true), new Integer(-1)},    // C3-MICROSCOPY
+            {new Integer(R.id.tab11parent), new Boolean(false), new Integer(-1)},   // ADHERENCE
+            {new Integer(R.id.tab12parent), new Boolean(false), new Integer(-1)},   // FEEDBACK
+            {new Integer(R.id.tab13parent), new Boolean(true), new Integer(-1)},    // ENVIRONMENT & MATERIALS
+            {new Integer(R.id.tab14parent), new Boolean(false), new Integer(-1)},   // REPORTING
+            {new Integer(R.id.tab15parent), new Boolean(false), new Integer(-1)},   // IQA EQA
+            {new Integer(R.id.tab16parent), new Boolean(false), new Integer(-1)}  // SCORE (Score tab layout is fixed)
+            //{new Integer(R.id.tab16parent), new Boolean(false), R.layout.scoretab}  // SCORE (Score tab layout is fixed)
     };
 
     @Override
@@ -68,8 +71,9 @@ public class MainActivity extends ActionBarActivity {
         for (int i = 0; i< tabLayoutList.size(); i++){
             Tab tabItem = tabList2.get(i);
             Log.d(".MainActivity", tabItem.toString());
-            Layout.insertTab(this, tabItem, ((Integer)tabLayoutList.get(i)[0]).intValue(), ((Boolean)tabLayoutList.get(i)[1]).booleanValue());
+            Layout.insertTab(this, tabItem, ((Integer)tabLayoutList.get(i)[0]).intValue(), ((Boolean)tabLayoutList.get(i)[1]).booleanValue(), ((Integer)tabLayoutList.get(i)[2]).intValue());
         }
+        // Score tab is a little bit special, we don't need to add it
     }
 
     @Override
