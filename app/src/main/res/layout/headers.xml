@@ -3,14 +3,14 @@
     android:orientation="vertical" android:layout_width="fill_parent"
     android:layout_height="match_parent"
     android:id="@+id/header"
-    android:background="#ff639533">
+    android:background="#1e506c">
 
     <TextView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="@string/emptyString"
         android:id="@+id/headerName"
-        android:background="#ff639533"
+        android:background="#1e506c"
         android:textColor="#ffffff"
         android:shadowColor="#407015"
         android:typeface="sans"

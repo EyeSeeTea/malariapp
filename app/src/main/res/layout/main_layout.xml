@@ -120,7 +120,6 @@
                         <GridLayout
                             android:layout_width="fill_parent"
                             android:layout_height="fill_parent"
-                            android:nestedScrollingEnabled="false"
                             android:id="@+id/scoretab2"
                             android:columnCount="2"
                             android:rowCount="1"
@@ -589,16 +588,6 @@
                 android:id="@+id/clear"
                 android:onClick="saveClearResults" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:id="@+id/score"
-                android:text="@string/emptyString"
-                android:background="#ffffff"
-                android:textStyle="bold"
-                android:textSize="24sp"
-                android:textColor="#002235" />
         </LinearLayout>
 
         <TextView

@@ -1,12 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="#1e506c">
 
     <RelativeLayout
         android:layout_width="0dip"
         android:layout_height="fill_parent"
-        android:layout_weight="0.8"
+        android:layout_weight="0.25">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Tab subtotal"
+            android:id="@+id/subtotalScoreText"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:textColor="#ffffff"
+            android:textSize="18sp"
+            android:textStyle="bold|italic" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="0dip"
+        android:layout_height="fill_parent"
+        android:layout_weight="0.15">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:id="@+id/score"
+            android:text="@string/emptyString"
+            android:textStyle="bold"
+            android:textSize="24sp"
+            android:textColor="#ffffff"
+            android:gravity="center"
+            android:layout_centerHorizontal="true" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="0dip"
+        android:layout_height="fill_parent"
+        android:layout_weight="0.3"
         android:layout_gravity="right">
 
         <TextView
@@ -15,10 +52,9 @@
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="@string/accumulated"
             android:id="@+id/accumulatedText"
-            android:textSize="18sp"
+            android:textSize="14sp"
             android:textStyle="italic"
             android:textColor="#ffffff"
-            android:background="#ff639533"
             android:layout_alignParentEnd="false"
             android:layout_centerVertical="true"
             android:layout_alignParentRight="true" />
@@ -27,7 +63,7 @@
     <RelativeLayout
         android:layout_width="0dip"
         android:layout_height="fill_parent"
-        android:layout_weight="0.1"
+        android:layout_weight="0.15"
         android:gravity="center_vertical|center|center_horizontal"
         android:layout_gravity="center">
 
@@ -35,17 +71,17 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Medium Text"
+            android:text="@string/emptyString"
             android:id="@+id/total_num"
-            android:textColor="#ff639533"
-            android:textSize="24sp"
+            android:textColor="#ffffff"
+            android:textSize="20sp"
             android:textStyle="bold"
             android:gravity="center" />
     </RelativeLayout>
     <RelativeLayout
         android:layout_width="0dip"
         android:layout_height="fill_parent"
-        android:layout_weight="0.1"
+        android:layout_weight="0.15"
         android:gravity="center_vertical|center|center_horizontal"
         android:layout_gravity="center">
 
@@ -53,12 +89,12 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Medium Text"
             android:id="@+id/total_den"
-            android:textColor="#ff639533"
-            android:textSize="24sp"
+            android:textColor="#ffffff"
+            android:textSize="20sp"
             android:textStyle="bold"
-            android:gravity="center" />
+            android:gravity="center"
+            android:text="@string/emptyString" />
     </RelativeLayout>
 
 

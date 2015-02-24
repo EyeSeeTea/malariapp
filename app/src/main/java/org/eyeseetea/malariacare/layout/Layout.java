@@ -1,9 +1,11 @@
 package org.eyeseetea.malariacare.layout;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -45,6 +47,8 @@ public class Layout {
         ScrollView layoutParentScroll = (ScrollView) layoutGrandParent.getChildAt(0);
         GridLayout layoutParent = (GridLayout) layoutParentScroll.getChildAt(0);
 
+        // Given the layoutGrandParent, we use the addTag method to associate the tab object, being able to instanciate it later
+
         if (childlayout != -1){
             child = childlayout;
             View scoreView = inflater.inflate(child, layoutParent, false);
@@ -75,13 +79,13 @@ public class Layout {
         for (Header header: headers){
             // First we introduce header text according to the template
             child = R.layout.headers;
-            Log.i(".Layout", "Reading header " + header.toString());
+            //Log.i(".Layout", "Reading header " + header.toString());
             View headerView = inflater.inflate(child, layoutParent, false);
             TextView headerText = (TextView) headerView.findViewById(R.id.headerName);
             headerText.setText(header.getName());
             layoutParent.addView(headerView);
 
-            Log.i(".Layout", "Reader questions for header " + header.toString());
+            //Log.i(".Layout", "Reader questions for header " + header.toString());
             List<Question> questionList = header.getQuestions();
             for (Question question : questionList){
                 // The statement is present in every kind of question
@@ -94,6 +98,16 @@ public class Layout {
                         statement = (TextView) questionView.findViewById(R.id.statement);
                         statement.setText(question.getForm_name());
                         statement.setTag(parent);
+                        TextView denominator = (TextView) questionView.findViewById(R.id.den);
+                        // If the question has children, we load the denominator, else we hide the question
+                        if (question.hasChildren()) {
+                            questionView.setBackgroundColor(Color.parseColor("#d3ffce"));
+                            denominator.setText(Float.toString(question.getDenominator_w()));
+                            // After loading the denominator we increase the subtotal denominator value
+                            scores.addValueDenominator(parent, question.getDenominator_w());
+                        } else {
+                            questionView.setVisibility(View.INVISIBLE);
+                        }
 
                         Spinner dropdown = (Spinner)questionView.findViewById(R.id.answer);
                         dropdown.setTag(question);
@@ -109,12 +123,12 @@ public class Layout {
                                 TextView numeratorView = (TextView) Utils.findParentRecursively(spinner,R.id.ddl).findViewById(R.id.num);
                                 TextView denominatorView = (TextView) Utils.findParentRecursively(spinner,R.id.ddl).findViewById(R.id.den);
                                 TextView statementView=(TextView) Utils.findParentRecursively(spinner,R.id.ddl).findViewById(R.id.statement);
-                                TextView partialScoreView = (TextView) Utils.findParentRecursively(spinner,R.id.Grid).findViewById(R.id.score);
+                                TextView partialScoreView = (TextView) Utils.findParentRecursively(spinner,MainActivity.getLayoutIds()).findViewById(R.id.score);
                                 TextView numSubtotal = (TextView)((LinearLayout) Utils.findParentRecursively(spinner,MainActivity.getLayoutIds())).findViewById(R.id.total_num);
                                 TextView denSubtotal = (TextView)((LinearLayout) Utils.findParentRecursively(spinner,MainActivity.getLayoutIds())).findViewById(R.id.total_den);
 
 
-                                if (triggeredOption.getName() != null && triggeredOption.getName() != Constants.DEFAULT_SELECT_OPTION) {
+                                if (triggeredOption.getName() != null && triggeredOption.getName() != Constants.DEFAULT_SELECT_OPTION) { // This is for capture the user selection
                                     // First we do the calculus
                                     Float numerator = triggeredOption.getFactor() * triggeredQuestion.getNumerator_w();
                                     Log.i(".Layout", "numerator: " + numerator);
@@ -134,7 +148,6 @@ public class Layout {
                                         }
                                     }
 
-
                                     if (numeratorView.getText().toString()!="") oldNumerator = Float.parseFloat(numeratorView.getText().toString());
                                     if (denominatorView.getText().toString()!="") oldDenominator = Float.parseFloat(denominatorView.getText().toString());
 
@@ -142,21 +155,32 @@ public class Layout {
                                     scores.resetValuesNumDenum((Integer)statementView.getTag(),oldNumerator,oldDenominator);
                                     scores.addValuesNumDenum((Integer)statementView.getTag(), numerator, denominator);
 
-                                    numeratorView.setText(Float.toString(numerator));
-                                    denominatorView.setText(Float.toString(denominator));
+                                    // If the option is changed to positive numerator and has children, we need to recalculate the denominator taking those children into account and make children visible again
+                                    if (numerator != 0.0F && triggeredQuestion.hasChildren()){
+                                        View father = Utils.findParentRecursively(spinner, MainActivity.getLayoutIds());
+                                        View son;
+                                        for (Question childQuestion: triggeredQuestion.getQuestionChildren()){
+                                            son = Utils.findChildRecursively(father, childQuestion);
+                                            ((View)son.getParent().getParent()).setVisibility(View.VISIBLE);
+                                            scores.addValueDenominator((Integer)statementView.getTag(), childQuestion.getDenominator_w());
+                                        }
+                                    }
+
+                                    numSubtotal.setText(Float.toString(scores.getNumerator((Integer)statementView.getTag())));
+                                    denSubtotal.setText(Float.toString(scores.getDenominator((Integer)statementView.getTag())));
 
                                 }
-                                else{
+                                else{ // This is for capturing the event when the user leaves the dropdown list without selecting any option
                                     numeratorView.setText(Float.toString(0.0F));
                                     denominatorView.setText(Float.toString(0.0F));
                                 }
                                 View tabView;
-                                Log.i(".Layout", "Statement view: " + (Integer)statementView.getTag());
-                                // We update the score in the per tab subtotal (num/dem) and in the tab percentage
-                                partialScoreView.setText(Float.toString(scores.getPercent((Integer) statementView.getTag())));
+                                // We update numerator in the subtotal score layout
                                 numSubtotal.setText(Float.toString(scores.getNumerator((Integer) statementView.getTag())));
-                                denSubtotal.setText(Float.toString(scores.getDenominator((Integer) statementView.getTag())));
 
+
+                                //denSubtotal.setText(Float.toString(scores.getDenominator((Integer) statementView.getTag())));
+                                partialScoreView.setText(Float.toString(scores.getPercent((Integer) statementView.getTag())));
                                 // Then we set the score in the Score tab
                             }
 
@@ -219,10 +243,11 @@ public class Layout {
             child = R.layout.subtotal_num_dem;
             View subtotalView = inflater.inflate(child, layoutParentScore, false);
             TextView total_num_text = (TextView) subtotalView.findViewById(R.id.total_num);
-            total_num_text.setText("0");
-            TextView total_dem_text = (TextView) subtotalView.findViewById(R.id.total_den);
-            total_dem_text.setText("0");
+            total_num_text.setText("0.0");
+            TextView total_den_text = (TextView) subtotalView.findViewById(R.id.total_den);
+            total_den_text.setText(Float.toString(scores.getDenominator(parent)));
             layoutParentScore.addView(subtotalView);
+            Log.i(".Layout", "after generated tab: " + scores.getNumerator(parent) + " " + scores.getDenominator(parent));
         }
 
         return child;
