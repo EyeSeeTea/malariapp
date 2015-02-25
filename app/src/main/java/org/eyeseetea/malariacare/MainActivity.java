@@ -48,8 +48,7 @@ public class MainActivity extends ActionBarActivity {
             {new Integer(R.id.tab13parent), new Boolean(true), new Integer(-1)},    // ENVIRONMENT & MATERIALS
             {new Integer(R.id.tab14parent), new Boolean(false), new Integer(-1)},   // REPORTING
             {new Integer(R.id.tab15parent), new Boolean(false), new Integer(-1)},   // IQA EQA
-            {new Integer(R.id.tab16parent), new Boolean(false), new Integer(-1)}  // SCORE (Score tab layout is fixed)
-            //{new Integer(R.id.tab16parent), new Boolean(false), R.layout.scoretab}  // SCORE (Score tab layout is fixed)
+            {new Integer(R.id.tab16parent), new Boolean(false), R.layout.scoretab}  // SCORE (Score tab layout is fixed)
     };
 
     @Override

@@ -54,12 +54,6 @@ public class Layout {
 
         // Given the layoutGrandParent, we use the addTag method to associate the tab object, being able to instanciate it later
 
-        if (childlayout != -1){
-            child = childlayout;
-            View scoreView = inflater.inflate(child, layoutParent, false);
-            layoutParent.addView(scoreView);
-            return childlayout;
-        }
 
         scores.addTabScore(parent);
 
@@ -78,6 +72,13 @@ public class Layout {
         tabSpec.setIndicator(name);
         tabSpec.setContent(parent);
         tabHost.addTab(tabSpec);
+
+        if (childlayout != -1){
+            child = childlayout;
+            View scoreView = inflater.inflate(child, layoutParent, false);
+            layoutParent.addView(scoreView);
+            return childlayout;
+        }
 
         Log.i(".Layout", "Generate Headers");
         List<Header> headers = tab.getHeaders();

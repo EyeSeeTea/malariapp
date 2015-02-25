@@ -542,14 +542,6 @@
                             </GridLayout>
                         </ScrollView>
 
-                        <GridLayout
-                            android:layout_width="fill_parent"
-                            android:layout_height="fill_parent"
-                            android:columnCount="2"
-                            android:rowCount="1"
-                            android:id="@+id/scoretab16"
-                            android:layout_weight="0.91" />
-
                     </LinearLayout>
 
                 </FrameLayout>
