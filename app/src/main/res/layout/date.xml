@@ -1,22 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@drawable/back">
 
     <RelativeLayout
         android:layout_width="0dip"
         android:layout_height="fill_parent"
-        android:layout_weight="0.5">
+        android:layout_weight="0.5"
+        android:background="@drawable/back">
         <TextView
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:text="@string/emptyStatement"
-            android:id="@+id/statement" />
+            android:id="@+id/statement"
+            android:paddingLeft="10dip" />
     </RelativeLayout>
     <RelativeLayout
         android:layout_width="0dip"
         android:layout_height="fill_parent"
-        android:layout_weight="0.5">
+        android:layout_weight="0.5"
+        android:background="@drawable/back">
         <EditText
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
