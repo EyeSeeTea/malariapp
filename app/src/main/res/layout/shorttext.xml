@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal" android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@drawable/back">
+    android:layout_height="match_parent">
 
     <RelativeLayout
         android:layout_width="0dip"
         android:layout_height="wrap_content"
-        android:layout_weight="0.5">
+        android:layout_weight="0.5"
+        android:layout_gravity="center_vertical">
         <TextView
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
@@ -18,13 +18,16 @@
     <RelativeLayout
         android:layout_width="0dip"
         android:layout_height="wrap_content"
-        android:layout_weight="0.5">
+        android:layout_weight="0.5"
+        android:padding="5dip"
+        android:gravity="center">
         <EditText
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:text=""
-            android:id="@+id/answer" />
+            android:id="@+id/answer"
+            android:background="@drawable/background_textfield" />
     </RelativeLayout>
 
 </LinearLayout>

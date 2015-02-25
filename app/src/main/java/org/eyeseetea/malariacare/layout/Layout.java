@@ -38,11 +38,13 @@ public class Layout {
 
     static final Score scores=new Score();
     static final int numberOfDecimals = 2; // Number of decimals outputs will have
+    static final int [] backgrounds = {R.drawable.background_even, R.drawable.background_odd};
 
     // This method fill in a tab layout
     public static int insertTab(MainActivity mainActivity, Tab tab, int parent, boolean withScore, int childlayout) {
 
         int child = -1;
+        int iterBacks = 0;
         // This layout inflater is for joining other layouts
         LayoutInflater inflater = (LayoutInflater) mainActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
@@ -87,7 +89,9 @@ public class Layout {
             child = R.layout.headers;
             //Log.i(".Layout", "Reading header " + header.toString());
             View headerView = inflater.inflate(child, layoutParent, false);
+
             TextView headerText = (TextView) headerView.findViewById(R.id.headerName);
+            headerText.setBackgroundResource(R.drawable.background_header);
             headerText.setText(header.getName());
             layoutParent.addView(headerView);
 
@@ -100,6 +104,7 @@ public class Layout {
                     case Constants.DROPDOWN_LIST:
                         child = R.layout.ddl;
                         View questionView = inflater.inflate(child, layoutParent, false);
+                        questionView.setBackgroundResource(backgrounds[iterBacks%backgrounds.length]);
 
                         statement = (TextView) questionView.findViewById(R.id.statement);
                         statement.setText(question.getForm_name());
@@ -108,7 +113,7 @@ public class Layout {
                         // If the question has children, we load the denominator, else we hide the question
                         if (!question.hasParent()) {
                             if (question.hasChildren()) {
-                                questionView.setBackgroundColor(Color.parseColor("#d3ffce"));
+                                questionView.setBackgroundResource(R.drawable.background_parent);
                             }
                             decimalNumber = Utils.round(question.getDenominator_w(), numberOfDecimals);
                             denominator.setText(Float.toString(decimalNumber.floatValue()));
@@ -215,6 +220,7 @@ public class Layout {
                     case Constants.INT:
                         child = R.layout.integer;
                         View questionIntView = inflater.inflate(child, layoutParent, false);
+                        questionIntView.setBackgroundResource(backgrounds[iterBacks%backgrounds.length]);
                         statement = (TextView) questionIntView.findViewById(R.id.statement);
                         statement.setText(question.getForm_name());
                         EditText answerI = (EditText) questionIntView.findViewById(R.id.answer);
@@ -223,6 +229,7 @@ public class Layout {
                     case Constants.LONG_TEXT:
                         child = R.layout.longtext;
                         View questionLTView = inflater.inflate(child, layoutParent, false);
+                        questionLTView.setBackgroundResource(backgrounds[iterBacks%backgrounds.length]);
                         statement = (TextView) questionLTView.findViewById(R.id.statement);
                         statement.setText(question.getForm_name());
                         EditText answerLT = (EditText) questionLTView.findViewById(R.id.answer);
@@ -231,6 +238,7 @@ public class Layout {
                     case Constants.SHORT_TEXT:
                         child = R.layout.shorttext;
                         View questionSTView = inflater.inflate(child, layoutParent, false);
+                        questionSTView.setBackgroundResource(backgrounds[iterBacks%backgrounds.length]);
                         statement = (TextView) questionSTView.findViewById(R.id.statement);
                         statement.setText(question.getForm_name());
                         EditText answerST = (EditText) questionSTView.findViewById(R.id.answer);
@@ -239,13 +247,14 @@ public class Layout {
                     case Constants.SHORT_DATE: case Constants. LONG_DATE:
                         child = R.layout.date;
                         View questionSDView = inflater.inflate(child, layoutParent, false);
+                        questionSDView.setBackgroundResource(backgrounds[iterBacks%backgrounds.length]);
                         statement = (TextView) questionSDView.findViewById(R.id.statement);
                         statement.setText(question.getForm_name());
                         EditText answerSD = (EditText) questionSDView.findViewById(R.id.answer);
                         layoutParent.addView(questionSDView);
                         break;
                 }
-
+                iterBacks++;
             }
         }
 
