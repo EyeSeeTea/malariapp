@@ -87,8 +87,8 @@ public class PopulateDB {
                             question.setDenominator_w(Float.valueOf(RowData[8]));
                             question.setHeader(headerList.get(Integer.valueOf(RowData[9])-1));
                             question.setAnswer(answerList.get(Integer.valueOf(RowData[10])-1));
-                            if (RowData.length == 13){
-                                question.setQuestion(questionList.get(Integer.valueOf(RowData[12])-1));
+                            if (RowData.length == 12){
+                                question.setQuestion(questionList.get(Integer.valueOf(RowData[11])-1));
                             }
                             questionList.add(question);
                             break;

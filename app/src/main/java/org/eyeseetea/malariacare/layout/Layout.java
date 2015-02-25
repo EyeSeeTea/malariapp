@@ -106,8 +106,10 @@ public class Layout {
                         statement.setTag(parent);
                         TextView denominator = (TextView) questionView.findViewById(R.id.den);
                         // If the question has children, we load the denominator, else we hide the question
-                        if (question.hasChildren()) {
-                            questionView.setBackgroundColor(Color.parseColor("#d3ffce"));
+                        if (!question.hasParent()) {
+                            if (question.hasChildren()) {
+                                questionView.setBackgroundColor(Color.parseColor("#d3ffce"));
+                            }
                             decimalNumber = Utils.round(question.getDenominator_w(), numberOfDecimals);
                             denominator.setText(Float.toString(decimalNumber.floatValue()));
                             // After loading the denominator we increase the subtotal denominator value
