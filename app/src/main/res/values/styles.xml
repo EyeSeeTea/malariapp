@@ -1,8 +1,10 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
+    <style name="EyeSeeTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="background">@color/mainColor</item>
+        <item name="logo">@drawable/malariapp_mosquito</item>
+        <item name="displayOptions">useLogo|showHome</item>
     </style>
 
 </resources>

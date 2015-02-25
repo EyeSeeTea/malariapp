@@ -1,9 +1,11 @@
 package org.eyeseetea.malariacare.layout;
 
+import android.app.ActionBar;
 import android.content.Context;
 import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -44,6 +46,7 @@ public class Layout {
 
         // This layout is for the tab content (questions)
         LinearLayout layoutGrandParent = (LinearLayout) mainActivity.findViewById(parent);
+        layoutGrandParent.setTag(tab);
         ScrollView layoutParentScroll = (ScrollView) layoutGrandParent.getChildAt(0);
         GridLayout layoutParent = (GridLayout) layoutParentScroll.getChildAt(0);
 
@@ -69,7 +72,7 @@ public class Layout {
 
         Log.i(".Layout", "Generate Tab");
         String name = tab.getName();
-        TabHost.TabSpec tabSpec = tabHost.newTabSpec("Question tab");
+        TabHost.TabSpec tabSpec = tabHost.newTabSpec(Long.toString(tab.getId())); // Here we set the tag, we'll use later to move between tabs
         tabSpec.setIndicator(name);
         tabSpec.setContent(parent);
         tabHost.addTab(tabSpec);
@@ -106,7 +109,7 @@ public class Layout {
                             // After loading the denominator we increase the subtotal denominator value
                             scores.addValueDenominator(parent, question.getDenominator_w());
                         } else {
-                            questionView.setVisibility(View.INVISIBLE);
+                            questionView.setVisibility(View.GONE);
                         }
 
                         Spinner dropdown = (Spinner)questionView.findViewById(R.id.answer);

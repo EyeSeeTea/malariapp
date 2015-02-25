@@ -7,14 +7,21 @@ import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+import android.widget.TabHost;
 import android.widget.TextView;
+import android.widget.AdapterView;
 
+
+import org.eyeseetea.malariacare.data.Option;
 import org.eyeseetea.malariacare.data.Tab;
 import org.eyeseetea.malariacare.layout.Layout;
 import org.eyeseetea.malariacare.utils.PopulateDB;
+import org.eyeseetea.malariacare.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -51,7 +58,10 @@ public class MainActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         Log.i(".MainActivity", "App started");
         setContentView(R.layout.main_layout);
-        final ActionBar actionBar = getActionBar();
+        android.support.v7.app.ActionBar actionBar = this.getSupportActionBar();
+        actionBar.setLogo(R.drawable.malariapp_mosquito);
+        actionBar.setDisplayUseLogoEnabled(true);
+
 
 //        adb pull /data/data/org.eyeseetea.malariacare/databases/malariacare.db ~/malariacare.db
 
@@ -63,16 +73,76 @@ public class MainActivity extends ActionBarActivity {
 
 
 
-
+        // We get the tab selector spinner and add the different options
+        Spinner tabSpinner = (Spinner) this.findViewById(R.id.tabSpinner);
+        ArrayList<String> spinnerArray = new ArrayList<String>();
         // We get all tabs and insert their content in their layout
-        List<Object[]> tabLayoutList = Arrays.asList(tabsLayouts);
-        List<Tab> tabList2 = Tab.listAll(Tab.class);
+        final List<Object[]> tabLayoutList = Arrays.asList(tabsLayouts);
+        final List<Tab> tabList2 = Tab.listAll(Tab.class);
         int tabLayout;
         for (int i = 0; i< tabLayoutList.size(); i++){
             Tab tabItem = tabList2.get(i);
+            spinnerArray.add(tabItem.getName());
             Log.d(".MainActivity", tabItem.toString());
             Layout.insertTab(this, tabItem, ((Integer)tabLayoutList.get(i)[0]).intValue(), ((Boolean)tabLayoutList.get(i)[1]).booleanValue(), ((Integer)tabLayoutList.get(i)[2]).intValue());
         }
+        // We
+        tabSpinner.setTag(tabsLayouts);
+        ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(this, R.layout.simple_spinner_item, spinnerArray);
+        tabSpinner.setAdapter(spinnerArrayAdapter);
+
+        // Now we manage the selection event, to launch a tab change
+        tabSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+                Spinner spinner = (Spinner) parentView;
+                Tab triggeredTab = (Tab)((View)Utils.findParentRecursively(spinner, R.id.Grid).findViewById(((Integer)tabsLayouts[position][0]).intValue())).getTag(); // Just in case in the future we need to have the tab captured
+                TabHost tabHost = (TabHost) Utils.findParentRecursively(spinner, R.id.tabHost);
+                tabHost.setCurrentTab(position);
+                Log.i(".MainActivity", "Tab selected: " +triggeredTab.getName());
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parentView) {
+                // your code here
+            }
+        });
+
+        // We manage the event for changing between tabs
+        // from http://stackoverflow.com/questions/8311236/how-to-call-tab-onclick-and-ontabchange-for-same-tab
+        // I hope it works
+        final TabHost tabHost = (TabHost)this.findViewById(R.id.tabHost);
+        tabHost.setOnTabChangedListener(new TabHost.OnTabChangeListener()
+        {
+            @Override
+            public void onTabChanged(String tabId) {
+                for (int i = 0; i < tabLayoutList.size(); i++){
+                    final String idLong = Long.toString(tabList2.get(i).getId());
+                    if (tabHost.getCurrentTabTag().equals(idLong)) {
+                        tabHost.getCurrentTabView().setOnTouchListener(
+                            new View.OnTouchListener() {
+                                @Override
+                                public boolean onTouch(View v, MotionEvent event) {
+                                    if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                                        if (tabHost.getCurrentTabTag().equals(idLong)) {
+                                            for (int k = 0; k < tabLayoutList.size(); k++) {
+                                                String idLong2 = Long.toString(tabList2.get(k).getId());
+                                                if (idLong2 != idLong) {
+                                                    tabHost.setCurrentTabByTag(idLong2);
+                                                }
+                                            }
+                                            tabHost.setCurrentTabByTag(idLong);
+                                        }
+                                        return false;
+                                    }
+                                    return false;
+                                }
+                            });
+                    }
+                }
+            }
+        });
+
         // Score tab is a little bit special, we don't need to add it
     }
 

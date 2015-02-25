@@ -11,7 +11,7 @@
         android:allowBackup="true"
         android:icon="@drawable/malariapp_mosquito"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme"
+        android:theme="@style/EyeSeeTheme"
         android:name="com.orm.SugarApp"
         tools:replace="android:icon">
 

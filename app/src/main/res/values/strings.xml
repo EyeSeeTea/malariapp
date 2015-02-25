@@ -52,5 +52,6 @@
     <string name="microscopyTitle">Microscopy</string>
     <string name="avgTitle">AVG</string>
     <string name="overall">Overall</string>
+    <string name="selectTab">Select tab:</string>
 
 </resources>

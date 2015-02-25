@@ -17,13 +17,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="@string/app_name"
+            android:text="@string/selectTab"
             android:id="@+id/HeaderTitle"
-            android:hint="@string/app_name"
             android:gravity="center_vertical|center_horizontal"
             android:background="#1e506c"
             android:textColor="#ffffff"
             android:textSize="24sp" />
+
     </LinearLayout>
 
     <LinearLayout
@@ -43,12 +43,12 @@
                 android:layout_height="fill_parent"
                 android:orientation="vertical">
 
-                <HorizontalScrollView
-                    android:layout_width="fill_parent"
+                <Spinner
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fillViewport="true"
-                    android:scrollbars="horizontal"
-                    android:background="#429470">
+                    android:id="@+id/tabSpinner"
+                    android:spinnerMode="dropdown"
+                    android:layoutMode="clipBounds" />
 
                 <TabWidget
                     android:id="@android:id/tabs"
@@ -56,14 +56,17 @@
                     android:layout_height="wrap_content"
                     android:textAlignment="center"
                     android:tabStripEnabled="true"
-                    android:nestedScrollingEnabled="true"></TabWidget>
-
-                </HorizontalScrollView>
+                    android:nestedScrollingEnabled="true"
+                    android:showDividers="beginning|end"
+                    android:measureWithLargestChild="true"
+                    android:background="@android:color/darker_gray"
+                    android:visibility="gone"></TabWidget>
 
                 <FrameLayout
                     android:id="@android:id/tabcontent"
                     android:layout_width="fill_parent"
-                    android:layout_height="fill_parent">
+                    android:layout_height="0dp"
+                    android:layout_weight="0.4">
 
                     <LinearLayout
                         android:id="@+id/tab1parent"
@@ -549,6 +552,7 @@
                     </LinearLayout>
 
                 </FrameLayout>
+
             </LinearLayout>
         </TabHost>
 
