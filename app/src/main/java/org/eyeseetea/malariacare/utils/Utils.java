@@ -5,6 +5,7 @@ import android.view.ViewGroup;
 
 import org.eyeseetea.malariacare.data.Question;
 
+import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
 
@@ -58,6 +59,12 @@ public class Utils {
             i++;
         }
         return null;
+    }
+
+    public static BigDecimal round(float base, int decimalPlace){
+        BigDecimal bd = new BigDecimal(Float.toString(base));
+        bd = bd.setScale(decimalPlace, BigDecimal.ROUND_DOWN);
+        return bd;
     }
 
 }

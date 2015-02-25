@@ -28,6 +28,7 @@ import org.eyeseetea.malariacare.utils.Constants;
 import org.eyeseetea.malariacare.utils.Score;
 import org.eyeseetea.malariacare.utils.Utils;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -36,6 +37,7 @@ import java.util.List;
 public class Layout {
 
     static final Score scores=new Score();
+    static final int numberOfDecimals = 2; // Number of decimals outputs will have
 
     // This method fill in a tab layout
     public static int insertTab(MainActivity mainActivity, Tab tab, int parent, boolean withScore, int childlayout) {
@@ -62,7 +64,7 @@ public class Layout {
         scores.addTabScore(parent);
 
 
-        int total_denum = 0;
+        BigDecimal decimalNumber;
         // We do this to have a default value in the ddl
         Option defaultOption = new Option(Constants.DEFAULT_SELECT_OPTION);
 
@@ -105,7 +107,8 @@ public class Layout {
                         // If the question has children, we load the denominator, else we hide the question
                         if (question.hasChildren()) {
                             questionView.setBackgroundColor(Color.parseColor("#d3ffce"));
-                            denominator.setText(Float.toString(question.getDenominator_w()));
+                            decimalNumber = Utils.round(question.getDenominator_w(), numberOfDecimals);
+                            denominator.setText(Float.toString(decimalNumber.floatValue()));
                             // After loading the denominator we increase the subtotal denominator value
                             scores.addValueDenominator(parent, question.getDenominator_w());
                         } else {
@@ -129,6 +132,7 @@ public class Layout {
                                 TextView partialScoreView = (TextView) Utils.findParentRecursively(spinner,MainActivity.getLayoutIds()).findViewById(R.id.score);
                                 TextView numSubtotal = (TextView)((LinearLayout) Utils.findParentRecursively(spinner,MainActivity.getLayoutIds())).findViewById(R.id.total_num);
                                 TextView denSubtotal = (TextView)((LinearLayout) Utils.findParentRecursively(spinner,MainActivity.getLayoutIds())).findViewById(R.id.total_den);
+                                BigDecimal decimalNumber;
 
 
                                 if (triggeredOption.getName() != null && triggeredOption.getName() != Constants.DEFAULT_SELECT_OPTION) { // This is for capture the user selection
@@ -154,7 +158,6 @@ public class Layout {
                                     if (numeratorView.getText().toString()!="") oldNumerator = Float.parseFloat(numeratorView.getText().toString());
                                     if (denominatorView.getText().toString()!="") oldDenominator = Float.parseFloat(denominatorView.getText().toString());
 
-
                                     scores.resetValuesNumDenum((Integer)statementView.getTag(),oldNumerator,oldDenominator);
                                     scores.addValuesNumDenum((Integer)statementView.getTag(), numerator, denominator);
 
@@ -169,8 +172,10 @@ public class Layout {
                                         }
                                     }
 
-                                    numSubtotal.setText(Float.toString(scores.getNumerator((Integer)statementView.getTag())));
-                                    denSubtotal.setText(Float.toString(scores.getDenominator((Integer)statementView.getTag())));
+                                    decimalNumber = Utils.round(scores.getNumerator((Integer)statementView.getTag()), numberOfDecimals);
+                                    numSubtotal.setText(Float.toString(decimalNumber.floatValue()));
+                                    decimalNumber = Utils.round(scores.getDenominator((Integer)statementView.getTag()), numberOfDecimals);
+                                    denSubtotal.setText(Float.toString(decimalNumber.floatValue()));
 
                                 }
                                 else{ // This is for capturing the event when the user leaves the dropdown list without selecting any option
@@ -179,11 +184,13 @@ public class Layout {
                                 }
                                 View tabView;
                                 // We update numerator in the subtotal score layout
-                                numSubtotal.setText(Float.toString(scores.getNumerator((Integer) statementView.getTag())));
+                                decimalNumber = Utils.round(scores.getNumerator((Integer) statementView.getTag()), numberOfDecimals);
+                                numSubtotal.setText(Float.toString(decimalNumber.floatValue()));
 
 
                                 //denSubtotal.setText(Float.toString(scores.getDenominator((Integer) statementView.getTag())));
-                                partialScoreView.setText(Float.toString(scores.getPercent((Integer) statementView.getTag())));
+                                decimalNumber = Utils.round(scores.getPercent((Integer) statementView.getTag()), numberOfDecimals);
+                                partialScoreView.setText(Float.toString(decimalNumber.floatValue()));
                                 // Then we set the score in the Score tab
                             }
 
@@ -248,7 +255,8 @@ public class Layout {
             TextView total_num_text = (TextView) subtotalView.findViewById(R.id.total_num);
             total_num_text.setText("0.0");
             TextView total_den_text = (TextView) subtotalView.findViewById(R.id.total_den);
-            total_den_text.setText(Float.toString(scores.getDenominator(parent)));
+            decimalNumber = Utils.round(scores.getDenominator(parent), numberOfDecimals);
+            total_den_text.setText(Float.toString(decimalNumber.floatValue()));
             layoutParentScore.addView(subtotalView);
             Log.i(".Layout", "after generated tab: " + scores.getNumerator(parent) + " " + scores.getDenominator(parent));
         }
