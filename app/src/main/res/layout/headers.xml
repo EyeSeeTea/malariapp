@@ -3,7 +3,8 @@
     android:orientation="vertical" android:layout_width="fill_parent"
     android:layout_height="match_parent"
     android:id="@+id/header"
-    android:paddingTop="20dip">
+    android:paddingTop="20dip"
+    android:paddingBottom="5dip">
 
     <TextView
         android:layout_width="fill_parent"

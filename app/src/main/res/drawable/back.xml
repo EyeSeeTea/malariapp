@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="rectangle" >
-    <!--<solid android:color="#ffffff" />--> <!--background color-->
-    <stroke android:width="1dip" android:color="#1e506c"/> <!--line color-->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle" >
+    <solid android:color="#deeee7" /> <!--background color-->
+    <corners android:radius="10dip"/>
+    <stroke
+        android:width="2dip"
+        android:color="#429470"/>
+        <!--android:dashWidth="10dip"
+        android:dashGap="10dip"/>--> <!--line color-->
+    <!--<padding
+        android:bottom="10dip"/>-->
 </shape>
