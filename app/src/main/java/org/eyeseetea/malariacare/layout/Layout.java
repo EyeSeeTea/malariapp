@@ -13,6 +13,7 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.GridLayout;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TabHost;
@@ -132,7 +133,10 @@ public class Layout {
                             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
 
                                 Spinner spinner = (Spinner)parentView;
+                                RelativeLayout spinnerFather = (RelativeLayout)spinner.getParent();
+                                Integer oldPosition = (Integer)spinnerFather.getTag();
                                 Option triggeredOption = (Option)spinner.getItemAtPosition(position);
+
                                 Question triggeredQuestion = (Question)spinner.getTag();
                                 TextView numeratorView = (TextView) Utils.findParentRecursively(spinner,R.id.ddl).findViewById(R.id.num);
                                 TextView denominatorView = (TextView) Utils.findParentRecursively(spinner,R.id.ddl).findViewById(R.id.den);
@@ -142,22 +146,29 @@ public class Layout {
                                 TextView denSubtotal = (TextView)((LinearLayout) Utils.findParentRecursively(spinner,MainActivity.getLayoutIds())).findViewById(R.id.total_den);
                                 BigDecimal decimalNumber;
 
+                                // FIXME:  This is an alternate way for getting the old position, using setTag() / getTag()
+                                if ( oldPosition != null){
+                                    // If value changes, we need to add or substract to the score the given value
+                                    if (oldPosition.intValue() != position){
+
+                                    }
+                                }
 
                                 if (triggeredOption.getName() != null && triggeredOption.getName() != Constants.DEFAULT_SELECT_OPTION) { // This is for capture the user selection
                                     // First we do the calculus
                                     Float numerator = triggeredOption.getFactor() * triggeredQuestion.getNumerator_w();
                                     Log.i(".Layout", "numerator: " + numerator);
-                                    Float denominator=new Float(0);
-                                    Float oldNumerator=new Float(0.0);
-                                    Float oldDenominator=new Float(0.0);
+                                    Float denominator=new Float(0.0F);
+                                    Float oldNumerator=new Float(0.0F);
+                                    Float oldDenominator=new Float(0.0F);
 
 
                                     if (triggeredQuestion.getNumerator_w().compareTo(triggeredQuestion.getDenominator_w())==0) {
-                                        denominator=triggeredQuestion.getDenominator_w();
+                                        denominator = triggeredQuestion.getDenominator_w();
                                         Log.i(".Layout", "denominator: " + denominator);
                                     }
                                     else {
-                                        if (triggeredQuestion.getNumerator_w().compareTo(new Float(0))==0 && triggeredQuestion.getDenominator_w().compareTo(new Float(0))!=0) {
+                                        if (triggeredQuestion.getNumerator_w().compareTo(new Float(0.0F))==0 && triggeredQuestion.getDenominator_w().compareTo(new Float(0.0F))!=0) {
                                             denominator = triggeredOption.getFactor() * triggeredQuestion.getDenominator_w();
                                             Log.i(".Layout", "denominator: " + denominator);
                                         }
@@ -170,13 +181,14 @@ public class Layout {
                                     scores.addValuesNumDenum((Integer)statementView.getTag(), numerator, denominator);
 
                                     // If the option is changed to positive numerator and has children, we need to recalculate the denominator taking those children into account and make children visible again
-                                    if (numerator != 0.0F && triggeredQuestion.hasChildren()){
+                                    if (triggeredQuestion.hasChildren()){
                                         View father = Utils.findParentRecursively(spinner, MainActivity.getLayoutIds());
-                                        View son;
+                                        View child;
                                         for (Question childQuestion: triggeredQuestion.getQuestionChildren()){
-                                            son = Utils.findChildRecursively(father, childQuestion);
-                                            ((View)son.getParent().getParent()).setVisibility(View.VISIBLE);
-                                            scores.addValueDenominator((Integer)statementView.getTag(), childQuestion.getDenominator_w());
+                                            child = Utils.findChildRecursively(father, childQuestion);
+                                            ((View)child.getParent().getParent()).setVisibility(View.VISIBLE);
+                                            if (numerator != 0.0F) scores.addValueDenominator((Integer)statementView.getTag(), childQuestion.getDenominator_w());
+                                            else scores.resetValueDenominator((Integer)statementView.getTag(), childQuestion.getDenominator_w());
                                         }
                                     }
 
@@ -200,6 +212,10 @@ public class Layout {
                                 decimalNumber = Utils.round(scores.getPercent((Integer) statementView.getTag()), numberOfDecimals);
                                 partialScoreView.setText(Float.toString(decimalNumber.floatValue()));
                                 // Then we set the score in the Score tab
+
+                                // FIXME:  This is an alternate way for getting the old position, using setTag() / getTag()
+                                // Finally we set the option that triggered this event as a Tag in the parent view
+                                spinnerFather.setTag(new Integer(position));
                             }
 
                             @Override
