@@ -162,12 +162,13 @@ public class Layout {
                                     numDenRecordMap.get((Integer)statementView.getTag()).addRecord(triggeredQuestion, numerator, denominator);
 
 
-                                    // If the option is changed to positive numerator and has children, we need to recalculate the denominator taking those children into account and make children visible again
+                                    // If the option is changed to positive numerator and has children, we need to show the children and take their denominators into account
                                     if (triggeredQuestion.hasChildren()){
                                         View parent = Utils.findParentRecursively(spinner, MainActivity.getLayoutIds());
                                         View child;
                                         for (Question childQuestion: triggeredQuestion.getQuestionChildren()){
                                             child = Utils.findChildRecursively(parent, childQuestion);
+
                                             ((View)child.getParent().getParent()).setVisibility(View.VISIBLE);
                                             if (numerator != 0.0F) {
                                                 numDenRecordMap.get((Integer)statementView.getTag()).addRecord(childQuestion, 0F, childQuestion.getDenominator_w());

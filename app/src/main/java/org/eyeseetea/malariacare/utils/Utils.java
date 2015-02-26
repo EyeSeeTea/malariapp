@@ -46,12 +46,11 @@ public class Utils {
 
     // Given a View, this method search down in the tree to find the corresponding child View to a given question
     public static View findChildRecursively(View startingView, Question question) {
-        ViewGroup startingViewGroup = (ViewGroup) startingView;
         int i = 0;
-        int count = startingViewGroup.getChildCount();
-        while(i<count){
-            View child = startingViewGroup.getChildAt(i);
-            if (child.getTag().equals(question)){
+        while(i<((ViewGroup)startingView).getChildCount()){
+            View child = ((ViewGroup)startingView).getChildAt(i);
+            if (child == null) return null;
+            if (child.getTag() != null && child.getTag().equals(question)){
                 return child;
             }
             child = findChildRecursively(child, question);
