@@ -14,6 +14,8 @@ import java.util.List;
  */
 public class Utils {
 
+    static final int numberOfDecimals = 2; // Number of decimals outputs will have
+
     // Given a View, this method climbs the tree searching the target ID
     public static View findParentRecursively(View view, int targetId) {
         if (view.getId() == targetId) {
@@ -61,10 +63,13 @@ public class Utils {
         return null;
     }
 
-    public static BigDecimal round(float base, int decimalPlace){
+    public static String round(float base, int decimalPlace){
         BigDecimal bd = new BigDecimal(Float.toString(base));
         bd = bd.setScale(decimalPlace, BigDecimal.ROUND_DOWN);
-        return bd;
+        return Float.toString(bd.floatValue());
     }
 
+    public static String round(float base){
+        return round(base, Utils.numberOfDecimals);
+    }
 }

@@ -1,13 +1,9 @@
 package org.eyeseetea.malariacare.layout;
 
-import android.app.ActionBar;
 import android.content.Context;
-import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -26,19 +22,21 @@ import org.eyeseetea.malariacare.data.Option;
 import org.eyeseetea.malariacare.data.Question;
 import org.eyeseetea.malariacare.data.Tab;
 import org.eyeseetea.malariacare.utils.Constants;
-import org.eyeseetea.malariacare.utils.Score;
+import org.eyeseetea.malariacare.utils.NumDenRecord;
 import org.eyeseetea.malariacare.utils.Utils;
 
 import java.math.BigDecimal;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by adrian on 19/02/15.
  */
 public class Layout {
 
-    static final Score scores=new Score();
-    static final int numberOfDecimals = 2; // Number of decimals outputs will have
+    //static final Score scores=new Score();
+    static Map<Integer, NumDenRecord> numDenRecordMap = new HashMap<Integer, NumDenRecord>();
     static final int [] backgrounds = {R.drawable.background_even, R.drawable.background_odd};
 
     // This method fill in a tab layout
@@ -58,8 +56,7 @@ public class Layout {
         // Given the layoutGrandParent, we use the addTag method to associate the tab object, being able to instanciate it later
 
 
-        scores.addTabScore(parent);
-
+        numDenRecordMap.put(parent, new NumDenRecord());
 
         BigDecimal decimalNumber;
         // We do this to have a default value in the ddl
@@ -116,10 +113,9 @@ public class Layout {
                             if (question.hasChildren()) {
                                 questionView.setBackgroundResource(R.drawable.background_parent);
                             }
-                            decimalNumber = Utils.round(question.getDenominator_w(), numberOfDecimals);
-                            denominator.setText(Float.toString(decimalNumber.floatValue()));
-                            // After loading the denominator we increase the subtotal denominator value
-                            scores.addValueDenominator(parent, question.getDenominator_w());
+                            denominator.setText(Utils.round(question.getDenominator_w()));
+
+                            numDenRecordMap.get(parent).addRecord(question, 0F, question.getDenominator_w());
                         } else {
                             questionView.setVisibility(View.GONE);
                         }
@@ -134,7 +130,6 @@ public class Layout {
 
                                 Spinner spinner = (Spinner)parentView;
                                 RelativeLayout spinnerFather = (RelativeLayout)spinner.getParent();
-                                Integer oldPosition = (Integer)spinnerFather.getTag();
                                 Option triggeredOption = (Option)spinner.getItemAtPosition(position);
 
                                 Question triggeredQuestion = (Question)spinner.getTag();
@@ -146,22 +141,11 @@ public class Layout {
                                 TextView denSubtotal = (TextView)((LinearLayout) Utils.findParentRecursively(spinner,MainActivity.getLayoutIds())).findViewById(R.id.total_den);
                                 BigDecimal decimalNumber;
 
-                                // FIXME:  This is an alternate way for getting the old position, using setTag() / getTag()
-                                if ( oldPosition != null){
-                                    // If value changes, we need to add or substract to the score the given value
-                                    if (oldPosition.intValue() != position){
-
-                                    }
-                                }
-
                                 if (triggeredOption.getName() != null && triggeredOption.getName() != Constants.DEFAULT_SELECT_OPTION) { // This is for capture the user selection
                                     // First we do the calculus
                                     Float numerator = triggeredOption.getFactor() * triggeredQuestion.getNumerator_w();
                                     Log.i(".Layout", "numerator: " + numerator);
                                     Float denominator=new Float(0.0F);
-                                    Float oldNumerator=new Float(0.0F);
-                                    Float oldDenominator=new Float(0.0F);
-
 
                                     if (triggeredQuestion.getNumerator_w().compareTo(triggeredQuestion.getDenominator_w())==0) {
                                         denominator = triggeredQuestion.getDenominator_w();
@@ -174,48 +158,47 @@ public class Layout {
                                         }
                                     }
 
-                                    if (numeratorView.getText().toString()!="") oldNumerator = Float.parseFloat(numeratorView.getText().toString());
-                                    if (denominatorView.getText().toString()!="") oldDenominator = Float.parseFloat(denominatorView.getText().toString());
+                                    numDenRecordMap.get((Integer)statementView.getTag()).addRecord(triggeredQuestion, numerator, denominator);
 
-                                    scores.resetValuesNumDenum((Integer)statementView.getTag(),oldNumerator,oldDenominator);
-                                    scores.addValuesNumDenum((Integer)statementView.getTag(), numerator, denominator);
 
                                     // If the option is changed to positive numerator and has children, we need to recalculate the denominator taking those children into account and make children visible again
                                     if (triggeredQuestion.hasChildren()){
-                                        View father = Utils.findParentRecursively(spinner, MainActivity.getLayoutIds());
+                                        View parent = Utils.findParentRecursively(spinner, MainActivity.getLayoutIds());
                                         View child;
                                         for (Question childQuestion: triggeredQuestion.getQuestionChildren()){
-                                            child = Utils.findChildRecursively(father, childQuestion);
+                                            child = Utils.findChildRecursively(parent, childQuestion);
                                             ((View)child.getParent().getParent()).setVisibility(View.VISIBLE);
-                                            if (numerator != 0.0F) scores.addValueDenominator((Integer)statementView.getTag(), childQuestion.getDenominator_w());
-                                            else scores.resetValueDenominator((Integer)statementView.getTag(), childQuestion.getDenominator_w());
+                                            if (numerator != 0.0F) {
+                                                numDenRecordMap.get((Integer)statementView.getTag()).addRecord(childQuestion, 0F, childQuestion.getDenominator_w());
+                                            }
+                                            else{
+                                                numDenRecordMap.get((Integer)statementView.getTag()).deleteRecord(childQuestion);
+                                            }
                                         }
                                     }
 
-                                    decimalNumber = Utils.round(scores.getNumerator((Integer)statementView.getTag()), numberOfDecimals);
-                                    numSubtotal.setText(Float.toString(decimalNumber.floatValue()));
-                                    decimalNumber = Utils.round(scores.getDenominator((Integer)statementView.getTag()), numberOfDecimals);
-                                    denSubtotal.setText(Float.toString(decimalNumber.floatValue()));
+                                    numeratorView.setText(Utils.round(numerator));
+                                    numeratorView.setText(Utils.round(denominator));
 
                                 }
-                                else{ // This is for capturing the event when the user leaves the dropdown list without selecting any option
-                                    numeratorView.setText(Float.toString(0.0F));
-                                    denominatorView.setText(Float.toString(0.0F));
+                                else{
+                                //FIXME: Probablemente anadir este metodo al onstart de la main activity instead of el oncreate
+                                // This is for capturing the event when the user leaves the dropdown list without selecting any option
+                                    //numeratorView.setText(Float.toString(0.0F));
+                                    //denominatorView.setText(Float.toString(0.0F));
                                 }
-                                View tabView;
-                                // We update numerator in the subtotal score layout
-                                decimalNumber = Utils.round(scores.getNumerator((Integer) statementView.getTag()), numberOfDecimals);
-                                numSubtotal.setText(Float.toString(decimalNumber.floatValue()));
 
 
-                                //denSubtotal.setText(Float.toString(scores.getDenominator((Integer) statementView.getTag())));
-                                decimalNumber = Utils.round(scores.getPercent((Integer) statementView.getTag()), numberOfDecimals);
-                                partialScoreView.setText(Float.toString(decimalNumber.floatValue()));
+                                List<Float> numDenSubTotal = numDenRecordMap.get((Integer)statementView.getTag()).calculateNumDenTotal();
+
+                                if (numSubtotal != null && denSubtotal != null && partialScoreView != null) {
+                                    numSubtotal.setText(Utils.round(numDenSubTotal.get(0)));
+                                    denSubtotal.setText(Utils.round(numDenSubTotal.get(1)));
+                                    partialScoreView.setText(Utils.round((numDenSubTotal.get(0) / numDenSubTotal.get(1)) * 100));
+                                }
+
                                 // Then we set the score in the Score tab
 
-                                // FIXME:  This is an alternate way for getting the old position, using setTag() / getTag()
-                                // Finally we set the option that triggered this event as a Tag in the parent view
-                                spinnerFather.setTag(new Integer(position));
                             }
 
                             @Override
@@ -236,7 +219,7 @@ public class Layout {
                     case Constants.INT:
                         child = R.layout.integer;
                         View questionIntView = inflater.inflate(child, layoutParent, false);
-                        questionIntView.setBackgroundResource(backgrounds[iterBacks%backgrounds.length]);
+                        questionIntView.setBackgroundResource(backgrounds[iterBacks % backgrounds.length]);
                         statement = (TextView) questionIntView.findViewById(R.id.statement);
                         statement.setText(question.getForm_name());
                         EditText answerI = (EditText) questionIntView.findViewById(R.id.answer);
@@ -254,7 +237,7 @@ public class Layout {
                     case Constants.SHORT_TEXT:
                         child = R.layout.shorttext;
                         View questionSTView = inflater.inflate(child, layoutParent, false);
-                        questionSTView.setBackgroundResource(backgrounds[iterBacks%backgrounds.length]);
+                        questionSTView.setBackgroundResource(backgrounds[iterBacks % backgrounds.length]);
                         statement = (TextView) questionSTView.findViewById(R.id.statement);
                         statement.setText(question.getForm_name());
                         EditText answerST = (EditText) questionSTView.findViewById(R.id.answer);
@@ -283,10 +266,10 @@ public class Layout {
             TextView total_num_text = (TextView) subtotalView.findViewById(R.id.total_num);
             total_num_text.setText("0.0");
             TextView total_den_text = (TextView) subtotalView.findViewById(R.id.total_den);
-            decimalNumber = Utils.round(scores.getDenominator(parent), numberOfDecimals);
-            total_den_text.setText(Float.toString(decimalNumber.floatValue()));
+            List<Float> numDenSubTotal = numDenRecordMap.get(parent).calculateNumDenTotal();
+            total_den_text.setText(Utils.round(numDenSubTotal.get(1)));
             layoutParentScore.addView(subtotalView);
-            Log.i(".Layout", "after generated tab: " + scores.getNumerator(parent) + " " + scores.getDenominator(parent));
+            Log.i(".Layout", "after generated tab: " + numDenSubTotal.get(0) + " " + numDenSubTotal.get(1));
         }
 
         return child;
