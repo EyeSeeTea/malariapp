@@ -140,12 +140,13 @@ public class Layout {
                                 TextView numSubtotal = (TextView)((LinearLayout) Utils.findParentRecursively(spinner,MainActivity.getLayoutIds())).findViewById(R.id.total_num);
                                 TextView denSubtotal = (TextView)((LinearLayout) Utils.findParentRecursively(spinner,MainActivity.getLayoutIds())).findViewById(R.id.total_den);
                                 BigDecimal decimalNumber;
+                                Float numerator, denominator;
 
                                 if (triggeredOption.getName() != null && triggeredOption.getName() != Constants.DEFAULT_SELECT_OPTION) { // This is for capture the user selection
                                     // First we do the calculus
-                                    Float numerator = triggeredOption.getFactor() * triggeredQuestion.getNumerator_w();
+                                    numerator = triggeredOption.getFactor() * triggeredQuestion.getNumerator_w();
                                     Log.i(".Layout", "numerator: " + numerator);
-                                    Float denominator=new Float(0.0F);
+                                    denominator=new Float(0.0F);
 
                                     if (triggeredQuestion.getNumerator_w().compareTo(triggeredQuestion.getDenominator_w())==0) {
                                         denominator = triggeredQuestion.getDenominator_w();
@@ -178,14 +179,18 @@ public class Layout {
                                     }
 
                                     numeratorView.setText(Utils.round(numerator));
-                                    numeratorView.setText(Utils.round(denominator));
+                                    denominatorView.setText(Utils.round(denominator));
 
                                 }
                                 else{
-                                //FIXME: Probablemente anadir este metodo al onstart de la main activity instead of el oncreate
                                 // This is for capturing the event when the user leaves the dropdown list without selecting any option
-                                    //numeratorView.setText(Float.toString(0.0F));
-                                    //denominatorView.setText(Float.toString(0.0F));
+                                    numerator = new Float(0.0F);
+                                    denominator = triggeredQuestion.getDenominator_w();
+                                    if (selectedItemView != null) {
+                                        numeratorView.setText(Utils.round(numerator));
+                                        denominatorView.setText(Utils.round(denominator));
+                                    }
+                                    numDenRecordMap.get((Integer)statementView.getTag()).addRecord(triggeredQuestion, numerator, denominator);
                                 }
 
 
