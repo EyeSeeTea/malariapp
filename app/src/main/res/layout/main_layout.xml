@@ -11,7 +11,8 @@
         android:id="@+id/Header"
         android:gravity="center_vertical|center_horizontal"
         android:layout_weight="0.05"
-        android:background="#1e506c">
+        android:background="#1e506c"
+        android:visibility="gone">
 
         <TextView
             android:layout_width="wrap_content"
@@ -22,7 +23,8 @@
             android:gravity="center_vertical|center_horizontal"
             android:background="#1e506c"
             android:textColor="#ffffff"
-            android:textSize="24sp" />
+            android:textSize="24sp"
+            android:visibility="gone" />
 
     </LinearLayout>
 

@@ -167,13 +167,12 @@ public class Layout {
                                         View parent = Utils.findParentRecursively(spinner, MainActivity.getLayoutIds());
                                         View child;
                                         for (Question childQuestion: triggeredQuestion.getQuestionChildren()){
-                                            child = Utils.findChildRecursively(parent, childQuestion);
-
-                                            ((View)child.getParent().getParent()).setVisibility(View.VISIBLE);
-                                            if (numerator != 0.0F) {
+                                            if (position == 1) { //FIXME: There must be a smarter way for saying "if the user selected yes"
+                                                Utils.setVisible(parent, childQuestion);
                                                 numDenRecordMap.get((Integer)statementView.getTag()).addRecord(childQuestion, 0F, childQuestion.getDenominator_w());
                                             }
                                             else{
+                                                Utils.setInvisible(parent, childQuestion);
                                                 numDenRecordMap.get((Integer)statementView.getTag()).deleteRecord(childQuestion);
                                             }
                                         }
