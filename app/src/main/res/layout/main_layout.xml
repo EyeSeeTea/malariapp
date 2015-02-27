@@ -51,7 +51,10 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/tabSpinner"
                     android:spinnerMode="dropdown"
-                    android:layoutMode="clipBounds"/>
+                    android:layoutMode="clipBounds"
+                    android:backgroundTint="#1e506c"
+                    android:backgroundTintMode="add"
+                    android:padding="2dip" />
 
                 <TabWidget
                     android:id="@android:id/tabs"
