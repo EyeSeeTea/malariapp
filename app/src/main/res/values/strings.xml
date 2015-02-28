@@ -59,5 +59,21 @@
     <string name="envAndMatsTitle"><![CDATA[Env & Mats]]></string>
     <string name="iqaeqaTitle">IQA EQA</string>
     <string name="profileTitle">Profile</string>
-
+    <string-array name="iqa_testresult">
+        <item>Positive</item>
+        <item>Negative</item>
+    </string-array>
+    <string-array name="adherence_testresults">
+        <item>Malaria Positive</item>
+        <item>Malaria Negative</item>
+        <item>Not tested</item>
+    </string-array>
+    <string-array name="gender">
+        <item>Male</item>
+        <item>Female</item>
+    </string-array>
+    <string-array name="yesno">
+        <item>Yes</item>
+        <item>No</item>
+    </string-array>
 </resources>
