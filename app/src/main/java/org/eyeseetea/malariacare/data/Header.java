@@ -1,19 +1,23 @@
 package org.eyeseetea.malariacare.data;
 
 import com.orm.SugarRecord;
+import com.orm.dsl.Ignore;
 
 import java.util.List;
 
 /**
  * Created by adrian on 14/02/15.
  */
-public class Header extends SugarRecord<Tab> {
+public class Header extends SugarRecord<Header> {
 
     String short_name;
     String name;
     Integer order_header;
     Integer master;
     Tab tab;
+
+    @Ignore
+    List<Question> _questions;
 
     public Header() {
     }
@@ -67,7 +71,10 @@ public class Header extends SugarRecord<Tab> {
     }
 
     public List<Question> getQuestions(){
-        return Question.find(Question.class, "header = ?", String.valueOf(this.getId()));
+        if (this._questions == null) {
+            return Question.find(Question.class, "header = ?", String.valueOf(this.getId()));
+        }
+        return _questions;
     }
 
     @Override

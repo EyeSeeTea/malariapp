@@ -5,7 +5,7 @@ import com.orm.SugarRecord;
 /**
  * Created by adrian on 14/02/15.
  */
-public class Option extends SugarRecord<Tab> {
+public class Option extends SugarRecord<Option> {
 
     String name;
     Float factor;

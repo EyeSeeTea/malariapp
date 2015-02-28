@@ -1,7 +1,5 @@
 package org.eyeseetea.malariacare.data;
 
-import android.util.Log;
-
 import com.orm.SugarRecord;
 import com.orm.dsl.Ignore;
 
@@ -10,7 +8,7 @@ import java.util.List;
 /**
  * Created by adrian on 14/02/15.
  */
-public class Question extends SugarRecord<Tab> {
+public class Question extends SugarRecord<Question> {
 
     String code;
     String de_name;
@@ -25,7 +23,7 @@ public class Question extends SugarRecord<Tab> {
     Question question;
 
     @Ignore
-    List<Question> _children;
+    List<Question> _questionChildren;
 
     public Question() {
     }
@@ -137,10 +135,10 @@ public class Question extends SugarRecord<Tab> {
     }
 
     public List<Question> getQuestionChildren() {
-        if (this._children == null){
-            this._children = Question.find(Question.class, "question = ?", String.valueOf(this.getId()));
+        if (this._questionChildren == null){
+            this._questionChildren = Question.find(Question.class, "question = ?", String.valueOf(this.getId()));
         }
-        return this._children;
+        return this._questionChildren;
     }
 
     public boolean hasChildren(){

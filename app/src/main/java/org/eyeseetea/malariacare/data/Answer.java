@@ -7,7 +7,7 @@ import java.util.List;
 /**
  * Created by adrian on 14/02/15.
  */
-public class Answer extends SugarRecord<Tab> {
+public class Answer extends SugarRecord<Answer> {
 
     String name;
     Integer output;

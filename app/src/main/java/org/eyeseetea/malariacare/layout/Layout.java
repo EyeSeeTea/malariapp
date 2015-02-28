@@ -10,7 +10,6 @@ import android.widget.EditText;
 import android.widget.GridLayout;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TabHost;
@@ -18,13 +17,11 @@ import android.widget.TextView;
 
 import org.eyeseetea.malariacare.MainActivity;
 import org.eyeseetea.malariacare.R;
-import org.eyeseetea.malariacare.adapters.IQATestArrayAdapter;
 import org.eyeseetea.malariacare.adapters.ReportingResultsArrayAdapter;
 import org.eyeseetea.malariacare.data.Header;
 import org.eyeseetea.malariacare.data.Option;
 import org.eyeseetea.malariacare.data.Question;
 import org.eyeseetea.malariacare.data.Tab;
-import org.eyeseetea.malariacare.models.DataHolder;
 import org.eyeseetea.malariacare.models.ReportingResults;
 import org.eyeseetea.malariacare.utils.Constants;
 import org.eyeseetea.malariacare.utils.LoadCustomQuestions;
@@ -198,13 +195,17 @@ public class Layout {
                                     // If the option is changed to positive numerator and has children, we need to show the children and take their denominators into account
                                     if (triggeredQuestion.hasChildren()) {
                                         View parent = Utils.findParentRecursively(spinner, Utils.getLayoutIds());
-                                        View child;
                                         for (Question childQuestion : triggeredQuestion.getQuestionChildren()) {
+                                            View childView = Utils.findChildRecursively(parent, childQuestion);
                                             if (position == 1) { //FIXME: There must be a smarter way for saying "if the user selected yes"
-                                                Utils.toggleVisible(parent, childQuestion, View.VISIBLE);
+                                                Utils.toggleVisible(childView, View.VISIBLE);
+                                                ((View) ((View) childView).getTag(R.id.HeaderTag)).setVisibility(View.VISIBLE);
                                                 numDenRecordMap.get((Integer) statementView.getTag()).addRecord(childQuestion, 0F, childQuestion.getDenominator_w());
                                             } else {
-                                                Utils.toggleVisible(parent, childQuestion, View.GONE);
+                                                Utils.toggleVisible(childView, View.GONE);
+                                                if (Utils.isHeaderEmpty(triggeredQuestion.getQuestionChildren(), childQuestion.getHeader().getQuestions())) {
+                                                    ((View) ((View) childView).getTag(R.id.HeaderTag)).setVisibility(View.GONE);
+                                                }
                                                 numDenRecordMap.get((Integer) statementView.getTag()).deleteRecord(childQuestion);
                                             }
                                         }
@@ -261,9 +262,17 @@ public class Layout {
                         statement = (TextView) questionIntView.findViewById(R.id.statement);
                         statement.setText(question.getForm_name());
                         EditText answerI = (EditText) questionIntView.findViewById(R.id.answer);
+                        answerI.setTag(R.id.QuestionTag, question);
+                        answerI.setTag(R.id.HeaderTag, headerView);
                         layoutParent.addView(questionIntView);
-                        //set header to visible
-                        headerView.setVisibility(View.VISIBLE);
+
+                        // If the question has children, we load the denominator, else we hide the question
+                        if (!question.hasParent()) {
+                            //set header to visible
+                            headerView.setVisibility(View.VISIBLE);
+                        } else {
+                            questionIntView.setVisibility(View.GONE);
+                        }
                         break;
                     case Constants.LONG_TEXT:
                         child = R.layout.longtext;
@@ -272,9 +281,17 @@ public class Layout {
                         statement = (TextView) questionLTView.findViewById(R.id.statement);
                         statement.setText(question.getForm_name());
                         EditText answerLT = (EditText) questionLTView.findViewById(R.id.answer);
+                        answerLT.setTag(R.id.QuestionTag, question);
+                        answerLT.setTag(R.id.HeaderTag, headerView);
                         layoutParent.addView(questionLTView);
-                        //set header to visible
-                        headerView.setVisibility(View.VISIBLE);
+                        // If the question has children, we load the denominator, else we hide the question
+                        if (!question.hasParent()) {
+                            //set header to visible
+                            headerView.setVisibility(View.VISIBLE);
+                        } else {
+                            questionLTView.setVisibility(View.GONE);
+                        }
+
                         break;
                     case Constants.SHORT_TEXT:
                         child = R.layout.shorttext;
@@ -283,9 +300,17 @@ public class Layout {
                         statement = (TextView) questionSTView.findViewById(R.id.statement);
                         statement.setText(question.getForm_name());
                         EditText answerST = (EditText) questionSTView.findViewById(R.id.answer);
+                        answerST.setTag(R.id.QuestionTag, question);
+                        answerST.setTag(R.id.HeaderTag, headerView);
                         layoutParent.addView(questionSTView);
-                        //set header to visible
-                        headerView.setVisibility(View.VISIBLE);
+                        // If the question has children, we load the denominator, else we hide the question
+                        if (!question.hasParent()) {
+                            //set header to visible
+                            headerView.setVisibility(View.VISIBLE);
+                        } else {
+                            questionSTView.setVisibility(View.GONE);
+                        }
+
                         break;
                     case Constants.SHORT_DATE: case Constants. LONG_DATE:
                         child = R.layout.date;
@@ -294,9 +319,17 @@ public class Layout {
                         statement = (TextView) questionSDView.findViewById(R.id.statement);
                         statement.setText(question.getForm_name());
                         EditText answerSD = (EditText) questionSDView.findViewById(R.id.answer);
+                        answerSD.setTag(R.id.QuestionTag, question);
+                        answerSD.setTag(R.id.HeaderTag, headerView);
                         layoutParent.addView(questionSDView);
-                        //set header to visible
-                        headerView.setVisibility(View.VISIBLE);
+                        // If the question has children, we load the denominator, else we hide the question
+                        if (!question.hasParent()) {
+                            //set header to visible
+                            headerView.setVisibility(View.VISIBLE);
+                        } else {
+                            questionSDView.setVisibility(View.GONE);
+                        }
+
                         break;
                 }
                 iterBacks++;

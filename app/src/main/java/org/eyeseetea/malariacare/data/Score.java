@@ -5,7 +5,7 @@ import com.orm.SugarRecord;
 /**
  * Created by adrian on 14/02/15.
  */
-public class Score extends SugarRecord<Tab> {
+public class Score extends SugarRecord<Score> {
 
     Float real;
     Tab tab;

@@ -2,6 +2,10 @@ package org.eyeseetea.malariacare.utils;
 
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.Spinner;
+
+import com.orm.SugarRecord;
 
 import org.eyeseetea.malariacare.MainActivity;
 import org.eyeseetea.malariacare.R;
@@ -65,13 +69,16 @@ public class Utils {
         return null;
     }
 
-    public static void toggleVisible(View startingView, Question question, int visibility){
-        View childView = findChildRecursively(startingView, question);
-        if (childView != null){
-            ((View)childView.getParent().getParent()).setVisibility(visibility);
-            ((View)childView.getParent()).setVisibility(visibility);
-            ((View)childView).setVisibility(visibility);
-            ((View)((View)childView).getTag(R.id.HeaderTag)).setVisibility(View.VISIBLE);
+    public static void toggleVisible(View childView, int visibility){
+        ((View)childView.getParent().getParent()).setVisibility(visibility);
+        ((View)childView.getParent()).setVisibility(visibility);
+        ((View)childView).setVisibility(visibility);
+
+        if (childView instanceof Spinner) {
+            ((Spinner) childView).setSelection(0);
+        }
+        else{
+            ((EditText) childView).setText("");
         }
     }
 
@@ -115,5 +122,21 @@ public class Utils {
             result.addAll(viewArrayList);
         }
         return result;
+    }
+
+    public static boolean isHeaderEmpty(List<Question> parentList, List<Question> childrenList){
+        boolean isContained;
+        for (Question child : childrenList){
+            isContained = false;
+            if (child.getQuestion() == null) return false;
+            for (Question parent : parentList) {
+                if (child.getId().equals(parent.getId())){
+                    isContained = true;
+                    break;
+                }
+            }
+            if (!isContained)return false;
+        }
+        return true;
     }
 }
