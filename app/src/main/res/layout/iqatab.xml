@@ -52,7 +52,7 @@
     <ListView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/listView2" />
+        android:id="@+id/listTestSupervisor" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -103,5 +103,5 @@
     <ListView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/listView3" />
+        android:id="@+id/listTestStaff" />
 </LinearLayout>

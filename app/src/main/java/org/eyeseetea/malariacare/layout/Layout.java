@@ -18,11 +18,13 @@ import android.widget.TextView;
 
 import org.eyeseetea.malariacare.MainActivity;
 import org.eyeseetea.malariacare.R;
+import org.eyeseetea.malariacare.adapters.IQATestArrayAdapter;
 import org.eyeseetea.malariacare.adapters.ReportingResultsArrayAdapter;
 import org.eyeseetea.malariacare.data.Header;
 import org.eyeseetea.malariacare.data.Option;
 import org.eyeseetea.malariacare.data.Question;
 import org.eyeseetea.malariacare.data.Tab;
+import org.eyeseetea.malariacare.models.DataHolder;
 import org.eyeseetea.malariacare.models.ReportingResults;
 import org.eyeseetea.malariacare.utils.Constants;
 import org.eyeseetea.malariacare.utils.LoadCustomQuestions;
@@ -92,7 +94,8 @@ public class Layout {
                     layoutParent.addView(customView);
                     break;
                 case R.layout.adherencetab:
-                    //Mi mierda
+                    ListView list_supervision = (ListView) customView.findViewById(R.id.listTestSupervisor);
+                    //ArrayAdapter<DataHolder> adapterSupervision = new IQATestArrayAdapter(mainActivity, )
                     break;
 
                 case R.layout.iqatab:
@@ -160,51 +163,49 @@ public class Layout {
                             @Override
                             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
 
-                                Spinner spinner = (Spinner)parentView;
-                                Option triggeredOption = (Option)spinner.getItemAtPosition(position);
+                                Spinner spinner = (Spinner) parentView;
+                                Option triggeredOption = (Option) spinner.getItemAtPosition(position);
 
-                                Question triggeredQuestion = (Question)spinner.getTag(R.id.QuestionTag);
-                                TextView numeratorView = (TextView) Utils.findParentRecursively(spinner,R.id.ddl).findViewById(R.id.num);
-                                TextView denominatorView = (TextView) Utils.findParentRecursively(spinner,R.id.ddl).findViewById(R.id.den);
-                                TextView statementView=(TextView) Utils.findParentRecursively(spinner,R.id.ddl).findViewById(R.id.statement);
-                                TextView partialScoreView = (TextView) Utils.findParentRecursively(spinner,Utils.getLayoutIds()).findViewById(R.id.score);
+                                Question triggeredQuestion = (Question) spinner.getTag(R.id.QuestionTag);
+                                TextView numeratorView = (TextView) Utils.findParentRecursively(spinner, R.id.ddl).findViewById(R.id.num);
+                                TextView denominatorView = (TextView) Utils.findParentRecursively(spinner, R.id.ddl).findViewById(R.id.den);
+                                TextView statementView = (TextView) Utils.findParentRecursively(spinner, R.id.ddl).findViewById(R.id.statement);
+                                TextView partialScoreView = (TextView) Utils.findParentRecursively(spinner, Utils.getLayoutIds()).findViewById(R.id.score);
                                 int generalScoreId = ((Integer) partialScoreView.getTag()).intValue();
                                 TextView generalScoreView = (TextView) Utils.findParentRecursively(spinner, R.id.Grid).findViewById(generalScoreId);
-                                TextView numSubtotal = (TextView)((LinearLayout) Utils.findParentRecursively(spinner,Utils.getLayoutIds())).findViewById(R.id.total_num);
-                                TextView denSubtotal = (TextView)((LinearLayout) Utils.findParentRecursively(spinner,Utils.getLayoutIds())).findViewById(R.id.total_den);
+                                TextView numSubtotal = (TextView) ((LinearLayout) Utils.findParentRecursively(spinner, Utils.getLayoutIds())).findViewById(R.id.total_num);
+                                TextView denSubtotal = (TextView) ((LinearLayout) Utils.findParentRecursively(spinner, Utils.getLayoutIds())).findViewById(R.id.total_den);
                                 Float numerator, denominator;
 
                                 if (triggeredOption.getName() != null && triggeredOption.getName() != Constants.DEFAULT_SELECT_OPTION) { // This is for capture the user selection
                                     // First we do the calculus
                                     numerator = triggeredOption.getFactor() * triggeredQuestion.getNumerator_w();
                                     Log.i(".Layout", "numerator: " + numerator);
-                                    denominator=new Float(0.0F);
+                                    denominator = new Float(0.0F);
 
-                                    if (triggeredQuestion.getNumerator_w().compareTo(triggeredQuestion.getDenominator_w())==0) {
+                                    if (triggeredQuestion.getNumerator_w().compareTo(triggeredQuestion.getDenominator_w()) == 0) {
                                         denominator = triggeredQuestion.getDenominator_w();
                                         Log.i(".Layout", "denominator: " + denominator);
-                                    }
-                                    else {
-                                        if (triggeredQuestion.getNumerator_w().compareTo(new Float(0.0F))==0 && triggeredQuestion.getDenominator_w().compareTo(new Float(0.0F))!=0) {
+                                    } else {
+                                        if (triggeredQuestion.getNumerator_w().compareTo(new Float(0.0F)) == 0 && triggeredQuestion.getDenominator_w().compareTo(new Float(0.0F)) != 0) {
                                             denominator = triggeredOption.getFactor() * triggeredQuestion.getDenominator_w();
                                             Log.i(".Layout", "denominator: " + denominator);
                                         }
                                     }
 
-                                    numDenRecordMap.get((Integer)statementView.getTag()).addRecord(triggeredQuestion, numerator, denominator);
+                                    numDenRecordMap.get((Integer) statementView.getTag()).addRecord(triggeredQuestion, numerator, denominator);
 
                                     // If the option is changed to positive numerator and has children, we need to show the children and take their denominators into account
-                                    if (triggeredQuestion.hasChildren()){
+                                    if (triggeredQuestion.hasChildren()) {
                                         View parent = Utils.findParentRecursively(spinner, Utils.getLayoutIds());
                                         View child;
-                                        for (Question childQuestion: triggeredQuestion.getQuestionChildren()){
+                                        for (Question childQuestion : triggeredQuestion.getQuestionChildren()) {
                                             if (position == 1) { //FIXME: There must be a smarter way for saying "if the user selected yes"
                                                 Utils.toggleVisible(parent, childQuestion, View.VISIBLE);
-                                                numDenRecordMap.get((Integer)statementView.getTag()).addRecord(childQuestion, 0F, childQuestion.getDenominator_w());
-                                            }
-                                            else{
+                                                numDenRecordMap.get((Integer) statementView.getTag()).addRecord(childQuestion, 0F, childQuestion.getDenominator_w());
+                                            } else {
                                                 Utils.toggleVisible(parent, childQuestion, View.GONE);
-                                                numDenRecordMap.get((Integer)statementView.getTag()).deleteRecord(childQuestion);
+                                                numDenRecordMap.get((Integer) statementView.getTag()).deleteRecord(childQuestion);
                                             }
                                         }
                                     }
@@ -212,20 +213,19 @@ public class Layout {
                                     numeratorView.setText(Utils.round(numerator));
                                     denominatorView.setText(Utils.round(denominator));
 
-                                }
-                                else{
-                                // This is for capturing the event when the user leaves the dropdown list without selecting any option
+                                } else {
+                                    // This is for capturing the event when the user leaves the dropdown list without selecting any option
                                     numerator = new Float(0.0F);
                                     denominator = triggeredQuestion.getDenominator_w();
                                     if (selectedItemView != null) {
                                         numeratorView.setText(Utils.round(numerator));
                                         denominatorView.setText(Utils.round(denominator));
                                     }
-                                    numDenRecordMap.get((Integer)statementView.getTag()).addRecord(triggeredQuestion, numerator, denominator);
+                                    numDenRecordMap.get((Integer) statementView.getTag()).addRecord(triggeredQuestion, numerator, denominator);
                                 }
 
 
-                                List<Float> numDenSubTotal = numDenRecordMap.get((Integer)statementView.getTag()).calculateNumDenTotal();
+                                List<Float> numDenSubTotal = numDenRecordMap.get((Integer) statementView.getTag()).calculateNumDenTotal();
 
                                 if (numSubtotal != null && denSubtotal != null && partialScoreView != null) {
                                     numSubtotal.setText(Utils.round(numDenSubTotal.get(0)));
@@ -268,7 +268,7 @@ public class Layout {
                     case Constants.LONG_TEXT:
                         child = R.layout.longtext;
                         View questionLTView = inflater.inflate(child, layoutParent, false);
-                        questionLTView.setBackgroundResource(backgrounds[iterBacks%backgrounds.length]);
+                        questionLTView.setBackgroundResource(backgrounds[iterBacks % backgrounds.length]);
                         statement = (TextView) questionLTView.findViewById(R.id.statement);
                         statement.setText(question.getForm_name());
                         EditText answerLT = (EditText) questionLTView.findViewById(R.id.answer);

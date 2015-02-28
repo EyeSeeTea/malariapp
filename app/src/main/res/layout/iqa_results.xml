@@ -21,12 +21,12 @@
     <EditText
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:id="@+id/editText"
+        android:id="@+id/answer1"
         android:layout_weight="0.25"/>
 
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/editText2"
+        android:id="@+id/answer2"
         android:layout_weight="0.25"/>
 </LinearLayout>
