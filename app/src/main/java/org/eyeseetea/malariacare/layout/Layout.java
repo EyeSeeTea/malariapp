@@ -30,6 +30,7 @@ import org.eyeseetea.malariacare.utils.TabConfiguration;
 import org.eyeseetea.malariacare.utils.Utils;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -163,16 +164,24 @@ public class Layout {
                                 Spinner spinner = (Spinner) parentView;
                                 Option triggeredOption = (Option) spinner.getItemAtPosition(position);
 
+                                Float numerator, denominator;
                                 Question triggeredQuestion = (Question) spinner.getTag(R.id.QuestionTag);
                                 TextView numeratorView = (TextView) Utils.findParentRecursively(spinner, R.id.ddl).findViewById(R.id.num);
                                 TextView denominatorView = (TextView) Utils.findParentRecursively(spinner, R.id.ddl).findViewById(R.id.den);
                                 TextView statementView = (TextView) Utils.findParentRecursively(spinner, R.id.ddl).findViewById(R.id.statement);
-                                TextView partialScoreView = (TextView) Utils.findParentRecursively(spinner, Utils.getLayoutIds()).findViewById(R.id.score);
-                                int generalScoreId = ((Integer) partialScoreView.getTag()).intValue();
-                                TextView generalScoreView = (TextView) Utils.findParentRecursively(spinner, R.id.Grid).findViewById(generalScoreId);
                                 TextView numSubtotal = (TextView) ((LinearLayout) Utils.findParentRecursively(spinner, Utils.getLayoutIds())).findViewById(R.id.total_num);
                                 TextView denSubtotal = (TextView) ((LinearLayout) Utils.findParentRecursively(spinner, Utils.getLayoutIds())).findViewById(R.id.total_den);
-                                Float numerator, denominator;
+                                TextView partialScoreView = (TextView) Utils.findParentRecursively(spinner, Utils.getLayoutIds()).findViewById(R.id.score);
+                                Integer generalScoreId = null, generalScoreAvgId = null;
+                                TextView generalScoreView = null, generalScoreAvgView = null;
+                                if (tabConfiguration.getScoreFieldId() != null) {
+                                    generalScoreId = ((Integer) partialScoreView.getTag());
+                                    generalScoreView = (TextView) Utils.findParentRecursively(spinner, R.id.Grid).findViewById(generalScoreId.intValue());
+                                    if (tabConfiguration.getScoreAvgFieldId() != null) {
+                                        generalScoreAvgId = ((Integer) tabConfiguration.getScoreAvgFieldId());
+                                        generalScoreAvgView = (TextView) Utils.findParentRecursively(spinner, R.id.Grid).findViewById(generalScoreAvgId.intValue());
+                                    }
+                                }
 
                                 if (triggeredOption.getName() != null && triggeredOption.getName() != Constants.DEFAULT_SELECT_OPTION) { // This is for capture the user selection
                                     // First we do the calculus
@@ -232,8 +241,31 @@ public class Layout {
                                     numSubtotal.setText(Utils.round(numDenSubTotal.get(0)));
                                     denSubtotal.setText(Utils.round(numDenSubTotal.get(1)));
                                     float score = (numDenSubTotal.get(0) / numDenSubTotal.get(1)) * 100;
+                                    float average = 0.0F;
+                                    TextView elementView = null;
                                     partialScoreView.setText(Utils.round(score)); // We set the score in the tab score
-                                    generalScoreView.setText(Utils.round(score)); // We set the score in the score tab
+                                    if (tabConfiguration.getScoreFieldId() != null) {
+                                        generalScoreView.setText(Utils.round(score)); // We set the score in the score tab
+                                        if(tabConfiguration.getScoreAvgFieldId() != null){
+                                            List<Integer> averageElements = (ArrayList<Integer>) generalScoreAvgView.getTag();
+                                            if (averageElements == null) {
+                                                averageElements = new ArrayList<Integer>();
+                                                averageElements.add(generalScoreId);
+                                                generalScoreAvgView.setText(Utils.round(score));
+                                                generalScoreAvgView.setTag(averageElements);
+                                            } else {
+                                                boolean found = false;
+                                                for (Integer element : averageElements) {
+                                                    if (element.intValue() == generalScoreId) found = true;
+                                                    average += Float.parseFloat((String) ((TextView) Utils.findParentRecursively(generalScoreView, R.id.scoreTable).findViewById(element)).getText());
+                                                }
+                                                if ( !found ) averageElements.add(generalScoreId);
+                                                average = average / averageElements.size();
+                                                generalScoreAvgView.setText(Utils.round(average));
+                                                generalScoreAvgView.setTag(averageElements);
+                                            }
+                                        }
+                                    }
                                 }
 
                                 // Then we set the score in the Score tab
@@ -349,8 +381,17 @@ public class Layout {
             total_den_text.setText(Utils.round(numDenSubTotal.get(1)));
             layoutParentScore.addView(subtotalView);
             TextView subscore_text = (TextView) subtotalView.findViewById(R.id.score);
-            int generalScoreId = tabConfiguration.getScoreFieldId();
-            subscore_text.setTag(generalScoreId);
+            // Now, for being able to write Score in the score tab and score averages in its place (in score tab), we use setTag() to include a pointer to
+            // the score View id, and in that id, we include a pointer to the average view id. This way, we can do the calculus here and represent there
+            Integer generalScoreId = tabConfiguration.getScoreFieldId();
+            Integer generalScoreAvgId = tabConfiguration.getScoreAvgFieldId();
+            TextView generalScoreIdView = null;
+            if (tabConfiguration.getScoreFieldId() != null) {
+                subscore_text.setTag(generalScoreId);
+            }
+
+
+
             Log.i(".Layout", "after generated tab: " + numDenSubTotal.get(0) + " " + numDenSubTotal.get(1));
         }
 

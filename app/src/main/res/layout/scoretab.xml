@@ -5,7 +5,8 @@
     android:gravity="center">
     <TableLayout
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent">
+        android:layout_height="fill_parent"
+        android:id="@+id/scoreTable">
 
         <TableRow
             android:layout_width="fill_parent"
@@ -33,17 +34,6 @@
                 android:textColor="#ffffff"
                 android:textSize="16sp"
                 android:gravity="center" />
-        </TableRow>
-
-        <TableRow
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:id="@+id/blankRow1"
-            android:padding="20dip" >
-
-            <Space
-                android:layout_width="10dip"
-                android:layout_height="10dip" />
         </TableRow>
 
         <TableRow
@@ -292,17 +282,6 @@
         <TableRow
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:id="@+id/blankRow2"
-            android:padding="20dip">
-
-            <Space
-                android:layout_width="10dip"
-                android:layout_height="10dip" />
-        </TableRow>
-
-        <TableRow
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
             android:id="@+id/adherenceRow"
             android:gravity="right">
 
@@ -443,7 +422,7 @@
         <TableRow
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:id="@+id/blankRow3"
+            android:id="@+id/blankRow"
             android:padding="20dip">
 
             <Space

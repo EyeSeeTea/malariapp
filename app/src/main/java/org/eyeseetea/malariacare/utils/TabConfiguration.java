@@ -12,12 +12,14 @@ public class TabConfiguration {
     boolean isAutomaticTab;
     Integer layoutId;
     Integer scoreFieldId;
+    Integer scoreAvgFieldId;
 
-    public TabConfiguration(Integer tabId, boolean isAutomaticTab, Integer layoutId, Integer scoreFieldId) {
+    public TabConfiguration(Integer tabId, boolean isAutomaticTab, Integer layoutId, Integer scoreFieldId, Integer scoreAvgFieldId) {
         this.tabId = tabId;
         this.isAutomaticTab = isAutomaticTab;
         this.layoutId = layoutId;
         this.scoreFieldId = scoreFieldId;
+        this.scoreAvgFieldId = scoreAvgFieldId;
     }
 
     public Integer getTabId() {
@@ -48,6 +50,10 @@ public class TabConfiguration {
 
     public void setScoreFieldId(Integer scoreFieldId) { this.scoreFieldId = scoreFieldId; }
 
+    public Integer getScoreAvgFieldId() { return scoreAvgFieldId; }
+
+    public void setScoreAvgFieldId(Integer scoreAvgFieldId) { this.scoreAvgFieldId = scoreAvgFieldId; }
+
     @Override
     public String toString() {
         return "TabConfiguration{" +
@@ -55,6 +61,7 @@ public class TabConfiguration {
                 ", isAutomaticTab=" + isAutomaticTab +
                 ", layoutId=" + layoutId +
                 ", scoreFieldId=" + scoreFieldId +
+                ", scoreAvgFieldId=" + scoreAvgFieldId +
                 '}';
     }
 }
