@@ -9,7 +9,8 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text=""
         android:layout_weight=".70"
-        android:id="@+id/questionunica" />
+        android:id="@+id/question"
+        />
 
     <EditText
         android:layout_width="0dp"
@@ -17,7 +18,8 @@
         android:inputType="number"
         android:ems="10"
         android:id="@+id/answer1"
-        android:layout_weight=".10" />
+        android:layout_weight=".10"
+        />
 
     <EditText
         android:layout_width="0dp"
@@ -25,7 +27,8 @@
         android:inputType="number"
         android:ems="10"
         android:id="@+id/answer2"
-        android:layout_weight=".10"/>
+        android:layout_weight=".10"
+        />
 
     <TextView
         android:layout_width="0dp"
@@ -33,5 +36,6 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text=""
         android:id="@+id/score"
-        android:layout_weight=".10"/>
+        android:layout_weight=".10"
+        />
 </LinearLayout>
