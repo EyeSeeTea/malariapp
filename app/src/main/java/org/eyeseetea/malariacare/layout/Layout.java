@@ -43,7 +43,6 @@ public class Layout {
     // This method fill in a tab layout
     public static int insertTab(MainActivity mainActivity, Tab tab, TabConfiguration tabConfiguration) {
 
-        int child = -1;
         int iterBacks = 0;
         // This layout inflater is for joining other layouts
         LayoutInflater inflater = (LayoutInflater) mainActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -74,12 +73,11 @@ public class Layout {
         tabSpec.setContent(tabConfiguration.getTabId());
         tabHost.addTab(tabSpec);
 
-        if (childlayout != -1){
+        if (tabConfiguration.getLayoutId() != null){
 
-            child = childlayout;
-            View customView = inflater.inflate(child, layoutParent, false);
+            View customView = inflater.inflate(tabConfiguration.getLayoutId(), layoutParent, false);
 
-            switch (childlayout){
+            switch (tabConfiguration.getLayoutId()){
                 case R.layout.scoretab:
                     layoutParent.addView(customView);
                     break;
@@ -99,7 +97,7 @@ public class Layout {
 
             }
 
-            return childlayout;
+            return tabConfiguration.getLayoutId();
         }
 
         Log.i(".Layout", "Generate Headers");
