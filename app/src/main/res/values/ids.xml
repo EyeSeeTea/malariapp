@@ -5,4 +5,6 @@
     <item name="Body" type="id"/>
     <item name="BodyGNR" type="id"/>
     <item name="Footer" type="id"/>
+    <item name="QuestionTag" type="id">0</item>
+    <item name="HeaderTag" type="id">1</item>
 </resources>

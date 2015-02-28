@@ -101,9 +101,8 @@ public class Layout {
         }
 
         Log.i(".Layout", "Generate Headers");
-        List<Header> headers = tab.getHeaders();
         int child = -1;
-        for (Header header: headers){
+        for (Header header: tab.getHeaders()){
             // First we introduce header text according to the template
             child = R.layout.headers;
             //Log.i(".Layout", "Reading header " + header.toString());
@@ -112,11 +111,13 @@ public class Layout {
             TextView headerText = (TextView) headerView.findViewById(R.id.headerName);
             headerText.setBackgroundResource(R.drawable.background_header);
             headerText.setText(header.getName());
+            //Set Visibility to false until we check if it has any question visible
+            headerView.setVisibility(View.GONE);
             layoutParent.addView(headerView);
 
+
             //Log.i(".Layout", "Reader questions for header " + header.toString());
-            List<Question> questionList = header.getQuestions();
-            for (Question question : questionList){
+            for (Question question : header.getQuestions()){
                 // The statement is present in every kind of question
                 TextView statement;
                 switch(question.getAnswer().getOutput()){
@@ -135,6 +136,8 @@ public class Layout {
                                 questionView.setBackgroundResource(R.drawable.background_parent);
                             }
                             denominator.setText(Utils.round(question.getDenominator_w()));
+                            //set header to visible
+                            headerView.setVisibility(View.VISIBLE);
 
                             numDenRecordMap.get(tabConfiguration.getTabId()).addRecord(question, 0F, question.getDenominator_w());
                         } else {
@@ -142,7 +145,11 @@ public class Layout {
                         }
 
                         Spinner dropdown = (Spinner)questionView.findViewById(R.id.answer);
-                        dropdown.setTag(question);
+                        //dropdown.setTag(question);
+
+                        dropdown.setTag(R.id.QuestionTag, question);
+                        dropdown.setTag(R.id.HeaderTag, headerView);
+
 
                         dropdown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 
@@ -150,10 +157,9 @@ public class Layout {
                             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
 
                                 Spinner spinner = (Spinner)parentView;
-                                RelativeLayout spinnerFather = (RelativeLayout)spinner.getParent();
                                 Option triggeredOption = (Option)spinner.getItemAtPosition(position);
 
-                                Question triggeredQuestion = (Question)spinner.getTag();
+                                Question triggeredQuestion = (Question)spinner.getTag(R.id.QuestionTag);
                                 TextView numeratorView = (TextView) Utils.findParentRecursively(spinner,R.id.ddl).findViewById(R.id.num);
                                 TextView denominatorView = (TextView) Utils.findParentRecursively(spinner,R.id.ddl).findViewById(R.id.den);
                                 TextView statementView=(TextView) Utils.findParentRecursively(spinner,R.id.ddl).findViewById(R.id.statement);
@@ -181,18 +187,17 @@ public class Layout {
 
                                     numDenRecordMap.get((Integer)statementView.getTag()).addRecord(triggeredQuestion, numerator, denominator);
 
-
                                     // If the option is changed to positive numerator and has children, we need to show the children and take their denominators into account
                                     if (triggeredQuestion.hasChildren()){
                                         View parent = Utils.findParentRecursively(spinner, Utils.getLayoutIds());
                                         View child;
                                         for (Question childQuestion: triggeredQuestion.getQuestionChildren()){
                                             if (position == 1) { //FIXME: There must be a smarter way for saying "if the user selected yes"
-                                                Utils.setVisible(parent, childQuestion);
+                                                Utils.toggleVisible(parent, childQuestion, View.VISIBLE);
                                                 numDenRecordMap.get((Integer)statementView.getTag()).addRecord(childQuestion, 0F, childQuestion.getDenominator_w());
                                             }
                                             else{
-                                                Utils.setInvisible(parent, childQuestion);
+                                                Utils.toggleVisible(parent, childQuestion, View.GONE);
                                                 numDenRecordMap.get((Integer)statementView.getTag()).deleteRecord(childQuestion);
                                             }
                                         }
@@ -249,6 +254,8 @@ public class Layout {
                         statement.setText(question.getForm_name());
                         EditText answerI = (EditText) questionIntView.findViewById(R.id.answer);
                         layoutParent.addView(questionIntView);
+                        //set header to visible
+                        headerView.setVisibility(View.VISIBLE);
                         break;
                     case Constants.LONG_TEXT:
                         child = R.layout.longtext;
@@ -258,6 +265,8 @@ public class Layout {
                         statement.setText(question.getForm_name());
                         EditText answerLT = (EditText) questionLTView.findViewById(R.id.answer);
                         layoutParent.addView(questionLTView);
+                        //set header to visible
+                        headerView.setVisibility(View.VISIBLE);
                         break;
                     case Constants.SHORT_TEXT:
                         child = R.layout.shorttext;
@@ -267,6 +276,8 @@ public class Layout {
                         statement.setText(question.getForm_name());
                         EditText answerST = (EditText) questionSTView.findViewById(R.id.answer);
                         layoutParent.addView(questionSTView);
+                        //set header to visible
+                        headerView.setVisibility(View.VISIBLE);
                         break;
                     case Constants.SHORT_DATE: case Constants. LONG_DATE:
                         child = R.layout.date;
@@ -276,6 +287,8 @@ public class Layout {
                         statement.setText(question.getForm_name());
                         EditText answerSD = (EditText) questionSDView.findViewById(R.id.answer);
                         layoutParent.addView(questionSDView);
+                        //set header to visible
+                        headerView.setVisibility(View.VISIBLE);
                         break;
                 }
                 iterBacks++;

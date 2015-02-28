@@ -4,6 +4,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import org.eyeseetea.malariacare.MainActivity;
+import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.Question;
 
 import java.math.BigDecimal;
@@ -49,7 +50,7 @@ public class Utils {
     // Given a View, this method search down in the tree to find the corresponding child View to a given question
     public static View findChildRecursively(View startingView, Question question) {
         View toReturn;
-        if (startingView != null && (startingView.getTag() != null) && (startingView.getTag() instanceof Question) && ((((Question) startingView.getTag()).getId()).longValue() == (question.getId()).longValue())) {
+        if (startingView != null && (startingView.getTag(R.id.QuestionTag) != null) && (startingView.getTag(R.id.QuestionTag) instanceof Question) && ((((Question) startingView.getTag(R.id.QuestionTag)).getId()).longValue() == (question.getId()).longValue())) {
             return startingView;
         } else {
             int childrenCount;
@@ -64,21 +65,13 @@ public class Utils {
         return null;
     }
 
-    public static void setVisible(View startingView, Question question){
+    public static void toggleVisible(View startingView, Question question, int visibility){
         View childView = findChildRecursively(startingView, question);
         if (childView != null){
-            ((View)childView.getParent().getParent()).setVisibility(View.VISIBLE);
-            ((View)childView.getParent()).setVisibility(View.VISIBLE);
-            ((View)childView).setVisibility(View.VISIBLE);
-        }
-    }
-
-    public static void setInvisible(View startingView, Question question){
-        View childView = findChildRecursively(startingView, question);
-        if (childView != null){
-            ((View)childView.getParent().getParent()).setVisibility(View.GONE);
-            ((View)childView.getParent()).setVisibility(View.GONE);
-            ((View)childView).setVisibility(View.GONE);
+            ((View)childView.getParent().getParent()).setVisibility(visibility);
+            ((View)childView.getParent()).setVisibility(visibility);
+            ((View)childView).setVisibility(visibility);
+            ((View)((View)childView).getTag(R.id.HeaderTag)).setVisibility(View.VISIBLE);
         }
     }
 
