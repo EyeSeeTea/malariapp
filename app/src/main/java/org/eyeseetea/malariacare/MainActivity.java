@@ -67,7 +67,7 @@ public class MainActivity extends ActionBarActivity {
         tabsLayouts.add(new TabConfiguration(R.id.adherence, false, null));
         tabsLayouts.add(new TabConfiguration(R.id.feedback, false, null));
         tabsLayouts.add(new TabConfiguration(R.id.environmentMaterial, true, null));
-        tabsLayouts.add(new TabConfiguration(R.id.reporting, false, null));
+        tabsLayouts.add(new TabConfiguration(R.id.reporting, false, R.layout.reportingtab));
         tabsLayouts.add(new TabConfiguration(R.id.iqaEQA, false, null));
         tabsLayouts.add(new TabConfiguration(R.id.scoreSummary, false, R.layout.scoretab));
     }
