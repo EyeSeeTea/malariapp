@@ -23,6 +23,7 @@ import org.eyeseetea.malariacare.data.Question;
 import org.eyeseetea.malariacare.data.Tab;
 import org.eyeseetea.malariacare.utils.Constants;
 import org.eyeseetea.malariacare.utils.NumDenRecord;
+import org.eyeseetea.malariacare.utils.TabConfiguration;
 import org.eyeseetea.malariacare.utils.Utils;
 
 import java.math.BigDecimal;
@@ -40,15 +41,14 @@ public class Layout {
     static final int [] backgrounds = {R.drawable.background_even, R.drawable.background_odd};
 
     // This method fill in a tab layout
-    public static int insertTab(MainActivity mainActivity, Tab tab, int parent, boolean withScore, int childlayout) {
+    public static int insertTab(MainActivity mainActivity, Tab tab, TabConfiguration tabConfiguration) {
 
-        int child = -1;
         int iterBacks = 0;
         // This layout inflater is for joining other layouts
         LayoutInflater inflater = (LayoutInflater) mainActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         // This layout is for the tab content (questions)
-        LinearLayout layoutGrandParent = (LinearLayout) mainActivity.findViewById(parent);
+        LinearLayout layoutGrandParent = (LinearLayout) mainActivity.findViewById(tabConfiguration.getTabId());
         layoutGrandParent.setTag(tab);
         ScrollView layoutParentScroll = (ScrollView) layoutGrandParent.getChildAt(0);
         GridLayout layoutParent = (GridLayout) layoutParentScroll.getChildAt(0);
@@ -56,7 +56,7 @@ public class Layout {
         // Given the layoutGrandParent, we use the addTag method to associate the tab object, being able to instanciate it later
 
 
-        numDenRecordMap.put(parent, new NumDenRecord());
+        numDenRecordMap.put(tabConfiguration.getTabId(), new NumDenRecord());
 
         BigDecimal decimalNumber;
         // We do this to have a default value in the ddl
@@ -70,18 +70,18 @@ public class Layout {
         String name = tab.getName();
         TabHost.TabSpec tabSpec = tabHost.newTabSpec(Long.toString(tab.getId())); // Here we set the tag, we'll use later to move between tabs
         tabSpec.setIndicator(name);
-        tabSpec.setContent(parent);
+        tabSpec.setContent(tabConfiguration.getTabId());
         tabHost.addTab(tabSpec);
 
-        if (childlayout != -1){
-            child = childlayout;
-            View scoreView = inflater.inflate(child, layoutParent, false);
+        if (tabConfiguration.getLayoutId() != null){
+            View scoreView = inflater.inflate(tabConfiguration.getLayoutId(), layoutParent, false);
             layoutParent.addView(scoreView);
-            return childlayout;
+            return tabConfiguration.getLayoutId();
         }
 
         Log.i(".Layout", "Generate Headers");
         List<Header> headers = tab.getHeaders();
+        int child = -1;
         for (Header header: headers){
             // First we introduce header text according to the template
             child = R.layout.headers;
@@ -106,7 +106,7 @@ public class Layout {
 
                         statement = (TextView) questionView.findViewById(R.id.statement);
                         statement.setText(question.getForm_name());
-                        statement.setTag(parent);
+                        statement.setTag(tabConfiguration.getTabId());
                         TextView denominator = (TextView) questionView.findViewById(R.id.den);
                         // If the question has children, we load the denominator, else we hide the question
                         if (!question.hasParent()) {
@@ -115,7 +115,7 @@ public class Layout {
                             }
                             denominator.setText(Utils.round(question.getDenominator_w()));
 
-                            numDenRecordMap.get(parent).addRecord(question, 0F, question.getDenominator_w());
+                            numDenRecordMap.get(tabConfiguration.getTabId()).addRecord(question, 0F, question.getDenominator_w());
                         } else {
                             questionView.setVisibility(View.GONE);
                         }
@@ -136,10 +136,9 @@ public class Layout {
                                 TextView numeratorView = (TextView) Utils.findParentRecursively(spinner,R.id.ddl).findViewById(R.id.num);
                                 TextView denominatorView = (TextView) Utils.findParentRecursively(spinner,R.id.ddl).findViewById(R.id.den);
                                 TextView statementView=(TextView) Utils.findParentRecursively(spinner,R.id.ddl).findViewById(R.id.statement);
-                                TextView partialScoreView = (TextView) Utils.findParentRecursively(spinner,MainActivity.getLayoutIds()).findViewById(R.id.score);
-                                TextView numSubtotal = (TextView)((LinearLayout) Utils.findParentRecursively(spinner,MainActivity.getLayoutIds())).findViewById(R.id.total_num);
-                                TextView denSubtotal = (TextView)((LinearLayout) Utils.findParentRecursively(spinner,MainActivity.getLayoutIds())).findViewById(R.id.total_den);
-                                BigDecimal decimalNumber;
+                                TextView partialScoreView = (TextView) Utils.findParentRecursively(spinner,Utils.getLayoutIds()).findViewById(R.id.score);
+                                TextView numSubtotal = (TextView)((LinearLayout) Utils.findParentRecursively(spinner,Utils.getLayoutIds())).findViewById(R.id.total_num);
+                                TextView denSubtotal = (TextView)((LinearLayout) Utils.findParentRecursively(spinner,Utils.getLayoutIds())).findViewById(R.id.total_den);
                                 Float numerator, denominator;
 
                                 if (triggeredOption.getName() != null && triggeredOption.getName() != Constants.DEFAULT_SELECT_OPTION) { // This is for capture the user selection
@@ -164,7 +163,7 @@ public class Layout {
 
                                     // If the option is changed to positive numerator and has children, we need to show the children and take their denominators into account
                                     if (triggeredQuestion.hasChildren()){
-                                        View parent = Utils.findParentRecursively(spinner, MainActivity.getLayoutIds());
+                                        View parent = Utils.findParentRecursively(spinner, Utils.getLayoutIds());
                                         View child;
                                         for (Question childQuestion: triggeredQuestion.getQuestionChildren()){
                                             if (position == 1) { //FIXME: There must be a smarter way for saying "if the user selected yes"
@@ -262,7 +261,7 @@ public class Layout {
             }
         }
 
-        if (withScore) {
+        if (tabConfiguration.isAutomaticTab()) {
             // This layout is for showing the accumulated score
             GridLayout layoutParentScore = (GridLayout) layoutGrandParent.getChildAt(1);
             Log.i(".Layout", "Grandpa layout children: " + layoutGrandParent.getChildCount());
@@ -271,7 +270,7 @@ public class Layout {
             TextView total_num_text = (TextView) subtotalView.findViewById(R.id.total_num);
             total_num_text.setText("0.0");
             TextView total_den_text = (TextView) subtotalView.findViewById(R.id.total_den);
-            List<Float> numDenSubTotal = numDenRecordMap.get(parent).calculateNumDenTotal();
+            List<Float> numDenSubTotal = numDenRecordMap.get(tabConfiguration.getTabId()).calculateNumDenTotal();
             total_den_text.setText(Utils.round(numDenSubTotal.get(1)));
             layoutParentScore.addView(subtotalView);
             Log.i(".Layout", "after generated tab: " + numDenSubTotal.get(0) + " " + numDenSubTotal.get(1));

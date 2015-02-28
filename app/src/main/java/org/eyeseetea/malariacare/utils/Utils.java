@@ -3,9 +3,11 @@ package org.eyeseetea.malariacare.utils;
 import android.view.View;
 import android.view.ViewGroup;
 
+import org.eyeseetea.malariacare.MainActivity;
 import org.eyeseetea.malariacare.data.Question;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -88,5 +90,37 @@ public class Utils {
 
     public static String round(float base){
         return round(base, Utils.numberOfDecimals);
+    }
+
+    public static List<Integer> getLayoutIds(){
+        List<Integer> ids = new ArrayList<Integer>();
+        for(TabConfiguration tabsLayout : MainActivity.getTabsLayouts()){
+            ids.add(tabsLayout.getTabId());
+        }
+        return ids;
+    }
+
+    public static List<View> getAllChildren(View v) {
+
+        if (!(v instanceof ViewGroup)) {
+            List<View> viewArrayList = new ArrayList<View>();
+            viewArrayList.add(v);
+            return viewArrayList;
+        }
+
+        List<View> result = new ArrayList<View>();
+
+        ViewGroup vg = (ViewGroup) v;
+        for (int i = 0; i < vg.getChildCount(); i++) {
+
+            View child = vg.getChildAt(i);
+
+            List<View> viewArrayList = new ArrayList<View>();
+            viewArrayList.add(v);
+            viewArrayList.addAll(getAllChildren(child));
+
+            result.addAll(viewArrayList);
+        }
+        return result;
     }
 }

@@ -75,7 +75,7 @@
                     android:layout_weight="0.4">
 
                     <LinearLayout
-                        android:id="@+id/tab1parent"
+                        android:id="@+id/profile"
                         android:layout_width="fill_parent"
                         android:layout_height="fill_parent"
                         android:orientation="vertical">
@@ -107,7 +107,7 @@
                     </LinearLayout>
 
                     <LinearLayout
-                        android:id="@+id/tab2parent"
+                        android:id="@+id/c1General"
                         android:layout_width="fill_parent"
                         android:layout_height="fill_parent"
                         android:orientation="vertical">
@@ -137,7 +137,7 @@
                     </LinearLayout>
 
                     <LinearLayout
-                        android:id="@+id/tab3parent"
+                        android:id="@+id/c1RDT"
                         android:layout_width="fill_parent"
                         android:layout_height="fill_parent"
                         android:orientation="vertical">
@@ -167,7 +167,7 @@
                     </LinearLayout>
 
                     <LinearLayout
-                        android:id="@+id/tab4parent"
+                        android:id="@+id/c1Microcospy"
                         android:layout_width="fill_parent"
                         android:layout_height="fill_parent"
                         android:orientation="vertical" >
@@ -197,7 +197,7 @@
                     </LinearLayout>
 
                     <LinearLayout
-                        android:id="@+id/tab5parent"
+                        android:id="@+id/c2General"
                         android:layout_width="fill_parent"
                         android:layout_height="fill_parent"
                         android:orientation="vertical" >
@@ -227,7 +227,7 @@
                     </LinearLayout>
 
                     <LinearLayout
-                        android:id="@+id/tab6parent"
+                        android:id="@+id/c2RDT"
                         android:layout_width="fill_parent"
                         android:layout_height="fill_parent"
                         android:orientation="vertical" >
@@ -257,7 +257,7 @@
                     </LinearLayout>
 
                     <LinearLayout
-                        android:id="@+id/tab7parent"
+                        android:id="@+id/c2Microscopy"
                         android:layout_width="fill_parent"
                         android:layout_height="fill_parent"
                         android:orientation="vertical" >
@@ -287,7 +287,7 @@
                     </LinearLayout>
 
                     <LinearLayout
-                        android:id="@+id/tab8parent"
+                        android:id="@+id/c3General"
                         android:layout_width="fill_parent"
                         android:layout_height="fill_parent"
                         android:orientation="vertical" >
@@ -317,7 +317,7 @@
                     </LinearLayout>
 
                     <LinearLayout
-                        android:id="@+id/tab9parent"
+                        android:id="@+id/c3RDT"
                         android:layout_width="fill_parent"
                         android:layout_height="fill_parent"
                         android:orientation="vertical" >
@@ -347,7 +347,7 @@
                     </LinearLayout>
 
                     <LinearLayout
-                        android:id="@+id/tab10parent"
+                        android:id="@+id/c3Microscopy"
                         android:layout_width="fill_parent"
                         android:layout_height="fill_parent"
                         android:orientation="vertical" >
@@ -377,7 +377,7 @@
                     </LinearLayout>
 
                     <LinearLayout
-                        android:id="@+id/tab11parent"
+                        android:id="@+id/adherence"
                         android:layout_width="fill_parent"
                         android:layout_height="fill_parent"
                         android:orientation="vertical" >
@@ -407,7 +407,7 @@
                     </LinearLayout>
 
                     <LinearLayout
-                        android:id="@+id/tab12parent"
+                        android:id="@+id/feedback"
                         android:layout_width="fill_parent"
                         android:layout_height="fill_parent"
                         android:orientation="vertical" >
@@ -437,7 +437,7 @@
                     </LinearLayout>
 
                     <LinearLayout
-                        android:id="@+id/tab13parent"
+                        android:id="@+id/environmentMaterial"
                         android:layout_width="fill_parent"
                         android:layout_height="fill_parent"
                         android:orientation="vertical" >
@@ -467,7 +467,7 @@
                     </LinearLayout>
 
                     <LinearLayout
-                        android:id="@+id/tab14parent"
+                        android:id="@+id/reporting"
                         android:layout_width="fill_parent"
                         android:layout_height="fill_parent"
                         android:orientation="vertical" >
@@ -497,7 +497,7 @@
                     </LinearLayout>
 
                     <LinearLayout
-                        android:id="@+id/tab15parent"
+                        android:id="@+id/iqaEQA"
                         android:layout_width="fill_parent"
                         android:layout_height="fill_parent"
                         android:orientation="vertical" >
@@ -527,7 +527,7 @@
                     </LinearLayout>
 
                     <LinearLayout
-                        android:id="@+id/tab16parent"
+                        android:id="@+id/scoreSummary"
                         android:layout_width="fill_parent"
                         android:layout_height="fill_parent"
                         android:orientation="vertical" >
