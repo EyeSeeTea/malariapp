@@ -54,22 +54,22 @@ public class MainActivity extends ActionBarActivity {
     }
 
     private void createTabConfiguration() {
-        tabsLayouts.add(new TabConfiguration(R.id.profile, true, null));
-        tabsLayouts.add(new TabConfiguration(R.id.c1General, true, null));
-        tabsLayouts.add(new TabConfiguration(R.id.c1RDT, true, null));
-        tabsLayouts.add(new TabConfiguration(R.id.c1Microcospy, true, null));
-        tabsLayouts.add(new TabConfiguration(R.id.c2General, true, null));
-        tabsLayouts.add(new TabConfiguration(R.id.c2RDT, true, null));
-        tabsLayouts.add(new TabConfiguration(R.id.c2Microscopy, true, null));
-        tabsLayouts.add(new TabConfiguration(R.id.c3General, true, null));
-        tabsLayouts.add(new TabConfiguration(R.id.c3RDT, true, null));
-        tabsLayouts.add(new TabConfiguration(R.id.c3Microscopy, true, null));
-        tabsLayouts.add(new TabConfiguration(R.id.adherence, false, null));
-        tabsLayouts.add(new TabConfiguration(R.id.feedback, false, null));
-        tabsLayouts.add(new TabConfiguration(R.id.environmentMaterial, true, null));
-        tabsLayouts.add(new TabConfiguration(R.id.reporting, false, R.layout.reportingtab));
-        tabsLayouts.add(new TabConfiguration(R.id.iqaEQA, false, null));
-        tabsLayouts.add(new TabConfiguration(R.id.scoreSummary, false, R.layout.scoretab));
+        tabsLayouts.add(new TabConfiguration(R.id.profile, true, null, R.id.profileScore));
+        tabsLayouts.add(new TabConfiguration(R.id.c1General, true, null, R.id.generalCase1));
+        tabsLayouts.add(new TabConfiguration(R.id.c1RDT, true, null, R.id.rdtCase1));
+        tabsLayouts.add(new TabConfiguration(R.id.c1Microcospy, true, null, R.id.microscopyCase1));
+        tabsLayouts.add(new TabConfiguration(R.id.c2General, true, null, R.id.generalCase2));
+        tabsLayouts.add(new TabConfiguration(R.id.c2RDT, true, null, R.id.rdtCase2));
+        tabsLayouts.add(new TabConfiguration(R.id.c2Microscopy, true, null, R.id.microscopyCase2));
+        tabsLayouts.add(new TabConfiguration(R.id.c3General, true, null, R.id.generalCase3));
+        tabsLayouts.add(new TabConfiguration(R.id.c3RDT, true, null, R.id.rdtCase3));
+        tabsLayouts.add(new TabConfiguration(R.id.c3Microscopy, true, null, R.id.microscopyCase3));
+        tabsLayouts.add(new TabConfiguration(R.id.adherence, false, null, R.id.adherenceScore));
+        tabsLayouts.add(new TabConfiguration(R.id.feedback, false, null, R.id.feedbackScore));
+        tabsLayouts.add(new TabConfiguration(R.id.environmentMaterial, true, null, R.id.envAndMatScore));
+        tabsLayouts.add(new TabConfiguration(R.id.reporting, false, R.layout.reportingtab, R.id.reportingScore));
+        tabsLayouts.add(new TabConfiguration(R.id.iqaEQA, false, null, R.id.iqaeqaScore));
+        tabsLayouts.add(new TabConfiguration(R.id.scoreSummary, false, R.layout.scoretab, null));
     }
 
     private void createMenuAndTabs() {

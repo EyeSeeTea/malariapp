@@ -45,7 +45,7 @@ public class Layout {
     static final int [] backgrounds = {R.drawable.background_even, R.drawable.background_odd};
 
     // This method fill in a tab layout
-    public static int insertTab(MainActivity mainActivity, Tab tab, TabConfiguration tabConfiguration) {
+    public static int insertTab(MainActivity mainActivity, Tab tab, final TabConfiguration tabConfiguration) {
 
         int iterBacks = 0;
         // This layout inflater is for joining other layouts
@@ -57,7 +57,7 @@ public class Layout {
         ScrollView layoutParentScroll = (ScrollView) layoutGrandParent.getChildAt(0);
         GridLayout layoutParent = (GridLayout) layoutParentScroll.getChildAt(0);
 
-        // Given the layoutGrandParent, we use the addTag method to associate the tab object, being able to instanciate it later
+        // Given the layoutGrandParent, we use the setTag method to associate the tab object, being able to instanciate it later
 
 
         numDenRecordMap.put(tabConfiguration.getTabId(), new NumDenRecord());
@@ -168,6 +168,8 @@ public class Layout {
                                 TextView denominatorView = (TextView) Utils.findParentRecursively(spinner,R.id.ddl).findViewById(R.id.den);
                                 TextView statementView=(TextView) Utils.findParentRecursively(spinner,R.id.ddl).findViewById(R.id.statement);
                                 TextView partialScoreView = (TextView) Utils.findParentRecursively(spinner,Utils.getLayoutIds()).findViewById(R.id.score);
+                                int generalScoreId = ((Integer) partialScoreView.getTag()).intValue();
+                                TextView generalScoreView = (TextView) Utils.findParentRecursively(spinner, R.id.Grid).findViewById(generalScoreId);
                                 TextView numSubtotal = (TextView)((LinearLayout) Utils.findParentRecursively(spinner,Utils.getLayoutIds())).findViewById(R.id.total_num);
                                 TextView denSubtotal = (TextView)((LinearLayout) Utils.findParentRecursively(spinner,Utils.getLayoutIds())).findViewById(R.id.total_den);
                                 Float numerator, denominator;
@@ -228,7 +230,9 @@ public class Layout {
                                 if (numSubtotal != null && denSubtotal != null && partialScoreView != null) {
                                     numSubtotal.setText(Utils.round(numDenSubTotal.get(0)));
                                     denSubtotal.setText(Utils.round(numDenSubTotal.get(1)));
-                                    partialScoreView.setText(Utils.round((numDenSubTotal.get(0) / numDenSubTotal.get(1)) * 100));
+                                    float score = (numDenSubTotal.get(0) / numDenSubTotal.get(1)) * 100;
+                                    partialScoreView.setText(Utils.round(score)); // We set the score in the tab score
+                                    generalScoreView.setText(Utils.round(score)); // We set the score in the score tab
                                 }
 
                                 // Then we set the score in the Score tab
@@ -311,6 +315,9 @@ public class Layout {
             List<Float> numDenSubTotal = numDenRecordMap.get(tabConfiguration.getTabId()).calculateNumDenTotal();
             total_den_text.setText(Utils.round(numDenSubTotal.get(1)));
             layoutParentScore.addView(subtotalView);
+            TextView subscore_text = (TextView) subtotalView.findViewById(R.id.score);
+            int generalScoreId = tabConfiguration.getScoreFieldId();
+            subscore_text.setTag(generalScoreId);
             Log.i(".Layout", "after generated tab: " + numDenSubTotal.get(0) + " " + numDenSubTotal.get(1));
         }
 

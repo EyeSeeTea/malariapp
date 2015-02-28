@@ -53,5 +53,11 @@
     <string name="avgTitle">AVG</string>
     <string name="overall">Overall</string>
     <string name="selectTab">Select tab:</string>
+    <string name="zeroFloat">0.0</string>
+    <string name="adherenceTitle">Adherence</string>
+    <string name="feedbackTitle">Feedback</string>
+    <string name="envAndMatsTitle"><![CDATA[Env & Mats]]></string>
+    <string name="iqaeqaTitle">IQA EQA</string>
+    <string name="profileTitle">Profile</string>
 
 </resources>
