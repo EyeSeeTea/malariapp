@@ -9,6 +9,7 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.GridLayout;
 import android.widget.LinearLayout;
+//import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.Spinner;
@@ -17,11 +18,14 @@ import android.widget.TextView;
 
 import org.eyeseetea.malariacare.MainActivity;
 import org.eyeseetea.malariacare.R;
+//import org.eyeseetea.malariacare.adapters.InteractiveArrayAdapter;
 import org.eyeseetea.malariacare.data.Header;
 import org.eyeseetea.malariacare.data.Option;
 import org.eyeseetea.malariacare.data.Question;
 import org.eyeseetea.malariacare.data.Tab;
+//import org.eyeseetea.malariacare.staticmodels.ReportingResults;
 import org.eyeseetea.malariacare.utils.Constants;
+//import org.eyeseetea.malariacare.utils.LoadCustomQuestions;
 import org.eyeseetea.malariacare.utils.NumDenRecord;
 import org.eyeseetea.malariacare.utils.Utils;
 
@@ -74,9 +78,30 @@ public class Layout {
         tabHost.addTab(tabSpec);
 
         if (childlayout != -1){
+
             child = childlayout;
-            View scoreView = inflater.inflate(child, layoutParent, false);
-            layoutParent.addView(scoreView);
+            View customView = inflater.inflate(child, layoutParent, false);
+
+            switch (childlayout){
+                case R.layout.scoretab:
+                    layoutParent.addView(customView);
+                    break;
+                case R.layout.reportingtab:
+                    //ListView list=(ListView) customView.findViewById(R.id.listView);
+                    //ArrayAdapter<String> adapter = new InteractiveArrayAdapter(mainActivity, R.id.questionunica, LoadCustomQuestions.addReportingQuestions2());
+                    //list.setAdapter(adapter);
+                    //layoutParent.addView(customView);
+                    break;
+                case R.layout.adherencetab:
+                    //Mi mierda
+                    break;
+
+                case R.layout.iqatab:
+                    //Mi mierda
+                    break;
+
+            }
+
             return childlayout;
         }
 
