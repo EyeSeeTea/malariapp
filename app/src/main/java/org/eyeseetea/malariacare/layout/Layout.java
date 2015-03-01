@@ -100,6 +100,7 @@ public class Layout {
             //Log.i(".Layout", "Reader questions for header " + header.toString());
             for (Question question : header.getQuestions()){
                 View questionView = null;
+                EditText answerI = null;
                 // The statement is present in every kind of question
                 switch(question.getAnswer().getOutput()){
                     case Constants.DROPDOWN_LIST:
@@ -116,6 +117,7 @@ public class Layout {
                         dropdown.setTag(R.id.NumeratorViewTag, questionView.findViewById(R.id.num));
                         dropdown.setTag(R.id.DenominatorViewTag, questionView.findViewById(R.id.den));
                         dropdown.setTag(R.id.Tab, tabConfiguration.getTabId());
+                        dropdown.setTag(R.id.QuestionTypeTag, Constants.DROPDOWN_LIST);
 
                         // If the question has children, we load the denominator, else we hide the question
                         if (!question.hasParent()) {
@@ -137,16 +139,16 @@ public class Layout {
                         dropdown.setAdapter(adapter);
                         break;
                     case Constants.INT:
-                        questionView = getView(iterBacks, inflater, layoutParent, headerView, question, R.layout.integer);
+                        questionView = getView(iterBacks, inflater, layoutParent, headerView, question, R.layout.integer, Constants.INT);
                         break;
                     case Constants.LONG_TEXT:
-                        questionView = getView(iterBacks, inflater, layoutParent, headerView, question, R.layout.longtext);
+                        questionView = getView(iterBacks, inflater, layoutParent, headerView, question, R.layout.longtext, Constants.LONG_TEXT);
                         break;
                     case Constants.SHORT_TEXT:
-                        questionView = getView(iterBacks, inflater, layoutParent, headerView, question, R.layout.shorttext);
+                        questionView = getView(iterBacks, inflater, layoutParent, headerView, question, R.layout.shorttext, Constants.SHORT_TEXT);
                         break;
                     case Constants.SHORT_DATE: case Constants. LONG_DATE:
-                        questionView = getView(iterBacks, inflater, layoutParent, headerView, question, R.layout.date);
+                        questionView = getView(iterBacks, inflater, layoutParent, headerView, question, R.layout.date, Constants.SHORT_TEXT);
                         break;
                 }
                 layoutParent.addView(questionView);
@@ -202,7 +204,6 @@ public class Layout {
                 Integer generalScoreId = null, generalScoreAvgId = null;
                 TextView generalScoreView = null, generalScoreAvgView = null;
                 if (tabConfiguration.getScoreFieldId() != null) {
-                    //generalScoreId = ((Integer) partialScoreView.getTag());
                     generalScoreId = (Integer) tabConfiguration.getScoreFieldId();
                     gridView = LayoutUtils.findParentRecursively(spinner, R.id.Grid);
                     generalScoreView = (TextView) gridView.findViewById(generalScoreId);
@@ -322,9 +323,6 @@ public class Layout {
                         }
                     }
                 }
-
-                // Then we set the score in the Score tab
-
             }
 
             @Override
@@ -335,7 +333,7 @@ public class Layout {
         });
     }
 
-    private static View getView(int iterBacks, LayoutInflater inflater, GridLayout layoutParent, View headerView, Question question, Integer componentType) {
+    private static View getView(int iterBacks, LayoutInflater inflater, GridLayout layoutParent, View headerView, Question question, Integer componentType, int questionType) {
         View questionView = inflater.inflate(componentType, layoutParent, false);
         questionView.setBackgroundResource(backgrounds[iterBacks % backgrounds.length]);
         TextView statement = (TextView) questionView.findViewById(R.id.statement);
@@ -343,6 +341,7 @@ public class Layout {
         EditText answerI = (EditText) questionView.findViewById(R.id.answer);
         answerI.setTag(R.id.QuestionTag, question);
         answerI.setTag(R.id.HeaderViewTag, headerView);
+        answerI.setTag(R.id.QuestionTypeTag, questionType);
 
         // If the question has children, we load the denominator, else we hide the question
         if (!question.hasParent()) {

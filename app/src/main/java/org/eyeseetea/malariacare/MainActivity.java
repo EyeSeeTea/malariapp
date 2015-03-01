@@ -8,8 +8,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TabHost;
 import android.widget.TextView;
@@ -151,6 +153,7 @@ public class MainActivity extends ActionBarActivity {
         actionBar.setDisplayUseLogoEnabled(true);
     }
 
+    // Method for capturing "Save" and "Reset" events
     public void saveClearResults(View view) {
 
         if (view.getId() == R.id.save) {
@@ -158,15 +161,10 @@ public class MainActivity extends ActionBarActivity {
         }
         else if (view.getId() == R.id.clear) {
             Log.d(".MainActivity", "Button clear pressed");
-        }
-        List<View> allViewsWithinMyTopView = LayoutUtils.getAllChildren(view);
-        for (View child : allViewsWithinMyTopView) {
-            if (child instanceof TextView) {
-                TextView childTextView = (TextView) child;
-                Log.d(".MainActivity", childTextView.getText().toString());
-            }
-            else if(child instanceof Spinner){
-
+            ViewGroup root = (LinearLayout) LayoutUtils.findParentRecursively(view, R.id.Grid);
+            List<View> viewsToClear = LayoutUtils.getChildrenByTag(root, R.id.QuestionTypeTag, null);
+            for (View viewToClear: viewsToClear){
+                LayoutUtils.resetComponent(viewToClear);
             }
         }
 

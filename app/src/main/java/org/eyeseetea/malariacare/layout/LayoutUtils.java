@@ -65,11 +65,17 @@ public class LayoutUtils {
         return null;
     }
 
+    // Put a View visibility to one of the constants from View class [View.VISIBLE | View.INVISIBLE | View.GONE]
     public static void toggleVisible(View childView, int visibility){
         ((View)childView.getParent().getParent()).setVisibility(visibility);
         ((View)childView.getParent()).setVisibility(visibility);
         ((View)childView).setVisibility(visibility);
 
+        resetComponent(childView);
+    }
+
+    // Given a View, clears the content (putting dropdown lists to its first position and resetting text fields)
+    public static void resetComponent(View childView) {
         if (childView instanceof Spinner) {
             ((Spinner) childView).setSelection(0);
         }
@@ -100,6 +106,30 @@ public class LayoutUtils {
             result.addAll(viewArrayList);
         }
         return result;
+    }
+
+    // Searchs for every children that contain the given tag. If tag equals null search for every view with the key. Otherwise, checks key equals the object tag
+    public static List<View> getChildrenByTag(ViewGroup root, int key, Object tag){
+        List<View> views = new ArrayList<View>();
+        final int childCount = root.getChildCount();
+        for (int i = 0; i < childCount; i++) {
+            final View child = root.getChildAt(i);
+            if (child instanceof ViewGroup) {
+                views.addAll(getChildrenByTag((ViewGroup) child, key, tag));
+            }
+
+            Object tagObj = child.getTag(key);
+            if (tagObj != null){
+                if (tag != null) {
+                    if (tagObj.equals(tag)) {
+                        views.add(child);
+                    }
+                } else {
+                    views.add(child);
+                }
+            }
+        }
+        return views;
     }
 
     public static boolean isHeaderEmpty(List<Question> parentList, List<Question> childrenList){

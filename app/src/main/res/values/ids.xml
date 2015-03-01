@@ -10,6 +10,7 @@
     <item name="NumeratorViewTag" type="id">2</item>
     <item name="DenominatorViewTag" type="id">3</item>
     <item name="Tab" type="id">4</item>
+    <item name="QuestionTypeTag" type="id">5</item>
 
 
 </resources>
