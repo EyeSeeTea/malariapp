@@ -12,6 +12,8 @@ import android.widget.TextView;
 
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.models.ReportingResults;
+import org.eyeseetea.malariacare.utils.Constants;
+import org.eyeseetea.malariacare.utils.Utils;
 
 import java.util.List;
 
@@ -22,6 +24,8 @@ public class ReportingResultsArrayAdapter extends ArrayAdapter<String>{
 
     private final List<String> list;
     private final Activity context;
+
+    private static int score = 0;
 
     public ReportingResultsArrayAdapter(Activity context, List<String> list)
     {
@@ -55,6 +59,7 @@ public class ReportingResultsArrayAdapter extends ArrayAdapter<String>{
         viewHolder.score = (TextView) rowView.findViewById(R.id.score);
 
         viewHolder.question.setText(list.get(position).toString());
+        viewHolder.question.setTag(0);
 
         viewHolder.answer1.addTextChangedListener(new TextWatcher(){
 
@@ -69,11 +74,30 @@ public class ReportingResultsArrayAdapter extends ArrayAdapter<String>{
 
                 String answer2=viewHolder.answer2.getText().toString();
                 String answer1=s.toString();
+                float score_total;
 
                 if (answer2!=null && answer1!=null)
-                    if (answer1.equals(answer2)) viewHolder.score.setText("1"); else viewHolder.score.setText("0");
+                    if (answer1.equals(answer2)) {
+                        viewHolder.score.setText("1");
+
+                        score=score + 1 - (int) viewHolder.question.getTag();
+
+                        viewHolder.question.setTag(1);
+
+                    } else {
+                        viewHolder.score.setText("0");
+
+                        score=score - (int) viewHolder.question.getTag();
+
+                        viewHolder.question.setTag(0);
+
+                    }
                 else
                     viewHolder.score.setText("");
+
+                TextView scoreView = (TextView) context.findViewById(R.id.reportingScore);
+                score_total = (float)score / Constants.REPORTING_MAX_SCORE;
+                scoreView.setText(Utils.round(score_total).toString());
 
             }
             @Override
@@ -96,11 +120,29 @@ public class ReportingResultsArrayAdapter extends ArrayAdapter<String>{
 
                 String answer1=viewHolder.answer1.getText().toString();
                 String answer2=s.toString();
+                float score_total;
 
                 if (answer2!=null && answer1!=null)
-                    if (answer1.equals(answer2)) viewHolder.score.setText("1"); else viewHolder.score.setText("0");
+                    if (answer1.equals(answer2)){
+                        viewHolder.score.setText("1");
+
+                        score=score + 1 - (int) viewHolder.question.getTag();
+
+                        viewHolder.question.setTag(1);
+
+                    } else{
+                        viewHolder.score.setText("0");
+
+                        score=score - (int) viewHolder.question.getTag();
+
+                        viewHolder.question.setTag(0);
+                    }
                 else
                     viewHolder.score.setText("");
+
+                TextView scoreView = (TextView) context.findViewById(R.id.reportingScore);
+                score_total = (float)score / Constants.REPORTING_MAX_SCORE;
+                scoreView.setText(Utils.round(score_total).toString());
 
 
             }
