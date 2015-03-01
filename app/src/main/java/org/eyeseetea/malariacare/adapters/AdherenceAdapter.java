@@ -62,6 +62,7 @@ public class AdherenceAdapter extends ArrayAdapter<String> {
         viewHolder.results.setAdapter(adapter);
 
 
+
         return rowView;
 
 

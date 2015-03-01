@@ -153,6 +153,7 @@ public class ReportingResultsArrayAdapter extends ArrayAdapter<String>{
             }
         });
 
+
         return rowView;
     }
 
