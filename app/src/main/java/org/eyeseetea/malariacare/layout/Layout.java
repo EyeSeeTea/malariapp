@@ -194,15 +194,17 @@ public class Layout {
                 TextView numSubtotal = (TextView) tabLayout.findViewById(R.id.totalNum);
                 TextView denSubtotal = (TextView) tabLayout.findViewById(R.id.totalDen);
                 TextView partialScoreView = (TextView) tabLayout.findViewById(R.id.score);
+                View gridView = null;
                 // General scores View
                 Integer generalScoreId = null, generalScoreAvgId = null;
                 TextView generalScoreView = null, generalScoreAvgView = null;
                 if (tabConfiguration.getScoreFieldId() != null) {
-                    generalScoreId = ((Integer) partialScoreView.getTag());
-                    View gridView = LayoutUtils.findParentRecursively(spinner, R.id.Grid);
+                    //generalScoreId = ((Integer) partialScoreView.getTag());
+                    generalScoreId = (Integer) tabConfiguration.getScoreFieldId();
+                    gridView = LayoutUtils.findParentRecursively(spinner, R.id.Grid);
                     generalScoreView = (TextView) gridView.findViewById(generalScoreId);
                     if (tabConfiguration.getScoreAvgFieldId() != null) {
-                        generalScoreAvgId = ((Integer) tabConfiguration.getScoreAvgFieldId());
+                        generalScoreAvgId = (Integer) tabConfiguration.getScoreAvgFieldId();
                         generalScoreAvgView = (TextView) gridView.findViewById(generalScoreAvgId);
                     }
                 }
@@ -266,7 +268,7 @@ public class Layout {
                     numSubtotal.setText(Utils.round(numDenSubTotal.get(0)));
                     denSubtotal.setText(Utils.round(numDenSubTotal.get(1)));
                     float score = (numDenSubTotal.get(0) / numDenSubTotal.get(1)) * 100;
-                    float average = 0.0F;
+                    float average = 0.0F, totalAverage = 0.0F;
                     TextView elementView = null;
                     partialScoreView.setText(Utils.round(score)); // We set the score in the tab score
                     if (tabConfiguration.getScoreFieldId() != null) {
@@ -284,11 +286,36 @@ public class Layout {
                                     if (element.intValue() == generalScoreId) found = true;
                                     average += Float.parseFloat((String) ((TextView) LayoutUtils.findParentRecursively(generalScoreView, R.id.scoreTable).findViewById(element)).getText());
                                 }
-                                if ( !found ) averageElements.add(generalScoreId);
+                                if (!found) averageElements.add(generalScoreId);
                                 average = average / averageElements.size();
                                 generalScoreAvgView.setText(Utils.round(average));
                                 generalScoreAvgView.setTag(averageElements);
                             }
+                        }
+                        List<Integer> scoreElements = (ArrayList<Integer>) gridView.findViewById(R.id.totalScore).getTag();
+                        TextView totalScoreView = (TextView) gridView.findViewById(R.id.totalScore);
+                        if (scoreElements == null) {
+                            scoreElements = new ArrayList<Integer>();
+                            if (tabConfiguration.getScoreAvgFieldId() != null) scoreElements.add(generalScoreAvgId);
+                            else scoreElements.add(generalScoreId);
+                            totalScoreView.setTag(scoreElements);
+                        } else {
+                            boolean foundElement = false;
+                            for (Integer element : scoreElements){
+                                if (tabConfiguration.getScoreAvgFieldId() != null) {
+                                    if (element.intValue() == generalScoreAvgId.intValue()) foundElement = true;
+                                } else {
+                                    if (element.intValue() == generalScoreId.intValue()) foundElement = true;
+                                }
+                                totalAverage += Float.parseFloat((String) ((TextView) LayoutUtils.findParentRecursively(generalScoreView, R.id.scoreTable).findViewById(element)).getText());
+                            }
+                            if (!foundElement){
+                                if (tabConfiguration.getScoreAvgFieldId() != null) scoreElements.add(generalScoreAvgId);
+                                else scoreElements.add(generalScoreId);
+                            }
+                            totalAverage = totalAverage / scoreElements.size();
+                            totalScoreView.setText(Utils.round(totalAverage));
+                            totalScoreView.setTag(scoreElements);
                         }
                     }
                 }
