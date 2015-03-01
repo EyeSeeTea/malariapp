@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -59,8 +60,11 @@ public class Layout {
         // This layout is for the tab content (questions)
         LinearLayout layoutGrandParent = (LinearLayout) mainActivity.findViewById(tabConfiguration.getTabId());
         layoutGrandParent.setTag(tab);
-        ScrollView layoutParentScroll = (ScrollView) layoutGrandParent.getChildAt(0);
-        GridLayout layoutParent = (GridLayout) layoutParentScroll.getChildAt(0);
+        ViewGroup layoutParentScroll = null;
+        GridLayout layoutParent = null;
+        if (tabConfiguration.isAutomaticTab()) layoutParentScroll = (ScrollView) layoutGrandParent.getChildAt(0);
+        else layoutParentScroll = (ViewGroup) layoutGrandParent.getChildAt(0); // in manual tabs this is not a scroll, but a linear layout
+        layoutParent = (GridLayout) layoutParentScroll.getChildAt(0);
 
         //Initialize numerator and denominator record map
         numDenRecordMap.put(tabConfiguration.getTabId(), new NumDenRecord());

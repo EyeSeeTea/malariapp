@@ -382,11 +382,10 @@
                         android:layout_height="fill_parent"
                         android:orientation="vertical" >
 
-                        <ScrollView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:id="@+id/Scroll11"
-                            android:layout_weight="0.09">
+                        <LinearLayout
+                            android:orientation="vertical"
+                            android:layout_width="fill_parent"
+                            android:layout_height="fill_parent">
 
                             <GridLayout
                                 android:layout_width="wrap_content"
@@ -394,7 +393,7 @@
                                 android:rowCount="1"
                                 android:columnCount="1"
                                 android:id="@+id/tab11" />
-                        </ScrollView>
+                        </LinearLayout>
 
                         <GridLayout
                             android:layout_width="fill_parent"
@@ -412,11 +411,10 @@
                         android:layout_height="fill_parent"
                         android:orientation="vertical" >
 
-                        <ScrollView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:id="@+id/Scroll12"
-                            android:layout_weight="0.09">
+                        <LinearLayout
+                            android:orientation="vertical"
+                            android:layout_width="fill_parent"
+                            android:layout_height="fill_parent">
 
                             <GridLayout
                                 android:layout_width="wrap_content"
@@ -424,7 +422,7 @@
                                 android:rowCount="1"
                                 android:columnCount="1"
                                 android:id="@+id/tab12" />
-                        </ScrollView>
+                        </LinearLayout>
 
                         <GridLayout
                             android:layout_width="fill_parent"
@@ -472,11 +470,10 @@
                         android:layout_height="fill_parent"
                         android:orientation="vertical" >
 
-                        <ScrollView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:id="@+id/Scroll14"
-                            android:layout_weight="0.09">
+                        <LinearLayout
+                            android:orientation="vertical"
+                            android:layout_width="fill_parent"
+                            android:layout_height="fill_parent">
 
                             <GridLayout
                                 android:layout_width="wrap_content"
@@ -484,7 +481,7 @@
                                 android:rowCount="1"
                                 android:columnCount="1"
                                 android:id="@+id/tab14" />
-                        </ScrollView>
+                        </LinearLayout>
 
                         <GridLayout
                             android:layout_width="fill_parent"
@@ -502,26 +499,25 @@
                         android:layout_height="fill_parent"
                         android:orientation="vertical" >
 
-                        <ScrollView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:id="@+id/Scroll15"
-                            android:layout_weight="0.09">
+                        <LinearLayout
+                            android:orientation="vertical"
+                            android:layout_width="fill_parent"
+                            android:layout_height="fill_parent">
 
                             <GridLayout
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:rowCount="1"
                                 android:columnCount="1"
-                                android:id="@+id/tab15" />
-                        </ScrollView>
+                                android:id="@+id/tabContent" />
+                        </LinearLayout>
 
                         <GridLayout
                             android:layout_width="fill_parent"
                             android:layout_height="fill_parent"
                             android:columnCount="2"
                             android:rowCount="1"
-                            android:id="@+id/scoretab15"
+                            android:id="@+id/tabIqaEqaContent"
                             android:layout_weight="0.91"></GridLayout>
 
                     </LinearLayout>
@@ -541,7 +537,7 @@
                             <GridLayout
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:id="@+id/tab16"
+                                android:id="@+id/tabScoreContent"
                                 android:columnCount="1"
                                 android:rowCount="1">
                             </GridLayout>
