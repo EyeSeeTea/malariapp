@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import org.eyeseetea.malariacare.data.Tab;
 import org.eyeseetea.malariacare.layout.Layout;
+import org.eyeseetea.malariacare.layout.LayoutUtils;
 import org.eyeseetea.malariacare.utils.PopulateDB;
 import org.eyeseetea.malariacare.utils.TabConfiguration;
 import org.eyeseetea.malariacare.utils.Utils;
@@ -97,8 +98,8 @@ public class MainActivity extends ActionBarActivity {
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
                 Spinner spinner = (Spinner) parentView;
-                Tab triggeredTab = (Tab) ((View) Utils.findParentRecursively(spinner, R.id.Grid).findViewById(tabsLayouts.get(position).getTabId())).getTag(); // Just in case in the future we need to have the tab captured
-                TabHost tabHost = (TabHost) Utils.findParentRecursively(spinner, R.id.tabHost);
+                Tab triggeredTab = (Tab) ((View) LayoutUtils.findParentRecursively(spinner, R.id.Grid).findViewById(tabsLayouts.get(position).getTabId())).getTag(); // Just in case in the future we need to have the tab captured
+                TabHost tabHost = (TabHost) LayoutUtils.findParentRecursively(spinner, R.id.tabHost);
                 tabHost.setCurrentTab(position);
                 Log.i(".MainActivity", "Tab selected: " + triggeredTab.getName());
             }
@@ -158,7 +159,7 @@ public class MainActivity extends ActionBarActivity {
         else if (view.getId() == R.id.clear) {
             Log.d(".MainActivity", "Button clear pressed");
         }
-        List<View> allViewsWithinMyTopView = Utils.getAllChildren(view);
+        List<View> allViewsWithinMyTopView = LayoutUtils.getAllChildren(view);
         for (View child : allViewsWithinMyTopView) {
             if (child instanceof TextView) {
                 TextView childTextView = (TextView) child;
@@ -196,4 +197,6 @@ public class MainActivity extends ActionBarActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+
 }

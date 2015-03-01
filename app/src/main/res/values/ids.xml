@@ -6,5 +6,10 @@
     <item name="BodyGNR" type="id"/>
     <item name="Footer" type="id"/>
     <item name="QuestionTag" type="id">0</item>
-    <item name="HeaderTag" type="id">1</item>
+    <item name="HeaderViewTag" type="id">1</item>
+    <item name="NumeratorViewTag" type="id">2</item>
+    <item name="DenominatorViewTag" type="id">3</item>
+    <item name="Tab" type="id">4</item>
+
+
 </resources>
