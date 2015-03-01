@@ -7,25 +7,34 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text=""
-        android:id="@+id/question1"
-        android:layout_weight=".10"/>
+        android:id="@+id/question"
+        android:layout_weight=".08"/>
+
+    <EditText
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:inputType="numberSigned"
+        android:ems="10"
+        android:id="@+id/patientid"
+        android:layout_weight=".23"/>
 
     <Spinner
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:id="@+id/spinner1"
-        android:layout_weight="0.30"
-       />
+        android:id="@+id/gender"
+        android:layout_weight=".23"/>
 
     <EditText
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:id="@+id/answer11"
-        android:layout_weight="0.30"/>
+        android:inputType="numberSigned"
+        android:ems="10"
+        android:id="@+id/age"
+        android:layout_weight=".23"/>
 
-    <EditText
+    <Spinner
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:id="@+id/answer21"
-        android:layout_weight="0.30"/>
+        android:id="@+id/results"
+        android:layout_weight=".23"/>
 </LinearLayout>

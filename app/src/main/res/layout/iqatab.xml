@@ -3,12 +3,11 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
-        android:layout_width="wrap_content"
+    <!--<TextView
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Supervisor"
-        android:id="@+id/textView6" />
+        android:id="@+id/textView6" /> -->
 
     <LinearLayout
         android:orientation="horizontal"
@@ -19,7 +18,6 @@
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceSmall"
             android:text="Nº"
             android:layout_weight=".10"
             android:id="@+id/textView9" />
@@ -27,34 +25,32 @@
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceSmall"
             android:text="Test result"
-            android:layout_weight=".4"
+            android:layout_weight=".3"
             android:id="@+id/textView10" />
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceSmall"
             android:text="Parasites/uL"
-            android:layout_weight=".25"
+            android:layout_weight=".3"
             android:id="@+id/textView11" />
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceSmall"
             android:text="Species"
-            android:layout_weight=".25"
+            android:layout_weight=".3"
             android:id="@+id/textView12" />
     </LinearLayout>
 
     <ListView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/listTestSupervisor" />
+        android:id="@+id/listTestSupervisor"
+        android:layout_gravity="center_horizontal"/>
 
-    <TextView
+  <!--  <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
@@ -103,5 +99,5 @@
     <ListView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/listTestStaff" />
+        android:id="@+id/listTestStaff" /> -->
 </LinearLayout>

@@ -6,7 +6,6 @@
     <TextView
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
         android:text=""
         android:layout_weight=".70"
         android:id="@+id/question"
@@ -33,7 +32,6 @@
     <TextView
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
         android:text=""
         android:id="@+id/score"
         android:layout_weight=".10"

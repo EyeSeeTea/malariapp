@@ -8,6 +8,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.models.DataHolder;
@@ -17,12 +18,13 @@ import java.util.List;
 /**
  * Created by Jose on 28/02/2015.
  */
-public class IQATestArrayAdapter extends ArrayAdapter<DataHolder> {
+public class IQATestArrayAdapter extends ArrayAdapter<String> {
 
-    final Activity context;
-    final List<DataHolder> list;
+    private final Activity context;
+    private final List<String> list;
 
-    public IQATestArrayAdapter(Activity context, List<DataHolder> list)
+
+    public IQATestArrayAdapter(Activity context, List<String> list)
     {
         super(context, R.layout.iqa_results, list);
         this.context=context;
@@ -30,60 +32,47 @@ public class IQATestArrayAdapter extends ArrayAdapter<DataHolder> {
     }
 
     static class ViewHolder {
+        protected TextView question;
         protected Spinner spinner;
         protected EditText answer1;
         protected EditText answer2;
-        protected DataHolder data;
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
-        View view=null;
 
-        // Check to see if this row has already been painted once.
-        if (convertView == null) {
+        LayoutInflater inflater = (LayoutInflater) context.getSystemService(context.LAYOUT_INFLATER_SERVICE);
 
-            // If it hasn't, set up everything:
-            LayoutInflater inflator = context.getLayoutInflater();
-            view = inflator.inflate(R.layout.iqa_results, null);
+        View rowView = inflater.inflate(R.layout.iqa_results, parent, false);
 
-            // Make a new ViewHolder for this row, and modify its data and spinner:
-            final ViewHolder viewHolder = new ViewHolder();
-            viewHolder.answer1 = (EditText) view.findViewById(R.id.answer1);
-            viewHolder.answer2 = (EditText) view.findViewById(R.id.answer2);
-            //viewHolder.data = new DataHolder(myContext);
-            viewHolder.spinner = (Spinner) view.findViewById(R.id.spinner);
-            viewHolder.spinner.setAdapter(viewHolder.data.getAdapter());
+        final ViewHolder viewHolder = new ViewHolder();
 
-            // Used to handle events when the user changes the Spinner selection:
-            viewHolder.spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        viewHolder.question = (TextView) rowView.findViewById(R.id.question1);
+        viewHolder.answer1 = (EditText) rowView.findViewById(R.id.answer11);
+        viewHolder.answer2 = (EditText) rowView.findViewById(R.id.answer21);
+        viewHolder.spinner = (Spinner) rowView.findViewById(R.id.spinner1);
 
-                @Override
-                public void onItemSelected(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-                }
+        viewHolder.question.setText(list.get(position).toString());
 
-                @Override
-                public void onNothingSelected(AdapterView<?> arg0) {
-                }
+        ArrayAdapter adapter = ArrayAdapter.createFromResource(context, R.array.iqa_testresult, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        viewHolder.spinner.setAdapter(adapter);
 
-            });
+        viewHolder.spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 
-            // Update the TextView to reflect what's in the Spinner
-            //viewHolder.text.setText(viewHolder.data.getText());
+            @Override
+            public void onItemSelected(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+            }
 
-            view.setTag(viewHolder);
+            @Override
+            public void onNothingSelected(AdapterView<?> arg0) {
+            }
 
-            //Log.d("DBGINF", viewHolder.text.getText() + "");
-        } else {
-            view = convertView;
-        }
+        });
 
-        // This is what gets called every time the ListView refreshes
-        ViewHolder holder = (ViewHolder) view.getTag();
-        holder.answer1.setText(getItem(position).getText());
-        holder.spinner.setSelection(getItem(position).getSelected());
+        return rowView;
 
-        return view;
+
     }
 }

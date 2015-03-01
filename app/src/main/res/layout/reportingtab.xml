@@ -12,7 +12,6 @@
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="Results"
             android:id="@+id/textView2"
             android:layout_weight=".70"
@@ -21,7 +20,6 @@
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="Register"
             android:id="@+id/textView3"
             android:layout_weight="0.10"
@@ -30,7 +28,6 @@
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="Monthly report"
             android:id="@+id/textView4"
             android:layout_weight="0.1"
@@ -39,7 +36,6 @@
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="Score"
             android:id="@+id/textView5"
             android:layout_weight="0.1"

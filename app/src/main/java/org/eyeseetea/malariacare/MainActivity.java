@@ -64,12 +64,12 @@ public class MainActivity extends ActionBarActivity {
         tabsLayouts.add(new TabConfiguration(R.id.c2Microscopy, true, null, R.id.microscopyCase2, R.id.microscopyAvg));
         tabsLayouts.add(new TabConfiguration(R.id.c3General, true, null, R.id.generalCase3, R.id.generalAvg));
         tabsLayouts.add(new TabConfiguration(R.id.c3RDT, true, null, R.id.rdtCase3, R.id.rdtAvg));
-        tabsLayouts.add(new TabConfiguration(R.id.c3Microscopy, true, null, R.id.microscopyCase3, R.id.microscopyAvg));
-        tabsLayouts.add(new TabConfiguration(R.id.adherence, false, null, R.id.adherenceScore, null));
+        tabsLayouts.add(new TabConfiguration(R.id.c3Microscopy, true, null, R.id.microscopyCase3, R.id.microscopyAvg));*/
+        tabsLayouts.add(new TabConfiguration(R.id.adherence, false, R.layout.adherencetab, R.id.adherenceScore, null));
         tabsLayouts.add(new TabConfiguration(R.id.feedback, false, null, R.id.feedbackScore, null));
         tabsLayouts.add(new TabConfiguration(R.id.environmentMaterial, true, null, R.id.envAndMatScore, null));
         tabsLayouts.add(new TabConfiguration(R.id.reporting, false, R.layout.reportingtab, R.id.reportingScore, null));
-        tabsLayouts.add(new TabConfiguration(R.id.iqaEQA, false, null, R.id.iqaeqaScore, null));
+        tabsLayouts.add(new TabConfiguration(R.id.iqaEQA, false, R.layout.iqatab, R.id.iqaeqaScore, null));
         tabsLayouts.add(new TabConfiguration(R.id.scoreSummary, false, R.layout.scoretab, null, null));
     }
 
