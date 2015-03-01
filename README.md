@@ -1,2 +1,2 @@
 # malariapp
-Little app for Android to help with Malaria diagnosis
+Little Android app to help with Malaria diagnosis
