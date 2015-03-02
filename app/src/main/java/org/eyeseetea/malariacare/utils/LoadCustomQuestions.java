@@ -13,20 +13,20 @@ import java.util.List;
  */
 public class LoadCustomQuestions {
 
-    public static List<String> addReportingQuestions()
+    public static List<ReportingResults> addReportingQuestions()
     {
-        List<String> results=new ArrayList<String>();
+        List<ReportingResults> results=new ArrayList<ReportingResults>();
 
-        results.add(Constants.REPORTING_Q1);
-        results.add(Constants.REPORTING_Q2);
-        results.add(Constants.REPORTING_Q3);
-        results.add(Constants.REPORTING_Q4);
-        results.add(Constants.REPORTING_Q5);
-        results.add(Constants.REPORTING_Q6);
-        results.add(Constants.REPORTING_Q7);
-        results.add(Constants.REPORTING_Q8);
-        results.add(Constants.REPORTING_Q9);
-        results.add(Constants.REPORTING_Q10);
+        results.add(new ReportingResults(Constants.REPORTING_Q1));
+        results.add(new ReportingResults(Constants.REPORTING_Q2));
+        results.add(new ReportingResults(Constants.REPORTING_Q3));
+        results.add(new ReportingResults(Constants.REPORTING_Q4));
+        results.add(new ReportingResults(Constants.REPORTING_Q5));
+        results.add(new ReportingResults(Constants.REPORTING_Q6));
+        results.add(new ReportingResults(Constants.REPORTING_Q7));
+        results.add(new ReportingResults(Constants.REPORTING_Q8));
+        results.add(new ReportingResults(Constants.REPORTING_Q9));
+        results.add(new ReportingResults(Constants.REPORTING_Q10));
 
         return results;
     }

@@ -368,7 +368,7 @@ public class Layout {
                 break;
             case R.layout.reportingtab:
                 ListView list=(ListView) customView.findViewById(R.id.listView);
-                ArrayAdapter<String> adapter = new ReportingResultsArrayAdapter(mainActivity, LoadCustomQuestions.addReportingQuestions());
+                ArrayAdapter<ReportingResults> adapter = new ReportingResultsArrayAdapter(mainActivity, LoadCustomQuestions.addReportingQuestions());
                 list.setAdapter(adapter);
                 layoutParent.addView(customView);
                 break;

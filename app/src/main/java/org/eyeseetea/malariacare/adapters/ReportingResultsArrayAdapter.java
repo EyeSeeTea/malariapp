@@ -21,14 +21,14 @@ import java.util.List;
 /**
  * Created by Jose on 28/02/2015.
  */
-public class ReportingResultsArrayAdapter extends ArrayAdapter<String>{
+public class ReportingResultsArrayAdapter extends ArrayAdapter<ReportingResults>{
 
-    private final List<String> list;
+    private final List<ReportingResults> list;
     private final Activity context;
 
     private static int score = 0;
 
-    public ReportingResultsArrayAdapter(Activity context, List<String> list)
+    public ReportingResultsArrayAdapter(Activity context, List<ReportingResults> list)
     {
         super(context, R.layout.resultsreporting, list);
         this.context=context;
@@ -47,117 +47,144 @@ public class ReportingResultsArrayAdapter extends ArrayAdapter<String>{
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
+        View view = null;
 
-        LayoutInflater inflater = (LayoutInflater) context.getSystemService(context.LAYOUT_INFLATER_SERVICE);
-        final int [] backgrounds = {R.drawable.background_even, R.drawable.background_odd};
+        if (convertView == null) {
 
-        View rowView = inflater.inflate(R.layout.resultsreporting, parent, false);
+            LayoutInflater inflater = (LayoutInflater) context.getLayoutInflater();
+            final int[] backgrounds = {R.drawable.background_even, R.drawable.background_odd};
 
-        final ViewHolder viewHolder = new ViewHolder();
+            view = inflater.inflate(R.layout.resultsreporting, null);
 
-        rowView.setBackgroundResource(backgrounds[position % backgrounds.length]);
-        viewHolder.question = (TextView) rowView.findViewById(R.id.question);
-        viewHolder.answer1 = (EditText) rowView.findViewById(R.id.answer1);
-        viewHolder.answer2 = (EditText) rowView.findViewById(R.id.answer2);
-        viewHolder.score = (TextView) rowView.findViewById(R.id.score);
+            final ViewHolder viewHolder = new ViewHolder();
 
-        viewHolder.question.setText(list.get(position).toString());
-        viewHolder.question.setTag(0);
+            view.setBackgroundResource(backgrounds[position % backgrounds.length]);
+            viewHolder.question = (TextView) view.findViewById(R.id.question);
+            viewHolder.answer1 = (EditText) view.findViewById(R.id.answer1);
+            viewHolder.answer2 = (EditText) view.findViewById(R.id.answer2);
+            viewHolder.score = (TextView) view.findViewById(R.id.score);
 
-        viewHolder.answer1.addTextChangedListener(new TextWatcher(){
+            viewHolder.answer1.addTextChangedListener(new TextWatcher() {
 
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
 
-            }
+                }
 
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
 
-                String answer2=viewHolder.answer2.getText().toString();
-                String answer1=s.toString();
-                float score_total;
+                    ReportingResults model = (ReportingResults) viewHolder.score.getTag();
+                    model.setAnswer1(s.toString());
 
-                if (answer2!=null && answer1!=null)
-                    if (answer1.equals(answer2)) {
-                        viewHolder.score.setText("1");
+                    String answer2 = viewHolder.answer2.getText().toString();
+                    String answer1 = s.toString();
+                    float score_total;
 
-                        score=score + 1 - (int) viewHolder.question.getTag();
+                    if (!answer2.equals("") || !answer1.equals(""))
+                        if (answer1.equals(answer2)) {
+                            viewHolder.score.setText("1");
 
-                        viewHolder.question.setTag(1);
+                            score = score + 1 - Integer.parseInt(model.getScore());
 
-                    } else {
+                            model.setScore("1");
+
+                        } else {
+                            viewHolder.score.setText("0");
+
+                            score = score - Integer.parseInt(model.getScore());
+
+                            model.setScore("0");
+
+                        }
+                    else
+                    {
                         viewHolder.score.setText("0");
-
-                        score=score - (int) viewHolder.question.getTag();
-
-                        viewHolder.question.setTag(0);
-
                     }
-                else
-                    viewHolder.score.setText("");
 
-                TextView scoreView = (TextView) context.findViewById(R.id.reportingScore);
-                score_total = (float)score / Constants.REPORTING_MAX_SCORE;
-                scoreView.setText(Utils.round(score_total).toString());
+                    TextView scoreView = (TextView) context.findViewById(R.id.reportingScore);
+                    score_total = (float) score / Constants.REPORTING_MAX_SCORE;
+                    scoreView.setText(Utils.round(score_total).toString());
 
-            }
-            @Override
-            public void afterTextChanged(Editable s) {
+                }
 
-            }
+                @Override
+                public void afterTextChanged(Editable s) {
+
+                }
 
 
-        });
+            });
 
-        viewHolder.answer2.addTextChangedListener(new TextWatcher(){
+            viewHolder.answer2.addTextChangedListener(new TextWatcher() {
 
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
-            }
+                }
 
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
 
-                String answer1=viewHolder.answer1.getText().toString();
-                String answer2=s.toString();
-                float score_total;
+                    ReportingResults model = (ReportingResults) viewHolder.score.getTag();
+                    model.setAnswer2(s.toString());
+                    String answer1 = viewHolder.answer1.getText().toString();
+                    String answer2 = s.toString();
+                    float score_total;
 
-                if (answer2!=null && answer1!=null)
-                    if (answer1.equals(answer2)){
-                        viewHolder.score.setText("1");
+                    if (!answer2.equals("") || !answer1.equals(""))
+                        if (answer1.equals(answer2)) {
+                            viewHolder.score.setText("1");
 
-                        score=score + 1 - (int) viewHolder.question.getTag();
+                            score = score + 1 - Integer.parseInt(model.getScore());
 
-                        viewHolder.question.setTag(1);
+                            model.setScore("1");
 
-                    } else{
+                        } else {
+                            viewHolder.score.setText("0");
+
+                            score = score - Integer.parseInt(model.getScore());
+
+                            model.setScore("0");
+                        }
+                    else {
                         viewHolder.score.setText("0");
-
-                        score=score - (int) viewHolder.question.getTag();
-
-                        viewHolder.question.setTag(0);
                     }
-                else
-                    viewHolder.score.setText("");
 
-                TextView scoreView = (TextView) context.findViewById(R.id.reportingScore);
-                score_total = (float)score / Constants.REPORTING_MAX_SCORE;
-                scoreView.setText(Utils.round(score_total).toString());
+                    TextView scoreView = (TextView) context.findViewById(R.id.reportingScore);
+                    score_total = (float) score / Constants.REPORTING_MAX_SCORE;
+                    scoreView.setText(Utils.round(score_total).toString());
 
 
-            }
+                }
 
-            @Override
-            public void afterTextChanged(Editable s) {
+                @Override
+                public void afterTextChanged(Editable s) {
 
-            }
-        });
+                }
+            });
+
+            view.setTag(viewHolder);
+            viewHolder.score.setTag(list.get(position));
+
+        }
+
+        else {
+
+            view=convertView;
+            ((ViewHolder) view.getTag()).score.setTag(list.get(position));
+
+        }
+
+        ViewHolder holder = (ViewHolder) view.getTag();
+        holder.question.setText(list.get(position).getQuestion());
+        holder.answer1.setText(list.get(position).getAnswer1());
+        holder.answer2.setText(list.get(position).getAnswer2());
+        holder.score.setText(list.get(position).getScore());
 
 
-        return rowView;
+        return view;
     }
 
 }

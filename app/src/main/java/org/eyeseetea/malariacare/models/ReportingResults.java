@@ -14,7 +14,7 @@ public class ReportingResults {
         this.question = question;
         answer1="";
         answer2="";
-        score="";
+        score="0";
     }
 
     public String getQuestion() {
