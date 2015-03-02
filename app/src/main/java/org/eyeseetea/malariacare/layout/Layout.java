@@ -270,6 +270,7 @@ public class Layout {
                 }
 
 
+                // FIXME: THIS PART NEEDS A REFACTOR. FROM HERE...
                 List<Float> numDenSubTotal = numDenRecordMap.get((Integer) spinner.getTag(R.id.Tab)).calculateNumDenTotal();
 
                 if (numSubtotal != null && denSubtotal != null && partialScoreView != null) {
@@ -327,6 +328,7 @@ public class Layout {
                         }
                     }
                 }
+                // FIXME: ...TO HERE
             }
 
             @Override
