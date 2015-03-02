@@ -3,8 +3,8 @@
     android:orientation="vertical" android:layout_width="fill_parent"
     android:layout_height="match_parent"
     android:id="@+id/header"
-    android:paddingTop="20dip"
-    android:paddingBottom="5dip">
+    android:background="@drawable/background_header"
+    android:paddingLeft="10dip">
 
     <TextView
         android:layout_width="fill_parent"
@@ -12,7 +12,6 @@
         android:text="@string/emptyString"
         android:id="@+id/headerName"
         android:textColor="#ffffff"
-        android:shadowColor="#407015"
         android:typeface="sans"
         android:textStyle="bold"
         android:textSize="18sp" />

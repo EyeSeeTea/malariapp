@@ -7,14 +7,18 @@
         android:orientation="horizontal"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:background="#407015">
+        android:background="@drawable/background_header"
+        android:paddingLeft="10dip"
+        android:layout_gravity="center">
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:background="#1e506c"
             android:text="Results"
+            android:textColor="#ffffff"
             android:id="@+id/textView2"
-            android:layout_weight=".60"
+            android:layout_weight="0.7"
             android:typeface="sans"
             android:textStyle="bold"
 
@@ -23,9 +27,11 @@
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:background="#1e506c"
             android:text="Register"
+            android:textColor="#ffffff"
             android:id="@+id/textView3"
-            android:layout_weight="0.15"
+            android:layout_weight="0.25"
             android:typeface="sans"
             android:textStyle="bold"
             android:textSize="18sp" />
@@ -33,9 +39,11 @@
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Monthly report"
+            android:background="#1e506c"
+            android:text="Report"
+            android:textColor="#ffffff"
             android:id="@+id/textView4"
-            android:layout_weight="0.15"
+            android:layout_weight="0.2"
             android:typeface="sans"
             android:textStyle="bold"
             android:textSize="18sp" />
@@ -43,9 +51,11 @@
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:background="#1e506c"
             android:text="Score"
+            android:textColor="#ffffff"
             android:id="@+id/textView5"
-            android:layout_weight="0.1"
+            android:layout_weight="0.2"
             android:typeface="sans"
             android:textStyle="bold"
             android:textSize="18sp" />
@@ -55,5 +65,5 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/listView"
-        android:layout_gravity="center_horizontal" />
+        android:layout_gravity="center" />
 </LinearLayout>

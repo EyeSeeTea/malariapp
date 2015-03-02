@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import org.eyeseetea.malariacare.R;
@@ -48,11 +49,13 @@ public class ReportingResultsArrayAdapter extends ArrayAdapter<String>{
 
 
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(context.LAYOUT_INFLATER_SERVICE);
+        final int [] backgrounds = {R.drawable.background_even, R.drawable.background_odd};
 
         View rowView = inflater.inflate(R.layout.resultsreporting, parent, false);
 
         final ViewHolder viewHolder = new ViewHolder();
 
+        rowView.setBackgroundResource(backgrounds[position % backgrounds.length]);
         viewHolder.question = (TextView) rowView.findViewById(R.id.question);
         viewHolder.answer1 = (EditText) rowView.findViewById(R.id.answer1);
         viewHolder.answer2 = (EditText) rowView.findViewById(R.id.answer2);

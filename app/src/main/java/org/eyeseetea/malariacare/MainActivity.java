@@ -38,7 +38,6 @@ public class MainActivity extends ActionBarActivity {
         Log.i(".MainActivity", "Starting App");
         initializeApp();
 
-        Log.i(".MainActivity", "Starting App");
         createTabConfiguration();
 
         // We import the initial data in case it has been done yet
