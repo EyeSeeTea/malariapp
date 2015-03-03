@@ -93,7 +93,13 @@
     <string name="rdtNegative">RDT Negative</string>
     <string name="microPositive">Microscopy Positive</string>
     <string name="microNegative">Microscopy Negative</string>
+    <string name="supervisor">Supervisor</string>
+    <string name="testresult">Test Result</string>
+    <string name="parasites">Parasites/uL</string>
+    <string name="species">Species</string>
+    <string name="labstaff">Lab Staff</string>
     <string-array name="iqa_testresult">
+        <item></item>
         <item>Positive</item>
         <item>Negative</item>
     </string-array>
@@ -107,6 +113,7 @@
         <item>Female</item>
     </string-array>
     <string-array name="yesno">
+        <item></item>
         <item>Yes</item>
         <item>No</item>
     </string-array>

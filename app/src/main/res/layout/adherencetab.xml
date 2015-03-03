@@ -1613,11 +1613,11 @@
                     android:text="@string/rdtPostive"
                     android:id="@+id/textView41" />
 
-                <CheckBox
+                <Spinner
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/yes"
-                    android:id="@+id/checkBox" />
+                    android:id="@+id/act1" />
 
                 <EditText
                     android:layout_width="40dip"
@@ -1654,11 +1654,11 @@
                     android:text="@string/rdtPostive"
                     android:id="@+id/textView13" />
 
-                <CheckBox
+                <Spinner
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/yes"
-                    android:id="@+id/checkBox2" />
+                    android:id="@+id/act2" />
 
                 <EditText
                     android:layout_width="40dip"
@@ -1694,11 +1694,11 @@
                     android:text="@string/rdtPostive"
                     android:id="@+id/edit2" />
 
-                <CheckBox
+                <Spinner
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/yes"
-                    android:id="@+id/edit3" />
+                    android:id="@+id/act3" />
 
                 <EditText
                     android:layout_width="40dip"
@@ -1733,11 +1733,11 @@
                     android:text="@string/rdtPostive"
                     android:id="@+id/edit12" />
 
-                <CheckBox
+                <Spinner
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/yes"
-                    android:id="@+id/edit13" />
+                    android:id="@+id/act4" />
 
                 <EditText
                     android:layout_width="40dip"
@@ -1773,11 +1773,11 @@
                     android:text="@string/rdtPostive"
                     android:id="@+id/edi22" />
 
-                <CheckBox
+                <Spinner
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/yes"
-                    android:id="@+id/edi23" />
+                    android:id="@+id/act5" />
 
                 <EditText
                     android:layout_width="40dip"
@@ -1812,11 +1812,11 @@
                     android:text="@string/rdtNegative"
                     android:id="@+id/edit32" />
 
-                <CheckBox
+                <Spinner
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/yes"
-                    android:id="@+id/edit33" />
+                    android:id="@+id/act6" />
 
                 <EditText
                     android:layout_width="40dip"
@@ -1851,11 +1851,11 @@
                     android:text="@string/rdtNegative"
                     android:id="@+id/edit42" />
 
-                <CheckBox
+                <Spinner
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/yes"
-                    android:id="@+id/edit43" />
+                    android:id="@+id/act7" />
 
                 <EditText
                     android:layout_width="40dip"
@@ -1890,11 +1890,11 @@
                     android:text="@string/rdtNegative"
                     android:id="@+id/edit52" />
 
-                <CheckBox
+                <Spinner
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/yes"
-                    android:id="@+id/edit53" />
+                    android:id="@+id/act8" />
 
                 <EditText
                     android:layout_width="40dip"
@@ -1929,11 +1929,11 @@
                     android:text="@string/rdtNegative"
                     android:id="@+id/edit62" />
 
-                <CheckBox
+                <Spinner
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/yes"
-                    android:id="@+id/edit63" />
+                    android:id="@+id/act9" />
 
                 <EditText
                     android:layout_width="40dip"
@@ -1968,11 +1968,11 @@
                     android:text="@string/rdtNegative"
                     android:id="@+id/edit72" />
 
-                <CheckBox
+                <Spinner
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/yes"
-                    android:id="@+id/edit73" />
+                    android:id="@+id/act10" />
 
                 <EditText
                     android:layout_width="40dip"
@@ -2007,11 +2007,11 @@
                     android:text="@string/microPositive"
                     android:id="@+id/textView4181" />
 
-                <CheckBox
+                <Spinner
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/yes"
-                    android:id="@+id/checkBox18" />
+                    android:id="@+id/act11" />
 
                 <EditText
                     android:layout_width="40dip"
@@ -2048,11 +2048,11 @@
                     android:text="@string/microPositive"
                     android:id="@+id/textView1713" />
 
-                <CheckBox
+                <Spinner
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/yes"
-                    android:id="@+id/checkBox172" />
+                    android:id="@+id/act12" />
 
                 <EditText
                     android:layout_width="40dip"
@@ -2088,11 +2088,11 @@
                     android:text="@string/microPositive"
                     android:id="@+id/edit1612" />
 
-                <CheckBox
+                <Spinner
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/yes"
-                    android:id="@+id/edit163" />
+                    android:id="@+id/act13" />
 
                 <EditText
                     android:layout_width="40dip"
@@ -2127,11 +2127,11 @@
                     android:text="@string/microPositive"
                     android:id="@+id/edit1152" />
 
-                <CheckBox
+                <Spinner
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/yes"
-                    android:id="@+id/edit1513" />
+                    android:id="@+id/act14" />
 
                 <EditText
                     android:layout_width="40dip"
@@ -2167,11 +2167,11 @@
                     android:text="@string/microPositive"
                     android:id="@+id/edi2142" />
 
-                <CheckBox
+                <Spinner
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/yes"
-                    android:id="@+id/edi2143" />
+                    android:id="@+id/act15" />
 
                 <EditText
                     android:layout_width="40dip"
@@ -2206,11 +2206,11 @@
                     android:text="@string/microNegative"
                     android:id="@+id/edit3132" />
 
-                <CheckBox
+                <Spinner
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/yes"
-                    android:id="@+id/edit3133" />
+                    android:id="@+id/act16" />
 
                 <EditText
                     android:layout_width="40dip"
@@ -2245,11 +2245,11 @@
                     android:text="@string/microNegative"
                     android:id="@+id/edit4122" />
 
-                <CheckBox
+                <Spinner
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/yes"
-                    android:id="@+id/edit4123" />
+                    android:id="@+id/act17" />
 
                 <EditText
                     android:layout_width="40dip"
@@ -2284,11 +2284,11 @@
                     android:text="@string/microNegative"
                     android:id="@+id/edit952" />
 
-                <CheckBox
+                <Spinner
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/yes"
-                    android:id="@+id/edit953" />
+                    android:id="@+id/act18" />
 
                 <EditText
                     android:layout_width="40dip"
@@ -2323,11 +2323,11 @@
                     android:text="@string/microNegative"
                     android:id="@+id/edit862" />
 
-                <CheckBox
+                <Spinner
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/yes"
-                    android:id="@+id/edit863" />
+                    android:id="@+id/act19" />
 
                 <EditText
                     android:layout_width="40dip"
@@ -2362,11 +2362,11 @@
                     android:text="@string/microNegative"
                     android:id="@+id/edit772" />
 
-                <CheckBox
+                <Spinner
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/yes"
-                    android:id="@+id/edit773" />
+                    android:id="@+id/act20" />
 
                 <EditText
                     android:layout_width="40dip"
