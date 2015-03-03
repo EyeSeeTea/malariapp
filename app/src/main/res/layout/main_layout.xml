@@ -382,10 +382,11 @@
                         android:layout_height="fill_parent"
                         android:orientation="vertical" >
 
-                        <LinearLayout
-                            android:orientation="vertical"
-                            android:layout_width="fill_parent"
-                            android:layout_height="fill_parent">
+                        <ScrollView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/scrollView2"
+                            android:layout_weight="0.09" >
 
                             <GridLayout
                                 android:layout_width="wrap_content"
@@ -393,7 +394,7 @@
                                 android:rowCount="1"
                                 android:columnCount="1"
                                 android:id="@+id/tab11" />
-                        </LinearLayout>
+                        </ScrollView>
 
                         <GridLayout
                             android:layout_width="fill_parent"
@@ -411,10 +412,11 @@
                         android:layout_height="fill_parent"
                         android:orientation="vertical" >
 
-                        <LinearLayout
-                            android:orientation="vertical"
-                            android:layout_width="fill_parent"
-                            android:layout_height="fill_parent">
+                        <ScrollView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/scrollView"
+                            android:layout_weight="0.09" >
 
                             <GridLayout
                                 android:layout_width="wrap_content"
@@ -422,7 +424,7 @@
                                 android:rowCount="1"
                                 android:columnCount="1"
                                 android:id="@+id/tab12" />
-                        </LinearLayout>
+                        </ScrollView>
 
                         <GridLayout
                             android:layout_width="fill_parent"
@@ -499,26 +501,20 @@
                         android:layout_height="fill_parent"
                         android:orientation="vertical" >
 
-                        <LinearLayout
-                            android:orientation="vertical"
-                            android:layout_width="fill_parent"
-                            android:layout_height="fill_parent">
+                        <ScrollView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/scrollIqaEqa"
+                            android:layout_weight="0.09" >
 
                             <GridLayout
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:rowCount="1"
+                                android:layout_width="fill_parent"
+                                android:layout_height="fill_parent"
                                 android:columnCount="1"
-                                android:id="@+id/tabContent" />
-                        </LinearLayout>
-
-                        <GridLayout
-                            android:layout_width="fill_parent"
-                            android:layout_height="fill_parent"
-                            android:columnCount="2"
-                            android:rowCount="1"
-                            android:id="@+id/tabIqaEqaContent"
-                            android:layout_weight="0.91"></GridLayout>
+                                android:rowCount="1"
+                                android:id="@+id/tabIqaEqaContent"
+                                android:layout_weight="0.91"></GridLayout>
+                        </ScrollView>
 
                     </LinearLayout>
 

@@ -18,14 +18,12 @@ import android.widget.TextView;
 
 import org.eyeseetea.malariacare.MainActivity;
 import org.eyeseetea.malariacare.R;
-import org.eyeseetea.malariacare.adapters.AdherenceAdapter;
 import org.eyeseetea.malariacare.adapters.IQATestArrayAdapter;
 import org.eyeseetea.malariacare.adapters.ReportingResultsArrayAdapter;
 import org.eyeseetea.malariacare.data.Header;
 import org.eyeseetea.malariacare.data.Option;
 import org.eyeseetea.malariacare.data.Question;
 import org.eyeseetea.malariacare.data.Tab;
-import org.eyeseetea.malariacare.models.DataHolder;
 import org.eyeseetea.malariacare.models.ReportingResults;
 import org.eyeseetea.malariacare.utils.Constants;
 import org.eyeseetea.malariacare.utils.LoadCustomQuestions;
@@ -373,16 +371,10 @@ public class Layout {
                 layoutParent.addView(customView);
                 break;
             case R.layout.adherencetab:
-                ListView listadherence = (ListView) customView.findViewById(R.id.listView2);
-                ArrayAdapter<String> adapterAdherence = new AdherenceAdapter(mainActivity, LoadCustomQuestions.addAdherenceQuestions());
-                listadherence.setAdapter(adapterAdherence);
                 layoutParent.addView(customView);
                 break;
 
             case R.layout.iqatab:
-                ListView list_supervision = (ListView) customView.findViewById(R.id.listTestSupervisor);
-                ArrayAdapter<String> adapterSupervision = new IQATestArrayAdapter(mainActivity, LoadCustomQuestions.addIQAQuestions() );
-                list_supervision.setAdapter(adapterSupervision);
                 layoutParent.addView(customView);
                 break;
 

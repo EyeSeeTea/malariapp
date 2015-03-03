@@ -1,156 +1,2382 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:orientation="vertical" android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
 
-<!--    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:paddingLeft="10dip"
-        android:layout_gravity="center"
-        android:background="@drawable/background_header">
 
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:background="#1e506c"
-            android:text="Nº"
-            android:textColor="#ffffff"
-            android:id="@+id/textView6"
-            android:layout_weight=".08"
-            android:typeface="sans"
-            android:textStyle="bold"
-            android:textSize="16sp"/>
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:background="#1e506c"
-            android:text="Patient ID"
-            android:textColor="#ffffff"
-            android:id="@+id/textView7"
-            android:layout_weight=".23"
-            android:typeface="sans"
-            android:textStyle="bold"
-            android:textSize="16sp"/>
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:background="#1e506c"
-            android:text="Gender"
-            android:textColor="#ffffff"
-            android:id="@+id/textView8"
-            android:layout_weight=".23"
-            android:typeface="sans"
-            android:textStyle="bold"
-            android:textSize="16sp"/>
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:background="#1e506c"
-            android:text="Age"
-            android:textColor="#ffffff"
-            android:id="@+id/textView9"
-            android:layout_weight=".23"
-            android:typeface="sans"
-            android:textStyle="bold"
-            android:textSize="16sp"/>
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:background="#1e506c"
-            android:text="Test results"
-            android:textColor="#ffffff"
-            android:id="@+id/textView10"
-            android:layout_weight=".23"
-            android:typeface="sans"
-            android:textStyle="bold"
-            android:textSize="16sp"/>
-    </LinearLayout>
-
-    <ListView
+    <GridLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/listView1" /> -->
-
-
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:paddingLeft="10dip"
-        android:layout_gravity="center"
-        android:background="@drawable/background_header">
+        android:columnCount="2"
+        android:rowCount="1"
+        android:id="@+id/switchQuestion"
+        android:background="@drawable/background_parent">
 
         <TextView
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="#1e506c"
-            android:text="Nº"
-            android:textColor="#ffffff"
-            android:id="@+id/textView11"
-            android:layout_weight=".08"
-            android:typeface="sans"
-            android:textStyle="bold"
-            android:textSize="16sp"/>
+            android:text="@string/switchQuestionStatement"
+            android:id="@+id/statement" />
 
-        <TextView
-            android:layout_width="0dp"
+        <Switch
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="#1e506c"
-            android:text="Patient ID"
-            android:textColor="#ffffff"
-            android:id="@+id/textView12"
-            android:layout_weight=".23"
-            android:typeface="sans"
-            android:textStyle="bold"
-            android:textSize="16sp"/>
+            android:text="@string/yes"
+            android:id="@+id/answer" />
+    </GridLayout>
 
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:background="#1e506c"
-            android:text="Test results"
-            android:textColor="#ffffff"
-            android:id="@+id/textView13"
-            android:layout_weight=".23"
-            android:typeface="sans"
-            android:textStyle="bold"
-            android:textSize="16sp"/>
+    <Space
+        android:layout_width="20px"
+        android:layout_height="20px" />
 
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:background="#1e506c"
-            android:text="ACT Prescribed?"
-            android:textColor="#ffffff"
-            android:id="@+id/textView14"
-            android:layout_weight=".23"
-            android:typeface="sans"
-            android:textStyle="bold"
-            android:textSize="16sp"/>
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:background="#1e506c"
-            android:text="Score"
-            android:textColor="#ffffff"
-            android:id="@+id/textView15"
-            android:layout_weight=".23"
-            android:typeface="sans"
-            android:textStyle="bold"
-            android:textSize="16sp"/>
-    </LinearLayout>
-
-    <ListView
+    <GridLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/listView2" />
+        android:columnCount="1"
+        android:rowCount="2"
+        android:paddingLeft="10dip"
+        android:id="@+id/explanationLayout">
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/explanationHeader"
+            android:id="@+id/explanationHeader"
+            android:background="@drawable/background_header"
+            android:textSize="18sp" />
 
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textMultiLine"
+            android:id="@+id/explanationText"
+            android:text="Record below the patient ID numbers of 20 patients prescribed ACTs from the Pharmacy Register.\nLocate the patient IDs from Step 1 in the Laboratory and/or Clinical Registers and record their test result in the appropriate column. "
+            android:background="@drawable/background_even"
+            android:textSize="14sp"/>
+
+    </GridLayout>
+
+    <Space
+        android:layout_width="20px"
+        android:layout_height="20px" />
+
+    <GridLayout
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        android:columnCount="1"
+        android:rowCount="2"
+        android:id="@+id/pharmacyRegister">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="@string/pharmacyRegister"
+            android:id="@+id/registerTitle"
+            android:textStyle="bold" />
+
+        <TableLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/registerTable"
+            android:layout_gravity="center">
+
+            <TableRow
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/registerHeader"
+                android:layout_gravity="center"
+                android:background="@drawable/background_odd">
+
+                <Space
+                    android:layout_width="20px"
+                    android:layout_height="20px" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="@string/patientIdNumber"
+                    android:id="@+id/textView7"
+                    android:background="@drawable/background_header"
+                    android:padding="5dip"
+                    android:textColor="#ffffff"
+                    android:gravity="center" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="@string/genderHeader"
+                    android:id="@+id/textView15"
+                    android:background="@drawable/background_header"
+                    android:padding="5dip"
+                    android:textColor="#ffffff"
+                    android:lines="2"
+                    android:gravity="center" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="@string/ageHeader"
+                    android:id="@+id/textView16"
+                    android:background="@drawable/background_header"
+                    android:padding="5dip"
+                    android:textColor="#ffffff"
+                    android:lines="2"
+                    android:gravity="center" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="@string/testResultsHeader"
+                    android:id="@+id/textView14"
+                    android:background="@drawable/background_header"
+                    android:padding="5dip"
+                    android:textColor="#ffffff"
+                    android:lines="2"
+                    android:gravity="center" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/background_even">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:text="@string/one"
+                    android:id="@+id/textView8" />
+
+                <EditText
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dip"
+                    android:inputType="number"
+                    android:id="@+id/editText"
+                    android:background="@drawable/background_textfield"/>
+
+                <RadioGroup
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Male"
+                        android:id="@+id/radioButton" />
+
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Female"
+                        android:id="@+id/radioButton2" />
+                </RadioGroup>
+
+                <EditText
+                    android:layout_width="40dip"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:id="@+id/editText2"
+                    android:background="@drawable/background_textfield" />
+
+                <RadioGroup
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Malaria Positive"
+                        android:id="@+id/radioButton3" />
+
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Malaria Negative"
+                        android:id="@+id/radioButton4" />
+
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Not tested"
+                        android:id="@+id/radioButton5" />
+                </RadioGroup>
+
+            </TableRow>
+
+            <TableRow
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/background_odd" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:text="@string/two"
+                    android:id="@+id/numberTwo" />
+
+                <EditText
+                    android:layout_width="40dip"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:id="@+id/editText6"
+                    android:background="@drawable/background_textfield" />
+
+                <RadioGroup
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" >
+
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Male"
+                        android:id="@+id/radioButton6" />
+
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Female"
+                        android:id="@+id/radioButton7" />
+                </RadioGroup>
+
+                <EditText
+                    android:layout_width="40dip"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:id="@+id/editText3"
+                    android:background="@drawable/background_textfield" />
+
+                <RadioGroup
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" >
+
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Malaria Positive"
+                        android:id="@+id/radioButton44" />
+
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Malaria Negative"
+                        android:id="@+id/radioButton45" />
+
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Not tested"
+                        android:id="@+id/radioButton46" />
+                </RadioGroup>
+
+            </TableRow>
+
+            <TableRow
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/background_even">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:text="@string/three"
+                    android:id="@+id/numberThree" />
+
+                <EditText
+                    android:layout_width="40dip"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:id="@+id/editText8"
+                    android:background="@drawable/background_textfield" />
+
+                <RadioGroup
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" >
+
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Male"
+                        android:id="@+id/radioButton8" />
+
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Female"
+                        android:id="@+id/radioButton9" />
+                </RadioGroup>
+
+                <EditText
+                    android:layout_width="40dip"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:id="@+id/editText5"
+                    android:background="@drawable/background_textfield" />
+
+                <RadioGroup
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Malaria Positive"
+                        android:id="@+id/radioButton103" />
+
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Malaria Negative"
+                        android:id="@+id/radioButton104" />
+
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Not tested"
+                        android:id="@+id/radioButton105" />
+                </RadioGroup>
+            </TableRow>
+
+            <TableRow
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/background_odd">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:text="@string/four"
+                    android:id="@+id/numberFour" />
+
+                <EditText
+                    android:layout_width="40dip"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:id="@+id/editText40"
+                    android:background="@drawable/background_textfield" />
+
+                <RadioGroup
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" >
+
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Male"
+                        android:id="@+id/radioButton10" />
+
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Female"
+                        android:id="@+id/radioButton11" />
+                </RadioGroup>
+
+                <EditText
+                    android:layout_width="40dip"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:id="@+id/editText7"
+                    android:background="@drawable/background_textfield" />
+
+                <RadioGroup
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Malaria Positive"
+                        android:id="@+id/radioButton203" />
+
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Malaria Negative"
+                        android:id="@+id/radioButton204" />
+
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Not tested"
+                        android:id="@+id/radioButton205" />
+                </RadioGroup>
+            </TableRow>
+
+            <TableRow
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/background_even">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:text="@string/five"
+                    android:id="@+id/numberFive" />
+
+                <EditText
+                    android:layout_width="40dip"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:id="@+id/editText10"
+                    android:background="@drawable/background_textfield" />
+
+                <RadioGroup
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" >
+
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Male"
+                        android:id="@+id/radioButton12" />
+
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Female"
+                        android:id="@+id/radioButton13" />
+                </RadioGroup>
+
+                <EditText
+                    android:layout_width="40dip"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:id="@+id/editText100"
+                    android:background="@drawable/background_textfield" />
+
+                <RadioGroup
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Malaria Positive"
+                        android:id="@+id/radioButton303" />
+
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Malaria Negative"
+                        android:id="@+id/radioButton304" />
+
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Not tested"
+                        android:id="@+id/radioButton305" />
+                </RadioGroup>
+            </TableRow>
+
+            <TableRow
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/background_odd">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:text="@string/six"
+                    android:id="@+id/numberSix" />
+
+                <EditText
+                    android:layout_width="40dip"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:id="@+id/editText14"
+                    android:background="@drawable/background_textfield" />
+
+                <RadioGroup
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" >
+
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Male"
+                        android:id="@+id/radioButton14" />
+
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Female"
+                        android:id="@+id/radioButton15" />
+                </RadioGroup>
+
+                <EditText
+                    android:layout_width="40dip"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:id="@+id/editText102"
+                    android:background="@drawable/background_textfield" />
+
+                <RadioGroup
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Malaria Positive"
+                        android:id="@+id/radioButton403" />
+
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Malaria Negative"
+                        android:id="@+id/radioButton404" />
+
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Not tested"
+                        android:id="@+id/radioButton405" />
+                </RadioGroup>
+            </TableRow>
+
+            <TableRow
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/background_even">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:text="@string/seven"
+                    android:id="@+id/numberSeven" />
+
+                <EditText
+                    android:layout_width="40dip"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:id="@+id/editText18"
+                    android:background="@drawable/background_textfield" />
+
+                <RadioGroup
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" >
+
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Male"
+                        android:id="@+id/radioButton16" />
+
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Female"
+                        android:id="@+id/radioButton17" />
+                </RadioGroup>
+
+                <EditText
+                    android:layout_width="40dip"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:id="@+id/editText103"
+                    android:background="@drawable/background_textfield" />
+
+                <RadioGroup
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Malaria Positive"
+                        android:id="@+id/radioButton503" />
+
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Malaria Negative"
+                        android:id="@+id/radioButton504" />
+
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Not tested"
+                        android:id="@+id/radioButton505" />
+                </RadioGroup>
+            </TableRow>
+
+            <TableRow
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/background_odd">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:text="@string/eight"
+                    android:id="@+id/numberEight" />
+
+                <EditText
+                    android:layout_width="40dip"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:id="@+id/editText22"
+                    android:background="@drawable/background_textfield" />
+
+                <RadioGroup
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" >
+
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Male"
+                        android:id="@+id/radioButton18" />
+
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Female"
+                        android:id="@+id/radioButton19" />
+                </RadioGroup>
+
+                <EditText
+                    android:layout_width="40dip"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:id="@+id/editText104"
+                    android:background="@drawable/background_textfield" />
+
+                <RadioGroup
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Malaria Positive"
+                        android:id="@+id/radioButton603" />
+
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Malaria Negative"
+                        android:id="@+id/radioButton604" />
+
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Not tested"
+                        android:id="@+id/radioButton605" />
+                </RadioGroup>
+            </TableRow>
+
+            <TableRow
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/background_even">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:text="@string/nine"
+                    android:id="@+id/numberNine" />
+
+                <EditText
+                    android:layout_width="40dip"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:id="@+id/editText26"
+                    android:background="@drawable/background_textfield" />
+
+                <RadioGroup
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" >
+
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Male"
+                        android:id="@+id/radioButton20" />
+
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Female"
+                        android:id="@+id/radioButton21" />
+                </RadioGroup>
+
+                <EditText
+                    android:layout_width="40dip"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:id="@+id/editText105"
+                    android:background="@drawable/background_textfield" />
+
+                <RadioGroup
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Malaria Positive"
+                        android:id="@+id/radioButton703" />
+
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Malaria Negative"
+                        android:id="@+id/radioButton704" />
+
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Not tested"
+                        android:id="@+id/radioButton705" />
+                </RadioGroup>
+            </TableRow>
+
+            <TableRow
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/background_odd">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:text="@string/ten"
+                    android:id="@+id/numberTen" />
+
+                <EditText
+                    android:layout_width="40dip"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:id="@+id/editText30"
+                    android:background="@drawable/background_textfield" />
+
+                <RadioGroup
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" >
+
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Male"
+                        android:id="@+id/radioButton22" />
+
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Female"
+                        android:id="@+id/radioButton23" />
+                </RadioGroup>
+
+                <EditText
+                    android:layout_width="40dip"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:id="@+id/editText106"
+                    android:background="@drawable/background_textfield" />
+
+                <RadioGroup
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Malaria Positive"
+                        android:id="@+id/radioButton803" />
+
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Malaria Negative"
+                        android:id="@+id/radioButton804" />
+
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Not tested"
+                        android:id="@+id/radioButton805" />
+                </RadioGroup>
+            </TableRow>
+
+            <TableRow
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/background_even">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:text="@string/eleven"
+                    android:id="@+id/numberEleven" />
+
+                <EditText
+                    android:layout_width="40dip"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:id="@+id/editText34"
+                    android:background="@drawable/background_textfield" />
+
+                <RadioGroup
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" >
+
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Male"
+                        android:id="@+id/radioButton24" />
+
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Female"
+                        android:id="@+id/radioButton25" />
+                </RadioGroup>
+
+                <EditText
+                    android:layout_width="40dip"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:id="@+id/editText107"
+                    android:background="@drawable/background_textfield" />
+
+                <RadioGroup
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Malaria Positive"
+                        android:id="@+id/radioButton903" />
+
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Malaria Negative"
+                        android:id="@+id/radioButton904" />
+
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Not tested"
+                        android:id="@+id/radioButton905" />
+                </RadioGroup>
+            </TableRow>
+
+            <TableRow
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/background_odd">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:text="@string/twelve"
+                    android:id="@+id/numberTwelve" />
+
+                <EditText
+                    android:layout_width="40dip"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:id="@+id/editText38"
+                    android:background="@drawable/background_textfield" />
+
+                <RadioGroup
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" >
+
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Male"
+                        android:id="@+id/radioButton26" />
+
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Female"
+                        android:id="@+id/radioButton27" />
+                </RadioGroup>
+
+                <EditText
+                    android:layout_width="40dip"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:id="@+id/editText108"
+                    android:background="@drawable/background_textfield" />
+
+                <RadioGroup
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Malaria Positive"
+                        android:id="@+id/radioButton1003" />
+
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Malaria Negative"
+                        android:id="@+id/radioButton1004" />
+
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Not tested"
+                        android:id="@+id/radioButton1005" />
+                </RadioGroup>
+            </TableRow>
+
+            <TableRow
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/background_even">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:text="@string/thirteen"
+                    android:id="@+id/numberThirteen" />
+
+                <EditText
+                    android:layout_width="40dip"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:id="@+id/editText36"
+                    android:background="@drawable/background_textfield" />
+
+                <RadioGroup
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" >
+
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Male"
+                        android:id="@+id/radioButton28" />
+
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Female"
+                        android:id="@+id/radioButton29" />
+                </RadioGroup>
+
+                <EditText
+                    android:layout_width="40dip"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:id="@+id/editText109"
+                    android:background="@drawable/background_textfield" />
+
+                <RadioGroup
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Malaria Positive"
+                        android:id="@+id/radioButton1103" />
+
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Malaria Negative"
+                        android:id="@+id/radioButton1104" />
+
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Not tested"
+                        android:id="@+id/radioButton1105" />
+                </RadioGroup>
+            </TableRow>
+
+            <TableRow
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/background_odd">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:text="@string/fourteen"
+                    android:id="@+id/numberFourteen" />
+
+                <EditText
+                    android:layout_width="40dip"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:id="@+id/editText32"
+                    android:background="@drawable/background_textfield" />
+
+                <RadioGroup
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" >
+
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Male"
+                        android:id="@+id/radioButton30" />
+
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Female"
+                        android:id="@+id/radioButton31" />
+                </RadioGroup>
+
+                <EditText
+                    android:layout_width="40dip"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:id="@+id/editText110"
+                    android:background="@drawable/background_textfield" />
+
+                <RadioGroup
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Malaria Positive"
+                        android:id="@+id/radioButton1203" />
+
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Malaria Negative"
+                        android:id="@+id/radioButton1204" />
+
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Not tested"
+                        android:id="@+id/radioButton1205" />
+                </RadioGroup>
+            </TableRow>
+
+            <TableRow
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/background_even">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:text="@string/fifteen"
+                    android:id="@+id/numberFifteen" />
+
+                <EditText
+                    android:layout_width="40dip"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:id="@+id/editText28"
+                    android:background="@drawable/background_textfield" />
+
+                <RadioGroup
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" >
+
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Male"
+                        android:id="@+id/radioButton32" />
+
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Female"
+                        android:id="@+id/radioButton33" />
+                </RadioGroup>
+
+                <EditText
+                    android:layout_width="40dip"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:id="@+id/editText111"
+                    android:background="@drawable/background_textfield" />
+
+                <RadioGroup
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Malaria Positive"
+                        android:id="@+id/radioButton1303" />
+
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Malaria Negative"
+                        android:id="@+id/radioButton1304" />
+
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Not tested"
+                        android:id="@+id/radioButton1305" />
+                </RadioGroup>
+            </TableRow>
+
+            <TableRow
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/background_odd">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:text="@string/sixteen"
+                    android:id="@+id/numberSixteen" />
+
+                <EditText
+                    android:layout_width="40dip"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:id="@+id/editText24"
+                    android:background="@drawable/background_textfield" />
+
+                <RadioGroup
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" >
+
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Male"
+                        android:id="@+id/radioButton34" />
+
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Female"
+                        android:id="@+id/radioButton35" />
+                </RadioGroup>
+
+                <EditText
+                    android:layout_width="40dip"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:id="@+id/editText112"
+                    android:background="@drawable/background_textfield" />
+
+                <RadioGroup
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Malaria Positive"
+                        android:id="@+id/radioButton1403" />
+
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Malaria Negative"
+                        android:id="@+id/radioButton1404" />
+
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Not tested"
+                        android:id="@+id/radioButton1405" />
+                </RadioGroup>
+            </TableRow>
+
+            <TableRow
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/background_even">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:text="@string/seventeen"
+                    android:id="@+id/numberSeventeen" />
+
+                <EditText
+                    android:layout_width="40dip"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:id="@+id/editText20"
+                    android:background="@drawable/background_textfield" />
+
+                <RadioGroup
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" >
+
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Male"
+                        android:id="@+id/radioButton36" />
+
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Female"
+                        android:id="@+id/radioButton37" />
+                </RadioGroup>
+
+                <EditText
+                    android:layout_width="40dip"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:id="@+id/editText113"
+                    android:background="@drawable/background_textfield" />
+
+                <RadioGroup
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Malaria Positive"
+                        android:id="@+id/radioButton1503" />
+
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Malaria Negative"
+                        android:id="@+id/radioButton1504" />
+
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Not tested"
+                        android:id="@+id/radioButton1505" />
+                </RadioGroup>
+            </TableRow>
+
+            <TableRow
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/background_odd">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:text="@string/eighteen"
+                    android:id="@+id/numberEighteen" />
+
+                <EditText
+                    android:layout_width="40dip"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:id="@+id/editText16"
+                    android:background="@drawable/background_textfield" />
+
+                <RadioGroup
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" >
+
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Male"
+                        android:id="@+id/radioButton38" />
+
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Female"
+                        android:id="@+id/radioButton39" />
+                </RadioGroup>
+
+                <EditText
+                    android:layout_width="40dip"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:id="@+id/editText114"
+                    android:background="@drawable/background_textfield" />
+
+                <RadioGroup
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Malaria Positive"
+                        android:id="@+id/radioButton1603" />
+
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Malaria Negative"
+                        android:id="@+id/radioButton1604" />
+
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Not tested"
+                        android:id="@+id/radioButton1605" />
+                </RadioGroup>
+            </TableRow>
+
+            <TableRow
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/background_even">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:text="@string/nineteen"
+                    android:id="@+id/numberNineteen" />
+
+                <EditText
+                    android:layout_width="40dip"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:id="@+id/editText12"
+                    android:background="@drawable/background_textfield" />
+
+                <RadioGroup
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" >
+
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Male"
+                        android:id="@+id/radioButton40" />
+
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Female"
+                        android:id="@+id/radioButton41" />
+                </RadioGroup>
+
+                <EditText
+                    android:layout_width="40dip"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:id="@+id/editText115"
+                    android:background="@drawable/background_textfield" />
+
+                <RadioGroup
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Malaria Positive"
+                        android:id="@+id/radioButton1703" />
+
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Malaria Negative"
+                        android:id="@+id/radioButton1704" />
+
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Not tested"
+                        android:id="@+id/radioButton1705" />
+                </RadioGroup>
+            </TableRow>
+
+            <TableRow
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/background_odd">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:text="@string/twenty"
+                    android:id="@+id/numberTwenty" />
+
+                <EditText
+                    android:layout_width="40dip"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:id="@+id/editText4"
+                    android:background="@drawable/background_textfield" />
+
+                <RadioGroup
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" >
+
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Male"
+                        android:id="@+id/radioButton42" />
+
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Female"
+                        android:id="@+id/radioButton43" />
+                </RadioGroup>
+
+                <EditText
+                    android:layout_width="40dip"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:id="@+id/editText116"
+                    android:background="@drawable/background_textfield" />
+
+                <RadioGroup
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Malaria Positive"
+                        android:id="@+id/radioButton1803" />
+
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Malaria Negative"
+                        android:id="@+id/radioButton1804" />
+
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Not tested"
+                        android:id="@+id/radioButton1805" />
+                </RadioGroup>
+            </TableRow>
+
+        </TableLayout>
+    </GridLayout>
+
+    <Space
+        android:layout_width="20px"
+        android:layout_height="20px" />
+
+    <GridLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:columnCount="1"
+        android:rowCount="2"
+        android:paddingLeft="10dip"
+        android:id="@+id/gridLayout" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/explanationHeader"
+            android:id="@+id/textView35"
+            android:background="@drawable/background_header"
+            android:textSize="18sp" />
+
+        <EditText
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textMultiLine"
+            android:id="@+id/editText41"
+            android:text="In the Laboratory Register, record the patient ID numbers 20 patients: 5 RDT +; 5 RDT -; 5 microscopy +; 5 microscopy -.\nLocate the patient IDs from Step 1 in the Pharmacy Register and record whether they received ACTs in the “ACT Prescribed” column by ticking either Y or N. For health facilities without microscopy, tick the N/A box"
+            android:background="@drawable/background_even"
+            android:textSize="14sp" />
+    </GridLayout>
+
+    <Space
+        android:layout_width="20px"
+        android:layout_height="20px" />
+
+    <GridLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:columnCount="1"
+        android:rowCount="1">
+
+        <TableLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <TableRow
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/tableRow"
+                android:layout_gravity="center">
+
+                <Space
+                    android:layout_width="20px"
+                    android:layout_height="20px" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="@string/patientIdNumber"
+                    android:id="@+id/textView37"
+                    android:background="@drawable/background_header"
+                    android:padding="5dip"
+                    android:textColor="#ffffff"
+                    android:gravity="center" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="@string/testResultsHeader"
+                    android:id="@+id/textView38"
+                    android:background="@drawable/background_header"
+                    android:padding="5dip"
+                    android:textColor="#ffffff"
+                    android:gravity="center"
+                    android:lines="2" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="@string/actPrescribed"
+                    android:id="@+id/textView39"
+                    android:background="@drawable/background_header"
+                    android:padding="5dip"
+                    android:gravity="center"
+                    android:textColor="#ffffff" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="@string/scoreHeader"
+                    android:id="@+id/textView40"
+                    android:background="@drawable/background_header"
+                    android:padding="5dip"
+                    android:textColor="#ffffff"
+                    android:gravity="center"
+                    android:lines="2" />
+
+            </TableRow>
+
+            <TableRow
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/background_odd">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:text="@string/one"
+                    android:id="@+id/numberTwenty2" />
+
+                <EditText
+                    android:layout_width="40dip"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:id="@+id/editText43"
+                    android:background="@drawable/background_textfield" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:text="@string/rdtPostive"
+                    android:id="@+id/textView41" />
+
+                <CheckBox
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/yes"
+                    android:id="@+id/checkBox" />
+
+                <EditText
+                    android:layout_width="40dip"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:id="@+id/editText44"
+                    android:background="@drawable/background_textfield" />
+
+            </TableRow>
+
+            <TableRow
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/background_even">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:text="@string/two"
+                    android:id="@+id/textView6" />
+
+                <EditText
+                    android:layout_width="40dip"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:id="@+id/editText9"
+                    android:background="@drawable/background_textfield" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:text="@string/rdtPostive"
+                    android:id="@+id/textView13" />
+
+                <CheckBox
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/yes"
+                    android:id="@+id/checkBox2" />
+
+                <EditText
+                    android:layout_width="40dip"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:id="@+id/editText11"
+                    android:background="@drawable/background_textfield" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/background_even">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:text="@string/three"
+                    android:id="@+id/textView116" />
+
+                <EditText
+                    android:layout_width="40dip"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:id="@+id/edit1"
+                    android:background="@drawable/background_textfield" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:text="@string/rdtPostive"
+                    android:id="@+id/edit2" />
+
+                <CheckBox
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/yes"
+                    android:id="@+id/edit3" />
+
+                <EditText
+                    android:layout_width="40dip"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:id="@+id/edit4"
+                    android:background="@drawable/background_textfield" />
+            </TableRow>
+            <TableRow
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/background_even">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:text="@string/four"
+                    android:id="@+id/textView111246" />
+
+                <EditText
+                    android:layout_width="40dip"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:id="@+id/edit11"
+                    android:background="@drawable/background_textfield" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:text="@string/rdtPostive"
+                    android:id="@+id/edit12" />
+
+                <CheckBox
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/yes"
+                    android:id="@+id/edit13" />
+
+                <EditText
+                    android:layout_width="40dip"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:id="@+id/edit14"
+                    android:background="@drawable/background_textfield" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/background_even">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:text="@string/five"
+                    android:id="@+id/textView1161634" />
+
+                <EditText
+                    android:layout_width="40dip"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:id="@+id/edit21"
+                    android:background="@drawable/background_textfield" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:text="@string/rdtPostive"
+                    android:id="@+id/edi22" />
+
+                <CheckBox
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/yes"
+                    android:id="@+id/edi23" />
+
+                <EditText
+                    android:layout_width="40dip"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:id="@+id/edi24"
+                    android:background="@drawable/background_textfield" />
+            </TableRow>
+            <TableRow
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/background_even">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:text="@string/six"
+                    android:id="@+id/textView114636" />
+
+                <EditText
+                    android:layout_width="40dip"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:id="@+id/edit31"
+                    android:background="@drawable/background_textfield" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:text="@string/rdtNegative"
+                    android:id="@+id/edit32" />
+
+                <CheckBox
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/yes"
+                    android:id="@+id/edit33" />
+
+                <EditText
+                    android:layout_width="40dip"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:id="@+id/edit34"
+                    android:background="@drawable/background_textfield" />
+            </TableRow>
+            <TableRow
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/background_even">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:text="@string/seven"
+                    android:id="@+id/textView111536" />
+
+                <EditText
+                    android:layout_width="40dip"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:id="@+id/edit41"
+                    android:background="@drawable/background_textfield" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:text="@string/rdtNegative"
+                    android:id="@+id/edit42" />
+
+                <CheckBox
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/yes"
+                    android:id="@+id/edit43" />
+
+                <EditText
+                    android:layout_width="40dip"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:id="@+id/edit44"
+                    android:background="@drawable/background_textfield" />
+            </TableRow>
+            <TableRow
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/background_even">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:text="@string/eight"
+                    android:id="@+id/textView111636" />
+
+                <EditText
+                    android:layout_width="40dip"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:id="@+id/edit51"
+                    android:background="@drawable/background_textfield" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:text="@string/rdtNegative"
+                    android:id="@+id/edit52" />
+
+                <CheckBox
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/yes"
+                    android:id="@+id/edit53" />
+
+                <EditText
+                    android:layout_width="40dip"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:id="@+id/edit54"
+                    android:background="@drawable/background_textfield" />
+            </TableRow>
+            <TableRow
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/background_even">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:text="@string/nine"
+                    android:id="@+id/textView111456" />
+
+                <EditText
+                    android:layout_width="40dip"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:id="@+id/edit61"
+                    android:background="@drawable/background_textfield" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:text="@string/rdtNegative"
+                    android:id="@+id/edit62" />
+
+                <CheckBox
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/yes"
+                    android:id="@+id/edit63" />
+
+                <EditText
+                    android:layout_width="40dip"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:id="@+id/edit64"
+                    android:background="@drawable/background_textfield" />
+            </TableRow>
+            <TableRow
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/background_even">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:text="@string/ten"
+                    android:id="@+id/textView116145" />
+
+                <EditText
+                    android:layout_width="40dip"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:id="@+id/edit71"
+                    android:background="@drawable/background_textfield" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:text="@string/rdtNegative"
+                    android:id="@+id/edit72" />
+
+                <CheckBox
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/yes"
+                    android:id="@+id/edit73" />
+
+                <EditText
+                    android:layout_width="40dip"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:id="@+id/edit74"
+                    android:background="@drawable/background_textfield" />
+            </TableRow>
+            <TableRow
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/background_odd">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:text="@string/eleven"
+                    android:id="@+id/numberTwenty182" />
+
+                <EditText
+                    android:layout_width="40dip"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:id="@+id/editText4183"
+                    android:background="@drawable/background_textfield" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:text="@string/microPositive"
+                    android:id="@+id/textView4181" />
+
+                <CheckBox
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/yes"
+                    android:id="@+id/checkBox18" />
+
+                <EditText
+                    android:layout_width="40dip"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:id="@+id/editText4184"
+                    android:background="@drawable/background_textfield" />
+
+            </TableRow>
+
+            <TableRow
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/background_even">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:text="@string/twelve"
+                    android:id="@+id/textView716" />
+
+                <EditText
+                    android:layout_width="40dip"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:id="@+id/editTex17t9"
+                    android:background="@drawable/background_textfield" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:text="@string/microPositive"
+                    android:id="@+id/textView1713" />
+
+                <CheckBox
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/yes"
+                    android:id="@+id/checkBox172" />
+
+                <EditText
+                    android:layout_width="40dip"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:id="@+id/editText1171"
+                    android:background="@drawable/background_textfield" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/background_even">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:text="@string/thirteen"
+                    android:id="@+id/textView11166" />
+
+                <EditText
+                    android:layout_width="40dip"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:id="@+id/edit161"
+                    android:background="@drawable/background_textfield" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:text="@string/microPositive"
+                    android:id="@+id/edit1612" />
+
+                <CheckBox
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/yes"
+                    android:id="@+id/edit163" />
+
+                <EditText
+                    android:layout_width="40dip"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:id="@+id/edit164"
+                    android:background="@drawable/background_textfield" />
+            </TableRow>
+            <TableRow
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/background_even">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:text="@string/fourteen"
+                    android:id="@+id/textView11156" />
+
+                <EditText
+                    android:layout_width="40dip"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:id="@+id/edit1151"
+                    android:background="@drawable/background_textfield" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:text="@string/microPositive"
+                    android:id="@+id/edit1152" />
+
+                <CheckBox
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/yes"
+                    android:id="@+id/edit1513" />
+
+                <EditText
+                    android:layout_width="40dip"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:id="@+id/edit1154"
+                    android:background="@drawable/background_textfield" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/background_even">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:text="@string/fifteen"
+                    android:id="@+id/textView11146" />
+
+                <EditText
+                    android:layout_width="40dip"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:id="@+id/edit2141"
+                    android:background="@drawable/background_textfield" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:text="@string/microPositive"
+                    android:id="@+id/edi2142" />
+
+                <CheckBox
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/yes"
+                    android:id="@+id/edi2143" />
+
+                <EditText
+                    android:layout_width="40dip"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:id="@+id/edi2144"
+                    android:background="@drawable/background_textfield" />
+            </TableRow>
+            <TableRow
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/background_even">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:text="@string/sixteen"
+                    android:id="@+id/textView11613" />
+
+                <EditText
+                    android:layout_width="40dip"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:id="@+id/edit3131"
+                    android:background="@drawable/background_textfield" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:text="@string/microNegative"
+                    android:id="@+id/edit3132" />
+
+                <CheckBox
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/yes"
+                    android:id="@+id/edit3133" />
+
+                <EditText
+                    android:layout_width="40dip"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:id="@+id/edit3134"
+                    android:background="@drawable/background_textfield" />
+            </TableRow>
+            <TableRow
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/background_even">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:text="@string/seventeen"
+                    android:id="@+id/textView11126" />
+
+                <EditText
+                    android:layout_width="40dip"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:id="@+id/edit4121"
+                    android:background="@drawable/background_textfield" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:text="@string/microNegative"
+                    android:id="@+id/edit4122" />
+
+                <CheckBox
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/yes"
+                    android:id="@+id/edit4123" />
+
+                <EditText
+                    android:layout_width="40dip"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:id="@+id/edit4124"
+                    android:background="@drawable/background_textfield" />
+            </TableRow>
+            <TableRow
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/background_even">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:text="@string/eighteen"
+                    android:id="@+id/textView9116" />
+
+                <EditText
+                    android:layout_width="40dip"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:id="@+id/edit951"
+                    android:background="@drawable/background_textfield" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:text="@string/microNegative"
+                    android:id="@+id/edit952" />
+
+                <CheckBox
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/yes"
+                    android:id="@+id/edit953" />
+
+                <EditText
+                    android:layout_width="40dip"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:id="@+id/edit954"
+                    android:background="@drawable/background_textfield" />
+            </TableRow>
+            <TableRow
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/background_even">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:text="@string/nineteen"
+                    android:id="@+id/textView1816" />
+
+                <EditText
+                    android:layout_width="40dip"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:id="@+id/edit861"
+                    android:background="@drawable/background_textfield" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:text="@string/microNegative"
+                    android:id="@+id/edit862" />
+
+                <CheckBox
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/yes"
+                    android:id="@+id/edit863" />
+
+                <EditText
+                    android:layout_width="40dip"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:id="@+id/edit864"
+                    android:background="@drawable/background_textfield" />
+            </TableRow>
+            <TableRow
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/background_even">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:text="@string/twenty"
+                    android:id="@+id/textView1176" />
+
+                <EditText
+                    android:layout_width="40dip"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:id="@+id/edit771"
+                    android:background="@drawable/background_textfield" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:text="@string/microNegative"
+                    android:id="@+id/edit772" />
+
+                <CheckBox
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/yes"
+                    android:id="@+id/edit773" />
+
+                <EditText
+                    android:layout_width="40dip"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:id="@+id/edit774"
+                    android:background="@drawable/background_textfield" />
+            </TableRow>
+
+        </TableLayout>
+
+    </GridLayout>
 </LinearLayout>

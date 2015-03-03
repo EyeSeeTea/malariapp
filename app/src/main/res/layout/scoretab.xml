@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="wrap_content"
+    android:orientation="vertical" android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:gravity="center">
     <TableLayout
@@ -39,7 +39,8 @@
         <TableRow
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:id="@+id/headersRow">
+            android:id="@+id/headersRow"
+            android:gravity="right">
 
             <Space
                 android:layout_width="20px"
@@ -102,7 +103,8 @@
         <TableRow
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:id="@+id/generalRow">
+            android:id="@+id/generalRow"
+            android:gravity="right">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -162,7 +164,8 @@
         <TableRow
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:id="@+id/rdtRow">
+            android:id="@+id/rdtRow"
+            android:gravity="right">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -222,7 +225,8 @@
         <TableRow
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:id="@+id/microscopyRow">
+            android:id="@+id/microscopyRow"
+            android:gravity="right">
 
             <TextView
                 android:layout_width="wrap_content"
