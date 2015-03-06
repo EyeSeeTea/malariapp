@@ -18,6 +18,7 @@ public class ManualAdapterAdherence {
     private final List<Integer> idsCombos;
 
     // This adapter is for filling the dropdown lists in the Adherence tab with 2 options: [Yes, No]
+    // FIXME: This class can be merged with ManualIQAAdapter. i.e. creating an abstract class implemented by both ManualIQA and ManualAdherence
     public ManualAdapterAdherence(Activity context)
     {
         this.context = context;

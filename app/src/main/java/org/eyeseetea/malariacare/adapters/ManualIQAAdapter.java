@@ -6,46 +6,53 @@ import android.widget.Spinner;
 
 import org.eyeseetea.malariacare.R;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by Jose on 03/03/2015.
  */
 public class ManualIQAAdapter {
 
     private final Activity context;
-    private final int[] ids_combos;
+    private final List<Integer> idsCombos;
 
+    // This adapter is for filling the dropdown lists in the Adherence tab with 2 options: [Yes, No]
+    // FIXME: This class can be merged with ManualAdapterAdherence. i.e. creating an abstract class implemented by both ManualIQA and ManualAdherence
     public ManualIQAAdapter(Activity context)
     {
         this.context = context;
-        ids_combos=new int[20];
+        this.idsCombos = new ArrayList<Integer>();
 
         Spinner view = (Spinner) context.findViewById(R.id.act1);
 
-        ids_combos[0]= R.id.testresult1;
-        ids_combos[1]= R.id.testresult2;
-        ids_combos[2]= R.id.testresult3;
-        ids_combos[3]= R.id.testresult4;
-        ids_combos[4]= R.id.testresult5;
-        ids_combos[5]= R.id.testresult6;
-        ids_combos[6]= R.id.testresult7;
-        ids_combos[7]= R.id.testresult8;
-        ids_combos[8]= R.id.testresult9;
-        ids_combos[9]= R.id.testresult10;
-        ids_combos[10]= R.id.testresult11;
-        ids_combos[11]= R.id.testresult12;
-        ids_combos[12]= R.id.testresult13;
-        ids_combos[13]= R.id.testresult14;
-        ids_combos[14]= R.id.testresult15;
-        ids_combos[15]= R.id.testresult16;
-        ids_combos[16]= R.id.testresult17;
-        ids_combos[17]= R.id.testresult18;
-        ids_combos[18]= R.id.testresult19;
-        ids_combos[19]= R.id.testresult20;
+        // We hard-code the ids that contribute to this score calculus
+        idsCombos.add(R.id.testresult1);
+        idsCombos.add(R.id.testresult2);
+        idsCombos.add(R.id.testresult3);
+        idsCombos.add(R.id.testresult4);
+        idsCombos.add(R.id.testresult5);
+        idsCombos.add(R.id.testresult6);
+        idsCombos.add(R.id.testresult7);
+        idsCombos.add(R.id.testresult8);
+        idsCombos.add(R.id.testresult9);
+        idsCombos.add(R.id.testresult10);
+        idsCombos.add(R.id.testresult11);
+        idsCombos.add(R.id.testresult12);
+        idsCombos.add(R.id.testresult13);
+        idsCombos.add(R.id.testresult14);
+        idsCombos.add(R.id.testresult15);
+        idsCombos.add(R.id.testresult16);
+        idsCombos.add(R.id.testresult17);
+        idsCombos.add(R.id.testresult18);
+        idsCombos.add(R.id.testresult19);
+        idsCombos.add(R.id.testresult20);
 
-        for (int i=0;i<20;i++) {
+        // For each dropdown list we add its content (in every dropdown there will be 2 options, yes/no).
+        for (Integer idCombo: idsCombos){
             ArrayAdapter adapter = ArrayAdapter.createFromResource(context, R.array.iqa_testresult, android.R.layout.simple_spinner_item);
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            ((Spinner) context.findViewById(ids_combos[i])).setAdapter(adapter);
+            ((Spinner) context.findViewById(idCombo)).setAdapter(adapter);
 
         }
 
