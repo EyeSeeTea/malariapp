@@ -53,9 +53,7 @@ public class ReportingResultsArrayAdapter extends ArrayAdapter<ReportingResults>
 
             LayoutInflater inflater = (LayoutInflater) context.getLayoutInflater();
             final int[] backgrounds = {R.drawable.background_even, R.drawable.background_odd};
-
             view = inflater.inflate(R.layout.resultsreporting, null);
-
             final ViewHolder viewHolder = new ViewHolder();
 
             view.setBackgroundResource(backgrounds[position % backgrounds.length]);
@@ -69,52 +67,21 @@ public class ReportingResultsArrayAdapter extends ArrayAdapter<ReportingResults>
                 @Override
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
-
                 }
 
                 @Override
                 public void onTextChanged(CharSequence s, int start, int before, int count) {
-
                     ReportingResults model = (ReportingResults) viewHolder.score.getTag();
                     model.setAnswer1(s.toString());
-
                     String answer2 = viewHolder.answer2.getText().toString();
                     String answer1 = s.toString();
-                    float score_total;
-
-                    if (!answer2.equals("") || !answer1.equals(""))
-                        if (answer1.equals(answer2)) {
-                            viewHolder.score.setText("1");
-
-                            score = score + 1 - Integer.parseInt(model.getScore());
-
-                            model.setScore("1");
-
-                        } else {
-                            viewHolder.score.setText("0");
-
-                            score = score - Integer.parseInt(model.getScore());
-
-                            model.setScore("0");
-
-                        }
-                    else
-                    {
-                        viewHolder.score.setText("0");
-                    }
-
-                    TextView scoreView = (TextView) context.findViewById(R.id.reportingScore);
-                    score_total = (float) score / Constants.REPORTING_MAX_SCORE;
-                    scoreView.setText(Utils.round(score_total).toString());
-
+                    updateScore(model, answer2, answer1, viewHolder);
                 }
 
                 @Override
                 public void afterTextChanged(Editable s) {
 
                 }
-
-
             });
 
             viewHolder.answer2.addTextChangedListener(new TextWatcher() {
@@ -126,37 +93,11 @@ public class ReportingResultsArrayAdapter extends ArrayAdapter<ReportingResults>
 
                 @Override
                 public void onTextChanged(CharSequence s, int start, int before, int count) {
-
                     ReportingResults model = (ReportingResults) viewHolder.score.getTag();
                     model.setAnswer2(s.toString());
                     String answer1 = viewHolder.answer1.getText().toString();
                     String answer2 = s.toString();
-                    float score_total;
-
-                    if (!answer2.equals("") || !answer1.equals(""))
-                        if (answer1.equals(answer2)) {
-                            viewHolder.score.setText("1");
-
-                            score = score + 1 - Integer.parseInt(model.getScore());
-
-                            model.setScore("1");
-
-                        } else {
-                            viewHolder.score.setText("0");
-
-                            score = score - Integer.parseInt(model.getScore());
-
-                            model.setScore("0");
-                        }
-                    else {
-                        viewHolder.score.setText("0");
-                    }
-
-                    TextView scoreView = (TextView) context.findViewById(R.id.reportingScore);
-                    score_total = (float) score / Constants.REPORTING_MAX_SCORE;
-                    scoreView.setText(Utils.round(score_total).toString());
-
-
+                    updateScore(model, answer2, answer1, viewHolder);
                 }
 
                 @Override
@@ -185,6 +126,29 @@ public class ReportingResultsArrayAdapter extends ArrayAdapter<ReportingResults>
 
 
         return view;
+    }
+
+    private void updateScore(ReportingResults model, String answer2, String answer1, ViewHolder viewHolder) {
+        float score_total;
+
+        if (!answer2.equals("") || !answer1.equals(""))
+            if (answer1.equals(answer2)) {
+                viewHolder.score.setText("1");
+                score = score + 1 - Integer.parseInt(model.getScore());
+                model.setScore("1");
+            } else {
+                viewHolder.score.setText("0");
+                score = score - Integer.parseInt(model.getScore());
+                model.setScore("0");
+            }
+        else
+        {
+            viewHolder.score.setText("0");
+        }
+
+        TextView scoreView = (TextView) context.findViewById(R.id.reportingScore);
+        score_total = ((float) score / Constants.REPORTING_MAX_SCORE)*100.0F;
+        scoreView.setText(Utils.round(score_total));
     }
 
 }
