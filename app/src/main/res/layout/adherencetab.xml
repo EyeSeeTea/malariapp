@@ -52,7 +52,8 @@
             android:id="@+id/explanationText"
             android:text="Record below the patient ID numbers of 20 patients prescribed ACTs from the Pharmacy Register.\nLocate the patient IDs from Step 1 in the Laboratory and/or Clinical Registers and record their test result in the appropriate column. "
             android:background="@drawable/background_even"
-            android:textSize="14sp"/>
+            android:textSize="14sp"
+            android:paddingLeft="5dip" />
 
     </GridLayout>
 
@@ -88,29 +89,31 @@
                 android:layout_gravity="center"
                 android:background="@drawable/background_odd">
 
-                <Space
-                    android:layout_width="20px"
-                    android:layout_height="20px" />
-
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:text="@string/emptyString"
+                    android:id="@+id/textView9" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="fill_parent"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:text="@string/patientIdNumber"
                     android:id="@+id/textView7"
                     android:background="@drawable/background_header"
-                    android:padding="5dip"
                     android:textColor="#ffffff"
-                    android:gravity="center" />
+                    android:gravity="center"
+                    android:lines="2" />
 
                 <TextView
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="fill_parent"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:text="@string/genderHeader"
                     android:id="@+id/textView15"
                     android:background="@drawable/background_header"
-                    android:padding="5dip"
                     android:textColor="#ffffff"
                     android:lines="2"
                     android:gravity="center" />
@@ -122,7 +125,6 @@
                     android:text="@string/ageHeader"
                     android:id="@+id/textView16"
                     android:background="@drawable/background_header"
-                    android:padding="5dip"
                     android:textColor="#ffffff"
                     android:lines="2"
                     android:gravity="center" />
@@ -134,7 +136,6 @@
                     android:text="@string/testResultsHeader"
                     android:id="@+id/textView14"
                     android:background="@drawable/background_header"
-                    android:padding="5dip"
                     android:textColor="#ffffff"
                     android:lines="2"
                     android:gravity="center" />
@@ -157,7 +158,8 @@
                     android:layout_height="40dip"
                     android:inputType="number"
                     android:id="@+id/editText"
-                    android:background="@drawable/background_textfield"/>
+                    android:background="@drawable/background_textfield"
+                    android:padding="5dip" />
 
                 <RadioGroup
                     android:layout_width="wrap_content"
@@ -1541,7 +1543,7 @@
 
                 <TextView
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="fill_parent"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:text="@string/patientIdNumber"
                     android:id="@+id/textView37"
@@ -1564,7 +1566,7 @@
 
                 <TextView
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="fill_parent"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:text="@string/actPrescribed"
                     android:id="@+id/textView39"

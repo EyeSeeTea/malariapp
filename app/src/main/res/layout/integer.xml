@@ -21,7 +21,8 @@
         android:layout_height="wrap_content"
         android:layout_weight="0.5"
         android:padding="5dip"
-        android:gravity="center">
+        android:gravity="center"
+        android:layout_gravity="center_vertical">
         <EditText
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"

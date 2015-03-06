@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.CalendarView;
 import android.widget.EditText;
 import android.widget.GridLayout;
 import android.widget.LinearLayout;
@@ -15,6 +16,7 @@ import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TabHost;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.eyeseetea.malariacare.MainActivity;
 import org.eyeseetea.malariacare.R;
@@ -32,6 +34,7 @@ import org.eyeseetea.malariacare.utils.TabConfiguration;
 import org.eyeseetea.malariacare.utils.Utils;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
