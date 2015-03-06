@@ -18,9 +18,8 @@ import android.widget.TextView;
 
 import org.eyeseetea.malariacare.MainActivity;
 import org.eyeseetea.malariacare.R;
-import org.eyeseetea.malariacare.adapters.IQATestArrayAdapter;
 import org.eyeseetea.malariacare.adapters.ManualAdapterAdherence;
-import org.eyeseetea.malariacare.adapters.ManualIQAAdapter;
+import org.eyeseetea.malariacare.adapters.ManualAdapterIQA;
 import org.eyeseetea.malariacare.adapters.ReportingResultsArrayAdapter;
 import org.eyeseetea.malariacare.data.Header;
 import org.eyeseetea.malariacare.data.Option;
@@ -379,7 +378,7 @@ public class Layout {
 
             case R.layout.iqatab:
                 layoutParent.addView(customView);
-                ManualIQAAdapter manualIQAAdapter = new ManualIQAAdapter(mainActivity);
+                ManualAdapterIQA manualAdapterIQA = new ManualAdapterIQA(mainActivity);
                 break;
 
         }

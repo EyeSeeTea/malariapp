@@ -12,14 +12,14 @@ import java.util.List;
 /**
  * Created by Jose on 03/03/2015.
  */
-public class ManualIQAAdapter {
+public class ManualAdapterIQA {
 
     private final Activity context;
     private final List<Integer> idsCombos;
 
     // This adapter is for filling the dropdown lists in the Adherence tab with 2 options: [Yes, No]
     // FIXME: This class can be merged with ManualAdapterAdherence. i.e. creating an abstract class implemented by both ManualIQA and ManualAdherence
-    public ManualIQAAdapter(Activity context)
+    public ManualAdapterIQA(Activity context)
     {
         this.context = context;
         this.idsCombos = new ArrayList<Integer>();
