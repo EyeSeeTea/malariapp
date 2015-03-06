@@ -27,7 +27,6 @@ import org.eyeseetea.malariacare.data.Question;
 import org.eyeseetea.malariacare.data.Tab;
 import org.eyeseetea.malariacare.models.ReportingResults;
 import org.eyeseetea.malariacare.utils.Constants;
-import org.eyeseetea.malariacare.utils.LoadCustomQuestions;
 import org.eyeseetea.malariacare.utils.NumDenRecord;
 import org.eyeseetea.malariacare.utils.TabConfiguration;
 import org.eyeseetea.malariacare.utils.Utils;
@@ -367,7 +366,7 @@ public class Layout {
                 break;
             case R.layout.reportingtab:
                 ListView list=(ListView) customView.findViewById(R.id.listView);
-                ArrayAdapter<ReportingResults> adapter = new ReportingResultsArrayAdapter(mainActivity, LoadCustomQuestions.addReportingQuestions());
+                ArrayAdapter<ReportingResults> adapter = new ReportingResultsArrayAdapter(mainActivity, LayoutUtils.addReportingQuestions());
                 list.setAdapter(adapter);
                 layoutParent.addView(customView);
                 break;

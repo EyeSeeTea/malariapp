@@ -8,6 +8,8 @@ import android.widget.Spinner;
 import org.eyeseetea.malariacare.MainActivity;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.Question;
+import org.eyeseetea.malariacare.models.ReportingResults;
+import org.eyeseetea.malariacare.utils.Constants;
 import org.eyeseetea.malariacare.utils.TabConfiguration;
 
 import java.math.BigDecimal;
@@ -146,6 +148,24 @@ public class LayoutUtils {
             if (!isContained)return false;
         }
         return true;
+    }
+
+    public static List<ReportingResults> addReportingQuestions()
+    {
+        List<ReportingResults> results=new ArrayList<ReportingResults>();
+
+        results.add(new ReportingResults(Constants.REPORTING_Q1));
+        results.add(new ReportingResults(Constants.REPORTING_Q2));
+        results.add(new ReportingResults(Constants.REPORTING_Q3));
+        results.add(new ReportingResults(Constants.REPORTING_Q4));
+        results.add(new ReportingResults(Constants.REPORTING_Q5));
+        results.add(new ReportingResults(Constants.REPORTING_Q6));
+        results.add(new ReportingResults(Constants.REPORTING_Q7));
+        results.add(new ReportingResults(Constants.REPORTING_Q8));
+        results.add(new ReportingResults(Constants.REPORTING_Q9));
+        results.add(new ReportingResults(Constants.REPORTING_Q10));
+
+        return results;
     }
 
 }
