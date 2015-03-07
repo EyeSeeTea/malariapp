@@ -34,11 +34,20 @@ public class MainActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
+        long time = System.currentTimeMillis();
+
         super.onCreate(savedInstanceState);
         Log.i(".MainActivity", "Starting App");
         initializeApp();
 
+        long time2 = System.currentTimeMillis();
+        Log.d(".MainActivity", "Time initialing app: " + (time2 -time) + " ms");
+
+        Log.i(".MainActivity", "Starting App");
         createTabConfiguration();
+
+        long time3 = System.currentTimeMillis();
+        Log.d(".MainActivity", "Time Configuring tab: " + (time3 -time2) + " ms");
 
         // We import the initial data in case it has been done yet
         if (Tab.count(Tab.class, null, null)==0) {
@@ -48,9 +57,14 @@ public class MainActivity extends ActionBarActivity {
             Log.i(".MainActivity", "DB populated");
         }
 
+        long time4 = System.currentTimeMillis();
+        Log.d(".MainActivity", "Time populating DB: " + (time4 -time3) + " ms");
+
         Log.i(".MainActivity", "Initializing Menu and generating tabs");
         createMenuAndTabs();
 
+        long time5 = System.currentTimeMillis();
+        Log.d(".MainActivity", "Time creating menu and tabs: " + (time5 -time4) + " ms");
 
         // Score tab is a little bit special, we don't need to add it
     }
