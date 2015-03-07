@@ -402,7 +402,8 @@
                             android:columnCount="2"
                             android:rowCount="1"
                             android:id="@+id/scoretab11"
-                            android:layout_weight="0.91"></GridLayout>
+                            android:layout_weight="0.91"
+                            android:visibility="gone"></GridLayout>
 
                     </LinearLayout>
 
@@ -491,7 +492,8 @@
                             android:columnCount="2"
                             android:rowCount="1"
                             android:id="@+id/scoretab14"
-                            android:layout_weight="0.91"></GridLayout>
+                            android:layout_weight="0.91"
+                            android:visibility="gone"></GridLayout>
 
                     </LinearLayout>
 
@@ -522,7 +524,8 @@
                         android:id="@+id/scoreSummary"
                         android:layout_width="fill_parent"
                         android:layout_height="fill_parent"
-                        android:orientation="vertical" >
+                        android:orientation="vertical"
+                        android:visibility="gone">
 
                         <ScrollView
                             android:layout_width="wrap_content"

@@ -21,13 +21,14 @@
         <Switch
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/yes"
-            android:id="@+id/answer" />
+            android:id="@+id/answer"
+            android:textOn="@string/yes"
+            android:textOff="@string/no" />
     </GridLayout>
 
     <Space
-        android:layout_width="20px"
-        android:layout_height="20px" />
+        android:layout_width="20dip"
+        android:layout_height="40dip" />
 
     <GridLayout
         android:layout_width="wrap_content"
@@ -43,7 +44,8 @@
             android:text="@string/explanationHeader"
             android:id="@+id/explanationHeader"
             android:background="@drawable/background_header"
-            android:textSize="18sp" />
+            android:textSize="18sp"
+            android:textColor="#ffffff" />
 
         <EditText
             android:layout_width="match_parent"
@@ -58,8 +60,8 @@
     </GridLayout>
 
     <Space
-        android:layout_width="20px"
-        android:layout_height="20px" />
+        android:layout_width="20dip"
+        android:layout_height="40dip" />
 
     <GridLayout
         android:layout_width="wrap_content"
@@ -1488,8 +1490,8 @@
     </GridLayout>
 
     <Space
-        android:layout_width="20px"
-        android:layout_height="20px" />
+        android:layout_width="20dip"
+        android:layout_height="40dip" />
 
     <GridLayout
         android:layout_width="fill_parent"
@@ -1505,7 +1507,8 @@
             android:text="@string/explanationHeader"
             android:id="@+id/textView35"
             android:background="@drawable/background_header"
-            android:textSize="18sp" />
+            android:textSize="18sp"
+            android:textColor="#ffffff" />
 
         <EditText
             android:layout_width="fill_parent"
@@ -1514,12 +1517,13 @@
             android:id="@+id/editText41"
             android:text="In the Laboratory Register, record the patient ID numbers 20 patients: 5 RDT +; 5 RDT -; 5 microscopy +; 5 microscopy -.\nLocate the patient IDs from Step 1 in the Pharmacy Register and record whether they received ACTs in the “ACT Prescribed” column by ticking either Y or N. For health facilities without microscopy, tick the N/A box"
             android:background="@drawable/background_even"
-            android:textSize="14sp" />
+            android:textSize="14sp"
+            android:paddingLeft="5dip" />
     </GridLayout>
 
     <Space
-        android:layout_width="20px"
-        android:layout_height="20px" />
+        android:layout_width="20dip"
+        android:layout_height="40dip" />
 
     <GridLayout
         android:layout_width="wrap_content"
@@ -1537,9 +1541,12 @@
                 android:id="@+id/tableRow"
                 android:layout_gravity="center">
 
-                <Space
-                    android:layout_width="20px"
-                    android:layout_height="20px" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:text="@string/emptyString"
+                    android:id="@+id/textView90" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -1550,7 +1557,8 @@
                     android:background="@drawable/background_header"
                     android:padding="5dip"
                     android:textColor="#ffffff"
-                    android:gravity="center" />
+                    android:gravity="center"
+                    android:lines="2" />
 
                 <TextView
                     android:layout_width="wrap_content"
