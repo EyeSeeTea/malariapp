@@ -429,6 +429,7 @@ public class Layout {
                         // If the question is a parent, do don't show it but use it to put the row layout
                         if (question.hasChildren()){ // FIXME: when the search above is improve this check will be unnecessary
                             iterListeners = 0;
+                            TextView answer = null;
                             View rowView = inflater.inflate(layoutsToUse.get(i), table, false);
                             // Set the row number
                             TextView number = (TextView) rowView.findViewById(R.id.number);
@@ -447,6 +448,7 @@ public class Layout {
                                             optionList.add(0, defaultOption);
                                             ArrayAdapter adapter = new ArrayAdapter(mainActivity, android.R.layout.simple_spinner_item, optionList);
                                             Spinner dropdown = (Spinner) ((ViewGroup) ((ViewGroup) rowView).getChildAt(j + 1)).getChildAt(0); // We take the spinner
+                                            dropdown.setTag(R.id.QuestionTypeTag, Constants.DROPDOWN_LIST);
                                             dropdown.setAdapter(adapter);
                                             if ("listener".equals(dropdown.getTag())) {
                                                 dropdown.setOnItemSelectedListener(listeners.get(iterListeners));
@@ -456,16 +458,24 @@ public class Layout {
                                             break;
                                         case Constants.INT:
                                             Log.d(".Layout", "Question int");
+                                            answer = (TextView) ((ViewGroup) ((ViewGroup) rowView).getChildAt(j + 1)).getChildAt(0); // We take the textfield
+                                            answer.setTag(R.id.QuestionTypeTag, Constants.INT);
                                             break;
                                         case Constants.LONG_TEXT:
                                             Log.i(".Layout", "Question longtext");
+                                            answer = (TextView) ((ViewGroup) ((ViewGroup) rowView).getChildAt(j + 1)).getChildAt(0); // We take the textfield
+                                            answer.setTag(R.id.QuestionTypeTag, Constants.LONG_TEXT);
                                             break;
                                         case Constants.SHORT_TEXT:
                                             Log.i(".Layout", "Question shorttext");
+                                            answer = (TextView) ((ViewGroup) ((ViewGroup) rowView).getChildAt(j + 1)).getChildAt(0); // We take the textfield
+                                            answer.setTag(R.id.QuestionTypeTag, Constants.SHORT_TEXT);
                                             break;
                                         case Constants.SHORT_DATE:
                                         case Constants.LONG_DATE:
                                             Log.i(".Layout", "Question date");
+                                            answer = (TextView) ((ViewGroup) ((ViewGroup) rowView).getChildAt(j + 1)).getChildAt(0); // We take the textfield
+                                            answer.setTag(R.id.QuestionTypeTag, Constants.SHORT_DATE);
                                             break;
                                     }
                                 } else {
