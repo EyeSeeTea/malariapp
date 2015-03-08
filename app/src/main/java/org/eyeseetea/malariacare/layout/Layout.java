@@ -7,12 +7,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.GridLayout;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ScrollView;
 import android.widget.Spinner;
+import android.widget.Switch;
 import android.widget.TabHost;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -384,6 +386,8 @@ public class Layout {
                 list.setAdapter(adapter);
                 break;
             case R.layout.adherencetab:
+                Switch visibility = (Switch) customView.findViewById(R.id.visibilitySwitch);
+                createAdherenceSwitchListener(visibility);
                 getFromDatabase = true;
                 layoutsToUse.add(R.layout.pharmacy_register);
                 layoutsToUse.add(R.layout.pharmacy_register2);
@@ -448,6 +452,7 @@ public class Layout {
                                                 dropdown.setOnItemSelectedListener(listeners.get(iterListeners));
                                                 iterListeners++;
                                             }
+
                                             break;
                                         case Constants.INT:
                                             Log.d(".Layout", "Question int");
@@ -518,6 +523,21 @@ public class Layout {
         };
 
         return listener;
+    }
+
+
+    public static void createAdherenceSwitchListener(Switch switchView){
+        switchView.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                LinearLayout grandpa = (LinearLayout) ((ViewGroup) buttonView.getParent()).getParent();
+                for (int i=1; i<grandpa.getChildCount(); i++){
+                    if (isChecked) (grandpa.getChildAt(i)).setVisibility(View.VISIBLE);
+                    else (grandpa.getChildAt(i)).setVisibility(View.GONE);
+                }
+                return;
+            }
+        });
     }
 }
 

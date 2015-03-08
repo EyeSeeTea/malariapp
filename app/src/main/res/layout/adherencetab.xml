@@ -21,7 +21,7 @@
         <Switch
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/answer"
+            android:id="@+id/visibilitySwitch"
             android:textOn="@string/yes"
             android:textOff="@string/no" />
     </GridLayout>
@@ -35,7 +35,8 @@
         android:layout_height="wrap_content"
         android:columnCount="1"
         android:rowCount="2"
-        android:id="@+id/explanationLayout">
+        android:id="@+id/explanationLayout"
+        android:visibility="gone">
 
         <TextView
             android:layout_width="wrap_content"
@@ -68,7 +69,8 @@
         android:layout_height="wrap_content"
         android:columnCount="1"
         android:rowCount="2"
-        android:id="@+id/pharmacyRegister">
+        android:id="@+id/pharmacyRegister"
+        android:visibility="gone">
 
         <TextView
             android:layout_width="wrap_content"
@@ -157,7 +159,8 @@
         android:layout_height="wrap_content"
         android:columnCount="1"
         android:rowCount="2"
-        android:id="@+id/explanation2Layout" >
+        android:id="@+id/explanation2Layout"
+        android:visibility="gone">
 
         <TextView
             android:layout_width="wrap_content"
@@ -189,7 +192,8 @@
         android:layout_height="wrap_content"
         android:columnCount="1"
         android:rowCount="1"
-        android:id="@+id/pharmacy2Register">
+        android:id="@+id/pharmacy2Register"
+        android:visibility="gone">
 
         <TableLayout
             android:layout_width="wrap_content"
