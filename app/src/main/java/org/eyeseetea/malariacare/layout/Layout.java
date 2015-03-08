@@ -388,6 +388,7 @@ public class Layout {
                 getFromDatabase = true;
                 layoutsToUse.add(R.layout.pharmacy_register);
                 layoutsToUse.add(R.layout.pharmacy_register2);
+                layoutParent.addView(customView);
                 break;
 
             case R.layout.iqatab:
