@@ -28,25 +28,6 @@ public class ManualAdapterAdherence {
 
         // We hard-code the ids that contribute to this score calculus
         idsCombos.add(R.id.act1);
-        idsCombos.add(R.id.act2);
-        idsCombos.add(R.id.act3);
-        idsCombos.add(R.id.act4);
-        idsCombos.add(R.id.act5);
-        idsCombos.add(R.id.act6);
-        idsCombos.add(R.id.act7);
-        idsCombos.add(R.id.act8);
-        idsCombos.add(R.id.act9);
-        idsCombos.add(R.id.act10);
-        idsCombos.add(R.id.act11);
-        idsCombos.add(R.id.act12);
-        idsCombos.add(R.id.act13);
-        idsCombos.add(R.id.act14);
-        idsCombos.add(R.id.act15);
-        idsCombos.add(R.id.act16);
-        idsCombos.add(R.id.act17);
-        idsCombos.add(R.id.act18);
-        idsCombos.add(R.id.act19);
-        idsCombos.add(R.id.act20);
 
         // For each dropdown list we add its content (in every dropdown there will be 2 options, yes/no).
         for (Integer idCombo: idsCombos) {

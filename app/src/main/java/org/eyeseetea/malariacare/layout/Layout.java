@@ -15,6 +15,7 @@ import android.widget.ListView;
 import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TabHost;
+import android.widget.TableLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -47,13 +48,14 @@ public class Layout {
     //static final Score scores=new Score();
     static final Map<Integer, NumDenRecord> numDenRecordMap = new HashMap<Integer, NumDenRecord>();
     static final int [] backgrounds = {R.drawable.background_even, R.drawable.background_odd};
+    //Iterator for background (odd and even)
+    static int iterBacks = 0;
 
     // This method fill in a tab layout
     public static void insertTab(MainActivity mainActivity, Tab tab, final TabConfiguration tabConfiguration) {
+        // We reset backgrounds counter
+        iterBacks = 0;
         Log.i(".Layout", "Generating Tab " + tab.getName());
-
-        //Iterator for background (odd and even)
-        int iterBacks = 0;
 
         // This layout inflater is for joining other layouts
         LayoutInflater inflater = (LayoutInflater) mainActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -83,109 +85,40 @@ public class Layout {
         tabSpec.setContent(tabConfiguration.getTabId());
         tabHost.addTab(tabSpec);
 
-        if (tabConfiguration.getLayoutId() != null){
-            generateManualTab(mainActivity, tabConfiguration, inflater, layoutParent);
+        if (!tabConfiguration.isAutomaticTab() && tabConfiguration.getLayoutId() != null){
+            generateManualTab(mainActivity, tab, tabConfiguration, inflater, layoutParent);
             return;
+        }else {
+            generateAutomaticTab(mainActivity, tab, tabConfiguration, inflater, layoutParent, defaultOption);
+            generateScore(tabConfiguration, inflater, layoutGrandParent);
         }
-
-        Log.i(".Layout", "Generate Headers");
-        for (Header header: tab.getHeaders()){
-            // First we introduce header text according to the template
-            //Log.i(".Layout", "Reading header " + header.toString());
-            View headerView = inflater.inflate(R.layout.headers, layoutParent, false);
-
-            TextView headerText = (TextView) headerView.findViewById(R.id.headerName);
-            headerText.setBackgroundResource(R.drawable.background_header);
-            headerText.setText(header.getName());
-            //Set Visibility to false until we check if it has any question visible
-            headerView.setVisibility(View.GONE);
-            layoutParent.addView(headerView);
-
-
-            //Log.i(".Layout", "Reader questions for header " + header.toString());
-            for (Question question : header.getQuestions()){
-                View questionView = null;
-                EditText answerI = null;
-                // The statement is present in every kind of question
-                switch(question.getAnswer().getOutput()){
-                    case Constants.DROPDOWN_LIST:
-                        questionView = inflater.inflate(R.layout.ddl, layoutParent, false);
-                        questionView.setBackgroundResource(backgrounds[iterBacks % backgrounds.length]);
-
-                        TextView statement = (TextView) questionView.findViewById(R.id.statement);
-                        statement.setText(question.getForm_name());
-                        TextView denominator = (TextView) questionView.findViewById(R.id.den);
-
-                        Spinner dropdown = (Spinner)questionView.findViewById(R.id.answer);
-                        dropdown.setTag(R.id.QuestionTag, question);
-                        dropdown.setTag(R.id.HeaderViewTag, headerView);
-                        dropdown.setTag(R.id.NumeratorViewTag, questionView.findViewById(R.id.num));
-                        dropdown.setTag(R.id.DenominatorViewTag, questionView.findViewById(R.id.den));
-                        dropdown.setTag(R.id.Tab, tabConfiguration.getTabId());
-                        dropdown.setTag(R.id.QuestionTypeTag, Constants.DROPDOWN_LIST);
-
-                        // If the question has children, we load the denominator, else we hide the question
-                        if (!question.hasParent()) {
-                            if (question.hasChildren()) questionView.setBackgroundResource(R.drawable.background_parent);
-
-                            denominator.setText(Utils.round(question.getDenominator_w()));
-                            headerView.setVisibility(View.VISIBLE);
-
-                            numDenRecordMap.get(tabConfiguration.getTabId()).addRecord(question, 0F, question.getDenominator_w());
-                        } else {
-                            questionView.setVisibility(View.GONE);
-                        }
-
-                        createDropDownListener(tabConfiguration, dropdown);
-
-                        List<Option> optionList = question.getAnswer().getOptions();
-                        optionList.add(0, defaultOption);
-                        ArrayAdapter adapter = new ArrayAdapter(mainActivity, android.R.layout.simple_spinner_item, optionList);
-                        dropdown.setAdapter(adapter);
-                        break;
-                    case Constants.INT:
-                        questionView = getView(iterBacks, inflater, layoutParent, headerView, question, R.layout.integer, Constants.INT);
-                        break;
-                    case Constants.LONG_TEXT:
-                        questionView = getView(iterBacks, inflater, layoutParent, headerView, question, R.layout.longtext, Constants.LONG_TEXT);
-                        break;
-                    case Constants.SHORT_TEXT:
-                        questionView = getView(iterBacks, inflater, layoutParent, headerView, question, R.layout.shorttext, Constants.SHORT_TEXT);
-                        break;
-                    case Constants.SHORT_DATE: case Constants. LONG_DATE:
-                        questionView = getView(iterBacks, inflater, layoutParent, headerView, question, R.layout.date, Constants.SHORT_TEXT);
-                        break;
-                }
-                layoutParent.addView(questionView);
-                iterBacks++;
-            }
-        }
-
-        if (tabConfiguration.isAutomaticTab()) {
-            // This layout is for showing the accumulated score
-            GridLayout layoutParentScore = (GridLayout) layoutGrandParent.getChildAt(1);
-            Log.i(".Layout", "Grandpa layout children: " + layoutGrandParent.getChildCount());
-            View subtotalView = inflater.inflate(R.layout.subtotal_num_dem, layoutParentScore, false);
-            TextView totalNumText = (TextView) subtotalView.findViewById(R.id.totalNum);
-            TextView totalDenText = (TextView) subtotalView.findViewById(R.id.totalDen);
-            totalNumText.setText("0.0");
-            List<Float> numDenSubTotal = numDenRecordMap.get(tabConfiguration.getTabId()).calculateNumDenTotal();
-            totalDenText.setText(Utils.round(numDenSubTotal.get(1)));
-
-            layoutParentScore.addView(subtotalView);
-            TextView subscoreView = (TextView) subtotalView.findViewById(R.id.score);
-
-            // Now, for being able to write Score in the score tab and score averages in its place (in score tab), we use setTag() to include a pointer to
-            // the score View id, and in that id, we include a pointer to the average view id. This way, we can do the calculus here and represent there
-            Integer generalScoreId = tabConfiguration.getScoreFieldId();
-            if (tabConfiguration.getScoreFieldId() != null) {
-                subscoreView.setTag(generalScoreId);
-            }
-
-            Log.i(".Layout", "after generated tab: " + numDenSubTotal.get(0) + " " + numDenSubTotal.get(1));
-        }
-
     }
+
+
+    private static void generateScore(TabConfiguration tabConfiguration, LayoutInflater inflater, LinearLayout layoutGrandParent) {
+        // This layout is for showing the accumulated score
+        GridLayout layoutParentScore = (GridLayout) layoutGrandParent.getChildAt(1);
+        Log.i(".Layout", "Grandpa layout children: " + layoutGrandParent.getChildCount());
+        View subtotalView = inflater.inflate(R.layout.subtotal_num_dem, layoutParentScore, false);
+        TextView totalNumText = (TextView) subtotalView.findViewById(R.id.totalNum);
+        TextView totalDenText = (TextView) subtotalView.findViewById(R.id.totalDen);
+        totalNumText.setText("0.0");
+        List<Float> numDenSubTotal = numDenRecordMap.get(tabConfiguration.getTabId()).calculateNumDenTotal();
+        totalDenText.setText(Utils.round(numDenSubTotal.get(1)));
+
+        layoutParentScore.addView(subtotalView);
+        TextView subscoreView = (TextView) subtotalView.findViewById(R.id.score);
+
+        // Now, for being able to write Score in the score tab and score averages in its place (in score tab), we use setTag() to include a pointer to
+        // the score View id, and in that id, we include a pointer to the average view id. This way, we can do the calculus here and represent there
+        Integer generalScoreId = tabConfiguration.getScoreFieldId();
+        if (tabConfiguration.getScoreFieldId() != null) {
+            subscoreView.setTag(generalScoreId);
+        }
+
+        Log.i(".Layout", "after generated tab: " + numDenSubTotal.get(0) + " " + numDenSubTotal.get(1));
+    }
+
 
     private static void createDropDownListener(final TabConfiguration tabConfiguration, Spinner dropdown) {
         dropdown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -267,6 +200,7 @@ public class Layout {
                         numeratorView.setText(Utils.round(numerator));
                         denominatorView.setText(Utils.round(denominator));
                     }
+                    // TODO: Maybe removing this line we'll avoid loading children denominator in first load
                     numDenRecordMap.get((Integer) spinner.getTag(R.id.Tab)).addRecord(triggeredQuestion, numerator, denominator);
                 }
 
@@ -360,8 +294,85 @@ public class Layout {
         return questionView;
     }
 
-    private static void generateManualTab(MainActivity mainActivity, TabConfiguration tabConfiguration, LayoutInflater inflater, GridLayout layoutParent) {
+    private static void generateAutomaticTab(MainActivity mainActivity, Tab tab, TabConfiguration tabConfiguration, LayoutInflater inflater, GridLayout layoutParent, Option defaultOption) {
+        Log.i(".Layout", "Generate Headers");
+        for (Header header: tab.getHeaders()){
+            // First we introduce header text according to the template
+            //Log.i(".Layout", "Reading header " + header.toString());
+            View headerView = inflater.inflate(R.layout.headers, layoutParent, false);
+
+            TextView headerText = (TextView) headerView.findViewById(R.id.headerName);
+            headerText.setBackgroundResource(R.drawable.background_header);
+            headerText.setText(header.getName());
+            //Set Visibility to false until we check if it has any question visible
+            headerView.setVisibility(View.GONE);
+            layoutParent.addView(headerView);
+
+
+            //Log.i(".Layout", "Reader questions for header " + header.toString());
+            for (Question question : header.getQuestions()){
+                View questionView = null;
+                EditText answerI = null;
+                // The statement is present in every kind of question
+                switch(question.getAnswer().getOutput()){
+                    case Constants.DROPDOWN_LIST:
+                        questionView = inflater.inflate(R.layout.ddl, layoutParent, false);
+                        questionView.setBackgroundResource(backgrounds[iterBacks % backgrounds.length]);
+
+                        TextView statement = (TextView) questionView.findViewById(R.id.statement);
+                        statement.setText(question.getForm_name());
+                        TextView denominator = (TextView) questionView.findViewById(R.id.den);
+
+                        Spinner dropdown = (Spinner)questionView.findViewById(R.id.answer);
+                        dropdown.setTag(R.id.QuestionTag, question);
+                        dropdown.setTag(R.id.HeaderViewTag, headerView);
+                        dropdown.setTag(R.id.NumeratorViewTag, questionView.findViewById(R.id.num));
+                        dropdown.setTag(R.id.DenominatorViewTag, questionView.findViewById(R.id.den));
+                        dropdown.setTag(R.id.Tab, tabConfiguration.getTabId());
+                        dropdown.setTag(R.id.QuestionTypeTag, Constants.DROPDOWN_LIST);
+
+                        // If the question has children, we load the denominator, else we hide the question
+                        if (!question.hasParent()) {
+                            if (question.hasChildren()) questionView.setBackgroundResource(R.drawable.background_parent);
+
+                            denominator.setText(Utils.round(question.getDenominator_w()));
+                            headerView.setVisibility(View.VISIBLE);
+
+                            numDenRecordMap.get(tabConfiguration.getTabId()).addRecord(question, 0F, question.getDenominator_w());
+                        } else {
+                            questionView.setVisibility(View.GONE);
+                        }
+
+                        createDropDownListener(tabConfiguration, dropdown);
+
+                        List<Option> optionList = question.getAnswer().getOptions();
+                        optionList.add(0, defaultOption);
+                        ArrayAdapter adapter = new ArrayAdapter(mainActivity, android.R.layout.simple_spinner_item, optionList);
+                        dropdown.setAdapter(adapter);
+                        break;
+                    case Constants.INT:
+                        questionView = getView(iterBacks, inflater, layoutParent, headerView, question, R.layout.integer, Constants.INT);
+                        break;
+                    case Constants.LONG_TEXT:
+                        questionView = getView(iterBacks, inflater, layoutParent, headerView, question, R.layout.longtext, Constants.LONG_TEXT);
+                        break;
+                    case Constants.SHORT_TEXT:
+                        questionView = getView(iterBacks, inflater, layoutParent, headerView, question, R.layout.shorttext, Constants.SHORT_TEXT);
+                        break;
+                    case Constants.SHORT_DATE: case Constants. LONG_DATE:
+                        questionView = getView(iterBacks, inflater, layoutParent, headerView, question, R.layout.date, Constants.SHORT_TEXT);
+                        break;
+                }
+                layoutParent.addView(questionView);
+                iterBacks++;
+            }
+        }
+    }
+
+    private static void generateManualTab(MainActivity mainActivity, Tab tab, TabConfiguration tabConfiguration, LayoutInflater inflater, GridLayout layoutParent) {
         View customView = inflater.inflate(tabConfiguration.getLayoutId(), layoutParent, false);
+        boolean getFromDatabase = false;
+        List<Integer> layoutsToUse = new ArrayList<Integer>();
 
         switch (tabConfiguration.getLayoutId()){
             case R.layout.scoretab:
@@ -371,19 +382,77 @@ public class Layout {
                 ListView list=(ListView) customView.findViewById(R.id.listView);
                 ArrayAdapter<ReportingResults> adapter = new ReportingResultsArrayAdapter(mainActivity, LayoutUtils.addReportingQuestions());
                 list.setAdapter(adapter);
-                layoutParent.addView(customView);
                 break;
             case R.layout.adherencetab:
-                layoutParent.addView(customView);
-                ManualAdapterAdherence manualAdapter = new ManualAdapterAdherence(mainActivity);
+                //ManualAdapterAdherence manualAdapter = new ManualAdapterAdherence(mainActivity);
+                getFromDatabase = true;
+                layoutsToUse.add(R.layout.pharmacy_register);
+                layoutsToUse.add(R.layout.pharmacy_register2);
                 break;
 
             case R.layout.iqatab:
                 layoutParent.addView(customView);
-                ManualAdapterIQA manualAdapterIQA = new ManualAdapterIQA(mainActivity);
+                //ManualAdapterIQA manualAdapterIQA = new ManualAdapterIQA(mainActivity);
                 break;
-
         }
+
+//        layoutParent.addView(customView); //FIXME: this command is failing but I think it shouldn't
+
+        // Some manual tabs, like adherence and IQA EQA get their questions from the database, here we manage how they are represented in the layout
+        // as long as they don't use the same convention.
+        // Standards:
+        //  * They use phantom questions to group some related questions and so have them referenced (a parent question only indicates their children are related)
+        //  * Questions are represented in tables. Header name will be set as a tag in the TableLayout (directly in the xml) component where its questions have to be represented
+        //  * Once found, we iterate on the parent questions (with children) and represent each of their questions in a different column
+        //  * Any score or thing that affects all the row questions, will be added to the parent question
+        //  * Another important thing to improve is that at this moment I'm creating a List called layoutsToUse that contains, ordered, the different layouts that must be used for each questions group
+        if (getFromDatabase){
+            List<Header> headers = tab.getHeaders();
+            for (int i=0; i<headers.size(); i++){
+                String headerName = headers.get(i).getName(); // this is also the ID
+                // This tables list must be a list of only one element if we have not failed in layout creation
+                List<View> tables = LayoutUtils.getChildrenByTag((ViewGroup)customView, null, headerName);
+                if(tables.size() == 1){
+                    TableLayout table = (TableLayout)tables.get(0);
+                    // Now we have the table element, we have to search for the parent questions
+                    List <Question> questions = headers.get(i).getQuestions(); // FIXME: improve this search to get only the parent questions
+                    for (Question question: questions){
+                        List<Question> children = question.getQuestionChildren();
+                        // If the question is a parent, do don't show it but use it to put the row layout
+                        if (question.hasChildren()){ // FIXME: when the search above is improve this check will be unnecessary
+                            View rowView = inflater.inflate(layoutsToUse.get(i), table, false);
+                            rowView.setBackgroundResource(backgrounds[iterBacks % backgrounds.length]);
+                            table.addView(rowView);
+                            Log.d(".Layout", "Row Question");
+
+                            for (Question questionChild: children) {
+                                switch (question.getAnswer().getOutput()) {
+                                    case Constants.DROPDOWN_LIST:
+                                        Log.d(".Layout", "Question dropdown");
+                                        break;
+                                    case Constants.INT:
+                                        Log.d(".Layout", "Question int");
+                                        break;
+                                    case Constants.LONG_TEXT:
+                                        Log.i(".Layout", "Question longtext");
+                                        break;
+                                    case Constants.SHORT_TEXT:
+                                        Log.i(".Layout", "Question shorttext");
+                                        break;
+                                    case Constants.SHORT_DATE:
+                                    case Constants.LONG_DATE:
+                                        Log.i(".Layout", "Question date");
+                                        break;
+                                }
+                            }
+                        }
+                    }
+                }else{
+                    Log.e(".Layout", "Error: Header name is suposed to be used to distinguish where to place associated questions in custom tabs, but when looking for header named " + headerName + " we've found " + tables.size() + " results");
+                }
+            }
+        }
+        iterBacks++;
 
         return;
     }

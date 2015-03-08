@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableRow xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@drawable/background_odd">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:id="@+id/number" />
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/patientIdContainer"
+        android:padding="5dip">
+
+        <EditText
+            android:layout_width="40dip"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:id="@+id/patientId"
+            android:background="@drawable/background_textfield" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/testResultContainer">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="@string/rdtPostive"
+            android:id="@+id/testResult"
+            android:padding="5dip" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/actContainer">
+
+        <Spinner
+            android:layout_width="100dip"
+            android:layout_height="wrap_content"
+            android:text="@string/yes"
+            android:id="@+id/act1" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/scoreContainer"
+        android:padding="5dip">
+
+        <EditText
+            android:layout_width="40dip"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:id="@+id/score"
+            android:background="@drawable/background_textfield" />
+    </LinearLayout>
+
+</TableRow>

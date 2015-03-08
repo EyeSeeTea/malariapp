@@ -110,8 +110,10 @@ public class LayoutUtils {
         return result;
     }
 
-    // Searchs for every children that contain the given tag. If tag equals null search for every view with the key. Otherwise, checks key equals the object tag
-    public static List<View> getChildrenByTag(ViewGroup root, int key, Object tag){
+    // Searchs for every children that contain the given tag.
+    // If tag equals null search for every view with the key. Otherwise, checks key equals the object tag
+    // If key equals null doesn't retrieve a key but it calls to getTag() assuming only one tag is set
+    public static List<View> getChildrenByTag(ViewGroup root, Integer key, Object tag){
         List<View> views = new ArrayList<View>();
         final int childCount = root.getChildCount();
         for (int i = 0; i < childCount; i++) {
@@ -120,7 +122,9 @@ public class LayoutUtils {
                 views.addAll(getChildrenByTag((ViewGroup) child, key, tag));
             }
 
-            Object tagObj = child.getTag(key);
+            Object tagObj = null;
+            if ( key == null) tagObj = child.getTag();
+            else tagObj = child.getTag(key);
             if (tagObj != null){
                 if (tag != null) {
                     if (tagObj.equals(tag)) {
