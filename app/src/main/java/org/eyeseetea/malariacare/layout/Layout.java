@@ -419,6 +419,7 @@ public class Layout {
                         List<Question> children = question.getQuestionChildren();
                         // If the question is a parent, do don't show it but use it to put the row layout
                         if (question.hasChildren()){ // FIXME: when the search above is improve this check will be unnecessary
+                            iterListeners = 0;
                             View rowView = inflater.inflate(layoutsToUse.get(i), table, false);
                             // Set the row number
                             TextView number = (TextView) rowView.findViewById(R.id.number);
@@ -438,10 +439,10 @@ public class Layout {
                                             ArrayAdapter adapter = new ArrayAdapter(mainActivity, android.R.layout.simple_spinner_item, optionList);
                                             Spinner dropdown = (Spinner) ((ViewGroup) ((ViewGroup) rowView).getChildAt(j + 1)).getChildAt(0); // We take the spinner
                                             dropdown.setAdapter(adapter);
-/*                                            if ("listener".equals(dropdown.getTag())) {
+                                            if ("listener".equals(dropdown.getTag())) {
                                                 dropdown.setOnItemSelectedListener(listeners.get(iterListeners));
                                                 iterListeners++;
-                                            }*/
+                                            }
                                             break;
                                         case Constants.INT:
                                             Log.d(".Layout", "Question int");
@@ -479,7 +480,7 @@ public class Layout {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 // This will occur when an item is selected in Adherence spinners
                 // For Adherence, when Test results is RDT* then ACT Prescribed=Yes means score=1, otherwise score=0
-                //              , when Test results is Micrsocopy* then ACT Prescribed=No means Score=1, otherwise score=0
+                //              , when Test results is Microscopy* then ACT Prescribed=No means Score=1, otherwise score=0
                 int score = 0;
                 TextView actPrescribed = (TextView)((ViewGroup)((ViewGroup)parent.getParent().getParent()).getChildAt(2)).getChildAt(0);
                 if("RDT Positive".equals(actPrescribed.getText()) || "RDT Negative".equals(actPrescribed.getText())){
