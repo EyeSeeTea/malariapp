@@ -23,6 +23,7 @@ import org.eyeseetea.malariacare.utils.PopulateDB;
 import org.eyeseetea.malariacare.utils.TabConfiguration;
 import org.eyeseetea.malariacare.utils.Utils;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -53,7 +54,11 @@ public class MainActivity extends ActionBarActivity {
         if (Tab.count(Tab.class, null, null)==0) {
             Log.i(".MainActivity", "Populating DB");
             AssetManager assetManager = getAssets();
-            PopulateDB.populateDB(assetManager);
+            try {
+                PopulateDB.populateDB(assetManager);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             Log.i(".MainActivity", "DB populated");
         }
 

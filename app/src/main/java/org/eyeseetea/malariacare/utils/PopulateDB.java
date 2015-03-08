@@ -2,6 +2,9 @@ package org.eyeseetea.malariacare.utils;
 
 import android.content.res.AssetManager;
 
+import com.opencsv.CSVReader;
+import com.opencsv.bean.ColumnPositionMappingStrategy;
+
 import org.eyeseetea.malariacare.data.Answer;
 import org.eyeseetea.malariacare.data.Header;
 import org.eyeseetea.malariacare.data.Option;
@@ -21,89 +24,97 @@ import java.util.List;
  */
 public class PopulateDB {
 
+    static List<Tab> tabList = new ArrayList<Tab>();
+    static List<Header> headerList = new ArrayList<Header>();
+    static List<Question> questionList = new ArrayList<Question>();
+    static List<Option> optionList = new ArrayList<Option>();
+    static List<Answer> answerList = new ArrayList<Answer>();
 
-    public static void populateDB(AssetManager assetManager){
-        List<Tab> tabList = new ArrayList<Tab>();
-        List<Header> headerList = new ArrayList<Header>();
-        List<Question> questionList = new ArrayList<Question>();
-        List<Option> optionList = new ArrayList<Option>();
-        List<Answer> answerList = new ArrayList<Answer>();
+    static List<Header> headerCustomList = new ArrayList<Header>();
+    static List<Question> questionCustomList = new ArrayList<Question>();
+
+    public static void populateDB(AssetManager assetManager) throws IOException {
 
 
-        List<String> tables2populate = Arrays.asList("Tabs.csv", "Headers.csv", "Answers.csv", "Options.csv", "Questions.csv");
-        InputStream is = null;
-        BufferedReader reader = null;
+        List<String> tables2populate = Arrays.asList("Tabs.csv", "Headers.csv", "Answers.csv", "Options.csv", "Questions.csv", "HeadersCustom.csv", "QuestionsCustom.csv");
 
+        CSVReader reader = null;
         for (String table : tables2populate) {
-            try {
-                is = assetManager.open(table);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            reader = new CSVReader(new InputStreamReader(assetManager.open(table)), ';', '\'');
 
-            reader = new BufferedReader(new InputStreamReader(is));
-            try {
-                String line;
-                while ((line = reader.readLine()) != null) {
-                    String[] RowData = line.split(";");
-                    switch (table) {
-                        case "Tabs.csv":
-                            Tab tab = new Tab();
-                            tab.setName(trimText(RowData[1]));
-                            tab.setOrder_tab(Integer.valueOf(RowData[2]));
-                            tabList.add(tab);
-                            break;
-                        case "Headers.csv":
-                            Header header = new Header();
-                            header.setShort_name(trimText(RowData[1]));
-                            header.setName(trimText(RowData[2]));
-                            header.setOrder_header(Integer.valueOf(RowData[3]));
-                            header.setMaster(Integer.valueOf(RowData[4]));
-                            header.setTab(tabList.get(Integer.valueOf(RowData[5])-1));
-                            headerList.add(header);
-                            break;
-                        case "Answers.csv":
-                            Answer answer = new Answer();
-                            answer.setName(RowData[1]);
-                            answer.setOutput(Integer.valueOf(RowData[2]));
-                            answerList.add(answer);
-                            break;
-                        case "Options.csv":
-                            Option option = new Option();
-                            option.setName(trimText(RowData[1]));
-                            option.setFactor(Float.valueOf(RowData[2]));
-                            option.setAnswer(answerList.get(Integer.valueOf(RowData[3]) - 1));
-                            optionList.add(option);
-                            break;
-                        case "Questions.csv":
-                            Question question = new Question();
-                            question.setCode(RowData[1]);
-                            question.setDe_name(RowData[2]);
-                            question.setShort_name(RowData[3]);
-                            question.setForm_name(trimText(RowData[4]));
-                            question.setUid(RowData[5]);
-                            question.setOrder_question(Integer.valueOf(RowData[6]));
-                            question.setNumerator_w(Float.valueOf(RowData[7]));
-                            question.setDenominator_w(Float.valueOf(RowData[8]));
-                            question.setHeader(headerList.get(Integer.valueOf(RowData[9])-1));
-                            question.setAnswer(answerList.get(Integer.valueOf(RowData[10])-1));
-                            if (RowData.length == 12){
-                                question.setQuestion(questionList.get(Integer.valueOf(RowData[11])-1));
-                            }
-                            questionList.add(question);
-                            break;
-                    }
-                }
-            } catch (IOException ex) {
-                // handle exception
-            } finally {
-                try {
-                    is.close();
-                } catch (IOException e) {
-                    // handle exception
+            String[] line;
+            while ((line = reader.readNext()) != null) {
+                switch (table) {
+                    case "Tabs.csv":
+                        Tab tab = new Tab();
+                        tab.setName(line[1]);
+                        tab.setOrder_tab(Integer.valueOf(line[2]));
+                        tabList.add(tab);
+                        break;
+                    case "Headers.csv":
+                        Header header = new Header();
+                        header.setShort_name(line[1]);
+                        header.setName(line[2]);
+                        header.setOrder_header(Integer.valueOf(line[3]));
+                        header.setMaster(Integer.valueOf(line[4]));
+                        header.setTab(tabList.get(Integer.valueOf(line[5])-1));
+                        headerList.add(header);
+                        break;
+                    case "Answers.csv":
+                        Answer answer = new Answer();
+                        answer.setName(line[1]);
+                        answer.setOutput(Integer.valueOf(line[2]));
+                        answerList.add(answer);
+                        break;
+                    case "Options.csv":
+                        Option option = new Option();
+                        option.setName(line[1]);
+                        option.setFactor(Float.valueOf(line[2]));
+                        option.setAnswer(answerList.get(Integer.valueOf(line[3]) - 1));
+                        optionList.add(option);
+                        break;
+                    case "Questions.csv":
+                        Question question = new Question();
+                        question.setCode(line[1]);
+                        question.setDe_name(line[2]);
+                        question.setShort_name(line[3]);
+                        question.setForm_name(line[4]);
+                        question.setUid(line[5]);
+                        question.setOrder_question(Integer.valueOf(line[6]));
+                        question.setNumerator_w(Float.valueOf(line[7]));
+                        question.setDenominator_w(Float.valueOf(line[8]));
+                        question.setHeader(headerList.get(Integer.valueOf(line[9])-1));
+                        question.setAnswer(answerList.get(Integer.valueOf(line[10])-1));
+                        if (!line[11].equals("")) question.setQuestion(questionList.get(Integer.valueOf(line[11])-1));
+                        questionList.add(question);
+                        break;
+                    case "HeadersCustom.csv":
+                        Header headerCustom = new Header();
+                        headerCustom.setShort_name(line[1]);
+                        headerCustom.setName(line[2]);
+                        headerCustom.setOrder_header(Integer.valueOf(line[3]));
+                        headerCustom.setMaster(Integer.valueOf(line[4]));
+                        headerCustom.setTab(tabList.get(Integer.valueOf(line[5])-1));
+                        headerCustomList.add(headerCustom);
+                        break;
+                    case "QuestionsCustom.csv":
+                        Question questionCustom = new Question();
+                        questionCustom.setCode(line[1]);
+                        questionCustom.setDe_name(line[2]);
+                        questionCustom.setShort_name(line[3]);
+                        questionCustom.setForm_name(line[4]);
+                        questionCustom.setUid(line[5]);
+                        questionCustom.setOrder_question(Integer.valueOf(line[6]));
+                        questionCustom.setNumerator_w(Float.valueOf(line[7]));
+                        questionCustom.setDenominator_w(Float.valueOf(line[8]));
+                        questionCustom.setHeader(headerCustomList.get(Integer.valueOf(line[9])-1));
+                        if (!line[10].equals("")) questionCustom.setAnswer(answerList.get(Integer.valueOf(line[10])-1));
+                        if (!line[11].equals("")) questionCustom.setQuestion(questionCustomList.get(Integer.valueOf(line[11])-1));
+                        questionCustomList.add(questionCustom);
+                        break;
                 }
             }
-
+            reader.close();
         }
 
         Tab.saveInTx(tabList);
@@ -112,9 +123,35 @@ public class PopulateDB {
         Option.saveInTx(optionList);
         Question.saveInTx(questionList);
 
+        Header.saveInTx(headerCustomList);
+        Header.saveInTx(questionCustomList);
+        //populateCustomTabs(assetManager);
+
     }
 
-    public static String trimText(String text){
-        return text.replaceAll("^'|'$", "");
+    private static void populateCustomTabs(AssetManager assetManager) throws IOException {
+
+        List<Header> headerCustomList = new ArrayList<Header>();
+        List<Question> questionCustomList = new ArrayList<Question>();
+
+        List<String> tables2populate = Arrays.asList("HeadersCustom.csv", "QuestionsCustom.csv");
+
+        CSVReader reader = null;
+        for (String table : tables2populate) {
+            reader = new CSVReader(new InputStreamReader(assetManager.open(table)));
+
+            String[] line;
+            while ((line = reader.readNext()) != null) {
+                switch (table) {
+
+                }
+            }
+            reader.close();
+        }
     }
+
+
+//    public static String trimText(String text){
+//        return text.replaceAll("^'|'$", "");
+//    }
 }

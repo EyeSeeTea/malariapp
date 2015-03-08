@@ -202,7 +202,7 @@
 202;'MAL-SUP-Profile-Q63';'MAL-SUP-Profile-Q63 District Health Officer';;'District Health Officer';;63;0.00;0.00;13;26;
 203;'MAL-SUP-Profile-Q64';'MAL-SUP-Profile-Q64 Telephone';;'Telephone';;64;0.00;0.00;13;26;
 204;'MAL-SUP-Profile-Q65';'MAL-SUP-Profile-Q65 E-mail';;'E-mail';;65;0.00;0.00;13;26;
-205;'MAL-SUP-Profile-Q66';'MAL-SUP-Profile-Q66 Hours of Operation – Weekdays';;'Hours of Operation – Weekdays';;66;0.00;0.00;13;26;
+205;'MAL-SUP-Profile-Q66';'MAL-SUP-Profile-Q66 Hours of Operation ï¿½ Weekdays';;'Hours of Operation ï¿½ Weekdays';;66;0.00;0.00;13;26;
 206;'MAL-SUP-Profile-Q67';'MAL-SUP-Profile-Q67 Hours of Operation - Weekend';;'Hours of Operation - Weekend';;67;0.00;0.00;13;26;
 207;'MAL-SUP-Feedback-Q1';'MAL-SUP-Feedback-Q1 Problem 1:';;'Problem 1:';;1;0.00;3.00;14;25;
 208;'MAL-SUP-Feedback-Q2';'MAL-SUP-Feedback-Q2 Was this problem addressed?';;'Was this problem addressed?';;2;3.00;0.00;14;3;
@@ -321,7 +321,7 @@
 321;'MAL-SUP-RDT-C1-Q14';'MAL-SUP-RDT-C1-Q14 Blood dispensed in correct well of RDT device';;'Blood dispensed in correct well of RDT device';;14;1.00;1.00;32;3;
 322;'MAL-SUP-RDT-C1-Q15';'MAL-SUP-RDT-C1-Q15 Buffer applied to correct well  of RDT device      ';;'Buffer applied to correct well  of RDT device      ';;15;1.00;1.00;33;3;
 323;'MAL-SUP-RDT-C1-Q16';'MAL-SUP-RDT-C1-Q16 Appropriate amount of buffer dispensed into well   ';;'Appropriate amount of buffer dispensed into well   ';;16;1.00;1.00;33;3;
-324;'MAL-SUP-RDT-C1-Q17';'MAL-SUP-RDT-C1-Q17 Did worker wait for correct amount of time according to manufacturer’s instruction)   ';;'Did worker wait for correct amount of time according to manufacturer’s instruction)   ';;17;2.00;2.00;33;3;
+324;'MAL-SUP-RDT-C1-Q17';'MAL-SUP-RDT-C1-Q17 Did worker wait for correct amount of time according to manufacturerï¿½s instruction)   ';;'Did worker wait for correct amount of time according to manufacturerï¿½s instruction)   ';;17;2.00;2.00;33;3;
 325;'MAL-SUP-RDT-C1-Q18';'MAL-SUP-RDT-C1-Q18 Was the result of the control line Positive?';;'Was the result of the control line Positive?';;18;0.00;0.00;33;3;
 326;'MAL-SUP-RDT-C1-Q19';'MAL-SUP-RDT-C1-Q19 Reads test result correctly (supervisor verifies results)';;'Reads test result correctly (supervisor verifies results)';;19;2.00;2.00;33;3;
 327;'MAL-SUP-RDT-C1-Q20';'MAL-SUP-RDT-C1-Q20 Records results correctly in register';;'Records results correctly in register';;20;2.00;2.00;33;3;
@@ -334,11 +334,11 @@
 334;'MAL-SUP-Microscopy-C1-Q5';'MAL-SUP-Microscopy-C1-Q5 Procedure explained to patient    ';;'Procedure explained to patient    ';;5;1.00;1.00;35;3;
 335;'MAL-SUP-Microscopy-C1-Q6';'MAL-SUP-Microscopy-C1-Q6 Gloves worn   ';;'Gloves worn   ';;6;1.00;1.00;35;3;
 336;'MAL-SUP-Microscopy-C1-Q7';'MAL-SUP-Microscopy-C1-Q7 Slide cleaned   ';;'Slide cleaned   ';;7;1.00;1.00;35;3;
-337;'MAL-SUP-Microscopy-C1-Q8';'MAL-SUP-Microscopy-C1-Q8 Slide labelled with date and patient’s name and/or number  ';;'Slide labelled with date and patient’s name and/or number  ';;8;1.00;1.00;35;3;
+337;'MAL-SUP-Microscopy-C1-Q8';'MAL-SUP-Microscopy-C1-Q8 Slide labelled with date and patientï¿½s name and/or number  ';;'Slide labelled with date and patientï¿½s name and/or number  ';;8;1.00;1.00;35;3;
 338;'MAL-SUP-Microscopy-C1-Q9';'MAL-SUP-Microscopy-C1-Q9 Was collection via finger prick?';;'Was collection via finger prick?';;9;0.00;0.00;36;3;
 339;'MAL-SUP-Microscopy-C1-Q12';'MAL-SUP-Microscopy-C1-Q12 Was collection via venipuncture?';;'Was collection via venipuncture?';;12;0.00;4.00;37;3;
 340;'MAL-SUP-Microscopy-C1-Q17';'MAL-SUP-Microscopy-C1-Q17 Blood from only one patient applied to each slide  ';;'Blood from only one patient applied to each slide  ';;17;1.00;1.00;38;3;
-341;'MAL-SUP-Microscopy-C1-Q18';'MAL-SUP-Microscopy-C1-Q18 Blood sample spread into 1-2 cm diameter circle – can read print placed under the slide (supervisor should verify to answer this question) ';;'Blood sample spread into 1-2 cm diameter circle – can read print placed under the slide (supervisor should verify to answer this question) ';;18;1.00;1.00;38;3;
+341;'MAL-SUP-Microscopy-C1-Q18';'MAL-SUP-Microscopy-C1-Q18 Blood sample spread into 1-2 cm diameter circle ï¿½ can read print placed under the slide (supervisor should verify to answer this question) ';;'Blood sample spread into 1-2 cm diameter circle ï¿½ can read print placed under the slide (supervisor should verify to answer this question) ';;18;1.00;1.00;38;3;
 342;'MAL-SUP-Microscopy-C1-Q19';'MAL-SUP-Microscopy-C1-Q19 Slide air dried before staining     ';;'Slide air dried before staining     ';;19;1.00;1.00;38;3;
 343;'MAL-SUP-Microscopy-C1-Q20';'MAL-SUP-Microscopy-C1-Q20 Blood from only one patient applied to each slide   ';;'Blood from only one patient applied to each slide   ';;20;1.00;1.00;39;3;
 344;'MAL-SUP-Microscopy-C1-Q21';'MAL-SUP-Microscopy-C1-Q21 Thin film spread out in feathered pattern (thins out towards end, dispersed and dome shaped in appearance)   ';;'Thin film spread out in feathered pattern (thins out towards end, dispersed and dome shaped in appearance)   ';;21;1.00;1.00;39;3;
@@ -458,7 +458,7 @@
 458;'MAL-SUP-RDT-C2-Q14';'MAL-SUP-RDT-C2-Q14 Blood dispensed in correct well of RDT device';;'Blood dispensed in correct well of RDT device';;14;1.00;1.00;73;3;
 459;'MAL-SUP-RDT-C2-Q15';'MAL-SUP-RDT-C2-Q15 Buffer applied to correct well  of RDT device      ';;'Buffer applied to correct well  of RDT device      ';;15;1.00;1.00;74;3;
 460;'MAL-SUP-RDT-C2-Q16';'MAL-SUP-RDT-C2-Q16 Appropriate amount of buffer dispensed into well   ';;'Appropriate amount of buffer dispensed into well   ';;16;1.00;1.00;74;3;
-461;'MAL-SUP-RDT-C2-Q17';'MAL-SUP-RDT-C2-Q17 Did worker wait for correct amount of time according to manufacturer’s instruction)   ';;'Did worker wait for correct amount of time according to manufacturer’s instruction)   ';;17;2.00;2.00;74;3;
+461;'MAL-SUP-RDT-C2-Q17';'MAL-SUP-RDT-C2-Q17 Did worker wait for correct amount of time according to manufacturerï¿½s instruction)   ';;'Did worker wait for correct amount of time according to manufacturerï¿½s instruction)   ';;17;2.00;2.00;74;3;
 462;'MAL-SUP-RDT-C2-Q18';'MAL-SUP-RDT-C2-Q18 Was the result of the control line Positive?';;'Was the result of the control line Positive?';;18;0.00;0.00;74;3;
 463;'MAL-SUP-RDT-C2-Q19';'MAL-SUP-RDT-C2-Q19 Reads test result correctly (supervisor verifies results)';;'Reads test result correctly (supervisor verifies results)';;19;2.00;2.00;74;3;
 464;'MAL-SUP-RDT-C2-Q20';'MAL-SUP-RDT-C2-Q20 Records results correctly in register';;'Records results correctly in register';;20;2.00;2.00;74;3;
@@ -471,11 +471,11 @@
 471;'MAL-SUP-Microscopy-C2-Q5';'MAL-SUP-Microscopy-C2-Q5 Procedure explained to patient    ';;'Procedure explained to patient    ';;5;1.00;1.00;76;3;
 472;'MAL-SUP-Microscopy-C2-Q6';'MAL-SUP-Microscopy-C2-Q6 Gloves worn   ';;'Gloves worn   ';;6;1.00;1.00;76;3;
 473;'MAL-SUP-Microscopy-C2-Q7';'MAL-SUP-Microscopy-C2-Q7 Slide cleaned   ';;'Slide cleaned   ';;7;1.00;1.00;76;3;
-474;'MAL-SUP-Microscopy-C2-Q8';'MAL-SUP-Microscopy-C2-Q8 Slide labelled with date and patient’s name and/or number  ';;'Slide labelled with date and patient’s name and/or number  ';;8;1.00;1.00;76;3;
+474;'MAL-SUP-Microscopy-C2-Q8';'MAL-SUP-Microscopy-C2-Q8 Slide labelled with date and patientï¿½s name and/or number  ';;'Slide labelled with date and patientï¿½s name and/or number  ';;8;1.00;1.00;76;3;
 475;'MAL-SUP-Microscopy-C2-Q9';'MAL-SUP-Microscopy-C2-Q9 Was collection via finger prick?';;'Was collection via finger prick?';;9;0.00;0.00;77;3;
 476;'MAL-SUP-Microscopy-C2-Q12';'MAL-SUP-Microscopy-C2-Q12 Was collection via venipuncture?';;'Was collection via venipuncture?';;12;0.00;4.00;78;3;
 477;'MAL-SUP-Microscopy-C2-Q17';'MAL-SUP-Microscopy-C2-Q17 Blood from only one patient applied to each slide  ';;'Blood from only one patient applied to each slide  ';;17;1.00;1.00;79;3;
-478;'MAL-SUP-Microscopy-C2-Q18';'MAL-SUP-Microscopy-C2-Q18 Blood sample spread into 1-2 cm diameter circle – can read print placed under the slide (supervisor should verify to answer this question) ';;'Blood sample spread into 1-2 cm diameter circle – can read print placed under the slide (supervisor should verify to answer this question) ';;18;1.00;1.00;79;3;
+478;'MAL-SUP-Microscopy-C2-Q18';'MAL-SUP-Microscopy-C2-Q18 Blood sample spread into 1-2 cm diameter circle ï¿½ can read print placed under the slide (supervisor should verify to answer this question) ';;'Blood sample spread into 1-2 cm diameter circle ï¿½ can read print placed under the slide (supervisor should verify to answer this question) ';;18;1.00;1.00;79;3;
 479;'MAL-SUP-Microscopy-C2-Q19';'MAL-SUP-Microscopy-C2-Q19 Slide air dried before staining     ';;'Slide air dried before staining     ';;19;1.00;1.00;79;3;
 480;'MAL-SUP-Microscopy-C2-Q20';'MAL-SUP-Microscopy-C2-Q20 Blood from only one patient applied to each slide   ';;'Blood from only one patient applied to each slide   ';;20;1.00;1.00;80;3;
 481;'MAL-SUP-Microscopy-C2-Q21';'MAL-SUP-Microscopy-C2-Q21 Thin film spread out in feathered pattern (thins out towards end, dispersed and dome shaped in appearance)   ';;'Thin film spread out in feathered pattern (thins out towards end, dispersed and dome shaped in appearance)   ';;21;1.00;1.00;80;3;
@@ -595,7 +595,7 @@
 595;'MAL-SUP-RDT-C3-Q14';'MAL-SUP-RDT-C3-Q14 Blood dispensed in correct well of RDT device';;'Blood dispensed in correct well of RDT device';;14;1.00;1.00;114;3;
 596;'MAL-SUP-RDT-C3-Q15';'MAL-SUP-RDT-C3-Q15 Buffer applied to correct well  of RDT device      ';;'Buffer applied to correct well  of RDT device      ';;15;1.00;1.00;115;3;
 597;'MAL-SUP-RDT-C3-Q16';'MAL-SUP-RDT-C3-Q16 Appropriate amount of buffer dispensed into well   ';;'Appropriate amount of buffer dispensed into well   ';;16;1.00;1.00;115;3;
-598;'MAL-SUP-RDT-C3-Q17';'MAL-SUP-RDT-C3-Q17 Did worker wait for correct amount of time according to manufacturer’s instruction)   ';;'Did worker wait for correct amount of time according to manufacturer’s instruction)   ';;17;2.00;2.00;115;3;
+598;'MAL-SUP-RDT-C3-Q17';'MAL-SUP-RDT-C3-Q17 Did worker wait for correct amount of time according to manufacturerï¿½s instruction)   ';;'Did worker wait for correct amount of time according to manufacturerï¿½s instruction)   ';;17;2.00;2.00;115;3;
 599;'MAL-SUP-RDT-C3-Q18';'MAL-SUP-RDT-C3-Q18 Was the result of the control line Positive?';;'Was the result of the control line Positive?';;18;0.00;0.00;115;3;
 600;'MAL-SUP-RDT-C3-Q19';'MAL-SUP-RDT-C3-Q19 Reads test result correctly (supervisor verifies results)';;'Reads test result correctly (supervisor verifies results)';;19;2.00;2.00;115;3;
 601;'MAL-SUP-RDT-C3-Q20';'MAL-SUP-RDT-C3-Q20 Records results correctly in register';;'Records results correctly in register';;20;2.00;2.00;115;3;
@@ -608,11 +608,11 @@
 608;'MAL-SUP-Microscopy-C3-Q5';'MAL-SUP-Microscopy-C3-Q5 Procedure explained to patient    ';;'Procedure explained to patient    ';;5;1.00;1.00;117;3;
 609;'MAL-SUP-Microscopy-C3-Q6';'MAL-SUP-Microscopy-C3-Q6 Gloves worn   ';;'Gloves worn   ';;6;1.00;1.00;117;3;
 610;'MAL-SUP-Microscopy-C3-Q7';'MAL-SUP-Microscopy-C3-Q7 Slide cleaned   ';;'Slide cleaned   ';;7;1.00;1.00;117;3;
-611;'MAL-SUP-Microscopy-C3-Q8';'MAL-SUP-Microscopy-C3-Q8 Slide labelled with date and patient’s name and/or number  ';;'Slide labelled with date and patient’s name and/or number  ';;8;1.00;1.00;117;3;
+611;'MAL-SUP-Microscopy-C3-Q8';'MAL-SUP-Microscopy-C3-Q8 Slide labelled with date and patientï¿½s name and/or number  ';;'Slide labelled with date and patientï¿½s name and/or number  ';;8;1.00;1.00;117;3;
 612;'MAL-SUP-Microscopy-C3-Q9';'MAL-SUP-Microscopy-C3-Q9 Was collection via finger prick?';;'Was collection via finger prick?';;9;0.00;0.00;118;3;
 613;'MAL-SUP-Microscopy-C3-Q12';'MAL-SUP-Microscopy-C3-Q12 Was collection via venipuncture?';;'Was collection via venipuncture?';;12;0.00;4.00;119;3;
 614;'MAL-SUP-Microscopy-C3-Q17';'MAL-SUP-Microscopy-C3-Q17 Blood from only one patient applied to each slide  ';;'Blood from only one patient applied to each slide  ';;17;1.00;1.00;120;3;
-615;'MAL-SUP-Microscopy-C3-Q18';'MAL-SUP-Microscopy-C3-Q18 Blood sample spread into 1-2 cm diameter circle – can read print placed under the slide (supervisor should verify to answer this question) ';;'Blood sample spread into 1-2 cm diameter circle – can read print placed under the slide (supervisor should verify to answer this question) ';;18;1.00;1.00;120;3;
+615;'MAL-SUP-Microscopy-C3-Q18';'MAL-SUP-Microscopy-C3-Q18 Blood sample spread into 1-2 cm diameter circle ï¿½ can read print placed under the slide (supervisor should verify to answer this question) ';;'Blood sample spread into 1-2 cm diameter circle ï¿½ can read print placed under the slide (supervisor should verify to answer this question) ';;18;1.00;1.00;120;3;
 616;'MAL-SUP-Microscopy-C3-Q19';'MAL-SUP-Microscopy-C3-Q19 Slide air dried before staining     ';;'Slide air dried before staining     ';;19;1.00;1.00;120;3;
 617;'MAL-SUP-Microscopy-C3-Q20';'MAL-SUP-Microscopy-C3-Q20 Blood from only one patient applied to each slide   ';;'Blood from only one patient applied to each slide   ';;20;1.00;1.00;121;3;
 618;'MAL-SUP-Microscopy-C3-Q21';'MAL-SUP-Microscopy-C3-Q21 Thin film spread out in feathered pattern (thins out towards end, dispersed and dome shaped in appearance)   ';;'Thin film spread out in feathered pattern (thins out towards end, dispersed and dome shaped in appearance)   ';;21;1.00;1.00;121;3;
@@ -690,7 +690,7 @@
 690;'MAL-SUP-General-C1-Q103';'MAL-SUP-General-C1-Q103 Was other pre-referral medication given?';;'Was other pre-referral medication given?';;103;0.00;0.00;28;3;302
 691;'MAL-SUP-Microscopy-C1-Q10';'MAL-SUP-Microscopy-C1-Q10 Finger cleaned with alcohol and allowed to dry  ';;'Finger cleaned with alcohol and allowed to dry  ';;10;0.00;0.00;36;3;338
 692;'MAL-SUP-Microscopy-C1-Q11';'MAL-SUP-Microscopy-C1-Q11 Finger pricked, first drop of blood wiped off, and subsequent drop placed on slide without touching finger   ';;'Finger pricked, first drop of blood wiped off, and subsequent drop placed on slide without touching finger   ';;11;0.00;0.00;36;3;338
-693;'MAL-SUP-Microscopy-C1-Q13';'MAL-SUP-Microscopy-C1-Q13 Label EDTA collection tube with date and patient’s name and/or number';;'Label EDTA collection tube with date and patient’s name and/or number';;13;1.00;0.00;37;3;339
+693;'MAL-SUP-Microscopy-C1-Q13';'MAL-SUP-Microscopy-C1-Q13 Label EDTA collection tube with date and patientï¿½s name and/or number';;'Label EDTA collection tube with date and patientï¿½s name and/or number';;13;1.00;0.00;37;3;339
 694;'MAL-SUP-Microscopy-C1-Q14';'MAL-SUP-Microscopy-C1-Q14 Puncture site cleaned with alcohol and allowed to dry  ';;'Puncture site cleaned with alcohol and allowed to dry  ';;14;1.00;0.00;37;3;339
 695;'MAL-SUP-Microscopy-C1-Q15';'MAL-SUP-Microscopy-C1-Q15 Sterile needle and syringe or vacutainer assembled';;'Sterile needle and syringe or vacutainer assembled';;15;1.00;0.00;37;3;339
 696;'MAL-SUP-Microscopy-C1-Q16';'MAL-SUP-Microscopy-C1-Q16 Venous blood sample successfully collected and gently mixed  ';;'Venous blood sample successfully collected and gently mixed  ';;16;1.00;0.00;37;3;339
@@ -755,7 +755,7 @@
 755;'MAL-SUP-General-C2-Q103';'MAL-SUP-General-C2-Q103 Was other pre-referral medication given?';;'Was other pre-referral medication given?';;103;0.00;0.00;69;3;439
 756;'MAL-SUP-Microscopy-C2-Q10';'MAL-SUP-Microscopy-C2-Q10 Finger cleaned with alcohol and allowed to dry  ';;'Finger cleaned with alcohol and allowed to dry  ';;10;0.00;0.00;77;3;475
 757;'MAL-SUP-Microscopy-C2-Q11';'MAL-SUP-Microscopy-C2-Q11 Finger pricked, first drop of blood wiped off, and subsequent drop placed on slide without touching finger   ';;'Finger pricked, first drop of blood wiped off, and subsequent drop placed on slide without touching finger   ';;11;0.00;0.00;77;3;475
-758;'MAL-SUP-Microscopy-C2-Q13';'MAL-SUP-Microscopy-C2-Q13 Label EDTA collection tube with date and patient’s name and/or number';;'Label EDTA collection tube with date and patient’s name and/or number';;13;1.00;0.00;78;3;476
+758;'MAL-SUP-Microscopy-C2-Q13';'MAL-SUP-Microscopy-C2-Q13 Label EDTA collection tube with date and patientï¿½s name and/or number';;'Label EDTA collection tube with date and patientï¿½s name and/or number';;13;1.00;0.00;78;3;476
 759;'MAL-SUP-Microscopy-C2-Q14';'MAL-SUP-Microscopy-C2-Q14 Puncture site cleaned with alcohol and allowed to dry  ';;'Puncture site cleaned with alcohol and allowed to dry  ';;14;1.00;0.00;78;3;476
 760;'MAL-SUP-Microscopy-C2-Q15';'MAL-SUP-Microscopy-C2-Q15 Sterile needle and syringe or vacutainer assembled';;'Sterile needle and syringe or vacutainer assembled';;15;1.00;0.00;78;3;476
 761;'MAL-SUP-Microscopy-C2-Q16';'MAL-SUP-Microscopy-C2-Q16 Venous blood sample successfully collected and gently mixed  ';;'Venous blood sample successfully collected and gently mixed  ';;16;1.00;0.00;78;3;476
@@ -820,7 +820,7 @@
 820;'MAL-SUP-General-C3-Q103';'MAL-SUP-General-C3-Q103 Was other pre-referral medication given?';;'Was other pre-referral medication given?';;103;0.00;0.00;110;3;576
 821;'MAL-SUP-Microscopy-C3-Q10';'MAL-SUP-Microscopy-C3-Q10 Finger cleaned with alcohol and allowed to dry  ';;'Finger cleaned with alcohol and allowed to dry  ';;10;0.00;0.00;118;3;612
 822;'MAL-SUP-Microscopy-C3-Q11';'MAL-SUP-Microscopy-C3-Q11 Finger pricked, first drop of blood wiped off, and subsequent drop placed on slide without touching finger   ';;'Finger pricked, first drop of blood wiped off, and subsequent drop placed on slide without touching finger   ';;11;0.00;0.00;118;3;612
-823;'MAL-SUP-Microscopy-C3-Q13';'MAL-SUP-Microscopy-C3-Q13 Label EDTA collection tube with date and patient’s name and/or number';;'Label EDTA collection tube with date and patient’s name and/or number';;13;1.00;0.00;119;3;613
+823;'MAL-SUP-Microscopy-C3-Q13';'MAL-SUP-Microscopy-C3-Q13 Label EDTA collection tube with date and patientï¿½s name and/or number';;'Label EDTA collection tube with date and patientï¿½s name and/or number';;13;1.00;0.00;119;3;613
 824;'MAL-SUP-Microscopy-C3-Q14';'MAL-SUP-Microscopy-C3-Q14 Puncture site cleaned with alcohol and allowed to dry  ';;'Puncture site cleaned with alcohol and allowed to dry  ';;14;1.00;0.00;119;3;613
 825;'MAL-SUP-Microscopy-C3-Q15';'MAL-SUP-Microscopy-C3-Q15 Sterile needle and syringe or vacutainer assembled';;'Sterile needle and syringe or vacutainer assembled';;15;1.00;0.00;119;3;613
 826;'MAL-SUP-Microscopy-C3-Q16';'MAL-SUP-Microscopy-C3-Q16 Venous blood sample successfully collected and gently mixed  ';;'Venous blood sample successfully collected and gently mixed  ';;16;1.00;0.00;119;3;613
@@ -856,13 +856,3 @@
 856;'MAL-SUP-Microscopy-C3-Q54';'MAL-SUP-Microscopy-C3-Q54 Infectious waste disposed of in appropriate waste containers';;'Infectious waste disposed of in appropriate waste containers';;54;1.00;0.00;132;3;621
 857;'MAL-SUP-Microscopy-C3-Q55';'MAL-SUP-Microscopy-C3-Q55 Liquid waste appropriately washed off/disinfected';;'Liquid waste appropriately washed off/disinfected';;55;1.00;0.00;132;3;621
 858;'MAL-SUP-Microscopy-C3-Q58';'MAL-SUP-Microscopy-C3-Q58 Was the examination done properly, including > 100 high power fields before declaring slides negative (takes about 10 minutes)?';;'Was the examination done properly, including > 100 high power fields before declaring slides negative (takes about 10 minutes)?';;58;1.00;0.00;135;3;623
-859;'PQ-1';'PQ-1 Phantom Question 1';;'Phantom Question 1';;1;0.00;0.00;162;24;
-860;'PID';'PID';;'Patient ID';;2;0.00;0.00;162;24;859
-861;'GD';'GD';;'Gender';;3;0.00;0.00;162;10;859
-862;'AGE';'AGE';;'Age';;4;0.00;0.00;162;24;859
-863;'TR';'TR';;'Test Results';;5;0.00;0.00;162;12;859
-864;'PQ-2';'PQ-2 Phantom Question 2';;'Phantom Question 2';;1;0.00;0.00;163;24;
-865;'PID';'PID';;'Patient ID';;2;0.00;0.00;163;24;864
-866;'TR';'TR';;'Test Results';;3;0.00;0.00;163;15;864
-867;'ACTP';'ACTP';;'ACT Prescribed?';;4;0.00;0.00;163;3;864
-868;'SCR';'SCR';;'Score';;5;0.00;0.00;163;24;864
