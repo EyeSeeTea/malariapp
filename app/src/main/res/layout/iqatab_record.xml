@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableRow xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:id="@+id/number" />
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/testResultsContainer" >
+
+        <Spinner
+            android:layout_width="100dip"
+            android:layout_height="wrap_content"
+            android:id="@+id/testResults" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:id="@+id/parasitesContainer"
+        android:padding="5dip">
+
+        <EditText
+                android:layout_width="40dip"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:id="@+id/parasites"
+                android:background="@drawable/background_textfield" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:id="@+id/speciesContainer"
+        android:padding="5dip">
+
+        <EditText
+                android:layout_width="40dip"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:id="@+id/species"
+                android:background="@drawable/background_textfield" />
+    </LinearLayout>
+
+</TableRow>

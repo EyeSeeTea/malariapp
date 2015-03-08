@@ -1,858 +1,159 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:orientation="vertical" android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+
 
     <GridLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:columnCount="1"
         android:rowCount="2"
-        android:id="@+id/IQASupervisor">
+        android:id="@+id/supervisor">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="@string/supervisor"
-        android:id="@+id/registerTitle"
-        android:textStyle="bold" />
-
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="@string/supervisor"
+            android:id="@+id/supervisorTitle"
+            android:textStyle="bold"
+            android:paddingBottom="20dip" />
 
         <TableLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/supervisorTable"
+            android:tag="IQEQA1"
             android:layout_gravity="center">
 
             <TableRow
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/registerHeader"
+                android:id="@+id/supervisorHeader"
                 android:layout_gravity="center"
                 android:background="@drawable/background_odd">
 
-            <Space
-                android:layout_width="20px"
-                android:layout_height="20px" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="@string/testresult"
-                android:id="@+id/textView7"
-                android:background="@drawable/background_header"
-                android:padding="5dip"
-                android:textColor="#ffffff"
-                android:gravity="center" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="@string/parasites"
-                android:id="@+id/textView15"
-                android:background="@drawable/background_header"
-                android:padding="5dip"
-                android:textColor="#ffffff"
-                android:lines="2"
-                android:gravity="center" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="@string/species"
-                android:id="@+id/textView16"
-                android:background="@drawable/background_header"
-                android:padding="5dip"
-                android:textColor="#ffffff"
-                android:lines="2"
-                android:gravity="center" />
-
-        </TableRow>
-
-            <TableRow
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/background_even">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:text="@string/one"
-                android:id="@+id/N1" />
-
-
-            <Spinner
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/testresult1" />
-
-
-            <EditText
-                android:layout_width="40dip"
-                android:layout_height="wrap_content"
-                android:inputType="number"
-                android:id="@+id/editText43"
-                android:background="@drawable/background_textfield" />
-
-
-            <EditText
-                android:layout_width="40dip"
-                android:layout_height="wrap_content"
-                android:inputType="number"
-                android:id="@+id/editText44"
-                android:background="@drawable/background_textfield" />
-
-            </TableRow>
-
-            <TableRow
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/background_even">
+                <Space
+                    android:layout_width="20dip"
+                    android:layout_height="40dip" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:text="@string/two"
-                    android:id="@+id/N2" />
-
-
-                <Spinner
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/testresult2" />
-
-
-                <EditText
-                    android:layout_width="40dip"
-                    android:layout_height="wrap_content"
-                    android:inputType="number"
-                    android:id="@+id/editText45"
-                    android:background="@drawable/background_textfield" />
-
-
-                <EditText
-                    android:layout_width="40dip"
-                    android:layout_height="wrap_content"
-                    android:inputType="number"
-                    android:id="@+id/editText46"
-                    android:background="@drawable/background_textfield" />
-
-            </TableRow>
-
-            <TableRow
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/background_even">
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="@string/testResultsHeader"
+                    android:id="@+id/supervisorResults"
+                    android:background="@drawable/background_header"
+                    android:textColor="#ffffff"
+                    android:lines="2"
+                    android:gravity="center"
+                    android:padding="5dip" />
 
                 <TextView
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:text="@string/three"
-                    android:id="@+id/N3" />
-
-
-                <Spinner
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/testresult3" />
-
-
-                <EditText
-                    android:layout_width="40dip"
-                    android:layout_height="wrap_content"
-                    android:inputType="number"
-                    android:id="@+id/editText53"
-                    android:background="@drawable/background_textfield" />
-
-
-                <EditText
-                    android:layout_width="40dip"
-                    android:layout_height="wrap_content"
-                    android:inputType="number"
-                    android:id="@+id/editText54"
-                    android:background="@drawable/background_textfield" />
-
-            </TableRow>
-
-            <TableRow
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/background_even">
+                    android:layout_height="fill_parent"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="@string/parasites"
+                    android:id="@+id/supervisorParasites"
+                    android:background="@drawable/background_header"
+                    android:textColor="#ffffff"
+                    android:gravity="center"
+                    android:lines="2"
+                    android:padding="5dip" />
 
                 <TextView
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:text="@string/four"
-                    android:id="@+id/N4" />
-
-
-                <Spinner
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/testresult4" />
-
-
-                <EditText
-                    android:layout_width="40dip"
-                    android:layout_height="wrap_content"
-                    android:inputType="number"
-                    android:id="@+id/editText63"
-                    android:background="@drawable/background_textfield" />
-
-
-                <EditText
-                    android:layout_width="40dip"
-                    android:layout_height="wrap_content"
-                    android:inputType="number"
-                    android:id="@+id/editText64"
-                    android:background="@drawable/background_textfield" />
-
+                    android:layout_height="fill_parent"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="@string/species"
+                    android:id="@+id/supervisorSpecies"
+                    android:background="@drawable/background_header"
+                    android:textColor="#ffffff"
+                    android:lines="2"
+                    android:gravity="center"
+                    android:padding="5dip" />
 
             </TableRow>
-
-            <TableRow
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/background_even">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:text="@string/five"
-                    android:id="@+id/N5" />
-
-
-                <Spinner
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/testresult5" />
-
-
-                <EditText
-                    android:layout_width="40dip"
-                    android:layout_height="wrap_content"
-                    android:inputType="number"
-                    android:id="@+id/editText73"
-                    android:background="@drawable/background_textfield" />
-
-
-                <EditText
-                    android:layout_width="40dip"
-                    android:layout_height="wrap_content"
-                    android:inputType="number"
-                    android:id="@+id/editText74"
-                    android:background="@drawable/background_textfield" />
-
-            </TableRow>
-
-            <TableRow
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/background_even">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:text="@string/six"
-                    android:id="@+id/N6" />
-
-
-                <Spinner
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/testresult6" />
-
-
-                <EditText
-                    android:layout_width="40dip"
-                    android:layout_height="wrap_content"
-                    android:inputType="number"
-                    android:id="@+id/editText83"
-                    android:background="@drawable/background_textfield" />
-
-
-                <EditText
-                    android:layout_width="40dip"
-                    android:layout_height="wrap_content"
-                    android:inputType="number"
-                    android:id="@+id/editText84"
-                    android:background="@drawable/background_textfield" />
-
-            </TableRow>
-
-            <TableRow
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/background_even">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:text="@string/seven"
-                    android:id="@+id/N7" />
-
-
-                <Spinner
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/testresult7" />
-
-
-                <EditText
-                    android:layout_width="40dip"
-                    android:layout_height="wrap_content"
-                    android:inputType="number"
-                    android:id="@+id/editText93"
-                    android:background="@drawable/background_textfield" />
-
-
-                <EditText
-                    android:layout_width="40dip"
-                    android:layout_height="wrap_content"
-                    android:inputType="number"
-                    android:id="@+id/editText94"
-                    android:background="@drawable/background_textfield" />
-
-            </TableRow>
-
-            <TableRow
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/background_even">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:text="@string/eight"
-                    android:id="@+id/N8" />
-
-
-                <Spinner
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/testresult8" />
-
-
-                <EditText
-                    android:layout_width="40dip"
-                    android:layout_height="wrap_content"
-                    android:inputType="number"
-                    android:id="@+id/editText103"
-                    android:background="@drawable/background_textfield" />
-
-
-                <EditText
-                    android:layout_width="40dip"
-                    android:layout_height="wrap_content"
-                    android:inputType="number"
-                    android:id="@+id/editText104"
-                    android:background="@drawable/background_textfield" />
-
-            </TableRow>
-
-            <TableRow
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/background_even">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:text="@string/nine"
-                    android:id="@+id/N9" />
-
-
-                <Spinner
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/testresult9" />
-
-
-                <EditText
-                    android:layout_width="40dip"
-                    android:layout_height="wrap_content"
-                    android:inputType="number"
-                    android:id="@+id/editText113"
-                    android:background="@drawable/background_textfield" />
-
-
-                <EditText
-                    android:layout_width="40dip"
-                    android:layout_height="wrap_content"
-                    android:inputType="number"
-                    android:id="@+id/editText114"
-                    android:background="@drawable/background_textfield" />
-
-            </TableRow>
-
-            <TableRow
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/background_even">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:text="@string/ten"
-                    android:id="@+id/N10" />
-
-                <Spinner
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/testresult10" />
-
-
-                <EditText
-                    android:layout_width="40dip"
-                    android:layout_height="wrap_content"
-                    android:inputType="number"
-                    android:id="@+id/editText123"
-                    android:background="@drawable/background_textfield" />
-
-
-                <EditText
-                    android:layout_width="40dip"
-                    android:layout_height="wrap_content"
-                    android:inputType="number"
-                    android:id="@+id/editText124"
-                    android:background="@drawable/background_textfield" />
-
-            </TableRow>
-
-
-
-
         </TableLayout>
-
     </GridLayout>
 
-
     <Space
-        android:layout_width="20px"
-        android:layout_height="50px" />
-
+        android:layout_width="20dip"
+        android:layout_height="40dip" />
 
     <GridLayout
         android:layout_width="wrap_content"
-        android:layout_height="fill_parent"
+        android:layout_height="wrap_content"
         android:columnCount="1"
-        android:rowCount="2"
-        android:id="@+id/IQALab">
+        android:rowCount="1"
+        android:id="@+id/labStaff"
+        android:longClickable="false">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="@string/labstaff"
-            android:id="@+id/registerTitle2"
-            android:textStyle="bold" />
-
+            android:id="@+id/labStaffTitle"
+            android:textStyle="bold"
+            android:paddingBottom="20dip" />
 
         <TableLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/labTable"
-            android:layout_gravity="center">
+            android:id="@+id/labStaffTable"
+            android:tag="IQEQA2"
+            android:layout_gravity="center" >
 
             <TableRow
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/labHeader"
+                android:id="@+id/labStaffHeader"
                 android:layout_gravity="center"
-                android:background="@drawable/background_odd">
+                android:background="@drawable/background_odd" >
 
                 <Space
-                    android:layout_width="20px"
-                    android:layout_height="20px" />
+                    android:layout_width="20dip"
+                    android:layout_height="40dip" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:text="@string/testresult"
-                    android:id="@+id/textView10"
+                    android:text="@string/testResultsHeader"
+                    android:id="@+id/labStaffResults"
                     android:background="@drawable/background_header"
-                    android:padding="5dip"
                     android:textColor="#ffffff"
-                    android:gravity="center" />
+                    android:lines="2"
+                    android:gravity="center"
+                    android:padding="5dip" />
 
                 <TextView
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="fill_parent"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:text="@string/parasites"
-                    android:id="@+id/textView11"
+                    android:id="@+id/labStaffParasites"
                     android:background="@drawable/background_header"
-                    android:padding="5dip"
                     android:textColor="#ffffff"
+                    android:gravity="center"
                     android:lines="2"
-                    android:gravity="center" />
+                    android:padding="5dip" />
 
                 <TextView
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="fill_parent"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:text="@string/species"
-                    android:id="@+id/textView12"
+                    android:id="@+id/labStaffSpecies"
                     android:background="@drawable/background_header"
-                    android:padding="5dip"
                     android:textColor="#ffffff"
                     android:lines="2"
-                    android:gravity="center" />
-
+                    android:gravity="center"
+                    android:padding="5dip" />
             </TableRow>
-
-            <TableRow
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/background_even">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:text="@string/one"
-                    android:id="@+id/N11" />
-
-                <Spinner
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/testresult11" />
-
-                <EditText
-                    android:layout_width="40dip"
-                    android:layout_height="wrap_content"
-                    android:inputType="number"
-                    android:id="@+id/editText203"
-                    android:background="@drawable/background_textfield" />
-
-                <EditText
-                    android:layout_width="40dip"
-                    android:layout_height="wrap_content"
-                    android:inputType="number"
-                    android:id="@+id/editText204"
-                    android:background="@drawable/background_textfield" />
-
-            </TableRow>
-
-            <TableRow
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/background_even">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:text="@string/two"
-                    android:id="@+id/N12" />
-
-                <Spinner
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/testresult12" />
-
-                <EditText
-                    android:layout_width="40dip"
-                    android:layout_height="wrap_content"
-                    android:inputType="number"
-                    android:id="@+id/editText215"
-                    android:background="@drawable/background_textfield" />
-
-                <EditText
-                    android:layout_width="40dip"
-                    android:layout_height="wrap_content"
-                    android:inputType="number"
-                    android:id="@+id/editText226"
-                    android:background="@drawable/background_textfield" />
-
-            </TableRow>
-
-            <TableRow
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/background_even">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:text="@string/three"
-                    android:id="@+id/N13" />
-
-                <Spinner
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/testresult13" />
-
-                <EditText
-                    android:layout_width="40dip"
-                    android:layout_height="wrap_content"
-                    android:inputType="number"
-                    android:id="@+id/editText233"
-                    android:background="@drawable/background_textfield" />
-
-                <EditText
-                    android:layout_width="40dip"
-                    android:layout_height="wrap_content"
-                    android:inputType="number"
-                    android:id="@+id/editText234"
-                    android:background="@drawable/background_textfield" />
-
-            </TableRow>
-
-            <TableRow
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/background_even">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:text="@string/four"
-                    android:id="@+id/N14" />
-
-                <Spinner
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/testresult14" />
-
-                <EditText
-                    android:layout_width="40dip"
-                    android:layout_height="wrap_content"
-                    android:inputType="number"
-                    android:id="@+id/editText243"
-                    android:background="@drawable/background_textfield" />
-
-                <EditText
-                    android:layout_width="40dip"
-                    android:layout_height="wrap_content"
-                    android:inputType="number"
-                    android:id="@+id/editText244"
-                    android:background="@drawable/background_textfield" />
-
-            </TableRow>
-
-            <TableRow
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/background_even">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:text="@string/five"
-                    android:id="@+id/N15" />
-
-                <Spinner
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/testresult15" />
-
-                <EditText
-                    android:layout_width="40dip"
-                    android:layout_height="wrap_content"
-                    android:inputType="number"
-                    android:id="@+id/editText253"
-                    android:background="@drawable/background_textfield" />
-
-                <EditText
-                    android:layout_width="40dip"
-                    android:layout_height="wrap_content"
-                    android:inputType="number"
-                    android:id="@+id/editText254"
-                    android:background="@drawable/background_textfield" />
-
-            </TableRow>
-
-            <TableRow
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/background_even">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:text="@string/six"
-                    android:id="@+id/N16" />
-
-                <Spinner
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/testresult16" />
-
-                <EditText
-                    android:layout_width="40dip"
-                    android:layout_height="wrap_content"
-                    android:inputType="number"
-                    android:id="@+id/editText263"
-                    android:background="@drawable/background_textfield" />
-
-                <EditText
-                    android:layout_width="40dip"
-                    android:layout_height="wrap_content"
-                    android:inputType="number"
-                    android:id="@+id/editText264"
-                    android:background="@drawable/background_textfield" />
-
-            </TableRow>
-
-            <TableRow
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/background_even">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:text="@string/seven"
-                    android:id="@+id/N17" />
-
-                <Spinner
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/testresult17" />
-
-                <EditText
-                    android:layout_width="40dip"
-                    android:layout_height="wrap_content"
-                    android:inputType="number"
-                    android:id="@+id/editText273"
-                    android:background="@drawable/background_textfield" />
-
-                <EditText
-                    android:layout_width="40dip"
-                    android:layout_height="wrap_content"
-                    android:inputType="number"
-                    android:id="@+id/editText274"
-                    android:background="@drawable/background_textfield" />
-
-            </TableRow>
-
-            <TableRow
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/background_even">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:text="@string/eight"
-                    android:id="@+id/N18" />
-
-                <Spinner
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/testresult18" />
-
-                <EditText
-                    android:layout_width="40dip"
-                    android:layout_height="wrap_content"
-                    android:inputType="number"
-                    android:id="@+id/editText283"
-                    android:background="@drawable/background_textfield" />
-
-                <EditText
-                    android:layout_width="40dip"
-                    android:layout_height="wrap_content"
-                    android:inputType="number"
-                    android:id="@+id/editText284"
-                    android:background="@drawable/background_textfield" />
-
-            </TableRow>
-
-            <TableRow
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/background_even">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:text="@string/nine"
-                    android:id="@+id/N19" />
-
-                <Spinner
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/testresult19" />
-
-                <EditText
-                    android:layout_width="40dip"
-                    android:layout_height="wrap_content"
-                    android:inputType="number"
-                    android:id="@+id/editText293"
-                    android:background="@drawable/background_textfield" />
-
-                <EditText
-                    android:layout_width="40dip"
-                    android:layout_height="wrap_content"
-                    android:inputType="number"
-                    android:id="@+id/editTex294"
-                    android:background="@drawable/background_textfield" />
-
-            </TableRow>
-
-            <TableRow
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/background_even">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:text="@string/ten"
-                    android:id="@+id/N20" />
-
-                <Spinner
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/testresult20" />
-
-                <EditText
-                    android:layout_width="40dip"
-                    android:layout_height="wrap_content"
-                    android:inputType="number"
-                    android:id="@+id/editText303"
-                    android:background="@drawable/background_textfield" />
-
-                <EditText
-                    android:layout_width="40dip"
-                    android:layout_height="wrap_content"
-                    android:inputType="number"
-                    android:id="@+id/editText304"
-                    android:background="@drawable/background_textfield" />
-
-            </TableRow>
-
-
-
-
         </TableLayout>
 
     </GridLayout>
-
-
-
 </LinearLayout>

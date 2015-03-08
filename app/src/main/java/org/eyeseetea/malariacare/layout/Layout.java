@@ -393,6 +393,9 @@ public class Layout {
                 break;
 
             case R.layout.iqatab:
+                getFromDatabase = true;
+                layoutsToUse.add(R.layout.iqatab_record);
+                layoutsToUse.add(R.layout.iqatab_record);
                 layoutParent.addView(customView);
                 break;
         }
