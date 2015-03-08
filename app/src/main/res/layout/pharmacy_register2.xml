@@ -50,7 +50,8 @@
             android:layout_width="100dip"
             android:layout_height="wrap_content"
             android:text="@string/yes"
-            android:id="@+id/act1" />
+            android:id="@+id/act1"
+            android:tag="listener"/>
     </LinearLayout>
 
     <LinearLayout
@@ -58,14 +59,17 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/scoreContainer"
-        android:padding="5dip">
+        android:padding="5dip"
+        android:layout_gravity="center">
 
-        <EditText
+        <TextView
             android:layout_width="40dip"
             android:layout_height="wrap_content"
-            android:inputType="number"
+            android:textAppearance="?android:attr/textAppearanceSmall"
             android:id="@+id/score"
-            android:background="@drawable/background_textfield" />
+            android:padding="5dip"
+            android:layout_gravity="center" />
+
     </LinearLayout>
 
 </TableRow>

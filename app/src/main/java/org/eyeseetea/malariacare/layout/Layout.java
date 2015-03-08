@@ -7,7 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.CalendarView;
 import android.widget.EditText;
 import android.widget.GridLayout;
 import android.widget.LinearLayout;
@@ -17,12 +16,9 @@ import android.widget.Spinner;
 import android.widget.TabHost;
 import android.widget.TableLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import org.eyeseetea.malariacare.MainActivity;
 import org.eyeseetea.malariacare.R;
-import org.eyeseetea.malariacare.adapters.ManualAdapterAdherence;
-import org.eyeseetea.malariacare.adapters.ManualAdapterIQA;
 import org.eyeseetea.malariacare.adapters.ReportingResultsArrayAdapter;
 import org.eyeseetea.malariacare.data.Header;
 import org.eyeseetea.malariacare.data.Option;
@@ -35,7 +31,6 @@ import org.eyeseetea.malariacare.utils.TabConfiguration;
 import org.eyeseetea.malariacare.utils.Utils;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -372,7 +367,11 @@ public class Layout {
     private static void generateManualTab(MainActivity mainActivity, Tab tab, TabConfiguration tabConfiguration, LayoutInflater inflater, GridLayout layoutParent) {
         View customView = inflater.inflate(tabConfiguration.getLayoutId(), layoutParent, false);
         boolean getFromDatabase = false;
+        // Array to get the needed layouts during question insertion
         List<Integer> layoutsToUse = new ArrayList<Integer>();
+        // Array to capture and process events when user selection is done
+        List<AdapterView.OnItemSelectedListener> listeners = new ArrayList<AdapterView.OnItemSelectedListener>();
+        int iterListeners = 0;
 
         switch (tabConfiguration.getLayoutId()){
             case R.layout.scoretab:
@@ -384,20 +383,19 @@ public class Layout {
                 list.setAdapter(adapter);
                 break;
             case R.layout.adherencetab:
-                //ManualAdapterAdherence manualAdapter = new ManualAdapterAdherence(mainActivity);
                 getFromDatabase = true;
                 layoutsToUse.add(R.layout.pharmacy_register);
                 layoutsToUse.add(R.layout.pharmacy_register2);
+                // Add onItemSelectedListener to manage score
+                AdapterView.OnItemSelectedListener listener = createAdherenceListener();
+                listeners.add(listener);
                 layoutParent.addView(customView);
                 break;
 
             case R.layout.iqatab:
                 layoutParent.addView(customView);
-                //ManualAdapterIQA manualAdapterIQA = new ManualAdapterIQA(mainActivity);
                 break;
         }
-
-//        layoutParent.addView(customView); //FIXME: this command is failing but I think it shouldn't
 
         // Some manual tabs, like adherence and IQA EQA get their questions from the database, here we manage how they are represented in the layout
         // as long as they don't use the same convention.
@@ -422,30 +420,48 @@ public class Layout {
                         // If the question is a parent, do don't show it but use it to put the row layout
                         if (question.hasChildren()){ // FIXME: when the search above is improve this check will be unnecessary
                             View rowView = inflater.inflate(layoutsToUse.get(i), table, false);
+                            // Set the row number
+                            TextView number = (TextView) rowView.findViewById(R.id.number);
+                            number.setText(Integer.toString(iterBacks+1));
+                            // Set the row background
                             rowView.setBackgroundResource(backgrounds[iterBacks % backgrounds.length]);
                             table.addView(rowView);
                             Log.d(".Layout", "Row Question");
 
-                            for (Question questionChild: children) {
-                                switch (question.getAnswer().getOutput()) {
-                                    case Constants.DROPDOWN_LIST:
-                                        Log.d(".Layout", "Question dropdown");
-                                        break;
-                                    case Constants.INT:
-                                        Log.d(".Layout", "Question int");
-                                        break;
-                                    case Constants.LONG_TEXT:
-                                        Log.i(".Layout", "Question longtext");
-                                        break;
-                                    case Constants.SHORT_TEXT:
-                                        Log.i(".Layout", "Question shorttext");
-                                        break;
-                                    case Constants.SHORT_DATE:
-                                    case Constants.LONG_DATE:
-                                        Log.i(".Layout", "Question date");
-                                        break;
+                            for (int j=0; j<children.size(); j++) {
+                                if (children.get(j).getAnswer() != null){
+                                    switch (children.get(j).getAnswer().getOutput()) {
+                                        case Constants.DROPDOWN_LIST:
+                                            Option defaultOption = new Option(Constants.DEFAULT_SELECT_OPTION);
+                                            List<Option> optionList = children.get(j).getAnswer().getOptions();
+                                            optionList.add(0, defaultOption);
+                                            ArrayAdapter adapter = new ArrayAdapter(mainActivity, android.R.layout.simple_spinner_item, optionList);
+                                            Spinner dropdown = (Spinner) ((ViewGroup) ((ViewGroup) rowView).getChildAt(j + 1)).getChildAt(0); // We take the spinner
+                                            dropdown.setAdapter(adapter);
+/*                                            if ("listener".equals(dropdown.getTag())) {
+                                                dropdown.setOnItemSelectedListener(listeners.get(iterListeners));
+                                                iterListeners++;
+                                            }*/
+                                            break;
+                                        case Constants.INT:
+                                            Log.d(".Layout", "Question int");
+                                            break;
+                                        case Constants.LONG_TEXT:
+                                            Log.i(".Layout", "Question longtext");
+                                            break;
+                                        case Constants.SHORT_TEXT:
+                                            Log.i(".Layout", "Question shorttext");
+                                            break;
+                                        case Constants.SHORT_DATE:
+                                        case Constants.LONG_DATE:
+                                            Log.i(".Layout", "Question date");
+                                            break;
+                                    }
+                                } else {
+                                    ((TextView) ((ViewGroup) ((ViewGroup) rowView).getChildAt(j + 1)).getChildAt(0)).setText(children.get(j).getForm_name());
                                 }
                             }
+                            iterBacks++;
                         }
                     }
                 }else{
@@ -453,9 +469,37 @@ public class Layout {
                 }
             }
         }
-        iterBacks++;
 
         return;
+    }
+
+    public static AdapterView.OnItemSelectedListener createAdherenceListener(){
+        AdapterView.OnItemSelectedListener listener = new AdapterView.OnItemSelectedListener(){
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                // This will occur when an item is selected in Adherence spinners
+                // For Adherence, when Test results is RDT* then ACT Prescribed=Yes means score=1, otherwise score=0
+                //              , when Test results is Micrsocopy* then ACT Prescribed=No means Score=1, otherwise score=0
+                int score = 0;
+                TextView actPrescribed = (TextView)((ViewGroup)((ViewGroup)parent.getParent().getParent()).getChildAt(2)).getChildAt(0);
+                if("RDT Positive".equals(actPrescribed.getText()) || "RDT Negative".equals(actPrescribed.getText())){
+                    if (position == 1) score=1;
+                    else score=0;
+                }else if("Microscopy Positive".equals(actPrescribed.getText()) || "Microscopy Negative".equals(actPrescribed.getText())){
+                    if (position == 2) score=1;
+                    else score=0;
+                }
+                TextView scoreText = (TextView)((ViewGroup)((ViewGroup)parent.getParent().getParent()).getChildAt(4)).getChildAt(0);
+                scoreText.setText((String)Integer.toString(score));
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        };
+
+        return listener;
     }
 }
 
