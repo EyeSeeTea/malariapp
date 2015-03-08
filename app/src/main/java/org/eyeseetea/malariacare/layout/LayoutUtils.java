@@ -1,9 +1,11 @@
 package org.eyeseetea.malariacare.layout;
 
+import android.graphics.Color;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import org.eyeseetea.malariacare.MainActivity;
 import org.eyeseetea.malariacare.R;
@@ -152,6 +154,16 @@ public class LayoutUtils {
             if (!isContained)return false;
         }
         return true;
+    }
+
+    public static void trafficLight(View view, float score){
+        if(score < 50.0F){
+            ((TextView)view).setTextColor(Color.parseColor("#40FF00")); // green
+        } else if (score < 80.0F){
+            ((TextView)view).setTextColor(Color.parseColor("#FF8000")); // amber
+        } else {
+            ((TextView)view).setTextColor(Color.parseColor("#FF0000")); // red
+        }
     }
 
     public static List<ReportingResults> addReportingQuestions()

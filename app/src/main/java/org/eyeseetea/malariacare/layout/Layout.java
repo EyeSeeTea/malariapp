@@ -212,14 +212,20 @@ public class Layout {
                     float score = (numDenSubTotal.get(0) / numDenSubTotal.get(1)) * 100;
                     float average = 0.0F, totalAverage = 0.0F;
                     TextView elementView = null;
+                    // TrafficLight
+                    LayoutUtils.trafficLight(partialScoreView, score);
                     partialScoreView.setText(Utils.round(score)); // We set the score in the tab score
                     if (tabConfiguration.getScoreFieldId() != null) {
+                        // TrafficLight
+                        LayoutUtils.trafficLight(generalScoreView, score);
                         generalScoreView.setText(Utils.round(score)); // We set the score in the score tab
                         if(tabConfiguration.getScoreAvgFieldId() != null){
                             List<Integer> averageElements = (ArrayList<Integer>) generalScoreAvgView.getTag();
                             if (averageElements == null) {
                                 averageElements = new ArrayList<Integer>();
                                 averageElements.add(generalScoreId);
+                                // TrafficLight
+                                LayoutUtils.trafficLight(generalScoreAvgView, score);
                                 generalScoreAvgView.setText(Utils.round(score));
                                 generalScoreAvgView.setTag(averageElements);
                             } else {
@@ -230,6 +236,8 @@ public class Layout {
                                 }
                                 if (!found) averageElements.add(generalScoreId);
                                 average = average / averageElements.size();
+                                // TrafficLight
+                                LayoutUtils.trafficLight(generalScoreAvgView, average);
                                 generalScoreAvgView.setText(Utils.round(average));
                                 generalScoreAvgView.setTag(averageElements);
                             }
@@ -256,6 +264,8 @@ public class Layout {
                                 else scoreElements.add(generalScoreId);
                             }
                             totalAverage = totalAverage / scoreElements.size();
+                            // TrafficLight Logic
+                            LayoutUtils.trafficLight(totalScoreView, totalAverage);
                             totalScoreView.setText(Utils.round(totalAverage));
                             totalScoreView.setTag(scoreElements);
                         }
@@ -523,7 +533,11 @@ public class Layout {
                 }
                 LinearLayout root = (LinearLayout) LayoutUtils.findParentRecursively(parent, R.id.Grid);
                 TextView totalScoreView = (TextView) root.findViewById(R.id.adherenceScore);
-                totalScoreView.setText(Utils.round(totalScore*100.0F/20.0F));
+                totalScore = totalScore*100.0F/20.0F;
+                // TrafficLight Logic
+                LayoutUtils.trafficLight(totalScoreView, totalScore);
+                totalScoreView.setText(Utils.round(totalScore));
+
             }
 
             @Override
