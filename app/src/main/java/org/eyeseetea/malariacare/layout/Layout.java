@@ -425,7 +425,7 @@ public class Layout {
                             View rowView = inflater.inflate(layoutsToUse.get(i), table, false);
                             // Set the row number
                             TextView number = (TextView) rowView.findViewById(R.id.number);
-                            number.setText(Integer.toString(iterBacks+1));
+                            number.setText(question.getForm_name());
                             // Set the row background
                             rowView.setBackgroundResource(backgrounds[iterBacks % backgrounds.length]);
                             table.addView(rowView);
