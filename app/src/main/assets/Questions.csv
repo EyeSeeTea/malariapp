@@ -856,3 +856,13 @@
 856;'MAL-SUP-Microscopy-C3-Q54';'MAL-SUP-Microscopy-C3-Q54 Infectious waste disposed of in appropriate waste containers';;'Infectious waste disposed of in appropriate waste containers';;54;1.00;0.00;132;3;621
 857;'MAL-SUP-Microscopy-C3-Q55';'MAL-SUP-Microscopy-C3-Q55 Liquid waste appropriately washed off/disinfected';;'Liquid waste appropriately washed off/disinfected';;55;1.00;0.00;132;3;621
 858;'MAL-SUP-Microscopy-C3-Q58';'MAL-SUP-Microscopy-C3-Q58 Was the examination done properly, including > 100 high power fields before declaring slides negative (takes about 10 minutes)?';;'Was the examination done properly, including > 100 high power fields before declaring slides negative (takes about 10 minutes)?';;58;1.00;0.00;135;3;623
+859;'PQ-1';'PQ-1 Phantom Question 1';;'Phantom Question 1';;1;0.00;0.00;162;24;
+860;'PID';'PID';;'Patient ID';;2;0.00;0.00;162;24;859
+861;'GD';'GD';;'Gender';;3;0.00;0.00;162;10;859
+862;'AGE';'AGE';;'Age';;4;0.00;0.00;162;24;859
+863;'TR';'TR';;'Test Results';;5;0.00;0.00;162;12;859
+864;'PQ-2';'PQ-2 Phantom Question 2';;'Phantom Question 2';;1;0.00;0.00;163;24;
+865;'PID';'PID';;'Patient ID';;2;0.00;0.00;163;24;864
+866;'TR';'TR';;'Test Results';;3;0.00;0.00;163;15;864
+867;'ACTP';'ACTP';;'ACT Prescribed?';;4;0.00;0.00;163;3;864
+868;'SCR';'SCR';;'Score';;5;0.00;0.00;163;24;864
