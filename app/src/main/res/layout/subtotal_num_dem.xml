@@ -13,7 +13,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Tab subtotal"
+            android:text="Score for tab"
             android:id="@+id/subtotalScoreText"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
