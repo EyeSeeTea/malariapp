@@ -125,31 +125,8 @@ public class PopulateDB {
 
         Header.saveInTx(headerCustomList);
         Header.saveInTx(questionCustomList);
-        //populateCustomTabs(assetManager);
 
     }
-
-    private static void populateCustomTabs(AssetManager assetManager) throws IOException {
-
-        List<Header> headerCustomList = new ArrayList<Header>();
-        List<Question> questionCustomList = new ArrayList<Question>();
-
-        List<String> tables2populate = Arrays.asList("HeadersCustom.csv", "QuestionsCustom.csv");
-
-        CSVReader reader = null;
-        for (String table : tables2populate) {
-            reader = new CSVReader(new InputStreamReader(assetManager.open(table)));
-
-            String[] line;
-            while ((line = reader.readNext()) != null) {
-                switch (table) {
-
-                }
-            }
-            reader.close();
-        }
-    }
-
 
 //    public static String trimText(String text){
 //        return text.replaceAll("^'|'$", "");
