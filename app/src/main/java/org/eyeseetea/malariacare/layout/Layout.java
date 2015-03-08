@@ -15,6 +15,7 @@ import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TabHost;
 import android.widget.TableLayout;
+import android.widget.TableRow;
 import android.widget.TextView;
 
 import org.eyeseetea.malariacare.MainActivity;
@@ -411,6 +412,7 @@ public class Layout {
         if (getFromDatabase){
             List<Header> headers = tab.getHeaders();
             for (int i=0; i<headers.size(); i++){
+                iterBacks = 0;
                 String headerName = headers.get(i).getName(); // this is also the ID
                 // This tables list must be a list of only one element if we have not failed in layout creation
                 List<View> tables = LayoutUtils.getChildrenByTag((ViewGroup)customView, null, headerName);
@@ -426,7 +428,7 @@ public class Layout {
                             View rowView = inflater.inflate(layoutsToUse.get(i), table, false);
                             // Set the row number
                             TextView number = (TextView) rowView.findViewById(R.id.number);
-                            number.setText(Integer.toString(iterBacks+1));
+                            number.setText(question.getForm_name());
                             // Set the row background
                             rowView.setBackgroundResource(backgrounds[iterBacks % backgrounds.length]);
                             table.addView(rowView);
@@ -495,6 +497,18 @@ public class Layout {
                 }
                 TextView scoreText = (TextView)((ViewGroup)((ViewGroup)parent.getParent().getParent()).getChildAt(4)).getChildAt(0);
                 scoreText.setText((String)Integer.toString(score));
+                // Set the total score in the score tab
+                TableLayout table = (TableLayout)LayoutUtils.findParentRecursively(parent, R.id.register2Table);
+                float totalScore = 0.0F;
+                for (int i=1; i<((ViewGroup) table).getChildCount(); i++){
+                    TableRow row = (TableRow) table.getChildAt(i);
+                    TextView scoreCell = ((TextView) ((ViewGroup) row.getChildAt(4)).getChildAt(0));
+                    String stringFloat = scoreCell.getText().toString();
+                    if (!("".equals(scoreCell.getText()))) totalScore += Float.parseFloat(stringFloat);
+                }
+                LinearLayout root = (LinearLayout) LayoutUtils.findParentRecursively(parent, R.id.Grid);
+                TextView totalScoreView = (TextView) root.findViewById(R.id.adherenceScore);
+                totalScoreView.setText(Utils.round(totalScore*100.0F/20.0F));
             }
 
             @Override
