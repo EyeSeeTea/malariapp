@@ -605,6 +605,7 @@ public class Layout {
                 // For IQAEQA, when file each file spinner option match with its equivalent in the other table, that means score = 1
                 int score = 0;
                 float totalScore = 0.0F;
+                TextView totalScoreView = null;
                 TableRow thisRow = (TableRow)((ViewGroup)parent.getParent()).getParent();
                 int numberOfRow = Integer.parseInt((String)((TextView) thisRow.getChildAt(0)).getText());
                 int thisPosition = parent.getSelectedItemPosition();
@@ -614,6 +615,16 @@ public class Layout {
                 scoreView.setText(Integer.toString(score));
 
                 // Update in score tab
+                LinearLayout root = (LinearLayout) LayoutUtils.findParentRecursively(view, R.id.Grid);
+                for (int i=1; i<matchTable.getChildCount(); i++){
+                    totalScoreView = (TextView)((ViewGroup) matchTable.getChildAt(i)).getChildAt(1);
+                    if (!("".equals((String)totalScoreView.getText()))) totalScore += Float.parseFloat((String)totalScoreView.getText());
+                }
+                totalScore = totalScore*10.0F;
+                TextView iqaEqaScore = (TextView) root.findViewById(R.id.iqaeqaScore);
+                LayoutUtils.trafficLight(iqaEqaScore, totalScore);
+                iqaEqaScore.setText(Utils.round(totalScore));
+
             }
 
             @Override
