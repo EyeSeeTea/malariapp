@@ -259,3 +259,43 @@
 259;'PID';'PID';;;;39;0.00;0.00;4;24;257
 260;'SPECIES';'SPECIES';;;;40;0.00;0.00;4;24;257
 261;'Tallies for the Month of';'Tallies for the Month of';;'Tallies for the Month of';;1;0.00;0.00;5;26;
+262;'PQ-Reporting-1';'PQ-Reporting-1 Phantom Question 1';;;;1;0.00;0.00;6;;
+263;'Total # of <5 years';'Total # of <5 years';;'Total # of <5 years';;2;0.00;0.00;6;;262
+264;'Register';'Register';;;;3;0.00;0.00;6;24;262
+265;'Monthly Report';'Monthly Report';;;;4;0.00;0.00;6;24;262
+266;'PQ-Reporting-2';'PQ-Reporting-2 Phantom Question 2';;;;5;0.00;0.00;6;;
+267;'Total # of >5 years';'Total # of >5 years';;'Total # of >5 years';;6;0.00;0.00;6;;266
+268;'Register';'Register';;;;7;0.00;0.00;6;24;266
+269;'Monthly Report';'Monthly Report';;;;8;0.00;0.00;6;24;266
+270;'PQ-Reporting-3';'PQ-Reporting-3 Phantom Question 3';;;;9;0.00;0.00;6;;
+271;'TOTAL';'TOTAL';;'TOTAL';;10;0.00;0.00;6;;270
+272;'Register';'Register';;;;11;0.00;0.00;6;24;270
+273;'Monthly Report';'Monthly Report';;;;12;0.00;0.00;6;24;270
+274;'PQ-Reporting-4';'PQ-Reporting-4 Phantom Question 4';;;;13;0.00;0.00;6;;
+275;'Total # patients seen in OPD';'Total # patients seen in OPD';;'Total # patients seen in OPD';;14;0.00;0.00;6;;274
+276;'Register';'Register';;;;15;0.00;0.00;6;24;274
+277;'Monthly Report';'Monthly Report';;;;16;0.00;0.00;6;24;274
+278;'PQ-Reporting-5';'PQ-Reporting-5 Phantom Question 5';;;;17;0.00;0.00;6;;
+279;'Total # presumptive malaria cases';'Total # presumptive malaria cases';;'Total # presumptive malaria cases';;18;0.00;0.00;6;;278
+280;'Register';'Register';;;;19;0.00;0.00;6;24;278
+281;'Monthly Report';'Monthly Report';;;;20;0.00;0.00;6;24;278
+282;'PQ-Reporting-6';'PQ-Reporting-6 Phantom Question 6';;;;21;0.00;0.00;6;;
+283;'Total # patients who received a diagnostic test for malaria';'Total # patients who received a diagnostic test for malaria';;'Total # patients who received a diagnostic test for malaria';;22;0.00;0.00;6;;282
+284;'Register';'Register';;;;23;0.00;0.00;6;24;282
+285;'Monthly Report';'Monthly Report';;;;24;0.00;0.00;6;24;282
+286;'PQ-Reporting-7';'PQ-Reporting-7 Phantom Question 7';;;;25;0.00;0.00;6;;
+287;'Total # of patients who tested positive for malaria';'Total # of patients who tested positive for malaria';;'Total # of patients who tested positive for malaria';;26;0.00;0.00;6;;286
+288;'Register';'Register';;;;27;0.00;0.00;6;24;286
+289;'Monthly Report';'Monthly Report';;;;28;0.00;0.00;6;24;286
+290;'PQ-Reporting-8';'PQ-Reporting-8 Phantom Question 8';;;;29;0.00;0.00;6;;
+291;'Total # of patients who tested negative for malaria';'Total # of patients who tested negative for malaria';;'Total # of patients who tested negative for malaria';;30;0.00;0.00;6;;290
+292;'Register';'Register';;;;31;0.00;0.00;6;24;290
+293;'Monthly Report';'Monthly Report';;;;32;0.00;0.00;6;24;290
+294;'PQ-Reporting-9';'PQ-Reporting-9 Phantom Question 9';;;;33;0.00;0.00;6;;
+295;'Total # patients who received ACTs';'Total # patients who received ACTs';;'Total # patients who received ACTs';;34;0.00;0.00;6;;294
+296;'Register';'Register';;;;35;0.00;0.00;6;24;294
+297;'Monthly Report';'Monthly Report';;;;36;0.00;0.00;6;24;294
+298;'PQ-Reporting-10';'PQ-Reporting-10 Phantom Question 10';;;;37;0.00;0.00;6;;
+299;'Total # of patients who were referred or admitted for suspected or diagnosed severe malaria';'Total # of patients who were referred or admitted for suspected or diagnosed severe malaria';;'Total # of patients who were referred or admitted for suspected or diagnosed severe malaria';;38;0.00;0.00;6;;298
+300;'Register';'Register';;;;39;0.00;0.00;6;24;298
+301;'Monthly Report';'Monthly Report';;;;40;0.00;0.00;6;24;298

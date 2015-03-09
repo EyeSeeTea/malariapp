@@ -473,18 +473,20 @@
                         android:layout_height="fill_parent"
                         android:orientation="vertical" >
 
-                        <LinearLayout
-                            android:orientation="vertical"
-                            android:layout_width="fill_parent"
-                            android:layout_height="fill_parent">
+                        <ScrollView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/scrollReporting"
+                            android:layout_weight="0.09" >
 
                             <GridLayout
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:rowCount="1"
+                                android:layout_width="fill_parent"
+                                android:layout_height="fill_parent"
                                 android:columnCount="1"
-                                android:id="@+id/tab14" />
-                        </LinearLayout>
+                                android:rowCount="1"
+                                android:id="@+id/tabReporting"
+                                android:layout_weight="0.91" />
+                        </ScrollView>
 
                         <GridLayout
                             android:layout_width="fill_parent"
