@@ -98,6 +98,9 @@
     <string name="parasites">Parasites/uL</string>
     <string name="species">Species</string>
     <string name="labstaff">Lab Staff</string>
+    <string name="percentage">%</string>
+    <string name="score4tab">Score for tab</string>
+    <string name="scorefortab">Score for tab:</string>
     <string-array name="iqa_testresult">
         <item></item>
         <item>Positive</item>

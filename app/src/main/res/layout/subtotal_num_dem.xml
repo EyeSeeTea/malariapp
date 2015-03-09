@@ -7,19 +7,39 @@
     <RelativeLayout
         android:layout_width="0dip"
         android:layout_height="fill_parent"
-        android:layout_weight="0.25">
+        android:layout_weight="0.45">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Score for tab"
-            android:id="@+id/subtotalScoreText"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:textColor="#ffffff"
-            android:textSize="18sp"
-            android:textStyle="bold|italic" />
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="@string/scorefortab"
+                android:id="@+id/subtotalScoreText"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:textColor="#ffffff"
+                android:textStyle="bold|italic"
+                android:paddingLeft="5dip" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:id="@+id/tabName"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:textColor="#ffffff"
+                android:textStyle="bold|italic"
+                android:paddingLeft="5dip" />
+
+        </LinearLayout>
+
     </RelativeLayout>
 
     <RelativeLayout
@@ -35,36 +55,51 @@
             android:id="@+id/score"
             android:text="@string/emptyString"
             android:textStyle="bold"
-            android:textSize="24sp"
+            android:textSize="20sp"
             android:textColor="#ffffff"
-            android:gravity="center"
+            android:gravity="center_vertical|right"
             android:layout_centerVertical="true" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:id="@+id/percentageSymbol"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:textColor="#ffffff"
+            android:textSize="18sp"
+            android:textStyle="bold|italic"
+            android:text="@string/percentage"
+            android:gravity="left|center_vertical"
+            android:paddingRight="5dip"
+            android:paddingLeft="5dip" />
     </RelativeLayout>
 
     <RelativeLayout
         android:layout_width="0dip"
         android:layout_height="fill_parent"
-        android:layout_weight="0.3"
+        android:layout_weight="0.2"
         android:layout_gravity="right">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textAppearance="?android:attr/textAppearanceSmall"
             android:text="@string/accumulated"
             android:id="@+id/accumulatedText"
-            android:textSize="14sp"
             android:textStyle="italic"
             android:textColor="#ffffff"
             android:layout_alignParentEnd="false"
             android:layout_centerVertical="true"
-            android:layout_alignParentRight="true" />
+            android:layout_alignParentRight="true"
+            android:textSize="12sp" />
     </RelativeLayout>
 
     <RelativeLayout
         android:layout_width="0dip"
         android:layout_height="fill_parent"
-        android:layout_weight="0.15"
+        android:layout_weight="0.1"
         android:gravity="center_vertical|center|center_horizontal"
         android:layout_gravity="center">
 
@@ -75,14 +110,14 @@
             android:text="@string/emptyString"
             android:id="@+id/totalNum"
             android:textColor="#ffffff"
-            android:textSize="20sp"
+            android:textSize="12sp"
             android:textStyle="bold"
             android:gravity="center" />
     </RelativeLayout>
     <RelativeLayout
         android:layout_width="0dip"
         android:layout_height="fill_parent"
-        android:layout_weight="0.15"
+        android:layout_weight="0.1"
         android:gravity="center_vertical|center|center_horizontal"
         android:layout_gravity="center">
 
@@ -92,7 +127,7 @@
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:id="@+id/totalDen"
             android:textColor="#ffffff"
-            android:textSize="20sp"
+            android:textSize="12sp"
             android:textStyle="bold"
             android:gravity="center"
             android:text="@string/emptyString" />
