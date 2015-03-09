@@ -66,7 +66,8 @@
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:id="@+id/score"
             android:padding="5dip"
-            android:layout_gravity="center" />
+            android:layout_gravity="center"
+            android:text="@string/zeroInt" />
     </LinearLayout>
 
 </TableRow>

@@ -1,6 +1,9 @@
 package org.eyeseetea.malariacare.layout;
 
+import android.app.Activity;
 import android.content.Context;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -393,7 +396,9 @@ public class Layout {
         List<Integer> layoutsToUse = new ArrayList<Integer>();
         // Array to capture and process events when user selection is done
         List<AdapterView.OnItemSelectedListener> listeners = new ArrayList<AdapterView.OnItemSelectedListener>();
+        List<TextWatcher> editListeners = new ArrayList<TextWatcher>();
         int iterListeners = 0;
+        int iterEditListeners = 0;
 
         switch (tabConfiguration.getLayoutId()){
             case R.layout.scoretab:
@@ -403,6 +408,10 @@ public class Layout {
                 getFromDatabase = true;
                 layoutsToUse.add(R.layout.reporting_record);
                 layoutsToUse.add(R.layout.reporting_record2);
+                TextWatcher editListener = createReportingListener(mainActivity);
+                TextWatcher editListener2 = createReportingListener(mainActivity);
+                editListeners.add(editListener);
+                editListeners.add(editListener2);
                 layoutParent.addView(customView);
                 break;
             case R.layout.adherencetab:
@@ -459,6 +468,7 @@ public class Layout {
                                 List<Question> children = question.getQuestionChildren();
 
                                 iterListeners = 0;
+                                iterEditListeners = 0;
                                 TextView answer = null;
                                 int offset = 0;
 
@@ -495,16 +505,28 @@ public class Layout {
                                                 Log.d(".Layout", "Question int");
                                                 answer = (TextView) ((ViewGroup) ((ViewGroup) rowView).getChildAt(j + offset)).getChildAt(0); // We take the textfield
                                                 answer.setTag(R.id.QuestionTypeTag, Constants.INT);
+                                                if ("listener".equals(answer.getTag())) {
+                                                    answer.addTextChangedListener(editListeners.get(iterEditListeners));
+                                                    iterEditListeners++;
+                                                }
                                                 break;
                                             case Constants.LONG_TEXT:
                                                 Log.i(".Layout", "Question longtext");
                                                 answer = (TextView) ((ViewGroup) ((ViewGroup) rowView).getChildAt(j + offset)).getChildAt(0); // We take the textfield
                                                 answer.setTag(R.id.QuestionTypeTag, Constants.LONG_TEXT);
+                                                if ("listener".equals(answer.getTag())) {
+                                                    answer.addTextChangedListener(editListeners.get(iterEditListeners));
+                                                    iterEditListeners++;
+                                                }
                                                 break;
                                             case Constants.SHORT_TEXT:
                                                 Log.i(".Layout", "Question shorttext");
                                                 answer = (TextView) ((ViewGroup) ((ViewGroup) rowView).getChildAt(j + offset)).getChildAt(0); // We take the textfield
                                                 answer.setTag(R.id.QuestionTypeTag, Constants.SHORT_TEXT);
+                                                if ("listener".equals(answer.getTag())) {
+                                                    answer.addTextChangedListener(editListeners.get(iterEditListeners));
+                                                    iterEditListeners++;
+                                                }
                                                 break;
                                             case Constants.SHORT_DATE:
                                             case Constants.LONG_DATE:
@@ -631,6 +653,41 @@ public class Layout {
         };
 
         return listener;
+    }
+
+    public static TextWatcher createReportingListener(final Activity myActivity){
+        TextWatcher watcher = new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                int score = 0;
+                EditText myEdit = (EditText)myActivity.getCurrentFocus();
+                TableRow myRow = (TableRow) ((ViewGroup) myEdit.getParent()).getParent();
+                EditText registerView = (EditText)((ViewGroup)myRow.getChildAt(1)).getChildAt(0);
+                EditText monthlyView = (EditText)((ViewGroup)myRow.getChildAt(2)).getChildAt(0);
+                TextView scoreView = (TextView)((ViewGroup)myRow.getChildAt(3)).getChildAt(0);
+                if (!("".equals(registerView.getText())) && !("".equals(monthlyView.getText()))){
+                    if (registerView.getText().toString().equals(monthlyView.getText().toString())){
+                        scoreView.setText("1");
+                    } else {
+                        scoreView.setText("0");
+                    }
+                } else {
+                    scoreView.setText("0");
+                }
+
+            }
+        };
+        return watcher;
     }
 }
 
