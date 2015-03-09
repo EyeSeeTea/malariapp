@@ -158,11 +158,11 @@ public class LayoutUtils {
 
     public static void trafficLight(View view, float score){
         if(score < 50.0F){
-            ((TextView)view).setTextColor(Color.parseColor("#40FF00")); // green
+            ((TextView)view).setTextColor(Color.parseColor("#FF0000")); // red
         } else if (score < 80.0F){
             ((TextView)view).setTextColor(Color.parseColor("#FF8000")); // amber
         } else {
-            ((TextView)view).setTextColor(Color.parseColor("#FF0000")); // red
+            ((TextView)view).setTextColor(Color.parseColor("#40FF00")); // green
         }
     }
 
