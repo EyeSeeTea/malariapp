@@ -1,69 +1,126 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:orientation="vertical" android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
 
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="fill_parent"
+
+    <Space
+        android:layout_width="20dip"
+        android:layout_height="40dip" />
+
+    <GridLayout
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/background_header"
-        android:paddingLeft="10dip"
-        android:layout_gravity="center">
+        android:columnCount="1"
+        android:rowCount="2"
+        android:id="@+id/reporting">
 
         <TextView
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="#1e506c"
-            android:text="Results"
-            android:textColor="#ffffff"
-            android:id="@+id/textView2"
-            android:layout_weight="0.7"
-            android:typeface="sans"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="@string/reporting"
+            android:id="@+id/reportingTitle"
             android:textStyle="bold"
+            android:paddingBottom="20dip" />
 
-            android:textSize="18sp" />
+    </GridLayout>
 
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:background="#1e506c"
-            android:text="Register"
-            android:textColor="#ffffff"
-            android:id="@+id/textView3"
-            android:layout_weight="0.25"
-            android:typeface="sans"
-            android:textStyle="bold"
-            android:textSize="18sp" />
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:background="#1e506c"
-            android:text="Report"
-            android:textColor="#ffffff"
-            android:id="@+id/textView4"
-            android:layout_weight="0.2"
-            android:typeface="sans"
-            android:textStyle="bold"
-            android:textSize="18sp" />
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:background="#1e506c"
-            android:text="Score"
-            android:textColor="#ffffff"
-            android:id="@+id/textView5"
-            android:layout_weight="0.2"
-            android:typeface="sans"
-            android:textStyle="bold"
-            android:textSize="18sp" />
-    </LinearLayout>
-
-    <ListView
-        android:layout_width="match_parent"
+    <GridLayout
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/listView"
-        android:layout_gravity="center" />
+        android:columnCount="1"
+        android:rowCount="2"
+        android:id="@+id/talliesLayout">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/talliesHeader"
+            android:id="@+id/talliesHeader"
+            android:background="@drawable/background_header"
+            android:textSize="18sp"
+            android:textColor="#ffffff"
+            android:paddingLeft="10dip" />
+
+        <TableLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/talliesTableLayout"
+            android:tag="AdherenceTable1"
+            android:layout_gravity="center" >
+
+        </TableLayout>
+
+    </GridLayout>
+
+    <Space
+        android:layout_width="20dip"
+        android:layout_height="40dip" />
+
+    <GridLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:columnCount="1"
+        android:rowCount="2"
+        android:id="@+id/gridLayout" >
+
+        <TableLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/tableLayout"
+            android:tag="AdherenceTable1"
+            android:layout_gravity="center" >
+
+            <TableRow
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/tableRow"
+                android:layout_gravity="center"
+                android:background="@drawable/background_odd" >
+
+                <Space
+                    android:layout_width="20dip"
+                    android:layout_height="40dip" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="fill_parent"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="@string/results"
+                    android:id="@+id/textView3"
+                    android:background="@drawable/background_header"
+                    android:textColor="#ffffff"
+                    android:gravity="center"
+                    android:lines="2"
+                    android:padding="5dip" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="fill_parent"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="@string/register"
+                    android:id="@+id/textView4"
+                    android:background="@drawable/background_header"
+                    android:textColor="#ffffff"
+                    android:lines="2"
+                    android:gravity="center"
+                    android:padding="5dip" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="@string/monthlyReport"
+                    android:id="@+id/textView5"
+                    android:background="@drawable/background_header"
+                    android:textColor="#ffffff"
+                    android:lines="2"
+                    android:gravity="center"
+                    android:padding="5dip" />
+
+            </TableRow>
+        </TableLayout>
+    </GridLayout>
+
 </LinearLayout>

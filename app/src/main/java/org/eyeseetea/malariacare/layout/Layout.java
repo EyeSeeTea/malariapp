@@ -393,9 +393,13 @@ public class Layout {
                 layoutParent.addView(customView);
                 break;
             case R.layout.reportingtab:
-                ListView list=(ListView) customView.findViewById(R.id.listView);
-                ArrayAdapter<ReportingResults> adapter = new ReportingResultsArrayAdapter(mainActivity, LayoutUtils.addReportingQuestions());
-                list.setAdapter(adapter);
+//                ListView list=(ListView) customView.findViewById(R.id.listView);
+//                ArrayAdapter<ReportingResults> adapter = new ReportingResultsArrayAdapter(mainActivity, LayoutUtils.addReportingQuestions());
+//                list.setAdapter(adapter);
+                getFromDatabase = true;
+                layoutsToUse.add(R.layout.shorttext);
+                layoutsToUse.add(R.layout.reporting_record);
+                layoutParent.addView(customView);
                 break;
             case R.layout.adherencetab:
                 Switch visibility = (Switch) customView.findViewById(R.id.visibilitySwitch);
@@ -413,6 +417,9 @@ public class Layout {
                 getFromDatabase = true;
                 layoutsToUse.add(R.layout.iqatab_record);
                 layoutsToUse.add(R.layout.iqatab_record);
+                // Add onItemSelectedListener to manage score
+                AdapterView.OnItemSelectedListener tabListener = createIQAListener();
+                listeners.add(tabListener);
                 layoutParent.addView(customView);
                 break;
         }
@@ -535,11 +542,10 @@ public class Layout {
                 }
                 LinearLayout root = (LinearLayout) LayoutUtils.findParentRecursively(parent, R.id.Grid);
                 TextView totalScoreView = (TextView) root.findViewById(R.id.adherenceScore);
-                totalScore = totalScore*100.0F/20.0F;
+				totalScore = totalScore*100.0F/20.0F;
                 // TrafficLight Logic
-                LayoutUtils.trafficLight(totalScoreView, totalScore);
-                totalScoreView.setText(Utils.round(totalScore));
-
+                LayoutUtils.trafficLight(totalScoreView, totalScore);               
+				totalScoreView.setText(Utils.round(totalScore*100.0F/20.0F));
             }
 
             @Override
@@ -550,7 +556,6 @@ public class Layout {
 
         return listener;
     }
-
 
     public static void createAdherenceSwitchListener(Switch switchView){
         switchView.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -564,6 +569,47 @@ public class Layout {
                 return;
             }
         });
+    }
+
+    public static AdapterView.OnItemSelectedListener createIQAListener(){
+        AdapterView.OnItemSelectedListener listener = new AdapterView.OnItemSelectedListener(){
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                // This will occur when an item is selected in Adherence spinners
+                // For Adherence, when Test results is RDT* then ACT Prescribed=Yes means score=1, otherwise score=0
+                //              , when Test results is Microscopy* then ACT Prescribed=No means Score=1, otherwise score=0
+                int score = 0;
+                TextView actPrescribed = (TextView)((ViewGroup)((ViewGroup)parent.getParent().getParent()).getChildAt(2)).getChildAt(0);
+                if("RDT Positive".equals(actPrescribed.getText()) || "RDT Negative".equals(actPrescribed.getText())){
+                    if (position == 1) score=1;
+                    else score=0;
+                }else if("Microscopy Positive".equals(actPrescribed.getText()) || "Microscopy Negative".equals(actPrescribed.getText())){
+                    if (position == 2) score=1;
+                    else score=0;
+                }
+                TextView scoreText = (TextView)((ViewGroup)((ViewGroup)parent.getParent().getParent()).getChildAt(4)).getChildAt(0);
+                scoreText.setText((String)Integer.toString(score));
+                // Set the total score in the score tab
+                TableLayout table = (TableLayout)LayoutUtils.findParentRecursively(parent, R.id.register2Table);
+                float totalScore = 0.0F;
+                for (int i=1; i<((ViewGroup) table).getChildCount(); i++){
+                    TableRow row = (TableRow) table.getChildAt(i);
+                    TextView scoreCell = ((TextView) ((ViewGroup) row.getChildAt(4)).getChildAt(0));
+                    String stringFloat = scoreCell.getText().toString();
+                    if (!("".equals(scoreCell.getText()))) totalScore += Float.parseFloat(stringFloat);
+                }
+                LinearLayout root = (LinearLayout) LayoutUtils.findParentRecursively(parent, R.id.Grid);
+                TextView totalScoreView = (TextView) root.findViewById(R.id.adherenceScore);
+                totalScoreView.setText(Utils.round(totalScore*100.0F/20.0F));
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        };
+
+        return listener;
     }
 }
 

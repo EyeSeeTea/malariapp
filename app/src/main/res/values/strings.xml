@@ -98,6 +98,11 @@
     <string name="parasites">Parasites/uL</string>
     <string name="species">Species</string>
     <string name="labstaff">Lab Staff</string>
+    <string name="reporting">Reporting</string>
+    <string name="talliesHeader">TALLIES - Add up and enter the totals for the following indicators from the registers in column A.  In column B enter the total numbers from the monthly reporting sheet</string>
+    <string name="results">Results</string>
+    <string name="register">Register</string>
+    <string name="monthlyReport">Monthly Report</string>
     <string name="percentage">%</string>
     <string name="score4tab">Score for tab</string>
     <string name="scorefortab">Score for tab:</string>
