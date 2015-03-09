@@ -33,7 +33,8 @@
                 android:layout_height="wrap_content"
                 android:inputType="number"
                 android:id="@+id/parasites"
-                android:background="@drawable/background_textfield" />
+                android:background="@drawable/background_textfield"
+            android:textSize="14sp" />
     </LinearLayout>
 
     <LinearLayout
@@ -48,7 +49,8 @@
                 android:layout_height="wrap_content"
                 android:inputType="number"
                 android:id="@+id/species"
-                android:background="@drawable/background_textfield" />
+                android:background="@drawable/background_textfield"
+            android:textSize="14sp" />
     </LinearLayout>
 
 </TableRow>
