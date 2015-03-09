@@ -416,8 +416,10 @@ public class Layout {
                 layoutsToUse.add(R.layout.iqatab_record);
                 layoutsToUse.add(R.layout.iqatab_record);
                 // Add onItemSelectedListener to manage score
-                AdapterView.OnItemSelectedListener tabListener = createIQAListener();
+                AdapterView.OnItemSelectedListener tabListener = createIQAListener(customView, R.id.labStaffTable, R.id.matchTable);
+                AdapterView.OnItemSelectedListener tabListener2 = createIQAListener(customView, R.id.supervisorTable, R.id.matchTable);
                 listeners.add(tabListener);
+                listeners.add(tabListener2);
                 layoutParent.addView(customView);
                 break;
         }
@@ -569,36 +571,25 @@ public class Layout {
         });
     }
 
-    public static AdapterView.OnItemSelectedListener createIQAListener(){
+    public static AdapterView.OnItemSelectedListener createIQAListener(View view, int opositeTableLayout, int matchTableLayout){
+        final TableLayout opositeTable = (TableLayout) view.findViewById(opositeTableLayout);
+        final TableLayout matchTable = (TableLayout) view.findViewById(matchTableLayout);
         AdapterView.OnItemSelectedListener listener = new AdapterView.OnItemSelectedListener(){
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                // This will occur when an item is selected in Adherence spinners
-                // For Adherence, when Test results is RDT* then ACT Prescribed=Yes means score=1, otherwise score=0
-                //              , when Test results is Microscopy* then ACT Prescribed=No means Score=1, otherwise score=0
+                // This will occur when an item is selected in IQAEQA spinners
+                // For IQAEQA, when file each file spinner option match with its equivalent in the other table, that means score = 1
                 int score = 0;
-                TextView actPrescribed = (TextView)((ViewGroup)((ViewGroup)parent.getParent().getParent()).getChildAt(2)).getChildAt(0);
-                if("RDT Positive".equals(actPrescribed.getText()) || "RDT Negative".equals(actPrescribed.getText())){
-                    if (position == 1) score=1;
-                    else score=0;
-                }else if("Microscopy Positive".equals(actPrescribed.getText()) || "Microscopy Negative".equals(actPrescribed.getText())){
-                    if (position == 2) score=1;
-                    else score=0;
-                }
-                TextView scoreText = (TextView)((ViewGroup)((ViewGroup)parent.getParent().getParent()).getChildAt(4)).getChildAt(0);
-                scoreText.setText((String)Integer.toString(score));
-                // Set the total score in the score tab
-                TableLayout table = (TableLayout)LayoutUtils.findParentRecursively(parent, R.id.register2Table);
                 float totalScore = 0.0F;
-                for (int i=1; i<((ViewGroup) table).getChildCount(); i++){
-                    TableRow row = (TableRow) table.getChildAt(i);
-                    TextView scoreCell = ((TextView) ((ViewGroup) row.getChildAt(4)).getChildAt(0));
-                    String stringFloat = scoreCell.getText().toString();
-                    if (!("".equals(scoreCell.getText()))) totalScore += Float.parseFloat(stringFloat);
-                }
-                LinearLayout root = (LinearLayout) LayoutUtils.findParentRecursively(parent, R.id.Grid);
-                TextView totalScoreView = (TextView) root.findViewById(R.id.adherenceScore);
-                totalScoreView.setText(Utils.round(totalScore*100.0F/20.0F));
+                TableRow thisRow = (TableRow)((ViewGroup)parent.getParent()).getParent();
+                int numberOfRow = Integer.parseInt((String)((TextView) thisRow.getChildAt(0)).getText());
+                int thisPosition = parent.getSelectedItemPosition();
+                int opositePosition = ((Spinner)((ViewGroup)((ViewGroup)opositeTable.getChildAt(numberOfRow)).getChildAt(1)).getChildAt(0)).getSelectedItemPosition();
+                if (thisPosition == opositePosition && thisPosition != 0 && opositePosition != 0) score = 1;
+                TextView scoreView = (TextView)((ViewGroup)matchTable.getChildAt(numberOfRow)).getChildAt(1);
+                scoreView.setText(Integer.toString(score));
+
+                // Update in score tab
             }
 
             @Override

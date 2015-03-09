@@ -106,6 +106,7 @@
     <string name="percentage">%</string>
     <string name="score4tab">Score for tab</string>
     <string name="scorefortab">Score for tab:</string>
+    <string name="supervisormatchlab">Supervisor matches lab staff?</string>
     <string-array name="iqa_testresult">
         <item></item>
         <item>Positive</item>
