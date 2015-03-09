@@ -169,21 +169,7 @@ public class Layout {
 
                     // If the option is changed to positive numerator and has children, we need to show the children and take their denominators into account
                     if (triggeredQuestion.hasChildren()) {
-                        View parent = LayoutUtils.findParentRecursively(spinner, (Integer) spinner.getTag(R.id.Tab));
-                        for (Question childQuestion : triggeredQuestion.getQuestionChildren()) {
-                            View childView = LayoutUtils.findChildRecursively(parent, childQuestion);
-                            if (position == 1) { //FIXME: There must be a smarter way for saying "if the user selected yes"
-                                LayoutUtils.toggleVisible(childView, View.VISIBLE);
-                                ((View) ((View) childView).getTag(R.id.HeaderViewTag)).setVisibility(View.VISIBLE);
-                                numDenRecordMap.get((Integer) spinner.getTag(R.id.Tab)).addRecord(childQuestion, 0F, childQuestion.getDenominator_w());
-                            } else {
-                                LayoutUtils.toggleVisible(childView, View.GONE);
-                                if (LayoutUtils.isHeaderEmpty(triggeredQuestion.getQuestionChildren(), childQuestion.getHeader().getQuestions())) {
-                                    ((View) ((View) childView).getTag(R.id.HeaderViewTag)).setVisibility(View.GONE);
-                                }
-                                numDenRecordMap.get((Integer) spinner.getTag(R.id.Tab)).deleteRecord(childQuestion);
-                            }
-                        }
+                        toggleVisibleChildren(position, spinner, triggeredQuestion);
                     }
 
                     numeratorView.setText(Utils.round(numerator));
@@ -192,12 +178,18 @@ public class Layout {
                 } else {
                     // This is for capturing the event when the user leaves the dropdown list without selecting any option
                     numerator = new Float(0.0F);
-                    denominator = triggeredQuestion.getDenominator_w();
+                    if (triggeredQuestion.hasChildren() == true){
+                        denominator = new Float(0.0F);
+                        toggleVisibleChildren(position, spinner, triggeredQuestion);
+                    }
+                    else{
+                        denominator = triggeredQuestion.getDenominator_w();
+                    }
+
                     if (selectedItemView != null) {
                         numeratorView.setText(Utils.round(numerator));
-                        denominatorView.setText(Utils.round(denominator));
+                         denominatorView.setText(Utils.round(denominator));
                     }
-                    // TODO: Maybe removing this line we'll avoid loading children denominator in first load
                     numDenRecordMap.get((Integer) spinner.getTag(R.id.Tab)).addRecord(triggeredQuestion, numerator, denominator);
                 }
 
@@ -279,6 +271,24 @@ public class Layout {
             }
 
         });
+    }
+
+    private static void toggleVisibleChildren(int position, Spinner spinner, Question triggeredQuestion) {
+        View parent = LayoutUtils.findParentRecursively(spinner, (Integer) spinner.getTag(R.id.Tab));
+        for (Question childQuestion : triggeredQuestion.getQuestionChildren()) {
+            View childView = LayoutUtils.findChildRecursively(parent, childQuestion);
+            if (position == 1) { //FIXME: There must be a smarter way for saying "if the user selected yes"
+                LayoutUtils.toggleVisible(childView, View.VISIBLE);
+                ((View) ((View) childView).getTag(R.id.HeaderViewTag)).setVisibility(View.VISIBLE);
+                numDenRecordMap.get((Integer) spinner.getTag(R.id.Tab)).addRecord(childQuestion, 0F, childQuestion.getDenominator_w());
+            } else {
+                LayoutUtils.toggleVisible(childView, View.GONE);
+                if (LayoutUtils.isHeaderEmpty(triggeredQuestion.getQuestionChildren(), childQuestion.getHeader().getQuestions())) {
+                    ((View) ((View) childView).getTag(R.id.HeaderViewTag)).setVisibility(View.GONE);
+                }
+                numDenRecordMap.get((Integer) spinner.getTag(R.id.Tab)).deleteRecord(childQuestion);
+            }
+        }
     }
 
     private static View getView(int iterBacks, LayoutInflater inflater, GridLayout layoutParent, View headerView, Question question, Integer componentType, int questionType) {
