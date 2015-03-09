@@ -669,9 +669,11 @@ public class Layout {
 
             @Override
             public void afterTextChanged(Editable s) {
-                int score = 0;
+                float totalScore = 0.0F;
+                TextView totalScoreView = null;
                 EditText myEdit = (EditText)myActivity.getCurrentFocus();
                 TableRow myRow = (TableRow) ((ViewGroup) myEdit.getParent()).getParent();
+                TableLayout myTable = (TableLayout)((ViewGroup)myRow).getParent();
                 EditText registerView = (EditText)((ViewGroup)myRow.getChildAt(1)).getChildAt(0);
                 EditText monthlyView = (EditText)((ViewGroup)myRow.getChildAt(2)).getChildAt(0);
                 TextView scoreView = (TextView)((ViewGroup)myRow.getChildAt(3)).getChildAt(0);
@@ -685,6 +687,16 @@ public class Layout {
                     scoreView.setText("0");
                 }
 
+                // Update in score tab
+                LinearLayout root = (LinearLayout) LayoutUtils.findParentRecursively(myEdit, R.id.Grid);
+                for (int i=1; i<myTable.getChildCount(); i++){
+                    totalScoreView = (TextView)((ViewGroup)((ViewGroup) myTable.getChildAt(i)).getChildAt(3)).getChildAt(0);
+                    if (!("".equals((String)totalScoreView.getText()))) totalScore += Float.parseFloat((String)totalScoreView.getText());
+                }
+                totalScore = totalScore*10.0F;
+                TextView reportingScore = (TextView) root.findViewById(R.id.reportingScore);
+                LayoutUtils.trafficLight(reportingScore, totalScore);
+                reportingScore.setText(Utils.round(totalScore));
             }
         };
         return watcher;
