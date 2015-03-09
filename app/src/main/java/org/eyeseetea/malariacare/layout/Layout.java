@@ -400,9 +400,6 @@ public class Layout {
                 layoutParent.addView(customView);
                 break;
             case R.layout.reportingtab:
-//                ListView list=(ListView) customView.findViewById(R.id.listView);
-//                ArrayAdapter<ReportingResults> adapter = new ReportingResultsArrayAdapter(mainActivity, LayoutUtils.addReportingQuestions());
-//                list.setAdapter(adapter);
                 getFromDatabase = true;
                 layoutsToUse.add(R.layout.reporting_record);
                 layoutsToUse.add(R.layout.reporting_record2);

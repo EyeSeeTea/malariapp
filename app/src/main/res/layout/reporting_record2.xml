@@ -19,32 +19,36 @@
 
     <LinearLayout
         android:orientation="vertical"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:id="@+id/registerContainer"
-        android:padding="5dip">
+        android:padding="5dip"
+        android:layout_gravity="center">
 
         <EditText
                 android:layout_width="40dip"
                 android:layout_height="wrap_content"
                 android:inputType="number"
                 android:id="@+id/register"
-                android:background="@drawable/background_textfield" />
+                android:background="@drawable/background_textfield"
+                android:tag="listener" />
     </LinearLayout>
 
     <LinearLayout
         android:orientation="vertical"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:id="@+id/monthlyReportContainer"
-        android:padding="5dip">
+        android:padding="5dip"
+        android:layout_gravity="center">
 
         <EditText
                 android:layout_width="40dip"
-                android:layout_height="wrap_content"
+                android:layout_height="fill_parent"
                 android:inputType="number"
                 android:id="@+id/monthlyReport"
-                android:background="@drawable/background_textfield" />
+                android:background="@drawable/background_textfield"
+                android:tag="listener"/>
 
     </LinearLayout>
 

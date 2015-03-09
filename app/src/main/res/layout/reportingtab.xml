@@ -80,7 +80,7 @@
                     android:layout_height="fill_parent"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:text="@string/results"
-                    android:id="@+id/textView3"
+                    android:id="@+id/resultsHeader"
                     android:background="@drawable/background_header"
                     android:textColor="#ffffff"
                     android:gravity="center"
@@ -92,7 +92,7 @@
                     android:layout_height="fill_parent"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:text="@string/register"
-                    android:id="@+id/textView4"
+                    android:id="@+id/registerHeader"
                     android:background="@drawable/background_header"
                     android:textColor="#ffffff"
                     android:lines="2"
@@ -101,10 +101,22 @@
 
                 <TextView
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="fill_parent"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:text="@string/monthlyReport"
-                    android:id="@+id/textView5"
+                    android:id="@+id/reportHeader"
+                    android:background="@drawable/background_header"
+                    android:textColor="#ffffff"
+                    android:lines="2"
+                    android:gravity="center"
+                    android:padding="5dip" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="fill_parent"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="@string/scoreHeader"
+                    android:id="@+id/scoreHeader"
                     android:background="@drawable/background_header"
                     android:textColor="#ffffff"
                     android:lines="2"
