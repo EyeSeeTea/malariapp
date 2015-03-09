@@ -11,7 +11,6 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.GridLayout;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.Switch;
@@ -395,8 +394,8 @@ public class Layout {
 //                ArrayAdapter<ReportingResults> adapter = new ReportingResultsArrayAdapter(mainActivity, LayoutUtils.addReportingQuestions());
 //                list.setAdapter(adapter);
                 getFromDatabase = true;
-                layoutsToUse.add(R.layout.shorttext);
                 layoutsToUse.add(R.layout.reporting_record);
+                layoutsToUse.add(R.layout.reporting_record2);
                 layoutParent.addView(customView);
                 break;
             case R.layout.adherencetab:
@@ -441,65 +440,80 @@ public class Layout {
                     TableLayout table = (TableLayout)tables.get(0);
                     // Now we have the table element, we have to search for the parent questions
                     List <Question> questions = headers.get(i).getQuestions(); // FIXME: improve this search to get only the parent questions
-                    for (Question question: questions){
-                        List<Question> children = question.getQuestionChildren();
+                    for (Question question: questions) {
                         // If the question is a parent, do don't show it but use it to put the row layout
-                        if (question.hasChildren()){ // FIXME: when the search above is improve this check will be unnecessary
-                            iterListeners = 0;
-                            TextView answer = null;
+                        if (question.getQuestion() == null) { // FIXME: when the search above is improve this check will be unnecessary
+
                             View rowView = inflater.inflate(layoutsToUse.get(i), table, false);
-                            // Set the row number
-                            TextView number = (TextView) rowView.findViewById(R.id.number);
-                            number.setText(question.getForm_name());
-                            // Set the row background
-                            rowView.setBackgroundResource(backgrounds[iterBacks % backgrounds.length]);
-                            table.addView(rowView);
-                            Log.d(".Layout", "Row Question");
 
-                            for (int j=0; j<children.size(); j++) {
-                                if (children.get(j).getAnswer() != null){
-                                    switch (children.get(j).getAnswer().getOutput()) {
-                                        case Constants.DROPDOWN_LIST:
-                                            Option defaultOption = new Option(Constants.DEFAULT_SELECT_OPTION);
-                                            List<Option> optionList = children.get(j).getAnswer().getOptions();
-                                            optionList.add(0, defaultOption);
-                                            ArrayAdapter adapter = new ArrayAdapter(mainActivity, android.R.layout.simple_spinner_item, optionList);
-                                            Spinner dropdown = (Spinner) ((ViewGroup) ((ViewGroup) rowView).getChildAt(j + 1)).getChildAt(0); // We take the spinner
-                                            dropdown.setTag(R.id.QuestionTypeTag, Constants.DROPDOWN_LIST);
-                                            dropdown.setAdapter(adapter);
-                                            if ("listener".equals(dropdown.getTag())) {
-                                                dropdown.setOnItemSelectedListener(listeners.get(iterListeners));
-                                                iterListeners++;
-                                            }
+                            if (question.hasChildren()){
+                                List<Question> children = question.getQuestionChildren();
 
-                                            break;
-                                        case Constants.INT:
-                                            Log.d(".Layout", "Question int");
-                                            answer = (TextView) ((ViewGroup) ((ViewGroup) rowView).getChildAt(j + 1)).getChildAt(0); // We take the textfield
-                                            answer.setTag(R.id.QuestionTypeTag, Constants.INT);
-                                            break;
-                                        case Constants.LONG_TEXT:
-                                            Log.i(".Layout", "Question longtext");
-                                            answer = (TextView) ((ViewGroup) ((ViewGroup) rowView).getChildAt(j + 1)).getChildAt(0); // We take the textfield
-                                            answer.setTag(R.id.QuestionTypeTag, Constants.LONG_TEXT);
-                                            break;
-                                        case Constants.SHORT_TEXT:
-                                            Log.i(".Layout", "Question shorttext");
-                                            answer = (TextView) ((ViewGroup) ((ViewGroup) rowView).getChildAt(j + 1)).getChildAt(0); // We take the textfield
-                                            answer.setTag(R.id.QuestionTypeTag, Constants.SHORT_TEXT);
-                                            break;
-                                        case Constants.SHORT_DATE:
-                                        case Constants.LONG_DATE:
-                                            Log.i(".Layout", "Question date");
-                                            answer = (TextView) ((ViewGroup) ((ViewGroup) rowView).getChildAt(j + 1)).getChildAt(0); // We take the textfield
-                                            answer.setTag(R.id.QuestionTypeTag, Constants.SHORT_DATE);
-                                            break;
-                                    }
-                                } else {
-                                    ((TextView) ((ViewGroup) ((ViewGroup) rowView).getChildAt(j + 1)).getChildAt(0)).setText(children.get(j).getForm_name());
+                                iterListeners = 0;
+                                TextView answer = null;
+                                int offset = 0;
+
+                                // Set the row number
+                                TextView number = (TextView) rowView.findViewById(R.id.number);
+                                if (number != null) {
+                                    number.setText(question.getForm_name());
+                                    offset = offset + 1;
                                 }
+
+                                // Set the row background
+                                rowView.setBackgroundResource(backgrounds[iterBacks % backgrounds.length]);
+                                table.addView(rowView);
+                                Log.d(".Layout", "Row Question");
+
+                                for (int j = 0; j < children.size(); j++) {
+                                    if (children.get(j).getAnswer() != null) {
+                                        switch (children.get(j).getAnswer().getOutput()) {
+                                            case Constants.DROPDOWN_LIST:
+                                                Option defaultOption = new Option(Constants.DEFAULT_SELECT_OPTION);
+                                                List<Option> optionList = children.get(j).getAnswer().getOptions();
+                                                optionList.add(0, defaultOption);
+                                                ArrayAdapter adapter = new ArrayAdapter(mainActivity, android.R.layout.simple_spinner_item, optionList);
+                                                Spinner dropdown = (Spinner) ((ViewGroup) ((ViewGroup) rowView).getChildAt(j + offset)).getChildAt(0); // We take the spinner
+                                                dropdown.setTag(R.id.QuestionTypeTag, Constants.DROPDOWN_LIST);
+                                                dropdown.setAdapter(adapter);
+                                                if ("listener".equals(dropdown.getTag())) {
+                                                    dropdown.setOnItemSelectedListener(listeners.get(iterListeners));
+                                                    iterListeners++;
+                                                }
+
+                                                break;
+                                            case Constants.INT:
+                                                Log.d(".Layout", "Question int");
+                                                answer = (TextView) ((ViewGroup) ((ViewGroup) rowView).getChildAt(j + offset)).getChildAt(0); // We take the textfield
+                                                answer.setTag(R.id.QuestionTypeTag, Constants.INT);
+                                                break;
+                                            case Constants.LONG_TEXT:
+                                                Log.i(".Layout", "Question longtext");
+                                                answer = (TextView) ((ViewGroup) ((ViewGroup) rowView).getChildAt(j + offset)).getChildAt(0); // We take the textfield
+                                                answer.setTag(R.id.QuestionTypeTag, Constants.LONG_TEXT);
+                                                break;
+                                            case Constants.SHORT_TEXT:
+                                                Log.i(".Layout", "Question shorttext");
+                                                answer = (TextView) ((ViewGroup) ((ViewGroup) rowView).getChildAt(j + offset)).getChildAt(0); // We take the textfield
+                                                answer.setTag(R.id.QuestionTypeTag, Constants.SHORT_TEXT);
+                                                break;
+                                            case Constants.SHORT_DATE:
+                                            case Constants.LONG_DATE:
+                                                Log.i(".Layout", "Question date");
+                                                answer = (TextView) ((ViewGroup) ((ViewGroup) rowView).getChildAt(j + offset)).getChildAt(0); // We take the textfield
+                                                answer.setTag(R.id.QuestionTypeTag, Constants.SHORT_DATE);
+                                                break;
+                                        }
+                                    } else {
+                                        ((TextView) ((ViewGroup) ((ViewGroup) rowView).getChildAt(j + offset)).getChildAt(0)).setText(children.get(j).getForm_name());
+                                    }
+                                }
+                                iterBacks++;
                             }
-                            iterBacks++;
+                            else{
+                                ((TextView) ((ViewGroup) ((ViewGroup) rowView).getChildAt(0)).getChildAt(0)).setText(question.getForm_name());
+                                table.addView(rowView);
+                            }
                         }
                     }
                 }else{

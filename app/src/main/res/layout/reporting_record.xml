@@ -3,12 +3,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:id="@+id/number" />
-
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="wrap_content"
@@ -19,7 +13,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
-            android:id="@+id/reportingQuestion"
+            android:id="@+id/talliesQuestion"
             android:padding="5dip" />
     </LinearLayout>
 
@@ -27,48 +21,15 @@
         android:orientation="vertical"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:id="@+id/registerContainer"
+        android:id="@+id/talliesContainer"
         android:padding="5dip">
 
         <EditText
                 android:layout_width="40dip"
                 android:layout_height="wrap_content"
-                android:inputType="number"
-                android:id="@+id/register"
-                android:background="@drawable/background_textfield" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:id="@+id/monthlyReportContainer"
-        android:padding="5dip">
-
-        <EditText
-                android:layout_width="40dip"
-                android:layout_height="wrap_content"
-                android:inputType="number"
-                android:id="@+id/monthlyReport"
+            android:id="@+id/tallies"
                 android:background="@drawable/background_textfield" />
 
-    </LinearLayout>
-
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/scoreContainer"
-        android:padding="5dip"
-        android:layout_gravity="center" >
-
-        <TextView
-            android:layout_width="40dip"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:id="@+id/score"
-            android:padding="5dip"
-            android:layout_gravity="center" />
     </LinearLayout>
 
 </TableRow>

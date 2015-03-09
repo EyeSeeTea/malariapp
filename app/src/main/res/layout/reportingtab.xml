@@ -4,10 +4,6 @@
     android:layout_height="fill_parent">
 
 
-    <Space
-        android:layout_width="20dip"
-        android:layout_height="40dip" />
-
     <GridLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -69,7 +65,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/tableLayout"
-            android:tag="AdherenceTable1"
+            android:tag="Reporting2"
             android:layout_gravity="center" >
 
             <TableRow
@@ -78,10 +74,6 @@
                 android:id="@+id/tableRow"
                 android:layout_gravity="center"
                 android:background="@drawable/background_odd" >
-
-                <Space
-                    android:layout_width="20dip"
-                    android:layout_height="40dip" />
 
                 <TextView
                     android:layout_width="wrap_content"
