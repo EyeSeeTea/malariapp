@@ -88,18 +88,20 @@ public class Layout {
             return;
         }else {
             generateAutomaticTab(mainActivity, tab, tabConfiguration, inflater, layoutParent, defaultOption);
-            generateScore(tabConfiguration, inflater, layoutGrandParent);
+            generateScore(tab, tabConfiguration, inflater, layoutGrandParent);
         }
     }
 
 
-    private static void generateScore(TabConfiguration tabConfiguration, LayoutInflater inflater, LinearLayout layoutGrandParent) {
+    private static void generateScore(Tab tab, TabConfiguration tabConfiguration, LayoutInflater inflater, LinearLayout layoutGrandParent) {
         // This layout is for showing the accumulated score
         GridLayout layoutParentScore = (GridLayout) layoutGrandParent.getChildAt(1);
         Log.i(".Layout", "Grandpa layout children: " + layoutGrandParent.getChildCount());
         View subtotalView = inflater.inflate(R.layout.subtotal_num_dem, layoutParentScore, false);
         TextView totalNumText = (TextView) subtotalView.findViewById(R.id.totalNum);
         TextView totalDenText = (TextView) subtotalView.findViewById(R.id.totalDen);
+        TextView tabName = (TextView) subtotalView.findViewById(R.id.tabName);
+        tabName.setText(tab.getName());
         totalNumText.setText("0.0");
         List<Float> numDenSubTotal = numDenRecordMap.get(tabConfiguration.getTabId()).calculateNumDenTotal();
         totalDenText.setText(Utils.round(numDenSubTotal.get(1)));

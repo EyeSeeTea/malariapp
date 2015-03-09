@@ -103,6 +103,9 @@
     <string name="results">Results</string>
     <string name="register">Register</string>
     <string name="monthlyReport">Monthly Report</string>
+    <string name="percentage">%</string>
+    <string name="score4tab">Score for tab</string>
+    <string name="scorefortab">Score for tab:</string>
     <string-array name="iqa_testresult">
         <item></item>
         <item>Positive</item>
