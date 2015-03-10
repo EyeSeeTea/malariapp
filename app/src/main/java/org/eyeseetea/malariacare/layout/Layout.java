@@ -585,10 +585,10 @@ public class Layout {
                 }
                 LinearLayout root = (LinearLayout) LayoutUtils.findParentRecursively(parent, R.id.Grid);
                 TextView totalScoreView = (TextView) root.findViewById(R.id.adherenceScore);
-				totalScore = totalScore*100.0F/20.0F;
+                totalScore = totalScore*100.0F/20.0F;
                 // TrafficLight Logic
                 LayoutUtils.trafficLight(totalScoreView, totalScore);               
-				totalScoreView.setText(Utils.round(totalScore*100.0F/20.0F));
+				totalScoreView.setText(Utils.round(totalScore));
             }
 
             @Override
