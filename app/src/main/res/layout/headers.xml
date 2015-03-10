@@ -3,8 +3,7 @@
     android:orientation="vertical" android:layout_width="fill_parent"
     android:layout_height="match_parent"
     android:id="@+id/header"
-    android:background="@drawable/background_header"
-    android:paddingLeft="10dip">
+    android:paddingTop="30dip">
 
     <TextView
         android:layout_width="fill_parent"
@@ -14,5 +13,7 @@
         android:textColor="#ffffff"
         android:typeface="sans"
         android:textStyle="bold"
-        android:textSize="18sp" />
+        android:textSize="18sp"
+        android:background="@drawable/background_header"
+        android:paddingLeft="10dip" />
 </LinearLayout>

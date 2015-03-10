@@ -86,7 +86,6 @@ public class Layout {
 
         if (!tabConfiguration.isAutomaticTab() && tabConfiguration.getLayoutId() != null){
             generateManualTab(mainActivity, tab, tabConfiguration, inflater, layoutParent);
-            return;
         }else {
             generateAutomaticTab(mainActivity, tab, tabConfiguration, inflater, layoutParent, defaultOption);
             generateScore(tab, tabConfiguration, inflater, layoutGrandParent);
@@ -153,17 +152,17 @@ public class Layout {
                 }
 
                 Float numerator, denominator;
-                if (triggeredOption.getName() != null && triggeredOption.getName() != Constants.DEFAULT_SELECT_OPTION) { // This is for capture the user selection
+                if (triggeredOption.getName() != null && !(triggeredOption.getName().equals(Constants.DEFAULT_SELECT_OPTION))) { // This is for capture the user selection
                     // First we do the calculus
                     numerator = triggeredOption.getFactor() * triggeredQuestion.getNumerator_w();
                     Log.i(".Layout", "numerator: " + numerator);
-                    denominator = new Float(0.0F);
+                    denominator = 0.0F;
 
                     if (triggeredQuestion.getNumerator_w().compareTo(triggeredQuestion.getDenominator_w()) == 0) {
                         denominator = triggeredQuestion.getDenominator_w();
                         Log.i(".Layout", "denominator: " + denominator);
                     } else {
-                        if (triggeredQuestion.getNumerator_w().compareTo(new Float(0.0F)) == 0 && triggeredQuestion.getDenominator_w().compareTo(new Float(0.0F)) != 0) {
+                        if (triggeredQuestion.getNumerator_w().compareTo(0.0F) == 0 && triggeredQuestion.getDenominator_w().compareTo(0.0F) != 0) {
                             denominator = triggeredOption.getFactor() * triggeredQuestion.getDenominator_w();
                             Log.i(".Layout", "denominator: " + denominator);
                         }
@@ -181,9 +180,9 @@ public class Layout {
 
                 } else {
                     // This is for capturing the event when the user leaves the dropdown list without selecting any option
-                    numerator = new Float(0.0F);
-                    if (triggeredQuestion.hasChildren() == true){
-                        denominator = new Float(0.0F);
+                    numerator = 0.0F;
+                    if (triggeredQuestion.hasChildren()){
+                        denominator = 0.0F;
                         toggleVisibleChildren(position, spinner, triggeredQuestion);
                     }
                     else{
@@ -553,12 +552,10 @@ public class Layout {
                 }
             }
         }
-
-        return;
     }
 
     public static AdapterView.OnItemSelectedListener createAdherenceListener(){
-        AdapterView.OnItemSelectedListener listener = new AdapterView.OnItemSelectedListener(){
+        return new AdapterView.OnItemSelectedListener(){
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 // This will occur when an item is selected in Adherence spinners
@@ -597,8 +594,6 @@ public class Layout {
 
             }
         };
-
-        return listener;
     }
 
     public static void createAdherenceSwitchListener(Switch switchView){
@@ -618,7 +613,7 @@ public class Layout {
     public static AdapterView.OnItemSelectedListener createIQAListener(View view, int opositeTableLayout, int matchTableLayout){
         final TableLayout opositeTable = (TableLayout) view.findViewById(opositeTableLayout);
         final TableLayout matchTable = (TableLayout) view.findViewById(matchTableLayout);
-        AdapterView.OnItemSelectedListener listener = new AdapterView.OnItemSelectedListener(){
+        return new AdapterView.OnItemSelectedListener(){
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 // This will occur when an item is selected in IQAEQA spinners
@@ -629,8 +624,8 @@ public class Layout {
                 TableRow thisRow = (TableRow)((ViewGroup)parent.getParent()).getParent();
                 int numberOfRow = Integer.parseInt((String)((TextView) thisRow.getChildAt(0)).getText());
                 int thisPosition = parent.getSelectedItemPosition();
-                int opositePosition = ((Spinner)((ViewGroup)((ViewGroup)opositeTable.getChildAt(numberOfRow)).getChildAt(1)).getChildAt(0)).getSelectedItemPosition();
-                if (thisPosition == opositePosition && thisPosition != 0 && opositePosition != 0) score = 1;
+                int oppositePosition = ((Spinner)((ViewGroup)((ViewGroup)opositeTable.getChildAt(numberOfRow)).getChildAt(1)).getChildAt(0)).getSelectedItemPosition();
+                if (thisPosition == oppositePosition && thisPosition != 0 && oppositePosition != 0) score = 1;
                 TextView scoreView = (TextView)((ViewGroup)matchTable.getChildAt(numberOfRow)).getChildAt(1);
                 scoreView.setText(Integer.toString(score));
 
@@ -652,12 +647,10 @@ public class Layout {
 
             }
         };
-
-        return listener;
     }
 
     public static TextWatcher createReportingListener(final Activity myActivity){
-        TextWatcher watcher = new TextWatcher() {
+        return new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -703,7 +696,6 @@ public class Layout {
                 reportingScore.setText(Utils.round(totalScore));
             }
         };
-        return watcher;
     }
 }
 
