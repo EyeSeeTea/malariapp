@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.GridLayout;
@@ -671,6 +672,9 @@ public class Layout {
             public void afterTextChanged(Editable s) {
                 float totalScore = 0.0F;
                 TextView totalScoreView = null;
+                View myView = myActivity.getCurrentFocus();
+                Log.d(".Layout", "instance of: ");
+                if (s.length() == 0) return;
                 EditText myEdit = (EditText)myActivity.getCurrentFocus();
                 TableRow myRow = (TableRow) ((ViewGroup) myEdit.getParent()).getParent();
                 TableLayout myTable = (TableLayout)((ViewGroup)myRow).getParent();
