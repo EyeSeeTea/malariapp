@@ -21,6 +21,7 @@ public class Question extends SugarRecord<Question> {
     Header header;
     Answer answer;
     Question question;
+    CompositiveScore compositiveScore;
 
     @Ignore
     List<Question> _questionChildren;
@@ -28,7 +29,7 @@ public class Question extends SugarRecord<Question> {
     public Question() {
     }
 
-    public Question(String code, String de_name, String short_name, String form_name, String uid, Integer order_pos, Float numerator_w, Float denominator_w, Header header, Answer answer, Question question) {
+    public Question(String code, String de_name, String short_name, String form_name, String uid, Integer order_pos, Float numerator_w, Float denominator_w, Header header, Answer answer, Question question, CompositiveScore compositiveScore) {
         this.code = code;
         this.de_name = de_name;
         this.short_name = short_name;
@@ -40,6 +41,7 @@ public class Question extends SugarRecord<Question> {
         this.header = header;
         this.answer = answer;
         this.question = question;
+        this.compositiveScore = compositiveScore;
     }
 
     public String getCode() {
@@ -130,6 +132,10 @@ public class Question extends SugarRecord<Question> {
         this.question = question;
     }
 
+    public CompositiveScore getCompositiveScore() { return compositiveScore; }
+
+    public void setCompositiveScore(CompositiveScore compositiveScore) { this.compositiveScore = compositiveScore; }
+
     public boolean hasParent(){
         return getQuestion() != null;
     }
@@ -164,6 +170,7 @@ public class Question extends SugarRecord<Question> {
                 ", header=" + header +
                 ", answer=" + answer +
                 ", question=" + question +
+                ", compositiveScore=" + compositiveScore +
                 '}';
     }
 }
