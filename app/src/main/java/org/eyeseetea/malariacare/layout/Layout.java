@@ -5,6 +5,7 @@ import android.content.Context;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,7 +46,7 @@ import java.util.Map;
 public class Layout {
 
     //static final Score scores=new Score();
-    static final Map<Integer, NumDenRecord> numDenRecordMap = new HashMap<Integer, NumDenRecord>();
+    static final SparseArray<NumDenRecord> numDenRecordMap = new SparseArray<NumDenRecord>();
     static final int [] backgrounds = {R.drawable.background_even, R.drawable.background_odd};
     //Iterator for background (odd and even)
     static int iterBacks = 0;
@@ -383,7 +384,7 @@ public class Layout {
                         questionView = getView(iterBacks, inflater, layoutParent, headerView, question, R.layout.date, Constants.SHORT_TEXT);
                         break;
                 }
-                layoutParent.addView(questionView);
+                if (questionView != null) layoutParent.addView(questionView);
                 iterBacks++;
             }
         }
