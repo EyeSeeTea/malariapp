@@ -171,6 +171,8 @@ public class MainActivity extends ActionBarActivity {
         android.support.v7.app.ActionBar actionBar = this.getSupportActionBar();
         actionBar.setLogo(R.drawable.malariapp_mosquito);
         actionBar.setDisplayUseLogoEnabled(true);
+        actionBar.setDisplayShowHomeEnabled(true);
+        actionBar.setIcon(R.drawable.malariapp_mosquito);
     }
 
     // Method for capturing "Save" and "Reset" events
