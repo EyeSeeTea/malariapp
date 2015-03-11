@@ -5,6 +5,7 @@ import android.content.res.AssetManager;
 import com.opencsv.CSVReader;
 
 import org.eyeseetea.malariacare.data.Answer;
+import org.eyeseetea.malariacare.data.CompositiveScore;
 import org.eyeseetea.malariacare.data.Header;
 import org.eyeseetea.malariacare.data.Option;
 import org.eyeseetea.malariacare.data.Question;
@@ -26,6 +27,7 @@ public class PopulateDB {
     static List<Question> questionList = new ArrayList<Question>();
     static List<Option> optionList = new ArrayList<Option>();
     static List<Answer> answerList = new ArrayList<Answer>();
+    static List<CompositiveScore> compositiveScoreList = new ArrayList<CompositiveScore>();
 
     static List<Header> headerCustomList = new ArrayList<Header>();
     static List<Question> questionCustomList = new ArrayList<Question>();
@@ -33,7 +35,7 @@ public class PopulateDB {
     public static void populateDB(AssetManager assetManager) throws IOException {
 
 
-        List<String> tables2populate = Arrays.asList("Tabs.csv", "Headers.csv", "Answers.csv", "Options.csv", "Questions.csv", "HeadersCustom.csv", "QuestionsCustom.csv");
+        List<String> tables2populate = Arrays.asList("Tabs.csv", "Headers.csv", "Answers.csv", "Options.csv", "CompositiveScores.csv", "Questions.csv", "HeadersCustom.csv", "QuestionsCustom.csv");
 
         CSVReader reader = null;
         for (String table : tables2populate) {
@@ -70,6 +72,12 @@ public class PopulateDB {
                         option.setAnswer(answerList.get(Integer.valueOf(line[3]) - 1));
                         optionList.add(option);
                         break;
+                    case "CompositiveScores.csv":
+                        CompositiveScore compositiveScore = new CompositiveScore();
+                        compositiveScore.setLabel(line[1]);
+                        if (!line[2].equals("")) compositiveScore.setCompositiveScore(compositiveScoreList.get(Integer.valueOf(line[2]) - 1));
+                        compositiveScoreList.add(compositiveScore);
+                        break;
                     case "Questions.csv":
                         Question question = new Question();
                         question.setCode(line[1]);
@@ -83,6 +91,7 @@ public class PopulateDB {
                         question.setHeader(headerList.get(Integer.valueOf(line[9])-1));
                         question.setAnswer(answerList.get(Integer.valueOf(line[10])-1));
                         if (!line[11].equals("")) question.setQuestion(questionList.get(Integer.valueOf(line[11])-1));
+                        if (line.length == 13 && !line[12].equals("")) question.setCompositiveScore(compositiveScoreList.get(Integer.valueOf(line[12])-1));
                         questionList.add(question);
                         break;
                     case "HeadersCustom.csv":
@@ -118,6 +127,7 @@ public class PopulateDB {
         Header.saveInTx(headerList);
         Answer.saveInTx(answerList);
         Option.saveInTx(optionList);
+        CompositiveScore.saveInTx(compositiveScoreList);
         Question.saveInTx(questionList);
 
         Header.saveInTx(headerCustomList);
