@@ -3,7 +3,6 @@ package org.eyeseetea.malariacare.utils;
 import android.content.res.AssetManager;
 
 import com.opencsv.CSVReader;
-import com.opencsv.bean.ColumnPositionMappingStrategy;
 
 import org.eyeseetea.malariacare.data.Answer;
 import org.eyeseetea.malariacare.data.Header;
@@ -11,9 +10,7 @@ import org.eyeseetea.malariacare.data.Option;
 import org.eyeseetea.malariacare.data.Question;
 import org.eyeseetea.malariacare.data.Tab;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -48,14 +45,14 @@ public class PopulateDB {
                     case "Tabs.csv":
                         Tab tab = new Tab();
                         tab.setName(line[1]);
-                        tab.setOrder_tab(Integer.valueOf(line[2]));
+                        tab.setOrder_pos(Integer.valueOf(line[2]));
                         tabList.add(tab);
                         break;
                     case "Headers.csv":
                         Header header = new Header();
                         header.setShort_name(line[1]);
                         header.setName(line[2]);
-                        header.setOrder_header(Integer.valueOf(line[3]));
+                        header.setOrder_pos(Integer.valueOf(line[3]));
                         header.setMaster(Integer.valueOf(line[4]));
                         header.setTab(tabList.get(Integer.valueOf(line[5])-1));
                         headerList.add(header);
@@ -80,7 +77,7 @@ public class PopulateDB {
                         question.setShort_name(line[3]);
                         question.setForm_name(line[4]);
                         question.setUid(line[5]);
-                        question.setOrder_question(Integer.valueOf(line[6]));
+                        question.setOrder_pos(Integer.valueOf(line[6]));
                         question.setNumerator_w(Float.valueOf(line[7]));
                         question.setDenominator_w(Float.valueOf(line[8]));
                         question.setHeader(headerList.get(Integer.valueOf(line[9])-1));
@@ -92,7 +89,7 @@ public class PopulateDB {
                         Header headerCustom = new Header();
                         headerCustom.setShort_name(line[1]);
                         headerCustom.setName(line[2]);
-                        headerCustom.setOrder_header(Integer.valueOf(line[3]));
+                        headerCustom.setOrder_pos(Integer.valueOf(line[3]));
                         headerCustom.setMaster(Integer.valueOf(line[4]));
                         headerCustom.setTab(tabList.get(Integer.valueOf(line[5])-1));
                         headerCustomList.add(headerCustom);
@@ -104,7 +101,7 @@ public class PopulateDB {
                         questionCustom.setShort_name(line[3]);
                         questionCustom.setForm_name(line[4]);
                         questionCustom.setUid(line[5]);
-                        questionCustom.setOrder_question(Integer.valueOf(line[6]));
+                        questionCustom.setOrder_pos(Integer.valueOf(line[6]));
                         questionCustom.setNumerator_w(Float.valueOf(line[7]));
                         questionCustom.setDenominator_w(Float.valueOf(line[8]));
                         questionCustom.setHeader(headerCustomList.get(Integer.valueOf(line[9])-1));

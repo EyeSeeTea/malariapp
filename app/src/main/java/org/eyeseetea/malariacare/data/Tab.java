@@ -10,14 +10,14 @@ import java.util.List;
 public class Tab extends SugarRecord<Tab> {
 
     String name;
-    Integer order_tab;
+    Integer order_pos;
 
     public Tab() {
     }
 
-    public Tab(String name, Integer order_tab) {
+    public Tab(String name, Integer order_pos) {
         this.name = name;
-        this.order_tab = order_tab;
+        this.order_pos = order_pos;
     }
 
     public String getName() {
@@ -28,12 +28,12 @@ public class Tab extends SugarRecord<Tab> {
         this.name = name;
     }
 
-    public Integer getOrder_tab() {
-        return order_tab;
+    public Integer getOrder_pos() {
+        return order_pos;
     }
 
-    public void setOrder_tab(Integer order_tab) {
-        this.order_tab = order_tab;
+    public void setOrder_pos(Integer order_pos) {
+        this.order_pos = order_pos;
     }
 
     public List<Header> getHeaders(){
@@ -49,7 +49,7 @@ public class Tab extends SugarRecord<Tab> {
         return "Tab{" +
                 "id='" + id + '\'' +
                 ", name='" + name + '\'' +
-                ", order_tab=" + order_tab +
+                ", order_pos=" + order_pos +
                 '}';
     }
 }

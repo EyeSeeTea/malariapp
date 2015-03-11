@@ -15,7 +15,7 @@ public class Question extends SugarRecord<Question> {
     String short_name;
     String form_name;
     String uid;
-    Integer order_question;
+    Integer order_pos;
     Float numerator_w;
     Float denominator_w;
     Header header;
@@ -28,13 +28,13 @@ public class Question extends SugarRecord<Question> {
     public Question() {
     }
 
-    public Question(String code, String de_name, String short_name, String form_name, String uid, Integer order_question, Float numerator_w, Float denominator_w, Header header, Answer answer, Question question) {
+    public Question(String code, String de_name, String short_name, String form_name, String uid, Integer order_pos, Float numerator_w, Float denominator_w, Header header, Answer answer, Question question) {
         this.code = code;
         this.de_name = de_name;
         this.short_name = short_name;
         this.form_name = form_name;
         this.uid = uid;
-        this.order_question = order_question;
+        this.order_pos = order_pos;
         this.numerator_w = numerator_w;
         this.denominator_w = denominator_w;
         this.header = header;
@@ -82,12 +82,12 @@ public class Question extends SugarRecord<Question> {
         this.uid = uid;
     }
 
-    public Integer getOrder_question() {
-        return order_question;
+    public Integer getOrder_pos() {
+        return order_pos;
     }
 
-    public void setOrder_question(Integer order_question) {
-        this.order_question = order_question;
+    public void setOrder_pos(Integer order_pos) {
+        this.order_pos = order_pos;
     }
 
     public Float getNumerator_w() {
@@ -158,7 +158,7 @@ public class Question extends SugarRecord<Question> {
                 ", short_name='" + short_name + '\'' +
                 ", form_name='" + form_name + '\'' +
                 ", uid='" + uid + '\'' +
-                ", order_question=" + order_question +
+                ", order_pos=" + order_pos +
                 ", numerator_w=" + numerator_w +
                 ", denominator_w=" + denominator_w +
                 ", header=" + header +
