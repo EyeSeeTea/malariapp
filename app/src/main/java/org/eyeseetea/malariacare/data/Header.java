@@ -74,7 +74,7 @@ public class Header extends SugarRecord<Header> {
             return Select.from(Question.class)
                     .where(Condition.prop("header")
                             .eq(String.valueOf(this.getId())))
-                    .groupBy("orderpos").list();
+                    .orderBy("orderpos").list();
             //return Question.find(Question.class, "header = ? order by orderpos", String.valueOf(this.getId()));
         }
         return _questions;
