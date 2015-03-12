@@ -13,7 +13,6 @@ public class Header extends SugarRecord<Header> {
     String short_name;
     String name;
     Integer order_pos;
-    Integer master;
     Tab tab;
 
     @Ignore
@@ -26,7 +25,6 @@ public class Header extends SugarRecord<Header> {
         this.short_name = short_name;
         this.name = name;
         this.order_pos = order_pos;
-        this.master = master;
         this.tab = tab;
     }
 
@@ -54,14 +52,6 @@ public class Header extends SugarRecord<Header> {
         this.order_pos = order_pos;
     }
 
-    public Integer getMaster() {
-        return master;
-    }
-
-    public void setMaster(Integer master) {
-        this.master = master;
-    }
-
     public Tab getTab() {
         return tab;
     }
@@ -84,7 +74,6 @@ public class Header extends SugarRecord<Header> {
                 ", short_name='" + short_name + '\'' +
                 ", name='" + name + '\'' +
                 ", order_pos=" + order_pos +
-                ", master=" + master +
                 ", tab=" + tab +
                 '}';
     }

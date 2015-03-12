@@ -55,8 +55,7 @@ public class PopulateDB {
                         header.setShort_name(line[1]);
                         header.setName(line[2]);
                         header.setOrder_pos(Integer.valueOf(line[3]));
-                        header.setMaster(Integer.valueOf(line[4]));
-                        header.setTab(tabList.get(Integer.valueOf(line[5])-1));
+                        header.setTab(tabList.get(Integer.valueOf(line[4])-1));
                         headerList.add(header);
                         break;
                     case "Answers.csv":
@@ -99,8 +98,7 @@ public class PopulateDB {
                         headerCustom.setShort_name(line[1]);
                         headerCustom.setName(line[2]);
                         headerCustom.setOrder_pos(Integer.valueOf(line[3]));
-                        headerCustom.setMaster(Integer.valueOf(line[4]));
-                        headerCustom.setTab(tabList.get(Integer.valueOf(line[5])-1));
+                        headerCustom.setTab(tabList.get(Integer.valueOf(line[4])-1));
                         headerCustomList.add(headerCustom);
                         break;
                     case "QuestionsCustom.csv":
