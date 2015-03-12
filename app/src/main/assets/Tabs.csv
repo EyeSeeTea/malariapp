@@ -1,16 +1,18 @@
-1;'Profile';1
-2;'C1 - General';2
-3;'C1 - RDT';3
-4;'C1 - Microscopy';4
-5;'C2 - General';5
-6;'C2 - RDT';6
-7;'C2 - Microscopy';7
-8;'C3 - General';8
-9;'C3 - RDT';9
-10;'C3 - Microscopy';10
-11;'Adherence';11
-12;'Feedback';12
-13;'Environment & Materials';13
-14;'Reporting';14
-15;'IQA EQA';15
-16;'Score';16
+1;'Health Facility Info';1
+2;'Profile';2
+3;'C1 - Clinical fever evaluation';3
+4;'C1 - RDT';4
+5;'C1 - Microscopy';5
+6;'C2 - Clinical fever evaluation';6
+7;'C2 - RDT';7
+8;'C2 - Microscopy';8
+9;'C3 - Clinical fever evaluation';9
+10;'C3 - RDT';10
+11;'C3 - Microscopy';11
+12;'Adherence';12
+13;'Feedback';13
+14;'Environment';14
+15;'Reporting';15
+16;'IQA EQA';16
+17;'Score';17
+18;'Compositive Scores';18

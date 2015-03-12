@@ -856,3 +856,17 @@
 856;'MAL-SUP-Microscopy-C3-Q54';'MAL-SUP-Microscopy-C3-Q54 Infectious waste disposed of in appropriate waste containers';;'Infectious waste disposed of in appropriate waste containers';;54;1.00;0.00;132;3;621
 857;'MAL-SUP-Microscopy-C3-Q55';'MAL-SUP-Microscopy-C3-Q55 Liquid waste appropriately washed off/disinfected';;'Liquid waste appropriately washed off/disinfected';;55;1.00;0.00;132;3;621
 858;'MAL-SUP-Microscopy-C3-Q58';'MAL-SUP-Microscopy-C3-Q58 Was the examination done properly, including > 100 high power fields before declaring slides negative (takes about 10 minutes)?';;'Was the examination done properly, including > 100 high power fields before declaring slides negative (takes about 10 minutes)?';;58;1.00;0.00;135;3;623
+859;'Test Question 1';'Test Question 1';;'Test Question 1';;1;0.00;1.00;162;3;;1
+860;'Test Question 2';'Test Question 2';;'Test Question 2';;2;0.00;1.00;162;3;;1
+861;'Test Question 3';'Test Question 3';;'Test Question 3';;3;0.00;1.00;162;3;;3
+862;'Test Question 4';'Test Question 4';;'Test Question 4';;4;0.00;1.00;162;3;;3
+863;'Test Question 5';'Test Question 5';;'Test Question 5';;5;0.00;1.00;162;3;;4
+864;'Test Question 6';'Test Question 6';;'Test Question 6';;6;0.00;1.00;162;3;;4
+865;'Test Question 7';'Test Question 7';;'Test Question 7';;7;0.00;1.00;162;3;;4
+866;'Test Question 8';'Test Question 8';;'Test Question 8';;8;0.00;1.00;162;3;;4
+867;'Test Question 9';'Test Question 9';;'Test Question 9';;9;0.00;1.00;162;3;;4
+868;'Test Question 10';'Test Question 10';;'Test Question 10';;10;0.00;1.00;162;3;;4
+869;'Test Question 11';'Test Question 11';;'Test Question 11';;11;0.00;1.00;162;3;;4
+870;'Test Question 12';'Test Question 12';;'Test Question 12';;12;0.00;1.00;162;3;;4
+871;'Test Question 13';'Test Question 13';;'Test Question 13';;13;0.00;1.00;162;3;;4
+872;'Test Question 14';'Test Question 14';;'Test Question 14';;14;0.00;1.00;162;3;;4

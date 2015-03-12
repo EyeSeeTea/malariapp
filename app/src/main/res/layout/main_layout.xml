@@ -75,6 +75,35 @@
                     android:layout_weight="0.4">
 
                     <LinearLayout
+                        android:id="@+id/healthFacilityInfo"
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:orientation="vertical" >
+
+                        <ScrollView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/ScrollHealth"
+                            android:layout_weight="0.09" >
+
+                            <GridLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:rowCount="1"
+                                android:columnCount="1"
+                                android:id="@+id/gridLayout2" />
+                        </ScrollView>
+
+                        <GridLayout
+                            android:layout_width="fill_parent"
+                            android:layout_height="fill_parent"
+                            android:id="@+id/gridLayout3"
+                            android:columnCount="2"
+                            android:rowCount="1"
+                            android:layout_weight="0.91" />
+                    </LinearLayout>
+
+                    <LinearLayout
                         android:id="@+id/profile"
                         android:layout_width="fill_parent"
                         android:layout_height="fill_parent"
@@ -83,7 +112,7 @@
                         <ScrollView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:id="@+id/Scroll1"
+                            android:id="@+id/ScrollProfile"
                             android:layout_weight="0.09">
 
                             <GridLayout
@@ -107,7 +136,7 @@
                     </LinearLayout>
 
                     <LinearLayout
-                        android:id="@+id/c1General"
+                        android:id="@+id/c1Clinical"
                         android:layout_width="fill_parent"
                         android:layout_height="fill_parent"
                         android:orientation="vertical">
@@ -115,7 +144,7 @@
                         <ScrollView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:id="@+id/Scroll2"
+                            android:id="@+id/ScrollClinical1"
                             android:layout_weight="0.09">
 
                             <GridLayout
@@ -145,7 +174,7 @@
                         <ScrollView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:id="@+id/Scroll3"
+                            android:id="@+id/ScrollRdt"
                             android:layout_weight="0.09">
 
                             <GridLayout
@@ -175,7 +204,7 @@
                         <ScrollView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:id="@+id/Scroll4"
+                            android:id="@+id/ScrollMicroscopy1"
                             android:layout_weight="0.09">
 
                             <GridLayout
@@ -197,7 +226,7 @@
                     </LinearLayout>
 
                     <LinearLayout
-                        android:id="@+id/c2General"
+                        android:id="@+id/c2Clinical"
                         android:layout_width="fill_parent"
                         android:layout_height="fill_parent"
                         android:orientation="vertical" >
@@ -205,7 +234,7 @@
                         <ScrollView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:id="@+id/Scroll5"
+                            android:id="@+id/ScrollClinical2"
                             android:layout_weight="0.09">
 
                             <GridLayout
@@ -235,7 +264,7 @@
                         <ScrollView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:id="@+id/Scroll6"
+                            android:id="@+id/ScrollRdt2"
                             android:layout_weight="0.09">
 
                             <GridLayout
@@ -265,7 +294,7 @@
                         <ScrollView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:id="@+id/Scroll7"
+                            android:id="@+id/ScrollMicroscopy2"
                             android:layout_weight="0.09">
 
                             <GridLayout
@@ -287,7 +316,7 @@
                     </LinearLayout>
 
                     <LinearLayout
-                        android:id="@+id/c3General"
+                        android:id="@+id/c3Clinical"
                         android:layout_width="fill_parent"
                         android:layout_height="fill_parent"
                         android:orientation="vertical" >
@@ -295,7 +324,7 @@
                         <ScrollView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:id="@+id/Scroll8"
+                            android:id="@+id/ScrollClinical3"
                             android:layout_weight="0.09">
 
                             <GridLayout
@@ -325,7 +354,7 @@
                         <ScrollView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:id="@+id/Scroll9"
+                            android:id="@+id/ScrollRdt3"
                             android:layout_weight="0.09">
 
                             <GridLayout
@@ -355,7 +384,7 @@
                         <ScrollView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:id="@+id/Scroll10"
+                            android:id="@+id/ScrollMicroscopy3"
                             android:layout_weight="0.09">
 
                             <GridLayout
@@ -544,6 +573,28 @@
                             </GridLayout>
                         </ScrollView>
 
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/compositiveScores"
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:orientation="vertical"
+                        android:visibility="gone" >
+
+                        <ScrollView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/scrollCompositive"
+                            android:layout_weight="0.09" >
+
+                            <GridLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:id="@+id/gridLayout4"
+                                android:columnCount="1"
+                                android:rowCount="1" />
+                        </ScrollView>
                     </LinearLayout>
 
                 </FrameLayout>

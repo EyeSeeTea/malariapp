@@ -77,14 +77,15 @@ public class MainActivity extends ActionBarActivity {
     }
 
     private void createTabConfiguration() {
+        tabsLayouts.add(new TabConfiguration(R.id.healthFacilityInfo, true, null,R.id.healthScore, null));
         tabsLayouts.add(new TabConfiguration(R.id.profile, true, null, R.id.profileScore, null));
-        tabsLayouts.add(new TabConfiguration(R.id.c1General, true, null, R.id.generalCase1, R.id.generalAvg));
+        tabsLayouts.add(new TabConfiguration(R.id.c1Clinical, true, null, R.id.clinicalCase1, R.id.clinicalAvg));
         tabsLayouts.add(new TabConfiguration(R.id.c1RDT, true, null, R.id.rdtCase1, R.id.rdtAvg));
         tabsLayouts.add(new TabConfiguration(R.id.c1Microcospy, true, null, R.id.microscopyCase1, R.id.microscopyAvg));
-        tabsLayouts.add(new TabConfiguration(R.id.c2General, true, null, R.id.generalCase2, R.id.generalAvg));
+        tabsLayouts.add(new TabConfiguration(R.id.c2Clinical, true, null, R.id.clinicalCase2, R.id.clinicalAvg));
         tabsLayouts.add(new TabConfiguration(R.id.c2RDT, true, null, R.id.rdtCase2, R.id.rdtAvg));
         tabsLayouts.add(new TabConfiguration(R.id.c2Microscopy, true, null, R.id.microscopyCase2, R.id.microscopyAvg));
-        tabsLayouts.add(new TabConfiguration(R.id.c3General, true, null, R.id.generalCase3, R.id.generalAvg));
+        tabsLayouts.add(new TabConfiguration(R.id.c3Clinical, true, null, R.id.clinicalCase3, R.id.clinicalAvg));
         tabsLayouts.add(new TabConfiguration(R.id.c3RDT, true, null, R.id.rdtCase3, R.id.rdtAvg));
         tabsLayouts.add(new TabConfiguration(R.id.c3Microscopy, true, null, R.id.microscopyCase3, R.id.microscopyAvg));
         tabsLayouts.add(new TabConfiguration(R.id.adherence, false, R.layout.adherencetab, R.id.adherenceScore, null));
@@ -93,6 +94,7 @@ public class MainActivity extends ActionBarActivity {
         tabsLayouts.add(new TabConfiguration(R.id.reporting, false, R.layout.reportingtab, R.id.reportingScore, null));
         tabsLayouts.add(new TabConfiguration(R.id.iqaEQA, false, R.layout.iqatab, R.id.iqaeqaScore, null));
         tabsLayouts.add(new TabConfiguration(R.id.scoreSummary, false, R.layout.scoretab, null, null));
+        tabsLayouts.add(new TabConfiguration(R.id.compositiveScores, false, R.layout.compositivescoretab, null, null));
     }
 
     private void createMenuAndTabs() {

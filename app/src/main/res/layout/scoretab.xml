@@ -11,6 +11,34 @@
         <TableRow
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
+            android:id="@+id/healthRow"
+            android:gravity="right" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="@string/healthTitle"
+                android:id="@+id/healthTitle"
+                android:textStyle="bold"
+                android:padding="10dip"
+                android:textSize="16sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="@string/zeroFloat"
+                android:id="@+id/healthScore"
+                android:background="#407015"
+                android:textColor="#ffffff"
+                android:textSize="16sp"
+                android:gravity="center" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
             android:id="@+id/profileRow"
             android:gravity="right" >
 
@@ -103,7 +131,7 @@
         <TableRow
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:id="@+id/generalRow"
+            android:id="@+id/clinicalRow"
             android:gravity="right">
 
             <TextView
@@ -111,7 +139,7 @@
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:text="@string/generalTitle"
-                android:id="@+id/generalTitle"
+                android:id="@+id/clinicalTitle"
                 android:textStyle="bold"
                 android:padding="10dip"
                 android:textSize="16sp" />
@@ -121,7 +149,7 @@
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="@string/zeroFloat"
-                android:id="@+id/generalCase1"
+                android:id="@+id/clinicalCase1"
                 android:background="#ff639533"
                 android:textColor="#ffffff"
                 android:textSize="16sp"
@@ -132,7 +160,7 @@
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="@string/zeroFloat"
-                android:id="@+id/generalCase2"
+                android:id="@+id/clinicalCase2"
                 android:background="#1e506c"
                 android:textColor="#ffffff"
                 android:textSize="16sp"
@@ -143,7 +171,7 @@
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="@string/zeroFloat"
-                android:id="@+id/generalCase3"
+                android:id="@+id/clinicalCase3"
                 android:background="#429470"
                 android:textColor="#ffffff"
                 android:textSize="16sp"
@@ -154,7 +182,7 @@
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="@string/zeroFloat"
-                android:id="@+id/generalAvg"
+                android:id="@+id/clinicalAvg"
                 android:background="#407015"
                 android:textColor="#ffffff"
                 android:textSize="16sp"
