@@ -334,9 +334,6 @@ public class Layout {
             for (Question question : header.getOrderedQuestions()){
                 View questionView = null;
                 EditText answerI = null;
-                if (question.getAnswer() == null){
-                    Log.i(".Layout", "just for debugging");
-                }
                 // The statement is present in every kind of question
                 switch(question.getAnswer().getOutput()){
                     case Constants.DROPDOWN_LIST:
