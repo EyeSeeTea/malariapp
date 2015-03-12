@@ -154,7 +154,7 @@ public class Question extends SugarRecord<Question> {
             this._questionChildren = Select.from(Question.class)
                     .where(Condition.prop("question")
                             .eq(String.valueOf(this.getId())))
-                    .groupBy("orderpos").list();
+                    .orderBy("orderpos").list();
             //this._questionChildren = Question.find(Question.class, "question = ? order by orderpos", String.valueOf(this.getId()));
         }
         return this._questionChildren;
