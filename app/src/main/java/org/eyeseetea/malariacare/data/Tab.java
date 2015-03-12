@@ -41,7 +41,7 @@ public class Tab extends SugarRecord<Tab> {
     }
 
     public List<Header> getOrderedHeaders(){
-        return Header.find(Header.class, "tab = ?", String.valueOf(this.getId()), "orderpos");
+        return Header.find(Header.class, "tab = ? order by orderpos", String.valueOf(this.getId()));
     }
 
     public List<Score> getScores(){
