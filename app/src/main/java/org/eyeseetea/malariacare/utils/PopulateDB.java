@@ -15,22 +15,24 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by adrian on 15/02/15.
  */
 public class PopulateDB {
 
-    static List<Tab> tabList = new ArrayList<Tab>();
-    static List<Header> headerList = new ArrayList<Header>();
-    static List<Question> questionList = new ArrayList<Question>();
-    static List<Option> optionList = new ArrayList<Option>();
-    static List<Answer> answerList = new ArrayList<Answer>();
-    static List<CompositiveScore> compositiveScoreList = new ArrayList<CompositiveScore>();
+    static Map<Integer, Tab> tabList = new HashMap<Integer, Tab>();
+    static Map<Integer, Header> headerList = new HashMap<Integer, Header>();
+    static Map<Integer, Question> questionList = new HashMap<Integer, Question>();
+    static Map<Integer, Option> optionList = new HashMap<Integer, Option>();
+    static Map<Integer, Answer> answerList = new HashMap<Integer, Answer>();
+    static Map<Integer, CompositiveScore> compositiveScoreList = new HashMap<Integer, CompositiveScore>();
 
-    static List<Header> headerCustomList = new ArrayList<Header>();
-    static List<Question> questionCustomList = new ArrayList<Question>();
+    static Map<Integer, Header> headerCustomList = new HashMap<Integer, Header>();
+    static Map<Integer, Question> questionCustomList = new HashMap<Integer, Question>();
 
     public static void populateDB(AssetManager assetManager) throws IOException {
 
@@ -48,7 +50,7 @@ public class PopulateDB {
                         Tab tab = new Tab();
                         tab.setName(line[1]);
                         tab.setOrder_pos(Integer.valueOf(line[2]));
-                        tabList.add(tab);
+                        tabList.put(Integer.valueOf(line[0]), tab);
                         break;
                     case "Headers.csv":
                         Header header = new Header();
@@ -56,26 +58,27 @@ public class PopulateDB {
                         header.setName(line[2]);
                         header.setOrder_pos(Integer.valueOf(line[3]));
                         header.setTab(tabList.get(Integer.valueOf(line[4])-1));
-                        headerList.add(header);
+                        headerList.put(Integer.valueOf(line[0]), header);
                         break;
                     case "Answers.csv":
                         Answer answer = new Answer();
                         answer.setName(line[1]);
                         answer.setOutput(Integer.valueOf(line[2]));
-                        answerList.add(answer);
+                        answerList.put(Integer.valueOf(line[0]), answer);
                         break;
                     case "Options.csv":
                         Option option = new Option();
                         option.setName(line[1]);
                         option.setFactor(Float.valueOf(line[2]));
                         option.setAnswer(answerList.get(Integer.valueOf(line[3]) - 1));
-                        optionList.add(option);
+                        optionList.put(Integer.valueOf(line[0]), option);
                         break;
                     case "CompositiveScores.csv":
                         CompositiveScore compositiveScore = new CompositiveScore();
-                        compositiveScore.setLabel(line[1]);
-                        if (!line[2].equals("")) compositiveScore.setCompositiveScore(compositiveScoreList.get(Integer.valueOf(line[2]) - 1));
-                        compositiveScoreList.add(compositiveScore);
+                        compositiveScore.setCode(line[1]);
+                        compositiveScore.setLabel(line[2]);
+                        if (!line[3].equals("")) compositiveScore.setCompositiveScore(compositiveScoreList.get(Integer.valueOf(line[3]) - 1));
+                        compositiveScoreList.put(Integer.valueOf(line[0]), compositiveScore);
                         break;
                     case "Questions.csv":
                         Question question = new Question();
@@ -91,7 +94,7 @@ public class PopulateDB {
                         question.setAnswer(answerList.get(Integer.valueOf(line[10])-1));
                         if (!line[11].equals("")) question.setQuestion(questionList.get(Integer.valueOf(line[11])-1));
                         if (line.length == 13 && !line[12].equals("")) question.setCompositiveScore(compositiveScoreList.get(Integer.valueOf(line[12])-1));
-                        questionList.add(question);
+                        questionList.put(Integer.valueOf(line[0]), question);
                         break;
                     case "HeadersCustom.csv":
                         Header headerCustom = new Header();
@@ -99,7 +102,7 @@ public class PopulateDB {
                         headerCustom.setName(line[2]);
                         headerCustom.setOrder_pos(Integer.valueOf(line[3]));
                         headerCustom.setTab(tabList.get(Integer.valueOf(line[4])-1));
-                        headerCustomList.add(headerCustom);
+                        headerCustomList.put(Integer.valueOf(line[0]), headerCustom);
                         break;
                     case "QuestionsCustom.csv":
                         Question questionCustom = new Question();
@@ -114,22 +117,22 @@ public class PopulateDB {
                         questionCustom.setHeader(headerCustomList.get(Integer.valueOf(line[9])-1));
                         if (!line[10].equals("")) questionCustom.setAnswer(answerList.get(Integer.valueOf(line[10])-1));
                         if (!line[11].equals("")) questionCustom.setQuestion(questionCustomList.get(Integer.valueOf(line[11])-1));
-                        questionCustomList.add(questionCustom);
+                        questionCustomList.put(Integer.valueOf(line[0]), questionCustom);
                         break;
                 }
             }
             reader.close();
         }
 
-        Tab.saveInTx(tabList);
-        Header.saveInTx(headerList);
-        Answer.saveInTx(answerList);
-        Option.saveInTx(optionList);
-        CompositiveScore.saveInTx(compositiveScoreList);
-        Question.saveInTx(questionList);
+        Tab.saveInTx(tabList.values());
+        Header.saveInTx(headerList.values());
+        Answer.saveInTx(answerList.values());
+        Option.saveInTx(optionList.values());
+        CompositiveScore.saveInTx(compositiveScoreList.values());
+        Question.saveInTx(questionList.values());
 
-        Header.saveInTx(headerCustomList);
-        Header.saveInTx(questionCustomList);
+        Header.saveInTx(headerCustomList.values());
+        Header.saveInTx(questionCustomList.values());
 
     }
 

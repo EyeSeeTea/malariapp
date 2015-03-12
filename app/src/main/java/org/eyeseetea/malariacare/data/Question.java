@@ -149,7 +149,7 @@ public class Question extends SugarRecord<Question> {
 
     public List<Question> getOrderedQuestionChildren() {
         if (this._questionChildren == null){
-            this._questionChildren = Question.find(Question.class, "question = ? order by orderpos", String.valueOf(this.getId()));
+            this._questionChildren = Question.find(Question.class, "question = ?", String.valueOf(this.getId()), "orderpos");
         }
         return this._questionChildren;
     }

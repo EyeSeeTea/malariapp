@@ -1,4 +1,29 @@
-1;'1';
-2;'2';
-3;'2.1';2
-4;'2.2';2
+1;'1';'Health facility readiness';
+2;'1.1';'Amenities/infrastructure (Water, Power)';1
+3;'1.2';'Equipment (Clinical and lab equipments)';1
+4;'1.2.1';'Clinical';3
+5;'1.2.2';'Lab';3
+6;'1.3';'Stockouts (ACTS, essential drugs and equipments)';1
+7;'1.3.1';'Outpatient supplies';6
+8;'1.3.2';'In patient suplies';6
+9;'1.3.3';'Microscope';6
+10;'1.3.4';'Power outage';6
+11;'1.3.5';'RDT';6
+12;'1.4';'Services, materials and reporting';1
+13;'1.4.1';'Lab & malaria reference materials';12
+14;'1.4.2';'Malaria registers and reporting';12
+15;'1.4.3';'IQA/EQA';12
+16;'1.4.4';'Turn around time for results';12
+17;'1.4.5';'Sevices (ANC& Referral)';12
+18;'1.5';'Human resources';1
+19;'2';'Suspected/Tested competence';
+20;'3';'RDT Competence';
+21;'4';'Competence in slide preparation';
+22;'5';'Competence in slide staining';
+23;'6';'Competence in Slide reading';
+24;'7';'Competence in Malaria case management';
+25;'7.1';'Correct diagnosis';24
+26;'7.2';'Fever treatment';24
+27;'7.3';'Communication';24
+28;'7.4';'Referral of severe cases';24
+29;'9';'Mentorship (on site training)';

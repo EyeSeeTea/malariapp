@@ -16,9 +16,6 @@
 16;'No';1.00;7
 17;'Unknown';1.00;7
 18;'Not Asked';0.00;7
-19;'Yes';1.00;8
-20;'No';1.00;8
-21;'Not Asked';0.00;8
 22;'Present & Functional [1]';1.00;9
 23;'Present & Non-functional [0.5]';0.50;9
 24;'Not present [0]';0.00;9
@@ -79,6 +76,14 @@
 79;'2. Loose paper sheets';0.00;23
 80;'3. Computerized record';0.00;23
 81;'4. Other';0.00;23
-82;'1. Malaria Positive';0.00;29
-83;'2. Malaria Negative';0.00;29
-84;'3. Not tested';0.00;29
+82;'1. Simple malaria';0.00;32
+83;'2.Severe Malaria';0.00;32
+84;'3.Diagnosis unknown';0.00;32
+85;'4. Other severe disease (Specify)';0.00;32
+86;'5. Other non-severe disease(specify)';0.00;32
+87;'Option1';0.00;29
+88;'Option2';0.00;29
+89;'Option1';0.00;30
+90;'Option2';0.00;30
+91;'Option1';0.00;31
+92;'Option2';0.00;31

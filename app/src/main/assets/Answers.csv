@@ -5,7 +5,6 @@
 5;'YesNoNA';1
 6;'YesNoAsked';1
 7;'YesNoUnkAsked';1
-8;'YesNoAsked';1
 9;'PresentFunctional';1
 10;'Gender';1
 11;'Officer';1
@@ -13,17 +12,21 @@
 13;'MAL Diagnose';1
 14;'MAL Species';1
 15;'Result';1
-16;'Feedback Type';1
+16;'Feedback provided';1
 17;'Facility Type';1
-18;'Health Center Level';1
+18;'Health health Centre Level';1
 19;'ANC services located';1
 20;'MAL Reporting';1
 21;'Counting method';1
 22;'Ownership';1
 23;'MAL Registers';1
-24;'Integer';2
-25;'Text_Long';3
-26;'Text_Short';4
-27;'Date_Short';5
+24;'Number';2
+25;'Long Text';3
+26;'Text';4
+27;'Monthly reporting format';5
 28;'Date';6
-29;'Pharmacy Result';1
+29;'HF Level';1
+30;'Place where patient information being recorded';1
+31;'Services Provided';1
+32;'Clinically suspected diagnosis';1
+33;'Pharmacy Result';1

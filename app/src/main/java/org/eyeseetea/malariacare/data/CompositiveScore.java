@@ -10,6 +10,7 @@ import java.util.List;
  */
 public class CompositiveScore extends SugarRecord<CompositiveScore> {
 
+    String code;
     String label;
     CompositiveScore compositiveScore;
 
@@ -19,10 +20,15 @@ public class CompositiveScore extends SugarRecord<CompositiveScore> {
     public CompositiveScore() {
     }
 
-    public CompositiveScore(String label, CompositiveScore compositiveScore) {
+    public CompositiveScore(String code, String label, CompositiveScore compositiveScore) {
+        this.code = code;
         this.label = label;
         this.compositiveScore = compositiveScore;
     }
+
+    public String getCode() { return code; }
+
+    public void setCode(String code) { this.code = code; }
 
     public String getLabel() {
         return label;
@@ -58,6 +64,7 @@ public class CompositiveScore extends SugarRecord<CompositiveScore> {
     @Override
     public String toString() {
         return "CompositiveScore{" +
+                "code='" + code + '\'' +
                 "label='" + label + '\'' +
                 ", compositiveScore=" + compositiveScore +
                 '}';
