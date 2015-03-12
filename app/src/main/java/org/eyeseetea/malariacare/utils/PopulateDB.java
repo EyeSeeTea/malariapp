@@ -1,6 +1,7 @@
 package org.eyeseetea.malariacare.utils;
 
 import android.content.res.AssetManager;
+import android.util.SparseArray;
 
 import com.opencsv.CSVReader;
 
@@ -25,15 +26,15 @@ import java.util.TreeMap;
  */
 public class PopulateDB {
 
-    static Map<Integer, Tab> tabList = new TreeMap<Integer, Tab>();
-    static Map<Integer, Header> headerList = new TreeMap<Integer, Header>();
-    static Map<Integer, Question> questionList = new TreeMap<Integer, Question>();
-    static Map<Integer, Option> optionList = new TreeMap<Integer, Option>();
-    static Map<Integer, Answer> answerList = new TreeMap<Integer, Answer>();
-    static Map<Integer, CompositiveScore> compositiveScoreList = new TreeMap<Integer, CompositiveScore>();
+    static SparseArray<Tab> tabList = new SparseArray<Tab>();
+    static SparseArray<Header> headerList = new SparseArray<Header>();
+    static SparseArray<Question> questionList = new SparseArray<Question>();
+    static SparseArray<Option> optionList = new SparseArray<Option>();
+    static SparseArray<Answer> answerList = new SparseArray<Answer>();
+    static SparseArray<CompositiveScore> compositiveScoreList = new SparseArray<CompositiveScore>();
 
-    static Map<Integer, Header> headerCustomList = new TreeMap<Integer, Header>();
-    static Map<Integer, Question> questionCustomList = new TreeMap<Integer, Question>();
+    static SparseArray<Header> headerCustomList = new SparseArray<Header>();
+    static SparseArray<Question> questionCustomList = new SparseArray<Question>();
 
     public static void populateDB(AssetManager assetManager) throws IOException {
 
@@ -93,7 +94,8 @@ public class PopulateDB {
                         question.setDenominator_w(Float.valueOf(line[8]));
                         question.setHeader(headerList.get(Integer.valueOf(line[9])));
                         question.setAnswer(answerList.get(Integer.valueOf(line[10])));
-                        if (!line[11].equals("")) question.setQuestion(questionList.get(Integer.valueOf(line[11])));
+                        if (!line[11].equals(""))
+                            question.setQuestion(questionList.get(Integer.valueOf(line[11])));
                         if (line.length == 13 && !line[12].equals("")) question.setCompositiveScore(compositiveScoreList.get(Integer.valueOf(line[12])));
                         questionList.put(Integer.valueOf(line[0]), question);
                         break;
@@ -125,16 +127,24 @@ public class PopulateDB {
             reader.close();
         }
 
-        Tab.saveInTx(tabList.values());
-        Header.saveInTx(headerList.values());
-        Answer.saveInTx(answerList.values());
-        Option.saveInTx(optionList.values());
-        CompositiveScore.saveInTx(compositiveScoreList.values());
-        Question.saveInTx(questionList.values());
+        Tab.saveInTx(asList(tabList));
+        Header.saveInTx(asList(headerList));
+        Answer.saveInTx(asList(answerList));
+        Option.saveInTx(asList(optionList));
+        CompositiveScore.saveInTx(asList(compositiveScoreList));
+        Question.saveInTx(asList(questionList));
 
-        Header.saveInTx(headerCustomList.values());
-        Header.saveInTx(questionCustomList.values());
+        Header.saveInTx(asList(headerCustomList));
+        Question.saveInTx(asList(questionCustomList));
 
+    }
+
+    public static <C> List <C> asList(SparseArray<C> sparseArray){
+        if (sparseArray == null) return null;
+        List<C> arrayList = new ArrayList<C>(sparseArray.size());
+        for (int i = 0; i < sparseArray.size(); i++)
+            arrayList.add(sparseArray.valueAt(i));
+        return arrayList;
     }
 
 //    public static String trimText(String text){
