@@ -91,7 +91,7 @@ public class MainActivity extends ActionBarActivity {
         tabsLayouts.add(new TabConfiguration(R.id.c3RDT, true, null, R.id.rdtCase3, R.id.rdtAvg));
         tabsLayouts.add(new TabConfiguration(R.id.c3Microscopy, true, null, R.id.microscopyCase3, R.id.microscopyAvg));
         tabsLayouts.add(new TabConfiguration(R.id.adherence, false, R.layout.adherencetab, R.id.adherenceScore, null));
-        tabsLayouts.add(new TabConfiguration(R.id.feedback, false, null, R.id.feedbackScore, null));
+        tabsLayouts.add(new TabConfiguration(R.id.feedback, true, null, R.id.feedbackScore, null));
         tabsLayouts.add(new TabConfiguration(R.id.environmentMaterial, true, null, R.id.envAndMatScore, null));
         tabsLayouts.add(new TabConfiguration(R.id.reporting, false, R.layout.reportingtab, R.id.reportingScore, null));
         tabsLayouts.add(new TabConfiguration(R.id.iqaEQA, false, R.layout.iqatab, R.id.iqaeqaScore, null));
