@@ -147,6 +147,13 @@ public class Question extends SugarRecord<Question> {
         return this._questionChildren;
     }
 
+    public List<Question> getOrderedQuestionChildren() {
+        if (this._questionChildren == null){
+            this._questionChildren = Question.find(Question.class, "question = ? order by orderpos", String.valueOf(this.getId()));
+        }
+        return this._questionChildren;
+    }
+
     public boolean hasChildren(){
         return !getQuestionChildren().isEmpty();
     }

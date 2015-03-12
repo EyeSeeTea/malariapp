@@ -67,6 +67,13 @@ public class Header extends SugarRecord<Header> {
         return _questions;
     }
 
+    public List<Question> getOrderedQuestions(){
+        if (this._questions == null){
+            return Question.find(Question.class, "header = ? order by orderpos", String.valueOf(this.getId()));
+        }
+        return _questions;
+    }
+
     @Override
     public String toString() {
         return "Header{" +

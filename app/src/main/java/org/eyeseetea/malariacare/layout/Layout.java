@@ -287,7 +287,7 @@ public class Layout {
                 numDenRecordMap.get((Integer) spinner.getTag(R.id.Tab)).addRecord(childQuestion, 0F, childQuestion.getDenominator_w());
             } else {
                 LayoutUtils.toggleVisible(childView, View.GONE);
-                if (LayoutUtils.isHeaderEmpty(triggeredQuestion.getQuestionChildren(), childQuestion.getHeader().getQuestions())) {
+                if (LayoutUtils.isHeaderEmpty(triggeredQuestion.getQuestionChildren(), childQuestion.getHeader().getOrderedQuestions())) {
                     ((View) ((View) childView).getTag(R.id.HeaderViewTag)).setVisibility(View.GONE);
                 }
                 numDenRecordMap.get((Integer) spinner.getTag(R.id.Tab)).deleteRecord(childQuestion);
@@ -317,7 +317,7 @@ public class Layout {
 
     private static void generateAutomaticTab(MainActivity mainActivity, Tab tab, TabConfiguration tabConfiguration, LayoutInflater inflater, GridLayout layoutParent, Option defaultOption) {
         Log.i(".Layout", "Generate Headers");
-        for (Header header: tab.getHeaders()){
+        for (Header header: tab.getOrderedHeaders()){
             // First we introduce header text according to the template
             //Log.i(".Layout", "Reading header " + header.toString());
             View headerView = inflater.inflate(R.layout.headers, layoutParent, false);
@@ -331,7 +331,7 @@ public class Layout {
 
 
             //Log.i(".Layout", "Reader questions for header " + header.toString());
-            for (Question question : header.getQuestions()){
+            for (Question question : header.getOrderedQuestions()){
                 View questionView = null;
                 EditText answerI = null;
                 // The statement is present in every kind of question
@@ -449,7 +449,7 @@ public class Layout {
         //  * Any score or thing that affects all the row questions, will be added to the parent question
         //  * Another important thing to improve is that at this moment I'm creating a List called layoutsToUse that contains, ordered, the different layouts that must be used for each questions group
         if (getFromDatabase){
-            List<Header> headers = tab.getHeaders();
+            List<Header> headers = tab.getOrderedHeaders();
             for (int i=0; i<headers.size(); i++){
                 iterBacks = 0;
                 String headerName = headers.get(i).getName(); // this is also the ID
@@ -458,7 +458,7 @@ public class Layout {
                 if(tables.size() == 1){
                     TableLayout table = (TableLayout)tables.get(0);
                     // Now we have the table element, we have to search for the parent questions
-                    List <Question> questions = headers.get(i).getQuestions(); // FIXME: improve this search to get only the parent questions
+                    List <Question> questions = headers.get(i).getOrderedQuestions(); // FIXME: improve this search to get only the parent questions
                     for (Question question: questions) {
                         // If the question is a parent, do don't show it but use it to put the row layout
                         if (question.getQuestion() == null) { // FIXME: when the search above is improve this check will be unnecessary
