@@ -57,7 +57,7 @@ public class PopulateDB {
                         header.setShort_name(line[1]);
                         header.setName(line[2]);
                         header.setOrder_pos(Integer.valueOf(line[3]));
-                        header.setTab(tabList.get(Integer.valueOf(line[4])-1));
+                        header.setTab(tabList.get(Integer.valueOf(line[4])));
                         headerList.put(Integer.valueOf(line[0]), header);
                         break;
                     case "Answers.csv":
@@ -70,14 +70,14 @@ public class PopulateDB {
                         Option option = new Option();
                         option.setName(line[1]);
                         option.setFactor(Float.valueOf(line[2]));
-                        option.setAnswer(answerList.get(Integer.valueOf(line[3]) - 1));
+                        option.setAnswer(answerList.get(Integer.valueOf(line[3])));
                         optionList.put(Integer.valueOf(line[0]), option);
                         break;
                     case "CompositiveScores.csv":
                         CompositiveScore compositiveScore = new CompositiveScore();
                         compositiveScore.setCode(line[1]);
                         compositiveScore.setLabel(line[2]);
-                        if (!line[3].equals("")) compositiveScore.setCompositiveScore(compositiveScoreList.get(Integer.valueOf(line[3]) - 1));
+                        if (!line[3].equals("")) compositiveScore.setCompositiveScore(compositiveScoreList.get(Integer.valueOf(line[3])));
                         compositiveScoreList.put(Integer.valueOf(line[0]), compositiveScore);
                         break;
                     case "Questions.csv":
@@ -93,7 +93,7 @@ public class PopulateDB {
                         question.setHeader(headerList.get(Integer.valueOf(line[9])-1));
                         question.setAnswer(answerList.get(Integer.valueOf(line[10])-1));
                         if (!line[11].equals("")) question.setQuestion(questionList.get(Integer.valueOf(line[11])-1));
-                        if (line.length == 13 && !line[12].equals("")) question.setCompositiveScore(compositiveScoreList.get(Integer.valueOf(line[12])-1));
+                        if (line.length == 13 && !line[12].equals("")) question.setCompositiveScore(compositiveScoreList.get(Integer.valueOf(line[12])));
                         questionList.put(Integer.valueOf(line[0]), question);
                         break;
                     case "HeadersCustom.csv":
@@ -101,7 +101,7 @@ public class PopulateDB {
                         headerCustom.setShort_name(line[1]);
                         headerCustom.setName(line[2]);
                         headerCustom.setOrder_pos(Integer.valueOf(line[3]));
-                        headerCustom.setTab(tabList.get(Integer.valueOf(line[4])-1));
+                        headerCustom.setTab(tabList.get(Integer.valueOf(line[4])));
                         headerCustomList.put(Integer.valueOf(line[0]), headerCustom);
                         break;
                     case "QuestionsCustom.csv":
@@ -114,9 +114,9 @@ public class PopulateDB {
                         questionCustom.setOrder_pos(Integer.valueOf(line[6]));
                         questionCustom.setNumerator_w(Float.valueOf(line[7]));
                         questionCustom.setDenominator_w(Float.valueOf(line[8]));
-                        questionCustom.setHeader(headerCustomList.get(Integer.valueOf(line[9])-1));
+                        questionCustom.setHeader(headerCustomList.get(Integer.valueOf(line[9])));
                         if (!line[10].equals("")) questionCustom.setAnswer(answerList.get(Integer.valueOf(line[10])-1));
-                        if (!line[11].equals("")) questionCustom.setQuestion(questionCustomList.get(Integer.valueOf(line[11])-1));
+                        if (!line[11].equals("")) questionCustom.setQuestion(questionCustomList.get(Integer.valueOf(line[11])));
                         questionCustomList.put(Integer.valueOf(line[0]), questionCustom);
                         break;
                 }
