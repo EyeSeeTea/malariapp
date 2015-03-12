@@ -18,21 +18,22 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 /**
  * Created by adrian on 15/02/15.
  */
 public class PopulateDB {
 
-    static Map<Integer, Tab> tabList = new HashMap<Integer, Tab>();
-    static Map<Integer, Header> headerList = new HashMap<Integer, Header>();
-    static Map<Integer, Question> questionList = new HashMap<Integer, Question>();
-    static Map<Integer, Option> optionList = new HashMap<Integer, Option>();
-    static Map<Integer, Answer> answerList = new HashMap<Integer, Answer>();
-    static Map<Integer, CompositiveScore> compositiveScoreList = new HashMap<Integer, CompositiveScore>();
+    static Map<Integer, Tab> tabList = new TreeMap<Integer, Tab>();
+    static Map<Integer, Header> headerList = new TreeMap<Integer, Header>();
+    static Map<Integer, Question> questionList = new TreeMap<Integer, Question>();
+    static Map<Integer, Option> optionList = new TreeMap<Integer, Option>();
+    static Map<Integer, Answer> answerList = new TreeMap<Integer, Answer>();
+    static Map<Integer, CompositiveScore> compositiveScoreList = new TreeMap<Integer, CompositiveScore>();
 
-    static Map<Integer, Header> headerCustomList = new HashMap<Integer, Header>();
-    static Map<Integer, Question> questionCustomList = new HashMap<Integer, Question>();
+    static Map<Integer, Header> headerCustomList = new TreeMap<Integer, Header>();
+    static Map<Integer, Question> questionCustomList = new TreeMap<Integer, Question>();
 
     public static void populateDB(AssetManager assetManager) throws IOException {
 

@@ -201,8 +201,13 @@ public class Layout {
                 if (numSubtotal != null && denSubtotal != null && partialScoreView != null) {
                     numSubtotal.setText(Utils.round(numDenSubTotal.get(0)));
                     denSubtotal.setText(Utils.round(numDenSubTotal.get(1)));
-                    float score = (numDenSubTotal.get(0) / numDenSubTotal.get(1)) * 100;
+                    float score;
                     float average = 0.0F, totalAverage = 0.0F;
+                    if (numDenSubTotal.get(0) == 0 && numDenSubTotal.get(1) == 0){
+                       score = 100;
+                    } else {
+                       score = (numDenSubTotal.get(0) / numDenSubTotal.get(1)) * 100;
+                    }
                     TextView elementView = null;
                     // TrafficLight
                     LayoutUtils.trafficLight(partialScoreView, score);
