@@ -144,13 +144,6 @@ public class Question extends SugarRecord<Question> {
 
     public List<Question> getQuestionChildren() {
         if (this._questionChildren == null){
-            this._questionChildren = Question.find(Question.class, "question = ?", String.valueOf(this.getId()));
-        }
-        return this._questionChildren;
-    }
-
-    public List<Question> getOrderedQuestionChildren() {
-        if (this._questionChildren == null){
             this._questionChildren = Select.from(Question.class)
                     .where(Condition.prop("question")
                             .eq(String.valueOf(this.getId())))

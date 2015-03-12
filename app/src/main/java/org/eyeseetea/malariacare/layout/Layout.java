@@ -11,7 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.GridLayout;
@@ -36,9 +35,7 @@ import org.eyeseetea.malariacare.utils.TabConfiguration;
 import org.eyeseetea.malariacare.utils.Utils;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by adrian on 19/02/15.
@@ -279,7 +276,7 @@ public class Layout {
 
     private static void toggleVisibleChildren(int position, Spinner spinner, Question triggeredQuestion) {
         View parent = LayoutUtils.findParentRecursively(spinner, (Integer) spinner.getTag(R.id.Tab));
-        for (Question childQuestion : triggeredQuestion.getOrderedQuestionChildren()) {
+        for (Question childQuestion : triggeredQuestion.getQuestionChildren()) {
             View childView = LayoutUtils.findChildRecursively(parent, childQuestion);
             if (position == 1) { //FIXME: There must be a smarter way for saying "if the user selected yes"
                 LayoutUtils.toggleVisible(childView, View.VISIBLE);
@@ -287,7 +284,7 @@ public class Layout {
                 numDenRecordMap.get((Integer) spinner.getTag(R.id.Tab)).addRecord(childQuestion, 0F, childQuestion.getDenominator_w());
             } else {
                 LayoutUtils.toggleVisible(childView, View.GONE);
-                if (LayoutUtils.isHeaderEmpty(triggeredQuestion.getOrderedQuestionChildren(), childQuestion.getHeader().getOrderedQuestions())) {
+                if (LayoutUtils.isHeaderEmpty(triggeredQuestion.getQuestionChildren(), childQuestion.getHeader().getOrderedQuestions())) {
                     ((View) ((View) childView).getTag(R.id.HeaderViewTag)).setVisibility(View.GONE);
                 }
                 numDenRecordMap.get((Integer) spinner.getTag(R.id.Tab)).deleteRecord(childQuestion);
@@ -466,7 +463,7 @@ public class Layout {
                             View rowView = inflater.inflate(layoutsToUse.get(i), table, false);
 
                             if (question.hasChildren()){
-                                List<Question> children = question.getOrderedQuestionChildren();
+                                List<Question> children = question.getQuestionChildren();
 
                                 iterListeners = 0;
                                 iterEditListeners = 0;
