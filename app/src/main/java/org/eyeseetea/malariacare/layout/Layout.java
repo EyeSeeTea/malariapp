@@ -284,7 +284,7 @@ public class Layout {
                 numDenRecordMap.get((Integer) spinner.getTag(R.id.Tab)).addRecord(childQuestion, 0F, childQuestion.getDenominator_w());
             } else {
                 LayoutUtils.toggleVisible(childView, View.GONE);
-                if (LayoutUtils.isHeaderEmpty(triggeredQuestion.getQuestionChildren(), childQuestion.getHeader().getOrderedQuestions())) {
+                if (LayoutUtils.isHeaderEmpty(triggeredQuestion.getQuestionChildren(), childQuestion.getHeader().getQuestions())) {
                     ((View) ((View) childView).getTag(R.id.HeaderViewTag)).setVisibility(View.GONE);
                 }
                 numDenRecordMap.get((Integer) spinner.getTag(R.id.Tab)).deleteRecord(childQuestion);
@@ -328,7 +328,7 @@ public class Layout {
 
 
             //Log.i(".Layout", "Reader questions for header " + header.toString());
-            for (Question question : header.getOrderedQuestions()){
+            for (Question question : header.getQuestions()){
                 View questionView = null;
                 EditText answerI = null;
                 // The statement is present in every kind of question
@@ -455,7 +455,7 @@ public class Layout {
                 if(tables.size() == 1){
                     TableLayout table = (TableLayout)tables.get(0);
                     // Now we have the table element, we have to search for the parent questions
-                    List <Question> questions = headers.get(i).getOrderedQuestions(); // FIXME: improve this search to get only the parent questions
+                    List <Question> questions = headers.get(i).getQuestions(); // FIXME: improve this search to get only the parent questions
                     for (Question question: questions) {
                         // If the question is a parent, do don't show it but use it to put the row layout
                         if (question.getQuestion() == null) { // FIXME: when the search above is improve this check will be unnecessary
