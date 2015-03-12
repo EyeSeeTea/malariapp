@@ -91,13 +91,13 @@
                                 android:layout_height="wrap_content"
                                 android:rowCount="1"
                                 android:columnCount="1"
-                                android:id="@+id/gridLayout2" />
+                                android:id="@+id/healthContent" />
                         </ScrollView>
 
                         <GridLayout
                             android:layout_width="fill_parent"
                             android:layout_height="fill_parent"
-                            android:id="@+id/gridLayout3"
+                            android:id="@+id/scoreHealth"
                             android:columnCount="2"
                             android:rowCount="1"
                             android:layout_weight="0.91" />
@@ -120,7 +120,7 @@
                                 android:layout_height="wrap_content"
                                 android:rowCount="1"
                                 android:columnCount="1"
-                                android:id="@+id/tab1">
+                                android:id="@+id/profileContent">
 
                             </GridLayout>
                         </ScrollView>
@@ -128,7 +128,7 @@
                         <GridLayout
                             android:layout_width="fill_parent"
                             android:layout_height="fill_parent"
-                            android:id="@+id/scoretab1"
+                            android:id="@+id/scoreProfile"
                             android:columnCount="2"
                             android:rowCount="1"
                             android:layout_weight="0.91"></GridLayout>
@@ -152,13 +152,13 @@
                                 android:layout_height="wrap_content"
                                 android:rowCount="1"
                                 android:columnCount="1"
-                                android:id="@+id/tab2" />
+                                android:id="@+id/c1ClinicalContent" />
                         </ScrollView>
 
                         <GridLayout
                             android:layout_width="fill_parent"
                             android:layout_height="fill_parent"
-                            android:id="@+id/scoretab2"
+                            android:id="@+id/scoreC1Clinical"
                             android:columnCount="2"
                             android:rowCount="1"
                             android:layout_weight="0.91"></GridLayout>
@@ -174,7 +174,7 @@
                         <ScrollView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:id="@+id/ScrollRdt"
+                            android:id="@+id/ScrollRdt1"
                             android:layout_weight="0.09">
 
                             <GridLayout
@@ -182,7 +182,7 @@
                                 android:layout_height="wrap_content"
                                 android:rowCount="1"
                                 android:columnCount="1"
-                                android:id="@+id/tab3" />
+                                android:id="@+id/c1RDTContent" />
                         </ScrollView>
 
                         <GridLayout
@@ -190,7 +190,7 @@
                             android:layout_height="fill_parent"
                             android:columnCount="2"
                             android:rowCount="1"
-                            android:id="@+id/scoretab3"
+                            android:id="@+id/scoreC1RDT"
                             android:layout_weight="0.91"></GridLayout>
 
                     </LinearLayout>
@@ -212,13 +212,13 @@
                                 android:layout_height="wrap_content"
                                 android:rowCount="1"
                                 android:columnCount="1"
-                                android:id="@+id/tab4" />
+                                android:id="@+id/c1MicroscopyContent" />
                         </ScrollView>
 
                         <GridLayout
                             android:layout_width="fill_parent"
                             android:layout_height="fill_parent"
-                            android:id="@+id/scoretab4"
+                            android:id="@+id/scoreC1Microscopy"
                             android:rowCount="1"
                             android:columnCount="2"
                             android:layout_weight="0.91"></GridLayout>
@@ -242,7 +242,7 @@
                                 android:layout_height="wrap_content"
                                 android:rowCount="1"
                                 android:columnCount="1"
-                                android:id="@+id/tab5" />
+                                android:id="@+id/c2ClinicalContent" />
                         </ScrollView>
 
                         <GridLayout
@@ -250,7 +250,7 @@
                             android:layout_height="fill_parent"
                             android:columnCount="2"
                             android:rowCount="1"
-                            android:id="@+id/scoretab5"
+                            android:id="@+id/scoreC2Clinical"
                             android:layout_weight="0.91"></GridLayout>
 
                     </LinearLayout>
@@ -272,7 +272,7 @@
                                 android:layout_height="wrap_content"
                                 android:rowCount="1"
                                 android:columnCount="1"
-                                android:id="@+id/tab6" />
+                                android:id="@+id/c2RDTContent" />
                         </ScrollView>
 
                         <GridLayout
@@ -280,7 +280,7 @@
                             android:layout_height="fill_parent"
                             android:columnCount="2"
                             android:rowCount="1"
-                            android:id="@+id/scoretab6"
+                            android:id="@+id/scoreC2RDT"
                             android:layout_weight="0.91"></GridLayout>
 
                     </LinearLayout>
@@ -302,7 +302,7 @@
                                 android:layout_height="wrap_content"
                                 android:rowCount="1"
                                 android:columnCount="1"
-                                android:id="@+id/tab7" />
+                                android:id="@+id/c2MicroscopyContent" />
                         </ScrollView>
 
                         <GridLayout
@@ -310,7 +310,7 @@
                             android:layout_height="fill_parent"
                             android:columnCount="2"
                             android:rowCount="1"
-                            android:id="@+id/scoretab7"
+                            android:id="@+id/scoreC2Microscopy"
                             android:layout_weight="0.91"></GridLayout>
 
                     </LinearLayout>
@@ -332,7 +332,7 @@
                                 android:layout_height="wrap_content"
                                 android:rowCount="1"
                                 android:columnCount="1"
-                                android:id="@+id/tab8" />
+                                android:id="@+id/c3ClinicalContent" />
                         </ScrollView>
 
                         <GridLayout
@@ -340,7 +340,7 @@
                             android:layout_height="fill_parent"
                             android:columnCount="2"
                             android:rowCount="1"
-                            android:id="@+id/scoretab8"
+                            android:id="@+id/scoreC3Clinical"
                             android:layout_weight="0.91"></GridLayout>
 
                     </LinearLayout>
@@ -362,7 +362,7 @@
                                 android:layout_height="wrap_content"
                                 android:rowCount="1"
                                 android:columnCount="1"
-                                android:id="@+id/tab9" />
+                                android:id="@+id/c3RDTContent" />
                         </ScrollView>
 
                         <GridLayout
@@ -370,7 +370,7 @@
                             android:layout_height="fill_parent"
                             android:columnCount="2"
                             android:rowCount="1"
-                            android:id="@+id/scoretab9"
+                            android:id="@+id/scoreC3RDT"
                             android:layout_weight="0.91"></GridLayout>
 
                     </LinearLayout>
@@ -392,7 +392,7 @@
                                 android:layout_height="wrap_content"
                                 android:rowCount="1"
                                 android:columnCount="1"
-                                android:id="@+id/tab10" />
+                                android:id="@+id/c3MicroscopyContent" />
                         </ScrollView>
 
                         <GridLayout
@@ -400,7 +400,7 @@
                             android:layout_height="fill_parent"
                             android:columnCount="2"
                             android:rowCount="1"
-                            android:id="@+id/scoretab10"
+                            android:id="@+id/scoreC3Microscopy"
                             android:layout_weight="0.91"></GridLayout>
 
                     </LinearLayout>
@@ -414,7 +414,7 @@
                         <ScrollView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:id="@+id/scrollView2"
+                            android:id="@+id/scrollAdherence"
                             android:layout_weight="0.09" >
 
                             <GridLayout
@@ -422,7 +422,7 @@
                                 android:layout_height="wrap_content"
                                 android:rowCount="1"
                                 android:columnCount="1"
-                                android:id="@+id/tab11" />
+                                android:id="@+id/adherenceContent" />
                         </ScrollView>
 
                         <GridLayout
@@ -430,7 +430,7 @@
                             android:layout_height="fill_parent"
                             android:columnCount="2"
                             android:rowCount="1"
-                            android:id="@+id/scoretab11"
+                            android:id="@+id/scoreAdherence"
                             android:layout_weight="0.91"
                             android:visibility="gone"></GridLayout>
 
@@ -445,7 +445,7 @@
                         <ScrollView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:id="@+id/scrollView"
+                            android:id="@+id/scrollFeedback"
                             android:layout_weight="0.09" >
 
                             <GridLayout
@@ -453,7 +453,7 @@
                                 android:layout_height="wrap_content"
                                 android:rowCount="1"
                                 android:columnCount="1"
-                                android:id="@+id/tab12" />
+                                android:id="@+id/feedbackContent" />
                         </ScrollView>
 
                         <GridLayout
@@ -461,7 +461,7 @@
                             android:layout_height="fill_parent"
                             android:columnCount="2"
                             android:rowCount="1"
-                            android:id="@+id/scoretab12"
+                            android:id="@+id/scoreFeedback"
                             android:layout_weight="0.91"></GridLayout>
 
                     </LinearLayout>
@@ -475,7 +475,7 @@
                         <ScrollView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:id="@+id/Scroll13"
+                            android:id="@+id/ScrollEnvironment"
                             android:layout_weight="0.09">
 
                             <GridLayout
@@ -483,7 +483,7 @@
                                 android:layout_height="wrap_content"
                                 android:rowCount="1"
                                 android:columnCount="1"
-                                android:id="@+id/tab13" />
+                                android:id="@+id/environmentContent" />
                         </ScrollView>
 
                         <GridLayout
@@ -491,7 +491,7 @@
                             android:layout_height="fill_parent"
                             android:columnCount="2"
                             android:rowCount="1"
-                            android:id="@+id/scoretab13"
+                            android:id="@+id/scoreEnvironment"
                             android:layout_weight="0.91"></GridLayout>
 
                     </LinearLayout>
@@ -513,7 +513,7 @@
                                 android:layout_height="fill_parent"
                                 android:columnCount="1"
                                 android:rowCount="1"
-                                android:id="@+id/tabReporting"
+                                android:id="@+id/reportingContent"
                                 android:layout_weight="0.91" />
                         </ScrollView>
 
@@ -522,7 +522,7 @@
                             android:layout_height="fill_parent"
                             android:columnCount="2"
                             android:rowCount="1"
-                            android:id="@+id/scoretab14"
+                            android:id="@+id/scoreReporting"
                             android:layout_weight="0.91"
                             android:visibility="gone"></GridLayout>
 
@@ -545,7 +545,7 @@
                                 android:layout_height="fill_parent"
                                 android:columnCount="1"
                                 android:rowCount="1"
-                                android:id="@+id/tabIqaEqaContent"
+                                android:id="@+id/IqaEqaContent"
                                 android:layout_weight="0.91"></GridLayout>
                         </ScrollView>
 
@@ -567,7 +567,7 @@
                             <GridLayout
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:id="@+id/tabScoreContent"
+                                android:id="@+id/scoreContent"
                                 android:columnCount="1"
                                 android:rowCount="1">
                             </GridLayout>
@@ -591,7 +591,7 @@
                             <GridLayout
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:id="@+id/gridLayout4"
+                                android:id="@+id/compositiveContent"
                                 android:columnCount="1"
                                 android:rowCount="1" />
                         </ScrollView>
