@@ -90,9 +90,9 @@ public class PopulateDB {
                         question.setOrder_pos(Integer.valueOf(line[6]));
                         question.setNumerator_w(Float.valueOf(line[7]));
                         question.setDenominator_w(Float.valueOf(line[8]));
-                        question.setHeader(headerList.get(Integer.valueOf(line[9])-1));
-                        question.setAnswer(answerList.get(Integer.valueOf(line[10])-1));
-                        if (!line[11].equals("")) question.setQuestion(questionList.get(Integer.valueOf(line[11])-1));
+                        question.setHeader(headerList.get(Integer.valueOf(line[9])));
+                        question.setAnswer(answerList.get(Integer.valueOf(line[10])));
+                        if (!line[11].equals("")) question.setQuestion(questionList.get(Integer.valueOf(line[11])));
                         if (line.length == 13 && !line[12].equals("")) question.setCompositiveScore(compositiveScoreList.get(Integer.valueOf(line[12])));
                         questionList.put(Integer.valueOf(line[0]), question);
                         break;
@@ -115,7 +115,7 @@ public class PopulateDB {
                         questionCustom.setNumerator_w(Float.valueOf(line[7]));
                         questionCustom.setDenominator_w(Float.valueOf(line[8]));
                         questionCustom.setHeader(headerCustomList.get(Integer.valueOf(line[9])));
-                        if (!line[10].equals("")) questionCustom.setAnswer(answerList.get(Integer.valueOf(line[10])-1));
+                        if (!line[10].equals("")) questionCustom.setAnswer(answerList.get(Integer.valueOf(line[10])));
                         if (!line[11].equals("")) questionCustom.setQuestion(questionCustomList.get(Integer.valueOf(line[11])));
                         questionCustomList.put(Integer.valueOf(line[0]), questionCustom);
                         break;
