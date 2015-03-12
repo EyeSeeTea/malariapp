@@ -2,6 +2,8 @@ package org.eyeseetea.malariacare.data;
 
 import com.orm.SugarRecord;
 import com.orm.dsl.Ignore;
+import com.orm.query.Condition;
+import com.orm.query.Select;
 
 import java.util.List;
 
@@ -69,7 +71,11 @@ public class Header extends SugarRecord<Header> {
 
     public List<Question> getOrderedQuestions(){
         if (this._questions == null){
-            return Question.find(Question.class, "header = ? order by orderpos", String.valueOf(this.getId()));
+            return Select.from(Question.class)
+                    .where(Condition.prop("header")
+                            .eq(String.valueOf(this.getId())))
+                    .groupBy("orderpos").list();
+            //return Question.find(Question.class, "header = ? order by orderpos", String.valueOf(this.getId()));
         }
         return _questions;
     }
