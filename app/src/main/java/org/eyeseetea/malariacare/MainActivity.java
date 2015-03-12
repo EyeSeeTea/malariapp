@@ -77,7 +77,7 @@ public class MainActivity extends ActionBarActivity {
     }
 
     private void createTabConfiguration() {
-        tabsLayouts.add(new TabConfiguration(R.id.healthFacilityInfo, true, null,R.id.healthScore, null));
+        tabsLayouts.add(new TabConfiguration(R.id.healthFacilityInfo, true, null, R.id.healthScore, null));
         tabsLayouts.add(new TabConfiguration(R.id.profile, true, null, R.id.profileScore, null));
         tabsLayouts.add(new TabConfiguration(R.id.c1Clinical, true, null, R.id.clinicalCase1, R.id.clinicalAvg));
         tabsLayouts.add(new TabConfiguration(R.id.c1RDT, true, null, R.id.rdtCase1, R.id.rdtAvg));
