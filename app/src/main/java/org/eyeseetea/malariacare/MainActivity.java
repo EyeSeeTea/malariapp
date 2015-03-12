@@ -18,6 +18,8 @@ import android.widget.Spinner;
 import android.widget.TabHost;
 import android.widget.TextView;
 
+import com.orm.query.Select;
+
 import org.eyeseetea.malariacare.data.Tab;
 import org.eyeseetea.malariacare.layout.Layout;
 import org.eyeseetea.malariacare.layout.LayoutUtils;
@@ -102,7 +104,7 @@ public class MainActivity extends ActionBarActivity {
         Spinner tabSpinner = (Spinner) this.findViewById(R.id.tabSpinner);
         ArrayList<String> spinnerArray = new ArrayList<String>();
         // We get all tabs and insert their content in their layout
-        final List<Tab> tabList = Tab.listAll(Tab.class);
+        final List<Tab> tabList = Select.from(Tab.class).orderBy("orderpos").list();
         for (int i = 0; i< tabsLayouts.size(); i++){
             Tab tabItem = tabList.get(i);
             Log.d(".MainActivity", "Adding tab to menu and generating tab " + tabItem.toString());
