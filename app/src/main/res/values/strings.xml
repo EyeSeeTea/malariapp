@@ -3,7 +3,6 @@
 
     <string name="app_name">MalariaCare</string>
     <string name="developers">EyeSeeTea LTD</string>
-    <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="button_send">Send</string>
     <string name="asked">Asked</string>
@@ -112,23 +111,4 @@
     <string name="idHeader">ID</string>
     <string name="nameHeader">Name</string>
     <string name="clinicalFeverEvalTitle">Clinical fever\n evaluation</string>
-    <string-array name="iqa_testresult">
-        <item></item>
-        <item>Positive</item>
-        <item>Negative</item>
-    </string-array>
-    <string-array name="adherence_testresults">
-        <item>Malaria Positive</item>
-        <item>Malaria Negative</item>
-        <item>Not tested</item>
-    </string-array>
-    <string-array name="gender">
-        <item>Male</item>
-        <item>Female</item>
-    </string-array>
-    <string-array name="yesno">
-        <item></item>
-        <item>Yes</item>
-        <item>No</item>
-    </string-array>
 </resources>
