@@ -279,7 +279,7 @@ public class Layout {
 
     private static void toggleVisibleChildren(int position, Spinner spinner, Question triggeredQuestion) {
         View parent = LayoutUtils.findParentRecursively(spinner, (Integer) spinner.getTag(R.id.Tab));
-        for (Question childQuestion : triggeredQuestion.getQuestionChildren()) {
+        for (Question childQuestion : triggeredQuestion.getOrderedQuestionChildren()) {
             View childView = LayoutUtils.findChildRecursively(parent, childQuestion);
             if (position == 1) { //FIXME: There must be a smarter way for saying "if the user selected yes"
                 LayoutUtils.toggleVisible(childView, View.VISIBLE);
@@ -287,7 +287,7 @@ public class Layout {
                 numDenRecordMap.get((Integer) spinner.getTag(R.id.Tab)).addRecord(childQuestion, 0F, childQuestion.getDenominator_w());
             } else {
                 LayoutUtils.toggleVisible(childView, View.GONE);
-                if (LayoutUtils.isHeaderEmpty(triggeredQuestion.getQuestionChildren(), childQuestion.getHeader().getOrderedQuestions())) {
+                if (LayoutUtils.isHeaderEmpty(triggeredQuestion.getOrderedQuestionChildren(), childQuestion.getHeader().getOrderedQuestions())) {
                     ((View) ((View) childView).getTag(R.id.HeaderViewTag)).setVisibility(View.GONE);
                 }
                 numDenRecordMap.get((Integer) spinner.getTag(R.id.Tab)).deleteRecord(childQuestion);
@@ -466,7 +466,7 @@ public class Layout {
                             View rowView = inflater.inflate(layoutsToUse.get(i), table, false);
 
                             if (question.hasChildren()){
-                                List<Question> children = question.getQuestionChildren();
+                                List<Question> children = question.getOrderedQuestionChildren();
 
                                 iterListeners = 0;
                                 iterEditListeners = 0;
