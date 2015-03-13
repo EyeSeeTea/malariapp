@@ -111,5 +111,5 @@
     <string name="idHeader">ID</string>
     <string name="nameHeader">Name</string>
     <string name="clinicalFeverEvalTitle">Clinical fever\n evaluation</string>
-    <string name="action_pull">Mis à jour des questions dès DHIS</string>
+    <string name="action_pull">Mise à jour des questions dès DHIS</string>
 </resources>
