@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">MalariaCare</string>
+    <string name="app_name">Falicity QA Tool</string>
     <string name="developers">EyeSeeTea LTD</string>
     <string name="action_settings">Configuración</string>
     <string name="button_send">Enviar</string>
@@ -111,4 +111,5 @@
     <string name="idHeader">ID</string>
     <string name="nameHeader">Nombre</string>
     <string name="clinicalFeverEvalTitle">Evaluación de\n fiebre clínica</string>
+    <string name="action_pull">Actualizar preguntas de DHIS</string>
 </resources>
