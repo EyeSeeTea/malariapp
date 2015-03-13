@@ -1,6 +1,7 @@
 package org.eyeseetea.malariacare.utils;
 
 import android.content.res.AssetManager;
+import android.util.Log;
 import android.util.SparseArray;
 
 import com.opencsv.CSVReader;
@@ -17,6 +18,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -26,15 +28,15 @@ import java.util.TreeMap;
  */
 public class PopulateDB {
 
-    static SparseArray<Tab> tabList = new SparseArray<Tab>();
-    static SparseArray<Header> headerList = new SparseArray<Header>();
-    static SparseArray<Question> questionList = new SparseArray<Question>();
-    static SparseArray<Option> optionList = new SparseArray<Option>();
-    static SparseArray<Answer> answerList = new SparseArray<Answer>();
-    static SparseArray<CompositiveScore> compositiveScoreList = new SparseArray<CompositiveScore>();
+    static Map<Integer, Tab> tabList = new LinkedHashMap<Integer, Tab>();
+    static Map<Integer, Header> headerList = new LinkedHashMap<Integer, Header>();
+    static Map<Integer, Question> questionList = new LinkedHashMap<Integer, Question>();
+    static Map<Integer, Option> optionList = new LinkedHashMap<Integer, Option>();
+    static Map<Integer, Answer> answerList = new LinkedHashMap<Integer, Answer>();
+    static Map<Integer, CompositiveScore> compositiveScoreList = new LinkedHashMap<Integer, CompositiveScore>();
 
-    static SparseArray<Header> headerCustomList = new SparseArray<Header>();
-    static SparseArray<Question> questionCustomList = new SparseArray<Question>();
+    static Map<Integer, Header> headerCustomList = new LinkedHashMap<Integer, Header>();
+    static Map<Integer, Question> questionCustomList = new LinkedHashMap<Integer, Question>();
 
     public static void populateDB(AssetManager assetManager) throws IOException {
 
@@ -127,19 +129,16 @@ public class PopulateDB {
             reader.close();
         }
 
-        Tab.saveInTx(Utils.asList(tabList));
-        Header.saveInTx(Utils.asList(headerList));
-        Answer.saveInTx(Utils.asList(answerList));
-        Option.saveInTx(Utils.asList(optionList));
-        CompositiveScore.saveInTx(Utils.asList(compositiveScoreList));
-        Question.saveInTx(Utils.asList(questionList));
+        Tab.saveInTx(tabList.values());
+        Header.saveInTx(headerList.values());
+        Answer.saveInTx(answerList.values());
+        Option.saveInTx(optionList.values());
+        CompositiveScore.saveInTx(compositiveScoreList.values());
+        Question.saveInTx(questionList.values());
 
-        Header.saveInTx(Utils.asList(headerCustomList));
-        Question.saveInTx(Utils.asList(questionCustomList));
+        Header.saveInTx(headerCustomList.values());
+        Question.saveInTx(questionCustomList.values());
 
     }
 
-//    public static String trimText(String text){
-//        return text.replaceAll("^'|'$", "");
-//    }
 }
