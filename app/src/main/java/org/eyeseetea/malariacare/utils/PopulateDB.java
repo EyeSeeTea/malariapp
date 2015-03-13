@@ -127,24 +127,16 @@ public class PopulateDB {
             reader.close();
         }
 
-        Tab.saveInTx(asList(tabList));
-        Header.saveInTx(asList(headerList));
-        Answer.saveInTx(asList(answerList));
-        Option.saveInTx(asList(optionList));
-        CompositiveScore.saveInTx(asList(compositiveScoreList));
-        Question.saveInTx(asList(questionList));
+        Tab.saveInTx(Utils.asList(tabList));
+        Header.saveInTx(Utils.asList(headerList));
+        Answer.saveInTx(Utils.asList(answerList));
+        Option.saveInTx(Utils.asList(optionList));
+        CompositiveScore.saveInTx(Utils.asList(compositiveScoreList));
+        Question.saveInTx(Utils.asList(questionList));
 
-        Header.saveInTx(asList(headerCustomList));
-        Question.saveInTx(asList(questionCustomList));
+        Header.saveInTx(Utils.asList(headerCustomList));
+        Question.saveInTx(Utils.asList(questionCustomList));
 
-    }
-
-    public static <C> List <C> asList(SparseArray<C> sparseArray){
-        if (sparseArray == null) return null;
-        List<C> arrayList = new ArrayList<C>(sparseArray.size());
-        for (int i = 0; i < sparseArray.size(); i++)
-            arrayList.add(sparseArray.valueAt(i));
-        return arrayList;
     }
 
 //    public static String trimText(String text){
