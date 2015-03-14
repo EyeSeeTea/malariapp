@@ -6,4 +6,7 @@
     android:layout_height="wrap_content"
     android:ellipsize="marquee"
     android:textSize="12sp"
-    style="?android:attr/spinnerItemStyle" />
+    style="?android:attr/spinnerItemStyle"
+    android:alpha="0.8"
+    android:textAlignment="gravity"
+    android:gravity="center" />

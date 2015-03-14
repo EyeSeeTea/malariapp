@@ -52,13 +52,13 @@
                     android:id="@+id/tabSpinner"
                     android:spinnerMode="dropdown"
                     android:layoutMode="clipBounds"
-                    android:backgroundTint="#1e506c"
                     android:backgroundTintMode="add"
                     android:gravity="right"
                     android:paddingLeft="2dip"
                     android:paddingTop="2dip"
                     android:paddingBottom="2dip"
-                    android:paddingRight="20dip" />
+                    android:paddingRight="20dip"
+                    android:backgroundTint="#1e506c" />
 
                 <TabWidget
                     android:id="@android:id/tabs"

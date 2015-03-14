@@ -7,7 +7,8 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_weight="0.16"
-        android:layout_gravity="center_vertical">
+        android:layout_gravity="center_vertical"
+        android:padding="5dip">
         <TextView
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
@@ -18,18 +19,37 @@
     <RelativeLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="0.26">
-        <Spinner
+        android:layout_weight="0.26"
+        android:padding="5dip">
+
+        <LinearLayout
+            android:orientation="vertical"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/answer"
-            android:spinnerMode="dropdown" />
+            android:layout_height="fill_parent"
+            android:background="#bebebe"
+            android:alpha="0.8">
+
+            <Spinner
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/answer"
+                android:spinnerMode="dropdown"
+                android:backgroundTintMode="add"
+                android:paddingLeft="2dip"
+                android:paddingTop="2dip"
+                android:paddingRight="20dip"
+                android:paddingBottom="2dip"
+                android:backgroundTint="#1e506c"
+                android:gravity="right" />
+        </LinearLayout>
+
     </RelativeLayout>
     <RelativeLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_weight="0.29"
-        android:gravity="center_vertical|center_horizontal">
+        android:gravity="center_vertical|center_horizontal"
+        android:padding="5dip">
         <TextView
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
@@ -41,7 +61,8 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_weight="0.29"
-        android:gravity="center_vertical|center_horizontal">
+        android:gravity="center_vertical|center_horizontal"
+        android:padding="5dip">
         <TextView
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
