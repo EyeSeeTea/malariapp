@@ -620,6 +620,11 @@ public class Layout {
                 TextView totalScoreView = (TextView) root.findViewById(R.id.adherenceScore);
                 totalScore = totalScore*100.0F/20.0F;
                 setScore(totalScore, totalScoreView);
+                LinearLayout tabLayout = (LinearLayout)LayoutUtils.findParentRecursively(parent, MainActivity.getTabsLayouts());
+                TextView subScoreView = (TextView)tabLayout.findViewById(R.id.score);
+                TextView percentageView = (TextView)tabLayout.findViewById(R.id.percentageSymbol);
+                TextView cualitativeView = (TextView)tabLayout.findViewById(R.id.cualitativeScore);
+                setScore(totalScore, subScoreView, percentageView, cualitativeView);
             }
 
             @Override
@@ -674,6 +679,11 @@ public class Layout {
                 totalScore = totalScore*10.0F;
                 TextView iqaEqaScoreView = (TextView) root.findViewById(R.id.iqaeqaScore);
                 setScore(totalScore, iqaEqaScoreView);
+                LinearLayout tabLayout = (LinearLayout)LayoutUtils.findParentRecursively(parent, MainActivity.getTabsLayouts());
+                TextView subScoreView = (TextView)tabLayout.findViewById(R.id.score);
+                TextView percentageView = (TextView)tabLayout.findViewById(R.id.percentageSymbol);
+                TextView cualitativeView = (TextView)tabLayout.findViewById(R.id.cualitativeScore);
+                setScore(totalScore, subScoreView, percentageView, cualitativeView);
             }
 
             @Override
@@ -727,6 +737,11 @@ public class Layout {
                 totalScore = totalScore*10.0F;
                 TextView reportingScoreView = (TextView) root.findViewById(R.id.reportingScore);
                 setScore(totalScore, reportingScoreView);
+                LinearLayout tabLayout = (LinearLayout)LayoutUtils.findParentRecursively(myEdit, MainActivity.getTabsLayouts());
+                TextView subScoreView = (TextView)tabLayout.findViewById(R.id.score);
+                TextView percentageView = (TextView)tabLayout.findViewById(R.id.percentageSymbol);
+                TextView cualitativeView = (TextView)tabLayout.findViewById(R.id.cualitativeScore);
+                setScore(totalScore, subScoreView, percentageView, cualitativeView);
             }
         };
     }

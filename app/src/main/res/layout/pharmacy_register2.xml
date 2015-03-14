@@ -67,7 +67,7 @@
             android:layout_width="40dip"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
-            android:id="@+id/score"
+            android:id="@+id/scoreValue"
             android:padding="5dip"
             android:layout_gravity="center" />
 

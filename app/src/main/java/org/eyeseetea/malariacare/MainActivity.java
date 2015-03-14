@@ -209,8 +209,12 @@ public class MainActivity extends ActionBarActivity {
         }
     }
 
-    public static List<TabConfiguration> getTabsLayouts() {
-        return tabsLayouts;
+    public static List<Integer> getTabsLayouts() {
+        ArrayList<Integer> layouts = new ArrayList<Integer>();
+        for (TabConfiguration tab: tabsLayouts){
+            layouts.add(new Integer(tab.getTabId()));
+        }
+        return layouts;
     }
 
     @Override
