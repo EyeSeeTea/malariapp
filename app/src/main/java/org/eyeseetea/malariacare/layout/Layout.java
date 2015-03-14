@@ -85,38 +85,40 @@ public class Layout {
         tabHost.addTab(tabSpec);
 
         if (!tabConfiguration.isAutomaticTab() && tabConfiguration.getLayoutId() != null){
-            generateManualTab(mainActivity, tab, tabConfiguration, inflater, layoutParent);
+            generateCustomTab(mainActivity, tab, tabConfiguration, inflater, layoutParent);
         }else {
             generateAutomaticTab(mainActivity, tab, tabConfiguration, inflater, layoutParent, defaultOption);
-            generateScore(tab, tabConfiguration, inflater, layoutGrandParent);
         }
+        if (tabConfiguration.getScoreFieldId() != null) generateScore(tab, tabConfiguration, inflater, layoutGrandParent);
     }
 
 
     private static void generateScore(Tab tab, TabConfiguration tabConfiguration, LayoutInflater inflater, LinearLayout layoutGrandParent) {
         // This layout is for showing the accumulated score
         GridLayout layoutParentScore = (GridLayout) layoutGrandParent.getChildAt(1);
-        Log.i(".Layout", "Grandpa layout children: " + layoutGrandParent.getChildCount());
-        View subtotalView = inflater.inflate(R.layout.subtotal_num_dem, layoutParentScore, false);
-        TextView totalNumText = (TextView) subtotalView.findViewById(R.id.totalNum);
-        TextView totalDenText = (TextView) subtotalView.findViewById(R.id.totalDen);
+        View subtotalView = null;
+        TextView totalNumText = null;
+        TextView totalDenText = null;
+        if (tabConfiguration.isAutomaticTab()) {
+            subtotalView = inflater.inflate(R.layout.subtotal_num_dem, layoutParentScore, false);
+            totalNumText = (TextView) subtotalView.findViewById(R.id.totalNum);
+            totalDenText = (TextView) subtotalView.findViewById(R.id.totalDen);
+            totalNumText.setText("0.0");
+            List<Float> numDenSubTotal = numDenRecordMap.get(tabConfiguration.getTabId()).calculateTotal();
+            totalDenText.setText(Utils.round(numDenSubTotal.get(1)));
+        } else {
+            subtotalView = inflater.inflate(R.layout.subtotal_custom, layoutParentScore, false);
+        }
         TextView tabName = (TextView) subtotalView.findViewById(R.id.tabName);
         tabName.setText(tab.getName());
-        totalNumText.setText("0.0");
-        List<Float> numDenSubTotal = numDenRecordMap.get(tabConfiguration.getTabId()).calculateTotal();
-        totalDenText.setText(Utils.round(numDenSubTotal.get(1)));
 
-        layoutParentScore.addView(subtotalView);
         TextView subscoreView = (TextView) subtotalView.findViewById(R.id.score);
 
         // Now, for being able to write Score in the score tab and score averages in its place (in score tab), we use setTag() to include a pointer to
         // the score View id, and in that id, we include a pointer to the average view id. This way, we can do the calculus here and represent there
         Integer generalScoreId = tabConfiguration.getScoreFieldId();
-        if (tabConfiguration.getScoreFieldId() != null) {
-            subscoreView.setTag(generalScoreId);
-        }
-
-        Log.i(".Layout", "after generated tab: " + numDenSubTotal.get(0) + " " + numDenSubTotal.get(1));
+        subscoreView.setTag(generalScoreId);
+        layoutParentScore.addView(subtotalView);
     }
 
 
@@ -400,7 +402,7 @@ public class Layout {
         }
     }
 
-    private static void generateManualTab(MainActivity mainActivity, Tab tab, TabConfiguration tabConfiguration, LayoutInflater inflater, GridLayout layoutParent) {
+    private static void generateCustomTab(MainActivity mainActivity, Tab tab, TabConfiguration tabConfiguration, LayoutInflater inflater, GridLayout layoutParent) {
         View customView = inflater.inflate(tabConfiguration.getLayoutId(), layoutParent, false);
         boolean getFromDatabase = false;
         boolean hasScoreLayout = false;

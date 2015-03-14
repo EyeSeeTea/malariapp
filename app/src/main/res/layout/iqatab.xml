@@ -5,7 +5,7 @@
 
 
     <GridLayout
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:columnCount="1"
         android:rowCount="2"
@@ -79,11 +79,11 @@
     </GridLayout>
 
     <Space
-        android:layout_width="20dip"
+        android:layout_width="fill_parent"
         android:layout_height="40dip" />
 
     <GridLayout
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:columnCount="1"
         android:rowCount="1"
@@ -158,11 +158,11 @@
     </GridLayout>
 
     <Space
-        android:layout_width="20dip"
+        android:layout_width="fill_parent"
         android:layout_height="40dip" />
 
     <GridLayout
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:columnCount="1"
         android:rowCount="1"

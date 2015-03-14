@@ -74,8 +74,6 @@ public class MainActivity extends ActionBarActivity {
 
         long time5 = System.currentTimeMillis();
         Log.d(".MainActivity", "Time creating menu and tabs: " + (time5 -time4) + " ms");
-
-        // Score tab is a little bit special, we don't need to add it
     }
 
     private void createTabConfiguration() {

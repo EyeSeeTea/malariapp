@@ -25,7 +25,7 @@
         android:padding="5dip">
 
         <EditText
-                android:layout_width="40dip"
+                android:layout_width="160dip"
                 android:layout_height="wrap_content"
             android:id="@+id/tallies"
                 android:background="@drawable/background_textfield" />
