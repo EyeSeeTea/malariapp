@@ -608,10 +608,36 @@ public class Layout {
                         // This will occur when an item is selected in first table Adherence spinners
                         // For this table, when Test result is "Malaria Positive" score=1, score=0 otherwise
                         int score = 0;
+                        float totalScore = 0.0F;
                         if (position == 1) score = 1;
                         else score = 0;
                         TextView scoreText = (TextView)((ViewGroup)((ViewGroup)((ViewGroup)parent.getParent().getParent().getParent())).getChildAt(5)).getChildAt(0);
                         scoreText.setText((String)Integer.toString(score));
+                        // Set the total score in the score tab
+                        LinearLayout tabLayout = (LinearLayout)LayoutUtils.findParentRecursively(parent, MainActivity.getTabsLayouts());
+                        TableLayout table1 = (TableLayout)tabLayout.findViewById(R.id.register1Table);
+                        for (int i=1; i<((ViewGroup) table1).getChildCount(); i++){
+                            TableRow row = (TableRow) table1.getChildAt(i);
+                            TextView scoreCell = ((TextView) ((ViewGroup) row.getChildAt(5)).getChildAt(0));
+                            String stringFloat = scoreCell.getText().toString();
+                            if (!("".equals(scoreCell.getText()))) totalScore += Float.parseFloat(stringFloat);
+                        }
+                        TableLayout table2 = (TableLayout)tabLayout.findViewById(R.id.register2Table);
+                        for (int i=1; i<((ViewGroup) table2).getChildCount(); i++){
+                            TableRow row = (TableRow) table2.getChildAt(i);
+                            TextView scoreCell = ((TextView) ((ViewGroup) row.getChildAt(4)).getChildAt(0));
+                            String stringFloat = scoreCell.getText().toString();
+                            if (!("".equals(scoreCell.getText()))) totalScore += Float.parseFloat(stringFloat);
+                        }
+                        LinearLayout root = (LinearLayout) LayoutUtils.findParentRecursively(parent, R.id.Grid);
+                        TextView totalScoreView = (TextView) root.findViewById(R.id.adherenceScore);
+                        totalScore = totalScore*100.0F/40.0F;
+                        setScore(totalScore, totalScoreView);
+
+                        TextView subScoreView = (TextView)tabLayout.findViewById(R.id.score);
+                        TextView percentageView = (TextView)tabLayout.findViewById(R.id.percentageSymbol);
+                        TextView cualitativeView = (TextView)tabLayout.findViewById(R.id.cualitativeScore);
+                        setScore(totalScore, subScoreView, percentageView, cualitativeView);
                     }
 
                     @Override
@@ -627,6 +653,7 @@ public class Layout {
                         // For this table, when Test results is RDT* then ACT Prescribed=Yes means score=1, otherwise score=0
                         //               , when Test results is Microscopy* then ACT Prescribed=No means Score=1, otherwise score=0
                         int score = 0;
+                        float totalScore = 0.0F;
                         TextView actPrescribed = (TextView)((ViewGroup)((ViewGroup)((ViewGroup)parent.getParent().getParent().getParent())).getChildAt(2)).getChildAt(0);
                         if("RDT Positive".equals(actPrescribed.getText()) || "RDT Negative".equals(actPrescribed.getText())){
                             if (position == 1) score=1;
@@ -638,19 +665,26 @@ public class Layout {
                         TextView scoreText = (TextView)((ViewGroup)((ViewGroup)((ViewGroup)parent.getParent().getParent().getParent())).getChildAt(4)).getChildAt(0);
                         scoreText.setText((String)Integer.toString(score));
                         // Set the total score in the score tab
-                        TableLayout table = (TableLayout)LayoutUtils.findParentRecursively(parent, R.id.register2Table);
-                        float totalScore = 0.0F;
-                        for (int i=1; i<((ViewGroup) table).getChildCount(); i++){
-                            TableRow row = (TableRow) table.getChildAt(i);
+                        LinearLayout tabLayout = (LinearLayout)LayoutUtils.findParentRecursively(parent, MainActivity.getTabsLayouts());
+                        TableLayout table1 = (TableLayout)tabLayout.findViewById(R.id.register1Table);
+                        for (int i=1; i<((ViewGroup) table1).getChildCount(); i++){
+                            TableRow row = (TableRow) table1.getChildAt(i);
+                            TextView scoreCell = ((TextView) ((ViewGroup) row.getChildAt(5)).getChildAt(0));
+                            String stringFloat = scoreCell.getText().toString();
+                            if (!("".equals(scoreCell.getText()))) totalScore += Float.parseFloat(stringFloat);
+                        }
+                        TableLayout table2 = (TableLayout)tabLayout.findViewById(R.id.register2Table);
+                        for (int i=1; i<((ViewGroup) table2).getChildCount(); i++){
+                            TableRow row = (TableRow) table2.getChildAt(i);
                             TextView scoreCell = ((TextView) ((ViewGroup) row.getChildAt(4)).getChildAt(0));
                             String stringFloat = scoreCell.getText().toString();
                             if (!("".equals(scoreCell.getText()))) totalScore += Float.parseFloat(stringFloat);
                         }
                         LinearLayout root = (LinearLayout) LayoutUtils.findParentRecursively(parent, R.id.Grid);
                         TextView totalScoreView = (TextView) root.findViewById(R.id.adherenceScore);
-                        totalScore = totalScore*100.0F/20.0F;
+                        totalScore = totalScore*100.0F/40.0F;
                         setScore(totalScore, totalScoreView);
-                        LinearLayout tabLayout = (LinearLayout)LayoutUtils.findParentRecursively(parent, MainActivity.getTabsLayouts());
+
                         TextView subScoreView = (TextView)tabLayout.findViewById(R.id.score);
                         TextView percentageView = (TextView)tabLayout.findViewById(R.id.percentageSymbol);
                         TextView cualitativeView = (TextView)tabLayout.findViewById(R.id.cualitativeScore);
