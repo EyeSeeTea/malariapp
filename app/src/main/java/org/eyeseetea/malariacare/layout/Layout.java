@@ -638,6 +638,9 @@ public class Layout {
                     if (isChecked) (grandpa.getChildAt(i)).setVisibility(View.VISIBLE);
                     else (grandpa.getChildAt(i)).setVisibility(View.GONE);
                 }
+                // We set invisible also the subscore layout
+                if (isChecked) ((GridLayout)((ViewGroup)((ViewGroup)((ViewGroup)grandpa.getParent()).getParent()).getParent()).getChildAt(1)).setVisibility(View.VISIBLE);
+                else ((GridLayout)((ViewGroup)((ViewGroup)((ViewGroup)grandpa.getParent()).getParent()).getParent()).getChildAt(1)).setVisibility(View.GONE);
                 return;
             }
         });

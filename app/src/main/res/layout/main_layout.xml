@@ -449,8 +449,8 @@
                             android:rowCount="1"
                             android:id="@+id/scoreAdherence"
                             android:layout_weight="0.91"
-                            android:visibility="gone"
-                            android:background="#1e506c"></GridLayout>
+                            android:background="#1e506c"
+                            android:visibility="gone"></GridLayout>
 
                     </LinearLayout>
 
@@ -544,7 +544,6 @@
                             android:rowCount="1"
                             android:id="@+id/scoreReporting"
                             android:layout_weight="0.91"
-                            android:visibility="gone"
                             android:background="#1e506c"></GridLayout>
 
                     </LinearLayout>
@@ -577,7 +576,6 @@
                             android:rowCount="1"
                             android:id="@+id/scoreIqaEqa"
                             android:layout_weight="0.91"
-                            android:visibility="gone"
                             android:background="#1e506c" />
 
                     </LinearLayout>
