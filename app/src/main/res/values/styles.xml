@@ -6,5 +6,8 @@
         <item name="logo">@drawable/qualityapp_logo</item>
         <item name="displayOptions">useLogo|showHome|homeAsUp|showTitle</item>
     </style>
+    <style name="Widget.AppCompat.Spinner.EyeSeeSpinner">
+        <item name="android:textSize">12sp</item>
+    </style>
 
 </resources>

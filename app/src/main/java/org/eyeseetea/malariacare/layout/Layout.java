@@ -375,6 +375,7 @@ public class Layout {
                         List<Option> optionList = question.getAnswer().getOptions();
                         optionList.add(0, defaultOption);
                         ArrayAdapter adapter = new ArrayAdapter(mainActivity, android.R.layout.simple_spinner_item, optionList);
+                        adapter.setDropDownViewResource(R.layout.simple_spinner_item);
                         dropdown.setAdapter(adapter);
                         break;
                     case Constants.INT:
@@ -500,6 +501,7 @@ public class Layout {
                                                 List<Option> optionList = children.get(j).getAnswer().getOptions();
                                                 optionList.add(0, defaultOption);
                                                 ArrayAdapter adapter = new ArrayAdapter(mainActivity, android.R.layout.simple_spinner_item, optionList);
+                                                adapter.setDropDownViewResource(R.layout.simple_spinner_item);
                                                 Spinner dropdown = (Spinner) ((ViewGroup) ((ViewGroup) rowView).getChildAt(j + offset)).getChildAt(0); // We take the spinner
                                                 dropdown.setTag(R.id.QuestionTypeTag, Constants.DROPDOWN_LIST);
                                                 dropdown.setAdapter(adapter);
