@@ -135,6 +135,8 @@ public class Layout {
                 TextView numSubtotal = (TextView) tabLayout.findViewById(R.id.totalNum);
                 TextView denSubtotal = (TextView) tabLayout.findViewById(R.id.totalDen);
                 TextView partialScoreView = (TextView) tabLayout.findViewById(R.id.score);
+                TextView partialScorePercentageView = (TextView) tabLayout.findViewById(R.id.percentageSymbol);
+                TextView partialCualitativeScoreView = (TextView) tabLayout.findViewById(R.id.cualitativeScore);
                 View gridView = null;
                 // General scores View
                 Integer generalScoreId = null, generalScoreAvgId = null;
@@ -209,21 +211,17 @@ public class Layout {
                        score = (numDenSubTotal.get(0) / numDenSubTotal.get(1)) * 100;
                     }
                     TextView elementView = null;
-                    // TrafficLight
-                    LayoutUtils.trafficLight(partialScoreView, score);
-                    partialScoreView.setText(Utils.round(score)); // We set the score in the tab score
+
+                    setScore(score, partialScoreView, partialScorePercentageView, partialCualitativeScoreView); // We set the score in the tab score
+
                     if (tabConfiguration.getScoreFieldId() != null) {
-                        // TrafficLight
-                        LayoutUtils.trafficLight(generalScoreView, score);
-                        generalScoreView.setText(Utils.round(score)); // We set the score in the score tab
+                        setScore(score, generalScoreView);
                         if(tabConfiguration.getScoreAvgFieldId() != null){
                             List<Integer> averageElements = (ArrayList<Integer>) generalScoreAvgView.getTag();
                             if (averageElements == null) {
                                 averageElements = new ArrayList<Integer>();
                                 averageElements.add(generalScoreId);
-                                // TrafficLight
-                                LayoutUtils.trafficLight(generalScoreAvgView, score);
-                                generalScoreAvgView.setText(Utils.round(score));
+                                setScore(score, generalScoreAvgView);
                                 generalScoreAvgView.setTag(averageElements);
                             } else {
                                 boolean found = false;
@@ -233,9 +231,7 @@ public class Layout {
                                 }
                                 if (!found) averageElements.add(generalScoreId);
                                 average = average / averageElements.size();
-                                // TrafficLight
-                                LayoutUtils.trafficLight(generalScoreAvgView, average);
-                                generalScoreAvgView.setText(Utils.round(average));
+                                setScore(average, generalScoreAvgView);
                                 generalScoreAvgView.setTag(averageElements);
                             }
                         }
@@ -261,9 +257,7 @@ public class Layout {
                                 else scoreElements.add(generalScoreId);
                             }
                             totalAverage = totalAverage / scoreElements.size();
-                            // TrafficLight Logic
-                            LayoutUtils.trafficLight(totalScoreView, totalAverage);
-                            totalScoreView.setText(Utils.round(totalAverage));
+                            setScore(totalAverage, totalScoreView);
                             totalScoreView.setTag(scoreElements);
                         }
                     }
@@ -277,6 +271,16 @@ public class Layout {
             }
 
         });
+    }
+
+    private static void setScore(float score, View scoreView, View percentageView, View cualitativeView){
+        LayoutUtils.trafficLight(scoreView, score, cualitativeView);
+        if (percentageView != null) LayoutUtils.trafficLight(percentageView, score, null);
+        ((TextView)scoreView).setText(Utils.round(score));
+    }
+
+    private static void setScore(float score, View scoreView){
+        setScore(score, scoreView, null, null);
     }
 
     private static void toggleVisibleChildren(int position, Spinner spinner, Question triggeredQuestion) {
@@ -395,6 +399,7 @@ public class Layout {
     private static void generateManualTab(MainActivity mainActivity, Tab tab, TabConfiguration tabConfiguration, LayoutInflater inflater, GridLayout layoutParent) {
         View customView = inflater.inflate(tabConfiguration.getLayoutId(), layoutParent, false);
         boolean getFromDatabase = false;
+        boolean hasScoreLayout = false;
         // Array to get the needed layouts during question insertion
         List<Integer> layoutsToUse = new ArrayList<Integer>();
         // Array to capture and process events when user selection is done
@@ -587,9 +592,7 @@ public class Layout {
                 LinearLayout root = (LinearLayout) LayoutUtils.findParentRecursively(parent, R.id.Grid);
                 TextView totalScoreView = (TextView) root.findViewById(R.id.adherenceScore);
                 totalScore = totalScore*100.0F/20.0F;
-                // TrafficLight Logic
-                LayoutUtils.trafficLight(totalScoreView, totalScore);               
-				totalScoreView.setText(Utils.round(totalScore));
+                setScore(totalScore, totalScoreView);
             }
 
             @Override
@@ -639,10 +642,8 @@ public class Layout {
                     if (!("".equals((String)totalScoreView.getText()))) totalScore += Float.parseFloat((String)totalScoreView.getText());
                 }
                 totalScore = totalScore*10.0F;
-                TextView iqaEqaScore = (TextView) root.findViewById(R.id.iqaeqaScore);
-                LayoutUtils.trafficLight(iqaEqaScore, totalScore);
-                iqaEqaScore.setText(Utils.round(totalScore));
-
+                TextView iqaEqaScoreView = (TextView) root.findViewById(R.id.iqaeqaScore);
+                setScore(totalScore, iqaEqaScoreView);
             }
 
             @Override
@@ -694,9 +695,8 @@ public class Layout {
                     if (!("".equals((String)totalScoreView.getText()))) totalScore += Float.parseFloat((String)totalScoreView.getText());
                 }
                 totalScore = totalScore*10.0F;
-                TextView reportingScore = (TextView) root.findViewById(R.id.reportingScore);
-                LayoutUtils.trafficLight(reportingScore, totalScore);
-                reportingScore.setText(Utils.round(totalScore));
+                TextView reportingScoreView = (TextView) root.findViewById(R.id.reportingScore);
+                setScore(totalScore, reportingScoreView);
             }
         };
     }

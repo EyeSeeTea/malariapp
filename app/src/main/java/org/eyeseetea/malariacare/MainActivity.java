@@ -115,7 +115,7 @@ public class MainActivity extends ActionBarActivity {
             Log.d(".MainActivity", "Tab " + tabItem.toString() + " created");
         }
         tabSpinner.setTag(tabsLayouts);
-        ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(this, R.layout.simple_spinner_item, spinnerArray);
+        ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(this, R.layout.main_spinner_item, spinnerArray);
         tabSpinner.setAdapter(spinnerArrayAdapter);
 
         Log.i(".MainActivity", "Adding tab event");
