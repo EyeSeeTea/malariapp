@@ -7,14 +7,9 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import org.eyeseetea.malariacare.MainActivity;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.Question;
-import org.eyeseetea.malariacare.models.ReportingResults;
-import org.eyeseetea.malariacare.utils.Constants;
-import org.eyeseetea.malariacare.utils.TabConfiguration;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -156,32 +151,27 @@ public class LayoutUtils {
         return true;
     }
 
-    public static void trafficLight(View view, float score){
-        if(score < 50.0F){
+    // Depending on a score sets the first view color (0<x<50:poor ; 50<x<80:fare ; 80<x<100:good)
+    // If a second view is given, it also writes the text good, fare or given there
+    public static void trafficLight(View view, float score, View textView){
+        if(score < 50.0F){ // poor
             ((TextView)view).setTextColor(Color.parseColor("#FF0000")); // red
-        } else if (score < 80.0F){
+            if(textView != null) {
+                ((TextView)textView).setTextColor(Color.parseColor("#FF0000")); // red
+                ((TextView)textView).setText(view.getContext().getResources().getString(R.string.poor));
+            }
+        } else if (score < 80.0F){ // fare
             ((TextView)view).setTextColor(Color.parseColor("#FF8000")); // amber
+            if(textView != null) {
+                ((TextView)textView).setTextColor(Color.parseColor("#FF8000")); // amber
+                ((TextView)textView).setText(view.getContext().getResources().getString(R.string.fare));
+            }
         } else {
             ((TextView)view).setTextColor(Color.parseColor("#40FF00")); // green
+            if(textView != null) { // good
+                ((TextView)textView).setTextColor(Color.parseColor("#40FF00")); // green
+                ((TextView)textView).setText(view.getContext().getResources().getString(R.string.good));
+            }
         }
     }
-
-    public static List<ReportingResults> addReportingQuestions()
-    {
-        List<ReportingResults> results=new ArrayList<ReportingResults>();
-
-        results.add(new ReportingResults(Constants.REPORTING_Q1));
-        results.add(new ReportingResults(Constants.REPORTING_Q2));
-        results.add(new ReportingResults(Constants.REPORTING_Q3));
-        results.add(new ReportingResults(Constants.REPORTING_Q4));
-        results.add(new ReportingResults(Constants.REPORTING_Q5));
-        results.add(new ReportingResults(Constants.REPORTING_Q6));
-        results.add(new ReportingResults(Constants.REPORTING_Q7));
-        results.add(new ReportingResults(Constants.REPORTING_Q8));
-        results.add(new ReportingResults(Constants.REPORTING_Q9));
-        results.add(new ReportingResults(Constants.REPORTING_Q10));
-
-        return results;
-    }
-
 }

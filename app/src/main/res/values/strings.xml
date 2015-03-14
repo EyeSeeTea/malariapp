@@ -112,4 +112,7 @@
     <string name="nameHeader">Name</string>
     <string name="clinicalFeverEvalTitle">Clinical fever\n evaluation</string>
     <string name="action_pull">Update questions from DHIS</string>
+    <string name="good">Good</string>
+    <string name="fare">Fare</string>
+    <string name="poor">Poor</string>
 </resources>

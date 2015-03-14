@@ -22,7 +22,8 @@
             android:layout_height="wrap_content"
             android:inputType="number"
             android:id="@+id/patientId"
-            android:background="@drawable/background_textfield" />
+            android:background="@drawable/background_textfield"
+            android:textSize="12sp" />
     </LinearLayout>
 
     <LinearLayout
@@ -51,7 +52,7 @@
             android:layout_height="wrap_content"
             android:text="@string/yes"
             android:id="@+id/act1"
-            android:tag="listener"/>
+            android:tag="listener" />
     </LinearLayout>
 
     <LinearLayout
