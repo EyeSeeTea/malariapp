@@ -409,8 +409,11 @@ public class Layout {
         // Array to get the needed layouts during question insertion
         List<Integer> layoutsToUse = new ArrayList<Integer>();
         // Array to capture and process events when user selection is done
-        List<AdapterView.OnItemSelectedListener> listeners = new ArrayList<AdapterView.OnItemSelectedListener>();
+        List<AdapterView.OnItemSelectedListener> listeners = new ArrayList<AdapterView.OnItemSelectedListener>(),
+                listeners2 = new ArrayList<AdapterView.OnItemSelectedListener>();
+        List<List> listenerTypes = new ArrayList<List>();
         List<TextWatcher> editListeners = new ArrayList<TextWatcher>();
+        int iterListenerType = 0;
         int iterListeners = 0;
         int iterEditListeners = 0;
 
@@ -435,8 +438,12 @@ public class Layout {
                 layoutsToUse.add(R.layout.pharmacy_register);
                 layoutsToUse.add(R.layout.pharmacy_register2);
                 // Add onItemSelectedListener to manage score
-                AdapterView.OnItemSelectedListener listener = createAdherenceListener();
+                AdapterView.OnItemSelectedListener listener = createAdherenceListener(1);
                 listeners.add(listener);
+                listenerTypes.add(listeners);
+                AdapterView.OnItemSelectedListener listener2 = createAdherenceListener(2);
+                listeners2.add(listener2);
+                listenerTypes.add(listeners2);
                 layoutParent.addView(customView);
                 break;
 
@@ -446,9 +453,11 @@ public class Layout {
                 layoutsToUse.add(R.layout.iqatab_record);
                 // Add onItemSelectedListener to manage score
                 AdapterView.OnItemSelectedListener tabListener = createIQAListener(customView, R.id.labStaffTable, R.id.matchTable);
-                AdapterView.OnItemSelectedListener tabListener2 = createIQAListener(customView, R.id.supervisorTable, R.id.matchTable);
                 listeners.add(tabListener);
-                listeners.add(tabListener2);
+                listenerTypes.add(listeners);
+                AdapterView.OnItemSelectedListener tabListener2 = createIQAListener(customView, R.id.supervisorTable, R.id.matchTable);
+                listeners2.add(tabListener2);
+                listenerTypes.add(listeners2);
                 layoutParent.addView(customView);
                 break;
             case R.layout.compositivescoretab:
@@ -482,6 +491,7 @@ public class Layout {
         //  * Any score or thing that affects all the row questions, will be added to the parent question
         //  * Another important thing to improve is that at this moment I'm creating a List called layoutsToUse that contains, ordered, the different layouts that must be used for each questions group
         if (getFromDatabase){
+            iterListenerType = 0;
             List<Header> headers = tab.getOrderedHeaders();
             for (int i=0; i<headers.size(); i++){
                 iterBacks = 0;
@@ -531,7 +541,7 @@ public class Layout {
                                                 dropdown.setTag(R.id.QuestionTypeTag, Constants.DROPDOWN_LIST);
                                                 dropdown.setAdapter(adapter);
                                                 if ("listener".equals(dropdown.getTag())) {
-                                                    dropdown.setOnItemSelectedListener(listeners.get(iterListeners));
+                                                    dropdown.setOnItemSelectedListener(((List<AdapterView.OnItemSelectedListener>)listenerTypes.get(iterListenerType)).get(iterListeners));
                                                     iterListeners++;
                                                 }
 
@@ -575,8 +585,7 @@ public class Layout {
                                     }
                                 }
                                 iterBacks++;
-                            }
-                            else{
+                            } else{
                                 ((TextView) ((ViewGroup) ((ViewGroup) rowView).getChildAt(0)).getChildAt(0)).setText(question.getForm_name());
                                 table.addView(rowView);
                             }
@@ -585,53 +594,76 @@ public class Layout {
                 }else{
                     Log.e(".Layout", "Error: Header name is supposed to be used to distinguish where to place associated questions in custom tabs, but when looking for header named " + headerName + " we've found " + tables.size() + " results");
                 }
+                iterListenerType++;
             }
         }
     }
 
-    public static AdapterView.OnItemSelectedListener createAdherenceListener(){
-        return new AdapterView.OnItemSelectedListener(){
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                // This will occur when an item is selected in Adherence spinners
-                // For Adherence, when Test results is RDT* then ACT Prescribed=Yes means score=1, otherwise score=0
-                //              , when Test results is Microscopy* then ACT Prescribed=No means Score=1, otherwise score=0
-                int score = 0;
-                TextView actPrescribed = (TextView)((ViewGroup)((ViewGroup)((ViewGroup)parent.getParent().getParent().getParent())).getChildAt(2)).getChildAt(0);
-                if("RDT Positive".equals(actPrescribed.getText()) || "RDT Negative".equals(actPrescribed.getText())){
-                    if (position == 1) score=1;
-                    else score=0;
-                }else if("Microscopy Positive".equals(actPrescribed.getText()) || "Microscopy Negative".equals(actPrescribed.getText())){
-                    if (position == 2) score=1;
-                    else score=0;
-                }
-                TextView scoreText = (TextView)((ViewGroup)((ViewGroup)((ViewGroup)parent.getParent().getParent().getParent())).getChildAt(4)).getChildAt(0);
-                scoreText.setText((String)Integer.toString(score));
-                // Set the total score in the score tab
-                TableLayout table = (TableLayout)LayoutUtils.findParentRecursively(parent, R.id.register2Table);
-                float totalScore = 0.0F;
-                for (int i=1; i<((ViewGroup) table).getChildCount(); i++){
-                    TableRow row = (TableRow) table.getChildAt(i);
-                    TextView scoreCell = ((TextView) ((ViewGroup) row.getChildAt(4)).getChildAt(0));
-                    String stringFloat = scoreCell.getText().toString();
-                    if (!("".equals(scoreCell.getText()))) totalScore += Float.parseFloat(stringFloat);
-                }
-                LinearLayout root = (LinearLayout) LayoutUtils.findParentRecursively(parent, R.id.Grid);
-                TextView totalScoreView = (TextView) root.findViewById(R.id.adherenceScore);
-                totalScore = totalScore*100.0F/20.0F;
-                setScore(totalScore, totalScoreView);
-                LinearLayout tabLayout = (LinearLayout)LayoutUtils.findParentRecursively(parent, MainActivity.getTabsLayouts());
-                TextView subScoreView = (TextView)tabLayout.findViewById(R.id.score);
-                TextView percentageView = (TextView)tabLayout.findViewById(R.id.percentageSymbol);
-                TextView cualitativeView = (TextView)tabLayout.findViewById(R.id.cualitativeScore);
-                setScore(totalScore, subScoreView, percentageView, cualitativeView);
-            }
+    public static AdapterView.OnItemSelectedListener createAdherenceListener(int type){
+        switch(type){
+            case 1:
+                return new AdapterView.OnItemSelectedListener(){
+                    @Override
+                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                        // This will occur when an item is selected in first table Adherence spinners
+                        // For this table, when Test result is "Malaria Positive" score=1, score=0 otherwise
+                        int score = 0;
+                        if (position == 1) score = 1;
+                        else score = 0;
+                        TextView scoreText = (TextView)((ViewGroup)((ViewGroup)((ViewGroup)parent.getParent().getParent().getParent())).getChildAt(5)).getChildAt(0);
+                        scoreText.setText((String)Integer.toString(score));
+                    }
 
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
+                    @Override
+                    public void onNothingSelected(AdapterView<?> parent) {
 
-            }
-        };
+                    }
+                };
+            case 2:
+                return new AdapterView.OnItemSelectedListener(){
+                    @Override
+                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                        // This will occur when an item is selected in second table Adherence spinners
+                        // For this table, when Test results is RDT* then ACT Prescribed=Yes means score=1, otherwise score=0
+                        //               , when Test results is Microscopy* then ACT Prescribed=No means Score=1, otherwise score=0
+                        int score = 0;
+                        TextView actPrescribed = (TextView)((ViewGroup)((ViewGroup)((ViewGroup)parent.getParent().getParent().getParent())).getChildAt(2)).getChildAt(0);
+                        if("RDT Positive".equals(actPrescribed.getText()) || "RDT Negative".equals(actPrescribed.getText())){
+                            if (position == 1) score=1;
+                            else score=0;
+                        }else if("Microscopy Positive".equals(actPrescribed.getText()) || "Microscopy Negative".equals(actPrescribed.getText())){
+                            if (position == 2) score=1;
+                            else score=0;
+                        }
+                        TextView scoreText = (TextView)((ViewGroup)((ViewGroup)((ViewGroup)parent.getParent().getParent().getParent())).getChildAt(4)).getChildAt(0);
+                        scoreText.setText((String)Integer.toString(score));
+                        // Set the total score in the score tab
+                        TableLayout table = (TableLayout)LayoutUtils.findParentRecursively(parent, R.id.register2Table);
+                        float totalScore = 0.0F;
+                        for (int i=1; i<((ViewGroup) table).getChildCount(); i++){
+                            TableRow row = (TableRow) table.getChildAt(i);
+                            TextView scoreCell = ((TextView) ((ViewGroup) row.getChildAt(4)).getChildAt(0));
+                            String stringFloat = scoreCell.getText().toString();
+                            if (!("".equals(scoreCell.getText()))) totalScore += Float.parseFloat(stringFloat);
+                        }
+                        LinearLayout root = (LinearLayout) LayoutUtils.findParentRecursively(parent, R.id.Grid);
+                        TextView totalScoreView = (TextView) root.findViewById(R.id.adherenceScore);
+                        totalScore = totalScore*100.0F/20.0F;
+                        setScore(totalScore, totalScoreView);
+                        LinearLayout tabLayout = (LinearLayout)LayoutUtils.findParentRecursively(parent, MainActivity.getTabsLayouts());
+                        TextView subScoreView = (TextView)tabLayout.findViewById(R.id.score);
+                        TextView percentageView = (TextView)tabLayout.findViewById(R.id.percentageSymbol);
+                        TextView cualitativeView = (TextView)tabLayout.findViewById(R.id.cualitativeScore);
+                        setScore(totalScore, subScoreView, percentageView, cualitativeView);
+                    }
+
+                    @Override
+                    public void onNothingSelected(AdapterView<?> parent) {
+
+                    }
+                };
+        }
+        return null;
     }
 
     public static void createAdherenceSwitchListener(Switch switchView){
