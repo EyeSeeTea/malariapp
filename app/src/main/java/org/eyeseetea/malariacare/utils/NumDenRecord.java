@@ -17,20 +17,27 @@ public class NumDenRecord {
 
     public void addRecord(Question question, Float num, Float den){
         numDenRecord.put(question, new ArrayList<Float>(Arrays.asList(num, den)));
+        CompositiveScoreRegister.addRecord(question, num, den);
     }
 
     public void deleteRecord(Question question){
         getNumDenRecord().remove(question);
+        CompositiveScoreRegister.remove(question);
     }
 
     public Map<Question, List<Float>> getNumDenRecord() {
         return numDenRecord;
     }
 
-    public List<Float> calculateNumDenTotal(){
+    public List<Float> calculateTotal(){
+        return calculateNumDenTotal(numDenRecord);
+
+    }
+
+    public static List<Float> calculateNumDenTotal(Map<Question,List<Float>> record) {
         Float num = 0.0F;
         Float den = 0.0F;
-        for (List<Float> numDen : numDenRecord.values()){
+        for (List<Float> numDen : record.values()) {
             num += numDen.get(0);
             den += numDen.get(1);
         }

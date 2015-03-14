@@ -25,10 +25,12 @@ import android.widget.TextView;
 
 import org.eyeseetea.malariacare.MainActivity;
 import org.eyeseetea.malariacare.R;
+import org.eyeseetea.malariacare.data.CompositiveScore;
 import org.eyeseetea.malariacare.data.Header;
 import org.eyeseetea.malariacare.data.Option;
 import org.eyeseetea.malariacare.data.Question;
 import org.eyeseetea.malariacare.data.Tab;
+import org.eyeseetea.malariacare.utils.CompositiveScoreRegister;
 import org.eyeseetea.malariacare.utils.Constants;
 import org.eyeseetea.malariacare.utils.NumDenRecord;
 import org.eyeseetea.malariacare.utils.TabConfiguration;
@@ -101,7 +103,7 @@ public class Layout {
         TextView tabName = (TextView) subtotalView.findViewById(R.id.tabName);
         tabName.setText(tab.getName());
         totalNumText.setText("0.0");
-        List<Float> numDenSubTotal = numDenRecordMap.get(tabConfiguration.getTabId()).calculateNumDenTotal();
+        List<Float> numDenSubTotal = numDenRecordMap.get(tabConfiguration.getTabId()).calculateTotal();
         totalDenText.setText(Utils.round(numDenSubTotal.get(1)));
 
         layoutParentScore.addView(subtotalView);
@@ -196,7 +198,8 @@ public class Layout {
 
 
                 // FIXME: THIS PART NEEDS A REFACTOR. FROM HERE...
-                List<Float> numDenSubTotal = numDenRecordMap.get((Integer) spinner.getTag(R.id.Tab)).calculateNumDenTotal();
+                List<Float> numDenSubTotal = numDenRecordMap.get((Integer) spinner.getTag(R.id.Tab)).calculateTotal();
+                CompositiveScoreRegister.updateCompositivesScore(triggeredQuestion, gridView);
 
                 if (numSubtotal != null && denSubtotal != null && partialScoreView != null) {
                     numSubtotal.setText(Utils.round(numDenSubTotal.get(0)));
@@ -440,6 +443,26 @@ public class Layout {
                 listeners.add(tabListener2);
                 layoutParent.addView(customView);
                 break;
+            case R.layout.compositivescoretab:
+                List<CompositiveScore> compositiveScoresList = CompositiveScore.listAll(CompositiveScore.class);
+                for (CompositiveScore compositiveScore : compositiveScoresList){
+                    CompositiveScoreRegister.registerScore(compositiveScore);
+                    List<View> tables = LayoutUtils.getChildrenByTag((ViewGroup)customView, null, "CompositivesScore");
+                    if(tables.size() == 1) {
+                        TableLayout table = (TableLayout) tables.get(0);
+                        View rowView = inflater.inflate(R.layout.compositive_scores_record, table, false);
+                        rowView.setTag("CompositiveScore_" + compositiveScore.getId());
+                        rowView.setBackgroundResource(backgrounds[iterBacks % backgrounds.length]);
+                        ((TextView) ((ViewGroup) ((ViewGroup) rowView).getChildAt(0)).getChildAt(0)).setText(compositiveScore.getCode());
+                        ((TextView) ((ViewGroup) ((ViewGroup) rowView).getChildAt(1)).getChildAt(0)).setText(compositiveScore.getLabel());
+                        table.addView(rowView);
+                    }
+                    else{
+                        Log.e(".Layout", "Error: Header name is supposed to be used to distinguish where to place associated questions in custom tabs, but when looking for header named CompositivesScore we've found " + tables.size() + " results");
+                    }
+                }
+                layoutParent.addView(customView);
+                break;
         }
 
         // Some manual tabs, like adherence and IQA EQA get their questions from the database, here we manage how they are represented in the layout
@@ -551,7 +574,7 @@ public class Layout {
                         }
                     }
                 }else{
-                    Log.e(".Layout", "Error: Header name is suposed to be used to distinguish where to place associated questions in custom tabs, but when looking for header named " + headerName + " we've found " + tables.size() + " results");
+                    Log.e(".Layout", "Error: Header name is supposed to be used to distinguish where to place associated questions in custom tabs, but when looking for header named " + headerName + " we've found " + tables.size() + " results");
                 }
             }
         }
