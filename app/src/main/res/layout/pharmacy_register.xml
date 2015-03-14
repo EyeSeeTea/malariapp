@@ -29,12 +29,22 @@
         android:orientation="vertical"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/genderContainer">
+        android:id="@+id/genderContainer"
+        android:alpha="0.8"
+        android:padding="5dip">
 
-        <Spinner
-            android:layout_width="100dip"
-            android:layout_height="wrap_content"
-            android:id="@+id/gender" />
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:background="#bebebe">
+
+            <Spinner
+                android:layout_width="100dip"
+                android:layout_height="wrap_content"
+                android:id="@+id/gender" />
+        </LinearLayout>
+
     </LinearLayout>
 
     <LinearLayout
@@ -57,12 +67,21 @@
         android:orientation="vertical"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/testResultsContainer" >
+        android:id="@+id/testResultsContainer"
+        android:padding="5dip">
 
-        <Spinner
-            android:layout_width="170dip"
-            android:layout_height="wrap_content"
-            android:id="@+id/testResults" />
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:background="#bebebe">
+
+            <Spinner
+                android:layout_width="170dip"
+                android:layout_height="wrap_content"
+                android:id="@+id/testResults" />
+        </LinearLayout>
+
     </LinearLayout>
 
 </TableRow>

@@ -45,14 +45,23 @@
         android:orientation="vertical"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/actContainer">
+        android:id="@+id/actContainer"
+        android:padding="5dip">
 
-        <Spinner
-            android:layout_width="100dip"
-            android:layout_height="wrap_content"
-            android:text="@string/yes"
-            android:id="@+id/act1"
-            android:tag="listener" />
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:background="#bebebe">
+
+            <Spinner
+                android:layout_width="100dip"
+                android:layout_height="wrap_content"
+                android:text="@string/yes"
+                android:id="@+id/act1"
+                android:tag="listener" />
+        </LinearLayout>
+
     </LinearLayout>
 
     <LinearLayout

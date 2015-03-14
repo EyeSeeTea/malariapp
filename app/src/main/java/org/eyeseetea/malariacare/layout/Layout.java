@@ -527,7 +527,7 @@ public class Layout {
                                                 optionList.add(0, defaultOption);
                                                 ArrayAdapter adapter = new ArrayAdapter(mainActivity, android.R.layout.simple_spinner_item, optionList);
                                                 adapter.setDropDownViewResource(R.layout.simple_spinner_item);
-                                                Spinner dropdown = (Spinner) ((ViewGroup) ((ViewGroup) rowView).getChildAt(j + offset)).getChildAt(0); // We take the spinner
+                                                Spinner dropdown = (Spinner) ((ViewGroup)((ViewGroup) ((ViewGroup) rowView).getChildAt(j + offset)).getChildAt(0)).getChildAt(0); // We take the spinner
                                                 dropdown.setTag(R.id.QuestionTypeTag, Constants.DROPDOWN_LIST);
                                                 dropdown.setAdapter(adapter);
                                                 if ("listener".equals(dropdown.getTag())) {
@@ -597,7 +597,7 @@ public class Layout {
                 // For Adherence, when Test results is RDT* then ACT Prescribed=Yes means score=1, otherwise score=0
                 //              , when Test results is Microscopy* then ACT Prescribed=No means Score=1, otherwise score=0
                 int score = 0;
-                TextView actPrescribed = (TextView)((ViewGroup)((ViewGroup)parent.getParent().getParent()).getChildAt(2)).getChildAt(0);
+                TextView actPrescribed = (TextView)((ViewGroup)((ViewGroup)((ViewGroup)parent.getParent().getParent().getParent())).getChildAt(2)).getChildAt(0);
                 if("RDT Positive".equals(actPrescribed.getText()) || "RDT Negative".equals(actPrescribed.getText())){
                     if (position == 1) score=1;
                     else score=0;
@@ -605,7 +605,7 @@ public class Layout {
                     if (position == 2) score=1;
                     else score=0;
                 }
-                TextView scoreText = (TextView)((ViewGroup)((ViewGroup)parent.getParent().getParent()).getChildAt(4)).getChildAt(0);
+                TextView scoreText = (TextView)((ViewGroup)((ViewGroup)((ViewGroup)parent.getParent().getParent().getParent())).getChildAt(4)).getChildAt(0);
                 scoreText.setText((String)Integer.toString(score));
                 // Set the total score in the score tab
                 TableLayout table = (TableLayout)LayoutUtils.findParentRecursively(parent, R.id.register2Table);
@@ -662,10 +662,10 @@ public class Layout {
                 int score = 0;
                 float totalScore = 0.0F;
                 TextView totalScoreView = null;
-                TableRow thisRow = (TableRow)((ViewGroup)parent.getParent()).getParent();
+                TableRow thisRow = (TableRow)((ViewGroup)((ViewGroup)parent.getParent()).getParent()).getParent();
                 int numberOfRow = Integer.parseInt((String)((TextView) thisRow.getChildAt(0)).getText());
                 int thisPosition = parent.getSelectedItemPosition();
-                int oppositePosition = ((Spinner)((ViewGroup)((ViewGroup)opositeTable.getChildAt(numberOfRow)).getChildAt(1)).getChildAt(0)).getSelectedItemPosition();
+                int oppositePosition = ((Spinner)((ViewGroup)((ViewGroup)((ViewGroup)opositeTable.getChildAt(numberOfRow)).getChildAt(1)).getChildAt(0)).getChildAt(0)).getSelectedItemPosition();
                 if (thisPosition == oppositePosition && thisPosition != 0 && oppositePosition != 0) score = 1;
                 TextView scoreView = (TextView)((ViewGroup)matchTable.getChildAt(numberOfRow)).getChildAt(1);
                 scoreView.setText(Integer.toString(score));
