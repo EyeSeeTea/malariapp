@@ -115,4 +115,8 @@
     <string name="good">Bien</string>
     <string name="fare">Moyen</string>
     <string name="poor">Pauvre</string>
+    <string name="clearTitle">Effacer formulaire</string>
+    <string name="clearMessage">Êtes-vous sûr que de vouloir effacer ce formulaire ?</string>
+    <string name="errorTitle">Erreur</string>
+    <string name="errorDenominator">Erreur, denominateur = 0</string>
 </resources>

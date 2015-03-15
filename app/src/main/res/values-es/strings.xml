@@ -115,4 +115,8 @@
     <string name="good">Bien</string>
     <string name="fare">Normal</string>
     <string name="poor">Mal</string>
+    <string name="clearTitle">Limpiar formulario</string>
+    <string name="clearMessage">¿Estás seguro de que quieres limpiar completamente este formulario?</string>
+    <string name="errorTitle">Error</string>
+    <string name="errorDenominator">Error, denominador = 0</string>
 </resources>
