@@ -115,4 +115,6 @@
     <string name="good">Good</string>
     <string name="fare">Fare</string>
     <string name="poor">Poor</string>
+    <string name="clearTitle">Clear Form</string>
+    <string name="clearMessage">Are you sure you want to completely clear this form?</string>
 </resources>

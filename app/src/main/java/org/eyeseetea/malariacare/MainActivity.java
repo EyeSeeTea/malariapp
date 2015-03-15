@@ -1,7 +1,5 @@
 package org.eyeseetea.malariacare;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.res.AssetManager;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
@@ -10,31 +8,29 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TabHost;
-import android.widget.TextView;
 
 import com.orm.query.Select;
 
 import org.eyeseetea.malariacare.data.Tab;
 import org.eyeseetea.malariacare.layout.Layout;
 import org.eyeseetea.malariacare.layout.LayoutUtils;
+import org.eyeseetea.malariacare.layout.components.DialogDispatcher;
 import org.eyeseetea.malariacare.utils.PopulateDB;
 import org.eyeseetea.malariacare.utils.TabConfiguration;
-import org.eyeseetea.malariacare.utils.Utils;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends ActionBarActivity{
 
     private static final List<TabConfiguration> tabsLayouts = new ArrayList<TabConfiguration>();
+    View viewToEvent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -184,28 +180,10 @@ public class MainActivity extends ActionBarActivity {
         }
         else if (view.getId() == R.id.clear) {
             Log.d(".MainActivity", "Button clear pressed");
-            final View viewToEvent = view;
-            new AlertDialog.Builder(this)
-                    .setTitle("Clear form")
-                    .setMessage("Are you sure you want to completely clear this form?")
-                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            ViewGroup root = (LinearLayout) LayoutUtils.findParentRecursively(viewToEvent, R.id.Grid);
-                            List<View> viewsToClear = LayoutUtils.getChildrenByTag(root, R.id.QuestionTypeTag, null);
-                            for (View viewToClear: viewsToClear){
-                                LayoutUtils.resetComponent(viewToClear);
-                            }
-                        }
-                    })
-                    .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener(){
-                        @Override
-                        public void onClick(DialogInterface dialog, int which){
+            DialogDispatcher mf = DialogDispatcher.newInstance(view);
+            mf.showDialog(getFragmentManager(), DialogDispatcher.DIALOG_FRAGMENT);
 
-                        }
-                    })
-                    .setIcon(android.R.drawable.ic_dialog_alert)
-                    .show();
+
         }
     }
 

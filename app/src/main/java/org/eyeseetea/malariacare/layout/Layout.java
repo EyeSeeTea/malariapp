@@ -30,6 +30,7 @@ import org.eyeseetea.malariacare.data.Header;
 import org.eyeseetea.malariacare.data.Option;
 import org.eyeseetea.malariacare.data.Question;
 import org.eyeseetea.malariacare.data.Tab;
+import org.eyeseetea.malariacare.layout.components.DialogDispatcher;
 import org.eyeseetea.malariacare.utils.CompositiveScoreRegister;
 import org.eyeseetea.malariacare.utils.Constants;
 import org.eyeseetea.malariacare.utils.NumDenRecord;
@@ -122,7 +123,7 @@ public class Layout {
     }
 
 
-    private static void createDropDownListener(final TabConfiguration tabConfiguration, Spinner dropdown) {
+    private static void createDropDownListener(final TabConfiguration tabConfiguration, Spinner dropdown, final MainActivity mainActivity) {
         dropdown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 
             @Override
@@ -212,7 +213,13 @@ public class Layout {
                     float average = 0.0F, totalAverage = 0.0F;
                     if (numDenSubTotal.get(0) == 0 && numDenSubTotal.get(1) == 0){
                        score = 100;
-                    } else {
+                    }
+                    else if (numDenSubTotal.get(0) > 0 && numDenSubTotal.get(1) == 0){
+                        score = 0;
+                        DialogDispatcher mf = DialogDispatcher.newInstance(null);
+                        mf.showDialog(mainActivity.getFragmentManager(), DialogDispatcher.DIALOG_FRAGMENT);
+                    }
+                    else {
                        score = (numDenSubTotal.get(0) / numDenSubTotal.get(1)) * 100;
                     }
                     TextView elementView = null;
@@ -375,7 +382,7 @@ public class Layout {
                             questionView.setVisibility(View.GONE);
                         }
 
-                        createDropDownListener(tabConfiguration, dropdown);
+                        createDropDownListener(tabConfiguration, dropdown, mainActivity);
 
                         List<Option> optionList = question.getAnswer().getOptions();
                         optionList.add(0, defaultOption);
