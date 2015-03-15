@@ -99,14 +99,16 @@ public class LayoutUtils {
             if(tabConfiguration.getScoreAvgFieldId() != null) ((TextView)root.findViewById(tabConfiguration.getScoreAvgFieldId())).setText("0.0");
 
             // Then for Custom tabs we search for TextViews with id == R.id.score and set them to 0
-            if(!tabConfiguration.isAutomaticTab()){
+            if(!tabConfiguration.isAutomaticTab() && tabConfiguration.getLayoutId() != null){
                 LinearLayout tabLayout = (LinearLayout)root.findViewById(tabConfiguration.getTabId());
                 List<View> tables = getTableChildren(tabLayout);
                 for (View table: tables){
                     for (int i=0; i<((TableLayout)table).getChildCount(); i++){
-                        if (((TableLayout)table).getChildAt(i).findViewById(R.id.score) != null){
-                            ((TextView)((TableLayout)table).getChildAt(i).findViewById(R.id.score)).setText("0");
-                        }
+                        TextView scoreText = (TextView)((TableLayout)table).getChildAt(i).findViewById(R.id.score);
+                        if (scoreText != null) scoreText.setText("0");
+                        // FIXME: we should rename this scoreValue ids to score, but subtotal updating relies on finding only one score id in the tab, so it's not straight-forward
+                        scoreText = (TextView)((TableLayout)table).getChildAt(i).findViewById(R.id.scoreValue);
+                        if (scoreText != null) scoreText.setText("0");
                     }
                 }
             }
