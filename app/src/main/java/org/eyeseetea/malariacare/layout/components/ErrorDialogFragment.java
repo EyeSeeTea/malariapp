@@ -7,17 +7,15 @@ import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
 
-import org.eyeseetea.malariacare.MainActivity;
-
 /**
  * Created by adrian on 14/03/15.
  */
-public class NoticeDialogFragment extends DialogFragment{
+public class ErrorDialogFragment extends DialogFragment{
 
 
 
-    public static NoticeDialogFragment newInstance(int title, int message) {
-        NoticeDialogFragment frag = new NoticeDialogFragment();
+    public static ErrorDialogFragment newInstance(int title, int message) {
+        ErrorDialogFragment frag = new ErrorDialogFragment();
         Bundle args = new Bundle();
         args.putInt("title", title);
         args.putInt("message", message);
@@ -31,18 +29,13 @@ public class NoticeDialogFragment extends DialogFragment{
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle(getArguments().getInt("title"))
                 .setMessage(getArguments().getInt("message"))
-                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                .setNeutralButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         // Send the positive button event back to the host activity
                         getTargetFragment().onActivityResult(getTargetRequestCode(), Activity.RESULT_OK, getActivity().getIntent());
                     }
                 })
-                .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        // Send the negative button event back to the host activity
-                        getTargetFragment().onActivityResult(getTargetRequestCode(), Activity.RESULT_CANCELED, getActivity().getIntent());
-                    }
-                })
+
                 .setIcon(android.R.drawable.ic_dialog_alert);
         // Create the AlertDialog object and return it
         return builder.create();

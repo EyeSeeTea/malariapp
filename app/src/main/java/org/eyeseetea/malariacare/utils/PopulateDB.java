@@ -81,7 +81,7 @@ public class PopulateDB {
                         CompositiveScore compositiveScore = new CompositiveScore();
                         compositiveScore.setCode(line[1]);
                         compositiveScore.setLabel(line[2]);
-                        if (!line[3].equals("")) compositiveScore.setCompositiveScore(compositiveScoreList.get(Integer.valueOf(line[3])));
+                        if (!line[3].equals("")) compositiveScore.setCompositive_score(compositiveScoreList.get(Integer.valueOf(line[3])));
                         compositiveScoreList.put(Integer.valueOf(line[0]), compositiveScore);
                         break;
                     case "Questions.csv":

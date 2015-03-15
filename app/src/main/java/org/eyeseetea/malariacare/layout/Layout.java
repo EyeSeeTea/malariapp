@@ -222,7 +222,7 @@ public class Layout {
                     else if (numDenSubTotal.get(0) > 0 && numDenSubTotal.get(1) == 0){
                         score = 0;
                         DialogDispatcher mf = DialogDispatcher.newInstance(null);
-                        mf.showDialog(mainActivity.getFragmentManager(), DialogDispatcher.DIALOG_FRAGMENT);
+                        mf.showDialog(mainActivity.getFragmentManager(), DialogDispatcher.ERROR_DIALOG);
                     }
                     else {
                        score = (numDenSubTotal.get(0) / numDenSubTotal.get(1)) * 100;

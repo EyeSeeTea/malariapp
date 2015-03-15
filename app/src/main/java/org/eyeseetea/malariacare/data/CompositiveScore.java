@@ -12,7 +12,7 @@ public class CompositiveScore extends SugarRecord<CompositiveScore> {
 
     String code;
     String label;
-    CompositiveScore compositiveScore;
+    CompositiveScore compositive_score;
 
     @Ignore
     List<CompositiveScore> _compositiveScoreChildren;
@@ -20,10 +20,10 @@ public class CompositiveScore extends SugarRecord<CompositiveScore> {
     public CompositiveScore() {
     }
 
-    public CompositiveScore(String code, String label, CompositiveScore compositiveScore) {
+    public CompositiveScore(String code, String label, CompositiveScore compositive_score) {
         this.code = code;
         this.label = label;
-        this.compositiveScore = compositiveScore;
+        this.compositive_score = compositive_score;
     }
 
     public String getCode() { return code; }
@@ -38,21 +38,21 @@ public class CompositiveScore extends SugarRecord<CompositiveScore> {
         this.label = label;
     }
 
-    public CompositiveScore getCompositiveScore() {
-        return compositiveScore;
+    public CompositiveScore getCompositive_score() {
+        return compositive_score;
     }
 
-    public void setCompositiveScore(CompositiveScore compositiveScore) {
-        this.compositiveScore = compositiveScore;
+    public void setCompositive_score(CompositiveScore compositive_score) {
+        this.compositive_score = compositive_score;
     }
 
     public boolean hasParent(){
-        return getCompositiveScore() != null;
+        return getCompositive_score() != null;
     }
 
     public List<CompositiveScore> getCompositiveScoreChildren() {
         if (this._compositiveScoreChildren == null){
-            this._compositiveScoreChildren = CompositiveScore.find(CompositiveScore.class, "compositiveScore = ?", String.valueOf(this.getId()));
+            this._compositiveScoreChildren = CompositiveScore.find(CompositiveScore.class, "compositivescore = ?", String.valueOf(this.getId()));
         }
         return this._compositiveScoreChildren;
     }
@@ -66,7 +66,7 @@ public class CompositiveScore extends SugarRecord<CompositiveScore> {
         return "CompositiveScore{" +
                 "code='" + code + '\'' +
                 "label='" + label + '\'' +
-                ", compositiveScore=" + compositiveScore +
+                ", compositiveScore=" + compositive_score +
                 '}';
     }
 
@@ -78,7 +78,7 @@ public class CompositiveScore extends SugarRecord<CompositiveScore> {
         CompositiveScore that = (CompositiveScore) o;
 
         if (code != null ? !code.equals(that.code) : that.code != null) return false;
-        if (compositiveScore != null ? !compositiveScore.equals(that.compositiveScore) : that.compositiveScore != null)
+        if (compositive_score != null ? !compositive_score.equals(that.compositive_score) : that.compositive_score != null)
             return false;
         if (label != null ? !label.equals(that.label) : that.label != null) return false;
 
@@ -89,7 +89,7 @@ public class CompositiveScore extends SugarRecord<CompositiveScore> {
     public int hashCode() {
         int result = code != null ? code.hashCode() : 0;
         result = 31 * result + (label != null ? label.hashCode() : 0);
-        result = 31 * result + (compositiveScore != null ? compositiveScore.hashCode() : 0);
+        result = 31 * result + (compositive_score != null ? compositive_score.hashCode() : 0);
         return result;
     }
 }
