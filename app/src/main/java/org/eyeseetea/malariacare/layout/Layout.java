@@ -229,16 +229,16 @@ public class Layout {
                     }
                     TextView elementView = null;
 
-                    setScore(score, partialScoreView, partialScorePercentageView, partialCualitativeScoreView); // We set the score in the tab score
+                    LayoutUtils.setScore(score, partialScoreView, partialScorePercentageView, partialCualitativeScoreView); // We set the score in the tab score
 
                     if (tabConfiguration.getScoreFieldId() != null) {
-                        setScore(score, generalScoreView);
+                        LayoutUtils.setScore(score, generalScoreView);
                         if(tabConfiguration.getScoreAvgFieldId() != null){
                             List<Integer> averageElements = (ArrayList<Integer>) generalScoreAvgView.getTag();
                             if (averageElements == null) {
                                 averageElements = new ArrayList<Integer>();
                                 averageElements.add(generalScoreId);
-                                setScore(score, generalScoreAvgView);
+                                LayoutUtils.setScore(score, generalScoreAvgView);
                                 generalScoreAvgView.setTag(averageElements);
                             } else {
                                 boolean found = false;
@@ -248,7 +248,7 @@ public class Layout {
                                 }
                                 if (!found) averageElements.add(generalScoreId);
                                 average = average / averageElements.size();
-                                setScore(average, generalScoreAvgView);
+                                LayoutUtils.setScore(average, generalScoreAvgView);
                                 generalScoreAvgView.setTag(averageElements);
                             }
                         }
@@ -274,7 +274,7 @@ public class Layout {
                                 else scoreElements.add(generalScoreId);
                             }
                             totalAverage = totalAverage / scoreElements.size();
-                            setScore(totalAverage, totalScoreView);
+                            LayoutUtils.setScore(totalAverage, totalScoreView);
                             totalScoreView.setTag(scoreElements);
                         }
                     }
@@ -290,15 +290,7 @@ public class Layout {
         });
     }
 
-    private static void setScore(float score, View scoreView, View percentageView, View cualitativeView){
-        LayoutUtils.trafficLight(scoreView, score, cualitativeView);
-        if (percentageView != null) LayoutUtils.trafficLight(percentageView, score, null);
-        ((TextView)scoreView).setText(Utils.round(score));
-    }
 
-    private static void setScore(float score, View scoreView){
-        setScore(score, scoreView, null, null);
-    }
 
     private static void toggleVisibleChildren(int position, Spinner spinner, Question triggeredQuestion) {
         View parent = LayoutUtils.findParentRecursively(spinner, (Integer) spinner.getTag(R.id.Tab));
@@ -644,12 +636,12 @@ public class Layout {
                         LinearLayout root = (LinearLayout) LayoutUtils.findParentRecursively(parent, R.id.Grid);
                         TextView totalScoreView = (TextView) root.findViewById(R.id.adherenceScore);
                         totalScore = totalScore*100.0F/40.0F;
-                        setScore(totalScore, totalScoreView);
+                        LayoutUtils.setScore(totalScore, totalScoreView);
 
                         TextView subScoreView = (TextView)tabLayout.findViewById(R.id.score);
                         TextView percentageView = (TextView)tabLayout.findViewById(R.id.percentageSymbol);
                         TextView cualitativeView = (TextView)tabLayout.findViewById(R.id.cualitativeScore);
-                        setScore(totalScore, subScoreView, percentageView, cualitativeView);
+                        LayoutUtils.setScore(totalScore, subScoreView, percentageView, cualitativeView);
                     }
 
                     @Override
@@ -695,12 +687,12 @@ public class Layout {
                         LinearLayout root = (LinearLayout) LayoutUtils.findParentRecursively(parent, R.id.Grid);
                         TextView totalScoreView = (TextView) root.findViewById(R.id.adherenceScore);
                         totalScore = totalScore*100.0F/40.0F;
-                        setScore(totalScore, totalScoreView);
+                        LayoutUtils.setScore(totalScore, totalScoreView);
 
                         TextView subScoreView = (TextView)tabLayout.findViewById(R.id.score);
                         TextView percentageView = (TextView)tabLayout.findViewById(R.id.percentageSymbol);
                         TextView cualitativeView = (TextView)tabLayout.findViewById(R.id.cualitativeScore);
-                        setScore(totalScore, subScoreView, percentageView, cualitativeView);
+                        LayoutUtils.setScore(totalScore, subScoreView, percentageView, cualitativeView);
                     }
 
                     @Override
@@ -756,12 +748,12 @@ public class Layout {
                 }
                 totalScore = totalScore*10.0F;
                 TextView iqaEqaScoreView = (TextView) root.findViewById(R.id.iqaeqaScore);
-                setScore(totalScore, iqaEqaScoreView);
+                LayoutUtils.setScore(totalScore, iqaEqaScoreView);
                 LinearLayout tabLayout = (LinearLayout)LayoutUtils.findParentRecursively(parent, MainActivity.getTabsLayouts());
                 TextView subScoreView = (TextView)tabLayout.findViewById(R.id.score);
                 TextView percentageView = (TextView)tabLayout.findViewById(R.id.percentageSymbol);
                 TextView cualitativeView = (TextView)tabLayout.findViewById(R.id.cualitativeScore);
-                setScore(totalScore, subScoreView, percentageView, cualitativeView);
+                LayoutUtils.setScore(totalScore, subScoreView, percentageView, cualitativeView);
             }
 
             @Override
@@ -814,12 +806,12 @@ public class Layout {
                 }
                 totalScore = totalScore*10.0F;
                 TextView reportingScoreView = (TextView) root.findViewById(R.id.reportingScore);
-                setScore(totalScore, reportingScoreView);
+                LayoutUtils.setScore(totalScore, reportingScoreView);
                 LinearLayout tabLayout = (LinearLayout)LayoutUtils.findParentRecursively(myEdit, MainActivity.getTabsLayouts());
                 TextView subScoreView = (TextView)tabLayout.findViewById(R.id.score);
                 TextView percentageView = (TextView)tabLayout.findViewById(R.id.percentageSymbol);
                 TextView cualitativeView = (TextView)tabLayout.findViewById(R.id.cualitativeScore);
-                setScore(totalScore, subScoreView, percentageView, cualitativeView);
+                LayoutUtils.setScore(totalScore, subScoreView, percentageView, cualitativeView);
             }
         };
     }

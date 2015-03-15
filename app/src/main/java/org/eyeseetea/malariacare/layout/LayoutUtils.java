@@ -4,6 +4,7 @@ import android.graphics.Color;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.GridLayout;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TableLayout;
@@ -13,6 +14,7 @@ import org.eyeseetea.malariacare.MainActivity;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.Question;
 import org.eyeseetea.malariacare.utils.TabConfiguration;
+import org.eyeseetea.malariacare.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -99,7 +101,7 @@ public class LayoutUtils {
             if(tabConfiguration.getScoreAvgFieldId() != null) ((TextView)root.findViewById(tabConfiguration.getScoreAvgFieldId())).setText("0.0");
 
             // Then for Custom tabs we search for TextViews with id == R.id.score and set them to 0
-            if(!tabConfiguration.isAutomaticTab() && tabConfiguration.getLayoutId() != null){
+            if(!tabConfiguration.isAutomaticTab() && tabConfiguration.getScoreFieldId() != null){
                 LinearLayout tabLayout = (LinearLayout)root.findViewById(tabConfiguration.getTabId());
                 List<View> tables = getTableChildren(tabLayout);
                 for (View table: tables){
@@ -111,8 +113,30 @@ public class LayoutUtils {
                         if (scoreText != null) scoreText.setText("0");
                     }
                 }
+                List<View> edits = getEditChildren(tabLayout);
+                for (View edit: edits){
+                    ((EditText)edit).setText("");
+                }
+
+                // Reset subscore layout components
+                GridLayout subscore = (GridLayout)(tabLayout.getChildAt(1));
+                LinearLayout subscoreContainer = (LinearLayout)((ViewGroup)((ViewGroup)subscore.getChildAt(0)).getChildAt(1)).getChildAt(0);
+                TextView score = (TextView)((ViewGroup)subscoreContainer.getChildAt(0)).getChildAt(0);
+                TextView percentageSymbol = (TextView)((ViewGroup)subscoreContainer.getChildAt(0)).getChildAt(1);
+                TextView cualitiveScore = (TextView)((ViewGroup)subscoreContainer.getChildAt(1)).getChildAt(0);
+                setScore(0.0F, score, percentageSymbol, cualitiveScore);
             }
         }
+    }
+
+    public static void setScore(float score, View scoreView, View percentageView, View cualitativeView){
+        LayoutUtils.trafficLight(scoreView, score, cualitativeView);
+        if (percentageView != null) LayoutUtils.trafficLight(percentageView, score, null);
+        ((TextView)scoreView).setText(Utils.round(score));
+    }
+
+    public static void setScore(float score, View scoreView){
+        setScore(score, scoreView, null, null);
     }
 
     public static List<View> getAllChildren(View v) {
@@ -151,6 +175,25 @@ public class LayoutUtils {
 
             if (child != null) {
                 if (child instanceof TableLayout) {
+                    views.add(child);
+                }
+            }
+        }
+        return views;
+    }
+
+    // Searchs for every children that is instance of EditText.
+    public static List<View> getEditChildren(ViewGroup root){
+        List<View> views = new ArrayList<View>();
+        final int childCount = root.getChildCount();
+        for (int i = 0; i < childCount; i++) {
+            final View child = root.getChildAt(i);
+            if (child instanceof ViewGroup) {
+                views.addAll(getEditChildren((ViewGroup) child));
+            }
+
+            if (child != null) {
+                if (child instanceof EditText) {
                     views.add(child);
                 }
             }
