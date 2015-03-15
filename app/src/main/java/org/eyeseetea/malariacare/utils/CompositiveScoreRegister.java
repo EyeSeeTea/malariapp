@@ -60,7 +60,7 @@ public class CompositiveScoreRegister {
             }
 
             List<View> compositiveScoreRow = LayoutUtils.getChildrenByTag((ViewGroup) gridView.findViewById(R.id.compositivescoreTable), null, "CompositiveScore_" + compositiveScore.getId().toString());
-            ((TextView) ((ViewGroup) ((ViewGroup) compositiveScoreRow.get(0)).getChildAt(2)).getChildAt(0)).setText(Float.toString(score));
+            ((TextView) ((ViewGroup) ((ViewGroup) compositiveScoreRow.get(0)).getChildAt(2)).getChildAt(0)).setText(Utils.round(score));
 
             //Iterate to get the parents
             while (compositiveScore.hasParent()){
@@ -74,7 +74,7 @@ public class CompositiveScoreRegister {
                 }
 
                 compositiveScoreRow = LayoutUtils.getChildrenByTag((ViewGroup) gridView.findViewById(R.id.compositivescoreTable), null, "CompositiveScore_" + compositiveScore.getId().toString());
-                ((TextView) ((ViewGroup) ((ViewGroup) compositiveScoreRow.get(0)).getChildAt(2)).getChildAt(0)).setText(Float.toString(score));
+                ((TextView) ((ViewGroup) ((ViewGroup) compositiveScoreRow.get(0)).getChildAt(2)).getChildAt(0)).setText(Utils.round(score));
             }
         }
     }
