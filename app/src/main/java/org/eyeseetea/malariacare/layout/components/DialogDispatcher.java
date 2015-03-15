@@ -7,18 +7,13 @@ import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.util.Log;
-import android.util.SparseArray;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.widget.Spinner;
 
-import org.eyeseetea.malariacare.MainActivity;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.Question;
 import org.eyeseetea.malariacare.layout.LayoutUtils;
-import org.eyeseetea.malariacare.utils.NumDenRecord;
-import org.eyeseetea.malariacare.utils.TabConfiguration;
 
 import java.util.List;
 
@@ -29,7 +24,8 @@ public class DialogDispatcher extends Fragment {
 
     private static View contextView;
 
-    public static final int DIALOG_FRAGMENT = 1;
+    public static final int CLEAR_DIALOG = 1;
+    public static final int ERROR_DIALOG = 2;
 
     public static DialogDispatcher newInstance(View view) {
         contextView = view;
@@ -48,20 +44,26 @@ public class DialogDispatcher extends Fragment {
 
         switch (type) {
 
-            case DIALOG_FRAGMENT:
+            case CLEAR_DIALOG:
 
                 DialogFragment dialogFrag = NoticeDialogFragment.newInstance(R.string.clearTitle, R.string.clearMessage);
-                dialogFrag.setTargetFragment(this, DIALOG_FRAGMENT);
+                dialogFrag.setTargetFragment(this, CLEAR_DIALOG);
                 dialogFrag.show(fragmentManager.beginTransaction(), "dialog");
 
                 break;
+
+            case ERROR_DIALOG:
+                DialogFragment errorFrag = NoticeDialogFragment.newInstance(R.string.errorTitle, R.string.errorDenominator);
+                errorFrag.setTargetFragment(this, ERROR_DIALOG);
+                errorFrag.show(fragmentManager.beginTransaction(), "dialog");
+
         }
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch(requestCode) {
-            case DIALOG_FRAGMENT:
+            case CLEAR_DIALOG:
 
                 if (resultCode == Activity.RESULT_OK) {
                     // After Ok code.

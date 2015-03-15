@@ -182,7 +182,7 @@ public class MainActivity extends ActionBarActivity{
         else if (view.getId() == R.id.clear) {
             Log.d(".MainActivity", "Button clear pressed");
             DialogDispatcher mf = DialogDispatcher.newInstance(view);
-            mf.showDialog(getFragmentManager(), DialogDispatcher.DIALOG_FRAGMENT);
+            mf.showDialog(getFragmentManager(), DialogDispatcher.CLEAR_DIALOG);
 
 
         }

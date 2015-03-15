@@ -117,4 +117,6 @@
     <string name="poor">Poor</string>
     <string name="clearTitle">Clear Form</string>
     <string name="clearMessage">Are you sure you want to completely clear this form?</string>
+    <string name="errorTitle">Error</string>
+    <string name="errorDenominator">Error, denominator = 0</string>
 </resources>
