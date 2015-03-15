@@ -1,8 +1,6 @@
 package org.eyeseetea.malariacare.utils;
 
 import android.content.res.AssetManager;
-import android.util.Log;
-import android.util.SparseArray;
 
 import com.opencsv.CSVReader;
 
@@ -15,13 +13,10 @@ import org.eyeseetea.malariacare.data.Tab;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.TreeMap;
 
 /**
  * Created by adrian on 15/02/15.
@@ -41,7 +36,7 @@ public class PopulateDB {
     public static void populateDB(AssetManager assetManager) throws IOException {
 
 
-        List<String> tables2populate = Arrays.asList("Tabs.csv", "Headers.csv", "Answers.csv", "Options.csv", "CompositiveScores.csv", "Questions.csv", "HeadersCustom.csv", "QuestionsCustom.csv");
+        List<String> tables2populate = Arrays.asList("Tabs.csv", "Headers.csv", "Answers.csv", "Options.csv", "CompositiveScores.csv", "Questions_backup.csv", "HeadersCustom.csv", "QuestionsCustom.csv");
 
         CSVReader reader = null;
         for (String table : tables2populate) {
@@ -84,7 +79,7 @@ public class PopulateDB {
                         if (!line[3].equals("")) compositiveScore.setCompositive_score(compositiveScoreList.get(Integer.valueOf(line[3])));
                         compositiveScoreList.put(Integer.valueOf(line[0]), compositiveScore);
                         break;
-                    case "Questions.csv":
+                    case "Questions_backup.csv":
                         Question question = new Question();
                         question.setCode(line[1]);
                         question.setDe_name(line[2]);
