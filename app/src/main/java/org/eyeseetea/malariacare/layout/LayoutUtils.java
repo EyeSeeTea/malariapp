@@ -66,10 +66,12 @@ public class LayoutUtils {
 
     // Put a View visibility to one of the constants from View class [View.VISIBLE | View.INVISIBLE | View.GONE]
     public static void toggleVisible(View childView, int visibility){
-        ((View)childView.getParent().getParent()).setVisibility(visibility);
-        ((View)childView.getParent()).setVisibility(visibility);
-        ((View)childView).setVisibility(visibility);
-
+        if (childView instanceof Spinner) {
+            ((ViewGroup) childView.getParent().getParent().getParent()).setVisibility(visibility);
+        }
+        else{
+            ((View) childView.getParent().getParent()).setVisibility(visibility);
+        }
         resetComponent(childView);
     }
 
