@@ -97,6 +97,7 @@ public class MainActivity extends ActionBarActivity{
         // We get the tab selector spinner and add the different options
         Spinner tabSpinner = (Spinner) this.findViewById(R.id.tabSpinner);
         ArrayList<String> spinnerArray = new ArrayList<String>();
+        Layout.setNumDenRecordMap(this);
         // We get all tabs and insert their content in their layout
         final List<Tab> tabList = Select.from(Tab.class).orderBy("orderpos").list();
         for (int i = 0; i< tabsLayouts.size(); i++){
@@ -193,6 +194,10 @@ public class MainActivity extends ActionBarActivity{
             layouts.add(new Integer(tab.getTabId()));
         }
         return layouts;
+    }
+
+    public static List<TabConfiguration> getTabConfigurations(){
+        return tabsLayouts;
     }
 
     @Override

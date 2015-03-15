@@ -7,12 +7,18 @@ import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.util.Log;
+import android.util.SparseArray;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
 
+import org.eyeseetea.malariacare.MainActivity;
 import org.eyeseetea.malariacare.R;
+import org.eyeseetea.malariacare.data.Question;
 import org.eyeseetea.malariacare.layout.LayoutUtils;
+import org.eyeseetea.malariacare.utils.NumDenRecord;
+import org.eyeseetea.malariacare.utils.TabConfiguration;
 
 import java.util.List;
 
@@ -64,7 +70,14 @@ public class DialogDispatcher extends Fragment {
                     List<View> viewsToClear = LayoutUtils.getChildrenByTag(root, R.id.QuestionTypeTag, null);
                     for (View viewToClear: viewsToClear){
                         LayoutUtils.resetComponent(viewToClear);
+                        // After resetting the component, if it is a question we need also to recalculate its num/dem
+                        if ((viewToClear.getId() == R.id.ddl) && viewToClear.getTag(R.id.QuestionTag) != null){
+                            Question triggeredQuestion = (Question) viewToClear.getTag(R.id.QuestionTag);
+                        }
                     }
+
+                    // Reset Score tab
+                    LayoutUtils.resetScores(root);
                 }
 
                 break;

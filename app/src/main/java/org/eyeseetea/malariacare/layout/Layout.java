@@ -51,6 +51,11 @@ public class Layout {
     //Iterator for background (odd and even)
     static int iterBacks = 0;
 
+    public static void setNumDenRecordMap(Activity mainActivity){
+        LinearLayout root = (LinearLayout) mainActivity.findViewById(R.id.Grid);
+        root.setTag(numDenRecordMap);
+    }
+
     // This method fill in a tab layout
     public static void insertTab(MainActivity mainActivity, Tab tab, final TabConfiguration tabConfiguration) {
         // We reset backgrounds counter
@@ -66,7 +71,7 @@ public class Layout {
         ViewGroup layoutParentScroll = null;
         GridLayout layoutParent = null;
         if (tabConfiguration.isAutomaticTab()) layoutParentScroll = (ScrollView) layoutGrandParent.getChildAt(0);
-        else layoutParentScroll = (ViewGroup) layoutGrandParent.getChildAt(0); // in manual tabs this is not a scroll, but a linear layout
+        else layoutParentScroll = (ViewGroup) layoutGrandParent.getChildAt(0);
         layoutParent = (GridLayout) layoutParentScroll.getChildAt(0);
 
         //Initialize numerator and denominator record map

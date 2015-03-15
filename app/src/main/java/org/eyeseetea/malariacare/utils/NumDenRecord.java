@@ -45,4 +45,5 @@ public class NumDenRecord {
         }
         return new ArrayList<Float>(Arrays.asList(num, den));
     }
+
 }

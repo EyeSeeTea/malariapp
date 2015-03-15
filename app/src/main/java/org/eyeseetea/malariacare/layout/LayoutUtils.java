@@ -4,11 +4,15 @@ import android.graphics.Color;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
+import android.widget.TableLayout;
 import android.widget.TextView;
 
+import org.eyeseetea.malariacare.MainActivity;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.Question;
+import org.eyeseetea.malariacare.utils.TabConfiguration;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -85,6 +89,30 @@ public class LayoutUtils {
         }
     }
 
+    // Reset values from Score tab
+    public static void resetScores(ViewGroup root){
+
+        for (TabConfiguration tabConfiguration: MainActivity.getTabConfigurations()){
+
+            // First reset the scores TextViews
+            if(tabConfiguration.getScoreFieldId() != null) ((TextView)root.findViewById(tabConfiguration.getScoreFieldId())).setText("0.0");
+            if(tabConfiguration.getScoreAvgFieldId() != null) ((TextView)root.findViewById(tabConfiguration.getScoreAvgFieldId())).setText("0.0");
+
+            // Then for Custom tabs we search for TextViews with id == R.id.score and set them to 0
+            if(!tabConfiguration.isAutomaticTab()){
+                LinearLayout tabLayout = (LinearLayout)root.findViewById(tabConfiguration.getLayoutId());
+                List<View> tables = getTableChildren(tabLayout);
+                for (View table: tables){
+                    for (int i=0; i<((TableLayout)table).getChildCount(); i++){
+                        if (((TableLayout)table).getChildAt(i).findViewById(R.id.score) != null){
+                            ((TextView)((TableLayout)table).getChildAt(i).findViewById(R.id.score)).setText("0");
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     public static List<View> getAllChildren(View v) {
 
         if (!(v instanceof ViewGroup)) {
@@ -107,6 +135,25 @@ public class LayoutUtils {
             result.addAll(viewArrayList);
         }
         return result;
+    }
+
+    // Searchs for every children that is instance of TableLayout.
+    public static List<View> getTableChildren(ViewGroup root){
+        List<View> views = new ArrayList<View>();
+        final int childCount = root.getChildCount();
+        for (int i = 0; i < childCount; i++) {
+            final View child = root.getChildAt(i);
+            if (child instanceof ViewGroup) {
+                views.addAll(getTableChildren((ViewGroup) child));
+            }
+
+            if (child != null) {
+                if (child instanceof TableLayout) {
+                    views.add(child);
+                }
+            }
+        }
+        return views;
     }
 
     // Searchs for every children that contain the given tag.
