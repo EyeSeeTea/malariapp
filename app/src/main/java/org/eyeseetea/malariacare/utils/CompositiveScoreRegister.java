@@ -9,6 +9,7 @@ import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.CompositiveScore;
 import org.eyeseetea.malariacare.data.Question;
 import org.eyeseetea.malariacare.layout.LayoutUtils;
+import org.eyeseetea.malariacare.layout.components.DialogDispatcher;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -55,7 +56,12 @@ public class CompositiveScoreRegister {
 
             if (numDenTotal.get(0) == 0 && numDenTotal.get(1) == 0){
                 score = 0;
-            } else {
+            }else if (numDenTotal.get(0) > 0 && numDenTotal.get(1) == 0){
+                score = 0;
+                //DialogDispatcher mf = DialogDispatcher.newInstance(null);
+                //mf.showDialog(mainActivity.getFragmentManager(), DialogDispatcher.ERROR_DIALOG);
+            }
+            else {
                 score = (numDenTotal.get(0) / numDenTotal.get(1)) * 100;
             }
 
@@ -69,7 +75,12 @@ public class CompositiveScoreRegister {
 
                 if (numDenTotal.get(0) == 0 && numDenTotal.get(1) == 0){
                     score = 0;
-                } else {
+                }else if (numDenTotal.get(0) > 0 && numDenTotal.get(1) == 0){
+                    score = 0;
+                    //DialogDispatcher mf = DialogDispatcher.newInstance(null);
+                    //mf.showDialog(mainActivity.getFragmentManager(), DialogDispatcher.ERROR_DIALOG);
+                }
+                else {
                     score = (numDenTotal.get(0) / numDenTotal.get(1)) * 100;
                 }
 

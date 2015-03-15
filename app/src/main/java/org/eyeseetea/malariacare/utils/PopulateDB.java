@@ -1,8 +1,6 @@
 package org.eyeseetea.malariacare.utils;
 
 import android.content.res.AssetManager;
-import android.util.Log;
-import android.util.SparseArray;
 
 import com.opencsv.CSVReader;
 
@@ -15,13 +13,10 @@ import org.eyeseetea.malariacare.data.Tab;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.TreeMap;
 
 /**
  * Created by adrian on 15/02/15.

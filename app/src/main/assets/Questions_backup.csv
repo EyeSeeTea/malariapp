@@ -1,7 +1,7 @@
 831;'MAL-SUP-RDT-C2-Q1';'MAL-SUP-RDT-C2-Q1 Health Worker Name';;'Health Worker Name';'O1ZBRUX44FQ';1;0.00;0.00;375;26;;
 851;'MAL-SUP-RDT-C3-Q1';'MAL-SUP-RDT-C3-Q1 Health Worker Name';;'Health Worker Name';'EnvcP9eOLbL';1;0.00;0.00;418;26;;
 114;'MAL-SUP-Clinical fever evaluation-C2-Q1';'MAL-SUP-Clinical fever evaluation-C2-Q1 Health Worker Name';;'Health Worker Name';'a4E8DF0MqPj';1;0.00;0.00;361;26;;
-340;'MAL-SUP-Environment-Q1';'MAL-SUP-Environment-Q1 Have you had any disruptions in water supply lasting more than a day in the last two weeks?';;'Have you had any disruptions in water supply lasting more than a day in the last two weeks?';'kXDiD6ZYcq3';1;5.00;5.00;449;4;;2
+340;'MAL-SUP-Environment-Q1';'MAL-SUP-Environment-Q1 Have you had any disruptions in water supply lasting more than a day in the last two weeks?';;'Have you had any disruptions in water supply lasting more than a day in the last two weeks?';'kXDiD6ZYcq3';1;5.00;5.00;449;4;;
 506;'MAL-SUP-Feedback-Q1';'MAL-SUP-Feedback-Q1 Problem 1:';;'Problem 1:';'k0BP1DZhPL1';1;0.00;3.00;447;25;;29
 526;'MAL-SUP-Health Facility Info-Q1';'MAL-SUP-Health Facility Info-Q1 Date of Visit (DD/MM/YYYY)';;'Date of Visit (DD/MM/YYYY)';'hYNxszMyu8H';1;0.00;0.00;305;28;;
 1;'MAL-SUP-Clinical fever evaluation-C1-Q1';'MAL-SUP-Clinical fever evaluation-C1-Q1 Health Worker Name';;'Health Worker Name';'kfqKemsm5KX';1;0.00;0.00;318;26;;
@@ -12,13 +12,13 @@
 761;'MAL-SUP-Profile-Q1';'MAL-SUP-Profile-Q1 Clinical Officers, Full-Time today';;'Clinical Officers, Full-Time today';'GFCEklocb4C';1;0.00;0.00;307;24;;
 545;'MAL-SUP-Microscopy-C1-Q1';'MAL-SUP-Microscopy-C1-Q1 Health Worker Name';;'Health Worker Name';'sQ8NqSDRbDq';1;0.00;0.00;338;26;;
 26;'MAL-SUP-Clinical fever evaluation-C1-Q2';'MAL-SUP-Clinical fever evaluation-C1-Q2 Health Worker Gender';;'Health Worker Gender';'vp0PYornXAq';2;0.00;0.00;318;10;;
-418;'MAL-SUP-Environment-Q2';'MAL-SUP-Environment-Q2 What is your usual water supply? (choose one)';;'What is your usual water supply? (choose one)';'JdSPCO6VVD1';2;0.00;0.00;449;26;;2
+418;'MAL-SUP-Environment-Q2';'MAL-SUP-Environment-Q2 What is your usual water supply? (choose one)';;'What is your usual water supply? (choose one)';'JdSPCO6VVD1';2;0.00;0.00;449;26;;
 822;'MAL-SUP-RDT-C1-Q2';'MAL-SUP-RDT-C1-Q2 Health Worker Gender';;'Health Worker Gender';'Vpm01B1o65q';2;0.00;0.00;332;10;;
 537;'MAL-SUP-Health Facility Info-Q2';'MAL-SUP-Health Facility Info-Q2 Supervisor ID';;'Supervisor ID';'c6sDlqp2AKV';2;0.00;0.00;305;26;;
 842;'MAL-SUP-RDT-C2-Q2';'MAL-SUP-RDT-C2-Q2 Health Worker Gender';;'Health Worker Gender';'OyrhEWfTViE';2;0.00;0.00;375;10;;
 628;'MAL-SUP-Microscopy-C2-Q2';'MAL-SUP-Microscopy-C2-Q2 Health Worker Gender';;'Health Worker Gender';'NlxUKoVCqYM';2;0.00;0.00;381;10;;
 556;'MAL-SUP-Microscopy-C1-Q2';'MAL-SUP-Microscopy-C1-Q2 Health Worker Gender';;'Health Worker Gender';'vHmYOS7gW6c';2;0.00;0.00;338;10;;
-517;'MAL-SUP-Feedback-Q2';'MAL-SUP-Feedback-Q2 Was this problem addressed?';;'Was this problem addressed?';'pD29GfEqIJ2';2;3.00;3.00;447;3;;29
+517;'MAL-SUP-Feedback-Q2';'MAL-SUP-Feedback-Q2 Was this problem addressed?';;'Was this problem addressed?';'pD29GfEqIJ2';2;3.00;0.00;447;3;;29
 252;'MAL-SUP-Clinical fever evaluation-C3-Q2';'MAL-SUP-Clinical fever evaluation-C3-Q2 Health Worker Gender';;'Health Worker Gender';'oDiQyIHyESb';2;0.00;0.00;404;10;;
 862;'MAL-SUP-RDT-C3-Q2';'MAL-SUP-RDT-C3-Q2 Health Worker Gender';;'Health Worker Gender';'RapcSLYKjQ7';2;0.00;0.00;418;10;;
 700;'MAL-SUP-Microscopy-C3-Q2';'MAL-SUP-Microscopy-C3-Q2 Health Worker Gender';;'Health Worker Gender';'DvLTgJHzbIM';2;0.00;0.00;424;10;;
@@ -35,12 +35,12 @@
 864;'MAL-SUP-RDT-C3-Q3';'MAL-SUP-RDT-C3-Q3 Health Worker Type';;'Health Worker Type';'czaWqfiRpBT';3;0.00;0.00;418;11;;
 844;'MAL-SUP-RDT-C2-Q3';'MAL-SUP-RDT-C2-Q3 Health Worker Type';;'Health Worker Type';'Ei8DBR1InEO';3;0.00;0.00;375;11;;
 519;'MAL-SUP-Feedback-Q3';'MAL-SUP-Feedback-Q3 If no, describe the action plan to address the problem:';;'If no, describe the action plan to address the problem:';'nWI8hayppiW';3;0.00;0.00;447;25;;29
-429;'MAL-SUP-Environment-Q3';'MAL-SUP-Environment-Q3 Running tap water';;'Running tap water';'Z01wdIB6h44';3;3.00;3.00;449;3;;2
+429;'MAL-SUP-Environment-Q3';'MAL-SUP-Environment-Q3 Running tap water';;'Running tap water';'Z01wdIB6h44';3;3.00;3.00;449;3;;
 538;'MAL-SUP-Health Facility Info-Q3';'MAL-SUP-Health Facility Info-Q3 Supervisor Name';;'Supervisor Name';'rrAUwzL47gv';3;0.00;0.00;305;26;;
 274;'MAL-SUP-Clinical fever evaluation-C3-Q4';'MAL-SUP-Clinical fever evaluation-C3-Q4 Patient and care giver welcomed';;'Patient and care giver welcomed';'VrMd1iGraST';4;0.00;0.00;405;3;;
 865;'MAL-SUP-RDT-C3-Q4';'MAL-SUP-RDT-C3-Q4 Type of RDT';;'Type of RDT';'MLdwlV7vHoY';4;0.00;0.00;419;26;;
 722;'MAL-SUP-Microscopy-C3-Q4';'MAL-SUP-Microscopy-C3-Q4 Patient identified and identification information recorded in register';;'Patient identified and identification information recorded in register';'z400kVhJ9Uc';4;1.00;1.00;425;3;;21
-440;'MAL-SUP-Environment-Q4';'MAL-SUP-Environment-Q4 Rain water';;'Rain water';'kLP7c0zTXuz';4;1.00;3.00;449;3;;2
+440;'MAL-SUP-Environment-Q4';'MAL-SUP-Environment-Q4 Rain water';;'Rain water';'kLP7c0zTXuz';4;1.00;3.00;449;3;;
 650;'MAL-SUP-Microscopy-C2-Q4';'MAL-SUP-Microscopy-C2-Q4 Patient identified and identification information recorded in register';;'Patient identified and identification information recorded in register';'ZIwd6L6kloK';4;1.00;1.00;382;3;;21
 520;'MAL-SUP-Feedback-Q4';'MAL-SUP-Feedback-Q4 Problem 2:';;'Problem 2:';'vOszBV32JEq';4;0.00;3.00;447;25;;29
 48;'MAL-SUP-Clinical fever evaluation-C1-Q4';'MAL-SUP-Clinical fever evaluation-C1-Q4 Patient and care giver welcomed';;'Patient and care giver welcomed';'bdqI2mOo2GV';4;0.00;0.00;319;3;;
@@ -55,10 +55,10 @@
 172;'MAL-SUP-Clinical fever evaluation-C2-Q5';'MAL-SUP-Clinical fever evaluation-C2-Q5 Ask if Referred from another Health Centre';;'Ask if Referred from another Health Centre';'mrntvxWCtMr';5;0.00;0.00;362;6;;
 866;'MAL-SUP-RDT-C3-Q5';'MAL-SUP-RDT-C3-Q5 Was the expiry date checked?';;'Was the expiry date checked?';'RXqf4ZRoo9g';5;1.00;1.00;419;3;;20
 589;'MAL-SUP-Microscopy-C1-Q5';'MAL-SUP-Microscopy-C1-Q5 Procedure explained to patient';;'Procedure explained to patient';'iLtma8GCx6G';5;1.00;1.00;339;3;;21
-451;'MAL-SUP-Environment-Q5';'MAL-SUP-Environment-Q5 Well';;'Well';'geVvc4eickM';5;3.00;3.00;449;3;;2
+451;'MAL-SUP-Environment-Q5';'MAL-SUP-Environment-Q5 Well';;'Well';'geVvc4eickM';5;3.00;3.00;449;3;;
 661;'MAL-SUP-Microscopy-C2-Q5';'MAL-SUP-Microscopy-C2-Q5 Procedure explained to patient';;'Procedure explained to patient';'byLhxAKeM70';5;1.00;1.00;382;3;;21
 846;'MAL-SUP-RDT-C2-Q5';'MAL-SUP-RDT-C2-Q5 Was the expiry date checked?';;'Was the expiry date checked?';'wy4MSETknDq';5;1.00;1.00;376;3;;20
-521;'MAL-SUP-Feedback-Q5';'MAL-SUP-Feedback-Q5 Was this problem addressed?';;'Was this problem addressed?';'MLOPNQmRNL8';5;3.00;3.00;447;3;;29
+521;'MAL-SUP-Feedback-Q5';'MAL-SUP-Feedback-Q5 Was this problem addressed?';;'Was this problem addressed?';'MLOPNQmRNL8';5;3.00;0.00;447;3;;29
 733;'MAL-SUP-Microscopy-C3-Q5';'MAL-SUP-Microscopy-C3-Q5 Procedure explained to patient';;'Procedure explained to patient';'WRS5prS1OVm';5;1.00;1.00;425;3;;21
 59;'MAL-SUP-Clinical fever evaluation-C1-Q5';'MAL-SUP-Clinical fever evaluation-C1-Q5 Ask if Referred from another Health Centre';;'Ask if Referred from another Health Centre';'SkHN2THVmIf';5;0.00;0.00;319;6;;
 826;'MAL-SUP-RDT-C1-Q5';'MAL-SUP-RDT-C1-Q5 Was the expiry date checked?';;'Was the expiry date checked?';'dFurNMdwtux';5;1.00;1.00;333;3;;20
@@ -69,14 +69,14 @@
 807;'MAL-SUP-Profile-Q6';'MAL-SUP-Profile-Q6 Medical Officers, Full-Time usual';;'Medical Officers, Full-Time usual';'qGTzqEDdBy0';6;0.00;0.00;308;24;;
 183;'MAL-SUP-Clinical fever evaluation-C2-Q6';'MAL-SUP-Clinical fever evaluation-C2-Q6 Age of patient determined';;'Age of patient determined';'guLnZAMLpXB';6;1.00;1.00;362;3;;19
 672;'MAL-SUP-Microscopy-C2-Q6';'MAL-SUP-Microscopy-C2-Q6 Gloves worn';;'Gloves worn';'mZFteLUBuJW';6;1.00;1.00;382;3;;21
-462;'MAL-SUP-Environment-Q6';'MAL-SUP-Environment-Q6 Bore hole';;'Bore hole';'R1cvr5eTXdj';6;3.00;3.00;449;3;;2
+462;'MAL-SUP-Environment-Q6';'MAL-SUP-Environment-Q6 Bore hole';;'Bore hole';'R1cvr5eTXdj';6;3.00;3.00;449;3;;
 296;'MAL-SUP-Clinical fever evaluation-C3-Q6';'MAL-SUP-Clinical fever evaluation-C3-Q6 Age of patient determined';;'Age of patient determined';'VQBrExGxQCe';6;1.00;1.00;405;3;;19
 600;'MAL-SUP-Microscopy-C1-Q6';'MAL-SUP-Microscopy-C1-Q6 Gloves worn';;'Gloves worn';'hYwx7s4y5Sv';6;1.00;1.00;339;3;;21
 867;'MAL-SUP-RDT-C3-Q6';'MAL-SUP-RDT-C3-Q6 Did the worker label the cassette?';;'Did the worker label the cassette?';'fLzYypGgxwY';6;1.00;1.00;419;3;;20
 522;'MAL-SUP-Feedback-Q6';'MAL-SUP-Feedback-Q6 If no, describe the action plan to address the problem:';;'If no, describe the action plan to address the problem:';'SNurpqS3kUf';6;0.00;0.00;447;25;;29
 827;'MAL-SUP-RDT-C1-Q6';'MAL-SUP-RDT-C1-Q6 Did the worker label the cassette?';;'Did the worker label the cassette?';'APKAyCLEEXo';6;1.00;1.00;333;3;;20
 847;'MAL-SUP-RDT-C2-Q6';'MAL-SUP-RDT-C2-Q6 Did the worker label the cassette?';;'Did the worker label the cassette?';'m51eknUdcrQ';6;1.00;1.00;376;3;;20
-473;'MAL-SUP-Environment-Q7';'MAL-SUP-Environment-Q7 Stream/river';;'Stream/river';'R1fdwnMB3KV';7;1.00;3.00;449;3;;2
+473;'MAL-SUP-Environment-Q7';'MAL-SUP-Environment-Q7 Stream/river';;'Stream/river';'R1fdwnMB3KV';7;1.00;3.00;449;3;;
 755;'MAL-SUP-Microscopy-C3-Q7';'MAL-SUP-Microscopy-C3-Q7 Slide cleaned';;'Slide cleaned';'MWFjsgPkI7X';7;1.00;1.00;425;3;;21
 523;'MAL-SUP-Feedback-Q7';'MAL-SUP-Feedback-Q7 Problem 3:';;'Problem 3:';'sQiZ5Mu9Tmw';7;0.00;3.00;447;25;;29
 542;'MAL-SUP-Health Facility Info-Q7';'MAL-SUP-Health Facility Info-Q7 Level of Health Health Centre';;'Level of Health Health Centre';'PHCqmZssazP';7;0.00;0.00;306;18;;
@@ -90,14 +90,14 @@
 848;'MAL-SUP-RDT-C2-Q7';'MAL-SUP-RDT-C2-Q7 Patient identified and identification information recorded in register';;'Patient identified and identification information recorded in register';'Cs0pCFlSQiJ';7;1.00;1.00;377;3;;20
 808;'MAL-SUP-Profile-Q7';'MAL-SUP-Profile-Q7 Medical Officers, Part-Time today';;'Medical Officers, Part-Time today';'lM0ryrayNqQ';7;0.00;0.00;308;24;;
 92;'MAL-SUP-Clinical fever evaluation-C1-Q8';'MAL-SUP-Clinical fever evaluation-C1-Q8 Weight of patient determined';;'Weight of patient determined';'c4X9qPRLcUh';8;1.00;1.00;319;3;;19
-524;'MAL-SUP-Feedback-Q8';'MAL-SUP-Feedback-Q8 Was this problem addressed?';;'Was this problem addressed?';'A0rCGZhW5gM';8;3.00;3.00;447;3;;29
+524;'MAL-SUP-Feedback-Q8';'MAL-SUP-Feedback-Q8 Was this problem addressed?';;'Was this problem addressed?';'A0rCGZhW5gM';8;3.00;0.00;447;3;;29
 687;'MAL-SUP-Microscopy-C2-Q8';'MAL-SUP-Microscopy-C2-Q8 Slide labelled with date and patient''s name and/or number';;'Slide labelled with date and patient''s name and/or number';'j33fIssP4yU';8;1.00;1.00;382;3;;21
 615;'MAL-SUP-Microscopy-C1-Q8';'MAL-SUP-Microscopy-C1-Q8 Slide labelled with date and patient''s name and/or number';;'Slide labelled with date and patient''s name and/or number';'JicwaRyqZAG';8;1.00;1.00;339;3;;21
 829;'MAL-SUP-RDT-C1-Q8';'MAL-SUP-RDT-C1-Q8 Procedure explained to patient';;'Procedure explained to patient';'dRD8l2LmKxC';8;1.00;1.00;334;3;;20
 318;'MAL-SUP-Clinical fever evaluation-C3-Q8';'MAL-SUP-Clinical fever evaluation-C3-Q8 Weight of patient determined';;'Weight of patient determined';'exaGe12gNxe';8;1.00;1.00;405;3;;19
 759;'MAL-SUP-Microscopy-C3-Q8';'MAL-SUP-Microscopy-C3-Q8 Slide labelled with date and patient''s name and/or number';;'Slide labelled with date and patient''s name and/or number';'CswKLgnMeTz';8;1.00;1.00;425;3;;21
 205;'MAL-SUP-Clinical fever evaluation-C2-Q8';'MAL-SUP-Clinical fever evaluation-C2-Q8 Weight of patient determined';;'Weight of patient determined';'rZZetbiGBPh';8;1.00;1.00;362;3;;19
-484;'MAL-SUP-Environment-Q8';'MAL-SUP-Environment-Q8 Bottled water';;'Bottled water';'TEb5eZaJa9Y';8;3.00;3.00;449;3;;2
+484;'MAL-SUP-Environment-Q8';'MAL-SUP-Environment-Q8 Bottled water';;'Bottled water';'TEb5eZaJa9Y';8;3.00;3.00;449;3;;
 869;'MAL-SUP-RDT-C3-Q8';'MAL-SUP-RDT-C3-Q8 Procedure explained to patient';;'Procedure explained to patient';'u0m0kBdK3o9';8;1.00;1.00;420;3;;20
 809;'MAL-SUP-Profile-Q8';'MAL-SUP-Profile-Q8 Medical Officers, Part-Time usual';;'Medical Officers, Part-Time usual';'SjxWNhxA3SI';8;0.00;0.00;308;24;;
 543;'MAL-SUP-Health Facility Info-Q8';'MAL-SUP-Health Facility Info-Q8 Ownership';;'Ownership';'DTqmhSLgIb3';8;0.00;0.00;306;22;;
@@ -106,7 +106,7 @@
 103;'MAL-SUP-Clinical fever evaluation-C1-Q9';'MAL-SUP-Clinical fever evaluation-C1-Q9 Weight';;'Weight';'GWyEBOcVCFE';9;0.00;0.00;319;24;;19
 525;'MAL-SUP-Feedback-Q9';'MAL-SUP-Feedback-Q9 If no, describe the action plan to address the problem:';;'If no, describe the action plan to address the problem:';'T7p7brZIjqj';9;0.00;0.00;447;25;;
 688;'MAL-SUP-Microscopy-C2-Q9';'MAL-SUP-Microscopy-C2-Q9 Was collection via finger prick?';;'Was collection via finger prick?';'vHxeHlcypeA';9;0.00;0.00;383;3;;21
-495;'MAL-SUP-Environment-Q9';'MAL-SUP-Environment-Q9 Externally filled water tank';;'Externally filled water tank';'E8BtJm7ixok';9;3.00;3.00;449;3;;2
+495;'MAL-SUP-Environment-Q9';'MAL-SUP-Environment-Q9 Externally filled water tank';;'Externally filled water tank';'E8BtJm7ixok';9;3.00;3.00;449;3;;
 616;'MAL-SUP-Microscopy-C1-Q9';'MAL-SUP-Microscopy-C1-Q9 Was collection via finger prick?';;'Was collection via finger prick?';'jEaiUsgFMW1';9;0.00;0.00;340;3;;21
 870;'MAL-SUP-RDT-C3-Q9';'MAL-SUP-RDT-C3-Q9 New gloves';;'New gloves';'P0PvCnOVtOe';9;1.00;1.00;420;3;;20
 760;'MAL-SUP-Microscopy-C3-Q9';'MAL-SUP-Microscopy-C3-Q9 Was collection via finger prick?';;'Was collection via finger prick?';'O4c4WE9L8TM';9;0.00;0.00;426;3;;21
@@ -115,7 +115,7 @@
 810;'MAL-SUP-Profile-Q9';'MAL-SUP-Profile-Q9 Nurses, Full-Time today';;'Nurses, Full-Time today';'TJPFicjRw4E';9;0.00;0.00;309;24;;
 216;'MAL-SUP-Clinical fever evaluation-C2-Q9';'MAL-SUP-Clinical fever evaluation-C2-Q9 Weight';;'Weight';'Y1COrJPtvkw';9;0.00;0.00;362;24;;19
 830;'MAL-SUP-RDT-C1-Q9';'MAL-SUP-RDT-C1-Q9 New gloves';;'New gloves';'udfDrNMA8ky';9;1.00;1.00;334;3;;20
-341;'MAL-SUP-Environment-Q10';'MAL-SUP-Environment-Q10 Have you had any disruptions in power supply lasting more than a day in the last two weeks?';;'Have you had any disruptions in power supply lasting more than a day in the last two weeks?';'jU8yniAKxcz';10;5.00;5.00;450;4;;2
+341;'MAL-SUP-Environment-Q10';'MAL-SUP-Environment-Q10 Have you had any disruptions in power supply lasting more than a day in the last two weeks?';;'Have you had any disruptions in power supply lasting more than a day in the last two weeks?';'jU8yniAKxcz';10;5.00;5.00;450;4;;
 832;'MAL-SUP-RDT-C2-Q10';'MAL-SUP-RDT-C2-Q10 Puncture site cleaned with alcohol and allowed to air dry';;'Puncture site cleaned with alcohol and allowed to air dry';'S0LDtaAWSBu';10;1.00;1.00;377;3;;20
 690;'MAL-SUP-Microscopy-C3-Q10';'MAL-SUP-Microscopy-C3-Q10 Finger cleaned with alcohol and allowed to dry';;'Finger cleaned with alcohol and allowed to dry';'XZJi75IMmvH';10;0.00;0.00;426;3;760;21
 546;'MAL-SUP-Microscopy-C1-Q10';'MAL-SUP-Microscopy-C1-Q10 Finger cleaned with alcohol and allowed to dry';;'Finger cleaned with alcohol and allowed to dry';'U8sm9olrCIV';10;0.00;0.00;340;3;616;21
@@ -136,12 +136,12 @@
 547;'MAL-SUP-Microscopy-C1-Q11';'MAL-SUP-Microscopy-C1-Q11 Finger pricked, first drop of blood wiped off, and subsequent drop placed on slide without touching finger';;'Finger pricked, first drop of blood wiped off, and subsequent drop placed on slide without touching finger';'q87RQcTaWse';11;0.00;0.00;340;3;616;21
 691;'MAL-SUP-Microscopy-C3-Q11';'MAL-SUP-Microscopy-C3-Q11 Finger pricked, first drop of blood wiped off, and subsequent drop placed on slide without touching finger';;'Finger pricked, first drop of blood wiped off, and subsequent drop placed on slide without touching finger';'ZMlb4Fy92H0';11;0.00;0.00;426;3;760;21
 833;'MAL-SUP-RDT-C2-Q11';'MAL-SUP-RDT-C2-Q11 Blood dispensed correctly';;'Blood dispensed correctly';'LpnnuF3iZt4';11;1.00;1.00;378;3;;20
-352;'MAL-SUP-Environment-Q11';'MAL-SUP-Environment-Q11 What is your usual energy supply?';;'What is your usual energy supply?';'ICKqvdAWnB7';11;0.00;0.00;450;26;;2
+352;'MAL-SUP-Environment-Q11';'MAL-SUP-Environment-Q11 What is your usual energy supply?';;'What is your usual energy supply?';'ICKqvdAWnB7';11;0.00;0.00;450;26;;
 763;'MAL-SUP-Profile-Q11';'MAL-SUP-Profile-Q11 Nurses, Part-Time today';;'Nurses, Part-Time today';'qQ24wpmH3SP';11;0.00;0.00;309;24;;
 126;'MAL-SUP-Clinical fever evaluation-C2-Q11';'MAL-SUP-Clinical fever evaluation-C2-Q11 Is patient pregnant?';;'Is patient pregnant?';'dhrxRPgd0Mi';11;1.00;1.00;362;6;;19
 528;'MAL-SUP-Health Facility Info-Q11';'MAL-SUP-Health Facility Info-Q11 General/Health Centre E-mail';;'General/Health Centre E-mail';'HrG3eyDxGWh';11;0.00;0.00;306;26;;
 619;'MAL-SUP-Microscopy-C2-Q11';'MAL-SUP-Microscopy-C2-Q11 Finger pricked, first drop of blood wiped off, and subsequent drop placed on slide without touching finger';;'Finger pricked, first drop of blood wiped off, and subsequent drop placed on slide without touching finger';'tjQWsQsmeWX';11;0.00;0.00;383;3;688;21
-363;'MAL-SUP-Environment-Q12';'MAL-SUP-Environment-Q12 Main power supply';;'Main power supply';'BsxpfdTgXEp';12;0.00;0.00;450;3;;2
+363;'MAL-SUP-Environment-Q12';'MAL-SUP-Environment-Q12 Main power supply';;'Main power supply';'BsxpfdTgXEp';12;0.00;0.00;450;3;;
 854;'MAL-SUP-RDT-C3-Q12';'MAL-SUP-RDT-C3-Q12 Blood dispensed in correct well of RDT device';;'Blood dispensed in correct well of RDT device';'hXO2zPH1yHG';12;1.00;1.00;421;3;;20
 692;'MAL-SUP-Microscopy-C3-Q12';'MAL-SUP-Microscopy-C3-Q12 Was collection via venipuncture?';;'Was collection via venipuncture?';'LP94MPB8wJE';12;0.00;4.00;427;3;;21
 131;'MAL-SUP-Clinical fever evaluation-C2-Q12';'MAL-SUP-Clinical fever evaluation-C2-Q12 Change in behavior, altered consciousness or coma';;'Change in behavior, altered consciousness or coma';'KiDn4uEdqXl';12;1.00;1.00;363;6;;19
@@ -160,7 +160,7 @@
 815;'MAL-SUP-RDT-C1-Q13';'MAL-SUP-RDT-C1-Q13 Buffer applied to correct well of RDT device';;'Buffer applied to correct well of RDT device';'sZpggvmxQfV';13;1.00;1.00;336;3;;20
 693;'MAL-SUP-Microscopy-C3-Q13';'MAL-SUP-Microscopy-C3-Q13 Label EDTA collection tube with date and patient''s name and/or number';;'Label EDTA collection tube with date and patient''s name and/or number';'RoFeqL3kwvb';13;1.00;0.00;427;3;692;21
 621;'MAL-SUP-Microscopy-C2-Q13';'MAL-SUP-Microscopy-C2-Q13 Label EDTA collection tube with date and patient''s name and/or number';;'Label EDTA collection tube with date and patient''s name and/or number';'Sja8dM9h5oF';13;1.00;0.00;384;3;620;21
-374;'MAL-SUP-Environment-Q13';'MAL-SUP-Environment-Q13 Generator';;'Generator';'EfeDVxeniNh';13;0.00;0.00;450;3;;2
+374;'MAL-SUP-Environment-Q13';'MAL-SUP-Environment-Q13 Generator';;'Generator';'EfeDVxeniNh';13;0.00;0.00;450;3;;
 835;'MAL-SUP-RDT-C2-Q13';'MAL-SUP-RDT-C2-Q13 Buffer applied to correct well of RDT device';;'Buffer applied to correct well of RDT device';'p5E5KdkPLX7';13;1.00;1.00;379;3;;20
 549;'MAL-SUP-Microscopy-C1-Q13';'MAL-SUP-Microscopy-C1-Q13 Label EDTA collection tube with date and patient''s name and/or number';;'Label EDTA collection tube with date and patient''s name and/or number';'pR4A28RTES8';13;1.00;0.00;341;3;548;21
 530;'MAL-SUP-Health Facility Info-Q13';'MAL-SUP-Health Facility Info-Q13 Telephone';;'Telephone';'mXVsMMLoeq5';13;0.00;0.00;306;26;;
@@ -168,7 +168,7 @@
 765;'MAL-SUP-Profile-Q13';'MAL-SUP-Profile-Q13 Medical Interns, Full-Time today';;'Medical Interns, Full-Time today';'BA4hk8zStld';13;0.00;0.00;310;24;;
 132;'MAL-SUP-Clinical fever evaluation-C2-Q13';'MAL-SUP-Clinical fever evaluation-C2-Q13 Convulsions';;'Convulsions';'zlptrR8KQ7s';13;1.00;1.00;363;6;;19
 531;'MAL-SUP-Health Facility Info-Q14';'MAL-SUP-Health Facility Info-Q14 E-mail';;'E-mail';'U0eoy0sEpos';14;0.00;0.00;306;26;;
-385;'MAL-SUP-Environment-Q14';'MAL-SUP-Environment-Q14 Solar';;'Solar';'sQSj8Ma8PHA';14;0.00;0.00;450;3;;2
+385;'MAL-SUP-Environment-Q14';'MAL-SUP-Environment-Q14 Solar';;'Solar';'sQSj8Ma8PHA';14;0.00;0.00;450;3;;
 511;'MAL-SUP-Feedback-Q14';'MAL-SUP-Feedback-Q14 Was immediate feedback provided?';;'Was immediate feedback provided?';'YXUh2BTq7MX';14;0.00;0.00;448;3;;
 856;'MAL-SUP-RDT-C3-Q14';'MAL-SUP-RDT-C3-Q14 Appropriate amount of buffer dispensed into well';;'Appropriate amount of buffer dispensed into well';'VY6WWva8ozR';14;1.00;1.00;422;3;;20
 766;'MAL-SUP-Profile-Q14';'MAL-SUP-Profile-Q14 Medical Interns, Full-Time usual';;'Medical Interns, Full-Time usual';'AlY5j354oL2';14;0.00;0.00;310;24;;
@@ -355,7 +355,7 @@
 432;'MAL-SUP-Environment-Q32';'MAL-SUP-Environment-Q32 Artesunate suppository++';;'Artesunate suppository++';'ELQoQfVgVNh';32;1.00;1.00;452;4;;7
 433;'MAL-SUP-Environment-Q33';'MAL-SUP-Environment-Q33 Artemether (injectable)++';;'Artemether (injectable)++';'jZAKczR3xr4';33;1.00;1.00;452;4;;7
 41;'MAL-SUP-Clinical fever evaluation-C1-Q33';'MAL-SUP-Clinical fever evaluation-C1-Q33 If yes, did the clinician ask about which treatment was given?';;'If yes, did the clinician ask about which treatment was given?';'NtkQZNWLxty';33;1.00;1.00;323;7;;19
-787;'MAL-SUP-Profile-Q33';'MAL-SUP-Profile-Q33 Staff above that perfom RDTs in the last 2 years';;'Staff above that perfom RDTs in the last 2 years';'OgXSTo2dnIp';33;5.00;5.00;315;3;;18
+787;'MAL-SUP-Profile-Q33';'MAL-SUP-Profile-Q33 Staff above that perfom RDTs in the last 2 years';;'Staff above that perfom RDTs in the last 2 years';'OgXSTo2dnIp';33;5.00;5.00;315;3;;
 643;'MAL-SUP-Microscopy-C2-Q33';'MAL-SUP-Microscopy-C2-Q33 Slide immersed in 10% Giemsa stain for 10-15 minutes';;'Slide immersed in 10% Giemsa stain for 10-15 minutes';'QJpR7oNr95g';33;2.00;0.00;390;3;632;22
 571;'MAL-SUP-Microscopy-C1-Q33';'MAL-SUP-Microscopy-C1-Q33 Slide immersed in 10% Giemsa stain for 10-15 minutes';;'Slide immersed in 10% Giemsa stain for 10-15 minutes';'XlyF2bYCmMz';33;2.00;0.00;347;3;560;22
 267;'MAL-SUP-Clinical fever evaluation-C3-Q33';'MAL-SUP-Clinical fever evaluation-C3-Q33 If yes, did the clinician ask about which treatment was given?';;'If yes, did the clinician ask about which treatment was given?';'wZyV6IEuHZV';33;1.00;1.00;409;7;;19
@@ -363,7 +363,7 @@
 715;'MAL-SUP-Microscopy-C3-Q33';'MAL-SUP-Microscopy-C3-Q33 Slide immersed in 10% Giemsa stain for 10-15 minutes';;'Slide immersed in 10% Giemsa stain for 10-15 minutes';'RRSTpPtRVBg';33;2.00;0.00;433;3;704;22
 572;'MAL-SUP-Microscopy-C1-Q34';'MAL-SUP-Microscopy-C1-Q34 Slide rinsed carefully with water';;'Slide rinsed carefully with water';'dvXGDXOYot6';34;2.00;0.00;347;3;560;22
 268;'MAL-SUP-Clinical fever evaluation-C3-Q34';'MAL-SUP-Clinical fever evaluation-C3-Q34 Was temperature taken?';;'Was temperature taken?';'WwxW39eeVKb';34;1.00;1.00;410;3;;19
-788;'MAL-SUP-Profile-Q34';'MAL-SUP-Profile-Q34 Staff above tha are formally trained in case management in the last 2 years';;'Staff above tha are formally trained in case management in the last 2 years';'YX8FLJAAsWd';34;5.00;5.00;315;3;;18
+788;'MAL-SUP-Profile-Q34';'MAL-SUP-Profile-Q34 Staff above tha are formally trained in case management in the last 2 years';;'Staff above tha are formally trained in case management in the last 2 years';'YX8FLJAAsWd';34;5.00;5.00;315;3;;
 155;'MAL-SUP-Clinical fever evaluation-C2-Q34';'MAL-SUP-Clinical fever evaluation-C2-Q34 Was temperature taken?';;'Was temperature taken?';'vlpXnGtQwkD';34;1.00;1.00;367;3;;19
 644;'MAL-SUP-Microscopy-C2-Q34';'MAL-SUP-Microscopy-C2-Q34 Slide rinsed carefully with water';;'Slide rinsed carefully with water';'KIMWlIdpq2N';34;2.00;0.00;390;3;632;22
 434;'MAL-SUP-Environment-Q34';'MAL-SUP-Environment-Q34 Quinine (injectable)';;'Quinine (injectable)';'M85FMUACiNZ';34;0.50;0.50;452;4;;7
@@ -376,7 +376,7 @@
 717;'MAL-SUP-Microscopy-C3-Q35';'MAL-SUP-Microscopy-C3-Q35 Slide drained and air dried (avoid applying external heat)';;'Slide drained and air dried (avoid applying external heat)';'TVvKZjXHIoT';35;1.00;0.00;434;3;704;22
 645;'MAL-SUP-Microscopy-C2-Q35';'MAL-SUP-Microscopy-C2-Q35 Slide drained and air dried (avoid applying external heat)';;'Slide drained and air dried (avoid applying external heat)';'ZY5l8GYwYne';35;1.00;0.00;391;3;632;22
 573;'MAL-SUP-Microscopy-C1-Q35';'MAL-SUP-Microscopy-C1-Q35 Slide drained and air dried (avoid applying external heat)';;'Slide drained and air dried (avoid applying external heat)';'A8VASrhxiUx';35;1.00;0.00;348;3;560;22
-789;'MAL-SUP-Profile-Q35';'MAL-SUP-Profile-Q35 Is there laboratory Staff formally trained in RDTs in the last two years?';;'Is there laboratory Staff formally trained in RDTs in the last two years?';'fxZd9Fk2wj3';35;5.00;5.00;315;3;;18
+789;'MAL-SUP-Profile-Q35';'MAL-SUP-Profile-Q35 Is there laboratory Staff formally trained in RDTs in the last two years?';;'Is there laboratory Staff formally trained in RDTs in the last two years?';'fxZd9Fk2wj3';35;5.00;5.00;315;3;;
 270;'MAL-SUP-Clinical fever evaluation-C3-Q36';'MAL-SUP-Clinical fever evaluation-C3-Q36 Neck exam';;'Neck exam';'irJDHY7WJ5h';36;1.00;1.00;410;3;;19
 646;'MAL-SUP-Microscopy-C2-Q36';'MAL-SUP-Microscopy-C2-Q36 Sharps waste segregated and safely disposed in a safety box';;'Sharps waste segregated and safely disposed in a safety box';'Gq7DTnI73cP';36;1.00;0.00;392;3;632;22
 436;'MAL-SUP-Environment-Q36';'MAL-SUP-Environment-Q36 Doxycycline';;'Doxycycline';'NZV2XGIxKs0';36;1.00;1.00;452;4;;7
@@ -384,7 +384,7 @@
 157;'MAL-SUP-Clinical fever evaluation-C2-Q36';'MAL-SUP-Clinical fever evaluation-C2-Q36 Neck exam';;'Neck exam';'Qn5irh0qiNe';36;1.00;1.00;367;3;;19
 718;'MAL-SUP-Microscopy-C3-Q36';'MAL-SUP-Microscopy-C3-Q36 Sharps waste segregated and safely disposed in a safety box';;'Sharps waste segregated and safely disposed in a safety box';'XAXrLVmb2Zi';36;1.00;0.00;435;3;704;22
 44;'MAL-SUP-Clinical fever evaluation-C1-Q36';'MAL-SUP-Clinical fever evaluation-C1-Q36 Neck exam';;'Neck exam';'tQzkLWObNFH';36;1.00;1.00;324;3;;19
-790;'MAL-SUP-Profile-Q36';'MAL-SUP-Profile-Q36 is there laboratory Staff formally trained in malaria microscopy in the last two years?';;'is there laboratory Staff formally trained in malaria microscopy in the last two years?';'GmmaYyz7Sxi';36;5.00;5.00;315;3;;18
+790;'MAL-SUP-Profile-Q36';'MAL-SUP-Profile-Q36 is there laboratory Staff formally trained in malaria microscopy in the last two years?';;'is there laboratory Staff formally trained in malaria microscopy in the last two years?';'GmmaYyz7Sxi';36;5.00;5.00;315;3;;
 647;'MAL-SUP-Microscopy-C2-Q37';'MAL-SUP-Microscopy-C2-Q37 Infectious waste disposed of in appropriate waste containers';;'Infectious waste disposed of in appropriate waste containers';'DXuu13pAjjD';37;1.00;0.00;392;3;632;22
 437;'MAL-SUP-Environment-Q37';'MAL-SUP-Environment-Q37 Paracetamol';;'Paracetamol';'Q5BDI1vGhrK';37;1.00;1.00;452;4;;7
 791;'MAL-SUP-Profile-Q37';'MAL-SUP-Profile-Q37 Does this health Health Centre provide antenatal care services?';;'Does this health Health Centre provide antenatal care services?';'N12BPDKXwDY';37;5.00;5.00;316;3;;17
@@ -554,266 +554,266 @@
 598;'MAL-SUP-Microscopy-C1-Q58';'MAL-SUP-Microscopy-C1-Q58 Was the examination done properly, including > 100 high power fields before declaring slides negative (takes about 10 minutes)?';;'Was the examination done properly, including > 100 high power fields before declaring slides negative (takes about 10 minutes)?';'eUnPnrdi6pY';58;1.00;0.00;357;3;597;23
 742;'MAL-SUP-Microscopy-C3-Q58';'MAL-SUP-Microscopy-C3-Q58 Was the examination done properly, including > 100 high power fields before declaring slides negative (takes about 10 minutes)?';;'Was the examination done properly, including > 100 high power fields before declaring slides negative (takes about 10 minutes)?';'sZYBfBf7yUr';58;1.00;0.00;443;3;741;23
 743;'MAL-SUP-Microscopy-C3-Q59';'MAL-SUP-Microscopy-C3-Q59 Report slide as positive for parasites';;'Report slide as positive for parasites';'Sxw0i17Y9Vp';59;0.00;0.00;444;3;;23
-69;'MAL-SUP-Clinical fever evaluation-C1-Q59';'MAL-SUP-Clinical fever evaluation-C1-Q59 Final diagnosis';;'Final diagnosis';'UiJz3FEZmFE';59;5.00;5.00;327;13;;25
-182;'MAL-SUP-Clinical fever evaluation-C2-Q59';'MAL-SUP-Clinical fever evaluation-C2-Q59 Final diagnosis';;'Final diagnosis';'I6KRPk8keBH';59;5.00;5.00;370;13;;25
+69;'MAL-SUP-Clinical fever evaluation-C1-Q59';'MAL-SUP-Clinical fever evaluation-C1-Q59 Final diagnosis';;'Final diagnosis';'UiJz3FEZmFE';59;5.00;5.00;327;13;;
+182;'MAL-SUP-Clinical fever evaluation-C2-Q59';'MAL-SUP-Clinical fever evaluation-C2-Q59 Final diagnosis';;'Final diagnosis';'I6KRPk8keBH';59;5.00;5.00;370;13;;
 461;'MAL-SUP-Environment-Q59';'MAL-SUP-Environment-Q59 Microscopes';;'Microscopes';'eeuhFAxdSIb';59;1.00;1.00;454;4;;9
-295;'MAL-SUP-Clinical fever evaluation-C3-Q59';'MAL-SUP-Clinical fever evaluation-C3-Q59 Final diagnosis';;'Final diagnosis';'RbNkT4eP69u';59;5.00;5.00;413;13;;25
+295;'MAL-SUP-Clinical fever evaluation-C3-Q59';'MAL-SUP-Clinical fever evaluation-C3-Q59 Final diagnosis';;'Final diagnosis';'RbNkT4eP69u';59;5.00;5.00;413;13;;
 599;'MAL-SUP-Microscopy-C1-Q59';'MAL-SUP-Microscopy-C1-Q59 Report slide as positive for parasites';;'Report slide as positive for parasites';'PEBj8pdzFlY';59;0.00;0.00;358;3;;23
 671;'MAL-SUP-Microscopy-C2-Q59';'MAL-SUP-Microscopy-C2-Q59 Report slide as positive for parasites';;'Report slide as positive for parasites';'FrFhrgPS4cQ';59;0.00;0.00;401;3;;23
 463;'MAL-SUP-Environment-Q60';'MAL-SUP-Environment-Q60 Lancets/needles & syringes';;'Lancets/needles & syringes';'ewNcWzWasvy';60;0.50;0.50;454;4;;9
 601;'MAL-SUP-Microscopy-C1-Q60';'MAL-SUP-Microscopy-C1-Q60 Was speciation performed?';;'Was speciation performed?';'cpLrV26xpeW';60;1.00;1.00;358;3;;23
 673;'MAL-SUP-Microscopy-C2-Q60';'MAL-SUP-Microscopy-C2-Q60 Was speciation performed?';;'Was speciation performed?';'PgnfC9oQnq8';60;1.00;1.00;401;3;;23
-71;'MAL-SUP-Clinical fever evaluation-C1-Q60';'MAL-SUP-Clinical fever evaluation-C1-Q60 RDT+';;'RDT+';'PhecM9OswAi';60;0.00;0.00;327;3;;25
+71;'MAL-SUP-Clinical fever evaluation-C1-Q60';'MAL-SUP-Clinical fever evaluation-C1-Q60 RDT+';;'RDT+';'PhecM9OswAi';60;0.00;0.00;327;3;;
 745;'MAL-SUP-Microscopy-C3-Q60';'MAL-SUP-Microscopy-C3-Q60 Was speciation performed?';;'Was speciation performed?';'JshqjM1u9dt';60;1.00;1.00;444;3;;23
-184;'MAL-SUP-Clinical fever evaluation-C2-Q60';'MAL-SUP-Clinical fever evaluation-C2-Q60 RDT+';;'RDT+';'DfT6kOGAEeJ';60;0.00;0.00;370;3;;25
-297;'MAL-SUP-Clinical fever evaluation-C3-Q60';'MAL-SUP-Clinical fever evaluation-C3-Q60 RDT+';;'RDT+';'QGUZQ4Pudvi';60;0.00;0.00;413;3;;25
+184;'MAL-SUP-Clinical fever evaluation-C2-Q60';'MAL-SUP-Clinical fever evaluation-C2-Q60 RDT+';;'RDT+';'DfT6kOGAEeJ';60;0.00;0.00;370;3;;
+297;'MAL-SUP-Clinical fever evaluation-C3-Q60';'MAL-SUP-Clinical fever evaluation-C3-Q60 RDT+';;'RDT+';'QGUZQ4Pudvi';60;0.00;0.00;413;3;;
 746;'MAL-SUP-Microscopy-C3-Q61';'MAL-SUP-Microscopy-C3-Q61 If yes, report species';;'If yes, report species';'PKmqI2vEeVC';61;0.00;0.00;444;14;;23
 464;'MAL-SUP-Environment-Q61';'MAL-SUP-Environment-Q61 Methylated spirits';;'Methylated spirits';'F3qI1hYTghY';61;0.50;0.50;454;4;;9
-298;'MAL-SUP-Clinical fever evaluation-C3-Q61';'MAL-SUP-Clinical fever evaluation-C3-Q61 Microscopy +';;'Microscopy +';'kXhkryOBTEb';61;0.00;0.00;413;3;;25
+298;'MAL-SUP-Clinical fever evaluation-C3-Q61';'MAL-SUP-Clinical fever evaluation-C3-Q61 Microscopy +';;'Microscopy +';'kXhkryOBTEb';61;0.00;0.00;413;3;;
 674;'MAL-SUP-Microscopy-C2-Q61';'MAL-SUP-Microscopy-C2-Q61 If yes, report species';;'If yes, report species';'UtBwaTlnP42';61;0.00;0.00;401;14;;23
-72;'MAL-SUP-Clinical fever evaluation-C1-Q61';'MAL-SUP-Clinical fever evaluation-C1-Q61 Microscopy +';;'Microscopy +';'tnup2svqKrZ';61;0.00;0.00;327;3;;25
+72;'MAL-SUP-Clinical fever evaluation-C1-Q61';'MAL-SUP-Clinical fever evaluation-C1-Q61 Microscopy +';;'Microscopy +';'tnup2svqKrZ';61;0.00;0.00;327;3;;
 602;'MAL-SUP-Microscopy-C1-Q61';'MAL-SUP-Microscopy-C1-Q61 If yes, report species';;'If yes, report species';'S2IAwGpJb9X';61;0.00;0.00;358;14;;23
-185;'MAL-SUP-Clinical fever evaluation-C2-Q61';'MAL-SUP-Clinical fever evaluation-C2-Q61 Microscopy +';;'Microscopy +';'lB1KhXA3Ur8';61;0.00;0.00;370;3;;25
-73;'MAL-SUP-Clinical fever evaluation-C1-Q62';'MAL-SUP-Clinical fever evaluation-C1-Q62 Clinical diagnosis without a test (test not available)';;'Clinical diagnosis without a test (test not available)';'Ps7T3ThjwxQ';62;0.00;0.00;327;3;;25
-186;'MAL-SUP-Clinical fever evaluation-C2-Q62';'MAL-SUP-Clinical fever evaluation-C2-Q62 Clinical diagnosis without a test (test not available)';;'Clinical diagnosis without a test (test not available)';'GCOEPa3G5kj';62;0.00;0.00;370;3;;25
+185;'MAL-SUP-Clinical fever evaluation-C2-Q61';'MAL-SUP-Clinical fever evaluation-C2-Q61 Microscopy +';;'Microscopy +';'lB1KhXA3Ur8';61;0.00;0.00;370;3;;
+73;'MAL-SUP-Clinical fever evaluation-C1-Q62';'MAL-SUP-Clinical fever evaluation-C1-Q62 Clinical diagnosis without a test (test not available)';;'Clinical diagnosis without a test (test not available)';'Ps7T3ThjwxQ';62;0.00;0.00;327;3;;
+186;'MAL-SUP-Clinical fever evaluation-C2-Q62';'MAL-SUP-Clinical fever evaluation-C2-Q62 Clinical diagnosis without a test (test not available)';;'Clinical diagnosis without a test (test not available)';'GCOEPa3G5kj';62;0.00;0.00;370;3;;
 747;'MAL-SUP-Microscopy-C3-Q62';'MAL-SUP-Microscopy-C3-Q62 Was quantification performed?';;'Was quantification performed?';'XaD00PJusEE';62;1.00;1.00;444;3;;23
 603;'MAL-SUP-Microscopy-C1-Q62';'MAL-SUP-Microscopy-C1-Q62 Was quantification performed?';;'Was quantification performed?';'Y1IkTsxxTQ9';62;1.00;1.00;358;3;;23
 675;'MAL-SUP-Microscopy-C2-Q62';'MAL-SUP-Microscopy-C2-Q62 Was quantification performed?';;'Was quantification performed?';'YaGUxTVM9CP';62;1.00;1.00;401;3;;23
-299;'MAL-SUP-Clinical fever evaluation-C3-Q62';'MAL-SUP-Clinical fever evaluation-C3-Q62 Clinical diagnosis without a test (test not available)';;'Clinical diagnosis without a test (test not available)';'FWogdkbNjiP';62;0.00;0.00;413;3;;25
+299;'MAL-SUP-Clinical fever evaluation-C3-Q62';'MAL-SUP-Clinical fever evaluation-C3-Q62 Clinical diagnosis without a test (test not available)';;'Clinical diagnosis without a test (test not available)';'FWogdkbNjiP';62;0.00;0.00;413;3;;
 465;'MAL-SUP-Environment-Q62';'MAL-SUP-Environment-Q62 Glycerol';;'Glycerol';'Q6GHSOr0eF4';62;0.50;0.50;454;4;;9
 466;'MAL-SUP-Environment-Q63';'MAL-SUP-Environment-Q63 Giemsa stain and/or field stain';;'Giemsa stain and/or field stain';'iS3DhQOVEbq';63;0.50;0.50;454;4;;9
-74;'MAL-SUP-Clinical fever evaluation-C1-Q63';'MAL-SUP-Clinical fever evaluation-C1-Q63 Clinical diagnosis with negative test';;'Clinical diagnosis with negative test';'gRs3jVpGrYE';63;0.00;0.00;327;3;;25
+74;'MAL-SUP-Clinical fever evaluation-C1-Q63';'MAL-SUP-Clinical fever evaluation-C1-Q63 Clinical diagnosis with negative test';;'Clinical diagnosis with negative test';'gRs3jVpGrYE';63;0.00;0.00;327;3;;
 748;'MAL-SUP-Microscopy-C3-Q63';'MAL-SUP-Microscopy-C3-Q63 Quantification - Plus System';;'Quantification - Plus System';'UW1I1qUUnwB';63;0.00;0.00;444;3;;23
-187;'MAL-SUP-Clinical fever evaluation-C2-Q63';'MAL-SUP-Clinical fever evaluation-C2-Q63 Clinical diagnosis with negative test';;'Clinical diagnosis with negative test';'VsrUNzCJIDv';63;0.00;0.00;370;3;;25
+187;'MAL-SUP-Clinical fever evaluation-C2-Q63';'MAL-SUP-Clinical fever evaluation-C2-Q63 Clinical diagnosis with negative test';;'Clinical diagnosis with negative test';'VsrUNzCJIDv';63;0.00;0.00;370;3;;
 676;'MAL-SUP-Microscopy-C2-Q63';'MAL-SUP-Microscopy-C2-Q63 Quantification - Plus System';;'Quantification - Plus System';'QIDngU1vj2j';63;0.00;0.00;401;3;;23
 604;'MAL-SUP-Microscopy-C1-Q63';'MAL-SUP-Microscopy-C1-Q63 Quantification - Plus System';;'Quantification - Plus System';'WR1qaSk9DHV';63;0.00;0.00;358;3;;23
-300;'MAL-SUP-Clinical fever evaluation-C3-Q63';'MAL-SUP-Clinical fever evaluation-C3-Q63 Clinical diagnosis with negative test';;'Clinical diagnosis with negative test';'JNjTXrQKeKz';63;0.00;0.00;413;3;;25
-188;'MAL-SUP-Clinical fever evaluation-C2-Q64';'MAL-SUP-Clinical fever evaluation-C2-Q64 Clinical diagnosis without a test (test not ordered)';;'Clinical diagnosis without a test (test not ordered)';'qKqsl1kHVGy';64;0.00;0.00;370;3;;25
+300;'MAL-SUP-Clinical fever evaluation-C3-Q63';'MAL-SUP-Clinical fever evaluation-C3-Q63 Clinical diagnosis with negative test';;'Clinical diagnosis with negative test';'JNjTXrQKeKz';63;0.00;0.00;413;3;;
+188;'MAL-SUP-Clinical fever evaluation-C2-Q64';'MAL-SUP-Clinical fever evaluation-C2-Q64 Clinical diagnosis without a test (test not ordered)';;'Clinical diagnosis without a test (test not ordered)';'qKqsl1kHVGy';64;0.00;0.00;370;3;;
 749;'MAL-SUP-Microscopy-C3-Q64';'MAL-SUP-Microscopy-C3-Q64 Quantification - WBC';;'Quantification - WBC';'KW5DNT3aRGV';64;0.00;0.00;444;3;;23
 677;'MAL-SUP-Microscopy-C2-Q64';'MAL-SUP-Microscopy-C2-Q64 Quantification - WBC';;'Quantification - WBC';'UVqy9AmnE55';64;0.00;0.00;401;3;;23
-75;'MAL-SUP-Clinical fever evaluation-C1-Q64';'MAL-SUP-Clinical fever evaluation-C1-Q64 Clinical diagnosis without a test (test not ordered)';;'Clinical diagnosis without a test (test not ordered)';'bVt9a2NiObB';64;0.00;0.00;327;3;;25
+75;'MAL-SUP-Clinical fever evaluation-C1-Q64';'MAL-SUP-Clinical fever evaluation-C1-Q64 Clinical diagnosis without a test (test not ordered)';;'Clinical diagnosis without a test (test not ordered)';'bVt9a2NiObB';64;0.00;0.00;327;3;;
 467;'MAL-SUP-Environment-Q64';'MAL-SUP-Environment-Q64 Buffer solution/tabs';;'Buffer solution/tabs';'fhyWDNlRWSe';64;0.50;0.50;454;4;;9
 605;'MAL-SUP-Microscopy-C1-Q64';'MAL-SUP-Microscopy-C1-Q64 Quantification - WBC';;'Quantification - WBC';'tcknDzdL5Ep';64;0.00;0.00;358;3;;23
-301;'MAL-SUP-Clinical fever evaluation-C3-Q64';'MAL-SUP-Clinical fever evaluation-C3-Q64 Clinical diagnosis without a test (test not ordered)';;'Clinical diagnosis without a test (test not ordered)';'qB2dgxNvyFg';64;0.00;0.00;413;3;;25
-189;'MAL-SUP-Clinical fever evaluation-C2-Q65';'MAL-SUP-Clinical fever evaluation-C2-Q65 Abnormalities diagnosed?';;'Abnormalities diagnosed?';'c62jHWai3bz';65;0.00;5.00;370;3;;25
+301;'MAL-SUP-Clinical fever evaluation-C3-Q64';'MAL-SUP-Clinical fever evaluation-C3-Q64 Clinical diagnosis without a test (test not ordered)';;'Clinical diagnosis without a test (test not ordered)';'qB2dgxNvyFg';64;0.00;0.00;413;3;;
+189;'MAL-SUP-Clinical fever evaluation-C2-Q65';'MAL-SUP-Clinical fever evaluation-C2-Q65 Abnormalities diagnosed?';;'Abnormalities diagnosed?';'c62jHWai3bz';65;0.00;5.00;370;3;;
 678;'MAL-SUP-Microscopy-C2-Q65';'MAL-SUP-Microscopy-C2-Q65 Quantification - Parasites/uL';;'Quantification - Parasites/uL';'zbMVy21zyTh';65;0.00;0.00;401;3;;23
 606;'MAL-SUP-Microscopy-C1-Q65';'MAL-SUP-Microscopy-C1-Q65 Quantification - Parasites/uL';;'Quantification - Parasites/uL';'iYZRJxx1G7h';65;0.00;0.00;358;3;;23
 468;'MAL-SUP-Environment-Q65';'MAL-SUP-Environment-Q65 Microscope slides';;'Microscope slides';'BiNbayuK8qE';65;0.50;0.50;454;4;;9
 750;'MAL-SUP-Microscopy-C3-Q65';'MAL-SUP-Microscopy-C3-Q65 Quantification - Parasites/uL';;'Quantification - Parasites/uL';'PaKe6ODzDhl';65;0.00;0.00;444;3;;23
-76;'MAL-SUP-Clinical fever evaluation-C1-Q65';'MAL-SUP-Clinical fever evaluation-C1-Q65 Abnormalities diagnosed?';;'Abnormalities diagnosed?';'YhbjyMgYsXv';65;0.00;5.00;327;3;;25
-302;'MAL-SUP-Clinical fever evaluation-C3-Q65';'MAL-SUP-Clinical fever evaluation-C3-Q65 Abnormalities diagnosed?';;'Abnormalities diagnosed?';'fpwGeAORQoa';65;0.00;5.00;413;3;;25
+76;'MAL-SUP-Clinical fever evaluation-C1-Q65';'MAL-SUP-Clinical fever evaluation-C1-Q65 Abnormalities diagnosed?';;'Abnormalities diagnosed?';'YhbjyMgYsXv';65;0.00;5.00;327;3;;
+302;'MAL-SUP-Clinical fever evaluation-C3-Q65';'MAL-SUP-Clinical fever evaluation-C3-Q65 Abnormalities diagnosed?';;'Abnormalities diagnosed?';'fpwGeAORQoa';65;0.00;5.00;413;3;;
 751;'MAL-SUP-Microscopy-C3-Q66';'MAL-SUP-Microscopy-C3-Q66 Report quantification';;'Report quantification';'jG6TUoxv3UI';66;0.00;0.00;444;26;;23
 679;'MAL-SUP-Microscopy-C2-Q66';'MAL-SUP-Microscopy-C2-Q66 Report quantification';;'Report quantification';'d6QswrRtTT1';66;0.00;0.00;401;26;;23
-77;'MAL-SUP-Clinical fever evaluation-C1-Q66';'MAL-SUP-Clinical fever evaluation-C1-Q66 If any abnormal, treated appropriately?';;'If any abnormal, treated appropriately?';'NySBNGs8zO4';66;5.00;0.00;327;5;;25
-303;'MAL-SUP-Clinical fever evaluation-C3-Q66';'MAL-SUP-Clinical fever evaluation-C3-Q66 If any abnormal, treated appropriately?';;'If any abnormal, treated appropriately?';'QihRj7vd29B';66;5.00;0.00;413;5;;25
+77;'MAL-SUP-Clinical fever evaluation-C1-Q66';'MAL-SUP-Clinical fever evaluation-C1-Q66 If any abnormal, treated appropriately?';;'If any abnormal, treated appropriately?';'NySBNGs8zO4';66;5.00;0.00;327;5;;
+303;'MAL-SUP-Clinical fever evaluation-C3-Q66';'MAL-SUP-Clinical fever evaluation-C3-Q66 If any abnormal, treated appropriately?';;'If any abnormal, treated appropriately?';'QihRj7vd29B';66;5.00;0.00;413;5;;
 469;'MAL-SUP-Environment-Q66';'MAL-SUP-Environment-Q66 Immersion oil';;'Immersion oil';'VR9cdURjDj5';66;0.50;0.50;454;4;;9
-190;'MAL-SUP-Clinical fever evaluation-C2-Q66';'MAL-SUP-Clinical fever evaluation-C2-Q66 If any abnormal, treated appropriately?';;'If any abnormal, treated appropriately?';'F6dCx57MCZe';66;5.00;0.00;370;5;;25
+190;'MAL-SUP-Clinical fever evaluation-C2-Q66';'MAL-SUP-Clinical fever evaluation-C2-Q66 If any abnormal, treated appropriately?';;'If any abnormal, treated appropriately?';'F6dCx57MCZe';66;5.00;0.00;370;5;;
 607;'MAL-SUP-Microscopy-C1-Q66';'MAL-SUP-Microscopy-C1-Q66 Report quantification';;'Report quantification';'KwwBBguouTD';66;0.00;0.00;358;26;;23
-304;'MAL-SUP-Clinical fever evaluation-C3-Q67';'MAL-SUP-Clinical fever evaluation-C3-Q67 Acute respiratory infection (ARI';;'Acute respiratory infection (ARI';'CDczS0a26Re';67;0.00;0.00;413;3;;25
+304;'MAL-SUP-Clinical fever evaluation-C3-Q67';'MAL-SUP-Clinical fever evaluation-C3-Q67 Acute respiratory infection (ARI';;'Acute respiratory infection (ARI';'CDczS0a26Re';67;0.00;0.00;413;3;;
 470;'MAL-SUP-Environment-Q67';'MAL-SUP-Environment-Q67 pH paper/meter';;'pH paper/meter';'zyE7ru60EL4';67;0.50;0.50;454;4;;9
 752;'MAL-SUP-Microscopy-C3-Q67';'MAL-SUP-Microscopy-C3-Q67 Report slide as positive for parasites';;'Report slide as positive for parasites';'PyrTdFd2uHK';67;15.00;15.00;445;3;;23
-78;'MAL-SUP-Clinical fever evaluation-C1-Q67';'MAL-SUP-Clinical fever evaluation-C1-Q67 Acute respiratory infection (ARI';;'Acute respiratory infection (ARI';'wn3GavCM89D';67;0.00;0.00;327;3;;25
-191;'MAL-SUP-Clinical fever evaluation-C2-Q67';'MAL-SUP-Clinical fever evaluation-C2-Q67 Acute respiratory infection (ARI';;'Acute respiratory infection (ARI';'FDdzr2OSTm1';67;0.00;0.00;370;3;;25
+78;'MAL-SUP-Clinical fever evaluation-C1-Q67';'MAL-SUP-Clinical fever evaluation-C1-Q67 Acute respiratory infection (ARI';;'Acute respiratory infection (ARI';'wn3GavCM89D';67;0.00;0.00;327;3;;
+191;'MAL-SUP-Clinical fever evaluation-C2-Q67';'MAL-SUP-Clinical fever evaluation-C2-Q67 Acute respiratory infection (ARI';;'Acute respiratory infection (ARI';'FDdzr2OSTm1';67;0.00;0.00;370;3;;
 680;'MAL-SUP-Microscopy-C2-Q67';'MAL-SUP-Microscopy-C2-Q67 Report slide as positive for parasites';;'Report slide as positive for parasites';'UYaycleCuNd';67;15.00;15.00;402;3;;23
 608;'MAL-SUP-Microscopy-C1-Q67';'MAL-SUP-Microscopy-C1-Q67 Report slide as positive for parasites';;'Report slide as positive for parasites';'Typu29FxGEP';67;15.00;15.00;359;3;;23
 681;'MAL-SUP-Microscopy-C2-Q68';'MAL-SUP-Microscopy-C2-Q68 Evaluation (if done) for parasite species';;'Evaluation (if done) for parasite species';'RPFhxBiPKNP';68;0.00;0.00;402;3;;23
 471;'MAL-SUP-Environment-Q68';'MAL-SUP-Environment-Q68 Power outrage that affected limited ability to perform malaria microcopy';;'Power outrage that affected limited ability to perform malaria microcopy';'VoENkPmX45q';68;3.00;3.00;454;4;;10
 609;'MAL-SUP-Microscopy-C1-Q68';'MAL-SUP-Microscopy-C1-Q68 Evaluation (if done) for parasite species';;'Evaluation (if done) for parasite species';'U7Wa0vKUAYv';68;0.00;0.00;359;3;;23
-192;'MAL-SUP-Clinical fever evaluation-C2-Q68';'MAL-SUP-Clinical fever evaluation-C2-Q68 Enteritis/diarrhoea';;'Enteritis/diarrhoea';'lOWdYdXQ9AJ';68;0.00;0.00;370;3;;25
+192;'MAL-SUP-Clinical fever evaluation-C2-Q68';'MAL-SUP-Clinical fever evaluation-C2-Q68 Enteritis/diarrhoea';;'Enteritis/diarrhoea';'lOWdYdXQ9AJ';68;0.00;0.00;370;3;;
 753;'MAL-SUP-Microscopy-C3-Q68';'MAL-SUP-Microscopy-C3-Q68 Evaluation (if done) for parasite species';;'Evaluation (if done) for parasite species';'gH5oHPEeQE5';68;0.00;0.00;445;3;;23
-79;'MAL-SUP-Clinical fever evaluation-C1-Q68';'MAL-SUP-Clinical fever evaluation-C1-Q68 Enteritis/diarrhoea';;'Enteritis/diarrhoea';'nzCdLD0spd4';68;0.00;0.00;327;3;;25
-305;'MAL-SUP-Clinical fever evaluation-C3-Q68';'MAL-SUP-Clinical fever evaluation-C3-Q68 Enteritis/diarrhoea';;'Enteritis/diarrhoea';'PqdBAWTKH4X';68;0.00;0.00;413;3;;25
-193;'MAL-SUP-Clinical fever evaluation-C2-Q69';'MAL-SUP-Clinical fever evaluation-C2-Q69 other severe illness';;'other severe illness';'CMGOgY5PeXD';69;0.00;0.00;370;3;;25
-306;'MAL-SUP-Clinical fever evaluation-C3-Q69';'MAL-SUP-Clinical fever evaluation-C3-Q69 other severe illness';;'other severe illness';'DxD4ibgeqAS';69;0.00;0.00;413;3;;25
+79;'MAL-SUP-Clinical fever evaluation-C1-Q68';'MAL-SUP-Clinical fever evaluation-C1-Q68 Enteritis/diarrhoea';;'Enteritis/diarrhoea';'nzCdLD0spd4';68;0.00;0.00;327;3;;
+305;'MAL-SUP-Clinical fever evaluation-C3-Q68';'MAL-SUP-Clinical fever evaluation-C3-Q68 Enteritis/diarrhoea';;'Enteritis/diarrhoea';'PqdBAWTKH4X';68;0.00;0.00;413;3;;
+193;'MAL-SUP-Clinical fever evaluation-C2-Q69';'MAL-SUP-Clinical fever evaluation-C2-Q69 other severe illness';;'other severe illness';'CMGOgY5PeXD';69;0.00;0.00;370;3;;
+306;'MAL-SUP-Clinical fever evaluation-C3-Q69';'MAL-SUP-Clinical fever evaluation-C3-Q69 other severe illness';;'other severe illness';'DxD4ibgeqAS';69;0.00;0.00;413;3;;
 610;'MAL-SUP-Microscopy-C1-Q69';'MAL-SUP-Microscopy-C1-Q69 Report parasite species';;'Report parasite species';'OfdIke8of53';69;0.00;0.00;359;14;;23
 754;'MAL-SUP-Microscopy-C3-Q69';'MAL-SUP-Microscopy-C3-Q69 Report parasite species';;'Report parasite species';'MLNwMNImorF';69;0.00;0.00;445;14;;23
-80;'MAL-SUP-Clinical fever evaluation-C1-Q69';'MAL-SUP-Clinical fever evaluation-C1-Q69 other severe illness';;'other severe illness';'P2IDYVrUeOq';69;0.00;0.00;327;3;;25
+80;'MAL-SUP-Clinical fever evaluation-C1-Q69';'MAL-SUP-Clinical fever evaluation-C1-Q69 other severe illness';;'other severe illness';'P2IDYVrUeOq';69;0.00;0.00;327;3;;
 472;'MAL-SUP-Environment-Q69';'MAL-SUP-Environment-Q69 RDTs';;'RDTs';'NDt9UPlzKrI';69;5.00;5.00;454;4;;11
 682;'MAL-SUP-Microscopy-C2-Q69';'MAL-SUP-Microscopy-C2-Q69 Report parasite species';;'Report parasite species';'cIv1xtwnEQu';69;0.00;0.00;402;14;;23
-308;'MAL-SUP-Clinical fever evaluation-C3-Q70';'MAL-SUP-Clinical fever evaluation-C3-Q70 Other mild illness';;'Other mild illness';'OzkUeou3uJI';70;0.00;0.00;413;3;;25
-82;'MAL-SUP-Clinical fever evaluation-C1-Q70';'MAL-SUP-Clinical fever evaluation-C1-Q70 Other mild illness';;'Other mild illness';'VPpDJH9gTSy';70;0.00;0.00;327;3;;25
+308;'MAL-SUP-Clinical fever evaluation-C3-Q70';'MAL-SUP-Clinical fever evaluation-C3-Q70 Other mild illness';;'Other mild illness';'OzkUeou3uJI';70;0.00;0.00;413;3;;
+82;'MAL-SUP-Clinical fever evaluation-C1-Q70';'MAL-SUP-Clinical fever evaluation-C1-Q70 Other mild illness';;'Other mild illness';'VPpDJH9gTSy';70;0.00;0.00;327;3;;
 684;'MAL-SUP-Microscopy-C2-Q70';'MAL-SUP-Microscopy-C2-Q70 Was there agreement on quantification?';;'Was there agreement on quantification?';'Y5SW82AKbBB';70;5.00;5.00;402;3;;23
 474;'MAL-SUP-Environment-Q70';'MAL-SUP-Environment-Q70 Are any of the reference materials below physically available? (copy shown)';;'Are any of the reference materials below physically available? (copy shown)';'NRmRKNAMXMt';70;0.00;0.00;454;25;;
-195;'MAL-SUP-Clinical fever evaluation-C2-Q70';'MAL-SUP-Clinical fever evaluation-C2-Q70 Other mild illness';;'Other mild illness';'o5djN3KBSH8';70;0.00;0.00;370;3;;25
+195;'MAL-SUP-Clinical fever evaluation-C2-Q70';'MAL-SUP-Clinical fever evaluation-C2-Q70 Other mild illness';;'Other mild illness';'o5djN3KBSH8';70;0.00;0.00;370;3;;
 612;'MAL-SUP-Microscopy-C1-Q70';'MAL-SUP-Microscopy-C1-Q70 Was there agreement on quantification?';;'Was there agreement on quantification?';'pZ1u2dEoISG';70;5.00;5.00;359;3;;23
 756;'MAL-SUP-Microscopy-C3-Q70';'MAL-SUP-Microscopy-C3-Q70 Was there agreement on quantification?';;'Was there agreement on quantification?';'pOrekWIW5fj';70;5.00;5.00;445;3;;23
-309;'MAL-SUP-Clinical fever evaluation-C3-Q71';'MAL-SUP-Clinical fever evaluation-C3-Q71 Anti-malarial treatment prescribed';;'Anti-malarial treatment prescribed';'abJQnccoDdt';71;0.00;5.00;414;5;;26
+309;'MAL-SUP-Clinical fever evaluation-C3-Q71';'MAL-SUP-Clinical fever evaluation-C3-Q71 Anti-malarial treatment prescribed';;'Anti-malarial treatment prescribed';'abJQnccoDdt';71;0.00;5.00;414;5;;
 613;'MAL-SUP-Microscopy-C1-Q71';'MAL-SUP-Microscopy-C1-Q71 Is the quality of stain adequate (adequate= did NOT require filtering due to heavy precipidate AND was NOT too pink or too blue in appearance due to inappropriate pH)?';;'Is the quality of stain adequate (adequate= did NOT require filtering due to heavy precipidate AND was NOT too pink or too blue in appearance due to inappropriate pH)?';'BRZiMWEzBgN';71;0.00;0.00;359;3;;23
-83;'MAL-SUP-Clinical fever evaluation-C1-Q71';'MAL-SUP-Clinical fever evaluation-C1-Q71 Anti-malarial treatment prescribed';;'Anti-malarial treatment prescribed';'kRMdjBnNXPj';71;0.00;0.00;328;5;;26
+83;'MAL-SUP-Clinical fever evaluation-C1-Q71';'MAL-SUP-Clinical fever evaluation-C1-Q71 Anti-malarial treatment prescribed';;'Anti-malarial treatment prescribed';'kRMdjBnNXPj';71;0.00;0.00;328;5;;
 685;'MAL-SUP-Microscopy-C2-Q71';'MAL-SUP-Microscopy-C2-Q71 Is the quality of stain adequate (adequate= did NOT require filtering due to heavy precipidate AND was NOT too pink or too blue in appearance due to inappropriate pH)?';;'Is the quality of stain adequate (adequate= did NOT require filtering due to heavy precipidate AND was NOT too pink or too blue in appearance due to inappropriate pH)?';'DtH1tWVN9HV';71;0.00;0.00;402;3;;23
 757;'MAL-SUP-Microscopy-C3-Q71';'MAL-SUP-Microscopy-C3-Q71 Is the quality of stain adequate (adequate= did NOT require filtering due to heavy precipidate AND was NOT too pink or too blue in appearance due to inappropriate pH)?';;'Is the quality of stain adequate (adequate= did NOT require filtering due to heavy precipidate AND was NOT too pink or too blue in appearance due to inappropriate pH)?';'FKp9CaV9oiH';71;0.00;0.00;445;3;;23
-196;'MAL-SUP-Clinical fever evaluation-C2-Q71';'MAL-SUP-Clinical fever evaluation-C2-Q71 Anti-malarial treatment prescribed';;'Anti-malarial treatment prescribed';'hvxa7SXHMM2';71;5.00;5.00;371;5;;26
+196;'MAL-SUP-Clinical fever evaluation-C2-Q71';'MAL-SUP-Clinical fever evaluation-C2-Q71 Anti-malarial treatment prescribed';;'Anti-malarial treatment prescribed';'hvxa7SXHMM2';71;5.00;5.00;371;5;;
 475;'MAL-SUP-Environment-Q71';'MAL-SUP-Environment-Q71 MOH guidelines for case management (diagnosis and treatment)';;'MOH guidelines for case management (diagnosis and treatment)';'NPDwCZhgbUg';71;0.00;0.00;454;3;;
-310;'MAL-SUP-Clinical fever evaluation-C3-Q72';'MAL-SUP-Clinical fever evaluation-C3-Q72 If yes, was treatment based on positive malaria diagnosis';;'If yes, was treatment based on positive malaria diagnosis';'i2kshDq8lU6';72;5.00;5.00;414;3;;26
-197;'MAL-SUP-Clinical fever evaluation-C2-Q72';'MAL-SUP-Clinical fever evaluation-C2-Q72 If yes, was treatment based on positive malaria diagnosis';;'If yes, was treatment based on positive malaria diagnosis';'nkVExVi7UJo';72;5.00;5.00;371;3;;26
+310;'MAL-SUP-Clinical fever evaluation-C3-Q72';'MAL-SUP-Clinical fever evaluation-C3-Q72 If yes, was treatment based on positive malaria diagnosis';;'If yes, was treatment based on positive malaria diagnosis';'i2kshDq8lU6';72;5.00;5.00;414;3;;
+197;'MAL-SUP-Clinical fever evaluation-C2-Q72';'MAL-SUP-Clinical fever evaluation-C2-Q72 If yes, was treatment based on positive malaria diagnosis';;'If yes, was treatment based on positive malaria diagnosis';'nkVExVi7UJo';72;5.00;5.00;371;3;;
 686;'MAL-SUP-Microscopy-C2-Q72';'MAL-SUP-Microscopy-C2-Q72 Were the slides recycled?';;'Were the slides recycled?';'e2bf5zcJGNz';72;1.00;1.00;403;3;;23
 758;'MAL-SUP-Microscopy-C3-Q72';'MAL-SUP-Microscopy-C3-Q72 Were the slides recycled?';;'Were the slides recycled?';'XGxznswmJHX';72;1.00;1.00;446;3;;23
-84;'MAL-SUP-Clinical fever evaluation-C1-Q72';'MAL-SUP-Clinical fever evaluation-C1-Q72 If yes, was treatment based on positive malaria diagnosis';;'If yes, was treatment based on positive malaria diagnosis';'kL2y9j9CO5h';72;5.00;5.00;328;3;;26
+84;'MAL-SUP-Clinical fever evaluation-C1-Q72';'MAL-SUP-Clinical fever evaluation-C1-Q72 If yes, was treatment based on positive malaria diagnosis';;'If yes, was treatment based on positive malaria diagnosis';'kL2y9j9CO5h';72;5.00;5.00;328;3;;
 614;'MAL-SUP-Microscopy-C1-Q72';'MAL-SUP-Microscopy-C1-Q72 Were the slides recycled?';;'Were the slides recycled?';'nPKM1trcxkw';72;1.00;1.00;360;3;;23
 476;'MAL-SUP-Environment-Q72';'MAL-SUP-Environment-Q72 If yes, most recent version?';;'If yes, most recent version?';'mMrF3rwEWHO';72;1.00;1.00;454;3;;13
-198;'MAL-SUP-Clinical fever evaluation-C2-Q73';'MAL-SUP-Clinical fever evaluation-C2-Q73 If yes, Indicate prescribed drug below:';;'If yes, Indicate prescribed drug below:';'ZsADG5LKMiP';73;0.00;0.00;371;26;;26
-85;'MAL-SUP-Clinical fever evaluation-C1-Q73';'MAL-SUP-Clinical fever evaluation-C1-Q73 If yes, Indicate prescribed drug below:';;'If yes, Indicate prescribed drug below:';'a5dAlqT6ue7';73;0.00;0.00;328;26;;26
-311;'MAL-SUP-Clinical fever evaluation-C3-Q73';'MAL-SUP-Clinical fever evaluation-C3-Q73 If yes, Indicate prescribed drug below:';;'If yes, Indicate prescribed drug below:';'WTfkpsTcobM';73;0.00;0.00;414;26;;26
+198;'MAL-SUP-Clinical fever evaluation-C2-Q73';'MAL-SUP-Clinical fever evaluation-C2-Q73 If yes, Indicate prescribed drug below:';;'If yes, Indicate prescribed drug below:';'ZsADG5LKMiP';73;0.00;0.00;371;26;;
+85;'MAL-SUP-Clinical fever evaluation-C1-Q73';'MAL-SUP-Clinical fever evaluation-C1-Q73 If yes, Indicate prescribed drug below:';;'If yes, Indicate prescribed drug below:';'a5dAlqT6ue7';73;0.00;0.00;328;26;;
+311;'MAL-SUP-Clinical fever evaluation-C3-Q73';'MAL-SUP-Clinical fever evaluation-C3-Q73 If yes, Indicate prescribed drug below:';;'If yes, Indicate prescribed drug below:';'WTfkpsTcobM';73;0.00;0.00;414;26;;
 477;'MAL-SUP-Environment-Q73';'MAL-SUP-Environment-Q73 Algorithms for case management';;'Algorithms for case management';'a8a8HJM8hHl';73;0.00;0.00;454;3;;13
 478;'MAL-SUP-Environment-Q74';'MAL-SUP-Environment-Q74 If yes, most recent version?';;'If yes, most recent version?';'lnUek5xGqUd';74;1.00;1.00;454;3;;13
-86;'MAL-SUP-Clinical fever evaluation-C1-Q74';'MAL-SUP-Clinical fever evaluation-C1-Q74 Treatment, ACT';;'Treatment, ACT';'TkWWOMvosHm';74;0.00;0.00;328;3;83;26
-199;'MAL-SUP-Clinical fever evaluation-C2-Q74';'MAL-SUP-Clinical fever evaluation-C2-Q74 Treatment, ACT';;'Treatment, ACT';'f0fpHWUPNoB';74;0.00;0.00;371;3;196;26
-312;'MAL-SUP-Clinical fever evaluation-C3-Q74';'MAL-SUP-Clinical fever evaluation-C3-Q74 Treatment, ACT';;'Treatment, ACT';'Ze62qqnG6Gz';74;0.00;0.00;414;3;309;26
-87;'MAL-SUP-Clinical fever evaluation-C1-Q75';'MAL-SUP-Clinical fever evaluation-C1-Q75 Treatment, Artemisinin (intramuscular monotherapy)';;'Treatment, Artemisinin (intramuscular monotherapy)';'XDqbL4BCUUL';75;0.00;0.00;328;3;83;26
+86;'MAL-SUP-Clinical fever evaluation-C1-Q74';'MAL-SUP-Clinical fever evaluation-C1-Q74 Treatment, ACT';;'Treatment, ACT';'TkWWOMvosHm';74;0.00;0.00;328;3;83;
+199;'MAL-SUP-Clinical fever evaluation-C2-Q74';'MAL-SUP-Clinical fever evaluation-C2-Q74 Treatment, ACT';;'Treatment, ACT';'f0fpHWUPNoB';74;0.00;0.00;371;3;196;
+312;'MAL-SUP-Clinical fever evaluation-C3-Q74';'MAL-SUP-Clinical fever evaluation-C3-Q74 Treatment, ACT';;'Treatment, ACT';'Ze62qqnG6Gz';74;0.00;0.00;414;3;309;
+87;'MAL-SUP-Clinical fever evaluation-C1-Q75';'MAL-SUP-Clinical fever evaluation-C1-Q75 Treatment, Artemisinin (intramuscular monotherapy)';;'Treatment, Artemisinin (intramuscular monotherapy)';'XDqbL4BCUUL';75;0.00;0.00;328;3;83;
 479;'MAL-SUP-Environment-Q75';'MAL-SUP-Environment-Q75 SOP: use of RDTs';;'SOP: use of RDTs';'GNcMDiDlB8Y';75;0.00;0.00;454;3;;13
-313;'MAL-SUP-Clinical fever evaluation-C3-Q75';'MAL-SUP-Clinical fever evaluation-C3-Q75 Treatment, Artemisinin (intramuscular monotherapy)';;'Treatment, Artemisinin (intramuscular monotherapy)';'fuLdkR7HVFB';75;0.00;0.00;414;3;309;26
-200;'MAL-SUP-Clinical fever evaluation-C2-Q75';'MAL-SUP-Clinical fever evaluation-C2-Q75 Treatment, Artemisinin (intramuscular monotherapy)';;'Treatment, Artemisinin (intramuscular monotherapy)';'dF96k6FHxZx';75;0.00;0.00;371;3;196;26
+313;'MAL-SUP-Clinical fever evaluation-C3-Q75';'MAL-SUP-Clinical fever evaluation-C3-Q75 Treatment, Artemisinin (intramuscular monotherapy)';;'Treatment, Artemisinin (intramuscular monotherapy)';'fuLdkR7HVFB';75;0.00;0.00;414;3;309;
+200;'MAL-SUP-Clinical fever evaluation-C2-Q75';'MAL-SUP-Clinical fever evaluation-C2-Q75 Treatment, Artemisinin (intramuscular monotherapy)';;'Treatment, Artemisinin (intramuscular monotherapy)';'dF96k6FHxZx';75;0.00;0.00;371;3;196;
 480;'MAL-SUP-Environment-Q76';'MAL-SUP-Environment-Q76 If yes, most recent version?';;'If yes, most recent version?';'AEy86koVibZ';76;1.00;1.00;454;3;;13
-201;'MAL-SUP-Clinical fever evaluation-C2-Q76';'MAL-SUP-Clinical fever evaluation-C2-Q76 Artemisinin (intravenous)';;'Artemisinin (intravenous)';'gT4FudbUFUH';76;0.00;0.00;371;3;196;26
-88;'MAL-SUP-Clinical fever evaluation-C1-Q76';'MAL-SUP-Clinical fever evaluation-C1-Q76 Artemisinin (intravenous)';;'Artemisinin (intravenous)';'vf7ukCvcmT6';76;0.00;0.00;328;3;83;26
-314;'MAL-SUP-Clinical fever evaluation-C3-Q76';'MAL-SUP-Clinical fever evaluation-C3-Q76 Artemisinin (intravenous)';;'Artemisinin (intravenous)';'LEl4xgQblqG';76;0.00;0.00;414;3;309;26
-202;'MAL-SUP-Clinical fever evaluation-C2-Q77';'MAL-SUP-Clinical fever evaluation-C2-Q77 Artemisinin (oral monotherapy)*';;'Artemisinin (oral monotherapy)*';'IkyMckAIp6b';77;0.00;0.00;371;3;196;26
+201;'MAL-SUP-Clinical fever evaluation-C2-Q76';'MAL-SUP-Clinical fever evaluation-C2-Q76 Artemisinin (intravenous)';;'Artemisinin (intravenous)';'gT4FudbUFUH';76;0.00;0.00;371;3;196;
+88;'MAL-SUP-Clinical fever evaluation-C1-Q76';'MAL-SUP-Clinical fever evaluation-C1-Q76 Artemisinin (intravenous)';;'Artemisinin (intravenous)';'vf7ukCvcmT6';76;0.00;0.00;328;3;83;
+314;'MAL-SUP-Clinical fever evaluation-C3-Q76';'MAL-SUP-Clinical fever evaluation-C3-Q76 Artemisinin (intravenous)';;'Artemisinin (intravenous)';'LEl4xgQblqG';76;0.00;0.00;414;3;309;
+202;'MAL-SUP-Clinical fever evaluation-C2-Q77';'MAL-SUP-Clinical fever evaluation-C2-Q77 Artemisinin (oral monotherapy)*';;'Artemisinin (oral monotherapy)*';'IkyMckAIp6b';77;0.00;0.00;371;3;196;
 481;'MAL-SUP-Environment-Q77';'MAL-SUP-Environment-Q77 Bench aid: use of RDTs';;'Bench aid: use of RDTs';'YKQy0ibKk5Y';77;0.00;0.00;455;3;;13
-89;'MAL-SUP-Clinical fever evaluation-C1-Q77';'MAL-SUP-Clinical fever evaluation-C1-Q77 Artemisinin (oral monotherapy)*';;'Artemisinin (oral monotherapy)*';'diN6cmNE905';77;0.00;0.00;328;3;83;26
-315;'MAL-SUP-Clinical fever evaluation-C3-Q77';'MAL-SUP-Clinical fever evaluation-C3-Q77 Artemisinin (oral monotherapy)*';;'Artemisinin (oral monotherapy)*';'GCMLfnRGXfl';77;0.00;0.00;414;3;309;26
-90;'MAL-SUP-Clinical fever evaluation-C1-Q78';'MAL-SUP-Clinical fever evaluation-C1-Q78 Quinine oral)';;'Quinine oral)';'PusaSP0aaxg';78;0.00;0.00;328;3;83;26
-316;'MAL-SUP-Clinical fever evaluation-C3-Q78';'MAL-SUP-Clinical fever evaluation-C3-Q78 Quinine oral)';;'Quinine oral)';'NuEel6soLMG';78;0.00;0.00;414;3;309;26
+89;'MAL-SUP-Clinical fever evaluation-C1-Q77';'MAL-SUP-Clinical fever evaluation-C1-Q77 Artemisinin (oral monotherapy)*';;'Artemisinin (oral monotherapy)*';'diN6cmNE905';77;0.00;0.00;328;3;83;
+315;'MAL-SUP-Clinical fever evaluation-C3-Q77';'MAL-SUP-Clinical fever evaluation-C3-Q77 Artemisinin (oral monotherapy)*';;'Artemisinin (oral monotherapy)*';'GCMLfnRGXfl';77;0.00;0.00;414;3;309;
+90;'MAL-SUP-Clinical fever evaluation-C1-Q78';'MAL-SUP-Clinical fever evaluation-C1-Q78 Quinine oral)';;'Quinine oral)';'PusaSP0aaxg';78;0.00;0.00;328;3;83;
+316;'MAL-SUP-Clinical fever evaluation-C3-Q78';'MAL-SUP-Clinical fever evaluation-C3-Q78 Quinine oral)';;'Quinine oral)';'NuEel6soLMG';78;0.00;0.00;414;3;309;
 482;'MAL-SUP-Environment-Q78';'MAL-SUP-Environment-Q78 If yes, most recent version?';;'If yes, most recent version?';'WG96Jll7Pu5';78;1.00;1.00;455;3;;13
-203;'MAL-SUP-Clinical fever evaluation-C2-Q78';'MAL-SUP-Clinical fever evaluation-C2-Q78 Quinine oral)';;'Quinine oral)';'TZJQzMCng10';78;0.00;0.00;371;3;196;26
-91;'MAL-SUP-Clinical fever evaluation-C1-Q79';'MAL-SUP-Clinical fever evaluation-C1-Q79 Quinine (intravenous)';;'Quinine (intravenous)';'qGKdDBtHTwY';79;0.00;0.00;328;3;83;26
-204;'MAL-SUP-Clinical fever evaluation-C2-Q79';'MAL-SUP-Clinical fever evaluation-C2-Q79 Quinine (intravenous)';;'Quinine (intravenous)';'S5V95cM93uZ';79;0.00;0.00;371;3;196;26
-317;'MAL-SUP-Clinical fever evaluation-C3-Q79';'MAL-SUP-Clinical fever evaluation-C3-Q79 Quinine (intravenous)';;'Quinine (intravenous)';'OqrUVrFgizf';79;0.00;0.00;414;3;309;26
+203;'MAL-SUP-Clinical fever evaluation-C2-Q78';'MAL-SUP-Clinical fever evaluation-C2-Q78 Quinine oral)';;'Quinine oral)';'TZJQzMCng10';78;0.00;0.00;371;3;196;
+91;'MAL-SUP-Clinical fever evaluation-C1-Q79';'MAL-SUP-Clinical fever evaluation-C1-Q79 Quinine (intravenous)';;'Quinine (intravenous)';'qGKdDBtHTwY';79;0.00;0.00;328;3;83;
+204;'MAL-SUP-Clinical fever evaluation-C2-Q79';'MAL-SUP-Clinical fever evaluation-C2-Q79 Quinine (intravenous)';;'Quinine (intravenous)';'S5V95cM93uZ';79;0.00;0.00;371;3;196;
+317;'MAL-SUP-Clinical fever evaluation-C3-Q79';'MAL-SUP-Clinical fever evaluation-C3-Q79 Quinine (intravenous)';;'Quinine (intravenous)';'OqrUVrFgizf';79;0.00;0.00;414;3;309;
 483;'MAL-SUP-Environment-Q79';'MAL-SUP-Environment-Q79 MOH guidelines for microscopy';;'MOH guidelines for microscopy';'kwLhv0mxOC0';79;0.00;0.00;456;3;;13
 485;'MAL-SUP-Environment-Q80';'MAL-SUP-Environment-Q80 If yes, most recent version?';;'If yes, most recent version?';'wBEgxkVItdb';80;2.00;2.00;456;3;;13
-206;'MAL-SUP-Clinical fever evaluation-C2-Q80';'MAL-SUP-Clinical fever evaluation-C2-Q80 Chloroquine*';;'Chloroquine*';'Wj57GpkhIt5';80;0.00;0.00;371;3;196;26
-93;'MAL-SUP-Clinical fever evaluation-C1-Q80';'MAL-SUP-Clinical fever evaluation-C1-Q80 Chloroquine*';;'Chloroquine*';'ISTr4ufwSR6';80;0.00;0.00;328;3;83;26
-319;'MAL-SUP-Clinical fever evaluation-C3-Q80';'MAL-SUP-Clinical fever evaluation-C3-Q80 Chloroquine*';;'Chloroquine*';'iqb4EuzADYM';80;0.00;0.00;414;3;309;26
-94;'MAL-SUP-Clinical fever evaluation-C1-Q81';'MAL-SUP-Clinical fever evaluation-C1-Q81 SP';;'SP';'MtfZWRawQAn';81;0.00;0.00;328;3;83;26
-320;'MAL-SUP-Clinical fever evaluation-C3-Q81';'MAL-SUP-Clinical fever evaluation-C3-Q81 SP';;'SP';'DjfZv603GEl';81;0.00;0.00;414;3;309;26
-207;'MAL-SUP-Clinical fever evaluation-C2-Q81';'MAL-SUP-Clinical fever evaluation-C2-Q81 SP';;'SP';'FoikEsIrRC9';81;0.00;0.00;371;3;196;26
+206;'MAL-SUP-Clinical fever evaluation-C2-Q80';'MAL-SUP-Clinical fever evaluation-C2-Q80 Chloroquine*';;'Chloroquine*';'Wj57GpkhIt5';80;0.00;0.00;371;3;196;
+93;'MAL-SUP-Clinical fever evaluation-C1-Q80';'MAL-SUP-Clinical fever evaluation-C1-Q80 Chloroquine*';;'Chloroquine*';'ISTr4ufwSR6';80;0.00;0.00;328;3;83;
+319;'MAL-SUP-Clinical fever evaluation-C3-Q80';'MAL-SUP-Clinical fever evaluation-C3-Q80 Chloroquine*';;'Chloroquine*';'iqb4EuzADYM';80;0.00;0.00;414;3;309;
+94;'MAL-SUP-Clinical fever evaluation-C1-Q81';'MAL-SUP-Clinical fever evaluation-C1-Q81 SP';;'SP';'MtfZWRawQAn';81;0.00;0.00;328;3;83;
+320;'MAL-SUP-Clinical fever evaluation-C3-Q81';'MAL-SUP-Clinical fever evaluation-C3-Q81 SP';;'SP';'DjfZv603GEl';81;0.00;0.00;414;3;309;
+207;'MAL-SUP-Clinical fever evaluation-C2-Q81';'MAL-SUP-Clinical fever evaluation-C2-Q81 SP';;'SP';'FoikEsIrRC9';81;0.00;0.00;371;3;196;
 486;'MAL-SUP-Environment-Q81';'MAL-SUP-Environment-Q81 Technical guides for microscopy';;'Technical guides for microscopy';'f2tPuvpTJBw';81;0.00;0.00;456;3;;13
-208;'MAL-SUP-Clinical fever evaluation-C2-Q82';'MAL-SUP-Clinical fever evaluation-C2-Q82 Other treatment';;'Other treatment';'ZC3LW04LXxR';82;0.00;0.00;371;3;196;26
-321;'MAL-SUP-Clinical fever evaluation-C3-Q82';'MAL-SUP-Clinical fever evaluation-C3-Q82 Other treatment';;'Other treatment';'Rl0j7yYtQ03';82;0.00;0.00;414;3;309;26
-95;'MAL-SUP-Clinical fever evaluation-C1-Q82';'MAL-SUP-Clinical fever evaluation-C1-Q82 Other treatment';;'Other treatment';'MSACziE0wdj';82;0.00;0.00;328;3;83;26
+208;'MAL-SUP-Clinical fever evaluation-C2-Q82';'MAL-SUP-Clinical fever evaluation-C2-Q82 Other treatment';;'Other treatment';'ZC3LW04LXxR';82;0.00;0.00;371;3;196;
+321;'MAL-SUP-Clinical fever evaluation-C3-Q82';'MAL-SUP-Clinical fever evaluation-C3-Q82 Other treatment';;'Other treatment';'Rl0j7yYtQ03';82;0.00;0.00;414;3;309;
+95;'MAL-SUP-Clinical fever evaluation-C1-Q82';'MAL-SUP-Clinical fever evaluation-C1-Q82 Other treatment';;'Other treatment';'MSACziE0wdj';82;0.00;0.00;328;3;83;
 487;'MAL-SUP-Environment-Q82';'MAL-SUP-Environment-Q82 If yes, most recent version?';;'If yes, most recent version?';'F8JvqRFrFPL';82;2.00;2.00;456;3;;13
-209;'MAL-SUP-Clinical fever evaluation-C2-Q83';'MAL-SUP-Clinical fever evaluation-C2-Q83 Was correct antimalarial drug prescribed?';;'Was correct antimalarial drug prescribed?';'OQtHy3aOc1I';83;5.00;5.00;371;3;;26
-322;'MAL-SUP-Clinical fever evaluation-C3-Q83';'MAL-SUP-Clinical fever evaluation-C3-Q83 Was correct antimalarial drug prescribed?';;'Was correct antimalarial drug prescribed?';'Vh6CByBAUuM';83;5.00;5.00;414;3;;26
-96;'MAL-SUP-Clinical fever evaluation-C1-Q83';'MAL-SUP-Clinical fever evaluation-C1-Q83 Was correct antimalarial drug prescribed?';;'Was correct antimalarial drug prescribed?';'VeJ5fgr58Ew';83;5.00;5.00;328;3;;26
+209;'MAL-SUP-Clinical fever evaluation-C2-Q83';'MAL-SUP-Clinical fever evaluation-C2-Q83 Was correct antimalarial drug prescribed?';;'Was correct antimalarial drug prescribed?';'OQtHy3aOc1I';83;5.00;5.00;371;3;;
+322;'MAL-SUP-Clinical fever evaluation-C3-Q83';'MAL-SUP-Clinical fever evaluation-C3-Q83 Was correct antimalarial drug prescribed?';;'Was correct antimalarial drug prescribed?';'Vh6CByBAUuM';83;5.00;5.00;414;3;;
+96;'MAL-SUP-Clinical fever evaluation-C1-Q83';'MAL-SUP-Clinical fever evaluation-C1-Q83 Was correct antimalarial drug prescribed?';;'Was correct antimalarial drug prescribed?';'VeJ5fgr58Ew';83;5.00;5.00;328;3;;
 488;'MAL-SUP-Environment-Q83';'MAL-SUP-Environment-Q83 SOP: use of RDTs';;'SOP: use of RDTs';'A6GoRoNP390';83;0.00;0.00;456;3;;13
-97;'MAL-SUP-Clinical fever evaluation-C1-Q84';'MAL-SUP-Clinical fever evaluation-C1-Q84 Antimalarial drug prescribed in correct dosage and duration (as specified in national guidelines and described in dosing table)';;'Antimalarial drug prescribed in correct dosage and duration (as specified in national guidelines and described in dosing table)';'vDkqPtMcvFd';84;5.00;5.00;328;5;83;26
+97;'MAL-SUP-Clinical fever evaluation-C1-Q84';'MAL-SUP-Clinical fever evaluation-C1-Q84 Antimalarial drug prescribed in correct dosage and duration (as specified in national guidelines and described in dosing table)';;'Antimalarial drug prescribed in correct dosage and duration (as specified in national guidelines and described in dosing table)';'vDkqPtMcvFd';84;5.00;5.00;328;5;83;
 489;'MAL-SUP-Environment-Q84';'MAL-SUP-Environment-Q84 If yes, most recent version?';;'If yes, most recent version?';'NNpGcm41yJI';84;2.00;2.00;456;3;;13
-323;'MAL-SUP-Clinical fever evaluation-C3-Q84';'MAL-SUP-Clinical fever evaluation-C3-Q84 Antimalarial drug prescribed in correct dosage and duration (as specified in national guidelines and described in dosing table)';;'Antimalarial drug prescribed in correct dosage and duration (as specified in national guidelines and described in dosing table)';'OqyFxemlZYG';84;5.00;0.00;414;5;309;26
-210;'MAL-SUP-Clinical fever evaluation-C2-Q84';'MAL-SUP-Clinical fever evaluation-C2-Q84 Antimalarial drug prescribed in correct dosage and duration (as specified in national guidelines and described in dosing table)';;'Antimalarial drug prescribed in correct dosage and duration (as specified in national guidelines and described in dosing table)';'yks09NAVeHU';84;5.00;0.00;371;5;196;26
-324;'MAL-SUP-Clinical fever evaluation-C3-Q85';'MAL-SUP-Clinical fever evaluation-C3-Q85 Antibiotics prescribed';;'Antibiotics prescribed';'KgqT4BgIrSC';85;0.00;0.00;414;3;;26
-211;'MAL-SUP-Clinical fever evaluation-C2-Q85';'MAL-SUP-Clinical fever evaluation-C2-Q85 Antibiotics prescribed';;'Antibiotics prescribed';'uc5h84uoUc2';85;0.00;0.00;371;3;;26
-98;'MAL-SUP-Clinical fever evaluation-C1-Q85';'MAL-SUP-Clinical fever evaluation-C1-Q85 Antibiotics prescribed';;'Antibiotics prescribed';'vThNH2xxwv4';85;0.00;0.00;328;3;;26
+323;'MAL-SUP-Clinical fever evaluation-C3-Q84';'MAL-SUP-Clinical fever evaluation-C3-Q84 Antimalarial drug prescribed in correct dosage and duration (as specified in national guidelines and described in dosing table)';;'Antimalarial drug prescribed in correct dosage and duration (as specified in national guidelines and described in dosing table)';'OqyFxemlZYG';84;5.00;0.00;414;5;309;
+210;'MAL-SUP-Clinical fever evaluation-C2-Q84';'MAL-SUP-Clinical fever evaluation-C2-Q84 Antimalarial drug prescribed in correct dosage and duration (as specified in national guidelines and described in dosing table)';;'Antimalarial drug prescribed in correct dosage and duration (as specified in national guidelines and described in dosing table)';'yks09NAVeHU';84;5.00;0.00;371;5;196;
+324;'MAL-SUP-Clinical fever evaluation-C3-Q85';'MAL-SUP-Clinical fever evaluation-C3-Q85 Antibiotics prescribed';;'Antibiotics prescribed';'KgqT4BgIrSC';85;0.00;0.00;414;3;;
+211;'MAL-SUP-Clinical fever evaluation-C2-Q85';'MAL-SUP-Clinical fever evaluation-C2-Q85 Antibiotics prescribed';;'Antibiotics prescribed';'uc5h84uoUc2';85;0.00;0.00;371;3;;
+98;'MAL-SUP-Clinical fever evaluation-C1-Q85';'MAL-SUP-Clinical fever evaluation-C1-Q85 Antibiotics prescribed';;'Antibiotics prescribed';'vThNH2xxwv4';85;0.00;0.00;328;3;;
 490;'MAL-SUP-Environment-Q85';'MAL-SUP-Environment-Q85 SOP: microscopy';;'SOP: microscopy';'j40ElhJd3Qy';85;0.00;0.00;456;3;;13
-325;'MAL-SUP-Clinical fever evaluation-C3-Q86';'MAL-SUP-Clinical fever evaluation-C3-Q86 Trimethoprim-sulfamethoxazole (cotrimoxazole)';;'Trimethoprim-sulfamethoxazole (cotrimoxazole)';'OJtog35R0Lq';86;0.00;0.00;414;3;324;26
+325;'MAL-SUP-Clinical fever evaluation-C3-Q86';'MAL-SUP-Clinical fever evaluation-C3-Q86 Trimethoprim-sulfamethoxazole (cotrimoxazole)';;'Trimethoprim-sulfamethoxazole (cotrimoxazole)';'OJtog35R0Lq';86;0.00;0.00;414;3;324;
 491;'MAL-SUP-Environment-Q86';'MAL-SUP-Environment-Q86 If yes, most recent version?';;'If yes, most recent version?';'LyUvlFkVsGE';86;2.00;2.00;456;3;;13
-212;'MAL-SUP-Clinical fever evaluation-C2-Q86';'MAL-SUP-Clinical fever evaluation-C2-Q86 Trimethoprim-sulfamethoxazole (cotrimoxazole)';;'Trimethoprim-sulfamethoxazole (cotrimoxazole)';'oKa09JJkeQs';86;0.00;0.00;371;3;211;26
-99;'MAL-SUP-Clinical fever evaluation-C1-Q86';'MAL-SUP-Clinical fever evaluation-C1-Q86 Trimethoprim-sulfamethoxazole (cotrimoxazole)';;'Trimethoprim-sulfamethoxazole (cotrimoxazole)';'litvL3xAhXn';86;0.00;0.00;328;3;98;26
-100;'MAL-SUP-Clinical fever evaluation-C1-Q87';'MAL-SUP-Clinical fever evaluation-C1-Q87 Amoxicillin';;'Amoxicillin';'US9qRz5MwWV';87;0.00;0.00;328;3;98;26
-326;'MAL-SUP-Clinical fever evaluation-C3-Q87';'MAL-SUP-Clinical fever evaluation-C3-Q87 Amoxicillin';;'Amoxicillin';'Y2UnqqELqpJ';87;0.00;0.00;414;3;324;26
-213;'MAL-SUP-Clinical fever evaluation-C2-Q87';'MAL-SUP-Clinical fever evaluation-C2-Q87 Amoxicillin';;'Amoxicillin';'uUa1yZSRt6u';87;0.00;0.00;371;3;211;26
+212;'MAL-SUP-Clinical fever evaluation-C2-Q86';'MAL-SUP-Clinical fever evaluation-C2-Q86 Trimethoprim-sulfamethoxazole (cotrimoxazole)';;'Trimethoprim-sulfamethoxazole (cotrimoxazole)';'oKa09JJkeQs';86;0.00;0.00;371;3;211;
+99;'MAL-SUP-Clinical fever evaluation-C1-Q86';'MAL-SUP-Clinical fever evaluation-C1-Q86 Trimethoprim-sulfamethoxazole (cotrimoxazole)';;'Trimethoprim-sulfamethoxazole (cotrimoxazole)';'litvL3xAhXn';86;0.00;0.00;328;3;98;
+100;'MAL-SUP-Clinical fever evaluation-C1-Q87';'MAL-SUP-Clinical fever evaluation-C1-Q87 Amoxicillin';;'Amoxicillin';'US9qRz5MwWV';87;0.00;0.00;328;3;98;
+326;'MAL-SUP-Clinical fever evaluation-C3-Q87';'MAL-SUP-Clinical fever evaluation-C3-Q87 Amoxicillin';;'Amoxicillin';'Y2UnqqELqpJ';87;0.00;0.00;414;3;324;
+213;'MAL-SUP-Clinical fever evaluation-C2-Q87';'MAL-SUP-Clinical fever evaluation-C2-Q87 Amoxicillin';;'Amoxicillin';'uUa1yZSRt6u';87;0.00;0.00;371;3;211;
 492;'MAL-SUP-Environment-Q87';'MAL-SUP-Environment-Q87 Bench aid: use of RDTs';;'Bench aid: use of RDTs';'t2h5pnulFLf';87;0.00;0.00;456;3;;13
-214;'MAL-SUP-Clinical fever evaluation-C2-Q88';'MAL-SUP-Clinical fever evaluation-C2-Q88 Other antibiotics';;'Other antibiotics';'BmhLqm95lSp';88;0.00;0.00;371;3;211;26
-327;'MAL-SUP-Clinical fever evaluation-C3-Q88';'MAL-SUP-Clinical fever evaluation-C3-Q88 Other antibiotics';;'Other antibiotics';'rfufGoYO32T';88;0.00;0.00;414;3;324;26
-101;'MAL-SUP-Clinical fever evaluation-C1-Q88';'MAL-SUP-Clinical fever evaluation-C1-Q88 Other antibiotics';;'Other antibiotics';'uxaJWBN5IGi';88;0.00;0.00;328;3;98;26
+214;'MAL-SUP-Clinical fever evaluation-C2-Q88';'MAL-SUP-Clinical fever evaluation-C2-Q88 Other antibiotics';;'Other antibiotics';'BmhLqm95lSp';88;0.00;0.00;371;3;211;
+327;'MAL-SUP-Clinical fever evaluation-C3-Q88';'MAL-SUP-Clinical fever evaluation-C3-Q88 Other antibiotics';;'Other antibiotics';'rfufGoYO32T';88;0.00;0.00;414;3;324;
+101;'MAL-SUP-Clinical fever evaluation-C1-Q88';'MAL-SUP-Clinical fever evaluation-C1-Q88 Other antibiotics';;'Other antibiotics';'uxaJWBN5IGi';88;0.00;0.00;328;3;98;
 493;'MAL-SUP-Environment-Q88';'MAL-SUP-Environment-Q88 If yes, most recent version?';;'If yes, most recent version?';'T81lsTEOvYw';88;2.00;2.00;456;3;;13
-102;'MAL-SUP-Clinical fever evaluation-C1-Q89';'MAL-SUP-Clinical fever evaluation-C1-Q89 Antidiarrheal prescribed';;'Antidiarrheal prescribed';'mFWXZegEU6n';89;0.00;0.00;328;3;;26
-215;'MAL-SUP-Clinical fever evaluation-C2-Q89';'MAL-SUP-Clinical fever evaluation-C2-Q89 Antidiarrheal prescribed';;'Antidiarrheal prescribed';'PxmhUfEi3yG';89;0.00;0.00;371;3;;26
-328;'MAL-SUP-Clinical fever evaluation-C3-Q89';'MAL-SUP-Clinical fever evaluation-C3-Q89 Antidiarrheal prescribed';;'Antidiarrheal prescribed';'vL0ewu3SciO';89;0.00;0.00;414;3;;26
+102;'MAL-SUP-Clinical fever evaluation-C1-Q89';'MAL-SUP-Clinical fever evaluation-C1-Q89 Antidiarrheal prescribed';;'Antidiarrheal prescribed';'mFWXZegEU6n';89;0.00;0.00;328;3;;
+215;'MAL-SUP-Clinical fever evaluation-C2-Q89';'MAL-SUP-Clinical fever evaluation-C2-Q89 Antidiarrheal prescribed';;'Antidiarrheal prescribed';'PxmhUfEi3yG';89;0.00;0.00;371;3;;
+328;'MAL-SUP-Clinical fever evaluation-C3-Q89';'MAL-SUP-Clinical fever evaluation-C3-Q89 Antidiarrheal prescribed';;'Antidiarrheal prescribed';'vL0ewu3SciO';89;0.00;0.00;414;3;;
 494;'MAL-SUP-Environment-Q89';'MAL-SUP-Environment-Q89 Bench aid: microscopy';;'Bench aid: microscopy';'TIejlvfDVvP';89;0.00;0.00;456;3;;13
-104;'MAL-SUP-Clinical fever evaluation-C1-Q90';'MAL-SUP-Clinical fever evaluation-C1-Q90 Antidiarrheal,ORS';;'Antidiarrheal,ORS';'HYh9zzzbXNb';90;0.00;0.00;328;3;102;26
-217;'MAL-SUP-Clinical fever evaluation-C2-Q90';'MAL-SUP-Clinical fever evaluation-C2-Q90 Antidiarrheal,ORS';;'Antidiarrheal,ORS';'ldYTalbNBKl';90;0.00;0.00;371;3;215;26
-330;'MAL-SUP-Clinical fever evaluation-C3-Q90';'MAL-SUP-Clinical fever evaluation-C3-Q90 Antidiarrheal,ORS';;'Antidiarrheal,ORS';'G9uXluFT6gy';90;0.00;0.00;414;3;328;26
+104;'MAL-SUP-Clinical fever evaluation-C1-Q90';'MAL-SUP-Clinical fever evaluation-C1-Q90 Antidiarrheal,ORS';;'Antidiarrheal,ORS';'HYh9zzzbXNb';90;0.00;0.00;328;3;102;
+217;'MAL-SUP-Clinical fever evaluation-C2-Q90';'MAL-SUP-Clinical fever evaluation-C2-Q90 Antidiarrheal,ORS';;'Antidiarrheal,ORS';'ldYTalbNBKl';90;0.00;0.00;371;3;215;
+330;'MAL-SUP-Clinical fever evaluation-C3-Q90';'MAL-SUP-Clinical fever evaluation-C3-Q90 Antidiarrheal,ORS';;'Antidiarrheal,ORS';'G9uXluFT6gy';90;0.00;0.00;414;3;328;
 496;'MAL-SUP-Environment-Q90';'MAL-SUP-Environment-Q90 If yes, most recent version?';;'If yes, most recent version?';'NnGeXbtOZFX';90;2.00;2.00;456;3;;13
 497;'MAL-SUP-Environment-Q91';'MAL-SUP-Environment-Q91 Functional microscopes at the health facility';;'Functional microscopes at the health facility';'ATdfFya8lnm';91;10.00;10.00;457;3;;5
-105;'MAL-SUP-Clinical fever evaluation-C1-Q91';'MAL-SUP-Clinical fever evaluation-C1-Q91 Antidiarrheal, Zinc';;'Antidiarrheal, Zinc';'GizlC2jc7yz';91;0.00;0.00;328;3;102;26
-331;'MAL-SUP-Clinical fever evaluation-C3-Q91';'MAL-SUP-Clinical fever evaluation-C3-Q91 Antidiarrheal, Zinc';;'Antidiarrheal, Zinc';'yjYqDKzAhzZ';91;0.00;0.00;414;3;328;26
-218;'MAL-SUP-Clinical fever evaluation-C2-Q91';'MAL-SUP-Clinical fever evaluation-C2-Q91 Antidiarrheal, Zinc';;'Antidiarrheal, Zinc';'jEBoXJFCktm';91;0.00;0.00;371;3;215;26
+105;'MAL-SUP-Clinical fever evaluation-C1-Q91';'MAL-SUP-Clinical fever evaluation-C1-Q91 Antidiarrheal, Zinc';;'Antidiarrheal, Zinc';'GizlC2jc7yz';91;0.00;0.00;328;3;102;
+331;'MAL-SUP-Clinical fever evaluation-C3-Q91';'MAL-SUP-Clinical fever evaluation-C3-Q91 Antidiarrheal, Zinc';;'Antidiarrheal, Zinc';'yjYqDKzAhzZ';91;0.00;0.00;414;3;328;
+218;'MAL-SUP-Clinical fever evaluation-C2-Q91';'MAL-SUP-Clinical fever evaluation-C2-Q91 Antidiarrheal, Zinc';;'Antidiarrheal, Zinc';'jEBoXJFCktm';91;0.00;0.00;371;3;215;
 498;'MAL-SUP-Environment-Q92';'MAL-SUP-Environment-Q92 Non-functional microscopes at the health facility';;'Non-functional microscopes at the health facility';'QkwIxbyoetO';92;0.00;0.00;457;3;;5
-219;'MAL-SUP-Clinical fever evaluation-C2-Q92';'MAL-SUP-Clinical fever evaluation-C2-Q92 Antidiarrheal, Other';;'Antidiarrheal, Other';'yl2BEqwbxzU';92;0.00;0.00;371;3;215;26
-332;'MAL-SUP-Clinical fever evaluation-C3-Q92';'MAL-SUP-Clinical fever evaluation-C3-Q92 Antidiarrheal, Other';;'Antidiarrheal, Other';'u0hWtLDCjIA';92;0.00;0.00;414;3;328;26
-106;'MAL-SUP-Clinical fever evaluation-C1-Q92';'MAL-SUP-Clinical fever evaluation-C1-Q92 Antidiarrheal, Other';;'Antidiarrheal, Other';'ioRvs8mXADG';92;0.00;0.00;328;3;102;26
+219;'MAL-SUP-Clinical fever evaluation-C2-Q92';'MAL-SUP-Clinical fever evaluation-C2-Q92 Antidiarrheal, Other';;'Antidiarrheal, Other';'yl2BEqwbxzU';92;0.00;0.00;371;3;215;
+332;'MAL-SUP-Clinical fever evaluation-C3-Q92';'MAL-SUP-Clinical fever evaluation-C3-Q92 Antidiarrheal, Other';;'Antidiarrheal, Other';'u0hWtLDCjIA';92;0.00;0.00;414;3;328;
+106;'MAL-SUP-Clinical fever evaluation-C1-Q92';'MAL-SUP-Clinical fever evaluation-C1-Q92 Antidiarrheal, Other';;'Antidiarrheal, Other';'ioRvs8mXADG';92;0.00;0.00;328;3;102;
 499;'MAL-SUP-Environment-Q93';'MAL-SUP-Environment-Q93 Standard microscope repair kits';;'Standard microscope repair kits';'vvtLFJtyi9P';93;2.00;2.00;457;3;;5
-107;'MAL-SUP-Clinical fever evaluation-C1-Q93';'MAL-SUP-Clinical fever evaluation-C1-Q93 Other medications prescribed';;'Other medications prescribed';'SSr1N9JkyYN';93;0.00;0.00;328;3;;26
-220;'MAL-SUP-Clinical fever evaluation-C2-Q93';'MAL-SUP-Clinical fever evaluation-C2-Q93 Other medications prescribed';;'Other medications prescribed';'xoCIuJymcWz';93;0.00;0.00;371;3;;26
-333;'MAL-SUP-Clinical fever evaluation-C3-Q93';'MAL-SUP-Clinical fever evaluation-C3-Q93 Other medications prescribed';;'Other medications prescribed';'y6DRU8p50ap';93;0.00;0.00;414;3;;26
-334;'MAL-SUP-Clinical fever evaluation-C3-Q94';'MAL-SUP-Clinical fever evaluation-C3-Q94 Other medications, Paracetamol';;'Other medications, Paracetamol';'Icpi0IUsPt8';94;0.00;0.00;414;3;333;26
+107;'MAL-SUP-Clinical fever evaluation-C1-Q93';'MAL-SUP-Clinical fever evaluation-C1-Q93 Other medications prescribed';;'Other medications prescribed';'SSr1N9JkyYN';93;0.00;0.00;328;3;;
+220;'MAL-SUP-Clinical fever evaluation-C2-Q93';'MAL-SUP-Clinical fever evaluation-C2-Q93 Other medications prescribed';;'Other medications prescribed';'xoCIuJymcWz';93;0.00;0.00;371;3;;
+333;'MAL-SUP-Clinical fever evaluation-C3-Q93';'MAL-SUP-Clinical fever evaluation-C3-Q93 Other medications prescribed';;'Other medications prescribed';'y6DRU8p50ap';93;0.00;0.00;414;3;;
+334;'MAL-SUP-Clinical fever evaluation-C3-Q94';'MAL-SUP-Clinical fever evaluation-C3-Q94 Other medications, Paracetamol';;'Other medications, Paracetamol';'Icpi0IUsPt8';94;0.00;0.00;414;3;333;
 500;'MAL-SUP-Environment-Q94';'MAL-SUP-Environment-Q94 Spare bulbs in stock';;'Spare bulbs in stock';'ktOJv37JilY';94;1.00;1.00;457;3;;5
-108;'MAL-SUP-Clinical fever evaluation-C1-Q94';'MAL-SUP-Clinical fever evaluation-C1-Q94 Other medications, Paracetamol';;'Other medications, Paracetamol';'fZshOG9dcV0';94;0.00;0.00;328;3;107;26
-221;'MAL-SUP-Clinical fever evaluation-C2-Q94';'MAL-SUP-Clinical fever evaluation-C2-Q94 Other medications, Paracetamol';;'Other medications, Paracetamol';'V7FKPlZHvYc';94;0.00;0.00;371;3;220;26
-222;'MAL-SUP-Clinical fever evaluation-C2-Q95';'MAL-SUP-Clinical fever evaluation-C2-Q95 Other medications, Vitamins';;'Other medications, Vitamins';'EJVw4rmCY9n';95;0.00;0.00;371;3;220;26
-335;'MAL-SUP-Clinical fever evaluation-C3-Q95';'MAL-SUP-Clinical fever evaluation-C3-Q95 Other medications, Vitamins';;'Other medications, Vitamins';'G5dhxVy7GQW';95;0.00;0.00;414;3;333;26
+108;'MAL-SUP-Clinical fever evaluation-C1-Q94';'MAL-SUP-Clinical fever evaluation-C1-Q94 Other medications, Paracetamol';;'Other medications, Paracetamol';'fZshOG9dcV0';94;0.00;0.00;328;3;107;
+221;'MAL-SUP-Clinical fever evaluation-C2-Q94';'MAL-SUP-Clinical fever evaluation-C2-Q94 Other medications, Paracetamol';;'Other medications, Paracetamol';'V7FKPlZHvYc';94;0.00;0.00;371;3;220;
+222;'MAL-SUP-Clinical fever evaluation-C2-Q95';'MAL-SUP-Clinical fever evaluation-C2-Q95 Other medications, Vitamins';;'Other medications, Vitamins';'EJVw4rmCY9n';95;0.00;0.00;371;3;220;
+335;'MAL-SUP-Clinical fever evaluation-C3-Q95';'MAL-SUP-Clinical fever evaluation-C3-Q95 Other medications, Vitamins';;'Other medications, Vitamins';'G5dhxVy7GQW';95;0.00;0.00;414;3;333;
 501;'MAL-SUP-Environment-Q95';'MAL-SUP-Environment-Q95 Fuses in stock';;'Fuses in stock';'CpUi8iatejd';95;1.00;1.00;457;3;;5
-109;'MAL-SUP-Clinical fever evaluation-C1-Q95';'MAL-SUP-Clinical fever evaluation-C1-Q95 Other medications, Vitamins';;'Other medications, Vitamins';'H77RpHfVR3X';95;0.00;0.00;328;3;107;26
-223;'MAL-SUP-Clinical fever evaluation-C2-Q96';'MAL-SUP-Clinical fever evaluation-C2-Q96 Other medications, Other';;'Other medications, Other';'QifH2bYebQ9';96;0.00;0.00;371;3;220;26
-110;'MAL-SUP-Clinical fever evaluation-C1-Q96';'MAL-SUP-Clinical fever evaluation-C1-Q96 Other medications, Other';;'Other medications, Other';'kIpUq0Ahcug';96;0.00;0.00;328;3;107;26
+109;'MAL-SUP-Clinical fever evaluation-C1-Q95';'MAL-SUP-Clinical fever evaluation-C1-Q95 Other medications, Vitamins';;'Other medications, Vitamins';'H77RpHfVR3X';95;0.00;0.00;328;3;107;
+223;'MAL-SUP-Clinical fever evaluation-C2-Q96';'MAL-SUP-Clinical fever evaluation-C2-Q96 Other medications, Other';;'Other medications, Other';'QifH2bYebQ9';96;0.00;0.00;371;3;220;
+110;'MAL-SUP-Clinical fever evaluation-C1-Q96';'MAL-SUP-Clinical fever evaluation-C1-Q96 Other medications, Other';;'Other medications, Other';'kIpUq0Ahcug';96;0.00;0.00;328;3;107;
 502;'MAL-SUP-Environment-Q96';'MAL-SUP-Environment-Q96 Does the laboratory staff conduct routine cleaning/maintenance of the microscope?';;'Does the laboratory staff conduct routine cleaning/maintenance of the microscope?';'DwXMYwHfV7u';96;1.00;1.00;457;3;;5
-336;'MAL-SUP-Clinical fever evaluation-C3-Q96';'MAL-SUP-Clinical fever evaluation-C3-Q96 Other medications, Other';;'Other medications, Other';'UhViQ8R4q3P';96;0.00;0.00;414;3;333;26
-111;'MAL-SUP-Clinical fever evaluation-C1-Q97';'MAL-SUP-Clinical fever evaluation-C1-Q97 Caregiver informed on what is wrong with the patient';;'Caregiver informed on what is wrong with the patient';'GNyJMFBhQ30';97;0.60;0.60;329;3;;27
-337;'MAL-SUP-Clinical fever evaluation-C3-Q97';'MAL-SUP-Clinical fever evaluation-C3-Q97 Caregiver informed on what is wrong with the patient';;'Caregiver informed on what is wrong with the patient';'wsJmZ9gdD2p';97;0.60;0.60;415;3;;27
-224;'MAL-SUP-Clinical fever evaluation-C2-Q97';'MAL-SUP-Clinical fever evaluation-C2-Q97 Caregiver informed on what is wrong with the patient';;'Caregiver informed on what is wrong with the patient';'cbN7oX27wJy';97;0.60;0.60;372;3;;27
+336;'MAL-SUP-Clinical fever evaluation-C3-Q96';'MAL-SUP-Clinical fever evaluation-C3-Q96 Other medications, Other';;'Other medications, Other';'UhViQ8R4q3P';96;0.00;0.00;414;3;333;
+111;'MAL-SUP-Clinical fever evaluation-C1-Q97';'MAL-SUP-Clinical fever evaluation-C1-Q97 Caregiver informed on what is wrong with the patient';;'Caregiver informed on what is wrong with the patient';'GNyJMFBhQ30';97;0.60;0.60;329;3;;
+337;'MAL-SUP-Clinical fever evaluation-C3-Q97';'MAL-SUP-Clinical fever evaluation-C3-Q97 Caregiver informed on what is wrong with the patient';;'Caregiver informed on what is wrong with the patient';'wsJmZ9gdD2p';97;0.60;0.60;415;3;;
+224;'MAL-SUP-Clinical fever evaluation-C2-Q97';'MAL-SUP-Clinical fever evaluation-C2-Q97 Caregiver informed on what is wrong with the patient';;'Caregiver informed on what is wrong with the patient';'cbN7oX27wJy';97;0.60;0.60;372;3;;
 503;'MAL-SUP-Environment-Q97';'MAL-SUP-Environment-Q97 Are maintenance engineers or contractors available to complete microscope repair OR is someone in the facility trained in microcopy repair?';;'Are maintenance engineers or contractors available to complete microscope repair OR is someone in the facility trained in microcopy repair?';'YnXMK7LlcVV';97;1.00;1.00;457;3;;5
-338;'MAL-SUP-Clinical fever evaluation-C3-Q98';'MAL-SUP-Clinical fever evaluation-C3-Q98 Advice given on how to take the prescribed medications';;'Advice given on how to take the prescribed medications';'YgIYnjRlljk';98;0.60;0.60;415;3;;27
+338;'MAL-SUP-Clinical fever evaluation-C3-Q98';'MAL-SUP-Clinical fever evaluation-C3-Q98 Advice given on how to take the prescribed medications';;'Advice given on how to take the prescribed medications';'YgIYnjRlljk';98;0.60;0.60;415;3;;
 504;'MAL-SUP-Environment-Q98';'MAL-SUP-Environment-Q98 Are the following equipment available?';;'Are the following equipment available?';'iot37wdn0Zn';98;0.00;0.00;458;25;;5
-112;'MAL-SUP-Clinical fever evaluation-C1-Q98';'MAL-SUP-Clinical fever evaluation-C1-Q98 Advice given on how to take the prescribed medications';;'Advice given on how to take the prescribed medications';'pQ44GdDch2F';98;0.60;0.60;329;3;;27
-225;'MAL-SUP-Clinical fever evaluation-C2-Q98';'MAL-SUP-Clinical fever evaluation-C2-Q98 Advice given on how to take the prescribed medications';;'Advice given on how to take the prescribed medications';'IZeglr6Ln5h';98;0.60;0.60;372;3;;27
-113;'MAL-SUP-Clinical fever evaluation-C1-Q99';'MAL-SUP-Clinical fever evaluation-C1-Q99 Advice given on when to return for follow-up evaluation';;'Advice given on when to return for follow-up evaluation';'fSjroRqDYBc';99;0.60;0.60;329;3;;27
-226;'MAL-SUP-Clinical fever evaluation-C2-Q99';'MAL-SUP-Clinical fever evaluation-C2-Q99 Advice given on when to return for follow-up evaluation';;'Advice given on when to return for follow-up evaluation';'ChvR82iYnPF';99;0.60;0.60;372;3;;27
+112;'MAL-SUP-Clinical fever evaluation-C1-Q98';'MAL-SUP-Clinical fever evaluation-C1-Q98 Advice given on how to take the prescribed medications';;'Advice given on how to take the prescribed medications';'pQ44GdDch2F';98;0.60;0.60;329;3;;
+225;'MAL-SUP-Clinical fever evaluation-C2-Q98';'MAL-SUP-Clinical fever evaluation-C2-Q98 Advice given on how to take the prescribed medications';;'Advice given on how to take the prescribed medications';'IZeglr6Ln5h';98;0.60;0.60;372;3;;
+113;'MAL-SUP-Clinical fever evaluation-C1-Q99';'MAL-SUP-Clinical fever evaluation-C1-Q99 Advice given on when to return for follow-up evaluation';;'Advice given on when to return for follow-up evaluation';'fSjroRqDYBc';99;0.60;0.60;329;3;;
+226;'MAL-SUP-Clinical fever evaluation-C2-Q99';'MAL-SUP-Clinical fever evaluation-C2-Q99 Advice given on when to return for follow-up evaluation';;'Advice given on when to return for follow-up evaluation';'ChvR82iYnPF';99;0.60;0.60;372;3;;
 505;'MAL-SUP-Environment-Q99';'MAL-SUP-Environment-Q99 Lab Coats / Aprons';;'Lab Coats / Aprons';'pZZPnFTmhU9';99;1.00;1.00;458;9;;5
-339;'MAL-SUP-Clinical fever evaluation-C3-Q99';'MAL-SUP-Clinical fever evaluation-C3-Q99 Advice given on when to return for follow-up evaluation';;'Advice given on when to return for follow-up evaluation';'NGa2NPUpGlD';99;0.60;0.60;415;3;;27
-229;'MAL-SUP-Clinical fever evaluation-C3-Q100';'MAL-SUP-Clinical fever evaluation-C3-Q100 Advice given on malaria prevention measures';;'Advice given on malaria prevention measures';'Y8JXJnkOdn5';100;0.60;0.60;415;3;;27
-116;'MAL-SUP-Clinical fever evaluation-C2-Q100';'MAL-SUP-Clinical fever evaluation-C2-Q100 Advice given on malaria prevention measures';;'Advice given on malaria prevention measures';'nejD6lGVUGo';100;0.60;0.60;372;3;;27
+339;'MAL-SUP-Clinical fever evaluation-C3-Q99';'MAL-SUP-Clinical fever evaluation-C3-Q99 Advice given on when to return for follow-up evaluation';;'Advice given on when to return for follow-up evaluation';'NGa2NPUpGlD';99;0.60;0.60;415;3;;
+229;'MAL-SUP-Clinical fever evaluation-C3-Q100';'MAL-SUP-Clinical fever evaluation-C3-Q100 Advice given on malaria prevention measures';;'Advice given on malaria prevention measures';'Y8JXJnkOdn5';100;0.60;0.60;415;3;;
+116;'MAL-SUP-Clinical fever evaluation-C2-Q100';'MAL-SUP-Clinical fever evaluation-C2-Q100 Advice given on malaria prevention measures';;'Advice given on malaria prevention measures';'nejD6lGVUGo';100;0.60;0.60;372;3;;
 342;'MAL-SUP-Environment-Q100';'MAL-SUP-Environment-Q100 Hemoglobin Meter';;'Hemoglobin Meter';'w2xqvtzgVRd';100;1.00;1.00;458;9;;5
-3;'MAL-SUP-Clinical fever evaluation-C1-Q100';'MAL-SUP-Clinical fever evaluation-C1-Q100 Advice given on malaria prevention measures';;'Advice given on malaria prevention measures';'yctEeCw548U';100;0.60;0.60;329;3;;27
+3;'MAL-SUP-Clinical fever evaluation-C1-Q100';'MAL-SUP-Clinical fever evaluation-C1-Q100 Advice given on malaria prevention measures';;'Advice given on malaria prevention measures';'yctEeCw548U';100;0.60;0.60;329;3;;
 343;'MAL-SUP-Environment-Q101';'MAL-SUP-Environment-Q101 Glucometer';;'Glucometer';'WiHbl8T61aQ';101;1.00;1.00;458;9;;5
-230;'MAL-SUP-Clinical fever evaluation-C3-Q101';'MAL-SUP-Clinical fever evaluation-C3-Q101 Caregiver and/or patient asked if they have any questions';;'Caregiver and/or patient asked if they have any questions';'HYpMWusk3p7';101;0.60;0.60;415;3;;27
-117;'MAL-SUP-Clinical fever evaluation-C2-Q101';'MAL-SUP-Clinical fever evaluation-C2-Q101 Caregiver and/or patient asked if they have any questions';;'Caregiver and/or patient asked if they have any questions';'v9ztwykLVBr';101;0.60;0.60;372;3;;27
-4;'MAL-SUP-Clinical fever evaluation-C1-Q101';'MAL-SUP-Clinical fever evaluation-C1-Q101 Caregiver and/or patient asked if they have any questions';;'Caregiver and/or patient asked if they have any questions';'dNb3MZMIfmQ';101;0.60;0.60;329;3;;27
-5;'MAL-SUP-Clinical fever evaluation-C1-Q102';'MAL-SUP-Clinical fever evaluation-C1-Q102 Was the patient found to have severe disease?';;'Was the patient found to have severe disease?';'GtNcjFUs1Gl';102;0.00;15.00;330;3;;28
-231;'MAL-SUP-Clinical fever evaluation-C3-Q102';'MAL-SUP-Clinical fever evaluation-C3-Q102 Was the patient found to have severe disease?';;'Was the patient found to have severe disease?';'kkjleG327UF';102;0.00;15.00;416;3;;28
+230;'MAL-SUP-Clinical fever evaluation-C3-Q101';'MAL-SUP-Clinical fever evaluation-C3-Q101 Caregiver and/or patient asked if they have any questions';;'Caregiver and/or patient asked if they have any questions';'HYpMWusk3p7';101;0.60;0.60;415;3;;
+117;'MAL-SUP-Clinical fever evaluation-C2-Q101';'MAL-SUP-Clinical fever evaluation-C2-Q101 Caregiver and/or patient asked if they have any questions';;'Caregiver and/or patient asked if they have any questions';'v9ztwykLVBr';101;0.60;0.60;372;3;;
+4;'MAL-SUP-Clinical fever evaluation-C1-Q101';'MAL-SUP-Clinical fever evaluation-C1-Q101 Caregiver and/or patient asked if they have any questions';;'Caregiver and/or patient asked if they have any questions';'dNb3MZMIfmQ';101;0.60;0.60;329;3;;
+5;'MAL-SUP-Clinical fever evaluation-C1-Q102';'MAL-SUP-Clinical fever evaluation-C1-Q102 Was the patient found to have severe disease?';;'Was the patient found to have severe disease?';'GtNcjFUs1Gl';102;0.00;15.00;330;3;;
+231;'MAL-SUP-Clinical fever evaluation-C3-Q102';'MAL-SUP-Clinical fever evaluation-C3-Q102 Was the patient found to have severe disease?';;'Was the patient found to have severe disease?';'kkjleG327UF';102;0.00;15.00;416;3;;
 344;'MAL-SUP-Environment-Q102';'MAL-SUP-Environment-Q102 Urine Strips';;'Urine Strips';'Sq0MLD4mpbZ';102;1.00;1.00;458;9;;5
-118;'MAL-SUP-Clinical fever evaluation-C2-Q102';'MAL-SUP-Clinical fever evaluation-C2-Q102 Was the patient found to have severe disease?';;'Was the patient found to have severe disease?';'SWw60yUVGZS';102;0.00;15.00;373;3;;28
-6;'MAL-SUP-Clinical fever evaluation-C1-Q103';'MAL-SUP-Clinical fever evaluation-C1-Q103';;'Missing text here';'pa6nsp0snq9';103;0.00;0.00;330;5;;28
+118;'MAL-SUP-Clinical fever evaluation-C2-Q102';'MAL-SUP-Clinical fever evaluation-C2-Q102 Was the patient found to have severe disease?';;'Was the patient found to have severe disease?';'SWw60yUVGZS';102;0.00;15.00;373;3;;
+6;'MAL-SUP-Clinical fever evaluation-C1-Q103';'MAL-SUP-Clinical fever evaluation-C1-Q103';;'Missing text here';'pa6nsp0snq9';103;0.00;0.00;330;5;;
 345;'MAL-SUP-Environment-Q103';'MAL-SUP-Environment-Q103 Staining Racks';;'Staining Racks';'gdtHrvUTNHW';103;1.00;1.00;458;9;;5
-119;'MAL-SUP-Clinical fever evaluation-C2-Q103';'MAL-SUP-Clinical fever evaluation-C2-Q103 Patient refered to a higher level Health Centre';;'Patient refered to a higher level Health Centre';'utV264w2TqB';103;0.00;0.00;373;5;;28
-232;'MAL-SUP-Clinical fever evaluation-C3-Q103';'MAL-SUP-Clinical fever evaluation-C3-Q103 Patient refered to a higher level Health Centre';;'Patient refered to a higher level Health Centre';'DHur8rrGzAZ';103;0.00;0.00;416;5;;28
-7;'MAL-SUP-Clinical fever evaluation-C1-Q104';'MAL-SUP-Clinical fever evaluation-C1-Q104 In-patient hospitalization';;'In-patient hospitalization';'MM5DOqONvQW';104;0.00;0.00;330;5;;28
+119;'MAL-SUP-Clinical fever evaluation-C2-Q103';'MAL-SUP-Clinical fever evaluation-C2-Q103 Patient refered to a higher level Health Centre';;'Patient refered to a higher level Health Centre';'utV264w2TqB';103;0.00;0.00;373;5;;
+232;'MAL-SUP-Clinical fever evaluation-C3-Q103';'MAL-SUP-Clinical fever evaluation-C3-Q103 Patient refered to a higher level Health Centre';;'Patient refered to a higher level Health Centre';'DHur8rrGzAZ';103;0.00;0.00;416;5;;
+7;'MAL-SUP-Clinical fever evaluation-C1-Q104';'MAL-SUP-Clinical fever evaluation-C1-Q104 In-patient hospitalization';;'In-patient hospitalization';'MM5DOqONvQW';104;0.00;0.00;330;5;;
 346;'MAL-SUP-Environment-Q104';'MAL-SUP-Environment-Q104 Staining Vessels';;'Staining Vessels';'p9nJAETGKEu';104;1.00;1.00;458;9;;5
-233;'MAL-SUP-Clinical fever evaluation-C3-Q104';'MAL-SUP-Clinical fever evaluation-C3-Q104 In-patient hospitalization';;'In-patient hospitalization';'kbB3CitTuLM';104;0.00;0.00;416;5;;28
-120;'MAL-SUP-Clinical fever evaluation-C2-Q104';'MAL-SUP-Clinical fever evaluation-C2-Q104 In-patient hospitalization';;'In-patient hospitalization';'k4LdhgIxepf';104;0.00;0.00;373;5;;28
+233;'MAL-SUP-Clinical fever evaluation-C3-Q104';'MAL-SUP-Clinical fever evaluation-C3-Q104 In-patient hospitalization';;'In-patient hospitalization';'kbB3CitTuLM';104;0.00;0.00;416;5;;
+120;'MAL-SUP-Clinical fever evaluation-C2-Q104';'MAL-SUP-Clinical fever evaluation-C2-Q104 In-patient hospitalization';;'In-patient hospitalization';'k4LdhgIxepf';104;0.00;0.00;373;5;;
 347;'MAL-SUP-Environment-Q105';'MAL-SUP-Environment-Q105 Glass Staining Dishes';;'Glass Staining Dishes';'ddt0ZAtW6Nn';105;1.00;1.00;458;9;;5
-8;'MAL-SUP-Clinical fever evaluation-C1-Q105';'MAL-SUP-Clinical fever evaluation-C1-Q105 if yes, was it properly referred?';;'if yes, was it properly referred?';'twBuHbADjiJ';105;5.00;0.00;330;3;;28
-121;'MAL-SUP-Clinical fever evaluation-C2-Q105';'MAL-SUP-Clinical fever evaluation-C2-Q105 if yes, was it properly referred?';;'if yes, was it properly referred?';'MKfDITAVrAi';105;5.00;0.00;373;3;;28
-234;'MAL-SUP-Clinical fever evaluation-C3-Q105';'MAL-SUP-Clinical fever evaluation-C3-Q105 if yes, was it properly referred?';;'if yes, was it properly referred?';'QNIhsVZrkeU';105;5.00;0.00;416;3;;28
+8;'MAL-SUP-Clinical fever evaluation-C1-Q105';'MAL-SUP-Clinical fever evaluation-C1-Q105 if yes, was it properly referred?';;'if yes, was it properly referred?';'twBuHbADjiJ';105;5.00;0.00;330;3;;
+121;'MAL-SUP-Clinical fever evaluation-C2-Q105';'MAL-SUP-Clinical fever evaluation-C2-Q105 if yes, was it properly referred?';;'if yes, was it properly referred?';'MKfDITAVrAi';105;5.00;0.00;373;3;;
+234;'MAL-SUP-Clinical fever evaluation-C3-Q105';'MAL-SUP-Clinical fever evaluation-C3-Q105 if yes, was it properly referred?';;'if yes, was it properly referred?';'QNIhsVZrkeU';105;5.00;0.00;416;3;;
 348;'MAL-SUP-Environment-Q106';'MAL-SUP-Environment-Q106 Slide Drying Racks';;'Slide Drying Racks';'THFbTqO9bQO';106;1.00;1.00;458;9;;5
-122;'MAL-SUP-Clinical fever evaluation-C2-Q106';'MAL-SUP-Clinical fever evaluation-C2-Q106 Was pre-referral antimalarial treatment given';;'Was pre-referral antimalarial treatment given';'m6yoxIXTz1a';106;5.00;0.00;373;3;;28
-9;'MAL-SUP-Clinical fever evaluation-C1-Q106';'MAL-SUP-Clinical fever evaluation-C1-Q106 Was pre-referral antimalarial treatment given';;'Was pre-referral antimalarial treatment given';'CzLqPb3S67m';106;5.00;0.00;330;3;;28
-235;'MAL-SUP-Clinical fever evaluation-C3-Q106';'MAL-SUP-Clinical fever evaluation-C3-Q106 Was pre-referral antimalarial treatment given';;'Was pre-referral antimalarial treatment given';'yNJsE9ztZDo';106;5.00;0.00;416;3;;28
-236;'MAL-SUP-Clinical fever evaluation-C3-Q107';'MAL-SUP-Clinical fever evaluation-C3-Q107 Was pre-referral antibiotic treatment given?';;'Was pre-referral antibiotic treatment given?';'kptln9XH7NA';107;5.00;0.00;416;3;;28
+122;'MAL-SUP-Clinical fever evaluation-C2-Q106';'MAL-SUP-Clinical fever evaluation-C2-Q106 Was pre-referral antimalarial treatment given';;'Was pre-referral antimalarial treatment given';'m6yoxIXTz1a';106;5.00;0.00;373;3;;
+9;'MAL-SUP-Clinical fever evaluation-C1-Q106';'MAL-SUP-Clinical fever evaluation-C1-Q106 Was pre-referral antimalarial treatment given';;'Was pre-referral antimalarial treatment given';'CzLqPb3S67m';106;5.00;0.00;330;3;;
+235;'MAL-SUP-Clinical fever evaluation-C3-Q106';'MAL-SUP-Clinical fever evaluation-C3-Q106 Was pre-referral antimalarial treatment given';;'Was pre-referral antimalarial treatment given';'yNJsE9ztZDo';106;5.00;0.00;416;3;;
+236;'MAL-SUP-Clinical fever evaluation-C3-Q107';'MAL-SUP-Clinical fever evaluation-C3-Q107 Was pre-referral antibiotic treatment given?';;'Was pre-referral antibiotic treatment given?';'kptln9XH7NA';107;5.00;0.00;416;3;;
 349;'MAL-SUP-Environment-Q107';'MAL-SUP-Environment-Q107 Serological Pipets and Pipet Bulbs or Automated Pippetor';;'Serological Pipets and Pipet Bulbs or Automated Pippetor';'faOn51At5zX';107;1.00;1.00;458;9;;5
-123;'MAL-SUP-Clinical fever evaluation-C2-Q107';'MAL-SUP-Clinical fever evaluation-C2-Q107 Was pre-referral antibiotic treatment given?';;'Was pre-referral antibiotic treatment given?';'TXgCxX8F3kc';107;5.00;0.00;373;3;;28
-10;'MAL-SUP-Clinical fever evaluation-C1-Q107';'MAL-SUP-Clinical fever evaluation-C1-Q107 Was pre-referral antibiotic treatment given?';;'Was pre-referral antibiotic treatment given?';'y0ozTu9XABY';107;5.00;0.00;330;3;;28
+123;'MAL-SUP-Clinical fever evaluation-C2-Q107';'MAL-SUP-Clinical fever evaluation-C2-Q107 Was pre-referral antibiotic treatment given?';;'Was pre-referral antibiotic treatment given?';'TXgCxX8F3kc';107;5.00;0.00;373;3;;
+10;'MAL-SUP-Clinical fever evaluation-C1-Q107';'MAL-SUP-Clinical fever evaluation-C1-Q107 Was pre-referral antibiotic treatment given?';;'Was pre-referral antibiotic treatment given?';'y0ozTu9XABY';107;5.00;0.00;330;3;;
 350;'MAL-SUP-Environment-Q108';'MAL-SUP-Environment-Q108 Timers';;'Timers';'EXussWwSMxS';108;1.00;1.00;458;9;;5
-237;'MAL-SUP-Clinical fever evaluation-C3-Q108';'MAL-SUP-Clinical fever evaluation-C3-Q108 Was other pre-referral medication given?';;'Was other pre-referral medication given?';'C5GSCpQMzOm';108;0.00;0.00;416;3;;28
-11;'MAL-SUP-Clinical fever evaluation-C1-Q108';'MAL-SUP-Clinical fever evaluation-C1-Q108 Was other pre-referral medication given?';;'Was other pre-referral medication given?';'WOdCKARqvEd';108;0.00;0.00;330;3;;28
-124;'MAL-SUP-Clinical fever evaluation-C2-Q108';'MAL-SUP-Clinical fever evaluation-C2-Q108 Was other pre-referral medication given?';;'Was other pre-referral medication given?';'eXJuy4hmtKm';108;0.00;0.00;373;3;;28
-238;'MAL-SUP-Clinical fever evaluation-C3-Q109';'MAL-SUP-Clinical fever evaluation-C3-Q109 Caregiver informed on what is wrong with the patient';;'Caregiver informed on what is wrong with the patient';'zeKwkbOpkXZ';109;0.60;0.60;417;3;;28
-12;'MAL-SUP-Clinical fever evaluation-C1-Q109';'MAL-SUP-Clinical fever evaluation-C1-Q109 Caregiver informed on what is wrong with the patient';;'Caregiver informed on what is wrong with the patient';'PxPKBINzL5T';109;0.60;0.60;331;3;;28
+237;'MAL-SUP-Clinical fever evaluation-C3-Q108';'MAL-SUP-Clinical fever evaluation-C3-Q108 Was other pre-referral medication given?';;'Was other pre-referral medication given?';'C5GSCpQMzOm';108;0.00;0.00;416;3;;
+11;'MAL-SUP-Clinical fever evaluation-C1-Q108';'MAL-SUP-Clinical fever evaluation-C1-Q108 Was other pre-referral medication given?';;'Was other pre-referral medication given?';'WOdCKARqvEd';108;0.00;0.00;330;3;;
+124;'MAL-SUP-Clinical fever evaluation-C2-Q108';'MAL-SUP-Clinical fever evaluation-C2-Q108 Was other pre-referral medication given?';;'Was other pre-referral medication given?';'eXJuy4hmtKm';108;0.00;0.00;373;3;;
+238;'MAL-SUP-Clinical fever evaluation-C3-Q109';'MAL-SUP-Clinical fever evaluation-C3-Q109 Caregiver informed on what is wrong with the patient';;'Caregiver informed on what is wrong with the patient';'zeKwkbOpkXZ';109;0.60;0.60;417;3;;
+12;'MAL-SUP-Clinical fever evaluation-C1-Q109';'MAL-SUP-Clinical fever evaluation-C1-Q109 Caregiver informed on what is wrong with the patient';;'Caregiver informed on what is wrong with the patient';'PxPKBINzL5T';109;0.60;0.60;331;3;;
 351;'MAL-SUP-Environment-Q109';'MAL-SUP-Environment-Q109 Tally Counters';;'Tally Counters';'fdatiUHvpln';109;1.00;1.00;458;9;;5
-125;'MAL-SUP-Clinical fever evaluation-C2-Q109';'MAL-SUP-Clinical fever evaluation-C2-Q109 Caregiver informed on what is wrong with the patient';;'Caregiver informed on what is wrong with the patient';'TLrzxqkSWHl';109;0.60;0.60;374;3;;28
-240;'MAL-SUP-Clinical fever evaluation-C3-Q110';'MAL-SUP-Clinical fever evaluation-C3-Q110 Caregiver informed of transfer';;'Caregiver informed of transfer';'t7PEq0BV8BD';110;0.60;0.60;417;3;;28
-14;'MAL-SUP-Clinical fever evaluation-C1-Q110';'MAL-SUP-Clinical fever evaluation-C1-Q110 Caregiver informed of transfer';;'Caregiver informed of transfer';'ib6KkepZSOA';110;0.60;0.60;331;3;;28
+125;'MAL-SUP-Clinical fever evaluation-C2-Q109';'MAL-SUP-Clinical fever evaluation-C2-Q109 Caregiver informed on what is wrong with the patient';;'Caregiver informed on what is wrong with the patient';'TLrzxqkSWHl';109;0.60;0.60;374;3;;
+240;'MAL-SUP-Clinical fever evaluation-C3-Q110';'MAL-SUP-Clinical fever evaluation-C3-Q110 Caregiver informed of transfer';;'Caregiver informed of transfer';'t7PEq0BV8BD';110;0.60;0.60;417;3;;
+14;'MAL-SUP-Clinical fever evaluation-C1-Q110';'MAL-SUP-Clinical fever evaluation-C1-Q110 Caregiver informed of transfer';;'Caregiver informed of transfer';'ib6KkepZSOA';110;0.60;0.60;331;3;;
 353;'MAL-SUP-Environment-Q110';'MAL-SUP-Environment-Q110 Slide Storage Boxes';;'Slide Storage Boxes';'WKoHvJQdFI2';110;1.00;1.00;458;9;;5
-127;'MAL-SUP-Clinical fever evaluation-C2-Q110';'MAL-SUP-Clinical fever evaluation-C2-Q110 Caregiver informed of transfer';;'Caregiver informed of transfer';'W5FoVjrmHv3';110;0.60;0.60;374;3;;28
-15;'MAL-SUP-Clinical fever evaluation-C1-Q111';'MAL-SUP-Clinical fever evaluation-C1-Q111 Caregiver given reason for transfer';;'Caregiver given reason for transfer';'AECsuq3DY35';111;0.60;0.60;331;3;;28
-241;'MAL-SUP-Clinical fever evaluation-C3-Q111';'MAL-SUP-Clinical fever evaluation-C3-Q111 Caregiver given reason for transfer';;'Caregiver given reason for transfer';'rz60Lc6jR6M';111;0.60;0.60;417;3;;28
+127;'MAL-SUP-Clinical fever evaluation-C2-Q110';'MAL-SUP-Clinical fever evaluation-C2-Q110 Caregiver informed of transfer';;'Caregiver informed of transfer';'W5FoVjrmHv3';110;0.60;0.60;374;3;;
+15;'MAL-SUP-Clinical fever evaluation-C1-Q111';'MAL-SUP-Clinical fever evaluation-C1-Q111 Caregiver given reason for transfer';;'Caregiver given reason for transfer';'AECsuq3DY35';111;0.60;0.60;331;3;;
+241;'MAL-SUP-Clinical fever evaluation-C3-Q111';'MAL-SUP-Clinical fever evaluation-C3-Q111 Caregiver given reason for transfer';;'Caregiver given reason for transfer';'rz60Lc6jR6M';111;0.60;0.60;417;3;;
 354;'MAL-SUP-Environment-Q111';'MAL-SUP-Environment-Q111 Graduated Cylinder (50 mL)';;'Graduated Cylinder (50 mL)';'woR7vkIhRou';111;1.00;1.00;458;9;;5
-128;'MAL-SUP-Clinical fever evaluation-C2-Q111';'MAL-SUP-Clinical fever evaluation-C2-Q111 Caregiver given reason for transfer';;'Caregiver given reason for transfer';'olkjGup4hKH';111;0.60;0.60;374;3;;28
-16;'MAL-SUP-Clinical fever evaluation-C1-Q112';'MAL-SUP-Clinical fever evaluation-C1-Q112 Caregiver informed about what will be done';;'Caregiver informed about what will be done';'WNC9BeiSizy';112;0.60;0.60;331;3;;28
-129;'MAL-SUP-Clinical fever evaluation-C2-Q112';'MAL-SUP-Clinical fever evaluation-C2-Q112 Caregiver informed about what will be done';;'Caregiver informed about what will be done';'IFUsMyS4ofR';112;0.60;0.60;374;3;;28
-242;'MAL-SUP-Clinical fever evaluation-C3-Q112';'MAL-SUP-Clinical fever evaluation-C3-Q112 Caregiver informed about what will be done';;'Caregiver informed about what will be done';'xIMwXHDoT3v';112;0.60;0.60;417;3;;28
+128;'MAL-SUP-Clinical fever evaluation-C2-Q111';'MAL-SUP-Clinical fever evaluation-C2-Q111 Caregiver given reason for transfer';;'Caregiver given reason for transfer';'olkjGup4hKH';111;0.60;0.60;374;3;;
+16;'MAL-SUP-Clinical fever evaluation-C1-Q112';'MAL-SUP-Clinical fever evaluation-C1-Q112 Caregiver informed about what will be done';;'Caregiver informed about what will be done';'WNC9BeiSizy';112;0.60;0.60;331;3;;
+129;'MAL-SUP-Clinical fever evaluation-C2-Q112';'MAL-SUP-Clinical fever evaluation-C2-Q112 Caregiver informed about what will be done';;'Caregiver informed about what will be done';'IFUsMyS4ofR';112;0.60;0.60;374;3;;
+242;'MAL-SUP-Clinical fever evaluation-C3-Q112';'MAL-SUP-Clinical fever evaluation-C3-Q112 Caregiver informed about what will be done';;'Caregiver informed about what will be done';'xIMwXHDoT3v';112;0.60;0.60;417;3;;
 355;'MAL-SUP-Environment-Q112';'MAL-SUP-Environment-Q112 Graduated Cylinder (250 mL)';;'Graduated Cylinder (250 mL)';'tbU5z2KfX9x';112;1.00;1.00;458;9;;5
-17;'MAL-SUP-Clinical fever evaluation-C1-Q113';'MAL-SUP-Clinical fever evaluation-C1-Q113 Caregiver and/or patient asked if there are questions';;'Caregiver and/or patient asked if there are questions';'qyALUHp07PW';113;0.60;0.60;331;3;;28
-243;'MAL-SUP-Clinical fever evaluation-C3-Q113';'MAL-SUP-Clinical fever evaluation-C3-Q113 Caregiver and/or patient asked if there are questions';;'Caregiver and/or patient asked if there are questions';'msdfeXbvNEE';113;0.60;0.60;417;3;;28
-130;'MAL-SUP-Clinical fever evaluation-C2-Q113';'MAL-SUP-Clinical fever evaluation-C2-Q113 Caregiver and/or patient asked if there are questions';;'Caregiver and/or patient asked if there are questions';'XozB9S2uQm1';113;0.60;0.60;374;3;;28
+17;'MAL-SUP-Clinical fever evaluation-C1-Q113';'MAL-SUP-Clinical fever evaluation-C1-Q113 Caregiver and/or patient asked if there are questions';;'Caregiver and/or patient asked if there are questions';'qyALUHp07PW';113;0.60;0.60;331;3;;
+243;'MAL-SUP-Clinical fever evaluation-C3-Q113';'MAL-SUP-Clinical fever evaluation-C3-Q113 Caregiver and/or patient asked if there are questions';;'Caregiver and/or patient asked if there are questions';'msdfeXbvNEE';113;0.60;0.60;417;3;;
+130;'MAL-SUP-Clinical fever evaluation-C2-Q113';'MAL-SUP-Clinical fever evaluation-C2-Q113 Caregiver and/or patient asked if there are questions';;'Caregiver and/or patient asked if there are questions';'XozB9S2uQm1';113;0.60;0.60;374;3;;
 356;'MAL-SUP-Environment-Q113';'MAL-SUP-Environment-Q113 Graduated Cylinder (500 mL)';;'Graduated Cylinder (500 mL)';'Cnr3NApkHEj';113;1.00;1.00;458;9;;5
 357;'MAL-SUP-Environment-Q114';'MAL-SUP-Environment-Q114 Weighing Scale';;'Weighing Scale';'W5vyV4ozdJA';114;1.00;1.00;458;9;;5
 358;'MAL-SUP-Environment-Q115';'MAL-SUP-Environment-Q115 Funnel';;'Funnel';'iRYN11nXzhb';115;1.00;1.00;458;9;;5
