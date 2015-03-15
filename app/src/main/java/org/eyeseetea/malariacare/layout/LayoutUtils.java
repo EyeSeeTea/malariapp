@@ -100,7 +100,7 @@ public class LayoutUtils {
 
             // Then for Custom tabs we search for TextViews with id == R.id.score and set them to 0
             if(!tabConfiguration.isAutomaticTab()){
-                LinearLayout tabLayout = (LinearLayout)root.findViewById(tabConfiguration.getLayoutId());
+                LinearLayout tabLayout = (LinearLayout)root.findViewById(tabConfiguration.getTabId());
                 List<View> tables = getTableChildren(tabLayout);
                 for (View table: tables){
                     for (int i=0; i<((TableLayout)table).getChildCount(); i++){
