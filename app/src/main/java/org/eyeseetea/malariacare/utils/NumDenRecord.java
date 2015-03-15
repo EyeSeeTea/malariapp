@@ -35,9 +35,11 @@ public class NumDenRecord {
     }
 
     public static List<Float> calculateNumDenTotal(Map<Question,List<Float>> record) {
+
         Float num = 0.0F;
         Float den = 0.0F;
         for (List<Float> numDen : record.values()) {
+            System.out.println(numDen.get(0).toString() + "/" + numDen.get(1).toString());
             num += numDen.get(0);
             den += numDen.get(1);
         }

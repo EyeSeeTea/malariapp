@@ -42,4 +42,25 @@ public class Value extends SugarRecord<Value> {
                 ", question=" + question +
                 '}';
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Value value = (Value) o;
+
+        if (option != null ? !option.equals(value.option) : value.option != null) return false;
+        if (question != null ? !question.equals(value.question) : value.question != null)
+            return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = option != null ? option.hashCode() : 0;
+        result = 31 * result + (question != null ? question.hashCode() : 0);
+        return result;
+    }
 }

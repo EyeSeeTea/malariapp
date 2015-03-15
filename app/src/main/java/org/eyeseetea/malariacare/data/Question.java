@@ -179,4 +179,54 @@ public class Question extends SugarRecord<Question> {
                 ", compositiveScore=" + compositiveScore +
                 '}';
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Question question1 = (Question) o;
+
+        if (answer != null ? !answer.equals(question1.answer) : question1.answer != null)
+            return false;
+        if (code != null ? !code.equals(question1.code) : question1.code != null) return false;
+        if (compositiveScore != null ? !compositiveScore.equals(question1.compositiveScore) : question1.compositiveScore != null)
+            return false;
+        if (de_name != null ? !de_name.equals(question1.de_name) : question1.de_name != null)
+            return false;
+        if (denominator_w != null ? !denominator_w.equals(question1.denominator_w) : question1.denominator_w != null)
+            return false;
+        if (form_name != null ? !form_name.equals(question1.form_name) : question1.form_name != null)
+            return false;
+        if (header != null ? !header.equals(question1.header) : question1.header != null)
+            return false;
+        if (numerator_w != null ? !numerator_w.equals(question1.numerator_w) : question1.numerator_w != null)
+            return false;
+        if (order_pos != null ? !order_pos.equals(question1.order_pos) : question1.order_pos != null)
+            return false;
+        if (question != null ? !question.equals(question1.question) : question1.question != null)
+            return false;
+        if (short_name != null ? !short_name.equals(question1.short_name) : question1.short_name != null)
+            return false;
+        if (uid != null ? !uid.equals(question1.uid) : question1.uid != null) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = code != null ? code.hashCode() : 0;
+        result = 31 * result + (de_name != null ? de_name.hashCode() : 0);
+        result = 31 * result + (short_name != null ? short_name.hashCode() : 0);
+        result = 31 * result + (form_name != null ? form_name.hashCode() : 0);
+        result = 31 * result + (uid != null ? uid.hashCode() : 0);
+        result = 31 * result + (order_pos != null ? order_pos.hashCode() : 0);
+        result = 31 * result + (numerator_w != null ? numerator_w.hashCode() : 0);
+        result = 31 * result + (denominator_w != null ? denominator_w.hashCode() : 0);
+        result = 31 * result + (header != null ? header.hashCode() : 0);
+        result = 31 * result + (answer != null ? answer.hashCode() : 0);
+        result = 31 * result + (question != null ? question.hashCode() : 0);
+        result = 31 * result + (compositiveScore != null ? compositiveScore.hashCode() : 0);
+        return result;
+    }
 }

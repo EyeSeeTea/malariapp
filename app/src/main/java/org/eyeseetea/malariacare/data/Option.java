@@ -53,4 +53,26 @@ public class Option extends SugarRecord<Option> {
     public String toString() {
         return name;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Option option = (Option) o;
+
+        if (answer != null ? !answer.equals(option.answer) : option.answer != null) return false;
+        if (factor != null ? !factor.equals(option.factor) : option.factor != null) return false;
+        if (name != null ? !name.equals(option.name) : option.name != null) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = name != null ? name.hashCode() : 0;
+        result = 31 * result + (factor != null ? factor.hashCode() : 0);
+        result = 31 * result + (answer != null ? answer.hashCode() : 0);
+        return result;
+    }
 }
