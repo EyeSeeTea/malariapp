@@ -18,7 +18,7 @@
 842;'MAL-SUP-RDT-C2-Q2';'MAL-SUP-RDT-C2-Q2 Health Worker Gender';;'Health Worker Gender';'OyrhEWfTViE';2;0.00;0.00;375;10;;
 628;'MAL-SUP-Microscopy-C2-Q2';'MAL-SUP-Microscopy-C2-Q2 Health Worker Gender';;'Health Worker Gender';'NlxUKoVCqYM';2;0.00;0.00;381;10;;
 556;'MAL-SUP-Microscopy-C1-Q2';'MAL-SUP-Microscopy-C1-Q2 Health Worker Gender';;'Health Worker Gender';'vHmYOS7gW6c';2;0.00;0.00;338;10;;
-517;'MAL-SUP-Feedback-Q2';'MAL-SUP-Feedback-Q2 Was this problem addressed?';;'Was this problem addressed?';'pD29GfEqIJ2';2;3.00;0.00;447;3;;29
+517;'MAL-SUP-Feedback-Q2';'MAL-SUP-Feedback-Q2 Was this problem addressed?';;'Was this problem addressed?';'pD29GfEqIJ2';2;3.00;3.00;447;3;;29
 252;'MAL-SUP-Clinical fever evaluation-C3-Q2';'MAL-SUP-Clinical fever evaluation-C3-Q2 Health Worker Gender';;'Health Worker Gender';'oDiQyIHyESb';2;0.00;0.00;404;10;;
 862;'MAL-SUP-RDT-C3-Q2';'MAL-SUP-RDT-C3-Q2 Health Worker Gender';;'Health Worker Gender';'RapcSLYKjQ7';2;0.00;0.00;418;10;;
 700;'MAL-SUP-Microscopy-C3-Q2';'MAL-SUP-Microscopy-C3-Q2 Health Worker Gender';;'Health Worker Gender';'DvLTgJHzbIM';2;0.00;0.00;424;10;;
@@ -58,7 +58,7 @@
 451;'MAL-SUP-Environment-Q5';'MAL-SUP-Environment-Q5 Well';;'Well';'geVvc4eickM';5;3.00;3.00;449;3;;2
 661;'MAL-SUP-Microscopy-C2-Q5';'MAL-SUP-Microscopy-C2-Q5 Procedure explained to patient';;'Procedure explained to patient';'byLhxAKeM70';5;1.00;1.00;382;3;;21
 846;'MAL-SUP-RDT-C2-Q5';'MAL-SUP-RDT-C2-Q5 Was the expiry date checked?';;'Was the expiry date checked?';'wy4MSETknDq';5;1.00;1.00;376;3;;20
-521;'MAL-SUP-Feedback-Q5';'MAL-SUP-Feedback-Q5 Was this problem addressed?';;'Was this problem addressed?';'MLOPNQmRNL8';5;3.00;0.00;447;3;;29
+521;'MAL-SUP-Feedback-Q5';'MAL-SUP-Feedback-Q5 Was this problem addressed?';;'Was this problem addressed?';'MLOPNQmRNL8';5;3.00;3.00;447;3;;29
 733;'MAL-SUP-Microscopy-C3-Q5';'MAL-SUP-Microscopy-C3-Q5 Procedure explained to patient';;'Procedure explained to patient';'WRS5prS1OVm';5;1.00;1.00;425;3;;21
 59;'MAL-SUP-Clinical fever evaluation-C1-Q5';'MAL-SUP-Clinical fever evaluation-C1-Q5 Ask if Referred from another Health Centre';;'Ask if Referred from another Health Centre';'SkHN2THVmIf';5;0.00;0.00;319;6;;
 826;'MAL-SUP-RDT-C1-Q5';'MAL-SUP-RDT-C1-Q5 Was the expiry date checked?';;'Was the expiry date checked?';'dFurNMdwtux';5;1.00;1.00;333;3;;20
@@ -90,7 +90,7 @@
 848;'MAL-SUP-RDT-C2-Q7';'MAL-SUP-RDT-C2-Q7 Patient identified and identification information recorded in register';;'Patient identified and identification information recorded in register';'Cs0pCFlSQiJ';7;1.00;1.00;377;3;;20
 808;'MAL-SUP-Profile-Q7';'MAL-SUP-Profile-Q7 Medical Officers, Part-Time today';;'Medical Officers, Part-Time today';'lM0ryrayNqQ';7;0.00;0.00;308;24;;
 92;'MAL-SUP-Clinical fever evaluation-C1-Q8';'MAL-SUP-Clinical fever evaluation-C1-Q8 Weight of patient determined';;'Weight of patient determined';'c4X9qPRLcUh';8;1.00;1.00;319;3;;19
-524;'MAL-SUP-Feedback-Q8';'MAL-SUP-Feedback-Q8 Was this problem addressed?';;'Was this problem addressed?';'A0rCGZhW5gM';8;3.00;0.00;447;3;;29
+524;'MAL-SUP-Feedback-Q8';'MAL-SUP-Feedback-Q8 Was this problem addressed?';;'Was this problem addressed?';'A0rCGZhW5gM';8;3.00;3.00;447;3;;29
 687;'MAL-SUP-Microscopy-C2-Q8';'MAL-SUP-Microscopy-C2-Q8 Slide labelled with date and patient''s name and/or number';;'Slide labelled with date and patient''s name and/or number';'j33fIssP4yU';8;1.00;1.00;382;3;;21
 615;'MAL-SUP-Microscopy-C1-Q8';'MAL-SUP-Microscopy-C1-Q8 Slide labelled with date and patient''s name and/or number';;'Slide labelled with date and patient''s name and/or number';'JicwaRyqZAG';8;1.00;1.00;339;3;;21
 829;'MAL-SUP-RDT-C1-Q8';'MAL-SUP-RDT-C1-Q8 Procedure explained to patient';;'Procedure explained to patient';'dRD8l2LmKxC';8;1.00;1.00;334;3;;20

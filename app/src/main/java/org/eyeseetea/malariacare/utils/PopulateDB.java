@@ -36,7 +36,7 @@ public class PopulateDB {
     public static void populateDB(AssetManager assetManager) throws IOException {
 
 
-        List<String> tables2populate = Arrays.asList("Tabs.csv", "Headers.csv", "Answers.csv", "Options.csv", "CompositiveScores.csv", "Questions_backup.csv", "HeadersCustom.csv", "QuestionsCustom.csv");
+        List<String> tables2populate = Arrays.asList("Tabs.csv", "Headers.csv", "Answers.csv", "Options.csv", "CompositiveScores.csv", "Questions.csv", "HeadersCustom.csv", "QuestionsCustom.csv");
 
         CSVReader reader = null;
         for (String table : tables2populate) {
@@ -79,7 +79,7 @@ public class PopulateDB {
                         if (!line[3].equals("")) compositiveScore.setCompositive_score(compositiveScoreList.get(Integer.valueOf(line[3])));
                         compositiveScoreList.put(Integer.valueOf(line[0]), compositiveScore);
                         break;
-                    case "Questions_backup.csv":
+                    case "Questions.csv":
                         Question question = new Question();
                         question.setCode(line[1]);
                         question.setDe_name(line[2]);
