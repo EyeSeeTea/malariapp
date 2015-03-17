@@ -16,6 +16,7 @@ public class LayoutConfiguration {
     private static final Map<Tab, TabConfiguration> tabsConfiguration = new LinkedHashMap<Tab, TabConfiguration>();
 
     public static void initialize(List<Tab> tabList) {
+
         tabsConfiguration.put(tabList.get(0), new TabConfiguration(R.id.healthFacilityInfo, true, null, R.id.healthScore, null));
         tabsConfiguration.put(tabList.get(1), new TabConfiguration(R.id.profile, true, null, R.id.profileScore, null));
         tabsConfiguration.put(tabList.get(2), new TabConfiguration(R.id.c1Clinical, true, null, R.id.clinicalCase1, R.id.clinicalAvg));
@@ -34,6 +35,7 @@ public class LayoutConfiguration {
         tabsConfiguration.put(tabList.get(14), new TabConfiguration(R.id.reporting, false, R.layout.reportingtab, R.id.reportingScore, null));
         tabsConfiguration.put(tabList.get(15), new TabConfiguration(R.id.iqaEQA, false, R.layout.iqatab, R.id.iqaeqaScore, null));
         tabsConfiguration.put(tabList.get(16), new TabConfiguration(R.id.scoreSummary, false, R.layout.scoretab, null, null));
+
         tabsConfiguration.put(tabList.get(17), new TabConfiguration(R.id.compositiveScores, false, R.layout.compositivescoretab, null, null));
     }
 

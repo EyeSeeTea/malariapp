@@ -16,9 +16,10 @@ import org.eyeseetea.malariacare.database.model.Header;
 import org.eyeseetea.malariacare.database.model.Option;
 import org.eyeseetea.malariacare.database.model.Question;
 import org.eyeseetea.malariacare.database.model.Tab;
-import org.eyeseetea.malariacare.layout.configuration.TabConfiguration;
+import org.eyeseetea.malariacare.layout.configuration.LayoutConfiguration;
 import org.eyeseetea.malariacare.layout.listeners.AutomaticTabListeners;
-import org.eyeseetea.malariacare.layout.score.NumDenRecord;
+import org.eyeseetea.malariacare.layout.score.ANumDenRecord;
+import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 import org.eyeseetea.malariacare.utils.Constants;
 import org.eyeseetea.malariacare.utils.Utils;
@@ -31,7 +32,7 @@ import java.util.List;
 public class AutomaticTabLayout {
 
 
-    public static void generateAutomaticTab(MainActivity mainActivity, Tab tab, TabConfiguration tabConfiguration, LayoutInflater inflater, GridLayout layoutParent, Option defaultOption, final SparseArray<NumDenRecord> numDenRecordMap) {
+    public static void generateAutomaticTab(MainActivity mainActivity, Tab tab, LayoutInflater inflater, GridLayout layoutParent, Option defaultOption) {
         //Iterator for background (odd and even)
         int iterBacks = 0;
 
@@ -68,7 +69,7 @@ public class AutomaticTabLayout {
                         dropdown.setTag(R.id.HeaderViewTag, headerView);
                         dropdown.setTag(R.id.NumeratorViewTag, questionView.findViewById(R.id.num));
                         dropdown.setTag(R.id.DenominatorViewTag, questionView.findViewById(R.id.den));
-                        dropdown.setTag(R.id.Tab, tabConfiguration.getTabId());
+                        dropdown.setTag(R.id.Tab, LayoutConfiguration.getTabsConfiguration().get(tab).getTabId());
                         dropdown.setTag(R.id.QuestionTypeTag, Constants.DROPDOWN_LIST);
 
                         // If the question has children, we load the denominator, else we hide the question
@@ -78,12 +79,12 @@ public class AutomaticTabLayout {
                             denominator.setText(Utils.round(question.getDenominator_w()));
                             headerView.setVisibility(View.VISIBLE);
 
-                            numDenRecordMap.get(tabConfiguration.getTabId()).addRecord(question, 0F, question.getDenominator_w());
+                            ScoreRegister.addRecord(question, 0F, question.getDenominator_w());
                         } else {
                             questionView.setVisibility(View.GONE);
                         }
 
-                        AutomaticTabListeners.createDropDownListener(tabConfiguration, dropdown, mainActivity, numDenRecordMap);
+                        AutomaticTabListeners.createDropDownListener(tab, dropdown, mainActivity);
 
                         List<Option> optionList = question.getAnswer().getOptions();
                         optionList.add(0, defaultOption);

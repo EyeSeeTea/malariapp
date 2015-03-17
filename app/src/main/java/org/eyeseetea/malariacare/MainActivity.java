@@ -12,11 +12,13 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TabHost;
 
+import org.eyeseetea.malariacare.database.model.CompositiveScore;
 import org.eyeseetea.malariacare.database.model.Tab;
 import org.eyeseetea.malariacare.database.utils.Persistence;
 import org.eyeseetea.malariacare.layout.Layout;
 import org.eyeseetea.malariacare.layout.configuration.LayoutConfiguration;
 import org.eyeseetea.malariacare.layout.configuration.TabConfiguration;
+import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 import org.eyeseetea.malariacare.layout.dialog.DialogDispatcher;
 import org.eyeseetea.malariacare.database.utils.PopulateDB;
@@ -53,6 +55,11 @@ public class MainActivity extends ActionBarActivity{
 
         Log.i(".MainActivity", "Initializing Layout Configuration");
         LayoutConfiguration.initialize(Persistence.getTabs());
+
+        //Intializing compositive score register
+        for (CompositiveScore compositiveScore : CompositiveScore.listAll(CompositiveScore.class)) {
+            ScoreRegister.registerScore(compositiveScore);
+        }
 
         //long time4 = System.currentTimeMillis();
         //Log.d(".MainActivity", "Time populating DB: " + (time4 -time3) + " ms");

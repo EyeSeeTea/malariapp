@@ -2,7 +2,6 @@ package org.eyeseetea.malariacare.layout;
 
 import android.content.Context;
 import android.util.Log;
-import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,7 +17,8 @@ import org.eyeseetea.malariacare.database.model.Option;
 import org.eyeseetea.malariacare.database.model.Tab;
 import org.eyeseetea.malariacare.layout.configuration.LayoutConfiguration;
 import org.eyeseetea.malariacare.layout.configuration.TabConfiguration;
-import org.eyeseetea.malariacare.layout.score.NumDenRecord;
+import org.eyeseetea.malariacare.layout.score.ANumDenRecord;
+import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.layout.utils.CustomTabLayout;
 import org.eyeseetea.malariacare.utils.Constants;
 import org.eyeseetea.malariacare.utils.Utils;
@@ -29,10 +29,6 @@ import java.util.List;
  * Created by adrian on 19/02/15.
  */
 public class Layout {
-
-    //static final Score scores=new Score();
-    static final SparseArray<NumDenRecord> numDenRecordMap = new SparseArray<NumDenRecord>();
-
 
     // This method fill in a tab layout
     public static void insertTab(MainActivity mainActivity, Tab tab) {
@@ -53,7 +49,7 @@ public class Layout {
         layoutParent = (GridLayout) layoutParentScroll.getChildAt(0);
 
         //Initialize numerator and denominator record map
-        numDenRecordMap.put(tabConfiguration.getTabId(), new NumDenRecord());
+        ScoreRegister.registerScore(tab);
 
         // We do this to have a default value in the ddl
         Option defaultOption = new Option(Constants.DEFAULT_SELECT_OPTION);
@@ -69,26 +65,26 @@ public class Layout {
         tabHost.addTab(tabSpec);
 
         if (!tabConfiguration.isAutomaticTab() && tabConfiguration.getLayoutId() != null){
-            CustomTabLayout.generateCustomTab(mainActivity, tab, tabConfiguration, inflater, layoutParent);
+            CustomTabLayout.generateCustomTab(mainActivity, tab, inflater, layoutParent);
         }else {
-            AutomaticTabLayout.generateAutomaticTab(mainActivity, tab, tabConfiguration, inflater, layoutParent, defaultOption, numDenRecordMap);
+            AutomaticTabLayout.generateAutomaticTab(mainActivity, tab, inflater, layoutParent, defaultOption);
         }
-        if (tabConfiguration.getScoreFieldId() != null) generateScore(tab, tabConfiguration, inflater, layoutGrandParent);
+        if (tabConfiguration.getScoreFieldId() != null) generateScore(tab, inflater, layoutGrandParent);
     }
 
 
-    private static void generateScore(Tab tab, TabConfiguration tabConfiguration, LayoutInflater inflater, LinearLayout layoutGrandParent) {
+    private static void generateScore(Tab tab, LayoutInflater inflater, LinearLayout layoutGrandParent) {
         // This layout is for showing the accumulated score
         GridLayout layoutParentScore = (GridLayout) layoutGrandParent.getChildAt(1);
         View subtotalView = null;
         TextView totalNumText = null;
         TextView totalDenText = null;
-        if (tabConfiguration.isAutomaticTab()) {
+        if (LayoutConfiguration.getTabsConfiguration().get(tab).isAutomaticTab()) {
             subtotalView = inflater.inflate(R.layout.subtotal_num_dem, layoutParentScore, false);
             totalNumText = (TextView) subtotalView.findViewById(R.id.totalNum);
             totalDenText = (TextView) subtotalView.findViewById(R.id.totalDen);
             totalNumText.setText("0.0");
-            List<Float> numDenSubTotal = numDenRecordMap.get(tabConfiguration.getTabId()).calculateTotal();
+            List<Float> numDenSubTotal = ScoreRegister.calculateGeneralScore(tab);
             totalDenText.setText(Utils.round(numDenSubTotal.get(1)));
         } else {
             subtotalView = inflater.inflate(R.layout.subtotal_custom, layoutParentScore, false);
@@ -96,12 +92,13 @@ public class Layout {
         TextView tabName = (TextView) subtotalView.findViewById(R.id.tabName);
         tabName.setText(tab.getName());
 
-        TextView subscoreView = (TextView) subtotalView.findViewById(R.id.score);
 
+        Integer generalScoreId = LayoutConfiguration.getTabsConfiguration().get(tab).getScoreFieldId();
         // Now, for being able to write Score in the score tab and score averages in its place (in score tab), we use setTag() to include a pointer to
         // the score View id, and in that id, we include a pointer to the average view id. This way, we can do the calculus here and represent there
-        Integer generalScoreId = tabConfiguration.getScoreFieldId();
+        TextView subscoreView = (TextView) subtotalView.findViewById(R.id.score);
         subscoreView.setTag(generalScoreId);
+
         layoutParentScore.addView(subtotalView);
     }
 

@@ -11,12 +11,12 @@ import android.widget.Spinner;
 import android.widget.TableLayout;
 import android.widget.TextView;
 
-import org.eyeseetea.malariacare.MainActivity;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.model.Question;
 import org.eyeseetea.malariacare.layout.configuration.LayoutConfiguration;
 import org.eyeseetea.malariacare.layout.configuration.TabConfiguration;
-import org.eyeseetea.malariacare.layout.score.NumDenRecord;
+import org.eyeseetea.malariacare.layout.score.ANumDenRecord;
+import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.utils.Utils;
 
 import java.util.ArrayList;
@@ -80,20 +80,20 @@ public class LayoutUtils {
         return null;
     }
 
-    public static void toggleVisibleChildren(int position, Spinner spinner, Question triggeredQuestion, SparseArray<NumDenRecord> numDenRecordMap) {
+    public static void toggleVisibleChildren(int position, Spinner spinner, Question triggeredQuestion) {
         View parent = LayoutUtils.findParentRecursively(spinner, (Integer) spinner.getTag(R.id.Tab));
         for (Question childQuestion : triggeredQuestion.getQuestionChildren()) {
             View childView = LayoutUtils.findChildRecursively(parent, childQuestion);
             if (position == 1) { //FIXME: There must be a smarter way for saying "if the user selected yes"
                 LayoutUtils.toggleVisible(childView, View.VISIBLE);
                 ((View) ((View) childView).getTag(R.id.HeaderViewTag)).setVisibility(View.VISIBLE);
-                numDenRecordMap.get((Integer) spinner.getTag(R.id.Tab)).addRecord(childQuestion, 0F, childQuestion.getDenominator_w());
+                ScoreRegister.addRecord(childQuestion, 0F, childQuestion.getDenominator_w());
             } else {
                 LayoutUtils.toggleVisible(childView, View.GONE);
                 if (LayoutUtils.isHeaderEmpty(triggeredQuestion.getQuestionChildren(), childQuestion.getHeader().getQuestions())) {
                     ((View) ((View) childView).getTag(R.id.HeaderViewTag)).setVisibility(View.GONE);
                 }
-                numDenRecordMap.get((Integer) spinner.getTag(R.id.Tab)).deleteRecord(childQuestion);
+                ScoreRegister.deleteRecord(childQuestion);
             }
         }
     }

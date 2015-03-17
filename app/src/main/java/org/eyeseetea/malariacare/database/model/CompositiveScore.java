@@ -65,7 +65,7 @@ public class CompositiveScore extends SugarRecord<CompositiveScore> {
     public String toString() {
         return "CompositiveScore{" +
                 "code='" + code + '\'' +
-                "label='" + label + '\'' +
+                ",label='" + label + '\'' +
                 ", compositiveScore=" + compositive_score +
                 '}';
     }

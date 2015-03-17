@@ -20,9 +20,10 @@ import org.eyeseetea.malariacare.database.model.Header;
 import org.eyeseetea.malariacare.database.model.Option;
 import org.eyeseetea.malariacare.database.model.Question;
 import org.eyeseetea.malariacare.database.model.Tab;
+import org.eyeseetea.malariacare.layout.configuration.LayoutConfiguration;
 import org.eyeseetea.malariacare.layout.configuration.TabConfiguration;
 import org.eyeseetea.malariacare.layout.listeners.CustomTabListeners;
-import org.eyeseetea.malariacare.layout.score.CompositiveScoreRegister;
+import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.utils.Constants;
 
 import java.util.ArrayList;
@@ -33,8 +34,8 @@ import java.util.List;
  */
 public class CustomTabLayout {
 
-    public static void generateCustomTab(MainActivity mainActivity, Tab tab, TabConfiguration tabConfiguration, LayoutInflater inflater, GridLayout layoutParent) {
-        View customView = inflater.inflate(tabConfiguration.getLayoutId(), layoutParent, false);
+    public static void generateCustomTab(MainActivity mainActivity, Tab tab, LayoutInflater inflater, GridLayout layoutParent) {
+        View customView = inflater.inflate(LayoutConfiguration.getTabsConfiguration().get(tab).getLayoutId(), layoutParent, false);
         boolean getFromDatabase = false;
         boolean hasScoreLayout = false;
         // Array to get the needed layouts during question insertion
@@ -49,7 +50,7 @@ public class CustomTabLayout {
         int iterEditListeners = 0;
         int iterBacks = 0;
 
-        switch (tabConfiguration.getLayoutId()){
+        switch (LayoutConfiguration.getTabsConfiguration().get(tab).getLayoutId()){
             case R.layout.scoretab:
                 layoutParent.addView(customView);
                 break;
@@ -93,9 +94,8 @@ public class CustomTabLayout {
                 layoutParent.addView(customView);
                 break;
             case R.layout.compositivescoretab:
-                List<CompositiveScore> compositiveScoresList = CompositiveScore.listAll(CompositiveScore.class);
-                for (CompositiveScore compositiveScore : compositiveScoresList){
-                    CompositiveScoreRegister.registerScore(compositiveScore);
+                for (CompositiveScore compositiveScore : CompositiveScore.listAll(CompositiveScore.class)){
+                    ScoreRegister.registerScore(compositiveScore);
                     List<View> tables = LayoutUtils.getChildrenByTag((ViewGroup)customView, null, "CompositivesScore");
                     if(tables.size() == 1) {
                         TableLayout table = (TableLayout) tables.get(0);

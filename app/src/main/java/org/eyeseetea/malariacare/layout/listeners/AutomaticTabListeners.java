@@ -1,7 +1,6 @@
 package org.eyeseetea.malariacare.layout.listeners;
 
 import android.util.Log;
-import android.util.SparseArray;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
@@ -12,10 +11,10 @@ import org.eyeseetea.malariacare.MainActivity;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.model.Option;
 import org.eyeseetea.malariacare.database.model.Question;
-import org.eyeseetea.malariacare.layout.configuration.TabConfiguration;
+import org.eyeseetea.malariacare.database.model.Tab;
+import org.eyeseetea.malariacare.layout.configuration.LayoutConfiguration;
 import org.eyeseetea.malariacare.layout.dialog.DialogDispatcher;
-import org.eyeseetea.malariacare.layout.score.CompositiveScoreRegister;
-import org.eyeseetea.malariacare.layout.score.NumDenRecord;
+import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 import org.eyeseetea.malariacare.utils.Constants;
 import org.eyeseetea.malariacare.utils.Utils;
@@ -28,7 +27,7 @@ import java.util.List;
  */
 public class AutomaticTabListeners {
 
-    public static void createDropDownListener(final TabConfiguration tabConfiguration, Spinner dropdown, final MainActivity mainActivity, final SparseArray<NumDenRecord> numDenRecordMap) {
+    public static void createDropDownListener(final Tab tab, Spinner dropdown, final MainActivity mainActivity) {
         dropdown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 
             @Override
@@ -51,12 +50,12 @@ public class AutomaticTabListeners {
                 // General scores View
                 Integer generalScoreId = null, generalScoreAvgId = null;
                 TextView generalScoreView = null, generalScoreAvgView = null;
-                if (tabConfiguration.getScoreFieldId() != null) {
-                    generalScoreId = (Integer) tabConfiguration.getScoreFieldId();
+                if (LayoutConfiguration.getTabsConfiguration().get(tab).getScoreFieldId() != null) {
+                    generalScoreId = (Integer) LayoutConfiguration.getTabsConfiguration().get(tab).getScoreFieldId();
                     gridView = LayoutUtils.findParentRecursively(spinner, R.id.Grid);
                     generalScoreView = (TextView) gridView.findViewById(generalScoreId);
-                    if (tabConfiguration.getScoreAvgFieldId() != null) {
-                        generalScoreAvgId = (Integer) tabConfiguration.getScoreAvgFieldId();
+                    if (LayoutConfiguration.getTabsConfiguration().get(tab).getScoreAvgFieldId() != null) {
+                        generalScoreAvgId = (Integer) LayoutConfiguration.getTabsConfiguration().get(tab).getScoreAvgFieldId();
                         generalScoreAvgView = (TextView) gridView.findViewById(generalScoreAvgId);
                     }
                 }
@@ -78,11 +77,11 @@ public class AutomaticTabListeners {
                         }
                     }
 
-                    numDenRecordMap.get((Integer) spinner.getTag(R.id.Tab)).addRecord(triggeredQuestion, numerator, denominator);
+                    ScoreRegister.addRecord(triggeredQuestion, numerator, denominator);
 
                     // If the option is changed to positive numerator and has children, we need to show the children and take their denominators into account
                     if (triggeredQuestion.hasChildren()) {
-                        LayoutUtils.toggleVisibleChildren(position, spinner, triggeredQuestion, numDenRecordMap);
+                        LayoutUtils.toggleVisibleChildren(position, spinner, triggeredQuestion);
                     }
 
                     numeratorView.setText(Utils.round(numerator));
@@ -93,7 +92,7 @@ public class AutomaticTabListeners {
                     numerator = 0.0F;
                     if (triggeredQuestion.hasChildren()){
                         denominator = 0.0F;
-                        LayoutUtils.toggleVisibleChildren(position, spinner, triggeredQuestion, numDenRecordMap);
+                        LayoutUtils.toggleVisibleChildren(position, spinner, triggeredQuestion);
                     }
                     else{
                         denominator = triggeredQuestion.getDenominator_w();
@@ -103,13 +102,14 @@ public class AutomaticTabListeners {
                         numeratorView.setText(Utils.round(numerator));
                         denominatorView.setText(Utils.round(denominator));
                     }
-                    numDenRecordMap.get((Integer) spinner.getTag(R.id.Tab)).addRecord(triggeredQuestion, numerator, denominator);
+
+                    ScoreRegister.addRecord(triggeredQuestion, numerator, denominator);
                 }
 
 
                 // FIXME: THIS PART NEEDS A REFACTOR. FROM HERE...
-                List<Float> numDenSubTotal = numDenRecordMap.get((Integer) spinner.getTag(R.id.Tab)).calculateTotal();
-                CompositiveScoreRegister.updateCompositivesScore(triggeredQuestion, gridView);
+                List<Float> numDenSubTotal = ScoreRegister.calculateGeneralScore(tab);
+                ScoreRegister.updateCompositivesScore(triggeredQuestion.getCompositiveScore(), gridView);
 
                 if (numSubtotal != null && denSubtotal != null && partialScoreView != null) {
                     numSubtotal.setText(Utils.round(numDenSubTotal.get(0)));
@@ -131,9 +131,9 @@ public class AutomaticTabListeners {
 
                     LayoutUtils.setScore(score, partialScoreView, partialScorePercentageView, partialCualitativeScoreView); // We set the score in the tab score
 
-                    if (tabConfiguration.getScoreFieldId() != null) {
+                    if (LayoutConfiguration.getTabsConfiguration().get(tab).getScoreFieldId() != null) {
                         LayoutUtils.setScore(score, generalScoreView);
-                        if(tabConfiguration.getScoreAvgFieldId() != null){
+                        if(LayoutConfiguration.getTabsConfiguration().get(tab).getScoreAvgFieldId() != null){
                             List<Integer> averageElements = (ArrayList<Integer>) generalScoreAvgView.getTag();
                             if (averageElements == null) {
                                 averageElements = new ArrayList<Integer>();
@@ -156,13 +156,13 @@ public class AutomaticTabListeners {
                         TextView totalScoreView = (TextView) gridView.findViewById(R.id.totalScore);
                         if (scoreElements == null) {
                             scoreElements = new ArrayList<Integer>();
-                            if (tabConfiguration.getScoreAvgFieldId() != null) scoreElements.add(generalScoreAvgId);
+                            if (LayoutConfiguration.getTabsConfiguration().get(tab).getScoreAvgFieldId() != null) scoreElements.add(generalScoreAvgId);
                             else scoreElements.add(generalScoreId);
                             totalScoreView.setTag(scoreElements);
                         } else {
                             boolean foundElement = false;
                             for (Integer element : scoreElements){
-                                if (tabConfiguration.getScoreAvgFieldId() != null) {
+                                if (LayoutConfiguration.getTabsConfiguration().get(tab).getScoreAvgFieldId() != null) {
                                     if (element.intValue() == generalScoreAvgId.intValue()) foundElement = true;
                                 } else {
                                     if (element.intValue() == generalScoreId.intValue()) foundElement = true;
@@ -170,7 +170,7 @@ public class AutomaticTabListeners {
                                 totalAverage += Float.parseFloat((String) ((TextView) LayoutUtils.findParentRecursively(generalScoreView, R.id.scoreTable).findViewById(element)).getText());
                             }
                             if (!foundElement){
-                                if (tabConfiguration.getScoreAvgFieldId() != null) scoreElements.add(generalScoreAvgId);
+                                if (LayoutConfiguration.getTabsConfiguration().get(tab).getScoreAvgFieldId() != null) scoreElements.add(generalScoreAvgId);
                                 else scoreElements.add(generalScoreId);
                             }
                             totalAverage = totalAverage / scoreElements.size();
