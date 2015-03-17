@@ -22,13 +22,17 @@
             android:orientation="horizontal"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:background="#bebebe">
+            android:background="#bebebe"
+            android:layout_gravity="right"
+            android:gravity="right">
 
             <Spinner
                 android:layout_width="100dip"
                 android:layout_height="wrap_content"
                 android:id="@+id/testResults"
-                android:tag="listener"/>
+                android:tag="listener"
+                android:layout_gravity="right"
+                android:gravity="right" />
         </LinearLayout>
 
     </LinearLayout>

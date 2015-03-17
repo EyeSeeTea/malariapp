@@ -8,7 +8,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:columnCount="1"
-        android:rowCount="2"
+        android:rowCount="1"
         android:id="@+id/reporting">
 
         <TextView
@@ -58,8 +58,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:columnCount="1"
-        android:rowCount="2"
-        android:id="@+id/gridLayout" >
+        android:rowCount="1"
+        android:id="@+id/gridLayout"
+        android:layout_gravity="center">
 
         <TableLayout
             android:layout_width="fill_parent"
@@ -86,7 +87,7 @@
                     android:gravity="center"
                     android:lines="2"
                     android:padding="5dip"
-                    android:layout_weight="1" />
+                    android:layout_weight="0.4" />
 
                 <TextView
                     android:layout_width="fill_parent"
@@ -99,7 +100,7 @@
                     android:lines="2"
                     android:gravity="center"
                     android:padding="5dip"
-                    android:layout_weight="1" />
+                    android:layout_weight="0.2" />
 
                 <TextView
                     android:layout_width="fill_parent"
@@ -112,7 +113,7 @@
                     android:lines="2"
                     android:gravity="center"
                     android:padding="5dip"
-                    android:layout_weight="1" />
+                    android:layout_weight="0.2" />
 
                 <TextView
                     android:layout_width="fill_parent"
@@ -125,7 +126,7 @@
                     android:lines="2"
                     android:gravity="center"
                     android:padding="5dip"
-                    android:layout_weight="1" />
+                    android:layout_weight="0.2" />
 
             </TableRow>
         </TableLayout>

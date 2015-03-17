@@ -41,7 +41,7 @@
     <string name="save">Sauvegarder</string>
     <string name="clear">Effacer</string>
     <string name="emptyString"></string>
-    <string name="accumulated">Onglette num/dem</string>
+    <string name="accumulated">Onglet num/dem</string>
     <string name="case1">Cas 1</string>
     <string name="case2">Cas 2</string>
     <string name="case3">Cas 3</string>
@@ -103,14 +103,14 @@
     <string name="register">Register</string>
     <string name="monthlyReport">Monthly \nReport</string>
     <string name="percentage">%</string>
-    <string name="score4tab">Punctuation pout onglette</string>
-    <string name="scorefortab">Punctuation pout onglette:</string>
+    <string name="score4tab">Ponctuation pour onglette</string>
+    <string name="scorefortab">Ponctuation pour onglette:</string>
     <string name="supervisormatchlab">Supervisor matches lab staff?</string>
     <string name="zeroInt">0</string>
-    <string name="healthTitle">Health \nFacility Info</string>
+    <string name="healthTitle">Health\nFacility\nInfo</string>
     <string name="idHeader">ID</string>
     <string name="nameHeader">Name</string>
-    <string name="clinicalFeverEvalTitle">Clinical fever\n evaluation</string>
+    <string name="clinicalFeverEvalTitle">Clinical\nfever\nevaluation</string>
     <string name="action_pull">Mise à jour des questions dès DHIS</string>
     <string name="good">Bien</string>
     <string name="fare">Moyen</string>

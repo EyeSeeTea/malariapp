@@ -107,10 +107,10 @@
     <string name="scorefortab">Score for tab:</string>
     <string name="supervisormatchlab">Supervisor matches lab staff?</string>
     <string name="zeroInt">0</string>
-    <string name="healthTitle">Health \nFacility Info</string>
+    <string name="healthTitle">Health\nFacility\nInfo</string>
     <string name="idHeader">ID</string>
     <string name="nameHeader">Name</string>
-    <string name="clinicalFeverEvalTitle">Clinical fever\n evaluation</string>
+    <string name="clinicalFeverEvalTitle">Clinical\nfever\nevaluation</string>
     <string name="action_pull">Update questions from DHIS</string>
     <string name="good">Good</string>
     <string name="fare">Fare</string>

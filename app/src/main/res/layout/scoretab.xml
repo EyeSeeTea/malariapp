@@ -1,530 +1,712 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="fill_parent"
     android:gravity="center">
-    <TableLayout
+
+    <GridLayout
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:id="@+id/scoreTable">
+        android:columnCount="1"
+        android:rowCount="1"
+        android:layout_gravity="center">
 
-        <TableRow
+        <TableLayout
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:id="@+id/healthRow"
-            android:gravity="right" >
+            android:id="@+id/scoreTable"
+            android:gravity="center"
+            android:layout_gravity="center">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="@string/healthTitle"
-                android:id="@+id/healthTitle"
-                android:textStyle="bold"
-                android:padding="10dip"
-                android:textSize="16sp"
-                android:layout_gravity="center_vertical" />
+            <TableRow
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:id="@+id/healthRow"
+                android:gravity="right"
+                android:layout_gravity="center">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="@string/zeroFloat"
-                android:id="@+id/healthScore"
-                android:background="#407015"
-                android:textColor="#ffffff"
-                android:textSize="16sp"
-                android:gravity="center"
-                android:layout_gravity="center_vertical" />
-        </TableRow>
+                <Space
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_weight="0.2" />
 
-        <TableRow
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:id="@+id/profileRow"
-            android:gravity="right" >
+                <Space
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_weight="0.1" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="@string/profileTitle"
-                android:id="@+id/profileTitle"
-                android:textStyle="bold"
-                android:padding="10dip"
-                android:textSize="16sp"
-                android:layout_gravity="center_vertical" />
+                <Space
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_weight="0.1" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="@string/zeroFloat"
-                android:id="@+id/profileScore"
-                android:background="#407015"
-                android:textColor="#ffffff"
-                android:textSize="16sp"
-                android:gravity="center"
-                android:layout_gravity="center_vertical" />
-        </TableRow>
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:text="@string/healthTitle"
+                    android:id="@+id/healthTitle"
+                    android:textStyle="bold"
+                    android:padding="10dip"
+                    android:textSize="14sp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="0.4" />
 
-        <TableRow
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:id="@+id/headersRow"
-            android:gravity="right">
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="@string/zeroFloat"
+                    android:id="@+id/healthScore"
+                    android:background="#407015"
+                    android:textColor="#ffffff"
+                    android:textSize="16sp"
+                    android:gravity="center"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="0.2" />
+            </TableRow>
 
-            <Space
-                android:layout_width="20px"
-                android:layout_height="20px" />
+            <TableRow
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:id="@+id/profileRow"
+                android:gravity="right"
+                android:layout_gravity="center">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="@string/case1"
-                android:id="@+id/case1title"
-                android:textStyle="bold"
-                android:padding="10dip"
-                android:textColor="#ffffff"
-                android:background="#ff639533"
-                android:textSize="16sp"
-                android:gravity="center"
-                android:layout_gravity="center_vertical" />
+                <Space
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_weight="0.2" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="@string/case2"
-                android:id="@+id/case2title"
-                android:textStyle="bold"
-                android:padding="10dip"
-                android:background="#1e506c"
-                android:textColor="#ffffff"
-                android:textSize="16sp"
-                android:gravity="center"
-                android:layout_gravity="center_vertical" />
+                <Space
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_weight="0.1" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="@string/case3"
-                android:id="@+id/case3title"
-                android:textStyle="bold"
-                android:padding="10dip"
-                android:background="#429470"
-                android:textColor="#ffffff"
-                android:textSize="16sp"
-                android:gravity="center"
-                android:layout_gravity="center_vertical" />
+                <Space
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_weight="0.1" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="@string/avgTitle"
-                android:id="@+id/avgTitle"
-                android:textStyle="bold"
-                android:padding="10dip"
-                android:background="#407015"
-                android:textColor="#ffffff"
-                android:textSize="16sp"
-                android:gravity="center"
-                android:layout_gravity="center_vertical" />
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:text="@string/profileTitle"
+                    android:id="@+id/profileTitle"
+                    android:textStyle="bold"
+                    android:padding="10dip"
+                    android:textSize="14sp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="0.4" />
 
-        </TableRow>
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="@string/zeroFloat"
+                    android:id="@+id/profileScore"
+                    android:background="#407015"
+                    android:textColor="#ffffff"
+                    android:textSize="16sp"
+                    android:gravity="center"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="0.2" />
+            </TableRow>
 
-        <TableRow
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:id="@+id/clinicalRow"
-            android:gravity="right">
+            <TableRow
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:id="@+id/headersRow"
+                android:gravity="right"
+                android:layout_gravity="center">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="@string/clinicalFeverEvalTitle"
-                android:id="@+id/clinicalTitle"
-                android:textStyle="bold"
-                android:padding="10dip"
-                android:textSize="16sp"
-                android:layout_gravity="center_vertical" />
+                <Space
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_weight="0.2" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="@string/zeroFloat"
-                android:id="@+id/clinicalCase1"
-                android:background="#ff639533"
-                android:textColor="#ffffff"
-                android:textSize="16sp"
-                android:gravity="center"
-                android:layout_gravity="center_vertical" />
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:text="@string/case1"
+                    android:id="@+id/case1title"
+                    android:textStyle="bold"
+                    android:padding="10dip"
+                    android:textColor="#ffffff"
+                    android:background="#ff639533"
+                    android:textSize="16sp"
+                    android:gravity="center"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="0.2" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="@string/zeroFloat"
-                android:id="@+id/clinicalCase2"
-                android:background="#1e506c"
-                android:textColor="#ffffff"
-                android:textSize="16sp"
-                android:gravity="center"
-                android:layout_gravity="center_vertical" />
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:text="@string/case2"
+                    android:id="@+id/case2title"
+                    android:textStyle="bold"
+                    android:padding="10dip"
+                    android:background="#1e506c"
+                    android:textColor="#ffffff"
+                    android:textSize="16sp"
+                    android:gravity="center"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="0.2" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="@string/zeroFloat"
-                android:id="@+id/clinicalCase3"
-                android:background="#429470"
-                android:textColor="#ffffff"
-                android:textSize="16sp"
-                android:gravity="center"
-                android:layout_gravity="center_vertical" />
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:text="@string/case3"
+                    android:id="@+id/case3title"
+                    android:textStyle="bold"
+                    android:padding="10dip"
+                    android:background="#429470"
+                    android:textColor="#ffffff"
+                    android:textSize="16sp"
+                    android:gravity="center"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="0.2" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="@string/zeroFloat"
-                android:id="@+id/clinicalAvg"
-                android:background="#407015"
-                android:textColor="#ffffff"
-                android:textSize="16sp"
-                android:gravity="center"
-                android:layout_gravity="center_vertical" />
-        </TableRow>
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:text="@string/avgTitle"
+                    android:id="@+id/avgTitle"
+                    android:textStyle="bold"
+                    android:padding="10dip"
+                    android:background="#407015"
+                    android:textColor="#ffffff"
+                    android:textSize="16sp"
+                    android:gravity="center"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="0.2" />
 
-        <TableRow
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:id="@+id/rdtRow"
-            android:gravity="right">
+            </TableRow>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="@string/rdtTitle"
-                android:id="@+id/rdtTitle"
-                android:textStyle="bold"
-                android:padding="10dip"
-                android:textSize="16sp"
-                android:layout_gravity="center_vertical" />
+            <TableRow
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:id="@+id/clinicalRow"
+                android:gravity="right"
+                android:layout_gravity="center">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="@string/zeroFloat"
-                android:id="@+id/rdtCase1"
-                android:background="#ff639533"
-                android:textColor="#ffffff"
-                android:textSize="16sp"
-                android:gravity="center"
-                android:layout_gravity="center_vertical" />
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:text="@string/clinicalFeverEvalTitle"
+                    android:id="@+id/clinicalTitle"
+                    android:textStyle="bold"
+                    android:padding="10dip"
+                    android:textSize="14sp"
+                    android:layout_gravity="center_vertical"
+                    android:lines="3"
+                    android:layout_weight="0.2" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="@string/zeroFloat"
-                android:id="@+id/rdtCase2"
-                android:background="#1e506c"
-                android:textColor="#ffffff"
-                android:textSize="16sp"
-                android:gravity="center"
-                android:layout_gravity="center_vertical" />
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="@string/zeroFloat"
+                    android:id="@+id/clinicalCase1"
+                    android:background="#ff639533"
+                    android:textColor="#ffffff"
+                    android:textSize="16sp"
+                    android:gravity="center"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="0.2" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="@string/zeroFloat"
-                android:id="@+id/rdtCase3"
-                android:background="#429470"
-                android:textColor="#ffffff"
-                android:textSize="16sp"
-                android:gravity="center"
-                android:layout_gravity="center_vertical" />
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="@string/zeroFloat"
+                    android:id="@+id/clinicalCase2"
+                    android:background="#1e506c"
+                    android:textColor="#ffffff"
+                    android:textSize="16sp"
+                    android:gravity="center"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="0.2" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="@string/zeroFloat"
-                android:id="@+id/rdtAvg"
-                android:background="#407015"
-                android:textColor="#ffffff"
-                android:textSize="16sp"
-                android:gravity="center"
-                android:layout_gravity="center_vertical" />
-        </TableRow>
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="@string/zeroFloat"
+                    android:id="@+id/clinicalCase3"
+                    android:background="#429470"
+                    android:textColor="#ffffff"
+                    android:textSize="16sp"
+                    android:gravity="center"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="0.2" />
 
-        <TableRow
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:id="@+id/microscopyRow"
-            android:gravity="right">
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="@string/zeroFloat"
+                    android:id="@+id/clinicalAvg"
+                    android:background="#407015"
+                    android:textColor="#ffffff"
+                    android:textSize="16sp"
+                    android:gravity="center"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="0.2" />
+            </TableRow>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="@string/microscopyTitle"
-                android:id="@+id/microscopyTitle"
-                android:textStyle="bold"
-                android:padding="10dip"
-                android:textSize="16sp"
-                android:layout_gravity="center_vertical" />
+            <TableRow
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:id="@+id/rdtRow"
+                android:gravity="right"
+                android:layout_gravity="center">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="@string/zeroFloat"
-                android:id="@+id/microscopyCase1"
-                android:background="#ff639533"
-                android:textColor="#ffffff"
-                android:textSize="16sp"
-                android:gravity="center"
-                android:layout_gravity="center_vertical" />
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:text="@string/rdtTitle"
+                    android:id="@+id/rdtTitle"
+                    android:textStyle="bold"
+                    android:padding="10dip"
+                    android:textSize="14sp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="0.2" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="@string/zeroFloat"
-                android:id="@+id/microscopyCase2"
-                android:background="#1e506c"
-                android:textColor="#ffffff"
-                android:textSize="16sp"
-                android:gravity="center"
-                android:layout_gravity="center_vertical" />
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="@string/zeroFloat"
+                    android:id="@+id/rdtCase1"
+                    android:background="#ff639533"
+                    android:textColor="#ffffff"
+                    android:textSize="16sp"
+                    android:gravity="center"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="0.2" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="@string/zeroFloat"
-                android:id="@+id/microscopyCase3"
-                android:background="#429470"
-                android:textColor="#ffffff"
-                android:textSize="16sp"
-                android:gravity="center"
-                android:layout_gravity="center_vertical" />
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="@string/zeroFloat"
+                    android:id="@+id/rdtCase2"
+                    android:background="#1e506c"
+                    android:textColor="#ffffff"
+                    android:textSize="16sp"
+                    android:gravity="center"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="0.2" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="@string/zeroFloat"
-                android:id="@+id/microscopyAvg"
-                android:background="#407015"
-                android:textColor="#ffffff"
-                android:textSize="16sp"
-                android:gravity="center"
-                android:layout_gravity="center_vertical" />
-        </TableRow>
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="@string/zeroFloat"
+                    android:id="@+id/rdtCase3"
+                    android:background="#429470"
+                    android:textColor="#ffffff"
+                    android:textSize="16sp"
+                    android:gravity="center"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="0.2" />
 
-        <TableRow
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:id="@+id/adherenceRow"
-            android:gravity="right">
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="@string/zeroFloat"
+                    android:id="@+id/rdtAvg"
+                    android:background="#407015"
+                    android:textColor="#ffffff"
+                    android:textSize="16sp"
+                    android:gravity="center"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="0.2" />
+            </TableRow>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="@string/adherenceTitle"
-                android:id="@+id/adherenceTitle"
-                android:textStyle="bold"
-                android:padding="10dip"
-                android:textSize="16sp"
-                android:layout_gravity="center_vertical" />
+            <TableRow
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:id="@+id/microscopyRow"
+                android:gravity="right"
+                android:layout_gravity="center">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="@string/zeroFloat"
-                android:id="@+id/adherenceScore"
-                android:background="#407015"
-                android:textColor="#ffffff"
-                android:textSize="16sp"
-                android:gravity="center"
-                android:layout_gravity="center_vertical" />
-        </TableRow>
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:text="@string/microscopyTitle"
+                    android:id="@+id/microscopyTitle"
+                    android:textStyle="bold"
+                    android:padding="10dip"
+                    android:textSize="14sp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="0.2" />
 
-        <TableRow
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:id="@+id/feedbackRow"
-            android:gravity="right" >
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="@string/zeroFloat"
+                    android:id="@+id/microscopyCase1"
+                    android:background="#ff639533"
+                    android:textColor="#ffffff"
+                    android:textSize="16sp"
+                    android:gravity="center"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="0.2" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="@string/feedbackTitle"
-                android:id="@+id/feedbackTitle"
-                android:textStyle="bold"
-                android:padding="10dip"
-                android:textSize="16sp"
-                android:layout_gravity="center_vertical" />
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="@string/zeroFloat"
+                    android:id="@+id/microscopyCase2"
+                    android:background="#1e506c"
+                    android:textColor="#ffffff"
+                    android:textSize="16sp"
+                    android:gravity="center"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="0.2" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="@string/zeroFloat"
-                android:id="@+id/feedbackScore"
-                android:background="#407015"
-                android:textColor="#ffffff"
-                android:textSize="16sp"
-                android:gravity="center"
-                android:layout_gravity="center_vertical" />
-        </TableRow>
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="@string/zeroFloat"
+                    android:id="@+id/microscopyCase3"
+                    android:background="#429470"
+                    android:textColor="#ffffff"
+                    android:textSize="16sp"
+                    android:gravity="center"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="0.2" />
 
-        <TableRow
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:id="@+id/envAndMatRow"
-            android:gravity="right" >
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="@string/zeroFloat"
+                    android:id="@+id/microscopyAvg"
+                    android:background="#407015"
+                    android:textColor="#ffffff"
+                    android:textSize="16sp"
+                    android:gravity="center"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="0.2" />
+            </TableRow>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="@string/envAndMatsTitle"
-                android:id="@+id/envAndMatTitle"
-                android:textStyle="bold"
-                android:padding="10dip"
-                android:textSize="16sp"
-                android:layout_gravity="center_vertical" />
+            <TableRow
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:id="@+id/adherenceRow"
+                android:gravity="right"
+                android:layout_gravity="center">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="@string/zeroFloat"
-                android:id="@+id/envAndMatScore"
-                android:background="#407015"
-                android:textColor="#ffffff"
-                android:textSize="16sp"
-                android:gravity="center"
-                android:layout_gravity="center_vertical" />
-        </TableRow>
+                <Space
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_weight="0.2" />
 
-        <TableRow
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:id="@+id/reportingRow"
-            android:gravity="right" >
+                <Space
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_weight="0.1" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="Reporting"
-                android:id="@+id/reportingTitle"
-                android:textStyle="bold"
-                android:padding="10dip"
-                android:textSize="16sp"
-                android:layout_gravity="center_vertical" />
+                <Space
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_weight="0.1" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="@string/zeroFloat"
-                android:id="@+id/reportingScore"
-                android:background="#407015"
-                android:textColor="#ffffff"
-                android:textSize="16sp"
-                android:gravity="center"
-                android:layout_gravity="center_vertical" />
-        </TableRow>
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:text="@string/adherenceTitle"
+                    android:id="@+id/adherenceTitle"
+                    android:textStyle="bold"
+                    android:padding="10dip"
+                    android:textSize="14sp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="0.4" />
 
-        <TableRow
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:id="@+id/iqaeqaRow"
-            android:gravity="right" >
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="@string/zeroFloat"
+                    android:id="@+id/adherenceScore"
+                    android:background="#407015"
+                    android:textColor="#ffffff"
+                    android:textSize="16sp"
+                    android:gravity="center"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="0.2" />
+            </TableRow>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="@string/iqaeqaTitle"
-                android:id="@+id/iqaeqaTitle"
-                android:textStyle="bold"
-                android:padding="10dip"
-                android:textSize="16sp"
-                android:layout_gravity="center_vertical" />
+            <TableRow
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:id="@+id/feedbackRow"
+                android:gravity="right"
+                android:layout_gravity="center">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="@string/zeroFloat"
-                android:id="@+id/iqaeqaScore"
-                android:background="#407015"
-                android:textColor="#ffffff"
-                android:textSize="16sp"
-                android:gravity="center"
-                android:layout_gravity="center_vertical" />
-        </TableRow>
+                <Space
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_weight="0.2" />
 
-        <TableRow
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:id="@+id/blankRow"
-            android:padding="20dip">
+                <Space
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_weight="0.1" />
 
-            <Space
-                android:layout_width="10dip"
-                android:layout_height="10dip" />
-        </TableRow>
+                <Space
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_weight="0.1" />
 
-        <TableRow
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:id="@+id/overallRow"
-            android:gravity="right">
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:text="@string/feedbackTitle"
+                    android:id="@+id/feedbackTitle"
+                    android:textStyle="bold"
+                    android:padding="10dip"
+                    android:textSize="14sp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="0.4" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="@string/overall"
-                android:id="@+id/totalScoreTitle"
-                android:textStyle="bold"
-                android:textColor="#002235"
-                android:textSize="20sp"
-                android:layout_gravity="center_vertical"
-                android:gravity="center" />
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="@string/zeroFloat"
+                    android:id="@+id/feedbackScore"
+                    android:background="#407015"
+                    android:textColor="#ffffff"
+                    android:textSize="16sp"
+                    android:gravity="center"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="0.2" />
+            </TableRow>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="@string/zeroFloat"
-                android:id="@+id/totalScore"
-                android:textStyle="bold|italic"
-                android:textColor="#ffffff"
-                android:textSize="20sp"
-                android:background="#002235"
-                android:gravity="center"
-                android:layout_gravity="center_vertical" />
-        </TableRow>
-    </TableLayout>
+            <TableRow
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:id="@+id/envAndMatRow"
+                android:gravity="right"
+                android:layout_gravity="center">
+
+                <Space
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_weight="0.2" />
+
+                <Space
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_weight="0.1" />
+
+                <Space
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_weight="0.1" />
+
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:text="@string/envAndMatsTitle"
+                    android:id="@+id/envAndMatTitle"
+                    android:textStyle="bold"
+                    android:padding="10dip"
+                    android:textSize="14sp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="0.4" />
+
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="@string/zeroFloat"
+                    android:id="@+id/envAndMatScore"
+                    android:background="#407015"
+                    android:textColor="#ffffff"
+                    android:textSize="16sp"
+                    android:gravity="center"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="0.2" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:id="@+id/reportingRow"
+                android:gravity="right"
+                android:layout_gravity="center">
+
+                <Space
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_weight="0.2" />
+
+                <Space
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_weight="0.1" />
+
+                <Space
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_weight="0.1" />
+
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:text="Reporting"
+                    android:id="@+id/reportingTitle"
+                    android:textStyle="bold"
+                    android:padding="10dip"
+                    android:textSize="14sp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="0.4" />
+
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="@string/zeroFloat"
+                    android:id="@+id/reportingScore"
+                    android:background="#407015"
+                    android:textColor="#ffffff"
+                    android:textSize="16sp"
+                    android:gravity="center"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="0.2" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:id="@+id/iqaeqaRow"
+                android:gravity="right"
+                android:layout_gravity="center">
+
+                <Space
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_weight="0.2" />
+
+                <Space
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_weight="0.1" />
+
+                <Space
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_weight="0.1" />
+
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:text="@string/iqaeqaTitle"
+                    android:id="@+id/iqaeqaTitle"
+                    android:textStyle="bold"
+                    android:padding="10dip"
+                    android:textSize="14sp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="0.4" />
+
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="@string/zeroFloat"
+                    android:id="@+id/iqaeqaScore"
+                    android:background="#407015"
+                    android:textColor="#ffffff"
+                    android:textSize="16sp"
+                    android:gravity="center"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="0.2" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:id="@+id/blankRow"
+                android:padding="20dip">
+
+                <Space
+                    android:layout_width="10dip"
+                    android:layout_height="10dip" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:id="@+id/overallRow"
+                android:gravity="right"
+                android:layout_gravity="center">
+
+                <Space
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_weight="0.2" />
+
+                <Space
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_weight="0.1" />
+
+                <Space
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_weight="0.1" />
+
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:text="@string/overall"
+                    android:id="@+id/totalScoreTitle"
+                    android:textStyle="bold"
+                    android:textColor="#002235"
+                    android:textSize="20sp"
+                    android:layout_gravity="center_vertical"
+                    android:gravity="center"
+                    android:layout_weight="0.4" />
+
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:text="@string/zeroFloat"
+                    android:id="@+id/totalScore"
+                    android:textStyle="bold|italic"
+                    android:textColor="#ffffff"
+                    android:textSize="20sp"
+                    android:background="#002235"
+                    android:gravity="center"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="0.2"
+                    android:padding="5dip" />
+            </TableRow>
+        </TableLayout>
+    </GridLayout>
+
 </LinearLayout>
