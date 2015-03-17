@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <TableRow xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content">
 
     <LinearLayout
         android:orientation="vertical"
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/linearLayout" >
+        android:id="@+id/linearLayout"
+        android:layout_weight="1">
 
         <TextView
             android:layout_width="170dip"
@@ -19,11 +20,12 @@
 
     <LinearLayout
         android:orientation="vertical"
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:id="@+id/registerContainer"
         android:padding="5dip"
-        android:layout_gravity="center">
+        android:layout_gravity="center"
+        android:layout_weight="1">
 
         <EditText
                 android:layout_width="40dip"
@@ -36,11 +38,12 @@
 
     <LinearLayout
         android:orientation="vertical"
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:id="@+id/monthlyReportContainer"
         android:padding="5dip"
-        android:layout_gravity="center">
+        android:layout_gravity="center"
+        android:layout_weight="1">
 
         <EditText
                 android:layout_width="40dip"
@@ -54,11 +57,12 @@
 
     <LinearLayout
         android:orientation="vertical"
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:id="@+id/scoreContainer"
         android:padding="5dip"
-        android:layout_gravity="center" >
+        android:layout_gravity="center"
+        android:layout_weight="1">
 
         <TextView
             android:layout_width="40dip"

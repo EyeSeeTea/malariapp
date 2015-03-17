@@ -62,21 +62,21 @@
         android:id="@+id/gridLayout" >
 
         <TableLayout
-            android:layout_width="wrap_content"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:id="@+id/tableLayout"
             android:tag="Reporting2"
             android:layout_gravity="center" >
 
             <TableRow
-                android:layout_width="wrap_content"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/tableRow"
                 android:layout_gravity="center"
                 android:background="@drawable/background_odd" >
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:text="@string/results"
@@ -85,10 +85,11 @@
                     android:textColor="#ffffff"
                     android:gravity="center"
                     android:lines="2"
-                    android:padding="5dip" />
+                    android:padding="5dip"
+                    android:layout_weight="1" />
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:text="@string/register"
@@ -97,10 +98,11 @@
                     android:textColor="#ffffff"
                     android:lines="2"
                     android:gravity="center"
-                    android:padding="5dip" />
+                    android:padding="5dip"
+                    android:layout_weight="1" />
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:text="@string/monthlyReport"
@@ -109,10 +111,11 @@
                     android:textColor="#ffffff"
                     android:lines="2"
                     android:gravity="center"
-                    android:padding="5dip" />
+                    android:padding="5dip"
+                    android:layout_weight="1" />
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:text="@string/scoreHeader"
@@ -121,7 +124,8 @@
                     android:textColor="#ffffff"
                     android:lines="2"
                     android:gravity="center"
-                    android:padding="5dip" />
+                    android:padding="5dip"
+                    android:layout_weight="1" />
 
             </TableRow>
         </TableLayout>

@@ -1,21 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <TableRow xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
+    android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/background_odd">
 
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceSmall"
-        android:id="@+id/number" />
+        android:id="@+id/number"
+        android:layout_weight="1" />
 
     <LinearLayout
         android:orientation="vertical"
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:id="@+id/patientIdContainer"
-        android:padding="5dip">
+        android:padding="5dip"
+        android:layout_weight="1">
 
         <EditText
             android:layout_width="40dip"
@@ -28,9 +30,10 @@
 
     <LinearLayout
         android:orientation="vertical"
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/testResultContainer">
+        android:id="@+id/testResultContainer"
+        android:layout_weight="1">
 
         <TextView
             android:layout_width="wrap_content"
@@ -43,10 +46,11 @@
 
     <LinearLayout
         android:orientation="vertical"
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:id="@+id/actContainer"
-        android:padding="5dip">
+        android:padding="5dip"
+        android:layout_weight="1">
 
         <LinearLayout
             android:orientation="horizontal"
@@ -66,11 +70,12 @@
 
     <LinearLayout
         android:orientation="vertical"
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:id="@+id/scoreContainer"
         android:padding="5dip"
-        android:layout_gravity="center">
+        android:layout_gravity="center"
+        android:layout_weight="1">
 
         <TextView
             android:layout_width="40dip"

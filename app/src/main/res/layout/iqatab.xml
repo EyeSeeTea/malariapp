@@ -21,25 +21,25 @@
             android:paddingBottom="20dip" />
 
         <TableLayout
-            android:layout_width="wrap_content"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:id="@+id/supervisorTable"
             android:tag="IQEQA1"
             android:layout_gravity="center">
 
             <TableRow
-                android:layout_width="wrap_content"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/supervisorHeader"
                 android:layout_gravity="center"
                 android:background="@drawable/background_odd">
 
                 <Space
-                    android:layout_width="20dip"
-                    android:layout_height="40dip" />
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content" />
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:text="@string/testResultsHeader"
@@ -48,10 +48,11 @@
                     android:textColor="#ffffff"
                     android:lines="2"
                     android:gravity="center"
-                    android:padding="5dip" />
+                    android:padding="5dip"
+                    android:layout_weight="1" />
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:text="@string/parasites"
@@ -60,10 +61,11 @@
                     android:textColor="#ffffff"
                     android:gravity="center"
                     android:lines="2"
-                    android:padding="5dip" />
+                    android:padding="5dip"
+                    android:layout_weight="1" />
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:text="@string/species"
@@ -72,7 +74,8 @@
                     android:textColor="#ffffff"
                     android:lines="2"
                     android:gravity="center"
-                    android:padding="5dip" />
+                    android:padding="5dip"
+                    android:layout_weight="1" />
 
             </TableRow>
         </TableLayout>
@@ -100,25 +103,26 @@
             android:paddingBottom="20dip" />
 
         <TableLayout
-            android:layout_width="wrap_content"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:id="@+id/labStaffTable"
             android:tag="IQEQA2"
             android:layout_gravity="center" >
 
             <TableRow
-                android:layout_width="wrap_content"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/labStaffHeader"
                 android:layout_gravity="center"
                 android:background="@drawable/background_odd" >
 
                 <Space
-                    android:layout_width="20dip"
-                    android:layout_height="40dip" />
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:text="@string/testResultsHeader"
@@ -127,11 +131,12 @@
                     android:textColor="#ffffff"
                     android:lines="2"
                     android:gravity="center"
-                    android:padding="5dip" />
+                    android:padding="5dip"
+                    android:layout_weight="1" />
 
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="fill_parent"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:text="@string/parasites"
                     android:id="@+id/labStaffParasites"
@@ -139,11 +144,12 @@
                     android:textColor="#ffffff"
                     android:gravity="center"
                     android:lines="2"
-                    android:padding="5dip" />
+                    android:padding="5dip"
+                    android:layout_weight="1" />
 
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="fill_parent"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:text="@string/species"
                     android:id="@+id/labStaffSpecies"
@@ -151,7 +157,8 @@
                     android:textColor="#ffffff"
                     android:lines="2"
                     android:gravity="center"
-                    android:padding="5dip" />
+                    android:padding="5dip"
+                    android:layout_weight="1" />
             </TableRow>
         </TableLayout>
 
@@ -179,24 +186,25 @@
             android:paddingBottom="20dip" />
 
         <TableLayout
-            android:layout_width="wrap_content"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:id="@+id/matchTable"
             android:layout_gravity="center" >
 
             <TableRow
-                android:layout_width="wrap_content"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/matchHeaders"
                 android:layout_gravity="center"
                 android:background="@drawable/background_odd" >
 
                 <Space
-                    android:layout_width="20dip"
-                    android:layout_height="40dip" />
+                    android:layout_width="fill_parent"
+                    android:layout_height="40dip"
+                    android:layout_weight="1" />
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:text="Maths below are auto-calculated"
@@ -205,209 +213,230 @@
                     android:textColor="#ffffff"
                     android:lines="2"
                     android:gravity="center"
-                    android:padding="5dip" />
+                    android:padding="5dip"
+                    android:layout_weight="1" />
 
             </TableRow>
 
             <TableRow xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="wrap_content"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/background_odd">
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceSmall"
                     android:id="@+id/number1"
-                    android:text="@string/one" />
+                    android:text="@string/one"
+                    android:layout_weight="1" />
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:id="@+id/matchesText1"
-                    android:gravity="center" />
+                    android:gravity="center"
+                    android:layout_weight="1" />
 
             </TableRow>
 
             <TableRow xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="wrap_content"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/background_even">
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceSmall"
                     android:id="@+id/number2"
-                    android:text="@string/two" />
+                    android:text="@string/two"
+                    android:layout_weight="1" />
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:id="@+id/matchesText2"
-                    android:gravity="center" />
+                    android:gravity="center"
+                    android:layout_weight="1" />
             </TableRow>
 
             <TableRow xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="wrap_content"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/background_odd">
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceSmall"
                     android:id="@+id/number3"
-                    android:text="@string/three" />
+                    android:text="@string/three"
+                    android:layout_weight="1" />
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:id="@+id/matchesText3"
-                    android:gravity="center" />
+                    android:gravity="center"
+                    android:layout_weight="1" />
             </TableRow>
 
             <TableRow xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="wrap_content"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/background_even">
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceSmall"
                     android:id="@+id/number4"
-                    android:text="@string/four" />
+                    android:text="@string/four"
+                    android:layout_weight="1" />
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:id="@+id/matchesText4"
-                    android:gravity="center" />
+                    android:gravity="center"
+                    android:layout_weight="1" />
             </TableRow>
 
             <TableRow xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="wrap_content"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/background_odd">
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceSmall"
                     android:id="@+id/number5"
-                    android:text="@string/five" />
+                    android:text="@string/five"
+                    android:layout_weight="1" />
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:id="@+id/matchesText5"
-                    android:gravity="center" />
+                    android:gravity="center"
+                    android:layout_weight="1" />
             </TableRow>
 
             <TableRow xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="wrap_content"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/background_even">
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceSmall"
                     android:id="@+id/number6"
-                    android:text="@string/six" />
+                    android:text="@string/six"
+                    android:layout_weight="1" />
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:id="@+id/matchesText6"
-                    android:gravity="center" />
+                    android:gravity="center"
+                    android:layout_weight="1" />
             </TableRow>
 
             <TableRow xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="wrap_content"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/background_odd">
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceSmall"
                     android:id="@+id/number7"
-                    android:text="@string/seven" />
+                    android:text="@string/seven"
+                    android:layout_weight="1" />
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:id="@+id/matchesText7"
-                    android:gravity="center" />
+                    android:gravity="center"
+                    android:layout_weight="1" />
             </TableRow>
 
             <TableRow xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="wrap_content"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/background_even">
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceSmall"
                     android:id="@+id/number8"
-                    android:text="@string/eight" />
+                    android:text="@string/eight"
+                    android:layout_weight="1" />
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:id="@+id/matchesText8"
-                    android:gravity="center" />
+                    android:gravity="center"
+                    android:layout_weight="1" />
             </TableRow>
 
             <TableRow xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="wrap_content"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/background_odd">
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceSmall"
                     android:id="@+id/number9"
-                    android:text="@string/nine" />
+                    android:text="@string/nine"
+                    android:layout_weight="1" />
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:id="@+id/matchesText9"
-                    android:gravity="center" />
+                    android:gravity="center"
+                    android:layout_weight="1" />
             </TableRow>
 
             <TableRow xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="wrap_content"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/background_even">
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceSmall"
                     android:id="@+id/number10"
-                    android:text="@string/ten" />
+                    android:text="@string/ten"
+                    android:layout_weight="1" />
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:id="@+id/matchesText10"
-                    android:gravity="center" />
+                    android:gravity="center"
+                    android:layout_weight="1" />
             </TableRow>
         </TableLayout>
     </GridLayout>
