@@ -1,4 +1,4 @@
-package org.eyeseetea.malariacare.layout.utils;
+package org.eyeseetea.malariacare.layout;
 
 import android.text.TextWatcher;
 import android.util.Log;
@@ -24,6 +24,7 @@ import org.eyeseetea.malariacare.layout.configuration.LayoutConfiguration;
 import org.eyeseetea.malariacare.layout.configuration.TabConfiguration;
 import org.eyeseetea.malariacare.layout.listeners.CustomTabListeners;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
+import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 import org.eyeseetea.malariacare.utils.Constants;
 
 import java.util.ArrayList;
@@ -96,7 +97,7 @@ public class CustomTabLayout {
             case R.layout.compositivescoretab:
                 for (CompositiveScore compositiveScore : CompositiveScore.listAll(CompositiveScore.class)){
                     ScoreRegister.registerScore(compositiveScore);
-                    List<View> tables = LayoutUtils.getChildrenByTag((ViewGroup)customView, null, "CompositivesScore");
+                    List<View> tables = LayoutUtils.getChildrenByTag((ViewGroup) customView, null, "CompositivesScore");
                     if(tables.size() == 1) {
                         TableLayout table = (TableLayout) tables.get(0);
                         View rowView = inflater.inflate(R.layout.compositive_scores_record, table, false);
