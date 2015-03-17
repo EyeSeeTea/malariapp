@@ -1,4 +1,4 @@
-package org.eyeseetea.malariacare.data;
+package org.eyeseetea.malariacare.database.model;
 
 import com.orm.SugarRecord;
 import com.orm.query.Condition;
@@ -39,15 +39,10 @@ public class Tab extends SugarRecord<Tab> {
     }
 
     public List<Header> getHeaders(){
-        return Header.find(Header.class, "tab = ?", String.valueOf(this.getId()));
-    }
-
-    public List<Header> getOrderedHeaders(){
         return Select.from(Header.class)
                 .where(Condition.prop("tab")
                         .eq(String.valueOf(this.getId())))
                 .orderBy("orderpos").list();
-        //return Header.find(Header.class, "tab = ? order by orderpos", String.valueOf(this.getId()));
     }
 
     public List<Score> getScores(){

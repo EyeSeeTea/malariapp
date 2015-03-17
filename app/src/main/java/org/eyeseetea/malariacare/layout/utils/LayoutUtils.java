@@ -1,6 +1,7 @@
-package org.eyeseetea.malariacare.layout;
+package org.eyeseetea.malariacare.layout.utils;
 
 import android.graphics.Color;
+import android.util.SparseArray;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
@@ -12,8 +13,10 @@ import android.widget.TextView;
 
 import org.eyeseetea.malariacare.MainActivity;
 import org.eyeseetea.malariacare.R;
-import org.eyeseetea.malariacare.data.Question;
-import org.eyeseetea.malariacare.utils.TabConfiguration;
+import org.eyeseetea.malariacare.database.model.Question;
+import org.eyeseetea.malariacare.layout.configuration.LayoutConfiguration;
+import org.eyeseetea.malariacare.layout.configuration.TabConfiguration;
+import org.eyeseetea.malariacare.layout.score.NumDenRecord;
 import org.eyeseetea.malariacare.utils.Utils;
 
 import java.util.ArrayList;
@@ -23,6 +26,13 @@ import java.util.List;
  * Created by Jose on 22/02/2015.
  */
 public class LayoutUtils {
+
+    public static final int [] rowBackgrounds = {R.drawable.background_even, R.drawable.background_odd};
+
+    // Given a index, this method return a background color
+    public static int calculateBackgrounds(int index) {
+        return LayoutUtils.rowBackgrounds[index % LayoutUtils.rowBackgrounds.length];
+    }
 
     // Given a View, this method climbs the tree searching the target ID
     public static View findParentRecursively(View view, int targetId) {
@@ -70,6 +80,24 @@ public class LayoutUtils {
         return null;
     }
 
+    public static void toggleVisibleChildren(int position, Spinner spinner, Question triggeredQuestion, SparseArray<NumDenRecord> numDenRecordMap) {
+        View parent = LayoutUtils.findParentRecursively(spinner, (Integer) spinner.getTag(R.id.Tab));
+        for (Question childQuestion : triggeredQuestion.getQuestionChildren()) {
+            View childView = LayoutUtils.findChildRecursively(parent, childQuestion);
+            if (position == 1) { //FIXME: There must be a smarter way for saying "if the user selected yes"
+                LayoutUtils.toggleVisible(childView, View.VISIBLE);
+                ((View) ((View) childView).getTag(R.id.HeaderViewTag)).setVisibility(View.VISIBLE);
+                numDenRecordMap.get((Integer) spinner.getTag(R.id.Tab)).addRecord(childQuestion, 0F, childQuestion.getDenominator_w());
+            } else {
+                LayoutUtils.toggleVisible(childView, View.GONE);
+                if (LayoutUtils.isHeaderEmpty(triggeredQuestion.getQuestionChildren(), childQuestion.getHeader().getQuestions())) {
+                    ((View) ((View) childView).getTag(R.id.HeaderViewTag)).setVisibility(View.GONE);
+                }
+                numDenRecordMap.get((Integer) spinner.getTag(R.id.Tab)).deleteRecord(childQuestion);
+            }
+        }
+    }
+
     // Put a View visibility to one of the constants from View class [View.VISIBLE | View.INVISIBLE | View.GONE]
     public static void toggleVisible(View childView, int visibility){
         if (childView instanceof Spinner) {
@@ -94,7 +122,7 @@ public class LayoutUtils {
     // Reset values from Score tab
     public static void resetScores(ViewGroup root){
 
-        for (TabConfiguration tabConfiguration: MainActivity.getTabConfigurations()){
+        for (TabConfiguration tabConfiguration: LayoutConfiguration.getTabsConfiguration().values()){
 
             // First reset the scores TextViews
             if(tabConfiguration.getScoreFieldId() != null) ((TextView)root.findViewById(tabConfiguration.getScoreFieldId())).setText("0.0");

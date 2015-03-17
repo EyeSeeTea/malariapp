@@ -1,6 +1,6 @@
-package org.eyeseetea.malariacare.utils;
+package org.eyeseetea.malariacare.layout.score;
 
-import org.eyeseetea.malariacare.data.Question;
+import org.eyeseetea.malariacare.database.model.Question;
 
 import java.util.ArrayList;
 import java.util.Arrays;

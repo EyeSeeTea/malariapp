@@ -1,4 +1,4 @@
-package org.eyeseetea.malariacare.layout.components;
+package org.eyeseetea.malariacare.layout.dialog;
 
 import android.app.Activity;
 import android.app.AlertDialog;

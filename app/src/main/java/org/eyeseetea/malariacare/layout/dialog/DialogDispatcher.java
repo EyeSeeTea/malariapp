@@ -1,4 +1,4 @@
-package org.eyeseetea.malariacare.layout.components;
+package org.eyeseetea.malariacare.layout.dialog;
 
 import android.app.Activity;
 import android.app.DialogFragment;
@@ -12,8 +12,8 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import org.eyeseetea.malariacare.R;
-import org.eyeseetea.malariacare.data.Question;
-import org.eyeseetea.malariacare.layout.LayoutUtils;
+import org.eyeseetea.malariacare.database.model.Question;
+import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 
 import java.util.List;
 

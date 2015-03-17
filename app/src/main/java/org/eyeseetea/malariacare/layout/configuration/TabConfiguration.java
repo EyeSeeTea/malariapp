@@ -1,4 +1,4 @@
-package org.eyeseetea.malariacare.utils;
+package org.eyeseetea.malariacare.layout.configuration;
 
 import java.util.ArrayList;
 import java.util.List;

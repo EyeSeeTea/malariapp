@@ -1,4 +1,4 @@
-package org.eyeseetea.malariacare.layout.components;
+package org.eyeseetea.malariacare.layout.dialog;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -6,8 +6,6 @@ import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
-
-import org.eyeseetea.malariacare.MainActivity;
 
 /**
  * Created by adrian on 14/03/15.

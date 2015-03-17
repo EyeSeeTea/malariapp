@@ -18,7 +18,7 @@
         <meta-data android:name="DATABASE" android:value="malariacare.db" />
         <meta-data android:name="VERSION" android:value="1" />
         <meta-data android:name="QUERY_LOG" android:value="false" />
-        <meta-data android:name="DOMAIN_PACKAGE_NAME" android:value="org.eyeseetea.malariacare.data" />
+        <meta-data android:name="DOMAIN_PACKAGE_NAME" android:value="org.eyeseetea.malariacare.database.model" />
 
         <activity
             android:name="org.eyeseetea.malariacare.MainActivity"

@@ -1,4 +1,4 @@
-package org.eyeseetea.malariacare.data;
+package org.eyeseetea.malariacare.database.model;
 
 import com.orm.SugarRecord;
 import com.orm.dsl.Ignore;

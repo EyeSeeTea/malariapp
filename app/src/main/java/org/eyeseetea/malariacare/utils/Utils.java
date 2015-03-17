@@ -1,21 +1,6 @@
 package org.eyeseetea.malariacare.utils;
 
-import android.util.SparseArray;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.EditText;
-import android.widget.Spinner;
-
-import com.orm.SugarRecord;
-
-import org.eyeseetea.malariacare.MainActivity;
-import org.eyeseetea.malariacare.R;
-import org.eyeseetea.malariacare.data.Question;
-
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 /**
  * Created by Jose on 22/02/2015.

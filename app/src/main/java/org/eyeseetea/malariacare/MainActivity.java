@@ -1,6 +1,5 @@
 package org.eyeseetea.malariacare;
 
-import android.content.res.AssetManager;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
@@ -13,103 +12,74 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TabHost;
 
-import com.orm.query.Select;
-
-import org.eyeseetea.malariacare.data.Tab;
+import org.eyeseetea.malariacare.database.model.Tab;
+import org.eyeseetea.malariacare.database.utils.Persistence;
 import org.eyeseetea.malariacare.layout.Layout;
-import org.eyeseetea.malariacare.layout.LayoutUtils;
-import org.eyeseetea.malariacare.layout.components.DialogDispatcher;
-import org.eyeseetea.malariacare.utils.PopulateDB;
-import org.eyeseetea.malariacare.utils.TabConfiguration;
+import org.eyeseetea.malariacare.layout.configuration.LayoutConfiguration;
+import org.eyeseetea.malariacare.layout.configuration.TabConfiguration;
+import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
+import org.eyeseetea.malariacare.layout.dialog.DialogDispatcher;
+import org.eyeseetea.malariacare.database.utils.PopulateDB;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
+import java.util.Map;
 
 public class MainActivity extends ActionBarActivity{
-
-    private static final List<TabConfiguration> tabsLayouts = new ArrayList<TabConfiguration>();
-    View viewToEvent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-        long time = System.currentTimeMillis();
+        //long time = System.currentTimeMillis();
 
         super.onCreate(savedInstanceState);
         Log.i(".MainActivity", "Starting App");
         initializeApp();
 
-        long time2 = System.currentTimeMillis();
-        Log.d(".MainActivity", "Time initialing app: " + (time2 -time) + " ms");
-
-        Log.i(".MainActivity", "Starting App");
-        createTabConfiguration();
-
-        long time3 = System.currentTimeMillis();
-        Log.d(".MainActivity", "Time Configuring tab: " + (time3 -time2) + " ms");
+        //long time3 = System.currentTimeMillis();
+        //Log.d(".MainActivity", "Time Configuring tab: " + (time3 -time2) + " ms");
 
         // We import the initial data in case it has been done yet
         if (Tab.count(Tab.class, null, null)==0) {
             Log.i(".MainActivity", "Populating DB");
-            AssetManager assetManager = getAssets();
             try {
-                PopulateDB.populateDB(assetManager);
+                PopulateDB.populateDB(getAssets());
             } catch (IOException e) {
                 e.printStackTrace();
             }
             Log.i(".MainActivity", "DB populated");
         }
 
-        long time4 = System.currentTimeMillis();
-        Log.d(".MainActivity", "Time populating DB: " + (time4 -time3) + " ms");
+        Log.i(".MainActivity", "Initializing Layout Configuration");
+        LayoutConfiguration.initialize(Persistence.getTabs());
+
+        //long time4 = System.currentTimeMillis();
+        //Log.d(".MainActivity", "Time populating DB: " + (time4 -time3) + " ms");
 
         Log.i(".MainActivity", "Initializing Menu and generating tabs");
         createMenuAndTabs();
 
-        long time5 = System.currentTimeMillis();
-        Log.d(".MainActivity", "Time creating menu and tabs: " + (time5 -time4) + " ms");
-    }
-
-    private void createTabConfiguration() {
-        tabsLayouts.add(new TabConfiguration(R.id.healthFacilityInfo, true, null, R.id.healthScore, null));
-        tabsLayouts.add(new TabConfiguration(R.id.profile, true, null, R.id.profileScore, null));
-        tabsLayouts.add(new TabConfiguration(R.id.c1Clinical, true, null, R.id.clinicalCase1, R.id.clinicalAvg));
-        tabsLayouts.add(new TabConfiguration(R.id.c1RDT, true, null, R.id.rdtCase1, R.id.rdtAvg));
-        tabsLayouts.add(new TabConfiguration(R.id.c1Microcospy, true, null, R.id.microscopyCase1, R.id.microscopyAvg));
-        tabsLayouts.add(new TabConfiguration(R.id.c2Clinical, true, null, R.id.clinicalCase2, R.id.clinicalAvg));
-        tabsLayouts.add(new TabConfiguration(R.id.c2RDT, true, null, R.id.rdtCase2, R.id.rdtAvg));
-        tabsLayouts.add(new TabConfiguration(R.id.c2Microscopy, true, null, R.id.microscopyCase2, R.id.microscopyAvg));
-        tabsLayouts.add(new TabConfiguration(R.id.c3Clinical, true, null, R.id.clinicalCase3, R.id.clinicalAvg));
-        tabsLayouts.add(new TabConfiguration(R.id.c3RDT, true, null, R.id.rdtCase3, R.id.rdtAvg));
-        tabsLayouts.add(new TabConfiguration(R.id.c3Microscopy, true, null, R.id.microscopyCase3, R.id.microscopyAvg));
-        tabsLayouts.add(new TabConfiguration(R.id.adherence, false, R.layout.adherencetab, R.id.adherenceScore, null));
-        tabsLayouts.add(new TabConfiguration(R.id.feedback, true, null, R.id.feedbackScore, null));
-        tabsLayouts.add(new TabConfiguration(R.id.environmentMaterial, true, null, R.id.envAndMatScore, null));
-        tabsLayouts.add(new TabConfiguration(R.id.reporting, false, R.layout.reportingtab, R.id.reportingScore, null));
-        tabsLayouts.add(new TabConfiguration(R.id.iqaEQA, false, R.layout.iqatab, R.id.iqaeqaScore, null));
-        tabsLayouts.add(new TabConfiguration(R.id.scoreSummary, false, R.layout.scoretab, null, null));
-        tabsLayouts.add(new TabConfiguration(R.id.compositiveScores, false, R.layout.compositivescoretab, null, null));
+        //long time5 = System.currentTimeMillis();
+        //Log.d(".MainActivity", "Time creating menu and tabs: " + (time5 -time4) + " ms");
     }
 
     private void createMenuAndTabs() {
-        // We get the tab selector spinner and add the different options
-        Spinner tabSpinner = (Spinner) this.findViewById(R.id.tabSpinner);
-        ArrayList<String> spinnerArray = new ArrayList<String>();
-        Layout.setNumDenRecordMap(this);
         // We get all tabs and insert their content in their layout
-        final List<Tab> tabList = Select.from(Tab.class).orderBy("orderpos").list();
-        for (int i = 0; i< tabsLayouts.size(); i++){
-            Tab tabItem = tabList.get(i);
-            Log.d(".MainActivity", "Adding tab to menu and generating tab " + tabItem.toString());
+        //final List<Tab> tabList = Persistence.getTabs();
+        // We get the tab selector spinner and add the different options
+        List<String> spinnerArray = new ArrayList<String>();
+        for (Map.Entry<Tab, TabConfiguration> tabConfigurationEntry : LayoutConfiguration.getTabsConfiguration().entrySet()){
+            Log.d(".MainActivity", "Adding tab to menu and generating tab " + tabConfigurationEntry.getKey().toString());
             //Menu
-            spinnerArray.add(tabItem.getName());
+            spinnerArray.add(tabConfigurationEntry.getKey().getName());
             //Insert tab
-            Layout.insertTab(this, tabItem, tabsLayouts.get(i));
-            Log.d(".MainActivity", "Tab " + tabItem.toString() + " created");
+            Layout.insertTab(this, tabConfigurationEntry.getKey());
+            Log.d(".MainActivity", "Tab " + tabConfigurationEntry.getKey().toString() + " created");
         }
-        tabSpinner.setTag(tabsLayouts);
+
+        Spinner tabSpinner = (Spinner) this.findViewById(R.id.tabSpinner);
+        //tabSpinner.setTag(LayoutConfiguration.getTabsConfiguration());
         ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(this, R.layout.main_spinner_item, spinnerArray);
         tabSpinner.setAdapter(spinnerArrayAdapter);
 
@@ -118,11 +88,9 @@ public class MainActivity extends ActionBarActivity{
         tabSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
-                Spinner spinner = (Spinner) parentView;
-                Tab triggeredTab = (Tab) ((View) LayoutUtils.findParentRecursively(spinner, R.id.Grid).findViewById(tabsLayouts.get(position).getTabId())).getTag(); // Just in case in the future we need to have the tab captured
-                TabHost tabHost = (TabHost) LayoutUtils.findParentRecursively(spinner, R.id.tabHost);
+                TabHost tabHost = (TabHost) LayoutUtils.findParentRecursively((Spinner) parentView, R.id.tabHost);
                 tabHost.setCurrentTab(position);
-                Log.i(".MainActivity", "Tab selected: " + triggeredTab.getName());
+                Log.i(".MainActivity", "Tab selected: " + position);
             }
 
             @Override
@@ -137,8 +105,8 @@ public class MainActivity extends ActionBarActivity{
         {
             @Override
             public void onTabChanged(String tabId) {
-                for (int i = 0; i < tabsLayouts.size(); i++){
-                    final String idLong = Long.toString(tabList.get(i).getId());
+                for (Map.Entry<Tab, TabConfiguration> tabConfigurationEntry : LayoutConfiguration.getTabsConfiguration().entrySet()){
+                    final String idLong = Long.toString(tabConfigurationEntry.getKey().getId());
                     if (tabHost.getCurrentTabTag().equals(idLong)) {
                         tabHost.getCurrentTabView().setOnTouchListener(
                                 new View.OnTouchListener() {
@@ -146,8 +114,8 @@ public class MainActivity extends ActionBarActivity{
                                     public boolean onTouch(View v, MotionEvent event) {
                                         if (event.getAction() == MotionEvent.ACTION_DOWN) {
                                             if (tabHost.getCurrentTabTag().equals(idLong)) {
-                                                for (int k = 0; k < tabsLayouts.size(); k++) {
-                                                    String idLong2 = Long.toString(tabList.get(k).getId());
+                                                for (Map.Entry<Tab, TabConfiguration> tabConfigurationEntry : LayoutConfiguration.getTabsConfiguration().entrySet()){
+                                                    String idLong2 = Long.toString(tabConfigurationEntry.getKey().getId());
                                                     if (!idLong2.equals(idLong)) {
                                                         tabHost.setCurrentTabByTag(idLong2);
                                                     }
@@ -183,21 +151,7 @@ public class MainActivity extends ActionBarActivity{
             Log.d(".MainActivity", "Button clear pressed");
             DialogDispatcher mf = DialogDispatcher.newInstance(view);
             mf.showDialog(getFragmentManager(), DialogDispatcher.CLEAR_DIALOG);
-
-
         }
-    }
-
-    public static List<Integer> getTabsLayouts() {
-        ArrayList<Integer> layouts = new ArrayList<Integer>();
-        for (TabConfiguration tab: tabsLayouts){
-            layouts.add(new Integer(tab.getTabId()));
-        }
-        return layouts;
-    }
-
-    public static List<TabConfiguration> getTabConfigurations(){
-        return tabsLayouts;
     }
 
     @Override
@@ -221,6 +175,5 @@ public class MainActivity extends ActionBarActivity{
 
         return super.onOptionsItemSelected(item);
     }
-
 
 }

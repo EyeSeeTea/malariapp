@@ -1,15 +1,15 @@
-package org.eyeseetea.malariacare.utils;
+package org.eyeseetea.malariacare.database.utils;
 
 import android.content.res.AssetManager;
 
 import com.opencsv.CSVReader;
 
-import org.eyeseetea.malariacare.data.Answer;
-import org.eyeseetea.malariacare.data.CompositiveScore;
-import org.eyeseetea.malariacare.data.Header;
-import org.eyeseetea.malariacare.data.Option;
-import org.eyeseetea.malariacare.data.Question;
-import org.eyeseetea.malariacare.data.Tab;
+import org.eyeseetea.malariacare.database.model.Answer;
+import org.eyeseetea.malariacare.database.model.CompositiveScore;
+import org.eyeseetea.malariacare.database.model.Header;
+import org.eyeseetea.malariacare.database.model.Option;
+import org.eyeseetea.malariacare.database.model.Question;
+import org.eyeseetea.malariacare.database.model.Tab;
 
 import java.io.IOException;
 import java.io.InputStreamReader;

@@ -1,4 +1,4 @@
-package org.eyeseetea.malariacare.utils;
+package org.eyeseetea.malariacare.layout.score;
 
 import android.util.SparseArray;
 import android.view.View;
@@ -6,16 +6,14 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import org.eyeseetea.malariacare.R;
-import org.eyeseetea.malariacare.data.CompositiveScore;
-import org.eyeseetea.malariacare.data.Question;
-import org.eyeseetea.malariacare.layout.LayoutUtils;
-import org.eyeseetea.malariacare.layout.components.DialogDispatcher;
+import org.eyeseetea.malariacare.database.model.CompositiveScore;
+import org.eyeseetea.malariacare.database.model.Question;
+import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
+import org.eyeseetea.malariacare.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by adrian on 26/02/15.
