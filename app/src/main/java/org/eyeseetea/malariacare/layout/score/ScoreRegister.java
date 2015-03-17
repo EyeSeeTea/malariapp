@@ -10,9 +10,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Created by adrian on 26/02/15.
- */
 public class ScoreRegister {
 
     private static final Map<CompositiveScore, CompositiveNumDenRecord> compositiveScoreRegister = new HashMap<CompositiveScore, CompositiveNumDenRecord>();

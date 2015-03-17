@@ -6,9 +6,6 @@ import com.orm.query.Select;
 
 import java.util.List;
 
-/**
- * Created by adrian on 14/02/15.
- */
 public class Tab extends SugarRecord<Tab> {
 
     String name;

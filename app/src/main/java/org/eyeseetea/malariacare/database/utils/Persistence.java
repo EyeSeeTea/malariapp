@@ -6,9 +6,6 @@ import org.eyeseetea.malariacare.database.model.Tab;
 
 import java.util.List;
 
-/**
- * Created by adrian on 16/03/15.
- */
 public class Persistence {
 
     public static List<Tab> getTabs(){

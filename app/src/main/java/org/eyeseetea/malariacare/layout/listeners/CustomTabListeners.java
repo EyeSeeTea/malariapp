@@ -21,9 +21,6 @@ import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.layout.configuration.LayoutConfiguration;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 
-/**
- * Created by adrian on 17/03/15.
- */
 public class CustomTabListeners {
 
 

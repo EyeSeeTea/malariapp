@@ -8,9 +8,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Created by adrian on 16/03/15.
- */
 public class LayoutConfiguration {
 
     private static final Map<Tab, TabConfiguration> tabsConfiguration = new LinkedHashMap<Tab, TabConfiguration>();

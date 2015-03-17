@@ -26,9 +26,6 @@ import org.eyeseetea.malariacare.utils.Utils;
 
 import java.util.List;
 
-/**
- * Created by adrian on 17/03/15.
- */
 public class AutomaticTabLayout {
 
 

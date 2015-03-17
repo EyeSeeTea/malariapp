@@ -3,9 +3,6 @@ package org.eyeseetea.malariacare.layout.configuration;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by adrian on 28/02/15.
- */
 public class TabConfiguration {
 
     Integer tabId;

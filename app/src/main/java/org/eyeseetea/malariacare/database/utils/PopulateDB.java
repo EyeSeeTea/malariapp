@@ -18,9 +18,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Created by adrian on 15/02/15.
- */
 public class PopulateDB {
 
     static Map<Integer, Tab> tabList = new LinkedHashMap<Integer, Tab>();

@@ -2,9 +2,6 @@ package org.eyeseetea.malariacare.database.model;
 
 import com.orm.SugarRecord;
 
-/**
- * Created by adrian on 14/02/15.
- */
 public class Value extends SugarRecord<Value> {
 
     Option option;

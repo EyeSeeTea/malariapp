@@ -30,9 +30,6 @@ import org.eyeseetea.malariacare.utils.Constants;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by adrian on 17/03/15.
- */
 public class CustomTabLayout {
 
     public static void generateCustomTab(MainActivity mainActivity, Tab tab, LayoutInflater inflater, GridLayout layoutParent) {

@@ -14,9 +14,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-/**
- * Created by adrian on 17/03/15.
- */
 public class CompositiveNumDenRecord extends ANumDenRecord{
 
     public void updateCompositivesScore(CompositiveScore compositiveScore, View gridView){

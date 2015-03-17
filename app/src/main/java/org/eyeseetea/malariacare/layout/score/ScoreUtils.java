@@ -2,9 +2,6 @@ package org.eyeseetea.malariacare.layout.score;
 
 import java.util.List;
 
-/**
- * Created by adrian on 17/03/15.
- */
 public class ScoreUtils {
 
     public static float calculateScoreFromNumDen(List<Float> numDenTotal){

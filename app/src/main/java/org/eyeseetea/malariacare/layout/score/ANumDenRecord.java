@@ -8,9 +8,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Created by adrian on 26/02/15.
- */
 public class ANumDenRecord {
 
     private Map<Question,List<Float>> numDenRecord = new HashMap<Question,List<Float>>();

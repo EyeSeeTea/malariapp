@@ -17,15 +17,13 @@ import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 
 import java.util.List;
 
-/**
- * Created by adrian on 14/03/15.
- */
 public class DialogDispatcher extends Fragment {
 
     private static View contextView;
 
     public static final int CLEAR_DIALOG = 1;
     public static final int ERROR_DIALOG = 2;
+    public static final int 
 
     public static DialogDispatcher newInstance(View view) {
         contextView = view;

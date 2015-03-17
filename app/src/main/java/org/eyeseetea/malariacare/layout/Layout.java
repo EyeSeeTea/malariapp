@@ -23,9 +23,6 @@ import org.eyeseetea.malariacare.utils.Utils;
 
 import java.util.List;
 
-/**
- * Created by adrian on 19/02/15.
- */
 public class Layout {
 
     // This method fill in a tab layout

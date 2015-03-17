@@ -7,9 +7,6 @@ import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
 
-/**
- * Created by adrian on 14/03/15.
- */
 public class ErrorDialogFragment extends DialogFragment{
 
 
