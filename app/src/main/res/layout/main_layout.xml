@@ -6,8 +6,8 @@
 
     <LinearLayout
         android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
         android:id="@+id/Header"
         android:gravity="center_vertical|center_horizontal"
         android:layout_weight="0.05"
@@ -30,10 +30,10 @@
 
     <LinearLayout
         android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
         android:id="@+id/GeneralBody"
-        android:layout_weight="0.83">
+        android:layout_weight="0.12">
 
         <TabHost
             android:layout_width="fill_parent"
@@ -636,12 +636,12 @@
 
 
     <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
         android:id="@+id/Footer"
         android:gravity="center_vertical|center_horizontal"
-        android:layout_weight="0.12"
+        android:layout_weight="0.88"
         android:weightSum="1"
         android:background="#429470">
 
@@ -649,15 +649,17 @@
 
         <LinearLayout
             android:orientation="horizontal"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
             android:id="@+id/buttonsAndInfo"
-            android:layout_weight="0.2">
+            android:layout_weight="0.3"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center_horizontal">
 
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/save"
+                android:text="@string/submit"
                 android:id="@+id/save"
                 android:onClick="saveClearResults" />
 
@@ -670,14 +672,26 @@
 
         </LinearLayout>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="@string/developers"
-            android:id="@+id/textView"
-            android:textColor="#ffffff"
-            android:textStyle="bold|italic" />
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="0.7"
+            android:gravity="bottom|right"
+            android:layout_gravity="bottom|right">
+
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="@string/developers"
+                android:id="@+id/textView"
+                android:textColor="#ffffff"
+                android:textStyle="bold|italic"
+                android:minHeight="400dip"
+                android:layout_gravity="bottom|right"
+                android:gravity="bottom|right" />
+        </LinearLayout>
 
     </LinearLayout>
 
