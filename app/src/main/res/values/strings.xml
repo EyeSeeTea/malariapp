@@ -112,6 +112,7 @@
     <string name="nameHeader">Name</string>
     <string name="clinicalFeverEvalTitle">Clinical\nfever\nevaluation</string>
     <string name="action_pull">Update questions from DHIS</string>
+    <string name="action_license">License</string>
     <string name="good">Good</string>
     <string name="fare">Fare</string>
     <string name="poor">Poor</string>
@@ -119,4 +120,5 @@
     <string name="clearMessage">Are you sure you want to completely clear this form?</string>
     <string name="errorTitle">Error</string>
     <string name="errorDenominator">Error, denominator = 0</string>
+    <string name="licenseTitle">GPLv3 License</string>
 </resources>

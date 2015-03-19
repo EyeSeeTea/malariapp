@@ -165,7 +165,7 @@ public class MainActivity extends ActionBarActivity{
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
+        return super.onCreateOptionsMenu(menu);
     }
 
     @Override
@@ -175,12 +175,17 @@ public class MainActivity extends ActionBarActivity{
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        switch(id) {
+            case R.id.action_settings:
+                return true;// TODO: implement the settings menu
+            case R.id.action_pull:
+                return true;// TODO: implement the DHIS pull
+            case R.id.action_license:
+                Log.d(".MainActivity", "User asked for license");
+                DialogDispatcher mf = DialogDispatcher.newInstance(this.getCurrentFocus());
+                mf.showDialog(getFragmentManager(), DialogDispatcher.LICENSE_DIALOG);
+                break;
         }
-
         return super.onOptionsItemSelected(item);
     }
-
 }

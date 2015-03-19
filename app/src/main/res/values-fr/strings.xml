@@ -112,6 +112,7 @@
     <string name="nameHeader">Name</string>
     <string name="clinicalFeverEvalTitle">Clinical\nfever\nevaluation</string>
     <string name="action_pull">Mise à jour des questions dès DHIS</string>
+    <string name="action_license">License</string>
     <string name="good">Bien</string>
     <string name="fare">Moyen</string>
     <string name="poor">Pauvre</string>
@@ -119,4 +120,5 @@
     <string name="clearMessage">Êtes-vous sûr que de vouloir effacer ce formulaire ?</string>
     <string name="errorTitle">Erreur</string>
     <string name="errorDenominator">Erreur, denominateur = 0</string>
+    <string name="licenseTitle">License GPLv3</string>
 </resources>

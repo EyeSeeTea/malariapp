@@ -6,6 +6,7 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
+import android.content.res.AssetManager;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +16,7 @@ import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.model.Question;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 
+import java.io.InputStream;
 import java.util.List;
 
 public class DialogDispatcher extends Fragment {
@@ -23,7 +25,7 @@ public class DialogDispatcher extends Fragment {
 
     public static final int CLEAR_DIALOG = 1;
     public static final int ERROR_DIALOG = 2;
-    public static final int 
+    public static final int LICENSE_DIALOG = 3;
 
     public static DialogDispatcher newInstance(View view) {
         contextView = view;
@@ -51,9 +53,19 @@ public class DialogDispatcher extends Fragment {
                 break;
 
             case ERROR_DIALOG:
-                DialogFragment errorFrag = NoticeDialogFragment.newInstance(R.string.errorTitle, R.string.errorDenominator);
+                DialogFragment errorFrag = ErrorDialogFragment.newInstance(R.string.errorTitle, R.string.errorDenominator);
                 errorFrag.setTargetFragment(this, ERROR_DIALOG);
                 errorFrag.show(fragmentManager.beginTransaction(), "dialog");
+
+                break;
+
+            case LICENSE_DIALOG:
+                InputStream is = contextView.getContext().getResources().openRawResource(R.raw.gpl);
+                DialogFragment licenseFrag = LargeTextDialogFragment.newInstance(R.string.licenseTitle, is);
+                licenseFrag.setTargetFragment(this, LICENSE_DIALOG);
+                licenseFrag.show(fragmentManager.beginTransaction(), "dialog");
+
+                break;
 
         }
     }

@@ -26,16 +26,33 @@ import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
 
-public class ErrorDialogFragment extends OkDialogFragment{
+import org.eyeseetea.malariacare.R;
 
-    public static DialogFragment newInstance(int title, int message) {
-        ErrorDialogFragment frag = new ErrorDialogFragment();
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+
+public class LargeTextDialogFragment extends OkDialogFragment{
+
+    public static DialogFragment newInstance(int title, InputStream inputStream) {
+        LargeTextDialogFragment frag = new LargeTextDialogFragment();
         setIcon(android.R.drawable.ic_dialog_alert);
         Bundle args = new Bundle();
         args.putInt("title", title);
-        args.putInt("message", message);
+        InputStreamReader isr = new InputStreamReader(inputStream);
+        BufferedReader br = new BufferedReader(isr);
+        String line="";
+        try {
+            while (br.ready()) {
+                line+=br.readLine()+'\n';
+            }
+        } catch (IOException io){
+            // TODO: catch this exception and show it with a Dialog
+        }
+        args.putString("message", line);
         frag.setArguments(args);
-        return (DialogFragment)frag;
+        return frag;
     }
 
 }
