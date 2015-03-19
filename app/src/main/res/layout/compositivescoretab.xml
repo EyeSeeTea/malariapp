@@ -10,25 +10,25 @@
         android:id="@+id/compositivescoreTable">
 
         <TableRow
-            android:layout_width="wrap_content"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:id="@+id/tableRow2"
-            android:layout_gravity="center"
-            android:background="@drawable/background_odd" >
+            android:layout_gravity="center">
 
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="@string/idHeader"
                 android:id="@+id/idHeader"
                 android:background="@drawable/background_header"
                 android:textColor="#ffffff"
                 android:gravity="center"
-                android:padding="5dip" />
+                android:padding="5dip"
+                android:layout_weight="0.3" />
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="@string/nameHeader"
@@ -36,10 +36,11 @@
                 android:background="@drawable/background_header"
                 android:textColor="#ffffff"
                 android:gravity="center"
-                android:padding="5dip" />
+                android:padding="5dip"
+                android:layout_weight="0.5" />
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="@string/scoreHeader"
@@ -47,7 +48,8 @@
                 android:background="@drawable/background_header"
                 android:textColor="#ffffff"
                 android:gravity="center"
-                android:padding="5dip" />
+                android:padding="5dip"
+                android:layout_weight="0.2" />
         </TableRow>
     </TableLayout>
 </LinearLayout>

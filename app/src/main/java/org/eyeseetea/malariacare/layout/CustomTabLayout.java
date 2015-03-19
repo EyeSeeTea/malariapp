@@ -103,6 +103,7 @@ public class CustomTabLayout {
                         ((TextView) ((ViewGroup) ((ViewGroup) rowView).getChildAt(0)).getChildAt(0)).setText(compositiveScore.getCode());
                         ((TextView) ((ViewGroup) ((ViewGroup) rowView).getChildAt(1)).getChildAt(0)).setText(compositiveScore.getLabel());
                         table.addView(rowView);
+                        iterBacks++;
                     }
                     else{
                         Log.e(".Layout", "Error: Header name is supposed to be used to distinguish where to place associated questions in custom tabs, but when looking for header named CompositivesScore we've found " + tables.size() + " results");
