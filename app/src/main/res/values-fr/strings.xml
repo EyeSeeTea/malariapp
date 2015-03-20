@@ -122,4 +122,17 @@
     <string name="errorDenominator">Erreur, denominateur = 0</string>
     <string name="licenseTitle">License GPLv3</string>
     <string name="submit">Envoyer</string>
+
+    <!-- # LOGIN ACTIVITY -->
+    <string name="title_activity_login">Se connecter</string>
+    <string name="prompt_email">Mel</string>
+    <string name="prompt_password">Mot de passe (optionel)</string>
+    <string name="action_sign_in">Se connecter ou s\'enregistrer</string>
+    <string name="action_sign_in_short">S\'enregistrer</string>
+    <string name="plus_sign_out">Changer compte Google+</string>
+    <string name="plus_disconnect">Se deconnecter de Google+</string>
+    <string name="error_invalid_email">Cette address du mel n\'est pas valide</string>
+    <string name="error_invalid_password">Le mot de passe est trop courte</string>
+    <string name="error_incorrect_password">Le mot de pas n\'est pas correct</string>
+    <string name="error_field_required">Cette entrée est necessaire</string>
 </resources>

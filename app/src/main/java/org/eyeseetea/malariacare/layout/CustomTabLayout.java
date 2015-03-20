@@ -92,6 +92,7 @@ public class CustomTabLayout {
                 layoutParent.addView(customView);
                 break;
             case R.layout.compositivescoretab:
+                // FIXME: Be careful here. For the rest of the tabs, this is not the place where the questions are being placed in their rows, but in the case of this tab it is. We may rethink all the process and do it in the same way
                 for (CompositiveScore compositiveScore : CompositiveScore.listAll(CompositiveScore.class)){
                     ScoreRegister.registerScore(compositiveScore);
                     List<View> tables = LayoutUtils.getChildrenByTag((ViewGroup) customView, null, "CompositivesScore");

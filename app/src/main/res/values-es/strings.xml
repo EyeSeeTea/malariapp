@@ -122,4 +122,17 @@
     <string name="errorDenominator">Error, denominador = 0</string>
     <string name="licenseTitle">Licencia GPLv3</string>
     <string name="submit">Enviar</string>
+
+    <!-- # LOGIN ACTIVITY -->
+    <string name="title_activity_login">Sign in</string>
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Contraseña (opcional)</string>
+    <string name="action_sign_in">Acceder o registrarse</string>
+    <string name="action_sign_in_short">Acceder</string>
+    <string name="plus_sign_out">Cambiar cuenta Google+</string>
+    <string name="plus_disconnect">Desconectarse de Google+</string>
+    <string name="error_invalid_email">La dirección de correo no es válida</string>
+    <string name="error_invalid_password">La constraseña es demasiado corta</string>
+    <string name="error_incorrect_password">La contraseña no es correcta</string>
+    <string name="error_field_required">El campo es obligatorio</string>
 </resources>
