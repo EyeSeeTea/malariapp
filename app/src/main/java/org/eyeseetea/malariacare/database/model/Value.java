@@ -6,6 +6,7 @@ public class Value extends SugarRecord<Value> {
 
     Option option;
     Question question;
+    String value;
 
     public Value() {
     }
@@ -13,6 +14,13 @@ public class Value extends SugarRecord<Value> {
     public Value(Option option, Question question) {
         this.option = option;
         this.question = question;
+        this.value = "";
+    }
+
+    public Value(Option option, Question question, String value) {
+        this.option = option;
+        this.question = question;
+        this.value = value;
     }
 
     public Option getOption() {
@@ -29,6 +37,14 @@ public class Value extends SugarRecord<Value> {
 
     public void setQuestion(Question question) {
         this.question = question;
+    }
+
+    public String getValue() {
+        return value;
+    }
+
+    public void setValue(String value) {
+        this.value = value;
     }
 
     @Override

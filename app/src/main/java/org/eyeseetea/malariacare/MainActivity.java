@@ -13,7 +13,11 @@ import android.widget.Spinner;
 import android.widget.TabHost;
 
 import org.eyeseetea.malariacare.database.model.CompositiveScore;
+import org.eyeseetea.malariacare.database.model.OrgUnit;
+import org.eyeseetea.malariacare.database.model.Program;
+import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.model.Tab;
+import org.eyeseetea.malariacare.database.model.User;
 import org.eyeseetea.malariacare.database.utils.Persistence;
 import org.eyeseetea.malariacare.layout.Layout;
 import org.eyeseetea.malariacare.layout.configuration.LayoutConfiguration;
@@ -29,6 +33,11 @@ import java.util.List;
 import java.util.Map;
 
 public class MainActivity extends ActionBarActivity{
+    User user;
+    Program program;
+    OrgUnit orgUnit;
+    Survey survey;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +53,13 @@ public class MainActivity extends ActionBarActivity{
 
         // We import the initial data in case it has been done yet
         if (Tab.count(Tab.class, null, null)==0) {
+            // As this is only executed the first time the app is loaded, and we still don't have a way to create users, surveys, etc, here
+            // we will create a dummy user, survey, orgUnit, program, etc. To be used in local save
+            user = new User("DummyUID", "Dummy user");
+            program = new Program("DummyProgram", "Dummy program");
+            orgUnit = new OrgUnit("DummyOrgUnit", "Dummy orgUnit");
+            survey = new Survey(orgUnit, program, user);
+
             Log.i(".MainActivity", "Populating DB");
             try {
                 PopulateDB.populateDB(getAssets());
