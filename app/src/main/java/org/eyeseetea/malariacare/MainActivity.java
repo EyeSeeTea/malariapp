@@ -19,6 +19,7 @@ import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.model.Tab;
 import org.eyeseetea.malariacare.database.model.User;
 import org.eyeseetea.malariacare.database.utils.Persistence;
+import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.layout.Layout;
 import org.eyeseetea.malariacare.layout.configuration.LayoutConfiguration;
 import org.eyeseetea.malariacare.layout.configuration.TabConfiguration;
@@ -33,11 +34,8 @@ import java.util.List;
 import java.util.Map;
 
 public class MainActivity extends ActionBarActivity{
-    User user;
-    Program program;
-    OrgUnit orgUnit;
-    Survey survey;
 
+    public static Session session = new Session();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,10 +53,7 @@ public class MainActivity extends ActionBarActivity{
         if (Tab.count(Tab.class, null, null)==0) {
             // As this is only executed the first time the app is loaded, and we still don't have a way to create users, surveys, etc, here
             // we will create a dummy user, survey, orgUnit, program, etc. To be used in local save
-            user = new User("DummyUID", "Dummy user");
-            program = new Program("DummyProgram", "Dummy program");
-            orgUnit = new OrgUnit("DummyOrgUnit", "Dummy orgUnit");
-            survey = new Survey(orgUnit, program, user);
+            session.createSurvey();
 
             Log.i(".MainActivity", "Populating DB");
             try {
@@ -67,6 +62,9 @@ public class MainActivity extends ActionBarActivity{
                 e.printStackTrace();
             }
             Log.i(".MainActivity", "DB populated");
+        } else {
+            // Select the first survey present in the db. Must not be null if populate didn't fail
+            session.selectSurvey(Survey.find(Survey.class, "id = 1").get(0));
         }
 
         Log.i(".MainActivity", "Initializing Layout Configuration");

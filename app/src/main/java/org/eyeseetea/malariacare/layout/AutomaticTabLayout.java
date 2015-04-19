@@ -16,6 +16,7 @@ import org.eyeseetea.malariacare.database.model.Header;
 import org.eyeseetea.malariacare.database.model.Option;
 import org.eyeseetea.malariacare.database.model.Question;
 import org.eyeseetea.malariacare.database.model.Tab;
+import org.eyeseetea.malariacare.database.model.Value;
 import org.eyeseetea.malariacare.layout.configuration.LayoutConfiguration;
 import org.eyeseetea.malariacare.layout.listeners.AutomaticTabListeners;
 import org.eyeseetea.malariacare.layout.score.ANumDenRecord;
@@ -50,7 +51,10 @@ public class AutomaticTabLayout {
             //Log.i(".Layout", "Reader questions for header " + header.toString());
             for (Question question : header.getQuestions()){
                 View questionView = null;
-                EditText answerI = null;
+                Value value = null;
+                // Check previous existing value
+                value = question.getValue(MainActivity.session.getSurvey());
+
                 // The statement is present in every kind of question
                 switch(question.getAnswer().getOutput()){
                     case Constants.DROPDOWN_LIST:
@@ -88,18 +92,25 @@ public class AutomaticTabLayout {
                         ArrayAdapter adapter = new ArrayAdapter(mainActivity, android.R.layout.simple_spinner_item, optionList);
                         adapter.setDropDownViewResource(R.layout.simple_spinner_item);
                         dropdown.setAdapter(adapter);
+
+                        // In case value existed previously
+                        if (value != null) dropdown.setSelection(optionList.indexOf(value.getOption()));
                         break;
                     case Constants.INT:
                         questionView = getView(iterBacks, inflater, layoutParent, headerView, question, R.layout.integer, Constants.INT);
+                        if (value != null) ((EditText)(questionView.findViewById(R.id.answer))).setText(value.getValue());
                         break;
                     case Constants.LONG_TEXT:
                         questionView = getView(iterBacks, inflater, layoutParent, headerView, question, R.layout.longtext, Constants.LONG_TEXT);
+                        if (value != null) ((EditText)(questionView.findViewById(R.id.answer))).setText(value.getValue());
                         break;
                     case Constants.SHORT_TEXT:
                         questionView = getView(iterBacks, inflater, layoutParent, headerView, question, R.layout.shorttext, Constants.SHORT_TEXT);
+                        if (value != null) ((EditText)(questionView.findViewById(R.id.answer))).setText(value.getValue());
                         break;
                     case Constants.SHORT_DATE: case Constants. LONG_DATE:
                         questionView = getView(iterBacks, inflater, layoutParent, headerView, question, R.layout.date, Constants.SHORT_TEXT);
+                        if (value != null) ((EditText)(questionView.findViewById(R.id.answer))).setText(value.getValue());
                         break;
                 }
                 if (questionView != null) layoutParent.addView(questionView);

@@ -7,11 +7,14 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import org.apache.commons.lang3.ObjectUtils;
 import org.eyeseetea.malariacare.MainActivity;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.model.Option;
 import org.eyeseetea.malariacare.database.model.Question;
 import org.eyeseetea.malariacare.database.model.Tab;
+import org.eyeseetea.malariacare.database.model.Value;
+import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.layout.configuration.LayoutConfiguration;
 import org.eyeseetea.malariacare.layout.dialog.DialogDispatcher;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
@@ -36,6 +39,15 @@ public class AutomaticTabListeners {
                 TextView numeratorView = (TextView) spinner.getTag(R.id.NumeratorViewTag);
                 TextView denominatorView = (TextView) spinner.getTag(R.id.DenominatorViewTag);
                 LinearLayout tabLayout = ((LinearLayout) LayoutUtils.findParentRecursively(spinner, (Integer) spinner.getTag(R.id.Tab)));
+                Value value = triggeredQuestion.getValue(MainActivity.session.getSurvey());
+                // If the value is not found we create one
+                if (value == null) {
+                    value = new Value(triggeredOption, triggeredQuestion, MainActivity.session.getSurvey());
+                    value.save();
+                } else {
+                    value.setOption(triggeredOption);
+                    value.save();
+                }
 
                 // Tab scores View
                 TextView numSubtotal = (TextView) tabLayout.findViewById(R.id.totalNum);
