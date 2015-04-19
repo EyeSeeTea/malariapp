@@ -98,19 +98,27 @@ public class AutomaticTabLayout {
                         break;
                     case Constants.INT:
                         questionView = getView(iterBacks, inflater, layoutParent, headerView, question, R.layout.integer, Constants.INT);
+                        ((EditText)(questionView.findViewById(R.id.answer))).setTag(R.id.QuestionTag, question);
                         if (value != null) ((EditText)(questionView.findViewById(R.id.answer))).setText(value.getValue());
+                        AutomaticTabListeners.createTextListener(tab, (EditText)questionView.findViewById(R.id.answer), mainActivity);
                         break;
                     case Constants.LONG_TEXT:
                         questionView = getView(iterBacks, inflater, layoutParent, headerView, question, R.layout.longtext, Constants.LONG_TEXT);
+                        ((EditText)(questionView.findViewById(R.id.answer))).setTag(R.id.QuestionTag, question);
                         if (value != null) ((EditText)(questionView.findViewById(R.id.answer))).setText(value.getValue());
+                        AutomaticTabListeners.createTextListener(tab, (EditText)questionView.findViewById(R.id.answer), mainActivity);
                         break;
                     case Constants.SHORT_TEXT:
                         questionView = getView(iterBacks, inflater, layoutParent, headerView, question, R.layout.shorttext, Constants.SHORT_TEXT);
+                        ((EditText)(questionView.findViewById(R.id.answer))).setTag(R.id.QuestionTag, question);
                         if (value != null) ((EditText)(questionView.findViewById(R.id.answer))).setText(value.getValue());
+                        AutomaticTabListeners.createTextListener(tab, (EditText)questionView.findViewById(R.id.answer), mainActivity);
                         break;
                     case Constants.SHORT_DATE: case Constants. LONG_DATE:
                         questionView = getView(iterBacks, inflater, layoutParent, headerView, question, R.layout.date, Constants.SHORT_TEXT);
+                        ((EditText)(questionView.findViewById(R.id.answer))).setTag(R.id.QuestionTag, question);
                         if (value != null) ((EditText)(questionView.findViewById(R.id.answer))).setText(value.getValue());
+                        AutomaticTabListeners.createTextListener(tab, (EditText)questionView.findViewById(R.id.answer), mainActivity);
                         break;
                 }
                 if (questionView != null) layoutParent.addView(questionView);

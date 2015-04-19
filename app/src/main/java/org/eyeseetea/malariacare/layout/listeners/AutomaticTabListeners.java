@@ -1,8 +1,12 @@
 package org.eyeseetea.malariacare.layout.listeners;
 
+import android.app.Activity;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -46,6 +50,7 @@ public class AutomaticTabListeners {
                     value.save();
                 } else {
                     value.setOption(triggeredOption);
+                    value.setValue(triggeredOption.getName());
                     value.save();
                 }
 
@@ -196,6 +201,38 @@ public class AutomaticTabListeners {
                 // your code here
             }
 
+        });
+    }
+
+    public static void createTextListener(final Tab tab, EditText editable, final Activity myActivity){
+        editable.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                View myView = myActivity.getCurrentFocus();
+                if (s.length() == 0) return;
+                EditText myEdit = (EditText)myActivity.getCurrentFocus();
+                Question triggeredQuestion = (Question) myEdit.getTag(R.id.QuestionTag);
+                Value value = triggeredQuestion.getValue(MainActivity.session.getSurvey());
+                // If the value is not found we create one
+                if (value == null) {
+                    value = new Value("", triggeredQuestion, MainActivity.session.getSurvey());
+                    value.save();
+                } else {
+                    value.setOption(null);
+                    value.setValue(s.toString());
+                    value.save();
+                }
+            }
         });
     }
 
