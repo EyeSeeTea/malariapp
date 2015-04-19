@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.GridLayout;
 import android.widget.Spinner;
 import android.widget.Switch;
@@ -20,8 +21,10 @@ import org.eyeseetea.malariacare.database.model.Header;
 import org.eyeseetea.malariacare.database.model.Option;
 import org.eyeseetea.malariacare.database.model.Question;
 import org.eyeseetea.malariacare.database.model.Tab;
+import org.eyeseetea.malariacare.database.model.Value;
 import org.eyeseetea.malariacare.layout.configuration.LayoutConfiguration;
 import org.eyeseetea.malariacare.layout.configuration.TabConfiguration;
+import org.eyeseetea.malariacare.layout.listeners.AutomaticTabListeners;
 import org.eyeseetea.malariacare.layout.listeners.CustomTabListeners;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
@@ -145,7 +148,7 @@ public class CustomTabLayout {
 
                                 iterListeners = 0;
                                 iterEditListeners = 0;
-                                TextView answer = null;
+                                EditText answer = null;
                                 int offset = 0;
 
                                 // Set the row number
@@ -162,6 +165,8 @@ public class CustomTabLayout {
 
                                 for (int j = 0; j < children.size(); j++) {
                                     if (children.get(j).getAnswer() != null) {
+                                        // Check previous existing value
+                                        Value value = children.get(j).getValue(MainActivity.session.getSurvey());
                                         switch (children.get(j).getAnswer().getOutput()) {
                                             case Constants.DROPDOWN_LIST:
                                                 Option defaultOption = new Option(Constants.DEFAULT_SELECT_OPTION);
@@ -171,45 +176,64 @@ public class CustomTabLayout {
                                                 adapter.setDropDownViewResource(R.layout.simple_spinner_item);
                                                 Spinner dropdown = (Spinner) ((ViewGroup)((ViewGroup) ((ViewGroup) rowView).getChildAt(j + offset)).getChildAt(0)).getChildAt(0); // We take the spinner
                                                 dropdown.setTag(R.id.QuestionTypeTag, Constants.DROPDOWN_LIST);
+                                                dropdown.setTag(R.id.QuestionTag, children.get(j));
                                                 dropdown.setAdapter(adapter);
-                                                if ("listener".equals(dropdown.getTag())) {
+                                                if ("listener".equals(dropdown.getTag())) { // listeners that contribute to punctuation
                                                     dropdown.setOnItemSelectedListener(((List<AdapterView.OnItemSelectedListener>)listenerTypes.get(iterListenerType)).get(iterListeners));
                                                     iterListeners++;
+                                                } else { // listeners that do not contribute. Only for local storage
+                                                    CustomTabListeners.createDropDownListener(dropdown, mainActivity);
                                                 }
+                                                if (value != null) dropdown.setSelection(optionList.indexOf(value.getOption()));
 
                                                 break;
                                             case Constants.INT:
                                                 Log.d(".Layout", "Question int");
-                                                answer = (TextView) ((ViewGroup) ((ViewGroup) rowView).getChildAt(j + offset)).getChildAt(0); // We take the textfield
+                                                answer = (EditText) ((ViewGroup) ((ViewGroup) rowView).getChildAt(j + offset)).getChildAt(0); // We take the textfield
                                                 answer.setTag(R.id.QuestionTypeTag, Constants.INT);
+                                                answer.setTag(R.id.QuestionTag, children.get(j));
+                                                if (value != null) answer.setText(value.getValue());
                                                 if ("listener".equals(answer.getTag())) {
                                                     answer.addTextChangedListener(editListeners.get(iterEditListeners));
                                                     iterEditListeners++;
+                                                } else {
+                                                    CustomTabListeners.createTextListener(answer, mainActivity);
                                                 }
                                                 break;
                                             case Constants.LONG_TEXT:
                                                 Log.i(".Layout", "Question longtext");
-                                                answer = (TextView) ((ViewGroup) ((ViewGroup) rowView).getChildAt(j + offset)).getChildAt(0); // We take the textfield
+                                                answer = (EditText) ((ViewGroup) ((ViewGroup) rowView).getChildAt(j + offset)).getChildAt(0); // We take the textfield
                                                 answer.setTag(R.id.QuestionTypeTag, Constants.LONG_TEXT);
+                                                answer.setTag(R.id.QuestionTag, children.get(j));
+                                                if (value != null) answer.setText(value.getValue());
                                                 if ("listener".equals(answer.getTag())) {
                                                     answer.addTextChangedListener(editListeners.get(iterEditListeners));
                                                     iterEditListeners++;
+                                                } else {
+                                                    CustomTabListeners.createTextListener(answer, mainActivity);
                                                 }
                                                 break;
                                             case Constants.SHORT_TEXT:
                                                 Log.i(".Layout", "Question shorttext");
-                                                answer = (TextView) ((ViewGroup) ((ViewGroup) rowView).getChildAt(j + offset)).getChildAt(0); // We take the textfield
+                                                answer = (EditText) ((ViewGroup) ((ViewGroup) rowView).getChildAt(j + offset)).getChildAt(0); // We take the textfield
                                                 answer.setTag(R.id.QuestionTypeTag, Constants.SHORT_TEXT);
+                                                answer.setTag(R.id.QuestionTag, children.get(j));
+                                                if (value != null) answer.setText(value.getValue());
                                                 if ("listener".equals(answer.getTag())) {
                                                     answer.addTextChangedListener(editListeners.get(iterEditListeners));
                                                     iterEditListeners++;
+                                                } else {
+                                                    CustomTabListeners.createTextListener(answer, mainActivity);
                                                 }
                                                 break;
                                             case Constants.SHORT_DATE:
                                             case Constants.LONG_DATE:
                                                 Log.i(".Layout", "Question date");
-                                                answer = (TextView) ((ViewGroup) ((ViewGroup) rowView).getChildAt(j + offset)).getChildAt(0); // We take the textfield
+                                                answer = (EditText) ((ViewGroup) ((ViewGroup) rowView).getChildAt(j + offset)).getChildAt(0); // We take the textfield
                                                 answer.setTag(R.id.QuestionTypeTag, Constants.SHORT_DATE);
+                                                answer.setTag(R.id.QuestionTag, children.get(j));
+                                                if (value != null) answer.setText(value.getValue());
+                                                CustomTabListeners.createTextListener(answer, mainActivity);
                                                 break;
                                         }
                                     } else {

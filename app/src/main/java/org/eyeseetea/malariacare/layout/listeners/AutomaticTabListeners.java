@@ -38,11 +38,12 @@ public class AutomaticTabListeners {
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
                 Spinner spinner = (Spinner) parentView;
                 Option triggeredOption = (Option) spinner.getItemAtPosition(position);
-
                 Question triggeredQuestion = (Question) spinner.getTag(R.id.QuestionTag);
+
                 TextView numeratorView = (TextView) spinner.getTag(R.id.NumeratorViewTag);
                 TextView denominatorView = (TextView) spinner.getTag(R.id.DenominatorViewTag);
                 LinearLayout tabLayout = ((LinearLayout) LayoutUtils.findParentRecursively(spinner, (Integer) spinner.getTag(R.id.Tab)));
+                // Persistence in local database
                 Value value = triggeredQuestion.getValue(MainActivity.session.getSurvey());
                 // If the value is not found we create one
                 if (value == null) {

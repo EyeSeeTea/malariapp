@@ -51,9 +51,8 @@ public class AutomaticTabLayout {
             //Log.i(".Layout", "Reader questions for header " + header.toString());
             for (Question question : header.getQuestions()){
                 View questionView = null;
-                Value value = null;
                 // Check previous existing value
-                value = question.getValue(MainActivity.session.getSurvey());
+                Value value = question.getValue(MainActivity.session.getSurvey());
 
                 // The statement is present in every kind of question
                 switch(question.getAnswer().getOutput()){

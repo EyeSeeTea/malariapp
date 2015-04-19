@@ -17,12 +17,42 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
+import org.eyeseetea.malariacare.MainActivity;
 import org.eyeseetea.malariacare.R;
+import org.eyeseetea.malariacare.database.model.Option;
+import org.eyeseetea.malariacare.database.model.Question;
+import org.eyeseetea.malariacare.database.model.Value;
 import org.eyeseetea.malariacare.layout.configuration.LayoutConfiguration;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 
 public class CustomTabListeners {
 
+    public static void createDropDownListener(Spinner dropdown, final MainActivity mainActivity){
+        dropdown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){
+            @Override
+            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+                Spinner spinner = (Spinner) parentView;
+                Option triggeredOption = (Option) spinner.getItemAtPosition(position);
+                Question triggeredQuestion = (Question) spinner.getTag(R.id.QuestionTag);
+
+                Value value = triggeredQuestion.getValue(MainActivity.session.getSurvey());
+                // If the value is not found we create one
+                if (value == null) {
+                    value = new Value(triggeredOption, triggeredQuestion, MainActivity.session.getSurvey());
+                    value.save();
+                } else {
+                    value.setOption(triggeredOption);
+                    value.setValue(triggeredOption.getName());
+                    value.save();
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parentView) {
+                // your code here
+            }
+        });
+    }
 
     public static AdapterView.OnItemSelectedListener createAdherenceListener(int type){
         switch(type){
@@ -36,10 +66,28 @@ public class CustomTabListeners {
                         float totalScore = 0.0F;
                         if (position == 1) score = 1;
                         else score = 0;
+
+                        Spinner spinner = (Spinner) parent;
+                        Option triggeredOption = (Option) spinner.getItemAtPosition(position);
+                        Question triggeredQuestion = (Question) spinner.getTag(R.id.QuestionTag);
+
                         TextView scoreText = (TextView)((ViewGroup)((ViewGroup)((ViewGroup)parent.getParent().getParent().getParent())).getChildAt(5)).getChildAt(0);
                         scoreText.setText((String)Integer.toString(score));
                         // Set the total score in the score tab
                         LinearLayout tabLayout = (LinearLayout)LayoutUtils.findParentRecursively(parent, LayoutConfiguration.getTabsConfigurationIds());
+
+                        // Persistence in local database
+                        Value value = triggeredQuestion.getValue(MainActivity.session.getSurvey());
+                        // If the value is not found we create one
+                        if (value == null) {
+                            value = new Value(triggeredOption, triggeredQuestion, MainActivity.session.getSurvey());
+                            value.save();
+                        } else {
+                            value.setOption(triggeredOption);
+                            value.setValue(triggeredOption.getName());
+                            value.save();
+                        }
+
                         TableLayout table1 = (TableLayout)tabLayout.findViewById(R.id.register1Table);
                         for (int i=1; i<((ViewGroup) table1).getChildCount(); i++){
                             TableRow row = (TableRow) table1.getChildAt(i);
@@ -80,6 +128,11 @@ public class CustomTabListeners {
                         int score = 0;
                         float totalScore = 0.0F;
                         TextView actPrescribed = (TextView)((ViewGroup)((ViewGroup)((ViewGroup)parent.getParent().getParent().getParent())).getChildAt(2)).getChildAt(0);
+
+                        Spinner spinner = (Spinner) parent;
+                        Option triggeredOption = (Option) spinner.getItemAtPosition(position);
+                        Question triggeredQuestion = (Question) spinner.getTag(R.id.QuestionTag);
+
                         if("RDT Positive".equals(actPrescribed.getText()) || "RDT Negative".equals(actPrescribed.getText())){
                             if (position == 1) score=1;
                             else score=0;
@@ -91,6 +144,19 @@ public class CustomTabListeners {
                         scoreText.setText((String)Integer.toString(score));
                         // Set the total score in the score tab
                         LinearLayout tabLayout = (LinearLayout)LayoutUtils.findParentRecursively(parent, LayoutConfiguration.getTabsConfigurationIds());
+
+                        // Persistence in local database
+                        Value value = triggeredQuestion.getValue(MainActivity.session.getSurvey());
+                        // If the value is not found we create one
+                        if (value == null) {
+                            value = new Value(triggeredOption, triggeredQuestion, MainActivity.session.getSurvey());
+                            value.save();
+                        } else {
+                            value.setOption(triggeredOption);
+                            value.setValue(triggeredOption.getName());
+                            value.save();
+                        }
+
                         TableLayout table1 = (TableLayout)tabLayout.findViewById(R.id.register1Table);
                         for (int i=1; i<((ViewGroup) table1).getChildCount(); i++){
                             TableRow row = (TableRow) table1.getChildAt(i);
@@ -235,5 +301,37 @@ public class CustomTabListeners {
                 LayoutUtils.setScore(totalScore, subScoreView, percentageView, cualitativeView);
             }
         };
+    }
+
+    public static void createTextListener(EditText editable, final Activity myActivity){
+        editable.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                View myView = myActivity.getCurrentFocus();
+                if (s.length() == 0) return;
+                EditText myEdit = (EditText)myActivity.getCurrentFocus();
+                Question triggeredQuestion = (Question) myEdit.getTag(R.id.QuestionTag);
+                Value value = triggeredQuestion.getValue(MainActivity.session.getSurvey());
+                // If the value is not found we create one
+                if (value == null) {
+                    value = new Value("", triggeredQuestion, MainActivity.session.getSurvey());
+                    value.save();
+                } else {
+                    value.setOption(null);
+                    value.setValue(s.toString());
+                    value.save();
+                }
+            }
+        });
     }
 }
