@@ -11,8 +11,10 @@ import android.widget.Spinner;
 import android.widget.TableLayout;
 import android.widget.TextView;
 
+import org.eyeseetea.malariacare.MainActivity;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.model.Question;
+import org.eyeseetea.malariacare.database.model.Value;
 import org.eyeseetea.malariacare.layout.configuration.LayoutConfiguration;
 import org.eyeseetea.malariacare.layout.configuration.TabConfiguration;
 import org.eyeseetea.malariacare.layout.score.ANumDenRecord;
@@ -116,6 +118,14 @@ public class LayoutUtils {
         }
         else{
             ((EditText) childView).setText("");
+            Question triggeredQuestion = (Question) ((EditText)childView).getTag(R.id.QuestionTag);
+            if (triggeredQuestion != null) {
+                Value value = triggeredQuestion.getValue(MainActivity.session.getSurvey());
+                if (value != null) {
+                    value.setValue("");
+                    value.save();
+                }
+            }
         }
     }
 
@@ -144,6 +154,14 @@ public class LayoutUtils {
                 List<View> edits = getEditChildren(tabLayout);
                 for (View edit: edits){
                     ((EditText)edit).setText("");
+                    Question triggeredQuestion = (Question) ((EditText)edit).getTag(R.id.QuestionTag);
+                    if (triggeredQuestion != null) {
+                        Value value = triggeredQuestion.getValue(MainActivity.session.getSurvey());
+                        if (value != null) {
+                            value.setValue("");
+                            value.save();
+                        }
+                    }
                 }
 
                 // Reset subscore layout components
@@ -179,7 +197,6 @@ public class LayoutUtils {
 
         ViewGroup vg = (ViewGroup) v;
         for (int i = 0; i < vg.getChildCount(); i++) {
-
             View child = vg.getChildAt(i);
 
             List<View> viewArrayList = new ArrayList<View>();
