@@ -125,7 +125,7 @@
 
     <!-- # LOGIN ACTIVITY -->
     <string name="title_activity_login">Sign in</string>
-    <string name="prompt_email">Email</string>
+    <string name="prompt_user">Email</string>
     <string name="prompt_password">Contraseña (opcional)</string>
     <string name="action_sign_in">Acceder o registrarse</string>
     <string name="action_sign_in_short">Acceder</string>

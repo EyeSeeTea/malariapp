@@ -35,11 +35,10 @@
         <meta-data
             android:name="DOMAIN_PACKAGE_NAME"
             android:value="org.eyeseetea.malariacare.database.model" />
-
         <activity
-            android:name=".MainActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:label="@string/app_name" >
+            android:name="org.eyeseetea.malariacare.LoginActivity"
+            android:label="@string/title_activity_login"
+            android:windowSoftInputMode="adjustResize|stateHidden" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -47,9 +46,13 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".LoginActivity"
-            android:label="@string/title_activity_login"
-            android:windowSoftInputMode="adjustResize|stateHidden" >
+            android:name="org.eyeseetea.malariacare.MainActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:label="@string/app_name"
+            android:parentActivityName="org.eyeseetea.malariacare.LoginActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="org.eyeseetea.malariacare.LoginActivity" />
         </activity>
 
         <meta-data
