@@ -206,37 +206,6 @@
                     </LinearLayout>
 
                     <LinearLayout
-                        android:id="@+id/c1Microcospy"
-                        android:layout_width="fill_parent"
-                        android:layout_height="fill_parent"
-                        android:orientation="vertical" >
-
-                        <ScrollView
-                            android:layout_width="fill_parent"
-                            android:layout_height="wrap_content"
-                            android:id="@+id/ScrollMicroscopy1"
-                            android:layout_weight="0.09">
-
-                            <GridLayout
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:rowCount="1"
-                                android:columnCount="1"
-                                android:id="@+id/c1MicroscopyContent" />
-                        </ScrollView>
-
-                        <GridLayout
-                            android:layout_width="fill_parent"
-                            android:layout_height="fill_parent"
-                            android:id="@+id/scoreC1Microscopy"
-                            android:rowCount="1"
-                            android:columnCount="2"
-                            android:layout_weight="0.91"
-                            android:background="#1e506c"></GridLayout>
-
-                    </LinearLayout>
-
-                    <LinearLayout
                         android:id="@+id/c2Clinical"
                         android:layout_width="fill_parent"
                         android:layout_height="fill_parent"
@@ -293,37 +262,6 @@
                             android:columnCount="2"
                             android:rowCount="1"
                             android:id="@+id/scoreC2RDT"
-                            android:layout_weight="0.91"
-                            android:background="#1e506c"></GridLayout>
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:id="@+id/c2Microscopy"
-                        android:layout_width="fill_parent"
-                        android:layout_height="fill_parent"
-                        android:orientation="vertical" >
-
-                        <ScrollView
-                            android:layout_width="fill_parent"
-                            android:layout_height="wrap_content"
-                            android:id="@+id/ScrollMicroscopy2"
-                            android:layout_weight="0.09">
-
-                            <GridLayout
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:rowCount="1"
-                                android:columnCount="1"
-                                android:id="@+id/c2MicroscopyContent" />
-                        </ScrollView>
-
-                        <GridLayout
-                            android:layout_width="fill_parent"
-                            android:layout_height="fill_parent"
-                            android:columnCount="2"
-                            android:rowCount="1"
-                            android:id="@+id/scoreC2Microscopy"
                             android:layout_weight="0.91"
                             android:background="#1e506c"></GridLayout>
 
@@ -392,69 +330,6 @@
                     </LinearLayout>
 
                     <LinearLayout
-                        android:id="@+id/c3Microscopy"
-                        android:layout_width="fill_parent"
-                        android:layout_height="fill_parent"
-                        android:orientation="vertical" >
-
-                        <ScrollView
-                            android:layout_width="fill_parent"
-                            android:layout_height="wrap_content"
-                            android:id="@+id/ScrollMicroscopy3"
-                            android:layout_weight="0.09">
-
-                            <GridLayout
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:rowCount="1"
-                                android:columnCount="1"
-                                android:id="@+id/c3MicroscopyContent" />
-                        </ScrollView>
-
-                        <GridLayout
-                            android:layout_width="fill_parent"
-                            android:layout_height="fill_parent"
-                            android:columnCount="2"
-                            android:rowCount="1"
-                            android:id="@+id/scoreC3Microscopy"
-                            android:layout_weight="0.91"
-                            android:background="#1e506c"></GridLayout>
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:id="@+id/adherence"
-                        android:layout_width="fill_parent"
-                        android:layout_height="fill_parent"
-                        android:orientation="vertical" >
-
-                        <ScrollView
-                            android:layout_width="fill_parent"
-                            android:layout_height="wrap_content"
-                            android:id="@+id/scrollAdherence"
-                            android:layout_weight="0.09" >
-
-                            <GridLayout
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:rowCount="1"
-                                android:columnCount="1"
-                                android:id="@+id/adherenceContent" />
-                        </ScrollView>
-
-                        <GridLayout
-                            android:layout_width="fill_parent"
-                            android:layout_height="fill_parent"
-                            android:columnCount="2"
-                            android:rowCount="1"
-                            android:id="@+id/scoreAdherence"
-                            android:layout_weight="0.91"
-                            android:background="#1e506c"
-                            android:visibility="gone"></GridLayout>
-
-                    </LinearLayout>
-
-                    <LinearLayout
                         android:id="@+id/feedback"
                         android:layout_width="fill_parent"
                         android:layout_height="fill_parent"
@@ -513,70 +388,6 @@
                             android:id="@+id/scoreEnvironment"
                             android:layout_weight="0.91"
                             android:background="#1e506c"></GridLayout>
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:id="@+id/reporting"
-                        android:layout_width="fill_parent"
-                        android:layout_height="fill_parent"
-                        android:orientation="vertical" >
-
-                        <ScrollView
-                            android:layout_width="fill_parent"
-                            android:layout_height="wrap_content"
-                            android:id="@+id/scrollReporting"
-                            android:layout_weight="0.09" >
-
-                            <GridLayout
-                                android:layout_width="fill_parent"
-                                android:layout_height="fill_parent"
-                                android:columnCount="1"
-                                android:rowCount="1"
-                                android:id="@+id/reportingContent"
-                                android:layout_weight="0.91" />
-                        </ScrollView>
-
-                        <GridLayout
-                            android:layout_width="fill_parent"
-                            android:layout_height="fill_parent"
-                            android:columnCount="2"
-                            android:rowCount="1"
-                            android:id="@+id/scoreReporting"
-                            android:layout_weight="0.91"
-                            android:background="#1e506c"></GridLayout>
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:id="@+id/iqaEQA"
-                        android:layout_width="fill_parent"
-                        android:layout_height="fill_parent"
-                        android:orientation="vertical" >
-
-                        <ScrollView
-                            android:layout_width="fill_parent"
-                            android:layout_height="wrap_content"
-                            android:id="@+id/scrollIqaEqa"
-                            android:layout_weight="0.09" >
-
-                            <GridLayout
-                                android:layout_width="fill_parent"
-                                android:layout_height="fill_parent"
-                                android:columnCount="1"
-                                android:rowCount="1"
-                                android:id="@+id/IqaEqaContent"
-                                android:layout_weight="0.91"></GridLayout>
-                        </ScrollView>
-
-                        <GridLayout
-                            android:layout_width="fill_parent"
-                            android:layout_height="fill_parent"
-                            android:columnCount="2"
-                            android:rowCount="1"
-                            android:id="@+id/scoreIqaEqa"
-                            android:layout_weight="0.91"
-                            android:background="#1e506c" />
 
                     </LinearLayout>
 
