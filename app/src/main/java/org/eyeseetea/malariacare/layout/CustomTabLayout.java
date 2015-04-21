@@ -226,11 +226,10 @@ public class CustomTabLayout {
                                                     CustomTabListeners.createTextListener(answer, mainActivity);
                                                 }
                                                 break;
-                                            case Constants.SHORT_DATE:
-                                            case Constants.LONG_DATE:
+                                            case Constants.DATE:
                                                 Log.i(".Layout", "Question date");
                                                 answer = (EditText) ((ViewGroup) ((ViewGroup) rowView).getChildAt(j + offset)).getChildAt(0); // We take the textfield
-                                                answer.setTag(R.id.QuestionTypeTag, Constants.SHORT_DATE);
+                                                answer.setTag(R.id.QuestionTypeTag, Constants.DATE);
                                                 answer.setTag(R.id.QuestionTag, children.get(j));
                                                 if (value != null) answer.setText(value.getValue());
                                                 CustomTabListeners.createTextListener(answer, mainActivity);

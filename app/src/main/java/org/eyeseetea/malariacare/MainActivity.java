@@ -13,11 +13,8 @@ import android.widget.Spinner;
 import android.widget.TabHost;
 
 import org.eyeseetea.malariacare.database.model.CompositiveScore;
-import org.eyeseetea.malariacare.database.model.OrgUnit;
-import org.eyeseetea.malariacare.database.model.Program;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.model.Tab;
-import org.eyeseetea.malariacare.database.model.User;
 import org.eyeseetea.malariacare.database.utils.Persistence;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.layout.Layout;

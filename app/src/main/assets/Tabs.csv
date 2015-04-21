@@ -1,18 +1,12 @@
 1;'Profile';2
 2;'C1 - Clinical fever evaluation';3
 3;'C1 - RDT';4
-4;'C1 - Microscopy';5
-5;'C2 - Clinical fever evaluation';6
-6;'C2 - RDT';7
-7;'C2 - Microscopy';8
-8;'C3 - Clinical fever evaluation';9
-9;'C3 - RDT';10
-10;'C3 - Microscopy';11
-11;'Adherence';12
-12;'Feedback';13
-13;'Environment';14
-14;'Reporting';15
-15;'IQA EQA';16
-16;'Score';17
+5;'C2 - Clinical fever evaluation';5
+6;'C2 - RDT';6
+8;'C3 - Clinical fever evaluation';7
+9;'C3 - RDT';8
+12;'Feedback';9
+13;'Environment';10
+16;'Score';11
 17;'Health Facility Info';1
-18;'Compositive Scores';18
+18;'Compositive Scores';12

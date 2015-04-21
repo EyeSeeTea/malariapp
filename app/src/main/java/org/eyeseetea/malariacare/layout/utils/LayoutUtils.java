@@ -1,6 +1,7 @@
 package org.eyeseetea.malariacare.layout.utils;
 
 import android.graphics.Color;
+import android.util.Log;
 import android.util.SparseArray;
 import android.view.View;
 import android.view.ViewGroup;
@@ -86,14 +87,15 @@ public class LayoutUtils {
         View parent = LayoutUtils.findParentRecursively(spinner, (Integer) spinner.getTag(R.id.Tab));
         for (Question childQuestion : triggeredQuestion.getQuestionChildren()) {
             View childView = LayoutUtils.findChildRecursively(parent, childQuestion);
+            View headerView = ((View) ((View) childView).getTag(R.id.HeaderViewTag));
             if (position == 1) { //FIXME: There must be a smarter way for saying "if the user selected yes"
                 LayoutUtils.toggleVisible(childView, View.VISIBLE);
-                ((View) ((View) childView).getTag(R.id.HeaderViewTag)).setVisibility(View.VISIBLE);
+                if (headerView != null) headerView.setVisibility(View.VISIBLE);
                 ScoreRegister.addRecord(childQuestion, 0F, childQuestion.getDenominator_w());
             } else {
                 LayoutUtils.toggleVisible(childView, View.GONE);
                 if (LayoutUtils.isHeaderEmpty(triggeredQuestion.getQuestionChildren(), childQuestion.getHeader().getQuestions())) {
-                    ((View) ((View) childView).getTag(R.id.HeaderViewTag)).setVisibility(View.GONE);
+                    if (headerView != null) headerView.setVisibility(View.GONE);
                 }
                 ScoreRegister.deleteRecord(childQuestion);
             }
@@ -116,7 +118,7 @@ public class LayoutUtils {
         if (childView instanceof Spinner) {
             ((Spinner) childView).setSelection(0);
         }
-        else{
+        else if (childView instanceof EditText){
             ((EditText) childView).setText("");
             Question triggeredQuestion = (Question) ((EditText)childView).getTag(R.id.QuestionTag);
             if (triggeredQuestion != null) {

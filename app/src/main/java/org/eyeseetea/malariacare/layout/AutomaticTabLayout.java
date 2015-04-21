@@ -113,11 +113,26 @@ public class AutomaticTabLayout {
                         if (value != null) ((EditText)(questionView.findViewById(R.id.answer))).setText(value.getValue());
                         AutomaticTabListeners.createTextListener(tab, (EditText)questionView.findViewById(R.id.answer), mainActivity);
                         break;
-                    case Constants.SHORT_DATE: case Constants. LONG_DATE:
-                        questionView = getView(iterBacks, inflater, layoutParent, headerView, question, R.layout.date, Constants.SHORT_TEXT);
+                    case Constants.DATE:
+                        questionView = getView(iterBacks, inflater, layoutParent, headerView, question, R.layout.date, Constants.DATE);
                         ((EditText)(questionView.findViewById(R.id.answer))).setTag(R.id.QuestionTag, question);
                         if (value != null) ((EditText)(questionView.findViewById(R.id.answer))).setText(value.getValue());
                         AutomaticTabListeners.createTextListener(tab, (EditText)questionView.findViewById(R.id.answer), mainActivity);
+                        break;
+                    case Constants.POSITIVE_INT:
+                        questionView = getView(iterBacks, inflater, layoutParent, headerView, question, R.layout.integer, Constants.POSITIVE_INT);
+                        ((EditText)(questionView.findViewById(R.id.answer))).setTag(R.id.QuestionTag, question);
+                        if (value != null) ((EditText)(questionView.findViewById(R.id.answer))).setText(value.getValue());
+                        AutomaticTabListeners.createTextListener(tab, (EditText)questionView.findViewById(R.id.answer), mainActivity);
+                        break;
+                    case Constants.NO_ANSWER:
+                        questionView = inflater.inflate(R.layout.noanswer, layoutParent, false);
+                        questionView.setBackgroundResource(LayoutUtils.calculateBackgrounds(iterBacks));
+                        TextView noStatement = (TextView) questionView.findViewById(R.id.statement);
+                        noStatement.setText(question.getForm_name());
+                        noStatement.setTag(R.id.QuestionTag, question);
+                        noStatement.setTag(R.id.HeaderViewTag, headerView);
+                        noStatement.setTag(R.id.QuestionTypeTag, Constants.NO_ANSWER);
                         break;
                 }
                 if (questionView != null) layoutParent.addView(questionView);

@@ -69,7 +69,7 @@ public class LoginActivity extends PlusBaseActivity implements LoaderCallbacks<C
      * TODO: remove after connecting to a real authentication system.
      */
     private static final String[] DUMMY_CREDENTIALS = new String[]{
-            "admin:!_admin_!", "user:!_user_!"
+            "admin:admin", "user:!_user_!"
     };
     /**
      * Keep track of the login task to ensure we can cancel it if requested.

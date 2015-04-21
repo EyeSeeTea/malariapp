@@ -23,7 +23,9 @@ public class ScoreRegister {
     }
 
     public static void deleteRecord(Question question){
-        compositiveScoreRegister.get(question.getCompositiveScore()).deleteRecord(question);
+        if (question.getCompositiveScore() != null) {
+            compositiveScoreRegister.get(question.getCompositiveScore()).deleteRecord(question);
+        }
         generalScoreRegister.get(question.getHeader().getTab()).deleteRecord(question);
     }
 

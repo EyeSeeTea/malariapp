@@ -60,7 +60,7 @@ public class CustomTabListeners {
                 return new AdapterView.OnItemSelectedListener(){
                     @Override
                     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                        // This will occur when an item is selected in first table Adherence spinners
+/*                        // This will occur when an item is selected in first table Adherence spinners
                         // For this table, when Test result is "Malaria Positive" score=1, score=0 otherwise
                         int score = 0;
                         float totalScore = 0.0F;
@@ -110,7 +110,7 @@ public class CustomTabListeners {
                         TextView subScoreView = (TextView)tabLayout.findViewById(R.id.score);
                         TextView percentageView = (TextView)tabLayout.findViewById(R.id.percentageSymbol);
                         TextView cualitativeView = (TextView)tabLayout.findViewById(R.id.cualitativeScore);
-                        LayoutUtils.setScore(totalScore, subScoreView, percentageView, cualitativeView);
+                        LayoutUtils.setScore(totalScore, subScoreView, percentageView, cualitativeView);*/
                     }
 
                     @Override
@@ -122,7 +122,7 @@ public class CustomTabListeners {
                 return new AdapterView.OnItemSelectedListener(){
                     @Override
                     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                        // This will occur when an item is selected in second table Adherence spinners
+/*                        // This will occur when an item is selected in second table Adherence spinners
                         // For this table, when Test results is RDT* then ACT Prescribed=Yes means score=1, otherwise score=0
                         //               , when Test results is Microscopy* then ACT Prescribed=No means Score=1, otherwise score=0
                         int score = 0;
@@ -179,7 +179,7 @@ public class CustomTabListeners {
                         TextView subScoreView = (TextView)tabLayout.findViewById(R.id.score);
                         TextView percentageView = (TextView)tabLayout.findViewById(R.id.percentageSymbol);
                         TextView cualitativeView = (TextView)tabLayout.findViewById(R.id.cualitativeScore);
-                        LayoutUtils.setScore(totalScore, subScoreView, percentageView, cualitativeView);
+                        LayoutUtils.setScore(totalScore, subScoreView, percentageView, cualitativeView);*/
                     }
 
                     @Override
@@ -214,7 +214,7 @@ public class CustomTabListeners {
         return new AdapterView.OnItemSelectedListener(){
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                // This will occur when an item is selected in IQAEQA spinners
+/*                // This will occur when an item is selected in IQAEQA spinners
                 // For IQAEQA, when file each file spinner option match with its equivalent in the other table, that means score = 1
                 int score = 0;
                 float totalScore = 0.0F;
@@ -240,7 +240,7 @@ public class CustomTabListeners {
                 TextView subScoreView = (TextView)tabLayout.findViewById(R.id.score);
                 TextView percentageView = (TextView)tabLayout.findViewById(R.id.percentageSymbol);
                 TextView cualitativeView = (TextView)tabLayout.findViewById(R.id.cualitativeScore);
-                LayoutUtils.setScore(totalScore, subScoreView, percentageView, cualitativeView);
+                LayoutUtils.setScore(totalScore, subScoreView, percentageView, cualitativeView);*/
             }
 
             @Override
@@ -264,7 +264,7 @@ public class CustomTabListeners {
 
             @Override
             public void afterTextChanged(Editable s) {
-                float totalScore = 0.0F;
+/*                float totalScore = 0.0F;
                 TextView totalScoreView = null;
                 View myView = myActivity.getCurrentFocus();
                 Log.d(".Layout", "instance of: ");
@@ -298,7 +298,7 @@ public class CustomTabListeners {
                 TextView subScoreView = (TextView)tabLayout.findViewById(R.id.score);
                 TextView percentageView = (TextView)tabLayout.findViewById(R.id.percentageSymbol);
                 TextView cualitativeView = (TextView)tabLayout.findViewById(R.id.cualitativeScore);
-                LayoutUtils.setScore(totalScore, subScoreView, percentageView, cualitativeView);
+                LayoutUtils.setScore(totalScore, subScoreView, percentageView, cualitativeView);*/
             }
         };
     }

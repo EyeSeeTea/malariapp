@@ -27,13 +27,13 @@ public class PopulateDB {
     static Map<Integer, Answer> answerList = new LinkedHashMap<Integer, Answer>();
     static Map<Integer, CompositiveScore> compositiveScoreList = new LinkedHashMap<Integer, CompositiveScore>();
 
-    static Map<Integer, Header> headerCustomList = new LinkedHashMap<Integer, Header>();
-    static Map<Integer, Question> questionCustomList = new LinkedHashMap<Integer, Question>();
+    //static Map<Integer, Header> headerCustomList = new LinkedHashMap<Integer, Header>();
+    //static Map<Integer, Question> questionCustomList = new LinkedHashMap<Integer, Question>();
 
     public static void populateDB(AssetManager assetManager) throws IOException {
 
 
-        List<String> tables2populate = Arrays.asList("Tabs.csv", "Headers.csv", "Answers.csv", "Options.csv", "CompositiveScores.csv", "Questions.csv", "HeadersCustom.csv", "QuestionsCustom.csv");
+        List<String> tables2populate = Arrays.asList("Tabs.csv", "Headers.csv", "Answers.csv", "Options.csv", "CompositiveScores.csv", "Questions.csv"); //"HeadersCustom.csv", "QuestionsCustom.csv");
 
         CSVReader reader = null;
         for (String table : tables2populate) {
@@ -93,7 +93,7 @@ public class PopulateDB {
                         if (line.length == 13 && !line[12].equals("")) question.setCompositiveScore(compositiveScoreList.get(Integer.valueOf(line[12])));
                         questionList.put(Integer.valueOf(line[0]), question);
                         break;
-                    case "HeadersCustom.csv":
+/*                    case "HeadersCustom.csv":
                         Header headerCustom = new Header();
                         headerCustom.setShort_name(line[1]);
                         headerCustom.setName(line[2]);
@@ -115,7 +115,7 @@ public class PopulateDB {
                         if (!line[10].equals("")) questionCustom.setAnswer(answerList.get(Integer.valueOf(line[10])));
                         if (!line[11].equals("")) questionCustom.setQuestion(questionCustomList.get(Integer.valueOf(line[11])));
                         questionCustomList.put(Integer.valueOf(line[0]), questionCustom);
-                        break;
+                        break;*/
                 }
             }
             reader.close();
@@ -128,8 +128,8 @@ public class PopulateDB {
         CompositiveScore.saveInTx(compositiveScoreList.values());
         Question.saveInTx(questionList.values());
 
-        Header.saveInTx(headerCustomList.values());
-        Question.saveInTx(questionCustomList.values());
+        //Header.saveInTx(headerCustomList.values());
+        //Question.saveInTx(questionCustomList.values());
 
     }
 
