@@ -367,7 +367,7 @@ public class LoginActivity extends PlusBaseActivity implements LoaderCallbacks<C
 
             if (success) {
                 Log.i(".LoginActivity", "--------------> Logged in");
-                Class c = MainActivity.class;
+                Class c = DashboardActivity.class;
                 Intent mainIntent = new Intent(LoginActivity.this, c);
                 startActivity(mainIntent);
             } else {

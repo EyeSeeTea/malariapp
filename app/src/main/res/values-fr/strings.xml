@@ -135,4 +135,6 @@
     <string name="error_invalid_password">Le mot de passe est trop courte</string>
     <string name="error_incorrect_password">Le mot de pas n\'est pas correct</string>
     <string name="error_field_required">Cette entrée est necessaire</string>
+    <string name="active_assessment">Active Assessment</string>
+    <string name="feedback">Feedback</string>
 </resources>
