@@ -23,8 +23,6 @@ import org.eyeseetea.malariacare.database.model.Question;
 import org.eyeseetea.malariacare.database.model.Tab;
 import org.eyeseetea.malariacare.database.model.Value;
 import org.eyeseetea.malariacare.layout.configuration.LayoutConfiguration;
-import org.eyeseetea.malariacare.layout.configuration.TabConfiguration;
-import org.eyeseetea.malariacare.layout.listeners.AutomaticTabListeners;
 import org.eyeseetea.malariacare.layout.listeners.CustomTabListeners;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
@@ -166,7 +164,7 @@ public class CustomTabLayout {
                                 for (int j = 0; j < children.size(); j++) {
                                     if (children.get(j).getAnswer() != null) {
                                         // Check previous existing value
-                                        Value value = children.get(j).getValue(MainActivity.session.getSurvey());
+                                        Value value = children.get(j).getValueBySession();
                                         switch (children.get(j).getAnswer().getOutput()) {
                                             case Constants.DROPDOWN_LIST:
                                                 Option defaultOption = new Option(Constants.DEFAULT_SELECT_OPTION);

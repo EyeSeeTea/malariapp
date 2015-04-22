@@ -147,5 +147,8 @@
     <string name="date">Date</string>
     <string name="target">Target</string>
     <string name="achievement">Achievement</string>
+    <string name="new_survey">New Survey</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="create_form">CREATE SURVEY</string>
 
 </resources>

@@ -29,6 +29,11 @@ public class OrgUnit extends SugarRecord<OrgUnit> {
     public OrgUnit() {
     }
 
+    public OrgUnit(String name) {
+        this.name = name;
+    }
+
+
     public OrgUnit(String uid, String name) {
         this.uid = uid;
         this.name = name;
@@ -70,11 +75,16 @@ public class OrgUnit extends SugarRecord<OrgUnit> {
         return result;
     }
 
+//    @Override
+//    public String toString() {
+//        return "OrgUnit{" +
+//                "uid='" + uid + '\'' +
+//                ", name='" + name + '\'' +
+//                '}';
+//    }
+
     @Override
     public String toString() {
-        return "OrgUnit{" +
-                "uid='" + uid + '\'' +
-                ", name='" + name + '\'' +
-                '}';
+        return name;
     }
 }

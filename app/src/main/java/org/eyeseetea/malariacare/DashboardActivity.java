@@ -20,18 +20,11 @@
 package org.eyeseetea.malariacare;
 
 import android.content.Intent;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.util.Log;
+import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
-
-import org.eyeseetea.malariacare.database.model.Tab;
-import org.eyeseetea.malariacare.database.model.User;
-import org.eyeseetea.malariacare.database.utils.PopulateDB;
-import org.eyeseetea.malariacare.fragments.AssessmentFragment;
-
-import java.io.IOException;
+import android.view.View;
 
 
 public class DashboardActivity extends ActionBarActivity {
@@ -69,6 +62,12 @@ public class DashboardActivity extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    /** Called when the user clicks the Send button */
+    public void newSurvey(View view) {
+        Intent createSurveyIntent = new Intent(this, CreateSurveyActivity.class);
+        startActivity(createSurveyIntent);
     }
 
 

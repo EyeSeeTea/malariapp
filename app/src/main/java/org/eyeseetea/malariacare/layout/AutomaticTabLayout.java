@@ -1,7 +1,6 @@
 package org.eyeseetea.malariacare.layout;
 
 import android.util.Log;
-import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -19,7 +18,6 @@ import org.eyeseetea.malariacare.database.model.Tab;
 import org.eyeseetea.malariacare.database.model.Value;
 import org.eyeseetea.malariacare.layout.configuration.LayoutConfiguration;
 import org.eyeseetea.malariacare.layout.listeners.AutomaticTabListeners;
-import org.eyeseetea.malariacare.layout.score.ANumDenRecord;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.layout.score.ScoreUtils;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
@@ -53,7 +51,7 @@ public class AutomaticTabLayout {
             for (Question question : header.getQuestions()){
                 View questionView = null;
                 // Check previous existing value
-                Value value = question.getValue(MainActivity.session.getSurvey());
+                Value value = question.getValueBySession();
 
                 // The statement is present in every kind of question
                 switch(question.getAnswer().getOutput()){

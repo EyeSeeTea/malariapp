@@ -360,7 +360,7 @@ public class LoginActivity extends PlusBaseActivity implements LoaderCallbacks<C
                         try {
                             PopulateDB.populateDB(getAssets());
                         } catch (IOException e) {
-                            e.printStackTrace();
+                            Log.e(".LoginActivity", "Error populating DB", e);
                         }
                         Log.i(".LoginActivity", "DB populated");
                     } //else {
@@ -383,8 +383,7 @@ public class LoginActivity extends PlusBaseActivity implements LoaderCallbacks<C
             // In case of login success, create the user in the db and proceed to the dashboard activity
             if (success) {
                 Log.i(".LoginActivity", "--------------> Logged in");
-                Class c = DashboardActivity.class;
-                Intent mainIntent = new Intent(LoginActivity.this, c);
+                Intent mainIntent = new Intent(LoginActivity.this, DashboardActivity.class);
                 startActivity(mainIntent);
             } else {
                 mPasswordView.setError(getString(R.string.error_incorrect_password));

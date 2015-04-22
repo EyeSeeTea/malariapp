@@ -29,6 +29,10 @@ public class Program extends SugarRecord<Program> {
     public Program() {
     }
 
+    public Program(String name) {
+        this.name = name;
+    }
+
     public Program(String uid, String name) {
         this.uid = uid;
         this.name = name;
@@ -72,9 +76,13 @@ public class Program extends SugarRecord<Program> {
 
     @Override
     public String toString() {
-        return "Program{" +
-                "uid='" + uid + '\'' +
-                ", name='" + name + '\'' +
-                '}';
+        return name;
     }
+//    @Override
+//    public String toString() {
+//        return "Program{" +
+//                "uid='" + uid + '\'' +
+//                ", name='" + name + '\'' +
+//                '}';
+//    }
 }

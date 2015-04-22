@@ -1,8 +1,6 @@
 package org.eyeseetea.malariacare.layout.utils;
 
 import android.graphics.Color;
-import android.util.Log;
-import android.util.SparseArray;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
@@ -18,7 +16,6 @@ import org.eyeseetea.malariacare.database.model.Question;
 import org.eyeseetea.malariacare.database.model.Value;
 import org.eyeseetea.malariacare.layout.configuration.LayoutConfiguration;
 import org.eyeseetea.malariacare.layout.configuration.TabConfiguration;
-import org.eyeseetea.malariacare.layout.score.ANumDenRecord;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.utils.Utils;
 
@@ -122,7 +119,7 @@ public class LayoutUtils {
             ((EditText) childView).setText("");
             Question triggeredQuestion = (Question) ((EditText)childView).getTag(R.id.QuestionTag);
             if (triggeredQuestion != null) {
-                Value value = triggeredQuestion.getValue(MainActivity.session.getSurvey());
+                Value value = triggeredQuestion.getValueBySession();
                 if (value != null) {
                     value.setValue("");
                     value.save();
@@ -158,7 +155,7 @@ public class LayoutUtils {
                     ((EditText)edit).setText("");
                     Question triggeredQuestion = (Question) ((EditText)edit).getTag(R.id.QuestionTag);
                     if (triggeredQuestion != null) {
-                        Value value = triggeredQuestion.getValue(MainActivity.session.getSurvey());
+                        Value value = triggeredQuestion.getValueBySession();
                         if (value != null) {
                             value.setValue("");
                             value.save();

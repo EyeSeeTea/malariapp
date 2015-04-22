@@ -3,7 +3,6 @@ package org.eyeseetea.malariacare.layout.listeners;
 import android.app.Activity;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
@@ -11,7 +10,6 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import org.apache.commons.lang3.ObjectUtils;
 import org.eyeseetea.malariacare.MainActivity;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.model.Option;
@@ -24,7 +22,6 @@ import org.eyeseetea.malariacare.layout.dialog.DialogDispatcher;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.layout.score.ScoreUtils;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
-import org.eyeseetea.malariacare.utils.Constants;
 import org.eyeseetea.malariacare.utils.Utils;
 
 import java.util.ArrayList;
@@ -45,10 +42,10 @@ public class AutomaticTabListeners {
                 TextView denominatorView = (TextView) spinner.getTag(R.id.DenominatorViewTag);
                 LinearLayout tabLayout = ((LinearLayout) LayoutUtils.findParentRecursively(spinner, (Integer) spinner.getTag(R.id.Tab)));
                 // Persistence in local database
-                Value value = triggeredQuestion.getValue(MainActivity.session.getSurvey());
+                Value value = triggeredQuestion.getValueBySession();
                 // If the value is not found we create one
                 if (value == null) {
-                    value = new Value(triggeredOption, triggeredQuestion, MainActivity.session.getSurvey());
+                    value = new Value(triggeredOption, triggeredQuestion, Session.getSurvey());
                     value.save();
                 } else {
                     value.setOption(triggeredOption);
@@ -188,10 +185,10 @@ public class AutomaticTabListeners {
                 if (s.length() == 0) return;
                 EditText myEdit = (EditText)myActivity.getCurrentFocus();
                 Question triggeredQuestion = (Question) myEdit.getTag(R.id.QuestionTag);
-                Value value = triggeredQuestion.getValue(MainActivity.session.getSurvey());
+                Value value = triggeredQuestion.getValueBySession();
                 // If the value is not found we create one
                 if (value == null) {
-                    value = new Value("", triggeredQuestion, MainActivity.session.getSurvey());
+                    value = new Value("", triggeredQuestion, Session.getSurvey());
                     value.save();
                 } else {
                     value.setOption(null);

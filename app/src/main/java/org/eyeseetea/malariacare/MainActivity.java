@@ -32,8 +32,6 @@ import java.util.Map;
 
 public class MainActivity extends ActionBarActivity{
 
-    public static Session session;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 

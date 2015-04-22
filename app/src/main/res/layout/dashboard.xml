@@ -23,6 +23,14 @@
     android:layout_width="fill_parent" android:layout_height="fill_parent"
     android:orientation="vertical">
 
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/new_survey"
+        android:id="@+id/button"
+        android:onClick="newSurvey" />
+
     <fragment android:name="org.eyeseetea.malariacare.fragments.AssessmentFragment"
               android:id="@+id/assessment_fragment"
               android:layout_weight="1"

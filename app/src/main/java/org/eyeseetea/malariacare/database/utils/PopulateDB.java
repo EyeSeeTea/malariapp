@@ -143,27 +143,13 @@ public class PopulateDB {
         OrgUnit orgUnit = new OrgUnit("DummyOrgUnit", "Dummy orgUnit");
         orgUnit.save();
         OrgUnit orgUnit2 = new OrgUnit("1234", "Clinical Center for District X");
-        orgUnit.save();
-        OrgUnit orgUnit3 = new OrgUnit("7634", "Clinical Center 23 for District Y");
         orgUnit2.save();
+        OrgUnit orgUnit3 = new OrgUnit("7634", "Clinical Center 23 for District Y");
+        orgUnit3.save();
 
         Program program = new Program("DummyProgram", "Dummy program");
         program.save();
 
-        Survey survey = new Survey(orgUnit, program, Session.getUser());
-        survey.save();
-
-        Survey survey2 = new Survey();
-        survey2.setOrgUnit(orgUnit);
-        survey2.setUser(Session.getUser());
-        survey2.setEventDate("23 Mar 2015");
-        survey2.save();
-
-        Survey survey3 = new Survey();
-        survey3.setOrgUnit(orgUnit2);
-        survey3.setUser(Session.getUser());
-        survey3.setEventDate("25 Mar 2015");
-        survey3.save();
     }
 
 }

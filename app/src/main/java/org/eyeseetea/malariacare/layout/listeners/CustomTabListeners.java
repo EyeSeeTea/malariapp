@@ -3,7 +3,6 @@ package org.eyeseetea.malariacare.layout.listeners;
 import android.app.Activity;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -14,16 +13,13 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TableLayout;
-import android.widget.TableRow;
-import android.widget.TextView;
 
 import org.eyeseetea.malariacare.MainActivity;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.model.Option;
 import org.eyeseetea.malariacare.database.model.Question;
 import org.eyeseetea.malariacare.database.model.Value;
-import org.eyeseetea.malariacare.layout.configuration.LayoutConfiguration;
-import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
+import org.eyeseetea.malariacare.database.utils.Session;
 
 public class CustomTabListeners {
 
@@ -35,10 +31,10 @@ public class CustomTabListeners {
                 Option triggeredOption = (Option) spinner.getItemAtPosition(position);
                 Question triggeredQuestion = (Question) spinner.getTag(R.id.QuestionTag);
 
-                Value value = triggeredQuestion.getValue(MainActivity.session.getSurvey());
+                Value value = triggeredQuestion.getValueBySession();
                 // If the value is not found we create one
                 if (value == null) {
-                    value = new Value(triggeredOption, triggeredQuestion, MainActivity.session.getSurvey());
+                    value = new Value(triggeredOption, triggeredQuestion, Session.getSurvey());
                     value.save();
                 } else {
                     value.setOption(triggeredOption);
@@ -77,7 +73,7 @@ public class CustomTabListeners {
                         LinearLayout tabLayout = (LinearLayout)LayoutUtils.findParentRecursively(parent, LayoutConfiguration.getTabsConfigurationIds());
 
                         // Persistence in local database
-                        Value value = triggeredQuestion.getValue(MainActivity.session.getSurvey());
+                        Value value = triggeredQuestion.getValueBySession(MainActivity.session.getSurvey());
                         // If the value is not found we create one
                         if (value == null) {
                             value = new Value(triggeredOption, triggeredQuestion, MainActivity.session.getSurvey());
@@ -146,7 +142,7 @@ public class CustomTabListeners {
                         LinearLayout tabLayout = (LinearLayout)LayoutUtils.findParentRecursively(parent, LayoutConfiguration.getTabsConfigurationIds());
 
                         // Persistence in local database
-                        Value value = triggeredQuestion.getValue(MainActivity.session.getSurvey());
+                        Value value = triggeredQuestion.getValueBySession(MainActivity.session.getSurvey());
                         // If the value is not found we create one
                         if (value == null) {
                             value = new Value(triggeredOption, triggeredQuestion, MainActivity.session.getSurvey());
@@ -321,10 +317,10 @@ public class CustomTabListeners {
                 if (s.length() == 0) return;
                 EditText myEdit = (EditText)myActivity.getCurrentFocus();
                 Question triggeredQuestion = (Question) myEdit.getTag(R.id.QuestionTag);
-                Value value = triggeredQuestion.getValue(MainActivity.session.getSurvey());
+                Value value = triggeredQuestion.getValueBySession();
                 // If the value is not found we create one
                 if (value == null) {
-                    value = new Value("", triggeredQuestion, MainActivity.session.getSurvey());
+                    value = new Value("", triggeredQuestion, Session.getSurvey());
                     value.save();
                 } else {
                     value.setOption(null);

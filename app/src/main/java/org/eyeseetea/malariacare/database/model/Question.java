@@ -5,6 +5,8 @@ import com.orm.dsl.Ignore;
 import com.orm.query.Condition;
 import com.orm.query.Select;
 
+import org.eyeseetea.malariacare.database.utils.Session;
+
 import java.util.List;
 
 public class Question extends SugarRecord<Question> {
@@ -158,12 +160,11 @@ public class Question extends SugarRecord<Question> {
     }
 
     // This method returns a value for this question given a survey. We return the first element because this must be unique
-    public Value getValue(Survey survey){
-        String surveyId = String.valueOf(survey.getId());
+    public Value getValueBySession(){
+        String surveyId = String.valueOf(Session.getSurvey().getId());
         String questionId = String.valueOf(this.getId());
-        List<Value> returnValues = Select.from(Value.class)
-                .where(Condition.prop("question").eq(questionId),
-                        Condition.prop("survey").eq(surveyId)).list();
+        List<Value> returnValues = Select.from(Value.class).where(Condition.prop("question").eq(questionId),
+                Condition.prop("survey").eq(surveyId)).list();
         if (returnValues.size() == 0) return null;
         else return returnValues.get(0);
     }
