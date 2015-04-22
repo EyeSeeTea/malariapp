@@ -74,11 +74,13 @@ public class AssessmentAdapter extends BaseAdapter {
 
         View rowView = lInflater.inflate(R.layout.assessment_record, parent, false);
 
-        ((TextView) rowView.findViewById(R.id.facilityDate)).setText(item.getOrgUnit().getUid() + " - " + item.getOrgUnit().getName() + "<br>" + item.getEventDate());
-        ((TextView) rowView.findViewById(R.id.status)).setText("STATUS");
-
-
-        //FIXME: We need to add some logic. Depending on the status we will be showing different links
+        ((TextView) rowView.findViewById(R.id.facility)).setText(item.getOrgUnit().getUid() + " - " + item.getOrgUnit().getName());
+        ((TextView) rowView.findViewById(R.id.date)).setText(item.getEventDate());
+        ((TextView) rowView.findViewById(R.id.score)).setText("25 %");
+        ((TextView) rowView.findViewById(R.id.completed)).setText("25");
+        ((TextView) rowView.findViewById(R.id.total)).setText("824");
+ 
+		//FIXME: We need to add some logic. Depending on the status we will be showing different links
 
         LinearLayout toolContainerView = (LinearLayout) rowView.findViewById(R.id.toolsContainer);
         TextView editTextView = new TextView(this.context);
@@ -124,4 +126,3 @@ public class AssessmentAdapter extends BaseAdapter {
 
     }
 }
-

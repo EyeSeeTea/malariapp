@@ -71,7 +71,8 @@ public class FeedbackAdapter extends BaseAdapter {
 
         rowView = lInflater.inflate(R.layout.feedback_record, parent, false);
 
-        ((TextView)rowView.findViewById(R.id.facilityDate)).setText(item.getOrgUnit().getUid() + " - " + item.getOrgUnit().getName() + "<br>" + item.getEventDate());
+        ((TextView)rowView.findViewById(R.id.facility)).setText(item.getOrgUnit().getUid() + " - " + item.getOrgUnit().getName());
+        ((TextView)rowView.findViewById(R.id.date)).setText(item.getEventDate());
         ((TextView)rowView.findViewById(R.id.status)).setText("STATUS");
 
         return rowView;

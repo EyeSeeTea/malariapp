@@ -43,11 +43,11 @@ public class DashboardActivity extends ActionBarActivity {
     }
 
     @Override
-    public void onResume()
-    {  // After a pause OR at startup
-        super.onResume();
-        //Refresh your stuff here
+    public void onRestart() {
+        super.onRestart();
         Log.i(".DashboardActivity", "coming back");
+        finish();
+        startActivity(getIntent());
     }
 
 

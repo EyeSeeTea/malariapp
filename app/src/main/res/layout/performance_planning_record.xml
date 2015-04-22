@@ -24,61 +24,65 @@
 
     <LinearLayout
         android:orientation="vertical"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="fill_parent"
         android:id="@+id/dateContainer"
-        android:layout_weight="0.2">
+        android:layout_weight="0.25">
 
         <TextView
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:id="@+id/date"
-            android:padding="5dip" />
+            android:padding="5dip"
+            android:layout_gravity="center" />
     </LinearLayout>
 
     <LinearLayout
         android:orientation="vertical"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="fill_parent"
         android:id="@+id/targetContainer"
-        android:layout_weight="0.2">
+        android:layout_weight="0.25">
 
         <TextView
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:id="@+id/target"
-            android:padding="5dip" />
+            android:padding="5dip"
+            android:layout_gravity="center" />
     </LinearLayout>
 
     <LinearLayout
         android:orientation="vertical"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="fill_parent"
         android:id="@+id/doneContainer"
-        android:layout_weight="0.3">
+        android:layout_weight="0.25">
 
         <TextView
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:id="@+id/done"
-            android:padding="5dip" />
+            android:padding="5dip"
+            android:layout_gravity="center" />
     </LinearLayout>
 
     <LinearLayout
         android:orientation="vertical"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="fill_parent"
         android:id="@+id/achievementContainer"
-        android:layout_weight="0.3">
+        android:layout_weight="0.25">
 
         <TextView
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:id="@+id/achievement"
-            android:padding="5dip" />
+            android:padding="5dip"
+            android:layout_gravity="center" />
     </LinearLayout>
 </TableRow>

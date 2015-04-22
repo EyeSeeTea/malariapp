@@ -18,9 +18,10 @@
   ~  along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
   -->
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal" android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
+<TableRow xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
     android:gravity="center">
 
     <TextView
@@ -33,7 +34,8 @@
         android:textColor="#ffffff"
         android:gravity="center"
         android:padding="5dip"
-        android:layout_weight="0.4" />
+        android:layout_weight="0.6"
+        android:layout_gravity="center" />
 
     <TextView
         android:layout_width="0dip"
@@ -45,7 +47,8 @@
         android:textColor="#ffffff"
         android:gravity="center"
         android:padding="5dip"
-        android:layout_weight="0.3" />
+        android:layout_weight="0.2"
+        android:layout_gravity="center" />
 
     <TextView
         android:layout_width="0dip"
@@ -56,5 +59,6 @@
         android:textColor="#ffffff"
         android:gravity="center"
         android:padding="5dip"
-        android:layout_weight="0.3" />
-</LinearLayout>
+        android:layout_weight="0.2"
+        android:layout_gravity="center" />
+</TableRow>
