@@ -148,7 +148,6 @@
     <string name="target">Target</string>
     <string name="achievement">Achievement</string>
     <string name="new_survey">New Survey</string>
-    <string name="hello_world">Hello world!</string>
     <string name="create_form">CREATE SURVEY</string>
     <string name="active_assessments">Active Assessments</string>
     <string name="OrgUnitDateHeader">Org Unit / Date</string>
