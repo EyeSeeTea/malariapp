@@ -178,9 +178,6 @@ public class LayoutUtils {
                     for (int i=0; i<((TableLayout)table).getChildCount(); i++){
                         TextView scoreText = (TextView)((TableLayout)table).getChildAt(i).findViewById(R.id.score);
                         if (scoreText != null) scoreText.setText("0");
-                        // FIXME: we should rename this scoreValue ids to score, but subtotal updating relies on finding only one score id in the tab, so it's not straight-forward
-                        scoreText = (TextView)((TableLayout)table).getChildAt(i).findViewById(R.id.scoreValue);
-                        if (scoreText != null) scoreText.setText("0");
                     }
                 }
             }
