@@ -19,15 +19,20 @@
 
 package org.eyeseetea.malariacare.layout.adapters.dashboard;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import org.eyeseetea.malariacare.MainActivity;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.model.Survey;
+import org.eyeseetea.malariacare.database.utils.Session;
 
 import java.util.List;
 
@@ -44,7 +49,7 @@ public class AssessmentAdapter extends BaseAdapter {
         this.items = items;
         this.context = context;
 
-        this.lInflater=LayoutInflater.from(context);
+        this.lInflater = LayoutInflater.from(context);
     }
 
 
@@ -65,15 +70,58 @@ public class AssessmentAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        View rowView = null;
-
         Survey item = (Survey) getItem(position);
 
-        rowView = lInflater.inflate(R.layout.assessment_record, parent, false);
+        View rowView = lInflater.inflate(R.layout.assessment_record, parent, false);
 
-        ((TextView)rowView.findViewById(R.id.facilityDate)).setText(item.getOrgUnit().getUid() + " - " + item.getOrgUnit().getName() + "<br>" + item.getEventDate());
-        ((TextView)rowView.findViewById(R.id.status)).setText("STATUS");
+        ((TextView) rowView.findViewById(R.id.facilityDate)).setText(item.getOrgUnit().getUid() + " - " + item.getOrgUnit().getName() + "<br>" + item.getEventDate());
+        ((TextView) rowView.findViewById(R.id.status)).setText("STATUS");
+
+
+        //FIXME: We need to add some logic. Depending on the status we will be showing different links
+
+        LinearLayout toolContainerView = (LinearLayout) rowView.findViewById(R.id.toolsContainer);
+        TextView editTextView = new TextView(this.context);
+        editTextView.setText("Edit");
+        editTextView.setOnClickListener(new AssessmentListener((Activity) this.context, item, "edit"));
+        toolContainerView.addView(editTextView);
+
+        TextView deleteTextView = new TextView(this.context);
+        deleteTextView.setText("Delete");
+        deleteTextView.setOnClickListener(new AssessmentListener((Activity) this.context, item, "delete"));
+        toolContainerView.addView(deleteTextView);
 
         return rowView;
     }
+
+    private class AssessmentListener implements View.OnClickListener {
+
+        private Survey survey;
+        private String listenerOption; //One of edit, delete
+        private Activity context;
+
+        public AssessmentListener(Activity context, Survey survey, String listenerOption) {
+            this.context = context;
+            this.survey = survey;
+            this.listenerOption = listenerOption;
+        }
+
+        public void onClick(View view) {
+            if (listenerOption.equals("delete")){
+                survey.delete();
+                this.context.finish();
+                this.context.startActivity(this.context.getIntent());
+            }
+            else if (listenerOption.equals("edit")){
+                Session.setSurvey(survey);
+
+                //Call Survey Activity
+                Intent surveyIntent = new Intent(this.context, MainActivity.class);
+                this.context.startActivity(surveyIntent);
+            }
+        }
+
+
+    }
 }
+

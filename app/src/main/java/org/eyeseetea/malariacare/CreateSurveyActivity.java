@@ -22,6 +22,7 @@ package org.eyeseetea.malariacare;
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -96,15 +97,22 @@ public class CreateSurveyActivity extends ActionBarActivity {
     /** Called when the user clicks the Send button */
     public void createSurvey(View view) {
 
+        Log.i(".CreateSurveyActivity", "Saving survey and saving in session");
+
+        // Read Selected Items
         OrgUnit orgUnit = (OrgUnit) orgUnitView.getSelectedItem();
         Program program = (Program) programView.getSelectedItem();
 
+        // Save Survey
         Survey survey = new Survey(orgUnit, program, Session.getUser());
         survey.save();
 
+        // Set to session
         Session.setSurvey(survey);
 
+        //Call Survey Activity
         Intent surveyIntent = new Intent(this, MainActivity.class);
         startActivity(surveyIntent);
+
     }
 }

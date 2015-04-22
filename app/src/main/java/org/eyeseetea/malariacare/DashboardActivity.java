@@ -22,6 +22,7 @@ package org.eyeseetea.malariacare;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -39,6 +40,14 @@ public class DashboardActivity extends ActionBarActivity {
 //                    .add(R.id.container, new AssessmentFragment())
 //                    .commit();
 //        }
+    }
+
+    @Override
+    public void onResume()
+    {  // After a pause OR at startup
+        super.onResume();
+        //Refresh your stuff here
+        Log.i(".DashboardActivity", "coming back");
     }
 
 
