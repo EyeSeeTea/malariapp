@@ -8,11 +8,15 @@ import org.eyeseetea.malariacare.database.model.Answer;
 import org.eyeseetea.malariacare.database.model.CompositiveScore;
 import org.eyeseetea.malariacare.database.model.Header;
 import org.eyeseetea.malariacare.database.model.Option;
+import org.eyeseetea.malariacare.database.model.OrgUnit;
 import org.eyeseetea.malariacare.database.model.Question;
+import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.model.Tab;
+import org.eyeseetea.malariacare.database.model.User;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -127,6 +131,34 @@ public class PopulateDB {
         Option.saveInTx(optionList.values());
         CompositiveScore.saveInTx(compositiveScoreList.values());
         Question.saveInTx(questionList.values());
+
+        OrgUnit orgUnit = new OrgUnit();
+        orgUnit.setUid("1234");
+        orgUnit.setName("Clinical Center for District X");
+        orgUnit.save();
+
+        OrgUnit orgUnit2 = new OrgUnit();
+        orgUnit2.setUid("7634");
+        orgUnit2.setName("Clinical Center 23 for District Y");
+        orgUnit2.save();
+
+        User user = new User();
+        user.setUid("User Uid");
+        user.setName("Test User Name");
+        user.save();
+
+        Survey survey = new Survey();
+        survey.setOrgUnit(orgUnit);
+        survey.setUser(user);
+        survey.setEventDate("23 Mar 2015");
+        survey.save();
+
+        Survey survey2 = new Survey();
+        survey2.setOrgUnit(orgUnit2);
+        survey2.setUser(user);
+        survey2.setEventDate("25 Mar 2015");
+        survey2.save();
+
 
         //Header.saveInTx(headerCustomList.values());
         //Question.saveInTx(questionCustomList.values());

@@ -21,16 +21,33 @@ package org.eyeseetea.malariacare;
 
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import org.eyeseetea.malariacare.database.model.Tab;
+import org.eyeseetea.malariacare.database.utils.PopulateDB;
 import org.eyeseetea.malariacare.fragments.AssessmentFragment;
+
+import java.io.IOException;
 
 
 public class DashboardActivity extends ActionBarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+//        if (Tab.count(Tab.class, null, null)==0) {
+//            // As this is only executed the first time the app is loaded, and we still don't have a way to create users, surveys, etc, here
+//            // we will create a dummy user, survey, orgUnit, program, etc. To be used in local save
+//            Log.i(".MainActivity", "Populating DB");
+//            try {
+//                PopulateDB.populateDB(getAssets());
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//            Log.i(".MainActivity", "DB populated");
+//        }
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
 //        if (savedInstanceState == null) {
