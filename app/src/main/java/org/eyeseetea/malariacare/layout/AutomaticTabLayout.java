@@ -21,6 +21,7 @@ import org.eyeseetea.malariacare.layout.configuration.LayoutConfiguration;
 import org.eyeseetea.malariacare.layout.listeners.AutomaticTabListeners;
 import org.eyeseetea.malariacare.layout.score.ANumDenRecord;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
+import org.eyeseetea.malariacare.layout.score.ScoreUtils;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 import org.eyeseetea.malariacare.utils.Constants;
 import org.eyeseetea.malariacare.utils.Utils;
@@ -72,14 +73,15 @@ public class AutomaticTabLayout {
                         dropdown.setTag(R.id.Tab, LayoutConfiguration.getTabsConfiguration().get(tab).getTabId());
                         dropdown.setTag(R.id.QuestionTypeTag, Constants.DROPDOWN_LIST);
 
-                        // If the question has children, we load the denominator, else we hide the question
+                        float numeratorF = ScoreUtils.calculateNum(question, defaultOption);
+                        float denominatorF = ScoreUtils.calculateDen(question, defaultOption);
+
+                        ScoreRegister.addRecord(question, numeratorF, denominatorF);
+                        denominator.setText(Utils.round(denominatorF));
+                        // If the question hasn't children we hide the question
                         if (!question.hasParent()) {
                             if (question.hasChildren()) questionView.setBackgroundResource(R.drawable.background_parent);
-
-                            denominator.setText(Utils.round(question.getDenominator_w()));
                             headerView.setVisibility(View.VISIBLE);
-
-                            ScoreRegister.addRecord(question, 0F, question.getDenominator_w());
                         } else {
                             questionView.setVisibility(View.GONE);
                         }

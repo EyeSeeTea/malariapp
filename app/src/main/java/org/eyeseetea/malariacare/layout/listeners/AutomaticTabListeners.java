@@ -22,6 +22,7 @@ import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.layout.configuration.LayoutConfiguration;
 import org.eyeseetea.malariacare.layout.dialog.DialogDispatcher;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
+import org.eyeseetea.malariacare.layout.score.ScoreUtils;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 import org.eyeseetea.malariacare.utils.Constants;
 import org.eyeseetea.malariacare.utils.Utils;
@@ -75,50 +76,14 @@ public class AutomaticTabListeners {
                     }
                 }
 
-                Float numerator, denominator;
-                if (triggeredOption.getName() != null && !(triggeredOption.getName().equals(Constants.DEFAULT_SELECT_OPTION))) { // This is for capture the user selection
-                    // First we do the calculus
-                    numerator = triggeredOption.getFactor() * triggeredQuestion.getNumerator_w();
-                    Log.i(".Layout", "numerator: " + numerator);
-                    denominator = 0.0F;
-
-                    if (triggeredQuestion.getNumerator_w().compareTo(triggeredQuestion.getDenominator_w()) == 0) {
-                        denominator = triggeredQuestion.getDenominator_w();
-                        Log.i(".Layout", "denominator: " + denominator);
-                    } else {
-                        if (triggeredQuestion.getNumerator_w().compareTo(0.0F) == 0 && triggeredQuestion.getDenominator_w().compareTo(0.0F) != 0) {
-                            denominator = triggeredOption.getFactor() * triggeredQuestion.getDenominator_w();
-                            Log.i(".Layout", "denominator: " + denominator);
-                        }
-                    }
-
-                    ScoreRegister.addRecord(triggeredQuestion, numerator, denominator);
-
-                    // If the option is changed to positive numerator and has children, we need to show the children and take their denominators into account
-                    if (triggeredQuestion.hasChildren()) {
-                        LayoutUtils.toggleVisibleChildren(position, spinner, triggeredQuestion);
-                    }
-
-                    numeratorView.setText(Utils.round(numerator));
-                    denominatorView.setText(Utils.round(denominator));
-
-                } else {
-                    // This is for capturing the event when the user leaves the dropdown list without selecting any option
-                    numerator = 0.0F;
-                    if (triggeredQuestion.hasChildren()){
-                        denominator = 0.0F;
-                        LayoutUtils.toggleVisibleChildren(position, spinner, triggeredQuestion);
-                    }
-                    else{
-                        denominator = triggeredQuestion.getDenominator_w();
-                    }
-
-                    if (selectedItemView != null) {
-                        numeratorView.setText(Utils.round(numerator));
-                        denominatorView.setText(Utils.round(denominator));
-                    }
-
-                    ScoreRegister.addRecord(triggeredQuestion, numerator, denominator);
+                // Num/Dem logic implementation
+                float numeratorF = ScoreUtils.calculateNum(triggeredQuestion, triggeredOption);
+                float denominatorF = ScoreUtils.calculateDen(triggeredQuestion, triggeredOption);
+                ScoreRegister.addRecord(triggeredQuestion, numeratorF, denominatorF);
+                numeratorView.setText(Utils.round(numeratorF));
+                denominatorView.setText(Utils.round(denominatorF));
+                if (triggeredQuestion.hasChildren()) {
+                    LayoutUtils.toggleVisibleChildren(position, spinner, triggeredQuestion);
                 }
 
 
