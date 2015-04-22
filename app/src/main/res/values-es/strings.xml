@@ -135,7 +135,7 @@
     <string name="error_invalid_password">La constraseña es demasiado corta</string>
     <string name="error_incorrect_password">La contraseña no es correcta</string>
     <string name="error_field_required">El campo es obligatorio</string>
-    <string name="title_activity_dashboard">Dashboard</string>
+    <string name="title_activity_dashboard">Panel de control</string>
     <string name="active_assessment">Active Assessment</string>
     <string name="feedback">Feedback</string>
     <string name="facilityDateHeader">Facility / Date</string>
