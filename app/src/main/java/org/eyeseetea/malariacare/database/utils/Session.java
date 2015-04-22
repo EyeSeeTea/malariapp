@@ -26,28 +26,27 @@ import org.eyeseetea.malariacare.database.model.Program;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.model.User;
 
+import java.io.Serializable;
 import java.util.List;
 
 public class Session {
 
-    public static Survey survey;
+    private static Survey survey;
+    private static User user;
 
-    public void createSurvey(){
-        OrgUnit orgUnit = new OrgUnit("DummyOrgUnit", "Dummy orgUnit");
-        orgUnit.save();
-        Program program = new Program("DummyProgram", "Dummy program");
-        program.save();
-        User user = new User("DummyUID", "Dummy user");
-        user.save();
-        this.survey = new Survey(orgUnit, program, user);
-        this.survey.save();
+    public static Survey getSurvey() {
+        return survey;
     }
 
-    public void selectSurvey(Survey survey){
-        this.survey = survey;
+    public static void setSurvey(Survey survey) {
+        Session.survey = survey;
     }
 
-    public Survey getSurvey(){
-        return this.survey;
+    public static User getUser() {
+        return user;
+    }
+
+    public static void setUser(User user) {
+        Session.user = user;
     }
 }

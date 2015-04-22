@@ -49,8 +49,18 @@ import android.widget.TextView;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.SignInButton;
+import com.orm.query.Condition;
+import com.orm.query.Select;
 
+import org.eyeseetea.malariacare.database.model.Survey;
+import org.eyeseetea.malariacare.database.model.Tab;
+import org.eyeseetea.malariacare.database.model.User;
+import org.eyeseetea.malariacare.database.utils.PopulateDB;
+import org.eyeseetea.malariacare.database.utils.Session;
+
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 
@@ -69,7 +79,7 @@ public class LoginActivity extends PlusBaseActivity implements LoaderCallbacks<C
      * TODO: remove after connecting to a real authentication system.
      */
     private static final String[] DUMMY_CREDENTIALS = new String[]{
-            "admin:admin", "user:!_user_!"
+            "admin:admin", "user:user"
     };
     /**
      * Keep track of the login task to ensure we can cancel it if requested.
@@ -81,14 +91,21 @@ public class LoginActivity extends PlusBaseActivity implements LoaderCallbacks<C
     private EditText mPasswordView;
     private View mProgressView;
     private View mUserLoginFormView;
-    //private SignInButton mPlusSignInButton;
-    //private View mSignOutButtons;
     private View mLoginFormView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_layout);
+
+        // Populate User table just in case there is already an existing user
+        Iterator<User> users = User.findAll(User.class);
+        if (users.hasNext()) {
+            Session.setUser(users.next());
+            Class c = DashboardActivity.class;
+            Intent mainIntent = new Intent(LoginActivity.this, c);
+            startActivity(mainIntent);
+        }
 
         // Set up the login form.
         mUserView = (AutoCompleteTextView) findViewById(R.id.user);
@@ -176,7 +193,7 @@ public class LoginActivity extends PlusBaseActivity implements LoaderCallbacks<C
 
     private boolean isPasswordValid(String password) {
         //TODO: Replace this with your own logic
-        return password.length() > 4;
+        return password.length() >= 4;
     }
 
     /**
@@ -216,23 +233,7 @@ public class LoginActivity extends PlusBaseActivity implements LoaderCallbacks<C
     }
 
     @Override
-    protected void onPlusClientSignIn() {
-        /*//Set up sign out and disconnect buttons.
-        Button signOutButton = (Button) findViewById(R.id.plus_sign_out_button);
-        signOutButton.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                signOut();
-            }
-        });
-        Button disconnectButton = (Button) findViewById(R.id.plus_disconnect_button);
-        disconnectButton.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                revokeAccess();
-            }
-        });*/
-    }
+    protected void onPlusClientSignIn() {}
 
     @Override
     protected void onPlusClientBlockingUI(boolean show) {
@@ -331,6 +332,7 @@ public class LoginActivity extends PlusBaseActivity implements LoaderCallbacks<C
 
         private final String mUser;
         private final String mPassword;
+        private User user;
 
         UserLoginTask(String user, String password) {
             mUser = user;
@@ -341,17 +343,30 @@ public class LoginActivity extends PlusBaseActivity implements LoaderCallbacks<C
         protected Boolean doInBackground(Void... params) {
             // TODO: attempt authentication against a network service.
 
-            try {
-                // Simulate network access.
-                Thread.sleep(2000);
-            } catch (InterruptedException e) {
-                return false;
-            }
-
             for (String credential : DUMMY_CREDENTIALS) {
                 String[] pieces = credential.split(":");
                 if (pieces[0].equals(mUser)) {
-                    // Account exists, return true if the password matches.
+                    this.user = new User(mUser, mUser);
+                    this.user.save();
+                    Session.setUser(user);
+                    // Account exists, populate DB and return true if the password matches.
+                    // We import the initial data in case it has been done yet
+                    if (Tab.count(Tab.class, null, null)==0) {
+                        // As this is only executed the first time the app is loaded, and we still don't have a way to create users, surveys, etc, here
+                        // we will create a dummy user, survey, orgUnit, program, etc. To be used in local save
+                        PopulateDB.populateDummyData();
+
+                        Log.i(".MainActivity", "Populating DB");
+                        try {
+                            PopulateDB.populateDB(getAssets());
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        Log.i(".MainActivity", "DB populated");
+                    } //else {
+                        // Select the first survey present in the db. Must not be null if populate didn't fail
+                       // session.selectSurvey(Survey.find(Survey.class, "id = 1").get(0));
+                    //}
                     return pieces[1].equals(mPassword);
                 }
             }
@@ -365,6 +380,7 @@ public class LoginActivity extends PlusBaseActivity implements LoaderCallbacks<C
             mAuthTask = null;
             showProgress(false);
 
+            // In case of login success, create the user in the db and proceed to the dashboard activity
             if (success) {
                 Log.i(".LoginActivity", "--------------> Logged in");
                 Class c = DashboardActivity.class;

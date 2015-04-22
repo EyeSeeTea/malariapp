@@ -32,7 +32,7 @@ import java.util.Map;
 
 public class MainActivity extends ActionBarActivity{
 
-    public static Session session = new Session();
+    public static Session session;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,24 +45,6 @@ public class MainActivity extends ActionBarActivity{
 
         //long time3 = System.currentTimeMillis();
         //Log.d(".MainActivity", "Time Configuring tab: " + (time3 -time2) + " ms");
-
-        // We import the initial data in case it has been done yet
-        if (Tab.count(Tab.class, null, null)==0) {
-            // As this is only executed the first time the app is loaded, and we still don't have a way to create users, surveys, etc, here
-            // we will create a dummy user, survey, orgUnit, program, etc. To be used in local save
-            session.createSurvey();
-
-            Log.i(".MainActivity", "Populating DB");
-            try {
-                PopulateDB.populateDB(getAssets());
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            Log.i(".MainActivity", "DB populated");
-        } else {
-            // Select the first survey present in the db. Must not be null if populate didn't fail
-            session.selectSurvey(Survey.find(Survey.class, "id = 1").get(0));
-        }
 
         Log.i(".MainActivity", "Initializing Layout Configuration");
         LayoutConfiguration.initialize(Persistence.getTabs());

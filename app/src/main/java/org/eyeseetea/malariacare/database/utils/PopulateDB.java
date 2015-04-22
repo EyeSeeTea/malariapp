@@ -9,6 +9,7 @@ import org.eyeseetea.malariacare.database.model.CompositiveScore;
 import org.eyeseetea.malariacare.database.model.Header;
 import org.eyeseetea.malariacare.database.model.Option;
 import org.eyeseetea.malariacare.database.model.OrgUnit;
+import org.eyeseetea.malariacare.database.model.Program;
 import org.eyeseetea.malariacare.database.model.Question;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.model.Tab;
@@ -132,37 +133,37 @@ public class PopulateDB {
         CompositiveScore.saveInTx(compositiveScoreList.values());
         Question.saveInTx(questionList.values());
 
-        OrgUnit orgUnit = new OrgUnit();
-        orgUnit.setUid("1234");
-        orgUnit.setName("Clinical Center for District X");
-        orgUnit.save();
-
-        OrgUnit orgUnit2 = new OrgUnit();
-        orgUnit2.setUid("7634");
-        orgUnit2.setName("Clinical Center 23 for District Y");
-        orgUnit2.save();
-
-        User user = new User();
-        user.setUid("User Uid");
-        user.setName("Test User Name");
-        user.save();
-
-        Survey survey = new Survey();
-        survey.setOrgUnit(orgUnit);
-        survey.setUser(user);
-        survey.setEventDate("23 Mar 2015");
-        survey.save();
-
-        Survey survey2 = new Survey();
-        survey2.setOrgUnit(orgUnit2);
-        survey2.setUser(user);
-        survey2.setEventDate("25 Mar 2015");
-        survey2.save();
-
 
         //Header.saveInTx(headerCustomList.values());
         //Question.saveInTx(questionCustomList.values());
 
+    }
+
+    public static void populateDummyData(){
+        OrgUnit orgUnit = new OrgUnit("DummyOrgUnit", "Dummy orgUnit");
+        orgUnit.save();
+        OrgUnit orgUnit2 = new OrgUnit("1234", "Clinical Center for District X");
+        orgUnit.save();
+        OrgUnit orgUnit3 = new OrgUnit("7634", "Clinical Center 23 for District Y");
+        orgUnit2.save();
+
+        Program program = new Program("DummyProgram", "Dummy program");
+        program.save();
+
+        Survey survey = new Survey(orgUnit, program, Session.getUser());
+        survey.save();
+
+        Survey survey2 = new Survey();
+        survey2.setOrgUnit(orgUnit);
+        survey2.setUser(Session.getUser());
+        survey2.setEventDate("23 Mar 2015");
+        survey2.save();
+
+        Survey survey3 = new Survey();
+        survey3.setOrgUnit(orgUnit2);
+        survey3.setUser(Session.getUser());
+        survey3.setEventDate("25 Mar 2015");
+        survey3.save();
     }
 
 }

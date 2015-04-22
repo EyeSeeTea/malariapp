@@ -21,6 +21,8 @@ package org.eyeseetea.malariacare.database.model;
 
 import com.orm.SugarRecord;
 
+import java.io.Serializable;
+
 public class User extends SugarRecord<User> {
 
     String uid;
