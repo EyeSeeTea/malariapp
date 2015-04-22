@@ -71,10 +71,10 @@ public class PerformancePlanningAdapter extends BaseAdapter {
 
         rowView = lInflater.inflate(R.layout.performance_planning_record, parent, false);
 
-        ((TextView)rowView.findViewById(R.id.date)).setText("");
-        ((TextView)rowView.findViewById(R.id.target)).setText("");
-        ((TextView)rowView.findViewById(R.id.done)).setText("");
-        ((TextView)rowView.findViewById(R.id.achievement)).setText("");
+        ((TextView)rowView.findViewById(R.id.date)).setText("Jan");
+        ((TextView)rowView.findViewById(R.id.target)).setText("10");
+        ((TextView)rowView.findViewById(R.id.done)).setText("5");
+        ((TextView)rowView.findViewById(R.id.achievement)).setText("50 %");
 
         return rowView;
     }

@@ -73,7 +73,8 @@ public class FutureAssessmentPlanningAdapter extends BaseAdapter {
 
         ((TextView)rowView.findViewById(R.id.facility)).setText(item.getOrgUnit().getUid() + " - " + item.getOrgUnit().getName());
         ((TextView)rowView.findViewById(R.id.datePreviousAssessment)).setText("");
-        ((TextView)rowView.findViewById(R.id.dueDate)).setText("");
+        ((TextView)rowView.findViewById(R.id.dueDate)).setText("23 Mar 2015");
+        ((TextView)rowView.findViewById(R.id.action)).setText("Start | Reschedule");
 
         return rowView;
     }
