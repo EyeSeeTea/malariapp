@@ -24,61 +24,69 @@
 
     <LinearLayout
         android:orientation="vertical"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="fill_parent"
         android:id="@+id/facilityContainer"
-        android:layout_weight="0.3">
+        android:layout_weight="0.4"
+        android:layout_gravity="center">
 
         <TextView
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:id="@+id/facility"
-            android:padding="5dip" />
+            android:padding="5dip"
+            android:layout_gravity="center" />
     </LinearLayout>
 
     <LinearLayout
         android:orientation="vertical"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="fill_parent"
         android:id="@+id/datePreviousAssessmentContainer"
-        android:layout_weight="0.3">
+        android:layout_weight="0.2"
+        android:layout_gravity="center">
 
         <TextView
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:id="@+id/datePreviousAssessment"
-            android:padding="5dip" />
+            android:padding="5dip"
+            android:layout_gravity="center" />
     </LinearLayout>
 
     <LinearLayout
         android:orientation="vertical"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="fill_parent"
         android:id="@+id/dueDateContainer"
-        android:layout_weight="0.2">
+        android:layout_weight="0.2"
+        android:layout_gravity="center">
 
         <TextView
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:id="@+id/dueDate"
-            android:padding="5dip" />
+            android:padding="5dip"
+            android:layout_gravity="center" />
     </LinearLayout>
 
     <LinearLayout
         android:orientation="vertical"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="fill_parent"
         android:id="@+id/actionContainer"
-        android:layout_weight="0.2">
+        android:layout_weight="0.2"
+        android:layout_gravity="center">
 
         <TextView
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:id="@+id/action"
-            android:padding="5dip" />
+            android:padding="5dip"
+            android:layout_gravity="center" />
     </LinearLayout>
 </TableRow>

@@ -150,5 +150,11 @@
     <string name="new_survey">New Survey</string>
     <string name="hello_world">Hello world!</string>
     <string name="create_form">CREATE SURVEY</string>
+    <string name="active_assessments">Active Assessments</string>
+    <string name="OrgUnitDateHeader">Org Unit / Date</string>
+    <string name="future_assessments_title">Future Assessments</string>
+    <string name="performance_against_target_header">Performance Against Target</string>
+    <string name="period_header">Period</string>
+    <string name="analytics_header">Analytics</string>
 
 </resources>

@@ -19,11 +19,13 @@
 
 package org.eyeseetea.malariacare.layout.adapters.dashboard;
 
+import android.app.ActionBar;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import org.eyeseetea.malariacare.R;
@@ -71,8 +73,12 @@ public class AssessmentAdapter extends BaseAdapter {
 
         rowView = lInflater.inflate(R.layout.assessment_record, parent, false);
 
-        ((TextView)rowView.findViewById(R.id.facilityDate)).setText(item.getOrgUnit().getUid() + " - " + item.getOrgUnit().getName() + "<br>" + item.getEventDate());
-        ((TextView)rowView.findViewById(R.id.status)).setText("STATUS");
+        ((TextView) rowView.findViewById(R.id.facility)).setText(item.getOrgUnit().getUid() + " - " + item.getOrgUnit().getName());
+        ((TextView) rowView.findViewById(R.id.date)).setText(item.getEventDate());
+        ((TextView) rowView.findViewById(R.id.score)).setText("25 %");
+        ((TextView) rowView.findViewById(R.id.completed)).setText("25");
+        ((TextView) rowView.findViewById(R.id.total)).setText("824");
+
 
         return rowView;
     }
