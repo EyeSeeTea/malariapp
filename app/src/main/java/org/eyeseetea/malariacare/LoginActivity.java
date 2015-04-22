@@ -356,13 +356,13 @@ public class LoginActivity extends PlusBaseActivity implements LoaderCallbacks<C
                         // we will create a dummy user, survey, orgUnit, program, etc. To be used in local save
                         PopulateDB.populateDummyData();
 
-                        Log.i(".MainActivity", "Populating DB");
+                        Log.i(".LoginActivity", "Populating DB");
                         try {
                             PopulateDB.populateDB(getAssets());
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
-                        Log.i(".MainActivity", "DB populated");
+                        Log.i(".LoginActivity", "DB populated");
                     } //else {
                         // Select the first survey present in the db. Must not be null if populate didn't fail
                        // session.selectSurvey(Survey.find(Survey.class, "id = 1").get(0));

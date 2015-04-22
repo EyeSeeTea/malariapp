@@ -31,8 +31,26 @@
 
     <fragment android:name="org.eyeseetea.malariacare.fragments.FeedbackFragment"
               android:id="@+id/feedback_fragment"
-              android:layout_weight="2"
+              android:layout_weight="1"
               android:layout_width="match_parent"
               android:layout_height="match_parent" />
+
+    <fragment android:name="org.eyeseetea.malariacare.fragments.FutureAssessmentPlanningFragment"
+        android:id="@+id/future_assessment_planning_fragment"
+        android:layout_weight="1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <fragment android:name="org.eyeseetea.malariacare.fragments.PerformancePlanningFragment"
+        android:id="@+id/performance_planning_fragment"
+        android:layout_weight="1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <fragment android:name="org.eyeseetea.malariacare.fragments.AnalyticsFragment"
+        android:id="@+id/analytics_fragment"
+        android:layout_weight="1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
 </LinearLayout>

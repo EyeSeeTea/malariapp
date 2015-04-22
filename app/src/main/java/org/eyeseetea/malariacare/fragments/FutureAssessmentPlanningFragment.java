@@ -19,6 +19,7 @@
 
 package org.eyeseetea.malariacare.fragments;
 
+import android.app.ListFragment;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -26,19 +27,41 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import org.eyeseetea.malariacare.R;
+import org.eyeseetea.malariacare.database.model.Survey;
+import org.eyeseetea.malariacare.layout.adapters.dashboard.FeedbackAdapter;
+import org.eyeseetea.malariacare.layout.adapters.dashboard.FutureAssessmentPlanningAdapter;
 
 /**
  * A placeholder fragment containing a simple view.
  */
-public class PlanningFragment extends Fragment {
+public class FutureAssessmentPlanningFragment extends ListFragment {
 
-    public PlanningFragment() {
+    FutureAssessmentPlanningAdapter futureAssessmentPlanningAdapter;
+    ViewGroup headerView;
+
+    public FutureAssessmentPlanningFragment() {
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_assessment, container, false);
-        return rootView;
+        headerView = (ViewGroup) inflater.inflate(R.layout.future_assessment_planning_header, null);
+        return inflater.inflate(R.layout.fragment_future_assessment_planning, container, false);
+
+
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+
+        super.onActivityCreated(savedInstanceState);
+
+        if (headerView != null)  this.getListView().addHeaderView(headerView);
+
+        futureAssessmentPlanningAdapter = new FutureAssessmentPlanningAdapter(Survey.listAll(Survey.class), getActivity());
+        setListAdapter(futureAssessmentPlanningAdapter);
+
+        //getListView().setOnItemClickListener(this);
+
     }
 }

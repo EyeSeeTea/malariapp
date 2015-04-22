@@ -139,4 +139,11 @@
     <string name="feedback">Feedback</string>
     <string name="facilityDateHeader">Facility / Date</string>
     <string name="statusHeader">Status</string>
+    <string name="facility">Facility</string>
+    <string name="datePreviousAssessment">Date Previous Assessment</string>
+    <string name="dueDate">Due date</string>
+    <string name="action">Action</string>
+    <string name="date">Date</string>
+    <string name="target">Target</string>
+    <string name="achievement">Achievement</string>
 </resources>

@@ -28,25 +28,25 @@ import android.view.ViewGroup;
 
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.model.Survey;
-import org.eyeseetea.malariacare.layout.adapters.dashboard.AssessmentAdapter;
-import org.eyeseetea.malariacare.layout.adapters.dashboard.FeedbackAdapter;
+import org.eyeseetea.malariacare.layout.adapters.dashboard.FutureAssessmentPlanningAdapter;
+import org.eyeseetea.malariacare.layout.adapters.dashboard.PerformancePlanningAdapter;
 
 /**
  * A placeholder fragment containing a simple view.
  */
-public class FeedbackFragment extends ListFragment {
+public class PerformancePlanningFragment extends ListFragment {
 
-    FeedbackAdapter feedbackAdapter;
+    PerformancePlanningAdapter performancePlanningAdapter;
     ViewGroup headerView;
 
-    public FeedbackFragment() {
+    public PerformancePlanningFragment() {
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        headerView = (ViewGroup) inflater.inflate(R.layout.feedback_header, null);
-        return inflater.inflate(R.layout.fragment_feedback, container, false);
+        headerView = (ViewGroup) inflater.inflate(R.layout.performance_planning_header, null);
+        return inflater.inflate(R.layout.fragment_performance_planning, container, false);
 
 
     }
@@ -58,8 +58,8 @@ public class FeedbackFragment extends ListFragment {
 
         if (headerView != null)  this.getListView().addHeaderView(headerView);
 
-        feedbackAdapter = new FeedbackAdapter(Survey.listAll(Survey.class), getActivity());
-        setListAdapter(feedbackAdapter);
+        performancePlanningAdapter = new PerformancePlanningAdapter(Survey.listAll(Survey.class), getActivity());
+        setListAdapter(performancePlanningAdapter);
 
         //getListView().setOnItemClickListener(this);
 
