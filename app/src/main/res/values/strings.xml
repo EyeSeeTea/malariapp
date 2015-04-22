@@ -135,8 +135,7 @@
     <string name="error_invalid_password">This password is too short</string>
     <string name="error_incorrect_password">This password is incorrect</string>
     <string name="error_field_required">This field is required</string>
-    <string name="title_activity_dashboard">DashboardActivity</string>
-    <string name="hello_world">Hello world!</string>
+    <string name="title_activity_dashboard">Dashboard</string>
     <string name="active_assessment">Active Assessment</string>
     <string name="feedback">Feedback</string>
     <string name="facilityDateHeader">Facility / Date</string>
