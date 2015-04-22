@@ -156,5 +156,7 @@
     <string name="performance_against_target_header">Performance Against Target</string>
     <string name="period_header">Period</string>
     <string name="analytics_header">Analytics</string>
+    <string name="orgUnit">Organisation Unit</string>
+    <string name="program">Program</string>
 
 </resources>

@@ -44,31 +44,79 @@
                 android:layout_gravity="center"
                 android:gravity="center">
 
-                <Spinner
+                <LinearLayout
+                    android:orientation="horizontal"
                     android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/org_unit"
-                    android:spinnerMode="dropdown"
-                    android:backgroundTintMode="add"
-                    android:paddingLeft="2dip"
-                    android:paddingTop="2dip"
-                    android:paddingRight="20dip"
-                    android:paddingBottom="2dip"
-                    android:backgroundTint="#1e506c"
-                    android:gravity="right" />
+                    android:layout_height="fill_parent">
 
-                <Spinner
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceLarge"
+                        android:text="@string/orgUnit"
+                        android:id="@+id/textView2" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:orientation="horizontal"
                     android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/program"
-                    android:spinnerMode="dropdown"
-                    android:backgroundTintMode="add"
-                    android:paddingLeft="2dip"
-                    android:paddingTop="2dip"
-                    android:paddingRight="20dip"
-                    android:paddingBottom="2dip"
-                    android:backgroundTint="#1e506c"
-                    android:gravity="right" />
+                    android:layout_height="fill_parent"
+                    android:background="@drawable/background_textfield">
+
+                    <Spinner
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/org_unit"
+                        android:spinnerMode="dropdown"
+                        android:backgroundTintMode="add"
+                        android:paddingLeft="2dip"
+                        android:paddingTop="2dip"
+                        android:paddingRight="20dip"
+                        android:paddingBottom="2dip"
+                        android:backgroundTint="#1e506c"
+                        android:gravity="right" />
+                </LinearLayout>
+
+                <Space
+                    android:layout_width="20px"
+                    android:layout_height="20px" />
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent" >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceLarge"
+                        android:text="@string/program"
+                        android:id="@+id/textView3" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:background="@drawable/background_textfield">
+
+                    <Spinner
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/program"
+                        android:spinnerMode="dropdown"
+                        android:backgroundTintMode="add"
+                        android:paddingLeft="2dip"
+                        android:paddingTop="2dip"
+                        android:paddingRight="20dip"
+                        android:paddingBottom="2dip"
+                        android:backgroundTint="#1e506c"
+                        android:gravity="right" />
+                </LinearLayout>
+
+                <Space
+                    android:layout_width="20px"
+                    android:layout_height="20px" />
 
                 <Button android:id="@+id/create_form_button" style="?android:textAppearanceSmall"
                     android:layout_width="match_parent" android:layout_height="wrap_content"
@@ -77,6 +125,7 @@
                     android:onClick="createSurvey" />
 
             </LinearLayout>
+
         </LinearLayout>
     </ScrollView>
 
