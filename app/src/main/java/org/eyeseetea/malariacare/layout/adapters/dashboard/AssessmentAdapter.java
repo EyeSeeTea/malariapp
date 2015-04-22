@@ -22,6 +22,8 @@ package org.eyeseetea.malariacare.layout.adapters.dashboard;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -85,11 +87,15 @@ public class AssessmentAdapter extends BaseAdapter {
         LinearLayout toolContainerView = (LinearLayout) rowView.findViewById(R.id.toolsContainer);
         TextView editTextView = new TextView(this.context);
         editTextView.setText("Edit");
+        editTextView.setTextColor(Color.parseColor("#1e506c"));
+        editTextView.setTypeface(null, Typeface.BOLD);
         editTextView.setOnClickListener(new AssessmentListener((Activity) this.context, item, "edit"));
         toolContainerView.addView(editTextView);
 
         TextView deleteTextView = new TextView(this.context);
         deleteTextView.setText("Delete");
+        deleteTextView.setTextColor(Color.parseColor("#1e506c"));
+        deleteTextView.setTypeface(null, Typeface.BOLD);
         deleteTextView.setOnClickListener(new AssessmentListener((Activity) this.context, item, "delete"));
         toolContainerView.addView(deleteTextView);
 
