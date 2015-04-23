@@ -1,5 +1,6 @@
 package org.eyeseetea.malariacare.layout;
 
+import android.text.InputFilter;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -97,7 +98,9 @@ public class AutomaticTabLayout {
                         break;
                     case Constants.INT:
                         questionView = getView(iterBacks, inflater, layoutParent, headerView, question, R.layout.integer, Constants.INT);
-                        ((EditText)(questionView.findViewById(R.id.answer))).setTag(R.id.QuestionTag, question);
+                        EditText answer = ((EditText)(questionView.findViewById(R.id.answer)));
+                        answer.setFilters(new InputFilter[] { new InputFilter.LengthFilter(Constants.MAX_INT_CHARS)});
+                        answer.setTag(R.id.QuestionTag, question);
                         if (value != null) ((EditText)(questionView.findViewById(R.id.answer))).setText(value.getValue());
                         AutomaticTabListeners.createTextListener(tab, (EditText)questionView.findViewById(R.id.answer), mainActivity);
                         break;
