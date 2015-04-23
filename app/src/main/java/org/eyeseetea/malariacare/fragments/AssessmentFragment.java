@@ -20,22 +20,30 @@
 package org.eyeseetea.malariacare.fragments;
 
 import android.app.ListFragment;
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 
+import org.eyeseetea.malariacare.MainActivity;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.model.Survey;
+import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.layout.adapters.dashboard.AssessmentAdapter;
+
+import java.util.List;
 
 /**
  * A placeholder fragment containing a simple view.
  */
-public class AssessmentFragment extends ListFragment {
+public class AssessmentFragment extends ListFragment  {
 
     AssessmentAdapter assessmentAdapter;
     ViewGroup headerView;
+    List<Survey> surveyList;
 
     public AssessmentFragment() {
     }
@@ -56,10 +64,21 @@ public class AssessmentFragment extends ListFragment {
 
         if (headerView != null)  this.getListView().addHeaderView(headerView);
 
-        assessmentAdapter = new AssessmentAdapter(Survey.listAll(Survey.class), getActivity());
+        surveyList = Survey.listAll(Survey.class);
+        assessmentAdapter = new AssessmentAdapter(surveyList, getActivity());
         setListAdapter(assessmentAdapter);
 
-        //getListView().setOnItemClickListener(this);
+    }
 
+    @Override
+    public void onListItemClick(ListView l, View v, int position, long id) {
+
+        super.onListItemClick(l, v, position, id);
+
+        Session.setSurvey(surveyList.get(position));
+
+        //Call Survey Activity
+        Intent surveyIntent = new Intent(v.getContext(), MainActivity.class);
+        v.getContext().startActivity(surveyIntent);
     }
 }

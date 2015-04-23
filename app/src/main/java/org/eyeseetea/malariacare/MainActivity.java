@@ -1,5 +1,8 @@
 package org.eyeseetea.malariacare;
 
+import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
@@ -9,8 +12,10 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TabHost;
+import android.widget.TextView;
 
 import org.eyeseetea.malariacare.database.model.CompositiveScore;
 import org.eyeseetea.malariacare.database.model.Survey;
@@ -60,6 +65,31 @@ public class MainActivity extends ActionBarActivity{
 
         //long time5 = System.currentTimeMillis();
         //Log.d(".MainActivity", "Time creating menu and tabs: " + (time5 -time4) + " ms");
+
+        createBreadCrumb();
+
+
+    }
+
+    private void createBreadCrumb() {
+        LinearLayout breadCrumbsView = (LinearLayout) findViewById(R.id.breadCrumbs);
+
+        TextView dashboardBreadCrumbsView = new TextView(this);
+        dashboardBreadCrumbsView.setText("Dashboard");
+        dashboardBreadCrumbsView.setTextColor(Color.parseColor("#1e506c"));
+        dashboardBreadCrumbsView.setTypeface(null, Typeface.BOLD);
+        dashboardBreadCrumbsView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent dashboardIntent = new Intent(view.getContext(), DashboardActivity.class);
+                startActivity(dashboardIntent);
+            }
+        });
+        breadCrumbsView.addView(dashboardBreadCrumbsView);
+
+        TextView surveyBreadCrumbsView = new TextView(this);
+        surveyBreadCrumbsView.setText(" > Survey");
+        breadCrumbsView.addView(surveyBreadCrumbsView);
     }
 
     private void createMenuAndTabs() {
