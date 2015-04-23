@@ -1,5 +1,3 @@
-1;'MAL-QA-Info-100';'MAL-QA-Info-100-Name of Health  Facility [OU]';;'Name of Health  Facility [OU]';;100;0.00;0.00;305;26;;
-2;'MAL-QA-Info-110';'MAL-QA-Info-110-Date of Visit [Event Date]';;'Date of Visit [Event Date]';;110;0.00;0.00;305;27;;
 3;'MAL-QA-Info-120';'MAL-QA-Info-120-Supervisor ID';;'Supervisor ID';;120;0.00;0.00;305;26;;
 4;'MAL-QA-Info-130';'MAL-QA-Info-130-Supervisor Name';;'Supervisor Name';;130;0.00;0.00;305;26;;
 5;'MAL-QA-Info-140';'MAL-QA-Info-140-Head of Health Facility (HHF)';;'Head of Health Facility (HHF)';;140;0.00;0.00;306;26;;
@@ -8,7 +6,7 @@
 8;'MAL-QA-Info-170';'MAL-QA-Info-170-District Health Officer (DHO)';;'District Health Officer (DHO)';;170;0.00;0.00;306;26;;
 9;'MAL-QA-Info-180';'MAL-QA-Info-180-DHO Telephone';;'DHO Telephone';;180;0.00;0.00;306;26;;
 10;'MAL-QA-Info-190';'MAL-QA-Info-190-DHO E-mail';;'DHO E-mail';;190;0.00;0.00;306;26;;
-11;'MAL-QA-Info-200';'MAL-QA-Info-200-Hours of Operation – Weekdays';;'Hours of Operation – Weekdays';;200;0.00;0.00;306;26;;
+11;'MAL-QA-Info-200';'MAL-QA-Info-200-Hours of Operation â€“ Weekdays';;'Hours of Operation â€“ Weekdays';;200;0.00;0.00;306;26;;
 12;'MAL-QA-Info-210';'MAL-QA-Info-210-Hours of Operation - Weekend';;'Hours of Operation - Weekend';;210;0.00;0.00;306;26;;
 13;'MAL-QA-Profile-110';'MAL-QA-Profile-110- Clinical Officers, Full-Time today';;'Clinical Officers, Full-Time today';;110;0.00;0.00;307;24;;
 14;'MAL-QA-Profile-120';'MAL-QA-Profile-120- Clinical Officers, Full-Time Employed';;'Clinical Officers, Full-Time Employed';;120;0.00;0.00;307;24;;
@@ -115,7 +113,7 @@
 115;'MAL-QA-RDT-230-C1';'MAL-QA-RDT-230-C1-Blood dispensed in correct well of RDT device';;'Blood dispensed in correct well of RDT device';;230;1.00;1.00;340;15;;20
 116;'MAL-QA-RDT-240-C1';'MAL-QA-RDT-240-C1-Buffer applied to correct well  of RDT device';;'Buffer applied to correct well  of RDT device';;240;1.00;1.00;341;15;;20
 117;'MAL-QA-RDT-250-C1';'MAL-QA-RDT-250-C1-Appropriate amount of buffer dispensed into well';;'Appropriate amount of buffer dispensed into well';;250;1.00;1.00;341;15;;20
-118;'MAL-QA-RDT-260-C1';'MAL-QA-RDT-260-C1-Did worker wait for correct amount of time according to manufacturer’s instruction)';;'Did worker wait for correct amount of time according to manufacturer’s instruction)';;260;2.00;2.00;341;15;;20
+118;'MAL-QA-RDT-260-C1';'MAL-QA-RDT-260-C1-Did worker wait for correct amount of time according to manufacturerâ€™s instruction)';;'Did worker wait for correct amount of time according to manufacturerâ€™s instruction)';;260;2.00;2.00;341;15;;20
 119;'MAL-QA-RDT-270-C1';'MAL-QA-RDT-270-C1-What was the result of the control line?';;'What was the result of the control line?';;270;0.00;0.00;341;7;;
 120;'MAL-QA-RDT-280-C1';'MAL-QA-RDT-280-C1-Reads test result correctly (supervisor verifies results)';;'Reads test result correctly (supervisor verifies results)';;280;2.00;2.00;341;15;;20
 121;'MAL-QA-RDT-290-C1';'MAL-QA-RDT-290-C1-Records results correctly in register';;'Records results correctly in register';;290;2.00;2.00;341;15;;20
@@ -197,7 +195,7 @@
 197;'MAL-QA-RDT-230-C2';'MAL-QA-RDT-230-C2-Blood dispensed in correct well of RDT device';;'Blood dispensed in correct well of RDT device';;230;1.00;1.00;365;15;;20
 198;'MAL-QA-RDT-240-C2';'MAL-QA-RDT-240-C2-Buffer applied to correct well  of RDT device';;'Buffer applied to correct well  of RDT device';;240;1.00;1.00;366;15;;20
 199;'MAL-QA-RDT-250-C2';'MAL-QA-RDT-250-C2-Appropriate amount of buffer dispensed into well';;'Appropriate amount of buffer dispensed into well';;250;1.00;1.00;366;15;;20
-200;'MAL-QA-RDT-260-C2';'MAL-QA-RDT-260-C2-Did worker wait for correct amount of time according to manufacturer’s instruction)';;'Did worker wait for correct amount of time according to manufacturer’s instruction)';;260;2.00;2.00;366;15;;20
+200;'MAL-QA-RDT-260-C2';'MAL-QA-RDT-260-C2-Did worker wait for correct amount of time according to manufacturerâ€™s instruction)';;'Did worker wait for correct amount of time according to manufacturerâ€™s instruction)';;260;2.00;2.00;366;15;;20
 201;'MAL-QA-RDT-270-C2';'MAL-QA-RDT-270-C2-What was the result of the control line?';;'What was the result of the control line?';;270;0.00;0.00;366;7;;
 202;'MAL-QA-RDT-280-C2';'MAL-QA-RDT-280-C2-Reads test result correctly (supervisor verifies results)';;'Reads test result correctly (supervisor verifies results)';;280;2.00;2.00;366;15;;20
 203;'MAL-QA-RDT-290-C2';'MAL-QA-RDT-290-C2-Records results correctly in register';;'Records results correctly in register';;290;2.00;2.00;366;15;;20
@@ -279,7 +277,7 @@
 279;'MAL-QA-RDT-230-C3';'MAL-QA-RDT-230-C3-Blood dispensed in correct well of RDT device';;'Blood dispensed in correct well of RDT device';;230;1.00;1.00;390;15;;20
 280;'MAL-QA-RDT-240-C3';'MAL-QA-RDT-240-C3-Buffer applied to correct well  of RDT device';;'Buffer applied to correct well  of RDT device';;240;1.00;1.00;391;15;;20
 281;'MAL-QA-RDT-250-C3';'MAL-QA-RDT-250-C3-Appropriate amount of buffer dispensed into well';;'Appropriate amount of buffer dispensed into well';;250;1.00;1.00;391;15;;20
-282;'MAL-QA-RDT-260-C3';'MAL-QA-RDT-260-C3-Did worker wait for correct amount of time according to manufacturer’s instruction)';;'Did worker wait for correct amount of time according to manufacturer’s instruction)';;260;2.00;2.00;391;15;;20
+282;'MAL-QA-RDT-260-C3';'MAL-QA-RDT-260-C3-Did worker wait for correct amount of time according to manufacturerâ€™s instruction)';;'Did worker wait for correct amount of time according to manufacturerâ€™s instruction)';;260;2.00;2.00;391;15;;20
 283;'MAL-QA-RDT-270-C3';'MAL-QA-RDT-270-C3-What was the result of the control line?';;'What was the result of the control line?';;270;0.00;0.00;391;7;;
 284;'MAL-QA-RDT-280-C3';'MAL-QA-RDT-280-C3-Reads test result correctly (supervisor verifies results)';;'Reads test result correctly (supervisor verifies results)';;280;2.00;2.00;391;15;;20
 285;'MAL-QA-RDT-290-C3';'MAL-QA-RDT-290-C3-Records results correctly in register';;'Records results correctly in register';;290;2.00;2.00;391;15;;20
@@ -292,7 +290,7 @@
 292;'MAL-QA-Environment-140';'MAL-QA-Environment-140-Otoscopes';;'Otoscopes';;140;1.00;1.00;396;6;;4
 293;'MAL-QA-Environment-150';'MAL-QA-Environment-150-Ophthalmoscopes';;'Ophthalmoscopes';;150;0.00;0.00;396;6;;
 294;'MAL-QA-Environment-160';'MAL-QA-Environment-160-Thermometers';;'Thermometers';;160;2.00;2.00;396;6;;4
-295;'MAL-QA-Environment-170';'MAL-QA-Environment-170-Torches';;'Torches';;170;1.00;2.00;396;6;;4
+295;'MAL-QA-Environment-170';'MAL-QA-Environment-170-Torches';;'Torches';;170;2.00;2.00;396;6;;4
 296;'MAL-QA-Environment-180';'MAL-QA-Environment-180-Adult weighing scales';;'Adult weighing scales';;180;0.00;0.00;396;6;;
 297;'MAL-QA-Environment-190';'MAL-QA-Environment-190-Child weighing scales';;'Child weighing scales';;190;1.00;1.00;396;6;;4
 298;'MAL-QA-Environment-200';'MAL-QA-Environment-200-Infant weighing scales';;'Infant weighing scales';;200;1.00;1.00;396;6;;4

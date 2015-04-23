@@ -157,5 +157,6 @@
     <string name="analytics_header">Analytics</string>
     <string name="orgUnit">Organisation Unit</string>
     <string name="program">Program</string>
+    <string name="survey">Survey</string>
 
 </resources>
