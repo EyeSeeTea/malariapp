@@ -12,8 +12,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
+import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.model.Question;
+import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 
 import java.io.InputStream;
@@ -26,12 +28,12 @@ public class DialogDispatcher extends Fragment {
     public static final int CLEAR_DIALOG = 1;
     public static final int ERROR_DIALOG = 2;
     public static final int LICENSE_DIALOG = 3;
+    public static final int DELETE_SURVEY_DIALOG = 4;
 
     public static DialogDispatcher newInstance(View view) {
         contextView = view;
         return new DialogDispatcher();
     }
-
 
     public void showDialog(FragmentManager fragmentManager, int type) {
 
@@ -49,6 +51,14 @@ public class DialogDispatcher extends Fragment {
                 DialogFragment dialogFrag = NoticeDialogFragment.newInstance(R.string.clearTitle, R.string.clearMessage);
                 dialogFrag.setTargetFragment(this, CLEAR_DIALOG);
                 dialogFrag.show(fragmentManager.beginTransaction(), "dialog");
+
+                break;
+
+            case DELETE_SURVEY_DIALOG:
+
+                DialogFragment dialogSFrag = NoticeDialogFragment.newInstance(R.string.deleteTitle, R.string.deleteMessage);
+                dialogSFrag.setTargetFragment(this, DELETE_SURVEY_DIALOG);
+                dialogSFrag.show(fragmentManager.beginTransaction(), "dialog");
 
                 break;
 
@@ -91,6 +101,20 @@ public class DialogDispatcher extends Fragment {
                     // Reset Score tab
                     LayoutUtils.resetScores(root);
                 }
+
+                break;
+
+            case DELETE_SURVEY_DIALOG:
+
+                if (resultCode == Activity.RESULT_OK) {
+                    Log.i("FragmentAlertDialog", "Positive click!");
+                    Session.getSurvey().delete();
+
+                    //myActivity.finish();
+                    Intent intent = new Intent(contextView.getContext(), DashboardActivity.class);
+                    contextView.getContext().startActivity(intent);
+                }
+                Session.setSurvey(null);
 
                 break;
         }

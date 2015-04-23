@@ -118,6 +118,8 @@
     <string name="poor">Pauvre</string>
     <string name="clearTitle">Effacer formulaire</string>
     <string name="clearMessage">Êtes-vous sûr que de vouloir effacer ce formulaire ?</string>
+    <string name="deleteTitle">Delete Survey</string>
+    <string name="deleteMessage">Are you sure you want to completely delete this survey?</string>
     <string name="errorTitle">Erreur</string>
     <string name="errorDenominator">Erreur, denominateur = 0</string>
     <string name="licenseTitle">License GPLv3</string>

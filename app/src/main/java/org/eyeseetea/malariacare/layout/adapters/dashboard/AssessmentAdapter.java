@@ -35,6 +35,7 @@ import org.eyeseetea.malariacare.MainActivity;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.utils.Session;
+import org.eyeseetea.malariacare.layout.dialog.DialogDispatcher;
 
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -118,9 +119,9 @@ public class AssessmentAdapter extends BaseAdapter {
 
         public void onClick(View view) {
             if (listenerOption.equals("delete")){
-                survey.delete();
-                this.context.finish();
-                this.context.startActivity(this.context.getIntent());
+                Session.setSurvey(survey);
+                DialogDispatcher mf = DialogDispatcher.newInstance(view);
+                mf.showDialog(context.getFragmentManager(), DialogDispatcher.DELETE_SURVEY_DIALOG);
             }
             else if (listenerOption.equals("edit")){
                 Session.setSurvey(survey);

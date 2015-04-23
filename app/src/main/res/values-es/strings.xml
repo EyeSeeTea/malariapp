@@ -118,6 +118,8 @@
     <string name="poor">Mal</string>
     <string name="clearTitle">Limpiar formulario</string>
     <string name="clearMessage">¿Estás seguro de que quieres limpiar completamente este formulario?</string>
+    <string name="deleteTitle">Delete Survey</string>
+    <string name="deleteMessage">Are you sure you want to completely delete this survey?</string>
     <string name="errorTitle">Error</string>
     <string name="errorDenominator">Error, denominador = 0</string>
     <string name="licenseTitle">Licencia GPLv3</string>
