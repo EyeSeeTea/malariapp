@@ -1,5 +1,6 @@
 package org.eyeseetea.malariacare;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -78,18 +79,26 @@ public class MainActivity extends ActionBarActivity{
         dashboardBreadCrumbsView.setText("Dashboard");
         dashboardBreadCrumbsView.setTextColor(Color.parseColor("#1e506c"));
         dashboardBreadCrumbsView.setTypeface(null, Typeface.BOLD);
-        dashboardBreadCrumbsView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent dashboardIntent = new Intent(view.getContext(), DashboardActivity.class);
-                startActivity(dashboardIntent);
-            }
-        });
+        dashboardBreadCrumbsView.setOnClickListener(new AssessmentListener(this));
         breadCrumbsView.addView(dashboardBreadCrumbsView);
 
         TextView surveyBreadCrumbsView = new TextView(this);
         surveyBreadCrumbsView.setText(" > Survey");
         breadCrumbsView.addView(surveyBreadCrumbsView);
+    }
+
+    private class AssessmentListener implements View.OnClickListener {
+        private Activity context;
+
+        public AssessmentListener(Activity context) {
+            this.context = context;
+        }
+
+        public void onClick(View view) {
+            this.context.finish();
+            Intent dashboardIntent = new Intent(view.getContext(), DashboardActivity.class);
+            startActivity(dashboardIntent);
+        }
     }
 
     private void createMenuAndTabs() {
