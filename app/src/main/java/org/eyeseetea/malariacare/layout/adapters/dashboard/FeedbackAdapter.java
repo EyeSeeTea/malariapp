@@ -29,6 +29,7 @@ import android.widget.TextView;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.model.Survey;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 /**
@@ -72,7 +73,8 @@ public class FeedbackAdapter extends BaseAdapter {
         rowView = lInflater.inflate(R.layout.feedback_record, parent, false);
 
         ((TextView)rowView.findViewById(R.id.facility)).setText(item.getOrgUnit().getUid() + " - " + item.getOrgUnit().getName());
-        ((TextView)rowView.findViewById(R.id.date)).setText(item.getEventDate());
+        SimpleDateFormat formattedDate = new SimpleDateFormat("dd MMM yyyy");
+        ((TextView)rowView.findViewById(R.id.date)).setText(formattedDate.format(item.getEventDate()));
         ((TextView)rowView.findViewById(R.id.status)).setText("FCM - 22 issues \n RDT - on site retraining \n Microscopy - 25 issues \n Work Environment - 20 issues");
 
         return rowView;

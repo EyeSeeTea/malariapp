@@ -21,6 +21,8 @@ package org.eyeseetea.malariacare.database.model;
 
 import com.orm.SugarRecord;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Survey extends SugarRecord<Survey> {
@@ -28,7 +30,7 @@ public class Survey extends SugarRecord<Survey> {
     OrgUnit orgUnit;
     Program program;
     User user;
-    String eventDate;
+    Date eventDate;
 
     public Survey() {
     }
@@ -37,14 +39,20 @@ public class Survey extends SugarRecord<Survey> {
         this.orgUnit = orgUnit;
         this.program = program;
         this.user = user;
-        this.eventDate = new Date().toString();
+        this.eventDate = new Date();
     }
 
     public Survey(OrgUnit orgUnit, Program program, User user, String eventDate) {
         this.orgUnit = orgUnit;
         this.program = program;
         this.user = user;
-        this.eventDate = eventDate;
+        this.eventDate = new Date();
+        SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/d");
+        try{
+            this.eventDate = format.parse(eventDate);
+        } catch (ParseException e){
+            e.printStackTrace();
+        }
     }
 
     public OrgUnit getOrgUnit() {
@@ -71,12 +79,21 @@ public class Survey extends SugarRecord<Survey> {
         this.user = user;
     }
 
-    public String getEventDate() {
+    public Date getEventDate() {
         return eventDate;
     }
 
-    public void setEventDate(String eventDate) {
+    public void setEventDate(Date eventDate) {
         this.eventDate = eventDate;
+    }
+
+    public void setEventDate(String eventDate) {
+        SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/d");
+        try{
+            this.eventDate = format.parse(eventDate);
+        } catch (ParseException e){
+            e.printStackTrace();
+        }
     }
 
     @Override

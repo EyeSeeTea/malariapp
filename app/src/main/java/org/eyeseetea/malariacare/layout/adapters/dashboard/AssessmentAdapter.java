@@ -36,6 +36,7 @@ import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.utils.Session;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 /**
@@ -77,7 +78,8 @@ public class AssessmentAdapter extends BaseAdapter {
         View rowView = lInflater.inflate(R.layout.assessment_record, parent, false);
 
         ((TextView) rowView.findViewById(R.id.facility)).setText(item.getOrgUnit().getUid() + " - " + item.getOrgUnit().getName());
-        ((TextView) rowView.findViewById(R.id.date)).setText(item.getEventDate());
+        SimpleDateFormat formattedDate = new SimpleDateFormat("dd MMM yyyy");
+        ((TextView) rowView.findViewById(R.id.date)).setText(formattedDate.format(item.getEventDate()));
         ((TextView) rowView.findViewById(R.id.score)).setText("25 %");
         ((TextView) rowView.findViewById(R.id.completed)).setText("25");
         ((TextView) rowView.findViewById(R.id.total)).setText("824");
