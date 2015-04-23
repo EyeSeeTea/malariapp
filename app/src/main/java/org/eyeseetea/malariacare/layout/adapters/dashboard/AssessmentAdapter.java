@@ -127,6 +127,7 @@ public class AssessmentAdapter extends BaseAdapter {
 
                 //Call Survey Activity
                 Intent surveyIntent = new Intent(this.context, MainActivity.class);
+                context.finish();
                 this.context.startActivity(surveyIntent);
             }
         }

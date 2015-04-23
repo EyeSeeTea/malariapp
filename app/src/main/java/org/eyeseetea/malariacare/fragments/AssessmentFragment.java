@@ -75,9 +75,10 @@ public class AssessmentFragment extends ListFragment  {
 
         super.onListItemClick(l, v, position, id);
 
-        Session.setSurvey(surveyList.get(position));
+        Session.setSurvey(surveyList.get(position-1));
 
         //Call Survey Activity
+        getActivity().finish();
         Intent surveyIntent = new Intent(v.getContext(), MainActivity.class);
         v.getContext().startActivity(surveyIntent);
     }
