@@ -124,7 +124,9 @@ public class AutomaticTabLayout {
                         break;
                     case Constants.POSITIVE_INT:
                         questionView = getView(iterBacks, inflater, layoutParent, headerView, question, R.layout.integer, Constants.POSITIVE_INT);
-                        ((EditText)(questionView.findViewById(R.id.answer))).setTag(R.id.QuestionTag, question);
+                        EditText answerPos = ((EditText)(questionView.findViewById(R.id.answer)));
+                        answerPos.setFilters(new InputFilter[] { new InputFilter.LengthFilter(Constants.MAX_INT_CHARS)});
+                        answerPos.setTag(R.id.QuestionTag, question);
                         if (value != null) ((EditText)(questionView.findViewById(R.id.answer))).setText(value.getValue());
                         AutomaticTabListeners.createTextListener(tab, (EditText)questionView.findViewById(R.id.answer), mainActivity);
                         break;
