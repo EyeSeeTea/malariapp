@@ -55,7 +55,6 @@ public class AssessmentAdapter extends BaseAdapter {
         this.lInflater = LayoutInflater.from(context);
     }
 
-
     @Override
     public int getCount() {
         return items.size();
@@ -87,12 +86,12 @@ public class AssessmentAdapter extends BaseAdapter {
 		//FIXME: We need to add some logic. Depending on the status we will be showing different links
 
         LinearLayout toolContainerView = (LinearLayout) rowView.findViewById(R.id.toolsContainer);
-        TextView editTextView = new TextView(this.context);
-        editTextView.setText("Edit");
-        editTextView.setTextColor(Color.parseColor("#1e506c"));
-        editTextView.setTypeface(null, Typeface.BOLD);
-        editTextView.setOnClickListener(new AssessmentListener((Activity) this.context, item, "edit"));
-        toolContainerView.addView(editTextView);
+//        TextView editTextView = new TextView(this.context);
+//        editTextView.setText("Edit");
+//        editTextView.setTextColor(Color.parseColor("#1e506c"));
+//        editTextView.setTypeface(null, Typeface.BOLD);
+//        editTextView.setOnClickListener(new AssessmentListener((Activity) this.context, item, "edit"));
+//        toolContainerView.addView(editTextView);
 
         TextView deleteTextView = new TextView(this.context);
         deleteTextView.setText("Delete");
