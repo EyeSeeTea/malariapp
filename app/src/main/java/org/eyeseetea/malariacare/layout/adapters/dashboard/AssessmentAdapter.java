@@ -87,12 +87,6 @@ public class AssessmentAdapter extends BaseAdapter {
 		//FIXME: We need to add some logic. Depending on the status we will be showing different links
 
         LinearLayout toolContainerView = (LinearLayout) rowView.findViewById(R.id.toolsContainer);
-//        TextView editTextView = new TextView(this.context);
-//        editTextView.setText("Edit");
-//        editTextView.setTextColor(Color.parseColor("#1e506c"));
-//        editTextView.setTypeface(null, Typeface.BOLD);
-//        editTextView.setOnClickListener(new AssessmentListener((Activity) this.context, item, "edit"));
-//        toolContainerView.addView(editTextView);
 
         TextView deleteTextView = new TextView(this.context);
         deleteTextView.setText("Delete");
@@ -121,14 +115,6 @@ public class AssessmentAdapter extends BaseAdapter {
                 Session.setSurvey(survey);
                 DialogDispatcher mf = DialogDispatcher.newInstance(view);
                 mf.showDialog(context.getFragmentManager(), DialogDispatcher.DELETE_SURVEY_DIALOG);
-            }
-            else if (listenerOption.equals("edit")){
-                Session.setSurvey(survey);
-
-                //Call Survey Activity
-                Intent surveyIntent = new Intent(this.context, MainActivity.class);
-                context.finish();
-                this.context.startActivity(surveyIntent);
             }
         }
 
