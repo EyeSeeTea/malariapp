@@ -36,7 +36,7 @@
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:id="@+id/facility"
             android:padding="5dip"
-            android:layout_gravity="center" />
+            android:layout_gravity="center_vertical" />
     </LinearLayout>
 
     <LinearLayout
