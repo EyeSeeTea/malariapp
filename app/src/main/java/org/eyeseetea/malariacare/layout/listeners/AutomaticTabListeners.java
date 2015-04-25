@@ -167,7 +167,7 @@ public class AutomaticTabListeners {
         });
     }
 
-    public static void createTextListener(final Tab tab, EditText editable, final Activity myActivity){
+    public static void createTextListener(final Tab tab, EditText editable, final Activity mainActivity){
         editable.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -181,8 +181,7 @@ public class AutomaticTabListeners {
 
             @Override
             public void afterTextChanged(Editable s) {
-                View myView = myActivity.getCurrentFocus();
-                EditText myEdit = (EditText)myActivity.getCurrentFocus();
+                EditText myEdit = (EditText)mainActivity.getCurrentFocus();
                 Question triggeredQuestion = (Question) myEdit.getTag(R.id.QuestionTag);
                 Value value = triggeredQuestion.getValueBySession();
                 if (s.length() == 0 && value != null) value.delete();
