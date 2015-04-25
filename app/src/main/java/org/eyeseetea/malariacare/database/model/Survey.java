@@ -20,10 +20,14 @@
 package org.eyeseetea.malariacare.database.model;
 
 import com.orm.SugarRecord;
+import com.orm.dsl.Ignore;
+import com.orm.query.Condition;
+import com.orm.query.Select;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 
 public class Survey extends SugarRecord<Survey> {
 
@@ -31,6 +35,9 @@ public class Survey extends SugarRecord<Survey> {
     Program program;
     User user;
     Date eventDate;
+
+    @Ignore
+    List<Integer> _answeredQuestionRatio;
 
     public Survey() {
     }
@@ -40,19 +47,6 @@ public class Survey extends SugarRecord<Survey> {
         this.program = program;
         this.user = user;
         this.eventDate = new Date();
-    }
-
-    public Survey(OrgUnit orgUnit, Program program, User user, String eventDate) {
-        this.orgUnit = orgUnit;
-        this.program = program;
-        this.user = user;
-        this.eventDate = new Date();
-        SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/d");
-        try{
-            this.eventDate = format.parse(eventDate);
-        } catch (ParseException e){
-            e.printStackTrace();
-        }
     }
 
     public OrgUnit getOrgUnit() {
@@ -87,13 +81,36 @@ public class Survey extends SugarRecord<Survey> {
         this.eventDate = eventDate;
     }
 
-    public void setEventDate(String eventDate) {
-        SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/d");
-        try{
-            this.eventDate = format.parse(eventDate);
-        } catch (ParseException e){
-            e.printStackTrace();
+    public List<Value> getValues(){
+        return Select.from(Value.class)
+                .where(Condition.prop("survey")
+                        .eq(String.valueOf(this.getId()))).list();
+    }
+
+    public List<Integer> getAnsweredQuestionRatio(){
+        if (_answeredQuestionRatio == null) {
+            Integer totalQuestions = 0;
+            for (Tab tab : this.getProgram().getTabs()) {
+                for (Header header : tab.getHeaders()) {
+                    for (Question question : header.getQuestions()) {
+                        if (question.getQuestion() == null)
+                            totalQuestions++;
+                    }
+                }
+            }
+
+            Integer answeredQuestions = 0;
+            for (Value value : this.getValues()) {
+                if ((value.getValue() != null && !value.getValue().equals("")) || value.getOption() != null) {
+                    answeredQuestions++;
+                    if (value.getQuestion().getQuestion() == null && value.getOption() != null && value.getOption().getName().equals("Yes"))
+                        totalQuestions += value.getQuestion().getQuestionChildren().size();
+                }
+            }
+
+            _answeredQuestionRatio = new ArrayList<Integer>(Arrays.asList(answeredQuestions, totalQuestions));
         }
+        return _answeredQuestionRatio;
     }
 
     @Override

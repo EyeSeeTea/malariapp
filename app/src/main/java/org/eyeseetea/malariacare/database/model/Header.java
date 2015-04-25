@@ -17,6 +17,9 @@ public class Header extends SugarRecord<Header> {
     @Ignore
     List<Question> _questions;
 
+//    @Ignore
+//    List<Question> _parentQuestions;
+
     public Header() {
     }
 
@@ -61,14 +64,24 @@ public class Header extends SugarRecord<Header> {
 
     public List<Question> getQuestions(){
         if (this._questions == null){
-            return Select.from(Question.class)
+            this._questions = Select.from(Question.class)
                     .where(Condition.prop("header")
                             .eq(String.valueOf(this.getId())))
                     .orderBy("orderpos").list();
-            //return Question.find(Question.class, "header = ? order by orderpos", String.valueOf(this.getId()));
         }
         return _questions;
     }
+
+    //FIXME We need to add the new release of sugar orm as it adds supports for null
+//    public List<Question> getParentQuestions(){
+//        if (this._parentQuestions == null){
+//            this._parentQuestions = Select.from(Question.class)
+//                    .where(Condition.prop("header").eq(String.valueOf(this.getId())),
+//                            Condition.prop("question").isNull)
+//                    .orderBy("orderpos").list();
+//        }
+//        return _parentQuestions;
+//    }
 
     @Override
     public String toString() {

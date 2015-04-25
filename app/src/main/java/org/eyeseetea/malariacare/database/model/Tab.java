@@ -10,13 +10,15 @@ public class Tab extends SugarRecord<Tab> {
 
     String name;
     Integer order_pos;
+    Program program;
 
     public Tab() {
     }
 
-    public Tab(String name, Integer order_pos) {
+    public Tab(String name, Integer order_pos, Program program) {
         this.name = name;
         this.order_pos = order_pos;
+        this.program = program;
     }
 
     public String getName() {
@@ -33,6 +35,14 @@ public class Tab extends SugarRecord<Tab> {
 
     public void setOrder_pos(Integer order_pos) {
         this.order_pos = order_pos;
+    }
+
+    public Program getProgram() {
+        return program;
+    }
+
+    public void setProgram(Program program) {
+        this.program = program;
     }
 
     public List<Header> getHeaders(){
@@ -52,6 +62,7 @@ public class Tab extends SugarRecord<Tab> {
                 "id='" + id + '\'' +
                 ", name='" + name + '\'' +
                 ", order_pos=" + order_pos +
+                ", program='" + program +
                 '}';
     }
 
@@ -65,6 +76,7 @@ public class Tab extends SugarRecord<Tab> {
         if (name != null ? !name.equals(tab.name) : tab.name != null) return false;
         if (order_pos != null ? !order_pos.equals(tab.order_pos) : tab.order_pos != null)
             return false;
+        if (program != null ? !program.equals(tab.program) : tab.program != null) return false;
 
         return true;
     }
@@ -73,6 +85,8 @@ public class Tab extends SugarRecord<Tab> {
     public int hashCode() {
         int result = name != null ? name.hashCode() : 0;
         result = 31 * result + (order_pos != null ? order_pos.hashCode() : 0);
+        result = 31 * result + (program != null ? program.hashCode() : 0);
         return result;
     }
+
 }

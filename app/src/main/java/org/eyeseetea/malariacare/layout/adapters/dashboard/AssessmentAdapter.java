@@ -33,11 +33,17 @@ import android.widget.TextView;
 
 import org.eyeseetea.malariacare.MainActivity;
 import org.eyeseetea.malariacare.R;
+import org.eyeseetea.malariacare.database.model.Header;
+import org.eyeseetea.malariacare.database.model.Question;
 import org.eyeseetea.malariacare.database.model.Survey;
+import org.eyeseetea.malariacare.database.model.Tab;
+import org.eyeseetea.malariacare.database.model.Value;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.layout.dialog.DialogDispatcher;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -73,26 +79,36 @@ public class AssessmentAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        Survey item = (Survey) getItem(position);
+        Survey survey = (Survey) getItem(position);
 
         View rowView = lInflater.inflate(R.layout.assessment_record, parent, false);
 
-        ((TextView) rowView.findViewById(R.id.facility)).setText(item.getOrgUnit().getUid() + " - " + item.getOrgUnit().getName());
+        // Org Unit Cell
+        ((TextView) rowView.findViewById(R.id.facility)).setText(survey.getOrgUnit().getUid() + " - " + survey.getOrgUnit().getName());
         SimpleDateFormat formattedDate = new SimpleDateFormat("dd MMM yyyy");
-        ((TextView) rowView.findViewById(R.id.date)).setText(item.getProgram() + " | " + formattedDate.format(item.getEventDate()));
-        ((TextView) rowView.findViewById(R.id.score)).setText("25 %");
-        ((TextView) rowView.findViewById(R.id.completed)).setText("25");
-        ((TextView) rowView.findViewById(R.id.total)).setText("824");
- 
-		//FIXME: We need to add some logic. Depending on the status we will be showing different links
+        ((TextView) rowView.findViewById(R.id.date)).setText(survey.getProgram() + " | " + formattedDate.format(survey.getEventDate()));
 
+        //Status Cell
+        //FIXME: This bit needs to change when jose architecture is introduced because probably the save will be executed in a different way
+        List<Integer> status = survey.getAnsweredQuestionRatio();
+
+        if (status.get(0) == status.get(1)) {
+            ((TextView) rowView.findViewById(R.id.score)).setText("Ready to upload");
+        }
+        else{
+            ((TextView) rowView.findViewById(R.id.score)).setText(String.format("%.2f", 100 * (double)status.get(0) / (double)status.get(1)));
+        }
+        ((TextView) rowView.findViewById(R.id.completed)).setText(Integer.toString(status.get(0)));
+        ((TextView) rowView.findViewById(R.id.total)).setText(Integer.toString(status.get(1)));
+
+        //Tools Cell
         LinearLayout toolContainerView = (LinearLayout) rowView.findViewById(R.id.toolsContainer);
 
         TextView deleteTextView = new TextView(this.context);
         deleteTextView.setText("Delete");
         deleteTextView.setTextColor(Color.parseColor("#1e506c"));
         deleteTextView.setTypeface(null, Typeface.BOLD);
-        deleteTextView.setOnClickListener(new AssessmentListener((Activity) this.context, item, "delete"));
+        deleteTextView.setOnClickListener(new AssessmentListener((Activity) this.context, survey, "delete"));
         toolContainerView.addView(deleteTextView);
 
         return rowView;
@@ -111,13 +127,11 @@ public class AssessmentAdapter extends BaseAdapter {
         }
 
         public void onClick(View view) {
-            if (listenerOption.equals("delete")){
+            if (listenerOption.equals("delete")) {
                 Session.setSurvey(survey);
                 DialogDispatcher mf = DialogDispatcher.newInstance(view);
                 mf.showDialog(context.getFragmentManager(), DialogDispatcher.DELETE_SURVEY_DIALOG);
             }
         }
-
-
     }
 }

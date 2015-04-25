@@ -25,6 +25,7 @@ import java.util.Map;
 
 public class PopulateDB {
 
+    static Map<Integer, Program> programList = new LinkedHashMap<Integer, Program>();
     static Map<Integer, Tab> tabList = new LinkedHashMap<Integer, Tab>();
     static Map<Integer, Header> headerList = new LinkedHashMap<Integer, Header>();
     static Map<Integer, Question> questionList = new LinkedHashMap<Integer, Question>();
@@ -38,7 +39,7 @@ public class PopulateDB {
     public static void populateDB(AssetManager assetManager) throws IOException {
 
 
-        List<String> tables2populate = Arrays.asList("Tabs.csv", "Headers.csv", "Answers.csv", "Options.csv", "CompositiveScores.csv", "Questions.csv"); //"HeadersCustom.csv", "QuestionsCustom.csv");
+        List<String> tables2populate = Arrays.asList("Programs.csv", "Tabs.csv", "Headers.csv", "Answers.csv", "Options.csv", "CompositiveScores.csv", "Questions.csv"); //"HeadersCustom.csv", "QuestionsCustom.csv");
 
         CSVReader reader = null;
         for (String table : tables2populate) {
@@ -47,10 +48,17 @@ public class PopulateDB {
             String[] line;
             while ((line = reader.readNext()) != null) {
                 switch (table) {
+                    case "Programs.csv":
+                        Program program = new Program();
+                        program.setUid(line[1]);
+                        program.setName(line[2]);
+                        programList.put(Integer.valueOf(line[0]), program);
+                        break;
                     case "Tabs.csv":
                         Tab tab = new Tab();
                         tab.setName(line[1]);
                         tab.setOrder_pos(Integer.valueOf(line[2]));
+                        tab.setProgram(programList.get(Integer.valueOf(line[3])));
                         tabList.put(Integer.valueOf(line[0]), tab);
                         break;
                     case "Headers.csv":
@@ -126,13 +134,13 @@ public class PopulateDB {
             reader.close();
         }
 
+        Program.saveInTx(programList.values());
         Tab.saveInTx(tabList.values());
         Header.saveInTx(headerList.values());
         Answer.saveInTx(answerList.values());
         Option.saveInTx(optionList.values());
         CompositiveScore.saveInTx(compositiveScoreList.values());
         Question.saveInTx(questionList.values());
-
 
         //Header.saveInTx(headerCustomList.values());
         //Question.saveInTx(questionCustomList.values());
@@ -144,10 +152,6 @@ public class PopulateDB {
             OrgUnit orgUnit = new OrgUnit("123" + i, "Health Facility " + i);
             orgUnit.save();
         }
-
-        Program program = new Program("ClinicalCaseManagement", "Clinical Case Management");
-        program.save();
-
     }
 
 }

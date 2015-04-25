@@ -20,6 +20,10 @@
 package org.eyeseetea.malariacare.database.model;
 
 import com.orm.SugarRecord;
+import com.orm.query.Condition;
+import com.orm.query.Select;
+
+import java.util.List;
 
 public class Program extends SugarRecord<Program> {
 
@@ -52,6 +56,13 @@ public class Program extends SugarRecord<Program> {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public List<Tab> getTabs(){
+        return Select.from(Tab.class)
+                .where(Condition.prop("program")
+                        .eq(String.valueOf(this.getId())))
+                .orderBy("orderpos").list();
     }
 
     @Override
