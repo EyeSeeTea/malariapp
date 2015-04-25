@@ -79,7 +79,7 @@ public class AssessmentAdapter extends BaseAdapter {
 
         ((TextView) rowView.findViewById(R.id.facility)).setText(item.getOrgUnit().getUid() + " - " + item.getOrgUnit().getName());
         SimpleDateFormat formattedDate = new SimpleDateFormat("dd MMM yyyy");
-        ((TextView) rowView.findViewById(R.id.date)).setText(formattedDate.format(item.getEventDate()));
+        ((TextView) rowView.findViewById(R.id.date)).setText(item.getProgram() + " | " + formattedDate.format(item.getEventDate()));
         ((TextView) rowView.findViewById(R.id.score)).setText("25 %");
         ((TextView) rowView.findViewById(R.id.completed)).setText("25");
         ((TextView) rowView.findViewById(R.id.total)).setText("824");
