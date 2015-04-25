@@ -140,10 +140,10 @@ public class PopulateDB {
     }
 
     public static void populateDummyData(){
-        OrgUnit orgUnit = new OrgUnit("1234", "Clinical Center for District X");
-        orgUnit.save();
-        OrgUnit orgUnit2 = new OrgUnit("7634", "Clinical Center 23 for District Y");
-        orgUnit2.save();
+        for (int i=0; i<10; i++) {
+            OrgUnit orgUnit = new OrgUnit("123" + i, "Health Facility " + i);
+            orgUnit.save();
+        }
 
         Program program = new Program("ClinicalCaseManagement", "Clinical Case Management");
         program.save();
