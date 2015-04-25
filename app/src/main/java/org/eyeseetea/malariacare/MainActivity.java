@@ -179,18 +179,6 @@ public class MainActivity extends ActionBarActivity{
         actionBar.setIcon(R.drawable.qualityapp_logo);
     }
 
-    // Method for capturing "Save" and "Reset" events
-    public void saveClearResults(View view) {
-        if (view.getId() == R.id.save) {
-            Log.d(".MainActivity", "Button save pressed");
-        }
-        else if (view.getId() == R.id.clear) {
-            Log.d(".MainActivity", "Button clear pressed");
-            DialogDispatcher mf = DialogDispatcher.newInstance(view);
-            mf.showDialog(getFragmentManager(), DialogDispatcher.CLEAR_DIALOG);
-        }
-    }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
