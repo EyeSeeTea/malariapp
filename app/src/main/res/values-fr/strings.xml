@@ -128,7 +128,8 @@
     <!-- # MENUS -->
     <string name="action_settings">Paramètres</string>
     <string name="action_pull">Mise à jour des questions dès DHIS</string>
-    <string name="action_license">Sur cette app</string>
+    <string name="action_license">License</string>
+    <string name="action_about">Sur cette app</string>
 
     <!-- # LOGIN ACTIVITY -->
     <string name="title_activity_login">Se connecter</string>
