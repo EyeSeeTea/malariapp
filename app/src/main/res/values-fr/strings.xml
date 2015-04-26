@@ -3,7 +3,6 @@
 
     <string name="app_name">Falicity QA Tool</string>
     <string name="developers">EyeSeeTea LTD</string>
-    <string name="action_settings">Paramètres</string>
     <string name="button_send">Envoyer</string>
     <string name="asked">Demandé</string>
     <string name="notAsked">Non demandé</string>
@@ -111,8 +110,6 @@
     <string name="idHeader">ID</string>
     <string name="nameHeader">Name</string>
     <string name="clinicalFeverEvalTitle">Clinical\nfever\nevaluation</string>
-    <string name="action_pull">Mise à jour des questions dès DHIS</string>
-    <string name="action_license">License</string>
     <string name="good">Bien</string>
     <string name="fare">Moyen</string>
     <string name="poor">Pauvre</string>
@@ -122,8 +119,16 @@
     <string name="deleteMessage">Are you sure you want to completely delete this survey?</string>
     <string name="errorTitle">Erreur</string>
     <string name="errorDenominator">Erreur, denominateur = 0</string>
-    <string name="licenseTitle">License GPLv3</string>
     <string name="submit">Envoyer</string>
+
+    <!-- # DIALOGS -->
+    <string name="licenseTitle">License GPLv3</string>
+    <string name="aboutTitle">Sur cette app</string>
+
+    <!-- # MENUS -->
+    <string name="action_settings">Paramètres</string>
+    <string name="action_pull">Mise à jour des questions dès DHIS</string>
+    <string name="action_license">Sur cette app</string>
 
     <!-- # LOGIN ACTIVITY -->
     <string name="title_activity_login">Se connecter</string>
@@ -137,6 +142,8 @@
     <string name="error_invalid_password">Le mot de passe est trop courte</string>
     <string name="error_incorrect_password">Le mot de pas n\'est pas correct</string>
     <string name="error_field_required">Cette entrée est necessaire</string>
+
+    <!-- # DASHBOARD ACTIVITY -->
     <string name="title_activity_dashboard">Panneu de commande</string>
     <string name="active_assessment">Active Assessment</string>
     <string name="feedback">Feedback</string>

@@ -29,6 +29,7 @@ public class DialogDispatcher extends Fragment {
     public static final int ERROR_DIALOG = 2;
     public static final int LICENSE_DIALOG = 3;
     public static final int DELETE_SURVEY_DIALOG = 4;
+    public static final int ABOUT_DIALOG = 5;
 
     public static DialogDispatcher newInstance(View view) {
         contextView = view;
@@ -74,6 +75,14 @@ public class DialogDispatcher extends Fragment {
                 DialogFragment licenseFrag = LargeTextDialogFragment.newInstance(R.string.licenseTitle, is);
                 licenseFrag.setTargetFragment(this, LICENSE_DIALOG);
                 licenseFrag.show(fragmentManager.beginTransaction(), "dialog");
+
+                break;
+
+            case ABOUT_DIALOG:
+                InputStream isa = contextView.getContext().getResources().openRawResource(R.raw.about);
+                DialogFragment aboutFrag = LargeTextDialogFragment.newInstance(R.string.aboutTitle, isa);
+                aboutFrag.setTargetFragment(this, ABOUT_DIALOG);
+                aboutFrag.show(fragmentManager.beginTransaction(), "dialog");
 
                 break;
 

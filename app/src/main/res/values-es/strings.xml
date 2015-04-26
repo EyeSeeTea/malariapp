@@ -3,7 +3,6 @@
 
     <string name="app_name">Falicity QA Tool</string>
     <string name="developers">EyeSeeTea LTD</string>
-    <string name="action_settings">Configuración</string>
     <string name="button_send">Enviar</string>
     <string name="asked">Preguntado</string>
     <string name="notAsked">No preguntado</string>
@@ -111,8 +110,6 @@
     <string name="idHeader">ID</string>
     <string name="nameHeader">Nombre</string>
     <string name="clinicalFeverEvalTitle">Evaluación\nde fiebre\nclínica</string>
-    <string name="action_pull">Actualizar preguntas de DHIS</string>
-    <string name="action_license">Licencia</string>
     <string name="good">Bien</string>
     <string name="fare">Normal</string>
     <string name="poor">Mal</string>
@@ -122,8 +119,17 @@
     <string name="deleteMessage">Are you sure you want to completely delete this survey?</string>
     <string name="errorTitle">Error</string>
     <string name="errorDenominator">Error, denominador = 0</string>
-    <string name="licenseTitle">Licencia GPLv3</string>
     <string name="submit">Enviar</string>
+
+    <!-- # DIALOGS -->
+    <string name="licenseTitle">Licencia GPLv3</string>
+    <string name="aboutTitle">Sobre esta app</string>
+
+    <!-- # MENUS -->
+    <string name="action_settings">Configuración</string>
+    <string name="action_pull">Actualizar preguntas de DHIS</string>
+    <string name="action_license">Licencia</string>
+    <string name="action_about">Sobre esta app</string>
 
     <!-- # LOGIN ACTIVITY -->
     <string name="title_activity_login">Sign in</string>
@@ -137,6 +143,8 @@
     <string name="error_invalid_password">La constraseña es demasiado corta</string>
     <string name="error_incorrect_password">La contraseña no es correcta</string>
     <string name="error_field_required">El campo es obligatorio</string>
+
+    <!-- # DASHBOARD ACTIVITY -->
     <string name="title_activity_dashboard">Panel de control</string>
     <string name="active_assessment">Active Assessment</string>
     <string name="feedback">Feedback</string>

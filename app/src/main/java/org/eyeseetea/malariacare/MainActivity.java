@@ -207,9 +207,12 @@ public class MainActivity extends ActionBarActivity{
             case R.id.action_pull:
                 return true;// TODO: implement the DHIS pull
             case R.id.action_license:
-                Log.d(".MainActivity", "User asked for license");
                 DialogDispatcher mf = DialogDispatcher.newInstance(this.getCurrentFocus());
                 mf.showDialog(getFragmentManager(), DialogDispatcher.LICENSE_DIALOG);
+                break;
+            case R.id.action_about:
+                DialogDispatcher aboutD = DialogDispatcher.newInstance(this.getCurrentFocus());
+                aboutD.showDialog(getFragmentManager(), DialogDispatcher.ABOUT_DIALOG);
                 break;
         }
         return super.onOptionsItemSelected(item);
