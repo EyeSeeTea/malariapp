@@ -46,7 +46,9 @@ public class MainActivity extends ActionBarActivity{
 
         super.onCreate(savedInstanceState);
         Log.i(".MainActivity", "Starting App");
-        initializeApp();
+        setContentView(R.layout.main_layout);
+        android.support.v7.app.ActionBar actionBar = this.getSupportActionBar();
+        Layout.setActionBarLogo(actionBar);
 
         //long time3 = System.currentTimeMillis();
         //Log.d(".MainActivity", "Time Configuring tab: " + (time3 -time2) + " ms");
@@ -176,15 +178,6 @@ public class MainActivity extends ActionBarActivity{
                 }*/
             }
         });
-    }
-
-    private void initializeApp() {
-        setContentView(R.layout.main_layout);
-        android.support.v7.app.ActionBar actionBar = this.getSupportActionBar();
-        actionBar.setLogo(R.drawable.qualityapp_logo);
-        actionBar.setDisplayUseLogoEnabled(true);
-        actionBar.setDisplayShowHomeEnabled(true);
-        actionBar.setIcon(R.drawable.qualityapp_logo);
     }
 
     @Override

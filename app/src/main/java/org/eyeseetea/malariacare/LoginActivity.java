@@ -382,7 +382,7 @@ public class LoginActivity extends PlusBaseActivity implements LoaderCallbacks<C
 
             // In case of login success, create the user in the db and proceed to the dashboard activity
             if (success) {
-                Log.i(".LoginActivity", "--------------> Logged in");
+                Log.i(".LoginActivity", "Logged in!");
                 Intent mainIntent = new Intent(LoginActivity.this, DashboardActivity.class);
                 startActivity(mainIntent);
             } else {

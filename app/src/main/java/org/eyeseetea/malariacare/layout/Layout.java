@@ -1,6 +1,7 @@
 package org.eyeseetea.malariacare.layout;
 
 import android.content.Context;
+import android.support.v7.app.ActionBar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -95,6 +96,13 @@ public class Layout {
         subscoreView.setTag(generalScoreId);
 
         layoutParentScore.addView(subtotalView);
+    }
+
+    public static void setActionBarLogo(ActionBar actionBar){
+        actionBar.setLogo(R.drawable.qualityapp_logo);
+        actionBar.setDisplayUseLogoEnabled(true);
+        actionBar.setDisplayShowHomeEnabled(true);
+        actionBar.setIcon(R.drawable.qualityapp_logo);
     }
 
 }

@@ -33,6 +33,7 @@ import org.eyeseetea.malariacare.database.model.OrgUnit;
 import org.eyeseetea.malariacare.database.model.Program;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.utils.Session;
+import org.eyeseetea.malariacare.layout.Layout;
 import org.eyeseetea.malariacare.utils.Constants;
 
 import java.util.List;
@@ -48,6 +49,8 @@ public class CreateSurveyActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_survey);
+        android.support.v7.app.ActionBar actionBar = this.getSupportActionBar();
+        Layout.setActionBarLogo(actionBar);
 
         //Create default options
         OrgUnit orgUnitDefaultOption = new OrgUnit(Constants.DEFAULT_SELECT_OPTION);

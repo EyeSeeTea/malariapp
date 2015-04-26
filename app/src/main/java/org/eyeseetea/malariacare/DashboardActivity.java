@@ -27,6 +27,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import org.eyeseetea.malariacare.layout.Layout;
+
 
 public class DashboardActivity extends ActionBarActivity {
 
@@ -35,6 +37,9 @@ public class DashboardActivity extends ActionBarActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.dashboard);
+        android.support.v7.app.ActionBar actionBar = this.getSupportActionBar();
+        Layout.setActionBarLogo(actionBar);
+
 //        if (savedInstanceState == null) {
 //            getSupportFragmentManager().beginTransaction()
 //                    .add(R.id.container, new AssessmentFragment())
