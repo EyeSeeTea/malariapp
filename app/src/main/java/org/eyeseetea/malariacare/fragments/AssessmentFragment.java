@@ -74,7 +74,9 @@ public class AssessmentFragment extends ListFragment  {
     public void onListItemClick(ListView l, View v, int position, long id) {
 
         super.onListItemClick(l, v, position, id);
+        if (position == 0) return; // to capture when header is clicked
 
+        // surveyList has also the header, so position must to be adjusted to match the survey
         Session.setSurvey(surveyList.get(position-1));
 
         //Call Survey Activity

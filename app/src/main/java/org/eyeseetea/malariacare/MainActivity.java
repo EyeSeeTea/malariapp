@@ -32,6 +32,7 @@ import org.eyeseetea.malariacare.layout.dialog.DialogDispatcher;
 import org.eyeseetea.malariacare.database.utils.PopulateDB;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -136,13 +137,19 @@ public class MainActivity extends ActionBarActivity{
             }
         });
 
+        Log.i(".MainActivity", "setting survey info");
+        SimpleDateFormat formattedDate = new SimpleDateFormat("dd MMM yyyy");
+        TextView surveyInfo = (TextView)this.findViewById(R.id.surveyinfo);
+        surveyInfo.setText("Org Unit: " + Session.getSurvey().getOrgUnit() + " | Program: " + Session.getSurvey().getProgram() + " | Creation Date: " + formattedDate.format(Session.getSurvey().getEventDate()));
+
         Log.i(".MainActivity", "Creating event for menu");
         final TabHost tabHost = (TabHost)this.findViewById(R.id.tabHost);
         tabHost.setOnTabChangedListener(new TabHost.OnTabChangeListener()
         {
             @Override
             public void onTabChanged(String tabId) {
-                Log.i(".MainActivity", "-----------> Moved to tab" + tabId);
+                Log.i(".MainActivity", "-----------> Moved to tab" + tabHost.getCurrentTab());
+
         /*        for (Map.Entry<Tab, TabConfiguration> tabConfigurationEntry : LayoutConfiguration.getTabsConfiguration().entrySet()){
                     final String idLong = Long.toString(tabConfigurationEntry.getKey().getId());
                     if (tabHost.getCurrentTabTag().equals(idLong)) {
