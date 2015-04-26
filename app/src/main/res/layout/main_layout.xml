@@ -444,20 +444,39 @@
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="fill_parent"
             android:gravity="bottom|right"
             android:layout_gravity="bottom|right"
-            android:id="@+id/logo">
+            android:id="@+id/survey"
+            android:layout_weight="1">
+
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:id="@+id/surveyinfo"
+                android:textColor="#ffffff"
+                android:textStyle="bold|italic"
+                android:gravity="bottom|right" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:gravity="bottom|right"
+            android:layout_gravity="bottom|right"
+            android:id="@+id/logo"
+            android:layout_weight="1">
 
             <TextView
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:text="@string/developers"
-                android:id="@+id/textView"
+                android:id="@+id/textView4"
                 android:textColor="#ffffff"
                 android:textStyle="bold|italic"
-                android:minHeight="400dip"
                 android:layout_gravity="bottom|right"
                 android:gravity="bottom|right" />
         </LinearLayout>
