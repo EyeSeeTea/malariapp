@@ -142,7 +142,8 @@ public class MainActivity extends ActionBarActivity{
         {
             @Override
             public void onTabChanged(String tabId) {
-                for (Map.Entry<Tab, TabConfiguration> tabConfigurationEntry : LayoutConfiguration.getTabsConfiguration().entrySet()){
+                Log.i(".MainActivity", "-----------> Moved to tab" + tabId);
+        /*        for (Map.Entry<Tab, TabConfiguration> tabConfigurationEntry : LayoutConfiguration.getTabsConfiguration().entrySet()){
                     final String idLong = Long.toString(tabConfigurationEntry.getKey().getId());
                     if (tabHost.getCurrentTabTag().equals(idLong)) {
                         tabHost.getCurrentTabView().setOnTouchListener(
@@ -165,7 +166,7 @@ public class MainActivity extends ActionBarActivity{
                                     }
                                 });
                     }
-                }
+                }*/
             }
         });
     }

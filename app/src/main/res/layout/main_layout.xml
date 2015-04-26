@@ -77,7 +77,7 @@
 
                         <ScrollView
                             android:layout_width="fill_parent"
-                            android:layout_height="wrap_content"
+                            android:layout_height="fill_parent"
                             android:id="@+id/ScrollHealth"
                             android:minHeight="20dip"
                             android:layout_weight="0.09">
@@ -92,17 +92,6 @@
                             </GridLayout>
                         </ScrollView>
 
-                        <GridLayout
-                            android:layout_width="fill_parent"
-                            android:layout_height="fill_parent"
-                            android:id="@+id/scoreHealth"
-                            android:columnCount="28"
-                            android:rowCount="11"
-                            android:minHeight="20dip"
-                            android:layout_weight="0.91"
-                            android:background="#1e506c" >
-
-                        </GridLayout>
                     </LinearLayout>
 
                     <LinearLayout
@@ -113,7 +102,7 @@
 
                         <ScrollView
                             android:layout_width="fill_parent"
-                            android:layout_height="wrap_content"
+                            android:layout_height="fill_parent"
                             android:id="@+id/ScrollProfile"
                             android:layout_weight="0.09">
 
@@ -146,7 +135,7 @@
 
                         <ScrollView
                             android:layout_width="fill_parent"
-                            android:layout_height="wrap_content"
+                            android:layout_height="fill_parent"
                             android:id="@+id/ScrollClinical1"
                             android:layout_weight="0.09">
 
@@ -177,7 +166,7 @@
 
                         <ScrollView
                             android:layout_width="fill_parent"
-                            android:layout_height="wrap_content"
+                            android:layout_height="fill_parent"
                             android:id="@+id/ScrollRdt1"
                             android:layout_weight="0.09">
 
@@ -208,7 +197,7 @@
 
                         <ScrollView
                             android:layout_width="fill_parent"
-                            android:layout_height="wrap_content"
+                            android:layout_height="fill_parent"
                             android:id="@+id/ScrollClinical2"
                             android:layout_weight="0.09">
 
@@ -239,7 +228,7 @@
 
                         <ScrollView
                             android:layout_width="fill_parent"
-                            android:layout_height="wrap_content"
+                            android:layout_height="fill_parent"
                             android:id="@+id/ScrollRdt2"
                             android:layout_weight="0.09">
 
@@ -270,7 +259,7 @@
 
                         <ScrollView
                             android:layout_width="fill_parent"
-                            android:layout_height="wrap_content"
+                            android:layout_height="fill_parent"
                             android:id="@+id/ScrollClinical3"
                             android:layout_weight="0.09">
 
@@ -301,7 +290,7 @@
 
                         <ScrollView
                             android:layout_width="fill_parent"
-                            android:layout_height="wrap_content"
+                            android:layout_height="fill_parent"
                             android:id="@+id/ScrollRdt3"
                             android:layout_weight="0.09">
 
@@ -332,7 +321,7 @@
 
                         <ScrollView
                             android:layout_width="fill_parent"
-                            android:layout_height="wrap_content"
+                            android:layout_height="fill_parent"
                             android:id="@+id/scrollFeedback"
                             android:layout_weight="0.09" >
 
@@ -363,7 +352,7 @@
 
                         <ScrollView
                             android:layout_width="fill_parent"
-                            android:layout_height="wrap_content"
+                            android:layout_height="fill_parent"
                             android:id="@+id/ScrollEnvironment"
                             android:layout_weight="0.09">
 
@@ -396,7 +385,7 @@
 
                         <ScrollView
                             android:layout_width="fill_parent"
-                            android:layout_height="wrap_content"
+                            android:layout_height="fill_parent"
                             android:id="@+id/Scroll16"
                             android:layout_weight="0.09">
 
@@ -442,7 +431,7 @@
 
 
     <LinearLayout
-        android:orientation="horizontal"
+        android:orientation="vertical"
         android:layout_width="fill_parent"
         android:layout_height="0dp"
         android:id="@+id/Footer"
@@ -453,12 +442,12 @@
 
 
         <LinearLayout
-            android:orientation="vertical"
+            android:orientation="horizontal"
             android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:layout_weight="0.7"
+            android:layout_height="wrap_content"
             android:gravity="bottom|right"
-            android:layout_gravity="bottom|right">
+            android:layout_gravity="bottom|right"
+            android:id="@+id/logo">
 
             <TextView
                 android:layout_width="fill_parent"
