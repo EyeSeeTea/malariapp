@@ -22,14 +22,13 @@ package org.eyeseetea.malariacare.fragments;
 import android.app.ListFragment;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
-import org.eyeseetea.malariacare.MainActivity;
 import org.eyeseetea.malariacare.R;
+import org.eyeseetea.malariacare.SurveyActivity;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.layout.adapters.dashboard.AssessmentAdapter;
@@ -81,7 +80,7 @@ public class AssessmentFragment extends ListFragment  {
 
         //Call Survey Activity
         getActivity().finish();
-        Intent surveyIntent = new Intent(v.getContext(), MainActivity.class);
+        Intent surveyIntent = new Intent(v.getContext(), SurveyActivity.class);
         v.getContext().startActivity(surveyIntent);
     }
 }

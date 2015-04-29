@@ -1,36 +1,21 @@
-/*
- * Copyright (c) 2015.
- *
- * This file is part of Facility QA Tool App.
- *
- *  Facility QA Tool App is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
- *
- *  Facility QA Tool App is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  You should have received a copy of the GNU General Public License
- *  along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 package org.eyeseetea.malariacare.layout.utils;
 
 import android.graphics.Color;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.GridLayout;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TableLayout;
 import android.widget.TextView;
 
+import org.eyeseetea.malariacare.MainActivity;
 import org.eyeseetea.malariacare.R;
-import org.eyeseetea.malariacare.database.model.Header;
 import org.eyeseetea.malariacare.database.model.Question;
 import org.eyeseetea.malariacare.database.model.Value;
+import org.eyeseetea.malariacare.layout.configuration.LayoutConfiguration;
+import org.eyeseetea.malariacare.layout.configuration.TabConfiguration;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.utils.Utils;
 
@@ -144,60 +129,60 @@ public class LayoutUtils {
     }
 
     // Reset values from Score tab
-//    public static void resetScores(ViewGroup root){
-//
-//        for (TabConfiguration tabConfiguration: LayoutConfiguration.getTabsConfiguration().values()){
-//
-//            // First reset the scores TextViews
-//            if(tabConfiguration.getScoreFieldId() != null) ((TextView)root.findViewById(tabConfiguration.getScoreFieldId())).setText("0.0");
-//            if(tabConfiguration.getScoreAvgFieldId() != null) ((TextView)root.findViewById(tabConfiguration.getScoreAvgFieldId())).setText("0.0");
-//
-//            // Then for Custom tabs we search for TextViews with id == R.id.score and set them to 0
-//            if(!tabConfiguration.isAutomaticTab() && tabConfiguration.getScoreFieldId() != null) {
-//                LinearLayout tabLayout = (LinearLayout)root.findViewById(tabConfiguration.getTabId());
-//                List<View> tables = getTableChildren(tabLayout);
-//                for (View table: tables){
-//                    for (int i=0; i<((TableLayout)table).getChildCount(); i++){
-//                        TextView scoreText = (TextView)((TableLayout)table).getChildAt(i).findViewById(R.id.score);
-//                        if (scoreText != null) scoreText.setText("0");
-//                        // FIXME: we should rename this scoreValue ids to score, but subtotal updating relies on finding only one score id in the tab, so it's not straight-forward
-//                        scoreText = (TextView)((TableLayout)table).getChildAt(i).findViewById(R.id.scoreValue);
-//                        if (scoreText != null) scoreText.setText("0");
-//                    }
-//                }
-//                List<View> edits = getEditChildren(tabLayout);
-//                for (View edit: edits){
-//                    ((EditText)edit).setText("");
-//                    Question triggeredQuestion = (Question) ((EditText)edit).getTag(R.id.QuestionTag);
-//                    if (triggeredQuestion != null) {
-//                        Value value = triggeredQuestion.getValueBySession();
-//                        if (value != null) {
-//                            value.setValue("");
-//                            value.save();
-//                        }
-//                    }
-//                }
-//
-//                // Reset subscore layout components
-//                GridLayout subscore = (GridLayout)(tabLayout.getChildAt(1));
-//                LinearLayout subscoreContainer = (LinearLayout)((ViewGroup)((ViewGroup)subscore.getChildAt(0)).getChildAt(1)).getChildAt(0);
-//                TextView score = (TextView)((ViewGroup)subscoreContainer.getChildAt(0)).getChildAt(0);
-//                TextView percentageSymbol = (TextView)((ViewGroup)subscoreContainer.getChildAt(0)).getChildAt(1);
-//                TextView cualitiveScore = (TextView)((ViewGroup)subscoreContainer.getChildAt(1)).getChildAt(0);
-//                setScore(0.0F, score, percentageSymbol, cualitiveScore);
-//            }
-//            if (tabConfiguration.getLayoutId() != null && tabConfiguration.getLayoutId() == R.layout.compositivescoretab){
-//                LinearLayout tabLayout = (LinearLayout)root.findViewById(tabConfiguration.getTabId());
-//                List<View> tables = getTableChildren(tabLayout);
-//                for (View table: tables){
-//                    for (int i=0; i<((TableLayout)table).getChildCount(); i++){
-//                        TextView scoreText = (TextView)((TableLayout)table).getChildAt(i).findViewById(R.id.score);
-//                        if (scoreText != null) scoreText.setText("0");
-//                    }
-//                }
-//            }
-//        }
-//    }
+    public static void resetScores(ViewGroup root){
+
+        for (TabConfiguration tabConfiguration: LayoutConfiguration.getTabsConfiguration().values()){
+
+            // First reset the scores TextViews
+            if(tabConfiguration.getScoreFieldId() != null) ((TextView)root.findViewById(tabConfiguration.getScoreFieldId())).setText("0.0");
+            if(tabConfiguration.getScoreAvgFieldId() != null) ((TextView)root.findViewById(tabConfiguration.getScoreAvgFieldId())).setText("0.0");
+
+            // Then for Custom tabs we search for TextViews with id == R.id.score and set them to 0
+            if(!tabConfiguration.isAutomaticTab() && tabConfiguration.getScoreFieldId() != null) {
+                LinearLayout tabLayout = (LinearLayout)root.findViewById(tabConfiguration.getTabId());
+                List<View> tables = getTableChildren(tabLayout);
+                for (View table: tables){
+                    for (int i=0; i<((TableLayout)table).getChildCount(); i++){
+                        TextView scoreText = (TextView)((TableLayout)table).getChildAt(i).findViewById(R.id.score);
+                        if (scoreText != null) scoreText.setText("0");
+                        // FIXME: we should rename this scoreValue ids to score, but subtotal updating relies on finding only one score id in the tab, so it's not straight-forward
+                        scoreText = (TextView)((TableLayout)table).getChildAt(i).findViewById(R.id.scoreValue);
+                        if (scoreText != null) scoreText.setText("0");
+                    }
+                }
+                List<View> edits = getEditChildren(tabLayout);
+                for (View edit: edits){
+                    ((EditText)edit).setText("");
+                    Question triggeredQuestion = (Question) ((EditText)edit).getTag(R.id.QuestionTag);
+                    if (triggeredQuestion != null) {
+                        Value value = triggeredQuestion.getValueBySession();
+                        if (value != null) {
+                            value.setValue("");
+                            value.save();
+                        }
+                    }
+                }
+
+                // Reset subscore layout components
+                GridLayout subscore = (GridLayout)(tabLayout.getChildAt(1));
+                LinearLayout subscoreContainer = (LinearLayout)((ViewGroup)((ViewGroup)subscore.getChildAt(0)).getChildAt(1)).getChildAt(0);
+                TextView score = (TextView)((ViewGroup)subscoreContainer.getChildAt(0)).getChildAt(0);
+                TextView percentageSymbol = (TextView)((ViewGroup)subscoreContainer.getChildAt(0)).getChildAt(1);
+                TextView cualitiveScore = (TextView)((ViewGroup)subscoreContainer.getChildAt(1)).getChildAt(0);
+                setScore(0.0F, score, percentageSymbol, cualitiveScore);
+            }
+            if (tabConfiguration.getLayoutId() != null && tabConfiguration.getLayoutId() == R.layout.compositivescoretab){
+                LinearLayout tabLayout = (LinearLayout)root.findViewById(tabConfiguration.getTabId());
+                List<View> tables = getTableChildren(tabLayout);
+                for (View table: tables){
+                    for (int i=0; i<((TableLayout)table).getChildCount(); i++){
+                        TextView scoreText = (TextView)((TableLayout)table).getChildAt(i).findViewById(R.id.score);
+                        if (scoreText != null) scoreText.setText("0");
+                    }
+                }
+            }
+        }
+    }
 
     public static void setScore(float score, View scoreView, View percentageView, View cualitativeView){
         LayoutUtils.trafficLight(scoreView, score, cualitativeView);
@@ -336,17 +321,5 @@ public class LayoutUtils {
                 ((TextView)textView).setText(view.getContext().getResources().getString(R.string.good));
             }
         }
-    }
-
-    public static int getNumberOfQuestionParentsHeader(Header header) {
-        int result = 0;
-
-        List<Question> list =  header.getQuestions();
-
-        for (Question question : list)
-            if (question.hasChildren())
-                result = result + 1;
-
-        return result;
     }
 }

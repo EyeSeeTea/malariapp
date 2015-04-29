@@ -20,8 +20,8 @@
 package org.eyeseetea.malariacare;
 
 import android.content.Intent;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -33,7 +33,6 @@ import org.eyeseetea.malariacare.database.model.OrgUnit;
 import org.eyeseetea.malariacare.database.model.Program;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.utils.Session;
-import org.eyeseetea.malariacare.layout.Layout;
 import org.eyeseetea.malariacare.utils.Constants;
 
 import java.util.List;
@@ -50,7 +49,8 @@ public class CreateSurveyActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_survey);
         android.support.v7.app.ActionBar actionBar = this.getSupportActionBar();
-        Layout.setActionBarLogo(actionBar);
+        //FIXME AQP
+        // Layout.setActionBarLogo(actionBar);
 
         //Create default options
         OrgUnit orgUnitDefaultOption = new OrgUnit(Constants.DEFAULT_SELECT_OPTION);
@@ -114,7 +114,7 @@ public class CreateSurveyActivity extends ActionBarActivity {
         Session.setSurvey(survey);
 
         //Call Survey Activity
-        Intent surveyIntent = new Intent(this, MainActivity.class);
+        Intent surveyIntent = new Intent(this, SurveyActivity.class);
         startActivity(surveyIntent);
 
     }

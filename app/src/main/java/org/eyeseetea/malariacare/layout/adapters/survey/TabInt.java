@@ -17,24 +17,22 @@
  *  along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.eyeseetea.malariacare.layout.score;
+package org.eyeseetea.malariacare.layout.adapters.survey;
 
-import org.eyeseetea.malariacare.database.model.CompositiveScore;
+import android.widget.BaseAdapter;
 
-import java.util.List;
+/**
+ * Created by Jose on 16/04/2015.
+ */
+public interface TabInt {
 
-public class CompositiveNumDenRecord extends ANumDenRecord{
+    public void initialize();
 
+    public BaseAdapter getAdapter();
 
-    public List<Float> readNumDen(CompositiveScore compositiveScore, List<Float> numDenTotal){
-        numDenTotal = this.calculateNumDenTotal(numDenTotal);
+    public Float getScore();
 
-        if (compositiveScore.hasChildren()){
-            for (CompositiveScore compositiveScoreChild: compositiveScore.getCompositiveScoreChildren()){
-                numDenTotal = readNumDen(compositiveScoreChild, numDenTotal);
-            }
-        }
+    public int getLayout();
 
-        return numDenTotal;
-    }
+    public String getName();
 }

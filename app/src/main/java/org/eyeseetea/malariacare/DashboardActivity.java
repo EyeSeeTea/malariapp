@@ -27,8 +27,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
-import org.eyeseetea.malariacare.layout.Layout;
-
 
 public class DashboardActivity extends ActionBarActivity {
 
@@ -38,13 +36,11 @@ public class DashboardActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.dashboard);
         android.support.v7.app.ActionBar actionBar = this.getSupportActionBar();
-        Layout.setActionBarLogo(actionBar);
+        actionBar.setLogo(R.drawable.qualityapp_logo);
+        actionBar.setDisplayUseLogoEnabled(true);
+        actionBar.setDisplayShowHomeEnabled(true);
+        actionBar.setIcon(R.drawable.qualityapp_logo);
 
-//        if (savedInstanceState == null) {
-//            getSupportFragmentManager().beginTransaction()
-//                    .add(R.id.container, new AssessmentFragment())
-//                    .commit();
-//        }
     }
 
     @Override

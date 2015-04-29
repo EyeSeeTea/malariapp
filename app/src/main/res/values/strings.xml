@@ -120,6 +120,7 @@
     <string name="errorTitle">Error</string>
     <string name="errorDenominator">Error, denominator = 0</string>
     <string name="submit">Submit</string>
+    <string name="talliesSubHeader">TALLIES for the Month of</string>
 
     <!-- # DIALOGS -->
     <string name="licenseTitle">GPLv3 License</string>
