@@ -54,9 +54,6 @@ public class SurveyActivity extends ActionBarActivity {
 
     List<Tab> tabsArray;
     private TabInt[] adapters = null;
-    private CompositiveScoreAdapter compositive_adapter = null;
-    public static Session session = new Session();
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -25,7 +25,6 @@ public class DialogDispatcher extends Fragment {
 
     private static View contextView;
 
-//    public static final int CLEAR_DIALOG = 1;
     public static final int ERROR_DIALOG = 2;
     public static final int LICENSE_DIALOG = 3;
     public static final int DELETE_SURVEY_DIALOG = 4;
@@ -46,14 +45,6 @@ public class DialogDispatcher extends Fragment {
         ft.addToBackStack(null);
 
         switch (type) {
-
-//            case CLEAR_DIALOG:
-//
-//                DialogFragment dialogFrag = NoticeDialogFragment.newInstance(R.string.clearTitle, R.string.clearMessage);
-//                dialogFrag.setTargetFragment(this, CLEAR_DIALOG);
-//                dialogFrag.show(fragmentManager.beginTransaction(), "dialog");
-//
-//                break;
 
             case DELETE_SURVEY_DIALOG:
 
@@ -92,27 +83,6 @@ public class DialogDispatcher extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch(requestCode) {
-            //FIXME: AQP
-//            case CLEAR_DIALOG:
-//
-//                if (resultCode == Activity.RESULT_OK) {
-//                    // After Ok code.
-//                    Log.i("FragmentAlertDialog", "Positive click!");
-//                    ViewGroup root = (LinearLayout) LayoutUtils.findParentRecursively(contextView, R.id.Grid);
-//                    List<View> viewsToClear = LayoutUtils.getChildrenByTag(root, R.id.QuestionTypeTag, null);
-//                    for (View viewToClear: viewsToClear){
-//                        LayoutUtils.resetComponent(viewToClear);
-//                        // After resetting the component, if it is a question we need also to recalculate its num/dem
-//                        if ((viewToClear.getId() == R.id.ddl) && viewToClear.getTag(R.id.QuestionTag) != null){
-//                            Question triggeredQuestion = (Question) viewToClear.getTag(R.id.QuestionTag);
-//                        }
-//                    }
-//
-//                    // Reset Score tab
-//                    LayoutUtils.resetScores(root);
-//                }
-//
-//                break;
 
             case DELETE_SURVEY_DIALOG:
 
@@ -120,7 +90,6 @@ public class DialogDispatcher extends Fragment {
                     Log.i("FragmentAlertDialog", "Positive click!");
                     Session.getSurvey().delete();
 
-                    //myActivity.finish();
                     Intent intent = new Intent(contextView.getContext(), DashboardActivity.class);
                     contextView.getContext().startActivity(intent);
                 }

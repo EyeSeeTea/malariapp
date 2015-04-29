@@ -27,7 +27,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class ANumDenRecord {
+public abstract class ANumDenRecord {
 
     private Map<Question,List<Float>> numDenRecord = new HashMap<Question,List<Float>>();
 

@@ -61,8 +61,6 @@ public class AutoTabAdapter extends BaseAdapter implements TabInt {
 
     String tabName;
 
-    Session session;
-
     float totalNum = 0;
     float totalDenum;
     float score;
@@ -101,7 +99,6 @@ public class AutoTabAdapter extends BaseAdapter implements TabInt {
         this.context = context;
         this.id_layout = id_layout;
         this.tabName = tabName;
-        this.session = SurveyActivity.session;
 
         hidden = new boolean[items.size()];
 
@@ -271,7 +268,7 @@ public class AutoTabAdapter extends BaseAdapter implements TabInt {
     private float calcNum(Question question) {
         float result = 0;
         if (question.getValueBySession() != null) {
-            Option op = ReadWriteDB.readOption(question, session);
+            Option op = ReadWriteDB.readOption(question);
             result = question.getNumerator_w() * op.getFactor();
         }
 
@@ -288,7 +285,7 @@ public class AutoTabAdapter extends BaseAdapter implements TabInt {
         if (question.getAnswer().getOutput() == Constants.DROPDOWN_LIST) {
 
             if (question.getValueBySession() != null) {
-                Option op = ReadWriteDB.readOption(question, session);
+                Option op = ReadWriteDB.readOption(question);
                 return calcDenum(op.getFactor(), question);
             } else result = calcDenum(0, question);
         }
@@ -321,7 +318,7 @@ public class AutoTabAdapter extends BaseAdapter implements TabInt {
                     totalNum = totalNum - numdenum.get(0);
                     ScoreRegister.deleteRecord(child);
                 }
-                ReadWriteDB.resetValue(child, session);
+                ReadWriteDB.resetValue(child);
                 hidden[items.indexOf(child.getHeader())] = isHeaderHide(child.getHeader());
             } else {
                 Float denum = calcDenum(child);
@@ -342,10 +339,10 @@ public class AutoTabAdapter extends BaseAdapter implements TabInt {
             case Constants.INT:
             case Constants.LONG_TEXT:
             case Constants.POSITIVE_INT:
-                viewHolder.answer.setText(ReadWriteDB.readValueQuestion(question, session));
+                viewHolder.answer.setText(ReadWriteDB.readValueQuestion(question));
                 break;
             case Constants.DROPDOWN_LIST:
-                viewHolder.spinner.setSelection(ReadWriteDB.readPositionOption(question, session));
+                viewHolder.spinner.setSelection(ReadWriteDB.readPositionOption(question));
 
                 List<Float> numdenum = ScoreRegister.getNumDenum(question);
                 if (numdenum != null) {
@@ -386,7 +383,7 @@ public class AutoTabAdapter extends BaseAdapter implements TabInt {
 
     private void itemSelected(ViewHolder viewHolder, Question question, Option option) {
 
-        ReadWriteDB.saveValuesDDL(question, option, session);
+        ReadWriteDB.saveValuesDDL(question, option);
 
         Float num = calcNum(question);
         Float denum = calcDenum(question);
@@ -519,7 +516,7 @@ public class AutoTabAdapter extends BaseAdapter implements TabInt {
                     public void onTextChanged(CharSequence s, int start, int before, int count) {
 
                         if (viewCreated.value)
-                            ReadWriteDB.saveValuesText(question, s.toString(), session);
+                            ReadWriteDB.saveValuesText(question, s.toString());
                         else viewCreated.value = true;
                     }
 

@@ -57,8 +57,6 @@ public class CustomIQTABAdapter extends BaseAdapter implements TabInt {
 
     String tabName;
 
-    Session session;
-
     private final Context context;
 
     final ScoreHolder scoreHolder = new ScoreHolder();
@@ -97,7 +95,6 @@ public class CustomIQTABAdapter extends BaseAdapter implements TabInt {
         this.context = context;
         this.id_layout = id_layout;
         this.tabName = tabName;
-        this.session = SurveyActivity.session;
 
         if (items.size()>0)
             number_rows_section = LayoutUtils.getNumberOfQuestionParentsHeader((Header) items.get(0))+1;
@@ -210,9 +207,9 @@ public class CustomIQTABAdapter extends BaseAdapter implements TabInt {
 
     private void setValues(ViewHolder viewHolder, Question question) {
         viewHolder.number.setText(question.getForm_name());
-        viewHolder.species.setText(ReadWriteDB.readValueQuestion(question.getQuestionChildren().get(2), session));
-        viewHolder.parasites.setText(ReadWriteDB.readValueQuestion(question.getQuestionChildren().get(1), session));
-        viewHolder.spinner.setSelection(ReadWriteDB.readPositionOption(question.getQuestionChildren().get(0), session));
+        viewHolder.species.setText(ReadWriteDB.readValueQuestion(question.getQuestionChildren().get(2)));
+        viewHolder.parasites.setText(ReadWriteDB.readValueQuestion(question.getQuestionChildren().get(1)));
+        viewHolder.spinner.setSelection(ReadWriteDB.readPositionOption(question.getQuestionChildren().get(0)));
     }
 
 
@@ -272,7 +269,7 @@ public class CustomIQTABAdapter extends BaseAdapter implements TabInt {
                     @Override
                     public void onTextChanged(CharSequence s, int start, int before, int count) {
                         if (viewCreated.value) {
-                            ReadWriteDB.saveValuesText(parasites, s.toString(), session);
+                            ReadWriteDB.saveValuesText(parasites, s.toString());
                         } else viewCreated.value = true;
                     }
 
@@ -294,7 +291,7 @@ public class CustomIQTABAdapter extends BaseAdapter implements TabInt {
                     public void onTextChanged(CharSequence s, int start, int before, int count) {
 
                         if (viewCreated.value) {
-                            ReadWriteDB.saveValuesText(species, s.toString(), session);
+                            ReadWriteDB.saveValuesText(species, s.toString());
                         } else viewCreated.value = true;
 
                     }
@@ -311,7 +308,7 @@ public class CustomIQTABAdapter extends BaseAdapter implements TabInt {
                     public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
 
                         if (viewCreated.value) {
-                            ReadWriteDB.saveValuesDDL(test, (Option) viewHolder.spinner.getItemAtPosition(pos), session);
+                            ReadWriteDB.saveValuesDDL(test, (Option) viewHolder.spinner.getItemAtPosition(pos));
                             calculateMatch(question);
                             updateScore();
                         } else viewCreated.value = true;

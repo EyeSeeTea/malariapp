@@ -31,7 +31,7 @@ import java.util.List;
  */
 public class ReadWriteDB {
 
-    public static String readValueQuestion(Question question, Session session){
+    public static String readValueQuestion(Question question){
         String result = null;
 
         Value value = question.getValueBySession();
@@ -42,7 +42,7 @@ public class ReadWriteDB {
         return result;
     }
 
-    public static int readPositionOption (Question question, Session session) {
+    public static int readPositionOption (Question question) {
         int result = 0;
 
         Value value = question.getValueBySession();
@@ -56,7 +56,7 @@ public class ReadWriteDB {
         return result;
     }
 
-    public static Option readOption (Question question, Session session) {
+    public static Option readOption (Question question) {
         Option option = null;
 
         Value value = question.getValueBySession();
@@ -67,13 +67,13 @@ public class ReadWriteDB {
         return option;
     }
 
-    public static void saveValuesDDL(Question question, Option option, Session session) {
+    public static void saveValuesDDL(Question question, Option option) {
 
         Value value = question.getValueBySession();
 
         if (!option.getName().equals(Constants.DEFAULT_SELECT_OPTION)) {
             if (value == null) {
-                value = new Value(option, question, session.getSurvey());
+                value = new Value(option, question, Session.getSurvey());
                 value.save();
             } else {
                 value.setOption(option);
@@ -87,13 +87,13 @@ public class ReadWriteDB {
         }
     }
 
-    public static void saveValuesText(Question question, String answer, Session session ) {
+    public static void saveValuesText(Question question, String answer) {
 
         Value value = question.getValueBySession();
 
         // If the value is not found we create one
         if (value == null) {
-            value = new Value(answer, question, session.getSurvey());
+            value = new Value(answer, question, Session.getSurvey());
             value.save();
         } else {
             value.setOption(null);
@@ -103,7 +103,7 @@ public class ReadWriteDB {
 
     }
 
-    public static void resetValue(Question question, Session session) {
+    public static void resetValue(Question question) {
 
         Value value = question.getValueBySession();
 

@@ -63,8 +63,6 @@ public class CustomAdherenceAdapter extends BaseAdapter implements TabInt {
 
     boolean visible = false;
 
-    Session session;
-
     final ScoreHolder scoreHolder = new ScoreHolder();
 
     float denum = 20;
@@ -151,7 +149,6 @@ public class CustomAdherenceAdapter extends BaseAdapter implements TabInt {
         this.items=items;
         this.context=context;
         this.tabName = tabName;
-        this.session = SurveyActivity.session;
 
         if (items.size()> 0)
             position_secondheader = LayoutUtils.getNumberOfQuestionParentsHeader((Header) items.get(0)) +1 ;
@@ -211,18 +208,18 @@ public class CustomAdherenceAdapter extends BaseAdapter implements TabInt {
 
     private void setValues(ViewHolder viewHolder, Question question) {
         viewHolder.number.setText(question.getForm_name());
-        viewHolder.patientID.setText(ReadWriteDB.readValueQuestion(question.getQuestionChildren().get(0), session));
-        viewHolder.age.setText(ReadWriteDB.readValueQuestion(question.getQuestionChildren().get(2), session));
-        viewHolder.gender.setSelection(ReadWriteDB.readPositionOption(question.getQuestionChildren().get(1), session));
-        viewHolder.testResutl.setSelection(ReadWriteDB.readPositionOption(question.getQuestionChildren().get(3), session));
+        viewHolder.patientID.setText(ReadWriteDB.readValueQuestion(question.getQuestionChildren().get(0)));
+        viewHolder.age.setText(ReadWriteDB.readValueQuestion(question.getQuestionChildren().get(2)));
+        viewHolder.gender.setSelection(ReadWriteDB.readPositionOption(question.getQuestionChildren().get(1)));
+        viewHolder.testResutl.setSelection(ReadWriteDB.readPositionOption(question.getQuestionChildren().get(3)));
     }
 
     private void setValues2(ViewHolder2 viewHolder, Question question) {
         calcScore(question);
         viewHolder.score.setText(String.valueOf(scores[items.indexOf(question)-position_secondheader]));
-        viewHolder.patientID.setText(ReadWriteDB.readValueQuestion(question.getQuestionChildren().get(0), session));
+        viewHolder.patientID.setText(ReadWriteDB.readValueQuestion(question.getQuestionChildren().get(0)));
         viewHolder.number.setText(question.getForm_name());
-        viewHolder.act.setSelection(ReadWriteDB.readPositionOption(question.getQuestionChildren().get(2), session));
+        viewHolder.act.setSelection(ReadWriteDB.readPositionOption(question.getQuestionChildren().get(2)));
 
     }
 
@@ -331,7 +328,7 @@ public class CustomAdherenceAdapter extends BaseAdapter implements TabInt {
                     @Override
                     public void onTextChanged(CharSequence s, int start, int before, int count) {
                         if (viewCreated.value) {
-                            ReadWriteDB.saveValuesText(question.getQuestionChildren().get(2), s.toString(), session);
+                            ReadWriteDB.saveValuesText(question.getQuestionChildren().get(2), s.toString());
                         } else viewCreated.value = true;
                     }
 
@@ -354,7 +351,7 @@ public class CustomAdherenceAdapter extends BaseAdapter implements TabInt {
                     public void onTextChanged(CharSequence s, int start, int before, int count) {
 
                         if (viewCreated.value) {
-                            ReadWriteDB.saveValuesText(question.getQuestionChildren().get(0), s.toString(), session);
+                            ReadWriteDB.saveValuesText(question.getQuestionChildren().get(0), s.toString());
                         } else viewCreated.value = true;
                     }
 
@@ -371,7 +368,7 @@ public class CustomAdherenceAdapter extends BaseAdapter implements TabInt {
                     @Override
                     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                         if (viewCreated.value)
-                            ReadWriteDB.saveValuesDDL(question.getQuestionChildren().get(1), (Option) viewHolder.gender.getItemAtPosition(position), session);
+                            ReadWriteDB.saveValuesDDL(question.getQuestionChildren().get(1), (Option) viewHolder.gender.getItemAtPosition(position));
                         else viewCreated.value = true;
                     }
 
@@ -385,7 +382,7 @@ public class CustomAdherenceAdapter extends BaseAdapter implements TabInt {
                     @Override
                     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                         if (viewCreated.value)
-                            ReadWriteDB.saveValuesDDL(question.getQuestionChildren().get(3), (Option) viewHolder.testResutl.getItemAtPosition(position), session);
+                            ReadWriteDB.saveValuesDDL(question.getQuestionChildren().get(3), (Option) viewHolder.testResutl.getItemAtPosition(position));
                         else viewCreated.value = true;
                     }
 
@@ -439,7 +436,7 @@ public class CustomAdherenceAdapter extends BaseAdapter implements TabInt {
                     @Override
                     public void onTextChanged(CharSequence s, int start, int before, int count) {
                         if (viewCreated.value)
-                            ReadWriteDB.saveValuesText(question.getQuestionChildren().get(0), s.toString(), session);
+                            ReadWriteDB.saveValuesText(question.getQuestionChildren().get(0), s.toString());
                         else viewCreated.value = true;
                     }
 
@@ -455,7 +452,7 @@ public class CustomAdherenceAdapter extends BaseAdapter implements TabInt {
 
                         if (viewCreated.value) {
 
-                            ReadWriteDB.saveValuesDDL(question.getQuestionChildren().get(2), (Option) viewHolder2.act.getItemAtPosition(pos), session);
+                            ReadWriteDB.saveValuesDDL(question.getQuestionChildren().get(2), (Option) viewHolder2.act.getItemAtPosition(pos));
                             calcScore(question);
                             viewHolder2.score.setText(Integer.toString(scores[items.indexOf(question)] - position_secondheader));
                             updateScore();

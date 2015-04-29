@@ -52,8 +52,6 @@ public class CustomReportingAdapter extends BaseAdapter implements TabInt {
 
     String tabName;
 
-    Session session;
-
     final ScoreHolder scoreHolder = new ScoreHolder();
 
     final RowValues[] values;
@@ -95,7 +93,6 @@ public class CustomReportingAdapter extends BaseAdapter implements TabInt {
         this.context=context;
         this.id_layout = id_layout;
         this.tabName = tabName;
-        this.session = SurveyActivity.session;
 
         values = new RowValues[items.size()];
 
@@ -190,8 +187,8 @@ public class CustomReportingAdapter extends BaseAdapter implements TabInt {
         RowValues rowValues = new RowValues();
 
         rowValues.statement = question.getQuestionChildren().get(0).getForm_name();
-        rowValues.register = ReadWriteDB.readValueQuestion(question.getQuestionChildren().get(1), session);
-        rowValues.report = ReadWriteDB.readValueQuestion(question.getQuestionChildren().get(2), session);
+        rowValues.register = ReadWriteDB.readValueQuestion(question.getQuestionChildren().get(1));
+        rowValues.report = ReadWriteDB.readValueQuestion(question.getQuestionChildren().get(2));
         rowValues.score = areEquals(rowValues.register, rowValues.report);
 
         if (rowValues.score == 1)
@@ -267,7 +264,7 @@ public class CustomReportingAdapter extends BaseAdapter implements TabInt {
 
                     if (viewCreated.value) {
                         rowValues.register = s.toString();
-                        ReadWriteDB.saveValuesText(register, s.toString(), session);
+                        ReadWriteDB.saveValuesText(register, s.toString());
                         textEntered(viewHolder.score, rowValues);
 
                     }
@@ -293,7 +290,7 @@ public class CustomReportingAdapter extends BaseAdapter implements TabInt {
 
                     if (viewCreated.value) {
                         rowValues.report = s.toString();
-                        ReadWriteDB.saveValuesText(report, s.toString(), session);
+                        ReadWriteDB.saveValuesText(report, s.toString());
                         textEntered(viewHolder.score, rowValues);
                     }
                     else viewCreated.value = true;
