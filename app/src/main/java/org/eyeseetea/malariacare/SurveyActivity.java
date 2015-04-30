@@ -40,6 +40,7 @@ import org.eyeseetea.malariacare.layout.adapters.general.TabArrayAdapter;
 import org.eyeseetea.malariacare.layout.adapters.survey.AutoTabAdapter;
 import org.eyeseetea.malariacare.layout.adapters.survey.CompositiveScoreAdapter;
 import org.eyeseetea.malariacare.layout.adapters.survey.ITabAdapter;
+import org.eyeseetea.malariacare.layout.dialog.DialogDispatcher;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 import org.eyeseetea.malariacare.utils.Utils;
@@ -75,8 +76,8 @@ public class SurveyActivity extends ActionBarActivity {
                 adaptersMap.put(tab, new CompositiveScoreAdapter(CompositiveScore.listAll(CompositiveScore.class), this, R.layout.compositivescoretab, tab.getName()));
             else if (!tab.getName().equals("Score")) {
                 ScoreRegister.registerScore(tab);
-                adaptersMap.put(tab, new AutoTabAdapter(Utils.convertTabToArray(tab), this, R.layout.form, tab.getName()));
-                //adapters.put(tab, new AutoTabAdapter(tab, this));
+                //adaptersMap.put(tab, new AutoTabAdapter(Utils.convertTabToArray(tab), this, R.layout.form, tab.getName()));
+                adaptersMap.put(tab, new AutoTabAdapter(tab, this));
             }
         }
 
@@ -87,7 +88,7 @@ public class SurveyActivity extends ActionBarActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+        getMenuInflater().inflate(R.menu.menu_survey, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -129,18 +130,19 @@ public class SurveyActivity extends ActionBarActivity {
 
     private void showTab(Tab selectedTab) {
 
-        ListView mQuestions;
         LayoutInflater inflater = LayoutInflater.from(this);
-
-        ITabAdapter mytab = adaptersMap.get(selectedTab);
-
         ViewGroup parent = (LinearLayout) this.findViewById(R.id.content);
         parent.removeAllViews();
-        View view = inflater.inflate(mytab.getLayout(), parent, false);
+
+        ITabAdapter tabAdapter = adaptersMap.get(selectedTab);
+
+        View view = inflater.inflate(tabAdapter.getLayout(), parent, false);
         parent.addView(view);
-        mQuestions = (ListView) this.findViewById(R.id.listView);
-        mytab.initialize();
-        mQuestions.setAdapter((BaseAdapter) mytab);
+
+        ListView mQuestions = (ListView) this.findViewById(R.id.listView);
+        mQuestions.setAdapter((BaseAdapter) tabAdapter);
+
+        tabAdapter.initialize();
     }
 
 

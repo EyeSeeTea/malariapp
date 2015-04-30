@@ -22,7 +22,6 @@ package org.eyeseetea.malariacare.layout.adapters.general;
 import android.content.Context;
 import android.widget.TextView;
 
-import org.eyeseetea.malariacare.database.model.OrgUnit;
 import org.eyeseetea.malariacare.database.model.Program;
 
 import java.util.List;
@@ -30,7 +29,7 @@ import java.util.List;
 /**
  * Created by adrian on 30/04/15.
  */
-public class ProgramArrayAdapter extends DDLArrayAdapter<Program> {
+public class ProgramArrayAdapter extends AddlArrayAdapter<Program> {
 
     public ProgramArrayAdapter(Context context, List<Program> programs) {
         super(context, programs);

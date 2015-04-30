@@ -23,14 +23,13 @@ import android.content.Context;
 import android.widget.TextView;
 
 import org.eyeseetea.malariacare.database.model.OrgUnit;
-import org.eyeseetea.malariacare.database.model.Tab;
 
 import java.util.List;
 
 /**
  * Created by adrian on 30/04/15.
  */
-public class OrgUnitArrayAdapter extends DDLArrayAdapter<OrgUnit> {
+public class OrgUnitArrayAdapter extends AddlArrayAdapter<OrgUnit> {
 
     public OrgUnitArrayAdapter(Context context, List<OrgUnit> orgUnits) {
         super(context, orgUnits);

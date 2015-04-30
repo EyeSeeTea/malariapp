@@ -75,16 +75,12 @@ public class OrgUnit extends SugarRecord<OrgUnit> {
         return result;
     }
 
-//    @Override
-//    public String toString() {
-//        return "OrgUnit{" +
-//                "uid='" + uid + '\'' +
-//                ", name='" + name + '\'' +
-//                '}';
-//    }
-
     @Override
     public String toString() {
-        return name;
+        return "OrgUnit{" +
+                "uid='" + uid + '\'' +
+                ", name='" + name + '\'' +
+                '}';
     }
+
 }

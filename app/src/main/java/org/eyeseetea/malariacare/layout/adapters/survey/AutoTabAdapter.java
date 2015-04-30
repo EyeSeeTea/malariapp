@@ -37,7 +37,9 @@ import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.model.Header;
 import org.eyeseetea.malariacare.database.model.Option;
 import org.eyeseetea.malariacare.database.model.Question;
+import org.eyeseetea.malariacare.database.model.Tab;
 import org.eyeseetea.malariacare.database.utils.ReadWriteDB;
+import org.eyeseetea.malariacare.layout.adapters.general.OptionArrayAdapter;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 import org.eyeseetea.malariacare.utils.Constants;
@@ -91,12 +93,12 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
         public TextView tabName;
     }
 
-    public AutoTabAdapter(List<Object> items, Context context, int id_layout, String tabName) {
+    public AutoTabAdapter(Tab tab, Context context) {
         this.lInflater = LayoutInflater.from(context);
-        this.items = items;
+        this.items = Utils.convertTabToArray(tab);
         this.context = context;
-        this.id_layout = id_layout;
-        this.tabName = tabName;
+        this.id_layout = R.layout.form;
+        this.tabName = tab.getName();
 
         hidden = new boolean[items.size()];
 
@@ -255,18 +257,10 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
         return items.get(getRealPosition(position)).hashCode();
     }
 
-    class Bool {
-        public boolean value;
-
-        public Bool(boolean value) {
-            this.value = value;
-        }
-    }
-
     private float calcNum(Question question) {
         float result = 0;
         if (question.getValueBySession() != null) {
-            Option op = ReadWriteDB.readOption(question);
+            Option op = question.getOptionBySession();
             result = question.getNumerator_w() * op.getFactor();
         }
 
@@ -282,10 +276,13 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
 
         if (question.getAnswer().getOutput() == Constants.DROPDOWN_LIST) {
 
-            if (question.getValueBySession() != null) {
-                Option op = ReadWriteDB.readOption(question);
-                return calcDenum(op.getFactor(), question);
-            } else result = calcDenum(0, question);
+            Option option = question.getOptionBySession();
+            if (option != null) {
+                return calcDenum(option.getFactor(), question);
+            }
+            else{
+                result = calcDenum(0, question);
+            }
         }
 
         return result;
@@ -414,9 +411,8 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
         View rowView = null;
 
         final Object item = getItem(position);
-        final Bool viewCreated = new Bool(false);
-        final Question question;
-        final ViewHolder viewHolder = new ViewHolder();
+        Question question;
+        ViewHolder viewHolder = new ViewHolder();
 
         if (item instanceof Header) {
             rowView = lInflater.inflate(R.layout.headers, parent, false);
@@ -469,12 +465,7 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
 
                     List<Option> optionList = question.getAnswer().getOptions();
                     optionList.add(0, new Option(Constants.DEFAULT_SELECT_OPTION));
-
-                    ArrayAdapter adapter = new ArrayAdapter(context, android.R.layout.simple_spinner_item, optionList);
-
-                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
-
-                    answers.setAdapter(adapter);
+                    answers.setAdapter(new OptionArrayAdapter(context, optionList));
 
                     break;
 
@@ -482,53 +473,79 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
                     break;
             }
 
-            rowView.setBackgroundResource(LayoutUtils.calculateBackgrounds(position));
             if (question.hasChildren())
                 rowView.setBackgroundResource(R.drawable.background_parent);
+            else
+                rowView.setBackgroundResource(LayoutUtils.calculateBackgrounds(position));
 
             if (question.getAnswer().getOutput() == Constants.DROPDOWN_LIST) {
-
-                viewHolder.spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                    @Override
-                    public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
-
-                        if (viewCreated.value) {
-                            itemSelected(viewHolder, question, (Option) viewHolder.spinner.getItemAtPosition(pos));
-                        } else viewCreated.value = true;
-                    }
-
-                    @Override
-                    public void onNothingSelected(AdapterView<?> parent) {
-
-                    }
-                });
-
+                viewHolder.spinner.setOnItemSelectedListener(new SpinnerListener(false, question, viewHolder));
             } else if (question.getAnswer().getOutput() != Constants.NO_ANSWER) {
-                viewHolder.answer.addTextChangedListener(new TextWatcher() {
-                    @Override
-                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-                    }
-
-                    @Override
-                    public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-                        if (viewCreated.value)
-                            ReadWriteDB.saveValuesText(question, s.toString());
-                        else viewCreated.value = true;
-                    }
-
-                    @Override
-                    public void afterTextChanged(Editable s) {
-
-                    }
-                });
+                viewHolder.answer.addTextChangedListener(new TextViewListener(false, question));
             }
             viewHolder.statement.setText(question.getForm_name());
             setValues(viewHolder, question);
         }
 
         return rowView;
+    }
+
+    private class TextViewListener implements TextWatcher {
+        private boolean viewCreated;
+        private Question question;
+
+        public TextViewListener(boolean viewCreated, Question question){
+            this.viewCreated = viewCreated;
+            this.question = question;
+        }
+
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            if (viewCreated){
+                ReadWriteDB.saveValuesText(question, s.toString());
+            }
+            else {
+                viewCreated = true;
+            }
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+
+        }
+    }
+
+    private class SpinnerListener implements AdapterView.OnItemSelectedListener {
+
+        private boolean viewCreated;
+        private ViewHolder viewHolder;
+        private Question question;
+
+        public SpinnerListener(boolean viewCreated, Question question, ViewHolder viewHolder){
+            this.viewCreated = viewCreated;
+            this.question = question;
+            this.viewHolder = viewHolder;
+        }
+
+        @Override
+        public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
+            if (viewCreated) {
+                itemSelected(viewHolder, question, (Option) viewHolder.spinner.getItemAtPosition(pos));
+            } else {
+                viewCreated = true;
+            }
+        }
+
+        @Override
+        public void onNothingSelected(AdapterView<?> parent) {
+
+        }
     }
 
 

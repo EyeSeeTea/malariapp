@@ -29,7 +29,7 @@ import java.util.List;
 /**
  * Created by adrian on 30/04/15.
  */
-public class TabArrayAdapter extends DDLArrayAdapter<Tab> {
+public class TabArrayAdapter extends AddlArrayAdapter<Tab> {
 
     public TabArrayAdapter(Context context, List<Tab> tabs) {
         super(context, tabs);

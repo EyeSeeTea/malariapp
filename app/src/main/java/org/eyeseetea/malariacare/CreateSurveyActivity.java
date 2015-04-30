@@ -33,6 +33,9 @@ import org.eyeseetea.malariacare.database.model.OrgUnit;
 import org.eyeseetea.malariacare.database.model.Program;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.utils.Session;
+import org.eyeseetea.malariacare.layout.adapters.general.OrgUnitArrayAdapter;
+import org.eyeseetea.malariacare.layout.adapters.general.ProgramArrayAdapter;
+import org.eyeseetea.malariacare.layout.adapters.general.TabArrayAdapter;
 import org.eyeseetea.malariacare.utils.Constants;
 
 import java.util.List;
@@ -49,8 +52,6 @@ public class CreateSurveyActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_survey);
         android.support.v7.app.ActionBar actionBar = this.getSupportActionBar();
-        //FIXME AQP
-        // Layout.setActionBarLogo(actionBar);
 
         //Create default options
         OrgUnit orgUnitDefaultOption = new OrgUnit(Constants.DEFAULT_SELECT_OPTION);
@@ -59,21 +60,16 @@ public class CreateSurveyActivity extends ActionBarActivity {
         //Populate Organization Unit DDL
         List<OrgUnit> orgUnitList = OrgUnit.listAll(OrgUnit.class);
         orgUnitList.add(0, orgUnitDefaultOption);
-        ArrayAdapter orgUnitAdapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, orgUnitList);
-        orgUnitAdapter.setDropDownViewResource(R.layout.simple_spinner_item);
         orgUnitView = (Spinner) findViewById(R.id.org_unit);
-        orgUnitView.setAdapter(orgUnitAdapter);
+        orgUnitView.setAdapter(new OrgUnitArrayAdapter(this, orgUnitList));
 
         //Populate Program View DDL
-        List<Program> programList = Program.listAll(Program.class);
+        List<Program> programList = OrgUnit.listAll(Program.class);
         programList.add(0, programDefaultOption);
-        ArrayAdapter programAdapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, programList);
-        programAdapter.setDropDownViewResource(R.layout.simple_spinner_item);
         programView = (Spinner) findViewById(R.id.program);
-        programView.setAdapter(programAdapter);
+        programView.setAdapter(new ProgramArrayAdapter(this, programList));
 
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

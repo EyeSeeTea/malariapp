@@ -56,17 +56,6 @@ public class ReadWriteDB {
         return result;
     }
 
-    public static Option readOption (Question question) {
-        Option option = null;
-
-        Value value = question.getValueBySession();
-
-        if (value!=null)
-            option = value.getOption();
-
-        return option;
-    }
-
     public static void saveValuesDDL(Question question, Option option) {
 
         Value value = question.getValueBySession();
@@ -74,13 +63,11 @@ public class ReadWriteDB {
         if (!option.getName().equals(Constants.DEFAULT_SELECT_OPTION)) {
             if (value == null) {
                 value = new Value(option, question, Session.getSurvey());
-                value.save();
             } else {
                 value.setOption(option);
                 value.setValue(option.getName());
-                value.save();
             }
-
+            value.save();
         }
         else {
             if (value != null) value.delete();
@@ -94,13 +81,11 @@ public class ReadWriteDB {
         // If the value is not found we create one
         if (value == null) {
             value = new Value(answer, question, Session.getSurvey());
-            value.save();
         } else {
             value.setOption(null);
             value.setValue(answer);
-            value.save();
         }
-
+        value.save();
     }
 
     public static void resetValue(Question question) {
