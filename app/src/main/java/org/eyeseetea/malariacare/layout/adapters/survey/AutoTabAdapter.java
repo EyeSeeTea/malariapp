@@ -34,12 +34,10 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import org.eyeseetea.malariacare.R;
-import org.eyeseetea.malariacare.SurveyActivity;
 import org.eyeseetea.malariacare.database.model.Header;
 import org.eyeseetea.malariacare.database.model.Option;
 import org.eyeseetea.malariacare.database.model.Question;
 import org.eyeseetea.malariacare.database.utils.ReadWriteDB;
-import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 import org.eyeseetea.malariacare.utils.Constants;
@@ -50,7 +48,7 @@ import java.util.List;
 /**
  * Created by Jose on 21/04/2015.
  */
-public class AutoTabAdapter extends BaseAdapter implements TabInt {
+public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
 
     //List of Headers and Questions. Each position contains an object to be showed in the listview
     List<Object> items;

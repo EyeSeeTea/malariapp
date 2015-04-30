@@ -39,7 +39,7 @@ import java.util.List;
 /**
  * Created by Jose on 21/04/2015.
  */
-public class CompositiveScoreAdapter extends BaseAdapter implements TabInt {
+public class CompositiveScoreAdapter extends BaseAdapter implements ITabAdapter {
 
     List<CompositiveScore> items;
     private LayoutInflater lInflater;

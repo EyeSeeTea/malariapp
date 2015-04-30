@@ -4,6 +4,8 @@ import com.orm.SugarRecord;
 import com.orm.query.Condition;
 import com.orm.query.Select;
 
+import org.eyeseetea.malariacare.database.utils.Session;
+
 import java.util.List;
 
 public class Tab extends SugarRecord<Tab> {
@@ -54,6 +56,14 @@ public class Tab extends SugarRecord<Tab> {
 
     public List<Score> getScores(){
         return Score.find(Score.class, "tab = ?", String.valueOf(this.getId()));
+    }
+
+    /*
+     * Return tabs filter by program and order by orderpos field
+     */
+    public static List<Tab> getTabsBySession(){
+        return Select.from(Tab.class).where(Condition.prop("program")
+                .eq(String.valueOf(Session.getSurvey().getProgram().getId()))).orderBy("orderpos").list();
     }
 
     @Override

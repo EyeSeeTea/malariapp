@@ -31,11 +31,9 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import org.eyeseetea.malariacare.R;
-import org.eyeseetea.malariacare.SurveyActivity;
 import org.eyeseetea.malariacare.database.model.Header;
 import org.eyeseetea.malariacare.database.model.Question;
 import org.eyeseetea.malariacare.database.utils.ReadWriteDB;
-import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 import org.eyeseetea.malariacare.utils.Utils;
 
@@ -44,7 +42,7 @@ import java.util.List;
 /**
  * Created by Jose on 12/04/2015.
  */
-public class CustomReportingAdapter extends BaseAdapter implements TabInt {
+public class CustomReportingAdapter extends BaseAdapter implements ITabAdapter {
 
     private List<Object> items;
 

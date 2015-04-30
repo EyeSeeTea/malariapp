@@ -29,7 +29,7 @@ import java.util.List;
 /**
  * Created by Jose on 24/04/2015.
  */
-public class ScoreTabAdapter implements TabInt {
+public class ScoreTabAdapter implements ITabAdapter {
 
     int id_layout;
     String tab_name;

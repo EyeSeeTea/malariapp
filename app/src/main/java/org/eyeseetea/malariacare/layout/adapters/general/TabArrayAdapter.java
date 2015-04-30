@@ -17,22 +17,26 @@
  *  along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.eyeseetea.malariacare.layout.adapters.survey;
+package org.eyeseetea.malariacare.layout.adapters.general;
 
-import android.widget.BaseAdapter;
+import android.content.Context;
+import android.widget.TextView;
+
+import org.eyeseetea.malariacare.database.model.Tab;
+
+import java.util.List;
 
 /**
- * Created by Jose on 16/04/2015.
+ * Created by adrian on 30/04/15.
  */
-public interface TabInt {
+public class TabArrayAdapter extends DDLArrayAdapter<Tab> {
 
-    public void initialize();
+    public TabArrayAdapter(Context context, List<Tab> tabs) {
+        super(context, tabs);
+    }
 
-    public BaseAdapter getAdapter();
+    @Override public void drawText(TextView textView, Tab tab) {
+        textView.setText(tab.getName());
+    }
 
-    public Float getScore();
-
-    public int getLayout();
-
-    public String getName();
 }
