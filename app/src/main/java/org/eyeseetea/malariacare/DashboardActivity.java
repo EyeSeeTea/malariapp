@@ -27,6 +27,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
+
 
 public class DashboardActivity extends ActionBarActivity {
 
@@ -36,11 +38,7 @@ public class DashboardActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.dashboard);
         android.support.v7.app.ActionBar actionBar = this.getSupportActionBar();
-        actionBar.setLogo(R.drawable.qualityapp_logo);
-        actionBar.setDisplayUseLogoEnabled(true);
-        actionBar.setDisplayShowHomeEnabled(true);
-        actionBar.setIcon(R.drawable.qualityapp_logo);
-
+        LayoutUtils.setActionBarLogo(actionBar);
     }
 
     @Override

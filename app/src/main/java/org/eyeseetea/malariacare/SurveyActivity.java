@@ -61,7 +61,9 @@ public class SurveyActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
 
         Log.i(".SurveyActivity", "Starting");
-        initializeApp();
+        setContentView(R.layout.survey);
+        android.support.v7.app.ActionBar actionBar = this.getSupportActionBar();
+        LayoutUtils.setActionBarLogo(actionBar);
 
         Log.i(".SurveyActivity", "Registering Compositive Score");
         //Intializing compositive score register
@@ -119,14 +121,6 @@ public class SurveyActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void initializeApp() {
-        setContentView(R.layout.survey);
-        android.support.v7.app.ActionBar actionBar = this.getSupportActionBar();
-        actionBar.setLogo(R.drawable.qualityapp_logo);
-        actionBar.setDisplayUseLogoEnabled(true);
-        actionBar.setDisplayShowHomeEnabled(true);
-        actionBar.setIcon(R.drawable.qualityapp_logo);
-    }
 
     private void showTab(Tab selectedTab) {
 
