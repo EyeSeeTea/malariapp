@@ -42,6 +42,7 @@ import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.layout.adapters.survey.AutoTabAdapter;
 import org.eyeseetea.malariacare.layout.adapters.survey.CompositiveScoreAdapter;
 import org.eyeseetea.malariacare.layout.adapters.survey.TabInt;
+import org.eyeseetea.malariacare.layout.dialog.DialogDispatcher;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 import org.eyeseetea.malariacare.utils.Utils;
@@ -101,11 +102,14 @@ public class SurveyActivity extends ActionBarActivity {
             case R.id.action_pull:
                 return true;// TODO: implement the DHIS pull
             case R.id.action_license:
-                /*Log.d(".MainActivity", "User asked for license");
+                Log.d(".MainActivity", "User asked for license");
                 DialogDispatcher mf = DialogDispatcher.newInstance(item.getActionView());
                 mf.showDialog(getFragmentManager(), DialogDispatcher.LICENSE_DIALOG);
-                break;*/
-                return true;
+                break;
+            case R.id.action_about:
+                DialogDispatcher aboutD = DialogDispatcher.newInstance(this.getCurrentFocus());
+                aboutD.showDialog(getFragmentManager(), DialogDispatcher.ABOUT_DIALOG);
+                break;
         }
 
         return super.onOptionsItemSelected(item);
