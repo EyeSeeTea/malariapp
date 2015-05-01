@@ -73,7 +73,7 @@ public class SurveyActivity extends ActionBarActivity {
 
         Log.i(".SurveyActivity", "Creating Adapter");
         tabsList = Tab.getTabsBySession();
-        for (Tab tab : tabsList){
+        for (Tab tab : tabsList) {
             if (tab.getName().equals("Compositive Scores"))
                 adaptersMap.put(tab, new CompositiveScoreAdapter(CompositiveScore.listAll(CompositiveScore.class), this, R.layout.compositivescoretab, tab.getName()));
             else if (!tab.getName().equals("Score")) {
@@ -109,11 +109,11 @@ public class SurveyActivity extends ActionBarActivity {
                 return true;// TODO: implement the DHIS pull
             case R.id.action_license:
                 Log.d(".MainActivity", "User asked for license");
-                DialogDispatcher mf = DialogDispatcher.newInstance(item.getActionView());
+                DialogDispatcher mf = DialogDispatcher.newInstance(new View(this)); // FIXME: here we create a View just to be able to show the dialog...this shouldn't be needed
                 mf.showDialog(getFragmentManager(), DialogDispatcher.LICENSE_DIALOG);
                 break;
             case R.id.action_about:
-                DialogDispatcher aboutD = DialogDispatcher.newInstance(this.getCurrentFocus());
+                DialogDispatcher aboutD = DialogDispatcher.newInstance(new View(this)); // FIXME: here we create a View just to be able to show the dialog...this shouldn't be needed
                 aboutD.showDialog(getFragmentManager(), DialogDispatcher.ABOUT_DIALOG);
                 break;
         }
