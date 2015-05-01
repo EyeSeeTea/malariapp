@@ -27,7 +27,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -63,7 +62,6 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
 
     float totalNum = 0;
     float totalDenum;
-    float score;
 
     private final Context context;
 
@@ -89,7 +87,7 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
         public TextView score;
         public TextView totalNum;
         public TextView totalDenum;
-        public TextView cualitativeScore;
+        public TextView qualitativeScore;
         public TextView tabName;
     }
 
@@ -145,7 +143,7 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
         scoreHolder.totalDenum = (TextView) ((Activity) context).findViewById(R.id.totalDen);
         scoreHolder.totalNum = (TextView) ((Activity) context).findViewById(R.id.totalNum);
         scoreHolder.subtotalscore = (TextView) ((Activity) context).findViewById(R.id.subtotalScoreText);
-        scoreHolder.cualitativeScore = (TextView) ((Activity) context).findViewById(R.id.cualitativeScore);
+        scoreHolder.qualitativeScore = (TextView) ((Activity) context).findViewById(R.id.cualitativeScore);
         scoreHolder.tabName = (TextView) ((Activity) context).findViewById(R.id.tabName);
         scoreHolder.tabName.setText(tabName);
     }
@@ -160,7 +158,7 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
         scoreHolder.totalDenum.setText(Float.toString(totalDenum));
         if (totalDenum != 0) {
             Float score = 100 * (totalNum / totalDenum);
-            LayoutUtils.trafficLight(scoreHolder.score, score, scoreHolder.cualitativeScore);
+            LayoutUtils.trafficLight(scoreHolder.score, score, scoreHolder.qualitativeScore);
             scoreHolder.score.setText(Utils.round(100 * (totalNum / totalDenum)));
         }
         if (totalDenum == 0 && totalNum == 0) {
@@ -279,8 +277,7 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
             Option option = question.getOptionBySession();
             if (option != null) {
                 return calcDenum(option.getFactor(), question);
-            }
-            else{
+            } else {
                 result = calcDenum(0, question);
             }
         }
@@ -494,7 +491,7 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
         private boolean viewCreated;
         private Question question;
 
-        public TextViewListener(boolean viewCreated, Question question){
+        public TextViewListener(boolean viewCreated, Question question) {
             this.viewCreated = viewCreated;
             this.question = question;
         }
@@ -507,10 +504,9 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
 
-            if (viewCreated){
+            if (viewCreated) {
                 ReadWriteDB.saveValuesText(question, s.toString());
-            }
-            else {
+            } else {
                 viewCreated = true;
             }
         }
@@ -527,7 +523,7 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
         private ViewHolder viewHolder;
         private Question question;
 
-        public SpinnerListener(boolean viewCreated, Question question, ViewHolder viewHolder){
+        public SpinnerListener(boolean viewCreated, Question question, ViewHolder viewHolder) {
             this.viewCreated = viewCreated;
             this.question = question;
             this.viewHolder = viewHolder;

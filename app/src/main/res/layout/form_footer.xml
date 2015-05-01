@@ -56,22 +56,20 @@
 
     <LinearLayout
         android:orientation="horizontal"
-        android:layout_width="match_parent"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:gravity="bottom|right"
-        android:layout_gravity="bottom|right">
+        android:layout_gravity="center"
+        android:id="@+id/survey" >
 
         <TextView
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="@string/developers"
-            android:id="@+id/textView"
+            android:id="@+id/surveyinfo"
             android:textColor="#ffffff"
             android:textStyle="bold|italic"
-            android:minHeight="20dip"
-            android:layout_gravity="bottom|right"
-            android:gravity="bottom|right" />
+            android:gravity="center" />
     </LinearLayout>
 
 </LinearLayout>

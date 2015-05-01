@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal" android:layout_width="match_parent"
+    android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/form_header"
     android:gravity="center_horizontal">
@@ -31,5 +31,14 @@
         android:paddingBottom="2dip"
         android:paddingRight="20dip"
         android:backgroundTint="#1e506c" />
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="left"
+        android:id="@+id/breadCrumbs"
+        android:layout_row="9"
+        android:layout_column="27" />
 
 </LinearLayout>

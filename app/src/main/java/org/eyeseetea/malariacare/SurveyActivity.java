@@ -19,6 +19,10 @@
 
 package org.eyeseetea.malariacare;
 
+import android.app.Activity;
+import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
@@ -85,6 +89,9 @@ public class SurveyActivity extends ActionBarActivity {
 
         Log.i(".SurveyActivity", "Creating Menu");
         createMenu();
+
+        // Breadcrumbs
+        createBreadCrumb();
     }
 
     @Override
@@ -161,6 +168,35 @@ public class SurveyActivity extends ActionBarActivity {
 
             }
         });
+    }
+
+    private void createBreadCrumb() {
+        LinearLayout breadCrumbsView = (LinearLayout) (this.findViewById(R.id.breadCrumbs));
+
+        TextView dashboardBreadCrumbsView = new TextView(this);
+        dashboardBreadCrumbsView.setText("Dashboard");
+        dashboardBreadCrumbsView.setTextColor(Color.parseColor("#1e506c"));
+        dashboardBreadCrumbsView.setTypeface(null, Typeface.BOLD);
+        dashboardBreadCrumbsView.setOnClickListener(new AssessmentListener(this));
+        breadCrumbsView.addView(dashboardBreadCrumbsView);
+
+        TextView surveyBreadCrumbsView = new TextView(this);
+        surveyBreadCrumbsView.setText(" > Survey");
+        breadCrumbsView.addView(surveyBreadCrumbsView);
+    }
+
+    private class AssessmentListener implements View.OnClickListener {
+        private Activity context;
+
+        public AssessmentListener(Activity context) {
+            this.context = context;
+        }
+
+        public void onClick(View view) {
+            this.context.finish();
+            Intent dashboardIntent = new Intent(view.getContext(), DashboardActivity.class);
+            this.context.startActivity(dashboardIntent);
+        }
     }
 
     private void runGeneralScores() {
