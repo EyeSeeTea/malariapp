@@ -26,6 +26,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.model.Tab;
 
 import java.util.List;
@@ -34,9 +35,18 @@ import java.util.List;
  * Created by adrian on 30/04/15.
  */
 public abstract class AddlArrayAdapter<T> extends ArrayAdapter<T> {
+    private Integer layout;
+
     public AddlArrayAdapter(Context context, List<T> objects) {
-        super(context, android.R.layout.simple_spinner_item, objects);
+        super(context, R.layout.simple_spinner_item, objects);
+        this.layout = R.layout.simple_spinner_item;
     }
+
+    public AddlArrayAdapter(Context context, Integer layout, List<T> objects){
+        super(context, layout, objects);
+        this.layout = layout;
+    }
+
 
     public abstract void drawText(TextView textView, T object);
 
@@ -44,7 +54,7 @@ public abstract class AddlArrayAdapter<T> extends ArrayAdapter<T> {
     public View getView(int position, View convertView, ViewGroup parent) {
         // Check if an existing view is being reused, otherwise inflate the view
         if (convertView == null) {
-            convertView = LayoutInflater.from(getContext()).inflate(android.R.layout.simple_spinner_item, parent, false);
+            convertView = LayoutInflater.from(getContext()).inflate(this.layout, parent, false);
         }
 
         //Set text item
@@ -60,7 +70,7 @@ public abstract class AddlArrayAdapter<T> extends ArrayAdapter<T> {
     public View getDropDownView(int position, View convertView, ViewGroup parent) {
         // Check if an existing view is being reused, otherwise inflate the view
         if (convertView == null) {
-            convertView = LayoutInflater.from(getContext()).inflate(android.R.layout.simple_spinner_item, parent, false);
+            convertView = LayoutInflater.from(getContext()).inflate(this.layout, parent, false);
         }
 
         //Set text item
