@@ -108,11 +108,12 @@ public class SurveyActivity extends ActionBarActivity {
             case R.id.action_pull:
                 return true;// TODO: implement the DHIS pull
             case R.id.action_license:
-                Log.d(".MainActivity", "User asked for license");
+                Log.d(".MainActivity", "User asked for license dialog");
                 DialogDispatcher mf = DialogDispatcher.newInstance(new View(this)); // FIXME: here we create a View just to be able to show the dialog...this shouldn't be needed
                 mf.showDialog(getFragmentManager(), DialogDispatcher.LICENSE_DIALOG);
                 break;
             case R.id.action_about:
+                Log.d(".MainActivity", "User asked for about dialog");
                 DialogDispatcher aboutD = DialogDispatcher.newInstance(new View(this)); // FIXME: here we create a View just to be able to show the dialog...this shouldn't be needed
                 aboutD.showDialog(getFragmentManager(), DialogDispatcher.ABOUT_DIALOG);
                 break;
@@ -177,59 +178,59 @@ public class SurveyActivity extends ActionBarActivity {
         if (adaptersList.get(1) != null) {
             tab1 = adaptersList.get(1).getScore();
             ((TextView) this.findViewById(R.id.profileScore)).setText(Utils.round(tab1));
-            LayoutUtils.trafficLight((TextView) this.findViewById(R.id.profileScore), tab1, null);
+            LayoutUtils.trafficLight(this.findViewById(R.id.profileScore), tab1, null);
         }
         if (adaptersList.get(9) != null) {
             tab9 = adaptersList.get(9).getScore();
             ((TextView) this.findViewById(R.id.envAndMatScore)).setText(Utils.round(tab9));
-            LayoutUtils.trafficLight((TextView) this.findViewById(R.id.envAndMatScore), tab9, null);
+            LayoutUtils.trafficLight(this.findViewById(R.id.envAndMatScore), tab9, null);
         }
         if (adaptersList.get(8) != null) {
             tab8 = adaptersList.get(8).getScore();
             ((TextView) this.findViewById(R.id.feedbackScore)).setText(Utils.round(tab8));
-            LayoutUtils.trafficLight((TextView) this.findViewById(R.id.feedbackScore), tab8, null);
+            LayoutUtils.trafficLight(this.findViewById(R.id.feedbackScore), tab8, null);
         }
         if (adaptersList.get(2) != null) {
             tab2 = adaptersList.get(2).getScore();
             ((TextView) this.findViewById(R.id.clinicalCase1)).setText(Utils.round(tab2));
-            LayoutUtils.trafficLight((TextView) this.findViewById(R.id.clinicalCase1), tab2, null);
+            LayoutUtils.trafficLight(this.findViewById(R.id.clinicalCase1), tab2, null);
         }
         if (adaptersList.get(4) != null) {
             tab4 = adaptersList.get(4).getScore();
             ((TextView) this.findViewById(R.id.clinicalCase2)).setText(Utils.round(tab4));
-            LayoutUtils.trafficLight((TextView) this.findViewById(R.id.clinicalCase2), tab4, null);
+            LayoutUtils.trafficLight(this.findViewById(R.id.clinicalCase2), tab4, null);
         }
         if (adaptersList.get(6) != null) {
             tab6 = adaptersList.get(6).getScore();
             ((TextView) this.findViewById(R.id.clinicalCase3)).setText(Utils.round(tab6));
-            LayoutUtils.trafficLight((TextView) this.findViewById(R.id.clinicalCase3), tab6, null);
+            LayoutUtils.trafficLight(this.findViewById(R.id.clinicalCase3), tab6, null);
         }
         if (adaptersList.get(3) != null) {
             tab3 = adaptersList.get(3).getScore();
             ((TextView) this.findViewById(R.id.rdtCase1)).setText(Utils.round(tab3));
-            LayoutUtils.trafficLight((TextView) this.findViewById(R.id.rdtCase1), tab3, null);
+            LayoutUtils.trafficLight(this.findViewById(R.id.rdtCase1), tab3, null);
         }
         if (adaptersList.get(5) != null) {
             tab5 = adaptersList.get(5).getScore();
             ((TextView) this.findViewById(R.id.rdtCase2)).setText(Utils.round(tab5));
-            LayoutUtils.trafficLight((TextView) this.findViewById(R.id.rdtCase2), tab5, null);
+            LayoutUtils.trafficLight(this.findViewById(R.id.rdtCase2), tab5, null);
         }
         if (adaptersList.get(7) != null) {
             tab7 = adaptersList.get(7).getScore();
             ((TextView) this.findViewById(R.id.rdtCase3)).setText(Utils.round(tab7));
-            LayoutUtils.trafficLight((TextView) this.findViewById(R.id.rdtCase3), tab7, null);
+            LayoutUtils.trafficLight(this.findViewById(R.id.rdtCase3), tab7, null);
         }
 
-        Float Avg_Clinical = (tab2 + tab4 + tab6) / 3;
-        Float Avg_Rdt = (tab3 + tab5 + tab7) / 3;
-        Float Overall = (Avg_Clinical + Avg_Rdt + tab1 + tab8 + tab9) / 5;
+        Float avgClinical = (tab2 + tab4 + tab6) / 3;
+        Float avgRdt = (tab3 + tab5 + tab7) / 3;
+        Float overall = (avgClinical + avgRdt + tab1 + tab8 + tab9) / 5;
 
-        ((TextView) this.findViewById(R.id.clinicalAvg)).setText(Utils.round(Avg_Clinical));
-        LayoutUtils.trafficLight((TextView) this.findViewById(R.id.clinicalAvg), Avg_Clinical, null);
-        ((TextView) this.findViewById(R.id.rdtAvg)).setText(Utils.round(Avg_Rdt));
-        LayoutUtils.trafficLight((TextView) this.findViewById(R.id.rdtAvg), Avg_Rdt, null);
-        ((TextView) this.findViewById(R.id.totalScore)).setText(Utils.round(Overall));
-        LayoutUtils.trafficLight((TextView) this.findViewById(R.id.totalScore), Overall, null);
+        ((TextView) this.findViewById(R.id.clinicalAvg)).setText(Utils.round(avgClinical));
+        LayoutUtils.trafficLight(this.findViewById(R.id.clinicalAvg), avgClinical, null);
+        ((TextView) this.findViewById(R.id.rdtAvg)).setText(Utils.round(avgRdt));
+        LayoutUtils.trafficLight(this.findViewById(R.id.rdtAvg), avgRdt, null);
+        ((TextView) this.findViewById(R.id.totalScore)).setText(Utils.round(overall));
+        LayoutUtils.trafficLight(this.findViewById(R.id.totalScore), overall, null);
 
     }
 }
