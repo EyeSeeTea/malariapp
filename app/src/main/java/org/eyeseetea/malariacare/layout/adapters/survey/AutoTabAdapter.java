@@ -22,6 +22,7 @@ package org.eyeseetea.malariacare.layout.adapters.survey;
 import android.app.Activity;
 import android.content.Context;
 import android.text.Editable;
+import android.text.InputFilter;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -437,6 +438,7 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
                     rowView = lInflater.inflate(R.layout.integer, parent, false);
                     viewHolder.statement = (TextView) rowView.findViewById(R.id.statement);
                     viewHolder.answer = (EditText) rowView.findViewById(R.id.answer);
+                    viewHolder.answer.setFilters(new InputFilter[] { new InputFilter.LengthFilter(Constants.MAX_INT_CHARS)});
                     break;
 
                 case Constants.DATE:
@@ -504,16 +506,15 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
 
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
             if (viewCreated) {
                 ReadWriteDB.saveValuesText(question, s.toString());
             } else {
                 viewCreated = true;
             }
-        }
-
-        @Override
-        public void afterTextChanged(Editable s) {
-
         }
     }
 
