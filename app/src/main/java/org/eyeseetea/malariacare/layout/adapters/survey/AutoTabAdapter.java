@@ -438,7 +438,7 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
                     rowView = lInflater.inflate(R.layout.integer, parent, false);
                     viewHolder.statement = (TextView) rowView.findViewById(R.id.statement);
                     viewHolder.answer = (EditText) rowView.findViewById(R.id.answer);
-                    viewHolder.answer.setFilters(new InputFilter[] { new InputFilter.LengthFilter(Constants.MAX_INT_CHARS)});
+                    viewHolder.answer.setFilters(new InputFilter[]{new InputFilter.LengthFilter(Constants.MAX_INT_CHARS)});
                     break;
 
                 case Constants.DATE:

@@ -40,6 +40,7 @@ import android.widget.TextView;
 
 import org.eyeseetea.malariacare.database.model.CompositiveScore;
 import org.eyeseetea.malariacare.database.model.Tab;
+import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.layout.adapters.general.TabArrayAdapter;
 import org.eyeseetea.malariacare.layout.adapters.survey.AutoTabAdapter;
 import org.eyeseetea.malariacare.layout.adapters.survey.CompositiveScoreAdapter;
@@ -49,6 +50,7 @@ import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 import org.eyeseetea.malariacare.utils.Utils;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -92,6 +94,11 @@ public class SurveyActivity extends ActionBarActivity {
 
         // Breadcrumbs
         createBreadCrumb();
+
+        // Show survey info
+        SimpleDateFormat formattedDate = new SimpleDateFormat("dd MMM yyyy");
+        TextView surveyInfo = (TextView) this.findViewById(R.id.surveyinfo);
+        surveyInfo.setText("Org Unit: " + Session.getSurvey().getOrgUnit().getName() + " | Survey: " + Session.getSurvey().getProgram().getName() + " | Creation Date: " + formattedDate.format(Session.getSurvey().getEventDate()));
     }
 
     @Override
