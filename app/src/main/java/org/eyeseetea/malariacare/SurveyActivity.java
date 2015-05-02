@@ -48,6 +48,7 @@ import org.eyeseetea.malariacare.layout.adapters.survey.ITabAdapter;
 import org.eyeseetea.malariacare.layout.dialog.DialogDispatcher;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
+import org.eyeseetea.malariacare.utils.ExceptionHandler;
 import org.eyeseetea.malariacare.utils.Utils;
 
 import java.text.SimpleDateFormat;
@@ -65,6 +66,8 @@ public class SurveyActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // Manage uncaught exceptions that may occur
+        Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(this));
 
         Log.i(".SurveyActivity", "Starting");
         setContentView(R.layout.survey);

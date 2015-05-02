@@ -28,6 +28,7 @@ import android.view.MenuItem;
 import android.view.View;
 
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
+import org.eyeseetea.malariacare.utils.ExceptionHandler;
 
 
 public class DashboardActivity extends ActionBarActivity {
@@ -36,6 +37,8 @@ public class DashboardActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
+        // Manage uncaught exceptions that may occur
+        Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(this));
         setContentView(R.layout.dashboard);
         android.support.v7.app.ActionBar actionBar = this.getSupportActionBar();
         LayoutUtils.setActionBarLogo(actionBar);

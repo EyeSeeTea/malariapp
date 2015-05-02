@@ -31,6 +31,8 @@ import com.google.android.gms.common.GooglePlayServicesClient;
 import com.google.android.gms.common.Scopes;
 import com.google.android.gms.plus.PlusClient;
 
+import org.eyeseetea.malariacare.utils.ExceptionHandler;
+
 
 /**
  * A base class to wrap communication with the Google Play Services PlusClient.
@@ -90,6 +92,8 @@ public abstract class PlusBaseActivity extends Activity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // Manage uncaught exceptions that may occur
+        Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(this));
 
         // Initialize the PlusClient connection.
         // Scopes indicate the information about the user your application will be able to access.
