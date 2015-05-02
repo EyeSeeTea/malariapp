@@ -30,8 +30,7 @@
             android:inputType="number"
             android:ems="10"
             android:id="@+id/answer"
-            android:background="@drawable/background_textfield"
-            android:maxLength="5" />
+            android:background="@drawable/background_textfield" />
     </RelativeLayout>
 
 </LinearLayout>
