@@ -48,7 +48,7 @@ import org.eyeseetea.malariacare.layout.adapters.survey.ITabAdapter;
 import org.eyeseetea.malariacare.layout.dialog.DialogDispatcher;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
-import org.eyeseetea.malariacare.utils.ExceptionHandler;
+import org.eyeseetea.malariacare.utils.Constants;
 import org.eyeseetea.malariacare.utils.Utils;
 
 import java.text.SimpleDateFormat;
@@ -67,7 +67,7 @@ public class SurveyActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // Manage uncaught exceptions that may occur
-        Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(this));
+        //Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(this));
 
         Log.i(".SurveyActivity", "Starting");
         setContentView(R.layout.survey);
@@ -82,14 +82,22 @@ public class SurveyActivity extends ActionBarActivity {
 
         Log.i(".SurveyActivity", "Creating Adapter");
         tabsList = Tab.getTabsBySession();
-        // FIXME: this is not good, here we're looping over all tabs just to put() on 2 of them found by name...fix it soon
         for (Tab tab : tabsList) {
             if (tab.getName().equals("Compositive Scores"))
                 adaptersMap.put(tab, new CompositiveScoreAdapter(CompositiveScore.listAll(CompositiveScore.class), this, R.layout.compositivescoretab, tab.getName()));
-            else if (!tab.getName().equals("Score")) {
+            else if (tab.getType() != Constants.TAB_SCORE_SUMMARY) {
                 ScoreRegister.registerScore(tab);
                 //adaptersMap.put(tab, new AutoTabAdapter(Utils.convertTabToArray(tab), this, R.layout.form, tab.getName()));
-                adaptersMap.put(tab, new AutoTabAdapter(tab, this));
+                switch(tab.getType()) {
+                    case Constants.TAB_AUTOMATIC_NON_SCORED:
+                        adaptersMap.put(tab, new AutoTabAdapter(tab, this, R.layout.form_without_score));
+                        break;
+                    case Constants.TAB_CUSTOM_SCORED:
+                    case Constants.TAB_CUSTOM_NON_SCORED:
+                    case Constants.TAB_AUTOMATIC_SCORED:
+                        adaptersMap.put(tab, new AutoTabAdapter(tab, this));
+                        break;
+                }
             }
         }
 
@@ -140,25 +148,6 @@ public class SurveyActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
-
-    private void showTab(Tab selectedTab) {
-
-        LayoutInflater inflater = LayoutInflater.from(this);
-        ViewGroup parent = (LinearLayout) this.findViewById(R.id.content);
-        parent.removeAllViews();
-
-        ITabAdapter tabAdapter = adaptersMap.get(selectedTab);
-
-        View view = inflater.inflate(tabAdapter.getLayout(), parent, false);
-        parent.addView(view);
-
-        ListView mQuestions = (ListView) this.findViewById(R.id.listView);
-        mQuestions.setAdapter((BaseAdapter) tabAdapter);
-
-        tabAdapter.initialize();
-    }
-
-
     private void createMenu() {
 
         final Spinner menu = (Spinner) this.findViewById(R.id.tabSpinner);
@@ -168,10 +157,7 @@ public class SurveyActivity extends ActionBarActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 Tab selectedTab = (Tab) menu.getSelectedItem();
-                if (selectedTab.getName().equals("Score"))
-                    runGeneralScores();
-                else
-                    showTab(selectedTab);
+                showTab(selectedTab);
             }
 
             @Override
@@ -181,36 +167,31 @@ public class SurveyActivity extends ActionBarActivity {
         });
     }
 
-    private void createBreadCrumb() {
-        LinearLayout breadCrumbsView = (LinearLayout) (this.findViewById(R.id.breadCrumbs));
+    private void showTab(Tab selectedTab) {
 
-        TextView dashboardBreadCrumbsView = new TextView(this);
-        dashboardBreadCrumbsView.setText("Dashboard");
-        dashboardBreadCrumbsView.setTextColor(Color.parseColor("#1e506c"));
-        dashboardBreadCrumbsView.setTypeface(null, Typeface.BOLD);
-        dashboardBreadCrumbsView.setOnClickListener(new AssessmentListener(this));
-        breadCrumbsView.addView(dashboardBreadCrumbsView);
+        // FIXME: this if-else must disappear by creating a smarter way of filling tabs
+        if (selectedTab.getType() == Constants.TAB_SCORE_SUMMARY)
+            showGeneralScores();
+        else {
+            LayoutInflater inflater = LayoutInflater.from(this);
+            ViewGroup parent = (LinearLayout) this.findViewById(R.id.content);
+            parent.removeAllViews();
 
-        TextView surveyBreadCrumbsView = new TextView(this);
-        surveyBreadCrumbsView.setText(" > Survey");
-        breadCrumbsView.addView(surveyBreadCrumbsView);
-    }
+            ITabAdapter tabAdapter = adaptersMap.get(selectedTab);
 
-    private class AssessmentListener implements View.OnClickListener {
-        private Activity context;
+            View view = inflater.inflate(tabAdapter.getLayout(), parent, false);
+            parent.addView(view);
 
-        public AssessmentListener(Activity context) {
-            this.context = context;
-        }
+            ListView mQuestions = (ListView) this.findViewById(R.id.listView);
+            mQuestions.setAdapter((BaseAdapter) tabAdapter);
 
-        public void onClick(View view) {
-            this.context.finish();
-            Intent dashboardIntent = new Intent(view.getContext(), DashboardActivity.class);
-            this.context.startActivity(dashboardIntent);
+            if (selectedTab.getType() == Constants.TAB_AUTOMATIC_SCORED || selectedTab.getType() == Constants.TAB_CUSTOM_SCORED) {
+                tabAdapter.initializeSubscore();
+            }
         }
     }
 
-    private void runGeneralScores() {
+    private void showGeneralScores() {
         LayoutInflater inflater = LayoutInflater.from(this);
 
         ViewGroup parent = (LinearLayout) this.findViewById(R.id.content);
@@ -222,13 +203,14 @@ public class SurveyActivity extends ActionBarActivity {
 
         List<ITabAdapter> adaptersList = new ArrayList<ITabAdapter>(adaptersMap.values());
 
-        if (adaptersList.get(1) != null) {
-            tab1 = adaptersList.get(1).getScore();
+        // FIXME: This is a very ugly way of doing it, change it soon
+        if (adaptersList.get(10) != null) {
+            tab1 = adaptersList.get(10).getScore();
             ((TextView) this.findViewById(R.id.profileScore)).setText(Utils.round(tab1));
             LayoutUtils.trafficLight(this.findViewById(R.id.profileScore), tab1, null);
         }
-        if (adaptersList.get(9) != null) {
-            tab9 = adaptersList.get(9).getScore();
+        if (adaptersList.get(2) != null) {
+            tab9 = adaptersList.get(2).getScore();
             ((TextView) this.findViewById(R.id.envAndMatScore)).setText(Utils.round(tab9));
             LayoutUtils.trafficLight(this.findViewById(R.id.envAndMatScore), tab9, null);
         }
@@ -237,33 +219,33 @@ public class SurveyActivity extends ActionBarActivity {
             ((TextView) this.findViewById(R.id.feedbackScore)).setText(Utils.round(tab8));
             LayoutUtils.trafficLight(this.findViewById(R.id.feedbackScore), tab8, null);
         }
-        if (adaptersList.get(2) != null) {
-            tab2 = adaptersList.get(2).getScore();
+        if (adaptersList.get(6) != null) {
+            tab2 = adaptersList.get(6).getScore();
             ((TextView) this.findViewById(R.id.clinicalCase1)).setText(Utils.round(tab2));
             LayoutUtils.trafficLight(this.findViewById(R.id.clinicalCase1), tab2, null);
         }
-        if (adaptersList.get(4) != null) {
-            tab4 = adaptersList.get(4).getScore();
+        if (adaptersList.get(1) != null) {
+            tab4 = adaptersList.get(1).getScore();
             ((TextView) this.findViewById(R.id.clinicalCase2)).setText(Utils.round(tab4));
             LayoutUtils.trafficLight(this.findViewById(R.id.clinicalCase2), tab4, null);
         }
-        if (adaptersList.get(6) != null) {
-            tab6 = adaptersList.get(6).getScore();
+        if (adaptersList.get(3) != null) {
+            tab6 = adaptersList.get(3).getScore();
             ((TextView) this.findViewById(R.id.clinicalCase3)).setText(Utils.round(tab6));
             LayoutUtils.trafficLight(this.findViewById(R.id.clinicalCase3), tab6, null);
         }
-        if (adaptersList.get(3) != null) {
-            tab3 = adaptersList.get(3).getScore();
+        if (adaptersList.get(0) != null) {
+            tab3 = adaptersList.get(0).getScore();
             ((TextView) this.findViewById(R.id.rdtCase1)).setText(Utils.round(tab3));
             LayoutUtils.trafficLight(this.findViewById(R.id.rdtCase1), tab3, null);
         }
-        if (adaptersList.get(5) != null) {
-            tab5 = adaptersList.get(5).getScore();
+        if (adaptersList.get(9) != null) {
+            tab5 = adaptersList.get(9).getScore();
             ((TextView) this.findViewById(R.id.rdtCase2)).setText(Utils.round(tab5));
             LayoutUtils.trafficLight(this.findViewById(R.id.rdtCase2), tab5, null);
         }
-        if (adaptersList.get(7) != null) {
-            tab7 = adaptersList.get(7).getScore();
+        if (adaptersList.get(5) != null) {
+            tab7 = adaptersList.get(5).getScore();
             ((TextView) this.findViewById(R.id.rdtCase3)).setText(Utils.round(tab7));
             LayoutUtils.trafficLight(this.findViewById(R.id.rdtCase3), tab7, null);
         }
@@ -279,5 +261,36 @@ public class SurveyActivity extends ActionBarActivity {
         ((TextView) this.findViewById(R.id.totalScore)).setText(Utils.round(overall));
         LayoutUtils.trafficLight(this.findViewById(R.id.totalScore), overall, null);
 
+    }
+
+    // Creates the breadcrumbs path shown on top of the form to ease navigation
+    private void createBreadCrumb() {
+        LinearLayout breadCrumbsView = (LinearLayout) (this.findViewById(R.id.breadCrumbs));
+
+        TextView dashboardBreadCrumbsView = new TextView(this);
+        dashboardBreadCrumbsView.setText("Dashboard");
+        dashboardBreadCrumbsView.setTextColor(Color.parseColor("#1e506c"));
+        dashboardBreadCrumbsView.setTypeface(null, Typeface.BOLD);
+        dashboardBreadCrumbsView.setOnClickListener(new AssessmentListener(this));
+        breadCrumbsView.addView(dashboardBreadCrumbsView);
+
+        TextView surveyBreadCrumbsView = new TextView(this);
+        surveyBreadCrumbsView.setText(" > Survey");
+        breadCrumbsView.addView(surveyBreadCrumbsView);
+    }
+
+    // Aux class to pass the context to the listener that must call to the finish on activity change
+    private class AssessmentListener implements View.OnClickListener {
+        private Activity context;
+
+        public AssessmentListener(Activity context) {
+            this.context = context;
+        }
+
+        public void onClick(View view) {
+            this.context.finish();
+            Intent dashboardIntent = new Intent(view.getContext(), DashboardActivity.class);
+            this.context.startActivity(dashboardIntent);
+        }
     }
 }

@@ -98,7 +98,7 @@ public class LoginActivity extends PlusBaseActivity implements LoaderCallbacks<C
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // Manage uncaught exceptions that may occur
-        Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(this));
+        //Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(this));
         setContentView(R.layout.login_layout);
 
         // Populate User table just in case there is already an existing user

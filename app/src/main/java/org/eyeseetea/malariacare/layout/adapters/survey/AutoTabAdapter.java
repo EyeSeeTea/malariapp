@@ -54,12 +54,11 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
 
     //List of Headers and Questions. Each position contains an object to be showed in the listview
     List<Object> items;
+    Tab tab;
 
     LayoutInflater lInflater;
 
     final ScoreHolder scoreHolder = new ScoreHolder();
-
-    String tabName;
 
     float totalNum = 0;
     float totalDenum;
@@ -96,8 +95,8 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
         this.lInflater = LayoutInflater.from(context);
         this.items = Utils.convertTabToArray(tab);
         this.context = context;
-        this.id_layout = R.layout.form;
-        this.tabName = tab.getName();
+        this.id_layout = R.layout.form_with_score;
+        this.tab = tab;
 
         hidden = new boolean[items.size()];
 
@@ -113,6 +112,11 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
                         && hidden[i];
             }
         }
+    }
+
+    public AutoTabAdapter(Tab tab, Context context, int id_layout){
+        this(tab, context);
+        this.id_layout = id_layout;
     }
 
     @Override
@@ -133,25 +137,25 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
     }
 
     @Override
-    public void initialize() {
+    public void initializeSubscore() {
         initializeScoreViews();
         initializeDenum();
         updateScore();
     }
 
     private void initializeScoreViews() {
+        scoreHolder.tabName = (TextView) ((Activity) context).findViewById(R.id.tabName);
+        scoreHolder.tabName.setText(tab.getName());
         scoreHolder.score = (TextView) ((Activity) context).findViewById(R.id.score);
         scoreHolder.totalDenum = (TextView) ((Activity) context).findViewById(R.id.totalDen);
         scoreHolder.totalNum = (TextView) ((Activity) context).findViewById(R.id.totalNum);
         scoreHolder.subtotalscore = (TextView) ((Activity) context).findViewById(R.id.subtotalScoreText);
         scoreHolder.qualitativeScore = (TextView) ((Activity) context).findViewById(R.id.cualitativeScore);
-        scoreHolder.tabName = (TextView) ((Activity) context).findViewById(R.id.tabName);
-        scoreHolder.tabName.setText(tabName);
     }
 
     @Override
     public String getName() {
-        return tabName;
+        return tab.getName();
     }
 
     public void updateScore() {

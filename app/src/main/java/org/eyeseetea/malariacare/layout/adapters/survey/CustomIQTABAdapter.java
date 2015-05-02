@@ -140,7 +140,7 @@ public class CustomIQTABAdapter extends BaseAdapter implements ITabAdapter {
         scoreHolder.score.setText(Utils.round(num / denum));
     }
 
-    public void initialize() {
+    public void initializeSubscore() {
         initializeScoreViews();
         updateScore();
     }

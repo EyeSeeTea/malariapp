@@ -13,14 +13,16 @@ public class Tab extends SugarRecord<Tab> {
     String name;
     Integer order_pos;
     Program program;
+    Integer type;
 
     public Tab() {
     }
 
-    public Tab(String name, Integer order_pos, Program program) {
+    public Tab(String name, Integer order_pos, Program program, Integer type) {
         this.name = name;
         this.order_pos = order_pos;
         this.program = program;
+        this.type = type;
     }
 
     public String getName() {
@@ -47,6 +49,14 @@ public class Tab extends SugarRecord<Tab> {
         this.program = program;
     }
 
+    public Integer getType() {
+        return type;
+    }
+
+    public void setType(Integer type) {
+        this.type = type;
+    }
+
     public List<Header> getHeaders(){
         return Select.from(Header.class)
                 .where(Condition.prop("tab")
@@ -69,34 +79,34 @@ public class Tab extends SugarRecord<Tab> {
     @Override
     public String toString() {
         return "Tab{" +
-                "id='" + id + '\'' +
-                ", name='" + name + '\'' +
+                "name='" + name + '\'' +
                 ", order_pos=" + order_pos +
-                ", program='" + program +
+                ", program=" + program +
+                ", type=" + type +
                 '}';
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (!(o instanceof Tab)) return false;
 
         Tab tab = (Tab) o;
 
-        if (name != null ? !name.equals(tab.name) : tab.name != null) return false;
-        if (order_pos != null ? !order_pos.equals(tab.order_pos) : tab.order_pos != null)
-            return false;
-        if (program != null ? !program.equals(tab.program) : tab.program != null) return false;
+        if (!name.equals(tab.name)) return false;
+        if (!order_pos.equals(tab.order_pos)) return false;
+        if (!program.equals(tab.program)) return false;
+        if (!type.equals(tab.type)) return false;
 
         return true;
     }
 
     @Override
     public int hashCode() {
-        int result = name != null ? name.hashCode() : 0;
-        result = 31 * result + (order_pos != null ? order_pos.hashCode() : 0);
-        result = 31 * result + (program != null ? program.hashCode() : 0);
+        int result = name.hashCode();
+        result = 31 * result + order_pos.hashCode();
+        result = 31 * result + program.hashCode();
+        result = 31 * result + type.hashCode();
         return result;
     }
-
 }

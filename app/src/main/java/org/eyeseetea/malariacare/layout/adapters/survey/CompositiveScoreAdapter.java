@@ -57,7 +57,7 @@ public class CompositiveScoreAdapter extends BaseAdapter implements ITabAdapter 
     }
 
     @Override
-    public void initialize() {
+    public void initializeSubscore() {
 
         ListView lCompositiveScores = (ListView) ((Activity) context).findViewById(R.id.listView);
 

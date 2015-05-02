@@ -44,7 +44,7 @@ public class ScoreTabAdapter implements ITabAdapter {
     }
 
     @Override
-    public void initialize() {
+    public void initializeSubscore() {
 
 
     }

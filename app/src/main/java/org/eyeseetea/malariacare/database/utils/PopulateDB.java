@@ -59,6 +59,7 @@ public class PopulateDB {
                         tab.setName(line[1]);
                         tab.setOrder_pos(Integer.valueOf(line[2]));
                         tab.setProgram(programList.get(Integer.valueOf(line[3])));
+                        tab.setType(Integer.valueOf(line[4]));
                         tabList.put(Integer.valueOf(line[0]), tab);
                         break;
                     case "Headers.csv":

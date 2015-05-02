@@ -38,7 +38,7 @@ public class DashboardActivity extends ActionBarActivity {
 
         super.onCreate(savedInstanceState);
         // Manage uncaught exceptions that may occur
-        Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(this));
+        //Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(this));
         setContentView(R.layout.dashboard);
         android.support.v7.app.ActionBar actionBar = this.getSupportActionBar();
         LayoutUtils.setActionBarLogo(actionBar);

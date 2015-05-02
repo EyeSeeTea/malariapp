@@ -26,7 +26,7 @@ import android.widget.BaseAdapter;
  */
 public interface ITabAdapter {
 
-    public void initialize();
+    public void initializeSubscore();
 
     public BaseAdapter getAdapter();
 

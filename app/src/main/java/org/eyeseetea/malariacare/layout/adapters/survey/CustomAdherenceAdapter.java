@@ -118,7 +118,7 @@ public class CustomAdherenceAdapter extends BaseAdapter implements ITabAdapter {
     }
 
     @Override
-    public void initialize() {
+    public void initializeSubscore() {
         initializeScoreViews();
         updateScore();
 

@@ -1,12 +1,12 @@
-1;'Profile';2;1
-2;'C1 - Clinical fever evaluation';3;1
-3;'C1 - RDT';4;1
-5;'C2 - Clinical fever evaluation';5;1
-6;'C2 - RDT';6;1
-8;'C3 - Clinical fever evaluation';7;1
-9;'C3 - RDT';8;1
-12;'Feedback';9;1
-13;'Environment';10;1
-16;'Score';11;1
-17;'Health Facility Info';1;1
-18;'Compositive Scores';12;1
+1;'Profile';2;1;0
+2;'C1 - Clinical fever evaluation';3;1;0
+3;'C1 - RDT';4;1;0
+5;'C2 - Clinical fever evaluation';5;1;0
+6;'C2 - RDT';6;1;0
+8;'C3 - Clinical fever evaluation';7;1;0
+9;'C3 - RDT';8;1;0
+12;'Feedback';9;1;0
+13;'Environment';10;1;0
+16;'Score';11;1;4
+17;'Health Facility Info';1;1;1
+18;'Compositive Scores';12;1;4

@@ -103,7 +103,7 @@ public class CustomReportingAdapter extends BaseAdapter implements ITabAdapter {
             }
         }
 
-        //initialize();
+        //initializeSubscore();
     }
 
     @Override
@@ -135,7 +135,7 @@ public class CustomReportingAdapter extends BaseAdapter implements ITabAdapter {
     }
 
     @Override
-    public void initialize() {
+    public void initializeSubscore() {
         initializeScoreViews();
         updateScore();
     }
