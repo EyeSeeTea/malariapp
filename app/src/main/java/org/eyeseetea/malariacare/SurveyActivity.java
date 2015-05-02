@@ -79,6 +79,7 @@ public class SurveyActivity extends ActionBarActivity {
 
         Log.i(".SurveyActivity", "Creating Adapter");
         tabsList = Tab.getTabsBySession();
+        // FIXME: this is not good, here we're looping over all tabs just to put() on 2 of them found by name...fix it soon
         for (Tab tab : tabsList) {
             if (tab.getName().equals("Compositive Scores"))
                 adaptersMap.put(tab, new CompositiveScoreAdapter(CompositiveScore.listAll(CompositiveScore.class), this, R.layout.compositivescoretab, tab.getName()));
@@ -92,10 +93,10 @@ public class SurveyActivity extends ActionBarActivity {
         Log.i(".SurveyActivity", "Creating Menu");
         createMenu();
 
-        // Breadcrumbs
+        // Breadcrumbs on top of the form
         createBreadCrumb();
 
-        // Show survey info
+        // Show survey info as a footer below the form
         SimpleDateFormat formattedDate = new SimpleDateFormat("dd MMM yyyy");
         TextView surveyInfo = (TextView) this.findViewById(R.id.surveyinfo);
         surveyInfo.setText("Org Unit: " + Session.getSurvey().getOrgUnit().getName() + " | Survey: " + Session.getSurvey().getProgram().getName() + " | Creation Date: " + formattedDate.format(Session.getSurvey().getEventDate()));
