@@ -2,7 +2,7 @@
 <resources>
 
     <!-- # GENERAL STRINGS -->
-    <string name="app_name">Falicity QA Tool</string>
+    <string name="app_name">Facility QA Tool</string>
     <string name="developers">EyeSeeTea LTD</string>
     <string name="emptyString"></string>
 
