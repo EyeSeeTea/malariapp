@@ -20,8 +20,8 @@
 package org.eyeseetea.malariacare;
 
 import android.content.Intent;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -33,8 +33,12 @@ import org.eyeseetea.malariacare.database.model.OrgUnit;
 import org.eyeseetea.malariacare.database.model.Program;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.utils.Session;
-import org.eyeseetea.malariacare.layout.Layout;
+import org.eyeseetea.malariacare.layout.adapters.general.OrgUnitArrayAdapter;
+import org.eyeseetea.malariacare.layout.adapters.general.ProgramArrayAdapter;
+import org.eyeseetea.malariacare.layout.adapters.general.TabArrayAdapter;
+import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 import org.eyeseetea.malariacare.utils.Constants;
+import org.eyeseetea.malariacare.utils.ExceptionHandler;
 
 import java.util.List;
 
@@ -48,9 +52,11 @@ public class CreateSurveyActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // Manage uncaught exceptions that may occur
+        //Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(this));
         setContentView(R.layout.activity_create_survey);
         android.support.v7.app.ActionBar actionBar = this.getSupportActionBar();
-        Layout.setActionBarLogo(actionBar);
+        LayoutUtils.setActionBarLogo(actionBar);
 
         //Create default options
         OrgUnit orgUnitDefaultOption = new OrgUnit(Constants.DEFAULT_SELECT_OPTION);
@@ -59,21 +65,16 @@ public class CreateSurveyActivity extends ActionBarActivity {
         //Populate Organization Unit DDL
         List<OrgUnit> orgUnitList = OrgUnit.listAll(OrgUnit.class);
         orgUnitList.add(0, orgUnitDefaultOption);
-        ArrayAdapter orgUnitAdapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, orgUnitList);
-        orgUnitAdapter.setDropDownViewResource(R.layout.simple_spinner_item);
         orgUnitView = (Spinner) findViewById(R.id.org_unit);
-        orgUnitView.setAdapter(orgUnitAdapter);
+        orgUnitView.setAdapter(new OrgUnitArrayAdapter(this, orgUnitList));
 
         //Populate Program View DDL
-        List<Program> programList = Program.listAll(Program.class);
+        List<Program> programList = OrgUnit.listAll(Program.class);
         programList.add(0, programDefaultOption);
-        ArrayAdapter programAdapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, programList);
-        programAdapter.setDropDownViewResource(R.layout.simple_spinner_item);
         programView = (Spinner) findViewById(R.id.program);
-        programView.setAdapter(programAdapter);
+        programView.setAdapter(new ProgramArrayAdapter(this, programList));
 
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -114,7 +115,7 @@ public class CreateSurveyActivity extends ActionBarActivity {
         Session.setSurvey(survey);
 
         //Call Survey Activity
-        Intent surveyIntent = new Intent(this, MainActivity.class);
+        Intent surveyIntent = new Intent(this, SurveyActivity.class);
         startActivity(surveyIntent);
 
     }

@@ -1,18 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TableRow xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content">
 
     <LinearLayout
         android:orientation="vertical"
-        android:layout_width="fill_parent"
+        android:layout_width="0dip"
         android:layout_height="wrap_content"
         android:id="@+id/codeLayout"
-        android:layout_weight="0.3">
+        android:layout_weight="0.2"
+        android:gravity="center_horizontal">
 
         <TextView
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:id="@+id/code"
             android:padding="5dip" />
@@ -20,31 +21,32 @@
 
     <LinearLayout
         android:orientation="vertical"
-        android:layout_width="fill_parent"
+        android:layout_width="0dip"
         android:layout_height="wrap_content"
         android:id="@+id/labelLayout"
-        android:layout_weight="0.2">
+        android:layout_weight="0.6">
 
         <TextView
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:id="@+id/label"
+            android:text="fdgf"
             android:padding="5dip" />
     </LinearLayout>
 
     <LinearLayout
         android:orientation="vertical"
-        android:layout_width="fill_parent"
+        android:layout_width="0dip"
         android:layout_height="wrap_content"
         android:id="@+id/scoreContainer"
         android:padding="5dip"
         android:layout_gravity="center"
-        android:layout_weight="0.3">
+        android:layout_weight="0.2">
 
         <TextView
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:id="@+id/score"
             android:padding="5dip"
@@ -52,4 +54,4 @@
             android:text="@string/zeroInt" />
     </LinearLayout>
 
-</TableRow>
+</LinearLayout>

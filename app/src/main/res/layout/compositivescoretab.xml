@@ -1,55 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
-    android:gravity="center">
-    <TableLayout
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:tag="CompositivesScore"
-        android:id="@+id/compositivescoreTable">
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-        <TableRow
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/tableRow2"
-            android:layout_gravity="center">
-
-            <TextView
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="@string/idHeader"
-                android:id="@+id/idHeader"
-                android:background="@drawable/background_header"
-                android:textColor="#ffffff"
-                android:gravity="center"
-                android:padding="5dip"
-                android:layout_weight="0.3" />
-
-            <TextView
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="@string/nameHeader"
-                android:id="@+id/nameHeader"
-                android:background="@drawable/background_header"
-                android:textColor="#ffffff"
-                android:gravity="center"
-                android:padding="5dip"
-                android:layout_weight="0.5" />
-
-            <TextView
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="@string/scoreHeader"
-                android:id="@+id/scoreHeader"
-                android:background="@drawable/background_header"
-                android:textColor="#ffffff"
-                android:gravity="center"
-                android:padding="5dip"
-                android:layout_weight="0.2" />
-        </TableRow>
-    </TableLayout>
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/listView" />
 </LinearLayout>

@@ -2,7 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:gravity="center">
+    android:gravity="center"
+    android:id="@+id/scoreTab">
 
     <GridLayout
         android:layout_width="fill_parent"
@@ -285,6 +286,7 @@
                     android:layout_weight="0.2" />
             </TableRow>
 
+
             <TableRow
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
@@ -380,6 +382,7 @@
                     android:layout_gravity="center_vertical"
                     android:layout_weight="0.2" />
             </TableRow>
+
 
             <TableRow
                 android:layout_width="fill_parent"

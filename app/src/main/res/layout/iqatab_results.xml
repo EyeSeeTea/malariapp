@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/background_odd">
+
+    <TextView
+        android:layout_width="0dip"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:id="@+id/number_result"
+        android:gravity="center"
+        android:text="@string/one"
+        android:layout_weight="1" />
+
+    <TextView
+        android:layout_width="0dip"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:id="@+id/matches"
+        android:gravity="center"
+        android:text="@string/zeroInt"
+        android:layout_weight="1" />
+
+</LinearLayout>
