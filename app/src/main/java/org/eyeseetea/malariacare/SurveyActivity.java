@@ -169,8 +169,8 @@ public class SurveyActivity extends ActionBarActivity {
 
     private void showTab(Tab selectedTab) {
 
-        // FIXME: this if-else must disappear by creating a smarter way of filling tabs
-        if (selectedTab.getType() == Constants.TAB_SCORE_SUMMARY)
+        // FIXME: this if-else must disappear by creating a smarter way of filling tabs and we shouldnt match the tab by name
+        if (selectedTab.getType() == Constants.TAB_SCORE_SUMMARY && !selectedTab.getName().equals("Compositive Scores"))
             showGeneralScores();
         else {
             LayoutInflater inflater = LayoutInflater.from(this);
