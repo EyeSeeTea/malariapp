@@ -38,7 +38,7 @@ import java.util.List;
 /**
  * A placeholder fragment containing a simple view.
  */
-public class AssessmentFragment extends ListFragment  {
+public class AssessmentFragment extends ListFragment {
 
     AssessmentAdapter assessmentAdapter;
     ViewGroup headerView;
@@ -61,7 +61,7 @@ public class AssessmentFragment extends ListFragment  {
 
         super.onActivityCreated(savedInstanceState);
 
-        if (headerView != null)  this.getListView().addHeaderView(headerView);
+        if (headerView != null) this.getListView().addHeaderView(headerView);
 
         surveyList = Survey.listAll(Survey.class);
         assessmentAdapter = new AssessmentAdapter(surveyList, getActivity());
@@ -76,7 +76,7 @@ public class AssessmentFragment extends ListFragment  {
         if (position == 0) return; // to capture when header is clicked
 
         // surveyList has also the header, so position must to be adjusted to match the survey
-        Session.setSurvey(surveyList.get(position-1));
+        Session.setSurvey(surveyList.get(position - 1));
 
         //Call Survey Activity
         getActivity().finish();
