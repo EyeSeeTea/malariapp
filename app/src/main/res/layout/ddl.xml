@@ -14,7 +14,8 @@
             android:layout_height="wrap_content"
             android:text="@string/emptyStatement"
             android:id="@+id/statement"
-            android:paddingLeft="10dip" />
+            android:paddingLeft="10dip"
+            android:textAppearance="?android:textAppearanceSmall" />
     </RelativeLayout>
     <RelativeLayout
         android:layout_width="fill_parent"
@@ -55,7 +56,8 @@
             android:layout_height="wrap_content"
             android:text="0"
             android:id="@+id/num"
-            android:gravity="center_vertical|center_horizontal" />
+            android:gravity="center_vertical|center_horizontal"
+            android:textAppearance="?android:textAppearanceSmall" />
     </RelativeLayout>
     <RelativeLayout
         android:layout_width="fill_parent"
@@ -68,7 +70,8 @@
             android:layout_height="wrap_content"
             android:text="0"
             android:id="@+id/den"
-            android:gravity="center_vertical|center_horizontal" />
+            android:gravity="center_vertical|center_horizontal"
+            android:textAppearance="?android:textAppearanceSmall" />
     </RelativeLayout>
 
 </LinearLayout>

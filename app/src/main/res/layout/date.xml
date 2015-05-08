@@ -15,7 +15,8 @@
             android:layout_height="wrap_content"
             android:text="@string/emptyStatement"
             android:id="@+id/statement"
-            android:paddingLeft="10dip" />
+            android:paddingLeft="10dip"
+            android:textAppearance="?android:textAppearanceSmall" />
     </RelativeLayout>
 
     <RelativeLayout

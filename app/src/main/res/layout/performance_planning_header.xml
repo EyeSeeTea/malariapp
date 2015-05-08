@@ -27,7 +27,7 @@
     <TextView
         android:layout_width="0dip"
         android:layout_height="fill_parent"
-        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textAppearance="?android:textAppearanceSmall"
         android:text="@string/period_header"
         android:id="@+id/periodHeader"
         android:background="@drawable/background_header"
@@ -40,7 +40,7 @@
     <TextView
         android:layout_width="0dip"
         android:layout_height="fill_parent"
-        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textAppearance="?android:textAppearanceSmall"
         android:text="@string/target"
         android:id="@+id/targetHeader"
         android:background="@drawable/background_header"
@@ -53,7 +53,7 @@
     <TextView
         android:layout_width="0dip"
         android:layout_height="fill_parent"
-        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textAppearance="?android:textAppearanceSmall"
         android:id="@+id/doneHeader"
         android:background="@drawable/background_header"
         android:textColor="#ffffff"
@@ -66,7 +66,7 @@
     <TextView
         android:layout_width="0dip"
         android:layout_height="fill_parent"
-        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textAppearance="?android:textAppearanceSmall"
         android:id="@+id/achievementHeader"
         android:background="@drawable/background_header"
         android:textColor="#ffffff"

@@ -28,6 +28,7 @@ import android.widget.TextView;
 
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.model.Survey;
+import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 
 import java.util.List;
 
@@ -70,6 +71,7 @@ public class FutureAssessmentPlanningAdapter extends BaseAdapter {
         Survey item = (Survey) getItem(position);
 
         rowView = lInflater.inflate(R.layout.future_assessment_planning_record, parent, false);
+        rowView.setBackgroundResource(LayoutUtils.calculateBackgrounds(position));
 
         ((TextView)rowView.findViewById(R.id.facility)).setText(item.getOrgUnit().getUid() + " - " + item.getOrgUnit().getName());
         ((TextView)rowView.findViewById(R.id.datePreviousAssessment)).setText("");
