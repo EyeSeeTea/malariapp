@@ -21,6 +21,7 @@ package org.eyeseetea.malariacare;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -292,5 +293,10 @@ public class SurveyActivity extends ActionBarActivity {
             Intent dashboardIntent = new Intent(view.getContext(), DashboardActivity.class);
             this.context.startActivity(dashboardIntent);
         }
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig){
+        super.onConfigurationChanged(newConfig);
     }
 }

@@ -21,6 +21,7 @@ package org.eyeseetea.malariacare.fragments;
 
 import android.app.ListFragment;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -82,5 +83,10 @@ public class AssessmentFragment extends ListFragment {
         getActivity().finish();
         Intent surveyIntent = new Intent(v.getContext(), SurveyActivity.class);
         v.getContext().startActivity(surveyIntent);
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig){
+        super.onConfigurationChanged(newConfig);
     }
 }

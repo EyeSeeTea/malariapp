@@ -20,6 +20,7 @@
 package org.eyeseetea.malariacare;
 
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
@@ -118,5 +119,10 @@ public class CreateSurveyActivity extends ActionBarActivity {
         Intent surveyIntent = new Intent(this, SurveyActivity.class);
         startActivity(surveyIntent);
 
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig){
+        super.onConfigurationChanged(newConfig);
     }
 }

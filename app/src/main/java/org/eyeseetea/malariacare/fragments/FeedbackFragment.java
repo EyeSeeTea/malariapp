@@ -20,6 +20,7 @@
 package org.eyeseetea.malariacare.fragments;
 
 import android.app.ListFragment;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -63,5 +64,10 @@ public class FeedbackFragment extends ListFragment {
 
         //getListView().setOnItemClickListener(this);
 
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig){
+        super.onConfigurationChanged(newConfig);
     }
 }
