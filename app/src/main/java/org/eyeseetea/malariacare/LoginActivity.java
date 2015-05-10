@@ -401,11 +401,6 @@ public class LoginActivity extends PlusBaseActivity implements LoaderCallbacks<C
             showProgress(false);
         }
     }
-
-    @Override
-    public void onConfigurationChanged(Configuration newConfig){
-        super.onConfigurationChanged(newConfig);
-    }
 }
 
 

@@ -44,7 +44,7 @@ import org.eyeseetea.malariacare.utils.ExceptionHandler;
 import java.util.List;
 
 
-public class CreateSurveyActivity extends ActionBarActivity {
+public class CreateSurveyActivity extends BaseActivity {
 
     // UI references.
     private Spinner orgUnitView;
@@ -81,7 +81,7 @@ public class CreateSurveyActivity extends ActionBarActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_create_form, menu);
-        return true;
+        return super.onCreateOptionsMenu(menu);
     }
 
     @Override
@@ -119,10 +119,5 @@ public class CreateSurveyActivity extends ActionBarActivity {
         Intent surveyIntent = new Intent(this, SurveyActivity.class);
         startActivity(surveyIntent);
 
-    }
-
-    @Override
-    public void onConfigurationChanged(Configuration newConfig){
-        super.onConfigurationChanged(newConfig);
     }
 }
