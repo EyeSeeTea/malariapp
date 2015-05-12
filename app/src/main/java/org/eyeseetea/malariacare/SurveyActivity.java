@@ -21,6 +21,7 @@ package org.eyeseetea.malariacare;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -58,7 +59,7 @@ import java.util.List;
 import java.util.Map;
 
 
-public class SurveyActivity extends ActionBarActivity {
+public class SurveyActivity extends BaseActivity {
 
     private List<Tab> tabsList;
     private Map<Tab, ITabAdapter> adaptersMap = new HashMap<Tab, ITabAdapter>();
@@ -122,29 +123,6 @@ public class SurveyActivity extends ActionBarActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-
-        int id = item.getItemId();
-
-        switch (id) {
-            case R.id.action_settings:
-                return true;// TODO: implement the settings menu
-            case R.id.action_pull:
-                return true;// TODO: implement the DHIS pull
-            case R.id.action_license:
-                Log.d(".MainActivity", "User asked for license dialog");
-                DialogDispatcher mf = DialogDispatcher.newInstance(new View(this)); // FIXME: here we create a View just to be able to show the dialog...this shouldn't be needed
-                mf.showDialog(getFragmentManager(), DialogDispatcher.LICENSE_DIALOG);
-                break;
-            case R.id.action_about:
-                Log.d(".MainActivity", "User asked for about dialog");
-                DialogDispatcher aboutD = DialogDispatcher.newInstance(new View(this)); // FIXME: here we create a View just to be able to show the dialog...this shouldn't be needed
-                aboutD.showDialog(getFragmentManager(), DialogDispatcher.ABOUT_DIALOG);
-                break;
-        }
-
         return super.onOptionsItemSelected(item);
     }
 

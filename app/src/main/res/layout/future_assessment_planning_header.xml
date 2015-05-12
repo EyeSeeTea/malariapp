@@ -27,7 +27,7 @@
     <TextView
         android:layout_width="0dip"
         android:layout_height="fill_parent"
-        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="@string/facility"
         android:id="@+id/facilityHeader"
         android:background="@drawable/background_header"
@@ -40,7 +40,7 @@
     <TextView
         android:layout_width="0dip"
         android:layout_height="fill_parent"
-        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="@string/datePreviousAssessment"
         android:id="@+id/previousDateHeader"
         android:background="@drawable/background_header"
@@ -53,7 +53,7 @@
     <TextView
         android:layout_width="0dip"
         android:layout_height="fill_parent"
-        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textAppearance="?android:attr/textAppearanceSmall"
         android:id="@+id/dueDateHeader"
         android:background="@drawable/background_header"
         android:textColor="#ffffff"
@@ -66,7 +66,7 @@
     <TextView
         android:layout_width="0dip"
         android:layout_height="fill_parent"
-        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textAppearance="?android:attr/textAppearanceSmall"
         android:id="@+id/actionHeader"
         android:background="@drawable/background_header"
         android:textColor="#ffffff"

@@ -65,7 +65,7 @@
         <TextView
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textAppearance="?android:textAppearanceSmall"
             android:id="@+id/surveyinfo"
             android:textColor="#ffffff"
             android:textStyle="bold|italic"

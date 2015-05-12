@@ -34,6 +34,7 @@ import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.layout.dialog.DialogDispatcher;
+import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -74,6 +75,7 @@ public class AssessmentAdapter extends BaseAdapter {
         Survey survey = (Survey) getItem(position);
 
         View rowView = lInflater.inflate(R.layout.assessment_record, parent, false);
+        rowView.setBackgroundResource(LayoutUtils.calculateBackgrounds(position));
 
         // Org Unit Cell
         ((TextView) rowView.findViewById(R.id.facility)).setText(survey.getOrgUnit().getUid() + " - " + survey.getOrgUnit().getName());
@@ -86,9 +88,8 @@ public class AssessmentAdapter extends BaseAdapter {
 
         if (status.get(0) == status.get(1)) {
             ((TextView) rowView.findViewById(R.id.score)).setText("Ready to upload");
-        }
-        else{
-            ((TextView) rowView.findViewById(R.id.score)).setText(String.format("%.2f", 100 * (double)status.get(0) / (double)status.get(1)));
+        } else {
+            ((TextView) rowView.findViewById(R.id.score)).setText(String.format("%.2f", 100 * (double) status.get(0) / (double) status.get(1)));
         }
         ((TextView) rowView.findViewById(R.id.completed)).setText(Integer.toString(status.get(0)));
         ((TextView) rowView.findViewById(R.id.total)).setText(Integer.toString(status.get(1)));

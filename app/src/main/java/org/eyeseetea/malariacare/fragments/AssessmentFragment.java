@@ -21,6 +21,7 @@ package org.eyeseetea.malariacare.fragments;
 
 import android.app.ListFragment;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -38,7 +39,7 @@ import java.util.List;
 /**
  * A placeholder fragment containing a simple view.
  */
-public class AssessmentFragment extends ListFragment  {
+public class AssessmentFragment extends ListFragment {
 
     AssessmentAdapter assessmentAdapter;
     ViewGroup headerView;
@@ -61,7 +62,7 @@ public class AssessmentFragment extends ListFragment  {
 
         super.onActivityCreated(savedInstanceState);
 
-        if (headerView != null)  this.getListView().addHeaderView(headerView);
+        if (headerView != null) this.getListView().addHeaderView(headerView);
 
         surveyList = Survey.listAll(Survey.class);
         assessmentAdapter = new AssessmentAdapter(surveyList, getActivity());
@@ -76,11 +77,16 @@ public class AssessmentFragment extends ListFragment  {
         if (position == 0) return; // to capture when header is clicked
 
         // surveyList has also the header, so position must to be adjusted to match the survey
-        Session.setSurvey(surveyList.get(position-1));
+        Session.setSurvey(surveyList.get(position - 1));
 
         //Call Survey Activity
         getActivity().finish();
         Intent surveyIntent = new Intent(v.getContext(), SurveyActivity.class);
         v.getContext().startActivity(surveyIntent);
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig){
+        super.onConfigurationChanged(newConfig);
     }
 }

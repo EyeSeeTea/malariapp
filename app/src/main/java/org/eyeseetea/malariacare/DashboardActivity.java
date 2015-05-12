@@ -20,6 +20,7 @@
 package org.eyeseetea.malariacare;
 
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
@@ -31,7 +32,7 @@ import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 import org.eyeseetea.malariacare.utils.ExceptionHandler;
 
 
-public class DashboardActivity extends ActionBarActivity {
+public class DashboardActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,20 +45,12 @@ public class DashboardActivity extends ActionBarActivity {
         LayoutUtils.setActionBarLogo(actionBar);
     }
 
-    @Override
-    public void onRestart() {
-        super.onRestart();
-        Log.i(".DashboardActivity", "coming back");
-        finish();
-        startActivity(getIntent());
-    }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_dashboard, menu);
-        return true;
+        return super.onCreateOptionsMenu(menu);
     }
 
     @Override
@@ -80,6 +73,4 @@ public class DashboardActivity extends ActionBarActivity {
         Intent createSurveyIntent = new Intent(this, CreateSurveyActivity.class);
         startActivity(createSurveyIntent);
     }
-
-
 }

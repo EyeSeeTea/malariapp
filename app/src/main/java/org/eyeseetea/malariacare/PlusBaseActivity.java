@@ -21,6 +21,7 @@ package org.eyeseetea.malariacare;
 
 import android.content.Intent;
 import android.content.IntentSender;
+import android.content.res.Configuration;
 import android.os.Bundle;
 
 import android.app.Activity;
@@ -303,4 +304,8 @@ public abstract class PlusBaseActivity extends Activity
         return mPlusClient;
     }
 
+    @Override
+    public void onConfigurationChanged(Configuration newConfig){
+        super.onConfigurationChanged(newConfig);
+    }
 }

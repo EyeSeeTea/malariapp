@@ -28,6 +28,7 @@ import android.widget.TextView;
 
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.model.Survey;
+import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 
 import java.util.List;
 
@@ -70,6 +71,7 @@ public class PerformancePlanningAdapter extends BaseAdapter {
         Survey item = (Survey) getItem(position);
 
         rowView = lInflater.inflate(R.layout.performance_planning_record, parent, false);
+        rowView.setBackgroundResource(LayoutUtils.calculateBackgrounds(position));
 
         ((TextView)rowView.findViewById(R.id.date)).setText("Jan");
         ((TextView)rowView.findViewById(R.id.target)).setText("10");

@@ -7,7 +7,7 @@
             <TextView
                 android:layout_width="0dip"
                 android:layout_height="fill_parent"
-                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textAppearance="?android:textAppearanceSmall"
                 android:text="@string/idHeader"
                 android:id="@+id/idHeader"
                 android:background="@drawable/background_header"
@@ -19,7 +19,7 @@
             <TextView
                 android:layout_width="0dip"
                 android:layout_height="fill_parent"
-                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textAppearance="?android:textAppearanceSmall"
                 android:text="@string/nameHeader"
                 android:id="@+id/nameHeader"
                 android:background="@drawable/background_header"
@@ -31,7 +31,7 @@
             <TextView
                 android:layout_width="0dip"
                 android:layout_height="fill_parent"
-                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textAppearance="?android:textAppearanceSmall"
                 android:text="@string/scoreHeader"
                 android:id="@+id/scoreHeader"
                 android:background="@drawable/background_header"
