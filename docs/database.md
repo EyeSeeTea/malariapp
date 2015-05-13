@@ -9,4 +9,8 @@ The whole database model of the app looks like this:
 
 ## Sample data
 
-`TODO: under construction`
+The easiest way to understand what those tables and columns mean is showing some random connected data:
+
+![Database model](img/database_data.png)
+
+
