@@ -98,7 +98,7 @@ public class AssessmentAdapter extends BaseAdapter {
         LinearLayout toolContainerView = (LinearLayout) rowView.findViewById(R.id.toolsContainer);
 
         TextView deleteTextView = new TextView(this.context);
-        deleteTextView.setText("Delete");
+        deleteTextView.setText(R.string.assessment_info_delete);
         deleteTextView.setTextColor(Color.parseColor("#1e506c"));
         deleteTextView.setTypeface(null, Typeface.BOLD);
         deleteTextView.setOnClickListener(new AssessmentListener((Activity) this.context, survey, "delete"));

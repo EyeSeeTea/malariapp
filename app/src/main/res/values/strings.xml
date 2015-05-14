@@ -1,64 +1,70 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <!-- # GENERAL STRINGS -->
+    <!-- # general -->
     <string name="app_name">Facility QA Tool</string>
     <string name="developers">EyeSeeTea LTD</string>
     <string name="emptyString"></string>
 
-    <!-- # DIALOGS -->
-    <string name="licenseTitle">GPLv3 License</string>
-    <string name="aboutTitle">About this app</string>
-    <string name="clearTitle">Clear Form</string>
-    <string name="clearMessage">Are you sure you want to completely clear this form?</string>
-    <string name="deleteTitle">Delete Survey</string>
-    <string name="deleteMessage">Are you sure you want to completely delete this survey?</string>
-    <string name="errorTitle">Error</string>
-    <string name="errorDenominator">Error, denominator = 0</string>
+    <!-- settings -->
+    <string name="settings_menu_about">About</string>
+    <string name="settings_menu_configuration">Settings</string>
+    <string name="settings_menu_licence">License</string>
+    <string name="settings_menu_update">Update questions (DHIS)</string>
 
-    <!-- # MENUS -->
-    <string name="action_settings">Settings</string>
-    <string name="action_pull">Update questions from DHIS</string>
-    <string name="action_license">License</string>
-    <string name="action_about">About this app</string>
+    <!-- login -->
+    <string name="login_info_username">User</string>
+    <string name="login_info_password">Password</string>
+    <string name="login_info_sign_in">Sign in</string>
+    <string name="login_error_password">This password is incorrect</string>
+    <string name="login_error_short_password">This password is too short</string>
+    <string name="login_error_required">This field is required</string>
 
-    <!-- # LOGIN ACTIVITY -->
-    <string name="title_activity_login">Sign in</string>
-    <string name="prompt_user">User</string>
-    <string name="prompt_password">Password</string>
-    <string name="action_sign_in">Sign in</string>
-    <string name="action_sign_in_short">Sign in</string>
-    <string name="plus_sign_out">Switch Google+ account</string>
-    <string name="plus_disconnect">Disconnect from Google+</string>
-    <string name="error_invalid_email">This email address is invalid</string>
-    <string name="error_invalid_password">This password is too short</string>
-    <string name="error_incorrect_password">This password is incorrect</string>
-    <string name="error_field_required">This field is required</string>
+    <!-- # dialogs -->
+    <string name="dialog_title_delete_survey">Delete Survey</string>
+    <string name="dialog_info_delete_survey">Are you sure you want to completely delete this survey?</string>
+    <string name="dialog_title_error">Error</string>
+    <string name="dialog_error_denominator">Error, denominator = 0</string>
 
-    <!-- # DASHBOARD ACTIVITY -->
-    <string name="title_activity_dashboard">Dashboard</string>
-    <string name="active_assessment">Active Assessment</string>
-    <string name="feedback">Feedback</string>
-    <string name="facilityDateHeader">Facility / Date</string>
-    <string name="statusHeader">Status</string>
-    <string name="facility">Facility</string>
-    <string name="datePreviousAssessment">Date Previous Assessment</string>
-    <string name="dueDate">Due date</string>
-    <string name="action">Action</string>
-    <string name="date">Date</string>
-    <string name="target">Target</string>
-    <string name="achievement">Achievement</string>
-    <string name="new_survey">New Survey</string>
-    <string name="create_form">CREATE SURVEY</string>
-    <string name="active_assessments">Active Assessments</string>
-    <string name="OrgUnitDateHeader">Org Unit / Date</string>
-    <string name="future_assessments_title">Future Assessments</string>
-    <string name="performance_against_target_header">Performance Against Target</string>
-    <string name="period_header">Period</string>
-    <string name="analytics_header">Analytics</string>
-    <string name="orgUnit">Organisation Unit</string>
-    <string name="program">Program</string>
-    <string name="survey">Survey</string>
+    <!-- dashboard -->
+    <string name="dashboard_info_feedback">Feedback</string>
+    <string name="dashboard_info_active_assessments">Active Assessments</string>
+    <string name="dashboard_info_new_assessment">New assessment</string>
+    <string name="dashboard_info_future_assessments">Future Assessments</string>
+    <string name="dashboard_info_performance">Performance Against Target</string>
+    <string name="dashboard_info_analytics">Analytics</string>
+
+    <!-- create -->
+    <string name="create_info_ok">Create assessment</string>
+    <string name="create_info_organization_unit">Organisation Unit</string>
+    <string name="create_info_survey">Survey</string>
+
+    <!-- assessment -->
+    <string name="assessment_title_facility_date">Facility / Date</string>
+    <string name="assessment_title_state">Status</string>
+    <string name="assessment_info_delete">Delete</string>
+
+    <!-- feedback -->
+    <!-- XXX Should it be replaced by 'assessment_title_facility_date'?-->
+    <string name="feedback_title_organization_unit_date">Org Unit / Date</string>
+
+    <!-- future -->
+    <string name="future_title_facility">Facility</string>
+    <string name="future_title_previous_date">Date Previous Assessment</string>
+    <string name="future_title_due_date">Due date</string>
+    <string name="future_title_action">Action</string>
+
+    <!-- performance -->
+    <string name="performance_title_period">Period</string>
+    <string name="performance_title_target">Target</string>
+    <string name="performance_title_completed">Done</string>
+    <string name="performance_title_achievement">Achievement</string>
+
+
+    <!-- survey -->
+    <!-- auto -->
+    <!-- custom -->
+    <!-- analytics -->
 
     <!-- # SURVEY ACTIVITY -->
     <string name="selectTab">Select Tab: </string>
@@ -164,7 +170,7 @@
     <string name="overall">Overall</string>
     <string name="zeroFloat">0.0</string>
     <string name="adherenceTitle">Adherence</string>
-    <string name="feedbackTitle">Feedback</string>
+
     <string name="envAndMatsTitle">Environment</string>
     <string name="iqaeqaTitle">IQA EQA</string>
     <string name="profileTitle">Profile</string>

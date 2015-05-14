@@ -1,64 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <!-- # GENERAL STRINGS -->
+    <!-- # general -->
     <string name="app_name">Facility QA Tool</string>
     <string name="developers">EyeSeeTea LTD</string>
     <string name="emptyString"></string>
 
-    <!-- # DIALOGS -->
-    <string name="licenseTitle">License GPLv3</string>
-    <string name="aboutTitle">Sur cette app</string>
-    <string name="clearTitle">Effacer formulaire</string>
-    <string name="clearMessage">Êtes-vous sûr que de vouloir effacer ce formulaire ?</string>
-    <string name="deleteTitle">Delete Survey</string>
-    <string name="deleteMessage">Are you sure you want to completely delete this survey?</string>
-    <string name="errorTitle">Erreur</string>
-    <string name="errorDenominator">Erreur, denominateur = 0</string>
+    <!-- settings -->
+    <string name="settings_menu_about">Sur cette app</string>
+    <string name="settings_menu_configuration">Paramètres</string>
+    <string name="settings_menu_licence">License</string>
+    <string name="settings_menu_update">Mise à jour des questions (DHIS)</string>
 
-    <!-- # MENUS -->
-    <string name="action_settings">Paramètres</string>
-    <string name="action_pull">Mise à jour des questions dès DHIS</string>
-    <string name="action_license">License</string>
-    <string name="action_about">Sur cette app</string>
+    <!-- login -->
+    <string name="login_info_username">Mel</string>
+    <string name="login_info_password">Mot de passe</string>
+    <string name="login_info_sign_in">Se connecter</string>
+    <string name="login_error_password">Le mot de pas n\'est pas correct</string>
+    <string name="login_error_short_password">Le mot de passe est trop courte</string>
+    <string name="login_error_required">Cette entrée est necessaire</string>
 
-    <!-- # LOGIN ACTIVITY -->
-    <string name="title_activity_login">Se connecter</string>
-    <string name="prompt_user">Mel</string>
-    <string name="prompt_password">Mot de passe</string>
-    <string name="action_sign_in">Se connecter</string>
-    <string name="action_sign_in_short">S\'enregistrer</string>
-    <string name="plus_sign_out">Changer compte Google+</string>
-    <string name="plus_disconnect">Se deconnecter de Google+</string>
-    <string name="error_invalid_email">Cette address du mel n\'est pas valide</string>
-    <string name="error_invalid_password">Le mot de passe est trop courte</string>
-    <string name="error_incorrect_password">Le mot de pas n\'est pas correct</string>
-    <string name="error_field_required">Cette entrée est necessaire</string>
+    <!-- # dialogs -->
+    <string name="dialog_title_delete_survey">Delete Survey</string>
+    <string name="dialog_info_delete_survey">Are you sure you want to completely delete this survey?</string>
+    <string name="dialog_title_error">Erreur</string>
+    <string name="dialog_error_denominator">Erreur, denominateur = 0</string>
 
-    <!-- # DASHBOARD ACTIVITY -->
-    <string name="title_activity_dashboard">Panneu de commande</string>
-    <string name="active_assessment">Active Assessment</string>
-    <string name="feedback">Feedback</string>
-    <string name="facilityDateHeader">Facility / Date</string>
-    <string name="statusHeader">Status</string>
-    <string name="facility">Facility</string>
-    <string name="datePreviousAssessment">Date Previous Assessment</string>
-    <string name="dueDate">Due date</string>
-    <string name="action">Action</string>
-    <string name="date">Date</string>
-    <string name="target">Target</string>
-    <string name="achievement">Achievement</string>
-    <string name="new_survey">New Survey</string>
-    <string name="create_form">CREATE FORM</string>
-    <string name="active_assessments">Evaluations actives</string>
-    <string name="OrgUnitDateHeader">Org Unit / Date</string>
-    <string name="future_assessments_title">Future Assessments</string>
-    <string name="performance_against_target_header">Performance Against Target</string>
-    <string name="period_header">Period</string>
-    <string name="analytics_header">Analytics</string>
-    <string name="orgUnit">Organisation Unit</string>
-    <string name="program">Program</string>
-    <string name="survey">Survey</string>
+    <!-- dashboard -->
+    <string name="dashboard_info_feedback">Feedback</string>
+    <string name="dashboard_info_active_assessments">Evaluations actives</string>
+    <string name="dashboard_info_new_assessment">Nouvelle évaluation</string>
+    <string name="dashboard_info_future_assessments">Future Assessments</string>
+    <string name="dashboard_info_performance">Performance Against Target</string>
+    <string name="dashboard_info_analytics">Analytics</string>
+
+    <!-- create -->
+    <string name="create_info_ok">Créer évaluation</string>
+    <string name="create_info_organization_unit">Unité d\'organisation</string>
+    <string name="create_info_survey">Enquête</string>
+
+    <!-- assessment -->
+    <string name="assessment_title_facility_date">Centre de santé / Date</string>
+    <string name="assessment_title_state">État</string>
+    <string name="assessment_info_delete">Effacer</string>
+
+    <!-- feedback -->
+    <string name="feedback_title_organization_unit_date">Org Unit / Date</string>
+
+    <!-- future -->
+    <string name="future_title_facility">Facility</string>
+    <string name="future_title_previous_date">Date Previous Assessment</string>
+    <string name="future_title_due_date">Due date</string>
+    <string name="future_title_action">Action</string>
+
+    <!-- performance -->
+    <string name="performance_title_period">Period</string>
+    <string name="performance_title_target">Target</string>
+    <string name="performance_title_completed">Done</string>
+    <string name="performance_title_achievement">Achievement</string>
+
+    <!-- survey -->
+    <!-- auto -->
+    <!-- custom -->
+    <!-- analytics -->
 
     <!-- # SURVEY ACTIVITY -->
     <string name="selectTab">Choisissez onglet: </string>
@@ -164,7 +168,6 @@
     <string name="overall">Total</string>
     <string name="zeroFloat">0.0</string>
     <string name="adherenceTitle">Adherence</string>
-    <string name="feedbackTitle">Feedback</string>
     <string name="envAndMatsTitle">Environement</string>
     <string name="iqaeqaTitle">IQA EQA</string>
     <string name="profileTitle">Profil</string>

@@ -28,7 +28,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="@string/future_assessments_title"
+        android:text="@string/dashboard_info_future_assessments"
         android:id="@+id/future_assessments_title" />
 
     <TableLayout

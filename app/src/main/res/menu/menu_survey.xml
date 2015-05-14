@@ -21,12 +21,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="org.eyeseetea.malariacare.SurveyActivity">
-    <item android:id="@+id/action_settings" android:title="@string/action_settings"
+    <item android:id="@+id/action_settings" android:title="@string/settings_menu_configuration"
         android:orderInCategory="100" app:showAsAction="never" />
 </menu> -->
 
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" tools:context=".SurveyActivity">
-    <item android:id="@+id/action_pull" android:title="@string/action_pull"
+    <item android:id="@+id/action_pull" android:title="@string/settings_menu_update"
         android:orderInCategory="90"/>
 </menu>

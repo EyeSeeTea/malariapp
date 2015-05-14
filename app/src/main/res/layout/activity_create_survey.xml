@@ -53,7 +53,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textAppearance="?android:attr/textAppearanceLarge"
-                        android:text="@string/orgUnit"
+                        android:text="@string/create_info_organization_unit"
                         android:id="@+id/textView2"
                         style="?android:textAppearanceMedium" />
                 </LinearLayout>
@@ -92,7 +92,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textAppearance="?android:attr/textAppearanceLarge"
-                        android:text="@string/survey"
+                        android:text="@string/create_info_survey"
                         android:id="@+id/textView3"
                         style="?android:textAppearanceMedium" />
                 </LinearLayout>
@@ -124,7 +124,7 @@
 
                 <Button android:id="@+id/create_form_button" style="?android:textAppearanceMedium"
                     android:layout_width="match_parent" android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp" android:text="@string/create_form"
+                    android:layout_marginTop="16dp" android:text="@string/create_info_ok"
                     android:textStyle="bold"
                     android:onClick="createSurvey" />
 

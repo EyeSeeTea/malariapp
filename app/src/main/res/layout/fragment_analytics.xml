@@ -28,7 +28,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:textAppearanceMedium"
-        android:text="@string/analytics_header"
+        android:text="@string/dashboard_info_analytics"
         android:id="@+id/analytics_title" />
 
     <TableLayout

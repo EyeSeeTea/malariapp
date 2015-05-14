@@ -33,7 +33,7 @@
         style="?android:attr/buttonStyleSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/new_survey"
+        android:text="@string/dashboard_info_new_assessment"
         android:id="@+id/button"
         android:onClick="newSurvey" />
 
