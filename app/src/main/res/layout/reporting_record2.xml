@@ -72,7 +72,7 @@
             android:id="@+id/scoreValue"
             android:padding="5dip"
             android:layout_gravity="center"
-            android:text="@string/zeroInt"
+            android:text="@string/number_zero"
             android:gravity="center_horizontal" />
     </LinearLayout>
 

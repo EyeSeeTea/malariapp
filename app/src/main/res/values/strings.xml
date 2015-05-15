@@ -4,8 +4,16 @@
     <!-- # general -->
     <string name="app_name">Facility QA Tool</string>
     <string name="developers">EyeSeeTea LTD</string>
-    <string name="emptyString"></string>
-
+    <string name="empty_string"></string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="score">Score</string>
+    <string name="number_zero">0</string>
+    <string name="title_id">ID</string>
+    <string name="title_name">Name</string>
+    <string name="good">Good</string>
+    <string name="fare">Fare</string>
+    <string name="poor">Poor</string>
     <!-- settings -->
     <string name="settings_menu_about">About</string>
     <string name="settings_menu_configuration">Settings</string>
@@ -60,125 +68,72 @@
     <string name="performance_title_completed">Done</string>
     <string name="performance_title_achievement">Achievement</string>
 
-
     <!-- survey -->
-    <!-- auto -->
+    <string name="survey_info_select_tab">Select Tab: </string>
+
+    <!--widget-->
+    <string name="widget_info_empty_statement">Question statement</string>
+
     <!-- custom -->
-    <!-- analytics -->
+    <string name="custom_title_tallies">TALLIES - Add up and enter the totals for the following indicators from the registers in column A.  In column B enter the total numbers from the monthly reporting sheet</string>
+    <string name="custom_info_tallies">TALLIES for the Month of</string>
 
-    <!-- # SURVEY ACTIVITY -->
-    <string name="selectTab">Select Tab: </string>
+    <!-- score -->
+    <string name="score_title_clinical_fever">Clinical\nfever\nevaluation</string>
+    <string name="score_title_rdt">RDT</string>
+    <string name="score_title_avg">AVG</string>
+    <string name="score_title_environment">Environment</string>
+    <string name="score_title_profile">Profile</string>
+    <string name="score_title_percentage">%</string>
+    <string name="score_info_tab_score">Score for tab:</string>
+    <string name="score_info_overall">Overall</string>
+    <string name="score_info_zero_float">0.0</string>
+    <string name="score_info_accumulated">Tab num/dem</string>
+    <string name="score_info_case1">Case 1</string>
+    <string name="score_info_case2">Case 2</string>
+    <string name="score_info_case3">Case 3</string>
+    <string name="score_info_case4">Case 4</string>
 
-    <!-- ## Automatic Surveys -->
-    <string name="asked">Asked</string>
-    <string name="notAsked">Not asked</string>
-    <string name="emptyStatement">Question statement</string>
-    <string name="done">Done</string>
-    <string name="notDone">Not done</string>
-    <string name="yes">Yes</string>
-    <string name="no">No</string>
-    <string name="notAnswered">Not answered</string>
-    <string name="na">N/A</string>
-    <string name="unknown">Unknown</string>
-    <string name="male">Male</string>
-    <string name="female">Female</string>
-    <string name="labTechnician">Lab Technician</string>
-    <string name="labAssistant">Lab Assistant</string>
-    <string name="clinicalOfficer">Clinical Officer/Physicians Assistant</string>
-    <string name="nurse">Nurse</string>
-    <string name="md">MD</string>
-    <string name="midwife">Midwife</string>
-    <string name="other">Other</string>
+    <!-- potencially deprecated strings (used in views that looks like are not being used)-->
+    <string name="deprecated_adherence_info_switchquestion">Are there pharmacy records of ACTs dispensed?</string>
+    <string name="deprecated_adherence_title_explanation">Phamacy/clinical register v.s Lab records. Steps in Evaluation of Provider Adherence to Malaria Diagnostic Test Results</string>
+    <string name="deprecated_adherence_info_pharmacy_register">Pharmacy Register</string>
+    <string name="deprecated_adherence_title_gender">Gender</string>
+    <string name="deprecated_adherence_title_age">Age</string>
+    <string name="deprecated_adherence_title_test_results">Test results</string>
+    <string name="deprecated_adherence_info_patient_id">Patient\nID</string>
+    <string name="deprecated_adherence_info_prescribed">ACT\nPrescribed?</string>
+    <string name="deprecated_adherence_info_rdt_positive">RDT Positive</string>
 
-    <!-- ## Custom Surveys -->
-    <string name="talliesHeader">TALLIES - Add up and enter the totals for the following indicators from the registers in column A.  In column B enter the total numbers from the monthly reporting sheet</string>
-    <string name="talliesSubHeader">TALLIES for the Month of</string>
-    <string name="rdtPos">RDT Positive</string>
-    <string name="rdtNeg">RDT Negative</string>
-    <string name="microscopyPos">Microscopy Positive</string>
-    <string name="microscopyNeg">Microscopy Negative</string>
-    <string name="testNA">Test not available</string>
-    <string name="testNO">Test not ordered</string>
-    <string name="simpleMalaria">Simple malaria</string>
-    <string name="severeMalaria">Severe malaria</string>
-    <string name="pf">Pf</string>
-    <string name="pv">Pv</string>
-    <string name="pm">Pm</string>
-    <string name="po">Po</string>
-    <string name="abnormal">Abnormal</string>
-    <string name="normal">Normal</string>
-    <string name="switchQuestionStatement">Are there pharmacy records of ACTs dispensed?</string>
-    <string name="explanationHeader">Phamacy/clinical register v.s Lab records. Steps in Evaluation of Provider Adherence to Malaria Diagnostic Test Results</string>
-    <string name="pharmacyRegister">Pharmacy Register</string>
-    <string name="actPatientHeader">Patient\nID</string>
-    <string name="genderHeader">Gender</string>
-    <string name="ageHeader">Age</string>
-    <string name="testResultsHeader">Test results</string>
-    <string name="patientIdNumber">Patient\nID</string>
-    <string name="actPrescribed">ACT\nPrescribed?</string>
-    <string name="scoreHeader">Score</string>
-    <string name="one">1</string>
-    <string name="two">2</string>
-    <string name="three">3</string>
-    <string name="four">4</string>
-    <string name="five">5</string>
-    <string name="six">6</string>
-    <string name="seven">7</string>
-    <string name="eight">8</string>
-    <string name="nine">9</string>
-    <string name="ten">10</string>
-    <string name="eleven">11</string>
-    <string name="twelve">12</string>
-    <string name="thirteen">13</string>
-    <string name="fourteen">14</string>
-    <string name="fifteen">15</string>
-    <string name="sixteen">16</string>
-    <string name="seventeen">17</string>
-    <string name="eighteen">18</string>
-    <string name="nineteen">19</string>
-    <string name="twenty">20</string>
-    <string name="rdtPostive">RDT Positive</string>
-    <string name="rdtNegative">RDT Negative</string>
-    <string name="microPositive">Microscopy Positive</string>
-    <string name="microNegative">Microscopy Negative</string>
-    <string name="supervisor">Supervisor</string>
-    <string name="testresult">Test Result</string>
-    <string name="parasites">Parasites/uL</string>
-    <string name="species">Species</string>
-    <string name="labstaff">Lab Staff</string>
-    <string name="reporting">Reporting</string>
-    <string name="results">Results</string>
-    <string name="register">Register</string>
-    <string name="monthlyReport">Monthly \nReport</string>
-    <string name="supervisormatchlab">Supervisor matches lab staff?</string>
-    <string name="zeroInt">0</string>
-    <string name="healthTitle">Health\nFacility\nInfo</string>
-    <string name="idHeader">ID</string>
-    <string name="nameHeader">Name</string>
-    <string name="clinicalFeverEvalTitle">Clinical\nfever\nevaluation</string>
+    <string name="deprecated_iqatab_info_one">1</string>
+    <string name="deprecated_iqatab_info_two">2</string>
+    <string name="deprecated_iqatab_info_three">3</string>
+    <string name="deprecated_iqatab_info_four">4</string>
+    <string name="deprecated_iqatab_info_five">5</string>
+    <string name="deprecated_iqatab_info_six">6</string>
+    <string name="deprecated_iqatab_info_seven">7</string>
+    <string name="deprecated_iqatab_info_eight">8</string>
+    <string name="deprecated_iqatab_info_nine">9</string>
+    <string name="deprecated_iqatab_info_ten">10</string>
+    <string name="deprecated_iqatab_info_eleven">11</string>
+    <string name="deprecated_iqatab_info_twelve">12</string>
+    <string name="deprecated_iqatab_info_thirteen">13</string>
+    <string name="deprecated_iqatab_info_fourteen">14</string>
+    <string name="deprecated_iqatab_info_fifteen">15</string>
+    <string name="deprecated_iqatab_info_sixteen">16</string>
+    <string name="deprecated_iqatab_info_seventeen">17</string>
+    <string name="deprecated_iqatab_info_eighteen">18</string>
+    <string name="deprecated_iqatab_info_nineteen">19</string>
+    <string name="deprecated_iqatab_info_twenty">20</string>
+    <string name="deprecated_iqatab_info_supervisor">Supervisor</string>
+    <string name="deprecated_iqatab_info_parasites">Parasites/uL</string>
+    <string name="deprecated_iqatab_info_species">Species</string>
+    <string name="deprecated_iqatab_info_labstaff">Lab Staff</string>
 
-    <!-- ## Scores -->
-    <string name="accumulated">Tab num/dem</string>
-    <string name="case1">Case 1</string>
-    <string name="case2">Case 2</string>
-    <string name="case3">Case 3</string>
-    <string name="case4">Case 4</string>
-    <string name="generalTitle">General</string>
-    <string name="rdtTitle">RDT</string>
-    <string name="microscopyTitle">Microscopy</string>
-    <string name="avgTitle">AVG</string>
-    <string name="overall">Overall</string>
-    <string name="zeroFloat">0.0</string>
-    <string name="adherenceTitle">Adherence</string>
-
-    <string name="envAndMatsTitle">Environment</string>
-    <string name="iqaeqaTitle">IQA EQA</string>
-    <string name="profileTitle">Profile</string>
-    <string name="percentage">%</string>
-    <string name="score4tab">Score for tab</string>
-    <string name="scorefortab">Score for tab:</string>
-    <string name="good">Good</string>
-    <string name="fare">Fare</string>
-    <string name="poor">Poor</string>
+    <string name="deprecated_reporting_info_reporting">Reporting</string>
+    <string name="deprecated_reporting_info_results">Results</string>
+    <string name="deprecated_reporting_info_register">Register</string>
+    <string name="deprecated_reporting_info_monthly">Monthly \nReport</string>
+    <string name="deprecated_iqatab_info_supervisor_matches">Supervisor matches lab staff?</string>
 
 </resources>

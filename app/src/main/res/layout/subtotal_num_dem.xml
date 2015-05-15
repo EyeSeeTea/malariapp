@@ -20,7 +20,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceSmall"
-                android:text="@string/scorefortab"
+                android:text="@string/score_info_tab_score"
                 android:id="@+id/subtotalScoreText"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
@@ -72,7 +72,7 @@
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceSmall"
                     android:id="@+id/score"
-                    android:text="@string/zeroFloat"
+                    android:text="@string/score_info_zero_float"
                     android:textStyle="bold"
                     android:textSize="14sp"
                     android:textColor="#ffffff"
@@ -90,7 +90,7 @@
                     android:textColor="#ffffff"
                     android:textSize="14sp"
                     android:textStyle="bold|italic"
-                    android:text="@string/percentage"
+                    android:text="@string/score_title_percentage"
                     android:gravity="left|center_vertical"
                     android:paddingRight="5dip"
                     android:paddingLeft="5dip"
@@ -132,7 +132,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="@string/accumulated"
+            android:text="@string/score_info_accumulated"
             android:id="@+id/accumulatedText"
             android:textStyle="italic"
             android:textColor="#ffffff"
@@ -153,7 +153,7 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="@string/emptyString"
+            android:text="@string/empty_string"
             android:id="@+id/totalNum"
             android:textColor="#ffffff"
             android:textSize="12sp"
@@ -176,7 +176,7 @@
             android:textSize="12sp"
             android:textStyle="bold"
             android:gravity="center"
-            android:text="@string/emptyString" />
+            android:text="@string/empty_string" />
     </RelativeLayout>
 
 
