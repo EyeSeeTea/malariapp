@@ -20,6 +20,7 @@
 package org.eyeseetea.malariacare.layout.adapters.dashboard;
 
 import android.app.Activity;
+import android.app.ListFragment;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -33,6 +34,8 @@ import android.widget.TextView;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.utils.Session;
+import org.eyeseetea.malariacare.fragments.AssessmentFragment;
+import org.eyeseetea.malariacare.fragments.IDashboardDetailsFragment;
 import org.eyeseetea.malariacare.layout.dialog.DialogDispatcher;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 
@@ -42,7 +45,7 @@ import java.util.List;
 /**
  * Created by Adrian on 22/04/2015.
  */
-public class AssessmentAdapter extends BaseAdapter {
+public class AssessmentAdapter extends BaseAdapter implements IDashboardAdapter {
 
     List<Survey> items;
     private LayoutInflater lInflater;
@@ -51,7 +54,6 @@ public class AssessmentAdapter extends BaseAdapter {
     public AssessmentAdapter(List<Survey> items, Context context) {
         this.items = items;
         this.context = context;
-
         this.lInflater = LayoutInflater.from(context);
     }
 
@@ -67,7 +69,7 @@ public class AssessmentAdapter extends BaseAdapter {
 
     @Override
     public long getItemId(int position) {
-        return 0;
+        return position;
     }
 
     @Override
@@ -105,6 +107,26 @@ public class AssessmentAdapter extends BaseAdapter {
         toolContainerView.addView(deleteTextView);
 
         return rowView;
+    }
+
+    @Override
+    public BaseAdapter getAdapter() {
+        return null;
+    }
+
+    @Override
+    public ListFragment getFragment() {
+        return null;
+    }
+
+    @Override
+    public Integer getHeaderLayout() {
+        return null;
+    }
+
+    @Override
+    public Integer getRecordLayout() {
+        return null;
     }
 
     private class AssessmentListener implements View.OnClickListener {

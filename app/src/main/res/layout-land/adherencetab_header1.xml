@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="40dip" />
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/explanationHeader"
+            android:id="@+id/explanationHeader"
+            android:background="@drawable/background_header"
+            android:textSize="18sp"
+            android:textColor="#ffffff"
+            android:paddingLeft="10dip" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textMultiLine"
+            android:id="@+id/explanationText"
+            android:text="Record below the patient ID numbers of 20 patients prescribed ACTs from the Pharmacy Register.\nLocate the patient IDs from Step 1 in the Laboratory and/or Clinical Registers and record their test result in the appropriate column. "
+            android:background="@drawable/background_even"
+            android:textSize="14sp"
+            android:paddingLeft="15dip" />
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="40dip" />
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="@string/pharmacyRegister"
+            android:id="@+id/registerTitle"
+            android:textStyle="bold"
+            android:paddingBottom="20dip" />
+
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="0dip"
+                    android:layout_height="match_parent"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="@string/patientIdNumber"
+                    android:id="@+id/patientId1"
+                    android:background="@drawable/background_header"
+                    android:textColor="#ffffff"
+                    android:gravity="center"
+                    android:lines="2"
+                    android:padding="5dip"
+                    android:layout_weight="1.8" />
+
+                <TextView
+                    android:layout_width="0dip"
+                    android:layout_height="match_parent"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="@string/genderHeader"
+                    android:id="@+id/gender"
+                    android:background="@drawable/background_header"
+                    android:textColor="#ffffff"
+                    android:lines="2"
+                    android:gravity="center"
+                    android:padding="5dip"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:layout_width="0dip"
+                    android:layout_height="match_parent"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="@string/ageHeader"
+                    android:id="@+id/age"
+                    android:background="@drawable/background_header"
+                    android:textColor="#ffffff"
+                    android:lines="2"
+                    android:gravity="center"
+                    android:layout_weight="1"
+                    android:padding="5dip" />
+
+                <TextView
+                    android:layout_width="0dip"
+                    android:layout_height="match_parent"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="@string/testResultsHeader"
+                    android:id="@+id/results"
+                    android:background="@drawable/background_header"
+                    android:textColor="#ffffff"
+                    android:lines="2"
+                    android:gravity="center"
+                    android:padding="5dip"
+                    android:layout_weight="1" />
+
+               <!-- <TextView
+                    android:layout_width="0dip"
+                    android:layout_height="match_parent"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="@string/scoreHeader"
+                    android:id="@+id/scoreHeader1"
+                    android:background="@drawable/background_header"
+                    android:padding="5dip"
+                    android:textColor="#ffffff"
+                    android:gravity="center"
+                    android:lines="2"
+                    android:layout_weight="1" /> -->
+            </LinearLayout>
+
+</LinearLayout>

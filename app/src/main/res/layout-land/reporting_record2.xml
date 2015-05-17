@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="0dip"
+        android:layout_height="wrap_content"
+        android:padding="5dip"
+        android:id="@+id/linearLayout"
+        android:layout_weight="0.4">
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:id="@+id/reportingQuestion"
+            android:padding="5dip"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="0dip"
+        android:layout_height="wrap_content"
+        android:id="@+id/registerContainer"
+        android:padding="5dip"
+        android:layout_gravity="center"
+        android:layout_weight="0.2">
+
+        <EditText
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:id="@+id/register"
+                android:background="@drawable/background_textfield"
+                android:tag="listener" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="0dip"
+        android:layout_height="wrap_content"
+        android:id="@+id/monthlyReportContainer"
+        android:padding="5dip"
+        android:layout_gravity="center"
+        android:layout_weight="0.2">
+
+        <EditText
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:id="@+id/monthlyReport"
+                android:background="@drawable/background_textfield"
+                android:tag="listener"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="0dip"
+        android:layout_height="wrap_content"
+        android:id="@+id/scoreContainer"
+        android:padding="5dip"
+        android:layout_gravity="center"
+        android:layout_weight="0.2">
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:id="@+id/scoreValue"
+            android:padding="5dip"
+            android:layout_gravity="center"
+            android:text="@string/zeroInt"
+            android:gravity="center_horizontal" />
+    </LinearLayout>
+
+</LinearLayout>

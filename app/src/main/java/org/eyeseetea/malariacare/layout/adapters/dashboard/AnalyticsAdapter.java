@@ -19,6 +19,7 @@
 
 package org.eyeseetea.malariacare.layout.adapters.dashboard;
 
+import android.app.ListFragment;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,7 +35,7 @@ import java.util.List;
 /**
  * Created by Adrian on 22/04/2015.
  */
-public class AnalyticsAdapter extends BaseAdapter {
+public class AnalyticsAdapter extends BaseAdapter implements IDashboardAdapter {
 
     List<Survey> items;
     private LayoutInflater lInflater;
@@ -65,6 +66,26 @@ public class AnalyticsAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
+        return null;
+    }
+
+    @Override
+    public BaseAdapter getAdapter() {
+        return null;
+    }
+
+    @Override
+    public ListFragment getFragment() {
+        return null;
+    }
+
+    @Override
+    public Integer getHeaderLayout() {
+        return null;
+    }
+
+    @Override
+    public Integer getRecordLayout() {
         return null;
     }
 }

@@ -49,22 +49,22 @@
             android:name=".DashboardActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/app_name"
-            android:parentActivityName=".LoginActivity"
-            android:launchMode="singleTask">
+            android:parentActivityName=".LoginActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="org.eyeseetea.malariacare.LoginActivity" />
+                android:value=".LoginActivity" />
         </activity>
 
         <activity
             android:name=".CreateSurveyActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/app_name"
-            android:parentActivityName=".DashboardActivity">
+            android:parentActivityName=".DashboardActivity"
+            android:launchMode="singleTask">
 
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="org.eyeseetea.malariacare.DashboardActivity" />
+                android:value=".DashboardActivity" />
         </activity>
 
         <activity
@@ -77,7 +77,7 @@
 
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="org.eyeseetea.malariacare.DashboardActivity" />
+                android:value=".DashboardActivity" />
         </activity>
 
         <meta-data

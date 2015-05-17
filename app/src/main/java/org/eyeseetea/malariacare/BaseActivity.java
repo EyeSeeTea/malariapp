@@ -46,6 +46,10 @@ public abstract class BaseActivity extends ActionBarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        // Manage uncaught exceptions that may occur
+        //Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(this));
+        android.support.v7.app.ActionBar actionBar = this.getSupportActionBar();
+        //LayoutUtils.setActionBarLogo(actionBar);
         super.onCreate(savedInstanceState);
     }
 

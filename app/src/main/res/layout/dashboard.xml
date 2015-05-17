@@ -17,48 +17,15 @@
   ~  along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
   -->
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/container"
     android:layout_width="fill_parent" android:layout_height="fill_parent"
-    android:orientation="vertical">
+    android:orientation="horizontal">
 
-    <fragment android:name="org.eyeseetea.malariacare.fragments.AssessmentFragment"
-              android:id="@+id/assessment_fragment"
-        android:layout_width="fill_parent"
-              android:layout_height="fill_parent"
-        android:layout_weight="1" />
+    <fragment android:name="org.eyeseetea.malariacare.fragments.DashboardFragment"
+              android:id="@+id/dashboard_fragment"
+              android:layout_width="fill_parent"
+              android:layout_height="fill_parent" />
 
-    <Button
-        style="?android:attr/buttonStyleSmall"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/new_survey"
-        android:id="@+id/button"
-        android:onClick="newSurvey" />
-
-    <fragment android:name="org.eyeseetea.malariacare.fragments.FeedbackFragment"
-              android:id="@+id/feedback_fragment"
-        android:layout_width="fill_parent"
-              android:layout_height="fill_parent"
-        android:layout_weight="1" />
-
-    <fragment android:name="org.eyeseetea.malariacare.fragments.FutureAssessmentPlanningFragment"
-        android:id="@+id/future_assessment_planning_fragment"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_weight="1" />
-
-    <fragment android:name="org.eyeseetea.malariacare.fragments.PerformancePlanningFragment"
-        android:id="@+id/performance_planning_fragment"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_weight="1" />
-
-    <fragment android:name="org.eyeseetea.malariacare.fragments.AnalyticsFragment"
-        android:id="@+id/analytics_fragment"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_weight="1" />
-
-</LinearLayout>
+</FrameLayout>

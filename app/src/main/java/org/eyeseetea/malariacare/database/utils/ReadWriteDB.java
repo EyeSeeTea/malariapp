@@ -19,8 +19,11 @@
 
 package org.eyeseetea.malariacare.database.utils;
 
+import com.orm.query.Select;
+
 import org.eyeseetea.malariacare.database.model.Option;
 import org.eyeseetea.malariacare.database.model.Question;
+import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.model.Value;
 import org.eyeseetea.malariacare.utils.Constants;
 
@@ -96,6 +99,11 @@ public class ReadWriteDB {
             value.delete();
     }
 
-
-
+    public static List<Survey> getLastNotSentSurveys(int number){
+        List<Survey> surveys = Select.from(Survey.class)
+                .where(com.orm.query.Condition.prop("status").notEq(Constants.SURVEY_SENT))
+                .orderBy("event_date").list();
+        if (surveys.size() < number) return surveys;
+        else return surveys.subList(0, number-1);
+    }
 }
