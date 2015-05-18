@@ -103,7 +103,7 @@ public class ReadWriteDB {
         List<Survey> surveys = Select.from(Survey.class)
                 .where(com.orm.query.Condition.prop("status").notEq(Constants.SURVEY_SENT))
                 .orderBy("event_date").list();
-        if (surveys.size() < number) return surveys;
-        else return surveys.subList(0, number-1);
+        if (surveys.size() <= number) return surveys;
+        else return surveys.subList(0, number);
     }
 }
