@@ -100,7 +100,6 @@ public class LoginActivity extends PlusBaseActivity implements LoaderCallbacks<C
         super.onCreate(savedInstanceState);
         // Manage uncaught exceptions that may occur
         //Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(this));
-        setContentView(R.layout.login_layout);
 
         // Populate User table just in case there is already an existing user
         Iterator<User> users = User.findAll(User.class);
@@ -108,36 +107,38 @@ public class LoginActivity extends PlusBaseActivity implements LoaderCallbacks<C
             Session.setUser(users.next());
             Class c = DashboardActivity.class;
             Intent mainIntent = new Intent(LoginActivity.this, c);
+            finish();
             startActivity(mainIntent);
-        }
+        }else{
+            setContentView(R.layout.login_layout);
+            // Set up the login form.
+            mUserView = (AutoCompleteTextView) findViewById(R.id.user);
+            populateAutoComplete();
 
-        // Set up the login form.
-        mUserView = (AutoCompleteTextView) findViewById(R.id.user);
-        populateAutoComplete();
-
-        mPasswordView = (EditText) findViewById(R.id.password);
-        mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
-                if (id == R.id.login || id == EditorInfo.IME_NULL) {
-                    attemptLogin();
-                    return true;
+            mPasswordView = (EditText) findViewById(R.id.password);
+            mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+                @Override
+                public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
+                    if (id == R.id.login || id == EditorInfo.IME_NULL) {
+                        attemptLogin();
+                        return true;
+                    }
+                    return false;
                 }
-                return false;
-            }
-        });
+            });
 
-        Button mUserSignInButton = (Button) findViewById(R.id.email_sign_in_button);
-        mUserSignInButton.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                attemptLogin();
-            }
-        });
+            Button mUserSignInButton = (Button) findViewById(R.id.email_sign_in_button);
+            mUserSignInButton.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    attemptLogin();
+                }
+            });
 
-        mLoginFormView = findViewById(R.id.login_form);
-        mProgressView = findViewById(R.id.login_progress);
-        mUserLoginFormView = findViewById(R.id.user_login_form);
+            mLoginFormView = findViewById(R.id.login_form);
+            mProgressView = findViewById(R.id.login_progress);
+            mUserLoginFormView = findViewById(R.id.user_login_form);
+        }
     }
 
     private void populateAutoComplete() {

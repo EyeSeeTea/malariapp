@@ -67,6 +67,10 @@ public class SurveyActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // We set the loading progress bar
+        setProgressBarIndeterminateVisibility(true);
+
         // Manage uncaught exceptions that may occur
         //Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(this));
 
@@ -112,6 +116,9 @@ public class SurveyActivity extends BaseActivity {
         SimpleDateFormat formattedDate = new SimpleDateFormat("dd MMM yyyy");
         TextView surveyInfo = (TextView) this.findViewById(R.id.surveyinfo);
         surveyInfo.setText("Org Unit: " + Session.getSurvey().getOrgUnit().getName() + " | Survey: " + Session.getSurvey().getProgram().getName() + " | Creation Date: " + formattedDate.format(Session.getSurvey().getEventDate()));
+
+        // We remove the loading progress bar
+        setProgressBarIndeterminateVisibility(false);
     }
 
     @Override

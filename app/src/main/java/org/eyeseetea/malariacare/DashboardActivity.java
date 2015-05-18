@@ -27,6 +27,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 
 import org.eyeseetea.malariacare.fragments.DashboardFragment;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;

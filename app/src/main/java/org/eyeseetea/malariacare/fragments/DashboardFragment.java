@@ -68,6 +68,8 @@ public class DashboardFragment extends ListFragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState){
         super.onActivityCreated(savedInstanceState);
+        // show the progress bar
+        setListShown(false);
 
         // Get the not-sent surveys ordered by date
         this.surveys = ReadWriteDB.getLastNotSentSurveys(5);
@@ -104,8 +106,7 @@ public class DashboardFragment extends ListFragment {
         this.records.add(R.layout.performance_planning_record);
         this.records.add(R.layout.analytics_record);
 
-        ((ListView)getActivity().findViewById(R.id.dashboard_list)).setAdapter(new DashboardAdapter(this.surveys, this.adapters, this.titles, this.headers, this.records, getActivity()));
-        //setListAdapter(new DashboardAdapter(this.surveys, this.adapters, this.headers, this.records, getActivity()));
+        setListAdapter(new DashboardAdapter(this.surveys, this.adapters, this.titles, this.headers, this.records, getActivity()));
 
         // Check to see if we have a frame in which to embed the details fragment directly in the containing UI
         View detailsFrame = getActivity().findViewById(R.id.details);
@@ -121,6 +122,9 @@ public class DashboardFragment extends ListFragment {
             // Make sure our UI is in the correct state
             showDetails(mCurCheckPosition);
         }
+
+        // hide the progress bar
+        setListShown(true);
     }
 
     @Override
@@ -131,7 +135,12 @@ public class DashboardFragment extends ListFragment {
 
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
+        // show the progress bar
+        setListShown(false);
+        // show details in fragment or activity
         showDetails(position);
+        // hide the progress bar
+        setListShown(true);
     }
 
     /**

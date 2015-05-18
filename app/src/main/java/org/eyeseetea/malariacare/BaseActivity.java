@@ -27,6 +27,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.widget.Spinner;
 
 import org.eyeseetea.malariacare.database.model.OrgUnit;
@@ -46,11 +47,12 @@ public abstract class BaseActivity extends ActionBarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
+        super.onCreate(savedInstanceState);
+        android.support.v7.app.ActionBar actionBar = this.getSupportActionBar();
+        LayoutUtils.setActionBarLogo(actionBar);
         // Manage uncaught exceptions that may occur
         //Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(this));
-        android.support.v7.app.ActionBar actionBar = this.getSupportActionBar();
-        //LayoutUtils.setActionBarLogo(actionBar);
-        super.onCreate(savedInstanceState);
     }
 
     @Override

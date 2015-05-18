@@ -69,7 +69,7 @@
             android:id="@+id/button"
             android:onClick="newSurvey"
             android:textAppearance="@android:style/TextAppearance.Small"
-            android:textColor="#ffffff" />
+            android:textColor="#1e506c" />
     </LinearLayout>
 
 </TableRow>
