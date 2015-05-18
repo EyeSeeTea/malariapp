@@ -27,6 +27,7 @@ import android.widget.Adapter;
 import android.widget.BaseAdapter;
 import android.widget.Space;
 import android.widget.TableLayout;
+import android.widget.TextView;
 
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.model.Survey;
@@ -40,14 +41,16 @@ public class DashboardAdapter extends BaseAdapter {
 
     List<Survey> items;
     List<IDashboardAdapter> adapters;
+    List<String> titles;
     List<Integer> headers;
     List<Integer> records;
     LayoutInflater lInflater;
     Context context;
 
-    public DashboardAdapter(List<Survey> items, List<IDashboardAdapter> adapters, List<Integer> headers, List<Integer> records, Context context) {
+    public DashboardAdapter(List<Survey> items, List<IDashboardAdapter> adapters, List<String> titles, List<Integer> headers, List<Integer> records, Context context) {
         this.items = items;
         this.adapters = adapters;
+        this.titles = titles;
         this.headers = headers;
         this.records = records;
         this.context = context;
@@ -74,16 +77,19 @@ public class DashboardAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
-        View rowView = lInflater.inflate(R.layout.dashboard_row, null, false);
-        //TableLayout container = (TableLayout) rowView.findViewById(R.id.container);
+        View rowView = lInflater.inflate(R.layout.dashboard_row, parent, false);
         View header = lInflater.inflate(this.headers.get(position), null, false);
+        TableLayout table = (TableLayout) rowView.findViewById(R.id.dashboard_table);
+        TextView title = (TextView) rowView.findViewById(R.id.title);
+        title.setText(this.titles.get(position));
+        table.addView(header);
 
-        for (int i=0; i<adapters.size(); i++){
-            for (int j=0; j<((BaseAdapter)adapters.get(i)).getCount(); j++) {
-                View subRow = ((Adapter) getItem(position)).getView(j, convertView, parent);
-            }
+
+        for (int i=0; i<((BaseAdapter)adapters.get(position)).getCount(); i++) {
+            View subRow = ((BaseAdapter) getItem(position)).getView(i, convertView, parent);
+            if (subRow != null) table.addView(subRow);
         }
 
-        return header;
+        return rowView;
     }
 }

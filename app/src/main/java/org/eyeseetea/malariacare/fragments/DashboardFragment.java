@@ -61,6 +61,7 @@ public class DashboardFragment extends ListFragment {
 
     List<Survey> surveys;
     List<IDashboardAdapter> adapters;
+    List<String> titles;
     List<Integer> headers;
     List<Integer> records;
 
@@ -79,6 +80,14 @@ public class DashboardFragment extends ListFragment {
         this.adapters.add(new PerformancePlanningAdapter(this.surveys, getActivity()));
         this.adapters.add(new AnalyticsAdapter(this.surveys, getActivity()));
 
+        // make a list with the titles
+        this.titles = new ArrayList<>();
+        this.titles.add(getResources().getString(R.string.active_assessments));
+        this.titles.add(getResources().getString(R.string.feedbackTitle));
+        this.titles.add(getResources().getString(R.string.future_assessments_title));
+        this.titles.add(getResources().getString(R.string.performance_against_target_header));
+        this.titles.add(getResources().getString(R.string.analytics_header));
+
         // make a list with the header layouts
         this.headers = new ArrayList<>();
         this.headers.add(R.layout.assessment_header);
@@ -95,7 +104,7 @@ public class DashboardFragment extends ListFragment {
         this.records.add(R.layout.performance_planning_record);
         this.records.add(R.layout.analytics_record);
 
-        ((ListView)getActivity().findViewById(R.id.dashboard_list)).setAdapter(new DashboardAdapter(this.surveys, this.adapters, this.headers, this.records, getActivity()));
+        ((ListView)getActivity().findViewById(R.id.dashboard_list)).setAdapter(new DashboardAdapter(this.surveys, this.adapters, this.titles, this.headers, this.records, getActivity()));
         //setListAdapter(new DashboardAdapter(this.surveys, this.adapters, this.headers, this.records, getActivity()));
 
         // Check to see if we have a frame in which to embed the details fragment directly in the containing UI
