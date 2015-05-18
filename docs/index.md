@@ -15,7 +15,7 @@ A quick overview of the app.
 
 A quick overview of the navigation flow inside the app would be:
 
-![Overview](img/facility_aq_tool_screens_data_travel.png)
+![Overview](https://www.lucidchart.com/publicSegments/view/5559a785-85b4-451b-bd11-5e660a004a17/image.png)
 
 
 ## Screenshots

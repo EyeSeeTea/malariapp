@@ -4,7 +4,7 @@
 
 The core of the app depends on the relationships between its domains.
 
-![Domain model](img/domain.png)
+![Domain model](https://www.lucidchart.com/publicSegments/view/5559a79b-0430-48fb-9a54-234f0a00ce79/image.png)
 
 
 ## Basic flows
