@@ -19,10 +19,12 @@
 
 package org.eyeseetea.malariacare.fragments;
 
+import android.app.Fragment;
 import android.app.ListFragment;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -43,7 +45,7 @@ import java.util.List;
 /**
  * A placeholder fragment containing a simple view.
  */
-public class DashboardDetailsFragment extends ListFragment {
+public class DashboardDetailsFragment extends Fragment {
 
     /**
      * Create a new instance of DetailsFragment, initialized to
@@ -89,6 +91,8 @@ public class DashboardDetailsFragment extends ListFragment {
                 4, getActivity().getResources().getDisplayMetrics());
         text.setPadding(padding, padding, padding, padding);
         scroller.addView(text);
+        Log.d(".DashDetailsActivity", Integer.toString(getShownIndex()));
+        if (getAdapter() != null) Log.d(".DashDetailsActivity", getAdapter().toString());
 
         return scroller;
     }

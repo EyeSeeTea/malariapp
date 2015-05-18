@@ -5,6 +5,12 @@
         <item name="background">@color/mainColor</item>
         <item name="logo">@drawable/qualityapp_logo</item>
         <item name="displayOptions">useLogo|showHome|homeAsUp|showTitle</item>
+        <!-- specify shared element transitions -->
+        <!--<item name="android:windowSharedElementEnterTransition">
+            @transition/fadein</item>-->
+        <!--<item name="android:windowSharedElementExitTransition">
+            @transition/fadeout</item>-->
+
     </style>
     <style name="Widget.AppCompat.Spinner.EyeSeeSpinner">
         <item name="android:textSize">12sp</item>

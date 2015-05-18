@@ -30,6 +30,7 @@ import android.widget.TextView;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.model.Survey;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**

@@ -107,7 +107,6 @@ public class LoginActivity extends PlusBaseActivity implements LoaderCallbacks<C
             Session.setUser(users.next());
             Class c = DashboardActivity.class;
             Intent mainIntent = new Intent(LoginActivity.this, c);
-            finish();
             startActivity(mainIntent);
         }else{
             setContentView(R.layout.login_layout);
@@ -250,7 +249,7 @@ public class LoginActivity extends PlusBaseActivity implements LoaderCallbacks<C
         //TODO: Update this logic to also handle the user logged in by email.
         boolean connected = getPlusClient().isConnected();
 
-        mUserLoginFormView.setVisibility(connected ? View.GONE : View.VISIBLE);
+        //mUserLoginFormView.setVisibility(connected ? View.GONE : View.VISIBLE);
     }
 
     @Override
@@ -350,9 +349,12 @@ public class LoginActivity extends PlusBaseActivity implements LoaderCallbacks<C
 
             for (String credential : DUMMY_CREDENTIALS) {
                 String[] pieces = credential.split(":");
-                if (pieces[0].equals(mUser)) {
-                    this.user = new User(mUser, mUser);
-                    this.user.save();
+                if (pieces[0].equals(mUser) && pieces[1].equals(mPassword)) {
+                    if (User.find(User.class, "user = ?", mUser) != null) {
+                        // If the user is already in our table we don't need to save it another time
+                        this.user = new User(mUser, mUser);
+                        this.user.save();
+                    }
                     Session.setUser(user);
                     // Account exists, populate DB and return true if the password matches.
                     // We import the initial data in case it has been done yet
@@ -372,8 +374,8 @@ public class LoginActivity extends PlusBaseActivity implements LoaderCallbacks<C
                         // Select the first survey present in the db. Must not be null if populate didn't fail
                        // session.selectSurvey(Survey.find(Survey.class, "id = 1").get(0));
                     //}
-                    return pieces[1].equals(mPassword);
                 }
+                return pieces[1].equals(mPassword);
             }
 
             // TODO: register the new account here.

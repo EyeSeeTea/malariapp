@@ -56,6 +56,7 @@ public class CreateSurveyActivity extends BaseActivity {
         // Manage uncaught exceptions that may occur
         //Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(this));
         setContentView(R.layout.activity_create_survey);
+
         android.support.v7.app.ActionBar actionBar = this.getSupportActionBar();
         LayoutUtils.setActionBarLogo(actionBar);
 

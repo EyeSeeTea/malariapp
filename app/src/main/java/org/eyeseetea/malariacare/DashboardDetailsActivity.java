@@ -19,6 +19,7 @@
 
 package org.eyeseetea.malariacare;
 
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -35,6 +36,8 @@ public class DashboardDetailsActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.fragment_dashboard_details);
+        overridePendingTransition(R.transition.fadein, R.transition.fadeout);
 
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
             // If the screen is now in landscape mode, we can show the dialog in-line so we don't need this activity
@@ -45,7 +48,10 @@ public class DashboardDetailsActivity extends BaseActivity {
         if (savedInstanceState == null) {
             DashboardDetailsFragment detailsFragment = new DashboardDetailsFragment();
             detailsFragment.setArguments(getIntent().getExtras());
-            getFragmentManager().beginTransaction().add(R.id.container, detailsFragment);
+            FragmentTransaction ft = getFragmentManager().beginTransaction();
+            ft.add(R.id.dashboard_details_container, detailsFragment);
+            ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+            ft.commit();
         }
     }
 

@@ -68,12 +68,6 @@ public class SurveyActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // We set the loading progress bar
-        setProgressBarIndeterminateVisibility(true);
-
-        // Manage uncaught exceptions that may occur
-        //Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(this));
-
         Log.i(".SurveyActivity", "Starting");
         setContentView(R.layout.survey);
         android.support.v7.app.ActionBar actionBar = this.getSupportActionBar();
@@ -109,16 +103,11 @@ public class SurveyActivity extends BaseActivity {
         Log.i(".SurveyActivity", "Creating Menu");
         createMenu();
 
-        // Breadcrumbs on top of the form
-        createBreadCrumb();
-
         // Show survey info as a footer below the form
         SimpleDateFormat formattedDate = new SimpleDateFormat("dd MMM yyyy");
         TextView surveyInfo = (TextView) this.findViewById(R.id.surveyinfo);
         surveyInfo.setText("Org Unit: " + Session.getSurvey().getOrgUnit().getName() + " | Survey: " + Session.getSurvey().getProgram().getName() + " | Creation Date: " + formattedDate.format(Session.getSurvey().getEventDate()));
 
-        // We remove the loading progress bar
-        setProgressBarIndeterminateVisibility(false);
     }
 
     @Override
@@ -248,34 +237,4 @@ public class SurveyActivity extends BaseActivity {
 
     }
 
-    // Creates the breadcrumbs path shown on top of the form to ease navigation
-    private void createBreadCrumb() {
-        LinearLayout breadCrumbsView = (LinearLayout) (this.findViewById(R.id.breadCrumbs));
-
-        TextView dashboardBreadCrumbsView = new TextView(this);
-        dashboardBreadCrumbsView.setText("Dashboard");
-        dashboardBreadCrumbsView.setTextColor(Color.parseColor("#1e506c"));
-        dashboardBreadCrumbsView.setTypeface(null, Typeface.BOLD);
-        dashboardBreadCrumbsView.setOnClickListener(new AssessmentListener(this));
-        breadCrumbsView.addView(dashboardBreadCrumbsView);
-
-        TextView surveyBreadCrumbsView = new TextView(this);
-        surveyBreadCrumbsView.setText(" > Survey");
-        breadCrumbsView.addView(surveyBreadCrumbsView);
-    }
-
-    // Aux class to pass the context to the listener that must call to the finish on activity change
-    private class AssessmentListener implements View.OnClickListener {
-        private Activity context;
-
-        public AssessmentListener(Activity context) {
-            this.context = context;
-        }
-
-        public void onClick(View view) {
-            this.context.finish();
-            Intent dashboardIntent = new Intent(view.getContext(), DashboardActivity.class);
-            this.context.startActivity(dashboardIntent);
-        }
-    }
 }

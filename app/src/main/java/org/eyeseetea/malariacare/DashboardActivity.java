@@ -19,6 +19,7 @@
 
 package org.eyeseetea.malariacare;
 
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -44,7 +45,10 @@ public class DashboardActivity extends BaseActivity {
         if (savedInstanceState == null) {
             DashboardFragment dashboard = new DashboardFragment();
             dashboard.setArguments(getIntent().getExtras());
-            getFragmentManager().beginTransaction().add(R.id.dashboard_container, dashboard).commit();
+            FragmentTransaction ft = getFragmentManager().beginTransaction();
+            ft.add(R.id.dashboard_container, dashboard);
+            ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+            ft.commit();
         }
     }
 
@@ -60,11 +64,5 @@ public class DashboardActivity extends BaseActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         // We don't have any special option in dashboard
         return super.onOptionsItemSelected(item);
-    }
-
-    /** Called when the user clicks the Send button */
-    public void newSurvey(View view) {
-        Intent createSurveyIntent = new Intent(this, CreateSurveyActivity.class);
-        startActivity(createSurveyIntent);
     }
 }

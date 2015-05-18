@@ -31,13 +31,14 @@ import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
 /**
  * Created by Adrian on 22/04/2015.
  */
-public class FeedbackAdapter extends BaseAdapter implements IDashboardAdapter{
+public class FeedbackAdapter extends BaseAdapter implements IDashboardAdapter {
 
     List<Survey> items;
     private LayoutInflater lInflater;

@@ -34,11 +34,10 @@ import android.widget.TextView;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.utils.Session;
-import org.eyeseetea.malariacare.fragments.AssessmentFragment;
-import org.eyeseetea.malariacare.fragments.IDashboardDetailsFragment;
 import org.eyeseetea.malariacare.layout.dialog.DialogDispatcher;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
