@@ -41,18 +41,12 @@ public class DashboardAdapter extends BaseAdapter {
 
     List<Survey> items;
     List<IDashboardAdapter> adapters;
-    List<String> titles;
-    List<Integer> headers;
-    List<Integer> records;
     LayoutInflater lInflater;
     Context context;
 
-    public DashboardAdapter(List<Survey> items, List<IDashboardAdapter> adapters, List<String> titles, List<Integer> headers, List<Integer> records, Context context) {
+    public DashboardAdapter(List<Survey> items, List<IDashboardAdapter> adapters, Context context) {
         this.items = items;
         this.adapters = adapters;
-        this.titles = titles;
-        this.headers = headers;
-        this.records = records;
         this.context = context;
         //this.lInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         this.lInflater = LayoutInflater.from(context);
@@ -78,10 +72,10 @@ public class DashboardAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
 
         View rowView = lInflater.inflate(R.layout.dashboard_row, parent, false);
-        View header = lInflater.inflate(this.headers.get(position), null, false);
+        View header = lInflater.inflate(this.adapters.get(position).getHeaderLayout(), null, false);
         TableLayout table = (TableLayout) rowView.findViewById(R.id.dashboard_table);
         TextView title = (TextView) rowView.findViewById(R.id.title);
-        title.setText(this.titles.get(position));
+        title.setText(this.adapters.get(position).getTitle());
         table.addView(header);
 
 

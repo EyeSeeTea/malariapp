@@ -37,7 +37,6 @@ public class DashboardDetailsActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_dashboard_details);
-        overridePendingTransition(R.transition.fadein, R.transition.fadeout);
 
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
             // If the screen is now in landscape mode, we can show the dialog in-line so we don't need this activity

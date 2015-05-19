@@ -42,15 +42,28 @@ public class FeedbackAdapter extends BaseAdapter implements IDashboardAdapter {
 
     List<Survey> items;
     private LayoutInflater lInflater;
-    private final Context context;
+    private Context context;
+    private Integer headerLayout;
+    private Integer recordLayout;
+    private String title;
 
     public FeedbackAdapter(List<Survey> items, Context context) {
         this.items = items;
         this.context = context;
-
-        this.lInflater=LayoutInflater.from(context);
+        this.lInflater = LayoutInflater.from(context);
+        this.headerLayout = R.layout.feedback_header;
+        this.recordLayout = R.layout.feedback_record;
+        this.title = context.getString(R.string.feedbackTitle);
     }
 
+    public FeedbackAdapter(List<Survey> items, Context context, Integer headerLayout, Integer recordLayout, String title) {
+        this.items = items;
+        this.context = context;
+        this.lInflater = LayoutInflater.from(context);
+        this.headerLayout = R.layout.feedback_header;
+        this.recordLayout = R.layout.feedback_record;
+        this.title = title;
+    }
 
     @Override
     public int getCount() {
@@ -73,7 +86,7 @@ public class FeedbackAdapter extends BaseAdapter implements IDashboardAdapter {
 
         Survey item = (Survey) getItem(position);
 
-        rowView = lInflater.inflate(R.layout.feedback_record, parent, false);
+        rowView = lInflater.inflate(getRecordLayout(), parent, false);
         rowView.setBackgroundResource(LayoutUtils.calculateBackgrounds(position));
 
         ((TextView)rowView.findViewById(R.id.facility)).setText(item.getOrgUnit().getUid() + " - " + item.getOrgUnit().getName());
@@ -85,22 +98,42 @@ public class FeedbackAdapter extends BaseAdapter implements IDashboardAdapter {
     }
 
     @Override
-    public BaseAdapter getAdapter() {
-        return null;
-    }
-
-    @Override
-    public ListFragment getFragment() {
-        return null;
-    }
-
-    @Override
     public Integer getHeaderLayout() {
-        return null;
+        return headerLayout;
+    }
+
+    @Override
+    public void setHeaderLayout(Integer headerLayout) {
+        this.headerLayout = headerLayout;
     }
 
     @Override
     public Integer getRecordLayout() {
-        return null;
+        return recordLayout;
+    }
+
+    @Override
+    public void setRecordLayout(Integer recordLayout) {
+        this.recordLayout = recordLayout;
+    }
+
+    @Override
+    public String getTitle() {
+        return title;
+    }
+
+    @Override
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    @Override
+    public Context getContext() {
+        return context;
+    }
+
+    @Override
+    public void setContext(Context context) {
+        this.context = context;
     }
 }

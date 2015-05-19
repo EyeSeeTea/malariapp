@@ -48,12 +48,27 @@ public class AssessmentAdapter extends BaseAdapter implements IDashboardAdapter 
 
     List<Survey> items;
     private LayoutInflater lInflater;
-    private final Context context;
+    private Context context;
+    private Integer headerLayout;
+    private Integer recordLayout;
+    private String title;
 
     public AssessmentAdapter(List<Survey> items, Context context) {
         this.items = items;
         this.context = context;
         this.lInflater = LayoutInflater.from(context);
+        this.headerLayout = R.layout.assessment_header;
+        this.recordLayout = R.layout.assessment_record;
+        this.title = context.getString(R.string.active_assessment);
+    }
+
+    public AssessmentAdapter(List<Survey> items, Context context, Integer headerLayout, Integer recordLayout, String title) {
+        this.items = items;
+        this.context = context;
+        this.lInflater = LayoutInflater.from(context);
+        this.headerLayout = R.layout.assessment_header;
+        this.recordLayout = R.layout.assessment_record;
+        this.title = title;
     }
 
     @Override
@@ -75,7 +90,7 @@ public class AssessmentAdapter extends BaseAdapter implements IDashboardAdapter 
     public View getView(int position, View convertView, ViewGroup parent) {
         Survey survey = (Survey) getItem(position);
 
-        View rowView = lInflater.inflate(R.layout.assessment_record, parent, false);
+        View rowView = lInflater.inflate(getRecordLayout(), parent, false);
         rowView.setBackgroundResource(LayoutUtils.calculateBackgrounds(position));
 
         // Org Unit Cell
@@ -108,26 +123,6 @@ public class AssessmentAdapter extends BaseAdapter implements IDashboardAdapter 
         return rowView;
     }
 
-    @Override
-    public BaseAdapter getAdapter() {
-        return null;
-    }
-
-    @Override
-    public ListFragment getFragment() {
-        return null;
-    }
-
-    @Override
-    public Integer getHeaderLayout() {
-        return null;
-    }
-
-    @Override
-    public Integer getRecordLayout() {
-        return null;
-    }
-
     private class AssessmentListener implements View.OnClickListener {
 
         private Survey survey;
@@ -147,5 +142,45 @@ public class AssessmentAdapter extends BaseAdapter implements IDashboardAdapter 
                 mf.showDialog(context.getFragmentManager(), DialogDispatcher.DELETE_SURVEY_DIALOG);
             }
         }
+    }
+
+    @Override
+    public void setHeaderLayout(Integer headerLayout){
+        this.headerLayout = headerLayout;
+    }
+
+    @Override
+    public Integer getHeaderLayout() {
+        return this.headerLayout;
+    }
+
+    @Override
+    public void setRecordLayout(Integer recordLayout){
+        this.recordLayout = recordLayout;
+    }
+
+    @Override
+    public Integer getRecordLayout() {
+        return this.recordLayout;
+    }
+
+    @Override
+    public String getTitle() {
+        return title;
+    }
+
+    @Override
+    public void setContext(Context context){
+        this.context = context;
+    }
+
+    @Override
+    public Context getContext(){
+        return this.context;
+    }
+
+    @Override
+    public void setTitle(String title) {
+        this.title = title;
     }
 }

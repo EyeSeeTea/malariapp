@@ -100,10 +100,14 @@ public class ReadWriteDB {
     }
 
     public static List<Survey> getLastNotSentSurveys(int number){
-        List<Survey> surveys = Select.from(Survey.class)
-                .where(com.orm.query.Condition.prop("status").notEq(Constants.SURVEY_SENT))
-                .orderBy("event_date").list();
+        List<Survey> surveys = getAllNotSentSurveys();
         if (surveys.size() <= number) return surveys;
         else return surveys.subList(0, number);
+    }
+
+    public static List<Survey> getAllNotSentSurveys(){
+        return Select.from(Survey.class)
+                .where(com.orm.query.Condition.prop("status").notEq(Constants.SURVEY_SENT))
+                .orderBy("event_date").list();
     }
 }

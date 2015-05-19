@@ -21,6 +21,7 @@ package org.eyeseetea.malariacare.fragments;
 
 import android.app.Fragment;
 import android.app.ListFragment;
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -29,6 +30,8 @@ import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.BaseAdapter;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -36,6 +39,7 @@ import android.widget.TextView;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.SurveyActivity;
 import org.eyeseetea.malariacare.database.model.Survey;
+import org.eyeseetea.malariacare.database.utils.ReadWriteDB;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.layout.adapters.dashboard.AssessmentAdapter;
 import org.eyeseetea.malariacare.layout.adapters.dashboard.IDashboardAdapter;
@@ -45,30 +49,26 @@ import java.util.List;
 /**
  * A placeholder fragment containing a simple view.
  */
-public class DashboardDetailsFragment extends Fragment {
+public class DashboardDetailsFragment extends ListFragment {
 
-    /**
-     * Create a new instance of DetailsFragment, initialized to
-     * show the text at 'index'.
-     */
-    public static DashboardDetailsFragment newInstance(int index, IDashboardAdapter adapter) {
+    private List<Survey> surveys;
+    private IDashboardAdapter adapter;
+    private static int index = 0;
+
+    public static DashboardDetailsFragment newInstance(int index) {
         DashboardDetailsFragment f = new DashboardDetailsFragment();
 
         // Supply index input as an argument.
         Bundle args = new Bundle();
         args.putInt("index", index);
-        args.putSerializable("adapter", adapter);
         f.setArguments(args);
 
         return f;
     }
 
+
     public int getShownIndex() {
         return getArguments().getInt("index", 0);
-    }
-
-    public IDashboardAdapter getAdapter(){
-        return (IDashboardAdapter)getArguments().getSerializable("adapter");
     }
 
     @Override
@@ -85,16 +85,15 @@ public class DashboardDetailsFragment extends Fragment {
             return null;
         }
 
-        ScrollView scroller = new ScrollView(getActivity());
-        TextView text = new TextView(getActivity());
-        int padding = (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
-                4, getActivity().getResources().getDisplayMetrics());
-        text.setPadding(padding, padding, padding, padding);
-        scroller.addView(text);
-        Log.d(".DashDetailsActivity", Integer.toString(getShownIndex()));
-        if (getAdapter() != null) Log.d(".DashDetailsActivity", getAdapter().toString());
-
-        return scroller;
+        this.surveys = ReadWriteDB.getAllNotSentSurveys();
+        return super.onCreateView(inflater, container, savedInstanceState);
     }
 
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        Session.getAdapter().setContext(getActivity());
+        setListAdapter((BaseAdapter) Session.getAdapter());
+        setListShown(true);
+    }
 }

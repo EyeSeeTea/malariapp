@@ -40,15 +40,28 @@ public class PerformancePlanningAdapter extends BaseAdapter implements IDashboar
 
     List<Survey> items;
     private LayoutInflater lInflater;
-    private final Context context;
+    private Context context;
+    private Integer headerLayout;
+    private Integer recordLayout;
+    private String title;
 
     public PerformancePlanningAdapter(List<Survey> items, Context context) {
         this.items = items;
         this.context = context;
-
-        this.lInflater=LayoutInflater.from(context);
+        this.lInflater = LayoutInflater.from(context);
+        this.headerLayout = R.layout.performance_planning_header;
+        this.recordLayout = R.layout.performance_planning_record;
+        this.title = context.getString(R.string.performance_against_target_header);
     }
 
+    public PerformancePlanningAdapter(List<Survey> items, Context context, Integer headerLayout, Integer recordLayout, String title) {
+        this.items = items;
+        this.context = context;
+        this.lInflater = LayoutInflater.from(context);
+        this.headerLayout = headerLayout;
+        this.recordLayout = recordLayout;
+        this.title = title;
+    }
 
     @Override
     public int getCount() {
@@ -71,7 +84,7 @@ public class PerformancePlanningAdapter extends BaseAdapter implements IDashboar
 
         Survey item = (Survey) getItem(position);
 
-        rowView = lInflater.inflate(R.layout.performance_planning_record, parent, false);
+        rowView = lInflater.inflate(getRecordLayout(), parent, false);
         rowView.setBackgroundResource(LayoutUtils.calculateBackgrounds(position));
 
         ((TextView)rowView.findViewById(R.id.date)).setText("Jan");
@@ -83,22 +96,42 @@ public class PerformancePlanningAdapter extends BaseAdapter implements IDashboar
     }
 
     @Override
-    public BaseAdapter getAdapter() {
-        return null;
+    public Context getContext() {
+        return context;
     }
 
     @Override
-    public ListFragment getFragment() {
-        return null;
+    public void setContext(Context context) {
+        this.context = context;
     }
 
     @Override
     public Integer getHeaderLayout() {
-        return null;
+        return headerLayout;
+    }
+
+    @Override
+    public void setHeaderLayout(Integer headerLayout) {
+        this.headerLayout = headerLayout;
     }
 
     @Override
     public Integer getRecordLayout() {
-        return null;
+        return recordLayout;
+    }
+
+    @Override
+    public void setRecordLayout(Integer recordLayout) {
+        this.recordLayout = recordLayout;
+    }
+
+    @Override
+    public String getTitle() {
+        return title;
+    }
+
+    @Override
+    public void setTitle(String title) {
+        this.title = title;
     }
 }

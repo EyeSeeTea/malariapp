@@ -20,21 +20,33 @@
 package org.eyeseetea.malariacare.layout.adapters.dashboard;
 
 import android.app.ListFragment;
+import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
+import org.eyeseetea.malariacare.database.model.Survey;
+
 import java.io.Serializable;
+import java.util.List;
 
 public interface IDashboardAdapter extends Serializable {
 
-    public BaseAdapter getAdapter();
+    public void setContext(Context context);
 
-    public ListFragment getFragment();
+    public Context getContext();
+
+    public void setHeaderLayout(Integer headerLayout);
 
     public Integer getHeaderLayout();
 
+    public void setRecordLayout(Integer recordLayout);
+
     public Integer getRecordLayout();
+
+    public void setTitle(String title);
+
+    public String getTitle();
 
     public View getView(int position, View convertView, ViewGroup parent);
 }

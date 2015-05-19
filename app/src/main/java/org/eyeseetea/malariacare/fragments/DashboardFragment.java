@@ -39,6 +39,7 @@ import org.eyeseetea.malariacare.DashboardDetailsActivity;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.utils.ReadWriteDB;
+import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.layout.adapters.dashboard.AnalyticsAdapter;
 import org.eyeseetea.malariacare.layout.adapters.dashboard.AssessmentAdapter;
 import org.eyeseetea.malariacare.layout.adapters.dashboard.DashboardAdapter;
@@ -59,15 +60,13 @@ public class DashboardFragment extends ListFragment {
     boolean mDualPane;
     int mCurCheckPosition = 0;
 
-    List<Survey> surveys;
-    List<IDashboardAdapter> adapters;
-    List<String> titles;
-    List<Integer> headers;
-    List<Integer> records;
+    private List<Survey> surveys;
+    private List<IDashboardAdapter> adapters;
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState){
         super.onActivityCreated(savedInstanceState);
+
         // show the progress bar
         setListShown(false);
 
@@ -82,31 +81,7 @@ public class DashboardFragment extends ListFragment {
         this.adapters.add(new PerformancePlanningAdapter(this.surveys, getActivity()));
         this.adapters.add(new AnalyticsAdapter(this.surveys, getActivity()));
 
-        // make a list with the titles
-        this.titles = new ArrayList<>();
-        this.titles.add(getResources().getString(R.string.active_assessments));
-        this.titles.add(getResources().getString(R.string.feedbackTitle));
-        this.titles.add(getResources().getString(R.string.future_assessments_title));
-        this.titles.add(getResources().getString(R.string.performance_against_target_header));
-        this.titles.add(getResources().getString(R.string.analytics_header));
-
-        // make a list with the header layouts
-        this.headers = new ArrayList<>();
-        this.headers.add(R.layout.assessment_header);
-        this.headers.add(R.layout.feedback_header);
-        this.headers.add(R.layout.future_assessment_planning_header);
-        this.headers.add(R.layout.performance_planning_header);
-        this.headers.add(R.layout.analytics_header);
-
-        //make a list with the record layouts
-        this.records = new ArrayList<>();
-        this.records.add(R.layout.assessment_record);
-        this.records.add(R.layout.feedback_record);
-        this.records.add(R.layout.future_assessment_planning_record);
-        this.records.add(R.layout.performance_planning_record);
-        this.records.add(R.layout.analytics_record);
-
-        setListAdapter(new DashboardAdapter(this.surveys, this.adapters, this.titles, this.headers, this.records, getActivity()));
+        setListAdapter(new DashboardAdapter(this.surveys, this.adapters, getActivity()));
 
         // Check to see if we have a frame in which to embed the details fragment directly in the containing UI
         View detailsFrame = getActivity().findViewById(R.id.details);
@@ -162,7 +137,7 @@ public class DashboardFragment extends ListFragment {
                     getFragmentManager().findFragmentById(R.id.details);
             if (details == null || details.getShownIndex() != index) {
                 // Make new fragment to show this selection.
-                details = DashboardDetailsFragment.newInstance(index, adapter);
+                details = DashboardDetailsFragment.newInstance(index);
 
                 // Execute a transaction, replacing any existing fragment
                 // with this one inside the frame.
@@ -184,6 +159,7 @@ public class DashboardFragment extends ListFragment {
             Intent intent = new Intent();
             intent.setClass(getActivity(), DashboardDetailsActivity.class);
             intent.putExtra("index", index);
+            Session.setAdapter(adapters.get(index));
             startActivity(intent);
         }
     }

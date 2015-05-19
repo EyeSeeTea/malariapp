@@ -25,6 +25,7 @@ import org.eyeseetea.malariacare.database.model.OrgUnit;
 import org.eyeseetea.malariacare.database.model.Program;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.model.User;
+import org.eyeseetea.malariacare.layout.adapters.dashboard.IDashboardAdapter;
 
 import java.io.Serializable;
 import java.util.List;
@@ -33,6 +34,7 @@ public class Session {
 
     private static Survey survey;
     private static User user;
+    private static IDashboardAdapter adapter;
 
     public static Survey getSurvey() {
         return survey;
@@ -48,5 +50,13 @@ public class Session {
 
     public static void setUser(User user) {
         Session.user = user;
+    }
+
+    public static IDashboardAdapter getAdapter() {
+        return adapter;
+    }
+
+    public static void setAdapter(IDashboardAdapter adapter) {
+        Session.adapter = adapter;
     }
 }
