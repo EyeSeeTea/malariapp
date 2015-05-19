@@ -27,7 +27,6 @@ import android.app.LoaderManager.LoaderCallbacks;
 import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.Loader;
-import android.content.res.Configuration;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -49,16 +48,11 @@ import android.widget.TextView;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
-import com.google.android.gms.common.SignInButton;
-import com.orm.query.Condition;
-import com.orm.query.Select;
 
-import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.model.Tab;
 import org.eyeseetea.malariacare.database.model.User;
 import org.eyeseetea.malariacare.database.utils.PopulateDB;
 import org.eyeseetea.malariacare.database.utils.Session;
-import org.eyeseetea.malariacare.utils.ExceptionHandler;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -169,14 +163,14 @@ public class LoginActivity extends PlusBaseActivity implements LoaderCallbacks<C
 
         // Check for a valid password, if the user entered one.
         if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
-            mPasswordView.setError(getString(R.string.error_invalid_password));
+            mPasswordView.setError(getString(R.string.login_error_short_password));
             focusView = mPasswordView;
             cancel = true;
         }
 
         // Check for a valid user.
         if (TextUtils.isEmpty(user)) {
-            mUserView.setError(getString(R.string.error_field_required));
+            mUserView.setError(getString(R.string.login_error_required));
             focusView = mUserView;
             cancel = true;
         }
@@ -393,7 +387,7 @@ public class LoginActivity extends PlusBaseActivity implements LoaderCallbacks<C
                 Intent mainIntent = new Intent(LoginActivity.this, DashboardActivity.class);
                 startActivity(mainIntent);
             } else {
-                mPasswordView.setError(getString(R.string.error_incorrect_password));
+                mPasswordView.setError(getString(R.string.login_error_password));
                 mPasswordView.requestFocus();
             }
         }

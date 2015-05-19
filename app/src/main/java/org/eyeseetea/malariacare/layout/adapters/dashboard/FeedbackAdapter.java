@@ -53,7 +53,7 @@ public class FeedbackAdapter extends BaseAdapter implements IDashboardAdapter {
         this.lInflater = LayoutInflater.from(context);
         this.headerLayout = R.layout.feedback_header;
         this.recordLayout = R.layout.feedback_record;
-        this.title = context.getString(R.string.feedbackTitle);
+        this.title = context.getString(R.string.feedback_title_header);
     }
 
     public FeedbackAdapter(List<Survey> items, Context context, Integer headerLayout, Integer recordLayout, String title) {

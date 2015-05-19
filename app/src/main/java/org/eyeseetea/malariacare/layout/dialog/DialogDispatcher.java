@@ -6,20 +6,14 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
-import android.content.res.AssetManager;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.LinearLayout;
 
 import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.R;
-import org.eyeseetea.malariacare.database.model.Question;
 import org.eyeseetea.malariacare.database.utils.Session;
-import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 
 import java.io.InputStream;
-import java.util.List;
 
 public class DialogDispatcher extends Fragment {
 
@@ -48,14 +42,14 @@ public class DialogDispatcher extends Fragment {
 
             case DELETE_SURVEY_DIALOG:
 
-                DialogFragment dialogSFrag = NoticeDialogFragment.newInstance(R.string.deleteTitle, R.string.deleteMessage);
+                DialogFragment dialogSFrag = NoticeDialogFragment.newInstance(R.string.dialog_title_delete_survey, R.string.dialog_info_delete_survey);
                 dialogSFrag.setTargetFragment(this, DELETE_SURVEY_DIALOG);
                 dialogSFrag.show(fragmentManager.beginTransaction(), "dialog");
 
                 break;
 
             case ERROR_DIALOG:
-                DialogFragment errorFrag = ErrorDialogFragment.newInstance(R.string.errorTitle, R.string.errorDenominator);
+                DialogFragment errorFrag = ErrorDialogFragment.newInstance(R.string.dialog_title_error, R.string.dialog_error_denominator);
                 errorFrag.setTargetFragment(this, ERROR_DIALOG);
                 errorFrag.show(fragmentManager.beginTransaction(), "dialog");
 
@@ -63,7 +57,7 @@ public class DialogDispatcher extends Fragment {
 
             case LICENSE_DIALOG:
                 InputStream is = contextView.getContext().getResources().openRawResource(R.raw.gpl);
-                DialogFragment licenseFrag = LargeTextDialogFragment.newInstance(R.string.licenseTitle, is);
+                DialogFragment licenseFrag = LargeTextDialogFragment.newInstance(R.string.settings_menu_licence, is);
                 licenseFrag.setTargetFragment(this, LICENSE_DIALOG);
                 licenseFrag.show(fragmentManager.beginTransaction(), "dialog");
 
@@ -71,7 +65,7 @@ public class DialogDispatcher extends Fragment {
 
             case ABOUT_DIALOG:
                 InputStream isa = contextView.getContext().getResources().openRawResource(R.raw.about);
-                DialogFragment aboutFrag = LargeTextDialogFragment.newInstance(R.string.aboutTitle, isa);
+                DialogFragment aboutFrag = LargeTextDialogFragment.newInstance(R.string.settings_menu_about, isa);
                 aboutFrag.setTargetFragment(this, ABOUT_DIALOG);
                 aboutFrag.show(fragmentManager.beginTransaction(), "dialog");
 

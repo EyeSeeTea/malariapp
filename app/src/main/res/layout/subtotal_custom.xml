@@ -21,7 +21,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceSmall"
-                android:text="@string/scorefortab"
+                android:text="@string/score_info_tab_score"
                 android:id="@+id/subtotalScoreText"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
@@ -71,7 +71,7 @@
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceSmall"
                     android:id="@+id/score"
-                    android:text="@string/zeroFloat"
+                    android:text="@string/score_info_zero_float"
                     android:textStyle="bold"
                     android:textSize="14sp"
                     android:textColor="#ffffff"
@@ -93,7 +93,7 @@
                     android:paddingRight="5dip"
                     android:paddingLeft="5dip"
                     android:layout_gravity="center_vertical"
-                    android:text="@string/percentage" />
+                    android:text="@string/score_title_percentage" />
             </LinearLayout>
 
             <LinearLayout

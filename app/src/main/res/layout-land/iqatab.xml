@@ -15,7 +15,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="@string/supervisor"
+            android:text="@string/deprecated_iqatab_info_supervisor"
             android:id="@+id/supervisorTitle"
             android:textStyle="bold"
             android:paddingBottom="20dip" />
@@ -42,7 +42,7 @@
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:text="@string/testResultsHeader"
+                    android:text="@string/deprecated_adherence_title_test_results"
                     android:id="@+id/supervisorResults"
                     android:background="@drawable/background_header"
                     android:textColor="#ffffff"
@@ -55,7 +55,7 @@
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:text="@string/parasites"
+                    android:text="@string/deprecated_iqatab_info_parasites"
                     android:id="@+id/supervisorParasites"
                     android:background="@drawable/background_header"
                     android:textColor="#ffffff"
@@ -68,7 +68,7 @@
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:text="@string/species"
+                    android:text="@string/deprecated_iqatab_info_species"
                     android:id="@+id/supervisorSpecies"
                     android:background="@drawable/background_header"
                     android:textColor="#ffffff"
@@ -97,7 +97,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="@string/labstaff"
+            android:text="@string/deprecated_iqatab_info_labstaff"
             android:id="@+id/labStaffTitle"
             android:textStyle="bold"
             android:paddingBottom="20dip" />
@@ -125,7 +125,7 @@
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:text="@string/testResultsHeader"
+                    android:text="@string/deprecated_adherence_title_test_results"
                     android:id="@+id/labStaffResults"
                     android:background="@drawable/background_header"
                     android:textColor="#ffffff"
@@ -138,7 +138,7 @@
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:text="@string/parasites"
+                    android:text="@string/deprecated_iqatab_info_parasites"
                     android:id="@+id/labStaffParasites"
                     android:background="@drawable/background_header"
                     android:textColor="#ffffff"
@@ -151,7 +151,7 @@
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:text="@string/species"
+                    android:text="@string/deprecated_iqatab_info_species"
                     android:id="@+id/labStaffSpecies"
                     android:background="@drawable/background_header"
                     android:textColor="#ffffff"
@@ -180,7 +180,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="@string/supervisormatchlab"
+            android:text="@string/deprecated_iqatab_info_supervisor_matches"
             android:id="@+id/matchTitle"
             android:textStyle="bold"
             android:paddingBottom="20dip" />
@@ -229,7 +229,7 @@
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceSmall"
                     android:id="@+id/number1"
-                    android:text="@string/one"
+                    android:text="@string/deprecated_iqatab_info_one"
                     android:layout_weight="1"
                     android:layout_gravity="center" />
 
@@ -253,7 +253,7 @@
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceSmall"
                     android:id="@+id/number2"
-                    android:text="@string/two"
+                    android:text="@string/deprecated_iqatab_info_two"
                     android:layout_weight="1"
                     android:layout_gravity="center" />
 
@@ -276,7 +276,7 @@
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceSmall"
                     android:id="@+id/number3"
-                    android:text="@string/three"
+                    android:text="@string/deprecated_iqatab_info_three"
                     android:layout_weight="1"
                     android:layout_gravity="center" />
 
@@ -299,7 +299,7 @@
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceSmall"
                     android:id="@+id/number4"
-                    android:text="@string/four"
+                    android:text="@string/deprecated_iqatab_info_four"
                     android:layout_weight="1"
                     android:layout_gravity="center" />
 
@@ -322,7 +322,7 @@
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceSmall"
                     android:id="@+id/number5"
-                    android:text="@string/five"
+                    android:text="@string/deprecated_iqatab_info_five"
                     android:layout_weight="1"
                     android:layout_gravity="center" />
 
@@ -345,7 +345,7 @@
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceSmall"
                     android:id="@+id/number6"
-                    android:text="@string/six"
+                    android:text="@string/deprecated_iqatab_info_six"
                     android:layout_weight="1"
                     android:layout_gravity="center" />
 
@@ -368,7 +368,7 @@
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceSmall"
                     android:id="@+id/number7"
-                    android:text="@string/seven"
+                    android:text="@string/deprecated_iqatab_info_seven"
                     android:layout_weight="1"
                     android:layout_gravity="center" />
 
@@ -391,7 +391,7 @@
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceSmall"
                     android:id="@+id/number8"
-                    android:text="@string/eight"
+                    android:text="@string/deprecated_iqatab_info_eight"
                     android:layout_weight="1"
                     android:layout_gravity="center" />
 
@@ -414,7 +414,7 @@
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceSmall"
                     android:id="@+id/number9"
-                    android:text="@string/nine"
+                    android:text="@string/deprecated_iqatab_info_nine"
                     android:layout_weight="1"
                     android:layout_gravity="center" />
 
@@ -437,7 +437,7 @@
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceSmall"
                     android:id="@+id/number10"
-                    android:text="@string/ten"
+                    android:text="@string/deprecated_iqatab_info_ten"
                     android:layout_weight="1"
                     android:layout_gravity="center" />
 

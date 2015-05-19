@@ -51,7 +51,7 @@ public class PerformancePlanningAdapter extends BaseAdapter implements IDashboar
         this.lInflater = LayoutInflater.from(context);
         this.headerLayout = R.layout.performance_planning_header;
         this.recordLayout = R.layout.performance_planning_record;
-        this.title = context.getString(R.string.performance_against_target_header);
+        this.title = context.getString(R.string.performance_title_header);
     }
 
     public PerformancePlanningAdapter(List<Survey> items, Context context, Integer headerLayout, Integer recordLayout, String title) {

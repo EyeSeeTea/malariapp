@@ -25,7 +25,7 @@
         android:orientation="horizontal"
         android:layout_width="0dip"
         android:layout_height="fill_parent"
-        android:id="@+id/patientIdContainer"
+        android:id="@+id/patientIdContainer2"
         android:padding="5dip"
         android:layout_weight="1">
 
@@ -49,7 +49,7 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="@string/rdtPostive"
+            android:text="@string/deprecated_adherence_info_rdt_positive"
             android:id="@+id/testResult"
             android:padding="5dip" />
     </LinearLayout>

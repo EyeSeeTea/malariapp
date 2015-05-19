@@ -51,7 +51,7 @@ public class AnalyticsAdapter extends BaseAdapter implements IDashboardAdapter {
         this.lInflater = LayoutInflater.from(context);
         this.headerLayout = R.layout.analytics_header;
         this.recordLayout = R.layout.analytics_record;
-        this.title = context.getString(R.string.analytics_header);
+        this.title = context.getString(R.string.analytics_title_header);
     }
 
     public AnalyticsAdapter(List<Survey> items, Context context, Integer headerLayout, Integer recordLayout, String title) {

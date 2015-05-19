@@ -59,7 +59,7 @@ public class AssessmentAdapter extends BaseAdapter implements IDashboardAdapter 
         this.lInflater = LayoutInflater.from(context);
         this.headerLayout = R.layout.assessment_header;
         this.recordLayout = R.layout.assessment_record;
-        this.title = context.getString(R.string.active_assessment);
+        this.title = context.getString(R.string.assessment_title_header);
     }
 
     public AssessmentAdapter(List<Survey> items, Context context, Integer headerLayout, Integer recordLayout, String title) {
@@ -114,7 +114,7 @@ public class AssessmentAdapter extends BaseAdapter implements IDashboardAdapter 
         LinearLayout toolContainerView = (LinearLayout) rowView.findViewById(R.id.toolsContainer);
 
         TextView deleteTextView = new TextView(this.context);
-        deleteTextView.setText("Delete");
+        deleteTextView.setText(R.string.assessment_info_delete);
         deleteTextView.setTextColor(Color.parseColor("#1e506c"));
         deleteTextView.setTypeface(null, Typeface.BOLD);
         deleteTextView.setOnClickListener(new AssessmentListener((Activity) this.context, survey, "delete"));

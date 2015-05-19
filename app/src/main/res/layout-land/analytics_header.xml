@@ -28,7 +28,7 @@
         android:layout_width="0dip"
         android:layout_height="fill_parent"
         android:textAppearance="?android:textAppearanceSmall"
-        android:text="@string/period_header"
+        android:text="@string/analytics_title_period"
         android:id="@+id/periodHeader"
         android:background="@drawable/background_header"
         android:textColor="#ffffff"
@@ -41,7 +41,7 @@
         android:layout_width="0dip"
         android:layout_height="fill_parent"
         android:textAppearance="?android:textAppearanceSmall"
-        android:text="@string/target"
+        android:text="@string/analytics_title_target"
         android:id="@+id/targetHeader"
         android:background="@drawable/background_header"
         android:textColor="#ffffff"
@@ -61,7 +61,7 @@
         android:padding="5dip"
         android:layout_weight="0.25"
         android:layout_gravity="center"
-        android:text="@string/done" />
+        android:text="@string/analytics_title_completed" />
 
     <TextView
         android:layout_width="0dip"
@@ -74,5 +74,5 @@
         android:padding="5dip"
         android:layout_weight="0.25"
         android:layout_gravity="center"
-        android:text="@string/achievement" />
+        android:text="@string/analytics_title_achievement" />
 </TableRow>

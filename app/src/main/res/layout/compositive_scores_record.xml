@@ -51,7 +51,7 @@
             android:id="@+id/score"
             android:padding="5dip"
             android:layout_gravity="center"
-            android:text="@string/zeroInt" />
+            android:text="@string/number_zero" />
     </LinearLayout>
 
 </LinearLayout>

@@ -52,7 +52,7 @@ public class FutureAssessmentPlanningAdapter extends BaseAdapter implements IDas
         this.lInflater = LayoutInflater.from(context);
         this.headerLayout = R.layout.future_assessment_planning_header;
         this.recordLayout = R.layout.future_assessment_planning_record;
-        this.title = context.getString(R.string.future_assessments_title);
+        this.title = context.getString(R.string.future_title_header);
     }
 
     public FutureAssessmentPlanningAdapter(List<Survey> items, Context context, Integer headerLayout, Integer recordLayout, String title) {

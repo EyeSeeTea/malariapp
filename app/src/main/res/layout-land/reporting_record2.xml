@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content">
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content">
 
     <LinearLayout
         android:orientation="vertical"
@@ -29,12 +29,12 @@
         android:layout_weight="0.2">
 
         <EditText
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:inputType="number"
-                android:id="@+id/register"
-                android:background="@drawable/background_textfield"
-                android:tag="listener" />
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:id="@+id/register"
+            android:background="@drawable/background_textfield"
+            android:tag="listener" />
     </LinearLayout>
 
     <LinearLayout
@@ -47,12 +47,12 @@
         android:layout_weight="0.2">
 
         <EditText
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:inputType="number"
-                android:id="@+id/monthlyReport"
-                android:background="@drawable/background_textfield"
-                android:tag="listener"/>
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:id="@+id/monthlyReport"
+            android:background="@drawable/background_textfield"
+            android:tag="listener"/>
 
     </LinearLayout>
 
@@ -72,7 +72,7 @@
             android:id="@+id/scoreValue"
             android:padding="5dip"
             android:layout_gravity="center"
-            android:text="@string/zeroInt"
+            android:text="@string/number_zero"
             android:gravity="center_horizontal" />
     </LinearLayout>
 

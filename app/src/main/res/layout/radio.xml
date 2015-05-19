@@ -31,7 +31,7 @@
         <TextView
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:text="@string/emptyStatement"
+            android:text="@string/widget_info_empty_statement"
             android:id="@+id/statement"
             android:paddingLeft="10dip" />
     </RelativeLayout>
