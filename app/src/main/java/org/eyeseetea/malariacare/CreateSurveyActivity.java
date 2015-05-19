@@ -19,6 +19,8 @@
 
 package org.eyeseetea.malariacare;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -49,6 +51,8 @@ public class CreateSurveyActivity extends BaseActivity {
     // UI references.
     private Spinner orgUnitView;
     private Spinner programView;
+    private OrgUnit orgUnitDefaultOption;
+    private Program programDefaultOption;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,8 +65,8 @@ public class CreateSurveyActivity extends BaseActivity {
         LayoutUtils.setActionBarLogo(actionBar);
 
         //Create default options
-        OrgUnit orgUnitDefaultOption = new OrgUnit(Constants.DEFAULT_SELECT_OPTION);
-        Program programDefaultOption = new Program(Constants.DEFAULT_SELECT_OPTION);
+        this.orgUnitDefaultOption = new OrgUnit(Constants.DEFAULT_SELECT_OPTION);
+        this.programDefaultOption = new Program(Constants.DEFAULT_SELECT_OPTION);
 
         //Populate Organization Unit DDL
         List<OrgUnit> orgUnitList = OrgUnit.listAll(OrgUnit.class);
@@ -98,16 +102,27 @@ public class CreateSurveyActivity extends BaseActivity {
         OrgUnit orgUnit = (OrgUnit) orgUnitView.getSelectedItem();
         Program program = (Program) programView.getSelectedItem();
 
-        // Save Survey
-        Survey survey = new Survey(orgUnit, program, Session.getUser());
-        survey.save();
+        if(!orgUnit.equals(this.orgUnitDefaultOption) && !program.equals(this.programDefaultOption)) {
+            // Save Survey
+            Survey survey = new Survey(orgUnit, program, Session.getUser());
+            survey.save();
 
-        // Set to session
-        Session.setSurvey(survey);
+            // Set to session
+            Session.setSurvey(survey);
 
-        //Call Survey Activity
-        finish();
-        Intent surveyIntent = new Intent(this, SurveyActivity.class);
-        startActivity(surveyIntent);
+            //Call Survey Activity
+            finish();
+            Intent surveyIntent = new Intent(this, SurveyActivity.class);
+            startActivity(surveyIntent);
+        } else {
+            new AlertDialog.Builder(this)
+                    .setTitle("Missing selection")
+                    .setMessage("Please select Org Unit and Survey")
+                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface arg0, int arg1) {
+
+                        }
+                    }).create().show();
+        }
     }
 }

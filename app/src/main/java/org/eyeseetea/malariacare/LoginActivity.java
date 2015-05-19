@@ -374,8 +374,8 @@ public class LoginActivity extends PlusBaseActivity implements LoaderCallbacks<C
                         // Select the first survey present in the db. Must not be null if populate didn't fail
                        // session.selectSurvey(Survey.find(Survey.class, "id = 1").get(0));
                     //}
+                    return pieces[1].equals(mPassword);
                 }
-                return pieces[1].equals(mPassword);
             }
 
             // TODO: register the new account here.

@@ -168,7 +168,8 @@ public class DashboardFragment extends ListFragment {
                 // with this one inside the frame.
                 FragmentTransaction ft = getFragmentManager().beginTransaction();
                 if (index == 0) {
-                    ft.replace(R.id.details, details);
+                    //ft.replace(R.id.details, details);
+                    ft.replace(R.id.dashboard_details_fragment, details);
                 } else {
                     Log.i(".DashboardFragment", "reaching this");
                     //ft.replace(R.id.a_item, details);
