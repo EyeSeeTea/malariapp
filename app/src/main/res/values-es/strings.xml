@@ -25,9 +25,7 @@
     <string name="login_info_username">Email</string>
     <string name="login_info_password">Contraseña</string>
     <string name="login_info_sign_in">Acceder</string>
-    <string name="login_error_password">La contraseña no es correcta</string>
-    <string name="login_error_short_password">La constraseña es demasiado corta</string>
-    <string name="login_error_required">El campo es obligatorio</string>
+    <string name="login_error_bad_credentials">El usuario/contraseña es incorrecto</string>
 
     <!-- # dialogs -->
     <string name="dialog_title_delete_survey">Borrar evaluación</string>
