@@ -98,6 +98,16 @@ public class FeedbackAdapter extends BaseAdapter implements IDashboardAdapter {
     }
 
     @Override
+    public void setItems(List items) {
+        this.items = (List<Survey>) items;
+    }
+
+    @Override
+    public IDashboardAdapter newInstance(List items, Context context) {
+        return new FeedbackAdapter((List<Survey>) items, context);
+    }
+
+    @Override
     public Integer getHeaderLayout() {
         return headerLayout;
     }

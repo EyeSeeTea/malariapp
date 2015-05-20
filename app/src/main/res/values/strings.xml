@@ -43,6 +43,7 @@
     <string name="dashboard_info_performance">Performance Against Target</string>
     <string name="dashboard_info_analytics">Analytics</string>
     <string name="dashboard_button_new_survey">New Survey</string>
+    <string name="dashboard_button_see_all">See all</string>
 
     <!-- create -->
     <string name="create_info_ok">Create assessment</string>

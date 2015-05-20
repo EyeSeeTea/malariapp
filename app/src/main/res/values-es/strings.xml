@@ -43,6 +43,7 @@
     <string name="dashboard_info_performance">Rendimiento</string>
     <string name="dashboard_info_analytics">Métricas</string>
     <string name="dashboard_button_new_survey">Nueva Encuesta</string>
+    <string name="dashboard_button_see_all">Ver todas</string>
 
     <!-- create -->
     <string name="create_info_ok">Crear evaluación</string>

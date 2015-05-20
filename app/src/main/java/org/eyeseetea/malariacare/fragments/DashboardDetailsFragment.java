@@ -92,8 +92,8 @@ public class DashboardDetailsFragment extends ListFragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        Session.getAdapter().setContext(getActivity());
-        setListAdapter((BaseAdapter) Session.getAdapter());
+        BaseAdapter adapter = (BaseAdapter) Session.getAdapter().newInstance(this.surveys, getActivity());
+        setListAdapter(adapter);
         setListShown(true);
     }
 }

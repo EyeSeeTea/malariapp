@@ -117,31 +117,20 @@ public class AssessmentAdapter extends BaseAdapter implements IDashboardAdapter 
         deleteTextView.setText(R.string.assessment_info_delete);
         deleteTextView.setTextColor(Color.parseColor("#1e506c"));
         deleteTextView.setTypeface(null, Typeface.BOLD);
-        deleteTextView.setOnClickListener(new AssessmentListener((Activity) this.context, survey, "delete"));
+        deleteTextView.setOnClickListener(new AssessmentListener((Activity) this.context, survey, context.getString(R.string.assessment_info_delete)));
         toolContainerView.addView(deleteTextView);
 
         return rowView;
     }
 
-    private class AssessmentListener implements View.OnClickListener {
+    @Override
+    public void setItems(List items) {
+        this.items = (List<Survey>) items;
+    }
 
-        private Survey survey;
-        private String listenerOption; //One of edit, delete
-        private Activity context;
-
-        public AssessmentListener(Activity context, Survey survey, String listenerOption) {
-            this.context = context;
-            this.survey = survey;
-            this.listenerOption = listenerOption;
-        }
-
-        public void onClick(View view) {
-            if (listenerOption.equals("delete")) {
-                Session.setSurvey(survey);
-                DialogDispatcher mf = DialogDispatcher.newInstance(view);
-                mf.showDialog(context.getFragmentManager(), DialogDispatcher.DELETE_SURVEY_DIALOG);
-            }
-        }
+    @Override
+    public IDashboardAdapter newInstance(List items, Context context) {
+        return new AssessmentAdapter((List<Survey>) items, context);
     }
 
     @Override
@@ -182,5 +171,26 @@ public class AssessmentAdapter extends BaseAdapter implements IDashboardAdapter 
     @Override
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    private class AssessmentListener implements View.OnClickListener {
+
+        private Survey survey;
+        private String listenerOption; //One of edit, delete
+        private Activity context;
+
+        public AssessmentListener(Activity context, Survey survey, String listenerOption) {
+            this.context = context;
+            this.survey = survey;
+            this.listenerOption = listenerOption;
+        }
+
+        public void onClick(View view) {
+            if (listenerOption.equals(context.getString(R.string.assessment_info_delete))) {
+                Session.setSurvey(survey);
+                DialogDispatcher mf = DialogDispatcher.newInstance(view);
+                mf.showDialog(context.getFragmentManager(), DialogDispatcher.DELETE_SURVEY_DIALOG);
+            }
+        }
     }
 }

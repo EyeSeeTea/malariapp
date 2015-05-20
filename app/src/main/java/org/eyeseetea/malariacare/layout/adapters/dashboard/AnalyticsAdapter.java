@@ -84,6 +84,16 @@ public class AnalyticsAdapter extends BaseAdapter implements IDashboardAdapter {
     }
 
     @Override
+    public void setItems(List items) {
+        this.items = (List<Survey>) items;
+    }
+
+    @Override
+    public IDashboardAdapter newInstance(List items, Context context) {
+        return new AnalyticsAdapter((List<Survey>) items, context);
+    }
+
+    @Override
     public Context getContext() {
         return context;
     }

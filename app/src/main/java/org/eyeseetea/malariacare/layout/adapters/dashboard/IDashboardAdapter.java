@@ -49,4 +49,8 @@ public interface IDashboardAdapter extends Serializable {
     public String getTitle();
 
     public View getView(int position, View convertView, ViewGroup parent);
+
+    public void setItems(List items);
+
+    public IDashboardAdapter newInstance(List items, Context context);
 }

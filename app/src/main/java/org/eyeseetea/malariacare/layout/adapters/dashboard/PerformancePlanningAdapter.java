@@ -96,6 +96,16 @@ public class PerformancePlanningAdapter extends BaseAdapter implements IDashboar
     }
 
     @Override
+    public void setItems(List items) {
+        this.items = (List<Survey>) items;
+    }
+
+    @Override
+    public IDashboardAdapter newInstance(List items, Context context) {
+        return new PerformancePlanningAdapter((List<Survey>) items, context);
+    }
+
+    @Override
     public Context getContext() {
         return context;
     }

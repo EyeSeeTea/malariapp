@@ -19,6 +19,7 @@
 
 package org.eyeseetea.malariacare.fragments;
 
+import android.app.Activity;
 import android.app.FragmentTransaction;
 import android.app.ListFragment;
 import android.content.Intent;
@@ -81,7 +82,13 @@ public class DashboardFragment extends ListFragment {
         this.adapters.add(new PerformancePlanningAdapter(this.surveys, getActivity()));
         this.adapters.add(new AnalyticsAdapter(this.surveys, getActivity()));
 
-        setListAdapter(new DashboardAdapter(this.surveys, this.adapters, getActivity()));
+        // create a list of listeners to capture the "see all" event
+        List<View.OnClickListener> listeners = new ArrayList<>();
+        for (int i=0; i<5; i++) {
+            listeners.add(new DashboardListener(getActivity(), getString(R.string.dashboard_button_see_all), i));
+        }
+
+        setListAdapter(new DashboardAdapter(this.surveys, this.adapters, listeners, getActivity()));
 
         // Check to see if we have a frame in which to embed the details fragment directly in the containing UI
         View detailsFrame = getActivity().findViewById(R.id.details);
@@ -108,7 +115,7 @@ public class DashboardFragment extends ListFragment {
         outState.putInt("curChoice", mCurCheckPosition);
     }
 
-    @Override
+    /*@Override
     public void onListItemClick(ListView l, View v, int position, long id) {
         // show the progress bar
         setListShown(false);
@@ -116,7 +123,7 @@ public class DashboardFragment extends ListFragment {
         showDetails(position);
         // hide the progress bar
         setListShown(true);
-    }
+    }*/
 
     /**
      * Helper function to show the details of a selected item, either by
@@ -173,5 +180,24 @@ public class DashboardFragment extends ListFragment {
     @Override
     public void onConfigurationChanged(Configuration newConfig){
         super.onConfigurationChanged(newConfig);
+    }
+
+    private class DashboardListener implements View.OnClickListener {
+
+        private String listenerOption; //One of edit, delete
+        private Activity context;
+        private int index;
+
+        public DashboardListener(Activity context, String listenerOption, int index) {
+            this.context = context;
+            this.listenerOption = listenerOption;
+            this.index = index;
+        }
+
+        public void onClick(View view) {
+            if (listenerOption.equals(context.getString(R.string.dashboard_button_see_all))) {
+                showDetails(index);
+            }
+        }
     }
 }

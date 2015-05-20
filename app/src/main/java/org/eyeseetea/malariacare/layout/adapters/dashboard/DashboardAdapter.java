@@ -19,6 +19,7 @@
 
 package org.eyeseetea.malariacare.layout.adapters.dashboard;
 
+import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,6 +32,8 @@ import android.widget.TextView;
 
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.model.Survey;
+import org.eyeseetea.malariacare.database.utils.Session;
+import org.eyeseetea.malariacare.layout.dialog.DialogDispatcher;
 
 import java.util.List;
 
@@ -41,12 +44,14 @@ public class DashboardAdapter extends BaseAdapter {
 
     List<Survey> items;
     List<IDashboardAdapter> adapters;
+    List<View.OnClickListener> listeners;
     LayoutInflater lInflater;
     Context context;
 
-    public DashboardAdapter(List<Survey> items, List<IDashboardAdapter> adapters, Context context) {
+    public DashboardAdapter(List<Survey> items, List<IDashboardAdapter> adapters, List<View.OnClickListener> listeners, Context context) {
         this.items = items;
         this.adapters = adapters;
+        this.listeners = listeners;
         this.context = context;
         //this.lInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         this.lInflater = LayoutInflater.from(context);
@@ -76,6 +81,9 @@ public class DashboardAdapter extends BaseAdapter {
         TableLayout table = (TableLayout) rowView.findViewById(R.id.dashboard_table);
         TextView title = (TextView) rowView.findViewById(R.id.title);
         title.setText(this.adapters.get(position).getTitle());
+        TextView seeAll = (TextView) rowView.findViewById(R.id.see_all);
+        seeAll.setOnClickListener(this.listeners.get(position));
+
         table.addView(header);
 
 

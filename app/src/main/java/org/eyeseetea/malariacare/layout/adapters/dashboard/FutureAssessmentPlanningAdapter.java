@@ -96,6 +96,16 @@ public class FutureAssessmentPlanningAdapter extends BaseAdapter implements IDas
     }
 
     @Override
+    public void setItems(List items) {
+        this.items = (List<Survey>) items;
+    }
+
+    @Override
+    public IDashboardAdapter newInstance(List items, Context context) {
+        return new FutureAssessmentPlanningAdapter((List<Survey>) items, context);
+    }
+
+    @Override
     public Integer getHeaderLayout() {
         return headerLayout;
     }
