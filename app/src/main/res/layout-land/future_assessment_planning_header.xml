@@ -34,7 +34,7 @@
         android:textColor="#ffffff"
         android:gravity="center"
         android:padding="5dip"
-        android:layout_weight="0.4"
+        android:layout_weight="0.3"
         android:layout_gravity="center" />
 
     <TextView
@@ -47,7 +47,7 @@
         android:textColor="#ffffff"
         android:gravity="center"
         android:padding="5dip"
-        android:layout_weight="0.2"
+        android:layout_weight="0.25"
         android:layout_gravity="center" />
 
     <TextView
@@ -59,7 +59,7 @@
         android:textColor="#ffffff"
         android:gravity="center"
         android:padding="5dip"
-        android:layout_weight="0.2"
+        android:layout_weight="0.25"
         android:layout_gravity="center"
         android:text="@string/future_title_due_date" />
 

@@ -63,7 +63,7 @@
 
     <!-- future -->
     <string name="future_title_facility">Facility</string>
-    <string name="future_title_previous_date">Date Previous Assessment</string>
+    <string name="future_title_previous_date">Date Prev. Assess.</string>
     <string name="future_title_due_date">Due date</string>
     <string name="future_title_action">Action</string>
     <string name="future_title_header">Future Assessments</string>

@@ -29,7 +29,9 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="@string/empty_string"
-        android:id="@+id/title" />
+        android:textColor="@color/black"
+        android:id="@+id/title"
+        android:padding="5dip" />
 
     <TableLayout
         android:layout_width="fill_parent"
@@ -41,7 +43,8 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="@string/dashboard_button_see_all"
-        android:textColor="#1e506c"
+        android:textColor="@color/headerColor"
+        android:typeface="monospace"
         android:id="@+id/see_all"
         android:textStyle="bold" />
 

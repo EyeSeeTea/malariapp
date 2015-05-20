@@ -29,7 +29,7 @@
         android:layout_width="0dp"
         android:layout_height="fill_parent"
         android:id="@+id/facilityContainer"
-        android:layout_weight="0.4"
+        android:layout_weight="0.3"
         android:layout_gravity="center">
 
         <TextView
@@ -47,7 +47,7 @@
         android:layout_width="0dp"
         android:layout_height="fill_parent"
         android:id="@+id/datePreviousAssessmentContainer"
-        android:layout_weight="0.2"
+        android:layout_weight="0.25"
         android:layout_gravity="center">
 
         <TextView
@@ -64,7 +64,7 @@
         android:layout_width="0dp"
         android:layout_height="fill_parent"
         android:id="@+id/dueDateContainer"
-        android:layout_weight="0.2"
+        android:layout_weight="0.25"
         android:layout_gravity="center">
 
         <TextView

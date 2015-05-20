@@ -116,7 +116,7 @@ public class AssessmentAdapter extends BaseAdapter implements IDashboardAdapter 
         TextView deleteTextView = new TextView(this.context);
         deleteTextView.setText(R.string.assessment_info_delete);
         deleteTextView.setTextColor(Color.parseColor("#1e506c"));
-        deleteTextView.setTypeface(null, Typeface.BOLD);
+        deleteTextView.setTypeface(Typeface.MONOSPACE, Typeface.BOLD);
         deleteTextView.setOnClickListener(new AssessmentListener((Activity) this.context, survey, context.getString(R.string.assessment_info_delete)));
         toolContainerView.addView(deleteTextView);
 

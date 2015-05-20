@@ -3,10 +3,10 @@
     <item android:top="-2dip" android:right="-2dip" android:left="-2dip">
         <shape
             android:shape="rectangle" >
-            <solid android:color="#deeee7" /> <!--background color-->
+            <solid android:color="@color/evenRows" /> <!--background color-->
             <stroke
                 android:width="2dip"
-                android:color="#1e506c"/> <!--line color-->
+                android:color="@color/headerColor"/> <!--line color-->
         </shape>
     </item>
 </layer-list>

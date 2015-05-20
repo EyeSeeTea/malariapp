@@ -46,7 +46,7 @@
         android:layout_width="0dp"
         android:layout_height="fill_parent"
         android:id="@+id/targetContainer"
-        android:layout_weight="0.25">
+        android:layout_weight="0.2">
 
         <TextView
             android:layout_width="wrap_content"
@@ -62,7 +62,7 @@
         android:layout_width="0dp"
         android:layout_height="fill_parent"
         android:id="@+id/doneContainer"
-        android:layout_weight="0.25">
+        android:layout_weight="0.2">
 
         <TextView
             android:layout_width="wrap_content"
@@ -78,7 +78,7 @@
         android:layout_width="0dp"
         android:layout_height="fill_parent"
         android:id="@+id/achievementContainer"
-        android:layout_weight="0.25">
+        android:layout_weight="0.3">
 
         <TextView
             android:layout_width="wrap_content"
