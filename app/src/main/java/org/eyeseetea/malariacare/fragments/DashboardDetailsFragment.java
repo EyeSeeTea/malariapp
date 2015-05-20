@@ -34,6 +34,7 @@ import android.widget.BaseAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.ScrollView;
+import android.widget.TableLayout;
 import android.widget.TextView;
 
 import org.eyeseetea.malariacare.R;
@@ -55,6 +56,10 @@ public class DashboardDetailsFragment extends ListFragment {
     private IDashboardAdapter adapter;
     private static int index = 0;
 
+    public DashboardDetailsFragment(){
+        this.adapter = Session.getAdapter();
+    }
+
     public static DashboardDetailsFragment newInstance(int index) {
         DashboardDetailsFragment f = new DashboardDetailsFragment();
 
@@ -72,6 +77,12 @@ public class DashboardDetailsFragment extends ListFragment {
     }
 
     @Override
+    public void onCreate(Bundle savedInstanceState){
+        super.onCreate(savedInstanceState);
+        this.surveys = ReadWriteDB.getAllNotSentSurveys();
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
         if (container == null) {
@@ -85,15 +96,18 @@ public class DashboardDetailsFragment extends ListFragment {
             return null;
         }
 
-        this.surveys = ReadWriteDB.getAllNotSentSurveys();
         return super.onCreateView(inflater, container, savedInstanceState);
     }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        BaseAdapter adapter = (BaseAdapter) Session.getAdapter().newInstance(this.surveys, getActivity());
-        setListAdapter(adapter);
+        IDashboardAdapter adapter = Session.getAdapter().newInstance(this.surveys, getActivity());
+        this.adapter = adapter;
+        LayoutInflater inflater = LayoutInflater.from(getActivity());
+        View header = inflater.inflate(this.adapter.getHeaderLayout(), null, false);
+        getListView().addHeaderView(header);
+        setListAdapter((BaseAdapter) adapter);
         setListShown(true);
     }
 

@@ -53,7 +53,6 @@ public class DashboardAdapter extends BaseAdapter {
         this.adapters = adapters;
         this.listeners = listeners;
         this.context = context;
-        //this.lInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         this.lInflater = LayoutInflater.from(context);
     }
 
