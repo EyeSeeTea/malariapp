@@ -1,0 +1,454 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+
+
+    <GridLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:columnCount="1"
+        android:rowCount="2"
+        android:id="@+id/supervisor">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="@string/deprecated_iqatab_info_supervisor"
+            android:id="@+id/supervisorTitle"
+            android:textStyle="bold"
+            android:paddingBottom="20dip" />
+
+        <TableLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/supervisorTable"
+            android:tag="IQEQA1"
+            android:layout_gravity="center">
+
+            <TableRow
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/supervisorHeader"
+                android:layout_gravity="center"
+                android:background="@drawable/background_odd">
+
+                <Space
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="@string/deprecated_adherence_title_test_results"
+                    android:id="@+id/supervisorResults"
+                    android:background="@drawable/background_header"
+                    android:textColor="#ffffff"
+                    android:lines="2"
+                    android:gravity="center"
+                    android:padding="5dip"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="@string/deprecated_iqatab_info_parasites"
+                    android:id="@+id/supervisorParasites"
+                    android:background="@drawable/background_header"
+                    android:textColor="#ffffff"
+                    android:gravity="center"
+                    android:lines="2"
+                    android:padding="5dip"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="@string/deprecated_iqatab_info_species"
+                    android:id="@+id/supervisorSpecies"
+                    android:background="@drawable/background_header"
+                    android:textColor="#ffffff"
+                    android:lines="2"
+                    android:gravity="center"
+                    android:padding="5dip"
+                    android:layout_weight="1" />
+
+            </TableRow>
+        </TableLayout>
+    </GridLayout>
+
+    <Space
+        android:layout_width="fill_parent"
+        android:layout_height="40dip" />
+
+    <GridLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:columnCount="1"
+        android:rowCount="2"
+        android:id="@+id/labStaff"
+        android:longClickable="false">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="@string/deprecated_iqatab_info_labstaff"
+            android:id="@+id/labStaffTitle"
+            android:textStyle="bold"
+            android:paddingBottom="20dip" />
+
+        <TableLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/labStaffTable"
+            android:tag="IQEQA2"
+            android:layout_gravity="center" >
+
+            <TableRow
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/labStaffHeader"
+                android:layout_gravity="center"
+                android:background="@drawable/background_odd" >
+
+                <Space
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="@string/deprecated_adherence_title_test_results"
+                    android:id="@+id/labStaffResults"
+                    android:background="@drawable/background_header"
+                    android:textColor="#ffffff"
+                    android:lines="2"
+                    android:gravity="center"
+                    android:padding="5dip"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="@string/deprecated_iqatab_info_parasites"
+                    android:id="@+id/labStaffParasites"
+                    android:background="@drawable/background_header"
+                    android:textColor="#ffffff"
+                    android:gravity="center"
+                    android:lines="2"
+                    android:padding="5dip"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="@string/deprecated_iqatab_info_species"
+                    android:id="@+id/labStaffSpecies"
+                    android:background="@drawable/background_header"
+                    android:textColor="#ffffff"
+                    android:lines="2"
+                    android:gravity="center"
+                    android:padding="5dip"
+                    android:layout_weight="1" />
+            </TableRow>
+        </TableLayout>
+
+    </GridLayout>
+
+    <Space
+        android:layout_width="fill_parent"
+        android:layout_height="40dip" />
+
+    <GridLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:columnCount="1"
+        android:rowCount="2"
+        android:id="@+id/match"
+        android:longClickable="false" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="@string/deprecated_iqatab_info_supervisor_matches"
+            android:id="@+id/matchTitle"
+            android:textStyle="bold"
+            android:paddingBottom="20dip" />
+
+        <TableLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/matchTable"
+            android:layout_gravity="center" >
+
+            <TableRow
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/matchHeaders"
+                android:layout_gravity="center"
+                android:background="@drawable/background_odd" >
+
+                <Space
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_weight="1"
+                    android:layout_gravity="center" />
+
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="Maths below are auto-calculated"
+                    android:id="@+id/matchHeader"
+                    android:background="@drawable/background_header"
+                    android:textColor="#ffffff"
+                    android:lines="2"
+                    android:gravity="center"
+                    android:padding="5dip"
+                    android:layout_weight="1" />
+
+            </TableRow>
+
+            <TableRow xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/background_odd">
+
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:id="@+id/number1"
+                    android:text="@string/deprecated_iqatab_info_one"
+                    android:layout_weight="1"
+                    android:layout_gravity="center" />
+
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:id="@+id/matchesText1"
+                    android:gravity="center"
+                    android:layout_weight="1" />
+
+            </TableRow>
+
+            <TableRow xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/background_even">
+
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:id="@+id/number2"
+                    android:text="@string/deprecated_iqatab_info_two"
+                    android:layout_weight="1"
+                    android:layout_gravity="center" />
+
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:id="@+id/matchesText2"
+                    android:gravity="center"
+                    android:layout_weight="1" />
+            </TableRow>
+
+            <TableRow xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/background_odd">
+
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:id="@+id/number3"
+                    android:text="@string/deprecated_iqatab_info_three"
+                    android:layout_weight="1"
+                    android:layout_gravity="center" />
+
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:id="@+id/matchesText3"
+                    android:gravity="center"
+                    android:layout_weight="1" />
+            </TableRow>
+
+            <TableRow xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/background_even">
+
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:id="@+id/number4"
+                    android:text="@string/deprecated_iqatab_info_four"
+                    android:layout_weight="1"
+                    android:layout_gravity="center" />
+
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:id="@+id/matchesText4"
+                    android:gravity="center"
+                    android:layout_weight="1" />
+            </TableRow>
+
+            <TableRow xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/background_odd">
+
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:id="@+id/number5"
+                    android:text="@string/deprecated_iqatab_info_five"
+                    android:layout_weight="1"
+                    android:layout_gravity="center" />
+
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:id="@+id/matchesText5"
+                    android:gravity="center"
+                    android:layout_weight="1" />
+            </TableRow>
+
+            <TableRow xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/background_even">
+
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:id="@+id/number6"
+                    android:text="@string/deprecated_iqatab_info_six"
+                    android:layout_weight="1"
+                    android:layout_gravity="center" />
+
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:id="@+id/matchesText6"
+                    android:gravity="center"
+                    android:layout_weight="1" />
+            </TableRow>
+
+            <TableRow xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/background_odd">
+
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:id="@+id/number7"
+                    android:text="@string/deprecated_iqatab_info_seven"
+                    android:layout_weight="1"
+                    android:layout_gravity="center" />
+
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:id="@+id/matchesText7"
+                    android:gravity="center"
+                    android:layout_weight="1" />
+            </TableRow>
+
+            <TableRow xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/background_even">
+
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:id="@+id/number8"
+                    android:text="@string/deprecated_iqatab_info_eight"
+                    android:layout_weight="1"
+                    android:layout_gravity="center" />
+
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:id="@+id/matchesText8"
+                    android:gravity="center"
+                    android:layout_weight="1" />
+            </TableRow>
+
+            <TableRow xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/background_odd">
+
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:id="@+id/number9"
+                    android:text="@string/deprecated_iqatab_info_nine"
+                    android:layout_weight="1"
+                    android:layout_gravity="center" />
+
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:id="@+id/matchesText9"
+                    android:gravity="center"
+                    android:layout_weight="1" />
+            </TableRow>
+
+            <TableRow xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/background_even">
+
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:id="@+id/number10"
+                    android:text="@string/deprecated_iqatab_info_ten"
+                    android:layout_weight="1"
+                    android:layout_gravity="center" />
+
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:id="@+id/matchesText10"
+                    android:gravity="center"
+                    android:layout_weight="1" />
+            </TableRow>
+        </TableLayout>
+    </GridLayout>
+</LinearLayout>

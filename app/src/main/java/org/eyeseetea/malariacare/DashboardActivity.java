@@ -19,6 +19,7 @@
 
 package org.eyeseetea.malariacare;
 
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -27,7 +28,9 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 
+import org.eyeseetea.malariacare.fragments.DashboardFragment;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 import org.eyeseetea.malariacare.utils.ExceptionHandler;
 
@@ -36,13 +39,17 @@ public class DashboardActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
-        // Manage uncaught exceptions that may occur
-        //Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(this));
-        setContentView(R.layout.dashboard);
-        android.support.v7.app.ActionBar actionBar = this.getSupportActionBar();
-        LayoutUtils.setActionBarLogo(actionBar);
+        setContentView(R.layout.fragment_dashboard);
+
+        if (savedInstanceState == null) {
+            DashboardFragment dashboard = new DashboardFragment();
+            dashboard.setArguments(getIntent().getExtras());
+            FragmentTransaction ft = getFragmentManager().beginTransaction();
+            ft.add(R.id.dashboard_container, dashboard);
+            ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+            ft.commit();
+        }
     }
 
 
@@ -55,22 +62,7 @@ public class DashboardActivity extends BaseActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
+        // We don't have any special option in dashboard
         return super.onOptionsItemSelected(item);
-    }
-
-    /** Called when the user clicks the Send button */
-    public void newSurvey(View view) {
-        Intent createSurveyIntent = new Intent(this, CreateSurveyActivity.class);
-        startActivity(createSurveyIntent);
     }
 }

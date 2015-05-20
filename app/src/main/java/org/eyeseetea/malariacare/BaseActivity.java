@@ -23,10 +23,12 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.transition.Explode;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.widget.Spinner;
 
 import org.eyeseetea.malariacare.database.model.OrgUnit;
@@ -46,7 +48,14 @@ public abstract class BaseActivity extends ActionBarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
+        requestWindowFeature(Window.FEATURE_ACTIVITY_TRANSITIONS);
         super.onCreate(savedInstanceState);
+        setTheme(R.style.EyeSeeTheme);
+        android.support.v7.app.ActionBar actionBar = this.getSupportActionBar();
+        LayoutUtils.setActionBarLogo(actionBar);
+        // Manage uncaught exceptions that may occur
+        //Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(this));
     }
 
     @Override
@@ -93,5 +102,12 @@ public abstract class BaseActivity extends ActionBarActivity {
         super.onRestart();
         finish();
         startActivity(getIntent());
+    }
+
+    /** Called when the user clicks the New Survey button */
+    public void newSurvey(View view) {
+        finish();
+        Intent createSurveyIntent = new Intent(this, CreateSurveyActivity.class);
+        startActivity(createSurveyIntent);
     }
 }

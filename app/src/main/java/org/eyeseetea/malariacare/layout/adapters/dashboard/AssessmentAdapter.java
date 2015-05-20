@@ -20,6 +20,7 @@
 package org.eyeseetea.malariacare.layout.adapters.dashboard;
 
 import android.app.Activity;
+import android.app.ListFragment;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -36,23 +37,38 @@ import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.layout.dialog.DialogDispatcher;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
 /**
  * Created by Adrian on 22/04/2015.
  */
-public class AssessmentAdapter extends BaseAdapter {
+public class AssessmentAdapter extends BaseAdapter implements IDashboardAdapter {
 
     List<Survey> items;
     private LayoutInflater lInflater;
-    private final Context context;
+    private Context context;
+    private Integer headerLayout;
+    private Integer recordLayout;
+    private String title;
 
     public AssessmentAdapter(List<Survey> items, Context context) {
         this.items = items;
         this.context = context;
-
         this.lInflater = LayoutInflater.from(context);
+        this.headerLayout = R.layout.assessment_header;
+        this.recordLayout = R.layout.assessment_record;
+        this.title = context.getString(R.string.assessment_title_header);
+    }
+
+    public AssessmentAdapter(List<Survey> items, Context context, Integer headerLayout, Integer recordLayout, String title) {
+        this.items = items;
+        this.context = context;
+        this.lInflater = LayoutInflater.from(context);
+        this.headerLayout = R.layout.assessment_header;
+        this.recordLayout = R.layout.assessment_record;
+        this.title = title;
     }
 
     @Override
@@ -67,14 +83,14 @@ public class AssessmentAdapter extends BaseAdapter {
 
     @Override
     public long getItemId(int position) {
-        return 0;
+        return position;
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         Survey survey = (Survey) getItem(position);
 
-        View rowView = lInflater.inflate(R.layout.assessment_record, parent, false);
+        View rowView = lInflater.inflate(getRecordLayout(), parent, false);
         rowView.setBackgroundResource(LayoutUtils.calculateBackgrounds(position));
 
         // Org Unit Cell
@@ -101,10 +117,60 @@ public class AssessmentAdapter extends BaseAdapter {
         deleteTextView.setText(R.string.assessment_info_delete);
         deleteTextView.setTextColor(Color.parseColor("#1e506c"));
         deleteTextView.setTypeface(null, Typeface.BOLD);
-        deleteTextView.setOnClickListener(new AssessmentListener((Activity) this.context, survey, "delete"));
+        deleteTextView.setOnClickListener(new AssessmentListener((Activity) this.context, survey, context.getString(R.string.assessment_info_delete)));
         toolContainerView.addView(deleteTextView);
 
         return rowView;
+    }
+
+    @Override
+    public void setItems(List items) {
+        this.items = (List<Survey>) items;
+    }
+
+    @Override
+    public IDashboardAdapter newInstance(List items, Context context) {
+        return new AssessmentAdapter((List<Survey>) items, context);
+    }
+
+    @Override
+    public void setHeaderLayout(Integer headerLayout){
+        this.headerLayout = headerLayout;
+    }
+
+    @Override
+    public Integer getHeaderLayout() {
+        return this.headerLayout;
+    }
+
+    @Override
+    public void setRecordLayout(Integer recordLayout){
+        this.recordLayout = recordLayout;
+    }
+
+    @Override
+    public Integer getRecordLayout() {
+        return this.recordLayout;
+    }
+
+    @Override
+    public String getTitle() {
+        return title;
+    }
+
+    @Override
+    public void setContext(Context context){
+        this.context = context;
+    }
+
+    @Override
+    public Context getContext(){
+        return this.context;
+    }
+
+    @Override
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     private class AssessmentListener implements View.OnClickListener {
@@ -120,7 +186,7 @@ public class AssessmentAdapter extends BaseAdapter {
         }
 
         public void onClick(View view) {
-            if (listenerOption.equals("delete")) {
+            if (listenerOption.equals(context.getString(R.string.assessment_info_delete))) {
                 Session.setSurvey(survey);
                 DialogDispatcher mf = DialogDispatcher.newInstance(view);
                 mf.showDialog(context.getFragmentManager(), DialogDispatcher.DELETE_SURVEY_DIALOG);

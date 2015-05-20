@@ -20,6 +20,8 @@
 package org.eyeseetea.malariacare;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Color;
@@ -67,8 +69,6 @@ public class SurveyActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // Manage uncaught exceptions that may occur
-        //Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(this));
 
         Log.i(".SurveyActivity", "Starting");
         setContentView(R.layout.survey);
@@ -105,13 +105,11 @@ public class SurveyActivity extends BaseActivity {
         Log.i(".SurveyActivity", "Creating Menu");
         createMenu();
 
-        // Breadcrumbs on top of the form
-        createBreadCrumb();
-
         // Show survey info as a footer below the form
         SimpleDateFormat formattedDate = new SimpleDateFormat("dd MMM yyyy");
         TextView surveyInfo = (TextView) this.findViewById(R.id.surveyinfo);
         surveyInfo.setText("Org Unit: " + Session.getSurvey().getOrgUnit().getName() + " | Survey: " + Session.getSurvey().getProgram().getName() + " | Creation Date: " + formattedDate.format(Session.getSurvey().getEventDate()));
+
     }
 
     @Override
@@ -241,34 +239,19 @@ public class SurveyActivity extends BaseActivity {
 
     }
 
-    // Creates the breadcrumbs path shown on top of the form to ease navigation
-    private void createBreadCrumb() {
-        LinearLayout breadCrumbsView = (LinearLayout) (this.findViewById(R.id.breadCrumbs));
 
-        TextView dashboardBreadCrumbsView = new TextView(this);
-        dashboardBreadCrumbsView.setText("Dashboard");
-        dashboardBreadCrumbsView.setTextColor(Color.parseColor("#1e506c"));
-        dashboardBreadCrumbsView.setTypeface(null, Typeface.BOLD);
-        dashboardBreadCrumbsView.setOnClickListener(new AssessmentListener(this));
-        breadCrumbsView.addView(dashboardBreadCrumbsView);
+    @Override
+    public void onBackPressed() {
+        new AlertDialog.Builder(this)
+                .setTitle("Really Exit?")
+                .setMessage("Are you sure you want to exit?")
+                .setNegativeButton(android.R.string.no, null)
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
 
-        TextView surveyBreadCrumbsView = new TextView(this);
-        surveyBreadCrumbsView.setText(" > Survey");
-        breadCrumbsView.addView(surveyBreadCrumbsView);
-    }
-
-    // Aux class to pass the context to the listener that must call to the finish on activity change
-    private class AssessmentListener implements View.OnClickListener {
-        private Activity context;
-
-        public AssessmentListener(Activity context) {
-            this.context = context;
-        }
-
-        public void onClick(View view) {
-            this.context.finish();
-            Intent dashboardIntent = new Intent(view.getContext(), DashboardActivity.class);
-            this.context.startActivity(dashboardIntent);
-        }
+                    public void onClick(DialogInterface arg0, int arg1) {
+                        finish();
+                        SurveyActivity.super.onBackPressed();
+                    }
+                }).create().show();
     }
 }

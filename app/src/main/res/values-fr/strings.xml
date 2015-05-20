@@ -42,6 +42,8 @@
     <string name="dashboard_info_future_assessments">Future Assessments</string>
     <string name="dashboard_info_performance">Performance Against Target</string>
     <string name="dashboard_info_analytics">Analytics</string>
+    <string name="dashboard_button_new_survey">Nouvelle enquête</string>
+    <string name="dashboard_button_see_all">Voir toutes</string>
 
     <!-- create -->
     <string name="create_info_ok">Créer évaluation</string>
@@ -52,21 +54,33 @@
     <string name="assessment_title_facility_date">Centre de santé / Date</string>
     <string name="assessment_title_state">État</string>
     <string name="assessment_info_delete">Effacer</string>
+    <string name="assessment_title_header">Evaluation active</string>
 
     <!-- feedback -->
+    <!-- XXX Should it be replaced by 'assessment_title_facility_date'?-->
     <string name="feedback_title_organization_unit_date">Org Unit / Date</string>
+    <string name="feedback_title_header">Retour</string>
 
     <!-- future -->
-    <string name="future_title_facility">Facility</string>
-    <string name="future_title_previous_date">Date Previous Assessment</string>
-    <string name="future_title_due_date">Due date</string>
+    <string name="future_title_facility">Centre</string>
+    <string name="future_title_previous_date">Date prealable evaluation</string>
+    <string name="future_title_due_date">Date limite</string>
     <string name="future_title_action">Action</string>
+    <string name="future_title_header">Evaluations Futurs</string>
 
     <!-- performance -->
-    <string name="performance_title_period">Period</string>
-    <string name="performance_title_target">Target</string>
-    <string name="performance_title_completed">Done</string>
-    <string name="performance_title_achievement">Achievement</string>
+    <string name="performance_title_period">Periode</string>
+    <string name="performance_title_target">But</string>
+    <string name="performance_title_completed">Fait</string>
+    <string name="performance_title_achievement">Obtention</string>
+    <string name="performance_title_header">Performance Sur But</string>
+
+    <!-- analytics -->
+    <string name="analytics_title_period">Periode</string>
+    <string name="analytics_title_target">But</string>
+    <string name="analytics_title_completed">Fait</string>
+    <string name="analytics_title_achievement">Obtention</string>
+    <string name="analytics_title_header">Statistiques</string>
 
     <!-- survey -->
     <string name="survey_info_select_tab">Choisissez onglet: </string>
@@ -94,8 +108,8 @@
     <string name="score_info_case3">Cas 3</string>
     <string name="score_info_case4">Cas 4</string>
 
-    <!-- potencially deprecated strings (used in  unused views)-->
-    <string name="deprecated_adherence_info_switchquestion">Are there pharmacy records of ACTs dispensed?</string>
+    <!-- potencially deprecated strings (used in views that looks like are not being used)-->
+    <string name="deprecated_adherence_info_switchquestion">Est-ce que les enregistrements du pharmacie sont du ACTs livrés ?</string>
     <string name="deprecated_adherence_title_explanation">Phamacy/clinical register v.s Lab records. Steps in Evaluation of Provider Adherence to Malaria Diagnostic Test Results</string>
     <string name="deprecated_adherence_info_pharmacy_register">Pharmacy Register</string>
     <string name="deprecated_adherence_title_gender">Genre</string>
@@ -129,11 +143,11 @@
     <string name="deprecated_iqatab_info_parasites">Parasites/uL</string>
     <string name="deprecated_iqatab_info_species">Species</string>
     <string name="deprecated_iqatab_info_labstaff">Lab Staff</string>
-    <string name="deprecated_iqatab_info_supervisor_matches">Supervisor matches lab staff?</string>
 
-    <string name="deprecated_reporting_info_reporting">Reporting</string>
-    <string name="deprecated_reporting_info_results">Results</string>
-    <string name="deprecated_reporting_info_register">Register</string>
-    <string name="deprecated_reporting_info_monthly">Monthly \nReport</string>
+    <string name="deprecated_reporting_info_reporting">Notification</string>
+    <string name="deprecated_reporting_info_results">Resultats</string>
+    <string name="deprecated_reporting_info_register">Enregistrement</string>
+    <string name="deprecated_reporting_info_monthly">Notification \nMensuel</string>
+    <string name="deprecated_iqatab_info_supervisor_matches">Supervisor matches lab staff?</string>
 
 </resources>

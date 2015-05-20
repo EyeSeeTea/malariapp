@@ -19,6 +19,7 @@
 
 package org.eyeseetea.malariacare.layout.adapters.dashboard;
 
+import android.app.ListFragment;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,24 +30,38 @@ import android.widget.TextView;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.model.Survey;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Created by Adrian on 22/04/2015.
  */
-public class AnalyticsAdapter extends BaseAdapter {
+public class AnalyticsAdapter extends BaseAdapter implements IDashboardAdapter {
 
     List<Survey> items;
     private LayoutInflater lInflater;
-    private final Context context;
+    private Context context;
+    private Integer headerLayout;
+    private Integer recordLayout;
+    private String title;
 
     public AnalyticsAdapter(List<Survey> items, Context context) {
         this.items = items;
         this.context = context;
-
-        this.lInflater=LayoutInflater.from(context);
+        this.lInflater = LayoutInflater.from(context);
+        this.headerLayout = R.layout.analytics_header;
+        this.recordLayout = R.layout.analytics_record;
+        this.title = context.getString(R.string.analytics_title_header);
     }
 
+    public AnalyticsAdapter(List<Survey> items, Context context, Integer headerLayout, Integer recordLayout, String title) {
+        this.items = items;
+        this.context = context;
+        this.lInflater = LayoutInflater.from(context);
+        this.headerLayout = headerLayout;
+        this.recordLayout = recordLayout;
+        this.title = title;
+    }
 
     @Override
     public int getCount() {
@@ -66,5 +81,55 @@ public class AnalyticsAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         return null;
+    }
+
+    @Override
+    public void setItems(List items) {
+        this.items = (List<Survey>) items;
+    }
+
+    @Override
+    public IDashboardAdapter newInstance(List items, Context context) {
+        return new AnalyticsAdapter((List<Survey>) items, context);
+    }
+
+    @Override
+    public Context getContext() {
+        return context;
+    }
+
+    @Override
+    public void setContext(Context context) {
+        this.context = context;
+    }
+
+    @Override
+    public Integer getHeaderLayout() {
+        return headerLayout;
+    }
+
+    @Override
+    public void setHeaderLayout(Integer headerLayout) {
+        this.headerLayout = headerLayout;
+    }
+
+    @Override
+    public Integer getRecordLayout() {
+        return recordLayout;
+    }
+
+    @Override
+    public void setRecordLayout(Integer recordLayout) {
+        this.recordLayout = recordLayout;
+    }
+
+    @Override
+    public String getTitle() {
+        return title;
+    }
+
+    @Override
+    public void setTitle(String title) {
+        this.title = title;
     }
 }

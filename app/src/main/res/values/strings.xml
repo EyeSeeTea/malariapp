@@ -14,6 +14,7 @@
     <string name="good">Good</string>
     <string name="fare">Fare</string>
     <string name="poor">Poor</string>
+
     <!-- settings -->
     <string name="settings_menu_about">About</string>
     <string name="settings_menu_configuration">Settings</string>
@@ -41,6 +42,8 @@
     <string name="dashboard_info_future_assessments">Future Assessments</string>
     <string name="dashboard_info_performance">Performance Against Target</string>
     <string name="dashboard_info_analytics">Analytics</string>
+    <string name="dashboard_button_new_survey">New Survey</string>
+    <string name="dashboard_button_see_all">See all</string>
 
     <!-- create -->
     <string name="create_info_ok">Create assessment</string>
@@ -51,22 +54,33 @@
     <string name="assessment_title_facility_date">Facility / Date</string>
     <string name="assessment_title_state">Status</string>
     <string name="assessment_info_delete">Delete</string>
+    <string name="assessment_title_header">Active Assessment</string>
 
     <!-- feedback -->
     <!-- XXX Should it be replaced by 'assessment_title_facility_date'?-->
     <string name="feedback_title_organization_unit_date">Org Unit / Date</string>
+    <string name="feedback_title_header">Feedback</string>
 
     <!-- future -->
     <string name="future_title_facility">Facility</string>
     <string name="future_title_previous_date">Date Previous Assessment</string>
     <string name="future_title_due_date">Due date</string>
     <string name="future_title_action">Action</string>
+    <string name="future_title_header">Future Assessments</string>
 
     <!-- performance -->
     <string name="performance_title_period">Period</string>
     <string name="performance_title_target">Target</string>
     <string name="performance_title_completed">Done</string>
     <string name="performance_title_achievement">Achievement</string>
+    <string name="performance_title_header">Performance Against Target</string>
+
+    <!-- analytics -->
+    <string name="analytics_title_period">Period</string>
+    <string name="analytics_title_target">Target</string>
+    <string name="analytics_title_completed">Done</string>
+    <string name="analytics_title_achievement">Achievement</string>
+    <string name="analytics_title_header">Analytics</string>
 
     <!-- survey -->
     <string name="survey_info_select_tab">Select Tab: </string>

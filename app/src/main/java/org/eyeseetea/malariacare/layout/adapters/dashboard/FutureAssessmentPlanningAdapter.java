@@ -19,6 +19,7 @@
 
 package org.eyeseetea.malariacare.layout.adapters.dashboard;
 
+import android.app.ListFragment;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,24 +31,38 @@ import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Created by Adrian on 22/04/2015.
  */
-public class FutureAssessmentPlanningAdapter extends BaseAdapter {
+public class FutureAssessmentPlanningAdapter extends BaseAdapter implements IDashboardAdapter {
 
     List<Survey> items;
     private LayoutInflater lInflater;
-    private final Context context;
+    private Context context;
+    private Integer headerLayout;
+    private Integer recordLayout;
+    private String title;
 
     public FutureAssessmentPlanningAdapter(List<Survey> items, Context context) {
         this.items = items;
         this.context = context;
-
-        this.lInflater=LayoutInflater.from(context);
+        this.lInflater = LayoutInflater.from(context);
+        this.headerLayout = R.layout.future_assessment_planning_header;
+        this.recordLayout = R.layout.future_assessment_planning_record;
+        this.title = context.getString(R.string.future_title_header);
     }
 
+    public FutureAssessmentPlanningAdapter(List<Survey> items, Context context, Integer headerLayout, Integer recordLayout, String title) {
+        this.items = items;
+        this.context = context;
+        this.lInflater = LayoutInflater.from(context);
+        this.headerLayout = headerLayout;
+        this.recordLayout = recordLayout;
+        this.title = title;
+    }
 
     @Override
     public int getCount() {
@@ -61,16 +76,15 @@ public class FutureAssessmentPlanningAdapter extends BaseAdapter {
 
     @Override
     public long getItemId(int position) {
-        return 0;
+        return position;
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        View rowView = null;
 
         Survey item = (Survey) getItem(position);
 
-        rowView = lInflater.inflate(R.layout.future_assessment_planning_record, parent, false);
+        View rowView = lInflater.inflate(getRecordLayout(), parent, false);
         rowView.setBackgroundResource(LayoutUtils.calculateBackgrounds(position));
 
         ((TextView)rowView.findViewById(R.id.facility)).setText(item.getOrgUnit().getUid() + " - " + item.getOrgUnit().getName());
@@ -79,5 +93,55 @@ public class FutureAssessmentPlanningAdapter extends BaseAdapter {
         ((TextView)rowView.findViewById(R.id.action)).setText("Start | Reschedule");
 
         return rowView;
+    }
+
+    @Override
+    public void setItems(List items) {
+        this.items = (List<Survey>) items;
+    }
+
+    @Override
+    public IDashboardAdapter newInstance(List items, Context context) {
+        return new FutureAssessmentPlanningAdapter((List<Survey>) items, context);
+    }
+
+    @Override
+    public Integer getHeaderLayout() {
+        return headerLayout;
+    }
+
+    @Override
+    public void setHeaderLayout(Integer headerLayout) {
+        this.headerLayout = headerLayout;
+    }
+
+    @Override
+    public Context getContext() {
+        return context;
+    }
+
+    @Override
+    public void setContext(Context context) {
+        this.context = context;
+    }
+
+    @Override
+    public String getTitle() {
+        return title;
+    }
+
+    @Override
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    @Override
+    public Integer getRecordLayout() {
+        return recordLayout;
+    }
+
+    @Override
+    public void setRecordLayout(Integer recordLayout) {
+        this.recordLayout = recordLayout;
     }
 }

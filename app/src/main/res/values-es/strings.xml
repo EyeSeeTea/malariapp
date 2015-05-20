@@ -42,6 +42,8 @@
     <string name="dashboard_info_future_assessments">Evaluaciones futuras</string>
     <string name="dashboard_info_performance">Rendimiento</string>
     <string name="dashboard_info_analytics">Métricas</string>
+    <string name="dashboard_button_new_survey">Nueva Encuesta</string>
+    <string name="dashboard_button_see_all">Ver todas</string>
 
     <!-- create -->
     <string name="create_info_ok">Crear evaluación</string>
@@ -52,21 +54,33 @@
     <string name="assessment_title_facility_date">Centro de salud/ Fecha</string>
     <string name="assessment_title_state">Estado</string>
     <string name="assessment_info_delete">Eliminar</string>
+    <string name="assessment_title_header">Evaluación Activa</string>
 
     <!-- feedback -->
+    <!-- XXX Should it be replaced by 'assessment_title_facility_date'?-->
     <string name="feedback_title_organization_unit_date">Unidad de organización/ Date</string>
+    <string name="feedback_title_header">Realimentación</string>
 
     <!-- future -->
     <string name="future_title_facility">Centro de salud</string>
     <string name="future_title_previous_date">Fecha última evaluación</string>
     <string name="future_title_due_date">Fecha límite</string>
     <string name="future_title_action">Acción</string>
+    <string name="future_title_header">Evaluaciones Futuras</string>
 
     <!-- performance -->
     <string name="performance_title_period">Periodo</string>
     <string name="performance_title_target">Objetivo</string>
     <string name="performance_title_completed">Completado</string>
     <string name="performance_title_achievement">%</string>
+    <string name="performance_title_header">Rendimiento Frente a Objetivo</string>
+
+    <!-- analytics -->
+    <string name="analytics_title_period">Periodo</string>
+    <string name="analytics_title_target">Objetivo</string>
+    <string name="analytics_title_completed">Completado</string>
+    <string name="analytics_title_achievement">%</string>
+    <string name="analytics_title_header">Estadísticas</string>
 
     <!-- survey -->
     <string name="survey_info_select_tab">Seleccione pestaña: </string>
@@ -94,7 +108,7 @@
     <string name="score_info_case3">Caso 3</string>
     <string name="score_info_case4">Caso 4</string>
 
-    <!-- potencially deprecated strings (used in  unused views)-->
+    <!-- potencially deprecated strings (used in views that looks like are not being used)-->
     <string name="deprecated_adherence_info_switchquestion">¿Hay registros de ACTs dispensados?</string>
     <string name="deprecated_adherence_title_explanation">Registros de farmacia/clínicos v.s. registros de laboratorio. Steps in Evaluation of Provider Adherence to Malaria Diagnostic Test Results</string>
     <string name="deprecated_adherence_info_pharmacy_register">Registro de farmacia</string>

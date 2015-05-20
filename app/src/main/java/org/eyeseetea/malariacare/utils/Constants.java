@@ -23,4 +23,9 @@ public class Constants {
             TAB_SCORE_SUMMARY = 4,
             TAB_OTHER = 5;
 
+    // ############# SURVEY STATUS ###############
+    public static final int SURVEY_IN_PROGRESS = 0,
+            SURVEY_COMPLETED = 1,
+            SURVEY_SENT = 2;
+
 }

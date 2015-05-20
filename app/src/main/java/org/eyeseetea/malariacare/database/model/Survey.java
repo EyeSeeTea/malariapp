@@ -24,6 +24,8 @@ import com.orm.dsl.Ignore;
 import com.orm.query.Condition;
 import com.orm.query.Select;
 
+import org.eyeseetea.malariacare.utils.Constants;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -35,6 +37,7 @@ public class Survey extends SugarRecord<Survey> {
     Program program;
     User user;
     Date eventDate;
+    Integer status;
 
     @Ignore
     List<Integer> _answeredQuestionRatio;
@@ -47,6 +50,7 @@ public class Survey extends SugarRecord<Survey> {
         this.program = program;
         this.user = user;
         this.eventDate = new Date();
+        this.status = Constants.SURVEY_IN_PROGRESS; // Possibilities [ In progress | Completed | Sent ]
     }
 
     public OrgUnit getOrgUnit() {
@@ -79,6 +83,14 @@ public class Survey extends SugarRecord<Survey> {
 
     public void setEventDate(Date eventDate) {
         this.eventDate = eventDate;
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
     }
 
     public List<Value> getValues(){
@@ -120,9 +132,12 @@ public class Survey extends SugarRecord<Survey> {
 
         Survey survey = (Survey) o;
 
+        if (_answeredQuestionRatio != null ? !_answeredQuestionRatio.equals(survey._answeredQuestionRatio) : survey._answeredQuestionRatio != null)
+            return false;
         if (!eventDate.equals(survey.eventDate)) return false;
         if (!orgUnit.equals(survey.orgUnit)) return false;
         if (!program.equals(survey.program)) return false;
+        if (!status.equals(survey.status)) return false;
         if (!user.equals(survey.user)) return false;
 
         return true;
@@ -134,6 +149,8 @@ public class Survey extends SugarRecord<Survey> {
         result = 31 * result + program.hashCode();
         result = 31 * result + user.hashCode();
         result = 31 * result + eventDate.hashCode();
+        result = 31 * result + status.hashCode();
+        result = 31 * result + (_answeredQuestionRatio != null ? _answeredQuestionRatio.hashCode() : 0);
         return result;
     }
 
@@ -143,7 +160,8 @@ public class Survey extends SugarRecord<Survey> {
                 "orgUnit=" + orgUnit +
                 ", program=" + program +
                 ", user=" + user +
-                ", eventDate='" + eventDate + '\'' +
+                ", eventDate=" + eventDate +
+                ", status=" + status +
                 '}';
     }
 }
