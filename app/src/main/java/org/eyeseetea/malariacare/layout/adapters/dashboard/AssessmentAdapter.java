@@ -96,7 +96,7 @@ public class AssessmentAdapter extends BaseAdapter implements IDashboardAdapter 
         // Org Unit Cell
         ((TextView) rowView.findViewById(R.id.facility)).setText(survey.getOrgUnit().getUid() + " - " + survey.getOrgUnit().getName());
         SimpleDateFormat formattedDate = new SimpleDateFormat("dd MMM yyyy");
-        ((TextView) rowView.findViewById(R.id.date)).setText(survey.getProgram() + " | " + formattedDate.format(survey.getEventDate()));
+        ((TextView) rowView.findViewById(R.id.date)).setText(survey.getProgram().getName() + " \n\t " + formattedDate.format(survey.getEventDate()));
 
         //Status Cell
         //FIXME: This bit needs to change when jose architecture is introduced because probably the save will be executed in a different way

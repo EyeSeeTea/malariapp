@@ -21,6 +21,8 @@ package org.eyeseetea.malariacare.layout.adapters.dashboard;
 
 import android.app.ListFragment;
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -90,7 +92,10 @@ public class FutureAssessmentPlanningAdapter extends BaseAdapter implements IDas
         ((TextView)rowView.findViewById(R.id.facility)).setText(item.getOrgUnit().getUid() + " - " + item.getOrgUnit().getName());
         ((TextView)rowView.findViewById(R.id.datePreviousAssessment)).setText("");
         ((TextView)rowView.findViewById(R.id.dueDate)).setText("23 Mar 2015");
-        ((TextView)rowView.findViewById(R.id.action)).setText("Start | Reschedule");
+        TextView action = ((TextView)rowView.findViewById(R.id.action));
+        action.setText("Start \n\t Reschedule");
+        action.setTextColor(Color.parseColor("#1e506c"));
+        action.setTypeface(Typeface.MONOSPACE, Typeface.BOLD);
 
         return rowView;
     }

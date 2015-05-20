@@ -91,7 +91,7 @@ public class FeedbackAdapter extends BaseAdapter implements IDashboardAdapter {
 
         ((TextView)rowView.findViewById(R.id.facility)).setText(item.getOrgUnit().getUid() + " - " + item.getOrgUnit().getName());
         SimpleDateFormat formattedDate = new SimpleDateFormat("dd MMM yyyy");
-        ((TextView)rowView.findViewById(R.id.date)).setText(item.getProgram() + " | " + formattedDate.format(item.getEventDate()));
+        ((TextView)rowView.findViewById(R.id.date)).setText(item.getProgram().getName() + " \n\t " + formattedDate.format(item.getEventDate()));
         ((TextView)rowView.findViewById(R.id.status)).setText("FCM - 22 issues \n RDT - on site retraining \n Microscopy - 25 issues \n Work Environment - 20 issues");
 
         return rowView;

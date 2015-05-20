@@ -250,7 +250,9 @@ public class SurveyActivity extends BaseActivity {
 
                     public void onClick(DialogInterface arg0, int arg1) {
                         finish();
-                        SurveyActivity.super.onBackPressed();
+                        Class c = DashboardActivity.class;
+                        Intent mainIntent = new Intent(SurveyActivity.this, c);
+                        startActivity(mainIntent);
                     }
                 }).create().show();
     }
