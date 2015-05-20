@@ -20,6 +20,7 @@
     <string name="settings_menu_configuration">Paramètres</string>
     <string name="settings_menu_licence">License</string>
     <string name="settings_menu_update">Mise à jour des questions (DHIS)</string>
+    <string name="settings_menu_logout">Se deconnecter</string>
 
     <!-- login -->
     <string name="login_info_username">Mel</string>

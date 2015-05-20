@@ -20,6 +20,7 @@
     <string name="settings_menu_configuration">Settings</string>
     <string name="settings_menu_licence">License</string>
     <string name="settings_menu_update">Update questions (DHIS)</string>
+    <string name="settings_menu_logout">Logout</string>
 
     <!-- login -->
     <string name="login_info_username">User</string>

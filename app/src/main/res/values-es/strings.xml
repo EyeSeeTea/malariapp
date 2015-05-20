@@ -20,6 +20,7 @@
     <string name="settings_menu_configuration">Configuración</string>
     <string name="settings_menu_licence">Licencia</string>
     <string name="settings_menu_update">Actualizar preguntas (DHIS)</string>
+    <string name="settings_menu_logout">Desconectar</string>
 
     <!-- login -->
     <string name="login_info_username">Email</string>

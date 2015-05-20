@@ -19,6 +19,8 @@
 
 package org.eyeseetea.malariacare;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -34,6 +36,7 @@ import android.widget.Spinner;
 import org.eyeseetea.malariacare.database.model.OrgUnit;
 import org.eyeseetea.malariacare.database.model.Program;
 import org.eyeseetea.malariacare.database.model.Survey;
+import org.eyeseetea.malariacare.database.utils.ReadWriteDB;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.layout.adapters.general.OrgUnitArrayAdapter;
 import org.eyeseetea.malariacare.layout.adapters.general.ProgramArrayAdapter;
@@ -87,6 +90,27 @@ public abstract class BaseActivity extends ActionBarActivity {
                 DialogDispatcher aboutD = DialogDispatcher.newInstance(new View(this)); // FIXME: here we create a View just to be able to show the dialog...this shouldn't be needed
                 aboutD.showDialog(getFragmentManager(), DialogDispatcher.ABOUT_DIALOG);
                 break;
+            case R.id.action_logout:
+                Log.d(".MainActivity", "User asked for logging out");
+                new AlertDialog.Builder(this)
+                        .setTitle("Logout")
+                        .setMessage("If you exit the system, all the not sent data will be deleted. Do you still want to exit?")
+                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface arg0, int arg1) {
+                                List<Survey> surveys = ReadWriteDB.getAllNotSentSurveys();
+                                for (Survey survey: surveys){
+                                    survey.delete();
+                                }
+                                Session.getUser().delete();
+                                Session.setUser(null);
+                                Session.setSurvey(null);
+                                Session.setAdapter(null);
+                                finish();
+                                Intent LoginIntent = new Intent(BaseActivity.this, LoginActivity.class);
+                                startActivity(LoginIntent);
+                            }
+                        })
+                        .setNegativeButton(android.R.string.no, null).create().show();
         }
 
         return super.onOptionsItemSelected(item);
