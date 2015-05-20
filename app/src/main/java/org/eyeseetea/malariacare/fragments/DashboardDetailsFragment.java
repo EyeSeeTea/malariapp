@@ -96,4 +96,15 @@ public class DashboardDetailsFragment extends ListFragment {
         setListAdapter(adapter);
         setListShown(true);
     }
+
+    @Override
+    public void onListItemClick(ListView l, View v, int position, long id){
+        super.onListItemClick(l, v, position, id);
+        Session.setSurvey(surveys.get(position));
+
+        //Call Survey Activity
+        getActivity().finish();
+        Intent surveyIntent = new Intent(v.getContext(), SurveyActivity.class);
+        v.getContext().startActivity(surveyIntent);
+    }
 }
