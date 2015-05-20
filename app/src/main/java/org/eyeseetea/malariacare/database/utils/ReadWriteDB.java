@@ -22,6 +22,8 @@ package org.eyeseetea.malariacare.database.utils;
 import com.orm.query.Select;
 
 import org.eyeseetea.malariacare.database.model.Option;
+import org.eyeseetea.malariacare.database.model.OrgUnit;
+import org.eyeseetea.malariacare.database.model.Program;
 import org.eyeseetea.malariacare.database.model.Question;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.model.Value;
@@ -99,15 +101,25 @@ public class ReadWriteDB {
             value.delete();
     }
 
+    // Returns the 5 last surveys (by date) with status yet not put to "Sent"
     public static List<Survey> getLastNotSentSurveys(int number){
         List<Survey> surveys = getAllNotSentSurveys();
         if (surveys.size() <= number) return surveys;
         else return surveys.subList(0, number);
     }
 
+    // Returns all the surveys with status yet not put to "Sent"
     public static List<Survey> getAllNotSentSurveys(){
         return Select.from(Survey.class)
                 .where(com.orm.query.Condition.prop("status").notEq(Constants.SURVEY_SENT))
+                .orderBy("event_date").list();
+    }
+
+    // Returns a concrete survey, if it exists
+    public static List<Survey> getNotSentSurvey(OrgUnit orgUnit, Program program){
+        return Select.from(Survey.class)
+                .where(com.orm.query.Condition.prop("org_unit").eq(orgUnit.getId()))
+                .and(com.orm.query.Condition.prop("program").eq(program.getId()))
                 .orderBy("event_date").list();
     }
 }

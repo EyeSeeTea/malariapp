@@ -35,6 +35,7 @@ import android.widget.Spinner;
 import org.eyeseetea.malariacare.database.model.OrgUnit;
 import org.eyeseetea.malariacare.database.model.Program;
 import org.eyeseetea.malariacare.database.model.Survey;
+import org.eyeseetea.malariacare.database.utils.ReadWriteDB;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.layout.adapters.general.OrgUnitArrayAdapter;
 import org.eyeseetea.malariacare.layout.adapters.general.ProgramArrayAdapter;
@@ -94,6 +95,19 @@ public class CreateSurveyActivity extends BaseActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    public boolean checkEverythingFilled(){
+        return (!orgUnitView.getSelectedItem().equals(this.orgUnitDefaultOption) && !programView.getSelectedItem().equals(this.programDefaultOption));
+    }
+
+    public boolean checkSurveyDoesntExist(){
+        // Read Selected Items
+        OrgUnit orgUnit = (OrgUnit) orgUnitView.getSelectedItem();
+        Program program = (Program) programView.getSelectedItem();
+
+        List<Survey> existing = ReadWriteDB.getNotSentSurvey(orgUnit, program);
+        return (existing == null || existing.size() == 0);
+    }
+
     /** Called when the user clicks the Send button */
     public void createSurvey(View view) {
         Log.i(".CreateSurveyActivity", "Saving survey and saving in session");
@@ -102,7 +116,25 @@ public class CreateSurveyActivity extends BaseActivity {
         OrgUnit orgUnit = (OrgUnit) orgUnitView.getSelectedItem();
         Program program = (Program) programView.getSelectedItem();
 
-        if(!orgUnit.equals(this.orgUnitDefaultOption) && !program.equals(this.programDefaultOption)) {
+        if(!checkEverythingFilled()){
+            new AlertDialog.Builder(this)
+                    .setTitle("Missing selection")
+                    .setMessage("Please select Org Unit and Survey")
+                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface arg0, int arg1) {
+
+                        }
+                    }).create().show();
+        } else if(!checkSurveyDoesntExist()) {
+            new AlertDialog.Builder(this)
+                    .setTitle("Existing Survey")
+                    .setMessage("There is already a not sent form in the system for that Org Unit/Survey")
+                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface arg0, int arg1) {
+
+                        }
+                    }).create().show();
+        } else {
             // Save Survey
             Survey survey = new Survey(orgUnit, program, Session.getUser());
             survey.save();
@@ -114,15 +146,6 @@ public class CreateSurveyActivity extends BaseActivity {
             finish();
             Intent surveyIntent = new Intent(this, SurveyActivity.class);
             startActivity(surveyIntent);
-        } else {
-            new AlertDialog.Builder(this)
-                    .setTitle("Missing selection")
-                    .setMessage("Please select Org Unit and Survey")
-                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface arg0, int arg1) {
-
-                        }
-                    }).create().show();
         }
     }
 }

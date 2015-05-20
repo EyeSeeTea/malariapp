@@ -93,7 +93,7 @@ public class FutureAssessmentPlanningAdapter extends BaseAdapter implements IDas
         ((TextView)rowView.findViewById(R.id.datePreviousAssessment)).setText("");
         ((TextView)rowView.findViewById(R.id.dueDate)).setText("23 Mar 2015");
         TextView action = ((TextView)rowView.findViewById(R.id.action));
-        action.setText("Start \n\t Reschedule");
+        action.setText("Start \n Reschedule");
         action.setTextColor(Color.parseColor("#1e506c"));
         action.setTypeface(Typeface.MONOSPACE, Typeface.BOLD);
 
