@@ -344,7 +344,7 @@ public class LoginActivity extends PlusBaseActivity implements LoaderCallbacks<C
             for (String credential : DUMMY_CREDENTIALS) {
                 String[] pieces = credential.split(":");
                 if (pieces[0].equals(mUser) && pieces[1].equals(mPassword)) {
-                    if (User.find(User.class, "user = ?", mUser) != null) {
+                    if (User.find(User.class, "name = ?", mUser) != null) {
                         // If the user is already in our table we don't need to save it another time
                         this.user = new User(mUser, mUser);
                         this.user.save();
