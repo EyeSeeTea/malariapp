@@ -1,4 +1,4 @@
-3;'MAL-QA-Info-120';'MAL-QA-Info-120-Supervisor ID';;'Supervisor ID';;120;0.00;0.00;305;26;;
+﻿3;'MAL-QA-Info-120';'MAL-QA-Info-120-Supervisor ID';;'Supervisor ID';;120;0.00;0.00;305;26;;
 4;'MAL-QA-Info-130';'MAL-QA-Info-130-Supervisor Name';;'Supervisor Name';;130;0.00;0.00;305;26;;
 5;'MAL-QA-Info-140';'MAL-QA-Info-140-Head of Health Facility (HHF)';;'Head of Health Facility (HHF)';;140;0.00;0.00;306;26;;
 6;'MAL-QA-Info-150';'MAL-QA-Info-150-HHF Telephone';;'HHF Telephone';;150;0.00;0.00;306;26;;
@@ -649,3 +649,23 @@
 651;'MAL-QA-CaseMng-1500-C3';'MAL-QA-CaseMng-1500-C3-Caregiver given reason for transfer';;'Caregiver given reason for transfer';;1500;1.00;0.00;385;15;645;28
 652;'MAL-QA-CaseMng-1510-C3';'MAL-QA-CaseMng-1510-C3-Caregiver informed about what will be done';;'Caregiver informed about what will be done';;1510;1.00;0.00;385;15;645;28
 653;'MAL-QA-CaseMng-1520-C3';'MAL-QA-CaseMng-1520-C3-Caregiver and/or patient asked if there are questions';;'Caregiver and/or patient asked if there are questions';;1520;1.00;0.00;385;15;645;28
+654;;;;'Provider obtains personal history (incl name, age, address, education, occupation)';;100;1.00;1.00;464;15;;32
+655;;;;'Provider asks reason for visiting health facility';;110;1.00;1.00;464;15;;32
+656;;;;'Provider checks immunization status';;120;1.00;1.00;464;15;;32
+657;;;;'Provider asks whether there are lethargy, convulsions/convulsing now';;130;1.00;1.00;465;15;;33
+658;;;;'Provider asks if the patient can drink or breastfeed.';;140;1.00;1.00;465;15;;33
+659;;;;'Provider asks if there is vomiting.';;150;1.00;1.00;465;15;;33
+660;;;;'Provider asks about frequency & Duration of cough.';;160;1.00;1.00;465;15;;33
+661;;;;'Provider asks if there is difficulty in breathing, fast breathing, wheezing .';;170;1.00;1.00;465;15;;33
+662;;;;'Provider asks whether mother or other family or community members have cough';;180;1.00;1.00;465;15;;33
+663;;;;'Provider asks whether the stool contains blood or mucus.';;210;1.00;1.00;465;15;;33
+664;;;;'Provider asks about fever – is there a pattern, duration, associated chills and/or rigors';;200;1.00;1.00;465;15;;33
+665;;;;'Provider asks about diarrhoea';;190;1.00;1.00;465;15;;33
+666;;;;'Provider ask for HIV positivity in mother or child';;220;1.00;1.00;465;15;;33
+667;;;;'Provider checks whether the patient is awake .If the patient is not awake, checks for consciousness/lethargy (try to wake)';;230;1.00;1.00;466;15;;34
+668;;;;'Provider checks for signs of malnutrition – visible emaciation (marasmus or kwashiorkor), pallor (anemia), oedema. Measure MUAC';;240;1.00;1.00;466;15;;34
+669;;;;'Provider weighs the patient. Checks weight on a growth chart.';;250;1.00;1.00;466;15;;34
+670;;;;'Provider assesses the respiratory system – counts breaths, checks for chest indrawing, stridor, wheezing, listens to breath sounds.';;260;1.00;1.00;466;15;;34
+671;;;;'Provider checks for dehydration – looks for sunken eyes, pinches the skin, offers the patient water if awake.';;270;1.00;1.00;466;15;;34
+672;;;;'Provider checks the temperature.';;280;1.00;1.00;466;15;;34
+673;;;;'Provider takes blood sample for rapid diagnostic test or microscopy in the laboratory.';;290;1.00;1.00;466;15;;34
