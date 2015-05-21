@@ -19,40 +19,37 @@
 
 package org.eyeseetea.malariacare;
 
+import android.app.FragmentTransaction;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 
-import org.eyeseetea.malariacare.layout.Layout;
+import org.eyeseetea.malariacare.fragments.DashboardFragment;
+import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
+import org.eyeseetea.malariacare.utils.ExceptionHandler;
 
 
-public class DashboardActivity extends ActionBarActivity {
+public class DashboardActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.dashboard);
-        android.support.v7.app.ActionBar actionBar = this.getSupportActionBar();
-        Layout.setActionBarLogo(actionBar);
+        setContentView(R.layout.fragment_dashboard);
 
-//        if (savedInstanceState == null) {
-//            getSupportFragmentManager().beginTransaction()
-//                    .add(R.id.container, new AssessmentFragment())
-//                    .commit();
-//        }
-    }
-
-    @Override
-    public void onRestart() {
-        super.onRestart();
-        Log.i(".DashboardActivity", "coming back");
-        finish();
-        startActivity(getIntent());
+        if (savedInstanceState == null) {
+            DashboardFragment dashboard = new DashboardFragment();
+            dashboard.setArguments(getIntent().getExtras());
+            FragmentTransaction ft = getFragmentManager().beginTransaction();
+            ft.add(R.id.dashboard_container, dashboard);
+            ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+            ft.commit();
+        }
     }
 
 
@@ -60,29 +57,12 @@ public class DashboardActivity extends ActionBarActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_dashboard, menu);
-        return true;
+        return super.onCreateOptionsMenu(menu);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
+        // We don't have any special option in dashboard
         return super.onOptionsItemSelected(item);
     }
-
-    /** Called when the user clicks the Send button */
-    public void newSurvey(View view) {
-        Intent createSurveyIntent = new Intent(this, CreateSurveyActivity.class);
-        startActivity(createSurveyIntent);
-    }
-
-
 }

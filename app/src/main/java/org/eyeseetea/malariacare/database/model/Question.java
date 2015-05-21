@@ -169,6 +169,16 @@ public class Question extends SugarRecord<Question> {
         else return returnValues.get(0);
     }
 
+    public Option getOptionBySession(){
+        Option option = null;
+
+        Value value = this.getValueBySession();
+        if (value!=null)
+            option = value.getOption();
+
+        return option;
+    }
+
     @Override
     public String toString() {
         return "Question{" +

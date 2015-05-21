@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/background_odd">
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="0dip"
+        android:layout_height="wrap_content"
+        android:id="@+id/patientIdContainer"
+        android:padding="5dip"
+        android:layout_weight="0.4">
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:id="@+id/number" />
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="0dip"
+        android:layout_height="fill_parent"
+        android:id="@+id/patientIdContainer2"
+        android:padding="5dip"
+        android:layout_weight="1">
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:inputType="number"
+            android:id="@+id/patientId"
+            android:background="@drawable/background_textfield"
+            android:textSize="12sp"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="0dip"
+        android:layout_height="wrap_content"
+        android:id="@+id/testResultContainer"
+        android:layout_weight="1">
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="@string/deprecated_adherence_info_rdt_positive"
+            android:id="@+id/testResult"
+            android:padding="5dip" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="0dip"
+        android:layout_height="fill_parent"
+        android:id="@+id/actContainer"
+        android:padding="5dip"
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:background="#bebebe">
+
+            <Spinner
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/yes"
+                android:id="@+id/act1"
+                android:tag="listener" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="0dip"
+        android:layout_height="fill_parent"
+        android:id="@+id/scoreContainer"
+        android:padding="5dip"
+        android:layout_gravity="center"
+        android:layout_weight="1">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:id="@+id/scoreValue"
+            android:padding="5dip"
+            android:text="100"
+            android:layout_gravity="center"
+            android:gravity="center_horizontal" />
+
+    </LinearLayout>
+
+</LinearLayout>

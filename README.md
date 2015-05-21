@@ -1,2 +1,2 @@
-# malariapp
-Little Android app to help with Malaria diagnosis
+# Facility AQ Tool
+Android app to help with several illness treatment assessment

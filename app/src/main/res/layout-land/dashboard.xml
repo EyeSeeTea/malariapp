@@ -1,0 +1,36 @@
+<!--
+  ~ Copyright (c) 2015.
+  ~
+  ~ This file is part of Facility QA Tool App.
+  ~
+  ~  Facility QA Tool App is free software: you can redistribute it and/or modify
+  ~  it under the terms of the GNU General Public License as published by
+  ~  the Free Software Foundation, either version 3 of the License, or
+  ~  (at your option) any later version.
+  ~
+  ~  Facility QA Tool App is distributed in the hope that it will be useful,
+  ~  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~  GNU General Public License for more details.
+  ~
+  ~  You should have received a copy of the GNU General Public License
+  ~  along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
+  -->
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/container"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:orientation="horizontal">
+
+    <fragment class="org.eyeseetea.malariacare.fragments.DashboardFragment"
+              android:id="@+id/dashboard_fragment"
+              android:layout_weight="1"
+              android:layout_width="0dp"
+              android:layout_height="match_parent" />
+
+    <FrameLayout android:id="@+id/details" android:layout_weight="1"
+            android:layout_width="0dp" android:layout_height="match_parent"
+            android:background="?android:attr/detailsElementBackground" />
+
+</LinearLayout>

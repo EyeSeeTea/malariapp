@@ -1,0 +1,6 @@
+site_name: MalariaCare
+pages:
+    - [index.md, Navigation]
+    - [layouts.md, Layouts]
+    - [classes.md, Classes]
+    - [database.md, Database Model]

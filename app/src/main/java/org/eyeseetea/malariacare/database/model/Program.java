@@ -87,13 +87,9 @@ public class Program extends SugarRecord<Program> {
 
     @Override
     public String toString() {
-        return name;
+        return "Program{" +
+                "uid='" + uid + '\'' +
+                ", name='" + name + '\'' +
+                '}';
     }
-//    @Override
-//    public String toString() {
-//        return "Program{" +
-//                "uid='" + uid + '\'' +
-//                ", name='" + name + '\'' +
-//                '}';
-//    }
 }

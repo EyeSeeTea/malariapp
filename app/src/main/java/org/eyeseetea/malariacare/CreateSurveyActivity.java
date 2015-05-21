@@ -19,9 +19,12 @@
 
 package org.eyeseetea.malariacare;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
-import android.support.v7.app.ActionBarActivity;
+import android.content.res.Configuration;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -32,90 +35,109 @@ import android.widget.Spinner;
 import org.eyeseetea.malariacare.database.model.OrgUnit;
 import org.eyeseetea.malariacare.database.model.Program;
 import org.eyeseetea.malariacare.database.model.Survey;
+import org.eyeseetea.malariacare.database.utils.ReadWriteDB;
 import org.eyeseetea.malariacare.database.utils.Session;
-import org.eyeseetea.malariacare.layout.Layout;
+import org.eyeseetea.malariacare.layout.adapters.general.OrgUnitArrayAdapter;
+import org.eyeseetea.malariacare.layout.adapters.general.ProgramArrayAdapter;
+import org.eyeseetea.malariacare.layout.adapters.general.TabArrayAdapter;
+import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 import org.eyeseetea.malariacare.utils.Constants;
+import org.eyeseetea.malariacare.utils.ExceptionHandler;
 
 import java.util.List;
 
 
-public class CreateSurveyActivity extends ActionBarActivity {
+public class CreateSurveyActivity extends BaseActivity {
 
     // UI references.
     private Spinner orgUnitView;
     private Spinner programView;
+    private OrgUnit orgUnitDefaultOption;
+    private Program programDefaultOption;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // Manage uncaught exceptions that may occur
+        //Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(this));
         setContentView(R.layout.activity_create_survey);
+
         android.support.v7.app.ActionBar actionBar = this.getSupportActionBar();
-        Layout.setActionBarLogo(actionBar);
+        LayoutUtils.setActionBarLogo(actionBar);
 
         //Create default options
-        OrgUnit orgUnitDefaultOption = new OrgUnit(Constants.DEFAULT_SELECT_OPTION);
-        Program programDefaultOption = new Program(Constants.DEFAULT_SELECT_OPTION);
+        this.orgUnitDefaultOption = new OrgUnit(Constants.DEFAULT_SELECT_OPTION);
+        this.programDefaultOption = new Program(Constants.DEFAULT_SELECT_OPTION);
 
         //Populate Organization Unit DDL
         List<OrgUnit> orgUnitList = OrgUnit.listAll(OrgUnit.class);
         orgUnitList.add(0, orgUnitDefaultOption);
-        ArrayAdapter orgUnitAdapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, orgUnitList);
-        orgUnitAdapter.setDropDownViewResource(R.layout.simple_spinner_item);
         orgUnitView = (Spinner) findViewById(R.id.org_unit);
-        orgUnitView.setAdapter(orgUnitAdapter);
+        orgUnitView.setAdapter(new OrgUnitArrayAdapter(this, orgUnitList));
 
         //Populate Program View DDL
-        List<Program> programList = Program.listAll(Program.class);
+        List<Program> programList = OrgUnit.listAll(Program.class);
         programList.add(0, programDefaultOption);
-        ArrayAdapter programAdapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, programList);
-        programAdapter.setDropDownViewResource(R.layout.simple_spinner_item);
         programView = (Spinner) findViewById(R.id.program);
-        programView.setAdapter(programAdapter);
+        programView.setAdapter(new ProgramArrayAdapter(this, programList));
 
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_create_form, menu);
-        return true;
+        return super.onCreateOptionsMenu(menu);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
         return super.onOptionsItemSelected(item);
+    }
+
+    public boolean checkEverythingFilled(){
+        return (!orgUnitView.getSelectedItem().equals(this.orgUnitDefaultOption) && !programView.getSelectedItem().equals(this.programDefaultOption));
+    }
+
+    public boolean checkSurveyDoesntExist(){
+        // Read Selected Items
+        OrgUnit orgUnit = (OrgUnit) orgUnitView.getSelectedItem();
+        Program program = (Program) programView.getSelectedItem();
+
+        List<Survey> existing = ReadWriteDB.getNotSentSurvey(orgUnit, program);
+        return (existing == null || existing.size() == 0);
     }
 
     /** Called when the user clicks the Send button */
     public void createSurvey(View view) {
-
         Log.i(".CreateSurveyActivity", "Saving survey and saving in session");
 
         // Read Selected Items
         OrgUnit orgUnit = (OrgUnit) orgUnitView.getSelectedItem();
         Program program = (Program) programView.getSelectedItem();
 
-        // Save Survey
-        Survey survey = new Survey(orgUnit, program, Session.getUser());
-        survey.save();
+        if(!checkEverythingFilled()){
+            new AlertDialog.Builder(this)
+                    .setTitle("Missing selection")
+                    .setMessage("Please select Org Unit and Survey")
+                    .setPositiveButton(android.R.string.ok, null).create().show();
+        } else if(!checkSurveyDoesntExist()) {
+            new AlertDialog.Builder(this)
+                    .setTitle("Existing Survey")
+                    .setMessage("There is already a not sent form in the system for that Org Unit/Survey")
+                    .setPositiveButton(android.R.string.ok, null).create().show();
+        } else {
+            // Save Survey
+            Survey survey = new Survey(orgUnit, program, Session.getUser());
+            survey.save();
 
-        // Set to session
-        Session.setSurvey(survey);
+            // Set to session
+            Session.setSurvey(survey);
 
-        //Call Survey Activity
-        Intent surveyIntent = new Intent(this, MainActivity.class);
-        startActivity(surveyIntent);
-
+            //Call Survey Activity
+            finish();
+            Intent surveyIntent = new Intent(this, SurveyActivity.class);
+            startActivity(surveyIntent);
+        }
     }
 }

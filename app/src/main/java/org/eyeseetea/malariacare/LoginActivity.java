@@ -48,11 +48,7 @@ import android.widget.TextView;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
-import com.google.android.gms.common.SignInButton;
-import com.orm.query.Condition;
-import com.orm.query.Select;
 
-import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.model.Tab;
 import org.eyeseetea.malariacare.database.model.User;
 import org.eyeseetea.malariacare.database.utils.PopulateDB;
@@ -96,7 +92,8 @@ public class LoginActivity extends PlusBaseActivity implements LoaderCallbacks<C
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.login_layout);
+        // Manage uncaught exceptions that may occur
+        //Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(this));
 
         // Populate User table just in case there is already an existing user
         Iterator<User> users = User.findAll(User.class);
@@ -105,35 +102,36 @@ public class LoginActivity extends PlusBaseActivity implements LoaderCallbacks<C
             Class c = DashboardActivity.class;
             Intent mainIntent = new Intent(LoginActivity.this, c);
             startActivity(mainIntent);
-        }
+        }else{
+            setContentView(R.layout.login_layout);
+            // Set up the login form.
+            mUserView = (AutoCompleteTextView) findViewById(R.id.user);
+            populateAutoComplete();
 
-        // Set up the login form.
-        mUserView = (AutoCompleteTextView) findViewById(R.id.user);
-        populateAutoComplete();
-
-        mPasswordView = (EditText) findViewById(R.id.password);
-        mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
-                if (id == R.id.login || id == EditorInfo.IME_NULL) {
-                    attemptLogin();
-                    return true;
+            mPasswordView = (EditText) findViewById(R.id.password);
+            mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+                @Override
+                public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
+                    if (id == R.id.login || id == EditorInfo.IME_NULL) {
+                        attemptLogin();
+                        return true;
+                    }
+                    return false;
                 }
-                return false;
-            }
-        });
+            });
 
-        Button mUserSignInButton = (Button) findViewById(R.id.email_sign_in_button);
-        mUserSignInButton.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                attemptLogin();
-            }
-        });
+            Button mUserSignInButton = (Button) findViewById(R.id.email_sign_in_button);
+            mUserSignInButton.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    attemptLogin();
+                }
+            });
 
-        mLoginFormView = findViewById(R.id.login_form);
-        mProgressView = findViewById(R.id.login_progress);
-        mUserLoginFormView = findViewById(R.id.user_login_form);
+            mLoginFormView = findViewById(R.id.login_form);
+            mProgressView = findViewById(R.id.login_progress);
+            mUserLoginFormView = findViewById(R.id.user_login_form);
+        }
     }
 
     private void populateAutoComplete() {
@@ -165,14 +163,14 @@ public class LoginActivity extends PlusBaseActivity implements LoaderCallbacks<C
 
         // Check for a valid password, if the user entered one.
         if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
-            mPasswordView.setError(getString(R.string.error_invalid_password));
+            mPasswordView.setError(getString(R.string.login_error_short_password));
             focusView = mPasswordView;
             cancel = true;
         }
 
         // Check for a valid user.
         if (TextUtils.isEmpty(user)) {
-            mUserView.setError(getString(R.string.error_field_required));
+            mUserView.setError(getString(R.string.login_error_required));
             focusView = mUserView;
             cancel = true;
         }
@@ -245,7 +243,7 @@ public class LoginActivity extends PlusBaseActivity implements LoaderCallbacks<C
         //TODO: Update this logic to also handle the user logged in by email.
         boolean connected = getPlusClient().isConnected();
 
-        mUserLoginFormView.setVisibility(connected ? View.GONE : View.VISIBLE);
+        //mUserLoginFormView.setVisibility(connected ? View.GONE : View.VISIBLE);
     }
 
     @Override
@@ -345,9 +343,12 @@ public class LoginActivity extends PlusBaseActivity implements LoaderCallbacks<C
 
             for (String credential : DUMMY_CREDENTIALS) {
                 String[] pieces = credential.split(":");
-                if (pieces[0].equals(mUser)) {
-                    this.user = new User(mUser, mUser);
-                    this.user.save();
+                if (pieces[0].equals(mUser) && pieces[1].equals(mPassword)) {
+                    if (User.find(User.class, "name = ?", mUser) != null) {
+                        // If the user is already in our table we don't need to save it another time
+                        this.user = new User(mUser, mUser);
+                        this.user.save();
+                    }
                     Session.setUser(user);
                     // Account exists, populate DB and return true if the password matches.
                     // We import the initial data in case it has been done yet
@@ -386,7 +387,7 @@ public class LoginActivity extends PlusBaseActivity implements LoaderCallbacks<C
                 Intent mainIntent = new Intent(LoginActivity.this, DashboardActivity.class);
                 startActivity(mainIntent);
             } else {
-                mPasswordView.setError(getString(R.string.error_incorrect_password));
+                mPasswordView.setError(getString(R.string.login_error_password));
                 mPasswordView.requestFocus();
             }
         }

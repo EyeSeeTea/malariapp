@@ -21,6 +21,7 @@ package org.eyeseetea.malariacare;
 
 import android.content.Intent;
 import android.content.IntentSender;
+import android.content.res.Configuration;
 import android.os.Bundle;
 
 import android.app.Activity;
@@ -30,6 +31,8 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesClient;
 import com.google.android.gms.common.Scopes;
 import com.google.android.gms.plus.PlusClient;
+
+import org.eyeseetea.malariacare.utils.ExceptionHandler;
 
 
 /**
@@ -90,6 +93,8 @@ public abstract class PlusBaseActivity extends Activity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // Manage uncaught exceptions that may occur
+        //Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(this));
 
         // Initialize the PlusClient connection.
         // Scopes indicate the information about the user your application will be able to access.
@@ -299,4 +304,8 @@ public abstract class PlusBaseActivity extends Activity
         return mPlusClient;
     }
 
+    @Override
+    public void onConfigurationChanged(Configuration newConfig){
+        super.onConfigurationChanged(newConfig);
+    }
 }

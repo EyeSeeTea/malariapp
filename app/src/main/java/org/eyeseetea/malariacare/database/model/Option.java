@@ -46,10 +46,13 @@ public class Option extends SugarRecord<Option> {
         this.answer = answer;
     }
 
-    //This is not a standard to string method as this is going to be used for ddl
     @Override
     public String toString() {
-        return name;
+        return "Option{" +
+                "name='" + name + '\'' +
+                ", factor=" + factor +
+                ", answer=" + answer +
+                '}';
     }
 
     @Override

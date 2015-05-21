@@ -1,172 +1,154 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">Falicity QA Tool</string>
+    <!-- # general -->
+    <string name="app_name">Facility QA Tool</string>
     <string name="developers">EyeSeeTea LTD</string>
-    <string name="button_send">Envoyer</string>
-    <string name="asked">Demandé</string>
-    <string name="notAsked">Non demandé</string>
-    <string name="emptyStatement">Question statement</string>
-    <string name="done">Fait</string>
-    <string name="notDone">Non fait</string>
+    <string name="empty_string"></string>
     <string name="yes">Oui</string>
     <string name="no">No</string>
-    <string name="notAnswered">Non répondu</string>
-    <string name="na">N/R</string>
-    <string name="unknown">Unconnu</string>
-    <string name="male">Male</string>
-    <string name="female">Female</string>
-    <string name="labTechnician">Lab Technician</string>
-    <string name="labAssistant">Lab Assistant</string>
-    <string name="clinicalOfficer">Clinical Officer/Physicians Assistant</string>
-    <string name="nurse">Nurse</string>
-    <string name="md">MD</string>
-    <string name="midwife">Midwife</string>
-    <string name="other">Autre</string>
-    <string name="rdtPos">RDT Positif</string>
-    <string name="rdtNeg">RDT Negatif</string>
-    <string name="microscopyPos">Microscopie Positive</string>
-    <string name="microscopyNeg">Microscopie Negative</string>
-    <string name="testNA">Test non disponible</string>
-    <string name="testNO">Test non commandé</string>
-    <string name="simpleMalaria">Malaria simple</string>
-    <string name="severeMalaria">Malaria grave</string>
-    <string name="pf">Pf</string>
-    <string name="pv">Pv</string>
-    <string name="pm">Pm</string>
-    <string name="po">Po</string>
-    <string name="abnormal">Abnormal</string>
-    <string name="normal">Normal</string>
-    <string name="save">Sauvegarder</string>
-    <string name="clear">Effacer</string>
-    <string name="emptyString"></string>
-    <string name="accumulated">Onglet num/dem</string>
-    <string name="case1">Cas 1</string>
-    <string name="case2">Cas 2</string>
-    <string name="case3">Cas 3</string>
-    <string name="case4">Cas 4</string>
-    <string name="generalTitle">General</string>
-    <string name="rdtTitle">RDT</string>
-    <string name="microscopyTitle">Microscopie</string>
-    <string name="avgTitle">Moyenne</string>
-    <string name="overall">Total</string>
-    <string name="selectTab">Choisir tab:</string>
-    <string name="zeroFloat">0.0</string>
-    <string name="adherenceTitle">Adherence</string>
-    <string name="feedbackTitle">Feedback</string>
-    <string name="envAndMatsTitle">Environement</string>
-    <string name="iqaeqaTitle">IQA EQA</string>
-    <string name="profileTitle">Profil</string>
-    <string name="switchQuestionStatement">Are there pharmacy records of ACTs dispensed?</string>
-    <string name="explanationHeader">Phamacy/clinical register v.s Lab records. Steps in Evaluation of Provider Adherence to Malaria Diagnostic Test Results</string>
-    <string name="pharmacyRegister">Pharmacy Register</string>
-    <string name="actPatientHeader">Patient\nID</string>
-    <string name="genderHeader">Genre</string>
-    <string name="ageHeader">Âge</string>
-    <string name="testResultsHeader">Results du test</string>
-    <string name="one">1</string>
-    <string name="patientIdNumber">ID\npatient</string>
-    <string name="actPrescribed">ACT\nPrescribed?</string>
-    <string name="scoreHeader">Score</string>
-    <string name="two">2</string>
-    <string name="three">3</string>
-    <string name="four">4</string>
-    <string name="five">5</string>
-    <string name="six">6</string>
-    <string name="seven">7</string>
-    <string name="eight">8</string>
-    <string name="nine">9</string>
-    <string name="ten">10</string>
-    <string name="eleven">11</string>
-    <string name="twelve">12</string>
-    <string name="thirteen">13</string>
-    <string name="fourteen">14</string>
-    <string name="fifteen">15</string>
-    <string name="sixteen">16</string>
-    <string name="seventeen">17</string>
-    <string name="eighteen">18</string>
-    <string name="nineteen">19</string>
-    <string name="twenty">20</string>
-    <string name="rdtPostive">RDT Positif</string>
-    <string name="rdtNegative">RDT Negatif</string>
-    <string name="microPositive">Microscopie Positive</string>
-    <string name="microNegative">Microscopie Negative</string>
-    <string name="supervisor">Supervisor</string>
-    <string name="testresult">Result du test</string>
-    <string name="parasites">Parasites/uL</string>
-    <string name="species">Species</string>
-    <string name="labstaff">Lab Staff</string>
-    <string name="reporting">Reporting</string>
-    <string name="talliesHeader">TALLIES - Add up and enter the totals for the following indicators from the registers in column A.  In column B enter the total numbers from the monthly reporting sheet</string>
-    <string name="results">Results</string>
-    <string name="register">Register</string>
-    <string name="monthlyReport">Monthly \nReport</string>
-    <string name="percentage">%</string>
-    <string name="score4tab">Ponctuation pour onglette</string>
-    <string name="scorefortab">Ponctuation pour onglette:</string>
-    <string name="supervisormatchlab">Supervisor matches lab staff?</string>
-    <string name="zeroInt">0</string>
-    <string name="healthTitle">Health\nFacility\nInfo</string>
-    <string name="idHeader">ID</string>
-    <string name="nameHeader">Name</string>
-    <string name="clinicalFeverEvalTitle">Clinical\nfever\nevaluation</string>
+    <string name="score">Score</string>
+    <string name="number_zero">0</string>
+    <string name="title_id">ID</string>
+    <string name="title_name">Name</string>
     <string name="good">Bien</string>
     <string name="fare">Moyen</string>
     <string name="poor">Pauvre</string>
-    <string name="clearTitle">Effacer formulaire</string>
-    <string name="clearMessage">Êtes-vous sûr que de vouloir effacer ce formulaire ?</string>
-    <string name="deleteTitle">Delete Survey</string>
-    <string name="deleteMessage">Are you sure you want to completely delete this survey?</string>
-    <string name="errorTitle">Erreur</string>
-    <string name="errorDenominator">Erreur, denominateur = 0</string>
-    <string name="submit">Envoyer</string>
 
-    <!-- # DIALOGS -->
-    <string name="licenseTitle">License GPLv3</string>
-    <string name="aboutTitle">Sur cette app</string>
+    <!-- settings -->
+    <string name="settings_menu_about">Sur cette app</string>
+    <string name="settings_menu_configuration">Paramètres</string>
+    <string name="settings_menu_licence">License</string>
+    <string name="settings_menu_update">Mise à jour des questions (DHIS)</string>
+    <string name="settings_menu_logout">Se deconnecter</string>
 
-    <!-- # MENUS -->
-    <string name="action_settings">Paramètres</string>
-    <string name="action_pull">Mise à jour des questions dès DHIS</string>
-    <string name="action_license">License</string>
-    <string name="action_about">Sur cette app</string>
+    <!-- login -->
+    <string name="login_info_username">Mel</string>
+    <string name="login_info_password">Mot de passe</string>
+    <string name="login_info_sign_in">Se connecter</string>
+    <string name="login_error_password">Le mot de pas n\'est pas correct</string>
+    <string name="login_error_short_password">Le mot de passe est trop courte</string>
+    <string name="login_error_required">Cette entrée est necessaire</string>
 
-    <!-- # LOGIN ACTIVITY -->
-    <string name="title_activity_login">Se connecter</string>
-    <string name="prompt_user">Mel</string>
-    <string name="prompt_password">Mot de passe (optionel)</string>
-    <string name="action_sign_in">Se connecter</string>
-    <string name="action_sign_in_short">S\'enregistrer</string>
-    <string name="plus_sign_out">Changer compte Google+</string>
-    <string name="plus_disconnect">Se deconnecter de Google+</string>
-    <string name="error_invalid_email">Cette address du mel n\'est pas valide</string>
-    <string name="error_invalid_password">Le mot de passe est trop courte</string>
-    <string name="error_incorrect_password">Le mot de pas n\'est pas correct</string>
-    <string name="error_field_required">Cette entrée est necessaire</string>
+    <!-- # dialogs -->
+    <string name="dialog_title_delete_survey">Delete Survey</string>
+    <string name="dialog_info_delete_survey">Are you sure you want to completely delete this survey?</string>
+    <string name="dialog_title_error">Erreur</string>
+    <string name="dialog_error_denominator">Erreur, denominateur = 0</string>
 
-    <!-- # DASHBOARD ACTIVITY -->
-    <string name="title_activity_dashboard">Panneu de commande</string>
-    <string name="active_assessment">Active Assessment</string>
-    <string name="feedback">Feedback</string>
-    <string name="facilityDateHeader">Facility / Date</string>
-    <string name="statusHeader">Status</string>
-    <string name="facility">Facility</string>
-    <string name="datePreviousAssessment">Date Previous Assessment</string>
-    <string name="dueDate">Due date</string>
-    <string name="action">Action</string>
-    <string name="date">Date</string>
-    <string name="target">Target</string>
-    <string name="achievement">Achievement</string>
-    <string name="new_survey">New Survey</string>
-    <string name="create_form">CREATE FORM</string>
-    <string name="active_assessments">Evaluations actives</string>
-    <string name="OrgUnitDateHeader">Org Unit / Date</string>
-    <string name="future_assessments_title">Future Assessments</string>
-    <string name="performance_against_target_header">Performance Against Target</string>
-    <string name="period_header">Period</string>
-    <string name="analytics_header">Analytics</string>
-    <string name="orgUnit">Organisation Unit</string>
-    <string name="program">Program</string>
-    <string name="survey">Survey</string>
+    <!-- dashboard -->
+    <string name="dashboard_info_feedback">Feedback</string>
+    <string name="dashboard_info_active_assessments">Evaluations actives</string>
+    <string name="dashboard_info_new_assessment">Nouvelle évaluation</string>
+    <string name="dashboard_info_future_assessments">Future Assessments</string>
+    <string name="dashboard_info_performance">Performance Against Target</string>
+    <string name="dashboard_info_analytics">Analytics</string>
+    <string name="dashboard_button_new_survey">Nouvelle enquête</string>
+    <string name="dashboard_button_see_all">Voir toutes</string>
+
+    <!-- create -->
+    <string name="create_info_ok">Créer évaluation</string>
+    <string name="create_info_organization_unit">Unité d\'organisation</string>
+    <string name="create_info_survey">Enquête</string>
+
+    <!-- assessment -->
+    <string name="assessment_title_facility_date">Centre de santé / Date</string>
+    <string name="assessment_title_state">État</string>
+    <string name="assessment_info_delete">Effacer</string>
+    <string name="assessment_title_header">Evaluation active</string>
+
+    <!-- feedback -->
+    <!-- XXX Should it be replaced by 'assessment_title_facility_date'?-->
+    <string name="feedback_title_organization_unit_date">Org Unit / Date</string>
+    <string name="feedback_title_header">Retour</string>
+
+    <!-- future -->
+    <string name="future_title_facility">Centre</string>
+    <string name="future_title_previous_date">Date prealable evaluation</string>
+    <string name="future_title_due_date">Date limite</string>
+    <string name="future_title_action">Action</string>
+    <string name="future_title_header">Evaluations Futurs</string>
+
+    <!-- performance -->
+    <string name="performance_title_period">Periode</string>
+    <string name="performance_title_target">But</string>
+    <string name="performance_title_completed">Fait</string>
+    <string name="performance_title_achievement">Obtention</string>
+    <string name="performance_title_header">Performance Sur But</string>
+
+    <!-- analytics -->
+    <string name="analytics_title_period">Periode</string>
+    <string name="analytics_title_target">But</string>
+    <string name="analytics_title_completed">Fait</string>
+    <string name="analytics_title_achievement">Obtention</string>
+    <string name="analytics_title_header">Statistiques</string>
+
+    <!-- survey -->
+    <string name="survey_info_select_tab">Choisissez onglet: </string>
+
+    <!-- widget -->
+    <string name="widget_info_empty_statement">Question statement</string>
+
+    <!-- custom -->
+    <string name="custom_title_tallies">TALLIES - Add up and enter the totals for the following indicators from the registers in column A.  In column B enter the total numbers from the monthly reporting sheet</string>
+    <string name="custom_info_tallies">TALLIES for the Month of</string>
+
+    <!-- score -->
+    <string name="score_title_clinical_fever">Clinical\nfever\nevaluation</string>
+    <string name="score_title_rdt">RDT</string>
+    <string name="score_title_avg">Moyenne</string>
+    <string name="score_title_environment">Environement</string>
+    <string name="score_title_profile">Profil</string>
+    <string name="score_title_percentage">%</string>
+    <string name="score_info_tab_score">Ponctuation pour onglette:</string>
+    <string name="score_info_overall">Total</string>
+    <string name="score_info_zero_float">0.0</string>
+    <string name="score_info_accumulated">Onglet num/dem</string>
+    <string name="score_info_case1">Cas 1</string>
+    <string name="score_info_case2">Cas 2</string>
+    <string name="score_info_case3">Cas 3</string>
+    <string name="score_info_case4">Cas 4</string>
+
+    <!-- potencially deprecated strings (used in views that looks like are not being used)-->
+    <string name="deprecated_adherence_info_switchquestion">Est-ce que les enregistrements du pharmacie sont du ACTs livrés ?</string>
+    <string name="deprecated_adherence_title_explanation">Phamacy/clinical register v.s Lab records. Steps in Evaluation of Provider Adherence to Malaria Diagnostic Test Results</string>
+    <string name="deprecated_adherence_info_pharmacy_register">Pharmacy Register</string>
+    <string name="deprecated_adherence_title_gender">Genre</string>
+    <string name="deprecated_adherence_title_age">Âge</string>
+    <string name="deprecated_adherence_title_test_results">Results du test</string>
+    <string name="deprecated_adherence_info_patient_id">ID\npatient</string>
+    <string name="deprecated_adherence_info_prescribed">ACT\nPrescribed?</string>
+    <string name="deprecated_adherence_info_rdt_positive">RDT Positif</string>
+
+    <string name="deprecated_iqatab_info_one">1</string>
+    <string name="deprecated_iqatab_info_two">2</string>
+    <string name="deprecated_iqatab_info_three">3</string>
+    <string name="deprecated_iqatab_info_four">4</string>
+    <string name="deprecated_iqatab_info_five">5</string>
+    <string name="deprecated_iqatab_info_six">6</string>
+    <string name="deprecated_iqatab_info_seven">7</string>
+    <string name="deprecated_iqatab_info_eight">8</string>
+    <string name="deprecated_iqatab_info_nine">9</string>
+    <string name="deprecated_iqatab_info_ten">10</string>
+    <string name="deprecated_iqatab_info_eleven">11</string>
+    <string name="deprecated_iqatab_info_twelve">12</string>
+    <string name="deprecated_iqatab_info_thirteen">13</string>
+    <string name="deprecated_iqatab_info_fourteen">14</string>
+    <string name="deprecated_iqatab_info_fifteen">15</string>
+    <string name="deprecated_iqatab_info_sixteen">16</string>
+    <string name="deprecated_iqatab_info_seventeen">17</string>
+    <string name="deprecated_iqatab_info_eighteen">18</string>
+    <string name="deprecated_iqatab_info_nineteen">19</string>
+    <string name="deprecated_iqatab_info_twenty">20</string>
+    <string name="deprecated_iqatab_info_supervisor">Supervisor</string>
+    <string name="deprecated_iqatab_info_parasites">Parasites/uL</string>
+    <string name="deprecated_iqatab_info_species">Species</string>
+    <string name="deprecated_iqatab_info_labstaff">Lab Staff</string>
+
+    <string name="deprecated_reporting_info_reporting">Notification</string>
+    <string name="deprecated_reporting_info_results">Resultats</string>
+    <string name="deprecated_reporting_info_register">Enregistrement</string>
+    <string name="deprecated_reporting_info_monthly">Notification \nMensuel</string>
+    <string name="deprecated_iqatab_info_supervisor_matches">Supervisor matches lab staff?</string>
 
 </resources>

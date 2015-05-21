@@ -1,4 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2015.
+  ~
+  ~ This file is part of Facility QA Tool App.
+  ~
+  ~  Facility QA Tool App is free software: you can redistribute it and/or modify
+  ~  it under the terms of the GNU General Public License as published by
+  ~  the Free Software Foundation, either version 3 of the License, or
+  ~  (at your option) any later version.
+  ~
+  ~  Facility QA Tool App is distributed in the hope that it will be useful,
+  ~  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~  GNU General Public License for more details.
+  ~
+  ~  You should have received a copy of the GNU General Public License
+  ~  along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
+  -->
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="fill_parent"
     android:layout_height="fill_parent">
@@ -15,7 +34,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="@string/reporting"
+            android:text="@string/deprecated_reporting_info_reporting"
             android:id="@+id/reportingTitle"
             android:textStyle="bold"
             android:paddingBottom="20dip" />
@@ -32,7 +51,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/talliesHeader"
+            android:text="@string/custom_title_tallies"
             android:id="@+id/talliesHeader"
             android:background="@drawable/background_header"
             android:textSize="18sp"
@@ -50,37 +69,59 @@
 
     </GridLayout>
 
+    <!--<LinearLayout
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/linearLayout"
+        android:layout_weight="0.5">
+
+    </LinearLayout> -->
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/talliesContainer"
+        android:padding="5dip"
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:id="@+id/talliesQuestion"
+            android:text="@string/custom_info_tallies"
+            android:padding="5dip" />
+
+
+        <EditText
+                android:layout_width="160dip"
+                android:layout_height="wrap_content"
+            android:id="@+id/tallies"
+                android:background="@drawable/background_textfield" />
+
+    </LinearLayout>
+
+
     <Space
         android:layout_width="20dip"
         android:layout_height="40dip" />
 
-    <GridLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:columnCount="1"
-        android:rowCount="1"
-        android:id="@+id/gridLayout"
-        android:layout_gravity="center">
 
-        <TableLayout
+        <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:id="@+id/tableLayout"
             android:tag="Reporting2"
             android:layout_gravity="center" >
 
-            <TableRow
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/tableRow"
-                android:layout_gravity="center"
-                android:background="@drawable/background_odd" >
 
                 <TextView
-                    android:layout_width="fill_parent"
+                    android:layout_width="0dip"
                     android:layout_height="fill_parent"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:text="@string/results"
+                    android:text="@string/deprecated_reporting_info_results"
                     android:id="@+id/resultsHeader"
                     android:background="@drawable/background_header"
                     android:textColor="#ffffff"
@@ -90,10 +131,10 @@
                     android:layout_weight="0.4" />
 
                 <TextView
-                    android:layout_width="fill_parent"
+                    android:layout_width="0dip"
                     android:layout_height="fill_parent"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:text="@string/register"
+                    android:text="@string/deprecated_reporting_info_register"
                     android:id="@+id/registerHeader"
                     android:background="@drawable/background_header"
                     android:textColor="#ffffff"
@@ -103,10 +144,10 @@
                     android:layout_weight="0.2" />
 
                 <TextView
-                    android:layout_width="fill_parent"
+                    android:layout_width="0dip"
                     android:layout_height="fill_parent"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:text="@string/monthlyReport"
+                    android:text="@string/deprecated_reporting_info_monthly"
                     android:id="@+id/reportHeader"
                     android:background="@drawable/background_header"
                     android:textColor="#ffffff"
@@ -116,10 +157,10 @@
                     android:layout_weight="0.2" />
 
                 <TextView
-                    android:layout_width="fill_parent"
+                    android:layout_width="0dip"
                     android:layout_height="fill_parent"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:text="@string/scoreHeader"
+                    android:text="@string/score"
                     android:id="@+id/scoreHeader"
                     android:background="@drawable/background_header"
                     android:textColor="#ffffff"
@@ -128,8 +169,7 @@
                     android:padding="5dip"
                     android:layout_weight="0.2" />
 
-            </TableRow>
-        </TableLayout>
-    </GridLayout>
+        </LinearLayout>
+
 
 </LinearLayout>
