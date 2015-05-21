@@ -93,8 +93,8 @@ public abstract class BaseActivity extends ActionBarActivity {
             case R.id.action_logout:
                 Log.d(".MainActivity", "User asked for logging out");
                 new AlertDialog.Builder(this)
-                        .setTitle("Logout")
-                        .setMessage("If you exit the system, all the not sent data will be deleted. Do you still want to exit?")
+                        .setTitle(getApplicationContext().getString(R.string.settings_menu_logout))
+                        .setMessage(getApplicationContext().getString(R.string.dialog_content_logout_confirmation))
                         .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface arg0, int arg1) {
                                 List<Survey> surveys = ReadWriteDB.getAllNotSentSurveys();
