@@ -114,7 +114,7 @@ public class DashboardDetailsFragment extends ListFragment {
     @Override
     public void onListItemClick(ListView l, View v, int position, long id){
         super.onListItemClick(l, v, position, id);
-        Session.setSurvey(surveys.get(position));
+        Session.setSurvey(surveys.get(position-1));
 
         //Call Survey Activity
         getActivity().finish();

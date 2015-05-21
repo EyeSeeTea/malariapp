@@ -36,9 +36,9 @@
     <string name="dialog_title_error">Erreur</string>
     <string name="dialog_error_denominator">Erreur, denominateur = 0</string>
     <string name="dialog_title_missing_selection">selection manquant</string>
-    <string name="dialog_content_missing_selection">Selectionez un cabinet medical et tipe d'enquête, s'il vous plait</string>
+    <string name="dialog_content_missing_selection">Selectionez un cabinet medical et tipe d\'enquête, s\'il vous plait</string>
     <string name="dialog_title_existing_survey">Enquête existant</string>
-    <string name="dialog_content_existing_survey">Il y a déjà une enquête pas encore envoyée dans le système pour le cabinet et tipe d'enquête choisís</string>
+    <string name="dialog_content_existing_survey">Il y a déjà une enquête pas encore envoyée dans le système pour le cabinet et tipe d\'enquête choisís</string>
     <string name="dialog_content_logout_confirmation">Si vous sortez du système, tous les donnés non envoyés seront perdus. Voulez-vous continuer encore ?</string>
 
     <!-- dashboard -->
