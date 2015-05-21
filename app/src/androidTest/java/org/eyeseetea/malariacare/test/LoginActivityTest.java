@@ -35,6 +35,16 @@ import android.widget.TextView;
 import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.LoginActivity;
 import org.eyeseetea.malariacare.R;
+import org.eyeseetea.malariacare.database.model.Answer;
+import org.eyeseetea.malariacare.database.model.CompositiveScore;
+import org.eyeseetea.malariacare.database.model.Header;
+import org.eyeseetea.malariacare.database.model.Option;
+import org.eyeseetea.malariacare.database.model.OrgUnit;
+import org.eyeseetea.malariacare.database.model.Program;
+import org.eyeseetea.malariacare.database.model.Question;
+import org.eyeseetea.malariacare.database.model.Tab;
+import org.eyeseetea.malariacare.database.utils.PopulateDB;
+import org.eyeseetea.malariacare.database.utils.Session;
 
 /**
  * Created by arrizabalaga on 19/05/15.
@@ -60,26 +70,23 @@ public class LoginActivityTest extends ActivityInstrumentationTestCase2<LoginAct
     @Override
     protected void setUp() throws Exception {
         super.setUp();
+
         cleanDB();
+        setActivityInitialTouchMode(true);
+
         loginActivity = getActivity();
         userView =(TextView) loginActivity.findViewById(R.id.user);
         passView =(TextView) loginActivity.findViewById(R.id.password);
         signInButton =(Button) loginActivity.findViewById(R.id.email_sign_in_button);
         res = getInstrumentation().getTargetContext().getResources();
-
     }
 
-    private void cleanDB(){
-        Context context=getInstrumentation().getTargetContext().getApplicationContext();
-        context.deleteDatabase("malariacare.db");
-    }
-
-    public void testPreconditions() {
+    public void test_preconditions() {
         assertNotNull("userView is null", userView);
         assertNotNull("passView is null", passView);
     }
 
-    public void testFields_initial_empty() {
+    public void test_form_initial_empty() {
         final String expected = "";
         final String actualUser = userView.getText().toString();
         final String actualPass = passView.getText().toString();
@@ -95,7 +102,6 @@ public class LoginActivityTest extends ActivityInstrumentationTestCase2<LoginAct
         //WHEN
         TouchUtils.clickView(this, signInButton);
 
-
         //THEN
         String error=userView.getError().toString();
         assertEquals(res.getString(R.string.login_error_bad_credentials), error);
@@ -108,12 +114,15 @@ public class LoginActivityTest extends ActivityInstrumentationTestCase2<LoginAct
         setText(passView, "user");
 
         //WHEN
-        TouchUtils.clickView(this,signInButton);
+        TouchUtils.clickView(this, signInButton);
+
+        //THEN
+        assertNotNull(Session.getUser());
 
         //THEN
         DashboardActivity dashboardActivity = (DashboardActivity) receiverActivityMonitor.waitForActivityWithTimeout(TIMEOUT_IN_MS);
         assertNotNull("DashboardActivity is started", dashboardActivity);
-        dashboardActivity.finish();
+        dashboardActivity.onBackPressed();
     }
 
     private void setText(final View v,String text){
@@ -128,5 +137,15 @@ public class LoginActivityTest extends ActivityInstrumentationTestCase2<LoginAct
         getInstrumentation().waitForIdleSync();
     }
 
+    private void cleanDB(){
+        Question.deleteAll(Question.class);
+        CompositiveScore.deleteAll(CompositiveScore.class);
+        Option.deleteAll(Option.class);
+        Answer.deleteAll(Answer.class);
+        Header.deleteAll(Header.class);
+        Tab.deleteAll(Tab.class);
+        Program.deleteAll(Program.class);
+        OrgUnit.deleteAll(OrgUnit.class);
+    }
 
 }

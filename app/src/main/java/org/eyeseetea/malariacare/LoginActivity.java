@@ -352,8 +352,8 @@ public class LoginActivity extends PlusBaseActivity implements LoaderCallbacks<C
             stopProgress();
             //something went wrong
             if(!success){
-                mPasswordView.setError(getString(R.string.login_error_bad_credentials));
-                mPasswordView.requestFocus();
+                mUserView.requestFocus();
+                mUserView.setError(getString(R.string.login_error_bad_credentials));
                 return;
             }
             //go dashboard
