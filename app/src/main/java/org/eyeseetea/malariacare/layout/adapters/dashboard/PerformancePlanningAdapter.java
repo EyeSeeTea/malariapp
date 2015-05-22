@@ -19,7 +19,6 @@
 
 package org.eyeseetea.malariacare.layout.adapters.dashboard;
 
-import android.app.ListFragment;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -87,7 +86,7 @@ public class PerformancePlanningAdapter extends BaseAdapter implements IDashboar
         rowView = lInflater.inflate(getRecordLayout(), parent, false);
         rowView.setBackgroundResource(LayoutUtils.calculateBackgrounds(position));
 
-        ((TextView)rowView.findViewById(R.id.date)).setText("Jan");
+        ((TextView)rowView.findViewById(R.id.survey_type)).setText("Jan");
         ((TextView)rowView.findViewById(R.id.target)).setText("10");
         ((TextView)rowView.findViewById(R.id.done)).setText("5");
         ((TextView)rowView.findViewById(R.id.achievement)).setText("50 %");

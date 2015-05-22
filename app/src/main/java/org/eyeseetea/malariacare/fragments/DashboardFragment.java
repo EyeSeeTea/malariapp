@@ -77,16 +77,10 @@ public class DashboardFragment extends ListFragment {
         // make a list with the adapters
         this.adapters = new ArrayList<>();
         this.adapters.add(new AssessmentAdapter(this.surveys, getActivity()));
-        this.adapters.add(new FeedbackAdapter(this.surveys, getActivity()));
-        this.adapters.add(new FutureAssessmentPlanningAdapter(this.surveys, getActivity()));
-        this.adapters.add(new PerformancePlanningAdapter(this.surveys, getActivity()));
-        this.adapters.add(new AnalyticsAdapter(this.surveys, getActivity()));
 
         // create a list of listeners to capture the "see all" event
         List<View.OnClickListener> listeners = new ArrayList<>();
-        for (int i=0; i<5; i++) {
-            listeners.add(new DashboardListener(getActivity(), getString(R.string.dashboard_button_see_all), i));
-        }
+        listeners.add(new DashboardListener(getActivity(), getString(R.string.dashboard_button_see_all), 0));
 
         setListAdapter(new DashboardAdapter(this.surveys, this.adapters, listeners, getActivity()));
 
