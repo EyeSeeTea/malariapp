@@ -11,7 +11,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="@string/deprecated_iqatab_info_supervisor_matches"
+        android:text="@string/iqatab_info_supervisor_matches"
         android:id="@+id/matchTitle"
         android:textStyle="bold"
         android:paddingBottom="20dip" />

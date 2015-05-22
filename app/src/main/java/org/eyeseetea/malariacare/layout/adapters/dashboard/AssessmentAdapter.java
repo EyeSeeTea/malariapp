@@ -103,7 +103,7 @@ public class AssessmentAdapter extends BaseAdapter implements IDashboardAdapter 
         List<Integer> status = survey.getAnsweredQuestionRatio();
 
         if (status.get(0) == status.get(1)) {
-            ((TextView) rowView.findViewById(R.id.score)).setText("Ready to upload");
+            ((TextView) rowView.findViewById(R.id.score)).setText(getContext().getString(R.string.dashboard_info_ready_to_upload));
         } else {
             ((TextView) rowView.findViewById(R.id.score)).setText(String.format("%.2f", 100 * (double) status.get(0) / (double) status.get(1)));
         }
@@ -115,7 +115,7 @@ public class AssessmentAdapter extends BaseAdapter implements IDashboardAdapter 
 
         TextView deleteTextView = new TextView(this.context);
         deleteTextView.setText(R.string.assessment_info_delete);
-        deleteTextView.setTextColor(Color.parseColor("#1e506c"));
+        deleteTextView.setTextColor(getContext().getResources().getColor(R.color.headerColor));
         deleteTextView.setTypeface(Typeface.MONOSPACE, Typeface.BOLD);
         deleteTextView.setOnClickListener(new AssessmentListener((Activity) this.context, survey, context.getString(R.string.assessment_info_delete)));
         toolContainerView.addView(deleteTextView);

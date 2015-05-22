@@ -236,8 +236,8 @@ public class CustomAdherenceAdapter extends BaseAdapter implements ITabAdapter {
             int pos = optList.indexOf(value.getOption());
 
 
-            if (test.getForm_name().equals("RDT Positive")
-                    || test.getForm_name().equals("RDT Negative")) {
+            if (test.getForm_name().equals(this.context.getString(R.string.adherence_info_rdt_positive))
+                    || test.getForm_name().equals(this.context.getString(R.string.adherence_info_rdt_negative))) {
                 if (pos == 1) {
                     num = num - scores[items.indexOf(question) - position_secondheader] + 1;
                     scores[items.indexOf(question) - position_secondheader] = 1;
@@ -246,8 +246,8 @@ public class CustomAdherenceAdapter extends BaseAdapter implements ITabAdapter {
                     scores[items.indexOf(question) - position_secondheader] = 0;
                 }
             } else {
-                if (test.getForm_name().equals("Microscopy Positive")
-                        || test.getForm_name().equals("Microscopy Negative")) {
+                if (test.getForm_name().equals(this.context.getString(R.string.adherence_info_microscopy_positive))
+                        || test.getForm_name().equals(this.context.getString(R.string.adherence_info_microscopy_negative))) {
                     if (pos == 2) {
                         num = num - scores[items.indexOf(question) - position_secondheader] + 1;
                         scores[items.indexOf(question) - position_secondheader] = 1;

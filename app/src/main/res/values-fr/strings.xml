@@ -50,6 +50,7 @@
     <string name="dashboard_info_analytics">Analytics</string>
     <string name="dashboard_button_new_survey">Nouvelle enquête</string>
     <string name="dashboard_button_see_all">Voir toutes</string>
+    <string name="dashboard_info_ready_to_upload">Prête pour envoyer</string>
 
     <!-- create -->
     <string name="create_info_ok">Créer évaluation</string>
@@ -97,6 +98,50 @@
     <!-- custom -->
     <string name="custom_title_tallies">TALLIES - Add up and enter the totals for the following indicators from the registers in column A.  In column B enter the total numbers from the monthly reporting sheet</string>
     <string name="custom_info_tallies">TALLIES for the Month of</string>
+    <string name="custom_info_one">1</string>
+    <string name="custom_info_two">2</string>
+    <string name="custom_info_three">3</string>
+    <string name="custom_info_four">4</string>
+    <string name="custom_info_five">5</string>
+    <string name="custom_info_six">6</string>
+    <string name="custom_info_seven">7</string>
+    <string name="custom_info_eight">8</string>
+    <string name="custom_info_nine">9</string>
+    <string name="custom_info_ten">10</string>
+    <string name="custom_info_eleven">11</string>
+    <string name="custom_info_twelve">12</string>
+    <string name="custom_info_thirteen">13</string>
+    <string name="custom_info_fourteen">14</string>
+    <string name="custom_info_fifteen">15</string>
+    <string name="custom_info_sixteen">16</string>
+    <string name="custom_info_seventeen">17</string>
+    <string name="custom_info_eighteen">18</string>
+    <string name="custom_info_nineteen">19</string>
+    <string name="custom_info_twenty">20</string>
+
+    <!-- adherence -->
+    <string name="adherence_info_switchquestion">Est-ce que les enregistrements du pharmacie sont du ACTs livrés ?</string>
+    <string name="adherence_title_explanation">Phamacy/clinical register v.s Lab records. Steps in Evaluation of Provider Adherence to Malaria Diagnostic Test Results</string>
+    <string name="adherence_info_pharmacy_register">Pharmacy Register</string>
+    <string name="adherence_title_gender">Genre</string>
+    <string name="adherence_title_age">Âge</string>
+    <string name="adherence_title_test_results">Results du test</string>
+    <string name="adherence_info_patient_id">ID\npatient</string>
+    <string name="adherence_info_prescribed">ACT\nPrescribed?</string>
+    <string name="adherence_info_rdt_positive">RDT Positif</string>
+
+    <!-- iqa eqa -->
+    <string name="iqatab_info_supervisor">Supervisor</string>
+    <string name="iqatab_info_parasites">Parasites/uL</string>
+    <string name="iqatab_info_species">Species</string>
+    <string name="iqatab_info_labstaff">Lab Staff</string>
+
+    <!-- reporting -->
+    <string name="reporting_info_reporting">Notification</string>
+    <string name="reporting_info_results">Resultats</string>
+    <string name="reporting_info_register">Enregistrement</string>
+    <string name="reporting_info_monthly">Notification \nMensuel</string>
+    <string name="iqatab_info_supervisor_matches">Supervisor matches lab staff?</string>
 
     <!-- score -->
     <string name="score_title_clinical_fever">Clinical\nfever\nevaluation</string>
@@ -113,47 +158,5 @@
     <string name="score_info_case2">Cas 2</string>
     <string name="score_info_case3">Cas 3</string>
     <string name="score_info_case4">Cas 4</string>
-
-    <!-- potencially deprecated strings (used in views that looks like are not being used)-->
-    <string name="deprecated_adherence_info_switchquestion">Est-ce que les enregistrements du pharmacie sont du ACTs livrés ?</string>
-    <string name="deprecated_adherence_title_explanation">Phamacy/clinical register v.s Lab records. Steps in Evaluation of Provider Adherence to Malaria Diagnostic Test Results</string>
-    <string name="deprecated_adherence_info_pharmacy_register">Pharmacy Register</string>
-    <string name="deprecated_adherence_title_gender">Genre</string>
-    <string name="deprecated_adherence_title_age">Âge</string>
-    <string name="deprecated_adherence_title_test_results">Results du test</string>
-    <string name="deprecated_adherence_info_patient_id">ID\npatient</string>
-    <string name="deprecated_adherence_info_prescribed">ACT\nPrescribed?</string>
-    <string name="deprecated_adherence_info_rdt_positive">RDT Positif</string>
-
-    <string name="deprecated_iqatab_info_one">1</string>
-    <string name="deprecated_iqatab_info_two">2</string>
-    <string name="deprecated_iqatab_info_three">3</string>
-    <string name="deprecated_iqatab_info_four">4</string>
-    <string name="deprecated_iqatab_info_five">5</string>
-    <string name="deprecated_iqatab_info_six">6</string>
-    <string name="deprecated_iqatab_info_seven">7</string>
-    <string name="deprecated_iqatab_info_eight">8</string>
-    <string name="deprecated_iqatab_info_nine">9</string>
-    <string name="deprecated_iqatab_info_ten">10</string>
-    <string name="deprecated_iqatab_info_eleven">11</string>
-    <string name="deprecated_iqatab_info_twelve">12</string>
-    <string name="deprecated_iqatab_info_thirteen">13</string>
-    <string name="deprecated_iqatab_info_fourteen">14</string>
-    <string name="deprecated_iqatab_info_fifteen">15</string>
-    <string name="deprecated_iqatab_info_sixteen">16</string>
-    <string name="deprecated_iqatab_info_seventeen">17</string>
-    <string name="deprecated_iqatab_info_eighteen">18</string>
-    <string name="deprecated_iqatab_info_nineteen">19</string>
-    <string name="deprecated_iqatab_info_twenty">20</string>
-    <string name="deprecated_iqatab_info_supervisor">Supervisor</string>
-    <string name="deprecated_iqatab_info_parasites">Parasites/uL</string>
-    <string name="deprecated_iqatab_info_species">Species</string>
-    <string name="deprecated_iqatab_info_labstaff">Lab Staff</string>
-
-    <string name="deprecated_reporting_info_reporting">Notification</string>
-    <string name="deprecated_reporting_info_results">Resultats</string>
-    <string name="deprecated_reporting_info_register">Enregistrement</string>
-    <string name="deprecated_reporting_info_monthly">Notification \nMensuel</string>
-    <string name="deprecated_iqatab_info_supervisor_matches">Supervisor matches lab staff?</string>
 
 </resources>

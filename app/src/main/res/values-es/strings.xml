@@ -50,6 +50,7 @@
     <string name="dashboard_info_analytics">Métricas</string>
     <string name="dashboard_button_new_survey">Nueva Encuesta</string>
     <string name="dashboard_button_see_all">Ver todas</string>
+    <string name="dashboard_info_ready_to_upload">Lista para enviar</string>
 
     <!-- create -->
     <string name="create_info_ok">Crear evaluación</string>
@@ -97,6 +98,53 @@
     <!-- custom -->
     <string name="custom_title_tallies">TALLIES - Add up and enter the totals for the following indicators from the registers in column A.  In column B enter the total numbers from the monthly reporting sheet</string>
     <string name="custom_info_tallies">TALLIES for the Month of</string>
+    <string name="custom_info_one">1</string>
+    <string name="custom_info_two">2</string>
+    <string name="custom_info_three">3</string>
+    <string name="custom_info_four">4</string>
+    <string name="custom_info_five">5</string>
+    <string name="custom_info_six">6</string>
+    <string name="custom_info_seven">7</string>
+    <string name="custom_info_eight">8</string>
+    <string name="custom_info_nine">9</string>
+    <string name="custom_info_ten">10</string>
+    <string name="custom_info_eleven">11</string>
+    <string name="custom_info_twelve">12</string>
+    <string name="custom_info_thirteen">13</string>
+    <string name="custom_info_fourteen">14</string>
+    <string name="custom_info_fifteen">15</string>
+    <string name="custom_info_sixteen">16</string>
+    <string name="custom_info_seventeen">17</string>
+    <string name="custom_info_eighteen">18</string>
+    <string name="custom_info_nineteen">19</string>
+    <string name="custom_info_twenty">20</string>
+
+    <!-- adherence -->
+    <string name="adherence_info_switchquestion">¿Hay registros de ACTs dispensados?</string>
+    <string name="adherence_title_explanation">Registros de farmacia/clínicos v.s. registros de laboratorio. Steps in Evaluation of Provider Adherence to Malaria Diagnostic Test Results</string>
+    <string name="adherence_info_pharmacy_register">Registro de farmacia</string>
+    <string name="adherence_title_gender">Género</string>
+    <string name="adherence_title_age">Edad</string>
+    <string name="adherence_title_test_results">Resultados del test</string>
+    <string name="adherence_info_patient_id">ID\npaciente</string>
+    <string name="adherence_info_prescribed">¿ACT\nPrescrito?</string>
+    <string name="adherence_info_rdt_positive">RDT Positivo</string>
+    <string name="adherence_info_rdt_negative">RDT Negativo</string>
+    <string name="adherence_info_microscopy_positive">Microscopía Positiva</string>
+    <string name="adherence_info_microscopy_negative">Microscopía Negativa</string>
+
+    <!-- iqa eqa -->
+    <string name="iqatab_info_supervisor">Supervisor</string>
+    <string name="iqatab_info_parasites">Parásitos/uL</string>
+    <string name="iqatab_info_species">Especímenes</string>
+    <string name="iqatab_info_labstaff">Personal de laboratorio</string>
+
+    <!-- reporting -->
+    <string name="reporting_info_reporting">Informes</string>
+    <string name="reporting_info_results">Resultados</string>
+    <string name="reporting_info_register">Registro</string>
+    <string name="reporting_info_monthly">Informe\nMensual</string>
+    <string name="iqatab_info_supervisor_matches">¿Coinciden supervisor y personal de laboratorio?</string>
 
     <!-- score -->
     <string name="score_title_clinical_fever">Evaluación\nde fiebre\nclínica</string>
@@ -113,47 +161,5 @@
     <string name="score_info_case2">Caso 2</string>
     <string name="score_info_case3">Caso 3</string>
     <string name="score_info_case4">Caso 4</string>
-
-    <!-- potencially deprecated strings (used in views that looks like are not being used)-->
-    <string name="deprecated_adherence_info_switchquestion">¿Hay registros de ACTs dispensados?</string>
-    <string name="deprecated_adherence_title_explanation">Registros de farmacia/clínicos v.s. registros de laboratorio. Steps in Evaluation of Provider Adherence to Malaria Diagnostic Test Results</string>
-    <string name="deprecated_adherence_info_pharmacy_register">Registro de farmacia</string>
-    <string name="deprecated_adherence_title_gender">Género</string>
-    <string name="deprecated_adherence_title_age">Edad</string>
-    <string name="deprecated_adherence_title_test_results">Resultados del test</string>
-    <string name="deprecated_adherence_info_patient_id">ID\npaciente</string>
-    <string name="deprecated_adherence_info_prescribed">¿ACT\nPrescrito?</string>
-    <string name="deprecated_adherence_info_rdt_positive">RDT Positivo</string>
-
-    <string name="deprecated_iqatab_info_one">1</string>
-    <string name="deprecated_iqatab_info_two">2</string>
-    <string name="deprecated_iqatab_info_three">3</string>
-    <string name="deprecated_iqatab_info_four">4</string>
-    <string name="deprecated_iqatab_info_five">5</string>
-    <string name="deprecated_iqatab_info_six">6</string>
-    <string name="deprecated_iqatab_info_seven">7</string>
-    <string name="deprecated_iqatab_info_eight">8</string>
-    <string name="deprecated_iqatab_info_nine">9</string>
-    <string name="deprecated_iqatab_info_ten">10</string>
-    <string name="deprecated_iqatab_info_eleven">11</string>
-    <string name="deprecated_iqatab_info_twelve">12</string>
-    <string name="deprecated_iqatab_info_thirteen">13</string>
-    <string name="deprecated_iqatab_info_fourteen">14</string>
-    <string name="deprecated_iqatab_info_fifteen">15</string>
-    <string name="deprecated_iqatab_info_sixteen">16</string>
-    <string name="deprecated_iqatab_info_seventeen">17</string>
-    <string name="deprecated_iqatab_info_eighteen">18</string>
-    <string name="deprecated_iqatab_info_nineteen">19</string>
-    <string name="deprecated_iqatab_info_twenty">20</string>
-    <string name="deprecated_iqatab_info_supervisor">Supervisor</string>
-    <string name="deprecated_iqatab_info_parasites">Parásitos/uL</string>
-    <string name="deprecated_iqatab_info_species">Especímenes</string>
-    <string name="deprecated_iqatab_info_labstaff">Personal de laboratorio</string>
-
-    <string name="deprecated_reporting_info_reporting">Informes</string>
-    <string name="deprecated_reporting_info_results">Resultados</string>
-    <string name="deprecated_reporting_info_register">Registro</string>
-    <string name="deprecated_reporting_info_monthly">Informe\nMensual</string>
-    <string name="deprecated_iqatab_info_supervisor_matches">¿Coinciden supervisor y personal de laboratorio?</string>
 
 </resources>

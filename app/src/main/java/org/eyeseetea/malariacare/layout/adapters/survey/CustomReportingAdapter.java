@@ -205,9 +205,9 @@ public class CustomReportingAdapter extends BaseAdapter implements ITabAdapter {
 
         if (rowValues.score == 1) {
             num = num +1;
-            score.setText("1");
+            score.setText(this.context.getString(R.string.custom_info_one));
         }
-        else score.setText("0");
+        else score.setText(this.context.getString(R.string.number_zero));
 
         updateScore();
 

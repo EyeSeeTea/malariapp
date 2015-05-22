@@ -167,7 +167,7 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
             scoreHolder.score.setText(Utils.round(100 * (totalNum / totalDenum)));
         }
         if (totalDenum == 0 && totalNum == 0) {
-            scoreHolder.score.setText("0");
+            scoreHolder.score.setText(this.context.getString(R.string.number_zero));
         }
     }
 
@@ -346,7 +346,7 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
                     viewHolder.num.setText(Float.toString(numdenum.get(0)));
                     viewHolder.denum.setText(Float.toString(numdenum.get(1)));
                 } else {
-                    viewHolder.num.setText("0");
+                    viewHolder.num.setText(this.context.getString(R.string.number_zero));
                     viewHolder.denum.setText(Float.toString(calcDenum(question)));
                     viewHolder.spinner.setSelection(0);
                 }
@@ -397,7 +397,7 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
 
         if (question.hasChildren()) {
 
-            if (option.getName().equals("Yes"))
+            if (option.getName().equals(this.context.getString(R.string.yes)))
                 updateQuestionsVisibility(question, true);
             else
                 updateQuestionsVisibility(question, false);
