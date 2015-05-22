@@ -29,6 +29,8 @@
 29;'9';'Mentorship (on site training)';
 30;'1.4.6';'Lab reference materials';12
 31;'1.4.7';'Tallies';12
-32;'1';'Introduction';
-33;'2';'Inquiry';
-34;'3';'Physical Examination';
+32;'1';'Introduction';36
+33;'2';'Inquiry';36
+34;'3';'Physical Examination';36
+35;'4';'Diagnosis, Treatment and Counseling';36
+36;'Total';'Total Score';
