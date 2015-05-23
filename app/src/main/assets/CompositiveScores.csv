@@ -34,3 +34,6 @@
 34;'3';'Physical Examination';36
 35;'4';'Diagnosis, Treatment and Counseling';36
 36;'Total';'Total Score';
+37;'Match1';'Diagnose1-Treatment1-Match';
+38;'Match2';'Diagnose2-Treatment2-Match';
+39;'Match3';'Diagnose3-Treatment3-Match';
