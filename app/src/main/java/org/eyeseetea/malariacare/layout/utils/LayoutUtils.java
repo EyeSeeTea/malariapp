@@ -20,6 +20,7 @@
 package org.eyeseetea.malariacare.layout.utils;
 
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.support.v7.app.ActionBar;
 import android.view.View;
 import android.view.ViewGroup;
@@ -300,5 +301,6 @@ public class LayoutUtils {
         actionBar.setDisplayUseLogoEnabled(true);
         actionBar.setDisplayShowHomeEnabled(true);
         actionBar.setIcon(R.drawable.qualityapp_logo);
+        actionBar.setBackgroundDrawable(new ColorDrawable(Color.WHITE));
     }
 }

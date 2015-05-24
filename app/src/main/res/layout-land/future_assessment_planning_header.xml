@@ -19,60 +19,81 @@
   -->
 
 <TableRow xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:gravity="center">
+    android:layout_height="wrap_content"
+    android:padding="5dp"
+    android:background="@drawable/cell_borders">
 
-    <TextView
-        android:layout_width="0dip"
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="0dp"
         android:layout_height="fill_parent"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="@string/future_title_facility"
-        android:id="@+id/facilityHeader"
-        android:background="@drawable/background_header"
-        android:textColor="#ffffff"
-        android:gravity="center"
-        android:padding="5dip"
+        android:id="@+id/facilityContainer"
         android:layout_weight="0.3"
-        android:layout_gravity="center" />
+        android:layout_gravity="center">
 
-    <TextView
-        android:layout_width="0dip"
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:id="@+id/facility"
+            android:padding="5dip"
+            android:layout_gravity="center_vertical"
+            android:textStyle="bold"
+            android:fontFamily="@string/bold_font_name" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="0dp"
         android:layout_height="fill_parent"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="@string/future_title_previous_date"
-        android:id="@+id/previousDateHeader"
-        android:background="@drawable/background_header"
-        android:textColor="#ffffff"
-        android:gravity="center"
-        android:padding="5dip"
+        android:id="@+id/datePreviousAssessmentContainer"
         android:layout_weight="0.25"
-        android:layout_gravity="center" />
+        android:layout_gravity="center">
 
-    <TextView
-        android:layout_width="0dip"
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:id="@+id/datePreviousAssessment"
+            android:padding="5dip"
+            android:layout_gravity="center"
+            android:fontFamily="@string/light_font_name" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="0dp"
         android:layout_height="fill_parent"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:id="@+id/dueDateHeader"
-        android:background="@drawable/background_header"
-        android:textColor="#ffffff"
-        android:gravity="center"
-        android:padding="5dip"
+        android:id="@+id/dueDateContainer"
         android:layout_weight="0.25"
-        android:layout_gravity="center"
-        android:text="@string/future_title_due_date" />
+        android:layout_gravity="center">
 
-    <TextView
-        android:layout_width="0dip"
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:id="@+id/dueDate"
+            android:padding="5dip"
+            android:layout_gravity="center"
+            android:fontFamily="@string/light_font_name" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="0dp"
         android:layout_height="fill_parent"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:id="@+id/actionHeader"
-        android:background="@drawable/background_header"
-        android:textColor="#ffffff"
-        android:gravity="center"
-        android:padding="5dip"
+        android:id="@+id/actionContainer"
         android:layout_weight="0.2"
-        android:layout_gravity="center"
-        android:text="@string/future_title_action" />
+        android:layout_gravity="center">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:id="@+id/action"
+            android:padding="5dip"
+            android:layout_gravity="center"
+            android:fontFamily="@string/light_font_name" />
+    </LinearLayout>
 </TableRow>

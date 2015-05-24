@@ -8,8 +8,9 @@
     android:ellipsize="marquee"
     android:textAlignment="gravity"
     android:gravity="center"
-    android:textColor="#ffffff"
-    android:background="#1e506c"
+    android:textColor="@color/white"
+    android:background="@color/headerColor"
     android:paddingRight="40dip"
     android:alpha="0.8"
-    android:paddingLeft="40dip" />
+    android:paddingLeft="40dip"
+    android:fontFamily="@string/bold_font_name" />

@@ -33,7 +33,8 @@
             android:layout_height="wrap_content"
             android:text="@string/widget_info_empty_statement"
             android:id="@+id/statement"
-            android:paddingLeft="10dip" />
+            android:paddingLeft="10dip"
+            android:fontFamily="@string/light_font_name" />
     </RelativeLayout>
     <RelativeLayout
         android:layout_width="fill_parent"
@@ -46,7 +47,7 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:alpha="0.8"
-            android:background="#bebebe">
+            android:background="@color/textFieldColor">
 
             <RadioGroup
                 android:layout_width="fill_parent"
@@ -65,7 +66,7 @@
         <TextView
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:text="0"
+            android:text="@string/number_zero"
             android:id="@+id/num"
             android:gravity="center_vertical|center_horizontal" />
     </RelativeLayout>
@@ -78,7 +79,7 @@
         <TextView
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:text="0"
+            android:text="@string/number_zero"
             android:id="@+id/den"
             android:gravity="center_vertical|center_horizontal" />
     </RelativeLayout>

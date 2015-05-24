@@ -51,7 +51,8 @@
                     android:padding="10dip"
                     android:textSize="14sp"
                     android:layout_gravity="center_vertical"
-                    android:layout_weight="0.4" />
+                    android:layout_weight="0.4"
+                    android:fontFamily="@string/bold_font_name" />
 
                 <TextView
                     android:layout_width="fill_parent"
@@ -60,11 +61,12 @@
                     android:text="@string/score_info_zero_float"
                     android:id="@+id/profileScore"
                     android:background="#407015"
-                    android:textColor="#ffffff"
+                    android:textColor="@color/white"
                     android:textSize="16sp"
                     android:gravity="center"
                     android:layout_gravity="center_vertical"
-                    android:layout_weight="0.2" />
+                    android:layout_weight="0.2"
+                    android:fontFamily="@string/medium_font_name" />
             </TableRow>
 
             <TableRow
@@ -87,12 +89,13 @@
                     android:id="@+id/case1title"
                     android:textStyle="bold"
                     android:padding="10dip"
-                    android:textColor="#ffffff"
+                    android:textColor="@color/white"
                     android:background="#ff639533"
                     android:textSize="16sp"
                     android:gravity="center"
                     android:layout_gravity="center_vertical"
-                    android:layout_weight="0.2" />
+                    android:layout_weight="0.2"
+                    android:fontFamily="@string/bold_font_name" />
 
                 <TextView
                     android:layout_width="fill_parent"
@@ -102,12 +105,13 @@
                     android:id="@+id/case2title"
                     android:textStyle="bold"
                     android:padding="10dip"
-                    android:background="#1e506c"
-                    android:textColor="#ffffff"
+                    android:background="@color/headerColor"
+                    android:textColor="@color/white"
                     android:textSize="16sp"
                     android:gravity="center"
                     android:layout_gravity="center_vertical"
-                    android:layout_weight="0.2" />
+                    android:layout_weight="0.2"
+                    android:fontFamily="@string/bold_font_name" />
 
                 <TextView
                     android:layout_width="fill_parent"
@@ -118,11 +122,12 @@
                     android:textStyle="bold"
                     android:padding="10dip"
                     android:background="#429470"
-                    android:textColor="#ffffff"
+                    android:textColor="@color/white"
                     android:textSize="16sp"
                     android:gravity="center"
                     android:layout_gravity="center_vertical"
-                    android:layout_weight="0.2" />
+                    android:layout_weight="0.2"
+                    android:fontFamily="@string/bold_font_name" />
 
                 <TextView
                     android:layout_width="fill_parent"
@@ -133,11 +138,12 @@
                     android:textStyle="bold"
                     android:padding="10dip"
                     android:background="#407015"
-                    android:textColor="#ffffff"
+                    android:textColor="@color/white"
                     android:textSize="16sp"
                     android:gravity="center"
                     android:layout_gravity="center_vertical"
-                    android:layout_weight="0.2" />
+                    android:layout_weight="0.2"
+                    android:fontFamily="@string/bold_font_name" />
 
             </TableRow>
 
@@ -159,7 +165,8 @@
                     android:textSize="14sp"
                     android:layout_gravity="center_vertical"
                     android:lines="3"
-                    android:layout_weight="0.2" />
+                    android:layout_weight="0.2"
+                    android:fontFamily="@string/bold_font_name" />
 
                 <TextView
                     android:layout_width="fill_parent"
@@ -168,11 +175,12 @@
                     android:text="@string/score_info_zero_float"
                     android:id="@+id/clinicalCase1"
                     android:background="#ff639533"
-                    android:textColor="#ffffff"
+                    android:textColor="@color/white"
                     android:textSize="16sp"
                     android:gravity="center"
                     android:layout_gravity="center_vertical"
-                    android:layout_weight="0.2" />
+                    android:layout_weight="0.2"
+                    android:fontFamily="@string/light_font_name" />
 
                 <TextView
                     android:layout_width="fill_parent"
@@ -180,12 +188,13 @@
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:text="@string/score_info_zero_float"
                     android:id="@+id/clinicalCase2"
-                    android:background="#1e506c"
-                    android:textColor="#ffffff"
+                    android:background="@color/headerColor"
+                    android:textColor="@color/white"
                     android:textSize="16sp"
                     android:gravity="center"
                     android:layout_gravity="center_vertical"
-                    android:layout_weight="0.2" />
+                    android:layout_weight="0.2"
+                    android:fontFamily="@string/medium_font_name" />
 
                 <TextView
                     android:layout_width="fill_parent"
@@ -194,11 +203,12 @@
                     android:text="@string/score_info_zero_float"
                     android:id="@+id/clinicalCase3"
                     android:background="#429470"
-                    android:textColor="#ffffff"
+                    android:textColor="@color/white"
                     android:textSize="16sp"
                     android:gravity="center"
                     android:layout_gravity="center_vertical"
-                    android:layout_weight="0.2" />
+                    android:layout_weight="0.2"
+                    android:fontFamily="@string/medium_font_name" />
 
                 <TextView
                     android:layout_width="fill_parent"
@@ -207,11 +217,12 @@
                     android:text="@string/score_info_zero_float"
                     android:id="@+id/clinicalAvg"
                     android:background="#407015"
-                    android:textColor="#ffffff"
+                    android:textColor="@color/white"
                     android:textSize="16sp"
                     android:gravity="center"
                     android:layout_gravity="center_vertical"
-                    android:layout_weight="0.2" />
+                    android:layout_weight="0.2"
+                    android:fontFamily="@string/medium_font_name" />
             </TableRow>
 
             <TableRow
@@ -231,7 +242,8 @@
                     android:padding="10dip"
                     android:textSize="14sp"
                     android:layout_gravity="center_vertical"
-                    android:layout_weight="0.2" />
+                    android:layout_weight="0.2"
+                    android:fontFamily="@string/bold_font_name" />
 
                 <TextView
                     android:layout_width="fill_parent"
@@ -240,11 +252,12 @@
                     android:text="@string/score_info_zero_float"
                     android:id="@+id/rdtCase1"
                     android:background="#ff639533"
-                    android:textColor="#ffffff"
+                    android:textColor="@color/white"
                     android:textSize="16sp"
                     android:gravity="center"
                     android:layout_gravity="center_vertical"
-                    android:layout_weight="0.2" />
+                    android:layout_weight="0.2"
+                    android:fontFamily="@string/medium_font_name" />
 
                 <TextView
                     android:layout_width="fill_parent"
@@ -252,12 +265,13 @@
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:text="@string/score_info_zero_float"
                     android:id="@+id/rdtCase2"
-                    android:background="#1e506c"
-                    android:textColor="#ffffff"
+                    android:background="@color/headerColor"
+                    android:textColor="@color/white"
                     android:textSize="16sp"
                     android:gravity="center"
                     android:layout_gravity="center_vertical"
-                    android:layout_weight="0.2" />
+                    android:layout_weight="0.2"
+                    android:fontFamily="@string/medium_font_name" />
 
                 <TextView
                     android:layout_width="fill_parent"
@@ -266,11 +280,12 @@
                     android:text="@string/score_info_zero_float"
                     android:id="@+id/rdtCase3"
                     android:background="#429470"
-                    android:textColor="#ffffff"
+                    android:textColor="@color/white"
                     android:textSize="16sp"
                     android:gravity="center"
                     android:layout_gravity="center_vertical"
-                    android:layout_weight="0.2" />
+                    android:layout_weight="0.2"
+                    android:fontFamily="@string/medium_font_name" />
 
                 <TextView
                     android:layout_width="fill_parent"
@@ -279,11 +294,12 @@
                     android:text="@string/score_info_zero_float"
                     android:id="@+id/rdtAvg"
                     android:background="#407015"
-                    android:textColor="#ffffff"
+                    android:textColor="@color/white"
                     android:textSize="16sp"
                     android:gravity="center"
                     android:layout_gravity="center_vertical"
-                    android:layout_weight="0.2" />
+                    android:layout_weight="0.2"
+                    android:fontFamily="@string/medium_font_name" />
             </TableRow>
 
 
@@ -319,7 +335,8 @@
                     android:padding="10dip"
                     android:textSize="14sp"
                     android:layout_gravity="center_vertical"
-                    android:layout_weight="0.4" />
+                    android:layout_weight="0.4"
+                    android:fontFamily="@string/bold_font_name" />
 
                 <TextView
                     android:layout_width="fill_parent"
@@ -328,11 +345,12 @@
                     android:text="@string/score_info_zero_float"
                     android:id="@+id/feedbackScore"
                     android:background="#407015"
-                    android:textColor="#ffffff"
+                    android:textColor="@color/white"
                     android:textSize="16sp"
                     android:gravity="center"
                     android:layout_gravity="center_vertical"
-                    android:layout_weight="0.2" />
+                    android:layout_weight="0.2"
+                    android:fontFamily="@string/medium_font_name" />
             </TableRow>
 
             <TableRow
@@ -367,7 +385,8 @@
                     android:padding="10dip"
                     android:textSize="14sp"
                     android:layout_gravity="center_vertical"
-                    android:layout_weight="0.4" />
+                    android:layout_weight="0.4"
+                    android:fontFamily="@string/bold_font_name" />
 
                 <TextView
                     android:layout_width="fill_parent"
@@ -376,11 +395,12 @@
                     android:text="@string/score_info_zero_float"
                     android:id="@+id/envAndMatScore"
                     android:background="#407015"
-                    android:textColor="#ffffff"
+                    android:textColor="@color/white"
                     android:textSize="16sp"
                     android:gravity="center"
                     android:layout_gravity="center_vertical"
-                    android:layout_weight="0.2" />
+                    android:layout_weight="0.2"
+                    android:fontFamily="@string/medium_font_name" />
             </TableRow>
 
 
@@ -428,7 +448,8 @@
                     android:textSize="20sp"
                     android:layout_gravity="center_vertical"
                     android:gravity="center"
-                    android:layout_weight="0.4" />
+                    android:layout_weight="0.4"
+                    android:fontFamily="@string/bold_font_name" />
 
                 <TextView
                     android:layout_width="fill_parent"
@@ -443,7 +464,8 @@
                     android:gravity="center"
                     android:layout_gravity="center_vertical"
                     android:layout_weight="0.2"
-                    android:padding="5dip" />
+                    android:padding="5dip"
+                    android:fontFamily="@string/bold_font_name" />
             </TableRow>
         </TableLayout>
     </GridLayout>

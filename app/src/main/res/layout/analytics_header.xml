@@ -31,11 +31,12 @@
         android:text="@string/analytics_title_period"
         android:id="@+id/periodHeader"
         android:background="@drawable/background_header"
-        android:textColor="#ffffff"
+        android:textColor="@color/white"
         android:gravity="center"
         android:padding="5dip"
         android:layout_weight="0.25"
-        android:layout_gravity="center" />
+        android:layout_gravity="center"
+        android:fontFamily="@string/medium_font_name" />
 
     <TextView
         android:layout_width="0dip"
@@ -44,11 +45,12 @@
         android:text="@string/analytics_title_target"
         android:id="@+id/targetHeader"
         android:background="@drawable/background_header"
-        android:textColor="#ffffff"
+        android:textColor="@color/white"
         android:gravity="center"
         android:padding="5dip"
         android:layout_weight="0.2"
-        android:layout_gravity="center" />
+        android:layout_gravity="center"
+        android:fontFamily="@string/medium_font_name" />
 
     <TextView
         android:layout_width="0dip"
@@ -56,12 +58,13 @@
         android:textAppearance="?android:textAppearanceSmall"
         android:id="@+id/doneHeader"
         android:background="@drawable/background_header"
-        android:textColor="#ffffff"
+        android:textColor="@color/white"
         android:gravity="center"
         android:padding="5dip"
         android:layout_weight="0.2"
         android:layout_gravity="center"
-        android:text="@string/analytics_title_completed" />
+        android:text="@string/analytics_title_completed"
+        android:fontFamily="@string/medium_font_name" />
 
     <TextView
         android:layout_width="0dip"
@@ -69,10 +72,11 @@
         android:textAppearance="?android:textAppearanceSmall"
         android:id="@+id/achievementHeader"
         android:background="@drawable/background_header"
-        android:textColor="#ffffff"
+        android:textColor="@color/white"
         android:gravity="center"
         android:padding="5dip"
         android:layout_weight="0.3"
         android:layout_gravity="center"
-        android:text="@string/analytics_title_achievement" />
+        android:text="@string/analytics_title_achievement"
+        android:fontFamily="@string/light_font_name"/>
 </TableRow>

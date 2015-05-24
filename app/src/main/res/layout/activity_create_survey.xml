@@ -55,7 +55,8 @@
                         android:textAppearance="?android:attr/textAppearanceLarge"
                         android:text="@string/create_info_organization_unit"
                         android:id="@+id/textView2"
-                        style="?android:textAppearanceMedium" />
+                        style="?android:textAppearanceMedium"
+                        android:fontFamily="@string/medium_font_name"/>
                 </LinearLayout>
 
                 <LinearLayout
@@ -74,7 +75,7 @@
                         android:paddingTop="2dip"
                         android:paddingRight="20dip"
                         android:paddingBottom="2dip"
-                        android:backgroundTint="#1e506c"
+                        android:backgroundTint="@color/headerColor"
                         android:gravity="right"
                         style="?android:textAppearanceMedium" />
                 </LinearLayout>
@@ -94,7 +95,8 @@
                         android:textAppearance="?android:attr/textAppearanceLarge"
                         android:text="@string/create_info_survey"
                         android:id="@+id/textView3"
-                        style="?android:textAppearanceMedium" />
+                        style="?android:textAppearanceMedium"
+                        android:fontFamily="@string/medium_font_name"/>
                 </LinearLayout>
 
                 <LinearLayout
@@ -113,7 +115,7 @@
                         android:paddingTop="2dip"
                         android:paddingRight="20dip"
                         android:paddingBottom="2dip"
-                        android:backgroundTint="#1e506c"
+                        android:backgroundTint="@color/headerColor"
                         android:gravity="right"
                         style="?android:textAppearanceMedium" />
                 </LinearLayout>
@@ -126,7 +128,8 @@
                     android:layout_width="match_parent" android:layout_height="wrap_content"
                     android:layout_marginTop="16dp" android:text="@string/create_info_ok"
                     android:textStyle="bold"
-                    android:onClick="createSurvey" />
+                    android:onClick="createSurvey"
+                    android:fontFamily="@string/condensed_font_name"/>
 
             </LinearLayout>
 

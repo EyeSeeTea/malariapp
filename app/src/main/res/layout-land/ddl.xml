@@ -15,7 +15,8 @@
             android:text="@string/widget_info_empty_statement"
             android:id="@+id/statement"
             android:paddingLeft="10dip"
-            android:textAppearance="?android:textAppearanceSmall" />
+            android:textAppearance="?android:textAppearanceSmall"
+            android:fontFamily="@string/light_font_name" />
     </RelativeLayout>
     <RelativeLayout
         android:layout_width="fill_parent"
@@ -28,7 +29,7 @@
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:alpha="0.8"
-            android:background="#bebebe">
+            android:background="@color/textFieldColor">
 
             <Spinner
                 android:layout_width="fill_parent"
@@ -40,7 +41,7 @@
                 android:paddingTop="2dip"
                 android:paddingRight="20dip"
                 android:paddingBottom="2dip"
-                android:backgroundTint="#1e506c"
+                android:backgroundTint="@color/headerColor"
                 android:gravity="right" />
         </LinearLayout>
 
@@ -54,10 +55,11 @@
         <TextView
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:text="0"
+            android:text="@string/number_zero"
             android:id="@+id/num"
             android:gravity="center_vertical|center_horizontal"
-            android:textAppearance="?android:textAppearanceSmall" />
+            android:textAppearance="?android:textAppearanceSmall"
+            android:fontFamily="@string/light_font_name" />
     </RelativeLayout>
     <RelativeLayout
         android:layout_width="fill_parent"
@@ -68,10 +70,11 @@
         <TextView
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:text="0"
+            android:text="@string/number_zero"
             android:id="@+id/den"
             android:gravity="center_vertical|center_horizontal"
-            android:textAppearance="?android:textAppearanceSmall" />
+            android:textAppearance="?android:textAppearanceSmall"
+            android:fontFamily="@string/light_font_name" />
     </RelativeLayout>
 
 </LinearLayout>

@@ -9,4 +9,5 @@
     style="?android:attr/spinnerItemStyle"
     android:alpha="0.8"
     android:textAlignment="gravity"
-    android:gravity="center" />
+    android:gravity="center"
+    android:fontFamily="@string/light_font_name" />
