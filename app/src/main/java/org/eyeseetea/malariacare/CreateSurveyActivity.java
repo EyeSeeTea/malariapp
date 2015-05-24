@@ -44,6 +44,7 @@ import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 import org.eyeseetea.malariacare.utils.Constants;
 import org.eyeseetea.malariacare.utils.ExceptionHandler;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -52,8 +53,15 @@ public class CreateSurveyActivity extends BaseActivity {
     // UI references.
     private Spinner orgUnitView;
     private Spinner programView;
-    private OrgUnit orgUnitDefaultOption;
-    private Program programDefaultOption;
+
+
+    private OrgUnit orgUnitDefaultOption=new OrgUnit(Constants.DEFAULT_SELECT_OPTION);
+    private Program programDefaultOption=new Program(Constants.DEFAULT_SELECT_OPTION);
+
+    List<OrgUnit> orgUnitListModel=new ArrayList<OrgUnit>();
+    List<Program> programListModel=new ArrayList<Program>();
+
+    private AlertDialog alertDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,23 +73,27 @@ public class CreateSurveyActivity extends BaseActivity {
         android.support.v7.app.ActionBar actionBar = this.getSupportActionBar();
         LayoutUtils.setActionBarLogo(actionBar);
 
-        //Create default options
-        this.orgUnitDefaultOption = new OrgUnit(Constants.DEFAULT_SELECT_OPTION);
-        this.programDefaultOption = new Program(Constants.DEFAULT_SELECT_OPTION);
-
         //Populate Organization Unit DDL
-        List<OrgUnit> orgUnitList = OrgUnit.listAll(OrgUnit.class);
-        orgUnitList.add(0, orgUnitDefaultOption);
         orgUnitView = (Spinner) findViewById(R.id.org_unit);
-        orgUnitView.setAdapter(new OrgUnitArrayAdapter(this, orgUnitList));
+        orgUnitView.setAdapter(new OrgUnitArrayAdapter(this, this.orgUnitListModel));
 
         //Populate Program View DDL
-        List<Program> programList = OrgUnit.listAll(Program.class);
-        programList.add(0, programDefaultOption);
         programView = (Spinner) findViewById(R.id.program);
-        programView.setAdapter(new ProgramArrayAdapter(this, programList));
+        programView.setAdapter(new ProgramArrayAdapter(this, this.programListModel));
 
+        reloadData();
     }
+
+    public void reloadData(){
+        this.orgUnitListModel.clear();
+        this.orgUnitListModel.add(this.orgUnitDefaultOption);
+        this.orgUnitListModel.addAll(OrgUnit.listAll(OrgUnit.class));
+
+        this.programListModel.clear();
+        this.programListModel.add(this.programDefaultOption);
+        this.programListModel.addAll(Program.listAll(Program.class));
+    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -117,15 +129,17 @@ public class CreateSurveyActivity extends BaseActivity {
         Program program = (Program) programView.getSelectedItem();
 
         if(!checkEverythingFilled()){
-            new AlertDialog.Builder(this)
+            alertDialog=new AlertDialog.Builder(this)
                     .setTitle("Missing selection")
                     .setMessage("Please select Org Unit and Survey")
-                    .setPositiveButton(android.R.string.ok, null).create().show();
+                    .setPositiveButton(android.R.string.ok, null).create();
+            alertDialog.show();
         } else if(!checkSurveyDoesntExist()) {
-            new AlertDialog.Builder(this)
+            alertDialog=new AlertDialog.Builder(this)
                     .setTitle("Existing Survey")
                     .setMessage("There is already a not sent form in the system for that Org Unit/Survey")
-                    .setPositiveButton(android.R.string.ok, null).create().show();
+                    .setPositiveButton(android.R.string.ok, null).create();
+            alertDialog.show();
         } else {
             // Save Survey
             Survey survey = new Survey(orgUnit, program, Session.getUser());
@@ -139,5 +153,12 @@ public class CreateSurveyActivity extends BaseActivity {
             Intent surveyIntent = new Intent(this, SurveyActivity.class);
             startActivity(surveyIntent);
         }
+    }
+
+    public boolean isAlertDialogShowing(){
+        if(alertDialog==null){
+            return false;
+        }
+        return alertDialog.isShowing();
     }
 }

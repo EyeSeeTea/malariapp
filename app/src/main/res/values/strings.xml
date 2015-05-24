@@ -26,9 +26,7 @@
     <string name="login_info_username">User</string>
     <string name="login_info_password">Password</string>
     <string name="login_info_sign_in">Sign in</string>
-    <string name="login_error_password">This password is incorrect</string>
-    <string name="login_error_short_password">This password is too short</string>
-    <string name="login_error_required">This field is required</string>
+    <string name="login_error_bad_credentials">Your user/password are incorrect</string>
 
     <!-- # dialogs -->
     <string name="dialog_title_delete_survey">Delete Survey</string>
