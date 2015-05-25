@@ -28,7 +28,8 @@
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:text=""
             android:id="@+id/answer"
-            android:background="@drawable/background_textfield" />
+            android:background="@drawable/background_textfield"
+            android:fontFamily="@string/light_font_name" />
     </RelativeLayout>
 
 </LinearLayout>

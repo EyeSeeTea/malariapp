@@ -22,8 +22,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/container"
     android:layout_width="fill_parent" android:layout_height="fill_parent"
-    android:orientation="vertical"
-    android:padding="5dip">
+    android:orientation="vertical">
 
     <TextView
         android:layout_width="wrap_content"
@@ -31,7 +30,9 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="@string/empty_string"
         android:textColor="@color/black"
-        android:id="@+id/title" />
+        android:id="@+id/title"
+        android:padding="5dip"
+        android:fontFamily="@string/medium_font_name" />
 
     <TableLayout
         android:layout_width="fill_parent"
@@ -46,7 +47,8 @@
         android:textColor="@color/headerColor"
         android:typeface="monospace"
         android:id="@+id/see_all"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        android:fontFamily="@string/light_font_name" />
 
     <Space
         android:layout_width="20dp"

@@ -1,19 +1,39 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="EyeSeeTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <item name="background">@color/mainColor</item>
-        <item name="logo">@drawable/qualityapp_logo</item>
-        <item name="displayOptions">useLogo|showHome|homeAsUp|showTitle</item>
+    <!--<style name="EyeSeeTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="background">@color/mainColor</item>-->
         <!-- specify shared element transitions -->
         <!--<item name="android:windowSharedElementEnterTransition">
             @transition/fadein</item>-->
         <!--<item name="android:windowSharedElementExitTransition">
             @transition/fadeout</item>-->
-
-    </style>
+    <!--</style>-->
     <style name="Widget.AppCompat.Spinner.EyeSeeSpinner">
         <item name="android:textSize">12sp</item>
+    </style>
+
+    <!-- Base application theme. -->
+    <style name="EyeSeeTheme" parent="Theme.AppCompat.Light">
+        <!--<item name="windowActionBar">false</item>-->
+        <item name="colorPrimary">@color/navy_blue</item>
+        <item name="colorPrimaryDark">@color/dark_navy_blue</item>
+        <item name="android:windowBackground">@color/light_grey</item>
+        <item name="displayOptions">useLogo|showHome|homeAsUp|showTitle</item>
+        <item name="logo">@drawable/qualityapp_logo</item>
+    </style>
+
+    <style name="LoginScreenTheme" parent="Theme.AppCompat.Light">
+        <item name="windowActionBar">false</item>
+        <item name="colorPrimary">@color/navy_blue</item>
+        <item name="colorPrimaryDark">@color/dark_navy_blue</item>
+        <item name="android:windowBackground">@color/dark_navy_blue</item>
+    </style>
+
+    <style name="Widget.MyApp.HeaderBar.Spinner" parent="Widget.AppCompat.Light.Spinner.DropDown.ActionBar">
+        <item name="android:background">?android:selectableItemBackground</item>
+        <item name="android:dropDownSelector">?android:selectableItemBackground</item>
+        <item name="android:divider">@null</item>
     </style>
 
 </resources>

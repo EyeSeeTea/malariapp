@@ -38,7 +38,8 @@
             android:id="@+id/survey_type"
             android:padding="5dip"
             android:layout_gravity="center_vertical"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:fontFamily="@string/bold_font_name" />
     </LinearLayout>
 
     <LinearLayout
@@ -54,7 +55,8 @@
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:id="@+id/target"
             android:padding="5dip"
-            android:layout_gravity="center" />
+            android:layout_gravity="center"
+            android:fontFamily="@string/light_font_name" />
     </LinearLayout>
 
     <LinearLayout
@@ -70,7 +72,8 @@
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:id="@+id/done"
             android:padding="5dip"
-            android:layout_gravity="center" />
+            android:layout_gravity="center"
+            android:fontFamily="@string/light_font_name" />
     </LinearLayout>
 
     <LinearLayout
@@ -86,6 +89,7 @@
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:id="@+id/achievement"
             android:padding="5dip"
-            android:layout_gravity="center" />
+            android:layout_gravity="center"
+            android:fontFamily="@string/light_font_name" />
     </LinearLayout>
 </TableRow>

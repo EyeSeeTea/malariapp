@@ -25,7 +25,7 @@
     android:layout_height="wrap_content"
     android:id="@+id/form_footer"
     android:gravity="center_vertical|center_horizontal"
-    android:background="#429470">
+    android:background="@color/formFooter">
 
 
 
@@ -67,9 +67,10 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:textAppearanceSmall"
             android:id="@+id/surveyinfo"
-            android:textColor="#ffffff"
+            android:textColor="@color/white"
             android:textStyle="bold|italic"
-            android:gravity="center" />
+            android:gravity="center"
+            android:fontFamily="@string/light_font_name" />
     </LinearLayout>
 
 </LinearLayout>

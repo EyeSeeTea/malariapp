@@ -2,6 +2,8 @@ package org.eyeseetea.malariacare.database.model;
 
 import com.orm.SugarRecord;
 import com.orm.dsl.Ignore;
+import com.orm.query.Condition;
+import com.orm.query.Select;
 
 import java.util.List;
 
@@ -13,6 +15,9 @@ public class CompositiveScore extends SugarRecord<CompositiveScore> {
 
     @Ignore
     List<CompositiveScore> _compositiveScoreChildren;
+
+    @Ignore
+    List<Question> _questions;
 
     public CompositiveScore() {
     }
@@ -52,6 +57,15 @@ public class CompositiveScore extends SugarRecord<CompositiveScore> {
             this._compositiveScoreChildren = CompositiveScore.find(CompositiveScore.class, "compositivescore = ?", String.valueOf(this.getId()));
         }
         return this._compositiveScoreChildren;
+    }
+
+    public List<Question> getQuestions(){
+        if (_questions == null) {
+            _questions = Select.from(Question.class)
+                    .where(Condition.prop("compositive_score")
+                    .eq(String.valueOf(this.getId()))).list();
+        }
+        return _questions;
     }
 
     public boolean hasChildren(){

@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ Copyright (c) 2015.
   ~
@@ -17,120 +18,65 @@
   ~  along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
   -->
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent" android:gravity="center"
-    android:orientation="vertical" android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="org.eyeseetea.malariacare.CreateSurveyActivity">
+<TableRow xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:gravity="center">
 
-    <!-- Login progress -->
-    <ProgressBar android:id="@+id/create_progress" style="?android:attr/progressBarStyleLarge"
-        android:layout_width="wrap_content" android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp" android:visibility="gone"
-        android:layout_gravity="center" />
+    <TextView
+        android:layout_width="0dip"
+        android:layout_height="fill_parent"
+        android:textAppearance="?android:textAppearanceSmall"
+        android:text="@string/analytics_title_period"
+        android:id="@+id/periodHeader"
+        android:background="@drawable/background_header"
+        android:textColor="@color/white"
+        android:gravity="center"
+        android:padding="5dip"
+        android:layout_weight="0.25"
+        android:layout_gravity="center"
+        android:fontFamily="@string/medium_font_name" />
 
-    <ScrollView android:id="@+id/login_form" android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center">
-        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:gravity="center">
+    <TextView
+        android:layout_width="0dip"
+        android:layout_height="fill_parent"
+        android:textAppearance="?android:textAppearanceSmall"
+        android:text="@string/analytics_title_target"
+        android:id="@+id/targetHeader"
+        android:background="@drawable/background_header"
+        android:textColor="@color/white"
+        android:gravity="center"
+        android:padding="5dip"
+        android:layout_weight="0.2"
+        android:layout_gravity="center"
+        android:fontFamily="@string/medium_font_name" />
 
-            <LinearLayout android:id="@+id/create_survey_form" android:layout_width="match_parent"
-                android:layout_height="wrap_content" android:orientation="vertical"
-                android:layout_gravity="center"
-                android:gravity="center">
+    <TextView
+        android:layout_width="0dip"
+        android:layout_height="fill_parent"
+        android:textAppearance="?android:textAppearanceSmall"
+        android:id="@+id/doneHeader"
+        android:background="@drawable/background_header"
+        android:textColor="@color/white"
+        android:gravity="center"
+        android:padding="5dip"
+        android:layout_weight="0.2"
+        android:layout_gravity="center"
+        android:text="@string/analytics_title_completed"
+        android:fontFamily="@string/medium_font_name" />
 
-                <LinearLayout
-                    android:orientation="horizontal"
-                    android:layout_width="fill_parent"
-                    android:layout_height="fill_parent">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textAppearance="?android:attr/textAppearanceLarge"
-                        android:text="@string/create_info_organization_unit"
-                        android:id="@+id/textView2"
-                        style="?android:textAppearanceMedium" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:orientation="horizontal"
-                    android:layout_width="fill_parent"
-                    android:layout_height="fill_parent"
-                    android:background="@drawable/background_textfield">
-
-                    <Spinner
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/org_unit"
-                        android:spinnerMode="dropdown"
-                        android:backgroundTintMode="add"
-                        android:paddingLeft="2dip"
-                        android:paddingTop="2dip"
-                        android:paddingRight="20dip"
-                        android:paddingBottom="2dip"
-                        android:backgroundTint="#1e506c"
-                        android:gravity="right"
-                        style="?android:textAppearanceMedium" />
-                </LinearLayout>
-
-                <Space
-                    android:layout_width="20px"
-                    android:layout_height="20px" />
-
-                <LinearLayout
-                    android:orientation="horizontal"
-                    android:layout_width="fill_parent"
-                    android:layout_height="fill_parent" >
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textAppearance="?android:attr/textAppearanceLarge"
-                        android:text="@string/create_info_survey"
-                        android:id="@+id/textView3"
-                        style="?android:textAppearanceMedium" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:orientation="horizontal"
-                    android:layout_width="fill_parent"
-                    android:layout_height="fill_parent"
-                    android:background="@drawable/background_textfield">
-
-                    <Spinner
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/program"
-                        android:spinnerMode="dropdown"
-                        android:backgroundTintMode="add"
-                        android:paddingLeft="2dip"
-                        android:paddingTop="2dip"
-                        android:paddingRight="20dip"
-                        android:paddingBottom="2dip"
-                        android:backgroundTint="#1e506c"
-                        android:gravity="right"
-                        style="?android:textAppearanceMedium" />
-                </LinearLayout>
-
-                <Space
-                    android:layout_width="20px"
-                    android:layout_height="20px" />
-
-                <Button android:id="@+id/create_form_button" style="?android:textAppearanceMedium"
-                    android:layout_width="match_parent" android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp" android:text="@string/create_info_ok"
-                    android:textStyle="bold"
-                    android:onClick="createSurvey" />
-
-            </LinearLayout>
-
-        </LinearLayout>
-    </ScrollView>
-
-</LinearLayout>
+    <TextView
+        android:layout_width="0dip"
+        android:layout_height="fill_parent"
+        android:textAppearance="?android:textAppearanceSmall"
+        android:id="@+id/achievementHeader"
+        android:background="@drawable/background_header"
+        android:textColor="@color/white"
+        android:gravity="center"
+        android:padding="5dip"
+        android:layout_weight="0.3"
+        android:layout_gravity="center"
+        android:text="@string/analytics_title_achievement"
+        android:fontFamily="@string/light_font_name"/>
+</TableRow>

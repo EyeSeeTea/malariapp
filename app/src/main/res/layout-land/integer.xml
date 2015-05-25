@@ -15,7 +15,8 @@
             android:layout_height="wrap_content"
             android:text="@string/widget_info_empty_statement"
             android:id="@+id/statement"
-            android:paddingLeft="10dip" />
+            android:paddingLeft="10dip"
+            android:fontFamily="@string/light_font_name"/>
     </RelativeLayout>
     <RelativeLayout
         android:layout_width="0dip"

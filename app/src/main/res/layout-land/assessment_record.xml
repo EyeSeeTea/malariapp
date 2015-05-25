@@ -40,7 +40,8 @@
             android:layout_gravity="center_vertical"
             android:textStyle="bold"
             android:paddingLeft="5dip"
-            android:paddingRight="5dip" />
+            android:paddingRight="5dip"
+            android:fontFamily="@string/bold_font_name" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -49,7 +50,8 @@
             android:id="@+id/survey_type"
             android:layout_gravity="center_vertical"
             android:paddingLeft="5dip"
-            android:paddingRight="5dip" />
+            android:paddingRight="5dip"
+            android:fontFamily="@string/light_font_name" />
 
     </LinearLayout>
 
@@ -68,7 +70,8 @@
             android:id="@+id/score"
             android:padding="5dip"
             android:layout_gravity="center"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:fontFamily="@string/bold_font_name" />
 
     </LinearLayout>
 
@@ -79,7 +82,7 @@
         android:id="@+id/toolsContainer"
         android:padding="5dip"
         android:layout_gravity="center"
-        android:layout_weight="0.2">
+        android:layout_weight="0.2" >
 
     </LinearLayout>
 
