@@ -171,13 +171,14 @@ public class SurveyActivity extends BaseActivity {
             View view = inflater.inflate(tabAdapter.getLayout(), parent, false);
             parent.addView(view);
 
-            ListView mQuestions = (ListView) this.findViewById(R.id.listView);
-            mQuestions.setAdapter((BaseAdapter) tabAdapter);
-
             if (selectedTab.getType() == Constants.TAB_AUTOMATIC_SCORED || selectedTab.getType() == Constants.TAB_CUSTOM_SCORED
                     || selectedTab.getType() == Constants.TAB_SCORE_SUMMARY) {
                 tabAdapter.initializeSubscore();
             }
+
+            ListView mQuestions = (ListView) this.findViewById(R.id.listView);
+            mQuestions.setAdapter((BaseAdapter) tabAdapter);
+
         }
     }
 
