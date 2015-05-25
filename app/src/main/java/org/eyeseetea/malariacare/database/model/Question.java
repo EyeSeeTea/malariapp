@@ -27,6 +27,9 @@ public class Question extends SugarRecord<Question> {
     @Ignore
     List<Question> _questionChildren;
 
+    @Ignore
+    List<Question> _relatives;
+
     public Question() {
     }
 
@@ -149,6 +152,15 @@ public class Question extends SugarRecord<Question> {
                     .orderBy("orderpos").list();
         }
         return this._questionChildren;
+    }
+
+    public List<Question> getRelatives() {
+        if (this._relatives == null) {
+
+            this._relatives = Question.findWithQuery(Question.class, "Select * from Question" +
+                    " where id in (Select relative from Relative where master ="+this.getId()+")");
+       }
+        return this._relatives;
     }
 
     public boolean hasChildren(){
