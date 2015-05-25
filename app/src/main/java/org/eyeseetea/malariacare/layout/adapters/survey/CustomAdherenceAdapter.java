@@ -90,7 +90,6 @@ public class CustomAdherenceAdapter extends BaseAdapter implements ITabAdapter {
 
     static class ScoreHolder {
         public TextView scoreText;
-        public TextView tabName;
         public TextView score;
         public TextView cualitativeScore;
     }
@@ -99,8 +98,6 @@ public class CustomAdherenceAdapter extends BaseAdapter implements ITabAdapter {
         scoreHolder.score = (TextView) ((Activity) context).findViewById(R.id.score);
         scoreHolder.cualitativeScore = (TextView) ((Activity) context).findViewById(R.id.cualitativeScore);
         scoreHolder.scoreText = (TextView) ((Activity) context).findViewById(R.id.subtotalScoreText);
-        scoreHolder.tabName = (TextView) ((Activity) context).findViewById(R.id.tabName);
-        scoreHolder.tabName.setText(tabName);
     }
 
     public void updateScore() {

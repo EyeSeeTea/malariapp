@@ -88,7 +88,6 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
         public TextView totalNum;
         public TextView totalDenum;
         public TextView qualitativeScore;
-        public TextView tabName;
     }
 
     public AutoTabAdapter(Tab tab, Context context) {
@@ -144,8 +143,6 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
     }
 
     private void initializeScoreViews() {
-        scoreHolder.tabName = (TextView) ((Activity) context).findViewById(R.id.tabName);
-        scoreHolder.tabName.setText(tab.getName());
         scoreHolder.score = (TextView) ((Activity) context).findViewById(R.id.score);
         scoreHolder.totalDenum = (TextView) ((Activity) context).findViewById(R.id.totalDen);
         scoreHolder.totalNum = (TextView) ((Activity) context).findViewById(R.id.totalNum);

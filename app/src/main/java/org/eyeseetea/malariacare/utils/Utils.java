@@ -31,11 +31,12 @@ import java.util.List;
 
 public class Utils {
 
-    static final int numberOfDecimals = 2; // Number of decimals outputs will have
+    static final int numberOfDecimals = 0; // Number of decimals outputs will have
 
     public static String round(float base, int decimalPlace){
         BigDecimal bd = new BigDecimal(Float.toString(base));
         bd = bd.setScale(decimalPlace, BigDecimal.ROUND_DOWN);
+        if (decimalPlace == 0) return Integer.toString((int) bd.floatValue());
         return Float.toString(bd.floatValue());
     }
 
