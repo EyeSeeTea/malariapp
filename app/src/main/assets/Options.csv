@@ -123,10 +123,9 @@ Specialized obstetrics clinic';0.00;33
 122;'Danger sign illness';6.00;50
 123;'Other illness';7.00;50
 124;'QAACTs';1.00;51
-125;'Other antimalarials';2.00;51
-126;'Antibiotics - Pneumonia';3.00;51
-127;'Antibiotics - Dysentery';4.00;51
-128;'ORS and Zinc';5.00;51
-129;'Cough Syrup or tablets';6.00;51
-130;'Severe patient reffered';7.00;51
-131;'other treatment';8.00;51
+126;'Antibiotics - Pneumonia';2.00;51
+127;'ORS and Zinc';3.00;51
+128;'Antibiotics - Dysentery';4.00;51
+129;'Cough Syrup or tablets';5.00;51
+130;'Referral';6.00;51
+131;'Other treatment';7.00;51

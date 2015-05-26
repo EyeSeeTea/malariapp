@@ -38,6 +38,7 @@ import org.eyeseetea.malariacare.database.model.Header;
 import org.eyeseetea.malariacare.database.model.Option;
 import org.eyeseetea.malariacare.database.model.Question;
 import org.eyeseetea.malariacare.database.model.Tab;
+import org.eyeseetea.malariacare.database.model.Value;
 import org.eyeseetea.malariacare.database.utils.ReadWriteDB;
 import org.eyeseetea.malariacare.layout.adapters.general.OptionArrayAdapter;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
@@ -378,6 +379,40 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
         }
     }
 
+    private boolean checkMatches(Question question) {
+        boolean match = true;
+
+        List<Question> relatives = question.getRelatives();
+
+        if (relatives.size()>0) {
+
+            Option option = ReadWriteDB.readOptionAnswered(relatives.get(0));
+
+            if (option == null) match = false;
+
+            for (int i=1; i<relatives.size() && match; i++) {
+                Option currentOption = ReadWriteDB.readOptionAnswered(relatives.get(i));
+
+                if (currentOption == null) match = false;
+                else match = match && (Float.compare(option.getFactor(), currentOption.getFactor())==0);
+            }
+
+        }
+
+        return match;
+    }
+
+    private void autoFillAnswer(ViewHolder viewHolder, Question question) {
+
+        viewHolder.spinner.setEnabled(false);
+
+        if (checkMatches(question))
+            itemSelected(viewHolder, question, question.getAnswer().getOptions().get(0));
+        else
+            itemSelected(viewHolder, question, question.getAnswer().getOptions().get(1));
+
+    }
+
     private void itemSelected(ViewHolder viewHolder, Question question, Option option) {
 
         ReadWriteDB.saveValuesDDL(question, option);
@@ -482,8 +517,13 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
                 rowView.setBackgroundResource(LayoutUtils.calculateBackgrounds(position));
 
             if (question.getAnswer().getOutput() == Constants.DROPDOWN_LIST) {
-                viewHolder.spinner.setOnItemSelectedListener(new SpinnerListener(false, question, viewHolder));
-            } else if (question.getAnswer().getOutput() != Constants.NO_ANSWER) {
+
+                if (!question.hasRelatives())
+                    viewHolder.spinner.setOnItemSelectedListener(new SpinnerListener(false, question, viewHolder));
+                else
+                    autoFillAnswer(viewHolder, question);
+            }
+            else if (question.getAnswer().getOutput() != Constants.NO_ANSWER) {
                 viewHolder.answer.addTextChangedListener(new TextViewListener(false, question));
             }
             viewHolder.statement.setText(question.getForm_name());
@@ -538,6 +578,8 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
         public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
             if (viewCreated) {
                 itemSelected(viewHolder, question, (Option) viewHolder.spinner.getItemAtPosition(pos));
+                if (question.belongsToMasterQuestions())
+                    notifyDataSetChanged();
             } else {
                 viewCreated = true;
             }

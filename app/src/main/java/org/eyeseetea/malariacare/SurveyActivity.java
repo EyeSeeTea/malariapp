@@ -96,6 +96,7 @@ public class SurveyActivity extends BaseActivity {
 
         Log.i(".SurveyActivity", "Creating Adapter");
         tabsList = Tab.getTabsBySession();
+
         for (Tab tab : tabsList) {
             if (tab.getName().equals("Compositive Scores"))
                 adaptersMap.put(tab, new CompositiveScoreAdapter(compositiveScores, this, R.layout.compositivescoretab, tab.getName()));

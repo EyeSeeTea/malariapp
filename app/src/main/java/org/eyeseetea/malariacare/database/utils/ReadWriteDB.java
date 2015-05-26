@@ -61,6 +61,17 @@ public class ReadWriteDB {
         return result;
     }
 
+    public static Option readOptionAnswered(Question question) {
+        Option option = null;
+
+        Value value = question.getValueBySession();
+
+        if (value!=null)
+            option = value.getOption();
+
+        return option;
+    }
+
     public static void saveValuesDDL(Question question, Option option) {
 
         Value value = question.getValueBySession();

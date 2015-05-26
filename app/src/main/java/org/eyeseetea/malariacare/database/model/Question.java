@@ -30,6 +30,9 @@ public class Question extends SugarRecord<Question> {
     @Ignore
     List<Question> _relatives;
 
+    @Ignore
+    List<Question> _master;
+
     public Question() {
     }
 
@@ -162,6 +165,19 @@ public class Question extends SugarRecord<Question> {
        }
         return this._relatives;
     }
+
+    public List<Question> getMasters() {
+        if (this._master == null) {
+
+            this._master = Question.findWithQuery(Question.class, "Select * from Question" +
+                    " where id in (Select master from Relative where relative ="+this.getId()+")");
+        }
+        return this._master;
+    }
+
+    public boolean belongsToMasterQuestions() {return !getMasters().isEmpty();}
+
+    public boolean hasRelatives() {return !getRelatives().isEmpty(); }
 
     public boolean hasChildren(){
         return !getQuestionChildren().isEmpty();
