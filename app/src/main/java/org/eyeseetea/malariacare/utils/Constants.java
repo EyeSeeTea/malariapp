@@ -28,4 +28,9 @@ public class Constants {
             SURVEY_COMPLETED = 1,
             SURVEY_SENT = 2;
 
+    //############# OPERATION TYPE ##############
+    public static final int OPERATION_TYPE_MATCH = 0,
+            OPERATION_TYPE_PARENT = 1,
+            OPERATION_TYPE_OTHER = 2;
+
 }

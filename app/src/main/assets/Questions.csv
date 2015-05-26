@@ -678,8 +678,8 @@
 680;;;;'Treatment 2 administered (if applicable)';;160;0.00;0.00;467;51;675;
 681;;;;'Treatment 3 administered (if applicable)';;170;0.00;0.00;467;51;677;
 682;;;;'Does diagnosis 1 match treatment 1?';;180;10.00;10.00;467;15;;35
-683;;;;'Does diagnosis 2 match treatment 2?';;190;10.00;0.00;467;45;675;35
-684;;;;'Does diagnosis 3 match treatment 3?';;200;10.00;0.00;467;45;677;35
+683;;;;'Does diagnosis 2 match treatment 2?';;190;10.00;0.00;467;15;675;35
+684;;;;'Does diagnosis 3 match treatment 3?';;200;10.00;0.00;467;15;677;35
 685;;;;'Treatment 1';;210;0.00;0.00;468;49;;
 686;;;;'Provider counsels caregiver on proper dosage (no. of  doses/days, side effects)';;220;1.00;1.00;468;15;;35
 687;;;;'Provider gives first dose of oral medicine on site';;230;1.00;1.00;468;15;;35
