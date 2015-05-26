@@ -19,235 +19,186 @@
 
 package org.eyeseetea.malariacare;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
-import android.content.Intent;
+import android.annotation.TargetApi;
+import android.content.Context;
+import android.content.res.Configuration;
+import android.media.Ringtone;
+import android.media.RingtoneManager;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.BaseAdapter;
-import android.widget.LinearLayout;
-import android.widget.ListView;
-import android.widget.Spinner;
-import android.widget.TextView;
+import android.preference.ListPreference;
+import android.preference.Preference;
+import android.preference.PreferenceActivity;
+import android.preference.PreferenceCategory;
+import android.preference.PreferenceFragment;
+import android.preference.PreferenceManager;
+import android.preference.RingtonePreference;
+import android.text.TextUtils;
 
-import org.eyeseetea.malariacare.database.model.CompositiveScore;
-import org.eyeseetea.malariacare.database.model.Tab;
-import org.eyeseetea.malariacare.database.utils.Session;
-import org.eyeseetea.malariacare.layout.adapters.general.TabArrayAdapter;
-import org.eyeseetea.malariacare.layout.adapters.survey.AutoTabAdapter;
-import org.eyeseetea.malariacare.layout.adapters.survey.CompositiveScoreAdapter;
-import org.eyeseetea.malariacare.layout.adapters.survey.ITabAdapter;
-import org.eyeseetea.malariacare.layout.score.ScoreRegister;
-import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
-import org.eyeseetea.malariacare.utils.Constants;
-import org.eyeseetea.malariacare.utils.Utils;
 
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-
-public class SettingsActivity extends BaseActivity {
-
-    private List<Tab> tabsList;
-    private Map<Tab, ITabAdapter> adaptersMap = new HashMap<Tab, ITabAdapter>();
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        Log.i(".SurveyActivity", "Starting");
-        setContentView(R.layout.survey);
-        android.support.v7.app.ActionBar actionBar = this.getSupportActionBar();
-        LayoutUtils.setActionBarLogo(actionBar);
-
-        Log.i(".SurveyActivity", "Registering Compositive Score");
-        //Intializing compositive score register
-        for (CompositiveScore compositiveScore : CompositiveScore.listAll(CompositiveScore.class)) {
-            ScoreRegister.registerScore(compositiveScore);
-        }
-
-        Log.i(".SurveyActivity", "Creating Adapter");
-        tabsList = Tab.getTabsBySession();
-        for (Tab tab : tabsList) {
-            if (tab.getName().equals("Compositive Scores"))
-                adaptersMap.put(tab, new CompositiveScoreAdapter(CompositiveScore.listAll(CompositiveScore.class), this, R.layout.compositivescoretab, tab.getName()));
-            else if (tab.getType() != Constants.TAB_SCORE_SUMMARY) {
-                ScoreRegister.registerScore(tab);
-                //adaptersMap.put(tab, new AutoTabAdapter(Utils.convertTabToArray(tab), this, R.layout.form, tab.getName()));
-                switch(tab.getType()) {
-                    case Constants.TAB_AUTOMATIC_NON_SCORED:
-                        adaptersMap.put(tab, new AutoTabAdapter(tab, this, R.layout.form_without_score));
-                        break;
-                    case Constants.TAB_CUSTOM_SCORED:
-                    case Constants.TAB_CUSTOM_NON_SCORED:
-                    case Constants.TAB_AUTOMATIC_SCORED:
-                        adaptersMap.put(tab, new AutoTabAdapter(tab, this));
-                        break;
-                }
-            }
-        }
-
-        Log.i(".SurveyActivity", "Creating Menu");
-        createMenu();
-
-        // Show survey info as a footer below the form
-        SimpleDateFormat formattedDate = new SimpleDateFormat("dd MMM yyyy");
-        TextView surveyInfo = (TextView) this.findViewById(R.id.surveyinfo);
-        surveyInfo.setText("Org Unit: " + Session.getSurvey().getOrgUnit().getName() + " | Survey: " + Session.getSurvey().getProgram().getName() + " | Creation Date: " + formattedDate.format(Session.getSurvey().getEventDate()));
-
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_survey, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        return super.onOptionsItemSelected(item);
-    }
-
-    private void createMenu() {
-
-        final Spinner menu = (Spinner) this.findViewById(R.id.tabSpinner);
-
-        menu.setAdapter(new TabArrayAdapter(this, tabsList));
-        menu.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                Tab selectedTab = (Tab) menu.getSelectedItem();
-                showTab(selectedTab);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-    }
-
-    private void showTab(Tab selectedTab) {
-
-        // FIXME: this if-else must disappear by creating a smarter way of filling tabs and we shouldnt match the tab by name
-        if (selectedTab.getType() == Constants.TAB_SCORE_SUMMARY && !selectedTab.getName().equals("Compositive Scores"))
-            showGeneralScores();
-        else {
-            LayoutInflater inflater = LayoutInflater.from(this);
-            ViewGroup parent = (LinearLayout) this.findViewById(R.id.content);
-            parent.removeAllViews();
-
-            ITabAdapter tabAdapter = adaptersMap.get(selectedTab);
-
-            View view = inflater.inflate(tabAdapter.getLayout(), parent, false);
-            parent.addView(view);
-
-            ListView mQuestions = (ListView) this.findViewById(R.id.listView);
-            mQuestions.setAdapter((BaseAdapter) tabAdapter);
-
-            if (selectedTab.getType() == Constants.TAB_AUTOMATIC_SCORED || selectedTab.getType() == Constants.TAB_CUSTOM_SCORED) {
-                tabAdapter.initializeSubscore();
-            }
-        }
-    }
-
-    private void showGeneralScores() {
-        LayoutInflater inflater = LayoutInflater.from(this);
-
-        ViewGroup parent = (LinearLayout) this.findViewById(R.id.content);
-        parent.removeAllViews();
-        View view = inflater.inflate(R.layout.scoretab, parent, false);
-        parent.addView(view);
-
-        Float tab1 = 0F, tab2 = 0F, tab3 = 0F, tab4 = 0F, tab5 = 0F, tab6 = 0F, tab7 = 0F, tab8 = 0F, tab9 = 0F;
-
-        List<ITabAdapter> adaptersList = new ArrayList<ITabAdapter>(adaptersMap.values());
-
-        // FIXME: This is a very ugly way of doing it, change it soon
-        if (adaptersList.get(10) != null) {
-            tab1 = adaptersList.get(10).getScore();
-            ((TextView) this.findViewById(R.id.profileScore)).setText(Utils.round(tab1));
-            LayoutUtils.trafficLight(this.findViewById(R.id.profileScore), tab1, null);
-        }
-        if (adaptersList.get(2) != null) {
-            tab9 = adaptersList.get(2).getScore();
-            ((TextView) this.findViewById(R.id.envAndMatScore)).setText(Utils.round(tab9));
-            LayoutUtils.trafficLight(this.findViewById(R.id.envAndMatScore), tab9, null);
-        }
-        if (adaptersList.get(8) != null) {
-            tab8 = adaptersList.get(8).getScore();
-            ((TextView) this.findViewById(R.id.feedbackScore)).setText(Utils.round(tab8));
-            LayoutUtils.trafficLight(this.findViewById(R.id.feedbackScore), tab8, null);
-        }
-        if (adaptersList.get(6) != null) {
-            tab2 = adaptersList.get(6).getScore();
-            ((TextView) this.findViewById(R.id.clinicalCase1)).setText(Utils.round(tab2));
-            LayoutUtils.trafficLight(this.findViewById(R.id.clinicalCase1), tab2, null);
-        }
-        if (adaptersList.get(1) != null) {
-            tab4 = adaptersList.get(1).getScore();
-            ((TextView) this.findViewById(R.id.clinicalCase2)).setText(Utils.round(tab4));
-            LayoutUtils.trafficLight(this.findViewById(R.id.clinicalCase2), tab4, null);
-        }
-        if (adaptersList.get(3) != null) {
-            tab6 = adaptersList.get(3).getScore();
-            ((TextView) this.findViewById(R.id.clinicalCase3)).setText(Utils.round(tab6));
-            LayoutUtils.trafficLight(this.findViewById(R.id.clinicalCase3), tab6, null);
-        }
-        if (adaptersList.get(0) != null) {
-            tab3 = adaptersList.get(0).getScore();
-            ((TextView) this.findViewById(R.id.rdtCase1)).setText(Utils.round(tab3));
-            LayoutUtils.trafficLight(this.findViewById(R.id.rdtCase1), tab3, null);
-        }
-        if (adaptersList.get(9) != null) {
-            tab5 = adaptersList.get(9).getScore();
-            ((TextView) this.findViewById(R.id.rdtCase2)).setText(Utils.round(tab5));
-            LayoutUtils.trafficLight(this.findViewById(R.id.rdtCase2), tab5, null);
-        }
-        if (adaptersList.get(5) != null) {
-            tab7 = adaptersList.get(5).getScore();
-            ((TextView) this.findViewById(R.id.rdtCase3)).setText(Utils.round(tab7));
-            LayoutUtils.trafficLight(this.findViewById(R.id.rdtCase3), tab7, null);
-        }
-
-        Float avgClinical = (tab2 + tab4 + tab6) / 3;
-        Float avgRdt = (tab3 + tab5 + tab7) / 3;
-        Float overall = (avgClinical + avgRdt + tab1 + tab8 + tab9) / 5;
-
-        ((TextView) this.findViewById(R.id.clinicalAvg)).setText(Utils.round(avgClinical));
-        LayoutUtils.trafficLight(this.findViewById(R.id.clinicalAvg), avgClinical, null);
-        ((TextView) this.findViewById(R.id.rdtAvg)).setText(Utils.round(avgRdt));
-        LayoutUtils.trafficLight(this.findViewById(R.id.rdtAvg), avgRdt, null);
-        ((TextView) this.findViewById(R.id.totalScore)).setText(Utils.round(overall));
-        LayoutUtils.trafficLight(this.findViewById(R.id.totalScore), overall, null);
-
-    }
+/**
+ * A {@link PreferenceActivity} that presents a set of application settings. On
+ * handset devices, settings are presented as a single list. On tablets,
+ * settings are split by category, with category headers shown to the left of
+ * the list of settings.
+ * <p/>
+ * See <a href="http://developer.android.com/design/patterns/settings.html">
+ * Android Design: Settings</a> for design guidelines and the <a
+ * href="http://developer.android.com/guide/topics/ui/settings.html">Settings
+ * API Guide</a> for more information on developing a Settings UI.
+ */
+public class SettingsActivity extends PreferenceActivity {
+    /**
+     * Determines whether to always show the simplified settings UI, where
+     * settings are presented in a single list. When false, settings are shown
+     * as a master/detail two-pane view on tablets. When true, a single pane is
+     * shown on tablets.
+     */
+    private static final boolean ALWAYS_SIMPLE_PREFS = false;
 
 
     @Override
-    public void onBackPressed() {
-        new AlertDialog.Builder(this)
-                .setTitle("Really Exit?")
-                .setMessage("Are you sure you want to exit?")
-                .setNegativeButton(android.R.string.no, null)
-                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
 
-                    public void onClick(DialogInterface arg0, int arg1) {
-                        finish();
-                        Class c = DashboardActivity.class;
-                        Intent mainIntent = new Intent(SettingsActivity.this, c);
-                        startActivity(mainIntent);
-                    }
-                }).create().show();
+        setupSimplePreferencesScreen();
+    }
+
+    /**
+     * Shows the simplified settings UI if the device configuration if the
+     * device configuration dictates that a simplified, single-pane UI should be
+     * shown.
+     */
+    private void setupSimplePreferencesScreen() {
+        if (!isSimplePreferences(this)) {
+            return;
+        }
+
+        // In the simplified UI, fragments are not used at all and we instead
+        // use the older PreferenceActivity APIs.
+
+        // Add 'general' preferences.
+        addPreferencesFromResource(R.xml.pref_general);
+
+        // Bind the summaries of EditText/List/Dialog/Ringtone preferences to
+        // their values. When their values change, their summaries are updated
+        // to reflect the new value, per the Android Design guidelines.
+        bindPreferenceSummaryToValue(findPreference("font_sizes"));
+        bindPreferenceSummaryToValue(findPreference("dhis_url"));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean onIsMultiPane() {
+        return isXLargeTablet(this) && !isSimplePreferences(this);
+    }
+
+    /**
+     * Helper method to determine if the device has an extra-large screen. For
+     * example, 10" tablets are extra-large.
+     */
+    private static boolean isXLargeTablet(Context context) {
+        return (context.getResources().getConfiguration().screenLayout
+                & Configuration.SCREENLAYOUT_SIZE_MASK) >= Configuration.SCREENLAYOUT_SIZE_XLARGE;
+    }
+
+    /**
+     * Determines whether the simplified settings UI should be shown. This is
+     * true if this is forced via {@link #ALWAYS_SIMPLE_PREFS}, or the device
+     * doesn't have newer APIs like {@link PreferenceFragment}, or the device
+     * doesn't have an extra-large screen. In these cases, a single-pane
+     * "simplified" settings UI should be shown.
+     */
+    private static boolean isSimplePreferences(Context context) {
+        return ALWAYS_SIMPLE_PREFS
+                || Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB
+                || !isXLargeTablet(context);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
+    public void onBuildHeaders(List<Header> target) {
+        if (!isSimplePreferences(this)) {
+            loadHeadersFromResource(R.xml.pref_headers, target);
+        }
+    }
+
+    /**
+     * A preference value change listener that updates the preference's summary
+     * to reflect its new value.
+     */
+    private static Preference.OnPreferenceChangeListener sBindPreferenceSummaryToValueListener = new Preference.OnPreferenceChangeListener() {
+        @Override
+        public boolean onPreferenceChange(Preference preference, Object value) {
+            String stringValue = value.toString();
+
+            if (preference instanceof ListPreference) {
+                // For list preferences, look up the correct display value in
+                // the preference's 'entries' list.
+                ListPreference listPreference = (ListPreference) preference;
+                int index = listPreference.findIndexOfValue(stringValue);
+
+                // Set the summary to reflect the new value.
+                preference.setSummary(
+                        index >= 0
+                                ? listPreference.getEntries()[index]
+                                : null);
+
+            } else {
+                // For all other preferences, set the summary to the value's
+                // simple string representation.
+                preference.setSummary(stringValue);
+            }
+            return true;
+        }
+    };
+
+    /**
+     * Binds a preference's summary to its value. More specifically, when the
+     * preference's value is changed, its summary (line of text below the
+     * preference title) is updated to reflect the value. The summary is also
+     * immediately updated upon calling this method. The exact display format is
+     * dependent on the type of preference.
+     *
+     * @see #sBindPreferenceSummaryToValueListener
+     */
+    private static void bindPreferenceSummaryToValue(Preference preference) {
+        // Set the listener to watch for value changes.
+        preference.setOnPreferenceChangeListener(sBindPreferenceSummaryToValueListener);
+
+        // Trigger the listener immediately with the preference's
+        // current value.
+        sBindPreferenceSummaryToValueListener.onPreferenceChange(preference,
+                PreferenceManager
+                        .getDefaultSharedPreferences(preference.getContext())
+                        .getString(preference.getKey(), ""));
+    }
+
+    /**
+     * This fragment shows general preferences only. It is used when the
+     * activity is showing a two-pane settings UI.
+     */
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
+    public static class GeneralPreferenceFragment extends PreferenceFragment {
+        @Override
+        public void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            addPreferencesFromResource(R.xml.pref_general);
+
+            // Bind the summaries of EditText/List/Dialog/Ringtone preferences
+            // to their values. When their values change, their summaries are
+            // updated to reflect the new value, per the Android Design
+            // guidelines.
+            bindPreferenceSummaryToValue(findPreference("font_sizes"));
+            bindPreferenceSummaryToValue(findPreference("dhis_url"));
+        }
     }
 }

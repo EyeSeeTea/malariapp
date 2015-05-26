@@ -77,6 +77,9 @@ public abstract class BaseActivity extends ActionBarActivity {
 
         switch (id) {
             case R.id.action_settings:
+                finish();
+                Intent settingsIntent = new Intent(BaseActivity.this, SettingsActivity.class);
+                startActivity(settingsIntent);
                 return true;// TODO: implement the settings menu
             case R.id.action_pull:
                 return true;// TODO: implement the DHIS pull
@@ -106,8 +109,8 @@ public abstract class BaseActivity extends ActionBarActivity {
                                 Session.setSurvey(null);
                                 Session.setAdapter(null);
                                 finish();
-                                Intent LoginIntent = new Intent(BaseActivity.this, LoginActivity.class);
-                                startActivity(LoginIntent);
+                                Intent loginIntent = new Intent(BaseActivity.this, LoginActivity.class);
+                                startActivity(loginIntent);
                             }
                         })
                         .setNegativeButton(android.R.string.no, null).create().show();
