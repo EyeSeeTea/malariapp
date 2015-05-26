@@ -201,4 +201,9 @@ public class SettingsActivity extends PreferenceActivity {
             bindPreferenceSummaryToValue(findPreference("dhis_url"));
         }
     }
+
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
+    public boolean isValidFragment(String fragment){
+        return true;
+    }
 }
