@@ -113,6 +113,7 @@ public class PopulateDB {
                         Relative relative = new Relative();
                         relative.setMaster(questionList.get(Integer.valueOf(line[1])));
                         relative.setRelative(questionList.get(Integer.valueOf(line[2])));
+                        relative.setOperation(Integer.valueOf(line[3]));
                         relativeList.put(Integer.valueOf(line[0]),relative);
                         break;
 

@@ -27,12 +27,14 @@ import com.orm.SugarRecord;
 public class Relative extends SugarRecord<Relative> {
     Question master;
     Question relative;
+    int operation;
 
     public Relative(){};
 
-    public Relative(Question master, Question relative) {
+    public Relative(Question master, Question relative, int operation) {
         this.master = master;
         this.relative = relative;
+        this.operation = operation;
     }
 
     public Question getMaster() {
@@ -49,5 +51,13 @@ public class Relative extends SugarRecord<Relative> {
 
     public void setRelative(Question relative) {
         this.relative = relative;
+    }
+
+    public int getOperation() {
+        return operation;
+    }
+
+    public void setOperation(int operation) {
+        this.operation = operation;
     }
 }
