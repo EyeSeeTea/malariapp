@@ -296,11 +296,22 @@ public class LayoutUtils {
         return result;
     }
 
+    // Used to setup the usual actionbar with the logo and the app name
     public static void setActionBarLogo(ActionBar actionBar){
         actionBar.setLogo(R.drawable.qualityapp_logo);
         actionBar.setDisplayUseLogoEnabled(true);
         actionBar.setDisplayShowHomeEnabled(true);
         actionBar.setIcon(R.drawable.qualityapp_logo);
         actionBar.setBackgroundDrawable(new ColorDrawable(Color.WHITE));
+    }
+
+    // Used to put the org unit name and the kind of survey instead of the app name
+    public static void setActionBarText(ActionBar actionBar, String title, String subtitle){
+        actionBar.setDisplayUseLogoEnabled(false);
+        // Uncomment in case of we want the logo out
+        // actionBar.setLogo(null);
+        // actionBar.setIcon(null);
+        actionBar.setTitle(title);
+        actionBar.setSubtitle(subtitle);
     }
 }

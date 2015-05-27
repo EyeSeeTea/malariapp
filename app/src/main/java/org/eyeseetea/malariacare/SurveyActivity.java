@@ -120,9 +120,7 @@ public class SurveyActivity extends BaseActivity {
         createMenu();
 
         // Show survey info as a footer below the form
-        SimpleDateFormat formattedDate = new SimpleDateFormat("dd MMM yyyy");
-        TextView surveyInfo = (TextView) this.findViewById(R.id.surveyinfo);
-        surveyInfo.setText("Org Unit: " + Session.getSurvey().getOrgUnit().getName() + " | Survey: " + Session.getSurvey().getProgram().getName() + " | Creation Date: " + formattedDate.format(Session.getSurvey().getEventDate()));
+        LayoutUtils.setActionBarText(actionBar, Session.getSurvey().getOrgUnit().getName(), Session.getSurvey().getProgram().getName());
 
     }
 

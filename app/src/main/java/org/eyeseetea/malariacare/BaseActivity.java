@@ -137,4 +137,5 @@ public abstract class BaseActivity extends ActionBarActivity {
         Intent createSurveyIntent = new Intent(this, CreateSurveyActivity.class);
         startActivity(createSurveyIntent);
     }
+
 }
