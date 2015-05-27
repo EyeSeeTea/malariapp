@@ -14,6 +14,7 @@
     <string name="good">Bien</string>
     <string name="fare">Moyen</string>
     <string name="poor">Pauvre</string>
+    <string name="plus">+</string>
 
     <!-- settings -->
     <string name="settings_menu_about">Sur cette app</string>

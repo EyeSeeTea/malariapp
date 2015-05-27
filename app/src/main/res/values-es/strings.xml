@@ -14,6 +14,7 @@
     <string name="good">Bien</string>
     <string name="fare">Normal</string>
     <string name="poor">Mal</string>
+    <string name="plus">+</string>
 
     <!-- settings -->
     <string name="settings_menu_about">Acerca de</string>

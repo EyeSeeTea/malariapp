@@ -34,6 +34,7 @@ import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.layout.dialog.DialogDispatcher;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
+import org.eyeseetea.malariacare.views.FloatingButton;
 
 import java.util.List;
 
@@ -112,6 +113,8 @@ public class AssessmentAdapter extends BaseAdapter implements IDashboardAdapter 
         deleteTextView.setTypeface(Typeface.MONOSPACE, Typeface.BOLD);
         deleteTextView.setOnClickListener(new AssessmentListener((Activity) this.context, survey, context.getString(R.string.assessment_info_delete)));
         toolContainerView.addView(deleteTextView);
+        FloatingButton addSurvey = new FloatingButton(this.context);
+        toolContainerView.addView(addSurvey);
 
         return rowView;
     }
