@@ -113,8 +113,8 @@ public class AssessmentAdapter extends BaseAdapter implements IDashboardAdapter 
         deleteTextView.setTypeface(Typeface.MONOSPACE, Typeface.BOLD);
         deleteTextView.setOnClickListener(new AssessmentListener((Activity) this.context, survey, context.getString(R.string.assessment_info_delete)));
         toolContainerView.addView(deleteTextView);
-        FloatingButton addSurvey = new FloatingButton(this.context);
-        toolContainerView.addView(addSurvey);
+        //FloatingButton addSurvey = new FloatingButton(this.context);
+        //toolContainerView.addView(addSurvey);
 
         return rowView;
     }

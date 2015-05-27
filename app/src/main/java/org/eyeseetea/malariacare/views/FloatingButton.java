@@ -92,9 +92,9 @@ public class FloatingButton extends ImageButton {
     }
 
     private void invalidateTextPaintAndMeasurements() {
-        mTextPaint.setTextSize(dimension);
-        mTextPaint.setColor(contentColor);
-        mTextWidth = mTextPaint.measureText(contentString);
+        mTextPaint.setTextSize(this.dimension);
+        mTextPaint.setColor(this.contentColor);
+        mTextWidth = mTextPaint.measureText(this.contentString);
 
         Paint.FontMetrics fontMetrics = mTextPaint.getFontMetrics();
         mTextHeight = fontMetrics.bottom;
