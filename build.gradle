@@ -15,6 +15,10 @@ buildscript {
 allprojects {
     repositories {
         jcenter()
-        maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
     }
+
+    configurations.all {
+        resolutionStrategy.force 'com.android.support:support-annotations:22.1.0'
+    }
+
 }

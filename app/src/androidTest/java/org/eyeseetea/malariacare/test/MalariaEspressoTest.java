@@ -20,13 +20,11 @@
 package org.eyeseetea.malariacare.test;
 
 import android.app.Activity;
-import android.app.Fragment;
-import android.app.FragmentManager;
+import android.content.res.AssetManager;
+import android.content.res.Resources;
 import android.database.sqlite.SQLiteDatabase;
-import android.os.SystemClock;
-import android.test.ActivityInstrumentationTestCase2;
+import android.support.test.InstrumentationRegistry;
 import android.util.Log;
-import android.view.View;
 
 import org.eyeseetea.malariacare.database.model.Answer;
 import org.eyeseetea.malariacare.database.model.CompositiveScore;
@@ -35,30 +33,47 @@ import org.eyeseetea.malariacare.database.model.Option;
 import org.eyeseetea.malariacare.database.model.OrgUnit;
 import org.eyeseetea.malariacare.database.model.Program;
 import org.eyeseetea.malariacare.database.model.Question;
+import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.model.Tab;
 import org.eyeseetea.malariacare.database.model.User;
+import org.eyeseetea.malariacare.database.model.Value;
 import org.eyeseetea.malariacare.database.utils.PopulateDB;
 import org.eyeseetea.malariacare.database.utils.Session;
+import org.junit.Before;
+import org.junit.BeforeClass;
 
 /**
- * Created by arrizabalaga on 21/05/15.
+ * Created by arrizabalaga on 25/05/15.
  */
+public class MalariaEspressoTest {
 
-public abstract class MalariaInstrumentationTestCase <T extends Activity> extends ActivityInstrumentationTestCase2<T> {
-//public abstract class  MalariaInstrumentationTestCase<T extends Activity> extends Activity{
+    protected Resources res;
+    public static final String DATABASE_NAME="malariacare.db";
+    public static final String DATABASE_FULL_PATH = "/data/data/org.eyeseetea.malariacare/databases/"+DATABASE_NAME;
 
-    public static final String DATABASE_FULL_PATH = "/data/data/org.eyeseetea.malariacare/databases/malariacare.db";
-
-    public MalariaInstrumentationTestCase(Class<T> activityClass) {
-        super(activityClass);
+    public static void init(){
+        cleanAll();
     }
 
-    public void cleanDB(){
+    public void setup(){
+        res = InstrumentationRegistry.getTargetContext().getResources();
+    }
+
+    public static void cleanAll(){
+        cleanDB();
+        cleanSession();
+    }
+
+    public static void cleanSession(){
+        Session.setUser(null);
+        Session.setSurvey(null);
+        Session.setAdapter(null);
+    }
+
+    public static void cleanDB(){
         if(!databaseExists()){
             return;
         }
-
-        Log.i(".LoginActivityTest", "Cleaning DB");
         Question.deleteAll(Question.class);
         CompositiveScore.deleteAll(CompositiveScore.class);
         Option.deleteAll(Option.class);
@@ -68,49 +83,12 @@ public abstract class MalariaInstrumentationTestCase <T extends Activity> extend
         Program.deleteAll(Program.class);
         OrgUnit.deleteAll(OrgUnit.class);
         User.deleteAll(User.class);
-
-        Session.setUser(null);
-        Session.setSurvey(null);
-        Session.setAdapter(null);
+        Value.deleteAll(Value.class);
+        Survey.deleteAll(Survey.class);
     }
 
-    public Fragment waitForFragment(int id, int timeout) {
-        long endTime = SystemClock.uptimeMillis() + timeout;
-        FragmentManager fragmentManager=getActivity().getFragmentManager();
-        while (SystemClock.uptimeMillis() <= endTime) {
-            Fragment fragment = fragmentManager.findFragmentById(id);
-            if (fragment != null) {
-                return fragment;
-            }
-        }
-        return null;
-    }
 
-    public void setText(final View v,String text){
-        getInstrumentation().runOnMainSync(new Runnable() {
-            @Override
-            public void run() {
-                v.requestFocus();
-            }
-        });
-        getInstrumentation().waitForIdleSync();
-        getInstrumentation().sendStringSync(text);
-        getInstrumentation().waitForIdleSync();
-    }
-
-    public void populateData(Activity activity){
-        //prerequisite
-        cleanDB();
-
-        try {
-            PopulateDB.populateDummyData();
-            PopulateDB.populateDB(activity.getAssets());
-        }catch(Exception ex){
-            Log.e(".DashboardActivityTest",ex.getMessage());
-        }
-    }
-
-    private boolean databaseExists() {
+    public static boolean databaseExists() {
         SQLiteDatabase checkDB = null;
         try {
             checkDB = SQLiteDatabase.openDatabase(DATABASE_FULL_PATH, null, SQLiteDatabase.OPEN_READONLY);
@@ -121,4 +99,15 @@ public abstract class MalariaInstrumentationTestCase <T extends Activity> extend
         }
         return checkDB != null;
     }
+
+    public static void populateData(AssetManager assetManager){
+        try {
+            cleanAll();
+            PopulateDB.populateDummyData();
+            PopulateDB.populateDB(assetManager);
+        }catch(Exception ex){
+            Log.e(".MalariaEspressoTest", ex.getMessage());
+        }
+    }
+
 }
