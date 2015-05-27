@@ -264,21 +264,21 @@ public class LayoutUtils {
     // If a second view is given, it also writes the text good, fare or given there
     public static void trafficLight(View view, float score, View textView){
         if(score < 50.0F){ // poor
-            ((TextView)view).setTextColor(Color.parseColor("#FF0000")); // red
+            ((TextView)view).setTextColor(view.getContext().getResources().getColor(R.color.red)); // red
             if(textView != null) {
-                ((TextView)textView).setTextColor(Color.parseColor("#FF0000")); // red
+                ((TextView)textView).setTextColor(view.getContext().getResources().getColor(R.color.red)); // red
                 ((TextView)textView).setText(view.getContext().getResources().getString(R.string.poor));
             }
         } else if (score < 80.0F){ // fare
-            ((TextView)view).setTextColor(Color.parseColor("#FF8000")); // amber
+            ((TextView)view).setTextColor(view.getContext().getResources().getColor(R.color.amber)); // amber
             if(textView != null) {
-                ((TextView)textView).setTextColor(Color.parseColor("#FF8000")); // amber
+                ((TextView)textView).setTextColor(view.getContext().getResources().getColor(R.color.amber)); // amber
                 ((TextView)textView).setText(view.getContext().getResources().getString(R.string.fare));
             }
         } else {
-            ((TextView)view).setTextColor(Color.parseColor("#40FF00")); // green
+            ((TextView)view).setTextColor(view.getContext().getResources().getColor(R.color.green)); // green
             if(textView != null) { // good
-                ((TextView)textView).setTextColor(Color.parseColor("#40FF00")); // green
+                ((TextView)textView).setTextColor(view.getContext().getResources().getColor(R.color.green)); // green
                 ((TextView)textView).setText(view.getContext().getResources().getString(R.string.good));
             }
         }
