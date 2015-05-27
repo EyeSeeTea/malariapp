@@ -92,7 +92,7 @@ public class AssessmentAdapter extends BaseAdapter implements IDashboardAdapter 
 
         // Org Unit Cell
         ((TextView) rowView.findViewById(R.id.facility)).setText(survey.getOrgUnit().getName());
-        ((TextView) rowView.findViewById(R.id.survey_type)).setText("\t- " + survey.getProgram().getName());
+        ((TextView) rowView.findViewById(R.id.survey_type)).setText("- " + survey.getProgram().getName());
 
         //Status Cell
         //FIXME: This bit needs to change when jose architecture is introduced because probably the save will be executed in a different way

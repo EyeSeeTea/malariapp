@@ -130,6 +130,9 @@
     <string name="adherence_info_patient_id">ID\npatient</string>
     <string name="adherence_info_prescribed">ACT\nPrescribed?</string>
     <string name="adherence_info_rdt_positive">RDT Positif</string>
+    <string name="adherence_info_rdt_negative">RDT Negatif</string>
+    <string name="adherence_info_microscopy_positive">Microscopie Positif</string>
+    <string name="adherence_info_microscopy_negative">Microscopie Negatif</string>
 
     <!-- iqa eqa -->
     <string name="iqatab_info_supervisor">Supervisor</string>
