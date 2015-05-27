@@ -649,9 +649,9 @@
 651;'MAL-QA-CaseMng-1500-C3';'MAL-QA-CaseMng-1500-C3-Caregiver given reason for transfer';;'Caregiver given reason for transfer';;1500;1.00;0.00;385;15;645;28
 652;'MAL-QA-CaseMng-1510-C3';'MAL-QA-CaseMng-1510-C3-Caregiver informed about what will be done';;'Caregiver informed about what will be done';;1510;1.00;0.00;385;15;645;28
 653;'MAL-QA-CaseMng-1520-C3';'MAL-QA-CaseMng-1520-C3-Caregiver and/or patient asked if there are questions';;'Caregiver and/or patient asked if there are questions';;1520;1.00;0.00;385;15;645;28
-654;;;;'Provider obtains personal history (incl name, age, address, education, occupation)';;100;1.00;1.00;464;15;;32
-655;;;;'Provider asks reason for visiting health facility';;110;1.00;1.00;464;15;;32
-656;;;;'Provider checks immunization status';;120;1.00;1.00;464;15;;32
+654;;;;'Provider obtains personal history (incl name, age, address, education, occupation)';;100;0.00;0.00;464;15;;
+655;;;;'Provider asks reason for visiting health facility';;110;0.00;0.00;464;15;;
+656;;;;'Provider checks immunization status';;120;0.00;0.00;464;15;;
 657;;;;'Provider asks whether there are lethargy, convulsions/convulsing now';;130;1.00;1.00;465;15;;33
 658;;;;'Provider asks if the patient can drink or breastfeed.';;140;1.00;1.00;465;15;;33
 659;;;;'Provider asks if there is vomiting.';;150;1.00;1.00;465;15;;33
@@ -670,16 +670,16 @@
 672;;;;'Provider checks the temperature.';;280;1.00;1.00;466;15;;34
 673;;;;'Provider takes blood sample for rapid diagnostic test or microscopy in the laboratory.';;290;1.00;1.00;466;15;;34
 674;;;;'Diagnosis 1 based on supervisor''s observation';;100;0.00;0.00;467;50;;
-675;;;;'Was a second diagnosis made?';;110;0.00;13.00;467;15;;35
+675;;;;'Was a second diagnosis made?';;110;0.00;4.00;467;15;;35
 676;;;;'Diagnosis 2 based on supervisor''s observation';;120;0.00;0.00;467;50;675;
-677;;;;'Was a third diagnosis made?';;130;0.00;13.00;467;15;;35
+677;;;;'Was a third diagnosis made?';;130;0.00;4.00;467;15;;35
 678;;;;'Diagnosis 3 based on supervisor''s observation';;140;0.00;0.00;467;50;677;
 679;;;;'Treatment 1 administered';;150;0.00;0.00;467;51;;
 680;;;;'Treatment 2 administered (if applicable)';;160;0.00;0.00;467;51;675;
 681;;;;'Treatment 3 administered (if applicable)';;170;0.00;0.00;467;51;677;
-682;;;;'Does diagnosis 1 match treatment 1?';;180;10.00;10.00;467;15;;35
-683;;;;'Does diagnosis 2 match treatment 2?';;190;10.00;0.00;467;15;675;35
-684;;;;'Does diagnosis 3 match treatment 3?';;200;10.00;0.00;467;15;677;35
+682;;;;'Does diagnosis 1 match treatment 1?';;180;1.00;1.00;467;15;;35
+683;;;;'Does diagnosis 2 match treatment 2?';;190;1.00;0.00;467;15;675;35
+684;;;;'Does diagnosis 3 match treatment 3?';;200;1.00;0.00;467;15;677;35
 685;;;;'Treatment 1';;210;0.00;0.00;468;49;;
 686;;;;'Provider counsels caregiver on proper dosage (no. of  doses/days, side effects)';;220;1.00;1.00;468;15;;35
 687;;;;'Provider gives first dose of oral medicine on site';;230;1.00;1.00;468;15;;35
