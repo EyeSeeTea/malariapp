@@ -22,6 +22,7 @@ package org.eyeseetea.malariacare.test;
 import android.content.res.Resources;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.test.InstrumentationRegistry;
+import android.support.test.espresso.intent.rule.IntentsTestRule;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.test.ActivityInstrumentationTestCase2;
@@ -51,6 +52,9 @@ import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static android.support.test.espresso.action.ViewActions.typeText;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
+import static android.support.test.espresso.intent.Intents.intended;
+import static android.support.test.espresso.intent.matcher.IntentMatchers.anyIntent;
+import static android.support.test.espresso.intent.matcher.IntentMatchers.toPackage;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withHint;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
@@ -65,8 +69,9 @@ import static org.eyeseetea.malariacare.test.utils.ErrorTextMatcher.hasErrorText
 public class LoginActivityEspressoTest extends MalariaEspressoTest{
 
     @Rule
-    public ActivityTestRule<LoginActivity> mActivityRule = new ActivityTestRule<>(
+    public IntentsTestRule<LoginActivity> mActivityRule = new IntentsTestRule<>(
             LoginActivity.class);
+
 
     @BeforeClass
     public static void init(){
@@ -109,6 +114,7 @@ public class LoginActivityEspressoTest extends MalariaEspressoTest{
         onView(withId(R.id.email_sign_in_button)).perform(click());
 
         //THEN
+        intended(anyIntent());
         assertNotNull(Session.getUser());
     }
 

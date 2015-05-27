@@ -4,3 +4,4 @@ pages:
     - [layouts.md, Layouts]
     - [classes.md, Classes]
     - [database.md, Database Model]
+    - [tests.md, Testing Android]

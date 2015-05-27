@@ -42,6 +42,8 @@ import org.eyeseetea.malariacare.database.utils.Session;
 import org.junit.Before;
 import org.junit.BeforeClass;
 
+import java.util.List;
+
 /**
  * Created by arrizabalaga on 25/05/15.
  */
@@ -108,6 +110,30 @@ public class MalariaEspressoTest {
         }catch(Exception ex){
             Log.e(".MalariaEspressoTest", ex.getMessage());
         }
+    }
+
+    public static void mockSurveys(int num){
+        List<OrgUnit> orgUnitList=OrgUnit.find(OrgUnit.class, null, null);
+        List<Program> programList=Program.find(Program.class,null,null);
+        Program program=programList.get(0);
+        User user =getSafeUser();
+
+        for(int i=0;i<num;i++){
+            Survey survey=new Survey(orgUnitList.get(i%num),program,user);
+            survey.save();
+        }
+
+    }
+
+    private static User getSafeUser(){
+        User user=Session.getUser();
+        if(user!=null){
+            return user;
+        }
+        user = new User("user", "user");
+        user.save();
+        Session.setUser(user);
+        return user;
     }
 
 }
