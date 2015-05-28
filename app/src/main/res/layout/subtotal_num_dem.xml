@@ -7,9 +7,23 @@
     <RelativeLayout
         android:layout_width="0dip"
         android:layout_height="wrap_content"
+        android:layout_weight="0"
+        android:gravity="center"
+        android:layout_gravity="center_vertical"
+        android:id="@+id/space">
+
+        <Space
+            android:layout_width="20px"
+            android:layout_height="20px" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="0dip"
+        android:layout_height="wrap_content"
         android:layout_weight="0.35"
         android:gravity="center"
-        android:layout_gravity="center_vertical">
+        android:layout_gravity="center_vertical"
+        android:id="@+id/subTotalScoreTextContainer">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -41,7 +55,8 @@
         android:layout_height="wrap_content"
         android:layout_weight="0.2"
         android:gravity="center"
-        android:layout_gravity="center_vertical">
+        android:layout_gravity="center_vertical"
+        android:id="@+id/subTotalScoreContainer">
 
         <LinearLayout
             android:orientation="vertical"

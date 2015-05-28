@@ -19,8 +19,12 @@
 
 package org.eyeseetea.malariacare.layout.adapters.survey;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.opengl.Visibility;
+import android.preference.PreferenceManager;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.TextWatcher;
@@ -30,6 +34,8 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -149,6 +155,25 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
         scoreHolder.totalNum = (TextView) ((Activity) context).findViewById(R.id.totalNum);
         scoreHolder.subtotalscore = (TextView) ((Activity) context).findViewById(R.id.subtotalScoreText);
         scoreHolder.qualitativeScore = (TextView) ((Activity) context).findViewById(R.id.cualitativeScore);
+        RelativeLayout space = (RelativeLayout) (((Activity) context).findViewById(R.id.space));
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this.context);
+        if (sharedPreferences.getBoolean("show_num_dems", false)){
+            scoreHolder.totalDenum.setVisibility(View.VISIBLE);
+            scoreHolder.totalNum.setVisibility(View.VISIBLE);
+            (((Activity) context).findViewById(R.id.accumulatedText)).setVisibility(View.VISIBLE);
+            ((RelativeLayout)(((Activity) context).findViewById(R.id.accumulatedText)).getParent()).setLayoutParams(new LinearLayout.LayoutParams(0, RelativeLayout.LayoutParams.WRAP_CONTENT, 0.25f));
+            space.setLayoutParams(new LinearLayout.LayoutParams(0, RelativeLayout.LayoutParams.WRAP_CONTENT, 0f));
+            ((RelativeLayout)scoreHolder.totalNum.getParent()).setLayoutParams(new LinearLayout.LayoutParams(0, RelativeLayout.LayoutParams.WRAP_CONTENT, 0.1f));
+            ((RelativeLayout)scoreHolder.totalDenum.getParent()).setLayoutParams(new LinearLayout.LayoutParams(0, RelativeLayout.LayoutParams.WRAP_CONTENT, 0.1f));
+        } else {
+            scoreHolder.totalDenum.setVisibility(View.GONE);
+            scoreHolder.totalNum.setVisibility(View.GONE);
+            (((Activity) context).findViewById(R.id.accumulatedText)).setVisibility(View.GONE);
+            ((RelativeLayout)(((Activity) context).findViewById(R.id.accumulatedText)).getParent()).setLayoutParams(new LinearLayout.LayoutParams(0, RelativeLayout.LayoutParams.WRAP_CONTENT, 0.0f));
+            space.setLayoutParams(new LinearLayout.LayoutParams(0, RelativeLayout.LayoutParams.WRAP_CONTENT, 0.45f));
+            ((RelativeLayout)scoreHolder.totalNum.getParent()).setLayoutParams(new LinearLayout.LayoutParams(0, RelativeLayout.LayoutParams.WRAP_CONTENT, 0.0f));
+            ((RelativeLayout)scoreHolder.totalDenum.getParent()).setLayoutParams(new LinearLayout.LayoutParams(0, RelativeLayout.LayoutParams.WRAP_CONTENT, 0.0f));
+        }
     }
 
     @Override
@@ -493,8 +518,25 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
                     rowView = lInflater.inflate(R.layout.ddl, parent, false);
                     viewHolder.statement = (TextView) rowView.findViewById(R.id.statement);
                     viewHolder.spinner = (Spinner) rowView.findViewById(R.id.answer);
+                    // In case the option is selected, we will need to show num/dems
                     viewHolder.num = (TextView) rowView.findViewById(R.id.num);
                     viewHolder.denum = (TextView) rowView.findViewById(R.id.den);
+                    SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this.context);
+                    if (sharedPreferences.getBoolean("show_num_dems", false)){
+                        viewHolder.num.setVisibility(View.VISIBLE);
+                        viewHolder.denum.setVisibility(View.VISIBLE);
+                        ((RelativeLayout)viewHolder.statement.getParent()).setLayoutParams(new LinearLayout.LayoutParams(0, RelativeLayout.LayoutParams.WRAP_CONTENT, 0.5f));
+                        ((RelativeLayout)viewHolder.spinner.getParent().getParent()).setLayoutParams(new LinearLayout.LayoutParams(0, RelativeLayout.LayoutParams.WRAP_CONTENT, 0.2f));
+                        ((RelativeLayout)viewHolder.num.getParent()).setLayoutParams(new LinearLayout.LayoutParams(0, RelativeLayout.LayoutParams.WRAP_CONTENT, 0.15f));
+                        ((RelativeLayout)viewHolder.denum.getParent()).setLayoutParams(new LinearLayout.LayoutParams(0, RelativeLayout.LayoutParams.WRAP_CONTENT, 0.15f));
+                    } else {
+                        viewHolder.num.setVisibility(View.GONE);
+                        viewHolder.denum.setVisibility(View.GONE);
+                        ((RelativeLayout)viewHolder.statement.getParent()).setLayoutParams(new LinearLayout.LayoutParams(0, RelativeLayout.LayoutParams.WRAP_CONTENT, 0.8f));
+                        ((RelativeLayout)viewHolder.spinner.getParent().getParent()).setLayoutParams(new LinearLayout.LayoutParams(0, RelativeLayout.LayoutParams.WRAP_CONTENT, 0.2f));
+                        ((RelativeLayout)viewHolder.num.getParent()).setLayoutParams(new LinearLayout.LayoutParams(0, RelativeLayout.LayoutParams.WRAP_CONTENT, 0.0f));
+                        ((RelativeLayout)viewHolder.denum.getParent()).setLayoutParams(new LinearLayout.LayoutParams(0, RelativeLayout.LayoutParams.WRAP_CONTENT, 0.0f));
+                    }
 
                     Spinner answers = (Spinner) rowView.findViewById(R.id.answer);
 

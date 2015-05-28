@@ -4,9 +4,9 @@
     android:layout_height="match_parent" android:id="@+id/ddl">
 
     <RelativeLayout
-        android:layout_width="fill_parent"
+        android:layout_width="0dip"
         android:layout_height="wrap_content"
-        android:layout_weight="0.16"
+        android:layout_weight="0.5"
         android:layout_gravity="center_vertical"
         android:padding="5dip">
         <TextView
@@ -19,9 +19,9 @@
             android:fontFamily="@string/light_font_name" />
     </RelativeLayout>
     <RelativeLayout
-        android:layout_width="fill_parent"
+        android:layout_width="0dip"
         android:layout_height="wrap_content"
-        android:layout_weight="0.26"
+        android:layout_weight="0.3"
         android:padding="5dip">
 
         <LinearLayout
@@ -47,9 +47,9 @@
 
     </RelativeLayout>
     <RelativeLayout
-        android:layout_width="fill_parent"
+        android:layout_width="0dip"
         android:layout_height="wrap_content"
-        android:layout_weight="0.29"
+        android:layout_weight="0.1"
         android:gravity="center_vertical|center_horizontal"
         android:padding="5dip">
         <TextView
@@ -62,9 +62,9 @@
             android:fontFamily="@string/light_font_name" />
     </RelativeLayout>
     <RelativeLayout
-        android:layout_width="fill_parent"
+        android:layout_width="0dip"
         android:layout_height="wrap_content"
-        android:layout_weight="0.29"
+        android:layout_weight="0.1"
         android:gravity="center_vertical|center_horizontal"
         android:padding="5dip">
         <TextView
