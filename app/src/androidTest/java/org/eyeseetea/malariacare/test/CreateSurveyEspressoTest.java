@@ -72,6 +72,7 @@ public class CreateSurveyEspressoTest extends MalariaEspressoTest{
     @BeforeClass
     public static void init(){
         populateData(InstrumentationRegistry.getTargetContext().getAssets());
+        mockSurveys(1);
     }
 
     @Before
@@ -93,7 +94,7 @@ public class CreateSurveyEspressoTest extends MalariaEspressoTest{
         onView(withId(R.id.create_form_button)).perform(click());
 
         //THEN
-        onView(withText("Missing selection")).check(matches(isDisplayed()));
+        onView(withText("Missing selection")).check(matches(isDisplayed())).perform(click());
     }
 
     @Test
@@ -101,7 +102,7 @@ public class CreateSurveyEspressoTest extends MalariaEspressoTest{
 
         //WHEN: Showing 2 ways of clicking spinners
         onView(withId(R.id.org_unit)).perform(click());
-        onView(withText("Health Facility 0")).perform(click());
+        onView(withText("Health Facility 2")).perform(click());
 
         onView(withId(R.id.program)).perform(click());
         onData(allOf(is(instanceOf(Program.class)))).atPosition(1).perform(click());
@@ -111,6 +112,22 @@ public class CreateSurveyEspressoTest extends MalariaEspressoTest{
         //THEN
         intended(anyIntent());
         assertNotNull(Session.getSurvey());
+    }
+
+    @Test
+    public void select_repeated_data_no_survey(){
+
+        //WHEN
+        onView(withId(R.id.org_unit)).perform(click());
+        onView(withText("Health Facility 0")).perform(click());
+
+        onView(withId(R.id.program)).perform(click());
+        onView(withText("Clinical Case Management")).perform(click());
+
+        onView(withId(R.id.create_form_button)).perform(click());
+
+        //THEN
+        onView(withText("Existing Survey")).check(matches(isDisplayed())).perform(click());
     }
 
 }

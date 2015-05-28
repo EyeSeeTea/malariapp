@@ -112,6 +112,13 @@ public class MalariaEspressoTest {
         }
     }
 
+    public static void mockSessionSurvey(){
+        mockSurveys(1);
+        User currentUser=Session.getUser();
+        List<Survey> surveys= Survey.find(Survey.class, "user=?", currentUser.getId().toString());
+        Session.setSurvey(surveys.get(0));
+    }
+
     public static void mockSurveys(int num){
         List<OrgUnit> orgUnitList=OrgUnit.find(OrgUnit.class, null, null);
         List<Program> programList=Program.find(Program.class,null,null);
