@@ -2,33 +2,22 @@
 2;'1.1';'Amenities/infrastructure (Water, Power)';1
 3;'1.2';'Equipment (Clinical and lab equipments)';1
 4;'1.2.1';'Clinical';3
-5;'1.2.2';'Lab';3
 6;'1.3';'Stockouts (ACTS, essential drugs and equipments)';1
 7;'1.3.1';'Stock out of Antimalarials';6
 8;'1.3.2';'Stock out of other essential drugs';6
-9;'1.3.3';'Microscope';6
-10;'1.3.4';'Power outage';6
-11;'1.3.5';'RDT';6
 12;'1.4';'Services, materials and reporting';1
 13;'1.4.1';'Malaria reference materials';12
 14;'1.4.2';'Malaria registers and reporting';12
-15;'1.4.3';'IQA/EQA';12
-16;'1.4.4';'Turn around time for results';12
 17;'1.4.5';'Sevices (ANC& Referral)';12
 18;'1.5';'Human resources';1
 19;'2';'Suspected/Tested competence';
 20;'3';'RDT Competence';
-21;'4';'Competence in slide preparation';
-22;'5';'Competence in slide staining';
-23;'6';'Competence in Slide reading';
 24;'7';'Competence in Malaria case management';
-25;'7.1';'Correct diagnosis';24
 26;'7.2';'Fever treatment';24
 27;'7.3';'Communication of uncomplicated disease';24
 28;'7.4';'Admission or Referral of severe cases';24
 29;'9';'Mentorship (on site training)';
-30;'1.4.6';'Lab reference materials';12
-31;'1.4.7';'Tallies';12
-32;'1';'Introduction';
-33;'2';'Inquiry';
-34;'3';'Physical Examination';
+32;'1';'Total';36
+33;'1.1';'Inquiry';32
+34;'1.2';'Physical Examination';32
+35;'1.3';'Diagnosis, Treatment and Counseling';32

@@ -76,7 +76,6 @@ public class CustomReportingAdapter extends BaseAdapter implements ITabAdapter {
 
     static class ScoreHolder {
         public TextView scoreText;
-        public TextView tabName;
         public TextView score;
         public TextView cualitativeScore;
     }
@@ -120,8 +119,6 @@ public class CustomReportingAdapter extends BaseAdapter implements ITabAdapter {
         scoreHolder.score = (TextView) ((Activity) context).findViewById(R.id.score);
         scoreHolder.cualitativeScore = (TextView) ((Activity) context).findViewById(R.id.cualitativeScore);
         scoreHolder.scoreText = (TextView) ((Activity) context).findViewById(R.id.subtotalScoreText);
-        scoreHolder.tabName = (TextView) ((Activity) context).findViewById(R.id.tabName);
-        scoreHolder.tabName.setText(tabName);
     }
 
     @Override
@@ -205,9 +202,9 @@ public class CustomReportingAdapter extends BaseAdapter implements ITabAdapter {
 
         if (rowValues.score == 1) {
             num = num +1;
-            score.setText("1");
+            score.setText(this.context.getString(R.string.custom_info_one));
         }
-        else score.setText("0");
+        else score.setText(this.context.getString(R.string.number_zero));
 
         updateScore();
 

@@ -31,7 +31,8 @@
         android:text="@string/empty_string"
         android:textColor="@color/black"
         android:id="@+id/title"
-        android:padding="5dip" />
+        android:padding="5dip"
+        android:fontFamily="@string/medium_font_name" />
 
     <TableLayout
         android:layout_width="fill_parent"
@@ -46,7 +47,8 @@
         android:textColor="@color/headerColor"
         android:typeface="monospace"
         android:id="@+id/see_all"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        android:fontFamily="@string/light_font_name" />
 
     <Space
         android:layout_width="20dp"

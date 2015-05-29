@@ -115,7 +115,7 @@ public class CompositiveScoreAdapter extends BaseAdapter implements ITabAdapter 
         Float compositive_value = ScoreRegister.getCompositiveScore(item);
 
         if (compositive_value == null)
-            ((TextView)rowView.findViewById(R.id.score)).setText("0");
+            ((TextView)rowView.findViewById(R.id.score)).setText(this.context.getString(R.string.number_zero));
         else
             ((TextView)rowView.findViewById(R.id.score)).setText(Utils.round(compositive_value));
 

@@ -77,16 +77,10 @@ public class DashboardFragment extends ListFragment {
         // make a list with the adapters
         this.adapters = new ArrayList<>();
         this.adapters.add(new AssessmentAdapter(this.surveys, getActivity()));
-        this.adapters.add(new FeedbackAdapter(this.surveys, getActivity()));
-        this.adapters.add(new FutureAssessmentPlanningAdapter(this.surveys, getActivity()));
-        this.adapters.add(new PerformancePlanningAdapter(this.surveys, getActivity()));
-        this.adapters.add(new AnalyticsAdapter(this.surveys, getActivity()));
 
         // create a list of listeners to capture the "see all" event
         List<View.OnClickListener> listeners = new ArrayList<>();
-        for (int i=0; i<5; i++) {
-            listeners.add(new DashboardListener(getActivity(), getString(R.string.dashboard_button_see_all), i));
-        }
+        listeners.add(new DashboardListener(getActivity(), getString(R.string.dashboard_button_see_all), 0));
 
         setListAdapter(new DashboardAdapter(this.surveys, this.adapters, listeners, getActivity()));
 
@@ -98,6 +92,7 @@ public class DashboardFragment extends ListFragment {
             mCurCheckPosition = savedInstanceState.getInt("curChoice", 0);
         }
 
+        // FIXME: This piece of code is not yet properly working and thought to be used for landscape display of dashboard
         if (mDualPane) {
             // In dual-pane mode, the list view highlights the selected item
             getListView().setChoiceMode(ListView.CHOICE_MODE_SINGLE);
@@ -133,6 +128,7 @@ public class DashboardFragment extends ListFragment {
     void showDetails(int index) {
         mCurCheckPosition = index;
 
+        // FIXME: This piece of code is not yet properly working and thought to be used for landscape display of dashboard
         if (mDualPane) {
             // We can display everything in-place with fragments, so update
             // the list to highlight the selected item and show the data.

@@ -11,6 +11,7 @@ import org.eyeseetea.malariacare.database.model.Option;
 import org.eyeseetea.malariacare.database.model.OrgUnit;
 import org.eyeseetea.malariacare.database.model.Program;
 import org.eyeseetea.malariacare.database.model.Question;
+import org.eyeseetea.malariacare.database.model.Relative;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.model.Tab;
 import org.eyeseetea.malariacare.database.model.User;
@@ -32,6 +33,7 @@ public class PopulateDB {
     static Map<Integer, Option> optionList = new LinkedHashMap<Integer, Option>();
     static Map<Integer, Answer> answerList = new LinkedHashMap<Integer, Answer>();
     static Map<Integer, CompositiveScore> compositiveScoreList = new LinkedHashMap<Integer, CompositiveScore>();
+    static Map<Integer, Relative> relativeList = new LinkedHashMap<Integer, Relative>();
 
     //static Map<Integer, Header> headerCustomList = new LinkedHashMap<Integer, Header>();
     //static Map<Integer, Question> questionCustomList = new LinkedHashMap<Integer, Question>();
@@ -39,7 +41,7 @@ public class PopulateDB {
     public static void populateDB(AssetManager assetManager) throws IOException {
 
 
-        List<String> tables2populate = Arrays.asList("Programs.csv", "Tabs.csv", "Headers.csv", "Answers.csv", "Options.csv", "CompositiveScores.csv", "Questions.csv"); //"HeadersCustom.csv", "QuestionsCustom.csv");
+        List<String> tables2populate = Arrays.asList("Programs.csv", "Tabs.csv", "Headers.csv", "Answers.csv", "Options.csv", "CompositiveScores.csv", "Questions.csv", "Relatives.csv"); //"HeadersCustom.csv", "QuestionsCustom.csv");
 
         CSVReader reader = null;
         for (String table : tables2populate) {
@@ -107,6 +109,14 @@ public class PopulateDB {
                         if (line.length == 13 && !line[12].equals("")) question.setCompositiveScore(compositiveScoreList.get(Integer.valueOf(line[12])));
                         questionList.put(Integer.valueOf(line[0]), question);
                         break;
+                    case "Relatives.csv":
+                        Relative relative = new Relative();
+                        relative.setMaster(questionList.get(Integer.valueOf(line[1])));
+                        relative.setRelative(questionList.get(Integer.valueOf(line[2])));
+                        relative.setOperation(Integer.valueOf(line[3]));
+                        relativeList.put(Integer.valueOf(line[0]),relative);
+                        break;
+
 /*                    case "HeadersCustom.csv":
                         Header headerCustom = new Header();
                         headerCustom.setShort_name(line[1]);
@@ -142,6 +152,7 @@ public class PopulateDB {
         Option.saveInTx(optionList.values());
         CompositiveScore.saveInTx(compositiveScoreList.values());
         Question.saveInTx(questionList.values());
+        Relative.saveInTx(relativeList.values());
 
         //Header.saveInTx(headerCustomList.values());
         //Question.saveInTx(questionCustomList.values());

@@ -19,7 +19,6 @@
 
 package org.eyeseetea.malariacare.layout.adapters.dashboard;
 
-import android.app.ListFragment;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,7 +30,6 @@ import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 
-import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
@@ -91,7 +89,7 @@ public class FeedbackAdapter extends BaseAdapter implements IDashboardAdapter {
 
         ((TextView)rowView.findViewById(R.id.facility)).setText(item.getOrgUnit().getUid() + " - " + item.getOrgUnit().getName());
         SimpleDateFormat formattedDate = new SimpleDateFormat("dd MMM yyyy");
-        ((TextView)rowView.findViewById(R.id.date)).setText(item.getProgram().getName() + " \n\t " + formattedDate.format(item.getEventDate()));
+        ((TextView)rowView.findViewById(R.id.survey_type)).setText(item.getProgram().getName() + " \n\t " + formattedDate.format(item.getEventDate()));
         ((TextView)rowView.findViewById(R.id.status)).setText("FCM - 22 issues \n RDT - on site retraining \n Microscopy - 25 issues \n Work Environment - 20 issues");
 
         return rowView;

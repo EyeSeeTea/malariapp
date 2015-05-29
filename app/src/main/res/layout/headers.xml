@@ -10,10 +10,11 @@
         android:layout_height="wrap_content"
         android:text="@string/empty_string"
         android:id="@+id/headerName"
-        android:textColor="#ffffff"
+        android:textColor="@color/white"
         android:typeface="sans"
         android:textStyle="bold"
         android:textSize="18sp"
         android:background="@drawable/background_header"
-        android:paddingLeft="10dip" />
+        android:paddingLeft="10dip"
+        android:fontFamily="@string/bold_font_name" />
 </LinearLayout>

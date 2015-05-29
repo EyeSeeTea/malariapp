@@ -90,7 +90,6 @@ public class CustomAdherenceAdapter extends BaseAdapter implements ITabAdapter {
 
     static class ScoreHolder {
         public TextView scoreText;
-        public TextView tabName;
         public TextView score;
         public TextView cualitativeScore;
     }
@@ -99,8 +98,6 @@ public class CustomAdherenceAdapter extends BaseAdapter implements ITabAdapter {
         scoreHolder.score = (TextView) ((Activity) context).findViewById(R.id.score);
         scoreHolder.cualitativeScore = (TextView) ((Activity) context).findViewById(R.id.cualitativeScore);
         scoreHolder.scoreText = (TextView) ((Activity) context).findViewById(R.id.subtotalScoreText);
-        scoreHolder.tabName = (TextView) ((Activity) context).findViewById(R.id.tabName);
-        scoreHolder.tabName.setText(tabName);
     }
 
     public void updateScore() {
@@ -236,8 +233,8 @@ public class CustomAdherenceAdapter extends BaseAdapter implements ITabAdapter {
             int pos = optList.indexOf(value.getOption());
 
 
-            if (test.getForm_name().equals("RDT Positive")
-                    || test.getForm_name().equals("RDT Negative")) {
+            if (test.getForm_name().equals(this.context.getString(R.string.adherence_info_rdt_positive))
+                    || test.getForm_name().equals(this.context.getString(R.string.adherence_info_rdt_negative))) {
                 if (pos == 1) {
                     num = num - scores[items.indexOf(question) - position_secondheader] + 1;
                     scores[items.indexOf(question) - position_secondheader] = 1;
@@ -246,8 +243,8 @@ public class CustomAdherenceAdapter extends BaseAdapter implements ITabAdapter {
                     scores[items.indexOf(question) - position_secondheader] = 0;
                 }
             } else {
-                if (test.getForm_name().equals("Microscopy Positive")
-                        || test.getForm_name().equals("Microscopy Negative")) {
+                if (test.getForm_name().equals(this.context.getString(R.string.adherence_info_microscopy_positive))
+                        || test.getForm_name().equals(this.context.getString(R.string.adherence_info_microscopy_negative))) {
                     if (pos == 2) {
                         num = num - scores[items.indexOf(question) - position_secondheader] + 1;
                         scores[items.indexOf(question) - position_secondheader] = 1;

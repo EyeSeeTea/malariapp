@@ -2,14 +2,28 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal" android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="#1e506c">
+    android:background="@color/headerColor">
 
     <RelativeLayout
         android:layout_width="0dip"
         android:layout_height="wrap_content"
-        android:layout_weight="0.45"
+        android:layout_weight="0"
         android:gravity="center"
-        android:layout_gravity="center_vertical">
+        android:layout_gravity="center_vertical"
+        android:id="@+id/space">
+
+        <Space
+            android:layout_width="20px"
+            android:layout_height="20px" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="0dip"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.35"
+        android:gravity="center"
+        android:layout_gravity="center_vertical"
+        android:id="@+id/subTotalScoreTextContainer">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -24,25 +38,13 @@
                 android:id="@+id/subtotalScoreText"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:textColor="#ffffff"
+                android:textColor="@color/white"
                 android:textStyle="bold|italic"
                 android:paddingLeft="5dip"
                 android:gravity="center"
                 android:layout_gravity="center"
-                android:textSize="12sp" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:id="@+id/tabName"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:textColor="#ffffff"
-                android:textStyle="bold|italic"
-                android:paddingLeft="5dip"
-                android:gravity="center"
-                android:textSize="12sp" />
+                android:textSize="12sp"
+                android:fontFamily="@string/bold_font_name" />
 
         </LinearLayout>
 
@@ -51,9 +53,10 @@
     <RelativeLayout
         android:layout_width="0dip"
         android:layout_height="wrap_content"
-        android:layout_weight="0.15"
+        android:layout_weight="0.2"
         android:gravity="center"
-        android:layout_gravity="center_vertical">
+        android:layout_gravity="center_vertical"
+        android:id="@+id/subTotalScoreContainer">
 
         <LinearLayout
             android:orientation="vertical"
@@ -72,13 +75,14 @@
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceSmall"
                     android:id="@+id/score"
-                    android:text="@string/score_info_zero_float"
+                    android:text="@string/number_zero"
                     android:textStyle="bold"
                     android:textSize="14sp"
-                    android:textColor="#ffffff"
+                    android:textColor="@color/white"
                     android:gravity="center_vertical|right"
                     android:layout_centerVertical="true"
-                    android:layout_gravity="center_vertical|right" />
+                    android:layout_gravity="center_vertical|right"
+                    android:fontFamily="@string/bold_font_name" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -87,7 +91,7 @@
                     android:id="@+id/percentageSymbol"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
-                    android:textColor="#ffffff"
+                    android:textColor="@color/white"
                     android:textSize="14sp"
                     android:textStyle="bold|italic"
                     android:text="@string/score_title_percentage"
@@ -95,7 +99,8 @@
                     android:paddingRight="5dip"
                     android:paddingLeft="5dip"
                     android:layout_gravity="left|center_vertical"
-                    android:layout_marginLeft="2dip" />
+                    android:layout_marginLeft="2dip"
+                    android:fontFamily="@string/bold_font_name" />
             </LinearLayout>
 
             <LinearLayout
@@ -112,10 +117,11 @@
                     android:id="@+id/cualitativeScore"
                     android:textStyle="bold"
                     android:textSize="14sp"
-                    android:textColor="#ffffff"
+                    android:textColor="@color/white"
                     android:gravity="center_vertical|right"
                     android:layout_centerVertical="true"
-                    android:layout_gravity="center" />
+                    android:layout_gravity="center"
+                    android:fontFamily="@string/bold_font_name" />
             </LinearLayout>
         </LinearLayout>
 
@@ -124,7 +130,7 @@
     <RelativeLayout
         android:layout_width="0dip"
         android:layout_height="wrap_content"
-        android:layout_weight="0.2"
+        android:layout_weight="0.25"
         android:layout_gravity="center_vertical|right"
         android:gravity="center_vertical|right">
 
@@ -135,11 +141,12 @@
             android:text="@string/score_info_accumulated"
             android:id="@+id/accumulatedText"
             android:textStyle="italic"
-            android:textColor="#ffffff"
+            android:textColor="@color/white"
             android:layout_alignParentEnd="false"
             android:layout_alignParentRight="false"
             android:textSize="12sp"
-            android:gravity="center_vertical|end" />
+            android:gravity="center_vertical|end"
+            android:fontFamily="@string/light_font_name" />
     </RelativeLayout>
 
     <RelativeLayout
@@ -155,10 +162,11 @@
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="@string/empty_string"
             android:id="@+id/totalNum"
-            android:textColor="#ffffff"
+            android:textColor="@color/white"
             android:textSize="12sp"
             android:textStyle="bold"
-            android:gravity="center" />
+            android:gravity="center"
+            android:fontFamily="@string/bold_font_name" />
     </RelativeLayout>
     <RelativeLayout
         android:layout_width="0dip"
@@ -172,11 +180,12 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:id="@+id/totalDen"
-            android:textColor="#ffffff"
+            android:textColor="@color/white"
             android:textSize="12sp"
             android:textStyle="bold"
             android:gravity="center"
-            android:text="@string/empty_string" />
+            android:text="@string/empty_string"
+            android:fontFamily="@string/bold_font_name" />
     </RelativeLayout>
 
 

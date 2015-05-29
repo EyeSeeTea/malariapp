@@ -122,13 +122,13 @@ public class CreateSurveyActivity extends BaseActivity {
 
         if(!checkEverythingFilled()){
             new AlertDialog.Builder(this)
-                    .setTitle("Missing selection")
-                    .setMessage("Please select Org Unit and Survey")
+                    .setTitle(getApplicationContext().getString(R.string.dialog_title_missing_selection))
+                    .setMessage(getApplicationContext().getString(R.string.dialog_content_missing_selection))
                     .setPositiveButton(android.R.string.ok, null).create().show();
         } else if(!checkSurveyDoesntExist()) {
             new AlertDialog.Builder(this)
-                    .setTitle("Existing Survey")
-                    .setMessage("There is already a not sent form in the system for that Org Unit/Survey")
+                    .setTitle(getApplicationContext().getString(R.string.dialog_title_existing_survey))
+                    .setMessage(getApplicationContext().getString(R.string.dialog_content_existing_survey))
                     .setPositiveButton(android.R.string.ok, null).create().show();
         } else {
             // Save Survey

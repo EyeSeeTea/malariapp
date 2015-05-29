@@ -42,6 +42,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import org.eyeseetea.malariacare.database.model.CompositiveScore;
+import org.eyeseetea.malariacare.database.model.Program;
+import org.eyeseetea.malariacare.database.model.Question;
 import org.eyeseetea.malariacare.database.model.Tab;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.layout.adapters.general.TabArrayAdapter;
@@ -75,17 +77,29 @@ public class SurveyActivity extends BaseActivity {
         android.support.v7.app.ActionBar actionBar = this.getSupportActionBar();
         LayoutUtils.setActionBarLogo(actionBar);
 
+        Program program = Session.getSurvey().getProgram();
+        List<CompositiveScore> compositiveScores = new ArrayList<CompositiveScore>();
+
         Log.i(".SurveyActivity", "Registering Compositive Score");
         //Intializing compositive score register
         for (CompositiveScore compositiveScore : CompositiveScore.listAll(CompositiveScore.class)) {
-            ScoreRegister.registerScore(compositiveScore);
+
+            //If the questions of the compositivescore belongs to the program, the comp. score is addded
+            if (program.equals(Utils.getProgramQuestion(Utils.getOneQuestionCompositiveScore(compositiveScore)))) {
+
+                Log.i(".SurveyActivity", "Include "+ compositiveScore.getCode());
+                compositiveScores.add(compositiveScore);
+                ScoreRegister.registerScore(compositiveScore);
+            }
+
         }
 
         Log.i(".SurveyActivity", "Creating Adapter");
         tabsList = Tab.getTabsBySession();
+
         for (Tab tab : tabsList) {
             if (tab.getName().equals("Compositive Scores"))
-                adaptersMap.put(tab, new CompositiveScoreAdapter(CompositiveScore.listAll(CompositiveScore.class), this, R.layout.compositivescoretab, tab.getName()));
+                adaptersMap.put(tab, new CompositiveScoreAdapter(compositiveScores, this, R.layout.compositivescoretab, tab.getName()));
             else if (tab.getType() != Constants.TAB_SCORE_SUMMARY) {
                 ScoreRegister.registerScore(tab);
                 //adaptersMap.put(tab, new AutoTabAdapter(Utils.convertTabToArray(tab), this, R.layout.form, tab.getName()));
@@ -106,9 +120,7 @@ public class SurveyActivity extends BaseActivity {
         createMenu();
 
         // Show survey info as a footer below the form
-        SimpleDateFormat formattedDate = new SimpleDateFormat("dd MMM yyyy");
-        TextView surveyInfo = (TextView) this.findViewById(R.id.surveyinfo);
-        surveyInfo.setText("Org Unit: " + Session.getSurvey().getOrgUnit().getName() + " | Survey: " + Session.getSurvey().getProgram().getName() + " | Creation Date: " + formattedDate.format(Session.getSurvey().getEventDate()));
+        LayoutUtils.setActionBarText(actionBar, Session.getSurvey().getOrgUnit().getName(), Session.getSurvey().getProgram().getName());
 
     }
 
@@ -158,12 +170,14 @@ public class SurveyActivity extends BaseActivity {
             View view = inflater.inflate(tabAdapter.getLayout(), parent, false);
             parent.addView(view);
 
+            if (selectedTab.getType() == Constants.TAB_AUTOMATIC_SCORED || selectedTab.getType() == Constants.TAB_CUSTOM_SCORED
+                    || selectedTab.getType() == Constants.TAB_SCORE_SUMMARY) {
+                tabAdapter.initializeSubscore();
+            }
+
             ListView mQuestions = (ListView) this.findViewById(R.id.listView);
             mQuestions.setAdapter((BaseAdapter) tabAdapter);
 
-            if (selectedTab.getType() == Constants.TAB_AUTOMATIC_SCORED || selectedTab.getType() == Constants.TAB_CUSTOM_SCORED) {
-                tabAdapter.initializeSubscore();
-            }
         }
     }
 

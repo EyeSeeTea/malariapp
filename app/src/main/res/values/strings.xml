@@ -14,6 +14,7 @@
     <string name="good">Good</string>
     <string name="fare">Fare</string>
     <string name="poor">Poor</string>
+    <string name="plus">+</string>
 
     <!-- settings -->
     <string name="settings_menu_about">About</string>
@@ -33,6 +34,11 @@
     <string name="dialog_info_delete_survey">Are you sure you want to completely delete this survey?</string>
     <string name="dialog_title_error">Error</string>
     <string name="dialog_error_denominator">Error, denominator = 0</string>
+    <string name="dialog_title_missing_selection">Missing selection</string>
+    <string name="dialog_content_missing_selection">Please select Org Unit and Survey</string>
+    <string name="dialog_title_existing_survey">Existing Survey</string>
+    <string name="dialog_content_existing_survey">There is already a not sent form in the system for that Org Unit/Survey</string>
+    <string name="dialog_content_logout_confirmation">If you exit the system, all the not sent data will be deleted. Do you still want to exit?</string>
 
     <!-- dashboard -->
     <string name="dashboard_info_feedback">Feedback</string>
@@ -43,6 +49,7 @@
     <string name="dashboard_info_analytics">Analytics</string>
     <string name="dashboard_button_new_survey">New Survey</string>
     <string name="dashboard_button_see_all">See all</string>
+    <string name="dashboard_info_ready_to_upload">Ready to upload</string>
 
     <!-- create -->
     <string name="create_info_ok">Create assessment</string>
@@ -50,8 +57,8 @@
     <string name="create_info_survey">Survey</string>
 
     <!-- assessment -->
-    <string name="assessment_title_facility_date">Facility / Date</string>
-    <string name="assessment_title_state">Status</string>
+    <string name="assessment_title_facility_date">Facility / Survey</string>
+    <string name="assessment_title_state">% complete</string>
     <string name="assessment_info_delete">Delete</string>
     <string name="assessment_title_header">Active Assessment</string>
 
@@ -90,6 +97,53 @@
     <!-- custom -->
     <string name="custom_title_tallies">TALLIES - Add up and enter the totals for the following indicators from the registers in column A.  In column B enter the total numbers from the monthly reporting sheet</string>
     <string name="custom_info_tallies">TALLIES for the Month of</string>
+    <string name="custom_info_one">1</string>
+    <string name="custom_info_two">2</string>
+    <string name="custom_info_three">3</string>
+    <string name="custom_info_four">4</string>
+    <string name="custom_info_five">5</string>
+    <string name="custom_info_six">6</string>
+    <string name="custom_info_seven">7</string>
+    <string name="custom_info_eight">8</string>
+    <string name="custom_info_nine">9</string>
+    <string name="custom_info_ten">10</string>
+    <string name="custom_info_eleven">11</string>
+    <string name="custom_info_twelve">12</string>
+    <string name="custom_info_thirteen">13</string>
+    <string name="custom_info_fourteen">14</string>
+    <string name="custom_info_fifteen">15</string>
+    <string name="custom_info_sixteen">16</string>
+    <string name="custom_info_seventeen">17</string>
+    <string name="custom_info_eighteen">18</string>
+    <string name="custom_info_nineteen">19</string>
+    <string name="custom_info_twenty">20</string>
+
+    <!-- adherence -->
+    <string name="adherence_info_switchquestion">Are there pharmacy records of ACTs dispensed?</string>
+    <string name="adherence_title_explanation">Phamacy/clinical register v.s Lab records. Steps in Evaluation of Provider Adherence to Malaria Diagnostic Test Results</string>
+    <string name="adherence_info_pharmacy_register">Pharmacy Register</string>
+    <string name="adherence_title_gender">Gender</string>
+    <string name="adherence_title_age">Age</string>
+    <string name="adherence_title_test_results">Test results</string>
+    <string name="adherence_info_patient_id">Patient\nID</string>
+    <string name="adherence_info_prescribed">ACT\nPrescribed?</string>
+    <string name="adherence_info_rdt_positive">RDT Positive</string>
+    <string name="adherence_info_rdt_negative">RDT Negative</string>
+    <string name="adherence_info_microscopy_positive">Microscopy Positive</string>
+    <string name="adherence_info_microscopy_negative">Microscopy Negative</string>
+
+    <!-- iqa eqa -->
+    <string name="iqatab_info_supervisor">Supervisor</string>
+    <string name="iqatab_info_parasites">Parasites/uL</string>
+    <string name="iqatab_info_species">Species</string>
+    <string name="iqatab_info_labstaff">Lab Staff</string>
+
+    <!-- reporting -->
+    <string name="reporting_info_reporting">Reporting</string>
+    <string name="reporting_info_results">Results</string>
+    <string name="reporting_info_register">Register</string>
+    <string name="reporting_info_monthly">Monthly \nReport</string>
+    <string name="iqatab_info_supervisor_matches">Supervisor matches lab staff?</string>
 
     <!-- score -->
     <string name="score_title_clinical_fever">Clinical\nfever\nevaluation</string>
@@ -107,46 +161,32 @@
     <string name="score_info_case3">Case 3</string>
     <string name="score_info_case4">Case 4</string>
 
-    <!-- potencially deprecated strings (used in views that looks like are not being used)-->
-    <string name="deprecated_adherence_info_switchquestion">Are there pharmacy records of ACTs dispensed?</string>
-    <string name="deprecated_adherence_title_explanation">Phamacy/clinical register v.s Lab records. Steps in Evaluation of Provider Adherence to Malaria Diagnostic Test Results</string>
-    <string name="deprecated_adherence_info_pharmacy_register">Pharmacy Register</string>
-    <string name="deprecated_adherence_title_gender">Gender</string>
-    <string name="deprecated_adherence_title_age">Age</string>
-    <string name="deprecated_adherence_title_test_results">Test results</string>
-    <string name="deprecated_adherence_info_patient_id">Patient\nID</string>
-    <string name="deprecated_adherence_info_prescribed">ACT\nPrescribed?</string>
-    <string name="deprecated_adherence_info_rdt_positive">RDT Positive</string>
+    <!-- settings -->
+    <string name="title_activity_settings">Settings</string>
+    <string name="settings_checkbox_show_num_dems">Show num/dems</string>
+    <string name="settings_checkbox_description_show_num_dems">When activated, survey questions show their numerators and denominators, used to calc the survey score</string>
+    <string name="settings_checkbox_customize_fonts">Customize fonts?</string>
+    <string name="settings_list_font_sizes">Fonts size</string>
+    <string-array name="settings_array_titles_font_sizes">
+        <item>Small</item>
+        <item>Medium</item>
+        <item>Large</item>
+        <item>Extra large</item>
+    </string-array>
+    <string-array name="settings_array_values_font_sizes">
+        <item>small</item>
+        <item>medium</item>
+        <item>large</item>
+        <item>extra</item>
+    </string-array>
+    <string name="settings_text_dhis_server_url">DHIS Server URL</string>
+    <string name="pref_header_general">General</string>
 
-    <string name="deprecated_iqatab_info_one">1</string>
-    <string name="deprecated_iqatab_info_two">2</string>
-    <string name="deprecated_iqatab_info_three">3</string>
-    <string name="deprecated_iqatab_info_four">4</string>
-    <string name="deprecated_iqatab_info_five">5</string>
-    <string name="deprecated_iqatab_info_six">6</string>
-    <string name="deprecated_iqatab_info_seven">7</string>
-    <string name="deprecated_iqatab_info_eight">8</string>
-    <string name="deprecated_iqatab_info_nine">9</string>
-    <string name="deprecated_iqatab_info_ten">10</string>
-    <string name="deprecated_iqatab_info_eleven">11</string>
-    <string name="deprecated_iqatab_info_twelve">12</string>
-    <string name="deprecated_iqatab_info_thirteen">13</string>
-    <string name="deprecated_iqatab_info_fourteen">14</string>
-    <string name="deprecated_iqatab_info_fifteen">15</string>
-    <string name="deprecated_iqatab_info_sixteen">16</string>
-    <string name="deprecated_iqatab_info_seventeen">17</string>
-    <string name="deprecated_iqatab_info_eighteen">18</string>
-    <string name="deprecated_iqatab_info_nineteen">19</string>
-    <string name="deprecated_iqatab_info_twenty">20</string>
-    <string name="deprecated_iqatab_info_supervisor">Supervisor</string>
-    <string name="deprecated_iqatab_info_parasites">Parasites/uL</string>
-    <string name="deprecated_iqatab_info_species">Species</string>
-    <string name="deprecated_iqatab_info_labstaff">Lab Staff</string>
-
-    <string name="deprecated_reporting_info_reporting">Reporting</string>
-    <string name="deprecated_reporting_info_results">Results</string>
-    <string name="deprecated_reporting_info_register">Register</string>
-    <string name="deprecated_reporting_info_monthly">Monthly \nReport</string>
-    <string name="deprecated_iqatab_info_supervisor_matches">Supervisor matches lab staff?</string>
+    <!-- fonts -->
+    <string name="light_font_name">sans-serif-light</string>
+    <string name="regular_font_name">sans-serif-light</string>
+    <string name="bold_font_name">sans-serif</string>
+    <string name="medium_font_name">sans-serif-condensed</string>
+    <string name="condensed_font_name">sans-serif-condensed</string>
 
 </resources>

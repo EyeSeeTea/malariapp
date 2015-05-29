@@ -96,7 +96,6 @@ public class SurveyEspressoTest extends MalariaEspressoTest{
     @Test
     public void form_views() {
         onView(withId(R.id.tabSpinner)).check(matches(isDisplayed()));
-        onView(withId(R.id.surveyinfo)).check(matches(isDisplayed()));
         onView(withText("General Info")).check(matches(isDisplayed()));
     }
 

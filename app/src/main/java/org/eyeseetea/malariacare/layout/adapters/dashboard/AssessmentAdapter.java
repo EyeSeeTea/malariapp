@@ -20,9 +20,7 @@
 package org.eyeseetea.malariacare.layout.adapters.dashboard;
 
 import android.app.Activity;
-import android.app.ListFragment;
 import android.content.Context;
-import android.graphics.Color;
 import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -36,9 +34,8 @@ import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.layout.dialog.DialogDispatcher;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
+import org.eyeseetea.malariacare.views.FloatingButton;
 
-import java.io.Serializable;
-import java.text.SimpleDateFormat;
 import java.util.List;
 
 /**
@@ -94,31 +91,30 @@ public class AssessmentAdapter extends BaseAdapter implements IDashboardAdapter 
         rowView.setBackgroundResource(LayoutUtils.calculateBackgrounds(position));
 
         // Org Unit Cell
-        ((TextView) rowView.findViewById(R.id.facility)).setText(survey.getOrgUnit().getUid() + " - " + survey.getOrgUnit().getName());
-        SimpleDateFormat formattedDate = new SimpleDateFormat("dd MMM yyyy");
-        ((TextView) rowView.findViewById(R.id.date)).setText(survey.getProgram().getName() + " \n\t " + formattedDate.format(survey.getEventDate()));
+        ((TextView) rowView.findViewById(R.id.facility)).setText(survey.getOrgUnit().getName());
+        ((TextView) rowView.findViewById(R.id.survey_type)).setText("- " + survey.getProgram().getName());
 
         //Status Cell
         //FIXME: This bit needs to change when jose architecture is introduced because probably the save will be executed in a different way
         List<Integer> status = survey.getAnsweredQuestionRatio();
 
         if (status.get(0) == status.get(1)) {
-            ((TextView) rowView.findViewById(R.id.score)).setText("Ready to upload");
+            ((TextView) rowView.findViewById(R.id.score)).setText(getContext().getString(R.string.dashboard_info_ready_to_upload));
         } else {
-            ((TextView) rowView.findViewById(R.id.score)).setText(String.format("%.2f", 100 * (double) status.get(0) / (double) status.get(1)));
+            ((TextView) rowView.findViewById(R.id.score)).setText(String.format("%d", new Double(100 * (double) status.get(0) / (double) status.get(1)).intValue()));
         }
-        ((TextView) rowView.findViewById(R.id.completed)).setText(Integer.toString(status.get(0)));
-        ((TextView) rowView.findViewById(R.id.total)).setText(Integer.toString(status.get(1)));
 
         //Tools Cell
         LinearLayout toolContainerView = (LinearLayout) rowView.findViewById(R.id.toolsContainer);
 
         TextView deleteTextView = new TextView(this.context);
         deleteTextView.setText(R.string.assessment_info_delete);
-        deleteTextView.setTextColor(Color.parseColor("#1e506c"));
+        deleteTextView.setTextColor(getContext().getResources().getColor(R.color.headerColor));
         deleteTextView.setTypeface(Typeface.MONOSPACE, Typeface.BOLD);
         deleteTextView.setOnClickListener(new AssessmentListener((Activity) this.context, survey, context.getString(R.string.assessment_info_delete)));
         toolContainerView.addView(deleteTextView);
+        //FloatingButton addSurvey = new FloatingButton(this.context);
+        //toolContainerView.addView(addSurvey);
 
         return rowView;
     }

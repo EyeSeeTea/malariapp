@@ -20,6 +20,7 @@
 package org.eyeseetea.malariacare.layout.utils;
 
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.support.v7.app.ActionBar;
 import android.view.View;
 import android.view.ViewGroup;
@@ -263,21 +264,21 @@ public class LayoutUtils {
     // If a second view is given, it also writes the text good, fare or given there
     public static void trafficLight(View view, float score, View textView){
         if(score < 50.0F){ // poor
-            ((TextView)view).setTextColor(Color.parseColor("#FF0000")); // red
+            ((TextView)view).setTextColor(view.getContext().getResources().getColor(R.color.red)); // red
             if(textView != null) {
-                ((TextView)textView).setTextColor(Color.parseColor("#FF0000")); // red
+                ((TextView)textView).setTextColor(view.getContext().getResources().getColor(R.color.red)); // red
                 ((TextView)textView).setText(view.getContext().getResources().getString(R.string.poor));
             }
         } else if (score < 80.0F){ // fare
-            ((TextView)view).setTextColor(Color.parseColor("#FF8000")); // amber
+            ((TextView)view).setTextColor(view.getContext().getResources().getColor(R.color.amber)); // amber
             if(textView != null) {
-                ((TextView)textView).setTextColor(Color.parseColor("#FF8000")); // amber
+                ((TextView)textView).setTextColor(view.getContext().getResources().getColor(R.color.amber)); // amber
                 ((TextView)textView).setText(view.getContext().getResources().getString(R.string.fare));
             }
         } else {
-            ((TextView)view).setTextColor(Color.parseColor("#40FF00")); // green
+            ((TextView)view).setTextColor(view.getContext().getResources().getColor(R.color.green)); // green
             if(textView != null) { // good
-                ((TextView)textView).setTextColor(Color.parseColor("#40FF00")); // green
+                ((TextView)textView).setTextColor(view.getContext().getResources().getColor(R.color.green)); // green
                 ((TextView)textView).setText(view.getContext().getResources().getString(R.string.good));
             }
         }
@@ -295,10 +296,22 @@ public class LayoutUtils {
         return result;
     }
 
+    // Used to setup the usual actionbar with the logo and the app name
     public static void setActionBarLogo(ActionBar actionBar){
         actionBar.setLogo(R.drawable.qualityapp_logo);
         actionBar.setDisplayUseLogoEnabled(true);
         actionBar.setDisplayShowHomeEnabled(true);
         actionBar.setIcon(R.drawable.qualityapp_logo);
+        actionBar.setBackgroundDrawable(new ColorDrawable(Color.WHITE));
+    }
+
+    // Used to put the org unit name and the kind of survey instead of the app name
+    public static void setActionBarText(ActionBar actionBar, String title, String subtitle){
+        actionBar.setDisplayUseLogoEnabled(false);
+        // Uncomment in case of we want the logo out
+        // actionBar.setLogo(null);
+        // actionBar.setIcon(null);
+        actionBar.setTitle(title);
+        actionBar.setSubtitle(subtitle);
     }
 }

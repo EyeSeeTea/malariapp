@@ -19,7 +19,9 @@
 
 package org.eyeseetea.malariacare.utils;
 
+import org.eyeseetea.malariacare.database.model.CompositiveScore;
 import org.eyeseetea.malariacare.database.model.Header;
+import org.eyeseetea.malariacare.database.model.Program;
 import org.eyeseetea.malariacare.database.model.Question;
 import org.eyeseetea.malariacare.database.model.Tab;
 
@@ -29,11 +31,12 @@ import java.util.List;
 
 public class Utils {
 
-    static final int numberOfDecimals = 2; // Number of decimals outputs will have
+    static final int numberOfDecimals = 0; // Number of decimals outputs will have
 
     public static String round(float base, int decimalPlace){
         BigDecimal bd = new BigDecimal(Float.toString(base));
         bd = bd.setScale(decimalPlace, BigDecimal.ROUND_DOWN);
+        if (decimalPlace == 0) return Integer.toString((int) bd.floatValue());
         return Float.toString(bd.floatValue());
     }
 
@@ -53,6 +56,28 @@ public class Utils {
         }
 
         return result;
+    }
+
+    public static Question getOneQuestionCompositiveScore(CompositiveScore compositiveScore) {
+        Question question = null;
+
+        if (compositiveScore.getQuestions().size()>0)
+            return compositiveScore.getQuestions().get(0);
+        else
+            for (CompositiveScore cScore: compositiveScore.getCompositiveScoreChildren())
+                return getOneQuestionCompositiveScore(cScore);
+
+        return question;
+    }
+
+    //return the program of one question
+    public static Program getProgramQuestion(Question question) {
+        Program program=null;
+
+        if (question!= null)
+            program = question.getHeader().getTab().getProgram();
+
+        return program;
     }
 
     public static List<Object> convertTabToArray(Tab tab) {

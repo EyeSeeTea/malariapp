@@ -37,17 +37,21 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:id="@+id/facility"
-            android:padding="5dip"
             android:layout_gravity="center_vertical"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:paddingLeft="5dip"
+            android:paddingRight="5dip"
+            android:fontFamily="@string/bold_font_name" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
-            android:id="@+id/date"
-            android:padding="5dip"
-            android:layout_gravity="center_vertical" />
+            android:id="@+id/survey_type"
+            android:layout_gravity="center_vertical"
+            android:paddingLeft="5dip"
+            android:paddingRight="5dip"
+            android:fontFamily="@string/light_font_name" />
 
     </LinearLayout>
 
@@ -66,39 +70,8 @@
             android:id="@+id/score"
             android:padding="5dip"
             android:layout_gravity="center"
-            android:textStyle="bold" />
-
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:id="@+id/completed"
-                android:padding="5dip"
-                android:layout_gravity="center" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:id="@+id/slash"
-                android:padding="5dip"
-                android:text="/"
-                android:layout_gravity="center" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:id="@+id/total"
-                android:padding="5dip"
-                android:layout_gravity="center" />
-        </LinearLayout>
+            android:textStyle="bold"
+            android:fontFamily="@string/bold_font_name" />
 
     </LinearLayout>
 
@@ -109,7 +82,7 @@
         android:id="@+id/toolsContainer"
         android:padding="5dip"
         android:layout_gravity="center"
-        android:layout_weight="0.2">
+        android:layout_weight="0.2" >
 
     </LinearLayout>
 

@@ -49,7 +49,7 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="@string/deprecated_adherence_info_rdt_positive"
+            android:text="@string/adherence_info_rdt_positive"
             android:id="@+id/testResult"
             android:padding="5dip" />
     </LinearLayout>
