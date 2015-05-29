@@ -184,4 +184,11 @@
     <string name="settings_text_dhis_server_url">DHIS Server URL</string>
     <string name="pref_header_general">General</string>
 
+    <!-- fonts -->
+    <string name="light_font_name">sans-serif-light</string>
+    <string name="regular_font_name">sans-serif-light</string>
+    <string name="bold_font_name">sans-serif</string>
+    <string name="medium_font_name">sans-serif-condensed</string>
+    <string name="condensed_font_name">sans-serif-condensed</string>
+
 </resources>
