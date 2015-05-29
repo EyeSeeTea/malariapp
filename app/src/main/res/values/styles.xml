@@ -36,4 +36,18 @@
         <item name="android:divider">@null</item>
     </style>
 
+    <style name="EyeSeeTextSmall">
+        <item name="android:textAppearance">?android:textAppearanceSmall</item>
+    </style>
+    <style name="EyeSeeTextMedium">
+        <item name="android:textAppearance">?android:textAppearanceMedium</item>
+    </style>
+    <style name="EyeSeeTextLarge">
+        <item name="android:textAppearance">?android:textAppearanceLarge</item>
+    </style>
+    <style name="EyeSeeTextExtra">
+        <item name="android:textAppearance">?android:textAppearanceLarge</item>
+    </style>
+
+
 </resources>

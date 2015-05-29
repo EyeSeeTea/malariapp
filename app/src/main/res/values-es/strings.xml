@@ -163,4 +163,25 @@
     <string name="score_info_case3">Caso 3</string>
     <string name="score_info_case4">Caso 4</string>
 
+    <!-- settings -->
+    <string name="title_activity_settings">Configuración</string>
+    <string name="settings_checkbox_show_num_dems">Mostrar num/dems</string>
+    <string name="settings_checkbox_description_show_num_dems">Si está activo, las preguntas del formulario muestran sus numeradores y denominadores, usados para calcular la puntuación total de la encuesta</string>
+    <string name="settings_checkbox_customize_fonts">¿Personalizar fuentes?</string>
+    <string name="settings_list_font_sizes">Tamaño de fuentes</string>
+    <string-array name="settings_array_titles_font_sizes">
+        <item>Pequeño</item>
+        <item>Medio</item>
+        <item>Grande</item>
+        <item>Extra grande</item>
+    </string-array>
+    <string-array name="settings_array_values_font_sizes">
+        <item>small</item>
+        <item>medium</item>
+        <item>large</item>
+        <item>extra</item>
+    </string-array>
+    <string name="settings_text_dhis_server_url">URL de servidor DHIS</string>
+    <string name="pref_header_general">General</string>
+
 </resources>

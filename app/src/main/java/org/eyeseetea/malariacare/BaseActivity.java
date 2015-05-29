@@ -22,8 +22,10 @@ package org.eyeseetea.malariacare;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBarActivity;
 import android.transition.Explode;
 import android.util.Log;
@@ -57,6 +59,26 @@ public abstract class BaseActivity extends ActionBarActivity {
         setTheme(R.style.EyeSeeTheme);
         android.support.v7.app.ActionBar actionBar = this.getSupportActionBar();
         LayoutUtils.setActionBarLogo(actionBar);
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        switch(sharedPreferences.getString("font_sizes", "system")){
+            case Constants.FONTS_SMALL:
+
+                break;
+            case Constants.FONTS_MEDIUM:
+
+                break;
+            case Constants.FONTS_LARGE:
+
+                break;
+            case Constants.FONTS_EXTRA_LARGE:
+
+                break;
+            case Constants.FONTS_SYSTEM:
+
+                break;
+        }
+        Log.d(".BaseActivity", "Font size: " + sharedPreferences.getString("font_sizes", "system"));
+        Log.d(".BaseActivity", "Show num/dems: " + Boolean.toString(sharedPreferences.getBoolean("show_num_dems", false)));
         // Manage uncaught exceptions that may occur
         //Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(this));
     }
@@ -80,7 +102,7 @@ public abstract class BaseActivity extends ActionBarActivity {
                 finish();
                 Intent settingsIntent = new Intent(BaseActivity.this, SettingsActivity.class);
                 startActivity(settingsIntent);
-                return true;// TODO: implement the settings menu
+                break;
             case R.id.action_pull:
                 return true;// TODO: implement the DHIS pull
             case R.id.action_license:

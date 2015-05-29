@@ -33,4 +33,10 @@ public class Constants {
             OPERATION_TYPE_PARENT = 1,
             OPERATION_TYPE_OTHER = 2;
 
+    public static final String FONTS_SMALL = "small",
+            FONTS_MEDIUM = "medium",
+            FONTS_LARGE = "large",
+            FONTS_EXTRA_LARGE = "extra",
+            FONTS_SYSTEM = "system";
+
 }
