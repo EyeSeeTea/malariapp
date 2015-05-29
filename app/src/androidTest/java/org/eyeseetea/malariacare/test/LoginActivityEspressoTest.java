@@ -85,8 +85,8 @@ public class LoginActivityEspressoTest extends MalariaEspressoTest{
 
     @Test
     public void form_views() {
-        onView(withId(R.id.user)).check(matches(withText("")));
-        onView(withId(R.id.password)).check(matches(withText("")));
+        onView(withId(R.id.user)).check(matches(isDisplayed()));
+        onView(withId(R.id.password)).check(matches(isDisplayed()));
     }
 
     @Test
