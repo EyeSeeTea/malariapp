@@ -27,7 +27,8 @@
               android:id="@+id/dashboard_fragment"
               android:layout_weight="0.5"
               android:layout_width="0dp"
-              android:layout_height="match_parent" />
+              android:layout_height="match_parent"
+              android:tag="MAIN_FRAGMENT"/>
 
     <FrameLayout android:id="@+id/details" android:layout_weight="0.5"
             android:layout_width="0dp" android:layout_height="match_parent"

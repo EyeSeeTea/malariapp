@@ -27,9 +27,8 @@
     <string name="login_info_username">Mel</string>
     <string name="login_info_password">Mot de passe</string>
     <string name="login_info_sign_in">Se connecter</string>
-    <string name="login_error_password">Le mot de pas n\'est pas correct</string>
-    <string name="login_error_short_password">Le mot de passe est trop courte</string>
-    <string name="login_error_required">Cette entrée est necessaire</string>
+    <string name="login_error_bad_credentials">Votre mode / mot de passe sont incorrects</string>
+
 
     <!-- # dialogs -->
     <string name="dialog_title_delete_survey">Delete Survey</string>

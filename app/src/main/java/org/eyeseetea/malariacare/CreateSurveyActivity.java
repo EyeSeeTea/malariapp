@@ -96,7 +96,11 @@ public class CreateSurveyActivity extends BaseActivity {
     }
 
     public boolean checkEverythingFilled(){
-        return (!orgUnitView.getSelectedItem().equals(this.orgUnitDefaultOption) && !programView.getSelectedItem().equals(this.programDefaultOption));
+        try {
+            return (!orgUnitView.getSelectedItem().equals(this.orgUnitDefaultOption) && !programView.getSelectedItem().equals(this.programDefaultOption));
+        }catch (Exception ex){
+            return false;
+        }
     }
 
     public boolean checkSurveyDoesntExist(){

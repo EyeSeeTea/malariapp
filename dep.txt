@@ -1,0 +1,251 @@
+:app:dependencies
+
+------------------------------------------------------------
+Project :app
+------------------------------------------------------------
+
+_debugAndroidTestApk - ## Internal use, do not manually configure ##
++--- com.android.support.test:runner:0.2
+|    +--- junit:junit-dep:4.10
+|    |    \--- org.hamcrest:hamcrest-core:1.1
+|    +--- com.android.support.test:exposed-instrumentation-api-publish:0.2
+|    \--- com.android.support:support-annotations:22.0.0 -> 22.1.0
++--- com.android.support.test:rules:0.2
+|    \--- com.android.support.test:runner:0.2 (*)
+\--- com.android.support.test.espresso:espresso-core:2.1
+     +--- com.android.support.test:rules:0.2 (*)
+     +--- com.squareup:javawriter:2.1.1
+     +--- org.hamcrest:hamcrest-integration:1.1
+     |    \--- org.hamcrest:hamcrest-core:1.1
+     +--- com.android.support.test.espresso:espresso-idling-resource:2.1
+     +--- org.hamcrest:hamcrest-library:1.1
+     |    \--- org.hamcrest:hamcrest-core:1.1
+     +--- javax.inject:javax.inject:1
+     +--- com.google.code.findbugs:jsr305:2.0.1
+     +--- com.android.support.test:runner:0.2 (*)
+     +--- javax.annotation:javax.annotation-api:1.2
+     \--- org.hamcrest:hamcrest-core:1.1
+
+_debugAndroidTestCompile - ## Internal use, do not manually configure ##
++--- com.android.support.test:runner:0.2
+|    +--- junit:junit-dep:4.10
+|    |    \--- org.hamcrest:hamcrest-core:1.1
+|    +--- com.android.support.test:exposed-instrumentation-api-publish:0.2
+|    \--- com.android.support:support-annotations:22.0.0 -> 22.1.0
++--- com.android.support.test:rules:0.2
+|    \--- com.android.support.test:runner:0.2 (*)
+\--- com.android.support.test.espresso:espresso-core:2.1
+     +--- com.android.support.test:rules:0.2 (*)
+     +--- com.squareup:javawriter:2.1.1
+     +--- org.hamcrest:hamcrest-integration:1.1
+     |    \--- org.hamcrest:hamcrest-core:1.1
+     +--- com.android.support.test.espresso:espresso-idling-resource:2.1
+     +--- org.hamcrest:hamcrest-library:1.1
+     |    \--- org.hamcrest:hamcrest-core:1.1
+     +--- javax.inject:javax.inject:1
+     +--- com.google.code.findbugs:jsr305:2.0.1
+     +--- com.android.support.test:runner:0.2 (*)
+     +--- javax.annotation:javax.annotation-api:1.2
+     \--- org.hamcrest:hamcrest-core:1.1
+
+_debugApk - ## Internal use, do not manually configure ##
++--- com.android.support:appcompat-v7:21.0.0
+|    \--- com.android.support:support-v4:21.0.0
+|         \--- com.android.support:support-annotations:21.0.0 -> 22.1.0
++--- com.github.satyan:sugar:1.3
++--- com.opencsv:opencsv:3.3
+|    \--- org.apache.commons:commons-lang3:3.3.2
++--- com.google.android.gms:play-services:6.1.71
+|    \--- com.android.support:support-v4:20.0.0 -> 21.0.0 (*)
++--- com.android.support:support-annotations:22.1.0
+\--- com.google.guava:guava:18.0
+
+_debugCompile - ## Internal use, do not manually configure ##
++--- com.android.support:appcompat-v7:21.0.0
+|    \--- com.android.support:support-v4:21.0.0
+|         \--- com.android.support:support-annotations:21.0.0 -> 22.1.0
++--- com.github.satyan:sugar:1.3
++--- com.opencsv:opencsv:3.3
+|    \--- org.apache.commons:commons-lang3:3.3.2
++--- com.google.android.gms:play-services:6.1.71
+|    \--- com.android.support:support-v4:20.0.0 -> 21.0.0 (*)
++--- com.android.support:support-annotations:22.1.0
+\--- com.google.guava:guava:18.0
+
+_debugUnitTestApk - ## Internal use, do not manually configure ##
+No dependencies
+
+_debugUnitTestCompile - ## Internal use, do not manually configure ##
+No dependencies
+
+_releaseApk - ## Internal use, do not manually configure ##
++--- com.android.support:appcompat-v7:21.0.0
+|    \--- com.android.support:support-v4:21.0.0
+|         \--- com.android.support:support-annotations:21.0.0 -> 22.1.0
++--- com.github.satyan:sugar:1.3
++--- com.opencsv:opencsv:3.3
+|    \--- org.apache.commons:commons-lang3:3.3.2
++--- com.google.android.gms:play-services:6.1.71
+|    \--- com.android.support:support-v4:20.0.0 -> 21.0.0 (*)
++--- com.android.support:support-annotations:22.1.0
+\--- com.google.guava:guava:18.0
+
+_releaseCompile - ## Internal use, do not manually configure ##
++--- com.android.support:appcompat-v7:21.0.0
+|    \--- com.android.support:support-v4:21.0.0
+|         \--- com.android.support:support-annotations:21.0.0 -> 22.1.0
++--- com.github.satyan:sugar:1.3
++--- com.opencsv:opencsv:3.3
+|    \--- org.apache.commons:commons-lang3:3.3.2
++--- com.google.android.gms:play-services:6.1.71
+|    \--- com.android.support:support-v4:20.0.0 -> 21.0.0 (*)
++--- com.android.support:support-annotations:22.1.0
+\--- com.google.guava:guava:18.0
+
+_releaseUnitTestApk - ## Internal use, do not manually configure ##
+No dependencies
+
+_releaseUnitTestCompile - ## Internal use, do not manually configure ##
+No dependencies
+
+androidJacocoAgent - The Jacoco agent to use to get coverage data.
+Download https://jcenter.bintray.com/org/jacoco/org.jacoco.agent/0.7.4.201502262128/org.jacoco.agent-0.7.4.201502262128.pom
+Download https://jcenter.bintray.com/org/jacoco/org.jacoco.build/0.7.4.201502262128/org.jacoco.build-0.7.4.201502262128.pom
+\--- org.jacoco:org.jacoco.agent:0.7.4.201502262128
+
+androidJacocoAnt - The Jacoco ant tasks to use to get execute Gradle tasks.
+Download https://jcenter.bintray.com/org/jacoco/org.jacoco.ant/0.7.4.201502262128/org.jacoco.ant-0.7.4.201502262128.pom
+Download https://jcenter.bintray.com/org/jacoco/org.jacoco.core/0.7.4.201502262128/org.jacoco.core-0.7.4.201502262128.pom
+Download https://jcenter.bintray.com/org/jacoco/org.jacoco.report/0.7.4.201502262128/org.jacoco.report-0.7.4.201502262128.pom
+\--- org.jacoco:org.jacoco.ant:0.7.4.201502262128
+     +--- org.jacoco:org.jacoco.core:0.7.4.201502262128
+     |    \--- org.ow2.asm:asm-debug-all:5.0.1
+     +--- org.jacoco:org.jacoco.report:0.7.4.201502262128
+     |    +--- org.jacoco:org.jacoco.core:0.7.4.201502262128 (*)
+     |    \--- org.ow2.asm:asm-debug-all:5.0.1
+     \--- org.jacoco:org.jacoco.agent:0.7.4.201502262128
+
+androidTestApk - Classpath packaged with the compiled 'androidTest' classes.
+No dependencies
+
+androidTestCompile - Classpath for compiling the androidTest sources.
++--- com.android.support.test:runner:0.2
+|    +--- junit:junit-dep:4.10
+|    |    \--- org.hamcrest:hamcrest-core:1.1
+|    +--- com.android.support.test:exposed-instrumentation-api-publish:0.2
+|    \--- com.android.support:support-annotations:22.0.0 -> 22.1.0
++--- com.android.support.test:rules:0.2
+|    \--- com.android.support.test:runner:0.2 (*)
+\--- com.android.support.test.espresso:espresso-core:2.1
+     +--- com.android.support.test:rules:0.2 (*)
+     +--- com.squareup:javawriter:2.1.1
+     +--- org.hamcrest:hamcrest-integration:1.1
+     |    \--- org.hamcrest:hamcrest-core:1.1
+     +--- com.android.support.test.espresso:espresso-idling-resource:2.1
+     +--- org.hamcrest:hamcrest-library:1.1
+     |    \--- org.hamcrest:hamcrest-core:1.1
+     +--- javax.inject:javax.inject:1
+     +--- com.google.code.findbugs:jsr305:2.0.1
+     +--- com.android.support.test:runner:0.2 (*)
+     +--- javax.annotation:javax.annotation-api:1.2
+     \--- org.hamcrest:hamcrest-core:1.1
+
+androidTestProvided - Classpath for only compiling the androidTest sources.
+No dependencies
+
+androidTestWearApp - Link to a wear app to embed for object 'androidTest'.
+No dependencies
+
+apk - Classpath packaged with the compiled 'main' classes.
+No dependencies
+
+archives - Configuration for archive artifacts.
+No dependencies
+
+compile - Classpath for compiling the main sources.
++--- com.android.support:appcompat-v7:21.0.0
+|    \--- com.android.support:support-v4:21.0.0
+|         \--- com.android.support:support-annotations:21.0.0 -> 22.1.0
++--- com.github.satyan:sugar:1.3
++--- com.opencsv:opencsv:3.3
+|    \--- org.apache.commons:commons-lang3:3.3.2
++--- com.google.android.gms:play-services:6.1.71
+|    \--- com.android.support:support-v4:20.0.0 -> 21.0.0 (*)
++--- com.android.support:support-annotations:22.1.0
+\--- com.google.guava:guava:18.0
+
+debugApk - Classpath packaged with the compiled 'debug' classes.
+No dependencies
+
+debugCompile - Classpath for compiling the debug sources.
+No dependencies
+
+debugProvided - Classpath for only compiling the debug sources.
+No dependencies
+
+debugWearApp - Link to a wear app to embed for object 'debug'.
+No dependencies
+
+default - Configuration for default artifacts.
+No dependencies
+
+default-mapping - Configuration for default mapping artifacts.
+No dependencies
+
+provided - Classpath for only compiling the main sources.
+No dependencies
+
+releaseApk - Classpath packaged with the compiled 'release' classes.
+No dependencies
+
+releaseCompile - Classpath for compiling the release sources.
+No dependencies
+
+releaseProvided - Classpath for only compiling the release sources.
+No dependencies
+
+releaseWearApp - Link to a wear app to embed for object 'release'.
+No dependencies
+
+testApk - Classpath packaged with the compiled 'test' classes.
+No dependencies
+
+testCompile - Classpath for compiling the test sources.
+No dependencies
+
+testDebugApk - Classpath packaged with the compiled 'testDebug' classes.
+No dependencies
+
+testDebugCompile - Classpath for compiling the testDebug sources.
+No dependencies
+
+testDebugProvided - Classpath for only compiling the testDebug sources.
+No dependencies
+
+testDebugWearApp - Link to a wear app to embed for object 'testDebug'.
+No dependencies
+
+testProvided - Classpath for only compiling the test sources.
+No dependencies
+
+testReleaseApk - Classpath packaged with the compiled 'testRelease' classes.
+No dependencies
+
+testReleaseCompile - Classpath for compiling the testRelease sources.
+No dependencies
+
+testReleaseProvided - Classpath for only compiling the testRelease sources.
+No dependencies
+
+testReleaseWearApp - Link to a wear app to embed for object 'testRelease'.
+No dependencies
+
+testWearApp - Link to a wear app to embed for object 'test'.
+No dependencies
+
+wearApp - Link to a wear app to embed for object 'main'.
+No dependencies
+
+BUILD SUCCESSFUL
+
+Total time: 12.922 secs

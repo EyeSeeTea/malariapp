@@ -57,8 +57,11 @@ import org.eyeseetea.malariacare.database.utils.Session;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -75,9 +78,14 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
      * A dummy authentication store containing known user names and passwords.
      * TODO: remove after connecting to a real authentication system.
      */
-    private static final String[] DUMMY_CREDENTIALS = new String[]{
-            "admin:admin", "user:user"
-    };
+
+    private static final Map<String, String> DUMMY_CREDENTIALS;
+    static {
+        Map<String, String> aMap = new HashMap<String,String>();
+        aMap.put("user", "user");
+        aMap.put("admin", "admin");
+        DUMMY_CREDENTIALS = Collections.unmodifiableMap(aMap);
+    }
     /**
      * Keep track of the login task to ensure we can cancel it if requested.
      */
@@ -99,6 +107,7 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
         // Populate User table just in case there is already an existing user
         Iterator<User> users = User.findAll(User.class);
         if (users.hasNext()) {
+            Log.i(".LoginActivity","User already logged in --> Dashboard");
             Session.setUser(users.next());
             Class c = DashboardActivity.class;
             Intent mainIntent = new Intent(LoginActivity.this, c);
@@ -152,47 +161,34 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
 
         // Reset errors.
         mUserView.setError(null);
-        mPasswordView.setError(null);
 
         // Store values at the time of the login attempt.
         String user = mUserView.getText().toString();
         String password = mPasswordView.getText().toString();
 
-        boolean cancel = false;
-        View focusView = null;
-
-
-        // Check for a valid password, if the user entered one.
-        if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
-            mPasswordView.setError(getString(R.string.login_error_short_password));
-            focusView = mPasswordView;
-            cancel = true;
+        if(!hasGoodCredentials(user,password)){
+            mUserView.requestFocus();
+            mUserView.setError(getString(R.string.login_error_bad_credentials));
+            return;
         }
 
-        // Check for a valid user.
-        if (TextUtils.isEmpty(user)) {
-            mUserView.setError(getString(R.string.login_error_required));
-            focusView = mUserView;
-            cancel = true;
-        }
-
-        if (cancel) {
-            // There was an error; don't attempt login and focus the first
-            // form field with an error.
-            focusView.requestFocus();
-        } else {
-            // Show a progress spinner, and kick off a background task to
-            // perform the user login attempt.
-            showProgress(true);
-            mAuthTask = new UserLoginTask(user, password);
-            mAuthTask.execute((Void) null);
-            Log.i(".LoginActivity", "attempt!!");
-        }
+        showProgress(true);
+        mAuthTask = new UserLoginTask(user, password);
+        mAuthTask.execute((Void) null);
+        Log.i(".LoginActivity", "attempt!!");
     }
 
-    private boolean isPasswordValid(String password) {
-        //TODO: Replace this with your own logic
-        return password.length() >= 4;
+    /**
+     * Checks if the pair user/password matches any dummy credentials.
+     * @param user
+     * @param password
+     * @return
+     */
+    public boolean hasGoodCredentials(String user, String password){String expectedPassword=DUMMY_CREDENTIALS.get(user);
+        if(null==expectedPassword || expectedPassword.isEmpty()){
+            return false;
+        }
+        return expectedPassword.equals(password);
     }
 
     /**
@@ -314,60 +310,69 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
         @Override
         protected Boolean doInBackground(Void... params) {
             // TODO: attempt authentication against a network service.
-
-            for (String credential : DUMMY_CREDENTIALS) {
-                String[] pieces = credential.split(":");
-                if (pieces[0].equals(mUser) && pieces[1].equals(mPassword)) {
-                    if (User.find(User.class, "name = ?", mUser) != null) {
-                        // If the user is already in our table we don't need to save it another time
-                        this.user = new User(mUser, mUser);
-                        this.user.save();
-                    }
-                    Session.setUser(user);
-                    // Account exists, populate DB and return true if the password matches.
-                    // We import the initial data in case it has been done yet
-                    if (Tab.count(Tab.class, null, null)==0) {
-                        // As this is only executed the first time the app is loaded, and we still don't have a way to create users, surveys, etc, here
-                        // we will create a dummy user, survey, orgUnit, program, etc. To be used in local save
-                        PopulateDB.populateDummyData();
-
-                        Log.i(".LoginActivity", "Populating DB");
-                        try {
-                            PopulateDB.populateDB(getAssets());
-                        } catch (IOException e) {
-                            Log.e(".LoginActivity", "Error populating DB", e);
-                        }
-                        Log.i(".LoginActivity", "DB populated");
-                    } //else {
-                        // Select the first survey present in the db. Must not be null if populate didn't fail
-                       // session.selectSurvey(Survey.find(Survey.class, "id = 1").get(0));
-                    //}
-                    return pieces[1].equals(mPassword);
-                }
+            try {
+                initUser();
+                initDataIfRequired();
+            }catch(Exception ex) {
+                Log.e(".LoginActivity", "Error doInBackground login -> dashboard", ex);
+                return false;
             }
 
-            // TODO: register the new account here.
             return true;
         }
 
         @Override
         protected void onPostExecute(final Boolean success) {
-            mAuthTask = null;
-            showProgress(false);
-
-            // In case of login success, create the user in the db and proceed to the dashboard activity
-            if (success) {
-                Log.i(".LoginActivity", "Logged in!");
-                Intent mainIntent = new Intent(LoginActivity.this, DashboardActivity.class);
-                startActivity(mainIntent);
-            } else {
-                mPasswordView.setError(getString(R.string.login_error_password));
-                mPasswordView.requestFocus();
+            stopProgress();
+            //something went wrong
+            if(!success){
+                mUserView.requestFocus();
+                mUserView.setError(getString(R.string.login_error_bad_credentials));
+                return;
             }
+            //go dashboard
+            Log.i(".LoginActivity", "Logged in!");
+            Intent mainIntent = new Intent(LoginActivity.this, DashboardActivity.class);
+            startActivity(mainIntent);
         }
 
         @Override
         protected void onCancelled() {
+            stopProgress();
+        }
+
+        /**
+         * Add user to table and session
+         */
+        private void initUser(){
+            this.user = new User(mUser, mUser);
+            this.user.save();
+            Session.setUser(user);
+        }
+
+        private void initDataIfRequired() throws IOException {
+            if (Tab.count(Tab.class, null, null)!=0) {
+                return;
+            }
+
+            Log.i(".LoginActivity", "Populating DB");
+
+            // As this is only executed the first time the app is loaded, and we still don't have a way to create users, surveys, etc, here
+            // we will create a dummy user, survey, orgUnit, program, etc. To be used in local save
+            PopulateDB.populateDummyData();
+            try {
+                PopulateDB.populateDB(getAssets());
+            } catch (IOException e) {
+                Log.e(".LoginActivity", "Error populating DB", e);
+                throw e;
+            }
+            Log.i(".LoginActivity", "DB populated");
+        }
+
+        /**
+         * Stops task and progress spinner
+         */
+        private void stopProgress(){
             mAuthTask = null;
             showProgress(false);
         }
