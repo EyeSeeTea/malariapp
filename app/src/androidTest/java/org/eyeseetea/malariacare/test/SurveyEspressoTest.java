@@ -127,7 +127,7 @@ public class SurveyEspressoTest extends MalariaEspressoTest{
 
         //THEN
         onView(withText("HR - Nurses")).check(matches(isDisplayed()));
-        onView(withId(R.id.accumulatedText)).check(matches(isDisplayed()));
+        onView(withId(R.id.subtotalScoreText)).check(matches(isDisplayed()));
     }
 
     @Test

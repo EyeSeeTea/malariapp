@@ -60,7 +60,7 @@ import static org.hamcrest.Matchers.is;
 @RunWith(AndroidJUnit4.class)
 public class DashboardActivityEspressoTest extends MalariaEspressoTest{
 
-    private final static int _EXPECTED_SURVEYS=7;
+    private final static int _EXPECTED_SURVEYS=1;
 
     @Rule
     public IntentsTestRule<DashboardActivity> mActivityRule = new IntentsTestRule<>(
@@ -82,11 +82,6 @@ public class DashboardActivityEspressoTest extends MalariaEspressoTest{
         onView(withId(R.id.button)).check(matches(isDisplayed()));
     }
 
-//    @Test
-//    public void surveys_on_screen(){
-//        onData(allOf(is(instanceOf(String.class)),equalTo("Delete"),wit)).atPosition(3).check(matches(isDisplayed()));
-//    }
-
     @Test
     public void new_survey_launches_intent(){
         //WHEN
@@ -96,8 +91,15 @@ public class DashboardActivityEspressoTest extends MalariaEspressoTest{
         intended(anyIntent());
     }
 
+    @Test
+    public void delete_survey_shows_dialog(){
+        //WHEN
+        onView(withText(R.string.assessment_info_delete)).perform(click());
 
+        //THEN
+        onView(withText(R.string.dialog_title_delete_survey)).check(matches(isDisplayed()));
+        onView(withText(android.R.string.no)).perform(click());
 
-
+    }
 
 }
