@@ -23,7 +23,7 @@
 
     <org.eyeseetea.malariacare.views.TextCard android:background="#ccc" android:layout_width="300dp"
         android:layout_height="300dp" android:paddingLeft="20dp" android:paddingBottom="40dp"
-        app:exampleDimension="24sp" app:exampleColor="#33b5e5" app:exampleString="Hello, TextCard"
-        app:exampleDrawable="@android:drawable/ic_menu_add" />
+        app:mDimension="24sp" app:color="#33b5e5" app:mString=""
+        app:drawable="@android:drawable/ic_menu_add" />
 
 </FrameLayout>

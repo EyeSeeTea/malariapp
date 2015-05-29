@@ -27,4 +27,10 @@
     <dimen name="extra_medium_text_size">22sp</dimen>
     <dimen name="extra_large_text_size">26sp</dimen>
 
+    <!-- Float Button default -->
+    <dimen name="float_button_def">24sp</dimen>
+    <!-- Text Card default -->
+    <dimen name="text_card_def">24sp</dimen>
+
+
 </resources>

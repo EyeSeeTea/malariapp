@@ -34,10 +34,10 @@ import org.eyeseetea.malariacare.R;
  * TODO: document your custom view class.
  */
 public class FloatingButton extends ImageButton {
-    private String contentString = getContext().getString(R.string.empty_string); // TODO: use a default from R.string...
-    private int contentColor = getContext().getResources().getColor(R.color.white); // TODO: use a default from R.color...
-    private float dimension = 0; // TODO: use a default from R.dimen...
-    private Drawable contentDrawable;
+    private String mString = getContext().getString(R.string.empty_string);
+    private int mColor = getContext().getResources().getColor(R.color.white);
+    private float mDimension = getContext().getResources().getDimension(R.dimen.float_button_def);
+    private Drawable mDrawable;
 
     private TextPaint mTextPaint;
     private float mTextWidth;
@@ -63,21 +63,21 @@ public class FloatingButton extends ImageButton {
         final TypedArray a = getContext().obtainStyledAttributes(
                 attrs, R.styleable.FloatingButton, defStyle, 0);
 
-        contentString = a.getString(
-                R.styleable.FloatingButton_contentString);
-        contentColor = a.getColor(
+        mString = a.getString(
+                R.styleable.FloatingButton_mString);
+        mColor = a.getColor(
                 R.styleable.FloatingButton_contentColor,
-                contentColor);
+                mColor);
         // Use getDimensionPixelSize or getDimensionPixelOffset when dealing with
         // values that should fall on pixel boundaries.
-        dimension = a.getDimension(
-                R.styleable.FloatingButton_dimension,
-                dimension);
+        mDimension = a.getDimension(
+                R.styleable.FloatingButton_mDimension,
+                mDimension);
 
         if (a.hasValue(R.styleable.FloatingButton_drawable)) {
-            contentDrawable = a.getDrawable(
+            mDrawable = a.getDrawable(
                     R.styleable.FloatingButton_drawable);
-            contentDrawable.setCallback(this);
+            mDrawable.setCallback(this);
         }
 
         a.recycle();
@@ -92,9 +92,9 @@ public class FloatingButton extends ImageButton {
     }
 
     private void invalidateTextPaintAndMeasurements() {
-        mTextPaint.setTextSize(this.dimension);
-        mTextPaint.setColor(this.contentColor);
-        mTextWidth = mTextPaint.measureText(this.contentString);
+        mTextPaint.setTextSize(this.mDimension);
+        mTextPaint.setColor(this.mColor);
+        mTextWidth = mTextPaint.measureText(this.mString);
 
         Paint.FontMetrics fontMetrics = mTextPaint.getFontMetrics();
         mTextHeight = fontMetrics.bottom;
@@ -115,16 +115,16 @@ public class FloatingButton extends ImageButton {
         int contentHeight = getHeight() - paddingTop - paddingBottom;
 
         // Draw the text.
-        canvas.drawText(contentString,
+        canvas.drawText(mString,
                 paddingLeft + (contentWidth - mTextWidth) / 2,
                 paddingTop + (contentHeight + mTextHeight) / 2,
                 mTextPaint);
 
-        // Draw the example contentDrawable on top of the text.
-        if (contentDrawable != null) {
-            contentDrawable.setBounds(paddingLeft, paddingTop,
+        // Draw the example mDrawable on top of the text.
+        if (mDrawable != null) {
+            mDrawable.setBounds(paddingLeft, paddingTop,
                     paddingLeft + contentWidth, paddingTop + contentHeight);
-            contentDrawable.draw(canvas);
+            mDrawable.draw(canvas);
         }
     }
 
@@ -133,18 +133,18 @@ public class FloatingButton extends ImageButton {
      *
      * @return The example string attribute value.
      */
-    public String getContentString() {
-        return contentString;
+    public String getmString() {
+        return mString;
     }
 
     /**
      * Sets the view's example string attribute value. In the example view, this string
      * is the text to draw.
      *
-     * @param contentString The example string attribute value to use.
+     * @param mString The example string attribute value to use.
      */
-    public void setContentString(String contentString) {
-        this.contentString = contentString;
+    public void setmString(String mString) {
+        this.mString = mString;
         invalidateTextPaintAndMeasurements();
     }
 
@@ -153,57 +153,57 @@ public class FloatingButton extends ImageButton {
      *
      * @return The example color attribute value.
      */
-    public int getContentColor() {
-        return contentColor;
+    public int getmColor() {
+        return mColor;
     }
 
     /**
      * Sets the view's example color attribute value. In the example view, this color
      * is the font color.
      *
-     * @param contentColor The example color attribute value to use.
+     * @param mColor The example color attribute value to use.
      */
-    public void setExampleColor(int contentColor) {
-        this.contentColor = contentColor;
+    public void setmColor(int mColor) {
+        this.mColor = mColor;
         invalidateTextPaintAndMeasurements();
     }
 
     /**
-     * Gets the example dimension attribute value.
+     * Gets the example mDimension attribute value.
      *
-     * @return The example dimension attribute value.
+     * @return The example mDimension attribute value.
      */
-    public float dimension() {
-        return dimension;
+    public float getmDimension() {
+        return mDimension;
     }
 
     /**
-     * Sets the view's example dimension attribute value. In the example view, this dimension
+     * Sets the view's example mDimension attribute value. In the example view, this mDimension
      * is the font size.
      *
-     * @param dimension The example dimension attribute value to use.
+     * @param mDimension The example mDimension attribute value to use.
      */
-    public void setDimension(float dimension) {
-        this.dimension = dimension;
+    public void setmDimension(float mDimension) {
+        this.mDimension = mDimension;
         invalidateTextPaintAndMeasurements();
     }
 
     /**
-     * Gets the example contentDrawable attribute value.
+     * Gets the example mDrawable attribute value.
      *
-     * @return The example contentDrawable attribute value.
+     * @return The example mDrawable attribute value.
      */
-    public Drawable getContentDrawable() {
-        return contentDrawable;
+    public Drawable getmDrawable() {
+        return mDrawable;
     }
 
     /**
-     * Sets the view's example contentDrawable attribute value. In the example view, this contentDrawable is
+     * Sets the view's example mDrawable attribute value. In the example view, this mDrawable is
      * drawn above the text.
      *
-     * @param contentDrawable The example contentDrawable attribute value to use.
+     * @param mDrawable The example mDrawable attribute value to use.
      */
-    public void setContentDrawable(Drawable contentDrawable) {
-        this.contentDrawable = contentDrawable;
+    public void setmDrawable(Drawable mDrawable) {
+        this.mDrawable = mDrawable;
     }
 }
