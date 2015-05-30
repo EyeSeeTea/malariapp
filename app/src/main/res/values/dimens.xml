@@ -3,6 +3,7 @@
     <dimen name="activity_horizontal_margin">5dp</dimen>
     <dimen name="activity_vertical_margin">5dp</dimen>
     <dimen name="question_padding_left">10dip</dimen>
+    <dimen name="question_padding_all">5dip</dimen>
 
     <!-- SMALL selected sizes -->
     <dimen name="small_small_text_size">8sp</dimen>
