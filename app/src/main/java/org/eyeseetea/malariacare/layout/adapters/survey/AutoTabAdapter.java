@@ -19,11 +19,9 @@
 
 package org.eyeseetea.malariacare.layout.adapters.survey;
 
-import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.opengl.Visibility;
 import android.preference.PreferenceManager;
 import android.text.Editable;
 import android.text.InputFilter;
@@ -124,7 +122,7 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
         }
     }
 
-    public AutoTabAdapter(Tab tab, Context context, int id_layout){
+    public AutoTabAdapter(Tab tab, Context context, int id_layout) {
         this(tab, context);
         this.id_layout = id_layout;
     }
@@ -161,22 +159,22 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
         scoreHolder.qualitativeScore = (TextView) ((Activity) context).findViewById(R.id.cualitativeScore);
         RelativeLayout space = (RelativeLayout) (((Activity) context).findViewById(R.id.space));
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this.context);
-        if (sharedPreferences.getBoolean("show_num_dems", false)){
+        if (sharedPreferences.getBoolean("show_num_dems", false)) {
             scoreHolder.totalDenum.setVisibility(View.VISIBLE);
             scoreHolder.totalNum.setVisibility(View.VISIBLE);
             (((Activity) context).findViewById(R.id.accumulatedText)).setVisibility(View.VISIBLE);
-            ((RelativeLayout)(((Activity) context).findViewById(R.id.accumulatedText)).getParent()).setLayoutParams(new LinearLayout.LayoutParams(0, RelativeLayout.LayoutParams.WRAP_CONTENT, 0.25f));
+            ((RelativeLayout) (((Activity) context).findViewById(R.id.accumulatedText)).getParent()).setLayoutParams(new LinearLayout.LayoutParams(0, RelativeLayout.LayoutParams.WRAP_CONTENT, 0.25f));
             space.setLayoutParams(new LinearLayout.LayoutParams(0, RelativeLayout.LayoutParams.WRAP_CONTENT, 0f));
-            ((RelativeLayout)scoreHolder.totalNum.getParent()).setLayoutParams(new LinearLayout.LayoutParams(0, RelativeLayout.LayoutParams.WRAP_CONTENT, 0.1f));
-            ((RelativeLayout)scoreHolder.totalDenum.getParent()).setLayoutParams(new LinearLayout.LayoutParams(0, RelativeLayout.LayoutParams.WRAP_CONTENT, 0.1f));
+            ((RelativeLayout) scoreHolder.totalNum.getParent()).setLayoutParams(new LinearLayout.LayoutParams(0, RelativeLayout.LayoutParams.WRAP_CONTENT, 0.1f));
+            ((RelativeLayout) scoreHolder.totalDenum.getParent()).setLayoutParams(new LinearLayout.LayoutParams(0, RelativeLayout.LayoutParams.WRAP_CONTENT, 0.1f));
         } else {
             scoreHolder.totalDenum.setVisibility(View.GONE);
             scoreHolder.totalNum.setVisibility(View.GONE);
             (((Activity) context).findViewById(R.id.accumulatedText)).setVisibility(View.GONE);
-            ((RelativeLayout)(((Activity) context).findViewById(R.id.accumulatedText)).getParent()).setLayoutParams(new LinearLayout.LayoutParams(0, RelativeLayout.LayoutParams.WRAP_CONTENT, 0.0f));
+            ((RelativeLayout) (((Activity) context).findViewById(R.id.accumulatedText)).getParent()).setLayoutParams(new LinearLayout.LayoutParams(0, RelativeLayout.LayoutParams.WRAP_CONTENT, 0.0f));
             space.setLayoutParams(new LinearLayout.LayoutParams(0, RelativeLayout.LayoutParams.WRAP_CONTENT, 0.45f));
-            ((RelativeLayout)scoreHolder.totalNum.getParent()).setLayoutParams(new LinearLayout.LayoutParams(0, RelativeLayout.LayoutParams.WRAP_CONTENT, 0.0f));
-            ((RelativeLayout)scoreHolder.totalDenum.getParent()).setLayoutParams(new LinearLayout.LayoutParams(0, RelativeLayout.LayoutParams.WRAP_CONTENT, 0.0f));
+            ((RelativeLayout) scoreHolder.totalNum.getParent()).setLayoutParams(new LinearLayout.LayoutParams(0, RelativeLayout.LayoutParams.WRAP_CONTENT, 0.0f));
+            ((RelativeLayout) scoreHolder.totalDenum.getParent()).setLayoutParams(new LinearLayout.LayoutParams(0, RelativeLayout.LayoutParams.WRAP_CONTENT, 0.0f));
         }
     }
 
@@ -383,14 +381,13 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
             case Constants.RADIO_BUTTON_VERTICAL:
                 //FIXME: it is almost the same as the previous case
                 Value value = question.getValueBySession();
-                if (value!=null) {
-                    ((RadioButton)viewHolder.radioGroup.findViewWithTag(value.getOption())).setChecked(true);
+                if (value != null) {
+                    ((RadioButton) viewHolder.radioGroup.findViewWithTag(value.getOption())).setChecked(true);
 
                     List<Float> numdenumradiobutton = ScoreRegister.getNumDenum(question);
                     viewHolder.num.setText(Float.toString(numdenumradiobutton.get(0)));
                     viewHolder.denum.setText(Float.toString(numdenumradiobutton.get(1)));
-                }
-                else{
+                } else {
                     viewHolder.num.setText(this.context.getString(R.string.number_zero));
                     viewHolder.denum.setText(Float.toString(calcDenum(question)));
                 }
@@ -426,17 +423,18 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
 
         List<Question> relatives = question.getRelatives();
 
-        if (relatives.size()>0) {
+        if (relatives.size() > 0) {
 
             Option option = ReadWriteDB.readOptionAnswered(relatives.get(0));
 
             if (option == null) match = false;
 
-            for (int i=1; i<relatives.size() && match; i++) {
+            for (int i = 1; i < relatives.size() && match; i++) {
                 Option currentOption = ReadWriteDB.readOptionAnswered(relatives.get(i));
 
                 if (currentOption == null) match = false;
-                else match = match && (Float.compare(option.getFactor(), currentOption.getFactor())==0);
+                else
+                    match = match && (Float.compare(option.getFactor(), currentOption.getFactor()) == 0);
             }
 
         }
@@ -589,12 +587,12 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
 
                     configureViewByPreference(viewHolder);
 
-                    for (Option option : question.getAnswer().getOptions()){
+                    for (Option option : question.getAnswer().getOptions()) {
                         viewHolder.radioGroup.addView(new UncheckeableRadioButton(context, option));
                     }
 
                     //Add Listener
-                    viewHolder.radioGroup.setOnCheckedChangeListener(new RadioButtonListener(false, question, viewHolder));
+                    viewHolder.radioGroup.setOnCheckedChangeListener(new RadioGroupListener(false, question, viewHolder));
                     break;
                 case Constants.RADIO_BUTTON_VERTICAL:
                     rowView = lInflater.inflate(R.layout.radio, parent, false);
@@ -607,15 +605,12 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
 
                     configureViewByPreference(viewHolder);
 
-                    for (Option option : question.getAnswer().getOptions()){
-                        RadioButton radioButton = new RadioButton(context);
-                        radioButton.setTag(option);
-                        radioButton.setText(option.getName());
-                        viewHolder.radioGroup.addView(radioButton);
+                    for (Option option : question.getAnswer().getOptions()) {
+                        viewHolder.radioGroup.addView(new UncheckeableRadioButton(context, option));
                     }
 
                     //Add Listener
-                    viewHolder.radioGroup.setOnCheckedChangeListener(new RadioButtonListener(false, question, viewHolder));
+                    viewHolder.radioGroup.setOnCheckedChangeListener(new RadioGroupListener(false, question, viewHolder));
                     break;
 
                 default:
@@ -636,33 +631,30 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
 
     private void configureViewByPreference(ViewHolder viewHolder) {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this.context);
-        if (sharedPreferences.getBoolean("show_num_dems", false)){
+        if (sharedPreferences.getBoolean("show_num_dems", false)) {
             viewHolder.num.setVisibility(View.VISIBLE);
             viewHolder.denum.setVisibility(View.VISIBLE);
-            ((RelativeLayout)viewHolder.statement.getParent()).setLayoutParams(new LinearLayout.LayoutParams(0, RelativeLayout.LayoutParams.WRAP_CONTENT, 0.5f));
+            ((RelativeLayout) viewHolder.statement.getParent()).setLayoutParams(new LinearLayout.LayoutParams(0, RelativeLayout.LayoutParams.WRAP_CONTENT, 0.5f));
             if (viewHolder.radioGroup == null) {
                 ((RelativeLayout) viewHolder.spinner.getParent().getParent()).setLayoutParams(new LinearLayout.LayoutParams(0, RelativeLayout.LayoutParams.WRAP_CONTENT, 0.2f));
-            }
-            else{
+            } else {
                 ((RelativeLayout) viewHolder.radioGroup.getParent().getParent()).setLayoutParams(new LinearLayout.LayoutParams(0, RelativeLayout.LayoutParams.WRAP_CONTENT, 0.2f));
             }
-            ((RelativeLayout)viewHolder.num.getParent()).setLayoutParams(new LinearLayout.LayoutParams(0, RelativeLayout.LayoutParams.WRAP_CONTENT, 0.15f));
-            ((RelativeLayout)viewHolder.denum.getParent()).setLayoutParams(new LinearLayout.LayoutParams(0, RelativeLayout.LayoutParams.WRAP_CONTENT, 0.15f));
+            ((RelativeLayout) viewHolder.num.getParent()).setLayoutParams(new LinearLayout.LayoutParams(0, RelativeLayout.LayoutParams.WRAP_CONTENT, 0.15f));
+            ((RelativeLayout) viewHolder.denum.getParent()).setLayoutParams(new LinearLayout.LayoutParams(0, RelativeLayout.LayoutParams.WRAP_CONTENT, 0.15f));
         } else {
             viewHolder.num.setVisibility(View.GONE);
             viewHolder.denum.setVisibility(View.GONE);
-            ((RelativeLayout)viewHolder.statement.getParent()).setLayoutParams(new LinearLayout.LayoutParams(0, RelativeLayout.LayoutParams.WRAP_CONTENT, 0.8f));
+            ((RelativeLayout) viewHolder.statement.getParent()).setLayoutParams(new LinearLayout.LayoutParams(0, RelativeLayout.LayoutParams.WRAP_CONTENT, 0.8f));
             if (viewHolder.radioGroup == null) {
                 ((RelativeLayout) viewHolder.spinner.getParent().getParent()).setLayoutParams(new LinearLayout.LayoutParams(0, RelativeLayout.LayoutParams.WRAP_CONTENT, 0.5f));
-            }
-            else{
+            } else {
                 ((RelativeLayout) viewHolder.radioGroup.getParent().getParent()).setLayoutParams(new LinearLayout.LayoutParams(0, RelativeLayout.LayoutParams.WRAP_CONTENT, 0.5f));
             }
-            ((RelativeLayout)viewHolder.num.getParent()).setLayoutParams(new LinearLayout.LayoutParams(0, RelativeLayout.LayoutParams.WRAP_CONTENT, 0.0f));
-            ((RelativeLayout)viewHolder.denum.getParent()).setLayoutParams(new LinearLayout.LayoutParams(0, RelativeLayout.LayoutParams.WRAP_CONTENT, 0.0f));
+            ((RelativeLayout) viewHolder.num.getParent()).setLayoutParams(new LinearLayout.LayoutParams(0, RelativeLayout.LayoutParams.WRAP_CONTENT, 0.0f));
+            ((RelativeLayout) viewHolder.denum.getParent()).setLayoutParams(new LinearLayout.LayoutParams(0, RelativeLayout.LayoutParams.WRAP_CONTENT, 0.0f));
         }
     }
-
 
 
     private class TextViewListener implements TextWatcher {
@@ -723,12 +715,12 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
         }
     }
 
-    public class RadioButtonListener implements RadioGroup.OnCheckedChangeListener{
+    public class RadioGroupListener implements RadioGroup.OnCheckedChangeListener {
         private boolean viewCreated;
         private ViewHolder viewHolder;
         private Question question;
 
-        public RadioButtonListener(boolean viewCreated, Question question, ViewHolder viewHolder){
+        public RadioGroupListener(boolean viewCreated, Question question, ViewHolder viewHolder) {
             this.viewCreated = viewCreated;
             this.question = question;
             this.viewHolder = viewHolder;
@@ -737,15 +729,19 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
 
         @Override
         public void onCheckedChanged(RadioGroup group, int checkedId) {
-            RadioButton radioButton = (RadioButton) this.viewHolder.radioGroup.findViewById(checkedId);
-
-            Option option = (Option)radioButton.getTag();
-
-            ReadWriteDB.saveValuesDDL(question, option);
-
+            Option option = null;
+            if (checkedId != -1) {
+                RadioButton radioButton = (RadioButton) this.viewHolder.radioGroup.findViewById(checkedId);
+                option = (Option) radioButton.getTag();
+                ReadWriteDB.saveValuesDDL(question, option);
+            }
+            else{
+                Value value = question.getValueBySession();
+                if (value != null) value.delete();
+            }
             recalculateScores(viewHolder, question);
 
-            if (question.hasChildren()) {
+            if (question.hasChildren() && option != null) {
 
                 if (option.getName().equals(R.string.yes))
                     updateQuestionsVisibility(question, true);

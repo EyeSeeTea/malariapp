@@ -20,8 +20,11 @@
 package org.eyeseetea.malariacare;
 
 import android.app.AlertDialog;
+import android.app.LoaderManager;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.Loader;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -57,7 +60,7 @@ import java.util.List;
 import java.util.Map;
 
 
-public class SurveyActivity extends BaseActivity {
+public class SurveyActivity extends BaseActivity implements LoaderManager.LoaderCallbacks<Cursor>{
 
     private List<Tab> tabsList;
     private Map<Tab, ITabAdapter> adaptersMap = new HashMap<Tab, ITabAdapter>();
@@ -265,5 +268,20 @@ public class SurveyActivity extends BaseActivity {
                         startActivity(mainIntent);
                     }
                 }).create().show();
+    }
+
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        return null;
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+
     }
 }
