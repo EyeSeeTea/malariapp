@@ -9,7 +9,9 @@ public class Constants {
             SHORT_TEXT = 4,
             DATE = 5,
             POSITIVE_INT = 6,
-            NO_ANSWER = 7;
+            NO_ANSWER = 7,
+            RADIO_BUTTON_HORIZONTAL = 8,
+            RADIO_BUTTON_VERTICAL = 9;
 
     public static final String DEFAULT_SELECT_OPTION = "";
 

@@ -35,6 +35,8 @@ import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -47,6 +49,7 @@ import org.eyeseetea.malariacare.database.model.Tab;
 import org.eyeseetea.malariacare.database.model.Value;
 import org.eyeseetea.malariacare.database.utils.ReadWriteDB;
 import org.eyeseetea.malariacare.layout.adapters.general.OptionArrayAdapter;
+import org.eyeseetea.malariacare.layout.adapters.survey.autoTabUtils.UncheckeableRadioButton;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 import org.eyeseetea.malariacare.utils.Constants;
@@ -83,6 +86,7 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
         public TextView statement;
         public Spinner spinner;
         public EditText answer;
+        public RadioGroup radioGroup;
         public TextView num;
         public TextView denum;
         public int type;
@@ -375,6 +379,22 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
                 }
 
                 break;
+            case Constants.RADIO_BUTTON_HORIZONTAL:
+            case Constants.RADIO_BUTTON_VERTICAL:
+                //FIXME: it is almost the same as the previous case
+                Value value = question.getValueBySession();
+                if (value!=null) {
+                    ((RadioButton)viewHolder.radioGroup.findViewWithTag(value.getOption())).setChecked(true);
+
+                    List<Float> numdenumradiobutton = ScoreRegister.getNumDenum(question);
+                    viewHolder.num.setText(Float.toString(numdenumradiobutton.get(0)));
+                    viewHolder.denum.setText(Float.toString(numdenumradiobutton.get(1)));
+                }
+                else{
+                    viewHolder.num.setText(this.context.getString(R.string.number_zero));
+                    viewHolder.denum.setText(Float.toString(calcDenum(question)));
+                }
+                break;
             default:
                 break;
         }
@@ -439,18 +459,7 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
 
         ReadWriteDB.saveValuesDDL(question, option);
 
-        Float num = calcNum(question);
-        Float denum = calcDenum(question);
-
-        viewHolder.num.setText(num.toString());
-        viewHolder.denum.setText(denum.toString());
-
-        resetTotalNumDenum(question);
-
-        totalNum = totalNum + num;
-        totalDenum = totalDenum + denum;
-
-        ScoreRegister.addRecord(question, num, denum);
+        recalculateScores(viewHolder, question);
 
         if (question.hasChildren()) {
 
@@ -463,6 +472,21 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
 
         updateScore();
 
+    }
+
+    private void recalculateScores(ViewHolder viewHolder, Question question) {
+        Float num = calcNum(question);
+        Float denum = calcDenum(question);
+
+        viewHolder.num.setText(num.toString());
+        viewHolder.denum.setText(denum.toString());
+
+        resetTotalNumDenum(question);
+
+        totalNum = totalNum + num;
+        totalDenum = totalDenum + denum;
+
+        ScoreRegister.addRecord(question, num, denum);
     }
 
     @Override
@@ -487,6 +511,10 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
                     rowView = lInflater.inflate(R.layout.longtext, parent, false);
                     viewHolder.statement = (TextView) rowView.findViewById(R.id.statement);
                     viewHolder.answer = (EditText) rowView.findViewById(R.id.answer);
+
+                    //Add Listener
+                    viewHolder.answer.addTextChangedListener(new TextViewListener(false, question));
+
                     break;
 
                 case Constants.NO_ANSWER:
@@ -500,18 +528,30 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
                     viewHolder.statement = (TextView) rowView.findViewById(R.id.statement);
                     viewHolder.answer = (EditText) rowView.findViewById(R.id.answer);
                     viewHolder.answer.setFilters(new InputFilter[]{new InputFilter.LengthFilter(Constants.MAX_INT_CHARS)});
+
+                    //Add Listener
+                    viewHolder.answer.addTextChangedListener(new TextViewListener(false, question));
+
                     break;
 
                 case Constants.DATE:
                     rowView = lInflater.inflate(R.layout.date, parent, false);
                     viewHolder.statement = (TextView) rowView.findViewById(R.id.statement);
                     viewHolder.answer = (EditText) rowView.findViewById(R.id.answer);
+
+                    //Add Listener
+                    viewHolder.answer.addTextChangedListener(new TextViewListener(false, question));
+
                     break;
 
                 case Constants.SHORT_TEXT:
                     rowView = lInflater.inflate(R.layout.shorttext, parent, false);
                     viewHolder.statement = (TextView) rowView.findViewById(R.id.statement);
                     viewHolder.answer = (EditText) rowView.findViewById(R.id.answer);
+
+                    //Add Listener
+                    viewHolder.answer.addTextChangedListener(new TextViewListener(false, question));
+
                     break;
 
                 case Constants.DROPDOWN_LIST:
@@ -521,22 +561,8 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
                     // In case the option is selected, we will need to show num/dems
                     viewHolder.num = (TextView) rowView.findViewById(R.id.num);
                     viewHolder.denum = (TextView) rowView.findViewById(R.id.den);
-                    SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this.context);
-                    if (sharedPreferences.getBoolean("show_num_dems", false)){
-                        viewHolder.num.setVisibility(View.VISIBLE);
-                        viewHolder.denum.setVisibility(View.VISIBLE);
-                        ((RelativeLayout)viewHolder.statement.getParent()).setLayoutParams(new LinearLayout.LayoutParams(0, RelativeLayout.LayoutParams.WRAP_CONTENT, 0.5f));
-                        ((RelativeLayout)viewHolder.spinner.getParent().getParent()).setLayoutParams(new LinearLayout.LayoutParams(0, RelativeLayout.LayoutParams.WRAP_CONTENT, 0.2f));
-                        ((RelativeLayout)viewHolder.num.getParent()).setLayoutParams(new LinearLayout.LayoutParams(0, RelativeLayout.LayoutParams.WRAP_CONTENT, 0.15f));
-                        ((RelativeLayout)viewHolder.denum.getParent()).setLayoutParams(new LinearLayout.LayoutParams(0, RelativeLayout.LayoutParams.WRAP_CONTENT, 0.15f));
-                    } else {
-                        viewHolder.num.setVisibility(View.GONE);
-                        viewHolder.denum.setVisibility(View.GONE);
-                        ((RelativeLayout)viewHolder.statement.getParent()).setLayoutParams(new LinearLayout.LayoutParams(0, RelativeLayout.LayoutParams.WRAP_CONTENT, 0.8f));
-                        ((RelativeLayout)viewHolder.spinner.getParent().getParent()).setLayoutParams(new LinearLayout.LayoutParams(0, RelativeLayout.LayoutParams.WRAP_CONTENT, 0.2f));
-                        ((RelativeLayout)viewHolder.num.getParent()).setLayoutParams(new LinearLayout.LayoutParams(0, RelativeLayout.LayoutParams.WRAP_CONTENT, 0.0f));
-                        ((RelativeLayout)viewHolder.denum.getParent()).setLayoutParams(new LinearLayout.LayoutParams(0, RelativeLayout.LayoutParams.WRAP_CONTENT, 0.0f));
-                    }
+
+                    configureViewByPreference(viewHolder);
 
                     Spinner answers = (Spinner) rowView.findViewById(R.id.answer);
 
@@ -544,6 +570,52 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
                     optionList.add(0, new Option(Constants.DEFAULT_SELECT_OPTION));
                     answers.setAdapter(new OptionArrayAdapter(context, optionList));
 
+                    //Add Listener
+                    if (!question.hasRelatives())
+                        viewHolder.spinner.setOnItemSelectedListener(new SpinnerListener(false, question, viewHolder));
+                    else
+                        autoFillAnswer(viewHolder, question);
+
+                    break;
+                case Constants.RADIO_BUTTON_HORIZONTAL:
+                    rowView = lInflater.inflate(R.layout.radio, parent, false);
+                    viewHolder.statement = (TextView) rowView.findViewById(R.id.statement);
+                    viewHolder.radioGroup = (RadioGroup) rowView.findViewById(R.id.answer);
+                    viewHolder.radioGroup.setOrientation(LinearLayout.HORIZONTAL);
+
+                    // In case the option is selected, we will need to show num/dems
+                    viewHolder.num = (TextView) rowView.findViewById(R.id.num);
+                    viewHolder.denum = (TextView) rowView.findViewById(R.id.den);
+
+                    configureViewByPreference(viewHolder);
+
+                    for (Option option : question.getAnswer().getOptions()){
+                        viewHolder.radioGroup.addView(new UncheckeableRadioButton(context, option));
+                    }
+
+                    //Add Listener
+                    viewHolder.radioGroup.setOnCheckedChangeListener(new RadioButtonListener(false, question, viewHolder));
+                    break;
+                case Constants.RADIO_BUTTON_VERTICAL:
+                    rowView = lInflater.inflate(R.layout.radio, parent, false);
+                    viewHolder.statement = (TextView) rowView.findViewById(R.id.statement);
+                    viewHolder.radioGroup = (RadioGroup) rowView.findViewById(R.id.answer);
+                    viewHolder.radioGroup.setOrientation(LinearLayout.VERTICAL);
+                    // In case the option is selected, we will need to show num/dems
+                    viewHolder.num = (TextView) rowView.findViewById(R.id.num);
+                    viewHolder.denum = (TextView) rowView.findViewById(R.id.den);
+
+                    configureViewByPreference(viewHolder);
+
+                    for (Option option : question.getAnswer().getOptions()){
+                        RadioButton radioButton = new RadioButton(context);
+                        radioButton.setTag(option);
+                        radioButton.setText(option.getName());
+                        viewHolder.radioGroup.addView(radioButton);
+                    }
+
+                    //Add Listener
+                    viewHolder.radioGroup.setOnCheckedChangeListener(new RadioButtonListener(false, question, viewHolder));
                     break;
 
                 default:
@@ -555,22 +627,43 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
             else
                 rowView.setBackgroundResource(LayoutUtils.calculateBackgrounds(position));
 
-            if (question.getAnswer().getOutput() == Constants.DROPDOWN_LIST) {
-
-                if (!question.hasRelatives())
-                    viewHolder.spinner.setOnItemSelectedListener(new SpinnerListener(false, question, viewHolder));
-                else
-                    autoFillAnswer(viewHolder, question);
-            }
-            else if (question.getAnswer().getOutput() != Constants.NO_ANSWER) {
-                viewHolder.answer.addTextChangedListener(new TextViewListener(false, question));
-            }
             viewHolder.statement.setText(question.getForm_name());
             setValues(viewHolder, question);
         }
 
         return rowView;
     }
+
+    private void configureViewByPreference(ViewHolder viewHolder) {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this.context);
+        if (sharedPreferences.getBoolean("show_num_dems", false)){
+            viewHolder.num.setVisibility(View.VISIBLE);
+            viewHolder.denum.setVisibility(View.VISIBLE);
+            ((RelativeLayout)viewHolder.statement.getParent()).setLayoutParams(new LinearLayout.LayoutParams(0, RelativeLayout.LayoutParams.WRAP_CONTENT, 0.5f));
+            if (viewHolder.radioGroup == null) {
+                ((RelativeLayout) viewHolder.spinner.getParent().getParent()).setLayoutParams(new LinearLayout.LayoutParams(0, RelativeLayout.LayoutParams.WRAP_CONTENT, 0.2f));
+            }
+            else{
+                ((RelativeLayout) viewHolder.radioGroup.getParent().getParent()).setLayoutParams(new LinearLayout.LayoutParams(0, RelativeLayout.LayoutParams.WRAP_CONTENT, 0.2f));
+            }
+            ((RelativeLayout)viewHolder.num.getParent()).setLayoutParams(new LinearLayout.LayoutParams(0, RelativeLayout.LayoutParams.WRAP_CONTENT, 0.15f));
+            ((RelativeLayout)viewHolder.denum.getParent()).setLayoutParams(new LinearLayout.LayoutParams(0, RelativeLayout.LayoutParams.WRAP_CONTENT, 0.15f));
+        } else {
+            viewHolder.num.setVisibility(View.GONE);
+            viewHolder.denum.setVisibility(View.GONE);
+            ((RelativeLayout)viewHolder.statement.getParent()).setLayoutParams(new LinearLayout.LayoutParams(0, RelativeLayout.LayoutParams.WRAP_CONTENT, 0.8f));
+            if (viewHolder.radioGroup == null) {
+                ((RelativeLayout) viewHolder.spinner.getParent().getParent()).setLayoutParams(new LinearLayout.LayoutParams(0, RelativeLayout.LayoutParams.WRAP_CONTENT, 0.5f));
+            }
+            else{
+                ((RelativeLayout) viewHolder.radioGroup.getParent().getParent()).setLayoutParams(new LinearLayout.LayoutParams(0, RelativeLayout.LayoutParams.WRAP_CONTENT, 0.5f));
+            }
+            ((RelativeLayout)viewHolder.num.getParent()).setLayoutParams(new LinearLayout.LayoutParams(0, RelativeLayout.LayoutParams.WRAP_CONTENT, 0.0f));
+            ((RelativeLayout)viewHolder.denum.getParent()).setLayoutParams(new LinearLayout.LayoutParams(0, RelativeLayout.LayoutParams.WRAP_CONTENT, 0.0f));
+        }
+    }
+
+
 
     private class TextViewListener implements TextWatcher {
         private boolean viewCreated;
@@ -627,6 +720,41 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
         @Override
         public void onNothingSelected(AdapterView<?> parent) {
 
+        }
+    }
+
+    public class RadioButtonListener implements RadioGroup.OnCheckedChangeListener{
+        private boolean viewCreated;
+        private ViewHolder viewHolder;
+        private Question question;
+
+        public RadioButtonListener(boolean viewCreated, Question question, ViewHolder viewHolder){
+            this.viewCreated = viewCreated;
+            this.question = question;
+            this.viewHolder = viewHolder;
+        }
+
+
+        @Override
+        public void onCheckedChanged(RadioGroup group, int checkedId) {
+            RadioButton radioButton = (RadioButton) this.viewHolder.radioGroup.findViewById(checkedId);
+
+            Option option = (Option)radioButton.getTag();
+
+            ReadWriteDB.saveValuesDDL(question, option);
+
+            recalculateScores(viewHolder, question);
+
+            if (question.hasChildren()) {
+
+                if (option.getName().equals(R.string.yes))
+                    updateQuestionsVisibility(question, true);
+                else
+                    updateQuestionsVisibility(question, false);
+
+            }
+
+            updateScore();
         }
     }
 
