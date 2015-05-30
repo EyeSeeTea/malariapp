@@ -64,8 +64,7 @@ public abstract class AddlArrayAdapter<T> extends ArrayAdapter<T> {
         return convertView;
     }
 
-    // And here is when the "chooser" is popped up
-    // Normally is the same view, but you can customize it if you want
+    // When the ddl is popped up
     @Override
     public View getDropDownView(int position, View convertView, ViewGroup parent) {
         // Check if an existing view is being reused, otherwise inflate the view
