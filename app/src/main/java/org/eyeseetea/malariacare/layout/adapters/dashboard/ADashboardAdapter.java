@@ -19,21 +19,11 @@
 
 package org.eyeseetea.malariacare.layout.adapters.dashboard;
 
-import android.app.Activity;
 import android.content.Context;
-import android.graphics.Typeface;
 import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
-import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.model.Survey;
-import org.eyeseetea.malariacare.database.utils.Session;
-import org.eyeseetea.malariacare.layout.dialog.DialogDispatcher;
-import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 
 import java.util.List;
 

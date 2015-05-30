@@ -19,12 +19,14 @@
 
 package org.eyeseetea.malariacare.utils;
 
-import org.eyeseetea.malariacare.database.model.CompositiveScore;
 import org.eyeseetea.malariacare.database.model.Header;
-import org.eyeseetea.malariacare.database.model.Program;
 import org.eyeseetea.malariacare.database.model.Question;
 import org.eyeseetea.malariacare.database.model.Tab;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -44,42 +46,6 @@ public class Utils {
         return round(base, Utils.numberOfDecimals);
     }
 
-    public static List<Object> convertTabToArrayCustom(Tab tab) {
-        List<Object> result = new ArrayList<Object>();
-
-        for (Header header : tab.getHeaders()) {
-            result.add(header);
-            for (Question question : header.getQuestions()) {
-                if (question.hasChildren())
-                    result.add(question);
-            }
-        }
-
-        return result;
-    }
-
-    public static Question getOneQuestionCompositiveScore(CompositiveScore compositiveScore) {
-        Question question = null;
-
-        if (compositiveScore.getQuestions().size()>0)
-            return compositiveScore.getQuestions().get(0);
-        else
-            for (CompositiveScore cScore: compositiveScore.getCompositiveScoreChildren())
-                return getOneQuestionCompositiveScore(cScore);
-
-        return question;
-    }
-
-    //return the program of one question
-    public static Program getProgramQuestion(Question question) {
-        Program program=null;
-
-        if (question!= null)
-            program = question.getHeader().getTab().getProgram();
-
-        return program;
-    }
-
     public static List<Object> convertTabToArray(Tab tab) {
         List<Object> result = new ArrayList<Object>();
 
@@ -89,12 +55,24 @@ public class Utils {
                 result.add(question);
 
         }
-
         return result;
-
     }
 
+    public static StringBuilder convertFromInputStreamToString(InputStream inputStream){
+        StringBuilder stringBuilder = new StringBuilder();
 
+        try {
+            BufferedReader r = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"));
+            String line;
+            while ((line = r.readLine()) != null) {
+                stringBuilder.append(line + "\n");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return stringBuilder;
+    }
 
 
 

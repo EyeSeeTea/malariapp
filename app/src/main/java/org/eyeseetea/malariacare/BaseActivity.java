@@ -27,25 +27,20 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBarActivity;
-import android.transition.Explode;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
-import android.widget.Spinner;
 
-import org.eyeseetea.malariacare.database.model.OrgUnit;
-import org.eyeseetea.malariacare.database.model.Program;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.utils.ReadWriteDB;
 import org.eyeseetea.malariacare.database.utils.Session;
-import org.eyeseetea.malariacare.layout.adapters.general.OrgUnitArrayAdapter;
-import org.eyeseetea.malariacare.layout.adapters.general.ProgramArrayAdapter;
-import org.eyeseetea.malariacare.layout.dialog.DialogDispatcher;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 import org.eyeseetea.malariacare.utils.Constants;
+import org.eyeseetea.malariacare.utils.Utils;
 
+import java.io.InputStream;
 import java.util.List;
 
 
@@ -107,13 +102,19 @@ public abstract class BaseActivity extends ActionBarActivity {
                 return true;// TODO: implement the DHIS pull
             case R.id.action_license:
                 Log.d(".MainActivity", "User asked for license dialog");
-                DialogDispatcher mf = DialogDispatcher.newInstance(new View(this)); // FIXME: here we create a View just to be able to show the dialog...this shouldn't be needed
-                mf.showDialog(getFragmentManager(), DialogDispatcher.LICENSE_DIALOG);
+                InputStream license = getApplicationContext().getResources().openRawResource(R.raw.gpl);
+                new AlertDialog.Builder(this)
+                        .setTitle(getApplicationContext().getString(R.string.settings_menu_licence))
+                        .setMessage(Utils.convertFromInputStreamToString(license))
+                        .setNeutralButton(android.R.string.ok, null).create().show();
                 break;
             case R.id.action_about:
                 Log.d(".MainActivity", "User asked for about dialog");
-                DialogDispatcher aboutD = DialogDispatcher.newInstance(new View(this)); // FIXME: here we create a View just to be able to show the dialog...this shouldn't be needed
-                aboutD.showDialog(getFragmentManager(), DialogDispatcher.ABOUT_DIALOG);
+                InputStream about = getApplicationContext().getResources().openRawResource(R.raw.about);
+                new AlertDialog.Builder(this)
+                        .setTitle(getApplicationContext().getString(R.string.settings_menu_about))
+                        .setMessage(Utils.convertFromInputStreamToString(about))
+                        .setNeutralButton(android.R.string.ok, null).create().show();
                 break;
             case R.id.action_logout:
                 Log.d(".MainActivity", "User asked for logging out");

@@ -20,21 +20,22 @@
 package org.eyeseetea.malariacare.layout.adapters.dashboard;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.utils.Session;
-import org.eyeseetea.malariacare.layout.dialog.DialogDispatcher;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
-import org.eyeseetea.malariacare.views.FloatingButton;
 
 import java.util.List;
 
@@ -105,8 +106,19 @@ public class AssessmentAdapter extends ADashboardAdapter implements IDashboardAd
         public void onClick(View view) {
             if (listenerOption.equals(context.getString(R.string.assessment_info_delete))) {
                 Session.setSurvey(survey);
-                DialogDispatcher mf = DialogDispatcher.newInstance(view);
-                mf.showDialog(context.getFragmentManager(), DialogDispatcher.DELETE_SURVEY_DIALOG);
+
+                new AlertDialog.Builder(context)
+                        .setTitle(context.getString(R.string.dialog_title_delete_survey))
+                        .setMessage(context.getString(R.string.dialog_info_delete_survey))
+                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface arg0, int arg1) {
+                                Session.getSurvey().delete();
+
+                                Intent intent = new Intent(context, DashboardActivity.class);
+                                context.startActivity(intent);
+                            }
+                        })
+                        .setNegativeButton(android.R.string.no, null).create().show();
             }
         }
     }
