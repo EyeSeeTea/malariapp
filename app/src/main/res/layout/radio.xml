@@ -34,7 +34,7 @@
             android:text="@string/widget_info_empty_statement"
             android:id="@+id/statement"
             android:paddingLeft="10dip"
-            android:fontFamily="@string/light_font_name" />
+            android:fontFamily="@string/normal_font" />
     </RelativeLayout>
     <RelativeLayout
         android:layout_width="fill_parent"

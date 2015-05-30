@@ -146,7 +146,7 @@
             android:layout_alignParentRight="false"
             android:textSize="12sp"
             android:gravity="center_vertical|end"
-            android:fontFamily="@string/light_font_name" />
+            android:fontFamily="@string/normal_font" />
     </RelativeLayout>
 
     <RelativeLayout

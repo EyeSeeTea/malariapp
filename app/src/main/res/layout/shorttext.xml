@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@drawable/background_textfield">
 
     <RelativeLayout
         android:layout_width="0dip"
@@ -14,7 +15,8 @@
             android:layout_height="wrap_content"
             android:text="@string/widget_info_empty_statement"
             android:id="@+id/statement"
-            android:paddingLeft="10dip" />
+            android:paddingLeft="@dimen/question_padding_left"
+            android:fontFamily="@string/normal_font" />
     </RelativeLayout>
     <RelativeLayout
         android:layout_width="0dip"
@@ -29,7 +31,7 @@
             android:text=""
             android:id="@+id/answer"
             android:background="@drawable/background_textfield"
-            android:fontFamily="@string/light_font_name" />
+            android:fontFamily="@string/normal_font" />
     </RelativeLayout>
 
 </LinearLayout>

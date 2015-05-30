@@ -10,4 +10,4 @@
     android:alpha="0.8"
     android:textAlignment="gravity"
     android:gravity="center"
-    android:fontFamily="@string/light_font_name" />
+    android:fontFamily="@string/normal_font" />

@@ -17,7 +17,7 @@
             android:id="@+id/statement"
             android:paddingLeft="10dip"
             android:textAppearance="?android:textAppearanceSmall"
-            android:fontFamily="@string/light_font_name" />
+            android:fontFamily="@string/normal_font" />
     </RelativeLayout>
 
     <RelativeLayout
@@ -35,7 +35,7 @@
             android:text=""
             android:id="@+id/answer"
             android:background="@drawable/background_textfield"
-            android:fontFamily="@string/light_font_name" />
+            android:fontFamily="@string/normal_font" />
     </RelativeLayout>
 
 </LinearLayout>

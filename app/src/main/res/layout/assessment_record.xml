@@ -51,7 +51,7 @@
             android:layout_gravity="center_vertical"
             android:paddingLeft="5dip"
             android:paddingRight="5dip"
-            android:fontFamily="@string/light_font_name" />
+            android:fontFamily="@string/normal_font" />
 
     </LinearLayout>
 
