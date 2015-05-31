@@ -78,5 +78,5 @@
         android:layout_weight="0.3"
         android:layout_gravity="center"
         android:text="@string/analytics_title_achievement"
-        android:fontFamily="@string/light_font_name"/>
+        android:fontFamily="@string/normal_font"/>
 </TableRow>

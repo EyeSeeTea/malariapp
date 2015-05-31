@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (c) 2015.
   ~
   ~ This file is part of Facility QA Tool App.
@@ -19,69 +18,81 @@
   -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal" android:layout_width="match_parent"
-    android:layout_height="wrap_content" android:id="@+id/radio">
+    android:id="@+id/radio"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
 
     <RelativeLayout
-        android:layout_width="fill_parent"
+        android:layout_width="0dip"
         android:layout_height="wrap_content"
-        android:layout_weight="0.16"
         android:layout_gravity="center_vertical"
+        android:layout_weight="0.5"
         android:padding="5dip">
+
         <TextView
+            android:id="@+id/statement"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:text="@string/widget_info_empty_statement"
-            android:id="@+id/statement"
-            android:paddingLeft="10dip"
-            android:fontFamily="@string/light_font_name" />
+            android:fontFamily="@string/normal_font"
+            android:paddingLeft="@dimen/question_padding_left"
+            android:text="@string/widget_info_empty_statement" />
     </RelativeLayout>
+
     <RelativeLayout
-        android:layout_width="fill_parent"
+        android:layout_width="0dip"
         android:layout_height="wrap_content"
-        android:layout_weight="0.26"
+        android:layout_weight="0.3"
         android:padding="5dip">
 
         <LinearLayout
-            android:orientation="vertical"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="fill_parent"
             android:alpha="0.8"
-            android:background="@color/textFieldColor">
+            android:background="@color/textFieldColor"
+            android:orientation="vertical">
 
             <RadioGroup
+                android:id="@+id/answer"
                 android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:id="@+id/answer"></RadioGroup>
+                android:layout_height="wrap_content">
+
+            </RadioGroup>
 
         </LinearLayout>
 
     </RelativeLayout>
+
     <RelativeLayout
-        android:layout_width="fill_parent"
+        android:layout_width="0dip"
         android:layout_height="wrap_content"
-        android:layout_weight="0.29"
+        android:layout_weight="0.1"
         android:gravity="center_vertical|center_horizontal"
-        android:padding="5dip">
+        android:padding="@dimen/question_padding_all">
+
         <TextView
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/number_zero"
             android:id="@+id/num"
-            android:gravity="center_vertical|center_horizontal" />
-    </RelativeLayout>
-    <RelativeLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="0.29"
-        android:gravity="center_vertical|center_horizontal"
-        android:padding="5dip">
-        <TextView
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:text="@string/number_zero"
+            android:fontFamily="@string/normal_font"
+            android:gravity="center_vertical|center_horizontal"
+            android:text="@string/number_zero" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="0dip"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.1"
+        android:gravity="center_vertical|center_horizontal"
+        android:padding="@dimen/question_padding_all">
+
+        <TextView
             android:id="@+id/den"
-            android:gravity="center_vertical|center_horizontal" />
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@string/normal_font"
+            android:gravity="center_vertical|center_horizontal"
+            android:text="@string/number_zero" />
     </RelativeLayout>
 
 </LinearLayout>

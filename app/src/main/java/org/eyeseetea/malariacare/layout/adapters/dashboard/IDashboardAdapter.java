@@ -30,7 +30,7 @@ import org.eyeseetea.malariacare.database.model.Survey;
 import java.io.Serializable;
 import java.util.List;
 
-public interface IDashboardAdapter extends Serializable {
+public interface IDashboardAdapter {
 
     public void setContext(Context context);
 

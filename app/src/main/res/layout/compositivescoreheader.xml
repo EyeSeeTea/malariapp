@@ -15,7 +15,7 @@
                 android:gravity="center"
                 android:padding="5dip"
                 android:layout_weight="0.2"
-                android:fontFamily="@string/light_font_name" />
+                android:fontFamily="@string/normal_font" />
 
             <TextView
                 android:layout_width="0dip"
@@ -28,7 +28,7 @@
                 android:gravity="center"
                 android:padding="5dip"
                 android:layout_weight="0.6"
-                android:fontFamily="@string/light_font_name" />
+                android:fontFamily="@string/normal_font" />
 
             <TextView
                 android:layout_width="0dip"
@@ -41,5 +41,5 @@
                 android:gravity="center"
                 android:padding="5dip"
                 android:layout_weight="0.2"
-                android:fontFamily="@string/light_font_name" />
+                android:fontFamily="@string/normal_font" />
 </LinearLayout>

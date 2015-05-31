@@ -72,7 +72,7 @@ public class DashboardFragment extends ListFragment {
         setListShown(false);
 
         // Get the not-sent surveys ordered by date
-        this.surveys = ReadWriteDB.getLastNotSentSurveys(5);
+        this.surveys = Survey.getUnsentSurveys(5);
 
         // make a list with the adapters
         this.adapters = new ArrayList<>();

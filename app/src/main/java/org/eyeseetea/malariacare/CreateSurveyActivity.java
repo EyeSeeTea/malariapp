@@ -95,24 +95,26 @@ public class CreateSurveyActivity extends BaseActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public boolean checkEverythingFilled(){
+    public boolean checkEverythingFilled() {
         try {
             return (!orgUnitView.getSelectedItem().equals(this.orgUnitDefaultOption) && !programView.getSelectedItem().equals(this.programDefaultOption));
-        }catch (Exception ex){
+        } catch (Exception ex) {
             return false;
         }
     }
 
-    public boolean checkSurveyDoesntExist(){
+    public boolean checkSurveyDoesntExist() {
         // Read Selected Items
         OrgUnit orgUnit = (OrgUnit) orgUnitView.getSelectedItem();
         Program program = (Program) programView.getSelectedItem();
 
-        List<Survey> existing = ReadWriteDB.getNotSentSurvey(orgUnit, program);
+        List<Survey> existing = Survey.getUnsentSurveys(orgUnit, program);
         return (existing == null || existing.size() == 0);
     }
 
-    /** Called when the user clicks the Send button */
+    /**
+     * Called when the user clicks the Send button
+     */
     public void createSurvey(View view) {
         Log.i(".CreateSurveyActivity", "Saving survey and saving in session");
 
@@ -120,12 +122,12 @@ public class CreateSurveyActivity extends BaseActivity {
         OrgUnit orgUnit = (OrgUnit) orgUnitView.getSelectedItem();
         Program program = (Program) programView.getSelectedItem();
 
-        if(!checkEverythingFilled()){
+        if (!checkEverythingFilled()) {
             new AlertDialog.Builder(this)
                     .setTitle(getApplicationContext().getString(R.string.dialog_title_missing_selection))
                     .setMessage(getApplicationContext().getString(R.string.dialog_content_missing_selection))
                     .setPositiveButton(android.R.string.ok, null).create().show();
-        } else if(!checkSurveyDoesntExist()) {
+        } else if (!checkSurveyDoesntExist()) {
             new AlertDialog.Builder(this)
                     .setTitle(getApplicationContext().getString(R.string.dialog_title_existing_survey))
                     .setMessage(getApplicationContext().getString(R.string.dialog_content_existing_survey))

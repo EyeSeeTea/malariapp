@@ -34,7 +34,7 @@
             android:id="@+id/label"
             android:text="fdgf"
             android:padding="5dip"
-            android:fontFamily="@string/light_font_name" />
+            android:fontFamily="@string/normal_font" />
     </LinearLayout>
 
     <LinearLayout
@@ -54,7 +54,7 @@
             android:padding="5dip"
             android:layout_gravity="center"
             android:text="@string/number_zero"
-            android:fontFamily="@string/light_font_name" />
+            android:fontFamily="@string/normal_font" />
     </LinearLayout>
 
 </LinearLayout>

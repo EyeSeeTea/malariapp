@@ -20,35 +20,26 @@
 package org.eyeseetea.malariacare.layout.adapters.dashboard;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.utils.Session;
-import org.eyeseetea.malariacare.layout.dialog.DialogDispatcher;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
-import org.eyeseetea.malariacare.views.FloatingButton;
 
 import java.util.List;
 
-/**
- * Created by Adrian on 22/04/2015.
- */
-public class AssessmentAdapter extends BaseAdapter implements IDashboardAdapter {
-
-    List<Survey> items;
-    private LayoutInflater lInflater;
-    private Context context;
-    private Integer headerLayout;
-    private Integer recordLayout;
-    private String title;
+public class AssessmentAdapter extends ADashboardAdapter implements IDashboardAdapter {
 
     public AssessmentAdapter(List<Survey> items, Context context) {
         this.items = items;
@@ -59,35 +50,11 @@ public class AssessmentAdapter extends BaseAdapter implements IDashboardAdapter 
         this.title = context.getString(R.string.assessment_title_header);
     }
 
-    public AssessmentAdapter(List<Survey> items, Context context, Integer headerLayout, Integer recordLayout, String title) {
-        this.items = items;
-        this.context = context;
-        this.lInflater = LayoutInflater.from(context);
-        this.headerLayout = R.layout.assessment_header;
-        this.recordLayout = R.layout.assessment_record;
-        this.title = title;
-    }
-
-    @Override
-    public int getCount() {
-        return items.size();
-    }
-
-    @Override
-    public Object getItem(int position) {
-        return items.get(position);
-    }
-
-    @Override
-    public long getItemId(int position) {
-        return position;
-    }
-
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         Survey survey = (Survey) getItem(position);
 
-        View rowView = lInflater.inflate(getRecordLayout(), parent, false);
+        View rowView = this.lInflater.inflate(getRecordLayout(), parent, false);
         rowView.setBackgroundResource(LayoutUtils.calculateBackgrounds(position));
 
         // Org Unit Cell
@@ -120,53 +87,8 @@ public class AssessmentAdapter extends BaseAdapter implements IDashboardAdapter 
     }
 
     @Override
-    public void setItems(List items) {
-        this.items = (List<Survey>) items;
-    }
-
-    @Override
     public IDashboardAdapter newInstance(List items, Context context) {
         return new AssessmentAdapter((List<Survey>) items, context);
-    }
-
-    @Override
-    public void setHeaderLayout(Integer headerLayout){
-        this.headerLayout = headerLayout;
-    }
-
-    @Override
-    public Integer getHeaderLayout() {
-        return this.headerLayout;
-    }
-
-    @Override
-    public void setRecordLayout(Integer recordLayout){
-        this.recordLayout = recordLayout;
-    }
-
-    @Override
-    public Integer getRecordLayout() {
-        return this.recordLayout;
-    }
-
-    @Override
-    public String getTitle() {
-        return title;
-    }
-
-    @Override
-    public void setContext(Context context){
-        this.context = context;
-    }
-
-    @Override
-    public Context getContext(){
-        return this.context;
-    }
-
-    @Override
-    public void setTitle(String title) {
-        this.title = title;
     }
 
     private class AssessmentListener implements View.OnClickListener {
@@ -184,8 +106,19 @@ public class AssessmentAdapter extends BaseAdapter implements IDashboardAdapter 
         public void onClick(View view) {
             if (listenerOption.equals(context.getString(R.string.assessment_info_delete))) {
                 Session.setSurvey(survey);
-                DialogDispatcher mf = DialogDispatcher.newInstance(view);
-                mf.showDialog(context.getFragmentManager(), DialogDispatcher.DELETE_SURVEY_DIALOG);
+
+                new AlertDialog.Builder(context)
+                        .setTitle(context.getString(R.string.dialog_title_delete_survey))
+                        .setMessage(context.getString(R.string.dialog_info_delete_survey))
+                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface arg0, int arg1) {
+                                Session.getSurvey().delete();
+
+                                Intent intent = new Intent(context, DashboardActivity.class);
+                                context.startActivity(intent);
+                            }
+                        })
+                        .setNegativeButton(android.R.string.no, null).create().show();
             }
         }
     }

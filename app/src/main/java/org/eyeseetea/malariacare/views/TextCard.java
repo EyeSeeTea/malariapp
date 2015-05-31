@@ -22,12 +22,10 @@ package org.eyeseetea.malariacare.views;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
 import android.text.TextPaint;
 import android.util.AttributeSet;
-import android.view.View;
 import android.widget.TextView;
 
 import org.eyeseetea.malariacare.R;
@@ -36,10 +34,10 @@ import org.eyeseetea.malariacare.R;
  * TODO: document your custom view class.
  */
 public class TextCard extends TextView {
-    private String mExampleString; // TODO: use a default from R.string...
-    private int mExampleColor = Color.RED; // TODO: use a default from R.color...
-    private float mExampleDimension = 0; // TODO: use a default from R.dimen...
-    private Drawable mExampleDrawable;
+    private String mString = getContext().getString(R.string.empty_string);
+    private int mColor = getContext().getResources().getColor(R.color.black);
+    private float mDimension = getContext().getResources().getDimension(R.dimen.text_card_def);
+    private Drawable mDrawable;
 
     private TextPaint mTextPaint;
     private float mTextWidth;
@@ -65,21 +63,21 @@ public class TextCard extends TextView {
         final TypedArray a = getContext().obtainStyledAttributes(
                 attrs, R.styleable.TextCard, defStyle, 0);
 
-        mExampleString = a.getString(
-                R.styleable.TextCard_exampleString);
-        mExampleColor = a.getColor(
-                R.styleable.TextCard_exampleColor,
-                mExampleColor);
+        mString = a.getString(
+                R.styleable.TextCard_TextCard_String);
+        mColor = a.getColor(
+                R.styleable.TextCard_TextCard_Color,
+                mColor);
         // Use getDimensionPixelSize or getDimensionPixelOffset when dealing with
         // values that should fall on pixel boundaries.
-        mExampleDimension = a.getDimension(
-                R.styleable.TextCard_exampleDimension,
-                mExampleDimension);
+        mDimension = a.getDimension(
+                R.styleable.TextCard_TextCard_Dimension,
+                mDimension);
 
-        if (a.hasValue(R.styleable.TextCard_exampleDrawable)) {
-            mExampleDrawable = a.getDrawable(
-                    R.styleable.TextCard_exampleDrawable);
-            mExampleDrawable.setCallback(this);
+        if (a.hasValue(R.styleable.TextCard_TextCard_Drawable)) {
+            mDrawable = a.getDrawable(
+                    R.styleable.TextCard_TextCard_Drawable);
+            mDrawable.setCallback(this);
         }
 
         a.recycle();
@@ -94,9 +92,9 @@ public class TextCard extends TextView {
     }
 
     private void invalidateTextPaintAndMeasurements() {
-        mTextPaint.setTextSize(mExampleDimension);
-        mTextPaint.setColor(mExampleColor);
-        mTextWidth = mTextPaint.measureText(mExampleString);
+        mTextPaint.setTextSize(mDimension);
+        mTextPaint.setColor(mColor);
+        mTextWidth = mTextPaint.measureText(mString);
 
         Paint.FontMetrics fontMetrics = mTextPaint.getFontMetrics();
         mTextHeight = fontMetrics.bottom;
@@ -117,16 +115,16 @@ public class TextCard extends TextView {
         int contentHeight = getHeight() - paddingTop - paddingBottom;
 
         // Draw the text.
-        canvas.drawText(mExampleString,
+        canvas.drawText(mString,
                 paddingLeft + (contentWidth - mTextWidth) / 2,
                 paddingTop + (contentHeight + mTextHeight) / 2,
                 mTextPaint);
 
         // Draw the example drawable on top of the text.
-        if (mExampleDrawable != null) {
-            mExampleDrawable.setBounds(paddingLeft, paddingTop,
+        if (mDrawable != null) {
+            mDrawable.setBounds(paddingLeft, paddingTop,
                     paddingLeft + contentWidth, paddingTop + contentHeight);
-            mExampleDrawable.draw(canvas);
+            mDrawable.draw(canvas);
         }
     }
 
@@ -135,18 +133,18 @@ public class TextCard extends TextView {
      *
      * @return The example string attribute value.
      */
-    public String getExampleString() {
-        return mExampleString;
+    public String getmString() {
+        return mString;
     }
 
     /**
      * Sets the view's example string attribute value. In the example view, this string
      * is the text to draw.
      *
-     * @param exampleString The example string attribute value to use.
+     * @param mString The example string attribute value to use.
      */
-    public void setExampleString(String exampleString) {
-        mExampleString = exampleString;
+    public void setmString(String mString) {
+        this.mString = mString;
         invalidateTextPaintAndMeasurements();
     }
 
@@ -155,38 +153,38 @@ public class TextCard extends TextView {
      *
      * @return The example color attribute value.
      */
-    public int getExampleColor() {
-        return mExampleColor;
+    public int getmColor() {
+        return mColor;
     }
 
     /**
      * Sets the view's example color attribute value. In the example view, this color
      * is the font color.
      *
-     * @param exampleColor The example color attribute value to use.
+     * @param mColor The example color attribute value to use.
      */
-    public void setExampleColor(int exampleColor) {
-        mExampleColor = exampleColor;
+    public void setmColor(int mColor) {
+        this.mColor = mColor;
         invalidateTextPaintAndMeasurements();
     }
 
     /**
-     * Gets the example dimension attribute value.
+     * Gets the example getmDimension attribute value.
      *
-     * @return The example dimension attribute value.
+     * @return The example getmDimension attribute value.
      */
-    public float getExampleDimension() {
-        return mExampleDimension;
+    public float getmDimension() {
+        return mDimension;
     }
 
     /**
-     * Sets the view's example dimension attribute value. In the example view, this dimension
+     * Sets the view's example getmDimension attribute value. In the example view, this getmDimension
      * is the font size.
      *
-     * @param exampleDimension The example dimension attribute value to use.
+     * @param mDimension The example getmDimension attribute value to use.
      */
-    public void setExampleDimension(float exampleDimension) {
-        mExampleDimension = exampleDimension;
+    public void setmDimension(float mDimension) {
+        this.mDimension = mDimension;
         invalidateTextPaintAndMeasurements();
     }
 
@@ -195,17 +193,17 @@ public class TextCard extends TextView {
      *
      * @return The example drawable attribute value.
      */
-    public Drawable getExampleDrawable() {
-        return mExampleDrawable;
+    public Drawable getmDrawable() {
+        return mDrawable;
     }
 
     /**
      * Sets the view's example drawable attribute value. In the example view, this drawable is
      * drawn above the text.
      *
-     * @param exampleDrawable The example drawable attribute value to use.
+     * @param mDrawable The example drawable attribute value to use.
      */
-    public void setExampleDrawable(Drawable exampleDrawable) {
-        mExampleDrawable = exampleDrawable;
+    public void setmDrawable(Drawable mDrawable) {
+        this.mDrawable = mDrawable;
     }
 }

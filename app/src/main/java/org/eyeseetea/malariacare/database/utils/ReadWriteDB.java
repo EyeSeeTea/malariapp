@@ -21,6 +21,7 @@ package org.eyeseetea.malariacare.database.utils;
 
 import com.orm.query.Select;
 
+import org.eyeseetea.malariacare.database.model.CompositiveScore;
 import org.eyeseetea.malariacare.database.model.Option;
 import org.eyeseetea.malariacare.database.model.OrgUnit;
 import org.eyeseetea.malariacare.database.model.Program;
@@ -36,7 +37,7 @@ import java.util.List;
  */
 public class ReadWriteDB {
 
-    public static String readValueQuestion(Question question){
+    public static String readValueQuestion(Question question) {
         String result = null;
 
         Value value = question.getValueBySession();
@@ -47,11 +48,11 @@ public class ReadWriteDB {
         return result;
     }
 
-    public static int readPositionOption (Question question) {
+    public static int readPositionOption(Question question) {
         int result = 0;
 
         Value value = question.getValueBySession();
-        if (value!=null) {
+        if (value != null) {
 
             List<Option> optionList = question.getAnswer().getOptions();
             optionList.add(0, new Option(Constants.DEFAULT_SELECT_OPTION));
@@ -66,7 +67,7 @@ public class ReadWriteDB {
 
         Value value = question.getValueBySession();
 
-        if (value!=null)
+        if (value != null)
             option = value.getOption();
 
         return option;
@@ -84,8 +85,7 @@ public class ReadWriteDB {
                 value.setValue(option.getName());
             }
             value.save();
-        }
-        else {
+        } else {
             if (value != null) value.delete();
         }
     }
@@ -112,25 +112,4 @@ public class ReadWriteDB {
             value.delete();
     }
 
-    // Returns the 5 last surveys (by date) with status yet not put to "Sent"
-    public static List<Survey> getLastNotSentSurveys(int number){
-        List<Survey> surveys = getAllNotSentSurveys();
-        if (surveys.size() <= number) return surveys;
-        else return surveys.subList(0, number);
-    }
-
-    // Returns all the surveys with status yet not put to "Sent"
-    public static List<Survey> getAllNotSentSurveys(){
-        return Select.from(Survey.class)
-                .where(com.orm.query.Condition.prop("status").notEq(Constants.SURVEY_SENT))
-                .orderBy("event_date").list();
-    }
-
-    // Returns a concrete survey, if it exists
-    public static List<Survey> getNotSentSurvey(OrgUnit orgUnit, Program program){
-        return Select.from(Survey.class)
-                .where(com.orm.query.Condition.prop("org_unit").eq(orgUnit.getId()))
-                .and(com.orm.query.Condition.prop("program").eq(program.getId()))
-                .orderBy("event_date").list();
-    }
 }

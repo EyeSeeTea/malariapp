@@ -36,7 +36,7 @@
         android:padding="5dip"
         android:layout_weight="0.7"
         android:layout_gravity="center"
-        android:fontFamily="@string/light_font_name" />
+        android:fontFamily="@string/normal_font" />
 
     <TextView
         android:layout_width="0dip"
@@ -50,6 +50,6 @@
         android:padding="5dip"
         android:layout_weight="0.3"
         android:layout_gravity="center"
-        android:fontFamily="@string/light_font_name" />
+        android:fontFamily="@string/normal_font" />
 
 </TableRow>

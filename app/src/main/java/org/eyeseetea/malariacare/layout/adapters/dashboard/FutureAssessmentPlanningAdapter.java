@@ -39,14 +39,7 @@ import java.util.List;
 /**
  * Created by Adrian on 22/04/2015.
  */
-public class FutureAssessmentPlanningAdapter extends BaseAdapter implements IDashboardAdapter {
-
-    List<Survey> items;
-    private LayoutInflater lInflater;
-    private Context context;
-    private Integer headerLayout;
-    private Integer recordLayout;
-    private String title;
+public class FutureAssessmentPlanningAdapter extends ADashboardAdapter implements IDashboardAdapter {
 
     public FutureAssessmentPlanningAdapter(List<Survey> items, Context context) {
         this.items = items;
@@ -55,30 +48,6 @@ public class FutureAssessmentPlanningAdapter extends BaseAdapter implements IDas
         this.headerLayout = R.layout.future_assessment_planning_header;
         this.recordLayout = R.layout.future_assessment_planning_record;
         this.title = context.getString(R.string.future_title_header);
-    }
-
-    public FutureAssessmentPlanningAdapter(List<Survey> items, Context context, Integer headerLayout, Integer recordLayout, String title) {
-        this.items = items;
-        this.context = context;
-        this.lInflater = LayoutInflater.from(context);
-        this.headerLayout = headerLayout;
-        this.recordLayout = recordLayout;
-        this.title = title;
-    }
-
-    @Override
-    public int getCount() {
-        return items.size();
-    }
-
-    @Override
-    public Object getItem(int position) {
-        return items.get(position);
-    }
-
-    @Override
-    public long getItemId(int position) {
-        return position;
     }
 
     @Override
@@ -93,60 +62,15 @@ public class FutureAssessmentPlanningAdapter extends BaseAdapter implements IDas
         ((TextView)rowView.findViewById(R.id.datePreviousAssessment)).setText("");
         ((TextView)rowView.findViewById(R.id.dueDate)).setText("23 Mar 2015");
         TextView action = ((TextView)rowView.findViewById(R.id.action));
-        action.setText("Start \n Reschedule");
-        action.setTextColor(Color.parseColor("#1e506c"));
+        action.setText("Start \nReschedule");
+        action.setTextColor(this.context.getResources().getColor(R.color.headerColor));
         action.setTypeface(Typeface.MONOSPACE, Typeface.BOLD);
 
         return rowView;
     }
 
     @Override
-    public void setItems(List items) {
-        this.items = (List<Survey>) items;
-    }
-
-    @Override
     public IDashboardAdapter newInstance(List items, Context context) {
         return new FutureAssessmentPlanningAdapter((List<Survey>) items, context);
-    }
-
-    @Override
-    public Integer getHeaderLayout() {
-        return headerLayout;
-    }
-
-    @Override
-    public void setHeaderLayout(Integer headerLayout) {
-        this.headerLayout = headerLayout;
-    }
-
-    @Override
-    public Context getContext() {
-        return context;
-    }
-
-    @Override
-    public void setContext(Context context) {
-        this.context = context;
-    }
-
-    @Override
-    public String getTitle() {
-        return title;
-    }
-
-    @Override
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    @Override
-    public Integer getRecordLayout() {
-        return recordLayout;
-    }
-
-    @Override
-    public void setRecordLayout(Integer recordLayout) {
-        this.recordLayout = recordLayout;
     }
 }

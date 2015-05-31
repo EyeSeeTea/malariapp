@@ -19,15 +19,13 @@
 
 package org.eyeseetea.malariacare;
 
-import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.LoaderManager;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.res.Configuration;
-import android.graphics.Color;
-import android.graphics.Typeface;
+import android.content.Loader;
+import android.database.Cursor;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -45,25 +43,24 @@ import org.eyeseetea.malariacare.database.model.CompositiveScore;
 import org.eyeseetea.malariacare.database.model.Program;
 import org.eyeseetea.malariacare.database.model.Question;
 import org.eyeseetea.malariacare.database.model.Tab;
+import org.eyeseetea.malariacare.database.utils.ReadWriteDB;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.layout.adapters.general.TabArrayAdapter;
 import org.eyeseetea.malariacare.layout.adapters.survey.AutoTabAdapter;
 import org.eyeseetea.malariacare.layout.adapters.survey.CompositiveScoreAdapter;
 import org.eyeseetea.malariacare.layout.adapters.survey.ITabAdapter;
-import org.eyeseetea.malariacare.layout.dialog.DialogDispatcher;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 import org.eyeseetea.malariacare.utils.Constants;
 import org.eyeseetea.malariacare.utils.Utils;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 
-public class SurveyActivity extends BaseActivity {
+public class SurveyActivity extends BaseActivity implements LoaderManager.LoaderCallbacks<Cursor>{
 
     private List<Tab> tabsList;
     private Map<Tab, ITabAdapter> adaptersMap = new HashMap<Tab, ITabAdapter>();
@@ -85,7 +82,9 @@ public class SurveyActivity extends BaseActivity {
         for (CompositiveScore compositiveScore : CompositiveScore.listAll(CompositiveScore.class)) {
 
             //If the questions of the compositivescore belongs to the program, the comp. score is addded
-            if (program.equals(Utils.getProgramQuestion(Utils.getOneQuestionCompositiveScore(compositiveScore)))) {
+            Question compositiveScoreQuestion = compositiveScore.getSingleQuestionIncludingChildren();
+
+            if (program.equals(compositiveScoreQuestion.getHeader().getTab().getProgram())) {
 
                 Log.i(".SurveyActivity", "Include "+ compositiveScore.getCode());
                 compositiveScores.add(compositiveScore);
@@ -269,5 +268,20 @@ public class SurveyActivity extends BaseActivity {
                         startActivity(mainIntent);
                     }
                 }).create().show();
+    }
+
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        return null;
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+
     }
 }

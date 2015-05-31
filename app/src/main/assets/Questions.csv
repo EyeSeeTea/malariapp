@@ -692,3 +692,5 @@
 694;;;;'Provider counsels caregiver on proper dosage (no. of  doses/days, side effects)';;300;1.00;0.00;468;45;677;35
 695;;;;'Provider gives first dose of oral medicine on site';;310;1.00;0.00;468;45;677;35
 696;;;;'Provider advises referral if condition worsens';;320;1.00;0.00;468;45;677;35
+697;'Raka';'Paka';;'Chaka';;120;1.00;0.00;307;52;;
+698;'Raka';'Paka';;'Chaka2';;120;1.00;0.00;307;53;;

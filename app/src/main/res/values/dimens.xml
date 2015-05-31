@@ -2,6 +2,8 @@
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="activity_horizontal_margin">5dp</dimen>
     <dimen name="activity_vertical_margin">5dp</dimen>
+    <dimen name="question_padding_left">10dip</dimen>
+    <dimen name="question_padding_all">5dip</dimen>
 
     <!-- SMALL selected sizes -->
     <dimen name="small_small_text_size">8sp</dimen>
@@ -26,5 +28,11 @@
     <dimen name="extra_normal_text_size">18sp</dimen>
     <dimen name="extra_medium_text_size">22sp</dimen>
     <dimen name="extra_large_text_size">26sp</dimen>
+
+    <!-- Float Button default -->
+    <dimen name="float_button_def">24sp</dimen>
+    <!-- Text Card default -->
+    <dimen name="text_card_def">24sp</dimen>
+
 
 </resources>

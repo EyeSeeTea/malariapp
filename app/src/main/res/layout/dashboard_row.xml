@@ -48,7 +48,7 @@
         android:typeface="monospace"
         android:id="@+id/see_all"
         android:textStyle="bold"
-        android:fontFamily="@string/light_font_name" />
+        android:fontFamily="@string/light_font" />
 
     <Space
         android:layout_width="20dp"

@@ -38,7 +38,7 @@
             android:id="@+id/survey_type"
             android:padding="5dip"
             android:layout_gravity="center_vertical"
-            android:fontFamily="@string/light_font_name"/>
+            android:fontFamily="@string/normal_font"/>
     </LinearLayout>
 
     <LinearLayout
@@ -55,7 +55,7 @@
             android:id="@+id/target"
             android:padding="5dip"
             android:layout_gravity="center"
-            android:fontFamily="@string/light_font_name" />
+            android:fontFamily="@string/normal_font" />
     </LinearLayout>
 
     <LinearLayout
@@ -72,7 +72,7 @@
             android:id="@+id/done"
             android:padding="5dip"
             android:layout_gravity="center"
-            android:fontFamily="@string/light_font_name" />
+            android:fontFamily="@string/normal_font" />
     </LinearLayout>
 
     <LinearLayout
@@ -89,6 +89,6 @@
             android:id="@+id/achievement"
             android:padding="5dip"
             android:layout_gravity="center"
-            android:fontFamily="@string/light_font_name" />
+            android:fontFamily="@string/normal_font" />
     </LinearLayout>
 </TableRow>

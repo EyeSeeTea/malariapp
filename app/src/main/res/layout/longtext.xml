@@ -9,30 +9,30 @@
         android:layout_height="wrap_content"
         android:layout_weight="0.5"
         android:layout_gravity="center_vertical"
-        android:padding="5dip">
+        android:padding="@dimen/question_padding_all">
         <TextView
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:text="@string/widget_info_empty_statement"
             android:id="@+id/statement"
-            android:paddingLeft="10dip"
-            android:fontFamily="@string/light_font_name" />
+            android:paddingLeft="@dimen/question_padding_left"
+            android:fontFamily="@string/normal_font" />
     </RelativeLayout>
     <RelativeLayout
         android:layout_width="0dip"
         android:layout_height="wrap_content"
         android:layout_weight="0.5"
-        android:padding="5dip"
+        android:padding="@dimen/question_padding_all"
         android:gravity="center">
 
         <EditText
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text=""
+            android:text="@string/empty_string"
             android:id="@+id/answer"
             android:background="@drawable/background_textfield"
-            android:fontFamily="@string/light_font_name" />
+            android:fontFamily="@string/normal_font" />
 
     </RelativeLayout>
 
