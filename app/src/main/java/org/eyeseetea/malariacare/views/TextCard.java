@@ -60,24 +60,17 @@ public class TextCard extends TextView {
 
     private void init(AttributeSet attrs, int defStyle) {
         // Load attributes
-        final TypedArray a = getContext().obtainStyledAttributes(
-                attrs, R.styleable.TextCard, defStyle, 0);
+        final TypedArray a = getContext().obtainStyledAttributes(attrs, R.styleable.TextCard, defStyle, 0);
 
-        mString = a.getString(
-                R.styleable.TextCard_TextCard_String);
-        mColor = a.getColor(
-                R.styleable.TextCard_TextCard_Color,
-                mColor);
+        this.mString = a.getString(R.styleable.TextCard_tString);
+        this.mColor = a.getColor(R.styleable.TextCard_tColor, this.mColor);
         // Use getDimensionPixelSize or getDimensionPixelOffset when dealing with
         // values that should fall on pixel boundaries.
-        mDimension = a.getDimension(
-                R.styleable.TextCard_TextCard_Dimension,
-                mDimension);
+        this.mDimension = a.getDimension(R.styleable.TextCard_tDimension, this.mDimension);
 
-        if (a.hasValue(R.styleable.TextCard_TextCard_Drawable)) {
-            mDrawable = a.getDrawable(
-                    R.styleable.TextCard_TextCard_Drawable);
-            mDrawable.setCallback(this);
+        if (a.hasValue(R.styleable.TextCard_tDrawable)) {
+            this.mDrawable = a.getDrawable(R.styleable.TextCard_tDrawable);
+            this.mDrawable.setCallback(this);
         }
 
         a.recycle();
@@ -92,21 +85,21 @@ public class TextCard extends TextView {
     }
 
     private void invalidateTextPaintAndMeasurements() {
-        mTextPaint.setTextSize(mDimension);
-        mTextPaint.setColor(mColor);
-        mTextWidth = mTextPaint.measureText(mString);
+        /*mTextPaint.setTextSize(this.mDimension);
+        mTextPaint.setColor(this.mColor);
+        mTextWidth = mTextPaint.measureText(this.mString);
 
         Paint.FontMetrics fontMetrics = mTextPaint.getFontMetrics();
-        mTextHeight = fontMetrics.bottom;
+        mTextHeight = fontMetrics.bottom;*/
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
-        super.onDraw(canvas);
+
 
         // TODO: consider storing these as member variables to reduce
         // allocations per draw cycle.
-        int paddingLeft = getPaddingLeft();
+        /*int paddingLeft = getPaddingLeft();
         int paddingTop = getPaddingTop();
         int paddingRight = getPaddingRight();
         int paddingBottom = getPaddingBottom();
@@ -122,10 +115,10 @@ public class TextCard extends TextView {
 
         // Draw the example drawable on top of the text.
         if (mDrawable != null) {
-            mDrawable.setBounds(paddingLeft, paddingTop,
-                    paddingLeft + contentWidth, paddingTop + contentHeight);
+            mDrawable.setBounds(paddingLeft, paddingTop, paddingLeft + contentWidth, paddingTop + contentHeight);
             mDrawable.draw(canvas);
-        }
+        }*/
+        super.onDraw(canvas);
     }
 
     /**

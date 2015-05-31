@@ -23,7 +23,7 @@
 
     <org.eyeseetea.malariacare.views.FloatingButton android:background="@color/headerColor"
         android:layout_width="50dp" android:layout_height="50dp"
-        app:mString="" app:mDimension="24sp" app:contentColor="@color/white"
-        app:drawable="@android:drawable/ic_menu_add" />
+        app:fString="" app:fDimension="24sp" app:fColor="@color/white"
+        app:fDrawable="@android:drawable/ic_menu_add" />
 
 </FrameLayout>

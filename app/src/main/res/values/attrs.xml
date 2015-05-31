@@ -19,16 +19,16 @@
 
 <resources>
     <declare-styleable name="FloatingButton">
-        <attr name="mString" format="string" />
-        <attr name="mDimension" format="dimension" />
-        <attr name="contentColor" format="color" />
-        <attr name="drawable" format="color|reference" />
+        <attr name="fString" format="string" />
+        <attr name="fDimension" format="dimension" />
+        <attr name="fColor" format="color" />
+        <attr name="fDrawable" format="color|reference" />
     </declare-styleable>
 
     <declare-styleable name="TextCard">
-        <attr name="TextCard_String" format="string" />
-        <attr name="TextCard_Dimension" format="dimension" />
-        <attr name="TextCard_Color" format="color" />
-        <attr name="TextCard_Drawable" format="color|reference" />
+        <attr name="tString" format="string" />
+        <attr name="tDimension" format="dimension" />
+        <attr name="tColor" format="color" />
+        <attr name="tDrawable" format="color|reference" />
     </declare-styleable>
 </resources>

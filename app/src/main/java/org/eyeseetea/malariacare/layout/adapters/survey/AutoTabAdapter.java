@@ -163,7 +163,7 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
         scoreHolder.qualitativeScore = (TextView) ((Activity) context).findViewById(R.id.cualitativeScore);
         RelativeLayout space = (RelativeLayout) (((Activity) context).findViewById(R.id.space));
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this.context);
-        if (sharedPreferences.getBoolean("show_num_dems", false)) {
+        if (sharedPreferences.getBoolean(this.context.getString(R.string.show_num_dems), false)) {
             scoreHolder.totalDenum.setVisibility(View.VISIBLE);
             scoreHolder.totalNum.setVisibility(View.VISIBLE);
             (((Activity) context).findViewById(R.id.accumulatedText)).setVisibility(View.VISIBLE);
@@ -522,6 +522,7 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
                     //Add main component, set filters and listener
                     ((EditText) viewHolder.component).setFilters(new InputFilter[]{new InputFilter.LengthFilter(Constants.MAX_INT_CHARS)});
                     ((EditText) viewHolder.component).addTextChangedListener(new TextViewListener(false, question));
+                    // FIXME: Add a filter to POSITIVE_INT to avoid user from entering a zero/negative integer
                     break;
                 case Constants.DATE:
                     rowView = initialiseView(R.layout.date, parent, question, viewHolder, position);
@@ -614,7 +615,7 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
 
     private void configureViewByPreference(ViewHolder viewHolder) {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this.context);
-        if (sharedPreferences.getBoolean("show_num_dems", false)) {
+        if (sharedPreferences.getBoolean(this.context.getString(R.string.show_num_dems), false)) {
             viewHolder.num.setVisibility(View.VISIBLE);
             viewHolder.denum.setVisibility(View.VISIBLE);
             ((RelativeLayout) viewHolder.statement.getParent()).setLayoutParams(new LinearLayout.LayoutParams(0, RelativeLayout.LayoutParams.WRAP_CONTENT, 0.5f));

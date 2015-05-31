@@ -60,23 +60,16 @@ public class FloatingButton extends ImageButton {
 
     private void init(AttributeSet attrs, int defStyle) {
         // Load attributes
-        final TypedArray a = getContext().obtainStyledAttributes(
-                attrs, R.styleable.FloatingButton, defStyle, 0);
+        final TypedArray a = getContext().obtainStyledAttributes(attrs, R.styleable.FloatingButton, defStyle, 0);
 
-        mString = a.getString(
-                R.styleable.FloatingButton_mString);
-        mColor = a.getColor(
-                R.styleable.FloatingButton_contentColor,
-                mColor);
+        mString = a.getString(R.styleable.FloatingButton_fString);
+        mColor = a.getColor(R.styleable.FloatingButton_fColor, mColor);
         // Use getDimensionPixelSize or getDimensionPixelOffset when dealing with
         // values that should fall on pixel boundaries.
-        mDimension = a.getDimension(
-                R.styleable.FloatingButton_mDimension,
-                mDimension);
+        mDimension = a.getDimension(R.styleable.FloatingButton_fDimension, mDimension);
 
-        if (a.hasValue(R.styleable.FloatingButton_drawable)) {
-            mDrawable = a.getDrawable(
-                    R.styleable.FloatingButton_drawable);
+        if (a.hasValue(R.styleable.FloatingButton_fDrawable)) {
+            mDrawable = a.getDrawable(R.styleable.FloatingButton_fDrawable);
             mDrawable.setCallback(this);
         }
 

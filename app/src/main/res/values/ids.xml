@@ -1,10 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <item name="Grid" type="id"/>
-    <item name="Header" type="id"/>
-    <item name="Body" type="id"/>
-    <item name="BodyGNR" type="id"/>
-    <item name="Footer" type="id"/>
+    <!-- surveys representation needed indexes -->
     <item name="QuestionTag" type="id">0</item>
     <item name="HeaderViewTag" type="id">1</item>
     <item name="NumeratorViewTag" type="id">2</item>
@@ -12,5 +8,10 @@
     <item name="Tab" type="id">4</item>
     <item name="QuestionTypeTag" type="id">5</item>
 
+
+    <!-- Preference variable names -->
+    <item name="show_num_dems" type="string">show_num_dems</item>
+    <item name="customize_fonts" type="string">customize_fonts</item>
+    <item name="font_sizes" type="string">font_sizes</item>
 
 </resources>

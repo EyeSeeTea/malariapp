@@ -35,6 +35,7 @@ public class Session {
     private static Survey survey;
     private static User user;
     private static IDashboardAdapter adapter;
+    private static String fontSize;
 
     public static Survey getSurvey() {
         return survey;
@@ -58,5 +59,13 @@ public class Session {
 
     public static void setAdapter(IDashboardAdapter adapter) {
         Session.adapter = adapter;
+    }
+
+    public static String getFontSize() {
+        return fontSize;
+    }
+
+    public static void setFontSize(String fontSize) {
+        Session.fontSize = fontSize;
     }
 }
