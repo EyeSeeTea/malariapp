@@ -55,7 +55,7 @@ public abstract class BaseActivity extends ActionBarActivity {
         android.support.v7.app.ActionBar actionBar = this.getSupportActionBar();
         LayoutUtils.setActionBarLogo(actionBar);
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        switch(sharedPreferences.getString("font_sizes", "system")){
+        switch (sharedPreferences.getString("font_sizes", "system")) {
             case Constants.FONTS_SMALL:
 
                 break;
@@ -123,8 +123,8 @@ public abstract class BaseActivity extends ActionBarActivity {
                         .setMessage(getApplicationContext().getString(R.string.dialog_content_logout_confirmation))
                         .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface arg0, int arg1) {
-                                List<Survey> surveys = ReadWriteDB.getAllNotSentSurveys();
-                                for (Survey survey: surveys){
+                                List<Survey> surveys = Survey.getAllUnsentSurveys();
+                                for (Survey survey : surveys) {
                                     survey.delete();
                                 }
                                 Session.getUser().delete();
@@ -143,7 +143,7 @@ public abstract class BaseActivity extends ActionBarActivity {
     }
 
     @Override
-    public void onConfigurationChanged(Configuration newConfig){
+    public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
     }
 
@@ -154,7 +154,9 @@ public abstract class BaseActivity extends ActionBarActivity {
         startActivity(getIntent());
     }
 
-    /** Called when the user clicks the New Survey button */
+    /**
+     * Called when the user clicks the New Survey button
+     */
     public void newSurvey(View view) {
         finish();
         Intent createSurveyIntent = new Intent(this, CreateSurveyActivity.class);

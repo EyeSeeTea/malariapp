@@ -79,7 +79,7 @@ public class DashboardDetailsFragment extends ListFragment {
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
-        this.surveys = ReadWriteDB.getAllNotSentSurveys();
+        this.surveys = Survey.getAllUnsentSurveys();
     }
 
     @Override

@@ -72,6 +72,17 @@ public class CompositiveScore extends SugarRecord<CompositiveScore> {
         return !getCompositiveScoreChildren().isEmpty();
     }
 
+    // Returns a single question for a compositive score
+    public Question getSingleQuestionIncludingChildren(){
+        if (this.getQuestions().size() > 0)
+            return this.getQuestions().get(0);
+        else
+            for (CompositiveScore cScore : this.getCompositiveScoreChildren())
+                return cScore.getSingleQuestionIncludingChildren();
+
+        return null;
+    }
+
     @Override
     public String toString() {
         return "CompositiveScore{" +

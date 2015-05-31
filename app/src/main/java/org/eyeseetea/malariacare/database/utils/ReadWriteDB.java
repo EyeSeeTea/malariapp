@@ -112,38 +112,4 @@ public class ReadWriteDB {
             value.delete();
     }
 
-    // Returns the 5 last surveys (by date) with status yet not put to "Sent"
-    public static List<Survey> getLastNotSentSurveys(int number) {
-        List<Survey> surveys = getAllNotSentSurveys();
-        if (surveys.size() <= number) return surveys;
-        else return surveys.subList(0, number);
-    }
-
-    // Returns all the surveys with status yet not put to "Sent"
-    public static List<Survey> getAllNotSentSurveys() {
-        return Select.from(Survey.class)
-                .where(com.orm.query.Condition.prop("status").notEq(Constants.SURVEY_SENT))
-                .orderBy("event_date").list();
-    }
-
-    // Returns a concrete survey, if it exists
-    public static List<Survey> getNotSentSurvey(OrgUnit orgUnit, Program program) {
-        return Select.from(Survey.class)
-                .where(com.orm.query.Condition.prop("org_unit").eq(orgUnit.getId()))
-                .and(com.orm.query.Condition.prop("program").eq(program.getId()))
-                .orderBy("event_date").list();
-    }
-
-    // Returns a single question for a compositive score
-    public static Question getOneQuestionCompositiveScore(CompositiveScore compositiveScore) {
-        Question question = null;
-
-        if (compositiveScore.getQuestions().size() > 0)
-            return compositiveScore.getQuestions().get(0);
-        else
-            for (CompositiveScore cScore : compositiveScore.getCompositiveScoreChildren())
-                return getOneQuestionCompositiveScore(cScore);
-
-        return question;
-    }
 }

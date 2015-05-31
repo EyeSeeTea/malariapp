@@ -82,7 +82,7 @@ public class SurveyActivity extends BaseActivity implements LoaderManager.Loader
         for (CompositiveScore compositiveScore : CompositiveScore.listAll(CompositiveScore.class)) {
 
             //If the questions of the compositivescore belongs to the program, the comp. score is addded
-            Question compositiveScoreQuestion = ReadWriteDB.getOneQuestionCompositiveScore(compositiveScore);
+            Question compositiveScoreQuestion = compositiveScore.getSingleQuestionIncludingChildren();
 
             if (program.equals(compositiveScoreQuestion.getHeader().getTab().getProgram())) {
 
