@@ -19,11 +19,9 @@
 
 package org.eyeseetea.malariacare.layout.adapters.survey;
 
-import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.opengl.Visibility;
 import android.preference.PreferenceManager;
 import android.text.Editable;
 import android.text.InputFilter;
@@ -44,7 +42,6 @@ import org.eyeseetea.malariacare.database.model.Header;
 import org.eyeseetea.malariacare.database.model.Option;
 import org.eyeseetea.malariacare.database.model.Question;
 import org.eyeseetea.malariacare.database.model.Tab;
-import org.eyeseetea.malariacare.database.model.Value;
 import org.eyeseetea.malariacare.database.utils.ReadWriteDB;
 import org.eyeseetea.malariacare.layout.adapters.general.OptionArrayAdapter;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
@@ -86,6 +83,11 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
         public TextView num;
         public TextView denum;
         public int type;
+
+        public void updateRowScore(Float n,Float d){
+            this.num.setText(n.toString());
+            this.denum.setText(d.toString());
+        }
     }
 
     //Store the views references for each view in the footer
@@ -366,11 +368,9 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
 
                 List<Float> numdenum = ScoreRegister.getNumDenum(question);
                 if (numdenum != null) {
-                    viewHolder.num.setText(Float.toString(numdenum.get(0)));
-                    viewHolder.denum.setText(Float.toString(numdenum.get(1)));
+                    viewHolder.updateRowScore(numdenum.get(0), numdenum.get(1));
                 } else {
-                    viewHolder.num.setText(this.context.getString(R.string.number_zero));
-                    viewHolder.denum.setText(Float.toString(calcDenum(question)));
+                    viewHolder.updateRowScore(0F, calcDenum(question));
                     viewHolder.spinner.setSelection(0);
                 }
 
@@ -392,13 +392,19 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
         return hidden;
     }
 
-    private void resetTotalNumDenum(Question question) {
+    private void refreshTotalScoreQuestionChange(Question question,Float newNum,Float newDen) {
+        //Take the previous value
         List<Float> numdenum = ScoreRegister.getNumDenum(question);
 
+        //Substract previous value
         if (numdenum != null) {
             totalNum = totalNum - numdenum.get(0);
             totalDenum = totalDenum - numdenum.get(1);
         }
+
+        //Add new value
+        totalNum += newNum;
+        totalDenum += newDen;
     }
 
     private boolean checkMatches(Question question) {
@@ -437,31 +443,30 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
 
     private void itemSelected(ViewHolder viewHolder, Question question, Option option) {
 
+        //Save value
         ReadWriteDB.saveValuesDDL(question, option);
 
+        //Calculate score
         Float num = calcNum(question);
         Float denum = calcDenum(question);
 
-        viewHolder.num.setText(num.toString());
-        viewHolder.denum.setText(denum.toString());
+        //Recalculate total tab score
+        refreshTotalScoreQuestionChange(question, num, denum);
 
-        resetTotalNumDenum(question);
-
-        totalNum = totalNum + num;
-        totalDenum = totalDenum + denum;
-
+        //Register new score
         ScoreRegister.addRecord(question, num, denum);
 
-        if (question.hasChildren()) {
+        //Visual: update row score
+        viewHolder.updateRowScore(num, denum);
 
-            if (option.getName().equals(this.context.getString(R.string.yes)))
-                updateQuestionsVisibility(question, true);
-            else
-                updateQuestionsVisibility(question, false);
-
-        }
-
+        //Visual: update tab total score
         updateScore();
+
+        //Visual: show children questions if required
+        if (question.hasChildren()) {
+            boolean isOptionYes=option.getName().equals(this.context.getString(R.string.yes));
+            updateQuestionsVisibility(question,isOptionYes);
+        }
 
     }
 
