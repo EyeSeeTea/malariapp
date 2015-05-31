@@ -731,5 +731,4 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
         }
     }
 
-
 }

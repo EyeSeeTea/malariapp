@@ -32,12 +32,14 @@ import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.SurveyActivity;
 import org.eyeseetea.malariacare.database.model.Answer;
 import org.eyeseetea.malariacare.database.model.Header;
+import org.eyeseetea.malariacare.database.model.Option;
 import org.eyeseetea.malariacare.database.model.Program;
 import org.eyeseetea.malariacare.database.model.Question;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.model.Tab;
 import org.eyeseetea.malariacare.database.model.User;
 import org.eyeseetea.malariacare.database.utils.Session;
+import org.eyeseetea.malariacare.layout.adapters.survey.AutoTabAdapter;
 import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -122,8 +124,7 @@ public class SurveyEspressoTest extends MalariaEspressoTest{
     @Test
     public void change_to_scored_tab(){
         //WHEN: Select 'Profile' tab
-        onView(withId(R.id.tabSpinner)).perform(click());
-        onData(allOf(is(instanceOf(Tab.class)))).atPosition(1).perform(click());
+        whenTabSelected(1);
 
         //THEN
         onView(withText("HR - Nurses")).check(matches(isDisplayed()));
@@ -133,8 +134,7 @@ public class SurveyEspressoTest extends MalariaEspressoTest{
     @Test
     public void change_to_score(){
         //WHEN: Select 'Score' tab
-        onView(withId(R.id.tabSpinner)).perform(click());
-        onData(allOf(is(instanceOf(Tab.class)))).atPosition(10).perform(click());
+        whenTabSelected(10);
 
         //THEN
         onView(withText(R.string.score_info_case1)).check(matches(isDisplayed()));
@@ -145,11 +145,65 @@ public class SurveyEspressoTest extends MalariaEspressoTest{
     @Test
     public void change_to_compositive_score(){
         //WHEN: Select 'Compositive Score' tab
-        onView(withId(R.id.tabSpinner)).perform(click());
-        onData(allOf(is(instanceOf(Tab.class)))).atPosition(11).perform(click());
+        whenTabSelected(11);
 
         //THEN
         onView(withText("Services, materials and reporting")).check(matches(isDisplayed()));
     }
 
+    @Test
+    public void in_c1_rdt_score_some_points(){
+        //WHEN: Select 'C1-RDT' tab
+        whenTabSelected(3);
+
+        //WHEN: Some answers 'Yes'
+        for(int i=6;i<=16;i++){
+            whenDropDownAnswered(i,true);
+        }
+
+        //THEN
+        onView(withId(R.id.score)).check(matches(withText("66")));
+        onView(withId(R.id.cualitativeScore)).check(matches(withText("Fare")));
+    }
+
+    @Test
+    public void global_scores_are_calculated(){
+        //WHEN: Select 'C1-RDT' tab | Some answers 'Yes'
+        whenTabSelected(3);
+
+        for(int i=6;i<=16;i++){
+            whenDropDownAnswered(i,true);
+        }
+
+        //WHEN: Select 'Score' tab
+        whenTabSelected(10);
+
+        //THEN
+        onView(withId(R.id.totalScore)).check(matches(withText("4")));
+        onView(withId(R.id.rdtAvg)).check(matches(withText("22")));
+    }
+
+    /**
+     * Select the tab number 'x'
+     * @param num Index of the tab to select
+     */
+    private void whenTabSelected(int num){
+        onView(withId(R.id.tabSpinner)).perform(click());
+        onData(is(instanceOf(Tab.class))).atPosition(num).perform(click());
+    }
+
+    /**
+     * Answers the question at position 'x'.
+     * @param position Index of the question to answer
+     * @param answer True (Yes), False (No)
+     */
+    private void whenDropDownAnswered(int position,boolean answer){
+        onData(is(instanceOf(Question.class))).
+                inAdapterView(withId(R.id.listView)).
+                atPosition(position).
+                onChildView(withId(R.id.answer)).
+                perform(click());
+        int indexAnswer=answer?1:2;
+        onData(is(instanceOf(Option.class))).atPosition(indexAnswer).perform(click());
+    }
 }
