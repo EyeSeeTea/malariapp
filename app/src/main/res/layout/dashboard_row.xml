@@ -24,7 +24,9 @@
     android:id="@+id/container"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:onClick="newSurvey"
+    android:measureWithLargestChild="false">
 
     <org.eyeseetea.malariacare.views.TextCard
         android:layout_width="wrap_content"
@@ -39,8 +41,9 @@
 
     <TableLayout
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
+        android:layout_height="wrap_content"
         android:id="@+id/dashboard_table"/>
+
 
     <org.eyeseetea.malariacare.views.TextCard
         android:layout_width="wrap_content"
@@ -53,6 +56,8 @@
         android:textStyle="bold"
         app:tDimension="@string/font_size_level2"
         app:tFontName="@string/condensed_font_name" />
+
+    <include layout="@layout/assessment_footer" />
 
     <Space
         android:layout_width="20dp"

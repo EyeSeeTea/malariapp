@@ -43,6 +43,7 @@ public class FeedbackAdapter extends ADashboardAdapter implements IDashboardAdap
         this.context = context;
         this.lInflater = LayoutInflater.from(context);
         this.headerLayout = R.layout.feedback_header;
+        this.footerLayout = null;
         this.recordLayout = R.layout.feedback_record;
         this.title = context.getString(R.string.feedback_title_header);
     }

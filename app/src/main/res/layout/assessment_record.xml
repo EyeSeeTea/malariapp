@@ -40,6 +40,7 @@
             android:id="@+id/facility"
             android:layout_gravity="center_vertical"
             android:textStyle="bold"
+            android:textColor="@color/black"
             android:paddingLeft="5dip"
             android:paddingRight="5dip"
             app:tDimension="@string/font_size_level1"
@@ -64,7 +65,8 @@
         android:layout_height="fill_parent"
         android:id="@+id/statusContainer"
         android:layout_weight="0.2"
-        android:layout_gravity="center">
+        android:layout_gravity="center"
+        android:gravity="center">
 
         <org.eyeseetea.malariacare.views.TextCard
             android:layout_width="wrap_content"
@@ -73,7 +75,9 @@
             android:id="@+id/score"
             android:padding="5dip"
             android:layout_gravity="center"
+            android:gravity="center_horizontal"
             android:textStyle="bold"
+            android:textColor="@color/black"
             app:tDimension="@string/font_size_level1"
             app:tFontName="@string/medium_font_name" />
 

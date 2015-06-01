@@ -39,6 +39,7 @@ public class PerformancePlanningAdapter extends ADashboardAdapter implements IDa
         this.context = context;
         this.lInflater = LayoutInflater.from(context);
         this.headerLayout = R.layout.performance_planning_header;
+        this.footerLayout = null;
         this.recordLayout = R.layout.performance_planning_record;
         this.title = context.getString(R.string.performance_title_header);
     }

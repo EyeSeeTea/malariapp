@@ -46,6 +46,7 @@ public class FutureAssessmentPlanningAdapter extends ADashboardAdapter implement
         this.context = context;
         this.lInflater = LayoutInflater.from(context);
         this.headerLayout = R.layout.future_assessment_planning_header;
+        this.footerLayout = null;
         this.recordLayout = R.layout.future_assessment_planning_record;
         this.title = context.getString(R.string.future_title_header);
     }

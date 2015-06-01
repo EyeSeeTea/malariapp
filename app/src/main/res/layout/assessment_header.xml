@@ -64,18 +64,6 @@
         android:layout_gravity="center"
         android:gravity="center"
         android:padding="5dip"
-        android:background="@drawable/background_header">
-
-        <Button
-            style="?android:attr/buttonStyleSmall"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/dashboard_button_new_survey"
-            android:id="@+id/button"
-            android:onClick="newSurvey"
-            android:textAppearance="@android:style/TextAppearance.Small"
-            android:textColor="@color/headerColor"
-            android:fontFamily="@string/normal_font" />
-    </LinearLayout>
+        android:background="@drawable/background_header"/>
 
 </TableRow>

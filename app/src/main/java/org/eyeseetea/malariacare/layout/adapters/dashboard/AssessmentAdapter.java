@@ -28,6 +28,7 @@ import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -36,6 +37,7 @@ import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
+import org.eyeseetea.malariacare.views.TextCard;
 
 import java.util.List;
 
@@ -47,6 +49,7 @@ public class AssessmentAdapter extends ADashboardAdapter implements IDashboardAd
         this.lInflater = LayoutInflater.from(context);
         this.headerLayout = R.layout.assessment_header;
         this.recordLayout = R.layout.assessment_record;
+        this.footerLayout = R.layout.assessment_footer;
         this.title = context.getString(R.string.assessment_title_header);
     }
 
@@ -74,15 +77,15 @@ public class AssessmentAdapter extends ADashboardAdapter implements IDashboardAd
         //Tools Cell
         LinearLayout toolContainerView = (LinearLayout) rowView.findViewById(R.id.toolsContainer);
 
-        TextView deleteTextView = new TextView(this.context);
+        TextCard deleteTextView = new TextCard(this.context);
+        deleteTextView.setmFontName(getContext().getString(R.string.medium_font_name));
+        deleteTextView.setmScale(getContext().getString(R.string.font_size_level1));
+        deleteTextView.setmDimension(getContext().getString(R.string.font_size_level1));
         deleteTextView.setText(R.string.assessment_info_delete);
         deleteTextView.setTextColor(getContext().getResources().getColor(R.color.headerColor));
         deleteTextView.setTypeface(Typeface.MONOSPACE, Typeface.BOLD);
         deleteTextView.setOnClickListener(new AssessmentListener((Activity) this.context, survey, context.getString(R.string.assessment_info_delete)));
         toolContainerView.addView(deleteTextView);
-        //FloatingButton addSurvey = new FloatingButton(this.context);
-        //toolContainerView.addView(addSurvey);
-
         return rowView;
     }
 

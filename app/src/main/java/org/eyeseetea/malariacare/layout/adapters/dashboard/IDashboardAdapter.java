@@ -40,6 +40,10 @@ public interface IDashboardAdapter {
 
     public Integer getHeaderLayout();
 
+    public void setFooterLayout(Integer headerLayout);
+
+    public Integer getFooterLayout();
+
     public void setRecordLayout(Integer recordLayout);
 
     public Integer getRecordLayout();

@@ -18,13 +18,6 @@
   -->
 
 <resources>
-    <declare-styleable name="FloatingButton">
-        <attr name="fString" format="string" />
-        <attr name="fDimension" format="dimension" />
-        <attr name="fColor" format="color" />
-        <attr name="fDrawable" format="color|reference" />
-    </declare-styleable>
-
     <declare-styleable name="TextCard">
         <attr name="tDimension" format="string|reference" />
         <attr name="tScale" format="string|reference" />

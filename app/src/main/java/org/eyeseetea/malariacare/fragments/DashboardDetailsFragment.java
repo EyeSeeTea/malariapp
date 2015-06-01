@@ -106,7 +106,9 @@ public class DashboardDetailsFragment extends ListFragment {
         this.adapter = adapter;
         LayoutInflater inflater = LayoutInflater.from(getActivity());
         View header = inflater.inflate(this.adapter.getHeaderLayout(), null, false);
+        View footer = inflater.inflate(this.adapter.getFooterLayout(), null, false);
         getListView().addHeaderView(header);
+        getListView().addFooterView(footer);
         setListAdapter((BaseAdapter) adapter);
         setListShown(true);
     }

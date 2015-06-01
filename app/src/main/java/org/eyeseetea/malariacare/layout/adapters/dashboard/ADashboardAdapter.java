@@ -33,6 +33,7 @@ public abstract class ADashboardAdapter extends BaseAdapter implements IDashboar
     protected LayoutInflater lInflater;
     protected Context context;
     protected Integer headerLayout;
+    protected Integer footerLayout;
     protected Integer recordLayout;
     protected String title;
 
@@ -40,11 +41,12 @@ public abstract class ADashboardAdapter extends BaseAdapter implements IDashboar
 
     }
 
-    public ADashboardAdapter(List<Survey> items, Context context, Integer headerLayout, Integer recordLayout, String title) {
+    public ADashboardAdapter(List<Survey> items, Context context, Integer headerLayout, Integer footerLayout, Integer recordLayout, String title) {
         this.items = items;
         this.context = context;
         this.lInflater = LayoutInflater.from(context);
         this.headerLayout = headerLayout;
+        this.footerLayout = footerLayout;
         this.recordLayout = recordLayout;
         this.title = title;
     }
@@ -77,6 +79,16 @@ public abstract class ADashboardAdapter extends BaseAdapter implements IDashboar
     @Override
     public Integer getHeaderLayout() {
         return this.headerLayout;
+    }
+
+    @Override
+    public void setFooterLayout(Integer footerLayout) {
+        this.footerLayout = footerLayout;
+    }
+
+    @Override
+    public Integer getFooterLayout() {
+        return footerLayout;
     }
 
     @Override
