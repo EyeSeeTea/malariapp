@@ -220,7 +220,8 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
 
     private void initScoreQuestion(Question question) {
 
-        if (question.getAnswer().getOutput() == Constants.DROPDOWN_LIST) {
+        if (question.getAnswer().getOutput() == Constants.DROPDOWN_LIST || question.getAnswer().getOutput() == Constants.RADIO_GROUP_HORIZONTAL
+                || question.getAnswer().getOutput() == Constants.RADIO_GROUP_VERTICAL) {
 
             Float num = calcNum(question);
             Float denum = calcDenum(question);
@@ -302,7 +303,8 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
     private float calcDenum(Question question) {
         float result = 0;
 
-        if (question.getAnswer().getOutput() == Constants.DROPDOWN_LIST) {
+        if (question.getAnswer().getOutput() == Constants.DROPDOWN_LIST || question.getAnswer().getOutput() == Constants.RADIO_GROUP_HORIZONTAL
+                || question.getAnswer().getOutput() == Constants.RADIO_GROUP_VERTICAL) {
 
             Option option = question.getOptionBySession();
             if (option != null) {
@@ -382,10 +384,10 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
             case Constants.RADIO_GROUP_VERTICAL:
                 //FIXME: it is almost the same as the previous case
                 Value value = question.getValueBySession();
+                List<Float> numdenumradiobutton = ScoreRegister.getNumDenum(question);
                 if (value != null) {
                     ((RadioButton)  viewHolder.component.findViewWithTag(value.getOption())).setChecked(true);
 
-                    List<Float> numdenumradiobutton = ScoreRegister.getNumDenum(question);
                     viewHolder.num.setText(Float.toString(numdenumradiobutton.get(0)));
                     viewHolder.denum.setText(Float.toString(numdenumradiobutton.get(1)));
                 } else {
@@ -707,7 +709,17 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
 
         @Override
         public void onCheckedChanged(RadioGroup group, int checkedId) {
-            Option option = null;
+
+                Option option = new Option(Constants.DEFAULT_SELECT_OPTION);
+                if (checkedId != -1) {
+                    RadioButton radioButton = (RadioButton) ((RadioGroup) this.viewHolder.component).findViewById(checkedId);
+                    option = (Option) radioButton.getTag();
+                }
+                itemSelected(viewHolder, question, option);
+
+        }
+
+            /*Option option = null;
             if (checkedId != -1) {
                 RadioButton radioButton = (RadioButton) ((RadioGroup) this.viewHolder.component).findViewById(checkedId);
                 option = (Option) radioButton.getTag();
@@ -715,8 +727,8 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
             } else {
                 Value value = question.getValueBySession();
                 if (value != null) value.delete();
-            }
-            recalculateScores(viewHolder, question);
+            }*/
+            /*recalculateScores(viewHolder, question);
 
             if (question.hasChildren() && option != null) {
 
@@ -727,8 +739,8 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
 
             }
 
-            updateScore();
-        }
+            updateScore();*/
+
     }
 
 }
