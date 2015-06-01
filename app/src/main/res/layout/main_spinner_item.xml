@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+<org.eyeseetea.malariacare.views.TextCard xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@android:id/text1"
-        style="?android:attr/spinnerItemStyle"
+    style="?android:attr/spinnerItemStyle"
     android:singleLine="true"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -13,4 +14,5 @@
     android:paddingRight="40dip"
     android:alpha="0.8"
     android:paddingLeft="40dip"
-    android:fontFamily="@string/bold_font_name" />
+    app:tDimension="@string/font_size_level1"
+    app:tFontName="@string/bold_font_name" />

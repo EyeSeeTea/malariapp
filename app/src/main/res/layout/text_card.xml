@@ -21,9 +21,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent" android:layout_height="match_parent">
 
-    <org.eyeseetea.malariacare.views.TextCard android:background="#ccc" android:layout_width="300dp"
-        android:layout_height="300dp" android:paddingLeft="20dp" android:paddingBottom="40dp"
-        app:tDimension="24sp" app:tColor="#33b5e5" app:tString=""
-        app:tDrawable="@android:drawable/ic_menu_add" />
+    <org.eyeseetea.malariacare.views.TextCard android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:tScale="@string/textcard_default_scale"
+        app:tDimension="@string/textcard_default_dimension"
+        app:tFontName="@string/normal_font" />
 
 </FrameLayout>

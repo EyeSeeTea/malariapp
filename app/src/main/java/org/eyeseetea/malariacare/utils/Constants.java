@@ -1,5 +1,7 @@
 package org.eyeseetea.malariacare.utils;
 
+import java.util.Map;
+
 public class Constants {
 
     // ############# QUESTION TYPE ###############
@@ -35,10 +37,10 @@ public class Constants {
             OPERATION_TYPE_PARENT = 1,
             OPERATION_TYPE_OTHER = 2;
 
-    public static final String FONTS_SMALL = "small",
+    public static final String FONTS_XSMALL = "xsmall",
+            FONTS_SMALL = "small",
             FONTS_MEDIUM = "medium",
             FONTS_LARGE = "large",
-            FONTS_EXTRA_LARGE = "extra",
+            FONTS_XLARGE = "xlarge",
             FONTS_SYSTEM = "system";
-
 }

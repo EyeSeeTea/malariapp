@@ -18,6 +18,7 @@
   -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/radio"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -30,13 +31,15 @@
         android:layout_weight="0.5"
         android:padding="5dip">
 
-        <TextView
+        <org.eyeseetea.malariacare.views.TextCard
             android:id="@+id/statement"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@string/normal_font"
             android:paddingLeft="@dimen/question_padding_left"
-            android:text="@string/widget_info_empty_statement" />
+            android:text="@string/widget_info_empty_statement"
+            app:tDimension="@string/font_size_level1"
+            app:tFontName="@string/medium_font_name" />
     </RelativeLayout>
 
     <RelativeLayout
@@ -70,13 +73,15 @@
         android:gravity="center_vertical|center_horizontal"
         android:padding="@dimen/question_padding_all">
 
-        <TextView
+        <org.eyeseetea.malariacare.views.TextCard
             android:id="@+id/num"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@string/normal_font"
             android:gravity="center_vertical|center_horizontal"
-            android:text="@string/number_zero" />
+            android:text="@string/number_zero"
+            app:tDimension="@string/font_size_level1"
+            app:tFontName="@string/medium_font_name" />
     </RelativeLayout>
 
     <RelativeLayout
@@ -86,13 +91,15 @@
         android:gravity="center_vertical|center_horizontal"
         android:padding="@dimen/question_padding_all">
 
-        <TextView
+        <org.eyeseetea.malariacare.views.TextCard
             android:id="@+id/den"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@string/normal_font"
             android:gravity="center_vertical|center_horizontal"
-            android:text="@string/number_zero" />
+            android:text="@string/number_zero"
+            app:tDimension="@string/font_size_level1"
+            app:tFontName="@string/medium_font_name" />
     </RelativeLayout>
 
 </LinearLayout>

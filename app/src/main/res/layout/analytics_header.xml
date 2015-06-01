@@ -19,12 +19,13 @@
   -->
 
 <TableRow xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="horizontal"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:gravity="center">
 
-    <TextView
+    <org.eyeseetea.malariacare.views.TextCard
         android:layout_width="0dip"
         android:layout_height="fill_parent"
         android:textAppearance="?android:textAppearanceSmall"
@@ -36,9 +37,11 @@
         android:padding="5dip"
         android:layout_weight="0.25"
         android:layout_gravity="center"
-        android:fontFamily="@string/medium_font_name" />
+        android:fontFamily="@string/medium_font_name"
+        app:tDimension="@string/font_size_level2"
+        app:tFontName="@string/condensed_font_name" />
 
-    <TextView
+    <org.eyeseetea.malariacare.views.TextCard
         android:layout_width="0dip"
         android:layout_height="fill_parent"
         android:textAppearance="?android:textAppearanceSmall"
@@ -50,9 +53,11 @@
         android:padding="5dip"
         android:layout_weight="0.2"
         android:layout_gravity="center"
-        android:fontFamily="@string/medium_font_name" />
+        android:fontFamily="@string/medium_font_name"
+        app:tDimension="@string/font_size_level2"
+        app:tFontName="@string/condensed_font_name" />
 
-    <TextView
+    <org.eyeseetea.malariacare.views.TextCard
         android:layout_width="0dip"
         android:layout_height="fill_parent"
         android:textAppearance="?android:textAppearanceSmall"
@@ -64,9 +69,10 @@
         android:layout_weight="0.2"
         android:layout_gravity="center"
         android:text="@string/analytics_title_completed"
-        android:fontFamily="@string/medium_font_name" />
+        app:tDimension="@string/font_size_level2"
+        app:tFontName="@string/condensed_font_name" />
 
-    <TextView
+    <org.eyeseetea.malariacare.views.TextCard
         android:layout_width="0dip"
         android:layout_height="fill_parent"
         android:textAppearance="?android:textAppearanceSmall"
@@ -78,5 +84,6 @@
         android:layout_weight="0.3"
         android:layout_gravity="center"
         android:text="@string/analytics_title_achievement"
-        android:fontFamily="@string/normal_font"/>
+        app:tDimension="@string/font_size_level2"
+        app:tFontName="@string/condensed_font_name"/>
 </TableRow>

@@ -26,9 +26,8 @@
     </declare-styleable>
 
     <declare-styleable name="TextCard">
-        <attr name="tString" format="string" />
-        <attr name="tDimension" format="dimension" />
-        <attr name="tColor" format="color" />
-        <attr name="tDrawable" format="color|reference" />
+        <attr name="tDimension" format="string|reference" />
+        <attr name="tScale" format="string|reference" />
+        <attr name="tFontName" format="string|reference" />
     </declare-styleable>
 </resources>

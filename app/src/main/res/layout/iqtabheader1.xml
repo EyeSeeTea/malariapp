@@ -1,16 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="fill_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
     android:layout_height="fill_parent">
 
-        <TextView
+        <org.eyeseetea.malariacare.views.TextCard
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="@string/iqatab_info_supervisor"
             android:id="@+id/supervisorTitle"
             android:textStyle="bold"
-            android:paddingBottom="20dip" />
+            android:paddingBottom="20dip"
+            app:tDimension="@string/font_size_level2"
+            app:tFontName="@string/condensed_font_name" />
 
         <Space
             android:layout_width="fill_parent"
@@ -25,7 +29,7 @@
             android:background="@drawable/background_odd">
 
 
-                <TextView
+                <org.eyeseetea.malariacare.views.TextCard
                     android:layout_width="0dip"
                     android:layout_height="match_parent"
                     android:textAppearance="?android:attr/textAppearanceMedium"
@@ -36,9 +40,11 @@
                     android:lines="2"
                     android:gravity="center"
                     android:padding="5dip"
-                    android:layout_weight="0.4" />
+                    android:layout_weight="0.4"
+                    app:tDimension="@string/font_size_level2"
+                    app:tFontName="@string/condensed_font_name" />
 
-                <TextView
+                <org.eyeseetea.malariacare.views.TextCard
                     android:layout_width="0dip"
                     android:layout_height="match_parent"
                     android:textAppearance="?android:attr/textAppearanceMedium"
@@ -49,9 +55,11 @@
                     android:gravity="center"
                     android:lines="2"
                     android:padding="5dip"
-                    android:layout_weight="0.3" />
+                    android:layout_weight="0.3"
+                    app:tDimension="@string/font_size_level2"
+                    app:tFontName="@string/condensed_font_name" />
 
-                <TextView
+                <org.eyeseetea.malariacare.views.TextCard
                     android:layout_width="0dip"
                     android:layout_height="match_parent"
                     android:textAppearance="?android:attr/textAppearanceMedium"
@@ -62,9 +70,8 @@
                     android:lines="2"
                     android:gravity="center"
                     android:padding="5dip"
-                    android:layout_weight="0.3" />
-
+                    android:layout_weight="0.3"
+                    app:tDimension="@string/font_size_level2"
+                    app:tFontName="@string/condensed_font_name" />
         </LinearLayout>
-
-
 </LinearLayout>

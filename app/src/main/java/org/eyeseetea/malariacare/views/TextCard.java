@@ -23,180 +23,167 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.text.TextPaint;
 import android.util.AttributeSet;
+import android.util.TypedValue;
 import android.widget.TextView;
 
 import org.eyeseetea.malariacare.R;
+import org.eyeseetea.malariacare.database.utils.Session;
+import org.eyeseetea.malariacare.utils.Constants;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * TODO: document your custom view class.
  */
 public class TextCard extends TextView {
-    private String mString = getContext().getString(R.string.empty_string);
-    private int mColor = getContext().getResources().getColor(R.color.black);
-    private float mDimension = getContext().getResources().getDimension(R.dimen.text_card_def);
-    private Drawable mDrawable;
+    private String mfontName = getContext().getString(R.string.normal_font);
+    private String mScale = getContext().getString(R.string.settings_array_values_font_sizes_def);
+    private String mDimension = getContext().getString(R.string.settings_array_values_font_sizes_def);
 
-    private TextPaint mTextPaint;
-    private float mTextWidth;
-    private float mTextHeight;
+    private  Map<String, Map<String, Float>> fonts = null;
 
     public TextCard(Context context) {
         super(context);
+        initMap();
         init(null, 0);
     }
 
     public TextCard(Context context, AttributeSet attrs) {
         super(context, attrs);
+        initMap();
         init(attrs, 0);
     }
 
     public TextCard(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
+        initMap();
         init(attrs, defStyle);
+    }
+
+    private void initMap(){
+        Map<String, Float> xsmall = new HashMap<>();
+        xsmall.put(Constants.FONTS_XSMALL, getContext().getResources().getDimension(R.dimen.xsmall_xsmall_text_size));
+        xsmall.put(Constants.FONTS_SMALL, getContext().getResources().getDimension(R.dimen.xsmall_small_text_size));
+        xsmall.put(Constants.FONTS_MEDIUM, getContext().getResources().getDimension(R.dimen.xsmall_medium_text_size));
+        xsmall.put(Constants.FONTS_LARGE, getContext().getResources().getDimension(R.dimen.xsmall_large_text_size));
+        xsmall.put(Constants.FONTS_XLARGE, getContext().getResources().getDimension(R.dimen.xsmall_xlarge_text_size));
+        Map<String, Float> small = new HashMap<>();
+        small.put(Constants.FONTS_XSMALL, getContext().getResources().getDimension(R.dimen.small_xsmall_text_size));
+        small.put(Constants.FONTS_SMALL, getContext().getResources().getDimension(R.dimen.small_small_text_size));
+        small.put(Constants.FONTS_MEDIUM, getContext().getResources().getDimension(R.dimen.small_medium_text_size));
+        small.put(Constants.FONTS_LARGE, getContext().getResources().getDimension(R.dimen.small_large_text_size));
+        small.put(Constants.FONTS_XLARGE, getContext().getResources().getDimension(R.dimen.small_xlarge_text_size));
+        Map<String, Float> medium = new HashMap<>();
+        medium.put(Constants.FONTS_XSMALL, getContext().getResources().getDimension(R.dimen.medium_xsmall_text_size));
+        medium.put(Constants.FONTS_SMALL, getContext().getResources().getDimension(R.dimen.medium_small_text_size));
+        medium.put(Constants.FONTS_MEDIUM, getContext().getResources().getDimension(R.dimen.medium_medium_text_size));
+        medium.put(Constants.FONTS_LARGE, getContext().getResources().getDimension(R.dimen.medium_large_text_size));
+        medium.put(Constants.FONTS_XLARGE, getContext().getResources().getDimension(R.dimen.medium_xlarge_text_size));
+        Map<String, Float> large = new HashMap<>();
+        large.put(Constants.FONTS_XSMALL, getContext().getResources().getDimension(R.dimen.large_xsmall_text_size));
+        large.put(Constants.FONTS_SMALL, getContext().getResources().getDimension(R.dimen.large_small_text_size));
+        large.put(Constants.FONTS_MEDIUM, getContext().getResources().getDimension(R.dimen.large_medium_text_size));
+        large.put(Constants.FONTS_LARGE, getContext().getResources().getDimension(R.dimen.large_large_text_size));
+        large.put(Constants.FONTS_XLARGE, getContext().getResources().getDimension(R.dimen.large_xlarge_text_size));
+        Map<String, Float> xlarge = new HashMap<>();
+        xlarge.put(Constants.FONTS_XSMALL, getContext().getResources().getDimension(R.dimen.extra_xsmall_text_size));
+        xlarge.put(Constants.FONTS_SMALL, getContext().getResources().getDimension(R.dimen.extra_small_text_size));
+        xlarge.put(Constants.FONTS_MEDIUM, getContext().getResources().getDimension(R.dimen.extra_medium_text_size));
+        xlarge.put(Constants.FONTS_LARGE, getContext().getResources().getDimension(R.dimen.extra_large_text_size));
+        xlarge.put(Constants.FONTS_XLARGE, getContext().getResources().getDimension(R.dimen.extra_xlarge_text_size));
+        fonts = new HashMap<>();
+        fonts.put(Constants.FONTS_XSMALL, xsmall);
+        fonts.put(Constants.FONTS_SMALL, small);
+        fonts.put(Constants.FONTS_MEDIUM, medium);
+        fonts.put(Constants.FONTS_LARGE, large);
+        fonts.put(Constants.FONTS_XLARGE, xlarge);
     }
 
     private void init(AttributeSet attrs, int defStyle) {
         // Load attributes
-        final TypedArray a = getContext().obtainStyledAttributes(attrs, R.styleable.TextCard, defStyle, 0);
+        if (attrs != null) {
+            final TypedArray a = getContext().obtainStyledAttributes(attrs, R.styleable.TextCard, defStyle, 0);
+            String fontName = a.getString(R.styleable.TextCard_tFontName);
+            if (fontName != null){
+                Typeface font = Typeface.createFromAsset(getContext().getAssets(), "fonts/"+fontName);
+                setTypeface(font);
+            }
 
-        this.mString = a.getString(R.styleable.TextCard_tString);
-        this.mColor = a.getColor(R.styleable.TextCard_tColor, this.mColor);
-        // Use getDimensionPixelSize or getDimensionPixelOffset when dealing with
-        // values that should fall on pixel boundaries.
-        this.mDimension = a.getDimension(R.styleable.TextCard_tDimension, this.mDimension);
+            String dimension = a.getString(R.styleable.TextCard_tDimension);
+            String scale = a.getString(R.styleable.TextCard_tScale);
+            if (dimension == null) dimension = getContext().getString(R.string.settings_array_values_font_sizes_def);
+            if (scale == null) scale = Session.getFontSize();
+            if (!scale.equals(Constants.FONTS_SYSTEM)) setTextSize(TypedValue.COMPLEX_UNIT_SP, fonts.get(scale).get(dimension));
 
-        if (a.hasValue(R.styleable.TextCard_tDrawable)) {
-            this.mDrawable = a.getDrawable(R.styleable.TextCard_tDrawable);
-            this.mDrawable.setCallback(this);
+            this.mDimension = dimension;
+            this.mScale = scale;
+            this.mfontName = fontName;
+            a.recycle();
         }
-
-        a.recycle();
-
-        // Set up a default TextPaint object
-        mTextPaint = new TextPaint();
-        mTextPaint.setFlags(Paint.ANTI_ALIAS_FLAG);
-        mTextPaint.setTextAlign(Paint.Align.LEFT);
-
-        // Update TextPaint and text measurements from attributes
-        invalidateTextPaintAndMeasurements();
-    }
-
-    private void invalidateTextPaintAndMeasurements() {
-        /*mTextPaint.setTextSize(this.mDimension);
-        mTextPaint.setColor(this.mColor);
-        mTextWidth = mTextPaint.measureText(this.mString);
-
-        Paint.FontMetrics fontMetrics = mTextPaint.getFontMetrics();
-        mTextHeight = fontMetrics.bottom;*/
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
-
-
-        // TODO: consider storing these as member variables to reduce
-        // allocations per draw cycle.
-        /*int paddingLeft = getPaddingLeft();
-        int paddingTop = getPaddingTop();
-        int paddingRight = getPaddingRight();
-        int paddingBottom = getPaddingBottom();
-
-        int contentWidth = getWidth() - paddingLeft - paddingRight;
-        int contentHeight = getHeight() - paddingTop - paddingBottom;
-
-        // Draw the text.
-        canvas.drawText(mString,
-                paddingLeft + (contentWidth - mTextWidth) / 2,
-                paddingTop + (contentHeight + mTextHeight) / 2,
-                mTextPaint);
-
-        // Draw the example drawable on top of the text.
-        if (mDrawable != null) {
-            mDrawable.setBounds(paddingLeft, paddingTop, paddingLeft + contentWidth, paddingTop + contentHeight);
-            mDrawable.draw(canvas);
-        }*/
         super.onDraw(canvas);
     }
 
     /**
-     * Gets the example string attribute value.
+     * Sets the view's mFontName attribute value. This is intended to be a String that represents the font filename.
      *
-     * @return The example string attribute value.
+     * @param mFontName The example getmDimension attribute value to use.
      */
-    public String getmString() {
-        return mString;
+    public void setmFontName(String mFontName) {
+        this.mDimension = mDimension;
     }
 
     /**
-     * Sets the view's example string attribute value. In the example view, this string
-     * is the text to draw.
+     * Gets the mDimension attribute value.
      *
-     * @param mString The example string attribute value to use.
+     * @return The mDimension attribute value.
      */
-    public void setmString(String mString) {
-        this.mString = mString;
-        invalidateTextPaintAndMeasurements();
+    public String getmFontName() {
+        return mfontName;
     }
 
     /**
-     * Gets the example color attribute value.
+     * Sets the view's mDimension attribute value. In this case, this is the fontSize divided into some dicrete levels
      *
-     * @return The example color attribute value.
+     * @param mDimension The example getmDimension attribute value to use.
      */
-    public int getmColor() {
-        return mColor;
+    public void setmDimension(String mDimension) {
+        this.mDimension = mDimension;
     }
 
     /**
-     * Sets the view's example color attribute value. In the example view, this color
-     * is the font color.
+     * Gets the mDimension attribute value.
      *
-     * @param mColor The example color attribute value to use.
+     * @return The dimension attribute value.
      */
-    public void setmColor(int mColor) {
-        this.mColor = mColor;
-        invalidateTextPaintAndMeasurements();
-    }
-
-    /**
-     * Gets the example getmDimension attribute value.
-     *
-     * @return The example getmDimension attribute value.
-     */
-    public float getmDimension() {
+    public String getmDimension() {
         return mDimension;
     }
 
     /**
-     * Sets the view's example getmDimension attribute value. In the example view, this getmDimension
-     * is the font size.
+     * Sets the view's mDimension attribute value. In this case, this is the fontSize scale separated into some discrete levels
      *
-     * @param mDimension The example getmDimension attribute value to use.
+     * @param mScale The example scale attribute value to use.
      */
-    public void setmDimension(float mDimension) {
-        this.mDimension = mDimension;
-        invalidateTextPaintAndMeasurements();
+    public void setmScale(String mScale) {
+        this.mScale = mScale;
     }
 
     /**
-     * Gets the example drawable attribute value.
+     * Gets the mDimension attribute value.
      *
-     * @return The example drawable attribute value.
+     * @return The scale attribute value.
      */
-    public Drawable getmDrawable() {
-        return mDrawable;
-    }
-
-    /**
-     * Sets the view's example drawable attribute value. In the example view, this drawable is
-     * drawn above the text.
-     *
-     * @param mDrawable The example drawable attribute value to use.
-     */
-    public void setmDrawable(Drawable mDrawable) {
-        this.mDrawable = mDrawable;
+    public String getmScale() {
+        return this.mScale;
     }
 }
+

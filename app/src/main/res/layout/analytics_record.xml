@@ -19,6 +19,7 @@
   -->
 
 <TableRow xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:padding="5dp"
@@ -31,14 +32,16 @@
         android:id="@+id/dateContainer"
         android:layout_weight="0.25">
 
-        <TextView
+        <org.eyeseetea.malariacare.views.TextCard
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:id="@+id/survey_type"
             android:padding="5dip"
             android:layout_gravity="center_vertical"
-            android:fontFamily="@string/normal_font"/>
+            android:fontFamily="@string/normal_font"
+            app:tDimension="@string/font_size_level1"
+            app:tFontName="@string/medium_font_name" />
     </LinearLayout>
 
     <LinearLayout
@@ -48,14 +51,16 @@
         android:id="@+id/targetContainer"
         android:layout_weight="0.2">
 
-        <TextView
+        <org.eyeseetea.malariacare.views.TextCard
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:id="@+id/target"
             android:padding="5dip"
             android:layout_gravity="center"
-            android:fontFamily="@string/normal_font" />
+            android:fontFamily="@string/normal_font"
+            app:tDimension="@string/font_size_level1"
+            app:tFontName="@string/medium_font_name" />
     </LinearLayout>
 
     <LinearLayout
@@ -65,14 +70,15 @@
         android:id="@+id/doneContainer"
         android:layout_weight="0.2">
 
-        <TextView
+        <org.eyeseetea.malariacare.views.TextCard
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:id="@+id/done"
             android:padding="5dip"
             android:layout_gravity="center"
-            android:fontFamily="@string/normal_font" />
+            app:tDimension="@string/font_size_level1"
+            app:tFontName="@string/medium_font_name" />
     </LinearLayout>
 
     <LinearLayout
@@ -82,13 +88,14 @@
         android:id="@+id/achievementContainer"
         android:layout_weight="0.3">
 
-        <TextView
+        <org.eyeseetea.malariacare.views.TextCard
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:id="@+id/achievement"
             android:padding="5dip"
             android:layout_gravity="center"
-            android:fontFamily="@string/normal_font" />
+            app:tDimension="@string/font_size_level1"
+            app:tFontName="@string/medium_font_name" />
     </LinearLayout>
 </TableRow>

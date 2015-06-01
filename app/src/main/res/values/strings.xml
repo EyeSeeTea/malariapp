@@ -168,25 +168,13 @@
     <string name="settings_checkbox_customize_fonts">Customize fonts?</string>
     <string name="settings_list_font_sizes">Fonts size</string>
     <string-array name="settings_array_titles_font_sizes">
+        <item>Extra small</item>
         <item>Small</item>
         <item>Medium</item>
         <item>Large</item>
         <item>Extra large</item>
     </string-array>
-    <string-array name="settings_array_values_font_sizes">
-        <item>small</item>
-        <item>medium</item>
-        <item>large</item>
-        <item>extra</item>
-    </string-array>
     <string name="settings_text_dhis_server_url">DHIS Server URL</string>
     <string name="pref_header_general">General</string>
-
-    <!-- fonts -->
-    <string name="normal_font">sans-serif</string>
-    <string name="light_font">sans-serif-light</string>
-    <string name="bold_font_name">sans-serif</string>
-    <string name="medium_font_name">sans-serif-condensed</string>
-    <string name="condensed_font_name">sans-serif-condensed</string>
 
 </resources>

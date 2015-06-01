@@ -19,6 +19,7 @@
   -->
 
 <TableRow xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:padding="5dp"
@@ -32,7 +33,7 @@
         android:layout_weight="0.6"
         android:layout_gravity="center">
 
-        <TextView
+        <org.eyeseetea.malariacare.views.TextCard
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
@@ -41,9 +42,10 @@
             android:textStyle="bold"
             android:paddingLeft="5dip"
             android:paddingRight="5dip"
-            android:fontFamily="@string/bold_font_name" />
+            app:tDimension="@string/font_size_level1"
+            app:tFontName="@string/medium_font_name" />
 
-        <TextView
+        <org.eyeseetea.malariacare.views.TextCard
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
@@ -51,7 +53,8 @@
             android:layout_gravity="center_vertical"
             android:paddingLeft="5dip"
             android:paddingRight="5dip"
-            android:fontFamily="@string/normal_font" />
+            app:tDimension="@string/font_size_level1"
+            app:tFontName="@string/medium_font_name" />
 
     </LinearLayout>
 
@@ -63,7 +66,7 @@
         android:layout_weight="0.2"
         android:layout_gravity="center">
 
-        <TextView
+        <org.eyeseetea.malariacare.views.TextCard
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
@@ -71,7 +74,8 @@
             android:padding="5dip"
             android:layout_gravity="center"
             android:textStyle="bold"
-            android:fontFamily="@string/bold_font_name" />
+            app:tDimension="@string/font_size_level1"
+            app:tFontName="@string/medium_font_name" />
 
     </LinearLayout>
 

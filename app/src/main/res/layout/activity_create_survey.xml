@@ -50,14 +50,14 @@
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent">
 
-                    <TextView
+                    <org.eyeseetea.malariacare.views.TextCard
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textAppearance="?android:attr/textAppearanceMedium"
                         android:text="@string/create_info_organization_unit"
-                        android:id="@+id/textView2"
-                        style="@style/EyeSeeTextMedium"
-                        android:fontFamily="@string/medium_font_name"/>
+                        app:tDimension="@string/font_size_level2"
+                        app:tFontName="@string/medium_font_name"
+                        android:id="@+id/textView2" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -90,14 +90,14 @@
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent" >
 
-                    <TextView
+                    <org.eyeseetea.malariacare.views.TextCard
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textAppearance="?android:attr/textAppearanceMedium"
                         android:text="@string/create_info_survey"
                         android:id="@+id/textView3"
-                        style="@style/EyeSeeTextMedium"
-                        android:fontFamily="@string/medium_font_name"/>
+                        app:tDimension="@string/font_size_level2"
+                        app:tFontName="@string/medium_font_name"/>
                 </LinearLayout>
 
                 <LinearLayout
