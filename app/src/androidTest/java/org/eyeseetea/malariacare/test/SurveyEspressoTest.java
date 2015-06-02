@@ -179,7 +179,7 @@ public class SurveyEspressoTest extends MalariaEspressoTest{
         whenTabSelected(10);
 
         //THEN
-        onView(withId(R.id.totalScore)).check(matches(withText("4")));
+        onView(withId(R.id.totalScore)).check(matches(withText("8")));
         onView(withId(R.id.rdtAvg)).check(matches(withText("22")));
     }
 
