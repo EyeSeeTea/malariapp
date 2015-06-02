@@ -19,29 +19,25 @@
 
 package org.eyeseetea.malariacare.layout.adapters.dashboard;
 
-import android.app.Activity;
-import android.app.AlertDialog;
+import android.app.ActionBar;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.model.Survey;
-import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 import org.eyeseetea.malariacare.views.TextCard;
 
 import java.util.List;
 
 public class AssessmentAdapter extends ADashboardAdapter implements IDashboardAdapter {
+
+    int backIndex = 0;
+    boolean showNextFacilityName = true;
 
     public AssessmentAdapter(List<Survey> items, Context context) {
         this.items = items;
@@ -56,13 +52,47 @@ public class AssessmentAdapter extends ADashboardAdapter implements IDashboardAd
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         Survey survey = (Survey) getItem(position);
+        float density = getContext().getResources().getDisplayMetrics().density;
+        int paddingDp = (int)(5 * density);
 
+                // Get the row layout
         View rowView = this.lInflater.inflate(getRecordLayout(), parent, false);
-        rowView.setBackgroundResource(LayoutUtils.calculateBackgrounds(position));
 
         // Org Unit Cell
-        ((TextView) rowView.findViewById(R.id.facility)).setText(survey.getOrgUnit().getName());
-        ((TextView) rowView.findViewById(R.id.survey_type)).setText("- " + survey.getProgram().getName());
+        TextCard facilityName = (TextCard) rowView.findViewById(R.id.facility);
+        TextCard surveyType = (TextCard) rowView.findViewById(R.id.survey_type);
+
+        // show facility name (or not) and write survey type name
+        if (!showNextFacilityName) {
+            facilityName.setVisibility(View.GONE);
+            facilityName.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, 0, 0f));
+            surveyType.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, 0, 1f));
+            rowView.setPadding(paddingDp, 0, paddingDp, paddingDp); // If this is the last, remove upper padding
+        } else {
+            facilityName.setText(survey.getOrgUnit().getName());
+            facilityName.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, 0, 0.5f));
+            surveyType.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, 0, 0.5f));
+        }
+        surveyType.setText("- " + survey.getProgram().getName());
+
+        // check whether the following item belongs to the same org unit (to group the data related
+        // to same org unit with the same background)
+        if (position < (this.items.size()-1)) { // FIXME: this algorithm to switch the background only works for 2 different types of program. Change soon or when a third is added
+            if (this.items.get(position+1).getOrgUnit().equals((this.items.get(position)).getOrgUnit())){
+                // show background without border and tell the system that next survey belongs to the same org unit, so its name doesn't need to be shown
+                rowView.setBackgroundResource(LayoutUtils.calculateBackgroundsNoBorder(this.backIndex));
+                this.showNextFacilityName = false;
+                rowView.setPadding(paddingDp, paddingDp, paddingDp, 0); // If there will be other survey, remove bottom padding
+            } else {
+                // show background with border and switch background for the next row
+                rowView.setBackgroundResource(LayoutUtils.calculateBackgrounds(this.backIndex));
+                this.backIndex++;
+                this.showNextFacilityName = true;
+            }
+        }  else {
+            //show background with border
+            rowView.setBackgroundResource(LayoutUtils.calculateBackgrounds(this.backIndex));
+        }
 
         //Status Cell
         //FIXME: This bit needs to change when jose architecture is introduced because probably the save will be executed in a different way

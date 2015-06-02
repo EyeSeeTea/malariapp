@@ -45,10 +45,16 @@ import java.util.List;
 public class LayoutUtils {
 
     public static final int [] rowBackgrounds = {R.drawable.background_even, R.drawable.background_odd};
+    public static final int [] rowBackgroundsNoBorder = {R.drawable.background_even_wo_border, R.drawable.background_odd_wo_border};
 
     // Given a index, this method return a background color
     public static int calculateBackgrounds(int index) {
         return LayoutUtils.rowBackgrounds[index % LayoutUtils.rowBackgrounds.length];
+    }
+
+    // Given an index, this method returns a background color but without a cell border
+    public static int calculateBackgroundsNoBorder(int index) {
+        return LayoutUtils.rowBackgroundsNoBorder[index % LayoutUtils.rowBackgroundsNoBorder.length];
     }
 
     // Given a View, this method climbs the tree searching the target ID

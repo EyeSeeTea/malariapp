@@ -29,6 +29,7 @@ import org.eyeseetea.malariacare.utils.Constants;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 public class Survey extends SugarRecord<Survey> {
@@ -130,14 +131,18 @@ public class Survey extends SugarRecord<Survey> {
         return Select.from(Survey.class)
                 .where(com.orm.query.Condition.prop("org_unit").eq(orgUnit.getId()))
                 .and(com.orm.query.Condition.prop("program").eq(program.getId()))
-                .orderBy("event_date").list();
+                .orderBy("event_date")
+                .orderBy("org_unit")
+                .list();
     }
 
     // Returns all the surveys with status yet not put to "Sent"
     public static List<Survey> getAllUnsentSurveys() {
         return Select.from(Survey.class)
                 .where(com.orm.query.Condition.prop("status").notEq(Constants.SURVEY_SENT))
-                .orderBy("event_date").list();
+                .orderBy("event_date")
+                .orderBy("org_unit")
+                .list();
     }
 
     // Returns the 5 last surveys (by date) with status yet not put to "Sent"
@@ -145,7 +150,9 @@ public class Survey extends SugarRecord<Survey> {
         return Select.from(Survey.class)
                 .where(com.orm.query.Condition.prop("status").notEq(Constants.SURVEY_SENT))
                 .limit(String.valueOf(limit))
-                .orderBy("event_date").list();
+                .orderBy("event_date")
+                .orderBy("org_unit")
+                .list();
     }
 
     @Override
