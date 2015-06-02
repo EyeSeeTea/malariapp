@@ -21,11 +21,7 @@ package org.eyeseetea.malariacare.views;
 
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.graphics.Canvas;
-import android.graphics.Paint;
 import android.graphics.Typeface;
-import android.graphics.drawable.Drawable;
-import android.text.TextPaint;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.widget.TextView;
@@ -34,77 +30,34 @@ import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.utils.Constants;
 
-import java.util.HashMap;
 import java.util.Map;
 
 /**
  * TODO: document your custom view class.
  */
-public class TextCard extends TextView {
+public class TextCard extends TextView implements IEyeSeeView {
     private String mfontName = getContext().getString(R.string.normal_font);
     private String mScale = getContext().getString(R.string.settings_array_values_font_sizes_def);
     private String mDimension = getContext().getString(R.string.settings_array_values_font_sizes_def);
 
-    private  Map<String, Map<String, Float>> fonts = null;
-
     public TextCard(Context context) {
         super(context);
-        initMap();
         init(null, 0);
     }
 
     public TextCard(Context context, AttributeSet attrs) {
         super(context, attrs);
-        initMap();
         init(attrs, 0);
     }
 
     public TextCard(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
-        initMap();
         init(attrs, defStyle);
     }
 
-    private void initMap(){
-        Map<String, Float> xsmall = new HashMap<>();
-        xsmall.put(Constants.FONTS_XSMALL, getContext().getResources().getDimension(R.dimen.xsmall_xsmall_text_size));
-        xsmall.put(Constants.FONTS_SMALL, getContext().getResources().getDimension(R.dimen.xsmall_small_text_size));
-        xsmall.put(Constants.FONTS_MEDIUM, getContext().getResources().getDimension(R.dimen.xsmall_medium_text_size));
-        xsmall.put(Constants.FONTS_LARGE, getContext().getResources().getDimension(R.dimen.xsmall_large_text_size));
-        xsmall.put(Constants.FONTS_XLARGE, getContext().getResources().getDimension(R.dimen.xsmall_xlarge_text_size));
-        Map<String, Float> small = new HashMap<>();
-        small.put(Constants.FONTS_XSMALL, getContext().getResources().getDimension(R.dimen.small_xsmall_text_size));
-        small.put(Constants.FONTS_SMALL, getContext().getResources().getDimension(R.dimen.small_small_text_size));
-        small.put(Constants.FONTS_MEDIUM, getContext().getResources().getDimension(R.dimen.small_medium_text_size));
-        small.put(Constants.FONTS_LARGE, getContext().getResources().getDimension(R.dimen.small_large_text_size));
-        small.put(Constants.FONTS_XLARGE, getContext().getResources().getDimension(R.dimen.small_xlarge_text_size));
-        Map<String, Float> medium = new HashMap<>();
-        medium.put(Constants.FONTS_XSMALL, getContext().getResources().getDimension(R.dimen.medium_xsmall_text_size));
-        medium.put(Constants.FONTS_SMALL, getContext().getResources().getDimension(R.dimen.medium_small_text_size));
-        medium.put(Constants.FONTS_MEDIUM, getContext().getResources().getDimension(R.dimen.medium_medium_text_size));
-        medium.put(Constants.FONTS_LARGE, getContext().getResources().getDimension(R.dimen.medium_large_text_size));
-        medium.put(Constants.FONTS_XLARGE, getContext().getResources().getDimension(R.dimen.medium_xlarge_text_size));
-        Map<String, Float> large = new HashMap<>();
-        large.put(Constants.FONTS_XSMALL, getContext().getResources().getDimension(R.dimen.large_xsmall_text_size));
-        large.put(Constants.FONTS_SMALL, getContext().getResources().getDimension(R.dimen.large_small_text_size));
-        large.put(Constants.FONTS_MEDIUM, getContext().getResources().getDimension(R.dimen.large_medium_text_size));
-        large.put(Constants.FONTS_LARGE, getContext().getResources().getDimension(R.dimen.large_large_text_size));
-        large.put(Constants.FONTS_XLARGE, getContext().getResources().getDimension(R.dimen.large_xlarge_text_size));
-        Map<String, Float> xlarge = new HashMap<>();
-        xlarge.put(Constants.FONTS_XSMALL, getContext().getResources().getDimension(R.dimen.extra_xsmall_text_size));
-        xlarge.put(Constants.FONTS_SMALL, getContext().getResources().getDimension(R.dimen.extra_small_text_size));
-        xlarge.put(Constants.FONTS_MEDIUM, getContext().getResources().getDimension(R.dimen.extra_medium_text_size));
-        xlarge.put(Constants.FONTS_LARGE, getContext().getResources().getDimension(R.dimen.extra_large_text_size));
-        xlarge.put(Constants.FONTS_XLARGE, getContext().getResources().getDimension(R.dimen.extra_xlarge_text_size));
-        fonts = new HashMap<>();
-        fonts.put(Constants.FONTS_XSMALL, xsmall);
-        fonts.put(Constants.FONTS_SMALL, small);
-        fonts.put(Constants.FONTS_MEDIUM, medium);
-        fonts.put(Constants.FONTS_LARGE, large);
-        fonts.put(Constants.FONTS_XLARGE, xlarge);
-    }
-
-    private void init(AttributeSet attrs, int defStyle) {
+    public void init(AttributeSet attrs, int defStyle) {
+        // Fonts Map initialisation
+        if (Session.getFontMap() == null) Session.initMap(getContext());
         // Load attributes
         if (attrs != null) {
             final TypedArray a = getContext().obtainStyledAttributes(attrs, R.styleable.TextCard, defStyle, 0);
@@ -118,18 +71,13 @@ public class TextCard extends TextView {
             String scale = a.getString(R.styleable.TextCard_tScale);
             if (dimension == null) dimension = getContext().getString(R.string.settings_array_values_font_sizes_def);
             if (scale == null) scale = Session.getFontSize();
-            if (!scale.equals(Constants.FONTS_SYSTEM)) setTextSize(TypedValue.COMPLEX_UNIT_SP, fonts.get(scale).get(dimension));
+            if (!scale.equals(Constants.FONTS_SYSTEM)) setTextSize(TypedValue.COMPLEX_UNIT_SP, Session.getFontMap().get(scale).get(dimension));
 
             this.mDimension = dimension;
             this.mScale = scale;
             this.mfontName = fontName;
             a.recycle();
         }
-    }
-
-    @Override
-    protected void onDraw(Canvas canvas) {
-        super.onDraw(canvas);
     }
 
     /**
