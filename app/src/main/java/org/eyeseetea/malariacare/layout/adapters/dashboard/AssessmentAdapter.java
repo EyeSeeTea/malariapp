@@ -74,55 +74,11 @@ public class AssessmentAdapter extends ADashboardAdapter implements IDashboardAd
             ((TextView) rowView.findViewById(R.id.score)).setText(String.format("%d", new Double(100 * (double) status.get(0) / (double) status.get(1)).intValue()));
         }
 
-        //Tools Cell
-        LinearLayout toolContainerView = (LinearLayout) rowView.findViewById(R.id.toolsContainer);
-
-        TextCard deleteTextView = new TextCard(this.context);
-        deleteTextView.setmFontName(getContext().getString(R.string.medium_font_name));
-        deleteTextView.setmScale(getContext().getString(R.string.font_size_level1));
-        deleteTextView.setmDimension(getContext().getString(R.string.font_size_level1));
-        deleteTextView.setText(R.string.assessment_info_delete);
-        deleteTextView.setTextColor(getContext().getResources().getColor(R.color.headerColor));
-        deleteTextView.setTypeface(Typeface.MONOSPACE, Typeface.BOLD);
-        deleteTextView.setOnClickListener(new AssessmentListener((Activity) this.context, survey, context.getString(R.string.assessment_info_delete)));
-        toolContainerView.addView(deleteTextView);
         return rowView;
     }
 
     @Override
     public IDashboardAdapter newInstance(List items, Context context) {
         return new AssessmentAdapter((List<Survey>) items, context);
-    }
-
-    private class AssessmentListener implements View.OnClickListener {
-
-        private Survey survey;
-        private String listenerOption; //One of edit, delete
-        private Activity context;
-
-        public AssessmentListener(Activity context, Survey survey, String listenerOption) {
-            this.context = context;
-            this.survey = survey;
-            this.listenerOption = listenerOption;
-        }
-
-        public void onClick(View view) {
-            if (listenerOption.equals(context.getString(R.string.assessment_info_delete))) {
-                Session.setSurvey(survey);
-
-                new AlertDialog.Builder(context)
-                        .setTitle(context.getString(R.string.dialog_title_delete_survey))
-                        .setMessage(context.getString(R.string.dialog_info_delete_survey))
-                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface arg0, int arg1) {
-                                Session.getSurvey().delete();
-
-                                Intent intent = new Intent(context, DashboardActivity.class);
-                                context.startActivity(intent);
-                            }
-                        })
-                        .setNegativeButton(android.R.string.no, null).create().show();
-            }
-        }
     }
 }
