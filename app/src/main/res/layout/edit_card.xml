@@ -17,15 +17,14 @@
   ~  along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
   -->
 
-<resources>
-    <declare-styleable name="TextCard">
-        <attr name="tDimension" format="string|reference" />
-        <attr name="tScale" format="string|reference" />
-        <attr name="tFontName" format="string|reference" />
-    </declare-styleable>
-    <declare-styleable name="EditCard">
-        <attr name="eDimension" format="string|reference" />
-        <attr name="eScale" format="string|reference" />
-        <attr name="eFontName" format="string|reference" />
-    </declare-styleable>
-</resources>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+
+    <org.eyeseetea.malariacare.views.EditCard android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:eScale="@string/textcard_default_scale"
+        app:eDimension="@string/textcard_default_dimension"
+        app:eFontName="@string/normal_font" />
+
+</FrameLayout>

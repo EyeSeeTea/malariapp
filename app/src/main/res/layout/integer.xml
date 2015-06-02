@@ -29,7 +29,7 @@
         android:padding="@dimen/question_padding_all"
         android:gravity="center"
         android:layout_gravity="center_vertical">
-        <EditText
+        <org.eyeseetea.malariacare.views.EditCard
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:inputType="number"
