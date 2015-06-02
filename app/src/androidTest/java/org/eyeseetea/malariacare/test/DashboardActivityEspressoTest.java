@@ -79,13 +79,13 @@ public class DashboardActivityEspressoTest extends MalariaEspressoTest{
 
     @Test
     public void form_views() {
-        onView(withId(R.id.button)).check(matches(isDisplayed()));
+        onView(withId(R.id.plusButton)).check(matches(isDisplayed()));
     }
 
     @Test
     public void new_survey_launches_intent(){
         //WHEN
-        onView(withId(R.id.button)).perform(click());
+        onView(withId(R.id.plusButton)).perform(click());
 
         //THEN
         intended(anyIntent());
