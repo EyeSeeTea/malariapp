@@ -55,8 +55,9 @@ public class AssessmentAdapter extends ADashboardAdapter implements IDashboardAd
         float density = getContext().getResources().getDisplayMetrics().density;
         int paddingDp = (int)(5 * density);
 
-                // Get the row layout
+        // Get the row layout
         View rowView = this.lInflater.inflate(getRecordLayout(), parent, false);
+        rowView.setPadding(paddingDp, paddingDp, paddingDp, paddingDp);
 
         // Org Unit Cell
         TextCard facilityName = (TextCard) rowView.findViewById(R.id.facility);
@@ -110,5 +111,11 @@ public class AssessmentAdapter extends ADashboardAdapter implements IDashboardAd
     @Override
     public IDashboardAdapter newInstance(List items, Context context) {
         return new AssessmentAdapter((List<Survey>) items, context);
+    }
+
+    @Override
+    public void notifyDataSetChanged(){
+        this.showNextFacilityName = true;
+        super.notifyDataSetChanged();
     }
 }

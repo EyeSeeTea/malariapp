@@ -17,14 +17,14 @@
     <string name="plus">+</string>
 
     <!-- settings -->
-    <string name="settings_menu_about">Sur cette app</string>
+    <string name="settings_menu_about">A propos de cette app</string>
     <string name="settings_menu_configuration">Paramètres</string>
     <string name="settings_menu_licence">License</string>
     <string name="settings_menu_update">Mise à jour des questions (DHIS)</string>
     <string name="settings_menu_logout">Se deconnecter</string>
 
     <!-- login -->
-    <string name="login_info_username">Mel</string>
+    <string name="login_info_username">Utilisateur</string>
     <string name="login_info_password">Mot de passe</string>
     <string name="login_info_sign_in">Se connecter</string>
     <string name="login_error_bad_credentials">Votre mode / mot de passe sont incorrects</string>
@@ -37,7 +37,7 @@
     <string name="dialog_error_denominator">Erreur, denominateur = 0</string>
     <string name="dialog_title_missing_selection">selection manquant</string>
     <string name="dialog_content_missing_selection">Selectionez un cabinet medical et tipe d\'enquête, s\'il vous plait</string>
-    <string name="dialog_title_existing_survey">Enquête existant</string>
+    <string name="dialog_title_existing_survey">Enquête existante</string>
     <string name="dialog_content_existing_survey">Il y a déjà une enquête pas encore envoyée dans le système pour le cabinet et tipe d\'enquête choisís</string>
     <string name="dialog_content_logout_confirmation">Si vous sortez du système, tous les donnés non envoyés seront perdus. Voulez-vous continuer encore ?</string>
 

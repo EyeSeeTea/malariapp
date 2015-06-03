@@ -87,6 +87,7 @@ public class DashboardFragment extends ListFragment {
         // Check to see if we have a frame in which to embed the details fragment directly in the containing UI
         View detailsFrame = getActivity().findViewById(R.id.details);
         mDualPane = detailsFrame != null && detailsFrame.getVisibility() == View.VISIBLE;
+        mDualPane = false; // FIXME: remove it when dualPane bug is solved
 
         if (savedInstanceState != null){
             mCurCheckPosition = savedInstanceState.getInt("curChoice", 0);
