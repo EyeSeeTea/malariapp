@@ -19,13 +19,16 @@
 
 package org.eyeseetea.malariacare;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.LoaderManager;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.support.v4.app.NavUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -132,6 +135,11 @@ public class SurveyActivity extends BaseActivity implements LoaderManager.Loader
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case android.R.id.home:
+                goBack(this);
+                break;
+        }
         return super.onOptionsItemSelected(item);
     }
 
@@ -252,9 +260,7 @@ public class SurveyActivity extends BaseActivity implements LoaderManager.Loader
 
     }
 
-
-    @Override
-    public void onBackPressed() {
+    public void goBack(final Activity activity){
         new AlertDialog.Builder(this)
                 .setTitle("Really Exit?")
                 .setMessage("Are you sure you want to exit?")
@@ -262,12 +268,14 @@ public class SurveyActivity extends BaseActivity implements LoaderManager.Loader
                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
 
                     public void onClick(DialogInterface arg0, int arg1) {
-                        finish();
-                        Class c = DashboardActivity.class;
-                        Intent mainIntent = new Intent(SurveyActivity.this, c);
-                        startActivity(mainIntent);
+                        NavUtils.navigateUpFromSameTask(activity);
                     }
                 }).create().show();
+    }
+
+    @Override
+    public void onBackPressed() {
+        goBack(this);
     }
 
     @Override

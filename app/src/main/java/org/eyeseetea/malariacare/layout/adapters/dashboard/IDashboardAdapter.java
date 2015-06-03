@@ -56,5 +56,11 @@ public interface IDashboardAdapter {
 
     public void setItems(List items);
 
+    public Object getItem(int position);
+
+    public void remove(Object item);
+
+    public void notifyDataSetChanged();
+
     public IDashboardAdapter newInstance(List items, Context context);
 }

@@ -52,8 +52,6 @@
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:alpha="0.8"
-            android:background="@color/textFieldColor"
             android:orientation="vertical">
 
             <RadioGroup
