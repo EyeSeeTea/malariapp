@@ -1,12 +1,13 @@
-#Testing app
+#Instrumented tests
+
 
 The current version of malariacare has some 'instrumented with Espresso' (a Google library for testing Android) tests that can be run to ensure that nothing has been broken while programming.
 
-# Where to find those tests #
+##Where to find those tests
 
 Under folder **'malariaapp/app/src/androidTest'**
 
-# How to run them #
+##How to run them 
 Instrumented tests require a physical device (or emulator) running in order to execute the tests.
 In fact tests are converted into another **apk** (named app-debug) that is temporary installed into the device in order to manipulate the app under test.
 
@@ -32,7 +33,7 @@ malariapp/app/build/reports/androidTests/connected/index.html
 ```
 
 
-# Understanding tests execution #
+##Understanding tests execution
 
 One of the main pains while programming instrumented tests is dealing with the expected state of the app (activities, sessions, databases and so on).
 
@@ -90,7 +91,7 @@ The sequence in order is:
         - @After method(s) (could be many but order is not warranted)
     - @AfterClass
 
-#Be aware of the 'state'#
+##Be aware of the 'state'
 
 Tests must be stateless otherwise they will or fail almost randomly which is awful because it causes false positives.    
 
@@ -100,3 +101,37 @@ Because of that it is really important to ensure that each tests with its precon
         - cleanDB: Deletes each table from the database in the right order.
         - cleanSession: Removes info (user, survey, ..) from the singleton session class.
     - populateData: Load 'csv' files into tables.
+
+
+#Unit tests
+
+Lately some unit tests has been added to the project.
+
+##Where to find those tests
+
+Under folder **'malariaapp/app/src/test'**
+
+##How to run them
+
+Considering that, these tests can be run from:
+
+ - Command Line:
+
+```bash
+./gradlew test --continue
+```
+
+ - Android Studio 
+    - Build Variants > Test Artifact
+    - Select folder(test), class or method
+    - Run JUnit test
+
+
+When the tests are running you can see the changes on your device, and the results of those tests are reported under the following path:
+
+```
+malariapp/app/build/reports/tests/debug/index.html
+
+```
+
+

@@ -123,4 +123,18 @@ public class Session {
         Session.fontMap.put(Constants.FONTS_XLARGE, xlarge);
     }
 
+    /**
+     * Closes the current session when the user logs out
+     */
+    public static void logout(){
+        List<Survey> surveys = Survey.getAllUnsentSurveys();
+        for (Survey survey : surveys) {
+            survey.delete();
+        }
+        Session.getUser().delete();
+        Session.setUser(null);
+        Session.setSurvey(null);
+        Session.setAdapter(null);
+    }
+
 }

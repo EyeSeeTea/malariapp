@@ -52,6 +52,7 @@ import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 import org.eyeseetea.malariacare.utils.Constants;
 import org.eyeseetea.malariacare.utils.Utils;
+import org.eyeseetea.malariacare.views.filters.MinMaxInputFilter;
 
 import java.util.List;
 
@@ -506,6 +507,7 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
 
             question = (Question) item;
 
+            //FIXME This should be moved into its own class (Ex: ViewHolderFactory.getView(item))
             switch (question.getAnswer().getOutput()) {
 
                 case Constants.LONG_TEXT:
@@ -518,13 +520,23 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
                     rowView = initialiseView(R.layout.label, parent, question, viewHolder, position);
                     break;
                 case Constants.POSITIVE_INT:
+                    rowView = initialiseView(R.layout.integer, parent, question, viewHolder, position);
+
+                    //Add main component, set filters and listener
+                    ((EditText) viewHolder.component).setFilters(new InputFilter[]{
+                            new InputFilter.LengthFilter(Constants.MAX_INT_CHARS),
+                            new MinMaxInputFilter(1,null)
+                    });
+                    ((EditText) viewHolder.component).addTextChangedListener(new TextViewListener(false, question));
+                    break;
                 case Constants.INT:
                     rowView = initialiseView(R.layout.integer, parent, question, viewHolder, position);
 
                     //Add main component, set filters and listener
-                    ((EditText) viewHolder.component).setFilters(new InputFilter[]{new InputFilter.LengthFilter(Constants.MAX_INT_CHARS)});
+                    ((EditText) viewHolder.component).setFilters(new InputFilter[]{
+                            new InputFilter.LengthFilter(Constants.MAX_INT_CHARS)
+                    });
                     ((EditText) viewHolder.component).addTextChangedListener(new TextViewListener(false, question));
-                    // FIXME: Add a filter to POSITIVE_INT to avoid user from entering a zero/negative integer
                     break;
                 case Constants.DATE:
                     rowView = initialiseView(R.layout.date, parent, question, viewHolder, position);
