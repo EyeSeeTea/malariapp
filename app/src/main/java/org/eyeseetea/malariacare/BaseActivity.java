@@ -19,6 +19,7 @@
 
 package org.eyeseetea.malariacare;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -26,6 +27,7 @@ import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -110,6 +112,9 @@ public abstract class BaseActivity extends ActionBarActivity {
                             }
                         })
                         .setNegativeButton(android.R.string.no, null).create().show();
+            case android.R.id.home:
+                goBack();
+                break;
         }
 
         return super.onOptionsItemSelected(item);
@@ -125,6 +130,15 @@ public abstract class BaseActivity extends ActionBarActivity {
         super.onRestart();
         finish();
         startActivity(getIntent());
+    }
+
+    public void goBack(){
+        NavUtils.navigateUpFromSameTask(this);
+    }
+
+    @Override
+    public void onBackPressed() {
+        goBack();
     }
 
     /**

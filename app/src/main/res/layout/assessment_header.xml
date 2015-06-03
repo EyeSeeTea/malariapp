@@ -35,7 +35,7 @@
         android:textColor="@color/white"
         android:gravity="center"
         android:padding="5dip"
-        android:layout_weight="0.6"
+        android:layout_weight="0.7"
         android:layout_gravity="center"
         app:tDimension="@string/font_size_level1"
         app:tFontName="@string/condensed_font_name" />
@@ -50,20 +50,10 @@
         android:textColor="@color/white"
         android:gravity="center"
         android:padding="5dip"
-        android:layout_weight="0.2"
+        android:layout_weight="0.3"
         android:layout_gravity="center"
         android:autoText="false"
         app:tDimension="@string/font_size_level1"
         app:tFontName="@string/condensed_font_name" />
-
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="0dip"
-        android:layout_height="fill_parent"
-        android:layout_weight="0.3"
-        android:layout_gravity="center"
-        android:gravity="center"
-        android:padding="5dip"
-        android:background="@drawable/background_header"/>
 
 </TableRow>

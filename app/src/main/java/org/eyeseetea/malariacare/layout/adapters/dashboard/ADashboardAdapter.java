@@ -120,4 +120,9 @@ public abstract class ADashboardAdapter extends BaseAdapter implements IDashboar
     public void setTitle(String title) {
         this.title = title;
     }
+
+    @Override
+    public void remove(Object item) {
+        this.items.remove(item);
+    }
 }
