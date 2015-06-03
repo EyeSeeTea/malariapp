@@ -19,9 +19,11 @@
 
 package org.eyeseetea.malariacare.fragments;
 
+import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.ListFragment;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -44,6 +46,7 @@ import org.eyeseetea.malariacare.database.utils.ReadWriteDB;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.layout.adapters.dashboard.AssessmentAdapter;
 import org.eyeseetea.malariacare.layout.adapters.dashboard.IDashboardAdapter;
+import org.eyeseetea.malariacare.layout.listeners.SwipeDismissListViewTouchListener;
 
 import java.util.List;
 
@@ -53,7 +56,7 @@ import java.util.List;
 public class DashboardDetailsFragment extends ListFragment {
 
     private List<Survey> surveys;
-    private IDashboardAdapter adapter;
+    protected IDashboardAdapter adapter;
     private static int index = 0;
 
     public DashboardDetailsFragment(){
@@ -79,7 +82,7 @@ public class DashboardDetailsFragment extends ListFragment {
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
-        this.surveys = ReadWriteDB.getAllNotSentSurveys();
+        this.surveys = Survey.getAllUnsentSurveys();
     }
 
     @Override
@@ -102,19 +105,59 @@ public class DashboardDetailsFragment extends ListFragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        IDashboardAdapter adapter = Session.getAdapter().newInstance(this.surveys, getActivity());
-        this.adapter = adapter;
+        IDashboardAdapter adapterE = Session.getAdapter().newInstance(this.surveys, getActivity());
+        this.adapter = adapterE;
         LayoutInflater inflater = LayoutInflater.from(getActivity());
         View header = inflater.inflate(this.adapter.getHeaderLayout(), null, false);
-        getListView().addHeaderView(header);
+        View footer = inflater.inflate(this.adapter.getFooterLayout(), null, false);
+        ListView listView = getListView();
+        listView.addHeaderView(header);
+        listView.addFooterView(footer);
         setListAdapter((BaseAdapter) adapter);
+
+        // Create a ListView-specific touch listener. ListViews are given special treatment because
+        // by default they handle touches for their list items... i.e. they're in charge of drawing
+        // the pressed state (the list selector), handling list item clicks, etc.
+        SwipeDismissListViewTouchListener touchListener =
+                new SwipeDismissListViewTouchListener(
+                        listView,
+                        new SwipeDismissListViewTouchListener.DismissCallbacks() {
+                            @Override
+                            public boolean canDismiss(int position) {
+                                return true;
+                            }
+
+                            @Override
+                            public void onDismiss(ListView listView, int[] reverseSortedPositions) {
+                                for (final int position : reverseSortedPositions) {
+                                    new AlertDialog.Builder(getActivity())
+                                            .setTitle(getActivity().getString(R.string.dialog_title_delete_survey))
+                                            .setMessage(getActivity().getString(R.string.dialog_info_delete_survey))
+                                            .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                                                public void onClick(DialogInterface arg0, int arg1) {
+                                                    ((Survey)adapter.getItem(position-1)).delete();
+                                                    adapter.remove(adapter.getItem(position - 1));
+                                                    adapter.notifyDataSetChanged();
+                                                }
+                                            })
+                                            .setNegativeButton(android.R.string.no, null).create().show();
+                                }
+
+                            }
+                        });
+        listView.setOnTouchListener(touchListener);
+        // Setting this scroll listener is required to ensure that during ListView scrolling,
+        // we don't look for swipes.
+        listView.setOnScrollListener(touchListener.makeScrollListener());
+
+
         setListShown(true);
     }
 
     @Override
     public void onListItemClick(ListView l, View v, int position, long id){
         super.onListItemClick(l, v, position, id);
-        Session.setSurvey(surveys.get(position));
+        Session.setSurvey(surveys.get(position-1));
 
         //Call Survey Activity
         getActivity().finish();

@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal" android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
     <RelativeLayout
@@ -8,13 +10,16 @@
         android:layout_height="wrap_content"
         android:layout_weight="0.5"
         android:layout_gravity="center_vertical"
-        android:padding="5dip">
-        <TextView
+        android:padding="@dimen/question_padding_all">
+        <org.eyeseetea.malariacare.views.TextCard
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:text="@string/widget_info_empty_statement"
             android:id="@+id/statement"
-            android:paddingLeft="10dip" />
+            android:paddingLeft="@dimen/question_padding_left"
+            android:textColor="@color/black"
+            app:tDimension="@string/font_size_level1"
+            app:tFontName="@string/medium_font_name" />
     </RelativeLayout>
 
 </LinearLayout>

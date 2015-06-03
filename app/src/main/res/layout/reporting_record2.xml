@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content">
 
     <LinearLayout
         android:orientation="vertical"
@@ -11,12 +12,14 @@
         android:id="@+id/linearLayout"
         android:layout_weight="0.4">
 
-        <TextView
+        <org.eyeseetea.malariacare.views.TextCard
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:id="@+id/reportingQuestion"
-            android:padding="5dip"/>
+            android:padding="5dip"
+            app:tDimension="@string/font_size_level1"
+            app:tFontName="@string/medium_font_name" />
     </LinearLayout>
 
     <LinearLayout
@@ -65,7 +68,7 @@
         android:layout_gravity="center"
         android:layout_weight="0.2">
 
-        <TextView
+        <org.eyeseetea.malariacare.views.TextCard
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
@@ -73,7 +76,9 @@
             android:padding="5dip"
             android:layout_gravity="center"
             android:text="@string/number_zero"
-            android:gravity="center_horizontal" />
+            android:gravity="center_horizontal"
+            app:tDimension="@string/font_size_level1"
+            app:tFontName="@string/medium_font_name" />
     </LinearLayout>
 
 </LinearLayout>

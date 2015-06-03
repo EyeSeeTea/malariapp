@@ -1,42 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal" android:layout_width="fill_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal"
+    android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:gravity="center">
 
-            <TextView
+            <org.eyeseetea.malariacare.views.TextCard
                 android:layout_width="0dip"
                 android:layout_height="fill_parent"
                 android:textAppearance="?android:textAppearanceSmall"
                 android:text="@string/title_id"
                 android:id="@+id/idHeader"
                 android:background="@drawable/background_header"
-                android:textColor="#ffffff"
+                android:textColor="@color/white"
                 android:gravity="center"
                 android:padding="5dip"
-                android:layout_weight="0.2" />
+                android:layout_weight="0.2"
+                app:tDimension="@string/font_size_level1"
+                app:tFontName="@string/medium_font_name" />
 
-            <TextView
+            <org.eyeseetea.malariacare.views.TextCard
                 android:layout_width="0dip"
                 android:layout_height="fill_parent"
                 android:textAppearance="?android:textAppearanceSmall"
                 android:text="@string/title_name"
                 android:id="@+id/nameHeader"
                 android:background="@drawable/background_header"
-                android:textColor="#ffffff"
+                android:textColor="@color/white"
                 android:gravity="center"
                 android:padding="5dip"
-                android:layout_weight="0.6" />
+                android:layout_weight="0.6"
+                app:tDimension="@string/font_size_level1"
+                app:tFontName="@string/medium_font_name" />
 
-            <TextView
+            <org.eyeseetea.malariacare.views.TextCard
                 android:layout_width="0dip"
                 android:layout_height="fill_parent"
                 android:textAppearance="?android:textAppearanceSmall"
                 android:text="@string/score"
                 android:id="@+id/scoreHeader"
                 android:background="@drawable/background_header"
-                android:textColor="#ffffff"
+                android:textColor="@color/white"
                 android:gravity="center"
                 android:padding="5dip"
-                android:layout_weight="0.2" />
+                android:layout_weight="0.2"
+                app:tDimension="@string/font_size_level1"
+                app:tFontName="@string/medium_font_name" />
 </LinearLayout>

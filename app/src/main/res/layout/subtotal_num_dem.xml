@@ -1,22 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal" android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="#1e506c">
+    android:background="@color/headerColor">
 
     <RelativeLayout
         android:layout_width="0dip"
         android:layout_height="wrap_content"
-        android:layout_weight="0.45"
+        android:layout_weight="0"
         android:gravity="center"
-        android:layout_gravity="center_vertical">
+        android:layout_gravity="center_vertical"
+        android:id="@+id/space">
+
+        <Space
+            android:layout_width="20px"
+            android:layout_height="20px" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="0dip"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.35"
+        android:gravity="center"
+        android:layout_gravity="center_vertical"
+        android:id="@+id/subTotalScoreTextContainer">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center">
 
-            <TextView
+            <org.eyeseetea.malariacare.views.TextCard
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceSmall"
@@ -24,25 +40,13 @@
                 android:id="@+id/subtotalScoreText"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:textColor="#ffffff"
+                android:textColor="@color/white"
                 android:textStyle="bold|italic"
                 android:paddingLeft="5dip"
                 android:gravity="center"
                 android:layout_gravity="center"
-                android:textSize="12sp" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:id="@+id/tabName"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:textColor="#ffffff"
-                android:textStyle="bold|italic"
-                android:paddingLeft="5dip"
-                android:gravity="center"
-                android:textSize="12sp" />
+                app:tDimension="@string/font_size_level1"
+                app:tFontName="@string/medium_font_name" />
 
         </LinearLayout>
 
@@ -51,9 +55,10 @@
     <RelativeLayout
         android:layout_width="0dip"
         android:layout_height="wrap_content"
-        android:layout_weight="0.15"
+        android:layout_weight="0.2"
         android:gravity="center"
-        android:layout_gravity="center_vertical">
+        android:layout_gravity="center_vertical"
+        android:id="@+id/subTotalScoreContainer">
 
         <LinearLayout
             android:orientation="vertical"
@@ -67,35 +72,37 @@
                 android:orientation="horizontal"
                 android:layout_gravity="center">
 
-                <TextView
+                <org.eyeseetea.malariacare.views.TextCard
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceSmall"
                     android:id="@+id/score"
-                    android:text="@string/score_info_zero_float"
+                    android:text="@string/number_zero"
                     android:textStyle="bold"
-                    android:textSize="14sp"
-                    android:textColor="#ffffff"
+                    android:textColor="@color/white"
                     android:gravity="center_vertical|right"
                     android:layout_centerVertical="true"
-                    android:layout_gravity="center_vertical|right" />
+                    android:layout_gravity="center_vertical|right"
+                    app:tDimension="@string/font_size_level1"
+                    app:tFontName="@string/medium_font_name" />
 
-                <TextView
+                <org.eyeseetea.malariacare.views.TextCard
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceSmall"
                     android:id="@+id/percentageSymbol"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
-                    android:textColor="#ffffff"
-                    android:textSize="14sp"
+                    android:textColor="@color/white"
                     android:textStyle="bold|italic"
                     android:text="@string/score_title_percentage"
                     android:gravity="left|center_vertical"
                     android:paddingRight="5dip"
                     android:paddingLeft="5dip"
                     android:layout_gravity="left|center_vertical"
-                    android:layout_marginLeft="2dip" />
+                    android:layout_marginLeft="2dip"
+                    app:tDimension="@string/font_size_level1"
+                    app:tFontName="@string/medium_font_name" />
             </LinearLayout>
 
             <LinearLayout
@@ -105,17 +112,18 @@
                 android:orientation="horizontal"
                 android:layout_gravity="center">
 
-                <TextView
+                <org.eyeseetea.malariacare.views.TextCard
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceSmall"
                     android:id="@+id/cualitativeScore"
                     android:textStyle="bold"
-                    android:textSize="14sp"
-                    android:textColor="#ffffff"
+                    android:textColor="@color/white"
                     android:gravity="center_vertical|right"
                     android:layout_centerVertical="true"
-                    android:layout_gravity="center" />
+                    android:layout_gravity="center"
+                    app:tDimension="@string/font_size_level1"
+                    app:tFontName="@string/medium_font_name" />
             </LinearLayout>
         </LinearLayout>
 
@@ -124,22 +132,23 @@
     <RelativeLayout
         android:layout_width="0dip"
         android:layout_height="wrap_content"
-        android:layout_weight="0.2"
+        android:layout_weight="0.25"
         android:layout_gravity="center_vertical|right"
         android:gravity="center_vertical|right">
 
-        <TextView
+        <org.eyeseetea.malariacare.views.TextCard
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:text="@string/score_info_accumulated"
             android:id="@+id/accumulatedText"
             android:textStyle="italic"
-            android:textColor="#ffffff"
+            android:textColor="@color/white"
             android:layout_alignParentEnd="false"
             android:layout_alignParentRight="false"
-            android:textSize="12sp"
-            android:gravity="center_vertical|end" />
+            android:gravity="center_vertical|end"
+            app:tDimension="@string/font_size_level1"
+            app:tFontName="@string/medium_font_name" />
     </RelativeLayout>
 
     <RelativeLayout
@@ -149,16 +158,17 @@
         android:gravity="center_vertical|center|center_horizontal"
         android:layout_gravity="center">
 
-        <TextView
+        <org.eyeseetea.malariacare.views.TextCard
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="@string/empty_string"
             android:id="@+id/totalNum"
-            android:textColor="#ffffff"
-            android:textSize="12sp"
+            android:textColor="@color/white"
             android:textStyle="bold"
-            android:gravity="center" />
+            android:gravity="center"
+            app:tDimension="@string/font_size_level1"
+            app:tFontName="@string/medium_font_name" />
     </RelativeLayout>
     <RelativeLayout
         android:layout_width="0dip"
@@ -167,16 +177,18 @@
         android:gravity="center_vertical|center|center_horizontal"
         android:layout_gravity="center">
 
-        <TextView
+        <org.eyeseetea.malariacare.views.TextCard
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:id="@+id/totalDen"
-            android:textColor="#ffffff"
+            android:textColor="@color/white"
             android:textSize="12sp"
             android:textStyle="bold"
             android:gravity="center"
-            android:text="@string/empty_string" />
+            android:text="@string/empty_string"
+            app:tDimension="@string/font_size_level1"
+            app:tFontName="@string/medium_font_name" />
     </RelativeLayout>
 
 

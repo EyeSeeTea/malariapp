@@ -1,21 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <Space
         android:layout_width="match_parent"
         android:layout_height="40dip" />
 
-        <TextView
+        <org.eyeseetea.malariacare.views.TextCard
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/deprecated_adherence_title_explanation"
+            android:text="@string/adherence_title_explanation"
             android:id="@+id/explanation2Header"
             android:background="@drawable/background_header"
             android:textSize="18sp"
             android:textColor="#ffffff"
-            android:paddingLeft="10dip" />
+            android:paddingLeft="10dip"
+            app:tDimension="@string/font_size_level1"
+            app:tFontName="@string/medium_font_name" />
 
         <EditText
             android:layout_width="match_parent"
@@ -39,46 +43,52 @@
 
 
 
-                <TextView
+                <org.eyeseetea.malariacare.views.TextCard
                     android:layout_width="0dip"
                     android:layout_height="match_parent"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:text="@string/deprecated_adherence_info_patient_id"
+                    android:text="@string/adherence_info_patient_id"
                     android:id="@+id/patientId2Header"
                     android:background="@drawable/background_header"
                     android:padding="5dip"
                     android:textColor="#ffffff"
                     android:gravity="center"
                     android:lines="2"
-                    android:layout_weight="1.5" />
+                    android:layout_weight="1.5"
+                    app:tDimension="@string/font_size_level1"
+                    app:tFontName="@string/medium_font_name" />
 
-                <TextView
+                <org.eyeseetea.malariacare.views.TextCard
                     android:layout_width="0dip"
                     android:layout_height="match_parent"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:text="@string/deprecated_adherence_title_test_results"
+                    android:text="@string/adherence_title_test_results"
                     android:id="@+id/testResultsHeader"
                     android:background="@drawable/background_header"
                     android:padding="5dip"
                     android:textColor="#ffffff"
                     android:gravity="center"
                     android:lines="2"
-                    android:layout_weight="1" />
+                    android:layout_weight="1"
+                    app:tDimension="@string/font_size_level1"
+                    app:tFontName="@string/medium_font_name" />
 
-                <TextView
+                <org.eyeseetea.malariacare.views.TextCard
                     android:layout_width="0dip"
                     android:layout_height="match_parent"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:text="@string/deprecated_adherence_info_prescribed"
+                    android:text="@string/adherence_info_prescribed"
                     android:id="@+id/actPrescribedHeader"
                     android:background="@drawable/background_header"
                     android:padding="5dip"
                     android:gravity="center"
                     android:textColor="#ffffff"
                     android:layout_weight="1"
-                    android:lines="2" />
+                    android:lines="2"
+                    app:tDimension="@string/font_size_level1"
+                    app:tFontName="@string/medium_font_name" />
 
-                <TextView
+                <org.eyeseetea.malariacare.views.TextCard
                     android:layout_width="0dip"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceMedium"
@@ -89,10 +99,9 @@
                     android:textColor="#ffffff"
                     android:gravity="center"
                     android:lines="2"
-                    android:layout_weight="1" />
-
+                    android:layout_weight="1"
+                    app:tDimension="@string/font_size_level1"
+                    app:tFontName="@string/medium_font_name" />
 
             </LinearLayout>
-
-
 </LinearLayout>

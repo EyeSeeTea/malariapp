@@ -19,6 +19,7 @@
   -->
 
 <TableRow xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:padding="5dp"
@@ -32,14 +33,16 @@
         android:layout_weight="0.3"
         android:layout_gravity="center">
 
-        <TextView
+        <org.eyeseetea.malariacare.views.TextCard
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:id="@+id/facility"
             android:padding="5dip"
             android:layout_gravity="center_vertical"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            app:tDimension="@string/font_size_level1"
+            app:tFontName="@string/medium_font_name" />
     </LinearLayout>
 
     <LinearLayout
@@ -50,13 +53,15 @@
         android:layout_weight="0.25"
         android:layout_gravity="center">
 
-        <TextView
+        <org.eyeseetea.malariacare.views.TextCard
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:id="@+id/datePreviousAssessment"
             android:padding="5dip"
-            android:layout_gravity="center" />
+            android:layout_gravity="center"
+            app:tDimension="@string/font_size_level1"
+            app:tFontName="@string/medium_font_name" />
     </LinearLayout>
 
     <LinearLayout
@@ -67,13 +72,15 @@
         android:layout_weight="0.25"
         android:layout_gravity="center">
 
-        <TextView
+        <org.eyeseetea.malariacare.views.TextCard
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:id="@+id/dueDate"
             android:padding="5dip"
-            android:layout_gravity="center" />
+            android:layout_gravity="center"
+            app:tDimension="@string/font_size_level1"
+            app:tFontName="@string/medium_font_name" />
     </LinearLayout>
 
     <LinearLayout
@@ -84,12 +91,14 @@
         android:layout_weight="0.2"
         android:layout_gravity="center">
 
-        <TextView
+        <org.eyeseetea.malariacare.views.TextCard
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:id="@+id/action"
             android:padding="5dip"
-            android:layout_gravity="center" />
+            android:layout_gravity="center"
+            app:tDimension="@string/font_size_level1"
+            app:tFontName="@string/medium_font_name" />
     </LinearLayout>
 </TableRow>

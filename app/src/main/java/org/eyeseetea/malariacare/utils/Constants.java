@@ -1,5 +1,7 @@
 package org.eyeseetea.malariacare.utils;
 
+import java.util.Map;
+
 public class Constants {
 
     // ############# QUESTION TYPE ###############
@@ -9,7 +11,9 @@ public class Constants {
             SHORT_TEXT = 4,
             DATE = 5,
             POSITIVE_INT = 6,
-            NO_ANSWER = 7;
+            NO_ANSWER = 7,
+            RADIO_GROUP_HORIZONTAL = 8,
+            RADIO_GROUP_VERTICAL = 9;
 
     public static final String DEFAULT_SELECT_OPTION = "";
 
@@ -28,4 +32,15 @@ public class Constants {
             SURVEY_COMPLETED = 1,
             SURVEY_SENT = 2;
 
+    //############# OPERATION TYPE ##############
+    public static final int OPERATION_TYPE_MATCH = 0,
+            OPERATION_TYPE_PARENT = 1,
+            OPERATION_TYPE_OTHER = 2;
+
+    public static final String FONTS_XSMALL = "xsmall",
+            FONTS_SMALL = "small",
+            FONTS_MEDIUM = "medium",
+            FONTS_LARGE = "large",
+            FONTS_XLARGE = "xlarge",
+            FONTS_SYSTEM = "system";
 }

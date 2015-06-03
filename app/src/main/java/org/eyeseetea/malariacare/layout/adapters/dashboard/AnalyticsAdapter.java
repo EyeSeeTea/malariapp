@@ -36,14 +36,7 @@ import java.util.List;
 /**
  * Created by Adrian on 22/04/2015.
  */
-public class AnalyticsAdapter extends BaseAdapter implements IDashboardAdapter {
-
-    List<Survey> items;
-    private LayoutInflater lInflater;
-    private Context context;
-    private Integer headerLayout;
-    private Integer recordLayout;
-    private String title;
+public class AnalyticsAdapter extends ADashboardAdapter implements IDashboardAdapter {
 
     public AnalyticsAdapter(List<Survey> items, Context context) {
         this.items = items;
@@ -54,82 +47,13 @@ public class AnalyticsAdapter extends BaseAdapter implements IDashboardAdapter {
         this.title = context.getString(R.string.analytics_title_header);
     }
 
-    public AnalyticsAdapter(List<Survey> items, Context context, Integer headerLayout, Integer recordLayout, String title) {
-        this.items = items;
-        this.context = context;
-        this.lInflater = LayoutInflater.from(context);
-        this.headerLayout = headerLayout;
-        this.recordLayout = recordLayout;
-        this.title = title;
-    }
-
-    @Override
-    public int getCount() {
-        return items.size();
-    }
-
-    @Override
-    public Object getItem(int position) {
-        return items.get(position);
-    }
-
-    @Override
-    public long getItemId(int position) {
-        return 0;
-    }
-
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         return null;
     }
 
     @Override
-    public void setItems(List items) {
-        this.items = (List<Survey>) items;
-    }
-
-    @Override
     public IDashboardAdapter newInstance(List items, Context context) {
         return new AnalyticsAdapter((List<Survey>) items, context);
-    }
-
-    @Override
-    public Context getContext() {
-        return context;
-    }
-
-    @Override
-    public void setContext(Context context) {
-        this.context = context;
-    }
-
-    @Override
-    public Integer getHeaderLayout() {
-        return headerLayout;
-    }
-
-    @Override
-    public void setHeaderLayout(Integer headerLayout) {
-        this.headerLayout = headerLayout;
-    }
-
-    @Override
-    public Integer getRecordLayout() {
-        return recordLayout;
-    }
-
-    @Override
-    public void setRecordLayout(Integer recordLayout) {
-        this.recordLayout = recordLayout;
-    }
-
-    @Override
-    public String getTitle() {
-        return title;
-    }
-
-    @Override
-    public void setTitle(String title) {
-        this.title = title;
     }
 }

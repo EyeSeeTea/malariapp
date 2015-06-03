@@ -115,3 +115,19 @@ Specialized obstetrics clinic';0.00;33
 114;'Yes, Normal';1.00;18
 115;'Yes, Abnormal';1.00;18
 116;'No';0.00;18
+117;'Malaria';1.00;50
+118;'Pneumonia';2.00;50
+119;'Diarhoea';3.00;50
+120;'Dysentery';4.00;50
+121;'Cough or Common Cold';5.00;50
+122;'Danger sign illness';6.00;50
+123;'Other illness';7.00;50
+124;'QAACTs';1.00;51
+126;'Antibiotics - Pneumonia';2.00;51
+127;'ORS and Zinc';3.00;51
+128;'Antibiotics - Dysentery';4.00;51
+129;'Cough Syrup or tablets';5.00;51
+130;'Referral';6.00;51
+131;'Other treatment';7.00;51
+132;'Yes';1.00;53
+133;'No';0.00;53

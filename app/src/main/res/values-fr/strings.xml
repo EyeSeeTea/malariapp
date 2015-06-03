@@ -2,7 +2,7 @@
 <resources>
 
     <!-- # general -->
-    <string name="app_name">Facility QA Tool</string>
+    <string name="app_name">Health Network QIS</string>
     <string name="developers">EyeSeeTea LTD</string>
     <string name="empty_string"></string>
     <string name="yes">Oui</string>
@@ -14,27 +14,32 @@
     <string name="good">Bien</string>
     <string name="fare">Moyen</string>
     <string name="poor">Pauvre</string>
+    <string name="plus">+</string>
 
     <!-- settings -->
-    <string name="settings_menu_about">Sur cette app</string>
+    <string name="settings_menu_about">A propos de cette app</string>
     <string name="settings_menu_configuration">Paramètres</string>
     <string name="settings_menu_licence">License</string>
     <string name="settings_menu_update">Mise à jour des questions (DHIS)</string>
     <string name="settings_menu_logout">Se deconnecter</string>
 
     <!-- login -->
-    <string name="login_info_username">Mel</string>
+    <string name="login_info_username">Utilisateur</string>
     <string name="login_info_password">Mot de passe</string>
     <string name="login_info_sign_in">Se connecter</string>
-    <string name="login_error_password">Le mot de pas n\'est pas correct</string>
-    <string name="login_error_short_password">Le mot de passe est trop courte</string>
-    <string name="login_error_required">Cette entrée est necessaire</string>
+    <string name="login_error_bad_credentials">Votre mode / mot de passe sont incorrects</string>
+
 
     <!-- # dialogs -->
     <string name="dialog_title_delete_survey">Delete Survey</string>
     <string name="dialog_info_delete_survey">Are you sure you want to completely delete this survey?</string>
     <string name="dialog_title_error">Erreur</string>
     <string name="dialog_error_denominator">Erreur, denominateur = 0</string>
+    <string name="dialog_title_missing_selection">selection manquant</string>
+    <string name="dialog_content_missing_selection">Selectionez un cabinet medical et tipe d\'enquête, s\'il vous plait</string>
+    <string name="dialog_title_existing_survey">Enquête existante</string>
+    <string name="dialog_content_existing_survey">Il y a déjà une enquête pas encore envoyée dans le système pour le cabinet et tipe d\'enquête choisís</string>
+    <string name="dialog_content_logout_confirmation">Si vous sortez du système, tous les donnés non envoyés seront perdus. Voulez-vous continuer encore ?</string>
 
     <!-- dashboard -->
     <string name="dashboard_info_feedback">Feedback</string>
@@ -45,6 +50,7 @@
     <string name="dashboard_info_analytics">Analytics</string>
     <string name="dashboard_button_new_survey">Nouvelle enquête</string>
     <string name="dashboard_button_see_all">Voir toutes</string>
+    <string name="dashboard_info_ready_to_upload">Prête pour envoyer</string>
 
     <!-- create -->
     <string name="create_info_ok">Créer évaluation</string>
@@ -92,6 +98,53 @@
     <!-- custom -->
     <string name="custom_title_tallies">TALLIES - Add up and enter the totals for the following indicators from the registers in column A.  In column B enter the total numbers from the monthly reporting sheet</string>
     <string name="custom_info_tallies">TALLIES for the Month of</string>
+    <string name="custom_info_one">1</string>
+    <string name="custom_info_two">2</string>
+    <string name="custom_info_three">3</string>
+    <string name="custom_info_four">4</string>
+    <string name="custom_info_five">5</string>
+    <string name="custom_info_six">6</string>
+    <string name="custom_info_seven">7</string>
+    <string name="custom_info_eight">8</string>
+    <string name="custom_info_nine">9</string>
+    <string name="custom_info_ten">10</string>
+    <string name="custom_info_eleven">11</string>
+    <string name="custom_info_twelve">12</string>
+    <string name="custom_info_thirteen">13</string>
+    <string name="custom_info_fourteen">14</string>
+    <string name="custom_info_fifteen">15</string>
+    <string name="custom_info_sixteen">16</string>
+    <string name="custom_info_seventeen">17</string>
+    <string name="custom_info_eighteen">18</string>
+    <string name="custom_info_nineteen">19</string>
+    <string name="custom_info_twenty">20</string>
+
+    <!-- adherence -->
+    <string name="adherence_info_switchquestion">Est-ce que les enregistrements du pharmacie sont du ACTs livrés ?</string>
+    <string name="adherence_title_explanation">Phamacy/clinical register v.s Lab records. Steps in Evaluation of Provider Adherence to Malaria Diagnostic Test Results</string>
+    <string name="adherence_info_pharmacy_register">Pharmacy Register</string>
+    <string name="adherence_title_gender">Genre</string>
+    <string name="adherence_title_age">Âge</string>
+    <string name="adherence_title_test_results">Results du test</string>
+    <string name="adherence_info_patient_id">ID\npatient</string>
+    <string name="adherence_info_prescribed">ACT\nPrescribed?</string>
+    <string name="adherence_info_rdt_positive">RDT Positif</string>
+    <string name="adherence_info_rdt_negative">RDT Negatif</string>
+    <string name="adherence_info_microscopy_positive">Microscopie Positif</string>
+    <string name="adherence_info_microscopy_negative">Microscopie Negatif</string>
+
+    <!-- iqa eqa -->
+    <string name="iqatab_info_supervisor">Supervisor</string>
+    <string name="iqatab_info_parasites">Parasites/uL</string>
+    <string name="iqatab_info_species">Species</string>
+    <string name="iqatab_info_labstaff">Lab Staff</string>
+
+    <!-- reporting -->
+    <string name="reporting_info_reporting">Notification</string>
+    <string name="reporting_info_results">Resultats</string>
+    <string name="reporting_info_register">Enregistrement</string>
+    <string name="reporting_info_monthly">Notification \nMensuel</string>
+    <string name="iqatab_info_supervisor_matches">Supervisor matches lab staff?</string>
 
     <!-- score -->
     <string name="score_title_clinical_fever">Clinical\nfever\nevaluation</string>
@@ -109,46 +162,43 @@
     <string name="score_info_case3">Cas 3</string>
     <string name="score_info_case4">Cas 4</string>
 
-    <!-- potencially deprecated strings (used in views that looks like are not being used)-->
-    <string name="deprecated_adherence_info_switchquestion">Est-ce que les enregistrements du pharmacie sont du ACTs livrés ?</string>
-    <string name="deprecated_adherence_title_explanation">Phamacy/clinical register v.s Lab records. Steps in Evaluation of Provider Adherence to Malaria Diagnostic Test Results</string>
-    <string name="deprecated_adherence_info_pharmacy_register">Pharmacy Register</string>
-    <string name="deprecated_adherence_title_gender">Genre</string>
-    <string name="deprecated_adherence_title_age">Âge</string>
-    <string name="deprecated_adherence_title_test_results">Results du test</string>
-    <string name="deprecated_adherence_info_patient_id">ID\npatient</string>
-    <string name="deprecated_adherence_info_prescribed">ACT\nPrescribed?</string>
-    <string name="deprecated_adherence_info_rdt_positive">RDT Positif</string>
+    <!-- settings -->
+    <string name="title_activity_settings">Parametres</string>
+    <string name="settings_checkbox_show_num_dems">Montrer num/dems</string>
+    <string name="settings_checkbox_description_show_num_dems">S\'il est actif, les questions du formulaire montrent ses numerateurs et denominateurs, usés pour calculer la ponctuation de l\'enquêtte</string>
+    <string name="settings_checkbox_customize_fonts">Personaliser les fonts?</string>
+    <string name="settings_list_font_sizes">Taille des fonts</string>
+    <string-array name="settings_array_titles_font_sizes">
+        <item>Petite</item>
+        <item>Medium</item>
+        <item>Grande</item>
+        <item>Extra Grande</item>
+    </string-array>
+    <string name="settings_text_dhis_server_url">URL du serveur DHIS</string>
+    <string name="pref_header_general">General</string>
 
-    <string name="deprecated_iqatab_info_one">1</string>
-    <string name="deprecated_iqatab_info_two">2</string>
-    <string name="deprecated_iqatab_info_three">3</string>
-    <string name="deprecated_iqatab_info_four">4</string>
-    <string name="deprecated_iqatab_info_five">5</string>
-    <string name="deprecated_iqatab_info_six">6</string>
-    <string name="deprecated_iqatab_info_seven">7</string>
-    <string name="deprecated_iqatab_info_eight">8</string>
-    <string name="deprecated_iqatab_info_nine">9</string>
-    <string name="deprecated_iqatab_info_ten">10</string>
-    <string name="deprecated_iqatab_info_eleven">11</string>
-    <string name="deprecated_iqatab_info_twelve">12</string>
-    <string name="deprecated_iqatab_info_thirteen">13</string>
-    <string name="deprecated_iqatab_info_fourteen">14</string>
-    <string name="deprecated_iqatab_info_fifteen">15</string>
-    <string name="deprecated_iqatab_info_sixteen">16</string>
-    <string name="deprecated_iqatab_info_seventeen">17</string>
-    <string name="deprecated_iqatab_info_eighteen">18</string>
-    <string name="deprecated_iqatab_info_nineteen">19</string>
-    <string name="deprecated_iqatab_info_twenty">20</string>
-    <string name="deprecated_iqatab_info_supervisor">Supervisor</string>
-    <string name="deprecated_iqatab_info_parasites">Parasites/uL</string>
-    <string name="deprecated_iqatab_info_species">Species</string>
-    <string name="deprecated_iqatab_info_labstaff">Lab Staff</string>
+    <string name="settings_array_values_font_sizes_def">@string/font_size_level2</string>
 
-    <string name="deprecated_reporting_info_reporting">Notification</string>
-    <string name="deprecated_reporting_info_results">Resultats</string>
-    <string name="deprecated_reporting_info_register">Enregistrement</string>
-    <string name="deprecated_reporting_info_monthly">Notification \nMensuel</string>
-    <string name="deprecated_iqatab_info_supervisor_matches">Supervisor matches lab staff?</string>
+    <string name="normal_font">Roboto-Medium.ttf</string>
+    <string name="light_font">Roboto-Light.ttf</string>
+    <string name="bold_font_name">Roboto-Bold.ttf</string>
+    <string name="medium_font_name">Roboto-Medium.ttf</string>
+    <string name="condensed_font_name">Roboto-Condensed.ttf</string>
+
+    <string-array name="settings_array_values_font_sizes">
+        <item>@string/font_size_level0</item>
+        <item>@string/font_size_level1</item>
+        <item>@string/font_size_level2</item>
+        <item>@string/font_size_level3</item>
+        <item>@string/font_size_level4</item>
+    </string-array>
+    <string name="font_size_level0">xsmall</string>
+    <string name="font_size_level1">small</string>
+    <string name="font_size_level2">medium</string>
+    <string name="font_size_level3">large</string>
+    <string name="font_size_level4">xlarge</string>
+
+    <string name="textcard_default_scale">system</string>
+    <string name="textcard_default_dimension">medium</string>
 
 </resources>

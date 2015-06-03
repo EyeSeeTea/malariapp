@@ -23,36 +23,27 @@ import org.eyeseetea.malariacare.database.model.Header;
 import org.eyeseetea.malariacare.database.model.Question;
 import org.eyeseetea.malariacare.database.model.Tab;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Utils {
 
-    static final int numberOfDecimals = 2; // Number of decimals outputs will have
+    static final int numberOfDecimals = 0; // Number of decimals outputs will have
 
     public static String round(float base, int decimalPlace){
         BigDecimal bd = new BigDecimal(Float.toString(base));
         bd = bd.setScale(decimalPlace, BigDecimal.ROUND_DOWN);
+        if (decimalPlace == 0) return Integer.toString((int) bd.floatValue());
         return Float.toString(bd.floatValue());
     }
 
     public static String round(float base){
         return round(base, Utils.numberOfDecimals);
-    }
-
-    public static List<Object> convertTabToArrayCustom(Tab tab) {
-        List<Object> result = new ArrayList<Object>();
-
-        for (Header header : tab.getHeaders()) {
-            result.add(header);
-            for (Question question : header.getQuestions()) {
-                if (question.hasChildren())
-                    result.add(question);
-            }
-        }
-
-        return result;
     }
 
     public static List<Object> convertTabToArray(Tab tab) {
@@ -64,12 +55,24 @@ public class Utils {
                 result.add(question);
 
         }
-
         return result;
-
     }
 
+    public static StringBuilder convertFromInputStreamToString(InputStream inputStream){
+        StringBuilder stringBuilder = new StringBuilder();
 
+        try {
+            BufferedReader r = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"));
+            String line;
+            while ((line = r.readLine()) != null) {
+                stringBuilder.append(line + "\n");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return stringBuilder;
+    }
 
 
 

@@ -19,35 +19,40 @@
   -->
 
 <TableRow xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="horizontal"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:gravity="center">
 
-    <TextView
+    <org.eyeseetea.malariacare.views.TextCard
         android:layout_width="0dip"
         android:layout_height="fill_parent"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="@string/feedback_title_organization_unit_date"
         android:id="@+id/idHeader"
         android:background="@drawable/background_header"
-        android:textColor="#ffffff"
+        android:textColor="@color/white"
         android:gravity="center"
         android:padding="5dip"
         android:layout_weight="0.7"
-        android:layout_gravity="center" />
+        android:layout_gravity="center"
+        app:tDimension="@string/font_size_level2"
+        app:tFontName="@string/condensed_font_name" />
 
-    <TextView
+    <org.eyeseetea.malariacare.views.TextCard
         android:layout_width="0dip"
         android:layout_height="fill_parent"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="@string/assessment_title_state"
         android:id="@+id/nameHeader"
         android:background="@drawable/background_header"
-        android:textColor="#ffffff"
+        android:textColor="@color/white"
         android:gravity="center"
         android:padding="5dip"
         android:layout_weight="0.3"
-        android:layout_gravity="center" />
+        android:layout_gravity="center"
+        app:tDimension="@string/font_size_level2"
+        app:tFontName="@string/condensed_font_name" />
 
 </TableRow>

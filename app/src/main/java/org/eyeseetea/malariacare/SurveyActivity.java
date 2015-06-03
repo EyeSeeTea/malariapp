@@ -21,13 +21,14 @@ package org.eyeseetea.malariacare;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.LoaderManager;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.res.Configuration;
-import android.graphics.Color;
-import android.graphics.Typeface;
+import android.content.Loader;
+import android.database.Cursor;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v4.app.NavUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -42,26 +43,27 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import org.eyeseetea.malariacare.database.model.CompositiveScore;
+import org.eyeseetea.malariacare.database.model.Program;
+import org.eyeseetea.malariacare.database.model.Question;
 import org.eyeseetea.malariacare.database.model.Tab;
+import org.eyeseetea.malariacare.database.utils.ReadWriteDB;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.layout.adapters.general.TabArrayAdapter;
 import org.eyeseetea.malariacare.layout.adapters.survey.AutoTabAdapter;
 import org.eyeseetea.malariacare.layout.adapters.survey.CompositiveScoreAdapter;
 import org.eyeseetea.malariacare.layout.adapters.survey.ITabAdapter;
-import org.eyeseetea.malariacare.layout.dialog.DialogDispatcher;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 import org.eyeseetea.malariacare.utils.Constants;
 import org.eyeseetea.malariacare.utils.Utils;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 
-public class SurveyActivity extends BaseActivity {
+public class SurveyActivity extends BaseActivity implements LoaderManager.LoaderCallbacks<Cursor>{
 
     private List<Tab> tabsList;
     private Map<Tab, ITabAdapter> adaptersMap = new HashMap<Tab, ITabAdapter>();
@@ -75,17 +77,31 @@ public class SurveyActivity extends BaseActivity {
         android.support.v7.app.ActionBar actionBar = this.getSupportActionBar();
         LayoutUtils.setActionBarLogo(actionBar);
 
+        Program program = Session.getSurvey().getProgram();
+        List<CompositiveScore> compositiveScores = new ArrayList<CompositiveScore>();
+
         Log.i(".SurveyActivity", "Registering Compositive Score");
         //Intializing compositive score register
         for (CompositiveScore compositiveScore : CompositiveScore.listAll(CompositiveScore.class)) {
-            ScoreRegister.registerScore(compositiveScore);
+
+            //If the questions of the compositivescore belongs to the program, the comp. score is addded
+            Question compositiveScoreQuestion = compositiveScore.getSingleQuestionIncludingChildren();
+
+            if (program.equals(compositiveScoreQuestion.getHeader().getTab().getProgram())) {
+
+                Log.i(".SurveyActivity", "Include "+ compositiveScore.getCode());
+                compositiveScores.add(compositiveScore);
+                ScoreRegister.registerScore(compositiveScore);
+            }
+
         }
 
         Log.i(".SurveyActivity", "Creating Adapter");
         tabsList = Tab.getTabsBySession();
+
         for (Tab tab : tabsList) {
             if (tab.getName().equals("Compositive Scores"))
-                adaptersMap.put(tab, new CompositiveScoreAdapter(CompositiveScore.listAll(CompositiveScore.class), this, R.layout.compositivescoretab, tab.getName()));
+                adaptersMap.put(tab, new CompositiveScoreAdapter(compositiveScores, this, R.layout.compositivescoretab, tab.getName()));
             else if (tab.getType() != Constants.TAB_SCORE_SUMMARY) {
                 ScoreRegister.registerScore(tab);
                 //adaptersMap.put(tab, new AutoTabAdapter(Utils.convertTabToArray(tab), this, R.layout.form, tab.getName()));
@@ -106,9 +122,7 @@ public class SurveyActivity extends BaseActivity {
         createMenu();
 
         // Show survey info as a footer below the form
-        SimpleDateFormat formattedDate = new SimpleDateFormat("dd MMM yyyy");
-        TextView surveyInfo = (TextView) this.findViewById(R.id.surveyinfo);
-        surveyInfo.setText("Org Unit: " + Session.getSurvey().getOrgUnit().getName() + " | Survey: " + Session.getSurvey().getProgram().getName() + " | Creation Date: " + formattedDate.format(Session.getSurvey().getEventDate()));
+        LayoutUtils.setActionBarText(actionBar, Session.getSurvey().getOrgUnit().getName(), Session.getSurvey().getProgram().getName());
 
     }
 
@@ -121,6 +135,11 @@ public class SurveyActivity extends BaseActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case android.R.id.home:
+                goBack(this);
+                break;
+        }
         return super.onOptionsItemSelected(item);
     }
 
@@ -158,12 +177,14 @@ public class SurveyActivity extends BaseActivity {
             View view = inflater.inflate(tabAdapter.getLayout(), parent, false);
             parent.addView(view);
 
+            if (selectedTab.getType() == Constants.TAB_AUTOMATIC_SCORED || selectedTab.getType() == Constants.TAB_CUSTOM_SCORED
+                    || selectedTab.getType() == Constants.TAB_SCORE_SUMMARY) {
+                tabAdapter.initializeSubscore();
+            }
+
             ListView mQuestions = (ListView) this.findViewById(R.id.listView);
             mQuestions.setAdapter((BaseAdapter) tabAdapter);
 
-            if (selectedTab.getType() == Constants.TAB_AUTOMATIC_SCORED || selectedTab.getType() == Constants.TAB_CUSTOM_SCORED) {
-                tabAdapter.initializeSubscore();
-            }
         }
     }
 
@@ -180,8 +201,8 @@ public class SurveyActivity extends BaseActivity {
         List<ITabAdapter> adaptersList = new ArrayList<ITabAdapter>(adaptersMap.values());
 
         // FIXME: This is a very ugly way of doing it, change it soon
-        if (adaptersList.get(10) != null) {
-            tab1 = adaptersList.get(10).getScore();
+        if (adaptersList.get(4) != null) {
+            tab1 = adaptersList.get(6).getScore();
             ((TextView) this.findViewById(R.id.profileScore)).setText(Utils.round(tab1));
             LayoutUtils.trafficLight(this.findViewById(R.id.profileScore), tab1, null);
         }
@@ -195,7 +216,7 @@ public class SurveyActivity extends BaseActivity {
             ((TextView) this.findViewById(R.id.feedbackScore)).setText(Utils.round(tab8));
             LayoutUtils.trafficLight(this.findViewById(R.id.feedbackScore), tab8, null);
         }
-        if (adaptersList.get(6) != null) {
+        if (adaptersList.get(5) != null) {
             tab2 = adaptersList.get(6).getScore();
             ((TextView) this.findViewById(R.id.clinicalCase1)).setText(Utils.round(tab2));
             LayoutUtils.trafficLight(this.findViewById(R.id.clinicalCase1), tab2, null);
@@ -205,22 +226,22 @@ public class SurveyActivity extends BaseActivity {
             ((TextView) this.findViewById(R.id.clinicalCase2)).setText(Utils.round(tab4));
             LayoutUtils.trafficLight(this.findViewById(R.id.clinicalCase2), tab4, null);
         }
-        if (adaptersList.get(3) != null) {
-            tab6 = adaptersList.get(3).getScore();
+        if (adaptersList.get(0) != null) {
+            tab6 = adaptersList.get(0).getScore();
             ((TextView) this.findViewById(R.id.clinicalCase3)).setText(Utils.round(tab6));
             LayoutUtils.trafficLight(this.findViewById(R.id.clinicalCase3), tab6, null);
         }
-        if (adaptersList.get(0) != null) {
+        if (adaptersList.get(8) != null) {
             tab3 = adaptersList.get(0).getScore();
             ((TextView) this.findViewById(R.id.rdtCase1)).setText(Utils.round(tab3));
             LayoutUtils.trafficLight(this.findViewById(R.id.rdtCase1), tab3, null);
         }
-        if (adaptersList.get(9) != null) {
+        if (adaptersList.get(7) != null) {
             tab5 = adaptersList.get(9).getScore();
             ((TextView) this.findViewById(R.id.rdtCase2)).setText(Utils.round(tab5));
             LayoutUtils.trafficLight(this.findViewById(R.id.rdtCase2), tab5, null);
         }
-        if (adaptersList.get(5) != null) {
+        if (adaptersList.get(2) != null) {
             tab7 = adaptersList.get(5).getScore();
             ((TextView) this.findViewById(R.id.rdtCase3)).setText(Utils.round(tab7));
             LayoutUtils.trafficLight(this.findViewById(R.id.rdtCase3), tab7, null);
@@ -239,9 +260,7 @@ public class SurveyActivity extends BaseActivity {
 
     }
 
-
-    @Override
-    public void onBackPressed() {
+    public void goBack(final Activity activity){
         new AlertDialog.Builder(this)
                 .setTitle("Really Exit?")
                 .setMessage("Are you sure you want to exit?")
@@ -249,11 +268,28 @@ public class SurveyActivity extends BaseActivity {
                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
 
                     public void onClick(DialogInterface arg0, int arg1) {
-                        finish();
-                        Class c = DashboardActivity.class;
-                        Intent mainIntent = new Intent(SurveyActivity.this, c);
-                        startActivity(mainIntent);
+                        NavUtils.navigateUpFromSameTask(activity);
                     }
                 }).create().show();
+    }
+
+    @Override
+    public void onBackPressed() {
+        goBack(this);
+    }
+
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        return null;
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+
     }
 }

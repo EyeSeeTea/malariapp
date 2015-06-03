@@ -30,7 +30,7 @@ import org.eyeseetea.malariacare.database.model.Survey;
 import java.io.Serializable;
 import java.util.List;
 
-public interface IDashboardAdapter extends Serializable {
+public interface IDashboardAdapter {
 
     public void setContext(Context context);
 
@@ -39,6 +39,10 @@ public interface IDashboardAdapter extends Serializable {
     public void setHeaderLayout(Integer headerLayout);
 
     public Integer getHeaderLayout();
+
+    public void setFooterLayout(Integer headerLayout);
+
+    public Integer getFooterLayout();
 
     public void setRecordLayout(Integer recordLayout);
 
@@ -51,6 +55,12 @@ public interface IDashboardAdapter extends Serializable {
     public View getView(int position, View convertView, ViewGroup parent);
 
     public void setItems(List items);
+
+    public Object getItem(int position);
+
+    public void remove(Object item);
+
+    public void notifyDataSetChanged();
 
     public IDashboardAdapter newInstance(List items, Context context);
 }

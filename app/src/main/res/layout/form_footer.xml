@@ -25,51 +25,6 @@
     android:layout_height="wrap_content"
     android:id="@+id/form_footer"
     android:gravity="center_vertical|center_horizontal"
-    android:background="#429470">
-
-
-
-<!--    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/buttonsAndInfo"
-        android:layout_gravity="center_horizontal"
-        android:gravity="center_horizontal">
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/submit"
-            android:id="@+id/save"
-            android:onClick="saveClearResults" />
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/clear"
-            android:id="@+id/clear"
-            android:onClick="saveClearResults" />
-
-    </LinearLayout> -->
-
-
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:gravity="bottom|right"
-        android:layout_gravity="center"
-        android:id="@+id/survey" >
-
-        <TextView
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:textAppearanceSmall"
-            android:id="@+id/surveyinfo"
-            android:textColor="#ffffff"
-            android:textStyle="bold|italic"
-            android:gravity="center" />
-    </LinearLayout>
+    android:background="@color/formFooter">
 
 </LinearLayout>

@@ -1,25 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/background_odd">
 
-    <TextView
+    <org.eyeseetea.malariacare.views.TextCard
         android:layout_width="0dip"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:id="@+id/number_result"
         android:gravity="center"
-        android:text="@string/deprecated_iqatab_info_one"
-        android:layout_weight="1" />
+        android:text="@string/custom_info_one"
+        android:layout_weight="1"
+        app:tDimension="@string/font_size_level1"
+        app:tFontName="@string/medium_font_name" />
 
-    <TextView
+    <org.eyeseetea.malariacare.views.TextCard
         android:layout_width="0dip"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:id="@+id/matches"
         android:gravity="center"
         android:text="@string/number_zero"
-        android:layout_weight="1" />
+        android:layout_weight="1"
+        app:tDimension="@string/font_size_level2"
+        app:tFontName="@string/condensed_font_name" />
 
 </LinearLayout>

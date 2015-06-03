@@ -37,63 +37,67 @@
             android:value="org.eyeseetea.malariacare.database.model" />
 
         <activity
-            android:name=".LoginActivity"
+            android:name="org.eyeseetea.malariacare.LoginActivity"
             android:label="@string/app_name"
             android:windowSoftInputMode="adjustResize|stateHidden" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
-            android:name=".DashboardActivity"
+            android:name="org.eyeseetea.malariacare.DashboardActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:label="@string/app_name">
+        </activity>
+        <activity
+            android:name="org.eyeseetea.malariacare.DashboardDetailsActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/app_name"
-            android:parentActivityName=".LoginActivity">
+            android:parentActivityName="org.eyeseetea.malariacare.DashboardActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".LoginActivity" />
+                android:value="org.eyeseetea.malariacare.DashboardActivity" />
         </activity>
-
         <activity
-            android:name=".DashboardDetailsActivity"
+            android:name="org.eyeseetea.malariacare.CreateSurveyActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/app_name"
-            android:parentActivityName=".DashboardActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".DashboardActivity" />
-        </activity>
-
-        <activity
-            android:name=".CreateSurveyActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:label="@string/app_name"
-            android:parentActivityName=".DashboardActivity"
-            android:launchMode="singleTask">
-
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".DashboardActivity" />
-        </activity>
-
-        <activity
-            android:name=".SurveyActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:label="@string/app_name"
-            android:parentActivityName=".DashboardActivity"
             android:launchMode="singleTask"
-            android:finishOnTaskLaunch="true"> <!-- singleTask makes that only one instance at a time  -->
+            android:parentActivityName="org.eyeseetea.malariacare.DashboardActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="org.eyeseetea.malariacare.DashboardActivity" />
+        </activity>
+        <activity
+            android:name="org.eyeseetea.malariacare.SurveyActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:finishOnTaskLaunch="true"
+            android:label="@string/app_name"
+            android:launchMode="singleTask"
+            android:parentActivityName="org.eyeseetea.malariacare.DashboardActivity" > <!-- singleTask makes that only one instance at a time -->
 
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".DashboardActivity" />
+                android:value="org.eyeseetea.malariacare.DashboardActivity" />
+        </activity>
+        <activity
+            android:name="org.eyeseetea.malariacare.SettingsActivity"
+            android:label="@string/title_activity_settings"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:finishOnTaskLaunch="true"
+            android:launchMode="singleTask"
+            android:parentActivityName="org.eyeseetea.malariacare.DashboardActivity" > <!-- singleTask makes that only one instance at a time -->
+
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="org.eyeseetea.malariacare.DashboardActivity" />
         </activity>
 
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
-
 
     </application>
 

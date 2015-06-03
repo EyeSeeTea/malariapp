@@ -19,21 +19,18 @@
 
 package org.eyeseetea.malariacare.layout.adapters.dashboard;
 
-import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Adapter;
 import android.widget.BaseAdapter;
-import android.widget.Space;
+import android.widget.ImageButton;
 import android.widget.TableLayout;
 import android.widget.TextView;
 
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.model.Survey;
-import org.eyeseetea.malariacare.database.utils.Session;
-import org.eyeseetea.malariacare.layout.dialog.DialogDispatcher;
+import org.eyeseetea.malariacare.views.TextCard;
 
 import java.util.List;
 
@@ -78,12 +75,12 @@ public class DashboardAdapter extends BaseAdapter {
         View rowView = lInflater.inflate(R.layout.dashboard_row, parent, false);
         View header = lInflater.inflate(this.adapters.get(position).getHeaderLayout(), null, false);
         TableLayout table = (TableLayout) rowView.findViewById(R.id.dashboard_table);
-        TextView title = (TextView) rowView.findViewById(R.id.title);
+        TextCard title = (TextCard) rowView.findViewById(R.id.title);
         title.setText(this.adapters.get(position).getTitle());
-        TextView seeAll = (TextView) rowView.findViewById(R.id.see_all);
+        TextCard seeAll = (TextCard) rowView.findViewById(R.id.see_all);
         seeAll.setOnClickListener(this.listeners.get(position));
-
         table.addView(header);
+
 
 
         for (int i=0; i<((BaseAdapter)adapters.get(position)).getCount(); i++) {

@@ -1,26 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal" android:layout_width="match_parent"
-    android:layout_height="match_parent" android:id="@+id/ddl">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/ddl">
 
     <RelativeLayout
-        android:layout_width="fill_parent"
+        android:layout_width="0dip"
         android:layout_height="wrap_content"
-        android:layout_weight="0.16"
+        android:layout_weight="0.5"
         android:layout_gravity="center_vertical"
         android:padding="5dip">
-        <TextView
+        <org.eyeseetea.malariacare.views.TextCard
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:text="@string/widget_info_empty_statement"
             android:id="@+id/statement"
-            android:paddingLeft="10dip"
-            android:textAppearance="?android:textAppearanceSmall" />
+            android:paddingLeft="@dimen/question_padding_left"
+            android:textColor="@color/black"
+            app:tDimension="@string/font_size_level1"
+            app:tFontName="@string/medium_font_name" />
     </RelativeLayout>
     <RelativeLayout
-        android:layout_width="fill_parent"
+        android:layout_width="0dip"
         android:layout_height="wrap_content"
-        android:layout_weight="0.26"
+        android:layout_weight="0.3"
         android:padding="5dip">
 
         <LinearLayout
@@ -28,7 +33,7 @@
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:alpha="0.8"
-            android:background="#bebebe">
+            android:background="@color/textFieldColor">
 
             <Spinner
                 android:layout_width="fill_parent"
@@ -40,38 +45,40 @@
                 android:paddingTop="2dip"
                 android:paddingRight="20dip"
                 android:paddingBottom="2dip"
-                android:backgroundTint="#1e506c"
+                android:backgroundTint="@color/headerColor"
                 android:gravity="right" />
         </LinearLayout>
 
     </RelativeLayout>
     <RelativeLayout
-        android:layout_width="fill_parent"
+        android:layout_width="0dip"
         android:layout_height="wrap_content"
-        android:layout_weight="0.29"
+        android:layout_weight="0.1"
         android:gravity="center_vertical|center_horizontal"
-        android:padding="5dip">
-        <TextView
+        android:padding="@dimen/question_padding_all">
+        <org.eyeseetea.malariacare.views.TextCard
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:text="0"
+            android:text="@string/number_zero"
             android:id="@+id/num"
             android:gravity="center_vertical|center_horizontal"
-            android:textAppearance="?android:textAppearanceSmall" />
+            app:tDimension="@string/font_size_level1"
+            app:tFontName="@string/medium_font_name" />
     </RelativeLayout>
     <RelativeLayout
-        android:layout_width="fill_parent"
+        android:layout_width="0dip"
         android:layout_height="wrap_content"
-        android:layout_weight="0.29"
+        android:layout_weight="0.1"
         android:gravity="center_vertical|center_horizontal"
-        android:padding="5dip">
-        <TextView
+        android:padding="@dimen/question_padding_all">
+        <org.eyeseetea.malariacare.views.TextCard
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:text="0"
+            android:text="@string/number_zero"
             android:id="@+id/den"
             android:gravity="center_vertical|center_horizontal"
-            android:textAppearance="?android:textAppearanceSmall" />
+            app:tDimension="@string/font_size_level1"
+            app:tFontName="@string/medium_font_name" />
     </RelativeLayout>
 
 </LinearLayout>

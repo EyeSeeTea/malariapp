@@ -21,6 +21,8 @@ package org.eyeseetea.malariacare.layout.adapters.survey;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.TextWatcher;
@@ -30,6 +32,10 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -38,12 +44,15 @@ import org.eyeseetea.malariacare.database.model.Header;
 import org.eyeseetea.malariacare.database.model.Option;
 import org.eyeseetea.malariacare.database.model.Question;
 import org.eyeseetea.malariacare.database.model.Tab;
+import org.eyeseetea.malariacare.database.model.Value;
 import org.eyeseetea.malariacare.database.utils.ReadWriteDB;
 import org.eyeseetea.malariacare.layout.adapters.general.OptionArrayAdapter;
+import org.eyeseetea.malariacare.layout.adapters.survey.autoTabUtils.UncheckeableRadioButton;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 import org.eyeseetea.malariacare.utils.Constants;
 import org.eyeseetea.malariacare.utils.Utils;
+import org.eyeseetea.malariacare.views.filters.MinMaxInputFilter;
 
 import java.util.List;
 
@@ -65,17 +74,22 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
 
     private final Context context;
 
-    //The length of this arrays is the same that the items list. Each position indicates if the item on this position is visible
-    //or not
+    //The length of this arrays is the same that the items list. Each position indicates if the item on this position is visible or not
     private final boolean[] hidden;
 
     int id_layout;
 
     //Store the Views references for each row (to avoid many calls to getViewById)
     static class ViewHolder {
+        //Label
         public TextView statement;
-        public Spinner spinner;
-        public EditText answer;
+//        public Spinner spinner;
+//        public EditText answer;
+//        public RadioGroup radioGroup;
+
+        // Main component in the row: Spinner, EditText or RadioGroup
+        public View component;
+
         public TextView num;
         public TextView denum;
         public int type;
@@ -88,7 +102,6 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
         public TextView totalNum;
         public TextView totalDenum;
         public TextView qualitativeScore;
-        public TextView tabName;
     }
 
     public AutoTabAdapter(Tab tab, Context context) {
@@ -114,7 +127,7 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
         }
     }
 
-    public AutoTabAdapter(Tab tab, Context context, int id_layout){
+    public AutoTabAdapter(Tab tab, Context context, int id_layout) {
         this(tab, context);
         this.id_layout = id_layout;
     }
@@ -144,13 +157,30 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
     }
 
     private void initializeScoreViews() {
-        scoreHolder.tabName = (TextView) ((Activity) context).findViewById(R.id.tabName);
-        scoreHolder.tabName.setText(tab.getName());
         scoreHolder.score = (TextView) ((Activity) context).findViewById(R.id.score);
         scoreHolder.totalDenum = (TextView) ((Activity) context).findViewById(R.id.totalDen);
         scoreHolder.totalNum = (TextView) ((Activity) context).findViewById(R.id.totalNum);
         scoreHolder.subtotalscore = (TextView) ((Activity) context).findViewById(R.id.subtotalScoreText);
         scoreHolder.qualitativeScore = (TextView) ((Activity) context).findViewById(R.id.cualitativeScore);
+        RelativeLayout space = (RelativeLayout) (((Activity) context).findViewById(R.id.space));
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this.context);
+        if (sharedPreferences.getBoolean(this.context.getString(R.string.show_num_dems), false)) {
+            scoreHolder.totalDenum.setVisibility(View.VISIBLE);
+            scoreHolder.totalNum.setVisibility(View.VISIBLE);
+            (((Activity) context).findViewById(R.id.accumulatedText)).setVisibility(View.VISIBLE);
+            ((RelativeLayout) (((Activity) context).findViewById(R.id.accumulatedText)).getParent()).setLayoutParams(new LinearLayout.LayoutParams(0, RelativeLayout.LayoutParams.WRAP_CONTENT, 0.25f));
+            space.setLayoutParams(new LinearLayout.LayoutParams(0, RelativeLayout.LayoutParams.WRAP_CONTENT, 0f));
+            ((RelativeLayout) scoreHolder.totalNum.getParent()).setLayoutParams(new LinearLayout.LayoutParams(0, RelativeLayout.LayoutParams.WRAP_CONTENT, 0.1f));
+            ((RelativeLayout) scoreHolder.totalDenum.getParent()).setLayoutParams(new LinearLayout.LayoutParams(0, RelativeLayout.LayoutParams.WRAP_CONTENT, 0.1f));
+        } else {
+            scoreHolder.totalDenum.setVisibility(View.GONE);
+            scoreHolder.totalNum.setVisibility(View.GONE);
+            (((Activity) context).findViewById(R.id.accumulatedText)).setVisibility(View.GONE);
+            ((RelativeLayout) (((Activity) context).findViewById(R.id.accumulatedText)).getParent()).setLayoutParams(new LinearLayout.LayoutParams(0, RelativeLayout.LayoutParams.WRAP_CONTENT, 0.0f));
+            space.setLayoutParams(new LinearLayout.LayoutParams(0, RelativeLayout.LayoutParams.WRAP_CONTENT, 0.45f));
+            ((RelativeLayout) scoreHolder.totalNum.getParent()).setLayoutParams(new LinearLayout.LayoutParams(0, RelativeLayout.LayoutParams.WRAP_CONTENT, 0.0f));
+            ((RelativeLayout) scoreHolder.totalDenum.getParent()).setLayoutParams(new LinearLayout.LayoutParams(0, RelativeLayout.LayoutParams.WRAP_CONTENT, 0.0f));
+        }
     }
 
     @Override
@@ -167,7 +197,7 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
             scoreHolder.score.setText(Utils.round(100 * (totalNum / totalDenum)));
         }
         if (totalDenum == 0 && totalNum == 0) {
-            scoreHolder.score.setText("0");
+            scoreHolder.score.setText(this.context.getString(R.string.number_zero));
         }
     }
 
@@ -191,7 +221,8 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
 
     private void initScoreQuestion(Question question) {
 
-        if (question.getAnswer().getOutput() == Constants.DROPDOWN_LIST) {
+        if (question.getAnswer().getOutput() == Constants.DROPDOWN_LIST || question.getAnswer().getOutput() == Constants.RADIO_GROUP_HORIZONTAL
+                || question.getAnswer().getOutput() == Constants.RADIO_GROUP_VERTICAL) {
 
             Float num = calcNum(question);
             Float denum = calcDenum(question);
@@ -270,14 +301,11 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
         return result;
     }
 
-    private float calcNum(float factor, Question question) {
-        return factor * question.getNumerator_w();
-    }
-
     private float calcDenum(Question question) {
         float result = 0;
 
-        if (question.getAnswer().getOutput() == Constants.DROPDOWN_LIST) {
+        if (question.getAnswer().getOutput() == Constants.DROPDOWN_LIST || question.getAnswer().getOutput() == Constants.RADIO_GROUP_HORIZONTAL
+                || question.getAnswer().getOutput() == Constants.RADIO_GROUP_VERTICAL) {
 
             Option option = question.getOptionBySession();
             if (option != null) {
@@ -336,21 +364,37 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
             case Constants.INT:
             case Constants.LONG_TEXT:
             case Constants.POSITIVE_INT:
-                viewHolder.answer.setText(ReadWriteDB.readValueQuestion(question));
+                ((EditText) viewHolder.component).setText(ReadWriteDB.readValueQuestion(question));
                 break;
             case Constants.DROPDOWN_LIST:
-                viewHolder.spinner.setSelection(ReadWriteDB.readPositionOption(question));
+
+                ((Spinner) viewHolder.component).setSelection(ReadWriteDB.readPositionOption(question));
 
                 List<Float> numdenum = ScoreRegister.getNumDenum(question);
                 if (numdenum != null) {
                     viewHolder.num.setText(Float.toString(numdenum.get(0)));
                     viewHolder.denum.setText(Float.toString(numdenum.get(1)));
                 } else {
-                    viewHolder.num.setText("0");
+                    viewHolder.num.setText(this.context.getString(R.string.number_zero));
                     viewHolder.denum.setText(Float.toString(calcDenum(question)));
-                    viewHolder.spinner.setSelection(0);
+                    ((Spinner) viewHolder.component).setSelection(0);
                 }
 
+                break;
+            case Constants.RADIO_GROUP_HORIZONTAL:
+            case Constants.RADIO_GROUP_VERTICAL:
+                //FIXME: it is almost the same as the previous case
+                Value value = question.getValueBySession();
+                List<Float> numdenumradiobutton = ScoreRegister.getNumDenum(question);
+                if (value != null) {
+                    ((RadioButton)  viewHolder.component.findViewWithTag(value.getOption())).setChecked(true);
+
+                    viewHolder.num.setText(Float.toString(numdenumradiobutton.get(0)));
+                    viewHolder.denum.setText(Float.toString(numdenumradiobutton.get(1)));
+                } else {
+                    viewHolder.num.setText(this.context.getString(R.string.number_zero));
+                    viewHolder.denum.setText(Float.toString(calcDenum(question)));
+                }
                 break;
             default:
                 break;
@@ -378,10 +422,61 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
         }
     }
 
+    private boolean checkMatches(Question question) {
+        boolean match = true;
+
+        List<Question> relatives = question.getRelatives();
+
+        if (relatives.size() > 0) {
+
+            Option option = ReadWriteDB.readOptionAnswered(relatives.get(0));
+
+            if (option == null) match = false;
+
+            for (int i = 1; i < relatives.size() && match; i++) {
+                Option currentOption = ReadWriteDB.readOptionAnswered(relatives.get(i));
+
+                if (currentOption == null) match = false;
+                else
+                    match = match && (Float.compare(option.getFactor(), currentOption.getFactor()) == 0);
+            }
+
+        }
+
+        return match;
+    }
+
+    private void autoFillAnswer(ViewHolder viewHolder, Question question) {
+
+        ((Spinner) viewHolder.component).setEnabled(false);
+
+        if (checkMatches(question))
+            itemSelected(viewHolder, question, question.getAnswer().getOptions().get(0));
+        else
+            itemSelected(viewHolder, question, question.getAnswer().getOptions().get(1));
+
+    }
+
     private void itemSelected(ViewHolder viewHolder, Question question, Option option) {
 
         ReadWriteDB.saveValuesDDL(question, option);
 
+        recalculateScores(viewHolder, question);
+
+        if (question.hasChildren()) {
+
+            if (option.getName().equals(this.context.getString(R.string.yes)))
+                updateQuestionsVisibility(question, true);
+            else
+                updateQuestionsVisibility(question, false);
+
+        }
+
+        updateScore();
+
+    }
+
+    private void recalculateScores(ViewHolder viewHolder, Question question) {
         Float num = calcNum(question);
         Float denum = calcDenum(question);
 
@@ -394,18 +489,6 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
         totalDenum = totalDenum + denum;
 
         ScoreRegister.addRecord(question, num, denum);
-
-        if (question.hasChildren()) {
-
-            if (option.getName().equals("Yes"))
-                updateQuestionsVisibility(question, true);
-            else
-                updateQuestionsVisibility(question, false);
-
-        }
-
-        updateScore();
-
     }
 
     @Override
@@ -424,75 +507,148 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
 
             question = (Question) item;
 
+            //FIXME This should be moved into its own class (Ex: ViewHolderFactory.getView(item))
             switch (question.getAnswer().getOutput()) {
 
                 case Constants.LONG_TEXT:
-                    rowView = lInflater.inflate(R.layout.longtext, parent, false);
-                    viewHolder.statement = (TextView) rowView.findViewById(R.id.statement);
-                    viewHolder.answer = (EditText) rowView.findViewById(R.id.answer);
-                    break;
+                    rowView = initialiseView(R.layout.longtext, parent, question, viewHolder, position);
 
+                    //Add main component and listener
+                    ((EditText) viewHolder.component).addTextChangedListener(new TextViewListener(false, question));
+                    break;
                 case Constants.NO_ANSWER:
-                    rowView = lInflater.inflate(R.layout.label, parent, false);
-                    viewHolder.statement = (TextView) rowView.findViewById(R.id.statement);
+                    rowView = initialiseView(R.layout.label, parent, question, viewHolder, position);
                     break;
-
                 case Constants.POSITIVE_INT:
-                case Constants.INT:
-                    rowView = lInflater.inflate(R.layout.integer, parent, false);
-                    viewHolder.statement = (TextView) rowView.findViewById(R.id.statement);
-                    viewHolder.answer = (EditText) rowView.findViewById(R.id.answer);
-                    viewHolder.answer.setFilters(new InputFilter[]{new InputFilter.LengthFilter(Constants.MAX_INT_CHARS)});
-                    break;
+                    rowView = initialiseView(R.layout.integer, parent, question, viewHolder, position);
 
+                    //Add main component, set filters and listener
+                    ((EditText) viewHolder.component).setFilters(new InputFilter[]{
+                            new InputFilter.LengthFilter(Constants.MAX_INT_CHARS),
+                            new MinMaxInputFilter(1,null)
+                    });
+                    ((EditText) viewHolder.component).addTextChangedListener(new TextViewListener(false, question));
+                    break;
+                case Constants.INT:
+                    rowView = initialiseView(R.layout.integer, parent, question, viewHolder, position);
+
+                    //Add main component, set filters and listener
+                    ((EditText) viewHolder.component).setFilters(new InputFilter[]{
+                            new InputFilter.LengthFilter(Constants.MAX_INT_CHARS)
+                    });
+                    ((EditText) viewHolder.component).addTextChangedListener(new TextViewListener(false, question));
+                    break;
                 case Constants.DATE:
-                    rowView = lInflater.inflate(R.layout.date, parent, false);
-                    viewHolder.statement = (TextView) rowView.findViewById(R.id.statement);
-                    viewHolder.answer = (EditText) rowView.findViewById(R.id.answer);
+                    rowView = initialiseView(R.layout.date, parent, question, viewHolder, position);
+
+                    //Add main component and listener
+                    ((EditText) viewHolder.component).addTextChangedListener(new TextViewListener(false, question));
                     break;
 
                 case Constants.SHORT_TEXT:
-                    rowView = lInflater.inflate(R.layout.shorttext, parent, false);
-                    viewHolder.statement = (TextView) rowView.findViewById(R.id.statement);
-                    viewHolder.answer = (EditText) rowView.findViewById(R.id.answer);
+                    rowView = initialiseView(R.layout.shorttext, parent, question, viewHolder, position);
+
+                    //Add main component and listener
+                    ((EditText) viewHolder.component).addTextChangedListener(new TextViewListener(false, question));
                     break;
 
                 case Constants.DROPDOWN_LIST:
-                    rowView = lInflater.inflate(R.layout.ddl, parent, false);
-                    viewHolder.statement = (TextView) rowView.findViewById(R.id.statement);
-                    viewHolder.spinner = (Spinner) rowView.findViewById(R.id.answer);
-                    viewHolder.num = (TextView) rowView.findViewById(R.id.num);
-                    viewHolder.denum = (TextView) rowView.findViewById(R.id.den);
+                    rowView = initialiseView(R.layout.ddl, parent, question, viewHolder, position);
 
-                    Spinner answers = (Spinner) rowView.findViewById(R.id.answer);
+                    initialiseScorableComponent(rowView, viewHolder);
 
+                    // In case the option is selected, we will need to show num/dems
                     List<Option> optionList = question.getAnswer().getOptions();
                     optionList.add(0, new Option(Constants.DEFAULT_SELECT_OPTION));
-                    answers.setAdapter(new OptionArrayAdapter(context, optionList));
+                    Spinner spinner = (Spinner) viewHolder.component;
+                    spinner.setAdapter(new OptionArrayAdapter(context, optionList));
 
+                    //Add Listener
+                    if (!question.hasRelatives())
+                        ((Spinner) viewHolder.component).setOnItemSelectedListener(new SpinnerListener(false, question, viewHolder));
+                    else
+                        autoFillAnswer(viewHolder, question);
+                    break;
+                case Constants.RADIO_GROUP_HORIZONTAL:
+                    rowView = initialiseView(R.layout.radio, parent, question, viewHolder, position);
+
+                    initialiseScorableComponent(rowView, viewHolder);
+
+                    createRadioGroupComponent(question, viewHolder, LinearLayout.HORIZONTAL);
+                    break;
+                case Constants.RADIO_GROUP_VERTICAL:
+                    rowView = initialiseView(R.layout.radio, parent, question, viewHolder, position);
+
+                    initialiseScorableComponent(rowView, viewHolder);
+
+                    createRadioGroupComponent(question, viewHolder, LinearLayout.VERTICAL);
                     break;
 
                 default:
                     break;
             }
 
-            if (question.hasChildren())
-                rowView.setBackgroundResource(R.drawable.background_parent);
-            else
-                rowView.setBackgroundResource(LayoutUtils.calculateBackgrounds(position));
-
-            if (question.getAnswer().getOutput() == Constants.DROPDOWN_LIST) {
-                viewHolder.spinner.setOnItemSelectedListener(new SpinnerListener(false, question, viewHolder));
-            } else if (question.getAnswer().getOutput() != Constants.NO_ANSWER) {
-                viewHolder.answer.addTextChangedListener(new TextViewListener(false, question));
-            }
-            viewHolder.statement.setText(question.getForm_name());
             setValues(viewHolder, question);
         }
 
         return rowView;
     }
 
+    private View initialiseView(int resource, ViewGroup parent, Question question, ViewHolder viewHolder, int position) {
+        View rowView = lInflater.inflate(resource, parent, false);
+        if (question.hasChildren())
+            rowView.setBackgroundResource(R.drawable.background_parent);
+        else
+            rowView.setBackgroundResource(LayoutUtils.calculateBackgrounds(position));
+
+        viewHolder.component = rowView.findViewById(R.id.answer);
+        viewHolder.statement = (TextView) rowView.findViewById(R.id.statement);
+        viewHolder.statement.setText(question.getForm_name());
+
+        return rowView;
+    }
+
+    private void initialiseScorableComponent(View rowView, ViewHolder viewHolder) {
+        // In case the option is selected, we will need to show num/dems
+        viewHolder.num = (TextView) rowView.findViewById(R.id.num);
+        viewHolder.denum = (TextView) rowView.findViewById(R.id.den);
+
+        configureViewByPreference(viewHolder);
+    }
+
+    private void createRadioGroupComponent(Question question, ViewHolder viewHolder, int orientation) {
+        ((RadioGroup) viewHolder.component).setOrientation(orientation);
+
+        for (Option option : question.getAnswer().getOptions()) {
+            ((RadioGroup) viewHolder.component).addView(new UncheckeableRadioButton(context, option));
+        }
+
+        //Add Listener
+        ((RadioGroup) viewHolder.component).setOnCheckedChangeListener(new RadioGroupListener(false, question, viewHolder));
+    }
+
+    private void configureViewByPreference(ViewHolder viewHolder) {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this.context);
+        if (sharedPreferences.getBoolean(this.context.getString(R.string.show_num_dems), false)) {
+            viewHolder.num.setVisibility(View.VISIBLE);
+            viewHolder.denum.setVisibility(View.VISIBLE);
+            ((RelativeLayout) viewHolder.statement.getParent()).setLayoutParams(new LinearLayout.LayoutParams(0, RelativeLayout.LayoutParams.WRAP_CONTENT, 0.5f));
+            ((RelativeLayout) viewHolder.component.getParent().getParent()).setLayoutParams(new LinearLayout.LayoutParams(0, RelativeLayout.LayoutParams.WRAP_CONTENT, 0.2f));
+            ((RelativeLayout) viewHolder.num.getParent()).setLayoutParams(new LinearLayout.LayoutParams(0, RelativeLayout.LayoutParams.WRAP_CONTENT, 0.15f));
+            ((RelativeLayout) viewHolder.denum.getParent()).setLayoutParams(new LinearLayout.LayoutParams(0, RelativeLayout.LayoutParams.WRAP_CONTENT, 0.15f));
+        } else {
+            viewHolder.num.setVisibility(View.GONE);
+            viewHolder.denum.setVisibility(View.GONE);
+            ((RelativeLayout) viewHolder.statement.getParent()).setLayoutParams(new LinearLayout.LayoutParams(0, RelativeLayout.LayoutParams.WRAP_CONTENT, 0.8f));
+            ((RelativeLayout) viewHolder.component.getParent().getParent()).setLayoutParams(new LinearLayout.LayoutParams(0, RelativeLayout.LayoutParams.WRAP_CONTENT, 0.5f));
+            ((RelativeLayout) viewHolder.num.getParent()).setLayoutParams(new LinearLayout.LayoutParams(0, RelativeLayout.LayoutParams.WRAP_CONTENT, 0.0f));
+            ((RelativeLayout) viewHolder.denum.getParent()).setLayoutParams(new LinearLayout.LayoutParams(0, RelativeLayout.LayoutParams.WRAP_CONTENT, 0.0f));
+        }
+    }
+
+    //////////////////////////////////////
+    /////////// LISTENERS ////////////////
+    //////////////////////////////////////
     private class TextViewListener implements TextWatcher {
         private boolean viewCreated;
         private Question question;
@@ -537,7 +693,9 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
         @Override
         public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
             if (viewCreated) {
-                itemSelected(viewHolder, question, (Option) viewHolder.spinner.getItemAtPosition(pos));
+                itemSelected(viewHolder, question, (Option) ((Spinner) viewHolder.component).getItemAtPosition(pos));
+                if (question.belongsToMasterQuestions())
+                    notifyDataSetChanged();
             } else {
                 viewCreated = true;
             }
@@ -549,5 +707,52 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
         }
     }
 
+    public class RadioGroupListener implements RadioGroup.OnCheckedChangeListener {
+        private boolean viewCreated;
+        private ViewHolder viewHolder;
+        private Question question;
+
+        public RadioGroupListener(boolean viewCreated, Question question, ViewHolder viewHolder) {
+            this.viewCreated = viewCreated;
+            this.question = question;
+            this.viewHolder = viewHolder;
+        }
+
+
+        @Override
+        public void onCheckedChanged(RadioGroup group, int checkedId) {
+
+                Option option = new Option(Constants.DEFAULT_SELECT_OPTION);
+                if (checkedId != -1) {
+                    RadioButton radioButton = (RadioButton) ((RadioGroup) this.viewHolder.component).findViewById(checkedId);
+                    option = (Option) radioButton.getTag();
+                }
+                itemSelected(viewHolder, question, option);
+
+        }
+
+            /*Option option = null;
+            if (checkedId != -1) {
+                RadioButton radioButton = (RadioButton) ((RadioGroup) this.viewHolder.component).findViewById(checkedId);
+                option = (Option) radioButton.getTag();
+                ReadWriteDB.saveValuesDDL(question, option);
+            } else {
+                Value value = question.getValueBySession();
+                if (value != null) value.delete();
+            }*/
+            /*recalculateScores(viewHolder, question);
+
+            if (question.hasChildren() && option != null) {
+
+                if (option.getName().equals(R.string.yes))
+                    updateQuestionsVisibility(question, true);
+                else
+                    updateQuestionsVisibility(question, false);
+
+            }
+
+            updateScore();*/
+
+    }
 
 }

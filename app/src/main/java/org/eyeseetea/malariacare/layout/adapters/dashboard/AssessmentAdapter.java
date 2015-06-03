@@ -19,39 +19,25 @@
 
 package org.eyeseetea.malariacare.layout.adapters.dashboard;
 
-import android.app.Activity;
-import android.app.ListFragment;
+import android.app.ActionBar;
 import android.content.Context;
-import android.graphics.Color;
-import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.model.Survey;
-import org.eyeseetea.malariacare.database.utils.Session;
-import org.eyeseetea.malariacare.layout.dialog.DialogDispatcher;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
+import org.eyeseetea.malariacare.views.TextCard;
 
-import java.io.Serializable;
-import java.text.SimpleDateFormat;
 import java.util.List;
 
-/**
- * Created by Adrian on 22/04/2015.
- */
-public class AssessmentAdapter extends BaseAdapter implements IDashboardAdapter {
+public class AssessmentAdapter extends ADashboardAdapter implements IDashboardAdapter {
 
-    List<Survey> items;
-    private LayoutInflater lInflater;
-    private Context context;
-    private Integer headerLayout;
-    private Integer recordLayout;
-    private String title;
+    int backIndex = 0;
+    boolean showNextFacilityName = true;
 
     public AssessmentAdapter(List<Survey> items, Context context) {
         this.items = items;
@@ -59,73 +45,67 @@ public class AssessmentAdapter extends BaseAdapter implements IDashboardAdapter 
         this.lInflater = LayoutInflater.from(context);
         this.headerLayout = R.layout.assessment_header;
         this.recordLayout = R.layout.assessment_record;
+        this.footerLayout = R.layout.assessment_footer;
         this.title = context.getString(R.string.assessment_title_header);
-    }
-
-    public AssessmentAdapter(List<Survey> items, Context context, Integer headerLayout, Integer recordLayout, String title) {
-        this.items = items;
-        this.context = context;
-        this.lInflater = LayoutInflater.from(context);
-        this.headerLayout = R.layout.assessment_header;
-        this.recordLayout = R.layout.assessment_record;
-        this.title = title;
-    }
-
-    @Override
-    public int getCount() {
-        return items.size();
-    }
-
-    @Override
-    public Object getItem(int position) {
-        return items.get(position);
-    }
-
-    @Override
-    public long getItemId(int position) {
-        return position;
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         Survey survey = (Survey) getItem(position);
+        float density = getContext().getResources().getDisplayMetrics().density;
+        int paddingDp = (int)(5 * density);
 
-        View rowView = lInflater.inflate(getRecordLayout(), parent, false);
-        rowView.setBackgroundResource(LayoutUtils.calculateBackgrounds(position));
+        // Get the row layout
+        View rowView = this.lInflater.inflate(getRecordLayout(), parent, false);
+        rowView.setPadding(paddingDp, paddingDp, paddingDp, paddingDp);
 
         // Org Unit Cell
-        ((TextView) rowView.findViewById(R.id.facility)).setText(survey.getOrgUnit().getUid() + " - " + survey.getOrgUnit().getName());
-        SimpleDateFormat formattedDate = new SimpleDateFormat("dd MMM yyyy");
-        ((TextView) rowView.findViewById(R.id.date)).setText(survey.getProgram().getName() + " \n\t " + formattedDate.format(survey.getEventDate()));
+        TextCard facilityName = (TextCard) rowView.findViewById(R.id.facility);
+        TextCard surveyType = (TextCard) rowView.findViewById(R.id.survey_type);
+
+        // show facility name (or not) and write survey type name
+        if (!showNextFacilityName) {
+            facilityName.setVisibility(View.GONE);
+            facilityName.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, 0, 0f));
+            surveyType.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, 0, 1f));
+            rowView.setPadding(paddingDp, 0, paddingDp, paddingDp); // If this is the last, remove upper padding
+        } else {
+            facilityName.setText(survey.getOrgUnit().getName());
+            facilityName.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, 0, 0.5f));
+            surveyType.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, 0, 0.5f));
+        }
+        surveyType.setText("- " + survey.getProgram().getName());
+
+        // check whether the following item belongs to the same org unit (to group the data related
+        // to same org unit with the same background)
+        if (position < (this.items.size()-1)) { // FIXME: this algorithm to switch the background only works for 2 different types of program. Change soon or when a third is added
+            if (this.items.get(position+1).getOrgUnit().equals((this.items.get(position)).getOrgUnit())){
+                // show background without border and tell the system that next survey belongs to the same org unit, so its name doesn't need to be shown
+                rowView.setBackgroundResource(LayoutUtils.calculateBackgroundsNoBorder(this.backIndex));
+                this.showNextFacilityName = false;
+                rowView.setPadding(paddingDp, paddingDp, paddingDp, 0); // If there will be other survey, remove bottom padding
+            } else {
+                // show background with border and switch background for the next row
+                rowView.setBackgroundResource(LayoutUtils.calculateBackgrounds(this.backIndex));
+                this.backIndex++;
+                this.showNextFacilityName = true;
+            }
+        }  else {
+            //show background with border
+            rowView.setBackgroundResource(LayoutUtils.calculateBackgrounds(this.backIndex));
+        }
 
         //Status Cell
         //FIXME: This bit needs to change when jose architecture is introduced because probably the save will be executed in a different way
         List<Integer> status = survey.getAnsweredQuestionRatio();
 
         if (status.get(0) == status.get(1)) {
-            ((TextView) rowView.findViewById(R.id.score)).setText("Ready to upload");
+            ((TextView) rowView.findViewById(R.id.score)).setText(getContext().getString(R.string.dashboard_info_ready_to_upload));
         } else {
-            ((TextView) rowView.findViewById(R.id.score)).setText(String.format("%.2f", 100 * (double) status.get(0) / (double) status.get(1)));
+            ((TextView) rowView.findViewById(R.id.score)).setText(String.format("%d", new Double(100 * (double) status.get(0) / (double) status.get(1)).intValue()));
         }
-        ((TextView) rowView.findViewById(R.id.completed)).setText(Integer.toString(status.get(0)));
-        ((TextView) rowView.findViewById(R.id.total)).setText(Integer.toString(status.get(1)));
-
-        //Tools Cell
-        LinearLayout toolContainerView = (LinearLayout) rowView.findViewById(R.id.toolsContainer);
-
-        TextView deleteTextView = new TextView(this.context);
-        deleteTextView.setText(R.string.assessment_info_delete);
-        deleteTextView.setTextColor(Color.parseColor("#1e506c"));
-        deleteTextView.setTypeface(Typeface.MONOSPACE, Typeface.BOLD);
-        deleteTextView.setOnClickListener(new AssessmentListener((Activity) this.context, survey, context.getString(R.string.assessment_info_delete)));
-        toolContainerView.addView(deleteTextView);
 
         return rowView;
-    }
-
-    @Override
-    public void setItems(List items) {
-        this.items = (List<Survey>) items;
     }
 
     @Override
@@ -134,63 +114,8 @@ public class AssessmentAdapter extends BaseAdapter implements IDashboardAdapter 
     }
 
     @Override
-    public void setHeaderLayout(Integer headerLayout){
-        this.headerLayout = headerLayout;
-    }
-
-    @Override
-    public Integer getHeaderLayout() {
-        return this.headerLayout;
-    }
-
-    @Override
-    public void setRecordLayout(Integer recordLayout){
-        this.recordLayout = recordLayout;
-    }
-
-    @Override
-    public Integer getRecordLayout() {
-        return this.recordLayout;
-    }
-
-    @Override
-    public String getTitle() {
-        return title;
-    }
-
-    @Override
-    public void setContext(Context context){
-        this.context = context;
-    }
-
-    @Override
-    public Context getContext(){
-        return this.context;
-    }
-
-    @Override
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    private class AssessmentListener implements View.OnClickListener {
-
-        private Survey survey;
-        private String listenerOption; //One of edit, delete
-        private Activity context;
-
-        public AssessmentListener(Activity context, Survey survey, String listenerOption) {
-            this.context = context;
-            this.survey = survey;
-            this.listenerOption = listenerOption;
-        }
-
-        public void onClick(View view) {
-            if (listenerOption.equals(context.getString(R.string.assessment_info_delete))) {
-                Session.setSurvey(survey);
-                DialogDispatcher mf = DialogDispatcher.newInstance(view);
-                mf.showDialog(context.getFragmentManager(), DialogDispatcher.DELETE_SURVEY_DIALOG);
-            }
-        }
+    public void notifyDataSetChanged(){
+        this.showNextFacilityName = true;
+        super.notifyDataSetChanged();
     }
 }

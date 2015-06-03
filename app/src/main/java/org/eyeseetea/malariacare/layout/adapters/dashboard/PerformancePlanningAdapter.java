@@ -19,7 +19,6 @@
 
 package org.eyeseetea.malariacare.layout.adapters.dashboard;
 
-import android.app.ListFragment;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,49 +32,16 @@ import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 
 import java.util.List;
 
-/**
- * Created by Adrian on 22/04/2015.
- */
-public class PerformancePlanningAdapter extends BaseAdapter implements IDashboardAdapter{
-
-    List<Survey> items;
-    private LayoutInflater lInflater;
-    private Context context;
-    private Integer headerLayout;
-    private Integer recordLayout;
-    private String title;
+public class PerformancePlanningAdapter extends ADashboardAdapter implements IDashboardAdapter{
 
     public PerformancePlanningAdapter(List<Survey> items, Context context) {
         this.items = items;
         this.context = context;
         this.lInflater = LayoutInflater.from(context);
         this.headerLayout = R.layout.performance_planning_header;
+        this.footerLayout = null;
         this.recordLayout = R.layout.performance_planning_record;
         this.title = context.getString(R.string.performance_title_header);
-    }
-
-    public PerformancePlanningAdapter(List<Survey> items, Context context, Integer headerLayout, Integer recordLayout, String title) {
-        this.items = items;
-        this.context = context;
-        this.lInflater = LayoutInflater.from(context);
-        this.headerLayout = headerLayout;
-        this.recordLayout = recordLayout;
-        this.title = title;
-    }
-
-    @Override
-    public int getCount() {
-        return items.size();
-    }
-
-    @Override
-    public Object getItem(int position) {
-        return items.get(position);
-    }
-
-    @Override
-    public long getItemId(int position) {
-        return position;
     }
 
     @Override
@@ -87,7 +53,7 @@ public class PerformancePlanningAdapter extends BaseAdapter implements IDashboar
         rowView = lInflater.inflate(getRecordLayout(), parent, false);
         rowView.setBackgroundResource(LayoutUtils.calculateBackgrounds(position));
 
-        ((TextView)rowView.findViewById(R.id.date)).setText("Jan");
+        ((TextView)rowView.findViewById(R.id.survey_type)).setText("Jan");
         ((TextView)rowView.findViewById(R.id.target)).setText("10");
         ((TextView)rowView.findViewById(R.id.done)).setText("5");
         ((TextView)rowView.findViewById(R.id.achievement)).setText("50 %");
@@ -96,52 +62,7 @@ public class PerformancePlanningAdapter extends BaseAdapter implements IDashboar
     }
 
     @Override
-    public void setItems(List items) {
-        this.items = (List<Survey>) items;
-    }
-
-    @Override
     public IDashboardAdapter newInstance(List items, Context context) {
         return new PerformancePlanningAdapter((List<Survey>) items, context);
-    }
-
-    @Override
-    public Context getContext() {
-        return context;
-    }
-
-    @Override
-    public void setContext(Context context) {
-        this.context = context;
-    }
-
-    @Override
-    public Integer getHeaderLayout() {
-        return headerLayout;
-    }
-
-    @Override
-    public void setHeaderLayout(Integer headerLayout) {
-        this.headerLayout = headerLayout;
-    }
-
-    @Override
-    public Integer getRecordLayout() {
-        return recordLayout;
-    }
-
-    @Override
-    public void setRecordLayout(Integer recordLayout) {
-        this.recordLayout = recordLayout;
-    }
-
-    @Override
-    public String getTitle() {
-        return title;
-    }
-
-    @Override
-    public void setTitle(String title) {
-        this.title = title;
     }
 }

@@ -1,5 +1,8 @@
-# malariapp iml
-malariapp.iml
+# iml files (idea)
+*.iml
+
+#Idea custom configuration
+.idea/
 
 # Built application files
 *.apk
