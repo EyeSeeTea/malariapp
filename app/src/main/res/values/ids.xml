@@ -13,29 +13,6 @@
     <item name="show_num_dems" type="string">show_num_dems</item>
     <item name="customize_fonts" type="string">customize_fonts</item>
     <item name="font_sizes" type="string">font_sizes</item>
-    <string name="settings_array_values_font_sizes_def">@string/font_size_level2</string>
-
-    <string name="normal_font">Roboto-Medium.ttf</string>
-    <string name="light_font">Roboto-Light.ttf</string>
-    <string name="bold_font_name">Roboto-Bold.ttf</string>
-    <string name="medium_font_name">Roboto-Medium.ttf</string>
-    <string name="condensed_font_name">Roboto-Condensed.ttf</string>
-
-    <string-array name="settings_array_values_font_sizes">
-        <item>@string/font_size_level0</item>
-        <item>@string/font_size_level1</item>
-        <item>@string/font_size_level2</item>
-        <item>@string/font_size_level3</item>
-        <item>@string/font_size_level4</item>
-    </string-array>
-    <string name="font_size_level0">xsmall</string>
-    <string name="font_size_level1">small</string>
-    <string name="font_size_level2">medium</string>
-    <string name="font_size_level3">large</string>
-    <string name="font_size_level4">xlarge</string>
-
-    <string name="textcard_default_scale">system</string>
-    <string name="textcard_default_dimension">medium</string>
 
 
 
