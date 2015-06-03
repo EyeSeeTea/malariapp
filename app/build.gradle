@@ -38,10 +38,12 @@ dependencies {
     compile 'com.google.android.gms:play-services:7.0.0'
     compile 'com.google.guava:guava:18.0'
 
-    // Testing-only dependencies
+    // Unit testing dependencies
+    testCompile 'junit:junit:4.12'
+
+    // Instrumented tests dependencies
     androidTestCompile 'com.android.support.test:runner:0.2'
     androidTestCompile 'com.android.support.test:rules:0.2'
     androidTestCompile 'com.android.support.test.espresso:espresso-core:2.1'
     androidTestCompile 'com.android.support.test.espresso:espresso-intents:2.1'
-
 }

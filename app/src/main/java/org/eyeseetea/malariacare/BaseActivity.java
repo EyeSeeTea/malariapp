@@ -90,19 +90,11 @@ public abstract class BaseActivity extends ActionBarActivity {
                 return true;// TODO: implement the DHIS pull
             case R.id.action_license:
                 Log.d(".MainActivity", "User asked for license dialog");
-                InputStream license = getApplicationContext().getResources().openRawResource(R.raw.gpl);
-                new AlertDialog.Builder(this)
-                        .setTitle(getApplicationContext().getString(R.string.settings_menu_licence))
-                        .setMessage(Utils.convertFromInputStreamToString(license))
-                        .setNeutralButton(android.R.string.ok, null).create().show();
+                showAlertWithMessage(R.string.settings_menu_licence, R.raw.gpl);
                 break;
             case R.id.action_about:
                 Log.d(".MainActivity", "User asked for about dialog");
-                InputStream about = getApplicationContext().getResources().openRawResource(R.raw.about);
-                new AlertDialog.Builder(this)
-                        .setTitle(getApplicationContext().getString(R.string.settings_menu_about))
-                        .setMessage(Utils.convertFromInputStreamToString(about))
-                        .setNeutralButton(android.R.string.ok, null).create().show();
+                showAlertWithMessage(R.string.settings_menu_about, R.raw.about);
                 break;
             case R.id.action_logout:
                 Log.d(".MainActivity", "User asked for logging out");
@@ -111,14 +103,7 @@ public abstract class BaseActivity extends ActionBarActivity {
                         .setMessage(getApplicationContext().getString(R.string.dialog_content_logout_confirmation))
                         .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface arg0, int arg1) {
-                                List<Survey> surveys = Survey.getAllUnsentSurveys();
-                                for (Survey survey : surveys) {
-                                    survey.delete();
-                                }
-                                Session.getUser().delete();
-                                Session.setUser(null);
-                                Session.setSurvey(null);
-                                Session.setAdapter(null);
+                                Session.logout();
                                 finish();
                                 Intent loginIntent = new Intent(BaseActivity.this, LoginActivity.class);
                                 startActivity(loginIntent);
@@ -149,6 +134,19 @@ public abstract class BaseActivity extends ActionBarActivity {
         finish();
         Intent createSurveyIntent = new Intent(this, CreateSurveyActivity.class);
         startActivity(createSurveyIntent);
+    }
+
+    /**
+     * Shows an alert dialog with a big message inside based on a raw resource
+     * @param titleId Id of the title resource
+     * @param rawId Id of the raw text resource
+     */
+    private void showAlertWithMessage(int titleId, int rawId){
+        InputStream message = getApplicationContext().getResources().openRawResource(rawId);
+        new AlertDialog.Builder(this)
+                .setTitle(getApplicationContext().getString(titleId))
+                .setMessage(Utils.convertFromInputStreamToString(message))
+                .setNeutralButton(android.R.string.ok, null).create().show();
     }
 
 }
