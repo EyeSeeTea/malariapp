@@ -22,9 +22,7 @@ package org.eyeseetea.malariacare;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.LoaderManager;
-import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -42,15 +40,14 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import org.eyeseetea.malariacare.database.model.CompositiveScore;
+import org.eyeseetea.malariacare.database.model.CompositeScore;
 import org.eyeseetea.malariacare.database.model.Program;
 import org.eyeseetea.malariacare.database.model.Question;
 import org.eyeseetea.malariacare.database.model.Tab;
-import org.eyeseetea.malariacare.database.utils.ReadWriteDB;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.layout.adapters.general.TabArrayAdapter;
 import org.eyeseetea.malariacare.layout.adapters.survey.AutoTabAdapter;
-import org.eyeseetea.malariacare.layout.adapters.survey.CompositiveScoreAdapter;
+import org.eyeseetea.malariacare.layout.adapters.survey.CompositeScoreAdapter;
 import org.eyeseetea.malariacare.layout.adapters.survey.ITabAdapter;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
@@ -78,20 +75,18 @@ public class SurveyActivity extends BaseActivity implements LoaderManager.Loader
         LayoutUtils.setActionBarLogo(actionBar);
 
         Program program = Session.getSurvey().getProgram();
-        List<CompositiveScore> compositiveScores = new ArrayList<CompositiveScore>();
+        List<CompositeScore> compositeScores = new ArrayList<CompositeScore>();
 
-        Log.i(".SurveyActivity", "Registering Compositive Score");
-        //Intializing compositive score register
-        for (CompositiveScore compositiveScore : CompositiveScore.listAll(CompositiveScore.class)) {
+        Log.i(".SurveyActivity", "Registering Composite Score");
+        //Intializing composite score register
+        for (CompositeScore compositeScore : CompositeScore.listAll(CompositeScore.class)) {
 
-            //If the questions of the compositivescore belongs to the program, the comp. score is addded
-            Question compositiveScoreQuestion = compositiveScore.getSingleQuestionIncludingChildren();
-
-            if (program.equals(compositiveScoreQuestion.getHeader().getTab().getProgram())) {
-
-                Log.i(".SurveyActivity", "Include "+ compositiveScore.getCode());
-                compositiveScores.add(compositiveScore);
-                ScoreRegister.registerScore(compositiveScore);
+            //If the questions of the compositescore belongs to the program, the comp. score is addded
+            Question compositeScoreQuestion = compositeScore.getSingleQuestionIncludingChildren();
+            if (compositeScoreQuestion.belongsToProgram(program)) {
+                Log.i(".SurveyActivity", "Include "+ compositeScore.getCode());
+                compositeScores.add(compositeScore);
+                ScoreRegister.registerScore(compositeScore);
             }
 
         }
@@ -100,21 +95,11 @@ public class SurveyActivity extends BaseActivity implements LoaderManager.Loader
         tabsList = Tab.getTabsBySession();
 
         for (Tab tab : tabsList) {
-            if (tab.getName().equals("Compositive Scores"))
-                adaptersMap.put(tab, new CompositiveScoreAdapter(compositiveScores, this, R.layout.compositivescoretab, tab.getName()));
+            if (tab.getName().equals(Constants.COMPOSITE_SCORE_TAB_NAME))
+                adaptersMap.put(tab, new CompositeScoreAdapter(compositeScores, this, R.layout.composite_score_tab, tab.getName()));
             else if (tab.getType() != Constants.TAB_SCORE_SUMMARY) {
                 ScoreRegister.registerScore(tab);
-                //adaptersMap.put(tab, new AutoTabAdapter(Utils.convertTabToArray(tab), this, R.layout.form, tab.getName()));
-                switch(tab.getType()) {
-                    case Constants.TAB_AUTOMATIC_NON_SCORED:
-                        adaptersMap.put(tab, new AutoTabAdapter(tab, this, R.layout.form_without_score));
-                        break;
-                    case Constants.TAB_CUSTOM_SCORED:
-                    case Constants.TAB_CUSTOM_NON_SCORED:
-                    case Constants.TAB_AUTOMATIC_SCORED:
-                        adaptersMap.put(tab, new AutoTabAdapter(tab, this));
-                        break;
-                }
+                adaptersMap.put(tab, AutoTabAdapter.build(tab,this));
             }
         }
 
@@ -131,16 +116,6 @@ public class SurveyActivity extends BaseActivity implements LoaderManager.Loader
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_survey, menu);
         return super.onCreateOptionsMenu(menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
-            case android.R.id.home:
-                goBack(this);
-                break;
-        }
-        return super.onOptionsItemSelected(item);
     }
 
     private void createMenu() {
@@ -164,8 +139,7 @@ public class SurveyActivity extends BaseActivity implements LoaderManager.Loader
 
     private void showTab(Tab selectedTab) {
 
-        // FIXME: this if-else must disappear by creating a smarter way of filling tabs and we shouldnt match the tab by name
-        if (selectedTab.getType() == Constants.TAB_SCORE_SUMMARY && !selectedTab.getName().equals("Compositive Scores"))
+        if (selectedTab.isGeneralScore())
             showGeneralScores();
         else {
             LayoutInflater inflater = LayoutInflater.from(this);
@@ -260,22 +234,17 @@ public class SurveyActivity extends BaseActivity implements LoaderManager.Loader
 
     }
 
-    public void goBack(final Activity activity){
+    @Override
+    public void onBackPressed() {
         new AlertDialog.Builder(this)
                 .setTitle("Really Exit?")
                 .setMessage("Are you sure you want to exit?")
                 .setNegativeButton(android.R.string.no, null)
                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-
-                    public void onClick(DialogInterface arg0, int arg1) {
-                        NavUtils.navigateUpFromSameTask(activity);
+                    public void onClick(DialogInterface dialog, int arg1) {
+                        SurveyActivity.super.onBackPressed();
                     }
                 }).create().show();
-    }
-
-    @Override
-    public void onBackPressed() {
-        goBack(this);
     }
 
     @Override

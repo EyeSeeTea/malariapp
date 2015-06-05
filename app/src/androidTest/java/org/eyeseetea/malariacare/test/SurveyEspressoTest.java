@@ -19,15 +19,20 @@
 
 package org.eyeseetea.malariacare.test;
 
+import android.app.Activity;
+import android.app.Instrumentation;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.espresso.intent.rule.IntentsTestRule;
 import android.support.test.runner.AndroidJUnit4;
+import android.support.test.runner.lifecycle.ActivityLifecycleMonitorRegistry;
+import android.support.test.runner.lifecycle.Stage;
 import android.test.suitebuilder.annotation.LargeTest;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.Spinner;
 
 import org.eyeseetea.malariacare.CreateSurveyActivity;
+import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.SurveyActivity;
 import org.eyeseetea.malariacare.database.model.Answer;
@@ -47,6 +52,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import java.util.Collection;
 import java.util.List;
 
 import static android.support.test.espresso.Espresso.onData;
@@ -66,6 +72,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withParent;
 import static android.support.test.espresso.matcher.ViewMatchers.withSpinnerText;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
+import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNotNull;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.containsString;
@@ -116,9 +123,11 @@ public class SurveyEspressoTest extends MalariaEspressoTest{
         //GIVEN
         pressBack();
 
-        //THEN
+        //WHEN
         onView(withText(android.R.string.yes)).perform(click());
-        intended(anyIntent());
+
+        //THEN
+        assertEquals(DashboardActivity.class, getActivityInstance().getClass());
     }
 
     @Test
@@ -143,8 +152,8 @@ public class SurveyEspressoTest extends MalariaEspressoTest{
     }
 
     @Test
-    public void change_to_compositive_score(){
-        //WHEN: Select 'Compositive Score' tab
+    public void change_to_composite_score(){
+        //WHEN: Select 'Composite Score' tab
         whenTabSelected(11);
 
         //THEN
@@ -205,5 +214,21 @@ public class SurveyEspressoTest extends MalariaEspressoTest{
                 perform(click());
         int indexAnswer=answer?1:2;
         onData(is(instanceOf(Option.class))).atPosition(indexAnswer).perform(click());
+    }
+
+    private Activity getActivityInstance(){
+        final Activity[] activity = new Activity[1];
+        Instrumentation instrumentation=InstrumentationRegistry.getInstrumentation();
+        instrumentation.waitForIdleSync();
+        instrumentation.runOnMainSync(new Runnable() {
+            public void run() {
+                Collection resumedActivities = ActivityLifecycleMonitorRegistry.getInstance().getActivitiesInStage(Stage.RESUMED);
+                if (resumedActivities.iterator().hasNext()) {
+                    activity[0] = (Activity) resumedActivities.iterator().next();
+                }
+            }
+        });
+
+        return activity[0];
     }
 }

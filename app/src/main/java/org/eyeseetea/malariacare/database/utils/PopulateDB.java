@@ -5,20 +5,17 @@ import android.content.res.AssetManager;
 import com.opencsv.CSVReader;
 
 import org.eyeseetea.malariacare.database.model.Answer;
-import org.eyeseetea.malariacare.database.model.CompositiveScore;
+import org.eyeseetea.malariacare.database.model.CompositeScore;
 import org.eyeseetea.malariacare.database.model.Header;
 import org.eyeseetea.malariacare.database.model.Option;
 import org.eyeseetea.malariacare.database.model.OrgUnit;
 import org.eyeseetea.malariacare.database.model.Program;
 import org.eyeseetea.malariacare.database.model.Question;
 import org.eyeseetea.malariacare.database.model.Relative;
-import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.model.Tab;
-import org.eyeseetea.malariacare.database.model.User;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -32,7 +29,7 @@ public class PopulateDB {
     static Map<Integer, Question> questionList = new LinkedHashMap<Integer, Question>();
     static Map<Integer, Option> optionList = new LinkedHashMap<Integer, Option>();
     static Map<Integer, Answer> answerList = new LinkedHashMap<Integer, Answer>();
-    static Map<Integer, CompositiveScore> compositiveScoreList = new LinkedHashMap<Integer, CompositiveScore>();
+    static Map<Integer, CompositeScore> compositeScoreMap = new LinkedHashMap<Integer, CompositeScore>();
     static Map<Integer, Relative> relativeList = new LinkedHashMap<Integer, Relative>();
 
     //static Map<Integer, Header> headerCustomList = new LinkedHashMap<Integer, Header>();
@@ -41,7 +38,7 @@ public class PopulateDB {
     public static void populateDB(AssetManager assetManager) throws IOException {
 
 
-        List<String> tables2populate = Arrays.asList("Programs.csv", "Tabs.csv", "Headers.csv", "Answers.csv", "Options.csv", "CompositiveScores.csv", "Questions.csv", "Relatives.csv"); //"HeadersCustom.csv", "QuestionsCustom.csv");
+        List<String> tables2populate = Arrays.asList("Programs.csv", "Tabs.csv", "Headers.csv", "Answers.csv", "Options.csv", "CompositeScores.csv", "Questions.csv", "Relatives.csv");
 
         CSVReader reader = null;
         for (String table : tables2populate) {
@@ -85,12 +82,12 @@ public class PopulateDB {
                         option.setAnswer(answerList.get(Integer.valueOf(line[3])));
                         optionList.put(Integer.valueOf(line[0]), option);
                         break;
-                    case "CompositiveScores.csv":
-                        CompositiveScore compositiveScore = new CompositiveScore();
-                        compositiveScore.setCode(line[1]);
-                        compositiveScore.setLabel(line[2]);
-                        if (!line[3].equals("")) compositiveScore.setCompositive_score(compositiveScoreList.get(Integer.valueOf(line[3])));
-                        compositiveScoreList.put(Integer.valueOf(line[0]), compositiveScore);
+                    case "CompositeScores.csv":
+                        CompositeScore compositeScore = new CompositeScore();
+                        compositeScore.setCode(line[1]);
+                        compositeScore.setLabel(line[2]);
+                        if (!line[3].equals("")) compositeScore.setCompositeScore(compositeScoreMap.get(Integer.valueOf(line[3])));
+                        compositeScoreMap.put(Integer.valueOf(line[0]), compositeScore);
                         break;
                     case "Questions.csv":
                         Question question = new Question();
@@ -106,7 +103,7 @@ public class PopulateDB {
                         question.setAnswer(answerList.get(Integer.valueOf(line[10])));
                         if (!line[11].equals(""))
                             question.setQuestion(questionList.get(Integer.valueOf(line[11])));
-                        if (line.length == 13 && !line[12].equals("")) question.setCompositiveScore(compositiveScoreList.get(Integer.valueOf(line[12])));
+                        if (line.length == 13 && !line[12].equals("")) question.setCompositeScore(compositeScoreMap.get(Integer.valueOf(line[12])));
                         questionList.put(Integer.valueOf(line[0]), question);
                         break;
                     case "Relatives.csv":
@@ -150,7 +147,7 @@ public class PopulateDB {
         Header.saveInTx(headerList.values());
         Answer.saveInTx(answerList.values());
         Option.saveInTx(optionList.values());
-        CompositiveScore.saveInTx(compositiveScoreList.values());
+        CompositeScore.saveInTx(compositeScoreMap.values());
         Question.saveInTx(questionList.values());
         Relative.saveInTx(relativeList.values());
 

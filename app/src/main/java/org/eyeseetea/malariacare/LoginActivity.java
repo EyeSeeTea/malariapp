@@ -167,8 +167,9 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
             return;
         }
 
+        cleanForm();
         showProgress(true);
-        mAuthTask = new UserLoginTask(user, password);
+        mAuthTask = new UserLoginTask(user);
         mAuthTask.execute((Void) null);
         Log.i(".LoginActivity", "attempt!!");
     }
@@ -179,11 +180,19 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
      * @param password
      * @return
      */
-    public boolean hasGoodCredentials(String user, String password){String expectedPassword=DUMMY_CREDENTIALS.get(user);
+    private boolean hasGoodCredentials(String user, String password){String expectedPassword=DUMMY_CREDENTIALS.get(user);
         if(null==expectedPassword || expectedPassword.isEmpty()){
             return false;
         }
         return expectedPassword.equals(password);
+    }
+
+    /**
+     * Cleans form before launching intent to dashboard
+     */
+    private void cleanForm(){
+        mUserView.setText(null);
+        mPasswordView.setText(null);
     }
 
     /**
@@ -283,12 +292,10 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
     public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
 
         private final String mUser;
-        private final String mPassword;
         private User user;
 
-        UserLoginTask(String user, String password) {
+        UserLoginTask(String user) {
             mUser = user;
-            mPassword = password;
         }
 
         @Override

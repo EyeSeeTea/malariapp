@@ -84,22 +84,22 @@ public abstract class BaseActivity extends ActionBarActivity {
 
         switch (id) {
             case R.id.action_settings:
-                finish();
+                //finish();
                 Intent settingsIntent = new Intent(BaseActivity.this, SettingsActivity.class);
                 startActivity(settingsIntent);
                 break;
             case R.id.action_pull:
                 return true;// TODO: implement the DHIS pull
             case R.id.action_license:
-                Log.d(".MainActivity", "User asked for license dialog");
+                debugMessage("User asked for license dialog");
                 showAlertWithMessage(R.string.settings_menu_licence, R.raw.gpl);
                 break;
             case R.id.action_about:
-                Log.d(".MainActivity", "User asked for about dialog");
+                debugMessage("User asked for about dialog");
                 showAlertWithMessage(R.string.settings_menu_about, R.raw.about);
                 break;
             case R.id.action_logout:
-                Log.d(".MainActivity", "User asked for logging out");
+                debugMessage("User asked for logging out");
                 new AlertDialog.Builder(this)
                         .setTitle(getApplicationContext().getString(R.string.settings_menu_logout))
                         .setMessage(getApplicationContext().getString(R.string.dialog_content_logout_confirmation))
@@ -112,9 +112,10 @@ public abstract class BaseActivity extends ActionBarActivity {
                             }
                         })
                         .setNegativeButton(android.R.string.no, null).create().show();
-            case android.R.id.home:
-                goBack();
                 break;
+            case android.R.id.home:
+                onBackPressed();
+                return true;
         }
 
         return super.onOptionsItemSelected(item);
@@ -132,20 +133,11 @@ public abstract class BaseActivity extends ActionBarActivity {
         startActivity(getIntent());
     }
 
-    public void goBack(){
-        NavUtils.navigateUpFromSameTask(this);
-    }
-
-    @Override
-    public void onBackPressed() {
-        goBack();
-    }
-
     /**
      * Called when the user clicks the New Survey button
      */
     public void newSurvey(View view) {
-        finish();
+        //finish();
         Intent createSurveyIntent = new Intent(this, CreateSurveyActivity.class);
         startActivity(createSurveyIntent);
     }
@@ -161,6 +153,15 @@ public abstract class BaseActivity extends ActionBarActivity {
                 .setTitle(getApplicationContext().getString(titleId))
                 .setMessage(Utils.convertFromInputStreamToString(message))
                 .setNeutralButton(android.R.string.ok, null).create().show();
+    }
+
+    /**
+     * Logs a debug message using current activity SimpleName as tag. Ex:
+     *   SurveyActivity => ".SurveyActivity"
+     * @param message
+     */
+    private void debugMessage(String message){
+        Log.d("."+this.getClass().getSimpleName(),message);
     }
 
 }
