@@ -161,7 +161,7 @@ public class Question extends SugarRecord<Question> {
         if (this._relatives == null) {
 
             this._relatives = Question.findWithQuery(Question.class, "Select * from Question" +
-                    " where id in (Select relative from Relative where master ="+this.getId()+")");
+                    " where id in (Select relative from QuestionRelation where master ="+this.getId()+")");
        }
         return this._relatives;
     }
@@ -170,7 +170,7 @@ public class Question extends SugarRecord<Question> {
         if (this._master == null) {
 
             this._master = Question.findWithQuery(Question.class, "Select * from Question" +
-                    " where id in (Select master from Relative where relative ="+this.getId()+")");
+                    " where id in (Select master from QuestionRelation where relative ="+this.getId()+")");
         }
         return this._master;
     }
