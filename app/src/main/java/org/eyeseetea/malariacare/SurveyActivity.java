@@ -100,7 +100,7 @@ public class SurveyActivity extends BaseActivity implements LoaderManager.Loader
         tabsList = Tab.getTabsBySession();
 
         for (Tab tab : tabsList) {
-            if (tab.getName().equals("Compositive Scores"))
+            if (tab.getName().equals("Composite Scores"))
                 adaptersMap.put(tab, new CompositiveScoreAdapter(compositiveScores, this, R.layout.compositivescoretab, tab.getName()));
             else if (tab.getType() != Constants.TAB_SCORE_SUMMARY) {
                 ScoreRegister.registerScore(tab);
@@ -165,7 +165,7 @@ public class SurveyActivity extends BaseActivity implements LoaderManager.Loader
     private void showTab(Tab selectedTab) {
 
         // FIXME: this if-else must disappear by creating a smarter way of filling tabs and we shouldnt match the tab by name
-        if (selectedTab.getType() == Constants.TAB_SCORE_SUMMARY && !selectedTab.getName().equals("Compositive Scores"))
+        if (selectedTab.getType() == Constants.TAB_SCORE_SUMMARY && !selectedTab.getName().equals("Composite Scores"))
             showGeneralScores();
         else {
             LayoutInflater inflater = LayoutInflater.from(this);
