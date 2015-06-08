@@ -79,6 +79,11 @@ public class UncheckeableRadioButton extends RadioButton implements IEyeSeeView 
         init(attrs, 0);
     }
 
+    /**
+     * Initializing method. Sets font name and font size depending on the styled attributes selected
+     * @param attrs
+     * @param defStyle
+     */
     public void init(AttributeSet attrs, int defStyle) {
         // Fonts Map initialisation
         if (Session.getFontMap() == null) Session.initMap(getContext());
@@ -110,9 +115,9 @@ public class UncheckeableRadioButton extends RadioButton implements IEyeSeeView 
 
     /**
      * Call sequentially all the updateXXX methods for each styleable properties
-     * @param scale
-     * @param dimension
-     * @param fontName
+     * @param scale global size selected by the user
+     * @param dimension specific dimension of this component related to the rest of the components
+     * @param fontName font name, within listed in fonts folder inside the resources of the app
      */
     public void updateProperties(String scale, String dimension, String fontName){
         updateFontName(fontName);
