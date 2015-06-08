@@ -279,7 +279,7 @@ public class LayoutUtils {
             ((TextView)view).setTextColor(view.getContext().getResources().getColor(R.color.amber)); // amber
             if(textView != null) {
                 ((TextView)textView).setTextColor(view.getContext().getResources().getColor(R.color.amber)); // amber
-                ((TextView)textView).setText(view.getContext().getResources().getString(R.string.fare));
+                ((TextView)textView).setText(view.getContext().getResources().getString(R.string.fair));
             }
         } else {
             ((TextView)view).setTextColor(view.getContext().getResources().getColor(R.color.green)); // green
