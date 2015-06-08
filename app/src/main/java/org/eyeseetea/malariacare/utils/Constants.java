@@ -47,4 +47,6 @@ public class Constants {
             FONTS_XLARGE = "xlarge",
             FONTS_SYSTEM = "system";
 
+    public static final int MAX_ITEMS_IN_DASHBOARD=5;
+
 }

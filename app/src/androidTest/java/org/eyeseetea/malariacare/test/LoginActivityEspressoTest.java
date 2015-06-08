@@ -34,6 +34,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.eyeseetea.malariacare.R;
 import static android.support.test.espresso.Espresso.onView;
+import static android.support.test.espresso.Espresso.pressBack;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static android.support.test.espresso.action.ViewActions.typeText;
@@ -102,6 +103,15 @@ public class LoginActivityEspressoTest extends MalariaEspressoTest{
         //THEN
         intended(anyIntent());
         assertNotNull(Session.getUser());
+
+        //WHEN
+        pressBack();
+
+        //THEN
+        onView(withText(android.R.string.yes)).perform(click());
+        onView(withId(R.id.user)).check(matches(withText("")));
+        onView(withId(R.id.password)).check(matches(withText("")));
+
     }
 
 }

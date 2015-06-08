@@ -19,7 +19,6 @@
 
 package org.eyeseetea.malariacare;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -27,7 +26,6 @@ import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -35,15 +33,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 
-import org.eyeseetea.malariacare.database.model.Survey;
-import org.eyeseetea.malariacare.database.utils.ReadWriteDB;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 import org.eyeseetea.malariacare.utils.Constants;
 import org.eyeseetea.malariacare.utils.Utils;
 
 import java.io.InputStream;
-import java.util.List;
 
 
 public abstract class BaseActivity extends ActionBarActivity {
@@ -53,19 +48,34 @@ public abstract class BaseActivity extends ActionBarActivity {
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         requestWindowFeature(Window.FEATURE_ACTIVITY_TRANSITIONS);
         super.onCreate(savedInstanceState);
+
+        initView();
+        updateFontsByPreferences();
+    }
+
+    /**
+     * Common styling
+     */
+    private void initView(){
         setTheme(R.style.EyeSeeTheme);
         android.support.v7.app.ActionBar actionBar = this.getSupportActionBar();
         LayoutUtils.setActionBarLogo(actionBar);
+    }
+
+    /**
+     * Loads visual preferences
+     */
+    private void updateFontsByPreferences(){
         // Update font size in case this could have been changed by the user
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        if (sharedPreferences.getBoolean(this.getString(R.string.customize_fonts), false))
+        if (sharedPreferences.getBoolean(this.getString(R.string.customize_fonts), false)) {
             Session.setFontSize(sharedPreferences.getString(this.getString(R.string.font_sizes), Constants.FONTS_SYSTEM));
-        else Session.setFontSize(Constants.FONTS_SYSTEM);
+        }else{
+            Session.setFontSize(Constants.FONTS_SYSTEM);
+        }
 
-        Log.d(".BaseActivity", "Font size: " + sharedPreferences.getString(this.getString(R.string.font_sizes), Constants.FONTS_SYSTEM));
-        Log.d(".BaseActivity", "Show num/dems: " + Boolean.toString(sharedPreferences.getBoolean(this.getString(R.string.show_num_dems), false)));
-        // Manage uncaught exceptions that may occur
-        //Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(this));
+        debugMessage("Font size: " + sharedPreferences.getString(this.getString(R.string.font_sizes), Constants.FONTS_SYSTEM));
+        debugMessage("Show num/dems: " + Boolean.toString(sharedPreferences.getBoolean(this.getString(R.string.show_num_dems), false)));
     }
 
     @Override
@@ -76,49 +86,41 @@ public abstract class BaseActivity extends ActionBarActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
 
         int id = item.getItemId();
 
         switch (id) {
             case R.id.action_settings:
-                //finish();
-                Intent settingsIntent = new Intent(BaseActivity.this, SettingsActivity.class);
-                startActivity(settingsIntent);
+                debugMessage("User asked for settings");
+                goSettings();
                 break;
-            case R.id.action_pull:
-                return true;// TODO: implement the DHIS pull
             case R.id.action_license:
-                debugMessage("User asked for license dialog");
+                debugMessage("User asked for license");
                 showAlertWithMessage(R.string.settings_menu_licence, R.raw.gpl);
                 break;
             case R.id.action_about:
-                debugMessage("User asked for about dialog");
+                debugMessage("User asked for about");
                 showAlertWithMessage(R.string.settings_menu_about, R.raw.about);
                 break;
             case R.id.action_logout:
-                debugMessage("User asked for logging out");
-                new AlertDialog.Builder(this)
-                        .setTitle(getApplicationContext().getString(R.string.settings_menu_logout))
-                        .setMessage(getApplicationContext().getString(R.string.dialog_content_logout_confirmation))
-                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface arg0, int arg1) {
-                                Session.logout();
-                                finish();
-                                Intent loginIntent = new Intent(BaseActivity.this, LoginActivity.class);
-                                startActivity(loginIntent);
-                            }
-                        })
-                        .setNegativeButton(android.R.string.no, null).create().show();
+                debugMessage("User asked for logout");
+                logout();
                 break;
             case android.R.id.home:
+                debugMessage("Go back");
                 onBackPressed();
-                return true;
+                break;
+            default:
+                return super.onOptionsItemSelected(item);
         }
+        return true;
+    }
 
-        return super.onOptionsItemSelected(item);
+    /**
+     * Every BaseActivity(Details, Create, Survey) goes back to DashBoard
+     */
+    public void onBackPressed(){
+        go(DashboardActivity.class);
     }
 
     @Override
@@ -126,20 +128,42 @@ public abstract class BaseActivity extends ActionBarActivity {
         super.onConfigurationChanged(newConfig);
     }
 
-    @Override
-    public void onRestart() {
-        super.onRestart();
-        finish();
-        startActivity(getIntent());
+    protected void goSettings(){
+        startActivity(new Intent(this,SettingsActivity.class));
     }
+
+    /**
+     * Closes current session and goes back to loginactivity
+     */
+    protected void logout(){
+        new AlertDialog.Builder(this)
+                .setTitle(getApplicationContext().getString(R.string.settings_menu_logout))
+                .setMessage(getApplicationContext().getString(R.string.dialog_content_logout_confirmation))
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface arg0, int arg1) {
+                        Session.logout();
+                        go(LoginActivity.class);
+                    }
+                })
+                .setNegativeButton(android.R.string.no, null).create().show();
+    }
+
 
     /**
      * Called when the user clicks the New Survey button
      */
     public void newSurvey(View view) {
-        //finish();
-        Intent createSurveyIntent = new Intent(this, CreateSurveyActivity.class);
-        startActivity(createSurveyIntent);
+        go(CreateSurveyActivity.class);
+    }
+
+    /**
+     * Launches an activity with the given class
+     * @param targetActivityClass Given target activity class
+     */
+    protected void go(Class targetActivityClass){
+        Intent targetActivityIntent = new Intent(this,targetActivityClass);
+        finish();
+        startActivity(targetActivityIntent);
     }
 
     /**
@@ -161,7 +185,7 @@ public abstract class BaseActivity extends ActionBarActivity {
      * @param message
      */
     private void debugMessage(String message){
-        Log.d("."+this.getClass().getSimpleName(),message);
+        Log.d("." + this.getClass().getSimpleName(), message);
     }
 
 }

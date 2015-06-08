@@ -69,7 +69,7 @@ public class SurveyActivity extends BaseActivity implements LoaderManager.Loader
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Log.i(".SurveyActivity", "Starting");
+        Log.i(".SurveyActivity", "onCreate");
         setContentView(R.layout.survey);
         android.support.v7.app.ActionBar actionBar = this.getSupportActionBar();
         LayoutUtils.setActionBarLogo(actionBar);
@@ -237,12 +237,12 @@ public class SurveyActivity extends BaseActivity implements LoaderManager.Loader
     @Override
     public void onBackPressed() {
         new AlertDialog.Builder(this)
-                .setTitle("Really Exit?")
-                .setMessage("Are you sure you want to exit?")
+                .setTitle(R.string.survey_title_exit)
+                .setMessage(R.string.survey_info_exit)
                 .setNegativeButton(android.R.string.no, null)
                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int arg1) {
-                        SurveyActivity.super.onBackPressed();
+                        go(DashboardActivity.class);
                     }
                 }).create().show();
     }

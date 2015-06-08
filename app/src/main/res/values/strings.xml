@@ -89,6 +89,8 @@
     <string name="analytics_title_header">Analytics</string>
 
     <!-- survey -->
+    <string name="survey_title_exit">"Really Exit?"</string>
+    <string name="survey_info_exit">"Are you sure you want to exit?"</string>
     <string name="survey_info_select_tab">Select Tab: </string>
 
     <!--widget-->

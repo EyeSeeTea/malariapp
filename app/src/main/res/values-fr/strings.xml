@@ -90,6 +90,8 @@
     <string name="analytics_title_header">Statistiques</string>
 
     <!-- survey -->
+    <string name="survey_title_exit">"Vraiment quitter?"</string>
+    <string name="survey_info_exit">"Êtes-vous sûr de vouloir quitter?"</string>
     <string name="survey_info_select_tab">Choisissez onglet: </string>
 
     <!-- widget -->
