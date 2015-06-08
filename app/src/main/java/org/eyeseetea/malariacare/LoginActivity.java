@@ -50,10 +50,12 @@ import android.widget.TextView;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 
+import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.model.Tab;
 import org.eyeseetea.malariacare.database.model.User;
 import org.eyeseetea.malariacare.database.utils.PopulateDB;
 import org.eyeseetea.malariacare.database.utils.Session;
+import org.eyeseetea.malariacare.layout.adapters.dashboard.AssessmentAdapter;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -102,9 +104,13 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
         // Populate User table just in case there is already an existing user
         Iterator<User> users = User.findAll(User.class);
         if (users.hasNext()) {
-            Log.i(".LoginActivity","User already logged in --> Dashboard");
+            Log.i(".LoginActivity","User already logged in --> DashboardDetails");
             Session.setUser(users.next());
-            Class c = DashboardActivity.class;
+            Class c = DashboardDetailsActivity.class;
+            //mainIntent.putExtra("index", 0);
+            // Get the not-sent surveys ordered by date
+            List <Survey> surveys = Survey.getAllUnsentSurveys();
+            Session.setAdapter(new AssessmentAdapter(surveys, getApplicationContext()));
             Intent mainIntent = new Intent(LoginActivity.this, c);
             startActivity(mainIntent);
         }else{
@@ -316,7 +322,11 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
             }
             //go dashboard
             Log.i(".LoginActivity", "Logged in!");
-            Intent mainIntent = new Intent(LoginActivity.this, DashboardActivity.class);
+            Intent mainIntent = new Intent(LoginActivity.this, DashboardDetailsActivity.class);
+            //mainIntent.putExtra("index", 0);
+            // Get the not-sent surveys ordered by date
+            List <Survey> surveys = Survey.getAllUnsentSurveys();
+            Session.setAdapter(new AssessmentAdapter(surveys, getApplicationContext()));
             startActivity(mainIntent);
         }
 

@@ -47,28 +47,19 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="org.eyeseetea.malariacare.DashboardActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:label="@string/app_name">
-        </activity>
-        <activity
             android:name="org.eyeseetea.malariacare.DashboardDetailsActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:label="@string/app_name"
-            android:parentActivityName="org.eyeseetea.malariacare.DashboardActivity" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="org.eyeseetea.malariacare.DashboardActivity" />
+            android:label="@string/app_name">
         </activity>
         <activity
             android:name="org.eyeseetea.malariacare.CreateSurveyActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/app_name"
             android:launchMode="singleTask"
-            android:parentActivityName="org.eyeseetea.malariacare.DashboardActivity" >
+            android:parentActivityName="org.eyeseetea.malariacare.DashboardDetailsActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="org.eyeseetea.malariacare.DashboardActivity" />
+                android:value="org.eyeseetea.malariacare.DashboardDetailsActivity" />
         </activity>
         <activity
             android:name="org.eyeseetea.malariacare.SurveyActivity"
@@ -76,11 +67,11 @@
             android:finishOnTaskLaunch="true"
             android:label="@string/app_name"
             android:launchMode="singleTask"
-            android:parentActivityName="org.eyeseetea.malariacare.DashboardActivity" > <!-- singleTask makes that only one instance at a time -->
+            android:parentActivityName="org.eyeseetea.malariacare.DashboardDetailsActivity" > <!-- singleTask makes that only one instance at a time -->
 
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="org.eyeseetea.malariacare.DashboardActivity" />
+                android:value="org.eyeseetea.malariacare.DashboardDetailsActivity" />
         </activity>
         <activity
             android:name="org.eyeseetea.malariacare.SettingsActivity"
@@ -88,11 +79,11 @@
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:finishOnTaskLaunch="true"
             android:launchMode="singleTask"
-            android:parentActivityName="org.eyeseetea.malariacare.DashboardActivity" > <!-- singleTask makes that only one instance at a time -->
+            android:parentActivityName="org.eyeseetea.malariacare.DashboardDetailsActivity" > <!-- singleTask makes that only one instance at a time -->
 
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="org.eyeseetea.malariacare.DashboardActivity" />
+                android:value="org.eyeseetea.malariacare.DashboardDetailsActivity" />
         </activity>
 
         <meta-data
