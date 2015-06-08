@@ -22,6 +22,7 @@ package org.eyeseetea.malariacare.layout.adapters.survey;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.res.TypedArray;
 import android.preference.PreferenceManager;
 import android.text.Editable;
 import android.text.InputFilter;
@@ -46,8 +47,9 @@ import org.eyeseetea.malariacare.database.model.Question;
 import org.eyeseetea.malariacare.database.model.Tab;
 import org.eyeseetea.malariacare.database.model.Value;
 import org.eyeseetea.malariacare.database.utils.ReadWriteDB;
+import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.layout.adapters.general.OptionArrayAdapter;
-import org.eyeseetea.malariacare.layout.adapters.survey.autoTabUtils.UncheckeableRadioButton;
+import org.eyeseetea.malariacare.views.UncheckeableRadioButton;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 import org.eyeseetea.malariacare.utils.Constants;
@@ -620,13 +622,22 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
         ((RadioGroup) viewHolder.component).setOrientation(orientation);
 
         for (Option option : question.getAnswer().getOptions()) {
-            ((RadioGroup) viewHolder.component).addView(new UncheckeableRadioButton(context, option));
+            // FIXME: here we need to provide the attrs values for adapting the view
+            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this.context);
+            UncheckeableRadioButton button = (UncheckeableRadioButton) lInflater.inflate(R.layout.uncheckeable_radiobutton, null);
+            button.setOption(option);
+            button.updateProperties(Session.getFontSize(), this.context.getString(R.string.font_size_level1), this.context.getString(R.string.medium_font_name));
+            ((RadioGroup) viewHolder.component).addView(button);
         }
 
         //Add Listener
         ((RadioGroup) viewHolder.component).setOnCheckedChangeListener(new RadioGroupListener(false, question, viewHolder));
     }
 
+    /**
+     * Set visibility of numerators and denominators depending on the user preference selected in the settings activity
+     * @param viewHolder view that holds the component to be more efficient
+     */
     private void configureViewByPreference(ViewHolder viewHolder) {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this.context);
         if (sharedPreferences.getBoolean(this.context.getString(R.string.show_num_dems), false)) {

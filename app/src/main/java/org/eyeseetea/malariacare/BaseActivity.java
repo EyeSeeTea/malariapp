@@ -56,14 +56,7 @@ public abstract class BaseActivity extends ActionBarActivity {
         setTheme(R.style.EyeSeeTheme);
         android.support.v7.app.ActionBar actionBar = this.getSupportActionBar();
         LayoutUtils.setActionBarLogo(actionBar);
-        // Update font size in case this could have been changed by the user
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        if (sharedPreferences.getBoolean(this.getString(R.string.customize_fonts), false))
-            Session.setFontSize(sharedPreferences.getString(this.getString(R.string.font_sizes), Constants.FONTS_SYSTEM));
-        else Session.setFontSize(Constants.FONTS_SYSTEM);
-
-        Log.d(".BaseActivity", "Font size: " + sharedPreferences.getString(this.getString(R.string.font_sizes), Constants.FONTS_SYSTEM));
-        Log.d(".BaseActivity", "Show num/dems: " + Boolean.toString(sharedPreferences.getBoolean(this.getString(R.string.show_num_dems), false)));
+        Session.setSessionPreferences(this);
         // Manage uncaught exceptions that may occur
         //Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(this));
     }
