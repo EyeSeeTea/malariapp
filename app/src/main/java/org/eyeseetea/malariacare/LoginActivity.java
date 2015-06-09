@@ -50,10 +50,12 @@ import android.widget.TextView;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 
+import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.model.Tab;
 import org.eyeseetea.malariacare.database.model.User;
 import org.eyeseetea.malariacare.database.utils.PopulateDB;
 import org.eyeseetea.malariacare.database.utils.Session;
+import org.eyeseetea.malariacare.layout.adapters.dashboard.AssessmentAdapter;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -145,7 +147,10 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
     private void goDashBoard(Iterator<User> users) {
         Log.i(".LoginActivity", "User already logged in --> Dashboard");
         Session.setUser(users.next());
-        Class c = DashboardActivity.class;
+        Class c = DashboardDetailsActivity.class;
+        // Get the not-sent surveys ordered by date
+        List <Survey> surveys = Survey.getAllUnsentSurveys();
+        Session.setAdapter(new AssessmentAdapter(surveys, getApplicationContext()));
         Intent mainIntent = new Intent(LoginActivity.this, c);
         startActivity(mainIntent);
     }
@@ -351,7 +356,10 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
             }
             //go dashboard
             Log.i(".LoginActivity", "Logged in!");
-            Intent mainIntent = new Intent(LoginActivity.this, DashboardActivity.class);
+            // Get the not-sent surveys ordered by date
+            List <Survey> surveys = Survey.getAllUnsentSurveys();
+            Session.setAdapter(new AssessmentAdapter(surveys, getApplicationContext()));
+            Intent mainIntent = new Intent(LoginActivity.this, DashboardDetailsActivity.class);
             startActivity(mainIntent);
         }
 
