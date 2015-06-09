@@ -146,7 +146,7 @@ public class SurveyEspressoTest extends MalariaEspressoTest{
 
         //THEN
         onView(withId(R.id.score)).check(matches(withText("66")));
-        onView(withId(R.id.qualitativeScore)).check(matches(withText("Fare")));
+        onView(withId(R.id.qualitativeScore)).check(matches(withText(getActivityInstance().getString(R.string.fair))));
     }
 
     @Test
