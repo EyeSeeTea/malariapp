@@ -100,15 +100,6 @@ public class LoginActivityEspressoTest extends MalariaEspressoTest{
         //THEN
         intended(anyIntent());
         assertNotNull(Session.getUser());
-
-        //WHEN
-        pressBack();
-
-        //THEN
-        onView(withText(android.R.string.yes)).perform(click());
-        onView(withId(R.id.user)).check(matches(withText("")));
-        onView(withId(R.id.password)).check(matches(withText("")));
-
     }
 
 }

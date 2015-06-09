@@ -38,6 +38,7 @@ import org.eyeseetea.malariacare.database.model.User;
 import org.eyeseetea.malariacare.database.model.Value;
 import org.eyeseetea.malariacare.database.utils.PopulateDB;
 import org.eyeseetea.malariacare.database.utils.Session;
+import org.eyeseetea.malariacare.layout.adapters.dashboard.AssessmentAdapter;
 import org.junit.Before;
 import org.junit.BeforeClass;
 
@@ -112,13 +113,11 @@ public class MalariaEspressoTest {
     }
 
     public static void mockSessionSurvey(){
-        mockSurveys(1);
-        User currentUser=Session.getUser();
-        List<Survey> surveys= Survey.find(Survey.class, "user=?", currentUser.getId().toString());
+        List<Survey> surveys=mockSurveys(1);
         Session.setSurvey(surveys.get(0));
     }
 
-    public static void mockSurveys(int num){
+    public static List<Survey> mockSurveys(int num){
         List<OrgUnit> orgUnitList=OrgUnit.find(OrgUnit.class, null, null);
         List<Program> programList=Program.find(Program.class,null,null);
         Program program=programList.get(0);
@@ -128,7 +127,9 @@ public class MalariaEspressoTest {
             Survey survey=new Survey(orgUnitList.get(i%num),program,user);
             survey.save();
         }
-
+        List<Survey> surveys= Survey.find(Survey.class, "user=?", user.getId().toString());
+        Session.setAdapter(new AssessmentAdapter(surveys, InstrumentationRegistry.getTargetContext()));
+        return surveys;
     }
 
     private static User getSafeUser(){

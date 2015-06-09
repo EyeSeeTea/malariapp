@@ -33,6 +33,7 @@ import android.widget.Spinner;
 
 import org.eyeseetea.malariacare.CreateSurveyActivity;
 import org.eyeseetea.malariacare.DashboardActivity;
+import org.eyeseetea.malariacare.DashboardDetailsActivity;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.SurveyActivity;
 import org.eyeseetea.malariacare.database.model.Answer;
@@ -127,7 +128,7 @@ public class SurveyEspressoTest extends MalariaEspressoTest{
         onView(withText(android.R.string.yes)).perform(click());
 
         //THEN
-        assertEquals(DashboardActivity.class, getActivityInstance().getClass());
+        assertEquals(DashboardDetailsActivity.class, getActivityInstance().getClass());
     }
 
     @Test
