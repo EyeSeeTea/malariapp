@@ -26,12 +26,8 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
 
 import org.eyeseetea.malariacare.fragments.DashboardDetailsFragment;
-import org.eyeseetea.malariacare.fragments.DashboardFragment;
 
 
 public class DashboardDetailsActivity extends BaseActivity {
