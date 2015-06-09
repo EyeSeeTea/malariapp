@@ -105,9 +105,9 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
         Iterator<User> users = User.findAll(User.class);
         if (users.hasNext()) {
             Log.i(".LoginActivity","User already logged in --> DashboardDetails");
+            finish();
             Session.setUser(users.next());
             Class c = DashboardDetailsActivity.class;
-            //mainIntent.putExtra("index", 0);
             // Get the not-sent surveys ordered by date
             List <Survey> surveys = Survey.getAllUnsentSurveys();
             Session.setAdapter(new AssessmentAdapter(surveys, getApplicationContext()));
@@ -322,6 +322,7 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
             }
             //go dashboard
             Log.i(".LoginActivity", "Logged in!");
+            finish();
             Intent mainIntent = new Intent(LoginActivity.this, DashboardDetailsActivity.class);
             //mainIntent.putExtra("index", 0);
             // Get the not-sent surveys ordered by date
