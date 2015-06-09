@@ -90,6 +90,7 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
     private AutoCompleteTextView mUserView;
     private EditText mPasswordView;
     private View mProgressView;
+    private View mUserLoginFormView;
     private View mLoginFormView;
 
     @Override

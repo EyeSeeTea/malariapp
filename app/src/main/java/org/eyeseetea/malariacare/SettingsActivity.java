@@ -228,7 +228,8 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
         sharedPreferences.unregisterOnSharedPreferenceChangeListener(this);
     }
 
-    public void onBackPressed(){
+    @Override
+    public void onBackPressed() {
         NavUtils.navigateUpFromSameTask(this);
     }
 
