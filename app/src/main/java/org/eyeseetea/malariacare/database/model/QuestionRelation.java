@@ -24,14 +24,14 @@ import com.orm.SugarRecord;
 /**
  * Created by Jose on 25/05/2015.
  */
-public class Relative extends SugarRecord<Relative> {
+public class QuestionRelation extends SugarRecord<QuestionRelation> {
     Question master;
     Question relative;
     int operation;
 
-    public Relative(){};
+    public QuestionRelation(){};
 
-    public Relative(Question master, Question relative, int operation) {
+    public QuestionRelation(Question master, Question relative, int operation) {
         this.master = master;
         this.relative = relative;
         this.operation = operation;

@@ -138,7 +138,6 @@ public class SurveyActivity extends BaseActivity implements LoaderManager.Loader
     }
 
     private void showTab(Tab selectedTab) {
-
         if (selectedTab.isGeneralScore())
             showGeneralScores();
         else {
