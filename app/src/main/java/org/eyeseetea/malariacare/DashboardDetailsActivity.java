@@ -41,11 +41,11 @@ public class DashboardDetailsActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_dashboard_details);
 
-        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            // If the screen is now in landscape mode, we can show the dialog in-line so we don't need this activity
-            finish();
-            return;
-        }
+//        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+//            // If the screen is now in landscape mode, we can show the dialog in-line so we don't need this activity
+//            finish();
+//            return;
+//        }
 
         if (savedInstanceState == null) {
             DashboardDetailsFragment detailsFragment = new DashboardDetailsFragment();

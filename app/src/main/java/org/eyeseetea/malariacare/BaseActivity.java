@@ -125,7 +125,7 @@ public abstract class BaseActivity extends ActionBarActivity {
      * Every BaseActivity(Details, Create, Survey) goes back to DashBoard
      */
     public void onBackPressed(){
-        go(DashboardActivity.class);
+        go(DashboardDetailsActivity.class);
     }
 
     @Override
