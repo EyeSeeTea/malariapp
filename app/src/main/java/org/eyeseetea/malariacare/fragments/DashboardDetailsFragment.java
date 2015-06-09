@@ -160,7 +160,6 @@ public class DashboardDetailsFragment extends ListFragment {
         Session.setSurvey(surveys.get(position-1));
 
         //Call Survey Activity
-        //getActivity().finish();
         Intent surveyIntent = new Intent(v.getContext(), SurveyActivity.class);
         v.getContext().startActivity(surveyIntent);
     }
