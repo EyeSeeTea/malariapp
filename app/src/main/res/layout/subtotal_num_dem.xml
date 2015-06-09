@@ -4,7 +4,7 @@
     android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/headerColor">
+    android:background="@drawable/background_footer">
 
     <RelativeLayout
         android:layout_width="0dip"
