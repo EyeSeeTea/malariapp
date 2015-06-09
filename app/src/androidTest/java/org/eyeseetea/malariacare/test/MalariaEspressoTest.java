@@ -19,7 +19,6 @@
 
 package org.eyeseetea.malariacare.test;
 
-import android.app.Activity;
 import android.content.res.AssetManager;
 import android.content.res.Resources;
 import android.database.sqlite.SQLiteDatabase;
@@ -27,7 +26,7 @@ import android.support.test.InstrumentationRegistry;
 import android.util.Log;
 
 import org.eyeseetea.malariacare.database.model.Answer;
-import org.eyeseetea.malariacare.database.model.CompositiveScore;
+import org.eyeseetea.malariacare.database.model.CompositeScore;
 import org.eyeseetea.malariacare.database.model.Header;
 import org.eyeseetea.malariacare.database.model.Option;
 import org.eyeseetea.malariacare.database.model.OrgUnit;
@@ -77,7 +76,7 @@ public class MalariaEspressoTest {
             return;
         }
         Question.deleteAll(Question.class);
-        CompositiveScore.deleteAll(CompositiveScore.class);
+        CompositeScore.deleteAll(CompositeScore.class);
         Option.deleteAll(Option.class);
         Answer.deleteAll(Answer.class);
         Header.deleteAll(Header.class);

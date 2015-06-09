@@ -134,6 +134,18 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
         this.id_layout = id_layout;
     }
 
+    /**
+     * Factory method to build a scored/non scored layout according to tab type.
+     * @param tab
+     * @param context
+     * @param withScore
+     * @return
+     */
+    public static AutoTabAdapter build(Tab tab, Context context){
+        int idLayout=tab.getType()==Constants.TAB_AUTOMATIC_NON_SCORED?R.layout.form_without_score:R.layout.form_with_score;
+        return new AutoTabAdapter(tab, context, idLayout);
+    }
+
     @Override
     public BaseAdapter getAdapter() {
         return this;

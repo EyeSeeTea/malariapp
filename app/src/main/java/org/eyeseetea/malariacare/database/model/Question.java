@@ -22,7 +22,7 @@ public class Question extends SugarRecord<Question> {
     Header header;
     Answer answer;
     Question question;
-    CompositiveScore compositiveScore;
+    CompositeScore compositeScore;
 
     @Ignore
     List<Question> _questionChildren;
@@ -36,7 +36,7 @@ public class Question extends SugarRecord<Question> {
     public Question() {
     }
 
-    public Question(String code, String de_name, String short_name, String form_name, String uid, Integer order_pos, Float numerator_w, Float denominator_w, Header header, Answer answer, Question question, CompositiveScore compositiveScore) {
+    public Question(String code, String de_name, String short_name, String form_name, String uid, Integer order_pos, Float numerator_w, Float denominator_w, Header header, Answer answer, Question question, CompositeScore compositeScore) {
         this.code = code;
         this.de_name = de_name;
         this.short_name = short_name;
@@ -48,7 +48,7 @@ public class Question extends SugarRecord<Question> {
         this.header = header;
         this.answer = answer;
         this.question = question;
-        this.compositiveScore = compositiveScore;
+        this.compositeScore = compositeScore;
     }
 
     public String getCode() {
@@ -139,9 +139,9 @@ public class Question extends SugarRecord<Question> {
         this.question = question;
     }
 
-    public CompositiveScore getCompositiveScore() { return compositiveScore; }
+    public CompositeScore getCompositeScore() { return compositeScore; }
 
-    public void setCompositiveScore(CompositiveScore compositiveScore) { this.compositiveScore = compositiveScore; }
+    public void setCompositeScore(CompositeScore compositeScore) { this.compositeScore = compositeScore; }
 
     public boolean hasParent(){
         return getQuestion() != null;
@@ -176,6 +176,14 @@ public class Question extends SugarRecord<Question> {
     }
 
     public boolean belongsToMasterQuestions() {return !getMasters().isEmpty();}
+
+    public boolean belongsToProgram(Program program){
+        try {
+            return program.equals(getHeader().getTab().getProgram());
+        }catch(NullPointerException ex){
+            return false;
+        }
+    }
 
     public boolean hasRelatives() {return !getRelatives().isEmpty(); }
 
@@ -222,7 +230,7 @@ public class Question extends SugarRecord<Question> {
                 ", header=" + header +
                 ", answer=" + answer +
                 ", question=" + question +
-                ", compositiveScore=" + compositiveScore +
+                ", compositeScore=" + compositeScore +
                 '}';
     }
 
@@ -236,7 +244,7 @@ public class Question extends SugarRecord<Question> {
         if (answer != null ? !answer.equals(question1.answer) : question1.answer != null)
             return false;
         if (code != null ? !code.equals(question1.code) : question1.code != null) return false;
-        if (compositiveScore != null ? !compositiveScore.equals(question1.compositiveScore) : question1.compositiveScore != null)
+        if (compositeScore != null ? !compositeScore.equals(question1.compositeScore) : question1.compositeScore != null)
             return false;
         if (de_name != null ? !de_name.equals(question1.de_name) : question1.de_name != null)
             return false;
@@ -272,7 +280,7 @@ public class Question extends SugarRecord<Question> {
         result = 31 * result + (header != null ? header.hashCode() : 0);
         result = 31 * result + (answer != null ? answer.hashCode() : 0);
         result = 31 * result + (question != null ? question.hashCode() : 0);
-        result = 31 * result + (compositiveScore != null ? compositiveScore.hashCode() : 0);
+        result = 31 * result + (compositeScore != null ? compositeScore.hashCode() : 0);
         return result;
     }
 }

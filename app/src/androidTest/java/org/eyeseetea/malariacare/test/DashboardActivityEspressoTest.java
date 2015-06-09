@@ -93,13 +93,13 @@ public class DashboardActivityEspressoTest extends MalariaEspressoTest{
 
     @Test
     public void delete_survey_shows_dialog(){
-        //WHEN
-        onView(withText(R.string.assessment_info_delete)).perform(click());
-
-        //THEN
-        onView(withText(R.string.dialog_title_delete_survey)).check(matches(isDisplayed()));
-        onView(withText(android.R.string.no)).perform(click());
-
+        //TODO The 'delete' button is over, now there is a swipe right touch gesture
+//        //WHEN
+//        onView(withText(R.string.assessment_info_delete)).perform(click());
+//
+//        //THEN
+//        onView(withText(R.string.dialog_title_delete_survey)).check(matches(isDisplayed()));
+//        onView(withText(android.R.string.no)).perform(click());
     }
 
 }
