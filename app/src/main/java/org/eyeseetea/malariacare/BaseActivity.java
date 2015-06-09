@@ -77,7 +77,6 @@ public abstract class BaseActivity extends ActionBarActivity {
 
         switch (id) {
             case R.id.action_settings:
-                finish();
                 Intent settingsIntent = new Intent(BaseActivity.this, SettingsActivity.class);
                 startActivity(settingsIntent);
                 break;

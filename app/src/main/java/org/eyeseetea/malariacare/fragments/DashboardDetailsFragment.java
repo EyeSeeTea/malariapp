@@ -164,4 +164,9 @@ public class DashboardDetailsFragment extends ListFragment {
         Intent surveyIntent = new Intent(v.getContext(), SurveyActivity.class);
         v.getContext().startActivity(surveyIntent);
     }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+    }
 }
