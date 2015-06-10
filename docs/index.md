@@ -60,8 +60,8 @@ There is a special tab called **'score'** where the scores from all the survey a
 
 ![Dashboard](img/survey_score.png)
 
-### Compositive tab
+### Composite tab
 
 Finally there is another specific tab where the scores are added according to its hierarchy.
 
-![Dashboard](img/survey_compositive_scores.png)
+![Dashboard](img/survey_composite_scores.png)

@@ -109,7 +109,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:id="@+id/cualitativeScore"
+                    android:id="@+id/qualitativeScore"
                     android:textStyle="bold"
                     android:textColor="@color/white"
                     android:gravity="center_vertical|right"

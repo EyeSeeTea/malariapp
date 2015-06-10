@@ -89,6 +89,8 @@
     <string name="analytics_title_header">Estadísticas</string>
 
     <!-- survey -->
+    <string name="survey_title_exit">"¿Realmente salir?"</string>
+    <string name="survey_info_exit">"¿Esta seguro que quiere salir?"</string>
     <string name="survey_info_select_tab">Seleccione pestaña: </string>
 
     <!-- widget -->

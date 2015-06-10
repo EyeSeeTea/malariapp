@@ -19,7 +19,6 @@
 
 package org.eyeseetea.malariacare.test;
 
-import android.app.Activity;
 import android.content.res.AssetManager;
 import android.content.res.Resources;
 import android.database.sqlite.SQLiteDatabase;
@@ -27,7 +26,7 @@ import android.support.test.InstrumentationRegistry;
 import android.util.Log;
 
 import org.eyeseetea.malariacare.database.model.Answer;
-import org.eyeseetea.malariacare.database.model.CompositiveScore;
+import org.eyeseetea.malariacare.database.model.CompositeScore;
 import org.eyeseetea.malariacare.database.model.Header;
 import org.eyeseetea.malariacare.database.model.Option;
 import org.eyeseetea.malariacare.database.model.OrgUnit;
@@ -39,6 +38,7 @@ import org.eyeseetea.malariacare.database.model.User;
 import org.eyeseetea.malariacare.database.model.Value;
 import org.eyeseetea.malariacare.database.utils.PopulateDB;
 import org.eyeseetea.malariacare.database.utils.Session;
+import org.eyeseetea.malariacare.layout.adapters.dashboard.AssessmentAdapter;
 import org.junit.Before;
 import org.junit.BeforeClass;
 
@@ -77,7 +77,7 @@ public class MalariaEspressoTest {
             return;
         }
         Question.deleteAll(Question.class);
-        CompositiveScore.deleteAll(CompositiveScore.class);
+        CompositeScore.deleteAll(CompositeScore.class);
         Option.deleteAll(Option.class);
         Answer.deleteAll(Answer.class);
         Header.deleteAll(Header.class);
@@ -113,13 +113,11 @@ public class MalariaEspressoTest {
     }
 
     public static void mockSessionSurvey(){
-        mockSurveys(1);
-        User currentUser=Session.getUser();
-        List<Survey> surveys= Survey.find(Survey.class, "user=?", currentUser.getId().toString());
+        List<Survey> surveys=mockSurveys(1);
         Session.setSurvey(surveys.get(0));
     }
 
-    public static void mockSurveys(int num){
+    public static List<Survey> mockSurveys(int num){
         List<OrgUnit> orgUnitList=OrgUnit.find(OrgUnit.class, null, null);
         List<Program> programList=Program.find(Program.class,null,null);
         Program program=programList.get(0);
@@ -129,7 +127,9 @@ public class MalariaEspressoTest {
             Survey survey=new Survey(orgUnitList.get(i%num),program,user);
             survey.save();
         }
-
+        List<Survey> surveys= Survey.find(Survey.class, "user=?", user.getId().toString());
+        Session.setAdapter(new AssessmentAdapter(surveys, InstrumentationRegistry.getTargetContext()));
+        return surveys;
     }
 
     private static User getSafeUser(){

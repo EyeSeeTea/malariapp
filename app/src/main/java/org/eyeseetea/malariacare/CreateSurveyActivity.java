@@ -83,18 +83,6 @@ public class CreateSurveyActivity extends BaseActivity {
 
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_create_form, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        return super.onOptionsItemSelected(item);
-    }
-
     public boolean checkEverythingFilled() {
         try {
             return (!orgUnitView.getSelectedItem().equals(this.orgUnitDefaultOption) && !programView.getSelectedItem().equals(this.programDefaultOption));
@@ -133,17 +121,15 @@ public class CreateSurveyActivity extends BaseActivity {
                     .setMessage(getApplicationContext().getString(R.string.dialog_content_existing_survey))
                     .setPositiveButton(android.R.string.ok, null).create().show();
         } else {
-            // Save Survey
+            // Put new survey in session
             Survey survey = new Survey(orgUnit, program, Session.getUser());
             survey.save();
-
-            // Set to session
             Session.setSurvey(survey);
 
             //Call Survey Activity
-            finish();
-            Intent surveyIntent = new Intent(this, SurveyActivity.class);
-            startActivity(surveyIntent);
+            go(SurveyActivity.class);
         }
     }
+
+
 }

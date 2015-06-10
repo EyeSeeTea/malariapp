@@ -5,6 +5,7 @@ import com.orm.query.Condition;
 import com.orm.query.Select;
 
 import org.eyeseetea.malariacare.database.utils.Session;
+import org.eyeseetea.malariacare.utils.Constants;
 
 import java.util.List;
 
@@ -74,6 +75,14 @@ public class Tab extends SugarRecord<Tab> {
     public static List<Tab> getTabsBySession(){
         return Select.from(Tab.class).where(Condition.prop("program")
                 .eq(String.valueOf(Session.getSurvey().getProgram().getId()))).orderBy("orderpos").list();
+    }
+
+    /**
+     * Checks if this tab is a general score tab.
+     * @return
+     */
+    public boolean isGeneralScore(){
+        return getType() == Constants.TAB_SCORE_SUMMARY && !getName().equals(Constants.COMPOSITE_SCORE_TAB_NAME);
     }
 
     @Override

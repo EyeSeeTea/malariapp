@@ -25,14 +25,9 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.support.v4.app.NavUtils;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
 
 import org.eyeseetea.malariacare.fragments.DashboardDetailsFragment;
-import org.eyeseetea.malariacare.fragments.DashboardFragment;
 
 
 public class DashboardDetailsActivity extends BaseActivity {
@@ -42,11 +37,11 @@ public class DashboardDetailsActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_dashboard_details);
 
-        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            // If the screen is now in landscape mode, we can show the dialog in-line so we don't need this activity
-            finish();
-            return;
-        }
+//        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+//            // If the screen is now in landscape mode, we can show the dialog in-line so we don't need this activity
+//            finish();
+//            return;
+//        }
 
         if (savedInstanceState == null) {
             DashboardDetailsFragment detailsFragment = new DashboardDetailsFragment();
@@ -56,19 +51,6 @@ public class DashboardDetailsActivity extends BaseActivity {
             ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
             ft.commit();
         }
-    }
-
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_dashboard, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        return super.onOptionsItemSelected(item);
     }
 
     /**

@@ -29,7 +29,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import org.eyeseetea.malariacare.R;
-import org.eyeseetea.malariacare.database.model.CompositiveScore;
+import org.eyeseetea.malariacare.database.model.CompositeScore;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 import org.eyeseetea.malariacare.utils.Utils;
@@ -39,15 +39,15 @@ import java.util.List;
 /**
  * Created by Jose on 21/04/2015.
  */
-public class CompositiveScoreAdapter extends BaseAdapter implements ITabAdapter {
+public class CompositeScoreAdapter extends BaseAdapter implements ITabAdapter {
 
-    List<CompositiveScore> items;
+    List<CompositeScore> items;
     private LayoutInflater lInflater;
     private final Context context;
     int id_layout;
     String tab_name;
 
-    public CompositiveScoreAdapter(List<CompositiveScore> items, Context context, int id_layout, String tab_name) {
+    public CompositeScoreAdapter(List<CompositeScore> items, Context context, int id_layout, String tab_name) {
         this.items = items;
         this.context = context;
         this.id_layout = id_layout;
@@ -59,10 +59,10 @@ public class CompositiveScoreAdapter extends BaseAdapter implements ITabAdapter 
     @Override
     public void initializeSubscore() {
 
-        ListView lCompositiveScores = (ListView) ((Activity) context).findViewById(R.id.listView);
+        ListView compositeScoreListView = (ListView) ((Activity) context).findViewById(R.id.listView);
 
-        ViewGroup header = (ViewGroup) lInflater.inflate(R.layout.compositivescoreheader, lCompositiveScores, false);
-        lCompositiveScores.addHeaderView(header);
+        ViewGroup header = (ViewGroup) lInflater.inflate(R.layout.composite_score_header, compositeScoreListView, false);
+        compositeScoreListView.addHeaderView(header);
 
     }
 
@@ -105,19 +105,19 @@ public class CompositiveScoreAdapter extends BaseAdapter implements ITabAdapter 
     public View getView(int position, View convertView, ViewGroup parent) {
         View rowView = null;
 
-        CompositiveScore item = (CompositiveScore) getItem(position);
+        CompositeScore item = (CompositeScore) getItem(position);
 
-        rowView = lInflater.inflate(R.layout.compositive_scores_record, parent, false);
+        rowView = lInflater.inflate(R.layout.composite_scores_record, parent, false);
 
         ((TextView)rowView.findViewById(R.id.code)).setText(item.getCode());
         ((TextView)rowView.findViewById(R.id.label)).setText(item.getLabel());
 
-        Float compositive_value = ScoreRegister.getCompositiveScore(item);
+        Float compositeScoreValue = ScoreRegister.getCompositeScore(item);
 
-        if (compositive_value == null)
+        if (compositeScoreValue == null)
             ((TextView)rowView.findViewById(R.id.score)).setText(this.context.getString(R.string.number_zero));
         else
-            ((TextView)rowView.findViewById(R.id.score)).setText(Utils.round(compositive_value));
+            ((TextView)rowView.findViewById(R.id.score)).setText(Utils.round(compositeScoreValue));
 
         rowView.setBackgroundResource(LayoutUtils.calculateBackgrounds(position));
 

@@ -22,7 +22,6 @@ package org.eyeseetea.malariacare.layout.adapters.survey;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.content.res.TypedArray;
 import android.preference.PreferenceManager;
 import android.text.Editable;
 import android.text.InputFilter;
@@ -134,6 +133,18 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
         this.id_layout = id_layout;
     }
 
+    /**
+     * Factory method to build a scored/non scored layout according to tab type.
+     * @param tab
+     * @param context
+     * @param withScore
+     * @return
+     */
+    public static AutoTabAdapter build(Tab tab, Context context){
+        int idLayout=tab.getType()==Constants.TAB_AUTOMATIC_NON_SCORED?R.layout.form_without_score:R.layout.form_with_score;
+        return new AutoTabAdapter(tab, context, idLayout);
+    }
+
     @Override
     public BaseAdapter getAdapter() {
         return this;
@@ -163,7 +174,7 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
         scoreHolder.totalDenum = (TextView) ((Activity) context).findViewById(R.id.totalDen);
         scoreHolder.totalNum = (TextView) ((Activity) context).findViewById(R.id.totalNum);
         scoreHolder.subtotalscore = (TextView) ((Activity) context).findViewById(R.id.subtotalScoreText);
-        scoreHolder.qualitativeScore = (TextView) ((Activity) context).findViewById(R.id.cualitativeScore);
+        scoreHolder.qualitativeScore = (TextView) ((Activity) context).findViewById(R.id.qualitativeScore);
         RelativeLayout space = (RelativeLayout) (((Activity) context).findViewById(R.id.space));
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this.context);
         if (sharedPreferences.getBoolean(this.context.getString(R.string.show_num_dems), false)) {

@@ -118,4 +118,5 @@ public class AssessmentAdapter extends ADashboardAdapter implements IDashboardAd
         this.showNextFacilityName = true;
         super.notifyDataSetChanged();
     }
+
 }
