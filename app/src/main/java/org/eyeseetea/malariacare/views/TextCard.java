@@ -54,6 +54,9 @@ public class TextCard extends TextView implements IEyeSeeView {
     }
 
     public void init(AttributeSet attrs, int defStyle) {
+        if(isInEditMode()){
+            return;
+        }
         // Fonts Map initialisation
         if (Session.getFontMap() == null) Session.initMap(getContext());
         // Load attributes
