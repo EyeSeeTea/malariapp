@@ -39,7 +39,7 @@
         android:dependency="@string/customize_fonts"
         android:key="font_sizes"
         android:title="@string/settings_list_font_sizes"
-        android:defaultValue="-1"
+        android:defaultValue="@string/font_size_level2"
         android:entries="@array/settings_array_titles_font_sizes"
         android:entryValues="@array/settings_array_values_font_sizes"
         android:negativeButtonText="@null"

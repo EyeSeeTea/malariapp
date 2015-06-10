@@ -30,8 +30,6 @@ import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.utils.Constants;
 
-import java.util.Map;
-
 /**
  * TODO: document your custom view class.
  */
