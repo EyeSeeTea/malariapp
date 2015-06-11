@@ -55,6 +55,7 @@ public class TextCard extends TextView implements IEyeSeeView {
 
     public void init(AttributeSet attrs, int defStyle) {
         if(isInEditMode()){
+            this.setText(R.string.lorem_ipsum);
             return;
         }
         // Fonts Map initialisation

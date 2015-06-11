@@ -68,7 +68,6 @@ public class AssessmentAdapter extends ADashboardAdapter implements IDashboardAd
             facilityName.setVisibility(View.GONE);
             facilityName.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, 0, 0f));
             surveyType.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, 0, 1f));
-            rowView.setPadding(paddingDp, 0, paddingDp, paddingDp); // If this is the last, remove upper padding
         } else {
             facilityName.setText(survey.getOrgUnit().getName());
             facilityName.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, 0, 0.5f));
@@ -83,7 +82,6 @@ public class AssessmentAdapter extends ADashboardAdapter implements IDashboardAd
                 // show background without border and tell the system that next survey belongs to the same org unit, so its name doesn't need to be shown
                 rowView.setBackgroundResource(LayoutUtils.calculateBackgroundsNoBorder(this.backIndex));
                 this.showNextFacilityName = false;
-                rowView.setPadding(paddingDp, paddingDp, paddingDp, 0); // If there will be other survey, remove bottom padding
             } else {
                 // show background with border and switch background for the next row
                 rowView.setBackgroundResource(LayoutUtils.calculateBackgrounds(this.backIndex));
