@@ -34,6 +34,7 @@ import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.SurveyActivity;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.utils.Session;
+import org.eyeseetea.malariacare.layout.adapters.dashboard.AssessmentAdapter;
 import org.eyeseetea.malariacare.layout.adapters.dashboard.IDashboardAdapter;
 import org.eyeseetea.malariacare.layout.listeners.SwipeDismissListViewTouchListener;
 
@@ -113,7 +114,7 @@ public class DashboardDetailsFragment extends ListFragment {
                         new SwipeDismissListViewTouchListener.DismissCallbacks() {
                             @Override
                             public boolean canDismiss(int position) {
-                                return true;
+                                return position>0 && position<=((AssessmentAdapter)adapter).getCount();
                             }
 
                             @Override
@@ -146,6 +147,12 @@ public class DashboardDetailsFragment extends ListFragment {
     @Override
     public void onListItemClick(ListView l, View v, int position, long id){
         super.onListItemClick(l, v, position, id);
+
+        //Discard clicks on header|footer
+        if(position<=0 || position > surveys.size()){
+            return;
+        }
+
         Session.setSurvey(surveys.get(position-1));
 
         //Call Survey Activity
