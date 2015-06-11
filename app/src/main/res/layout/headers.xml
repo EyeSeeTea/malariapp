@@ -5,7 +5,7 @@
     android:layout_width="fill_parent"
     android:layout_height="match_parent"
     android:id="@+id/header"
-    android:paddingTop="30dip">
+    android:paddingTop="15dip">
 
     <org.eyeseetea.malariacare.views.TextCard
         android:layout_width="fill_parent"
