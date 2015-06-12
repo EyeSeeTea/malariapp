@@ -39,14 +39,12 @@ import java.util.List;
  */
 public class DashboardAdapter extends BaseAdapter {
 
-    List<Survey> items;
     List<IDashboardAdapter> adapters;
     List<View.OnClickListener> listeners;
     LayoutInflater lInflater;
     Context context;
 
-    public DashboardAdapter(List<Survey> items, List<IDashboardAdapter> adapters, List<View.OnClickListener> listeners, Context context) {
-        this.items = items;
+    public DashboardAdapter(List<IDashboardAdapter> adapters, List<View.OnClickListener> listeners, Context context) {
         this.adapters = adapters;
         this.listeners = listeners;
         this.context = context;

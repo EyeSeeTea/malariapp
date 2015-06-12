@@ -7,14 +7,18 @@
     <string name="empty_string"></string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
+    <string name="ok">Ok</string>
+    <string name="cancel">Cancel</string>
     <string name="score">Score</string>
     <string name="number_zero">0</string>
+    <string name="number_zero_percentage">0 % </string>
     <string name="title_id">ID</string>
     <string name="title_name">Name</string>
     <string name="good">Good</string>
-    <string name="fare">Fare</string>
+    <string name="fair">Fair</string>
     <string name="poor">Poor</string>
     <string name="plus">+</string>
+    <string name="lorem_ipsum">Lorem ipsum dolor sit amet</string>
 
     <!-- settings -->
     <string name="settings_menu_about">About</string>
@@ -89,6 +93,8 @@
     <string name="analytics_title_header">Analytics</string>
 
     <!-- survey -->
+    <string name="survey_title_exit">"Really Exit?"</string>
+    <string name="survey_info_exit">"Are you sure you want to exit?"</string>
     <string name="survey_info_select_tab">Select Tab: </string>
 
     <!--widget-->
@@ -200,5 +206,6 @@
 
     <string name="textcard_default_scale">system</string>
     <string name="textcard_default_dimension">medium</string>
+
 
 </resources>

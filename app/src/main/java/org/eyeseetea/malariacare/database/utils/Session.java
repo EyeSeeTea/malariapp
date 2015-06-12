@@ -20,6 +20,9 @@
 package org.eyeseetea.malariacare.database.utils;
 
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
+import android.util.Log;
 
 import com.orm.query.Select;
 
@@ -121,6 +124,21 @@ public class Session {
         Session.fontMap.put(Constants.FONTS_MEDIUM, medium);
         Session.fontMap.put(Constants.FONTS_LARGE, large);
         Session.fontMap.put(Constants.FONTS_XLARGE, xlarge);
+    }
+
+    /**
+     * Put preferences in the Session class
+     * @param context Context in which preferences are set up
+     */
+    public static void setSessionPreferences(Context context){
+        // Update font size in case this could have been changed by the user
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        if (sharedPreferences.getBoolean(context.getString(R.string.customize_fonts), false))
+            Session.setFontSize(sharedPreferences.getString(context.getString(R.string.font_sizes), Constants.FONTS_SYSTEM));
+        else Session.setFontSize(Constants.FONTS_SYSTEM);
+
+        Log.d(".BaseActivity", "Font size: " + sharedPreferences.getString(context.getString(R.string.font_sizes), Constants.FONTS_SYSTEM));
+        Log.d(".BaseActivity", "Show num/dems: " + Boolean.toString(sharedPreferences.getBoolean(context.getString(R.string.show_num_dems), false)));
     }
 
     /**

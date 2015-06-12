@@ -269,24 +269,24 @@ public class LayoutUtils {
     // Depending on a score sets the first view color (0<x<50:poor ; 50<x<80:fare ; 80<x<100:good)
     // If a second view is given, it also writes the text good, fare or given there
     public static void trafficLight(View view, float score, View textView){
-        if(score < 50.0F){ // poor
-            ((TextView)view).setTextColor(view.getContext().getResources().getColor(R.color.red)); // red
-            if(textView != null) {
-                ((TextView)textView).setTextColor(view.getContext().getResources().getColor(R.color.red)); // red
-                ((TextView)textView).setText(view.getContext().getResources().getString(R.string.poor));
-            }
-        } else if (score < 80.0F){ // fare
-            ((TextView)view).setTextColor(view.getContext().getResources().getColor(R.color.amber)); // amber
-            if(textView != null) {
-                ((TextView)textView).setTextColor(view.getContext().getResources().getColor(R.color.amber)); // amber
-                ((TextView)textView).setText(view.getContext().getResources().getString(R.string.fare));
-            }
-        } else {
-            ((TextView)view).setTextColor(view.getContext().getResources().getColor(R.color.green)); // green
-            if(textView != null) { // good
-                ((TextView)textView).setTextColor(view.getContext().getResources().getColor(R.color.green)); // green
-                ((TextView)textView).setText(view.getContext().getResources().getString(R.string.good));
-            }
+        //Suppose it is 'Good' && Green
+        int color=view.getContext().getResources().getColor(R.color.green);
+        String tag=view.getContext().getResources().getString(R.string.good);
+
+        if (score < 80.0F){
+            color= view.getContext().getResources().getColor(R.color.amber);
+            tag=view.getContext().getResources().getString(R.string.fair);
+        }
+        if (score < 50.0F){
+            color= view.getContext().getResources().getColor(R.color.red);
+            tag=view.getContext().getResources().getString(R.string.poor);
+        }
+        //Change color for number
+        ((TextView)view).setTextColor(color);
+        //Change color& text for qualitative score
+        if(textView != null) {
+            ((TextView)textView).setTextColor(color); // red
+            ((TextView)textView).setText(tag);
         }
     }
 

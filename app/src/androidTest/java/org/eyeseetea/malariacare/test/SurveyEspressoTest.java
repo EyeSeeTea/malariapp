@@ -19,59 +19,48 @@
 
 package org.eyeseetea.malariacare.test;
 
+import android.app.Activity;
+import android.app.Instrumentation;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.espresso.intent.rule.IntentsTestRule;
 import android.support.test.runner.AndroidJUnit4;
+import android.support.test.runner.lifecycle.ActivityLifecycleMonitorRegistry;
+import android.support.test.runner.lifecycle.Stage;
 import android.test.suitebuilder.annotation.LargeTest;
-import android.view.View;
-import android.widget.ListView;
-import android.widget.Spinner;
 
-import org.eyeseetea.malariacare.CreateSurveyActivity;
+import org.eyeseetea.malariacare.DashboardDetailsActivity;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.SurveyActivity;
-import org.eyeseetea.malariacare.database.model.Answer;
-import org.eyeseetea.malariacare.database.model.Header;
 import org.eyeseetea.malariacare.database.model.Option;
-import org.eyeseetea.malariacare.database.model.Program;
 import org.eyeseetea.malariacare.database.model.Question;
-import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.model.Tab;
-import org.eyeseetea.malariacare.database.model.User;
-import org.eyeseetea.malariacare.database.utils.Session;
-import org.eyeseetea.malariacare.layout.adapters.survey.AutoTabAdapter;
-import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import java.util.List;
+import java.util.Collection;
 
 import static android.support.test.espresso.Espresso.onData;
 import static android.support.test.espresso.Espresso.onView;
+import static android.support.test.espresso.Espresso.openActionBarOverflowOrOptionsMenu;
 import static android.support.test.espresso.Espresso.pressBack;
 import static android.support.test.espresso.action.ViewActions.click;
+import static android.support.test.espresso.action.ViewActions.swipeRight;
+import static android.support.test.espresso.assertion.ViewAssertions.doesNotExist;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
-import static android.support.test.espresso.intent.Intents.intended;
-import static android.support.test.espresso.intent.matcher.IntentMatchers.anyIntent;
-import static android.support.test.espresso.matcher.ViewMatchers.hasSibling;
-import static android.support.test.espresso.matcher.ViewMatchers.isClickable;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withChild;
-import static android.support.test.espresso.matcher.ViewMatchers.withClassName;
-import static android.support.test.espresso.matcher.ViewMatchers.withContentDescription;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
-import static android.support.test.espresso.matcher.ViewMatchers.withParent;
-import static android.support.test.espresso.matcher.ViewMatchers.withSpinnerText;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
-import static junit.framework.Assert.assertNotNull;
+import static junit.framework.Assert.assertEquals;
+import static org.eyeseetea.malariacare.test.utils.TextCardScaleMatcher.hasTextCardScale;
+import static org.eyeseetea.malariacare.test.utils.EditCardScaleMatcher.hasEditCardScale;
+import static org.eyeseetea.malariacare.test.utils.UncheckeableRadioButtonScaleMatcher.hasRadioButtonScale;
 import static org.hamcrest.Matchers.allOf;
-import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.not;
 
 /**
  *
@@ -87,7 +76,7 @@ public class SurveyEspressoTest extends MalariaEspressoTest{
     @BeforeClass
     public static void init(){
         populateData(InstrumentationRegistry.getTargetContext().getAssets());
-        mockSessionSurvey();
+        mockSessionSurvey(2, 0);
     }
 
     @Before
@@ -116,9 +105,11 @@ public class SurveyEspressoTest extends MalariaEspressoTest{
         //GIVEN
         pressBack();
 
-        //THEN
+        //WHEN
         onView(withText(android.R.string.yes)).perform(click());
-        intended(anyIntent());
+
+        //THEN
+        assertEquals(DashboardDetailsActivity.class, getActivityInstance().getClass());
     }
 
     @Test
@@ -143,8 +134,8 @@ public class SurveyEspressoTest extends MalariaEspressoTest{
     }
 
     @Test
-    public void change_to_compositive_score(){
-        //WHEN: Select 'Compositive Score' tab
+    public void change_to_composite_score(){
+        //WHEN: Select 'Composite Score' tab
         whenTabSelected(11);
 
         //THEN
@@ -163,7 +154,7 @@ public class SurveyEspressoTest extends MalariaEspressoTest{
 
         //THEN
         onView(withId(R.id.score)).check(matches(withText("66")));
-        onView(withId(R.id.cualitativeScore)).check(matches(withText("Fare")));
+        onView(withId(R.id.qualitativeScore)).check(matches(withText(getActivityInstance().getString(R.string.fair))));
     }
 
     @Test
@@ -181,6 +172,139 @@ public class SurveyEspressoTest extends MalariaEspressoTest{
         //THEN
         onView(withId(R.id.totalScore)).check(matches(withText("8")));
         onView(withId(R.id.rdtAvg)).check(matches(withText("22")));
+    }
+
+    @Test
+    public void radiobutton_textsize_changes(){
+        //GIVEN
+        Activity activity = getActivityInstance();
+        cleanAll();
+        cleanSettings(activity); // FIXME: looks like clean settings is not properly being done
+        populateData(InstrumentationRegistry.getTargetContext().getAssets());
+        mockSessionSurvey(1, 1, 0);
+
+        //WHEN: Select Large fonts on Settings
+        whenFontSizeChange(activity, 3);
+
+        //WHEN: Access a ICM survey (contains rabiobuttons)
+        WhenAssessmentSelected("Health Facility 0", "ICM");
+
+        //THEN: Check font size has properly changed
+        onData(is(instanceOf(Question.class))).inAdapterView(withId(R.id.listView)).atPosition(0)
+                .onChildView(withId(R.id.answer))
+                .onChildView(withText(activity.getString(R.string.yes)))
+                .check(matches(hasRadioButtonScale(activity.getString(R.string.font_size_level3))));
+    }
+
+    @Test
+    public void textcard_textsize_changes(){
+        //GIVEN
+        Activity activity = getActivityInstance();
+        cleanAll();
+        cleanSettings(activity); // FIXME: looks like clean settings is not properly being done
+        populateData(InstrumentationRegistry.getTargetContext().getAssets());
+        mockSessionSurvey(1, 1, 0);
+
+        //WHEN: Select Large fonts on Settings
+        whenFontSizeChange(activity, 3);
+
+        //WHEN: Access a ICM survey (contains rabiobuttons)
+        WhenAssessmentSelected("Health Facility 0", "ICM");
+
+        //THEN: Check font size has properly changed
+        onData(is(instanceOf(Question.class))).inAdapterView(withId(R.id.listView)).atPosition(1)
+                .onChildView(withId(R.id.statement))
+                .check(matches(hasTextCardScale(activity.getString(R.string.font_size_level3))));
+    }
+
+    @Test
+    public void editcard_textsize_changes(){
+        //GIVEN
+        Activity activity = getActivityInstance();
+        cleanAll();
+        cleanSettings(activity); // FIXME: looks like clean settings is not properly being done
+        populateData(InstrumentationRegistry.getTargetContext().getAssets());
+        mockSessionSurvey(1, 0, 0);
+
+        //WHEN: Select Large fonts on Settings
+        whenFontSizeChange(activity, 3);
+
+        //WHEN: Access a Clinical Case Management survey (contains edit fields)
+        WhenAssessmentSelected("Health Facility 0", "Clinical Case Management");
+
+        //THEN: Check font size has properly changed
+        onData(is(instanceOf(Question.class))).inAdapterView(withId(R.id.listView)).atPosition(1)
+                .onChildView(withId(R.id.answer))
+                .check(matches(hasEditCardScale(activity.getString(R.string.font_size_level3))));
+    }
+
+    @Test
+    public void delete_survey_by_swipping(){
+        //GIVEN
+        Activity activity = getActivityInstance();
+        cleanAll();
+        cleanSettings(activity); // FIXME: looks like clean settings is not properly being done
+        populateData(InstrumentationRegistry.getTargetContext().getAssets());
+        mockSessionSurvey(1, 1, 0);
+
+        //WHEN: Access a ICM survey (contains rabiobuttons)
+        pressBack();
+        onView(withText(activity.getString(android.R.string.ok))).perform(click()); // confirm exit
+        WhenAssessmentSwipeAndOk("Health Facility 0", "ICM");
+
+        //THEN: Check font size has properly changed
+        checkAssessmentDoesntExist("Health Facility 0", "ICM");
+    }
+
+    private void checkAssessmentDoesntExist(String orgUnit, String program) {
+        onView(allOf(withId(R.id.assessment_row),
+                withChild(allOf(
+                        withChild(allOf(withId(R.id.facility), withText(orgUnit))),
+                        withChild(allOf(withId(R.id.survey_type), withText("- " + program))))))).check(doesNotExist());
+    }
+
+    /**
+     * From Dashboard access survey
+     * @param orgUnit
+     * @param program
+     */
+    private void WhenAssessmentSelected(String orgUnit, String program) {
+        onView(allOf(withId(R.id.assessment_row),
+                withChild(allOf(
+                        withChild(allOf(withId(R.id.facility), withText(orgUnit))),
+                        withChild(allOf(withId(R.id.survey_type), withText("- " + program)))))))
+                .perform(click());
+    }
+
+    /**
+     * From Dashboard access
+     * @param orgUnit
+     * @param program
+     */
+    private void WhenAssessmentSwipeAndOk(String orgUnit, String program) {
+        onView(allOf(withId(R.id.assessment_row),
+                withChild(allOf(
+                        withChild(allOf(withId(R.id.facility), withText(orgUnit))),
+                        withChild(allOf(withId(R.id.survey_type), withText("- " + program)))))))
+                .perform(swipeRight());
+        // FIXME: It looks like sometimes this ok button is not being found, maybe it appears with a little delay and the check occurs before?
+        onView(withText(getActivityInstance().getString(android.R.string.ok))).perform(click()); // confirm delete
+    }
+
+    /**
+     * Change font size
+     * @param activity
+     * @param num font size in a discrete int scale [0: xsmall - 1: small - 2: medium - 3: large - 4: xlarge]
+     */
+    private void whenFontSizeChange(Activity activity, int num) {
+        openActionBarOverflowOrOptionsMenu(getActivityInstance());
+        onView(withText(activity.getString(R.string.settings_menu_configuration))).perform(click());
+        onView(withText(activity.getString(R.string.settings_checkbox_customize_fonts))).perform(click());
+        onView(withText(activity.getString(R.string.settings_list_font_sizes))).perform(click());
+        onView(withText((activity.getResources().getStringArray(R.array.settings_array_titles_font_sizes))[num])).perform(click());
+        pressBack(); // Exit settings
+        pressBack(); // exit survey
+        onView(withText(activity.getString(android.R.string.ok))).perform(click()); // confirm exit
     }
 
     /**
@@ -205,5 +329,21 @@ public class SurveyEspressoTest extends MalariaEspressoTest{
                 perform(click());
         int indexAnswer=answer?1:2;
         onData(is(instanceOf(Option.class))).atPosition(indexAnswer).perform(click());
+    }
+
+    private Activity getActivityInstance(){
+        final Activity[] activity = new Activity[1];
+        Instrumentation instrumentation=InstrumentationRegistry.getInstrumentation();
+        instrumentation.waitForIdleSync();
+        instrumentation.runOnMainSync(new Runnable() {
+            public void run() {
+                Collection resumedActivities = ActivityLifecycleMonitorRegistry.getInstance().getActivitiesInStage(Stage.RESUMED);
+                if (resumedActivities.iterator().hasNext()) {
+                    activity[0] = (Activity) resumedActivities.iterator().next();
+                }
+            }
+        });
+
+        return activity[0];
     }
 }

@@ -27,6 +27,9 @@ public class Constants {
             TAB_SCORE_SUMMARY = 4,
             TAB_OTHER = 5;
 
+    //FIXME So far the special sub type of composite scores is treated by name
+    public static final String COMPOSITE_SCORE_TAB_NAME="Composite Scores";
+
     // ############# SURVEY STATUS ###############
     public static final int SURVEY_IN_PROGRESS = 0,
             SURVEY_COMPLETED = 1,
@@ -43,4 +46,7 @@ public class Constants {
             FONTS_LARGE = "large",
             FONTS_XLARGE = "xlarge",
             FONTS_SYSTEM = "system";
+
+    public static final int MAX_ITEMS_IN_DASHBOARD=5;
+
 }

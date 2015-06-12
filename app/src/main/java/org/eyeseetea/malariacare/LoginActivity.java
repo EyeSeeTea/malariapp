@@ -50,10 +50,12 @@ import android.widget.TextView;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 
+import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.model.Tab;
 import org.eyeseetea.malariacare.database.model.User;
 import org.eyeseetea.malariacare.database.utils.PopulateDB;
 import org.eyeseetea.malariacare.database.utils.Session;
+import org.eyeseetea.malariacare.layout.adapters.dashboard.AssessmentAdapter;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -95,52 +97,62 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.d(".LoginActivity","onCreate");
         super.onCreate(savedInstanceState);
-        // Manage uncaught exceptions that may occur
-        //Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(this));
 
-        // Populate User table just in case there is already an existing user
+        //User already logged in --> dashboard
         Iterator<User> users = User.findAll(User.class);
         if (users.hasNext()) {
-            Log.i(".LoginActivity","User already logged in --> Dashboard");
-            Session.setUser(users.next());
-            Class c = DashboardActivity.class;
-            Intent mainIntent = new Intent(LoginActivity.this, c);
-            startActivity(mainIntent);
-        }else{
-            setContentView(R.layout.login_layout);
-            // Set up the login form.
-            mUserView = (AutoCompleteTextView) findViewById(R.id.user);
-            populateAutoComplete();
-
-            mPasswordView = (EditText) findViewById(R.id.password);
-            mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-                @Override
-                public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
-                    if (id == R.id.login || id == EditorInfo.IME_NULL) {
-                        attemptLogin();
-                        return true;
-                    }
-                    return false;
-                }
-            });
-
-            Button mUserSignInButton = (Button) findViewById(R.id.email_sign_in_button);
-            mUserSignInButton.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    attemptLogin();
-                }
-            });
-
-            mLoginFormView = findViewById(R.id.login_form);
-            mProgressView = findViewById(R.id.login_progress);
-            mUserLoginFormView = findViewById(R.id.user_login_form);
+            goDashBoard(users);
+            return;
         }
+
+        //Show form
+        initView();
     }
 
-    private void populateAutoComplete() {
-        getLoaderManager().initLoader(0, null, this);
+    /**
+     * Initialize login form and listeners
+     */
+    private void initView(){
+        setContentView(R.layout.login_layout);
+        // Set up the login form.
+        mUserView = (AutoCompleteTextView) findViewById(R.id.user);
+        populateAutoComplete();
+
+        mPasswordView = (EditText) findViewById(R.id.password);
+        mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
+                if (id == R.id.login || id == EditorInfo.IME_NULL) {
+                    attemptLogin();
+                    return true;
+                }
+                return false;
+            }
+        });
+
+        Button mUserSignInButton = (Button) findViewById(R.id.email_sign_in_button);
+        mUserSignInButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                attemptLogin();
+            }
+        });
+
+        mLoginFormView = findViewById(R.id.login_form);
+        mProgressView = findViewById(R.id.login_progress);
+    }
+
+    private void goDashBoard(Iterator<User> users) {
+        Log.i(".LoginActivity", "User already logged in --> Dashboard");
+        Session.setUser(users.next());
+        Class c = DashboardDetailsActivity.class;
+        // Get the not-sent surveys ordered by date
+        List <Survey> surveys = Survey.getAllUnsentSurveys();
+        Session.setAdapter(new AssessmentAdapter(surveys, getApplicationContext()));
+        Intent mainIntent = new Intent(LoginActivity.this, c);
+        startActivity(mainIntent);
     }
 
 
@@ -150,6 +162,8 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
      * errors are presented and no actual login attempt is made.
      */
     public void attemptLogin() {
+        Log.i(".LoginActivity", "attempt!!");
+
         if (mAuthTask != null) {
             return;
         }
@@ -168,9 +182,17 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
         }
 
         showProgress(true);
-        mAuthTask = new UserLoginTask(user, password);
+        mAuthTask = new UserLoginTask(user);
         mAuthTask.execute((Void) null);
-        Log.i(".LoginActivity", "attempt!!");
+    }
+
+    /**
+     * Login form is cleaned when the activity is back to foreground
+     */
+    @Override
+    public void onResume(){
+        cleanForm();
+        super.onResume();
     }
 
     /**
@@ -179,11 +201,24 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
      * @param password
      * @return
      */
-    public boolean hasGoodCredentials(String user, String password){String expectedPassword=DUMMY_CREDENTIALS.get(user);
+    private boolean hasGoodCredentials(String user, String password){String expectedPassword=DUMMY_CREDENTIALS.get(user);
         if(null==expectedPassword || expectedPassword.isEmpty()){
             return false;
         }
         return expectedPassword.equals(password);
+    }
+
+    /**
+     * Cleans form before launching intent to dashboard
+     */
+    private void cleanForm(){
+        if(mUserView!=null) {
+            mUserView.setError(null);
+            mUserView.setText(null);
+        }
+        if(mPasswordView!=null) {
+            mPasswordView.setText(null);
+        }
     }
 
     /**
@@ -220,6 +255,13 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
             mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
             mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
         }
+    }
+
+    /***************************
+     * FIXME: Not required so far
+     ***************************/
+    private void populateAutoComplete() {
+        getLoaderManager().initLoader(0, null, this);
     }
 
     @Override
@@ -283,12 +325,10 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
     public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
 
         private final String mUser;
-        private final String mPassword;
         private User user;
 
-        UserLoginTask(String user, String password) {
+        UserLoginTask(String user) {
             mUser = user;
-            mPassword = password;
         }
 
         @Override
@@ -316,7 +356,10 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
             }
             //go dashboard
             Log.i(".LoginActivity", "Logged in!");
-            Intent mainIntent = new Intent(LoginActivity.this, DashboardActivity.class);
+            // Get the not-sent surveys ordered by date
+            List <Survey> surveys = Survey.getAllUnsentSurveys();
+            Session.setAdapter(new AssessmentAdapter(surveys, getApplicationContext()));
+            Intent mainIntent = new Intent(LoginActivity.this, DashboardDetailsActivity.class);
             startActivity(mainIntent);
         }
 

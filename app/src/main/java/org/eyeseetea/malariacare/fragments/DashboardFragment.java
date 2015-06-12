@@ -72,7 +72,7 @@ public class DashboardFragment extends ListFragment {
         setListShown(false);
 
         // Get the not-sent surveys ordered by date
-        this.surveys = Survey.getUnsentSurveys(5);
+        this.surveys = Survey.getUnsentSurveys(Constants.MAX_ITEMS_IN_DASHBOARD);
 
         // make a list with the adapters
         this.adapters = new ArrayList<>();
@@ -82,7 +82,7 @@ public class DashboardFragment extends ListFragment {
         List<View.OnClickListener> listeners = new ArrayList<>();
         listeners.add(new DashboardListener(getActivity(), getString(R.string.dashboard_button_see_all), 0));
 
-        setListAdapter(new DashboardAdapter(this.surveys, this.adapters, listeners, getActivity()));
+        setListAdapter(new DashboardAdapter(this.adapters, listeners, getActivity()));
 
         // Check to see if we have a frame in which to embed the details fragment directly in the containing UI
         View detailsFrame = getActivity().findViewById(R.id.details);

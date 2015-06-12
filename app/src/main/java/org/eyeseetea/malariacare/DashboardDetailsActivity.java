@@ -19,16 +19,15 @@
 
 package org.eyeseetea.malariacare;
 
+import android.app.AlertDialog;
 import android.app.FragmentTransaction;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
+import android.util.Log;
 
 import org.eyeseetea.malariacare.fragments.DashboardDetailsFragment;
-import org.eyeseetea.malariacare.fragments.DashboardFragment;
 
 
 public class DashboardDetailsActivity extends BaseActivity {
@@ -38,11 +37,11 @@ public class DashboardDetailsActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_dashboard_details);
 
-        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            // If the screen is now in landscape mode, we can show the dialog in-line so we don't need this activity
-            finish();
-            return;
-        }
+//        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+//            // If the screen is now in landscape mode, we can show the dialog in-line so we don't need this activity
+//            finish();
+//            return;
+//        }
 
         if (savedInstanceState == null) {
             DashboardDetailsFragment detailsFragment = new DashboardDetailsFragment();
@@ -54,16 +53,24 @@ public class DashboardDetailsActivity extends BaseActivity {
         }
     }
 
-
+    /**
+     * Just to avoid trying to navigate back from the dashboard. There's no parent activity here
+     */
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_dashboard, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
+    public void onBackPressed() {
+        Log.d(".DashboardDetails", "back pressed");
+        new AlertDialog.Builder(this)
+                .setTitle("Really Exit?")
+                .setMessage("Are you sure you want to exit the app?")
+                .setNegativeButton(android.R.string.no, null)
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        return super.onOptionsItemSelected(item);
+                    public void onClick(DialogInterface arg0, int arg1) {
+                        Intent intent = new Intent(Intent.ACTION_MAIN);
+                        intent.addCategory(Intent.CATEGORY_HOME);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(intent);
+                    }
+                }).create().show();
     }
 }

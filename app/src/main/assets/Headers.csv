@@ -106,5 +106,49 @@
 464;'Introduction';'Introduction';1;19
 465;'Inquiry';'Inquiry';2;19
 466;'Physical Examination';'Physical Examination';3;19
-467;'Diagnosis and Treatment';'Diagnosis and Treatment';1;21
-468;'Counseling';'Counseling';2;21
+467;'Diagnosis 1';'Diagnosis 1';1;21
+468;'Diagnosis 2';'Diagnosis 2';2;21
+469;'Contraceptive Counseling';'Contraceptive Counseling';1;22
+470;'Injectables';'Injectables';3;22
+471;'IUCD Insertion';'IUCD Insertion';4;22
+472;'IUCD Removal';'IUCD Removal';5;22
+473;'Implant Insertion';'Implant Insertion';6;22
+474;'Implant Removal';'Implant Removal';7;22
+475;'Introduction';'Introduction';1;23
+476;'Inquiry';'Inquiry';2;23
+477;'Physical Examination';'Physical Examination';3;23
+478;'Diagnosis 1';'Diagnosis 1';4;23
+479;'Diagnosis 2';'Diagnosis 2';5;23
+480;'RDT Procedure';'RDT Procedure';1;25
+481;'Introduction';'Introduction';1;26
+482;'Ask';'Ask';2;26
+483;'Care';'Care';3;26
+484;'Client education and counseling';'Client education and counseling';4;26
+485;'Pre-Insertion (Clinical)';'Pre-Insertion (Clinical)';1;27
+486;'Insertion';'Insertion';2;27
+487;'Post-insertion';'Post-insertion';3;27
+488;'Procedure/Follow-Ip';'Procedure/Follow-Ip';4;27
+489;'Management of Pre-Eclampsia/Eclampsia';'Management of Pre-Eclampsia/Eclampsia';1;28
+490;'Management of Post Partum Haemorrhage';'Management of Post Partum Haemorrhage';2;28
+491;'Pre-delivery';'Pre-delivery';1;29
+492;'Delivery';'Delivery';2;29
+493;'Immediate Post-delivery';'Immediate Post-delivery';3;29
+494;'Pre-Screening';'Pre-Screening';1;30
+495;'Patient screening';'Patient screening';2;30
+496;'Pre-Cryotherapy Counselling';'Pre-Cryotherapy Counselling';3;30
+497;'Getting Ready';'Getting Ready';4;30
+498;'Cryotherapy';'Cryotherapy';5;30
+499;'Post Cryotherapy Tasks';'Post Cryotherapy Tasks';6;30
+500;'Inquiry';'Inquiry';1;31
+501;'Examination';'Examination';2;31
+502;'Treatment';'Treatment';3;31
+503;'Counseling';'Counseling';4;31
+504;'Newborn Resuscitation';'Newborn Resuscitation';1;32
+505;'HIV Testing and Counseling';'HIV Testing and Counseling';1;33
+506;'HIV Care and Treatment';'HIV Care and Treatment';2;33
+507;'HTN screening , classification and staging';'HTN screening , classification and staging';1;34
+508;'History taking and assessment';'History taking and assessment';2;34
+509;'Diagnosis and Management as per protocol';'Diagnosis and Management as per protocol';3;34
+510;'Oral Contraceptive Pills';'Oral Contraceptive Pills';2;22
+511;'Diagnosis 3';'Diagnosis 3';3;21
+512;'Diagnosis 3';'Diagnosis 3';6;23

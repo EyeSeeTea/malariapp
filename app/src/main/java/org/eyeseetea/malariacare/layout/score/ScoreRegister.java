@@ -19,7 +19,7 @@
 
 package org.eyeseetea.malariacare.layout.score;
 
-import org.eyeseetea.malariacare.database.model.CompositiveScore;
+import org.eyeseetea.malariacare.database.model.CompositeScore;
 import org.eyeseetea.malariacare.database.model.Question;
 import org.eyeseetea.malariacare.database.model.Tab;
 
@@ -31,28 +31,28 @@ import java.util.Map;
 
 public class ScoreRegister {
 
-    private static final Map<CompositiveScore, CompositiveNumDenRecord> compositiveScoreRegister = new HashMap<CompositiveScore, CompositiveNumDenRecord>();
+    private static final Map<CompositeScore, CompositeNumDenRecord> compositeScoreRegister = new HashMap<CompositeScore, CompositeNumDenRecord>();
     private static final Map<Tab, GeneralNumDenRecord> generalScoreRegister = new HashMap<Tab, GeneralNumDenRecord>();
 
     public static void addRecord(Question question, Float num, Float den){
-        if (question.getCompositiveScore() != null) {
-            compositiveScoreRegister.get(question.getCompositiveScore()).addRecord(question, num, den);
+        if (question.getCompositeScore() != null) {
+            compositeScoreRegister.get(question.getCompositeScore()).addRecord(question, num, den);
         }
         generalScoreRegister.get(question.getHeader().getTab()).addRecord(question, num, den);
     }
 
     public static void deleteRecord(Question question){
-        if (question.getCompositiveScore() != null)
-            compositiveScoreRegister.get(question.getCompositiveScore()).deleteRecord(question);
+        if (question.getCompositeScore() != null)
+            compositeScoreRegister.get(question.getCompositeScore()).deleteRecord(question);
         generalScoreRegister.get(question.getHeader().getTab()).deleteRecord(question);
     }
 
-    private static List<Float> getRecursiveScore(CompositiveScore cScore, List<Float> result) {
+    private static List<Float> getRecursiveScore(CompositeScore cScore, List<Float> result) {
 
         if (!cScore.hasChildren())
-            return compositiveScoreRegister.get(cScore).calculateNumDenTotal(result);
+            return compositeScoreRegister.get(cScore).calculateNumDenTotal(result);
         else {
-            for (CompositiveScore cScoreChildren : cScore.getCompositiveScoreChildren())
+            for (CompositeScore cScoreChildren : cScore.getCompositeScoreChildren())
                 result = getRecursiveScore(cScoreChildren, result);
             return result;
         }
@@ -62,9 +62,9 @@ public class ScoreRegister {
         return generalScoreRegister.get(question.getHeader().getTab()).getNumDenRecord().get(question);
     }
 
-    public static Float getCompositiveScore(CompositiveScore cScore) {
+    public static Float getCompositeScore(CompositeScore cScore) {
 
-        List<Float>result = compositiveScoreRegister.get(cScore).calculateNumDenTotal(new ArrayList<Float>(Arrays.asList(0F, 0F)));
+        List<Float>result = compositeScoreRegister.get(cScore).calculateNumDenTotal(new ArrayList<Float>(Arrays.asList(0F, 0F)));
 
         result = getRecursiveScore(cScore, result);
 
@@ -76,8 +76,8 @@ public class ScoreRegister {
         return generalScoreRegister.get(tab).calculateTotal();
     }
 
-    public static void registerScore(CompositiveScore compositiveScore){
-        compositiveScoreRegister.put(compositiveScore, new CompositiveNumDenRecord());
+    public static void registerScore(CompositeScore compositeScore){
+        compositeScoreRegister.put(compositeScore, new CompositeNumDenRecord());
     }
 
     public static void registerScore(Tab tab){

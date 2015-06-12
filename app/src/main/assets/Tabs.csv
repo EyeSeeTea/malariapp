@@ -9,7 +9,18 @@
 13;'Environment';10;1;0
 16;'Score';11;1;4
 17;'Health Facility Info';1;1;1
-18;'Compositive Scores';12;1;4
-19;'Standard Medical Care Procedure';1;2;0
-20;'Compositive Scores';3;2;4
+18;'Composite Scores';12;1;4
+19;'Inquiry and Physical Examination';1;2;0
 21;'Diagnosis, Treatment and Counseling';2;2;0
+22;'FP all methods';1;3;0
+23;'IMCI';2;3;0
+25;'RDT Procedure';4;3;0
+26;'Focused Antenatal Care';5;3;0
+27;'Post Partum IUD';6;3;0
+28;'Management of Pre-Eclampsia/Eclampsia';7;3;0
+29;'Labour and Delivery';8;3;0
+30;'Cervical Cancer';9;3;0
+31;'Tuberculosis';10;3;0
+32;'Newborn Resuscitation';11;3;0
+33;'HIV';12;3;0
+34;'Hypertension';13;3;0

@@ -30,8 +30,6 @@ import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.utils.Constants;
 
-import java.util.Map;
-
 /**
  * TODO: document your custom view class.
  */
@@ -56,6 +54,10 @@ public class TextCard extends TextView implements IEyeSeeView {
     }
 
     public void init(AttributeSet attrs, int defStyle) {
+        if(isInEditMode()){
+            this.setText(R.string.lorem_ipsum);
+            return;
+        }
         // Fonts Map initialisation
         if (Session.getFontMap() == null) Session.initMap(getContext());
         // Load attributes

@@ -29,16 +29,24 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
+import android.widget.ListView;
 
+import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.fragments.DashboardFragment;
+import org.eyeseetea.malariacare.layout.adapters.dashboard.AssessmentAdapter;
+import org.eyeseetea.malariacare.layout.adapters.dashboard.DashboardAdapter;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
+import org.eyeseetea.malariacare.utils.Constants;
 import org.eyeseetea.malariacare.utils.ExceptionHandler;
+
+import java.util.List;
 
 
 public class DashboardActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.d(".DashboardActivity","onCreate");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_dashboard);
 
@@ -52,17 +60,11 @@ public class DashboardActivity extends BaseActivity {
         }
     }
 
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_dashboard, menu);
-        return super.onCreateOptionsMenu(menu);
+    /**
+     * Logs out, requires confirmation
+     */
+    public void onBackPressed(){
+        logout();
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // We don't have any special option in dashboard
-        return super.onOptionsItemSelected(item);
-    }
 }

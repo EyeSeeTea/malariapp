@@ -46,8 +46,9 @@ import org.eyeseetea.malariacare.database.model.Question;
 import org.eyeseetea.malariacare.database.model.Tab;
 import org.eyeseetea.malariacare.database.model.Value;
 import org.eyeseetea.malariacare.database.utils.ReadWriteDB;
+import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.layout.adapters.general.OptionArrayAdapter;
-import org.eyeseetea.malariacare.layout.adapters.survey.autoTabUtils.UncheckeableRadioButton;
+import org.eyeseetea.malariacare.views.UncheckeableRadioButton;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 import org.eyeseetea.malariacare.utils.Constants;
@@ -132,6 +133,18 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
         this.id_layout = id_layout;
     }
 
+    /**
+     * Factory method to build a scored/non scored layout according to tab type.
+     * @param tab
+     * @param context
+     * @param withScore
+     * @return
+     */
+    public static AutoTabAdapter build(Tab tab, Context context){
+        int idLayout=tab.getType()==Constants.TAB_AUTOMATIC_NON_SCORED?R.layout.form_without_score:R.layout.form_with_score;
+        return new AutoTabAdapter(tab, context, idLayout);
+    }
+
     @Override
     public BaseAdapter getAdapter() {
         return this;
@@ -161,7 +174,7 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
         scoreHolder.totalDenum = (TextView) ((Activity) context).findViewById(R.id.totalDen);
         scoreHolder.totalNum = (TextView) ((Activity) context).findViewById(R.id.totalNum);
         scoreHolder.subtotalscore = (TextView) ((Activity) context).findViewById(R.id.subtotalScoreText);
-        scoreHolder.qualitativeScore = (TextView) ((Activity) context).findViewById(R.id.cualitativeScore);
+        scoreHolder.qualitativeScore = (TextView) ((Activity) context).findViewById(R.id.qualitativeScore);
         RelativeLayout space = (RelativeLayout) (((Activity) context).findViewById(R.id.space));
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this.context);
         if (sharedPreferences.getBoolean(this.context.getString(R.string.show_num_dems), false)) {
@@ -194,10 +207,10 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
         if (totalDenum != 0) {
             Float score = 100 * (totalNum / totalDenum);
             LayoutUtils.trafficLight(scoreHolder.score, score, scoreHolder.qualitativeScore);
-            scoreHolder.score.setText(Utils.round(100 * (totalNum / totalDenum)));
+            scoreHolder.score.setText(Utils.round(100 * (totalNum / totalDenum))+" % ");
         }
         if (totalDenum == 0 && totalNum == 0) {
-            scoreHolder.score.setText(this.context.getString(R.string.number_zero));
+            scoreHolder.score.setText(this.context.getString(R.string.number_zero_percentage));
         }
     }
 
@@ -620,13 +633,22 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
         ((RadioGroup) viewHolder.component).setOrientation(orientation);
 
         for (Option option : question.getAnswer().getOptions()) {
-            ((RadioGroup) viewHolder.component).addView(new UncheckeableRadioButton(context, option));
+            // FIXME: here we need to provide the attrs values for adapting the view
+            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this.context);
+            UncheckeableRadioButton button = (UncheckeableRadioButton) lInflater.inflate(R.layout.uncheckeable_radiobutton, null);
+            button.setOption(option);
+            button.updateProperties(Session.getFontSize(), this.context.getString(R.string.font_size_level1), this.context.getString(R.string.medium_font_name));
+            ((RadioGroup) viewHolder.component).addView(button);
         }
 
         //Add Listener
-        ((RadioGroup) viewHolder.component).setOnCheckedChangeListener(new RadioGroupListener(false, question, viewHolder));
+        ((RadioGroup) viewHolder.component).setOnCheckedChangeListener(new RadioGroupListener(question, viewHolder));
     }
 
+    /**
+     * Set visibility of numerators and denominators depending on the user preference selected in the settings activity
+     * @param viewHolder view that holds the component to be more efficient
+     */
     private void configureViewByPreference(ViewHolder viewHolder) {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this.context);
         if (sharedPreferences.getBoolean(this.context.getString(R.string.show_num_dems), false)) {
@@ -708,12 +730,10 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
     }
 
     public class RadioGroupListener implements RadioGroup.OnCheckedChangeListener {
-        private boolean viewCreated;
         private ViewHolder viewHolder;
         private Question question;
 
-        public RadioGroupListener(boolean viewCreated, Question question, ViewHolder viewHolder) {
-            this.viewCreated = viewCreated;
+        public RadioGroupListener(Question question, ViewHolder viewHolder) {
             this.question = question;
             this.viewHolder = viewHolder;
         }
@@ -722,12 +742,15 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
         @Override
         public void onCheckedChanged(RadioGroup group, int checkedId) {
 
+            if (group.isShown()) {
+
                 Option option = new Option(Constants.DEFAULT_SELECT_OPTION);
                 if (checkedId != -1) {
                     RadioButton radioButton = (RadioButton) ((RadioGroup) this.viewHolder.component).findViewById(checkedId);
                     option = (Option) radioButton.getTag();
                 }
                 itemSelected(viewHolder, question, option);
+            }
 
         }
 

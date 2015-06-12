@@ -7,14 +7,18 @@
     <string name="empty_string"></string>
     <string name="yes">Sí</string>
     <string name="no">No</string>
+    <string name="ok">Ok</string>
+    <string name="cancel">Annuler</string>
     <string name="score">Puntuación</string>
     <string name="number_zero">0</string>
+    <string name="number_zero_percentage">0 % </string>
     <string name="title_id">ID</string>
     <string name="title_name">Nombre</string>
     <string name="good">Bien</string>
-    <string name="fare">Normal</string>
+    <string name="fair">Normal</string>
     <string name="poor">Mal</string>
     <string name="plus">+</string>
+    <string name="lorem_ipsum">Lorem ipsum dolor sit amet</string>
 
     <!-- settings -->
     <string name="settings_menu_about">Acerca de</string>
@@ -89,6 +93,8 @@
     <string name="analytics_title_header">Estadísticas</string>
 
     <!-- survey -->
+    <string name="survey_title_exit">"¿Realmente salir?"</string>
+    <string name="survey_info_exit">"¿Esta seguro que quiere salir?"</string>
     <string name="survey_info_select_tab">Seleccione pestaña: </string>
 
     <!-- widget -->

@@ -96,7 +96,7 @@ public class CustomAdherenceAdapter extends BaseAdapter implements ITabAdapter {
 
     private void initializeScoreViews() {
         scoreHolder.score = (TextView) ((Activity) context).findViewById(R.id.score);
-        scoreHolder.cualitativeScore = (TextView) ((Activity) context).findViewById(R.id.cualitativeScore);
+        scoreHolder.cualitativeScore = (TextView) ((Activity) context).findViewById(R.id.qualitativeScore);
         scoreHolder.scoreText = (TextView) ((Activity) context).findViewById(R.id.subtotalScoreText);
     }
 
