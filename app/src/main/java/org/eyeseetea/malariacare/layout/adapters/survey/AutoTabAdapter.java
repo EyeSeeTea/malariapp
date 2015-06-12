@@ -642,7 +642,7 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
         }
 
         //Add Listener
-        ((RadioGroup) viewHolder.component).setOnCheckedChangeListener(new RadioGroupListener(false, question, viewHolder));
+        ((RadioGroup) viewHolder.component).setOnCheckedChangeListener(new RadioGroupListener(question, viewHolder));
     }
 
     /**
@@ -730,12 +730,10 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
     }
 
     public class RadioGroupListener implements RadioGroup.OnCheckedChangeListener {
-        private boolean viewCreated;
         private ViewHolder viewHolder;
         private Question question;
 
-        public RadioGroupListener(boolean viewCreated, Question question, ViewHolder viewHolder) {
-            this.viewCreated = viewCreated;
+        public RadioGroupListener(Question question, ViewHolder viewHolder) {
             this.question = question;
             this.viewHolder = viewHolder;
         }
@@ -744,12 +742,15 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
         @Override
         public void onCheckedChanged(RadioGroup group, int checkedId) {
 
+            if (group.isShown()) {
+
                 Option option = new Option(Constants.DEFAULT_SELECT_OPTION);
                 if (checkedId != -1) {
                     RadioButton radioButton = (RadioButton) ((RadioGroup) this.viewHolder.component).findViewById(checkedId);
                     option = (Option) radioButton.getTag();
                 }
                 itemSelected(viewHolder, question, option);
+            }
 
         }
 
