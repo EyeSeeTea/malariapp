@@ -55,7 +55,9 @@ import static android.support.test.espresso.matcher.ViewMatchers.withChild;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static junit.framework.Assert.assertEquals;
-import static org.eyeseetea.malariacare.test.utils.UncheckeableRadioButtonScaleMatcher.hasScale;
+import static org.eyeseetea.malariacare.test.utils.TextCardScaleMatcher.hasTextCardScale;
+import static org.eyeseetea.malariacare.test.utils.EditCardScaleMatcher.hasEditCardScale;
+import static org.eyeseetea.malariacare.test.utils.UncheckeableRadioButtonScaleMatcher.hasRadioButtonScale;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
@@ -191,7 +193,49 @@ public class SurveyEspressoTest extends MalariaEspressoTest{
         onData(is(instanceOf(Question.class))).inAdapterView(withId(R.id.listView)).atPosition(0)
                 .onChildView(withId(R.id.answer))
                 .onChildView(withText(activity.getString(R.string.yes)))
-                .check(matches(hasScale(activity.getString(R.string.font_size_level3))));
+                .check(matches(hasRadioButtonScale(activity.getString(R.string.font_size_level3))));
+    }
+
+    @Test
+    public void textcard_textsize_changes(){
+        //GIVEN
+        Activity activity = getActivityInstance();
+        cleanAll();
+        cleanSettings(activity); // FIXME: looks like clean settings is not properly being done
+        populateData(InstrumentationRegistry.getTargetContext().getAssets());
+        mockSessionSurvey(1, 1, 0);
+
+        //WHEN: Select Large fonts on Settings
+        whenFontSizeChange(activity, 3);
+
+        //WHEN: Access a ICM survey (contains rabiobuttons)
+        WhenAssessmentSelected("Health Facility 0", "ICM");
+
+        //THEN: Check font size has properly changed
+        onData(is(instanceOf(Question.class))).inAdapterView(withId(R.id.listView)).atPosition(1)
+                .onChildView(withId(R.id.statement))
+                .check(matches(hasTextCardScale(activity.getString(R.string.font_size_level3))));
+    }
+
+    @Test
+    public void editcard_textsize_changes(){
+        //GIVEN
+        Activity activity = getActivityInstance();
+        cleanAll();
+        cleanSettings(activity); // FIXME: looks like clean settings is not properly being done
+        populateData(InstrumentationRegistry.getTargetContext().getAssets());
+        mockSessionSurvey(1, 0, 0);
+
+        //WHEN: Select Large fonts on Settings
+        whenFontSizeChange(activity, 3);
+
+        //WHEN: Access a Clinical Case Management survey (contains edit fields)
+        WhenAssessmentSelected("Health Facility 0", "Clinical Case Management");
+
+        //THEN: Check font size has properly changed
+        onData(is(instanceOf(Question.class))).inAdapterView(withId(R.id.listView)).atPosition(1)
+                .onChildView(withId(R.id.answer))
+                .check(matches(hasEditCardScale(activity.getString(R.string.font_size_level3))));
     }
 
     @Test
@@ -241,7 +285,7 @@ public class SurveyEspressoTest extends MalariaEspressoTest{
         onView(allOf(withId(R.id.assessment_row),
                 withChild(allOf(
                         withChild(allOf(withId(R.id.facility), withText(orgUnit))),
-                        withChild(allOf(withId(R.id.survey_type), withText("- "+program)))))))
+                        withChild(allOf(withId(R.id.survey_type), withText("- " + program)))))))
                 .perform(swipeRight());
         // FIXME: It looks like sometimes this ok button is not being found, maybe it appears with a little delay and the check occurs before?
         onView(withText(getActivityInstance().getString(android.R.string.ok))).perform(click()); // confirm delete
