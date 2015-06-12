@@ -669,29 +669,26 @@
 671;;;;'Provider checks for dehydration – looks for sunken eyes, pinches the skin, offers the patient water if awake.';;270;1.00;1.00;466;53;;34
 672;;;;'Provider checks the temperature.';;280;1.00;1.00;466;53;;34
 673;;;;'Provider takes blood sample for rapid diagnostic test or microscopy in the laboratory.';;290;1.00;1.00;466;53;;34
-674;;;;'Diagnosis 1 based on supervisor''s observation';;100;0.00;0.00;467;50;;
-675;;;;'Was a second diagnosis made?';;110;0.00;4.00;467;53;;35
-676;;;;'Diagnosis 2 based on supervisor''s observation';;120;0.00;0.00;467;50;675;
-677;;;;'Was a third diagnosis made?';;130;0.00;4.00;467;53;;35
-678;;;;'Diagnosis 3 based on supervisor''s observation';;140;0.00;0.00;467;50;677;
-679;;;;'Treatment 1 administered';;150;0.00;0.00;467;51;;
-680;;;;'Treatment 2 administered (if applicable)';;160;0.00;0.00;467;51;675;
-681;;;;'Treatment 3 administered (if applicable)';;170;0.00;0.00;467;51;677;
-682;;;;'Does diagnosis 1 match treatment 1?';;180;1.00;1.00;467;15;;35
-683;;;;'Does diagnosis 2 match treatment 2?';;190;1.00;0.00;467;15;675;35
-684;;;;'Does diagnosis 3 match treatment 3?';;200;1.00;0.00;467;15;677;35
-685;;;;'Treatment 1';;210;0.00;0.00;468;49;;
-686;;;;'Provider counsels caregiver on proper dosage (no. of  doses/days, side effects)';;220;1.00;1.00;468;53;;35
-687;;;;'Provider gives first dose of oral medicine on site';;230;1.00;1.00;468;53;;35
-688;;;;'Provider advises referral if condition worsens';;240;1.00;1.00;468;53;;35
-689;;;;'Treatment 2';;250;0.00;0.00;468;49;675;
-690;;;;'Provider counsels caregiver on proper dosage (no. of  doses/days, side effects)';;260;1.00;0.00;468;53;675;35
-691;;;;'Provider gives first dose of oral medicine on site';;270;1.00;0.00;468;53;675;35
-692;;;;'Provider advises referral if condition worsens';;280;1.00;0.00;468;53;675;35
-693;;;;'Treatment 3';;290;0.00;0.00;468;49;677;
-694;;;;'Provider counsels caregiver on proper dosage (no. of  doses/days, side effects)';;300;1.00;0.00;468;53;677;35
-695;;;;'Provider gives first dose of oral medicine on site';;310;1.00;0.00;468;53;677;35
-696;;;;'Provider advises referral if condition worsens';;320;1.00;0.00;468;53;677;35
+674;;;;'Diagnosis 1 based on supervisor''s observation';;110;0.00;0.00;467;50;;
+675;;;;'Was a second diagnosis made?';;190;0.00;4.00;468;53;;35
+676;;;;'Diagnosis 2 based on supervisor''s observation';;200;0.00;0.00;468;50;675;
+677;;;;'Was a third diagnosis made?';;280;0.00;4.00;511;53;;35
+678;;;;'Diagnosis 3 based on supervisor''s observation';;290;0.00;0.00;511;50;677;
+679;;;;'Treatment 1 administered';;120;0.00;0.00;467;51;;
+680;;;;'Treatment 2 administered';;210;0.00;0.00;468;51;675;
+681;;;;'Treatment 3 administered';;300;0.00;0.00;511;51;677;
+682;;;;'Does diagnosis 1 match treatment 1?';;130;1.00;1.00;467;15;;35
+683;;;;'Does diagnosis 2 match treatment 2?';;220;1.00;0.00;468;15;675;35
+684;;;;'Does diagnosis 3 match treatment 3?';;310;1.00;0.00;511;15;677;35
+686;;;;'Provider counsels caregiver on proper dosage (no. of  doses/days, side effects)';;150;1.00;1.00;467;53;;35
+687;;;;'Provider gives first dose of oral medicine on site';;160;1.00;1.00;467;53;;35
+688;;;;'Provider advises referral if condition worsens';;170;1.00;1.00;467;53;;35
+690;;;;'Provider counsels caregiver on proper dosage (no. of  doses/days, side effects)';;240;1.00;0.00;468;53;675;35
+691;;;;'Provider gives first dose of oral medicine on site';;250;1.00;0.00;468;53;675;35
+692;;;;'Provider advises referral if condition worsens';;260;1.00;0.00;468;53;675;35
+694;;;;'Provider counsels caregiver on proper dosage (no. of  doses/days, side effects)';;330;1.00;0.00;511;53;677;35
+695;;;;'Provider gives first dose of oral medicine on site';;340;1.00;0.00;511;53;677;35
+696;;;;'Provider advises referral if condition worsens';;350;1.00;0.00;511;53;677;35
 697;'SF-FP all methods-Contraceptive Counseling-100';'SF-FP all methods-Contraceptive Counseling-100-Ensures privacy (auditory and visual)';'';'Preparation';'';100;0.00;0.00;469;49;;
 698;'SF-FP all methods-Contraceptive Counseling-110';'SF-FP all methods-Contraceptive Counseling-110-Pre-Choice';'';'Ensures privacy (auditory and visual)';'';110;0.25;0.25;469;53;;
 699;'SF-FP all methods-Contraceptive Counseling-120';'SF-FP all methods-Contraceptive Counseling-120-Mentions range of FP, RTI.STI/HIV, and CaCx services offered in the FP clinic or through referral. ';'';'Pre-Choice';'';120;0.00;0.00;469;49;;
@@ -801,29 +798,29 @@
 803;'SF-IMCI-Physical Examination-270';'SF-IMCI-Physical Examination-270-Provider checks the temperature.';'';'Provider checks for dehydration – looks for sunken eyes, pinches the skin, offers the patient water if awake. ';'';270;1.00;1.00;477;53;;49
 804;'SF-IMCI-Physical Examination-280';'SF-IMCI-Physical Examination-280-Provider takes blood sample for rapid diagnostic test or microscopy in the laboratory.';'';'Provider checks the temperature.';'';280;1.00;1.00;477;53;;50
 805;'SF-IMCI-Physical Examination-290';'SF-IMCI-Physical Examination-290-Diagnosis 1 based on supervisor s observation';'';'Provider takes blood sample for rapid diagnostic test or microscopy in the laboratory.';'';290;1.00;1.00;477;53;;50
-806;'SF-IMCI-Diagnosis and Treatment-300';'SF-IMCI-Diagnosis and Treatment-300-Was a second diagnosis made?';'';'Diagnosis 1 based on supervisor s observation';'';300;0.00;0.00;478;50;;
-807;'SF-IMCI-Diagnosis and Treatment-310';'SF-IMCI-Diagnosis and Treatment-310-Diagnosis 2 based on supervisor s observation';'';'Was a second diagnosis made?';'';310;0.00;4.00;478;53;;
-808;'SF-IMCI-Diagnosis and Treatment-320';'SF-IMCI-Diagnosis and Treatment-320-Was a third diagnosis made?';'';'Diagnosis 2 based on supervisor s observation';'';320;0.00;0.00;478;50;807;
-809;'SF-IMCI-Diagnosis and Treatment-330';'SF-IMCI-Diagnosis and Treatment-330-Diagnosis 3 based on supervisor s observation';'';'Was a third diagnosis made?';'';330;0.00;4.00;478;53;;
-810;'SF-IMCI-Diagnosis and Treatment-340';'SF-IMCI-Diagnosis and Treatment-340-Treatment 1 administered';'';'Diagnosis 3 based on supervisor s observation';'';340;0.00;0.00;478;50;809;
-811;'SF-IMCI-Diagnosis and Treatment-350';'SF-IMCI-Diagnosis and Treatment-350-Treatment 2 administered (if applicable)';'';'Treatment 1 administered';'';350;0.00;0.00;478;51;;
-812;'SF-IMCI-Diagnosis and Treatment-360';'SF-IMCI-Diagnosis and Treatment-360-Treatment 3 administered (if applicable)';'';'Treatment 2 administered (if applicable)';'';360;0.00;0.00;478;51;807;
-813;'SF-IMCI-Diagnosis and Treatment-370';'SF-IMCI-Diagnosis and Treatment-370-Does diagnosis 1 match treatment 1?';'';'Treatment 3 administered (if applicable)';'';370;0.00;0.00;478;51;809;
-814;'SF-IMCI-Diagnosis and Treatment-380';'SF-IMCI-Diagnosis and Treatment-380-Does diagnosis 2 match treatment 2?';'';'Does diagnosis 1 match treatment 1?';'';380;1.00;1.00;478;15;;51
-815;'SF-IMCI-Diagnosis and Treatment-390';'SF-IMCI-Diagnosis and Treatment-390-Does diagnosis 3 match treatment 3?';'';'Does diagnosis 2 match treatment 2?';'';390;1.00;0.00;478;15;807;52
-816;'SF-IMCI-Diagnosis and Treatment-400';'SF-IMCI-Diagnosis and Treatment-400-Treatment 1';'';'Does diagnosis 3 match treatment 3?';'';400;1.00;0.00;478;15;809;53
-817;'SF-IMCI-Counseling-410';'SF-IMCI-Counseling-410-Provider counsels caregiver on proper dosage (no. of  doses/days, side effects)';'';'Treatment 1';'';410;0.00;0.00;479;49;;
-818;'SF-IMCI-Counseling-420';'SF-IMCI-Counseling-420-Provider gives first dose of oral medicine on site';'';'Provider counsels caregiver on proper dosage (no. of  doses/days, side effects)';'';420;1.00;1.00;479;53;;54
-819;'SF-IMCI-Counseling-430';'SF-IMCI-Counseling-430-Provider advises referral if condition worsens';'';'Provider gives first dose of oral medicine on site';'';430;1.00;1.00;479;53;;54
-820;'SF-IMCI-Counseling-440';'SF-IMCI-Counseling-440-Treatment 2';'';'Provider advises referral if condition worsens';'';440;1.00;1.00;479;53;;54
-821;'SF-IMCI-Counseling-450';'SF-IMCI-Counseling-450-Provider counsels caregiver on proper dosage (no. of  doses/days, side effects)';'';'Treatment 2';'';450;0.00;0.00;479;49;807;
-822;'SF-IMCI-Counseling-460';'SF-IMCI-Counseling-460-Provider gives first dose of oral medicine on site';'';'Provider counsels caregiver on proper dosage (no. of  doses/days, side effects)';'';460;1.00;0.00;479;53;807;55
-823;'SF-IMCI-Counseling-470';'SF-IMCI-Counseling-470-Provider advises referral if condition worsens';'';'Provider gives first dose of oral medicine on site';'';470;1.00;0.00;479;53;807;55
-824;'SF-IMCI-Counseling-480';'SF-IMCI-Counseling-480-Treatment 3';'';'Provider advises referral if condition worsens';'';480;1.00;0.00;479;53;807;55
-825;'SF-IMCI-Counseling-490';'SF-IMCI-Counseling-490-Provider counsels caregiver on proper dosage (no. of  doses/days, side effects)';'';'Treatment 3';'';490;0.00;0.00;479;49;809;
-826;'SF-IMCI-Counseling-500';'SF-IMCI-Counseling-500-Provider gives first dose of oral medicine on site';'';'Provider counsels caregiver on proper dosage (no. of  doses/days, side effects)';'';500;1.00;0.00;479;53;809;56
-827;'SF-IMCI-Counseling-510';'SF-IMCI-Counseling-510-Provider advises referral if condition worsens';'';'Provider gives first dose of oral medicine on site';'';510;1.00;0.00;479;53;809;56
-828;'SF-IMCI-Counseling-520';'SF-IMCI-Counseling-520-Inquiry score';'';'Provider advises referral if condition worsens';'';520;1.00;0.00;479;53;809;56
+806;'SF-IMCI-Diagnosis and Treatment-300';'SF-IMCI-Diagnosis and Treatment-300-Was a second diagnosis made?';'';'Diagnosis 1 based on supervisor s observation';'';110;0.00;0.00;478;50;;
+807;'SF-IMCI-Diagnosis and Treatment-310';'SF-IMCI-Diagnosis and Treatment-310-Diagnosis 2 based on supervisor s observation';'';'Was a second diagnosis made?';'';190;0.00;4.00;479;53;;
+808;'SF-IMCI-Diagnosis and Treatment-320';'SF-IMCI-Diagnosis and Treatment-320-Was a third diagnosis made?';'';'Diagnosis 2 based on supervisor s observation';'';200;0.00;0.00;479;50;807;
+809;'SF-IMCI-Diagnosis and Treatment-330';'SF-IMCI-Diagnosis and Treatment-330-Diagnosis 3 based on supervisor s observation';'';'Was a third diagnosis made?';'';280;0.00;4.00;512;53;;
+810;'SF-IMCI-Diagnosis and Treatment-340';'SF-IMCI-Diagnosis and Treatment-340-Treatment 1 administered';'';'Diagnosis 3 based on supervisor s observation';'';290;0.00;0.00;512;50;809;
+811;'SF-IMCI-Diagnosis and Treatment-350';'SF-IMCI-Diagnosis and Treatment-350-Treatment 2 administered (if applicable)';'';'Treatment 1 administered';'';120;0.00;0.00;478;51;;
+812;'SF-IMCI-Diagnosis and Treatment-360';'SF-IMCI-Diagnosis and Treatment-360-Treatment 3 administered (if applicable)';'';'Treatment 2 administered';'';210;0.00;0.00;479;51;807;
+813;'SF-IMCI-Diagnosis and Treatment-370';'SF-IMCI-Diagnosis and Treatment-370-Does diagnosis 1 match treatment 1?';'';'Treatment 3 administered';'';300;0.00;0.00;512;51;809;
+814;'SF-IMCI-Diagnosis and Treatment-380';'SF-IMCI-Diagnosis and Treatment-380-Does diagnosis 2 match treatment 2?';'';'Does diagnosis 1 match treatment 1?';'';130;1.00;1.00;478;15;;51
+815;'SF-IMCI-Diagnosis and Treatment-390';'SF-IMCI-Diagnosis and Treatment-390-Does diagnosis 3 match treatment 3?';'';'Does diagnosis 2 match treatment 2?';'';220;1.00;0.00;479;15;807;52
+816;'SF-IMCI-Diagnosis and Treatment-400';'SF-IMCI-Diagnosis and Treatment-400-Treatment 1';'';'Does diagnosis 3 match treatment 3?';'';310;1.00;0.00;512;15;809;53
+817;'SF-IMCI-Counseling-410';'SF-IMCI-Counseling-410-Provider counsels caregiver on proper dosage (no. of  doses/days, side effects)';'';'Counseling';'';140;0.00;0.00;478;49;;
+818;'SF-IMCI-Counseling-420';'SF-IMCI-Counseling-420-Provider gives first dose of oral medicine on site';'';'Provider counsels caregiver on proper dosage (no. of  doses/days, side effects)';'';150;1.00;1.00;478;53;;54
+819;'SF-IMCI-Counseling-430';'SF-IMCI-Counseling-430-Provider advises referral if condition worsens';'';'Provider gives first dose of oral medicine on site';'';160;1.00;1.00;478;53;;54
+820;'SF-IMCI-Counseling-440';'SF-IMCI-Counseling-440-Treatment 2';'';'Provider advises referral if condition worsens';'';170;1.00;1.00;478;53;;54
+821;'SF-IMCI-Counseling-450';'SF-IMCI-Counseling-450-Provider counsels caregiver on proper dosage (no. of  doses/days, side effects)';'';'Counseling';'';230;0.00;0.00;479;49;807;
+822;'SF-IMCI-Counseling-460';'SF-IMCI-Counseling-460-Provider gives first dose of oral medicine on site';'';'Provider counsels caregiver on proper dosage (no. of  doses/days, side effects)';'';240;1.00;0.00;479;53;807;55
+823;'SF-IMCI-Counseling-470';'SF-IMCI-Counseling-470-Provider advises referral if condition worsens';'';'Provider gives first dose of oral medicine on site';'';250;1.00;0.00;479;53;807;55
+824;'SF-IMCI-Counseling-480';'SF-IMCI-Counseling-480-Treatment 3';'';'Provider advises referral if condition worsens';'';260;1.00;0.00;479;53;807;55
+825;'SF-IMCI-Counseling-490';'SF-IMCI-Counseling-490-Provider counsels caregiver on proper dosage (no. of  doses/days, side effects)';'';'Counseling';'';320;0.00;0.00;512;49;809;
+826;'SF-IMCI-Counseling-500';'SF-IMCI-Counseling-500-Provider gives first dose of oral medicine on site';'';'Provider counsels caregiver on proper dosage (no. of  doses/days, side effects)';'';330;1.00;0.00;512;53;809;56
+827;'SF-IMCI-Counseling-510';'SF-IMCI-Counseling-510-Provider advises referral if condition worsens';'';'Provider gives first dose of oral medicine on site';'';340;1.00;0.00;512;53;809;56
+828;'SF-IMCI-Counseling-520';'SF-IMCI-Counseling-520-Inquiry score';'';'Provider advises referral if condition worsens';'';350;1.00;0.00;512;53;809;56
 833;'SF-RDT Procedure-RDT Procedure-100';'SF-RDT Procedure-RDT Procedure-100-Puts a new pair of gloves ';'';'Assembles new test packet, swab, buffer, pipette, lancet and gloves';'';100;0.03;0.03;480;53;;
 834;'SF-RDT Procedure-RDT Procedure-110';'SF-RDT Procedure-RDT Procedure-110-(i) Checks expiry date on package (ii) checks dessicant satchet is still dry (iii) Write s patient s name or ID on cassette (iv) Places cassette on a level surface';'';'Puts a new pair of gloves ';'';110;0.07;0.07;480;53;;
 835;'SF-RDT Procedure-RDT Procedure-120';'SF-RDT Procedure-RDT Procedure-120-Cleans finger with antiseptic/ alcohol';'';'(i) Checks expiry date on package (ii) checks dessicant satchet is still dry (iii) Write s patient s name or ID on cassette (iv) Places cassette on a level surface';'';120;0.03;0.03;480;53;;
@@ -1059,3 +1056,12 @@
 1065;'SF-Hypertension-Diagnosis and Management as per protocol-250';'SF-Hypertension-Diagnosis and Management as per protocol-250-Counsels client on lifestyle modification instructions and treatment adherence and follow up date based on clients BP levels and condition';'';'Correct drug therapy as per diagnosis and guidelines';'';250;0.10;0.10;509;53;;
 1066;'SF-Hypertension-Diagnosis and Management as per protocol-260';'SF-Hypertension-Diagnosis and Management as per protocol-260-Client referral- right client referred according to protocol and well documented';'';'Counsels client on lifestyle modification instructions and treatment adherence and follow up date based on clients BP levels and condition';'';260;0.10;0.10;509;53;;
 1067;'SF-Hypertension-Diagnosis and Management as per protocol-270';'SF-Hypertension-Diagnosis and Management as per protocol-270-';'';'Client referral- right client referred according to protocol and well documented';'';270;0.05;0.05;509;53;;
+1068;;;;'Diagnosis and Treatment';;100;0.00;0.00;467;49;;
+1069;;;;'Counseling';;140;0.00;0.00;467;49;;
+1070;;;;'Diagnosis and Treatment';;180;0.00;0.00;468;49;;
+1071;;;;'Counseling';;230;0.00;0.00;468;49;675;
+1072;;;;'Diagnosis and Treatment';;270;0.00;0.00;511;49;;
+1073;;;;'Counseling';;320;0.00;0.00;511;49;677;
+1074;;;;'Diagnosis and Treatment';;100;0.00;0.00;478;49;;
+1075;;;;'Diagnosis and Treatment';;180;0.00;0.00;479;49;;
+1076;;;;'Diagnosis and Treatment';;270;0.00;0.00;512;49;;
