@@ -124,12 +124,29 @@ public abstract class BaseActivity extends ActionBarActivity {
     }
 
     @Override
+    public void onResume(){
+        super.onResume();
+        Intent intent;
+        intent = (getCallingActivity() != null) ? new Intent(getCallingActivity().getClassName()) : getIntent();
+
+        if (intent.getStringExtra("activity") != null && getCallingActivity() != null && intent.getStringExtra("activity").equals("settings")){
+            Log.i(".onResume", "coming from settings");
+            overridePendingTransition(0, 0);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+            finish();
+
+            overridePendingTransition(0, 0);
+            startActivity(intent);
+        }
+    }
+
+    @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
     }
 
     protected void goSettings(){
-        startActivity(new Intent(this,SettingsActivity.class));
+        startActivity(new Intent(this, SettingsActivity.class));
     }
 
     /**
