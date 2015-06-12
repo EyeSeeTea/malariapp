@@ -11,6 +11,7 @@
     <string name="cancel">Cancelar</string>
     <string name="score">Score</string>
     <string name="number_zero">0</string>
+    <string name="number_zero_percentage">0 % </string>
     <string name="title_id">ID</string>
     <string name="title_name">Name</string>
     <string name="good">Bien</string>

@@ -207,10 +207,10 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
         if (totalDenum != 0) {
             Float score = 100 * (totalNum / totalDenum);
             LayoutUtils.trafficLight(scoreHolder.score, score, scoreHolder.qualitativeScore);
-            scoreHolder.score.setText(Utils.round(100 * (totalNum / totalDenum)));
+            scoreHolder.score.setText(Utils.round(100 * (totalNum / totalDenum))+" % ");
         }
         if (totalDenum == 0 && totalNum == 0) {
-            scoreHolder.score.setText(this.context.getString(R.string.number_zero));
+            scoreHolder.score.setText(this.context.getString(R.string.number_zero_percentage));
         }
     }
 

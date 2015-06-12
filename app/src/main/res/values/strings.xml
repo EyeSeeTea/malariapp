@@ -11,6 +11,7 @@
     <string name="cancel">Cancel</string>
     <string name="score">Score</string>
     <string name="number_zero">0</string>
+    <string name="number_zero_percentage">0 % </string>
     <string name="title_id">ID</string>
     <string name="title_name">Name</string>
     <string name="good">Good</string>
@@ -204,5 +205,6 @@
 
     <string name="textcard_default_scale">system</string>
     <string name="textcard_default_dimension">medium</string>
+
 
 </resources>
