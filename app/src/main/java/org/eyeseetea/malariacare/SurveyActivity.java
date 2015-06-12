@@ -171,23 +171,23 @@ public class SurveyActivity extends BaseActivity implements LoaderManager.Loader
         List<ITabAdapter> adaptersList = new ArrayList<ITabAdapter>(adaptersMap.values());
 
         // FIXME: This is a very ugly way of doing it, change it soon
-        if (adaptersList.get(10) != null) {
-            tab1 = adaptersList.get(10).getScore();
+        if (adaptersList.get(6) != null) {
+            tab1 = adaptersList.get(6).getScore();
             ((TextView) this.findViewById(R.id.profileScore)).setText(Utils.round(tab1));
             LayoutUtils.trafficLight(this.findViewById(R.id.profileScore), tab1, null);
         }
-        if (adaptersList.get(2) != null) {
-            tab9 = adaptersList.get(2).getScore();
+        if (adaptersList.get(9) != null) {
+            tab9 = adaptersList.get(9).getScore();
             ((TextView) this.findViewById(R.id.envAndMatScore)).setText(Utils.round(tab9));
             LayoutUtils.trafficLight(this.findViewById(R.id.envAndMatScore), tab9, null);
         }
-        if (adaptersList.get(8) != null) {
-            tab8 = adaptersList.get(8).getScore();
+        if (adaptersList.get(3) != null) {
+            tab8 = adaptersList.get(3).getScore();
             ((TextView) this.findViewById(R.id.feedbackScore)).setText(Utils.round(tab8));
             LayoutUtils.trafficLight(this.findViewById(R.id.feedbackScore), tab8, null);
         }
-        if (adaptersList.get(6) != null) {
-            tab2 = adaptersList.get(6).getScore();
+        if (adaptersList.get(5) != null) {
+            tab2 = adaptersList.get(5).getScore();
             ((TextView) this.findViewById(R.id.clinicalCase1)).setText(Utils.round(tab2));
             LayoutUtils.trafficLight(this.findViewById(R.id.clinicalCase1), tab2, null);
         }
@@ -196,23 +196,23 @@ public class SurveyActivity extends BaseActivity implements LoaderManager.Loader
             ((TextView) this.findViewById(R.id.clinicalCase2)).setText(Utils.round(tab4));
             LayoutUtils.trafficLight(this.findViewById(R.id.clinicalCase2), tab4, null);
         }
-        if (adaptersList.get(4) != null) {
-            tab6 = adaptersList.get(4).getScore();
+        if (adaptersList.get(0) != null) {
+            tab6 = adaptersList.get(0).getScore();
             ((TextView) this.findViewById(R.id.clinicalCase3)).setText(Utils.round(tab6));
             LayoutUtils.trafficLight(this.findViewById(R.id.clinicalCase3), tab6, null);
         }
-        if (adaptersList.get(0) != null) {
-            tab3 = adaptersList.get(0).getScore();
+        if (adaptersList.get(8) != null) {
+            tab3 = adaptersList.get(8).getScore();
             ((TextView) this.findViewById(R.id.rdtCase1)).setText(Utils.round(tab3));
             LayoutUtils.trafficLight(this.findViewById(R.id.rdtCase1), tab3, null);
         }
-        if (adaptersList.get(9) != null) {
-            tab5 = adaptersList.get(9).getScore();
+        if (adaptersList.get(7) != null) {
+            tab5 = adaptersList.get(7).getScore();
             ((TextView) this.findViewById(R.id.rdtCase2)).setText(Utils.round(tab5));
             LayoutUtils.trafficLight(this.findViewById(R.id.rdtCase2), tab5, null);
         }
-        if (adaptersList.get(5) != null) {
-            tab7 = adaptersList.get(5).getScore();
+        if (adaptersList.get(2) != null) {
+            tab7 = adaptersList.get(2).getScore();
             ((TextView) this.findViewById(R.id.rdtCase3)).setText(Utils.round(tab7));
             LayoutUtils.trafficLight(this.findViewById(R.id.rdtCase3), tab7, null);
         }
