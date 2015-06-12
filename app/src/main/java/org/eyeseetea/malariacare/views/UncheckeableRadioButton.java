@@ -144,8 +144,8 @@ public class UncheckeableRadioButton extends RadioButton implements IEyeSeeView 
     public void updateFontSize(String scale, String dimension){
         if (dimension != null && scale != null){
             this.mDimension = dimension;
+            this.mScale = scale;
             if (!scale.equals(Constants.FONTS_SYSTEM))
-                this.mScale = scale;
                 setTextSize(TypedValue.COMPLEX_UNIT_SP, Session.getFontMap().get(scale).get(dimension));
         }
     }
