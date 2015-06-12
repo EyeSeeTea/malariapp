@@ -47,16 +47,18 @@ import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.Espresso.openActionBarOverflowOrOptionsMenu;
 import static android.support.test.espresso.Espresso.pressBack;
 import static android.support.test.espresso.action.ViewActions.click;
+import static android.support.test.espresso.action.ViewActions.swipeRight;
+import static android.support.test.espresso.assertion.ViewAssertions.doesNotExist;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withChild;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static junit.framework.Assert.assertEquals;
+import static org.eyeseetea.malariacare.test.utils.UncheckeableRadioButtonScaleMatcher.hasScale;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
-import static org.eyeseetea.malariacare.test.utils.UncheckeableRadioButtonScaleMatcher.hasScale;
 
 /**
  *
@@ -192,8 +194,33 @@ public class SurveyEspressoTest extends MalariaEspressoTest{
                 .check(matches(hasScale(activity.getString(R.string.font_size_level3))));
     }
 
+    @Test
+    public void delete_survey_by_swipping(){
+        //GIVEN
+        Activity activity = getActivityInstance();
+        cleanAll();
+        cleanSettings(activity); // FIXME: looks like clean settings is not properly being done
+        populateData(InstrumentationRegistry.getTargetContext().getAssets());
+        mockSessionSurvey(1, 1, 0);
+
+        //WHEN: Access a ICM survey (contains rabiobuttons)
+        pressBack();
+        onView(withText(activity.getString(android.R.string.ok))).perform(click()); // confirm exit
+        WhenAssessmentSwipeAndOk("Health Facility 0", "ICM");
+
+        //THEN: Check font size has properly changed
+        checkAssessmentDoesntExist("Health Facility 0", "ICM");
+    }
+
+    private void checkAssessmentDoesntExist(String orgUnit, String program) {
+        onView(allOf(withId(R.id.assessment_row),
+                withChild(allOf(
+                        withChild(allOf(withId(R.id.facility), withText(orgUnit))),
+                        withChild(allOf(withId(R.id.survey_type), withText("- " + program))))))).check(doesNotExist());
+    }
+
     /**
-     * From Dashboard access
+     * From Dashboard access survey
      * @param orgUnit
      * @param program
      */
@@ -201,8 +228,23 @@ public class SurveyEspressoTest extends MalariaEspressoTest{
         onView(allOf(withId(R.id.assessment_row),
                 withChild(allOf(
                         withChild(allOf(withId(R.id.facility), withText(orgUnit))),
-                        withChild(allOf(withId(R.id.survey_type), withText("- "+program)))))))
+                        withChild(allOf(withId(R.id.survey_type), withText("- " + program)))))))
                 .perform(click());
+    }
+
+    /**
+     * From Dashboard access
+     * @param orgUnit
+     * @param program
+     */
+    private void WhenAssessmentSwipeAndOk(String orgUnit, String program) {
+        onView(allOf(withId(R.id.assessment_row),
+                withChild(allOf(
+                        withChild(allOf(withId(R.id.facility), withText(orgUnit))),
+                        withChild(allOf(withId(R.id.survey_type), withText("- "+program)))))))
+                .perform(swipeRight());
+        // FIXME: It looks like sometimes this ok button is not being found, maybe it appears with a little delay and the check occurs before?
+        onView(withText(getActivityInstance().getString(android.R.string.ok))).perform(click()); // confirm delete
     }
 
     /**
