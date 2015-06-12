@@ -7,6 +7,8 @@
     <string name="empty_string"></string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
+    <string name="ok">Ok</string>
+    <string name="cancel">Cancel</string>
     <string name="score">Score</string>
     <string name="number_zero">0</string>
     <string name="title_id">ID</string>

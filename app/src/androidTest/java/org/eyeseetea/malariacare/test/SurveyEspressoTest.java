@@ -44,15 +44,19 @@ import java.util.Collection;
 
 import static android.support.test.espresso.Espresso.onData;
 import static android.support.test.espresso.Espresso.onView;
+import static android.support.test.espresso.Espresso.openActionBarOverflowOrOptionsMenu;
 import static android.support.test.espresso.Espresso.pressBack;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static android.support.test.espresso.matcher.ViewMatchers.withChild;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static junit.framework.Assert.assertEquals;
+import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
+import static org.eyeseetea.malariacare.test.utils.UncheckeableRadioButtonScaleMatcher.hasScale;
 
 /**
  *
@@ -68,7 +72,7 @@ public class SurveyEspressoTest extends MalariaEspressoTest{
     @BeforeClass
     public static void init(){
         populateData(InstrumentationRegistry.getTargetContext().getAssets());
-        mockSessionSurvey();
+        mockSessionSurvey(2, 0);
     }
 
     @Before
@@ -164,6 +168,57 @@ public class SurveyEspressoTest extends MalariaEspressoTest{
         //THEN
         onView(withId(R.id.totalScore)).check(matches(withText("8")));
         onView(withId(R.id.rdtAvg)).check(matches(withText("22")));
+    }
+
+    @Test
+    public void radiobutton_textsize_changes(){
+        //GIVEN
+        Activity activity = getActivityInstance();
+        cleanAll();
+        cleanSettings(activity); // FIXME: looks like clean settings is not properly being done
+        populateData(InstrumentationRegistry.getTargetContext().getAssets());
+        mockSessionSurvey(1, 1, 0);
+
+        //WHEN: Select Large fonts on Settings
+        whenFontSizeChange(activity, 3);
+
+        //WHEN: Access a ICM survey (contains rabiobuttons)
+        WhenAssessmentSelected("Health Facility 0", "ICM");
+
+        //THEN: Check font size has properly changed
+        onData(is(instanceOf(Question.class))).inAdapterView(withId(R.id.listView)).atPosition(0)
+                .onChildView(withId(R.id.answer))
+                .onChildView(withText(activity.getString(R.string.yes)))
+                .check(matches(hasScale(activity.getString(R.string.font_size_level3))));
+    }
+
+    /**
+     * From Dashboard access
+     * @param orgUnit
+     * @param program
+     */
+    private void WhenAssessmentSelected(String orgUnit, String program) {
+        onView(allOf(withId(R.id.assessment_row),
+                withChild(allOf(
+                        withChild(allOf(withId(R.id.facility), withText(orgUnit))),
+                        withChild(allOf(withId(R.id.survey_type), withText("- "+program)))))))
+                .perform(click());
+    }
+
+    /**
+     * Change font size
+     * @param activity
+     * @param num font size in a discrete int scale [0: xsmall - 1: small - 2: medium - 3: large - 4: xlarge]
+     */
+    private void whenFontSizeChange(Activity activity, int num) {
+        openActionBarOverflowOrOptionsMenu(getActivityInstance());
+        onView(withText(activity.getString(R.string.settings_menu_configuration))).perform(click());
+        onView(withText(activity.getString(R.string.settings_checkbox_customize_fonts))).perform(click());
+        onView(withText(activity.getString(R.string.settings_list_font_sizes))).perform(click());
+        onView(withText((activity.getResources().getStringArray(R.array.settings_array_titles_font_sizes))[num])).perform(click());
+        pressBack(); // Exit settings
+        pressBack(); // exit survey
+        onView(withText(activity.getString(android.R.string.ok))).perform(click()); // confirm exit
     }
 
     /**
