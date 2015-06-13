@@ -179,7 +179,6 @@ public class SurveyEspressoTest extends MalariaEspressoTest{
         //GIVEN
         Activity activity = getActivityInstance();
         cleanAll();
-        cleanSettings(activity); // FIXME: looks like clean settings is not properly being done
         populateData(InstrumentationRegistry.getTargetContext().getAssets());
         mockSessionSurvey(1, 1, 0);
 
@@ -201,7 +200,6 @@ public class SurveyEspressoTest extends MalariaEspressoTest{
         //GIVEN
         Activity activity = getActivityInstance();
         cleanAll();
-        cleanSettings(activity); // FIXME: looks like clean settings is not properly being done
         populateData(InstrumentationRegistry.getTargetContext().getAssets());
         mockSessionSurvey(1, 1, 0);
 
@@ -222,7 +220,6 @@ public class SurveyEspressoTest extends MalariaEspressoTest{
         //GIVEN
         Activity activity = getActivityInstance();
         cleanAll();
-        cleanSettings(activity); // FIXME: looks like clean settings is not properly being done
         populateData(InstrumentationRegistry.getTargetContext().getAssets());
         mockSessionSurvey(1, 0, 0);
 
@@ -239,11 +236,15 @@ public class SurveyEspressoTest extends MalariaEspressoTest{
     }
 
     @Test
+    public void num_dem_show_hide(){
+
+    }
+
+    @Test
     public void delete_survey_by_swipping(){
         //GIVEN
         Activity activity = getActivityInstance();
         cleanAll();
-        cleanSettings(activity); // FIXME: looks like clean settings is not properly being done
         populateData(InstrumentationRegistry.getTargetContext().getAssets());
         mockSessionSurvey(1, 1, 0);
 

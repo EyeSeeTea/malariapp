@@ -19,7 +19,7 @@
 
 package org.eyeseetea.malariacare.test;
 
-import android.app.Activity;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.AssetManager;
 import android.content.res.Resources;
@@ -65,6 +65,7 @@ public class MalariaEspressoTest {
     public static void cleanAll(){
         cleanDB();
         cleanSession();
+        cleanSettings();
     }
 
     public static void cleanSession(){
@@ -90,10 +91,12 @@ public class MalariaEspressoTest {
         Survey.deleteAll(Survey.class);
     }
 
-    public static void cleanSettings(Activity activity){
+    public static void cleanSettings(){
+        Context activity = InstrumentationRegistry.getInstrumentation().getTargetContext().getApplicationContext();
         SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(activity);
-        settings.edit().clear();
-        settings.edit().commit();
+        SharedPreferences.Editor editor = settings.edit();
+        editor.clear();
+        editor.commit();
     }
 
 
