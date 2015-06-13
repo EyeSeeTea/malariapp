@@ -55,12 +55,14 @@ import static android.support.test.espresso.matcher.ViewMatchers.withChild;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static junit.framework.Assert.assertEquals;
-import static org.eyeseetea.malariacare.test.utils.TextCardScaleMatcher.hasTextCardScale;
 import static org.eyeseetea.malariacare.test.utils.EditCardScaleMatcher.hasEditCardScale;
+import static org.eyeseetea.malariacare.test.utils.TextCardScaleMatcher.hasTextCardScale;
 import static org.eyeseetea.malariacare.test.utils.UncheckeableRadioButtonScaleMatcher.hasRadioButtonScale;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.not;
+
 
 /**
  *
@@ -86,6 +88,13 @@ public class SurveyEspressoTest extends MalariaEspressoTest{
 
     @Test
     public void form_views() {
+        //GIVEN
+        Activity activity = getActivityInstance();
+        cleanAll();
+        populateData(InstrumentationRegistry.getTargetContext().getAssets());
+        mockSessionSurvey(1, 0, 0);
+
+        //THEN
         onView(withId(R.id.tabSpinner)).check(matches(isDisplayed()));
         onView(withText("General Info")).check(matches(isDisplayed()));
     }
@@ -143,7 +152,13 @@ public class SurveyEspressoTest extends MalariaEspressoTest{
     }
 
     @Test
-    public void in_c1_rdt_score_some_points(){
+    public void in_c1_rdt_score_some_points() {
+        //GIVEN
+        Activity activity = getActivityInstance();
+        cleanAll();
+        populateData(InstrumentationRegistry.getTargetContext().getAssets());
+        mockSessionSurvey(1, 0, 0);
+
         //WHEN: Select 'C1-RDT' tab
         whenTabSelected(3);
 
@@ -170,7 +185,7 @@ public class SurveyEspressoTest extends MalariaEspressoTest{
         whenTabSelected(10);
 
         //THEN
-        onView(withId(R.id.totalScore)).check(matches(withText("8")));
+        onView(withId(R.id.totalScore)).check(matches(withText("4")));
         onView(withId(R.id.rdtAvg)).check(matches(withText("22")));
     }
 
@@ -237,7 +252,32 @@ public class SurveyEspressoTest extends MalariaEspressoTest{
 
     @Test
     public void num_dem_show_hide(){
+        //GIVEN
+        Activity activity = getActivityInstance();
+        cleanAll();
+        populateData(InstrumentationRegistry.getTargetContext().getAssets());
+        mockSessionSurvey(1, 0, 0);
 
+        //WHEN: We are in Dashboard
+        pressBack();
+        onView(withText(activity.getString(android.R.string.ok))).perform(click()); // confirm exit
+
+        //WHEN: Access a Clinical Case Management survey
+        WhenAssessmentSelected("Health Facility 0", "Clinical Case Management");
+        whenTabSelected(1);
+
+        //THEN: Check that num/dems are not yet being shown
+        onView(withId(R.id.totalNum)).check(matches(not(isDisplayed())));
+
+        //WHEN: Select show num/dems (by default they're not shown)
+        whenToggleShowHideNumDem(activity);
+
+        //WHEN: Access a Clinical Case Management survey
+        WhenAssessmentSelected("Health Facility 0", "Clinical Case Management");
+        whenTabSelected(1);
+
+        //THEN: Check that num/dems are now being shown
+        onView(withId(R.id.totalNum)).check(matches(isDisplayed()));
     }
 
     @Test
@@ -266,8 +306,8 @@ public class SurveyEspressoTest extends MalariaEspressoTest{
 
     /**
      * From Dashboard access survey
-     * @param orgUnit
-     * @param program
+     * @param orgUnit orgUnit of the survey we want to access
+     * @param program program of the survey we want to access
      */
     private void WhenAssessmentSelected(String orgUnit, String program) {
         onView(allOf(withId(R.id.assessment_row),
@@ -278,9 +318,9 @@ public class SurveyEspressoTest extends MalariaEspressoTest{
     }
 
     /**
-     * From Dashboard access
-     * @param orgUnit
-     * @param program
+     * From Dashboard delete survey
+     * @param orgUnit orgUnit of the survey we want to delete
+     * @param program program of the survey we want to delete
      */
     private void WhenAssessmentSwipeAndOk(String orgUnit, String program) {
         onView(allOf(withId(R.id.assessment_row),
@@ -294,7 +334,7 @@ public class SurveyEspressoTest extends MalariaEspressoTest{
 
     /**
      * Change font size
-     * @param activity
+     * @param activity activity to get the preferences
      * @param num font size in a discrete int scale [0: xsmall - 1: small - 2: medium - 3: large - 4: xlarge]
      */
     private void whenFontSizeChange(Activity activity, int num) {
@@ -304,8 +344,21 @@ public class SurveyEspressoTest extends MalariaEspressoTest{
         onView(withText(activity.getString(R.string.settings_list_font_sizes))).perform(click());
         onView(withText((activity.getResources().getStringArray(R.array.settings_array_titles_font_sizes))[num])).perform(click());
         pressBack(); // Exit settings
-        pressBack(); // exit survey
+        pressBack(); // Exit survey
         onView(withText(activity.getString(android.R.string.ok))).perform(click()); // confirm exit
+    }
+
+    /**
+     * Change show/hide num/dem preference
+     * @param activity
+     */
+    private void whenToggleShowHideNumDem(Activity activity) {
+        openActionBarOverflowOrOptionsMenu(getActivityInstance());
+        onView(withText(activity.getString(R.string.settings_menu_configuration))).perform(click());
+        onView(withText(activity.getString(R.string.settings_checkbox_show_num_dems))).perform(click());
+        pressBack(); // Exit settings
+        //pressBack(); // Exit survey
+        //onView(withText(activity.getString(android.R.string.ok))).perform(click()); // confirm exit
     }
 
     /**
@@ -326,8 +379,8 @@ public class SurveyEspressoTest extends MalariaEspressoTest{
         onData(is(instanceOf(Question.class))).
                 inAdapterView(withId(R.id.listView)).
                 atPosition(position).
-                onChildView(withId(R.id.answer)).
-                perform(click());
+                onChildView(withId(R.id.answer))
+                .perform(click());
         int indexAnswer=answer?1:2;
         onData(is(instanceOf(Option.class))).atPosition(indexAnswer).perform(click());
     }
