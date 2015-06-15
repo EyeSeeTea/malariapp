@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ Copyright (c) 2015.
   ~
@@ -15,15 +16,14 @@
   ~
   ~  You should have received a copy of the GNU General Public License
   ~  along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
+  ~
+  ~ The radiobutton PNG files license are
+  Google (http://www.flaticon.com/authors/google) from http://www.flaticon.com is licensed by CC BY 3.0 (http://creativecommons.org/licenses/by/3.0/)
   -->
 
-    <org.eyeseetea.malariacare.views.UncheckeableRadioButton
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:button="@drawable/radiobutton"
-        android:paddingEnd="20sp"
-        app:rScale="@string/textcard_default_scale"
-        app:rDimension="@string/textcard_default_dimension"
-        app:rFontName="@string/normal_font" />
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_checked="true" android:state_pressed="false" android:drawable="@drawable/radio_on"/>
+    <item android:state_checked="false" android:state_pressed="false" android:drawable="@drawable/radio_off"/>
+    <item android:state_checked="true" android:state_pressed="true" android:drawable="@drawable/radio_on_pressed"/>
+    <item android:state_checked="false" android:state_pressed="true" android:drawable="@drawable/radio_off_pressed"/>
+</selector>
