@@ -137,7 +137,6 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
      * Factory method to build a scored/non scored layout according to tab type.
      * @param tab
      * @param context
-     * @param withScore
      * @return
      */
     public static AutoTabAdapter build(Tab tab, Context context){
@@ -661,8 +660,8 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
         } else {
             viewHolder.num.setVisibility(View.GONE);
             viewHolder.denum.setVisibility(View.GONE);
-            ((RelativeLayout) viewHolder.statement.getParent()).setLayoutParams(new LinearLayout.LayoutParams(0, RelativeLayout.LayoutParams.WRAP_CONTENT, 0.6f));
-            ((RelativeLayout) viewHolder.component.getParent().getParent()).setLayoutParams(new LinearLayout.LayoutParams(0, RelativeLayout.LayoutParams.WRAP_CONTENT, 0.4f));
+            ((RelativeLayout) viewHolder.statement.getParent()).setLayoutParams(new LinearLayout.LayoutParams(0, RelativeLayout.LayoutParams.WRAP_CONTENT, 0.7f));
+            ((RelativeLayout) viewHolder.component.getParent().getParent()).setLayoutParams(new LinearLayout.LayoutParams(0, RelativeLayout.LayoutParams.WRAP_CONTENT, 0.3f));
             ((RelativeLayout) viewHolder.num.getParent()).setLayoutParams(new LinearLayout.LayoutParams(0, RelativeLayout.LayoutParams.WRAP_CONTENT, 0.0f));
             ((RelativeLayout) viewHolder.denum.getParent()).setLayoutParams(new LinearLayout.LayoutParams(0, RelativeLayout.LayoutParams.WRAP_CONTENT, 0.0f));
         }
