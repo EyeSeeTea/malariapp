@@ -241,7 +241,7 @@
 
             </TableRow>
 
-            <TableRow xmlns:android="http://schemas.android.com/apk/res/android"
+            <TableRow
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/background_odd">
@@ -269,7 +269,7 @@
 
             </TableRow>
 
-            <TableRow xmlns:android="http://schemas.android.com/apk/res/android"
+            <TableRow
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/background_even">
@@ -296,7 +296,7 @@
                     app:tFontName="@string/condensed_font_name" />
             </TableRow>
 
-            <TableRow xmlns:android="http://schemas.android.com/apk/res/android"
+            <TableRow
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/background_odd">
@@ -323,7 +323,7 @@
                     app:tFontName="@string/condensed_font_name" />
             </TableRow>
 
-            <TableRow xmlns:android="http://schemas.android.com/apk/res/android"
+            <TableRow
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/background_even">
@@ -350,7 +350,7 @@
                     app:tFontName="@string/condensed_font_name" />
             </TableRow>
 
-            <TableRow xmlns:android="http://schemas.android.com/apk/res/android"
+            <TableRow
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/background_odd">
@@ -377,7 +377,7 @@
                     app:tFontName="@string/condensed_font_name" />
             </TableRow>
 
-            <TableRow xmlns:android="http://schemas.android.com/apk/res/android"
+            <TableRow
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/background_even">
@@ -404,7 +404,7 @@
                     app:tFontName="@string/condensed_font_name" />
             </TableRow>
 
-            <TableRow xmlns:android="http://schemas.android.com/apk/res/android"
+            <TableRow
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/background_odd">
@@ -431,7 +431,7 @@
                     app:tFontName="@string/condensed_font_name" />
             </TableRow>
 
-            <TableRow xmlns:android="http://schemas.android.com/apk/res/android"
+            <TableRow
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/background_even">
@@ -458,7 +458,7 @@
                     app:tFontName="@string/condensed_font_name" />
             </TableRow>
 
-            <TableRow xmlns:android="http://schemas.android.com/apk/res/android"
+            <TableRow
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/background_odd">
@@ -485,7 +485,7 @@
                     app:tFontName="@string/condensed_font_name" />
             </TableRow>
 
-            <TableRow xmlns:android="http://schemas.android.com/apk/res/android"
+            <TableRow
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/background_even">

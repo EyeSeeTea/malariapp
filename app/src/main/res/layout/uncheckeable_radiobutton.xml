@@ -24,6 +24,7 @@
         android:layout_height="wrap_content"
         android:button="@drawable/radiobutton"
         android:paddingEnd="10sp"
+        android:paddingRight="10sp"
         app:rScale="@string/textcard_default_scale"
         app:rDimension="@string/textcard_default_dimension"
         app:rFontName="@string/normal_font" />
