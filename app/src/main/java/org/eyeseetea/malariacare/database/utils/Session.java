@@ -46,6 +46,8 @@ public class Session {
     private static IDashboardAdapter adapter;
     private static String fontSize;
     private static Map<String, Map<String, Float>> fontMap;
+    private static Map<String,Object> serviceValues=new HashMap<>();
+
 
     public static Survey getSurvey() {
         return survey;
@@ -153,6 +155,25 @@ public class Session {
         Session.setUser(null);
         Session.setSurvey(null);
         Session.setAdapter(null);
+    }
+
+    /**
+     * Puts a pair key/value into a shared map.
+     * Used to share values that are not serializable and thus cannot be put into an intent (domains and so).
+     * @param key
+     * @param value
+     */
+    public static void putServiceValue(String key, Object value){
+        serviceValues.put(key,value);
+    }
+
+    /**
+     * Pops the value of the given key out of the map.
+     * @param key
+     * @return
+     */
+    public static Object popServiceValue(String key){
+        return serviceValues.remove(key);
     }
 
 }

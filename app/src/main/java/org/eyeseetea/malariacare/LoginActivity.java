@@ -354,7 +354,7 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
                 mUserView.setError(getString(R.string.login_error_bad_credentials));
                 return;
             }
-            //go dashboard
+            //finishAndGo dashboard
             Log.i(".LoginActivity", "Logged in!");
             // Get the not-sent surveys ordered by date
             List <Survey> surveys = Survey.getAllUnsentSurveys();

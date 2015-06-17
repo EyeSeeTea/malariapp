@@ -224,7 +224,7 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
 
     @Override
     public void onBackPressed() {
-        // FIXME: find a way for comming back to the same activity from which we go to settings, maybe using putExtra when going to settings
+        // FIXME: find a way for comming back to the same activity from which we finishAndGo to settings, maybe using putExtra when going to settings
         Intent intent = NavUtils.getParentActivityIntent(this);
         intent.putExtra("activity", "settings");
         NavUtils.navigateUpTo(this, intent);
