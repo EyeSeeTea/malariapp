@@ -219,7 +219,7 @@ public class DashboardDetailsFragment extends ListFragment {
 
         if(surveyReceiver==null){
             surveyReceiver=new SurveyReceiver();
-            LocalBroadcastManager.getInstance(getActivity()).registerReceiver(surveyReceiver, new IntentFilter(SurveyService.BROADCAST_SERVICE));
+            LocalBroadcastManager.getInstance(getActivity()).registerReceiver(surveyReceiver, new IntentFilter(SurveyService.ALL_UNSENT_SURVEYS_ACTION));
         }
     }
 
@@ -241,6 +241,7 @@ public class DashboardDetailsFragment extends ListFragment {
     private void getSurveysFromService(){
         Activity activity=getActivity();
         Intent surveysIntent=new Intent(activity, SurveyService.class);
+        surveysIntent.putExtra(SurveyService.SERVICE_METHOD,SurveyService.ALL_UNSENT_SURVEYS_ACTION);
         activity.startService(surveysIntent);
     }
 
@@ -259,7 +260,7 @@ public class DashboardDetailsFragment extends ListFragment {
 
         @Override
         public void onReceive(Context context, Intent intent) {
-            List<Survey> surveysFromService=(List<Survey>)Session.popServiceValue(SurveyService.BROADCAST_RESULT);
+            List<Survey> surveysFromService=(List<Survey>)Session.popServiceValue(SurveyService.ALL_UNSENT_SURVEYS_ACTION);
             reloadSurveys(surveysFromService);
         }
 

@@ -26,7 +26,6 @@ import android.support.v4.content.LocalBroadcastManager;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.utils.Session;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -36,14 +35,14 @@ import java.util.List;
 public class SurveyService extends IntentService {
 
     /**
-     * The constant used to broadcast the result of the service
+     * Constant added to the intent in order to reuse the service for different 'methods'
      */
-    public static final String BROADCAST_SERVICE="org.eyeseetea.malariacare.services.SurveyService.BROADCAST";
+    public static final String SERVICE_METHOD="serviceMethod";
 
     /**
-     * The name of the parameter where the result of the service is returned
+     * The constant used to broadcast the result of the service
      */
-    public static final String BROADCAST_RESULT="org.eyeseetea.malariacare.services.SurveyService.RESULT";
+    public static final String ALL_UNSENT_SURVEYS_ACTION ="org.eyeseetea.malariacare.services.SurveyService.ALL_UNSENT_SURVEYS_ACTION";
 
     /**
      * Constructor required due to a error message in AndroidManifest.xml if it is not present
@@ -62,14 +61,27 @@ public class SurveyService extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
+        //Take action to be done
+        switch (intent.getStringExtra(SERVICE_METHOD)){
+            //TODO all additional background methods
+            case ALL_UNSENT_SURVEYS_ACTION:
+                getAllUnsentSurveys();
+                break;
+        }
+    }
+
+    /**
+     * Selects all pending surveys from database
+     */
+    protected void getAllUnsentSurveys(){
         //Select surveys from sql
         List<Survey> surveys = Survey.getAllUnsentSurveys();
 
         //Since intents does NOT admit NON serializable as values we use Session instead
-        Session.putServiceValue(BROADCAST_RESULT,surveys);
+        Session.putServiceValue(ALL_UNSENT_SURVEYS_ACTION,surveys);
 
         //Returning result to anyone listening
-        Intent resultIntent= new Intent(BROADCAST_SERVICE);
+        Intent resultIntent= new Intent(ALL_UNSENT_SURVEYS_ACTION);
         LocalBroadcastManager.getInstance(this).sendBroadcast(resultIntent);
     }
 }
