@@ -120,7 +120,7 @@ public abstract class BaseActivity extends ActionBarActivity {
      * Every BaseActivity(Details, Create, Survey) goes back to DashBoard
      */
     public void onBackPressed(){
-        go(DashboardDetailsActivity.class);
+        finishAndGo(DashboardDetailsActivity.class);
     }
 
     @Override
@@ -159,7 +159,7 @@ public abstract class BaseActivity extends ActionBarActivity {
                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface arg0, int arg1) {
                         Session.logout();
-                        go(LoginActivity.class);
+                        finishAndGo(LoginActivity.class);
                     }
                 })
                 .setNegativeButton(android.R.string.no, null).create().show();
@@ -170,18 +170,30 @@ public abstract class BaseActivity extends ActionBarActivity {
      * Called when the user clicks the New Survey button
      */
     public void newSurvey(View view) {
-        go(CreateSurveyActivity.class);
+        Intent targetActivityIntent = new Intent(this,CreateSurveyActivity.class);
+        startActivity(targetActivityIntent);
+    }
+
+    /**
+     * Finish current activity and launches an activity with the given class
+     * @param targetActivityClass Given target activity class
+     */
+    public void finishAndGo(Class targetActivityClass){
+        Intent targetActivityIntent = new Intent(this,targetActivityClass);
+        finish();
+        startActivity(targetActivityIntent);
     }
 
     /**
      * Launches an activity with the given class
      * @param targetActivityClass Given target activity class
      */
-    protected void go(Class targetActivityClass){
+    public void go(Class targetActivityClass){
         Intent targetActivityIntent = new Intent(this,targetActivityClass);
-        finish();
         startActivity(targetActivityIntent);
     }
+
+
 
     /**
      * Shows an alert dialog with a big message inside based on a raw resource

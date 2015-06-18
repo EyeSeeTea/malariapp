@@ -19,25 +19,33 @@
 
 package org.eyeseetea.malariacare.fragments;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ListFragment;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
+import android.support.v4.content.LocalBroadcastManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 
+import org.eyeseetea.malariacare.DashboardDetailsActivity;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.SurveyActivity;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.utils.Session;
-import org.eyeseetea.malariacare.layout.adapters.dashboard.AssessmentAdapter;
 import org.eyeseetea.malariacare.layout.adapters.dashboard.IDashboardAdapter;
 import org.eyeseetea.malariacare.layout.listeners.SwipeDismissListViewTouchListener;
+import org.eyeseetea.malariacare.services.SurveyService;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -45,12 +53,14 @@ import java.util.List;
  */
 public class DashboardDetailsFragment extends ListFragment {
 
+    private SurveyReceiver surveyReceiver;
     private List<Survey> surveys;
     protected IDashboardAdapter adapter;
     private static int index = 0;
 
     public DashboardDetailsFragment(){
         this.adapter = Session.getAdapter();
+        this.surveys=new ArrayList<Survey>();
     }
 
     public static DashboardDetailsFragment newInstance(int index) {
@@ -72,20 +82,16 @@ public class DashboardDetailsFragment extends ListFragment {
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
-        this.surveys = Survey.getAllUnsentSurveys();
+
+        Log.d(".DetailsFragment", "onCreate");
+        registerSurveysReceiver();
+        getSurveysFromService();
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
+        Log.d(".DetailsFragment", "onCreateView");
         if (container == null) {
-            // We have different layouts, and in one of them this
-            // fragment's containing frame doesn't exist.  The fragment
-            // may still be created from its saved state, but there is
-            // no reason to try to create its view hierarchy because it
-            // won't be displayed.  Note this is not needed -- we could
-            // just run the code below, where we would create and return
-            // the view hierarchy; it would just never be used.
             return null;
         }
 
@@ -95,8 +101,69 @@ public class DashboardDetailsFragment extends ListFragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
+        Log.d(".DetailsFragment", "onActivityCreated");
         IDashboardAdapter adapterE = Session.getAdapter().newInstance(this.surveys, getActivity());
         this.adapter = adapterE;
+        initListView();
+
+    }
+
+    @Override
+    public void onListItemClick(ListView l, View v, int position, long id){
+        Log.d(".DetailsFragment", "onListItemClick");
+        super.onListItemClick(l, v, position, id);
+
+        //Discard clicks on header|footer (which is attendend on newSurvey via super)
+        if(!isPositionASurvey(position)){
+            return;
+        }
+
+        //Put selected survey in session
+        Session.setSurvey(surveys.get(position - 1));
+        //Go to SurveyActivity
+        ((DashboardDetailsActivity) getActivity()).go(SurveyActivity.class);
+    }
+
+    @Override
+    public void onStop(){
+        Log.d(".DetailsFragment", "onStop");
+        unregisterSurveysReceiver();
+
+        super.onStop();
+    }
+
+    /**
+     * Checks if the given position points to a real survey instead of a footer or header of the listview.
+     * @param position
+     * @return true|false
+     */
+    private boolean isPositionASurvey(int position){
+        return !isPositionFooter(position) && !isPositionHeader(position);
+    }
+
+    /**
+     * Checks if the given position is the header of the listview instead of a real survey
+     * @param position
+     * @return true|false
+     */
+    private boolean isPositionHeader(int position){
+        return position<=0;
+    }
+
+    /**
+     * Checks if the given position is the footer of the listview instead of a real survey
+     * @param position
+     * @return true|false
+     */
+    private boolean isPositionFooter(int position){
+        return position==(this.surveys.size()+1);
+    }
+
+    /**
+     * Initializes the listview component, adding a listener for swiping right
+     */
+    private void initListView(){
         LayoutInflater inflater = LayoutInflater.from(getActivity());
         View header = inflater.inflate(this.adapter.getHeaderLayout(), null, false);
         View footer = inflater.inflate(this.adapter.getFooterLayout(), null, false);
@@ -114,7 +181,7 @@ public class DashboardDetailsFragment extends ListFragment {
                         new SwipeDismissListViewTouchListener.DismissCallbacks() {
                             @Override
                             public boolean canDismiss(int position) {
-                                return position>0 && position<=((AssessmentAdapter)adapter).getCount();
+                                return position>0 && position<=surveys.size();
                             }
 
                             @Override
@@ -140,28 +207,62 @@ public class DashboardDetailsFragment extends ListFragment {
         // we don't look for swipes.
         listView.setOnScrollListener(touchListener.makeScrollListener());
 
+        setListShown(false);
+    }
 
+
+    /**
+     * Register a survey receiver to load surveys into the listadapter
+     */
+    private void registerSurveysReceiver() {
+        Log.d(".DetailsFragment", "registerSurveysReceiver");
+
+        if(surveyReceiver==null){
+            surveyReceiver=new SurveyReceiver();
+            LocalBroadcastManager.getInstance(getActivity()).registerReceiver(surveyReceiver, new IntentFilter(SurveyService.ALL_UNSENT_SURVEYS_ACTION));
+        }
+    }
+
+
+    /**
+     * Unregisters the survey receiver.
+     * It really important to do this, otherwise each receiver will invoke its code.
+     */
+    private void  unregisterSurveysReceiver(){
+        if(surveyReceiver!=null){
+            LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(surveyReceiver);
+            surveyReceiver=null;
+        }
+    }
+
+    /**
+     * Asks SurveyService for the current list of surveys
+     */
+    private void getSurveysFromService(){
+        Activity activity=getActivity();
+        Intent surveysIntent=new Intent(activity, SurveyService.class);
+        surveysIntent.putExtra(SurveyService.SERVICE_METHOD,SurveyService.ALL_UNSENT_SURVEYS_ACTION);
+        activity.startService(surveysIntent);
+    }
+
+    public void reloadSurveys(List<Survey> newListSurveys){
+        Log.d(".DetailsFragment", "reloadSurveys(" + newListSurveys.size() + ")");
+        this.surveys.clear();
+        this.surveys.addAll(newListSurveys);
+        this.adapter.notifyDataSetChanged();
         setListShown(true);
     }
+    /**
+     * Inner private class that receives the result from the service
+     */
+    private class SurveyReceiver extends BroadcastReceiver{
+        private SurveyReceiver(){}
 
-    @Override
-    public void onListItemClick(ListView l, View v, int position, long id){
-        super.onListItemClick(l, v, position, id);
-
-        //Discard clicks on header|footer
-        if(position<=0 || position > surveys.size()){
-            return;
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            List<Survey> surveysFromService=(List<Survey>)Session.popServiceValue(SurveyService.ALL_UNSENT_SURVEYS_ACTION);
+            reloadSurveys(surveysFromService);
         }
 
-        Session.setSurvey(surveys.get(position-1));
-
-        //Call Survey Activity
-        Intent surveyIntent = new Intent(v.getContext(), SurveyActivity.class);
-        v.getContext().startActivity(surveyIntent);
-    }
-
-    @Override
-    public void onResume(){
-        super.onResume();
     }
 }

@@ -238,7 +238,7 @@ public class SurveyActivity extends BaseActivity implements LoaderManager.Loader
                 .setNegativeButton(android.R.string.no, null)
                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int arg1) {
-                        go(DashboardDetailsActivity.class);
+                        finishAndGo(DashboardDetailsActivity.class);
                     }
                 }).create().show();
     }
