@@ -177,14 +177,6 @@ public class Question extends SugarRecord<Question> {
 
     public boolean belongsToMasterQuestions() {return !getMasters().isEmpty();}
 
-    public boolean belongsToProgram(Program program){
-        try {
-            return program.equals(getHeader().getTab().getProgram());
-        }catch(NullPointerException ex){
-            return false;
-        }
-    }
-
     public boolean hasRelatives() {return !getRelatives().isEmpty(); }
 
     public boolean hasChildren(){

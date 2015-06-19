@@ -40,6 +40,7 @@ import android.widget.TextView;
 import org.eyeseetea.malariacare.database.model.CompositeScore;
 import org.eyeseetea.malariacare.database.model.Program;
 import org.eyeseetea.malariacare.database.model.Question;
+import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.model.Tab;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.layout.adapters.general.TabArrayAdapter;
@@ -57,8 +58,8 @@ import java.util.List;
 import java.util.Map;
 
 
-public class SurveyActivity extends BaseActivity implements LoaderManager.LoaderCallbacks<Cursor>{
-
+//public class SurveyActivity extends BaseActivity implements LoaderManager.LoaderCallbacks<Cursor>{
+public class SurveyActivity extends BaseActivity{
     private List<Tab> tabsList;
     private Map<Tab, ITabAdapter> adaptersMap = new HashMap<Tab, ITabAdapter>();
 
@@ -71,21 +72,13 @@ public class SurveyActivity extends BaseActivity implements LoaderManager.Loader
         android.support.v7.app.ActionBar actionBar = this.getSupportActionBar();
         LayoutUtils.setActionBarLogo(actionBar);
 
-        Program program = Session.getSurvey().getProgram();
-        List<CompositeScore> compositeScores = new ArrayList<CompositeScore>();
-
+        Survey survey=Session.getSurvey();
+        Program program = survey.getProgram();
         Log.i(".SurveyActivity", "Registering Composite Score");
-        //Intializing composite score register
-        for (CompositeScore compositeScore : CompositeScore.listAll(CompositeScore.class)) {
-
-            //If the questions of the compositescore belongs to the program, the comp. score is addded
-            Question compositeScoreQuestion = compositeScore.getSingleQuestionIncludingChildren();
-            if (compositeScoreQuestion.belongsToProgram(program)) {
-                Log.i(".SurveyActivity", "Include "+ compositeScore.getCode());
-                compositeScores.add(compositeScore);
-                ScoreRegister.registerScore(compositeScore);
-            }
-
+        List<CompositeScore> compositeScores = CompositeScore.listAllByProgram(program);
+        for(CompositeScore compositeScore : compositeScores){
+            Log.i(".SurveyActivity", "Include "+ compositeScore.getCode());
+            ScoreRegister.registerScore(compositeScore);
         }
 
         Log.i(".SurveyActivity", "Creating Adapter");
@@ -104,7 +97,7 @@ public class SurveyActivity extends BaseActivity implements LoaderManager.Loader
         createMenu();
 
         // Show survey info as a footer below the form
-        LayoutUtils.setActionBarText(actionBar, Session.getSurvey().getOrgUnit().getName(), Session.getSurvey().getProgram().getName());
+        LayoutUtils.setActionBarText(actionBar, survey.getOrgUnit().getName(), program.getName());
 
     }
 
@@ -243,18 +236,18 @@ public class SurveyActivity extends BaseActivity implements LoaderManager.Loader
                 }).create().show();
     }
 
-    @Override
-    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        return null;
-    }
-
-    @Override
-    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-
-    }
-
-    @Override
-    public void onLoaderReset(Loader<Cursor> loader) {
-
-    }
+//    @Override
+//    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+//        return null;
+//    }
+//
+//    @Override
+//    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+//
+//    }
+//
+//    @Override
+//    public void onLoaderReset(Loader<Cursor> loader) {
+//
+//    }
 }
