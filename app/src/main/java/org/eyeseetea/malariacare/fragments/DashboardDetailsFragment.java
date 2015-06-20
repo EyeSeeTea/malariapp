@@ -33,6 +33,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 
@@ -206,6 +207,33 @@ public class DashboardDetailsFragment extends ListFragment {
         // Setting this scroll listener is required to ensure that during ListView scrolling,
         // we don't look for swipes.
         listView.setOnScrollListener(touchListener.makeScrollListener());
+
+        listView.setLongClickable(true);
+
+        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
+
+
+                new AlertDialog.Builder(getActivity())
+                        .setTitle("Pushing data")
+                        .setMessage("Are you sure? You can not undo this action")
+                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface arg0, int arg1) {
+
+                                Survey survey = (Survey) adapter.getItem(position-1);
+
+                                Log.d(".DetailsFragment", "Pushing " + survey.getProgram().getName());
+
+                            }
+                        })
+                        .setNegativeButton(android.R.string.no, null).create().show();
+
+
+                return true;
+            }
+        });
+
 
         setListShown(false);
     }
