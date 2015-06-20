@@ -11,6 +11,7 @@ public class CompositeScore extends SugarRecord<CompositeScore> {
 
     String code;
     String label;
+    String uid;
     CompositeScore compositeScore;
 
     @Ignore
@@ -27,6 +28,14 @@ public class CompositeScore extends SugarRecord<CompositeScore> {
         this.label = label;
         this.compositeScore = compositeScore;
     }
+
+    public CompositeScore(String code, String label, String uid, CompositeScore compositeScore) {
+        this.code = code;
+        this.label = label;
+        this.uid = uid;
+        this.compositeScore = compositeScore;
+    }
+
 
     public String getCode() { return code; }
 
@@ -46,6 +55,14 @@ public class CompositeScore extends SugarRecord<CompositeScore> {
 
     public void setCompositeScore(CompositeScore compositeScore) {
         this.compositeScore = compositeScore;
+    }
+
+    public String getUid() {
+        return uid;
+    }
+
+    public void setUid(String uid) {
+        this.uid = uid;
     }
 
     public boolean hasParent(){
