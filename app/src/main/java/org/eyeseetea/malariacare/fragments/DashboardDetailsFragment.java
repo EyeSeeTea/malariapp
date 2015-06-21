@@ -45,6 +45,7 @@ import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.layout.adapters.dashboard.IDashboardAdapter;
 import org.eyeseetea.malariacare.layout.listeners.SwipeDismissListViewTouchListener;
 import org.eyeseetea.malariacare.services.SurveyService;
+import org.eyeseetea.malariacare.utils.PushEvents;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -221,9 +222,19 @@ public class DashboardDetailsFragment extends ListFragment {
                         .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface arg0, int arg1) {
 
-                                Survey survey = (Survey) adapter.getItem(position-1);
+                                final Survey survey = (Survey) adapter.getItem(position-1);
 
                                 Log.d(".DetailsFragment", "Pushing " + survey.getProgram().getName());
+
+                                new Thread (){
+                                    public void run() {
+
+                                        Log.d (".DetailsFragment","Thread");
+
+                                        new PushEvents(survey).run();
+                                    }
+                                }.start();
+
 
                             }
                         })
