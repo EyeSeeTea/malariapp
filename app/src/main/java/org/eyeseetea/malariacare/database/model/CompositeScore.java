@@ -10,10 +10,10 @@ import java.util.List;
 
 public class CompositeScore extends SugarRecord<CompositeScore> {
 
-    private static final String LIST_BY_PROGRAM_SQL="select cs.* from composite_score cs left join question q on q.composite_score=cs.id "+
+    private static final String LIST_BY_PROGRAM_SQL="select distinct cs.* from composite_score cs left join question q on q.composite_score=cs.id "+
             "left join header h on q.header=h.id "+
             "left join tab t on h.tab=t.id "+
-            "left join program p on t program=p.id where p.id=?";
+            "left join program p on t.program=p.id where p.id=?";
 
     String code;
     String label;

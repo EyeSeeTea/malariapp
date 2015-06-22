@@ -54,6 +54,8 @@ import java.util.List;
  */
 public class DashboardDetailsFragment extends ListFragment {
 
+
+
     private SurveyReceiver surveyReceiver;
     private List<Survey> surveys;
     protected IDashboardAdapter adapter;
@@ -261,7 +263,7 @@ public class DashboardDetailsFragment extends ListFragment {
     }
 
     public void reloadSurveys(List<Survey> newListSurveys){
-        Log.d(".DetailsFragment", "reloadSurveys(" + newListSurveys.size() + ")");
+        Log.d(".DetailsFragment", "reloadSurveys (Thread: "+Thread.currentThread().getId()+"): " + newListSurveys.size());
         this.surveys.clear();
         this.surveys.addAll(newListSurveys);
         this.adapter.notifyDataSetChanged();
