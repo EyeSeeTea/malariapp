@@ -95,13 +95,7 @@ public class AssessmentAdapter extends ADashboardAdapter implements IDashboardAd
 
         //Status Cell
         //FIXME: This bit needs to change when jose architecture is introduced because probably the save will be executed in a different way
-        List<Integer> status = survey.getAnsweredQuestionRatio();
-
-        if (status.get(0) == status.get(1)) {
-            ((TextView) rowView.findViewById(R.id.score)).setText(getContext().getString(R.string.dashboard_info_ready_to_upload));
-        } else {
-            ((TextView) rowView.findViewById(R.id.score)).setText(String.format("%d", new Double(100 * (double) status.get(0) / (double) status.get(1)).intValue()));
-        }
+        ((TextView) rowView.findViewById(R.id.score)).setText(getStatus(survey));
 
         return rowView;
     }
@@ -109,6 +103,21 @@ public class AssessmentAdapter extends ADashboardAdapter implements IDashboardAd
     @Override
     public IDashboardAdapter newInstance(List items, Context context) {
         return new AssessmentAdapter((List<Survey>) items, context);
+    }
+
+    /**
+     * Returns the proper status value (% or ready to send) according to the level of completion of the survey
+     * @param survey
+     * @return
+     */
+    private String getStatus(Survey survey){
+        List<Integer> status = survey.getAnsweredQuestionRatio();
+
+        if (status.get(0) == status.get(1)) {
+            return getContext().getString(R.string.dashboard_info_ready_to_upload);
+        } else {
+            return String.format("%d", new Double(100 * (double) status.get(0) / (double) status.get(1)).intValue());
+        }
     }
 
     @Override

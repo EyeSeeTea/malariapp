@@ -55,6 +55,7 @@ import org.eyeseetea.malariacare.utils.Constants;
 import org.eyeseetea.malariacare.utils.Utils;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -64,7 +65,36 @@ import java.util.Map;
  */
 public class SurveyActivity extends BaseActivity{
 
-    public static final String TAG = ".DetailsFragment";
+    public static final String TAG = ".SurveyActivity";
+
+    //FIXME Better than a bunch of 'ifs' worse than it should
+    private static final int ORDER_PROFILE=2;
+    private static final int ORDER_C1_CLINICAL=3;
+    private static final int ORDER_C1_RDT=4;
+    private static final int ORDER_C2_CLINICAL=5;
+    private static final int ORDER_C2_RDT=6;
+    private static final int ORDER_C3_CLINICAL=7;
+    private static final int ORDER_C3_RDT=8;
+    private static final int ORDER_FEEDBACK=9;
+    private static final int ORDER_ENVIRONMENT=10;
+
+    private static final int[] ORDER_TABS_AVG_CLINICAL={ORDER_C1_CLINICAL,ORDER_C2_CLINICAL,ORDER_C3_CLINICAL};
+    private static final int[] ORDER_TABS_RDT={ORDER_C1_RDT,ORDER_C2_RDT,ORDER_C3_RDT};
+    private static final int[] ORDER_TABS_OVERALL={ORDER_PROFILE,ORDER_FEEDBACK,ORDER_ENVIRONMENT};
+
+    private static final int[] IDS_SCORES_IN_GENERAL_TAB={
+            0,                      //0
+            0,                      //1
+            R.id.profileScore,      //2
+            R.id.clinicalCase1,     //3
+            R.id.rdtCase1,          //4
+            R.id.clinicalCase2,     //5
+            R.id.rdtCase2,          //6
+            R.id.clinicalCase3,     //7
+            R.id.rdtCase3,          //8
+            R.id.feedbackScore,     //9
+            R.id.envAndMatScore     //10
+    };
 
     /**
      * List of tabs that belongs to the current selected survey
@@ -79,7 +109,7 @@ public class SurveyActivity extends BaseActivity{
     private TabAdaptersCache tabAdaptersCache = new TabAdaptersCache();
 
     /**
-     * Adapter for  the e of tae
+     * Adapter for the tabs spinner
      */
     private TabArrayAdapter tabAdapter;
 
@@ -104,7 +134,6 @@ public class SurveyActivity extends BaseActivity{
         Log.i(".SurveyActivity", "onCreate");
         setContentView(R.layout.survey);
         registerReceiver();
-//        prepareSurveyInfo();
         createActionBar();
         createMenu();
         createProgress();
@@ -141,6 +170,9 @@ public class SurveyActivity extends BaseActivity{
         super.onStop();
     }
 
+    /**
+     * Adds the spinner for tabs
+     */
     private void createMenu() {
 
         Log.i(".SurveyActivity", "createMenu");
@@ -168,6 +200,9 @@ public class SurveyActivity extends BaseActivity{
         });
     }
 
+    /**
+     * Adds actionbar to the activity
+     */
     private void createActionBar(){
         Survey survey=Session.getSurvey();
         Program program = survey.getProgram();
@@ -177,12 +212,26 @@ public class SurveyActivity extends BaseActivity{
         LayoutUtils.setActionBarText(actionBar, survey.getOrgUnit().getName(), program.getName());
     }
 
+
+    /**
+     * Gets a reference to the progress view in order to stop it later
+     */
+    private void createProgress(){
+        progressBar=(ProgressBar)findViewById(R.id.survey_progress);
+    }
+
+    /**
+     * Shows the form for the given tab.
+     * @param selectedTab
+     */
     private void showTab(Tab selectedTab) {
         LayoutInflater inflater = LayoutInflater.from(this);
         ViewGroup parent = (LinearLayout) this.findViewById(R.id.content);
         parent.removeAllViews();
 
-//        ITabAdapter tabAdapter = adaptersMap.get(selectedTab);
+        if(selectedTab.isCompositeScore()){
+            tabAdaptersCache.cacheAllTabs();
+        }
         ITabAdapter tabAdapter=tabAdaptersCache.findAdapter(selectedTab);
 
         View view = inflater.inflate(tabAdapter.getLayout(), parent, false);
@@ -198,6 +247,9 @@ public class SurveyActivity extends BaseActivity{
         mQuestions.setAdapter((BaseAdapter) tabAdapter);
     }
 
+    /**
+     * Shows the special 'Score' tab
+     */
     private void showGeneralScores() {
         LayoutInflater inflater = LayoutInflater.from(this);
 
@@ -206,75 +258,98 @@ public class SurveyActivity extends BaseActivity{
         View view = inflater.inflate(R.layout.scoretab, parent, false);
         parent.addView(view);
 
-        Float tab1 = 0F, tab2 = 0F, tab3 = 0F, tab4 = 0F, tab5 = 0F, tab6 = 0F, tab7 = 0F, tab8 = 0F, tab9 = 0F;
-
-//        List<ITabAdapter> adaptersList = new ArrayList<ITabAdapter>(adaptersMap.values());
         List<ITabAdapter> adaptersList = tabAdaptersCache.list();
-        // FIXME: This is a very ugly way of doing it, change it soon
-        if (adaptersList.get(10) != null) {
-            tab1 = adaptersList.get(10).getScore();
-            ((TextView) this.findViewById(R.id.profileScore)).setText(Utils.round(tab1));
-            LayoutUtils.trafficLight(this.findViewById(R.id.profileScore), tab1, null);
-        }
-        if (adaptersList.get(2) != null) {
-            tab9 = adaptersList.get(2).getScore();
-            ((TextView) this.findViewById(R.id.envAndMatScore)).setText(Utils.round(tab9));
-            LayoutUtils.trafficLight(this.findViewById(R.id.envAndMatScore), tab9, null);
-        }
-        if (adaptersList.get(8) != null) {
-            tab8 = adaptersList.get(8).getScore();
-            ((TextView) this.findViewById(R.id.feedbackScore)).setText(Utils.round(tab8));
-            LayoutUtils.trafficLight(this.findViewById(R.id.feedbackScore), tab8, null);
-        }
-        if (adaptersList.get(6) != null) {
-            tab2 = adaptersList.get(6).getScore();
-            ((TextView) this.findViewById(R.id.clinicalCase1)).setText(Utils.round(tab2));
-            LayoutUtils.trafficLight(this.findViewById(R.id.clinicalCase1), tab2, null);
-        }
-        if (adaptersList.get(1) != null) {
-            tab4 = adaptersList.get(1).getScore();
-            ((TextView) this.findViewById(R.id.clinicalCase2)).setText(Utils.round(tab4));
-            LayoutUtils.trafficLight(this.findViewById(R.id.clinicalCase2), tab4, null);
-        }
-        if (adaptersList.get(4) != null) {
-            tab6 = adaptersList.get(4).getScore();
-            ((TextView) this.findViewById(R.id.clinicalCase3)).setText(Utils.round(tab6));
-            LayoutUtils.trafficLight(this.findViewById(R.id.clinicalCase3), tab6, null);
-        }
-        if (adaptersList.get(0) != null) {
-            tab3 = adaptersList.get(0).getScore();
-            ((TextView) this.findViewById(R.id.rdtCase1)).setText(Utils.round(tab3));
-            LayoutUtils.trafficLight(this.findViewById(R.id.rdtCase1), tab3, null);
-        }
-        if (adaptersList.get(9) != null) {
-            tab5 = adaptersList.get(9).getScore();
-            ((TextView) this.findViewById(R.id.rdtCase2)).setText(Utils.round(tab5));
-            LayoutUtils.trafficLight(this.findViewById(R.id.rdtCase2), tab5, null);
-        }
-        if (adaptersList.get(5) != null) {
-            tab7 = adaptersList.get(5).getScore();
-            ((TextView) this.findViewById(R.id.rdtCase3)).setText(Utils.round(tab7));
-            LayoutUtils.trafficLight(this.findViewById(R.id.rdtCase3), tab7, null);
+        Float avgClinical=0F;
+        Float avgRdt=0F;
+        Float avgOverall=0F;
+        for(ITabAdapter adapter:adaptersList){
+            updateViewInGeneralScores(adapter);
+            avgClinical+=valueForClinical(adapter);
+            avgRdt+=valueForRdt(adapter);
+            avgOverall+=valueForOverall(adapter);
         }
 
-        Float avgClinical = (tab2 + tab4 + tab6) / 3;
-        Float avgRdt = (tab3 + tab5 + tab7) / 3;
-        Float overall = (avgClinical + avgRdt + tab1 + tab8 + tab9) / 5;
+        avgClinical=avgClinical/3;
+        avgRdt=avgRdt/3;
+        avgOverall=(avgOverall+avgClinical+avgRdt)/5;
 
-        ((TextView) this.findViewById(R.id.clinicalAvg)).setText(Utils.round(avgClinical));
-        LayoutUtils.trafficLight(this.findViewById(R.id.clinicalAvg), avgClinical, null);
-        ((TextView) this.findViewById(R.id.rdtAvg)).setText(Utils.round(avgRdt));
-        LayoutUtils.trafficLight(this.findViewById(R.id.rdtAvg), avgRdt, null);
-        ((TextView) this.findViewById(R.id.totalScore)).setText(Utils.round(overall));
-        LayoutUtils.trafficLight(this.findViewById(R.id.totalScore), overall, null);
+        updateAvgInGeneralScores(R.id.clinicalAvg, avgClinical);
+        updateAvgInGeneralScores(R.id.rdtAvg, avgRdt);
+        updateAvgInGeneralScores(R.id.totalScore, avgOverall);
+    }
 
+    private void updateViewInGeneralScores(ITabAdapter adapter){
+
+        if(isNotAutoTabAdapterOrNull(adapter)){
+            return;
+        }
+
+        Float score=adapter.getScore();
+        if(score==null){
+            return;
+        }
+        Tab tab=((AutoTabAdapter)adapter).getTab();
+        int viewId=IDS_SCORES_IN_GENERAL_TAB[tab.getOrder_pos()];
+        if(viewId!=0) {
+            TextView textView=((TextView) this.findViewById(viewId));
+            textView.setText(Utils.round(score));
+            LayoutUtils.trafficLight(textView, score, null);
+        }
+    }
+
+    private Float valueForClinical(ITabAdapter adapter){
+        return valueForAvg(adapter,ORDER_TABS_AVG_CLINICAL);
+    }
+
+    private Float valueForRdt(ITabAdapter adapter){
+        return valueForAvg(adapter,ORDER_TABS_RDT);
+    }
+
+    private Float valueForOverall(ITabAdapter adapter){
+        return valueForAvg(adapter,ORDER_TABS_OVERALL);
     }
 
     /**
-     * Gets a reference to the progress view in order to stop it later
+     * Returns the score of the tab inside the given adapter if the tab is relevant to the metric according to given array of positions.
+     * It the tab is NOT relevant to that metric returns 0.
+     * @param adapter Adapter whose tab is evaluated.
+     * @param indexToConsider Arrays of positions to consider
+     * @return The score of the tab or 0 if it doesnt apply for the metric.
      */
-    private void createProgress(){
-        progressBar=(ProgressBar)findViewById(R.id.survey_progress);
+    private Float valueForAvg(ITabAdapter adapter, int[] indexToConsider){
+        if(isNotAutoTabAdapterOrNull(adapter)){
+            return 0F;
+        }
+
+        Float score=adapter.getScore();
+        if(score==null){
+            return 0F;
+        }
+        Tab tab=((AutoTabAdapter)adapter).getTab();
+        if(contains(indexToConsider,tab.getOrder_pos())){
+            return score;
+        }
+        return 0F;
+    }
+
+    private boolean contains(int[] array, int value){
+        boolean found=false;
+        for (int i=0;i<array.length;i++){
+            if(array[i]==value){
+                found=true;
+                break;
+            }
+        }
+        return found;
+    }
+
+    private boolean isNotAutoTabAdapterOrNull(ITabAdapter adapter){
+        return adapter==null || !(adapter instanceof AutoTabAdapter);
+    }
+
+    private void updateAvgInGeneralScores(int viewId, Float score){
+        ((TextView) this.findViewById(viewId)).setText(Utils.round(score));
+        LayoutUtils.trafficLight(this.findViewById(viewId), score, null);
     }
 
     /**
@@ -356,13 +431,15 @@ public class SurveyActivity extends BaseActivity{
             List<CompositeScore> compositeScores=(List<CompositeScore>)Session.popServiceValue(SurveyService.PREPARE_SURVEY_ACTION_COMPOSITE_SCORES);
             List<Tab> tabs=(List<Tab>)Session.popServiceValue(SurveyService.PREPARE_SURVEY_ACTION_TABS);
 
-//            buildAdapters(tabs,compositeScores);
             tabAdaptersCache.reloadAdapters(tabs,compositeScores);
             reloadTabs(tabs);
             stopProgress();
         }
     }
 
+    /**
+     * Inner class that resolves each Tab as it is required (lazy manner) instead of loading all of them at once.
+     */
     private class TabAdaptersCache{
 
         /**
@@ -393,6 +470,12 @@ public class SurveyActivity extends BaseActivity{
             return adapter;
         }
 
+        /**
+         * Resets the state of the cache.
+         * Called form the receiver once data is ready.
+         * @param tabs
+         * @param compositeScores
+         */
         public void reloadAdapters(List<Tab> tabs, List<CompositeScore> compositeScores){
             Tab firstTab=tabs.get(0);
             this.adapters.clear();
@@ -400,19 +483,35 @@ public class SurveyActivity extends BaseActivity{
             this.compositeScores=compositeScores;
         }
 
+        /**
+         * Returns the list of adapters.
+         * Puts every adapter (for every tab) into the cache if is not already there.
+         * @return
+         */
         public List<ITabAdapter> list(){
             //The cache only has loaded Tabs
             if (this.adapters.size() < tabsList.size()){
-                for(Tab tab:tabsList){
-                    //Ensure every tab in built and cache
-                    findAdapter(tab);
-                }
+                cacheAllTabs();
             }
             //Return full list of adapters
             return new ArrayList<ITabAdapter>(this.adapters.values());
 
         }
 
+        /**
+         * Puts every adapter (for every tab) into the cache if is not already there.
+         */
+        public void cacheAllTabs(){
+            for(Tab tab:tabsList){
+                findAdapter(tab);
+            }
+        }
+
+        /**
+         * Builds the right adapter for the given tab
+         * @param tab
+         * @return
+         */
         private ITabAdapter buildAdapter(Tab tab){
             if (tab.isCompositeScore())
                 return new CompositeScoreAdapter(this.compositeScores, SurveyActivity.this, R.layout.composite_score_tab, tab.getName());

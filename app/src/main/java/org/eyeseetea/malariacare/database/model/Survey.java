@@ -19,6 +19,7 @@
 
 package org.eyeseetea.malariacare.database.model;
 
+import com.google.android.gms.games.quest.Quest;
 import com.orm.SugarRecord;
 import com.orm.dsl.Ignore;
 import com.orm.query.Condition;
@@ -102,15 +103,7 @@ public class Survey extends SugarRecord<Survey> {
 
     public List<Integer> getAnsweredQuestionRatio(){
         if (_answeredQuestionRatio == null) {
-            Integer totalQuestions = 0;
-            for (Tab tab : this.getProgram().getTabs()) {
-                for (Header header : tab.getHeaders()) {
-                    for (Question question : header.getQuestions()) {
-                        if (question.getQuestion() == null)
-                            totalQuestions++;
-                    }
-                }
-            }
+            Integer totalQuestions= Question.countRequiredByProgram(this.getProgram());
 
             Integer answeredQuestions = 0;
             for (Value value : this.getValues()) {

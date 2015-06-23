@@ -11,6 +11,15 @@ import java.util.List;
 
 public class Question extends SugarRecord<Question> {
 
+    /**
+     * Sql query that counts required questions in a program (required for % stats)
+     */
+    private static final String LIST_REQUIRED_BY_PROGRAM ="select q.* from question q"+
+            " left join header h on q.header=h.id"+
+            " left join tab t on h.tab=t.id"+
+            " left join program p on t.program=p.id"+
+            " where q.question=0 and p.id=?";
+
     String code;
     String de_name;
     String short_name;
@@ -161,7 +170,7 @@ public class Question extends SugarRecord<Question> {
         if (this._relatives == null) {
 
             this._relatives = Question.findWithQuery(Question.class, "Select * from Question" +
-                    " where id in (Select relative from Question_Relation where master ="+this.getId()+")");
+                    " where id in (Select relative from Question_Relation where master =" + this.getId() + ")");
        }
         return this._relatives;
     }
@@ -205,6 +214,20 @@ public class Question extends SugarRecord<Question> {
             option = value.getOption();
 
         return option;
+    }
+
+    /**
+     * Counts the number of required questions (without a parent question).
+     * @param program
+     * @return
+     */
+    public static int countRequiredByProgram(Program program){
+        if(program==null || program.getId()==null){
+            return 0;
+        }
+
+        List<Question> questionsByProgram = Question.findWithQuery(Question.class, LIST_REQUIRED_BY_PROGRAM, program.getId().toString());
+        return questionsByProgram.size();
     }
 
     @Override

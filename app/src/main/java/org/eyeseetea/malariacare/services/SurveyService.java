@@ -107,6 +107,11 @@ public class SurveyService extends IntentService {
         //Select surveys from sql
         List<Survey> surveys = Survey.getAllUnsentSurveys();
 
+        //Load %completion in every survey (it takes a while so it can NOT be done in UI Thread)
+        for(Survey survey:surveys){
+            survey.getAnsweredQuestionRatio();
+        }
+
         //Since intents does NOT admit NON serializable as values we use Session instead
         Session.putServiceValue(ALL_UNSENT_SURVEYS_ACTION,surveys);
 
@@ -121,11 +126,6 @@ public class SurveyService extends IntentService {
     private void prepareSurveyInfo(){
         Log.d(TAG, "prepareSurveyInfo (Thread:" + Thread.currentThread().getId() + ")");
 
-        try {
-            Thread.sleep(2000);
-        }catch(Exception ex){
-
-        }
         Survey survey=Session.getSurvey();
         Program program=survey.getProgram();
 

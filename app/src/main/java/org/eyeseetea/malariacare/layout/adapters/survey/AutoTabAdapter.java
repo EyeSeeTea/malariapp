@@ -144,6 +144,10 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
         return new AutoTabAdapter(tab, context, idLayout);
     }
 
+    public Tab getTab(){
+        return this.tab;
+    }
+
     @Override
     public BaseAdapter getAdapter() {
         return this;
