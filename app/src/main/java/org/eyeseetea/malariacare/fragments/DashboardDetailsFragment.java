@@ -88,7 +88,6 @@ public class DashboardDetailsFragment extends ListFragment {
 
         Log.d(".DetailsFragment", "onCreate");
         registerSurveysReceiver();
-        getSurveysFromService();
     }
 
     @Override
@@ -109,6 +108,12 @@ public class DashboardDetailsFragment extends ListFragment {
         initAdapter();
         initListView();
 
+    }
+
+    @Override
+    public void onResume(){
+        getSurveysFromService();
+        super.onResume();
     }
 
     /**

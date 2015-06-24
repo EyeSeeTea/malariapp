@@ -22,10 +22,9 @@ package org.eyeseetea.malariacare.test;
 import android.app.Activity;
 import android.app.Instrumentation;
 import android.support.test.InstrumentationRegistry;
+import android.support.test.espresso.Espresso;
 import android.support.test.espresso.intent.rule.IntentsTestRule;
 import android.support.test.runner.AndroidJUnit4;
-import android.support.test.runner.lifecycle.ActivityLifecycleMonitorRegistry;
-import android.support.test.runner.lifecycle.Stage;
 import android.test.suitebuilder.annotation.LargeTest;
 
 import org.eyeseetea.malariacare.DashboardDetailsActivity;
@@ -34,21 +33,20 @@ import org.eyeseetea.malariacare.SurveyActivity;
 import org.eyeseetea.malariacare.database.model.Option;
 import org.eyeseetea.malariacare.database.model.Question;
 import org.eyeseetea.malariacare.database.model.Tab;
+import org.eyeseetea.malariacare.services.SurveyService;
+import org.eyeseetea.malariacare.test.utils.IntentServiceIdlingResource;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import java.util.Collection;
-
 import static android.support.test.espresso.Espresso.onData;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.Espresso.openActionBarOverflowOrOptionsMenu;
 import static android.support.test.espresso.Espresso.pressBack;
 import static android.support.test.espresso.action.ViewActions.click;
-import static android.support.test.espresso.action.ViewActions.swipeRight;
-import static android.support.test.espresso.assertion.ViewAssertions.doesNotExist;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withChild;
@@ -82,18 +80,20 @@ public class SurveyEspressoTest extends MalariaEspressoTest{
     }
 
     @Before
-    public void setup(){
+    public void registerIntentServiceIdlingResource(){
         super.setup();
+        Instrumentation instrumentation = InstrumentationRegistry.getInstrumentation();
+        idlingResource = new IntentServiceIdlingResource(instrumentation.getTargetContext(), SurveyService.class);
+        Espresso.registerIdlingResources(idlingResource);
+    }
+
+    @After
+    public void unregisterIntentServiceIdlingResource(){
+        Espresso.unregisterIdlingResources(idlingResource);
     }
 
     @Test
     public void form_views() {
-        //GIVEN
-        Activity activity = getActivityInstance();
-        cleanAll();
-        populateData(InstrumentationRegistry.getTargetContext().getAssets());
-        mockSessionSurvey(1, 0, 0);
-
         //THEN
         onView(withId(R.id.tabSpinner)).check(matches(isDisplayed()));
         onView(withText("General Info")).check(matches(isDisplayed()));
@@ -148,17 +148,11 @@ public class SurveyEspressoTest extends MalariaEspressoTest{
         whenTabSelected(11);
 
         //THEN
-        onView(withText("Services, materials and reporting")).check(matches(isDisplayed()));
+        onView(withText("Malaria reference materials")).check(matches(isDisplayed()));
     }
 
     @Test
     public void in_c1_rdt_score_some_points() {
-        //GIVEN
-        Activity activity = getActivityInstance();
-        cleanAll();
-        populateData(InstrumentationRegistry.getTargetContext().getAssets());
-        mockSessionSurvey(1, 0, 0);
-
         //WHEN: Select 'C1-RDT' tab
         whenTabSelected(3);
 
@@ -168,7 +162,7 @@ public class SurveyEspressoTest extends MalariaEspressoTest{
         }
 
         //THEN
-        onView(withId(R.id.score)).check(matches(withText("66")));
+        onView(withId(R.id.score)).check(matches(withText("66 % ")));
         onView(withId(R.id.qualitativeScore)).check(matches(withText(getActivityInstance().getString(R.string.fair))));
     }
 
@@ -192,16 +186,17 @@ public class SurveyEspressoTest extends MalariaEspressoTest{
     @Test
     public void radiobutton_textsize_changes(){
         //GIVEN
-        Activity activity = getActivityInstance();
-        cleanAll();
-        populateData(InstrumentationRegistry.getTargetContext().getAssets());
-        mockSessionSurvey(1, 1, 0);
+//        Activity activity = getActivityInstance();
+//        cleanAll();
+//        populateData(InstrumentationRegistry.getTargetContext().getAssets());
+//        mockSessionSurvey(1, 1, 0);
 
         //WHEN: Select Large fonts on Settings
+        Activity activity = getActivityInstance();
         whenFontSizeChange(activity, 3);
 
         //WHEN: Access a ICM survey (contains rabiobuttons)
-        WhenAssessmentSelected("Health Facility 0", "ICM");
+        whenAssessmentSelected("Health Facility 0", "ICM");
 
         //THEN: Check font size has properly changed
         onData(is(instanceOf(Question.class))).inAdapterView(withId(R.id.listView)).atPosition(0)
@@ -222,7 +217,7 @@ public class SurveyEspressoTest extends MalariaEspressoTest{
         whenFontSizeChange(activity, 3);
 
         //WHEN: Access a ICM survey (contains rabiobuttons)
-        WhenAssessmentSelected("Health Facility 0", "ICM");
+        whenAssessmentSelected("Health Facility 0", "ICM");
 
         //THEN: Check font size has properly changed
         onData(is(instanceOf(Question.class))).inAdapterView(withId(R.id.listView)).atPosition(1)
@@ -242,7 +237,7 @@ public class SurveyEspressoTest extends MalariaEspressoTest{
         whenFontSizeChange(activity, 3);
 
         //WHEN: Access a Clinical Case Management survey (contains edit fields)
-        WhenAssessmentSelected("Health Facility 0", "Clinical Case Management");
+        whenAssessmentSelected("Health Facility 0", "Clinical Case Management");
 
         //THEN: Check font size has properly changed
         onData(is(instanceOf(Question.class))).inAdapterView(withId(R.id.listView)).atPosition(1)
@@ -263,7 +258,7 @@ public class SurveyEspressoTest extends MalariaEspressoTest{
         onView(withText(activity.getString(android.R.string.ok))).perform(click()); // confirm exit
 
         //WHEN: Access a Clinical Case Management survey
-        WhenAssessmentSelected("Health Facility 0", "Clinical Case Management");
+        whenAssessmentSelected("Health Facility 0", "Clinical Case Management");
         whenTabSelected(1);
 
         //THEN: Check that num/dems are not yet being shown
@@ -273,35 +268,11 @@ public class SurveyEspressoTest extends MalariaEspressoTest{
         whenToggleShowHideNumDem(activity);
 
         //WHEN: Access a Clinical Case Management survey
-        WhenAssessmentSelected("Health Facility 0", "Clinical Case Management");
+        whenAssessmentSelected("Health Facility 0", "Clinical Case Management");
         whenTabSelected(1);
 
         //THEN: Check that num/dems are now being shown
         onView(withId(R.id.totalNum)).check(matches(isDisplayed()));
-    }
-
-    @Test
-    public void delete_survey_by_swipping(){
-        //GIVEN
-        Activity activity = getActivityInstance();
-        cleanAll();
-        populateData(InstrumentationRegistry.getTargetContext().getAssets());
-        mockSessionSurvey(1, 1, 0);
-
-        //WHEN: Access a ICM survey (contains rabiobuttons)
-        pressBack();
-        onView(withText(activity.getString(android.R.string.ok))).perform(click()); // confirm exit
-        WhenAssessmentSwipeAndOk("Health Facility 0", "ICM");
-
-        //THEN: Check font size has properly changed
-        checkAssessmentDoesntExist("Health Facility 0", "ICM");
-    }
-
-    private void checkAssessmentDoesntExist(String orgUnit, String program) {
-        onView(allOf(withId(R.id.assessment_row),
-                withChild(allOf(
-                        withChild(allOf(withId(R.id.facility), withText(orgUnit))),
-                        withChild(allOf(withId(R.id.survey_type), withText("- " + program))))))).check(doesNotExist());
     }
 
     /**
@@ -309,27 +280,12 @@ public class SurveyEspressoTest extends MalariaEspressoTest{
      * @param orgUnit orgUnit of the survey we want to access
      * @param program program of the survey we want to access
      */
-    private void WhenAssessmentSelected(String orgUnit, String program) {
+    private void whenAssessmentSelected(String orgUnit, String program) {
         onView(allOf(withId(R.id.assessment_row),
                 withChild(allOf(
                         withChild(allOf(withId(R.id.facility), withText(orgUnit))),
                         withChild(allOf(withId(R.id.survey_type), withText("- " + program)))))))
                 .perform(click());
-    }
-
-    /**
-     * From Dashboard delete survey
-     * @param orgUnit orgUnit of the survey we want to delete
-     * @param program program of the survey we want to delete
-     */
-    private void WhenAssessmentSwipeAndOk(String orgUnit, String program) {
-        onView(allOf(withId(R.id.assessment_row),
-                withChild(allOf(
-                        withChild(allOf(withId(R.id.facility), withText(orgUnit))),
-                        withChild(allOf(withId(R.id.survey_type), withText("- " + program)))))))
-                .perform(swipeRight());
-        // FIXME: It looks like sometimes this ok button is not being found, maybe it appears with a little delay and the check occurs before?
-        onView(withText(getActivityInstance().getString(android.R.string.ok))).perform(click()); // confirm delete
     }
 
     /**
@@ -385,19 +341,5 @@ public class SurveyEspressoTest extends MalariaEspressoTest{
         onData(is(instanceOf(Option.class))).atPosition(indexAnswer).perform(click());
     }
 
-    private Activity getActivityInstance(){
-        final Activity[] activity = new Activity[1];
-        Instrumentation instrumentation=InstrumentationRegistry.getInstrumentation();
-        instrumentation.waitForIdleSync();
-        instrumentation.runOnMainSync(new Runnable() {
-            public void run() {
-                Collection resumedActivities = ActivityLifecycleMonitorRegistry.getInstance().getActivitiesInStage(Stage.RESUMED);
-                if (resumedActivities.iterator().hasNext()) {
-                    activity[0] = (Activity) resumedActivities.iterator().next();
-                }
-            }
-        });
 
-        return activity[0];
-    }
 }
