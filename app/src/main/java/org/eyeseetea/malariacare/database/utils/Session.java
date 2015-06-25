@@ -24,6 +24,7 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
+import com.orm.SugarApp;
 import com.orm.query.Select;
 
 import org.eyeseetea.malariacare.R;
@@ -39,14 +40,68 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * An application scoped object that stores transversal information:
+ *  -Font details
+ *  -User
+ *  -Survey
+ *  -..
+ */
 public class Session {
 
+    /**
+     * The current selected survey
+     */
     private static Survey survey;
+    /**
+     * The current user
+     */
     private static User user;
     private static IDashboardAdapter adapter;
     private static String fontSize;
-    private static Map<String, Map<String, Float>> fontMap;
     private static Map<String,Object> serviceValues=new HashMap<>();
+    private static Map<String, Map<String, Float>> fontMap;
+
+    static{
+        Map<String, Float> xsmall = new HashMap<>();
+        Context ctx= SugarApp.getSugarContext();
+        xsmall.put(Constants.FONTS_XSMALL, ctx.getResources().getDimension(R.dimen.xsmall_xsmall_text_size));
+        xsmall.put(Constants.FONTS_SMALL, ctx.getResources().getDimension(R.dimen.xsmall_small_text_size));
+        xsmall.put(Constants.FONTS_MEDIUM, ctx.getResources().getDimension(R.dimen.xsmall_medium_text_size));
+        xsmall.put(Constants.FONTS_LARGE, ctx.getResources().getDimension(R.dimen.xsmall_large_text_size));
+        xsmall.put(Constants.FONTS_XLARGE, ctx.getResources().getDimension(R.dimen.xsmall_xlarge_text_size));
+        Map<String, Float> small = new HashMap<>();
+        small.put(Constants.FONTS_XSMALL, ctx.getResources().getDimension(R.dimen.small_xsmall_text_size));
+        small.put(Constants.FONTS_SMALL, ctx.getResources().getDimension(R.dimen.small_small_text_size));
+        small.put(Constants.FONTS_MEDIUM, ctx.getResources().getDimension(R.dimen.small_medium_text_size));
+        small.put(Constants.FONTS_LARGE, ctx.getResources().getDimension(R.dimen.small_large_text_size));
+        small.put(Constants.FONTS_XLARGE, ctx.getResources().getDimension(R.dimen.small_xlarge_text_size));
+        Map<String, Float> medium = new HashMap<>();
+        medium.put(Constants.FONTS_XSMALL, ctx.getResources().getDimension(R.dimen.medium_xsmall_text_size));
+        medium.put(Constants.FONTS_SMALL, ctx.getResources().getDimension(R.dimen.medium_small_text_size));
+        medium.put(Constants.FONTS_MEDIUM, ctx.getResources().getDimension(R.dimen.medium_medium_text_size));
+        medium.put(Constants.FONTS_LARGE, ctx.getResources().getDimension(R.dimen.medium_large_text_size));
+        medium.put(Constants.FONTS_XLARGE, ctx.getResources().getDimension(R.dimen.medium_xlarge_text_size));
+        Map<String, Float> large = new HashMap<>();
+        large.put(Constants.FONTS_XSMALL, ctx.getResources().getDimension(R.dimen.large_xsmall_text_size));
+        large.put(Constants.FONTS_SMALL, ctx.getResources().getDimension(R.dimen.large_small_text_size));
+        large.put(Constants.FONTS_MEDIUM, ctx.getResources().getDimension(R.dimen.large_medium_text_size));
+        large.put(Constants.FONTS_LARGE, ctx.getResources().getDimension(R.dimen.large_large_text_size));
+        large.put(Constants.FONTS_XLARGE, ctx.getResources().getDimension(R.dimen.large_xlarge_text_size));
+        Map<String, Float> xlarge = new HashMap<>();
+        xlarge.put(Constants.FONTS_XSMALL, ctx.getResources().getDimension(R.dimen.extra_xsmall_text_size));
+        xlarge.put(Constants.FONTS_SMALL, ctx.getResources().getDimension(R.dimen.extra_small_text_size));
+        xlarge.put(Constants.FONTS_MEDIUM, ctx.getResources().getDimension(R.dimen.extra_medium_text_size));
+        xlarge.put(Constants.FONTS_LARGE, ctx.getResources().getDimension(R.dimen.extra_large_text_size));
+        xlarge.put(Constants.FONTS_XLARGE, ctx.getResources().getDimension(R.dimen.extra_xlarge_text_size));
+        Session.fontMap = new HashMap<>();
+        Session.fontMap.put(Constants.FONTS_XSMALL, xsmall);
+        Session.fontMap.put(Constants.FONTS_SMALL, small);
+        Session.fontMap.put(Constants.FONTS_MEDIUM, medium);
+        Session.fontMap.put(Constants.FONTS_LARGE, large);
+        Session.fontMap.put(Constants.FONTS_XLARGE, xlarge);
+    }
+
 
 
     public static Survey getSurvey() {
@@ -83,64 +138,6 @@ public class Session {
 
     public static Map<String, Map<String, Float>> getFontMap() {
         return fontMap;
-    }
-
-    public static void setFontMap(Map<String, Map<String, Float>> fontMap) {
-        Session.fontMap = fontMap;
-    }
-
-    public static void initMap(Context context){
-        Map<String, Float> xsmall = new HashMap<>();
-        xsmall.put(Constants.FONTS_XSMALL, context.getResources().getDimension(R.dimen.xsmall_xsmall_text_size));
-        xsmall.put(Constants.FONTS_SMALL, context.getResources().getDimension(R.dimen.xsmall_small_text_size));
-        xsmall.put(Constants.FONTS_MEDIUM, context.getResources().getDimension(R.dimen.xsmall_medium_text_size));
-        xsmall.put(Constants.FONTS_LARGE, context.getResources().getDimension(R.dimen.xsmall_large_text_size));
-        xsmall.put(Constants.FONTS_XLARGE, context.getResources().getDimension(R.dimen.xsmall_xlarge_text_size));
-        Map<String, Float> small = new HashMap<>();
-        small.put(Constants.FONTS_XSMALL, context.getResources().getDimension(R.dimen.small_xsmall_text_size));
-        small.put(Constants.FONTS_SMALL, context.getResources().getDimension(R.dimen.small_small_text_size));
-        small.put(Constants.FONTS_MEDIUM, context.getResources().getDimension(R.dimen.small_medium_text_size));
-        small.put(Constants.FONTS_LARGE, context.getResources().getDimension(R.dimen.small_large_text_size));
-        small.put(Constants.FONTS_XLARGE, context.getResources().getDimension(R.dimen.small_xlarge_text_size));
-        Map<String, Float> medium = new HashMap<>();
-        medium.put(Constants.FONTS_XSMALL, context.getResources().getDimension(R.dimen.medium_xsmall_text_size));
-        medium.put(Constants.FONTS_SMALL, context.getResources().getDimension(R.dimen.medium_small_text_size));
-        medium.put(Constants.FONTS_MEDIUM, context.getResources().getDimension(R.dimen.medium_medium_text_size));
-        medium.put(Constants.FONTS_LARGE, context.getResources().getDimension(R.dimen.medium_large_text_size));
-        medium.put(Constants.FONTS_XLARGE, context.getResources().getDimension(R.dimen.medium_xlarge_text_size));
-        Map<String, Float> large = new HashMap<>();
-        large.put(Constants.FONTS_XSMALL, context.getResources().getDimension(R.dimen.large_xsmall_text_size));
-        large.put(Constants.FONTS_SMALL, context.getResources().getDimension(R.dimen.large_small_text_size));
-        large.put(Constants.FONTS_MEDIUM, context.getResources().getDimension(R.dimen.large_medium_text_size));
-        large.put(Constants.FONTS_LARGE, context.getResources().getDimension(R.dimen.large_large_text_size));
-        large.put(Constants.FONTS_XLARGE, context.getResources().getDimension(R.dimen.large_xlarge_text_size));
-        Map<String, Float> xlarge = new HashMap<>();
-        xlarge.put(Constants.FONTS_XSMALL, context.getResources().getDimension(R.dimen.extra_xsmall_text_size));
-        xlarge.put(Constants.FONTS_SMALL, context.getResources().getDimension(R.dimen.extra_small_text_size));
-        xlarge.put(Constants.FONTS_MEDIUM, context.getResources().getDimension(R.dimen.extra_medium_text_size));
-        xlarge.put(Constants.FONTS_LARGE, context.getResources().getDimension(R.dimen.extra_large_text_size));
-        xlarge.put(Constants.FONTS_XLARGE, context.getResources().getDimension(R.dimen.extra_xlarge_text_size));
-        Session.fontMap = new HashMap<>();
-        Session.fontMap.put(Constants.FONTS_XSMALL, xsmall);
-        Session.fontMap.put(Constants.FONTS_SMALL, small);
-        Session.fontMap.put(Constants.FONTS_MEDIUM, medium);
-        Session.fontMap.put(Constants.FONTS_LARGE, large);
-        Session.fontMap.put(Constants.FONTS_XLARGE, xlarge);
-    }
-
-    /**
-     * Put preferences in the Session class
-     * @param context Context in which preferences are set up
-     */
-    public static void setSessionPreferences(Context context){
-        // Update font size in case this could have been changed by the user
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-        if (sharedPreferences.getBoolean(context.getString(R.string.customize_fonts), false))
-            Session.setFontSize(sharedPreferences.getString(context.getString(R.string.font_sizes), Constants.FONTS_SYSTEM));
-        else Session.setFontSize(Constants.FONTS_SYSTEM);
-
-        Log.d(".BaseActivity", "Font size: " + sharedPreferences.getString(context.getString(R.string.font_sizes), Constants.FONTS_SYSTEM));
-        Log.d(".BaseActivity", "Show num/dems: " + Boolean.toString(sharedPreferences.getBoolean(context.getString(R.string.show_num_dems), false)));
     }
 
     /**

@@ -22,9 +22,15 @@ package org.eyeseetea.malariacare.services;
 import android.app.IntentService;
 import android.content.Intent;
 import android.support.v4.content.LocalBroadcastManager;
+import android.util.Log;
 
+import org.eyeseetea.malariacare.database.model.CompositeScore;
+import org.eyeseetea.malariacare.database.model.Program;
+import org.eyeseetea.malariacare.database.model.Score;
 import org.eyeseetea.malariacare.database.model.Survey;
+import org.eyeseetea.malariacare.database.model.Tab;
 import org.eyeseetea.malariacare.database.utils.Session;
+import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 
 import java.util.List;
 
@@ -40,9 +46,29 @@ public class SurveyService extends IntentService {
     public static final String SERVICE_METHOD="serviceMethod";
 
     /**
-     * The constant used to broadcast the result of the service
+     * Name of 'list' action
      */
     public static final String ALL_UNSENT_SURVEYS_ACTION ="org.eyeseetea.malariacare.services.SurveyService.ALL_UNSENT_SURVEYS_ACTION";
+
+    /**
+     * Name of 'show' action
+     */
+    public static final String PREPARE_SURVEY_ACTION ="org.eyeseetea.malariacare.services.SurveyService.PREPARE_SURVEY_ACTION";
+
+    /**
+     * Key of composite scores entry in shared session
+     */
+    public static final String PREPARE_SURVEY_ACTION_COMPOSITE_SCORES ="org.eyeseetea.malariacare.services.SurveyService.PREPARE_SURVEY_ACTION_COMPOSITE_SCORES";
+
+    /**
+     * Key of tabs entry in shared session
+     */
+    public static final String PREPARE_SURVEY_ACTION_TABS ="org.eyeseetea.malariacare.services.SurveyService.PREPARE_SURVEY_ACTION_TABS";
+
+    /**
+     * Tag for logging
+     */
+    public static final String TAG = ".SurveyService";
 
     /**
      * Constructor required due to a error message in AndroidManifest.xml if it is not present
@@ -63,7 +89,9 @@ public class SurveyService extends IntentService {
     protected void onHandleIntent(Intent intent) {
         //Take action to be done
         switch (intent.getStringExtra(SERVICE_METHOD)){
-            //TODO all additional background methods
+            case PREPARE_SURVEY_ACTION:
+                prepareSurveyInfo();
+                break;
             case ALL_UNSENT_SURVEYS_ACTION:
                 getAllUnsentSurveys();
                 break;
@@ -73,15 +101,48 @@ public class SurveyService extends IntentService {
     /**
      * Selects all pending surveys from database
      */
-    protected void getAllUnsentSurveys(){
+    private void getAllUnsentSurveys(){
+        Log.d(TAG,"getAllUnsentSurveys (Thread:"+Thread.currentThread().getId()+")");
+
         //Select surveys from sql
         List<Survey> surveys = Survey.getAllUnsentSurveys();
+
+        //Load %completion in every survey (it takes a while so it can NOT be done in UI Thread)
+        for(Survey survey:surveys){
+            survey.getAnsweredQuestionRatio();
+        }
 
         //Since intents does NOT admit NON serializable as values we use Session instead
         Session.putServiceValue(ALL_UNSENT_SURVEYS_ACTION,surveys);
 
         //Returning result to anyone listening
         Intent resultIntent= new Intent(ALL_UNSENT_SURVEYS_ACTION);
+        LocalBroadcastManager.getInstance(this).sendBroadcast(resultIntent);
+    }
+
+    /**
+     * Prepares required data to show a survey completely (tabs and composite scores).
+     */
+    private void prepareSurveyInfo(){
+        Log.d(TAG, "prepareSurveyInfo (Thread:" + Thread.currentThread().getId() + ")");
+
+        Survey survey=Session.getSurvey();
+        Program program=survey.getProgram();
+
+        //Get composite scores for current program & register them (scores)
+        List<CompositeScore> compositeScores = CompositeScore.listAllByProgram(program);
+        ScoreRegister.registerCompositeScores(compositeScores);
+
+        //Get tabs for current program & register them (scores)
+        List<Tab> tabs = Tab.getTabsBySession();
+        ScoreRegister.registerTabScores(tabs);
+
+        //Since intents does NOT admit NON serializable as values we use Session instead
+        Session.putServiceValue(PREPARE_SURVEY_ACTION_COMPOSITE_SCORES,compositeScores);
+        Session.putServiceValue(PREPARE_SURVEY_ACTION_TABS,tabs);
+
+        //Returning result to anyone listening
+        Intent resultIntent= new Intent(PREPARE_SURVEY_ACTION);
         LocalBroadcastManager.getInstance(this).sendBroadcast(resultIntent);
     }
 }

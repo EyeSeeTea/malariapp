@@ -5,9 +5,15 @@ import com.orm.dsl.Ignore;
 import com.orm.query.Condition;
 import com.orm.query.Select;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class CompositeScore extends SugarRecord<CompositeScore> {
+
+    private static final String LIST_BY_PROGRAM_SQL="select distinct cs.* from composite_score cs left join question q on q.composite_score=cs.id "+
+            "left join header h on q.header=h.id "+
+            "left join tab t on h.tab=t.id "+
+            "left join program p on t.program=p.id where p.id=?";
 
     String code;
     String label;
@@ -85,19 +91,21 @@ public class CompositeScore extends SugarRecord<CompositeScore> {
         return _questions;
     }
 
-    public boolean hasChildren(){
-        return !getCompositeScoreChildren().isEmpty();
+    /**
+     * Select all composite score that belongs to a program
+     * @param program Program whose composite scores are searched.
+     * @return
+     */
+    public static List<CompositeScore> listAllByProgram(Program program){
+        if(program==null || program.getId()==null){
+            return new ArrayList<>();
+        }
+        List<CompositeScore> compositeScoresByProgram = CompositeScore.findWithQuery(CompositeScore.class, LIST_BY_PROGRAM_SQL, program.getId().toString());
+        return compositeScoresByProgram;
     }
 
-    // Returns a single question for a composite score
-    public Question getSingleQuestionIncludingChildren(){
-        if (this.getQuestions().size() > 0)
-            return this.getQuestions().get(0);
-        else
-            for (CompositeScore cScore : this.getCompositeScoreChildren())
-                return cScore.getSingleQuestionIncludingChildren();
-
-        return null;
+    public boolean hasChildren(){
+        return !getCompositeScoreChildren().isEmpty();
     }
 
     @Override

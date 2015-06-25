@@ -41,6 +41,7 @@ import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.SurveyActivity;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.utils.Session;
+import org.eyeseetea.malariacare.layout.adapters.dashboard.AssessmentAdapter;
 import org.eyeseetea.malariacare.layout.adapters.dashboard.IDashboardAdapter;
 import org.eyeseetea.malariacare.layout.listeners.SwipeDismissListViewTouchListener;
 import org.eyeseetea.malariacare.services.SurveyService;
@@ -52,6 +53,8 @@ import java.util.List;
  * A placeholder fragment containing a simple view.
  */
 public class DashboardDetailsFragment extends ListFragment {
+
+
 
     private SurveyReceiver surveyReceiver;
     private List<Survey> surveys;
@@ -103,10 +106,24 @@ public class DashboardDetailsFragment extends ListFragment {
         super.onActivityCreated(savedInstanceState);
 
         Log.d(".DetailsFragment", "onActivityCreated");
-        IDashboardAdapter adapterE = Session.getAdapter().newInstance(this.surveys, getActivity());
-        this.adapter = adapterE;
+        initAdapter();
         initListView();
 
+    }
+
+    /**
+     * Inits adapter.
+     * Most of times is just an AssessmentAdapter.
+     * In a version with several adapters in dashboard (like in 'mock' branch) a new one like the one in session is created.
+     */
+    private void initAdapter(){
+        IDashboardAdapter adapterInSession=Session.getAdapter();
+        if(adapterInSession==null){
+            adapterInSession=new AssessmentAdapter(this.surveys,getActivity());
+        }else{
+            adapterInSession=adapterInSession.newInstance(this.surveys,getActivity());
+        }
+        this.adapter=adapterInSession;
     }
 
     @Override
@@ -246,7 +263,7 @@ public class DashboardDetailsFragment extends ListFragment {
     }
 
     public void reloadSurveys(List<Survey> newListSurveys){
-        Log.d(".DetailsFragment", "reloadSurveys(" + newListSurveys.size() + ")");
+        Log.d(".DetailsFragment", "reloadSurveys (Thread: "+Thread.currentThread().getId()+"): " + newListSurveys.size());
         this.surveys.clear();
         this.surveys.addAll(newListSurveys);
         this.adapter.notifyDataSetChanged();

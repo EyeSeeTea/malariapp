@@ -19,6 +19,8 @@
 
 package org.eyeseetea.malariacare.layout.score;
 
+import android.util.Log;
+
 import org.eyeseetea.malariacare.database.model.CompositeScore;
 import org.eyeseetea.malariacare.database.model.Question;
 import org.eyeseetea.malariacare.database.model.Tab;
@@ -29,9 +31,24 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Utility class for storing and dealing with survey scores.
+ */
 public class ScoreRegister {
 
+    /**
+     * Tag for logging
+     */
+    private static final String TAG=".ScoreRegister";
+
+    /**
+     * Map of scores for each compositescore
+     */
     private static final Map<CompositeScore, CompositeNumDenRecord> compositeScoreRegister = new HashMap<CompositeScore, CompositeNumDenRecord>();
+
+    /**
+     * Map of scores for each tab
+     */
     private static final Map<Tab, GeneralNumDenRecord> generalScoreRegister = new HashMap<Tab, GeneralNumDenRecord>();
 
     public static void addRecord(Question question, Float num, Float den){
@@ -76,11 +93,35 @@ public class ScoreRegister {
         return generalScoreRegister.get(tab).calculateTotal();
     }
 
-    public static void registerScore(CompositeScore compositeScore){
-        compositeScoreRegister.put(compositeScore, new CompositeNumDenRecord());
+    /**
+     * Resets compositescores and initializes a new set of them
+     * @param compositeScores
+     */
+    public static void registerCompositeScores(List<CompositeScore> compositeScores){
+        compositeScoreRegister.clear();
+        for(CompositeScore compositeScore:compositeScores){
+            Log.i(TAG, "Register composite score: " + compositeScore.getCode());
+            compositeScoreRegister.put(compositeScore, new CompositeNumDenRecord());
+        }
     }
 
-    public static void registerScore(Tab tab){
-        generalScoreRegister.put(tab, new GeneralNumDenRecord());
+    /**
+     * Resets generalScores and initializes a new set ot them
+     * @param tabs
+     */
+    public static void registerTabScores(List<Tab> tabs){
+        generalScoreRegister.clear();
+        for(Tab tab:tabs){
+            Log.i(TAG, "Register tab score: " + tab.getName());
+            generalScoreRegister.put(tab, new GeneralNumDenRecord());
+        }
     }
+
+//    public static void registerScore(CompositeScore compositeScore){
+//        compositeScoreRegister.put(compositeScore, new CompositeNumDenRecord());
+//    }
+
+//    public static void registerScore(Tab tab){
+//        generalScoreRegister.put(tab, new GeneralNumDenRecord());
+//    }
 }
