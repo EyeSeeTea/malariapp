@@ -1,14 +1,14 @@
 /*
  * Copyright (c) 2015.
  *
- * This file is part of Facility QA Tool App.
+ * This file is part of Health Network QIS App.
  *
- *  Facility QA Tool App is free software: you can redistribute it and/or modify
+ *  Health Network QIS App is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
  *  the Free Software Foundation, either version 3 of the License, or
  *  (at your option) any later version.
  *
- *  Facility QA Tool App is distributed in the hope that it will be useful,
+ *  Health Network QIS App is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *  GNU General Public License for more details.
@@ -20,51 +20,70 @@
 package org.eyeseetea.malariacare.database.utils;
 
 import android.content.Context;
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
-import android.util.Log;
 
 import com.orm.SugarApp;
-import com.orm.query.Select;
 
 import org.eyeseetea.malariacare.R;
-import org.eyeseetea.malariacare.database.model.OrgUnit;
-import org.eyeseetea.malariacare.database.model.Program;
-import org.eyeseetea.malariacare.database.model.Survey;
-import org.eyeseetea.malariacare.database.model.User;
-import org.eyeseetea.malariacare.layout.adapters.dashboard.IDashboardAdapter;
 import org.eyeseetea.malariacare.utils.Constants;
 
-import java.io.Serializable;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
- * An application scoped object that stores transversal information:
- *  -Font details
- *  -User
- *  -Survey
- *  -..
+ * Singleton that holds info related to preferences
+ * Created by arrizabalaga on 26/06/15.
  */
-public class Session {
-
-    private final static String TAG=".Session";
+public class PreferencesState {
 
     /**
-     * The current selected survey
+     * Singleton reference
      */
-    private static Survey survey;
-    /**
-     * The current user
-     */
-    private static User user;
-    private static IDashboardAdapter adapter;
-    private static String fontSize;
-    private static Map<String,Object> serviceValues=new HashMap<>();
-    private static Map<String, Map<String, Float>> fontMap;
+    private PreferencesState instance;
 
-    static{
+    /**
+     * Selected scale, one between [xsmall,small,medium,large,xlarge,system
+     */
+    private String scale;
+
+    /**
+     * Flag that determines if numerator/denominator are shown in scores.
+     */
+    private boolean showNumDen;
+
+    /**
+     * Map that holds the relationship between a scale and a set of dimensions
+     */
+    private Map<String, Map<String, Float>> scaleDimensionsMap;
+
+    private PreferencesState(){
+        scale= initScale();
+        showNumDen=initShowNumDen();
+        scaleDimensionsMap=initScaleDimensionsMap();
+    }
+
+    /**
+     * Inits scale according to preferences
+     * @return
+     */
+    private String initScale(){
+        //TODO
+        return Constants.FONTS_SYSTEM;
+    }
+
+    /**
+     * Inits flag according to preferences
+     * @return
+     */
+    private boolean initShowNumDen(){
+        //TODO
+        return false;
+    }
+
+    /**
+     * Inits maps of dimensions
+     * @return
+     */
+    private Map<String, Map<String, Float>> initScaleDimensionsMap(){
         Map<String, Float> xsmall = new HashMap<>();
         Context ctx= SugarApp.getSugarContext();
         xsmall.put(Constants.FONTS_XSMALL, ctx.getResources().getDimension(R.dimen.xsmall_xsmall_text_size));
@@ -96,93 +115,36 @@ public class Session {
         xlarge.put(Constants.FONTS_MEDIUM, ctx.getResources().getDimension(R.dimen.extra_medium_text_size));
         xlarge.put(Constants.FONTS_LARGE, ctx.getResources().getDimension(R.dimen.extra_large_text_size));
         xlarge.put(Constants.FONTS_XLARGE, ctx.getResources().getDimension(R.dimen.extra_xlarge_text_size));
-        Session.fontMap = new HashMap<>();
-        Session.fontMap.put(Constants.FONTS_XSMALL, xsmall);
-        Session.fontMap.put(Constants.FONTS_SMALL, small);
-        Session.fontMap.put(Constants.FONTS_MEDIUM, medium);
-        Session.fontMap.put(Constants.FONTS_LARGE, large);
-        Session.fontMap.put(Constants.FONTS_XLARGE, xlarge);
+
+        Map scaleDimensionsMap = new HashMap<>();
+        scaleDimensionsMap.put(Constants.FONTS_XSMALL, xsmall);
+        scaleDimensionsMap.put(Constants.FONTS_SMALL, small);
+        scaleDimensionsMap.put(Constants.FONTS_MEDIUM, medium);
+        scaleDimensionsMap.put(Constants.FONTS_LARGE, large);
+        scaleDimensionsMap.put(Constants.FONTS_XLARGE, xlarge);
+        return scaleDimensionsMap;
     }
 
-
-
-    public static Survey getSurvey() {
-        return survey;
-    }
-
-    public static void setSurvey(Survey survey) {
-        Session.survey = survey;
-    }
-
-    public static User getUser() {
-        return user;
-    }
-
-    public static void setUser(User user) {
-        Session.user = user;
-    }
-
-    public static IDashboardAdapter getAdapter() {
-        return adapter;
-    }
-
-    public static void setAdapter(IDashboardAdapter adapter) {
-        Session.adapter = adapter;
-    }
-
-    public static String getFontSize() {
-        return fontSize;
-    }
-
-    public static void setFontSize(String fontSize) {
-        Session.fontSize = fontSize;
-    }
-
-    public static Map<String, Map<String, Float>> getFontMap() {
-        return fontMap;
-    }
-
-    /**
-     * Closes the current session when the user logs out
-     */
-    public static void logout(){
-        List<Survey> surveys = Survey.getAllUnsentSurveys();
-        for (Survey survey : surveys) {
-            survey.delete();
+    public PreferencesState getInstance(){
+        if(instance==null){
+            instance=new PreferencesState();
         }
-        Session.getUser().delete();
-        Session.setUser(null);
-        Session.setSurvey(null);
-        Session.setAdapter(null);
-        Session.serviceValues.clear();
+        return instance;
     }
 
-    /**
-     * Puts a pair key/value into a shared map.
-     * Used to share values that are not serializable and thus cannot be put into an intent (domains and so).
-     * @param key
-     * @param value
-     */
-    public static void putServiceValue(String key, Object value){
-        Log.i(TAG,"putServiceValue("+key+", "+value.toString()+")");
-        serviceValues.put(key,value);
+    public String getScale() {
+        return scale;
     }
 
-    /**
-     * Pops the value of the given key out of the map.
-     * @param key
-     * @return
-     */
-    public static Object popServiceValue(String key){
-        return serviceValues.remove(key);
+    public void setScale(String scale) {
+        this.scale = scale;
     }
 
-    /**
-     * Clears the service values in memory.
-     * Used for clean testing.
-     */
-    public static void clearServiceValues(){
-        serviceValues.clear();
+    public boolean isShowNumDen() {
+        return showNumDen;
     }
 
+    public void setShowNumDen(boolean showNumDen) {
+        this.showNumDen = showNumDen;
+    }
 }

@@ -55,6 +55,10 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
      */
     private static final boolean ALWAYS_SIMPLE_PREFS = false;
 
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
+
 
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
@@ -224,10 +228,23 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
 
     @Override
     public void onBackPressed() {
-        // FIXME: find a way for comming back to the same activity from which we finishAndGo to settings, maybe using putExtra when going to settings
-        Intent intent = NavUtils.getParentActivityIntent(this);
-        intent.putExtra("activity", "settings");
-        NavUtils.navigateUpTo(this, intent);
+        Class callerActivityClass=getCallerActivity();
+        Intent returnIntent=new Intent(this,callerActivityClass);
+        startActivity(returnIntent);
+    }
+
+    private Class getCallerActivity(){
+        //FIXME Not working as it should the intent param is always null
+        Intent creationIntent=getIntent();
+        if(creationIntent==null){
+            return DashboardDetailsActivity.class;
+        }
+        Class callerActivity=(Class)creationIntent.getSerializableExtra(BaseActivity.SETTINGS_CALLER_ACTIVITY);
+        if(callerActivity==null){
+            return DashboardDetailsActivity.class;
+        }
+
+        return callerActivity;
     }
 
 }

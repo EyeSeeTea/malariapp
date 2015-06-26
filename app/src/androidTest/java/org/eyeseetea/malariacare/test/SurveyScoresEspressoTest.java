@@ -23,21 +23,26 @@ import android.app.Activity;
 import android.app.Instrumentation;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.espresso.Espresso;
+import android.support.test.espresso.action.ViewActions;
 import android.support.test.espresso.intent.rule.IntentsTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.test.suitebuilder.annotation.LargeTest;
+import android.util.Log;
 
 import org.eyeseetea.malariacare.DashboardDetailsActivity;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.SurveyActivity;
 import org.eyeseetea.malariacare.database.model.Option;
 import org.eyeseetea.malariacare.database.model.Question;
+import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.model.Tab;
+import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.services.SurveyService;
 import org.eyeseetea.malariacare.test.utils.IntentServiceIdlingResource;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -63,11 +68,13 @@ import static org.hamcrest.Matchers.not;
 
 
 /**
- *
+ * Espresso tests for the survey that contains scores, compositeScores
  */
 @RunWith(AndroidJUnit4.class)
 @LargeTest
-public class SurveyEspressoTest extends MalariaEspressoTest{
+public class SurveyScoresEspressoTest extends MalariaEspressoTest{
+
+    private static String TAG=".SurveyScoresEspressoTest";
 
     @Rule
     public IntentsTestRule<SurveyActivity> mActivityRule = new IntentsTestRule<>(
@@ -76,11 +83,12 @@ public class SurveyEspressoTest extends MalariaEspressoTest{
     @BeforeClass
     public static void init(){
         populateData(InstrumentationRegistry.getTargetContext().getAssets());
-        mockSessionSurvey(2, 0);
+        mockSessionSurvey(1,0,0);//1 Clinical Case Management, select this one
     }
 
     @Before
     public void registerIntentServiceIdlingResource(){
+        Log.i(TAG,"---BEFORE---");
         super.setup();
         Instrumentation instrumentation = InstrumentationRegistry.getInstrumentation();
         idlingResource = new IntentServiceIdlingResource(instrumentation.getTargetContext(), SurveyService.class);
@@ -89,18 +97,24 @@ public class SurveyEspressoTest extends MalariaEspressoTest{
 
     @After
     public void unregisterIntentServiceIdlingResource(){
+        Log.i(TAG,"---AFTER---");
         Espresso.unregisterIdlingResources(idlingResource);
+        unregisterSurveyReceiver();
     }
 
     @Test
+    @Ignore
     public void form_views() {
+        Log.i(TAG,"------form_views------");
         //THEN
         onView(withId(R.id.tabSpinner)).check(matches(isDisplayed()));
         onView(withText("General Info")).check(matches(isDisplayed()));
     }
 
     @Test
+    @Ignore
     public void back_shows_dialog(){
+        Log.i(TAG,"------back_shows_dialog------");
         //GIVEN
         pressBack();
 
@@ -110,7 +124,9 @@ public class SurveyEspressoTest extends MalariaEspressoTest{
     }
 
     @Test
+    @Ignore
     public void back_yes_intent(){
+        Log.i(TAG,"------back_yes_intent------");
         //GIVEN
         pressBack();
 
@@ -122,7 +138,9 @@ public class SurveyEspressoTest extends MalariaEspressoTest{
     }
 
     @Test
+    @Ignore
     public void change_to_scored_tab(){
+        Log.i(TAG,"------change_to_scored_tab------");
         //WHEN: Select 'Profile' tab
         whenTabSelected(1);
 
@@ -132,7 +150,9 @@ public class SurveyEspressoTest extends MalariaEspressoTest{
     }
 
     @Test
+    @Ignore
     public void change_to_score(){
+        Log.i(TAG,"------change_to_score------");
         //WHEN: Select 'Score' tab
         whenTabSelected(10);
 
@@ -143,7 +163,9 @@ public class SurveyEspressoTest extends MalariaEspressoTest{
     }
 
     @Test
+    @Ignore
     public void change_to_composite_score(){
+        Log.i(TAG,"------change_to_composite_score------");
         //WHEN: Select 'Composite Score' tab
         whenTabSelected(11);
 
@@ -152,7 +174,9 @@ public class SurveyEspressoTest extends MalariaEspressoTest{
     }
 
     @Test
+    @Ignore
     public void in_c1_rdt_score_some_points() {
+        Log.i(TAG,"------in_c1_rdt_score_some_points------");
         //WHEN: Select 'C1-RDT' tab
         whenTabSelected(3);
 
@@ -167,7 +191,9 @@ public class SurveyEspressoTest extends MalariaEspressoTest{
     }
 
     @Test
+    @Ignore
     public void global_scores_are_calculated(){
+        Log.i(TAG,"------global_scores_are_calculated------");
         //WHEN: Select 'C1-RDT' tab | Some answers 'Yes'
         whenTabSelected(3);
 
@@ -184,59 +210,15 @@ public class SurveyEspressoTest extends MalariaEspressoTest{
     }
 
     @Test
-    public void radiobutton_textsize_changes(){
-        //GIVEN
-//        Activity activity = getActivityInstance();
-//        cleanAll();
-//        populateData(InstrumentationRegistry.getTargetContext().getAssets());
-//        mockSessionSurvey(1, 1, 0);
-
-        //WHEN: Select Large fonts on Settings
-        Activity activity = getActivityInstance();
-        whenFontSizeChange(activity, 3);
-
-        //WHEN: Access a ICM survey (contains rabiobuttons)
-        whenAssessmentSelected("Health Facility 0", "ICM");
-
-        //THEN: Check font size has properly changed
-        onData(is(instanceOf(Question.class))).inAdapterView(withId(R.id.listView)).atPosition(0)
-                .onChildView(withId(R.id.answer))
-                .onChildView(withText(activity.getString(R.string.yes)))
-                .check(matches(hasRadioButtonScale(activity.getString(R.string.font_size_level3))));
-    }
-
-    @Test
-    public void textcard_textsize_changes(){
+    public void textsize_editcard_changes(){
+        Log.i(TAG,"------editcard_textsize_changes------");
         //GIVEN
         Activity activity = getActivityInstance();
-        cleanAll();
-        populateData(InstrumentationRegistry.getTargetContext().getAssets());
-        mockSessionSurvey(1, 1, 0);
 
         //WHEN: Select Large fonts on Settings
         whenFontSizeChange(activity, 3);
 
-        //WHEN: Access a ICM survey (contains rabiobuttons)
-        whenAssessmentSelected("Health Facility 0", "ICM");
-
-        //THEN: Check font size has properly changed
-        onData(is(instanceOf(Question.class))).inAdapterView(withId(R.id.listView)).atPosition(1)
-                .onChildView(withId(R.id.statement))
-                .check(matches(hasTextCardScale(activity.getString(R.string.font_size_level3))));
-    }
-
-    @Test
-    public void editcard_textsize_changes(){
-        //GIVEN
-        Activity activity = getActivityInstance();
-        cleanAll();
-        populateData(InstrumentationRegistry.getTargetContext().getAssets());
-        mockSessionSurvey(1, 0, 0);
-
-        //WHEN: Select Large fonts on Settings
-        whenFontSizeChange(activity, 3);
-
-        //WHEN: Access a Clinical Case Management survey (contains edit fields)
+        //WHEN: Select survey again from dashboard
         whenAssessmentSelected("Health Facility 0", "Clinical Case Management");
 
         //THEN: Check font size has properly changed
@@ -247,18 +229,9 @@ public class SurveyEspressoTest extends MalariaEspressoTest{
 
     @Test
     public void num_dem_show_hide(){
+        Log.i(TAG,"------num_dem_show_hide------");
         //GIVEN
         Activity activity = getActivityInstance();
-        cleanAll();
-        populateData(InstrumentationRegistry.getTargetContext().getAssets());
-        mockSessionSurvey(1, 0, 0);
-
-        //WHEN: We are in Dashboard
-        pressBack();
-        onView(withText(activity.getString(android.R.string.ok))).perform(click()); // confirm exit
-
-        //WHEN: Access a Clinical Case Management survey
-        whenAssessmentSelected("Health Facility 0", "Clinical Case Management");
         whenTabSelected(1);
 
         //THEN: Check that num/dems are not yet being shown
@@ -300,8 +273,8 @@ public class SurveyEspressoTest extends MalariaEspressoTest{
         onView(withText(activity.getString(R.string.settings_list_font_sizes))).perform(click());
         onView(withText((activity.getResources().getStringArray(R.array.settings_array_titles_font_sizes))[num])).perform(click());
         pressBack(); // Exit settings
-        pressBack(); // Exit survey
-        onView(withText(activity.getString(android.R.string.ok))).perform(click()); // confirm exit
+//        pressBack(); // exit survey
+//        onView(withText(activity.getString(android.R.string.ok))).perform(click()); // confirm exit
     }
 
     /**
@@ -339,6 +312,15 @@ public class SurveyEspressoTest extends MalariaEspressoTest{
                 .perform(click());
         int indexAnswer=answer?1:2;
         onData(is(instanceOf(Option.class))).atPosition(indexAnswer).perform(click());
+    }
+
+    private void unregisterSurveyReceiver(){
+        try{
+            SurveyActivity surveyActivity=(SurveyActivity)getActivityInstance();
+            surveyActivity.unregisterReceiver();
+        }catch(Exception ex){
+            Log.e(TAG,"unregisterSurveyReceiver(): "+ex.getMessage());
+        }
     }
 
 

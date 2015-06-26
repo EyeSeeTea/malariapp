@@ -140,9 +140,11 @@ public class MalariaEspressoTest {
         }
     }
 
-    public static void mockSessionSurvey(int numSurvey, int numProgram, int select){
+    public static Survey mockSessionSurvey(int numSurvey, int numProgram, int select){
         List<Survey> surveys=mockSurveys(numSurvey, numProgram);
-        Session.setSurvey(surveys.get(select));
+        Survey survey=surveys.get(select);
+        Session.setSurvey(survey);
+        return survey;
     }
 
     public static void mockSessionSurvey(int num, int select){

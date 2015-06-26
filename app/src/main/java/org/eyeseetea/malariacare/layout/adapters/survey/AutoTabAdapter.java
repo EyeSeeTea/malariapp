@@ -180,7 +180,7 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
         scoreHolder.qualitativeScore = (TextView) ((Activity) context).findViewById(R.id.qualitativeScore);
         RelativeLayout space = (RelativeLayout) (((Activity) context).findViewById(R.id.space));
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this.context);
-        if (sharedPreferences.getBoolean(this.context.getString(R.string.show_num_dems), false)) {
+        if (sharedPreferences.getBoolean(Constants.PREFERENCE_SHOW_NUM_DEN, false)) {
             scoreHolder.totalDenum.setVisibility(View.VISIBLE);
             scoreHolder.totalNum.setVisibility(View.VISIBLE);
             (((Activity) context).findViewById(R.id.accumulatedText)).setVisibility(View.VISIBLE);
@@ -654,7 +654,7 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
      */
     private void configureViewByPreference(ViewHolder viewHolder) {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this.context);
-        if (sharedPreferences.getBoolean(this.context.getString(R.string.show_num_dems), false)) {
+        if (sharedPreferences.getBoolean(Constants.PREFERENCE_SHOW_NUM_DEN, false)) {
             viewHolder.num.setVisibility(View.VISIBLE);
             viewHolder.denum.setVisibility(View.VISIBLE);
             ((RelativeLayout) viewHolder.statement.getParent()).setLayoutParams(new LinearLayout.LayoutParams(0, RelativeLayout.LayoutParams.WRAP_CONTENT, 0.5f));

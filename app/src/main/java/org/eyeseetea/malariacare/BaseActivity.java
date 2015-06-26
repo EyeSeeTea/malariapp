@@ -43,6 +43,11 @@ import java.io.InputStream;
 
 public abstract class BaseActivity extends ActionBarActivity {
 
+    /**
+     * Extra param to annotate the activity to return after settings
+     */
+    public static final String SETTINGS_CALLER_ACTIVITY = "SETTINGS_CALLER_ACTIVITY";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
@@ -68,14 +73,14 @@ public abstract class BaseActivity extends ActionBarActivity {
     private void updateFontsByPreferences(){
         // Update font size in case this could have been changed by the user
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        if (sharedPreferences.getBoolean(this.getString(R.string.customize_fonts), false)) {
-            Session.setFontSize(sharedPreferences.getString(this.getString(R.string.font_sizes), Constants.FONTS_SYSTEM));
+        if (sharedPreferences.getBoolean(Constants.PREFERENCE_CUSTOMIZE_FONTS, false)) {
+            Session.setFontSize(sharedPreferences.getString(Constants.PREFERENCE_FONT_SIZES, Constants.FONTS_SYSTEM));
         }else{
             Session.setFontSize(Constants.FONTS_SYSTEM);
         }
 
-        debugMessage("Font size: " + sharedPreferences.getString(this.getString(R.string.font_sizes), Constants.FONTS_SYSTEM));
-        debugMessage("Show num/dems: " + Boolean.toString(sharedPreferences.getBoolean(this.getString(R.string.show_num_dems), false)));
+        debugMessage("Font size: " + Session.getFontSize());
+        debugMessage("Show num/dems: " + Boolean.toString(sharedPreferences.getBoolean(Constants.PREFERENCE_SHOW_NUM_DEN, false)));
     }
 
     @Override
@@ -146,6 +151,8 @@ public abstract class BaseActivity extends ActionBarActivity {
     }
 
     protected void goSettings(){
+        Intent intentSettings=new Intent(this,SettingsActivity.class);
+        intentSettings.putExtra(SETTINGS_CALLER_ACTIVITY,this.getClass());
         startActivity(new Intent(this, SettingsActivity.class));
     }
 
