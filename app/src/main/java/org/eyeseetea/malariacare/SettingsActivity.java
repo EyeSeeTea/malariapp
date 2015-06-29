@@ -33,6 +33,9 @@ import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.support.v4.app.NavUtils;
 
+import org.eyeseetea.malariacare.database.utils.PreferencesState;
+import org.eyeseetea.malariacare.utils.Constants;
+
 import java.util.List;
 
 /**
@@ -86,8 +89,8 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
         // Bind the summaries of EditText/List/Dialog/Ringtone preferences to
         // their values. When their values change, their summaries are updated
         // to reflect the new value, per the Android Design guidelines.
-        bindPreferenceSummaryToValue(findPreference("font_sizes"));
-        bindPreferenceSummaryToValue(findPreference("dhis_url"));
+        bindPreferenceSummaryToValue(findPreference(Constants.PREFERENCE_FONT_SIZES));
+        bindPreferenceSummaryToValue(findPreference(Constants.PREFERENCE_DHIS_URL));
     }
 
     /**
@@ -224,6 +227,9 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
         super.onResume();
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         sharedPreferences.unregisterOnSharedPreferenceChangeListener(this);
+
+        //Reload changes into PreferencesState
+        PreferencesState.getInstance().reloadPreferences();
     }
 
     @Override

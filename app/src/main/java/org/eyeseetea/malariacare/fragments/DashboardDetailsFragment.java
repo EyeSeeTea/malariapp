@@ -251,7 +251,7 @@ public class DashboardDetailsFragment extends ListFragment {
      * Unregisters the survey receiver.
      * It really important to do this, otherwise each receiver will invoke its code.
      */
-    private void  unregisterSurveysReceiver(){
+    public void  unregisterSurveysReceiver(){
         if(surveyReceiver!=null){
             LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(surveyReceiver);
             surveyReceiver=null;

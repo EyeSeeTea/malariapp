@@ -20,6 +20,9 @@
 package org.eyeseetea.malariacare.database.utils;
 
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
+import android.util.Log;
 
 import com.orm.SugarApp;
 
@@ -35,10 +38,12 @@ import java.util.Map;
  */
 public class PreferencesState {
 
+    private static String TAG=".PreferencesState";
+
     /**
      * Singleton reference
      */
-    private PreferencesState instance;
+    private static PreferencesState instance;
 
     /**
      * Selected scale, one between [xsmall,small,medium,large,xlarge,system
@@ -56,9 +61,14 @@ public class PreferencesState {
     private Map<String, Map<String, Float>> scaleDimensionsMap;
 
     private PreferencesState(){
+        scaleDimensionsMap=initScaleDimensionsMap();
+        reloadPreferences();
+    }
+
+    public void reloadPreferences(){
         scale= initScale();
         showNumDen=initShowNumDen();
-        scaleDimensionsMap=initScaleDimensionsMap();
+        Log.d(TAG,"reloadPreferences: scale:"+scale+" | showNumDen:"+showNumDen);
     }
 
     /**
@@ -66,7 +76,11 @@ public class PreferencesState {
      * @return
      */
     private String initScale(){
-        //TODO
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(SugarApp.getSugarContext());
+        if (sharedPreferences.getBoolean(Constants.PREFERENCE_CUSTOMIZE_FONTS, false)) {
+            return sharedPreferences.getString(Constants.PREFERENCE_FONT_SIZES, Constants.FONTS_SYSTEM);
+        }
+
         return Constants.FONTS_SYSTEM;
     }
 
@@ -75,8 +89,8 @@ public class PreferencesState {
      * @return
      */
     private boolean initShowNumDen(){
-        //TODO
-        return false;
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(SugarApp.getSugarContext());
+        return sharedPreferences.getBoolean(Constants.PREFERENCE_SHOW_NUM_DEN, false);
     }
 
     /**
@@ -125,7 +139,7 @@ public class PreferencesState {
         return scaleDimensionsMap;
     }
 
-    public PreferencesState getInstance(){
+    public static PreferencesState getInstance(){
         if(instance==null){
             instance=new PreferencesState();
         }
@@ -136,15 +150,19 @@ public class PreferencesState {
         return scale;
     }
 
-    public void setScale(String scale) {
-        this.scale = scale;
+    public void setScale(String value){
+        this.scale=value;
     }
 
     public boolean isShowNumDen() {
         return showNumDen;
     }
 
-    public void setShowNumDen(boolean showNumDen) {
-        this.showNumDen = showNumDen;
+    public void setShowNumDen(boolean value){
+        this.showNumDen=value;
+    }
+
+    public Float getFontSize(String scale,String dimension){
+        return scaleDimensionsMap.get(scale).get(dimension);
     }
 }

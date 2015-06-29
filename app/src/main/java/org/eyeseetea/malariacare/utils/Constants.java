@@ -55,4 +55,6 @@ public class Constants {
 
     public static final String PREFERENCE_SHOW_NUM_DEN="show_num_dems";
 
+    public static final String PREFERENCE_DHIS_URL="dhis_url";
+
 }

@@ -36,9 +36,11 @@ import org.eyeseetea.malariacare.database.model.Option;
 import org.eyeseetea.malariacare.database.model.Question;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.model.Tab;
+import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.services.SurveyService;
 import org.eyeseetea.malariacare.test.utils.IntentServiceIdlingResource;
+import org.eyeseetea.malariacare.utils.Constants;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -103,7 +105,6 @@ public class SurveyScoresEspressoTest extends MalariaEspressoTest{
     }
 
     @Test
-    @Ignore
     public void form_views() {
         Log.i(TAG,"------form_views------");
         //THEN
@@ -112,7 +113,6 @@ public class SurveyScoresEspressoTest extends MalariaEspressoTest{
     }
 
     @Test
-    @Ignore
     public void back_shows_dialog(){
         Log.i(TAG,"------back_shows_dialog------");
         //GIVEN
@@ -124,7 +124,6 @@ public class SurveyScoresEspressoTest extends MalariaEspressoTest{
     }
 
     @Test
-    @Ignore
     public void back_yes_intent(){
         Log.i(TAG,"------back_yes_intent------");
         //GIVEN
@@ -138,7 +137,6 @@ public class SurveyScoresEspressoTest extends MalariaEspressoTest{
     }
 
     @Test
-    @Ignore
     public void change_to_scored_tab(){
         Log.i(TAG,"------change_to_scored_tab------");
         //WHEN: Select 'Profile' tab
@@ -150,7 +148,6 @@ public class SurveyScoresEspressoTest extends MalariaEspressoTest{
     }
 
     @Test
-    @Ignore
     public void change_to_score(){
         Log.i(TAG,"------change_to_score------");
         //WHEN: Select 'Score' tab
@@ -163,7 +160,6 @@ public class SurveyScoresEspressoTest extends MalariaEspressoTest{
     }
 
     @Test
-    @Ignore
     public void change_to_composite_score(){
         Log.i(TAG,"------change_to_composite_score------");
         //WHEN: Select 'Composite Score' tab
@@ -174,7 +170,6 @@ public class SurveyScoresEspressoTest extends MalariaEspressoTest{
     }
 
     @Test
-    @Ignore
     public void in_c1_rdt_score_some_points() {
         Log.i(TAG,"------in_c1_rdt_score_some_points------");
         //WHEN: Select 'C1-RDT' tab
@@ -191,7 +186,6 @@ public class SurveyScoresEspressoTest extends MalariaEspressoTest{
     }
 
     @Test
-    @Ignore
     public void global_scores_are_calculated(){
         Log.i(TAG,"------global_scores_are_calculated------");
         //WHEN: Select 'C1-RDT' tab | Some answers 'Yes'
@@ -211,83 +205,30 @@ public class SurveyScoresEspressoTest extends MalariaEspressoTest{
 
     @Test
     public void textsize_editcard_changes(){
-        Log.i(TAG,"------editcard_textsize_changes------");
-        //GIVEN
-        Activity activity = getActivityInstance();
-
-        //WHEN: Select Large fonts on Settings
-        whenFontSizeChange(activity, 3);
+        Log.i(TAG, "------textsize_editcard_changes------");
+        //GIVEN: Some special font size set
+        PreferencesState.getInstance().setScale(Constants.FONTS_LARGE);
 
         //WHEN: Select survey again from dashboard
-        whenAssessmentSelected("Health Facility 0", "Clinical Case Management");
+        whenTabSelected(1);
 
         //THEN: Check font size has properly changed
         onData(is(instanceOf(Question.class))).inAdapterView(withId(R.id.listView)).atPosition(1)
                 .onChildView(withId(R.id.answer))
-                .check(matches(hasEditCardScale(activity.getString(R.string.font_size_level3))));
+                .check(matches(hasEditCardScale(res.getString(R.string.font_size_level3))));
     }
 
     @Test
     public void num_dem_show_hide(){
-        Log.i(TAG,"------num_dem_show_hide------");
-        //GIVEN
-        Activity activity = getActivityInstance();
-        whenTabSelected(1);
+        Log.i(TAG, "------num_dem_show_hide------");
+        //GIVEN: Preferences set to show num/den
+        PreferencesState.getInstance().setShowNumDen(true);
 
-        //THEN: Check that num/dems are not yet being shown
-        onView(withId(R.id.totalNum)).check(matches(not(isDisplayed())));
-
-        //WHEN: Select show num/dems (by default they're not shown)
-        whenToggleShowHideNumDem(activity);
-
-        //WHEN: Access a Clinical Case Management survey
-        whenAssessmentSelected("Health Facility 0", "Clinical Case Management");
+        //WHEN: Select 'profile' tab
         whenTabSelected(1);
 
         //THEN: Check that num/dems are now being shown
         onView(withId(R.id.totalNum)).check(matches(isDisplayed()));
-    }
-
-    /**
-     * From Dashboard access survey
-     * @param orgUnit orgUnit of the survey we want to access
-     * @param program program of the survey we want to access
-     */
-    private void whenAssessmentSelected(String orgUnit, String program) {
-        onView(allOf(withId(R.id.assessment_row),
-                withChild(allOf(
-                        withChild(allOf(withId(R.id.facility), withText(orgUnit))),
-                        withChild(allOf(withId(R.id.survey_type), withText("- " + program)))))))
-                .perform(click());
-    }
-
-    /**
-     * Change font size
-     * @param activity activity to get the preferences
-     * @param num font size in a discrete int scale [0: xsmall - 1: small - 2: medium - 3: large - 4: xlarge]
-     */
-    private void whenFontSizeChange(Activity activity, int num) {
-        openActionBarOverflowOrOptionsMenu(getActivityInstance());
-        onView(withText(activity.getString(R.string.settings_menu_configuration))).perform(click());
-        onView(withText(activity.getString(R.string.settings_checkbox_customize_fonts))).perform(click());
-        onView(withText(activity.getString(R.string.settings_list_font_sizes))).perform(click());
-        onView(withText((activity.getResources().getStringArray(R.array.settings_array_titles_font_sizes))[num])).perform(click());
-        pressBack(); // Exit settings
-//        pressBack(); // exit survey
-//        onView(withText(activity.getString(android.R.string.ok))).perform(click()); // confirm exit
-    }
-
-    /**
-     * Change show/hide num/dem preference
-     * @param activity
-     */
-    private void whenToggleShowHideNumDem(Activity activity) {
-        openActionBarOverflowOrOptionsMenu(getActivityInstance());
-        onView(withText(activity.getString(R.string.settings_menu_configuration))).perform(click());
-        onView(withText(activity.getString(R.string.settings_checkbox_show_num_dems))).perform(click());
-        pressBack(); // Exit settings
-        //pressBack(); // Exit survey
-        //onView(withText(activity.getString(android.R.string.ok))).perform(click()); // confirm exit
     }
 
     /**

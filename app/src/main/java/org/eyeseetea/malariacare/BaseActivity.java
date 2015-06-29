@@ -55,7 +55,6 @@ public abstract class BaseActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
 
         initView();
-        updateFontsByPreferences();
     }
 
     /**
@@ -65,22 +64,6 @@ public abstract class BaseActivity extends ActionBarActivity {
         setTheme(R.style.EyeSeeTheme);
         android.support.v7.app.ActionBar actionBar = this.getSupportActionBar();
         LayoutUtils.setActionBarLogo(actionBar);
-    }
-
-    /**
-     * Loads visual preferences
-     */
-    private void updateFontsByPreferences(){
-        // Update font size in case this could have been changed by the user
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        if (sharedPreferences.getBoolean(Constants.PREFERENCE_CUSTOMIZE_FONTS, false)) {
-            Session.setFontSize(sharedPreferences.getString(Constants.PREFERENCE_FONT_SIZES, Constants.FONTS_SYSTEM));
-        }else{
-            Session.setFontSize(Constants.FONTS_SYSTEM);
-        }
-
-        debugMessage("Font size: " + Session.getFontSize());
-        debugMessage("Show num/dems: " + Boolean.toString(sharedPreferences.getBoolean(Constants.PREFERENCE_SHOW_NUM_DEN, false)));
     }
 
     @Override

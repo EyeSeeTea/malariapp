@@ -21,6 +21,7 @@ package org.eyeseetea.malariacare.test;
 
 import android.app.Activity;
 import android.app.Instrumentation;
+import android.content.SharedPreferences;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.espresso.Espresso;
 import android.support.test.espresso.intent.rule.IntentsTestRule;
@@ -28,21 +29,23 @@ import android.support.test.runner.AndroidJUnit4;
 import android.test.suitebuilder.annotation.LargeTest;
 import android.util.Log;
 
+import junit.framework.Assert;
+
 import org.eyeseetea.malariacare.DashboardDetailsActivity;
 import org.eyeseetea.malariacare.R;
+import org.eyeseetea.malariacare.SettingsActivity;
 import org.eyeseetea.malariacare.SurveyActivity;
 import org.eyeseetea.malariacare.database.model.Option;
 import org.eyeseetea.malariacare.database.model.Question;
-import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.model.Tab;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
-import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.services.SurveyService;
 import org.eyeseetea.malariacare.test.utils.IntentServiceIdlingResource;
 import org.eyeseetea.malariacare.utils.Constants;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -59,8 +62,6 @@ import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static junit.framework.Assert.assertEquals;
 import static org.eyeseetea.malariacare.test.utils.EditCardScaleMatcher.hasEditCardScale;
-import static org.eyeseetea.malariacare.test.utils.TextCardScaleMatcher.hasTextCardScale;
-import static org.eyeseetea.malariacare.test.utils.UncheckeableRadioButtonScaleMatcher.hasRadioButtonScale;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
@@ -68,84 +69,72 @@ import static org.hamcrest.Matchers.not;
 
 
 /**
- *
+ * Espresso tests for the survey that contains scores, compositeScores
  */
 @RunWith(AndroidJUnit4.class)
 @LargeTest
-public class SurveyChecksEspressoTest extends MalariaEspressoTest{
+public class SettingsEspressoTest extends MalariaEspressoTest{
 
-    private static String TAG=".SurveyChecksEspressoTest";
-
-    private static Survey icmSurvey;
+    private static String TAG=".SettingsEspressoTest";
 
     @Rule
-    public IntentsTestRule<SurveyActivity> mActivityRule = new IntentsTestRule<>(
-            SurveyActivity.class);
+    public IntentsTestRule<SettingsActivity> mActivityRule = new IntentsTestRule<>(
+            SettingsActivity.class);
 
     @BeforeClass
     public static void init(){
-        populateData(InstrumentationRegistry.getTargetContext().getAssets());
-        icmSurvey=mockSessionSurvey(1,1,0);//1 ICM
-    }
-
-    @Before
-    public void registerIntentServiceIdlingResource(){
-        super.setup();
-        Instrumentation instrumentation = InstrumentationRegistry.getInstrumentation();
-        idlingResource = new IntentServiceIdlingResource(instrumentation.getTargetContext(), SurveyService.class);
-        Espresso.registerIdlingResources(idlingResource);
-    }
-
-    @After
-    public void unregisterIntentServiceIdlingResource(){
-        Espresso.unregisterIdlingResources(idlingResource);
+        clearSharedPreferences();
     }
 
     @Test
     public void form_views() {
+        Log.i(TAG,"------form_views------");
         //THEN
-        onView(withId(R.id.tabSpinner)).check(matches(isDisplayed()));
-        onView(withText("Inquiry and Physical Examination")).check(matches(isDisplayed()));
+        onView(withText("Show num/dems")).check(matches(isDisplayed()));
+        onView(withText("Customize fonts?")).check(matches(isDisplayed()));
     }
 
     @Test
-    public void radiobutton_textsize_changes(){
-        Log.i(TAG, "------radiobutton_textsize_changes------");
-        //GIVEN: Some special font size set
-        PreferencesState.getInstance().setScale(Constants.FONTS_LARGE);
+    public void change_font(){
+        Log.i(TAG, "------change_font------");
 
-        //WHEN: Select survey again from dashboard
-        whenTabSelected(1);
+        //WHEN
+        whenFontSizeChange(3);
+        pressBack();
 
-        //THEN: Check font size has properly changed
-        onData(is(instanceOf(Question.class))).inAdapterView(withId(R.id.listView)).atPosition(5)
-                .onChildView(withId(R.id.answer))
-                .onChildView(withText(res.getString(R.string.yes)))
-                .check(matches(hasRadioButtonScale(res.getString(R.string.font_size_level3))));
+        //THEN
+        Assert.assertEquals(Constants.FONTS_LARGE, PreferencesState.getInstance().getScale());
     }
 
     @Test
-    public void textcard_textsize_changes(){
-        Log.i(TAG, "------textcard_textsize_changes------");
-        //GIVEN: Some special font size set
-        PreferencesState.getInstance().setScale(Constants.FONTS_LARGE);
+    public void change_num_den(){
+        Log.i(TAG, "------change_num_den------");
 
-        //WHEN: Select survey again from dashboard
-        whenTabSelected(1);
+        //WHEN
+        whenToggleShowHideNumDem();
+        pressBack();
 
         //THEN
-        onData(is(instanceOf(Question.class))).inAdapterView(withId(R.id.listView)).atPosition(1)
-                .onChildView(withId(R.id.statement))
-                .check(matches(hasTextCardScale(res.getString(R.string.font_size_level3))));
+        Assert.assertEquals(true, PreferencesState.getInstance().isShowNumDen());
     }
 
     /**
-     * Select the tab number 'x'
-     * @param num Index of the tab to select
+     * Change font size
+     * @param num font size in a discrete int scale [0: xsmall - 1: small - 2: medium - 3: large - 4: xlarge]
      */
-    private void whenTabSelected(int num){
-        onView(withId(R.id.tabSpinner)).perform(click());
-        onData(is(instanceOf(Tab.class))).atPosition(num).perform(click());
+    private void whenFontSizeChange(int num) {
+        SettingsActivity settingsActivity=(SettingsActivity)getActivityInstance();
+        onView(withText(settingsActivity.getString(R.string.settings_checkbox_customize_fonts))).perform(click());
+        onView(withText(settingsActivity.getString(R.string.settings_list_font_sizes))).perform(click());
+        onView(withText((settingsActivity.getResources().getStringArray(R.array.settings_array_titles_font_sizes))[num])).perform(click());
+    }
+
+    /**
+     * Change show/hide num/dem preference
+     */
+    private void whenToggleShowHideNumDem() {
+        SettingsActivity settingsActivity=(SettingsActivity)getActivityInstance();
+        onView(withText(settingsActivity.getString(R.string.settings_checkbox_show_num_dems))).perform(click());
     }
 
 }

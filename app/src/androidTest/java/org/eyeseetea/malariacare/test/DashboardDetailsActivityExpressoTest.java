@@ -31,11 +31,13 @@ import org.eyeseetea.malariacare.CreateSurveyActivity;
 import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.DashboardDetailsActivity;
 import org.eyeseetea.malariacare.R;
+import org.eyeseetea.malariacare.SurveyActivity;
 import org.eyeseetea.malariacare.database.model.OrgUnit;
 import org.eyeseetea.malariacare.database.model.Program;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.model.User;
 import org.eyeseetea.malariacare.database.utils.Session;
+import org.eyeseetea.malariacare.fragments.DashboardDetailsFragment;
 import org.eyeseetea.malariacare.services.SurveyService;
 import org.eyeseetea.malariacare.test.utils.IntentServiceIdlingResource;
 import org.eyeseetea.malariacare.test.utils.MalariaEspressoActions;
@@ -62,6 +64,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.isRoot;
 import static android.support.test.espresso.matcher.ViewMatchers.withChild;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
+import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNotNull;
 import static org.eyeseetea.malariacare.test.utils.MalariaEspressoActions.waitId;
 import static org.eyeseetea.malariacare.test.utils.MalariaEspressoActions.waitSnippet;
@@ -75,6 +78,8 @@ import static org.hamcrest.Matchers.is;
  */
 @RunWith(AndroidJUnit4.class)
 public class DashboardDetailsActivityExpressoTest extends MalariaEspressoTest{
+
+    private static String TAG=".DDActivityExpressoTest";
 
     private final static int _EXPECTED_SURVEYS=2;
 
@@ -90,6 +95,7 @@ public class DashboardDetailsActivityExpressoTest extends MalariaEspressoTest{
 
     @Before
     public void registerIntentServiceIdlingResource(){
+        Log.i(TAG,"---BEFORE---");
         super.setup();
         Instrumentation instrumentation = InstrumentationRegistry.getInstrumentation();
         idlingResource = new IntentServiceIdlingResource(instrumentation.getTargetContext(), SurveyService.class);
@@ -98,16 +104,31 @@ public class DashboardDetailsActivityExpressoTest extends MalariaEspressoTest{
 
     @After
     public void unregisterIntentServiceIdlingResource(){
+        Log.i(TAG,"---AFTER---");
         Espresso.unregisterIdlingResources(idlingResource);
+        unregisterSurveyReceiver();
+        getActivityInstance().finish();
     }
 
     @Test
     public void form_views() {
+        Log.i(TAG,"------form_views------");
         onView(isRoot()).perform(waitId(R.id.plusButton, 3000));
     }
 
     @Test
+    public void survey_selected(){
+        Log.i(TAG,"------survey_selected------");
+        //WHEN
+        whenAssessmentSelected("Health Facility 1", "ICM");
+
+        //THEN
+        assertEquals(SurveyActivity.class, getActivityInstance().getClass());
+    }
+
+    @Test
     public void new_survey_launches_intent(){
+        Log.i(TAG,"------new_survey_launches_intent------");
         //WHEN
         onView(withId(R.id.plusButton)).perform(click());
 
@@ -117,6 +138,7 @@ public class DashboardDetailsActivityExpressoTest extends MalariaEspressoTest{
 
     @Test
     public void delete_survey(){
+        Log.i(TAG,"------delete_survey------");
         //WHEN
         whenAssessmentSwipeAndOk("Health Facility 0", "ICM");
 
@@ -129,7 +151,7 @@ public class DashboardDetailsActivityExpressoTest extends MalariaEspressoTest{
      * @param orgUnit orgUnit of the survey we want to delete
      * @param program program of the survey we want to delete
      */
-    protected void whenAssessmentSwipeAndOk(String orgUnit, String program) {
+    private void whenAssessmentSwipeAndOk(String orgUnit, String program) {
         onView(allOf(withId(R.id.assessment_row),
                 withChild(allOf(
                         withChild(allOf(withId(R.id.facility), withText(orgUnit))),
@@ -145,11 +167,35 @@ public class DashboardDetailsActivityExpressoTest extends MalariaEspressoTest{
         }
     }
 
+    /**
+     * From Dashboard access survey
+     * @param orgUnit orgUnit of the survey we want to access
+     * @param program program of the survey we want to access
+     */
+    private void whenAssessmentSelected(String orgUnit, String program) {
+        onView(allOf(withId(R.id.assessment_row),
+                withChild(allOf(
+                        withChild(allOf(withId(R.id.facility), withText(orgUnit))),
+                        withChild(allOf(withId(R.id.survey_type), withText("- " + program)))))))
+                .perform(click());
+    }
+
     private void checkAssessmentDoesntExist(String orgUnit, String program) {
         onView(allOf(withId(R.id.assessment_row),
                 withChild(allOf(
                         withChild(allOf(withId(R.id.facility), withText(orgUnit))),
                         withChild(allOf(withId(R.id.survey_type), withText("- " + program))))))).check(doesNotExist());
+    }
+
+
+    private void unregisterSurveyReceiver(){
+        try{
+            DashboardDetailsActivity dashboardDetailsActivity=(DashboardDetailsActivity)getActivityInstance();
+            DashboardDetailsFragment dashboardDetailsFragment=(DashboardDetailsFragment)dashboardDetailsActivity.getFragmentManager().findFragmentById(R.id.dashboard_details_fragment);
+            dashboardDetailsFragment.unregisterSurveysReceiver();
+        }catch(Exception ex){
+            Log.e(TAG,"unregisterSurveyReceiver(): "+ex.getMessage());
+        }
     }
 
 }
