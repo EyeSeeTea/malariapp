@@ -103,7 +103,7 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
         //User already logged in --> dashboard
         Iterator<User> users = User.findAll(User.class);
         if (users.hasNext()) {
-            goDashBoard(users);
+            goDashBoard(users.next());
             return;
         }
 
@@ -144,15 +144,10 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
         mProgressView = findViewById(R.id.login_progress);
     }
 
-    private void goDashBoard(Iterator<User> users) {
+    private void goDashBoard(User user) {
         Log.i(".LoginActivity", "User already logged in --> Dashboard");
-        Session.setUser(users.next());
-        Class c = DashboardDetailsActivity.class;
-        // Get the not-sent surveys ordered by date
-        List <Survey> surveys = Survey.getAllUnsentSurveys();
-        Session.setAdapter(new AssessmentAdapter(surveys, getApplicationContext()));
-        Intent mainIntent = new Intent(LoginActivity.this, c);
-        startActivity(mainIntent);
+        Session.setUser(user);
+        startActivity(new Intent(LoginActivity.this, DashboardDetailsActivity.class));
     }
 
 
@@ -357,10 +352,7 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
             //finishAndGo dashboard
             Log.i(".LoginActivity", "Logged in!");
             // Get the not-sent surveys ordered by date
-            List <Survey> surveys = Survey.getAllUnsentSurveys();
-            Session.setAdapter(new AssessmentAdapter(surveys, getApplicationContext()));
-            Intent mainIntent = new Intent(LoginActivity.this, DashboardDetailsActivity.class);
-            startActivity(mainIntent);
+            goDashBoard(user);
         }
 
         @Override
@@ -374,7 +366,6 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
         private void initUser(){
             this.user = new User(mUser, mUser);
             this.user.save();
-            Session.setUser(user);
         }
 
         private void initDataIfRequired() throws IOException {

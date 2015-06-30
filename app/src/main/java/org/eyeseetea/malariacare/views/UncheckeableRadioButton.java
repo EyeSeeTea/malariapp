@@ -85,8 +85,6 @@ public class UncheckeableRadioButton extends RadioButton implements IEyeSeeView 
      * @param defStyle
      */
     public void init(AttributeSet attrs, int defStyle) {
-        // Fonts Map initialisation
-        if (Session.getFontMap() == null) Session.initMap(getContext());
         // Load attributes
         if (attrs != null) {
             final TypedArray a = getContext().obtainStyledAttributes(attrs, R.styleable.UncheckeableRadioButton, defStyle, 0);

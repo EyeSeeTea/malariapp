@@ -58,8 +58,6 @@ public class TextCard extends TextView implements IEyeSeeView {
             this.setText(R.string.lorem_ipsum);
             return;
         }
-        // Fonts Map initialisation
-        if (Session.getFontMap() == null) Session.initMap(getContext());
         // Load attributes
         if (attrs != null) {
             final TypedArray a = getContext().obtainStyledAttributes(attrs, R.styleable.TextCard, defStyle, 0);
