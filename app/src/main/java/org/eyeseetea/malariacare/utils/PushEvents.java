@@ -72,6 +72,9 @@ public class PushEvents {
 
             object.put("dataValues", values);
 
+            //SCORES
+
+
             Log.d(".PushEvents", object.toString());
         }catch (JSONException e) {
             e.printStackTrace();
