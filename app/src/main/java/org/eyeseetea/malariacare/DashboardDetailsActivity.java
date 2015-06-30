@@ -53,6 +53,11 @@ public class DashboardDetailsActivity extends BaseActivity {
         }
     }
 
+    @Override
+    protected void initTransition(){
+        this.overridePendingTransition(R.transition.anim_slide_in_right, R.transition.anim_slide_out_right);
+    }
+
     /**
      * Just to avoid trying to navigate back from the dashboard. There's no parent activity here
      */

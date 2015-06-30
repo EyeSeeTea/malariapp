@@ -66,9 +66,15 @@ public abstract class BaseActivity extends ActionBarActivity {
         LayoutUtils.setActionBarLogo(actionBar);
 
         if (savedInstanceState == null){
-            this.overridePendingTransition(R.transition.anim_slide_in_left,
-                    R.transition.anim_slide_out_right);
+            initTransition();
         }
+    }
+
+    /**
+     * Customize transitions for these activities
+     */
+    protected void initTransition(){
+        this.overridePendingTransition(R.transition.anim_slide_in_left,R.transition.anim_slide_out_left);
     }
 
     @Override
