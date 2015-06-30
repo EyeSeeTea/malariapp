@@ -22,7 +22,6 @@
         <item name="displayOptions">useLogo|showHome|homeAsUp|showTitle</item>
         <item name="logo">@drawable/qualityapp_logo</item>
         <item name="android:windowActionBarOverlay">true</item>
-
     </style>
 
     <style name="LoginScreenTheme" parent="Theme.AppCompat.Light">

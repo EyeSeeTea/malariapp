@@ -54,16 +54,21 @@ public abstract class BaseActivity extends ActionBarActivity {
         requestWindowFeature(Window.FEATURE_ACTIVITY_TRANSITIONS);
         super.onCreate(savedInstanceState);
 
-        initView();
+        initView(savedInstanceState);
     }
 
     /**
      * Common styling
      */
-    private void initView(){
+    private void initView(Bundle savedInstanceState){
         setTheme(R.style.EyeSeeTheme);
         android.support.v7.app.ActionBar actionBar = this.getSupportActionBar();
         LayoutUtils.setActionBarLogo(actionBar);
+
+        if (savedInstanceState == null){
+            this.overridePendingTransition(R.transition.anim_slide_in_left,
+                    R.transition.anim_slide_out_right);
+        }
     }
 
     @Override
