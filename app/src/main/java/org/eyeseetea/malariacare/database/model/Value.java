@@ -58,6 +58,30 @@ public class Value extends SugarRecord<Value> {
         this.survey = survey;
     }
 
+    /**
+     * Checks if the current value contains an answer
+     * @return true|false
+     */
+    public boolean isAnAnswer(){
+        return (getValue() != null && !getValue().equals("")) || getOption() != null;
+    }
+
+    /**
+     * Checks if the current value belongs to a 'required' question
+     * @return
+     */
+    public boolean belongsToAParentQuestion(){
+        return !getQuestion().hasParent();
+    }
+
+    /**
+     * The value is 'Yes' from a dropdown
+     * @return true|false
+     */
+    public boolean isAYes() {
+        return getOption() != null && getOption().getName().equals("Yes");
+    }
+
     @Override
     public String toString() {
         return "Value{" +
@@ -91,4 +115,5 @@ public class Value extends SugarRecord<Value> {
         result = 31 * result + survey.hashCode();
         return result;
     }
+
 }

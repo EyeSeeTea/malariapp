@@ -6,6 +6,7 @@ import com.orm.query.Condition;
 import com.orm.query.Select;
 
 import org.eyeseetea.malariacare.database.utils.Session;
+import org.eyeseetea.malariacare.utils.Constants;
 
 import java.util.List;
 
@@ -15,10 +16,13 @@ public class Question extends SugarRecord<Question> {
      * Sql query that counts required questions in a program (required for % stats)
      */
     private static final String LIST_REQUIRED_BY_PROGRAM ="select q.* from question q"+
+            " left join answer a on q.answer=a.id"+
             " left join header h on q.header=h.id"+
             " left join tab t on h.tab=t.id"+
             " left join program p on t.program=p.id"+
-            " where q.question=0 and p.id=?";
+            " where q.question=0"+
+            " and a.output<>"+ Constants.NO_ANSWER+
+            " and p.id=?";
 
     String code;
     String de_name;

@@ -19,15 +19,19 @@
 
 package org.eyeseetea.malariacare.database.model;
 
+import android.util.Log;
+
 import com.orm.SugarRecord;
 import com.orm.dsl.Ignore;
 import com.orm.query.Condition;
 import com.orm.query.Select;
 
+import org.eyeseetea.malariacare.database.utils.SurveyAnsweredRatio;
 import org.eyeseetea.malariacare.utils.Constants;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
@@ -38,10 +42,14 @@ public class Survey extends SugarRecord<Survey> {
     Program program;
     User user;
     Date eventDate;
+    Date completionDate;
     Integer status;
 
     @Ignore
-    List<Integer> _answeredQuestionRatio;
+    private long DEFAULT_COMPLETION_DATE_AS_LONG=32506423216238l;
+
+    @Ignore
+    SurveyAnsweredRatio _answeredQuestionRatio;
 
     public Survey() {
     }
@@ -52,6 +60,9 @@ public class Survey extends SugarRecord<Survey> {
         this.user = user;
         this.eventDate = new Date();
         this.status = Constants.SURVEY_IN_PROGRESS; // Possibilities [ In progress | Completed | Sent ]
+        this.completionDate= new Date(DEFAULT_COMPLETION_DATE_AS_LONG);
+
+        Log.i(".Survey", Long.valueOf(this.completionDate.getTime()).toString());
     }
 
     public OrgUnit getOrgUnit() {
@@ -86,6 +97,14 @@ public class Survey extends SugarRecord<Survey> {
         this.eventDate = eventDate;
     }
 
+    public Date getCompletionDate(){
+        return completionDate;
+    }
+
+    public void setCompletionDate(Date completionDate){
+        this.completionDate=completionDate;
+    }
+
     public Integer getStatus() {
         return status;
     }
@@ -94,28 +113,72 @@ public class Survey extends SugarRecord<Survey> {
         this.status = status;
     }
 
+    /**
+     * Checks if the survey has been sent or not
+     * @return true|false
+     */
+    public boolean isSent(){
+        return Constants.SURVEY_SENT==this.status;
+    }
+
     public List<Value> getValues(){
         return Select.from(Value.class)
                 .where(Condition.prop("survey")
                         .eq(String.valueOf(this.getId()))).list();
     }
 
-    public List<Integer> getAnsweredQuestionRatio(){
+    /**
+     * Ratio of completion is cached into _answeredQuestionRatio in order to speed up loading
+     * @return
+     */
+    public SurveyAnsweredRatio getAnsweredQuestionRatio(){
         if (_answeredQuestionRatio == null) {
-            Integer totalQuestions= Question.countRequiredByProgram(this.getProgram());
-
-            Integer answeredQuestions = 0;
-            for (Value value : this.getValues()) {
-                if ((value.getValue() != null && !value.getValue().equals("")) || value.getOption() != null) {
-                    answeredQuestions++;
-                    if (value.getQuestion().getQuestion() == null && value.getOption() != null && value.getOption().getName().equals("Yes"))
-                        totalQuestions += value.getQuestion().getQuestionChildren().size();
-                }
-            }
-
-            _answeredQuestionRatio = new ArrayList<Integer>(Arrays.asList(answeredQuestions, totalQuestions));
+            _answeredQuestionRatio=reloadSurveyAnsweredRatio();
         }
         return _answeredQuestionRatio;
+    }
+
+    /**
+     * Calculates the current ratio of completion for this survey
+     * @return SurveyAnsweredRatio that hold the total & answered questions.
+     */
+    private SurveyAnsweredRatio reloadSurveyAnsweredRatio(){
+
+        int numRequired= Question.countRequiredByProgram(this.getProgram());
+        int numOptional=0;
+        int numAnswered = 0;
+
+        for (Value value : this.getValues()) {
+            if (value!=null && value.isAnAnswer()) {
+                numAnswered++;
+                if (value.belongsToAParentQuestion() && value.isAYes()) {
+                    //There might be children no answer questions that should be skipped
+                    for(Question childQuestion:value.getQuestion().getQuestionChildren()){
+                        numOptional+=(childQuestion.getAnswer().getOutput()==Constants.NO_ANSWER)?0:1;
+                    }
+                }
+            }
+        }
+        return new SurveyAnsweredRatio(numRequired+numOptional, numAnswered);
+    }
+
+    /**
+     * Updates ratios, status and completion date depending on the question and answer (text)
+     */
+    public void updateSurveyStatus(){
+        SurveyAnsweredRatio answeredRatio=this.reloadSurveyAnsweredRatio();
+
+        //Update status & completionDate
+        if(answeredRatio.isCompleted()) {
+            this.setStatus(Constants.SURVEY_COMPLETED);
+            this.setCompletionDate(new Date());
+        }else{
+            this.setStatus(Constants.SURVEY_IN_PROGRESS);
+            this.setCompletionDate(new Date(DEFAULT_COMPLETION_DATE_AS_LONG));
+        }
+
+        //Saves new status & completionDate
+        this.save();
     }
 
     // Returns a concrete survey, if it exists
@@ -157,6 +220,7 @@ public class Survey extends SugarRecord<Survey> {
         if (_answeredQuestionRatio != null ? !_answeredQuestionRatio.equals(survey._answeredQuestionRatio) : survey._answeredQuestionRatio != null)
             return false;
         if (!eventDate.equals(survey.eventDate)) return false;
+        if (!completionDate.equals(survey.completionDate)) return false;
         if (!orgUnit.equals(survey.orgUnit)) return false;
         if (!program.equals(survey.program)) return false;
         if (!status.equals(survey.status)) return false;
@@ -171,6 +235,7 @@ public class Survey extends SugarRecord<Survey> {
         result = 31 * result + program.hashCode();
         result = 31 * result + user.hashCode();
         result = 31 * result + eventDate.hashCode();
+        result = 31 * result + completionDate.hashCode();
         result = 31 * result + status.hashCode();
         result = 31 * result + (_answeredQuestionRatio != null ? _answeredQuestionRatio.hashCode() : 0);
         return result;
@@ -183,6 +248,7 @@ public class Survey extends SugarRecord<Survey> {
                 ", program=" + program +
                 ", user=" + user +
                 ", eventDate=" + eventDate +
+                ", completionDate=" + completionDate +
                 ", status=" + status +
                 '}';
     }

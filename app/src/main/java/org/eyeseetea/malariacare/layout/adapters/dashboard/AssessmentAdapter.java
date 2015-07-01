@@ -29,6 +29,7 @@ import android.widget.TextView;
 
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.model.Survey;
+import org.eyeseetea.malariacare.database.utils.SurveyAnsweredRatio;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 import org.eyeseetea.malariacare.views.TextCard;
 
@@ -111,12 +112,12 @@ public class AssessmentAdapter extends ADashboardAdapter implements IDashboardAd
      * @return
      */
     private String getStatus(Survey survey){
-        List<Integer> status = survey.getAnsweredQuestionRatio();
+        SurveyAnsweredRatio surveyAnsweredRatio=survey.getAnsweredQuestionRatio();
 
-        if (status.get(0) == status.get(1)) {
+        if (surveyAnsweredRatio.isCompleted()) {
             return getContext().getString(R.string.dashboard_info_ready_to_upload);
         } else {
-            return String.format("%d", new Double(100 * (double) status.get(0) / (double) status.get(1)).intValue());
+            return String.format("%d", new Float(100*surveyAnsweredRatio.getRatio()).intValue());
         }
     }
 

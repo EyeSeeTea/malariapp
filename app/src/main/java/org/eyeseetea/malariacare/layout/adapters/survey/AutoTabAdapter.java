@@ -80,6 +80,11 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
 
     int id_layout;
 
+    /**
+     * Flag that indicates if the current survey in session is already sent or not (it affects readonly settings)
+     */
+    private boolean readOnly;
+
     //Store the Views references for each row (to avoid many calls to getViewById)
     static class ViewHolder {
         //Label
@@ -126,6 +131,8 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
                         && hidden[i];
             }
         }
+
+        this.readOnly =Session.getSurvey().isSent();
     }
 
     public AutoTabAdapter(Tab tab, Context context, int id_layout) {
@@ -604,10 +611,34 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
                     break;
             }
 
+            //Put current value in the component
             setValues(viewHolder, question);
+            //Disables component if survey has already been sent
+            updateReadOnly(viewHolder.component);
+
         }
 
         return rowView;
+    }
+
+    /**
+     * Enables/Disables input view according to the state of the survey.
+     * Sent surveys cannot be modified.
+     * @param v
+     */
+    private void updateReadOnly(View v){
+        if(v==null){
+            return;
+        }
+
+        if(v instanceof RadioGroup){
+            RadioGroup radioGroup=(RadioGroup)v;
+            for(int i=0;i<radioGroup.getChildCount();i++){
+                radioGroup.getChildAt(i).setEnabled(!readOnly);
+            }
+        }else {
+            v.setEnabled(!readOnly);
+        }
     }
 
     private View initialiseView(int resource, ViewGroup parent, Question question, ViewHolder viewHolder, int position) {
