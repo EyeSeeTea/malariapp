@@ -45,6 +45,7 @@ import org.eyeseetea.malariacare.database.model.Option;
 import org.eyeseetea.malariacare.database.model.Question;
 import org.eyeseetea.malariacare.database.model.Tab;
 import org.eyeseetea.malariacare.database.model.Value;
+import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.ReadWriteDB;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.layout.adapters.general.OptionArrayAdapter;
@@ -180,23 +181,27 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
         scoreHolder.qualitativeScore = (TextView) ((Activity) context).findViewById(R.id.qualitativeScore);
         RelativeLayout space = (RelativeLayout) (((Activity) context).findViewById(R.id.space));
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this.context);
-        if (sharedPreferences.getBoolean(this.context.getString(R.string.show_num_dems), false)) {
-            scoreHolder.totalDenum.setVisibility(View.VISIBLE);
-            scoreHolder.totalNum.setVisibility(View.VISIBLE);
-            (((Activity) context).findViewById(R.id.accumulatedText)).setVisibility(View.VISIBLE);
-            ((RelativeLayout) (((Activity) context).findViewById(R.id.accumulatedText)).getParent()).setLayoutParams(new LinearLayout.LayoutParams(0, RelativeLayout.LayoutParams.WRAP_CONTENT, 0.25f));
-            space.setLayoutParams(new LinearLayout.LayoutParams(0, RelativeLayout.LayoutParams.WRAP_CONTENT, 0f));
-            ((RelativeLayout) scoreHolder.totalNum.getParent()).setLayoutParams(new LinearLayout.LayoutParams(0, RelativeLayout.LayoutParams.WRAP_CONTENT, 0.1f));
-            ((RelativeLayout) scoreHolder.totalDenum.getParent()).setLayoutParams(new LinearLayout.LayoutParams(0, RelativeLayout.LayoutParams.WRAP_CONTENT, 0.1f));
-        } else {
-            scoreHolder.totalDenum.setVisibility(View.GONE);
-            scoreHolder.totalNum.setVisibility(View.GONE);
-            (((Activity) context).findViewById(R.id.accumulatedText)).setVisibility(View.GONE);
-            ((RelativeLayout) (((Activity) context).findViewById(R.id.accumulatedText)).getParent()).setLayoutParams(new LinearLayout.LayoutParams(0, RelativeLayout.LayoutParams.WRAP_CONTENT, 0.0f));
-            space.setLayoutParams(new LinearLayout.LayoutParams(0, RelativeLayout.LayoutParams.WRAP_CONTENT, 0.45f));
-            ((RelativeLayout) scoreHolder.totalNum.getParent()).setLayoutParams(new LinearLayout.LayoutParams(0, RelativeLayout.LayoutParams.WRAP_CONTENT, 0.0f));
-            ((RelativeLayout) scoreHolder.totalDenum.getParent()).setLayoutParams(new LinearLayout.LayoutParams(0, RelativeLayout.LayoutParams.WRAP_CONTENT, 0.0f));
+
+        int visibility=View.GONE;
+        float weightAccumulatedTextParent=0.0f;
+        float weightSpace=0.45f;
+        float weightNumDen=0.0f;
+
+        if (PreferencesState.getInstance().isShowNumDen()) {
+            visibility=View.VISIBLE;
+            weightAccumulatedTextParent=0.25f;
+            weightSpace=0f;
+            weightNumDen=0.1f;
         }
+
+        scoreHolder.totalDenum.setVisibility(visibility);
+        scoreHolder.totalNum.setVisibility(visibility);
+        (((Activity) context).findViewById(R.id.accumulatedText)).setVisibility(visibility);
+
+        ((RelativeLayout) (((Activity) context).findViewById(R.id.accumulatedText)).getParent()).setLayoutParams(new LinearLayout.LayoutParams(0, RelativeLayout.LayoutParams.WRAP_CONTENT, weightAccumulatedTextParent));
+        space.setLayoutParams(new LinearLayout.LayoutParams(0, RelativeLayout.LayoutParams.WRAP_CONTENT, weightSpace));
+        ((RelativeLayout) scoreHolder.totalNum.getParent()).setLayoutParams(new LinearLayout.LayoutParams(0, RelativeLayout.LayoutParams.WRAP_CONTENT, weightNumDen));
+        ((RelativeLayout) scoreHolder.totalDenum.getParent()).setLayoutParams(new LinearLayout.LayoutParams(0, RelativeLayout.LayoutParams.WRAP_CONTENT, weightNumDen));
     }
 
     @Override
@@ -640,7 +645,7 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
             SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this.context);
             UncheckeableRadioButton button = (UncheckeableRadioButton) lInflater.inflate(R.layout.uncheckeable_radiobutton, null);
             button.setOption(option);
-            button.updateProperties(Session.getFontSize(), this.context.getString(R.string.font_size_level1), this.context.getString(R.string.medium_font_name));
+            button.updateProperties(PreferencesState.getInstance().getScale(), this.context.getString(R.string.font_size_level1), this.context.getString(R.string.medium_font_name));
             ((RadioGroup) viewHolder.component).addView(button);
         }
 
@@ -654,21 +659,24 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
      */
     private void configureViewByPreference(ViewHolder viewHolder) {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this.context);
-        if (sharedPreferences.getBoolean(this.context.getString(R.string.show_num_dems), false)) {
-            viewHolder.num.setVisibility(View.VISIBLE);
-            viewHolder.denum.setVisibility(View.VISIBLE);
-            ((RelativeLayout) viewHolder.statement.getParent()).setLayoutParams(new LinearLayout.LayoutParams(0, RelativeLayout.LayoutParams.WRAP_CONTENT, 0.5f));
-            ((RelativeLayout) viewHolder.component.getParent().getParent()).setLayoutParams(new LinearLayout.LayoutParams(0, RelativeLayout.LayoutParams.WRAP_CONTENT, 0.2f));
-            ((RelativeLayout) viewHolder.num.getParent()).setLayoutParams(new LinearLayout.LayoutParams(0, RelativeLayout.LayoutParams.WRAP_CONTENT, 0.15f));
-            ((RelativeLayout) viewHolder.denum.getParent()).setLayoutParams(new LinearLayout.LayoutParams(0, RelativeLayout.LayoutParams.WRAP_CONTENT, 0.15f));
-        } else {
-            viewHolder.num.setVisibility(View.GONE);
-            viewHolder.denum.setVisibility(View.GONE);
-            ((RelativeLayout) viewHolder.statement.getParent()).setLayoutParams(new LinearLayout.LayoutParams(0, RelativeLayout.LayoutParams.WRAP_CONTENT, 0.7f));
-            ((RelativeLayout) viewHolder.component.getParent().getParent()).setLayoutParams(new LinearLayout.LayoutParams(0, RelativeLayout.LayoutParams.WRAP_CONTENT, 0.3f));
-            ((RelativeLayout) viewHolder.num.getParent()).setLayoutParams(new LinearLayout.LayoutParams(0, RelativeLayout.LayoutParams.WRAP_CONTENT, 0.0f));
-            ((RelativeLayout) viewHolder.denum.getParent()).setLayoutParams(new LinearLayout.LayoutParams(0, RelativeLayout.LayoutParams.WRAP_CONTENT, 0.0f));
+        int visibility=View.GONE;
+        float statementWeight=0.7f;
+        float componentWeight=0.3f;
+        float numDenWeight=0.0f;
+
+        if(PreferencesState.getInstance().isShowNumDen()){
+            visibility=View.VISIBLE;
+            statementWeight=0.5f;
+            componentWeight=0.2f;
+            numDenWeight=0.15f;
         }
+
+        viewHolder.num.setVisibility(visibility);
+        viewHolder.denum.setVisibility(visibility);
+        ((RelativeLayout) viewHolder.statement.getParent()).setLayoutParams(new LinearLayout.LayoutParams(0, RelativeLayout.LayoutParams.WRAP_CONTENT, statementWeight));
+        ((RelativeLayout) viewHolder.component.getParent().getParent()).setLayoutParams(new LinearLayout.LayoutParams(0, RelativeLayout.LayoutParams.WRAP_CONTENT, componentWeight));
+        ((RelativeLayout) viewHolder.num.getParent()).setLayoutParams(new LinearLayout.LayoutParams(0, RelativeLayout.LayoutParams.WRAP_CONTENT, numDenWeight));
+        ((RelativeLayout) viewHolder.denum.getParent()).setLayoutParams(new LinearLayout.LayoutParams(0, RelativeLayout.LayoutParams.WRAP_CONTENT, numDenWeight));
     }
 
     //////////////////////////////////////
@@ -756,29 +764,6 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
             }
 
         }
-
-            /*Option option = null;
-            if (checkedId != -1) {
-                RadioButton radioButton = (RadioButton) ((RadioGroup) this.viewHolder.component).findViewById(checkedId);
-                option = (Option) radioButton.getTag();
-                ReadWriteDB.saveValuesDDL(question, option);
-            } else {
-                Value value = question.getValueBySession();
-                if (value != null) value.delete();
-            }*/
-            /*recalculateScores(viewHolder, question);
-
-            if (question.hasChildren() && option != null) {
-
-                if (option.getName().equals(R.string.yes))
-                    updateQuestionsVisibility(question, true);
-                else
-                    updateQuestionsVisibility(question, false);
-
-            }
-
-            updateScore();*/
-
     }
 
 }

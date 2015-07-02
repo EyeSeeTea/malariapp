@@ -55,7 +55,7 @@ import java.util.List;
 public class DashboardDetailsFragment extends ListFragment {
 
 
-
+    public static final String TAG = ".DetailsFragment";
     private SurveyReceiver surveyReceiver;
     private List<Survey> surveys;
     protected IDashboardAdapter adapter;
@@ -86,14 +86,13 @@ public class DashboardDetailsFragment extends ListFragment {
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
 
-        Log.d(".DetailsFragment", "onCreate");
+        Log.d(TAG, "onCreate");
         registerSurveysReceiver();
-        getSurveysFromService();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
-        Log.d(".DetailsFragment", "onCreateView");
+        Log.d(TAG, "onCreateView");
         if (container == null) {
             return null;
         }
@@ -105,10 +104,17 @@ public class DashboardDetailsFragment extends ListFragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        Log.d(".DetailsFragment", "onActivityCreated");
+        Log.d(TAG, "onActivityCreated");
         initAdapter();
         initListView();
 
+    }
+
+    @Override
+    public void onResume(){
+        Log.d(TAG, "onResume");
+        getSurveysFromService();
+        super.onResume();
     }
 
     /**
@@ -128,7 +134,7 @@ public class DashboardDetailsFragment extends ListFragment {
 
     @Override
     public void onListItemClick(ListView l, View v, int position, long id){
-        Log.d(".DetailsFragment", "onListItemClick");
+        Log.d(TAG, "onListItemClick");
         super.onListItemClick(l, v, position, id);
 
         //Discard clicks on header|footer (which is attendend on newSurvey via super)
@@ -144,7 +150,7 @@ public class DashboardDetailsFragment extends ListFragment {
 
     @Override
     public void onStop(){
-        Log.d(".DetailsFragment", "onStop");
+        Log.d(TAG, "onStop");
         unregisterSurveysReceiver();
 
         super.onStop();
@@ -232,7 +238,7 @@ public class DashboardDetailsFragment extends ListFragment {
      * Register a survey receiver to load surveys into the listadapter
      */
     private void registerSurveysReceiver() {
-        Log.d(".DetailsFragment", "registerSurveysReceiver");
+        Log.d(TAG, "registerSurveysReceiver");
 
         if(surveyReceiver==null){
             surveyReceiver=new SurveyReceiver();
@@ -245,7 +251,7 @@ public class DashboardDetailsFragment extends ListFragment {
      * Unregisters the survey receiver.
      * It really important to do this, otherwise each receiver will invoke its code.
      */
-    private void  unregisterSurveysReceiver(){
+    public void  unregisterSurveysReceiver(){
         if(surveyReceiver!=null){
             LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(surveyReceiver);
             surveyReceiver=null;
@@ -256,6 +262,7 @@ public class DashboardDetailsFragment extends ListFragment {
      * Asks SurveyService for the current list of surveys
      */
     private void getSurveysFromService(){
+        Log.d(TAG, "getSurveysFromService");
         Activity activity=getActivity();
         Intent surveysIntent=new Intent(activity, SurveyService.class);
         surveysIntent.putExtra(SurveyService.SERVICE_METHOD,SurveyService.ALL_UNSENT_SURVEYS_ACTION);
@@ -263,7 +270,7 @@ public class DashboardDetailsFragment extends ListFragment {
     }
 
     public void reloadSurveys(List<Survey> newListSurveys){
-        Log.d(".DetailsFragment", "reloadSurveys (Thread: "+Thread.currentThread().getId()+"): " + newListSurveys.size());
+        Log.d(TAG, "reloadSurveys (Thread: "+Thread.currentThread().getId()+"): " + newListSurveys.size());
         this.surveys.clear();
         this.surveys.addAll(newListSurveys);
         this.adapter.notifyDataSetChanged();
@@ -277,6 +284,7 @@ public class DashboardDetailsFragment extends ListFragment {
 
         @Override
         public void onReceive(Context context, Intent intent) {
+            Log.d(TAG, "onReceive");
             List<Survey> surveysFromService=(List<Survey>)Session.popServiceValue(SurveyService.ALL_UNSENT_SURVEYS_ACTION);
             reloadSurveys(surveysFromService);
         }

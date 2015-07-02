@@ -27,6 +27,7 @@ import android.util.TypedValue;
 import android.widget.EditText;
 
 import org.eyeseetea.malariacare.R;
+import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.utils.Constants;
 
@@ -70,8 +71,8 @@ public class EditCard extends EditText implements IEyeSeeView{
             String dimension = a.getString(R.styleable.EditCard_eDimension);
             String scale = a.getString(R.styleable.EditCard_eScale);
             if (dimension == null) dimension = getContext().getString(R.string.settings_array_values_font_sizes_def);
-            if (scale == null) scale = Session.getFontSize();
-            if (!scale.equals(Constants.FONTS_SYSTEM)) setTextSize(TypedValue.COMPLEX_UNIT_SP, Session.getFontMap().get(scale).get(dimension));
+            if (scale == null) scale = PreferencesState.getInstance().getScale();
+            if (!scale.equals(Constants.FONTS_SYSTEM)) setTextSize(TypedValue.COMPLEX_UNIT_SP, PreferencesState.getInstance().getFontSize(scale,dimension));
 
             this.mDimension = dimension;
             this.mScale = scale;
