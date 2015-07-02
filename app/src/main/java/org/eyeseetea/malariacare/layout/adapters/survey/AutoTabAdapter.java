@@ -194,14 +194,20 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
             weightNumDen=0.1f;
         }
 
+
         scoreHolder.totalDenum.setVisibility(visibility);
         scoreHolder.totalNum.setVisibility(visibility);
+        scoreHolder.qualitativeScore.setVisibility(visibility);
+        scoreHolder.score.setVisibility(visibility);
+        scoreHolder.subtotalscore.setVisibility(visibility);
         (((Activity) context).findViewById(R.id.accumulatedText)).setVisibility(visibility);
 
         ((RelativeLayout) (((Activity) context).findViewById(R.id.accumulatedText)).getParent()).setLayoutParams(new LinearLayout.LayoutParams(0, RelativeLayout.LayoutParams.WRAP_CONTENT, weightAccumulatedTextParent));
         space.setLayoutParams(new LinearLayout.LayoutParams(0, RelativeLayout.LayoutParams.WRAP_CONTENT, weightSpace));
         ((RelativeLayout) scoreHolder.totalNum.getParent()).setLayoutParams(new LinearLayout.LayoutParams(0, RelativeLayout.LayoutParams.WRAP_CONTENT, weightNumDen));
         ((RelativeLayout) scoreHolder.totalDenum.getParent()).setLayoutParams(new LinearLayout.LayoutParams(0, RelativeLayout.LayoutParams.WRAP_CONTENT, weightNumDen));
+        ((RelativeLayout) scoreHolder.totalNum.getParent()).setVisibility(visibility);
+        ((LinearLayout)(scoreHolder.totalNum.getParent()).getParent()).setVisibility(visibility);
     }
 
     @Override
@@ -469,7 +475,7 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
 
     private void autoFillAnswer(ViewHolder viewHolder, Question question) {
 
-        ((Spinner) viewHolder.component).setEnabled(false);
+        viewHolder.component.setEnabled(false);
 
         if (checkMatches(question))
             itemSelected(viewHolder, question, question.getAnswer().getOptions().get(0));

@@ -46,7 +46,7 @@ public class PreferencesState {
     private static PreferencesState instance;
 
     /**
-     * Selected scale, one between [xsmall,small,medium,large,xlarge,system
+     * Selected scale, one between [xsmall,small,medium,large,xlarge,system]
      */
     private String scale;
 
