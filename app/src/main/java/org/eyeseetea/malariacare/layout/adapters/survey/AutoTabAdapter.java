@@ -179,29 +179,10 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
         scoreHolder.totalNum = (TextView) ((Activity) context).findViewById(R.id.totalNum);
         scoreHolder.subtotalscore = (TextView) ((Activity) context).findViewById(R.id.subtotalScoreText);
         scoreHolder.qualitativeScore = (TextView) ((Activity) context).findViewById(R.id.qualitativeScore);
-        RelativeLayout space = (RelativeLayout) (((Activity) context).findViewById(R.id.space));
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this.context);
+        int visibility = (PreferencesState.getInstance().isShowNumDen()) ? View.VISIBLE : View.GONE;
 
-        int visibility=View.GONE;
-        float weightAccumulatedTextParent=0.0f;
-        float weightSpace=0.45f;
-        float weightNumDen=0.0f;
-
-        if (PreferencesState.getInstance().isShowNumDen()) {
-            visibility=View.VISIBLE;
-            weightAccumulatedTextParent=0.25f;
-            weightSpace=0f;
-            weightNumDen=0.1f;
-        }
-
-        scoreHolder.totalDenum.setVisibility(visibility);
-        scoreHolder.totalNum.setVisibility(visibility);
-        (((Activity) context).findViewById(R.id.accumulatedText)).setVisibility(visibility);
-
-        ((RelativeLayout) (((Activity) context).findViewById(R.id.accumulatedText)).getParent()).setLayoutParams(new LinearLayout.LayoutParams(0, RelativeLayout.LayoutParams.WRAP_CONTENT, weightAccumulatedTextParent));
-        space.setLayoutParams(new LinearLayout.LayoutParams(0, RelativeLayout.LayoutParams.WRAP_CONTENT, weightSpace));
-        ((RelativeLayout) scoreHolder.totalNum.getParent()).setLayoutParams(new LinearLayout.LayoutParams(0, RelativeLayout.LayoutParams.WRAP_CONTENT, weightNumDen));
-        ((RelativeLayout) scoreHolder.totalDenum.getParent()).setLayoutParams(new LinearLayout.LayoutParams(0, RelativeLayout.LayoutParams.WRAP_CONTENT, weightNumDen));
+        // Set all the subscore bar visibility (this way, the bar will disappear if visibility is GONE)
+        ((LinearLayout)(scoreHolder.totalNum.getParent()).getParent()).setVisibility(visibility);
     }
 
     @Override
@@ -469,7 +450,7 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
 
     private void autoFillAnswer(ViewHolder viewHolder, Question question) {
 
-        ((Spinner) viewHolder.component).setEnabled(false);
+        viewHolder.component.setEnabled(false);
 
         if (checkMatches(question))
             itemSelected(viewHolder, question, question.getAnswer().getOptions().get(0));

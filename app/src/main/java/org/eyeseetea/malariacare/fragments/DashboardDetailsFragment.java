@@ -63,7 +63,7 @@ public class DashboardDetailsFragment extends ListFragment {
 
     public DashboardDetailsFragment(){
         this.adapter = Session.getAdapter();
-        this.surveys=new ArrayList<Survey>();
+        this.surveys=new ArrayList();
     }
 
     public static DashboardDetailsFragment newInstance(int index) {
