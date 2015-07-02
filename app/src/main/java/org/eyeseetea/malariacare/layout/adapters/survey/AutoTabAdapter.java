@@ -126,7 +126,7 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
             if (item instanceof Question) {
                 if (!(hidden[i] = isHidden((Question) item))) {
                     initScoreQuestion((Question) item);
-                } else ScoreRegister.addRecord((Question) item, 0F, calcDenum((Question) item));
+                } else ScoreRegister.addRecord((Question) item, 0F, ScoreRegister.calcDenum((Question) item));
                 hidden[items.indexOf(((Question) item).getHeader())] = hidden[items.indexOf(((Question) item).getHeader())]
                         && hidden[i];
             }
@@ -233,7 +233,7 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
                 if (items.get(i) instanceof Question && !hidden[i]) {
                     Question question = (Question) items.get(i);
                     if (question.getAnswer().getOutput() == Constants.DROPDOWN_LIST)
-                        result = result + calcDenum((Question) items.get(i));
+                        result = result + ScoreRegister.calcDenum((Question) items.get(i));
                 }
 
             }
@@ -247,8 +247,8 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
         if (question.getAnswer().getOutput() == Constants.DROPDOWN_LIST || question.getAnswer().getOutput() == Constants.RADIO_GROUP_HORIZONTAL
                 || question.getAnswer().getOutput() == Constants.RADIO_GROUP_VERTICAL) {
 
-            Float num = calcNum(question);
-            Float denum = calcDenum(question);
+            Float num = ScoreRegister.calcNum(question);
+            Float denum = ScoreRegister.calcDenum(question);
 
             totalNum = totalNum + num;
             totalDenum = totalDenum + denum;
@@ -314,45 +314,36 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
         return items.get(getRealPosition(position)).hashCode();
     }
 
-    private float calcNum(Question question) {
-        float result = 0;
-        if (question.getValueBySession() != null) {
-            Option op = question.getOptionBySession();
-            result = question.getNumerator_w() * op.getFactor();
-        }
 
-        return result;
-    }
-
-    private float calcDenum(Question question) {
-        float result = 0;
-
-        if (question.getAnswer().getOutput() == Constants.DROPDOWN_LIST || question.getAnswer().getOutput() == Constants.RADIO_GROUP_HORIZONTAL
-                || question.getAnswer().getOutput() == Constants.RADIO_GROUP_VERTICAL) {
-
-            Option option = question.getOptionBySession();
-            if (option != null) {
-                return calcDenum(option.getFactor(), question);
-            } else {
-                result = calcDenum(0, question);
-            }
-        }
-
-        return result;
-    }
-
-    private float calcDenum(float factor, Question question) {
-        float result = 0;
-        float num = question.getNumerator_w();
-        float denum = question.getDenominator_w();
-
-        if (num == denum)
-            result = denum;
-        if (num == 0 && denum != 0)
-            result = factor * denum;
-
-        return result;
-    }
+//    private float calcDenum(Question question) {
+//        float result = 0;
+//
+//        if (question.getAnswer().getOutput() == Constants.DROPDOWN_LIST || question.getAnswer().getOutput() == Constants.RADIO_GROUP_HORIZONTAL
+//                || question.getAnswer().getOutput() == Constants.RADIO_GROUP_VERTICAL) {
+//
+//            Option option = question.getOptionBySession();
+//            if (option != null) {
+//                return calcDenum(option.getFactor(), question);
+//            } else {
+//                result = calcDenum(0, question);
+//            }
+//        }
+//
+//        return result;
+//    }
+//
+//    private float calcDenum(float factor, Question question) {
+//        float result = 0;
+//        float num = question.getNumerator_w();
+//        float denum = question.getDenominator_w();
+//
+//        if (num == denum)
+//            result = denum;
+//        if (num == 0 && denum != 0)
+//            result = factor * denum;
+//
+//        return result;
+//    }
 
     private void updateQuestionsVisibility(Question question, boolean show) {
         List<Question> children = question.getQuestionChildren();
@@ -369,7 +360,7 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
                 ReadWriteDB.resetValue(child);
                 hidden[items.indexOf(child.getHeader())] = isHeaderHide(child.getHeader());
             } else {
-                Float denum = calcDenum(child);
+                Float denum = ScoreRegister.calcDenum(child);
                 totalDenum = totalDenum + denum;
                 ScoreRegister.addRecord(child, 0F, denum);
                 hidden[items.indexOf(child.getHeader())] = false;
@@ -399,7 +390,7 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
                     viewHolder.denum.setText(Float.toString(numdenum.get(1)));
                 } else {
                     viewHolder.num.setText(this.context.getString(R.string.number_zero));
-                    viewHolder.denum.setText(Float.toString(calcDenum(question)));
+                    viewHolder.denum.setText(Float.toString(ScoreRegister.calcDenum(question)));
                     ((Spinner) viewHolder.component).setSelection(0);
                 }
 
@@ -416,7 +407,7 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
                     viewHolder.denum.setText(Float.toString(numdenumradiobutton.get(1)));
                 } else {
                     viewHolder.num.setText(this.context.getString(R.string.number_zero));
-                    viewHolder.denum.setText(Float.toString(calcDenum(question)));
+                    viewHolder.denum.setText(Float.toString(ScoreRegister.calcDenum(question)));
                 }
                 break;
             default:
@@ -500,8 +491,8 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
     }
 
     private void recalculateScores(ViewHolder viewHolder, Question question) {
-        Float num = calcNum(question);
-        Float denum = calcDenum(question);
+        Float num = ScoreRegister.calcNum(question);
+        Float denum = ScoreRegister.calcDenum(question);
 
         viewHolder.num.setText(num.toString());
         viewHolder.denum.setText(denum.toString());
@@ -787,29 +778,6 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
             }
 
         }
-
-            /*Option option = null;
-            if (checkedId != -1) {
-                RadioButton radioButton = (RadioButton) ((RadioGroup) this.viewHolder.component).findViewById(checkedId);
-                option = (Option) radioButton.getTag();
-                ReadWriteDB.saveValuesDDL(question, option);
-            } else {
-                Value value = question.getValueBySession();
-                if (value != null) value.delete();
-            }*/
-            /*recalculateScores(viewHolder, question);
-
-            if (question.hasChildren() && option != null) {
-
-                if (option.getName().equals(R.string.yes))
-                    updateQuestionsVisibility(question, true);
-                else
-                    updateQuestionsVisibility(question, false);
-
-            }
-
-            updateScore();*/
-
     }
 
 }

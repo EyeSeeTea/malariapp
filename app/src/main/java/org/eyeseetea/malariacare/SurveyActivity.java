@@ -49,6 +49,7 @@ import org.eyeseetea.malariacare.layout.adapters.general.TabArrayAdapter;
 import org.eyeseetea.malariacare.layout.adapters.survey.AutoTabAdapter;
 import org.eyeseetea.malariacare.layout.adapters.survey.CompositeScoreAdapter;
 import org.eyeseetea.malariacare.layout.adapters.survey.ITabAdapter;
+import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 import org.eyeseetea.malariacare.services.SurveyService;
 import org.eyeseetea.malariacare.utils.Constants;
@@ -159,6 +160,7 @@ public class SurveyActivity extends BaseActivity{
                 .setNegativeButton(android.R.string.no, null)
                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int arg1) {
+                        ScoreRegister.clear();
                         finishAndGo(DashboardDetailsActivity.class);
                     }
                 }).create().show();

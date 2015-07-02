@@ -27,6 +27,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
@@ -46,7 +47,7 @@ import org.eyeseetea.malariacare.layout.adapters.dashboard.AssessmentAdapter;
 import org.eyeseetea.malariacare.layout.adapters.dashboard.IDashboardAdapter;
 import org.eyeseetea.malariacare.layout.listeners.SwipeDismissListViewTouchListener;
 import org.eyeseetea.malariacare.services.SurveyService;
-import org.eyeseetea.malariacare.utils.PushEvents;
+import org.eyeseetea.malariacare.utils.PushClient;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -238,21 +239,9 @@ public class DashboardDetailsFragment extends ListFragment {
                         .setMessage("Are you sure? You can not undo this action")
                         .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface arg0, int arg1) {
-
                                 final Survey survey = (Survey) adapter.getItem(position-1);
-
-                                Log.d(".DetailsFragment", "Pushing " + survey.getProgram().getName());
-
-                                new Thread (){
-                                    public void run() {
-
-                                        Log.d (".DetailsFragment","Thread");
-
-                                        new PushEvents(survey).run();
-                                    }
-                                }.start();
-
-
+                                AsyncPush asyncPush=new AsyncPush(survey);
+                                asyncPush.execute((Void) null);
                             }
                         })
                         .setNegativeButton(android.R.string.no, null).create().show();
@@ -319,6 +308,58 @@ public class DashboardDetailsFragment extends ListFragment {
             List<Survey> surveysFromService=(List<Survey>)Session.popServiceValue(SurveyService.ALL_UNSENT_SURVEYS_ACTION);
             reloadSurveys(surveysFromService);
         }
-
     }
+
+    public class AsyncPush extends AsyncTask<Void, Integer, Exception> {
+
+        private Survey survey;
+
+
+        public AsyncPush(Survey survey) {
+            this.survey = survey;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            //spinner
+            setListShown(false);
+        }
+
+        @Override
+        protected Exception doInBackground(Void... params) {
+            try {
+                PushClient pushClient=new PushClient(survey);
+                pushClient.push();
+            }catch (Exception e) {
+                //Result is an error
+                return e;
+            }
+            //No error
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Exception e) {
+            super.onPostExecute(e);
+            setListShown(true);
+
+            String msg=e!=null?e.getMessage():getActivity().getString(R.string.dialog_info_push_ok);
+            showResponse(msg);
+        }
+
+        /**
+         * Shows the proper response message
+         * @param msg
+         */
+        private void showResponse(String msg){
+            new AlertDialog.Builder(getActivity())
+                    .setTitle(getActivity().getString(R.string.dialog_title_push_response))
+                    .setMessage(msg)
+                    .setNeutralButton(android.R.string.yes,null).create().show();
+
+        }
+    }
+
+
 }

@@ -22,8 +22,12 @@ package org.eyeseetea.malariacare.layout.score;
 import android.util.Log;
 
 import org.eyeseetea.malariacare.database.model.CompositeScore;
+import org.eyeseetea.malariacare.database.model.Option;
 import org.eyeseetea.malariacare.database.model.Question;
+import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.model.Tab;
+import org.eyeseetea.malariacare.database.utils.Session;
+import org.eyeseetea.malariacare.utils.Constants;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -44,30 +48,30 @@ public class ScoreRegister {
     /**
      * Map of scores for each compositescore
      */
-    private static final Map<CompositeScore, CompositeNumDenRecord> compositeScoreRegister = new HashMap<CompositeScore, CompositeNumDenRecord>();
+    private static final Map<CompositeScore, CompositeNumDenRecord> compositeScoreMap = new HashMap<CompositeScore, CompositeNumDenRecord>();
 
     /**
      * Map of scores for each tab
      */
-    private static final Map<Tab, GeneralNumDenRecord> generalScoreRegister = new HashMap<Tab, GeneralNumDenRecord>();
+    private static final Map<Tab, TabNumDenRecord> tabScoreMap = new HashMap<Tab, TabNumDenRecord>();
 
     public static void addRecord(Question question, Float num, Float den){
         if (question.getCompositeScore() != null) {
-            compositeScoreRegister.get(question.getCompositeScore()).addRecord(question, num, den);
+            compositeScoreMap.get(question.getCompositeScore()).addRecord(question, num, den);
         }
-        generalScoreRegister.get(question.getHeader().getTab()).addRecord(question, num, den);
+        tabScoreMap.get(question.getHeader().getTab()).addRecord(question, num, den);
     }
 
     public static void deleteRecord(Question question){
         if (question.getCompositeScore() != null)
-            compositeScoreRegister.get(question.getCompositeScore()).deleteRecord(question);
-        generalScoreRegister.get(question.getHeader().getTab()).deleteRecord(question);
+            compositeScoreMap.get(question.getCompositeScore()).deleteRecord(question);
+        tabScoreMap.get(question.getHeader().getTab()).deleteRecord(question);
     }
 
     private static List<Float> getRecursiveScore(CompositeScore cScore, List<Float> result) {
 
         if (!cScore.hasChildren())
-            return compositeScoreRegister.get(cScore).calculateNumDenTotal(result);
+            return compositeScoreMap.get(cScore).calculateNumDenTotal(result);
         else {
             for (CompositeScore cScoreChildren : cScore.getCompositeScoreChildren())
                 result = getRecursiveScore(cScoreChildren, result);
@@ -76,12 +80,12 @@ public class ScoreRegister {
     }
 
     public static List<Float> getNumDenum(Question question) {
-        return generalScoreRegister.get(question.getHeader().getTab()).getNumDenRecord().get(question);
+        return tabScoreMap.get(question.getHeader().getTab()).getNumDenRecord().get(question);
     }
 
     public static Float getCompositeScore(CompositeScore cScore) {
 
-        List<Float>result = compositeScoreRegister.get(cScore).calculateNumDenTotal(new ArrayList<Float>(Arrays.asList(0F, 0F)));
+        List<Float>result = compositeScoreMap.get(cScore).calculateNumDenTotal(new ArrayList<Float>(Arrays.asList(0F, 0F)));
 
         result = getRecursiveScore(cScore, result);
 
@@ -90,7 +94,7 @@ public class ScoreRegister {
 
 
     public static List<Float> calculateGeneralScore(Tab tab) {
-        return generalScoreRegister.get(tab).calculateTotal();
+        return tabScoreMap.get(tab).calculateTotal();
     }
 
     /**
@@ -98,10 +102,10 @@ public class ScoreRegister {
      * @param compositeScores
      */
     public static void registerCompositeScores(List<CompositeScore> compositeScores){
-        compositeScoreRegister.clear();
+        compositeScoreMap.clear();
         for(CompositeScore compositeScore:compositeScores){
             Log.i(TAG, "Register composite score: " + compositeScore.getCode());
-            compositeScoreRegister.put(compositeScore, new CompositeNumDenRecord());
+            compositeScoreMap.put(compositeScore, new CompositeNumDenRecord());
         }
     }
 
@@ -110,18 +114,88 @@ public class ScoreRegister {
      * @param tabs
      */
     public static void registerTabScores(List<Tab> tabs){
-        generalScoreRegister.clear();
+        tabScoreMap.clear();
         for(Tab tab:tabs){
             Log.i(TAG, "Register tab score: " + tab.getName());
-            generalScoreRegister.put(tab, new GeneralNumDenRecord());
+            tabScoreMap.put(tab, new TabNumDenRecord());
         }
     }
 
-//    public static void registerScore(CompositeScore compositeScore){
-//        compositeScoreRegister.put(compositeScore, new CompositeNumDenRecord());
-//    }
+    /**
+     * Clears every score in session
+     */
+    public static void clear(){
+        compositeScoreMap.clear();
+        tabScoreMap.clear();
+    }
 
-//    public static void registerScore(Tab tab){
-//        generalScoreRegister.put(tab, new GeneralNumDenRecord());
-//    }
+    /**
+     * Calculates the numerator of the given question in the current survey
+     * @param question
+     * @return
+     */
+    public static float calcNum(Question question) {
+        return calcNum(question,Session.getSurvey());
+    }
+
+    /**
+     * Calculates the numerator of the given question & survey
+     * @param question
+     * @param survey
+     * @return
+     */
+    public static float calcNum(Question question, Survey survey){
+        if(survey==null || question==null){
+            return 0;
+        }
+
+        Option option=question.getOptionBySurvey(survey);
+        if(option==null){
+            return 0;
+        }
+        return question.getNumerator_w()*option.getFactor();
+    }
+
+    /**
+     * Calculates the numerator of the given question in the current survey
+     * @param question
+     * @return
+     */
+    public static float calcDenum(Question question) {
+        return calcDenum(question,Session.getSurvey());
+    }
+
+    /**
+     * Calculates the denominator of the given question & survey
+     * @param question
+     * @param survey
+     * @return
+     */
+    public static float calcDenum(Question question,Survey survey) {
+        float result = 0;
+
+        if(!question.isScored()){
+            return 0;
+        }
+
+        Option option = question.getOptionBySurvey(survey);
+        if(option==null){
+            return calcDenum(0,question);
+        }
+        return calcDenum(option.getFactor(),question);
+    }
+
+    private static float calcDenum(float factor, Question question) {
+        float num = question.getNumerator_w();
+        float denum = question.getDenominator_w();
+
+        if (num == denum) {
+            return denum;
+        }
+        if (num == 0 && denum != 0) {
+            return factor * denum;
+        }
+        return 0;
+    }
+
 }

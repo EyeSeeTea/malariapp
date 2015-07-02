@@ -183,7 +183,7 @@ public class Question extends SugarRecord<Question> {
         if (this._master == null) {
 
             this._master = Question.findWithQuery(Question.class, "Select * from Question" +
-                    " where id in (Select master from Question_Relation where relative ="+this.getId()+")");
+                    " where id in (Select master from Question_Relation where relative =" + this.getId() + ")");
         }
         return this._master;
     }
@@ -200,24 +200,59 @@ public class Question extends SugarRecord<Question> {
         return Value.find(Value.class, "question = ?", String.valueOf(this.getId()));
     }
 
-    // This method returns a value for this question given a survey. We return the first element because this must be unique
+    /**
+     * Gets the value of this question in the current survey in session
+     * @return
+     */
     public Value getValueBySession(){
-        String surveyId = String.valueOf(Session.getSurvey().getId());
-        String questionId = String.valueOf(this.getId());
-        List<Value> returnValues = Select.from(Value.class).where(Condition.prop("question").eq(questionId),
-                Condition.prop("survey").eq(surveyId)).list();
-        if (returnValues.size() == 0) return null;
-        else return returnValues.get(0);
+        return this.getValueBySurvey(Session.getSurvey());
     }
 
+    /**
+     * Gets the value of this question in the given Survey
+     * @param survey
+     * @return
+     */
+    public Value getValueBySurvey(Survey survey){
+        if(survey==null){
+            return null;
+        }
+        String surveyId = String.valueOf(survey.getId());
+        String questionId = String.valueOf(this.getId());
+        List<Value> returnValues = Select.from(Value.class).
+                where(Condition.prop("question").eq(questionId), Condition.prop("survey").eq(surveyId)).list();
+
+        if (returnValues.size() == 0){
+            return null;
+        }else{
+            return returnValues.get(0);
+        }
+    }
+
+    /**
+     * Gets the option of this question in the current survey in session
+     * @return
+     */
     public Option getOptionBySession(){
-        Option option = null;
+        return this.getOptionBySurvey(Session.getSurvey());
+    }
 
-        Value value = this.getValueBySession();
-        if (value!=null)
-            option = value.getOption();
+    /**
+     * Gets the option of this question in the given survey
+     * @param survey
+     * @return
+     */
+    public Option getOptionBySurvey(Survey survey){
+        if(survey==null){
+            return null;
+        }
 
-        return option;
+        Value value = this.getValueBySurvey(survey);
+        if(value==null){
+            return null;
+        }
+
+        return value.getOption();
     }
 
     /**
@@ -233,6 +268,22 @@ public class Question extends SugarRecord<Question> {
         List<Question> questionsByProgram = Question.findWithQuery(Question.class, LIST_REQUIRED_BY_PROGRAM, program.getId().toString());
         return questionsByProgram.size();
     }
+
+    /**
+     * Checks if this question is scored or not.
+     * @return true|false
+     */
+    public boolean isScored(){
+        try {
+            Integer output=getAnswer().getOutput();
+            return  output == Constants.DROPDOWN_LIST ||
+                    output == Constants.RADIO_GROUP_HORIZONTAL ||
+                    output == Constants.RADIO_GROUP_VERTICAL;
+        }catch(Exception e){
+            return false;
+        }
+    }
+
 
     @Override
     public String toString() {

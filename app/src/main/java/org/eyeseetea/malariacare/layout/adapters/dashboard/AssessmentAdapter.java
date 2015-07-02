@@ -112,6 +112,11 @@ public class AssessmentAdapter extends ADashboardAdapter implements IDashboardAd
      * @return
      */
     private String getStatus(Survey survey){
+
+        if(survey.isSent()){
+            return getContext().getString(R.string.dashboard_info_sent);
+        }
+
         SurveyAnsweredRatio surveyAnsweredRatio=survey.getAnsweredQuestionRatio();
 
         if (surveyAnsweredRatio.isCompleted()) {

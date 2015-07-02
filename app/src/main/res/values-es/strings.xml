@@ -206,5 +206,11 @@
 
     <string name="textcard_default_scale">system</string>
     <string name="textcard_default_dimension">medium</string>
+    <string name="dashboard_info_sent">Enviado</string>
+    <string name="dialog_title_push_response">Respuesta carga</string>
+    <string name="customize_fonts">customize_fonts</string>
+    <string name="dialog_info_push_ok">Datos subidos correctamente al servidor DHIS</string>
+    <string name="font_sizes">font_sizes</string>
+    <string name="show_num_dems">show_num_dems</string>
 
 </resources>

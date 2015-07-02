@@ -54,6 +54,7 @@
     <string name="dashboard_button_new_survey">New Survey</string>
     <string name="dashboard_button_see_all">See all</string>
     <string name="dashboard_info_ready_to_upload">Ready to upload</string>
+    <string name="dashboard_info_sent">Sent</string>
 
     <!-- create -->
     <string name="create_info_ok">Create assessment</string>
@@ -206,6 +207,8 @@
 
     <string name="textcard_default_scale">system</string>
     <string name="textcard_default_dimension">medium</string>
+    <string name="dialog_title_push_response">Push response</string>
+    <string name="dialog_info_push_ok">Survey data has been successfully pushed to DHIS server</string>
 
 
 </resources>
