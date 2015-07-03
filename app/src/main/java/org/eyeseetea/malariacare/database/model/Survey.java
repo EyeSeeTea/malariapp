@@ -29,7 +29,6 @@ import org.eyeseetea.malariacare.utils.Constants;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 
 public class Survey extends SugarRecord<Survey> {
@@ -147,6 +146,25 @@ public class Survey extends SugarRecord<Survey> {
                 .list();
     }
 
+    // Returns all the surveys with status put to "Sent"
+    public static List<Survey> getAllSentSurveys() {
+        return Select.from(Survey.class)
+                .where(com.orm.query.Condition.prop("status").eq(Constants.SURVEY_SENT))
+                .orderBy("event_date")
+                .orderBy("org_unit")
+                .list();
+    }
+
+    // Returns the last surveys (by date) with status put to "Sent"
+    public static List<Survey> getSentSurveys(int limit) {
+        return Select.from(Survey.class)
+                .where(com.orm.query.Condition.prop("status").eq(Constants.SURVEY_SENT))
+                .limit(String.valueOf(limit))
+                .orderBy("event_date")
+                .orderBy("org_unit")
+                .list();
+    }
+
     // Returns all the surveys with status put to "Completed"
     public static List<Survey> getAllCompletedSurveys() {
         return Select.from(Survey.class)
@@ -184,6 +202,8 @@ public class Survey extends SugarRecord<Survey> {
                 .orderBy("org_unit")
                 .list();
     }
+
+
 
     @Override
     public boolean equals(Object o) {

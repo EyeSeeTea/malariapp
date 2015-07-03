@@ -44,7 +44,7 @@
         android:layout_width="0dip"
         android:layout_height="fill_parent"
         android:textAppearance="?android:textAppearanceSmall"
-        android:text="@string/assessment_completed_title_state"
+        android:text="@string/assessment_sent_title_state"
         android:id="@+id/nameHeader"
         android:background="@drawable/background_header"
         android:textColor="@color/white"
