@@ -206,7 +206,7 @@
 
     <string name="textcard_default_scale">system</string>
     <string name="textcard_default_dimension">medium</string>
-    <string name="assessment_completed_title_state">Estado</string>
-    <string name="assessment_completed_title_header">Evaluación Completada</string>
+    <string name="assessment_sent_title_state">Estado</string>
+    <string name="assessment_sent_title_header">Evaluación Enviada</string>
 
 </resources>

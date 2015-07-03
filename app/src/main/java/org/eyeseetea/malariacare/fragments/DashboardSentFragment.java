@@ -36,12 +36,9 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 
-import org.eyeseetea.malariacare.DashboardDetailsActivity;
 import org.eyeseetea.malariacare.R;
-import org.eyeseetea.malariacare.SurveyActivity;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.utils.Session;
-import org.eyeseetea.malariacare.layout.adapters.dashboard.AssessmentAdapter;
 import org.eyeseetea.malariacare.layout.adapters.dashboard.AssessmentCompletedAdapter;
 import org.eyeseetea.malariacare.layout.adapters.dashboard.IDashboardAdapter;
 import org.eyeseetea.malariacare.layout.listeners.SwipeDismissListViewTouchListener;
@@ -54,7 +51,7 @@ import java.util.List;
 /**
  * A placeholder fragment containing a simple view.
  */
-public class DashboardCompletedFragment extends ListFragment {
+public class DashboardSentFragment extends ListFragment {
 
 
     public static final String TAG = ".CompletedFragment";
@@ -63,13 +60,13 @@ public class DashboardCompletedFragment extends ListFragment {
     protected IDashboardAdapter adapter;
     private static int index = 0;
 
-    public DashboardCompletedFragment(){
+    public DashboardSentFragment(){
         this.adapter = Session.getAdapterCompleted();
         this.surveys = new ArrayList();
     }
 
-    public static DashboardCompletedFragment newInstance(int index) {
-        DashboardCompletedFragment f = new DashboardCompletedFragment();
+    public static DashboardSentFragment newInstance(int index) {
+        DashboardSentFragment f = new DashboardSentFragment();
 
         // Supply index input as an argument.
         Bundle args = new Bundle();
@@ -248,7 +245,7 @@ public class DashboardCompletedFragment extends ListFragment {
 
         if(surveyReceiver==null){
             surveyReceiver=new SurveyReceiver();
-            LocalBroadcastManager.getInstance(getActivity()).registerReceiver(surveyReceiver, new IntentFilter(SurveyService.ALL_COMPLETED_SURVEYS_ACTION));
+            LocalBroadcastManager.getInstance(getActivity()).registerReceiver(surveyReceiver, new IntentFilter(SurveyService.ALL_SENT_SURVEYS_ACTION));
         }
     }
 
@@ -271,7 +268,7 @@ public class DashboardCompletedFragment extends ListFragment {
         Log.d(TAG, "getSurveysFromService");
         Activity activity=getActivity();
         Intent surveysIntent=new Intent(activity, SurveyService.class);
-        surveysIntent.putExtra(SurveyService.SERVICE_METHOD,SurveyService.ALL_COMPLETED_SURVEYS_ACTION);
+        surveysIntent.putExtra(SurveyService.SERVICE_METHOD,SurveyService.ALL_SENT_SURVEYS_ACTION);
         activity.startService(surveysIntent);
     }
 
@@ -291,7 +288,7 @@ public class DashboardCompletedFragment extends ListFragment {
         @Override
         public void onReceive(Context context, Intent intent) {
             Log.d(TAG, "onReceive");
-            List<Survey> surveysFromService=(List<Survey>)Session.popServiceValue(SurveyService.ALL_COMPLETED_SURVEYS_ACTION);
+            List<Survey> surveysFromService=(List<Survey>)Session.popServiceValue(SurveyService.ALL_SENT_SURVEYS_ACTION);
             reloadSurveys(surveysFromService);
         }
 
