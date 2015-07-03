@@ -25,7 +25,9 @@ public class Constants {
             TAB_CUSTOM_SCORED = 2,
             TAB_CUSTOM_NON_SCORED = 3,
             TAB_SCORE_SUMMARY = 4,
-            TAB_OTHER = 5;
+            TAB_OTHER = 5,
+            TAB_ADHERENCE = 6,
+            TAB_IQATAB=7;
 
     //FIXME So far the special sub type of composite scores is treated by name
     public static final String COMPOSITE_SCORE_TAB_NAME="Composite Scores";
