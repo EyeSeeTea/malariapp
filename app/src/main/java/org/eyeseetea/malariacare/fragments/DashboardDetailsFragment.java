@@ -45,6 +45,7 @@ import org.eyeseetea.malariacare.layout.adapters.dashboard.AssessmentAdapter;
 import org.eyeseetea.malariacare.layout.adapters.dashboard.IDashboardAdapter;
 import org.eyeseetea.malariacare.layout.listeners.SwipeDismissListViewTouchListener;
 import org.eyeseetea.malariacare.services.SurveyService;
+import org.eyeseetea.malariacare.views.TextCard;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -191,6 +192,8 @@ public class DashboardDetailsFragment extends ListFragment {
         LayoutInflater inflater = LayoutInflater.from(getActivity());
         View header = inflater.inflate(this.adapter.getHeaderLayout(), null, false);
         View footer = inflater.inflate(this.adapter.getFooterLayout(), null, false);
+        TextCard title = (TextCard) getActivity().findViewById(R.id.titleInProgress);
+        title.setText(adapter.getTitle());
         ListView listView = getListView();
         listView.addHeaderView(header);
         listView.addFooterView(footer);

@@ -17,9 +17,22 @@
   ~  along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
   -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
+
+    <org.eyeseetea.malariacare.views.TextCard
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="@string/empty_string"
+        android:textColor="@color/black"
+        android:id="@+id/titleInProgress"
+        android:padding="5dip"
+        app:tDimension="@string/font_size_level2"
+        app:tFontName="@string/condensed_font_name" />
+
     <FrameLayout
         android:orientation="vertical" android:layout_width="fill_parent"
         android:layout_height="wrap_content" android:paddingLeft="@dimen/activity_horizontal_margin"
@@ -40,6 +53,17 @@
 
         </TableLayout>
     </FrameLayout>
+
+    <org.eyeseetea.malariacare.views.TextCard
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="@string/empty_string"
+        android:textColor="@color/black"
+        android:id="@+id/titleCompleted"
+        android:padding="5dip"
+        app:tDimension="@string/font_size_level2"
+        app:tFontName="@string/condensed_font_name" />
 
     <FrameLayout
         android:orientation="vertical" android:layout_width="fill_parent"
