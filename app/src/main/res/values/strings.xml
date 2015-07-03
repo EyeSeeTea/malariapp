@@ -63,6 +63,7 @@
     <!-- assessment -->
     <string name="assessment_title_facility_date">Facility / Survey</string>
     <string name="assessment_title_state">% complete</string>
+    <string name="assessment_completed_title_state">Status</string>
     <string name="assessment_info_delete">Delete</string>
     <string name="assessment_title_header">Active Assessment</string>
 

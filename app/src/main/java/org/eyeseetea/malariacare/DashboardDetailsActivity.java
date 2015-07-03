@@ -27,6 +27,7 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.util.Log;
 
+import org.eyeseetea.malariacare.fragments.DashboardCompletedFragment;
 import org.eyeseetea.malariacare.fragments.DashboardDetailsFragment;
 
 
@@ -50,6 +51,12 @@ public class DashboardDetailsActivity extends BaseActivity {
             ft.add(R.id.dashboard_details_container, detailsFragment);
             ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
             ft.commit();
+            DashboardCompletedFragment completedFragment = new DashboardCompletedFragment();
+            detailsFragment.setArguments(getIntent().getExtras());
+            FragmentTransaction ftr = getFragmentManager().beginTransaction();
+            ftr.add(R.id.dashboard_completed_container, completedFragment);
+            ftr.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+            ftr.commit();
         }
     }
 

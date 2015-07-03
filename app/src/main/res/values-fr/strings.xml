@@ -207,5 +207,6 @@
 
     <string name="textcard_default_scale">system</string>
     <string name="textcard_default_dimension">medium</string>
+    <string name="assessment_completed_title_state"></string>
 
 </resources>

@@ -19,23 +19,12 @@
 
 package org.eyeseetea.malariacare.database.utils;
 
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 import android.util.Log;
 
-import com.orm.SugarApp;
-import com.orm.query.Select;
-
-import org.eyeseetea.malariacare.R;
-import org.eyeseetea.malariacare.database.model.OrgUnit;
-import org.eyeseetea.malariacare.database.model.Program;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.model.User;
 import org.eyeseetea.malariacare.layout.adapters.dashboard.IDashboardAdapter;
-import org.eyeseetea.malariacare.utils.Constants;
 
-import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -65,7 +54,7 @@ public class Session {
     private static Map<String,Object> serviceValues=new HashMap<>();
 
     //FIXME Probably no longer required
-    private static IDashboardAdapter adapter;
+    private static IDashboardAdapter adapterUncompleted, adapterCompleted;
 
     public static Survey getSurvey() {
         return survey;
@@ -83,12 +72,20 @@ public class Session {
         Session.user = user;
     }
 
-    public static IDashboardAdapter getAdapter() {
-        return adapter;
+    public static IDashboardAdapter getAdapterUncompleted() {
+        return adapterUncompleted;
     }
 
-    public static void setAdapter(IDashboardAdapter adapter) {
-        Session.adapter = adapter;
+    public static void setAdapterUncompleted(IDashboardAdapter adapterUncompleted) {
+        Session.adapterUncompleted = adapterUncompleted;
+    }
+
+    public static IDashboardAdapter getAdapterCompleted() {
+        return adapterCompleted;
+    }
+
+    public static void setAdapterCompleted(IDashboardAdapter adapterCompleted) {
+        Session.adapterCompleted = adapterCompleted;
     }
 
     /**
@@ -102,7 +99,7 @@ public class Session {
         Session.getUser().delete();
         Session.setUser(null);
         Session.setSurvey(null);
-        Session.setAdapter(null);
+        Session.setAdapterUncompleted(null);
         Session.serviceValues.clear();
     }
 
