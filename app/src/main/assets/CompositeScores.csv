@@ -1,43 +1,38 @@
-1;'1';'Health facility readiness';
-2;'1.1';'Amenities/infrastructure (Water, Power)';1
-3;'1.2';'Equipment (Clinical and lab equipments)';1
-4;'1.2.1';'Clinical';3
-6;'1.3';'Stockouts (ACTS, essential drugs and equipments)';1
-7;'1.3.1';'Stock out of Antimalarials';6
-8;'1.3.2';'Stock out of other essential drugs';6
-12;'1.4';'Services, materials and reporting';1
-13;'1.4.1';'Malaria reference materials';12
-14;'1.4.2';'Malaria registers and reporting';12
-17;'1.4.5';'Sevices (ANC& Referral)';12
-18;'1.5';'Human resources';1
-19;'2';'Suspected/Tested competence';
-20;'3';'RDT Competence';
-24;'7';'Competence in Malaria case management';
-26;'7.2';'Fever treatment';24
-27;'7.3';'Communication of uncomplicated disease';24
-28;'7.4';'Admission or Referral of severe cases';24
-29;'9';'Mentorship (on site training)';
-32;'1';'Total';36
-33;'1.1';'Inquiry';32
-34;'1.2';'Physical Examination';32
-35;'1.3';'Diagnosis, Treatment and Counseling';32
-37;'Total';'Total Score';
-38;'2';'Inquiry Score';37
-39;'3';'Physical Examination Score';37
-40;'4';'Diagnosis, Treatment and Counseling Score';37
-41;'2.1';'Inquiry (2.1)';38
-42;'2.2';'Inquiry (2.2)';38
-43;'2.3';'Inquiry (2.3)';38
-44;'2.4';'Inquiry (2.4)';38
-45;'2.5';'Inquiry (2.5)';38
-46;'3.1';'Physical Examination (3.1)';39
-47;'3.2';'Physical Examination (3.2)';39
-48;'3.3';'Physical Examination (3.3)';39
-49;'3.4';'Physical Examination (3.4)';39
-50;'3.5';'Physical Examination (3.5)';39
-51;'4.1';'Diagnosis, Treatment and Counseling (4.1)';40
-52;'4.2';'Diagnosis, Treatment and Counseling (4.2)';40
-53;'4.3';'Diagnosis, Treatment and Counseling (4.3)';40
-54;'4.4';'Diagnosis, Treatment and Counseling (4.4)';40
-55;'4.5';'Diagnosis, Treatment and Counseling (4.5)';40
-56;'4.6';'Diagnosis, Treatment and Counseling (4.6)';40
+1;'1';'Treatment Readiness';;'aSCal7Ftgzp'
+2;'2';'RDT Readiness';;'cNe4i2DIkkn'
+3;'3';'Microscopy Readiness';;'gcC2cWYtBHl'
+4;'4';'Slide-Rechecking';;'VyCoAWHIVXz'
+5;'4.1';'Positive/Negative Test Result';4;'zs9c8wvan7P'
+6;'4.2';'Speciation';4;'qQCbp77i5DW'
+7;'5';'Adherence';;'tyno3EjsJTP'
+8;'5.1';'Pharmacy/Clinical Register to Lab Result';7;'rE9R3H8WKZ7'
+9;'5.2';'Lab Result to Pharmacy/Clinical Register';7;'HwK0rqPpOWt'
+10;'5.2.1';'Positive Test Result';9;'HtRXeJDfWwG'
+11;'5.2.2';'Negative Test Result';9;'ORgZFxgNSeb'
+12;'6';'Clinical Observation Overall';;'UIhMsAkUsDn'
+13;'6.1';'Clinical Observation 1';12;'tFQ6kFYbB4j'
+14;'6.1.1';'Clinical Observation 1:  Case In-take';13;'VQTruMhhgZz'
+15;'6.1.2';'Clinical Observation 1: Final Diagnosis & Treatment';13;'i44OQEsFWvx'
+16;'6.2';'Clinical Observation 2';12;'z90UsTsBo74'
+17;'6.2.1';'Clinical Observation 2:  Case In-take';16;'B8NfUnFyW4D'
+18;'6.2.2';'Clinical Observation 2: Final Diagnosis & Treatment';16;'DcwD6Nigdxo'
+19;'6.3';'Clinical Observation 3';12;'XWaZIlPjvxc'
+20;'6.3.1';'Clinical Observation 3:  Case In-take';19;'GgTSHFzIDPJ'
+21;'6.3.2';'Clinical Observation 3: Final Diagnosis & Treatment';19;'NE1WfGu7F09'
+22;'7';'RDT Observation';;'kyQSrI85yFE'
+23;'7.1';'RDT Observation 1';22;'ndXnWTpSCC0'
+24;'7.2';'RDT Observation 2';22;'VJewfCV3P2m'
+25;'7.3';'RDT Observation 3';22;'KtZbeh1bzI3'
+26;'8';'Microscopy Observation';;'qndMJwFPydn'
+27;'8.1';'Slide Preparation';26;'p1rg7Tk5HYW'
+28;'8.1.1';'Slide Preparation: Observation 1';27;'IfI6vCONqUk'
+29;'8.1.2';'Slide Preparation: Observation 2';27;'xC4t1z2XNJ7'
+30;'8.1.3';'Slide Preparation: Observation 3';27;'jgQmz8UbkUz'
+31;'8.2';'Slide Staining';26;'CniWLU0pbaa'
+32;'8.2.1';'Slide Staining: Observation 1';31;'NaLbjlJ2H4e'
+33;'8.2.2';'Slide Staining: Observation 2';31;'BKXk0iKDhJf'
+34;'8.2.3';'Slide Staining: Observation 3';31;'FRC6RYh6yQh'
+35;'8.3';'Slide Reading';26;'EObHjTCGtys'
+36;'8.3.1';'Slide Reading: Observation 1';35;'A6DTtE8O78h'
+37;'8.3.2';'Slide Reading: Observation 2';35;'kalQBCGa5Eh'
+38;'8.3.3';'Slide Reading: Observation 3';35;'s735xZ6iQcj'

@@ -1,154 +1,85 @@
-305;'Assessment visit details';'Assessment visit details';1;17
-306;'General Info';'General Info';2;17
-307;'HR - Clinical Officers';'HR - Clinical Officers';3;1
-308;'HR - Medical Officers/MD';'HR - Medical Officers/MD';4;1
-309;'HR - Nurses';'HR - Nurses';5;1
-310;'HR - Medical Interns';'HR - Medical Interns';6;1
-311;'HR - Clinical Students';'HR - Clinical Students';7;1
-312;'HR - Other';'HR - Other';8;1
-313;'HR - Clinical Staff Training';'HR - Clinical Staff Training';9;1
-314;'ANC Services';'ANC Services';10;1
-315;'Inpatient Services & Referral systems';'Inpatient Services & Referral systems';11;1
-316;'Forms of malaria diagnosis';'Forms of malaria diagnosis';12;1
-318;'Health Worker information';'Health Worker information';14;2
-319;'Reception';'Reception';15;2
-320;'Signs of severe malaria';'Signs of severe malaria';16;2
-321;'Clinical severity assessment';'Clinical severity assessment';17;2
-322;'Taking Clinical history';'Taking Clinical history';18;2
-323;'Prior Diagnosis and treatment';'Prior Diagnosis and treatment';19;2
-324;'General Examination';'General Examination';20;2
-325;'Clinically suspected diagnosis';'Clinically suspected diagnosis';21;2
-326;'Agreement';'Agreement';22;2
-327;'Malaria Test';'Malaria Test';23;2
-328;'Other Tests';'Other Tests';24;2
-329;'Test Results';'Test Results';25;2
-330;'Diagnosis';'Diagnosis';26;2
-331;'Treatment';'Treatment';27;2
-332;'Severity of disease';'Severity of disease';28;2
-333;'Uncomplicated disease: Communication';'Uncomplicated disease: Communication';29;2
-334;'Severe: AdmissionRef';'Severe: AdmissionRef';30;2
-335;'Severe: Communication';'Severe: Communication';31;2
-336;'Worker Information';'Worker Information';32;3
-337;'RDT Type & Brand';'RDT Type & Brand';33;3
-338;'RDT Preparation';'RDT Preparation';34;3
-339;'Patient Preparation';'Patient Preparation';35;3
-340;'Blood Collection';'Blood Collection';36;3
-341;'RDT Procedure';'RDT Procedure';37;3
-342;'RDT Waste Disposal';'RDT Waste Disposal';38;3
-343;'Health Worker information';'Health Worker information';39;5
-344;'Reception';'Reception';40;5
-345;'Signs of severe malaria';'Signs of severe malaria';41;5
-346;'Clinical severity assessment';'Clinical severity assessment';42;5
-347;'Taking Clinical history';'Taking Clinical history';43;5
-348;'Prior Diagnosis and treatment';'Prior Diagnosis and treatment';44;5
-349;'General Examination';'General Examination';44;5
-350;'Clinically suspected diagnosis';'Clinically suspected diagnosis';45;5
-351;'Agreement';'Agreement';46;5
-352;'Malaria Test';'Malaria Test';47;5
-353;'Other Tests';'Other Tests';48;5
-354;'Test Results';'Test Results';49;5
-355;'Diagnosis';'Diagnosis';50;5
-356;'Treatment';'Treatment';51;5
-357;'Severity of disease';'Severity of disease';52;5
-358;'Uncomplicated disease: Communication';'Uncomplicated disease: Communication';53;5
-359;'Severe: AdmissionRef';'Severe: AdmissionRef';54;5
-360;'Severe: Communication';'Severe: Communication';55;5
-361;'Worker Information';'Worker Information';56;6
-362;'RDT Type & Brand';'RDT Type & Brand';57;6
-363;'RDT Preparation';'RDT Preparation';58;6
-364;'Patient Preparation';'Patient Preparation';59;6
-365;'Blood Collection';'Blood Collection';60;6
-366;'RDT Procedure';'RDT Procedure';61;6
-367;'RDT Waste Disposal';'RDT Waste Disposal';62;6
-368;'Health Worker information';'Health Worker information';63;8
-369;'Reception';'Reception';64;8
-370;'Signs of severe malaria';'Signs of severe malaria';65;8
-371;'Clinical severity assessment';'Clinical severity assessment';66;8
-372;'Taking Clinical history';'Taking Clinical history';67;8
-373;'Prior Diagnosis and treatment';'Prior Diagnosis and treatment';68;8
-374;'General Examination';'General Examination';69;8
-375;'Clinically suspected diagnosis';'Clinically suspected diagnosis';70;8
-376;'Agreement';'Agreement';71;8
-377;'Malaria Test';'Malaria Test';72;8
-378;'Other Tests';'Other Tests';73;8
-379;'Test Results';'Test Results';74;8
-380;'Diagnosis';'Diagnosis';75;8
-381;'Treatment';'Treatment';76;8
-382;'Severity of disease';'Severity of disease';77;8
-383;'Uncomplicated disease: Communication';'Uncomplicated disease: Communication';78;8
-384;'Severe: AdmissionRef';'Severe: AdmissionRef';79;8
-385;'Severe: Communication';'Severe: Communication';80;8
-386;'Worker Information';'Worker Information';81;9
-387;'RDT Type & Brand';'RDT Type & Brand';82;9
-388;'RDT Preparation';'RDT Preparation';83;9
-389;'Patient Preparation';'Patient Preparation';84;9
-390;'Blood Collection';'Blood Collection';85;9
-391;'RDT Procedure';'RDT Procedure';86;9
-392;'RDT Waste Disposal';'RDT Waste Disposal';87;9
-393;'Last Visit';'Last Visit';88;12
-394;'This Visit';'This Visit';89;12
-395;'Water supply';'Water supply';90;13
-396;'Clinical Equipment';'Clinical Equipment';91;13
-397;'Stock out of Antimalarials';'Stock out of Antimalarials';92;13
-398;'Stock out of other essential drugs';'Stock out of other essential drugs';93;13
-399;'Malaria Reference Material';'Malaria Reference Material';94;13
-400;'Malaria reporting';'Malaria reporting';95;13
-401;'Malaria registers';'Malaria registers';96;13
-402;'-';'-';97;16
-403;'Profile';'Profile';98;16
-404;'Case Management';'Case Management';99;16
-405;'General';'General';100;16
-406;'Health facility readiness';'Health facility readiness';101;18
-407;'Suspected/Tested competence';'Suspected/Tested competence';102;18
-408;'RDT Competence';'RDT Competence';103;18
-409;'Competence in Malaria case management';'Competence in Malaria case management';104;18
-410;'Mentorship (on site training)';'Mentorship (on site training)';105;18
-464;'Introduction';'Introduction';1;19
-465;'Inquiry';'Inquiry';2;19
-466;'Physical Examination';'Physical Examination';3;19
-467;'Diagnosis 1';'Diagnosis 1';1;21
-468;'Diagnosis 2';'Diagnosis 2';2;21
-469;'Contraceptive Counseling';'Contraceptive Counseling';1;22
-470;'Injectables';'Injectables';3;22
-471;'IUCD Insertion';'IUCD Insertion';4;22
-472;'IUCD Removal';'IUCD Removal';5;22
-473;'Implant Insertion';'Implant Insertion';6;22
-474;'Implant Removal';'Implant Removal';7;22
-475;'Introduction';'Introduction';1;23
-476;'Inquiry';'Inquiry';2;23
-477;'Physical Examination';'Physical Examination';3;23
-478;'Diagnosis 1';'Diagnosis 1';4;23
-479;'Diagnosis 2';'Diagnosis 2';5;23
-480;'RDT Procedure';'RDT Procedure';1;25
-481;'Introduction';'Introduction';1;26
-482;'Ask';'Ask';2;26
-483;'Care';'Care';3;26
-484;'Client education and counseling';'Client education and counseling';4;26
-485;'Pre-Insertion (Clinical)';'Pre-Insertion (Clinical)';1;27
-486;'Insertion';'Insertion';2;27
-487;'Post-insertion';'Post-insertion';3;27
-488;'Procedure/Follow-Ip';'Procedure/Follow-Ip';4;27
-489;'Management of Pre-Eclampsia/Eclampsia';'Management of Pre-Eclampsia/Eclampsia';1;28
-490;'Management of Post Partum Haemorrhage';'Management of Post Partum Haemorrhage';2;28
-491;'Pre-delivery';'Pre-delivery';1;29
-492;'Delivery';'Delivery';2;29
-493;'Immediate Post-delivery';'Immediate Post-delivery';3;29
-494;'Pre-Screening';'Pre-Screening';1;30
-495;'Patient screening';'Patient screening';2;30
-496;'Pre-Cryotherapy Counselling';'Pre-Cryotherapy Counselling';3;30
-497;'Getting Ready';'Getting Ready';4;30
-498;'Cryotherapy';'Cryotherapy';5;30
-499;'Post Cryotherapy Tasks';'Post Cryotherapy Tasks';6;30
-500;'Inquiry';'Inquiry';1;31
-501;'Examination';'Examination';2;31
-502;'Treatment';'Treatment';3;31
-503;'Counseling';'Counseling';4;31
-504;'Newborn Resuscitation';'Newborn Resuscitation';1;32
-505;'HIV Testing and Counseling';'HIV Testing and Counseling';1;33
-506;'HIV Care and Treatment';'HIV Care and Treatment';2;33
-507;'HTN screening , classification and staging';'HTN screening , classification and staging';1;34
-508;'History taking and assessment';'History taking and assessment';2;34
-509;'Diagnosis and Management as per protocol';'Diagnosis and Management as per protocol';3;34
-510;'Oral Contraceptive Pills';'Oral Contraceptive Pills';2;22
-511;'Diagnosis 3';'Diagnosis 3';3;21
-512;'Diagnosis 3';'Diagnosis 3';6;23
+1;'HF Info';'Health Facility Information';1;1
+2;'HR_T';'Human Resources and Training';2;1
+3;'HF Infra';'Health Facility Infrastructure';3;1
+4;'Ph, St, Eq';'Pharmacy, Stocks & Equipment';4;1
+5;'Mal Diag';'Malaria Diagnostics';5;1
+6;'RDT Assess';'RDT Assessment';6;1
+7;'Ph/Cl reg';'Pharmacy/Clinical Register';1;2
+8;'Lab Reg';'Laboratory Register';2;2
+9;'HW Info';'Health Worker Information';1;3
+10;'Rec';'Reception';2;3
+11;'Signs Sev Dis';'Signs of severe disease';3;3
+12;'Cl sev assess';'Clinical severity assessment';4;3
+13;'Cl hist';'Taking a clinical history';5;3
+14;'Prior Dx Tx';'Prior Diagnosis and Treatment';6;3
+15;'Gen Ex';'General examination';7;3
+16;'Diag';'Clinically suspected diagnosis';8;3
+17;'Agr';'Agreement';9;3
+18;'Mal Test';'Malaria Test';10;3
+19;'Oth Test';'Other tests';11;3
+20;'Diag Test res';'Diagnostic test results';12;3
+21;'Tx';'Treatment';13;3
+22;'Com: Unc disease';'Communication: Uncomplicated disease';14;3
+23;'Com: Sev disease';'Communication: Severe disease';15;3
+24;'Sev dis';'Severe disease';16;3
+25;'HW Info';'Health Worker Information';1;4
+26;'Rec';'Reception';2;4
+27;'Signs Sev Dis';'Signs of severe disease';3;4
+28;'Cl sev assess';'Clinical severity assessment';4;4
+29;'Cl hist';'Taking a clinical history';5;4
+30;'Prior Dx Tx';'Prior Diagnosis and Treatment';6;4
+31;'Gen Ex';'General examination';7;4
+32;'Diag';'Clinically suspected diagnosis';8;4
+33;'Agr';'Agreement';9;4
+34;'Mal Test';'Malaria Test';10;4
+35;'Oth Test';'Other tests';11;4
+36;'Diag Test res';'Diagnostic test results';12;4
+37;'Tx';'Treatment';13;4
+38;'Com: Unc disease';'Communication: Uncomplicated disease';14;4
+39;'Com: Sev disease';'Communication: Severe disease';15;4
+40;'Sev dis';'Severe disease';16;4
+41;'HW Info';'Health Worker Information';1;5
+42;'Rec';'Reception';2;5
+43;'Signs Sev Dis';'Signs of severe disease';3;5
+44;'Cl sev assess';'Clinical severity assessment';4;5
+45;'Cl hist';'Taking a clinical history';5;5
+46;'Prior Dx Tx';'Prior Diagnosis and Treatment';6;5
+47;'Gen Ex';'General examination';7;5
+48;'Diag';'Clinically suspected diagnosis';8;5
+49;'Agr';'Agreement';9;5
+50;'Mal Test';'Malaria Test';10;5
+51;'Oth Test';'Other tests';11;5
+52;'Diag Test res';'Diagnostic test results';12;5
+53;'Tx';'Treatment';13;5
+54;'Com: Unc disease';'Communication: Uncomplicated disease';14;5
+55;'Com: Sev disease';'Communication: Severe disease';15;5
+56;'Sev dis';'Severe disease';16;5
+57;'Obs 1';'Observation 1';1;6
+58;'Obs 2';'Observation 2';2;6
+59;'Obs 3';'Observation 3';3;6
+60;'HSR_lab';'Human Resources - Laboratory Staff';1;7
+61;'Train_lab';'Training Overview - Laboratory';2;7
+62;'W&P supp';'Water and Power Supply';3;7
+63;'Stock_Mal Micro';'Stock-outs for Malaria Microscopy';4;7
+64;'Micro, parts, main';'Microscopes, Spare Parts, Maintenance';5;7
+65;'Lab equip';'Minor Laboratory Equipment';6;7
+66;'IQA';'Internal Quality Assurance (IQA)';7;7
+67;'EQA';'EQA - Malaria Microscopy';8;7
+68;'Mal timing';'Malaria Test Result Timing';9;7
+69;'Ref mat_micro';'Reference Material - Microscopy';10;7
+70;'Obs 1';'Observation 1';1;8
+71;'Obs 2';'Observation 2';2;8
+72;'Obs 3';'Observation 3';3;8
+73;'Obs 1';'Observation 1';1;9
+74;'Obs 2';'Observation 2';2;9
+75;'Obs 3';'Observation 3';3;9
+76;'Obs 1';'Observation 1';1;10
+77;'Obs 2';'Observation 2';2;10
+78;'Obs 3';'Observation 3';3;10
+79;'Prob 1';'Problem 1';1;12
+80;'Prob 2';'Problem 2';2;12
+81;'Prob 3';'Problem 3';3;12
+82;'AdherenceTable1';'AdherenceTable1';1;2
+83;'AdherenceTable2';'AdherenceTable2';2;2
+84;'IQEQA1';'IQEQA1';1;11
+85;'IQEQA2';'IQEQA2';2;11

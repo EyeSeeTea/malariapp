@@ -91,6 +91,7 @@ public class PopulateDB {
                         compositeScore.setCode(line[1]);
                         compositeScore.setLabel(line[2]);
                         if (!line[3].equals("")) compositeScore.setCompositeScore(compositeScoreMap.get(Integer.valueOf(line[3])));
+                        compositeScore.setUid(line[4]);
                         compositeScoreMap.put(Integer.valueOf(line[0]), compositeScore);
                         break;
                     case QUESTIONS_CSV:
@@ -104,7 +105,8 @@ public class PopulateDB {
                         question.setNumerator_w(Float.valueOf(line[7]));
                         question.setDenominator_w(Float.valueOf(line[8]));
                         question.setHeader(headerList.get(Integer.valueOf(line[9])));
-                        question.setAnswer(answerList.get(Integer.valueOf(line[10])));
+                        if (!line[10].equals(""))
+                            question.setAnswer(answerList.get(Integer.valueOf(line[10])));
                         if (!line[11].equals(""))
                             question.setQuestion(questionList.get(Integer.valueOf(line[11])));
                         if (line.length == 13 && !line[12].equals("")) question.setCompositeScore(compositeScoreMap.get(Integer.valueOf(line[12])));
@@ -133,10 +135,43 @@ public class PopulateDB {
     }
 
     public static void populateDummyData(){
-        for (int i=0; i<10; i++) {
+        /*for (int i=0; i<10; i++) {
             OrgUnit orgUnit = new OrgUnit("123" + i, "Health Facility " + i);
             orgUnit.save();
-        }
+        }*/
+
+        OrgUnit orgUnit = new OrgUnit("gN7EhLCgKAS", "Outlet 1-1");
+        orgUnit.save();
+
+        orgUnit = new OrgUnit("avIJ8BAiEzA", "Outlet 1-2");
+        orgUnit.save();
+
+        orgUnit = new OrgUnit("4wCykG8Tm", "Outlet 1-3");
+        orgUnit.save();
+
+        orgUnit = new OrgUnit("DMBrIWRzFPo", "Outlet 1-4");
+        orgUnit.save();
+
+        orgUnit = new OrgUnit("HEpmESXlcLn", "Outlet 1-5");
+        orgUnit.save();
+
+        orgUnit = new OrgUnit("XD0wteyXBbf", "Outlet 2-1");
+        orgUnit.save();
+
+        orgUnit = new OrgUnit("JsWspiAFl9X", "Outlet 2-2");
+        orgUnit.save();
+
+        orgUnit = new OrgUnit("wqbYPZZd7Fp", "Outlet 2-3");
+        orgUnit.save();
+
+        orgUnit = new OrgUnit("EjDVgc1MI4O", "Outlet 2-4");
+        orgUnit.save();
+
+        orgUnit = new OrgUnit("g91OgEIKIm", "Outlet 2-5");
+        orgUnit.save();
+
+
+
     }
 
 }

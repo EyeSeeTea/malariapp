@@ -20,8 +20,8 @@ Specialized obstetrics clinic';0.00;33
 19;'Male';0.00;3
 20;'Female';0.00;3
 21;'Health Center';0.00;37
-22;'District Hospital 3. Regional';0.00;37
-23;'Hospital';0.00;37
+22;'District Hospital';0.00;37
+23;'Regional Hospital';0.00;37
 24;'Simple malaria';0.00;38
 25;'Severe malaria';0.00;38
 26;'Other';0.00;38
@@ -40,19 +40,18 @@ Specialized obstetrics clinic';0.00;33
 39;'No';0.00;39
 40;'Partially';0.33;39
 41;'Completely';1.00;39
-42;'Lab Technichian';0.00;4
-43;'Lab Assistant';0.00;4
-44;'Clinical Officer/Physicians';0.00;4
-45;'Assistant';0.00;4
+42;'MD/Medical Officer/Physician';0.00;4
+43;'Clinical Officer/Physician''s Assistant';0.00;4
+44;'Lab Tech';0.00;4
+45;'Microscopist';0.00;4
 46;'Nurse';0.00;4
-47;'MD';0.00;4
 48;'Midwife';0.00;4
 49;'Other';0.00;4
 50;'Positive';0.00;7
 51;'Negative';0.00;7
-52;'Unknown';0.00;7
+52;'Unknown/ No Test Result';0.00;7
 53;'Present & Functional';1.00;6
-54;'Present & Non-functional';0.50;6
+54;'Present & Non-functional';0.00;6
 55;'Not present';0.00;6
 56;'Clinicalpractice general';0.00;42
 57;'Adherence to Malariatest';0.00;42
@@ -73,7 +72,7 @@ Specialized obstetrics clinic';0.00;33
 72;'RDT';0.00;10
 73;'Microcopy Thick smear';0.00;10
 74;'Microscopy Thin smear';0.00;10
-75;'Both';0.00;10
+75;'Microscopy Thick and Thin smear';0.00;10
 76;'Traditional treatment';1.00;12
 77;'Antimalarial treatment';1.00;12
 78;'Other/  Unknown';1.00;12
@@ -85,8 +84,8 @@ Specialized obstetrics clinic';0.00;33
 84;'Stream/ river';0.33;11
 85;'Commercial Bottled water';1.00;11
 86;'Externally filled water tank';1.00;11
-87;'No';1.00;13
-88;'Yes';0.00;13
+87;'Yes';0.00;13
+88;'No';1.00;13
 89;'Yes';0.00;48
 90;'No';1.00;48
 91;'Not Asked';0.00;48
@@ -131,3 +130,93 @@ Specialized obstetrics clinic';0.00;33
 131;'Other treatment';7.00;51
 132;'Yes';1.00;53
 133;'No';0.00;53
+134;'Yes';1.00;54
+135;'No';1.00;54
+136;'Unknown';1.00;54
+137;'Not Asked';0.00;54
+138;'Yes';1.00;55
+139;'No';1.00;55
+140;'Not asked';0.00;55
+141;'Not applicable';1.00;55
+142;'Yes';1.00;56
+143;'No';0.00;56
+144;'Antimalarial not prescribed';1.00;56
+145;'Yes';1.00;57
+146;'No';0.00;57
+147;'N/A';1.00;57
+148;'Yes';1.00;58
+149;'No';0.00;58
+150;'Not available';1.00;58
+151;'Yes';1.00;59
+152;'No';0.00;59
+153;'Not Applicable';1.00;59
+154;'Yes';0.00;60
+155;'No';1.00;60
+156;'Unk';0.00;60
+157;'Thick smear';0.00;61
+158;'Thin smear';0.00;61
+159;'Both';0.00;61
+160;'RDT';0.00;62
+161;'Microscopy';0.00;62
+162;'Test not available';0.00;62
+163;'Test not ordered';0.00;62
+164;'Severe disease';0.00;63
+165;'Non-severe disease';0.00;63
+166;'Main';0.00;64
+167;'Generator';0.00;64
+168;'Solar';0.00;64
+169;'None';0.00;64
+170;'Pharmacy';0.00;65
+171;'Clinical';0.00;65
+172;'Neither Pharmacy nor Clinical Records Available';0.00;65
+173;'Unofficial register';0.00;66
+174;'Loose paper sheets';0.00;66
+175;'Computerized record';0.00;66
+176;'Other';0.00;66
+177;'Lab Tech';0.00;67
+178;'Microscopist';0.00;67
+179;'Normal';0.00;68
+180;'Abnormal';0.00;68
+181;'RDT +';1.00;69
+182;'RDT -';0.00;69
+183;'Microscopy +';1.00;69
+184;'Microscopy -';0.00;69
+185;'Not found';0.00;69
+186;'No antimalarial prescribed';0.00;70
+187;'ACT';0.00;70
+188;'Artemisinin (intramuscular monotherapy)';0.00;70
+189;'Artemisinin (intravenous)';0.00;70
+190;'Artemisinin (oral monotherapy)';0.00;70
+191;'Artemether (intramuscular)';0.00;70
+192;'Artesunate (intramuscular monotherapy)';0.00;70
+193;'Artesunate (rectal)';0.00;70
+194;'Quinine (oral)';0.00;70
+195;'Quinine (intramuscular)';0.00;70
+196;'Quinine (intravenous)';0.00;70
+197;'Chloroquine';0.00;70
+198;'SP';0.00;70
+199;'Other';0.00;70
+200;'Both RDT and Microscopy (any type)';0.00;10
+201;'Mixed';0.00;40
+204;'Male';0.00;73
+205;'Female';0.00;73
+206;'Male';0.00;72
+207;'Female';0.00;72
+208;'Yes';0.00;74
+209;'No';1.00;74
+210;'Yes';1.00;75
+211;'No';0.00;75
+212;'Available';1.00;75
+213;'Yes';1.00;76
+214;'No';0.00;76
+215;'NA';1.00;76
+216;'Yes';1.00;77
+217;'No';1.00;77
+218;'Asked';0.00;77
+219;'Yes';1.00;78
+220;'No';1.00;78
+221;'Asked';0.00;78
+222;'???';0.00;79
+223;'???';0.00;79
+224;'???';0.00;80
+225;'???';0.00;80
