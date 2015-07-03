@@ -42,7 +42,7 @@ public class AssessmentCompletedAdapter extends AAssessmentAdapter implements IA
         this.headerLayout = R.layout.assessment_completed_header;
         this.recordLayout = R.layout.assessment_record;
         this.footerLayout = R.layout.assessment_completed_footer;
-        this.title = context.getString(R.string.assessment_title_header);
+        this.title = context.getString(R.string.assessment_completed_title_header);
     }
 
     @Override

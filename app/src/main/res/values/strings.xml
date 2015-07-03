@@ -4,7 +4,7 @@
     <!-- # general -->
     <string name="app_name">Health Network QIS</string>
     <string name="developers">EyeSeeTea LTD</string>
-    <string name="empty_string"></string>
+    <string name="empty_string" translatable="false"></string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="ok">Ok</string>
@@ -66,6 +66,7 @@
     <string name="assessment_completed_title_state">Status</string>
     <string name="assessment_info_delete">Delete</string>
     <string name="assessment_title_header">Active Assessment</string>
+    <string name="assessment_completed_title_header">Complete Assessment</string>
 
     <!-- feedback -->
     <!-- XXX Should it be replaced by 'assessment_title_facility_date'?-->
