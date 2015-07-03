@@ -1,14 +1,14 @@
 /*
  * Copyright (c) 2015.
  *
- * This file is part of Facility QA Tool App.
+ * This file is part of Health Network QIS App.
  *
- *  Facility QA Tool App is free software: you can redistribute it and/or modify
+ *  Health Network QIS App is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
  *  the Free Software Foundation, either version 3 of the License, or
  *  (at your option) any later version.
  *
- *  Facility QA Tool App is distributed in the hope that it will be useful,
+ *  Health Network QIS App is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *  GNU General Public License for more details.
@@ -42,6 +42,7 @@ import org.eyeseetea.malariacare.SurveyActivity;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.layout.adapters.dashboard.AssessmentAdapter;
+import org.eyeseetea.malariacare.layout.adapters.dashboard.AssessmentCompletedAdapter;
 import org.eyeseetea.malariacare.layout.adapters.dashboard.IDashboardAdapter;
 import org.eyeseetea.malariacare.layout.listeners.SwipeDismissListViewTouchListener;
 import org.eyeseetea.malariacare.services.SurveyService;
@@ -52,22 +53,22 @@ import java.util.List;
 /**
  * A placeholder fragment containing a simple view.
  */
-public class DashboardDetailsFragment extends ListFragment {
+public class DashboardCompletedFragment extends ListFragment {
 
 
-    public static final String TAG = ".DetailsFragment";
+    public static final String TAG = ".CompletedFragment";
     private SurveyReceiver surveyReceiver;
     private List<Survey> surveys;
     protected IDashboardAdapter adapter;
     private static int index = 0;
 
-    public DashboardDetailsFragment(){
-        this.adapter = Session.getAdapterUncompleted();
+    public DashboardCompletedFragment(){
+        this.adapter = Session.getAdapterCompleted();
         this.surveys = new ArrayList();
     }
 
-    public static DashboardDetailsFragment newInstance(int index) {
-        DashboardDetailsFragment f = new DashboardDetailsFragment();
+    public static DashboardCompletedFragment newInstance(int index) {
+        DashboardCompletedFragment f = new DashboardCompletedFragment();
 
         // Supply index input as an argument.
         Bundle args = new Bundle();
@@ -123,11 +124,11 @@ public class DashboardDetailsFragment extends ListFragment {
      * In a version with several adapters in dashboard (like in 'mock' branch) a new one like the one in session is created.
      */
     private void initAdapter(){
-        IDashboardAdapter adapterInSession = Session.getAdapterUncompleted();
+        IDashboardAdapter adapterInSession = Session.getAdapterCompleted();
         if(adapterInSession == null){
-            adapterInSession = new AssessmentAdapter(this.surveys,getActivity());
+            adapterInSession = new AssessmentCompletedAdapter(this.surveys, getActivity());
         }else{
-            adapterInSession = adapterInSession.newInstance(this.surveys,getActivity());
+            adapterInSession = adapterInSession.newInstance(this.surveys, getActivity());
         }
         this.adapter = adapterInSession;
 
@@ -138,15 +139,16 @@ public class DashboardDetailsFragment extends ListFragment {
         Log.d(TAG, "onListItemClick");
         super.onListItemClick(l, v, position, id);
 
-        //Discard clicks on header|footer (which is attendend on newSurvey via super)
+        //Discard clicks on header|footer (which is attended on newSurvey via super)
         if(!isPositionASurvey(position)){
             return;
         }
 
         //Put selected survey in session
         Session.setSurvey(surveys.get(position - 1));
-        //Go to SurveyActivity
-        ((DashboardDetailsActivity) getActivity()).go(SurveyActivity.class);
+        // Go to SurveyActivity
+        // Here we should do the push
+        //((DashboardDetailsActivity) getActivity()).go(SurveyActivity.class);
     }
 
     @Override
@@ -243,7 +245,7 @@ public class DashboardDetailsFragment extends ListFragment {
 
         if(surveyReceiver==null){
             surveyReceiver=new SurveyReceiver();
-            LocalBroadcastManager.getInstance(getActivity()).registerReceiver(surveyReceiver, new IntentFilter(SurveyService.ALL_UNCOMPLETED_SURVEYS_ACTION));
+            LocalBroadcastManager.getInstance(getActivity()).registerReceiver(surveyReceiver, new IntentFilter(SurveyService.ALL_COMPLETED_SURVEYS_ACTION));
         }
     }
 
@@ -266,7 +268,7 @@ public class DashboardDetailsFragment extends ListFragment {
         Log.d(TAG, "getSurveysFromService");
         Activity activity=getActivity();
         Intent surveysIntent=new Intent(activity, SurveyService.class);
-        surveysIntent.putExtra(SurveyService.SERVICE_METHOD,SurveyService.ALL_UNCOMPLETED_SURVEYS_ACTION);
+        surveysIntent.putExtra(SurveyService.SERVICE_METHOD,SurveyService.ALL_COMPLETED_SURVEYS_ACTION);
         activity.startService(surveysIntent);
     }
 
@@ -286,7 +288,7 @@ public class DashboardDetailsFragment extends ListFragment {
         @Override
         public void onReceive(Context context, Intent intent) {
             Log.d(TAG, "onReceive");
-            List<Survey> surveysFromService=(List<Survey>)Session.popServiceValue(SurveyService.ALL_UNCOMPLETED_SURVEYS_ACTION);
+            List<Survey> surveysFromService=(List<Survey>)Session.popServiceValue(SurveyService.ALL_COMPLETED_SURVEYS_ACTION);
             reloadSurveys(surveysFromService);
         }
 

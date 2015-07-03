@@ -137,10 +137,48 @@ public class Survey extends SugarRecord<Survey> {
                 .list();
     }
 
-    // Returns the 5 last surveys (by date) with status yet not put to "Sent"
+    // Returns the last surveys (by date) with status yet not put to "Sent"
     public static List<Survey> getUnsentSurveys(int limit) {
         return Select.from(Survey.class)
                 .where(com.orm.query.Condition.prop("status").notEq(Constants.SURVEY_SENT))
+                .limit(String.valueOf(limit))
+                .orderBy("event_date")
+                .orderBy("org_unit")
+                .list();
+    }
+
+    // Returns all the surveys with status put to "Completed"
+    public static List<Survey> getAllCompletedSurveys() {
+        return Select.from(Survey.class)
+                .where(com.orm.query.Condition.prop("status").eq(Constants.SURVEY_COMPLETED))
+                .orderBy("event_date")
+                .orderBy("org_unit")
+                .list();
+    }
+
+    // Returns the last surveys (by date) with status put to "Completed"
+    public static List<Survey> getCompletedSurveys(int limit) {
+        return Select.from(Survey.class)
+                .where(com.orm.query.Condition.prop("status").eq(Constants.SURVEY_COMPLETED))
+                .limit(String.valueOf(limit))
+                .orderBy("event_date")
+                .orderBy("org_unit")
+                .list();
+    }
+
+    // Returns all the surveys with status put to "In progress"
+    public static List<Survey> getAllUncompletedSurveys() {
+        return Select.from(Survey.class)
+                .where(com.orm.query.Condition.prop("status").eq(Constants.SURVEY_IN_PROGRESS))
+                .orderBy("event_date")
+                .orderBy("org_unit")
+                .list();
+    }
+
+    // Returns the last surveys (by date) with status put to "In progress"
+    public static List<Survey> getUncompletedSurveys(int limit) {
+        return Select.from(Survey.class)
+                .where(com.orm.query.Condition.prop("status").eq(Constants.SURVEY_IN_PROGRESS))
                 .limit(String.valueOf(limit))
                 .orderBy("event_date")
                 .orderBy("org_unit")

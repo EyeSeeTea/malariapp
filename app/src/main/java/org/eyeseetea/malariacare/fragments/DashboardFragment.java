@@ -26,33 +26,20 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Adapter;
-import android.widget.BaseAdapter;
 import android.widget.ListView;
 
-import com.orm.query.Select;
-
-import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.DashboardDetailsActivity;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.model.Survey;
-import org.eyeseetea.malariacare.database.utils.ReadWriteDB;
 import org.eyeseetea.malariacare.database.utils.Session;
-import org.eyeseetea.malariacare.layout.adapters.dashboard.AnalyticsAdapter;
 import org.eyeseetea.malariacare.layout.adapters.dashboard.AssessmentAdapter;
 import org.eyeseetea.malariacare.layout.adapters.dashboard.DashboardAdapter;
-import org.eyeseetea.malariacare.layout.adapters.dashboard.FeedbackAdapter;
-import org.eyeseetea.malariacare.layout.adapters.dashboard.FutureAssessmentPlanningAdapter;
 import org.eyeseetea.malariacare.layout.adapters.dashboard.IDashboardAdapter;
-import org.eyeseetea.malariacare.layout.adapters.dashboard.PerformancePlanningAdapter;
 import org.eyeseetea.malariacare.utils.Constants;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.locks.Condition;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -163,7 +150,7 @@ public class DashboardFragment extends ListFragment {
             Intent intent = new Intent();
             intent.setClass(getActivity(), DashboardDetailsActivity.class);
             intent.putExtra("index", index);
-            Session.setAdapter(adapters.get(index));
+            Session.setAdapterUncompleted(adapters.get(index));
             startActivity(intent);
         }
     }

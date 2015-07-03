@@ -16,24 +16,49 @@
   ~  You should have received a copy of the GNU General Public License
   ~  along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
   -->
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-android:orientation="vertical" android:layout_width="fill_parent"
-android:layout_height="fill_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
-android:paddingRight="@dimen/activity_horizontal_margin"
-android:paddingTop="@dimen/activity_vertical_margin"
-android:paddingBottom="@dimen/activity_vertical_margin"
-android:id="@+id/dashboard_details_container">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+    <FrameLayout
+        android:orientation="vertical" android:layout_width="fill_parent"
+        android:layout_height="wrap_content" android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        android:id="@+id/dashboard_details_container">
 
-    <TableLayout
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:id="@+id/dashboard_details_table">
-
-        <ListView
-            android:layout_width="match_parent"
+        <TableLayout
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/dashboard_details_list"/>
+            android:id="@+id/dashboard_details_table">
 
-    </TableLayout>
+            <ListView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/dashboard_details_list"/>
 
-</FrameLayout>
+        </TableLayout>
+    </FrameLayout>
+
+    <FrameLayout
+        android:orientation="vertical" android:layout_width="fill_parent"
+        android:layout_height="wrap_content" android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        android:id="@+id/dashboard_completed_container">
+
+        <TableLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/dashboard_details_table_sent">
+
+            <ListView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/dashboard_details_list_sent"/>
+
+        </TableLayout>
+    </FrameLayout>
+</LinearLayout>

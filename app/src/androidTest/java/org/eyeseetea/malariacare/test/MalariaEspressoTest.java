@@ -28,15 +28,9 @@ import android.content.res.Resources;
 import android.database.sqlite.SQLiteDatabase;
 import android.preference.PreferenceManager;
 import android.support.test.InstrumentationRegistry;
-import android.support.test.espresso.PerformException;
-import android.support.test.espresso.UiController;
-import android.support.test.espresso.ViewAction;
-import android.support.test.espresso.util.HumanReadables;
-import android.support.test.espresso.util.TreeIterables;
 import android.support.test.runner.lifecycle.ActivityLifecycleMonitorRegistry;
 import android.support.test.runner.lifecycle.Stage;
 import android.util.Log;
-import android.view.View;
 
 import org.eyeseetea.malariacare.database.model.Answer;
 import org.eyeseetea.malariacare.database.model.CompositeScore;
@@ -50,17 +44,13 @@ import org.eyeseetea.malariacare.database.model.Tab;
 import org.eyeseetea.malariacare.database.model.User;
 import org.eyeseetea.malariacare.database.model.Value;
 import org.eyeseetea.malariacare.database.utils.PopulateDB;
-import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.layout.adapters.dashboard.AssessmentAdapter;
 import org.eyeseetea.malariacare.test.utils.IntentServiceIdlingResource;
-import org.hamcrest.Matcher;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.concurrent.TimeoutException;
 
-import static android.support.test.espresso.matcher.ViewMatchers.isRoot;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 
 /**
@@ -90,7 +80,7 @@ public class MalariaEspressoTest {
     public static void cleanSession(){
         Session.setUser(null);
         Session.setSurvey(null);
-        Session.setAdapter(null);
+        Session.setAdapterUncompleted(null);
     }
 
     public static void cleanDB(){
@@ -163,7 +153,7 @@ public class MalariaEspressoTest {
             survey.save();
         }
         List<Survey> surveys= Survey.find(Survey.class, "user=?", user.getId().toString());
-        Session.setAdapter(new AssessmentAdapter(surveys, InstrumentationRegistry.getTargetContext()));
+        Session.setAdapterUncompleted(new AssessmentAdapter(surveys, InstrumentationRegistry.getTargetContext()));
         return surveys;
     }
 
