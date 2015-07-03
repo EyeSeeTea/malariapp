@@ -46,9 +46,6 @@ public class Survey extends SugarRecord<Survey> {
     Integer status;
 
     @Ignore
-    private long DEFAULT_COMPLETION_DATE_AS_LONG=32506423216238l;
-
-    @Ignore
     SurveyAnsweredRatio _answeredQuestionRatio;
 
     public Survey() {
@@ -60,7 +57,7 @@ public class Survey extends SugarRecord<Survey> {
         this.user = user;
         this.eventDate = new Date();
         this.status = Constants.SURVEY_IN_PROGRESS; // Possibilities [ In progress | Completed | Sent ]
-        this.completionDate= new Date(DEFAULT_COMPLETION_DATE_AS_LONG);
+        this.completionDate= this.eventDate;
 
         Log.i(".Survey", Long.valueOf(this.completionDate.getTime()).toString());
     }
@@ -174,7 +171,7 @@ public class Survey extends SugarRecord<Survey> {
             this.setCompletionDate(new Date());
         }else{
             this.setStatus(Constants.SURVEY_IN_PROGRESS);
-            this.setCompletionDate(new Date(DEFAULT_COMPLETION_DATE_AS_LONG));
+            this.setCompletionDate(this.eventDate);
         }
 
         //Saves new status & completionDate

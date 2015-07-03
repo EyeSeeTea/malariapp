@@ -212,5 +212,6 @@
     <string name="dialog_info_push_ok">Datos subidos correctamente al servidor DHIS</string>
     <string name="font_sizes">font_sizes</string>
     <string name="show_num_dems">show_num_dems</string>
+    <string name="dialog_info_push_bad_credentials">Credenciales incorrectas para el push</string>
 
 </resources>

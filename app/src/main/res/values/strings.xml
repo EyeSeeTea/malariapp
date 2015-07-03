@@ -209,6 +209,7 @@
     <string name="textcard_default_dimension">medium</string>
     <string name="dialog_title_push_response">Push response</string>
     <string name="dialog_info_push_ok">Survey data has been successfully pushed to DHIS server</string>
+    <string name="dialog_info_push_bad_credentials">Bad credentials for pushing</string>
 
 
 </resources>

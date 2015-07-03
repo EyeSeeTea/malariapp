@@ -329,7 +329,7 @@ public class DashboardDetailsFragment extends ListFragment {
         @Override
         protected Exception doInBackground(Void... params) {
             try {
-                PushClient pushClient=new PushClient(survey);
+                PushClient pushClient=new PushClient(survey,getActivity());
                 pushClient.push();
             }catch (Exception e) {
                 //Result is an error

@@ -19,8 +19,19 @@
 
 package org.eyeseetea.malariacare.utils;
 
+import android.app.Activity;
 import android.util.Log;
 
+import com.squareup.okhttp.Authenticator;
+import com.squareup.okhttp.Challenge;
+import com.squareup.okhttp.Credentials;
+import com.squareup.okhttp.MediaType;
+import com.squareup.okhttp.OkHttpClient;
+import com.squareup.okhttp.Request;
+import com.squareup.okhttp.RequestBody;
+import com.squareup.okhttp.Response;
+
+import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.model.CompositeScore;
 import org.eyeseetea.malariacare.database.model.Question;
 import org.eyeseetea.malariacare.database.model.Survey;
@@ -30,6 +41,9 @@ import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.io.IOException;
+import java.net.Proxy;
+import java.net.URL;
 import java.util.List;
 
 /**
@@ -37,10 +51,20 @@ import java.util.List;
  */
 public class PushClient {
 
+
+
     private static String TAG=".PushClient";
 
     //FIXME This should change for a sharedpreferences url that is selected from the login screen
-    private static String DHIS_SERVER="http://localhost:8080/dhis2";
+    private static String DHIS_DEFAULT_SERVER="https://malariacare.psi.org";
+    private static String DHIS_PUSH_API="/api/events";
+    private static String DHIS_USERNAME="testing";
+    private static String DHIS_PASSWORD="Testing2015";
+
+    private String credentials = Credentials.basic(DHIS_USERNAME,DHIS_PASSWORD);
+
+    public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
+    private OkHttpClient client = new OkHttpClient();
 
     private static String COMPLETED="COMPLETED";
 
@@ -53,10 +77,13 @@ public class PushClient {
     private static String TAG_DATAELEMENT="dataElement";
     private static String TAG_VALUE="value";
 
-    Survey survey;
 
-    public PushClient(Survey survey) {
+    Survey survey;
+    Activity activity;
+
+    public PushClient(Survey survey, Activity activity) {
         this.survey = survey;
+        this.activity = activity;
     }
 
     public void push() throws Exception{
@@ -122,7 +149,7 @@ public class PushClient {
      * Format: {dataValues: [{dataElement:'234567',value:'34'}, ...]}
      * @param value
      * @return
-     * @throws Exceptionuser
+     * @throws Exception
      */
     private JSONObject prepareValue(Value value) throws Exception{
         JSONObject elementObject = new JSONObject();
@@ -131,34 +158,57 @@ public class PushClient {
         return elementObject;
     }
 
+    /**
+     * Adds a pair dataElement|value according to the 'compositeScore' of the value.
+     * Format: {dataValues: [{dataElement:'234567',value:'34'}, ...]}
+     * @param compositeScore
+     * @return
+     * @throws Exception
+     */
     private JSONObject prepareValue(CompositeScore compositeScore) throws Exception{
         JSONObject elementObject = new JSONObject();
         elementObject.put(TAG_DATAELEMENT, compositeScore.getUid());
         elementObject.put(TAG_VALUE, ScoreRegister.getCompositeScore(compositeScore));
         return elementObject;
     }
-
-    /**
-     * Adds a pair dataElement|value according to the 'compositeScore' of the value.
-     * Format: {dataValues: [{dataElement:'234567',value:'34'}, ...]}
-     * @param value
-     * @return
-     * @throws Exception
-     */
-    private JSONObject prepareCompositeScore(Value value) throws Exception{
-        JSONObject elementObject = new JSONObject();
-        elementObject.put(TAG_DATAELEMENT, value.getQuestion().getUid());
-        elementObject.put(TAG_VALUE, value.getValue());
-        return elementObject;
-    }
-
     /**
      * Pushes data to DHIS Server
      * @param data
      */
-    private void pushData(JSONObject data)throws Exception{
-        //TODO do a real push to DHIS_SERVER
-        Thread.sleep(3000);
+    private void pushData(JSONObject data)throws Exception {
+        client.setAuthenticator(new Authenticator() {
+            @Override
+            public Request authenticate(Proxy proxy, Response response) throws IOException {
+                return response.request().newBuilder().header("Authorization", credentials).build();
+            }
+
+            @Override
+            public Request authenticateProxy(Proxy proxy, Response response) throws IOException {
+                return null;
+            }
+        });
+
+        RequestBody body = RequestBody.create(JSON, data.toString());
+        Request request = new Request.Builder()
+                .header("Authorization",credentials)
+                .url(DHIS_DEFAULT_SERVER+DHIS_PUSH_API)
+                .post(body)
+                .build();
+        Response response = client.newCall(request).execute();
+        if(!response.isSuccessful()){
+            Log.e(TAG, "pushData (" + response.code()+"): "+response.body().string());
+            throw new IOException(response.message());
+        }
+        parseResponse(response.body().string());
+    }
+
+    private void parseResponse(String responseData)throws Exception{
+        try{
+            JSONObject jsonResponse=new JSONObject(responseData);
+            Log.e(TAG, "parseResponse: " + jsonResponse);
+        }catch(Exception ex){
+            throw new Exception(activity.getString(R.string.dialog_info_push_bad_credentials));
+        }
     }
 
 }
