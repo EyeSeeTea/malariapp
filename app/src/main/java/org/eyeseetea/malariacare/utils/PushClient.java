@@ -44,7 +44,10 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.net.Proxy;
 import java.net.URL;
+import java.security.GeneralSecurityException;
 import java.util.List;
+
+import javax.net.ssl.SSLContext;
 
 /**
  * Created by Jose on 20/06/2015.
@@ -190,7 +193,7 @@ public class PushClient {
 
         RequestBody body = RequestBody.create(JSON, data.toString());
         Request request = new Request.Builder()
-                .header("Authorization",credentials)
+//                .header("Authorization",credentials)
                 .url(DHIS_DEFAULT_SERVER+DHIS_PUSH_API)
                 .post(body)
                 .build();
