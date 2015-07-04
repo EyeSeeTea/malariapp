@@ -40,6 +40,7 @@ import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.model.Header;
 import org.eyeseetea.malariacare.database.model.Option;
 import org.eyeseetea.malariacare.database.model.Question;
+import org.eyeseetea.malariacare.database.model.Tab;
 import org.eyeseetea.malariacare.database.model.Value;
 import org.eyeseetea.malariacare.database.utils.ReadWriteDB;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
@@ -54,10 +55,9 @@ import java.util.List;
 public class CustomAdherenceAdapter extends BaseAdapter implements ITabAdapter {
 
     private List<Object> items;
+    Tab tab;
 
     private LayoutInflater lInflater;
-
-    String tabName;
 
     boolean visible = false;
 
@@ -111,7 +111,7 @@ public class CustomAdherenceAdapter extends BaseAdapter implements ITabAdapter {
 
     @Override
     public String getName() {
-        return tabName;
+        return tab.getName();
     }
 
     @Override
@@ -139,18 +139,16 @@ public class CustomAdherenceAdapter extends BaseAdapter implements ITabAdapter {
 
     }
 
-    public CustomAdherenceAdapter(List<Object> items, Context context, int id_layout, String tabName) {
+    public CustomAdherenceAdapter(Tab tab, Context context) {
         this.lInflater=LayoutInflater.from(context);
-        this.items=items;
+        this.items=Utils.convertTabToArrayCustom(tab);
+        this.id_layout = R.layout.form_custom;
         this.context=context;
-        this.tabName = tabName;
 
         if (items.size()> 0)
             position_secondheader = LayoutUtils.getNumberOfQuestionParentsHeader((Header) items.get(0)) +1 ;
 
         scores = new int[position_secondheader];
-
-        this.id_layout = id_layout;
 
         for (int i = position_secondheader; i < items.size(); i++) {
             if (items.get(i) instanceof Question) {
@@ -158,6 +156,16 @@ public class CustomAdherenceAdapter extends BaseAdapter implements ITabAdapter {
             }
         }
 
+    }
+
+    /**
+     * Factory method to build a CustomAdherenceTab.
+     * @param tab
+     * @param context
+     * @return
+     */
+    public static CustomAdherenceAdapter build(Tab tab, Context context){
+        return new CustomAdherenceAdapter(tab, context);
     }
 
     private void resetScores() {

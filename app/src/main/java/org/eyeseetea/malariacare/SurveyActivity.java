@@ -48,6 +48,8 @@ import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.layout.adapters.general.TabArrayAdapter;
 import org.eyeseetea.malariacare.layout.adapters.survey.AutoTabAdapter;
 import org.eyeseetea.malariacare.layout.adapters.survey.CompositeScoreAdapter;
+import org.eyeseetea.malariacare.layout.adapters.survey.CustomAdherenceAdapter;
+import org.eyeseetea.malariacare.layout.adapters.survey.CustomIQTABAdapter;
 import org.eyeseetea.malariacare.layout.adapters.survey.ITabAdapter;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
@@ -240,13 +242,16 @@ public class SurveyActivity extends BaseActivity{
         if(selectedTab.isCompositeScore()){
             tabAdaptersCache.cacheAllTabs();
         }
+
+
         ITabAdapter tabAdapter=tabAdaptersCache.findAdapter(selectedTab);
 
         View view = inflater.inflate(tabAdapter.getLayout(), parent, false);
         parent.addView(view);
 
         if (    selectedTab.getType() == Constants.TAB_AUTOMATIC_SCORED ||
-                selectedTab.getType() == Constants.TAB_CUSTOM_SCORED    ||
+                selectedTab.getType() == Constants.TAB_ADHERENCE    ||
+                selectedTab.getType() == Constants.TAB_IQATAB ||
                 selectedTab.getType() == Constants.TAB_SCORE_SUMMARY) {
             tabAdapter.initializeSubscore();
         }
@@ -411,6 +416,10 @@ public class SurveyActivity extends BaseActivity{
         for (Tab tab : tabs) {
             if (tab.isCompositeScore())
                 adaptersMap.put(tab, new CompositeScoreAdapter(compositeScores, this, R.layout.composite_score_tab, tab.getName()));
+            else if (tab.isAdherenceTab()){
+                Log.d(TAG, "Adherence Tab");
+                adaptersMap.put(tab, CustomAdherenceAdapter.build(tab, this));
+            }
             else if (!tab.isGeneralScore()) {
                 adaptersMap.put(tab, AutoTabAdapter.build(tab,this));
             }
@@ -523,6 +532,15 @@ public class SurveyActivity extends BaseActivity{
         private ITabAdapter buildAdapter(Tab tab){
             if (tab.isCompositeScore())
                 return new CompositeScoreAdapter(this.compositeScores, SurveyActivity.this, R.layout.composite_score_tab, tab.getName());
+
+            if (tab.isAdherenceTab()) {
+                Log.d(TAG, "Creating an Adherence Adapter");
+                return CustomAdherenceAdapter.build(tab, SurveyActivity.this);
+            }
+
+            if (tab.isIQATab())
+                return CustomIQTABAdapter.build(tab, SurveyActivity.this);
+
 
             if(tab.isGeneralScore()){
                 return null;
