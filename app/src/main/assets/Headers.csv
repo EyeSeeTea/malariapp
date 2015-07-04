@@ -4,8 +4,6 @@
 4;'Ph, St, Eq';'Pharmacy, Stocks & Equipment';4;1
 5;'Mal Diag';'Malaria Diagnostics';5;1
 6;'RDT Assess';'RDT Assessment';6;1
-7;'Ph/Cl reg';'Pharmacy/Clinical Register';1;2
-8;'Lab Reg';'Laboratory Register';2;2
 9;'HW Info';'Health Worker Information';1;3
 10;'Rec';'Reception';2;3
 11;'Signs Sev Dis';'Signs of severe disease';3;3
