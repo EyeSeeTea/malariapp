@@ -82,10 +82,14 @@ public class PushClient {
         this.activity = activity;
     }
 
-    public void push() throws Exception{
-        JSONObject data=prepareMetadata();
-        data= prepareDataElements(data);
-        pushData(data);
+    public PushResult push() {
+        try{
+            JSONObject data = prepareMetadata();
+            data = prepareDataElements(data);
+            return new PushResult(pushData(data));
+        }catch(Exception ex){
+            return new PushResult(ex);
+        }
     }
 
     /**
@@ -171,7 +175,7 @@ public class PushClient {
      * Pushes data to DHIS Server
      * @param data
      */
-    private void pushData(JSONObject data)throws Exception {
+    private JSONObject pushData(JSONObject data)throws Exception {
 
         final String DHIS_URL=DHIS_DEFAULT_SERVER + DHIS_PUSH_API;
 
@@ -192,7 +196,7 @@ public class PushClient {
             Log.e(TAG, "pushData (" + response.code()+"): "+response.body().string());
             throw new IOException(response.message());
         }
-        parseResponse(response.body().string());
+        return parseResponse(response.body().string());
     }
 
     private JSONObject parseResponse(String responseData)throws Exception{

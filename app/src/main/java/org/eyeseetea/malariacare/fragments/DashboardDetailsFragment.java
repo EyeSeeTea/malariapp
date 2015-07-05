@@ -46,6 +46,7 @@ import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.layout.adapters.dashboard.AssessmentAdapter;
 import org.eyeseetea.malariacare.layout.adapters.dashboard.IDashboardAdapter;
 import org.eyeseetea.malariacare.layout.listeners.SwipeDismissListViewTouchListener;
+import org.eyeseetea.malariacare.network.PushResult;
 import org.eyeseetea.malariacare.services.SurveyService;
 import org.eyeseetea.malariacare.network.PushClient;
 
@@ -310,7 +311,7 @@ public class DashboardDetailsFragment extends ListFragment {
         }
     }
 
-    public class AsyncPush extends AsyncTask<Void, Integer, Exception> {
+    public class AsyncPush extends AsyncTask<Void, Integer, PushResult> {
 
         private Survey survey;
 
@@ -327,32 +328,30 @@ public class DashboardDetailsFragment extends ListFragment {
         }
 
         @Override
-        protected Exception doInBackground(Void... params) {
-            try {
-                PushClient pushClient=new PushClient(survey,getActivity());
-                pushClient.push();
-            }catch (Exception e) {
-                //Result is an error
-                return e;
-            }
-            //No error
-            return null;
+        protected PushResult doInBackground(Void... params) {
+            PushClient pushClient=new PushClient(survey,getActivity());
+            return pushClient.push();
         }
 
         @Override
-        protected void onPostExecute(Exception e) {
-            super.onPostExecute(e);
+        protected void onPostExecute(PushResult pushResult) {
+            super.onPostExecute(pushResult);
             setListShown(true);
-
-            String msg=e!=null?e.getMessage():getActivity().getString(R.string.dialog_info_push_ok);
-            showResponse(msg);
+            showResponse(pushResult);
         }
 
         /**
          * Shows the proper response message
-         * @param msg
+         * @param pushResult
          */
-        private void showResponse(String msg){
+        private void showResponse(PushResult pushResult){
+            String msg="";
+            if(pushResult.isSuccessful()){
+                msg="Survey data pushed to server. Results: \n"+String.format("Imported: %s | Updated: %s | Ignored: %s",pushResult.getImported(),pushResult.getUpdated(),pushResult.getIgnored());
+            }else{
+                msg=pushResult.getException().getMessage();
+            }
+
             new AlertDialog.Builder(getActivity())
                     .setTitle(getActivity().getString(R.string.dialog_title_push_response))
                     .setMessage(msg)
