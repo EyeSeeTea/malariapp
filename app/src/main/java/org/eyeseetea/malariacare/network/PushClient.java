@@ -17,13 +17,12 @@
  *  along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.eyeseetea.malariacare.utils;
+package org.eyeseetea.malariacare.network;
 
 import android.app.Activity;
 import android.util.Log;
 
 import com.squareup.okhttp.Authenticator;
-import com.squareup.okhttp.Challenge;
 import com.squareup.okhttp.Credentials;
 import com.squareup.okhttp.MediaType;
 import com.squareup.okhttp.OkHttpClient;
@@ -43,11 +42,7 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.net.Proxy;
-import java.net.URL;
-import java.security.GeneralSecurityException;
 import java.util.List;
-
-import javax.net.ssl.SSLContext;
 
 /**
  * Created by Jose on 20/06/2015.
@@ -64,10 +59,8 @@ public class PushClient {
     private static String DHIS_USERNAME="testing";
     private static String DHIS_PASSWORD="Testing2015";
 
-    private String credentials = Credentials.basic(DHIS_USERNAME,DHIS_PASSWORD);
 
     public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
-    private OkHttpClient client = new OkHttpClient();
 
     private static String COMPLETED="COMPLETED";
 
@@ -179,24 +172,21 @@ public class PushClient {
      * @param data
      */
     private void pushData(JSONObject data)throws Exception {
-        client.setAuthenticator(new Authenticator() {
-            @Override
-            public Request authenticate(Proxy proxy, Response response) throws IOException {
-                return response.request().newBuilder().header("Authorization", credentials).build();
-            }
 
-            @Override
-            public Request authenticateProxy(Proxy proxy, Response response) throws IOException {
-                return null;
-            }
-        });
+        final String DHIS_URL=DHIS_DEFAULT_SERVER + DHIS_PUSH_API;
+
+        OkHttpClient client= UnsafeOkHttpsClientFactory.getUnsafeOkHttpClient();
+
+        BasicAuthenticator basicAuthenticator=new BasicAuthenticator();
+        client.setAuthenticator(basicAuthenticator);
 
         RequestBody body = RequestBody.create(JSON, data.toString());
         Request request = new Request.Builder()
-//                .header("Authorization",credentials)
-                .url(DHIS_DEFAULT_SERVER+DHIS_PUSH_API)
+                .header(basicAuthenticator.AUTHORIZATION_HEADER,basicAuthenticator.getCredentials())
+                .url(DHIS_URL)
                 .post(body)
                 .build();
+
         Response response = client.newCall(request).execute();
         if(!response.isSuccessful()){
             Log.e(TAG, "pushData (" + response.code()+"): "+response.body().string());
@@ -205,12 +195,40 @@ public class PushClient {
         parseResponse(response.body().string());
     }
 
-    private void parseResponse(String responseData)throws Exception{
+    private JSONObject parseResponse(String responseData)throws Exception{
         try{
             JSONObject jsonResponse=new JSONObject(responseData);
-            Log.e(TAG, "parseResponse: " + jsonResponse);
+            Log.i(TAG, "parseResponse: " + jsonResponse);
+            return jsonResponse;
         }catch(Exception ex){
             throw new Exception(activity.getString(R.string.dialog_info_push_bad_credentials));
+        }
+    }
+
+    /**
+     * Basic
+     */
+    class BasicAuthenticator implements  Authenticator{
+
+        public final String AUTHORIZATION_HEADER="Authorization";
+        private String credentials;
+
+        BasicAuthenticator(){
+            credentials = Credentials.basic(DHIS_USERNAME, DHIS_PASSWORD);
+        }
+
+        @Override
+        public Request authenticate(Proxy proxy, Response response) throws IOException {
+            return response.request().newBuilder().header(AUTHORIZATION_HEADER, credentials).build();
+        }
+
+        @Override
+        public Request authenticateProxy(Proxy proxy, Response response) throws IOException {
+            return null;
+        }
+
+        public String getCredentials(){
+            return credentials;
         }
     }
 
