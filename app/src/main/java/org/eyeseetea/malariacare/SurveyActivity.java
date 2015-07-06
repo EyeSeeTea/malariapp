@@ -134,7 +134,7 @@ public class SurveyActivity extends BaseActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Log.i(".SurveyActivity", "onCreate");
+        Log.d(TAG, "onCreate");
         setContentView(R.layout.survey);
         registerReceiver();
         createActionBar();
@@ -143,6 +143,7 @@ public class SurveyActivity extends BaseActivity{
     }
 
     public void onResume(){
+        Log.d(TAG, "onResume");
         prepareSurveyInfo();
         super.onResume();
     }
@@ -156,6 +157,7 @@ public class SurveyActivity extends BaseActivity{
 
     @Override
     public void onBackPressed() {
+        Log.d(TAG, "onBackPressed");
         new AlertDialog.Builder(this)
                 .setTitle(R.string.survey_title_exit)
                 .setMessage(R.string.survey_info_exit)
@@ -163,6 +165,7 @@ public class SurveyActivity extends BaseActivity{
                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int arg1) {
                         ScoreRegister.clear();
+                        unregisterReceiver();
                         finishAndGo(DashboardDetailsActivity.class);
                     }
                 }).create().show();
@@ -176,6 +179,7 @@ public class SurveyActivity extends BaseActivity{
 
     @Override
     public void onStop(){
+        Log.d(TAG, "onStop");
         unregisterReceiver();
         super.onStop();
     }
@@ -185,7 +189,7 @@ public class SurveyActivity extends BaseActivity{
      */
     private void createMenu() {
 
-        Log.i(".SurveyActivity", "createMenu");
+        Log.d(TAG, "createMenu");
         this.tabAdapter=new TabArrayAdapter(this, tabsList);
 
         spinner= (Spinner) this.findViewById(R.id.tabSpinner);
@@ -242,8 +246,6 @@ public class SurveyActivity extends BaseActivity{
         if(selectedTab.isCompositeScore()){
             tabAdaptersCache.cacheAllTabs();
         }
-
-
         ITabAdapter tabAdapter=tabAdaptersCache.findAdapter(selectedTab);
 
         View view = inflater.inflate(tabAdapter.getLayout(), parent, false);
@@ -376,7 +378,7 @@ public class SurveyActivity extends BaseActivity{
     /**
      * Register a survey receiver to load surveys into the listadapter
      */
-    private void registerReceiver() {
+    public void registerReceiver() {
         Log.d(TAG, "registerReceiver");
 
         if(surveyReceiver==null){
@@ -390,7 +392,7 @@ public class SurveyActivity extends BaseActivity{
      * Unregisters the survey receiver.
      * It really important to do this, otherwise each receiver will invoke its code.
      */
-    private void  unregisterReceiver(){
+    public void  unregisterReceiver(){
         Log.d(TAG, "unregisterReceiver");
         if(surveyReceiver!=null){
             LocalBroadcastManager.getInstance(this).unregisterReceiver(surveyReceiver);
@@ -401,7 +403,8 @@ public class SurveyActivity extends BaseActivity{
     /**
      * Asks SurveyService for the current list of surveys
      */
-    private void prepareSurveyInfo(){
+    public void prepareSurveyInfo(){
+        Log.d(TAG, "prepareSurveyInfo");
         Intent surveysIntent=new Intent(this, SurveyService.class);
         surveysIntent.putExtra(SurveyService.SERVICE_METHOD,SurveyService.PREPARE_SURVEY_ACTION);
         this.startService(surveysIntent);
@@ -449,6 +452,7 @@ public class SurveyActivity extends BaseActivity{
 
         @Override
         public void onReceive(Context context, Intent intent) {
+            Log.d(TAG,"onReceive");
             List<CompositeScore> compositeScores=(List<CompositeScore>)Session.popServiceValue(SurveyService.PREPARE_SURVEY_ACTION_COMPOSITE_SCORES);
             List<Tab> tabs=(List<Tab>)Session.popServiceValue(SurveyService.PREPARE_SURVEY_ACTION_TABS);
 

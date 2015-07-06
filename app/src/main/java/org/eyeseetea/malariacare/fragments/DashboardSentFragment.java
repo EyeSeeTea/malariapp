@@ -1,14 +1,14 @@
 /*
  * Copyright (c) 2015.
  *
- * This file is part of Facility QA Tool App.
+ * This file is part of Health Network QIS App.
  *
- *  Facility QA Tool App is free software: you can redistribute it and/or modify
+ *  Health Network QIS App is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
  *  the Free Software Foundation, either version 3 of the License, or
  *  (at your option) any later version.
  *
- *  Facility QA Tool App is distributed in the hope that it will be useful,
+ *  Health Network QIS App is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *  GNU General Public License for more details.
@@ -27,28 +27,22 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 
-import org.eyeseetea.malariacare.DashboardDetailsActivity;
 import org.eyeseetea.malariacare.R;
-import org.eyeseetea.malariacare.SurveyActivity;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.utils.Session;
-import org.eyeseetea.malariacare.layout.adapters.dashboard.AssessmentAdapter;
+import org.eyeseetea.malariacare.layout.adapters.dashboard.AssessmentCompletedAdapter;
 import org.eyeseetea.malariacare.layout.adapters.dashboard.IDashboardAdapter;
 import org.eyeseetea.malariacare.layout.listeners.SwipeDismissListViewTouchListener;
-import org.eyeseetea.malariacare.network.PushResult;
 import org.eyeseetea.malariacare.services.SurveyService;
-import org.eyeseetea.malariacare.network.PushClient;
 import org.eyeseetea.malariacare.views.TextCard;
 
 import java.util.ArrayList;
@@ -57,22 +51,22 @@ import java.util.List;
 /**
  * A placeholder fragment containing a simple view.
  */
-public class DashboardDetailsFragment extends ListFragment {
+public class DashboardSentFragment extends ListFragment {
 
 
-    public static final String TAG = ".DetailsFragment";
+    public static final String TAG = ".CompletedFragment";
     private SurveyReceiver surveyReceiver;
     private List<Survey> surveys;
     protected IDashboardAdapter adapter;
     private static int index = 0;
 
-    public DashboardDetailsFragment(){
-        this.adapter = Session.getAdapterUncompleted();
+    public DashboardSentFragment(){
+        this.adapter = Session.getAdapterCompleted();
         this.surveys = new ArrayList();
     }
 
-    public static DashboardDetailsFragment newInstance(int index) {
-        DashboardDetailsFragment f = new DashboardDetailsFragment();
+    public static DashboardSentFragment newInstance(int index) {
+        DashboardSentFragment f = new DashboardSentFragment();
 
         // Supply index input as an argument.
         Bundle args = new Bundle();
@@ -93,7 +87,6 @@ public class DashboardDetailsFragment extends ListFragment {
 
         Log.d(TAG, "onCreate");
         registerSurveysReceiver();
-        getSurveysFromService();
     }
 
     @Override
@@ -116,19 +109,27 @@ public class DashboardDetailsFragment extends ListFragment {
 
     }
 
+    @Override
+    public void onResume(){
+        Log.d(TAG, "onResume");
+        getSurveysFromService();
+        super.onResume();
+    }
+
     /**
      * Inits adapter.
      * Most of times is just an AssessmentAdapter.
      * In a version with several adapters in dashboard (like in 'mock' branch) a new one like the one in session is created.
      */
     private void initAdapter(){
-        IDashboardAdapter adapterInSession = Session.getAdapterUncompleted();
+        IDashboardAdapter adapterInSession = Session.getAdapterCompleted();
         if(adapterInSession == null){
-            adapterInSession = new AssessmentAdapter(this.surveys,getActivity());
+            adapterInSession = new AssessmentCompletedAdapter(this.surveys, getActivity());
         }else{
-            adapterInSession = adapterInSession.newInstance(this.surveys,getActivity());
+            adapterInSession = adapterInSession.newInstance(this.surveys, getActivity());
         }
         this.adapter = adapterInSession;
+
     }
 
     @Override
@@ -136,15 +137,16 @@ public class DashboardDetailsFragment extends ListFragment {
         Log.d(TAG, "onListItemClick");
         super.onListItemClick(l, v, position, id);
 
-        //Discard clicks on header|footer (which is attendend on newSurvey via super)
+        //Discard clicks on header|footer (which is attended on newSurvey via super)
         if(!isPositionASurvey(position)){
             return;
         }
 
         //Put selected survey in session
         Session.setSurvey(surveys.get(position - 1));
-        //Go to SurveyActivity
-        ((DashboardDetailsActivity) getActivity()).go(SurveyActivity.class);
+        // Go to SurveyActivity
+        // Here we should do the push
+        //((DashboardDetailsActivity) getActivity()).go(SurveyActivity.class);
     }
 
     @Override
@@ -189,7 +191,7 @@ public class DashboardDetailsFragment extends ListFragment {
         LayoutInflater inflater = LayoutInflater.from(getActivity());
         View header = inflater.inflate(this.adapter.getHeaderLayout(), null, false);
         View footer = inflater.inflate(this.adapter.getFooterLayout(), null, false);
-        TextCard title = (TextCard) getActivity().findViewById(R.id.titleInProgress);
+        TextCard title = (TextCard) getActivity().findViewById(R.id.titleCompleted);
         title.setText(adapter.getTitle());
         ListView listView = getListView();
         listView.addHeaderView(header);
@@ -231,31 +233,6 @@ public class DashboardDetailsFragment extends ListFragment {
         // we don't look for swipes.
         listView.setOnScrollListener(touchListener.makeScrollListener());
 
-        listView.setLongClickable(true);
-
-        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
-
-
-                new AlertDialog.Builder(getActivity())
-                        .setTitle("Pushing data")
-                        .setMessage("Are you sure? You can not undo this action")
-                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface arg0, int arg1) {
-                                final Survey survey = (Survey) adapter.getItem(position-1);
-                                AsyncPush asyncPush=new AsyncPush(survey);
-                                asyncPush.execute((Void) null);
-                            }
-                        })
-                        .setNegativeButton(android.R.string.no, null).create().show();
-
-
-                return true;
-            }
-        });
-
-
         setListShown(false);
     }
 
@@ -268,7 +245,7 @@ public class DashboardDetailsFragment extends ListFragment {
 
         if(surveyReceiver==null){
             surveyReceiver=new SurveyReceiver();
-            LocalBroadcastManager.getInstance(getActivity()).registerReceiver(surveyReceiver, new IntentFilter(SurveyService.ALL_UNSENT_SURVEYS_ACTION));
+            LocalBroadcastManager.getInstance(getActivity()).registerReceiver(surveyReceiver, new IntentFilter(SurveyService.ALL_SENT_SURVEYS_ACTION));
         }
     }
 
@@ -291,7 +268,7 @@ public class DashboardDetailsFragment extends ListFragment {
         Log.d(TAG, "getSurveysFromService");
         Activity activity=getActivity();
         Intent surveysIntent=new Intent(activity, SurveyService.class);
-        surveysIntent.putExtra(SurveyService.SERVICE_METHOD,SurveyService.ALL_UNSENT_SURVEYS_ACTION);
+        surveysIntent.putExtra(SurveyService.SERVICE_METHOD,SurveyService.ALL_SENT_SURVEYS_ACTION);
         activity.startService(surveysIntent);
     }
 
@@ -311,59 +288,9 @@ public class DashboardDetailsFragment extends ListFragment {
         @Override
         public void onReceive(Context context, Intent intent) {
             Log.d(TAG, "onReceive");
-            List<Survey> surveysFromService=(List<Survey>)Session.popServiceValue(SurveyService.ALL_UNSENT_SURVEYS_ACTION);
+            List<Survey> surveysFromService=(List<Survey>)Session.popServiceValue(SurveyService.ALL_SENT_SURVEYS_ACTION);
             reloadSurveys(surveysFromService);
         }
+
     }
-
-    public class AsyncPush extends AsyncTask<Void, Integer, PushResult> {
-
-        private Survey survey;
-
-
-        public AsyncPush(Survey survey) {
-            this.survey = survey;
-        }
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            //spinner
-            setListShown(false);
-        }
-
-        @Override
-        protected PushResult doInBackground(Void... params) {
-            PushClient pushClient=new PushClient(survey,getActivity());
-            return pushClient.push();
-        }
-
-        @Override
-        protected void onPostExecute(PushResult pushResult) {
-            super.onPostExecute(pushResult);
-            setListShown(true);
-            showResponse(pushResult);
-        }
-
-        /**
-         * Shows the proper response message
-         * @param pushResult
-         */
-        private void showResponse(PushResult pushResult){
-            String msg="";
-            if(pushResult.isSuccessful()){
-                msg="Survey data pushed to server. Results: \n"+String.format("Imported: %s | Updated: %s | Ignored: %s",pushResult.getImported(),pushResult.getUpdated(),pushResult.getIgnored());
-            }else{
-                msg=pushResult.getException().getMessage();
-            }
-
-            new AlertDialog.Builder(getActivity())
-                    .setTitle(getActivity().getString(R.string.dialog_title_push_response))
-                    .setMessage(msg)
-                    .setNeutralButton(android.R.string.yes,null).create().show();
-
-        }
-    }
-
-
 }

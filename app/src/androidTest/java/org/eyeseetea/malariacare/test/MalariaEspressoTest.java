@@ -19,6 +19,8 @@
 
 package org.eyeseetea.malariacare.test;
 
+import android.app.Activity;
+import android.app.Instrumentation;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.AssetManager;
@@ -26,6 +28,8 @@ import android.content.res.Resources;
 import android.database.sqlite.SQLiteDatabase;
 import android.preference.PreferenceManager;
 import android.support.test.InstrumentationRegistry;
+import android.support.test.runner.lifecycle.ActivityLifecycleMonitorRegistry;
+import android.support.test.runner.lifecycle.Stage;
 import android.util.Log;
 
 import org.eyeseetea.malariacare.database.model.Answer;
@@ -42,14 +46,19 @@ import org.eyeseetea.malariacare.database.model.Value;
 import org.eyeseetea.malariacare.database.utils.PopulateDB;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.layout.adapters.dashboard.AssessmentAdapter;
+import org.eyeseetea.malariacare.test.utils.IntentServiceIdlingResource;
 
+import java.util.Collection;
 import java.util.List;
+
+import static android.support.test.espresso.matcher.ViewMatchers.withId;
 
 /**
  * Created by arrizabalaga on 25/05/15.
  */
 public class MalariaEspressoTest {
 
+    protected IntentServiceIdlingResource idlingResource;
     protected Resources res;
     public static final String DATABASE_NAME="malariacare.db";
     public static final String DATABASE_FULL_PATH = "/data/data/org.eyeseetea.malariacare/databases/"+DATABASE_NAME;
@@ -71,7 +80,7 @@ public class MalariaEspressoTest {
     public static void cleanSession(){
         Session.setUser(null);
         Session.setSurvey(null);
-        Session.setAdapter(null);
+        Session.setAdapterUncompleted(null);
     }
 
     public static void cleanDB(){
@@ -122,9 +131,11 @@ public class MalariaEspressoTest {
         }
     }
 
-    public static void mockSessionSurvey(int numSurvey, int numProgram, int select){
+    public static Survey mockSessionSurvey(int numSurvey, int numProgram, int select){
         List<Survey> surveys=mockSurveys(numSurvey, numProgram);
-        Session.setSurvey(surveys.get(select));
+        Survey survey=surveys.get(select);
+        Session.setSurvey(survey);
+        return survey;
     }
 
     public static void mockSessionSurvey(int num, int select){
@@ -142,7 +153,7 @@ public class MalariaEspressoTest {
             survey.save();
         }
         List<Survey> surveys= Survey.find(Survey.class, "user=?", user.getId().toString());
-        Session.setAdapter(new AssessmentAdapter(surveys, InstrumentationRegistry.getTargetContext()));
+        Session.setAdapterUncompleted(new AssessmentAdapter(surveys, InstrumentationRegistry.getTargetContext()));
         return surveys;
     }
 
@@ -161,4 +172,26 @@ public class MalariaEspressoTest {
         return user;
     }
 
+    protected Activity getActivityInstance(){
+        final Activity[] activity = new Activity[1];
+        Instrumentation instrumentation=InstrumentationRegistry.getInstrumentation();
+        instrumentation.waitForIdleSync();
+        instrumentation.runOnMainSync(new Runnable() {
+            public void run() {
+                Collection resumedActivities = ActivityLifecycleMonitorRegistry.getInstance().getActivitiesInStage(Stage.RESUMED);
+                if (resumedActivities.iterator().hasNext()) {
+                    activity[0] = (Activity) resumedActivities.iterator().next();
+                }
+            }
+        });
+
+        return activity[0];
+    }
+
+    protected static void clearSharedPreferences(){
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(InstrumentationRegistry.getTargetContext());
+        sharedPreferences.edit().clear().commit();
+    }
+
 }
+

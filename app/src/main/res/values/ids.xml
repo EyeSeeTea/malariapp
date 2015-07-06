@@ -10,9 +10,9 @@
 
 
     <!-- Preference variable names -->
-    <item name="show_num_dems" type="string">show_num_dems</item>
-    <item name="customize_fonts" type="string">customize_fonts</item>
-    <item name="font_sizes" type="string">font_sizes</item>
+    <item name="show_num_dems" type="string" translatable="false">show_num_dems</item>
+    <item name="customize_fonts" type="string" translatable="false">customize_fonts</item>
+    <item name="font_sizes" type="string" translatable="false">font_sizes</item>
 
 
 

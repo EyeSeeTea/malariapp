@@ -51,4 +51,12 @@ public class Constants {
 
     public static final int MAX_ITEMS_IN_DASHBOARD=5;
 
+    public static final String PREFERENCE_CUSTOMIZE_FONTS="customize_fonts";
+
+    public static final String PREFERENCE_FONT_SIZES="font_sizes";
+
+    public static final String PREFERENCE_SHOW_NUM_DEN="show_num_dems";
+
+    public static final String PREFERENCE_DHIS_URL="dhis_url";
+
 }

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2015.
+  ~
+  ~ This file is part of Health Network QIS App.
+  ~
+  ~  Health Network QIS App is free software: you can redistribute it and/or modify
+  ~  it under the terms of the GNU General Public License as published by
+  ~  the Free Software Foundation, either version 3 of the License, or
+  ~  (at your option) any later version.
+  ~
+  ~  Health Network QIS App is distributed in the hope that it will be useful,
+  ~  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~  GNU General Public License for more details.
+  ~
+  ~  You should have received a copy of the GNU General Public License
+  ~  along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
+  -->
+
+<TableRow xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:gravity="center">
+
+    <org.eyeseetea.malariacare.views.TextCard
+        android:layout_width="0dip"
+        android:layout_height="fill_parent"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="@string/assessment_title_facility_date"
+        android:id="@+id/idHeader"
+        android:background="@drawable/background_header"
+        android:textColor="@color/white"
+        android:gravity="center"
+        android:padding="5dip"
+        android:layout_weight="0.7"
+        android:layout_gravity="center"
+        app:tDimension="@string/font_size_level1"
+        app:tFontName="@string/condensed_font_name" />
+
+    <org.eyeseetea.malariacare.views.TextCard
+        android:layout_width="0dip"
+        android:layout_height="fill_parent"
+        android:textAppearance="?android:textAppearanceSmall"
+        android:text="@string/assessment_sent_title_state"
+        android:id="@+id/nameHeader"
+        android:background="@drawable/background_header"
+        android:textColor="@color/white"
+        android:gravity="center"
+        android:padding="5dip"
+        android:layout_weight="0.3"
+        android:layout_gravity="center"
+        android:autoText="false"
+        app:tDimension="@string/font_size_level1"
+        app:tFontName="@string/condensed_font_name" />
+
+</TableRow>
