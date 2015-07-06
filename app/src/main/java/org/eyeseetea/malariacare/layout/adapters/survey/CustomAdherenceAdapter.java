@@ -41,10 +41,12 @@ import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.model.Header;
 import org.eyeseetea.malariacare.database.model.Option;
 import org.eyeseetea.malariacare.database.model.Question;
+import org.eyeseetea.malariacare.database.model.Score;
 import org.eyeseetea.malariacare.database.model.Tab;
 import org.eyeseetea.malariacare.database.model.Value;
 import org.eyeseetea.malariacare.database.utils.ReadWriteDB;
 import org.eyeseetea.malariacare.layout.adapters.general.OptionArrayAdapter;
+import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 import org.eyeseetea.malariacare.utils.Constants;
 import org.eyeseetea.malariacare.utils.Utils;
@@ -151,12 +153,21 @@ public class CustomAdherenceAdapter extends BaseAdapter implements ITabAdapter {
         if (items.size()> 0)
             position_secondheader = LayoutUtils.getNumberOfQuestionParentsHeader((Header) items.get(0)) +1 ;
 
-        Log.d("Second headeer", position_secondheader + "");
+        Log.d("Second header", position_secondheader + "");
 
         scores = new int[position_secondheader];
 
+        for (int i=0;i<position_secondheader; i++) {
+            if (items.get(i) instanceof Question) {
+                Question testResult = ((Question) items.get(i)).getQuestionChildren().get(3);
+                ScoreRegister.addRecord(testResult, ScoreRegister.calcNum(testResult), ScoreRegister.calcDenum(testResult));
+            }
+        }
+
         for (int i = position_secondheader; i < items.size(); i++) {
             if (items.get(i) instanceof Question) {
+                Question act = ((Question) items.get(i)).getQuestionChildren().get(2);
+                ScoreRegister.addRecord(act, ScoreRegister.calcNum(act), ScoreRegister.calcDenum(act));
                 calcScore((Question) items.get(i));
             }
         }
@@ -224,7 +235,7 @@ public class CustomAdherenceAdapter extends BaseAdapter implements ITabAdapter {
 
     private void setValues2(ViewHolder2 viewHolder, Question question) {
         calcScore(question);
-        viewHolder.score.setText(String.valueOf(scores[items.indexOf(question)-position_secondheader]));
+        viewHolder.score.setText(String.valueOf(scores[items.indexOf(question) - position_secondheader]));
         viewHolder.patientID.setText(ReadWriteDB.readValueQuestion(question.getQuestionChildren().get(0)));
         viewHolder.number.setText(question.getForm_name());
         viewHolder.testResult.setText(question.getQuestionChildren().get(1).getForm_name());
@@ -381,8 +392,11 @@ public class CustomAdherenceAdapter extends BaseAdapter implements ITabAdapter {
                 viewHolder.testResutl.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                     @Override
                     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                        if (viewCreated.value)
-                            ReadWriteDB.saveValuesDDL(question.getQuestionChildren().get(3), (Option) viewHolder.testResutl.getItemAtPosition(position));
+                        if (viewCreated.value) {
+                            Question testResult = question.getQuestionChildren().get(3);
+                            ReadWriteDB.saveValuesDDL(testResult, (Option) viewHolder.testResutl.getItemAtPosition(position));
+                            ScoreRegister.addRecord(testResult, ScoreRegister.calcNum(testResult), ScoreRegister.calcDenum(testResult));
+                        }
                         else viewCreated.value = true;
                     }
 
@@ -434,6 +448,7 @@ public class CustomAdherenceAdapter extends BaseAdapter implements ITabAdapter {
                     public void onTextChanged(CharSequence s, int start, int before, int count) {
                         if (viewCreated.value)
                             ReadWriteDB.saveValuesText(question.getQuestionChildren().get(0), s.toString());
+
                         else viewCreated.value = true;
                     }
 
@@ -449,9 +464,11 @@ public class CustomAdherenceAdapter extends BaseAdapter implements ITabAdapter {
 
                         if (viewCreated.value) {
 
-                            ReadWriteDB.saveValuesDDL(question.getQuestionChildren().get(2), (Option) viewHolder2.act.getItemAtPosition(pos));
+                            Question act = question.getQuestionChildren().get(2);
+                            ReadWriteDB.saveValuesDDL(act, (Option) viewHolder2.act.getItemAtPosition(pos));
                             calcScore(question);
                             viewHolder2.score.setText(Integer.toString(scores[items.indexOf(question) - position_secondheader]));
+                            ScoreRegister.addRecord(act, ScoreRegister.calcNum(act), ScoreRegister.calcDenum(act));
 
                             updateScore();
                         } else

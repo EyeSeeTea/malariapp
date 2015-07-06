@@ -420,6 +420,10 @@ public class SurveyActivity extends BaseActivity{
                 Log.d(TAG, "Adherence Tab");
                 adaptersMap.put(tab, CustomAdherenceAdapter.build(tab, this));
             }
+            else if (tab.isIQATab()){
+                Log.d(TAG, "IQA Tab");
+                adaptersMap.put(tab, CustomIQTABAdapter.build(tab, this));
+            }
             else if (!tab.isGeneralScore()) {
                 adaptersMap.put(tab, AutoTabAdapter.build(tab,this));
             }
