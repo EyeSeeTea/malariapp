@@ -19,16 +19,13 @@
 
 package org.eyeseetea.malariacare.layout.adapters.survey;
 
-import android.app.Activity;
 import android.content.Context;
-import android.test.RenamingDelegatingContext;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -64,9 +61,6 @@ public class CustomIQTABAdapter extends BaseAdapter implements ITabAdapter {
 
     int number_rows_section;
 
-    float denum = 10;
-    float num = 0;
-
     int id_layout;
 
     int[] results;
@@ -97,8 +91,6 @@ public class CustomIQTABAdapter extends BaseAdapter implements ITabAdapter {
 
         if (items.size()>0)
             number_rows_section = LayoutUtils.getNumberOfQuestionParentsHeader((Header) items.get(0))+1;
-
-        results = new int[number_rows_section-1];
 
         for (int i = 0; i < 2 * number_rows_section; i++) {
             Object item = items.get(i);
@@ -166,7 +158,14 @@ public class CustomIQTABAdapter extends BaseAdapter implements ITabAdapter {
 
     @Override
     public Float getScore() {
-        return num / denum;
+
+        List<Float> numdenum = ScoreRegister.calculateGeneralScore(tab);
+
+        Float num = numdenum.get(0);
+        Float denum = numdenum.get(1);
+
+        return num/denum;
+
     }
 
     @Override
@@ -216,20 +215,15 @@ public class CustomIQTABAdapter extends BaseAdapter implements ITabAdapter {
 
         if (q1.getValueBySession() != null && q2.getValueBySession() != null &&
                 q1.getValueBySession().getOption().equals(q2.getValueBySession().getOption())) {
-            num = num - results[result_position] + 1;
 
             ReadWriteDB.saveValuesDDL(testResult,  testResult.getAnswer().getOptions().get(0));
-
             ScoreRegister.addRecord(testResult, ScoreRegister.calcNum(testResult), ScoreRegister.calcNum(testResult));
 
-            results[result_position] = 1;
         } else {
-            results[result_position] = 0;
 
             ScoreRegister.addRecord(testResult, 0F, ScoreRegister.calcDenum(testResult));
 
             if (q1.getValueBySession() != null && q2.getValueBySession() != null) {
-                num = num - results[result_position];
                 ReadWriteDB.saveValuesDDL(testResult,  testResult.getAnswer().getOptions().get(1));
             }
             else
@@ -363,11 +357,25 @@ public class CustomIQTABAdapter extends BaseAdapter implements ITabAdapter {
                 rowView = lInflater.inflate(R.layout.iqtabheader3, parent, false);
             } else {
                 rowView = lInflater.inflate(R.layout.iqatab_results, parent, false);
+
+                Question questionResult = (Question) getItem(position);
+                Question testResult = questionResult.getQuestionChildren().get(0);
+
+
                 viewHolder2.number = (TextView) rowView.findViewById(R.id.number_result);
                 viewHolder2.result = (TextView) rowView.findViewById(R.id.matches);
 
-                viewHolder2.number.setText(String.valueOf(position - 2*number_rows_section));
-                viewHolder2.result.setText(Integer.toString(results[position - 2*number_rows_section -1]));
+
+                viewHolder2.number.setText(String.valueOf(questionResult.getForm_name()));
+
+                Option option = ReadWriteDB.readOptionAnswered(testResult);
+
+                if (option!=null && option.getName().equals("Yes"))
+                    viewHolder2.result.setText("1");
+                else
+                    viewHolder2.result.setText("0");
+
+
             }
         }
         return rowView;
