@@ -37,7 +37,7 @@ public class Utils {
 
     public static String round(float base, int decimalPlace){
         BigDecimal bd = new BigDecimal(Float.toString(base));
-        bd = bd.setScale(decimalPlace, BigDecimal.ROUND_DOWN);
+        bd = bd.setScale(decimalPlace, BigDecimal.ROUND_HALF_UP);
         if (decimalPlace == 0) return Integer.toString((int) bd.floatValue());
         return Float.toString(bd.floatValue());
     }
