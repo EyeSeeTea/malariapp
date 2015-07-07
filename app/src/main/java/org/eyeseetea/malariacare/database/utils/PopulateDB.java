@@ -146,7 +146,7 @@ public class PopulateDB {
         orgUnit = new OrgUnit("avIJ8BAiEzA", "Outlet 1-2");
         orgUnit.save();
 
-        orgUnit = new OrgUnit("4wCykG8Tm", "Outlet 1-3");
+        orgUnit = new OrgUnit("lP4wCykG8Tm", "Outlet 1-3");
         orgUnit.save();
 
         orgUnit = new OrgUnit("DMBrIWRzFPo", "Outlet 1-4");
