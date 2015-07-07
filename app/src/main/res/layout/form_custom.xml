@@ -23,18 +23,26 @@
     android:layout_height="match_parent"
     android:id="@+id/form_custom">
 
-    <include
+    <!--<include
         android:id="@+id/footer_layout"
         android:layout_width="fill_parent"
         android:layout_alignParentBottom="true"
         android:layout_height="wrap_content"
         layout="@layout/subtotal_custom"/>
 
+
     <ListView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@id/footer_layout"
         android:id="@+id/listView"
+        android:gravity="top" /> -->
+
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/listView"
         android:gravity="top" />
+
 
 </RelativeLayout>

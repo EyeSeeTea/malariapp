@@ -207,6 +207,13 @@
 
     <string name="textcard_default_scale">system</string>
     <string name="textcard_default_dimension">medium</string>
+    <string name="dashboard_info_sent">Envoyé</string>
+    <string name="dialog_title_push_response">Réponse de charge</string>
+    <string name="customize_fonts">customize_fonts</string>
+    <string name="dialog_info_push_ok">Les données du sondage a été poussé avec succès au serveur DHIS</string>
+    <string name="font_sizes">font_sizes</string>
+    <string name="show_num_dems">show_num_dems</string>
+    <string name="dialog_info_push_bad_credentials">Identification incorrectes pour la poussée</string>
     <string name="assessment_sent_title_state">État</string>
     <string name="assessment_sent_title_header">Evaluation Envoyée</string>
 

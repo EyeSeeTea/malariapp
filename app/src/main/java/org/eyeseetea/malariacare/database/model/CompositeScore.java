@@ -6,7 +6,9 @@ import com.orm.query.Condition;
 import com.orm.query.Select;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class CompositeScore extends SugarRecord<CompositeScore> {
 
@@ -100,8 +102,31 @@ public class CompositeScore extends SugarRecord<CompositeScore> {
         if(program==null || program.getId()==null){
             return new ArrayList<>();
         }
+        //Take scores associated to questions of the program ('leaves')
         List<CompositeScore> compositeScoresByProgram = CompositeScore.findWithQuery(CompositeScore.class, LIST_BY_PROGRAM_SQL, program.getId().toString());
+
+        //Find parent scores from 'leaves'
+        Set<CompositeScore> parentCompositeScores = new HashSet<CompositeScore>();
+        for(CompositeScore compositeScore: compositeScoresByProgram){
+            parentCompositeScores.addAll(listParentCompositeScores(compositeScore));
+        }
+        compositeScoresByProgram.addAll(parentCompositeScores);
+
+        //return all scores
         return compositeScoresByProgram;
+    }
+
+    public static List<CompositeScore> listParentCompositeScores(CompositeScore compositeScore){
+        ArrayList<CompositeScore> parentScores= new ArrayList<CompositeScore>();
+        if(compositeScore==null || !compositeScore.hasParent()){
+            return parentScores;
+        }
+        CompositeScore currentScore=compositeScore;
+        while(currentScore!=null && currentScore.hasParent()){
+            currentScore=currentScore.getComposite_score();
+            parentScores.add(currentScore);
+        }
+        return parentScores;
     }
 
     public boolean hasChildren(){

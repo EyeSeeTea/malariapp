@@ -58,6 +58,20 @@ public class Utils {
         return result;
     }
 
+    public static List<Object> convertTabToArrayCustom(Tab tab) {
+        List<Object> result = new ArrayList<Object>();
+
+        for (Header header : tab.getHeaders()) {
+            result.add(header);
+            for (Question question : header.getQuestions()) {
+                if (question.hasChildren())
+                    result.add(question);
+            }
+        }
+
+        return result;
+    }
+
     public static StringBuilder convertFromInputStreamToString(InputStream inputStream){
         StringBuilder stringBuilder = new StringBuilder();
 

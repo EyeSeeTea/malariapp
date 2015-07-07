@@ -66,6 +66,30 @@
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="0dip"
+        android:layout_height="wrap_content"
+        android:id="@+id/speciesContainer"
+        android:padding="5dip"
+        android:layout_weight="0.3">
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:background="#bebebe">
+
+            <Spinner
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/species"
+                android:tag="listener" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+    <!-- <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="0dip"
         android:layout_height="fill_parent"
         android:id="@+id/speciesContainer"
         android:padding="5dip"
@@ -78,7 +102,7 @@
                 android:id="@+id/species"
                 android:background="@drawable/background_textfield"
             android:textSize="14sp" />
-    </LinearLayout>
+    </LinearLayout> -->
 
 
 </LinearLayout>

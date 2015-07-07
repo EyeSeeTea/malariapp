@@ -81,6 +81,11 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
 
     int id_layout;
 
+    /**
+     * Flag that indicates if the current survey in session is already sent or not (it affects readonly settings)
+     */
+    private boolean readOnly;
+
     //Store the Views references for each row (to avoid many calls to getViewById)
     static class ViewHolder {
         //Label
@@ -122,11 +127,14 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
             if (item instanceof Question) {
                 if (!(hidden[i] = isHidden((Question) item))) {
                     initScoreQuestion((Question) item);
-                } else ScoreRegister.addRecord((Question) item, 0F, calcDenum((Question) item));
-                hidden[items.indexOf(((Question) item).getHeader())] = hidden[items.indexOf(((Question) item).getHeader())]
-                        && hidden[i];
+                } else {
+                    ScoreRegister.addRecord((Question) item, 0F, ScoreRegister.calcDenum((Question) item));
+                }
+                hidden[items.indexOf(((Question) item).getHeader())] = hidden[items.indexOf(((Question) item).getHeader())]&& hidden[i];
             }
         }
+
+        this.readOnly = Session.getSurvey().isSent();
     }
 
     public AutoTabAdapter(Tab tab, Context context, int id_layout) {
@@ -136,16 +144,17 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
 
     /**
      * Factory method to build a scored/non scored layout according to tab type.
+     *
      * @param tab
      * @param context
      * @return
      */
-    public static AutoTabAdapter build(Tab tab, Context context){
-        int idLayout=tab.getType()==Constants.TAB_AUTOMATIC_NON_SCORED?R.layout.form_without_score:R.layout.form_with_score;
+    public static AutoTabAdapter build(Tab tab, Context context) {
+        int idLayout = tab.getType() == Constants.TAB_AUTOMATIC_NON_SCORED ? R.layout.form_without_score : R.layout.form_with_score;
         return new AutoTabAdapter(tab, context, idLayout);
     }
 
-    public Tab getTab(){
+    public Tab getTab() {
         return this.tab;
     }
 
@@ -182,7 +191,7 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
         int visibility = (PreferencesState.getInstance().isShowNumDen()) ? View.VISIBLE : View.GONE;
 
         // Set all the subscore bar visibility (this way, the bar will disappear if visibility is GONE)
-        ((LinearLayout)(scoreHolder.totalNum.getParent()).getParent()).setVisibility(visibility);
+        ((LinearLayout) (scoreHolder.totalNum.getParent()).getParent()).setVisibility(visibility);
     }
 
     @Override
@@ -196,7 +205,7 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
         if (totalDenum != 0) {
             Float score = 100 * (totalNum / totalDenum);
             LayoutUtils.trafficLight(scoreHolder.score, score, scoreHolder.qualitativeScore);
-            scoreHolder.score.setText(Utils.round(100 * (totalNum / totalDenum))+" % ");
+            scoreHolder.score.setText(Utils.round(100 * (totalNum / totalDenum)) + " % ");
         }
         if (totalDenum == 0 && totalNum == 0) {
             scoreHolder.score.setText(this.context.getString(R.string.number_zero_percentage));
@@ -212,7 +221,7 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
                 if (items.get(i) instanceof Question && !hidden[i]) {
                     Question question = (Question) items.get(i);
                     if (question.getAnswer().getOutput() == Constants.DROPDOWN_LIST)
-                        result = result + calcDenum((Question) items.get(i));
+                        result = result + ScoreRegister.calcDenum((Question) items.get(i));
                 }
 
             }
@@ -226,8 +235,8 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
         if (question.getAnswer().getOutput() == Constants.DROPDOWN_LIST || question.getAnswer().getOutput() == Constants.RADIO_GROUP_HORIZONTAL
                 || question.getAnswer().getOutput() == Constants.RADIO_GROUP_VERTICAL) {
 
-            Float num = calcNum(question);
-            Float denum = calcDenum(question);
+            Float num = ScoreRegister.calcNum(question);
+            Float denum = ScoreRegister.calcDenum(question);
 
             totalNum = totalNum + num;
             totalDenum = totalDenum + denum;
@@ -293,45 +302,36 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
         return items.get(getRealPosition(position)).hashCode();
     }
 
-    private float calcNum(Question question) {
-        float result = 0;
-        if (question.getValueBySession() != null) {
-            Option op = question.getOptionBySession();
-            result = question.getNumerator_w() * op.getFactor();
-        }
 
-        return result;
-    }
-
-    private float calcDenum(Question question) {
-        float result = 0;
-
-        if (question.getAnswer().getOutput() == Constants.DROPDOWN_LIST || question.getAnswer().getOutput() == Constants.RADIO_GROUP_HORIZONTAL
-                || question.getAnswer().getOutput() == Constants.RADIO_GROUP_VERTICAL) {
-
-            Option option = question.getOptionBySession();
-            if (option != null) {
-                return calcDenum(option.getFactor(), question);
-            } else {
-                result = calcDenum(0, question);
-            }
-        }
-
-        return result;
-    }
-
-    private float calcDenum(float factor, Question question) {
-        float result = 0;
-        float num = question.getNumerator_w();
-        float denum = question.getDenominator_w();
-
-        if (num == denum)
-            result = denum;
-        if (num == 0 && denum != 0)
-            result = factor * denum;
-
-        return result;
-    }
+//    private float calcDenum(Question question) {
+//        float result = 0;
+//
+//        if (question.getAnswer().getOutput() == Constants.DROPDOWN_LIST || question.getAnswer().getOutput() == Constants.RADIO_GROUP_HORIZONTAL
+//                || question.getAnswer().getOutput() == Constants.RADIO_GROUP_VERTICAL) {
+//
+//            Option option = question.getOptionBySession();
+//            if (option != null) {
+//                return calcDenum(option.getFactor(), question);
+//            } else {
+//                result = calcDenum(0, question);
+//            }
+//        }
+//
+//        return result;
+//    }
+//
+//    private float calcDenum(float factor, Question question) {
+//        float result = 0;
+//        float num = question.getNumerator_w();
+//        float denum = question.getDenominator_w();
+//
+//        if (num == denum)
+//            result = denum;
+//        if (num == 0 && denum != 0)
+//            result = factor * denum;
+//
+//        return result;
+//    }
 
     private void updateQuestionsVisibility(Question question, boolean show) {
         List<Question> children = question.getQuestionChildren();
@@ -348,7 +348,7 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
                 ReadWriteDB.resetValue(child);
                 hidden[items.indexOf(child.getHeader())] = isHeaderHide(child.getHeader());
             } else {
-                Float denum = calcDenum(child);
+                Float denum = ScoreRegister.calcDenum(child);
                 totalDenum = totalDenum + denum;
                 ScoreRegister.addRecord(child, 0F, denum);
                 hidden[items.indexOf(child.getHeader())] = false;
@@ -378,7 +378,7 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
                     viewHolder.denum.setText(Float.toString(numdenum.get(1)));
                 } else {
                     viewHolder.num.setText(this.context.getString(R.string.number_zero));
-                    viewHolder.denum.setText(Float.toString(calcDenum(question)));
+                    viewHolder.denum.setText(Float.toString(ScoreRegister.calcDenum(question)));
                     ((Spinner) viewHolder.component).setSelection(0);
                 }
 
@@ -389,13 +389,13 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
                 Value value = question.getValueBySession();
                 List<Float> numdenumradiobutton = ScoreRegister.getNumDenum(question);
                 if (value != null) {
-                    ((RadioButton)  viewHolder.component.findViewWithTag(value.getOption())).setChecked(true);
+                    ((RadioButton) viewHolder.component.findViewWithTag(value.getOption())).setChecked(true);
 
                     viewHolder.num.setText(Float.toString(numdenumradiobutton.get(0)));
                     viewHolder.denum.setText(Float.toString(numdenumradiobutton.get(1)));
                 } else {
                     viewHolder.num.setText(this.context.getString(R.string.number_zero));
-                    viewHolder.denum.setText(Float.toString(calcDenum(question)));
+                    viewHolder.denum.setText(Float.toString(ScoreRegister.calcDenum(question)));
                 }
                 break;
             default:
@@ -479,8 +479,8 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
     }
 
     private void recalculateScores(ViewHolder viewHolder, Question question) {
-        Float num = calcNum(question);
-        Float denum = calcDenum(question);
+        Float num = ScoreRegister.calcNum(question);
+        Float denum = ScoreRegister.calcDenum(question);
 
         viewHolder.num.setText(num.toString());
         viewHolder.denum.setText(denum.toString());
@@ -527,7 +527,7 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
                     //Add main component, set filters and listener
                     ((EditText) viewHolder.component).setFilters(new InputFilter[]{
                             new InputFilter.LengthFilter(Constants.MAX_INT_CHARS),
-                            new MinMaxInputFilter(1,null)
+                            new MinMaxInputFilter(1, null)
                     });
                     ((EditText) viewHolder.component).addTextChangedListener(new TextViewListener(false, question));
                     break;
@@ -590,10 +590,35 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
                     break;
             }
 
+            //Put current value in the component
             setValues(viewHolder, question);
+            //Disables component if survey has already been sent
+            updateReadOnly(viewHolder.component);
+
         }
 
         return rowView;
+    }
+
+    /**
+     * Enables/Disables input view according to the state of the survey.
+     * Sent surveys cannot be modified.
+     *
+     * @param v
+     */
+    private void updateReadOnly(View v) {
+        if (v == null) {
+            return;
+        }
+
+        if (v instanceof RadioGroup) {
+            RadioGroup radioGroup = (RadioGroup) v;
+            for (int i = 0; i < radioGroup.getChildCount(); i++) {
+                radioGroup.getChildAt(i).setEnabled(!readOnly);
+            }
+        } else {
+            v.setEnabled(!readOnly);
+        }
     }
 
     private View initialiseView(int resource, ViewGroup parent, Question question, ViewHolder viewHolder, int position) {
@@ -636,20 +661,21 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
 
     /**
      * Set visibility of numerators and denominators depending on the user preference selected in the settings activity
+     *
      * @param viewHolder view that holds the component to be more efficient
      */
     private void configureViewByPreference(ViewHolder viewHolder) {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this.context);
-        int visibility=View.GONE;
-        float statementWeight=0.7f;
-        float componentWeight=0.3f;
-        float numDenWeight=0.0f;
+        int visibility = View.GONE;
+        float statementWeight = 0.7f;
+        float componentWeight = 0.3f;
+        float numDenWeight = 0.0f;
 
-        if(PreferencesState.getInstance().isShowNumDen()){
-            visibility=View.VISIBLE;
-            statementWeight=0.5f;
-            componentWeight=0.2f;
-            numDenWeight=0.15f;
+        if (PreferencesState.getInstance().isShowNumDen()) {
+            visibility = View.VISIBLE;
+            statementWeight = 0.5f;
+            componentWeight = 0.2f;
+            numDenWeight = 0.15f;
         }
 
         viewHolder.num.setVisibility(visibility);

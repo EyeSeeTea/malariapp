@@ -48,7 +48,10 @@ import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.layout.adapters.general.TabArrayAdapter;
 import org.eyeseetea.malariacare.layout.adapters.survey.AutoTabAdapter;
 import org.eyeseetea.malariacare.layout.adapters.survey.CompositeScoreAdapter;
+import org.eyeseetea.malariacare.layout.adapters.survey.CustomAdherenceAdapter;
+import org.eyeseetea.malariacare.layout.adapters.survey.CustomIQTABAdapter;
 import org.eyeseetea.malariacare.layout.adapters.survey.ITabAdapter;
+import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 import org.eyeseetea.malariacare.services.SurveyService;
 import org.eyeseetea.malariacare.utils.Constants;
@@ -101,6 +104,10 @@ public class SurveyActivity extends BaseActivity{
      */
     private List<Tab> tabsList=new ArrayList<>();
 
+    /**
+     * Map of adapters, each tab requires a different adapter to show its form
+     */
+    private Map<Tab, ITabAdapter> adaptersMap = new HashMap<Tab, ITabAdapter>();
 
     private TabAdaptersCache tabAdaptersCache = new TabAdaptersCache();
 
@@ -157,10 +164,17 @@ public class SurveyActivity extends BaseActivity{
                 .setNegativeButton(android.R.string.no, null)
                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int arg1) {
+                        ScoreRegister.clear();
                         unregisterReceiver();
                         finishAndGo(DashboardDetailsActivity.class);
                     }
                 }).create().show();
+    }
+
+    @Override
+    public void onPause(){
+        Session.getSurvey().updateSurveyStatus();
+        super.onPause();
     }
 
     @Override
@@ -238,7 +252,8 @@ public class SurveyActivity extends BaseActivity{
         parent.addView(view);
 
         if (    selectedTab.getType() == Constants.TAB_AUTOMATIC_SCORED ||
-                selectedTab.getType() == Constants.TAB_CUSTOM_SCORED    ||
+                selectedTab.getType() == Constants.TAB_ADHERENCE    ||
+                selectedTab.getType() == Constants.TAB_IQATAB ||
                 selectedTab.getType() == Constants.TAB_SCORE_SUMMARY) {
             tabAdapter.initializeSubscore();
         }
@@ -396,6 +411,29 @@ public class SurveyActivity extends BaseActivity{
     }
 
     /**
+     * Builds all the adapters required for each tab.
+     * @param tabs
+     * @param compositeScores
+     */
+    private void buildAdapters(List<Tab> tabs, List<CompositeScore> compositeScores){
+        for (Tab tab : tabs) {
+            if (tab.isCompositeScore())
+                adaptersMap.put(tab, new CompositeScoreAdapter(compositeScores, this, R.layout.composite_score_tab, tab.getName()));
+            else if (tab.isAdherenceTab()){
+                Log.d(TAG, "Adherence Tab");
+                adaptersMap.put(tab, CustomAdherenceAdapter.build(tab, this));
+            }
+            else if (tab.isIQATab()){
+                Log.d(TAG, "IQA Tab");
+                adaptersMap.put(tab, CustomIQTABAdapter.build(tab, this));
+            }
+            else if (!tab.isGeneralScore()) {
+                adaptersMap.put(tab, AutoTabAdapter.build(tab,this));
+            }
+        }
+    }
+
+    /**
      * Reloads tabs info and notifies its adapter
      * @param tabs
      */
@@ -403,7 +441,6 @@ public class SurveyActivity extends BaseActivity{
         this.tabsList.clear();
         this.tabsList.addAll(tabs);
         this.tabAdapter.notifyDataSetChanged();
-        spinner.setSelection(0);
     }
 
 
@@ -503,6 +540,15 @@ public class SurveyActivity extends BaseActivity{
         private ITabAdapter buildAdapter(Tab tab){
             if (tab.isCompositeScore())
                 return new CompositeScoreAdapter(this.compositeScores, SurveyActivity.this, R.layout.composite_score_tab, tab.getName());
+
+            if (tab.isAdherenceTab()) {
+                Log.d(TAG, "Creating an Adherence Adapter");
+                return CustomAdherenceAdapter.build(tab, SurveyActivity.this);
+            }
+
+            if (tab.isIQATab())
+                return CustomIQTABAdapter.build(tab, SurveyActivity.this);
+
 
             if(tab.isGeneralScore()){
                 return null;

@@ -23,6 +23,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,8 +41,12 @@ import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.model.Header;
 import org.eyeseetea.malariacare.database.model.Option;
 import org.eyeseetea.malariacare.database.model.Question;
+import org.eyeseetea.malariacare.database.model.Score;
+import org.eyeseetea.malariacare.database.model.Tab;
 import org.eyeseetea.malariacare.database.model.Value;
 import org.eyeseetea.malariacare.database.utils.ReadWriteDB;
+import org.eyeseetea.malariacare.layout.adapters.general.OptionArrayAdapter;
+import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 import org.eyeseetea.malariacare.utils.Constants;
 import org.eyeseetea.malariacare.utils.Utils;
@@ -54,14 +59,13 @@ import java.util.List;
 public class CustomAdherenceAdapter extends BaseAdapter implements ITabAdapter {
 
     private List<Object> items;
+    Tab tab;
 
     private LayoutInflater lInflater;
 
-    String tabName;
-
     boolean visible = false;
 
-    final ScoreHolder scoreHolder = new ScoreHolder();
+    //final ScoreHolder scoreHolder = new ScoreHolder();
 
     float denum = 20;
     float num = 0;
@@ -84,24 +88,25 @@ public class CustomAdherenceAdapter extends BaseAdapter implements ITabAdapter {
     static class ViewHolder2 {
         public TextView number;
         public EditText patientID;
+        public TextView testResult;
         public Spinner act;
         public TextView score;
     }
 
-    static class ScoreHolder {
+    /*static class ScoreHolder {
         public TextView scoreText;
         public TextView score;
         public TextView cualitativeScore;
-    }
+    }*/
 
     private void initializeScoreViews() {
-        scoreHolder.score = (TextView) ((Activity) context).findViewById(R.id.score);
+       /* scoreHolder.score = (TextView) ((Activity) context).findViewById(R.id.score);
         scoreHolder.cualitativeScore = (TextView) ((Activity) context).findViewById(R.id.qualitativeScore);
-        scoreHolder.scoreText = (TextView) ((Activity) context).findViewById(R.id.subtotalScoreText);
+        scoreHolder.scoreText = (TextView) ((Activity) context).findViewById(R.id.subtotalScoreText);*/
     }
 
     public void updateScore() {
-        scoreHolder.score.setText(Utils.round(num / denum));
+        //scoreHolder.score.setText(Utils.round(num / denum));
     }
 
     @Override
@@ -111,7 +116,7 @@ public class CustomAdherenceAdapter extends BaseAdapter implements ITabAdapter {
 
     @Override
     public String getName() {
-        return tabName;
+        return tab.getName();
     }
 
     @Override
@@ -139,25 +144,44 @@ public class CustomAdherenceAdapter extends BaseAdapter implements ITabAdapter {
 
     }
 
-    public CustomAdherenceAdapter(List<Object> items, Context context, int id_layout, String tabName) {
+    public CustomAdherenceAdapter(Tab tab, Context context) {
         this.lInflater=LayoutInflater.from(context);
-        this.items=items;
+        this.items=Utils.convertTabToArrayCustom(tab);
+        this.id_layout = R.layout.form_custom;
         this.context=context;
-        this.tabName = tabName;
 
         if (items.size()> 0)
             position_secondheader = LayoutUtils.getNumberOfQuestionParentsHeader((Header) items.get(0)) +1 ;
 
+        Log.d("Second header", position_secondheader + "");
+
         scores = new int[position_secondheader];
 
-        this.id_layout = id_layout;
+        for (int i=0;i<position_secondheader; i++) {
+            if (items.get(i) instanceof Question) {
+                Question testResult = ((Question) items.get(i)).getQuestionChildren().get(3);
+                ScoreRegister.addRecord(testResult, ScoreRegister.calcNum(testResult), ScoreRegister.calcDenum(testResult));
+            }
+        }
 
         for (int i = position_secondheader; i < items.size(); i++) {
             if (items.get(i) instanceof Question) {
+                Question act = ((Question) items.get(i)).getQuestionChildren().get(2);
+                ScoreRegister.addRecord(act, ScoreRegister.calcNum(act), ScoreRegister.calcDenum(act));
                 calcScore((Question) items.get(i));
             }
         }
 
+    }
+
+    /**
+     * Factory method to build a CustomAdherenceTab.
+     * @param tab
+     * @param context
+     * @return
+     */
+    public static CustomAdherenceAdapter build(Tab tab, Context context){
+        return new CustomAdherenceAdapter(tab, context);
     }
 
     private void resetScores() {
@@ -211,9 +235,10 @@ public class CustomAdherenceAdapter extends BaseAdapter implements ITabAdapter {
 
     private void setValues2(ViewHolder2 viewHolder, Question question) {
         calcScore(question);
-        viewHolder.score.setText(String.valueOf(scores[items.indexOf(question)-position_secondheader]));
+        viewHolder.score.setText(String.valueOf(scores[items.indexOf(question) - position_secondheader]));
         viewHolder.patientID.setText(ReadWriteDB.readValueQuestion(question.getQuestionChildren().get(0)));
         viewHolder.number.setText(question.getForm_name());
+        viewHolder.testResult.setText(question.getQuestionChildren().get(1).getForm_name());
         viewHolder.act.setSelection(ReadWriteDB.readPositionOption(question.getQuestionChildren().get(2)));
 
     }
@@ -292,22 +317,13 @@ public class CustomAdherenceAdapter extends BaseAdapter implements ITabAdapter {
                 List<Option> optionList = question.getQuestionChildren().get(1).getAnswer().getOptions();
                 optionList.add(0, new Option(Constants.DEFAULT_SELECT_OPTION));
 
-                ArrayAdapter adapter = new ArrayAdapter(context, android.R.layout.simple_spinner_item, optionList);
-
-                adapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
-
-                viewHolder.gender.setAdapter(adapter);
-
+                viewHolder.gender.setAdapter(new OptionArrayAdapter(context,optionList));
 
                 optionList = question.getQuestionChildren().get(3).getAnswer().getOptions();
 
                 optionList.add(0, new Option(Constants.DEFAULT_SELECT_OPTION));
 
-                adapter = new ArrayAdapter(context, android.R.layout.simple_spinner_item, optionList);
-
-                adapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
-
-                viewHolder.testResutl.setAdapter(adapter);
+                viewHolder.testResutl.setAdapter(new OptionArrayAdapter(context, optionList));
 
                 rowView.setBackgroundResource(LayoutUtils.calculateBackgrounds(position));
 
@@ -376,8 +392,11 @@ public class CustomAdherenceAdapter extends BaseAdapter implements ITabAdapter {
                 viewHolder.testResutl.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                     @Override
                     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                        if (viewCreated.value)
-                            ReadWriteDB.saveValuesDDL(question.getQuestionChildren().get(3), (Option) viewHolder.testResutl.getItemAtPosition(position));
+                        if (viewCreated.value) {
+                            Question testResult = question.getQuestionChildren().get(3);
+                            ReadWriteDB.saveValuesDDL(testResult, (Option) viewHolder.testResutl.getItemAtPosition(position));
+                            ScoreRegister.addRecord(testResult, ScoreRegister.calcNum(testResult), ScoreRegister.calcDenum(testResult));
+                        }
                         else viewCreated.value = true;
                     }
 
@@ -407,21 +426,18 @@ public class CustomAdherenceAdapter extends BaseAdapter implements ITabAdapter {
 
                 viewHolder2.number = (TextView) rowView.findViewById(R.id.number);
                 viewHolder2.patientID = (EditText) rowView.findViewById(R.id.patientId);
+                viewHolder2.testResult = (TextView) rowView.findViewById(R.id.testResult);
                 viewHolder2.act = (Spinner) rowView.findViewById(R.id.act1);
                 viewHolder2.score = (TextView) rowView.findViewById(R.id.scoreValue);
 
                 List<Option> optionList = ((Question) item).getQuestionChildren().get(2).getAnswer().getOptions();
                 optionList.add(0, new Option(Constants.DEFAULT_SELECT_OPTION));
 
-                ArrayAdapter adapter = new ArrayAdapter(context, android.R.layout.simple_spinner_item, optionList);
-
-                adapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
-
-                viewHolder2.act.setAdapter(adapter);
+                viewHolder2.act.setAdapter(new OptionArrayAdapter(context, optionList));
 
                 viewHolder2.patientID.addTextChangedListener(new TextWatcher() {
 
-                    Bool viewCreated = new Bool (false);
+                    Bool viewCreated = new Bool(false);
 
                     @Override
                     public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -432,6 +448,7 @@ public class CustomAdherenceAdapter extends BaseAdapter implements ITabAdapter {
                     public void onTextChanged(CharSequence s, int start, int before, int count) {
                         if (viewCreated.value)
                             ReadWriteDB.saveValuesText(question.getQuestionChildren().get(0), s.toString());
+
                         else viewCreated.value = true;
                     }
 
@@ -447,9 +464,12 @@ public class CustomAdherenceAdapter extends BaseAdapter implements ITabAdapter {
 
                         if (viewCreated.value) {
 
-                            ReadWriteDB.saveValuesDDL(question.getQuestionChildren().get(2), (Option) viewHolder2.act.getItemAtPosition(pos));
+                            Question act = question.getQuestionChildren().get(2);
+                            ReadWriteDB.saveValuesDDL(act, (Option) viewHolder2.act.getItemAtPosition(pos));
                             calcScore(question);
-                            viewHolder2.score.setText(Integer.toString(scores[items.indexOf(question)] - position_secondheader));
+                            viewHolder2.score.setText(Integer.toString(scores[items.indexOf(question) - position_secondheader]));
+                            ScoreRegister.addRecord(act, ScoreRegister.calcNum(act), ScoreRegister.calcDenum(act));
+
                             updateScore();
                         } else
                             viewCreated.value = true;
