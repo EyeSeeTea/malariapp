@@ -123,7 +123,9 @@ public class PushClient {
         List<Tab> tabs=survey.getProgram().getTabs();
         ScoreRegister.registerTabScores(tabs);
 
-        List<CompositeScore> compositeScoreList=CompositeScore.listAllByProgram(survey.getProgram());
+        //List<CompositeScore> compositeScoreList=CompositeScore.listAllByProgram(survey.getProgram());
+
+        List<CompositeScore> compositeScoreList=CompositeScore.listAll(CompositeScore.class);
         ScoreRegister.registerCompositeScores(compositeScoreList);
 
         JSONArray values = new JSONArray();
