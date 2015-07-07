@@ -88,6 +88,7 @@ public class PushClient {
             data = prepareDataElements(data);
             return new PushResult(pushData(data));
         }catch(Exception ex){
+            Log.e(TAG, ex.getMessage());
             return new PushResult(ex);
         }
     }
@@ -119,31 +120,57 @@ public class PushClient {
     private JSONObject prepareDataElements(JSONObject data)throws Exception{
         Log.d(TAG, "prepareDataElements for survey: " + survey.getId());
 
-        ScoreRegister.clear();
-        List<Tab> tabs=survey.getProgram().getTabs();
-        ScoreRegister.registerTabScores(tabs);
+        //Add dataElement per values
+        JSONArray values=prepareValues(new JSONArray());
 
-        //List<CompositeScore> compositeScoreList=CompositeScore.listAllByProgram(survey.getProgram());
+        //Add dataElement per compositeScores
+        values=prepareCompositeScores(values);
 
-        List<CompositeScore> compositeScoreList=CompositeScore.listAll(CompositeScore.class);
-        ScoreRegister.registerCompositeScores(compositeScoreList);
-
-        JSONArray values = new JSONArray();
-        for (Value value : survey.getValues()) {
-            values.put(prepareValue(value));
-
-            Question question=value.getQuestion();
-            Float num=ScoreRegister.calcNum(question, survey);
-            Float den=ScoreRegister.calcDenum(question, survey);
-            ScoreRegister.addRecord(value.getQuestion(), num,den);
-        }
-
-        for(CompositeScore compositeScore:compositeScoreList){
-            values.put(prepareValue(compositeScore));
-        }
         data.put(TAG_DATAVALUES, values);
         Log.d(TAG, "prepareDataElements result: " + data.toString());
         return data;
+    }
+
+    /**
+     * Add a dataElement per value (answer)
+     * @param values
+     * @return
+     * @throws Exception
+     */
+    private JSONArray prepareValues(JSONArray values) throws Exception{
+        for (Value value : survey.getValues()) {
+            values.put(prepareValue(value));
+        }
+        return values;
+    }
+
+    private JSONArray prepareCompositeScores(JSONArray values) throws Exception{
+
+        //Cleans scores
+        ScoreRegister.clear();
+
+        //Register scores for tabs
+        List<Tab> tabs=survey.getProgram().getTabs();
+        ScoreRegister.registerTabScores(tabs);
+
+        //Register scores for composites
+        List<CompositeScore> compositeScoreList=CompositeScore.listAllByProgram(survey.getProgram());
+        ScoreRegister.registerCompositeScores(compositeScoreList);
+
+        //Initialize scores x question
+        for(Question question : Question.listAllByProgram(survey.getProgram())){
+            if(!question.isHiddenBySurvey(survey)) {
+                question.initScore(survey);
+            }else{
+                ScoreRegister.addRecord(question, 0F, ScoreRegister.calcDenum(question));
+            }
+        }
+
+        //1 CompositeScore -> 1 dataValue
+        for(CompositeScore compositeScore:compositeScoreList){
+            values.put(prepareValue(compositeScore));
+        }
+        return values;
     }
 
     /**

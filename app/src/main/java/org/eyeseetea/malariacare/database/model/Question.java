@@ -6,8 +6,11 @@ import com.orm.query.Condition;
 import com.orm.query.Select;
 
 import org.eyeseetea.malariacare.database.utils.Session;
+import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.utils.Constants;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class Question extends SugarRecord<Question> {
@@ -23,6 +26,13 @@ public class Question extends SugarRecord<Question> {
             " where q.question=0"+
             " and a.output<>"+ Constants.NO_ANSWER+
             " and p.id=?";
+
+    private static final String LIST_ALL_BY_PROGRAM ="select q.* from question q"+
+            " left join answer a on q.answer=a.id"+
+            " left join header h on q.header=h.id"+
+            " left join tab t on h.tab=t.id"+
+            " left join program p on t.program=p.id"+
+            " and p.id=? order by t.orderpos, q.orderpos";
 
     String code;
     String de_name;
@@ -256,6 +266,36 @@ public class Question extends SugarRecord<Question> {
     }
 
     /**
+     * Checks if this question is shown according to the values of the given survey
+     * @param survey
+     * @return
+     */
+    public boolean isHiddenBySurvey(Survey survey){
+        Question parent=this.getQuestion();
+        //There is a parent question and it is not answered
+        if (parent!= null && parent.getValueBySurvey(survey)==null) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Add register to ScoreRegister if this is an scored question
+     * @return List</Float> {num, den}
+     */
+    public List<Float> initScore(Survey survey) {
+        if (!this.isScored()){
+            return null;
+        }
+
+        Float num = ScoreRegister.calcNum(this,survey);
+        Float denum = ScoreRegister.calcDenum(this,survey);
+        ScoreRegister.addRecord(this, num, denum);
+        return Arrays.asList(num,denum);
+    }
+
+    /**
      * Counts the number of required questions (without a parent question).
      * @param program
      * @return
@@ -268,6 +308,21 @@ public class Question extends SugarRecord<Question> {
         List<Question> questionsByProgram = Question.findWithQuery(Question.class, LIST_REQUIRED_BY_PROGRAM, program.getId().toString());
         return questionsByProgram.size();
     }
+
+    /**
+     * Returns all the questions that belongs to a program
+     * @param program
+     * @return
+     */
+    public static List<Question> listAllByProgram(Program program){
+        if(program==null || program.getId()==null){
+            return new ArrayList<Question>();
+        }
+
+        return Question.findWithQuery(Question.class, LIST_ALL_BY_PROGRAM, program.getId().toString());
+    }
+
+
 
     /**
      * Checks if this question is scored or not.

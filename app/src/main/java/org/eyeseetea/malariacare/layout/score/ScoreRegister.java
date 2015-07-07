@@ -70,9 +70,15 @@ public class ScoreRegister {
 
     private static List<Float> getRecursiveScore(CompositeScore cScore, List<Float> result) {
 
-        if (!cScore.hasChildren())
-            return compositeScoreMap.get(cScore).calculateNumDenTotal(result);
-        else {
+        if (!cScore.hasChildren()) {
+
+            //FIXME this try catch just covers a error in data compositeScore: '4.2'
+            try{
+                return compositeScoreMap.get(cScore).calculateNumDenTotal(result);
+            }catch(Exception ex){
+                return Arrays.asList(new Float(0f),new Float(0f));
+            }
+        }else {
             for (CompositeScore cScoreChildren : cScore.getCompositeScoreChildren())
                 result = getRecursiveScore(cScoreChildren, result);
             return result;

@@ -127,13 +127,14 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
             if (item instanceof Question) {
                 if (!(hidden[i] = isHidden((Question) item))) {
                     initScoreQuestion((Question) item);
-                } else ScoreRegister.addRecord((Question) item, 0F, ScoreRegister.calcDenum((Question) item));
-                hidden[items.indexOf(((Question) item).getHeader())] = hidden[items.indexOf(((Question) item).getHeader())]
-                        && hidden[i];
+                } else {
+                    ScoreRegister.addRecord((Question) item, 0F, ScoreRegister.calcDenum((Question) item));
+                }
+                hidden[items.indexOf(((Question) item).getHeader())] = hidden[items.indexOf(((Question) item).getHeader())]&& hidden[i];
             }
         }
 
-        this.readOnly =Session.getSurvey().isSent();
+        this.readOnly = Session.getSurvey().isSent();
     }
 
     public AutoTabAdapter(Tab tab, Context context, int id_layout) {
@@ -143,16 +144,17 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
 
     /**
      * Factory method to build a scored/non scored layout according to tab type.
+     *
      * @param tab
      * @param context
      * @return
      */
-    public static AutoTabAdapter build(Tab tab, Context context){
-        int idLayout=tab.getType()==Constants.TAB_AUTOMATIC_NON_SCORED?R.layout.form_without_score:R.layout.form_with_score;
+    public static AutoTabAdapter build(Tab tab, Context context) {
+        int idLayout = tab.getType() == Constants.TAB_AUTOMATIC_NON_SCORED ? R.layout.form_without_score : R.layout.form_with_score;
         return new AutoTabAdapter(tab, context, idLayout);
     }
 
-    public Tab getTab(){
+    public Tab getTab() {
         return this.tab;
     }
 
@@ -189,7 +191,7 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
         int visibility = (PreferencesState.getInstance().isShowNumDen()) ? View.VISIBLE : View.GONE;
 
         // Set all the subscore bar visibility (this way, the bar will disappear if visibility is GONE)
-        ((LinearLayout)(scoreHolder.totalNum.getParent()).getParent()).setVisibility(visibility);
+        ((LinearLayout) (scoreHolder.totalNum.getParent()).getParent()).setVisibility(visibility);
     }
 
     @Override
@@ -203,7 +205,7 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
         if (totalDenum != 0) {
             Float score = 100 * (totalNum / totalDenum);
             LayoutUtils.trafficLight(scoreHolder.score, score, scoreHolder.qualitativeScore);
-            scoreHolder.score.setText(Utils.round(100 * (totalNum / totalDenum))+" % ");
+            scoreHolder.score.setText(Utils.round(100 * (totalNum / totalDenum)) + " % ");
         }
         if (totalDenum == 0 && totalNum == 0) {
             scoreHolder.score.setText(this.context.getString(R.string.number_zero_percentage));
@@ -387,7 +389,7 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
                 Value value = question.getValueBySession();
                 List<Float> numdenumradiobutton = ScoreRegister.getNumDenum(question);
                 if (value != null) {
-                    ((RadioButton)  viewHolder.component.findViewWithTag(value.getOption())).setChecked(true);
+                    ((RadioButton) viewHolder.component.findViewWithTag(value.getOption())).setChecked(true);
 
                     viewHolder.num.setText(Float.toString(numdenumradiobutton.get(0)));
                     viewHolder.denum.setText(Float.toString(numdenumradiobutton.get(1)));
@@ -525,7 +527,7 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
                     //Add main component, set filters and listener
                     ((EditText) viewHolder.component).setFilters(new InputFilter[]{
                             new InputFilter.LengthFilter(Constants.MAX_INT_CHARS),
-                            new MinMaxInputFilter(1,null)
+                            new MinMaxInputFilter(1, null)
                     });
                     ((EditText) viewHolder.component).addTextChangedListener(new TextViewListener(false, question));
                     break;
@@ -601,19 +603,20 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
     /**
      * Enables/Disables input view according to the state of the survey.
      * Sent surveys cannot be modified.
+     *
      * @param v
      */
-    private void updateReadOnly(View v){
-        if(v==null){
+    private void updateReadOnly(View v) {
+        if (v == null) {
             return;
         }
 
-        if(v instanceof RadioGroup){
-            RadioGroup radioGroup=(RadioGroup)v;
-            for(int i=0;i<radioGroup.getChildCount();i++){
+        if (v instanceof RadioGroup) {
+            RadioGroup radioGroup = (RadioGroup) v;
+            for (int i = 0; i < radioGroup.getChildCount(); i++) {
                 radioGroup.getChildAt(i).setEnabled(!readOnly);
             }
-        }else {
+        } else {
             v.setEnabled(!readOnly);
         }
     }
@@ -658,20 +661,21 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
 
     /**
      * Set visibility of numerators and denominators depending on the user preference selected in the settings activity
+     *
      * @param viewHolder view that holds the component to be more efficient
      */
     private void configureViewByPreference(ViewHolder viewHolder) {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this.context);
-        int visibility=View.GONE;
-        float statementWeight=0.7f;
-        float componentWeight=0.3f;
-        float numDenWeight=0.0f;
+        int visibility = View.GONE;
+        float statementWeight = 0.7f;
+        float componentWeight = 0.3f;
+        float numDenWeight = 0.0f;
 
-        if(PreferencesState.getInstance().isShowNumDen()){
-            visibility=View.VISIBLE;
-            statementWeight=0.5f;
-            componentWeight=0.2f;
-            numDenWeight=0.15f;
+        if (PreferencesState.getInstance().isShowNumDen()) {
+            visibility = View.VISIBLE;
+            statementWeight = 0.5f;
+            componentWeight = 0.2f;
+            numDenWeight = 0.15f;
         }
 
         viewHolder.num.setVisibility(visibility);
