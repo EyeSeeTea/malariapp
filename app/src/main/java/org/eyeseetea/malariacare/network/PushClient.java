@@ -20,6 +20,7 @@
 package org.eyeseetea.malariacare.network;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.util.Log;
 
 import com.squareup.okhttp.Authenticator;
@@ -36,7 +37,9 @@ import org.eyeseetea.malariacare.database.model.Question;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.model.Tab;
 import org.eyeseetea.malariacare.database.model.Value;
+import org.eyeseetea.malariacare.fragments.DashboardDetailsFragment;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
+import org.eyeseetea.malariacare.services.SurveyService;
 import org.eyeseetea.malariacare.utils.Constants;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -76,11 +79,13 @@ public class PushClient {
 
 
     Survey survey;
+    DashboardDetailsFragment dashboardDetailsFragment;
     Activity activity;
 
-    public PushClient(Survey survey, Activity activity) {
+    public PushClient(Survey survey, DashboardDetailsFragment dashboardDetailsFragment) {
         this.survey = survey;
-        this.activity = activity;
+        this.dashboardDetailsFragment=dashboardDetailsFragment;
+        this.activity = dashboardDetailsFragment.getActivity();
     }
 
     public PushResult push() {
@@ -88,13 +93,25 @@ public class PushClient {
             JSONObject data = prepareMetadata();
             data = prepareDataElements(data);
             PushResult result = new PushResult(pushData(data));
-            this.survey.setStatus(Constants.SURVEY_SENT);
-            this.survey.save();
+            if(result.isSuccessful()){
+                updateSurveyState();
+            }
             return result;
         }catch(Exception ex){
             Log.e(TAG, ex.getMessage());
             return new PushResult(ex);
         }
+    }
+
+    public void updateSurveyState(){
+        //Change status
+        this.survey.setStatus(Constants.SURVEY_SENT);
+        this.survey.save();
+
+        //Reload data using service
+        Intent surveysIntent=new Intent(activity, SurveyService.class);
+        surveysIntent.putExtra(SurveyService.SERVICE_METHOD, SurveyService.RELOAD_DASHBOARD_ACTION);
+        activity.startService(surveysIntent);
     }
 
     /**

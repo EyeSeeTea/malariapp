@@ -36,7 +36,9 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 
+import org.eyeseetea.malariacare.DashboardDetailsActivity;
 import org.eyeseetea.malariacare.R;
+import org.eyeseetea.malariacare.SurveyActivity;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.layout.adapters.dashboard.AssessmentCompletedAdapter;
@@ -145,8 +147,7 @@ public class DashboardSentFragment extends ListFragment {
         //Put selected survey in session
         Session.setSurvey(surveys.get(position - 1));
         // Go to SurveyActivity
-        // Here we should do the push
-        //((DashboardDetailsActivity) getActivity()).go(SurveyActivity.class);
+        ((DashboardDetailsActivity) getActivity()).go(SurveyActivity.class);
     }
 
     @Override
@@ -288,8 +289,11 @@ public class DashboardSentFragment extends ListFragment {
         @Override
         public void onReceive(Context context, Intent intent) {
             Log.d(TAG, "onReceive");
-            List<Survey> surveysFromService=(List<Survey>)Session.popServiceValue(SurveyService.ALL_SENT_SURVEYS_ACTION);
-            reloadSurveys(surveysFromService);
+            //Listening only intents from this method
+            if(SurveyService.ALL_SENT_SURVEYS_ACTION.equals(intent.getAction())) {
+                List<Survey> surveysFromService = (List<Survey>) Session.popServiceValue(SurveyService.ALL_SENT_SURVEYS_ACTION);
+                reloadSurveys(surveysFromService);
+            }
         }
 
     }

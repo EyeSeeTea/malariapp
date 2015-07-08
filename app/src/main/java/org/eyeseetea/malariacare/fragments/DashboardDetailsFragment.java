@@ -288,7 +288,7 @@ public class DashboardDetailsFragment extends ListFragment {
     /**
      * Asks SurveyService for the current list of surveys
      */
-    private void getSurveysFromService(){
+    public void getSurveysFromService(){
         Log.d(TAG, "getSurveysFromService");
         Activity activity=getActivity();
         Intent surveysIntent=new Intent(activity, SurveyService.class);
@@ -312,8 +312,11 @@ public class DashboardDetailsFragment extends ListFragment {
         @Override
         public void onReceive(Context context, Intent intent) {
             Log.d(TAG, "onReceive");
-            List<Survey> surveysUnsentFromService=(List<Survey>)Session.popServiceValue(SurveyService.ALL_UNSENT_SURVEYS_ACTION);
-            reloadSurveys(surveysUnsentFromService);
+            //Listening only intents from this method
+            if(SurveyService.ALL_UNSENT_SURVEYS_ACTION.equals(intent.getAction())) {
+                List<Survey> surveysUnsentFromService = (List<Survey>) Session.popServiceValue(SurveyService.ALL_UNSENT_SURVEYS_ACTION);
+                reloadSurveys(surveysUnsentFromService);
+            }
         }
     }
 
@@ -335,7 +338,7 @@ public class DashboardDetailsFragment extends ListFragment {
 
         @Override
         protected PushResult doInBackground(Void... params) {
-            PushClient pushClient=new PushClient(survey,getActivity());
+            PushClient pushClient=new PushClient(survey,DashboardDetailsFragment.this);
             return pushClient.push();
         }
 

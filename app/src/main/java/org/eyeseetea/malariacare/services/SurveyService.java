@@ -60,6 +60,11 @@ public class SurveyService extends IntentService {
     public static final String ALL_SENT_SURVEYS_ACTION ="org.eyeseetea.malariacare.services.SurveyService.ALL_SENT_SURVEYS_ACTION";
 
     /**
+     * Name of 'reload' action which returns both lists (unsent, sent)
+     */
+    public static final String RELOAD_DASHBOARD_ACTION ="org.eyeseetea.malariacare.services.SurveyService.RELOAD_DASHBOARD_ACTION";
+
+    /**
      * Name of 'show' action
      */
     public static final String PREPARE_SURVEY_ACTION ="org.eyeseetea.malariacare.services.SurveyService.PREPARE_SURVEY_ACTION";
@@ -110,6 +115,10 @@ public class SurveyService extends IntentService {
             case ALL_SENT_SURVEYS_ACTION:
                 getAllSentSurveys();
                 break;
+            case RELOAD_DASHBOARD_ACTION:
+                getAllUnsentSurveys();
+                getAllSentSurveys();
+                break;
         }
     }
 
@@ -143,11 +152,6 @@ public class SurveyService extends IntentService {
 
         //Select surveys from sql
         List<Survey> surveys = Survey.getAllSentSurveys();
-
-        //Load %completion in every survey (it takes a while so it can NOT be done in UI Thread)
-        for(Survey survey:surveys){
-            survey.getAnsweredQuestionRatio();
-        }
 
         //Since intents does NOT admit NON serializable as values we use Session instead
         Session.putServiceValue(ALL_SENT_SURVEYS_ACTION,surveys);
