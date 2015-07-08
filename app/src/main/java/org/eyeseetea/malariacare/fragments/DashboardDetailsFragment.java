@@ -129,6 +129,7 @@ public class DashboardDetailsFragment extends ListFragment {
             adapterInSession = adapterInSession.newInstance(this.surveys,getActivity());
         }
         this.adapter = adapterInSession;
+        Session.setAdapterCompleted(this.adapter);
     }
 
     @Override
@@ -311,8 +312,8 @@ public class DashboardDetailsFragment extends ListFragment {
         @Override
         public void onReceive(Context context, Intent intent) {
             Log.d(TAG, "onReceive");
-            List<Survey> surveysFromService=(List<Survey>)Session.popServiceValue(SurveyService.ALL_UNSENT_SURVEYS_ACTION);
-            reloadSurveys(surveysFromService);
+            List<Survey> surveysUnsentFromService=(List<Survey>)Session.popServiceValue(SurveyService.ALL_UNSENT_SURVEYS_ACTION);
+            reloadSurveys(surveysUnsentFromService);
         }
     }
 
