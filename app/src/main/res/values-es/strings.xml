@@ -4,7 +4,6 @@
     <!-- # general -->
     <string name="app_name">Health Network QIS</string>
     <string name="developers">EyeSeeTea LTD</string>
-    <string name="empty_string"></string>
     <string name="yes">Sí</string>
     <string name="no">No</string>
     <string name="ok">Ok</string>
