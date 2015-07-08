@@ -80,13 +80,11 @@ public class PushClient {
 
 
     Survey survey;
-    DashboardDetailsFragment dashboardDetailsFragment;
     Activity activity;
 
-    public PushClient(Survey survey, DashboardDetailsFragment dashboardDetailsFragment) {
+    public PushClient(Survey survey, Activity activity) {
         this.survey = survey;
-        this.dashboardDetailsFragment=dashboardDetailsFragment;
-        this.activity = dashboardDetailsFragment.getActivity();
+        this.activity = activity;
     }
 
     public PushResult push() {

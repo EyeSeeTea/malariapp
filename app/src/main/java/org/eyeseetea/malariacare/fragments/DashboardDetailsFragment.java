@@ -341,7 +341,7 @@ public class DashboardDetailsFragment extends ListFragment {
 
         @Override
         protected PushResult doInBackground(Void... params) {
-            PushClient pushClient=new PushClient(survey,DashboardDetailsFragment.this);
+            PushClient pushClient=new PushClient(survey,getActivity());
             return pushClient.push();
         }
 
