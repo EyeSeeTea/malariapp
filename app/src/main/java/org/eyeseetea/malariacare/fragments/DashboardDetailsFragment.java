@@ -46,6 +46,7 @@ import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.layout.adapters.dashboard.AssessmentAdapter;
 import org.eyeseetea.malariacare.layout.adapters.dashboard.IDashboardAdapter;
 import org.eyeseetea.malariacare.layout.listeners.SwipeDismissListViewTouchListener;
+import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.network.PushResult;
 import org.eyeseetea.malariacare.services.SurveyService;
 import org.eyeseetea.malariacare.network.PushClient;
@@ -218,8 +219,10 @@ public class DashboardDetailsFragment extends ListFragment {
                                             .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                                                 public void onClick(DialogInterface arg0, int arg1) {
                                                     ((Survey)adapter.getItem(position-1)).delete();
-                                                    adapter.remove(adapter.getItem(position - 1));
-                                                    adapter.notifyDataSetChanged();
+                                                    //Reload data using service
+                                                    Intent surveysIntent=new Intent(getActivity(), SurveyService.class);
+                                                    surveysIntent.putExtra(SurveyService.SERVICE_METHOD, SurveyService.RELOAD_DASHBOARD_ACTION);
+                                                    getActivity().startService(surveysIntent);
                                                 }
                                             })
                                             .setNegativeButton(android.R.string.no, null).create().show();

@@ -220,8 +220,9 @@ public class DashboardSentFragment extends ListFragment {
                                             .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                                                 public void onClick(DialogInterface arg0, int arg1) {
                                                     ((Survey)adapter.getItem(position-1)).delete();
-                                                    adapter.remove(adapter.getItem(position - 1));
-                                                    adapter.notifyDataSetChanged();
+                                                    Intent surveysIntent=new Intent(getActivity(), SurveyService.class);
+                                                    surveysIntent.putExtra(SurveyService.SERVICE_METHOD, SurveyService.RELOAD_DASHBOARD_ACTION);
+                                                    getActivity().startService(surveysIntent);
                                                 }
                                             })
                                             .setNegativeButton(android.R.string.no, null).create().show();

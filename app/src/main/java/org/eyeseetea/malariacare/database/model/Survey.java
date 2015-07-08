@@ -159,6 +159,12 @@ public class Survey extends SugarRecord<Survey> {
      * Updates ratios, status and completion date depending on the question and answer (text)
      */
     public void updateSurveyStatus(){
+
+        //Sent surveys are not updated
+        if(this.isSent()){
+            return;
+        }
+
         SurveyAnsweredRatio answeredRatio=this.reloadSurveyAnsweredRatio();
 
         //Update status & completionDate

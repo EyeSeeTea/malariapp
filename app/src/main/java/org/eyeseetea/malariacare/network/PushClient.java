@@ -41,6 +41,7 @@ import org.eyeseetea.malariacare.fragments.DashboardDetailsFragment;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.services.SurveyService;
 import org.eyeseetea.malariacare.utils.Constants;
+import org.eyeseetea.malariacare.utils.Utils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -218,7 +219,7 @@ public class PushClient {
     private JSONObject prepareValue(CompositeScore compositeScore) throws Exception{
         JSONObject elementObject = new JSONObject();
         elementObject.put(TAG_DATAELEMENT, compositeScore.getUid());
-        elementObject.put(TAG_VALUE, ScoreRegister.getCompositeScore(compositeScore));
+        elementObject.put(TAG_VALUE, Utils.round(ScoreRegister.getCompositeScore(compositeScore)));
         return elementObject;
     }
     /**
