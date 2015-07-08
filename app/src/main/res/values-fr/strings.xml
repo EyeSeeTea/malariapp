@@ -175,10 +175,11 @@
     <string name="settings_checkbox_customize_fonts">Personaliser les fonts?</string>
     <string name="settings_list_font_sizes">Taille des fonts</string>
     <string-array name="settings_array_titles_font_sizes">
-        <item>Petite</item>
-        <item>Medium</item>
-        <item>Grande</item>
-        <item>Extra Grande</item>
+        <item>Extra petit</item>
+        <item>Petit</item>
+        <item>Moyen</item>
+        <item>Grand</item>
+        <item>Extra grand</item>
     </string-array>
     <string name="settings_text_dhis_server_url">URL du serveur DHIS</string>
     <string name="pref_header_general">General</string>
@@ -206,5 +207,12 @@
 
     <string name="textcard_default_scale">system</string>
     <string name="textcard_default_dimension">medium</string>
+    <string name="dashboard_info_sent">Envoyé</string>
+    <string name="dialog_title_push_response">Réponse de charge</string>
+    <string name="dialog_info_push_ok">Les données du sondage a été poussé avec succès au serveur DHIS</string>
+    <string name="dialog_info_push_bad_credentials">Identification incorrectes pour la poussée</string>
+    <string name="assessment_sent_title_state">État</string>
+    <string name="assessment_sent_title_header">Evaluation Envoyée</string>
+    <string name="assessment_sent_date">Date de remplissement</string>
 
 </resources>

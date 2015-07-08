@@ -37,7 +37,7 @@ public class Utils {
 
     public static String round(float base, int decimalPlace){
         BigDecimal bd = new BigDecimal(Float.toString(base));
-        bd = bd.setScale(decimalPlace, BigDecimal.ROUND_DOWN);
+        bd = bd.setScale(decimalPlace, BigDecimal.ROUND_HALF_UP);
         if (decimalPlace == 0) return Integer.toString((int) bd.floatValue());
         return Float.toString(bd.floatValue());
     }
@@ -55,6 +55,20 @@ public class Utils {
                 result.add(question);
 
         }
+        return result;
+    }
+
+    public static List<Object> convertTabToArrayCustom(Tab tab) {
+        List<Object> result = new ArrayList<Object>();
+
+        for (Header header : tab.getHeaders()) {
+            result.add(header);
+            for (Question question : header.getQuestions()) {
+                if (question.hasChildren())
+                    result.add(question);
+            }
+        }
+
         return result;
     }
 

@@ -33,6 +33,9 @@ import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.support.v4.app.NavUtils;
 
+import org.eyeseetea.malariacare.database.utils.PreferencesState;
+import org.eyeseetea.malariacare.utils.Constants;
+
 import java.util.List;
 
 /**
@@ -54,6 +57,10 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
      * shown on tablets.
      */
     private static final boolean ALWAYS_SIMPLE_PREFS = false;
+
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
 
 
     @Override
@@ -82,8 +89,8 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
         // Bind the summaries of EditText/List/Dialog/Ringtone preferences to
         // their values. When their values change, their summaries are updated
         // to reflect the new value, per the Android Design guidelines.
-        bindPreferenceSummaryToValue(findPreference("font_sizes"));
-        bindPreferenceSummaryToValue(findPreference("dhis_url"));
+        bindPreferenceSummaryToValue(findPreference(Constants.PREFERENCE_FONT_SIZES));
+        bindPreferenceSummaryToValue(findPreference(Constants.PREFERENCE_DHIS_URL));
     }
 
     /**
@@ -220,14 +227,30 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
         super.onResume();
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         sharedPreferences.unregisterOnSharedPreferenceChangeListener(this);
+
+        //Reload changes into PreferencesState
+        PreferencesState.getInstance().reloadPreferences();
     }
 
     @Override
     public void onBackPressed() {
-        // FIXME: find a way for comming back to the same activity from which we go to settings, maybe using putExtra when going to settings
-        Intent intent = NavUtils.getParentActivityIntent(this);
-        intent.putExtra("activity", "settings");
-        NavUtils.navigateUpTo(this, intent);
+        Class callerActivityClass=getCallerActivity();
+        Intent returnIntent=new Intent(this,callerActivityClass);
+        startActivity(returnIntent);
+    }
+
+    private Class getCallerActivity(){
+        //FIXME Not working as it should the intent param is always null
+        Intent creationIntent=getIntent();
+        if(creationIntent==null){
+            return DashboardDetailsActivity.class;
+        }
+        Class callerActivity=(Class)creationIntent.getSerializableExtra(BaseActivity.SETTINGS_CALLER_ACTIVITY);
+        if(callerActivity==null){
+            return DashboardDetailsActivity.class;
+        }
+
+        return callerActivity;
     }
 
 }

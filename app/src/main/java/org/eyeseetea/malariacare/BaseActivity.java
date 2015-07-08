@@ -43,39 +43,38 @@ import java.io.InputStream;
 
 public abstract class BaseActivity extends ActionBarActivity {
 
+    /**
+     * Extra param to annotate the activity to return after settings
+     */
+    public static final String SETTINGS_CALLER_ACTIVITY = "SETTINGS_CALLER_ACTIVITY";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         requestWindowFeature(Window.FEATURE_ACTIVITY_TRANSITIONS);
         super.onCreate(savedInstanceState);
 
-        initView();
-        updateFontsByPreferences();
+        initView(savedInstanceState);
     }
 
     /**
      * Common styling
      */
-    private void initView(){
+    private void initView(Bundle savedInstanceState){
         setTheme(R.style.EyeSeeTheme);
         android.support.v7.app.ActionBar actionBar = this.getSupportActionBar();
         LayoutUtils.setActionBarLogo(actionBar);
+
+        if (savedInstanceState == null){
+            initTransition();
+        }
     }
 
     /**
-     * Loads visual preferences
+     * Customize transitions for these activities
      */
-    private void updateFontsByPreferences(){
-        // Update font size in case this could have been changed by the user
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        if (sharedPreferences.getBoolean(this.getString(R.string.customize_fonts), false)) {
-            Session.setFontSize(sharedPreferences.getString(this.getString(R.string.font_sizes), Constants.FONTS_SYSTEM));
-        }else{
-            Session.setFontSize(Constants.FONTS_SYSTEM);
-        }
-
-        debugMessage("Font size: " + sharedPreferences.getString(this.getString(R.string.font_sizes), Constants.FONTS_SYSTEM));
-        debugMessage("Show num/dems: " + Boolean.toString(sharedPreferences.getBoolean(this.getString(R.string.show_num_dems), false)));
+    protected void initTransition(){
+        this.overridePendingTransition(R.transition.anim_slide_in_left,R.transition.anim_slide_out_left);
     }
 
     @Override
@@ -120,7 +119,7 @@ public abstract class BaseActivity extends ActionBarActivity {
      * Every BaseActivity(Details, Create, Survey) goes back to DashBoard
      */
     public void onBackPressed(){
-        go(DashboardDetailsActivity.class);
+        finishAndGo(DashboardDetailsActivity.class);
     }
 
     @Override
@@ -146,6 +145,8 @@ public abstract class BaseActivity extends ActionBarActivity {
     }
 
     protected void goSettings(){
+        Intent intentSettings=new Intent(this,SettingsActivity.class);
+        intentSettings.putExtra(SETTINGS_CALLER_ACTIVITY,this.getClass());
         startActivity(new Intent(this, SettingsActivity.class));
     }
 
@@ -159,7 +160,7 @@ public abstract class BaseActivity extends ActionBarActivity {
                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface arg0, int arg1) {
                         Session.logout();
-                        go(LoginActivity.class);
+                        finishAndGo(LoginActivity.class);
                     }
                 })
                 .setNegativeButton(android.R.string.no, null).create().show();
@@ -170,18 +171,30 @@ public abstract class BaseActivity extends ActionBarActivity {
      * Called when the user clicks the New Survey button
      */
     public void newSurvey(View view) {
-        go(CreateSurveyActivity.class);
+        Intent targetActivityIntent = new Intent(this,CreateSurveyActivity.class);
+        startActivity(targetActivityIntent);
+    }
+
+    /**
+     * Finish current activity and launches an activity with the given class
+     * @param targetActivityClass Given target activity class
+     */
+    public void finishAndGo(Class targetActivityClass){
+        Intent targetActivityIntent = new Intent(this,targetActivityClass);
+        finish();
+        startActivity(targetActivityIntent);
     }
 
     /**
      * Launches an activity with the given class
      * @param targetActivityClass Given target activity class
      */
-    protected void go(Class targetActivityClass){
+    public void go(Class targetActivityClass){
         Intent targetActivityIntent = new Intent(this,targetActivityClass);
-        finish();
         startActivity(targetActivityIntent);
     }
+
+
 
     /**
      * Shows an alert dialog with a big message inside based on a raw resource

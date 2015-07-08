@@ -19,17 +19,26 @@
 
 package org.eyeseetea.malariacare.fragments;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ListFragment;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.content.LocalBroadcastManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 
+import org.eyeseetea.malariacare.DashboardDetailsActivity;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.SurveyActivity;
 import org.eyeseetea.malariacare.database.model.Survey;
@@ -37,7 +46,13 @@ import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.layout.adapters.dashboard.AssessmentAdapter;
 import org.eyeseetea.malariacare.layout.adapters.dashboard.IDashboardAdapter;
 import org.eyeseetea.malariacare.layout.listeners.SwipeDismissListViewTouchListener;
+import org.eyeseetea.malariacare.layout.score.ScoreRegister;
+import org.eyeseetea.malariacare.network.PushResult;
+import org.eyeseetea.malariacare.services.SurveyService;
+import org.eyeseetea.malariacare.network.PushClient;
+import org.eyeseetea.malariacare.views.TextCard;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -45,12 +60,16 @@ import java.util.List;
  */
 public class DashboardDetailsFragment extends ListFragment {
 
+
+    public static final String TAG = ".DetailsFragment";
+    private SurveyReceiver surveyReceiver;
     private List<Survey> surveys;
     protected IDashboardAdapter adapter;
     private static int index = 0;
 
     public DashboardDetailsFragment(){
-        this.adapter = Session.getAdapter();
+        this.adapter = Session.getAdapterUncompleted();
+        this.surveys = new ArrayList();
     }
 
     public static DashboardDetailsFragment newInstance(int index) {
@@ -72,20 +91,16 @@ public class DashboardDetailsFragment extends ListFragment {
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
-        this.surveys = Survey.getAllUnsentSurveys();
+
+        Log.d(TAG, "onCreate");
+        registerSurveysReceiver();
+        getSurveysFromService();
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
+        Log.d(TAG, "onCreateView");
         if (container == null) {
-            // We have different layouts, and in one of them this
-            // fragment's containing frame doesn't exist.  The fragment
-            // may still be created from its saved state, but there is
-            // no reason to try to create its view hierarchy because it
-            // won't be displayed.  Note this is not needed -- we could
-            // just run the code below, where we would create and return
-            // the view hierarchy; it would just never be used.
             return null;
         }
 
@@ -95,11 +110,89 @@ public class DashboardDetailsFragment extends ListFragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        IDashboardAdapter adapterE = Session.getAdapter().newInstance(this.surveys, getActivity());
-        this.adapter = adapterE;
+
+        Log.d(TAG, "onActivityCreated");
+        initAdapter();
+        initListView();
+
+    }
+
+    /**
+     * Inits adapter.
+     * Most of times is just an AssessmentAdapter.
+     * In a version with several adapters in dashboard (like in 'mock' branch) a new one like the one in session is created.
+     */
+    private void initAdapter(){
+        IDashboardAdapter adapterInSession = Session.getAdapterUncompleted();
+        if(adapterInSession == null){
+            adapterInSession = new AssessmentAdapter(this.surveys,getActivity());
+        }else{
+            adapterInSession = adapterInSession.newInstance(this.surveys,getActivity());
+        }
+        this.adapter = adapterInSession;
+        Session.setAdapterUncompleted(this.adapter);
+    }
+
+    @Override
+    public void onListItemClick(ListView l, View v, int position, long id){
+        Log.d(TAG, "onListItemClick");
+        super.onListItemClick(l, v, position, id);
+
+        //Discard clicks on header|footer (which is attendend on newSurvey via super)
+        if(!isPositionASurvey(position)){
+            return;
+        }
+
+        //Put selected survey in session
+        Session.setSurvey(surveys.get(position - 1));
+        //Go to SurveyActivity
+        ((DashboardDetailsActivity) getActivity()).go(SurveyActivity.class);
+    }
+
+    @Override
+    public void onStop(){
+        Log.d(TAG, "onStop");
+        unregisterSurveysReceiver();
+
+        super.onStop();
+    }
+
+    /**
+     * Checks if the given position points to a real survey instead of a footer or header of the listview.
+     * @param position
+     * @return true|false
+     */
+    private boolean isPositionASurvey(int position){
+        return !isPositionFooter(position) && !isPositionHeader(position);
+    }
+
+    /**
+     * Checks if the given position is the header of the listview instead of a real survey
+     * @param position
+     * @return true|false
+     */
+    private boolean isPositionHeader(int position){
+        return position<=0;
+    }
+
+    /**
+     * Checks if the given position is the footer of the listview instead of a real survey
+     * @param position
+     * @return true|false
+     */
+    private boolean isPositionFooter(int position){
+        return position==(this.surveys.size()+1);
+    }
+
+    /**
+     * Initializes the listview component, adding a listener for swiping right
+     */
+    private void initListView(){
         LayoutInflater inflater = LayoutInflater.from(getActivity());
         View header = inflater.inflate(this.adapter.getHeaderLayout(), null, false);
         View footer = inflater.inflate(this.adapter.getFooterLayout(), null, false);
+        TextCard title = (TextCard) getActivity().findViewById(R.id.titleInProgress);
+        title.setText(adapter.getTitle());
         ListView listView = getListView();
         listView.addHeaderView(header);
         listView.addFooterView(footer);
@@ -114,7 +207,7 @@ public class DashboardDetailsFragment extends ListFragment {
                         new SwipeDismissListViewTouchListener.DismissCallbacks() {
                             @Override
                             public boolean canDismiss(int position) {
-                                return position>0 && position<=((AssessmentAdapter)adapter).getCount();
+                                return position>0 && position<=surveys.size();
                             }
 
                             @Override
@@ -126,8 +219,10 @@ public class DashboardDetailsFragment extends ListFragment {
                                             .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                                                 public void onClick(DialogInterface arg0, int arg1) {
                                                     ((Survey)adapter.getItem(position-1)).delete();
-                                                    adapter.remove(adapter.getItem(position - 1));
-                                                    adapter.notifyDataSetChanged();
+                                                    //Reload data using service
+                                                    Intent surveysIntent=new Intent(getActivity(), SurveyService.class);
+                                                    surveysIntent.putExtra(SurveyService.SERVICE_METHOD, SurveyService.RELOAD_DASHBOARD_ACTION);
+                                                    getActivity().startService(surveysIntent);
                                                 }
                                             })
                                             .setNegativeButton(android.R.string.no, null).create().show();
@@ -140,28 +235,142 @@ public class DashboardDetailsFragment extends ListFragment {
         // we don't look for swipes.
         listView.setOnScrollListener(touchListener.makeScrollListener());
 
+        listView.setLongClickable(true);
 
+        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
+
+
+                new AlertDialog.Builder(getActivity())
+                        .setTitle("Pushing data")
+                        .setMessage("Are you sure? You can not undo this action")
+                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface arg0, int arg1) {
+                                final Survey survey = (Survey) adapter.getItem(position-1);
+                                AsyncPush asyncPush=new AsyncPush(survey);
+                                asyncPush.execute((Void) null);
+                            }
+                        })
+                        .setNegativeButton(android.R.string.no, null).create().show();
+
+
+                return true;
+            }
+        });
+
+
+        setListShown(false);
+    }
+
+
+    /**
+     * Register a survey receiver to load surveys into the listadapter
+     */
+    private void registerSurveysReceiver() {
+        Log.d(TAG, "registerSurveysReceiver");
+
+        if(surveyReceiver==null){
+            surveyReceiver=new SurveyReceiver();
+            LocalBroadcastManager.getInstance(getActivity()).registerReceiver(surveyReceiver, new IntentFilter(SurveyService.ALL_UNSENT_SURVEYS_ACTION));
+        }
+    }
+
+
+    /**
+     * Unregisters the survey receiver.
+     * It really important to do this, otherwise each receiver will invoke its code.
+     */
+    public void  unregisterSurveysReceiver(){
+        if(surveyReceiver!=null){
+            LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(surveyReceiver);
+            surveyReceiver=null;
+        }
+    }
+
+    /**
+     * Asks SurveyService for the current list of surveys
+     */
+    public void getSurveysFromService(){
+        Log.d(TAG, "getSurveysFromService");
+        Activity activity=getActivity();
+        Intent surveysIntent=new Intent(activity, SurveyService.class);
+        surveysIntent.putExtra(SurveyService.SERVICE_METHOD,SurveyService.ALL_UNSENT_SURVEYS_ACTION);
+        activity.startService(surveysIntent);
+    }
+
+    public void reloadSurveys(List<Survey> newListSurveys){
+        Log.d(TAG, "reloadSurveys (Thread: "+Thread.currentThread().getId()+"): " + newListSurveys.size());
+        this.surveys.clear();
+        this.surveys.addAll(newListSurveys);
+        this.adapter.notifyDataSetChanged();
         setListShown(true);
     }
+    /**
+     * Inner private class that receives the result from the service
+     */
+    private class SurveyReceiver extends BroadcastReceiver{
+        private SurveyReceiver(){}
 
-    @Override
-    public void onListItemClick(ListView l, View v, int position, long id){
-        super.onListItemClick(l, v, position, id);
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Log.d(TAG, "onReceive");
+            //Listening only intents from this method
+            if(SurveyService.ALL_UNSENT_SURVEYS_ACTION.equals(intent.getAction())) {
+                List<Survey> surveysUnsentFromService = (List<Survey>) Session.popServiceValue(SurveyService.ALL_UNSENT_SURVEYS_ACTION);
+                reloadSurveys(surveysUnsentFromService);
+            }
+        }
+    }
 
-        //Discard clicks on header|footer
-        if(position<=0 || position > surveys.size()){
-            return;
+    public class AsyncPush extends AsyncTask<Void, Integer, PushResult> {
+
+        private Survey survey;
+
+
+        public AsyncPush(Survey survey) {
+            this.survey = survey;
         }
 
-        Session.setSurvey(surveys.get(position-1));
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            //spinner
+            setListShown(false);
+        }
 
-        //Call Survey Activity
-        Intent surveyIntent = new Intent(v.getContext(), SurveyActivity.class);
-        v.getContext().startActivity(surveyIntent);
+        @Override
+        protected PushResult doInBackground(Void... params) {
+            PushClient pushClient=new PushClient(survey,getActivity());
+            return pushClient.push();
+        }
+
+        @Override
+        protected void onPostExecute(PushResult pushResult) {
+            super.onPostExecute(pushResult);
+            setListShown(true);
+            showResponse(pushResult);
+        }
+
+        /**
+         * Shows the proper response message
+         * @param pushResult
+         */
+        private void showResponse(PushResult pushResult){
+            String msg="";
+            if(pushResult.isSuccessful()){
+                msg="Survey data pushed to server. Results: \n"+String.format("Imported: %s | Updated: %s | Ignored: %s",pushResult.getImported(),pushResult.getUpdated(),pushResult.getIgnored());
+            }else{
+                msg=pushResult.getException().getMessage();
+            }
+
+            new AlertDialog.Builder(getActivity())
+                    .setTitle(getActivity().getString(R.string.dialog_title_push_response))
+                    .setMessage(msg)
+                    .setNeutralButton(android.R.string.yes,null).create().show();
+
+        }
     }
 
-    @Override
-    public void onResume(){
-        super.onResume();
-    }
+
 }

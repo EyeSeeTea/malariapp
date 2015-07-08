@@ -6,10 +6,33 @@ import com.orm.query.Condition;
 import com.orm.query.Select;
 
 import org.eyeseetea.malariacare.database.utils.Session;
+import org.eyeseetea.malariacare.layout.score.ScoreRegister;
+import org.eyeseetea.malariacare.utils.Constants;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class Question extends SugarRecord<Question> {
+
+    /**
+     * Sql query that counts required questions in a program (required for % stats)
+     */
+    private static final String LIST_REQUIRED_BY_PROGRAM ="select q.* from question q"+
+            " left join answer a on q.answer=a.id"+
+            " left join header h on q.header=h.id"+
+            " left join tab t on h.tab=t.id"+
+            " left join program p on t.program=p.id"+
+            " where q.question=0"+
+            " and a.output<>"+ Constants.NO_ANSWER+
+            " and p.id=?";
+
+    private static final String LIST_ALL_BY_PROGRAM ="select q.* from question q"+
+            " left join answer a on q.answer=a.id"+
+            " left join header h on q.header=h.id"+
+            " left join tab t on h.tab=t.id"+
+            " left join program p on t.program=p.id"+
+            " and p.id=? order by t.orderpos, q.orderpos";
 
     String code;
     String de_name;
@@ -161,7 +184,7 @@ public class Question extends SugarRecord<Question> {
         if (this._relatives == null) {
 
             this._relatives = Question.findWithQuery(Question.class, "Select * from Question" +
-                    " where id in (Select relative from Question_Relation where master ="+this.getId()+")");
+                    " where id in (Select relative from Question_Relation where master =" + this.getId() + ")");
        }
         return this._relatives;
     }
@@ -170,20 +193,12 @@ public class Question extends SugarRecord<Question> {
         if (this._master == null) {
 
             this._master = Question.findWithQuery(Question.class, "Select * from Question" +
-                    " where id in (Select master from Question_Relation where relative ="+this.getId()+")");
+                    " where id in (Select master from Question_Relation where relative =" + this.getId() + ")");
         }
         return this._master;
     }
 
     public boolean belongsToMasterQuestions() {return !getMasters().isEmpty();}
-
-    public boolean belongsToProgram(Program program){
-        try {
-            return program.equals(getHeader().getTab().getProgram());
-        }catch(NullPointerException ex){
-            return false;
-        }
-    }
 
     public boolean hasRelatives() {return !getRelatives().isEmpty(); }
 
@@ -195,25 +210,135 @@ public class Question extends SugarRecord<Question> {
         return Value.find(Value.class, "question = ?", String.valueOf(this.getId()));
     }
 
-    // This method returns a value for this question given a survey. We return the first element because this must be unique
+    /**
+     * Gets the value of this question in the current survey in session
+     * @return
+     */
     public Value getValueBySession(){
-        String surveyId = String.valueOf(Session.getSurvey().getId());
+        return this.getValueBySurvey(Session.getSurvey());
+    }
+
+    /**
+     * Gets the value of this question in the given Survey
+     * @param survey
+     * @return
+     */
+    public Value getValueBySurvey(Survey survey){
+        if(survey==null){
+            return null;
+        }
+        String surveyId = String.valueOf(survey.getId());
         String questionId = String.valueOf(this.getId());
-        List<Value> returnValues = Select.from(Value.class).where(Condition.prop("question").eq(questionId),
-                Condition.prop("survey").eq(surveyId)).list();
-        if (returnValues.size() == 0) return null;
-        else return returnValues.get(0);
+        List<Value> returnValues = Select.from(Value.class).
+                where(Condition.prop("question").eq(questionId), Condition.prop("survey").eq(surveyId)).list();
+
+        if (returnValues.size() == 0){
+            return null;
+        }else{
+            return returnValues.get(0);
+        }
     }
 
+    /**
+     * Gets the option of this question in the current survey in session
+     * @return
+     */
     public Option getOptionBySession(){
-        Option option = null;
-
-        Value value = this.getValueBySession();
-        if (value!=null)
-            option = value.getOption();
-
-        return option;
+        return this.getOptionBySurvey(Session.getSurvey());
     }
+
+    /**
+     * Gets the option of this question in the given survey
+     * @param survey
+     * @return
+     */
+    public Option getOptionBySurvey(Survey survey){
+        if(survey==null){
+            return null;
+        }
+
+        Value value = this.getValueBySurvey(survey);
+        if(value==null){
+            return null;
+        }
+
+        return value.getOption();
+    }
+
+    /**
+     * Checks if this question is shown according to the values of the given survey
+     * @param survey
+     * @return
+     */
+    public boolean isHiddenBySurvey(Survey survey){
+        Question parent=this.getQuestion();
+        //There is a parent question and it is not answered
+        if (parent!= null && parent.getValueBySurvey(survey)==null) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Add register to ScoreRegister if this is an scored question
+     * @return List</Float> {num, den}
+     */
+    public List<Float> initScore(Survey survey) {
+        if (!this.isScored()){
+            return null;
+        }
+
+        Float num = ScoreRegister.calcNum(this,survey);
+        Float denum = ScoreRegister.calcDenum(this,survey);
+        ScoreRegister.addRecord(this, num, denum);
+        return Arrays.asList(num,denum);
+    }
+
+    /**
+     * Counts the number of required questions (without a parent question).
+     * @param program
+     * @return
+     */
+    public static int countRequiredByProgram(Program program){
+        if(program==null || program.getId()==null){
+            return 0;
+        }
+
+        List<Question> questionsByProgram = Question.findWithQuery(Question.class, LIST_REQUIRED_BY_PROGRAM, program.getId().toString());
+        return questionsByProgram.size();
+    }
+
+    /**
+     * Returns all the questions that belongs to a program
+     * @param program
+     * @return
+     */
+    public static List<Question> listAllByProgram(Program program){
+        if(program==null || program.getId()==null){
+            return new ArrayList<Question>();
+        }
+
+        return Question.findWithQuery(Question.class, LIST_ALL_BY_PROGRAM, program.getId().toString());
+    }
+
+
+
+    /**
+     * Checks if this question is scored or not.
+     * @return true|false
+     */
+    public boolean isScored(){
+        try {
+            Integer output=getAnswer().getOutput();
+            return  output == Constants.DROPDOWN_LIST ||
+                    output == Constants.RADIO_GROUP_HORIZONTAL ||
+                    output == Constants.RADIO_GROUP_VERTICAL;
+        }catch(Exception e){
+            return false;
+        }
+    }
+
 
     @Override
     public String toString() {

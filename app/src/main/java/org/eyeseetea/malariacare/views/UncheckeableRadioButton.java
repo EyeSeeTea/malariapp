@@ -29,6 +29,7 @@ import android.widget.RadioGroup;
 
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.model.Option;
+import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.utils.Constants;
 
@@ -85,8 +86,6 @@ public class UncheckeableRadioButton extends RadioButton implements IEyeSeeView 
      * @param defStyle
      */
     public void init(AttributeSet attrs, int defStyle) {
-        // Fonts Map initialisation
-        if (Session.getFontMap() == null) Session.initMap(getContext());
         // Load attributes
         if (attrs != null) {
             final TypedArray a = getContext().obtainStyledAttributes(attrs, R.styleable.UncheckeableRadioButton, defStyle, 0);
@@ -99,8 +98,8 @@ public class UncheckeableRadioButton extends RadioButton implements IEyeSeeView 
             String dimension = a.getString(R.styleable.UncheckeableRadioButton_rDimension);
             String scale = a.getString(R.styleable.UncheckeableRadioButton_rScale);
             if (dimension == null) dimension = getContext().getString(R.string.settings_array_values_font_sizes_def);
-            if (scale == null) scale = Session.getFontSize();
-            if (!scale.equals(Constants.FONTS_SYSTEM)) setTextSize(TypedValue.COMPLEX_UNIT_SP, Session.getFontMap().get(scale).get(dimension));
+            if (scale == null) scale = PreferencesState.getInstance().getScale();
+            if (!scale.equals(Constants.FONTS_SYSTEM)) setTextSize(TypedValue.COMPLEX_UNIT_SP, PreferencesState.getInstance().getFontSize(scale,dimension));
 
             this.mDimension = dimension;
             this.mScale = scale;
@@ -145,8 +144,9 @@ public class UncheckeableRadioButton extends RadioButton implements IEyeSeeView 
         if (dimension != null && scale != null){
             this.mDimension = dimension;
             this.mScale = scale;
-            if (!scale.equals(Constants.FONTS_SYSTEM))
-                setTextSize(TypedValue.COMPLEX_UNIT_SP, Session.getFontMap().get(scale).get(dimension));
+            if (!scale.equals(Constants.FONTS_SYSTEM)) {
+                setTextSize(TypedValue.COMPLEX_UNIT_SP, PreferencesState.getInstance().getFontSize(scale,dimension));
+            }
         }
     }
 

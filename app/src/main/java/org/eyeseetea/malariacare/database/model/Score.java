@@ -7,23 +7,25 @@ import com.orm.SugarRecord;
  */
 public class Score extends SugarRecord<Score> {
 
-    Float real;
+    Float value;
     Tab tab;
+    String uid;
 
     public Score() {
     }
 
-    public Score(Float real, Tab tab) {
-        this.real = real;
+    public Score(Float real, Tab tab, String uid) {
+        this.value = real;
         this.tab = tab;
+        this.uid = uid;
     }
 
-    public Float getReal() {
-        return real;
+    public Float getValue() {
+        return value;
     }
 
-    public void setReal(Float real) {
-        this.real = real;
+    public void setValue(Float real) {
+        this.value = real;
     }
 
     public Tab getTab() {
@@ -34,11 +36,19 @@ public class Score extends SugarRecord<Score> {
         this.tab = tab;
     }
 
+    public String getUid() {
+        return uid;
+    }
+
+    public void setUid(String uid) {
+        this.uid = uid;
+    }
+
     @Override
     public String toString() {
         return "Score{" +
                 "id='" + id + '\'' +
-                "real=" + real +
+                "real=" + value +
                 ", tab=" + tab +
                 '}';
     }
@@ -50,7 +60,7 @@ public class Score extends SugarRecord<Score> {
 
         Score score = (Score) o;
 
-        if (real != null ? !real.equals(score.real) : score.real != null) return false;
+        if (value != null ? !value.equals(score.value) : score.value != null) return false;
         if (tab != null ? !tab.equals(score.tab) : score.tab != null) return false;
 
         return true;
@@ -58,7 +68,7 @@ public class Score extends SugarRecord<Score> {
 
     @Override
     public int hashCode() {
-        int result = real != null ? real.hashCode() : 0;
+        int result = value != null ? value.hashCode() : 0;
         result = 31 * result + (tab != null ? tab.hashCode() : 0);
         return result;
     }

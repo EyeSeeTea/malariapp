@@ -23,10 +23,10 @@ import android.app.AlertDialog;
 import android.app.FragmentTransaction;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.res.Configuration;
 import android.os.Bundle;
 import android.util.Log;
 
+import org.eyeseetea.malariacare.fragments.DashboardSentFragment;
 import org.eyeseetea.malariacare.fragments.DashboardDetailsFragment;
 
 
@@ -50,7 +50,18 @@ public class DashboardDetailsActivity extends BaseActivity {
             ft.add(R.id.dashboard_details_container, detailsFragment);
             ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
             ft.commit();
+            DashboardSentFragment completedFragment = new DashboardSentFragment();
+            detailsFragment.setArguments(getIntent().getExtras());
+            FragmentTransaction ftr = getFragmentManager().beginTransaction();
+            ftr.add(R.id.dashboard_completed_container, completedFragment);
+            ftr.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+            ftr.commit();
         }
+    }
+
+    @Override
+    protected void initTransition(){
+        this.overridePendingTransition(R.transition.anim_slide_in_right, R.transition.anim_slide_out_right);
     }
 
     /**
