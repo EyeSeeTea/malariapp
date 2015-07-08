@@ -37,6 +37,7 @@ import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.model.Tab;
 import org.eyeseetea.malariacare.database.model.Value;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
+import org.eyeseetea.malariacare.utils.Constants;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -86,7 +87,10 @@ public class PushClient {
         try{
             JSONObject data = prepareMetadata();
             data = prepareDataElements(data);
-            return new PushResult(pushData(data));
+            PushResult result = new PushResult(pushData(data));
+            this.survey.setStatus(Constants.SURVEY_SENT);
+            this.survey.save();
+            return result;
         }catch(Exception ex){
             Log.e(TAG, ex.getMessage());
             return new PushResult(ex);

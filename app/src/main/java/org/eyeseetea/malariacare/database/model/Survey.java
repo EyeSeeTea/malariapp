@@ -29,9 +29,6 @@ import com.orm.query.Select;
 import org.eyeseetea.malariacare.database.utils.SurveyAnsweredRatio;
 import org.eyeseetea.malariacare.utils.Constants;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -182,6 +179,7 @@ public class Survey extends SugarRecord<Survey> {
         return Select.from(Survey.class)
                 .where(com.orm.query.Condition.prop("org_unit").eq(orgUnit.getId()))
                 .and(com.orm.query.Condition.prop("program").eq(program.getId()))
+                .and(com.orm.query.Condition.prop("status").notEq(Constants.SURVEY_SENT))
                 .orderBy("event_date")
                 .orderBy("org_unit")
                 .list();

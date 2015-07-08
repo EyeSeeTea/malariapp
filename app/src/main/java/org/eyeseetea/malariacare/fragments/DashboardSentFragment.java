@@ -129,7 +129,7 @@ public class DashboardSentFragment extends ListFragment {
             adapterInSession = adapterInSession.newInstance(this.surveys, getActivity());
         }
         this.adapter = adapterInSession;
-
+        Session.setAdapterCompleted(this.adapter);
     }
 
     @Override
