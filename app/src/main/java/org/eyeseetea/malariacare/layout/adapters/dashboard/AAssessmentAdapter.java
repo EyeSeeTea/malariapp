@@ -32,6 +32,8 @@ import org.eyeseetea.malariacare.database.utils.SurveyAnsweredRatio;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 import org.eyeseetea.malariacare.views.TextCard;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 public abstract class AAssessmentAdapter extends ADashboardAdapter implements IDashboardAdapter {
@@ -64,6 +66,13 @@ public abstract class AAssessmentAdapter extends ADashboardAdapter implements ID
         // Org Unit Cell
         TextCard facilityName = (TextCard) rowView.findViewById(R.id.facility);
         TextCard surveyType = (TextCard) rowView.findViewById(R.id.survey_type);
+        TextCard sentDate = (TextCard) rowView.findViewById(R.id.sentDate);
+
+        if (sentDate != null){
+            Date completionDate = survey.getCompletionDate();
+            SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy");
+            sentDate.setText(format.format(completionDate));
+        }
 
         // show facility name (or not) and write survey type name
         if (!showNextFacilityName) {
