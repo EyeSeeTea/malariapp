@@ -165,6 +165,9 @@
     <string name="score_info_case3">Caso 3</string>
     <string name="score_info_case4">Caso 4</string>
 
+    <!-- composite score -->
+    <string name="compscore_title_score_percentage">Puntuación (%)</string>
+
     <!-- settings -->
     <string name="title_activity_settings">Configuración</string>
     <string name="settings_checkbox_show_num_dems">Mostrar num/dems</string>

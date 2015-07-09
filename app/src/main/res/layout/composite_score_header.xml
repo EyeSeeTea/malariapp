@@ -38,7 +38,7 @@
                 android:layout_width="0dip"
                 android:layout_height="fill_parent"
                 android:textAppearance="?android:textAppearanceSmall"
-                android:text="@string/score"
+                android:text="@string/compscore_title_score_percentage"
                 android:id="@+id/scoreHeader"
                 android:background="@drawable/background_header"
                 android:textColor="@color/white"
