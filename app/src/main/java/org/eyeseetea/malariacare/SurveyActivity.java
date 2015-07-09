@@ -58,7 +58,6 @@ import org.eyeseetea.malariacare.utils.Constants;
 import org.eyeseetea.malariacare.utils.Utils;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -274,19 +273,19 @@ public class SurveyActivity extends BaseActivity{
         parent.addView(view);
 
         List<ITabAdapter> adaptersList = tabAdaptersCache.list();
-        Float avgClinical=0F;
-        Float avgRdt=0F;
-        Float avgOverall=0F;
+        Float avgClinical = 0F;
+        Float avgRdt = 0F;
+        Float avgOverall = 0F;
         for(ITabAdapter adapter:adaptersList){
             updateViewInGeneralScores(adapter);
-            avgClinical+=valueForClinical(adapter);
-            avgRdt+=valueForRdt(adapter);
-            avgOverall+=valueForOverall(adapter);
+            avgClinical += valueForClinical(adapter);
+            avgRdt += valueForRdt(adapter);
+            avgOverall += valueForOverall(adapter);
         }
 
-        avgClinical=avgClinical/3;
-        avgRdt=avgRdt/3;
-        avgOverall=(avgOverall+avgClinical+avgRdt)/5;
+        avgClinical = avgClinical/3;
+        avgRdt = avgRdt/3;
+        avgOverall = (avgOverall+avgClinical+avgRdt)/5;
 
         updateAvgInGeneralScores(R.id.clinicalAvg, avgClinical);
         updateAvgInGeneralScores(R.id.rdtAvg, avgRdt);
@@ -386,7 +385,6 @@ public class SurveyActivity extends BaseActivity{
             LocalBroadcastManager.getInstance(this).registerReceiver(surveyReceiver, new IntentFilter(SurveyService.PREPARE_SURVEY_ACTION));
         }
     }
-
 
     /**
      * Unregisters the survey receiver.

@@ -2,7 +2,6 @@
 <resources>
 
     <!-- # general -->
-    <string name="app_name">Health Network QIS</string>
     <string name="developers">EyeSeeTea LTD</string>
     <string name="yes">Sí</string>
     <string name="no">No</string>

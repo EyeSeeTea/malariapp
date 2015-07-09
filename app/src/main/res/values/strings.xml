@@ -2,7 +2,7 @@
 <resources>
 
     <!-- # general -->
-    <string name="app_name">Health Network QIS</string>
+    <string name="app_name" translatable="false">QA App</string>
     <string name="developers">EyeSeeTea LTD</string>
     <string name="empty_string" translatable="false"></string>
     <string name="yes">Yes</string>
