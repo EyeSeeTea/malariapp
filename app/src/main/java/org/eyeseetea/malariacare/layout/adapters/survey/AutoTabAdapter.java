@@ -263,7 +263,7 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
     }
 
     private int getHiddenCountUpTo(int position) {
-        boolean [] upper = Arrays.copyOfRange(Booleans.toArray(elementInvisibility.values()), 0, position);
+        boolean [] upper = Arrays.copyOfRange(Booleans.toArray(elementInvisibility.values()), 0, position+1);
         int hiddens = Booleans.countTrue(upper);
         return hiddens;
     }
@@ -500,12 +500,7 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
         Question question;
         ViewHolder viewHolder = new ViewHolder();
 
-        if (item instanceof Header) {
-            rowView = lInflater.inflate(R.layout.headers, parent, false);
-            viewHolder.statement = (TextView) rowView.findViewById(R.id.headerName);
-            viewHolder.statement.setText(((Header) item).getName());
-        } else {
-
+        if (item instanceof Question) {
             question = (Question) item;
 
             //FIXME This should be moved into its own class (Ex: ViewHolderFactory.getView(item))
@@ -593,6 +588,10 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
             setValues(viewHolder, question);
             //Disables component if survey has already been sent
             updateReadOnly(viewHolder.component);
+        } else {
+            rowView = lInflater.inflate(R.layout.headers, parent, false);
+            viewHolder.statement = (TextView) rowView.findViewById(R.id.headerName);
+            viewHolder.statement.setText(((Header) item).getName());
 
         }
 
