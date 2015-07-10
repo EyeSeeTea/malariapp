@@ -25,6 +25,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
@@ -129,6 +130,11 @@ public class SurveyActivity extends BaseActivity{
      */
     private Spinner spinner;
 
+    /**
+     * Parent view of main content
+     */
+    private LinearLayout content;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -143,8 +149,9 @@ public class SurveyActivity extends BaseActivity{
 
     public void onResume(){
         Log.d(TAG, "onResume");
-        prepareSurveyInfo();
         super.onResume();
+
+        prepareSurveyInfo();
     }
 
     @Override
@@ -198,12 +205,10 @@ public class SurveyActivity extends BaseActivity{
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                Tab selectedTab = (Tab) spinner.getSelectedItem();
-                if (selectedTab.isGeneralScore()) {
-                    showGeneralScores();
-                } else {
-                    showTab(selectedTab);
-                }
+                Log.d(TAG, "onItemSelected..");
+                final Tab selectedTab = (Tab) spinner.getSelectedItem();
+                new AsyncChangeTab(selectedTab).execute((Void)null);
+                Log.d(TAG, "onItemSelected(" + Thread.currentThread().getId() + ")..DONE");
             }
 
             @Override
@@ -212,6 +217,57 @@ public class SurveyActivity extends BaseActivity{
             }
         });
     }
+
+    public class AsyncChangeTab extends AsyncTask<Void, Integer, View> {
+
+        private Tab tab;
+
+        public AsyncChangeTab(Tab tab) {
+            this.tab = tab;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            //spinner
+            startProgress();
+        }
+
+        @Override
+        protected View doInBackground(Void... params) {
+
+            Log.d(TAG, "doInBackground("+Thread.currentThread().getId()+")..");
+            View view=null;
+            if (tab.isGeneralScore()) {
+                showGeneralScores();
+            } else {
+//                showTab(tab);
+                view=prepareTab(tab);
+            }
+            Log.d(TAG, "doInBackground(" + Thread.currentThread().getId() + ")..DONE");
+            return view;
+        }
+
+        @Override
+        protected void onPostExecute(View viewContent) {
+            super.onPostExecute(viewContent);
+
+            content.removeAllViews();
+            content.addView(viewContent);
+            ITabAdapter tabAdapter=(ITabAdapter) tabAdaptersCache.findAdapter(tab);
+            if (    tab.getType() == Constants.TAB_AUTOMATIC_SCORED ||
+                    tab.getType() == Constants.TAB_ADHERENCE    ||
+                    tab.getType() == Constants.TAB_IQATAB ||
+                    tab.getType() == Constants.TAB_SCORE_SUMMARY) {
+                tabAdapter.initializeSubscore();
+            }
+            ListView mQuestions = (ListView) SurveyActivity.this.findViewById(R.id.listView);
+            mQuestions.setAdapter((BaseAdapter)tabAdapter);
+            stopProgress();
+        }
+    }
+
+
 
     /**
      * Adds actionbar to the activity
@@ -230,6 +286,7 @@ public class SurveyActivity extends BaseActivity{
      * Gets a reference to the progress view in order to stop it later
      */
     private void createProgress(){
+        content = (LinearLayout) this.findViewById(R.id.content);
         progressBar=(ProgressBar)findViewById(R.id.survey_progress);
     }
 
@@ -239,16 +296,16 @@ public class SurveyActivity extends BaseActivity{
      */
     private void showTab(Tab selectedTab) {
         LayoutInflater inflater = LayoutInflater.from(this);
-        ViewGroup parent = (LinearLayout) this.findViewById(R.id.content);
-        parent.removeAllViews();
+
+        content.removeAllViews();
 
         if(selectedTab.isCompositeScore()){
             tabAdaptersCache.cacheAllTabs();
         }
         ITabAdapter tabAdapter=tabAdaptersCache.findAdapter(selectedTab);
 
-        View view = inflater.inflate(tabAdapter.getLayout(), parent, false);
-        parent.addView(view);
+        View view = inflater.inflate(tabAdapter.getLayout(), content, false);
+        content.addView(view);
 
         if (    selectedTab.getType() == Constants.TAB_AUTOMATIC_SCORED ||
                 selectedTab.getType() == Constants.TAB_ADHERENCE    ||
@@ -261,16 +318,26 @@ public class SurveyActivity extends BaseActivity{
         mQuestions.setAdapter((BaseAdapter) tabAdapter);
     }
 
+    private View prepareTab(Tab selectedTab) {
+        LayoutInflater inflater = LayoutInflater.from(this);
+
+        if(selectedTab.isCompositeScore()){
+            tabAdaptersCache.cacheAllTabs();
+        }
+        ITabAdapter tabAdapter=tabAdaptersCache.findAdapter(selectedTab);
+
+        return inflater.inflate(tabAdapter.getLayout(), content, false);
+    }
+
     /**
      * Shows the special 'Score' tab
      */
     private void showGeneralScores() {
         LayoutInflater inflater = LayoutInflater.from(this);
 
-        ViewGroup parent = (LinearLayout) this.findViewById(R.id.content);
-        parent.removeAllViews();
-        View view = inflater.inflate(R.layout.scoretab, parent, false);
-        parent.addView(view);
+        content.removeAllViews();
+        View view = inflater.inflate(R.layout.scoretab, content, false);
+        content.addView(view);
 
         List<ITabAdapter> adaptersList = tabAdaptersCache.list();
         Float avgClinical = 0F;
@@ -372,6 +439,15 @@ public class SurveyActivity extends BaseActivity{
     private void stopProgress(){
         this.progressBar.setVisibility(View.GONE);
         this.spinner.setVisibility(View.VISIBLE);
+        this.content.setVisibility(View.VISIBLE);
+
+    }
+
+    private void startProgress(){
+        this.spinner.setVisibility(View.GONE);
+        this.content.setVisibility(View.GONE);
+        this.progressBar.setVisibility(View.VISIBLE);
+        this.progressBar.setEnabled(true);
     }
 
     /**
@@ -436,9 +512,13 @@ public class SurveyActivity extends BaseActivity{
      * @param tabs
      */
     private void reloadTabs(List<Tab> tabs){
+        Log.d(TAG, "reloadTabs("+tabs.size()+")");
+
         this.tabsList.clear();
         this.tabsList.addAll(tabs);
         this.tabAdapter.notifyDataSetChanged();
+
+        Log.d(TAG, "reloadTabs(" + tabs.size() + ")..DONE");
     }
 
 
