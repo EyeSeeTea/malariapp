@@ -227,7 +227,7 @@ public class CustomIQTABAdapter extends BaseAdapter implements ITabAdapter {
                 ReadWriteDB.saveValuesDDL(testResult,  testResult.getAnswer().getOptions().get(1));
             }
             else
-                ReadWriteDB.resetValue(testResult);
+                ReadWriteDB.deleteValue(testResult);
         }
         notifyDataSetChanged();
     }

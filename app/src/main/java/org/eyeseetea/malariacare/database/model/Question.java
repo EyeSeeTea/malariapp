@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class Question extends SugarRecord<Question> {
+public class Question extends SugarRecord<Question>{
 
     /**
      * Sql query that counts required questions in a program (required for % stats)
@@ -290,9 +290,9 @@ public class Question extends SugarRecord<Question> {
         }
 
         Float num = ScoreRegister.calcNum(this,survey);
-        Float denum = ScoreRegister.calcDenum(this,survey);
+        Float denum = ScoreRegister.calcDenum(this, survey);
         ScoreRegister.addRecord(this, num, denum);
-        return Arrays.asList(num,denum);
+        return Arrays.asList(num, denum);
     }
 
     /**
