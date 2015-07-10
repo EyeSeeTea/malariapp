@@ -276,13 +276,14 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
      * @return the real position in the elements list
      */
     private int getRealPosition(int position){
-        // Calulus of previous hidden elements
-        int realPosition = position + getHiddenCountUpTo(position);
-        // setting the position to the next not-hidden element
-        while (elementInvisibility.get(items.get(realPosition))) {
-            realPosition++;
+        int hElements = getHiddenCountUpTo(position);
+        int diff = 0;
+
+        for (int i = 0; i < hElements; i++) {
+            diff++;
+            if (elementInvisibility.get(items.get(position + diff))) i--;
         }
-        return realPosition;
+            return (position + diff);
     }
 
     /**
