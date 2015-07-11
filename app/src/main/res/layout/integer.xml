@@ -32,6 +32,7 @@
         <org.eyeseetea.malariacare.views.EditCard
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
             android:inputType="number"
             android:ems="10"
             android:id="@+id/answer"

@@ -22,7 +22,6 @@ package org.eyeseetea.malariacare.layout.adapters.survey;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.os.Debug;
 import android.preference.PreferenceManager;
 import android.text.Editable;
 import android.text.InputFilter;
@@ -40,6 +39,8 @@ import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.google.common.primitives.Booleans;
+
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.model.Header;
 import org.eyeseetea.malariacare.database.model.Option;
@@ -50,13 +51,15 @@ import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.ReadWriteDB;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.layout.adapters.general.OptionArrayAdapter;
-import org.eyeseetea.malariacare.views.UncheckeableRadioButton;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 import org.eyeseetea.malariacare.utils.Constants;
 import org.eyeseetea.malariacare.utils.Utils;
+import org.eyeseetea.malariacare.views.UncheckeableRadioButton;
 import org.eyeseetea.malariacare.views.filters.MinMaxInputFilter;
 
+import java.util.Arrays;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 /**
@@ -79,7 +82,8 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
 
     // The length of this arrays is the same that the items list. Each position indicates if the item
     // on this position is hidden (true) or visible (false)
-    private final boolean[] questionHidden;
+
+    private final LinkedHashMap<Object, Boolean> elementInvisibility = new LinkedHashMap<>();
 
     int id_layout;
 
@@ -120,19 +124,20 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
         this.id_layout = R.layout.form_with_score;
         this.tab = tab;
 
-        questionHidden = new boolean[items.size()];
-
+        // Initialize the elementInvisibility HashMap by reading all questions and headers and decide
+        // whether or not they must be visible
         for (int i = 0; i < items.size(); i++) {
             Object item = items.get(i);
             if (item instanceof Header)
-                questionHidden[i] = true;
+                elementInvisibility.put(item, true);
             if (item instanceof Question) {
-                if (!(questionHidden[i] = isHidden((Question) item))) {
-                    initScoreQuestion((Question) item);
-                } else {
-                    ScoreRegister.addRecord((Question) item, 0F, ScoreRegister.calcDenum((Question) item));
-                }
-                questionHidden[items.indexOf(((Question) item).getHeader())] = questionHidden[items.indexOf(((Question) item).getHeader())]&& questionHidden[i];
+                boolean hidden = isHidden((Question) item);
+                elementInvisibility.put(item, hidden);
+                if (!(hidden)) initScoreQuestion((Question) item);
+                else ScoreRegister.addRecord((Question) item, 0F, ScoreRegister.calcDenum((Question) item));
+                Header header = ((Question) item).getHeader();
+                boolean headerVisibility = elementInvisibility.get(header);
+                elementInvisibility.put(header, headerVisibility && elementInvisibility.get(item));
             }
         }
 
@@ -220,7 +225,7 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
 
         if (totalDenum == 0) {
             for (int i = 0; i < number_items; i++) {
-                if (items.get(i) instanceof Question && !questionHidden[i]) {
+                if (items.get(i) instanceof Question && !elementInvisibility.get(items.get(i))) {
                     Question question = (Question) items.get(i);
                     if (question.getAnswer().getOutput() == Constants.DROPDOWN_LIST)
                         result = result + ScoreRegister.calcDenum((Question) items.get(i));
@@ -248,33 +253,37 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
 
     }
 
+    /**
+     * Get the number of elements that are hidden
+     * @return number of elements hidden
+     */
     private int getHiddenCount() {
-        int count = 0;
-
-        for (int i = 0; i < items.size(); i++)
-            if (questionHidden[i]) count++;
-
-        return count;
+        // using Guava library and its Booleans utility class
+        return Booleans.countTrue(Booleans.toArray(elementInvisibility.values()));
     }
 
-    private int getHiddenCountUpTo(int location) {
-        int count = 0;
-
-        for (int i = 0; i <= location; i++)
-            if (questionHidden[i]) count++;
-
-        return count;
+    private int getHiddenCountUpTo(int position) {
+        boolean [] upper = Arrays.copyOfRange(Booleans.toArray(elementInvisibility.values()), 0, position+1);
+        int hiddens = Booleans.countTrue(upper);
+        return hiddens;
     }
 
-    private int getRealPosition(int position) {
+    /**
+     * Given a desired position (that means, the position shown in the screen) of an element, get the
+     * real position (that means, the position in the stored items list taking into account the hidden
+     * elements)
+     * @param position
+     * @return the real position in the elements list
+     */
+    private int getRealPosition(int position){
         int hElements = getHiddenCountUpTo(position);
         int diff = 0;
 
         for (int i = 0; i < hElements; i++) {
             diff++;
-            if (questionHidden[position + diff]) i--;
+            if (elementInvisibility.get(items.get(position + diff))) i--;
         }
-        return (position + diff);
+            return (position + diff);
     }
 
     /**
@@ -285,7 +294,7 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
     public boolean hideHeader(Header header) {
         // look in every question to see if every question is hidden. In case one cuestion is not hidden, we return false
         for (Question question : header.getQuestions()) {
-            if (!questionHidden[items.indexOf(question)]) {
+            if (!elementInvisibility.get(question)) {
                 return false;
             }
         }
@@ -294,49 +303,20 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
 
     @Override
     public int getCount() {
-        return (items.size() - getHiddenCount());
+        int count = (items.size() - getHiddenCount());
+        return count;
     }
 
     @Override
     public Object getItem(int position) {
-        return items.get(getRealPosition(position));
+        Object item= items.get(getRealPosition(position));
+        return item;
     }
 
     @Override
     public long getItemId(int position) {
         return items.get(getRealPosition(position)).hashCode();
     }
-
-
-/*private float calcDenum(Question question) {
-        float result = 0;
-
-        if (question.getAnswer().getOutput() == Constants.DROPDOWN_LIST || question.getAnswer().getOutput() == Constants.RADIO_GROUP_HORIZONTAL
-                || question.getAnswer().getOutput() == Constants.RADIO_GROUP_VERTICAL) {
-
-            Option option = question.getOptionBySession();
-            if (option != null) {
-                return calcDenum(option.getFactor(), question);
-            } else {
-                result = calcDenum(0, question);
-            }
-        }
-
-        return result;
-    }
-
-    private float calcDenum(float factor, Question question) {
-        float result = 0;
-        float num = question.getNumerator_w();
-        float denum = question.getDenominator_w();
-
-        if (num == denum)
-            result = denum;
-        if (num == 0 && denum != 0)
-            result = factor * denum;
-
-        return result;
-    }*/
 
     /**
      * Given a question, make visible or invisible their children. In case all children in a header
@@ -346,9 +326,11 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
      */
     private void toggleChildrenVisibility(Question question, boolean visible) {
         List<Question> children = question.getQuestionChildren();
+        Question cachedQuestion = null;
 
         for (Question child : children) {
-            questionHidden[items.indexOf(child)] = !visible;
+            Header childHeader = child.getHeader();
+            elementInvisibility.put(child, !visible);
             if (!visible) {
                 List<Float> numdenum = ScoreRegister.getNumDenum(child);
                 if (numdenum != null) {
@@ -357,14 +339,17 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
                     totalNum = totalNum - numdenum.get(0);
                     ScoreRegister.deleteRecord(child);
                 }
-                ReadWriteDB.resetValue(child); // delete value
-                questionHidden[items.indexOf(child.getHeader())] = hideHeader(child.getHeader()); // make a simple cache
+                ReadWriteDB.deleteValue(child); // when we hide a question, we remove its value
+                // little cache to avoid double checking same
+                if(cachedQuestion == null || (cachedQuestion.getHeader().getId() != child.getHeader().getId()))
+                    elementInvisibility.put(childHeader, hideHeader(childHeader));
             } else {
                 Float denum = ScoreRegister.calcDenum(child);
                 totalDenum = totalDenum + denum;
                 ScoreRegister.addRecord(child, 0F, denum);
-                questionHidden[items.indexOf(child.getHeader())] = false;
+                elementInvisibility.put(childHeader, false);
             }
+            cachedQuestion = question;
         }
 
         notifyDataSetChanged();
@@ -480,9 +465,9 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
         if (question.hasChildren()) {
 
             if (option.getName().equals(this.context.getString(R.string.yes))) {
-                Debug.startMethodTracing("toggleChildrenVisibility");
+                //Debug.startMethodTracing("toggleChildrenVisibility");
                 toggleChildrenVisibility(question, true);
-                Debug.stopMethodTracing();
+                //Debug.stopMethodTracing();
             }
             else
                 toggleChildrenVisibility(question, false);
@@ -516,12 +501,7 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
         Question question;
         ViewHolder viewHolder = new ViewHolder();
 
-        if (item instanceof Header) {
-            rowView = lInflater.inflate(R.layout.headers, parent, false);
-            viewHolder.statement = (TextView) rowView.findViewById(R.id.headerName);
-            viewHolder.statement.setText(((Header) item).getName());
-        } else {
-
+        if (item instanceof Question) {
             question = (Question) item;
 
             //FIXME This should be moved into its own class (Ex: ViewHolderFactory.getView(item))
@@ -609,6 +589,10 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
             setValues(viewHolder, question);
             //Disables component if survey has already been sent
             updateReadOnly(viewHolder.component);
+        } else {
+            rowView = lInflater.inflate(R.layout.headers, parent, false);
+            viewHolder.statement = (TextView) rowView.findViewById(R.id.headerName);
+            viewHolder.statement.setText(((Header) item).getName());
 
         }
 
