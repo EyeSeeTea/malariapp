@@ -94,7 +94,6 @@ public class DashboardDetailsFragment extends ListFragment {
 
         Log.d(TAG, "onCreate");
         registerSurveysReceiver();
-        getSurveysFromService();
     }
 
     @Override
@@ -286,17 +285,6 @@ public class DashboardDetailsFragment extends ListFragment {
             LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(surveyReceiver);
             surveyReceiver=null;
         }
-    }
-
-    /**
-     * Asks SurveyService for the current list of surveys
-     */
-    public void getSurveysFromService(){
-        Log.d(TAG, "getSurveysFromService");
-        Activity activity=getActivity();
-        Intent surveysIntent=new Intent(activity, SurveyService.class);
-        surveysIntent.putExtra(SurveyService.SERVICE_METHOD,SurveyService.ALL_UNSENT_SURVEYS_ACTION);
-        activity.startService(surveysIntent);
     }
 
     public void reloadSurveys(List<Survey> newListSurveys){

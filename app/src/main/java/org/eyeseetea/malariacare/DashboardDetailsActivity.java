@@ -28,9 +28,12 @@ import android.util.Log;
 
 import org.eyeseetea.malariacare.fragments.DashboardSentFragment;
 import org.eyeseetea.malariacare.fragments.DashboardDetailsFragment;
+import org.eyeseetea.malariacare.services.SurveyService;
 
 
 public class DashboardDetailsActivity extends BaseActivity {
+
+    private final static String TAG=".DDetailsActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +65,19 @@ public class DashboardDetailsActivity extends BaseActivity {
     @Override
     protected void initTransition(){
         this.overridePendingTransition(R.transition.anim_slide_in_right, R.transition.anim_slide_out_right);
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        getSurveysFromService();
+    }
+
+    public void getSurveysFromService(){
+        Log.d(TAG, "getSurveysFromService");
+        Intent surveysIntent=new Intent(this, SurveyService.class);
+        surveysIntent.putExtra(SurveyService.SERVICE_METHOD,SurveyService.RELOAD_DASHBOARD_ACTION);
+        this.startService(surveysIntent);
     }
 
     /**

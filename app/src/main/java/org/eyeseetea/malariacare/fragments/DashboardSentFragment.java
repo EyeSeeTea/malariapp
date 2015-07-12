@@ -114,7 +114,7 @@ public class DashboardSentFragment extends ListFragment {
     @Override
     public void onResume(){
         Log.d(TAG, "onResume");
-        getSurveysFromService();
+//        getSurveysFromService();
         super.onResume();
     }
 
