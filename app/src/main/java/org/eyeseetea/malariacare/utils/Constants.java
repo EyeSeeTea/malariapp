@@ -59,4 +59,6 @@ public class Constants {
 
     public static final String PREFERENCE_DHIS_URL="dhis_url";
 
+    public static final String CHECKBOX_YES_OPTION="Yes";
+
 }

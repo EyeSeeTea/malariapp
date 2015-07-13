@@ -2,6 +2,8 @@ package org.eyeseetea.malariacare.database.model;
 
 import com.orm.SugarRecord;
 
+import org.eyeseetea.malariacare.utils.Constants;
+
 
 public class Option extends SugarRecord<Option> {
 
@@ -44,6 +46,15 @@ public class Option extends SugarRecord<Option> {
 
     public void setAnswer(Answer answer) {
         this.answer = answer;
+    }
+
+    /**
+     * Checks if this option is a 'Yes'.
+     *
+     * @return true|false
+     */
+    public boolean isYes(){
+        return Constants.CHECKBOX_YES_OPTION.equals(name);
     }
 
     @Override

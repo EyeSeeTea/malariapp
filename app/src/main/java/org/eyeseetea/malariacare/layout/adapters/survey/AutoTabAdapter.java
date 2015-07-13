@@ -26,6 +26,7 @@ import android.preference.PreferenceManager;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -66,6 +67,8 @@ import java.util.List;
  * Created by Jose on 21/04/2015.
  */
 public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
+
+    private final static String TAG=".AutoTabAdapter";
 
     //List of Headers and Questions. Each position contains an object to be showed in the listview
     List<Object> items;
@@ -463,19 +466,10 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
         recalculateScores(viewHolder, question);
 
         if (question.hasChildren()) {
-
-            if (option.getName().equals(this.context.getString(R.string.yes))) {
-                //Debug.startMethodTracing("toggleChildrenVisibility");
-                toggleChildrenVisibility(question, true);
-                //Debug.stopMethodTracing();
-            }
-            else
-                toggleChildrenVisibility(question, false);
-
+            toggleChildrenVisibility(question,option.isYes());
         }
 
         updateScore();
-
     }
 
     private void recalculateScores(ViewHolder viewHolder, Question question) {
@@ -756,17 +750,16 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
 
         @Override
         public void onCheckedChanged(RadioGroup group, int checkedId) {
-
-            if (group.isShown()) {
-
-                Option option = new Option(Constants.DEFAULT_SELECT_OPTION);
-                if (checkedId != -1) {
-                    RadioButton radioButton = (RadioButton) ((RadioGroup) this.viewHolder.component).findViewById(checkedId);
-                    option = (Option) radioButton.getTag();
-                }
-                itemSelected(viewHolder, question, option);
+            if(!group.isShown()){
+                return;
             }
 
+            Option option = new Option(Constants.DEFAULT_SELECT_OPTION);
+            if (checkedId != -1) {
+                RadioButton radioButton = (RadioButton) ((RadioGroup) this.viewHolder.component).findViewById(checkedId);
+                option = (Option) radioButton.getTag();
+            }
+            itemSelected(viewHolder, question, option);
         }
     }
 
