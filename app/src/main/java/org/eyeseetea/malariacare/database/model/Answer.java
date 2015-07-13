@@ -20,6 +20,7 @@
 package org.eyeseetea.malariacare.database.model;
 
 import com.orm.SugarRecord;
+import com.orm.dsl.Ignore;
 
 import java.util.List;
 
@@ -27,6 +28,9 @@ public class Answer extends SugarRecord<Answer> {
 
     String name;
     Integer output;
+
+    @Ignore
+    List<Option> _options;
 
     public Answer() {
     }
@@ -53,7 +57,10 @@ public class Answer extends SugarRecord<Answer> {
     }
 
     public List<Option> getOptions(){
-        return Option.find(Option.class, "answer = ?", String.valueOf(this.getId()));
+        if(_options==null){
+            _options=Option.find(Option.class, "answer = ?", String.valueOf(this.getId()));
+        }
+        return _options;
     }
 
     @Override
