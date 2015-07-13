@@ -165,7 +165,7 @@ public class SurveyActivity extends BaseActivity{
                     public void onClick(DialogInterface dialog, int arg1) {
                         ScoreRegister.clear();
                         unregisterReceiver();
-                        finishAndGo(DashboardDetailsActivity.class);
+                        finishAndGo(DashboardActivity.class);
                     }
                 }).create().show();
     }

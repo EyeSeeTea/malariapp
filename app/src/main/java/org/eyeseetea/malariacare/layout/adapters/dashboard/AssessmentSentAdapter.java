@@ -27,9 +27,9 @@ import org.eyeseetea.malariacare.database.model.Survey;
 
 import java.util.List;
 
-public class AssessmentCompletedAdapter extends AAssessmentAdapter implements IAssessmentAdapter {
+public class AssessmentSentAdapter extends AAssessmentAdapter implements IAssessmentAdapter {
 
-    public AssessmentCompletedAdapter(List<Survey> items, Context context) {
+    public AssessmentSentAdapter(List<Survey> items, Context context) {
         this.items = items;
         this.context = context;
         this.lInflater = LayoutInflater.from(context);
@@ -41,6 +41,6 @@ public class AssessmentCompletedAdapter extends AAssessmentAdapter implements IA
 
     @Override
     public IDashboardAdapter newInstance(List items, Context context) {
-        return new AssessmentCompletedAdapter((List<Survey>) items, context);
+        return new AssessmentSentAdapter((List<Survey>) items, context);
     }
 }

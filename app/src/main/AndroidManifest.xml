@@ -53,7 +53,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="org.eyeseetea.malariacare.DashboardDetailsActivity"
+            android:name=".DashboardActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/app_name">
         </activity>
@@ -62,10 +62,10 @@
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:finishOnTaskLaunch="true"
             android:label="@string/app_name"
-            android:parentActivityName="org.eyeseetea.malariacare.DashboardDetailsActivity" >
+            android:parentActivityName=".DashboardActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="org.eyeseetea.malariacare.DashboardDetailsActivity" />
+                android:value=".DashboardActivity" />
         </activity>
         <activity
             android:name="org.eyeseetea.malariacare.SurveyActivity"
@@ -73,22 +73,22 @@
             android:finishOnTaskLaunch="true"
             android:label="@string/app_name"
             android:windowSoftInputMode="adjustPan"
-            android:parentActivityName="org.eyeseetea.malariacare.DashboardDetailsActivity" >
+            android:parentActivityName=".DashboardActivity" >
 
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="org.eyeseetea.malariacare.DashboardDetailsActivity" />
+                android:value=".DashboardActivity" />
         </activity>
         <activity
             android:name="org.eyeseetea.malariacare.SettingsActivity"
             android:label="@string/title_activity_settings"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:finishOnTaskLaunch="true"
-            android:parentActivityName="org.eyeseetea.malariacare.DashboardDetailsActivity" >
+            android:parentActivityName=".DashboardActivity" >
 
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="org.eyeseetea.malariacare.DashboardDetailsActivity" />
+                android:value=".DashboardActivity" />
         </activity>
 
         <meta-data

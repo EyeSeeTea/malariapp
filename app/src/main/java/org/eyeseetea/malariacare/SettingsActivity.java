@@ -31,7 +31,6 @@ import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
-import android.support.v4.app.NavUtils;
 
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.utils.Constants;
@@ -243,11 +242,11 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
         //FIXME Not working as it should the intent param is always null
         Intent creationIntent=getIntent();
         if(creationIntent==null){
-            return DashboardDetailsActivity.class;
+            return DashboardActivity.class;
         }
         Class callerActivity=(Class)creationIntent.getSerializableExtra(BaseActivity.SETTINGS_CALLER_ACTIVITY);
         if(callerActivity==null){
-            return DashboardDetailsActivity.class;
+            return DashboardActivity.class;
         }
 
         return callerActivity;

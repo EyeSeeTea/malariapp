@@ -45,7 +45,7 @@ import org.eyeseetea.malariacare.database.model.User;
 import org.eyeseetea.malariacare.database.model.Value;
 import org.eyeseetea.malariacare.database.utils.PopulateDB;
 import org.eyeseetea.malariacare.database.utils.Session;
-import org.eyeseetea.malariacare.layout.adapters.dashboard.AssessmentAdapter;
+import org.eyeseetea.malariacare.layout.adapters.dashboard.AssessmentUnsentAdapter;
 import org.eyeseetea.malariacare.test.utils.IntentServiceIdlingResource;
 
 import java.util.Collection;
@@ -153,7 +153,7 @@ public class MalariaEspressoTest {
             survey.save();
         }
         List<Survey> surveys= Survey.find(Survey.class, "user=?", user.getId().toString());
-        Session.setAdapterUncompleted(new AssessmentAdapter(surveys, InstrumentationRegistry.getTargetContext()));
+        Session.setAdapterUncompleted(new AssessmentUnsentAdapter(surveys, InstrumentationRegistry.getTargetContext()));
         return surveys;
     }
 
