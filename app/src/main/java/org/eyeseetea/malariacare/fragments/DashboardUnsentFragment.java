@@ -19,7 +19,6 @@
 
 package org.eyeseetea.malariacare.fragments;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ListFragment;
 import android.content.BroadcastReceiver;
@@ -38,15 +37,14 @@ import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 
-import org.eyeseetea.malariacare.DashboardDetailsActivity;
+import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.SurveyActivity;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.utils.Session;
-import org.eyeseetea.malariacare.layout.adapters.dashboard.AssessmentAdapter;
+import org.eyeseetea.malariacare.layout.adapters.dashboard.AssessmentUnsentAdapter;
 import org.eyeseetea.malariacare.layout.adapters.dashboard.IDashboardAdapter;
 import org.eyeseetea.malariacare.layout.listeners.SwipeDismissListViewTouchListener;
-import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.network.PushResult;
 import org.eyeseetea.malariacare.services.SurveyService;
 import org.eyeseetea.malariacare.network.PushClient;
@@ -58,7 +56,7 @@ import java.util.List;
 /**
  * A placeholder fragment containing a simple view.
  */
-public class DashboardDetailsFragment extends ListFragment {
+public class DashboardUnsentFragment extends ListFragment {
 
 
     public static final String TAG = ".DetailsFragment";
@@ -67,13 +65,13 @@ public class DashboardDetailsFragment extends ListFragment {
     protected IDashboardAdapter adapter;
     private static int index = 0;
 
-    public DashboardDetailsFragment(){
+    public DashboardUnsentFragment(){
         this.adapter = Session.getAdapterUncompleted();
         this.surveys = new ArrayList();
     }
 
-    public static DashboardDetailsFragment newInstance(int index) {
-        DashboardDetailsFragment f = new DashboardDetailsFragment();
+    public static DashboardUnsentFragment newInstance(int index) {
+        DashboardUnsentFragment f = new DashboardUnsentFragment();
 
         // Supply index input as an argument.
         Bundle args = new Bundle();
@@ -124,7 +122,7 @@ public class DashboardDetailsFragment extends ListFragment {
     private void initAdapter(){
         IDashboardAdapter adapterInSession = Session.getAdapterUncompleted();
         if(adapterInSession == null){
-            adapterInSession = new AssessmentAdapter(this.surveys,getActivity());
+            adapterInSession = new AssessmentUnsentAdapter(this.surveys,getActivity());
         }else{
             adapterInSession = adapterInSession.newInstance(this.surveys,getActivity());
         }
@@ -145,7 +143,7 @@ public class DashboardDetailsFragment extends ListFragment {
         //Put selected survey in session
         Session.setSurvey(surveys.get(position - 1));
         //Go to SurveyActivity
-        ((DashboardDetailsActivity) getActivity()).go(SurveyActivity.class);
+        ((DashboardActivity) getActivity()).go(SurveyActivity.class);
     }
 
     @Override
