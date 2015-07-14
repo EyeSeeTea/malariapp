@@ -20,10 +20,10 @@
 package org.eyeseetea.malariacare.layout.adapters.general;
 
 import android.content.Context;
-import android.widget.TextView;
 
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.model.Tab;
+import org.eyeseetea.malariacare.views.TextCard;
 
 import java.util.List;
 
@@ -36,8 +36,8 @@ public class TabArrayAdapter extends AddlArrayAdapter<Tab> {
         super(context, R.layout.main_spinner_item, tabs);
     }
 
-    @Override public void drawText(TextView textView, Tab tab) {
-        textView.setText(tab.getName());
+    @Override public void drawText(TextCard textCard, Tab tab) {
+        textCard.setText(tab.getName());
     }
 
 }

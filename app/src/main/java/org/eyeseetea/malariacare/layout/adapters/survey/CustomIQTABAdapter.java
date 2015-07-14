@@ -27,9 +27,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
-import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.TextView;
 
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.model.Header;
@@ -42,6 +40,8 @@ import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 import org.eyeseetea.malariacare.utils.Constants;
 import org.eyeseetea.malariacare.utils.Utils;
+import org.eyeseetea.malariacare.views.EditCard;
+import org.eyeseetea.malariacare.views.TextCard;
 
 import java.util.List;
 
@@ -66,21 +66,21 @@ public class CustomIQTABAdapter extends BaseAdapter implements ITabAdapter {
     int[] results;
 
     static class ViewHolder {
-        public TextView number;
+        public TextCard number;
         public Spinner spinner;
-        public EditText parasites;
+        public EditCard parasites;
         public Spinner species;
     }
 
     static class ViewHolder2 {
-        public TextView number;
-        public TextView result;
+        public TextCard number;
+        public TextCard result;
     }
 
     /*static class ScoreHolder {
-        public TextView scoreText;
-        public TextView score;
-        public TextView cualitativeScore;
+        public TextCard scoreText;
+        public TextCard score;
+        public TextCard cualitativeScore;
     }*/
 
     public CustomIQTABAdapter(Tab tab, Context context) {
@@ -137,9 +137,9 @@ public class CustomIQTABAdapter extends BaseAdapter implements ITabAdapter {
     }
 
     private void initializeScoreViews() {
-        /*scoreHolder.score = (TextView) ((Activity) context).findViewById(R.id.score);
-        scoreHolder.cualitativeScore = (TextView) ((Activity) context).findViewById(R.id.qualitativeScore);
-        scoreHolder.scoreText = (TextView) ((Activity) context).findViewById(R.id.subtotalScoreText);*/
+        /*scoreHolder.score = (TextCard) ((Activity) context).findViewById(R.id.score);
+        scoreHolder.cualitativeScore = (TextCard) ((Activity) context).findViewById(R.id.qualitativeScore);
+        scoreHolder.scoreText = (TextCard) ((Activity) context).findViewById(R.id.subtotalScoreText);*/
     }
 
     private void resetResults() {
@@ -264,9 +264,9 @@ public class CustomIQTABAdapter extends BaseAdapter implements ITabAdapter {
                 question = (Question) item;
 
                 rowView = lInflater.inflate(R.layout.iqatab_record, parent, false);
-                viewHolder.number = (TextView) rowView.findViewById(R.id.number);
+                viewHolder.number = (TextCard) rowView.findViewById(R.id.number);
                 viewHolder.spinner = (Spinner) rowView.findViewById(R.id.testRes);
-                viewHolder.parasites = (EditText) rowView.findViewById(R.id.parasites);
+                viewHolder.parasites = (EditCard) rowView.findViewById(R.id.parasites);
                 viewHolder.species = (Spinner) rowView.findViewById(R.id.species);
 
                 List<Option> optionList = ((Question) item).getQuestionChildren().get(0).getAnswer().getOptions();
@@ -362,8 +362,8 @@ public class CustomIQTABAdapter extends BaseAdapter implements ITabAdapter {
                 Question testResult = questionResult.getQuestionChildren().get(0);
 
 
-                viewHolder2.number = (TextView) rowView.findViewById(R.id.number_result);
-                viewHolder2.result = (TextView) rowView.findViewById(R.id.matches);
+                viewHolder2.number = (TextCard) rowView.findViewById(R.id.number_result);
+                viewHolder2.result = (TextCard) rowView.findViewById(R.id.matches);
 
 
                 viewHolder2.number.setText(String.valueOf(questionResult.getForm_name()));

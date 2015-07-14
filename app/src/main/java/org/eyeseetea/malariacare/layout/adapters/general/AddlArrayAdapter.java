@@ -24,10 +24,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.TextView;
 
 import org.eyeseetea.malariacare.R;
-import org.eyeseetea.malariacare.database.model.Tab;
+import org.eyeseetea.malariacare.views.TextCard;
 
 import java.util.List;
 
@@ -48,7 +47,7 @@ public abstract class AddlArrayAdapter<T> extends ArrayAdapter<T> {
     }
 
 
-    public abstract void drawText(TextView textView, T object);
+    public abstract void drawText(TextCard textCard, T object);
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
@@ -58,7 +57,7 @@ public abstract class AddlArrayAdapter<T> extends ArrayAdapter<T> {
         }
 
         //Set text item
-        drawText((TextView) convertView.findViewById(android.R.id.text1), getItem(position));
+        drawText((TextCard) convertView.findViewById(android.R.id.text1), getItem(position));
 
         // Return the completed view to render on screen
         return convertView;
@@ -73,7 +72,7 @@ public abstract class AddlArrayAdapter<T> extends ArrayAdapter<T> {
         }
 
         //Set text item
-        drawText((TextView) convertView.findViewById(android.R.id.text1), getItem(position));
+        drawText((TextCard) convertView.findViewById(android.R.id.text1), getItem(position));
 
         // Return the completed view to render on screen
         return convertView;

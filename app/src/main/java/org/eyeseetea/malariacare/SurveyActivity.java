@@ -38,7 +38,6 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
-import android.widget.TextView;
 
 import org.eyeseetea.malariacare.database.model.CompositeScore;
 import org.eyeseetea.malariacare.database.model.Program;
@@ -56,6 +55,7 @@ import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 import org.eyeseetea.malariacare.services.SurveyService;
 import org.eyeseetea.malariacare.utils.Constants;
 import org.eyeseetea.malariacare.utils.Utils;
+import org.eyeseetea.malariacare.views.TextCard;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -305,9 +305,9 @@ public class SurveyActivity extends BaseActivity{
         Tab tab=((AutoTabAdapter)adapter).getTab();
         int viewId=IDS_SCORES_IN_GENERAL_TAB[tab.getOrder_pos()];
         if(viewId!=0) {
-            TextView textView=((TextView) this.findViewById(viewId));
-            textView.setText(Utils.round(score));
-            LayoutUtils.trafficLight(textView, score, null);
+            TextCard textCard=((TextCard) this.findViewById(viewId));
+            textCard.setText(Utils.round(score));
+            LayoutUtils.trafficLight(textCard, score, null);
         }
     }
 
@@ -362,7 +362,7 @@ public class SurveyActivity extends BaseActivity{
     }
 
     private void updateAvgInGeneralScores(int viewId, Float score){
-        ((TextView) this.findViewById(viewId)).setText(Utils.round(score));
+        ((TextCard) this.findViewById(viewId)).setText(Utils.round(score));
         LayoutUtils.trafficLight(this.findViewById(viewId), score, null);
     }
 

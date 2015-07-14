@@ -24,7 +24,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.model.Survey;
@@ -106,7 +105,7 @@ public abstract class AAssessmentAdapter extends ADashboardAdapter implements ID
 
         //Status Cell
         //FIXME: This bit needs to change when jose architecture is introduced because probably the save will be executed in a different way
-        ((TextView) rowView.findViewById(R.id.score)).setText(getStatus(survey));
+        ((TextCard) rowView.findViewById(R.id.score)).setText(getStatus(survey));
 
         return rowView;
     }
