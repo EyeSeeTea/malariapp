@@ -28,10 +28,7 @@ import android.widget.EditText;
 
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
-import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.utils.Constants;
-
-import java.util.Map;
 
 /**
  * TODO: document your custom view class.
@@ -62,21 +59,18 @@ public class EditCard extends EditText implements IEyeSeeView{
         // Load attributes
         if (attrs != null) {
             final TypedArray a = getContext().obtainStyledAttributes(attrs, R.styleable.TextCard, defStyle, 0);
-            String fontName = a.getString(R.styleable.EditCard_eFontName);
-            if (fontName != null){
-                Typeface font = Typeface.createFromAsset(getContext().getAssets(), "fonts/"+fontName);
+            mfontName = a.getString(R.styleable.EditCard_eFontName);
+            if (mfontName != null){
+                Typeface font = Typeface.createFromAsset(getContext().getAssets(), "fonts/"+mfontName);
                 setTypeface(font);
             }
 
-            String dimension = a.getString(R.styleable.EditCard_eDimension);
-            String scale = a.getString(R.styleable.EditCard_eScale);
-            if (dimension == null) dimension = getContext().getString(R.string.settings_array_values_font_sizes_def);
-            if (scale == null) scale = PreferencesState.getInstance().getScale();
-            if (!scale.equals(Constants.FONTS_SYSTEM)) setTextSize(TypedValue.COMPLEX_UNIT_SP, PreferencesState.getInstance().getFontSize(scale,dimension));
+            mDimension = a.getString(R.styleable.EditCard_eDimension);
+            mScale = a.getString(R.styleable.EditCard_eScale);
+            if (mDimension == null) mDimension = getContext().getString(R.string.settings_array_values_font_sizes_def);
+            if (mScale == null) mScale = PreferencesState.getInstance().getScale();
+            if (!mScale.equals(Constants.FONTS_SYSTEM)) setTextSize(TypedValue.COMPLEX_UNIT_SP, PreferencesState.getInstance().getFontSize(mScale,mDimension));
 
-            this.mDimension = dimension;
-            this.mScale = scale;
-            this.mfontName = fontName;
             a.recycle();
         }
     }

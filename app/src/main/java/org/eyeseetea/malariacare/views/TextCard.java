@@ -28,7 +28,6 @@ import android.widget.TextView;
 
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
-import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.utils.Constants;
 
 /**
@@ -55,28 +54,25 @@ public class TextCard extends TextView implements IEyeSeeView {
     }
 
     public void init(AttributeSet attrs, int defStyle) {
-        if(isInEditMode()){
+        /*if(isInEditMode()){
             this.setText(R.string.lorem_ipsum);
             return;
-        }
+        }*/
         // Load attributes
         if (attrs != null) {
             final TypedArray a = getContext().obtainStyledAttributes(attrs, R.styleable.TextCard, defStyle, 0);
-            String fontName = a.getString(R.styleable.TextCard_tFontName);
-            if (fontName != null){
-                Typeface font = Typeface.createFromAsset(getContext().getAssets(), "fonts/"+fontName);
+            mfontName = a.getString(R.styleable.TextCard_tFontName);
+            if (mfontName != null){
+                Typeface font = Typeface.createFromAsset(getContext().getAssets(), "fonts/"+mfontName);
                 setTypeface(font);
             }
 
-            String dimension = a.getString(R.styleable.TextCard_tDimension);
-            String scale = a.getString(R.styleable.TextCard_tScale);
-            if (dimension == null) dimension = getContext().getString(R.string.settings_array_values_font_sizes_def);
-            if (scale == null) scale = PreferencesState.getInstance().getScale();
-            if (!scale.equals(Constants.FONTS_SYSTEM)) setTextSize(TypedValue.COMPLEX_UNIT_SP, PreferencesState.getInstance().getFontSize(scale,dimension));
+            mDimension = a.getString(R.styleable.TextCard_tDimension);
+            mScale = a.getString(R.styleable.TextCard_tScale);
+            if (mDimension == null) this.mDimension = getContext().getString(R.string.settings_array_values_font_sizes_def);
+            if (mScale == null) this.mScale = PreferencesState.getInstance().getScale();
+            if (!mScale.equals(Constants.FONTS_SYSTEM)) setTextSize(TypedValue.COMPLEX_UNIT_SP, PreferencesState.getInstance().getFontSize(mScale,mDimension));
 
-            this.mDimension = dimension;
-            this.mScale = scale;
-            this.mfontName = fontName;
             a.recycle();
         }
     }

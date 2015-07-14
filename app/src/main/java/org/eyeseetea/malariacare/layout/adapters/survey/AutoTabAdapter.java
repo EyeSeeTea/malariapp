@@ -26,19 +26,16 @@ import android.preference.PreferenceManager;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
-import android.widget.TextView;
 
 import com.google.common.primitives.Booleans;
 
@@ -56,6 +53,8 @@ import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 import org.eyeseetea.malariacare.utils.Constants;
 import org.eyeseetea.malariacare.utils.Utils;
+import org.eyeseetea.malariacare.views.EditCard;
+import org.eyeseetea.malariacare.views.TextCard;
 import org.eyeseetea.malariacare.views.UncheckeableRadioButton;
 import org.eyeseetea.malariacare.views.filters.MinMaxInputFilter;
 
@@ -98,7 +97,7 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
     //Store the Views references for each row (to avoid many calls to getViewById)
     static class ViewHolder {
         //Label
-        public TextView statement;
+        public TextCard statement;
 //        public Spinner spinner;
 //        public EditText answer;
 //        public RadioGroup radioGroup;
@@ -106,18 +105,18 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
         // Main component in the row: Spinner, EditText or RadioGroup
         public View component;
 
-        public TextView num;
-        public TextView denum;
+        public TextCard num;
+        public TextCard denum;
         public int type;
     }
 
     //Store the views references for each view in the footer
     static class ScoreHolder {
-        public TextView subtotalscore;
-        public TextView score;
-        public TextView totalNum;
-        public TextView totalDenum;
-        public TextView qualitativeScore;
+        public TextCard subtotalscore;
+        public TextCard score;
+        public TextCard totalNum;
+        public TextCard totalDenum;
+        public TextCard qualitativeScore;
     }
 
     public AutoTabAdapter(Tab tab, Context context) {
@@ -193,11 +192,11 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
     }
 
     private void initializeScoreViews() {
-        scoreHolder.score = (TextView) ((Activity) context).findViewById(R.id.score);
-        scoreHolder.totalDenum = (TextView) ((Activity) context).findViewById(R.id.totalDen);
-        scoreHolder.totalNum = (TextView) ((Activity) context).findViewById(R.id.totalNum);
-        scoreHolder.subtotalscore = (TextView) ((Activity) context).findViewById(R.id.subtotalScoreText);
-        scoreHolder.qualitativeScore = (TextView) ((Activity) context).findViewById(R.id.qualitativeScore);
+        scoreHolder.score = (TextCard) ((Activity) context).findViewById(R.id.score);
+        scoreHolder.totalDenum = (TextCard) ((Activity) context).findViewById(R.id.totalDen);
+        scoreHolder.totalNum = (TextCard) ((Activity) context).findViewById(R.id.totalNum);
+        scoreHolder.subtotalscore = (TextCard) ((Activity) context).findViewById(R.id.subtotalScoreText);
+        scoreHolder.qualitativeScore = (TextCard) ((Activity) context).findViewById(R.id.qualitativeScore);
         int visibility = (PreferencesState.getInstance().isShowNumDen()) ? View.VISIBLE : View.GONE;
 
         // Set all the subscore bar visibility (this way, the bar will disappear if visibility is GONE)
@@ -366,7 +365,7 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
             case Constants.INT:
             case Constants.LONG_TEXT:
             case Constants.POSITIVE_INT:
-                ((EditText) viewHolder.component).setText(ReadWriteDB.readValueQuestion(question));
+                ((EditCard) viewHolder.component).setText(ReadWriteDB.readValueQuestion(question));
                 break;
             case Constants.DROPDOWN_LIST:
 
@@ -505,7 +504,7 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
                     rowView = initialiseView(R.layout.longtext, parent, question, viewHolder, position);
 
                     //Add main component and listener
-                    ((EditText) viewHolder.component).addTextChangedListener(new TextViewListener(false, question));
+                    ((EditCard) viewHolder.component).addTextChangedListener(new TextViewListener(false, question));
                     break;
                 case Constants.NO_ANSWER:
                     rowView = initialiseView(R.layout.label, parent, question, viewHolder, position);
@@ -514,33 +513,33 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
                     rowView = initialiseView(R.layout.integer, parent, question, viewHolder, position);
 
                     //Add main component, set filters and listener
-                    ((EditText) viewHolder.component).setFilters(new InputFilter[]{
+                    ((EditCard) viewHolder.component).setFilters(new InputFilter[]{
                             new InputFilter.LengthFilter(Constants.MAX_INT_CHARS),
                             new MinMaxInputFilter(1, null)
                     });
-                    ((EditText) viewHolder.component).addTextChangedListener(new TextViewListener(false, question));
+                    ((EditCard) viewHolder.component).addTextChangedListener(new TextViewListener(false, question));
                     break;
                 case Constants.INT:
                     rowView = initialiseView(R.layout.integer, parent, question, viewHolder, position);
 
                     //Add main component, set filters and listener
-                    ((EditText) viewHolder.component).setFilters(new InputFilter[]{
+                    ((EditCard) viewHolder.component).setFilters(new InputFilter[]{
                             new InputFilter.LengthFilter(Constants.MAX_INT_CHARS)
                     });
-                    ((EditText) viewHolder.component).addTextChangedListener(new TextViewListener(false, question));
+                    ((EditCard) viewHolder.component).addTextChangedListener(new TextViewListener(false, question));
                     break;
                 case Constants.DATE:
                     rowView = initialiseView(R.layout.date, parent, question, viewHolder, position);
 
                     //Add main component and listener
-                    ((EditText) viewHolder.component).addTextChangedListener(new TextViewListener(false, question));
+                    ((EditCard) viewHolder.component).addTextChangedListener(new TextViewListener(false, question));
                     break;
 
                 case Constants.SHORT_TEXT:
                     rowView = initialiseView(R.layout.shorttext, parent, question, viewHolder, position);
 
                     //Add main component and listener
-                    ((EditText) viewHolder.component).addTextChangedListener(new TextViewListener(false, question));
+                    ((EditCard) viewHolder.component).addTextChangedListener(new TextViewListener(false, question));
                     break;
 
                 case Constants.DROPDOWN_LIST:
@@ -585,7 +584,7 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
             updateReadOnly(viewHolder.component);
         } else {
             rowView = lInflater.inflate(R.layout.headers, parent, false);
-            viewHolder.statement = (TextView) rowView.findViewById(R.id.headerName);
+            viewHolder.statement = (TextCard) rowView.findViewById(R.id.headerName);
             viewHolder.statement.setText(((Header) item).getName());
 
         }
@@ -622,7 +621,7 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
             rowView.setBackgroundResource(LayoutUtils.calculateBackgrounds(position));
 
         viewHolder.component = rowView.findViewById(R.id.answer);
-        viewHolder.statement = (TextView) rowView.findViewById(R.id.statement);
+        viewHolder.statement = (TextCard) rowView.findViewById(R.id.statement);
         viewHolder.statement.setText(question.getForm_name());
 
         return rowView;
@@ -630,8 +629,8 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
 
     private void initialiseScorableComponent(View rowView, ViewHolder viewHolder) {
         // In case the option is selected, we will need to show num/dems
-        viewHolder.num = (TextView) rowView.findViewById(R.id.num);
-        viewHolder.denum = (TextView) rowView.findViewById(R.id.den);
+        viewHolder.num = (TextCard) rowView.findViewById(R.id.num);
+        viewHolder.denum = (TextCard) rowView.findViewById(R.id.den);
 
         configureViewByPreference(viewHolder);
     }
