@@ -21,8 +21,6 @@ package org.eyeseetea.malariacare.layout.adapters.survey;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.TextWatcher;
@@ -32,7 +30,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.LinearLayout;
-import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
@@ -98,9 +95,6 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
     static class ViewHolder {
         //Label
         public TextCard statement;
-//        public Spinner spinner;
-//        public EditText answer;
-//        public RadioGroup radioGroup;
 
         // Main component in the row: Spinner, EditText or RadioGroup
         public View component;
@@ -191,6 +185,9 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
         updateScore();
     }
 
+    /**
+     *
+     */
     private void initializeScoreViews() {
         scoreHolder.score = (TextCard) ((Activity) context).findViewById(R.id.score);
         scoreHolder.totalDenum = (TextCard) ((Activity) context).findViewById(R.id.totalDen);
@@ -305,14 +302,12 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
 
     @Override
     public int getCount() {
-        int count = (items.size() - getHiddenCount());
-        return count;
+        return (items.size() - getHiddenCount());
     }
 
     @Override
     public Object getItem(int position) {
-        Object item= items.get(getRealPosition(position));
-        return item;
+        return items.get(getRealPosition(position));
     }
 
     @Override
@@ -353,7 +348,6 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
             }
             cachedQuestion = question;
         }
-
         notifyDataSetChanged();
     }
 
@@ -388,7 +382,7 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
                 Value value = question.getValueBySession();
                 List<Float> numdenumradiobutton = ScoreRegister.getNumDenum(question);
                 if (value != null) {
-                    ((RadioButton) viewHolder.component.findViewWithTag(value.getOption())).setChecked(true);
+                    ((UncheckeableRadioButton) viewHolder.component.findViewWithTag(value.getOption())).setChecked(true);
 
                     viewHolder.num.setText(Float.toString(numdenumradiobutton.get(0)));
                     viewHolder.denum.setText(Float.toString(numdenumradiobutton.get(1)));
@@ -488,6 +482,7 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
+//        Debug.startMethodTracing("auto_getview");
         View rowView = null;
 
         final Object item = getItem(position);
@@ -589,6 +584,7 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
 
         }
 
+//        Debug.stopMethodTracing();
         return rowView;
     }
 
@@ -641,7 +637,7 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
         for (Option option : question.getAnswer().getOptions()) {
             UncheckeableRadioButton button = (UncheckeableRadioButton) lInflater.inflate(R.layout.uncheckeable_radiobutton, null);
             button.setOption(option);
-            button.updateProperties(PreferencesState.getInstance().getScale(), this.context.getString(R.string.font_size_level1), this.context.getString(R.string.medium_font_name));
+            //button.updateProperties(PreferencesState.getInstance().getScale(), this.context.getString(R.string.font_size_level1), this.context.getString(R.string.medium_font_name));
             ((RadioGroup) viewHolder.component).addView(button);
         }
 
@@ -655,7 +651,6 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
      * @param viewHolder view that holds the component to be more efficient
      */
     private void configureViewByPreference(ViewHolder viewHolder) {
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this.context);
         int visibility = View.GONE;
         float statementWeight = 0.7f;
         float componentWeight = 0.3f;
@@ -724,8 +719,8 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
         public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
             if (viewCreated) {
                 itemSelected(viewHolder, question, (Option) ((Spinner) viewHolder.component).getItemAtPosition(pos));
-                if (question.belongsToMasterQuestions())
-                    notifyDataSetChanged();
+                //if (question.belongsToMasterQuestions())
+                  //  notifyDataSetChanged();
             } else {
                 viewCreated = true;
             }
@@ -755,8 +750,8 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
 
             Option option = new Option(Constants.DEFAULT_SELECT_OPTION);
             if (checkedId != -1) {
-                RadioButton radioButton = (RadioButton) ((RadioGroup) this.viewHolder.component).findViewById(checkedId);
-                option = (Option) radioButton.getTag();
+                UncheckeableRadioButton uncheckeableRadioButton = (UncheckeableRadioButton) (this.viewHolder.component).findViewById(checkedId);
+                option = (Option) uncheckeableRadioButton.getTag();
             }
             itemSelected(viewHolder, question, option);
         }

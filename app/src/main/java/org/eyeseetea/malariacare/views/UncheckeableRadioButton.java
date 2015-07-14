@@ -20,6 +20,7 @@
 package org.eyeseetea.malariacare.views;
 
 import android.content.Context;
+import android.content.res.AssetManager;
 import android.content.res.TypedArray;
 import android.graphics.Typeface;
 import android.util.AttributeSet;
@@ -36,10 +37,13 @@ import org.eyeseetea.malariacare.utils.Constants;
  * Created by adrian on 30/05/15.
  */
 public class UncheckeableRadioButton extends RadioButton implements IEyeSeeView {
-
-    private String mfontName = getContext().getString(R.string.normal_font);
-    private String mScale = getContext().getString(R.string.settings_array_values_font_sizes_def);
-    private String mDimension = getContext().getString(R.string.settings_array_values_font_sizes_def);
+    private Context context = getContext();
+    private String mfontName = context.getString(R.string.normal_font);
+    private String mScale = context.getString(R.string.settings_array_values_font_sizes_def);
+    private String mDimension = context.getString(R.string.settings_array_values_font_sizes_def);
+    private AssetManager assetManager = context.getAssets();
+    private TypedArray a;
+    private Typeface font;
 
     private Option option = null;
 
@@ -87,20 +91,24 @@ public class UncheckeableRadioButton extends RadioButton implements IEyeSeeView 
     public void init(AttributeSet attrs, int defStyle) {
         // Load attributes
         if (attrs != null) {
-            final TypedArray a = getContext().obtainStyledAttributes(attrs, R.styleable.UncheckeableRadioButton, defStyle, 0);
-            mfontName = a.getString(R.styleable.UncheckeableRadioButton_rFontName);
-            if (mfontName != null){
-                Typeface font = Typeface.createFromAsset(getContext().getAssets(), "fonts/"+mfontName);
-                setTypeface(font);
+            a = getContext().obtainStyledAttributes(attrs, R.styleable.UncheckeableRadioButton, defStyle, 0);
+            try {
+                mfontName = a.getString(R.styleable.UncheckeableRadioButton_rFontName);
+                if (mfontName != null) {
+                    font = Typeface.createFromAsset(assetManager, "fonts/" + mfontName);
+                    setTypeface(font);
+                }
+
+                mDimension = a.getString(R.styleable.UncheckeableRadioButton_rDimension);
+                mScale = a.getString(R.styleable.UncheckeableRadioButton_rScale);
+                if (mDimension == null)
+                    mDimension = context.getString(R.string.settings_array_values_font_sizes_def);
+                if (mScale == null) mScale = PreferencesState.getInstance().getScale();
+                if (!mScale.equals(Constants.FONTS_SYSTEM))
+                    setTextSize(TypedValue.COMPLEX_UNIT_SP, PreferencesState.getInstance().getFontSize(mScale, mDimension));
+            } finally {
+                a.recycle();
             }
-
-            mDimension = a.getString(R.styleable.UncheckeableRadioButton_rDimension);
-            mScale = a.getString(R.styleable.UncheckeableRadioButton_rScale);
-            if (mDimension == null) mDimension = getContext().getString(R.string.settings_array_values_font_sizes_def);
-            if (mScale == null) mScale = PreferencesState.getInstance().getScale();
-            if (!mScale.equals(Constants.FONTS_SYSTEM)) setTextSize(TypedValue.COMPLEX_UNIT_SP, PreferencesState.getInstance().getFontSize(mScale,mDimension));
-
-            a.recycle();
         }
     }
 

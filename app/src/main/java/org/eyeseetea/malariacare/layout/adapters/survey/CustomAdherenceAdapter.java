@@ -264,6 +264,7 @@ public class CustomAdherenceAdapter extends BaseAdapter implements ITabAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
+//        Debug.startMethodTracing("custom_getView");
         View rowView = null;
 
         final Object item = getItem(position);
@@ -457,6 +458,7 @@ public class CustomAdherenceAdapter extends BaseAdapter implements ITabAdapter {
             }
 
         }
+//        Debug.stopMethodTracing();
         return rowView;
     }
 
