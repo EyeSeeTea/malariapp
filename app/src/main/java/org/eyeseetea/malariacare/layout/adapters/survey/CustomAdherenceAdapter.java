@@ -91,22 +91,6 @@ public class CustomAdherenceAdapter extends BaseAdapter implements ITabAdapter {
         public TextCard score;
     }
 
-    /*static class ScoreHolder {
-        public TextCard scoreText;
-        public TextCard score;
-        public TextCard cualitativeScore;
-    }*/
-
-    private void initializeScoreViews() {
-       /* scoreHolder.score = (TextCard) ((Activity) context).findViewById(R.id.score);
-        scoreHolder.cualitativeScore = (TextCard) ((Activity) context).findViewById(R.id.qualitativeScore);
-        scoreHolder.scoreText = (TextCard) ((Activity) context).findViewById(R.id.subtotalScoreText);*/
-    }
-
-    public void updateScore() {
-        //scoreHolder.score.setText(Utils.round(num / denum));
-    }
-
     @Override
     public Float getScore() {
         return num/denum;
@@ -119,9 +103,6 @@ public class CustomAdherenceAdapter extends BaseAdapter implements ITabAdapter {
 
     @Override
     public void initializeSubscore() {
-        initializeScoreViews();
-        updateScore();
-
         ListView lAdapter = (ListView) ((Activity) context).findViewById(R.id.listView);
 
         ViewGroup header = (ViewGroup) lInflater.inflate(R.layout.adherencetab_header0, lAdapter, false);
@@ -180,11 +161,6 @@ public class CustomAdherenceAdapter extends BaseAdapter implements ITabAdapter {
      */
     public static CustomAdherenceAdapter build(Tab tab, Context context){
         return new CustomAdherenceAdapter(tab, context);
-    }
-
-    private void resetScores() {
-        for (int i=0; i<scores.length; i++)
-            scores[i] = 0;
     }
 
     class Bool {
@@ -467,12 +443,8 @@ public class CustomAdherenceAdapter extends BaseAdapter implements ITabAdapter {
                             calcScore(question);
                             viewHolder2.score.setText(Integer.toString(scores[items.indexOf(question) - position_secondheader]));
                             ScoreRegister.addRecord(act, ScoreRegister.calcNum(act), ScoreRegister.calcDenum(act));
-
-                            updateScore();
                         } else
                             viewCreated.value = true;
-
-
                     }
 
                     @Override
