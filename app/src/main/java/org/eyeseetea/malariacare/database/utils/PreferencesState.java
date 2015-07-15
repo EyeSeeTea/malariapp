@@ -81,7 +81,7 @@ public class PreferencesState {
             return sharedPreferences.getString(SugarApp.getSugarContext().getString(R.string.font_sizes), Constants.FONTS_SYSTEM);
         }
 
-se        return Constants.FONTS_SYSTEM;
+        return Constants.FONTS_SYSTEM;
     }
 
     /**
