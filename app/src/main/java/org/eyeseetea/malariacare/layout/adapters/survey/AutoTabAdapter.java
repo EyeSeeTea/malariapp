@@ -664,7 +664,7 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
         for (Option option : question.getAnswer().getOptions()) {
             UncheckeableRadioButton button = (UncheckeableRadioButton) lInflater.inflate(R.layout.uncheckeable_radiobutton, null);
             button.setOption(option);
-            //button.updateProperties(PreferencesState.getInstance().getScale(), this.context.getString(R.string.font_size_level1), this.context.getString(R.string.medium_font_name));
+            button.updateProperties(PreferencesState.getInstance().getScale(), this.context.getString(R.string.font_size_level1), this.context.getString(R.string.medium_font_name));
             ((RadioGroup) viewHolder.component).addView(button);
         }
 
