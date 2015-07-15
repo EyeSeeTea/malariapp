@@ -178,15 +178,19 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
         else return 0F;
     }
 
+    /**
+     * Do every initialization related to subscore needed before showing a tab
+     */
     @Override
     public void initializeSubscore() {
         initializeScoreViews();
+        setSubScoreVisibility();
         initializeDenum();
         updateScore();
     }
 
     /**
-     *
+     * Store subscore bar views in a private class to later access them quickly
      */
     private void initializeScoreViews() {
         scoreHolder.score = (TextCard) ((Activity) context).findViewById(R.id.score);
@@ -194,16 +198,17 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
         scoreHolder.totalNum = (TextCard) ((Activity) context).findViewById(R.id.totalNum);
         scoreHolder.subtotalscore = (TextCard) ((Activity) context).findViewById(R.id.subtotalScoreText);
         scoreHolder.qualitativeScore = (TextCard) ((Activity) context).findViewById(R.id.qualitativeScore);
+    }
+
+    /**
+     * set subscore bar visibility depending on the show/hide num/dems user settings
+     */
+    private void setSubScoreVisibility(){
+        ViewGroup subscoreBar = (ViewGroup) ((Activity)context).findViewById(R.id.subscore_bar);
         int visibility = (PreferencesState.getInstance().isShowNumDen()) ? View.VISIBLE : View.GONE;
-
-        // Set all the subscore bar visibility (this way, the bar will disappear if visibility is GONE)
-        ((LinearLayout) (scoreHolder.totalNum.getParent()).getParent()).setVisibility(visibility);
+        subscoreBar.setVisibility(visibility);
     }
 
-    @Override
-    public String getName() {
-        return tab.getName();
-    }
 
     public void updateScore() {
         scoreHolder.totalNum.setText(Float.toString(totalNum));
@@ -234,6 +239,11 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
             totalDenum = result;
 
         }
+    }
+
+    @Override
+    public String getName() {
+        return tab.getName();
     }
 
     private void initScoreQuestion(Question question) {
@@ -321,7 +331,8 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
      * @param question the question whose children we want to show/hide
      * @param visible true for make them visible, false for invisible
      */
-    private void toggleChildrenVisibility(Question question, boolean visible) {
+    private void
+    toggleChildrenVisibility(Question question, boolean visible) {
         List<Question> children = question.getQuestionChildren();
         Question cachedQuestion = null;
 
@@ -452,19 +463,30 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
 
     }
 
+    /**
+     * Do the logic after a DDL option change
+     * @param viewHolder private class that acts like a cache to quickly access the different views
+     * @param question the question that changes his value
+     * @param option the option that has been selected
+     */
     private void itemSelected(ViewHolder viewHolder, Question question, Option option) {
-
+        // Write option to DB
         ReadWriteDB.saveValuesDDL(question, option);
 
         recalculateScores(viewHolder, question);
 
         if (question.hasChildren()) {
-            toggleChildrenVisibility(question,option.isYes());
+            toggleChildrenVisibility(question, option.is(context.getString(R.string.yes)));
         }
 
         updateScore();
     }
 
+    /**
+     * Recalculate num and denum of a quetsion, update them in cache vars and save the new num/denum in the score register associated with the question
+     * @param viewHolder views cache
+     * @param question question that change its values
+     */
     private void recalculateScores(ViewHolder viewHolder, Question question) {
         Float num = ScoreRegister.calcNum(question);
         Float denum = ScoreRegister.calcDenum(question);

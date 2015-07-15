@@ -77,8 +77,8 @@ public class PreferencesState {
      */
     private String initScale(){
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(SugarApp.getSugarContext());
-        if (sharedPreferences.getBoolean(Constants.PREFERENCE_CUSTOMIZE_FONTS, false)) {
-            return sharedPreferences.getString(Constants.PREFERENCE_FONT_SIZES, Constants.FONTS_SYSTEM);
+        if (sharedPreferences.getBoolean(SugarApp.getSugarContext().getString(R.string.show_num_dems), false)) {
+            return sharedPreferences.getString(SugarApp.getSugarContext().getString(R.string.font_sizes), Constants.FONTS_SYSTEM);
         }
 
         return Constants.FONTS_SYSTEM;
@@ -90,7 +90,7 @@ public class PreferencesState {
      */
     private boolean initShowNumDen(){
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(SugarApp.getSugarContext());
-        return sharedPreferences.getBoolean(Constants.PREFERENCE_SHOW_NUM_DEN, false);
+        return sharedPreferences.getBoolean(SugarApp.getSugarContext().getString(R.string.show_num_dems), false);
     }
 
     /**
