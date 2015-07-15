@@ -77,11 +77,11 @@ public class PreferencesState {
      */
     private String initScale(){
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(SugarApp.getSugarContext());
-        if (sharedPreferences.getBoolean(SugarApp.getSugarContext().getString(R.string.show_num_dems), false)) {
+        if (sharedPreferences.getBoolean(SugarApp.getSugarContext().getString(R.string.customize_fonts), false)) {
             return sharedPreferences.getString(SugarApp.getSugarContext().getString(R.string.font_sizes), Constants.FONTS_SYSTEM);
         }
 
-        return Constants.FONTS_SYSTEM;
+se        return Constants.FONTS_SYSTEM;
     }
 
     /**

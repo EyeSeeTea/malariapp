@@ -264,13 +264,18 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
 
     /**
      * Get the number of elements that are hidden
-     * @return number of elements hidden
+     * @return number of elements hidden (true in elementInvisibility Map)
      */
     private int getHiddenCount() {
         // using Guava library and its Booleans utility class
         return Booleans.countTrue(Booleans.toArray(elementInvisibility.values()));
     }
 
+    /**
+     * Get the number of elements that are hidden until a given position
+     * @param position
+     * @return number of elements hidden (true in elementInvisibility Map)
+     */
     private int getHiddenCountUpTo(int position) {
         boolean [] upper = Arrays.copyOfRange(Booleans.toArray(elementInvisibility.values()), 0, position+1);
         int hiddens = Booleans.countTrue(upper);
