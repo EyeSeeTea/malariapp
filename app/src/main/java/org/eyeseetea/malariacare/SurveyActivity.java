@@ -41,6 +41,7 @@ import android.widget.Spinner;
 
 import org.eyeseetea.malariacare.database.model.CompositeScore;
 import org.eyeseetea.malariacare.database.model.Program;
+import org.eyeseetea.malariacare.database.model.Question;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.model.Tab;
 import org.eyeseetea.malariacare.database.utils.Session;
@@ -61,6 +62,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Activity that supports the data entry for the surveys.
@@ -206,7 +208,7 @@ public class SurveyActivity extends BaseActivity{
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 Log.d(TAG, "onItemSelected..");
                 final Tab selectedTab = (Tab) spinner.getSelectedItem();
-                new AsyncChangeTab(selectedTab).execute((Void)null);
+                new AsyncChangeTab(selectedTab).execute((Void) null);
                 Log.d(TAG, "onItemSelected(" + Thread.currentThread().getId() + ")..DONE");
             }
 
@@ -240,7 +242,6 @@ public class SurveyActivity extends BaseActivity{
             if (tab.isGeneralScore()) {
                 showGeneralScores();
             } else {
-//                showTab(tab);
                 view=prepareTab(tab);
             }
             Log.d(TAG, "doInBackground(" + Thread.currentThread().getId() + ")..DONE");
@@ -290,38 +291,17 @@ public class SurveyActivity extends BaseActivity{
     }
 
     /**
-     * Shows the form for the given tab.
+     * Prepares the selected tab to be shown
      * @param selectedTab
+     * @return
      */
-    private void showTab(Tab selectedTab) {
-        LayoutInflater inflater = LayoutInflater.from(this);
-
-        content.removeAllViews();
-
-        if(selectedTab.isCompositeScore()){
-            tabAdaptersCache.cacheAllTabs();
-        }
-        ITabAdapter tabAdapter=tabAdaptersCache.findAdapter(selectedTab);
-
-        View view = inflater.inflate(tabAdapter.getLayout(), content, false);
-        content.addView(view);
-
-        if (    selectedTab.getType() == Constants.TAB_AUTOMATIC_SCORED ||
-                selectedTab.getType() == Constants.TAB_ADHERENCE    ||
-                selectedTab.getType() == Constants.TAB_IQATAB ||
-                selectedTab.getType() == Constants.TAB_SCORE_SUMMARY) {
-            tabAdapter.initializeSubscore();
-        }
-
-        ListView mQuestions = (ListView) this.findViewById(R.id.listView);
-        mQuestions.setAdapter((BaseAdapter) tabAdapter);
-    }
-
     private View prepareTab(Tab selectedTab) {
         LayoutInflater inflater = LayoutInflater.from(this);
 
         if(selectedTab.isCompositeScore()){
-            tabAdaptersCache.cacheAllTabs();
+            //Initialize scores x question not loaded yet
+            List<Tab> notLoadedTabs=tabAdaptersCache.getNotLoadedTabs();
+            ScoreRegister.initScoresForQuestions(Question.listAllByTabs(notLoadedTabs), Session.getSurvey());
         }
         ITabAdapter tabAdapter=tabAdaptersCache.findAdapter(selectedTab);
 
@@ -443,7 +423,6 @@ public class SurveyActivity extends BaseActivity{
     }
 
     private void startProgress(){
-//        this.spinner.setVisibility(View.GONE);
         this.content.setVisibility(View.GONE);
         this.progressBar.setVisibility(View.VISIBLE);
         this.progressBar.setEnabled(true);
@@ -481,29 +460,6 @@ public class SurveyActivity extends BaseActivity{
         Intent surveysIntent=new Intent(this, SurveyService.class);
         surveysIntent.putExtra(SurveyService.SERVICE_METHOD,SurveyService.PREPARE_SURVEY_ACTION);
         this.startService(surveysIntent);
-    }
-
-    /**
-     * Builds all the adapters required for each tab.
-     * @param tabs
-     * @param compositeScores
-     */
-    private void buildAdapters(List<Tab> tabs, List<CompositeScore> compositeScores){
-        for (Tab tab : tabs) {
-            if (tab.isCompositeScore())
-                adaptersMap.put(tab, new CompositeScoreAdapter(compositeScores, this, R.layout.composite_score_tab, tab.getName()));
-            else if (tab.isAdherenceTab()){
-                Log.d(TAG, "Adherence Tab");
-                adaptersMap.put(tab, CustomAdherenceAdapter.build(tab, this));
-            }
-            else if (tab.isIQATab()){
-                Log.d(TAG, "IQA Tab");
-                adaptersMap.put(tab, CustomIQTABAdapter.build(tab, this));
-            }
-            else if (!tab.isGeneralScore()) {
-                adaptersMap.put(tab, AutoTabAdapter.build(tab,this));
-            }
-        }
     }
 
     /**
@@ -555,6 +511,11 @@ public class SurveyActivity extends BaseActivity{
         private List<CompositeScore> compositeScores;
 
         /**
+         * Flag that optimizes the load of compositeScore the next time
+         */
+        private boolean compositeScoreTabShown=false;
+
+        /**
          * Finds the right adapter according to the selected tab.
          * Tabs are lazy trying to speed up the first load
          * @param tab Tab whose adapter is searched.
@@ -570,6 +531,20 @@ public class SurveyActivity extends BaseActivity{
                 }
             }
             return adapter;
+        }
+
+        public List<Tab> getNotLoadedTabs(){
+            List<Tab> notLoadedTabs=new ArrayList<Tab>();
+            //If has already been shown NOTHING to reload
+            if(compositeScoreTabShown){
+                return notLoadedTabs;
+            }
+
+            compositeScoreTabShown=true;
+            notLoadedTabs=new ArrayList<>(tabsList);
+            Set<Tab> loadedTabs=adapters.keySet();
+            notLoadedTabs.removeAll(loadedTabs);
+            return notLoadedTabs;
         }
 
         /**
