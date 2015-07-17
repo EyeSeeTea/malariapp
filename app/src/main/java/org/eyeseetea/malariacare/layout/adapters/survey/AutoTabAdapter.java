@@ -481,7 +481,7 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
         recalculateScores(viewHolder, question);
 
         if (question.hasChildren()) {
-            toggleChildrenVisibility(question, option.is(context.getString(R.string.yes)));
+            toggleChildrenVisibility(question, option.isActiveChildren());
         }
 
         updateScore();

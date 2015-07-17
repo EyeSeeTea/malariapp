@@ -5,6 +5,9 @@ import com.orm.SugarRecord;
 
 public class Option extends SugarRecord<Option> {
 
+    //FIXME A 'Yes' answer shows children questions, this should be configurable by some additional attribute in Option
+    public static final String CHECKBOX_YES_OPTION="Yes";
+
     String name;
     Float factor;
     Answer answer;
@@ -44,6 +47,14 @@ public class Option extends SugarRecord<Option> {
 
     public void setAnswer(Answer answer) {
         this.answer = answer;
+    }
+
+    /**
+     * Checks if this option actives the children questions
+     * @return true: Children questions should be shown, false: otherwise.
+     */
+    public boolean isActiveChildren(){
+        return CHECKBOX_YES_OPTION.equals(name);
     }
 
     /**
