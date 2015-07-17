@@ -165,7 +165,7 @@ public class PushClient {
 
     private JSONArray prepareCompositeScores(JSONArray values) throws Exception{
 
-        //Cleans scores
+        //Cleans score
         ScoreRegister.clear();
 
         //Register scores for tabs
@@ -177,13 +177,7 @@ public class PushClient {
         ScoreRegister.registerCompositeScores(compositeScoreList);
 
         //Initialize scores x question
-        for(Question question : Question.listAllByProgram(survey.getProgram())){
-            if(!question.isHiddenBySurvey(survey)) {
-                question.initScore(survey);
-            }else{
-                ScoreRegister.addRecord(question, 0F, ScoreRegister.calcDenum(question));
-            }
-        }
+        ScoreRegister.initScoresForQuestions(Question.listAllByProgram(survey.getProgram()),survey);
 
         //1 CompositeScore -> 1 dataValue
         for(CompositeScore compositeScore:compositeScoreList){
