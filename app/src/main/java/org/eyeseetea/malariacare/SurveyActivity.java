@@ -32,7 +32,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.LinearLayout;
@@ -254,7 +253,7 @@ public class SurveyActivity extends BaseActivity{
 
             content.removeAllViews();
             content.addView(viewContent);
-            ITabAdapter tabAdapter=(ITabAdapter) tabAdaptersCache.findAdapter(tab);
+            ITabAdapter tabAdapter = tabAdaptersCache.findAdapter(tab);
             if (    tab.getType() == Constants.TAB_AUTOMATIC_SCORED ||
                     tab.getType() == Constants.TAB_ADHERENCE    ||
                     tab.getType() == Constants.TAB_IQATAB ||
