@@ -55,6 +55,16 @@ public class ScoreRegister {
      */
     private static final Map<Tab, TabNumDenRecord> tabScoreMap = new HashMap<Tab, TabNumDenRecord>();
 
+    public static void initScoresForQuestions(List<Question> questions, Survey survey){
+        for(Question question : questions){
+            if(!question.isHiddenBySurvey(survey)) {
+                question.initScore(survey);
+            }else{
+                addRecord(question, 0F, calcDenum(question));
+            }
+        }
+    }
+
     public static void addRecord(Question question, Float num, Float den){
         if (question.getCompositeScore() != null) {
             compositeScoreMap.get(question.getCompositeScore()).addRecord(question, num, den);
