@@ -31,13 +31,15 @@
         android:layout_gravity="center"
         android:layout_weight="0.2">
 
-        <EditText
+        <org.eyeseetea.malariacare.views.EditCard
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:inputType="number"
                 android:id="@+id/register"
                 android:background="@drawable/background_textfield"
-                android:tag="listener" />
+                android:tag="listener"
+                app:tDimension="@string/font_size_level1"
+                app:tFontName="@string/medium_font_name" />
     </LinearLayout>
 
     <LinearLayout
@@ -49,13 +51,15 @@
         android:layout_gravity="center"
         android:layout_weight="0.2">
 
-        <EditText
+        <org.eyeseetea.malariacare.views.EditCard
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:inputType="number"
                 android:id="@+id/monthlyReport"
                 android:background="@drawable/background_textfield"
-                android:tag="listener"/>
+                android:tag="listener"
+                app:tDimension="@string/font_size_level1"
+                app:tFontName="@string/medium_font_name" />
 
     </LinearLayout>
 

@@ -27,8 +27,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.EditText;
-import android.widget.TextView;
 
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.model.Header;
@@ -36,6 +34,8 @@ import org.eyeseetea.malariacare.database.model.Question;
 import org.eyeseetea.malariacare.database.utils.ReadWriteDB;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 import org.eyeseetea.malariacare.utils.Utils;
+import org.eyeseetea.malariacare.views.EditCard;
+import org.eyeseetea.malariacare.views.TextCard;
 
 import java.util.List;
 
@@ -68,16 +68,16 @@ public class CustomReportingAdapter extends BaseAdapter implements ITabAdapter {
     }
 
     static class ViewHolder {
-        public TextView statement;
-        public EditText register;
-        public EditText report;
-        public TextView score;
+        public TextCard statement;
+        public EditCard register;
+        public EditCard report;
+        public TextCard score;
     }
 
     static class ScoreHolder {
-        public TextView scoreText;
-        public TextView score;
-        public TextView cualitativeScore;
+        public TextCard scoreText;
+        public TextCard score;
+        public TextCard cualitativeScore;
     }
 
     public void updateScore() {
@@ -116,9 +116,9 @@ public class CustomReportingAdapter extends BaseAdapter implements ITabAdapter {
     }
 
     private void initializeScoreViews() {
-        scoreHolder.score = (TextView) ((Activity) context).findViewById(R.id.score);
-        scoreHolder.cualitativeScore = (TextView) ((Activity) context).findViewById(R.id.qualitativeScore);
-        scoreHolder.scoreText = (TextView) ((Activity) context).findViewById(R.id.subtotalScoreText);
+        scoreHolder.score = (TextCard) ((Activity) context).findViewById(R.id.score);
+        scoreHolder.cualitativeScore = (TextCard) ((Activity) context).findViewById(R.id.qualitativeScore);
+        scoreHolder.scoreText = (TextCard) ((Activity) context).findViewById(R.id.subtotalScoreText);
     }
 
     @Override
@@ -194,7 +194,7 @@ public class CustomReportingAdapter extends BaseAdapter implements ITabAdapter {
         return rowValues;
     }
 
-    private void textEntered(TextView score, RowValues rowValues) {
+    private void textEntered(TextCard score, RowValues rowValues) {
 
         num = num - rowValues.score;
 
@@ -235,10 +235,10 @@ public class CustomReportingAdapter extends BaseAdapter implements ITabAdapter {
         else
         {
             rowView = lInflater.inflate(R.layout.reporting_record2, parent, false);
-            viewHolder.statement = (TextView) rowView.findViewById(R.id.reportingQuestion);
-            viewHolder.report = (EditText) rowView.findViewById(R.id.monthlyReport);
-            viewHolder.register = (EditText) rowView.findViewById(R.id.register);
-            viewHolder.score = (TextView) rowView.findViewById(R.id.scoreValue);
+            viewHolder.statement = (TextCard) rowView.findViewById(R.id.reportingQuestion);
+            viewHolder.report = (EditCard) rowView.findViewById(R.id.monthlyReport);
+            viewHolder.register = (EditCard) rowView.findViewById(R.id.register);
+            viewHolder.score = (TextCard) rowView.findViewById(R.id.scoreValue);
 
             register = ((Question)item).getQuestionChildren().get(1);
             report = ((Question)item).getQuestionChildren().get(2);

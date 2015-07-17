@@ -24,13 +24,17 @@ import android.content.Intent;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
+import com.orm.query.Select;
+
 import org.eyeseetea.malariacare.database.model.CompositeScore;
 import org.eyeseetea.malariacare.database.model.Program;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.model.Tab;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
+import org.eyeseetea.malariacare.utils.Constants;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -116,10 +120,35 @@ public class SurveyService extends IntentService {
                 getAllSentSurveys();
                 break;
             case RELOAD_DASHBOARD_ACTION:
-                getAllUnsentSurveys();
-                getAllSentSurveys();
+                reloadDashboard();
                 break;
         }
+    }
+
+    private void reloadDashboard(){
+        List<Survey> surveys=Select.from(Survey.class)
+                .orderBy("event_date")
+                .orderBy("org_unit")
+                .list();
+
+        List<Survey> unsentSurveys=new ArrayList<Survey>();
+        List<Survey> sentSurveys=new ArrayList<Survey>();
+        for(Survey survey:surveys){
+            if(!survey.isSent()){
+                unsentSurveys.add(survey);
+                survey.getAnsweredQuestionRatio();
+            }else{
+                sentSurveys.add(survey);
+            }
+        }
+
+        //Since intents does NOT admit NON serializable as values we use Session instead
+        Session.putServiceValue(ALL_UNSENT_SURVEYS_ACTION,unsentSurveys);
+        Session.putServiceValue(ALL_SENT_SURVEYS_ACTION, sentSurveys);
+
+        //Returning result to anyone listening
+        LocalBroadcastManager.getInstance(this).sendBroadcast(new Intent(ALL_UNSENT_SURVEYS_ACTION));
+        LocalBroadcastManager.getInstance(this).sendBroadcast(new Intent(ALL_SENT_SURVEYS_ACTION));
     }
 
     /**

@@ -36,12 +36,12 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 
-import org.eyeseetea.malariacare.DashboardDetailsActivity;
+import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.SurveyActivity;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.utils.Session;
-import org.eyeseetea.malariacare.layout.adapters.dashboard.AssessmentCompletedAdapter;
+import org.eyeseetea.malariacare.layout.adapters.dashboard.AssessmentSentAdapter;
 import org.eyeseetea.malariacare.layout.adapters.dashboard.IDashboardAdapter;
 import org.eyeseetea.malariacare.layout.listeners.SwipeDismissListViewTouchListener;
 import org.eyeseetea.malariacare.services.SurveyService;
@@ -114,7 +114,7 @@ public class DashboardSentFragment extends ListFragment {
     @Override
     public void onResume(){
         Log.d(TAG, "onResume");
-        getSurveysFromService();
+//        getSurveysFromService();
         super.onResume();
     }
 
@@ -126,7 +126,7 @@ public class DashboardSentFragment extends ListFragment {
     private void initAdapter(){
         IDashboardAdapter adapterInSession = Session.getAdapterCompleted();
         if(adapterInSession == null){
-            adapterInSession = new AssessmentCompletedAdapter(this.surveys, getActivity());
+            adapterInSession = new AssessmentSentAdapter(this.surveys, getActivity());
         }else{
             adapterInSession = adapterInSession.newInstance(this.surveys, getActivity());
         }
@@ -147,7 +147,7 @@ public class DashboardSentFragment extends ListFragment {
         //Put selected survey in session
         Session.setSurvey(surveys.get(position - 1));
         // Go to SurveyActivity
-        ((DashboardDetailsActivity) getActivity()).go(SurveyActivity.class);
+        ((DashboardActivity) getActivity()).go(SurveyActivity.class);
     }
 
     @Override

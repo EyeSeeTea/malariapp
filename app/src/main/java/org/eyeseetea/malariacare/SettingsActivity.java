@@ -31,10 +31,8 @@ import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
-import android.support.v4.app.NavUtils;
 
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
-import org.eyeseetea.malariacare.utils.Constants;
 
 import java.util.List;
 
@@ -89,8 +87,8 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
         // Bind the summaries of EditText/List/Dialog/Ringtone preferences to
         // their values. When their values change, their summaries are updated
         // to reflect the new value, per the Android Design guidelines.
-        bindPreferenceSummaryToValue(findPreference(Constants.PREFERENCE_FONT_SIZES));
-        bindPreferenceSummaryToValue(findPreference(Constants.PREFERENCE_DHIS_URL));
+        bindPreferenceSummaryToValue(findPreference(getApplicationContext().getString(R.string.font_sizes)));
+        bindPreferenceSummaryToValue(findPreference(getApplicationContext().getString(R.string.dhis_url)));
     }
 
     /**
@@ -175,7 +173,7 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
      */
     private static void bindPreferenceSummaryToValue(Preference preference) {
         // Set the listener to watch for value changes.
-        preference.setOnPreferenceChangeListener(sBindPreferenceSummaryToValueListener);
+         preference.setOnPreferenceChangeListener(sBindPreferenceSummaryToValueListener);
 
         // Trigger the listener immediately with the preference's
         // current value.
@@ -205,8 +203,8 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
             // to their values. When their values change, their summaries are
             // updated to reflect the new value, per the Android Design
             // guidelines.
-            bindPreferenceSummaryToValue(findPreference("font_sizes"));
-            bindPreferenceSummaryToValue(findPreference("dhis_url"));
+            bindPreferenceSummaryToValue(findPreference(getString(R.string.font_sizes)));
+            bindPreferenceSummaryToValue(findPreference(getString(R.string.dhis_url)));
         }
     }
 
@@ -243,11 +241,11 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
         //FIXME Not working as it should the intent param is always null
         Intent creationIntent=getIntent();
         if(creationIntent==null){
-            return DashboardDetailsActivity.class;
+            return DashboardActivity.class;
         }
         Class callerActivity=(Class)creationIntent.getSerializableExtra(BaseActivity.SETTINGS_CALLER_ACTIVITY);
         if(callerActivity==null){
-            return DashboardDetailsActivity.class;
+            return DashboardActivity.class;
         }
 
         return callerActivity;

@@ -19,41 +19,21 @@
 
 package org.eyeseetea.malariacare.layout.adapters.dashboard;
 
-import android.app.ListFragment;
 import android.content.Context;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.BaseAdapter;
-import android.widget.TextView;
 
-import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.model.Survey;
 
-import java.io.Serializable;
 import java.util.List;
 
-/**
- * Created by Adrian on 22/04/2015.
- */
-public class AnalyticsAdapter extends ADashboardAdapter implements IDashboardAdapter {
+public class AssessmentUnsentAdapter extends AAssessmentAdapter implements IAssessmentAdapter {
 
-    public AnalyticsAdapter(List<Survey> items, Context context) {
-        this.items = items;
-        this.context = context;
-        this.lInflater = LayoutInflater.from(context);
-        this.headerLayout = R.layout.analytics_header;
-        this.recordLayout = R.layout.analytics_record;
-        this.title = context.getString(R.string.analytics_title_header);
-    }
-
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        return null;
+    public AssessmentUnsentAdapter(List<Survey> items, Context context) {
+        super(items, context);
     }
 
     @Override
     public IDashboardAdapter newInstance(List items, Context context) {
-        return new AnalyticsAdapter((List<Survey>) items, context);
+        return new AssessmentUnsentAdapter((List<Survey>) items, context);
     }
+
 }

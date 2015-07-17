@@ -46,6 +46,17 @@ public class Option extends SugarRecord<Option> {
         this.answer = answer;
     }
 
+    /**
+     * Checks if this option name is equals to a given string.
+     *
+     * @return true|false
+     */
+    public boolean is(String given){
+        return given.equals(name);
+    }
+
+
+
     @Override
     public String toString() {
         return "Option{" +

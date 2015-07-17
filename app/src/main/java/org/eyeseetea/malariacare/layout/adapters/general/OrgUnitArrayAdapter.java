@@ -20,9 +20,9 @@
 package org.eyeseetea.malariacare.layout.adapters.general;
 
 import android.content.Context;
-import android.widget.TextView;
 
 import org.eyeseetea.malariacare.database.model.OrgUnit;
+import org.eyeseetea.malariacare.views.TextCard;
 
 import java.util.List;
 
@@ -35,8 +35,8 @@ public class OrgUnitArrayAdapter extends AddlArrayAdapter<OrgUnit> {
         super(context, orgUnits);
     }
 
-    @Override public void drawText(TextView textView, OrgUnit orgUnit) {
-        textView.setText(orgUnit.getName());
+    @Override public void drawText(TextCard textCard, OrgUnit orgUnit) {
+        textCard.setText(orgUnit.getName());
     }
 
 }

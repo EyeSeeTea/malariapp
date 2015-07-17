@@ -21,8 +21,6 @@ package org.eyeseetea.malariacare.layout.adapters.survey;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.TextWatcher;
@@ -31,13 +29,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
-import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
-import android.widget.TextView;
 
 import com.google.common.primitives.Booleans;
 
@@ -55,6 +50,8 @@ import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 import org.eyeseetea.malariacare.utils.Constants;
 import org.eyeseetea.malariacare.utils.Utils;
+import org.eyeseetea.malariacare.views.EditCard;
+import org.eyeseetea.malariacare.views.TextCard;
 import org.eyeseetea.malariacare.views.UncheckeableRadioButton;
 import org.eyeseetea.malariacare.views.filters.MinMaxInputFilter;
 
@@ -66,6 +63,8 @@ import java.util.List;
  * Created by Jose on 21/04/2015.
  */
 public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
+
+    private final static String TAG=".AutoTabAdapter";
 
     //List of Headers and Questions. Each position contains an object to be showed in the listview
     List<Object> items;
@@ -95,26 +94,23 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
     //Store the Views references for each row (to avoid many calls to getViewById)
     static class ViewHolder {
         //Label
-        public TextView statement;
-//        public Spinner spinner;
-//        public EditText answer;
-//        public RadioGroup radioGroup;
+        public TextCard statement;
 
         // Main component in the row: Spinner, EditText or RadioGroup
         public View component;
 
-        public TextView num;
-        public TextView denum;
+        public TextCard num;
+        public TextCard denum;
         public int type;
     }
 
     //Store the views references for each view in the footer
     static class ScoreHolder {
-        public TextView subtotalscore;
-        public TextView score;
-        public TextView totalNum;
-        public TextView totalDenum;
-        public TextView qualitativeScore;
+        public TextCard subtotalscore;
+        public TextCard score;
+        public TextCard totalNum;
+        public TextCard totalDenum;
+        public TextCard qualitativeScore;
     }
 
     public AutoTabAdapter(Tab tab, Context context) {
@@ -182,29 +178,37 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
         else return 0F;
     }
 
+    /**
+     * Do every initialization related to subscore needed before showing a tab
+     */
     @Override
     public void initializeSubscore() {
         initializeScoreViews();
+        setSubScoreVisibility();
         initializeDenum();
         updateScore();
     }
 
+    /**
+     * Store subscore bar views in a private class to later access them quickly
+     */
     private void initializeScoreViews() {
-        scoreHolder.score = (TextView) ((Activity) context).findViewById(R.id.score);
-        scoreHolder.totalDenum = (TextView) ((Activity) context).findViewById(R.id.totalDen);
-        scoreHolder.totalNum = (TextView) ((Activity) context).findViewById(R.id.totalNum);
-        scoreHolder.subtotalscore = (TextView) ((Activity) context).findViewById(R.id.subtotalScoreText);
-        scoreHolder.qualitativeScore = (TextView) ((Activity) context).findViewById(R.id.qualitativeScore);
+        scoreHolder.score = (TextCard) ((Activity) context).findViewById(R.id.score);
+        scoreHolder.totalDenum = (TextCard) ((Activity) context).findViewById(R.id.totalDen);
+        scoreHolder.totalNum = (TextCard) ((Activity) context).findViewById(R.id.totalNum);
+        scoreHolder.subtotalscore = (TextCard) ((Activity) context).findViewById(R.id.subtotalScoreText);
+        scoreHolder.qualitativeScore = (TextCard) ((Activity) context).findViewById(R.id.qualitativeScore);
+    }
+
+    /**
+     * set subscore bar visibility depending on the show/hide num/dems user settings
+     */
+    private void setSubScoreVisibility(){
+        ViewGroup subscoreBar = (ViewGroup) ((Activity)context).findViewById(R.id.subscore_bar);
         int visibility = (PreferencesState.getInstance().isShowNumDen()) ? View.VISIBLE : View.GONE;
-
-        // Set all the subscore bar visibility (this way, the bar will disappear if visibility is GONE)
-        ((LinearLayout) (scoreHolder.totalNum.getParent()).getParent()).setVisibility(visibility);
+        subscoreBar.setVisibility(visibility);
     }
 
-    @Override
-    public String getName() {
-        return tab.getName();
-    }
 
     public void updateScore() {
         scoreHolder.totalNum.setText(Float.toString(totalNum));
@@ -237,6 +241,11 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
         }
     }
 
+    @Override
+    public String getName() {
+        return tab.getName();
+    }
+
     private void initScoreQuestion(Question question) {
 
         if (question.getAnswer().getOutput() == Constants.DROPDOWN_LIST || question.getAnswer().getOutput() == Constants.RADIO_GROUP_HORIZONTAL
@@ -255,13 +264,18 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
 
     /**
      * Get the number of elements that are hidden
-     * @return number of elements hidden
+     * @return number of elements hidden (true in elementInvisibility Map)
      */
     private int getHiddenCount() {
         // using Guava library and its Booleans utility class
         return Booleans.countTrue(Booleans.toArray(elementInvisibility.values()));
     }
 
+    /**
+     * Get the number of elements that are hidden until a given position
+     * @param position
+     * @return number of elements hidden (true in elementInvisibility Map)
+     */
     private int getHiddenCountUpTo(int position) {
         boolean [] upper = Arrays.copyOfRange(Booleans.toArray(elementInvisibility.values()), 0, position+1);
         int hiddens = Booleans.countTrue(upper);
@@ -303,14 +317,12 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
 
     @Override
     public int getCount() {
-        int count = (items.size() - getHiddenCount());
-        return count;
+        return (items.size() - getHiddenCount());
     }
 
     @Override
     public Object getItem(int position) {
-        Object item= items.get(getRealPosition(position));
-        return item;
+        return items.get(getRealPosition(position));
     }
 
     @Override
@@ -324,7 +336,8 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
      * @param question the question whose children we want to show/hide
      * @param visible true for make them visible, false for invisible
      */
-    private void toggleChildrenVisibility(Question question, boolean visible) {
+    private void
+    toggleChildrenVisibility(Question question, boolean visible) {
         List<Question> children = question.getQuestionChildren();
         Question cachedQuestion = null;
 
@@ -351,7 +364,6 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
             }
             cachedQuestion = question;
         }
-
         notifyDataSetChanged();
     }
 
@@ -363,7 +375,7 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
             case Constants.INT:
             case Constants.LONG_TEXT:
             case Constants.POSITIVE_INT:
-                ((EditText) viewHolder.component).setText(ReadWriteDB.readValueQuestion(question));
+                ((EditCard) viewHolder.component).setText(ReadWriteDB.readValueQuestion(question));
                 break;
             case Constants.DROPDOWN_LIST:
 
@@ -386,7 +398,7 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
                 Value value = question.getValueBySession();
                 List<Float> numdenumradiobutton = ScoreRegister.getNumDenum(question);
                 if (value != null) {
-                    ((RadioButton) viewHolder.component.findViewWithTag(value.getOption())).setChecked(true);
+                    ((UncheckeableRadioButton) viewHolder.component.findViewWithTag(value.getOption())).setChecked(true);
 
                     viewHolder.num.setText(Float.toString(numdenumradiobutton.get(0)));
                     viewHolder.denum.setText(Float.toString(numdenumradiobutton.get(1)));
@@ -456,28 +468,30 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
 
     }
 
+    /**
+     * Do the logic after a DDL option change
+     * @param viewHolder private class that acts like a cache to quickly access the different views
+     * @param question the question that changes his value
+     * @param option the option that has been selected
+     */
     private void itemSelected(ViewHolder viewHolder, Question question, Option option) {
-
+        // Write option to DB
         ReadWriteDB.saveValuesDDL(question, option);
 
         recalculateScores(viewHolder, question);
 
         if (question.hasChildren()) {
-
-            if (option.getName().equals(this.context.getString(R.string.yes))) {
-                //Debug.startMethodTracing("toggleChildrenVisibility");
-                toggleChildrenVisibility(question, true);
-                //Debug.stopMethodTracing();
-            }
-            else
-                toggleChildrenVisibility(question, false);
-
+            toggleChildrenVisibility(question, option.is(context.getString(R.string.yes)));
         }
 
         updateScore();
-
     }
 
+    /**
+     * Recalculate num and denum of a quetsion, update them in cache vars and save the new num/denum in the score register associated with the question
+     * @param viewHolder views cache
+     * @param question question that change its values
+     */
     private void recalculateScores(ViewHolder viewHolder, Question question) {
         Float num = ScoreRegister.calcNum(question);
         Float denum = ScoreRegister.calcDenum(question);
@@ -495,6 +509,7 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
+//        Debug.startMethodTracing("auto_getview");
         View rowView = null;
 
         final Object item = getItem(position);
@@ -511,7 +526,7 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
                     rowView = initialiseView(R.layout.longtext, parent, question, viewHolder, position);
 
                     //Add main component and listener
-                    ((EditText) viewHolder.component).addTextChangedListener(new TextViewListener(false, question));
+                    ((EditCard) viewHolder.component).addTextChangedListener(new TextViewListener(false, question));
                     break;
                 case Constants.NO_ANSWER:
                     rowView = initialiseView(R.layout.label, parent, question, viewHolder, position);
@@ -520,33 +535,33 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
                     rowView = initialiseView(R.layout.integer, parent, question, viewHolder, position);
 
                     //Add main component, set filters and listener
-                    ((EditText) viewHolder.component).setFilters(new InputFilter[]{
+                    ((EditCard) viewHolder.component).setFilters(new InputFilter[]{
                             new InputFilter.LengthFilter(Constants.MAX_INT_CHARS),
                             new MinMaxInputFilter(1, null)
                     });
-                    ((EditText) viewHolder.component).addTextChangedListener(new TextViewListener(false, question));
+                    ((EditCard) viewHolder.component).addTextChangedListener(new TextViewListener(false, question));
                     break;
                 case Constants.INT:
                     rowView = initialiseView(R.layout.integer, parent, question, viewHolder, position);
 
                     //Add main component, set filters and listener
-                    ((EditText) viewHolder.component).setFilters(new InputFilter[]{
+                    ((EditCard) viewHolder.component).setFilters(new InputFilter[]{
                             new InputFilter.LengthFilter(Constants.MAX_INT_CHARS)
                     });
-                    ((EditText) viewHolder.component).addTextChangedListener(new TextViewListener(false, question));
+                    ((EditCard) viewHolder.component).addTextChangedListener(new TextViewListener(false, question));
                     break;
                 case Constants.DATE:
                     rowView = initialiseView(R.layout.date, parent, question, viewHolder, position);
 
                     //Add main component and listener
-                    ((EditText) viewHolder.component).addTextChangedListener(new TextViewListener(false, question));
+                    ((EditCard) viewHolder.component).addTextChangedListener(new TextViewListener(false, question));
                     break;
 
                 case Constants.SHORT_TEXT:
                     rowView = initialiseView(R.layout.shorttext, parent, question, viewHolder, position);
 
                     //Add main component and listener
-                    ((EditText) viewHolder.component).addTextChangedListener(new TextViewListener(false, question));
+                    ((EditCard) viewHolder.component).addTextChangedListener(new TextViewListener(false, question));
                     break;
 
                 case Constants.DROPDOWN_LIST:
@@ -591,11 +606,12 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
             updateReadOnly(viewHolder.component);
         } else {
             rowView = lInflater.inflate(R.layout.headers, parent, false);
-            viewHolder.statement = (TextView) rowView.findViewById(R.id.headerName);
+            viewHolder.statement = (TextCard) rowView.findViewById(R.id.headerName);
             viewHolder.statement.setText(((Header) item).getName());
 
         }
 
+//        Debug.stopMethodTracing();
         return rowView;
     }
 
@@ -628,7 +644,7 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
             rowView.setBackgroundResource(LayoutUtils.calculateBackgrounds(position));
 
         viewHolder.component = rowView.findViewById(R.id.answer);
-        viewHolder.statement = (TextView) rowView.findViewById(R.id.statement);
+        viewHolder.statement = (TextCard) rowView.findViewById(R.id.statement);
         viewHolder.statement.setText(question.getForm_name());
 
         return rowView;
@@ -636,8 +652,8 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
 
     private void initialiseScorableComponent(View rowView, ViewHolder viewHolder) {
         // In case the option is selected, we will need to show num/dems
-        viewHolder.num = (TextView) rowView.findViewById(R.id.num);
-        viewHolder.denum = (TextView) rowView.findViewById(R.id.den);
+        viewHolder.num = (TextCard) rowView.findViewById(R.id.num);
+        viewHolder.denum = (TextCard) rowView.findViewById(R.id.den);
 
         configureViewByPreference(viewHolder);
     }
@@ -662,7 +678,6 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
      * @param viewHolder view that holds the component to be more efficient
      */
     private void configureViewByPreference(ViewHolder viewHolder) {
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this.context);
         int visibility = View.GONE;
         float statementWeight = 0.7f;
         float componentWeight = 0.3f;
@@ -731,8 +746,8 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
         public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
             if (viewCreated) {
                 itemSelected(viewHolder, question, (Option) ((Spinner) viewHolder.component).getItemAtPosition(pos));
-                if (question.belongsToMasterQuestions())
-                    notifyDataSetChanged();
+                //if (question.belongsToMasterQuestions())
+                  //  notifyDataSetChanged();
             } else {
                 viewCreated = true;
             }
@@ -756,17 +771,16 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
 
         @Override
         public void onCheckedChanged(RadioGroup group, int checkedId) {
-
-            if (group.isShown()) {
-
-                Option option = new Option(Constants.DEFAULT_SELECT_OPTION);
-                if (checkedId != -1) {
-                    RadioButton radioButton = (RadioButton) ((RadioGroup) this.viewHolder.component).findViewById(checkedId);
-                    option = (Option) radioButton.getTag();
-                }
-                itemSelected(viewHolder, question, option);
+            if(!group.isShown()){
+                return;
             }
 
+            Option option = new Option(Constants.DEFAULT_SELECT_OPTION);
+            if (checkedId != -1) {
+                UncheckeableRadioButton uncheckeableRadioButton = (UncheckeableRadioButton) (this.viewHolder.component).findViewById(checkedId);
+                option = (Option) uncheckeableRadioButton.getTag();
+            }
+            itemSelected(viewHolder, question, option);
         }
     }
 
