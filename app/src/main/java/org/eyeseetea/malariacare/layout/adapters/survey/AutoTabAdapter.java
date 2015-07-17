@@ -679,14 +679,14 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
      */
     private void configureViewByPreference(ViewHolder viewHolder) {
         int visibility = View.GONE;
-        float statementWeight = 0.7f;
-        float componentWeight = 0.3f;
+        float statementWeight = 0.65f;
+        float componentWeight = 0.35f;
         float numDenWeight = 0.0f;
 
         if (PreferencesState.getInstance().isShowNumDen()) {
             visibility = View.VISIBLE;
-            statementWeight = 0.5f;
-            componentWeight = 0.2f;
+            statementWeight = 0.45f;
+            componentWeight = 0.25f;
             numDenWeight = 0.15f;
         }
 
