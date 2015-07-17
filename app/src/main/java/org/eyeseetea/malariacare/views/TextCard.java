@@ -20,6 +20,7 @@
 package org.eyeseetea.malariacare.views;
 
 import android.content.Context;
+import android.content.res.AssetManager;
 import android.content.res.TypedArray;
 import android.graphics.Typeface;
 import android.util.AttributeSet;
@@ -28,16 +29,19 @@ import android.widget.TextView;
 
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
-import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.utils.Constants;
 
 /**
  * TODO: document your custom view class.
  */
 public class TextCard extends TextView implements IEyeSeeView {
-    private String mfontName = getContext().getString(R.string.normal_font);
-    private String mScale = getContext().getString(R.string.settings_array_values_font_sizes_def);
-    private String mDimension = getContext().getString(R.string.settings_array_values_font_sizes_def);
+    private Context context = getContext();
+    private String mfontName = context.getString(R.string.normal_font);
+    private String mScale = context.getString(R.string.settings_array_values_font_sizes_def);
+    private String mDimension = context.getString(R.string.settings_array_values_font_sizes_def);
+    private AssetManager assetManager = context.getAssets();
+    private TypedArray a;
+    private Typeface font;
 
     public TextCard(Context context) {
         super(context);
@@ -55,29 +59,30 @@ public class TextCard extends TextView implements IEyeSeeView {
     }
 
     public void init(AttributeSet attrs, int defStyle) {
-        if(isInEditMode()){
+        /*if(isInEditMode()){
             this.setText(R.string.lorem_ipsum);
             return;
-        }
+        }*/
         // Load attributes
         if (attrs != null) {
-            final TypedArray a = getContext().obtainStyledAttributes(attrs, R.styleable.TextCard, defStyle, 0);
-            String fontName = a.getString(R.styleable.TextCard_tFontName);
-            if (fontName != null){
-                Typeface font = Typeface.createFromAsset(getContext().getAssets(), "fonts/"+fontName);
-                setTypeface(font);
+            a = context.obtainStyledAttributes(attrs, R.styleable.TextCard, defStyle, 0);
+            try {
+                mfontName = a.getString(R.styleable.TextCard_tFontName);
+                if (mfontName != null) {
+                    font = Typeface.createFromAsset(assetManager, "fonts/" + mfontName);
+                    setTypeface(font);
+                }
+
+                mDimension = a.getString(R.styleable.TextCard_tDimension);
+                mScale = a.getString(R.styleable.TextCard_tScale);
+                if (mDimension == null)
+                    mDimension = context.getString(R.string.settings_array_values_font_sizes_def);
+                if (mScale == null) this.mScale = PreferencesState.getInstance().getScale();
+                if (!mScale.equals(Constants.FONTS_SYSTEM))
+                    setTextSize(TypedValue.COMPLEX_UNIT_SP, PreferencesState.getInstance().getFontSize(mScale, mDimension));
+            } finally {
+                a.recycle();
             }
-
-            String dimension = a.getString(R.styleable.TextCard_tDimension);
-            String scale = a.getString(R.styleable.TextCard_tScale);
-            if (dimension == null) dimension = getContext().getString(R.string.settings_array_values_font_sizes_def);
-            if (scale == null) scale = PreferencesState.getInstance().getScale();
-            if (!scale.equals(Constants.FONTS_SYSTEM)) setTextSize(TypedValue.COMPLEX_UNIT_SP, PreferencesState.getInstance().getFontSize(scale,dimension));
-
-            this.mDimension = dimension;
-            this.mScale = scale;
-            this.mfontName = fontName;
-            a.recycle();
         }
     }
 

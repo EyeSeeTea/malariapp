@@ -20,10 +20,9 @@
 package org.eyeseetea.malariacare.layout.adapters.general;
 
 import android.content.Context;
-import android.widget.TextView;
 
 import org.eyeseetea.malariacare.database.model.Option;
-import org.eyeseetea.malariacare.database.model.Tab;
+import org.eyeseetea.malariacare.views.TextCard;
 
 import java.util.List;
 
@@ -36,8 +35,8 @@ public class OptionArrayAdapter extends AddlArrayAdapter<Option> {
         super(context, options);
     }
 
-    @Override public void drawText(TextView textView, Option option) {
-        textView.setText(option.getName());
+    @Override public void drawText(TextCard textCard, Option option) {
+        textCard.setText(option.getName());
     }
 
 }

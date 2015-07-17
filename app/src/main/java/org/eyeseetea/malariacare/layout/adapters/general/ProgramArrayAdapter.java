@@ -20,9 +20,9 @@
 package org.eyeseetea.malariacare.layout.adapters.general;
 
 import android.content.Context;
-import android.widget.TextView;
 
 import org.eyeseetea.malariacare.database.model.Program;
+import org.eyeseetea.malariacare.views.TextCard;
 
 import java.util.List;
 
@@ -35,8 +35,8 @@ public class ProgramArrayAdapter extends AddlArrayAdapter<Program> {
         super(context, programs);
     }
 
-    @Override public void drawText(TextView textView, Program program) {
-        textView.setText(program.getName());
+    @Override public void drawText(TextCard textCard, Program program) {
+        textCard.setText(program.getName());
     }
 
 }

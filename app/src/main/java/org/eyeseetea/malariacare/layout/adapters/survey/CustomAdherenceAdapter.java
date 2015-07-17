@@ -28,20 +28,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.CompoundButton;
-import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Switch;
-import android.widget.TextView;
 
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.model.Header;
 import org.eyeseetea.malariacare.database.model.Option;
 import org.eyeseetea.malariacare.database.model.Question;
-import org.eyeseetea.malariacare.database.model.Score;
 import org.eyeseetea.malariacare.database.model.Tab;
 import org.eyeseetea.malariacare.database.model.Value;
 import org.eyeseetea.malariacare.database.utils.ReadWriteDB;
@@ -50,6 +46,8 @@ import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 import org.eyeseetea.malariacare.utils.Constants;
 import org.eyeseetea.malariacare.utils.Utils;
+import org.eyeseetea.malariacare.views.EditCard;
+import org.eyeseetea.malariacare.views.TextCard;
 
 import java.util.List;
 
@@ -78,35 +76,19 @@ public class CustomAdherenceAdapter extends BaseAdapter implements ITabAdapter {
     int []scores;
 
     static class ViewHolder {
-        public TextView number;
-        public EditText patientID;
+        public TextCard number;
+        public EditCard patientID;
         public Spinner gender;
-        public EditText age;
+        public EditCard age;
         public Spinner testResutl;
     }
 
     static class ViewHolder2 {
-        public TextView number;
-        public EditText patientID;
-        public TextView testResult;
+        public TextCard number;
+        public EditCard patientID;
+        public TextCard testResult;
         public Spinner act;
-        public TextView score;
-    }
-
-    /*static class ScoreHolder {
-        public TextView scoreText;
-        public TextView score;
-        public TextView cualitativeScore;
-    }*/
-
-    private void initializeScoreViews() {
-       /* scoreHolder.score = (TextView) ((Activity) context).findViewById(R.id.score);
-        scoreHolder.cualitativeScore = (TextView) ((Activity) context).findViewById(R.id.qualitativeScore);
-        scoreHolder.scoreText = (TextView) ((Activity) context).findViewById(R.id.subtotalScoreText);*/
-    }
-
-    public void updateScore() {
-        //scoreHolder.score.setText(Utils.round(num / denum));
+        public TextCard score;
     }
 
     @Override
@@ -121,9 +103,6 @@ public class CustomAdherenceAdapter extends BaseAdapter implements ITabAdapter {
 
     @Override
     public void initializeSubscore() {
-        initializeScoreViews();
-        updateScore();
-
         ListView lAdapter = (ListView) ((Activity) context).findViewById(R.id.listView);
 
         ViewGroup header = (ViewGroup) lInflater.inflate(R.layout.adherencetab_header0, lAdapter, false);
@@ -182,11 +161,6 @@ public class CustomAdherenceAdapter extends BaseAdapter implements ITabAdapter {
      */
     public static CustomAdherenceAdapter build(Tab tab, Context context){
         return new CustomAdherenceAdapter(tab, context);
-    }
-
-    private void resetScores() {
-        for (int i=0; i<scores.length; i++)
-            scores[i] = 0;
     }
 
     class Bool {
@@ -290,6 +264,7 @@ public class CustomAdherenceAdapter extends BaseAdapter implements ITabAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
+//        Debug.startMethodTracing("custom_getView");
         View rowView = null;
 
         final Object item = getItem(position);
@@ -308,10 +283,10 @@ public class CustomAdherenceAdapter extends BaseAdapter implements ITabAdapter {
                 final ViewHolder viewHolder = new ViewHolder();
 
                 rowView = lInflater.inflate(R.layout.pharmacy_register, parent, false);
-                viewHolder.number = (TextView) rowView.findViewById(R.id.number);
+                viewHolder.number = (TextCard) rowView.findViewById(R.id.number);
                 viewHolder.gender = (Spinner) rowView.findViewById(R.id.gender);
-                viewHolder.age = (EditText) rowView.findViewById(R.id.age);
-                viewHolder.patientID = (EditText) rowView.findViewById(R.id.patientId);
+                viewHolder.age = (EditCard) rowView.findViewById(R.id.age);
+                viewHolder.patientID = (EditCard) rowView.findViewById(R.id.patientId);
                 viewHolder.testResutl = (Spinner) rowView.findViewById(R.id.testResults);
 
                 List<Option> optionList = question.getQuestionChildren().get(1).getAnswer().getOptions();
@@ -424,11 +399,11 @@ public class CustomAdherenceAdapter extends BaseAdapter implements ITabAdapter {
 
                 rowView = lInflater.inflate(R.layout.pharmacy_register2, parent, false);
 
-                viewHolder2.number = (TextView) rowView.findViewById(R.id.number);
-                viewHolder2.patientID = (EditText) rowView.findViewById(R.id.patientId);
-                viewHolder2.testResult = (TextView) rowView.findViewById(R.id.testResult);
+                viewHolder2.number = (TextCard) rowView.findViewById(R.id.number);
+                viewHolder2.patientID = (EditCard) rowView.findViewById(R.id.patientId);
+                viewHolder2.testResult = (TextCard) rowView.findViewById(R.id.testResult);
                 viewHolder2.act = (Spinner) rowView.findViewById(R.id.act1);
-                viewHolder2.score = (TextView) rowView.findViewById(R.id.scoreValue);
+                viewHolder2.score = (TextCard) rowView.findViewById(R.id.scoreValue);
 
                 List<Option> optionList = ((Question) item).getQuestionChildren().get(2).getAnswer().getOptions();
                 optionList.add(0, new Option(Constants.DEFAULT_SELECT_OPTION));
@@ -469,12 +444,8 @@ public class CustomAdherenceAdapter extends BaseAdapter implements ITabAdapter {
                             calcScore(question);
                             viewHolder2.score.setText(Integer.toString(scores[items.indexOf(question) - position_secondheader]));
                             ScoreRegister.addRecord(act, ScoreRegister.calcNum(act), ScoreRegister.calcDenum(act));
-
-                            updateScore();
                         } else
                             viewCreated.value = true;
-
-
                     }
 
                     @Override
@@ -487,6 +458,7 @@ public class CustomAdherenceAdapter extends BaseAdapter implements ITabAdapter {
             }
 
         }
+//        Debug.stopMethodTracing();
         return rowView;
     }
 

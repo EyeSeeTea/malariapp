@@ -2,9 +2,7 @@
 <resources>
 
     <!-- # general -->
-    <string name="app_name">Health Network QIS</string>
     <string name="developers">EyeSeeTea LTD</string>
-    <string name="empty_string"></string>
     <string name="yes">Sí</string>
     <string name="no">No</string>
     <string name="ok">Ok</string>
@@ -167,6 +165,9 @@
     <string name="score_info_case3">Caso 3</string>
     <string name="score_info_case4">Caso 4</string>
 
+    <!-- composite score -->
+    <string name="compscore_title_score_percentage">Puntuación (%)</string>
+
     <!-- settings -->
     <string name="title_activity_settings">Configuración</string>
     <string name="settings_checkbox_show_num_dems">Mostrar num/dems</string>
@@ -184,12 +185,6 @@
     <string name="pref_header_general">General</string>
 
     <string name="settings_array_values_font_sizes_def">@string/font_size_level2</string>
-
-    <string name="normal_font">Roboto-Medium.ttf</string>
-    <string name="light_font">Roboto-Light.ttf</string>
-    <string name="bold_font_name">Roboto-Bold.ttf</string>
-    <string name="medium_font_name">Roboto-Medium.ttf</string>
-    <string name="condensed_font_name">Roboto-Condensed.ttf</string>
 
     <string-array name="settings_array_values_font_sizes">
         <item>@string/font_size_level0</item>

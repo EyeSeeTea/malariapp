@@ -17,15 +17,15 @@
   ~  along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
   -->
 
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/container"
     android:layout_width="fill_parent" android:layout_height="fill_parent"
     android:orientation="horizontal">
 
-    <fragment android:name="org.eyeseetea.malariacare.fragments.DashboardFragment"
-              android:id="@+id/dashboard_fragment"
+    <fragment android:name="org.eyeseetea.malariacare.fragments.DashboardUnsentFragment"
+              android:id="@+id/dashboard_details_fragment"
               android:layout_width="fill_parent"
               android:layout_height="fill_parent" />
 
-</FrameLayout>
+</LinearLayout>

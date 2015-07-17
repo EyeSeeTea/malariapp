@@ -23,25 +23,25 @@
     <dimen name="small_xlarge_text_size">12sp</dimen>
 
     <!-- MEDIUM selected sizes -->
-    <dimen name="medium_xsmall_text_size">6sp</dimen>
-    <dimen name="medium_small_text_size">8sp</dimen>
-    <dimen name="medium_medium_text_size">10sp</dimen>
-    <dimen name="medium_large_text_size">12sp</dimen>
-    <dimen name="medium_xlarge_text_size">14sp</dimen>
+    <dimen name="medium_xsmall_text_size">12sp</dimen>
+    <dimen name="medium_small_text_size">16sp</dimen>
+    <dimen name="medium_medium_text_size">18sp</dimen>
+    <dimen name="medium_large_text_size">20sp</dimen>
+    <dimen name="medium_xlarge_text_size">22sp</dimen>
 
     <!-- LARGE selected sizes -->
-    <dimen name="large_xsmall_text_size">10sp</dimen>
-    <dimen name="large_small_text_size">12sp</dimen>
-    <dimen name="large_medium_text_size">14sp</dimen>
-    <dimen name="large_large_text_size">16sp</dimen>
-    <dimen name="large_xlarge_text_size">18sp</dimen>
+    <dimen name="large_xsmall_text_size">20sp</dimen>
+    <dimen name="large_small_text_size">22sp</dimen>
+    <dimen name="large_medium_text_size">24sp</dimen>
+    <dimen name="large_large_text_size">26sp</dimen>
+    <dimen name="large_xlarge_text_size">28sp</dimen>
 
     <!-- EXTRA LARGE selected sizes -->
-    <dimen name="extra_xsmall_text_size">12sp</dimen>
-    <dimen name="extra_small_text_size">16sp</dimen>
-    <dimen name="extra_medium_text_size">18sp</dimen>
-    <dimen name="extra_large_text_size">20sp</dimen>
-    <dimen name="extra_xlarge_text_size">22sp</dimen>
+    <dimen name="extra_xsmall_text_size">28sp</dimen>
+    <dimen name="extra_small_text_size">30sp</dimen>
+    <dimen name="extra_medium_text_size">32sp</dimen>
+    <dimen name="extra_large_text_size">34sp</dimen>
+    <dimen name="extra_xlarge_text_size">36sp</dimen>
 
     <!-- Float Button default -->
     <dimen name="float_button_def">24sp</dimen>

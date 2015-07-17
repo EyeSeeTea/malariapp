@@ -27,7 +27,6 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TableLayout;
-import android.widget.TextView;
 
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.model.Header;
@@ -35,6 +34,7 @@ import org.eyeseetea.malariacare.database.model.Question;
 import org.eyeseetea.malariacare.database.model.Value;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.utils.Utils;
+import org.eyeseetea.malariacare.views.TextCard;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -154,7 +154,7 @@ public class LayoutUtils {
     public static void setScore(float score, View scoreView, View percentageView, View cualitativeView){
         LayoutUtils.trafficLight(scoreView, score, cualitativeView);
         if (percentageView != null) LayoutUtils.trafficLight(percentageView, score, null);
-        ((TextView)scoreView).setText(Utils.round(score));
+        ((TextCard)scoreView).setText(Utils.round(score));
     }
 
     public static void setScore(float score, View scoreView){
@@ -268,7 +268,7 @@ public class LayoutUtils {
 
     // Depending on a score sets the first view color (0<x<50:poor ; 50<x<80:fare ; 80<x<100:good)
     // If a second view is given, it also writes the text good, fare or given there
-    public static void trafficLight(View view, float score, View textView){
+    public static void trafficLight(View view, float score, View textCard){
         //Suppose it is 'Good' && Green
         int color=view.getContext().getResources().getColor(R.color.green);
         String tag=view.getContext().getResources().getString(R.string.good);
@@ -282,11 +282,11 @@ public class LayoutUtils {
             tag=view.getContext().getResources().getString(R.string.poor);
         }
         //Change color for number
-        ((TextView)view).setTextColor(color);
+        ((TextCard)view).setTextColor(color);
         //Change color& text for qualitative score
-        if(textView != null) {
-            ((TextView)textView).setTextColor(color); // red
-            ((TextView)textView).setText(tag);
+        if(textCard != null) {
+            ((TextCard)textCard).setTextColor(color); // red
+            ((TextCard)textCard).setText(tag);
         }
     }
 

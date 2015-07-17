@@ -37,7 +37,6 @@ import org.eyeseetea.malariacare.database.model.Question;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.model.Tab;
 import org.eyeseetea.malariacare.database.model.Value;
-import org.eyeseetea.malariacare.fragments.DashboardDetailsFragment;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.services.SurveyService;
 import org.eyeseetea.malariacare.utils.Constants;
@@ -166,7 +165,7 @@ public class PushClient {
 
     private JSONArray prepareCompositeScores(JSONArray values) throws Exception{
 
-        //Cleans scores
+        //Cleans score
         ScoreRegister.clear();
 
         //Register scores for tabs
@@ -178,13 +177,7 @@ public class PushClient {
         ScoreRegister.registerCompositeScores(compositeScoreList);
 
         //Initialize scores x question
-        for(Question question : Question.listAllByProgram(survey.getProgram())){
-            if(!question.isHiddenBySurvey(survey)) {
-                question.initScore(survey);
-            }else{
-                ScoreRegister.addRecord(question, 0F, ScoreRegister.calcDenum(question));
-            }
-        }
+        ScoreRegister.initScoresForQuestions(Question.listAllByProgram(survey.getProgram()),survey);
 
         //1 CompositeScore -> 1 dataValue
         for(CompositeScore compositeScore:compositeScoreList){

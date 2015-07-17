@@ -98,7 +98,7 @@ public class ReadWriteDB {
         value.save();
     }
 
-    public static void resetValue(Question question) {
+    public static void deleteValue(Question question) {
 
         Value value = question.getValueBySession();
 

@@ -35,7 +35,6 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -47,15 +46,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GooglePlayServicesUtil;
-
-import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.model.Tab;
 import org.eyeseetea.malariacare.database.model.User;
 import org.eyeseetea.malariacare.database.utils.PopulateDB;
 import org.eyeseetea.malariacare.database.utils.Session;
-import org.eyeseetea.malariacare.layout.adapters.dashboard.AssessmentAdapter;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -147,7 +141,7 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
     private void goDashBoard(User user) {
         Log.i(".LoginActivity", "User already logged in --> Dashboard");
         Session.setUser(user);
-        startActivity(new Intent(LoginActivity.this, DashboardDetailsActivity.class));
+        startActivity(new Intent(LoginActivity.this, DashboardActivity.class));
     }
 
 

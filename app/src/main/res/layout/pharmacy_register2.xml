@@ -32,7 +32,7 @@
         android:padding="5dip"
         android:layout_weight="1">
 
-        <EditText
+        <org.eyeseetea.malariacare.views.EditCard
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:inputType="number"

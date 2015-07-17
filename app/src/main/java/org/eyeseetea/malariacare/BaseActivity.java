@@ -22,10 +22,8 @@ package org.eyeseetea.malariacare;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -35,7 +33,6 @@ import android.view.Window;
 
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
-import org.eyeseetea.malariacare.utils.Constants;
 import org.eyeseetea.malariacare.utils.Utils;
 
 import java.io.InputStream;
@@ -119,7 +116,7 @@ public abstract class BaseActivity extends ActionBarActivity {
      * Every BaseActivity(Details, Create, Survey) goes back to DashBoard
      */
     public void onBackPressed(){
-        finishAndGo(DashboardDetailsActivity.class);
+        finishAndGo(DashboardActivity.class);
     }
 
     @Override

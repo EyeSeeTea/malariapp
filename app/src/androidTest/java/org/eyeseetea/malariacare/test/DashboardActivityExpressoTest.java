@@ -22,70 +22,50 @@ package org.eyeseetea.malariacare.test;
 import android.app.Instrumentation;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.espresso.Espresso;
-import android.support.test.espresso.NoMatchingViewException;
 import android.support.test.espresso.intent.rule.IntentsTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.util.Log;
 
-import org.eyeseetea.malariacare.CreateSurveyActivity;
 import org.eyeseetea.malariacare.DashboardActivity;
-import org.eyeseetea.malariacare.DashboardDetailsActivity;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.SurveyActivity;
-import org.eyeseetea.malariacare.database.model.OrgUnit;
-import org.eyeseetea.malariacare.database.model.Program;
-import org.eyeseetea.malariacare.database.model.Survey;
-import org.eyeseetea.malariacare.database.model.User;
-import org.eyeseetea.malariacare.database.utils.Session;
-import org.eyeseetea.malariacare.fragments.DashboardDetailsFragment;
+import org.eyeseetea.malariacare.fragments.DashboardUnsentFragment;
 import org.eyeseetea.malariacare.services.SurveyService;
 import org.eyeseetea.malariacare.test.utils.IntentServiceIdlingResource;
-import org.eyeseetea.malariacare.test.utils.MalariaEspressoActions;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import java.util.List;
-
-import static android.support.test.espresso.Espresso.onData;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.swipeRight;
 import static android.support.test.espresso.assertion.ViewAssertions.doesNotExist;
-import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.intent.Intents.intended;
 import static android.support.test.espresso.intent.matcher.IntentMatchers.anyIntent;
-import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.isRoot;
 import static android.support.test.espresso.matcher.ViewMatchers.withChild;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertNotNull;
 import static org.eyeseetea.malariacare.test.utils.MalariaEspressoActions.waitId;
-import static org.eyeseetea.malariacare.test.utils.MalariaEspressoActions.waitSnippet;
 import static org.hamcrest.Matchers.allOf;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.instanceOf;
-import static org.hamcrest.Matchers.is;
 
 /**
  *
  */
 @RunWith(AndroidJUnit4.class)
-public class DashboardDetailsActivityExpressoTest extends MalariaEspressoTest{
+public class DashboardActivityExpressoTest extends MalariaEspressoTest{
 
     private static String TAG=".DDActivityExpressoTest";
 
     private final static int _EXPECTED_SURVEYS=2;
 
     @Rule
-    public IntentsTestRule<DashboardDetailsActivity> mActivityRule = new IntentsTestRule<>(
-            DashboardDetailsActivity.class);
+    public IntentsTestRule<DashboardActivity> mActivityRule = new IntentsTestRule<>(
+            DashboardActivity.class);
 
     @BeforeClass
     public static void init(){
@@ -190,9 +170,9 @@ public class DashboardDetailsActivityExpressoTest extends MalariaEspressoTest{
 
     private void unregisterSurveyReceiver(){
         try{
-            DashboardDetailsActivity dashboardDetailsActivity=(DashboardDetailsActivity)getActivityInstance();
-            DashboardDetailsFragment dashboardDetailsFragment=(DashboardDetailsFragment)dashboardDetailsActivity.getFragmentManager().findFragmentById(R.id.dashboard_details_fragment);
-            dashboardDetailsFragment.unregisterSurveysReceiver();
+            DashboardActivity dashboardActivity =(DashboardActivity)getActivityInstance();
+            DashboardUnsentFragment dashboardUnsentFragment =(DashboardUnsentFragment) dashboardActivity.getFragmentManager().findFragmentById(R.id.dashboard_details_fragment);
+            dashboardUnsentFragment.unregisterSurveysReceiver();
         }catch(Exception ex){
             Log.e(TAG,"unregisterSurveyReceiver(): "+ex.getMessage());
         }
