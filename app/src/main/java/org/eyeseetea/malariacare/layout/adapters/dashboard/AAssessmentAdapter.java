@@ -87,7 +87,7 @@ public abstract class AAssessmentAdapter extends ADashboardAdapter implements ID
 
         // check whether the following item belongs to the same org unit (to group the data related
         // to same org unit with the same background)
-        if (position < (this.items.size()-1)) { // FIXME: this algorithm to switch the background only works for 2 different types of program. Change soon or when a third is added
+        if (position < (this.items.size()-1)) {
             if (this.items.get(position+1).getOrgUnit().equals((this.items.get(position)).getOrgUnit())){
                 // show background without border and tell the system that next survey belongs to the same org unit, so its name doesn't need to be shown
                 rowView.setBackgroundResource(LayoutUtils.calculateBackgroundsNoBorder(this.backIndex));
@@ -104,7 +104,6 @@ public abstract class AAssessmentAdapter extends ADashboardAdapter implements ID
         }
 
         //Status Cell
-        //FIXME: This bit needs to change when jose architecture is introduced because probably the save will be executed in a different way
         ((TextCard) rowView.findViewById(R.id.score)).setText(getStatus(survey));
 
         return rowView;
