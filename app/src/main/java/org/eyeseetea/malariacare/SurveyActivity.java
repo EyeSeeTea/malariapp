@@ -443,7 +443,7 @@ public class SurveyActivity extends BaseActivity{
     }
 
     private void startProgress(){
-        this.spinner.setVisibility(View.GONE);
+//        this.spinner.setVisibility(View.GONE);
         this.content.setVisibility(View.GONE);
         this.progressBar.setVisibility(View.VISIBLE);
         this.progressBar.setEnabled(true);
