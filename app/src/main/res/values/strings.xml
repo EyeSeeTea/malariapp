@@ -192,11 +192,11 @@
 
     <string name="settings_array_values_font_sizes_def">@string/font_size_level2</string>
 
-    <string name="normal_font">Roboto-Medium.ttf</string>
-    <string name="light_font">Roboto-Light.ttf</string>
-    <string name="bold_font_name">Roboto-Bold.ttf</string>
-    <string name="medium_font_name">Roboto-Medium.ttf</string>
-    <string name="condensed_font_name">Roboto-Condensed.ttf</string>
+    <string name="normal_font" translatable="false">Roboto-Medium.ttf</string>
+    <string name="light_font" translatable="false">Roboto-Light.ttf</string>
+    <string name="bold_font_name" translatable="false">Roboto-Bold.ttf</string>
+    <string name="medium_font_name" translatable="false">Roboto-Medium.ttf</string>
+    <string name="condensed_font_name" translatable="false">Roboto-Condensed.ttf</string>
 
     <string-array name="settings_array_values_font_sizes">
         <item>@string/font_size_level0</item>
