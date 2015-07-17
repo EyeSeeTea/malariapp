@@ -16,17 +16,73 @@
   ~  You should have received a copy of the GNU General Public License
   ~  along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
   -->
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-android:orientation="vertical" android:layout_width="fill_parent"
-android:layout_height="fill_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
-android:paddingRight="@dimen/activity_horizontal_margin"
-android:paddingTop="@dimen/activity_vertical_margin"
-android:paddingBottom="@dimen/activity_vertical_margin"
-android:id="@+id/dashboard_container">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
 
-    <ListView
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:id="@+id/dashboard_list"/>
+    <org.eyeseetea.malariacare.views.TextCard
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="@string/empty_string"
+        android:textColor="@color/black"
+        android:id="@+id/titleInProgress"
+        android:padding="5dip"
+        app:tDimension="@string/font_size_level2"
+        app:tFontName="@string/condensed_font_name" />
 
-</FrameLayout>
+    <FrameLayout
+        android:orientation="vertical" android:layout_width="fill_parent"
+        android:layout_height="wrap_content" android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        android:id="@+id/dashboard_details_container">
+
+        <TableLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/dashboard_details_table">
+
+            <ListView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/dashboard_details_list"/>
+
+        </TableLayout>
+    </FrameLayout>
+
+    <org.eyeseetea.malariacare.views.TextCard
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="@string/empty_string"
+        android:textColor="@color/black"
+        android:id="@+id/titleCompleted"
+        android:padding="5dip"
+        app:tDimension="@string/font_size_level2"
+        app:tFontName="@string/condensed_font_name" />
+
+    <FrameLayout
+        android:orientation="vertical" android:layout_width="fill_parent"
+        android:layout_height="wrap_content" android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        android:id="@+id/dashboard_completed_container">
+
+        <TableLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/dashboard_details_table_sent">
+
+            <ListView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/dashboard_details_list_sent"/>
+
+        </TableLayout>
+    </FrameLayout>
+</LinearLayout>

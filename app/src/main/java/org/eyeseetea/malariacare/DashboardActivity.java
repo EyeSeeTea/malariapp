@@ -19,52 +19,85 @@
 
 package org.eyeseetea.malariacare;
 
+import android.app.AlertDialog;
 import android.app.FragmentTransaction;
+import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.res.Configuration;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.Window;
-import android.widget.ListView;
 
-import org.eyeseetea.malariacare.database.model.Survey;
-import org.eyeseetea.malariacare.fragments.DashboardFragment;
-import org.eyeseetea.malariacare.layout.adapters.dashboard.AssessmentAdapter;
-import org.eyeseetea.malariacare.layout.adapters.dashboard.DashboardAdapter;
-import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
-import org.eyeseetea.malariacare.utils.Constants;
-import org.eyeseetea.malariacare.utils.ExceptionHandler;
-
-import java.util.List;
+import org.eyeseetea.malariacare.fragments.DashboardSentFragment;
+import org.eyeseetea.malariacare.fragments.DashboardUnsentFragment;
+import org.eyeseetea.malariacare.services.SurveyService;
 
 
 public class DashboardActivity extends BaseActivity {
 
+    private final static String TAG=".DDetailsActivity";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Log.d(".DashboardActivity","onCreate");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_dashboard);
 
+//        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+//            // If the screen is now in landscape mode, we can show the dialog in-line so we don't need this activity
+//            finish();
+//            return;
+//        }
+
         if (savedInstanceState == null) {
-            DashboardFragment dashboard = new DashboardFragment();
-            dashboard.setArguments(getIntent().getExtras());
+            DashboardUnsentFragment detailsFragment = new DashboardUnsentFragment();
+            detailsFragment.setArguments(getIntent().getExtras());
             FragmentTransaction ft = getFragmentManager().beginTransaction();
-            ft.add(R.id.dashboard_container, dashboard);
+            ft.add(R.id.dashboard_details_container, detailsFragment);
             ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
             ft.commit();
+            DashboardSentFragment completedFragment = new DashboardSentFragment();
+            detailsFragment.setArguments(getIntent().getExtras());
+            FragmentTransaction ftr = getFragmentManager().beginTransaction();
+            ftr.add(R.id.dashboard_completed_container, completedFragment);
+            ftr.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+            ftr.commit();
         }
     }
 
-    /**
-     * Logs out, requires confirmation
-     */
-    public void onBackPressed(){
-        logout();
+    @Override
+    protected void initTransition(){
+        this.overridePendingTransition(R.transition.anim_slide_in_right, R.transition.anim_slide_out_right);
     }
 
+    @Override
+    public void onResume(){
+        super.onResume();
+        getSurveysFromService();
+    }
+
+    public void getSurveysFromService(){
+        Log.d(TAG, "getSurveysFromService");
+        Intent surveysIntent=new Intent(this, SurveyService.class);
+        surveysIntent.putExtra(SurveyService.SERVICE_METHOD,SurveyService.RELOAD_DASHBOARD_ACTION);
+        this.startService(surveysIntent);
+    }
+
+    /**
+     * Just to avoid trying to navigate back from the dashboard. There's no parent activity here
+     */
+    @Override
+    public void onBackPressed() {
+        Log.d(".DashboardDetails", "back pressed");
+        new AlertDialog.Builder(this)
+                .setTitle("Really Exit?")
+                .setMessage("Are you sure you want to exit the app?")
+                .setNegativeButton(android.R.string.no, null)
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+
+                    public void onClick(DialogInterface arg0, int arg1) {
+                        Intent intent = new Intent(Intent.ACTION_MAIN);
+                        intent.addCategory(Intent.CATEGORY_HOME);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(intent);
+                    }
+                }).create().show();
+    }
 }

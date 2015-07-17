@@ -14,7 +14,7 @@
 14;'ZMB_MAL.QA-Gen OTSS-230';'ZMB_MAL.QA-Gen OTSS-HR_T-Student/Intern-230';;'Student/Intern';'dVVSimBuDqy';230;0.00;0.00;2;24;;
 15;'ZMB_MAL.QA-Gen OTSS-240';'ZMB_MAL.QA-Gen OTSS-HR_T-Total clinicians at health facility today-240';;'Total clinicians at health facility today';'nEYkUZOayJD';240;0.00;0.00;2;24;;
 16;'ZMB_MAL.QA-Gen OTSS-250';'ZMB_MAL.QA-Gen OTSS-HR_T-TRAINING OVERVIEW - OPD STAFF-250';;'TRAINING OVERVIEW - OPD STAFF';'Dta8T2BzXay';250;0.00;0.00;2;49;;
-17;'ZMB_MAL.QA-Gen OTSS-260';'ZMB_MAL.QA-Gen OTSS-HR_T-Are there OPD staff formally trained in RDTs in the last two years?-260';;'Are there OPD staff formally trained in RDTs in the last two years?';'i2VI8k3oGm2';260;5.00;5.00;2;53;;2
+17;'ZMB_MAL.QA-Gen OTSS-260';'ZMB_MAL.QA-Gen OTSS-HR_T-Are there OPD staff formally trained in RDTs in the last two years?-260';;'Are there OPD staff formally trained in RDTs in the last two years?';'i2VI8k3oGm2';260;10.00;10.00;2;53;;2
 18;'ZMB_MAL.QA-Gen OTSS-270';'ZMB_MAL.QA-Gen OTSS-HR_T-Number of clinical staff trained on RDTs in last 2 years-270';;'Number of clinical staff trained on RDTs in last 2 years';'tAS5UQnJIjx';270;0.00;0.00;2;24;17;
 19;'ZMB_MAL.QA-Gen OTSS-280';'ZMB_MAL.QA-Gen OTSS-HR_T-Name of organization that conducted RDT training-280';;'Name of organization that conducted RDT training';'hL2YB7pChb3';280;0.00;0.00;2;26;17;
 20;'ZMB_MAL.QA-Gen OTSS-290';'ZMB_MAL.QA-Gen OTSS-HR_T-Are there OPD staff trained in malaria case management in the last two years?-290';;'Are there OPD staff trained in malaria case management in the last two years?';'wCr5x9JTzZt';290;10.00;10.00;2;53;;1
@@ -117,15 +117,15 @@
 117;'ZMB_MAL.QA-Gen OTSS-1260';'ZMB_MAL.QA-Gen OTSS-Ph, St, Eq-Other adjuvants/antibiotics (list)-1260';;'Other adjuvants/antibiotics (list)';'KuQrHclPikH';1260;0.00;0.00;4;25;;
 118;'ZMB_MAL.QA-Gen OTSS-1270';'ZMB_MAL.QA-Gen OTSS-Ph, St, Eq-CLINICAL EQUIPMENT-1270';;'CLINICAL EQUIPMENT';'mAWdu9IOBsh';1270;0.00;0.00;4;49;;
 119;'ZMB_MAL.QA-Gen OTSS-1280';'ZMB_MAL.QA-Gen OTSS-Ph, St, Eq-For each item below, is there at least one that is present and functional at the facility?-1280';;'For each item below, is there at least one that is present and functional at the facility?';'w5w9WUANcR0';1280;0.00;0.00;4;49;;
-120;'ZMB_MAL.QA-Gen OTSS-1290';'ZMB_MAL.QA-Gen OTSS-Ph, St, Eq-Respiratory Timers-1290';;'Respiratory Timers';'iNpEUq7NI97';1290;1.00;1.00;4;6;;
-121;'ZMB_MAL.QA-Gen OTSS-1300';'ZMB_MAL.QA-Gen OTSS-Ph, St, Eq-Stethoscopes-1300';;'Stethoscopes';'X51MMS4p9s2';1300;1.00;1.00;4;6;;
-122;'ZMB_MAL.QA-Gen OTSS-1310';'ZMB_MAL.QA-Gen OTSS-Ph, St, Eq-Otoscopes-1310';;'Otoscopes';'qMewMzpyhKQ';1310;1.00;1.00;4;6;;
-123;'ZMB_MAL.QA-Gen OTSS-1320';'ZMB_MAL.QA-Gen OTSS-Ph, St, Eq-Ophthalmoscopes-1320';;'Ophthalmoscopes';'LLEeo1mOzdS';1320;0.00;0.00;4;6;;
-124;'ZMB_MAL.QA-Gen OTSS-1330';'ZMB_MAL.QA-Gen OTSS-Ph, St, Eq-Thermometers-1330';;'Thermometers';'HjHdtNcTFtn';1330;1.00;1.00;4;6;;
-125;'ZMB_MAL.QA-Gen OTSS-1340';'ZMB_MAL.QA-Gen OTSS-Ph, St, Eq-Torches-1340';;'Torches';'tTPV5GE5uSh';1340;1.00;1.00;4;6;;
-126;'ZMB_MAL.QA-Gen OTSS-1350';'ZMB_MAL.QA-Gen OTSS-Ph, St, Eq-Adult weighing scales-1350';;'Adult weighing scales';'hP9krmVHgnN';1350;0.00;0.00;4;6;;
-127;'ZMB_MAL.QA-Gen OTSS-1360';'ZMB_MAL.QA-Gen OTSS-Ph, St, Eq-Child weighing scales-1360';;'Child weighing scales';'IB1A8Q2ZqSp';1360;1.00;1.00;4;6;;
-128;'ZMB_MAL.QA-Gen OTSS-1370';'ZMB_MAL.QA-Gen OTSS-Ph, St, Eq-Infant weighing scales-1370';;'Infant weighing scales';'lgkNBIgePMV';1370;1.00;1.00;4;6;;
+120;'ZMB_MAL.QA-Gen OTSS-1290';'ZMB_MAL.QA-Gen OTSS-Ph, St, Eq-Respiratory Timers-1290';;'Respiratory Timers';'iNpEUq7NI97';1290;1.00;1.00;4;81;;
+121;'ZMB_MAL.QA-Gen OTSS-1300';'ZMB_MAL.QA-Gen OTSS-Ph, St, Eq-Stethoscopes-1300';;'Stethoscopes';'X51MMS4p9s2';1300;1.00;1.00;4;81;;
+122;'ZMB_MAL.QA-Gen OTSS-1310';'ZMB_MAL.QA-Gen OTSS-Ph, St, Eq-Otoscopes-1310';;'Otoscopes';'qMewMzpyhKQ';1310;1.00;1.00;4;81;;
+123;'ZMB_MAL.QA-Gen OTSS-1320';'ZMB_MAL.QA-Gen OTSS-Ph, St, Eq-Ophthalmoscopes-1320';;'Ophthalmoscopes';'LLEeo1mOzdS';1320;0.00;0.00;4;81;;
+124;'ZMB_MAL.QA-Gen OTSS-1330';'ZMB_MAL.QA-Gen OTSS-Ph, St, Eq-Thermometers-1330';;'Thermometers';'HjHdtNcTFtn';1330;1.00;1.00;4;81;;
+125;'ZMB_MAL.QA-Gen OTSS-1340';'ZMB_MAL.QA-Gen OTSS-Ph, St, Eq-Torches-1340';;'Torches';'tTPV5GE5uSh';1340;1.00;1.00;4;81;;
+126;'ZMB_MAL.QA-Gen OTSS-1350';'ZMB_MAL.QA-Gen OTSS-Ph, St, Eq-Adult weighing scales-1350';;'Adult weighing scales';'hP9krmVHgnN';1350;0.00;0.00;4;81;;
+127;'ZMB_MAL.QA-Gen OTSS-1360';'ZMB_MAL.QA-Gen OTSS-Ph, St, Eq-Child weighing scales-1360';;'Child weighing scales';'IB1A8Q2ZqSp';1360;1.00;1.00;4;81;;
+128;'ZMB_MAL.QA-Gen OTSS-1370';'ZMB_MAL.QA-Gen OTSS-Ph, St, Eq-Infant weighing scales-1370';;'Infant weighing scales';'lgkNBIgePMV';1370;1.00;1.00;4;81;;
 129;'ZMB_MAL.QA-Gen OTSS-1380';'ZMB_MAL.QA-Gen OTSS-Mal Diag-MALARIA DIAGNOSTICS-1380';;'MALARIA DIAGNOSTICS';'llyJtwJI5Z2';1380;0.00;0.00;5;49;;
 130;'ZMB_MAL.QA-Gen OTSS-1390';'ZMB_MAL.QA-Gen OTSS-Mal Diag-Does this facility perform Malaria Microscopy?-1390';;'Does this facility perform Malaria Microscopy?';'e83qpVa8VhM';1390;0.00;0.00;5;53;;
 131;'ZMB_MAL.QA-Gen OTSS-1400';'ZMB_MAL.QA-Gen OTSS-Mal Diag-Does this facility perform Malaria RDTs?-1400';;'Does this facility perform Malaria RDTs?';'yjyChZ6AWq9';1400;0.00;0.00;5;53;;
@@ -144,7 +144,7 @@
 144;'ZMB_MAL.QA-Gen OTSS-1530';'ZMB_MAL.QA-Gen OTSS-RDT Assess-Is turnaround time for preparation and recording documented in the register?-1530';;'Is turnaround time for preparation and recording documented in the register?';'v0vhn73v4GG';1530;1.00;1.00;6;53;131;2
 145;'ZMB_MAL.QA-Gen OTSS-1540';'ZMB_MAL.QA-Gen OTSS-RDT Assess-What is the turnaround time for preparation and recording of the test result (in minutes)?-1540';;'What is the turnaround time for preparation and recording of the test result (in minutes)?';'SVSqjLOawXv';1540;0.00;0.00;6;24;131;
 146;'ZMB_MAL.QA-Gen OTSS-1550';'ZMB_MAL.QA-Gen OTSS-RDT Assess-RDT brand used most frequently-1550';;'RDT brand used most frequently';'HMtJChWVdzs';1550;0.00;0.00;6;25;131;
-147;'ZMB_MAL.QA-CCM 1-100';'ZMB_MAL.QA-CCM 1-HW Info-Sex-100';;'Sex';'zM5oOZosV5s';100;0.00;0.00;9;72;;
+147;'ZMB_MAL.QA-CCM 1-100';'ZMB_MAL.QA-CCM 1-HW Info-Sex-100';;'Sex';'zM5oOZosV5s';100;0.00;0.00;9;73;;
 148;'ZMB_MAL.QA-CCM 1-110';'ZMB_MAL.QA-CCM 1-HW Info-Type of provider-110';;'Type of provider';'JWq1ioc3FwE';110;0.00;0.00;9;4;;
 149;'ZMB_MAL.QA-CCM 1-120';'ZMB_MAL.QA-CCM 1-HW Info-Has this provider been trained in malaria case management-120';;'Has this provider been trained in malaria case management';'Ud11tniHK4s';120;0.00;0.00;9;53;;
 150;'ZMB_MAL.QA-CCM 1-130';'ZMB_MAL.QA-CCM 1-Rec-Patient and care giver welcomed?-130';;'Patient and care giver welcomed?';'apF9mm3TmG6';130;0.00;0.00;10;53;;
@@ -189,10 +189,10 @@
 189;'ZMB_MAL.QA-CCM 1-520';'ZMB_MAL.QA-CCM 1-Cl hist-Presence of fever-520';;'Presence of fever';'bIedFBJ4IJG';520;1.00;1.00;13;78;188;14
 190;'ZMB_MAL.QA-CCM 1-530';'ZMB_MAL.QA-CCM 1-Cl hist-If yes, duration:-530';;'If yes, duration:';'n2kQIqi4B9L';530;0.00;0.00;13;80;188;
 191;'ZMB_MAL.QA-CCM 1-540';'ZMB_MAL.QA-CCM 1-Cl hist-Diarrhea-540';;'Diarrhea';'myJ5OLrCsnR';540;1.00;1.00;13;78;188;14
-192;'ZMB_MAL.QA-CCM 1-550';'ZMB_MAL.QA-CCM 1-Cl hist-If yes, bloody:-550';;'If yes, bloody:';'VQzjYQIfK8Z';550;0.00;0.00;13;77;188;
+192;'ZMB_MAL.QA-CCM 1-550';'ZMB_MAL.QA-CCM 1-Cl hist-If yes, bloody:-550';;'If yes, bloody:';'VQzjYQIfK8Z';550;0.00;0.00;13;78;188;
 193;'ZMB_MAL.QA-CCM 1-560';'ZMB_MAL.QA-CCM 1-Cl hist-Vomiting-560';;'Vomiting';'cEaIgywDupn';560;1.00;1.00;13;78;188;14
 194;'ZMB_MAL.QA-CCM 1-570';'ZMB_MAL.QA-CCM 1-Cl hist-Cough-570';;'Cough';'rk4395XvjWw';570;1.00;1.00;13;78;188;14
-195;'ZMB_MAL.QA-CCM 1-580';'ZMB_MAL.QA-CCM 1-Cl hist-If yes, duration greater than 2 weeks?-580';;'If yes, duration greater than 2 weeks?';'qMVzHxVdxQH';580;0.00;0.00;13;77;188;
+195;'ZMB_MAL.QA-CCM 1-580';'ZMB_MAL.QA-CCM 1-Cl hist-If yes, duration greater than 2 weeks?-580';;'If yes, duration greater than 2 weeks?';'qMVzHxVdxQH';580;0.00;0.00;13;78;188;
 196;'ZMB_MAL.QA-CCM 1-590';'ZMB_MAL.QA-CCM 1-Cl hist-Difficult breathing-590';;'Difficult breathing';'ERZybGGUDEs';590;1.00;1.00;13;78;188;14
 197;'ZMB_MAL.QA-CCM 1-600';'ZMB_MAL.QA-CCM 1-Cl hist-Any other symptoms-600';;'Any other symptoms';'mQPSrdTlodV';600;1.00;1.00;13;78;188;14
 198;'ZMB_MAL.QA-CCM 1-610';'ZMB_MAL.QA-CCM 1-Cl hist-If yes, specify-610';;'If yes, specify';'yfEons1tNjQ';610;0.00;0.00;13;25;188;
@@ -202,14 +202,14 @@
 202;'ZMB_MAL.QA-CCM 1-650';'ZMB_MAL.QA-CCM 1-Prior Dx Tx-If yes, what is the result, if known?-650';;'If yes, what is the result, if known?';'ZRTVrq3e9J5';650;0.00;0.00;14;7;188;
 203;'ZMB_MAL.QA-CCM 1-660';'ZMB_MAL.QA-CCM 1-Prior Dx Tx-Did patient receive treatment at another health facility before coming to this Health facility?-660';;'Did patient receive treatment at another health facility before coming to this Health facility?';'Lhd0PYrn4OX';660;1.00;1.00;14;17;188;14
 204;'ZMB_MAL.QA-CCM 1-670';'ZMB_MAL.QA-CCM 1-Prior Dx Tx-If yes, what type of treatment did the patient receive?-670';;'If yes, what type of treatment did the patient receive?';'Q8O1o6zx2PZ';670;1.00;1.00;14;12;188;14
-205;'ZMB_MAL.QA-CCM 1-680';'ZMB_MAL.QA-CCM 1-Gen Ex-Eye, ear, nose, and throat exam-680';;'Eye, ear, nose, and throat exam';'cASSi1EyDmw';680;0.25;0.25;15;35;188;14
-206;'ZMB_MAL.QA-CCM 1-690';'ZMB_MAL.QA-CCM 1-Gen Ex-Neck exam-690';;'Neck exam';'DnjBtFERRBw';690;1.00;1.00;15;35;188;14
-207;'ZMB_MAL.QA-CCM 1-700';'ZMB_MAL.QA-CCM 1-Gen Ex-Lung exam -700';;'Lung exam';'SKG1d73Akqx';700;1.00;1.00;15;35;188;14
-208;'ZMB_MAL.QA-CCM 1-710';'ZMB_MAL.QA-CCM 1-Gen Ex-Heart exam-710';;'Heart exam';'ydw3irLfgwe';710;0.25;0.25;15;35;188;14
-209;'ZMB_MAL.QA-CCM 1-720';'ZMB_MAL.QA-CCM 1-Gen Ex-Abdominal exam-720';;'Abdominal exam';'bUYyeoHn6Rw';720;1.00;1.00;15;35;188;14
-210;'ZMB_MAL.QA-CCM 1-730';'ZMB_MAL.QA-CCM 1-Gen Ex-Extremities exam-730';;'Extremities exam';'KM7kRqqE4t4';730;0.25;0.25;15;35;188;14
-211;'ZMB_MAL.QA-CCM 1-740';'ZMB_MAL.QA-CCM 1-Gen Ex-Skin exam-740';;'Skin exam';'QlwdV8YFM1S';740;0.25;0.25;15;35;188;14
-212;'ZMB_MAL.QA-CCM 1-750';'ZMB_MAL.QA-CCM 1-Gen Ex-Neurological exam-750';;'Neurological exam';'VHosnl6s9qh';750;1.00;1.00;15;35;188;14
+205;'ZMB_MAL.QA-CCM 1-680';'ZMB_MAL.QA-CCM 1-Gen Ex-Eye, ear, nose, and throat exam-680';;'Eye, ear, nose, and throat exam';'cASSi1EyDmw';680;0.25;0.25;15;82;188;14
+206;'ZMB_MAL.QA-CCM 1-690';'ZMB_MAL.QA-CCM 1-Gen Ex-Neck exam-690';;'Neck exam';'DnjBtFERRBw';690;1.00;1.00;15;82;188;14
+207;'ZMB_MAL.QA-CCM 1-700';'ZMB_MAL.QA-CCM 1-Gen Ex-Lung exam -700';;'Lung exam';'SKG1d73Akqx';700;1.00;1.00;15;82;188;14
+208;'ZMB_MAL.QA-CCM 1-710';'ZMB_MAL.QA-CCM 1-Gen Ex-Heart exam-710';;'Heart exam';'ydw3irLfgwe';710;0.25;0.25;15;82;188;14
+209;'ZMB_MAL.QA-CCM 1-720';'ZMB_MAL.QA-CCM 1-Gen Ex-Abdominal exam-720';;'Abdominal exam';'bUYyeoHn6Rw';720;1.00;1.00;15;82;188;14
+210;'ZMB_MAL.QA-CCM 1-730';'ZMB_MAL.QA-CCM 1-Gen Ex-Extremities exam-730';;'Extremities exam';'KM7kRqqE4t4';730;0.25;0.25;15;82;188;14
+211;'ZMB_MAL.QA-CCM 1-740';'ZMB_MAL.QA-CCM 1-Gen Ex-Skin exam-740';;'Skin exam';'QlwdV8YFM1S';740;0.25;0.25;15;82;188;14
+212;'ZMB_MAL.QA-CCM 1-750';'ZMB_MAL.QA-CCM 1-Gen Ex-Neurological exam-750';;'Neurological exam';'VHosnl6s9qh';750;1.00;1.00;15;82;188;14
 213;'ZMB_MAL.QA-CCM 1-760';'ZMB_MAL.QA-CCM 1-Diag-Do you suspect that the patient has non-severe or severe disease?-760';;'Do you suspect that the patient has non-severe or severe disease?';'Z346lYmuAMm';760;0.00;0.00;16;63;;
 214;'ZMB_MAL.QA-CCM 1-770';'ZMB_MAL.QA-CCM 1-Diag-What is your clinically suspected diagnosis? (Check all that apply or Diagnosis unknown)-770';;'What is your clinically suspected diagnosis? (Check all that apply or Diagnosis unknown)';'qbi9TX6RZ8S';770;0.00;0.00;16;49;;
 215;'ZMB_MAL.QA-CCM 1-780';'ZMB_MAL.QA-CCM 1-Diag-Malaria-780';;'Malaria';'SPMPDBTxzSB';780;0.00;0.00;16;53;;
@@ -289,7 +289,7 @@
 289;'ZMB_MAL.QA-CCM 1-1520';'ZMB_MAL.QA-CCM 1-Sev dis-Caregiver given reason for referral or admission-1520';;'Caregiver given reason for referral or admission';'KCTXbHajPvk';1520;1.00;1.00;24;53;280;15
 290;'ZMB_MAL.QA-CCM 1-1530';'ZMB_MAL.QA-CCM 1-Sev dis-Caregiver informed about what will be done-1530';;'Caregiver informed about what will be done';'kyz1hlmQUt4';1530;1.00;1.00;24;53;280;15
 291;'ZMB_MAL.QA-CCM 1-1540';'ZMB_MAL.QA-CCM 1-Sev dis-Caregiver and/or patient asked if there are questions-1540';;'Caregiver and/or patient asked if there are questions';'BaCoD8xBHsF';1540;1.00;1.00;24;53;280;15
-292;'ZMB_MAL.QA-CCM 2-100';'ZMB_MAL.QA-CCM 2-HW Info-Sex-100';;'Sex';'WIZoJAn2c9a';100;0.00;0.00;25;72;;
+292;'ZMB_MAL.QA-CCM 2-100';'ZMB_MAL.QA-CCM 2-HW Info-Sex-100';;'Sex';'WIZoJAn2c9a';100;0.00;0.00;25;73;;
 293;'ZMB_MAL.QA-CCM 2-110';'ZMB_MAL.QA-CCM 2-HW Info-Type of provider-110';;'Type of provider';'FgpEqeMQqRy';110;0.00;0.00;25;4;;
 294;'ZMB_MAL.QA-CCM 2-120';'ZMB_MAL.QA-CCM 2-HW Info-Has this provider been trained in malaria case management-120';;'Has this provider been trained in malaria case management';'L4uf2YNgIhc';120;0.00;0.00;25;53;;
 295;'ZMB_MAL.QA-CCM 2-130';'ZMB_MAL.QA-CCM 2-Rec-Patient and care giver welcomed?-130';;'Patient and care giver welcomed?';'HvmsrWFwKT7';130;0.00;0.00;26;53;;
@@ -334,10 +334,10 @@
 334;'ZMB_MAL.QA-CCM 2-520';'ZMB_MAL.QA-CCM 2-Cl hist-Presence of fever-520';;'Presence of fever';'RzydGw3EDjq';520;1.00;1.00;29;78;333;17
 335;'ZMB_MAL.QA-CCM 2-530';'ZMB_MAL.QA-CCM 2-Cl hist-If yes, duration:-530';;'If yes, duration:';'TkjcNhR8XvC';530;0.00;0.00;29;80;333;
 336;'ZMB_MAL.QA-CCM 2-540';'ZMB_MAL.QA-CCM 2-Cl hist-Diarrhea-540';;'Diarrhea';'YQKdSqQKen4';540;1.00;1.00;29;78;333;17
-337;'ZMB_MAL.QA-CCM 2-550';'ZMB_MAL.QA-CCM 2-Cl hist-If yes, bloody:-550';;'If yes, bloody:';'uT1ACuyTq5T';550;0.00;0.00;29;77;333;
+337;'ZMB_MAL.QA-CCM 2-550';'ZMB_MAL.QA-CCM 2-Cl hist-If yes, bloody:-550';;'If yes, bloody:';'uT1ACuyTq5T';550;0.00;0.00;29;78;333;
 338;'ZMB_MAL.QA-CCM 2-560';'ZMB_MAL.QA-CCM 2-Cl hist-Vomiting-560';;'Vomiting';'xZv2jTVIL8b';560;1.00;1.00;29;78;333;17
 339;'ZMB_MAL.QA-CCM 2-570';'ZMB_MAL.QA-CCM 2-Cl hist-Cough-570';;'Cough';'Wsc5DsHQ9MR';570;1.00;1.00;29;78;333;17
-340;'ZMB_MAL.QA-CCM 2-580';'ZMB_MAL.QA-CCM 2-Cl hist-If yes, duration greater than 2 weeks?-580';;'If yes, duration greater than 2 weeks?';'wRTwb2Rnwf6';580;0.00;0.00;29;77;333;
+340;'ZMB_MAL.QA-CCM 2-580';'ZMB_MAL.QA-CCM 2-Cl hist-If yes, duration greater than 2 weeks?-580';;'If yes, duration greater than 2 weeks?';'wRTwb2Rnwf6';580;0.00;0.00;29;78;333;
 341;'ZMB_MAL.QA-CCM 2-590';'ZMB_MAL.QA-CCM 2-Cl hist-Difficult breathing-590';;'Difficult breathing';'HKgpWrFVSWT';590;1.00;1.00;29;78;333;17
 342;'ZMB_MAL.QA-CCM 2-600';'ZMB_MAL.QA-CCM 2-Cl hist-Any other symptoms-600';;'Any other symptoms';'ADmc8eWhAEl';600;1.00;1.00;29;78;333;17
 343;'ZMB_MAL.QA-CCM 2-610';'ZMB_MAL.QA-CCM 2-Cl hist-If yes, specify-610';;'If yes, specify';'BBtGBgUD576';610;0.00;0.00;29;25;333;
@@ -347,14 +347,14 @@
 347;'ZMB_MAL.QA-CCM 2-650';'ZMB_MAL.QA-CCM 2-Prior Dx Tx-If yes, what is the result, if known?-650';;'If yes, what is the result, if known?';'dN0iMSbv7hu';650;0.00;0.00;30;7;333;
 348;'ZMB_MAL.QA-CCM 2-660';'ZMB_MAL.QA-CCM 2-Prior Dx Tx-Did patient receive treatment at another health facility before coming to this Health facility?-660';;'Did patient receive treatment at another health facility before coming to this Health facility?';'YO6K3ypibe3';660;1.00;1.00;30;17;333;17
 349;'ZMB_MAL.QA-CCM 2-670';'ZMB_MAL.QA-CCM 2-Prior Dx Tx-If yes, what type of treatment did the patient receive?-670';;'If yes, what type of treatment did the patient receive?';'S6NdfD7R4oc';670;1.00;1.00;30;12;333;17
-350;'ZMB_MAL.QA-CCM 2-680';'ZMB_MAL.QA-CCM 2-Gen Ex-Eye, ear, nose, and throat exam-680';;'Eye, ear, nose, and throat exam';'QMBtdIf7Oyl';680;0.25;0.25;31;35;333;17
-351;'ZMB_MAL.QA-CCM 2-690';'ZMB_MAL.QA-CCM 2-Gen Ex-Neck exam-690';;'Neck exam';'FJX6yoOGpeP';690;1.00;1.00;31;35;333;17
-352;'ZMB_MAL.QA-CCM 2-700';'ZMB_MAL.QA-CCM 2-Gen Ex-Lung exam -700';;'Lung exam';'dLhfUgxuqrB';700;1.00;1.00;31;35;333;17
-353;'ZMB_MAL.QA-CCM 2-710';'ZMB_MAL.QA-CCM 2-Gen Ex-Heart exam-710';;'Heart exam';'miYNOGOJpi3';710;0.25;0.25;31;35;333;17
-354;'ZMB_MAL.QA-CCM 2-720';'ZMB_MAL.QA-CCM 2-Gen Ex-Abdominal exam-720';;'Abdominal exam';'DvTD8Jyh001';720;1.00;1.00;31;35;333;17
-355;'ZMB_MAL.QA-CCM 2-730';'ZMB_MAL.QA-CCM 2-Gen Ex-Extremities exam-730';;'Extremities exam';'npueSqqHAt3';730;0.25;0.25;31;35;333;17
-356;'ZMB_MAL.QA-CCM 2-740';'ZMB_MAL.QA-CCM 2-Gen Ex-Skin exam-740';;'Skin exam';'qhJfiyb0C7T';740;0.25;0.25;31;35;333;17
-357;'ZMB_MAL.QA-CCM 2-750';'ZMB_MAL.QA-CCM 2-Gen Ex-Neurological exam-750';;'Neurological exam';'zCfBr9uWOs5';750;1.00;1.00;31;35;333;17
+350;'ZMB_MAL.QA-CCM 2-680';'ZMB_MAL.QA-CCM 2-Gen Ex-Eye, ear, nose, and throat exam-680';;'Eye, ear, nose, and throat exam';'QMBtdIf7Oyl';680;0.25;0.25;31;82;333;17
+351;'ZMB_MAL.QA-CCM 2-690';'ZMB_MAL.QA-CCM 2-Gen Ex-Neck exam-690';;'Neck exam';'FJX6yoOGpeP';690;1.00;1.00;31;82;333;17
+352;'ZMB_MAL.QA-CCM 2-700';'ZMB_MAL.QA-CCM 2-Gen Ex-Lung exam -700';;'Lung exam';'dLhfUgxuqrB';700;1.00;1.00;31;82;333;17
+353;'ZMB_MAL.QA-CCM 2-710';'ZMB_MAL.QA-CCM 2-Gen Ex-Heart exam-710';;'Heart exam';'miYNOGOJpi3';710;0.25;0.25;31;82;333;17
+354;'ZMB_MAL.QA-CCM 2-720';'ZMB_MAL.QA-CCM 2-Gen Ex-Abdominal exam-720';;'Abdominal exam';'DvTD8Jyh001';720;1.00;1.00;31;82;333;17
+355;'ZMB_MAL.QA-CCM 2-730';'ZMB_MAL.QA-CCM 2-Gen Ex-Extremities exam-730';;'Extremities exam';'npueSqqHAt3';730;0.25;0.25;31;82;333;17
+356;'ZMB_MAL.QA-CCM 2-740';'ZMB_MAL.QA-CCM 2-Gen Ex-Skin exam-740';;'Skin exam';'qhJfiyb0C7T';740;0.25;0.25;31;82;333;17
+357;'ZMB_MAL.QA-CCM 2-750';'ZMB_MAL.QA-CCM 2-Gen Ex-Neurological exam-750';;'Neurological exam';'zCfBr9uWOs5';750;1.00;1.00;31;82;333;17
 358;'ZMB_MAL.QA-CCM 2-760';'ZMB_MAL.QA-CCM 2-Diag-Do you suspect that the patient has non-severe or severe disease?-760';;'Do you suspect that the patient has non-severe or severe disease?';'XreKncIMueS';760;0.00;0.00;32;63;;
 359;'ZMB_MAL.QA-CCM 2-770';'ZMB_MAL.QA-CCM 2-Diag-What is your clinically suspected diagnosis? (Check all that apply or Diagnosis unknown)-770';;'What is your clinically suspected diagnosis? (Check all that apply or Diagnosis unknown)';'CNsvxpndP3P';770;0.00;0.00;32;49;;
 360;'ZMB_MAL.QA-CCM 2-780';'ZMB_MAL.QA-CCM 2-Diag-Malaria-780';;'Malaria';'KtZFMFpEOI2';780;0.00;0.00;32;53;;
@@ -434,7 +434,7 @@
 434;'ZMB_MAL.QA-CCM 2-1520';'ZMB_MAL.QA-CCM 2-Sev dis-Caregiver given reason for referral or admission-1520';;'Caregiver given reason for referral or admission';'c0K0LsbXVGf';1520;1.00;1.00;40;53;425;18
 435;'ZMB_MAL.QA-CCM 2-1530';'ZMB_MAL.QA-CCM 2-Sev dis-Caregiver informed about what will be done-1530';;'Caregiver informed about what will be done';'rYKdFFayVTo';1530;1.00;1.00;40;53;425;18
 436;'ZMB_MAL.QA-CCM 2-1540';'ZMB_MAL.QA-CCM 2-Sev dis-Caregiver and/or patient asked if there are questions-1540';;'Caregiver and/or patient asked if there are questions';'xtD7P3Ceg2I';1540;1.00;1.00;40;53;425;18
-437;'ZMB_MAL.QA-CCM 3-100';'ZMB_MAL.QA-CCM 3-HW Info-Sex-100';;'Sex';'jgcu6OarmCU';100;0.00;0.00;41;72;;
+437;'ZMB_MAL.QA-CCM 3-100';'ZMB_MAL.QA-CCM 3-HW Info-Sex-100';;'Sex';'jgcu6OarmCU';100;0.00;0.00;41;73;;
 438;'ZMB_MAL.QA-CCM 3-110';'ZMB_MAL.QA-CCM 3-HW Info-Type of provider-110';;'Type of provider';'DhTuo68XuMx';110;0.00;0.00;41;4;;
 439;'ZMB_MAL.QA-CCM 3-120';'ZMB_MAL.QA-CCM 3-HW Info-Has this provider been trained in malaria case management-120';;'Has this provider been trained in malaria case management';'zS61akHyVOk';120;0.00;0.00;41;53;;
 440;'ZMB_MAL.QA-CCM 3-130';'ZMB_MAL.QA-CCM 3-Rec-Patient and care giver welcomed?-130';;'Patient and care giver welcomed?';'dDYnIRqXGE2';130;0.00;0.00;42;53;;
@@ -479,10 +479,10 @@
 479;'ZMB_MAL.QA-CCM 3-520';'ZMB_MAL.QA-CCM 3-Cl hist-Presence of fever-520';;'Presence of fever';'mQ75QfXi4Fb';520;1.00;1.00;45;78;478;20
 480;'ZMB_MAL.QA-CCM 3-530';'ZMB_MAL.QA-CCM 3-Cl hist-If yes, duration:-530';;'If yes, duration:';'CiN1xw94jJw';530;0.00;0.00;45;80;478;
 481;'ZMB_MAL.QA-CCM 3-540';'ZMB_MAL.QA-CCM 3-Cl hist-Diarrhea-540';;'Diarrhea';'Yq2XbzsE5Qy';540;1.00;1.00;45;78;478;20
-482;'ZMB_MAL.QA-CCM 3-550';'ZMB_MAL.QA-CCM 3-Cl hist-If yes, bloody:-550';;'If yes, bloody:';'peLfkVAHD0q';550;0.00;0.00;45;77;478;
+482;'ZMB_MAL.QA-CCM 3-550';'ZMB_MAL.QA-CCM 3-Cl hist-If yes, bloody:-550';;'If yes, bloody:';'peLfkVAHD0q';550;0.00;0.00;45;78;478;
 483;'ZMB_MAL.QA-CCM 3-560';'ZMB_MAL.QA-CCM 3-Cl hist-Vomiting-560';;'Vomiting';'dEqTIOlRrf1';560;1.00;1.00;45;78;478;20
 484;'ZMB_MAL.QA-CCM 3-570';'ZMB_MAL.QA-CCM 3-Cl hist-Cough-570';;'Cough';'pLo8OkUOEwJ';570;1.00;1.00;45;78;478;20
-485;'ZMB_MAL.QA-CCM 3-580';'ZMB_MAL.QA-CCM 3-Cl hist-If yes, duration greater than 2 weeks?-580';;'If yes, duration greater than 2 weeks?';'U9MjXBRg6oO';580;0.00;0.00;45;77;478;
+485;'ZMB_MAL.QA-CCM 3-580';'ZMB_MAL.QA-CCM 3-Cl hist-If yes, duration greater than 2 weeks?-580';;'If yes, duration greater than 2 weeks?';'U9MjXBRg6oO';580;0.00;0.00;45;78;478;
 486;'ZMB_MAL.QA-CCM 3-590';'ZMB_MAL.QA-CCM 3-Cl hist-Difficult breathing-590';;'Difficult breathing';'Dsju9FtCjOB';590;1.00;1.00;45;78;478;20
 487;'ZMB_MAL.QA-CCM 3-600';'ZMB_MAL.QA-CCM 3-Cl hist-Any other symptoms-600';;'Any other symptoms';'Fg68oFoGYyq';600;1.00;1.00;45;78;478;20
 488;'ZMB_MAL.QA-CCM 3-610';'ZMB_MAL.QA-CCM 3-Cl hist-If yes, specify-610';;'If yes, specify';'wWtUN12ZdmV';610;0.00;0.00;45;25;478;
@@ -492,14 +492,14 @@
 492;'ZMB_MAL.QA-CCM 3-650';'ZMB_MAL.QA-CCM 3-Prior Dx Tx-If yes, what is the result, if known?-650';;'If yes, what is the result, if known?';'ds0uZBJrrJn';650;0.00;0.00;46;7;478;
 493;'ZMB_MAL.QA-CCM 3-660';'ZMB_MAL.QA-CCM 3-Prior Dx Tx-Did patient receive treatment at another health facility before coming to this Health facility?-660';;'Did patient receive treatment at another health facility before coming to this Health facility?';'LRcbd66sFdL';660;1.00;1.00;46;17;478;20
 494;'ZMB_MAL.QA-CCM 3-670';'ZMB_MAL.QA-CCM 3-Prior Dx Tx-If yes, what type of treatment did the patient receive?-670';;'If yes, what type of treatment did the patient receive?';'RphpPB9XlC9';670;1.00;1.00;46;12;478;20
-495;'ZMB_MAL.QA-CCM 3-680';'ZMB_MAL.QA-CCM 3-Gen Ex-Eye, ear, nose, and throat exam-680';;'Eye, ear, nose, and throat exam';'Fx4kiIt6PVw';680;0.25;0.25;47;35;478;20
-496;'ZMB_MAL.QA-CCM 3-690';'ZMB_MAL.QA-CCM 3-Gen Ex-Neck exam-690';;'Neck exam';'HtF89rXd20U';690;1.00;1.00;47;35;478;20
-497;'ZMB_MAL.QA-CCM 3-700';'ZMB_MAL.QA-CCM 3-Gen Ex-Lung exam -700';;'Lung exam';'yn1FDO8qHQO';700;1.00;1.00;47;35;478;20
-498;'ZMB_MAL.QA-CCM 3-710';'ZMB_MAL.QA-CCM 3-Gen Ex-Heart exam-710';;'Heart exam';'tr8ch8K0bgM';710;0.25;0.25;47;35;478;20
-499;'ZMB_MAL.QA-CCM 3-720';'ZMB_MAL.QA-CCM 3-Gen Ex-Abdominal exam-720';;'Abdominal exam';'xTw3PBqjUYf';720;1.00;1.00;47;35;478;20
-500;'ZMB_MAL.QA-CCM 3-730';'ZMB_MAL.QA-CCM 3-Gen Ex-Extremities exam-730';;'Extremities exam';'SbOK7h0DsRR';730;0.25;0.25;47;35;478;20
-501;'ZMB_MAL.QA-CCM 3-740';'ZMB_MAL.QA-CCM 3-Gen Ex-Skin exam-740';;'Skin exam';'t6W2Lx2PoUt';740;0.25;0.25;47;35;478;20
-502;'ZMB_MAL.QA-CCM 3-750';'ZMB_MAL.QA-CCM 3-Gen Ex-Neurological exam-750';;'Neurological exam';'jt9jSTSi78e';750;1.00;1.00;47;35;478;20
+495;'ZMB_MAL.QA-CCM 3-680';'ZMB_MAL.QA-CCM 3-Gen Ex-Eye, ear, nose, and throat exam-680';;'Eye, ear, nose, and throat exam';'Fx4kiIt6PVw';680;0.25;0.25;47;82;478;20
+496;'ZMB_MAL.QA-CCM 3-690';'ZMB_MAL.QA-CCM 3-Gen Ex-Neck exam-690';;'Neck exam';'HtF89rXd20U';690;1.00;1.00;47;82;478;20
+497;'ZMB_MAL.QA-CCM 3-700';'ZMB_MAL.QA-CCM 3-Gen Ex-Lung exam -700';;'Lung exam';'yn1FDO8qHQO';700;1.00;1.00;47;82;478;20
+498;'ZMB_MAL.QA-CCM 3-710';'ZMB_MAL.QA-CCM 3-Gen Ex-Heart exam-710';;'Heart exam';'tr8ch8K0bgM';710;0.25;0.25;47;82;478;20
+499;'ZMB_MAL.QA-CCM 3-720';'ZMB_MAL.QA-CCM 3-Gen Ex-Abdominal exam-720';;'Abdominal exam';'xTw3PBqjUYf';720;1.00;1.00;47;82;478;20
+500;'ZMB_MAL.QA-CCM 3-730';'ZMB_MAL.QA-CCM 3-Gen Ex-Extremities exam-730';;'Extremities exam';'SbOK7h0DsRR';730;0.25;0.25;47;82;478;20
+501;'ZMB_MAL.QA-CCM 3-740';'ZMB_MAL.QA-CCM 3-Gen Ex-Skin exam-740';;'Skin exam';'t6W2Lx2PoUt';740;0.25;0.25;47;82;478;20
+502;'ZMB_MAL.QA-CCM 3-750';'ZMB_MAL.QA-CCM 3-Gen Ex-Neurological exam-750';;'Neurological exam';'jt9jSTSi78e';750;1.00;1.00;47;82;478;20
 503;'ZMB_MAL.QA-CCM 3-760';'ZMB_MAL.QA-CCM 3-Diag-Do you suspect that the patient has non-severe or severe disease?-760';;'Do you suspect that the patient has non-severe or severe disease?';'i01iw70Nuyb';760;0.00;0.00;48;63;;
 504;'ZMB_MAL.QA-CCM 3-770';'ZMB_MAL.QA-CCM 3-Diag-What is your clinically suspected diagnosis? (Check all that apply or Diagnosis unknown)-770';;'What is your clinically suspected diagnosis? (Check all that apply or Diagnosis unknown)';'m1eM4shikJE';770;0.00;0.00;48;49;;
 505;'ZMB_MAL.QA-CCM 3-780';'ZMB_MAL.QA-CCM 3-Diag-Malaria-780';;'Malaria';'VTMGuBpJXlB';780;0.00;0.00;48;53;;
@@ -994,10 +994,10 @@
 994;'ZMB_MAL.QA-Read Film-140';'ZMB_MAL.QA-Read Film-Obs 1-READING SLIDE-140';;'READING SLIDE';'egJuW9hGeMy';140;0.00;0.00;76;49;;
 995;'ZMB_MAL.QA-Read Film-150';'ZMB_MAL.QA-Read Film-Obs 1-Thick Smear: Report slide as positive for parasites-150';;'Thick Smear: Report slide as positive for parasites';'WpwAkmiRpG9';150;0.00;0.00;76;7;;
 996;'ZMB_MAL.QA-Read Film-160';'ZMB_MAL.QA-Read Film-Obs 1-Does supervisor agree with assessment?-160';;'Does supervisor agree with assessment?';'sceJcXovMzn';160;15.00;15.00;76;53;;36
-997;'ZMB_MAL.QA-Read Film-170';'ZMB_MAL.QA-Read Film-Obs 1-Thin Smear: Was speciation performed?-170';;'Thin Smear: Was speciation performed?';'x3G3PANgUYE';170;1.00;1.00;76;76;;36
+997;'ZMB_MAL.QA-Read Film-170';'ZMB_MAL.QA-Read Film-Obs 1-Thin Smear: Was speciation performed?-170';;'Thin Smear: Was speciation performed?';'x3G3PANgUYE';170;1.00;1.00;76;83;;36
 998;'ZMB_MAL.QA-Read Film-180';'ZMB_MAL.QA-Read Film-Obs 1-Report species of parasites-180';;'Report species of parasites';'hPd3Ec9YFGD';180;0.00;0.00;76;40;997;
 999;'ZMB_MAL.QA-Read Film-190';'ZMB_MAL.QA-Read Film-Obs 1-Does supervisor agree with assessment?-190';;'Does supervisor agree with assessment?';'GccmEmFCA0P';190;15.00;15.00;76;53;997;36
-1000;'ZMB_MAL.QA-Read Film-200';'ZMB_MAL.QA-Read Film-Obs 1-Thin Smear: Was quantification performed?-200';;'Thin Smear: Was quantification performed?';'ERggDOtteCu';200;1.00;1.00;76;76;;36
+1000;'ZMB_MAL.QA-Read Film-200';'ZMB_MAL.QA-Read Film-Obs 1-Thin Smear: Was quantification performed?-200';;'Thin Smear: Was quantification performed?';'ERggDOtteCu';200;1.00;1.00;76;83;;36
 1001;'ZMB_MAL.QA-Read Film-210';'ZMB_MAL.QA-Read Film-Obs 1-How was quantification supported?-210';;'How was quantification supported?';'h506OqBDEYM';210;0.00;0.00;76;79;1000;
 1002;'ZMB_MAL.QA-Read Film-220';'ZMB_MAL.QA-Read Film-Obs 1-Report Quantification-220';;'Report Quantification';'QLmY70b3At2';220;0.00;0.00;76;26;1000;
 1003;'ZMB_MAL.QA-Read Film-230';'ZMB_MAL.QA-Read Film-Obs 1-Does supervisor agree with assessment?-230';;'Does supervisor agree with assessment?';'S9ZgSk0uSnA';230;15.00;15.00;76;53;1000;36
@@ -1012,10 +1012,10 @@
 1012;'ZMB_MAL.QA-Read Film-320';'ZMB_MAL.QA-Read Film-Obs 2-READING SLIDE-320';;'READING SLIDE';'MYHzSoidc86';320;0.00;0.00;77;49;;
 1013;'ZMB_MAL.QA-Read Film-330';'ZMB_MAL.QA-Read Film-Obs 2-Thick Smear: Report slide as positive for parasites-330';;'Thick Smear: Report slide as positive for parasites';'gKu4cks54Vn';330;0.00;0.00;77;7;;
 1014;'ZMB_MAL.QA-Read Film-340';'ZMB_MAL.QA-Read Film-Obs 2-Does supervisor agree with assessment?-340';;'Does supervisor agree with assessment?';'OJP7z9e34HY';340;15.00;15.00;77;53;;37
-1015;'ZMB_MAL.QA-Read Film-350';'ZMB_MAL.QA-Read Film-Obs 2-Thin Smear: Was speciation performed?-350';;'Thin Smear: Was speciation performed?';'UIUOoLJXhd5';350;1.00;1.00;77;76;;37
+1015;'ZMB_MAL.QA-Read Film-350';'ZMB_MAL.QA-Read Film-Obs 2-Thin Smear: Was speciation performed?-350';;'Thin Smear: Was speciation performed?';'UIUOoLJXhd5';350;1.00;1.00;77;83;;37
 1016;'ZMB_MAL.QA-Read Film-360';'ZMB_MAL.QA-Read Film-Obs 2-Report species of parasites-360';;'Report species of parasites';'xNU8yGbcjSy';360;0.00;0.00;77;40;1015;
 1017;'ZMB_MAL.QA-Read Film-370';'ZMB_MAL.QA-Read Film-Obs 2-Does supervisor agree with assessment?-370';;'Does supervisor agree with assessment?';'szI9OvzCd6z';370;15.00;15.00;77;53;1015;37
-1018;'ZMB_MAL.QA-Read Film-380';'ZMB_MAL.QA-Read Film-Obs 2-Thin Smear: Was quantification performed?-380';;'Thin Smear: Was quantification performed?';'LKhovrpOqVO';380;1.00;1.00;77;76;;37
+1018;'ZMB_MAL.QA-Read Film-380';'ZMB_MAL.QA-Read Film-Obs 2-Thin Smear: Was quantification performed?-380';;'Thin Smear: Was quantification performed?';'LKhovrpOqVO';380;1.00;1.00;77;83;;37
 1019;'ZMB_MAL.QA-Read Film-390';'ZMB_MAL.QA-Read Film-Obs 2-How was quantification supported?-390';;'How was quantification supported?';'xcWuWgpyaw5';390;0.00;0.00;77;79;1018;
 1020;'ZMB_MAL.QA-Read Film-400';'ZMB_MAL.QA-Read Film-Obs 2-Report Quantification-400';;'Report Quantification';'j3A9hdrRwd7';400;0.00;0.00;77;26;1018;
 1021;'ZMB_MAL.QA-Read Film-410';'ZMB_MAL.QA-Read Film-Obs 2-Does supervisor agree with assessment?-410';;'Does supervisor agree with assessment?';'Ui9MGFrpm2T';410;15.00;15.00;77;53;1018;37
@@ -1030,10 +1030,10 @@
 1030;'ZMB_MAL.QA-Read Film-500';'ZMB_MAL.QA-Read Film-Obs 3-READING SLIDE-500';;'READING SLIDE';'ggvVihsRQZu';500;0.00;0.00;78;49;;
 1031;'ZMB_MAL.QA-Read Film-510';'ZMB_MAL.QA-Read Film-Obs 3-Thick Smear: Report slide as positive for parasites-510';;'Thick Smear: Report slide as positive for parasites';'BwZFU32Kegf';510;0.00;0.00;78;7;;
 1032;'ZMB_MAL.QA-Read Film-520';'ZMB_MAL.QA-Read Film-Obs 3-Does supervisor agree with assessment?-520';;'Does supervisor agree with assessment?';'o7FgmRbYKSH';520;15.00;15.00;78;53;;38
-1033;'ZMB_MAL.QA-Read Film-530';'ZMB_MAL.QA-Read Film-Obs 3-Thin Smear: Was speciation performed?-530';;'Thin Smear: Was speciation performed?';'AwCuAblHGL1';530;1.00;1.00;78;76;;38
+1033;'ZMB_MAL.QA-Read Film-530';'ZMB_MAL.QA-Read Film-Obs 3-Thin Smear: Was speciation performed?-530';;'Thin Smear: Was speciation performed?';'AwCuAblHGL1';530;1.00;1.00;78;83;;38
 1034;'ZMB_MAL.QA-Read Film-540';'ZMB_MAL.QA-Read Film-Obs 3-Report species of parasites-540';;'Report species of parasites';'WTBDVlWLwZb';540;0.00;0.00;78;40;1033;
 1035;'ZMB_MAL.QA-Read Film-550';'ZMB_MAL.QA-Read Film-Obs 3-Does supervisor agree with assessment?-550';;'Does supervisor agree with assessment?';'Ckr6lP2J0Qc';550;15.00;15.00;78;53;1033;38
-1036;'ZMB_MAL.QA-Read Film-560';'ZMB_MAL.QA-Read Film-Obs 3-Thin Smear: Was quantification performed?-560';;'Thin Smear: Was quantification performed?';'JpDH3tiD2YT';560;1.00;1.00;78;76;;38
+1036;'ZMB_MAL.QA-Read Film-560';'ZMB_MAL.QA-Read Film-Obs 3-Thin Smear: Was quantification performed?-560';;'Thin Smear: Was quantification performed?';'JpDH3tiD2YT';560;1.00;1.00;78;83;;38
 1037;'ZMB_MAL.QA-Read Film-570';'ZMB_MAL.QA-Read Film-Obs 3-How was quantification supported?-570';;'How was quantification supported?';'mX8w0fqOlc6';570;0.00;0.00;78;79;1036;
 1038;'ZMB_MAL.QA-Read Film-580';'ZMB_MAL.QA-Read Film-Obs 3-Report Quantification-580';;'Report Quantification';'VcWKJZXl7M5';580;0.00;0.00;78;26;1036;
 1039;'ZMB_MAL.QA-Read Film-590';'ZMB_MAL.QA-Read Film-Obs 3-Does supervisor agree with assessment?-590';;'Does supervisor agree with assessment?';'PCEdfNI1MK3';590;15.00;15.00;78;53;1036;38

@@ -7,6 +7,13 @@
     android:background="@drawable/background_footer"
     android:padding="5dp">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:id="@+id/subscore_bar"
+        android:baselineAligned="false">
+
     <RelativeLayout
         android:layout_width="0dip"
         android:layout_height="wrap_content"
@@ -158,5 +165,6 @@
             app:tFontName="@string/medium_font_name" />
     </RelativeLayout>
 
+    </LinearLayout>
 
 </LinearLayout>

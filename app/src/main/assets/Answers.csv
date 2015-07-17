@@ -12,7 +12,7 @@
 13;'Yes0No1';1
 14;'Yes1Apparent1Asked';1
 15;'Yes1No0';1
-16;'Yes1No1Asked0';1
+16;'Yes1No1NotAsked0';1
 17;'Yes1No1Unk1Asked0';1
 18;'YesNormal1YesAbnormal1No0';1
 19;'Yes1NotAvailable1No0';1
@@ -44,7 +44,7 @@
 55;'Yes1No1Asked0Applicable1CBVertical';9
 56;'Yes1No0Prescribed1CBVertical';9
 57;'Yes1No0NA1';1
-58;'Yes1No0Available1';1
+58;'Yes1No0NotAvailable1';1
 59;'Yes1No0Applicable1';1
 60;'Yes0No1Unk0CBVertical';9
 61;'TestType3';1
@@ -60,9 +60,12 @@
 72;'GenderCBHorizontal';8
 73;'GenderCBVertical';9
 74;'Yes0No1CBHorizontal';8
-75;'Yes1No0Available1CBVertical';9
+75;'Yes1No0NotAvailable1CBVertical';9
 76;'Yes1No0NA1CBHorizontal';8
 77;'Yes1No1Asked0CBHorizontal';8
-78;'Yes1No1Asked0CBVertical';9
+78;'Yes1No1NotAsked0CBVertical';9
 79;'Counting';1
 80;'Duration';1
+81;'PresentFunctionalCBVertical';9
+82;'DoneCBVertical';9
+83;'Yes1No0NA1CBVertical';9

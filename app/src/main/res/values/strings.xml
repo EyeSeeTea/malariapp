@@ -2,7 +2,7 @@
 <resources>
 
     <!-- # general -->
-    <string name="app_name">Health Network QIS</string>
+    <string name="app_name" translatable="false">QA App</string>
     <string name="developers">EyeSeeTea LTD</string>
     <string name="empty_string" translatable="false"></string>
     <string name="yes">Yes</string>
@@ -171,6 +171,9 @@
     <string name="score_info_case3">Case 3</string>
     <string name="score_info_case4">Case 4</string>
 
+    <!-- composite score -->
+    <string name="compscore_title_score_percentage">Score (%)</string>
+
     <!-- settings -->
     <string name="title_activity_settings">Settings</string>
     <string name="settings_checkbox_show_num_dems">Show num/dems</string>
@@ -189,11 +192,11 @@
 
     <string name="settings_array_values_font_sizes_def">@string/font_size_level2</string>
 
-    <string name="normal_font">Roboto-Medium.ttf</string>
-    <string name="light_font">Roboto-Light.ttf</string>
-    <string name="bold_font_name">Roboto-Bold.ttf</string>
-    <string name="medium_font_name">Roboto-Medium.ttf</string>
-    <string name="condensed_font_name">Roboto-Condensed.ttf</string>
+    <string name="normal_font" translatable="false">Roboto-Medium.ttf</string>
+    <string name="light_font" translatable="false">Roboto-Light.ttf</string>
+    <string name="bold_font_name" translatable="false">Roboto-Bold.ttf</string>
+    <string name="medium_font_name" translatable="false">Roboto-Medium.ttf</string>
+    <string name="condensed_font_name" translatable="false">Roboto-Condensed.ttf</string>
 
     <string-array name="settings_array_values_font_sizes">
         <item>@string/font_size_level0</item>
@@ -214,5 +217,10 @@
     <string name="dialog_info_push_ok">Survey data has been successfully pushed to DHIS server</string>
     <string name="dialog_info_push_bad_credentials">Bad credentials for pushing</string>
 
+    <!-- Preference variable names -->
+    <item name="show_num_dems" type="string" translatable="false">show_num_dems</item>
+    <item name="customize_fonts" type="string" translatable="false">customize_fonts</item>
+    <item name="font_sizes" type="string" translatable="false">font_sizes</item>
+    <item name="dhis_url" type="string" translatable="false">dhis_url</item>
 
 </resources>

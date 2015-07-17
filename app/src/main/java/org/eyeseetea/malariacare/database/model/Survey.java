@@ -27,12 +27,20 @@ import com.orm.query.Condition;
 import com.orm.query.Select;
 
 import org.eyeseetea.malariacare.database.utils.SurveyAnsweredRatio;
+import org.eyeseetea.malariacare.database.utils.SurveyAnsweredRatioCache;
 import org.eyeseetea.malariacare.utils.Constants;
 
 import java.util.Date;
 import java.util.List;
 
 public class Survey extends SugarRecord<Survey> {
+
+
+    private static final String LIST_VALUES_PARENT_QUESTION ="select v.* from value v"+
+            " left join question q on v.question=q.id"+
+            " where v.survey=?"+
+            " and q.question=0"+
+            " and v.value is not null and v.value<>''";
 
     OrgUnit orgUnit;
     Program program;
@@ -121,12 +129,24 @@ public class Survey extends SugarRecord<Survey> {
     }
 
     /**
+     * Returns the list of answered values from this survey that belong to a parent question
+     * @return
+     */
+    public List<Value> getValuesFromParentQuestions(){
+        List<Value> values = Value.findWithQuery(Value.class, LIST_VALUES_PARENT_QUESTION, this.getId().toString());
+        return values;
+    }
+
+    /**
      * Ratio of completion is cached into _answeredQuestionRatio in order to speed up loading
      * @return
      */
     public SurveyAnsweredRatio getAnsweredQuestionRatio(){
         if (_answeredQuestionRatio == null) {
-            _answeredQuestionRatio=reloadSurveyAnsweredRatio();
+            _answeredQuestionRatio=SurveyAnsweredRatioCache.get(this.id);
+            if(_answeredQuestionRatio == null) {
+                _answeredQuestionRatio = reloadSurveyAnsweredRatio();
+            }
         }
         return _answeredQuestionRatio;
     }
@@ -141,18 +161,19 @@ public class Survey extends SugarRecord<Survey> {
         int numOptional=0;
         int numAnswered = 0;
 
-        for (Value value : this.getValues()) {
-            if (value!=null && value.isAnAnswer()) {
-                numAnswered++;
-                if (value.belongsToAParentQuestion() && value.isAYes()) {
-                    //There might be children no answer questions that should be skipped
-                    for(Question childQuestion:value.getQuestion().getQuestionChildren()){
-                        numOptional+=(childQuestion.getAnswer().getOutput()==Constants.NO_ANSWER)?0:1;
-                    }
+        for (Value value : this.getValuesFromParentQuestions()) {
+            numAnswered++;
+            if (value.isAYes()) {
+                //There might be children no answer questions that should be skipped
+                for(Question childQuestion:value.getQuestion().getQuestionChildren()){
+                    numOptional+=(childQuestion.getAnswer().getOutput()==Constants.NO_ANSWER)?0:1;
                 }
             }
+
         }
-        return new SurveyAnsweredRatio(numRequired+numOptional, numAnswered);
+        SurveyAnsweredRatio surveyAnsweredRatio=new SurveyAnsweredRatio(numRequired+numOptional, numAnswered);
+        SurveyAnsweredRatioCache.put(this.id, surveyAnsweredRatio);
+        return surveyAnsweredRatio;
     }
 
     /**

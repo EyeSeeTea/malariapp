@@ -7,7 +7,7 @@ import com.orm.query.Select;
 
 import java.util.List;
 
-public class Header extends SugarRecord<Header> {
+public class Header extends SugarRecord<Header>{
 
     String short_name;
     String name;

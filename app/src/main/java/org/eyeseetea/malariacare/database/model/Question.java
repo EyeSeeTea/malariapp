@@ -11,9 +11,10 @@ import org.eyeseetea.malariacare.utils.Constants;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 
-public class Question extends SugarRecord<Question> {
+public class Question extends SugarRecord<Question>{
 
     /**
      * Sql query that counts required questions in a program (required for % stats)
@@ -28,11 +29,15 @@ public class Question extends SugarRecord<Question> {
             " and p.id=?";
 
     private static final String LIST_ALL_BY_PROGRAM ="select q.* from question q"+
-            " left join answer a on q.answer=a.id"+
             " left join header h on q.header=h.id"+
             " left join tab t on h.tab=t.id"+
             " left join program p on t.program=p.id"+
             " and p.id=? order by t.orderpos, q.orderpos";
+
+    private static final String LIST_ALL_BY_TABS ="select q.* from question q"+
+            " left join header h on q.header=h.id"+
+            " left join tab t on h.tab=t.id"+
+            " and t.id in (?) order by t.orderpos, q.orderpos";
 
     String code;
     String de_name;
@@ -290,9 +295,9 @@ public class Question extends SugarRecord<Question> {
         }
 
         Float num = ScoreRegister.calcNum(this,survey);
-        Float denum = ScoreRegister.calcDenum(this,survey);
+        Float denum = ScoreRegister.calcDenum(this, survey);
         ScoreRegister.addRecord(this, num, denum);
-        return Arrays.asList(num,denum);
+        return Arrays.asList(num, denum);
     }
 
     /**
@@ -320,6 +325,23 @@ public class Question extends SugarRecord<Question> {
         }
 
         return Question.findWithQuery(Question.class, LIST_ALL_BY_PROGRAM, program.getId().toString());
+    }
+
+    public static List<Question> listAllByTabs(List<Tab> tabs){
+
+        if(tabs==null || tabs.size()==0){
+            return new ArrayList<Question>();
+        }
+        String tabsAsString="";
+        Iterator<Tab> iterator=tabs.iterator();
+        while(iterator.hasNext()){
+            tabsAsString+="'"+iterator.next().getId().toString()+"'";
+            if(iterator.hasNext()){
+                tabsAsString+=",";
+            }
+        }
+        return Question.findWithQuery(Question.class,LIST_ALL_BY_TABS, tabsAsString);
+
     }
 
 
