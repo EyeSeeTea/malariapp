@@ -153,6 +153,7 @@ public class SurveyActivity extends BaseActivity{
         super.onResume();
 
         prepareSurveyInfo();
+        this.tabAdapter.notifyDataSetChanged();
     }
 
     @Override

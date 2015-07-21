@@ -397,6 +397,9 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
                 //FIXME: it is almost the same as the previous case
                 Value value = question.getValueBySession();
                 List<Float> numdenumradiobutton = ScoreRegister.getNumDenum(question);
+                if (numdenumradiobutton == null) { //FIXME: this avoid app crash when onResume
+                    break;
+                }
                 if (value != null) {
                     ((UncheckeableRadioButton) viewHolder.component.findViewWithTag(value.getOption())).setChecked(true);
 
