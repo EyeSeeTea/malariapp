@@ -2,20 +2,15 @@
 <resources>
 
     <!-- # general -->
-    <string name="developers">EyeSeeTea LTD</string>
     <string name="yes">Sim</string>
     <string name="no">Não</string>
-    <string name="ok">Ok</string>
     <string name="cancel">Cancelar</string>
     <string name="score">Resultado</string>
-    <string name="number_zero">0</string>
-    <string name="number_zero_percentage">0 % </string>
     <string name="title_id">Identidade</string>
     <string name="title_name">Nome</string>
     <string name="good">Bom</string>
     <string name="fair">Suficiente</string>
     <string name="poor">Insuficiente</string>
-    <string name="plus">+</string>
     <string name="lorem_ipsum">Lorem ipsum dolor sit amet</string>
 
     <!-- settings -->
@@ -105,26 +100,6 @@
     <!-- custom -->
     <string name="custom_title_tallies">Folhas de controlo: Somar e dar entrada dos totais dos seguintes indicadores dos registos na coluna A. Na coluna B indique os números totais da folha de relatório mensal</string>
     <string name="custom_info_tallies">Folhas de Controlo do mês de</string>
-    <string name="custom_info_one">1</string>
-    <string name="custom_info_two">2</string>
-    <string name="custom_info_three">3</string>
-    <string name="custom_info_four">4</string>
-    <string name="custom_info_five">5</string>
-    <string name="custom_info_six">6</string>
-    <string name="custom_info_seven">7</string>
-    <string name="custom_info_eight">8</string>
-    <string name="custom_info_nine">9</string>
-    <string name="custom_info_ten">10</string>
-    <string name="custom_info_eleven">11</string>
-    <string name="custom_info_twelve">12</string>
-    <string name="custom_info_thirteen">13</string>
-    <string name="custom_info_fourteen">14</string>
-    <string name="custom_info_fifteen">15</string>
-    <string name="custom_info_sixteen">16</string>
-    <string name="custom_info_seventeen">17</string>
-    <string name="custom_info_eighteen">18</string>
-    <string name="custom_info_nineteen">19</string>
-    <string name="custom_info_twenty">20</string>
 
     <!-- adherence -->
     <string name="adherence_info_switchquestion">Existem registos farmacêuticos para TCA dispensada?</string>
@@ -159,10 +134,8 @@
     <string name="score_title_avg">AVG Grupos de Doentes de Ambulatório (GDA)</string>
     <string name="score_title_environment">Ambiente</string>
     <string name="score_title_profile">Perfil</string>
-    <string name="score_title_percentage">%</string>
     <string name="score_info_tab_score">Resultado para a tab:</string>
     <string name="score_info_overall">Geral</string>
-    <string name="score_info_zero_float">0.0</string>
     <string name="score_info_accumulated">Numerador/Denominador da Tab</string>
     <string name="score_info_case1">Caso 1</string>
     <string name="score_info_case2">Caso 2</string>
@@ -197,14 +170,7 @@
         <item>@string/font_size_level3</item>
         <item>@string/font_size_level4</item>
     </string-array>
-    <string name="font_size_level0">xsmall</string>
-    <string name="font_size_level1">small</string>
-    <string name="font_size_level2">medium</string>
-    <string name="font_size_level3">large</string>
-    <string name="font_size_level4">xlarge</string>
 
-    <string name="textcard_default_scale">Sistema</string>
-    <string name="textcard_default_dimension">Meio/suporte</string>
     <string name="dialog_title_push_response">Reposta</string>
     <string name="dialog_info_push_ok">Os dados da pesquisa foi enviado com sucesso para o servidor DHIS</string>
     <string name="dialog_info_push_bad_credentials">Bad credenciais</string>
