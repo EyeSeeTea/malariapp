@@ -29,7 +29,6 @@ import android.widget.TextView;
 
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
-import org.eyeseetea.malariacare.utils.Constants;
 
 /**
  * TODO: document your custom view class.
@@ -78,7 +77,7 @@ public class TextCard extends TextView implements IEyeSeeView {
                 if (mDimension == null)
                     mDimension = context.getString(R.string.settings_array_values_font_sizes_def);
                 if (mScale == null) this.mScale = PreferencesState.getInstance().getScale();
-                if (!mScale.equals(Constants.FONTS_SYSTEM))
+                if (!mScale.equals(context.getString(R.string.font_size_system)))
                     setTextSize(TypedValue.COMPLEX_UNIT_SP, PreferencesState.getInstance().getFontSize(mScale, mDimension));
             } finally {
                 a.recycle();

@@ -29,7 +29,6 @@ import android.widget.EditText;
 
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
-import org.eyeseetea.malariacare.utils.Constants;
 
 /**
  * TODO: document your custom view class.
@@ -63,7 +62,7 @@ public class EditCard extends EditText implements IEyeSeeView{
     public void init(AttributeSet attrs, int defStyle) {
         // Load attributes
         if (attrs != null) {
-            a = getContext().obtainStyledAttributes(attrs, R.styleable.TextCard, defStyle, 0);
+            a = context.obtainStyledAttributes(attrs, R.styleable.TextCard, defStyle, 0);
             try {
                 mfontName = a.getString(R.styleable.EditCard_eFontName);
                 if (mfontName != null) {
@@ -76,7 +75,7 @@ public class EditCard extends EditText implements IEyeSeeView{
                 if (mDimension == null)
                     mDimension = context.getString(R.string.settings_array_values_font_sizes_def);
                 if (mScale == null) mScale = PreferencesState.getInstance().getScale();
-                if (!mScale.equals(Constants.FONTS_SYSTEM))
+                if (!mScale.equals(context.getString(R.string.font_size_system)))
                     setTextSize(TypedValue.COMPLEX_UNIT_SP, PreferencesState.getInstance().getFontSize(mScale, mDimension));
             } finally {
                 a.recycle();

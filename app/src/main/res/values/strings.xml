@@ -210,6 +210,7 @@
     <string name="font_size_level2" translatable="false">medium</string>
     <string name="font_size_level3" translatable="false">large</string>
     <string name="font_size_level4" translatable="false">xlarge</string>
+    <string name="font_size_system" translatable="false">system</string>
 
     <string name="textcard_default_scale" translatable="false">system</string>
     <string name="textcard_default_dimension" translatable="false">medium</string>

@@ -31,7 +31,6 @@ import android.widget.RadioGroup;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.model.Option;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
-import org.eyeseetea.malariacare.utils.Constants;
 
 /**
  * Created by adrian on 30/05/15.
@@ -91,7 +90,7 @@ public class UncheckeableRadioButton extends RadioButton implements IEyeSeeView 
     public void init(AttributeSet attrs, int defStyle) {
         // Load attributes
         if (attrs != null) {
-            a = getContext().obtainStyledAttributes(attrs, R.styleable.UncheckeableRadioButton, defStyle, 0);
+            a = context.obtainStyledAttributes(attrs, R.styleable.UncheckeableRadioButton, defStyle, 0);
             try {
                 mfontName = a.getString(R.styleable.UncheckeableRadioButton_rFontName);
                 if (mfontName != null) {
@@ -104,7 +103,7 @@ public class UncheckeableRadioButton extends RadioButton implements IEyeSeeView 
                 if (mDimension == null)
                     mDimension = context.getString(R.string.settings_array_values_font_sizes_def);
                 if (mScale == null) mScale = PreferencesState.getInstance().getScale();
-                if (!mScale.equals(Constants.FONTS_SYSTEM))
+                if (!mScale.equals(context.getString(R.string.font_size_system)))
                     setTextSize(TypedValue.COMPLEX_UNIT_SP, PreferencesState.getInstance().getFontSize(mScale, mDimension));
             } finally {
                 a.recycle();
@@ -148,7 +147,7 @@ public class UncheckeableRadioButton extends RadioButton implements IEyeSeeView 
         if (dimension != null && scale != null){
             this.mDimension = dimension;
             this.mScale = scale;
-            if (!scale.equals(Constants.FONTS_SYSTEM)) {
+            if (!scale.equals(context.getString(R.string.font_size_system))) {
                 setTextSize(TypedValue.COMPLEX_UNIT_SP, PreferencesState.getInstance().getFontSize(scale,dimension));
             }
         }

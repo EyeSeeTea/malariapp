@@ -29,7 +29,6 @@ import junit.framework.Assert;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.SettingsActivity;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
-import org.eyeseetea.malariacare.utils.Constants;
 import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
@@ -40,12 +39,7 @@ import static android.support.test.espresso.Espresso.pressBack;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
-import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
-import static junit.framework.Assert.assertEquals;
-import static org.hamcrest.Matchers.allOf;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.not;
 
 
 /**
@@ -83,7 +77,7 @@ public class SettingsEspressoTest extends MalariaEspressoTest{
         pressBack();
 
         //THEN
-        Assert.assertEquals(Constants.FONTS_LARGE, PreferencesState.getInstance().getScale());
+        Assert.assertEquals(getActivityInstance().getString(R.string.font_size_level2), PreferencesState.getInstance().getScale());
     }
 
     @Test

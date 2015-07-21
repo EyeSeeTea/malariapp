@@ -40,13 +40,6 @@ public class Constants {
             OPERATION_TYPE_PARENT = 1,
             OPERATION_TYPE_OTHER = 2;
 
-    public static final String FONTS_XSMALL = "xsmall",
-            FONTS_SMALL = "small",
-            FONTS_MEDIUM = "medium",
-            FONTS_LARGE = "large",
-            FONTS_XLARGE = "xlarge",
-            FONTS_SYSTEM = "system";
-
     public static final int MAX_ITEMS_IN_DASHBOARD=5;
 
     public static final String CHECKBOX_YES_OPTION="Yes";
