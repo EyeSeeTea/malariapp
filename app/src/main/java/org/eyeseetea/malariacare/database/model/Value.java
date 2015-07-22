@@ -92,6 +92,14 @@ public class Value extends SugarRecord<Value> {
                 '}';
     }
 
+    public static int countBySurvey(Survey survey){
+        if(survey==null || survey.getId()==null){
+            return 0;
+        }
+        String[] whereArgs={survey.getId().toString()};
+        return (int)Value.count(Value.class,"survey=?",whereArgs);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
