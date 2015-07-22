@@ -119,6 +119,7 @@
     <string name="iqatab_info_parasites">Parasites/uL</string>
     <string name="iqatab_info_species">Species</string>
     <string name="iqatab_info_labstaff">Lab Staff</string>
+    <string name="iqatab_info_results">Results below are auto-calculated</string>
 
     <!-- reporting -->
     <string name="reporting_info_reporting">Notification</string>
