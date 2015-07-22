@@ -484,7 +484,8 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
         recalculateScores(viewHolder, question);
 
         if (question.hasChildren()) {
-            toggleChildrenVisibility(question, option.isActiveChildren());
+            // FIXME: the database should have the link from question to the option that triggers its show/hide action. This way, we wouldn't depend on translation to properly match yes/oui/sí/etc
+            toggleChildrenVisibility(question, option.is(context.getString(R.string.yes)));
         }
 
         updateScore();

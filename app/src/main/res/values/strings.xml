@@ -3,21 +3,21 @@
 
     <!-- # general -->
     <string name="app_name" translatable="false">QA App</string>
-    <string name="developers">EyeSeeTea LTD</string>
+    <string name="developers" translatable="false">EyeSeeTea LTD</string>
     <string name="empty_string" translatable="false"></string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
-    <string name="ok">Ok</string>
+    <string name="ok" translatable="false">Ok</string>
     <string name="cancel">Cancel</string>
     <string name="score">Score</string>
-    <string name="number_zero">0</string>
-    <string name="number_zero_percentage">0 % </string>
+    <string name="number_zero" translatable="false">0</string>
+    <string name="number_zero_percentage" translatable="false">0 % </string>
     <string name="title_id">ID</string>
     <string name="title_name">Name</string>
     <string name="good">Good</string>
     <string name="fair">Fair</string>
     <string name="poor">Poor</string>
-    <string name="plus">+</string>
+    <string name="plus" translatable="false">+</string>
     <string name="lorem_ipsum">Lorem ipsum dolor sit amet</string>
 
     <!-- settings -->
@@ -107,30 +107,32 @@
     <!-- custom -->
     <string name="custom_title_tallies">TALLIES - Add up and enter the totals for the following indicators from the registers in column A.  In column B enter the total numbers from the monthly reporting sheet</string>
     <string name="custom_info_tallies">TALLIES for the Month of</string>
-    <string name="custom_info_one">1</string>
-    <string name="custom_info_two">2</string>
-    <string name="custom_info_three">3</string>
-    <string name="custom_info_four">4</string>
-    <string name="custom_info_five">5</string>
-    <string name="custom_info_six">6</string>
-    <string name="custom_info_seven">7</string>
-    <string name="custom_info_eight">8</string>
-    <string name="custom_info_nine">9</string>
-    <string name="custom_info_ten">10</string>
-    <string name="custom_info_eleven">11</string>
-    <string name="custom_info_twelve">12</string>
-    <string name="custom_info_thirteen">13</string>
-    <string name="custom_info_fourteen">14</string>
-    <string name="custom_info_fifteen">15</string>
-    <string name="custom_info_sixteen">16</string>
-    <string name="custom_info_seventeen">17</string>
-    <string name="custom_info_eighteen">18</string>
-    <string name="custom_info_nineteen">19</string>
-    <string name="custom_info_twenty">20</string>
+    <string name="custom_info_one" translatable="false">1</string>
+    <string name="custom_info_two" translatable="false">2</string>
+    <string name="custom_info_three" translatable="false">3</string>
+    <string name="custom_info_four" translatable="false">4</string>
+    <string name="custom_info_five" translatable="false">5</string>
+    <string name="custom_info_six" translatable="false">6</string>
+    <string name="custom_info_seven" translatable="false">7</string>
+    <string name="custom_info_eight" translatable="false">8</string>
+    <string name="custom_info_nine" translatable="false">9</string>
+    <string name="custom_info_ten" translatable="false">10</string>
+    <string name="custom_info_eleven" translatable="false">11</string>
+    <string name="custom_info_twelve" translatable="false">12</string>
+    <string name="custom_info_thirteen" translatable="false">13</string>
+    <string name="custom_info_fourteen" translatable="false">14</string>
+    <string name="custom_info_fifteen" translatable="false">15</string>
+    <string name="custom_info_sixteen" translatable="false">16</string>
+    <string name="custom_info_seventeen" translatable="false">17</string>
+    <string name="custom_info_eighteen" translatable="false">18</string>
+    <string name="custom_info_nineteen" translatable="false">19</string>
+    <string name="custom_info_twenty" translatable="false">20</string>
 
     <!-- adherence -->
     <string name="adherence_info_switchquestion">Are there pharmacy records of ACTs dispensed?</string>
     <string name="adherence_title_explanation">Phamacy/clinical register v.s Lab records. Steps in Evaluation of Provider Adherence to Malaria Diagnostic Test Results</string>
+    <string name="adherence_title_explanation_content">Record below the patient ID numbers of 20 patients prescribed ACTs from the Pharmacy Register.\nLocate the patient IDs from Step 1 in the Laboratory and/or Clinical Registers and record their test result in the appropriate column. </string>
+    <string name="adherence_title2_explanation_content">In the Laboratory Register, record the patient ID numbers 20 patients: 5 RDT +; 5 RDT -; 5 microscopy +; 5 microscopy -.\nLocate the patient IDs from Step 1 in the Pharmacy Register and record whether they received ACTs in the “ACT Prescribed” column by ticking either Y or N.</string>
     <string name="adherence_info_pharmacy_register">Pharmacy Register</string>
     <string name="adherence_title_gender">Gender</string>
     <string name="adherence_title_age">Age</string>
@@ -147,6 +149,7 @@
     <string name="iqatab_info_parasites">Parasites/uL</string>
     <string name="iqatab_info_species">Species</string>
     <string name="iqatab_info_labstaff">Lab Staff</string>
+    <string name="iqatab_info_results">Results below are auto-calculated</string>
 
     <!-- reporting -->
     <string name="reporting_info_reporting">Reporting</string>
@@ -161,10 +164,10 @@
     <string name="score_title_avg">AVG</string>
     <string name="score_title_environment">Environment</string>
     <string name="score_title_profile">Profile</string>
-    <string name="score_title_percentage">%</string>
+    <string name="score_title_percentage" translatable="false">%</string>
     <string name="score_info_tab_score">Score for tab:</string>
     <string name="score_info_overall">Overall</string>
-    <string name="score_info_zero_float">0.0</string>
+    <string name="score_info_zero_float" translatable="false">0.0</string>
     <string name="score_info_accumulated">Tab num/dem</string>
     <string name="score_info_case1">Case 1</string>
     <string name="score_info_case2">Case 2</string>
@@ -205,14 +208,15 @@
         <item>@string/font_size_level3</item>
         <item>@string/font_size_level4</item>
     </string-array>
-    <string name="font_size_level0">xsmall</string>
-    <string name="font_size_level1">small</string>
-    <string name="font_size_level2">medium</string>
-    <string name="font_size_level3">large</string>
-    <string name="font_size_level4">xlarge</string>
+    <string name="font_size_level0" translatable="false">xsmall</string>
+    <string name="font_size_level1" translatable="false">small</string>
+    <string name="font_size_level2" translatable="false">medium</string>
+    <string name="font_size_level3" translatable="false">large</string>
+    <string name="font_size_level4" translatable="false">xlarge</string>
+    <string name="font_size_system" translatable="false">system</string>
 
-    <string name="textcard_default_scale">system</string>
-    <string name="textcard_default_dimension">medium</string>
+    <string name="textcard_default_scale" translatable="false">system</string>
+    <string name="textcard_default_dimension" translatable="false">medium</string>
     <string name="dialog_title_push_response">Push response</string>
     <string name="dialog_info_push_ok">Survey data has been successfully pushed to DHIS server</string>
     <string name="dialog_info_push_bad_credentials">Bad credentials for pushing</string>

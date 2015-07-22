@@ -93,21 +93,7 @@ public class Tab extends SugarRecord<Tab> {
         return getName().equals(Constants.COMPOSITE_SCORE_TAB_NAME);
     }
 
-    /**
-     * Checks if this tab is the adherence tab
-     * @return
-     */
-    public boolean isAdherenceTab(){
-        return getType() == Constants.TAB_ADHERENCE;
-    }
 
-    /**
-     * Checks if this tab is the IQA tab
-     * @return
-     */
-    public boolean isIQATab(){
-        return getType() == Constants.TAB_IQATAB;
-    }
 
     @Override
     public String toString() {

@@ -36,7 +36,6 @@ import org.eyeseetea.malariacare.database.model.Tab;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.services.SurveyService;
 import org.eyeseetea.malariacare.test.utils.IntentServiceIdlingResource;
-import org.eyeseetea.malariacare.utils.Constants;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -54,10 +53,8 @@ import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static junit.framework.Assert.assertEquals;
 import static org.eyeseetea.malariacare.test.utils.EditCardScaleMatcher.hasEditCardScale;
-import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.not;
 
 
 /**
@@ -198,7 +195,7 @@ public class SurveyScoresEspressoTest extends MalariaEspressoTest{
     public void textsize_editcard_changes(){
         Log.i(TAG, "------textsize_editcard_changes------");
         //GIVEN: Some special font size set
-        PreferencesState.getInstance().setScale(Constants.FONTS_LARGE);
+        PreferencesState.getInstance().setScale(getActivityInstance().getString(R.string.font_size_level2));
 
         //WHEN: Select survey again from dashboard
         whenTabSelected(1);

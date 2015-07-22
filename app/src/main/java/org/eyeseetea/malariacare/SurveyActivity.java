@@ -50,6 +50,7 @@ import org.eyeseetea.malariacare.layout.adapters.survey.AutoTabAdapter;
 import org.eyeseetea.malariacare.layout.adapters.survey.CompositeScoreAdapter;
 import org.eyeseetea.malariacare.layout.adapters.survey.CustomAdherenceAdapter;
 import org.eyeseetea.malariacare.layout.adapters.survey.CustomIQTABAdapter;
+import org.eyeseetea.malariacare.layout.adapters.survey.CustomReportingAdapter;
 import org.eyeseetea.malariacare.layout.adapters.survey.ITabAdapter;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
@@ -256,10 +257,11 @@ public class SurveyActivity extends BaseActivity{
             content.removeAllViews();
             content.addView(viewContent);
             ITabAdapter tabAdapter = tabAdaptersCache.findAdapter(tab);
-            if (    tab.getType() == Constants.TAB_AUTOMATIC_SCORED ||
+            if (    tab.getType() == Constants.TAB_AUTOMATIC ||
                     tab.getType() == Constants.TAB_ADHERENCE    ||
                     tab.getType() == Constants.TAB_IQATAB ||
-                    tab.getType() == Constants.TAB_SCORE_SUMMARY) {
+                    tab.getType() == Constants.TAB_REPORTING ||
+                    tab.getType() == Constants.TAB_COMPOSITE_SCORE) {
                 tabAdapter.initializeSubscore();
             }
             ListView mQuestions = (ListView) SurveyActivity.this.findViewById(R.id.listView);
@@ -591,20 +593,16 @@ public class SurveyActivity extends BaseActivity{
          * @return
          */
         private ITabAdapter buildAdapter(Tab tab){
-            if (tab.isCompositeScore())
-                return new CompositeScoreAdapter(this.compositeScores, SurveyActivity.this, R.layout.composite_score_tab, tab.getName());
 
-            if (tab.isAdherenceTab()) {
-                Log.d(TAG, "Creating an Adherence Adapter");
-                return CustomAdherenceAdapter.build(tab, SurveyActivity.this);
-            }
-
-            if (tab.isIQATab())
-                return CustomIQTABAdapter.build(tab, SurveyActivity.this);
-
-
-            if(tab.isGeneralScore()){
-                return null;
+            switch (tab.getType()) {
+                case Constants.TAB_COMPOSITE_SCORE:
+                    return new CompositeScoreAdapter(this.compositeScores, SurveyActivity.this, R.layout.composite_score_tab, tab.getName());
+                case Constants.TAB_IQATAB:
+                    return CustomIQTABAdapter.build(tab, SurveyActivity.this);
+                case Constants.TAB_ADHERENCE:
+                    return CustomAdherenceAdapter.build(tab, SurveyActivity.this);
+                case Constants.TAB_REPORTING:
+                    return CustomReportingAdapter.build(tab, SurveyActivity.this);
             }
 
             return AutoTabAdapter.build(tab,SurveyActivity.this);
