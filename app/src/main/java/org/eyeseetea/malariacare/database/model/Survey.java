@@ -156,13 +156,11 @@ public class Survey extends SugarRecord<Survey> {
      * @return SurveyAnsweredRatio that hold the total & answered questions.
      */
     private SurveyAnsweredRatio reloadSurveyAnsweredRatio(){
-
         int numRequired= Question.countRequiredByProgram(this.getProgram());
         int numOptional=0;
-        int numAnswered = 0;
+        int numAnswered = Value.countBySurvey(this);
 
         for (Value value : this.getValuesFromParentQuestions()) {
-            numAnswered++;
             if (value.isAYes()) {
                 //There might be children no answer questions that should be skipped
                 for(Question childQuestion:value.getQuestion().getQuestionChildren()){
