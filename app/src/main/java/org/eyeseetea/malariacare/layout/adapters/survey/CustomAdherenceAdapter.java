@@ -128,6 +128,7 @@ public class CustomAdherenceAdapter extends BaseAdapter implements ITabAdapter {
         this.items=Utils.convertTabToArrayCustom(tab);
         this.id_layout = R.layout.form_custom;
         this.context=context;
+        this.tab=tab;
 
         if (items.size()> 0)
             position_secondheader = LayoutUtils.getNumberOfQuestionParentsHeader((Header) items.get(0)) +1 ;

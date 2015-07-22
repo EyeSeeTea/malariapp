@@ -18,14 +18,13 @@ public class Constants {
     public static final int MAX_INT_CHARS = 5;
 
     // ############# TAB TYPE ###############
-    public static final int TAB_AUTOMATIC_SCORED = 0,
-            TAB_AUTOMATIC_NON_SCORED = 1,
-            TAB_CUSTOM_SCORED = 2,
-            TAB_CUSTOM_NON_SCORED = 3,
-            TAB_SCORE_SUMMARY = 4,
-            TAB_OTHER = 5,
+    public static final int TAB_AUTOMATIC = 0,
+            TAB_AUTOMATIC_NON_SCORED = 1,//we need to delete this
+            TAB_COMPOSITE_SCORE = 2,
+            TAB_SCORE_SUMMARY = 4, //we need to delete this
             TAB_ADHERENCE = 6,
-            TAB_IQATAB=7;
+            TAB_IQATAB=7,
+            TAB_REPORTING=8;
 
     //FIXME So far the special sub type of composite scores is treated by name
     public static final String COMPOSITE_SCORE_TAB_NAME="Composite Scores";
