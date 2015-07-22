@@ -28,7 +28,7 @@
             android:layout_height="wrap_content"
             android:inputType="textMultiLine"
             android:id="@+id/explanationText"
-            android:text="Record below the patient ID numbers of 20 patients prescribed ACTs from the Pharmacy Register.\nLocate the patient IDs from Step 1 in the Laboratory and/or Clinical Registers and record their test result in the appropriate column. "
+            android:text="@string/adherence_title_explanation_content"
             android:background="@drawable/background_even"
             android:textSize="14sp"
             android:paddingLeft="15dip" />

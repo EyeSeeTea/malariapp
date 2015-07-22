@@ -100,6 +100,8 @@
     <!-- adherence -->
     <string name="adherence_info_switchquestion">¿Hay registros de ACTs dispensados?</string>
     <string name="adherence_title_explanation">Registros de farmacia/clínicos v.s. registros de laboratorio. Steps in Evaluation of Provider Adherence to Malaria Diagnostic Test Results</string>
+    <string name="adherence_title_explanation_content">Record below the patient ID numbers of 20 patients prescribed ACTs from the Pharmacy Register.\nLocate the patient IDs from Step 1 in the Laboratory and/or Clinical Registers and record their test result in the appropriate column. </string>
+    <string name="adherence_title2_explanation_content">In the Laboratory Register, record the patient ID numbers 20 patients: 5 RDT +; 5 RDT -; 5 microscopy +; 5 microscopy -.\nLocate the patient IDs from Step 1 in the Pharmacy Register and record whether they received ACTs in the “ACT Prescribed” column by ticking either Y or N.</string>
     <string name="adherence_info_pharmacy_register">Registro de farmacia</string>
     <string name="adherence_title_gender">Género</string>
     <string name="adherence_title_age">Edad</string>
