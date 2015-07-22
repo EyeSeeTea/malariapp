@@ -30,6 +30,7 @@ public interface ITabAdapter {
 
     public BaseAdapter getAdapter();
 
+    // FIXME: scores are in disappearing so, this will be removed from here and from every adapter that implements it
     public Float getScore();
 
     public int getLayout();
