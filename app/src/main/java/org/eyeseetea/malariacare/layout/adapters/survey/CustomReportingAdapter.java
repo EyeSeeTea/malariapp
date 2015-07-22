@@ -31,7 +31,9 @@ import android.widget.BaseAdapter;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.model.Header;
 import org.eyeseetea.malariacare.database.model.Question;
+import org.eyeseetea.malariacare.database.model.Tab;
 import org.eyeseetea.malariacare.database.utils.ReadWriteDB;
+import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 import org.eyeseetea.malariacare.utils.Utils;
 import org.eyeseetea.malariacare.views.EditCard;
@@ -48,24 +50,12 @@ public class CustomReportingAdapter extends BaseAdapter implements ITabAdapter {
 
     private LayoutInflater lInflater;
 
-    String tabName;
+    Tab tab;
 
-    final ScoreHolder scoreHolder = new ScoreHolder();
-
-    final RowValues[] values;
     private final Context context;
 
     int id_layout;
 
-    float denum = 0;
-    float num = 0;
-
-    class RowValues {
-        public String statement;
-        public String register;
-        public String report;
-        public int score;
-    }
 
     static class ViewHolder {
         public TextCard statement;
@@ -74,35 +64,23 @@ public class CustomReportingAdapter extends BaseAdapter implements ITabAdapter {
         public TextCard score;
     }
 
-    static class ScoreHolder {
-        public TextCard scoreText;
-        public TextCard score;
-        public TextCard cualitativeScore;
+    /**
+     * Factory method to build a CustomReportingTab.
+     * @param tab
+     * @param context
+     * @return
+     */
+    public static CustomReportingAdapter build(Tab tab, Context context){
+        return new CustomReportingAdapter(tab, context);
     }
 
-    public void updateScore() {
-        scoreHolder.score.setText(Utils.round(num / denum));
-    }
-
-    public CustomReportingAdapter(List<Object> items, Context context, int id_layout, String tabName) {
+    public CustomReportingAdapter(Tab tab, Context context) {
         this.lInflater=LayoutInflater.from(context);
-        this.items=items;
+        this.items=Utils.convertTabToArrayCustom(tab);
         this.context=context;
-        this.id_layout = id_layout;
-        this.tabName = tabName;
+        this.id_layout = R.layout.form_custom;
+        this.tab = tab;
 
-        values = new RowValues[items.size()];
-
-        for (int i = 0; i<items.size(); i++){
-            Object item = items.get(i);
-            if (item instanceof Question) {
-                Question question = (Question) item;
-                if (question.hasChildren())
-                    values[i] = readValues(question);
-            }
-        }
-
-        //initializeSubscore();
     }
 
     @Override
@@ -116,25 +94,21 @@ public class CustomReportingAdapter extends BaseAdapter implements ITabAdapter {
     }
 
     private void initializeScoreViews() {
-        scoreHolder.score = (TextCard) ((Activity) context).findViewById(R.id.score);
-        scoreHolder.cualitativeScore = (TextCard) ((Activity) context).findViewById(R.id.qualitativeScore);
-        scoreHolder.scoreText = (TextCard) ((Activity) context).findViewById(R.id.subtotalScoreText);
+
     }
 
     @Override
     public Float getScore() {
-        return num/denum;
+        return 0F;
     }
 
     @Override
     public String getName() {
-        return tabName;
+        return tab.getName();
     }
 
     @Override
     public void initializeSubscore() {
-        initializeScoreViews();
-        updateScore();
     }
 
     class Bool {
@@ -160,54 +134,39 @@ public class CustomReportingAdapter extends BaseAdapter implements ITabAdapter {
         return items.get(position).hashCode();
     }
 
-    private void setValues(ViewHolder viewHolder, RowValues rowValues) {
-        viewHolder.statement.setText(rowValues.statement);
-        viewHolder.register.setText(rowValues.register);
-        viewHolder.report.setText(rowValues.report);
-        viewHolder.score.setText(String.valueOf(rowValues.score));
+    private void setValues(ViewHolder viewHolder, Question question) {
+
+        Question questionRegister = question.getQuestionChildren().get(0);
+        Question questionReport = question.getQuestionChildren().get(1);
+
+        viewHolder.statement.setText(question.getForm_name());
+        viewHolder.register.setText(ReadWriteDB.readValueQuestion(questionRegister));
+        viewHolder.report.setText(ReadWriteDB.readValueQuestion(questionReport));
+
+        setScoreColumn(viewHolder.score, questionRegister, questionReport);
+
     }
 
-    private int areEquals(String answer1, String answer2) {
-        int result = 0;
+    private boolean areEquals(String answer1, String answer2) {
+        boolean result = false;
 
         if (answer1!=null && !answer1.equals(""))
             if (answer1.equals(answer2))
-                result=1;
+                result=true;
 
         return result;
     }
 
-    private RowValues readValues(Question question) {
 
-        RowValues rowValues = new RowValues();
+    private void setScoreColumn(TextCard score, Question questionRegister, Question questionReport) {
 
-        rowValues.statement = question.getQuestionChildren().get(0).getForm_name();
-        rowValues.register = ReadWriteDB.readValueQuestion(question.getQuestionChildren().get(1));
-        rowValues.report = ReadWriteDB.readValueQuestion(question.getQuestionChildren().get(2));
-        rowValues.score = areEquals(rowValues.register, rowValues.report);
+        String register = ReadWriteDB.readValueQuestion(questionRegister);
+        String report =  ReadWriteDB.readValueQuestion(questionReport);
 
-        if (rowValues.score == 1)
-            num = num + 1;
-
-        denum = denum + 1;
-
-        return rowValues;
-    }
-
-    private void textEntered(TextCard score, RowValues rowValues) {
-
-        num = num - rowValues.score;
-
-        rowValues.score = areEquals(rowValues.register, rowValues.report);
-
-        if (rowValues.score == 1) {
-            num = num +1;
-            score.setText(this.context.getString(R.string.custom_info_one));
-        }
-        else score.setText(this.context.getString(R.string.number_zero));
-
-        updateScore();
-
+        if (areEquals(register, report))
+            score.setText(R.string.custom_info_one);
+        else
+            score.setText(R.string.number_zero);
     }
 
     @Override
@@ -215,15 +174,11 @@ public class CustomReportingAdapter extends BaseAdapter implements ITabAdapter {
         View rowView = null;
 
         final Object item = getItem(position);
-        final RowValues rowValues;
         final ViewHolder viewHolder = new ViewHolder();
-        final Question register;
-        final Question report;
 
-        if (values[items.indexOf(item)]==null)
-            values[items.indexOf(item)] = new RowValues();
-
-        rowValues = values [items.indexOf(item)];
+        final Question question;
+        final Question questionRegister;
+        final Question questionReport;
 
         if (item instanceof Header) {
             if (position==0)
@@ -240,12 +195,12 @@ public class CustomReportingAdapter extends BaseAdapter implements ITabAdapter {
             viewHolder.register = (EditCard) rowView.findViewById(R.id.register);
             viewHolder.score = (TextCard) rowView.findViewById(R.id.scoreValue);
 
-            register = ((Question)item).getQuestionChildren().get(1);
-            report = ((Question)item).getQuestionChildren().get(2);
+            question = (Question) item;
+
+            questionRegister = question.getQuestionChildren().get(0);
+            questionReport = question.getQuestionChildren().get(1);
 
             rowView.setBackgroundResource(LayoutUtils.calculateBackgrounds(position));
-
-
             viewHolder.register.addTextChangedListener(new TextWatcher() {
 
                 Bool viewCreated = new Bool(false);
@@ -258,10 +213,8 @@ public class CustomReportingAdapter extends BaseAdapter implements ITabAdapter {
                 public void onTextChanged(CharSequence s, int start, int before, int count) {
 
                     if (viewCreated.value) {
-                        rowValues.register = s.toString();
-                        ReadWriteDB.saveValuesText(register, s.toString());
-                        textEntered(viewHolder.score, rowValues);
-
+                        ReadWriteDB.saveValuesText(questionRegister, s.toString());
+                        setScoreColumn(viewHolder.score, questionRegister, questionReport);
                     }
                     else viewCreated.value = true;
                 }
@@ -284,9 +237,8 @@ public class CustomReportingAdapter extends BaseAdapter implements ITabAdapter {
                 public void onTextChanged(CharSequence s, int start, int before, int count) {
 
                     if (viewCreated.value) {
-                        rowValues.report = s.toString();
-                        ReadWriteDB.saveValuesText(report, s.toString());
-                        textEntered(viewHolder.score, rowValues);
+                        ReadWriteDB.saveValuesText(questionReport, s.toString());
+                        setScoreColumn(viewHolder.score, questionRegister, questionReport);
                     }
                     else viewCreated.value = true;
                 }
@@ -297,8 +249,7 @@ public class CustomReportingAdapter extends BaseAdapter implements ITabAdapter {
                 }
             });
 
-            setValues(viewHolder, rowValues);
-
+            setValues(viewHolder, question);
 
         }
 
