@@ -26,14 +26,14 @@ import android.widget.BaseAdapter;
  */
 public interface ITabAdapter {
 
-    public void initializeSubscore();
+    void initializeSubscore();
 
-    public BaseAdapter getAdapter();
+    BaseAdapter getAdapter();
 
     // FIXME: scores are in disappearing so, this will be removed from here and from every adapter that implements it
-    public Float getScore();
+    Float getScore();
 
-    public int getLayout();
+    int getLayout();
 
-    public String getName();
+    String getName();
 }
