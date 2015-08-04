@@ -203,7 +203,7 @@ public class Question extends SugarRecord<Question>{
         return this._master;
     }
 
-    public boolean belongsToMasterQuestions() {return !getMasters().isEmpty();}
+    public boolean calculatesMasterQuestions() {return !getMasters().isEmpty();}
 
     public boolean hasRelatives() {return !getRelatives().isEmpty(); }
 
