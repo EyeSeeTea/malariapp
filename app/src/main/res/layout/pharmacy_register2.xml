@@ -35,10 +35,10 @@
         <org.eyeseetea.malariacare.views.EditCard
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:inputType="number"
             android:id="@+id/patientId"
             android:background="@drawable/background_textfield"
-            android:textSize="12sp"/>
+            android:textSize="12sp"
+            android:inputType="text" />
     </LinearLayout>
 
     <LinearLayout
@@ -88,6 +88,7 @@
         android:layout_height="fill_parent"
         android:id="@+id/scoreContainer"
         android:padding="5dip"
+        android:visibility="gone"
         android:layout_gravity="center"
         android:layout_weight="1">
 

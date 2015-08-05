@@ -35,7 +35,7 @@
         <org.eyeseetea.malariacare.views.EditCard
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:inputType="number"
+                android:inputType="text"
                 android:id="@+id/patientId"
                 android:background="@drawable/background_textfield"
                 android:textSize="12sp" />
