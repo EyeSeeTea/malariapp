@@ -1,13 +1,56 @@
+/*
+ * Copyright (c) 2015.
+ *
+ * This file is part of QA App.
+ *
+ *  Health Network QIS App is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  Health Network QIS App is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 package org.eyeseetea.malariacare.database.model;
 
 import com.orm.SugarRecord;
+import com.raizlabs.android.dbflow.annotation.Column;
+import com.raizlabs.android.dbflow.annotation.ForeignKey;
+import com.raizlabs.android.dbflow.annotation.ForeignKeyReference;
+import com.raizlabs.android.dbflow.annotation.PrimaryKey;
+import com.raizlabs.android.dbflow.structure.BaseModel;
 
-public class Value extends SugarRecord<Value> {
+public class Value extends BaseModel {
 
-    Option option;
-    Question question;
+    @Column
+    @PrimaryKey(autoincrement = true)
+    Long id;
+    @Column
     String value;
+    @Column
+    @ForeignKey(references = {@ForeignKeyReference(columnName = "id_question",
+            columnType = Long.class,
+            foreignColumnName = "id")},
+            saveForeignKeyModel = false)
+    Question question;
+    @Column
+    @ForeignKey(references = {@ForeignKeyReference(columnName = "id_survey",
+            columnType = Long.class,
+            foreignColumnName = "id")},
+            saveForeignKeyModel = false)
     Survey survey;
+    @Column
+    @ForeignKey(references = {@ForeignKeyReference(columnName = "id_option",
+            columnType = Long.class,
+            foreignColumnName = "id")},
+            saveForeignKeyModel = false)
+    Option option;
 
     public Value() {
     }
@@ -24,6 +67,14 @@ public class Value extends SugarRecord<Value> {
         this.question = question;
         this.value = option.getName();
         this.survey = survey;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public Option getOption() {
@@ -82,16 +133,6 @@ public class Value extends SugarRecord<Value> {
         return getOption() != null && getOption().getName().equals("Yes");
     }
 
-    @Override
-    public String toString() {
-        return "Value{" +
-                "option=" + option +
-                ", question=" + question +
-                ", value='" + value + '\'' +
-                ", survey=" + survey +
-                '}';
-    }
-
     public static int countBySurvey(Survey survey){
         if(survey==null || survey.getId()==null){
             return 0;
@@ -107,21 +148,32 @@ public class Value extends SugarRecord<Value> {
 
         Value value1 = (Value) o;
 
-        if (!option.equals(value1.option)) return false;
+        if (!id.equals(value1.id)) return false;
+        if (!value.equals(value1.value)) return false;
         if (!question.equals(value1.question)) return false;
         if (!survey.equals(value1.survey)) return false;
-        if (!value.equals(value1.value)) return false;
+        return !(option != null ? !option.equals(value1.option) : value1.option != null);
 
-        return true;
     }
 
     @Override
     public int hashCode() {
-        int result = option.hashCode();
-        result = 31 * result + question.hashCode();
+        int result = id.hashCode();
         result = 31 * result + value.hashCode();
+        result = 31 * result + question.hashCode();
         result = 31 * result + survey.hashCode();
+        result = 31 * result + (option != null ? option.hashCode() : 0);
         return result;
     }
 
+    @Override
+    public String toString() {
+        return "Value{" +
+                "id=" + id +
+                ", value='" + value + '\'' +
+                ", question=" + question +
+                ", survey=" + survey +
+                ", option=" + option +
+                '}';
+    }
 }

@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2015.
  *
- * This file is part of Facility QA Tool App.
+ * This file is part of QA App.
  *
  *  Facility QA Tool App is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -19,16 +19,32 @@
 
 package org.eyeseetea.malariacare.database.model;
 
-import com.orm.SugarRecord;
-import com.orm.query.Condition;
-import com.orm.query.Select;
+import com.raizlabs.android.dbflow.annotation.Table;
+import com.raizlabs.android.dbflow.sql.builder.Condition;
+import com.raizlabs.android.dbflow.sql.language.Select;
+import com.raizlabs.android.dbflow.annotation.Column;
+import com.raizlabs.android.dbflow.annotation.OneToMany;
+import com.raizlabs.android.dbflow.annotation.PrimaryKey;
+import com.raizlabs.android.dbflow.structure.BaseModel;
+
+import org.eyeseetea.malariacare.database.AppDatabase;
 
 import java.util.List;
 
-public class Program extends SugarRecord<Program> {
+@Table(databaseName = AppDatabase.NAME)
+public class Program extends BaseModel {
 
+    @Column
+    @PrimaryKey(autoincrement = true)
+    Long id;
+    @Column
     String uid;
+    @Column
     String name;
+
+    List<Tab> tabs;
+
+    List<Survey> surveys;
 
     public Program() {
     }
@@ -40,6 +56,14 @@ public class Program extends SugarRecord<Program> {
     public Program(String uid, String name) {
         this.uid = uid;
         this.name = name;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getUid() {
@@ -58,11 +82,23 @@ public class Program extends SugarRecord<Program> {
         this.name = name;
     }
 
+    @OneToMany(methods = {OneToMany.Method.ALL}, variableName = "tabs")
     public List<Tab> getTabs(){
-        return Select.from(Tab.class)
-                .where(Condition.prop("program")
-                        .eq(String.valueOf(this.getId())))
-                .orderBy("orderpos").list();
+        if(this.tabs == null) {
+            this.tabs = new Select().from(Tab.class)
+                    .where(Condition.column(Tab$Table.ID_PROGRAM).is(this.getId()))
+                    .orderBy(Tab$Table.ORDER_POS).queryList();
+        }
+        return this.tabs;
+    }
+
+    @OneToMany(methods = {OneToMany.Method.ALL}, variableName = "surveys")
+    public List<Survey> getSurveys(){
+        if(this.surveys == null) {
+            this.surveys = new Select().from(Survey.class)
+                    .where(Condition.column(Survey$Table.ID_PROGRAM).is(this.getId())).queryList();
+        }
+        return this.surveys;
     }
 
     @Override
@@ -72,23 +108,25 @@ public class Program extends SugarRecord<Program> {
 
         Program program = (Program) o;
 
-        if (name != null ? !name.equals(program.name) : program.name != null) return false;
-        if (!uid.equals(program.uid)) return false;
+        if (!id.equals(program.id)) return false;
+        if (uid != null ? !uid.equals(program.uid) : program.uid != null) return false;
+        return name.equals(program.name);
 
-        return true;
     }
 
     @Override
     public int hashCode() {
-        int result = uid.hashCode();
-        result = 31 * result + (name != null ? name.hashCode() : 0);
+        int result = id.hashCode();
+        result = 31 * result + (uid != null ? uid.hashCode() : 0);
+        result = 31 * result + name.hashCode();
         return result;
     }
 
     @Override
     public String toString() {
         return "Program{" +
-                "uid='" + uid + '\'' +
+                "id=" + id +
+                ", uid='" + uid + '\'' +
                 ", name='" + name + '\'' +
                 '}';
     }

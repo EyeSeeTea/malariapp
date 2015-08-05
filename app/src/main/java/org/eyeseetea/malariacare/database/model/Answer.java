@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2015.
  *
- * This file is part of Facility QA Tool App.
+ * This file is part of QA App.
  *
  *  Facility QA Tool App is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -19,13 +19,27 @@
 
 package org.eyeseetea.malariacare.database.model;
 
-import com.orm.SugarRecord;
+import com.raizlabs.android.dbflow.annotation.Column;
+import com.raizlabs.android.dbflow.annotation.OneToMany;
+import com.raizlabs.android.dbflow.annotation.PrimaryKey;
+import com.raizlabs.android.dbflow.annotation.Table;
+import com.raizlabs.android.dbflow.sql.builder.Condition;
+import com.raizlabs.android.dbflow.sql.language.Select;
+import com.raizlabs.android.dbflow.structure.BaseModel;
+
+import org.eyeseetea.malariacare.database.AppDatabase;
 
 import java.util.List;
 
-public class Answer extends SugarRecord<Answer> {
+@Table(databaseName = AppDatabase.NAME)
+public class Answer extends BaseModel {
 
+    @Column
+    @PrimaryKey(autoincrement = true)
+    Long id;
+    @Column
     String name;
+    @Column
     Integer output;
 
     public Answer() {
@@ -34,6 +48,14 @@ public class Answer extends SugarRecord<Answer> {
     public Answer(String name, Integer output) {
         this.name = name;
         this.output = output;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -52,36 +74,45 @@ public class Answer extends SugarRecord<Answer> {
         this.output = output;
     }
 
+    //TODO: to enable lazy loading, here we need to set Method.SAVE and Method.DELETE and use the .toModel() to specify when do we want to load the models
+    @OneToMany(methods = {OneToMany.Method.ALL}, variableName = "options")
     public List<Option> getOptions(){
-        return Option.find(Option.class, "answer = ?", String.valueOf(this.getId()));
+        return new Select().from(Option.class).where(Condition.column(Option$Table.ID_ANSWER).is(this.getId())).queryList();
     }
 
-    @Override
-    public String toString() {
-        return "Answer{" +
-                "id='" + id + '\'' +
-                ", name='" + name + '\'' +
-                ", output=" + output +
-                '}';
+    //TODO: to enable lazy loading, here we need to set Method.SAVE and Method.DELETE and use the .toModel() to specify when do we want to load the models
+    @OneToMany(methods = {OneToMany.Method.ALL}, variableName = "questions")
+    public List<Option> getQuestions(){
+        return new Select().from(Question.class).where(Condition.column(Question$Table.ID_ANSWER).is(this.getId())).queryList();
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (!(o instanceof Answer)) return false;
 
         Answer answer = (Answer) o;
 
+        if (!id.equals(answer.id)) return false;
         if (name != null ? !name.equals(answer.name) : answer.name != null) return false;
-        if (output != null ? !output.equals(answer.output) : answer.output != null) return false;
+        return output.equals(answer.output);
 
-        return true;
     }
 
     @Override
     public int hashCode() {
-        int result = name != null ? name.hashCode() : 0;
-        result = 31 * result + (output != null ? output.hashCode() : 0);
+        int result = id.hashCode();
+        result = 31 * result + (name != null ? name.hashCode() : 0);
+        result = 31 * result + output.hashCode();
         return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Answer{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", output=" + output +
+                '}';
     }
 }

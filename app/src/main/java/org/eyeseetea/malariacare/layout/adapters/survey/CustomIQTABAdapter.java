@@ -103,7 +103,7 @@ public class CustomIQTABAdapter extends BaseAdapter implements ITabAdapter {
         for (int i = 2 * number_rows_section; i<items.size();i++) {
             Object item = items.get(i);
             if (item instanceof Question) {
-                Question result = ((Question) item).getQuestionChildren().get(0);
+                Question result = ((Question) item).getChildren().get(0);
                 ScoreRegister.addRecord(result, ScoreRegister.calcNum(result), ScoreRegister.calcDenum(result));
             }
 
@@ -207,11 +207,11 @@ public class CustomIQTABAdapter extends BaseAdapter implements ITabAdapter {
             result_position = position - 1;
         }
 
-        q1 = ((Question) items.get(position)).getQuestionChildren().get(0);
-        q2 = ((Question) items.get(simetric_position)).getQuestionChildren().get(0);
+        q1 = ((Question) items.get(position)).getChildren().get(0);
+        q2 = ((Question) items.get(simetric_position)).getChildren().get(0);
 
         Question questionAnswer =  (Question) items.get(2*number_rows_section+result_position+1);
-        Question testResult = questionAnswer.getQuestionChildren().get(0);
+        Question testResult = questionAnswer.getChildren().get(0);
 
         if (q1.getValueBySession() != null && q2.getValueBySession() != null &&
                 q1.getValueBySession().getOption().equals(q2.getValueBySession().getOption())) {
@@ -234,9 +234,9 @@ public class CustomIQTABAdapter extends BaseAdapter implements ITabAdapter {
 
     private void setValues(ViewHolder viewHolder, Question question) {
         viewHolder.number.setText(question.getForm_name());
-        viewHolder.species.setSelection(ReadWriteDB.readPositionOption(question.getQuestionChildren().get(2)));
-        viewHolder.parasites.setText(ReadWriteDB.readValueQuestion(question.getQuestionChildren().get(1)));
-        viewHolder.spinner.setSelection(ReadWriteDB.readPositionOption(question.getQuestionChildren().get(0)));
+        viewHolder.species.setSelection(ReadWriteDB.readPositionOption(question.getChildren().get(2)));
+        viewHolder.parasites.setText(ReadWriteDB.readValueQuestion(question.getChildren().get(1)));
+        viewHolder.spinner.setSelection(ReadWriteDB.readPositionOption(question.getChildren().get(0)));
     }
 
 
@@ -269,20 +269,20 @@ public class CustomIQTABAdapter extends BaseAdapter implements ITabAdapter {
                 viewHolder.parasites = (EditCard) rowView.findViewById(R.id.parasites);
                 viewHolder.species = (Spinner) rowView.findViewById(R.id.species);
 
-                List<Option> optionList = ((Question) item).getQuestionChildren().get(0).getAnswer().getOptions();
+                List<Option> optionList = ((Question) item).getChildren().get(0).getAnswer().getOptions();
                 optionList.add(0, new Option(Constants.DEFAULT_SELECT_OPTION));
 
                 viewHolder.spinner.setAdapter(new OptionArrayAdapter(context, optionList));
 
-                optionList = ((Question) item).getQuestionChildren().get(2).getAnswer().getOptions();
+                optionList = ((Question) item).getChildren().get(2).getAnswer().getOptions();
                 optionList.add(0, new Option(Constants.DEFAULT_SELECT_OPTION));
 
                 viewHolder.species.setAdapter(new OptionArrayAdapter(context, optionList));
 
 
-                test = question.getQuestionChildren().get(0);
-                parasites = question.getQuestionChildren().get(1);
-                species = question.getQuestionChildren().get(2);
+                test = question.getChildren().get(0);
+                parasites = question.getChildren().get(1);
+                species = question.getChildren().get(2);
 
                 rowView.setBackgroundResource(LayoutUtils.calculateBackgrounds(position));
 
@@ -359,7 +359,7 @@ public class CustomIQTABAdapter extends BaseAdapter implements ITabAdapter {
                 rowView = lInflater.inflate(R.layout.iqatab_results, parent, false);
 
                 Question questionResult = (Question) getItem(position);
-                Question testResult = questionResult.getQuestionChildren().get(0);
+                Question testResult = questionResult.getChildren().get(0);
 
 
                 viewHolder2.number = (TextCard) rowView.findViewById(R.id.number_result);

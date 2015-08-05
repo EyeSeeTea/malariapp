@@ -105,7 +105,7 @@ public class LayoutUtils {
 
     public static void toggleVisibleChildren(int position, Spinner spinner, Question triggeredQuestion) {
         View parent = LayoutUtils.findParentRecursively(spinner, (Integer) spinner.getTag(R.id.Tab));
-        for (Question childQuestion : triggeredQuestion.getQuestionChildren()) {
+        for (Question childQuestion : triggeredQuestion.getChildren()) {
             View childView = LayoutUtils.findChildRecursively(parent, childQuestion);
             View headerView = ((View) ((View) childView).getTag(R.id.HeaderViewTag));
             if (position == 1) { //FIXME: There must be a smarter way for saying "if the user selected yes"
@@ -114,7 +114,7 @@ public class LayoutUtils {
                 ScoreRegister.addRecord(childQuestion, 0F, childQuestion.getDenominator_w());
             } else {
                 LayoutUtils.toggleVisible(childView, View.GONE);
-                if (LayoutUtils.isHeaderEmpty(triggeredQuestion.getQuestionChildren(), childQuestion.getHeader().getQuestions())) {
+                if (LayoutUtils.isHeaderEmpty(triggeredQuestion.getChildren(), childQuestion.getHeader().getQuestions())) {
                     if (headerView != null) headerView.setVisibility(View.GONE);
                 }
                 ScoreRegister.deleteRecord(childQuestion);

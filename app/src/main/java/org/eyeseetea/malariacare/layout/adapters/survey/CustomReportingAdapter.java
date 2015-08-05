@@ -19,7 +19,6 @@
 
 package org.eyeseetea.malariacare.layout.adapters.survey;
 
-import android.app.Activity;
 import android.content.Context;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -33,7 +32,6 @@ import org.eyeseetea.malariacare.database.model.Header;
 import org.eyeseetea.malariacare.database.model.Question;
 import org.eyeseetea.malariacare.database.model.Tab;
 import org.eyeseetea.malariacare.database.utils.ReadWriteDB;
-import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 import org.eyeseetea.malariacare.utils.Utils;
 import org.eyeseetea.malariacare.views.EditCard;
@@ -136,8 +134,8 @@ public class CustomReportingAdapter extends BaseAdapter implements ITabAdapter {
 
     private void setValues(ViewHolder viewHolder, Question question) {
 
-        Question questionRegister = question.getQuestionChildren().get(0);
-        Question questionReport = question.getQuestionChildren().get(1);
+        Question questionRegister = question.getChildren().get(0);
+        Question questionReport = question.getChildren().get(1);
 
         viewHolder.statement.setText(question.getForm_name());
         viewHolder.register.setText(ReadWriteDB.readValueQuestion(questionRegister));
@@ -197,8 +195,8 @@ public class CustomReportingAdapter extends BaseAdapter implements ITabAdapter {
 
             question = (Question) item;
 
-            questionRegister = question.getQuestionChildren().get(0);
-            questionReport = question.getQuestionChildren().get(1);
+            questionRegister = question.getChildren().get(0);
+            questionReport = question.getChildren().get(1);
 
             rowView.setBackgroundResource(LayoutUtils.calculateBackgrounds(position));
             viewHolder.register.addTextChangedListener(new TextWatcher() {

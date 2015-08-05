@@ -1,14 +1,14 @@
 /*
  * Copyright (c) 2015.
  *
- * This file is part of Facility QA Tool App.
+ * This file is part of QA App.
  *
- *  Facility QA Tool App is free software: you can redistribute it and/or modify
+ *  Health Network QIS App is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
  *  the Free Software Foundation, either version 3 of the License, or
  *  (at your option) any later version.
  *
- *  Facility QA Tool App is distributed in the hope that it will be useful,
+ *  Health Network QIS App is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *  GNU General Public License for more details.
@@ -21,11 +21,17 @@ package org.eyeseetea.malariacare.database.model;
 
 import android.util.Log;
 
-import com.orm.SugarRecord;
-import com.orm.dsl.Ignore;
-import com.orm.query.Condition;
-import com.orm.query.Select;
+import com.raizlabs.android.dbflow.annotation.OneToMany;
+import com.raizlabs.android.dbflow.sql.builder.Condition;
+import com.raizlabs.android.dbflow.sql.language.Select;
+import com.raizlabs.android.dbflow.annotation.Column;
+import com.raizlabs.android.dbflow.annotation.ForeignKey;
+import com.raizlabs.android.dbflow.annotation.ForeignKeyReference;
+import com.raizlabs.android.dbflow.annotation.PrimaryKey;
+import com.raizlabs.android.dbflow.annotation.Table;
+import com.raizlabs.android.dbflow.structure.BaseModel;
 
+import org.eyeseetea.malariacare.database.AppDatabase;
 import org.eyeseetea.malariacare.database.utils.SurveyAnsweredRatio;
 import org.eyeseetea.malariacare.database.utils.SurveyAnsweredRatioCache;
 import org.eyeseetea.malariacare.utils.Constants;
@@ -33,7 +39,8 @@ import org.eyeseetea.malariacare.utils.Constants;
 import java.util.Date;
 import java.util.List;
 
-public class Survey extends SugarRecord<Survey> {
+@Table(databaseName = AppDatabase.NAME)
+public class Survey extends BaseModel {
 
 
     private static final String LIST_VALUES_PARENT_QUESTION ="select v.* from value v"+
@@ -42,15 +49,35 @@ public class Survey extends SugarRecord<Survey> {
             " and q.question=0"+
             " and v.value is not null and v.value<>''";
 
-    OrgUnit orgUnit;
+    @Column
+    @PrimaryKey(autoincrement = true)
+    Long id;
+    @Column
+    @ForeignKey(references = {@ForeignKeyReference(columnName = "id_program",
+            columnType = Long.class,
+            foreignColumnName = "id")},
+            saveForeignKeyModel = false)
     Program program;
+    @Column
+    @ForeignKey(references = {@ForeignKeyReference(columnName = "id_org_unit",
+            columnType = Long.class,
+            foreignColumnName = "id")},
+            saveForeignKeyModel = false)
+    OrgUnit orgUnit;
+    @Column
+    @ForeignKey(references = {@ForeignKeyReference(columnName = "id_user",
+            columnType = Long.class,
+            foreignColumnName = "id")},
+            saveForeignKeyModel = false)
     User user;
+    @Column
     Date eventDate;
+    @Column
     Date completionDate;
+    @Column
     Integer status;
 
-    @Ignore
-    SurveyAnsweredRatio _answeredQuestionRatio;
+    SurveyAnsweredRatio answeredQuestionRatio;
 
     public Survey() {
     }
@@ -64,6 +91,14 @@ public class Survey extends SugarRecord<Survey> {
         this.completionDate= this.eventDate;
 
         Log.i(".Survey", Long.valueOf(this.completionDate.getTime()).toString());
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public OrgUnit getOrgUnit() {
@@ -122,10 +157,14 @@ public class Survey extends SugarRecord<Survey> {
         return Constants.SURVEY_SENT==this.status;
     }
 
+    /**
+     * Returns the list of answered values from this survey
+     * @return
+     */
+    @OneToMany(methods = OneToMany.Method.ALL, variableName = "values")
     public List<Value> getValues(){
-        return Select.from(Value.class)
-                .where(Condition.prop("survey")
-                        .eq(String.valueOf(this.getId()))).list();
+        return new Select().from(Value.class)
+                .where(Condition.column(Survey$Table.ID).is(this.getId())).queryList();
     }
 
     /**
@@ -133,22 +172,23 @@ public class Survey extends SugarRecord<Survey> {
      * @return
      */
     public List<Value> getValuesFromParentQuestions(){
+        //TODO: Implement join
         List<Value> values = Value.findWithQuery(Value.class, LIST_VALUES_PARENT_QUESTION, this.getId().toString());
         return values;
     }
 
     /**
-     * Ratio of completion is cached into _answeredQuestionRatio in order to speed up loading
+     * Ratio of completion is cached into answeredQuestionRatio in order to speed up loading
      * @return
      */
     public SurveyAnsweredRatio getAnsweredQuestionRatio(){
-        if (_answeredQuestionRatio == null) {
-            _answeredQuestionRatio=SurveyAnsweredRatioCache.get(this.id);
-            if(_answeredQuestionRatio == null) {
-                _answeredQuestionRatio = reloadSurveyAnsweredRatio();
+        if (answeredQuestionRatio == null) {
+            answeredQuestionRatio =SurveyAnsweredRatioCache.get(this.getId());
+            if(answeredQuestionRatio == null) {
+                answeredQuestionRatio = reloadSurveyAnsweredRatio();
             }
         }
-        return _answeredQuestionRatio;
+        return answeredQuestionRatio;
     }
 
     /**
@@ -163,7 +203,7 @@ public class Survey extends SugarRecord<Survey> {
         for (Value value : this.getValuesFromParentQuestions()) {
             if (value.isAYes()) {
                 //There might be children no answer questions that should be skipped
-                for(Question childQuestion:value.getQuestion().getQuestionChildren()){
+                for(Question childQuestion:value.getQuestion().getChildren()){
                     numOptional+=(childQuestion.getAnswer().getOutput()==Constants.NO_ANSWER)?0:1;
                 }
             }
@@ -199,94 +239,116 @@ public class Survey extends SugarRecord<Survey> {
         this.save();
     }
 
-    // Returns a concrete survey, if it exists
+    /**
+     * Returns a concrete survey, if it exists
+     * @param orgUnit
+     * @param program
+     * @return
+     */
     public static List<Survey> getUnsentSurveys(OrgUnit orgUnit, Program program) {
-        return Select.from(Survey.class)
-                .where(com.orm.query.Condition.prop("org_unit").eq(orgUnit.getId()))
-                .and(com.orm.query.Condition.prop("program").eq(program.getId()))
-                .and(com.orm.query.Condition.prop("status").notEq(Constants.SURVEY_SENT))
-                .orderBy("event_date")
-                .orderBy("org_unit")
-                .list();
+        return new Select().from(Survey.class)
+                .where(Condition.column(Survey$Table.ID_ORG_UNIT).is(orgUnit.getId()))
+                .and(Condition.column(Survey$Table.ID_PROGRAM).is(program.getId()))
+                .and(Condition.column(Survey$Table.STATUS).isNot(Constants.SURVEY_SENT))
+                .orderBy(Condition.column(Survey$Table.EVENT_DATE))
+                .orderBy(Condition.column(Survey$Table.ID_ORG_UNIT)).queryList();
     }
 
-    // Returns all the surveys with status yet not put to "Sent"
+    /**
+     * Returns all the surveys with status yet not put to "Sent"
+     * @return
+     */
     public static List<Survey> getAllUnsentSurveys() {
-        return Select.from(Survey.class)
-                .where(com.orm.query.Condition.prop("status").notEq(Constants.SURVEY_SENT))
-                .orderBy("event_date")
-                .orderBy("org_unit")
-                .list();
+        return new Select().from(Survey.class)
+                .where(Condition.column(Survey$Table.STATUS).isNot(Constants.SURVEY_SENT))
+                .orderBy(Condition.column(Survey$Table.EVENT_DATE))
+                .orderBy(Condition.column(Survey$Table.ID_ORG_UNIT)).queryList();
     }
 
-    // Returns the last surveys (by date) with status yet not put to "Sent"
+    /**
+     * Returns the last surveys (by date) with status yet not put to "Sent"
+     * @param limit
+     * @return
+     */
     public static List<Survey> getUnsentSurveys(int limit) {
-        return Select.from(Survey.class)
-                .where(com.orm.query.Condition.prop("status").notEq(Constants.SURVEY_SENT))
+        return new Select().from(Survey.class)
+                .where(Condition.column(Survey$Table.STATUS).isNot(Constants.SURVEY_SENT))
                 .limit(String.valueOf(limit))
-                .orderBy("event_date")
-                .orderBy("org_unit")
-                .list();
+                .orderBy(Condition.column(Survey$Table.EVENT_DATE))
+                .orderBy(Condition.column(Survey$Table.ID_ORG_UNIT)).queryList();
     }
 
-    // Returns all the surveys with status put to "Sent"
+    /**
+     * Returns all the surveys with status put to "Sent"
+     * @return
+     */
     public static List<Survey> getAllSentSurveys() {
-        return Select.from(Survey.class)
-                .where(com.orm.query.Condition.prop("status").eq(Constants.SURVEY_SENT))
-                .orderBy("event_date")
-                .orderBy("org_unit")
-                .list();
+        return new Select().from(Survey.class)
+                .where(Condition.column(Survey$Table.STATUS).is(Constants.SURVEY_SENT))
+                .orderBy(Condition.column(Survey$Table.EVENT_DATE))
+                .orderBy(Condition.column(Survey$Table.ID_ORG_UNIT)).queryList();
     }
 
-    // Returns the last surveys (by date) with status put to "Sent"
+    /**
+     * Returns the last surveys (by date) with status put to "Sent"
+     * @param limit
+     * @return
+     */
     public static List<Survey> getSentSurveys(int limit) {
-        return Select.from(Survey.class)
-                .where(com.orm.query.Condition.prop("status").eq(Constants.SURVEY_SENT))
+        return new Select().from(Survey.class)
+                .where(Condition.column(Survey$Table.STATUS).is(Constants.SURVEY_SENT))
                 .limit(String.valueOf(limit))
-                .orderBy("event_date")
-                .orderBy("org_unit")
-                .list();
+                .orderBy(Condition.column(Survey$Table.EVENT_DATE))
+                .orderBy(Condition.column(Survey$Table.ID_ORG_UNIT)).queryList();
     }
 
-    // Returns all the surveys with status put to "Completed"
+    /**
+     * Returns all the surveys with status put to "Completed"
+     * @return
+     */
     public static List<Survey> getAllCompletedSurveys() {
-        return Select.from(Survey.class)
-                .where(com.orm.query.Condition.prop("status").eq(Constants.SURVEY_COMPLETED))
-                .orderBy("event_date")
-                .orderBy("org_unit")
-                .list();
+        return new Select().from(Survey.class)
+                .where(Condition.column(Survey$Table.STATUS).is(Constants.SURVEY_COMPLETED))
+                .orderBy(Condition.column(Survey$Table.EVENT_DATE))
+                .orderBy(Condition.column(Survey$Table.ID_ORG_UNIT)).queryList();
     }
 
-    // Returns the last surveys (by date) with status put to "Completed"
+    /**
+     * Returns the last surveys (by date) with status put to "Completed"
+     * @param limit
+     * @return
+     */
     public static List<Survey> getCompletedSurveys(int limit) {
-        return Select.from(Survey.class)
-                .where(com.orm.query.Condition.prop("status").eq(Constants.SURVEY_COMPLETED))
+        return new Select().from(Survey.class)
+                .where(Condition.column(Survey$Table.STATUS).is(Constants.SURVEY_COMPLETED))
                 .limit(String.valueOf(limit))
-                .orderBy("event_date")
-                .orderBy("org_unit")
-                .list();
+                .orderBy(Condition.column(Survey$Table.EVENT_DATE))
+                .orderBy(Condition.column(Survey$Table.ID_ORG_UNIT)).queryList();
     }
 
-    // Returns all the surveys with status put to "In progress"
+    /**
+     * Returns all the surveys with status put to "In progress"
+     * @return
+     */
     public static List<Survey> getAllUncompletedSurveys() {
-        return Select.from(Survey.class)
-                .where(com.orm.query.Condition.prop("status").eq(Constants.SURVEY_IN_PROGRESS))
-                .orderBy("event_date")
-                .orderBy("org_unit")
-                .list();
+        return new Select().from(Survey.class)
+                .where(Condition.column(Survey$Table.STATUS).is(Constants.SURVEY_IN_PROGRESS))
+                .orderBy(Condition.column(Survey$Table.EVENT_DATE))
+                .orderBy(Condition.column(Survey$Table.ID_ORG_UNIT)).queryList();
     }
 
-    // Returns the last surveys (by date) with status put to "In progress"
+    /**
+     * Returns the last surveys (by date) with status put to "In progress"
+     * @param limit
+     * @return
+     */
     public static List<Survey> getUncompletedSurveys(int limit) {
-        return Select.from(Survey.class)
-                .where(com.orm.query.Condition.prop("status").eq(Constants.SURVEY_IN_PROGRESS))
+        return new Select().from(Survey.class)
+                .where(Condition.column(Survey$Table.STATUS).is(Constants.SURVEY_IN_PROGRESS))
                 .limit(String.valueOf(limit))
-                .orderBy("event_date")
-                .orderBy("org_unit")
-                .list();
+                .orderBy(Condition.column(Survey$Table.EVENT_DATE))
+                .orderBy(Condition.column(Survey$Table.ID_ORG_UNIT)).queryList();
     }
-
-
 
     @Override
     public boolean equals(Object o) {
@@ -295,35 +357,36 @@ public class Survey extends SugarRecord<Survey> {
 
         Survey survey = (Survey) o;
 
-        if (_answeredQuestionRatio != null ? !_answeredQuestionRatio.equals(survey._answeredQuestionRatio) : survey._answeredQuestionRatio != null)
-            return false;
-        if (!eventDate.equals(survey.eventDate)) return false;
-        if (!completionDate.equals(survey.completionDate)) return false;
-        if (!orgUnit.equals(survey.orgUnit)) return false;
+        if (!id.equals(survey.id)) return false;
         if (!program.equals(survey.program)) return false;
-        if (!status.equals(survey.status)) return false;
+        if (!orgUnit.equals(survey.orgUnit)) return false;
         if (!user.equals(survey.user)) return false;
+        if (eventDate != null ? !eventDate.equals(survey.eventDate) : survey.eventDate != null)
+            return false;
+        if (completionDate != null ? !completionDate.equals(survey.completionDate) : survey.completionDate != null)
+            return false;
+        return status.equals(survey.status);
 
-        return true;
     }
 
     @Override
     public int hashCode() {
-        int result = orgUnit.hashCode();
+        int result = id.hashCode();
         result = 31 * result + program.hashCode();
+        result = 31 * result + orgUnit.hashCode();
         result = 31 * result + user.hashCode();
-        result = 31 * result + eventDate.hashCode();
-        result = 31 * result + completionDate.hashCode();
+        result = 31 * result + (eventDate != null ? eventDate.hashCode() : 0);
+        result = 31 * result + (completionDate != null ? completionDate.hashCode() : 0);
         result = 31 * result + status.hashCode();
-        result = 31 * result + (_answeredQuestionRatio != null ? _answeredQuestionRatio.hashCode() : 0);
         return result;
     }
 
     @Override
     public String toString() {
         return "Survey{" +
-                "orgUnit=" + orgUnit +
+                "id=" + id +
                 ", program=" + program +
+                ", orgUnit=" + orgUnit +
                 ", user=" + user +
                 ", eventDate=" + eventDate +
                 ", completionDate=" + completionDate +

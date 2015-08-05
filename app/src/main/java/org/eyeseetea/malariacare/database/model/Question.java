@@ -1,10 +1,35 @@
+/*
+ * Copyright (c) 2015.
+ *
+ * This file is part of QA App.
+ *
+ *  Health Network QIS App is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  Health Network QIS App is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 package org.eyeseetea.malariacare.database.model;
 
-import com.orm.SugarRecord;
-import com.orm.dsl.Ignore;
-import com.orm.query.Condition;
-import com.orm.query.Select;
+import com.raizlabs.android.dbflow.annotation.Column;
+import com.raizlabs.android.dbflow.annotation.ForeignKey;
+import com.raizlabs.android.dbflow.annotation.ForeignKeyReference;
+import com.raizlabs.android.dbflow.annotation.OneToMany;
+import com.raizlabs.android.dbflow.annotation.PrimaryKey;
+import com.raizlabs.android.dbflow.annotation.Table;
+import com.raizlabs.android.dbflow.sql.builder.Condition;
+import com.raizlabs.android.dbflow.sql.language.Select;
+import com.raizlabs.android.dbflow.structure.BaseModel;
 
+import org.eyeseetea.malariacare.database.AppDatabase;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.utils.Constants;
@@ -14,7 +39,8 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
-public class Question extends SugarRecord<Question>{
+@Table(databaseName = AppDatabase.NAME)
+public class Question extends BaseModel{
 
     /**
      * Sql query that counts required questions in a program (required for % stats)
@@ -39,27 +65,55 @@ public class Question extends SugarRecord<Question>{
             " left join tab t on h.tab=t.id"+
             " and t.id in (?) order by t.orderpos, q.orderpos";
 
+    @Column
+    @PrimaryKey(autoincrement = true)
+    Long id;
+    @Column
     String code;
+    @Column
     String de_name;
+    @Column
     String short_name;
+    @Column
     String form_name;
+    @Column
     String uid;
+    @Column
     Integer order_pos;
+    @Column
     Float numerator_w;
+    @Column
     Float denominator_w;
+    @Column
+    @ForeignKey(references = {@ForeignKeyReference(columnName = "id_header",
+            columnType = Long.class,
+            foreignColumnName = "id")},
+            saveForeignKeyModel = false)
     Header header;
+    @Column
+    @ForeignKey(references = {@ForeignKeyReference(columnName = "id_answer",
+            columnType = Long.class,
+            foreignColumnName = "id")},
+            saveForeignKeyModel = false)
     Answer answer;
+    @Column
+    @ForeignKey(references = {@ForeignKeyReference(columnName = "id_parent",
+            columnType = Long.class,
+            foreignColumnName = "id")},
+            saveForeignKeyModel = false)
     Question question;
+    @Column
+    @ForeignKey(references = {@ForeignKeyReference(columnName = "id_composite_score",
+            columnType = Long.class,
+            foreignColumnName = "id")},
+            saveForeignKeyModel = false)
     CompositeScore compositeScore;
 
-    @Ignore
-    List<Question> _questionChildren;
+    List<Question> children;
 
-    @Ignore
-    List<Question> _relatives;
+    List<Question> relatives;
 
-    @Ignore
-    List<Question> _master;
+    List<Question> master;
 
     public Question() {
     }
@@ -77,6 +131,14 @@ public class Question extends SugarRecord<Question>{
         this.answer = answer;
         this.question = question;
         this.compositeScore = compositeScore;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getCode() {
@@ -175,32 +237,37 @@ public class Question extends SugarRecord<Question>{
         return getQuestion() != null;
     }
 
-    public List<Question> getQuestionChildren() {
-        if (this._questionChildren == null){
-            this._questionChildren = Select.from(Question.class)
-                    .where(Condition.prop("question")
-                            .eq(String.valueOf(this.getId())))
-                    .orderBy("orderpos").list();
+    @OneToMany(methods = {OneToMany.Method.ALL}, variableName = "children")
+    public List<Question> getChildren() {
+        if (this.children == null){
+            this.children = new Select().from(Question.class)
+                    .where(Condition.column(Question$Table.ID_PARENT).is(this.getId()))
+                    .orderBy(Question$Table.ORDER_POS).queryList();
         }
-        return this._questionChildren;
+        return this.children;
     }
 
     public List<Question> getRelatives() {
-        if (this._relatives == null) {
-
-            this._relatives = Question.findWithQuery(Question.class, "Select * from Question" +
-                    " where id in (Select relative from Question_Relation where master =" + this.getId() + ")");
+        if (this.relatives == null) {
+            this.relatives = new Select().from(Question.class).where(Condition.column(Question$Table.ID)
+                    .in(new Select(QuestionRelation$Table.RELATIVE).from(QuestionRelation.class)
+                            .where(Condition.column(QuestionRelation$Table.MASTER).is(this.getId())))).queryList();
+            //this.relatives = Question.findWithQuery(Question.class, "Select * from Question" +
+            //        " where id in (Select relative from Question_Relation where master =" + this.getId() + ")");
        }
-        return this._relatives;
+        return this.relatives;
     }
 
-    public List<Question> getMasters() {
-        if (this._master == null) {
 
-            this._master = Question.findWithQuery(Question.class, "Select * from Question" +
-                    " where id in (Select master from Question_Relation where relative =" + this.getId() + ")");
+    public List<Question> getMasters() {
+        if (this.master == null) {
+            this.master = new Select().from(Question.class).where(Condition.column(Question$Table.ID)
+                    .in(new Select(QuestionRelation$Table.MASTER).from(QuestionRelation.class)
+                    .where(Condition.column(QuestionRelation$Table.RELATIVE).is(this.getId())))).queryList();
+            //this.master = Question.findWithQuery(Question.class, "Select * from Question" +
+            //        " where id in (Select master from Question_Relation where relative =" + this.getId() + ")");
         }
-        return this._master;
+        return this.master;
     }
 
     public boolean belongsToMasterQuestions() {return !getMasters().isEmpty();}
@@ -208,11 +275,12 @@ public class Question extends SugarRecord<Question>{
     public boolean hasRelatives() {return !getRelatives().isEmpty(); }
 
     public boolean hasChildren(){
-        return !getQuestionChildren().isEmpty();
+        return !getChildren().isEmpty();
     }
 
+    @OneToMany(methods = OneToMany.Method.ALL, variableName = "values")
     public List<Value> getValues(){
-        return Value.find(Value.class, "question = ?", String.valueOf(this.getId()));
+        return new Select().from(Value.class).where(Condition.column(Value$Table.QUESTION).is(this.getId())).queryList();
     }
 
     /**
@@ -234,8 +302,11 @@ public class Question extends SugarRecord<Question>{
         }
         String surveyId = String.valueOf(survey.getId());
         String questionId = String.valueOf(this.getId());
-        List<Value> returnValues = Select.from(Value.class).
-                where(Condition.prop("question").eq(questionId), Condition.prop("survey").eq(surveyId)).list();
+        List<Value> returnValues = new Select().from(Value.class)
+                .where(Condition.column(Value$Table.ID_QUESTION).is(this.getId()))
+                .and(Condition.column(Survey$Table.ID_SURVEY).is(survey.getId())).queryList();
+        //List<Value> returnValues = Select.from(Value.class).
+        //        where(Condition.prop("question").eq(questionId), Condition.prop("survey").eq(surveyId)).list();
 
         if (returnValues.size() == 0){
             return null;
@@ -310,6 +381,7 @@ public class Question extends SugarRecord<Question>{
             return 0;
         }
 
+        //TODO: Implement join
         List<Question> questionsByProgram = Question.findWithQuery(Question.class, LIST_REQUIRED_BY_PROGRAM, program.getId().toString());
         return questionsByProgram.size();
     }
@@ -324,6 +396,7 @@ public class Question extends SugarRecord<Question>{
             return new ArrayList<Question>();
         }
 
+        //TODO: Implement join
         return Question.findWithQuery(Question.class, LIST_ALL_BY_PROGRAM, program.getId().toString());
     }
 
@@ -340,6 +413,7 @@ public class Question extends SugarRecord<Question>{
                 tabsAsString+=",";
             }
         }
+        //TODO: Implement join
         return Question.findWithQuery(Question.class,LIST_ALL_BY_TABS, tabsAsString);
 
     }
@@ -361,6 +435,52 @@ public class Question extends SugarRecord<Question>{
         }
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Question)) return false;
+
+        Question question1 = (Question) o;
+
+        if (!id.equals(question1.id)) return false;
+        if (code != null ? !code.equals(question1.code) : question1.code != null) return false;
+        if (de_name != null ? !de_name.equals(question1.de_name) : question1.de_name != null)
+            return false;
+        if (short_name != null ? !short_name.equals(question1.short_name) : question1.short_name != null)
+            return false;
+        if (form_name != null ? !form_name.equals(question1.form_name) : question1.form_name != null)
+            return false;
+        if (uid != null ? !uid.equals(question1.uid) : question1.uid != null) return false;
+        if (!order_pos.equals(question1.order_pos)) return false;
+        if (numerator_w != null ? !numerator_w.equals(question1.numerator_w) : question1.numerator_w != null)
+            return false;
+        if (denominator_w != null ? !denominator_w.equals(question1.denominator_w) : question1.denominator_w != null)
+            return false;
+        if (!header.equals(question1.header)) return false;
+        if (!answer.equals(question1.answer)) return false;
+        if (question != null ? !question.equals(question1.question) : question1.question != null)
+            return false;
+        return compositeScore.equals(question1.compositeScore);
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id.hashCode();
+        result = 31 * result + (code != null ? code.hashCode() : 0);
+        result = 31 * result + (de_name != null ? de_name.hashCode() : 0);
+        result = 31 * result + (short_name != null ? short_name.hashCode() : 0);
+        result = 31 * result + (form_name != null ? form_name.hashCode() : 0);
+        result = 31 * result + (uid != null ? uid.hashCode() : 0);
+        result = 31 * result + order_pos.hashCode();
+        result = 31 * result + (numerator_w != null ? numerator_w.hashCode() : 0);
+        result = 31 * result + (denominator_w != null ? denominator_w.hashCode() : 0);
+        result = 31 * result + header.hashCode();
+        result = 31 * result + answer.hashCode();
+        result = 31 * result + (question != null ? question.hashCode() : 0);
+        result = 31 * result + compositeScore.hashCode();
+        return result;
+    }
 
     @Override
     public String toString() {
@@ -379,55 +499,5 @@ public class Question extends SugarRecord<Question>{
                 ", question=" + question +
                 ", compositeScore=" + compositeScore +
                 '}';
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        Question question1 = (Question) o;
-
-        if (answer != null ? !answer.equals(question1.answer) : question1.answer != null)
-            return false;
-        if (code != null ? !code.equals(question1.code) : question1.code != null) return false;
-        if (compositeScore != null ? !compositeScore.equals(question1.compositeScore) : question1.compositeScore != null)
-            return false;
-        if (de_name != null ? !de_name.equals(question1.de_name) : question1.de_name != null)
-            return false;
-        if (denominator_w != null ? !denominator_w.equals(question1.denominator_w) : question1.denominator_w != null)
-            return false;
-        if (form_name != null ? !form_name.equals(question1.form_name) : question1.form_name != null)
-            return false;
-        if (header != null ? !header.equals(question1.header) : question1.header != null)
-            return false;
-        if (numerator_w != null ? !numerator_w.equals(question1.numerator_w) : question1.numerator_w != null)
-            return false;
-        if (order_pos != null ? !order_pos.equals(question1.order_pos) : question1.order_pos != null)
-            return false;
-        if (question != null ? !question.equals(question1.question) : question1.question != null)
-            return false;
-        if (short_name != null ? !short_name.equals(question1.short_name) : question1.short_name != null)
-            return false;
-        if (uid != null ? !uid.equals(question1.uid) : question1.uid != null) return false;
-
-        return true;
-    }
-
-    @Override
-    public int hashCode() {
-        int result = code != null ? code.hashCode() : 0;
-        result = 31 * result + (de_name != null ? de_name.hashCode() : 0);
-        result = 31 * result + (short_name != null ? short_name.hashCode() : 0);
-        result = 31 * result + (form_name != null ? form_name.hashCode() : 0);
-        result = 31 * result + (uid != null ? uid.hashCode() : 0);
-        result = 31 * result + (order_pos != null ? order_pos.hashCode() : 0);
-        result = 31 * result + (numerator_w != null ? numerator_w.hashCode() : 0);
-        result = 31 * result + (denominator_w != null ? denominator_w.hashCode() : 0);
-        result = 31 * result + (header != null ? header.hashCode() : 0);
-        result = 31 * result + (answer != null ? answer.hashCode() : 0);
-        result = 31 * result + (question != null ? question.hashCode() : 0);
-        result = 31 * result + (compositeScore != null ? compositeScore.hashCode() : 0);
-        return result;
     }
 }
