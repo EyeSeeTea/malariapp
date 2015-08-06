@@ -533,7 +533,7 @@ public class Question extends BaseModel{
         result = 31 * result + header.hashCode();
         result = 31 * result + answer.hashCode();
         result = 31 * result + (question != null ? question.hashCode() : 0);
-        result = 31 * result + compositeScore.hashCode();
+        result = 31 * result + (compositeScore != null ? compositeScore.hashCode() : 0);
         return result;
     }
 

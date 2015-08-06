@@ -218,20 +218,20 @@ public class CompositeScore extends BaseModel {
         CompositeScore that = (CompositeScore) o;
 
         if (id != that.id) return false;
-        if (code != null ? !code.equals(that.code) : that.code != null) return false;
+        if (!code.equals(that.code)) return false;
         if (label != null ? !label.equals(that.label) : that.label != null) return false;
         if (uid != null ? !uid.equals(that.uid) : that.uid != null) return false;
-        return compositeScore.equals(that.compositeScore);
+        return !(compositeScore != null ? !compositeScore.equals(that.compositeScore) : that.compositeScore != null);
 
     }
 
     @Override
     public int hashCode() {
         int result = (int) (id ^ (id >>> 32));
-        result = 31 * result + (code != null ? code.hashCode() : 0);
+        result = 31 * result + code.hashCode();
         result = 31 * result + (label != null ? label.hashCode() : 0);
         result = 31 * result + (uid != null ? uid.hashCode() : 0);
-        result = 31 * result + compositeScore.hashCode();
+        result = 31 * result + (compositeScore != null ? compositeScore.hashCode() : 0);
         return result;
     }
 
