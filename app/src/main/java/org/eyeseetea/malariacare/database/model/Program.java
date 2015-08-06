@@ -82,22 +82,18 @@ public class Program extends BaseModel {
         this.name = name;
     }
 
-    @OneToMany(methods = {OneToMany.Method.ALL}, variableName = "tabs")
+    @OneToMany(methods = {OneToMany.Method.SAVE, OneToMany.Method.DELETE}, variableName = "tabs")
     public List<Tab> getTabs(){
-        if(this.tabs == null) {
-            this.tabs = new Select().from(Tab.class)
+        this.tabs = new Select().from(Tab.class)
                     .where(Condition.column(Tab$Table.PROGRAM_ID_PROGRAM).is(this.getId()))
                     .orderBy(Tab$Table.ORDER_POS).queryList();
-        }
         return this.tabs;
     }
 
-    @OneToMany(methods = {OneToMany.Method.ALL}, variableName = "surveys")
+    @OneToMany(methods = {OneToMany.Method.SAVE, OneToMany.Method.DELETE}, variableName = "surveys")
     public List<Survey> getSurveys(){
-        if(this.surveys == null) {
-            this.surveys = new Select().from(Survey.class)
+        this.surveys = new Select().from(Survey.class)
                     .where(Condition.column(Survey$Table.PROGRAM_ID_PROGRAM).is(this.getId())).queryList();
-        }
         return this.surveys;
     }
 
