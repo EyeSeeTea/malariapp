@@ -243,24 +243,24 @@ public class Question extends BaseModel{
         return getQuestion() != null;
     }
 
-    @OneToMany(methods = {OneToMany.Method.ALL}, variableName = "children")
+    @OneToMany(methods = {OneToMany.Method.SAVE, OneToMany.Method.DELETE}, variableName = "children")
     public List<Question> getChildren() {
-        if (this.children == null){
+        //if (this.children == null){
             this.children = new Select().from(Question.class)
                     .where(Condition.column(Question$Table.QUESTION_ID_PARENT).is(this.getId()))
                     .orderBy(Question$Table.ORDER_POS).queryList();
-        }
+        //}
         return this.children;
     }
 
     public List<Question> getRelatives() {
-        if (this.relatives == null) {
+        //if (this.relatives == null) {
             this.relatives = new Select().from(Question.class).where(Condition.column(Question$Table.ID)
                     .in(new Select(QuestionRelation$Table.RELATIVE_RELATIVE).from(QuestionRelation.class)
                             .where(Condition.column(QuestionRelation$Table.MASTER_MASTER).is(this.getId())))).queryList();
             //this.relatives = Question.findWithQuery(Question.class, "Select * from Question" +
             //        " where id in (Select relative from Question_Relation where master =" + this.getId() + ")");
-       }
+       //}
         return this.relatives;
     }
 
@@ -284,7 +284,7 @@ public class Question extends BaseModel{
         return !getChildren().isEmpty();
     }
 
-    @OneToMany(methods = OneToMany.Method.ALL, variableName = "values")
+    @OneToMany(methods = {OneToMany.Method.SAVE, OneToMany.Method.DELETE}, variableName = "values")
     public List<Value> getValues(){
         return new Select().from(Value.class).where(Condition.column(Value$Table.QUESTION_ID_QUESTION).is(this.getId())).queryList();
     }

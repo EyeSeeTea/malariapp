@@ -108,13 +108,13 @@ public class Header extends BaseModel{
     }
 
     //TODO: to enable lazy loading, here we need to set Method.SAVE and Method.DELETE and use the .toModel() to specify when do we want to load the models
-    @OneToMany(methods = {OneToMany.Method.ALL}, variableName = "questions")
+    @OneToMany(methods = {OneToMany.Method.SAVE, OneToMany.Method.DELETE}, variableName = "questions")
     public List<Question> getQuestions(){
-        if (this.questions == null){
+        //if (this.questions == null){
             this.questions = new Select().from(Question.class)
                     .where(Condition.column(Question$Table.HEADER_ID_HEADER).is(this.getId()))
                     .orderBy(Question$Table.ORDER_POS).queryList();
-        }
+        //}
         return questions;
     }
 

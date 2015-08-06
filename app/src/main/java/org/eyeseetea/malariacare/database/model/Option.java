@@ -118,7 +118,7 @@ public class Option extends BaseModel {
     }
 
     //TODO: to enable lazy loading, here we need to set Method.SAVE and Method.DELETE and use the .toModel() to specify when do we want to load the models
-    @OneToMany(methods = {OneToMany.Method.ALL}, variableName = "values")
+    @OneToMany(methods = {OneToMany.Method.SAVE, OneToMany.Method.DELETE}, variableName = "values")
     public List<Value> getValues(){
         return new Select().from(Value.class)
                 .where(Condition.column(Value$Table.OPTION_ID_OPTION).is(this.getId())).queryList();

@@ -81,12 +81,12 @@ public class OrgUnit extends BaseModel {
         this.name = name;
     }
 
-    @OneToMany(methods = {OneToMany.Method.ALL}, variableName = "surveys")
+    @OneToMany(methods = {OneToMany.Method.SAVE, OneToMany.Method.DELETE}, variableName = "surveys")
     public List<Survey> getSurveys(){
-        if(this.surveys == null){
+        //if(this.surveys == null){
             this.surveys = new Select().from(Survey.class)
                     .where(Condition.column(Survey$Table.ORGUNIT_ID_ORG_UNIT).is(this.getId())).queryList();
-        }
+        //}
         return surveys;
     }
 

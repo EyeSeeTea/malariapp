@@ -109,7 +109,7 @@ public class Tab extends BaseModel {
     }
 
     //TODO: to enable lazy loading, here we need to set Method.SAVE and Method.DELETE and use the .toModel() to specify when do we want to load the models
-    @OneToMany(methods = OneToMany.Method.ALL, variableName = "headers")
+    @OneToMany(methods = {OneToMany.Method.SAVE, OneToMany.Method.DELETE}, variableName = "headers")
     public List<Header> getHeaders(){
         return new Select().from(Header.class)
                 .where(Condition.column(Header$Table.ID).is(this.getId()))
@@ -117,7 +117,7 @@ public class Tab extends BaseModel {
     }
 
     //TODO: to enable lazy loading, here we need to set Method.SAVE and Method.DELETE and use the .toModel() to specify when do we want to load the models
-    @OneToMany(methods = OneToMany.Method.ALL, variableName = "scores")
+    @OneToMany(methods = {OneToMany.Method.SAVE, OneToMany.Method.DELETE}, variableName = "scores")
     public List<Score> getScores(){
         return new Select().from(Score.class)
                 .where(Condition.column(Score$Table.ID).is(this.getId())).queryList();

@@ -137,9 +137,9 @@ public class CompositeScore extends BaseModel {
     }
 
     //TODO: to enable lazy loading, here we need to set Method.SAVE and Method.DELETE and use the .toModel() to specify when do we want to load the models
-    @OneToMany(methods = {OneToMany.Method.ALL}, variableName = "questions")
+    @OneToMany(methods = {OneToMany.Method.SAVE, OneToMany.Method.DELETE}, variableName = "questions")
     public List<Question> getQuestions(){
-        if (questions == null) {
+        //if (questions == null) {
             questions = new Select()
                     .from(Question.class)
                     .where(Condition.column(Question$Table.COMPOSITESCORE_ID_COMPOSITE_SCORE).is(this.getId()))
@@ -147,7 +147,7 @@ public class CompositeScore extends BaseModel {
             /*questions = Select.from(Question.class)
                     .where(Condition.prop("composite_score")
                     .eq(String.valueOf(this.getId()))).list();*/
-        }
+        //}
         return questions;
     }
 

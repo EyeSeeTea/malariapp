@@ -165,7 +165,7 @@ public class Survey extends BaseModel {
      * Returns the list of answered values from this survey
      * @return
      */
-    @OneToMany(methods = OneToMany.Method.ALL, variableName = "values")
+    @OneToMany(methods = {OneToMany.Method.SAVE, OneToMany.Method.DELETE}, variableName = "values")
     public List<Value> getValues(){
         return new Select().from(Value.class)
                 .where(Condition.column(Survey$Table.ID).is(this.getId())).queryList();
