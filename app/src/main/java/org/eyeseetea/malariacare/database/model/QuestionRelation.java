@@ -35,7 +35,7 @@ import org.eyeseetea.malariacare.database.AppDatabase;
 public class QuestionRelation extends BaseModel {
     @Column
     @PrimaryKey(autoincrement = true)
-    Long id;
+    long id;
     @Column
     @ForeignKey(references = {@ForeignKeyReference(columnName = "master",
             columnType = Long.class,
@@ -98,8 +98,8 @@ public class QuestionRelation extends BaseModel {
 
         QuestionRelation that = (QuestionRelation) o;
 
+        if (id != that.id) return false;
         if (operation != that.operation) return false;
-        if (!id.equals(that.id)) return false;
         if (!master.equals(that.master)) return false;
         return relative.equals(that.relative);
 
@@ -107,7 +107,7 @@ public class QuestionRelation extends BaseModel {
 
     @Override
     public int hashCode() {
-        int result = id.hashCode();
+        int result = (int) (id ^ (id >>> 32));
         result = 31 * result + master.hashCode();
         result = 31 * result + relative.hashCode();
         result = 31 * result + operation;

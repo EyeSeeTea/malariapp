@@ -38,7 +38,7 @@ public class Header extends BaseModel{
 
     @Column
     @PrimaryKey(autoincrement = true)
-    Long id;
+    long id;
     @Column
     String short_name;
     @Column
@@ -125,7 +125,7 @@ public class Header extends BaseModel{
 
         Header header = (Header) o;
 
-        if (!id.equals(header.id)) return false;
+        if (id != header.id) return false;
         if (short_name != null ? !short_name.equals(header.short_name) : header.short_name != null)
             return false;
         if (name != null ? !name.equals(header.name) : header.name != null) return false;
@@ -136,7 +136,7 @@ public class Header extends BaseModel{
 
     @Override
     public int hashCode() {
-        int result = id.hashCode();
+        int result = (int) (id ^ (id >>> 32));
         result = 31 * result + (short_name != null ? short_name.hashCode() : 0);
         result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + order_pos.hashCode();

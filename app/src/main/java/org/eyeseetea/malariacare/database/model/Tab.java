@@ -40,7 +40,7 @@ public class Tab extends BaseModel {
 
     @Column
     @PrimaryKey(autoincrement = true)
-    Long id;
+    long id;
     @Column
     String name;
     @Column
@@ -155,7 +155,7 @@ public class Tab extends BaseModel {
 
         Tab tab = (Tab) o;
 
-        if (!id.equals(tab.id)) return false;
+        if (id != tab.id) return false;
         if (name != null ? !name.equals(tab.name) : tab.name != null) return false;
         if (!order_pos.equals(tab.order_pos)) return false;
         if (!program.equals(tab.program)) return false;
@@ -165,7 +165,7 @@ public class Tab extends BaseModel {
 
     @Override
     public int hashCode() {
-        int result = id.hashCode();
+        int result = (int) (id ^ (id >>> 32));
         result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + order_pos.hashCode();
         result = 31 * result + program.hashCode();

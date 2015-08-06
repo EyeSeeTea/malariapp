@@ -36,7 +36,7 @@ public class OrgUnit extends BaseModel {
 
     @Column
     @PrimaryKey(autoincrement = true)
-    Long id;
+    long id;
     @Column
     String uid;
     @Column
@@ -97,7 +97,7 @@ public class OrgUnit extends BaseModel {
 
         OrgUnit orgUnit = (OrgUnit) o;
 
-        if (!id.equals(orgUnit.id)) return false;
+        if (id != orgUnit.id) return false;
         if (uid != null ? !uid.equals(orgUnit.uid) : orgUnit.uid != null) return false;
         return name.equals(orgUnit.name);
 
@@ -105,7 +105,7 @@ public class OrgUnit extends BaseModel {
 
     @Override
     public int hashCode() {
-        int result = id.hashCode();
+        int result = (int) (id ^ (id >>> 32));
         result = 31 * result + (uid != null ? uid.hashCode() : 0);
         result = 31 * result + name.hashCode();
         return result;

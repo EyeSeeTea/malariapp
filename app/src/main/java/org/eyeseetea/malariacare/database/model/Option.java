@@ -41,7 +41,7 @@ public class Option extends BaseModel {
 
     @Column
     @PrimaryKey(autoincrement = true)
-    Long id;
+    long id;
     @Column
     String name;
     @Column
@@ -131,7 +131,7 @@ public class Option extends BaseModel {
 
         Option option = (Option) o;
 
-        if (!id.equals(option.id)) return false;
+        if (id != option.id) return false;
         if (!name.equals(option.name)) return false;
         if (factor != null ? !factor.equals(option.factor) : option.factor != null) return false;
         return answer.equals(option.answer);
@@ -140,7 +140,7 @@ public class Option extends BaseModel {
 
     @Override
     public int hashCode() {
-        int result = id.hashCode();
+        int result = (int) (id ^ (id >>> 32));
         result = 31 * result + name.hashCode();
         result = 31 * result + (factor != null ? factor.hashCode() : 0);
         result = 31 * result + answer.hashCode();

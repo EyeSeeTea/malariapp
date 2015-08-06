@@ -36,7 +36,7 @@ public class User extends BaseModel {
 
     @Column
     @PrimaryKey(autoincrement = true)
-    Long id;
+    long id;
     @Column
     String uid;
     @Column
@@ -90,7 +90,7 @@ public class User extends BaseModel {
 
         User user = (User) o;
 
-        if (!id.equals(user.id)) return false;
+        if (id != user.id) return false;
         if (uid != null ? !uid.equals(user.uid) : user.uid != null) return false;
         return !(name != null ? !name.equals(user.name) : user.name != null);
 
@@ -98,7 +98,7 @@ public class User extends BaseModel {
 
     @Override
     public int hashCode() {
-        int result = id.hashCode();
+        int result = (int) (id ^ (id >>> 32));
         result = 31 * result + (uid != null ? uid.hashCode() : 0);
         result = 31 * result + (name != null ? name.hashCode() : 0);
         return result;

@@ -53,7 +53,7 @@ public class Survey extends BaseModel {
 
     @Column
     @PrimaryKey(autoincrement = true)
-    Long id;
+    long id;
     @Column
     @ForeignKey(references = {@ForeignKeyReference(columnName = "id_program",
             columnType = Long.class,
@@ -369,7 +369,7 @@ public class Survey extends BaseModel {
 
         Survey survey = (Survey) o;
 
-        if (!id.equals(survey.id)) return false;
+        if (id != survey.id) return false;
         if (!program.equals(survey.program)) return false;
         if (!orgUnit.equals(survey.orgUnit)) return false;
         if (!user.equals(survey.user)) return false;
@@ -383,7 +383,7 @@ public class Survey extends BaseModel {
 
     @Override
     public int hashCode() {
-        int result = id.hashCode();
+        int result = (int) (id ^ (id >>> 32));
         result = 31 * result + program.hashCode();
         result = 31 * result + orgUnit.hashCode();
         result = 31 * result + user.hashCode();

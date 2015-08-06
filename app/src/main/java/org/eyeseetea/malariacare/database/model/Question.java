@@ -71,7 +71,7 @@ public class Question extends BaseModel{
 
     @Column
     @PrimaryKey(autoincrement = true)
-    Long id;
+    long id;
     @Column
     String code;
     @Column
@@ -488,35 +488,40 @@ public class Question extends BaseModel{
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Question)) return false;
+        if (o == null || getClass() != o.getClass()) return false;
 
         Question question1 = (Question) o;
 
-        if (!id.equals(question1.id)) return false;
+        if (id != question1.id) return false;
+        if (answer != null ? !answer.equals(question1.answer) : question1.answer != null)
+            return false;
         if (code != null ? !code.equals(question1.code) : question1.code != null) return false;
+        if (compositeScore != null ? !compositeScore.equals(question1.compositeScore) : question1.compositeScore != null)
+            return false;
         if (de_name != null ? !de_name.equals(question1.de_name) : question1.de_name != null)
-            return false;
-        if (short_name != null ? !short_name.equals(question1.short_name) : question1.short_name != null)
-            return false;
-        if (form_name != null ? !form_name.equals(question1.form_name) : question1.form_name != null)
-            return false;
-        if (uid != null ? !uid.equals(question1.uid) : question1.uid != null) return false;
-        if (!order_pos.equals(question1.order_pos)) return false;
-        if (numerator_w != null ? !numerator_w.equals(question1.numerator_w) : question1.numerator_w != null)
             return false;
         if (denominator_w != null ? !denominator_w.equals(question1.denominator_w) : question1.denominator_w != null)
             return false;
-        if (!header.equals(question1.header)) return false;
-        if (!answer.equals(question1.answer)) return false;
+        if (form_name != null ? !form_name.equals(question1.form_name) : question1.form_name != null)
+            return false;
+        if (header != null ? !header.equals(question1.header) : question1.header != null)
+            return false;
+        if (numerator_w != null ? !numerator_w.equals(question1.numerator_w) : question1.numerator_w != null)
+            return false;
+        if (order_pos != null ? !order_pos.equals(question1.order_pos) : question1.order_pos != null)
+            return false;
         if (question != null ? !question.equals(question1.question) : question1.question != null)
             return false;
-        return compositeScore.equals(question1.compositeScore);
+        if (short_name != null ? !short_name.equals(question1.short_name) : question1.short_name != null)
+            return false;
+        if (uid != null ? !uid.equals(question1.uid) : question1.uid != null) return false;
 
+        return true;
     }
 
     @Override
     public int hashCode() {
-        int result = id.hashCode();
+        int result = (int) (id ^ (id >>> 32));
         result = 31 * result + (code != null ? code.hashCode() : 0);
         result = 31 * result + (de_name != null ? de_name.hashCode() : 0);
         result = 31 * result + (short_name != null ? short_name.hashCode() : 0);

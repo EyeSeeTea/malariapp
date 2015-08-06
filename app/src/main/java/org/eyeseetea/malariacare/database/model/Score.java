@@ -36,7 +36,7 @@ public class Score extends BaseModel {
 
     @Column
     @PrimaryKey(autoincrement = true)
-    Long id;
+    long id;
     @Column
     @ForeignKey(references = {@ForeignKeyReference(columnName = "id_tab",
             columnType = Long.class,
@@ -85,7 +85,7 @@ public class Score extends BaseModel {
 
         Score score = (Score) o;
 
-        if (!id.equals(score.id)) return false;
+        if (id != score.id) return false;
         if (!tab.equals(score.tab)) return false;
         return !(uid != null ? !uid.equals(score.uid) : score.uid != null);
 
@@ -93,7 +93,7 @@ public class Score extends BaseModel {
 
     @Override
     public int hashCode() {
-        int result = id.hashCode();
+        int result = (int) (id ^ (id >>> 32));
         result = 31 * result + tab.hashCode();
         result = 31 * result + (uid != null ? uid.hashCode() : 0);
         return result;
