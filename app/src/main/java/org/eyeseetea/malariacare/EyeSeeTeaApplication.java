@@ -20,6 +20,8 @@
 package org.eyeseetea.malariacare;
 
 import android.app.Application;
+import android.content.Context;
+import android.support.multidex.MultiDex;
 
 import com.raizlabs.android.dbflow.config.FlowManager;
 
@@ -43,4 +45,9 @@ public class EyeSeeTeaApplication extends Application {
         FlowManager.destroy();
     }
 
+    @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(base);
+        MultiDex.install(this);
+    }
 }
