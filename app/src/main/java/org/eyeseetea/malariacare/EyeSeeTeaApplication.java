@@ -23,6 +23,8 @@ import android.app.Application;
 
 import com.raizlabs.android.dbflow.config.FlowManager;
 
+import org.eyeseetea.malariacare.database.utils.PreferencesState;
+
 /**
  * Created by nacho on 04/08/15.
  */
@@ -31,7 +33,14 @@ public class EyeSeeTeaApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        PreferencesState.getInstance().setContext(getApplicationContext());
         FlowManager.init(this);
+    }
+
+    @Override
+    public void onTerminate() {
+        super.onTerminate();
+        FlowManager.destroy();
     }
 
 }

@@ -38,8 +38,6 @@ public class Score extends BaseModel {
     @PrimaryKey(autoincrement = true)
     Long id;
     @Column
-    Float value;
-    @Column
     @ForeignKey(references = {@ForeignKeyReference(columnName = "id_tab",
             columnType = Long.class,
             foreignColumnName = "id")},
@@ -51,8 +49,7 @@ public class Score extends BaseModel {
     public Score() {
     }
 
-    public Score(Float real, Tab tab, String uid) {
-        this.value = real;
+    public Score(Tab tab, String uid) {
         this.tab = tab;
         this.uid = uid;
     }
@@ -63,14 +60,6 @@ public class Score extends BaseModel {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public Float getValue() {
-        return value;
-    }
-
-    public void setValue(Float real) {
-        this.value = real;
     }
 
     public Tab getTab() {
@@ -97,7 +86,6 @@ public class Score extends BaseModel {
         Score score = (Score) o;
 
         if (!id.equals(score.id)) return false;
-        if (value != null ? !value.equals(score.value) : score.value != null) return false;
         if (!tab.equals(score.tab)) return false;
         return !(uid != null ? !uid.equals(score.uid) : score.uid != null);
 
@@ -106,7 +94,6 @@ public class Score extends BaseModel {
     @Override
     public int hashCode() {
         int result = id.hashCode();
-        result = 31 * result + (value != null ? value.hashCode() : 0);
         result = 31 * result + tab.hashCode();
         result = 31 * result + (uid != null ? uid.hashCode() : 0);
         return result;
@@ -116,7 +103,6 @@ public class Score extends BaseModel {
     public String toString() {
         return "Score{" +
                 "id=" + id +
-                ", value=" + value +
                 ", tab=" + tab +
                 ", uid='" + uid + '\'' +
                 '}';

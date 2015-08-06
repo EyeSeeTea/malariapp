@@ -59,8 +59,7 @@ public class PreferencesState {
 
     static Context context;
 
-    private PreferencesState(Context context){
-        this.context = context;
+    private PreferencesState(){
         scaleDimensionsMap=initScaleDimensionsMap();
         reloadPreferences();
     }
@@ -84,9 +83,9 @@ public class PreferencesState {
      * @return
      */
     private String initScale(){
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-        if (sharedPreferences.getBoolean(context.getString(R.string.customize_fonts), false)) {
-            return sharedPreferences.getString(context.getString(R.string.font_sizes), context.getString(R.string.font_size_system));
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(instance.getContext());
+        if (sharedPreferences.getBoolean(instance.getContext().getString(R.string.customize_fonts), false)) {
+            return sharedPreferences.getString(instance.getContext().getString(R.string.font_sizes), instance.getContext().getString(R.string.font_size_system));
         }
 
         return context.getString(R.string.font_size_system);
@@ -97,8 +96,8 @@ public class PreferencesState {
      * @return
      */
     private boolean initShowNumDen(){
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-        return sharedPreferences.getBoolean(context.getString(R.string.show_num_dems), false);
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(instance.getContext());
+        return sharedPreferences.getBoolean(instance.getContext().getString(R.string.show_num_dems), false);
     }
 
     /**
@@ -107,7 +106,7 @@ public class PreferencesState {
      */
     private Map<String, Map<String, Float>> initScaleDimensionsMap(){
         Map<String, Float> xsmall = new HashMap<>();
-        String xsmallKey = context.getString(R.string.font_size_level0),
+        String xsmallKey = instance.getContext().getString(R.string.font_size_level0),
                 smallKey = context.getString(R.string.font_size_level1),
                 mediumKey = context.getString(R.string.font_size_level2),
                 largeKey = context.getString(R.string.font_size_level3),
@@ -154,7 +153,7 @@ public class PreferencesState {
 
     public static PreferencesState getInstance(){
         if(instance==null){
-            instance=new PreferencesState(context);
+            instance=new PreferencesState();
         }
         return instance;
     }
