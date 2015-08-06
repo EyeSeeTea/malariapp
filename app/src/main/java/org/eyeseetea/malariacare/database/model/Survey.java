@@ -77,6 +77,8 @@ public class Survey extends BaseModel {
     @Column
     Integer status;
 
+    List<Value> values;
+
     SurveyAnsweredRatio answeredQuestionRatio;
 
     public Survey() {
@@ -247,11 +249,11 @@ public class Survey extends BaseModel {
      */
     public static List<Survey> getUnsentSurveys(OrgUnit orgUnit, Program program) {
         return new Select().from(Survey.class)
-                .where(Condition.column(Survey$Table.ID_ORG_UNIT).is(orgUnit.getId()))
-                .and(Condition.column(Survey$Table.ID_PROGRAM).is(program.getId()))
+                .where(Condition.column(Survey$Table.ORGUNIT_ID_ORG_UNIT).is(orgUnit.getId()))
+                .and(Condition.column(Survey$Table.PROGRAM_ID_PROGRAM).is(program.getId()))
                 .and(Condition.column(Survey$Table.STATUS).isNot(Constants.SURVEY_SENT))
-                .orderBy(Condition.column(Survey$Table.EVENT_DATE))
-                .orderBy(Condition.column(Survey$Table.ID_ORG_UNIT)).queryList();
+                .orderBy(Survey$Table.EVENTDATE)
+                .orderBy(Survey$Table.ORGUNIT_ID_ORG_UNIT).queryList();
     }
 
     /**
@@ -261,8 +263,8 @@ public class Survey extends BaseModel {
     public static List<Survey> getAllUnsentSurveys() {
         return new Select().from(Survey.class)
                 .where(Condition.column(Survey$Table.STATUS).isNot(Constants.SURVEY_SENT))
-                .orderBy(Condition.column(Survey$Table.EVENT_DATE))
-                .orderBy(Condition.column(Survey$Table.ID_ORG_UNIT)).queryList();
+                .orderBy(Survey$Table.EVENTDATE)
+                .orderBy(Survey$Table.ORGUNIT_ID_ORG_UNIT).queryList();
     }
 
     /**
@@ -274,8 +276,8 @@ public class Survey extends BaseModel {
         return new Select().from(Survey.class)
                 .where(Condition.column(Survey$Table.STATUS).isNot(Constants.SURVEY_SENT))
                 .limit(String.valueOf(limit))
-                .orderBy(Condition.column(Survey$Table.EVENT_DATE))
-                .orderBy(Condition.column(Survey$Table.ID_ORG_UNIT)).queryList();
+                .orderBy(Survey$Table.EVENTDATE)
+                .orderBy(Survey$Table.ORGUNIT_ID_ORG_UNIT).queryList();
     }
 
     /**
@@ -285,8 +287,8 @@ public class Survey extends BaseModel {
     public static List<Survey> getAllSentSurveys() {
         return new Select().from(Survey.class)
                 .where(Condition.column(Survey$Table.STATUS).is(Constants.SURVEY_SENT))
-                .orderBy(Condition.column(Survey$Table.EVENT_DATE))
-                .orderBy(Condition.column(Survey$Table.ID_ORG_UNIT)).queryList();
+                .orderBy(Survey$Table.EVENTDATE)
+                .orderBy(Survey$Table.ORGUNIT_ID_ORG_UNIT).queryList();
     }
 
     /**
@@ -298,8 +300,8 @@ public class Survey extends BaseModel {
         return new Select().from(Survey.class)
                 .where(Condition.column(Survey$Table.STATUS).is(Constants.SURVEY_SENT))
                 .limit(String.valueOf(limit))
-                .orderBy(Condition.column(Survey$Table.EVENT_DATE))
-                .orderBy(Condition.column(Survey$Table.ID_ORG_UNIT)).queryList();
+                .orderBy(Survey$Table.EVENTDATE)
+                .orderBy(Survey$Table.ORGUNIT_ID_ORG_UNIT).queryList();
     }
 
     /**
@@ -309,8 +311,8 @@ public class Survey extends BaseModel {
     public static List<Survey> getAllCompletedSurveys() {
         return new Select().from(Survey.class)
                 .where(Condition.column(Survey$Table.STATUS).is(Constants.SURVEY_COMPLETED))
-                .orderBy(Condition.column(Survey$Table.EVENT_DATE))
-                .orderBy(Condition.column(Survey$Table.ID_ORG_UNIT)).queryList();
+                .orderBy(Survey$Table.EVENTDATE)
+                .orderBy(Survey$Table.ORGUNIT_ID_ORG_UNIT).queryList();
     }
 
     /**
@@ -322,8 +324,8 @@ public class Survey extends BaseModel {
         return new Select().from(Survey.class)
                 .where(Condition.column(Survey$Table.STATUS).is(Constants.SURVEY_COMPLETED))
                 .limit(String.valueOf(limit))
-                .orderBy(Condition.column(Survey$Table.EVENT_DATE))
-                .orderBy(Condition.column(Survey$Table.ID_ORG_UNIT)).queryList();
+                .orderBy(Survey$Table.EVENTDATE)
+                .orderBy(Survey$Table.ORGUNIT_ID_ORG_UNIT).queryList();
     }
 
     /**
@@ -333,8 +335,8 @@ public class Survey extends BaseModel {
     public static List<Survey> getAllUncompletedSurveys() {
         return new Select().from(Survey.class)
                 .where(Condition.column(Survey$Table.STATUS).is(Constants.SURVEY_IN_PROGRESS))
-                .orderBy(Condition.column(Survey$Table.EVENT_DATE))
-                .orderBy(Condition.column(Survey$Table.ID_ORG_UNIT)).queryList();
+                .orderBy(Survey$Table.EVENTDATE)
+                .orderBy(Survey$Table.ORGUNIT_ID_ORG_UNIT).queryList();
     }
 
     /**
@@ -346,8 +348,8 @@ public class Survey extends BaseModel {
         return new Select().from(Survey.class)
                 .where(Condition.column(Survey$Table.STATUS).is(Constants.SURVEY_IN_PROGRESS))
                 .limit(String.valueOf(limit))
-                .orderBy(Condition.column(Survey$Table.EVENT_DATE))
-                .orderBy(Condition.column(Survey$Table.ID_ORG_UNIT)).queryList();
+                .orderBy(Survey$Table.EVENTDATE)
+                .orderBy(Survey$Table.ORGUNIT_ID_ORG_UNIT).queryList();
     }
 
     @Override

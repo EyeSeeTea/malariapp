@@ -112,7 +112,7 @@ public class Header extends BaseModel{
     public List<Question> getQuestions(){
         if (this.questions == null){
             this.questions = new Select().from(Question.class)
-                    .where(Condition.column(Question$Table.HEADER).is(this.getId()))
+                    .where(Condition.column(Question$Table.HEADER_ID_HEADER).is(this.getId()))
                     .orderBy(Question$Table.ORDER_POS).queryList();
         }
         return questions;

@@ -53,6 +53,8 @@ public class Option extends BaseModel {
             saveForeignKeyModel = false)
     Answer answer;
 
+    List<Value> values;
+
     public Option() {
     }
 
@@ -119,7 +121,7 @@ public class Option extends BaseModel {
     @OneToMany(methods = {OneToMany.Method.ALL}, variableName = "values")
     public List<Value> getValues(){
         return new Select().from(Value.class)
-                .where(Condition.column(Value$Table.ID_OPTION).is(this.getId())).queryList();
+                .where(Condition.column(Value$Table.OPTION_ID_OPTION).is(this.getId())).queryList();
     }
 
     @Override

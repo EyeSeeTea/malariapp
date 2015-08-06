@@ -45,6 +45,7 @@ public class Tab extends BaseModel {
     String name;
     @Column
     Integer order_pos;
+    @Column
     @ForeignKey(references = {@ForeignKeyReference(columnName = "id_program",
             columnType = Long.class,
             foreignColumnName = "id")},
@@ -52,6 +53,10 @@ public class Tab extends BaseModel {
     Program program;
     @Column
     Integer type;
+
+    List<Header> headers;
+
+    List<Score> scores;
 
     public Tab() {
     }
@@ -108,7 +113,7 @@ public class Tab extends BaseModel {
     public List<Header> getHeaders(){
         return new Select().from(Header.class)
                 .where(Condition.column(Header$Table.ID).is(this.getId()))
-                .orderBy(Condition.column(Header$Table.ORDER_POS)).queryList();
+                .orderBy(Header$Table.ORDER_POS).queryList();
     }
 
     //TODO: to enable lazy loading, here we need to set Method.SAVE and Method.DELETE and use the .toModel() to specify when do we want to load the models
@@ -123,8 +128,8 @@ public class Tab extends BaseModel {
      */
     public static List<Tab> getTabsBySession(){
         return new Select().from(Tab.class)
-                .where(Condition.column(Tab$Table.ID_PROGRAM).is(String.valueOf(Session.getSurvey().getProgram().getId())))
-                .orderBy(Condition.column(Tab$Table.ORDER_POS)).queryList();
+                .where(Condition.column(Tab$Table.PROGRAM_ID_PROGRAM).is(String.valueOf(Session.getSurvey().getProgram().getId())))
+                .orderBy(Tab$Table.ORDER_POS).queryList();
     }
 
     /**

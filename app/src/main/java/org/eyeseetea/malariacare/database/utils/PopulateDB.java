@@ -3,6 +3,9 @@ package org.eyeseetea.malariacare.database.utils;
 import android.content.res.AssetManager;
 
 import com.opencsv.CSVReader;
+import com.raizlabs.android.dbflow.runtime.TransactionManager;
+import com.raizlabs.android.dbflow.runtime.transaction.process.ProcessModelInfo;
+import com.raizlabs.android.dbflow.runtime.transaction.process.SaveModelTransaction;
 
 import org.eyeseetea.malariacare.database.model.Answer;
 import org.eyeseetea.malariacare.database.model.CompositeScore;
@@ -31,14 +34,14 @@ public class PopulateDB {
     public static final String COMPOSITE_SCORES_CSV = "CompositeScores.csv";
     public static final String QUESTIONS_CSV = "Questions.csv";
     public static final String QUESTION_RELATIONS_CSV = "QuestionRelations.csv";
-    static Map<Integer, Program> programList = new LinkedHashMap<Integer, Program>();
-    static Map<Integer, Tab> tabList = new LinkedHashMap<Integer, Tab>();
-    static Map<Integer, Header> headerList = new LinkedHashMap<Integer, Header>();
-    static Map<Integer, Question> questionList = new LinkedHashMap<Integer, Question>();
-    static Map<Integer, Option> optionList = new LinkedHashMap<Integer, Option>();
-    static Map<Integer, Answer> answerList = new LinkedHashMap<Integer, Answer>();
-    static Map<Integer, CompositeScore> compositeScoreMap = new LinkedHashMap<Integer, CompositeScore>();
-    static Map<Integer, QuestionRelation> relationList = new LinkedHashMap<Integer, QuestionRelation>();
+    static Map<Integer, Program> programs = new LinkedHashMap<Integer, Program>();
+    static Map<Integer, Tab> tabs = new LinkedHashMap<Integer, Tab>();
+    static Map<Integer, Header> headers = new LinkedHashMap<Integer, Header>();
+    static Map<Integer, Question> questions = new LinkedHashMap<Integer, Question>();
+    static Map<Integer, Option> options = new LinkedHashMap<Integer, Option>();
+    static Map<Integer, Answer> answers = new LinkedHashMap<Integer, Answer>();
+    static Map<Integer, CompositeScore> compositeScores = new LinkedHashMap<Integer, CompositeScore>();
+    static Map<Integer, QuestionRelation> relations = new LinkedHashMap<Integer, QuestionRelation>();
 
     public static void populateDB(AssetManager assetManager) throws IOException {
 
@@ -55,44 +58,44 @@ public class PopulateDB {
                         Program program = new Program();
                         program.setUid(line[1]);
                         program.setName(line[2]);
-                        programList.put(Integer.valueOf(line[0]), program);
+                        programs.put(Integer.valueOf(line[0]), program);
                         break;
                     case TABS_CSV:
                         Tab tab = new Tab();
                         tab.setName(line[1]);
                         tab.setOrder_pos(Integer.valueOf(line[2]));
-                        tab.setProgram(programList.get(Integer.valueOf(line[3])));
+                        tab.setProgram(programs.get(Integer.valueOf(line[3])));
                         tab.setType(Integer.valueOf(line[4]));
-                        tabList.put(Integer.valueOf(line[0]), tab);
+                        tabs.put(Integer.valueOf(line[0]), tab);
                         break;
                     case HEADERS_CSV:
                         Header header = new Header();
                         header.setShort_name(line[1]);
                         header.setName(line[2]);
                         header.setOrder_pos(Integer.valueOf(line[3]));
-                        header.setTab(tabList.get(Integer.valueOf(line[4])));
-                        headerList.put(Integer.valueOf(line[0]), header);
+                        header.setTab(tabs.get(Integer.valueOf(line[4])));
+                        headers.put(Integer.valueOf(line[0]), header);
                         break;
                     case ANSWERS_CSV:
                         Answer answer = new Answer();
                         answer.setName(line[1]);
                         answer.setOutput(Integer.valueOf(line[2]));
-                        answerList.put(Integer.valueOf(line[0]), answer);
+                        answers.put(Integer.valueOf(line[0]), answer);
                         break;
                     case OPTIONS_CSV:
                         Option option = new Option();
                         option.setName(line[1]);
                         option.setFactor(Float.valueOf(line[2]));
-                        option.setAnswer(answerList.get(Integer.valueOf(line[3])));
-                        optionList.put(Integer.valueOf(line[0]), option);
+                        option.setAnswer(answers.get(Integer.valueOf(line[3])));
+                        options.put(Integer.valueOf(line[0]), option);
                         break;
                     case COMPOSITE_SCORES_CSV:
                         CompositeScore compositeScore = new CompositeScore();
                         compositeScore.setCode(line[1]);
                         compositeScore.setLabel(line[2]);
-                        if (!line[3].equals("")) compositeScore.setCompositeScore(compositeScoreMap.get(Integer.valueOf(line[3])));
+                        if (!line[3].equals("")) compositeScore.setCompositeScore(compositeScores.get(Integer.valueOf(line[3])));
                         compositeScore.setUid(line[4]);
-                        compositeScoreMap.put(Integer.valueOf(line[0]), compositeScore);
+                        compositeScores.put(Integer.valueOf(line[0]), compositeScore);
                         break;
                     case QUESTIONS_CSV:
                         Question question = new Question();
@@ -104,34 +107,42 @@ public class PopulateDB {
                         question.setOrder_pos(Integer.valueOf(line[6]));
                         question.setNumerator_w(Float.valueOf(line[7]));
                         question.setDenominator_w(Float.valueOf(line[8]));
-                        question.setHeader(headerList.get(Integer.valueOf(line[9])));
+                        question.setHeader(headers.get(Integer.valueOf(line[9])));
                         if (!line[10].equals(""))
-                            question.setAnswer(answerList.get(Integer.valueOf(line[10])));
+                            question.setAnswer(answers.get(Integer.valueOf(line[10])));
                         if (!line[11].equals(""))
-                            question.setQuestion(questionList.get(Integer.valueOf(line[11])));
-                        if (line.length == 13 && !line[12].equals("")) question.setCompositeScore(compositeScoreMap.get(Integer.valueOf(line[12])));
-                        questionList.put(Integer.valueOf(line[0]), question);
+                            question.setQuestion(questions.get(Integer.valueOf(line[11])));
+                        if (line.length == 13 && !line[12].equals("")) question.setCompositeScore(compositeScores.get(Integer.valueOf(line[12])));
+                        questions.put(Integer.valueOf(line[0]), question);
                         break;
                     case QUESTION_RELATIONS_CSV:
                         QuestionRelation relation = new QuestionRelation();
-                        relation.setMaster(questionList.get(Integer.valueOf(line[1])));
-                        relation.setRelative(questionList.get(Integer.valueOf(line[2])));
+                        relation.setMaster(questions.get(Integer.valueOf(line[1])));
+                        relation.setRelative(questions.get(Integer.valueOf(line[2])));
                         relation.setOperation(Integer.valueOf(line[3]));
-                        relationList.put(Integer.valueOf(line[0]),relation);
+                        relations.put(Integer.valueOf(line[0]), relation);
                         break;
                 }
             }
             reader.close();
         }
 
-        Program.saveInTx(programList.values());
-        Tab.saveInTx(tabList.values());
-        Header.saveInTx(headerList.values());
-        Answer.saveInTx(answerList.values());
-        Option.saveInTx(optionList.values());
-        CompositeScore.saveInTx(compositeScoreMap.values());
-        Question.saveInTx(questionList.values());
-        QuestionRelation.saveInTx(relationList.values());
+        TransactionManager.getInstance().addTransaction(new SaveModelTransaction<>(ProcessModelInfo.withModels(programs.values())));
+        //Program.saveInTx(programs.values());
+        TransactionManager.getInstance().addTransaction(new SaveModelTransaction<>(ProcessModelInfo.withModels(tabs.values())));
+        //Tab.saveInTx(tabs.values());
+        TransactionManager.getInstance().addTransaction(new SaveModelTransaction<>(ProcessModelInfo.withModels(headers.values())));
+        //Header.saveInTx(headers.values());
+        TransactionManager.getInstance().addTransaction(new SaveModelTransaction<>(ProcessModelInfo.withModels(answers.values())));
+        //Answer.saveInTx(answers.values());
+        TransactionManager.getInstance().addTransaction(new SaveModelTransaction<>(ProcessModelInfo.withModels(options.values())));
+        //Option.saveInTx(options.values());
+        TransactionManager.getInstance().addTransaction(new SaveModelTransaction<>(ProcessModelInfo.withModels(compositeScores.values())));
+        //CompositeScore.saveInTx(compositeScores.values());
+        TransactionManager.getInstance().addTransaction(new SaveModelTransaction<>(ProcessModelInfo.withModels(questions.values())));
+        //Question.saveInTx(questions.values());
+        TransactionManager.getInstance().addTransaction(new SaveModelTransaction<>(ProcessModelInfo.withModels(relations.values())));
+        //QuestionRelation.saveInTx(relations.values());
     }
 
     public static void populateDummyData(){

@@ -86,7 +86,7 @@ public class Program extends BaseModel {
     public List<Tab> getTabs(){
         if(this.tabs == null) {
             this.tabs = new Select().from(Tab.class)
-                    .where(Condition.column(Tab$Table.ID_PROGRAM).is(this.getId()))
+                    .where(Condition.column(Tab$Table.PROGRAM_ID_PROGRAM).is(this.getId()))
                     .orderBy(Tab$Table.ORDER_POS).queryList();
         }
         return this.tabs;
@@ -96,7 +96,7 @@ public class Program extends BaseModel {
     public List<Survey> getSurveys(){
         if(this.surveys == null) {
             this.surveys = new Select().from(Survey.class)
-                    .where(Condition.column(Survey$Table.ID_PROGRAM).is(this.getId())).queryList();
+                    .where(Condition.column(Survey$Table.PROGRAM_ID_PROGRAM).is(this.getId())).queryList();
         }
         return this.surveys;
     }

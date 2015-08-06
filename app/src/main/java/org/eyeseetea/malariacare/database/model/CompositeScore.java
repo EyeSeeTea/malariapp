@@ -126,7 +126,7 @@ public class CompositeScore extends BaseModel {
         if (this.compositeScoreChildren == null){
             this.compositeScoreChildren = new Select()
                     .from(CompositeScore.class)
-                    .where(Condition.column(CompositeScore$Table.COMPOSITESCOREKEYCONTAINER_COMPOSITESCORE_ID).is(this.getId()))
+                    .where(Condition.column(CompositeScore$Table.COMPOSITESCORE_ID_COMPOSITE_SCORE).is(this.getId()))
                     .queryList();
             //this.compositeScoreChildren = CompositeScore.find(CompositeScore.class, "composite_score = ?", String.valueOf(this.getId()));
         }
@@ -139,7 +139,7 @@ public class CompositeScore extends BaseModel {
         if (questions == null) {
             questions = new Select()
                     .from(Question.class)
-                    .where(Condition.column(Question$Table.QUESTIONKEYCONTAINER_COMPOSITESCORE_ID).is(this.getId()))
+                    .where(Condition.column(Question$Table.COMPOSITESCORE_ID_COMPOSITE_SCORE).is(this.getId()))
                     .queryList();
             /*questions = Select.from(Question.class)
                     .where(Condition.prop("composite_score")

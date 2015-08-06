@@ -25,6 +25,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Spinner;
 
+import com.raizlabs.android.dbflow.sql.language.Select;
+
 import org.eyeseetea.malariacare.database.model.OrgUnit;
 import org.eyeseetea.malariacare.database.model.Program;
 import org.eyeseetea.malariacare.database.model.Survey;
@@ -60,13 +62,13 @@ public class CreateSurveyActivity extends BaseActivity {
         this.programDefaultOption = new Program(Constants.DEFAULT_SELECT_OPTION);
 
         //Populate Organization Unit DDL
-        List<OrgUnit> orgUnitList = OrgUnit.listAll(OrgUnit.class);
+        List<OrgUnit> orgUnitList = new Select().all().from(OrgUnit.class).queryList();
         orgUnitList.add(0, orgUnitDefaultOption);
         orgUnitView = (Spinner) findViewById(R.id.org_unit);
         orgUnitView.setAdapter(new OrgUnitArrayAdapter(this, orgUnitList));
 
         //Populate Program View DDL
-        List<Program> programList = OrgUnit.listAll(Program.class);
+        List<Program> programList = new Select().all().from(Program.class).queryList();;
         programList.add(0, programDefaultOption);
         programView = (Spinner) findViewById(R.id.program);
         programView.setAdapter(new ProgramArrayAdapter(this, programList));

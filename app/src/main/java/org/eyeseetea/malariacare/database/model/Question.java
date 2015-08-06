@@ -115,6 +115,8 @@ public class Question extends BaseModel{
 
     List<Question> master;
 
+    List<Value> values;
+
     public Question() {
     }
 
@@ -241,7 +243,7 @@ public class Question extends BaseModel{
     public List<Question> getChildren() {
         if (this.children == null){
             this.children = new Select().from(Question.class)
-                    .where(Condition.column(Question$Table.ID_PARENT).is(this.getId()))
+                    .where(Condition.column(Question$Table.QUESTION_ID_PARENT).is(this.getId()))
                     .orderBy(Question$Table.ORDER_POS).queryList();
         }
         return this.children;
@@ -250,8 +252,8 @@ public class Question extends BaseModel{
     public List<Question> getRelatives() {
         if (this.relatives == null) {
             this.relatives = new Select().from(Question.class).where(Condition.column(Question$Table.ID)
-                    .in(new Select(QuestionRelation$Table.RELATIVE).from(QuestionRelation.class)
-                            .where(Condition.column(QuestionRelation$Table.MASTER).is(this.getId())))).queryList();
+                    .in(new Select(QuestionRelation$Table.RELATIVE_RELATIVE).from(QuestionRelation.class)
+                            .where(Condition.column(QuestionRelation$Table.MASTER_MASTER).is(this.getId())))).queryList();
             //this.relatives = Question.findWithQuery(Question.class, "Select * from Question" +
             //        " where id in (Select relative from Question_Relation where master =" + this.getId() + ")");
        }
@@ -262,8 +264,8 @@ public class Question extends BaseModel{
     public List<Question> getMasters() {
         if (this.master == null) {
             this.master = new Select().from(Question.class).where(Condition.column(Question$Table.ID)
-                    .in(new Select(QuestionRelation$Table.MASTER).from(QuestionRelation.class)
-                    .where(Condition.column(QuestionRelation$Table.RELATIVE).is(this.getId())))).queryList();
+                    .in(new Select(QuestionRelation$Table.MASTER_MASTER).from(QuestionRelation.class)
+                    .where(Condition.column(QuestionRelation$Table.RELATIVE_RELATIVE).is(this.getId())))).queryList();
             //this.master = Question.findWithQuery(Question.class, "Select * from Question" +
             //        " where id in (Select master from Question_Relation where relative =" + this.getId() + ")");
         }
@@ -280,7 +282,7 @@ public class Question extends BaseModel{
 
     @OneToMany(methods = OneToMany.Method.ALL, variableName = "values")
     public List<Value> getValues(){
-        return new Select().from(Value.class).where(Condition.column(Value$Table.QUESTION).is(this.getId())).queryList();
+        return new Select().from(Value.class).where(Condition.column(Value$Table.QUESTION_ID_QUESTION).is(this.getId())).queryList();
     }
 
     /**
@@ -303,8 +305,8 @@ public class Question extends BaseModel{
         String surveyId = String.valueOf(survey.getId());
         String questionId = String.valueOf(this.getId());
         List<Value> returnValues = new Select().from(Value.class)
-                .where(Condition.column(Value$Table.ID_QUESTION).is(this.getId()))
-                .and(Condition.column(Survey$Table.ID_SURVEY).is(survey.getId())).queryList();
+                .where(Condition.column(Value$Table.QUESTION_ID_QUESTION).is(this.getId()))
+                .and(Condition.column(Survey$Table.ID).is(survey.getId())).queryList();
         //List<Value> returnValues = Select.from(Value.class).
         //        where(Condition.prop("question").eq(questionId), Condition.prop("survey").eq(surveyId)).list();
 

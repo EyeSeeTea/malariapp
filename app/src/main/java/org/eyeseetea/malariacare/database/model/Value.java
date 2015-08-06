@@ -19,13 +19,18 @@
 
 package org.eyeseetea.malariacare.database.model;
 
-import com.orm.SugarRecord;
 import com.raizlabs.android.dbflow.annotation.Column;
 import com.raizlabs.android.dbflow.annotation.ForeignKey;
 import com.raizlabs.android.dbflow.annotation.ForeignKeyReference;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
+import com.raizlabs.android.dbflow.annotation.Table;
+import com.raizlabs.android.dbflow.sql.builder.Condition;
+import com.raizlabs.android.dbflow.sql.language.Select;
 import com.raizlabs.android.dbflow.structure.BaseModel;
 
+import org.eyeseetea.malariacare.database.AppDatabase;
+
+@Table(databaseName = AppDatabase.NAME)
 public class Value extends BaseModel {
 
     @Column
@@ -137,8 +142,11 @@ public class Value extends BaseModel {
         if(survey==null || survey.getId()==null){
             return 0;
         }
-        String[] whereArgs={survey.getId().toString()};
-        return (int)Value.count(Value.class,"survey=?",whereArgs);
+        return (int)new Select().count()
+                .from(Value.class)
+                .where(Condition.column(Value$Table.ID).is(survey.getId()));
+        //String[] whereArgs={survey.getId().toString()};
+        //Value.count(Value.class,"survey=?",whereArgs);
     }
 
     @Override

@@ -42,6 +42,8 @@ public class User extends BaseModel {
     @Column
     String name;
 
+    List<Survey> surveys;
+
     public User() {
     }
 
@@ -78,7 +80,7 @@ public class User extends BaseModel {
     @OneToMany(methods = OneToMany.Method.ALL, variableName = "surveys")
     public List<Survey> getSurveys(){
         return new Select().from(Survey.class)
-                .where(Condition.column(Survey$Table.ID_USER).is(this.getId())).queryList();
+                .where(Condition.column(Survey$Table.USER_ID_USER).is(this.getId())).queryList();
     }
 
     @Override
