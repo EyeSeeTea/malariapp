@@ -50,7 +50,7 @@ public class CompositeScore extends BaseModel {
 
     @Column
     @PrimaryKey(autoincrement = true)
-    Long id;
+    long id;
     @Column
     String code;
     @Column
@@ -217,7 +217,7 @@ public class CompositeScore extends BaseModel {
 
         CompositeScore that = (CompositeScore) o;
 
-        if (!id.equals(that.id)) return false;
+        if (id != that.id) return false;
         if (code != null ? !code.equals(that.code) : that.code != null) return false;
         if (label != null ? !label.equals(that.label) : that.label != null) return false;
         if (uid != null ? !uid.equals(that.uid) : that.uid != null) return false;
@@ -227,7 +227,7 @@ public class CompositeScore extends BaseModel {
 
     @Override
     public int hashCode() {
-        int result = id.hashCode();
+        int result = (int) (id ^ (id >>> 32));
         result = 31 * result + (code != null ? code.hashCode() : 0);
         result = 31 * result + (label != null ? label.hashCode() : 0);
         result = 31 * result + (uid != null ? uid.hashCode() : 0);

@@ -36,7 +36,7 @@ public class Answer extends BaseModel {
 
     @Column
     @PrimaryKey(autoincrement = true)
-    Long id;
+    long id;
     @Column
     String name;
     @Column
@@ -97,7 +97,7 @@ public class Answer extends BaseModel {
 
         Answer answer = (Answer) o;
 
-        if (!id.equals(answer.id)) return false;
+        if (id != answer.id) return false;
         if (name != null ? !name.equals(answer.name) : answer.name != null) return false;
         return output.equals(answer.output);
 
@@ -105,7 +105,7 @@ public class Answer extends BaseModel {
 
     @Override
     public int hashCode() {
-        int result = id.hashCode();
+        int result = (int) (id ^ (id >>> 32));
         result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + output.hashCode();
         return result;
