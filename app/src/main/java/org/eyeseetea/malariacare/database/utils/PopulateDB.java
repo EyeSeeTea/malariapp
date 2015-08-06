@@ -4,8 +4,6 @@ import android.content.res.AssetManager;
 
 import com.opencsv.CSVReader;
 import com.raizlabs.android.dbflow.runtime.TransactionManager;
-import com.raizlabs.android.dbflow.runtime.transaction.process.ProcessModelInfo;
-import com.raizlabs.android.dbflow.runtime.transaction.process.SaveModelTransaction;
 
 import org.eyeseetea.malariacare.database.model.Answer;
 import org.eyeseetea.malariacare.database.model.CompositeScore;
@@ -127,22 +125,16 @@ public class PopulateDB {
             reader.close();
         }
 
-        TransactionManager.getInstance().addTransaction(new SaveModelTransaction<>(ProcessModelInfo.withModels(programs.values())));
-        //Program.saveInTx(programs.values());
-        TransactionManager.getInstance().addTransaction(new SaveModelTransaction<>(ProcessModelInfo.withModels(tabs.values())));
-        //Tab.saveInTx(tabs.values());
-        TransactionManager.getInstance().addTransaction(new SaveModelTransaction<>(ProcessModelInfo.withModels(headers.values())));
-        //Header.saveInTx(headers.values());
-        TransactionManager.getInstance().addTransaction(new SaveModelTransaction<>(ProcessModelInfo.withModels(answers.values())));
-        //Answer.saveInTx(answers.values());
-        TransactionManager.getInstance().addTransaction(new SaveModelTransaction<>(ProcessModelInfo.withModels(options.values())));
-        //Option.saveInTx(options.values());
-        TransactionManager.getInstance().addTransaction(new SaveModelTransaction<>(ProcessModelInfo.withModels(compositeScores.values())));
-        //CompositeScore.saveInTx(compositeScores.values());
-        TransactionManager.getInstance().addTransaction(new SaveModelTransaction<>(ProcessModelInfo.withModels(questions.values())));
-        //Question.saveInTx(questions.values());
-        TransactionManager.getInstance().addTransaction(new SaveModelTransaction<>(ProcessModelInfo.withModels(relations.values())));
-        //QuestionRelation.saveInTx(relations.values());
+
+        TransactionManager.getInstance().saveOnSaveQueue(programs.values());
+        TransactionManager.getInstance().saveOnSaveQueue(tabs.values());
+        TransactionManager.getInstance().saveOnSaveQueue(headers.values());
+        TransactionManager.getInstance().saveOnSaveQueue(answers.values());
+        TransactionManager.getInstance().saveOnSaveQueue(options.values());
+        TransactionManager.getInstance().saveOnSaveQueue(compositeScores.values());
+        TransactionManager.getInstance().saveOnSaveQueue(questions.values());
+        TransactionManager.getInstance().saveOnSaveQueue(relations.values());
+
     }
 
     public static void populateDummyData(){
