@@ -33,7 +33,7 @@ public class EyeSeeTeaApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        PreferencesState.getInstance().setContext(getApplicationContext());
+        PreferencesState.getInstance().init(getApplicationContext());
         FlowManager.init(this);
     }
 

@@ -59,17 +59,16 @@ public class PreferencesState {
 
     static Context context;
 
-    private PreferencesState(){
+    private PreferencesState(){ }
+
+    public void init(Context context){
+        this.context=context;
         scaleDimensionsMap=initScaleDimensionsMap();
         reloadPreferences();
     }
 
     public Context getContext() {
         return context;
-    }
-
-    public void setContext(Context context) {
-        this.context = context;
     }
 
     public void reloadPreferences(){
