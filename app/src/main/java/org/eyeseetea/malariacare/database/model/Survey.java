@@ -21,14 +21,16 @@ package org.eyeseetea.malariacare.database.model;
 
 import android.util.Log;
 
-import com.raizlabs.android.dbflow.annotation.OneToMany;
-import com.raizlabs.android.dbflow.sql.builder.Condition;
-import com.raizlabs.android.dbflow.sql.language.Select;
 import com.raizlabs.android.dbflow.annotation.Column;
 import com.raizlabs.android.dbflow.annotation.ForeignKey;
 import com.raizlabs.android.dbflow.annotation.ForeignKeyReference;
+import com.raizlabs.android.dbflow.annotation.OneToMany;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;
+import com.raizlabs.android.dbflow.sql.builder.Condition;
+import com.raizlabs.android.dbflow.sql.language.ColumnAlias;
+import com.raizlabs.android.dbflow.sql.language.Join;
+import com.raizlabs.android.dbflow.sql.language.Select;
 import com.raizlabs.android.dbflow.structure.BaseModel;
 
 import org.eyeseetea.malariacare.database.AppDatabase;
@@ -43,11 +45,11 @@ import java.util.List;
 public class Survey extends BaseModel {
 
 
-    private static final String LIST_VALUES_PARENT_QUESTION ="select v.* from value v"+
+    /*private static final String LIST_VALUES_PARENT_QUESTION = "select v.* from value v"+
             " left join question q on v.question=q.id"+
             " where v.survey=?"+
             " and q.question=0"+
-            " and v.value is not null and v.value<>''";
+            " and v.value is not null and v.value<>''";*/
 
     @Column
     @PrimaryKey(autoincrement = true)
@@ -174,8 +176,16 @@ public class Survey extends BaseModel {
      * @return
      */
     public List<Value> getValuesFromParentQuestions(){
-        //TODO: Implement join
-        List<Value> values = Value.findWithQuery(Value.class, LIST_VALUES_PARENT_QUESTION, this.getId().toString());
+        List<Value> values = new Select().all().from(Value.class).as("v")
+                .join(Question.class, Join.JoinType.LEFT).as("q")
+                .on(Condition.column(ColumnAlias.columnWithTable("v", Value$Table.QUESTION_ID_QUESTION))
+                        .eq(ColumnAlias.columnWithTable("q", Question$Table.ID)))
+                .where(Condition.column(ColumnAlias.columnWithTable("v", Value$Table.SURVEY_ID_SURVEY))
+                        .eq(this.getId()))
+                .and(Condition.column(ColumnAlias.columnWithTable("q", Question$Table.QUESTION_ID_PARENT)).is(0))
+                .and(Condition.column(ColumnAlias.columnWithTable("v", Value$Table.VALUE)).isNotNull())
+                .and(Condition.column(ColumnAlias.columnWithTable("v", Value$Table.VALUE)).isNot("")).queryList();
+        //List<Value> values = Value.findWithQuery(Value.class, LIST_VALUES_PARENT_QUESTION, this.getId().toString());
         return values;
     }
 

@@ -26,6 +26,8 @@ import com.raizlabs.android.dbflow.annotation.OneToMany;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;
 import com.raizlabs.android.dbflow.sql.builder.Condition;
+import com.raizlabs.android.dbflow.sql.language.ColumnAlias;
+import com.raizlabs.android.dbflow.sql.language.Join;
 import com.raizlabs.android.dbflow.sql.language.Select;
 import com.raizlabs.android.dbflow.structure.BaseModel;
 
@@ -39,11 +41,12 @@ import java.util.Set;
 @Table(databaseName = AppDatabase.NAME)
 public class CompositeScore extends BaseModel {
 
-    private static final String LIST_BY_PROGRAM_SQL=
-            "select distinct cs.* from composite_score cs left join question q on q.composite_score=cs.id "+
+    /*private static final String LIST_BY_PROGRAM_SQL=
+            "select distinct cs.* from composite_score cs "+
+            "left join question q on q.composite_score=cs.id "+
             "left join header h on q.header=h.id "+
             "left join tab t on h.tab=t.id "+
-            "left join program p on t.program=p.id where p.id=?";
+            "left join program p on t.program=p.id where p.id=?";*/
 
     @Column
     @PrimaryKey(autoincrement = true)
@@ -160,11 +163,23 @@ public class CompositeScore extends BaseModel {
         }
         //TODO: Implement join
         //Take scores associated to questions of the program ('leaves')
-        /*List<CompositeScore> compositeScoresByProgram = new Select().distinct().from(CompositeScore.class).as("C")
-                .join(Question.class, Join.JoinType.LEFT).as("Q")
-                .on(Condition.column(ColumnAlias.columnTable("Q", Question$Table.COMPOSITESCORE.
-                eq)))*/
-        List<CompositeScore> compositeScoresByProgram = CompositeScore.findWithQuery(CompositeScore.class, LIST_BY_PROGRAM_SQL, program.getId().toString());
+        List<CompositeScore> compositeScoresByProgram = new Select().distinct().all().from(CompositeScore.class).as("cs")
+                .join(Question.class, Join.JoinType.LEFT).as("q")
+                .on(Condition.column(ColumnAlias.columnWithTable("q", Question$Table.COMPOSITESCORE_ID_COMPOSITE_SCORE))
+                        .eq(ColumnAlias.columnWithTable("cs", CompositeScore$Table.ID)))
+                .join(Header.class, Join.JoinType.LEFT).as("h")
+                .on(Condition.column(ColumnAlias.columnWithTable("q", Question$Table.HEADER_ID_HEADER))
+                        .eq(ColumnAlias.columnWithTable("h", Header$Table.ID)))
+                .join(Tab.class, Join.JoinType.LEFT).as("t")
+                .on(Condition.column(ColumnAlias.columnWithTable("h", Header$Table.TAB_ID_TAB))
+                        .eq(ColumnAlias.columnWithTable("t", Tab$Table.ID)))
+                .join(Program.class, Join.JoinType.LEFT).as("p")
+                .on(Condition.column(ColumnAlias.columnWithTable("t", Tab$Table.PROGRAM_ID_PROGRAM))
+                        .eq(ColumnAlias.columnWithTable("p", Program$Table.ID)))
+                .where(Condition.column(ColumnAlias.columnWithTable("p", Program$Table.ID))
+                .eq(program.getId())).queryList();
+
+        //List<CompositeScore> compositeScoresByProgram = CompositeScore.findWithQuery(CompositeScore.class, LIST_BY_PROGRAM_SQL, program.getId().toString());
 
         //Find parent scores from 'leaves'
         Set<CompositeScore> parentCompositeScores = new HashSet<CompositeScore>();

@@ -142,9 +142,9 @@ public class Value extends BaseModel {
         if(survey==null || survey.getId()==null){
             return 0;
         }
-        return (int)new Select().count()
+        return (int) new Select().count()
                 .from(Value.class)
-                .where(Condition.column(Value$Table.ID).is(survey.getId()));
+                .where(Condition.column(Value$Table.ID).is(survey.getId())).count();
         //String[] whereArgs={survey.getId().toString()};
         //Value.count(Value.class,"survey=?",whereArgs);
     }

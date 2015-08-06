@@ -26,6 +26,8 @@ import com.raizlabs.android.dbflow.annotation.OneToMany;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;
 import com.raizlabs.android.dbflow.sql.builder.Condition;
+import com.raizlabs.android.dbflow.sql.language.ColumnAlias;
+import com.raizlabs.android.dbflow.sql.language.Join;
 import com.raizlabs.android.dbflow.sql.language.Select;
 import com.raizlabs.android.dbflow.structure.BaseModel;
 
@@ -45,25 +47,27 @@ public class Question extends BaseModel{
     /**
      * Sql query that counts required questions in a program (required for % stats)
      */
-    private static final String LIST_REQUIRED_BY_PROGRAM ="select q.* from question q"+
+    /*private static final String LIST_REQUIRED_BY_PROGRAM = "select q.* from question q"+
             " left join answer a on q.answer=a.id"+
             " left join header h on q.header=h.id"+
             " left join tab t on h.tab=t.id"+
             " left join program p on t.program=p.id"+
             " where q.question=0"+
             " and a.output<>"+ Constants.NO_ANSWER+
-            " and p.id=?";
+            " and p.id=?";*/
 
-    private static final String LIST_ALL_BY_PROGRAM ="select q.* from question q"+
+    /*private static final String LIST_ALL_BY_PROGRAM =
+            "select q.* from question q"+
             " left join header h on q.header=h.id"+
             " left join tab t on h.tab=t.id"+
             " left join program p on t.program=p.id"+
-            " and p.id=? order by t.orderpos, q.orderpos";
+            " and p.id=? order by t.orderpos, q.orderpos";*/
 
-    private static final String LIST_ALL_BY_TABS ="select q.* from question q"+
+    /*private static final String LIST_ALL_BY_TABS =
+            "select q.* from question q"+
             " left join header h on q.header=h.id"+
             " left join tab t on h.tab=t.id"+
-            " and t.id in (?) order by t.orderpos, q.orderpos";
+            " and t.id in (?) order by t.orderpos, q.orderpos";*/
 
     @Column
     @PrimaryKey(autoincrement = true)
@@ -383,8 +387,27 @@ public class Question extends BaseModel{
             return 0;
         }
 
-        //TODO: Implement join
-        List<Question> questionsByProgram = Question.findWithQuery(Question.class, LIST_REQUIRED_BY_PROGRAM, program.getId().toString());
+        /**
+         * Sql query that counts required questions in a program (required for % stats)
+         */
+        List<Question> questionsByProgram = new Select().all().from(Question.class).as("q")
+                .join(Answer.class, Join.JoinType.LEFT).as("a")
+                .on(Condition.column(ColumnAlias.columnWithTable("q", Question$Table.ANSWER_ID_ANSWER))
+                        .eq(ColumnAlias.columnWithTable("a", Answer$Table.ID)))
+                .join(Header.class, Join.JoinType.LEFT).as("h")
+                .on(Condition.column(ColumnAlias.columnWithTable("q", Question$Table.HEADER_ID_HEADER))
+                        .eq(ColumnAlias.columnWithTable("h", Header$Table.ID)))
+                .join(Tab.class, Join.JoinType.LEFT).as("t")
+                .on(Condition.column(ColumnAlias.columnWithTable("h", Header$Table.TAB_ID_TAB))
+                        .eq(ColumnAlias.columnWithTable("t", Tab$Table.ID)))
+                .join(Program.class, Join.JoinType.LEFT).as("p")
+                .on(Condition.column(ColumnAlias.columnWithTable("t", Tab$Table.PROGRAM_ID_PROGRAM))
+                        .eq(ColumnAlias.columnWithTable("p", Program$Table.ID)))
+                .where(Condition.column(ColumnAlias.columnWithTable("q", Question$Table.QUESTION_ID_PARENT)).is(0))
+                .and(Condition.column(ColumnAlias.columnWithTable("a", Answer$Table.OUTPUT)).isNot(Constants.NO_ANSWER))
+                .and(Condition.column(ColumnAlias.columnWithTable("p", Program$Table.ID)).is(program.getId())).queryList();
+
+        //List<Question> questionsByProgram = Question.findWithQuery(Question.class, LIST_REQUIRED_BY_PROGRAM, program.getId().toString());
         return questionsByProgram.size();
     }
 
@@ -395,17 +418,31 @@ public class Question extends BaseModel{
      */
     public static List<Question> listAllByProgram(Program program){
         if(program==null || program.getId()==null){
-            return new ArrayList<Question>();
+            return new ArrayList();
         }
 
-        //TODO: Implement join
-        return Question.findWithQuery(Question.class, LIST_ALL_BY_PROGRAM, program.getId().toString());
+        return new Select().all().from(Question.class).as("q")
+                .join(Header.class, Join.JoinType.LEFT).as("h")
+                .on(Condition.column(ColumnAlias.columnWithTable("q", Question$Table.HEADER_ID_HEADER))
+                        .eq(ColumnAlias.columnWithTable("h", Header$Table.ID)))
+                .join(Tab.class, Join.JoinType.LEFT).as("t")
+                .on(Condition.column(ColumnAlias.columnWithTable("h", Header$Table.TAB_ID_TAB))
+                        .eq(ColumnAlias.columnWithTable("t", Tab$Table.ID)))
+                .join(Program.class, Join.JoinType.LEFT).as("p")
+                .on(Condition.column(ColumnAlias.columnWithTable("t", Tab$Table.PROGRAM_ID_PROGRAM))
+                        .eq(ColumnAlias.columnWithTable("p", Program$Table.ID)))
+                .where(Condition.column(ColumnAlias.columnWithTable("p", Program$Table.ID))
+                        .eq(program.getId()))
+                .orderBy(Tab$Table.ORDER_POS)
+                .orderBy(Question$Table.ORDER_POS).queryList();
+
+        //return Question.findWithQuery(Question.class, LIST_ALL_BY_PROGRAM, program.getId().toString());
     }
 
     public static List<Question> listAllByTabs(List<Tab> tabs){
 
         if(tabs==null || tabs.size()==0){
-            return new ArrayList<Question>();
+            return new ArrayList();
         }
         String tabsAsString="";
         Iterator<Tab> iterator=tabs.iterator();
@@ -415,8 +452,19 @@ public class Question extends BaseModel{
                 tabsAsString+=",";
             }
         }
-        //TODO: Implement join
-        return Question.findWithQuery(Question.class,LIST_ALL_BY_TABS, tabsAsString);
+
+        return new Select().all().from(Question.class).as("q")
+                .join(Header.class, Join.JoinType.LEFT).as("h")
+                .on(Condition.column(ColumnAlias.columnWithTable("q", Question$Table.HEADER_ID_HEADER))
+                        .eq(ColumnAlias.columnWithTable("h", Header$Table.ID)))
+                .join(Tab.class, Join.JoinType.LEFT).as("t")
+                .on(Condition.column(ColumnAlias.columnWithTable("h", Header$Table.TAB_ID_TAB))
+                        .eq(ColumnAlias.columnWithTable("t", Tab$Table.ID)))
+                .where(Condition.column(ColumnAlias.columnWithTable("t", Tab$Table.ID))
+                .in(tabs))
+                .orderBy(Tab$Table.ORDER_POS)
+                .orderBy(Question$Table.ORDER_POS).queryList();
+        //return Question.findWithQuery(Question.class,LIST_ALL_BY_TABS, tabsAsString);
 
     }
 
