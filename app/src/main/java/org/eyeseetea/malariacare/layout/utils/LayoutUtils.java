@@ -28,9 +28,13 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TableLayout;
 
+import com.raizlabs.android.dbflow.sql.builder.Condition;
+import com.raizlabs.android.dbflow.sql.language.Select;
+
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.model.Header;
 import org.eyeseetea.malariacare.database.model.Question;
+import org.eyeseetea.malariacare.database.model.Question$Table;
 import org.eyeseetea.malariacare.database.model.Value;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.utils.Utils;
@@ -290,16 +294,15 @@ public class LayoutUtils {
         }
     }
 
-    public static int getNumberOfQuestionParentsHeader(Header header) {
-        int result = 0;
-
-        List<Question> list =  header.getQuestions();
-
-        for (Question question : list)
-            if (question.hasChildren())
-                result = result + 1;
-
-        return result;
+    /**
+     * getNumber Of Question Parents Header
+     * @param header
+     * @return
+     */
+    public static long getNumberOfQuestionParentsHeader(Header header) {
+        return new Select().count().from(Question.class)
+                .where(Condition.column(Question$Table.HEADER_ID_HEADER).eq(header.getId()))
+                .and(Condition.column(Question$Table.QUESTION_ID_PARENT).isNull()).count();
     }
 
     // Used to setup the usual actionbar with the logo and the app name

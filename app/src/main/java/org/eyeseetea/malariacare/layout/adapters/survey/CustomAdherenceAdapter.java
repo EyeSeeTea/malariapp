@@ -131,7 +131,7 @@ public class CustomAdherenceAdapter extends BaseAdapter implements ITabAdapter {
         this.tab=tab;
 
         if (items.size()> 0)
-            position_secondheader = LayoutUtils.getNumberOfQuestionParentsHeader((Header) items.get(0)) +1 ;
+            position_secondheader = (int) LayoutUtils.getNumberOfQuestionParentsHeader((Header) items.get(0)) +1 ;
 
         Log.d("Second header", position_secondheader + "");
 
