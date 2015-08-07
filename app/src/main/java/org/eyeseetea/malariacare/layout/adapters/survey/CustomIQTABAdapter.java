@@ -90,7 +90,7 @@ public class CustomIQTABAdapter extends BaseAdapter implements ITabAdapter {
         this.id_layout = R.layout.form_custom;
 
         if (items.size()>0)
-            number_rows_section = (int) LayoutUtils.getNumberOfQuestionParentsHeader((Header) items.get(0))+1;
+            number_rows_section = (int) ((Header) items.get(0)).getNumberOfQuestionParents() +1;
 
         for (int i = 0; i < 2 * number_rows_section; i++) {
             Object item = items.get(i);

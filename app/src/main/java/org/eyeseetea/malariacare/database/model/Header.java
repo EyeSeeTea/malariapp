@@ -118,6 +118,16 @@ public class Header extends BaseModel{
         return questions;
     }
 
+    /**
+     * getNumber Of Question Parents Header
+     * @return
+     */
+    public long getNumberOfQuestionParents() {
+        return new Select().count().from(Question.class)
+                .where(Condition.column(Question$Table.HEADER_ID_HEADER).eq(getId()))
+                .and(Condition.column(Question$Table.QUESTION_ID_PARENT).isNull()).count();
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
