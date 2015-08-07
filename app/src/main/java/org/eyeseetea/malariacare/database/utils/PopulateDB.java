@@ -133,7 +133,6 @@ public class PopulateDB {
             reader.close();
         }
 
-
         TransactionManager.getInstance().saveOnSaveQueue(programs.values());
         TransactionManager.getInstance().saveOnSaveQueue(tabs.values());
         TransactionManager.getInstance().saveOnSaveQueue(headers.values());
@@ -142,6 +141,7 @@ public class PopulateDB {
         TransactionManager.getInstance().saveOnSaveQueue(compositeScores.values());
         TransactionManager.getInstance().saveOnSaveQueue(questions.values());
         TransactionManager.getInstance().saveOnSaveQueue(relations.values());
+        TransactionManager.getInstance().saveOnSaveQueue(orgUnits.values());
 
     }
 }
