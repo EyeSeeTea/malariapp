@@ -531,7 +531,7 @@ public class Question extends BaseModel{
         result = 31 * result + (numerator_w != null ? numerator_w.hashCode() : 0);
         result = 31 * result + (denominator_w != null ? denominator_w.hashCode() : 0);
         result = 31 * result + header.hashCode();
-        result = 31 * result + answer.hashCode();
+        result = 31 * result + (answer != null ? answer.hashCode() : 0);
         result = 31 * result + (question != null ? question.hashCode() : 0);
         result = 31 * result + (compositeScore != null ? compositeScore.hashCode() : 0);
         return result;
