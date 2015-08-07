@@ -50,14 +50,13 @@ public class PopulateDB {
             reader = new CSVReader(new InputStreamReader(assetManager.open(table)), ';', '\'');
 
             String[] line;
-            int idReal = 1;
             while ((line = reader.readNext()) != null) {
                 switch (table) {
                     case PROGRAMS_CSV:
                         Program program = new Program();
                         program.setUid(line[1]);
                         program.setName(line[2]);
-                        programs.put(idReal, program);
+                        programs.put(Integer.valueOf(line[0]), program);
                         break;
                     case TABS_CSV:
                         Tab tab = new Tab();
@@ -65,7 +64,7 @@ public class PopulateDB {
                         tab.setOrder_pos(Integer.valueOf(line[2]));
                         tab.setProgram(programs.get(Integer.valueOf(line[3])));
                         tab.setType(Integer.valueOf(line[4]));
-                        tabs.put(idReal, tab);
+                        tabs.put(Integer.valueOf(line[0]), tab);
                         break;
                     case HEADERS_CSV:
                         Header header = new Header();
@@ -73,20 +72,20 @@ public class PopulateDB {
                         header.setName(line[2]);
                         header.setOrder_pos(Integer.valueOf(line[3]));
                         header.setTab(tabs.get(Integer.valueOf(line[4])));
-                        headers.put(idReal, header);
+                        headers.put(Integer.valueOf(line[0]), header);
                         break;
                     case ANSWERS_CSV:
                         Answer answer = new Answer();
                         answer.setName(line[1]);
                         answer.setOutput(Integer.valueOf(line[2]));
-                        answers.put(idReal, answer);
+                        answers.put(Integer.valueOf(line[0]), answer);
                         break;
                     case OPTIONS_CSV:
                         Option option = new Option();
                         option.setName(line[1]);
                         option.setFactor(Float.valueOf(line[2]));
                         option.setAnswer(answers.get(Integer.valueOf(line[3])));
-                        options.put(idReal, option);
+                        options.put(Integer.valueOf(line[0]), option);
                         break;
                     case COMPOSITE_SCORES_CSV:
                         CompositeScore compositeScore = new CompositeScore();
@@ -94,7 +93,7 @@ public class PopulateDB {
                         compositeScore.setLabel(line[2]);
                         if (!line[3].equals("")) compositeScore.setCompositeScore(compositeScores.get(Integer.valueOf(line[3])));
                         compositeScore.setUid(line[4]);
-                        compositeScores.put(idReal, compositeScore);
+                        compositeScores.put(Integer.valueOf(line[0]), compositeScore);
                         break;
                     case QUESTIONS_CSV:
                         Question question = new Question();
@@ -112,17 +111,16 @@ public class PopulateDB {
                         if (!line[11].equals(""))
                             question.setQuestion(questions.get(Integer.valueOf(line[11])));
                         if (line.length == 13 && !line[12].equals("")) question.setCompositeScore(compositeScores.get(Integer.valueOf(line[12])));
-                        questions.put(idReal, question);
+                        questions.put(Integer.valueOf(line[0]), question);
                         break;
                     case QUESTION_RELATIONS_CSV:
                         QuestionRelation relation = new QuestionRelation();
                         relation.setMaster(questions.get(Integer.valueOf(line[1])));
                         relation.setRelative(questions.get(Integer.valueOf(line[2])));
                         relation.setOperation(Integer.valueOf(line[3]));
-                        relations.put(idReal, relation);
+                        relations.put(Integer.valueOf(line[0]), relation);
                         break;
                 }
-                idReal++;
             }
             reader.close();
         }
