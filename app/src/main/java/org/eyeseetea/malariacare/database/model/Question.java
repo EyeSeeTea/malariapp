@@ -309,8 +309,8 @@ public class Question extends BaseModel{
         String surveyId = String.valueOf(survey.getId());
         String questionId = String.valueOf(this.getId());
         List<Value> returnValues = new Select().from(Value.class)
-                .where(Condition.column(Value$Table.QUESTION_ID_QUESTION).is(this.getId()))
-                .and(Condition.column(Survey$Table.ID).is(survey.getId())).queryList();
+                .where(Condition.column(Value$Table.QUESTION_ID_QUESTION).eq(this.getId()))
+                .and(Condition.column(Value$Table.SURVEY_ID_SURVEY).eq(survey.getId())).queryList();
         //List<Value> returnValues = Select.from(Value.class).
         //        where(Condition.prop("question").eq(questionId), Condition.prop("survey").eq(surveyId)).list();
 
