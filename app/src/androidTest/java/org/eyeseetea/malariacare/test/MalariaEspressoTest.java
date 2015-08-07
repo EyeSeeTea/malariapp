@@ -124,7 +124,6 @@ public class MalariaEspressoTest {
     public static void populateData(AssetManager assetManager){
         try {
             cleanAll();
-            PopulateDB.populateDummyData();
             PopulateDB.populateDB(assetManager);
         }catch(Exception ex){
             Log.e(".MalariaEspressoTest", ex.getMessage());

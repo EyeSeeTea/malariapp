@@ -32,6 +32,7 @@ public class PopulateDB {
     public static final String COMPOSITE_SCORES_CSV = "CompositeScores.csv";
     public static final String QUESTIONS_CSV = "Questions.csv";
     public static final String QUESTION_RELATIONS_CSV = "QuestionRelations.csv";
+    public static final String ORG_UNITS_CSV = "OrgUnits.csv";
     static Map<Integer, Program> programs = new LinkedHashMap<Integer, Program>();
     static Map<Integer, Tab> tabs = new LinkedHashMap<Integer, Tab>();
     static Map<Integer, Header> headers = new LinkedHashMap<Integer, Header>();
@@ -40,12 +41,13 @@ public class PopulateDB {
     static Map<Integer, Answer> answers = new LinkedHashMap<Integer, Answer>();
     static Map<Integer, CompositeScore> compositeScores = new LinkedHashMap<Integer, CompositeScore>();
     static Map<Integer, QuestionRelation> relations = new LinkedHashMap<Integer, QuestionRelation>();
+    static Map<Integer, OrgUnit> orgUnits = new LinkedHashMap<>();
 
     public static void populateDB(AssetManager assetManager) throws IOException {
 
-        List<String> tables2populate = Arrays.asList(PROGRAMS_CSV, TABS_CSV, HEADERS_CSV, ANSWERS_CSV, OPTIONS_CSV, COMPOSITE_SCORES_CSV, QUESTIONS_CSV, QUESTION_RELATIONS_CSV);
+        List<String> tables2populate = Arrays.asList(PROGRAMS_CSV, TABS_CSV, HEADERS_CSV, ANSWERS_CSV, OPTIONS_CSV, COMPOSITE_SCORES_CSV, QUESTIONS_CSV, QUESTION_RELATIONS_CSV, ORG_UNITS_CSV);
 
-        CSVReader reader = null;
+        CSVReader reader;
         for (String table : tables2populate) {
             reader = new CSVReader(new InputStreamReader(assetManager.open(table)), ';', '\'');
 
@@ -120,6 +122,12 @@ public class PopulateDB {
                         relation.setOperation(Integer.valueOf(line[3]));
                         relations.put(Integer.valueOf(line[0]), relation);
                         break;
+                    case ORG_UNITS_CSV:
+                        OrgUnit orgUnit = new OrgUnit();
+                        orgUnit.setUid(line[1]);
+                        orgUnit.setName(line[2]);
+                        orgUnits.put(Integer.valueOf(line[0]), orgUnit);
+                        break;
                 }
             }
             reader.close();
@@ -136,45 +144,4 @@ public class PopulateDB {
         TransactionManager.getInstance().saveOnSaveQueue(relations.values());
 
     }
-
-    public static void populateDummyData(){
-        /*for (int i=0; i<10; i++) {
-            OrgUnit orgUnit = new OrgUnit("123" + i, "Health Facility " + i);
-            orgUnit.save();
-        }*/
-
-        OrgUnit orgUnit = new OrgUnit("gN7EhLCgKAS", "Outlet 1-1");
-        orgUnit.save();
-
-        orgUnit = new OrgUnit("avIJ8BAiEzA", "Outlet 1-2");
-        orgUnit.save();
-
-        orgUnit = new OrgUnit("lP4wCykG8Tm", "Outlet 1-3");
-        orgUnit.save();
-
-        orgUnit = new OrgUnit("DMBrIWRzFPo", "Outlet 1-4");
-        orgUnit.save();
-
-        orgUnit = new OrgUnit("HEpmESXlcLn", "Outlet 1-5");
-        orgUnit.save();
-
-        orgUnit = new OrgUnit("XD0wteyXBbf", "Outlet 2-1");
-        orgUnit.save();
-
-        orgUnit = new OrgUnit("JsWspiAFl9X", "Outlet 2-2");
-        orgUnit.save();
-
-        orgUnit = new OrgUnit("wqbYPZZd7Fp", "Outlet 2-3");
-        orgUnit.save();
-
-        orgUnit = new OrgUnit("EjDVgc1MI4O", "Outlet 2-4");
-        orgUnit.save();
-
-        orgUnit = new OrgUnit("g91OgEIKIm", "Outlet 2-5");
-        orgUnit.save();
-
-
-
-    }
-
 }

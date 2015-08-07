@@ -369,9 +369,7 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
 
             Log.i(".LoginActivity", "Populating DB");
 
-            // As this is only executed the first time the app is loaded, and we still don't have a way to create users, surveys, etc, here
-            // we will create a dummy user, survey, orgUnit, program, etc. To be used in local save
-            PopulateDB.populateDummyData();
+            // This is only executed the first time the app is loaded
             try {
                 PopulateDB.populateDB(getAssets());
             } catch (IOException e) {
