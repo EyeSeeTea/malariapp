@@ -168,7 +168,7 @@ public class Survey extends BaseModel {
     @OneToMany(methods = {OneToMany.Method.SAVE, OneToMany.Method.DELETE}, variableName = "values")
     public List<Value> getValues(){
         return new Select().from(Value.class)
-                .where(Condition.column(Survey$Table.ID).eq(this.getId())).queryList();
+                .where(Condition.column(Value$Table.SURVEY_ID_SURVEY).eq(this.getId())).queryList();
     }
 
     /**
