@@ -247,7 +247,7 @@ public class Question extends BaseModel{
     public List<Question> getChildren() {
         //if (this.children == null){
             this.children = new Select().from(Question.class)
-                    .where(Condition.column(Question$Table.QUESTION_ID_PARENT).is(this.getId()))
+                    .where(Condition.column(Question$Table.QUESTION_ID_PARENT).eq(this.getId()))
                     .orderBy(Question$Table.ORDER_POS).queryList();
         //}
         return this.children;
@@ -257,7 +257,7 @@ public class Question extends BaseModel{
         //if (this.relatives == null) {
             this.relatives = new Select().from(Question.class).where(Condition.column(Question$Table.ID)
                     .in(new Select(QuestionRelation$Table.RELATIVE_RELATIVE).from(QuestionRelation.class)
-                            .where(Condition.column(QuestionRelation$Table.MASTER_MASTER).is(this.getId())))).queryList();
+                            .where(Condition.column(QuestionRelation$Table.MASTER_MASTER).eq(this.getId())))).queryList();
             //this.relatives = Question.findWithQuery(Question.class, "Select * from Question" +
             //        " where id in (Select relative from Question_Relation where master =" + this.getId() + ")");
        //}
@@ -269,7 +269,7 @@ public class Question extends BaseModel{
         if (this.master == null) {
             this.master = new Select().from(Question.class).where(Condition.column(Question$Table.ID)
                     .in(new Select(QuestionRelation$Table.MASTER_MASTER).from(QuestionRelation.class)
-                    .where(Condition.column(QuestionRelation$Table.RELATIVE_RELATIVE).is(this.getId())))).queryList();
+                    .where(Condition.column(QuestionRelation$Table.RELATIVE_RELATIVE).eq(this.getId())))).queryList();
             //this.master = Question.findWithQuery(Question.class, "Select * from Question" +
             //        " where id in (Select master from Question_Relation where relative =" + this.getId() + ")");
         }
@@ -286,7 +286,7 @@ public class Question extends BaseModel{
 
     @OneToMany(methods = {OneToMany.Method.SAVE, OneToMany.Method.DELETE}, variableName = "values")
     public List<Value> getValues(){
-        return new Select().from(Value.class).where(Condition.column(Value$Table.QUESTION_ID_QUESTION).is(this.getId())).queryList();
+        return new Select().from(Value.class).where(Condition.column(Value$Table.QUESTION_ID_QUESTION).eq(this.getId())).queryList();
     }
 
     /**
@@ -306,13 +306,9 @@ public class Question extends BaseModel{
         if(survey==null){
             return null;
         }
-        String surveyId = String.valueOf(survey.getId());
-        String questionId = String.valueOf(this.getId());
         List<Value> returnValues = new Select().from(Value.class)
                 .where(Condition.column(Value$Table.QUESTION_ID_QUESTION).eq(this.getId()))
                 .and(Condition.column(Value$Table.SURVEY_ID_SURVEY).eq(survey.getId())).queryList();
-        //List<Value> returnValues = Select.from(Value.class).
-        //        where(Condition.prop("question").eq(questionId), Condition.prop("survey").eq(surveyId)).list();
 
         if (returnValues.size() == 0){
             return null;
@@ -403,9 +399,9 @@ public class Question extends BaseModel{
                 .join(Program.class, Join.JoinType.LEFT).as("p")
                 .on(Condition.column(ColumnAlias.columnWithTable("t", Tab$Table.PROGRAM_ID_PROGRAM))
                         .eq(ColumnAlias.columnWithTable("p", Program$Table.ID)))
-                .where(Condition.column(ColumnAlias.columnWithTable("q", Question$Table.QUESTION_ID_PARENT)).is(0))
+                .where(Condition.column(ColumnAlias.columnWithTable("q", Question$Table.QUESTION_ID_PARENT)).eq(0))
                 .and(Condition.column(ColumnAlias.columnWithTable("a", Answer$Table.OUTPUT)).isNot(Constants.NO_ANSWER))
-                .and(Condition.column(ColumnAlias.columnWithTable("p", Program$Table.ID)).is(program.getId())).queryList();
+                .and(Condition.column(ColumnAlias.columnWithTable("p", Program$Table.ID)).eq(program.getId())).queryList();
 
         //List<Question> questionsByProgram = Question.findWithQuery(Question.class, LIST_REQUIRED_BY_PROGRAM, program.getId().toString());
         return questionsByProgram.size();

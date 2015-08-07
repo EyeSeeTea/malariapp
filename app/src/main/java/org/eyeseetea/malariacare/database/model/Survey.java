@@ -168,7 +168,7 @@ public class Survey extends BaseModel {
     @OneToMany(methods = {OneToMany.Method.SAVE, OneToMany.Method.DELETE}, variableName = "values")
     public List<Value> getValues(){
         return new Select().from(Value.class)
-                .where(Condition.column(Survey$Table.ID).is(this.getId())).queryList();
+                .where(Condition.column(Survey$Table.ID).eq(this.getId())).queryList();
     }
 
     /**
@@ -182,7 +182,7 @@ public class Survey extends BaseModel {
                         .eq(ColumnAlias.columnWithTable("q", Question$Table.ID)))
                 .where(Condition.column(ColumnAlias.columnWithTable("v", Value$Table.SURVEY_ID_SURVEY))
                         .eq(this.getId()))
-                .and(Condition.column(ColumnAlias.columnWithTable("q", Question$Table.QUESTION_ID_PARENT)).is(0))
+                .and(Condition.column(ColumnAlias.columnWithTable("q", Question$Table.QUESTION_ID_PARENT)).eq(0))
                 .and(Condition.column(ColumnAlias.columnWithTable("v", Value$Table.VALUE)).isNotNull())
                 .and(Condition.column(ColumnAlias.columnWithTable("v", Value$Table.VALUE)).isNot("")).queryList();
         //List<Value> values = Value.findWithQuery(Value.class, LIST_VALUES_PARENT_QUESTION, this.getId().toString());
@@ -259,8 +259,8 @@ public class Survey extends BaseModel {
      */
     public static List<Survey> getUnsentSurveys(OrgUnit orgUnit, Program program) {
         return new Select().from(Survey.class)
-                .where(Condition.column(Survey$Table.ORGUNIT_ID_ORG_UNIT).is(orgUnit.getId()))
-                .and(Condition.column(Survey$Table.PROGRAM_ID_PROGRAM).is(program.getId()))
+                .where(Condition.column(Survey$Table.ORGUNIT_ID_ORG_UNIT).eq(orgUnit.getId()))
+                .and(Condition.column(Survey$Table.PROGRAM_ID_PROGRAM).eq(program.getId()))
                 .and(Condition.column(Survey$Table.STATUS).isNot(Constants.SURVEY_SENT))
                 .orderBy(Survey$Table.EVENTDATE)
                 .orderBy(Survey$Table.ORGUNIT_ID_ORG_UNIT).queryList();
@@ -296,7 +296,7 @@ public class Survey extends BaseModel {
      */
     public static List<Survey> getAllSentSurveys() {
         return new Select().from(Survey.class)
-                .where(Condition.column(Survey$Table.STATUS).is(Constants.SURVEY_SENT))
+                .where(Condition.column(Survey$Table.STATUS).eq(Constants.SURVEY_SENT))
                 .orderBy(Survey$Table.EVENTDATE)
                 .orderBy(Survey$Table.ORGUNIT_ID_ORG_UNIT).queryList();
     }
@@ -308,7 +308,7 @@ public class Survey extends BaseModel {
      */
     public static List<Survey> getSentSurveys(int limit) {
         return new Select().from(Survey.class)
-                .where(Condition.column(Survey$Table.STATUS).is(Constants.SURVEY_SENT))
+                .where(Condition.column(Survey$Table.STATUS).eq(Constants.SURVEY_SENT))
                 .limit(String.valueOf(limit))
                 .orderBy(Survey$Table.EVENTDATE)
                 .orderBy(Survey$Table.ORGUNIT_ID_ORG_UNIT).queryList();
@@ -320,7 +320,7 @@ public class Survey extends BaseModel {
      */
     public static List<Survey> getAllCompletedSurveys() {
         return new Select().from(Survey.class)
-                .where(Condition.column(Survey$Table.STATUS).is(Constants.SURVEY_COMPLETED))
+                .where(Condition.column(Survey$Table.STATUS).eq(Constants.SURVEY_COMPLETED))
                 .orderBy(Survey$Table.EVENTDATE)
                 .orderBy(Survey$Table.ORGUNIT_ID_ORG_UNIT).queryList();
     }
@@ -332,7 +332,7 @@ public class Survey extends BaseModel {
      */
     public static List<Survey> getCompletedSurveys(int limit) {
         return new Select().from(Survey.class)
-                .where(Condition.column(Survey$Table.STATUS).is(Constants.SURVEY_COMPLETED))
+                .where(Condition.column(Survey$Table.STATUS).eq(Constants.SURVEY_COMPLETED))
                 .limit(String.valueOf(limit))
                 .orderBy(Survey$Table.EVENTDATE)
                 .orderBy(Survey$Table.ORGUNIT_ID_ORG_UNIT).queryList();
@@ -344,7 +344,7 @@ public class Survey extends BaseModel {
      */
     public static List<Survey> getAllUncompletedSurveys() {
         return new Select().from(Survey.class)
-                .where(Condition.column(Survey$Table.STATUS).is(Constants.SURVEY_IN_PROGRESS))
+                .where(Condition.column(Survey$Table.STATUS).eq(Constants.SURVEY_IN_PROGRESS))
                 .orderBy(Survey$Table.EVENTDATE)
                 .orderBy(Survey$Table.ORGUNIT_ID_ORG_UNIT).queryList();
     }
@@ -356,7 +356,7 @@ public class Survey extends BaseModel {
      */
     public static List<Survey> getUncompletedSurveys(int limit) {
         return new Select().from(Survey.class)
-                .where(Condition.column(Survey$Table.STATUS).is(Constants.SURVEY_IN_PROGRESS))
+                .where(Condition.column(Survey$Table.STATUS).eq(Constants.SURVEY_IN_PROGRESS))
                 .limit(String.valueOf(limit))
                 .orderBy(Survey$Table.EVENTDATE)
                 .orderBy(Survey$Table.ORGUNIT_ID_ORG_UNIT).queryList();

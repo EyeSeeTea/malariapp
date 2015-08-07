@@ -121,7 +121,7 @@ public class Option extends BaseModel {
     @OneToMany(methods = {OneToMany.Method.SAVE, OneToMany.Method.DELETE}, variableName = "values")
     public List<Value> getValues(){
         return new Select().from(Value.class)
-                .where(Condition.column(Value$Table.OPTION_ID_OPTION).is(this.getId())).queryList();
+                .where(Condition.column(Value$Table.OPTION_ID_OPTION).eq(this.getId())).queryList();
     }
 
     @Override

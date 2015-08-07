@@ -85,7 +85,7 @@ public class Program extends BaseModel {
     @OneToMany(methods = {OneToMany.Method.SAVE, OneToMany.Method.DELETE}, variableName = "tabs")
     public List<Tab> getTabs(){
         this.tabs = new Select().from(Tab.class)
-                    .where(Condition.column(Tab$Table.PROGRAM_ID_PROGRAM).is(this.getId()))
+                    .where(Condition.column(Tab$Table.PROGRAM_ID_PROGRAM).eq(this.getId()))
                     .orderBy(Tab$Table.ORDER_POS).queryList();
         return this.tabs;
     }
@@ -93,7 +93,7 @@ public class Program extends BaseModel {
     @OneToMany(methods = {OneToMany.Method.SAVE, OneToMany.Method.DELETE}, variableName = "surveys")
     public List<Survey> getSurveys(){
         this.surveys = new Select().from(Survey.class)
-                    .where(Condition.column(Survey$Table.PROGRAM_ID_PROGRAM).is(this.getId())).queryList();
+                    .where(Condition.column(Survey$Table.PROGRAM_ID_PROGRAM).eq(this.getId())).queryList();
         return this.surveys;
     }
 

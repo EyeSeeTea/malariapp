@@ -80,7 +80,7 @@ public class User extends BaseModel {
     @OneToMany(methods = {OneToMany.Method.SAVE, OneToMany.Method.DELETE}, variableName = "surveys")
     public List<Survey> getSurveys(){
         return new Select().from(Survey.class)
-                .where(Condition.column(Survey$Table.USER_ID_USER).is(this.getId())).queryList();
+                .where(Condition.column(Survey$Table.USER_ID_USER).eq(this.getId())).queryList();
     }
 
     @Override

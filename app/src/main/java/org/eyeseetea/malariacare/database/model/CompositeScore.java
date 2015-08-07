@@ -129,7 +129,7 @@ public class CompositeScore extends BaseModel {
         if (this.compositeScoreChildren == null){
             this.compositeScoreChildren = new Select()
                     .from(CompositeScore.class)
-                    .where(Condition.column(CompositeScore$Table.COMPOSITESCORE_ID_COMPOSITE_SCORE).is(this.getId()))
+                    .where(Condition.column(CompositeScore$Table.COMPOSITESCORE_ID_COMPOSITE_SCORE).eq(this.getId()))
                     .queryList();
             //this.compositeScoreChildren = CompositeScore.find(CompositeScore.class, "composite_score = ?", String.valueOf(this.getId()));
         }
@@ -142,7 +142,7 @@ public class CompositeScore extends BaseModel {
         //if (questions == null) {
             questions = new Select()
                     .from(Question.class)
-                    .where(Condition.column(Question$Table.COMPOSITESCORE_ID_COMPOSITE_SCORE).is(this.getId()))
+                    .where(Condition.column(Question$Table.COMPOSITESCORE_ID_COMPOSITE_SCORE).eq(this.getId()))
                     .queryList();
             /*questions = Select.from(Question.class)
                     .where(Condition.prop("composite_score")
@@ -161,7 +161,7 @@ public class CompositeScore extends BaseModel {
         if(program==null || program.getId()==null){
             return new ArrayList<>();
         }
-        //TODO: Implement join
+
         //Take scores associated to questions of the program ('leaves')
         List<CompositeScore> compositeScoresByProgram = new Select().distinct().all().from(CompositeScore.class).as("cs")
                 .join(Question.class, Join.JoinType.LEFT).as("q")
@@ -182,7 +182,7 @@ public class CompositeScore extends BaseModel {
         //List<CompositeScore> compositeScoresByProgram = CompositeScore.findWithQuery(CompositeScore.class, LIST_BY_PROGRAM_SQL, program.getId().toString());
 
         //Find parent scores from 'leaves'
-        Set<CompositeScore> parentCompositeScores = new HashSet<CompositeScore>();
+        Set<CompositeScore> parentCompositeScores = new HashSet<>();
         for(CompositeScore compositeScore: compositeScoresByProgram){
             parentCompositeScores.addAll(listParentCompositeScores(compositeScore));
         }
@@ -194,7 +194,7 @@ public class CompositeScore extends BaseModel {
 
     //TODO: to enable lazy loading, here we need to set Method.SAVE and Method.DELETE and use the .toModel() to specify when do we want to load the models
     public static List<CompositeScore> listParentCompositeScores(CompositeScore compositeScore){
-        ArrayList<CompositeScore> parentScores= new ArrayList<CompositeScore>();
+        ArrayList<CompositeScore> parentScores= new ArrayList<>();
         if(compositeScore==null || !compositeScore.hasParent()){
             return parentScores;
         }
