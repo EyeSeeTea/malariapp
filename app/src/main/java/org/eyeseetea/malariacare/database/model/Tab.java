@@ -112,7 +112,7 @@ public class Tab extends BaseModel {
     @OneToMany(methods = {OneToMany.Method.SAVE, OneToMany.Method.DELETE}, variableName = "headers")
     public List<Header> getHeaders(){
         return new Select().from(Header.class)
-                .where(Condition.column(Header$Table.ID).eq(this.getId()))
+                .where(Condition.column(Header$Table.TAB_ID_TAB).eq(this.getId()))
                 .orderBy(Header$Table.ORDER_POS).queryList();
     }
 
@@ -120,7 +120,7 @@ public class Tab extends BaseModel {
     @OneToMany(methods = {OneToMany.Method.SAVE, OneToMany.Method.DELETE}, variableName = "scores")
     public List<Score> getScores(){
         return new Select().from(Score.class)
-                .where(Condition.column(Score$Table.ID).eq(this.getId())).queryList();
+                .where(Condition.column(Score$Table.TAB_ID_TAB).eq(this.getId())).queryList();
     }
 
     /*
