@@ -1,49 +1,100 @@
+/*
+ * Copyright (c) 2015.
+ *
+ * This file is part of QA App.
+ *
+ *  Health Network QIS App is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  Health Network QIS App is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 package org.eyeseetea.malariacare.database.model;
 
-import com.orm.SugarRecord;
-import com.orm.dsl.Ignore;
-import com.orm.query.Condition;
-import com.orm.query.Select;
+import com.raizlabs.android.dbflow.annotation.Column;
+import com.raizlabs.android.dbflow.annotation.ForeignKey;
+import com.raizlabs.android.dbflow.annotation.ForeignKeyReference;
+import com.raizlabs.android.dbflow.annotation.OneToMany;
+import com.raizlabs.android.dbflow.annotation.PrimaryKey;
+import com.raizlabs.android.dbflow.annotation.Table;
+import com.raizlabs.android.dbflow.sql.builder.Condition;
+import com.raizlabs.android.dbflow.sql.language.ColumnAlias;
+import com.raizlabs.android.dbflow.sql.language.Join;
+import com.raizlabs.android.dbflow.sql.language.Select;
+import com.raizlabs.android.dbflow.structure.BaseModel;
+
+import org.eyeseetea.malariacare.database.AppDatabase;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class CompositeScore extends SugarRecord<CompositeScore> {
+@Table(databaseName = AppDatabase.NAME)
+public class CompositeScore extends BaseModel {
 
-    private static final String LIST_BY_PROGRAM_SQL="select distinct cs.* from composite_score cs left join question q on q.composite_score=cs.id "+
+    /*private static final String LIST_BY_PROGRAM_SQL=
+            "select distinct cs.* from composite_score cs "+
+            "left join question q on q.composite_score=cs.id "+
             "left join header h on q.header=h.id "+
             "left join tab t on h.tab=t.id "+
-            "left join program p on t.program=p.id where p.id=?";
+            "left join program p on t.program=p.id where p.id=?";*/
 
+    @Column
+    @PrimaryKey(autoincrement = true)
+    long id;
+    @Column
     String code;
+    @Column
     String label;
+    @Column
     String uid;
+    @Column
+    Integer order_pos;
+    @Column
+    @ForeignKey(references = {@ForeignKeyReference(columnName = "id_composite_score",
+            columnType = Long.class,
+            foreignColumnName = "id")},
+            saveForeignKeyModel = false)
     CompositeScore compositeScore;
 
-    @Ignore
-    List<CompositeScore> _compositeScoreChildren;
+    List<CompositeScore> compositeScoreChildren;
 
-    @Ignore
-    List<Question> _questions;
+    List<Question> questions;
 
     public CompositeScore() {
     }
 
-    public CompositeScore(String code, String label, CompositeScore compositeScore) {
+    public CompositeScore(String code, String label, CompositeScore compositeScore, Integer order_pos) {
         this.code = code;
         this.label = label;
         this.compositeScore = compositeScore;
+        this.order_pos = order_pos;
     }
 
-    public CompositeScore(String code, String label, String uid, CompositeScore compositeScore) {
+    public CompositeScore(String code, String label, String uid, CompositeScore compositeScore, Integer order_pos) {
         this.code = code;
         this.label = label;
         this.uid = uid;
         this.compositeScore = compositeScore;
+        this.order_pos = order_pos;
     }
 
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getCode() { return code; }
 
@@ -73,40 +124,79 @@ public class CompositeScore extends SugarRecord<CompositeScore> {
         this.uid = uid;
     }
 
+    public Integer getOrder_pos() {
+        return order_pos;
+    }
+
+    public void setOrder_pos(Integer order_pos) {
+        this.order_pos = order_pos;
+    }
+
     public boolean hasParent(){
         return getComposite_score() != null;
     }
 
+    //TODO: to enable lazy loading, here we need to set Method.SAVE and Method.DELETE and use the .toModel() to specify when do we want to load the models
     public List<CompositeScore> getCompositeScoreChildren() {
-        if (this._compositeScoreChildren == null){
-            this._compositeScoreChildren = CompositeScore.find(CompositeScore.class, "composite_score = ?", String.valueOf(this.getId()));
+        if (this.compositeScoreChildren == null){
+            this.compositeScoreChildren = new Select()
+                    .from(CompositeScore.class)
+                    .where(Condition.column(CompositeScore$Table.COMPOSITESCORE_ID_COMPOSITE_SCORE).eq(this.getId()))
+                    .orderBy(CompositeScore$Table.ORDER_POS)
+                    .queryList();
+            //this.compositeScoreChildren = CompositeScore.find(CompositeScore.class, "composite_score = ?", String.valueOf(this.getId()));
         }
-        return this._compositeScoreChildren;
+        return this.compositeScoreChildren;
     }
 
+    //TODO: to enable lazy loading, here we need to set Method.SAVE and Method.DELETE and use the .toModel() to specify when do we want to load the models
+    @OneToMany(methods = {OneToMany.Method.SAVE, OneToMany.Method.DELETE}, variableName = "questions")
     public List<Question> getQuestions(){
-        if (_questions == null) {
-            _questions = Select.from(Question.class)
+        //if (questions == null) {
+            questions = new Select()
+                    .from(Question.class)
+                    .where(Condition.column(Question$Table.COMPOSITESCORE_ID_COMPOSITE_SCORE).eq(this.getId()))
+                    .orderBy(CompositeScore$Table.ORDER_POS)
+                    .queryList();
+            /*questions = Select.from(Question.class)
                     .where(Condition.prop("composite_score")
-                    .eq(String.valueOf(this.getId()))).list();
-        }
-        return _questions;
+                    .eq(String.valueOf(this.getId()))).list();*/
+        //}
+        return questions;
     }
 
     /**
      * Select all composite score that belongs to a program
-     * @param program Program whose composite scores are searched.
+     * @param tabGroup Program whose composite scores are searched.
      * @return
      */
-    public static List<CompositeScore> listAllByProgram(Program program){
-        if(program==null || program.getId()==null){
+    //TODO: to enable lazy loading, here we need to set Method.SAVE and Method.DELETE and use the .toModel() to specify when do we want to load the models
+    public static List<CompositeScore> listByTabGroup(TabGroup tabGroup){
+        if(tabGroup==null || tabGroup.getId()==null){
             return new ArrayList<>();
         }
+
         //Take scores associated to questions of the program ('leaves')
-        List<CompositeScore> compositeScoresByProgram = CompositeScore.findWithQuery(CompositeScore.class, LIST_BY_PROGRAM_SQL, program.getId().toString());
+        List<CompositeScore> compositeScoresByProgram = new Select().distinct().all().from(CompositeScore.class).as("cs")
+                .join(Question.class, Join.JoinType.LEFT).as("q")
+                .on(Condition.column(ColumnAlias.columnWithTable("q", Question$Table.COMPOSITESCORE_ID_COMPOSITE_SCORE))
+                        .eq(ColumnAlias.columnWithTable("cs", CompositeScore$Table.ID)))
+                .join(Header.class, Join.JoinType.LEFT).as("h")
+                .on(Condition.column(ColumnAlias.columnWithTable("q", Question$Table.HEADER_ID_HEADER))
+                        .eq(ColumnAlias.columnWithTable("h", Header$Table.ID)))
+                .join(Tab.class, Join.JoinType.LEFT).as("t")
+                .on(Condition.column(ColumnAlias.columnWithTable("h", Header$Table.TAB_ID_TAB))
+                        .eq(ColumnAlias.columnWithTable("t", Tab$Table.ID)))
+                .join(Program.class, Join.JoinType.LEFT).as("p")
+                .on(Condition.column(ColumnAlias.columnWithTable("t", Tab$Table.TABGROUP_ID_TAB_GROUP))
+                        .eq(ColumnAlias.columnWithTable("p", TabGroup$Table.ID)))
+                .where(Condition.column(ColumnAlias.columnWithTable("p", TabGroup$Table.ID))
+                .eq(tabGroup.getId())).queryList();
+
+        //List<CompositeScore> compositeScoresByProgram = CompositeScore.findWithQuery(CompositeScore.class, LIST_BY_PROGRAM_SQL, program.getId().toString());
 
         //Find parent scores from 'leaves'
-        Set<CompositeScore> parentCompositeScores = new HashSet<CompositeScore>();
+        Set<CompositeScore> parentCompositeScores = new HashSet<>();
         for(CompositeScore compositeScore: compositeScoresByProgram){
             parentCompositeScores.addAll(listParentCompositeScores(compositeScore));
         }
@@ -116,8 +206,9 @@ public class CompositeScore extends SugarRecord<CompositeScore> {
         return compositeScoresByProgram;
     }
 
+    //TODO: to enable lazy loading, here we need to set Method.SAVE and Method.DELETE and use the .toModel() to specify when do we want to load the models
     public static List<CompositeScore> listParentCompositeScores(CompositeScore compositeScore){
-        ArrayList<CompositeScore> parentScores= new ArrayList<CompositeScore>();
+        ArrayList<CompositeScore> parentScores= new ArrayList<>();
         if(compositeScore==null || !compositeScore.hasParent()){
             return parentScores;
         }
@@ -134,34 +225,41 @@ public class CompositeScore extends SugarRecord<CompositeScore> {
     }
 
     @Override
-    public String toString() {
-        return "CompositeScore{" +
-                "code='" + code + '\'' +
-                ",label='" + label + '\'' +
-                ", compositeScore=" + compositeScore +
-                '}';
-    }
-
-    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (!(o instanceof CompositeScore)) return false;
 
         CompositeScore that = (CompositeScore) o;
 
-        if (code != null ? !code.equals(that.code) : that.code != null) return false;
-        if (compositeScore != null ? !compositeScore.equals(that.compositeScore) : that.compositeScore != null)
-            return false;
+        if (id != that.id) return false;
+        if (!code.equals(that.code)) return false;
         if (label != null ? !label.equals(that.label) : that.label != null) return false;
+        if (uid != null ? !uid.equals(that.uid) : that.uid != null) return false;
+        if (order_pos != null ? !order_pos.equals(that.order_pos) : that.order_pos != null) return false;
+        return !(compositeScore != null ? !compositeScore.equals(that.compositeScore) : that.compositeScore != null);
 
-        return true;
     }
 
     @Override
     public int hashCode() {
-        int result = code != null ? code.hashCode() : 0;
+        int result = (int) (id ^ (id >>> 32));
+        result = 31 * result + code.hashCode();
         result = 31 * result + (label != null ? label.hashCode() : 0);
+        result = 31 * result + (uid != null ? uid.hashCode() : 0);
+        result = 31 * result + (order_pos != null ? order_pos.hashCode() : 0);
         result = 31 * result + (compositeScore != null ? compositeScore.hashCode() : 0);
         return result;
+    }
+
+    @Override
+    public String toString() {
+        return "CompositeScore{" +
+                "id=" + id +
+                ", code='" + code + '\'' +
+                ", label='" + label + '\'' +
+                ", uid='" + uid + '\'' +
+                ", order_pos='" + order_pos + '\'' +
+                ", compositeScore=" + compositeScore +
+                '}';
     }
 }

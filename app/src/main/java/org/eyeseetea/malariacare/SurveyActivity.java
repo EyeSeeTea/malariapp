@@ -277,7 +277,8 @@ public class SurveyActivity extends BaseActivity{
      */
     private void createActionBar(){
         Survey survey=Session.getSurvey();
-        Program program = survey.getProgram();
+        //FIXME: Shall we add the tab group?
+        Program program = survey.getTabGroup().getProgram();
 
         android.support.v7.app.ActionBar actionBar = this.getSupportActionBar();
         LayoutUtils.setActionBarLogo(actionBar);
