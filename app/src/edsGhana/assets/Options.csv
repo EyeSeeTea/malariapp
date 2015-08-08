@@ -132,8 +132,8 @@ Specialized obstetrics clinic';0.00;33
 133;'No';0.00;53
 134;'Yes';1.00;54
 135;'No';1.00;54
-136;'Unknown';1.00;54
-137;'Not Asked';0.00;54
+136;'Not Asked';0.00;54
+137;'Male';1.00;54
 138;'Yes';1.00;55
 139;'No';1.00;55
 140;'Not asked';0.00;55
@@ -227,3 +227,28 @@ Specialized obstetrics clinic';0.00;33
 230;'Yes';1.00;83
 231;'No';0.00;83
 232;'NA';1.00;83
+233;'Not Present';0.00;81
+234;'CHPS';0.00;84
+235;'Clinic';0.00;84
+236;'Maternity Home';0.00;84
+237;'Health Centre';0.00;84
+238;'Polyclinic';0.00;84
+239;'Hospital';0.00;84
+240;'Quasi-Govt';0.00;85
+241;'Govt';0.00;85
+242;'Mission (CHAG)';0.00;85
+243;'Private';0.00;85
+244;'Other';0.00;85
+245;'CHO/CHN';0.00;86
+246;'EN/RN/SRN';0.00;86
+247;'PA/MA';0.00;86
+248;'Medical Officer';0.00;86
+249;'Mid Wife';0.00;86
+250;'Lab Tech';0.00;86
+251;'CHO/CHN';0.00;87
+252;'Clinical Nurse';0.00;87
+253;'Medical Officer';0.00;87
+254;'Midwife';0.00;87
+255;'Physician/Medical Assistant';0.00;87
+256;'Medical Intern';0.00;87
+257;'Other';0.00;87
