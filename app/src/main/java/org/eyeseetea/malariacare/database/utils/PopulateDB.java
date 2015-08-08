@@ -14,6 +14,7 @@ import org.eyeseetea.malariacare.database.model.Program;
 import org.eyeseetea.malariacare.database.model.Question;
 import org.eyeseetea.malariacare.database.model.QuestionRelation;
 import org.eyeseetea.malariacare.database.model.Tab;
+import org.eyeseetea.malariacare.database.model.TabGroup;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -25,6 +26,7 @@ import java.util.Map;
 public class PopulateDB {
 
     public static final String PROGRAMS_CSV = "Programs.csv";
+    public static final String TAB_GROUPS_CSV = "TabGroups.csv";
     public static final String TABS_CSV = "Tabs.csv";
     public static final String HEADERS_CSV = "Headers.csv";
     public static final String ANSWERS_CSV = "Answers.csv";
@@ -34,6 +36,7 @@ public class PopulateDB {
     public static final String QUESTION_RELATIONS_CSV = "QuestionRelations.csv";
     public static final String ORG_UNITS_CSV = "OrgUnits.csv";
     static Map<Integer, Program> programs = new LinkedHashMap<Integer, Program>();
+    static Map<Integer, TabGroup> tabGroups = new LinkedHashMap<Integer, TabGroup>();
     static Map<Integer, Tab> tabs = new LinkedHashMap<Integer, Tab>();
     static Map<Integer, Header> headers = new LinkedHashMap<Integer, Header>();
     static Map<Integer, Question> questions = new LinkedHashMap<Integer, Question>();
@@ -45,7 +48,7 @@ public class PopulateDB {
 
     public static void populateDB(AssetManager assetManager) throws IOException {
 
-        List<String> tables2populate = Arrays.asList(PROGRAMS_CSV, TABS_CSV, HEADERS_CSV, ANSWERS_CSV, OPTIONS_CSV, COMPOSITE_SCORES_CSV, QUESTIONS_CSV, QUESTION_RELATIONS_CSV, ORG_UNITS_CSV);
+        List<String> tables2populate = Arrays.asList(PROGRAMS_CSV, TAB_GROUPS_CSV, TABS_CSV, HEADERS_CSV, ANSWERS_CSV, OPTIONS_CSV, COMPOSITE_SCORES_CSV, QUESTIONS_CSV, QUESTION_RELATIONS_CSV, ORG_UNITS_CSV);
 
         CSVReader reader;
         for (String table : tables2populate) {
@@ -60,11 +63,17 @@ public class PopulateDB {
                         program.setName(line[2]);
                         programs.put(Integer.valueOf(line[0]), program);
                         break;
+                    case TAB_GROUPS_CSV:
+                        TabGroup tabGroup = new TabGroup();
+                        tabGroup.setName(line[1]);
+                        tabGroup.setProgram(programs.get(Integer.valueOf(line[2])));
+                        tabGroups.put(Integer.valueOf(line[0]), tabGroup);
+                        break;
                     case TABS_CSV:
                         Tab tab = new Tab();
                         tab.setName(line[1]);
                         tab.setOrder_pos(Integer.valueOf(line[2]));
-                        tab.setProgram(programs.get(Integer.valueOf(line[3])));
+                        tab.setTabGroup(tabGroups.get(Integer.valueOf(line[3])));
                         tab.setType(Integer.valueOf(line[4]));
                         tabs.put(Integer.valueOf(line[0]), tab);
                         break;
@@ -134,6 +143,7 @@ public class PopulateDB {
         }
 
         TransactionManager.getInstance().saveOnSaveQueue(programs.values());
+        TransactionManager.getInstance().saveOnSaveQueue(tabGroups.values());
         TransactionManager.getInstance().saveOnSaveQueue(tabs.values());
         TransactionManager.getInstance().saveOnSaveQueue(headers.values());
         TransactionManager.getInstance().saveOnSaveQueue(answers.values());

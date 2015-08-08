@@ -376,11 +376,11 @@ public class Question extends BaseModel{
 
     /**
      * Counts the number of required questions (without a parent question).
-     * @param program
+     * @param tabGroup
      * @return
      */
-    public static int countRequiredByProgram(Program program){
-        if(program==null || program.getId()==null){
+    public static int countRequiredByProgram(TabGroup tabGroup){
+        if(tabGroup==null || tabGroup.getId()==null){
             return 0;
         }
 
@@ -398,22 +398,22 @@ public class Question extends BaseModel{
                 .on(Condition.column(ColumnAlias.columnWithTable("h", Header$Table.TAB_ID_TAB))
                         .eq(ColumnAlias.columnWithTable("t", Tab$Table.ID)))
                 .join(Program.class, Join.JoinType.LEFT).as("p")
-                .on(Condition.column(ColumnAlias.columnWithTable("t", Tab$Table.PROGRAM_ID_PROGRAM))
-                        .eq(ColumnAlias.columnWithTable("p", Program$Table.ID)))
+                .on(Condition.column(ColumnAlias.columnWithTable("t", Tab$Table.TABGROUP_ID_TAB_GROUP))
+                        .eq(ColumnAlias.columnWithTable("p", TabGroup$Table.ID)))
                 .where(Condition.column(ColumnAlias.columnWithTable("q", Question$Table.QUESTION_ID_PARENT)).isNull())
                 .and(Condition.column(ColumnAlias.columnWithTable("a", Answer$Table.OUTPUT)).isNot(Constants.NO_ANSWER))
-                .and(Condition.column(ColumnAlias.columnWithTable("p", Program$Table.ID)).eq(program.getId())).count();
+                .and(Condition.column(ColumnAlias.columnWithTable("p", TabGroup$Table.ID)).eq(tabGroup.getId())).count();
 
         //List<Question> questionsByProgram = Question.findWithQuery(Question.class, LIST_REQUIRED_BY_PROGRAM, program.getId().toString());
     }
 
     /**
      * Returns all the questions that belongs to a program
-     * @param program
+     * @param tabGroup
      * @return
      */
-    public static List<Question> listAllByProgram(Program program){
-        if(program==null || program.getId()==null){
+    public static List<Question> listByTabGroup(TabGroup tabGroup){
+        if(tabGroup==null || tabGroup.getId()==null){
             return new ArrayList();
         }
 
@@ -425,10 +425,10 @@ public class Question extends BaseModel{
                 .on(Condition.column(ColumnAlias.columnWithTable("h", Header$Table.TAB_ID_TAB))
                         .eq(ColumnAlias.columnWithTable("t", Tab$Table.ID)))
                 .join(Program.class, Join.JoinType.LEFT).as("p")
-                .on(Condition.column(ColumnAlias.columnWithTable("t", Tab$Table.PROGRAM_ID_PROGRAM))
-                        .eq(ColumnAlias.columnWithTable("p", Program$Table.ID)))
-                .where(Condition.column(ColumnAlias.columnWithTable("p", Program$Table.ID))
-                        .eq(program.getId()))
+                .on(Condition.column(ColumnAlias.columnWithTable("t", Tab$Table.TABGROUP_ID_TAB_GROUP))
+                        .eq(ColumnAlias.columnWithTable("p", TabGroup$Table.ID)))
+                .where(Condition.column(ColumnAlias.columnWithTable("p", TabGroup$Table.ID))
+                        .eq(tabGroup.getId()))
                 .orderBy(Tab$Table.ORDER_POS)
                 .orderBy(Question$Table.ORDER_POS).queryList();
 

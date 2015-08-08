@@ -30,6 +30,7 @@ import com.raizlabs.android.dbflow.sql.language.Select;
 import org.eyeseetea.malariacare.database.model.OrgUnit;
 import org.eyeseetea.malariacare.database.model.Program;
 import org.eyeseetea.malariacare.database.model.Survey;
+import org.eyeseetea.malariacare.database.model.TabGroup;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.layout.adapters.general.OrgUnitArrayAdapter;
 import org.eyeseetea.malariacare.layout.adapters.general.ProgramArrayAdapter;
@@ -86,9 +87,11 @@ public class CreateSurveyActivity extends BaseActivity {
     public boolean checkSurveyDoesntExist() {
         // Read Selected Items
         OrgUnit orgUnit = (OrgUnit) orgUnitView.getSelectedItem();
-        Program program = (Program) programView.getSelectedItem();
 
-        List<Survey> existing = Survey.getUnsentSurveys(orgUnit, program);
+        //FIXME: Once we have the tabs groups this needs to be fix
+        TabGroup tabGroup = ((Program) programView.getSelectedItem()).getTabGroups().get(0);
+
+        List<Survey> existing = Survey.getUnsentSurveys(orgUnit, tabGroup);
         return (existing == null || existing.size() == 0);
     }
 
@@ -100,7 +103,9 @@ public class CreateSurveyActivity extends BaseActivity {
 
         // Read Selected Items
         OrgUnit orgUnit = (OrgUnit) orgUnitView.getSelectedItem();
-        Program program = (Program) programView.getSelectedItem();
+
+        //FIXME: Once we have the tabs groups this needs to be fix
+        TabGroup tabGroup = ((Program) programView.getSelectedItem()).getTabGroups().get(0);
 
         if (!checkEverythingFilled()) {
             new AlertDialog.Builder(this)
@@ -114,7 +119,7 @@ public class CreateSurveyActivity extends BaseActivity {
                     .setPositiveButton(android.R.string.ok, null).create().show();
         } else {
             // Put new survey in session
-            Survey survey = new Survey(orgUnit, program, Session.getUser());
+            Survey survey = new Survey(orgUnit, tabGroup, Session.getUser());
             survey.save();
             Session.setSurvey(survey);
 

@@ -233,8 +233,8 @@ public class SurveyService extends IntentService {
     private void prepareSurveyInfo(){
         Log.d(TAG, "prepareSurveyInfo (Thread:" + Thread.currentThread().getId() + ")");
 
-        Survey survey=Session.getSurvey();
-        Program program=survey.getProgram();
+//        Survey survey=Session.getSurvey();
+//        Program program=survey.getProgram();
 
         //Get composite scores for current program & register them (scores)
         //List<CompositeScore> compositeScores = CompositeScore.listAllByProgram(program);

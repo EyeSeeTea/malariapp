@@ -58,6 +58,8 @@ public class CompositeScore extends BaseModel {
     @Column
     String uid;
     @Column
+    Integer order_pos;
+    @Column
     @ForeignKey(references = {@ForeignKeyReference(columnName = "id_composite_score",
             columnType = Long.class,
             foreignColumnName = "id")},
@@ -71,17 +73,19 @@ public class CompositeScore extends BaseModel {
     public CompositeScore() {
     }
 
-    public CompositeScore(String code, String label, CompositeScore compositeScore) {
+    public CompositeScore(String code, String label, CompositeScore compositeScore, Integer order_pos) {
         this.code = code;
         this.label = label;
         this.compositeScore = compositeScore;
+        this.order_pos = order_pos;
     }
 
-    public CompositeScore(String code, String label, String uid, CompositeScore compositeScore) {
+    public CompositeScore(String code, String label, String uid, CompositeScore compositeScore, Integer order_pos) {
         this.code = code;
         this.label = label;
         this.uid = uid;
         this.compositeScore = compositeScore;
+        this.order_pos = order_pos;
     }
 
     public Long getId() {
@@ -120,6 +124,14 @@ public class CompositeScore extends BaseModel {
         this.uid = uid;
     }
 
+    public Integer getOrder_pos() {
+        return order_pos;
+    }
+
+    public void setOrder_pos(Integer order_pos) {
+        this.order_pos = order_pos;
+    }
+
     public boolean hasParent(){
         return getComposite_score() != null;
     }
@@ -130,6 +142,7 @@ public class CompositeScore extends BaseModel {
             this.compositeScoreChildren = new Select()
                     .from(CompositeScore.class)
                     .where(Condition.column(CompositeScore$Table.COMPOSITESCORE_ID_COMPOSITE_SCORE).eq(this.getId()))
+                    .orderBy(CompositeScore$Table.ORDER_POS)
                     .queryList();
             //this.compositeScoreChildren = CompositeScore.find(CompositeScore.class, "composite_score = ?", String.valueOf(this.getId()));
         }
@@ -143,6 +156,7 @@ public class CompositeScore extends BaseModel {
             questions = new Select()
                     .from(Question.class)
                     .where(Condition.column(Question$Table.COMPOSITESCORE_ID_COMPOSITE_SCORE).eq(this.getId()))
+                    .orderBy(CompositeScore$Table.ORDER_POS)
                     .queryList();
             /*questions = Select.from(Question.class)
                     .where(Condition.prop("composite_score")
@@ -153,12 +167,12 @@ public class CompositeScore extends BaseModel {
 
     /**
      * Select all composite score that belongs to a program
-     * @param program Program whose composite scores are searched.
+     * @param tabGroup Program whose composite scores are searched.
      * @return
      */
     //TODO: to enable lazy loading, here we need to set Method.SAVE and Method.DELETE and use the .toModel() to specify when do we want to load the models
-    public static List<CompositeScore> listAllByProgram(Program program){
-        if(program==null || program.getId()==null){
+    public static List<CompositeScore> listByTabGroup(TabGroup tabGroup){
+        if(tabGroup==null || tabGroup.getId()==null){
             return new ArrayList<>();
         }
 
@@ -174,10 +188,10 @@ public class CompositeScore extends BaseModel {
                 .on(Condition.column(ColumnAlias.columnWithTable("h", Header$Table.TAB_ID_TAB))
                         .eq(ColumnAlias.columnWithTable("t", Tab$Table.ID)))
                 .join(Program.class, Join.JoinType.LEFT).as("p")
-                .on(Condition.column(ColumnAlias.columnWithTable("t", Tab$Table.PROGRAM_ID_PROGRAM))
-                        .eq(ColumnAlias.columnWithTable("p", Program$Table.ID)))
-                .where(Condition.column(ColumnAlias.columnWithTable("p", Program$Table.ID))
-                .eq(program.getId())).queryList();
+                .on(Condition.column(ColumnAlias.columnWithTable("t", Tab$Table.TABGROUP_ID_TAB_GROUP))
+                        .eq(ColumnAlias.columnWithTable("p", TabGroup$Table.ID)))
+                .where(Condition.column(ColumnAlias.columnWithTable("p", TabGroup$Table.ID))
+                .eq(tabGroup.getId())).queryList();
 
         //List<CompositeScore> compositeScoresByProgram = CompositeScore.findWithQuery(CompositeScore.class, LIST_BY_PROGRAM_SQL, program.getId().toString());
 
@@ -221,6 +235,7 @@ public class CompositeScore extends BaseModel {
         if (!code.equals(that.code)) return false;
         if (label != null ? !label.equals(that.label) : that.label != null) return false;
         if (uid != null ? !uid.equals(that.uid) : that.uid != null) return false;
+        if (order_pos != null ? !order_pos.equals(that.order_pos) : that.order_pos != null) return false;
         return !(compositeScore != null ? !compositeScore.equals(that.compositeScore) : that.compositeScore != null);
 
     }
@@ -231,6 +246,7 @@ public class CompositeScore extends BaseModel {
         result = 31 * result + code.hashCode();
         result = 31 * result + (label != null ? label.hashCode() : 0);
         result = 31 * result + (uid != null ? uid.hashCode() : 0);
+        result = 31 * result + (order_pos != null ? order_pos.hashCode() : 0);
         result = 31 * result + (compositeScore != null ? compositeScore.hashCode() : 0);
         return result;
     }
@@ -242,6 +258,7 @@ public class CompositeScore extends BaseModel {
                 ", code='" + code + '\'' +
                 ", label='" + label + '\'' +
                 ", uid='" + uid + '\'' +
+                ", order_pos='" + order_pos + '\'' +
                 ", compositeScore=" + compositeScore +
                 '}';
     }

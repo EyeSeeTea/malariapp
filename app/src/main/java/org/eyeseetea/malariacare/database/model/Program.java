@@ -42,9 +42,7 @@ public class Program extends BaseModel {
     @Column
     String name;
 
-    List<Tab> tabs;
-
-    List<Survey> surveys;
+    List<TabGroup> tabGroups;
 
     public Program() {
     }
@@ -82,19 +80,12 @@ public class Program extends BaseModel {
         this.name = name;
     }
 
-    @OneToMany(methods = {OneToMany.Method.SAVE, OneToMany.Method.DELETE}, variableName = "tabs")
-    public List<Tab> getTabs(){
-        this.tabs = new Select().from(Tab.class)
-                    .where(Condition.column(Tab$Table.PROGRAM_ID_PROGRAM).eq(this.getId()))
-                    .orderBy(Tab$Table.ORDER_POS).queryList();
-        return this.tabs;
-    }
-
-    @OneToMany(methods = {OneToMany.Method.SAVE, OneToMany.Method.DELETE}, variableName = "surveys")
-    public List<Survey> getSurveys(){
-        this.surveys = new Select().from(Survey.class)
-                    .where(Condition.column(Survey$Table.PROGRAM_ID_PROGRAM).eq(this.getId())).queryList();
-        return this.surveys;
+    @OneToMany(methods = {OneToMany.Method.SAVE, OneToMany.Method.DELETE}, variableName = "tabGroups")
+    public List<TabGroup> getTabGroups(){
+        this.tabGroups = new Select().from(TabGroup.class)
+                    .where(Condition.column(TabGroup$Table.PROGRAM_ID_PROGRAM).eq(this.getId()))
+                    .queryList();
+        return this.tabGroups;
     }
 
     @Override

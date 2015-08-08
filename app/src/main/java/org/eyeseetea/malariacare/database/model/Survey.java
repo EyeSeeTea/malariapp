@@ -55,11 +55,11 @@ public class Survey extends BaseModel {
     @PrimaryKey(autoincrement = true)
     long id;
     @Column
-    @ForeignKey(references = {@ForeignKeyReference(columnName = "id_program",
+    @ForeignKey(references = {@ForeignKeyReference(columnName = "id_tab_group",
             columnType = Long.class,
             foreignColumnName = "id")},
             saveForeignKeyModel = false)
-    Program program;
+    TabGroup tabGroup;
     @Column
     @ForeignKey(references = {@ForeignKeyReference(columnName = "id_org_unit",
             columnType = Long.class,
@@ -86,9 +86,9 @@ public class Survey extends BaseModel {
     public Survey() {
     }
 
-    public Survey(OrgUnit orgUnit, Program program, User user) {
+    public Survey(OrgUnit orgUnit, TabGroup tabGroup, User user) {
         this.orgUnit = orgUnit;
-        this.program = program;
+        this.tabGroup = tabGroup;
         this.user = user;
         this.eventDate = new Date();
         this.status = Constants.SURVEY_IN_PROGRESS; // Possibilities [ In progress | Completed | Sent ]
@@ -113,12 +113,12 @@ public class Survey extends BaseModel {
         this.orgUnit = orgUnit;
     }
 
-    public Program getProgram() {
-        return program;
+    public TabGroup getTabGroup() {
+        return tabGroup;
     }
 
-    public void setProgram(Program program) {
-        this.program = program;
+    public void setTabGroup(TabGroup tabGroup) {
+        this.tabGroup = tabGroup;
     }
 
     public User getUser() {
@@ -208,7 +208,7 @@ public class Survey extends BaseModel {
      * @return SurveyAnsweredRatio that hold the total & answered questions.
      */
     private SurveyAnsweredRatio reloadSurveyAnsweredRatio(){
-        int numRequired = Question.countRequiredByProgram(this.getProgram());
+        int numRequired = Question.countRequiredByProgram(this.getTabGroup());
         int numOptional = 0;
         int numAnswered = Value.countBySurvey(this);
 
@@ -254,13 +254,13 @@ public class Survey extends BaseModel {
     /**
      * Returns a concrete survey, if it exists
      * @param orgUnit
-     * @param program
+     * @param tabGroup
      * @return
      */
-    public static List<Survey> getUnsentSurveys(OrgUnit orgUnit, Program program) {
+    public static List<Survey> getUnsentSurveys(OrgUnit orgUnit, TabGroup tabGroup) {
         return new Select().from(Survey.class)
                 .where(Condition.column(Survey$Table.ORGUNIT_ID_ORG_UNIT).eq(orgUnit.getId()))
-                .and(Condition.column(Survey$Table.PROGRAM_ID_PROGRAM).eq(program.getId()))
+                .and(Condition.column(Survey$Table.TABGROUP_ID_TAB_GROUP).eq(tabGroup.getId()))
                 .and(Condition.column(Survey$Table.STATUS).isNot(Constants.SURVEY_SENT))
                 .orderBy(Survey$Table.EVENTDATE)
                 .orderBy(Survey$Table.ORGUNIT_ID_ORG_UNIT).queryList();
@@ -370,7 +370,7 @@ public class Survey extends BaseModel {
         Survey survey = (Survey) o;
 
         if (id != survey.id) return false;
-        if (!program.equals(survey.program)) return false;
+        if (!tabGroup.equals(survey.tabGroup)) return false;
         if (!orgUnit.equals(survey.orgUnit)) return false;
         if (!user.equals(survey.user)) return false;
         if (eventDate != null ? !eventDate.equals(survey.eventDate) : survey.eventDate != null)
@@ -384,7 +384,7 @@ public class Survey extends BaseModel {
     @Override
     public int hashCode() {
         int result = (int) (id ^ (id >>> 32));
-        result = 31 * result + program.hashCode();
+        result = 31 * result + tabGroup.hashCode();
         result = 31 * result + orgUnit.hashCode();
         result = 31 * result + user.hashCode();
         result = 31 * result + (eventDate != null ? eventDate.hashCode() : 0);
@@ -397,7 +397,7 @@ public class Survey extends BaseModel {
     public String toString() {
         return "Survey{" +
                 "id=" + id +
-                ", program=" + program +
+                ", tabGroup=" + tabGroup +
                 ", orgUnit=" + orgUnit +
                 ", user=" + user +
                 ", eventDate=" + eventDate +
