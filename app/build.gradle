@@ -41,9 +41,44 @@ android {
         exclude  'LICENSE.txt'
     }
     productFlavors {
-        eds {
+        edsGhana {
             applicationId "org.eyeseetea.malariacare.eds"
-            versionName "10.0-eds"
+            versionName "10.0-eds-ghana"
+            minSdkVersion 15
+            signingConfig signingConfigs.config
+            targetSdkVersion 21
+        }
+        edsMalawi {
+            applicationId "org.eyeseetea.malariacare.eds"
+            versionName "10.0-eds-malawi"
+            minSdkVersion 15
+            signingConfig signingConfigs.config
+            targetSdkVersion 21
+        }
+        edsMozambique {
+            applicationId "org.eyeseetea.malariacare.eds"
+            versionName "10.0-eds-mozambique"
+            minSdkVersion 15
+            signingConfig signingConfigs.config
+            targetSdkVersion 21
+        }
+        edsTanzania {
+            applicationId "org.eyeseetea.malariacare.eds"
+            versionName "10.0-eds-tanzania"
+            minSdkVersion 15
+            signingConfig signingConfigs.config
+            targetSdkVersion 21
+        }
+        edsZambia {
+            applicationId "org.eyeseetea.malariacare.eds"
+            versionName "10.0-eds-zambia"
+            minSdkVersion 15
+            signingConfig signingConfigs.config
+            targetSdkVersion 21
+        }
+        edsSFICM {
+            applicationId "org.eyeseetea.malariacare.eds"
+            versionName "10.0-eds-zambia"
             minSdkVersion 15
             signingConfig signingConfigs.config
             targetSdkVersion 21
