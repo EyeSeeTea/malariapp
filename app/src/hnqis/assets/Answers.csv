@@ -69,3 +69,8 @@
 81;'PresentFunctionalCBVertical';9
 82;'DoneCBVertical';9
 83;'Yes1No0NA1CBVertical';9
+84;'GHA_FacilityType';1
+85;'GHA_FacilityOwn';1
+86;'GHA_Cadre';1
+87;'GHA_Officer';1
+88;'RealSimulatedCBVertical';9
