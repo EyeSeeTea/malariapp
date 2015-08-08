@@ -104,6 +104,7 @@ public class PopulateDB {
                         compositeScore.setLabel(line[2]);
                         if (!line[3].equals("")) compositeScore.setCompositeScore(compositeScores.get(Integer.valueOf(line[3])));
                         compositeScore.setUid(line[4]);
+                        compositeScore.setOrder_pos(Integer.valueOf(line[5]));
                         compositeScores.put(Integer.valueOf(line[0]), compositeScore);
                         break;
                     case QUESTIONS_CSV:
@@ -135,6 +136,8 @@ public class PopulateDB {
                         OrgUnit orgUnit = new OrgUnit();
                         orgUnit.setUid(line[1]);
                         orgUnit.setName(line[2]);
+                        if (!line[3].equals(""))
+                            orgUnit.setOrgUnit(orgUnits.get(Integer.valueOf(line[3])));
                         orgUnits.put(Integer.valueOf(line[0]), orgUnit);
                         break;
                 }
