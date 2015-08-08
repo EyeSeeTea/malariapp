@@ -47,7 +47,8 @@ public class Question extends BaseModel{
     /**
      * Sql query that counts required questions in a program (required for % stats)
      */
-    /*private static final String LIST_REQUIRED_BY_PROGRAM = "select q.* from question q"+
+    /*private static final String LIST_REQUIRED_BY_PROGRAM =
+            "select q.* from question q"+
             " left join answer a on q.answer=a.id"+
             " left join header h on q.header=h.id"+
             " left join tab t on h.tab=t.id"+
@@ -367,7 +368,7 @@ public class Question extends BaseModel{
             return null;
         }
 
-        Float num = ScoreRegister.calcNum(this,survey);
+        Float num = ScoreRegister.calcNum(this, survey);
         Float denum = ScoreRegister.calcDenum(this, survey);
         ScoreRegister.addRecord(this, num, denum);
         return Arrays.asList(num, denum);
@@ -399,7 +400,7 @@ public class Question extends BaseModel{
                 .join(Program.class, Join.JoinType.LEFT).as("p")
                 .on(Condition.column(ColumnAlias.columnWithTable("t", Tab$Table.PROGRAM_ID_PROGRAM))
                         .eq(ColumnAlias.columnWithTable("p", Program$Table.ID)))
-                .where(Condition.column(ColumnAlias.columnWithTable("q", Question$Table.QUESTION_ID_PARENT)).eq(0))
+                .where(Condition.column(ColumnAlias.columnWithTable("q", Question$Table.QUESTION_ID_PARENT)).isNull())
                 .and(Condition.column(ColumnAlias.columnWithTable("a", Answer$Table.OUTPUT)).isNot(Constants.NO_ANSWER))
                 .and(Condition.column(ColumnAlias.columnWithTable("p", Program$Table.ID)).eq(program.getId())).queryList();
 

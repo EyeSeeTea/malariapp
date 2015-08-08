@@ -92,7 +92,7 @@ public class Survey extends BaseModel {
         this.user = user;
         this.eventDate = new Date();
         this.status = Constants.SURVEY_IN_PROGRESS; // Possibilities [ In progress | Completed | Sent ]
-        this.completionDate= this.eventDate;
+        this.completionDate = this.eventDate;
 
         Log.i(".Survey", Long.valueOf(this.completionDate.getTime()).toString());
     }
@@ -195,7 +195,7 @@ public class Survey extends BaseModel {
      */
     public SurveyAnsweredRatio getAnsweredQuestionRatio(){
         if (answeredQuestionRatio == null) {
-            answeredQuestionRatio =SurveyAnsweredRatioCache.get(this.getId());
+            answeredQuestionRatio = SurveyAnsweredRatioCache.get(this.getId());
             if(answeredQuestionRatio == null) {
                 answeredQuestionRatio = reloadSurveyAnsweredRatio();
             }
