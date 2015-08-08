@@ -218,8 +218,8 @@ Specialized obstetrics clinic';0.00;33
 221;'Not Asked';0.00;78
 222;'???';0.00;79
 223;'???';0.00;79
-224;'???';0.00;80
-225;'???';0.00;80
+224;'One day';0.00;80
+225;'Greater than one day';0.00;80
 226;'Present & Functional';1.00;81
 227;'Present & Non-functional';0.00;81
 228;'Done';1.00;82
@@ -227,3 +227,40 @@ Specialized obstetrics clinic';0.00;33
 230;'Yes';1.00;83
 231;'No';0.00;83
 232;'NA';1.00;83
+233;'Yes';0.00;84
+234;'No';1.00;84
+235;'NA';1.00;84
+236;'Plus System';0.00;85
+237;'Parasite uL';0.00;85
+238;'Against WBC';0.00;85
+239;'Yes';1.00;86
+240;'NA';1.00;86
+241;'No';0.00;86
+242;'Not present';0.00;81
+243;'Medical Officer';0.00;87
+244;'Clinical Officer';0.00;87
+245;'Medical Intern';0.00;87
+246;'Nurse';0.00;87
+247;'Students on Attachment';0.00;87
+248;'Lab Tech';0.00;87
+249;'Lab Assistant';0.00;87
+250;'Other';0.00;87
+251;'Lab Tech';0.00;88
+252;'Lab Assistant';0.00;88
+253;'Other';0.00;88
+254;'Not asked';0.00;80
+255;'No antimalarial prescribed';0.00;89
+256;'ACT';0.00;89
+257;'Artemisinin (intramuscular monotherapy)';0.00;89
+258;'Artemisinin (intravenous)';0.00;89
+259;'Artemisinin (oral monotherapy)';0.00;89
+260;'Artemether (intramuscular)';0.00;89
+261;'Artesunate (intramuscular monotherapy)';0.00;89
+262;'Artesunate (rectal)';0.00;89
+263;'Quinine (oral)';0.00;89
+264;'Quinine (intramuscular)';0.00;89
+265;'Quinine (intravenous)';0.00;89
+266;'Quinine (oral) + Clindamycin';0.00;89
+267;'Chloroquine';0.00;89
+268;'SP';0.00;89
+269;'Other';0.00;89

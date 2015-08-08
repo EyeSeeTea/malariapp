@@ -1,119 +1,118 @@
 1;'Years';0.00;1
 2;'Months';0.00;1
-3;'OPD';0.00;33
-4;'ANC';0.00;33
-5;'Specialized obstetrics clinic
-Specialized obstetrics clinic';0.00;33
-6;'Other';0.00;33
-7;'Asked';1.00;34
-8;'Not Asked';0.00;34
-9;'Not available';0.00;2
-10;'Available';0.50;2
-11;'Most recent';1.00;2
-12;'Done';1.00;35
-13;'Not Done';0.00;35
-14;'Guideline review';0.00;36
-15;'Lecture';0.00;36
-16;'Demonstration';0.00;36
-17;'SOP Review';0.00;36
-18;'Clinical mentoring';0.00;36
-19;'Male';0.00;3
-20;'Female';0.00;3
-21;'Health Center';0.00;37
-22;'District Hospital';0.00;37
-23;'Regional Hospital';0.00;37
-24;'Simple malaria';0.00;38
-25;'Severe malaria';0.00;38
-26;'Other';0.00;38
-27;'PF(HRP2) only';0.00;5
+3;'CE';0.00;33
+4;'CPN';0.00;33
+5;'Clínica especializada em obstetrícia';0.00;33
+6;'Outro';0.00;33
+7;'Questionado';1.00;34
+8;'Não questionado';0.00;34
+9;'Não disponível';0.00;2
+10;'Disponível';0.50;2
+11;'Mais recente';1.00;2
+12;'Realizado';1.00;35
+13;'Não realizado';0.00;35
+14;'Revisão de Linhas de Orientação';0.00;36
+15;'Palestra';0.00;36
+16;'Demonstração';0.00;36
+17;'Revisão de POPs';0.00;36
+18;'Tutoria Clínica';0.00;36
+19;'Masculino';0.00;3
+20;'Feminino';0.00;3
+21;'Posto de Saúde';0.00;37
+22;'Centro de Saúde';0.00;37
+23;'Hospital Distrital';0.00;37
+24;'Malária simples';0.00;38
+25;'Malária grave';0.00;38
+26;'Outro';0.00;38
+27;'PF(HRP2) apenas';0.00;5
 28;'PF(HRP2) + Pan(LDH)';0.00;5
-29;'RDT +';0.00;41
-30;'RDT -';0.00;41
-31;'Microscopy +';0.00;41
-32;'Microscopy -';0.00;41
-33;'Test not available';0.00;41
-34;'Test not ordered';0.00;41
+29;'TDR +';0.00;41
+30;'TDR -';0.00;41
+31;'Microscopia +';0.00;41
+32;'Microscopia -';0.00;41
+33;'Teste não disponível';0.00;41
+34;'Teste não pedido';0.00;41
 35;'Pf';0.00;40
 36;'Pv';0.00;40
 37;'Pm';0.00;40
 38;'Po';0.00;40
-39;'No';0.00;39
-40;'Partially';0.33;39
-41;'Completely';1.00;39
-42;'MD/Medical Officer/Physician';0.00;4
-43;'Clinical Officer/Physician''s Assistant';0.00;4
-44;'Lab Tech';0.00;4
-45;'Microscopist';0.00;4
-46;'Nurse';0.00;4
-48;'Midwife';0.00;4
-49;'Other';0.00;4
-50;'Positive';0.00;7
-51;'Negative';0.00;7
-52;'Unknown/ No Test Result';0.00;7
-53;'Present & Functional';1.00;6
-54;'Present & Non-functional';0.00;6
-55;'Not present';0.00;6
-56;'Clinicalpractice general';0.00;42
-57;'Adherence to Malariatest';0.00;42
-58;'Malaria treatment';0.00;42
-59;'RDT';0.00;42
-60;'Other';0.00;42
-61;'Paper reports on designated tally sheets';0.00;9
-62;'Paper reports without tally sheets';0.00;9
-63;'SMS-based reports';0.00;9
-64;'Direct computer entry into designated form';0.00;9
+39;'Não';0.00;39
+40;'Parcial';0.33;39
+41;'Completo';1.00;39
+42;'Medico';0.00;4
+43;'Tec. Medicina/ Agente de Medicina';0.00;4
+44;'Técnico de Laboratório';0.00;4
+45;'Assistente de Laboratório';0.00;4
+46;'Enfermeiro(a)';0.00;4
+48;'Parteira';0.00;4
+49;'Outro';0.00;4
+50;'Positivo';0.00;7
+51;'Negativo';0.00;7
+52;'Desconhecido/Sem resultado do teste';0.00;7
+53;'Presente & Functional';1.00;6
+54;'Presente & Não-funcional';0.00;6
+55;'Não existe';0.00;6
+56;'Clínica geral';0.00;42
+57;'Adesão ao teste da Malária';0.00;42
+58;'Tratamento da Malária';0.00;42
+59;'TDR';0.00;42
+60;'Outro';0.00;42
+61;'Relatórios em papel e em folhas de controlo designadas';0.00;9
+62;'Relatórios em papel sem folhas de controlo';0.00;9
+63;'Relatórios com base em SMS';0.00;9
+64;'Entradas directas no computador em formulários designados';0.00;9
 65;'Email';0.00;9
 66;'Yes, a day or greater';1.00;43
 67;'No';1.00;43
 68;'Not Asked';0.00;43
 69;'Normal';0.00;44
-70;'Abnormal';0.00;44
-71;'Not Ordered';0.00;44
-72;'RDT';0.00;10
-73;'Microcopy Thick smear';0.00;10
-74;'Microscopy Thin smear';0.00;10
-75;'Microscopy Thick and Thin smear';0.00;10
-76;'Traditional treatment';1.00;12
-77;'Antimalarial treatment';1.00;12
-78;'Other/  Unknown';1.00;12
-79;'Not Asked';0.00;12
-80;'Running tap water';1.00;11
-81;'Rain water';0.33;11
-82;'Well';1.00;11
-83;'Bore hole';1.00;11
-84;'Stream/ river';0.33;11
-85;'Commercial Bottled water';1.00;11
-86;'Externally filled water tank';1.00;11
-87;'Yes';0.00;13
-88;'No';1.00;13
-89;'Yes';0.00;48
-90;'No';1.00;48
-91;'Not Asked';0.00;48
+70;'Anormal';0.00;44
+71;'Não pedido';0.00;44
+72;'TDR';0.00;10
+73;'Microscopia Esfregaço Espesso';0.00;10
+74;'Microscopia Esfregaço Fino';0.00;10
+75;'Microscopia Esfregaço Espesso e Fino';0.00;10
+76;'Tratamento tradicional';1.00;12
+77;'Tratamento antimalárico';1.00;12
+78;'Outro / Desconhecido';1.00;12
+79;'Não questionado';0.00;12
+80;'Água de torneira/canalizada';1.00;11
+81;'Água da Chuva';0.33;11
+82;'Poço';1.00;11
+83;'Furo';1.00;11
+84;'Riacho/Rio';0.33;11
+85;'Água engarrafada comercial';1.00;11
+86;'Tanque enchido no exterior';1.00;11
+87;'Sim';0.00;13
+88;'Não';1.00;13
+89;'Sim';0.00;48
+90;'Não';1.00;48
+91;'Não Questionado';0.00;48
 92;'N/A';1.00;48
-93;'Yes';1.00;14
-94;'Apparent';1.00;14
-95;'Not Asked';0.00;14
-96;'Yes';1.00;15
-97;'No';0.00;15
-98;'Yes';1.00;46
-99;'No';0.00;46
-100;'Not Asked';0.00;46
-101;'Yes';1.00;45
-102;'No';0.00;45
+93;'Sim';1.00;14
+94;'Aparente';1.00;14
+95;'Não Questionado';0.00;14
+96;'Sim';1.00;15
+97;'Não';0.00;15
+98;'Sim';1.00;46
+99;'Não';0.00;46
+100;'Não Questionado';0.00;46
+101;'Sim';1.00;45
+102;'Não';0.00;45
 103;'N/A';0.00;45
-104;'Yes';1.00;16
-105;'No';1.00;16
-106;'Not Asked';0.00;16
-107;'Yes';1.00;17
-108;'No';1.00;17
-109;'Unknown';1.00;17
-110;'Not Asked';0.00;17
-111;'Yes';1.00;19
-112;'Not Available';1.00;19
-113;'No';0.00;19
-114;'Yes, Normal';1.00;18
-115;'Yes, Abnormal';1.00;18
-116;'No';0.00;18
+104;'Sim';1.00;16
+105;'Não';1.00;16
+106;'Não Questionado';0.00;16
+107;'Sim';1.00;17
+108;'Não';1.00;17
+109;'Desconhecido';1.00;17
+110;'Não Questionado';0.00;17
+111;'Sim';1.00;19
+112;'Não disponível';1.00;19
+113;'Não';0.00;19
+114;'Sim, Normal';1.00;18
+115;'Sim, Anormal';1.00;18
+116;'Não';0.00;18
 117;'Malaria';1.00;50
 118;'Pneumonia';2.00;50
 119;'Diarhoea';3.00;50
@@ -128,102 +127,130 @@ Specialized obstetrics clinic';0.00;33
 129;'Cough Syrup or tablets';5.00;51
 130;'Referral';6.00;51
 131;'Other treatment';7.00;51
-132;'Yes';1.00;53
-133;'No';0.00;53
-134;'Yes';1.00;54
-135;'No';1.00;54
-136;'Unknown';1.00;54
-137;'Not Asked';0.00;54
-138;'Yes';1.00;55
-139;'No';1.00;55
-140;'Not asked';0.00;55
-141;'Not applicable';1.00;55
-142;'Yes';1.00;56
-143;'No';0.00;56
-144;'Antimalarial not prescribed';1.00;56
-145;'Yes';1.00;57
-146;'No';0.00;57
+132;'Sim';1.00;53
+133;'Não';0.00;53
+134;'Sim';1.00;54
+135;'Não';1.00;54
+136;'Não Questionado';0.00;54
+137;'Masculino';1.00;54
+138;'Sim';1.00;55
+139;'Não';1.00;55
+140;'Não Questionado';0.00;55
+141;'Não aplicável';1.00;55
+142;'Sim';1.00;56
+143;'Não';0.00;56
+144;'Antimalárico não receitado';1.00;56
+145;'Sim';1.00;57
+146;'Não';0.00;57
 147;'N/A';1.00;57
-148;'Yes';1.00;58
-149;'No';0.00;58
-150;'Not available';1.00;58
-151;'Yes';1.00;59
-152;'No';0.00;59
-153;'Not Applicable';1.00;59
-154;'Yes';0.00;60
-155;'No';1.00;60
-156;'Unk';0.00;60
-157;'Thick smear';0.00;61
-158;'Thin smear';0.00;61
-159;'Both';0.00;61
-160;'RDT';0.00;62
-161;'Microscopy';0.00;62
-162;'Test not available';0.00;62
-163;'Test not ordered';0.00;62
-164;'Severe disease';0.00;63
-165;'Non-severe disease';0.00;63
-166;'Main';0.00;64
-167;'Generator';0.00;64
+148;'Sim';1.00;58
+149;'Não';0.00;58
+150;'Não disponível';1.00;58
+151;'Sim';1.00;59
+152;'Não';0.00;59
+153;'Não aplicável';1.00;59
+154;'Sim';0.00;60
+155;'Não';1.00;60
+156;'Desconhecido';0.00;60
+157;'Esfregaço espesso';0.00;61
+158;'Esfregaço fino';0.00;61
+159;'Ambos';0.00;61
+160;'TDR';0.00;62
+161;'Microscopia';0.00;62
+162;'Teste não disponível';0.00;62
+163;'Teste não pedido';0.00;62
+164;'Doença grave';0.00;63
+165;'Doença não grave';0.00;63
+166;'Principal';0.00;64
+167;'Gerador';0.00;64
 168;'Solar';0.00;64
-169;'None';0.00;64
-170;'Pharmacy';0.00;65
-171;'Clinical';0.00;65
-172;'Neither Pharmacy nor Clinical Records Available';0.00;65
-173;'Unofficial register';0.00;66
-174;'Loose paper sheets';0.00;66
-175;'Computerized record';0.00;66
-176;'Other';0.00;66
-177;'Lab Tech';0.00;67
-178;'Microscopist';0.00;67
+169;'Nenhum';0.00;64
+170;'Farmácia';0.00;65
+171;'Clínica';0.00;65
+172;'Registos de Farmácia ou Clínicos não disponíveis';0.00;65
+173;'Registo não oficial';0.00;66
+174;'Folhas de papel soltas';0.00;66
+175;'Registo informatizado';0.00;66
+176;'Outro';0.00;66
+177;'Técnico de Laboratório';0.00;67
+178;'Assistente de Laboratório';0.00;67
 179;'Normal';0.00;68
-180;'Abnormal';0.00;68
-181;'RDT +';1.00;69
-182;'RDT -';0.00;69
-183;'Microscopy +';1.00;69
-184;'Microscopy -';0.00;69
-185;'Not found';0.00;69
-186;'No antimalarial prescribed';0.00;70
-187;'ACT';0.00;70
-188;'Artemisinin (intramuscular monotherapy)';0.00;70
-189;'Artemisinin (intravenous)';0.00;70
-190;'Artemisinin (oral monotherapy)';0.00;70
-191;'Artemether (intramuscular)';0.00;70
-192;'Artesunate (intramuscular monotherapy)';0.00;70
-193;'Artesunate (rectal)';0.00;70
-194;'Quinine (oral)';0.00;70
-195;'Quinine (intramuscular)';0.00;70
-196;'Quinine (intravenous)';0.00;70
-197;'Chloroquine';0.00;70
+180;'Anormal';0.00;68
+181;'TDR +';1.00;69
+182;'TDR -';0.00;69
+183;'Microscopia +';1.00;69
+184;'Microscopia -';0.00;69
+185;'Não encontrado';0.00;69
+186;'Antimalárico não receitado';0.00;70
+187;'TCA';0.00;70
+188;'Artemisinina (monoterapia intramuscular )';0.00;70
+189;'Artemisinina (intravenoso)';0.00;70
+190;'Artemisinina (monoterapia oral )';0.00;70
+191;'Artemetér (intramuscular)';0.00;70
+192;'Artesunate (monoterapia intramuscular)';0.00;70
+193;'Artesunato (rectal)';0.00;70
+194;'Quinina (oral)';0.00;70
+195;'Quinina (intramuscular)';0.00;70
+196;'Quinina (intravenoso)';0.00;70
+197;'Cloroquina';0.00;70
 198;'SP';0.00;70
-199;'Other';0.00;70
-200;'Both RDT and Microscopy (any type)';0.00;10
-201;'Mixed';0.00;40
-204;'Male';0.00;73
-205;'Female';0.00;73
-206;'Male';0.00;72
-207;'Female';0.00;72
-208;'Yes';0.00;74
-209;'No';1.00;74
-210;'Yes';1.00;75
-211;'No';0.00;75
-212;'Not Available';1.00;75
-213;'Yes';1.00;76
-214;'No';0.00;76
+199;'Outro';0.00;70
+200;'Ambos TDR e Microscopia (qualquer tipo)';0.00;10
+201;'Misto';0.00;40
+204;'Masculino';0.00;73
+205;'Feminino';0.00;73
+206;'Masculino';0.00;72
+207;'Feminino';0.00;72
+208;'Sim';0.00;74
+209;'Não';1.00;74
+210;'Sim';1.00;75
+211;'Não';0.00;75
+212;'Não disponível';1.00;75
+213;'Sim';1.00;76
+214;'Não';0.00;76
 215;'NA';1.00;76
-216;'Yes';1.00;77
-217;'No';1.00;77
-218;'Asked';0.00;77
-219;'Yes';1.00;78
-220;'No';1.00;78
-221;'Not Asked';0.00;78
+216;'Sim';1.00;77
+217;'Não';1.00;77
+218;'Questionado';0.00;77
+219;'Sim';1.00;78
+220;'Não';1.00;78
+221;'Não Questionado';0.00;78
 222;'???';0.00;79
 223;'???';0.00;79
-224;'???';0.00;80
-225;'???';0.00;80
-226;'Present & Functional';1.00;81
-227;'Present & Non-functional';0.00;81
-228;'Done';1.00;82
-229;'Not Done';0.00;82
-230;'Yes';1.00;83
-231;'No';0.00;83
+224;'Um dia';0.00;80
+225;'Mais do que um dia';0.00;80
+226;'Presente & Functional';1.00;81
+227;'Presente & Não-funcional';0.00;81
+228;'Realizado';1.00;82
+229;'Não realizado';0.00;82
+230;'Sim';1.00;83
+231;'Não';0.00;83
 232;'NA';1.00;83
+233;'Não existe';0.00;81
+234;'CHPS';0.00;84
+235;'Clinic';0.00;84
+236;'Maternity Home';0.00;84
+237;'Health Centre';0.00;84
+238;'Polyclinic';0.00;84
+239;'Hospital';0.00;84
+240;'Quasi-Govt';0.00;85
+241;'Govt';0.00;85
+242;'Mission (CHAG)';0.00;85
+243;'Private';0.00;85
+244;'Other';0.00;85
+245;'CHO/CHN';0.00;86
+246;'EN/RN/SRN';0.00;86
+247;'PA/MA';0.00;86
+248;'Medical Officer';0.00;86
+249;'Mid Wife';0.00;86
+250;'Lab Tech';0.00;86
+251;'CHO/CHN';0.00;87
+252;'Clinical Nurse';0.00;87
+253;'Medical Officer';0.00;87
+254;'Midwife';0.00;87
+255;'Physician/Medical Assistant';0.00;87
+256;'Medical Intern';0.00;87
+257;'Other';0.00;87
+258;'Não questionado';0.00;80
+259;'Hospital Provincial/Regional';0.00;37
+260;'Laboratório de Referência';0.00;37

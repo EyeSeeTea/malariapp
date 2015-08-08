@@ -218,8 +218,8 @@ Specialized obstetrics clinic';0.00;33
 221;'Not Asked';0.00;78
 222;'???';0.00;79
 223;'???';0.00;79
-224;'???';0.00;80
-225;'???';0.00;80
+224;'One Day';0.00;80
+225;'Greater than one day';0.00;80
 226;'Present & Functional';1.00;81
 227;'Present & Non-functional';0.00;81
 228;'Done';1.00;82
@@ -227,3 +227,36 @@ Specialized obstetrics clinic';0.00;33
 230;'Yes';1.00;83
 231;'No';0.00;83
 232;'NA';1.00;83
+233;'Yes';0.00;84
+234;'No';1.00;84
+235;'Yes';1.00;85
+236;'NA';1.00;85
+237;'No';0.00;85
+238;'Yes';0.00;86
+239;'NA';1.00;86
+240;'No';1.00;86
+241;'Plus System';0.00;87
+242;'Parasite uL';0.00;87
+243;'Against WBC';0.00;87
+244;'Not present';0.00;81
+245;'Not asked';0.00;80
+246;'Medical Officer';0.00;89
+247;'Assistant Medical Officer';0.00;89
+248;'Clinical Officer';0.00;89
+249;'Assistant Clinical Officer';0.00;89
+250;'Nurse officer';0.00;89
+251;'Assistant Nurse Officer';0.00;89
+252;'Enrolled Nurse';0.00;89
+253;'Medical Attendant';0.00;89
+254;'Lab Scientist';0.00;89
+255;'Lab Technologist';0.00;89
+256;'Assistant Lab Technologist';0.00;89
+257;'Other';0.00;89
+259;'Lab Scientist';0.00;90
+260;'Lab Technologist';0.00;90
+261;'Assistant Lab Technologist';0.00;90
+262;'Other';0.00;90
+263;'Health Center';0.00;91
+264;'District Hospital';0.00;91
+265;'Regional hospital';0.00;91
+266;'Specialized Hospital';0.00;91

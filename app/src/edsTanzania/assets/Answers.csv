@@ -69,3 +69,10 @@
 81;'PresentFunctionalCBVertical';9
 82;'DoneCBVertical';9
 83;'Yes1No0NA1CBVertical';9
+84;'Yes0No1CBHorizontal';8
+85;'Yes1NA1No0';1
+86;'Yes0NA1No1';1
+87;'Counting method';1
+89;'TZ_Officer';1
+90;'TZ_Officer2';1
+91;'TZ_HealthFacilityLevel';1
