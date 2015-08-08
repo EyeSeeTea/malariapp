@@ -90,8 +90,8 @@ public class TabGroup extends BaseModel {
     @OneToMany(methods = {OneToMany.Method.SAVE, OneToMany.Method.DELETE}, variableName = "tabs")
     public List<Tab> getTabs(){
         return new Select().from(Tab.class)
-                .where(Condition.column(Tab$Table.ID).eq(this.getId()))
-                .orderBy(Header$Table.ORDER_POS).queryList();
+                .where(Condition.column(Tab$Table.TABGROUP_ID_TAB_GROUP).eq(this.getId()))
+                .orderBy(Tab$Table.ORDER_POS).queryList();
     }
 
     @OneToMany(methods = {OneToMany.Method.SAVE, OneToMany.Method.DELETE}, variableName = "surveys")
