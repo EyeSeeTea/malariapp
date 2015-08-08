@@ -3,12 +3,12 @@
  *
  * This file is part of QA App.
  *
- *  Facility QA Tool App is free software: you can redistribute it and/or modify
+ *  Health Network QIS App is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
  *  the Free Software Foundation, either version 3 of the License, or
  *  (at your option) any later version.
  *
- *  Facility QA Tool App is distributed in the hope that it will be useful,
+ *  Health Network QIS App is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *  GNU General Public License for more details.
@@ -30,42 +30,36 @@ import com.raizlabs.android.dbflow.sql.language.Select;
 import com.raizlabs.android.dbflow.structure.BaseModel;
 
 import org.eyeseetea.malariacare.database.AppDatabase;
+import org.eyeseetea.malariacare.database.utils.Session;
+import org.eyeseetea.malariacare.utils.Constants;
 
 import java.util.List;
 
 @Table(databaseName = AppDatabase.NAME)
-public class OrgUnit extends BaseModel {
+public class TabGroup extends BaseModel {
 
     @Column
     @PrimaryKey(autoincrement = true)
     long id;
     @Column
-    String uid;
-    @Column
     String name;
     @Column
-    @ForeignKey(references = {@ForeignKeyReference(columnName = "id_parent",
+    @ForeignKey(references = {@ForeignKeyReference(columnName = "id_program",
             columnType = Long.class,
             foreignColumnName = "id")},
             saveForeignKeyModel = false)
-    OrgUnit orgUnit;
+    Program program;
 
+    //OneToMany Relations
+    List<Tab> tabs;
     List<Survey> surveys;
 
-    List<OrgUnit> children;
-
-    public OrgUnit() {
+    public TabGroup() {
     }
 
-    public OrgUnit(String name) {
+    public TabGroup(String name, Program program) {
         this.name = name;
-    }
-
-
-    public OrgUnit(String uid, String name, OrgUnit orgUnit) {
-        this.uid = uid;
-        this.name = name;
-        this.orgUnit = orgUnit;
+        this.program = program;
     }
 
     public Long getId() {
@@ -76,14 +70,6 @@ public class OrgUnit extends BaseModel {
         this.id = id;
     }
 
-    public String getUid() {
-        return uid;
-    }
-
-    public void setUid(String uid) {
-        this.uid = uid;
-    }
-
     public String getName() {
         return name;
     }
@@ -92,29 +78,36 @@ public class OrgUnit extends BaseModel {
         this.name = name;
     }
 
-    public OrgUnit getOrgUnit() {
-        return orgUnit;
+    public Program getProgram() {
+        return program;
     }
 
-    public void setOrgUnit(OrgUnit orgUnit) {
-        this.orgUnit = orgUnit;
+    public void setProgram(Program program) {
+        this.program = program;
     }
 
-
-    @OneToMany(methods = {OneToMany.Method.SAVE, OneToMany.Method.DELETE}, variableName = "children")
-    public List<OrgUnit> getChildren(){
-        this.children = new Select().from(OrgUnit.class)
-                .where(Condition.column(OrgUnit$Table.ORGUNIT_ID_PARENT).eq(this.getId())).queryList();
-        return children;
+    //TODO: to enable lazy loading, here we need to set Method.SAVE and Method.DELETE and use the .toModel() to specify when do we want to load the models
+    @OneToMany(methods = {OneToMany.Method.SAVE, OneToMany.Method.DELETE}, variableName = "tabs")
+    public List<Tab> getTabs(){
+        return new Select().from(Tab.class)
+                .where(Condition.column(Tab$Table.TABGROUP_ID_TAB_GROUP).eq(this.getId()))
+                .orderBy(Tab$Table.ORDER_POS).queryList();
     }
 
     @OneToMany(methods = {OneToMany.Method.SAVE, OneToMany.Method.DELETE}, variableName = "surveys")
     public List<Survey> getSurveys(){
-        //if(this.surveys == null){
-            this.surveys = new Select().from(Survey.class)
-                    .where(Condition.column(Survey$Table.ORGUNIT_ID_ORG_UNIT).eq(this.getId())).queryList();
-        //}
-        return surveys;
+        this.surveys = new Select().from(Survey.class)
+                .where(Condition.column(Survey$Table.TABGROUP_ID_TAB_GROUP).eq(this.getId())).queryList();
+        return this.surveys;
+    }
+
+    /*
+     * Return tabs filter by program and order by orderpos field
+     */
+    public static List<Tab> getTabsBySession(){
+        return new Select().from(Tab.class)
+                .where(Condition.column(Tab$Table.TABGROUP_ID_TAB_GROUP).eq(Session.getSurvey().getTabGroup().getProgram().getId()))
+                .orderBy(Tab$Table.ORDER_POS).queryList();
     }
 
     @Override
@@ -122,13 +115,12 @@ public class OrgUnit extends BaseModel {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        OrgUnit orgUnit1 = (OrgUnit) o;
+        TabGroup tabGroup = (TabGroup) o;
 
-        if (id != orgUnit1.id) return false;
-        if (name != null ? !name.equals(orgUnit1.name) : orgUnit1.name != null) return false;
-        if (orgUnit != null ? !orgUnit.equals(orgUnit1.orgUnit) : orgUnit1.orgUnit != null)
+        if (id != tabGroup.id) return false;
+        if (name != null ? !name.equals(tabGroup.name) : tabGroup.name != null) return false;
+        if (program != null ? !program.equals(tabGroup.program) : tabGroup.program != null)
             return false;
-        if (uid != null ? !uid.equals(orgUnit1.uid) : orgUnit1.uid != null) return false;
 
         return true;
     }
@@ -136,19 +128,16 @@ public class OrgUnit extends BaseModel {
     @Override
     public int hashCode() {
         int result = (int) (id ^ (id >>> 32));
-        result = 31 * result + (uid != null ? uid.hashCode() : 0);
         result = 31 * result + (name != null ? name.hashCode() : 0);
-        result = 31 * result + (orgUnit != null ? orgUnit.hashCode() : 0);
+        result = 31 * result + (program != null ? program.hashCode() : 0);
         return result;
     }
 
     @Override
     public String toString() {
-        return "OrgUnit{" +
+        return "TabGroup{" +
                 "id=" + id +
-                ", uid='" + uid + '\'' +
                 ", name='" + name + '\'' +
-                ", orgUnit='" + orgUnit + '\'' +
                 '}';
     }
 }

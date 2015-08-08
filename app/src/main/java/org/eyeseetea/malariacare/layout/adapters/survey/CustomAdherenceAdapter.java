@@ -131,7 +131,7 @@ public class CustomAdherenceAdapter extends BaseAdapter implements ITabAdapter {
         this.tab=tab;
 
         if (items.size()> 0)
-            position_secondheader = LayoutUtils.getNumberOfQuestionParentsHeader((Header) items.get(0)) +1 ;
+            position_secondheader = (int) ((Header) items.get(0)).getNumberOfQuestionParents() +1 ;
 
         Log.d("Second header", position_secondheader + "");
 
@@ -139,14 +139,14 @@ public class CustomAdherenceAdapter extends BaseAdapter implements ITabAdapter {
 
         for (int i=0;i<position_secondheader; i++) {
             if (items.get(i) instanceof Question) {
-                Question testResult = ((Question) items.get(i)).getQuestionChildren().get(3);
+                Question testResult = ((Question) items.get(i)).getChildren().get(3);
                 ScoreRegister.addRecord(testResult, ScoreRegister.calcNum(testResult), ScoreRegister.calcDenum(testResult));
             }
         }
 
         for (int i = position_secondheader; i < items.size(); i++) {
             if (items.get(i) instanceof Question) {
-                Question act = ((Question) items.get(i)).getQuestionChildren().get(2);
+                Question act = ((Question) items.get(i)).getChildren().get(2);
                 ScoreRegister.addRecord(act, ScoreRegister.calcNum(act), ScoreRegister.calcDenum(act));
                 calcScore((Question) items.get(i));
             }
@@ -202,26 +202,26 @@ public class CustomAdherenceAdapter extends BaseAdapter implements ITabAdapter {
 
     private void setValues(ViewHolder viewHolder, Question question) {
         viewHolder.number.setText(question.getForm_name());
-        viewHolder.patientID.setText(ReadWriteDB.readValueQuestion(question.getQuestionChildren().get(0)));
-        viewHolder.age.setText(ReadWriteDB.readValueQuestion(question.getQuestionChildren().get(2)));
-        viewHolder.gender.setSelection(ReadWriteDB.readPositionOption(question.getQuestionChildren().get(1)));
-        viewHolder.testResutl.setSelection(ReadWriteDB.readPositionOption(question.getQuestionChildren().get(3)));
+        viewHolder.patientID.setText(ReadWriteDB.readValueQuestion(question.getChildren().get(0)));
+        viewHolder.age.setText(ReadWriteDB.readValueQuestion(question.getChildren().get(2)));
+        viewHolder.gender.setSelection(ReadWriteDB.readPositionOption(question.getChildren().get(1)));
+        viewHolder.testResutl.setSelection(ReadWriteDB.readPositionOption(question.getChildren().get(3)));
     }
 
     private void setValues2(ViewHolder2 viewHolder, Question question) {
         calcScore(question);
         viewHolder.score.setText(String.valueOf(scores[items.indexOf(question) - position_secondheader]));
-        viewHolder.patientID.setText(ReadWriteDB.readValueQuestion(question.getQuestionChildren().get(0)));
+        viewHolder.patientID.setText(ReadWriteDB.readValueQuestion(question.getChildren().get(0)));
         viewHolder.number.setText(question.getForm_name());
-        viewHolder.testResult.setText(question.getQuestionChildren().get(1).getForm_name());
-        viewHolder.act.setSelection(ReadWriteDB.readPositionOption(question.getQuestionChildren().get(2)));
+        viewHolder.testResult.setText(question.getChildren().get(1).getForm_name());
+        viewHolder.act.setSelection(ReadWriteDB.readPositionOption(question.getChildren().get(2)));
 
     }
 
     private void calcScore(Question question) {
 
-        Question act = question.getQuestionChildren().get(2);
-        Question test = question.getQuestionChildren().get(1);
+        Question act = question.getChildren().get(2);
+        Question test = question.getChildren().get(1);
 
         Value value = act.getValueBySession();
 
@@ -290,12 +290,12 @@ public class CustomAdherenceAdapter extends BaseAdapter implements ITabAdapter {
                 viewHolder.patientID = (EditCard) rowView.findViewById(R.id.patientId);
                 viewHolder.testResutl = (Spinner) rowView.findViewById(R.id.testResults);
 
-                List<Option> optionList = question.getQuestionChildren().get(1).getAnswer().getOptions();
+                List<Option> optionList = question.getChildren().get(1).getAnswer().getOptions();
                 optionList.add(0, new Option(Constants.DEFAULT_SELECT_OPTION));
 
                 viewHolder.gender.setAdapter(new OptionArrayAdapter(context,optionList));
 
-                optionList = question.getQuestionChildren().get(3).getAnswer().getOptions();
+                optionList = question.getChildren().get(3).getAnswer().getOptions();
 
                 optionList.add(0, new Option(Constants.DEFAULT_SELECT_OPTION));
 
@@ -315,7 +315,7 @@ public class CustomAdherenceAdapter extends BaseAdapter implements ITabAdapter {
                     @Override
                     public void onTextChanged(CharSequence s, int start, int before, int count) {
                         if (viewCreated.value) {
-                            ReadWriteDB.saveValuesText(question.getQuestionChildren().get(2), s.toString());
+                            ReadWriteDB.saveValuesText(question.getChildren().get(2), s.toString());
                         } else viewCreated.value = true;
                     }
 
@@ -338,7 +338,7 @@ public class CustomAdherenceAdapter extends BaseAdapter implements ITabAdapter {
                     public void onTextChanged(CharSequence s, int start, int before, int count) {
 
                         if (viewCreated.value) {
-                            ReadWriteDB.saveValuesText(question.getQuestionChildren().get(0), s.toString());
+                            ReadWriteDB.saveValuesText(question.getChildren().get(0), s.toString());
                         } else viewCreated.value = true;
                     }
 
@@ -355,7 +355,7 @@ public class CustomAdherenceAdapter extends BaseAdapter implements ITabAdapter {
                     @Override
                     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                         if (viewCreated.value)
-                            ReadWriteDB.saveValuesDDL(question.getQuestionChildren().get(1), (Option) viewHolder.gender.getItemAtPosition(position));
+                            ReadWriteDB.saveValuesDDL(question.getChildren().get(1), (Option) viewHolder.gender.getItemAtPosition(position));
                         else viewCreated.value = true;
                     }
 
@@ -369,7 +369,7 @@ public class CustomAdherenceAdapter extends BaseAdapter implements ITabAdapter {
                     @Override
                     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                         if (viewCreated.value) {
-                            Question testResult = question.getQuestionChildren().get(3);
+                            Question testResult = question.getChildren().get(3);
                             ReadWriteDB.saveValuesDDL(testResult, (Option) viewHolder.testResutl.getItemAtPosition(position));
                             ScoreRegister.addRecord(testResult, ScoreRegister.calcNum(testResult), ScoreRegister.calcDenum(testResult));
                         }
@@ -406,7 +406,7 @@ public class CustomAdherenceAdapter extends BaseAdapter implements ITabAdapter {
                 viewHolder2.act = (Spinner) rowView.findViewById(R.id.act1);
                 viewHolder2.score = (TextCard) rowView.findViewById(R.id.scoreValue);
 
-                List<Option> optionList = ((Question) item).getQuestionChildren().get(2).getAnswer().getOptions();
+                List<Option> optionList = ((Question) item).getChildren().get(2).getAnswer().getOptions();
                 optionList.add(0, new Option(Constants.DEFAULT_SELECT_OPTION));
 
                 viewHolder2.act.setAdapter(new OptionArrayAdapter(context, optionList));
@@ -423,7 +423,7 @@ public class CustomAdherenceAdapter extends BaseAdapter implements ITabAdapter {
                     @Override
                     public void onTextChanged(CharSequence s, int start, int before, int count) {
                         if (viewCreated.value)
-                            ReadWriteDB.saveValuesText(question.getQuestionChildren().get(0), s.toString());
+                            ReadWriteDB.saveValuesText(question.getChildren().get(0), s.toString());
 
                         else viewCreated.value = true;
                     }
@@ -440,7 +440,7 @@ public class CustomAdherenceAdapter extends BaseAdapter implements ITabAdapter {
 
                         if (viewCreated.value) {
 
-                            Question act = question.getQuestionChildren().get(2);
+                            Question act = question.getChildren().get(2);
                             ReadWriteDB.saveValuesDDL(act, (Option) viewHolder2.act.getItemAtPosition(pos));
                             calcScore(question);
                             viewHolder2.score.setText(Integer.toString(scores[items.indexOf(question) - position_secondheader]));

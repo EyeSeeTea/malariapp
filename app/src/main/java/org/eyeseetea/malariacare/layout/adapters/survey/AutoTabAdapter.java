@@ -338,7 +338,7 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
      */
     private void
     toggleChildrenVisibility(Question question, boolean visible) {
-        List<Question> children = question.getQuestionChildren();
+        List<Question> children = question.getChildren();
         Question cachedQuestion = null;
 
         for (Question child : children) {

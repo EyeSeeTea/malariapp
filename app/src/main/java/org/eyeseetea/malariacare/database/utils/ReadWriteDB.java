@@ -74,11 +74,12 @@ public class ReadWriteDB {
         if (!option.getName().equals(Constants.DEFAULT_SELECT_OPTION)) {
             if (value == null) {
                 value = new Value(option, question, Session.getSurvey());
+                value.save();
             } else {
                 value.setOption(option);
                 value.setValue(option.getName());
+                value.update();
             }
-            value.save();
         } else {
             if (value != null) value.delete();
         }
@@ -91,11 +92,12 @@ public class ReadWriteDB {
         // If the value is not found we create one
         if (value == null) {
             value = new Value(answer, question, Session.getSurvey());
+            value.save();
         } else {
             value.setOption(null);
             value.setValue(answer);
+            value.update();
         }
-        value.save();
     }
 
     public static void deleteValue(Question question) {

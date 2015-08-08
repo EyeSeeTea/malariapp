@@ -1,14 +1,14 @@
 /*
  * Copyright (c) 2015.
  *
- * This file is part of Facility QA Tool App.
+ * This file is part of QA App.
  *
- *  Facility QA Tool App is free software: you can redistribute it and/or modify
+ *  Health Network QIS App is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
  *  the Free Software Foundation, either version 3 of the License, or
  *  (at your option) any later version.
  *
- *  Facility QA Tool App is distributed in the hope that it will be useful,
+ *  Health Network QIS App is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *  GNU General Public License for more details.
@@ -19,14 +19,36 @@
 
 package org.eyeseetea.malariacare.database.model;
 
-import com.orm.SugarRecord;
+import com.raizlabs.android.dbflow.annotation.Column;
+import com.raizlabs.android.dbflow.annotation.ForeignKey;
+import com.raizlabs.android.dbflow.annotation.ForeignKeyReference;
+import com.raizlabs.android.dbflow.annotation.PrimaryKey;
+import com.raizlabs.android.dbflow.annotation.Table;
+import com.raizlabs.android.dbflow.structure.BaseModel;
+
+import org.eyeseetea.malariacare.database.AppDatabase;
 
 /**
  * Created by Jose on 25/05/2015.
  */
-public class QuestionRelation extends SugarRecord<QuestionRelation> {
+@Table(databaseName = AppDatabase.NAME)
+public class QuestionRelation extends BaseModel {
+    @Column
+    @PrimaryKey(autoincrement = true)
+    long id;
+    @Column
+    @ForeignKey(references = {@ForeignKeyReference(columnName = "master",
+            columnType = Long.class,
+            foreignColumnName = "id")},
+            saveForeignKeyModel = false)
     Question master;
+    @Column
+    @ForeignKey(references = {@ForeignKeyReference(columnName = "relative",
+            columnType = Long.class,
+            foreignColumnName = "id")},
+            saveForeignKeyModel = false)
     Question relative;
+    @Column
     int operation;
 
     public QuestionRelation(){};
@@ -35,6 +57,14 @@ public class QuestionRelation extends SugarRecord<QuestionRelation> {
         this.master = master;
         this.relative = relative;
         this.operation = operation;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public Question getMaster() {
@@ -59,5 +89,38 @@ public class QuestionRelation extends SugarRecord<QuestionRelation> {
 
     public void setOperation(int operation) {
         this.operation = operation;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof QuestionRelation)) return false;
+
+        QuestionRelation that = (QuestionRelation) o;
+
+        if (id != that.id) return false;
+        if (operation != that.operation) return false;
+        if (!master.equals(that.master)) return false;
+        return relative.equals(that.relative);
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = (int) (id ^ (id >>> 32));
+        result = 31 * result + master.hashCode();
+        result = 31 * result + relative.hashCode();
+        result = 31 * result + operation;
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "QuestionRelation{" +
+                "id=" + id +
+                ", master=" + master +
+                ", relative=" + relative +
+                ", operation=" + operation +
+                '}';
     }
 }

@@ -104,7 +104,7 @@ public class PushClient {
     public void updateSurveyState(){
         //Change status
         this.survey.setStatus(Constants.SURVEY_SENT);
-        this.survey.save();
+        this.survey.update();
 
         //Reload data using service
         Intent surveysIntent=new Intent(activity, SurveyService.class);
@@ -121,7 +121,8 @@ public class PushClient {
         Log.d(TAG,"prepareMetadata for survey: "+survey.getId());
 
         JSONObject object=new JSONObject();
-        object.put(TAG_PROGRAM, survey.getProgram().getUid());
+        //FIXME Do we want to push the program or the tab group or both?
+        object.put(TAG_PROGRAM, survey.getTabGroup().getProgram().getUid());
         object.put(TAG_ORG_UNIT, survey.getOrgUnit().getUid());
         object.put(TAG_EVENTDATE, android.text.format.DateFormat.format("yyyy-MM-dd", survey.getCompletionDate()));
         object.put(TAG_STATUS,COMPLETED );
@@ -169,15 +170,15 @@ public class PushClient {
         ScoreRegister.clear();
 
         //Register scores for tabs
-        List<Tab> tabs=survey.getProgram().getTabs();
+        List<Tab> tabs=survey.getTabGroup().getTabs();
         ScoreRegister.registerTabScores(tabs);
 
         //Register scores for composites
-        List<CompositeScore> compositeScoreList=CompositeScore.listAllByProgram(survey.getProgram());
+        List<CompositeScore> compositeScoreList=CompositeScore.listByTabGroup(survey.getTabGroup());
         ScoreRegister.registerCompositeScores(compositeScoreList);
 
         //Initialize scores x question
-        ScoreRegister.initScoresForQuestions(Question.listAllByProgram(survey.getProgram()),survey);
+        ScoreRegister.initScoresForQuestions(Question.listByTabGroup(survey.getTabGroup()),survey);
 
         //1 CompositeScore -> 1 dataValue
         for(CompositeScore compositeScore:compositeScoreList){

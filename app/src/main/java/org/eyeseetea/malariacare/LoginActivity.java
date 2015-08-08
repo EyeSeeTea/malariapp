@@ -22,7 +22,6 @@ package org.eyeseetea.malariacare;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
-
 import android.app.Activity;
 import android.app.LoaderManager.LoaderCallbacks;
 import android.content.CursorLoader;
@@ -31,7 +30,6 @@ import android.content.Loader;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
-
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
@@ -45,6 +43,8 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import com.raizlabs.android.dbflow.sql.language.Select;
 
 import org.eyeseetea.malariacare.database.model.Tab;
 import org.eyeseetea.malariacare.database.model.User;
@@ -95,7 +95,7 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
         super.onCreate(savedInstanceState);
 
         //User already logged in --> dashboard
-        Iterator<User> users = User.findAll(User.class);
+        Iterator<User> users = new Select().all().from(User.class).queryList().iterator();
         if (users.hasNext()) {
             goDashBoard(users.next());
             return;
@@ -363,15 +363,13 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
         }
 
         private void initDataIfRequired() throws IOException {
-            if (Tab.count(Tab.class, null, null)!=0) {
+            if (new Select().count().from(Tab.class).count()!=0) {
                 return;
             }
 
             Log.i(".LoginActivity", "Populating DB");
 
-            // As this is only executed the first time the app is loaded, and we still don't have a way to create users, surveys, etc, here
-            // we will create a dummy user, survey, orgUnit, program, etc. To be used in local save
-            PopulateDB.populateDummyData();
+            // This is only executed the first time the app is loaded
             try {
                 PopulateDB.populateDB(getAssets());
             } catch (IOException e) {
