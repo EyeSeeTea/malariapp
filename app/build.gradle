@@ -1,6 +1,5 @@
 apply plugin: 'com.android.application'
 apply plugin: 'com.neenbedankt.android-apt'
-//apply plugin: 'com.raizlabs.griddle'
 
 android {
     signingConfigs {
@@ -17,8 +16,8 @@ android {
         applicationId 'org.eyeseetea.malariacare'
         minSdkVersion 15
         targetSdkVersion 21
-        versionCode 1
-        versionName "1.0"
+        versionCode 10
+        versionName "10.0"
         multiDexEnabled true
         /*dexOptions {
             jumboMode = true
@@ -39,18 +38,68 @@ android {
     }
     //TODO This config is related to a known issue: http://stackoverflow.com/questions/20827885/android-studio-0-4-duplicate-files-copied-in-apk-meta-inf-license-txt
     packagingOptions {
-        exclude 'LICENSE.txt'
+        exclude  'LICENSE.txt'
     }
     productFlavors {
+        edsGhana {
+            applicationId "org.eyeseetea.malariacare.eds"
+            versionName "10.0-eds-ghana"
+            minSdkVersion 15
+            signingConfig signingConfigs.config
+            targetSdkVersion 21
+        }
+        edsMalawi {
+            applicationId "org.eyeseetea.malariacare.eds"
+            versionName "10.0-eds-malawi"
+            minSdkVersion 15
+            signingConfig signingConfigs.config
+            targetSdkVersion 21
+        }
+        edsMozambique {
+            applicationId "org.eyeseetea.malariacare.eds"
+            versionName "10.0-eds-mozambique"
+            minSdkVersion 15
+            signingConfig signingConfigs.config
+            targetSdkVersion 21
+        }
+        edsTanzania {
+            applicationId "org.eyeseetea.malariacare.eds"
+            versionName "10.0-eds-tanzania"
+            minSdkVersion 15
+            signingConfig signingConfigs.config
+            targetSdkVersion 21
+        }
+        edsZambia {
+            applicationId "org.eyeseetea.malariacare.eds"
+            versionName "10.0-eds-zambia"
+            minSdkVersion 15
+            signingConfig signingConfigs.config
+            targetSdkVersion 21
+        }
+        edsSFICM {
+            applicationId "org.eyeseetea.malariacare.eds"
+            versionName "10.0-eds-zambia"
+            minSdkVersion 15
+            signingConfig signingConfigs.config
+            targetSdkVersion 21
+        }
+        hnqis {
+            applicationId "org.eyeseetea.malariacare.hnqis"
+            versionName "10.0-hnqis"
+            minSdkVersion 15
+            signingConfig signingConfigs.config
+            targetSdkVersion 21
+        }
     }
 }
 
 dependencies {
     // App dependencies
-    compile 'com.opencsv:opencsv:3.3'
     compile 'com.android.support:support-v4:22.2.0'
     compile 'com.android.support:appcompat-v7:22.2.0'
     compile 'com.android.support:support-annotations:22.2.0'
+
+    compile 'com.opencsv:opencsv:3.3'
     compile 'com.android.support:multidex:1.0.1'
     compile 'com.google.android.gms:play-services:7.5.0'
     compile 'com.google.guava:guava:18.0'
@@ -61,6 +110,7 @@ dependencies {
 
     // Unit testing dependencies
     testCompile 'junit:junit:4.12'
+
     // Instrumented tests dependencies
     androidTestCompile 'com.android.support.test:runner:0.2'
     androidTestCompile 'com.android.support.test:rules:0.2'
