@@ -387,7 +387,7 @@ public class Question extends BaseModel{
         /**
          * Sql query that counts required questions in a program (required for % stats)
          */
-        List<Question> questionsByProgram = new Select().all().from(Question.class).as("q")
+        return (int) new Select().count().from(Question.class).as("q")
                 .join(Answer.class, Join.JoinType.LEFT).as("a")
                 .on(Condition.column(ColumnAlias.columnWithTable("q", Question$Table.ANSWER_ID_ANSWER))
                         .eq(ColumnAlias.columnWithTable("a", Answer$Table.ID)))
@@ -402,10 +402,9 @@ public class Question extends BaseModel{
                         .eq(ColumnAlias.columnWithTable("p", Program$Table.ID)))
                 .where(Condition.column(ColumnAlias.columnWithTable("q", Question$Table.QUESTION_ID_PARENT)).isNull())
                 .and(Condition.column(ColumnAlias.columnWithTable("a", Answer$Table.OUTPUT)).isNot(Constants.NO_ANSWER))
-                .and(Condition.column(ColumnAlias.columnWithTable("p", Program$Table.ID)).eq(program.getId())).queryList();
+                .and(Condition.column(ColumnAlias.columnWithTable("p", Program$Table.ID)).eq(program.getId())).count();
 
         //List<Question> questionsByProgram = Question.findWithQuery(Question.class, LIST_REQUIRED_BY_PROGRAM, program.getId().toString());
-        return questionsByProgram.size();
     }
 
     /**

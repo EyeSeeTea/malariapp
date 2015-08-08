@@ -208,8 +208,8 @@ public class Survey extends BaseModel {
      * @return SurveyAnsweredRatio that hold the total & answered questions.
      */
     private SurveyAnsweredRatio reloadSurveyAnsweredRatio(){
-        int numRequired= Question.countRequiredByProgram(this.getProgram());
-        int numOptional=0;
+        int numRequired = Question.countRequiredByProgram(this.getProgram());
+        int numOptional = 0;
         int numAnswered = Value.countBySurvey(this);
 
         for (Value value : this.getValuesFromParentQuestions()) {
