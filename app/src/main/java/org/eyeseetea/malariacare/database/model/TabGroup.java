@@ -57,6 +57,10 @@ public class TabGroup extends BaseModel {
     public TabGroup() {
     }
 
+    public TabGroup(String name) {
+        this.name = name;
+    }
+
     public TabGroup(String name, Program program) {
         this.name = name;
         this.program = program;

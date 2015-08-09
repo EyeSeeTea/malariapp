@@ -125,6 +125,47 @@
                     android:layout_width="20px"
                     android:layout_height="20px" />
 
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent" >
+
+                    <org.eyeseetea.malariacare.views.TextCard
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:text="@string/create_info_tabs_group"
+                        android:id="@+id/textView4"
+                        app:tDimension="@string/font_size_level2"
+                        app:tFontName="@string/medium_font_name"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:background="@drawable/background_textfield">
+
+                    <Spinner
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/tabGroup"
+                        android:spinnerMode="dropdown"
+                        android:backgroundTintMode="add"
+                        android:paddingLeft="2dip"
+                        android:paddingTop="2dip"
+                        android:paddingRight="20dip"
+                        android:paddingBottom="2dip"
+                        android:backgroundTint="@color/headerColor"
+                        android:gravity="right"
+                        android:visibility="gone"
+                        style="?android:textAppearanceMedium" />
+                </LinearLayout>
+
+                <Space
+                    android:layout_width="20px"
+                    android:layout_height="20px" />
+
                 <Button android:id="@+id/create_form_button" style="?android:textAppearanceMedium"
                     android:layout_width="match_parent" android:layout_height="wrap_content"
                     android:layout_marginTop="16dp" android:text="@string/create_info_ok"

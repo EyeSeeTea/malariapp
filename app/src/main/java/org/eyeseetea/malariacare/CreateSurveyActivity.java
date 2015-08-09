@@ -23,6 +23,7 @@ import android.app.AlertDialog;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Spinner;
 
 import com.raizlabs.android.dbflow.sql.language.Select;
@@ -34,6 +35,7 @@ import org.eyeseetea.malariacare.database.model.TabGroup;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.layout.adapters.general.OrgUnitArrayAdapter;
 import org.eyeseetea.malariacare.layout.adapters.general.ProgramArrayAdapter;
+import org.eyeseetea.malariacare.layout.adapters.general.TabGroupArrayAdapter;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 import org.eyeseetea.malariacare.utils.Constants;
 
@@ -45,8 +47,19 @@ public class CreateSurveyActivity extends BaseActivity {
     // UI references.
     private Spinner orgUnitView;
     private Spinner programView;
+    private Spinner tabGroupView;
     private OrgUnit orgUnitDefaultOption;
     private Program programDefaultOption;
+    private TabGroup tabGroupDefaultOption;
+
+    //Store the Views references for each row (to avoid many calls to getViewById)
+    static class ViewHolder {
+
+
+        // Main component in the row: Spinner, EditText or RadioGroup
+        public View component;
+
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,8 +72,9 @@ public class CreateSurveyActivity extends BaseActivity {
         LayoutUtils.setActionBarLogo(actionBar);
 
         //Create default options
-        this.orgUnitDefaultOption = new OrgUnit(Constants.DEFAULT_SELECT_OPTION);
-        this.programDefaultOption = new Program(Constants.DEFAULT_SELECT_OPTION);
+        orgUnitDefaultOption = new OrgUnit(Constants.DEFAULT_SELECT_OPTION);
+        programDefaultOption = new Program(Constants.DEFAULT_SELECT_OPTION);
+        tabGroupDefaultOption = new TabGroup(Constants.DEFAULT_SELECT_OPTION);
 
         //Populate Organization Unit DDL
         List<OrgUnit> orgUnitList = new Select().all().from(OrgUnit.class).queryList();
@@ -73,18 +87,25 @@ public class CreateSurveyActivity extends BaseActivity {
         programList.add(0, programDefaultOption);
         programView = (Spinner) findViewById(R.id.program);
         programView.setAdapter(new ProgramArrayAdapter(this, programList));
+        programView.setOnItemSelectedListener(new SpinnerListener());
+
+        //Create Tab Group View DDL. Not populated and not visible.
+        tabGroupView = (Spinner) findViewById(R.id.tabGroup);
 
     }
 
-    public boolean checkEverythingFilled() {
+    public boolean isEverythingFilled() {
         try {
-            return (!orgUnitView.getSelectedItem().equals(this.orgUnitDefaultOption) && !programView.getSelectedItem().equals(this.programDefaultOption));
+            boolean isEverythingFilled = (!orgUnitView.getSelectedItem().equals(orgUnitDefaultOption) && !programView.getSelectedItem().equals(programDefaultOption));
+            if (tabGroupView.getVisibility() != View.GONE && tabGroupView.getSelectedItem().equals(tabGroupDefaultOption))
+                isEverythingFilled = false;
+            return isEverythingFilled;
         } catch (Exception ex) {
             return false;
         }
     }
 
-    public boolean checkSurveyDoesntExist() {
+    public boolean doesSurveyExist() {
         // Read Selected Items
         OrgUnit orgUnit = (OrgUnit) orgUnitView.getSelectedItem();
 
@@ -92,7 +113,7 @@ public class CreateSurveyActivity extends BaseActivity {
         TabGroup tabGroup = ((Program) programView.getSelectedItem()).getTabGroups().get(0);
 
         List<Survey> existing = Survey.getUnsentSurveys(orgUnit, tabGroup);
-        return (existing == null || existing.size() == 0);
+        return (existing != null && existing.size() != 0);
     }
 
     /**
@@ -107,12 +128,12 @@ public class CreateSurveyActivity extends BaseActivity {
         //FIXME: Once we have the tabs groups this needs to be fix
         TabGroup tabGroup = ((Program) programView.getSelectedItem()).getTabGroups().get(0);
 
-        if (!checkEverythingFilled()) {
+        if (!isEverythingFilled()) {
             new AlertDialog.Builder(this)
                     .setTitle(getApplicationContext().getString(R.string.dialog_title_missing_selection))
                     .setMessage(getApplicationContext().getString(R.string.dialog_content_missing_selection))
                     .setPositiveButton(android.R.string.ok, null).create().show();
-        } else if (!checkSurveyDoesntExist()) {
+        } else if (doesSurveyExist()) {
             new AlertDialog.Builder(this)
                     .setTitle(getApplicationContext().getString(R.string.dialog_title_existing_survey))
                     .setMessage(getApplicationContext().getString(R.string.dialog_content_existing_survey))
@@ -125,6 +146,31 @@ public class CreateSurveyActivity extends BaseActivity {
 
             //Call Survey Activity
             finishAndGo(SurveyActivity.class);
+        }
+    }
+
+    private class SpinnerListener implements AdapterView.OnItemSelectedListener {
+
+        public SpinnerListener() {
+        }
+
+        @Override
+        public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
+            Program selectedProgram = (Program) programView.getSelectedItem();
+            List<TabGroup> tabGroupList = selectedProgram.getTabGroups();
+            if (tabGroupList.size() > 1){
+                tabGroupView.setVisibility(View.VISIBLE);
+                tabGroupList.add(0, tabGroupDefaultOption);
+                tabGroupView.setAdapter(new TabGroupArrayAdapter(CreateSurveyActivity.this, tabGroupList));
+            }
+            else{
+                tabGroupView.setVisibility(View.GONE);
+            }
+        }
+
+        @Override
+        public void onNothingSelected(AdapterView<?> parent) {
+
         }
     }
 
