@@ -11,8 +11,10 @@
     android:gravity="center"
     android:textColor="@color/white"
     android:background="@color/headerColor"
-    android:paddingRight="40dip"
+    android:paddingRight="@dimen/survey_main_spinner_padding_leftright"
+    android:paddingLeft="@dimen/survey_main_spinner_padding_leftright"
+    android:paddingBottom="@dimen/survey_main_spinner_padding_updown"
+    android:paddingTop="@dimen/survey_main_spinner_padding_updown"
     android:alpha="0.8"
-    android:paddingLeft="40dip"
     app:tDimension="@string/font_size_level1"
     app:tFontName="@string/bold_font_name" />
