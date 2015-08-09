@@ -122,7 +122,7 @@ public class TabGroup extends BaseModel {
         TabGroup tabGroup = (TabGroup) o;
 
         if (id != tabGroup.id) return false;
-        if (name != null ? !name.equals(tabGroup.name) : tabGroup.name != null) return false;
+        if (!name.equals(tabGroup.name)) return false;
         if (program != null ? !program.equals(tabGroup.program) : tabGroup.program != null)
             return false;
 
@@ -132,7 +132,7 @@ public class TabGroup extends BaseModel {
     @Override
     public int hashCode() {
         int result = (int) (id ^ (id >>> 32));
-        result = 31 * result + (name != null ? name.hashCode() : 0);
+        result = 31 * result + name.hashCode();
         result = 31 * result + (program != null ? program.hashCode() : 0);
         return result;
     }

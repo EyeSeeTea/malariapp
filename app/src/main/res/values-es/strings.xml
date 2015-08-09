@@ -178,5 +178,6 @@
     <string name="assessment_sent_title_state">Estado</string>
     <string name="assessment_sent_title_header">Evaluación Enviada</string>
     <string name="assessment_sent_date">Fecha de llenado</string>
+    <string name="dialog_title_incorrect_org_unit" />
 
 </resources>
