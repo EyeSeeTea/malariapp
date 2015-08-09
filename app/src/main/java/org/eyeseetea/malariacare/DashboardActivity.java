@@ -26,9 +26,16 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.raizlabs.android.dbflow.sql.language.Select;
+
+import org.eyeseetea.malariacare.database.model.Tab;
+import org.eyeseetea.malariacare.database.model.User;
+import org.eyeseetea.malariacare.database.utils.PopulateDB;
 import org.eyeseetea.malariacare.fragments.DashboardSentFragment;
 import org.eyeseetea.malariacare.fragments.DashboardUnsentFragment;
 import org.eyeseetea.malariacare.services.SurveyService;
+
+import java.io.IOException;
 
 
 public class DashboardActivity extends BaseActivity {
@@ -45,6 +52,12 @@ public class DashboardActivity extends BaseActivity {
 //            finish();
 //            return;
 //        }
+
+        try {
+            initDataIfRequired();
+        } catch (IOException e){
+            Log.e(".DashboardActivity", e.getMessage());
+        }
 
         if (savedInstanceState == null) {
             DashboardUnsentFragment detailsFragment = new DashboardUnsentFragment();
@@ -76,7 +89,7 @@ public class DashboardActivity extends BaseActivity {
     public void getSurveysFromService(){
         Log.d(TAG, "getSurveysFromService");
         Intent surveysIntent=new Intent(this, SurveyService.class);
-        surveysIntent.putExtra(SurveyService.SERVICE_METHOD,SurveyService.RELOAD_DASHBOARD_ACTION);
+        surveysIntent.putExtra(SurveyService.SERVICE_METHOD, SurveyService.RELOAD_DASHBOARD_ACTION);
         this.startService(surveysIntent);
     }
 
@@ -99,5 +112,24 @@ public class DashboardActivity extends BaseActivity {
                         startActivity(intent);
                     }
                 }).create().show();
+    }
+
+    private void initDataIfRequired() throws IOException {
+        if (new Select().count().from(Tab.class).count()!=0) {
+            return;
+        }
+
+        Log.i(".DashboardActivity", "Populating DB");
+
+        // This is only executed the first time the app is loaded
+        try {
+            User user = new User();
+            user.save();
+            PopulateDB.populateDB(getAssets());
+        } catch (IOException e) {
+            Log.e(".DashboardActivity", "Error populating DB", e);
+            throw e;
+        }
+        Log.i(".DashboardActivity", "DB populated");
     }
 }

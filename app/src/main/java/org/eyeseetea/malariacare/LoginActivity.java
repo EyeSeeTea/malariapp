@@ -48,12 +48,9 @@ import android.widget.TextView;
 
 import com.raizlabs.android.dbflow.sql.language.Select;
 
-import org.eyeseetea.malariacare.database.model.Tab;
 import org.eyeseetea.malariacare.database.model.User;
-import org.eyeseetea.malariacare.database.utils.PopulateDB;
 import org.eyeseetea.malariacare.database.utils.Session;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -329,7 +326,6 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
             // TODO: attempt authentication against a network service.
             try {
                 initUser();
-                initDataIfRequired();
                 setDhisServerPreference();
             }catch(Exception ex) {
                 Log.e(".LoginActivity", "Error doInBackground login -> dashboard", ex);
@@ -365,23 +361,6 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
         private void initUser(){
             this.user = new User(mUser, mUser);
             this.user.save();
-        }
-
-        private void initDataIfRequired() throws IOException {
-            if (new Select().count().from(Tab.class).count()!=0) {
-                return;
-            }
-
-            Log.i(".LoginActivity", "Populating DB");
-
-            // This is only executed the first time the app is loaded
-            try {
-                PopulateDB.populateDB(getAssets());
-            } catch (IOException e) {
-                Log.e(".LoginActivity", "Error populating DB", e);
-                throw e;
-            }
-            Log.i(".LoginActivity", "DB populated");
         }
 
         /**
