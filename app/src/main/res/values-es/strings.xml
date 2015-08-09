@@ -57,7 +57,7 @@
     <string name="assessment_title_facility_date">Centro de salud/ Fecha</string>
     <string name="assessment_title_state">Estado</string>
     <string name="assessment_info_delete">Eliminar</string>
-    <string name="assessment_title_header">Evaluación Activa</string>
+    <string name="assessment_title_header">Evaluación(es) Activa(s)</string>
 
     <!-- feedback -->
     <!-- XXX Should it be replaced by 'assessment_title_facility_date'?-->
@@ -175,7 +175,7 @@
     <string name="dialog_info_push_ok">Datos subidos correctamente al servidor DHIS</string>
     <string name="dialog_info_push_bad_credentials">Credenciales incorrectas para el push</string>
     <string name="assessment_sent_title_state">Estado</string>
-    <string name="assessment_sent_title_header">Evaluación Enviada</string>
+    <string name="assessment_sent_title_header">Evaluación(es) Enviada(s)</string>
     <string name="assessment_sent_date">Fecha de llenado</string>
 
 </resources>
