@@ -50,7 +50,7 @@
     <string name="dashboard_info_ready_to_upload">Prête pour envoyer</string>
 
     <!-- create -->
-    <string name="create_info_ok">Créer évaluation</string>
+    <string name="create_info_ok">Commencer Évaluation</string>
     <string name="create_info_organization_unit">Unité d\'organisation</string>
     <string name="create_info_survey">Enquête</string>
 

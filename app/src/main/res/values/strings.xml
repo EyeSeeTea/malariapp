@@ -57,7 +57,7 @@
     <string name="dashboard_info_sent">Sent</string>
 
     <!-- create -->
-    <string name="create_info_ok">Create assessment</string>
+    <string name="create_info_ok">Start Assessment</string>
     <string name="create_info_organization_unit">Organisation Unit</string>
     <string name="create_info_survey">Survey</string>
 

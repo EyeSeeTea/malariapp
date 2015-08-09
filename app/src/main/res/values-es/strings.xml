@@ -49,7 +49,7 @@
     <string name="dashboard_info_ready_to_upload">Lista para enviar</string>
 
     <!-- create -->
-    <string name="create_info_ok">Crear evaluación</string>
+    <string name="create_info_ok">Empezar Evaluación</string>
     <string name="create_info_organization_unit">Unidad de organización</string>
     <string name="create_info_survey">Formulario</string>
 
