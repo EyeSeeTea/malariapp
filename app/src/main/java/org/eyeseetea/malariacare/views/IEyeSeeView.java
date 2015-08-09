@@ -26,17 +26,17 @@ import android.util.AttributeSet;
  */
 public interface IEyeSeeView {
 
-    public void init(AttributeSet attrs, int defStyle);
+    void init(AttributeSet attrs, int defStyle);
 
-    public void setmFontName(String mFontName);
+    void setmFontName(String mFontName);
 
-    public String getmFontName();
+    String getmFontName();
 
-    public void setmDimension(String mDimension);
+    void setmDimension(String mDimension);
 
-    public String getmDimension();
+    String getmDimension();
 
-    public void setmScale(String mScale);
+    void setmScale(String mScale);
 
-    public String getmScale();
+    String getmScale();
 }
