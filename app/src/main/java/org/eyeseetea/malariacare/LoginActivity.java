@@ -27,11 +27,13 @@ import android.app.LoaderManager.LoaderCallbacks;
 import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.Loader;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -85,6 +87,7 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
     // UI references.
     private AutoCompleteTextView mUserView;
     private EditText mPasswordView;
+    private AutoCompleteTextView mServerUrlView;
     private View mProgressView;
     private View mUserLoginFormView;
     private View mLoginFormView;
@@ -112,6 +115,7 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
         setContentView(R.layout.login_layout);
         // Set up the login form.
         mUserView = (AutoCompleteTextView) findViewById(R.id.user);
+        mServerUrlView = (AutoCompleteTextView) findViewById(R.id.dhis_url);
         populateAutoComplete();
 
         mPasswordView = (EditText) findViewById(R.id.password);
@@ -326,6 +330,7 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
             try {
                 initUser();
                 initDataIfRequired();
+                setDhisServerPreference();
             }catch(Exception ex) {
                 Log.e(".LoginActivity", "Error doInBackground login -> dashboard", ex);
                 return false;
@@ -377,6 +382,19 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
                 throw e;
             }
             Log.i(".LoginActivity", "DB populated");
+        }
+
+        /**
+         * Fill in the dhis server preference with what user selected in the login field
+         */
+        private void setDhisServerPreference(){
+            String url = mServerUrlView.getText().toString();
+            if (!url.equals("")) {
+                SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                SharedPreferences.Editor editor = settings.edit();
+                editor.putString(getApplicationContext().getString(R.string.dhis_url), url);
+                editor.commit();
+            }
         }
 
         /**

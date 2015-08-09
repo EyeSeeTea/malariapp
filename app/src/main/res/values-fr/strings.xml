@@ -50,7 +50,7 @@
     <string name="dashboard_info_ready_to_upload">Prête pour envoyer</string>
 
     <!-- create -->
-    <string name="create_info_ok">Créer évaluation</string>
+    <string name="create_info_ok">Commencer Évaluation</string>
     <string name="create_info_organization_unit">Unité d\'organisation</string>
     <string name="create_info_survey">Enquête</string>
 
@@ -58,7 +58,7 @@
     <string name="assessment_title_facility_date">Centre de santé / Date</string>
     <string name="assessment_title_state">État</string>
     <string name="assessment_info_delete">Effacer</string>
-    <string name="assessment_title_header">Evaluation active</string>
+    <string name="assessment_title_header">Evaluation(s) active(s)</string>
 
     <!-- feedback -->
     <!-- XXX Should it be replaced by 'assessment_title_facility_date'?-->
@@ -176,7 +176,7 @@
     <string name="dialog_info_push_ok">Les données du sondage a été poussé avec succès au serveur DHIS</string>
     <string name="dialog_info_push_bad_credentials">Identification incorrectes pour la poussée</string>
     <string name="assessment_sent_title_state">État</string>
-    <string name="assessment_sent_title_header">Evaluation Envoyée</string>
+    <string name="assessment_sent_title_header">Evaluation(s) Envoyée(s)</string>
     <string name="assessment_sent_date">Date de remplissement</string>
 
 </resources>

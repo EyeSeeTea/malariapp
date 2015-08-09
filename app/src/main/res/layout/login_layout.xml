@@ -56,6 +56,11 @@
                     android:imeOptions="actionUnspecified" android:inputType="textPassword"
                     android:maxLines="1" android:singleLine="true" />
 
+                <AutoCompleteTextView android:id="@+id/dhis_url" android:layout_width="match_parent"
+                    android:layout_height="wrap_content" android:hint="@string/login_info_dhis_default_server_url"
+                    android:inputType="textUri" android:maxLines="1"
+                    android:singleLine="true" />
+
                 <Button android:id="@+id/email_sign_in_button" style="?android:textAppearanceSmall"
                     android:layout_width="match_parent" android:layout_height="wrap_content"
                     android:layout_marginTop="16dp" android:text="@string/login_info_sign_in"

@@ -49,7 +49,7 @@
     <string name="dashboard_info_ready_to_upload">Lista para enviar</string>
 
     <!-- create -->
-    <string name="create_info_ok">Crear evaluación</string>
+    <string name="create_info_ok">Empezar Evaluación</string>
     <string name="create_info_organization_unit">Unidad de organización</string>
     <string name="create_info_survey">Formulario</string>
     <string name="create_info_tabs_group">Grupo de Pestañas</string>
@@ -58,7 +58,7 @@
     <string name="assessment_title_facility_date">Centro de salud/ Fecha</string>
     <string name="assessment_title_state">Estado</string>
     <string name="assessment_info_delete">Eliminar</string>
-    <string name="assessment_title_header">Evaluación Activa</string>
+    <string name="assessment_title_header">Evaluación(es) Activa(s)</string>
 
     <!-- feedback -->
     <!-- XXX Should it be replaced by 'assessment_title_facility_date'?-->
@@ -176,7 +176,7 @@
     <string name="dialog_info_push_ok">Datos subidos correctamente al servidor DHIS</string>
     <string name="dialog_info_push_bad_credentials">Credenciales incorrectas para el push</string>
     <string name="assessment_sent_title_state">Estado</string>
-    <string name="assessment_sent_title_header">Evaluación Enviada</string>
+    <string name="assessment_sent_title_header">Evaluación(es) Enviada(s)</string>
     <string name="assessment_sent_date">Fecha de llenado</string>
     <string name="dialog_title_incorrect_org_unit" />
 
