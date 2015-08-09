@@ -21,6 +21,8 @@ package org.eyeseetea.malariacare.network;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.squareup.okhttp.Authenticator;
@@ -58,7 +60,6 @@ public class PushClient {
     private static String TAG=".PushClient";
 
     //FIXME This should change for a sharedpreferences url that is selected from the login screen
-    private static String DHIS_DEFAULT_SERVER="https://malariacare.psi.org";
     private static String DHIS_PUSH_API="/api/events";
     private static String DHIS_USERNAME="testing";
     private static String DHIS_PASSWORD="Testing2015";
@@ -220,7 +221,8 @@ public class PushClient {
      */
     private JSONObject pushData(JSONObject data)throws Exception {
 
-        final String DHIS_URL=DHIS_DEFAULT_SERVER + DHIS_PUSH_API;
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(activity);
+        final String DHIS_URL=sharedPreferences.getString(activity.getString(R.string.dhis_url), activity.getString(R.string.login_info_dhis_default_server_url)) + DHIS_PUSH_API;
 
         OkHttpClient client= UnsafeOkHttpsClientFactory.getUnsafeOkHttpClient();
 

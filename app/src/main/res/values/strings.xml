@@ -4,7 +4,7 @@
     <!-- # general -->
     <string name="app_name" translatable="false">QA App</string>
     <string name="developers" translatable="false">EyeSeeTea LTD</string>
-    <string name="empty_string" translatable="false"></string>
+    <string name="empty_string" translatable="false"/>
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="ok" translatable="false">Ok</string>
@@ -32,6 +32,7 @@
     <string name="login_info_password">Password</string>
     <string name="login_info_sign_in">Sign in</string>
     <string name="login_error_bad_credentials">Your user/password are incorrect</string>
+    <string name="login_info_dhis_default_server_url" translatable="false">https://malariacare.psi.org</string>
 
     <!-- # dialogs -->
     <string name="dialog_title_delete_survey">Delete Survey</string>
