@@ -57,7 +57,7 @@
     <string name="dashboard_info_sent">Sent</string>
 
     <!-- create -->
-    <string name="create_info_ok">Create assessment</string>
+    <string name="create_info_ok">Start Assessment</string>
     <string name="create_info_organization_unit">Organisation Unit</string>
     <string name="create_info_survey">Survey</string>
 
@@ -67,8 +67,8 @@
     <string name="assessment_sent_title_state">Status</string>
     <string name="assessment_sent_date">Completion date</string>
     <string name="assessment_info_delete">Delete</string>
-    <string name="assessment_title_header">Active Assessment</string>
-    <string name="assessment_sent_title_header">Sent Assessment</string>
+    <string name="assessment_title_header">Active Assessment(s)</string>
+    <string name="assessment_sent_title_header">Sent Assessment(s)</string>
 
     <!-- feedback -->
     <!-- XXX Should it be replaced by 'assessment_title_facility_date'?-->

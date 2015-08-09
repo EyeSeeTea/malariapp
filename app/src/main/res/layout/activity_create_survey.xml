@@ -125,12 +125,17 @@
                     android:layout_width="20px"
                     android:layout_height="20px" />
 
-                <Button android:id="@+id/create_form_button" style="?android:textAppearanceMedium"
+                <org.eyeseetea.malariacare.views.FontCustomizableButton android:id="@+id/create_form_button" style="?android:textAppearanceMedium"
                     android:layout_width="match_parent" android:layout_height="wrap_content"
                     android:layout_marginTop="16dp" android:text="@string/create_info_ok"
                     android:textStyle="bold"
                     android:onClick="createSurvey"
-                    android:fontFamily="@string/condensed_font_name"/>
+                    android:fontFamily="@string/condensed_font_name"
+                    android:background="@color/headerColor"
+                    android:textColor="@color/white"
+                    app:bDimension="@string/font_size_level2"
+                    app:bFontName="@string/condensed_font_name">
+                </org.eyeseetea.malariacare.views.FontCustomizableButton>
 
             </LinearLayout>
 

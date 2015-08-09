@@ -147,13 +147,13 @@ public class SurveyActivity extends BaseActivity{
         createActionBar();
         createMenu();
         createProgress();
+        prepareSurveyInfo();
     }
 
-    public void onResume(){
+    public void onResume() {
         Log.d(TAG, "onResume");
         super.onResume();
 
-        prepareSurveyInfo();
         this.tabAdapter.notifyDataSetChanged();
     }
 
@@ -183,6 +183,7 @@ public class SurveyActivity extends BaseActivity{
     @Override
     public void onPause(){
         Session.getSurvey().updateSurveyStatus();
+        unregisterReceiver();
         super.onPause();
     }
 
