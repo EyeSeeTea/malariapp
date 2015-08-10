@@ -119,9 +119,7 @@ public class CreateSurveyActivity extends BaseActivity {
     private boolean isEverythingFilled() {
         try {
             boolean isEverythingFilled = (!orgUnitView.getSelectedItem().equals(orgUnitDefaultOption) && !programView.getSelectedItem().equals(programDefaultOption));
-            if (tabGroupView.getSelectedItem().equals(tabGroupDefaultOption))
-                isEverythingFilled = false;
-            return isEverythingFilled;
+            return (!isEverythingFilled) ? false : !tabGroupView.getSelectedItem().equals(tabGroupDefaultOption);
         } catch (Exception ex) {
             ex.printStackTrace();
             //FIXME: getSelectedItem throws an exception when there is not an item selected. I looked for a while in API but couldn't find anything. It is not a good idea to catch this behaviour as an exception.
