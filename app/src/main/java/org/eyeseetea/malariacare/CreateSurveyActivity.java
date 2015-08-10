@@ -96,7 +96,7 @@ public class CreateSurveyActivity extends BaseActivity {
         orgUnitView.setTag(R.id.OrgUnitLevelTag, 1);
         orgUnitView.setAdapter(new OrgUnitArrayAdapter(this, orgUnitList));
         orgUnitView.setOnItemSelectedListener(new OrgUnitSpinnerListener(viewHolder));
-        orgUnitHierarchyView = new HashMap<Integer, View>();
+        orgUnitHierarchyView = new HashMap<>();
         orgUnitHierarchyView.put(1, findViewById(R.id.org_unit_container));
 //        realOrgUnitView = orgUnitView;
 
@@ -111,7 +111,7 @@ public class CreateSurveyActivity extends BaseActivity {
         programView.setOnItemSelectedListener(new ProgramSpinnerListener());
 
         //Create Tab Group View DDL. Not populated and not visible.
-        tabGroupContainer = (LinearLayout) findViewById(R.id.tab_group_container);
+        tabGroupContainer = findViewById(R.id.tab_group_container);
         tabGroupView = (Spinner) findViewById(R.id.tab_group);
 
     }
@@ -234,10 +234,10 @@ public class CreateSurveyActivity extends BaseActivity {
             realOrgUnitView = ((Spinner) viewHolder.component);
             List<OrgUnit> orgUnitList = selectedOrgUnit.getChildren();
             //Check for child View
-            boolean hasOrgUnitChild = orgUnitHierarchyView.containsKey((Integer)((Spinner)viewHolder.component).getTag(R.id.OrgUnitLevelTag)+1);
+            boolean hasOrgUnitChild = orgUnitHierarchyView.containsKey((Integer)(viewHolder.component).getTag(R.id.OrgUnitLevelTag)+1);
             View childView = null;
             if (hasOrgUnitChild)
-                childView = orgUnitHierarchyView.get((Integer)((Spinner)viewHolder.component).getTag(R.id.OrgUnitLevelTag)+1);
+                childView = orgUnitHierarchyView.get((Integer)(viewHolder.component).getTag(R.id.OrgUnitLevelTag)+1);
 
             if (orgUnitList.size() > 1){
 
@@ -256,7 +256,7 @@ public class CreateSurveyActivity extends BaseActivity {
                 orgUnitList.add(0, orgUnitDefaultOption);
                 ((Spinner) subViewHolder.component).setAdapter(new OrgUnitArrayAdapter(CreateSurveyActivity.this, orgUnitList));
                 ((Spinner) subViewHolder.component).setOnItemSelectedListener(new OrgUnitSpinnerListener(subViewHolder));
-                ((Spinner) subViewHolder.component).setTag(R.id.OrgUnitLevelTag, (Integer)((Spinner)viewHolder.component).getTag(R.id.OrgUnitLevelTag)+1);
+                ((Spinner) subViewHolder.component).setTag(R.id.OrgUnitLevelTag, (Integer)(viewHolder.component).getTag(R.id.OrgUnitLevelTag)+1);
 
 
                 ((Spinner)childView.findViewById(R.id.org_unit_item_spinner)).setSelection(0);

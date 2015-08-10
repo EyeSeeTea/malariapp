@@ -31,6 +31,7 @@ import com.raizlabs.android.dbflow.sql.language.Select;
 import org.eyeseetea.malariacare.database.model.Tab;
 import org.eyeseetea.malariacare.database.model.User;
 import org.eyeseetea.malariacare.database.utils.PopulateDB;
+import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.fragments.DashboardSentFragment;
 import org.eyeseetea.malariacare.fragments.DashboardUnsentFragment;
 import org.eyeseetea.malariacare.services.SurveyService;
@@ -55,6 +56,7 @@ public class DashboardActivity extends BaseActivity {
 
         try {
             initDataIfRequired();
+            loadSessionIfRequired();
         } catch (IOException e){
             Log.e(".DashboardActivity", e.getMessage());
         }
@@ -114,6 +116,10 @@ public class DashboardActivity extends BaseActivity {
                 }).create().show();
     }
 
+    /**
+     * In case data is not yet populated (detected by looking at the Tab table) we populate the data
+     * @throws IOException in case any IO error occurs while populating DB
+     */
     private void initDataIfRequired() throws IOException {
         if (new Select().count().from(Tab.class).count()!=0) {
             return;
@@ -131,5 +137,14 @@ public class DashboardActivity extends BaseActivity {
             throw e;
         }
         Log.i(".DashboardActivity", "DB populated");
+    }
+
+    /**
+     * In case Session doesn't have the user set, here we set it to the first entry of User table
+     */
+    private void loadSessionIfRequired(){
+        if (Session.getUser() == null){
+            Session.setUser(new Select().all().from(User.class).queryList().get(0));
+        }
     }
 }
