@@ -52,6 +52,7 @@
     <string name="create_info_ok">Empezar Evaluación</string>
     <string name="create_info_organization_unit">Unidad de organización</string>
     <string name="create_info_survey">Formulario</string>
+    <string name="create_info_tabs_group">Grupo de Pestañas</string>
 
     <!-- assessment -->
     <string name="assessment_title_facility_date">Centro de salud/ Fecha</string>
@@ -177,5 +178,6 @@
     <string name="assessment_sent_title_state">Estado</string>
     <string name="assessment_sent_title_header">Evaluación(es) Enviada(s)</string>
     <string name="assessment_sent_date">Fecha de llenado</string>
+    <string name="dialog_title_incorrect_org_unit" />
 
 </resources>
