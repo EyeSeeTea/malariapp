@@ -38,4 +38,11 @@
         <attr name="rScale" format="string|reference" />
         <attr name="rFontName" format="string|reference" />
     </declare-styleable>
+
+    <!-- FontCustomizableButton: Button with adaptative text size and text font-->
+    <declare-styleable name="FontCustomizableButton">
+        <attr name="bDimension" format="string|reference" />
+        <attr name="bScale" format="string|reference" />
+        <attr name="bFontName" format="string|reference" />
+    </declare-styleable>
 </resources>

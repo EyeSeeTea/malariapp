@@ -50,7 +50,7 @@
     <EditTextPreference
         android:key="dhis_url"
         android:title="@string/settings_text_dhis_server_url"
-        android:defaultValue="@string/empty_string"
+        android:defaultValue="@string/login_info_dhis_default_server_url"
         android:selectAllOnFocus="true"
         android:inputType="textUri"
         android:singleLine="true"

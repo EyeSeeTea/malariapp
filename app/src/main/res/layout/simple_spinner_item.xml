@@ -6,10 +6,10 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:ellipsize="marquee"
-    android:textSize="12sp"
     style="?android:attr/spinnerItemStyle"
     android:alpha="0.8"
     android:textAlignment="gravity"
     android:gravity="center"
+    android:textColor="@color/darkGrey"
     app:tDimension="@string/font_size_level1"
     app:tFontName="@string/medium_font_name" />
