@@ -46,6 +46,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.raizlabs.android.dbflow.sql.language.Delete;
 import com.raizlabs.android.dbflow.sql.language.Select;
 
 import org.eyeseetea.malariacare.database.model.User;
@@ -325,6 +326,8 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
         protected Boolean doInBackground(Void... params) {
             // TODO: attempt authentication against a network service.
             try {
+                // restablish user with the data entered
+                Delete.tables(User.class);
                 initUser();
                 setDhisServerPreference();
             }catch(Exception ex) {
