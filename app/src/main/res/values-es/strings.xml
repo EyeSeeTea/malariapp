@@ -178,6 +178,8 @@
     <string name="assessment_sent_title_state">Estado</string>
     <string name="assessment_sent_title_header">Evaluación(es) Enviada(s)</string>
     <string name="assessment_sent_date">Fecha de llenado</string>
-    <string name="dialog_title_incorrect_org_unit" />
+    <string name="dialog_title_incorrect_org_unit" >Org Unit Incorrecta</string>
+    <string name="dialog_error_push_no_location">Localización no disponible</string>
+    <string name="dialog_content_incorrect_org_unit">Por favor seleccione una org unit final</string>
 
 </resources>
