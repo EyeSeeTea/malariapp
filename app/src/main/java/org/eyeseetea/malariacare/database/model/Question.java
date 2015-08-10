@@ -277,7 +277,7 @@ public class Question extends BaseModel{
         return this.master;
     }
 
-    public boolean belongsToMasterQuestions() {return !getMasters().isEmpty();}
+    public boolean calculatesMasterQuestions() {return !getMasters().isEmpty();}
 
     public boolean hasRelatives() {return !getRelatives().isEmpty(); }
 

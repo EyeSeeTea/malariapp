@@ -750,8 +750,8 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
         public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
             if (viewCreated) {
                 itemSelected(viewHolder, question, (Option) ((Spinner) viewHolder.component).getItemAtPosition(pos));
-                //if (question.belongsToMasterQuestions())
-                  //  notifyDataSetChanged();
+                if (question.calculatesMasterQuestions())
+                    notifyDataSetChanged();
             } else {
                 viewCreated = true;
             }

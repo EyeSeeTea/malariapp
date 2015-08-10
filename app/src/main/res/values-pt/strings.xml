@@ -128,6 +128,8 @@
     <string name="iqatab_info_species">Espécies</string>
     <string name="iqatab_info_labstaff">Pessoal de Laboratório</string>
     <string name="iqatab_info_results">Os resultados abaixo são auto calculado</string>
+    <string name="iqatab_info_note">Note: Slide rechecking should be carried out at the health facility during OTSS in the presence of the facility lab staff.  Slides should not be removed from the facility for this purpose.</string>
+
 
     <!-- reporting -->
     <string name="reporting_info_reporting">Relatórios</string>

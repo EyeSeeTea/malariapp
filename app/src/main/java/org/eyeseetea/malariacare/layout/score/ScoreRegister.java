@@ -66,9 +66,10 @@ public class ScoreRegister {
     }
 
     public static void addRecord(Question question, Float num, Float den){
-        if (question.getCompositeScore() != null) {
+        if (question.getCompositeScore() != null && compositeScoreMap.get(question.getCompositeScore())!=null) {
             compositeScoreMap.get(question.getCompositeScore()).addRecord(question, num, den);
         }
+        if (tabScoreMap.get(question.getHeader().getTab())!=null)
         tabScoreMap.get(question.getHeader().getTab()).addRecord(question, num, den);
     }
 
