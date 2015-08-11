@@ -21,7 +21,7 @@ package org.eyeseetea.malariacare.test.utils;
 
 import android.view.View;
 
-import org.eyeseetea.malariacare.views.TextCard;
+import org.eyeseetea.malariacare.views.FontCustomizableTextView;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
@@ -40,11 +40,11 @@ public class TextCardScaleMatcher extends TypeSafeMatcher<View> {
 
     @Override
     public boolean matchesSafely(View view) {
-        if (!(view instanceof TextCard)) {
+        if (!(view instanceof FontCustomizableTextView)) {
             return false;
         }
-        TextCard textCard = (TextCard) view;
-        return scale.equals(textCard.getmScale());
+        FontCustomizableTextView fontCustomizableTextView = (FontCustomizableTextView) view;
+        return scale.equals(fontCustomizableTextView.getmScale());
     }
 
     @Override

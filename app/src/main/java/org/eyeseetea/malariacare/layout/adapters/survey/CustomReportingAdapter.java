@@ -34,8 +34,8 @@ import org.eyeseetea.malariacare.database.model.Tab;
 import org.eyeseetea.malariacare.database.utils.ReadWriteDB;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 import org.eyeseetea.malariacare.utils.Utils;
-import org.eyeseetea.malariacare.views.EditCard;
-import org.eyeseetea.malariacare.views.TextCard;
+import org.eyeseetea.malariacare.views.FontCustomizableEditText;
+import org.eyeseetea.malariacare.views.FontCustomizableTextView;
 
 import java.util.List;
 
@@ -56,10 +56,10 @@ public class CustomReportingAdapter extends BaseAdapter implements ITabAdapter {
 
 
     static class ViewHolder {
-        public TextCard statement;
-        public EditCard register;
-        public EditCard report;
-        public TextCard score;
+        public FontCustomizableTextView statement;
+        public FontCustomizableEditText register;
+        public FontCustomizableEditText report;
+        public FontCustomizableTextView score;
     }
 
     /**
@@ -156,7 +156,7 @@ public class CustomReportingAdapter extends BaseAdapter implements ITabAdapter {
     }
 
 
-    private void setScoreColumn(TextCard score, Question questionRegister, Question questionReport) {
+    private void setScoreColumn(FontCustomizableTextView score, Question questionRegister, Question questionReport) {
 
         String register = ReadWriteDB.readValueQuestion(questionRegister);
         String report =  ReadWriteDB.readValueQuestion(questionReport);
@@ -188,10 +188,10 @@ public class CustomReportingAdapter extends BaseAdapter implements ITabAdapter {
         else
         {
             rowView = lInflater.inflate(R.layout.reporting_record2, parent, false);
-            viewHolder.statement = (TextCard) rowView.findViewById(R.id.reportingQuestion);
-            viewHolder.report = (EditCard) rowView.findViewById(R.id.monthlyReport);
-            viewHolder.register = (EditCard) rowView.findViewById(R.id.register);
-            viewHolder.score = (TextCard) rowView.findViewById(R.id.scoreValue);
+            viewHolder.statement = (FontCustomizableTextView) rowView.findViewById(R.id.reportingQuestion);
+            viewHolder.report = (FontCustomizableEditText) rowView.findViewById(R.id.monthlyReport);
+            viewHolder.register = (FontCustomizableEditText) rowView.findViewById(R.id.register);
+            viewHolder.score = (FontCustomizableTextView) rowView.findViewById(R.id.scoreValue);
 
             question = (Question) item;
 

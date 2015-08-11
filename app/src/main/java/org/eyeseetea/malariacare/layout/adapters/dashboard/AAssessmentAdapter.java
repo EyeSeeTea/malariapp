@@ -29,7 +29,7 @@ import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.utils.SurveyAnsweredRatio;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
-import org.eyeseetea.malariacare.views.TextCard;
+import org.eyeseetea.malariacare.views.FontCustomizableTextView;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -63,9 +63,9 @@ public abstract class AAssessmentAdapter extends ADashboardAdapter implements ID
         rowView.setPadding(paddingDp, paddingDp, paddingDp, paddingDp);
 
         // Org Unit Cell
-        TextCard facilityName = (TextCard) rowView.findViewById(R.id.facility);
-        TextCard surveyType = (TextCard) rowView.findViewById(R.id.survey_type);
-        TextCard sentDate = (TextCard) rowView.findViewById(R.id.sentDate);
+        FontCustomizableTextView facilityName = (FontCustomizableTextView) rowView.findViewById(R.id.facility);
+        FontCustomizableTextView surveyType = (FontCustomizableTextView) rowView.findViewById(R.id.survey_type);
+        FontCustomizableTextView sentDate = (FontCustomizableTextView) rowView.findViewById(R.id.sentDate);
 
         if (sentDate != null){
             Date completionDate = survey.getCompletionDate();
@@ -105,7 +105,7 @@ public abstract class AAssessmentAdapter extends ADashboardAdapter implements ID
         }
 
         //Status Cell
-        ((TextCard) rowView.findViewById(R.id.score)).setText(getStatus(survey));
+        ((FontCustomizableTextView) rowView.findViewById(R.id.score)).setText(getStatus(survey));
 
         return rowView;
     }

@@ -19,14 +19,14 @@
 
 <resources>
     <!-- TextCard: Text not editable with adaptative text size and text font-->
-    <declare-styleable name="TextCard">
+    <declare-styleable name="FontCustomizableTextView">
         <attr name="tDimension" format="string|reference" />
         <attr name="tScale" format="string|reference" />
         <attr name="tFontName" format="string|reference" />
     </declare-styleable>
 
     <!-- EditCard: Text field editable with adaptative text size and text font-->
-    <declare-styleable name="EditCard">
+    <declare-styleable name="FontCustomizableEditText">
         <attr name="eDimension" format="string|reference" />
         <attr name="eScale" format="string|reference" />
         <attr name="eFontName" format="string|reference" />
@@ -44,5 +44,12 @@
         <attr name="bDimension" format="string|reference" />
         <attr name="bScale" format="string|reference" />
         <attr name="bFontName" format="string|reference" />
+    </declare-styleable>
+
+    <!-- FontCustomizableButton: Button with adaptative text size and text font-->
+    <declare-styleable name="FontCustomizableAutoCompleteTextView">
+        <attr name="aDimension" format="string|reference" />
+        <attr name="aScale" format="string|reference" />
+        <attr name="aFontName" format="string|reference" />
     </declare-styleable>
 </resources>

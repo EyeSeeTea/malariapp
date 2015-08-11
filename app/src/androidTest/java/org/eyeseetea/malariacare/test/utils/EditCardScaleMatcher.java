@@ -21,7 +21,7 @@ package org.eyeseetea.malariacare.test.utils;
 
 import android.view.View;
 
-import org.eyeseetea.malariacare.views.EditCard;
+import org.eyeseetea.malariacare.views.FontCustomizableEditText;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
@@ -40,10 +40,10 @@ public class EditCardScaleMatcher extends TypeSafeMatcher<View> {
 
     @Override
     public boolean matchesSafely(View view) {
-        if (!(view instanceof EditCard)) {
+        if (!(view instanceof FontCustomizableEditText)) {
             return false;
         }
-        EditCard button = (EditCard) view;
+        FontCustomizableEditText button = (FontCustomizableEditText) view;
         return scale.equals(button.getmScale());
     }
 
