@@ -48,14 +48,15 @@
                 android:layout_gravity="center"
                 android:gravity="center">
 
-                <org.eyeseetea.malariacare.views.FontCustomizableAutoCompleteTextView android:id="@+id/user" android:layout_width="match_parent"
+                <org.eyeseetea.malariacare.views.CustomAutoCompleteTextView
+                    android:id="@+id/user" android:layout_width="match_parent"
                     android:layout_height="wrap_content" android:hint="@string/login_info_username"
                     android:inputType="textPersonName" android:maxLines="1"
                     android:singleLine="true"
                     app:tDimension="@string/font_size_level1"
                     app:tFontName="@string/medium_font_name"/>
 
-                <org.eyeseetea.malariacare.views.FontCustomizableEditText
+                <org.eyeseetea.malariacare.views.CustomEditText
                     android:id="@+id/password" android:layout_width="match_parent"
                     android:layout_height="wrap_content" android:hint="@string/login_info_password"
                     android:imeActionId="@+id/login"
@@ -65,7 +66,7 @@
                     app:tDimension="@string/font_size_level1"
                     app:tFontName="@string/medium_font_name"/>
 
-                <org.eyeseetea.malariacare.views.FontCustomizableAutoCompleteTextView
+                <org.eyeseetea.malariacare.views.CustomAutoCompleteTextView
                     android:id="@+id/dhis_url" android:layout_width="match_parent"
                     android:layout_height="wrap_content" android:hint="@string/login_info_dhis_default_server_url"
                     android:inputType="textUri" android:maxLines="1"
@@ -73,7 +74,8 @@
                     app:tDimension="@string/font_size_level1"
                     app:tFontName="@string/medium_font_name"/>
 
-                <org.eyeseetea.malariacare.views.FontCustomizableButton android:id="@+id/email_sign_in_button" style="?android:textAppearanceSmall"
+                <org.eyeseetea.malariacare.views.CustomButton
+                    android:id="@+id/email_sign_in_button" style="?android:textAppearanceSmall"
                     android:layout_width="match_parent" android:layout_height="wrap_content"
                     android:layout_marginTop="16dp" android:text="@string/login_info_sign_in"
                     android:textStyle="bold"

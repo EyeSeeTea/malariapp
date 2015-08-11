@@ -25,7 +25,7 @@ import android.content.res.TypedArray;
 import android.graphics.Typeface;
 import android.util.AttributeSet;
 import android.util.TypedValue;
-import android.widget.EditText;
+import android.widget.TextView;
 
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
@@ -33,7 +33,7 @@ import org.eyeseetea.malariacare.database.utils.PreferencesState;
 /**
  * TODO: document your custom view class.
  */
-public class FontCustomizableEditText extends EditText implements IEyeSeeView{
+public class CustomTextView extends TextView implements IEyeSeeView {
     private Context context = getContext();
     private String mfontName = context.getString(R.string.normal_font);
     private String mScale = context.getString(R.string.settings_array_values_font_sizes_def);
@@ -42,39 +42,41 @@ public class FontCustomizableEditText extends EditText implements IEyeSeeView{
     private TypedArray a;
     private Typeface font;
 
-    public FontCustomizableEditText(Context context) {
+    public CustomTextView(Context context) {
         super(context);
         init(null, 0);
     }
 
-    public FontCustomizableEditText(Context context, AttributeSet attrs) {
+    public CustomTextView(Context context, AttributeSet attrs) {
         super(context, attrs);
         init(attrs, 0);
     }
 
-    public FontCustomizableEditText(Context context, AttributeSet attrs, int defStyle) {
+    public CustomTextView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         init(attrs, defStyle);
     }
 
-
-
     public void init(AttributeSet attrs, int defStyle) {
+        /*if(isInEditMode()){
+            this.setText(R.string.lorem_ipsum);
+            return;
+        }*/
         // Load attributes
         if (attrs != null) {
-            a = context.obtainStyledAttributes(attrs, R.styleable.FontCustomizableTextView, defStyle, 0);
+            a = context.obtainStyledAttributes(attrs, R.styleable.CustomTextView, defStyle, 0);
             try {
-                mfontName = a.getString(R.styleable.FontCustomizableEditText_eFontName);
+                mfontName = a.getString(R.styleable.CustomTextView_tFontName);
                 if (mfontName != null) {
                     font = Typeface.createFromAsset(assetManager, "fonts/" + mfontName);
                     setTypeface(font);
                 }
 
-                mDimension = a.getString(R.styleable.FontCustomizableEditText_eDimension);
-                mScale = a.getString(R.styleable.FontCustomizableEditText_eScale);
+                mDimension = a.getString(R.styleable.CustomTextView_tDimension);
+                mScale = a.getString(R.styleable.CustomTextView_tScale);
                 if (mDimension == null)
                     mDimension = context.getString(R.string.settings_array_values_font_sizes_def);
-                if (mScale == null) mScale = PreferencesState.getInstance().getScale();
+                if (mScale == null) this.mScale = PreferencesState.getInstance().getScale();
                 if (!mScale.equals(context.getString(R.string.font_size_system)))
                     setTextSize(TypedValue.COMPLEX_UNIT_SP, PreferencesState.getInstance().getFontSize(mScale, mDimension));
             } finally {

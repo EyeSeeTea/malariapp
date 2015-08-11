@@ -32,7 +32,7 @@ import org.eyeseetea.malariacare.database.model.CompositeScore;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 import org.eyeseetea.malariacare.utils.Utils;
-import org.eyeseetea.malariacare.views.FontCustomizableTextView;
+import org.eyeseetea.malariacare.views.CustomTextView;
 
 import java.util.List;
 
@@ -109,15 +109,15 @@ public class CompositeScoreAdapter extends BaseAdapter implements ITabAdapter {
 
         rowView = lInflater.inflate(R.layout.composite_scores_record, parent, false);
 
-        ((FontCustomizableTextView)rowView.findViewById(R.id.code)).setText(item.getCode());
-        ((FontCustomizableTextView)rowView.findViewById(R.id.label)).setText(item.getLabel());
+        ((CustomTextView)rowView.findViewById(R.id.code)).setText(item.getCode());
+        ((CustomTextView)rowView.findViewById(R.id.label)).setText(item.getLabel());
 
         Float compositeScoreValue = ScoreRegister.getCompositeScore(item);
 
         if (compositeScoreValue == null)
-            ((FontCustomizableTextView)rowView.findViewById(R.id.score)).setText(this.context.getString(R.string.number_zero));
+            ((CustomTextView)rowView.findViewById(R.id.score)).setText(this.context.getString(R.string.number_zero));
         else
-            ((FontCustomizableTextView)rowView.findViewById(R.id.score)).setText(Utils.round(compositeScoreValue));
+            ((CustomTextView)rowView.findViewById(R.id.score)).setText(Utils.round(compositeScoreValue));
 
         rowView.setBackgroundResource(LayoutUtils.calculateBackgrounds(position));
 

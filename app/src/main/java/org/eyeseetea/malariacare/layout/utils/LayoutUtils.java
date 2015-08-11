@@ -33,7 +33,7 @@ import org.eyeseetea.malariacare.database.model.Question;
 import org.eyeseetea.malariacare.database.model.Value;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.utils.Utils;
-import org.eyeseetea.malariacare.views.FontCustomizableTextView;
+import org.eyeseetea.malariacare.views.CustomTextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -153,7 +153,7 @@ public class LayoutUtils {
     public static void setScore(float score, View scoreView, View percentageView, View cualitativeView){
         LayoutUtils.trafficLight(scoreView, score, cualitativeView);
         if (percentageView != null) LayoutUtils.trafficLight(percentageView, score, null);
-        ((FontCustomizableTextView)scoreView).setText(Utils.round(score));
+        ((CustomTextView)scoreView).setText(Utils.round(score));
     }
 
     public static void setScore(float score, View scoreView){
@@ -281,11 +281,11 @@ public class LayoutUtils {
             tag=view.getContext().getResources().getString(R.string.poor);
         }
         //Change color for number
-        ((FontCustomizableTextView)view).setTextColor(color);
+        ((CustomTextView)view).setTextColor(color);
         //Change color& text for qualitative score
         if(textCard != null) {
-            ((FontCustomizableTextView)textCard).setTextColor(color); // red
-            ((FontCustomizableTextView)textCard).setText(tag);
+            ((CustomTextView)textCard).setTextColor(color); // red
+            ((CustomTextView)textCard).setText(tag);
         }
     }
 

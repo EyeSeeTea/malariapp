@@ -23,7 +23,7 @@ import android.content.Context;
 
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.model.Tab;
-import org.eyeseetea.malariacare.views.FontCustomizableTextView;
+import org.eyeseetea.malariacare.views.CustomTextView;
 
 import java.util.List;
 
@@ -36,8 +36,8 @@ public class TabArrayAdapter extends AddlArrayAdapter<Tab> {
         super(context, R.layout.main_spinner_item, tabs);
     }
 
-    @Override public void drawText(FontCustomizableTextView fontCustomizableTextView, Tab tab) {
-        fontCustomizableTextView.setText(tab.getName());
+    @Override public void drawText(CustomTextView customTextView, Tab tab) {
+        customTextView.setText(tab.getName());
     }
 
 }

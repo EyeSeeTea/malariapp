@@ -46,8 +46,8 @@ import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 import org.eyeseetea.malariacare.utils.Constants;
 import org.eyeseetea.malariacare.utils.Utils;
-import org.eyeseetea.malariacare.views.FontCustomizableEditText;
-import org.eyeseetea.malariacare.views.FontCustomizableTextView;
+import org.eyeseetea.malariacare.views.CustomEditText;
+import org.eyeseetea.malariacare.views.CustomTextView;
 
 import java.util.List;
 
@@ -76,19 +76,19 @@ public class CustomAdherenceAdapter extends BaseAdapter implements ITabAdapter {
     int []scores;
 
     static class ViewHolder {
-        public FontCustomizableTextView number;
-        public FontCustomizableEditText patientID;
+        public CustomTextView number;
+        public CustomEditText patientID;
         public Spinner gender;
-        public FontCustomizableEditText age;
+        public CustomEditText age;
         public Spinner testResutl;
     }
 
     static class ViewHolder2 {
-        public FontCustomizableTextView number;
-        public FontCustomizableEditText patientID;
-        public FontCustomizableTextView testResult;
+        public CustomTextView number;
+        public CustomEditText patientID;
+        public CustomTextView testResult;
         public Spinner act;
-        public FontCustomizableTextView score;
+        public CustomTextView score;
     }
 
     @Override
@@ -284,10 +284,10 @@ public class CustomAdherenceAdapter extends BaseAdapter implements ITabAdapter {
                 final ViewHolder viewHolder = new ViewHolder();
 
                 rowView = lInflater.inflate(R.layout.pharmacy_register, parent, false);
-                viewHolder.number = (FontCustomizableTextView) rowView.findViewById(R.id.number);
+                viewHolder.number = (CustomTextView) rowView.findViewById(R.id.number);
                 viewHolder.gender = (Spinner) rowView.findViewById(R.id.gender);
-                viewHolder.age = (FontCustomizableEditText) rowView.findViewById(R.id.age);
-                viewHolder.patientID = (FontCustomizableEditText) rowView.findViewById(R.id.patientId);
+                viewHolder.age = (CustomEditText) rowView.findViewById(R.id.age);
+                viewHolder.patientID = (CustomEditText) rowView.findViewById(R.id.patientId);
                 viewHolder.testResutl = (Spinner) rowView.findViewById(R.id.testResults);
 
                 List<Option> optionList = question.getChildren().get(1).getAnswer().getOptions();
@@ -400,11 +400,11 @@ public class CustomAdherenceAdapter extends BaseAdapter implements ITabAdapter {
 
                 rowView = lInflater.inflate(R.layout.pharmacy_register2, parent, false);
 
-                viewHolder2.number = (FontCustomizableTextView) rowView.findViewById(R.id.number);
-                viewHolder2.patientID = (FontCustomizableEditText) rowView.findViewById(R.id.patientId);
-                viewHolder2.testResult = (FontCustomizableTextView) rowView.findViewById(R.id.testResult);
+                viewHolder2.number = (CustomTextView) rowView.findViewById(R.id.number);
+                viewHolder2.patientID = (CustomEditText) rowView.findViewById(R.id.patientId);
+                viewHolder2.testResult = (CustomTextView) rowView.findViewById(R.id.testResult);
                 viewHolder2.act = (Spinner) rowView.findViewById(R.id.act1);
-                viewHolder2.score = (FontCustomizableTextView) rowView.findViewById(R.id.scoreValue);
+                viewHolder2.score = (CustomTextView) rowView.findViewById(R.id.scoreValue);
 
                 List<Option> optionList = ((Question) item).getChildren().get(2).getAnswer().getOptions();
                 optionList.add(0, new Option(Constants.DEFAULT_SELECT_OPTION));

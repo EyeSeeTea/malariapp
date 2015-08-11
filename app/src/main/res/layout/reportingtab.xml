@@ -32,7 +32,7 @@
         android:rowCount="1"
         android:id="@+id/reporting">
 
-        <org.eyeseetea.malariacare.views.FontCustomizableTextView
+        <org.eyeseetea.malariacare.views.CustomTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
@@ -52,7 +52,7 @@
         android:rowCount="2"
         android:id="@+id/talliesLayout">
 
-        <org.eyeseetea.malariacare.views.FontCustomizableTextView
+        <org.eyeseetea.malariacare.views.CustomTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/custom_title_tallies"
@@ -92,7 +92,7 @@
         android:padding="5dip"
         >
 
-        <org.eyeseetea.malariacare.views.FontCustomizableTextView
+        <org.eyeseetea.malariacare.views.CustomTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
@@ -125,7 +125,7 @@
             android:layout_gravity="center" >
 
 
-                <org.eyeseetea.malariacare.views.FontCustomizableTextView
+                <org.eyeseetea.malariacare.views.CustomTextView
                     android:layout_width="0dip"
                     android:layout_height="fill_parent"
                     android:textAppearance="?android:attr/textAppearanceMedium"
@@ -140,7 +140,7 @@
                     app:tDimension="@string/font_size_level1"
                     app:tFontName="@string/medium_font_name" />
 
-                <org.eyeseetea.malariacare.views.FontCustomizableTextView
+                <org.eyeseetea.malariacare.views.CustomTextView
                     android:layout_width="0dip"
                     android:layout_height="fill_parent"
                     android:textAppearance="?android:attr/textAppearanceMedium"
@@ -155,7 +155,7 @@
                     app:tDimension="@string/font_size_level1"
                     app:tFontName="@string/medium_font_name" />
 
-                <org.eyeseetea.malariacare.views.FontCustomizableTextView
+                <org.eyeseetea.malariacare.views.CustomTextView
                     android:layout_width="0dip"
                     android:layout_height="fill_parent"
                     android:textAppearance="?android:attr/textAppearanceMedium"
@@ -170,7 +170,7 @@
                     app:tDimension="@string/font_size_level1"
                     app:tFontName="@string/medium_font_name" />
 
-                <org.eyeseetea.malariacare.views.FontCustomizableTextView
+                <org.eyeseetea.malariacare.views.CustomTextView
                     android:layout_width="0dip"
                     android:layout_height="fill_parent"
                     android:textAppearance="?android:attr/textAppearanceMedium"

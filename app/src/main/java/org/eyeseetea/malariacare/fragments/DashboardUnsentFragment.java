@@ -51,7 +51,7 @@ import org.eyeseetea.malariacare.network.PushClient;
 import org.eyeseetea.malariacare.network.PushResult;
 import org.eyeseetea.malariacare.services.SurveyService;
 import org.eyeseetea.malariacare.utils.Constants;
-import org.eyeseetea.malariacare.views.FontCustomizableTextView;
+import org.eyeseetea.malariacare.views.CustomTextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -191,7 +191,7 @@ public class DashboardUnsentFragment extends ListFragment {
         LayoutInflater inflater = LayoutInflater.from(getActivity());
         View header = inflater.inflate(this.adapter.getHeaderLayout(), null, false);
         View footer = inflater.inflate(this.adapter.getFooterLayout(), null, false);
-        FontCustomizableTextView title = (FontCustomizableTextView) getActivity().findViewById(R.id.titleInProgress);
+        CustomTextView title = (CustomTextView) getActivity().findViewById(R.id.titleInProgress);
         title.setText(adapter.getTitle());
         ListView listView = getListView();
         listView.addHeaderView(header);
