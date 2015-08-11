@@ -40,8 +40,8 @@ import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 import org.eyeseetea.malariacare.utils.Constants;
 import org.eyeseetea.malariacare.utils.Utils;
-import org.eyeseetea.malariacare.views.EditCard;
-import org.eyeseetea.malariacare.views.TextCard;
+import org.eyeseetea.malariacare.views.FontCustomizableEditText;
+import org.eyeseetea.malariacare.views.FontCustomizableTextView;
 
 import java.util.List;
 
@@ -66,15 +66,15 @@ public class CustomIQTABAdapter extends BaseAdapter implements ITabAdapter {
     int[] results;
 
     static class ViewHolder {
-        public TextCard number;
+        public FontCustomizableTextView number;
         public Spinner spinner;
-        public EditCard parasites;
+        public FontCustomizableEditText parasites;
         public Spinner species;
     }
 
     static class ViewHolder2 {
-        public TextCard number;
-        public TextCard result;
+        public FontCustomizableTextView number;
+        public FontCustomizableTextView result;
     }
 
     /*static class ScoreHolder {
@@ -264,9 +264,9 @@ public class CustomIQTABAdapter extends BaseAdapter implements ITabAdapter {
                 question = (Question) item;
 
                 rowView = lInflater.inflate(R.layout.iqatab_record, parent, false);
-                viewHolder.number = (TextCard) rowView.findViewById(R.id.number);
+                viewHolder.number = (FontCustomizableTextView) rowView.findViewById(R.id.number);
                 viewHolder.spinner = (Spinner) rowView.findViewById(R.id.testRes);
-                viewHolder.parasites = (EditCard) rowView.findViewById(R.id.parasites);
+                viewHolder.parasites = (FontCustomizableEditText) rowView.findViewById(R.id.parasites);
                 viewHolder.species = (Spinner) rowView.findViewById(R.id.species);
 
                 List<Option> optionList = ((Question) item).getChildren().get(0).getAnswer().getOptions();
@@ -362,8 +362,8 @@ public class CustomIQTABAdapter extends BaseAdapter implements ITabAdapter {
                 Question testResult = questionResult.getChildren().get(0);
 
 
-                viewHolder2.number = (TextCard) rowView.findViewById(R.id.number_result);
-                viewHolder2.result = (TextCard) rowView.findViewById(R.id.matches);
+                viewHolder2.number = (FontCustomizableTextView) rowView.findViewById(R.id.number_result);
+                viewHolder2.result = (FontCustomizableTextView) rowView.findViewById(R.id.matches);
 
 
                 viewHolder2.number.setText(String.valueOf(questionResult.getForm_name()));

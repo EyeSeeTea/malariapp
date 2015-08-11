@@ -61,7 +61,7 @@ import java.util.Map;
  * Login Screen.
  * It shows only when the user has an open session.
  */
-public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
+public class LoginActivity extends BaseActivity implements LoaderCallbacks<Cursor> {
 
     /**
      * A dummy authentication store containing known user names and passwords.

@@ -14,7 +14,7 @@
         android:orientation="horizontal">
 
 
-         <org.eyeseetea.malariacare.views.TextCard
+         <org.eyeseetea.malariacare.views.FontCustomizableTextView
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
@@ -32,7 +32,7 @@
         android:layout_weight="1.5"
         android:orientation="horizontal">
 
-        <org.eyeseetea.malariacare.views.EditCard
+        <org.eyeseetea.malariacare.views.FontCustomizableEditText
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:inputType="number"
@@ -71,7 +71,7 @@
         android:layout_weight="1"
         android:orientation="horizontal">
 
-        <org.eyeseetea.malariacare.views.EditCard
+        <org.eyeseetea.malariacare.views.FontCustomizableEditText
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:inputType="number"

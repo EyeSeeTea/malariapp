@@ -26,7 +26,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 
 import org.eyeseetea.malariacare.R;
-import org.eyeseetea.malariacare.views.TextCard;
+import org.eyeseetea.malariacare.views.FontCustomizableTextView;
 
 import java.util.List;
 
@@ -47,7 +47,7 @@ public abstract class AddlArrayAdapter<T> extends ArrayAdapter<T> {
     }
 
 
-    public abstract void drawText(TextCard textCard, T object);
+    public abstract void drawText(FontCustomizableTextView fontCustomizableTextView, T object);
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
@@ -57,7 +57,7 @@ public abstract class AddlArrayAdapter<T> extends ArrayAdapter<T> {
         }
 
         //Set text item
-        drawText((TextCard) convertView.findViewById(android.R.id.text1), getItem(position));
+        drawText((FontCustomizableTextView) convertView.findViewById(android.R.id.text1), getItem(position));
 
         // Return the completed view to render on screen
         return convertView;
@@ -72,7 +72,7 @@ public abstract class AddlArrayAdapter<T> extends ArrayAdapter<T> {
         }
 
         //Set text item
-        drawText((TextCard) convertView.findViewById(android.R.id.text1), getItem(position));
+        drawText((FontCustomizableTextView) convertView.findViewById(android.R.id.text1), getItem(position));
 
         // Return the completed view to render on screen
         return convertView;
