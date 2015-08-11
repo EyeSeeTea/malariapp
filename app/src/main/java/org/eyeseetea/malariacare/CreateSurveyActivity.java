@@ -43,6 +43,7 @@ import org.eyeseetea.malariacare.layout.adapters.general.TabGroupArrayAdapter;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 import org.eyeseetea.malariacare.utils.Constants;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -96,9 +97,9 @@ public class CreateSurveyActivity extends BaseActivity {
         orgUnitView.setTag(R.id.OrgUnitLevelTag, 1);
         orgUnitView.setAdapter(new OrgUnitArrayAdapter(this, orgUnitList));
         orgUnitView.setOnItemSelectedListener(new OrgUnitSpinnerListener(viewHolder));
+        //Put in org unit hierarchy map
         orgUnitHierarchyView = new HashMap<>();
         orgUnitHierarchyView.put(1, findViewById(R.id.org_unit_container));
-//        realOrgUnitView = orgUnitView;
 
         //Prepare Organization Unit Item DDL
         orgUnitContainerItems = findViewById(R.id.org_unit_container_items);
@@ -113,15 +114,18 @@ public class CreateSurveyActivity extends BaseActivity {
         //Create Tab Group View DDL. Not populated and not visible.
         tabGroupContainer = findViewById(R.id.tab_group_container);
         tabGroupView = (Spinner) findViewById(R.id.tab_group);
-
+        List<TabGroup> tabGroupList = new ArrayList<>();
+        tabGroupList.add(0, tabGroupDefaultOption);
+        tabGroupView.setAdapter(new TabGroupArrayAdapter(getApplicationContext(), tabGroupList));
     }
 
     private boolean isEverythingFilled() {
         try {
             boolean isEverythingFilled = (!orgUnitView.getSelectedItem().equals(orgUnitDefaultOption) && !programView.getSelectedItem().equals(programDefaultOption));
-            return (isEverythingFilled) && !tabGroupView.getSelectedItem().equals(tabGroupDefaultOption);
+            boolean isTabGroupFilled = tabGroupView.getSelectedItemPosition() != 0;
+            return isEverythingFilled && isTabGroupFilled;
         } catch (Exception ex) {
-            ex.printStackTrace();
+            Log.e(".CreateSurveyActivity", ex.getMessage());
             //FIXME: getSelectedItem throws an exception when there is not an item selected. I looked for a while in API but couldn't find anything. It is not a good idea to catch this behaviour as an exception.
             return true;
         }
@@ -171,12 +175,8 @@ public class CreateSurveyActivity extends BaseActivity {
         if (validateForm()){
             // Read Selected Items
             OrgUnit orgUnit = (OrgUnit) realOrgUnitView.getSelectedItem();
-
             //Read Tab Group
             TabGroup tabGroup = (TabGroup) tabGroupView.getSelectedItem();
-
-            //FIXME: Once we have the tabs groups this needs to be fix
-//            TabGroup tabGroup = ((TabGroup) tabGroupView.getSelectedItem()).getTabGroups().get(0);
 
             // Put new survey in session
             Survey survey = new Survey(orgUnit, tabGroup, Session.getUser());
@@ -200,16 +200,25 @@ public class CreateSurveyActivity extends BaseActivity {
             Program selectedProgram = (Program) programView.getSelectedItem();
             List<TabGroup> tabGroupList = selectedProgram.getTabGroups();
             if (tabGroupList.size() > 1){
-                //Show tab group select and populate tab group spinner
+                // Populate tab group spinner
                 tabGroupList.add(0, tabGroupDefaultOption);
-                tabGroupView.setAdapter(new TabGroupArrayAdapter(CreateSurveyActivity.this, tabGroupList));
+                tabGroupView.setAdapter(new TabGroupArrayAdapter(getApplicationContext(), tabGroupList));
+                //Show tab group select
                 tabGroupContainer.setVisibility(View.VISIBLE);
             }
             else{
-                //Hide tab group tab selector and select single tab group
-                tabGroupView.setAdapter(new TabGroupArrayAdapter(CreateSurveyActivity.this, tabGroupList));
-                tabGroupView.setSelection(0);
-                tabGroupContainer.setVisibility(View.GONE);
+                if (tabGroupList.size() == 1){
+                    tabGroupList.add(0, tabGroupDefaultOption);
+                    tabGroupView.setAdapter(new TabGroupArrayAdapter(getApplicationContext(), tabGroupList));
+                    tabGroupView.setSelection(1);
+                }
+                else {
+                    //tabGroupView.setAdapter(new TabGroupArrayAdapter(CreateSurveyActivity.this, tabGroupList));
+                    // Select single tab group
+                    tabGroupView.setSelection(0);
+                }
+                //Hide tab group selector
+               tabGroupContainer.setVisibility(View.GONE);
             }
         }
 
@@ -222,7 +231,6 @@ public class CreateSurveyActivity extends BaseActivity {
     private class OrgUnitSpinnerListener implements AdapterView.OnItemSelectedListener {
 
         private ViewHolder viewHolder;
-        //private View childView;
 
         public OrgUnitSpinnerListener(ViewHolder viewHolder) {
             this.viewHolder = viewHolder;
@@ -230,24 +238,25 @@ public class CreateSurveyActivity extends BaseActivity {
 
         @Override
         public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
+
             OrgUnit selectedOrgUnit = (OrgUnit) ((Spinner)viewHolder.component).getItemAtPosition(pos);
             realOrgUnitView = ((Spinner) viewHolder.component);
-            List<OrgUnit> orgUnitList = selectedOrgUnit.getChildren();
-            //Check for child View
-            boolean hasOrgUnitChild = orgUnitHierarchyView.containsKey((Integer)(viewHolder.component).getTag(R.id.OrgUnitLevelTag)+1);
+
+            // Populate child view. If it exists in org unit map, grab it; otherwise inflate it
             View childView = null;
-            if (hasOrgUnitChild)
-                childView = orgUnitHierarchyView.get((Integer)(viewHolder.component).getTag(R.id.OrgUnitLevelTag)+1);
+            List<OrgUnit> orgUnitList = selectedOrgUnit.getChildren();
+            if (orgUnitHierarchyView.containsKey((Integer) viewHolder.component.getTag(R.id.OrgUnitLevelTag) + 1)) {
+                childView = orgUnitHierarchyView.get((Integer) viewHolder.component.getTag(R.id.OrgUnitLevelTag) + 1);
+            }
+            else if (orgUnitList.size() > 1){
+                childView = lInflater.inflate(R.layout.activity_create_survey_org_unit_item, (LinearLayout) orgUnitContainerItems, false);
+                ((LinearLayout) orgUnitContainerItems).addView(childView);
+                //Put in org unit hierarchy map
+                orgUnitHierarchyView.put((Integer)viewHolder.component.getTag(R.id.OrgUnitLevelTag)+1, childView);
+            }
 
+            // If there are children create spinner or populate it otherwise hide existing one
             if (orgUnitList.size() > 1){
-
-
-                if (!hasOrgUnitChild) {
-                    childView = lInflater.inflate(R.layout.activity_create_survey_org_unit_item, (LinearLayout) orgUnitContainerItems, false);
-                    ((LinearLayout) orgUnitContainerItems).addView(childView);
-                    orgUnitHierarchyView.put((Integer)((Spinner)viewHolder.component).getTag(R.id.OrgUnitLevelTag)+1, childView);
-                }
-
 
                 ViewHolder subViewHolder = new ViewHolder();
                 subViewHolder.component = childView.findViewById(R.id.org_unit_item_spinner);
@@ -256,18 +265,18 @@ public class CreateSurveyActivity extends BaseActivity {
                 orgUnitList.add(0, orgUnitDefaultOption);
                 ((Spinner) subViewHolder.component).setAdapter(new OrgUnitArrayAdapter(CreateSurveyActivity.this, orgUnitList));
                 ((Spinner) subViewHolder.component).setOnItemSelectedListener(new OrgUnitSpinnerListener(subViewHolder));
-                ((Spinner) subViewHolder.component).setTag(R.id.OrgUnitLevelTag, (Integer)(viewHolder.component).getTag(R.id.OrgUnitLevelTag)+1);
+                subViewHolder.component.setTag(R.id.OrgUnitLevelTag, (Integer) ((Spinner) viewHolder.component).getTag(R.id.OrgUnitLevelTag) + 1);
 
-
-                ((Spinner)childView.findViewById(R.id.org_unit_item_spinner)).setSelection(0);
+                // Select single
+                //((Spinner)childView.findViewById(R.id.org_unit_item_spinner)).setSelection(0);
+                //Hide org unit selector
                 childView.setVisibility(View.VISIBLE);
             }
-            else{
-                if (hasOrgUnitChild) {
-                    //Hide tab group tab selector and select single tab group
-                    ((Spinner) childView.findViewById(R.id.org_unit_item_spinner)).setSelection(0,true);
+            else if (childView != null) {
+                    // Select single tab group
+                    ((Spinner) childView.findViewById(R.id.org_unit_item_spinner)).setSelection(0, true);
+                    // Hide tab group tab selector
                     childView.setVisibility(View.GONE);
-                }
             }
 
         }
