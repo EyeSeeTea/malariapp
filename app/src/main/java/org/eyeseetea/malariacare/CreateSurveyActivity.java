@@ -215,11 +215,18 @@ public class CreateSurveyActivity extends BaseActivity {
                 tabGroupContainer.setVisibility(View.VISIBLE);
             }
             else{
-                //tabGroupView.setAdapter(new TabGroupArrayAdapter(CreateSurveyActivity.this, tabGroupList));
-                // Select single tab group
-                tabGroupView.setSelection(0, true);
+                if (tabGroupList.size() == 1){
+                    tabGroupList.add(0, tabGroupDefaultOption);
+                    tabGroupView.setAdapter(new TabGroupArrayAdapter(getApplicationContext(), tabGroupList));
+                    tabGroupView.setSelection(1);
+                }
+                else {
+                    //tabGroupView.setAdapter(new TabGroupArrayAdapter(CreateSurveyActivity.this, tabGroupList));
+                    // Select single tab group
+                    tabGroupView.setSelection(0);
+                }
                 //Hide tab group selector
-                tabGroupContainer.setVisibility(View.GONE);
+               tabGroupContainer.setVisibility(View.GONE);
             }
         }
 

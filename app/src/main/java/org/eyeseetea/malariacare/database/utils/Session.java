@@ -19,6 +19,7 @@
 
 package org.eyeseetea.malariacare.database.utils;
 
+import android.location.Location;
 import android.util.Log;
 
 import org.eyeseetea.malariacare.database.model.Survey;
@@ -47,6 +48,11 @@ public class Session {
      * The current user
      */
     private static User user;
+
+    /**
+     * The current location
+     */
+    private static Location location;
 
     /**
      * Map that holds non serializable results from services
@@ -130,6 +136,14 @@ public class Session {
      */
     public static void clearServiceValues(){
         serviceValues.clear();
+    }
+
+    public static Location getLocation() {
+        return location;
+    }
+
+    public static void setLocation(Location location) {
+        Session.location = location;
     }
 
 }

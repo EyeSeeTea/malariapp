@@ -178,5 +178,8 @@
     <string name="assessment_sent_title_state">État</string>
     <string name="assessment_sent_title_header">Evaluation(s) Envoyée(s)</string>
     <string name="assessment_sent_date">Date de remplissement</string>
+    <string name="dialog_error_push_no_location">Aucun emplacement disponible</string>
+    <string name="dialog_title_incorrect_org_unit">Org Unit erronées</string>
+    <string name="dialog_content_incorrect_org_unit"></string>
 
 </resources>
