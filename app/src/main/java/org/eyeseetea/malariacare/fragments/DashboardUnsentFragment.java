@@ -19,6 +19,7 @@
 
 package org.eyeseetea.malariacare.fragments;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ListFragment;
 import android.content.BroadcastReceiver;
@@ -38,6 +39,7 @@ import android.widget.BaseAdapter;
 import android.widget.ListView;
 
 import org.eyeseetea.malariacare.DashboardActivity;
+import org.eyeseetea.malariacare.LoginActivity;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.SurveyActivity;
 import org.eyeseetea.malariacare.database.model.Survey;
@@ -45,9 +47,10 @@ import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.layout.adapters.dashboard.AssessmentUnsentAdapter;
 import org.eyeseetea.malariacare.layout.adapters.dashboard.IDashboardAdapter;
 import org.eyeseetea.malariacare.layout.listeners.SwipeDismissListViewTouchListener;
+import org.eyeseetea.malariacare.network.PushClient;
 import org.eyeseetea.malariacare.network.PushResult;
 import org.eyeseetea.malariacare.services.SurveyService;
-import org.eyeseetea.malariacare.network.PushClient;
+import org.eyeseetea.malariacare.utils.Constants;
 import org.eyeseetea.malariacare.views.TextCard;
 
 import java.util.ArrayList;
@@ -244,9 +247,11 @@ public class DashboardUnsentFragment extends ListFragment {
                         .setMessage("Are you sure? You can not undo this action")
                         .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface arg0, int arg1) {
-                                final Survey survey = (Survey) adapter.getItem(position-1);
-                                AsyncPush asyncPush=new AsyncPush(survey);
-                                asyncPush.execute((Void) null);
+                                // We launch the login system, to authorize the push
+                                Intent authorizePush = new Intent(getActivity(), LoginActivity.class);
+                                authorizePush.putExtra("Action", Constants.AUTHORIZE_PUSH);
+                                authorizePush.putExtra("Survey", position);
+                                startActivityForResult(authorizePush, Constants.AUTHORIZE_PUSH);
                             }
                         })
                         .setNegativeButton(android.R.string.no, null).create().show();
@@ -292,6 +297,28 @@ public class DashboardUnsentFragment extends ListFragment {
         this.adapter.notifyDataSetChanged();
         setListShown(true);
     }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data){
+        // This captures the return code sent by Login Activity, to know whether or not the user got the authorization
+        if(requestCode == Constants.AUTHORIZE_PUSH) {
+            if(resultCode == Activity.RESULT_OK) {
+                // In case authorization was ok, we launch push action
+                int position = data.getIntExtra("Survey", 0);
+                final Survey survey = (Survey) adapter.getItem(position - 1);
+                AsyncPush asyncPush = new AsyncPush(survey);
+                asyncPush.execute((Void) null);
+            } else {
+                // Otherwise we notify and continue
+                new AlertDialog.Builder(getActivity())
+                        .setTitle("Authorization failed")
+                        .setMessage("User or password introduced are wrong. Push aborted.")
+                        .setPositiveButton(android.R.string.ok, null)
+                        .setNegativeButton(android.R.string.no, null).create().show();
+            }
+        }
+    }
+
     /**
      * Inner private class that receives the result from the service
      */

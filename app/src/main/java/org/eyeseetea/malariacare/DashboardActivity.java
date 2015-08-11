@@ -37,6 +37,7 @@ import org.eyeseetea.malariacare.fragments.DashboardUnsentFragment;
 import org.eyeseetea.malariacare.services.SurveyService;
 
 import java.io.IOException;
+import java.util.List;
 
 
 public class DashboardActivity extends BaseActivity {
@@ -47,12 +48,6 @@ public class DashboardActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_dashboard);
-
-//        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
-//            // If the screen is now in landscape mode, we can show the dialog in-line so we don't need this activity
-//            finish();
-//            return;
-//        }
 
         try {
             initDataIfRequired();
@@ -144,7 +139,15 @@ public class DashboardActivity extends BaseActivity {
      */
     private void loadSessionIfRequired(){
         if (Session.getUser() == null){
-            Session.setUser(new Select().all().from(User.class).queryList().get(0));
+            List<User> users = new Select().all().from(User.class).queryList();
+            if (users.size() == 0){
+                User user = new User();
+                user.setName("");
+                user.save();
+                Session.setUser(user);
+            } else {
+                Session.setUser(users.get(0));
+            }
         }
     }
 }

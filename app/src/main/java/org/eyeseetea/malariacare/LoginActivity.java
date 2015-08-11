@@ -46,7 +46,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.raizlabs.android.dbflow.sql.language.Delete;
 import com.raizlabs.android.dbflow.sql.language.Select;
 
 import org.eyeseetea.malariacare.database.model.User;
@@ -55,7 +54,6 @@ import org.eyeseetea.malariacare.database.utils.Session;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -92,15 +90,8 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Log.d(".LoginActivity","onCreate");
+        Log.d(".LoginActivity", "onCreate");
         super.onCreate(savedInstanceState);
-
-        //User already logged in --> dashboard
-        Iterator<User> users = new Select().all().from(User.class).queryList().iterator();
-        if (users.hasNext()) {
-            goDashBoard(users.next());
-            return;
-        }
 
         //Show form
         initView();
@@ -115,6 +106,13 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
         mUserView = (AutoCompleteTextView) findViewById(R.id.user);
         mServerUrlView = (AutoCompleteTextView) findViewById(R.id.dhis_url);
         populateAutoComplete();
+
+        // In case the user set previously a different DHIS2 server URL in the settings, this is filled in automatically.
+        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        String urlInPreferences = settings.getString(getApplicationContext().getString(R.string.dhis_url), "");
+        if (!urlInPreferences.equals("")){
+            mServerUrlView.setText(urlInPreferences);
+        }
 
         mPasswordView = (EditText) findViewById(R.id.password);
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -138,12 +136,6 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
 
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
-    }
-
-    private void goDashBoard(User user) {
-        Log.i(".LoginActivity", "User already logged in --> Dashboard");
-        Session.setUser(user);
-        startActivity(new Intent(LoginActivity.this, DashboardActivity.class));
     }
 
 
@@ -274,7 +266,7 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
 
     @Override
     public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor) {
-        List<String> emails = new ArrayList<String>();
+        List<String> emails = new ArrayList<>();
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
             emails.add(cursor.getString(ProfileQuery.ADDRESS));
@@ -303,7 +295,7 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
     private void addEmailsToAutoComplete(List<String> emailAddressCollection) {
         //Create adapter to tell the AutoCompleteTextView what to show in its dropdown list.
         ArrayAdapter<String> adapter =
-                new ArrayAdapter<String>(LoginActivity.this,
+                new ArrayAdapter<>(LoginActivity.this,
                         android.R.layout.simple_dropdown_item_1line, emailAddressCollection);
 
         mUserView.setAdapter(adapter);
@@ -327,11 +319,10 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
             // TODO: attempt authentication against a network service.
             try {
                 // restablish user with the data entered
-                Delete.tables(User.class);
                 initUser();
                 setDhisServerPreference();
             }catch(Exception ex) {
-                Log.e(".LoginActivity", "Error doInBackground login -> dashboard", ex);
+                Log.e(".LoginActivity", "Error doInBackground login", ex);
                 return false;
             }
 
@@ -349,8 +340,13 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
             }
             //finishAndGo dashboard
             Log.i(".LoginActivity", "Logged in!");
-            // Get the not-sent surveys ordered by date
-            goDashBoard(user);
+            // Set the user in the session
+            Session.setUser(user);
+            // return back to the calling activity the survey position in the dashboard and the ok returncode
+            Intent resultData = new Intent();
+            resultData.putExtra("Survey", getIntent().getIntExtra("Survey", 0));
+            setResult(Activity.RESULT_OK, resultData);
+            finish();
         }
 
         @Override
@@ -362,8 +358,17 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
          * Add user to table and session
          */
         private void initUser(){
-            this.user = new User(mUser, mUser);
-            this.user.save();
+            // In case no user was previously set in the database we create one. Otherwise we update it
+            List<User> users = new Select().all().from(User.class).queryList();
+            if (users.size() == 0) {
+                this.user = new User(mUser, mUser);
+                this.user.save();
+            } else {
+                this.user = users.get(0);
+                this.user.setName(mUser);
+                this.user.setUid(mUser);
+                this.user.update();
+            }
         }
 
         /**
