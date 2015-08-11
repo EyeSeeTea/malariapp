@@ -73,6 +73,7 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
         Map<String, String> aMap = new HashMap<String,String>();
         aMap.put("user", "user");
         aMap.put("admin", "admin");
+        aMap.put("testing", "Testing2015");
         DUMMY_CREDENTIALS = Collections.unmodifiableMap(aMap);
     }
     /**
@@ -85,7 +86,6 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
     private EditText mPasswordView;
     private AutoCompleteTextView mServerUrlView;
     private View mProgressView;
-    private View mUserLoginFormView;
     private View mLoginFormView;
 
     @Override
@@ -107,11 +107,15 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
         mServerUrlView = (AutoCompleteTextView) findViewById(R.id.dhis_url);
         populateAutoComplete();
 
-        // In case the user set previously a different DHIS2 server URL in the settings, this is filled in automatically.
+        // In case the user set previously a different DHIS2 server URL or user in the settings, this is filled in automatically.
         SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         String urlInPreferences = settings.getString(getApplicationContext().getString(R.string.dhis_url), "");
         if (!urlInPreferences.equals("")){
             mServerUrlView.setText(urlInPreferences);
+        }
+        String userInPreferences = settings.getString(getApplicationContext().getString(R.string.dhis_user), "");
+        if (!userInPreferences.equals("")){
+            mUserView.setText(userInPreferences);
         }
 
         mPasswordView = (EditText) findViewById(R.id.password);
@@ -174,7 +178,6 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
      */
     @Override
     public void onResume(){
-        cleanForm();
         super.onResume();
     }
 
@@ -189,19 +192,6 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
             return false;
         }
         return expectedPassword.equals(password);
-    }
-
-    /**
-     * Cleans form before launching intent to dashboard
-     */
-    private void cleanForm(){
-        if(mUserView!=null) {
-            mUserView.setError(null);
-            mUserView.setText(null);
-        }
-        if(mPasswordView!=null) {
-            mPasswordView.setText(null);
-        }
     }
 
     /**
@@ -320,6 +310,7 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
             try {
                 // restablish user with the data entered
                 initUser();
+                setDhisUserPreference();
                 setDhisServerPreference();
             }catch(Exception ex) {
                 Log.e(".LoginActivity", "Error doInBackground login", ex);
@@ -372,16 +363,32 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
         }
 
         /**
+         * Fill in the preference given by the preference key with the text contained in the given view
+         * @param view Component containing the text
+         * @param preferenceKey resource that points to the String in strings.xml which is the preference key for the desired preference
+         */
+        private void setPreference(TextView view, int preferenceKey){
+            String text = view.getText().toString();
+            if (!text.equals("")) {
+                SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                SharedPreferences.Editor editor = settings.edit();
+                editor.putString(getApplicationContext().getString(preferenceKey), text);
+                editor.commit();
+            }
+        }
+
+        /**
+         * Fill in the dhis user preference with what user selected in the login field
+         */
+        private void setDhisUserPreference(){
+            setPreference(mUserView, R.string.dhis_user);
+        }
+
+        /**
          * Fill in the dhis server preference with what user selected in the login field
          */
         private void setDhisServerPreference(){
-            String url = mServerUrlView.getText().toString();
-            if (!url.equals("")) {
-                SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-                SharedPreferences.Editor editor = settings.edit();
-                editor.putString(getApplicationContext().getString(R.string.dhis_url), url);
-                editor.commit();
-            }
+            setPreference(mServerUrlView, R.string.dhis_url);
         }
 
         /**
