@@ -304,9 +304,12 @@ public class DashboardUnsentFragment extends ListFragment {
         if(requestCode == Constants.AUTHORIZE_PUSH) {
             if(resultCode == Activity.RESULT_OK) {
                 // In case authorization was ok, we launch push action
-                int position = data.getIntExtra("Survey", 0);
+                Bundle extras = data.getExtras();
+                int position = extras.getInt("Survey", 0);
+                String user = extras.getString("User");
+                String password = extras.getString("Password");
                 final Survey survey = (Survey) adapter.getItem(position - 1);
-                AsyncPush asyncPush = new AsyncPush(survey);
+                AsyncPush asyncPush = new AsyncPush(survey, user, password);
                 asyncPush.execute((Void) null);
             } else {
                 // Otherwise we notify and continue
@@ -339,10 +342,14 @@ public class DashboardUnsentFragment extends ListFragment {
     public class AsyncPush extends AsyncTask<Void, Integer, PushResult> {
 
         private Survey survey;
+        private String user;
+        private String password;
 
 
-        public AsyncPush(Survey survey) {
+        public AsyncPush(Survey survey, String user, String password) {
             this.survey = survey;
+            this.user = user;
+            this.password = password;
         }
 
         @Override
@@ -354,7 +361,7 @@ public class DashboardUnsentFragment extends ListFragment {
 
         @Override
         protected PushResult doInBackground(Void... params) {
-            PushClient pushClient=new PushClient(survey,getActivity());
+            PushClient pushClient=new PushClient(survey, getActivity(), user, password);
             return pushClient.push();
         }
 

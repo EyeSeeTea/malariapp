@@ -61,11 +61,8 @@ public class PushClient {
 
     private static String TAG=".PushClient";
 
-    //FIXME This should change for a sharedpreferences url that is selected from the login screen
-    private static String DHIS_PUSH_API="/api/events";
-    private static String DHIS_USERNAME="testing";
-    private static String DHIS_PASSWORD="Testing2015";
 
+    private static String DHIS_PUSH_API="/api/events";
 
     public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
 
@@ -86,10 +83,14 @@ public class PushClient {
 
     Survey survey;
     Activity activity;
+    String user;
+    String password;
 
-    public PushClient(Survey survey, Activity activity) {
+    public PushClient(Survey survey, Activity activity, String user, String password) {
         this.survey = survey;
         this.activity = activity;
+        this.user = user;
+        this.password = password;
     }
 
     public PushResult push() {
@@ -281,7 +282,7 @@ public class PushClient {
         private String credentials;
 
         BasicAuthenticator(){
-            credentials = Credentials.basic(DHIS_USERNAME, DHIS_PASSWORD);
+            credentials = Credentials.basic(user, password);
         }
 
         @Override

@@ -336,6 +336,8 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
             // return back to the calling activity the survey position in the dashboard and the ok returncode
             Intent resultData = new Intent();
             resultData.putExtra("Survey", getIntent().getIntExtra("Survey", 0));
+            resultData.putExtra("User", mUserView.getText().toString());
+            resultData.putExtra("Password", mPasswordView.getText().toString());
             setResult(Activity.RESULT_OK, resultData);
             finish();
         }
