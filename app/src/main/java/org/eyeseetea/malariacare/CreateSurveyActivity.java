@@ -52,31 +52,23 @@ import java.util.Map;
 public class CreateSurveyActivity extends BaseActivity {
 
     // UI references.
+    private Spinner orgUnitView;
+    private View orgUnitContainerItems;
     static class ViewHolder{
         public View component;
     }
-    // Org Unit DDL
-    private Spinner orgUnitView;
-    // Org Unit Row DDL
-    private View orgUnitContainerItems;
-    // Org Unit Hierarchy
     private Map<Integer, View> orgUnitHierarchyView;
-    // Org Unit Last Level DDL
     private Spinner realOrgUnitView;
 
-    // Program DDL
+
     private Spinner programView;
-    // Tab Group Row DDL
     private View tabGroupContainer;
-    // Tab Group DDL
     private Spinner tabGroupView;
 
-    // DDL default options
     private OrgUnit orgUnitDefaultOption;
     private Program programDefaultOption;
     private TabGroup tabGroupDefaultOption;
 
-    // Inflater for Org Unit Row
     private LayoutInflater lInflater;
 
     @Override
@@ -106,7 +98,7 @@ public class CreateSurveyActivity extends BaseActivity {
         orgUnitView.setAdapter(new OrgUnitArrayAdapter(this, orgUnitList));
         orgUnitView.setOnItemSelectedListener(new OrgUnitSpinnerListener(viewHolder));
         //Put in org unit hierarchy map
-        orgUnitHierarchyView = new HashMap<Integer, View>();
+        orgUnitHierarchyView = new HashMap<>();
         orgUnitHierarchyView.put(1, findViewById(R.id.org_unit_container));
 
         //Prepare Organization Unit Item DDL
@@ -133,7 +125,7 @@ public class CreateSurveyActivity extends BaseActivity {
             boolean isTabGroupFilled = tabGroupView.getSelectedItemPosition() != 0;
             return isEverythingFilled && isTabGroupFilled;
         } catch (Exception ex) {
-            Log.e("TAKA", ex.getMessage());
+            Log.e(".CreateSurveyActivity", ex.getMessage());
             //FIXME: getSelectedItem throws an exception when there is not an item selected. I looked for a while in API but couldn't find anything. It is not a good idea to catch this behaviour as an exception.
             return true;
         }
@@ -273,7 +265,7 @@ public class CreateSurveyActivity extends BaseActivity {
                 orgUnitList.add(0, orgUnitDefaultOption);
                 ((Spinner) subViewHolder.component).setAdapter(new OrgUnitArrayAdapter(CreateSurveyActivity.this, orgUnitList));
                 ((Spinner) subViewHolder.component).setOnItemSelectedListener(new OrgUnitSpinnerListener(subViewHolder));
-                subViewHolder.component.setTag(R.id.OrgUnitLevelTag, (Integer)((Spinner)viewHolder.component).getTag(R.id.OrgUnitLevelTag)+1);
+                subViewHolder.component.setTag(R.id.OrgUnitLevelTag, (Integer) ((Spinner) viewHolder.component).getTag(R.id.OrgUnitLevelTag) + 1);
 
                 // Select single
                 //((Spinner)childView.findViewById(R.id.org_unit_item_spinner)).setSelection(0);

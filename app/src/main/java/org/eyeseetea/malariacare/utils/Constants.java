@@ -41,6 +41,10 @@ public class Constants {
 
     public static final int MAX_ITEMS_IN_DASHBOARD=5;
 
+    //############# LOGIN AUTHORIZATION ACTIONS ##############
+    public static final int AUTHORIZE_PUSH = 0,
+            AUTHORIZE_PULL = 1;
+
     public static final String CHECKBOX_YES_OPTION="Yes";
 
 }
