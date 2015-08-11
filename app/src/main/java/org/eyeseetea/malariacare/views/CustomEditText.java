@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2015.
  *
- * This file is part of QA App.
+ * This file is part of Health Network QIS App.
  *
  *  Health Network QIS App is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -25,7 +25,7 @@ import android.content.res.TypedArray;
 import android.graphics.Typeface;
 import android.util.AttributeSet;
 import android.util.TypedValue;
-import android.widget.Button;
+import android.widget.EditText;
 
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
@@ -33,7 +33,7 @@ import org.eyeseetea.malariacare.database.utils.PreferencesState;
 /**
  * TODO: document your custom view class.
  */
-public class FontCustomizableButton extends Button implements IEyeSeeView{
+public class CustomEditText extends EditText implements IEyeSeeView{
     private Context context = getContext();
     private String mfontName = context.getString(R.string.normal_font);
     private String mScale = context.getString(R.string.settings_array_values_font_sizes_def);
@@ -42,17 +42,17 @@ public class FontCustomizableButton extends Button implements IEyeSeeView{
     private TypedArray a;
     private Typeface font;
 
-    public FontCustomizableButton(Context context) {
+    public CustomEditText(Context context) {
         super(context);
         init(null, 0);
     }
 
-    public FontCustomizableButton(Context context, AttributeSet attrs) {
+    public CustomEditText(Context context, AttributeSet attrs) {
         super(context, attrs);
         init(attrs, 0);
     }
 
-    public FontCustomizableButton(Context context, AttributeSet attrs, int defStyle) {
+    public CustomEditText(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         init(attrs, defStyle);
     }
@@ -62,16 +62,16 @@ public class FontCustomizableButton extends Button implements IEyeSeeView{
     public void init(AttributeSet attrs, int defStyle) {
         // Load attributes
         if (attrs != null) {
-            a = context.obtainStyledAttributes(attrs, R.styleable.FontCustomizableButton, defStyle, 0);
+            a = context.obtainStyledAttributes(attrs, R.styleable.CustomEditText, defStyle, 0);
             try {
-                mfontName = a.getString(R.styleable.FontCustomizableButton_bFontName);
+                mfontName = a.getString(R.styleable.CustomEditText_eFontName);
                 if (mfontName != null) {
                     font = Typeface.createFromAsset(assetManager, "fonts/" + mfontName);
                     setTypeface(font);
                 }
 
-                mDimension = a.getString(R.styleable.FontCustomizableButton_bDimension);
-                mScale = a.getString(R.styleable.FontCustomizableButton_bScale);
+                mDimension = a.getString(R.styleable.CustomEditText_eDimension);
+                mScale = a.getString(R.styleable.CustomEditText_eScale);
                 if (mDimension == null)
                     mDimension = context.getString(R.string.settings_array_values_font_sizes_def);
                 if (mScale == null) mScale = PreferencesState.getInstance().getScale();

@@ -19,35 +19,35 @@
 
 <resources>
     <!-- TextCard: Text not editable with adaptative text size and text font-->
-    <declare-styleable name="FontCustomizableTextView">
+    <declare-styleable name="CustomTextView">
         <attr name="tDimension" format="string|reference" />
         <attr name="tScale" format="string|reference" />
         <attr name="tFontName" format="string|reference" />
     </declare-styleable>
 
     <!-- EditCard: Text field editable with adaptative text size and text font-->
-    <declare-styleable name="FontCustomizableEditText">
+    <declare-styleable name="CustomEditText">
         <attr name="eDimension" format="string|reference" />
         <attr name="eScale" format="string|reference" />
         <attr name="eFontName" format="string|reference" />
     </declare-styleable>
 
     <!-- UncheckeableRadioButton: Radiobutton with adaptative text size and text font -->
-    <declare-styleable name="UncheckeableRadioButton">
+    <declare-styleable name="CustomRadioButton">
         <attr name="rDimension" format="string|reference" />
         <attr name="rScale" format="string|reference" />
         <attr name="rFontName" format="string|reference" />
     </declare-styleable>
 
     <!-- FontCustomizableButton: Button with adaptative text size and text font-->
-    <declare-styleable name="FontCustomizableButton">
+    <declare-styleable name="CustomButton">
         <attr name="bDimension" format="string|reference" />
         <attr name="bScale" format="string|reference" />
         <attr name="bFontName" format="string|reference" />
     </declare-styleable>
 
     <!-- FontCustomizableButton: Button with adaptative text size and text font-->
-    <declare-styleable name="FontCustomizableAutoCompleteTextView">
+    <declare-styleable name="CustomAutoCompleteTextView">
         <attr name="aDimension" format="string|reference" />
         <attr name="aScale" format="string|reference" />
         <attr name="aFontName" format="string|reference" />

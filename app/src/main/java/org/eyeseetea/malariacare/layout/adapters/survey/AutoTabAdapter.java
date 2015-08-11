@@ -50,9 +50,9 @@ import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 import org.eyeseetea.malariacare.utils.Constants;
 import org.eyeseetea.malariacare.utils.Utils;
-import org.eyeseetea.malariacare.views.FontCustomizableEditText;
-import org.eyeseetea.malariacare.views.FontCustomizableTextView;
-import org.eyeseetea.malariacare.views.UncheckeableRadioButton;
+import org.eyeseetea.malariacare.views.CustomEditText;
+import org.eyeseetea.malariacare.views.CustomTextView;
+import org.eyeseetea.malariacare.views.CustomRadioButton;
 import org.eyeseetea.malariacare.views.filters.MinMaxInputFilter;
 
 import java.util.Arrays;
@@ -94,23 +94,23 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
     //Store the Views references for each row (to avoid many calls to getViewById)
     static class ViewHolder {
         //Label
-        public FontCustomizableTextView statement;
+        public CustomTextView statement;
 
         // Main component in the row: Spinner, EditText or RadioGroup
         public View component;
 
-        public FontCustomizableTextView num;
-        public FontCustomizableTextView denum;
+        public CustomTextView num;
+        public CustomTextView denum;
         public int type;
     }
 
     //Store the views references for each view in the footer
     static class ScoreHolder {
-        public FontCustomizableTextView subtotalscore;
-        public FontCustomizableTextView score;
-        public FontCustomizableTextView totalNum;
-        public FontCustomizableTextView totalDenum;
-        public FontCustomizableTextView qualitativeScore;
+        public CustomTextView subtotalscore;
+        public CustomTextView score;
+        public CustomTextView totalNum;
+        public CustomTextView totalDenum;
+        public CustomTextView qualitativeScore;
     }
 
     public AutoTabAdapter(Tab tab, Context context) {
@@ -193,11 +193,11 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
      * Store subscore bar views in a private class to later access them quickly
      */
     private void initializeScoreViews() {
-        scoreHolder.score = (FontCustomizableTextView) ((Activity) context).findViewById(R.id.score);
-        scoreHolder.totalDenum = (FontCustomizableTextView) ((Activity) context).findViewById(R.id.totalDen);
-        scoreHolder.totalNum = (FontCustomizableTextView) ((Activity) context).findViewById(R.id.totalNum);
-        scoreHolder.subtotalscore = (FontCustomizableTextView) ((Activity) context).findViewById(R.id.subtotalScoreText);
-        scoreHolder.qualitativeScore = (FontCustomizableTextView) ((Activity) context).findViewById(R.id.qualitativeScore);
+        scoreHolder.score = (CustomTextView) ((Activity) context).findViewById(R.id.score);
+        scoreHolder.totalDenum = (CustomTextView) ((Activity) context).findViewById(R.id.totalDen);
+        scoreHolder.totalNum = (CustomTextView) ((Activity) context).findViewById(R.id.totalNum);
+        scoreHolder.subtotalscore = (CustomTextView) ((Activity) context).findViewById(R.id.subtotalScoreText);
+        scoreHolder.qualitativeScore = (CustomTextView) ((Activity) context).findViewById(R.id.qualitativeScore);
     }
 
     /**
@@ -375,7 +375,7 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
             case Constants.INT:
             case Constants.LONG_TEXT:
             case Constants.POSITIVE_INT:
-                ((FontCustomizableEditText) viewHolder.component).setText(ReadWriteDB.readValueQuestion(question));
+                ((CustomEditText) viewHolder.component).setText(ReadWriteDB.readValueQuestion(question));
                 break;
             case Constants.DROPDOWN_LIST:
 
@@ -401,7 +401,7 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
                     break;
                 }
                 if (value != null) {
-                    ((UncheckeableRadioButton) viewHolder.component.findViewWithTag(value.getOption())).setChecked(true);
+                    ((CustomRadioButton) viewHolder.component.findViewWithTag(value.getOption())).setChecked(true);
 
                     viewHolder.num.setText(Float.toString(numdenumradiobutton.get(0)));
                     viewHolder.denum.setText(Float.toString(numdenumradiobutton.get(1)));
@@ -530,7 +530,7 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
                     rowView = initialiseView(R.layout.longtext, parent, question, viewHolder, position);
 
                     //Add main component and listener
-                    ((FontCustomizableEditText) viewHolder.component).addTextChangedListener(new TextViewListener(false, question));
+                    ((CustomEditText) viewHolder.component).addTextChangedListener(new TextViewListener(false, question));
                     break;
                 case Constants.NO_ANSWER:
                     rowView = initialiseView(R.layout.label, parent, question, viewHolder, position);
@@ -539,33 +539,33 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
                     rowView = initialiseView(R.layout.integer, parent, question, viewHolder, position);
 
                     //Add main component, set filters and listener
-                    ((FontCustomizableEditText) viewHolder.component).setFilters(new InputFilter[]{
+                    ((CustomEditText) viewHolder.component).setFilters(new InputFilter[]{
                             new InputFilter.LengthFilter(Constants.MAX_INT_CHARS),
                             new MinMaxInputFilter(1, null)
                     });
-                    ((FontCustomizableEditText) viewHolder.component).addTextChangedListener(new TextViewListener(false, question));
+                    ((CustomEditText) viewHolder.component).addTextChangedListener(new TextViewListener(false, question));
                     break;
                 case Constants.INT:
                     rowView = initialiseView(R.layout.integer, parent, question, viewHolder, position);
 
                     //Add main component, set filters and listener
-                    ((FontCustomizableEditText) viewHolder.component).setFilters(new InputFilter[]{
+                    ((CustomEditText) viewHolder.component).setFilters(new InputFilter[]{
                             new InputFilter.LengthFilter(Constants.MAX_INT_CHARS)
                     });
-                    ((FontCustomizableEditText) viewHolder.component).addTextChangedListener(new TextViewListener(false, question));
+                    ((CustomEditText) viewHolder.component).addTextChangedListener(new TextViewListener(false, question));
                     break;
                 case Constants.DATE:
                     rowView = initialiseView(R.layout.date, parent, question, viewHolder, position);
 
                     //Add main component and listener
-                    ((FontCustomizableEditText) viewHolder.component).addTextChangedListener(new TextViewListener(false, question));
+                    ((CustomEditText) viewHolder.component).addTextChangedListener(new TextViewListener(false, question));
                     break;
 
                 case Constants.SHORT_TEXT:
                     rowView = initialiseView(R.layout.shorttext, parent, question, viewHolder, position);
 
                     //Add main component and listener
-                    ((FontCustomizableEditText) viewHolder.component).addTextChangedListener(new TextViewListener(false, question));
+                    ((CustomEditText) viewHolder.component).addTextChangedListener(new TextViewListener(false, question));
                     break;
 
                 case Constants.DROPDOWN_LIST:
@@ -610,7 +610,7 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
             updateReadOnly(viewHolder.component);
         } else {
             rowView = lInflater.inflate(R.layout.headers, parent, false);
-            viewHolder.statement = (FontCustomizableTextView) rowView.findViewById(R.id.headerName);
+            viewHolder.statement = (CustomTextView) rowView.findViewById(R.id.headerName);
             viewHolder.statement.setText(((Header) item).getName());
 
         }
@@ -648,7 +648,7 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
             rowView.setBackgroundResource(LayoutUtils.calculateBackgrounds(position));
 
         viewHolder.component = rowView.findViewById(R.id.answer);
-        viewHolder.statement = (FontCustomizableTextView) rowView.findViewById(R.id.statement);
+        viewHolder.statement = (CustomTextView) rowView.findViewById(R.id.statement);
         viewHolder.statement.setText(question.getForm_name());
 
         return rowView;
@@ -656,8 +656,8 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
 
     private void initialiseScorableComponent(View rowView, ViewHolder viewHolder) {
         // In case the option is selected, we will need to show num/dems
-        viewHolder.num = (FontCustomizableTextView) rowView.findViewById(R.id.num);
-        viewHolder.denum = (FontCustomizableTextView) rowView.findViewById(R.id.den);
+        viewHolder.num = (CustomTextView) rowView.findViewById(R.id.num);
+        viewHolder.denum = (CustomTextView) rowView.findViewById(R.id.den);
 
         configureViewByPreference(viewHolder);
     }
@@ -666,7 +666,7 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
         ((RadioGroup) viewHolder.component).setOrientation(orientation);
 
         for (Option option : question.getAnswer().getOptions()) {
-            UncheckeableRadioButton button = (UncheckeableRadioButton) lInflater.inflate(R.layout.uncheckeable_radiobutton, null);
+            CustomRadioButton button = (CustomRadioButton) lInflater.inflate(R.layout.uncheckeable_radiobutton, null);
             button.setOption(option);
             button.updateProperties(PreferencesState.getInstance().getScale(), this.context.getString(R.string.font_size_level1), this.context.getString(R.string.medium_font_name));
             ((RadioGroup) viewHolder.component).addView(button);
@@ -781,8 +781,8 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
 
             Option option = new Option(Constants.DEFAULT_SELECT_OPTION);
             if (checkedId != -1) {
-                UncheckeableRadioButton uncheckeableRadioButton = (UncheckeableRadioButton) (this.viewHolder.component).findViewById(checkedId);
-                option = (Option) uncheckeableRadioButton.getTag();
+                CustomRadioButton customRadioButton = (CustomRadioButton) (this.viewHolder.component).findViewById(checkedId);
+                option = (Option) customRadioButton.getTag();
             }
             itemSelected(viewHolder, question, option);
         }

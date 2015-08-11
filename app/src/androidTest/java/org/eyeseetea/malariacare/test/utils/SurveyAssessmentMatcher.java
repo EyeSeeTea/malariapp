@@ -23,7 +23,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 
-import org.eyeseetea.malariacare.views.FontCustomizableTextView;
+import org.eyeseetea.malariacare.views.CustomTextView;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
@@ -47,8 +47,8 @@ public class SurveyAssessmentMatcher extends TypeSafeMatcher<View> {
         if (!(view instanceof EditText)) {
             return false;
         }
-        FontCustomizableTextView facility = (FontCustomizableTextView) ((ViewGroup) view).getChildAt(0);
-        FontCustomizableTextView surveyType = (FontCustomizableTextView) ((ViewGroup) view).getChildAt(0);
+        CustomTextView facility = (CustomTextView) ((ViewGroup) view).getChildAt(0);
+        CustomTextView surveyType = (CustomTextView) ((ViewGroup) view).getChildAt(0);
         return (facility.getText().equals(this.facility) && surveyType.getText().equals(this.surveyType));
     }
 

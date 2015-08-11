@@ -33,7 +33,7 @@ import org.eyeseetea.malariacare.database.utils.PreferencesState;
 /**
  * TODO: document your custom view class.
  */
-public class FontCustomizableAutoCompleteTextView extends AutoCompleteTextView implements IEyeSeeView{
+public class CustomAutoCompleteTextView extends AutoCompleteTextView implements IEyeSeeView{
     private Context context = getContext();
     private String mfontName = context.getString(R.string.normal_font);
     private String mScale = context.getString(R.string.settings_array_values_font_sizes_def);
@@ -42,17 +42,17 @@ public class FontCustomizableAutoCompleteTextView extends AutoCompleteTextView i
     private TypedArray a;
     private Typeface font;
 
-    public FontCustomizableAutoCompleteTextView(Context context) {
+    public CustomAutoCompleteTextView(Context context) {
         super(context);
         init(null, 0);
     }
 
-    public FontCustomizableAutoCompleteTextView(Context context, AttributeSet attrs) {
+    public CustomAutoCompleteTextView(Context context, AttributeSet attrs) {
         super(context, attrs);
         init(attrs, 0);
     }
 
-    public FontCustomizableAutoCompleteTextView(Context context, AttributeSet attrs, int defStyle) {
+    public CustomAutoCompleteTextView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         init(attrs, defStyle);
     }
@@ -62,16 +62,16 @@ public class FontCustomizableAutoCompleteTextView extends AutoCompleteTextView i
     public void init(AttributeSet attrs, int defStyle) {
         // Load attributes
         if (attrs != null) {
-            a = context.obtainStyledAttributes(attrs, R.styleable.FontCustomizableAutoCompleteTextView, defStyle, 0);
+            a = context.obtainStyledAttributes(attrs, R.styleable.CustomAutoCompleteTextView, defStyle, 0);
             try {
-                mfontName = a.getString(R.styleable.FontCustomizableAutoCompleteTextView_aFontName);
+                mfontName = a.getString(R.styleable.CustomAutoCompleteTextView_aFontName);
                 if (mfontName != null) {
                     font = Typeface.createFromAsset(assetManager, "fonts/" + mfontName);
                     setTypeface(font);
                 }
 
-                mDimension = a.getString(R.styleable.FontCustomizableAutoCompleteTextView_aDimension);
-                mScale = a.getString(R.styleable.FontCustomizableAutoCompleteTextView_aScale);
+                mDimension = a.getString(R.styleable.CustomAutoCompleteTextView_aDimension);
+                mScale = a.getString(R.styleable.CustomAutoCompleteTextView_aScale);
                 if (mDimension == null)
                     mDimension = context.getString(R.string.settings_array_values_font_sizes_def);
                 if (mScale == null) mScale = PreferencesState.getInstance().getScale();

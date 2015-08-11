@@ -22,7 +22,7 @@ package org.eyeseetea.malariacare.layout.adapters.general;
 import android.content.Context;
 
 import org.eyeseetea.malariacare.database.model.OrgUnit;
-import org.eyeseetea.malariacare.views.FontCustomizableTextView;
+import org.eyeseetea.malariacare.views.CustomTextView;
 
 import java.util.List;
 
@@ -35,8 +35,8 @@ public class OrgUnitArrayAdapter extends AddlArrayAdapter<OrgUnit> {
         super(context, orgUnits);
     }
 
-    @Override public void drawText(FontCustomizableTextView fontCustomizableTextView, OrgUnit orgUnit) {
-        fontCustomizableTextView.setText(orgUnit.getName());
+    @Override public void drawText(CustomTextView customTextView, OrgUnit orgUnit) {
+        customTextView.setText(orgUnit.getName());
     }
 
 }
