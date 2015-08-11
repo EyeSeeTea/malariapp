@@ -27,7 +27,6 @@ import android.util.Log;
 import com.raizlabs.android.dbflow.sql.language.Select;
 
 import org.eyeseetea.malariacare.database.model.CompositeScore;
-import org.eyeseetea.malariacare.database.model.Program;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.model.Survey$Table;
 import org.eyeseetea.malariacare.database.model.Tab;
@@ -130,8 +129,8 @@ public class SurveyService extends IntentService {
                 .orderBy(Survey$Table.EVENTDATE)
                 .orderBy(Survey$Table.ORGUNIT_ID_ORG_UNIT).queryList();
 
-        List<Survey> unsentSurveys=new ArrayList<Survey>();
-        List<Survey> sentSurveys=new ArrayList<Survey>();
+        List<Survey> unsentSurveys=new ArrayList<>();
+        List<Survey> sentSurveys=new ArrayList<>();
         for(Survey survey:surveys){
             if(!survey.isSent()){
                 unsentSurveys.add(survey);
@@ -142,7 +141,7 @@ public class SurveyService extends IntentService {
         }
 
         //Since intents does NOT admit NON serializable as values we use Session instead
-        Session.putServiceValue(ALL_UNSENT_SURVEYS_ACTION,unsentSurveys);
+        Session.putServiceValue(ALL_UNSENT_SURVEYS_ACTION, unsentSurveys);
         Session.putServiceValue(ALL_SENT_SURVEYS_ACTION, sentSurveys);
 
         //Returning result to anyone listening

@@ -363,6 +363,19 @@ public class DashboardUnsentFragment extends ListFragment {
             super.onPostExecute(pushResult);
             setListShown(true);
             showResponse(pushResult);
+            if(pushResult.isSuccessful()) {
+                survey.setStatus(Constants.SURVEY_SENT);
+                survey.update();
+            }
+            // Launch service to update dashboard
+            Intent surveysIntent=new Intent(getActivity(), SurveyService.class);
+            surveysIntent.putExtra(SurveyService.SERVICE_METHOD, SurveyService.RELOAD_DASHBOARD_ACTION);
+            getActivity().startService(surveysIntent);
+            // Change adapters according to service answer
+            Session.getAdapterUncompleted().setItems((List) Session.popServiceValue(SurveyService.ALL_UNSENT_SURVEYS_ACTION));
+            Session.getAdapterCompleted().setItems((List) Session.popServiceValue(SurveyService.ALL_SENT_SURVEYS_ACTION));
+            Session.getAdapterUncompleted().notifyDataSetChanged();
+            Session.getAdapterCompleted().notifyDataSetChanged();
         }
 
         /**
