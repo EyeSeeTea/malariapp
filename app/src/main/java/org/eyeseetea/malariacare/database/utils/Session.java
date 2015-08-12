@@ -57,10 +57,17 @@ public class Session {
     /**
      * Map that holds non serializable results from services
      */
-    private static Map<String,Object> serviceValues=new HashMap<>();
+    private static Map<String,Object> serviceValues = new HashMap<>();
 
-    //FIXME Probably no longer required
-    private static IDashboardAdapter adapterUncompleted, adapterCompleted;
+    /**
+     * Adapters that hold dashboard sent and unset surveys adapters
+     */
+    private static IDashboardAdapter adapterUnsent, adapterSent;
+
+    /**
+     * Cache containing the list of ordered items that compounds each tab
+     */
+    private static Map<Long, List<Object>> tabsCache = new HashMap<>();
 
     public static Survey getSurvey() {
         return survey;
@@ -78,20 +85,28 @@ public class Session {
         Session.user = user;
     }
 
-    public static IDashboardAdapter getAdapterUncompleted() {
-        return adapterUncompleted;
+    public static IDashboardAdapter getAdapterUnsent() {
+        return adapterUnsent;
     }
 
-    public static void setAdapterUncompleted(IDashboardAdapter adapterUncompleted) {
-        Session.adapterUncompleted = adapterUncompleted;
+    public static void setAdapterUnsent(IDashboardAdapter adapterUnsent) {
+        Session.adapterUnsent = adapterUnsent;
     }
 
-    public static IDashboardAdapter getAdapterCompleted() {
-        return adapterCompleted;
+    public static IDashboardAdapter getAdapterSent() {
+        return adapterSent;
     }
 
-    public static void setAdapterCompleted(IDashboardAdapter adapterCompleted) {
-        Session.adapterCompleted = adapterCompleted;
+    public static void setAdapterSent(IDashboardAdapter adapterSent) {
+        Session.adapterSent = adapterSent;
+    }
+
+    public static Map<Long, List<Object>> getTabsCache() {
+        return tabsCache;
+    }
+
+    public static void setTabsCache(Map<Long, List<Object>> tabsCache) {
+        Session.tabsCache = tabsCache;
     }
 
     /**
@@ -105,7 +120,7 @@ public class Session {
         Session.getUser().delete();
         Session.setUser(null);
         Session.setSurvey(null);
-        Session.setAdapterUncompleted(null);
+        Session.setAdapterUnsent(null);
         Session.serviceValues.clear();
     }
 
