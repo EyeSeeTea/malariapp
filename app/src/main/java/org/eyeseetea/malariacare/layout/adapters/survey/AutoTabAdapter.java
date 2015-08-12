@@ -115,7 +115,7 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
 
     public AutoTabAdapter(Tab tab, Context context) {
         this.lInflater = LayoutInflater.from(context);
-        this.items = Utils.convertTabToArray(tab);
+        this.items = Utils.getTabItems(tab);
         this.context = context;
         this.id_layout = R.layout.form_with_score;
         this.tab = tab;

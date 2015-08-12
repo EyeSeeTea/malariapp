@@ -69,7 +69,7 @@ public class DashboardUnsentFragment extends ListFragment {
     private static int index = 0;
 
     public DashboardUnsentFragment(){
-        this.adapter = Session.getAdapterUncompleted();
+        this.adapter = Session.getAdapterUnsent();
         this.surveys = new ArrayList();
     }
 
@@ -123,14 +123,14 @@ public class DashboardUnsentFragment extends ListFragment {
      * In a version with several adapters in dashboard (like in 'mock' branch) a new one like the one in session is created.
      */
     private void initAdapter(){
-        IDashboardAdapter adapterInSession = Session.getAdapterUncompleted();
+        IDashboardAdapter adapterInSession = Session.getAdapterUnsent();
         if(adapterInSession == null){
             adapterInSession = new AssessmentUnsentAdapter(this.surveys,getActivity());
         }else{
             adapterInSession = adapterInSession.newInstance(this.surveys,getActivity());
         }
         this.adapter = adapterInSession;
-        Session.setAdapterUncompleted(this.adapter);
+        Session.setAdapterUnsent(this.adapter);
     }
 
     @Override
@@ -379,10 +379,10 @@ public class DashboardUnsentFragment extends ListFragment {
             surveysIntent.putExtra(SurveyService.SERVICE_METHOD, SurveyService.RELOAD_DASHBOARD_ACTION);
             getActivity().startService(surveysIntent);
             // Change adapters according to service answer
-            Session.getAdapterUncompleted().setItems((List) Session.popServiceValue(SurveyService.ALL_UNSENT_SURVEYS_ACTION));
-            Session.getAdapterCompleted().setItems((List) Session.popServiceValue(SurveyService.ALL_SENT_SURVEYS_ACTION));
-            Session.getAdapterUncompleted().notifyDataSetChanged();
-            Session.getAdapterCompleted().notifyDataSetChanged();
+            Session.getAdapterUnsent().setItems((List) Session.popServiceValue(SurveyService.ALL_UNSENT_SURVEYS_ACTION));
+            Session.getAdapterSent().setItems((List) Session.popServiceValue(SurveyService.ALL_SENT_SURVEYS_ACTION));
+            Session.getAdapterUnsent().notifyDataSetChanged();
+            Session.getAdapterSent().notifyDataSetChanged();
         }
 
         /**
