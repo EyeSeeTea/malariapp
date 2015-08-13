@@ -38,18 +38,6 @@
         android:layout_height="40dip" />
 
 
-        <org.eyeseetea.malariacare.views.CustomTextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="@string/adherence_info_pharmacy_register"
-            android:id="@+id/registerTitle"
-            android:textStyle="bold"
-            android:paddingBottom="20dip"
-            app:tDimension="@string/font_size_level1"
-            app:tFontName="@string/medium_font_name" />
-
-
             <LinearLayout
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content">

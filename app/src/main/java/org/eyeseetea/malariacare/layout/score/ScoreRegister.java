@@ -27,7 +27,6 @@ import org.eyeseetea.malariacare.database.model.Question;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.model.Tab;
 import org.eyeseetea.malariacare.database.utils.Session;
-import org.eyeseetea.malariacare.utils.Constants;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -66,6 +65,7 @@ public class ScoreRegister {
     }
 
     public static void addRecord(Question question, Float num, Float den){
+        // TODO: apparently, this map (compositeScoreMap) may return a null sometimes. We may check it in case of bug
         if (question.getCompositeScore() != null) {
             compositeScoreMap.get(question.getCompositeScore()).addRecord(question, num, den);
         }
@@ -101,7 +101,7 @@ public class ScoreRegister {
 
     public static Float getCompositeScore(CompositeScore cScore) {
 
-        List<Float>result = compositeScoreMap.get(cScore).calculateNumDenTotal(new ArrayList<Float>(Arrays.asList(0F, 0F)));
+        List<Float>result = compositeScoreMap.get(cScore).calculateNumDenTotal(new ArrayList<>(Arrays.asList(0F, 0F)));
 
         result = getRecursiveScore(cScore, result);
 
