@@ -148,7 +148,6 @@ public class SurveyActivity extends BaseActivity{
         registerReceiver();
         createActionBar();
         createMenu();
-        preLoadItems();
         createProgress();
         prepareSurveyInfo();
     }
@@ -228,22 +227,10 @@ public class SurveyActivity extends BaseActivity{
     private void preLoadItems(){
         List<Tab> tabs = new Select().all().from(Tab.class).queryList();
         for(Tab tab: tabs) {
-            new AsyncPreLoadTabs(tab).execute((Void) null);
-        }
-    }
-
-    public class AsyncPreLoadTabs extends AsyncTask<Void, Integer, Void>{
-
-        private Tab tab;
-
-        public AsyncPreLoadTabs(Tab tab) {
-            this.tab = tab;
-        }
-
-        @Override
-        protected Void doInBackground(Void... params) {
-            Utils.getTabItems(tab);
-            return null;
+            Intent preLoadService = new Intent(this, SurveyService.class);
+            preLoadService.putExtra(SurveyService.SERVICE_METHOD, SurveyService.PRELOAD_TAB_ITEMS);
+            preLoadService.putExtra("tab", tab.getId());
+            this.startService(preLoadService);
         }
     }
 
@@ -522,6 +509,9 @@ public class SurveyActivity extends BaseActivity{
             tabAdaptersCache.reloadAdapters(tabs,compositeScores);
             reloadTabs(tabs);
             stopProgress();
+
+            // After loading first tab we start the individual services that preload the items for the rest of tabs
+            preLoadItems();
         }
     }
 
