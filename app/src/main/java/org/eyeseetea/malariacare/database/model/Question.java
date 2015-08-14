@@ -116,11 +116,9 @@ public class Question extends BaseModel{
 
     List<Question> children;
 
-    List<Question> relatives;
-
-    List<Question> master;
-
     List<Value> values;
+
+    List<QuestionRelation> questionRelations;
 
     public Question() {
     }
@@ -244,6 +242,32 @@ public class Question extends BaseModel{
         return getQuestion() != null;
     }
 
+    @OneToMany(methods = {OneToMany.Method.SAVE, OneToMany.Method.DELETE}, variableName = "questionRelations")
+    public List<QuestionRelation> getQuestionRelations() {
+        //if (this.children == null){
+        this.questionRelations = new Select().from(QuestionRelation.class)
+                .where(Condition.column(QuestionRelation$Table.QUESTION_ID_QUESTION).eq(this.getId()))
+                .queryList();
+        //}
+        return this.questionRelations;
+    }
+
+   public boolean hasQuestionRelations(){
+       return !this.getQuestionRelations().isEmpty();
+   }
+
+    public List<QuestionOption> getQuestionOption() {
+        //if (this.children == null){
+        return new Select().from(QuestionOption.class)
+                .where(Condition.column(QuestionOption$Table.QUESTION_ID_QUESTION).eq(this.getId()))
+                .queryList();
+        //}
+    }
+
+    public boolean hasQuestionOption(){
+        return !this.getQuestionOption().isEmpty();
+    }
+
     @OneToMany(methods = {OneToMany.Method.SAVE, OneToMany.Method.DELETE}, variableName = "children")
     public List<Question> getChildren() {
         //if (this.children == null){
@@ -253,33 +277,6 @@ public class Question extends BaseModel{
         //}
         return this.children;
     }
-
-    public List<Question> getRelatives() {
-        //if (this.relatives == null) {
-            this.relatives = new Select().from(Question.class).where(Condition.column(Question$Table.ID)
-                    .in(new Select(QuestionRelation$Table.RELATIVE_RELATIVE).from(QuestionRelation.class)
-                            .where(Condition.column(QuestionRelation$Table.MASTER_MASTER).eq(this.getId())))).queryList();
-            //this.relatives = Question.findWithQuery(Question.class, "Select * from Question" +
-            //        " where id in (Select relative from Question_Relation where master =" + this.getId() + ")");
-       //}
-        return this.relatives;
-    }
-
-
-    public List<Question> getMasters() {
-        if (this.master == null) {
-            this.master = new Select().from(Question.class).where(Condition.column(Question$Table.ID)
-                    .in(new Select(QuestionRelation$Table.MASTER_MASTER).from(QuestionRelation.class)
-                    .where(Condition.column(QuestionRelation$Table.RELATIVE_RELATIVE).eq(this.getId())))).queryList();
-            //this.master = Question.findWithQuery(Question.class, "Select * from Question" +
-            //        " where id in (Select master from Question_Relation where relative =" + this.getId() + ")");
-        }
-        return this.master;
-    }
-
-    public boolean belongsToMasterQuestions() {return !getMasters().isEmpty();}
-
-    public boolean hasRelatives() {return !getRelatives().isEmpty(); }
 
     public boolean hasChildren(){
         return !getChildren().isEmpty();

@@ -37,39 +37,28 @@ import java.util.List;
  * Created by Jose on 25/05/2015.
  */
 @Table(databaseName = AppDatabase.NAME)
-public class QuestionRelation extends BaseModel {
+public class Match extends BaseModel {
     @Column
     @PrimaryKey(autoincrement = true)
     long id;
+
     @Column
-    @ForeignKey(references = {@ForeignKeyReference(columnName = "id_question",
+    @ForeignKey(references = {@ForeignKeyReference(columnName = "id_question_relation",
             columnType = Long.class,
             foreignColumnName = "id")},
             saveForeignKeyModel = false)
-    Question question;
+    QuestionRelation questionRelation;
 
-    @Column
-    int operation;
+    List<QuestionOption> questionOptions;
 
-    List<Match> matches;
-
-    @OneToMany(methods = {OneToMany.Method.SAVE, OneToMany.Method.DELETE}, variableName = "matches")
-    public List<Match> getMatches() {
+    @OneToMany(methods = {OneToMany.Method.SAVE, OneToMany.Method.DELETE}, variableName = "questionOptions")
+    public List<QuestionOption> getQuestionOptions() {
         //if (this.children == null){
-        this.matches = new Select().from(Match.class)
-                .where(Condition.column(Match$Table.QUESTIONRELATION_ID_QUESTION_RELATION).eq(this.getId()))
+        this.questionOptions = new Select().from(QuestionOption.class)
+                .where(Condition.column(QuestionOption$Table.MATCH_ID_MATCH).eq(this.getId()))
                 .queryList();
         //}
-        return this.matches;
-    }
-
-
-
-    public QuestionRelation(){};
-
-    public QuestionRelation(Question question, int operation) {
-        this.question = question;
-        this.operation = operation;
+        return this.questionOptions;
     }
 
     public long getId() {
@@ -80,20 +69,12 @@ public class QuestionRelation extends BaseModel {
         this.id = id;
     }
 
-    public Question getQuestion() {
-        return question;
+    public QuestionRelation getQuestionRelation() {
+        return questionRelation;
     }
 
-    public void setQuestion(Question question) {
-        this.question = question;
-    }
-
-    public int getOperation() {
-        return operation;
-    }
-
-    public void setOperation(int operation) {
-        this.operation = operation;
+    public void setQuestionRelation(QuestionRelation questionRelation) {
+        this.questionRelation = questionRelation;
     }
 
     @Override
@@ -101,11 +82,10 @@ public class QuestionRelation extends BaseModel {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        QuestionRelation that = (QuestionRelation) o;
+        Match match = (Match) o;
 
-        if (id != that.id) return false;
-        if (operation != that.operation) return false;
-        if (question != null ? !question.equals(that.question) : that.question != null)
+        if (id != match.id) return false;
+        if (questionRelation != null ? !questionRelation.equals(match.questionRelation) : match.questionRelation != null)
             return false;
 
         return true;
@@ -114,8 +94,7 @@ public class QuestionRelation extends BaseModel {
     @Override
     public int hashCode() {
         int result = (int) (id ^ (id >>> 32));
-        result = 31 * result + (question != null ? question.hashCode() : 0);
-        result = 31 * result + operation;
+        result = 31 * result + (questionRelation != null ? questionRelation.hashCode() : 0);
         return result;
     }
 
@@ -123,8 +102,7 @@ public class QuestionRelation extends BaseModel {
     public String toString() {
         return "QuestionRelation{" +
                 "id=" + id +
-                ", question=" + question +
-                ", operation=" + operation +
+                ", questionRelation=" + questionRelation +
                 '}';
     }
 }

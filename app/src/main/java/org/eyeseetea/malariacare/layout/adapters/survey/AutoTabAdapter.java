@@ -38,8 +38,11 @@ import com.google.common.primitives.Booleans;
 
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.model.Header;
+import org.eyeseetea.malariacare.database.model.Match;
 import org.eyeseetea.malariacare.database.model.Option;
 import org.eyeseetea.malariacare.database.model.Question;
+import org.eyeseetea.malariacare.database.model.QuestionOption;
+import org.eyeseetea.malariacare.database.model.QuestionRelation;
 import org.eyeseetea.malariacare.database.model.Tab;
 import org.eyeseetea.malariacare.database.model.Value;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
@@ -55,9 +58,12 @@ import org.eyeseetea.malariacare.views.CustomTextView;
 import org.eyeseetea.malariacare.views.CustomRadioButton;
 import org.eyeseetea.malariacare.views.filters.MinMaxInputFilter;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Jose on 21/04/2015.
@@ -336,8 +342,7 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
      * @param question the question whose children we want to show/hide
      * @param visible true for make them visible, false for invisible
      */
-    private void
-    toggleChildrenVisibility(Question question, boolean visible) {
+    private void toggleChildrenVisibility(Question question, boolean visible) {
         List<Question> children = question.getChildren();
         Question cachedQuestion = null;
 
@@ -364,7 +369,6 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
             }
             cachedQuestion = question;
         }
-        notifyDataSetChanged();
     }
 
     public void setValues(ViewHolder viewHolder, Question question) {
@@ -378,6 +382,7 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
                 ((CustomEditText) viewHolder.component).setText(ReadWriteDB.readValueQuestion(question));
                 break;
             case Constants.DROPDOWN_LIST:
+            case Constants.DROPDOWN_LIST_DISABLED:
 
                 ((Spinner) viewHolder.component).setSelection(ReadWriteDB.readPositionOption(question));
 
@@ -437,38 +442,80 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
     }
 
     private boolean checkMatches(Question question) {
-        boolean match = true;
 
-        List<Question> relatives = question.getRelatives();
+        for (QuestionRelation questionRelation : question.getQuestionRelations()){
+            Map<Question, Option> questionOptionMap = new HashMap<>();
+            for (Match match : questionRelation.getMatches()){
+                boolean isMatch = true;
+                for (QuestionOption questionOption : match.getQuestionOptions()){
+                    if  (!questionOptionMap.containsKey(questionOption.getQuestion())) {
+                        Option currentOption = ReadWriteDB.readOptionAnswered(questionOption.getQuestion());
+                        if (currentOption == null)
+                            return false;
+                        else
+                            questionOptionMap.put(questionOption.getQuestion(), currentOption);
+                    }
 
-        if (relatives.size() > 0) {
-
-            Option option = ReadWriteDB.readOptionAnswered(relatives.get(0));
-
-            if (option == null) match = false;
-
-            for (int i = 1; i < relatives.size() && match; i++) {
-                Option currentOption = ReadWriteDB.readOptionAnswered(relatives.get(i));
-
-                if (currentOption == null) match = false;
-                else
-                    match = match && (Float.compare(option.getFactor(), currentOption.getFactor()) == 0);
+                    if (!questionOptionMap.get(questionOption.getQuestion()).equals(questionOption.getOption())){
+                        isMatch= false;
+                        break;
+                    }
+                }
+                if (isMatch)
+                    return true;
             }
-
         }
 
-        return match;
+        return false;
+
+
+
+
+//        Map<Question, Option> masterQuestions = new HashMap<>();
+//        int matchedQuestions = 0;
+//        // Retrieve the Question Relation where this question is mater
+//        for (QuestionRelation questionRelation : question.getRelativeQuestionsRelations()){
+//
+//            // For this question relation extract the master question and check if the v
+//            for (QuestionRelation masterQuestionRelation:questionRelation.getRelative_question().getMasterQuestionRelations()){
+//                if  (!masterQuestions.containsKey(masterQuestionRelation.getMaster_question()))
+//                    masterQuestions.put(masterQuestionRelation.getMaster_question(), ReadWriteDB.readOptionAnswered(questionRelation.getMaster_question()));
+//
+//                if (masterQuestions.get(masterQuestionRelation.getMaster_question())!= null && masterQuestionRelation.getMaster_option() != null && masterQuestions.get(masterQuestionRelation.getMaster_question()).equals(masterQuestionRelation.getMaster_option())){
+//                    matchedQuestions++;
+//                }
+//
+//            }
+//
+//
+//
+//        }
+
+//        if (matchedQuestions == masterQuestions.size()) {
+//            match = true;
+//
+//
+//            //question.getRelative_question()
+//
+//            matchedQuestions = 0;
+//            masterQuestions = new HashMap<>();
+//        }
+
+//        for (Option option : questionRelation.getRelative_question().getAnswer().getOptions()){
+//            if (matched && option.is(context.getString(R.string.yes)) || !matched && option.is(context.getString(R.string.no)) ) {
+//                ReadWriteDB.saveValuesDDL(question, option);
+//            }
+//        }
+
     }
 
     private void autoFillAnswer(ViewHolder viewHolder, Question question) {
 
-        viewHolder.component.setEnabled(false);
 
         if (checkMatches(question))
             itemSelected(viewHolder, question, question.getAnswer().getOptions().get(0));
         else
             itemSelected(viewHolder, question, question.getAnswer().getOptions().get(1));
-
     }
 
     /**
@@ -483,10 +530,14 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
 
         recalculateScores(viewHolder, question);
 
-        if (question.hasChildren()) {
-            // FIXME: the database should have the link from question to the option that triggers its show/hide action. This way, we wouldn't depend on translation to properly match yes/oui/sí/etc
-            toggleChildrenVisibility(question, option.is(context.getString(R.string.yes)));
+        // Toggle Children Spinner Visibility if parent relation found
+        // FIXME: the database should have the link from question to the option that triggers its show/hide action. This way, we wouldn't depend on translation to properly match yes/oui/sí/etc
+        if (question.hasChildren() || question.hasQuestionOption()){
+            if (question.hasChildren())
+                toggleChildrenVisibility(question, option.is(context.getString(R.string.yes)));
+            notifyDataSetChanged();
         }
+
 
         updateScore();
     }
@@ -579,11 +630,24 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
                     Spinner spinner = (Spinner) viewHolder.component;
                     spinner.setAdapter(new OptionArrayAdapter(context, optionList));
 
-                    //Add Listener
-                    if (!question.hasRelatives())
-                        ((Spinner) viewHolder.component).setOnItemSelectedListener(new SpinnerListener(false, question, viewHolder));
-                    else
-                        autoFillAnswer(viewHolder, question);
+                    ((Spinner) viewHolder.component).setOnItemSelectedListener(new SpinnerListener(false, question, viewHolder));
+                    break;
+                case Constants.DROPDOWN_LIST_DISABLED:
+                    rowView = initialiseView(R.layout.ddl, parent, question, viewHolder, position);
+
+                    initialiseScorableComponent(rowView, viewHolder);
+
+                    // In case the option is selected, we will need to show num/dems
+                    List<Option> optionList2 = question.getAnswer().getOptions();
+                    optionList2.add(0, new Option(Constants.DEFAULT_SELECT_OPTION));
+                    Spinner spinner2 = (Spinner) viewHolder.component;
+                    spinner2.setAdapter(new OptionArrayAdapter(context, optionList2));
+
+                    autoFillAnswer(viewHolder, question);
+
+                    //Disabled Spinner
+                    //spinner2.getSelectedView().setEnabled(false);
+                    spinner2.setEnabled(false);
                     break;
                 case Constants.RADIO_GROUP_HORIZONTAL:
                     rowView = initialiseView(R.layout.radio, parent, question, viewHolder, position);
@@ -750,8 +814,6 @@ public class AutoTabAdapter extends BaseAdapter implements ITabAdapter {
         public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
             if (viewCreated) {
                 itemSelected(viewHolder, question, (Option) ((Spinner) viewHolder.component).getItemAtPosition(pos));
-                //if (question.belongsToMasterQuestions())
-                  //  notifyDataSetChanged();
             } else {
                 viewCreated = true;
             }

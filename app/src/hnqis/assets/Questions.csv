@@ -21,7 +21,7 @@
 21;'HNQIS-ICM-D,T&C-100';'HNQIS-ICM-D,T&C-Diag1-100-DIAGNOSIS AND TREATMENT';;'DIAGNOSIS AND TREATMENT';'fz5MTTsOTA1';100;0.00;0.00;4;49;;
 22;'HNQIS-ICM-D,T&C-110';'HNQIS-ICM-D,T&C-Diag1-110-Diagnosis 1 based on supervisor''s observation';;'Diagnosis 1 based on supervisor''s observation';'h8jxRGcOqLf';110;0.00;0.00;4;50;;
 23;'HNQIS-ICM-D,T&C-120';'HNQIS-ICM-D,T&C-Diag1-120-Treatment 1 administered';;'Treatment 1 administered';'r1BTbbj12cu';120;0.00;0.00;4;51;;
-24;'HNQIS-ICM-D,T&C-130';'HNQIS-ICM-D,T&C-Diag1-130-Does diagnosis 1 match treatment 1?';;'Does diagnosis 1 match treatment 1?';'M0dwjE6TviV';130;1.00;1.00;4;15;;4
+24;'HNQIS-ICM-D,T&C-130';'HNQIS-ICM-D,T&C-Diag1-130-Does diagnosis 1 match treatment 1?';;'Does diagnosis 1 match treatment 1?';'M0dwjE6TviV';130;1.00;1.00;4;89;;4
 25;'HNQIS-ICM-D,T&C-140';'HNQIS-ICM-D,T&C-Diag1-140-COUNSELING';;'COUNSELING';'lgpaUPiyzCD';140;0.00;0.00;4;49;;
 26;'HNQIS-ICM-D,T&C-150';'HNQIS-ICM-D,T&C-Diag1-150-Provider counsels caregiver on proper dosage (no. of  doses/days, side effects)';;'Provider counsels caregiver on proper dosage (no. of  doses/days, side effects)';'ZUbFS8Sn9VK';150;1.00;1.00;4;53;;4
 27;'HNQIS-ICM-D,T&C-160';'HNQIS-ICM-D,T&C-Diag1-160-Provider gives first dose of oral medicine on site';;'Provider gives first dose of oral medicine on site';'m1jEwtOohjp';160;1.00;1.00;4;53;;4
@@ -30,7 +30,7 @@
 30;'HNQIS-ICM-D,T&C-190';'HNQIS-ICM-D,T&C-Diag2-190-Was a second diagnosis made?';;'Was a second diagnosis made?';'d2o7cifME4z';190;0.00;0.00;5;53;;
 31;'HNQIS-ICM-D,T&C-200';'HNQIS-ICM-D,T&C-Diag2-200-Diagnosis 2 based on supervisor''s observation';;'Diagnosis 2 based on supervisor''s observation';'QnFBHcybOXC';200;0.00;0.00;5;50;30;
 32;'HNQIS-ICM-D,T&C-210';'HNQIS-ICM-D,T&C-Diag2-210-Treatment 2 administered';;'Treatment 2 administered';'fLfac9AuABJ';210;0.00;0.00;5;51;30;
-33;'HNQIS-ICM-D,T&C-220';'HNQIS-ICM-D,T&C-Diag2-220-Does diagnosis 2 match treatment 2?';;'Does diagnosis 2 match treatment 2?';'gWrt5jLpQHY';220;1.00;1.00;5;15;30;5
+33;'HNQIS-ICM-D,T&C-220';'HNQIS-ICM-D,T&C-Diag2-220-Does diagnosis 2 match treatment 2?';;'Does diagnosis 2 match treatment 2?';'gWrt5jLpQHY';220;1.00;1.00;5;89;30;5
 34;'HNQIS-ICM-D,T&C-230';'HNQIS-ICM-D,T&C-Diag2-230-COUNSELING';;'COUNSELING';'nLtnatD5p07';230;0.00;0.00;5;49;30;
 35;'HNQIS-ICM-D,T&C-240';'HNQIS-ICM-D,T&C-Diag2-240-Provider counsels caregiver on proper dosage (no. of  doses/days, side effects)';;'Provider counsels caregiver on proper dosage (no. of  doses/days, side effects)';'Nj2upW78aPs';240;1.00;1.00;5;53;30;5
 36;'HNQIS-ICM-D,T&C-250';'HNQIS-ICM-D,T&C-Diag2-250-Provider gives first dose of oral medicine on site';;'Provider gives first dose of oral medicine on site';'q45wkwfepMR';250;1.00;1.00;5;53;30;5
@@ -39,7 +39,7 @@
 39;'HNQIS-ICM-D,T&C-280';'HNQIS-ICM-D,T&C-Diag3-280-Was a third diagnosis made?';;'Was a third diagnosis made?';'lI97dA4gYzG';280;0.00;0.00;6;53;;
 40;'HNQIS-ICM-D,T&C-290';'HNQIS-ICM-D,T&C-Diag3-290-Diagnosis 3 based on supervisor''s observation';;'Diagnosis 3 based on supervisor''s observation';'PGMv3dw2BYd';290;0.00;0.00;6;50;39;
 41;'HNQIS-ICM-D,T&C-300';'HNQIS-ICM-D,T&C-Diag3-300-Treatment 3 administered';;'Treatment 3 administered';'ahTgXn992wv';300;0.00;0.00;6;51;39;
-42;'HNQIS-ICM-D,T&C-310';'HNQIS-ICM-D,T&C-Diag3-310-Does diagnosis 3 match treatment 3?';;'Does diagnosis 3 match treatment 3?';'vgG9mXhJ8UZ';310;1.00;1.00;6;15;39;6
+42;'HNQIS-ICM-D,T&C-310';'HNQIS-ICM-D,T&C-Diag3-310-Does diagnosis 3 match treatment 3?';;'Does diagnosis 3 match treatment 3?';'vgG9mXhJ8UZ';310;1.00;1.00;6;89;39;6
 43;'HNQIS-ICM-D,T&C-320';'HNQIS-ICM-D,T&C-Diag3-320-COUNSELING';;'COUNSELING';'hZ5lgYcLuO3';320;0.00;0.00;6;49;39;
 44;'HNQIS-ICM-D,T&C-330';'HNQIS-ICM-D,T&C-Diag3-330-Provider counsels caregiver on proper dosage (no. of  doses/days, side effects)';;'Provider counsels caregiver on proper dosage (no. of  doses/days, side effects)';'aiMMvuriqGI';330;1.00;1.00;6;53;39;6
 45;'HNQIS-ICM-D,T&C-340';'HNQIS-ICM-D,T&C-Diag3-340-Provider gives first dose of oral medicine on site';;'Provider gives first dose of oral medicine on site';'NiAXMnXDbXu';340;1.00;1.00;6;53;39;6
@@ -218,7 +218,7 @@
 227;'HNQIS-SF-IMCI-310';'HNQIS-SF-IMCI-Diag1-310-DIAGNOSIS AND TREATMENT';;'DIAGNOSIS AND TREATMENT';'ByvRW7JoKls';310;0.00;0.00;26;49;;25
 228;'HNQIS-SF-IMCI-320';'HNQIS-SF-IMCI-Diag1-320-Diagnosis 1 based on supervisor''s observation';;'Diagnosis 1 based on supervisor''s observation';'jsat2VbRd3r';320;0.00;0.00;26;50;;25
 229;'HNQIS-SF-IMCI-330';'HNQIS-SF-IMCI-Diag1-330-Treatment 1 administered';;'Treatment 1 administered';'aKHuzC0S1UI';330;0.00;0.00;26;51;;25
-230;'HNQIS-SF-IMCI-340';'HNQIS-SF-IMCI-Diag1-340-Does diagnosis 1 match treatment 1?';;'Does diagnosis 1 match treatment 1?';'r40AMZNr3sM';340;1.00;1.00;26;15;;25
+230;'HNQIS-SF-IMCI-340';'HNQIS-SF-IMCI-Diag1-340-Does diagnosis 1 match treatment 1?';;'Does diagnosis 1 match treatment 1?';'r40AMZNr3sM';340;1.00;1.00;26;89;;25
 231;'HNQIS-SF-IMCI-350';'HNQIS-SF-IMCI-Diag1-350-COUNSELING';;'COUNSELING';'HLabJjvJwSw';350;0.00;0.00;26;49;;25
 232;'HNQIS-SF-IMCI-360';'HNQIS-SF-IMCI-Diag1-360-Provider counsels caregiver on proper dosage (no. of  doses/days, side effects)';;'Provider counsels caregiver on proper dosage (no. of  doses/days, side effects)';'HvnhEJWh0o6';360;1.00;1.00;26;53;;25
 233;'HNQIS-SF-IMCI-370';'HNQIS-SF-IMCI-Diag1-370-Provider gives first dose of oral medicine on site';;'Provider gives first dose of oral medicine on site';'Wz7LGmBgGC4';370;1.00;1.00;26;53;;25
@@ -227,7 +227,7 @@
 236;'HNQIS-SF-IMCI-400';'HNQIS-SF-IMCI-Diag2-400-Was a second diagnosis made?';;'Was a second diagnosis made?';'EhEKfwjRsMy';400;0.00;4.00;27;53;;26
 237;'HNQIS-SF-IMCI-410';'HNQIS-SF-IMCI-Diag2-410-Diagnosis 2 based on supervisor''s observation';;'Diagnosis 2 based on supervisor''s observation';'Fs8xQFEFD2j';410;0.00;0.00;27;50;236;26
 238;'HNQIS-SF-IMCI-420';'HNQIS-SF-IMCI-Diag2-420-Treatment 2 administered';;'Treatment 2 administered';'WESaTy5xUEJ';420;0.00;0.00;27;51;236;26
-239;'HNQIS-SF-IMCI-430';'HNQIS-SF-IMCI-Diag2-430-Does diagnosis 2 match treatment 2?';;'Does diagnosis 2 match treatment 2?';'hPT4Nx5qkoN';430;1.00;0.00;27;15;236;26
+239;'HNQIS-SF-IMCI-430';'HNQIS-SF-IMCI-Diag2-430-Does diagnosis 2 match treatment 2?';;'Does diagnosis 2 match treatment 2?';'hPT4Nx5qkoN';430;1.00;0.00;27;89;236;26
 240;'HNQIS-SF-IMCI-440';'HNQIS-SF-IMCI-Diag2-440-COUNSELING';;'COUNSELING';'kQpbtp1Yrqa';440;0.00;0.00;27;49;236;26
 241;'HNQIS-SF-IMCI-450';'HNQIS-SF-IMCI-Diag2-450-Provider counsels caregiver on proper dosage (no. of  doses/days, side effects)';;'Provider counsels caregiver on proper dosage (no. of  doses/days, side effects)';'OJKDj8aNC0H';450;1.00;0.00;27;53;236;26
 242;'HNQIS-SF-IMCI-460';'HNQIS-SF-IMCI-Diag2-460-Provider gives first dose of oral medicine on site';;'Provider gives first dose of oral medicine on site';'z6qER4b7qUi';460;1.00;0.00;27;53;236;26
@@ -236,7 +236,7 @@
 245;'HNQIS-SF-IMCI-490';'HNQIS-SF-IMCI-Diag3-490-Was a third diagnosis made?';;'Was a third diagnosis made?';'rAUfaBQNlo0';490;0.00;4.00;28;53;;27
 246;'HNQIS-SF-IMCI-500';'HNQIS-SF-IMCI-Diag3-500-Diagnosis 3 based on supervisor''s observation';;'Diagnosis 3 based on supervisor''s observation';'XGe87Zrz6Bo';500;0.00;0.00;28;50;245;27
 247;'HNQIS-SF-IMCI-510';'HNQIS-SF-IMCI-Diag3-510-Treatment 3 administered';;'Treatment 3 administered';'t46D8TxOdpk';510;0.00;0.00;28;51;245;27
-248;'HNQIS-SF-IMCI-520';'HNQIS-SF-IMCI-Diag3-520-Does diagnosis 3 match treatment 3?';;'Does diagnosis 3 match treatment 3?';'CNZbIMfI7qE';520;1.00;0.00;28;15;245;27
+248;'HNQIS-SF-IMCI-520';'HNQIS-SF-IMCI-Diag3-520-Does diagnosis 3 match treatment 3?';;'Does diagnosis 3 match treatment 3?';'CNZbIMfI7qE';520;1.00;0.00;28;89;245;27
 249;'HNQIS-SF-IMCI-530';'HNQIS-SF-IMCI-Diag3-530-COUNSELING';;'COUNSELING';'eyVfGY07S5m';530;0.00;0.00;28;49;245;27
 250;'HNQIS-SF-IMCI-540';'HNQIS-SF-IMCI-Diag3-540-Provider counsels caregiver on proper dosage (no. of  doses/days, side effects)';;'Provider counsels caregiver on proper dosage (no. of  doses/days, side effects)';'ZQi8w3xdMOb';540;1.00;0.00;28;53;245;27
 251;'HNQIS-SF-IMCI-550';'HNQIS-SF-IMCI-Diag3-550-Provider gives first dose of oral medicine on site';;'Provider gives first dose of oral medicine on site';'LLwkFRxrk69';550;1.00;0.00;28;53;245;27

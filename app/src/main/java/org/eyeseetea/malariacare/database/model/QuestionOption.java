@@ -22,54 +22,48 @@ package org.eyeseetea.malariacare.database.model;
 import com.raizlabs.android.dbflow.annotation.Column;
 import com.raizlabs.android.dbflow.annotation.ForeignKey;
 import com.raizlabs.android.dbflow.annotation.ForeignKeyReference;
-import com.raizlabs.android.dbflow.annotation.OneToMany;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;
-import com.raizlabs.android.dbflow.sql.builder.Condition;
-import com.raizlabs.android.dbflow.sql.language.Select;
 import com.raizlabs.android.dbflow.structure.BaseModel;
 
 import org.eyeseetea.malariacare.database.AppDatabase;
-
-import java.util.List;
 
 /**
  * Created by Jose on 25/05/2015.
  */
 @Table(databaseName = AppDatabase.NAME)
-public class QuestionRelation extends BaseModel {
+public class QuestionOption extends BaseModel {
     @Column
     @PrimaryKey(autoincrement = true)
     long id;
+    @Column
+    @ForeignKey(references = {@ForeignKeyReference(columnName = "id_option",
+            columnType = Long.class,
+            foreignColumnName = "id")},
+            saveForeignKeyModel = false)
+    Option option;
     @Column
     @ForeignKey(references = {@ForeignKeyReference(columnName = "id_question",
             columnType = Long.class,
             foreignColumnName = "id")},
             saveForeignKeyModel = false)
     Question question;
-
     @Column
-    int operation;
+    @ForeignKey(references = {@ForeignKeyReference(columnName = "id_match",
+            columnType = Long.class,
+            foreignColumnName = "id")},
+            saveForeignKeyModel = false)
+    Match match;
 
-    List<Match> matches;
 
-    @OneToMany(methods = {OneToMany.Method.SAVE, OneToMany.Method.DELETE}, variableName = "matches")
-    public List<Match> getMatches() {
-        //if (this.children == null){
-        this.matches = new Select().from(Match.class)
-                .where(Condition.column(Match$Table.QUESTIONRELATION_ID_QUESTION_RELATION).eq(this.getId()))
-                .queryList();
-        //}
-        return this.matches;
+    public QuestionOption(){
+
     }
 
-
-
-    public QuestionRelation(){};
-
-    public QuestionRelation(Question question, int operation) {
+    public QuestionOption(Option option, Question question, Match match) {
+        this.option = option;
         this.question = question;
-        this.operation = operation;
+        this.match = match;
     }
 
     public long getId() {
@@ -80,6 +74,14 @@ public class QuestionRelation extends BaseModel {
         this.id = id;
     }
 
+    public Option getOption() {
+        return option;
+    }
+
+    public void setOption(Option option) {
+        this.option = option;
+    }
+
     public Question getQuestion() {
         return question;
     }
@@ -88,12 +90,12 @@ public class QuestionRelation extends BaseModel {
         this.question = question;
     }
 
-    public int getOperation() {
-        return operation;
+    public Match getMatch() {
+        return match;
     }
 
-    public void setOperation(int operation) {
-        this.operation = operation;
+    public void setMatch(Match match) {
+        this.match = match;
     }
 
     @Override
@@ -101,10 +103,11 @@ public class QuestionRelation extends BaseModel {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        QuestionRelation that = (QuestionRelation) o;
+        QuestionOption that = (QuestionOption) o;
 
         if (id != that.id) return false;
-        if (operation != that.operation) return false;
+        if (match != null ? !match.equals(that.match) : that.match != null) return false;
+        if (option != null ? !option.equals(that.option) : that.option != null) return false;
         if (question != null ? !question.equals(that.question) : that.question != null)
             return false;
 
@@ -114,8 +117,9 @@ public class QuestionRelation extends BaseModel {
     @Override
     public int hashCode() {
         int result = (int) (id ^ (id >>> 32));
+        result = 31 * result + (option != null ? option.hashCode() : 0);
         result = 31 * result + (question != null ? question.hashCode() : 0);
-        result = 31 * result + operation;
+        result = 31 * result + (match != null ? match.hashCode() : 0);
         return result;
     }
 
@@ -123,8 +127,9 @@ public class QuestionRelation extends BaseModel {
     public String toString() {
         return "QuestionRelation{" +
                 "id=" + id +
+                ", option=" + option +
                 ", question=" + question +
-                ", operation=" + operation +
+                ", match=" + match +
                 '}';
     }
 }
