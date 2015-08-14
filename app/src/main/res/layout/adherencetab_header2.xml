@@ -100,6 +100,7 @@
                     android:gravity="center"
                     android:lines="2"
                     android:layout_weight="1"
+                    android:visibility="gone"
                     app:tDimension="@string/font_size_level1"
                     app:tFontName="@string/medium_font_name" />
 

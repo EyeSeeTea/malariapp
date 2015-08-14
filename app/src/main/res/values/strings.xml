@@ -133,7 +133,7 @@
     <string name="custom_info_twenty" translatable="false">20</string>
 
     <!-- adherence -->
-    <string name="adherence_info_switchquestion">Are there pharmacy records of ACTs dispensed?</string>
+    <string name="adherence_info_switchquestion">Are there laboratory registers and pharmacy or clinical registers available at this facility?</string>
     <string name="adherence_title_explanation">Phamacy/clinical register v.s Lab records. Steps in Evaluation of Provider Adherence to Malaria Diagnostic Test Results</string>
     <string name="adherence_title_explanation_content">Record below the patient ID numbers of 20 patients prescribed ACTs from the Pharmacy Register.\nLocate the patient IDs from Step 1 in the Laboratory and/or Clinical Registers and record their test result in the appropriate column. </string>
     <string name="adherence_title2_explanation_content">In the Laboratory Register, record the patient ID numbers 20 patients: 5 RDT +; 5 RDT -; 5 microscopy +; 5 microscopy -.\nLocate the patient IDs from Step 1 in the Pharmacy Register and record whether they received ACTs in the “ACT Prescribed” column by ticking either Y or N.</string>
@@ -154,6 +154,7 @@
     <string name="iqatab_info_species">Species</string>
     <string name="iqatab_info_labstaff">Lab Staff</string>
     <string name="iqatab_info_results">Results below are auto-calculated</string>
+    <string name="iqatab_info_note">Note: Slide rechecking should be carried out at the health facility during OTSS in the presence of the facility lab staff.  Slides should not be removed from the facility for this purpose.</string>
 
     <!-- reporting -->
     <string name="reporting_info_reporting">Reporting</string>
