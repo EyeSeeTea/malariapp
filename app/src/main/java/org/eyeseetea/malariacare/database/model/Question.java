@@ -26,6 +26,7 @@ import com.raizlabs.android.dbflow.annotation.OneToMany;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;
 import com.raizlabs.android.dbflow.sql.builder.Condition;
+import com.raizlabs.android.dbflow.sql.builder.Condition.In;
 import com.raizlabs.android.dbflow.sql.language.ColumnAlias;
 import com.raizlabs.android.dbflow.sql.language.Join;
 import com.raizlabs.android.dbflow.sql.language.Select;
@@ -63,12 +64,6 @@ public class Question extends BaseModel{
             " left join tab t on h.tab=t.id"+
             " left join program p on t.program=p.id"+
             " and p.id=? order by t.orderpos, q.orderpos";*/
-
-    /*private static final String LIST_ALL_BY_TABS =
-            "select q.* from question q"+
-            " left join header h on q.header=h.id"+
-            " left join tab t on h.tab=t.id"+
-            " and t.id in (?) order by t.orderpos, q.orderpos";*/
 
     @Column
     @PrimaryKey(autoincrement = true)
@@ -437,28 +432,23 @@ public class Question extends BaseModel{
         if(tabs==null || tabs.size()==0){
             return new ArrayList();
         }
-        String tabsAsString="";
+
         Iterator<Tab> iterator=tabs.iterator();
-        while(iterator.hasNext()){
-            tabsAsString+="'"+iterator.next().getId().toString()+"'";
-            if(iterator.hasNext()){
-                tabsAsString+=",";
-            }
+        In in = Condition.column(ColumnAlias.columnWithTable("t", Tab$Table.ID)).in(Long.toString(iterator.next().getId()));
+        while (iterator.hasNext()) {
+            in.and(Long.toString(iterator.next().getId()));
         }
 
-        return new Select().all().from(Question.class).as("q")
+        return new Select().from(Question.class).as("q")
                 .join(Header.class, Join.JoinType.LEFT).as("h")
                 .on(Condition.column(ColumnAlias.columnWithTable("q", Question$Table.HEADER_ID_HEADER))
                         .eq(ColumnAlias.columnWithTable("h", Header$Table.ID)))
                 .join(Tab.class, Join.JoinType.LEFT).as("t")
                 .on(Condition.column(ColumnAlias.columnWithTable("h", Header$Table.TAB_ID_TAB))
                         .eq(ColumnAlias.columnWithTable("t", Tab$Table.ID)))
-                .where(Condition.column(ColumnAlias.columnWithTable("t", Tab$Table.ID))
-                .in(tabs))
+                .where(in)
                 .orderBy(Tab$Table.ORDER_POS)
                 .orderBy(Question$Table.ORDER_POS).queryList();
-        //return Question.findWithQuery(Question.class,LIST_ALL_BY_TABS, tabsAsString);
-
     }
 
 

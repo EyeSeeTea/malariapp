@@ -39,6 +39,8 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
 
+import com.raizlabs.android.dbflow.sql.language.Select;
+
 import org.eyeseetea.malariacare.database.model.CompositeScore;
 import org.eyeseetea.malariacare.database.model.Program;
 import org.eyeseetea.malariacare.database.model.Question;
@@ -146,6 +148,7 @@ public class SurveyActivity extends BaseActivity{
         registerReceiver();
         createActionBar();
         createMenu();
+        preLoadItems();
         createProgress();
         prepareSurveyInfo();
     }
@@ -201,8 +204,8 @@ public class SurveyActivity extends BaseActivity{
 
         Log.d(TAG, "createMenu");
         this.tabAdapter=new TabArrayAdapter(this, tabsList);
-
         spinner= (Spinner) this.findViewById(R.id.tabSpinner);
+
         //Invisible until info ready
         spinner.setVisibility(View.GONE);
         spinner.setAdapter(this.tabAdapter);
@@ -220,6 +223,28 @@ public class SurveyActivity extends BaseActivity{
 
             }
         });
+    }
+
+    private void preLoadItems(){
+        List<Tab> tabs = new Select().all().from(Tab.class).queryList();
+        for(Tab tab: tabs) {
+            new AsyncPreLoadTabs(tab).execute((Void) null);
+        }
+    }
+
+    public class AsyncPreLoadTabs extends AsyncTask<Void, Integer, Void>{
+
+        private Tab tab;
+
+        public AsyncPreLoadTabs(Tab tab) {
+            this.tab = tab;
+        }
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            Utils.getTabItems(tab);
+            return null;
+        }
     }
 
     public class AsyncChangeTab extends AsyncTask<Void, Integer, View> {
@@ -277,7 +302,7 @@ public class SurveyActivity extends BaseActivity{
      * Adds actionbar to the activity
      */
     private void createActionBar(){
-        Survey survey=Session.getSurvey();
+        Survey survey = Session.getSurvey();
         //FIXME: Shall we add the tab group?
         Program program = survey.getTabGroup().getProgram();
 
@@ -508,7 +533,7 @@ public class SurveyActivity extends BaseActivity{
         /**
          * Cache of {tab: adapter} for each tab in the survey
          */
-        private Map<Tab, ITabAdapter> adapters = new HashMap<Tab, ITabAdapter>();
+        private Map<Tab, ITabAdapter> adapters = new HashMap<>();
 
         /**
          * List of composite scores of the current survey
@@ -539,7 +564,7 @@ public class SurveyActivity extends BaseActivity{
         }
 
         public List<Tab> getNotLoadedTabs(){
-            List<Tab> notLoadedTabs=new ArrayList<Tab>();
+            List<Tab> notLoadedTabs=new ArrayList<>();
             //If has already been shown NOTHING to reload
             if(compositeScoreTabShown){
                 return notLoadedTabs;
@@ -576,7 +601,7 @@ public class SurveyActivity extends BaseActivity{
                 cacheAllTabs();
             }
             //Return full list of adapters
-            return new ArrayList<ITabAdapter>(this.adapters.values());
+            return new ArrayList<>(this.adapters.values());
 
         }
 
@@ -598,6 +623,7 @@ public class SurveyActivity extends BaseActivity{
 
             switch (tab.getType()) {
                 case Constants.TAB_COMPOSITE_SCORE:
+                    this.compositeScores = CompositeScore.listByTabGroup(Session.getSurvey().getTabGroup());
                     return new CompositeScoreAdapter(this.compositeScores, SurveyActivity.this, R.layout.composite_score_tab, tab.getName());
                 case Constants.TAB_IQATAB:
                     return CustomIQTABAdapter.build(tab, SurveyActivity.this);

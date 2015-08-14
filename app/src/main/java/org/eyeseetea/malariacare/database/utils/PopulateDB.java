@@ -106,7 +106,7 @@ public class PopulateDB {
                         break;
                     case COMPOSITE_SCORES_CSV:
                         CompositeScore compositeScore = new CompositeScore();
-                        compositeScore.setCode(line[1]);
+                        compositeScore.setHierarchical_code(line[1]);
                         compositeScore.setLabel(line[2]);
                         if (!line[3].equals("")) compositeScore.setCompositeScore(compositeScores.get(Integer.valueOf(line[3])));
                         compositeScore.setUid(line[4]);

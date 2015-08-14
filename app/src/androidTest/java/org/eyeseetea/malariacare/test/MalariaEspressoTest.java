@@ -83,7 +83,7 @@ public class MalariaEspressoTest {
     public static void cleanSession(){
         Session.setUser(null);
         Session.setSurvey(null);
-        Session.setAdapterUncompleted(null);
+        Session.setAdapterUnsent(null);
     }
 
     public static void cleanDB(){
@@ -157,7 +157,7 @@ public class MalariaEspressoTest {
             survey.save();
         }
         List<Survey> surveys = new Select().from(Survey.class).where(Condition.column(Survey$Table.USER_ID_USER).eq(user.getId())).queryList();
-        Session.setAdapterUncompleted(new AssessmentUnsentAdapter(surveys, InstrumentationRegistry.getTargetContext()));
+        Session.setAdapterUnsent(new AssessmentUnsentAdapter(surveys, InstrumentationRegistry.getTargetContext()));
         return surveys;
     }
 

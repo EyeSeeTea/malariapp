@@ -63,7 +63,7 @@ public class DashboardSentFragment extends ListFragment {
     private static int index = 0;
 
     public DashboardSentFragment(){
-        this.adapter = Session.getAdapterCompleted();
+        this.adapter = Session.getAdapterSent();
         this.surveys = new ArrayList();
     }
 
@@ -124,14 +124,14 @@ public class DashboardSentFragment extends ListFragment {
      * In a version with several adapters in dashboard (like in 'mock' branch) a new one like the one in session is created.
      */
     private void initAdapter(){
-        IDashboardAdapter adapterInSession = Session.getAdapterCompleted();
+        IDashboardAdapter adapterInSession = Session.getAdapterSent();
         if(adapterInSession == null){
             adapterInSession = new AssessmentSentAdapter(this.surveys, getActivity());
         }else{
             adapterInSession = adapterInSession.newInstance(this.surveys, getActivity());
         }
         this.adapter = adapterInSession;
-        Session.setAdapterCompleted(this.adapter);
+        Session.setAdapterSent(this.adapter);
     }
 
     @Override

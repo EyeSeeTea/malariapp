@@ -27,7 +27,6 @@ import org.eyeseetea.malariacare.database.model.Question;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.model.Tab;
 import org.eyeseetea.malariacare.database.utils.Session;
-import org.eyeseetea.malariacare.utils.Constants;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -48,12 +47,12 @@ public class ScoreRegister {
     /**
      * Map of scores for each compositescore
      */
-    private static final Map<CompositeScore, CompositeNumDenRecord> compositeScoreMap = new HashMap<CompositeScore, CompositeNumDenRecord>();
+    private static final Map<CompositeScore, CompositeNumDenRecord> compositeScoreMap = new HashMap<>();
 
     /**
      * Map of scores for each tab
      */
-    private static final Map<Tab, TabNumDenRecord> tabScoreMap = new HashMap<Tab, TabNumDenRecord>();
+    private static final Map<Tab, TabNumDenRecord> tabScoreMap = new HashMap<>();
 
     public static void initScoresForQuestions(List<Question> questions, Survey survey){
         for(Question question : questions){
@@ -66,6 +65,7 @@ public class ScoreRegister {
     }
 
     public static void addRecord(Question question, Float num, Float den){
+        // TODO: apparently, this map (compositeScoreMap) may return a null sometimes. We may check it in case of bug
         if (question.getCompositeScore() != null) {
             compositeScoreMap.get(question.getCompositeScore()).addRecord(question, num, den);
         }
@@ -100,8 +100,8 @@ public class ScoreRegister {
     }
 
     public static Float getCompositeScore(CompositeScore cScore) {
-
-        List<Float>result = compositeScoreMap.get(cScore).calculateNumDenTotal(new ArrayList<Float>(Arrays.asList(0F, 0F)));
+        
+        List<Float>result = compositeScoreMap.get(cScore).calculateNumDenTotal(new ArrayList<>(Arrays.asList(0F, 0F)));
 
         result = getRecursiveScore(cScore, result);
 
@@ -120,7 +120,7 @@ public class ScoreRegister {
     public static void registerCompositeScores(List<CompositeScore> compositeScores){
         compositeScoreMap.clear();
         for(CompositeScore compositeScore:compositeScores){
-            Log.i(TAG, "Register composite score: " + compositeScore.getCode());
+            Log.i(TAG, "Register composite score: " + compositeScore.getHierarchical_code());
             compositeScoreMap.put(compositeScore, new CompositeNumDenRecord());
         }
     }

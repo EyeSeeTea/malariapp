@@ -22,6 +22,7 @@ package org.eyeseetea.malariacare.utils;
 import org.eyeseetea.malariacare.database.model.Header;
 import org.eyeseetea.malariacare.database.model.Question;
 import org.eyeseetea.malariacare.database.model.Tab;
+import org.eyeseetea.malariacare.database.utils.Session;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -70,6 +71,16 @@ public class Utils {
         }
 
         return result;
+    }
+
+    public static List<Object> getTabItems(Tab tab){
+        List<Object> items = Session.getTabsCache().get(tab.getId());
+        if (items == null) {
+            items = convertTabToArray(tab);
+            Session.getTabsCache().put(tab.getId(), items);
+            return items;
+        }
+        return items;
     }
 
     public static StringBuilder convertFromInputStreamToString(InputStream inputStream){
