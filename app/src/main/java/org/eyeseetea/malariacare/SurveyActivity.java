@@ -533,7 +533,7 @@ public class SurveyActivity extends BaseActivity{
         /**
          * Cache of {tab: adapter} for each tab in the survey
          */
-        private Map<Tab, ITabAdapter> adapters = new HashMap<Tab, ITabAdapter>();
+        private Map<Tab, ITabAdapter> adapters = new HashMap<>();
 
         /**
          * List of composite scores of the current survey
@@ -564,7 +564,7 @@ public class SurveyActivity extends BaseActivity{
         }
 
         public List<Tab> getNotLoadedTabs(){
-            List<Tab> notLoadedTabs=new ArrayList<Tab>();
+            List<Tab> notLoadedTabs=new ArrayList<>();
             //If has already been shown NOTHING to reload
             if(compositeScoreTabShown){
                 return notLoadedTabs;
@@ -601,7 +601,7 @@ public class SurveyActivity extends BaseActivity{
                 cacheAllTabs();
             }
             //Return full list of adapters
-            return new ArrayList<ITabAdapter>(this.adapters.values());
+            return new ArrayList<>(this.adapters.values());
 
         }
 

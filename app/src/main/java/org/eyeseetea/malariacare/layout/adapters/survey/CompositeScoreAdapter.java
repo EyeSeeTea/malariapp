@@ -58,12 +58,10 @@ public class CompositeScoreAdapter extends BaseAdapter implements ITabAdapter {
 
     @Override
     public void initializeSubscore() {
-
         ListView compositeScoreListView = (ListView) ((Activity) context).findViewById(R.id.listView);
 
         ViewGroup header = (ViewGroup) lInflater.inflate(R.layout.composite_score_header, compositeScoreListView, false);
         compositeScoreListView.addHeaderView(header);
-
     }
 
     @Override
@@ -103,13 +101,11 @@ public class CompositeScoreAdapter extends BaseAdapter implements ITabAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        View rowView = null;
+        View rowView = lInflater.inflate(R.layout.composite_scores_record, parent, false);
 
         CompositeScore item = (CompositeScore) getItem(position);
 
-        rowView = lInflater.inflate(R.layout.composite_scores_record, parent, false);
-
-        ((CustomTextView)rowView.findViewById(R.id.code)).setText(item.getCode());
+        ((CustomTextView)rowView.findViewById(R.id.code)).setText(item.getHierarchical_code());
         ((CustomTextView)rowView.findViewById(R.id.label)).setText(item.getLabel());
 
         Float compositeScoreValue = ScoreRegister.getCompositeScore(item);

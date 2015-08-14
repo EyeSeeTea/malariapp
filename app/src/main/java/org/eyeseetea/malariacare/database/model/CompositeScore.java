@@ -52,7 +52,7 @@ public class CompositeScore extends BaseModel {
     @PrimaryKey(autoincrement = true)
     long id;
     @Column
-    String code;
+    String hierarchical_code;
     @Column
     String label;
     @Column
@@ -73,15 +73,15 @@ public class CompositeScore extends BaseModel {
     public CompositeScore() {
     }
 
-    public CompositeScore(String code, String label, CompositeScore compositeScore, Integer order_pos) {
-        this.code = code;
+    public CompositeScore(String hierarchical_code, String label, CompositeScore compositeScore, Integer order_pos) {
+        this.hierarchical_code = hierarchical_code;
         this.label = label;
         this.compositeScore = compositeScore;
         this.order_pos = order_pos;
     }
 
-    public CompositeScore(String code, String label, String uid, CompositeScore compositeScore, Integer order_pos) {
-        this.code = code;
+    public CompositeScore(String hierarchical_code, String label, String uid, CompositeScore compositeScore, Integer order_pos) {
+        this.hierarchical_code = hierarchical_code;
         this.label = label;
         this.uid = uid;
         this.compositeScore = compositeScore;
@@ -96,9 +96,9 @@ public class CompositeScore extends BaseModel {
         this.id = id;
     }
 
-    public String getCode() { return code; }
+    public String getHierarchical_code() { return hierarchical_code; }
 
-    public void setCode(String code) { this.code = code; }
+    public void setHierarchical_code(String hierarchical_code) { this.hierarchical_code = hierarchical_code; }
 
     public String getLabel() {
         return label;
@@ -176,24 +176,34 @@ public class CompositeScore extends BaseModel {
             return new ArrayList<>();
         }
 
+        //FIXME: Apparently there is a bug in DBFlow joins that affects here. Question has a column 'uid', and so do CompositeScore, so results are having Questions one, and should keep CompositeScore one. To solve it, we've introduced a last join with CompositeScore again and a HashSet to remove resulting duplicates
         //Take scores associated to questions of the program ('leaves')
-        List<CompositeScore> compositeScoresByProgram = new Select().distinct().all().from(CompositeScore.class).as("cs")
+        List<CompositeScore> compositeScoresByProgram = new Select().distinct().from(CompositeScore.class).as("cs")
                 .join(Question.class, Join.JoinType.LEFT).as("q")
-                .on(Condition.column(ColumnAlias.columnWithTable("q", Question$Table.COMPOSITESCORE_ID_COMPOSITE_SCORE))
-                        .eq(ColumnAlias.columnWithTable("cs", CompositeScore$Table.ID)))
+                .on(Condition.column(ColumnAlias.columnWithTable("cs", CompositeScore$Table.ID))
+                        .eq(ColumnAlias.columnWithTable("q", Question$Table.COMPOSITESCORE_ID_COMPOSITE_SCORE)))
                 .join(Header.class, Join.JoinType.LEFT).as("h")
                 .on(Condition.column(ColumnAlias.columnWithTable("q", Question$Table.HEADER_ID_HEADER))
                         .eq(ColumnAlias.columnWithTable("h", Header$Table.ID)))
                 .join(Tab.class, Join.JoinType.LEFT).as("t")
                 .on(Condition.column(ColumnAlias.columnWithTable("h", Header$Table.TAB_ID_TAB))
                         .eq(ColumnAlias.columnWithTable("t", Tab$Table.ID)))
-                .join(Program.class, Join.JoinType.LEFT).as("p")
+                .join(TabGroup.class, Join.JoinType.LEFT).as("g")
                 .on(Condition.column(ColumnAlias.columnWithTable("t", Tab$Table.TABGROUP_ID_TAB_GROUP))
-                        .eq(ColumnAlias.columnWithTable("p", TabGroup$Table.ID)))
-                .where(Condition.column(ColumnAlias.columnWithTable("p", TabGroup$Table.ID))
-                .eq(tabGroup.getId())).queryList();
+                        .eq(ColumnAlias.columnWithTable("g", TabGroup$Table.ID)))
+                .join(CompositeScore.class, Join.JoinType.LEFT).as("cs2")
+                .on(Condition.column(ColumnAlias.columnWithTable("cs", CompositeScore$Table.ID))
+                        .eq(ColumnAlias.columnWithTable("cs2", CompositeScore$Table.ID)))
+                .where(Condition.column(ColumnAlias.columnWithTable("g", TabGroup$Table.ID))
+                        .eq(tabGroup.getId()))
+                .queryList();
 
-        //List<CompositeScore> compositeScoresByProgram = CompositeScore.findWithQuery(CompositeScore.class, LIST_BY_PROGRAM_SQL, program.getId().toString());
+
+        // remove duplicates
+        Set<CompositeScore> uniqueCompositeScoresByProgram = new HashSet<>();
+        uniqueCompositeScoresByProgram.addAll(compositeScoresByProgram);
+        compositeScoresByProgram.clear();
+        compositeScoresByProgram.addAll(uniqueCompositeScoresByProgram);
 
         //Find parent scores from 'leaves'
         Set<CompositeScore> parentCompositeScores = new HashSet<>();
@@ -232,7 +242,7 @@ public class CompositeScore extends BaseModel {
         CompositeScore that = (CompositeScore) o;
 
         if (id != that.id) return false;
-        if (!code.equals(that.code)) return false;
+        if (!hierarchical_code.equals(that.hierarchical_code)) return false;
         if (label != null ? !label.equals(that.label) : that.label != null) return false;
         if (uid != null ? !uid.equals(that.uid) : that.uid != null) return false;
         if (order_pos != null ? !order_pos.equals(that.order_pos) : that.order_pos != null) return false;
@@ -243,7 +253,7 @@ public class CompositeScore extends BaseModel {
     @Override
     public int hashCode() {
         int result = (int) (id ^ (id >>> 32));
-        result = 31 * result + code.hashCode();
+        result = 31 * result + hierarchical_code.hashCode();
         result = 31 * result + (label != null ? label.hashCode() : 0);
         result = 31 * result + (uid != null ? uid.hashCode() : 0);
         result = 31 * result + (order_pos != null ? order_pos.hashCode() : 0);
@@ -255,7 +265,7 @@ public class CompositeScore extends BaseModel {
     public String toString() {
         return "CompositeScore{" +
                 "id=" + id +
-                ", code='" + code + '\'' +
+                ", code='" + hierarchical_code + '\'' +
                 ", label='" + label + '\'' +
                 ", uid='" + uid + '\'' +
                 ", order_pos='" + order_pos + '\'' +
