@@ -11,7 +11,9 @@ public class Constants {
             POSITIVE_INT = 6,
             NO_ANSWER = 7,
             RADIO_GROUP_HORIZONTAL = 8,
-            RADIO_GROUP_VERTICAL = 9;
+            RADIO_GROUP_VERTICAL = 9,
+            DROPDOWN_LIST_DISABLED = 10;
+
 
     public static final String DEFAULT_SELECT_OPTION = "";
 

@@ -95,7 +95,6 @@
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
                     android:id="@+id/org_unit_container_items">
-                ALLI
                 </LinearLayout>
 
                 <LinearLayout
@@ -148,7 +147,8 @@
                     android:orientation="vertical"
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
-                    android:id="@+id/tab_group_container">
+                    android:id="@+id/tab_group_container"
+                    android:visibility="gone">
                     <Space
                         android:layout_width="20px"
                         android:layout_height="20px" />

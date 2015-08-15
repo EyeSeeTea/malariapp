@@ -29,6 +29,7 @@ import android.widget.ListView;
 
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.model.CompositeScore;
+import org.eyeseetea.malariacare.database.model.Tab;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 import org.eyeseetea.malariacare.utils.Utils;
@@ -39,59 +40,29 @@ import java.util.List;
 /**
  * Created by Jose on 21/04/2015.
  */
-public class CompositeScoreAdapter extends BaseAdapter implements ITabAdapter {
+public class CompositeScoreAdapter extends ATabAdapter {
 
-    List<CompositeScore> items;
-    private LayoutInflater lInflater;
-    private final Context context;
-    int id_layout;
-    String tab_name;
+    public CompositeScoreAdapter(Tab tab, Context context, int id_layout) {
+        super(tab, context, id_layout);
+    }
 
-    public CompositeScoreAdapter(List<CompositeScore> items, Context context, int id_layout, String tab_name) {
-        this.items = items;
-        this.context = context;
-        this.id_layout = id_layout;
-        this.tab_name = tab_name;
-
-        this.lInflater=LayoutInflater.from(context);
+    /**
+     * Factory method to build a scored/non scored layout according to tab type.
+     *
+     * @param tab
+     * @param context
+     * @return
+     */
+    public static CompositeScoreAdapter build(Tab tab, Context context) {
+        return new CompositeScoreAdapter(tab, context, R.layout.composite_score_tab);
     }
 
     @Override
     public void initializeSubscore() {
-        ListView compositeScoreListView = (ListView) ((Activity) context).findViewById(R.id.listView);
+        ListView compositeScoreListView = (ListView) ((Activity) getContext()).findViewById(R.id.listView);
 
-        ViewGroup header = (ViewGroup) lInflater.inflate(R.layout.composite_score_header, compositeScoreListView, false);
+        ViewGroup header = (ViewGroup) getInflater().inflate(R.layout.composite_score_header, compositeScoreListView, false);
         compositeScoreListView.addHeaderView(header);
-    }
-
-    @Override
-    public BaseAdapter getAdapter() {
-        return this;
-    }
-
-    @Override
-    public Float getScore() {
-        return null;
-    }
-
-    @Override
-    public int getLayout() {
-        return id_layout;
-    }
-
-    @Override
-    public String getName() {
-        return tab_name;
-    }
-
-    @Override
-    public int getCount() {
-        return items.size();
-    }
-
-    @Override
-    public Object getItem(int position) {
-        return items.get(position);
     }
 
     @Override
@@ -101,7 +72,7 @@ public class CompositeScoreAdapter extends BaseAdapter implements ITabAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        View rowView = lInflater.inflate(R.layout.composite_scores_record, parent, false);
+        View rowView = getInflater().inflate(R.layout.composite_scores_record, parent, false);
 
         CompositeScore item = (CompositeScore) getItem(position);
 
@@ -111,7 +82,7 @@ public class CompositeScoreAdapter extends BaseAdapter implements ITabAdapter {
         Float compositeScoreValue = ScoreRegister.getCompositeScore(item);
 
         if (compositeScoreValue == null)
-            ((CustomTextView)rowView.findViewById(R.id.score)).setText(this.context.getString(R.string.number_zero));
+            ((CustomTextView)rowView.findViewById(R.id.score)).setText(getContext().getString(R.string.number_zero));
         else
             ((CustomTextView)rowView.findViewById(R.id.score)).setText(Utils.round(compositeScoreValue));
 
