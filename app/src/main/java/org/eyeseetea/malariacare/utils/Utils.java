@@ -73,7 +73,7 @@ public class Utils {
         return result;
     }
 
-    public static List<Object> getTabItems(Tab tab){
+    public static List<Object> preloadTabItems(Tab tab){
         List<Object> items = Session.getTabsCache().get(tab.getId());
         if (items == null) {
             items = convertTabToArray(tab);
