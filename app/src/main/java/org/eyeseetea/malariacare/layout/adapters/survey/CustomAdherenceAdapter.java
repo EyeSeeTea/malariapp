@@ -54,25 +54,15 @@ import java.util.List;
 /**
  * Created by Jose on 24/04/2015.
  */
-public class CustomAdherenceAdapter extends BaseAdapter implements ITabAdapter {
-
-    private List<Object> items;
-    Tab tab;
-
-    private LayoutInflater lInflater;
+public class CustomAdherenceAdapter extends ATabAdapter {
 
     boolean visible = false;
-
-    //final ScoreHolder scoreHolder = new ScoreHolder();
 
     float denum = 20;
     float num = 0;
 
-    private final Context context;
-
     int position_secondheader = 0;
 
-    int id_layout;
     int []scores;
 
     static class ViewHolder {
@@ -97,18 +87,13 @@ public class CustomAdherenceAdapter extends BaseAdapter implements ITabAdapter {
     }
 
     @Override
-    public String getName() {
-        return tab.getName();
-    }
-
-    @Override
     public void initializeSubscore() {
-        ListView lAdapter = (ListView) ((Activity) context).findViewById(R.id.listView);
+        ListView lAdapter = (ListView) ((Activity) getContext()).findViewById(R.id.listView);
 
-        ViewGroup header = (ViewGroup) lInflater.inflate(R.layout.adherencetab_header0, lAdapter, false);
+        ViewGroup header = (ViewGroup) getInflater().inflate(R.layout.adherencetab_header0, lAdapter, false);
         lAdapter.addHeaderView(header);
 
-        final Switch visibility = (Switch) ((Activity) context).findViewById(R.id.visibilitySwitch);
+        final Switch visibility = (Switch) ((Activity) getContext()).findViewById(R.id.visibilitySwitch);
 
         visibility.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -124,31 +109,27 @@ public class CustomAdherenceAdapter extends BaseAdapter implements ITabAdapter {
     }
 
     public CustomAdherenceAdapter(Tab tab, Context context) {
-        this.lInflater=LayoutInflater.from(context);
-        this.items=Utils.convertTabToArrayCustom(tab);
-        this.id_layout = R.layout.form_custom;
-        this.context=context;
-        this.tab=tab;
+        super(tab, context, R.layout.form_custom);
 
-        if (items.size()> 0)
-            position_secondheader = (int) ((Header) items.get(0)).getNumberOfQuestionParents() +1 ;
+        if (getItems().size()> 0)
+            position_secondheader = (int) ((Header) getItems().get(0)).getNumberOfQuestionParents() +1 ;
 
         Log.d("Second header", position_secondheader + "");
 
         scores = new int[position_secondheader];
 
         for (int i=0;i<position_secondheader; i++) {
-            if (items.get(i) instanceof Question) {
-                Question testResult = ((Question) items.get(i)).getChildren().get(3);
+            if (getItems().get(i) instanceof Question) {
+                Question testResult = ((Question) getItems().get(i)).getChildren().get(3);
                 ScoreRegister.addRecord(testResult, ScoreRegister.calcNum(testResult), ScoreRegister.calcDenum(testResult));
             }
         }
 
-        for (int i = position_secondheader; i < items.size(); i++) {
-            if (items.get(i) instanceof Question) {
-                Question act = ((Question) items.get(i)).getChildren().get(2);
+        for (int i = position_secondheader; i < getItems().size(); i++) {
+            if (getItems().get(i) instanceof Question) {
+                Question act = ((Question) getItems().get(i)).getChildren().get(2);
                 ScoreRegister.addRecord(act, ScoreRegister.calcNum(act), ScoreRegister.calcDenum(act));
-                calcScore((Question) items.get(i));
+                calcScore((Question) getItems().get(i));
             }
         }
 
@@ -173,32 +154,11 @@ public class CustomAdherenceAdapter extends BaseAdapter implements ITabAdapter {
     }
 
     @Override
-    public BaseAdapter getAdapter() {
-        return this;
-    }
-
-    @Override
-    public int getLayout() {
-        return id_layout;
-    }
-
-    @Override
     public int getCount() {
         if (visible)
-            return items.size();
+            return getItems().size();
         else return 0;
     }
-
-    @Override
-    public Object getItem(int position) {
-        return items.get(position);
-    }
-
-    @Override
-    public long getItemId(int position) {
-        return items.get(position).hashCode();
-    }
-
 
     private void setValues(ViewHolder viewHolder, Question question) {
         viewHolder.number.setText(question.getForm_name());
@@ -210,7 +170,7 @@ public class CustomAdherenceAdapter extends BaseAdapter implements ITabAdapter {
 
     private void setValues2(ViewHolder2 viewHolder, Question question) {
         calcScore(question);
-        viewHolder.score.setText(String.valueOf(scores[items.indexOf(question) - position_secondheader]));
+        viewHolder.score.setText(String.valueOf(scores[getItems().indexOf(question) - position_secondheader]));
         viewHolder.patientID.setText(ReadWriteDB.readValueQuestion(question.getChildren().get(0)));
         viewHolder.number.setText(question.getForm_name());
         viewHolder.testResult.setText(question.getChildren().get(1).getForm_name());
@@ -233,39 +193,36 @@ public class CustomAdherenceAdapter extends BaseAdapter implements ITabAdapter {
             int pos = optList.indexOf(value.getOption());
 
 
-            if (test.getForm_name().equals(this.context.getString(R.string.adherence_info_rdt_positive))
-                    || test.getForm_name().equals(this.context.getString(R.string.adherence_info_rdt_negative))) {
+            if (test.getForm_name().equals(getContext().getString(R.string.adherence_info_rdt_positive))
+                    || test.getForm_name().equals(getContext().getString(R.string.adherence_info_rdt_negative))) {
                 if (pos == 1) {
-                    num = num - scores[items.indexOf(question) - position_secondheader] + 1;
-                    scores[items.indexOf(question) - position_secondheader] = 1;
+                    num = num - scores[getItems().indexOf(question) - position_secondheader] + 1;
+                    scores[getItems().indexOf(question) - position_secondheader] = 1;
                 } else {
-                    num = num - scores[items.indexOf(question) - position_secondheader];
-                    scores[items.indexOf(question) - position_secondheader] = 0;
+                    num = num - scores[getItems().indexOf(question) - position_secondheader];
+                    scores[getItems().indexOf(question) - position_secondheader] = 0;
                 }
             } else {
-                if (test.getForm_name().equals(this.context.getString(R.string.adherence_info_microscopy_positive))
-                        || test.getForm_name().equals(this.context.getString(R.string.adherence_info_microscopy_negative))) {
+                if (test.getForm_name().equals(getContext().getString(R.string.adherence_info_microscopy_positive))
+                        || test.getForm_name().equals(getContext().getString(R.string.adherence_info_microscopy_negative))) {
                     if (pos == 2) {
-                        num = num - scores[items.indexOf(question) - position_secondheader] + 1;
-                        scores[items.indexOf(question) - position_secondheader] = 1;
+                        num = num - scores[getItems().indexOf(question) - position_secondheader] + 1;
+                        scores[getItems().indexOf(question) - position_secondheader] = 1;
                     } else {
-                        num = num - scores[items.indexOf(question) - position_secondheader];
-                        scores[items.indexOf(question) - position_secondheader] = 0;
+                        num = num - scores[getItems().indexOf(question) - position_secondheader];
+                        scores[getItems().indexOf(question) - position_secondheader] = 0;
                     }
                 }
 
             }
         }
         else {
-            scores[items.indexOf(question) - position_secondheader] = 0;
+            scores[getItems().indexOf(question) - position_secondheader] = 0;
         }
-
     }
-
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-//        Debug.startMethodTracing("custom_getView");
         View rowView = null;
 
         final Object item = getItem(position);
@@ -273,17 +230,16 @@ public class CustomAdherenceAdapter extends BaseAdapter implements ITabAdapter {
 
         final Question question;
 
-
         if (position < position_secondheader) {
             if (item instanceof Header)
-                rowView = lInflater.inflate(R.layout.adherencetab_header1, parent, false);
+                rowView = getInflater().inflate(R.layout.adherencetab_header1, parent, false);
             else {
 
                 question = (Question) item;
 
                 final ViewHolder viewHolder = new ViewHolder();
 
-                rowView = lInflater.inflate(R.layout.pharmacy_register, parent, false);
+                rowView = getInflater().inflate(R.layout.pharmacy_register, parent, false);
                 viewHolder.number = (CustomTextView) rowView.findViewById(R.id.number);
                 viewHolder.gender = (Spinner) rowView.findViewById(R.id.gender);
                 viewHolder.age = (CustomEditText) rowView.findViewById(R.id.age);
@@ -293,13 +249,13 @@ public class CustomAdherenceAdapter extends BaseAdapter implements ITabAdapter {
                 List<Option> optionList = question.getChildren().get(1).getAnswer().getOptions();
                 optionList.add(0, new Option(Constants.DEFAULT_SELECT_OPTION));
 
-                viewHolder.gender.setAdapter(new OptionArrayAdapter(context,optionList));
+                viewHolder.gender.setAdapter(new OptionArrayAdapter(getContext(),optionList));
 
                 optionList = question.getChildren().get(3).getAnswer().getOptions();
 
                 optionList.add(0, new Option(Constants.DEFAULT_SELECT_OPTION));
 
-                viewHolder.testResutl.setAdapter(new OptionArrayAdapter(context, optionList));
+                viewHolder.testResutl.setAdapter(new OptionArrayAdapter(getContext(), optionList));
 
                 rowView.setBackgroundResource(LayoutUtils.calculateBackgrounds(position));
 
@@ -391,14 +347,14 @@ public class CustomAdherenceAdapter extends BaseAdapter implements ITabAdapter {
         else {
 
             if (item instanceof Header)
-                rowView = lInflater.inflate(R.layout.adherencetab_header2, parent, false);
+                rowView = getInflater().inflate(R.layout.adherencetab_header2, parent, false);
             else {
 
                 question = (Question) item;
 
                 final ViewHolder2 viewHolder2 = new ViewHolder2();
 
-                rowView = lInflater.inflate(R.layout.pharmacy_register2, parent, false);
+                rowView = getInflater().inflate(R.layout.pharmacy_register2, parent, false);
 
                 viewHolder2.number = (CustomTextView) rowView.findViewById(R.id.number);
                 viewHolder2.patientID = (CustomEditText) rowView.findViewById(R.id.patientId);
@@ -409,7 +365,7 @@ public class CustomAdherenceAdapter extends BaseAdapter implements ITabAdapter {
                 List<Option> optionList = ((Question) item).getChildren().get(2).getAnswer().getOptions();
                 optionList.add(0, new Option(Constants.DEFAULT_SELECT_OPTION));
 
-                viewHolder2.act.setAdapter(new OptionArrayAdapter(context, optionList));
+                viewHolder2.act.setAdapter(new OptionArrayAdapter(getContext(), optionList));
 
                 viewHolder2.patientID.addTextChangedListener(new TextWatcher() {
 
@@ -443,7 +399,7 @@ public class CustomAdherenceAdapter extends BaseAdapter implements ITabAdapter {
                             Question act = question.getChildren().get(2);
                             ReadWriteDB.saveValuesDDL(act, (Option) viewHolder2.act.getItemAtPosition(pos));
                             calcScore(question);
-                            viewHolder2.score.setText(Integer.toString(scores[items.indexOf(question) - position_secondheader]));
+                            viewHolder2.score.setText(Integer.toString(scores[getItems().indexOf(question) - position_secondheader]));
                             ScoreRegister.addRecord(act, ScoreRegister.calcNum(act), ScoreRegister.calcDenum(act));
                         } else
                             viewCreated.value = true;
@@ -459,7 +415,6 @@ public class CustomAdherenceAdapter extends BaseAdapter implements ITabAdapter {
             }
 
         }
-//        Debug.stopMethodTracing();
         return rowView;
     }
 

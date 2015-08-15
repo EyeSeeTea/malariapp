@@ -19,7 +19,16 @@
 
 package org.eyeseetea.malariacare.layout.adapters.survey;
 
+import android.content.Context;
+import android.view.LayoutInflater;
+import android.widget.BaseAdapter;
+
+import com.raizlabs.android.dbflow.structure.BaseModel;
+
 import org.eyeseetea.malariacare.database.model.Question;
+import org.eyeseetea.malariacare.database.model.Tab;
+import org.eyeseetea.malariacare.database.utils.Session;
+import org.eyeseetea.malariacare.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -27,31 +36,84 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public abstract class ATabAdapter {
+public abstract class ATabAdapter extends BaseAdapter implements  ITabAdapter{
 
-    private Map<Question,List<Float>> numDenRecord = new HashMap<Question,List<Float>>();
+    private int id_layout;
+    private Tab tab;
+    private LayoutInflater lInflater;
+    private final Context context;
 
-    public void addRecord(Question question, Float num, Float den){
-        numDenRecord.put(question, new ArrayList<Float>(Arrays.asList(num, den)));
+    //List of Headers and Questions. Each position contains an object to be showed in the listview
+    private List<? extends BaseModel> items;
+
+
+    public ATabAdapter(Tab tab, Context context, int id_layout){
+        this.context = context;
+        this.tab = tab;
+        this.lInflater = LayoutInflater.from(context);
+        this.items = Utils.preloadTabItems(tab);
+        this.id_layout = id_layout;
     }
 
-    public void deleteRecord(Question question){
-        getNumDenRecord().remove(question);
+    /**
+     * Flag that indicates if the current survey in session is already sent or not (it affects readonly settings)
+     */
+    private boolean readOnly = Session.getSurvey().isSent();
+
+    @Override
+    public BaseAdapter getAdapter() {
+        return this;
     }
 
-    public Map<Question, List<Float>> getNumDenRecord() {
-        return numDenRecord;
+    @Override
+    public int getLayout() {
+        return id_layout;
     }
 
-    public List<Float> calculateNumDenTotal(List<Float> numDenTotal){
-        Float num = numDenTotal.get(0);
-        Float den = numDenTotal.get(1);
-        for (List<Float> numDen : getNumDenRecord().values()) {
-            num += numDen.get(0);
-            den += numDen.get(1);
-        }
-        return new ArrayList<Float>(Arrays.asList(num, den));
-
+    @Override
+    public Float getScore() {
+        return null;
     }
 
+    @Override
+    public void initializeSubscore() {}
+
+    @Override
+    public int getCount() {
+        return items.size();
+    }
+
+    @Override
+    public Object getItem(int position) {
+        return items.get(position);
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return items.get(position).hashCode();
+    }
+
+    @Override
+    public String getName() {
+        return tab.getName();
+    }
+
+
+    public Context getContext(){
+        return this.context;
+    }
+
+    public LayoutInflater getInflater(){
+        return this.lInflater;
+    }
+
+    public boolean getReadOnly(){
+        return readOnly;
+    }
+
+    public Tab getTab() {
+        return this.tab;
+    }
+
+    public List<? extends BaseModel> getItems(){ return this.items; }
 }

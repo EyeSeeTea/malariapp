@@ -1,7 +1,393 @@
+/*
+ * Copyright (c) 2015.
+ *
+ * This file is part of QA App.
+ *
+ *  Health Network QIS App is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  Health Network QIS App is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 package org.eyeseetea.malariacare.layout.utils;
+
+import android.content.Context;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.RadioGroup;
+import android.widget.RelativeLayout;
+import android.widget.Spinner;
+
+import com.google.common.primitives.Booleans;
+import com.raizlabs.android.dbflow.structure.BaseModel;
+
+import org.eyeseetea.malariacare.R;
+import org.eyeseetea.malariacare.database.model.Header;
+import org.eyeseetea.malariacare.database.model.Match;
+import org.eyeseetea.malariacare.database.model.Option;
+import org.eyeseetea.malariacare.database.model.Question;
+import org.eyeseetea.malariacare.database.model.QuestionOption;
+import org.eyeseetea.malariacare.database.model.QuestionRelation;
+import org.eyeseetea.malariacare.database.utils.PreferencesState;
+import org.eyeseetea.malariacare.database.utils.ReadWriteDB;
+import org.eyeseetea.malariacare.layout.adapters.general.OptionArrayAdapter;
+import org.eyeseetea.malariacare.layout.score.ScoreRegister;
+import org.eyeseetea.malariacare.utils.Constants;
+import org.eyeseetea.malariacare.utils.Utils;
+import org.eyeseetea.malariacare.views.CustomRadioButton;
+import org.eyeseetea.malariacare.views.CustomTextView;
+
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by adrian on 15/08/15.
  */
 public class AutoTabLayoutUtils {
+
+    //Store the Views references for each row (to avoid many calls to getViewById)
+    public static class ViewHolder {
+        //Label
+        public CustomTextView statement;
+
+        // Main component in the row: Spinner, EditText or RadioGroup
+        public View component;
+
+        public CustomTextView num;
+        public CustomTextView denum;
+        public int type;
+    }
+
+    //Store the views references for each view in the footer
+    public static class ScoreHolder {
+        public CustomTextView subtotalscore;
+        public CustomTextView score;
+        public CustomTextView totalNum;
+        public CustomTextView totalDenum;
+        public CustomTextView qualitativeScore;
+    }
+
+    /**
+     * Enables/Disables input view according to the state of the survey.
+     * Sent surveys cannot be modified.
+     *
+     * @param view
+     */
+    public static void updateReadOnly(View view, boolean readOnly) {
+        if (view == null) {
+            return;
+        }
+
+        if (view instanceof RadioGroup) {
+            RadioGroup radioGroup = (RadioGroup) view;
+            for (int i = 0; i < radioGroup.getChildCount(); i++) {
+                radioGroup.getChildAt(i).setEnabled(!readOnly);
+            }
+        } else {
+            view.setEnabled(!readOnly);
+        }
+    }
+
+    public static boolean isHidden(Question question) {
+        Question parent;
+        boolean hidden = false;
+
+        if ((parent = question.getQuestion()) != null) {
+            if (parent.getValueBySession() == null)
+                hidden = true;
+        }
+
+        return hidden;
+    }
+
+    /**
+     * Given a desired position (that means, the position shown in the screen) of an element, get the
+     * real position (that means, the position in the stored items list taking into account the hidden
+     * elements)
+     * @param position
+     * @return the real position in the elements list
+     */
+    public static int getRealPosition(int position, LinkedHashMap<BaseModel, Boolean> elementInvisibility, List<? extends BaseModel> items){
+        int hElements = getHiddenCountUpTo(position, elementInvisibility);
+        int diff = 0;
+
+        for (int i = 0; i < hElements; i++) {
+            diff++;
+            if (elementInvisibility.get(items.get(position + diff))) i--;
+        }
+        return (position + diff);
+    }
+
+    /**
+     * Get the number of elements that are hidden until a given position
+     * @param position
+     * @return number of elements hidden (true in elementInvisibility Map)
+     */
+    private static int getHiddenCountUpTo(int position, LinkedHashMap<BaseModel, Boolean> elementInvisibility) {
+        boolean [] upper = Arrays.copyOfRange(Booleans.toArray(elementInvisibility.values()), 0, position + 1);
+        int hiddens = Booleans.countTrue(upper);
+        return hiddens;
+    }
+
+    public static View initialiseDropDown(int position, ViewGroup parent, Question question, ViewHolder viewHolder, LayoutInflater lInflater, Context context) {
+        View rowView;
+        rowView = initialiseView(R.layout.ddl, parent, question, viewHolder, position, lInflater);
+
+        initialiseScorableComponent(rowView, viewHolder);
+
+        // In case the option is selected, we will need to show num/dems
+        List<Option> optionList = question.getAnswer().getOptions();
+        optionList.add(0, new Option(Constants.DEFAULT_SELECT_OPTION));
+        Spinner spinner = (Spinner) viewHolder.component;
+        spinner.setAdapter(new OptionArrayAdapter(context, optionList));
+        return rowView;
+    }
+
+
+    public static View initialiseView(int resource, ViewGroup parent, Question question, ViewHolder viewHolder, int position, LayoutInflater lInflater) {
+        View rowView = lInflater.inflate(resource, parent, false);
+        if (question.hasChildren())
+            rowView.setBackgroundResource(R.drawable.background_parent);
+        else
+            rowView.setBackgroundResource(LayoutUtils.calculateBackgrounds(position));
+
+        viewHolder.component = rowView.findViewById(R.id.answer);
+        viewHolder.statement = (CustomTextView) rowView.findViewById(R.id.statement);
+        viewHolder.statement.setText(question.getForm_name());
+
+        return rowView;
+    }
+
+    public static void initialiseScorableComponent(View rowView, ViewHolder viewHolder) {
+        // In case the option is selected, we will need to show num/dems
+        viewHolder.num = (CustomTextView) rowView.findViewById(R.id.num);
+        viewHolder.denum = (CustomTextView) rowView.findViewById(R.id.den);
+
+        configureViewByPreference(viewHolder);
+    }
+
+    public static void createRadioGroupComponent(Question question, ViewHolder viewHolder, int orientation, LayoutInflater lInflater, Context context) {
+        ((RadioGroup) viewHolder.component).setOrientation(orientation);
+
+        for (Option option : question.getAnswer().getOptions()) {
+            CustomRadioButton button = (CustomRadioButton) lInflater.inflate(R.layout.uncheckeable_radiobutton, null);
+            button.setOption(option);
+            button.updateProperties(PreferencesState.getInstance().getScale(), context.getString(R.string.font_size_level1), context.getString(R.string.medium_font_name));
+            ((RadioGroup) viewHolder.component).addView(button);
+        }
+    }
+
+    /**
+     * Set visibility of numerators and denominators depending on the user preference selected in the settings activity
+     *
+     * @param viewHolder view that holds the component to be more efficient
+     */
+    private static void configureViewByPreference(AutoTabLayoutUtils.ViewHolder viewHolder) {
+        int visibility = View.GONE;
+        float statementWeight = 0.65f;
+        float componentWeight = 0.35f;
+        float numDenWeight = 0.0f;
+
+        if (PreferencesState.getInstance().isShowNumDen()) {
+            visibility = View.VISIBLE;
+            statementWeight = 0.45f;
+            componentWeight = 0.25f;
+            numDenWeight = 0.15f;
+        }
+
+        viewHolder.num.setVisibility(visibility);
+        viewHolder.denum.setVisibility(visibility);
+        ((RelativeLayout) viewHolder.statement.getParent()).setLayoutParams(new LinearLayout.LayoutParams(0, RelativeLayout.LayoutParams.WRAP_CONTENT, statementWeight));
+        ((RelativeLayout) viewHolder.component.getParent().getParent()).setLayoutParams(new LinearLayout.LayoutParams(0, RelativeLayout.LayoutParams.WRAP_CONTENT, componentWeight));
+        ((RelativeLayout) viewHolder.num.getParent()).setLayoutParams(new LinearLayout.LayoutParams(0, RelativeLayout.LayoutParams.WRAP_CONTENT, numDenWeight));
+        ((RelativeLayout) viewHolder.denum.getParent()).setLayoutParams(new LinearLayout.LayoutParams(0, RelativeLayout.LayoutParams.WRAP_CONTENT, numDenWeight));
+    }
+
+    /**
+     * Decide whether we need or not to hide this header (if every question inside is hidden)
+     * @param header header that
+     * @return true if every header question is hidden, false otherwise
+     */
+    public static boolean hideHeader(Header header, LinkedHashMap<BaseModel, Boolean> elementInvisibility) {
+        // look in every question to see if every question is hidden. In case one cuestion is not hidden, we return false
+        for (Question question : header.getQuestions()) {
+            if (!elementInvisibility.get(question)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * Get the number of elements that are hidden
+     * @return number of elements hidden (true in elementInvisibility Map)
+     */
+    public static int getHiddenCount(LinkedHashMap<BaseModel, Boolean> elementInvisibility) {
+        // using Guava library and its Booleans utility class
+        return Booleans.countTrue(Booleans.toArray(elementInvisibility.values()));
+    }
+
+    private static boolean checkMatches(Question question) {
+        for (QuestionRelation questionRelation : question.getQuestionRelations()){
+            Map<Question, Option> questionOptionMap = new HashMap<>();
+            for (Match match : questionRelation.getMatches()){
+                boolean isMatch = true;
+                for (QuestionOption questionOption : match.getQuestionOptions()){
+                    if  (!questionOptionMap.containsKey(questionOption.getQuestion())) {
+                        Option currentOption = ReadWriteDB.readOptionAnswered(questionOption.getQuestion());
+                        if (currentOption == null)
+                            return false;
+                        else
+                            questionOptionMap.put(questionOption.getQuestion(), currentOption);
+                    }
+
+                    if (!questionOptionMap.get(questionOption.getQuestion()).equals(questionOption.getOption())){
+                        isMatch= false;
+                        break;
+                    }
+                }
+                if (isMatch)
+                    return true;
+            }
+        }
+        return false;
+    }
+
+    public static boolean autoFillAnswer(AutoTabLayoutUtils.ViewHolder viewHolder, AutoTabLayoutUtils.ScoreHolder scoreHolder, Question question, float totalNum, float totalDenum, Context context, LinkedHashMap<BaseModel, Boolean> elementInvisibility) {
+
+        int option = 1;
+        if (checkMatches(question))
+            option = 0;
+
+        return itemSelected(viewHolder, scoreHolder, question, question.getAnswer().getOptions().get(option), totalNum, totalDenum, context, elementInvisibility);
+    }
+
+    /**
+     * Do the logic after a DDL option change
+     * @param viewHolder private class that acts like a cache to quickly access the different views
+     * @param question the question that changes his value
+     * @param option the option that has been selected
+     */
+    public static boolean itemSelected(AutoTabLayoutUtils.ViewHolder viewHolder, AutoTabLayoutUtils.ScoreHolder scoreHolder, Question question, Option option, float totalNum, float totalDenum, Context context, LinkedHashMap<BaseModel, Boolean> elementInvisibility) {
+        boolean refreshTab = false;
+
+        // Write option to DB
+        ReadWriteDB.saveValuesDDL(question, option);
+
+        recalculateScores(viewHolder, question, totalNum, totalDenum);
+
+        // If parent relation found, toggle Children Spinner Visibility
+        // If question has question-option, refresh the tab
+        // FIXME: the database should have the link from question to the option that triggers its show/hide action.
+        // FIXME: The db tables are there but we need to refactor the code.
+        if (question.hasChildren() || question.hasQuestionOption()){
+            if (question.hasChildren())
+                toggleChildrenVisibility(question, option.is(context.getString(R.string.yes)), elementInvisibility, totalNum, totalDenum);
+            refreshTab = true;
+        }
+
+        updateScore(scoreHolder, totalNum, totalDenum, context);
+        return refreshTab;
+    }
+    /**
+     * Recalculate num and denum of a quetsion, update them in cache vars and save the new num/denum in the score register associated with the question
+     * @param viewHolder views cache
+     * @param question question that change its values
+     */
+    private static void recalculateScores(AutoTabLayoutUtils.ViewHolder viewHolder, Question question, float totalNum, float totalDenum) {
+        Float num = ScoreRegister.calcNum(question);
+        Float denum = ScoreRegister.calcDenum(question);
+
+        viewHolder.num.setText(num.toString());
+        viewHolder.denum.setText(denum.toString());
+
+        List<Float> numdenum = ScoreRegister.getNumDenum(question);
+
+        if (numdenum != null) {
+            totalNum = totalNum - numdenum.get(0);
+            totalDenum = totalDenum - numdenum.get(1);
+        }
+
+        totalNum = totalNum + num;
+        totalDenum = totalDenum + denum;
+
+        ScoreRegister.addRecord(question, num, denum);
+    }
+
+    public static void updateScore(ScoreHolder scoreHolder, float totalNum, float totalDenum, Context context) {
+        scoreHolder.totalNum.setText(Float.toString(totalNum));
+        scoreHolder.totalDenum.setText(Float.toString(totalDenum));
+        if (totalDenum != 0) {
+            Float score = 100 * (totalNum / totalDenum);
+            LayoutUtils.trafficLight(scoreHolder.score, score, scoreHolder.qualitativeScore);
+            scoreHolder.score.setText(Utils.round(100 * (totalNum / totalDenum)) + " % ");
+        }
+        if (totalDenum == 0 && totalNum == 0) {
+            scoreHolder.score.setText(context.getString(R.string.number_zero_percentage));
+        }
+    }
+
+    /**
+     * Given a question, make visible or invisible their children. In case all children in a header
+     * became invisible, that header is also hidden
+     * @param question the question whose children we want to show/hide
+     * @param visible true for make them visible, false for invisible
+     */
+    private static void toggleChildrenVisibility(Question question, boolean visible, LinkedHashMap<BaseModel, Boolean> elementInvisibility, float totalNum, float totalDenum) {
+        List<Question> children = question.getChildren();
+        Question cachedQuestion = null;
+
+        for (Question child : children) {
+            Header childHeader = child.getHeader();
+            elementInvisibility.put(child, !visible);
+            if (!visible) {
+                List<Float> numdenum = ScoreRegister.getNumDenum(child);
+                if (numdenum != null) {
+                    // update scores
+                    totalDenum = totalDenum - numdenum.get(1);
+                    totalNum = totalNum - numdenum.get(0);
+                    ScoreRegister.deleteRecord(child);
+                }
+                ReadWriteDB.deleteValue(child); // when we hide a question, we remove its value
+                // little cache to avoid double checking same
+                if(cachedQuestion == null || (cachedQuestion.getHeader().getId() != child.getHeader().getId()))
+                    elementInvisibility.put(childHeader, AutoTabLayoutUtils.hideHeader(childHeader, elementInvisibility));
+            } else {
+                Float denum = ScoreRegister.calcDenum(child);
+                totalDenum = totalDenum + denum;
+                ScoreRegister.addRecord(child, 0F, denum);
+                elementInvisibility.put(childHeader, false);
+            }
+            cachedQuestion = question;
+        }
+    }
+
+    public static void initScoreQuestion(Question question, float totalNum, float totalDenum) {
+
+        if (question.getAnswer().getOutput() == Constants.DROPDOWN_LIST || question.getAnswer().getOutput() == Constants.RADIO_GROUP_HORIZONTAL
+                || question.getAnswer().getOutput() == Constants.RADIO_GROUP_VERTICAL) {
+
+            Float num = ScoreRegister.calcNum(question);
+            Float denum = ScoreRegister.calcDenum(question);
+
+            totalNum = totalNum + num;
+            totalDenum = totalDenum + denum;
+
+            ScoreRegister.addRecord(question, num, denum);
+        }
+
+    }
 }

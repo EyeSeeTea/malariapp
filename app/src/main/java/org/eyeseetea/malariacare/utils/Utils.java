@@ -19,6 +19,9 @@
 
 package org.eyeseetea.malariacare.utils;
 
+import com.raizlabs.android.dbflow.structure.BaseModel;
+
+import org.eyeseetea.malariacare.database.model.CompositeScore;
 import org.eyeseetea.malariacare.database.model.Header;
 import org.eyeseetea.malariacare.database.model.Question;
 import org.eyeseetea.malariacare.database.model.Tab;
@@ -47,25 +50,13 @@ public class Utils {
         return round(base, Utils.numberOfDecimals);
     }
 
-    public static List<Object> convertTabToArray(Tab tab) {
-        List<Object> result = new ArrayList<Object>();
-
-        for (Header header : tab.getHeaders()) {
-            result.add(header);
-            for (Question question : header.getQuestions())
-                result.add(question);
-
-        }
-        return result;
-    }
-
-    public static List<Object> convertTabToArrayCustom(Tab tab) {
-        List<Object> result = new ArrayList<Object>();
+    public static List<BaseModel> convertTabToArrayCustom(Tab tab) {
+        List<BaseModel> result = new ArrayList<BaseModel>();
 
         for (Header header : tab.getHeaders()) {
             result.add(header);
             for (Question question : header.getQuestions()) {
-                if (question.hasChildren())
+                if (tab.getType().equals(Constants.TAB_AUTOMATIC) || tab.getType().equals(Constants.TAB_AUTOMATIC_NON_SCORED) || question.hasChildren())
                     result.add(question);
             }
         }
@@ -73,10 +64,15 @@ public class Utils {
         return result;
     }
 
-    public static List<Object> preloadTabItems(Tab tab){
-        List<Object> items = Session.getTabsCache().get(tab.getId());
+    public static List<? extends BaseModel> preloadTabItems(Tab tab){
+        List<? extends BaseModel> items = Session.getTabsCache().get(tab.getId());
         if (items == null) {
-            items = convertTabToArray(tab);
+            if (tab.isCompositeScore()){
+                items = CompositeScore.listByTabGroup(Session.getSurvey().getTabGroup());
+            }
+            else{
+                items = convertTabToArrayCustom(tab);
+            }
             Session.getTabsCache().put(tab.getId(), items);
             return items;
         }
@@ -98,7 +94,5 @@ public class Utils {
 
         return stringBuilder;
     }
-
-
 
 }

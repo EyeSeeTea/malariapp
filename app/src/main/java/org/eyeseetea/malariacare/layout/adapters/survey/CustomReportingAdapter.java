@@ -42,18 +42,7 @@ import java.util.List;
 /**
  * Created by Jose on 12/04/2015.
  */
-public class CustomReportingAdapter extends BaseAdapter implements ITabAdapter {
-
-    private List<Object> items;
-
-    private LayoutInflater lInflater;
-
-    Tab tab;
-
-    private final Context context;
-
-    int id_layout;
-
+public class CustomReportingAdapter extends ATabAdapter {
 
     static class ViewHolder {
         public CustomTextView statement;
@@ -73,40 +62,12 @@ public class CustomReportingAdapter extends BaseAdapter implements ITabAdapter {
     }
 
     public CustomReportingAdapter(Tab tab, Context context) {
-        this.lInflater=LayoutInflater.from(context);
-        this.items=Utils.convertTabToArrayCustom(tab);
-        this.context=context;
-        this.id_layout = R.layout.form_custom;
-        this.tab = tab;
-
-    }
-
-    @Override
-    public BaseAdapter getAdapter() {
-        return this;
-    }
-
-    @Override
-    public int getLayout() {
-        return id_layout;
-    }
-
-    private void initializeScoreViews() {
-
+        super(tab, context, R.layout.form_custom);
     }
 
     @Override
     public Float getScore() {
         return 0F;
-    }
-
-    @Override
-    public String getName() {
-        return tab.getName();
-    }
-
-    @Override
-    public void initializeSubscore() {
     }
 
     class Bool {
@@ -115,21 +76,6 @@ public class CustomReportingAdapter extends BaseAdapter implements ITabAdapter {
         public Bool(boolean value) {
             this.value=value;
         }
-    }
-
-    @Override
-    public int getCount() {
-        return items.size();
-    }
-
-    @Override
-    public Object getItem(int position) {
-        return items.get(position);
-    }
-
-    @Override
-    public long getItemId(int position) {
-        return items.get(position).hashCode();
     }
 
     private void setValues(ViewHolder viewHolder, Question question) {
@@ -180,14 +126,14 @@ public class CustomReportingAdapter extends BaseAdapter implements ITabAdapter {
 
         if (item instanceof Header) {
             if (position==0)
-                rowView = lInflater.inflate(R.layout.reportingtab, parent, false);
+                rowView = getInflater().inflate(R.layout.reportingtab, parent, false);
             else
-                rowView = lInflater.inflate(R.layout.reporting_record, parent, false);
+                rowView = getInflater().inflate(R.layout.reporting_record, parent, false);
         }
 
         else
         {
-            rowView = lInflater.inflate(R.layout.reporting_record2, parent, false);
+            rowView = getInflater().inflate(R.layout.reporting_record2, parent, false);
             viewHolder.statement = (CustomTextView) rowView.findViewById(R.id.reportingQuestion);
             viewHolder.report = (CustomEditText) rowView.findViewById(R.id.monthlyReport);
             viewHolder.register = (CustomEditText) rowView.findViewById(R.id.register);
