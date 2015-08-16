@@ -506,7 +506,7 @@ public class SurveyActivity extends BaseActivity{
             List<CompositeScore> compositeScores=(List<CompositeScore>)Session.popServiceValue(SurveyService.PREPARE_SURVEY_ACTION_COMPOSITE_SCORES);
             List<Tab> tabs=(List<Tab>)Session.popServiceValue(SurveyService.PREPARE_SURVEY_ACTION_TABS);
 
-            tabAdaptersCache.reloadAdapters(tabs,compositeScores);
+            tabAdaptersCache.reloadAdapters(tabs, compositeScores);
             reloadTabs(tabs);
             stopProgress();
 
