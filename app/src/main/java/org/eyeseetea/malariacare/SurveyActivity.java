@@ -613,8 +613,9 @@ public class SurveyActivity extends BaseActivity{
 
             switch (tab.getType()) {
                 case Constants.TAB_COMPOSITE_SCORE:
-                    this.compositeScores = CompositeScore.listByTabGroup(Session.getSurvey().getTabGroup());
-                    return new CompositeScoreAdapter(this.compositeScores, SurveyActivity.this, R.layout.composite_score_tab, tab.getName());
+//                    this.compositeScores = CompositeScore.listByTabGroup(Session.getSurvey().getTabGroup());
+//                    return new CompositeScoreAdapter(this.compositeScores, SurveyActivity.this, R.layout.composite_score_tab, tab.getName());
+                    return CompositeScoreAdapter.build(tab, SurveyActivity.this);
                 case Constants.TAB_IQATAB:
                     return CustomIQTABAdapter.build(tab, SurveyActivity.this);
                 case Constants.TAB_ADHERENCE:

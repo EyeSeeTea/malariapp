@@ -22,11 +22,9 @@ package org.eyeseetea.malariacare.layout.adapters.survey;
 import android.content.Context;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.BaseAdapter;
 import android.widget.Spinner;
 
 import org.eyeseetea.malariacare.R;
@@ -39,7 +37,6 @@ import org.eyeseetea.malariacare.layout.adapters.general.OptionArrayAdapter;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 import org.eyeseetea.malariacare.utils.Constants;
-import org.eyeseetea.malariacare.utils.Utils;
 import org.eyeseetea.malariacare.views.CustomEditText;
 import org.eyeseetea.malariacare.views.CustomTextView;
 
@@ -48,22 +45,9 @@ import java.util.List;
 /**
  * Created by Jose on 11/04/2015.
  */
-public class CustomIQTABAdapter extends BaseAdapter implements ITabAdapter {
-
-    private List<Object> items;
-    Tab tab;
-
-    private LayoutInflater lInflater;
-
-    private final Context context;
-
-    //final ScoreHolder scoreHolder = new ScoreHolder();
+public class CustomIQTABAdapter extends ATabAdapter {
 
     int number_rows_section;
-
-    int id_layout;
-
-    int[] results;
 
     static class ViewHolder {
         public CustomTextView number;
@@ -77,38 +61,25 @@ public class CustomIQTABAdapter extends BaseAdapter implements ITabAdapter {
         public CustomTextView result;
     }
 
-    /*static class ScoreHolder {
-        public TextCard scoreText;
-        public TextCard score;
-        public TextCard cualitativeScore;
-    }*/
-
     public CustomIQTABAdapter(Tab tab, Context context) {
-        this.lInflater = LayoutInflater.from(context);
-        this.items = Utils.convertTabToArrayCustom(tab);
-        this.context = context;
-        this.id_layout = R.layout.form_custom;
+        super(tab, context, R.layout.form_custom);
 
-        if (items.size()>0)
-            number_rows_section = (int) ((Header) items.get(0)).getNumberOfQuestionParents() +1;
+        if (getItems().size()>0)
+            number_rows_section = (int) ((Header) getItems().get(0)).getNumberOfQuestionParents() +1;
 
         for (int i = 0; i < 2 * number_rows_section; i++) {
-            Object item = items.get(i);
+            Object item = getItems().get(i);
             if (item instanceof Question)
                 calculateMatch((Question) item);
-
-
         }
 
-        for (int i = 2 * number_rows_section; i<items.size();i++) {
-            Object item = items.get(i);
+        for (int i = 2 * number_rows_section; i<getItems().size();i++) {
+            Object item = getItems().get(i);
             if (item instanceof Question) {
                 Question result = ((Question) item).getChildren().get(0);
                 ScoreRegister.addRecord(result, ScoreRegister.calcNum(result), ScoreRegister.calcDenum(result));
             }
-
         }
-
     }
 
     /**
@@ -122,65 +93,15 @@ public class CustomIQTABAdapter extends BaseAdapter implements ITabAdapter {
     }
 
     @Override
-    public BaseAdapter getAdapter() {
-        return this;
-    }
-
-    @Override
-    public int getLayout() {
-        return id_layout;
-    }
-
-    @Override
-    public String getName() {
-        return tab.getName();
-    }
-
-    private void initializeScoreViews() {
-        /*scoreHolder.score = (TextCard) ((Activity) context).findViewById(R.id.score);
-        scoreHolder.cualitativeScore = (TextCard) ((Activity) context).findViewById(R.id.qualitativeScore);
-        scoreHolder.scoreText = (TextCard) ((Activity) context).findViewById(R.id.subtotalScoreText);*/
-    }
-
-    private void resetResults() {
-        for (int i = 0; i < results.length; i++)
-            results[i] = 0;
-    }
-
-    public void updateScore() {
-        //scoreHolder.score.setText(Utils.round(num / denum));
-    }
-
-    public void initializeSubscore() {
-        initializeScoreViews();
-        updateScore();
-    }
-
-    @Override
     public Float getScore() {
 
-        List<Float> numdenum = ScoreRegister.calculateGeneralScore(tab);
+        List<Float> numdenum = ScoreRegister.calculateGeneralScore(getTab());
 
         Float num = numdenum.get(0);
         Float denum = numdenum.get(1);
 
         return num/denum;
 
-    }
-
-    @Override
-    public int getCount() {
-        return items.size();
-    }
-
-    @Override
-    public Object getItem(int position) {
-        return items.get(position);
-    }
-
-    @Override
-    public long getItemId(int position) {
-        return items.get(position).hashCode();
     }
 
     class Bool {
@@ -195,7 +116,7 @@ public class CustomIQTABAdapter extends BaseAdapter implements ITabAdapter {
         int simetric_position;
         int result_position;
 
-        int position = items.indexOf(question);
+        int position = getItems().indexOf(question);
 
         Question q1, q2;
 
@@ -207,10 +128,10 @@ public class CustomIQTABAdapter extends BaseAdapter implements ITabAdapter {
             result_position = position - 1;
         }
 
-        q1 = ((Question) items.get(position)).getChildren().get(0);
-        q2 = ((Question) items.get(simetric_position)).getChildren().get(0);
+        q1 = ((Question) getItems().get(position)).getChildren().get(0);
+        q2 = ((Question) getItems().get(simetric_position)).getChildren().get(0);
 
-        Question questionAnswer =  (Question) items.get(2*number_rows_section+result_position+1);
+        Question questionAnswer =  (Question) getItems().get(2*number_rows_section+result_position+1);
         Question testResult = questionAnswer.getChildren().get(0);
 
         if (q1.getValueBySession() != null && q2.getValueBySession() != null &&
@@ -256,14 +177,14 @@ public class CustomIQTABAdapter extends BaseAdapter implements ITabAdapter {
 
             if (item instanceof Header) {
                 if (position == 0)
-                    rowView = lInflater.inflate(R.layout.iqtabheader1, parent, false);
+                    rowView = getInflater().inflate(R.layout.iqtabheader1, parent, false);
                 else
-                    rowView = lInflater.inflate(R.layout.iqtabheader2, parent, false);
+                    rowView = getInflater().inflate(R.layout.iqtabheader2, parent, false);
             } else {
 
                 question = (Question) item;
 
-                rowView = lInflater.inflate(R.layout.iqatab_record, parent, false);
+                rowView = getInflater().inflate(R.layout.iqatab_record, parent, false);
                 viewHolder.number = (CustomTextView) rowView.findViewById(R.id.number);
                 viewHolder.spinner = (Spinner) rowView.findViewById(R.id.testRes);
                 viewHolder.parasites = (CustomEditText) rowView.findViewById(R.id.parasites);
@@ -272,12 +193,12 @@ public class CustomIQTABAdapter extends BaseAdapter implements ITabAdapter {
                 List<Option> optionList = ((Question) item).getChildren().get(0).getAnswer().getOptions();
                 optionList.add(0, new Option(Constants.DEFAULT_SELECT_OPTION));
 
-                viewHolder.spinner.setAdapter(new OptionArrayAdapter(context, optionList));
+                viewHolder.spinner.setAdapter(new OptionArrayAdapter(getContext(), optionList));
 
                 optionList = ((Question) item).getChildren().get(2).getAnswer().getOptions();
                 optionList.add(0, new Option(Constants.DEFAULT_SELECT_OPTION));
 
-                viewHolder.species.setAdapter(new OptionArrayAdapter(context, optionList));
+                viewHolder.species.setAdapter(new OptionArrayAdapter(getContext(), optionList));
 
 
                 test = question.getChildren().get(0);
@@ -332,7 +253,6 @@ public class CustomIQTABAdapter extends BaseAdapter implements ITabAdapter {
                         if (viewCreated.value) {
                             ReadWriteDB.saveValuesDDL(test, (Option) viewHolder.spinner.getItemAtPosition(pos));
                             calculateMatch(question);
-                            updateScore();
                         } else viewCreated.value = true;
 
                     }
@@ -354,9 +274,9 @@ public class CustomIQTABAdapter extends BaseAdapter implements ITabAdapter {
 
 
             if (position == 2 * number_rows_section) {
-                rowView = lInflater.inflate(R.layout.iqtabheader3, parent, false);
+                rowView = getInflater().inflate(R.layout.iqtabheader3, parent, false);
             } else {
-                rowView = lInflater.inflate(R.layout.iqatab_results, parent, false);
+                rowView = getInflater().inflate(R.layout.iqatab_results, parent, false);
 
                 Question questionResult = (Question) getItem(position);
                 Question testResult = questionResult.getChildren().get(0);

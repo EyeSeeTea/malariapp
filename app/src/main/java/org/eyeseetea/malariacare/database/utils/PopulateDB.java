@@ -8,10 +8,12 @@ import com.raizlabs.android.dbflow.runtime.TransactionManager;
 import org.eyeseetea.malariacare.database.model.Answer;
 import org.eyeseetea.malariacare.database.model.CompositeScore;
 import org.eyeseetea.malariacare.database.model.Header;
+import org.eyeseetea.malariacare.database.model.Match;
 import org.eyeseetea.malariacare.database.model.Option;
 import org.eyeseetea.malariacare.database.model.OrgUnit;
 import org.eyeseetea.malariacare.database.model.Program;
 import org.eyeseetea.malariacare.database.model.Question;
+import org.eyeseetea.malariacare.database.model.QuestionOption;
 import org.eyeseetea.malariacare.database.model.QuestionRelation;
 import org.eyeseetea.malariacare.database.model.Tab;
 import org.eyeseetea.malariacare.database.model.TabGroup;
@@ -34,6 +36,8 @@ public class PopulateDB {
     public static final String COMPOSITE_SCORES_CSV = "CompositeScores.csv";
     public static final String QUESTIONS_CSV = "Questions.csv";
     public static final String QUESTION_RELATIONS_CSV = "QuestionRelations.csv";
+    public static final String MATCHES_CSV = "Matches.csv";
+    public static final String QUESTION_OPTIONS_CSV = "QuestionOptions.csv";
     public static final String ORG_UNITS_CSV = "OrgUnits.csv";
     static Map<Integer, Program> programs = new LinkedHashMap<Integer, Program>();
     static Map<Integer, TabGroup> tabGroups = new LinkedHashMap<Integer, TabGroup>();
@@ -43,12 +47,14 @@ public class PopulateDB {
     static Map<Integer, Option> options = new LinkedHashMap<Integer, Option>();
     static Map<Integer, Answer> answers = new LinkedHashMap<Integer, Answer>();
     static Map<Integer, CompositeScore> compositeScores = new LinkedHashMap<Integer, CompositeScore>();
-    static Map<Integer, QuestionRelation> relations = new LinkedHashMap<Integer, QuestionRelation>();
+    static Map<Integer, QuestionRelation> questionRelations = new LinkedHashMap<Integer, QuestionRelation>();
+    static Map<Integer, Match> matches = new LinkedHashMap<Integer, Match>();
+    static Map<Integer, QuestionOption> questionOptions = new LinkedHashMap<Integer, QuestionOption>();
     static Map<Integer, OrgUnit> orgUnits = new LinkedHashMap<>();
 
     public static void populateDB(AssetManager assetManager) throws IOException {
 
-        List<String> tables2populate = Arrays.asList(PROGRAMS_CSV, TAB_GROUPS_CSV, TABS_CSV, HEADERS_CSV, ANSWERS_CSV, OPTIONS_CSV, COMPOSITE_SCORES_CSV, QUESTIONS_CSV, QUESTION_RELATIONS_CSV, ORG_UNITS_CSV);
+        List<String> tables2populate = Arrays.asList(PROGRAMS_CSV, TAB_GROUPS_CSV, TABS_CSV, HEADERS_CSV, ANSWERS_CSV, OPTIONS_CSV, COMPOSITE_SCORES_CSV, QUESTIONS_CSV, QUESTION_RELATIONS_CSV, MATCHES_CSV, QUESTION_OPTIONS_CSV, ORG_UNITS_CSV);
 
         CSVReader reader;
         for (String table : tables2populate) {
@@ -127,11 +133,22 @@ public class PopulateDB {
                         questions.put(Integer.valueOf(line[0]), question);
                         break;
                     case QUESTION_RELATIONS_CSV:
-                        QuestionRelation relation = new QuestionRelation();
-                        relation.setMaster(questions.get(Integer.valueOf(line[1])));
-                        relation.setRelative(questions.get(Integer.valueOf(line[2])));
-                        relation.setOperation(Integer.valueOf(line[3]));
-                        relations.put(Integer.valueOf(line[0]), relation);
+                        QuestionRelation questionRelation = new QuestionRelation();
+                        questionRelation.setOperation(Integer.valueOf(line[1]));
+                        questionRelation.setQuestion(questions.get(Integer.valueOf(line[2])));
+                        questionRelations.put(Integer.valueOf(line[0]), questionRelation);
+                        break;
+                    case MATCHES_CSV:
+                        Match match = new Match();
+                        match.setQuestionRelation(questionRelations.get(Integer.valueOf(line[1])));
+                        matches.put(Integer.valueOf(line[0]), match);
+                        break;
+                    case QUESTION_OPTIONS_CSV:
+                        QuestionOption questionOption = new QuestionOption();
+                        questionOption.setOption(options.get(Integer.valueOf(line[1])));
+                        questionOption.setQuestion(questions.get(Integer.valueOf(line[2])));
+                        questionOption.setMatch(matches.get(Integer.valueOf(line[3])));
+                        questionOptions.put(Integer.valueOf(line[0]), questionOption);
                         break;
                     case ORG_UNITS_CSV:
                         OrgUnit orgUnit = new OrgUnit();
@@ -154,7 +171,9 @@ public class PopulateDB {
         TransactionManager.getInstance().saveOnSaveQueue(options.values());
         TransactionManager.getInstance().saveOnSaveQueue(compositeScores.values());
         TransactionManager.getInstance().saveOnSaveQueue(questions.values());
-        TransactionManager.getInstance().saveOnSaveQueue(relations.values());
+        TransactionManager.getInstance().saveOnSaveQueue(questionRelations.values());
+        TransactionManager.getInstance().saveOnSaveQueue(matches.values());
+        TransactionManager.getInstance().saveOnSaveQueue(questionOptions.values());
         TransactionManager.getInstance().saveOnSaveQueue(orgUnits.values());
 
     }

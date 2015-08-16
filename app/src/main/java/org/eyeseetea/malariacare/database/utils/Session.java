@@ -22,6 +22,8 @@ package org.eyeseetea.malariacare.database.utils;
 import android.location.Location;
 import android.util.Log;
 
+import com.raizlabs.android.dbflow.structure.BaseModel;
+
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.model.User;
 import org.eyeseetea.malariacare.layout.adapters.dashboard.IDashboardAdapter;
@@ -67,7 +69,7 @@ public class Session {
     /**
      * Cache containing the list of ordered items that compounds each tab
      */
-    private static Map<Long, List<Object>> tabsCache = new HashMap<>();
+    private static Map<Long, List<? extends BaseModel>> tabsCache = new HashMap<>();
 
     public static Survey getSurvey() {
         return survey;
@@ -101,12 +103,8 @@ public class Session {
         Session.adapterSent = adapterSent;
     }
 
-    public static Map<Long, List<Object>> getTabsCache() {
+    public static Map<Long, List<? extends BaseModel>> getTabsCache() {
         return tabsCache;
-    }
-
-    public static void setTabsCache(Map<Long, List<Object>> tabsCache) {
-        Session.tabsCache = tabsCache;
     }
 
     /**
