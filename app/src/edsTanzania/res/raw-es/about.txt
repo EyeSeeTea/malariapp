@@ -1,0 +1,46 @@
+Sistema Electrónico de Datos (EDS)
+
+Esta aplicación es posible por la generosa aportación del pueblo norteamericano a través de la Agencia Internacional para el Desarrollo de los Estados Unidos (USAID). Ha sido desarrollada por MalariaCare, un partenariado de 5 años liderado por PATH y financiado por la Agencia Internacional para el Desarrollo de los Estados Unidos (USAID) a través de la US President’s Malaria Initiative (PMI). El objetivo de MalariaCare es la realización de un diagnóstico de alta calidad escalable y los servicios de tratamiento de malaria y otras enfermedades febriles. Los contenidos son responsabilidad MalariaCare y no necesariamente reflejan el punto de vista de USAID o del gobierno de los Estados Unidos.
+
+Este software se publica bajo la Licencia Pública General de GNU (GPL). Para más información sobre esta licencia, por favor, visite la sección 'licencia' bajo el menú de 'configuración'.
+
+Para más información, por favor, contáctenos en mis@psi.org
+
+Organizaciones participantes
+
+Socios de MalariaCare:
+
+- Population Services International
+
+Desarrollo de contenidos, desarrollo conceptual e implementación
+
+PSI hace más fácil para la población de países en desarrollo llevar una vida saludable y la planificación que deseen mediante la venta de productos y servicios adaptados a las posibilidades locales.
+
+www.psi.org
+
+
+- PATH
+
+Desarrollo de contenidos, desarrollo conceptual e implementación
+
+PATH acelera la innovación mediante cinco plataformas (vacunas, medicinas, diagnósticos, dispositivos y sistemas y servicios de innovación) que aprovechan su visión empresarial, científica y saber-hacer en salud pública, así como su pasión por la igualdad sanitaria. Mediante la movilización de sus socios alrededor del mundo, PATH lleva la innovación a una escala superior, trabajando en múltiples países, principalmente en África y Asia, para abordar sus mayores necesidades sanitarias
+
+www.path.org
+
+
+Socios desarrolladores de software:
+
+- EyeSeeTea LTD
+
+Liderazgo del desarrollo técnico. 
+
+EyeSeeTea LTD es una empresa establecida en Londres dedicada a:
+- El desarrollo de software para ONG
+- El desarrollo y despliegue de infraestructuras TIC
+- El análisis de datos y su representación
+
+www.eyeseetea.com
+
+- KnowTechTure 
+
+Desarrollo conceptual y técnico
