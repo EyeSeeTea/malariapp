@@ -26,11 +26,15 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.text.Html;
+import android.text.SpannableString;
+import android.text.method.LinkMovementMethod;
+import android.text.util.Linkify;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
+import android.widget.TextView;
 
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
@@ -158,7 +162,7 @@ public abstract class BaseActivity extends ActionBarActivity {
                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface arg0, int arg1) {
                         Session.logout();
-                        finishAndGo(LoginActivity.class);
+                        finishAndGo(DashboardActivity.class);
                     }
                 })
                 .setNegativeButton(android.R.string.no, null).create().show();
@@ -211,7 +215,9 @@ public abstract class BaseActivity extends ActionBarActivity {
      */
     private void showAlertWithHtmlMessage(int titleId, int rawId){
         InputStream message = getApplicationContext().getResources().openRawResource(rawId);
-        showAlert(titleId, Html.fromHtml(Utils.convertFromInputStreamToString(message).toString()));
+        final SpannableString linkedMessage = new SpannableString(Html.fromHtml(Utils.convertFromInputStreamToString(message).toString()));
+        Linkify.addLinks(linkedMessage, Linkify.ALL);
+        showAlert(titleId, linkedMessage);
     }
 
     /**
@@ -220,10 +226,12 @@ public abstract class BaseActivity extends ActionBarActivity {
      * @param text String of the message
      */
     private void showAlert(int titleId, CharSequence text){
-        new AlertDialog.Builder(this)
+        final AlertDialog dialog = new AlertDialog.Builder(this)
                 .setTitle(getApplicationContext().getString(titleId))
                 .setMessage(text)
-                .setNeutralButton(android.R.string.ok, null).create().show();
+                .setNeutralButton(android.R.string.ok, null).create();
+        dialog.show();
+        ((TextView)dialog.findViewById(android.R.id.message)).setMovementMethod(LinkMovementMethod.getInstance());
     }
 
     /**
