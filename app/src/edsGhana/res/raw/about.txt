@@ -1,50 +1,44 @@
-The Electronic Data System
+<p><b>The Electronic Data System</b></p>
 
-This application is made possible by the generous support of the American people through the United States Agency for International Development (USAID). It was developed by MalariaCare, a five-year partnership led by PATH and funded by the US Agency for International Development (USAID) under the US President’s Malaria Initiative (PMI). MalariaCare aims to scale up high-quality diagnosis and treatment services for malaria and other febrile illnesses. The contents are the responsibility of MalariaCare and do not necessarily reflect the views of USAID or the United States Government.
+<p>This application is made possible by the generous support of the American people through the United States Agency for International Development (USAID). It was developed by MalariaCare, a five-year partnership led by <a href="http://www.path.org/">PATH</a> and funded by the <a href="http://www.usaid.gov/">US Agency for International Development (USAID)</a> under the <a href="http://www.pmi.gov/">US President’s Malaria Initiative (PMI)</a>. MalariaCare aims to scale up high-quality diagnosis and treatment services for malaria and other febrile illnesses. The contents are the responsibility of MalariaCare and do not necessarily reflect the views of USAID or the United States Government.</p>
 
-This software is released under the GNU General Public License. For more information about this license, please visit the ‘license’ section under the “settings” menu.
+<p>This software is released under the GNU General Public License. For more information about this license, please visit the ‘license’ section under the “settings” menu.</p>
 
-For more information, please contact us at mis@psi.org
+<p>For more information, please contact us at mis@psi.org</p>
 
-Contributing organizations
+<p><b><u>Contributing organizations</u></b></p>
 
-MalariaCare partners:
+<p><b>MalariaCare partners:</b></p>
 
-- Population Services International
+<p><b><i>Population Services International</i></b></p>
 
-Content development, conceptual development and implementation
+<p><i>Content development, conceptual development and implementation</i></p>
 
-PSI makes it easier for people in the developing world to lead
+<p>PSI makes it easier for people in the developing world to lead healthier lives and plan the families they desire by marketing affordable products and services</p>
 
-healthier lives and plan the families they desire by marketing
+<p><a href="http://www.psi.org">www.psi.org</a></p>
 
-affordable products and services
+<p><b><i>PATH</i></b></p>
 
-www.psi.org
+<p><i>Content development, conceptual development and implementation</i></p>
 
+<p>PATH accelerates innovation across five platforms—vaccines, drugs, diagnostics, devices, and system and service innovations—that harness our entrepreneurial insight, scientific and public health expertise, and passion for health equity. By mobilizing partners around the world, we take innovation to scale, working alongside countries primarily in Africa and Asia to tackle their greatest health needs.</p>
 
-- PATH
+<p><a href="http://www.path.org">www.path.org</a></p>
 
-Content development, conceptual development and implementation
+<p><b>Software development partners:</b></p>
 
-PATH accelerates innovation across five platforms—vaccines, drugs, diagnostics, devices, and system and service innovations—that harness our entrepreneurial insight, scientific and public health expertise, and passion for health equity. By mobilizing partners around the world, we take innovation to scale, working alongside countries primarily in Africa and Asia to tackle their greatest health needs.
+<p><b><i>EyeSeeTea LTD</i></b></p>
 
-www.path.org
+<p><i>Lead technical development</i></p>
 
+<p>EyeSeeTea LTD is a London-based company dedicated to:<br/>
+- NGO software development<br/>
+- ICT development & deployment<br/>
+- Data analysis and representation<br/></p>
 
-Software development partners:
+<p><a href="http://www.eyeseetea.com">www.eyeseetea.com</a></p>
 
-- EyeSeeTea LTD
+<p><b><i>KnowTechTure</i></b></p>
 
-Lead technical development
-
-EyeSeeTea LTD is a London-based company dedicated to:
-- NGO software development
-- ICT development & deployment
-- Data analysis and representation
-
-www.eyeseetea.com
-
-- KnowTechTure
-
-Conceptual and technical development
+<p><i>Conceptual and technical development</i></p>
