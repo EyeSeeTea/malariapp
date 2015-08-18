@@ -1,46 +1,44 @@
-Sistema Electrónico de Datos (EDS)
+<p><b>Sistema Electrónico de Datos (EDS)</b></p>
 
-Esta aplicación es posible por la generosa aportación del pueblo norteamericano a través de la Agencia Internacional para el Desarrollo de los Estados Unidos (USAID). Ha sido desarrollada por MalariaCare, un partenariado de 5 años liderado por PATH y financiado por la Agencia Internacional para el Desarrollo de los Estados Unidos (USAID) a través de la US President’s Malaria Initiative (PMI). El objetivo de MalariaCare es la realización de un diagnóstico de alta calidad escalable y los servicios de tratamiento de malaria y otras enfermedades febriles. Los contenidos son responsabilidad MalariaCare y no necesariamente reflejan el punto de vista de USAID o del gobierno de los Estados Unidos.
+<p>Esta aplicación es posible por la generosa aportación del pueblo norteamericano a través de la Agencia Internacional para el Desarrollo de los Estados Unidos (USAID). Ha sido desarrollada por MalariaCare, un partenariado de 5 años liderado por <a href="http://www.path.org/">PATH</a> y financiado por la <a href="http://www.usaid.gov/">Agencia Internacional para el Desarrollo de los Estados Unidos (USAID)</a> a través de la <a href="http://www.pmi.gov/">US President’s Malaria Initiative (PMI)</a>. El objetivo de MalariaCare es la realización de un diagnóstico de alta calidad escalable y los servicios de tratamiento de malaria y otras enfermedades febriles. Los contenidos son responsabilidad MalariaCare y no necesariamente reflejan el punto de vista de USAID o del gobierno de los Estados Unidos.</p>
 
-Este software se publica bajo la Licencia Pública General de GNU (GPL). Para más información sobre esta licencia, por favor, visite la sección 'licencia' bajo el menú de 'configuración'.
+<p>Este software se publica bajo la Licencia Pública General de GNU (GPL). Para más información sobre esta licencia, por favor, visite la sección 'licencia' bajo el menú de 'configuración'.</p>
 
-Para más información, por favor, contáctenos en mis@psi.org
+<p>Para más información, por favor, contáctenos en mis@psi.org</p>
 
-Organizaciones participantes
+<p><b><u>Organizaciones participantes</u></b></p>
 
-Socios de MalariaCare:
+<p><b>Socios de MalariaCare:</b></p>
 
-- Population Services International
+<p><b><i>Population Services International</i></b></p>
 
-Desarrollo de contenidos, desarrollo conceptual e implementación
+<p><i>Desarrollo de contenidos, desarrollo conceptual e implementación</i></p>
 
-PSI hace más fácil para la población de países en desarrollo llevar una vida saludable y la planificación que deseen mediante la venta de productos y servicios adaptados a las posibilidades locales.
+<p>PSI hace más fácil para la población de países en desarrollo llevar una vida saludable y la planificación que deseen mediante la venta de productos y servicios adaptados a las posibilidades locales.</p>
 
-www.psi.org
+<p><a href="http://www.psi.org">www.psi.org</a></p>
 
+<p><b><i>PATH</i></b></p>
 
-- PATH
+<p><i>Desarrollo de contenidos, desarrollo conceptual e implementación</i></p>
 
-Desarrollo de contenidos, desarrollo conceptual e implementación
+<p>PATH acelera la innovación mediante cinco plataformas (vacunas, medicinas, diagnósticos, dispositivos y sistemas y servicios de innovación) que aprovechan su visión empresarial, científica y saber-hacer en salud pública, así como su pasión por la igualdad sanitaria. Mediante la movilización de sus socios alrededor del mundo, PATH lleva la innovación a una escala superior, trabajando en múltiples países, principalmente en África y Asia, para abordar sus mayores necesidades sanitarias</p>
 
-PATH acelera la innovación mediante cinco plataformas (vacunas, medicinas, diagnósticos, dispositivos y sistemas y servicios de innovación) que aprovechan su visión empresarial, científica y saber-hacer en salud pública, así como su pasión por la igualdad sanitaria. Mediante la movilización de sus socios alrededor del mundo, PATH lleva la innovación a una escala superior, trabajando en múltiples países, principalmente en África y Asia, para abordar sus mayores necesidades sanitarias
+<p><a href="http://www.path.org">www.path.org</a></p>
 
-www.path.org
+<p><b>Socios desarrolladores de software:</b></p>
 
+<p><b><i>EyeSeeTea LTD</i></b></p>
 
-Socios desarrolladores de software:
+<p><i>Liderazgo del desarrollo técnico.</i></p>
 
-- EyeSeeTea LTD
+<p>EyeSeeTea LTD es una empresa establecida en Londres dedicada a:<br/>
+- El desarrollo de software para ONG<br/>
+- El desarrollo y despliegue de infraestructuras TIC<br/>
+- El análisis de datos y su representación<br/></p>
 
-Liderazgo del desarrollo técnico. 
+<p><a href="http://www.eyeseetea.com">www.eyeseetea.com</a></p>
 
-EyeSeeTea LTD es una empresa establecida en Londres dedicada a:
-- El desarrollo de software para ONG
-- El desarrollo y despliegue de infraestructuras TIC
-- El análisis de datos y su representación
+<p><b><i>KnowTechTure</i></b></p>
 
-www.eyeseetea.com
-
-- KnowTechTure 
-
-Desarrollo conceptual y técnico
+<p><i>Desarrollo conceptual y técnico</i></p>

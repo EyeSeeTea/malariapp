@@ -25,6 +25,7 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.text.Html;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -71,7 +72,7 @@ public abstract class BaseActivity extends ActionBarActivity {
      * Customize transitions for these activities
      */
     protected void initTransition(){
-        this.overridePendingTransition(R.transition.anim_slide_in_left,R.transition.anim_slide_out_left);
+        this.overridePendingTransition(R.transition.anim_slide_in_left, R.transition.anim_slide_out_left);
     }
 
     @Override
@@ -96,7 +97,7 @@ public abstract class BaseActivity extends ActionBarActivity {
                 break;
             case R.id.action_about:
                 debugMessage("User asked for about");
-                showAlertWithMessage(R.string.settings_menu_about, R.raw.about);
+                showAlertWithHtmlMessage(R.string.settings_menu_about, R.raw.about);
                 break;
             case R.id.action_logout:
                 debugMessage("User asked for logout");
@@ -200,9 +201,28 @@ public abstract class BaseActivity extends ActionBarActivity {
      */
     private void showAlertWithMessage(int titleId, int rawId){
         InputStream message = getApplicationContext().getResources().openRawResource(rawId);
+        showAlert(titleId, Utils.convertFromInputStreamToString(message).toString());
+    }
+
+    /**
+     * Shows an alert dialog with a big message inside based on a raw resource HTML formatted
+     * @param titleId Id of the title resource
+     * @param rawId Id of the raw text resource in HTML format
+     */
+    private void showAlertWithHtmlMessage(int titleId, int rawId){
+        InputStream message = getApplicationContext().getResources().openRawResource(rawId);
+        showAlert(titleId, Html.fromHtml(Utils.convertFromInputStreamToString(message).toString()));
+    }
+
+    /**
+     * Shows an alert dialog with a given string
+     * @param titleId Id of the title resource
+     * @param text String of the message
+     */
+    private void showAlert(int titleId, CharSequence text){
         new AlertDialog.Builder(this)
                 .setTitle(getApplicationContext().getString(titleId))
-                .setMessage(Utils.convertFromInputStreamToString(message))
+                .setMessage(text)
                 .setNeutralButton(android.R.string.ok, null).create().show();
     }
 
