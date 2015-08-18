@@ -52,10 +52,7 @@ import org.eyeseetea.malariacare.database.model.User;
 import org.eyeseetea.malariacare.database.utils.Session;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Login Screen.
@@ -63,19 +60,6 @@ import java.util.Map;
  */
 public class LoginActivity extends BaseActivity implements LoaderCallbacks<Cursor> {
 
-    /**
-     * A dummy authentication store containing known user names and passwords.
-     * TODO: remove after connecting to a real authentication system.
-     */
-
-    private static final Map<String, String> DUMMY_CREDENTIALS;
-    static {
-        Map<String, String> aMap = new HashMap<String,String>();
-        aMap.put("user", "user");
-        aMap.put("admin", "admin");
-        aMap.put("testing", "Testing2015");
-        DUMMY_CREDENTIALS = Collections.unmodifiableMap(aMap);
-    }
     /**
      * Keep track of the login task to ensure we can cancel it if requested.
      */
@@ -187,11 +171,11 @@ public class LoginActivity extends BaseActivity implements LoaderCallbacks<Curso
      * @param password
      * @return
      */
-    private boolean hasGoodCredentials(String user, String password){String expectedPassword=DUMMY_CREDENTIALS.get(user);
-        if(null==expectedPassword || expectedPassword.isEmpty()){
-            return false;
-        }
-        return expectedPassword.equals(password);
+    private boolean hasGoodCredentials(String user, String password){
+        /*
+        Introduce here the API call to check the credentials in case of API calls strategy
+         */
+        return true;
     }
 
     /**
