@@ -34,3 +34,4 @@ proguard/
 /.idea/workspace.xml
 /.idea/libraries
 .DS_Store
+app/fabric.properties
