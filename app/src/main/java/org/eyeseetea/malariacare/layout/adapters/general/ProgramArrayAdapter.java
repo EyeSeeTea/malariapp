@@ -21,6 +21,7 @@ package org.eyeseetea.malariacare.layout.adapters.general;
 
 import android.content.Context;
 
+import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.model.Program;
 import org.eyeseetea.malariacare.views.CustomTextView;
 
@@ -36,6 +37,8 @@ public class ProgramArrayAdapter extends AddlArrayAdapter<Program> {
     }
 
     @Override public void drawText(CustomTextView customTextView, Program program) {
+        if (customTextView.getmScale().equals(getContext().getString(R.string.font_size_system)))
+            customTextView.setTextSize(16);
         customTextView.setText(program.getName());
     }
 

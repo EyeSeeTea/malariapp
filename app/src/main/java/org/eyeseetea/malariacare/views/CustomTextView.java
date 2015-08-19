@@ -110,6 +110,8 @@ public class CustomTextView extends TextView implements IEyeSeeView {
      */
     public void setmDimension(String mDimension) {
         this.mDimension = mDimension;
+        if (getmScale() != getContext().getString(R.string.font_size_system))
+            setTextSize(TypedValue.COMPLEX_UNIT_SP, PreferencesState.getInstance().getFontSize(mScale, mDimension));
     }
 
     /**
@@ -127,6 +129,8 @@ public class CustomTextView extends TextView implements IEyeSeeView {
      * @param mScale The example scale attribute value to use.
      */
     public void setmScale(String mScale) {
+        if (!mScale.equals(this.mScale))
+            setTextSize(TypedValue.COMPLEX_UNIT_SP, PreferencesState.getInstance().getFontSize(mScale, mDimension));
         this.mScale = mScale;
     }
 

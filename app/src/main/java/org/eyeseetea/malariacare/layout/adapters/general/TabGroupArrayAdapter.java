@@ -21,6 +21,7 @@ package org.eyeseetea.malariacare.layout.adapters.general;
 
 import android.content.Context;
 
+import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.model.TabGroup;
 import org.eyeseetea.malariacare.views.CustomTextView;
 
@@ -36,6 +37,8 @@ public class TabGroupArrayAdapter extends AddlArrayAdapter<TabGroup> {
     }
 
     @Override public void drawText(CustomTextView customTextView, TabGroup tabGroup) {
+        if (customTextView.getmScale().equals(getContext().getString(R.string.font_size_system)))
+            customTextView.setTextSize(16);
         customTextView.setText(tabGroup.getName());
     }
 
