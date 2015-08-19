@@ -49,6 +49,12 @@ public class OrgUnit extends BaseModel {
             foreignColumnName = "id")},
             saveForeignKeyModel = false)
     OrgUnit orgUnit;
+    @Column
+    @ForeignKey(references = {@ForeignKeyReference(columnName = "id_org_unit_level",
+            columnType = Long.class,
+            foreignColumnName = "id")},
+            saveForeignKeyModel = false)
+    OrgUnitLevel orgUnitLevel;
 
     List<Survey> surveys;
 
@@ -62,10 +68,11 @@ public class OrgUnit extends BaseModel {
     }
 
 
-    public OrgUnit(String uid, String name, OrgUnit orgUnit) {
+    public OrgUnit(String uid, String name, OrgUnit orgUnit, OrgUnitLevel orgUnitLevel) {
         this.uid = uid;
         this.name = name;
         this.orgUnit = orgUnit;
+        this.orgUnitLevel = orgUnitLevel;
     }
 
     public Long getId() {
@@ -100,6 +107,13 @@ public class OrgUnit extends BaseModel {
         this.orgUnit = orgUnit;
     }
 
+    public OrgUnitLevel getOrgUnitLevel() {
+        return orgUnitLevel;
+    }
+
+    public void setOrgUnitLevel(OrgUnitLevel orgUnitLevel) {
+        this.orgUnitLevel = orgUnitLevel;
+    }
 
     @OneToMany(methods = {OneToMany.Method.SAVE, OneToMany.Method.DELETE}, variableName = "children")
     public List<OrgUnit> getChildren(){
@@ -125,12 +139,12 @@ public class OrgUnit extends BaseModel {
         OrgUnit orgUnit1 = (OrgUnit) o;
 
         if (id != orgUnit1.id) return false;
+        if (uid != null ? !uid.equals(orgUnit1.uid) : orgUnit1.uid != null) return false;
         if (name != null ? !name.equals(orgUnit1.name) : orgUnit1.name != null) return false;
         if (orgUnit != null ? !orgUnit.equals(orgUnit1.orgUnit) : orgUnit1.orgUnit != null)
             return false;
-        if (uid != null ? !uid.equals(orgUnit1.uid) : orgUnit1.uid != null) return false;
+        return !(orgUnitLevel != null ? !orgUnitLevel.equals(orgUnit1.orgUnitLevel) : orgUnit1.orgUnitLevel != null);
 
-        return true;
     }
 
     @Override
@@ -139,6 +153,7 @@ public class OrgUnit extends BaseModel {
         result = 31 * result + (uid != null ? uid.hashCode() : 0);
         result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (orgUnit != null ? orgUnit.hashCode() : 0);
+        result = 31 * result + (orgUnitLevel != null ? orgUnitLevel.hashCode() : 0);
         return result;
     }
 
@@ -149,6 +164,7 @@ public class OrgUnit extends BaseModel {
                 ", uid='" + uid + '\'' +
                 ", name='" + name + '\'' +
                 ", orgUnit='" + orgUnit + '\'' +
+                ", orgUnitLevel='" + orgUnitLevel + '\'' +
                 '}';
     }
 }

@@ -41,16 +41,9 @@ public class OrgUnitLevel extends BaseModel {
     long id;
     @Column
     String name;
-    @Column
-    @ForeignKey(references = {@ForeignKeyReference(columnName = "id_parent",
-            columnType = Long.class,
-            foreignColumnName = "id")},
-            saveForeignKeyModel = false)
-    OrgUnitLevel orgUnit;
 
-    List<Survey> surveys;
 
-    List<OrgUnitLevel> children;
+    List<OrgUnit> orgUnits;
 
     public OrgUnitLevel() {
     }
@@ -60,10 +53,8 @@ public class OrgUnitLevel extends BaseModel {
     }
 
 
-    public OrgUnitLevel(String uid, String name, OrgUnitLevel orgUnit) {
-        this.uid = uid;
+    public OrgUnitLevel(String uid, String name) {
         this.name = name;
-        this.orgUnit = orgUnit;
     }
 
     public Long getId() {
@@ -74,14 +65,6 @@ public class OrgUnitLevel extends BaseModel {
         this.id = id;
     }
 
-    public String getUid() {
-        return uid;
-    }
-
-    public void setUid(String uid) {
-        this.uid = uid;
-    }
-
     public String getName() {
         return name;
     }
@@ -90,29 +73,12 @@ public class OrgUnitLevel extends BaseModel {
         this.name = name;
     }
 
-    public OrgUnitLevel getOrgUnit() {
-        return orgUnit;
-    }
 
-    public void setOrgUnit(OrgUnitLevel orgUnit) {
-        this.orgUnit = orgUnit;
-    }
-
-
-    @OneToMany(methods = {OneToMany.Method.SAVE, OneToMany.Method.DELETE}, variableName = "children")
-    public List<OrgUnitLevel> getChildren(){
-        this.children = new Select().from(OrgUnitLevel.class)
+    @OneToMany(methods = {OneToMany.Method.SAVE, OneToMany.Method.DELETE}, variableName = "orgUnits")
+    public List<OrgUnit> getOrgUnits(){
+        this.orgUnits = new Select().from(OrgUnit.class)
                 .where(Condition.column(OrgUnit$Table.ORGUNIT_ID_PARENT).eq(this.getId())).queryList();
-        return children;
-    }
-
-    @OneToMany(methods = {OneToMany.Method.SAVE, OneToMany.Method.DELETE}, variableName = "surveys")
-    public List<Survey> getSurveys(){
-        //if(this.surveys == null){
-            this.surveys = new Select().from(Survey.class)
-                    .where(Condition.column(Survey$Table.ORGUNIT_ID_ORG_UNIT).eq(this.getId())).queryList();
-        //}
-        return surveys;
+        return orgUnits;
     }
 
     @Override
@@ -120,23 +86,17 @@ public class OrgUnitLevel extends BaseModel {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        OrgUnitLevel orgUnit1 = (OrgUnitLevel) o;
+        OrgUnitLevel that = (OrgUnitLevel) o;
 
-        if (id != orgUnit1.id) return false;
-        if (name != null ? !name.equals(orgUnit1.name) : orgUnit1.name != null) return false;
-        if (orgUnit != null ? !orgUnit.equals(orgUnit1.orgUnit) : orgUnit1.orgUnit != null)
-            return false;
-        if (uid != null ? !uid.equals(orgUnit1.uid) : orgUnit1.uid != null) return false;
+        if (id != that.id) return false;
+        return !(name != null ? !name.equals(that.name) : that.name != null);
 
-        return true;
     }
 
     @Override
     public int hashCode() {
         int result = (int) (id ^ (id >>> 32));
-        result = 31 * result + (uid != null ? uid.hashCode() : 0);
         result = 31 * result + (name != null ? name.hashCode() : 0);
-        result = 31 * result + (orgUnit != null ? orgUnit.hashCode() : 0);
         return result;
     }
 
@@ -144,9 +104,7 @@ public class OrgUnitLevel extends BaseModel {
     public String toString() {
         return "OrgUnit{" +
                 "id=" + id +
-                ", uid='" + uid + '\'' +
                 ", name='" + name + '\'' +
-                ", orgUnit='" + orgUnit + '\'' +
                 '}';
     }
 }
