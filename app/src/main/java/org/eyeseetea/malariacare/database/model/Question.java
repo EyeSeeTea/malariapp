@@ -379,7 +379,7 @@ public class Question extends BaseModel{
         /**
          * Sql query that counts required questions in a program (required for % stats)
          */
-        List<Question> questions=new Select().all().from(Question.class).as("q")
+        return (int) new Select().count().from(Question.class).as("q")
                 .join(Answer.class, Join.JoinType.LEFT).as("a")
                 .on(Condition.column(ColumnAlias.columnWithTable("q", Question$Table.ANSWER_ID_ANSWER))
                         .eq(ColumnAlias.columnWithTable("a", Answer$Table.ID_ANSWER)))
@@ -397,26 +397,7 @@ public class Question extends BaseModel{
                         .eq(ColumnAlias.columnWithTable("p", Program$Table.ID_PROGRAM)))
                 .where(Condition.column(ColumnAlias.columnWithTable("q", Question$Table.QUESTION_ID_PARENT)).isNull())
                 .and(Condition.column(ColumnAlias.columnWithTable("a", Answer$Table.OUTPUT)).isNot(Constants.NO_ANSWER))
-                .and(Condition.column(ColumnAlias.columnWithTable("g", TabGroup$Table.ID_TAB_GROUP)).eq(tabGroup.getId_tab_group())).queryList();
-        return questions.size();
-        /*return (int) new Select().count().from(Question.class).as("q")
-                .join(Answer.class, Join.JoinType.LEFT).as("a")
-                .on(Condition.column(ColumnAlias.columnWithTable("q", Question$Table.ANSWER_ID_ANSWER))
-                        .eq(ColumnAlias.columnWithTable("a", Answer$Table.ID)))
-                .join(Header.class, Join.JoinType.LEFT).as("h")
-                .on(Condition.column(ColumnAlias.columnWithTable("q", Question$Table.HEADER_ID_HEADER))
-                        .eq(ColumnAlias.columnWithTable("h", Header$Table.ID)))
-                .join(Tab.class, Join.JoinType.LEFT).as("t")
-                .on(Condition.column(ColumnAlias.columnWithTable("h", Header$Table.TAB_ID_TAB))
-                        .eq(ColumnAlias.columnWithTable("t", Tab$Table.ID)))
-                .join(Program.class, Join.JoinType.LEFT).as("p")
-                .on(Condition.column(ColumnAlias.columnWithTable("t", Tab$Table.TABGROUP_ID_TAB_GROUP))
-                        .eq(ColumnAlias.columnWithTable("p", TabGroup$Table.ID)))
-                .where(Condition.column(ColumnAlias.columnWithTable("q", Question$Table.QUESTION_ID_PARENT)).isNull())
-                .and(Condition.column(ColumnAlias.columnWithTable("a", Answer$Table.OUTPUT)).isNot(Constants.NO_ANSWER))
-                .and(Condition.column(ColumnAlias.columnWithTable("p", TabGroup$Table.ID)).eq(tabGroup.getId())).count();*/
-
-        //List<Question> questionsByProgram = Question.findWithQuery(Question.class, LIST_REQUIRED_BY_PROGRAM, program.getId().toString());
+                .and(Condition.column(ColumnAlias.columnWithTable("g", TabGroup$Table.ID_TAB_GROUP)).eq(tabGroup.getId_tab_group())).count();
     }
 
     /**
