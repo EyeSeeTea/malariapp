@@ -52,7 +52,7 @@ public class OrgUnit extends BaseModel {
     @Column
     @ForeignKey(references = {@ForeignKeyReference(columnName = "id_org_unit_level",
             columnType = Long.class,
-            foreignColumnName = "id")},
+            foreignColumnName = "id_org_unit_level")},
             saveForeignKeyModel = false)
     OrgUnitLevel orgUnitLevel;
 

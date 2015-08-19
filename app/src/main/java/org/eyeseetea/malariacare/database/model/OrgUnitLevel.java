@@ -20,8 +20,6 @@
 package org.eyeseetea.malariacare.database.model;
 
 import com.raizlabs.android.dbflow.annotation.Column;
-import com.raizlabs.android.dbflow.annotation.ForeignKey;
-import com.raizlabs.android.dbflow.annotation.ForeignKeyReference;
 import com.raizlabs.android.dbflow.annotation.OneToMany;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;
@@ -38,7 +36,7 @@ public class OrgUnitLevel extends BaseModel {
 
     @Column
     @PrimaryKey(autoincrement = true)
-    long id;
+    long id_org_unit_level;
     @Column
     String name;
 
@@ -57,12 +55,12 @@ public class OrgUnitLevel extends BaseModel {
         this.name = name;
     }
 
-    public Long getId() {
-        return id;
+    public Long getId_org_unit_level() {
+        return id_org_unit_level;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setId_org_unit_level(Long id_org_unit_level) {
+        this.id_org_unit_level = id_org_unit_level;
     }
 
     public String getName() {
@@ -77,7 +75,7 @@ public class OrgUnitLevel extends BaseModel {
     @OneToMany(methods = {OneToMany.Method.SAVE, OneToMany.Method.DELETE}, variableName = "orgUnits")
     public List<OrgUnit> getOrgUnits(){
         this.orgUnits = new Select().from(OrgUnit.class)
-                .where(Condition.column(OrgUnit$Table.ORGUNIT_ID_PARENT).eq(this.getId())).queryList();
+                .where(Condition.column(OrgUnit$Table.ORGUNIT_ID_PARENT).eq(this.getId_org_unit_level())).queryList();
         return orgUnits;
     }
 
@@ -88,14 +86,14 @@ public class OrgUnitLevel extends BaseModel {
 
         OrgUnitLevel that = (OrgUnitLevel) o;
 
-        if (id != that.id) return false;
+        if (id_org_unit_level != that.id_org_unit_level) return false;
         return !(name != null ? !name.equals(that.name) : that.name != null);
 
     }
 
     @Override
     public int hashCode() {
-        int result = (int) (id ^ (id >>> 32));
+        int result = (int) (id_org_unit_level ^ (id_org_unit_level >>> 32));
         result = 31 * result + (name != null ? name.hashCode() : 0);
         return result;
     }
@@ -103,7 +101,7 @@ public class OrgUnitLevel extends BaseModel {
     @Override
     public String toString() {
         return "OrgUnit{" +
-                "id=" + id +
+                "id=" + id_org_unit_level +
                 ", name='" + name + '\'' +
                 '}';
     }
