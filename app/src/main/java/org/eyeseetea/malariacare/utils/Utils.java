@@ -65,7 +65,7 @@ public class Utils {
     }
 
     public static List<? extends BaseModel> preloadTabItems(Tab tab){
-        List<? extends BaseModel> items = Session.getTabsCache().get(tab.getId());
+        List<? extends BaseModel> items = Session.getTabsCache().get(tab.getId_tab());
         if (items == null) {
             if (tab.isCompositeScore()){
                 items = CompositeScore.listByTabGroup(Session.getSurvey().getTabGroup());
@@ -73,7 +73,7 @@ public class Utils {
             else{
                 items = convertTabToArrayCustom(tab);
             }
-            Session.getTabsCache().put(tab.getId(), items);
+            Session.getTabsCache().put(tab.getId_tab(), items);
             return items;
         }
         return items;

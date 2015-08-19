@@ -87,7 +87,7 @@ public class LayoutUtils {
     // Given a View, this method search down in the tree to find the corresponding child View to a given question
     public static View findChildRecursively(View startingView, Question question) {
         View toReturn;
-        if (startingView != null && (startingView.getTag(R.id.QuestionTag) != null) && (startingView.getTag(R.id.QuestionTag) instanceof Question) && ((((Question) startingView.getTag(R.id.QuestionTag)).getId()).longValue() == (question.getId()).longValue())) {
+        if (startingView != null && (startingView.getTag(R.id.QuestionTag) != null) && (startingView.getTag(R.id.QuestionTag) instanceof Question) && ((((Question) startingView.getTag(R.id.QuestionTag)).getId_question()).longValue() == (question.getId_question()).longValue())) {
             return startingView;
         } else {
             int childrenCount;
@@ -255,7 +255,7 @@ public class LayoutUtils {
             isContained = false;
             if (child.getQuestion() == null) return false;
             for (Question parent : parentList) {
-                if (child.getId().equals(parent.getId())){
+                if (child.getId_question().equals(parent.getId_question())){
                     isContained = true;
                     break;
                 }

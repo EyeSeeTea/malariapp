@@ -67,7 +67,7 @@ public class Question extends BaseModel{
 
     @Column
     @PrimaryKey(autoincrement = true)
-    long id;
+    long id_question;
     @Column
     String code;
     @Column
@@ -87,25 +87,25 @@ public class Question extends BaseModel{
     @Column
     @ForeignKey(references = {@ForeignKeyReference(columnName = "id_header",
             columnType = Long.class,
-            foreignColumnName = "id")},
+            foreignColumnName = "id_header")},
             saveForeignKeyModel = false)
     Header header;
     @Column
     @ForeignKey(references = {@ForeignKeyReference(columnName = "id_answer",
             columnType = Long.class,
-            foreignColumnName = "id")},
+            foreignColumnName = "id_answer")},
             saveForeignKeyModel = false)
     Answer answer;
     @Column
     @ForeignKey(references = {@ForeignKeyReference(columnName = "id_parent",
             columnType = Long.class,
-            foreignColumnName = "id")},
+            foreignColumnName = "id_question")},
             saveForeignKeyModel = false)
     Question question;
     @Column
     @ForeignKey(references = {@ForeignKeyReference(columnName = "id_composite_score",
             columnType = Long.class,
-            foreignColumnName = "id")},
+            foreignColumnName = "id_composite_score")},
             saveForeignKeyModel = false)
     CompositeScore compositeScore;
 
@@ -133,12 +133,12 @@ public class Question extends BaseModel{
         this.compositeScore = compositeScore;
     }
 
-    public Long getId() {
-        return id;
+    public Long getId_question() {
+        return id_question;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setId_question(Long id_question) {
+        this.id_question = id_question;
     }
 
     public String getCode() {
@@ -241,7 +241,7 @@ public class Question extends BaseModel{
     public List<QuestionRelation> getQuestionRelations() {
         //if (this.children == null){
         this.questionRelations = new Select().from(QuestionRelation.class)
-                .where(Condition.column(QuestionRelation$Table.QUESTION_ID_QUESTION).eq(this.getId()))
+                .where(Condition.column(QuestionRelation$Table.QUESTION_ID_QUESTION).eq(this.getId_question()))
                 .queryList();
         //}
         return this.questionRelations;
@@ -254,7 +254,7 @@ public class Question extends BaseModel{
     public List<QuestionOption> getQuestionOption() {
         //if (this.children == null){
         return new Select().from(QuestionOption.class)
-                .where(Condition.column(QuestionOption$Table.QUESTION_ID_QUESTION).eq(this.getId()))
+                .where(Condition.column(QuestionOption$Table.QUESTION_ID_QUESTION).eq(this.getId_question()))
                 .queryList();
         //}
     }
@@ -267,7 +267,7 @@ public class Question extends BaseModel{
     public List<Question> getChildren() {
         //if (this.children == null){
             this.children = new Select().from(Question.class)
-                    .where(Condition.column(Question$Table.QUESTION_ID_PARENT).eq(this.getId()))
+                    .where(Condition.column(Question$Table.QUESTION_ID_PARENT).eq(this.getId_question()))
                     .orderBy(Question$Table.ORDER_POS).queryList();
         //}
         return this.children;
@@ -279,7 +279,7 @@ public class Question extends BaseModel{
 
     @OneToMany(methods = {OneToMany.Method.SAVE, OneToMany.Method.DELETE}, variableName = "values")
     public List<Value> getValues(){
-        return new Select().from(Value.class).where(Condition.column(Value$Table.QUESTION_ID_QUESTION).eq(this.getId())).queryList();
+        return new Select().from(Value.class).where(Condition.column(Value$Table.QUESTION_ID_QUESTION).eq(this.getId_question())).queryList();
     }
 
     /**
@@ -300,8 +300,8 @@ public class Question extends BaseModel{
             return null;
         }
         List<Value> returnValues = new Select().from(Value.class)
-                .where(Condition.column(Value$Table.QUESTION_ID_QUESTION).eq(this.getId()))
-                .and(Condition.column(Value$Table.SURVEY_ID_SURVEY).eq(survey.getId())).queryList();
+                .where(Condition.column(Value$Table.QUESTION_ID_QUESTION).eq(this.getId_question()))
+                .and(Condition.column(Value$Table.SURVEY_ID_SURVEY).eq(survey.getId_survey())).queryList();
 
         if (returnValues.size() == 0){
             return null;
@@ -372,14 +372,34 @@ public class Question extends BaseModel{
      * @return
      */
     public static int countRequiredByProgram(TabGroup tabGroup){
-        if(tabGroup==null || tabGroup.getId()==null){
+        if(tabGroup==null || tabGroup.getId_tab_group()==null){
             return 0;
         }
 
         /**
          * Sql query that counts required questions in a program (required for % stats)
          */
-        return (int) new Select().count().from(Question.class).as("q")
+        List<Question> questions=new Select().all().from(Question.class).as("q")
+                .join(Answer.class, Join.JoinType.LEFT).as("a")
+                .on(Condition.column(ColumnAlias.columnWithTable("q", Question$Table.ANSWER_ID_ANSWER))
+                        .eq(ColumnAlias.columnWithTable("a", Answer$Table.ID_ANSWER)))
+                .join(Header.class, Join.JoinType.LEFT).as("h")
+                .on(Condition.column(ColumnAlias.columnWithTable("q", Question$Table.HEADER_ID_HEADER))
+                        .eq(ColumnAlias.columnWithTable("h", Header$Table.ID_HEADER)))
+                .join(Tab.class, Join.JoinType.LEFT).as("t")
+                .on(Condition.column(ColumnAlias.columnWithTable("h", Header$Table.TAB_ID_TAB))
+                        .eq(ColumnAlias.columnWithTable("t", Tab$Table.ID_TAB)))
+                .join(TabGroup.class, Join.JoinType.LEFT).as("g")
+                .on(Condition.column(ColumnAlias.columnWithTable("t", Tab$Table.TABGROUP_ID_TAB_GROUP))
+                        .eq(ColumnAlias.columnWithTable("g", TabGroup$Table.ID_TAB_GROUP)))
+                .join(Program.class, Join.JoinType.LEFT).as("p")
+                .on(Condition.column(ColumnAlias.columnWithTable("g", TabGroup$Table.PROGRAM_ID_PROGRAM))
+                        .eq(ColumnAlias.columnWithTable("p", Program$Table.ID_PROGRAM)))
+                .where(Condition.column(ColumnAlias.columnWithTable("q", Question$Table.QUESTION_ID_PARENT)).isNull())
+                .and(Condition.column(ColumnAlias.columnWithTable("a", Answer$Table.OUTPUT)).isNot(Constants.NO_ANSWER))
+                .and(Condition.column(ColumnAlias.columnWithTable("g", TabGroup$Table.ID_TAB_GROUP)).eq(tabGroup.getId_tab_group())).queryList();
+        return questions.size();
+        /*return (int) new Select().count().from(Question.class).as("q")
                 .join(Answer.class, Join.JoinType.LEFT).as("a")
                 .on(Condition.column(ColumnAlias.columnWithTable("q", Question$Table.ANSWER_ID_ANSWER))
                         .eq(ColumnAlias.columnWithTable("a", Answer$Table.ID)))
@@ -394,7 +414,7 @@ public class Question extends BaseModel{
                         .eq(ColumnAlias.columnWithTable("p", TabGroup$Table.ID)))
                 .where(Condition.column(ColumnAlias.columnWithTable("q", Question$Table.QUESTION_ID_PARENT)).isNull())
                 .and(Condition.column(ColumnAlias.columnWithTable("a", Answer$Table.OUTPUT)).isNot(Constants.NO_ANSWER))
-                .and(Condition.column(ColumnAlias.columnWithTable("p", TabGroup$Table.ID)).eq(tabGroup.getId())).count();
+                .and(Condition.column(ColumnAlias.columnWithTable("p", TabGroup$Table.ID)).eq(tabGroup.getId())).count();*/
 
         //List<Question> questionsByProgram = Question.findWithQuery(Question.class, LIST_REQUIRED_BY_PROGRAM, program.getId().toString());
     }
@@ -405,22 +425,22 @@ public class Question extends BaseModel{
      * @return
      */
     public static List<Question> listByTabGroup(TabGroup tabGroup){
-        if(tabGroup==null || tabGroup.getId()==null){
+        if(tabGroup==null || tabGroup.getId_tab_group()==null){
             return new ArrayList();
         }
 
         return new Select().all().from(Question.class).as("q")
                 .join(Header.class, Join.JoinType.LEFT).as("h")
                 .on(Condition.column(ColumnAlias.columnWithTable("q", Question$Table.HEADER_ID_HEADER))
-                        .eq(ColumnAlias.columnWithTable("h", Header$Table.ID)))
+                        .eq(ColumnAlias.columnWithTable("h", Header$Table.ID_HEADER)))
                 .join(Tab.class, Join.JoinType.LEFT).as("t")
                 .on(Condition.column(ColumnAlias.columnWithTable("h", Header$Table.TAB_ID_TAB))
-                        .eq(ColumnAlias.columnWithTable("t", Tab$Table.ID)))
+                        .eq(ColumnAlias.columnWithTable("t", Tab$Table.ID_TAB)))
                 .join(Program.class, Join.JoinType.LEFT).as("p")
                 .on(Condition.column(ColumnAlias.columnWithTable("t", Tab$Table.TABGROUP_ID_TAB_GROUP))
-                        .eq(ColumnAlias.columnWithTable("p", TabGroup$Table.ID)))
-                .where(Condition.column(ColumnAlias.columnWithTable("p", TabGroup$Table.ID))
-                        .eq(tabGroup.getId()))
+                        .eq(ColumnAlias.columnWithTable("p", TabGroup$Table.ID_TAB_GROUP)))
+                .where(Condition.column(ColumnAlias.columnWithTable("p", TabGroup$Table.ID_TAB_GROUP))
+                        .eq(tabGroup.getId_tab_group()))
                 .orderBy(Tab$Table.ORDER_POS)
                 .orderBy(Question$Table.ORDER_POS).queryList();
 
@@ -434,18 +454,18 @@ public class Question extends BaseModel{
         }
 
         Iterator<Tab> iterator=tabs.iterator();
-        In in = Condition.column(ColumnAlias.columnWithTable("t", Tab$Table.ID)).in(Long.toString(iterator.next().getId()));
+        In in = Condition.column(ColumnAlias.columnWithTable("t", Tab$Table.ID_TAB)).in(Long.toString(iterator.next().getId_tab()));
         while (iterator.hasNext()) {
-            in.and(Long.toString(iterator.next().getId()));
+            in.and(Long.toString(iterator.next().getId_tab()));
         }
 
         return new Select().from(Question.class).as("q")
                 .join(Header.class, Join.JoinType.LEFT).as("h")
                 .on(Condition.column(ColumnAlias.columnWithTable("q", Question$Table.HEADER_ID_HEADER))
-                        .eq(ColumnAlias.columnWithTable("h", Header$Table.ID)))
+                        .eq(ColumnAlias.columnWithTable("h", Header$Table.ID_HEADER)))
                 .join(Tab.class, Join.JoinType.LEFT).as("t")
                 .on(Condition.column(ColumnAlias.columnWithTable("h", Header$Table.TAB_ID_TAB))
-                        .eq(ColumnAlias.columnWithTable("t", Tab$Table.ID)))
+                        .eq(ColumnAlias.columnWithTable("t", Tab$Table.ID_TAB)))
                 .where(in)
                 .orderBy(Tab$Table.ORDER_POS)
                 .orderBy(Question$Table.ORDER_POS).queryList();
@@ -475,7 +495,7 @@ public class Question extends BaseModel{
 
         Question question1 = (Question) o;
 
-        if (id != question1.id) return false;
+        if (id_question != question1.id_question) return false;
         if (answer != null ? !answer.equals(question1.answer) : question1.answer != null)
             return false;
         if (code != null ? !code.equals(question1.code) : question1.code != null) return false;
@@ -504,7 +524,7 @@ public class Question extends BaseModel{
 
     @Override
     public int hashCode() {
-        int result = (int) (id ^ (id >>> 32));
+        int result = (int) (id_question ^ (id_question >>> 32));
         result = 31 * result + (code != null ? code.hashCode() : 0);
         result = 31 * result + (de_name != null ? de_name.hashCode() : 0);
         result = 31 * result + (short_name != null ? short_name.hashCode() : 0);
@@ -523,7 +543,7 @@ public class Question extends BaseModel{
     @Override
     public String toString() {
         return "Question{" +
-                "id='" + id + '\'' +
+                "id='" + id_question + '\'' +
                 ", code='" + code + '\'' +
                 ", de_name='" + de_name + '\'' +
                 ", short_name='" + short_name + '\'' +

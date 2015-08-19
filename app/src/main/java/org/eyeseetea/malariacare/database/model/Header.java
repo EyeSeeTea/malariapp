@@ -38,7 +38,7 @@ public class Header extends BaseModel{
 
     @Column
     @PrimaryKey(autoincrement = true)
-    long id;
+    long id_header;
     @Column
     String short_name;
     @Column
@@ -48,7 +48,7 @@ public class Header extends BaseModel{
     @Column
     @ForeignKey(references = {@ForeignKeyReference(columnName = "id_tab",
             columnType = Long.class,
-            foreignColumnName = "id")},
+            foreignColumnName = "id_tab")},
             saveForeignKeyModel = false)
     Tab tab;
 
@@ -67,12 +67,12 @@ public class Header extends BaseModel{
         this.tab = tab;
     }
 
-    public Long getId() {
-        return id;
+    public Long getId_header() {
+        return id_header;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setId_header(Long id_header) {
+        this.id_header = id_header;
     }
 
     public String getShort_name() {
@@ -112,7 +112,7 @@ public class Header extends BaseModel{
     public List<Question> getQuestions(){
         //if (this.questions == null){
             this.questions = new Select().from(Question.class)
-                    .where(Condition.column(Question$Table.HEADER_ID_HEADER).eq(this.getId()))
+                    .where(Condition.column(Question$Table.HEADER_ID_HEADER).eq(this.getId_header()))
                     .orderBy(Question$Table.ORDER_POS).queryList();
         //}
         return questions;
@@ -124,7 +124,7 @@ public class Header extends BaseModel{
      */
     public long getNumberOfQuestionParents() {
         return new Select().count().from(Question.class)
-                .where(Condition.column(Question$Table.HEADER_ID_HEADER).eq(getId()))
+                .where(Condition.column(Question$Table.HEADER_ID_HEADER).eq(getId_header()))
                 .and(Condition.column(Question$Table.QUESTION_ID_PARENT).isNull()).count();
     }
 
@@ -135,7 +135,7 @@ public class Header extends BaseModel{
 
         Header header = (Header) o;
 
-        if (id != header.id) return false;
+        if (id_header != header.id_header) return false;
         if (short_name != null ? !short_name.equals(header.short_name) : header.short_name != null)
             return false;
         if (name != null ? !name.equals(header.name) : header.name != null) return false;
@@ -146,7 +146,7 @@ public class Header extends BaseModel{
 
     @Override
     public int hashCode() {
-        int result = (int) (id ^ (id >>> 32));
+        int result = (int) (id_header ^ (id_header >>> 32));
         result = 31 * result + (short_name != null ? short_name.hashCode() : 0);
         result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + order_pos.hashCode();
@@ -157,7 +157,7 @@ public class Header extends BaseModel{
     @Override
     public String toString() {
         return "Header{" +
-                "id=" + id +
+                "id=" + id_header +
                 ", short_name='" + short_name + '\'' +
                 ", name='" + name + '\'' +
                 ", order_pos=" + order_pos +

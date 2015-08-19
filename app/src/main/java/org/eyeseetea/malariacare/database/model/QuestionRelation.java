@@ -40,11 +40,11 @@ import java.util.List;
 public class QuestionRelation extends BaseModel {
     @Column
     @PrimaryKey(autoincrement = true)
-    long id;
+    long id_question_relation;
     @Column
     @ForeignKey(references = {@ForeignKeyReference(columnName = "id_question",
             columnType = Long.class,
-            foreignColumnName = "id")},
+            foreignColumnName = "id_question")},
             saveForeignKeyModel = false)
     Question question;
 
@@ -57,7 +57,7 @@ public class QuestionRelation extends BaseModel {
     public List<Match> getMatches() {
         //if (this.children == null){
         this.matches = new Select().from(Match.class)
-                .where(Condition.column(Match$Table.QUESTIONRELATION_ID_QUESTION_RELATION).eq(this.getId()))
+                .where(Condition.column(Match$Table.QUESTIONRELATION_ID_QUESTION_RELATION).eq(this.getId_question_relation()))
                 .queryList();
         //}
         return this.matches;
@@ -72,12 +72,12 @@ public class QuestionRelation extends BaseModel {
         this.operation = operation;
     }
 
-    public long getId() {
-        return id;
+    public long getId_question_relation() {
+        return id_question_relation;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public void setId_question_relation(long id_question_relation) {
+        this.id_question_relation = id_question_relation;
     }
 
     public Question getQuestion() {
@@ -103,7 +103,7 @@ public class QuestionRelation extends BaseModel {
 
         QuestionRelation that = (QuestionRelation) o;
 
-        if (id != that.id) return false;
+        if (id_question_relation != that.id_question_relation) return false;
         if (operation != that.operation) return false;
         if (question != null ? !question.equals(that.question) : that.question != null)
             return false;
@@ -113,7 +113,7 @@ public class QuestionRelation extends BaseModel {
 
     @Override
     public int hashCode() {
-        int result = (int) (id ^ (id >>> 32));
+        int result = (int) (id_question_relation ^ (id_question_relation >>> 32));
         result = 31 * result + (question != null ? question.hashCode() : 0);
         result = 31 * result + operation;
         return result;
@@ -122,7 +122,7 @@ public class QuestionRelation extends BaseModel {
     @Override
     public String toString() {
         return "QuestionRelation{" +
-                "id=" + id +
+                "id=" + id_question_relation +
                 ", question=" + question +
                 ", operation=" + operation +
                 '}';

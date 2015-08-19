@@ -36,7 +36,7 @@ public class Answer extends BaseModel {
 
     @Column
     @PrimaryKey(autoincrement = true)
-    long id;
+    long id_answer;
     @Column
     String name;
     @Column
@@ -54,12 +54,12 @@ public class Answer extends BaseModel {
         this.output = output;
     }
 
-    public Long getId() {
-        return id;
+    public Long getId_answer() {
+        return id_answer;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setId_answer(Long id_answer) {
+        this.id_answer = id_answer;
     }
 
     public String getName() {
@@ -81,13 +81,13 @@ public class Answer extends BaseModel {
     //TODO: to enable lazy loading, here we need to set Method.SAVE and Method.DELETE and use the .toModel() to specify when do we want to load the models
     @OneToMany(methods = {OneToMany.Method.SAVE, OneToMany.Method.DELETE}, variableName = "options")
     public List<Option> getOptions(){
-        return new Select().from(Option.class).where(Condition.column(Option$Table.ANSWER_ID_ANSWER).eq(this.getId())).queryList();
+        return new Select().from(Option.class).where(Condition.column(Option$Table.ANSWER_ID_ANSWER).eq(this.getId_answer())).queryList();
     }
 
     //TODO: to enable lazy loading, here we need to set Method.SAVE and Method.DELETE and use the .toModel() to specify when do we want to load the models
     @OneToMany(methods = {OneToMany.Method.SAVE, OneToMany.Method.DELETE}, variableName = "questions")
     public List<Question> getQuestions(){
-        return new Select().from(Question.class).where(Condition.column(Question$Table.ANSWER_ID_ANSWER).eq(this.getId())).queryList();
+        return new Select().from(Question.class).where(Condition.column(Question$Table.ANSWER_ID_ANSWER).eq(this.getId_answer())).queryList();
     }
 
     @Override
@@ -97,7 +97,7 @@ public class Answer extends BaseModel {
 
         Answer answer = (Answer) o;
 
-        if (id != answer.id) return false;
+        if (id_answer != answer.id_answer) return false;
         if (name != null ? !name.equals(answer.name) : answer.name != null) return false;
         return output.equals(answer.output);
 
@@ -105,7 +105,7 @@ public class Answer extends BaseModel {
 
     @Override
     public int hashCode() {
-        int result = (int) (id ^ (id >>> 32));
+        int result = (int) (id_answer ^ (id_answer >>> 32));
         result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + output.hashCode();
         return result;
@@ -114,7 +114,7 @@ public class Answer extends BaseModel {
     @Override
     public String toString() {
         return "Answer{" +
-                "id=" + id +
+                "id=" + id_answer +
                 ", name='" + name + '\'' +
                 ", output=" + output +
                 '}';

@@ -53,23 +53,23 @@ public class Survey extends BaseModel {
 
     @Column
     @PrimaryKey(autoincrement = true)
-    long id;
+    long id_survey;
     @Column
     @ForeignKey(references = {@ForeignKeyReference(columnName = "id_tab_group",
             columnType = Long.class,
-            foreignColumnName = "id")},
+            foreignColumnName = "id_tab_group")},
             saveForeignKeyModel = false)
     TabGroup tabGroup;
     @Column
     @ForeignKey(references = {@ForeignKeyReference(columnName = "id_org_unit",
             columnType = Long.class,
-            foreignColumnName = "id")},
+            foreignColumnName = "id_org_unit")},
             saveForeignKeyModel = false)
     OrgUnit orgUnit;
     @Column
     @ForeignKey(references = {@ForeignKeyReference(columnName = "id_user",
             columnType = Long.class,
-            foreignColumnName = "id")},
+            foreignColumnName = "id_user")},
             saveForeignKeyModel = false)
     User user;
     @Column
@@ -97,12 +97,12 @@ public class Survey extends BaseModel {
         Log.i(".Survey", Long.valueOf(this.completionDate.getTime()).toString());
     }
 
-    public Long getId() {
-        return id;
+    public Long getId_survey() {
+        return id_survey;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setId_survey(Long id_survey) {
+        this.id_survey = id_survey;
     }
 
     public OrgUnit getOrgUnit() {
@@ -168,7 +168,7 @@ public class Survey extends BaseModel {
     @OneToMany(methods = {OneToMany.Method.SAVE, OneToMany.Method.DELETE}, variableName = "values")
     public List<Value> getValues(){
         return new Select().from(Value.class)
-                .where(Condition.column(Value$Table.SURVEY_ID_SURVEY).eq(this.getId())).queryList();
+                .where(Condition.column(Value$Table.SURVEY_ID_SURVEY).eq(this.getId_survey())).queryList();
     }
 
     /**
@@ -179,9 +179,9 @@ public class Survey extends BaseModel {
         List<Value> values = new Select().all().from(Value.class).as("v")
                 .join(Question.class, Join.JoinType.LEFT).as("q")
                 .on(Condition.column(ColumnAlias.columnWithTable("v", Value$Table.QUESTION_ID_QUESTION))
-                        .eq(ColumnAlias.columnWithTable("q", Question$Table.ID)))
+                        .eq(ColumnAlias.columnWithTable("q", Question$Table.ID_QUESTION)))
                 .where(Condition.column(ColumnAlias.columnWithTable("v", Value$Table.SURVEY_ID_SURVEY))
-                        .eq(this.getId()))
+                        .eq(this.getId_survey()))
                 .and(Condition.column(ColumnAlias.columnWithTable("q", Question$Table.QUESTION_ID_PARENT)).isNull())
                 .and(Condition.column(ColumnAlias.columnWithTable("v", Value$Table.VALUE)).isNotNull())
                 .and(Condition.column(ColumnAlias.columnWithTable("v", Value$Table.VALUE)).isNot("")).queryList();
@@ -195,7 +195,7 @@ public class Survey extends BaseModel {
      */
     public SurveyAnsweredRatio getAnsweredQuestionRatio(){
         if (answeredQuestionRatio == null) {
-            answeredQuestionRatio = SurveyAnsweredRatioCache.get(this.getId());
+            answeredQuestionRatio = SurveyAnsweredRatioCache.get(this.getId_survey());
             if(answeredQuestionRatio == null) {
                 answeredQuestionRatio = reloadSurveyAnsweredRatio();
             }
@@ -222,7 +222,7 @@ public class Survey extends BaseModel {
 
         }
         SurveyAnsweredRatio surveyAnsweredRatio=new SurveyAnsweredRatio(numRequired+numOptional, numAnswered);
-        SurveyAnsweredRatioCache.put(this.id, surveyAnsweredRatio);
+        SurveyAnsweredRatioCache.put(this.id_survey, surveyAnsweredRatio);
         return surveyAnsweredRatio;
     }
 
@@ -259,8 +259,8 @@ public class Survey extends BaseModel {
      */
     public static List<Survey> getUnsentSurveys(OrgUnit orgUnit, TabGroup tabGroup) {
         return new Select().from(Survey.class)
-                .where(Condition.column(Survey$Table.ORGUNIT_ID_ORG_UNIT).eq(orgUnit.getId()))
-                .and(Condition.column(Survey$Table.TABGROUP_ID_TAB_GROUP).eq(tabGroup.getId()))
+                .where(Condition.column(Survey$Table.ORGUNIT_ID_ORG_UNIT).eq(orgUnit.getId_org_unit()))
+                .and(Condition.column(Survey$Table.TABGROUP_ID_TAB_GROUP).eq(tabGroup.getId_tab_group()))
                 .and(Condition.column(Survey$Table.STATUS).isNot(Constants.SURVEY_SENT))
                 .orderBy(Survey$Table.EVENTDATE)
                 .orderBy(Survey$Table.ORGUNIT_ID_ORG_UNIT).queryList();
@@ -369,7 +369,7 @@ public class Survey extends BaseModel {
 
         Survey survey = (Survey) o;
 
-        if (id != survey.id) return false;
+        if (id_survey != survey.id_survey) return false;
         if (!tabGroup.equals(survey.tabGroup)) return false;
         if (!orgUnit.equals(survey.orgUnit)) return false;
         if (!user.equals(survey.user)) return false;
@@ -383,7 +383,7 @@ public class Survey extends BaseModel {
 
     @Override
     public int hashCode() {
-        int result = (int) (id ^ (id >>> 32));
+        int result = (int) (id_survey ^ (id_survey >>> 32));
         result = 31 * result + tabGroup.hashCode();
         result = 31 * result + orgUnit.hashCode();
         result = 31 * result + user.hashCode();
@@ -396,7 +396,7 @@ public class Survey extends BaseModel {
     @Override
     public String toString() {
         return "Survey{" +
-                "id=" + id +
+                "id=" + id_survey +
                 ", tabGroup=" + tabGroup +
                 ", orgUnit=" + orgUnit +
                 ", user=" + user +

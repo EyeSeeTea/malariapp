@@ -125,7 +125,7 @@ public class PushClient {
      * @throws Exception
      */
     private JSONObject prepareMetadata() throws Exception{
-        Log.d(TAG,"prepareMetadata for survey: "+survey.getId());
+        Log.d(TAG,"prepareMetadata for survey: "+survey.getId_survey());
 
         JSONObject object=new JSONObject();
         //FIXME Do we want to push the program or the tab group or both?
@@ -158,7 +158,7 @@ public class PushClient {
      * @throws Exception
      */
     private JSONObject prepareDataElements(JSONObject data)throws Exception{
-        Log.d(TAG, "prepareDataElements for survey: " + survey.getId());
+        Log.d(TAG, "prepareDataElements for survey: " + survey.getId_survey());
 
         //Add dataElement per values
         JSONArray values=prepareValues(new JSONArray());

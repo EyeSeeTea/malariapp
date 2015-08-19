@@ -229,7 +229,7 @@ public class SurveyActivity extends BaseActivity{
         for(Tab tab: tabs) {
             Intent preLoadService = new Intent(this, SurveyService.class);
             preLoadService.putExtra(SurveyService.SERVICE_METHOD, SurveyService.PRELOAD_TAB_ITEMS);
-            preLoadService.putExtra("tab", tab.getId());
+            preLoadService.putExtra("tab", tab.getId_tab());
             this.startService(preLoadService);
         }
     }
