@@ -38,7 +38,7 @@ public class OrgUnit extends BaseModel {
 
     @Column
     @PrimaryKey(autoincrement = true)
-    long id;
+    long id_org_unit;
     @Column
     String uid;
     @Column
@@ -46,7 +46,7 @@ public class OrgUnit extends BaseModel {
     @Column
     @ForeignKey(references = {@ForeignKeyReference(columnName = "id_parent",
             columnType = Long.class,
-            foreignColumnName = "id")},
+            foreignColumnName = "id_org_unit")},
             saveForeignKeyModel = false)
     OrgUnit orgUnit;
     @Column
@@ -75,12 +75,12 @@ public class OrgUnit extends BaseModel {
         this.orgUnitLevel = orgUnitLevel;
     }
 
-    public Long getId() {
-        return id;
+    public Long getId_org_unit() {
+        return id_org_unit;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setId_org_unit(Long id_org_unit) {
+        this.id_org_unit = id_org_unit;
     }
 
     public String getUid() {
@@ -118,7 +118,7 @@ public class OrgUnit extends BaseModel {
     @OneToMany(methods = {OneToMany.Method.SAVE, OneToMany.Method.DELETE}, variableName = "children")
     public List<OrgUnit> getChildren(){
         this.children = new Select().from(OrgUnit.class)
-                .where(Condition.column(OrgUnit$Table.ORGUNIT_ID_PARENT).eq(this.getId())).queryList();
+                .where(Condition.column(OrgUnit$Table.ORGUNIT_ID_PARENT).eq(this.getId_org_unit())).queryList();
         return children;
     }
 
@@ -126,7 +126,7 @@ public class OrgUnit extends BaseModel {
     public List<Survey> getSurveys(){
         //if(this.surveys == null){
             this.surveys = new Select().from(Survey.class)
-                    .where(Condition.column(Survey$Table.ORGUNIT_ID_ORG_UNIT).eq(this.getId())).queryList();
+                    .where(Condition.column(Survey$Table.ORGUNIT_ID_ORG_UNIT).eq(this.getId_org_unit())).queryList();
         //}
         return surveys;
     }
@@ -138,18 +138,17 @@ public class OrgUnit extends BaseModel {
 
         OrgUnit orgUnit1 = (OrgUnit) o;
 
-        if (id != orgUnit1.id) return false;
-        if (uid != null ? !uid.equals(orgUnit1.uid) : orgUnit1.uid != null) return false;
+        if (id_org_unit != orgUnit1.id_org_unit) return false;
         if (name != null ? !name.equals(orgUnit1.name) : orgUnit1.name != null) return false;
         if (orgUnit != null ? !orgUnit.equals(orgUnit1.orgUnit) : orgUnit1.orgUnit != null)
             return false;
+        if (uid != null ? !uid.equals(orgUnit1.uid) : orgUnit1.uid != null) return false;
         return !(orgUnitLevel != null ? !orgUnitLevel.equals(orgUnit1.orgUnitLevel) : orgUnit1.orgUnitLevel != null);
-
     }
 
     @Override
     public int hashCode() {
-        int result = (int) (id ^ (id >>> 32));
+        int result = (int) (id_org_unit ^ (id_org_unit >>> 32));
         result = 31 * result + (uid != null ? uid.hashCode() : 0);
         result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (orgUnit != null ? orgUnit.hashCode() : 0);
@@ -160,7 +159,7 @@ public class OrgUnit extends BaseModel {
     @Override
     public String toString() {
         return "OrgUnit{" +
-                "id=" + id +
+                "id=" + id_org_unit +
                 ", uid='" + uid + '\'' +
                 ", name='" + name + '\'' +
                 ", orgUnit='" + orgUnit + '\'' +

@@ -35,25 +35,25 @@ public class Value extends BaseModel {
 
     @Column
     @PrimaryKey(autoincrement = true)
-    long id;
+    long id_value;
     @Column
     String value;
     @Column
     @ForeignKey(references = {@ForeignKeyReference(columnName = "id_question",
             columnType = Long.class,
-            foreignColumnName = "id")},
+            foreignColumnName = "id_question")},
             saveForeignKeyModel = false)
     Question question;
     @Column
     @ForeignKey(references = {@ForeignKeyReference(columnName = "id_survey",
             columnType = Long.class,
-            foreignColumnName = "id")},
+            foreignColumnName = "id_survey")},
             saveForeignKeyModel = false)
     Survey survey;
     @Column
     @ForeignKey(references = {@ForeignKeyReference(columnName = "id_option",
             columnType = Long.class,
-            foreignColumnName = "id")},
+            foreignColumnName = "id_option")},
             saveForeignKeyModel = false)
     Option option;
 
@@ -74,12 +74,12 @@ public class Value extends BaseModel {
         this.survey = survey;
     }
 
-    public Long getId() {
-        return id;
+    public Long getId_value() {
+        return id_value;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setId_value(Long id_value) {
+        this.id_value = id_value;
     }
 
     public Option getOption() {
@@ -139,12 +139,12 @@ public class Value extends BaseModel {
     }
 
     public static int countBySurvey(Survey survey){
-        if(survey==null || survey.getId()==null){
+        if(survey==null || survey.getId_survey()==null){
             return 0;
         }
         return (int) new Select().count()
                 .from(Value.class)
-                .where(Condition.column(Value$Table.SURVEY_ID_SURVEY).eq(survey.getId())).count();
+                .where(Condition.column(Value$Table.SURVEY_ID_SURVEY).eq(survey.getId_survey())).count();
         //String[] whereArgs={survey.getId().toString()};
         //Value.count(Value.class,"survey=?",whereArgs);
     }
@@ -156,7 +156,7 @@ public class Value extends BaseModel {
 
         Value value1 = (Value) o;
 
-        if (id != value1.id) return false;
+        if (id_value != value1.id_value) return false;
         if (!value.equals(value1.value)) return false;
         if (!question.equals(value1.question)) return false;
         if (!survey.equals(value1.survey)) return false;
@@ -166,7 +166,7 @@ public class Value extends BaseModel {
 
     @Override
     public int hashCode() {
-        int result = (int) (id ^ (id >>> 32));
+        int result = (int) (id_value ^ (id_value >>> 32));
         result = 31 * result + value.hashCode();
         result = 31 * result + question.hashCode();
         result = 31 * result + survey.hashCode();
@@ -177,7 +177,7 @@ public class Value extends BaseModel {
     @Override
     public String toString() {
         return "Value{" +
-                "id=" + id +
+                "id=" + id_value +
                 ", value='" + value + '\'' +
                 ", question=" + question +
                 ", survey=" + survey +

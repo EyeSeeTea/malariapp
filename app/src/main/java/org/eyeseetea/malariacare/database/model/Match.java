@@ -40,12 +40,12 @@ import java.util.List;
 public class Match extends BaseModel {
     @Column
     @PrimaryKey(autoincrement = true)
-    long id;
+    long id_match;
 
     @Column
     @ForeignKey(references = {@ForeignKeyReference(columnName = "id_question_relation",
             columnType = Long.class,
-            foreignColumnName = "id")},
+            foreignColumnName = "id_question_relation")},
             saveForeignKeyModel = false)
     QuestionRelation questionRelation;
 
@@ -55,18 +55,18 @@ public class Match extends BaseModel {
     public List<QuestionOption> getQuestionOptions() {
         //if (this.children == null){
         this.questionOptions = new Select().from(QuestionOption.class)
-                .where(Condition.column(QuestionOption$Table.MATCH_ID_MATCH).eq(this.getId()))
+                .where(Condition.column(QuestionOption$Table.MATCH_ID_MATCH).eq(this.getId_match()))
                 .queryList();
         //}
         return this.questionOptions;
     }
 
-    public long getId() {
-        return id;
+    public long getId_match() {
+        return id_match;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public void setId_match(long id_match) {
+        this.id_match = id_match;
     }
 
     public QuestionRelation getQuestionRelation() {
@@ -84,7 +84,7 @@ public class Match extends BaseModel {
 
         Match match = (Match) o;
 
-        if (id != match.id) return false;
+        if (id_match != match.id_match) return false;
         if (questionRelation != null ? !questionRelation.equals(match.questionRelation) : match.questionRelation != null)
             return false;
 
@@ -93,7 +93,7 @@ public class Match extends BaseModel {
 
     @Override
     public int hashCode() {
-        int result = (int) (id ^ (id >>> 32));
+        int result = (int) (id_match ^ (id_match >>> 32));
         result = 31 * result + (questionRelation != null ? questionRelation.hashCode() : 0);
         return result;
     }
@@ -101,7 +101,7 @@ public class Match extends BaseModel {
     @Override
     public String toString() {
         return "QuestionRelation{" +
-                "id=" + id +
+                "id=" + id_match +
                 ", questionRelation=" + questionRelation +
                 '}';
     }

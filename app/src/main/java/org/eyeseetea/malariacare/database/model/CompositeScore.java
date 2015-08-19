@@ -50,7 +50,7 @@ public class CompositeScore extends BaseModel {
 
     @Column
     @PrimaryKey(autoincrement = true)
-    long id;
+    long id_composite_score;
     @Column
     String hierarchical_code;
     @Column
@@ -60,9 +60,9 @@ public class CompositeScore extends BaseModel {
     @Column
     Integer order_pos;
     @Column
-    @ForeignKey(references = {@ForeignKeyReference(columnName = "id_composite_score",
+    @ForeignKey(references = {@ForeignKeyReference(columnName = "id_parent",
             columnType = Long.class,
-            foreignColumnName = "id")},
+            foreignColumnName = "id_composite_score")},
             saveForeignKeyModel = false)
     CompositeScore compositeScore;
 
@@ -88,12 +88,12 @@ public class CompositeScore extends BaseModel {
         this.order_pos = order_pos;
     }
 
-    public Long getId() {
-        return id;
+    public Long getId_composite_score() {
+        return id_composite_score;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setId_composite_score(Long id_composite_score) {
+        this.id_composite_score = id_composite_score;
     }
 
     public String getHierarchical_code() { return hierarchical_code; }
@@ -141,7 +141,7 @@ public class CompositeScore extends BaseModel {
         if (this.compositeScoreChildren == null){
             this.compositeScoreChildren = new Select()
                     .from(CompositeScore.class)
-                    .where(Condition.column(CompositeScore$Table.COMPOSITESCORE_ID_COMPOSITE_SCORE).eq(this.getId()))
+                    .where(Condition.column(CompositeScore$Table.COMPOSITESCORE_ID_PARENT).eq(this.getId_composite_score()))
                     .orderBy(CompositeScore$Table.ORDER_POS)
                     .queryList();
             //this.compositeScoreChildren = CompositeScore.find(CompositeScore.class, "composite_score = ?", String.valueOf(this.getId()));
@@ -155,7 +155,7 @@ public class CompositeScore extends BaseModel {
         //if (questions == null) {
             questions = new Select()
                     .from(Question.class)
-                    .where(Condition.column(Question$Table.COMPOSITESCORE_ID_COMPOSITE_SCORE).eq(this.getId()))
+                    .where(Condition.column(Question$Table.COMPOSITESCORE_ID_COMPOSITE_SCORE).eq(this.getId_composite_score()))
                     .orderBy(CompositeScore$Table.ORDER_POS)
                     .queryList();
             /*questions = Select.from(Question.class)
@@ -172,7 +172,7 @@ public class CompositeScore extends BaseModel {
      */
     //TODO: to enable lazy loading, here we need to set Method.SAVE and Method.DELETE and use the .toModel() to specify when do we want to load the models
     public static List<CompositeScore> listByTabGroup(TabGroup tabGroup){
-        if(tabGroup==null || tabGroup.getId()==null){
+        if(tabGroup==null || tabGroup.getId_tab_group()==null){
             return new ArrayList<>();
         }
 
@@ -180,22 +180,22 @@ public class CompositeScore extends BaseModel {
         //Take scores associated to questions of the program ('leaves')
         List<CompositeScore> compositeScoresByProgram = new Select().distinct().from(CompositeScore.class).as("cs")
                 .join(Question.class, Join.JoinType.LEFT).as("q")
-                .on(Condition.column(ColumnAlias.columnWithTable("cs", CompositeScore$Table.ID))
+                .on(Condition.column(ColumnAlias.columnWithTable("cs", CompositeScore$Table.ID_COMPOSITE_SCORE))
                         .eq(ColumnAlias.columnWithTable("q", Question$Table.COMPOSITESCORE_ID_COMPOSITE_SCORE)))
                 .join(Header.class, Join.JoinType.LEFT).as("h")
                 .on(Condition.column(ColumnAlias.columnWithTable("q", Question$Table.HEADER_ID_HEADER))
-                        .eq(ColumnAlias.columnWithTable("h", Header$Table.ID)))
+                        .eq(ColumnAlias.columnWithTable("h", Header$Table.ID_HEADER)))
                 .join(Tab.class, Join.JoinType.LEFT).as("t")
                 .on(Condition.column(ColumnAlias.columnWithTable("h", Header$Table.TAB_ID_TAB))
-                        .eq(ColumnAlias.columnWithTable("t", Tab$Table.ID)))
+                        .eq(ColumnAlias.columnWithTable("t", Tab$Table.ID_TAB)))
                 .join(TabGroup.class, Join.JoinType.LEFT).as("g")
                 .on(Condition.column(ColumnAlias.columnWithTable("t", Tab$Table.TABGROUP_ID_TAB_GROUP))
-                        .eq(ColumnAlias.columnWithTable("g", TabGroup$Table.ID)))
+                        .eq(ColumnAlias.columnWithTable("g", TabGroup$Table.ID_TAB_GROUP)))
                 .join(CompositeScore.class, Join.JoinType.LEFT).as("cs2")
-                .on(Condition.column(ColumnAlias.columnWithTable("cs", CompositeScore$Table.ID))
-                        .eq(ColumnAlias.columnWithTable("cs2", CompositeScore$Table.ID)))
-                .where(Condition.column(ColumnAlias.columnWithTable("g", TabGroup$Table.ID))
-                        .eq(tabGroup.getId()))
+                .on(Condition.column(ColumnAlias.columnWithTable("cs", CompositeScore$Table.ID_COMPOSITE_SCORE))
+                        .eq(ColumnAlias.columnWithTable("cs2", CompositeScore$Table.ID_COMPOSITE_SCORE)))
+                .where(Condition.column(ColumnAlias.columnWithTable("g", TabGroup$Table.ID_TAB_GROUP))
+                        .eq(tabGroup.getId_tab_group()))
                 .queryList();
 
 
@@ -241,7 +241,7 @@ public class CompositeScore extends BaseModel {
 
         CompositeScore that = (CompositeScore) o;
 
-        if (id != that.id) return false;
+        if (id_composite_score != that.id_composite_score) return false;
         if (!hierarchical_code.equals(that.hierarchical_code)) return false;
         if (label != null ? !label.equals(that.label) : that.label != null) return false;
         if (uid != null ? !uid.equals(that.uid) : that.uid != null) return false;
@@ -252,7 +252,7 @@ public class CompositeScore extends BaseModel {
 
     @Override
     public int hashCode() {
-        int result = (int) (id ^ (id >>> 32));
+        int result = (int) (id_composite_score ^ (id_composite_score >>> 32));
         result = 31 * result + hierarchical_code.hashCode();
         result = 31 * result + (label != null ? label.hashCode() : 0);
         result = 31 * result + (uid != null ? uid.hashCode() : 0);
@@ -264,7 +264,7 @@ public class CompositeScore extends BaseModel {
     @Override
     public String toString() {
         return "CompositeScore{" +
-                "id=" + id +
+                "id=" + id_composite_score +
                 ", code='" + hierarchical_code + '\'' +
                 ", label='" + label + '\'' +
                 ", uid='" + uid + '\'' +

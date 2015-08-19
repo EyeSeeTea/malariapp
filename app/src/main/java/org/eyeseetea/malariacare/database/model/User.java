@@ -36,7 +36,7 @@ public class User extends BaseModel {
 
     @Column
     @PrimaryKey(autoincrement = true)
-    long id;
+    long id_user;
     @Column
     String uid;
     @Column
@@ -52,12 +52,12 @@ public class User extends BaseModel {
         this.name = name;
     }
 
-    public Long getId() {
-        return id;
+    public Long getId_user() {
+        return id_user;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setId_user(Long id_user) {
+        this.id_user = id_user;
     }
 
     public String getUid() {
@@ -80,7 +80,7 @@ public class User extends BaseModel {
     @OneToMany(methods = {OneToMany.Method.SAVE, OneToMany.Method.DELETE}, variableName = "surveys")
     public List<Survey> getSurveys(){
         return new Select().from(Survey.class)
-                .where(Condition.column(Survey$Table.USER_ID_USER).eq(this.getId())).queryList();
+                .where(Condition.column(Survey$Table.USER_ID_USER).eq(this.getId_user())).queryList();
     }
 
     @Override
@@ -90,7 +90,7 @@ public class User extends BaseModel {
 
         User user = (User) o;
 
-        if (id != user.id) return false;
+        if (id_user != user.id_user) return false;
         if (uid != null ? !uid.equals(user.uid) : user.uid != null) return false;
         return !(name != null ? !name.equals(user.name) : user.name != null);
 
@@ -98,7 +98,7 @@ public class User extends BaseModel {
 
     @Override
     public int hashCode() {
-        int result = (int) (id ^ (id >>> 32));
+        int result = (int) (id_user ^ (id_user >>> 32));
         result = 31 * result + (uid != null ? uid.hashCode() : 0);
         result = 31 * result + (name != null ? name.hashCode() : 0);
         return result;
@@ -107,7 +107,7 @@ public class User extends BaseModel {
     @Override
     public String toString() {
         return "User{" +
-                "id=" + id +
+                "id=" + id_user +
                 ", uid='" + uid + '\'' +
                 ", name='" + name + '\'' +
                 '}';

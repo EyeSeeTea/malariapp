@@ -35,23 +35,23 @@ import org.eyeseetea.malariacare.database.AppDatabase;
 public class QuestionOption extends BaseModel {
     @Column
     @PrimaryKey(autoincrement = true)
-    long id;
+    long id_question_option;
     @Column
     @ForeignKey(references = {@ForeignKeyReference(columnName = "id_option",
             columnType = Long.class,
-            foreignColumnName = "id")},
+            foreignColumnName = "id_option")},
             saveForeignKeyModel = false)
     Option option;
     @Column
     @ForeignKey(references = {@ForeignKeyReference(columnName = "id_question",
             columnType = Long.class,
-            foreignColumnName = "id")},
+            foreignColumnName = "id_question")},
             saveForeignKeyModel = false)
     Question question;
     @Column
     @ForeignKey(references = {@ForeignKeyReference(columnName = "id_match",
             columnType = Long.class,
-            foreignColumnName = "id")},
+            foreignColumnName = "id_match")},
             saveForeignKeyModel = false)
     Match match;
 
@@ -66,12 +66,12 @@ public class QuestionOption extends BaseModel {
         this.match = match;
     }
 
-    public long getId() {
-        return id;
+    public long getId_question_option() {
+        return id_question_option;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public void setId_question_option(long id_question_option) {
+        this.id_question_option = id_question_option;
     }
 
     public Option getOption() {
@@ -105,7 +105,7 @@ public class QuestionOption extends BaseModel {
 
         QuestionOption that = (QuestionOption) o;
 
-        if (id != that.id) return false;
+        if (id_question_option != that.id_question_option) return false;
         if (match != null ? !match.equals(that.match) : that.match != null) return false;
         if (option != null ? !option.equals(that.option) : that.option != null) return false;
         if (question != null ? !question.equals(that.question) : that.question != null)
@@ -116,7 +116,7 @@ public class QuestionOption extends BaseModel {
 
     @Override
     public int hashCode() {
-        int result = (int) (id ^ (id >>> 32));
+        int result = (int) (id_question_option ^ (id_question_option >>> 32));
         result = 31 * result + (option != null ? option.hashCode() : 0);
         result = 31 * result + (question != null ? question.hashCode() : 0);
         result = 31 * result + (match != null ? match.hashCode() : 0);
@@ -126,7 +126,7 @@ public class QuestionOption extends BaseModel {
     @Override
     public String toString() {
         return "QuestionRelation{" +
-                "id=" + id +
+                "id=" + id_question_option +
                 ", option=" + option +
                 ", question=" + question +
                 ", match=" + match +

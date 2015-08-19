@@ -36,7 +36,7 @@ public class Program extends BaseModel {
 
     @Column
     @PrimaryKey(autoincrement = true)
-    long id;
+    long id_program;
     @Column
     String uid;
     @Column
@@ -56,12 +56,12 @@ public class Program extends BaseModel {
         this.name = name;
     }
 
-    public Long getId() {
-        return id;
+    public Long getId_program() {
+        return id_program;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setId_program(Long id_program) {
+        this.id_program = id_program;
     }
 
     public String getUid() {
@@ -83,7 +83,7 @@ public class Program extends BaseModel {
     @OneToMany(methods = {OneToMany.Method.SAVE, OneToMany.Method.DELETE}, variableName = "tabGroups")
     public List<TabGroup> getTabGroups(){
         this.tabGroups = new Select().from(TabGroup.class)
-                    .where(Condition.column(TabGroup$Table.PROGRAM_ID_PROGRAM).eq(this.getId()))
+                    .where(Condition.column(TabGroup$Table.PROGRAM_ID_PROGRAM).eq(this.getId_program()))
                     .queryList();
         return this.tabGroups;
     }
@@ -95,7 +95,7 @@ public class Program extends BaseModel {
 
         Program program = (Program) o;
 
-        if (id != program.id) return false;
+        if (id_program != program.id_program) return false;
         if (uid != null ? !uid.equals(program.uid) : program.uid != null) return false;
         return name.equals(program.name);
 
@@ -103,7 +103,7 @@ public class Program extends BaseModel {
 
     @Override
     public int hashCode() {
-        int result = (int) (id ^ (id >>> 32));
+        int result = (int) (id_program ^ (id_program >>> 32));
         result = 31 * result + (uid != null ? uid.hashCode() : 0);
         result = 31 * result + name.hashCode();
         return result;
@@ -112,7 +112,7 @@ public class Program extends BaseModel {
     @Override
     public String toString() {
         return "Program{" +
-                "id=" + id +
+                "id=" + id_program +
                 ", uid='" + uid + '\'' +
                 ", name='" + name + '\'' +
                 '}';

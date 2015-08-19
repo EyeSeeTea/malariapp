@@ -41,7 +41,7 @@ public class Option extends BaseModel {
 
     @Column
     @PrimaryKey(autoincrement = true)
-    long id;
+    long id_option;
     @Column
     String name;
     @Column
@@ -49,7 +49,7 @@ public class Option extends BaseModel {
     @Column
     @ForeignKey(references = {@ForeignKeyReference(columnName = "id_answer",
             columnType = Long.class,
-            foreignColumnName = "id")},
+            foreignColumnName = "id_answer")},
             saveForeignKeyModel = false)
     Answer answer;
 
@@ -68,12 +68,12 @@ public class Option extends BaseModel {
         this.name = name;
     }
 
-    public Long getId() {
-        return id;
+    public Long getId_option() {
+        return id_option;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setId_option(Long id_option) {
+        this.id_option = id_option;
     }
 
     public String getName() {
@@ -121,7 +121,7 @@ public class Option extends BaseModel {
     @OneToMany(methods = {OneToMany.Method.SAVE, OneToMany.Method.DELETE}, variableName = "values")
     public List<Value> getValues(){
         return new Select().from(Value.class)
-                .where(Condition.column(Value$Table.OPTION_ID_OPTION).eq(this.getId())).queryList();
+                .where(Condition.column(Value$Table.OPTION_ID_OPTION).eq(this.getId_option())).queryList();
     }
 
     @Override
@@ -131,7 +131,7 @@ public class Option extends BaseModel {
 
         Option option = (Option) o;
 
-        if (id != option.id) return false;
+        if (id_option != option.id_option) return false;
         if (!name.equals(option.name)) return false;
         if (factor != null ? !factor.equals(option.factor) : option.factor != null) return false;
         return answer.equals(option.answer);
@@ -140,7 +140,7 @@ public class Option extends BaseModel {
 
     @Override
     public int hashCode() {
-        int result = (int) (id ^ (id >>> 32));
+        int result = (int) (id_option ^ (id_option >>> 32));
         result = 31 * result + name.hashCode();
         result = 31 * result + (factor != null ? factor.hashCode() : 0);
         result = 31 * result + answer.hashCode();
@@ -150,7 +150,7 @@ public class Option extends BaseModel {
     @Override
     public String toString() {
         return "Option{" +
-                "id=" + id +
+                "id=" + id_option +
                 ", name='" + name + '\'' +
                 ", factor=" + factor +
                 ", answer=" + answer +

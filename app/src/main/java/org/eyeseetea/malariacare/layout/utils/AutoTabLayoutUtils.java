@@ -363,7 +363,7 @@ public class AutoTabLayoutUtils {
                 }
                 ReadWriteDB.deleteValue(child); // when we hide a question, we remove its value
                 // little cache to avoid double checking same
-                if(cachedQuestion == null || (cachedQuestion.getHeader().getId() != child.getHeader().getId()))
+                if(cachedQuestion == null || (cachedQuestion.getHeader().getId_header() != child.getHeader().getId_header()))
                     elementInvisibility.put(childHeader, AutoTabLayoutUtils.hideHeader(childHeader, elementInvisibility));
             } else {
                 Float denum = ScoreRegister.calcDenum(child);
