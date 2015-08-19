@@ -11,6 +11,7 @@ import org.eyeseetea.malariacare.database.model.Header;
 import org.eyeseetea.malariacare.database.model.Match;
 import org.eyeseetea.malariacare.database.model.Option;
 import org.eyeseetea.malariacare.database.model.OrgUnit;
+import org.eyeseetea.malariacare.database.model.OrgUnitLevel;
 import org.eyeseetea.malariacare.database.model.Program;
 import org.eyeseetea.malariacare.database.model.Question;
 import org.eyeseetea.malariacare.database.model.QuestionOption;
@@ -38,6 +39,7 @@ public class PopulateDB {
     public static final String QUESTION_RELATIONS_CSV = "QuestionRelations.csv";
     public static final String MATCHES_CSV = "Matches.csv";
     public static final String QUESTION_OPTIONS_CSV = "QuestionOptions.csv";
+    public static final String ORG_UNIT_LEVELS_CSV = "OrgUnitLevels.csv";
     public static final String ORG_UNITS_CSV = "OrgUnits.csv";
     static Map<Integer, Program> programs = new LinkedHashMap<Integer, Program>();
     static Map<Integer, TabGroup> tabGroups = new LinkedHashMap<Integer, TabGroup>();
@@ -50,11 +52,12 @@ public class PopulateDB {
     static Map<Integer, QuestionRelation> questionRelations = new LinkedHashMap<Integer, QuestionRelation>();
     static Map<Integer, Match> matches = new LinkedHashMap<Integer, Match>();
     static Map<Integer, QuestionOption> questionOptions = new LinkedHashMap<Integer, QuestionOption>();
+    static Map<Integer, OrgUnitLevel> orgUnitLevels = new LinkedHashMap<>();
     static Map<Integer, OrgUnit> orgUnits = new LinkedHashMap<>();
 
     public static void populateDB(AssetManager assetManager) throws IOException {
 
-        List<String> tables2populate = Arrays.asList(PROGRAMS_CSV, TAB_GROUPS_CSV, TABS_CSV, HEADERS_CSV, ANSWERS_CSV, OPTIONS_CSV, COMPOSITE_SCORES_CSV, QUESTIONS_CSV, QUESTION_RELATIONS_CSV, MATCHES_CSV, QUESTION_OPTIONS_CSV, ORG_UNITS_CSV);
+        List<String> tables2populate = Arrays.asList(PROGRAMS_CSV, TAB_GROUPS_CSV, TABS_CSV, HEADERS_CSV, ANSWERS_CSV, OPTIONS_CSV, COMPOSITE_SCORES_CSV, QUESTIONS_CSV, QUESTION_RELATIONS_CSV, MATCHES_CSV, QUESTION_OPTIONS_CSV, ORG_UNIT_LEVELS_CSV, ORG_UNITS_CSV);
 
         CSVReader reader;
         for (String table : tables2populate) {
@@ -150,12 +153,19 @@ public class PopulateDB {
                         questionOption.setMatch(matches.get(Integer.valueOf(line[3])));
                         questionOptions.put(Integer.valueOf(line[0]), questionOption);
                         break;
+                    case ORG_UNIT_LEVELS_CSV:
+                        OrgUnitLevel orgUnitLevel = new OrgUnitLevel();
+                        orgUnitLevel.setName(line[1]);
+                        orgUnitLevels.put(Integer.valueOf(line[0]), orgUnitLevel);
+                        break;
                     case ORG_UNITS_CSV:
                         OrgUnit orgUnit = new OrgUnit();
                         orgUnit.setUid(line[1]);
                         orgUnit.setName(line[2]);
                         if (!line[3].equals(""))
                             orgUnit.setOrgUnit(orgUnits.get(Integer.valueOf(line[3])));
+                        if (!line[4].equals(""))
+                            orgUnit.setOrgUnitLevel(orgUnitLevels.get(Integer.valueOf(line[4])));
                         orgUnits.put(Integer.valueOf(line[0]), orgUnit);
                         break;
                 }
@@ -174,6 +184,7 @@ public class PopulateDB {
         TransactionManager.getInstance().saveOnSaveQueue(questionRelations.values());
         TransactionManager.getInstance().saveOnSaveQueue(matches.values());
         TransactionManager.getInstance().saveOnSaveQueue(questionOptions.values());
+        TransactionManager.getInstance().saveOnSaveQueue(orgUnitLevels.values());
         TransactionManager.getInstance().saveOnSaveQueue(orgUnits.values());
 
     }
