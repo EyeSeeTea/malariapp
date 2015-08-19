@@ -141,24 +141,15 @@ public class CreateSurveyActivity extends BaseActivity {
     }
 
     private boolean isEverythingFilled() {
-        try {
-            boolean isEverythingFilled = (!orgUnitView.getSelectedItem().equals(orgUnitDefaultOption) && !programView.getSelectedItem().equals(programDefaultOption));
-            boolean isTabGroupFilled = tabGroupView.getSelectedItemPosition() != 0;
-            return isEverythingFilled && isTabGroupFilled;
-        } catch (Exception ex) {
-            Log.e(".CreateSurveyActivity", ex.getMessage());
-            //FIXME: getSelectedItem throws an exception when there is not an item selected. I looked for a while in API but couldn't find anything. It is not a good idea to catch this behaviour as an exception.
-            return true;
-        }
+        boolean isEverythingFilled = (!realOrgUnitView.getSelectedItem().equals(orgUnitDefaultOption) && !programView.getSelectedItem().equals(programDefaultOption));
+        boolean isTabGroupFilled = !tabGroupView.getSelectedItem().equals(tabGroupDefaultOption);
+        return isEverythingFilled && isTabGroupFilled;
     }
 
     private boolean doesSurveyExist() {
         // Read Selected Items
         OrgUnit orgUnit = (OrgUnit) realOrgUnitView.getSelectedItem();
-
-        //FIXME: Once we have the tabs groups this needs to be fix
-        TabGroup tabGroup = ((Program) programView.getSelectedItem()).getTabGroups().get(0);
-
+        TabGroup tabGroup = (TabGroup) tabGroupView.getSelectedItem();
         List<Survey> existing = Survey.getUnsentSurveys(orgUnit, tabGroup);
         return (existing != null && existing.size() != 0);
     }
@@ -206,7 +197,6 @@ public class CreateSurveyActivity extends BaseActivity {
 
             //Call Survey Activity
             finishAndGo(SurveyActivity.class);
-
         }
 
     }
@@ -234,7 +224,6 @@ public class CreateSurveyActivity extends BaseActivity {
                     tabGroupView.setSelection(1);
                 }
                 else {
-                    //tabGroupView.setAdapter(new TabGroupArrayAdapter(CreateSurveyActivity.this, tabGroupList));
                     // Select single tab group
                     tabGroupView.setSelection(0);
                 }
@@ -266,18 +255,6 @@ public class CreateSurveyActivity extends BaseActivity {
             // Populate child view. If it exists in org unit map, grab it; otherwise inflate it
             List<OrgUnit> orgUnitList = selectedOrgUnit.getChildren();
 
-//            if (orgUnitHierarchyView.containsKey((Integer) viewHolder.component.getTag(R.id.OrgUnitLevelTag) + 1)) {
-//                childView = orgUnitHierarchyView.get((Integer) viewHolder.component.getTag(R.id.OrgUnitLevelTag) + 1);
-//            }
-//            else if (orgUnitList.size() > 1){
-//                childView = lInflater.inflate(R.layout.activity_create_survey_org_unit_item, (LinearLayout) orgUnitContainerItems, false);
-//                ((LinearLayout) orgUnitContainerItems).addView(childView);
-//                //Put in org unit hierarchy map
-//                orgUnitHierarchyView.put((Integer)viewHolder.component.getTag(R.id.OrgUnitLevelTag)+1, childView);
-//            }
-
-            //if (orgUnitHierarchyView.containsKey()) {
-
             // If there are children create spinner or populate it otherwise hide existing one
             if (orgUnitList.size() > 0){
                 View childView = orgUnitHierarchyView.get(orgUnitList.get(0).getOrgUnitLevel());
@@ -288,14 +265,13 @@ public class CreateSurveyActivity extends BaseActivity {
                 orgUnitList.add(0, orgUnitDefaultOption);
                 ((Spinner) subViewHolder.component).setAdapter(new OrgUnitArrayAdapter(CreateSurveyActivity.this, orgUnitList));
                 ((Spinner) subViewHolder.component).setOnItemSelectedListener(new OrgUnitSpinnerListener(subViewHolder));
-//                subViewHolder.component.setTag(R.id.OrgUnitLevelTag, (Integer) viewHolder.component.getTag(R.id.OrgUnitLevelTag) + 1);
 
-                // Select single
-                //((Spinner)childView.findViewById(R.id.org_unit_item_spinner)).setSelection(0);
                 //Hide org unit selector
                 childView.setVisibility(View.VISIBLE);
             }
             else{
+                //If there is not any children, iterate over the org units spinners and hide non needed
+                //FIXME This code is horrible. We need a more elegant way
                 Boolean setInvisible = false;
                 for (Map.Entry<OrgUnitLevel, View> entry : orgUnitHierarchyView.entrySet()){
                     if (setInvisible){
