@@ -84,8 +84,7 @@
                             android:paddingRight="20dip"
                             android:paddingBottom="2dip"
                             android:backgroundTint="@color/headerColor"
-                            android:gravity="right"
-                            style="?android:textAppearanceMedium" />
+                            android:gravity="right"/>
                     </LinearLayout>
 
                 </LinearLayout>
@@ -138,8 +137,7 @@
                             android:paddingRight="20dip"
                             android:paddingBottom="2dip"
                             android:backgroundTint="@color/headerColor"
-                            android:gravity="right"
-                            style="?android:textAppearanceMedium" />
+                            android:gravity="right"/>
                     </LinearLayout>
                 </LinearLayout>
 
@@ -185,8 +183,7 @@
                             android:paddingRight="20dip"
                             android:paddingBottom="2dip"
                             android:backgroundTint="@color/headerColor"
-                            android:gravity="right"
-                            style="?android:textAppearanceMedium" />
+                            android:gravity="right"/>
                     </LinearLayout>
                 </LinearLayout>
 
@@ -200,7 +197,6 @@
                     android:layout_marginTop="16dp" android:text="@string/create_info_ok"
                     android:textStyle="bold"
                     android:onClick="createSurvey"
-                    android:fontFamily="@string/condensed_font_name"
                     android:background="@color/headerColor"
                     android:textColor="@color/white"
                     app:bDimension="@string/font_size_level2"

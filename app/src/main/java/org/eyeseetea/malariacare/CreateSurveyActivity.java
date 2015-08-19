@@ -43,7 +43,6 @@ import org.eyeseetea.malariacare.layout.adapters.general.TabGroupArrayAdapter;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 import org.eyeseetea.malariacare.utils.Constants;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -74,8 +73,6 @@ public class CreateSurveyActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // Manage uncaught exceptions that may occur
-        //Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(this));
         setContentView(R.layout.activity_create_survey);
 
         android.support.v7.app.ActionBar actionBar = this.getSupportActionBar();
@@ -114,9 +111,6 @@ public class CreateSurveyActivity extends BaseActivity {
         //Create Tab Group View DDL. Not populated and not visible.
         tabGroupContainer = findViewById(R.id.tab_group_container);
         tabGroupView = (Spinner) findViewById(R.id.tab_group);
-        List<TabGroup> tabGroupList = new ArrayList<>();
-        tabGroupList.add(0, tabGroupDefaultOption);
-        tabGroupView.setAdapter(new TabGroupArrayAdapter(getApplicationContext(), tabGroupList));
     }
 
     private boolean isEverythingFilled() {
@@ -265,7 +259,7 @@ public class CreateSurveyActivity extends BaseActivity {
                 orgUnitList.add(0, orgUnitDefaultOption);
                 ((Spinner) subViewHolder.component).setAdapter(new OrgUnitArrayAdapter(CreateSurveyActivity.this, orgUnitList));
                 ((Spinner) subViewHolder.component).setOnItemSelectedListener(new OrgUnitSpinnerListener(subViewHolder));
-                subViewHolder.component.setTag(R.id.OrgUnitLevelTag, (Integer) ((Spinner) viewHolder.component).getTag(R.id.OrgUnitLevelTag) + 1);
+                subViewHolder.component.setTag(R.id.OrgUnitLevelTag, (Integer) viewHolder.component.getTag(R.id.OrgUnitLevelTag) + 1);
 
                 // Select single
                 //((Spinner)childView.findViewById(R.id.org_unit_item_spinner)).setSelection(0);

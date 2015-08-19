@@ -58,8 +58,7 @@
                         android:paddingRight="20dip"
                         android:paddingBottom="2dip"
                         android:backgroundTint="@color/headerColor"
-                        android:gravity="right"
-                        style="?android:textAppearanceMedium" />
+                        android:gravity="right"/>
                 </LinearLayout>
     </LinearLayout>
 
