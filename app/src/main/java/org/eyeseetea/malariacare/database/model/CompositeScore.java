@@ -34,6 +34,8 @@ import com.raizlabs.android.dbflow.structure.BaseModel;
 import org.eyeseetea.malariacare.database.AppDatabase;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -211,6 +213,21 @@ public class CompositeScore extends BaseModel {
             parentCompositeScores.addAll(listParentCompositeScores(compositeScore));
         }
         compositeScoresByProgram.addAll(parentCompositeScores);
+
+
+        Collections.sort(compositeScoresByProgram, new Comparator() {
+
+            @Override
+            public int compare(Object o1, Object o2) {
+
+                CompositeScore cs1 = (CompositeScore) o1;
+                CompositeScore cs2 = (CompositeScore) o2;
+
+                return new Integer(cs1.getOrder_pos().compareTo(new Integer(cs2.getOrder_pos())));
+            }
+        });
+
+
 
         //return all scores
         return compositeScoresByProgram;

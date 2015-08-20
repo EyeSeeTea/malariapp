@@ -66,15 +66,18 @@ public class Utils {
 
     public static List<? extends BaseModel> preloadTabItems(Tab tab){
         List<? extends BaseModel> items = Session.getTabsCache().get(tab.getId_tab());
-        if (items == null) {
-            if (tab.isCompositeScore()){
-                items = CompositeScore.listByTabGroup(Session.getSurvey().getTabGroup());
-            }
-            else{
+
+        if (tab.isCompositeScore())
+            items = CompositeScore.listByTabGroup(Session.getSurvey().getTabGroup());
+
+        else{
+
+            items=Session.getTabsCache().get(tab.getId_tab());
+
+            if (items == null) {
                 items = convertTabToArrayCustom(tab);
             }
             Session.getTabsCache().put(tab.getId_tab(), items);
-            return items;
         }
         return items;
     }
