@@ -181,6 +181,8 @@ public class CustomRadioButton extends RadioButton implements IEyeSeeView {
      */
     public void setmDimension(String mDimension) {
         this.mDimension = mDimension;
+        if (getmScale() != getContext().getString(R.string.font_size_system))
+            setTextSize(TypedValue.COMPLEX_UNIT_SP, PreferencesState.getInstance().getFontSize(mScale, mDimension));
     }
 
     @Override
@@ -200,6 +202,8 @@ public class CustomRadioButton extends RadioButton implements IEyeSeeView {
      * @param mScale The scale for this component.
      */
     public void setmScale(String mScale) {
+        if (!mScale.equals(this.mScale))
+            setTextSize(TypedValue.COMPLEX_UNIT_SP, PreferencesState.getInstance().getFontSize(mScale, mDimension));
         this.mScale = mScale;
     }
 

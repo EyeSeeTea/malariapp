@@ -137,7 +137,7 @@ public class SurveyService extends IntentService {
     }
 
     private void preLoadTabItems(Long tabID){
-        List<Tab> tabs = new Select().from(Tab.class).where(Condition.column(Tab$Table.ID).eq(tabID)).queryList();
+        List<Tab> tabs = new Select().from(Tab.class).where(Condition.column(Tab$Table.ID_TAB).eq(tabID)).queryList();
         if (tabs !=null && tabs.size()>=1)
             Utils.preloadTabItems(tabs.get(0));
     }

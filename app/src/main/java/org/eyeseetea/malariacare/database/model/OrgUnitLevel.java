@@ -19,12 +19,12 @@
 
 package org.eyeseetea.malariacare.database.model;
 
-import com.raizlabs.android.dbflow.annotation.Table;
-import com.raizlabs.android.dbflow.sql.builder.Condition;
-import com.raizlabs.android.dbflow.sql.language.Select;
 import com.raizlabs.android.dbflow.annotation.Column;
 import com.raizlabs.android.dbflow.annotation.OneToMany;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
+import com.raizlabs.android.dbflow.annotation.Table;
+import com.raizlabs.android.dbflow.sql.builder.Condition;
+import com.raizlabs.android.dbflow.sql.language.Select;
 import com.raizlabs.android.dbflow.structure.BaseModel;
 
 import org.eyeseetea.malariacare.database.AppDatabase;
@@ -32,44 +32,35 @@ import org.eyeseetea.malariacare.database.AppDatabase;
 import java.util.List;
 
 @Table(databaseName = AppDatabase.NAME)
-public class Program extends BaseModel {
+public class OrgUnitLevel extends BaseModel {
 
     @Column
     @PrimaryKey(autoincrement = true)
-    long id_program;
-    @Column
-    String uid;
+    long id_org_unit_level;
     @Column
     String name;
 
-    List<TabGroup> tabGroups;
 
-    public Program() {
+    List<OrgUnit> orgUnits;
+
+    public OrgUnitLevel() {
     }
 
-    public Program(String name) {
+    public OrgUnitLevel(String name) {
         this.name = name;
     }
 
-    public Program(String uid, String name) {
-        this.uid = uid;
+
+    public OrgUnitLevel(String uid, String name) {
         this.name = name;
     }
 
-    public Long getId_program() {
-        return id_program;
+    public Long getId_org_unit_level() {
+        return id_org_unit_level;
     }
 
-    public void setId_program(Long id_program) {
-        this.id_program = id_program;
-    }
-
-    public String getUid() {
-        return uid;
-    }
-
-    public void setUid(String uid) {
-        this.uid = uid;
+    public void setId_org_unit_level(Long id_org_unit_level) {
+        this.id_org_unit_level = id_org_unit_level;
     }
 
     public String getName() {
@@ -80,40 +71,37 @@ public class Program extends BaseModel {
         this.name = name;
     }
 
-    @OneToMany(methods = {OneToMany.Method.SAVE, OneToMany.Method.DELETE}, variableName = "tabGroups")
-    public List<TabGroup> getTabGroups(){
-        this.tabGroups = new Select().from(TabGroup.class)
-                    .where(Condition.column(TabGroup$Table.PROGRAM_ID_PROGRAM).eq(this.getId_program()))
-                    .queryList();
-        return this.tabGroups;
+
+    @OneToMany(methods = {OneToMany.Method.SAVE, OneToMany.Method.DELETE}, variableName = "orgUnits")
+    public List<OrgUnit> getOrgUnits(){
+        this.orgUnits = new Select().from(OrgUnit.class)
+                .where(Condition.column(OrgUnit$Table.ORGUNIT_ID_PARENT).eq(this.getId_org_unit_level())).queryList();
+        return orgUnits;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Program)) return false;
+        if (o == null || getClass() != o.getClass()) return false;
 
-        Program program = (Program) o;
+        OrgUnitLevel that = (OrgUnitLevel) o;
 
-        if (id_program != program.id_program) return false;
-        if (uid != null ? !uid.equals(program.uid) : program.uid != null) return false;
-        return name.equals(program.name);
+        if (id_org_unit_level != that.id_org_unit_level) return false;
+        return !(name != null ? !name.equals(that.name) : that.name != null);
 
     }
 
     @Override
     public int hashCode() {
-        int result = (int) (id_program ^ (id_program >>> 32));
-        result = 31 * result + (uid != null ? uid.hashCode() : 0);
-        result = 31 * result + name.hashCode();
+        int result = (int) (id_org_unit_level ^ (id_org_unit_level >>> 32));
+        result = 31 * result + (name != null ? name.hashCode() : 0);
         return result;
     }
 
     @Override
     public String toString() {
-        return "Program{" +
-                "id=" + id_program +
-                ", uid='" + uid + '\'' +
+        return "OrgUnit{" +
+                "id=" + id_org_unit_level +
                 ", name='" + name + '\'' +
                 '}';
     }

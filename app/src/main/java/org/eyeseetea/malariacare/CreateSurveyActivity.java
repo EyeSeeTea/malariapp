@@ -33,6 +33,7 @@ import com.raizlabs.android.dbflow.sql.language.Select;
 
 import org.eyeseetea.malariacare.database.model.OrgUnit;
 import org.eyeseetea.malariacare.database.model.OrgUnit$Table;
+import org.eyeseetea.malariacare.database.model.OrgUnitLevel;
 import org.eyeseetea.malariacare.database.model.Program;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.model.TabGroup;
@@ -42,9 +43,10 @@ import org.eyeseetea.malariacare.layout.adapters.general.ProgramArrayAdapter;
 import org.eyeseetea.malariacare.layout.adapters.general.TabGroupArrayAdapter;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 import org.eyeseetea.malariacare.utils.Constants;
+import org.eyeseetea.malariacare.views.CustomTextView;
 
-import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -57,7 +59,7 @@ public class CreateSurveyActivity extends BaseActivity {
     static class ViewHolder{
         public View component;
     }
-    private Map<Integer, View> orgUnitHierarchyView;
+    private LinkedHashMap<OrgUnitLevel, View> orgUnitHierarchyView;
     private Spinner realOrgUnitView;
 
 
@@ -74,8 +76,6 @@ public class CreateSurveyActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // Manage uncaught exceptions that may occur
-        //Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(this));
         setContentView(R.layout.activity_create_survey);
 
         android.support.v7.app.ActionBar actionBar = this.getSupportActionBar();
@@ -94,15 +94,39 @@ public class CreateSurveyActivity extends BaseActivity {
         orgUnitList.add(0, orgUnitDefaultOption);
         viewHolder.component = findViewById(R.id.org_unit);
         orgUnitView = (Spinner) viewHolder.component;
-        orgUnitView.setTag(R.id.OrgUnitLevelTag, 1);
+        orgUnitView.setTag(orgUnitList.get(1).getOrgUnitLevel());
         orgUnitView.setAdapter(new OrgUnitArrayAdapter(this, orgUnitList));
         orgUnitView.setOnItemSelectedListener(new OrgUnitSpinnerListener(viewHolder));
+
+        View childView =findViewById(R.id.org_unit_container);
+        CustomTextView childViewTextView= (CustomTextView) childView.findViewById(R.id.textView2);
+        childViewTextView.setText(orgUnitList.get(1).getOrgUnitLevel().getName());
+
+
         //Put in org unit hierarchy map
-        orgUnitHierarchyView = new HashMap<>();
-        orgUnitHierarchyView.put(1, findViewById(R.id.org_unit_container));
+        orgUnitHierarchyView = new LinkedHashMap<>();
+        orgUnitHierarchyView.put(orgUnitList.get(1).getOrgUnitLevel(), childView);
 
         //Prepare Organization Unit Item DDL
         orgUnitContainerItems = findViewById(R.id.org_unit_container_items);
+
+        List<OrgUnitLevel> orgUnitLevelList= new Select().all().from(OrgUnitLevel.class).queryList();
+        for (OrgUnitLevel orgUnitLevel : orgUnitLevelList) {
+            if (!orgUnitLevel.equals(orgUnitList.get(1).getOrgUnitLevel())) {
+                childView = lInflater.inflate(R.layout.activity_create_survey_org_unit_item, (LinearLayout) orgUnitContainerItems, false);
+                childViewTextView= (CustomTextView) childView.findViewById(R.id.textView);
+                childViewTextView.setText(orgUnitLevel.getName());
+
+                Spinner childViewSpinner= (Spinner) childView.findViewById(R.id.org_unit_item_spinner);
+                childViewSpinner.setTag(orgUnitLevel);
+                childView.setVisibility(View.GONE);
+                ((LinearLayout) orgUnitContainerItems).addView(childView);
+                //Put in org unit hierarchy map
+                orgUnitHierarchyView.put(orgUnitLevel, childView);
+            }
+        }
+
+
 
         //Populate Program View DDL
         List<Program> programList = new Select().all().from(Program.class).queryList();;
@@ -114,30 +138,18 @@ public class CreateSurveyActivity extends BaseActivity {
         //Create Tab Group View DDL. Not populated and not visible.
         tabGroupContainer = findViewById(R.id.tab_group_container);
         tabGroupView = (Spinner) findViewById(R.id.tab_group);
-        List<TabGroup> tabGroupList = new ArrayList<>();
-        tabGroupList.add(0, tabGroupDefaultOption);
-        tabGroupView.setAdapter(new TabGroupArrayAdapter(getApplicationContext(), tabGroupList));
     }
 
     private boolean isEverythingFilled() {
-        try {
-            boolean isEverythingFilled = (!orgUnitView.getSelectedItem().equals(orgUnitDefaultOption) && !programView.getSelectedItem().equals(programDefaultOption));
-            boolean isTabGroupFilled = tabGroupView.getSelectedItemPosition() != 0;
-            return isEverythingFilled && isTabGroupFilled;
-        } catch (Exception ex) {
-            Log.e(".CreateSurveyActivity", ex.getMessage());
-            //FIXME: getSelectedItem throws an exception when there is not an item selected. I looked for a while in API but couldn't find anything. It is not a good idea to catch this behaviour as an exception.
-            return true;
-        }
+        boolean isEverythingFilled = (!realOrgUnitView.getSelectedItem().equals(orgUnitDefaultOption) && !programView.getSelectedItem().equals(programDefaultOption));
+        boolean isTabGroupFilled = !tabGroupView.getSelectedItem().equals(tabGroupDefaultOption);
+        return isEverythingFilled && isTabGroupFilled;
     }
 
     private boolean doesSurveyExist() {
         // Read Selected Items
         OrgUnit orgUnit = (OrgUnit) realOrgUnitView.getSelectedItem();
-
-        //FIXME: Once we have the tabs groups this needs to be fix
-        TabGroup tabGroup = ((Program) programView.getSelectedItem()).getTabGroups().get(0);
-
+        TabGroup tabGroup = (TabGroup) tabGroupView.getSelectedItem();
         List<Survey> existing = Survey.getUnsentSurveys(orgUnit, tabGroup);
         return (existing != null && existing.size() != 0);
     }
@@ -185,7 +197,6 @@ public class CreateSurveyActivity extends BaseActivity {
 
             //Call Survey Activity
             finishAndGo(SurveyActivity.class);
-
         }
 
     }
@@ -213,7 +224,6 @@ public class CreateSurveyActivity extends BaseActivity {
                     tabGroupView.setSelection(1);
                 }
                 else {
-                    //tabGroupView.setAdapter(new TabGroupArrayAdapter(CreateSurveyActivity.this, tabGroupList));
                     // Select single tab group
                     tabGroupView.setSelection(0);
                 }
@@ -243,21 +253,11 @@ public class CreateSurveyActivity extends BaseActivity {
             realOrgUnitView = ((Spinner) viewHolder.component);
 
             // Populate child view. If it exists in org unit map, grab it; otherwise inflate it
-            View childView = null;
             List<OrgUnit> orgUnitList = selectedOrgUnit.getChildren();
-            if (orgUnitHierarchyView.containsKey((Integer) viewHolder.component.getTag(R.id.OrgUnitLevelTag) + 1)) {
-                childView = orgUnitHierarchyView.get((Integer) viewHolder.component.getTag(R.id.OrgUnitLevelTag) + 1);
-            }
-            else if (orgUnitList.size() > 1){
-                childView = lInflater.inflate(R.layout.activity_create_survey_org_unit_item, (LinearLayout) orgUnitContainerItems, false);
-                ((LinearLayout) orgUnitContainerItems).addView(childView);
-                //Put in org unit hierarchy map
-                orgUnitHierarchyView.put((Integer)viewHolder.component.getTag(R.id.OrgUnitLevelTag)+1, childView);
-            }
 
             // If there are children create spinner or populate it otherwise hide existing one
-            if (orgUnitList.size() > 1){
-
+            if (orgUnitList.size() > 0){
+                View childView = orgUnitHierarchyView.get(orgUnitList.get(0).getOrgUnitLevel());
                 ViewHolder subViewHolder = new ViewHolder();
                 subViewHolder.component = childView.findViewById(R.id.org_unit_item_spinner);
 
@@ -265,20 +265,27 @@ public class CreateSurveyActivity extends BaseActivity {
                 orgUnitList.add(0, orgUnitDefaultOption);
                 ((Spinner) subViewHolder.component).setAdapter(new OrgUnitArrayAdapter(CreateSurveyActivity.this, orgUnitList));
                 ((Spinner) subViewHolder.component).setOnItemSelectedListener(new OrgUnitSpinnerListener(subViewHolder));
-                subViewHolder.component.setTag(R.id.OrgUnitLevelTag, (Integer) ((Spinner) viewHolder.component).getTag(R.id.OrgUnitLevelTag) + 1);
 
-                // Select single
-                //((Spinner)childView.findViewById(R.id.org_unit_item_spinner)).setSelection(0);
                 //Hide org unit selector
                 childView.setVisibility(View.VISIBLE);
             }
-            else if (childView != null) {
-                    // Select single tab group
-                    ((Spinner) childView.findViewById(R.id.org_unit_item_spinner)).setSelection(0, true);
-                    // Hide tab group tab selector
-                    childView.setVisibility(View.GONE);
+            else{
+                //If there is not any children, iterate over the org units spinners and hide non needed
+                //FIXME This code is horrible. We need a more elegant way
+                Boolean setInvisible = false;
+                for (Map.Entry<OrgUnitLevel, View> entry : orgUnitHierarchyView.entrySet()){
+                    if (setInvisible){
+                        View childView = entry.getValue();
+                        // Select single tab group
+                        ((Spinner) childView.findViewById(R.id.org_unit_item_spinner)).setSelection(0, true);
+                        // Hide tab group tab selector
+                        childView.setVisibility(View.GONE);
+                    }
+                    if (entry.getKey().equals(((Spinner)viewHolder.component).getTag())){
+                        setInvisible = true;
+                    }
+                }
             }
-
         }
 
         @Override

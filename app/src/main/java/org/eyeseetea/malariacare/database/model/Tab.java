@@ -40,7 +40,7 @@ public class Tab extends BaseModel {
 
     @Column
     @PrimaryKey(autoincrement = true)
-    long id;
+    long id_tab;
     @Column
     String name;
     @Column
@@ -50,7 +50,7 @@ public class Tab extends BaseModel {
     @Column
     @ForeignKey(references = {@ForeignKeyReference(columnName = "id_tab_group",
             columnType = Long.class,
-            foreignColumnName = "id")},
+            foreignColumnName = "id_tab_group")},
             saveForeignKeyModel = false)
     TabGroup tabGroup;
 
@@ -68,12 +68,12 @@ public class Tab extends BaseModel {
         this.tabGroup = tabGroup;
     }
 
-    public Long getId() {
-        return id;
+    public Long getId_tab() {
+        return id_tab;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setId_tab(Long id_tab) {
+        this.id_tab = id_tab;
     }
 
     public String getName() {
@@ -112,7 +112,7 @@ public class Tab extends BaseModel {
     @OneToMany(methods = {OneToMany.Method.SAVE, OneToMany.Method.DELETE}, variableName = "headers")
     public List<Header> getHeaders(){
         return new Select().from(Header.class)
-                .where(Condition.column(Header$Table.TAB_ID_TAB).eq(this.getId()))
+                .where(Condition.column(Header$Table.TAB_ID_TAB).eq(this.getId_tab()))
                 .orderBy(Header$Table.ORDER_POS).queryList();
     }
 
@@ -120,7 +120,7 @@ public class Tab extends BaseModel {
     @OneToMany(methods = {OneToMany.Method.SAVE, OneToMany.Method.DELETE}, variableName = "scores")
     public List<Score> getScores(){
         return new Select().from(Score.class)
-                .where(Condition.column(Score$Table.TAB_ID_TAB).eq(this.getId())).queryList();
+                .where(Condition.column(Score$Table.TAB_ID_TAB).eq(this.getId_tab())).queryList();
     }
 
     /*
@@ -128,7 +128,7 @@ public class Tab extends BaseModel {
      */
     public static List<Tab> getTabsBySession(){
         return new Select().from(Tab.class)
-                .where(Condition.column(Tab$Table.TABGROUP_ID_TAB_GROUP).eq(Session.getSurvey().getTabGroup().getId()))
+                .where(Condition.column(Tab$Table.TABGROUP_ID_TAB_GROUP).eq(Session.getSurvey().getTabGroup().getId_tab_group()))
                 .orderBy(Tab$Table.ORDER_POS).queryList();
     }
 
@@ -155,7 +155,7 @@ public class Tab extends BaseModel {
 
         Tab tab = (Tab) o;
 
-        if (id != tab.id) return false;
+        if (id_tab != tab.id_tab) return false;
         if (name != null ? !name.equals(tab.name) : tab.name != null) return false;
         if (!order_pos.equals(tab.order_pos)) return false;
         if (!tabGroup.equals(tab.tabGroup)) return false;
@@ -165,7 +165,7 @@ public class Tab extends BaseModel {
 
     @Override
     public int hashCode() {
-        int result = (int) (id ^ (id >>> 32));
+        int result = (int) (id_tab ^ (id_tab >>> 32));
         result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + order_pos.hashCode();
         result = 31 * result + tabGroup.hashCode();
@@ -176,7 +176,7 @@ public class Tab extends BaseModel {
     @Override
     public String toString() {
         return "Tab{" +
-                "id=" + id +
+                "id=" + id_tab +
                 ", name='" + name + '\'' +
                 ", order_pos=" + order_pos +
                 ", type=" + type +

@@ -31,7 +31,6 @@ import com.raizlabs.android.dbflow.structure.BaseModel;
 
 import org.eyeseetea.malariacare.database.AppDatabase;
 import org.eyeseetea.malariacare.database.utils.Session;
-import org.eyeseetea.malariacare.utils.Constants;
 
 import java.util.List;
 
@@ -40,13 +39,13 @@ public class TabGroup extends BaseModel {
 
     @Column
     @PrimaryKey(autoincrement = true)
-    long id;
+    long id_tab_group;
     @Column
     String name;
     @Column
     @ForeignKey(references = {@ForeignKeyReference(columnName = "id_program",
             columnType = Long.class,
-            foreignColumnName = "id")},
+            foreignColumnName = "id_program")},
             saveForeignKeyModel = false)
     Program program;
 
@@ -66,12 +65,12 @@ public class TabGroup extends BaseModel {
         this.program = program;
     }
 
-    public Long getId() {
-        return id;
+    public Long getId_tab_group() {
+        return id_tab_group;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setId_tab_group(Long id_tab_group) {
+        this.id_tab_group = id_tab_group;
     }
 
     public String getName() {
@@ -94,14 +93,14 @@ public class TabGroup extends BaseModel {
     @OneToMany(methods = {OneToMany.Method.SAVE, OneToMany.Method.DELETE}, variableName = "tabs")
     public List<Tab> getTabs(){
         return new Select().from(Tab.class)
-                .where(Condition.column(Tab$Table.TABGROUP_ID_TAB_GROUP).eq(this.getId()))
+                .where(Condition.column(Tab$Table.TABGROUP_ID_TAB_GROUP).eq(this.getId_tab_group()))
                 .orderBy(Tab$Table.ORDER_POS).queryList();
     }
 
     @OneToMany(methods = {OneToMany.Method.SAVE, OneToMany.Method.DELETE}, variableName = "surveys")
     public List<Survey> getSurveys(){
         this.surveys = new Select().from(Survey.class)
-                .where(Condition.column(Survey$Table.TABGROUP_ID_TAB_GROUP).eq(this.getId())).queryList();
+                .where(Condition.column(Survey$Table.TABGROUP_ID_TAB_GROUP).eq(this.getId_tab_group())).queryList();
         return this.surveys;
     }
 
@@ -110,7 +109,7 @@ public class TabGroup extends BaseModel {
      */
     public static List<Tab> getTabsBySession(){
         return new Select().from(Tab.class)
-                .where(Condition.column(Tab$Table.TABGROUP_ID_TAB_GROUP).eq(Session.getSurvey().getTabGroup().getProgram().getId()))
+                .where(Condition.column(Tab$Table.TABGROUP_ID_TAB_GROUP).eq(Session.getSurvey().getTabGroup().getProgram().getId_program()))
                 .orderBy(Tab$Table.ORDER_POS).queryList();
     }
 
@@ -121,7 +120,7 @@ public class TabGroup extends BaseModel {
 
         TabGroup tabGroup = (TabGroup) o;
 
-        if (id != tabGroup.id) return false;
+        if (id_tab_group != tabGroup.id_tab_group) return false;
         if (!name.equals(tabGroup.name)) return false;
         if (program != null ? !program.equals(tabGroup.program) : tabGroup.program != null)
             return false;
@@ -131,7 +130,7 @@ public class TabGroup extends BaseModel {
 
     @Override
     public int hashCode() {
-        int result = (int) (id ^ (id >>> 32));
+        int result = (int) (id_tab_group ^ (id_tab_group >>> 32));
         result = 31 * result + name.hashCode();
         result = 31 * result + (program != null ? program.hashCode() : 0);
         return result;
@@ -140,7 +139,7 @@ public class TabGroup extends BaseModel {
     @Override
     public String toString() {
         return "TabGroup{" +
-                "id=" + id +
+                "id=" + id_tab_group +
                 ", name='" + name + '\'' +
                 '}';
     }

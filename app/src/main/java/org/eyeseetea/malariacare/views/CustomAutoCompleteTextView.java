@@ -108,6 +108,8 @@ public class CustomAutoCompleteTextView extends AutoCompleteTextView implements 
      */
     public void setmDimension(String mDimension) {
         this.mDimension = mDimension;
+        if (getmScale() != getContext().getString(R.string.font_size_system))
+            setTextSize(TypedValue.COMPLEX_UNIT_SP, PreferencesState.getInstance().getFontSize(mScale, mDimension));
     }
 
     /**
@@ -134,6 +136,8 @@ public class CustomAutoCompleteTextView extends AutoCompleteTextView implements 
      * @return The scale attribute value.
      */
     public String getmScale() {
+        if (!mScale.equals(this.mScale))
+            setTextSize(TypedValue.COMPLEX_UNIT_SP, PreferencesState.getInstance().getFontSize(mScale, mDimension));
         return this.mScale;
     }
 }
