@@ -25,8 +25,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
+import com.raizlabs.android.dbflow.sql.language.Select;
+
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.model.Survey;
+import org.eyeseetea.malariacare.database.model.TabGroup;
 import org.eyeseetea.malariacare.database.utils.SurveyAnsweredRatio;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 import org.eyeseetea.malariacare.views.CustomTextView;
@@ -39,6 +42,7 @@ public abstract class AAssessmentAdapter extends ADashboardAdapter implements ID
 
     protected int backIndex = 0;
     protected boolean showNextFacilityName = true;
+    protected boolean multipleTabGroups = new Select().count().from(TabGroup.class).count() != 1;
 
     public AAssessmentAdapter() { }
 
@@ -84,7 +88,8 @@ public abstract class AAssessmentAdapter extends ADashboardAdapter implements ID
             surveyType.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, 0, 0.5f));
         }
         //FIXME Shall we use the tab group?
-        surveyType.setText("- " + survey.getTabGroup().getProgram().getName());
+        String surveyDescription = "- " + survey.getTabGroup().getProgram().getName() + ((multipleTabGroups) ? " : " + survey.getTabGroup().getName() : "");
+        surveyType.setText(surveyDescription);
 
         // check whether the following item belongs to the same org unit (to group the data related
         // to same org unit with the same background)
