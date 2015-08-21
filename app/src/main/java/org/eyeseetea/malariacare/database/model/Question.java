@@ -410,22 +410,25 @@ public class Question extends BaseModel{
             return new ArrayList();
         }
 
-        return new Select().all().from(Question.class).as("q")
+
+        //return Question.findWithQuery(Question.class, LIST_ALL_BY_PROGRAM, program.getId().toString());
+
+
+                return new Select().all().from(Question.class).as("q")
                 .join(Header.class, Join.JoinType.LEFT).as("h")
                 .on(Condition.column(ColumnAlias.columnWithTable("q", Question$Table.HEADER_ID_HEADER))
                         .eq(ColumnAlias.columnWithTable("h", Header$Table.ID_HEADER)))
                 .join(Tab.class, Join.JoinType.LEFT).as("t")
                 .on(Condition.column(ColumnAlias.columnWithTable("h", Header$Table.TAB_ID_TAB))
                         .eq(ColumnAlias.columnWithTable("t", Tab$Table.ID_TAB)))
-                .join(Program.class, Join.JoinType.LEFT).as("p")
+                .join(TabGroup.class, Join.JoinType.LEFT).as("tg")
                 .on(Condition.column(ColumnAlias.columnWithTable("t", Tab$Table.TABGROUP_ID_TAB_GROUP))
-                        .eq(ColumnAlias.columnWithTable("p", TabGroup$Table.ID_TAB_GROUP)))
-                .where(Condition.column(ColumnAlias.columnWithTable("p", TabGroup$Table.ID_TAB_GROUP))
+                        .eq(ColumnAlias.columnWithTable("tg", TabGroup$Table.ID_TAB_GROUP)))
+                .where(Condition.column(ColumnAlias.columnWithTable("tg", TabGroup$Table.ID_TAB_GROUP))
                         .eq(tabGroup.getId_tab_group()))
                 .orderBy(Tab$Table.ORDER_POS)
                 .orderBy(Question$Table.ORDER_POS).queryList();
 
-        //return Question.findWithQuery(Question.class, LIST_ALL_BY_PROGRAM, program.getId().toString());
     }
 
     public static List<Question> listAllByTabs(List<Tab> tabs){
