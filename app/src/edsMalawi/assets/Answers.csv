@@ -75,3 +75,11 @@
 87;'MWI_Officer';1
 88;'MWI_Officer2';1
 89;'MWI_AntiMalTreatment';1
+90;'Yes1No0CBVertical';9
+91;'PositiveNegativeCBVertical';9
+92;'MicroOptOut';1
+93;'RDTOptOut';1
+94;'CCMOptOut';1
+95;'Frequency';1
+96;'Yes0NA1No1CBHorizontal';8
+97;'Yes1NA1No0CBHorizontal';8
