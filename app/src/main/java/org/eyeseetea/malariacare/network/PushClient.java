@@ -34,6 +34,7 @@ import com.squareup.okhttp.Request;
 import com.squareup.okhttp.RequestBody;
 import com.squareup.okhttp.Response;
 
+import org.apache.http.auth.AuthenticationException;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.model.CompositeScore;
 import org.eyeseetea.malariacare.database.model.Question;
@@ -280,6 +281,7 @@ public class PushClient {
 
         public final String AUTHORIZATION_HEADER="Authorization";
         private String credentials;
+        private int mCounter = 0;
 
         BasicAuthenticator(){
             credentials = Credentials.basic(user, password);
@@ -287,6 +289,10 @@ public class PushClient {
 
         @Override
         public Request authenticate(Proxy proxy, Response response) throws IOException {
+
+            if (mCounter++ > 0) {
+                throw new IOException(response.message());
+            }
             return response.request().newBuilder().header(AUTHORIZATION_HEADER, credentials).build();
         }
 
@@ -298,6 +304,8 @@ public class PushClient {
         public String getCredentials(){
             return credentials;
         }
+
+
     }
 
 }
