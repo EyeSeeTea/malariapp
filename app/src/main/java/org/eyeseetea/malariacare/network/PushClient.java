@@ -129,26 +129,28 @@ public class PushClient {
         Log.d(TAG,"prepareMetadata for survey: "+survey.getId_survey());
 
         JSONObject object=new JSONObject();
-        //FIXME Do we want to push the program or the tab group or both?
+        //FIXME Do we want to push the program or the tab group or both? -> Answer: The tab group
         object.put(TAG_PROGRAM, survey.getTabGroup().getProgram().getUid());
         object.put(TAG_ORG_UNIT, survey.getOrgUnit().getUid());
         object.put(TAG_EVENTDATE, android.text.format.DateFormat.format("yyyy-MM-dd", survey.getCompletionDate()));
         object.put(TAG_STATUS,COMPLETED );
         object.put(TAG_STOREDBY, survey.getUser().getName());
-        object.put(TAG_COORDINATE, prepareCoordinates());
+
+        Location lastLocation = Session.getLocation();
+        if (lastLocation!=null)
+            object.put(TAG_COORDINATE, prepareCoordinates(lastLocation));
 
         Log.d(TAG, "prepareMetadata: " + object.toString());
         return object;
     }
 
-    private JSONObject prepareCoordinates() throws Exception{
-        Location lastLocation= Session.getLocation();
-        if(lastLocation==null){
-            throw new Exception(activity.getString(R.string.dialog_error_push_no_location));
-        }
-        JSONObject coordinate=new JSONObject();
-        coordinate.put(TAG_COORDINATE_LAT,lastLocation.getLatitude());
-        coordinate.put(TAG_COORDINATE_LNG,lastLocation.getLongitude());
+    private JSONObject prepareCoordinates(Location location) throws Exception{
+
+        JSONObject coordinate = new JSONObject();
+
+        coordinate.put(TAG_COORDINATE_LAT, location.getLatitude());
+        coordinate.put(TAG_COORDINATE_LNG, location.getLongitude());
+
         return coordinate;
     }
 
