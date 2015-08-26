@@ -265,11 +265,11 @@ public class Question extends BaseModel{
 
     @OneToMany(methods = {OneToMany.Method.SAVE, OneToMany.Method.DELETE}, variableName = "children")
     public List<Question> getChildren() {
-        //if (this.children == null){
+        if (this.children == null){
             this.children = new Select().from(Question.class)
                     .where(Condition.column(Question$Table.QUESTION_ID_PARENT).eq(this.getId_question()))
                     .orderBy(Question$Table.ORDER_POS).queryList();
-        //}
+        }
         return this.children;
     }
 
