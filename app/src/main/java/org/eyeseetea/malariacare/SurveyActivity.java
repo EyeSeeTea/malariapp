@@ -516,6 +516,7 @@ public class SurveyActivity extends BaseActivity{
                 View currentFocus = getCurrentFocus();
                 if (currentFocus != null) {
                     currentFocus.clearFocus();
+                    // Remove the virtual keyboard from the screen
                     InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
                 }
@@ -642,8 +643,6 @@ public class SurveyActivity extends BaseActivity{
         private ITabAdapter buildAdapter(Tab tab){
             switch (tab.getType()) {
                 case Constants.TAB_COMPOSITE_SCORE:
-//                    this.compositeScores = CompositeScore.listByTabGroup(Session.getSurvey().getTabGroup());
-//                    return new CompositeScoreAdapter(this.compositeScores, SurveyActivity.this, R.layout.composite_score_tab, tab.getName());
                     return CompositeScoreAdapter.build(tab, SurveyActivity.this);
                 case Constants.TAB_IQATAB:
                     return CustomIQTABAdapter.build(tab, SurveyActivity.this);
