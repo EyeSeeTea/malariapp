@@ -19,6 +19,7 @@
 
 package org.eyeseetea.malariacare.fragments;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ListFragment;
 import android.content.BroadcastReceiver;
@@ -38,6 +39,7 @@ import android.widget.BaseAdapter;
 import android.widget.ListView;
 
 import org.eyeseetea.malariacare.DashboardActivity;
+import org.eyeseetea.malariacare.LoginActivity;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.SurveyActivity;
 import org.eyeseetea.malariacare.database.model.Survey;
@@ -45,10 +47,11 @@ import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.layout.adapters.dashboard.AssessmentUnsentAdapter;
 import org.eyeseetea.malariacare.layout.adapters.dashboard.IDashboardAdapter;
 import org.eyeseetea.malariacare.layout.listeners.SwipeDismissListViewTouchListener;
+import org.eyeseetea.malariacare.network.PushClient;
 import org.eyeseetea.malariacare.network.PushResult;
 import org.eyeseetea.malariacare.services.SurveyService;
-import org.eyeseetea.malariacare.network.PushClient;
-import org.eyeseetea.malariacare.views.TextCard;
+import org.eyeseetea.malariacare.utils.Constants;
+import org.eyeseetea.malariacare.views.CustomTextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -66,7 +69,7 @@ public class DashboardUnsentFragment extends ListFragment {
     private static int index = 0;
 
     public DashboardUnsentFragment(){
-        this.adapter = Session.getAdapterUncompleted();
+        this.adapter = Session.getAdapterUnsent();
         this.surveys = new ArrayList();
     }
 
@@ -120,14 +123,14 @@ public class DashboardUnsentFragment extends ListFragment {
      * In a version with several adapters in dashboard (like in 'mock' branch) a new one like the one in session is created.
      */
     private void initAdapter(){
-        IDashboardAdapter adapterInSession = Session.getAdapterUncompleted();
+        IDashboardAdapter adapterInSession = Session.getAdapterUnsent();
         if(adapterInSession == null){
             adapterInSession = new AssessmentUnsentAdapter(this.surveys,getActivity());
         }else{
             adapterInSession = adapterInSession.newInstance(this.surveys,getActivity());
         }
         this.adapter = adapterInSession;
-        Session.setAdapterUncompleted(this.adapter);
+        Session.setAdapterUnsent(this.adapter);
     }
 
     @Override
@@ -188,7 +191,7 @@ public class DashboardUnsentFragment extends ListFragment {
         LayoutInflater inflater = LayoutInflater.from(getActivity());
         View header = inflater.inflate(this.adapter.getHeaderLayout(), null, false);
         View footer = inflater.inflate(this.adapter.getFooterLayout(), null, false);
-        TextCard title = (TextCard) getActivity().findViewById(R.id.titleInProgress);
+        CustomTextView title = (CustomTextView) getActivity().findViewById(R.id.titleInProgress);
         title.setText(adapter.getTitle());
         ListView listView = getListView();
         listView.addHeaderView(header);
@@ -244,9 +247,11 @@ public class DashboardUnsentFragment extends ListFragment {
                         .setMessage("Are you sure? You can not undo this action")
                         .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface arg0, int arg1) {
-                                final Survey survey = (Survey) adapter.getItem(position-1);
-                                AsyncPush asyncPush=new AsyncPush(survey);
-                                asyncPush.execute((Void) null);
+                                // We launch the login system, to authorize the push
+                                Intent authorizePush = new Intent(getActivity(), LoginActivity.class);
+                                authorizePush.putExtra("Action", Constants.AUTHORIZE_PUSH);
+                                authorizePush.putExtra("Survey", position);
+                                startActivityForResult(authorizePush, Constants.AUTHORIZE_PUSH);
                             }
                         })
                         .setNegativeButton(android.R.string.no, null).create().show();
@@ -292,6 +297,31 @@ public class DashboardUnsentFragment extends ListFragment {
         this.adapter.notifyDataSetChanged();
         setListShown(true);
     }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data){
+        // This captures the return code sent by Login Activity, to know whether or not the user got the authorization
+        if(requestCode == Constants.AUTHORIZE_PUSH) {
+            if(resultCode == Activity.RESULT_OK) {
+                // In case authorization was ok, we launch push action
+                Bundle extras = data.getExtras();
+                int position = extras.getInt("Survey", 0);
+                String user = extras.getString("User");
+                String password = extras.getString("Password");
+                final Survey survey = (Survey) adapter.getItem(position - 1);
+                AsyncPush asyncPush = new AsyncPush(survey, user, password);
+                asyncPush.execute((Void) null);
+            } else {
+                // Otherwise we notify and continue
+                new AlertDialog.Builder(getActivity())
+                        .setTitle("Authorization failed")
+                        .setMessage("User or password introduced are wrong. Push aborted.")
+                        .setPositiveButton(android.R.string.ok, null)
+                        .setNegativeButton(android.R.string.no, null).create().show();
+            }
+        }
+    }
+
     /**
      * Inner private class that receives the result from the service
      */
@@ -312,10 +342,14 @@ public class DashboardUnsentFragment extends ListFragment {
     public class AsyncPush extends AsyncTask<Void, Integer, PushResult> {
 
         private Survey survey;
+        private String user;
+        private String password;
 
 
-        public AsyncPush(Survey survey) {
+        public AsyncPush(Survey survey, String user, String password) {
             this.survey = survey;
+            this.user = user;
+            this.password = password;
         }
 
         @Override
@@ -327,7 +361,7 @@ public class DashboardUnsentFragment extends ListFragment {
 
         @Override
         protected PushResult doInBackground(Void... params) {
-            PushClient pushClient=new PushClient(survey,getActivity());
+            PushClient pushClient=new PushClient(survey, getActivity(), user, password);
             return pushClient.push();
         }
 
@@ -336,6 +370,19 @@ public class DashboardUnsentFragment extends ListFragment {
             super.onPostExecute(pushResult);
             setListShown(true);
             showResponse(pushResult);
+            if(pushResult.isSuccessful()) {
+                survey.setStatus(Constants.SURVEY_SENT);
+                survey.update();
+            }
+            // Launch service to update dashboard
+            Intent surveysIntent=new Intent(getActivity(), SurveyService.class);
+            surveysIntent.putExtra(SurveyService.SERVICE_METHOD, SurveyService.RELOAD_DASHBOARD_ACTION);
+            getActivity().startService(surveysIntent);
+            // Change adapters according to service answer
+            Session.getAdapterUnsent().setItems((List) Session.popServiceValue(SurveyService.ALL_UNSENT_SURVEYS_ACTION));
+            Session.getAdapterSent().setItems((List) Session.popServiceValue(SurveyService.ALL_SENT_SURVEYS_ACTION));
+            Session.getAdapterUnsent().notifyDataSetChanged();
+            Session.getAdapterSent().notifyDataSetChanged();
         }
 
         /**

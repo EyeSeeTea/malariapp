@@ -1,29 +1,79 @@
+/*
+ * Copyright (c) 2015.
+ *
+ * This file is part of QA App.
+ *
+ *  Health Network QIS App is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  Health Network QIS App is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 package org.eyeseetea.malariacare.database.model;
 
-import com.orm.SugarRecord;
-import com.orm.query.Condition;
-import com.orm.query.Select;
+import com.raizlabs.android.dbflow.annotation.Column;
+import com.raizlabs.android.dbflow.annotation.ForeignKey;
+import com.raizlabs.android.dbflow.annotation.ForeignKeyReference;
+import com.raizlabs.android.dbflow.annotation.OneToMany;
+import com.raizlabs.android.dbflow.annotation.PrimaryKey;
+import com.raizlabs.android.dbflow.annotation.Table;
+import com.raizlabs.android.dbflow.sql.builder.Condition;
+import com.raizlabs.android.dbflow.sql.language.Select;
+import com.raizlabs.android.dbflow.structure.BaseModel;
 
+import org.eyeseetea.malariacare.database.AppDatabase;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.utils.Constants;
 
 import java.util.List;
 
-public class Tab extends SugarRecord<Tab> {
+@Table(databaseName = AppDatabase.NAME)
+public class Tab extends BaseModel {
 
+    @Column
+    @PrimaryKey(autoincrement = true)
+    long id_tab;
+    @Column
     String name;
+    @Column
     Integer order_pos;
-    Program program;
+    @Column
     Integer type;
+    @Column
+    @ForeignKey(references = {@ForeignKeyReference(columnName = "id_tab_group",
+            columnType = Long.class,
+            foreignColumnName = "id_tab_group")},
+            saveForeignKeyModel = false)
+    TabGroup tabGroup;
+
+    List<Header> headers;
+
+    List<Score> scores;
 
     public Tab() {
     }
 
-    public Tab(String name, Integer order_pos, Program program, Integer type) {
+    public Tab(String name, Integer order_pos, Integer type, TabGroup tabGroup) {
         this.name = name;
         this.order_pos = order_pos;
-        this.program = program;
         this.type = type;
+        this.tabGroup = tabGroup;
+    }
+
+    public Long getId_tab() {
+        return id_tab;
+    }
+
+    public void setId_tab(Long id_tab) {
+        this.id_tab = id_tab;
     }
 
     public String getName() {
@@ -42,14 +92,6 @@ public class Tab extends SugarRecord<Tab> {
         this.order_pos = order_pos;
     }
 
-    public Program getProgram() {
-        return program;
-    }
-
-    public void setProgram(Program program) {
-        this.program = program;
-    }
-
     public Integer getType() {
         return type;
     }
@@ -58,23 +100,36 @@ public class Tab extends SugarRecord<Tab> {
         this.type = type;
     }
 
-    public List<Header> getHeaders(){
-        return Select.from(Header.class)
-                .where(Condition.prop("tab")
-                        .eq(String.valueOf(this.getId())))
-                .orderBy("orderpos").list();
+    public TabGroup getTabGroup() {
+        return tabGroup;
     }
 
+    public void setTabGroup(TabGroup tabGroup) {
+        this.tabGroup = tabGroup;
+    }
+
+    //TODO: to enable lazy loading, here we need to set Method.SAVE and Method.DELETE and use the .toModel() to specify when do we want to load the models
+    @OneToMany(methods = {OneToMany.Method.SAVE, OneToMany.Method.DELETE}, variableName = "headers")
+    public List<Header> getHeaders(){
+        return new Select().from(Header.class)
+                .where(Condition.column(Header$Table.TAB_ID_TAB).eq(this.getId_tab()))
+                .orderBy(Header$Table.ORDER_POS).queryList();
+    }
+
+    //TODO: to enable lazy loading, here we need to set Method.SAVE and Method.DELETE and use the .toModel() to specify when do we want to load the models
+    @OneToMany(methods = {OneToMany.Method.SAVE, OneToMany.Method.DELETE}, variableName = "scores")
     public List<Score> getScores(){
-        return Score.find(Score.class, "tab = ?", String.valueOf(this.getId()));
+        return new Select().from(Score.class)
+                .where(Condition.column(Score$Table.TAB_ID_TAB).eq(this.getId_tab())).queryList();
     }
 
     /*
      * Return tabs filter by program and order by orderpos field
      */
     public static List<Tab> getTabsBySession(){
-        return Select.from(Tab.class).where(Condition.prop("program")
-                .eq(String.valueOf(Session.getSurvey().getProgram().getId()))).orderBy("orderpos").list();
+        return new Select().from(Tab.class)
+                .where(Condition.column(Tab$Table.TABGROUP_ID_TAB_GROUP).eq(Session.getSurvey().getTabGroup().getId_tab_group()))
+                .orderBy(Tab$Table.ORDER_POS).queryList();
     }
 
     /**
@@ -93,32 +148,6 @@ public class Tab extends SugarRecord<Tab> {
         return getName().equals(Constants.COMPOSITE_SCORE_TAB_NAME);
     }
 
-    /**
-     * Checks if this tab is the adherence tab
-     * @return
-     */
-    public boolean isAdherenceTab(){
-        return getType() == Constants.TAB_ADHERENCE;
-    }
-
-    /**
-     * Checks if this tab is the IQA tab
-     * @return
-     */
-    public boolean isIQATab(){
-        return getType() == Constants.TAB_IQATAB;
-    }
-
-    @Override
-    public String toString() {
-        return "Tab{" +
-                "name='" + name + '\'' +
-                ", order_pos=" + order_pos +
-                ", program=" + program +
-                ", type=" + type +
-                '}';
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -126,20 +155,32 @@ public class Tab extends SugarRecord<Tab> {
 
         Tab tab = (Tab) o;
 
-        if (!name.equals(tab.name)) return false;
+        if (id_tab != tab.id_tab) return false;
+        if (name != null ? !name.equals(tab.name) : tab.name != null) return false;
         if (!order_pos.equals(tab.order_pos)) return false;
-        if (!program.equals(tab.program)) return false;
-        if (!type.equals(tab.type)) return false;
+        if (!tabGroup.equals(tab.tabGroup)) return false;
+        return type.equals(tab.type);
 
-        return true;
     }
 
     @Override
     public int hashCode() {
-        int result = name.hashCode();
+        int result = (int) (id_tab ^ (id_tab >>> 32));
+        result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + order_pos.hashCode();
-        result = 31 * result + program.hashCode();
+        result = 31 * result + tabGroup.hashCode();
         result = 31 * result + type.hashCode();
         return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Tab{" +
+                "id=" + id_tab +
+                ", name='" + name + '\'' +
+                ", order_pos=" + order_pos +
+                ", type=" + type +
+                ", tabGroup=" + tabGroup +
+                '}';
     }
 }

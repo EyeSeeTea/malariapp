@@ -1,0 +1,683 @@
+1;'TeqzAowss4n';'1. MWI Test Region';;1
+2;'ektKFtbDn1C';'Central East Health Zone';;1
+3;'lxQnPnAurFO';'Central West Health Zone';;1
+4;'EUKT4e0614Y';'North Health Zone';;1
+5;'fMZuW80muhp';'South East Health Zone';;1
+6;'tzNqD3IUfpI';'South West Health Zone';;1
+7;'Doa9u6qkSO3';'MWI Outlet 1';1;2
+8;'hMNQJYhMn5k';'MWI Outlet 2';1;2
+9;'jPrTcYQe2Ql';'MWI Outlet 3';1;2
+10;'LMEKoQoEU5j';'MWI Outlet 4';1;2
+11;'j9pInJLCxZ8';'MWI Outlet 5';1;2
+12;'TCNLJAxa3Pi';'Dowa';2;2
+13;'Fdw9lqbuwOK';'Kasungu';2;2
+14;'w4xjBNV9STQ';'Nkhotakota';2;2
+15;'glGVBTHVJPr';'Ntchisi';2;2
+16;'aJOz17lAQDp';'Salima';2;2
+17;'DtQmXmzNSwG';'Dedza';3;2
+18;'KS3ETjUZgNz';'Lilongwe';3;2
+19;'V9LIEzAglOQ';'Mchinji';3;2
+20;'TOsmBVKzd7R';'Ntcheu';3;2
+21;'s3KDsLtklJr';'Chitipa';4;2
+22;'P9R8egnCySV';'Karonga';4;2
+23;'lvb3FZBMOj1';'Likoma';4;2
+24;'C5RafIUKxSU';'Mzimba North';4;2
+25;'KdVz6Tqi5RW';'Mzimba South';4;2
+26;'LAIpIcQx749';'Nkhata Bay';4;2
+27;'KbYOmvebh6m';'Rumphi';4;2
+28;'oReJxVA6aPd';'Balaka';5;2
+29;'LoixCYo68VD';'Chiradzulu';5;2
+30;'mWZ3sJR59Rt';'Machinga';5;2
+31;'AKU7WkPQa1R';'Mangochi';5;2
+32;'shOH8CqMFDx';'Mulanje';5;2
+33;'l3rhwknKNKe';'Phalombe';5;2
+34;'QabwSMkvq2b';'Zomba';5;2
+35;'EXFX2q10Bk7';'Blantyre';6;2
+36;'zl8yYPbVazO';'Chikwawa';6;2
+37;'p3uQKq4ZKae';'Mwanza';6;2
+38;'ofi9B05eXrP';'Neno';6;2
+39;'Dlr8buhn4DL';'Nsanje';6;2
+40;'D0t75oWPlxX';'Thyolo';6;2
+41;'qeENMD3x6y7';'MWI outlet 1 test 1';7;3
+42;'MWHeYibjcZ0';'MWI outlet 1 test 2';7;3
+43;'WUMTjkpV9EC';'MWI outlet 2 test 1';8;3
+44;'e0I7uf9L5OJ';'MWI outlet 2 test 2';8;3
+45;'JVpRpx2sCPX';'MWI outlet 3 test 1';9;3
+46;'duIdoZ5rAOd';'MWI outlet 3 test 2';9;3
+47;'NRCSS4lZ2sT';'MWI outlet 4 test 1';10;3
+48;'akEIqEraPOo';'MWI outlet 4 test 2';10;3
+49;'yeXQgxrj9YA';'MWI outlet 5 test 1';11;3
+50;'XEOI56E0hoY';'MWI outlet 5 test 2';11;3
+51;'r7bSj2A0hKt';'Bowe Health Centre';12;3
+52;'YKdRZlRJeQl';'Chakhaza Health Centre';12;3
+53;'XgRqxe3CY9F';'Chakhungu Health Centre';12;3
+54;'Ssl2fvKRJis';'Chezi Mission Health Centre';12;3
+55;'xPvSlAKBDa9';'Chinkhwili Health Centre';12;3
+56;'pPqGVTnoBGw';'Chisepo Health Centre';12;3
+57;'YrbfRQzk533';'Chizolowondo Health Centre';12;3
+58;'gg1mDgoqvVv';'Dowa District Hospital';12;3
+59;'qyVOuVrkLjM';'Dzaleka Health Centre';12;3
+60;'qlHACe6y16n';'Dzoole Health Centre';12;3
+61;'wkRmJStazPc';'Kasese Health Centre';12;3
+62;'ZUTnlv19yT6';'Kayembe Health Centre';12;3
+63;'YGPXOAYl2ZL';'Madisi Mission Community Hospital';12;3
+64;'nIb0EqKLWaX';'Mbingwai Health Centre';12;3
+65;'kdqSdxMLsmG';'Mponela Rural Hospital';12;3
+66;'o9YXpl4vxxe';'Msakambewa Health Centre';12;3
+67;'W994mDWx88t';'Mtengowanthenga Rural Hospital';12;3
+68;'inaIYt6RZOi';'Mvera Army Health Centre';12;3
+69;'wUCUKPoNdon';'Mvera Mission Health Centre';12;3
+70;'rA9jxmWo1V8';'Mwangala Health Centre';12;3
+71;'YVw0YgGNDz0';'Nalunga Health Centre';12;3
+72;'CQX6BrnYldn';'Thonje Health Centre';12;3
+73;'YtX6Bf426dQ';'Bua Health Centre (Kasungu)';13;3
+74;'AxvDi2EVqA4';'Chamama Health Centre';13;3
+75;'WDoDOCRIG21';'Chamwavi Health Centre';13;3
+76;'TNVuKEIz6x9';'Chulu Health Centre';13;3
+77;'SKzMcBKzNXz';'Dwangwa Health Centre';13;3
+78;'mYCwgA4tdUm';'Gogode Health Centre';13;3
+79;'eWPXQdTP6K8';'Kaluluma Rural Hospital';13;3
+80;'HBkDlCTCeUR';'Kamboni Health Centre';13;3
+81;'H1KNWyPIYSL';'Kapelula Health Centre';13;3
+82;'b5OAzmeE8pU';'Kasalika Health Centre';13;3
+83;'OVlQqqOARbJ';'Kasungu District Hospital';13;3
+84;'IlHzdILGfSU';'Kawamba Health Centre';13;3
+85;'V3PjHefYbY8';'Khola Health Centre';13;3
+86;'HSSwufIg0K6';'Livwezi Health Centre';13;3
+87;'ftBcrmpuZMr';'Lojwa Health Centre';13;3
+88;'evyQxUqtExB';'Lunyangwa Health Centre';13;3
+89;'GWzAWpmgAjr';'Mdunga Health Centre';13;3
+90;'lg8Mt0QJRbQ';'Mkhota Health Centre';13;3
+91;'ArbzQfM83dm';'Mnyanja Health Centre';13;3
+92;'Y2cRyhOYwDn';'Mpepa Health Centre';13;3
+93;'pwvixAZKPrH';'Mtunthama Health Centre';13;3
+94;'KikYJ6MEC7O';'Mziza Health Centre';13;3
+95;'S993t2fk2K8';'Nkhamenya Rural Hospital';13;3
+96;'xk7xN1WPfQ1';'Ofesi Health Centre';13;3
+97;'BdJv9IwblV1';'Santhe Health Centre';13;3
+98;'UxPUJPqVBIt';'Simulemba Health Centre';13;3
+99;'ejkf4Rpa4sh';'St. Andrew''s Community Hospital';13;3
+100;'t5LHkVXbAN4';'St. Faith Health Centre';13;3
+101;'TqNT84CunFP';'Wimbe Health Centre';13;3
+102;'GHqkplv42Vn';'Alinafe Community Community Hospital';14;3
+103;'FL57VOWBdtv';'Benga Health Centre';14;3
+104;'AEcT8F3sdXo';'Bua Health Centre (Nkhotakota)';14;3
+105;'MkUlfPfpZNO';'Chididi Health Centre';14;3
+106;'UylRmHyI4SU';'DCGL Private Clinic';14;3
+107;'uH9ifbi0Nft';'Dwambazi Rural Hospital';14;3
+108;'yhBVhD1IRpY';'Kapiri Health Centre';14;3
+109;'g4tay6IfWT6';'Kasitu Health Centre';14;3
+110;'b1iMG3V0TFf';'Katimbira Health Centre';14;3
+111;'UUH9B2n2w2E';'Kawongozi Health Centre';14;3
+112;'TAXxzbLi13o';'Liwaladzi Health Centre';14;3
+113;'u4WdnjBGSoB';'Malowa Health Centre';14;3
+114;'i4ejqiI3iQM';'Matiki Private Clinic';14;3
+115;'McTQIwhWhfP';'Mpamantha Health Centre';14;3
+116;'WllCxW3gXxs';'Msenjere Health Centre';14;3
+117;'czzSS8rN0Wq';'Mtosa Health Centre';14;3
+118;'ZdJ5DO0dcpm';'Mwansambo Health Centre';14;3
+119;'CMxqPnoUYCA';'Ngala Health Centre';14;3
+120;'ypSvhDPKnzD';'Nkhota-Kota District Hospital';14;3
+121;'JwFIHsZhpc6';'Nkhunga Health Centre';14;3
+122;'TH3bYDC4GPL';'St. Annie''s Hospital';14;3
+123;'wveQODb8B7O';'Chinguluwe - NS Health Centre';15;3
+124;'MyBACFLaqXk';'Chinthembwe Health Centre';15;3
+125;'Qc6udeRhTDe';'Kamsonga Health Centre';15;3
+126;'RsUJrtMLkEg';'Kangolwa Health Centre';15;3
+127;'RjySNi3MHbA';'Khuwi Health Centre';15;3
+128;'fb7u5aqk3fy';'Malambo Health Centre';15;3
+129;'FtpoKKoxw6P';'Malomo Health Centre';15;3
+130;'qj6KOJrdS8q';'Mkhuzi Health Centre';15;3
+131;'GQQwSokh7s7';'Mndinda Health Centre';15;3
+132;'ysqyTN26EeK';'Mzandu Health Centre';15;3
+133;'aU94wmUP2zB';'Ntchisi District Hospital';15;3
+134;'B07SIKffwPv';'NthondoHealth Centre';15;3
+135;'CCYaI4ov9Ju';'Chagunda Health Centre';16;3
+136;'jaU6D8XLVZu';'Chinguluwe -SA Health Centre';16;3
+137;'jHUbLUaP6hP';'Chipoka Health Centre';16;3
+138;'kq51WCe8owy';'Chitala Health Centre';16;3
+139;'nuGEYDlkdJb';'Kaphatenga Health Centre';16;3
+140;'dWWrgKpzO1E';'Katawa PrivateHealth Centre';16;3
+141;'Un4L5kFO0BG';'Khombedza Health Centre';16;3
+142;'gN2BAoWbl3a';'Lifeline Health Centre';16;3
+143;'l1BzAmudpbn';'Lifuwu Health Centre';16;3
+144;'i9pBRW34LMU';'MAFCO Private Health Centre';16;3
+145;'iRYQ208X3N6';'Maganga Health Centre';16;3
+146;'HHxFiMBxhsw';'Makioni Health Centre';16;3
+147;'FAnVSkTX60U';'Mchoka Health Centre';16;3
+148;'SMQD7CbBkx2';'Ngodzi Health Centre';16;3
+149;'mPRkRjuLilG';'Parachute Private Health Centre';16;3
+150;'ZvJjvg8NYbE';'Salima District Hospital';16;3
+151;'fROfuA5rUkk';'Sengabay Baptist Health Centre';16;3
+152;'wLD7D9RPj2c';'Thavite Health Centre';16;3
+153;'XCYDk9zyC0K';'Bembeke Health Centre';17;3
+154;'hR6RwAfADkh';'Chikuse Health Centre';17;3
+155;'a4Awv6T04V4';'Chimoto Health Centre';17;3
+156;'KMNbvxpU6AX';'Chitowo Health Centre';17;3
+157;'RyICBtOBMdZ';'Chongoni Health Centre';17;3
+158;'u3h3DAeQv0y';'Dedza District Hospital';17;3
+159;'Pw2X1nMFCPO';'Dzindevu Health Centre';17;3
+160;'c7Kb67FNntC';'Golomoti Health Centre';17;3
+161;'eUTZag7ZGIQ';'Kachindamoto Health Centre';17;3
+162;'UtXL8gsJeTh';'Kafere Health Centre';17;3
+163;'KVUwgrvXuWj';'Kalulu Health Centre';17;3
+164;'JvrjHW16CZQ';'Kanyama Health Centre';17;3
+165;'UtkLEbTUyjP';'Kanyezi Health Centre';17;3
+166;'KfjQ9xOxXsn';'Kaphuka Health Centre';17;3
+167;'AjyuS3u6QM8';'Kasina Health Centre';17;3
+168;'HPspxhE4bFI';'Kaundu Health Centre';17;3
+169;'eysoHU2vcJV';'Lobi Health Centre';17;3
+170;'FyobrDJqxAM';'Maonde Health Centre';17;3
+171;'sV7CdKEdFKF';'Matumba Health Centre';17;3
+172;'XE7W7BQXS4V';'Mayani Health Centre';17;3
+173;'pbVDy6l97y3';'Mdeza Health Centre';17;3
+174;'lFkfD3N6TpY';'Mganja Health Centre';17;3
+175;'kBb8qm7tGDm';'Mikondo Health Centre';17;3
+176;'vXKpHwYr5l6';'Mjini Health Centre';17;3
+177;'MCnfTC9oKyk';'Mlangali Health Centre';17;3
+178;'YU38gfk6YVC';'Mphathi Health Centre';17;3
+179;'YE0gBlJC0ki';'Mphuzi Health Centre';17;3
+180;'WrO4Ga5KXxG';'Mtakataka Health Centre';17;3
+181;'pP76M9tHMKC';'Mtakataka Police College Health Centre';17;3
+182;'TFtBLiseWG2';'Mtendere Community Hospital';17;3
+183;'Iz0E4N2vqbT';'Mua Community Hospital';17;3
+184;'TLcoADW5WXL';'Nakalanzi Health Centre';17;3
+185;'KP50Ct9neXU';'St. Joseph''s (Chiphwanya) Health Centre';17;3
+186;'Jiwz2Vee28p';'Tsoyo Health Centre';17;3
+187;'e1D5XqRjHgJ';'ABC Clinic';18;3
+188;'jOYOrZ8OXFb';'Airwing Clinic';18;3
+189;'POs9YzO8Eq1';'Area 18 Health Centre';18;3
+190;'PUaO9gGJrD9';'Area 25 Health Centre';18;3
+191;'g8J3uOqUYta';'Area 30 Police Health Centre';18;3
+192;'bIFPxSIVvQk';'Bunda Private Clinic';18;3
+193;'xjTpLtUbXDq';'Bwaila Hospital';18;3
+194;'ByBGBhYXpDK';'Chadza Health Centre';18;3
+195;'Emjml7CsQfh';'Chamba Dispensary';18;3
+196;'OszJMopLI6Q';'Chikowa-LL030';18;3
+197;'Sr0UqQPt1vf';'Child Legacy Health Centre';18;3
+198;'sVmc04JW6gS';'Chileka-LL Health Centre';18;3
+199;'sMTkF0UXvV8';'Chilobwe Health Centre';18;3
+200;'u0gaz8kwVtN';'Chimbalanga Health Centre';18;3
+201;'wDCSb7mKN7k';'Chimwala Health Centre';18;3
+202;'C9J9Mk7KOvm';'Chitedze Health Centre';18;3
+203;'dBQfRFUhy4E';'Chiunjiza Health Centre';18;3
+204;'AO5aGhYKQM3';'Chiwamba Health Centre';18;3
+205;'YGuJ4xITrXr';'Chiwe Health Centre';18;3
+206;'XsesfoNXh3p';'Chiwoza Health Centre';18;3
+207;'cV3w98SneHC';'Diamphwe Health Centre';18;3
+208;'ujFsuZAdKyk';'Dickson Health Centre';18;3
+209;'uY5s1F6uP1S';'Dyang Luke Community Hospital';18;3
+210;'b4LZk33V702';'Dzenza Health Centre';18;3
+211;'Ag0LT6yq00N';'Kabudula Community Hospital';18;3
+212;'KaCXI9URQIC';'Kamuzu Barracks Community Hospital';18;3
+213;'wKRBNIb217B';'Kamuzu Central Referral Hospital';18;3
+214;'PtUovFpu00W';'Kang''oma Health Centre';18;3
+215;'PyJwEmESyGP';'Katchale Health Centre';18;3
+216;'SxdVIR2LpvS';'Kawale Health Centre';18;3
+217;'C3GdALeL9aO';'Khongoni Health Centre';18;3
+218;'YfhudPEMlU1';'Likuni Mission Community Hospital';18;3
+219;'goNWV8szYWT';'Lilongwe City Council';18;3
+220;'xw6Ja00MdMo';'Lumbadzi Health Centre';18;3
+221;'lt7PTnpVcBp';'Lutheran Mobile Clinic';18;3
+222;'CptOrOfsTqz';'M''bang''ombe I Health Centre';18;3
+223;'OKlCMvppiEy';'M''bang''ombe II Health Centre';18;3
+224;'RdomfQcchWT';'Malembo Health Centre';18;3
+225;'EBCK2QXNdQQ';'Malingunde Health Centre';18;3
+226;'nbYpaiDgyoW';'Maluwa Health Centre';18;3
+227;'Ugd8j8a2gsc';'Matapila Health Centre';18;3
+228;'ZYH5lwWlBba';'Maula Prison Health Centre';18;3
+229;'sNJjabMqs3o';'Mbabvi Health Centre';18;3
+230;'q03ILthbJVV';'Mbwatalika Health Centre';18;3
+231;'SsGksg3NWrx';'Mingo''ongo Health Centre';18;3
+232;'Dhw06GaUauN';'Mitundu Community Hospital';18;3
+233;'NMgMyQdkIZt';'Mlare Community Hospital';18;3
+234;'nJyOoHRfQ93';'Mlodza Community Hospital';18;3
+235;'YhWQjnE4hn6';'Mtenthera Health Centre';18;3
+236;'UoMjfL7yrOT';'Mwayi Private Clinic';18;3
+237;'YlYdSOOmnzE';'Chioshya Health Centre';19;3
+238;'h53sjcOUgGG';'Chipumi Health Centre';19;3
+239;'q8k5mGvH6Nh';'Gumba Health Centre';19;3
+240;'nVq56qwyyM9';'Kaigwazanga Health Centre';19;3
+241;'FuSnhcIgoaI';'Kapanga Health Centre';19;3
+242;'RWg1TA39nLl';'Kapiri Community Hospital';19;3
+243;'C07ooYppejM';'Kazyozyo Health Centre';19;3
+244;'nQ74DFw2Ibc';'Kochilira Health Centre';19;3
+245;'vSdxxR1Fj5U';'Mchinji District Hospital';19;3
+246;'QahBPFG8ytA';'Mikundi Health Centre';19;3
+247;'b5Odj35b3fK';'Mkanda Health Centre';19;3
+248;'fF0ifXWAbIP';'Nkhwazi Health Centre';19;3
+249;'o8CyIdVeCJH';'St. Joseph (Ludzi) Community Hospital';19;3
+250;'biV8mcguuvl';'St. Michael (Guilleme) Community Hospital';19;3
+251;'Eygp4Afwmmx';'Tembwe Health Centre';19;3
+252;'lKwwktzVeiU';'Bilira Health Centre';20;3
+253;'I5ijeqgeR1Q';'Biliwiri Health Centre';20;3
+254;'G2VNzVongOx';'Bwanje Health Centre';20;3
+255;'FGNSjapznhc';'Champiti Health Centre';20;3
+256;'MXCBOqTcCLH';'Chigodi Health Centre';20;3
+257;'rKHq4mqnLbg';'Chikande Health Centre';20;3
+258;'nrwrvIrPmuM';'Chiole Health Centre';20;3
+259;'P1BzwbLqLKo';'Doviko Health Centre';20;3
+260;'fyFKe87A32H';'Dzunje Health Centre';20;3
+261;'LdsKp5s6dd2';'Ganya Health Centre';20;3
+262;'WEyvXWCLHEL';'Gowa Health Centre';20;3
+263;'Xezlje3bms2';'Kalimanjira Health Centre';20;3
+264;'HHC8sI2Y1f3';'Kandeu Health Centre';20;3
+265;'UpFdbH2B2vO';'Kapeni Health Centre';20;3
+266;'hHMPHk97QRe';'Kasinje Health Centre';20;3
+267;'QVo75jRVvqk';'Katsekera Health Centre';20;3
+268;'Nuxc7qM7BUN';'Lakeview Health Centre';20;3
+269;'F53vxLjJdNM';'Lizulu Health Centre';20;3
+270;'clWu0hnDo1u';'Manjawira Health Centre';20;3
+271;'YPe4ux03MlA';'Masasa Health Centre';20;3
+272;'JnIbOKW9yED';'Matanda Health Centre';20;3
+273;'q10gJ3Mjfc7';'Mlanda Health Centre';20;3
+274;'lHXzmeiiHOo';'Mlangeni Health Centre';20;3
+275;'caJTY76NHqr';'Mphepozinayi Health Centre';20;3
+276;'hi5FgIkQhE6';'Muluma Health Centre';20;3
+277;'SB4bkZlgh0H';'Mzama Health Centre';20;3
+278;'cZCNlBzubFV';'Nsipe Health Centre';20;3
+279;'OdYsi8b2H9o';'Nsiyaludzu Health Centre';20;3
+280;'SWmYkR3NrB6';'Ntcheu District Hospital';20;3
+281;'Yb1aJgxm3ld';'Ntonda Community Hospital';20;3
+282;'ZQ3bpt6UPrH';'Senzani Health Centre';20;3
+283;'srn7mO8shpV';'Shapeville Health Centre';20;3
+284;'pW8AUDFkFl3';'Sister Tereza Health Centre';20;3
+285;'ixDTf4Hzp5t';'Tsangano Health Centre';20;3
+286;'obz46zVX5BE';'Chambo Health Centre';21;3
+287;'xPSN0ZE2g7Y';'Chitipa District Hospital';21;3
+288;'ATFvHXk49IQ';'Ifumbo Health Centre';21;3
+289;'jmO8l0w9ves';'Kameme Health Centre';21;3
+290;'yGx0ouyPg7F';'Kapenda Health Centre';21;3
+291;'KQhzf77WtQ1';'Kaseye Community Hospital';21;3
+292;'fSZby4J9wsT';'Misuku Health Centre';21;3
+293;'IqZ4uYXvKUL';'Msumbe Health Centre';21;3
+294;'oTybmTT0vVW';'Nthalire Health Centre';21;3
+295;'i9hOiSPWXOB';'Wenya Health Centre';21;3
+296;'TIegLhGoiBy';'Atupele Community Hospital';22;3
+297;'u39JjJTnKiI';'Chilumba Community Hospital';22;3
+298;'EpRv2PdSIGK';'Fulirwa Health Centre';22;3
+299;'ZfX58kuUwf6';'Garrison Health Centre';22;3
+300;'ws1SVvcema8';'Hara Health Centre';22;3
+301;'N0KQwXkW3xx';'Iponga Health Centre';22;3
+302;'lKErYetkQjB';'Kaporo Community Hospital';22;3
+303;'LoOgaFUShkQ';'Karonga District Hospital';22;3
+304;'IwMIYwfCNHX';'Kasoba Health Centre';22;3
+305;'kfeQHmKuk3V';'Lupembe Health Centre';22;3
+306;'OvBTVPcRBjK';'Lwezga Health Centre';22;3
+307;'CSi3aodnO9P';'Mlare Health Centre';22;3
+308;'HM6H3WeK1VU';'Mpata Health Centre';22;3
+309;'bkjNpL65DPw';'Ngana Health Centre';22;3
+310;'WTAD0XbwYaS';'Nyungwe Health Centre';22;3
+311;'UGbLshdWx4z';'Sangilo Health Centre';22;3
+312;'tFOXqwC9RsE';'St. Anne''s Health Centre';22;3
+313;'rIInJSZ2Hmd';'Wiliro Health Centre';22;3
+314;'cFBshiWXEVu';'Chizumulu Health Centre';23;3
+315;'p2rwxmPCmjk';'St. Peter''s Hospital';23;3
+316;'E3PMJo8qOdG';'Bwengu Health Centre';24;3
+317;'IWYUWfGRKHP';'Choma Health Centre';24;3
+318;'cbQlcjCQUUC';'Ekwayiweni Health Centre';24;3
+319;'nNmNoynF9vM';'Ekwendeni Hospital';24;3
+320;'ktrMB81oX8g';'Emsizini Health Centre';24;3
+321;'QEwOA90cflK';'Engucwini Health Centre';24;3
+322;'indi7ARpxGw';'Enukweni Health Centre';24;3
+323;'Kdp5oh1chWb';'Kabwafu Health Centre';24;3
+324;'NUFrSVq5DMt';'Kafukule Health Centre';24;3
+325;'nFUcrukx7Mq';'Kamwe Health Centre';24;3
+326;'nEAgqyOQ95P';'Kaweche Health Centre';24;3
+327;'BP7FmQqoGb4';'Khuyukuyu Health Centre';24;3
+328;'kTwhWSyutcg';'Luvwere Health Centre';24;3
+329;'dzKsX1nwjFA';'Luzi Health Centre';24;3
+330;'qTCMk8VCcBv';'Malidade Health Centre';24;3
+331;'ykKVH0pXFuu';'Manoro Health Centre';24;3
+332;'jDVi85en2Fi';'Matuli Health Centre';24;3
+333;'lux3CjaQqic';'Moyale Barracks Health Centre';24;3
+334;'GR4NRADcBot';'Mpherembe Health Centre';24;3
+335;'EYfSJOkLMat';'Mtwalo Health Centre';24;3
+336;'PgQdw0MZUlK';'Mzimba North District hospital';24;3
+337;'FOb2jTWoOtD';'Mzuzu Central Hospital';24;3
+338;'oCsbQN375CQ';'Mzuzu Health Centre';24;3
+339;'lddTjslYhKT';'Njuyu Health Centre';24;3
+340;'KbYyE0e4U5P';'Nkholongo CHAM';24;3
+341;'e3azObNlAHY';'Padley Pio';24;3
+342;'x7eMdBWwkMr';'St. John''s Hospital';24;3
+343;'FoFTblMblIo';'Thunduwike Health Centre';24;3
+344;'x2AjkLkrbzm';'Bulala Health Centre';25;3
+345;'MivwHmNyGoS';'Chikangawa Health Centre';25;3
+346;'yxFDn2gacEr';'Edingeni Health Centre';25;3
+347;'oqcOtMgggud';'Ehehleni Health Centre';25;3
+348;'jEYuuXTkMl1';'Embangweni Hospital';25;3
+349;'Kx7i06hg4cz';'Emfeni Rural Hospital';25;3
+350;'oqbAABEoJIE';'Endindeni Health Centre';25;3
+351;'K3bKMF0QQNZ';'Euthini Rural Hospital';25;3
+352;'z3WzmmFHtJL';'Hoho Health Centre';25;3
+353;'cMBUJxboAWr';'Jenda Rural Hospital';25;3
+354;'jx8ADSPjxoU';'Kabuwa Health Centre';25;3
+355;'KoTt3etxAtw';'Kalikumbi Health Centre';25;3
+356;'Tz9dDzXyiEL';'Kamteteka Health Centre';25;3
+357;'ENsmUw01nex';'Katete Community Hospital';25;3
+358;'hrT5h1JhCES';'Khosolo Health Centre';25;3
+359;'Ao0gq0RrJg9';'Lunjika Health Centre';25;3
+360;'P7mHlJoyVbU';'Luwawa Health Centre';25;3
+361;'SWy4imptfQQ';'Luwerezi Health Centre';25;3
+362;'hTTtVIOoafJ';'Mabiri Health Centre';25;3
+363;'SEtmHdGWKJK';'Madede Health Centre';25;3
+364;'RoGX2U3Y6iQ';'Manyamulu Health Centre';25;3
+365;'p0M5h8hmQSH';'Mbalachanda Health Centre';25;3
+366;'TBxRFAvUNwp';'Mhalaunda Health Centre';25;3
+367;'J42rVdeJyoZ';'Mkoma Health Centre';25;3
+368;'QKtaAwgiJwR';'Msese Health Centre';25;3
+369;'Pc93WnrI6ne';'Mtende Health Centre';25;3
+370;'oA1Jk9fYLah';'Mzalangwe Health Centre';25;3
+371;'aiydiBI2vXr';'Mzambazi Community Hospital';25;3
+372;'EAPY9z784KD';'Mzimba lDistrict Hospital';25;3
+373;'LEP4FuaXTzL';'Raiply Clinic';25;3
+374;'LALYuIqY1SY';'Vibangalala Health Centre';25;3
+375;'aWTYuqHDpSc';'Bula Health Centre';26;3
+376;'WiCR00sjTno';'Chikwina Health Centre';26;3
+377;'EArhoVczmtY';'Chilambwe Health Centre';26;3
+378;'w5RJjaF3GHv';'Chintheche Rural Hospital';26;3
+379;'DHtR5QL3He8';'Chisala Health Centre';26;3
+380;'JYcLw6Ecux3';'Chitheka Health Centre';26;3
+381;'v1U8032SDg4';'Kachere Health Centre';26;3
+382;'ekCydYskiuj';'Kande Health Centre';26;3
+383;'wmynDVHwNwL';'Kavuzi Plantation Clinic';26;3
+384;'yGv3jGmf1QX';'Kawalazi Plantation Clinic';26;3
+385;'JVHBWvmzjhM';'Khondowe Health Centre';26;3
+386;'WyezQikOTmz';'Liuzi Health Centre';26;3
+387;'LQaglx5VTH4';'Luwazi Health Centre';26;3
+388;'ObMkDodpqOh';'Maula Health Centre';26;3
+389;'QQw5QEf12KH';'Mpamba Health Centre';26;3
+390;'bmORr8r1CWE';'Mwaya Health Centre';26;3
+391;'hIp6NCAw1cm';'Mzenga Health Centre';26;3
+392;'pGZ00PnNgmO';'Nkhata-Bay District Hospital';26;3
+393;'sN7kRmgFrHF';'Nthungwa Health Centre';26;3
+394;'Aq2XGrocRaI';'Ruarwe Health Centre';26;3
+395;'oK6DNTyGLWT';'Tchesamu Health Centre';26;3
+396;'tniaa48wbfA';'Usisya Health Centre';26;3
+397;'HaTXdkLRKng';'Vizara Plantation Clinic';26;3
+398;'aNcNBYsRlgQ';'Bolero Community Hospital';27;3
+399;'YKpW3Eio9rV';'Chisimuka Health Centre';27;3
+400;'yVRB0iqaOuW';'Chitimba Health Centre';27;3
+401;'lIJJWgdqSbK';'David Gordon Memorial Health Centre';27;3
+402;'nJqPcEcPMme';'Jalawe Health Centre';27;3
+403;'rt7xe50kCwl';'Katowo Rural Hospital';27;3
+404;'ZItGjw46r40';'Lura Health Centre';27;3
+405;'pQrq3glPXVx';'Luwuchi Health Centre';27;3
+406;'cmwTdS8LcR5';'Mhuju Rural Hospital';27;3
+407;'I3WT0lb8eD4';'Mlowe Health Centre';27;3
+408;'WId5SiTS2BW';'Mphompha Health Centre';27;3
+409;'k49J8g7SFmn';'Mwazisi Health Centre';27;3
+410;'BqzUqAgJRqy';'Mzokoto Health Centre';27;3
+411;'cCarJEImYKC';'Ng''onga Health Centre';27;3
+412;'kH56enZULsD';'Nthenje Health Centre';27;3
+413;'GYwB6SYs9lp';'Rumphi District Hospital';27;3
+414;'wVezi8vmOR7';'St. Patrick''s Health Centre';27;3
+415;'qh5j85cnx81';'Tcharo Health Centre';27;3
+416;'zwGxx1PuLB6';'Balaka District Hospital';28;3
+417;'sRKxYT6WA5r';'Chiyendausiku Health Centre';28;3
+418;'emJM7BTSBLs';'Kalembo Health Centre';28;3
+419;'oBd0FlUDR7j';'Kankao Health Centre';28;3
+420;'Gx3esXO8HxN';'Kwitanda Health Centre';28;3
+421;'f48f5WYEe4y';'Mbera Health Centre';28;3
+422;'vupnTS3V2UZ';'Namanolo Health Centre';28;3
+423;'o2T70buvYwL';'Nandumbo Health Centre';28;3
+424;'af2koK14QTc';'Phalula Health Centre';28;3
+425;'wvXeW0GzHxT';'Phimbi Health Centre';28;3
+426;'lPgVaUNnU7h';'Ulongwe Health Centre';28;3
+427;'RyrgXewzyd6';'Utale 2 Health Centre';28;3
+428;'nYQckcvIVkY';'Chiradzulu District Hospital';29;3
+429;'hWy0ktAlBg3';'Chitera Health Centre';29;3
+430;'lbX3dOlYn6b';'Mawuwa Health Centre';29;3
+431;'yUCqkcwLL0G';'Mbulumbuzi Health Centre';29;3
+432;'viCPmJOmFsG';'Milepa Health Centre';29;3
+433;'LoTkmwEKGmv';'Namadzi Health Centre';29;3
+434;'b3rc4vsKrFU';'Namitambo Health Centre';29;3
+435;'ZFs6AXlPGfo';'Ndude Health Centre';29;3
+436;'XaxWfZ2J9Vb';'Nkalo Health Centre';29;3
+437;'hJktpI1U9Vc';'PIM Health Centre';29;3
+438;'cOnaVELuaAI';'St. Joseph (Nguludi)Community Hospital';29;3
+439;'L0C25MeSDEU';'Thumbwe Health Centre';29;3
+440;'kQhvlKjlhrD';'Chikweo Health Centre';30;3
+441;'S6sqBHWb7yy';'Gawanani Health Centre';30;3
+442;'b9b7gz73QIV';'Kawinga Health Centre';30;3
+443;'ETsYd5B1eDH';'Machinga District Hospital';30;3
+444;'gn7lXMRHK80';'Machinga Health Centre';30;3
+445;'W5e1RjNwnhK';'Mangamba Health Centre';30;3
+446;'oJBkjJo8NtS';'Mbonechera Health Centre';30;3
+447;'t6tWayYeFAm';'Mkwepere Health Centre';30;3
+448;'hOuYpALl2rg';'Mlomba Health Centre';30;3
+449;'IuGJm9hIBxG';'Mpiri Health Centre';30;3
+450;'FD99CDoXb43';'Mposa Health Centre';30;3
+451;'RqnoX4gs9ZV';'Nainunje Health Centre';30;3
+452;'dhq76XdqPZM';'Namandanje Health Centre';30;3
+453;'jvINOcYePbk';'Namanja Health Centre';30;3
+454;'xt7bIq3MpqC';'Nayuchi Health Centre';30;3
+455;'wuoA6uVZlKA';'Ngokwe Health Centre';30;3
+456;'dk8E6nZ3Ej4';'Nsanama Health Centre';30;3
+457;'CiRKKxCUmPi';'Ntaja Health Centre';30;3
+458;'MIJg3nxFz1N';'Ntholowa Health Centre';30;3
+459;'FMMnsW5cuYM';'Nyambi Health Centre';30;3
+460;'j32t5BSBnxT';'Assalam Clinic';31;3
+461;'XD0PNEALtAM';'Billy Loudon Health Centre';31;3
+462;'qv5UIOElDc2';'Chikole Health Centre';31;3
+463;'auLKR66Aelc';'Chilipa Health Centre';31;3
+464;'E73pzhFpZse';'Chilonga Health Centre';31;3
+465;'kbwRsvDkTaw';'Chiponde Health Centre';31;3
+466;'mxDNzUlK6f4';'Chiumbangame Health Centre';31;3
+467;'u1WOa1eObDc';'Chiunda Health Centre';31;3
+468;'cYOCT50Gucn';'Iba Health Centre';31;3
+469;'bP1PW7jS420';'Jalasi Health Centre';31;3
+470;'UxpMYzCYhgq';'Kadango Health Centre';31;3
+471;'PXsBkJBxtUj';'Kapire Health Centre';31;3
+472;'IkDLBbESML9';'Katema Health Centre';31;3
+473;'sCh58YRagyL';'Katuli Health Centre';31;3
+474;'PVh7TpL2Ns5';'Koche Health Centre';31;3
+475;'pEo0mXhzxCp';'Kukalanga Health Centre';31;3
+476;'V2DKkaxSLmp';'Lugola Health Centre';31;3
+477;'suhENliBHTO';'Lulanga Health Centre';31;3
+478;'Q16riyCzXMG';'Lungwena Health Centre';31;3
+479;'m0Nx0nf67nu';'Luwalika Health Centre';31;3
+480;'ZQeHm0Gv0Dk';'Madina Private Mobile Clinic';31;3
+481;'lm8HSAMUkLq';'Makanjira Health Centre';31;3
+482;'L9k9sdlJhIt';'Maldeco Clinic';31;3
+483;'l2afrchnfyZ';'Malembo Health Centre';31;3
+484;'QjgQKamUINx';'Malombe Health Centre';31;3
+485;'itoTUehQyh8';'Malukula Health Centre';31;3
+486;'EqAI5wHk1Gv';'Mama Khadija Clinic';31;3
+487;'t5D26QJhEWJ';'Mangochi District Hospital';31;3
+488;'XxLwnyfvKja';'Mase Health Centre';31;3
+489;'AwlH60uTzMl';'Monkey Bay Community Hospital';31;3
+490;'G0IWvGJ1Kbd';'Mpondasi Health Centre';31;3
+491;'LWA3R4vQB1D';'Mtimabi Health Centre';31;3
+492;'v9GgnXiG9vY';'Mulibwanji Community Hospital';31;3
+493;'qTyWXudQNPH';'Namalaka Health Centre';31;3
+494;'OEErceXVOuS';'Namwera Health Centre';31;3
+495;'kZnUPDQOtmn';'Nancholi Health Centre';31;3
+496;'Q6F2L7Ju8Co';'Nangalamu Health Centre';31;3
+497;'znXw5GxhvYP';'Nankhwali Health Centre';31;3
+498;'co5lqnYgPLf';'Nankumba Health Centre';31;3
+499;'PnzKfi4lgjT';'Ngapani Sable Farming Private Clinic';31;3
+500;'zCZfGdDlpzc';'Nkope Health Centre';31;3
+501;'ElSITicJdpP';'Nkumba Health Centre';31;3
+502;'klv8ByDEtkR';'Phirilongwe Health Centre';31;3
+503;'o9iV6dJro8u';'Sinyala Health Centre';31;3
+504;'BPiD1fQBatE';'Sister Martha Health Centre';31;3
+505;'PHxj4YLtigp';'St. Martin Community Hospital';31;3
+506;'MOCKdmjyGI3';'Bondo Health Centre';32;3
+507;'kYb4mJnVUc9';'Chambe Health Centre';32;3
+508;'HGrsNbfwZsO';'Chinyama Health Centre';32;3
+509;'gZabeMFCpOU';'Chisitu Health Centre';32;3
+510;'WVVdrxikZNk';'Chonde Health Centre';32;3
+511;'vChkHfzC6KZ';'Dzenje Health Centre';32;3
+512;'Huz7OapmkQP';'Kambenje Health Centre';32;3
+513;'wCTqXlP3PgX';'Lujeri Clinic';32;3
+514;'F04bNNxNxkX';'Mbiza Health Centre';32;3
+515;'NEVlj8OHseb';'Milonde Health Centre';32;3
+516;'u0WLCJjM4R9';'Mimosa Health Centre';32;3
+517;'h04B2AqEiYl';'Mpala Health Centre';32;3
+518;'d1DAVztIceh';'Mulanje District Hospital';32;3
+519;'V6TWf66XmLA';'Mulanje Mission Community Hospital';32;3
+520;'zmcWTQtVd78';'Mulomba Health Centre';32;3
+521;'SOoUGqdhGMB';'Muloza Health Centre';32;3
+522;'qr1ljXxH4gT';'Namasalima SDA Health Centre';32;3
+523;'sTYLNR69eHI';'Namphungo Health Centre';32;3
+524;'podeAyss42z';'Namulenga Health Centre';32;3
+525;'oAasden0agO';'Naphimba Health Centre';32;3
+526;'GxxzDbf4G5D';'Nkomaula Health Centre';32;3
+527;'c7d0eFyxyBz';'Thembe Health Centre';32;3
+528;'cl7dIWkk0HD';'Thuchila Health Centre';32;3
+529;'pqCfsqo30DD';'Chiringa Health Centre (Faith)';33;3
+530;'icEVVeu7rFo';'Chiringa Health Centre (Gov)';33;3
+531;'NbmaivJCBtu';'Chitekesa Health Centre';33;3
+532;'hcoa2sFEzQK';'Holy Family Community Hospital';33;3
+533;'dRLWb9RLvuO';'Kalinde Health Centre';33;3
+534;'UhLvKetvin5';'Migowi Health Centre';33;3
+535;'CLAoPe9wCpU';'Mpasa Health Centre';33;3
+536;'F3OBEFYDqVE';'Mwanga Health Centre';33;3
+537;'XRP04ww2DFI';'Nambazo Health Centre';33;3
+538;'i1vE8nZwAUv';'Nazombe Health Centre';33;3
+539;'kJJOA0lug78';'Nkhulambe Health Centre';33;3
+540;'cp7jFcyBeDB';'Nkhwayi Health Centre';33;3
+541;'swcnDjmptdX';'Phalombe Health Centre';33;3
+542;'SfFsCeSL8YO';'Sukasanje Health Centre';33;3
+543;'FwrqwGAsR60';'Bimbi Health Centre';34;3
+544;'VrPjlxqGPeh';'Chamba Health Centre';34;3
+545;'B1ExEgvIFQl';'Chanco Health Centre';34;3
+546;'JlS81Y6ApV3';'Changalume Health Centre';34;3
+547;'MuSXpVkVjnY';'Chilipa Health Centre';34;3
+548;'PxO8jstsAqr';'Chingale Health Centre';34;3
+549;'ooRtXeXmCmn';'Chipini Health Centre';34;3
+550;'kxP6TkkJcMv';'Chisi Health Centre';34;3
+551;'tGHpEl9Uy0C';'City Clinic';34;3
+552;'h33r4b0Y0EL';'Cobbe Barracks Community Hospital';34;3
+553;'Y86kNeORhNP';'Domasi Health Centre';34;3
+554;'Z661LniW4Yu';'H Parker (Domasi C.C.A.P.) Health Centre';34;3
+555;'BOQNB6MkW4W';'Lambulira Health Centre';34;3
+556;'gCqPh1cPWWK';'Likangala Health Centre';34;3
+557;'AtBQV7jX7OJ';'M''mambo Health Centre';34;3
+558;'I8ovznRzsPS';'Machinjiri Health Centre';34;3
+559;'lEirBQg1tkK';'Magomero Health Centre';34;3
+560;'ZjL2DFbSB1E';'Makwapala Health Centre';34;3
+561;'chsLMe8wWKF';'Matawale Health Centre';34;3
+562;'D4DBhk2HHAy';'Matiya Health Centre';34;3
+563;'as3d3KpGdMQ';'Mayaka Health Centre';34;3
+564;'jCWqLML8mis';'Mikuyu Adult Clinic';34;3
+565;'HLkWaFuzf2E';'Mikuyu Young Clinic';34;3
+566;'WzI4IGYhH8Y';'Naisi Health Centre';34;3
+567;'zR08dsmyYDp';'Namadidi Health Centre';34;3
+568;'o2cJVqjE9NN';'Namasalima Health Centre';34;3
+569;'yjNGMyS7SqR';'Namikango Health Centre';34;3
+570;'Y4CBIiUToyJ';'Nasawa Health Centre';34;3
+571;'oBBkLFYJamk';'Ngwelero Health Centre';34;3
+572;'Pqi4KqC4ShW';'Nkasala Health Centre';34;3
+573;'rdYsYtjC00W';'Pirimiti Health Centre';34;3
+574;'PMnvXQtO0ON';'Police Community Hospital';34;3
+575;'ZZeY0oYbfOH';'Sadzi Health Centre';34;3
+576;'J3MMPGdkiwZ';'St. Luke''s Community Hospital';34;3
+577;'F03FWOtFFLX';'State House Clinic';34;3
+578;'fj3SlhvHMD7';'Thondwe Health Centre';34;3
+579;'rVWmDbicfao';'Zilindo Clinic';34;3
+580;'ECKuEN5PXeN';'Zomba Central Referral Hospital';34;3
+581;'pktG1eRyOWG';'Zomba Mental Referral Hospital';34;3
+582;'QiYOXmbH1WI';'Bangwe Health Centre';35;3
+583;'Jf4eL8afwpp';'Chavala Health Centre';35;3
+584;'ck2yxYLBGEn';'Chikowa Health Centre';35;3
+585;'TwMmRRKdCvM';'Chileka - BT Health Centre';35;3
+586;'ha2EGr22fty';'Chileka SDA Health Centre';35;3
+587;'C0jGnlZcwGU';'Chilomoni Health Centre';35;3
+588;'V3OIRPsatgN';'Chimembe Health Centre';35;3
+589;'z9qJh3V7twL';'Chirimba Health Centre';35;3
+590;'FDLQxV468sB';'Dziwe Health Centre';35;3
+591;'yuQ1rcwCPdk';'Kadidi Health Centre';35;3
+592;'rlfP97Sa2nH';'Limbe Health Centre';35;3
+593;'FyFn9ZS8YPM';'Lirangwe Health Centre';35;3
+594;'xWh9XMktlri';'Lumbila Health Centre';35;3
+595;'O7kGHz1sRn7';'Lundu Health Centre';35;3
+596;'nrCPHQv7wAn';'Madziabango Health Centre';35;3
+597;'Cheg4stfBeq';'Makata Health Centre';35;3
+598;'JiH80PxFIEL';'Makhetha Health Centre';35;3
+599;'Oq2UVXZJw2V';'Malabada Health Centre';35;3
+600;'Ibluzgqtsm3';'Mbayani Health Centre';35;3
+601;'appSmbWUy1U';'Mdeka Health Centre';35;3
+602;'NEb0l2S9C2D';'Mlambe Community Hospital';35;3
+603;'mohiY8MSJty';'Mpemba Health Centre';35;3
+604;'RWLpdnrYLn1';'Namikoko Health Centre';35;3
+605;'ylRuwwOaJKI';'Ndirande Health Centre';35;3
+606;'j9BDYVaBtYQ';'Pensulo Health Centre';35;3
+607;'URG24ymtyW5';'Queen Elizabeth Referral Hospital';35;3
+608;'jnEO1Uvo5Pd';'Soche Health Centre';35;3
+609;'qx1kkVh7ROD';'South Lunzu Health Centre';35;3
+610;'utMa7wWQEDT';'St. Vincent Health Centre';35;3
+611;'XEEdHBVtppM';'Zingwangwa Health Centre';35;3
+612;'Xa1HiBQnMLx';'Bereu Health Centre';36;3
+613;'tR9peY8nzD2';'Chapananga Health Centre';36;3
+614;'UnUGcm9fB7n';'Chikwawa District Hospital';36;3
+615;'yRukNsaN0hV';'Chipwaila Health Centre';36;3
+616;'POncddgW7JQ';'Chithumba Health Centre';36;3
+617;'U3OiiApydUo';'Dolo Health Centre';36;3
+618;'RKDoFahKyjE';'Gaga Health Centre';36;3
+619;'A4Sug7eB0vV';'Illovo Health Centre';36;3
+620;'vO2KBu99evc';'Kakoma Health Centre';36;3
+621;'CgGsrzOmWx2';'Kapichira (ESCOM) Private Clinic';36;3
+622;'GP3aYXFVkff';'Makhuwira Health Centre';36;3
+623;'SS206MtUTW7';'Mapelera Health Centre';36;3
+624;'LBlcj22gGFJ';'Mfera Health Centre';36;3
+625;'gtPBlnKy5DD';'Misomali Health Centre';36;3
+626;'SUfTuNQ4tUk';'Mkumaniza Health Centre';36;3
+627;'SwlyvXPr1EQ';'Mont Fort Health Centre';36;3
+628;'ebzhyuOlnhv';'Ndakwera Health Centre';36;3
+629;'Ztczdei1QxM';'Ngabu Rural Hospital';36;3
+630;'gJqP4qlGHXn';'Ngabu SDA Health Centre';36;3
+631;'ZGrjwe5Np4F';'Kunenekude Health Centre';37;3
+632;'Ifyff5flM3y';'Mwanza District Hospital';37;3
+633;'ZRjOswtj0vv';'Thambani Health Centre';37;3
+634;'LLcHDR16olo';'Tulunkhondo Health Centre';37;3
+635;'N6BPiHKeAel';'Chifunga Health Centre';38;3
+636;'sH79BO063CS';'DAPP Zalewa Private Clinic';38;3
+637;'eQU6lNJawbd';'Ligowe Health Centre';38;3
+638;'DL5Ksl8da2J';'Lisungwi Community Hospital';38;3
+639;'FQv2kwmJxLl';'Luwani Health Centre';38;3
+640;'SxK8cUxu1sX';'Magaleta Health Centre';38;3
+641;'BsbrjNOuWAp';'Matandani Health Centre';38;3
+642;'dY3KYDnYl2C';'Matope Health Centre';38;3
+643;'EBIw2dPHcHz';'Midzemba Health Centre';38;3
+644;'B2FeSsoevoV';'Neno District Hospital';38;3
+645;'P0ERd5P2xWO';'Neno Parish Health Centre';38;3
+646;'TPYaSGtsYqC';'Nkula ESCOM Private Clinic';38;3
+647;'VhYA6OJKrIQ';'Nsambe Health Centre';38;3
+648;'ijwVtAcEtJH';'Chididi Health Centre';39;3
+649;'QbRAM4sUXUT';'Kalemba Community Hospital';39;3
+650;'IuH3Bi3WRxB';'Lulwe Health Centre';39;3
+651;'yfoTMFUVyyp';'Makhanga Health Centre';39;3
+652;'Du78XliKALt';'Masenjere Health Centre';39;3
+653;'ojr1ps9PSGR';'Mbenje Health Centre';39;3
+654;'mox2ID6sRsK';'Ndamera Health Centre';39;3
+655;'lKfgWlywdRR';'Nsanje District Hospital';39;3
+656;'QvWAeQ8BE9E';'Nyamithuthu Health Centre';39;3
+657;'RfWXVv9tauw';'Phokera Health Centre';39;3
+658;'AKvMn1mPtdC';'Sankhulani Health Centre';39;3
+659;'Y6d0Ho0RrDR';'Sorgin Health Centre';39;3
+660;'jLn8N6zJmBb';'Tengani Health Centre';39;3
+661;'F90u9WAlV4Y';'Trinity Community Hospital';39;3
+662;'HLNeGSDtZ5k';'Bvumbwe Reserch Health Centre';40;3
+663;'ZKfjJwZWXSK';'Changata Health Centre';40;3
+664;'MYLP6DuZBDS';'Chimaliro Health Centre';40;3
+665;'mr15fuOhcJs';'Chimvu Health Centre';40;3
+666;'HvKYquQqIDi';'Chingazi Health Centre';40;3
+667;'jhgsh19uVuv';'Chipho Health Centre';40;3
+668;'f8XSQMzpqiV';'ChisoKa Health Centre';40;3
+669;'NPF27gPq1dq';'Didi Health Centre';40;3
+670;'hIU6YdI78t7';'Khonjeni Health Centre';40;3
+671;'TJYENRGCKm3';'Makapwa Health Centre';40;3
+672;'uUpmkeqgZNU';'Makungwa Health Centre';40;3
+673;'iooJ3qeIzEZ';'Malamulo Mission Community Hospital';40;3
+674;'LEiGXzF8Fdc';'Mangunda Health Centre';40;3
+675;'QG1l1aJIJDM';'Mapanga Health Centre';40;3
+676;'dk4ZDzz68u7';'Mikolongwe Health Centre';40;3
+677;'nnEws4P434m';'St. Hellena Oakley (Ntambanyama) Health Centre';40;3
+678;'YXpzm62Ormg';'St. Joseph Mitengo Community Hospital';40;3
+679;'zshHETEy1Q0';'St. Martin''s Molere Health Centre';40;3
+680;'G8wd4jZVzDP';'Thekerani Health Centre';40;3
+681;'LJHqSJWgUau';'Thomas Health Centre';40;3
+682;'NIWzGgbbcyC';'Thyolo District Hospital';40;3
+683;'azUAWl84bZb';'Zoa Health Centre';40;3

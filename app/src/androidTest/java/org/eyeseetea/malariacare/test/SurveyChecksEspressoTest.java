@@ -35,7 +35,6 @@ import org.eyeseetea.malariacare.database.model.Tab;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.services.SurveyService;
 import org.eyeseetea.malariacare.test.utils.IntentServiceIdlingResource;
-import org.eyeseetea.malariacare.utils.Constants;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -50,13 +49,10 @@ import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
-import static junit.framework.Assert.assertEquals;
 import static org.eyeseetea.malariacare.test.utils.TextCardScaleMatcher.hasTextCardScale;
 import static org.eyeseetea.malariacare.test.utils.UncheckeableRadioButtonScaleMatcher.hasRadioButtonScale;
-import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.not;
 
 
 /**
@@ -104,7 +100,7 @@ public class SurveyChecksEspressoTest extends MalariaEspressoTest{
     public void radiobutton_textsize_changes(){
         Log.i(TAG, "------radiobutton_textsize_changes------");
         //GIVEN: Some special font size set
-        PreferencesState.getInstance().setScale(Constants.FONTS_LARGE);
+        PreferencesState.getInstance().setScale(getActivityInstance().getString(R.string.font_size_level2));
 
         //WHEN: Select survey again from dashboard
         whenTabSelected(1);
@@ -120,7 +116,7 @@ public class SurveyChecksEspressoTest extends MalariaEspressoTest{
     public void textcard_textsize_changes(){
         Log.i(TAG, "------textcard_textsize_changes------");
         //GIVEN: Some special font size set
-        PreferencesState.getInstance().setScale(Constants.FONTS_LARGE);
+        PreferencesState.getInstance().setScale(getActivityInstance().getString(R.string.font_size_level2));
 
         //WHEN: Select survey again from dashboard
         whenTabSelected(1);

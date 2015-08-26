@@ -4,22 +4,10 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:paddingTop="@dimen/survey_heading_padding_all"
+    android:paddingBottom="@dimen/survey_heading_padding_all"
     android:id="@+id/form_header"
     android:gravity="center_horizontal">
-
-    <org.eyeseetea.malariacare.views.TextCard
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="@string/survey_info_select_tab"
-        android:id="@+id/HeaderTitle"
-        android:gravity="center_vertical|center_horizontal"
-        android:background="@color/headerColor"
-        android:textColor="@color/white"
-        android:textSize="24sp"
-        android:visibility="gone"
-        app:tDimension="@string/font_size_level3"
-        app:tFontName="@string/bold_font_name" />
 
     <Spinner
         android:layout_width="wrap_content"

@@ -19,9 +19,13 @@
 
 package org.eyeseetea.malariacare.utils;
 
+import com.raizlabs.android.dbflow.structure.BaseModel;
+
+import org.eyeseetea.malariacare.database.model.CompositeScore;
 import org.eyeseetea.malariacare.database.model.Header;
 import org.eyeseetea.malariacare.database.model.Question;
 import org.eyeseetea.malariacare.database.model.Tab;
+import org.eyeseetea.malariacare.database.utils.Session;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -46,30 +50,36 @@ public class Utils {
         return round(base, Utils.numberOfDecimals);
     }
 
-    public static List<Object> convertTabToArray(Tab tab) {
-        List<Object> result = new ArrayList<Object>();
-
-        for (Header header : tab.getHeaders()) {
-            result.add(header);
-            for (Question question : header.getQuestions())
-                result.add(question);
-
-        }
-        return result;
-    }
-
-    public static List<Object> convertTabToArrayCustom(Tab tab) {
-        List<Object> result = new ArrayList<Object>();
+    public static List<BaseModel> convertTabToArrayCustom(Tab tab) {
+        List<BaseModel> result = new ArrayList<BaseModel>();
 
         for (Header header : tab.getHeaders()) {
             result.add(header);
             for (Question question : header.getQuestions()) {
-                if (question.hasChildren())
+                if (tab.getType().equals(Constants.TAB_AUTOMATIC) || tab.getType().equals(Constants.TAB_AUTOMATIC_NON_SCORED) || question.hasChildren())
                     result.add(question);
             }
         }
 
         return result;
+    }
+
+    public static List<? extends BaseModel> preloadTabItems(Tab tab){
+        List<? extends BaseModel> items = Session.getTabsCache().get(tab.getId_tab());
+
+        if (tab.isCompositeScore())
+            items = CompositeScore.listByTabGroup(Session.getSurvey().getTabGroup());
+
+        else{
+
+            items=Session.getTabsCache().get(tab.getId_tab());
+
+            if (items == null) {
+                items = convertTabToArrayCustom(tab);
+            }
+            Session.getTabsCache().put(tab.getId_tab(), items);
+        }
+        return items;
     }
 
     public static StringBuilder convertFromInputStreamToString(InputStream inputStream){
@@ -87,7 +97,5 @@ public class Utils {
 
         return stringBuilder;
     }
-
-
 
 }

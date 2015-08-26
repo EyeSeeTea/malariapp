@@ -4,6 +4,9 @@
     <dimen name="activity_vertical_margin">5dp</dimen>
     <dimen name="question_padding_left">10dip</dimen>
     <dimen name="question_padding_all">5dip</dimen>
+    <dimen name="survey_heading_padding_all">5dip</dimen>
+    <dimen name="survey_main_spinner_padding_leftright">40dip</dimen>
+    <dimen name="survey_main_spinner_padding_updown">5dip</dimen>
 
     <!-- Dashboard -->
     <dimen name="dashboard_row_padding">5dp</dimen>

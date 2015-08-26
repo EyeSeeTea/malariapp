@@ -1,15 +1,39 @@
+buildscript {
+    repositories {
+        maven { url 'https://maven.fabric.io/public' }
+    }
+
+    dependencies {
+        classpath 'io.fabric.tools:gradle:1.+'
+    }
+}
 apply plugin: 'com.android.application'
+apply plugin: 'io.fabric'
+
+repositories {
+    maven { url 'https://maven.fabric.io/public' }
+
+}
+
+apply plugin: 'com.neenbedankt.android-apt'
 
 android {
+    signingConfigs {
+    }
     compileSdkVersion 21
     buildToolsVersion "22.0.1"
     defaultConfig {
         applicationId 'org.eyeseetea.malariacare'
         minSdkVersion 15
         targetSdkVersion 21
-        versionCode 1
-        versionName "1.0"
-
+        versionCode 10
+        versionName "10.0"
+        multiDexEnabled true
+        /*dexOptions {
+            jumboMode = true
+            incremental true
+            javaMaxHeapSize "4g"
+        }*/
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -17,7 +41,7 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
-        debug{
+        debug {
             debuggable true
         }
     }
@@ -26,28 +50,66 @@ android {
         exclude  'LICENSE.txt'
     }
     productFlavors {
+        edsGhana {
+            applicationId "org.eyeseetea.malariacare.eds"
+            versionName "10.0-eds-ghana"
+            minSdkVersion 15
+            targetSdkVersion 21
+        }
+        edsMalawi {
+            applicationId "org.eyeseetea.malariacare.eds"
+            versionName "10.0-eds-malawi"
+            minSdkVersion 15
+            targetSdkVersion 21
+        }
+        edsMozambique {
+            applicationId "org.eyeseetea.malariacare.eds"
+            versionName "10.0-eds-mozambique"
+            minSdkVersion 15
+            targetSdkVersion 21
+        }
+        edsTanzania {
+            applicationId "org.eyeseetea.malariacare.eds"
+            versionName "10.0-eds-tanzania"
+            minSdkVersion 15
+            targetSdkVersion 21
+        }
+        edsZambia {
+            applicationId "org.eyeseetea.malariacare.eds"
+            versionName "10.0-eds-zambia"
+            minSdkVersion 15
+            targetSdkVersion 21
+        }
+        hnqis {
+            applicationId "org.eyeseetea.malariacare.hnqis"
+            versionName "10.0-hnqis"
+            minSdkVersion 15
+            targetSdkVersion 21
+        }
     }
 }
 
 dependencies {
-
-    compile 'com.android.support:support-v4:22.1.1'
-    compile 'com.android.support:appcompat-v7:22.1.1'
-    compile 'com.android.support:support-annotations:22.1.0'
-
     // App dependencies
-    compile 'com.github.satyan:sugar:1.3'
+    compile 'com.android.support:support-v4:22.2.1'
+    compile 'com.android.support:appcompat-v7:22.2.1'
+    compile 'com.android.support:support-annotations:22.2.1'
     compile 'com.opencsv:opencsv:3.3'
-    compile 'com.google.android.gms:play-services:7.0.0'
+    compile 'com.android.support:multidex:1.0.1'
+    compile 'com.google.android.gms:play-services:7.8.0'
     compile 'com.google.guava:guava:18.0'
     compile 'com.squareup.okhttp:okhttp:2.2.0'
-
+    apt 'com.raizlabs.android:DBFlow-Compiler:2.2.1'
+    compile 'com.raizlabs.android:DBFlow-Core:2.2.1'
+    compile 'com.raizlabs.android:DBFlow:2.2.1'
     // Unit testing dependencies
     testCompile 'junit:junit:4.12'
-
     // Instrumented tests dependencies
     androidTestCompile 'com.android.support.test:runner:0.2'
     androidTestCompile 'com.android.support.test:rules:0.2'
     androidTestCompile 'com.android.support.test.espresso:espresso-core:2.1'
     androidTestCompile 'com.android.support.test.espresso:espresso-intents:2.1'
+    compile('com.crashlytics.sdk.android:crashlytics:2.5.1@aar') {
+        transitive = true;
+    }
 }

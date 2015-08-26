@@ -29,12 +29,11 @@ import android.widget.Spinner;
 import android.widget.TableLayout;
 
 import org.eyeseetea.malariacare.R;
-import org.eyeseetea.malariacare.database.model.Header;
 import org.eyeseetea.malariacare.database.model.Question;
 import org.eyeseetea.malariacare.database.model.Value;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.utils.Utils;
-import org.eyeseetea.malariacare.views.TextCard;
+import org.eyeseetea.malariacare.views.CustomTextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -88,7 +87,7 @@ public class LayoutUtils {
     // Given a View, this method search down in the tree to find the corresponding child View to a given question
     public static View findChildRecursively(View startingView, Question question) {
         View toReturn;
-        if (startingView != null && (startingView.getTag(R.id.QuestionTag) != null) && (startingView.getTag(R.id.QuestionTag) instanceof Question) && ((((Question) startingView.getTag(R.id.QuestionTag)).getId()).longValue() == (question.getId()).longValue())) {
+        if (startingView != null && (startingView.getTag(R.id.QuestionTag) != null) && (startingView.getTag(R.id.QuestionTag) instanceof Question) && ((((Question) startingView.getTag(R.id.QuestionTag)).getId_question()).longValue() == (question.getId_question()).longValue())) {
             return startingView;
         } else {
             int childrenCount;
@@ -105,7 +104,7 @@ public class LayoutUtils {
 
     public static void toggleVisibleChildren(int position, Spinner spinner, Question triggeredQuestion) {
         View parent = LayoutUtils.findParentRecursively(spinner, (Integer) spinner.getTag(R.id.Tab));
-        for (Question childQuestion : triggeredQuestion.getQuestionChildren()) {
+        for (Question childQuestion : triggeredQuestion.getChildren()) {
             View childView = LayoutUtils.findChildRecursively(parent, childQuestion);
             View headerView = ((View) ((View) childView).getTag(R.id.HeaderViewTag));
             if (position == 1) { //FIXME: There must be a smarter way for saying "if the user selected yes"
@@ -114,7 +113,7 @@ public class LayoutUtils {
                 ScoreRegister.addRecord(childQuestion, 0F, childQuestion.getDenominator_w());
             } else {
                 LayoutUtils.toggleVisible(childView, View.GONE);
-                if (LayoutUtils.isHeaderEmpty(triggeredQuestion.getQuestionChildren(), childQuestion.getHeader().getQuestions())) {
+                if (LayoutUtils.isHeaderEmpty(triggeredQuestion.getChildren(), childQuestion.getHeader().getQuestions())) {
                     if (headerView != null) headerView.setVisibility(View.GONE);
                 }
                 ScoreRegister.deleteRecord(childQuestion);
@@ -154,7 +153,7 @@ public class LayoutUtils {
     public static void setScore(float score, View scoreView, View percentageView, View cualitativeView){
         LayoutUtils.trafficLight(scoreView, score, cualitativeView);
         if (percentageView != null) LayoutUtils.trafficLight(percentageView, score, null);
-        ((TextCard)scoreView).setText(Utils.round(score));
+        ((CustomTextView)scoreView).setText(Utils.round(score));
     }
 
     public static void setScore(float score, View scoreView){
@@ -256,7 +255,7 @@ public class LayoutUtils {
             isContained = false;
             if (child.getQuestion() == null) return false;
             for (Question parent : parentList) {
-                if (child.getId().equals(parent.getId())){
+                if (child.getId_question().equals(parent.getId_question())){
                     isContained = true;
                     break;
                 }
@@ -282,24 +281,12 @@ public class LayoutUtils {
             tag=view.getContext().getResources().getString(R.string.poor);
         }
         //Change color for number
-        ((TextCard)view).setTextColor(color);
+        ((CustomTextView)view).setTextColor(color);
         //Change color& text for qualitative score
         if(textCard != null) {
-            ((TextCard)textCard).setTextColor(color); // red
-            ((TextCard)textCard).setText(tag);
+            ((CustomTextView)textCard).setTextColor(color); // red
+            ((CustomTextView)textCard).setText(tag);
         }
-    }
-
-    public static int getNumberOfQuestionParentsHeader(Header header) {
-        int result = 0;
-
-        List<Question> list =  header.getQuestions();
-
-        for (Question question : list)
-            if (question.hasChildren())
-                result = result + 1;
-
-        return result;
     }
 
     // Used to setup the usual actionbar with the logo and the app name

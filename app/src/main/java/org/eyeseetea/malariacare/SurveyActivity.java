@@ -32,12 +32,16 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
+
+import com.raizlabs.android.dbflow.sql.language.Select;
 
 import org.eyeseetea.malariacare.database.model.CompositeScore;
 import org.eyeseetea.malariacare.database.model.Program;
@@ -50,13 +54,14 @@ import org.eyeseetea.malariacare.layout.adapters.survey.AutoTabAdapter;
 import org.eyeseetea.malariacare.layout.adapters.survey.CompositeScoreAdapter;
 import org.eyeseetea.malariacare.layout.adapters.survey.CustomAdherenceAdapter;
 import org.eyeseetea.malariacare.layout.adapters.survey.CustomIQTABAdapter;
+import org.eyeseetea.malariacare.layout.adapters.survey.CustomReportingAdapter;
 import org.eyeseetea.malariacare.layout.adapters.survey.ITabAdapter;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 import org.eyeseetea.malariacare.services.SurveyService;
 import org.eyeseetea.malariacare.utils.Constants;
 import org.eyeseetea.malariacare.utils.Utils;
-import org.eyeseetea.malariacare.views.TextCard;
+import org.eyeseetea.malariacare.views.CustomTextView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -146,13 +151,14 @@ public class SurveyActivity extends BaseActivity{
         createActionBar();
         createMenu();
         createProgress();
+        prepareSurveyInfo();
     }
 
-    public void onResume(){
+    public void onResume() {
         Log.d(TAG, "onResume");
         super.onResume();
 
-        prepareSurveyInfo();
+        this.tabAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -181,6 +187,7 @@ public class SurveyActivity extends BaseActivity{
     @Override
     public void onPause(){
         Session.getSurvey().updateSurveyStatus();
+        unregisterReceiver();
         super.onPause();
     }
 
@@ -198,8 +205,8 @@ public class SurveyActivity extends BaseActivity{
 
         Log.d(TAG, "createMenu");
         this.tabAdapter=new TabArrayAdapter(this, tabsList);
-
         spinner= (Spinner) this.findViewById(R.id.tabSpinner);
+
         //Invisible until info ready
         spinner.setVisibility(View.GONE);
         spinner.setAdapter(this.tabAdapter);
@@ -217,6 +224,16 @@ public class SurveyActivity extends BaseActivity{
 
             }
         });
+    }
+
+    private void preLoadItems(){
+        List<Tab> tabs = new Select().all().from(Tab.class).queryList();
+        for(Tab tab: tabs) {
+            Intent preLoadService = new Intent(this, SurveyService.class);
+            preLoadService.putExtra(SurveyService.SERVICE_METHOD, SurveyService.PRELOAD_TAB_ITEMS);
+            preLoadService.putExtra("tab", tab.getId_tab());
+            this.startService(preLoadService);
+        }
     }
 
     public class AsyncChangeTab extends AsyncTask<Void, Integer, View> {
@@ -255,14 +272,17 @@ public class SurveyActivity extends BaseActivity{
             content.removeAllViews();
             content.addView(viewContent);
             ITabAdapter tabAdapter = tabAdaptersCache.findAdapter(tab);
-            if (    tab.getType() == Constants.TAB_AUTOMATIC_SCORED ||
+            if (    tab.getType() == Constants.TAB_AUTOMATIC ||
                     tab.getType() == Constants.TAB_ADHERENCE    ||
                     tab.getType() == Constants.TAB_IQATAB ||
-                    tab.getType() == Constants.TAB_SCORE_SUMMARY) {
+                    tab.getType() == Constants.TAB_REPORTING ||
+                    tab.getType() == Constants.TAB_COMPOSITE_SCORE) {
                 tabAdapter.initializeSubscore();
             }
             ListView mQuestions = (ListView) SurveyActivity.this.findViewById(R.id.listView);
-            mQuestions.setAdapter((BaseAdapter)tabAdapter);
+            mQuestions.setAdapter((BaseAdapter) tabAdapter);
+            UnfocusScrollListener unfocusScrollListener = new UnfocusScrollListener();
+            mQuestions.setOnScrollListener(unfocusScrollListener);
             stopProgress();
         }
     }
@@ -273,8 +293,9 @@ public class SurveyActivity extends BaseActivity{
      * Adds actionbar to the activity
      */
     private void createActionBar(){
-        Survey survey=Session.getSurvey();
-        Program program = survey.getProgram();
+        Survey survey = Session.getSurvey();
+        //FIXME: Shall we add the tab group?
+        Program program = survey.getTabGroup().getProgram();
 
         android.support.v7.app.ActionBar actionBar = this.getSupportActionBar();
         LayoutUtils.setActionBarLogo(actionBar);
@@ -351,9 +372,9 @@ public class SurveyActivity extends BaseActivity{
         Tab tab=((AutoTabAdapter)adapter).getTab();
         int viewId=IDS_SCORES_IN_GENERAL_TAB[tab.getOrder_pos()];
         if(viewId!=0) {
-            TextCard textCard=((TextCard) this.findViewById(viewId));
-            textCard.setText(Utils.round(score));
-            LayoutUtils.trafficLight(textCard, score, null);
+            CustomTextView customTextView =((CustomTextView) this.findViewById(viewId));
+            customTextView.setText(Utils.round(score));
+            LayoutUtils.trafficLight(customTextView, score, null);
         }
     }
 
@@ -408,7 +429,7 @@ public class SurveyActivity extends BaseActivity{
     }
 
     private void updateAvgInGeneralScores(int viewId, Float score){
-        ((TextCard) this.findViewById(viewId)).setText(Utils.round(score));
+        ((CustomTextView) this.findViewById(viewId)).setText(Utils.round(score));
         LayoutUtils.trafficLight(this.findViewById(viewId), score, null);
     }
 
@@ -477,6 +498,33 @@ public class SurveyActivity extends BaseActivity{
     }
 
 
+    /*
+    * ScrollListener added to avoid bug ocurred when checkbox pressed in a listview after this view is gone out from the focus
+    * see more here: http://stackoverflow.com/questions/7100555/preventing-catching-illegalargumentexception-parameter-must-be-a-descendant-of
+    */
+    protected class UnfocusScrollListener implements AbsListView.OnScrollListener {
+
+        @Override
+        public void onScroll(AbsListView view, int firstVisibleItem,
+                             int visibleItemCount, int totalItemCount) {
+            // do nothing
+        }
+
+        @Override
+        public void onScrollStateChanged(AbsListView view, int scrollState) {
+            if (SCROLL_STATE_TOUCH_SCROLL == scrollState) {
+                View currentFocus = getCurrentFocus();
+                if (currentFocus != null) {
+                    currentFocus.clearFocus();
+                    // Remove the virtual keyboard from the screen
+                    InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+                }
+            }
+        }
+
+    }
+
     /**
      * Inner private class that receives the result from the service
      */
@@ -489,9 +537,12 @@ public class SurveyActivity extends BaseActivity{
             List<CompositeScore> compositeScores=(List<CompositeScore>)Session.popServiceValue(SurveyService.PREPARE_SURVEY_ACTION_COMPOSITE_SCORES);
             List<Tab> tabs=(List<Tab>)Session.popServiceValue(SurveyService.PREPARE_SURVEY_ACTION_TABS);
 
-            tabAdaptersCache.reloadAdapters(tabs,compositeScores);
+            tabAdaptersCache.reloadAdapters(tabs, compositeScores);
             reloadTabs(tabs);
             stopProgress();
+
+            // After loading first tab we start the individual services that preload the items for the rest of tabs
+            preLoadItems();
         }
     }
 
@@ -503,7 +554,7 @@ public class SurveyActivity extends BaseActivity{
         /**
          * Cache of {tab: adapter} for each tab in the survey
          */
-        private Map<Tab, ITabAdapter> adapters = new HashMap<Tab, ITabAdapter>();
+        private Map<Tab, ITabAdapter> adapters = new HashMap<>();
 
         /**
          * List of composite scores of the current survey
@@ -534,7 +585,7 @@ public class SurveyActivity extends BaseActivity{
         }
 
         public List<Tab> getNotLoadedTabs(){
-            List<Tab> notLoadedTabs=new ArrayList<Tab>();
+            List<Tab> notLoadedTabs=new ArrayList<>();
             //If has already been shown NOTHING to reload
             if(compositeScoreTabShown){
                 return notLoadedTabs;
@@ -571,7 +622,7 @@ public class SurveyActivity extends BaseActivity{
                 cacheAllTabs();
             }
             //Return full list of adapters
-            return new ArrayList<ITabAdapter>(this.adapters.values());
+            return new ArrayList<>(this.adapters.values());
 
         }
 
@@ -590,20 +641,15 @@ public class SurveyActivity extends BaseActivity{
          * @return
          */
         private ITabAdapter buildAdapter(Tab tab){
-            if (tab.isCompositeScore())
-                return new CompositeScoreAdapter(this.compositeScores, SurveyActivity.this, R.layout.composite_score_tab, tab.getName());
-
-            if (tab.isAdherenceTab()) {
-                Log.d(TAG, "Creating an Adherence Adapter");
-                return CustomAdherenceAdapter.build(tab, SurveyActivity.this);
-            }
-
-            if (tab.isIQATab())
-                return CustomIQTABAdapter.build(tab, SurveyActivity.this);
-
-
-            if(tab.isGeneralScore()){
-                return null;
+            switch (tab.getType()) {
+                case Constants.TAB_COMPOSITE_SCORE:
+                    return CompositeScoreAdapter.build(tab, SurveyActivity.this);
+                case Constants.TAB_IQATAB:
+                    return CustomIQTABAdapter.build(tab, SurveyActivity.this);
+                case Constants.TAB_ADHERENCE:
+                    return CustomAdherenceAdapter.build(tab, SurveyActivity.this);
+                case Constants.TAB_REPORTING:
+                    return CustomReportingAdapter.build(tab, SurveyActivity.this);
             }
 
             return AutoTabAdapter.build(tab,SurveyActivity.this);

@@ -12,7 +12,7 @@
         android:layout_gravity="center_vertical"
         android:layout_weight="0.5"
         android:padding="@dimen/question_padding_all">
-        <org.eyeseetea.malariacare.views.TextCard
+        <org.eyeseetea.malariacare.views.CustomTextView
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:text="@string/widget_info_empty_statement"
@@ -31,7 +31,7 @@
         android:layout_weight="0.5"
         android:padding="@dimen/question_padding_all">
 
-        <org.eyeseetea.malariacare.views.EditCard
+        <org.eyeseetea.malariacare.views.CustomEditText
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"

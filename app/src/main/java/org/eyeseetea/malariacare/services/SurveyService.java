@@ -24,15 +24,17 @@ import android.content.Intent;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
-import com.orm.query.Select;
+import com.raizlabs.android.dbflow.sql.builder.Condition;
+import com.raizlabs.android.dbflow.sql.language.Select;
 
 import org.eyeseetea.malariacare.database.model.CompositeScore;
-import org.eyeseetea.malariacare.database.model.Program;
 import org.eyeseetea.malariacare.database.model.Survey;
+import org.eyeseetea.malariacare.database.model.Survey$Table;
 import org.eyeseetea.malariacare.database.model.Tab;
+import org.eyeseetea.malariacare.database.model.Tab$Table;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
-import org.eyeseetea.malariacare.utils.Constants;
+import org.eyeseetea.malariacare.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -84,6 +86,11 @@ public class SurveyService extends IntentService {
     public static final String PREPARE_SURVEY_ACTION_TABS ="org.eyeseetea.malariacare.services.SurveyService.PREPARE_SURVEY_ACTION_TABS";
 
     /**
+     * Key of
+     */
+    public static final String PRELOAD_TAB_ITEMS ="org.eyeseetea.malariacare.services.SurveyService.PRELOAD_TAB_ITEMS";
+
+    /**
      * Tag for logging
      */
     public static final String TAG = ".SurveyService";
@@ -122,17 +129,26 @@ public class SurveyService extends IntentService {
             case RELOAD_DASHBOARD_ACTION:
                 reloadDashboard();
                 break;
+            case PRELOAD_TAB_ITEMS:
+                Log.e(".SurveyService", "Pre-loading tab: " + intent.getStringExtra("tab"));
+                preLoadTabItems(intent.getLongExtra("tab", 0));
+                break;
         }
     }
 
-    private void reloadDashboard(){
-        List<Survey> surveys=Select.from(Survey.class)
-                .orderBy("event_date")
-                .orderBy("org_unit")
-                .list();
+    private void preLoadTabItems(Long tabID){
+        List<Tab> tabs = new Select().from(Tab.class).where(Condition.column(Tab$Table.ID_TAB).eq(tabID)).queryList();
+        if (tabs !=null && tabs.size()>=1)
+            Utils.preloadTabItems(tabs.get(0));
+    }
 
-        List<Survey> unsentSurveys=new ArrayList<Survey>();
-        List<Survey> sentSurveys=new ArrayList<Survey>();
+    private void reloadDashboard(){
+        List<Survey> surveys=new Select().all().from(Survey.class)
+                .orderBy(Survey$Table.EVENTDATE)
+                .orderBy(Survey$Table.ORGUNIT_ID_ORG_UNIT).queryList();
+
+        List<Survey> unsentSurveys=new ArrayList<>();
+        List<Survey> sentSurveys=new ArrayList<>();
         for(Survey survey:surveys){
             if(!survey.isSent()){
                 unsentSurveys.add(survey);
@@ -143,7 +159,7 @@ public class SurveyService extends IntentService {
         }
 
         //Since intents does NOT admit NON serializable as values we use Session instead
-        Session.putServiceValue(ALL_UNSENT_SURVEYS_ACTION,unsentSurveys);
+        Session.putServiceValue(ALL_UNSENT_SURVEYS_ACTION, unsentSurveys);
         Session.putServiceValue(ALL_SENT_SURVEYS_ACTION, sentSurveys);
 
         //Returning result to anyone listening
@@ -234,13 +250,13 @@ public class SurveyService extends IntentService {
     private void prepareSurveyInfo(){
         Log.d(TAG, "prepareSurveyInfo (Thread:" + Thread.currentThread().getId() + ")");
 
-        Survey survey=Session.getSurvey();
-        Program program=survey.getProgram();
+//        Survey survey=Session.getSurvey();
+//        Program program=survey.getProgram();
 
         //Get composite scores for current program & register them (scores)
         //List<CompositeScore> compositeScores = CompositeScore.listAllByProgram(program);
 
-        List<CompositeScore> compositeScores = CompositeScore.listAll(CompositeScore.class);
+        List<CompositeScore> compositeScores = new Select().all().from(CompositeScore.class).queryList();
         ScoreRegister.registerCompositeScores(compositeScores);
 
         //Get tabs for current program & register them (scores)

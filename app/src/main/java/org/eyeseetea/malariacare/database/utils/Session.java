@@ -19,7 +19,10 @@
 
 package org.eyeseetea.malariacare.database.utils;
 
+import android.location.Location;
 import android.util.Log;
+
+import com.raizlabs.android.dbflow.structure.BaseModel;
 
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.model.User;
@@ -49,12 +52,24 @@ public class Session {
     private static User user;
 
     /**
+     * The current location
+     */
+    private static Location location;
+
+    /**
      * Map that holds non serializable results from services
      */
-    private static Map<String,Object> serviceValues=new HashMap<>();
+    private static Map<String,Object> serviceValues = new HashMap<>();
 
-    //FIXME Probably no longer required
-    private static IDashboardAdapter adapterUncompleted, adapterCompleted;
+    /**
+     * Adapters that hold dashboard sent and unset surveys adapters
+     */
+    private static IDashboardAdapter adapterUnsent, adapterSent;
+
+    /**
+     * Cache containing the list of ordered items that compounds each tab
+     */
+    private static Map<Long, List<? extends BaseModel>> tabsCache = new HashMap<>();
 
     public static Survey getSurvey() {
         return survey;
@@ -72,20 +87,24 @@ public class Session {
         Session.user = user;
     }
 
-    public static IDashboardAdapter getAdapterUncompleted() {
-        return adapterUncompleted;
+    public static IDashboardAdapter getAdapterUnsent() {
+        return adapterUnsent;
     }
 
-    public static void setAdapterUncompleted(IDashboardAdapter adapterUncompleted) {
-        Session.adapterUncompleted = adapterUncompleted;
+    public static void setAdapterUnsent(IDashboardAdapter adapterUnsent) {
+        Session.adapterUnsent = adapterUnsent;
     }
 
-    public static IDashboardAdapter getAdapterCompleted() {
-        return adapterCompleted;
+    public static IDashboardAdapter getAdapterSent() {
+        return adapterSent;
     }
 
-    public static void setAdapterCompleted(IDashboardAdapter adapterCompleted) {
-        Session.adapterCompleted = adapterCompleted;
+    public static void setAdapterSent(IDashboardAdapter adapterSent) {
+        Session.adapterSent = adapterSent;
+    }
+
+    public static Map<Long, List<? extends BaseModel>> getTabsCache() {
+        return tabsCache;
     }
 
     /**
@@ -99,7 +118,7 @@ public class Session {
         Session.getUser().delete();
         Session.setUser(null);
         Session.setSurvey(null);
-        Session.setAdapterUncompleted(null);
+        Session.setAdapterUnsent(null);
         Session.serviceValues.clear();
     }
 
@@ -130,6 +149,14 @@ public class Session {
      */
     public static void clearServiceValues(){
         serviceValues.clear();
+    }
+
+    public static Location getLocation() {
+        return location;
+    }
+
+    public static void setLocation(Location location) {
+        Session.location = location;
     }
 
 }

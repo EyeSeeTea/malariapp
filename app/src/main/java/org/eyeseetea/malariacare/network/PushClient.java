@@ -21,6 +21,9 @@ package org.eyeseetea.malariacare.network;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.location.Location;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.squareup.okhttp.Authenticator;
@@ -31,12 +34,14 @@ import com.squareup.okhttp.Request;
 import com.squareup.okhttp.RequestBody;
 import com.squareup.okhttp.Response;
 
+import org.apache.http.auth.AuthenticationException;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.model.CompositeScore;
 import org.eyeseetea.malariacare.database.model.Question;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.model.Tab;
 import org.eyeseetea.malariacare.database.model.Value;
+import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.services.SurveyService;
 import org.eyeseetea.malariacare.utils.Constants;
@@ -57,12 +62,8 @@ public class PushClient {
 
     private static String TAG=".PushClient";
 
-    //FIXME This should change for a sharedpreferences url that is selected from the login screen
-    private static String DHIS_DEFAULT_SERVER="https://malariacare.psi.org";
-    private static String DHIS_PUSH_API="/api/events";
-    private static String DHIS_USERNAME="testing";
-    private static String DHIS_PASSWORD="Testing2015";
 
+    private static String DHIS_PUSH_API="/api/events";
 
     public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
 
@@ -73,6 +74,9 @@ public class PushClient {
     private static String TAG_EVENTDATE="eventDate";
     private static String TAG_STATUS="status";
     private static String TAG_STOREDBY="storedBy";
+    private static String TAG_COORDINATE="coordinate";
+    private static String TAG_COORDINATE_LAT="latitude";
+    private static String TAG_COORDINATE_LNG="longitude";
     private static String TAG_DATAVALUES="dataValues";
     private static String TAG_DATAELEMENT="dataElement";
     private static String TAG_VALUE="value";
@@ -80,10 +84,14 @@ public class PushClient {
 
     Survey survey;
     Activity activity;
+    String user;
+    String password;
 
-    public PushClient(Survey survey, Activity activity) {
+    public PushClient(Survey survey, Activity activity, String user, String password) {
         this.survey = survey;
         this.activity = activity;
+        this.user = user;
+        this.password = password;
     }
 
     public PushResult push() {
@@ -104,7 +112,7 @@ public class PushClient {
     public void updateSurveyState(){
         //Change status
         this.survey.setStatus(Constants.SURVEY_SENT);
-        this.survey.save();
+        this.survey.update();
 
         //Reload data using service
         Intent surveysIntent=new Intent(activity, SurveyService.class);
@@ -118,17 +126,33 @@ public class PushClient {
      * @throws Exception
      */
     private JSONObject prepareMetadata() throws Exception{
-        Log.d(TAG,"prepareMetadata for survey: "+survey.getId());
+        Log.d(TAG,"prepareMetadata for survey: "+survey.getId_survey());
 
         JSONObject object=new JSONObject();
-        object.put(TAG_PROGRAM, survey.getProgram().getUid());
+        //FIXME Do we want to push the program or the tab group or both? -> Answer: The tab group
+        object.put(TAG_PROGRAM, survey.getTabGroup().getProgram().getUid());
         object.put(TAG_ORG_UNIT, survey.getOrgUnit().getUid());
         object.put(TAG_EVENTDATE, android.text.format.DateFormat.format("yyyy-MM-dd", survey.getCompletionDate()));
         object.put(TAG_STATUS,COMPLETED );
         object.put(TAG_STOREDBY, survey.getUser().getName());
+
+        Location lastLocation = Session.getLocation();
+        if (lastLocation!=null)
+            object.put(TAG_COORDINATE, prepareCoordinates(lastLocation));
+
+        Log.d(TAG, "prepareMetadata: " + object.toString());
         return object;
     }
 
+    private JSONObject prepareCoordinates(Location location) throws Exception{
+
+        JSONObject coordinate = new JSONObject();
+
+        coordinate.put(TAG_COORDINATE_LAT, location.getLatitude());
+        coordinate.put(TAG_COORDINATE_LNG, location.getLongitude());
+
+        return coordinate;
+    }
 
     /**
      * Adds questions and scores values to the JSON object
@@ -137,7 +161,7 @@ public class PushClient {
      * @throws Exception
      */
     private JSONObject prepareDataElements(JSONObject data)throws Exception{
-        Log.d(TAG, "prepareDataElements for survey: " + survey.getId());
+        Log.d(TAG, "prepareDataElements for survey: " + survey.getId_survey());
 
         //Add dataElement per values
         JSONArray values=prepareValues(new JSONArray());
@@ -169,15 +193,15 @@ public class PushClient {
         ScoreRegister.clear();
 
         //Register scores for tabs
-        List<Tab> tabs=survey.getProgram().getTabs();
+        List<Tab> tabs=survey.getTabGroup().getTabs();
         ScoreRegister.registerTabScores(tabs);
 
         //Register scores for composites
-        List<CompositeScore> compositeScoreList=CompositeScore.listAllByProgram(survey.getProgram());
+        List<CompositeScore> compositeScoreList=CompositeScore.listByTabGroup(survey.getTabGroup());
         ScoreRegister.registerCompositeScores(compositeScoreList);
 
         //Initialize scores x question
-        ScoreRegister.initScoresForQuestions(Question.listAllByProgram(survey.getProgram()),survey);
+        ScoreRegister.initScoresForQuestions(Question.listByTabGroup(survey.getTabGroup()),survey);
 
         //1 CompositeScore -> 1 dataValue
         for(CompositeScore compositeScore:compositeScoreList){
@@ -219,7 +243,8 @@ public class PushClient {
      */
     private JSONObject pushData(JSONObject data)throws Exception {
 
-        final String DHIS_URL=DHIS_DEFAULT_SERVER + DHIS_PUSH_API;
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(activity);
+        final String DHIS_URL=sharedPreferences.getString(activity.getString(R.string.dhis_url), activity.getString(R.string.login_info_dhis_default_server_url)) + DHIS_PUSH_API;
 
         OkHttpClient client= UnsafeOkHttpsClientFactory.getUnsafeOkHttpClient();
 
@@ -258,13 +283,18 @@ public class PushClient {
 
         public final String AUTHORIZATION_HEADER="Authorization";
         private String credentials;
+        private int mCounter = 0;
 
         BasicAuthenticator(){
-            credentials = Credentials.basic(DHIS_USERNAME, DHIS_PASSWORD);
+            credentials = Credentials.basic(user, password);
         }
 
         @Override
         public Request authenticate(Proxy proxy, Response response) throws IOException {
+
+            if (mCounter++ > 0) {
+                throw new IOException(response.message());
+            }
             return response.request().newBuilder().header(AUTHORIZATION_HEADER, credentials).build();
         }
 
@@ -276,6 +306,8 @@ public class PushClient {
         public String getCredentials(){
             return credentials;
         }
+
+
     }
 
 }

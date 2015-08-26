@@ -32,6 +32,10 @@ import android.support.test.runner.lifecycle.ActivityLifecycleMonitorRegistry;
 import android.support.test.runner.lifecycle.Stage;
 import android.util.Log;
 
+import com.raizlabs.android.dbflow.sql.builder.Condition;
+import com.raizlabs.android.dbflow.sql.language.Delete;
+import com.raizlabs.android.dbflow.sql.language.Select;
+
 import org.eyeseetea.malariacare.database.model.Answer;
 import org.eyeseetea.malariacare.database.model.CompositeScore;
 import org.eyeseetea.malariacare.database.model.Header;
@@ -40,6 +44,7 @@ import org.eyeseetea.malariacare.database.model.OrgUnit;
 import org.eyeseetea.malariacare.database.model.Program;
 import org.eyeseetea.malariacare.database.model.Question;
 import org.eyeseetea.malariacare.database.model.Survey;
+import org.eyeseetea.malariacare.database.model.Survey$Table;
 import org.eyeseetea.malariacare.database.model.Tab;
 import org.eyeseetea.malariacare.database.model.User;
 import org.eyeseetea.malariacare.database.model.Value;
@@ -50,8 +55,6 @@ import org.eyeseetea.malariacare.test.utils.IntentServiceIdlingResource;
 
 import java.util.Collection;
 import java.util.List;
-
-import static android.support.test.espresso.matcher.ViewMatchers.withId;
 
 /**
  * Created by arrizabalaga on 25/05/15.
@@ -80,24 +83,26 @@ public class MalariaEspressoTest {
     public static void cleanSession(){
         Session.setUser(null);
         Session.setSurvey(null);
-        Session.setAdapterUncompleted(null);
+        Session.setAdapterUnsent(null);
     }
 
     public static void cleanDB(){
         if(!databaseExists()){
             return;
         }
-        Question.deleteAll(Question.class);
-        CompositeScore.deleteAll(CompositeScore.class);
-        Option.deleteAll(Option.class);
-        Answer.deleteAll(Answer.class);
-        Header.deleteAll(Header.class);
-        Tab.deleteAll(Tab.class);
-        Program.deleteAll(Program.class);
-        OrgUnit.deleteAll(OrgUnit.class);
-        User.deleteAll(User.class);
-        Value.deleteAll(Value.class);
-        Survey.deleteAll(Survey.class);
+        // Clean DB
+        Delete.tables(Question.class, CompositeScore.class, Option.class, Answer.class, Header.class, Tab.class, Program.class, OrgUnit.class, User.class, Value.class, Survey.class);
+        /*new Delete().from(Question.class).where(Condition.column(Question$Table.ID).isNotNull()).query();
+        new Delete().from(CompositeScore.class).where(Condition.column(CompositeScore$Table.ID).isNotNull()).query();;
+        new Delete().from(Option.class).where(Condition.column(Option$Table.ID).isNotNull()).query();;
+        new Delete().from(Answer.class).where(Condition.column(Answer$Table.ID).isNotNull()).query();;
+        new Delete().from(Header.class).where(Condition.column(Header$Table.ID).isNotNull()).query();;
+        new Delete().from(Tab.class).where(Condition.column(Tab$Table.ID).isNotNull()).query();;
+        new Delete().from(Program.class).where(Condition.column(Program$Table.ID).isNotNull()).query();;
+        new Delete().from(OrgUnit.class).where(Condition.column(OrgUnit$Table.ID).isNotNull()).query();;
+        new Delete().from(User.class).where(Condition.column(User$Table.ID).isNotNull()).query();;
+        new Delete().from(Value.class).where(Condition.column(Value$Table.ID).isNotNull()).query();;
+        new Delete().from(Survey.class).where(Condition.column(Survey$Table.ID).isNotNull()).query();;*/
     }
 
     public static void cleanSettings(){
@@ -124,7 +129,6 @@ public class MalariaEspressoTest {
     public static void populateData(AssetManager assetManager){
         try {
             cleanAll();
-            PopulateDB.populateDummyData();
             PopulateDB.populateDB(assetManager);
         }catch(Exception ex){
             Log.e(".MalariaEspressoTest", ex.getMessage());
@@ -143,17 +147,17 @@ public class MalariaEspressoTest {
     }
 
     public static List<Survey> mockSurveys(int numOrgs, int numPrograms){
-        List<OrgUnit> orgUnitList=OrgUnit.find(OrgUnit.class, null, null);
-        List<Program> programList=Program.find(Program.class,null,null);
+        List<OrgUnit> orgUnitList = new Select().all().from(OrgUnit.class).queryList();
+        List<Program> programList = new Select().all().from(Program.class).queryList();
         Program program=programList.get(numPrograms);
         User user =getSafeUser();
 
         for(int i=0;i<numOrgs;i++){
-            Survey survey=new Survey(orgUnitList.get(i%numOrgs),program,user);
+            Survey survey=new Survey(orgUnitList.get(i%numOrgs),program.getTabGroups().get(0),user);
             survey.save();
         }
-        List<Survey> surveys= Survey.find(Survey.class, "user=?", user.getId().toString());
-        Session.setAdapterUncompleted(new AssessmentUnsentAdapter(surveys, InstrumentationRegistry.getTargetContext()));
+        List<Survey> surveys = new Select().from(Survey.class).where(Condition.column(Survey$Table.USER_ID_USER).eq(user.getId_user())).queryList();
+        Session.setAdapterUnsent(new AssessmentUnsentAdapter(surveys, InstrumentationRegistry.getTargetContext()));
         return surveys;
     }
 

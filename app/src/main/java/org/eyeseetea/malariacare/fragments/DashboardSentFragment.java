@@ -45,7 +45,7 @@ import org.eyeseetea.malariacare.layout.adapters.dashboard.AssessmentSentAdapter
 import org.eyeseetea.malariacare.layout.adapters.dashboard.IDashboardAdapter;
 import org.eyeseetea.malariacare.layout.listeners.SwipeDismissListViewTouchListener;
 import org.eyeseetea.malariacare.services.SurveyService;
-import org.eyeseetea.malariacare.views.TextCard;
+import org.eyeseetea.malariacare.views.CustomTextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -63,7 +63,7 @@ public class DashboardSentFragment extends ListFragment {
     private static int index = 0;
 
     public DashboardSentFragment(){
-        this.adapter = Session.getAdapterCompleted();
+        this.adapter = Session.getAdapterSent();
         this.surveys = new ArrayList();
     }
 
@@ -124,14 +124,14 @@ public class DashboardSentFragment extends ListFragment {
      * In a version with several adapters in dashboard (like in 'mock' branch) a new one like the one in session is created.
      */
     private void initAdapter(){
-        IDashboardAdapter adapterInSession = Session.getAdapterCompleted();
+        IDashboardAdapter adapterInSession = Session.getAdapterSent();
         if(adapterInSession == null){
             adapterInSession = new AssessmentSentAdapter(this.surveys, getActivity());
         }else{
             adapterInSession = adapterInSession.newInstance(this.surveys, getActivity());
         }
         this.adapter = adapterInSession;
-        Session.setAdapterCompleted(this.adapter);
+        Session.setAdapterSent(this.adapter);
     }
 
     @Override
@@ -192,7 +192,7 @@ public class DashboardSentFragment extends ListFragment {
         LayoutInflater inflater = LayoutInflater.from(getActivity());
         View header = inflater.inflate(this.adapter.getHeaderLayout(), null, false);
         View footer = inflater.inflate(this.adapter.getFooterLayout(), null, false);
-        TextCard title = (TextCard) getActivity().findViewById(R.id.titleCompleted);
+        CustomTextView title = (CustomTextView) getActivity().findViewById(R.id.titleCompleted);
         title.setText(adapter.getTitle());
         ListView listView = getListView();
         listView.addHeaderView(header);

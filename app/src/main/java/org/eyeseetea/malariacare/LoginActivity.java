@@ -22,18 +22,18 @@ package org.eyeseetea.malariacare;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
-
 import android.app.Activity;
 import android.app.LoaderManager.LoaderCallbacks;
 import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.Loader;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
-
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -46,37 +46,20 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import org.eyeseetea.malariacare.database.model.Tab;
+import com.raizlabs.android.dbflow.sql.language.Select;
+
 import org.eyeseetea.malariacare.database.model.User;
-import org.eyeseetea.malariacare.database.utils.PopulateDB;
 import org.eyeseetea.malariacare.database.utils.Session;
 
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Login Screen.
  * It shows only when the user has an open session.
  */
-public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
+public class LoginActivity extends BaseActivity implements LoaderCallbacks<Cursor> {
 
-    /**
-     * A dummy authentication store containing known user names and passwords.
-     * TODO: remove after connecting to a real authentication system.
-     */
-
-    private static final Map<String, String> DUMMY_CREDENTIALS;
-    static {
-        Map<String, String> aMap = new HashMap<String,String>();
-        aMap.put("user", "user");
-        aMap.put("admin", "admin");
-        DUMMY_CREDENTIALS = Collections.unmodifiableMap(aMap);
-    }
     /**
      * Keep track of the login task to ensure we can cancel it if requested.
      */
@@ -85,21 +68,14 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
     // UI references.
     private AutoCompleteTextView mUserView;
     private EditText mPasswordView;
+    private AutoCompleteTextView mServerUrlView;
     private View mProgressView;
-    private View mUserLoginFormView;
     private View mLoginFormView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Log.d(".LoginActivity","onCreate");
+        Log.d(".LoginActivity", "onCreate");
         super.onCreate(savedInstanceState);
-
-        //User already logged in --> dashboard
-        Iterator<User> users = User.findAll(User.class);
-        if (users.hasNext()) {
-            goDashBoard(users.next());
-            return;
-        }
 
         //Show form
         initView();
@@ -112,7 +88,19 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
         setContentView(R.layout.login_layout);
         // Set up the login form.
         mUserView = (AutoCompleteTextView) findViewById(R.id.user);
+        mServerUrlView = (AutoCompleteTextView) findViewById(R.id.dhis_url);
         populateAutoComplete();
+
+        // In case the user set previously a different DHIS2 server URL or user in the settings, this is filled in automatically.
+        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        String urlInPreferences = settings.getString(getApplicationContext().getString(R.string.dhis_url), "");
+        if (!urlInPreferences.equals("")){
+            mServerUrlView.setText(urlInPreferences);
+        }
+        String userInPreferences = settings.getString(getApplicationContext().getString(R.string.dhis_user), "");
+        if (!userInPreferences.equals("")){
+            mUserView.setText(userInPreferences);
+        }
 
         mPasswordView = (EditText) findViewById(R.id.password);
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -136,12 +124,6 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
 
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
-    }
-
-    private void goDashBoard(User user) {
-        Log.i(".LoginActivity", "User already logged in --> Dashboard");
-        Session.setUser(user);
-        startActivity(new Intent(LoginActivity.this, DashboardActivity.class));
     }
 
 
@@ -180,7 +162,6 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
      */
     @Override
     public void onResume(){
-        cleanForm();
         super.onResume();
     }
 
@@ -190,24 +171,11 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
      * @param password
      * @return
      */
-    private boolean hasGoodCredentials(String user, String password){String expectedPassword=DUMMY_CREDENTIALS.get(user);
-        if(null==expectedPassword || expectedPassword.isEmpty()){
-            return false;
-        }
-        return expectedPassword.equals(password);
-    }
-
-    /**
-     * Cleans form before launching intent to dashboard
-     */
-    private void cleanForm(){
-        if(mUserView!=null) {
-            mUserView.setError(null);
-            mUserView.setText(null);
-        }
-        if(mPasswordView!=null) {
-            mPasswordView.setText(null);
-        }
+    private boolean hasGoodCredentials(String user, String password){
+        /*
+        Introduce here the API call to check the credentials in case of API calls strategy
+         */
+        return true;
     }
 
     /**
@@ -272,7 +240,7 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
 
     @Override
     public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor) {
-        List<String> emails = new ArrayList<String>();
+        List<String> emails = new ArrayList<>();
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
             emails.add(cursor.getString(ProfileQuery.ADDRESS));
@@ -301,7 +269,7 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
     private void addEmailsToAutoComplete(List<String> emailAddressCollection) {
         //Create adapter to tell the AutoCompleteTextView what to show in its dropdown list.
         ArrayAdapter<String> adapter =
-                new ArrayAdapter<String>(LoginActivity.this,
+                new ArrayAdapter<>(LoginActivity.this,
                         android.R.layout.simple_dropdown_item_1line, emailAddressCollection);
 
         mUserView.setAdapter(adapter);
@@ -324,10 +292,12 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
         protected Boolean doInBackground(Void... params) {
             // TODO: attempt authentication against a network service.
             try {
+                // restablish user with the data entered
                 initUser();
-                initDataIfRequired();
+                setDhisUserPreference();
+                setDhisServerPreference();
             }catch(Exception ex) {
-                Log.e(".LoginActivity", "Error doInBackground login -> dashboard", ex);
+                Log.e(".LoginActivity", "Error doInBackground login", ex);
                 return false;
             }
 
@@ -345,8 +315,15 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
             }
             //finishAndGo dashboard
             Log.i(".LoginActivity", "Logged in!");
-            // Get the not-sent surveys ordered by date
-            goDashBoard(user);
+            // Set the user in the session
+            Session.setUser(user);
+            // return back to the calling activity the survey position in the dashboard and the ok returncode
+            Intent resultData = new Intent();
+            resultData.putExtra("Survey", getIntent().getIntExtra("Survey", 0));
+            resultData.putExtra("User", mUserView.getText().toString());
+            resultData.putExtra("Password", mPasswordView.getText().toString());
+            setResult(Activity.RESULT_OK, resultData);
+            finish();
         }
 
         @Override
@@ -358,27 +335,46 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
          * Add user to table and session
          */
         private void initUser(){
-            this.user = new User(mUser, mUser);
-            this.user.save();
+            // In case no user was previously set in the database we create one. Otherwise we update it
+            List<User> users = new Select().all().from(User.class).queryList();
+            if (users.size() == 0) {
+                this.user = new User(mUser, mUser);
+                this.user.save();
+            } else {
+                this.user = users.get(0);
+                this.user.setName(mUser);
+                this.user.setUid(mUser);
+                this.user.update();
+            }
         }
 
-        private void initDataIfRequired() throws IOException {
-            if (Tab.count(Tab.class, null, null)!=0) {
-                return;
+        /**
+         * Fill in the preference given by the preference key with the text contained in the given view
+         * @param view Component containing the text
+         * @param preferenceKey resource that points to the String in strings.xml which is the preference key for the desired preference
+         */
+        private void setPreference(TextView view, int preferenceKey){
+            String text = view.getText().toString();
+            if (!text.equals("")) {
+                SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                SharedPreferences.Editor editor = settings.edit();
+                editor.putString(getApplicationContext().getString(preferenceKey), text);
+                editor.commit();
             }
+        }
 
-            Log.i(".LoginActivity", "Populating DB");
+        /**
+         * Fill in the dhis user preference with what user selected in the login field
+         */
+        private void setDhisUserPreference(){
+            setPreference(mUserView, R.string.dhis_user);
+        }
 
-            // As this is only executed the first time the app is loaded, and we still don't have a way to create users, surveys, etc, here
-            // we will create a dummy user, survey, orgUnit, program, etc. To be used in local save
-            PopulateDB.populateDummyData();
-            try {
-                PopulateDB.populateDB(getAssets());
-            } catch (IOException e) {
-                Log.e(".LoginActivity", "Error populating DB", e);
-                throw e;
-            }
-            Log.i(".LoginActivity", "DB populated");
+        /**
+         * Fill in the dhis server preference with what user selected in the login field
+         */
+        private void setDhisServerPreference(){
+            setPreference(mServerUrlView, R.string.dhis_url);
         }
 
         /**

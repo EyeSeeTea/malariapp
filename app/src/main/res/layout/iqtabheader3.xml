@@ -9,7 +9,7 @@
         android:layout_width="fill_parent"
         android:layout_height="40dip" />
 
-    <org.eyeseetea.malariacare.views.TextCard
+    <org.eyeseetea.malariacare.views.CustomTextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
@@ -28,11 +28,11 @@
         android:layout_gravity="center"
         android:background="@drawable/background_odd" >
 
-        <org.eyeseetea.malariacare.views.TextCard
+        <org.eyeseetea.malariacare.views.CustomTextView
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Results below are auto-calculated"
+            android:text="@string/iqatab_info_results"
             android:id="@+id/matchHeader"
             android:background="@drawable/background_header"
             android:textColor="#ffffff"

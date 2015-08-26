@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<org.eyeseetea.malariacare.views.TextCard xmlns:android="http://schemas.android.com/apk/res/android"
+<org.eyeseetea.malariacare.views.CustomTextView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@android:id/text1"
     style="?android:attr/spinnerItemStyle"
@@ -11,8 +11,10 @@
     android:gravity="center"
     android:textColor="@color/white"
     android:background="@color/headerColor"
-    android:paddingRight="40dip"
+    android:paddingRight="@dimen/survey_main_spinner_padding_leftright"
+    android:paddingLeft="@dimen/survey_main_spinner_padding_leftright"
+    android:paddingBottom="@dimen/survey_main_spinner_padding_updown"
+    android:paddingTop="@dimen/survey_main_spinner_padding_updown"
     android:alpha="0.8"
-    android:paddingLeft="40dip"
     app:tDimension="@string/font_size_level1"
     app:tFontName="@string/bold_font_name" />

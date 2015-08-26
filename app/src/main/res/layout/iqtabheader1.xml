@@ -5,7 +5,21 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
 
-        <org.eyeseetea.malariacare.views.TextCard
+        <org.eyeseetea.malariacare.views.CustomTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:text="@string/iqatab_info_note"
+            android:id="@+id/iqatab_note"
+            android:paddingBottom="20dip"
+            app:tDimension="@string/font_size_level1"
+            app:tFontName="@string/medium_font_name" />
+
+            <Space
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content" />
+
+        <org.eyeseetea.malariacare.views.CustomTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
@@ -29,7 +43,7 @@
             android:background="@drawable/background_odd">
 
 
-                <org.eyeseetea.malariacare.views.TextCard
+                <org.eyeseetea.malariacare.views.CustomTextView
                     android:layout_width="0dip"
                     android:layout_height="match_parent"
                     android:textAppearance="?android:attr/textAppearanceMedium"
@@ -44,7 +58,7 @@
                     app:tDimension="@string/font_size_level2"
                     app:tFontName="@string/condensed_font_name" />
 
-                <org.eyeseetea.malariacare.views.TextCard
+                <org.eyeseetea.malariacare.views.CustomTextView
                     android:layout_width="0dip"
                     android:layout_height="match_parent"
                     android:textAppearance="?android:attr/textAppearanceMedium"
@@ -59,7 +73,7 @@
                     app:tDimension="@string/font_size_level2"
                     app:tFontName="@string/condensed_font_name" />
 
-                <org.eyeseetea.malariacare.views.TextCard
+                <org.eyeseetea.malariacare.views.CustomTextView
                     android:layout_width="0dip"
                     android:layout_height="match_parent"
                     android:textAppearance="?android:attr/textAppearanceMedium"

@@ -25,11 +25,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
+import com.raizlabs.android.dbflow.sql.language.Select;
+
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.model.Survey;
+import org.eyeseetea.malariacare.database.model.TabGroup;
 import org.eyeseetea.malariacare.database.utils.SurveyAnsweredRatio;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
-import org.eyeseetea.malariacare.views.TextCard;
+import org.eyeseetea.malariacare.views.CustomTextView;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -39,6 +42,7 @@ public abstract class AAssessmentAdapter extends ADashboardAdapter implements ID
 
     protected int backIndex = 0;
     protected boolean showNextFacilityName = true;
+    protected boolean multipleTabGroups = new Select().count().from(TabGroup.class).count() != 1;
 
     public AAssessmentAdapter() { }
 
@@ -63,14 +67,17 @@ public abstract class AAssessmentAdapter extends ADashboardAdapter implements ID
         rowView.setPadding(paddingDp, paddingDp, paddingDp, paddingDp);
 
         // Org Unit Cell
-        TextCard facilityName = (TextCard) rowView.findViewById(R.id.facility);
-        TextCard surveyType = (TextCard) rowView.findViewById(R.id.survey_type);
-        TextCard sentDate = (TextCard) rowView.findViewById(R.id.sentDate);
+        CustomTextView facilityName = (CustomTextView) rowView.findViewById(R.id.facility);
+        CustomTextView surveyType = (CustomTextView) rowView.findViewById(R.id.survey_type);
+        CustomTextView sentDate = (CustomTextView) rowView.findViewById(R.id.sentDate);
 
         if (sentDate != null){
             Date completionDate = survey.getCompletionDate();
             SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy");
             sentDate.setText(format.format(completionDate));
+        } else {
+            //Status Cell
+            ((CustomTextView) rowView.findViewById(R.id.score)).setText(getStatus(survey));
         }
 
         // show facility name (or not) and write survey type name
@@ -83,7 +90,9 @@ public abstract class AAssessmentAdapter extends ADashboardAdapter implements ID
             facilityName.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, 0, 0.5f));
             surveyType.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, 0, 0.5f));
         }
-        surveyType.setText("- " + survey.getProgram().getName());
+        //FIXME Shall we use the tab group?
+        String surveyDescription = "- " + survey.getTabGroup().getProgram().getName() + ((multipleTabGroups) ? " : " + survey.getTabGroup().getName() : "");
+        surveyType.setText(surveyDescription);
 
         // check whether the following item belongs to the same org unit (to group the data related
         // to same org unit with the same background)
@@ -102,9 +111,6 @@ public abstract class AAssessmentAdapter extends ADashboardAdapter implements ID
             //show background with border
             rowView.setBackgroundResource(LayoutUtils.calculateBackgrounds(this.backIndex));
         }
-
-        //Status Cell
-        ((TextCard) rowView.findViewById(R.id.score)).setText(getStatus(survey));
 
         return rowView;
     }
@@ -125,7 +131,7 @@ public abstract class AAssessmentAdapter extends ADashboardAdapter implements ID
         if (surveyAnsweredRatio.isCompleted()) {
             return getContext().getString(R.string.dashboard_info_ready_to_upload);
         } else {
-            return String.format("%d", new Float(100*surveyAnsweredRatio.getRatio()).intValue());
+            return String.format("%d", Float.valueOf(100*surveyAnsweredRatio.getRatio()).intValue());
         }
     }
 

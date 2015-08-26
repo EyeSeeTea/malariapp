@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- # general -->
+    <string name="yes">Sim</string>
+    <string name="no">Não</string>
+    <string name="cancel">Cancelar</string>
+    <string name="score">Resultado</string>
+    <string name="title_id">Identidade</string>
+    <string name="title_name">Nome</string>
+    <string name="good">Bom</string>
+    <string name="fair">Suficiente</string>
+    <string name="poor">Insuficiente</string>
+    <string name="lorem_ipsum">Lorem ipsum dolor sit amet</string>
+
+    <!-- settings -->
+    <string name="settings_menu_about">Acerca de</string>
+    <string name="settings_menu_configuration">Definições</string>
+    <string name="settings_menu_licence">Licença</string>
+    <string name="settings_menu_update">Actualizar questões (SISD) Sistemas de Informação de Saúde Distrital</string>
+    <string name="settings_menu_logout">Logout</string>
+
+    <!-- login -->
+    <string name="login_info_username">Utilizador</string>
+    <string name="login_info_password">Password</string>
+    <string name="login_info_sign_in">Iniciar Sessão</string>
+    <string name="login_error_bad_credentials">O nome de utilizador/password estão incorrectos</string>
+
+    <!-- # dialogs -->
+    <string name="dialog_title_delete_survey">Apagar inquérito</string>
+    <string name="dialog_info_delete_survey">Tem a certeza que quer apagar completamente este inquérito?</string>
+    <string name="dialog_title_error">Erro</string>
+    <string name="dialog_error_denominator">Erro, denominador = 0</string>
+    <string name="dialog_title_missing_selection">Selecção em falta</string>
+    <string name="dialog_content_missing_selection">Por favor seleccione Unid. Org. e Inquérito</string>
+    <string name="dialog_title_existing_survey">Inquérito existente</string>
+    <string name="dialog_content_existing_survey">Já existe um formato não enviado no sistema para essa Unid. Org.Inquérito</string>
+    <string name="dialog_content_logout_confirmation">Se sair do sistema, todos os dados nao enviados serao apagados Ainda quer sair?</string>
+
+    <!-- dashboard -->
+    <string name="dashboard_info_feedback">Feedback</string>
+    <string name="dashboard_info_active_assessments">Avaliações activas</string>
+    <string name="dashboard_info_new_assessment">Nova avaliação</string>
+    <string name="dashboard_info_future_assessments">Avaliações futuras</string>
+    <string name="dashboard_info_performance">Desempenho baseado nos objectivos fixados</string>
+    <string name="dashboard_info_analytics">Análises</string>
+    <string name="dashboard_button_new_survey">Novo Inquérito</string>
+    <string name="dashboard_button_see_all">Ver todos(as)</string>
+    <string name="dashboard_info_ready_to_upload">Pronto para carregar</string>
+    <string name="dashboard_info_sent">Enviei</string>
+
+    <!-- create -->
+    <string name="create_info_ok">Criar avaliação</string>
+    <string name="create_info_organization_unit">Unidade da Organização – Unid. Org.</string>
+    <string name="create_info_survey">Inquérito</string>
+
+    <!-- assessment -->
+    <string name="assessment_title_facility_date">Unidade de Saúde/Inquérito</string>
+    <string name="assessment_title_state">% completo</string>
+    <string name="assessment_sent_title_state">Estado</string>
+    <string name="assessment_sent_date">Data de conclusao</string>
+    <string name="assessment_info_delete">Apagar</string>
+    <string name="assessment_title_header">Avaliação activa</string>
+    <string name="assessment_sent_title_header">Avaliação enviado</string>
+
+    <!-- feedback -->
+    <!-- XXX Should it be replaced by 'assessment_title_facility_date'?-->
+    <string name="feedback_title_organization_unit_date">Unid. Org.Data</string>
+    <string name="feedback_title_header">Feedback</string>
+
+    <!-- future -->
+    <string name="future_title_facility">Unidade de Saúde</string>
+    <string name="future_title_previous_date">Data prevista para avaliação</string>
+    <string name="future_title_due_date">Data devida</string>
+    <string name="future_title_action">Acção</string>
+    <string name="future_title_header">Avaliações futuras</string>
+
+    <!-- performance -->
+    <string name="performance_title_period">Período</string>
+    <string name="performance_title_target">Objectivo</string>
+    <string name="performance_title_completed">Realizado</string>
+    <string name="performance_title_achievement">Resultados</string>
+    <string name="performance_title_header">Desempenho baseado nos objectivos fixados</string>
+
+    <!-- analytics -->
+    <string name="analytics_title_period">Período</string>
+    <string name="analytics_title_target">Objectivo</string>
+    <string name="analytics_title_completed">Realizado</string>
+    <string name="analytics_title_achievement">Resultados</string>
+    <string name="analytics_title_header">Análises</string>
+
+    <!-- survey -->
+    <string name="survey_title_exit">"Really Exit?"</string>
+    <string name="survey_info_exit">"Tem a certeza que quer sair?"</string>
+    <string name="survey_info_select_tab">Seleccione Tab: </string>
+
+    <!--widget-->
+    <string name="widget_info_empty_statement">Problema</string>
+
+    <!-- custom -->
+    <string name="custom_title_tallies">Folhas de controlo: Somar e dar entrada dos totais dos seguintes indicadores dos registos na coluna A. Na coluna B indique os números totais da folha de relatório mensal</string>
+    <string name="custom_info_tallies">Folhas de Controlo do mês de</string>
+
+    <!-- adherence -->
+    <string name="adherence_info_switchquestion">Existem registos farmacêuticos para TCA dispensada?</string>
+    <string name="adherence_title_explanation">Evaluation of Provider Adherence to Malaria Diagnostic Test Results</string>
+    <string name="adherence_title_explanation_content">Step 1. Record below the patient ID numbers of 20 patients prescribed ACTs from the Pharmacy Register.\nStep 2. Locate the patient IDs from Step 1 in the Laboratory and/or Clinical Registers and record their test result in the appropriate column.</string>
+    <string name="adherence_title2_explanation_content">"No Registo do Laboratório, registe os nrs. de ID de 20 pacientes conforme o seguinte:
+5 pacientes que receberam um resultado positivo do TDR
+5 pacientes que receberam um resultado negativo do TDR
+5 pacientes que receberam um resultado microscópico positivo para malária
+5 pacientes que receberam um resultado microscópico negativo para malária\nPasso 2: Localize a ID do paciente de 1) no Registo de Farmácia e anote se receberam ACT na coluna “ACT receitada” marcando S ou N. Para Unidades de Saúde sem microscopia marque a caixa N/A"
+</string>
+    <string name="adherence_info_pharmacy_register">Registo de Farmacia</string>
+    <string name="adherence_title_gender">Género</string>
+    <string name="adherence_title_age">Idade</string>
+    <string name="adherence_title_test_results">Resultados do teste</string>
+    <string name="adherence_info_patient_id">Identidade do Paciente</string>
+    <string name="adherence_info_prescribed">Foi receitada TCA?</string>
+    <string name="adherence_info_rdt_positive">TDR positivo</string>
+    <string name="adherence_info_rdt_negative">TDR negativo</string>
+    <string name="adherence_info_microscopy_positive">Microscopia positiva</string>
+    <string name="adherence_info_microscopy_negative">Microscopia negativa</string>
+
+    <!-- iqa eqa -->
+    <string name="iqatab_info_supervisor">Supervisor</string>
+    <string name="iqatab_info_parasites">Parasitas/mL</string>
+    <string name="iqatab_info_species">Espécies</string>
+    <string name="iqatab_info_labstaff">Pessoal de Laboratório</string>
+    <string name="iqatab_info_results">Os resultados abaixo são auto calculado</string>
+
+    <!-- reporting -->
+    <string name="reporting_info_reporting">Relatórios</string>
+    <string name="reporting_info_results">Resultados</string>
+    <string name="reporting_info_register">Registo</string>
+    <string name="reporting_info_monthly">Relatório/mensal</string>
+    <string name="iqatab_info_supervisor_matches">O supervisor está de acordo com o pessoal de laboratório?</string>
+
+    <!-- score -->
+    <string name="score_title_clinical_fever">Avaliação clínica/febre</string>
+    <string name="score_title_rdt">TDR</string>
+    <string name="score_title_avg">AVG Grupos de Doentes de Ambulatório (GDA)</string>
+    <string name="score_title_environment">Ambiente</string>
+    <string name="score_title_profile">Perfil</string>
+    <string name="score_info_tab_score">Resultado para a tab:</string>
+    <string name="score_info_overall">Geral</string>
+    <string name="score_info_accumulated">Numerador/Denominador da Tab</string>
+    <string name="score_info_case1">Caso 1</string>
+    <string name="score_info_case2">Caso 2</string>
+    <string name="score_info_case3">Caso 3</string>
+    <string name="score_info_case4">Caso 4</string>
+
+    <!-- composite score -->
+    <string name="compscore_title_score_percentage">Ponto (%)</string>
+
+    <!-- settings -->
+    <string name="title_activity_settings">Definições</string>
+    <string name="settings_checkbox_show_num_dems">Mostrar numerador/denominador</string>
+    <string name="settings_checkbox_description_show_num_dems">Quando activadas, as questões do inquérito mostram os seus numeradores e denominadores, usados para calcular resultados do inquérito</string>
+    <string name="settings_checkbox_customize_fonts">Personalizar tipos de letra?</string>
+    <string name="settings_list_font_sizes">Tamanho dos tipos de letra</string>
+    <string-array name="settings_array_titles_font_sizes">
+        <item>Muito pequeno</item>
+        <item>Pequeno</item>
+        <item>Médio</item>
+        <item>Grande</item>
+        <item>Muito Grande</item>
+    </string-array>
+    <string name="settings_text_dhis_server_url">URL do servidor SISD</string>
+    <string name="pref_header_general">Geral</string>
+
+    <string name="settings_array_values_font_sizes_def">@string/font_size_level2</string>
+
+    <string-array name="settings_array_values_font_sizes">
+        <item>@string/font_size_level0</item>
+        <item>@string/font_size_level1</item>
+        <item>@string/font_size_level2</item>
+        <item>@string/font_size_level3</item>
+        <item>@string/font_size_level4</item>
+    </string-array>
+
+    <string name="dialog_title_push_response">Reposta</string>
+    <string name="dialog_info_push_ok">Os dados da pesquisa foi enviado com sucesso para o servidor DHIS</string>
+    <string name="dialog_info_push_bad_credentials">Bad credenciais</string>
+    <string name="dialog_error_push_no_location">Localização indisponíveis</string>
+    <string name="dialog_title_incorrect_org_unit">Org Unit errado</string>
+    <string name="dialog_content_incorrect_org_unit">Por favor seleccione uma org unit de final</string>
+    <string name="create_info_tabs_group">Tab Group</string>
+    <string name="iqatab_info_note">Note: Slide rechecking should be carried out at the health facility during OTSS in the presence of the facility lab staff.  Slides should not be removed from the facility for this purpose.</string>
+    <string name="settings_text_dhis_user">Utilizador DHIS</string>
+
+
+</resources>

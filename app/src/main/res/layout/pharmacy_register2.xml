@@ -13,7 +13,7 @@
         android:padding="5dip"
         android:layout_weight="0.4">
 
-    <org.eyeseetea.malariacare.views.TextCard
+    <org.eyeseetea.malariacare.views.CustomTextView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceSmall"
@@ -32,10 +32,10 @@
         android:padding="5dip"
         android:layout_weight="1">
 
-        <org.eyeseetea.malariacare.views.EditCard
+        <org.eyeseetea.malariacare.views.CustomEditText
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:inputType="number"
+            android:inputType="text"
             android:id="@+id/patientId"
             android:background="@drawable/background_textfield"
             android:textSize="12sp"/>
@@ -48,7 +48,7 @@
         android:id="@+id/testResultContainer"
         android:layout_weight="1">
 
-        <org.eyeseetea.malariacare.views.TextCard
+        <org.eyeseetea.malariacare.views.CustomTextView
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
@@ -88,10 +88,11 @@
         android:layout_height="fill_parent"
         android:id="@+id/scoreContainer"
         android:padding="5dip"
+        android:visibility="gone"
         android:layout_gravity="center"
         android:layout_weight="1">
 
-        <org.eyeseetea.malariacare.views.TextCard
+        <org.eyeseetea.malariacare.views.CustomTextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:textAppearance="?android:attr/textAppearanceSmall"

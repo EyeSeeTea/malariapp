@@ -29,6 +29,7 @@ import java.util.List;
 /**
  * Created by Jose on 24/04/2015.
  */
+// FIXME: this tab is apparently not going to be used anymore. This need to be removed in next refactor
 public class ScoreTabAdapter implements ITabAdapter {
 
     int id_layout;
@@ -40,13 +41,10 @@ public class ScoreTabAdapter implements ITabAdapter {
         this.tabs = tabs;
         this.id_layout = id_layout;
         this.tab_name = tab_name;
-        //this.lInflater=LayoutInflater.from(context);
     }
 
     @Override
     public void initializeSubscore() {
-
-
     }
 
     @Override

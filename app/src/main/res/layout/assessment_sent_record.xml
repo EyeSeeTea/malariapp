@@ -31,10 +31,10 @@
         android:layout_width="0dp"
         android:layout_height="fill_parent"
         android:id="@+id/facilityDateContainer"
-        android:layout_weight="0.4"
+        android:layout_weight="0.6"
         android:layout_gravity="center">
 
-        <org.eyeseetea.malariacare.views.TextCard
+        <org.eyeseetea.malariacare.views.CustomTextView
             android:layout_width="wrap_content"
             android:layout_height="0dp"
             android:layout_weight="0.5"
@@ -48,7 +48,7 @@
             app:tDimension="@string/font_size_level1"
             app:tFontName="@string/medium_font_name" />
 
-        <org.eyeseetea.malariacare.views.TextCard
+        <org.eyeseetea.malariacare.views.CustomTextView
             android:layout_width="wrap_content"
             android:layout_height="0dp"
             android:layout_weight="0.5"
@@ -66,35 +66,12 @@
         android:orientation="vertical"
         android:layout_width="0dp"
         android:layout_height="fill_parent"
-        android:id="@+id/statusContainer"
-        android:layout_weight="0.2"
-        android:layout_gravity="center"
-        android:gravity="center">
-
-        <org.eyeseetea.malariacare.views.TextCard
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:id="@+id/score"
-            android:layout_gravity="center"
-            android:gravity="center_horizontal"
-            android:textStyle="bold"
-            android:textColor="@color/black"
-            app:tDimension="@string/font_size_level1"
-            app:tFontName="@string/medium_font_name" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="0dp"
-        android:layout_height="fill_parent"
         android:id="@+id/dateContainer"
         android:layout_weight="0.4"
         android:layout_gravity="center"
         android:gravity="center">
 
-        <org.eyeseetea.malariacare.views.TextCard
+        <org.eyeseetea.malariacare.views.CustomTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"

@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2015.
  *
- * This file is part of Facility QA Tool App.
+ * This file is part of QA App.
  *
  *  Facility QA Tool App is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -19,12 +19,30 @@
 
 package org.eyeseetea.malariacare.database.model;
 
-import com.orm.SugarRecord;
+import com.raizlabs.android.dbflow.annotation.Column;
+import com.raizlabs.android.dbflow.annotation.OneToMany;
+import com.raizlabs.android.dbflow.annotation.PrimaryKey;
+import com.raizlabs.android.dbflow.annotation.Table;
+import com.raizlabs.android.dbflow.sql.builder.Condition;
+import com.raizlabs.android.dbflow.sql.language.Select;
+import com.raizlabs.android.dbflow.structure.BaseModel;
 
-public class User extends SugarRecord<User> {
+import org.eyeseetea.malariacare.database.AppDatabase;
 
+import java.util.List;
+
+@Table(databaseName = AppDatabase.NAME)
+public class User extends BaseModel {
+
+    @Column
+    @PrimaryKey(autoincrement = true)
+    long id_user;
+    @Column
     String uid;
+    @Column
     String name;
+
+    List<Survey> surveys;
 
     public User() {
     }
@@ -32,6 +50,14 @@ public class User extends SugarRecord<User> {
     public User(String uid, String name) {
         this.uid = uid;
         this.name = name;
+    }
+
+    public Long getId_user() {
+        return id_user;
+    }
+
+    public void setId_user(Long id_user) {
+        this.id_user = id_user;
     }
 
     public String getUid() {
@@ -50,6 +76,13 @@ public class User extends SugarRecord<User> {
         this.name = name;
     }
 
+    //TODO: to enable lazy loading, here we need to set Method.SAVE and Method.DELETE and use the .toModel() to specify when do we want to load the models
+    @OneToMany(methods = {OneToMany.Method.SAVE, OneToMany.Method.DELETE}, variableName = "surveys")
+    public List<Survey> getSurveys(){
+        return new Select().from(Survey.class)
+                .where(Condition.column(Survey$Table.USER_ID_USER).eq(this.getId_user())).queryList();
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -57,15 +90,16 @@ public class User extends SugarRecord<User> {
 
         User user = (User) o;
 
-        if (name != null ? !name.equals(user.name) : user.name != null) return false;
-        if (!uid.equals(user.uid)) return false;
+        if (id_user != user.id_user) return false;
+        if (uid != null ? !uid.equals(user.uid) : user.uid != null) return false;
+        return !(name != null ? !name.equals(user.name) : user.name != null);
 
-        return true;
     }
 
     @Override
     public int hashCode() {
-        int result = uid.hashCode();
+        int result = (int) (id_user ^ (id_user >>> 32));
+        result = 31 * result + (uid != null ? uid.hashCode() : 0);
         result = 31 * result + (name != null ? name.hashCode() : 0);
         return result;
     }
@@ -73,7 +107,8 @@ public class User extends SugarRecord<User> {
     @Override
     public String toString() {
         return "User{" +
-                "uid='" + uid + '\'' +
+                "id=" + id_user +
+                ", uid='" + uid + '\'' +
                 ", name='" + name + '\'' +
                 '}';
     }
