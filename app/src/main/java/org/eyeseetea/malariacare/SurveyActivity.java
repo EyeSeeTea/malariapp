@@ -32,6 +32,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.LinearLayout;
@@ -278,7 +280,9 @@ public class SurveyActivity extends BaseActivity{
                 tabAdapter.initializeSubscore();
             }
             ListView mQuestions = (ListView) SurveyActivity.this.findViewById(R.id.listView);
-            mQuestions.setAdapter((BaseAdapter)tabAdapter);
+            mQuestions.setAdapter((BaseAdapter) tabAdapter);
+            UnfocusScrollListener unfocusScrollListener = new UnfocusScrollListener();
+            mQuestions.setOnScrollListener(unfocusScrollListener);
             stopProgress();
         }
     }
@@ -494,6 +498,32 @@ public class SurveyActivity extends BaseActivity{
     }
 
 
+    /*
+    * ScrollListener added to avoid bug ocurred when checkbox pressed in a listview after this view is gone out from the focus
+    * see more here: http://stackoverflow.com/questions/7100555/preventing-catching-illegalargumentexception-parameter-must-be-a-descendant-of
+    */
+    protected class UnfocusScrollListener implements AbsListView.OnScrollListener {
+
+        @Override
+        public void onScroll(AbsListView view, int firstVisibleItem,
+                             int visibleItemCount, int totalItemCount) {
+            // do nothing
+        }
+
+        @Override
+        public void onScrollStateChanged(AbsListView view, int scrollState) {
+            if (SCROLL_STATE_TOUCH_SCROLL == scrollState) {
+                View currentFocus = getCurrentFocus();
+                if (currentFocus != null) {
+                    currentFocus.clearFocus();
+                    InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+                }
+            }
+        }
+
+    }
+
     /**
      * Inner private class that receives the result from the service
      */
@@ -610,7 +640,6 @@ public class SurveyActivity extends BaseActivity{
          * @return
          */
         private ITabAdapter buildAdapter(Tab tab){
-
             switch (tab.getType()) {
                 case Constants.TAB_COMPOSITE_SCORE:
 //                    this.compositeScores = CompositeScore.listByTabGroup(Session.getSurvey().getTabGroup());

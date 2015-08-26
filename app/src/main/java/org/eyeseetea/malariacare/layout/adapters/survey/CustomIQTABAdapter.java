@@ -56,11 +56,6 @@ public class CustomIQTABAdapter extends ATabAdapter {
         public Spinner species;
     }
 
-    static class ViewHolder2 {
-        public CustomTextView number;
-        public CustomTextView result;
-    }
-
     public CustomIQTABAdapter(Tab tab, Context context) {
         super(tab, context, R.layout.form_custom);
 
@@ -112,6 +107,11 @@ public class CustomIQTABAdapter extends ATabAdapter {
         }
     }
 
+    @Override
+    public int getCount() {
+        return 2*number_rows_section;
+    }
+
     public void calculateMatch(Question question) {
         int simetric_position;
         int result_position;
@@ -150,7 +150,6 @@ public class CustomIQTABAdapter extends ATabAdapter {
             else
                 ReadWriteDB.deleteValue(testResult);
         }
-        notifyDataSetChanged();
     }
 
     private void setValues(ViewHolder viewHolder, Question question) {
@@ -200,7 +199,6 @@ public class CustomIQTABAdapter extends ATabAdapter {
 
                 viewHolder.species.setAdapter(new OptionArrayAdapter(getContext(), optionList));
 
-
                 test = question.getChildren().get(0);
                 parasites = question.getChildren().get(1);
                 species = question.getChildren().get(2);
@@ -210,6 +208,7 @@ public class CustomIQTABAdapter extends ATabAdapter {
                 viewHolder.parasites.addTextChangedListener(new TextWatcher() {
 
                     Bool viewCreated = new Bool(false);
+
                     @Override
                     public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -247,6 +246,7 @@ public class CustomIQTABAdapter extends ATabAdapter {
                 viewHolder.spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 
                     Bool viewCreated = new Bool(false);
+
                     @Override
                     public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
 
@@ -268,36 +268,8 @@ public class CustomIQTABAdapter extends ATabAdapter {
 
             }
 
-        } else {
-
-            final ViewHolder2 viewHolder2 = new ViewHolder2();
-
-
-            if (position == 2 * number_rows_section) {
-                rowView = getInflater().inflate(R.layout.iqtabheader3, parent, false);
-            } else {
-                rowView = getInflater().inflate(R.layout.iqatab_results, parent, false);
-
-                Question questionResult = (Question) getItem(position);
-                Question testResult = questionResult.getChildren().get(0);
-
-
-                viewHolder2.number = (CustomTextView) rowView.findViewById(R.id.number_result);
-                viewHolder2.result = (CustomTextView) rowView.findViewById(R.id.matches);
-
-
-                viewHolder2.number.setText(String.valueOf(questionResult.getForm_name()));
-
-                Option option = ReadWriteDB.readOptionAnswered(testResult);
-
-                if (option!=null && option.getName().equals("Yes"))
-                    viewHolder2.result.setText("1");
-                else
-                    viewHolder2.result.setText("0");
-
-
-            }
         }
+
         return rowView;
     }
 }

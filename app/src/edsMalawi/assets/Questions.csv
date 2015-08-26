@@ -21,16 +21,16 @@
 21;'MWI_MAL.QA-Gen OTSS-300';'MWI_MAL.QA-Gen OTSS-HR_T-Number of clinical staff trained in case management in last 2 years-300';;'Number of clinical staff trained in case management in last 2 years';'DkVZvj8uLp6';300;0.00;0.00;2;24;20;
 22;'MWI_MAL.QA-Gen OTSS-310';'MWI_MAL.QA-Gen OTSS-HR_T-Name of organization that conducted case management training-310';;'Name of organization that conducted case management training';'xxCyrkTuIAw';310;0.00;0.00;2;26;20;
 23;'MWI_MAL.QA-Gen OTSS-320';'MWI_MAL.QA-Gen OTSS-HF Infra-ANC SERVICES-320';;'ANC SERVICES';'dxmFG5MSxJN';320;0.00;0.00;3;49;;
-24;'MWI_MAL.QA-Gen OTSS-330';'MWI_MAL.QA-Gen OTSS-HF Infra-Does this facility provide antenatal care services-330';;'Does this facility provide antenatal care services';'gPEr9Li5his';330;0.00;0.00;3;53;;
+24;'MWI_MAL.QA-Gen OTSS-330';'MWI_MAL.QA-Gen OTSS-HF Infra-Does this facility provide antenatal care services-330';;'Does this facility provide antenatal care services?';'gPEr9Li5his';330;0.00;0.00;3;53;;
 25;'MWI_MAL.QA-Gen OTSS-340';'MWI_MAL.QA-Gen OTSS-HF Infra-Where are these services provided?-340';;'Where are these services provided?';'I45JVxmWl52';340;0.00;0.00;3;33;24;
 26;'MWI_MAL.QA-Gen OTSS-350';'MWI_MAL.QA-Gen OTSS-HF Infra-Do you have a protocol/SOP for testing and treating pregnant women for malaria?-350';;'Do you have a protocol/SOP for testing and treating pregnant women for malaria?';'VvE748vmOwk';350;1.00;1.00;3;53;24;1
-27;'MWI_MAL.QA-Gen OTSS-360';'MWI_MAL.QA-Gen OTSS-HF Infra-Do you provide antimalarial prophylaxis?-360';;'Do you provide antimalarial prophylaxis?';'P8JLjXKmHge';360;1.00;1.00;3;53;24;1
-28;'MWI_MAL.QA-Gen OTSS-370';'MWI_MAL.QA-Gen OTSS-HF Infra-Do you provide prophylaxis greater than two times during pregnancy?-370';;'Do you provide prophylaxis greater than two times during pregnancy?';'fJpkXDekG8y';370;1.00;1.00;3;53;24;1
+27;'MWI_MAL.QA-Gen OTSS-360';'MWI_MAL.QA-Gen OTSS-HF Infra-Do you provide antimalarial prophylaxis?-360';;'Do you provide IPTp?';'P8JLjXKmHge';360;1.00;1.00;3;53;24;1
+28;'MWI_MAL.QA-Gen OTSS-370';'MWI_MAL.QA-Gen OTSS-HF Infra-Do you provide prophylaxis greater than two times during pregnancy?-370';;'Do you provide IPTp3 doses and above?';'fJpkXDekG8y';370;1.00;1.00;3;53;24;1
 29;'MWI_MAL.QA-Gen OTSS-380';'MWI_MAL.QA-Gen OTSS-HF Infra-Do you test pregnant women for HIV?-380';;'Do you test pregnant women for HIV?';'kynpjrRWEIL';380;1.00;1.00;3;53;24;1
 30;'MWI_MAL.QA-Gen OTSS-390';'MWI_MAL.QA-Gen OTSS-HF Infra-Do you test pregnant women for anemia?-390';;'Do you test pregnant women for anemia?';'kzhYzXkJauB';390;1.00;1.00;3;53;24;1
 31;'MWI_MAL.QA-Gen OTSS-400';'MWI_MAL.QA-Gen OTSS-HF Infra-INPATIENT SERVICES AND REFERRAL SYSTEMS-400';;'INPATIENT SERVICES AND REFERRAL SYSTEMS';'EfcfNUKx3U6';400;0.00;0.00;3;49;;
 32;'MWI_MAL.QA-Gen OTSS-410';'MWI_MAL.QA-Gen OTSS-HF Infra-Does this facility have overnight/inpatient beds?-410';;'Does this facility have overnight/inpatient beds?';'rLOCilWBwX2';410;0.00;0.00;3;53;;
-33;'MWI_MAL.QA-Gen OTSS-420';'MWI_MAL.QA-Gen OTSS-HF Infra-Does this facility generally refer patients with severe malaria to a higher level facility-420';;'Does this facility generally refer patients with severe malaria to a higher level facility';'qrXNLyq8SOC';420;0.00;0.00;3;53;;
+33;'MWI_MAL.QA-Gen OTSS-420';'MWI_MAL.QA-Gen OTSS-HF Infra-Does this facility generally refer patients with severe malaria to a higher level facility-420';;'Does this facility generally refer patients with severe malaria to a higher level facility?';'qrXNLyq8SOC';420;0.00;0.00;3;53;;
 34;'MWI_MAL.QA-Gen OTSS-430';'MWI_MAL.QA-Gen OTSS-HF Infra-What level of HF?-430';;'What level of HF?';'ti3s6kzXAOy';430;0.00;0.00;3;37;33;
 35;'MWI_MAL.QA-Gen OTSS-440';'MWI_MAL.QA-Gen OTSS-HF Infra-Do you have a contact phone number for the referral HF?-440';;'Do you have a contact phone number for the referral HF?';'zoKO2OHWYa4';440;1.00;1.00;3;53;33;1
 36;'MWI_MAL.QA-Gen OTSS-450';'MWI_MAL.QA-Gen OTSS-HF Infra-Do you normally give a verbal report or travel with a severely ill patient to the referral facility?-450';;'Do you normally give a verbal report or travel with a severely ill patient to the referral facility?';'LaMWAleS1lm';450;1.00;1.00;3;53;33;1
@@ -38,15 +38,16 @@
 38;'MWI_MAL.QA-Gen OTSS-470';'MWI_MAL.QA-Gen OTSS-HF Infra-Is there a readily available transport system (ambulance) for severely ill patients?-470';;'Is there a readily available transport system (ambulance) for severely ill patients?';'wYeM4M3ltPq';470;1.00;1.00;3;53;33;1
 39;'MWI_MAL.QA-Gen OTSS-480';'MWI_MAL.QA-Gen OTSS-HF Infra-Do you usually get any feedback on patients transported to a higher level facility-480';;'Do you usually get any feedback on patients transported to a higher level facility';'JnyN0r3J0Y4';480;1.00;1.00;3;53;33;1
 40;'MWI_MAL.QA-Gen OTSS-490';'MWI_MAL.QA-Gen OTSS-HF Infra-MALARIA REFERENCE MATERIAL-490';;'MALARIA REFERENCE MATERIAL';'o39wg6OQZUF';490;0.00;0.00;3;49;;
-41;'MWI_MAL.QA-Gen OTSS-500';'MWI_MAL.QA-Gen OTSS-HF Infra-Only tick ''Yes'' if you can verify that the following are physically available-500';;'Only tick ''Yes'' if you can verify that the following are physically available';'G6A1xlVIJJ2';500;0.00;0.00;3;49;;
+41;'MWI_MAL.QA-Gen OTSS-500';'MWI_MAL.QA-Gen OTSS-HF Infra-Only tick ''Yes'' if you can verify that the following are physically available-500';;'Are the following malaria reference materials available? 
+(Only tick ''Yes'' if you can verify that the following are physically available)';'G6A1xlVIJJ2';500;0.00;0.00;3;49;;
 42;'MWI_MAL.QA-Gen OTSS-510';'MWI_MAL.QA-Gen OTSS-HF Infra-MOH guidelines for case management (diagnosis and treatment) present in the facility-510';;'MOH guidelines for case management (diagnosis and treatment) present in the facility';'mev1jisFj8z';510;1.00;1.00;3;53;;1
 43;'MWI_MAL.QA-Gen OTSS-520';'MWI_MAL.QA-Gen OTSS-HF Infra-Is it the most recent version?-520';;'Is it the most recent version?';'KPmTKjJCflP';520;0.00;0.00;3;53;42;
-44;'MWI_MAL.QA-Gen OTSS-530';'MWI_MAL.QA-Gen OTSS-HF Infra-Algorithms for case management in the OPT-530';;'Algorithms for case management in the OPT';'INuXAfJz7Nv';530;1.00;1.00;3;53;;1
+44;'MWI_MAL.QA-Gen OTSS-530';'MWI_MAL.QA-Gen OTSS-HF Infra-Algorithms for case management in the OPT-530';;'Algorithms for case management in the OPD';'INuXAfJz7Nv';530;1.00;1.00;3;53;;1
 45;'MWI_MAL.QA-Gen OTSS-540';'MWI_MAL.QA-Gen OTSS-HF Infra-Is it the most recent version?-540';;'Is it the most recent version?';'BSJx5v0VArJ';540;0.00;0.00;3;53;44;
 46;'MWI_MAL.QA-Gen OTSS-550';'MWI_MAL.QA-Gen OTSS-HF Infra-MALARIA REPORTING-550';;'MALARIA REPORTING';'fWVgK3DqGKk';550;0.00;0.00;3;49;;
 47;'MWI_MAL.QA-Gen OTSS-560';'MWI_MAL.QA-Gen OTSS-HF Infra-Gather source documents for malaria reporting, including registers, tally sheets and monthly reporting forms-560';;'Gather source documents for malaria reporting, including registers, tally sheets and monthly reporting forms';'zNZZcJjKPOz';560;0.00;0.00;3;49;;
 48;'MWI_MAL.QA-Gen OTSS-570';'MWI_MAL.QA-Gen OTSS-HF Infra-Are there malaria monthly reports available at this facility for the last three months?-570';;'Are there malaria monthly reports available at this facility for the last three months?';'Hpc7zqjfqWU';570;0.00;0.00;3;53;;
-49;'MWI_MAL.QA-Gen OTSS-580';'MWI_MAL.QA-Gen OTSS-HF Infra-Is there a staff member assigned to conduct monthly tallies?-580';;'Is there a staff member assigned to conduct monthly tallies?';'lPfUbwOLFDc';580;1.00;1.00;3;53;;1
+49;'MWI_MAL.QA-Gen OTSS-580';'MWI_MAL.QA-Gen OTSS-HF Infra-Is there a staff member assigned to conduct monthly tallies?-580';;'Is there a staff member assigned to conduct monthly summary forms?';'lPfUbwOLFDc';580;1.00;1.00;3;53;;1
 50;'MWI_MAL.QA-Gen OTSS-590';'MWI_MAL.QA-Gen OTSS-HF Infra-Has any staff member been trained in monthly reporting?-590';;'Has any staff member been trained in monthly reporting?';'Xzua9AQsu97';590;1.00;1.00;3;53;;1
 51;'MWI_MAL.QA-Gen OTSS-600';'MWI_MAL.QA-Gen OTSS-HF Infra-Are monthly reports verified by a second person before submission?-600';;'Are monthly reports verified by a second person before submission?';'EwRaqJESlOt';600;1.00;1.00;3;53;;1
 52;'MWI_MAL.QA-Gen OTSS-610';'MWI_MAL.QA-Gen OTSS-HF Infra-What is the format for monthly reporting?-610';;'What is the format for monthly reporting?';'AaRtNeEr6Vj';610;0.00;0.00;3;9;;
@@ -61,7 +62,7 @@
 61;'MWI_MAL.QA-Gen OTSS-700';'MWI_MAL.QA-Gen OTSS-HF Infra-MALARIA INFORMATION IN REGISTERS-700';;'MALARIA INFORMATION IN REGISTERS';'owwADRZGrKf';700;0.00;0.00;3;49;;
 62;'MWI_MAL.QA-Gen OTSS-710';'MWI_MAL.QA-Gen OTSS-HF Infra-Are there outpatient registers available in this facility?-710';;'Are there outpatient registers available in this facility?';'ZUn7Spn03Lb';710;10.00;10.00;3;53;;1
 63;'MWI_MAL.QA-Gen OTSS-720';'MWI_MAL.QA-Gen OTSS-HF Infra-If no, where is the patient information being recorded?-720';;'If no, where is the patient information being recorded?';'cY7lEVsqm14';720;0.00;0.00;3;66;;
-64;'MWI_MAL.QA-Gen OTSS-730';'MWI_MAL.QA-Gen OTSS-HF Infra-Is there a space to record the following:-730';;'Is there a space to record the following:';'ukORKFpH8cX';730;0.00;0.00;3;49;;
+64;'MWI_MAL.QA-Gen OTSS-730';'MWI_MAL.QA-Gen OTSS-HF Infra-Is there a space to record the following:-730';;'Is there a space to record each of the following?:';'ukORKFpH8cX';730;0.00;0.00;3;49;;
 65;'MWI_MAL.QA-Gen OTSS-740';'MWI_MAL.QA-Gen OTSS-HF Infra-Age of the patient-740';;'Age of the patient';'lMTTpnayv42';740;1.00;1.00;3;53;;1
 66;'MWI_MAL.QA-Gen OTSS-750';'MWI_MAL.QA-Gen OTSS-HF Infra-Sex of the patient-750';;'Sex of the patient';'y3Cmw9fOtM5';750;1.00;1.00;3;53;;1
 67;'MWI_MAL.QA-Gen OTSS-760';'MWI_MAL.QA-Gen OTSS-HF Infra-Presumptive diagnosis-760';;'Presumptive diagnosis';'wlsx0pOu5jY';760;1.00;1.00;3;53;;1
@@ -70,50 +71,28 @@
 70;'MWI_MAL.QA-Gen OTSS-790';'MWI_MAL.QA-Gen OTSS-HF Infra-Prescriptions-790';;'Prescriptions';'X9OvviWK6ny';790;1.00;1.00;3;53;;1
 71;'MWI_MAL.QA-Gen OTSS-800';'MWI_MAL.QA-Gen OTSS-HF Infra-Are all the columns filled for each patient?-800';;'Are all the columns filled for each patient?';'M5dZF3UlcBS';800;1.00;1.00;3;53;;1
 72;'MWI_MAL.QA-Gen OTSS-810';'MWI_MAL.QA-Gen OTSS-Ph, St, Eq-STOCK-OUTS OF ANTIMALARIALS-810';;'STOCK-OUTS OF ANTIMALARIALS';'xblI0WUKHoE';810;0.00;0.00;4;49;;
-73;'MWI_MAL.QA-Gen OTSS-820';'MWI_MAL.QA-Gen OTSS-Ph, St, Eq-Are there any stock outs of any of the following drugs today?-820';;'Are there any stock outs of any of the following drugs today?';'mjDOtLvgbUd';820;0.00;0.00;4;49;;
-74;'MWI_MAL.QA-Gen OTSS-830';'MWI_MAL.QA-Gen OTSS-Ph, St, Eq-Artemether-Lumefantrine-830';;'Artemether-Lumefantrine';'rz0dRCN6t2d';830;0.00;0.00;4;74;;
-75;'MWI_MAL.QA-Gen OTSS-840';'MWI_MAL.QA-Gen OTSS-Ph, St, Eq-Artesunate-Amodiaquine-840';;'Artesunate-Amodiaquine';'EprVVvDD3wV';840;0.00;0.00;4;74;;
-76;'MWI_MAL.QA-Gen OTSS-850';'MWI_MAL.QA-Gen OTSS-Ph, St, Eq-Dihydroartemisinin-piperaquine-850';;'Dihydroartemisinin-piperaquine';'XqbDfJebhqC';850;0.00;0.00;4;74;;
-77;'MWI_MAL.QA-Gen OTSS-860';'MWI_MAL.QA-Gen OTSS-Ph, St, Eq-Artesunate (injectable)-860';;'Artesunate (injectable)';'COrtTMl5fF8';860;0.00;0.00;4;74;;
-78;'MWI_MAL.QA-Gen OTSS-870';'MWI_MAL.QA-Gen OTSS-Ph, St, Eq-Artesunate (rectal)-870';;'Artesunate (rectal)';'u3UhfCgIajP';870;0.00;0.00;4;74;;
-79;'MWI_MAL.QA-Gen OTSS-880';'MWI_MAL.QA-Gen OTSS-Ph, St, Eq-Artemether (injectable)-880';;'Artemether (injectable)';'OzalFszMXdh';880;0.00;0.00;4;74;;
-80;'MWI_MAL.QA-Gen OTSS-890';'MWI_MAL.QA-Gen OTSS-Ph, St, Eq-Artemisinin (rectal)-890';;'Artemisinin (rectal)';'wOrX5i3vitP';890;0.00;0.00;4;74;;
-81;'MWI_MAL.QA-Gen OTSS-900';'MWI_MAL.QA-Gen OTSS-Ph, St, Eq-Quinine (injectable)-900';;'Quinine (injectable)';'Z9P6pip0uBl';900;0.00;0.00;4;74;;
-82;'MWI_MAL.QA-Gen OTSS-910';'MWI_MAL.QA-Gen OTSS-Ph, St, Eq-Quinine (oral)-910';;'Quinine (oral)';'FyhQBbcbayD';910;0.00;0.00;4;74;;
-83;'MWI_MAL.QA-Gen OTSS-920';'MWI_MAL.QA-Gen OTSS-Ph, St, Eq-Was there a stock out of any of the following for 7 consecutive days in the last 3 months-920';;'Was there a stock out of any of the following for 7 consecutive days in the last 3 months';'A8vMcpR6KFi';920;0.00;0.00;4;49;;
-84;'MWI_MAL.QA-Gen OTSS-930';'MWI_MAL.QA-Gen OTSS-Ph, St, Eq-Artemether-Lumefantrine-930';;'Artemether-Lumefantrine';'iOIyaQfvbQ8';930;10.00;10.00;4;74;;1
-85;'MWI_MAL.QA-Gen OTSS-940';'MWI_MAL.QA-Gen OTSS-Ph, St, Eq-Artesunate-Amodiaquine-940';;'Artesunate-Amodiaquine';'gqXJEXcFQ0T';940;0.00;0.00;4;74;;
-86;'MWI_MAL.QA-Gen OTSS-950';'MWI_MAL.QA-Gen OTSS-Ph, St, Eq-Dihydroartemisinin-piperaquine-950';;'Dihydroartemisinin-piperaquine';'ufZqJzVLyE6';950;0.00;0.00;4;74;;
-87;'MWI_MAL.QA-Gen OTSS-960';'MWI_MAL.QA-Gen OTSS-Ph, St, Eq-Artesunate (injectable)-960';;'Artesunate (injectable)';'Y7DYbiSWy1K';960;0.00;0.00;4;74;;
-88;'MWI_MAL.QA-Gen OTSS-970';'MWI_MAL.QA-Gen OTSS-Ph, St, Eq-Artesunate (rectal)-970';;'Artesunate (rectal)';'B5MzzSbZrC0';970;0.00;0.00;4;74;;
-89;'MWI_MAL.QA-Gen OTSS-980';'MWI_MAL.QA-Gen OTSS-Ph, St, Eq-Artemether (injectable)-980';;'Artemether (injectable)';'nRnvzQkyoJx';980;0.00;0.00;4;74;;
-90;'MWI_MAL.QA-Gen OTSS-990';'MWI_MAL.QA-Gen OTSS-Ph, St, Eq-Artemisinin (rectal)-990';;'Artemisinin (rectal)';'gNRWHJQ7u6M';990;0.00;0.00;4;74;;
-91;'MWI_MAL.QA-Gen OTSS-1000';'MWI_MAL.QA-Gen OTSS-Ph, St, Eq-Quinine (injectable)-1000';;'Quinine (injectable)';'dLenJiweLxE';1000;0.00;0.00;4;74;;
-92;'MWI_MAL.QA-Gen OTSS-1010';'MWI_MAL.QA-Gen OTSS-Ph, St, Eq-Quinine (oral)-1010';;'Quinine (oral)';'BINvQV2AvJF';1010;0.00;0.00;4;74;;
+83;'MWI_MAL.QA-Gen OTSS-920';'MWI_MAL.QA-Gen OTSS-Ph, St, Eq-Was there a stock out of any of the following for 7 consecutive days in the last 3 months-920';;'Was there a stock out of any of the following for 7 consecutive days in the last 3 months?';'A8vMcpR6KFi';920;0.00;0.00;4;49;;
+84;'MWI_MAL.QA-Gen OTSS-930';'MWI_MAL.QA-Gen OTSS-Ph, St, Eq-Artemether-Lumefantrine-930';;'Artemether-Lumefantrine';'iOIyaQfvbQ8';930;10.00;10.00;4;96;;1
+85;'MWI_MAL.QA-Gen OTSS-940';'MWI_MAL.QA-Gen OTSS-Ph, St, Eq-Artesunate-Amodiaquine-940';;'Artesunate-Amodiaquine';'gqXJEXcFQ0T';940;0.00;0.00;4;96;;
+86;'MWI_MAL.QA-Gen OTSS-950';'MWI_MAL.QA-Gen OTSS-Ph, St, Eq-Dihydroartemisinin-piperaquine-950';;'Dihydroartemisinin-piperaquine';'ufZqJzVLyE6';950;0.00;0.00;4;96;;
+87;'MWI_MAL.QA-Gen OTSS-960';'MWI_MAL.QA-Gen OTSS-Ph, St, Eq-Artesunate (injectable)-960';;'Artesunate (injectable)';'Y7DYbiSWy1K';960;0.00;0.00;4;96;;
+88;'MWI_MAL.QA-Gen OTSS-970';'MWI_MAL.QA-Gen OTSS-Ph, St, Eq-Artesunate (rectal)-970';;'Artesunate (rectal)';'B5MzzSbZrC0';970;0.00;0.00;4;96;;
+89;'MWI_MAL.QA-Gen OTSS-980';'MWI_MAL.QA-Gen OTSS-Ph, St, Eq-Artemether (injectable)-980';;'Artemether (injectable)';'nRnvzQkyoJx';980;0.00;0.00;4;96;;
+90;'MWI_MAL.QA-Gen OTSS-990';'MWI_MAL.QA-Gen OTSS-Ph, St, Eq-Artemisinin (rectal)-990';;'Artemisinin (rectal)';'gNRWHJQ7u6M';990;0.00;0.00;4;96;;
+91;'MWI_MAL.QA-Gen OTSS-1000';'MWI_MAL.QA-Gen OTSS-Ph, St, Eq-Quinine (injectable)-1000';;'Quinine (injectable)';'dLenJiweLxE';1000;0.00;0.00;4;96;;
+92;'MWI_MAL.QA-Gen OTSS-1010';'MWI_MAL.QA-Gen OTSS-Ph, St, Eq-Quinine (oral)-1010';;'Quinine (oral)';'BINvQV2AvJF';1010;0.00;0.00;4;96;;
 93;'MWI_MAL.QA-Gen OTSS-1020';'MWI_MAL.QA-Gen OTSS-Ph, St, Eq-STOCK-OUTS OF OTHER ESSENTIAL DRUGS-1020';;'STOCK-OUTS OF OTHER ESSENTIAL DRUGS';'QwGYs3EUEm9';1020;0.00;0.00;4;49;;
-94;'MWI_MAL.QA-Gen OTSS-1030';'MWI_MAL.QA-Gen OTSS-Ph, St, Eq-Are there any stock outs of any of the following drugs today?-1030';;'Are there any stock outs of any of the following drugs today?';'rQ2qitVM6ew';1030;0.00;0.00;4;49;;
-95;'MWI_MAL.QA-Gen OTSS-1040';'MWI_MAL.QA-Gen OTSS-Ph, St, Eq-Doxycycline-1040';;'Doxycycline';'O7TgZGA4lfl';1040;0.00;0.00;4;74;;
-96;'MWI_MAL.QA-Gen OTSS-1050';'MWI_MAL.QA-Gen OTSS-Ph, St, Eq-Paracetamol-1050';;'Paracetamol';'KJfZ31v98qa';1050;0.00;0.00;4;74;;
-97;'MWI_MAL.QA-Gen OTSS-1060';'MWI_MAL.QA-Gen OTSS-Ph, St, Eq-Ibuprofen-1060';;'Ibuprofen';'cd6Ckw8Dp0h';1060;0.00;0.00;4;74;;
-98;'MWI_MAL.QA-Gen OTSS-1070';'MWI_MAL.QA-Gen OTSS-Ph, St, Eq-Cotrimoxazole-1070';;'Cotrimoxazole';'PGIxUYi4d9p';1070;0.00;0.00;4;74;;
-99;'MWI_MAL.QA-Gen OTSS-1080';'MWI_MAL.QA-Gen OTSS-Ph, St, Eq-Amoxicillin-1080';;'Amoxicillin';'WCMgPpOrHES';1080;0.00;0.00;4;74;;
-100;'MWI_MAL.QA-Gen OTSS-1090';'MWI_MAL.QA-Gen OTSS-Ph, St, Eq-Ceftriaxone-1090';;'Ceftriaxone';'JU9PGuMdPl6';1090;0.00;0.00;4;74;;
-101;'MWI_MAL.QA-Gen OTSS-1100';'MWI_MAL.QA-Gen OTSS-Ph, St, Eq-5% Glucose Solution-1100';;'5% Glucose Solution';'lCYa86si4MF';1100;0.00;0.00;4;74;;
-102;'MWI_MAL.QA-Gen OTSS-1110';'MWI_MAL.QA-Gen OTSS-Ph, St, Eq-10% Glucose Solution-1110';;'10% Glucose Solution';'Tdia1bH6RRy';1110;0.00;0.00;4;74;;
-103;'MWI_MAL.QA-Gen OTSS-1120';'MWI_MAL.QA-Gen OTSS-Ph, St, Eq-50% Glucose Solution-1120';;'50% Glucose Solution';'r8GFqSSHT3j';1120;0.00;0.00;4;74;;
-104;'MWI_MAL.QA-Gen OTSS-1130';'MWI_MAL.QA-Gen OTSS-Ph, St, Eq-Injectable Diazepam-1130';;'Injectable Diazepam';'UgxdW8ZpXrt';1130;0.00;0.00;4;74;;
-105;'MWI_MAL.QA-Gen OTSS-1140';'MWI_MAL.QA-Gen OTSS-Ph, St, Eq-Other adjuvants/antibiotics (list)-1140';;'Other adjuvants/antibiotics (list)';'ylrpOi1y6Jo';1140;0.00;0.00;4;25;;
-106;'MWI_MAL.QA-Gen OTSS-1150';'MWI_MAL.QA-Gen OTSS-Ph, St, Eq-Was there a stock out of any of the following for 7 consecutive days in the last 3 months-1150';;'Was there a stock out of any of the following for 7 consecutive days in the last 3 months';'j5X9uTuNkgN';1150;0.00;0.00;4;49;;
-107;'MWI_MAL.QA-Gen OTSS-1160';'MWI_MAL.QA-Gen OTSS-Ph, St, Eq-Doxycycline-1160';;'Doxycycline';'CwMA4cOOFpn';1160;0.00;0.00;4;74;;
-108;'MWI_MAL.QA-Gen OTSS-1170';'MWI_MAL.QA-Gen OTSS-Ph, St, Eq-Paracetamol-1170';;'Paracetamol';'FTb3GZ09QDd';1170;2.00;2.00;4;74;;
-109;'MWI_MAL.QA-Gen OTSS-1180';'MWI_MAL.QA-Gen OTSS-Ph, St, Eq-Ibuprofen-1180';;'Ibuprofen';'E5137tPR1fj';1180;0.00;0.00;4;74;;
-110;'MWI_MAL.QA-Gen OTSS-1190';'MWI_MAL.QA-Gen OTSS-Ph, St, Eq-Cotrimoxazole-1190';;'Cotrimoxazole';'IrFjA1Pmarh';1190;0.00;0.00;4;74;;
-111;'MWI_MAL.QA-Gen OTSS-1200';'MWI_MAL.QA-Gen OTSS-Ph, St, Eq-Amoxicillin-1200';;'Amoxicillin';'w2SnC95nxZd';1200;0.00;0.00;4;74;;
-112;'MWI_MAL.QA-Gen OTSS-1210';'MWI_MAL.QA-Gen OTSS-Ph, St, Eq-Ceftriaxone-1210';;'Ceftriaxone';'o9AqKxAMQyZ';1210;0.00;0.00;4;74;;
-113;'MWI_MAL.QA-Gen OTSS-1220';'MWI_MAL.QA-Gen OTSS-Ph, St, Eq-5% Glucose Solution-1220';;'5% Glucose Solution';'MIHbg9CZODI';1220;0.00;0.00;4;74;;
-114;'MWI_MAL.QA-Gen OTSS-1230';'MWI_MAL.QA-Gen OTSS-Ph, St, Eq-10% Glucose Solution-1230';;'10% Glucose Solution';'wfLlQrDdiXK';1230;0.00;0.00;4;74;;
-115;'MWI_MAL.QA-Gen OTSS-1240';'MWI_MAL.QA-Gen OTSS-Ph, St, Eq-50% Glucose Solution-1240';;'50% Glucose Solution';'XxShezoDPuL';1240;0.00;0.00;4;74;;
-116;'MWI_MAL.QA-Gen OTSS-1250';'MWI_MAL.QA-Gen OTSS-Ph, St, Eq-Injectable Diazepam-1250';;'Injectable Diazepam';'Llah3NPLdM8';1250;0.00;0.00;4;74;;
+106;'MWI_MAL.QA-Gen OTSS-1150';'MWI_MAL.QA-Gen OTSS-Ph, St, Eq-Was there a stock out of any of the following for 7 consecutive days in the last 3 months-1150';;'Was there a stock out of any of the following for 7 consecutive days in the last 3 months?';'j5X9uTuNkgN';1150;0.00;0.00;4;49;;
+107;'MWI_MAL.QA-Gen OTSS-1160';'MWI_MAL.QA-Gen OTSS-Ph, St, Eq-Doxycycline-1160';;'Doxycycline';'CwMA4cOOFpn';1160;0.00;0.00;4;96;;
+108;'MWI_MAL.QA-Gen OTSS-1170';'MWI_MAL.QA-Gen OTSS-Ph, St, Eq-Paracetamol-1170';;'Paracetamol';'FTb3GZ09QDd';1170;2.00;2.00;4;96;;
+109;'MWI_MAL.QA-Gen OTSS-1180';'MWI_MAL.QA-Gen OTSS-Ph, St, Eq-Ibuprofen-1180';;'Ibuprofen';'E5137tPR1fj';1180;0.00;0.00;4;96;;
+110;'MWI_MAL.QA-Gen OTSS-1190';'MWI_MAL.QA-Gen OTSS-Ph, St, Eq-Cotrimoxazole-1190';;'Cotrimoxazole';'IrFjA1Pmarh';1190;0.00;0.00;4;96;;
+111;'MWI_MAL.QA-Gen OTSS-1200';'MWI_MAL.QA-Gen OTSS-Ph, St, Eq-Amoxicillin-1200';;'Amoxicillin';'w2SnC95nxZd';1200;0.00;0.00;4;96;;
+112;'MWI_MAL.QA-Gen OTSS-1210';'MWI_MAL.QA-Gen OTSS-Ph, St, Eq-Ceftriaxone-1210';;'Ceftriaxone';'o9AqKxAMQyZ';1210;0.00;0.00;4;96;;
+113;'MWI_MAL.QA-Gen OTSS-1220';'MWI_MAL.QA-Gen OTSS-Ph, St, Eq-5% Glucose Solution-1220';;'5% Glucose Solution';'MIHbg9CZODI';1220;0.00;0.00;4;96;;
+114;'MWI_MAL.QA-Gen OTSS-1230';'MWI_MAL.QA-Gen OTSS-Ph, St, Eq-10% Glucose Solution-1230';;'10% Glucose Solution';'wfLlQrDdiXK';1230;0.00;0.00;4;96;;
+115;'MWI_MAL.QA-Gen OTSS-1240';'MWI_MAL.QA-Gen OTSS-Ph, St, Eq-50% Glucose Solution-1240';;'50% Glucose Solution';'XxShezoDPuL';1240;0.00;0.00;4;96;;
+116;'MWI_MAL.QA-Gen OTSS-1250';'MWI_MAL.QA-Gen OTSS-Ph, St, Eq-Injectable Diazepam-1250';;'Injectable Diazepam';'Llah3NPLdM8';1250;0.00;0.00;4;96;;
 117;'MWI_MAL.QA-Gen OTSS-1260';'MWI_MAL.QA-Gen OTSS-Ph, St, Eq-Other adjuvants/antibiotics (list)-1260';;'Other adjuvants/antibiotics (list)';'gvgzYo1QTXz';1260;0.00;0.00;4;25;;
 118;'MWI_MAL.QA-Gen OTSS-1270';'MWI_MAL.QA-Gen OTSS-Ph, St, Eq-CLINICAL EQUIPMENT-1270';;'CLINICAL EQUIPMENT';'f6hwtI470tP';1270;0.00;0.00;4;49;;
 119;'MWI_MAL.QA-Gen OTSS-1280';'MWI_MAL.QA-Gen OTSS-Ph, St, Eq-For each item below, is there at least one that is present and functional at the facility?-1280';;'For each item below, is there at least one that is present and functional at the facility?';'xZUqgLLpiLB';1280;0.00;0.00;4;49;;
@@ -128,31 +107,30 @@
 128;'MWI_MAL.QA-Gen OTSS-1370';'MWI_MAL.QA-Gen OTSS-Ph, St, Eq-Infant weighing scales-1370';;'Infant weighing scales';'YlBdh1eSWLc';1370;1.00;1.00;4;81;;
 129;'MWI_MAL.QA-Gen OTSS-1380';'MWI_MAL.QA-Gen OTSS-Mal Diag-MALARIA DIAGNOSTICS-1380';;'MALARIA DIAGNOSTICS';'U4klNNgQsLE';1380;0.00;0.00;5;49;;
 130;'MWI_MAL.QA-Gen OTSS-1390';'MWI_MAL.QA-Gen OTSS-Mal Diag-Does this facility perform Malaria Microscopy?-1390';;'Does this facility perform Malaria Microscopy?';'ttnEb78vvWV';1390;0.00;0.00;5;53;;
-131;'MWI_MAL.QA-Gen OTSS-1400';'MWI_MAL.QA-Gen OTSS-Mal Diag-Does this facility perform Malaria RDTs?-1400';;'Does this facility perform Malaria RDTs?';'ckvvKio0hMM';1400;0.00;0.00;5;53;;
+131;'MWI_MAL.QA-Gen OTSS-1400';'MWI_MAL.QA-Gen OTSS-Mal Diag-Does this facility perform Malaria RDTs?-1400';;'Does this facility perform malaria RDTs?';'ckvvKio0hMM';1400;0.00;0.00;5;53;;
 132;'MWI_MAL.QA-Gen OTSS-1410';'MWI_MAL.QA-Gen OTSS-RDT Assess-STOCK-OUTS FOR MALARIA RAPID DIAGNOSTIC TESTS-1410';;'STOCK-OUTS FOR MALARIA RAPID DIAGNOSTIC TESTS';'R464PsZD3rX';1410;0.00;0.00;6;49;131;
 133;'MWI_MAL.QA-Gen OTSS-1420';'MWI_MAL.QA-Gen OTSS-RDT Assess-Did this facility experience a stock-out of malaria RDTs lasting 7 or more consecutive days during the last three months?-1420';;'Did this facility experience a stock-out of malaria RDTs lasting 7 or more consecutive days during the last three months?';'pzMryC0BooL';1420;10.00;10.00;6;60;131;2
 134;'MWI_MAL.QA-Gen OTSS-1430';'MWI_MAL.QA-Gen OTSS-RDT Assess-Is there a stock-out of malaria RDTs in this health facility today?-1430';;'Is there a stock-out of malaria RDTs in this health facility today?';'sewQXBdKkJe';1430;0.00;0.00;6;60;131;
 135;'MWI_MAL.QA-Gen OTSS-1440';'MWI_MAL.QA-Gen OTSS-RDT Assess-Malaria Reference Material - RDT-1440';;'Malaria Reference Material - RDT';'mgTTpj7XeuZ';1440;0.00;0.00;6;49;131;
-136;'MWI_MAL.QA-Gen OTSS-1450';'MWI_MAL.QA-Gen OTSS-RDT Assess-Only tick ''YES'' if you can verify that the following materials are physically available-1450';;'Only tick ''YES'' if you can verify that the following materials are physically available';'aiQRj3xJXao';1450;0.00;0.00;6;49;131;
+136;'MWI_MAL.QA-Gen OTSS-1450';'MWI_MAL.QA-Gen OTSS-RDT Assess-Only tick ''YES'' if you can verify that the following materials are physically available-1450';;'Are the following malaria reference materials available? 
+(Only tick ''Yes'' if you can verify that the following are physically available)';'aiQRj3xJXao';1450;0.00;0.00;6;49;131;
 137;'MWI_MAL.QA-Gen OTSS-1460';'MWI_MAL.QA-Gen OTSS-RDT Assess-SOP: use of RDTs-1460';;'SOP: use of RDTs';'oNZJEjCh55h';1460;2.00;2.00;6;53;131;2
 138;'MWI_MAL.QA-Gen OTSS-1470';'MWI_MAL.QA-Gen OTSS-RDT Assess-Bench aid: use of RDTs-1470';;'Bench aid: use of RDTs';'ijq4nSumaqo';1470;2.00;2.00;6;53;131;2
 139;'MWI_MAL.QA-Gen OTSS-1480';'MWI_MAL.QA-Gen OTSS-RDT Assess-EXTERNAL QUALITY ASSURANCE – RDT-1480';;'EXTERNAL QUALITY ASSURANCE – RDT';'XYjJbCWnGaU';1480;0.00;0.00;6;49;131;
 140;'MWI_MAL.QA-Gen OTSS-1490';'MWI_MAL.QA-Gen OTSS-RDT Assess-Does the laboratory conduct RDT validation exercises?-1490';;'Does this facility conduct RDT validation exercises?';'uywLUVmEGIH';1490;2.00;2.00;6;53;131;2
-141;'MWI_MAL.QA-Gen OTSS-1500';'MWI_MAL.QA-Gen OTSS-RDT Assess-Date of last validation-1500';;'Date of last validation';'XSVl4AV4PT0';1500;0.00;0.00;6;27;131;
+141;'MWI_MAL.QA-Gen OTSS-1500';'MWI_MAL.QA-Gen OTSS-RDT Assess-Date of last validation-1500';;'If yes, date of last validation:';'XSVl4AV4PT0';1500;0.00;0.00;6;27;131;
 142;'MWI_MAL.QA-Gen OTSS-1510';'MWI_MAL.QA-Gen OTSS-RDT Assess-USE OF MALARIA RAPID DIAGNOSTIC TESTS AND TURNAROUND TIME FOR TEST RESULTS-1510';;'USE OF MALARIA RAPID DIAGNOSTIC TESTS AND TURNAROUND TIME FOR TEST RESULTS';'J9M31qZ21WR';1510;0.00;0.00;6;49;131;
-143;'MWI_MAL.QA-Gen OTSS-1520';'MWI_MAL.QA-Gen OTSS-RDT Assess-Does this facility use RDTs for malaria diagnosis no matter the frequency?-1520';;'Does this facility use RDTs for malaria diagnosis no matter the frequency?';'MyIG2oRr2B5';1520;0.00;0.00;6;53;131;
 144;'MWI_MAL.QA-Gen OTSS-1530';'MWI_MAL.QA-Gen OTSS-RDT Assess-Is turnaround time for preparation and recording documented in the register?-1530';;'Is turnaround time for preparation and recording documented in the register?';'Zpxbo6WYPYL';1530;1.00;1.00;6;53;131;2
 145;'MWI_MAL.QA-Gen OTSS-1540';'MWI_MAL.QA-Gen OTSS-RDT Assess-What is the turnaround time for preparation and recording of the test result (in minutes)?-1540';;'What is the turnaround time for preparation and recording of the test result (in minutes)?';'mVH6qQBeUKP';1540;0.00;0.00;6;24;131;
 146;'MWI_MAL.QA-Gen OTSS-1550';'MWI_MAL.QA-Gen OTSS-RDT Assess-RDT brand used most frequently-1550';;'RDT brand used most frequently';'CPSsxbGTICO';1550;0.00;0.00;6;25;131;
 147;'MWI_MAL.QA-CCM 1-100';'MWI_MAL.QA-CCM 1-HW Info-Sex-100';;'Sex';'uQtgZbuGfDV';100;0.00;0.00;9;73;;
 148;'MWI_MAL.QA-CCM 1-110';'MWI_MAL.QA-CCM 1-HW Info-Type of provider-110';;'Type of provider';'S5PlnL2hSn9';110;0.00;0.00;9;87;;
-149;'MWI_MAL.QA-CCM 1-120';'MWI_MAL.QA-CCM 1-HW Info-Has this provider been trained in malaria case management-120';;'Has this provider been trained in malaria case management';'oAvyKiKt29m';120;0.00;0.00;9;53;;
-150;'MWI_MAL.QA-CCM 1-130';'MWI_MAL.QA-CCM 1-Rec-Patient and care giver welcomed?-130';;'Patient and care giver welcomed?';'n5KWb4BKbWq';130;0.00;0.00;10;53;;
-151;'MWI_MAL.QA-CCM 1-140';'MWI_MAL.QA-CCM 1-Rec-Referred from another facility?-140';;'Referred from another facility?';'jjwhXcELSj7';140;0.00;0.00;10;78;;
-152;'MWI_MAL.QA-CCM 1-150';'MWI_MAL.QA-CCM 1-Rec-Age of patient determined?-150';;'Age of patient determined?';'IpPMzn5cK6e';150;1.00;1.00;10;53;;14
-154;'MWI_MAL.QA-CCM 1-170';'MWI_MAL.QA-CCM 1-Rec-Weight of patient determined?-170';;'Weight of patient determined?';'AUvLlKfisz9';170;1.00;1.00;10;53;;14
-156;'MWI_MAL.QA-CCM 1-190';'MWI_MAL.QA-CCM 1-Signs Sev Dis-Signs of severe disease found by the clinician (check all that apply)-190';;'Signs of severe disease found by the clinician (check all that apply)';'tTSDuemwdCd';190;0.00;0.00;11;49;;
-157;'MWI_MAL.QA-CCM 1-200';'MWI_MAL.QA-CCM 1-Signs Sev Dis-Did clinician check for any signs of severe disease, or were signs of severe disease apparent? -200';;'Did clinician check for any signs of severe disease, or were signs of severe disease apparent?';'tuANHrxY9eM';200;8.00;8.00;11;53;;14
+149;'MWI_MAL.QA-CCM 1-120';'MWI_MAL.QA-CCM 1-HW Info-Has this provider been trained in malaria case management-120';;'Has this provider been trained in malaria case management?';'oAvyKiKt29m';120;0.00;0.00;9;53;;
+150;'MWI_MAL.QA-CCM 1-130';'MWI_MAL.QA-CCM 1-Rec-Patient and care giver welcomed?-130';;'Patient and care giver welcomed';'n5KWb4BKbWq';130;0.00;0.00;10;53;;
+151;'MWI_MAL.QA-CCM 1-140';'MWI_MAL.QA-CCM 1-Rec-Referred from another facility?-140';;'Referred from another facility';'jjwhXcELSj7';140;0.00;0.00;10;78;;
+152;'MWI_MAL.QA-CCM 1-150';'MWI_MAL.QA-CCM 1-Rec-Age of patient determined?-150';;'Age of patient determined';'IpPMzn5cK6e';150;1.00;1.00;10;53;;14
+154;'MWI_MAL.QA-CCM 1-170';'MWI_MAL.QA-CCM 1-Rec-Weight of patient determined?-170';;'Weight of patient determined';'AUvLlKfisz9';170;1.00;1.00;10;53;;14
+156;'MWI_MAL.QA-CCM 1-190';'MWI_MAL.QA-CCM 1-Signs Sev Dis-Signs of severe disease found by the clinician (check all that apply)-190';;'Signs of severe disease found by the clinician';'tTSDuemwdCd';190;0.00;0.00;11;49;;
 158;'MWI_MAL.QA-CCM 1-210';'MWI_MAL.QA-CCM 1-Signs Sev Dis-Change in behavior, altered consciousness or coma     -210';;'Change in behavior, altered consciousness or coma';'RpmTZyuXTaV';210;0.00;0.00;11;14;157;
 159;'MWI_MAL.QA-CCM 1-220';'MWI_MAL.QA-CCM 1-Signs Sev Dis-Convulsions-220';;'Convulsions';'PZJKDsxkG5t';220;0.00;0.00;11;14;157;
 160;'MWI_MAL.QA-CCM 1-230';'MWI_MAL.QA-CCM 1-Signs Sev Dis-Reduced urinary output or dark urine    -230';;'Reduced urinary output or dark urine';'XoG7g6flF8p';230;0.00;0.00;11;14;157;
@@ -162,7 +140,7 @@
 164;'MWI_MAL.QA-CCM 1-270';'MWI_MAL.QA-CCM 1-Signs Sev Dis-Deep breathing/respiratory distress-270';;'Deep breathing/respiratory distress';'FLnjPAj8Cpj';270;0.00;0.00;11;14;157;
 165;'MWI_MAL.QA-CCM 1-280';'MWI_MAL.QA-CCM 1-Signs Sev Dis-Jaundice (yellow eyes or skin)-280';;'Jaundice (yellow eyes or skin)';'thoGHRyj5JY';280;0.00;0.00;11;14;157;
 166;'MWI_MAL.QA-CCM 1-290';'MWI_MAL.QA-CCM 1-Signs Sev Dis-Patient is assessed by clinician to have signs of severe disease-290';;'Patient is assessed by clinician to have signs of severe disease';'noMO0LAVw1A';290;0.00;0.00;11;53;;
-167;'MWI_MAL.QA-CCM 1-300';'MWI_MAL.QA-CCM 1-Signs Sev Dis-Supervisor, Do you agree with this assessment?-300';;'Supervisor, Do you agree with this assessment?';'v4roIzXm1xo';300;5.00;5.00;11;53;;14
+167;'MWI_MAL.QA-CCM 1-300';'MWI_MAL.QA-CCM 1-Signs Sev Dis-Supervisor, Do you agree with this assessment?-300';;'Supervisor: do you agree with this assessment?';'v4roIzXm1xo';300;5.00;5.00;11;53;;14
 169;'MWI_MAL.QA-CCM 1-320';'MWI_MAL.QA-CCM 1-Cl sev assess-Is the patient pregnant?-320';;'Is the patient pregnant?';'wsP3JDJRfwQ';320;1.00;1.00;12;55;168;14
 170;'MWI_MAL.QA-CCM 1-330';'MWI_MAL.QA-CCM 1-Cl sev assess-Was temperature taken?-330';;'Was temperature taken?';'T0VFCf57a66';330;2.00;2.00;12;53;168;14
 171;'MWI_MAL.QA-CCM 1-340';'MWI_MAL.QA-CCM 1-Cl sev assess-If taken, -340';;'If taken,';'cN5M7dYRsZI';340;0.00;0.00;12;68;168;
@@ -181,7 +159,7 @@
 184;'MWI_MAL.QA-CCM 1-470';'MWI_MAL.QA-CCM 1-Cl sev assess-Systolic blood pressure <50mm Hg in children and <80mm Hg in adults-470';;'Systolic blood pressure <50mm Hg in children and <80mm Hg in adults';'dLG5eh3DE2o';470;0.00;0.00;12;53;168;
 185;'MWI_MAL.QA-CCM 1-480';'MWI_MAL.QA-CCM 1-Cl sev assess-Altered consciousness-480';;'Altered consciousness';'YruHRhIUZFO';480;0.00;0.00;12;53;168;
 186;'MWI_MAL.QA-CCM 1-490';'MWI_MAL.QA-CCM 1-Cl sev assess-Other (specify)-490';;'Other (specify)';'F2kDKAiQEAH';490;0.00;0.00;12;25;168;
-187;'MWI_MAL.QA-CCM 1-500';'MWI_MAL.QA-CCM 1-Cl sev assess-Were other signs of severe disease present-500';;'Were other signs of severe disease present';'uyeNbbPckDa';500;0.00;0.00;12;53;168;
+187;'MWI_MAL.QA-CCM 1-500';'MWI_MAL.QA-CCM 1-Cl sev assess-Were other signs of severe disease present-500';;'Were other signs of severe disease present?';'uyeNbbPckDa';500;0.00;0.00;12;53;168;
 188;'MWI_MAL.QA-CCM 1-510';'MWI_MAL.QA-CCM 1-Cl hist-Does the clinician assess the patient to be a NON-severe case? -510';;'Does the clinician assess the patient to be a NON-severe case?';'tCbU4WkbWbP';510;0.00;0.00;13;53;;
 189;'MWI_MAL.QA-CCM 1-520';'MWI_MAL.QA-CCM 1-Cl hist-Presence of fever-520';;'Presence of fever';'IRWUOwZn3n2';520;1.00;1.00;13;78;188;14
 190;'MWI_MAL.QA-CCM 1-530';'MWI_MAL.QA-CCM 1-Cl hist-If yes, duration:-530';;'If yes, duration:';'Oo8q6tkvWB1';530;0.00;0.00;13;80;188;
@@ -219,9 +197,9 @@
 222;'MWI_MAL.QA-CCM 1-850';'MWI_MAL.QA-CCM 1-Agr-Supervisor: Did you agree with this assessment?-850';;'Supervisor: Did you agree with this assessment?';'u748y41rqLT';850;10.00;10.00;17;53;;14
 223;'MWI_MAL.QA-CCM 1-860';'MWI_MAL.QA-CCM 1-Mal Test-Did the clinician order a malaria test?-860';;'Did the clinician order a malaria test?';'F5OZumbFoBl';860;0.00;0.00;18;58;;
 224;'MWI_MAL.QA-CCM 1-870';'MWI_MAL.QA-CCM 1-Mal Test-If yes, indicate the type of test-870';;'If yes, indicate the type of test';'UZmZQFkdwp3';870;0.00;0.00;18;10;223;
-225;'MWI_MAL.QA-CCM 1-880';'MWI_MAL.QA-CCM 1-Mal Test-Supervisor, do you agree with clinician''s decision to order or not order a malaria test? -880';;'Supervisor, do you agree with clinician''s decision to order or not order a malaria test?';'Eu1onLjCaV9';880;10.00;10.00;18;75;;14
+225;'MWI_MAL.QA-CCM 1-880';'MWI_MAL.QA-CCM 1-Mal Test-Supervisor, do you agree with clinician''s decision to order or not order a malaria test? -880';;'Supervisor: do you agree with clinician''s decision to order or not order a malaria test?';'Eu1onLjCaV9';880;10.00;10.00;18;75;;14
 226;'MWI_MAL.QA-CCM 1-890';'MWI_MAL.QA-CCM 1-Oth Test-Other tests ordered?-890';;'Other tests ordered?';'AwmS1SoRFgb';890;0.00;0.00;19;53;;
-227;'MWI_MAL.QA-CCM 1-900';'MWI_MAL.QA-CCM 1-Oth Test-Indicate the other tests ordered below-900';;'Indicate the other tests ordered below';'RCuD5IikPyz';900;0.00;0.00;19;49;226;
+227;'MWI_MAL.QA-CCM 1-900';'MWI_MAL.QA-CCM 1-Oth Test-Indicate the other tests ordered below-900';;'Indicate the other tests ordered below:';'RCuD5IikPyz';900;0.00;0.00;19;49;226;
 228;'MWI_MAL.QA-CCM 1-910';'MWI_MAL.QA-CCM 1-Oth Test-Hemoglobin/hematocrit -910';;'Hemoglobin/hematocrit';'xrlftnOOKap';910;0.00;0.00;19;53;226;
 229;'MWI_MAL.QA-CCM 1-920';'MWI_MAL.QA-CCM 1-Oth Test-Blood glucose -920';;'Blood glucose';'GeAvOniNIYR';920;0.00;0.00;19;53;226;
 230;'MWI_MAL.QA-CCM 1-930';'MWI_MAL.QA-CCM 1-Oth Test-Platelet count-930';;'Platelet count';'TxBLgYOwHEn';930;0.00;0.00;19;53;226;
@@ -233,14 +211,14 @@
 236;'MWI_MAL.QA-CCM 1-990';'MWI_MAL.QA-CCM 1-Oth Test-Lumbar puncture-990';;'Lumbar puncture';'x4yIuwC7QvY';990;0.00;0.00;19;53;226;
 237;'MWI_MAL.QA-CCM 1-1000';'MWI_MAL.QA-CCM 1-Oth Test-Other tests, specify-1000';;'Other tests, specify';'WserNt2YTuk';1000;0.00;0.00;19;25;226;
 238;'MWI_MAL.QA-CCM 1-1010';'MWI_MAL.QA-CCM 1-Diag Test res-This section should be completed on the same patient after testing, if any, is completed-1010';;'This section should be completed on the same patient after testing, if any, is completed';'nuEA4mSjKHI';1010;0.00;0.00;20;49;;
-239;'MWI_MAL.QA-CCM 1-1020';'MWI_MAL.QA-CCM 1-Diag Test res-What type of test was done?-1020';;'What type of test was done?';'Dxcla4mTuaX';1020;0.00;0.00;20;62;;
-240;'MWI_MAL.QA-CCM 1-1030';'MWI_MAL.QA-CCM 1-Diag Test res-Test result-1030';;'Test result';'J1ksg2X9NH5';1030;0.00;0.00;20;7;;
+239;'MWI_MAL.QA-CCM 1-1020';'MWI_MAL.QA-CCM 1-Diag Test res-What type of test was done?-1020';;'What type of malaria test was done?';'Dxcla4mTuaX';1020;0.00;0.00;20;62;;
+240;'MWI_MAL.QA-CCM 1-1030';'MWI_MAL.QA-CCM 1-Diag Test res-Test result-1030';;'Malaria test result';'J1ksg2X9NH5';1030;0.00;0.00;20;7;;
 241;'MWI_MAL.QA-CCM 1-1040';'MWI_MAL.QA-CCM 1-Diag Test res-Other test results-1040';;'Other test results';'LNv3PYMobSh';1040;0.00;0.00;20;49;;
 242;'MWI_MAL.QA-CCM 1-1050';'MWI_MAL.QA-CCM 1-Diag Test res-Hemoglobin/hematocrit result(s) -1050';;'Hemoglobin/hematocrit result(s)';'I1CNzu4exy6';1050;0.00;0.00;20;44;;
 243;'MWI_MAL.QA-CCM 1-1060';'MWI_MAL.QA-CCM 1-Diag Test res-Blood glucose results -1060';;'Blood glucose results';'JguTRJaCgIN';1060;0.00;0.00;20;44;;
 244;'MWI_MAL.QA-CCM 1-1070';'MWI_MAL.QA-CCM 1-Diag Test res-Urinalysis-1070';;'Urinalysis';'SzXu3fHBHpi';1070;0.00;0.00;20;44;;
 245;'MWI_MAL.QA-CCM 1-1080';'MWI_MAL.QA-CCM 1-Diag Test res-Lumbar puncture-1080';;'Lumbar puncture';'ndkk7NlexVg';1080;0.00;0.00;20;44;;
-246;'MWI_MAL.QA-CCM 1-1090';'MWI_MAL.QA-CCM 1-Diag Test res-What is your final diagnosis (check all that apply or Diagnosis unknown)-1090';;'What is your final diagnosis (check all that apply or Diagnosis unknown)';'lO7jfr9cLSk';1090;0.00;0.00;20;49;;
+246;'MWI_MAL.QA-CCM 1-1090';'MWI_MAL.QA-CCM 1-Diag Test res-What is your final diagnosis (check all that apply or Diagnosis unknown)-1090';;'What is your final diagnosis? (Check all that apply or "Diagnosis unknown")';'lO7jfr9cLSk';1090;0.00;0.00;20;49;;
 247;'MWI_MAL.QA-CCM 1-1100';'MWI_MAL.QA-CCM 1-Diag Test res-Malaria-1100';;'Malaria';'mjLhFGEOpRN';1100;0.00;0.00;20;53;;
 248;'MWI_MAL.QA-CCM 1-1110';'MWI_MAL.QA-CCM 1-Diag Test res-Acute respiratory infection (ARI)-1110';;'Acute respiratory infection (ARI)';'VwYRkS2que4';1110;0.00;0.00;20;53;;
 249;'MWI_MAL.QA-CCM 1-1120';'MWI_MAL.QA-CCM 1-Diag Test res-Enteritis-1120';;'Enteritis';'SqnlzkjLg5U';1120;0.00;0.00;20;53;;
@@ -250,8 +228,8 @@
 253;'MWI_MAL.QA-CCM 1-1160';'MWI_MAL.QA-CCM 1-Diag Test res-Diagnosis unknown (no discernible diagnosis)-1160';;'Diagnosis unknown (no discernible diagnosis)';'FZIgW8krCz3';1160;0.00;0.00;20;53;;
 254;'MWI_MAL.QA-CCM 1-1170';'MWI_MAL.QA-CCM 1-Diag Test res-Did the clinician assess the patient to have severe or non-severe disease? -1170';;'Did the clinician assess the patient to have severe or non-severe disease?';'wH5fHqq0AsJ';1170;0.00;0.00;20;63;;
 255;'MWI_MAL.QA-CCM 1-1180';'MWI_MAL.QA-CCM 1-Tx-Antimalarial prescribed-1180';;'Antimalarial prescribed';'QuXHPvlN4zF';1180;0.00;0.00;21;89;;
-256;'MWI_MAL.QA-CCM 1-1190';'MWI_MAL.QA-CCM 1-Tx-Supervisor, does the treatment prescribed match the test result and disease severity assessment?-1190';;'Supervisor, does the treatment prescribed match the test result and disease severity assessment?';'Lu4ErScV2yl';1190;15.00;15.00;21;53;;15
-257;'MWI_MAL.QA-CCM 1-1200';'MWI_MAL.QA-CCM 1-Tx-If antimalarial drug prescribed, was it prescribed in correct dosage and duration (as specified in national guidelinees and described in dosing table)-1200';;'If antimalarial drug prescribed, was it prescribed in correct dosage and duration (as specified in national guidelinees and described in dosing table)';'zmPyLWniKd5';1200;5.00;5.00;21;56;;15
+256;'MWI_MAL.QA-CCM 1-1190';'MWI_MAL.QA-CCM 1-Tx-Supervisor, does the treatment prescribed match the test result and disease severity assessment?-1190';;'Supervisor: does the treatment prescribed match the test result and disease severity assessment?';'Lu4ErScV2yl';1190;15.00;15.00;21;53;;15
+257;'MWI_MAL.QA-CCM 1-1200';'MWI_MAL.QA-CCM 1-Tx-If antimalarial drug prescribed, was it prescribed in correct dosage and duration (as specified in national guidelinees and described in dosing table)-1200';;'If antimalarial drug prescribed, was it prescribed in correct dosage and duration (as specified in national guidelines and described in dosing table)?';'zmPyLWniKd5';1200;5.00;5.00;21;56;;15
 258;'MWI_MAL.QA-CCM 1-1210';'MWI_MAL.QA-CCM 1-Tx-Antibiotics prescribed-1210';;'Antibiotics prescribed';'I4YzGfYBjbI';1210;0.00;0.00;21;53;;
 259;'MWI_MAL.QA-CCM 1-1220';'MWI_MAL.QA-CCM 1-Tx-Indicate prescribed antibiotic below-1220';;'Indicate prescribed antibiotic below';'e84chMr8HUU';1220;0.00;0.00;21;49;258;
 260;'MWI_MAL.QA-CCM 1-1230';'MWI_MAL.QA-CCM 1-Tx-Trimethoprim-sulfamethoxazole (cotrimoxazole)-1230';;'Trimethoprim-sulfamethoxazole (cotrimoxazole)';'d33W8rHhxx1';1230;0.00;0.00;21;53;258;
@@ -263,18 +241,18 @@
 266;'MWI_MAL.QA-CCM 1-1290';'MWI_MAL.QA-CCM 1-Tx-ORS-1290';;'ORS';'NX0CYcM1Via';1290;0.00;0.00;21;53;264;
 267;'MWI_MAL.QA-CCM 1-1300';'MWI_MAL.QA-CCM 1-Tx-ZINC-1300';;'ZINC';'zXeqVVU6Myd';1300;0.00;0.00;21;53;264;
 268;'MWI_MAL.QA-CCM 1-1310';'MWI_MAL.QA-CCM 1-Tx-Other treatment (specify)-1310';;'Other treatment (specify)';'t0Oxnk1tGLA';1310;0.00;0.00;21;26;264;
-269;'MWI_MAL.QA-CCM 1-1320';'MWI_MAL.QA-CCM 1-Tx-Other medications prescribed?-1320';;'Other medications prescribed?';'eu3AD24nJkn';1320;0.00;0.00;21;53;;
+269;'MWI_MAL.QA-CCM 1-1320';'MWI_MAL.QA-CCM 1-Tx-Other medications prescribed?-1320';;'Other medications prescribed';'eu3AD24nJkn';1320;0.00;0.00;21;53;;
 270;'MWI_MAL.QA-CCM 1-1330';'MWI_MAL.QA-CCM 1-Tx-Paracetamol-1330';;'Paracetamol';'JvqBumyb38V';1330;0.00;0.00;21;53;269;
 271;'MWI_MAL.QA-CCM 1-1340';'MWI_MAL.QA-CCM 1-Tx-Vitamins (specify)-1340';;'Vitamins (specify)';'a85yvvJC5sy';1340;0.00;0.00;21;26;269;
 272;'MWI_MAL.QA-CCM 1-1350';'MWI_MAL.QA-CCM 1-Tx-Other (specify)-1350';;'Other (specify)';'WjVt680QR7h';1350;0.00;0.00;21;26;269;
 273;'MWI_MAL.QA-CCM 1-1360';'MWI_MAL.QA-CCM 1-Com: Unc disease-Provider communication with the patient and caregiver-1360';;'Provider communication with the patient and caregiver';'AkYtFksnJkI';1360;0.00;0.00;22;49;;
-274;'MWI_MAL.QA-CCM 1-1370';'MWI_MAL.QA-CCM 1-Com: Unc disease-Was patient found to have uncomplicated disease-1370';;'Was patient found to have uncomplicated disease';'eg599SDMRpo';1370;0.00;0.00;22;53;;
+274;'MWI_MAL.QA-CCM 1-1370';'MWI_MAL.QA-CCM 1-Com: Unc disease-Was patient found to have uncomplicated disease-1370';;'Was patient found to have uncomplicated disease?';'eg599SDMRpo';1370;0.00;0.00;22;53;;
 275;'MWI_MAL.QA-CCM 1-1380';'MWI_MAL.QA-CCM 1-Com: Unc disease-Caregiver informed on what is wrong with the patient-1380';;'Caregiver informed on what is wrong with the patient';'Q9V4mz7gomI';1380;2.00;2.00;22;53;274;15
 276;'MWI_MAL.QA-CCM 1-1390';'MWI_MAL.QA-CCM 1-Com: Unc disease-Advice given on how to take the prescribed medications-1390';;'Advice given on how to take the prescribed medications';'iMNoUATN2a2';1390;2.00;2.00;22;53;274;15
 277;'MWI_MAL.QA-CCM 1-1400';'MWI_MAL.QA-CCM 1-Com: Unc disease-Advice given on when to return for follow-up evaluation-1400';;'Advice given on when to return for follow-up evaluation';'pmM63fwcfGE';1400;2.00;2.00;22;53;274;15
 278;'MWI_MAL.QA-CCM 1-1410';'MWI_MAL.QA-CCM 1-Com: Unc disease-Advice given on malaria prevention measures-1410';;'Advice given on malaria prevention measures';'sZNCZ0tGfkI';1410;1.00;1.00;22;53;274;15
 279;'MWI_MAL.QA-CCM 1-1420';'MWI_MAL.QA-CCM 1-Com: Unc disease-Caregiver and/or patient asked if they have any questions-1420';;'Caregiver and/or patient asked if they have any questions';'fxEOBprNIGZ';1420;1.00;1.00;22;53;274;15
-280;'MWI_MAL.QA-CCM 1-1430';'MWI_MAL.QA-CCM 1-Com: Sev disease-Was patient found to have severe disease-1430';;'Was patient found to have severe disease';'XR8Z5HkmjJ2';1430;0.00;0.00;23;53;;
+280;'MWI_MAL.QA-CCM 1-1430';'MWI_MAL.QA-CCM 1-Com: Sev disease-Was patient found to have severe disease-1430';;'Was patient found to have severe disease?';'XR8Z5HkmjJ2';1430;0.00;0.00;23;53;;
 281;'MWI_MAL.QA-CCM 1-1440';'MWI_MAL.QA-CCM 1-Sev dis-Admission or Referral-1440';;'Admission or Referral';'MffbLNfXjTY';1440;0.00;0.00;24;49;280;
 282;'MWI_MAL.QA-CCM 1-1450';'MWI_MAL.QA-CCM 1-Sev dis-Was the patient referred or admitted for treatment?-1450';;'Was the patient referred or admitted for treatment?';'lhiQaY0nKb1';1450;3.00;3.00;24;53;280;15
 283;'MWI_MAL.QA-CCM 1-1460';'MWI_MAL.QA-CCM 1-Sev dis-If yes, where was the patient sent for treatment? -1460';;'If yes, where was the patient sent for treatment?';'NSamWYYyr1D';1460;0.00;0.00;24;49;280;
@@ -288,13 +266,12 @@
 291;'MWI_MAL.QA-CCM 1-1540';'MWI_MAL.QA-CCM 1-Sev dis-Caregiver and/or patient asked if there are questions-1540';;'Caregiver and/or patient asked if there are questions';'w0B203XLOIs';1540;1.00;1.00;24;53;280;15
 292;'MWI_MAL.QA-CCM 2-100';'MWI_MAL.QA-CCM 2-HW Info-Sex-100';;'Sex';'d3oHykjaJQK';100;0.00;0.00;25;73;;
 293;'MWI_MAL.QA-CCM 2-110';'MWI_MAL.QA-CCM 2-HW Info-Type of provider-110';;'Type of provider';'aboEqqSVUzw';110;0.00;0.00;25;87;;
-294;'MWI_MAL.QA-CCM 2-120';'MWI_MAL.QA-CCM 2-HW Info-Has this provider been trained in malaria case management-120';;'Has this provider been trained in malaria case management';'HR3UY9RktuW';120;0.00;0.00;25;53;;
-295;'MWI_MAL.QA-CCM 2-130';'MWI_MAL.QA-CCM 2-Rec-Patient and care giver welcomed?-130';;'Patient and care giver welcomed?';'UUxZGBgwEz5';130;0.00;0.00;26;53;;
-296;'MWI_MAL.QA-CCM 2-140';'MWI_MAL.QA-CCM 2-Rec-Referred from another facility?-140';;'Referred from another facility?';'INV5qi1vn3E';140;0.00;0.00;26;78;;
-297;'MWI_MAL.QA-CCM 2-150';'MWI_MAL.QA-CCM 2-Rec-Age of patient determined?-150';;'Age of patient determined?';'fV315QBu1HS';150;1.00;1.00;26;53;;17
-299;'MWI_MAL.QA-CCM 2-170';'MWI_MAL.QA-CCM 2-Rec-Weight of patient determined?-170';;'Weight of patient determined?';'HMkIP7TLHEj';170;1.00;1.00;26;53;;17
-301;'MWI_MAL.QA-CCM 2-190';'MWI_MAL.QA-CCM 2-Signs Sev Dis-Signs of severe disease found by the clinician (check all that apply)-190';;'Signs of severe disease found by the clinician (check all that apply)';'Shc9DmSKLR6';190;0.00;0.00;27;49;;
-302;'MWI_MAL.QA-CCM 2-200';'MWI_MAL.QA-CCM 2-Signs Sev Dis-Did clinician check for any signs of severe disease, or were signs of severe disease apparent? -200';;'Did clinician check for any signs of severe disease, or were signs of severe disease apparent?';'rHsEthAl1Wx';200;8.00;8.00;27;53;;17
+294;'MWI_MAL.QA-CCM 2-120';'MWI_MAL.QA-CCM 2-HW Info-Has this provider been trained in malaria case management-120';;'Has this provider been trained in malaria case management?';'HR3UY9RktuW';120;0.00;0.00;25;53;;
+295;'MWI_MAL.QA-CCM 2-130';'MWI_MAL.QA-CCM 2-Rec-Patient and care giver welcomed?-130';;'Patient and care giver welcomed';'UUxZGBgwEz5';130;0.00;0.00;26;53;;
+296;'MWI_MAL.QA-CCM 2-140';'MWI_MAL.QA-CCM 2-Rec-Referred from another facility?-140';;'Referred from another facility';'INV5qi1vn3E';140;0.00;0.00;26;78;;
+297;'MWI_MAL.QA-CCM 2-150';'MWI_MAL.QA-CCM 2-Rec-Age of patient determined?-150';;'Age of patient determined';'fV315QBu1HS';150;1.00;1.00;26;53;;17
+299;'MWI_MAL.QA-CCM 2-170';'MWI_MAL.QA-CCM 2-Rec-Weight of patient determined?-170';;'Weight of patient determined';'HMkIP7TLHEj';170;1.00;1.00;26;53;;17
+301;'MWI_MAL.QA-CCM 2-190';'MWI_MAL.QA-CCM 2-Signs Sev Dis-Signs of severe disease found by the clinician (check all that apply)-190';;'Signs of severe disease found by the clinician';'Shc9DmSKLR6';190;0.00;0.00;27;49;;
 303;'MWI_MAL.QA-CCM 2-210';'MWI_MAL.QA-CCM 2-Signs Sev Dis-Change in behavior, altered consciousness or coma     -210';;'Change in behavior, altered consciousness or coma';'WlrXhiMwz1N';210;0.00;0.00;27;14;302;
 304;'MWI_MAL.QA-CCM 2-220';'MWI_MAL.QA-CCM 2-Signs Sev Dis-Convulsions-220';;'Convulsions';'qE1b2hdyVrj';220;0.00;0.00;27;14;302;
 305;'MWI_MAL.QA-CCM 2-230';'MWI_MAL.QA-CCM 2-Signs Sev Dis-Reduced urinary output or dark urine    -230';;'Reduced urinary output or dark urine';'xasccVf1qjS';230;0.00;0.00;27;14;302;
@@ -304,7 +281,7 @@
 309;'MWI_MAL.QA-CCM 2-270';'MWI_MAL.QA-CCM 2-Signs Sev Dis-Deep breathing/respiratory distress-270';;'Deep breathing/respiratory distress';'kAReLKvEMzA';270;0.00;0.00;27;14;302;
 310;'MWI_MAL.QA-CCM 2-280';'MWI_MAL.QA-CCM 2-Signs Sev Dis-Jaundice (yellow eyes or skin)-280';;'Jaundice (yellow eyes or skin)';'RftiJhkuXQo';280;0.00;0.00;27;14;302;
 311;'MWI_MAL.QA-CCM 2-290';'MWI_MAL.QA-CCM 2-Signs Sev Dis-Patient is assessed by clinician to have signs of severe disease-290';;'Patient is assessed by clinician to have signs of severe disease';'yb32HZmQH3v';290;0.00;0.00;27;53;;
-312;'MWI_MAL.QA-CCM 2-300';'MWI_MAL.QA-CCM 2-Signs Sev Dis-Supervisor, Do you agree with this assessment?-300';;'Supervisor, Do you agree with this assessment?';'yexim08nr6g';300;5.00;5.00;27;53;;17
+312;'MWI_MAL.QA-CCM 2-300';'MWI_MAL.QA-CCM 2-Signs Sev Dis-Supervisor, Do you agree with this assessment?-300';;'Supervisor: Do you agree with this assessment?';'yexim08nr6g';300;5.00;5.00;27;53;;17
 314;'MWI_MAL.QA-CCM 2-320';'MWI_MAL.QA-CCM 2-Cl sev assess-Is the patient pregnant?-320';;'Is the patient pregnant?';'ieJ2sGniOpG';320;1.00;1.00;28;55;311;17
 315;'MWI_MAL.QA-CCM 2-330';'MWI_MAL.QA-CCM 2-Cl sev assess-Was temperature taken?-330';;'Was temperature taken?';'IGBPIUxUghH';330;2.00;2.00;28;53;311;17
 316;'MWI_MAL.QA-CCM 2-340';'MWI_MAL.QA-CCM 2-Cl sev assess-If taken, -340';;'If taken,';'ENLhgLjFFHU';340;0.00;0.00;28;68;311;
@@ -323,7 +300,7 @@
 329;'MWI_MAL.QA-CCM 2-470';'MWI_MAL.QA-CCM 2-Cl sev assess-Systolic blood pressure <50mm Hg in children and <80mm Hg in adults-470';;'Systolic blood pressure <50mm Hg in children and <80mm Hg in adults';'LjuLvfc6SZZ';470;0.00;0.00;28;53;311;
 330;'MWI_MAL.QA-CCM 2-480';'MWI_MAL.QA-CCM 2-Cl sev assess-Altered consciousness-480';;'Altered consciousness';'l4uHA9tTSaA';480;0.00;0.00;28;53;311;
 331;'MWI_MAL.QA-CCM 2-490';'MWI_MAL.QA-CCM 2-Cl sev assess-Other (specify)-490';;'Other (specify)';'iAlHaLXVsch';490;0.00;0.00;28;25;311;
-332;'MWI_MAL.QA-CCM 2-500';'MWI_MAL.QA-CCM 2-Cl sev assess-Were other signs of severe disease present-500';;'Were other signs of severe disease present';'Txoiu5bnNnh';500;0.00;0.00;28;53;311;
+332;'MWI_MAL.QA-CCM 2-500';'MWI_MAL.QA-CCM 2-Cl sev assess-Were other signs of severe disease present-500';;'Were other signs of severe disease present?';'Txoiu5bnNnh';500;0.00;0.00;28;53;311;
 333;'MWI_MAL.QA-CCM 2-510';'MWI_MAL.QA-CCM 2-Cl hist-Does the clinician assess the patient to be a NON-severe case? -510';;'Does the clinician assess the patient to be a NON-severe case?';'xsRy0P7GSCa';510;0.00;0.00;29;53;;
 334;'MWI_MAL.QA-CCM 2-520';'MWI_MAL.QA-CCM 2-Cl hist-Presence of fever-520';;'Presence of fever';'OayKbNRFUCk';520;1.00;1.00;29;78;333;17
 335;'MWI_MAL.QA-CCM 2-530';'MWI_MAL.QA-CCM 2-Cl hist-If yes, duration:-530';;'If yes, duration:';'Hbzqb3S7svj';530;0.00;0.00;29;80;333;
@@ -361,9 +338,9 @@
 367;'MWI_MAL.QA-CCM 2-850';'MWI_MAL.QA-CCM 2-Agr-Supervisor: Did you agree with this assessment?-850';;'Supervisor: Did you agree with this assessment?';'w8kSQkWpu6q';850;10.00;10.00;33;53;;17
 368;'MWI_MAL.QA-CCM 2-860';'MWI_MAL.QA-CCM 2-Mal Test-Did the clinician order a malaria test?-860';;'Did the clinician order a malaria test?';'qNQbhSCK1xw';860;0.00;0.00;34;58;;
 369;'MWI_MAL.QA-CCM 2-870';'MWI_MAL.QA-CCM 2-Mal Test-If yes, indicate the type of test-870';;'If yes, indicate the type of test';'xuF3eG8fUZX';870;0.00;0.00;34;10;368;
-370;'MWI_MAL.QA-CCM 2-880';'MWI_MAL.QA-CCM 2-Mal Test-Supervisor, do you agree with clinician''s decision to order or not order a malaria test? -880';;'Supervisor, do you agree with clinician''s decision to order or not order a malaria test?';'dVAA12oGq9U';880;10.00;10.00;34;75;;17
+370;'MWI_MAL.QA-CCM 2-880';'MWI_MAL.QA-CCM 2-Mal Test-Supervisor, do you agree with clinician''s decision to order or not order a malaria test? -880';;'Supervisor: Do you agree with clinician''s decision to order or not order a malaria test?';'dVAA12oGq9U';880;10.00;10.00;34;75;;17
 371;'MWI_MAL.QA-CCM 2-890';'MWI_MAL.QA-CCM 2-Oth Test-Other tests ordered?-890';;'Other tests ordered?';'OmFhcxkiB8B';890;0.00;0.00;35;53;;
-372;'MWI_MAL.QA-CCM 2-900';'MWI_MAL.QA-CCM 2-Oth Test-Indicate the other tests ordered below-900';;'Indicate the other tests ordered below';'N65Dg95FTFn';900;0.00;0.00;35;49;371;
+372;'MWI_MAL.QA-CCM 2-900';'MWI_MAL.QA-CCM 2-Oth Test-Indicate the other tests ordered below-900';;'Indicate the other tests ordered below:';'N65Dg95FTFn';900;0.00;0.00;35;49;371;
 373;'MWI_MAL.QA-CCM 2-910';'MWI_MAL.QA-CCM 2-Oth Test-Hemoglobin/hematocrit -910';;'Hemoglobin/hematocrit';'kDNgRS5RWJp';910;0.00;0.00;35;53;371;
 374;'MWI_MAL.QA-CCM 2-920';'MWI_MAL.QA-CCM 2-Oth Test-Blood glucose -920';;'Blood glucose';'N5CdApU6TLV';920;0.00;0.00;35;53;371;
 375;'MWI_MAL.QA-CCM 2-930';'MWI_MAL.QA-CCM 2-Oth Test-Platelet count-930';;'Platelet count';'cC3p4nUsDdR';930;0.00;0.00;35;53;371;
@@ -375,14 +352,14 @@
 381;'MWI_MAL.QA-CCM 2-990';'MWI_MAL.QA-CCM 2-Oth Test-Lumbar puncture-990';;'Lumbar puncture';'hrOqxvNEeKe';990;0.00;0.00;35;53;371;
 382;'MWI_MAL.QA-CCM 2-1000';'MWI_MAL.QA-CCM 2-Oth Test-Other tests, specify-1000';;'Other tests, specify';'jNd8X4zNFns';1000;0.00;0.00;35;25;371;
 383;'MWI_MAL.QA-CCM 2-1010';'MWI_MAL.QA-CCM 2-Diag Test res-This section should be completed on the same patient after testing, if any, is completed-1010';;'This section should be completed on the same patient after testing, if any, is completed';'OhGtjDosc19';1010;0.00;0.00;36;49;;
-384;'MWI_MAL.QA-CCM 2-1020';'MWI_MAL.QA-CCM 2-Diag Test res-What type of test was done?-1020';;'What type of test was done?';'dxvN3zRnnca';1020;0.00;0.00;36;62;;
-385;'MWI_MAL.QA-CCM 2-1030';'MWI_MAL.QA-CCM 2-Diag Test res-Test result-1030';;'Test result';'dNpSLxGsgr6';1030;0.00;0.00;36;7;;
+384;'MWI_MAL.QA-CCM 2-1020';'MWI_MAL.QA-CCM 2-Diag Test res-What type of test was done?-1020';;'What type of malaria test was done?';'dxvN3zRnnca';1020;0.00;0.00;36;62;;
+385;'MWI_MAL.QA-CCM 2-1030';'MWI_MAL.QA-CCM 2-Diag Test res-Test result-1030';;'Malaria test result';'dNpSLxGsgr6';1030;0.00;0.00;36;7;;
 386;'MWI_MAL.QA-CCM 2-1040';'MWI_MAL.QA-CCM 2-Diag Test res-Other test results-1040';;'Other test results';'MpFkyq2YO0S';1040;0.00;0.00;36;49;;
 387;'MWI_MAL.QA-CCM 2-1050';'MWI_MAL.QA-CCM 2-Diag Test res-Hemoglobin/hematocrit result(s) -1050';;'Hemoglobin/hematocrit result(s)';'B6mpi5jq5BG';1050;0.00;0.00;36;44;;
 388;'MWI_MAL.QA-CCM 2-1060';'MWI_MAL.QA-CCM 2-Diag Test res-Blood glucose results -1060';;'Blood glucose results';'qHKjQxJ19ES';1060;0.00;0.00;36;44;;
 389;'MWI_MAL.QA-CCM 2-1070';'MWI_MAL.QA-CCM 2-Diag Test res-Urinalysis-1070';;'Urinalysis';'HKQ3WEvwqM7';1070;0.00;0.00;36;44;;
 390;'MWI_MAL.QA-CCM 2-1080';'MWI_MAL.QA-CCM 2-Diag Test res-Lumbar puncture-1080';;'Lumbar puncture';'ETOgmWvOZOg';1080;0.00;0.00;36;44;;
-391;'MWI_MAL.QA-CCM 2-1090';'MWI_MAL.QA-CCM 2-Diag Test res-What is your final diagnosis (check all that apply or Diagnosis unknown)-1090';;'What is your final diagnosis (check all that apply or Diagnosis unknown)';'Y62l0wlj1kA';1090;0.00;0.00;36;49;;
+391;'MWI_MAL.QA-CCM 2-1090';'MWI_MAL.QA-CCM 2-Diag Test res-What is your final diagnosis (check all that apply or Diagnosis unknown)-1090';;'What is your final diagnosis? (Check all that apply or "Diagnosis unknown")';'Y62l0wlj1kA';1090;0.00;0.00;36;49;;
 392;'MWI_MAL.QA-CCM 2-1100';'MWI_MAL.QA-CCM 2-Diag Test res-Malaria-1100';;'Malaria';'fhHGMb3oVx4';1100;0.00;0.00;36;53;;
 393;'MWI_MAL.QA-CCM 2-1110';'MWI_MAL.QA-CCM 2-Diag Test res-Acute respiratory infection (ARI)-1110';;'Acute respiratory infection (ARI)';'rMatSuLn10Z';1110;0.00;0.00;36;53;;
 394;'MWI_MAL.QA-CCM 2-1120';'MWI_MAL.QA-CCM 2-Diag Test res-Enteritis-1120';;'Enteritis';'ugfDzIvqOUQ';1120;0.00;0.00;36;53;;
@@ -392,8 +369,8 @@
 398;'MWI_MAL.QA-CCM 2-1160';'MWI_MAL.QA-CCM 2-Diag Test res-Diagnosis unknown (no discernible diagnosis)-1160';;'Diagnosis unknown (no discernible diagnosis)';'W09j2zfoaU4';1160;0.00;0.00;36;53;;
 399;'MWI_MAL.QA-CCM 2-1170';'MWI_MAL.QA-CCM 2-Diag Test res-Did the clinician assess the patient to have severe or non-severe disease? -1170';;'Did the clinician assess the patient to have severe or non-severe disease?';'vJQoSsdzVPx';1170;0.00;0.00;36;63;;
 400;'MWI_MAL.QA-CCM 2-1180';'MWI_MAL.QA-CCM 2-Tx-Antimalarial prescribed-1180';;'Antimalarial prescribed';'BQO5XNmrTgb';1180;0.00;0.00;37;89;;
-401;'MWI_MAL.QA-CCM 2-1190';'MWI_MAL.QA-CCM 2-Tx-Supervisor, does the treatment prescribed match the test result and disease severity assessment?-1190';;'Supervisor, does the treatment prescribed match the test result and disease severity assessment?';'KyV7nx6iHHX';1190;15.00;15.00;37;53;;18
-402;'MWI_MAL.QA-CCM 2-1200';'MWI_MAL.QA-CCM 2-Tx-If antimalarial drug prescribed, was it prescribed in correct dosage and duration (as specified in national guidelinees and described in dosing table)-1200';;'If antimalarial drug prescribed, was it prescribed in correct dosage and duration (as specified in national guidelinees and described in dosing table)';'PXdgVYpl7wj';1200;5.00;5.00;37;56;;18
+401;'MWI_MAL.QA-CCM 2-1190';'MWI_MAL.QA-CCM 2-Tx-Supervisor, does the treatment prescribed match the test result and disease severity assessment?-1190';;'Supervisor: Does the treatment prescribed match the test result and disease severity assessment?';'KyV7nx6iHHX';1190;15.00;15.00;37;53;;18
+402;'MWI_MAL.QA-CCM 2-1200';'MWI_MAL.QA-CCM 2-Tx-If antimalarial drug prescribed, was it prescribed in correct dosage and duration (as specified in national guidelinees and described in dosing table)-1200';;'If antimalarial drug prescribed, was it prescribed in correct dosage and duration (as specified in national guidelines and described in dosing table)?';'PXdgVYpl7wj';1200;5.00;5.00;37;56;;18
 403;'MWI_MAL.QA-CCM 2-1210';'MWI_MAL.QA-CCM 2-Tx-Antibiotics prescribed-1210';;'Antibiotics prescribed';'AjODxUf2OuJ';1210;0.00;0.00;37;53;;
 404;'MWI_MAL.QA-CCM 2-1220';'MWI_MAL.QA-CCM 2-Tx-Indicate prescribed antibiotic below-1220';;'Indicate prescribed antibiotic below';'wkjnvseg7Q7';1220;0.00;0.00;37;49;403;
 405;'MWI_MAL.QA-CCM 2-1230';'MWI_MAL.QA-CCM 2-Tx-Trimethoprim-sulfamethoxazole (cotrimoxazole)-1230';;'Trimethoprim-sulfamethoxazole (cotrimoxazole)';'fDh9Ak79FZ5';1230;0.00;0.00;37;53;403;
@@ -405,18 +382,18 @@
 411;'MWI_MAL.QA-CCM 2-1290';'MWI_MAL.QA-CCM 2-Tx-ORS-1290';;'ORS';'hLwowYJTDoE';1290;0.00;0.00;37;53;409;
 412;'MWI_MAL.QA-CCM 2-1300';'MWI_MAL.QA-CCM 2-Tx-ZINC-1300';;'ZINC';'ZtfWpM7r25s';1300;0.00;0.00;37;53;409;
 413;'MWI_MAL.QA-CCM 2-1310';'MWI_MAL.QA-CCM 2-Tx-Other treatment (specify)-1310';;'Other treatment (specify)';'zoW8LpiDNlI';1310;0.00;0.00;37;26;409;
-414;'MWI_MAL.QA-CCM 2-1320';'MWI_MAL.QA-CCM 2-Tx-Other medications prescribed?-1320';;'Other medications prescribed?';'RhyLLRS1tjI';1320;0.00;0.00;37;53;;
+414;'MWI_MAL.QA-CCM 2-1320';'MWI_MAL.QA-CCM 2-Tx-Other medications prescribed?-1320';;'Other medications prescribed';'RhyLLRS1tjI';1320;0.00;0.00;37;53;;
 415;'MWI_MAL.QA-CCM 2-1330';'MWI_MAL.QA-CCM 2-Tx-Paracetamol-1330';;'Paracetamol';'wTs6T8UEmC8';1330;0.00;0.00;37;53;414;
 416;'MWI_MAL.QA-CCM 2-1340';'MWI_MAL.QA-CCM 2-Tx-Vitamins (specify)-1340';;'Vitamins (specify)';'NzVIrDNK2SL';1340;0.00;0.00;37;26;414;
 417;'MWI_MAL.QA-CCM 2-1350';'MWI_MAL.QA-CCM 2-Tx-Other (specify)-1350';;'Other (specify)';'yh9NZcY8FRO';1350;0.00;0.00;37;26;414;
 418;'MWI_MAL.QA-CCM 2-1360';'MWI_MAL.QA-CCM 2-Com: Unc disease-Provider communication with the patient and caregiver-1360';;'Provider communication with the patient and caregiver';'cLsjAHgFyVJ';1360;0.00;0.00;38;49;;
-419;'MWI_MAL.QA-CCM 2-1370';'MWI_MAL.QA-CCM 2-Com: Unc disease-Was patient found to have uncomplicated disease-1370';;'Was patient found to have uncomplicated disease';'x6JBpxPLTMg';1370;0.00;0.00;38;53;;
+419;'MWI_MAL.QA-CCM 2-1370';'MWI_MAL.QA-CCM 2-Com: Unc disease-Was patient found to have uncomplicated disease-1370';;'Was patient found to have uncomplicated disease?';'x6JBpxPLTMg';1370;0.00;0.00;38;53;;
 420;'MWI_MAL.QA-CCM 2-1380';'MWI_MAL.QA-CCM 2-Com: Unc disease-Caregiver informed on what is wrong with the patient-1380';;'Caregiver informed on what is wrong with the patient';'ixIdNtbcvg5';1380;2.00;2.00;38;53;419;18
 421;'MWI_MAL.QA-CCM 2-1390';'MWI_MAL.QA-CCM 2-Com: Unc disease-Advice given on how to take the prescribed medications-1390';;'Advice given on how to take the prescribed medications';'J8wOyBdDq5A';1390;2.00;2.00;38;53;419;18
 422;'MWI_MAL.QA-CCM 2-1400';'MWI_MAL.QA-CCM 2-Com: Unc disease-Advice given on when to return for follow-up evaluation-1400';;'Advice given on when to return for follow-up evaluation';'ig2aEP3gKNs';1400;2.00;2.00;38;53;419;18
 423;'MWI_MAL.QA-CCM 2-1410';'MWI_MAL.QA-CCM 2-Com: Unc disease-Advice given on malaria prevention measures-1410';;'Advice given on malaria prevention measures';'oOiwkswTFDO';1410;1.00;1.00;38;53;419;18
 424;'MWI_MAL.QA-CCM 2-1420';'MWI_MAL.QA-CCM 2-Com: Unc disease-Caregiver and/or patient asked if they have any questions-1420';;'Caregiver and/or patient asked if they have any questions';'G3ChJ8b7dGB';1420;1.00;1.00;38;53;419;18
-425;'MWI_MAL.QA-CCM 2-1430';'MWI_MAL.QA-CCM 2-Com: Sev disease-Was patient found to have severe disease-1430';;'Was patient found to have severe disease';'pRp2py2RloG';1430;0.00;0.00;39;53;;
+425;'MWI_MAL.QA-CCM 2-1430';'MWI_MAL.QA-CCM 2-Com: Sev disease-Was patient found to have severe disease-1430';;'Was patient found to have severe disease?';'pRp2py2RloG';1430;0.00;0.00;39;53;;
 426;'MWI_MAL.QA-CCM 2-1440';'MWI_MAL.QA-CCM 2-Sev dis-Admission or Referral-1440';;'Admission or Referral';'LuAjtrmzgiz';1440;0.00;0.00;40;49;425;
 427;'MWI_MAL.QA-CCM 2-1450';'MWI_MAL.QA-CCM 2-Sev dis-Was the patient referred or admitted for treatment?-1450';;'Was the patient referred or admitted for treatment?';'tG1Yys30hD5';1450;3.00;3.00;40;53;425;18
 428;'MWI_MAL.QA-CCM 2-1460';'MWI_MAL.QA-CCM 2-Sev dis-If yes, where was the patient sent for treatment? -1460';;'If yes, where was the patient sent for treatment?';'BbauXDaP9Br';1460;0.00;0.00;40;49;425;
@@ -430,13 +407,12 @@
 436;'MWI_MAL.QA-CCM 2-1540';'MWI_MAL.QA-CCM 2-Sev dis-Caregiver and/or patient asked if there are questions-1540';;'Caregiver and/or patient asked if there are questions';'mowjZsMKlal';1540;1.00;1.00;40;53;425;18
 437;'MWI_MAL.QA-CCM 3-100';'MWI_MAL.QA-CCM 3-HW Info-Sex-100';;'Sex';'lQCrIB2RuWM';100;0.00;0.00;41;73;;
 438;'MWI_MAL.QA-CCM 3-110';'MWI_MAL.QA-CCM 3-HW Info-Type of provider-110';;'Type of provider';'fvChgQa3HsP';110;0.00;0.00;41;87;;
-439;'MWI_MAL.QA-CCM 3-120';'MWI_MAL.QA-CCM 3-HW Info-Has this provider been trained in malaria case management-120';;'Has this provider been trained in malaria case management';'pYcqkU2yAnL';120;0.00;0.00;41;53;;
-440;'MWI_MAL.QA-CCM 3-130';'MWI_MAL.QA-CCM 3-Rec-Patient and care giver welcomed?-130';;'Patient and care giver welcomed?';'HDFHRd7Mql0';130;0.00;0.00;42;53;;
-441;'MWI_MAL.QA-CCM 3-140';'MWI_MAL.QA-CCM 3-Rec-Referred from another facility?-140';;'Referred from another facility?';'lYy5Lgdz23x';140;0.00;0.00;42;78;;
-442;'MWI_MAL.QA-CCM 3-150';'MWI_MAL.QA-CCM 3-Rec-Age of patient determined?-150';;'Age of patient determined?';'Bc3davtxciQ';150;1.00;1.00;42;53;;20
-444;'MWI_MAL.QA-CCM 3-170';'MWI_MAL.QA-CCM 3-Rec-Weight of patient determined?-170';;'Weight of patient determined?';'wUmltv5KK48';170;1.00;1.00;42;53;;20
+439;'MWI_MAL.QA-CCM 3-120';'MWI_MAL.QA-CCM 3-HW Info-Has this provider been trained in malaria case management-120';;'Has this provider been trained in malaria case management?';'pYcqkU2yAnL';120;0.00;0.00;41;53;;
+440;'MWI_MAL.QA-CCM 3-130';'MWI_MAL.QA-CCM 3-Rec-Patient and care giver welcomed?-130';;'Patient and care giver welcomed';'HDFHRd7Mql0';130;0.00;0.00;42;53;;
+441;'MWI_MAL.QA-CCM 3-140';'MWI_MAL.QA-CCM 3-Rec-Referred from another facility?-140';;'Referred from another facility';'lYy5Lgdz23x';140;0.00;0.00;42;78;;
+442;'MWI_MAL.QA-CCM 3-150';'MWI_MAL.QA-CCM 3-Rec-Age of patient determined?-150';;'Age of patient determined';'Bc3davtxciQ';150;1.00;1.00;42;53;;20
+444;'MWI_MAL.QA-CCM 3-170';'MWI_MAL.QA-CCM 3-Rec-Weight of patient determined?-170';;'Weight of patient determined';'wUmltv5KK48';170;1.00;1.00;42;53;;20
 446;'MWI_MAL.QA-CCM 3-190';'MWI_MAL.QA-CCM 3-Signs Sev Dis-Signs of severe disease found by the clinician (check all that apply)-190';;'Signs of severe disease found by the clinician (check all that apply)';'LFGvy9zR2lx';190;0.00;0.00;43;49;;
-447;'MWI_MAL.QA-CCM 3-200';'MWI_MAL.QA-CCM 3-Signs Sev Dis-Did clinician check for any signs of severe disease, or were signs of severe disease apparent? -200';;'Did clinician check for any signs of severe disease, or were signs of severe disease apparent?';'t3pcgVsf2RM';200;8.00;8.00;43;53;;20
 448;'MWI_MAL.QA-CCM 3-210';'MWI_MAL.QA-CCM 3-Signs Sev Dis-Change in behavior, altered consciousness or coma     -210';;'Change in behavior, altered consciousness or coma';'JBQfbZuuyoR';210;0.00;0.00;43;14;448;
 449;'MWI_MAL.QA-CCM 3-220';'MWI_MAL.QA-CCM 3-Signs Sev Dis-Convulsions-220';;'Convulsions';'STSPWMgDvaC';220;0.00;0.00;43;14;448;
 450;'MWI_MAL.QA-CCM 3-230';'MWI_MAL.QA-CCM 3-Signs Sev Dis-Reduced urinary output or dark urine    -230';;'Reduced urinary output or dark urine';'ztqClrHV2ea';230;0.00;0.00;43;14;448;
@@ -446,7 +422,7 @@
 454;'MWI_MAL.QA-CCM 3-270';'MWI_MAL.QA-CCM 3-Signs Sev Dis-Deep breathing/respiratory distress-270';;'Deep breathing/respiratory distress';'SryjOg3rvHl';270;0.00;0.00;43;14;448;
 455;'MWI_MAL.QA-CCM 3-280';'MWI_MAL.QA-CCM 3-Signs Sev Dis-Jaundice (yellow eyes or skin)-280';;'Jaundice (yellow eyes or skin)';'FS6DPuzFOKL';280;0.00;0.00;43;14;448;
 456;'MWI_MAL.QA-CCM 3-290';'MWI_MAL.QA-CCM 3-Signs Sev Dis-Patient is assessed by clinician to have signs of severe disease-290';;'Patient is assessed by clinician to have signs of severe disease';'HsSORfqSXZr';290;0.00;0.00;43;53;;
-457;'MWI_MAL.QA-CCM 3-300';'MWI_MAL.QA-CCM 3-Signs Sev Dis-Supervisor, Do you agree with this assessment?-300';;'Supervisor, Do you agree with this assessment?';'Ttq9b56hMuX';300;5.00;5.00;43;53;;20
+457;'MWI_MAL.QA-CCM 3-300';'MWI_MAL.QA-CCM 3-Signs Sev Dis-Supervisor, Do you agree with this assessment?-300';;'Supervisor: Do you agree with this assessment?';'Ttq9b56hMuX';300;5.00;5.00;43;53;;20
 459;'MWI_MAL.QA-CCM 3-320';'MWI_MAL.QA-CCM 3-Cl sev assess-Is the patient pregnant?-320';;'Is the patient pregnant?';'Cay3JnETkaz';320;1.00;1.00;44;55;456;20
 460;'MWI_MAL.QA-CCM 3-330';'MWI_MAL.QA-CCM 3-Cl sev assess-Was temperature taken?-330';;'Was temperature taken?';'OluxhDxLnkK';330;2.00;2.00;44;53;456;20
 461;'MWI_MAL.QA-CCM 3-340';'MWI_MAL.QA-CCM 3-Cl sev assess-If taken, -340';;'If taken,';'y8KgLVetUF1';340;0.00;0.00;44;68;456;
@@ -465,7 +441,7 @@
 474;'MWI_MAL.QA-CCM 3-470';'MWI_MAL.QA-CCM 3-Cl sev assess-Systolic blood pressure <50mm Hg in children and <80mm Hg in adults-470';;'Systolic blood pressure <50mm Hg in children and <80mm Hg in adults';'nObSIRJWJji';470;0.00;0.00;44;53;456;
 475;'MWI_MAL.QA-CCM 3-480';'MWI_MAL.QA-CCM 3-Cl sev assess-Altered consciousness-480';;'Altered consciousness';'k1Jqq1B1fgM';480;0.00;0.00;44;53;456;
 476;'MWI_MAL.QA-CCM 3-490';'MWI_MAL.QA-CCM 3-Cl sev assess-Other (specify)-490';;'Other (specify)';'Dp5yFLTA1TM';490;0.00;0.00;44;25;456;
-477;'MWI_MAL.QA-CCM 3-500';'MWI_MAL.QA-CCM 3-Cl sev assess-Were other signs of severe disease present-500';;'Were other signs of severe disease present';'dmLy6O88KRD';500;0.00;0.00;44;53;456;
+477;'MWI_MAL.QA-CCM 3-500';'MWI_MAL.QA-CCM 3-Cl sev assess-Were other signs of severe disease present-500';;'Were other signs of severe disease present?';'dmLy6O88KRD';500;0.00;0.00;44;53;456;
 478;'MWI_MAL.QA-CCM 3-510';'MWI_MAL.QA-CCM 3-Cl hist-Does the clinician assess the patient to be a NON-severe case? -510';;'Does the clinician assess the patient to be a NON-severe case?';'HavyNzPO5aR';510;0.00;0.00;45;53;;
 479;'MWI_MAL.QA-CCM 3-520';'MWI_MAL.QA-CCM 3-Cl hist-Presence of fever-520';;'Presence of fever';'Cfhjjb1G6vZ';520;1.00;1.00;45;78;478;20
 480;'MWI_MAL.QA-CCM 3-530';'MWI_MAL.QA-CCM 3-Cl hist-If yes, duration:-530';;'If yes, duration:';'xJGiprQRFp1';530;0.00;0.00;45;80;478;
@@ -503,9 +479,9 @@
 512;'MWI_MAL.QA-CCM 3-850';'MWI_MAL.QA-CCM 3-Agr-Supervisor: Did you agree with this assessment?-850';;'Supervisor: Did you agree with this assessment?';'o3761R8EI2a';850;10.00;10.00;49;53;;20
 513;'MWI_MAL.QA-CCM 3-860';'MWI_MAL.QA-CCM 3-Mal Test-Did the clinician order a malaria test?-860';;'Did the clinician order a malaria test?';'oVvSvVAjECM';860;0.00;0.00;50;58;;
 514;'MWI_MAL.QA-CCM 3-870';'MWI_MAL.QA-CCM 3-Mal Test-If yes, indicate the type of test-870';;'If yes, indicate the type of test';'jObhVFqBeYd';870;0.00;0.00;50;10;513;
-515;'MWI_MAL.QA-CCM 3-880';'MWI_MAL.QA-CCM 3-Mal Test-Supervisor, do you agree with clinician''s decision to order or not order a malaria test? -880';;'Supervisor, do you agree with clinician''s decision to order or not order a malaria test?';'TglOLI2W4U0';880;10.00;10.00;50;75;;20
+515;'MWI_MAL.QA-CCM 3-880';'MWI_MAL.QA-CCM 3-Mal Test-Supervisor, do you agree with clinician''s decision to order or not order a malaria test? -880';;'Supervisor: Do you agree with clinician''s decision to order or not order a malaria test?';'TglOLI2W4U0';880;10.00;10.00;50;75;;20
 516;'MWI_MAL.QA-CCM 3-890';'MWI_MAL.QA-CCM 3-Oth Test-Other tests ordered?-890';;'Other tests ordered?';'JzR16K4lc84';890;0.00;0.00;51;53;;
-517;'MWI_MAL.QA-CCM 3-900';'MWI_MAL.QA-CCM 3-Oth Test-Indicate the other tests ordered below-900';;'Indicate the other tests ordered below';'N7CNoTW1A06';900;0.00;0.00;51;49;516;
+517;'MWI_MAL.QA-CCM 3-900';'MWI_MAL.QA-CCM 3-Oth Test-Indicate the other tests ordered below-900';;'Indicate the other tests ordered below:';'N7CNoTW1A06';900;0.00;0.00;51;49;516;
 518;'MWI_MAL.QA-CCM 3-910';'MWI_MAL.QA-CCM 3-Oth Test-Hemoglobin/hematocrit -910';;'Hemoglobin/hematocrit';'RN66ELeF2xM';910;0.00;0.00;51;53;516;
 519;'MWI_MAL.QA-CCM 3-920';'MWI_MAL.QA-CCM 3-Oth Test-Blood glucose -920';;'Blood glucose';'y2fNF0oEoOb';920;0.00;0.00;51;53;516;
 520;'MWI_MAL.QA-CCM 3-930';'MWI_MAL.QA-CCM 3-Oth Test-Platelet count-930';;'Platelet count';'iHa7F5u8ahj';930;0.00;0.00;51;53;516;
@@ -517,14 +493,14 @@
 526;'MWI_MAL.QA-CCM 3-990';'MWI_MAL.QA-CCM 3-Oth Test-Lumbar puncture-990';;'Lumbar puncture';'tG41ZzWvlRO';990;0.00;0.00;51;53;516;
 527;'MWI_MAL.QA-CCM 3-1000';'MWI_MAL.QA-CCM 3-Oth Test-Other tests, specify-1000';;'Other tests, specify';'p0S5MTCtuZr';1000;0.00;0.00;51;25;516;
 528;'MWI_MAL.QA-CCM 3-1010';'MWI_MAL.QA-CCM 3-Diag Test res-This section should be completed on the same patient after testing, if any, is completed-1010';;'This section should be completed on the same patient after testing, if any, is completed';'MBktxGssjNt';1010;0.00;0.00;52;49;;
-529;'MWI_MAL.QA-CCM 3-1020';'MWI_MAL.QA-CCM 3-Diag Test res-What type of test was done?-1020';;'What type of test was done?';'S373vNAAq0z';1020;0.00;0.00;52;62;;
-530;'MWI_MAL.QA-CCM 3-1030';'MWI_MAL.QA-CCM 3-Diag Test res-Test result-1030';;'Test result';'slwU8LVC0pW';1030;0.00;0.00;52;7;;
+529;'MWI_MAL.QA-CCM 3-1020';'MWI_MAL.QA-CCM 3-Diag Test res-What type of test was done?-1020';;'What type of malaria test was done?';'S373vNAAq0z';1020;0.00;0.00;52;62;;
+530;'MWI_MAL.QA-CCM 3-1030';'MWI_MAL.QA-CCM 3-Diag Test res-Test result-1030';;'Malaria test result';'slwU8LVC0pW';1030;0.00;0.00;52;7;;
 531;'MWI_MAL.QA-CCM 3-1040';'MWI_MAL.QA-CCM 3-Diag Test res-Other test results-1040';;'Other test results';'FRl0atFozeX';1040;0.00;0.00;52;49;;
 532;'MWI_MAL.QA-CCM 3-1050';'MWI_MAL.QA-CCM 3-Diag Test res-Hemoglobin/hematocrit result(s) -1050';;'Hemoglobin/hematocrit result(s)';'z8YUDTBMoEB';1050;0.00;0.00;52;44;;
 533;'MWI_MAL.QA-CCM 3-1060';'MWI_MAL.QA-CCM 3-Diag Test res-Blood glucose results -1060';;'Blood glucose results';'OWKf4LPUF2H';1060;0.00;0.00;52;44;;
 534;'MWI_MAL.QA-CCM 3-1070';'MWI_MAL.QA-CCM 3-Diag Test res-Urinalysis-1070';;'Urinalysis';'XaeSyMgidM0';1070;0.00;0.00;52;44;;
 535;'MWI_MAL.QA-CCM 3-1080';'MWI_MAL.QA-CCM 3-Diag Test res-Lumbar puncture-1080';;'Lumbar puncture';'sKGkyLS8sM3';1080;0.00;0.00;52;44;;
-536;'MWI_MAL.QA-CCM 3-1090';'MWI_MAL.QA-CCM 3-Diag Test res-What is your final diagnosis (check all that apply or Diagnosis unknown)-1090';;'What is your final diagnosis (check all that apply or Diagnosis unknown)';'FdYlOzRmBl6';1090;0.00;0.00;52;49;;
+536;'MWI_MAL.QA-CCM 3-1090';'MWI_MAL.QA-CCM 3-Diag Test res-What is your final diagnosis (check all that apply or Diagnosis unknown)-1090';;'What is your final diagnosis? (Check all that apply or "Diagnosis unknown")';'FdYlOzRmBl6';1090;0.00;0.00;52;49;;
 537;'MWI_MAL.QA-CCM 3-1100';'MWI_MAL.QA-CCM 3-Diag Test res-Malaria-1100';;'Malaria';'MPmbDniECUb';1100;0.00;0.00;52;53;;
 538;'MWI_MAL.QA-CCM 3-1110';'MWI_MAL.QA-CCM 3-Diag Test res-Acute respiratory infection (ARI)-1110';;'Acute respiratory infection (ARI)';'SyGnaBQlp1o';1110;0.00;0.00;52;53;;
 539;'MWI_MAL.QA-CCM 3-1120';'MWI_MAL.QA-CCM 3-Diag Test res-Enteritis-1120';;'Enteritis';'EaKXq9yy3g2';1120;0.00;0.00;52;53;;
@@ -534,8 +510,8 @@
 543;'MWI_MAL.QA-CCM 3-1160';'MWI_MAL.QA-CCM 3-Diag Test res-Diagnosis unknown (no discernible diagnosis)-1160';;'Diagnosis unknown (no discernible diagnosis)';'WcOhZA5YU8x';1160;0.00;0.00;52;53;;
 544;'MWI_MAL.QA-CCM 3-1170';'MWI_MAL.QA-CCM 3-Diag Test res-Did the clinician assess the patient to have severe or non-severe disease? -1170';;'Did the clinician assess the patient to have severe or non-severe disease?';'aWACWibuM1S';1170;0.00;0.00;52;63;;
 545;'MWI_MAL.QA-CCM 3-1180';'MWI_MAL.QA-CCM 3-Tx-Antimalarial prescribed-1180';;'Antimalarial prescribed';'JR4O4ilzaJr';1180;0.00;0.00;53;89;;
-546;'MWI_MAL.QA-CCM 3-1190';'MWI_MAL.QA-CCM 3-Tx-Supervisor, does the treatment prescribed match the test result and disease severity assessment?-1190';;'Supervisor, does the treatment prescribed match the test result and disease severity assessment?';'zzUI7XI9Jpy';1190;15.00;15.00;53;53;;21
-547;'MWI_MAL.QA-CCM 3-1200';'MWI_MAL.QA-CCM 3-Tx-If antimalarial drug prescribed, was it prescribed in correct dosage and duration (as specified in national guidelinees and described in dosing table)-1200';;'If antimalarial drug prescribed, was it prescribed in correct dosage and duration (as specified in national guidelinees and described in dosing table)';'GMxiyKwucQA';1200;5.00;5.00;53;56;;21
+546;'MWI_MAL.QA-CCM 3-1190';'MWI_MAL.QA-CCM 3-Tx-Supervisor, does the treatment prescribed match the test result and disease severity assessment?-1190';;'Supervisor: Does the treatment prescribed match the test result and disease severity assessment?';'zzUI7XI9Jpy';1190;15.00;15.00;53;53;;21
+547;'MWI_MAL.QA-CCM 3-1200';'MWI_MAL.QA-CCM 3-Tx-If antimalarial drug prescribed, was it prescribed in correct dosage and duration (as specified in national guidelinees and described in dosing table)-1200';;'If antimalarial drug prescribed, was it prescribed in correct dosage and duration (as specified in national guidelinees and described in dosing table)?';'GMxiyKwucQA';1200;5.00;5.00;53;56;;21
 548;'MWI_MAL.QA-CCM 3-1210';'MWI_MAL.QA-CCM 3-Tx-Antibiotics prescribed-1210';;'Antibiotics prescribed';'NindPpxY3AE';1210;0.00;0.00;53;53;;
 549;'MWI_MAL.QA-CCM 3-1220';'MWI_MAL.QA-CCM 3-Tx-Indicate prescribed antibiotic below-1220';;'Indicate prescribed antibiotic below';'Ph5RBLVoaSI';1220;0.00;0.00;53;49;548;
 550;'MWI_MAL.QA-CCM 3-1230';'MWI_MAL.QA-CCM 3-Tx-Trimethoprim-sulfamethoxazole (cotrimoxazole)-1230';;'Trimethoprim-sulfamethoxazole (cotrimoxazole)';'HASIrJQrtZD';1230;0.00;0.00;53;53;548;
@@ -547,18 +523,18 @@
 556;'MWI_MAL.QA-CCM 3-1290';'MWI_MAL.QA-CCM 3-Tx-ORS-1290';;'ORS';'qRqmmghBD4q';1290;0.00;0.00;53;53;554;
 557;'MWI_MAL.QA-CCM 3-1300';'MWI_MAL.QA-CCM 3-Tx-ZINC-1300';;'ZINC';'yM8YYgfNMRA';1300;0.00;0.00;53;53;554;
 558;'MWI_MAL.QA-CCM 3-1310';'MWI_MAL.QA-CCM 3-Tx-Other treatment (specify)-1310';;'Other treatment (specify)';'xuW5mJtoTa0';1310;0.00;0.00;53;26;554;
-559;'MWI_MAL.QA-CCM 3-1320';'MWI_MAL.QA-CCM 3-Tx-Other medications prescribed?-1320';;'Other medications prescribed?';'JIrSA3AJTZp';1320;0.00;0.00;53;53;;
+559;'MWI_MAL.QA-CCM 3-1320';'MWI_MAL.QA-CCM 3-Tx-Other medications prescribed?-1320';;'Other medications prescribed';'JIrSA3AJTZp';1320;0.00;0.00;53;53;;
 560;'MWI_MAL.QA-CCM 3-1330';'MWI_MAL.QA-CCM 3-Tx-Paracetamol-1330';;'Paracetamol';'XqFzlB968ty';1330;0.00;0.00;53;53;559;
 561;'MWI_MAL.QA-CCM 3-1340';'MWI_MAL.QA-CCM 3-Tx-Vitamins (specify)-1340';;'Vitamins (specify)';'MAdb07z4MOe';1340;0.00;0.00;53;26;559;
 562;'MWI_MAL.QA-CCM 3-1350';'MWI_MAL.QA-CCM 3-Tx-Other (specify)-1350';;'Other (specify)';'nJTrJkTtXdo';1350;0.00;0.00;53;26;559;
 563;'MWI_MAL.QA-CCM 3-1360';'MWI_MAL.QA-CCM 3-Com: Unc disease-Provider communication with the patient and caregiver-1360';;'Provider communication with the patient and caregiver';'BeKXyVNhypu';1360;0.00;0.00;54;49;;
-564;'MWI_MAL.QA-CCM 3-1370';'MWI_MAL.QA-CCM 3-Com: Unc disease-Was patient found to have uncomplicated disease-1370';;'Was patient found to have uncomplicated disease';'aTFQzvsH9Rx';1370;0.00;0.00;54;53;;
+564;'MWI_MAL.QA-CCM 3-1370';'MWI_MAL.QA-CCM 3-Com: Unc disease-Was patient found to have uncomplicated disease-1370';;'Was patient found to have uncomplicated disease?';'aTFQzvsH9Rx';1370;0.00;0.00;54;53;;
 565;'MWI_MAL.QA-CCM 3-1380';'MWI_MAL.QA-CCM 3-Com: Unc disease-Caregiver informed on what is wrong with the patient-1380';;'Caregiver informed on what is wrong with the patient';'e8DsfXs78qk';1380;2.00;2.00;54;53;564;21
 566;'MWI_MAL.QA-CCM 3-1390';'MWI_MAL.QA-CCM 3-Com: Unc disease-Advice given on how to take the prescribed medications-1390';;'Advice given on how to take the prescribed medications';'L2sAiLsIPyy';1390;2.00;2.00;54;53;564;21
 567;'MWI_MAL.QA-CCM 3-1400';'MWI_MAL.QA-CCM 3-Com: Unc disease-Advice given on when to return for follow-up evaluation-1400';;'Advice given on when to return for follow-up evaluation';'SNGD4OdWYNZ';1400;2.00;2.00;54;53;564;21
 568;'MWI_MAL.QA-CCM 3-1410';'MWI_MAL.QA-CCM 3-Com: Unc disease-Advice given on malaria prevention measures-1410';;'Advice given on malaria prevention measures';'IUsxSmn2ldL';1410;1.00;1.00;54;53;564;21
 569;'MWI_MAL.QA-CCM 3-1420';'MWI_MAL.QA-CCM 3-Com: Unc disease-Caregiver and/or patient asked if they have any questions-1420';;'Caregiver and/or patient asked if they have any questions';'Cyt9ASbLLzG';1420;1.00;1.00;54;53;564;21
-570;'MWI_MAL.QA-CCM 3-1430';'MWI_MAL.QA-CCM 3-Com: Sev disease-Was patient found to have severe disease-1430';;'Was patient found to have severe disease';'rJlb7G5eolu';1430;0.00;0.00;55;53;;
+570;'MWI_MAL.QA-CCM 3-1430';'MWI_MAL.QA-CCM 3-Com: Sev disease-Was patient found to have severe disease-1430';;'Was patient found to have severe disease?';'rJlb7G5eolu';1430;0.00;0.00;55;53;;
 571;'MWI_MAL.QA-CCM 3-1440';'MWI_MAL.QA-CCM 3-Sev dis-Admission or Referral-1440';;'Admission or Referral';'eWGwQKJ8fA6';1440;0.00;0.00;56;49;570;
 572;'MWI_MAL.QA-CCM 3-1450';'MWI_MAL.QA-CCM 3-Sev dis-Was the patient referred or admitted for treatment?-1450';;'Was the patient referred or admitted for treatment?';'mmEJDBJagZ4';1450;3.00;3.00;56;53;570;21
 573;'MWI_MAL.QA-CCM 3-1460';'MWI_MAL.QA-CCM 3-Sev dis-If yes, where was the patient sent for treatment? -1460';;'If yes, where was the patient sent for treatment?';'LHA2KzCo44x';1460;0.00;0.00;56;49;570;
@@ -574,10 +550,10 @@
 583;'MWI_MAL.QA-P&R RDTs-110';'MWI_MAL.QA-P&R RDTs-Obs 1-Sex-110';;'Sex';'L9YpwRU7ah0';110;0.00;0.00;57;73;;
 584;'MWI_MAL.QA-P&R RDTs-120';'MWI_MAL.QA-P&R RDTs-Obs 1-Type of provider-120';;'Type of provider';'RyKtxMG2wj2';120;0.00;0.00;57;87;;
 585;'MWI_MAL.QA-P&R RDTs-130';'MWI_MAL.QA-P&R RDTs-Obs 1-If other, specify-130';;'If other, specify';'T589CrRVDZ9';130;0.00;0.00;57;25;;
-586;'MWI_MAL.QA-P&R RDTs-140';'MWI_MAL.QA-P&R RDTs-Obs 1-Has this worker been formally trained in RDTs?-140';;'Has this worker been formally trained in RDTs?';'NMuWIxOYE8g';140;0.00;0.00;57;53;;
+586;'MWI_MAL.QA-P&R RDTs-140';'MWI_MAL.QA-P&R RDTs-Obs 1-Has this worker been formally trained in RDTs?-140';;'Has this worker been formally trained to use RDTs?';'NMuWIxOYE8g';140;0.00;0.00;57;53;;
 587;'MWI_MAL.QA-P&R RDTs-150';'MWI_MAL.QA-P&R RDTs-Obs 1-RDT PREPARATION-150';;'RDT PREPARATION';'xBRSjW5GRRw';150;0.00;0.00;57;49;;
-588;'MWI_MAL.QA-P&R RDTs-160';'MWI_MAL.QA-P&R RDTs-Obs 1-Was the expiry date checked?  -160';;'Was the expiry date checked?';'sRyAKthhZUZ';160;1.00;1.00;57;53;;23
-589;'MWI_MAL.QA-P&R RDTs-170';'MWI_MAL.QA-P&R RDTs-Obs 1-Did the worker label the cassette?  -170';;'Did the worker label the cassette?';'pigzjGeOLpr';170;1.00;1.00;57;53;;23
+588;'MWI_MAL.QA-P&R RDTs-160';'MWI_MAL.QA-P&R RDTs-Obs 1-Was the expiry date checked?  -160';;'Expiry date checked';'sRyAKthhZUZ';160;1.00;1.00;57;53;;23
+589;'MWI_MAL.QA-P&R RDTs-170';'MWI_MAL.QA-P&R RDTs-Obs 1-Did the worker label the cassette?  -170';;'Cassette labeled with patient''s name/ID number';'pigzjGeOLpr';170;1.00;1.00;57;53;;23
 590;'MWI_MAL.QA-P&R RDTs-180';'MWI_MAL.QA-P&R RDTs-Obs 1-PATIENT PREPARATION-180';;'PATIENT PREPARATION';'XzI6dyFznkR';180;0.00;0.00;57;49;;
 591;'MWI_MAL.QA-P&R RDTs-190';'MWI_MAL.QA-P&R RDTs-Obs 1-Patient identified and identification information recorded in register-190';;'Patient identified and identification information recorded in register';'iBAhgsUIQ2W';190;1.00;1.00;57;53;;23
 592;'MWI_MAL.QA-P&R RDTs-200';'MWI_MAL.QA-P&R RDTs-Obs 1-Procedure explained to patient      -200';;'Procedure explained to patient';'pBax4MoxZd2';200;1.00;1.00;57;53;;23
@@ -589,8 +565,8 @@
 598;'MWI_MAL.QA-P&R RDTs-260';'MWI_MAL.QA-P&R RDTs-Obs 1-RDT PROCEDURE-260';;'RDT PROCEDURE';'sAJABDJhCcv';260;0.00;0.00;57;49;;
 599;'MWI_MAL.QA-P&R RDTs-270';'MWI_MAL.QA-P&R RDTs-Obs 1-Buffer applied to correct well  of RDT device      -270';;'Buffer applied to correct well  of RDT device';'F4zXyCuY0G3';270;1.00;1.00;57;53;;23
 600;'MWI_MAL.QA-P&R RDTs-280';'MWI_MAL.QA-P&R RDTs-Obs 1-Appropriate amount of buffer dispensed into well   -280';;'Appropriate amount of buffer dispensed into well';'bMVnJQoRHR4';280;1.00;1.00;57;53;;23
-601;'MWI_MAL.QA-P&R RDTs-290';'MWI_MAL.QA-P&R RDTs-Obs 1-Did worker wait for correct amount of time (20-30 MINUTES according to manufacturer’s instruction)-290';;'Did worker wait for correct amount of time according to manufacturer’s instruction?';'AzQu42nXGWb';290;2.00;2.00;57;53;;23
-602;'MWI_MAL.QA-P&R RDTs-300';'MWI_MAL.QA-P&R RDTs-Obs 1-Was the control line visible?-300';;'Was the control line visible?';'aTfIcIcB4k9';300;0.00;0.00;57;53;;
+601;'MWI_MAL.QA-P&R RDTs-290';'MWI_MAL.QA-P&R RDTs-Obs 1-Did worker wait for correct amount of time (20-30 MINUTES according to manufacturer’s instruction)-290';;'If negative, did worker wait for correct incubation time according to manufacturer’s instruction?';'AzQu42nXGWb';290;2.00;2.00;57;97;;23
+602;'MWI_MAL.QA-P&R RDTs-300';'MWI_MAL.QA-P&R RDTs-Obs 1-Was the control line visible?-300';;'Control line visible';'aTfIcIcB4k9';300;0.00;0.00;57;53;;
 603;'MWI_MAL.QA-P&R RDTs-310';'MWI_MAL.QA-P&R RDTs-Obs 1-Reads test result correctly (supervisor verifies results)-310';;'Reads test result correctly (supervisor verifies results)';'dPSl99AysCG';310;2.00;2.00;57;53;;23
 604;'MWI_MAL.QA-P&R RDTs-320';'MWI_MAL.QA-P&R RDTs-Obs 1-Records results correctly in register-320';;'Records results correctly in register';'ifc7u38OTnl';320;2.00;2.00;57;53;;23
 605;'MWI_MAL.QA-P&R RDTs-330';'MWI_MAL.QA-P&R RDTs-Obs 1-RDT WASTE DISPOSAL-330';;'RDT WASTE DISPOSAL';'ZaT0TJQf3GK';330;0.00;0.00;57;49;;
@@ -601,10 +577,10 @@
 610;'MWI_MAL.QA-P&R RDTs-380';'MWI_MAL.QA-P&R RDTs-Obs 2-Sex-380';;'Sex';'tTHTmTmXToF';380;0.00;0.00;58;73;609;
 611;'MWI_MAL.QA-P&R RDTs-390';'MWI_MAL.QA-P&R RDTs-Obs 2-Type of provider-390';;'Type of provider';'A2gnaqmArRW';390;0.00;0.00;58;87;609;
 612;'MWI_MAL.QA-P&R RDTs-400';'MWI_MAL.QA-P&R RDTs-Obs 2-If other, specify-400';;'If other, specify';'QmSzuOVxsny';400;0.00;0.00;58;25;609;
-613;'MWI_MAL.QA-P&R RDTs-410';'MWI_MAL.QA-P&R RDTs-Obs 2-Has this worker been formally trained in RDTs?-410';;'Has this worker been formally trained in RDTs?';'NiWtVCB8jMK';410;0.00;0.00;58;53;609;
+613;'MWI_MAL.QA-P&R RDTs-410';'MWI_MAL.QA-P&R RDTs-Obs 2-Has this worker been formally trained in RDTs?-410';;'Has this worker been formally trained to use RDTs?';'NiWtVCB8jMK';410;0.00;0.00;58;53;609;
 614;'MWI_MAL.QA-P&R RDTs-420';'MWI_MAL.QA-P&R RDTs-Obs 2-RDT PREPARATION-420';;'RDT PREPARATION';'MV6ROsghSWX';420;0.00;0.00;58;49;;
-615;'MWI_MAL.QA-P&R RDTs-430';'MWI_MAL.QA-P&R RDTs-Obs 2-Was the expiry date checked?  -430';;'Was the expiry date checked?';'kRRqmQCNREQ';430;1.00;1.00;58;53;;24
-616;'MWI_MAL.QA-P&R RDTs-440';'MWI_MAL.QA-P&R RDTs-Obs 2-Did the worker label the cassette?  -440';;'Did the worker label the cassette?';'aaNA6CJcqty';440;1.00;1.00;58;53;;24
+615;'MWI_MAL.QA-P&R RDTs-430';'MWI_MAL.QA-P&R RDTs-Obs 2-Was the expiry date checked?  -430';;'Expiry date checked';'kRRqmQCNREQ';430;1.00;1.00;58;53;;24
+616;'MWI_MAL.QA-P&R RDTs-440';'MWI_MAL.QA-P&R RDTs-Obs 2-Did the worker label the cassette?  -440';;'Cassette labeled with patient''s name/ID number';'aaNA6CJcqty';440;1.00;1.00;58;53;;24
 617;'MWI_MAL.QA-P&R RDTs-450';'MWI_MAL.QA-P&R RDTs-Obs 2-PATIENT PREPARATION-450';;'PATIENT PREPARATION';'iAUo48zmkKJ';450;0.00;0.00;58;49;;
 618;'MWI_MAL.QA-P&R RDTs-460';'MWI_MAL.QA-P&R RDTs-Obs 2-Patient identified and identification information recorded in register-460';;'Patient identified and identification information recorded in register';'hTRoP7kgl8z';460;1.00;1.00;58;53;;24
 619;'MWI_MAL.QA-P&R RDTs-470';'MWI_MAL.QA-P&R RDTs-Obs 2-Procedure explained to patient      -470';;'Procedure explained to patient';'vbpoxS1FFx5';470;1.00;1.00;58;53;;24
@@ -616,8 +592,8 @@
 625;'MWI_MAL.QA-P&R RDTs-530';'MWI_MAL.QA-P&R RDTs-Obs 2-RDT PROCEDURE-530';;'RDT PROCEDURE';'pHttaod01Ep';530;0.00;0.00;58;49;;
 626;'MWI_MAL.QA-P&R RDTs-540';'MWI_MAL.QA-P&R RDTs-Obs 2-Buffer applied to correct well  of RDT device      -540';;'Buffer applied to correct well  of RDT device';'gfUPB0V951R';540;1.00;1.00;58;53;;24
 627;'MWI_MAL.QA-P&R RDTs-550';'MWI_MAL.QA-P&R RDTs-Obs 2-Appropriate amount of buffer dispensed into well   -550';;'Appropriate amount of buffer dispensed into well';'WgkbJGnjFsF';550;1.00;1.00;58;53;;24
-628;'MWI_MAL.QA-P&R RDTs-560';'MWI_MAL.QA-P&R RDTs-Obs 2-Did worker wait for correct amount of time (20-30 MINUTES according to manufacturer’s instruction)-560';;'Did worker wait for correct amount of time according to manufacturer’s instruction?';'vErsNgYwszR';560;2.00;2.00;58;53;;24
-629;'MWI_MAL.QA-P&R RDTs-570';'MWI_MAL.QA-P&R RDTs-Obs 2-Was the control line visible?-570';;'Was the control line visible?';'MJd2I0D6ibQ';570;0.00;0.00;58;53;;
+628;'MWI_MAL.QA-P&R RDTs-560';'MWI_MAL.QA-P&R RDTs-Obs 2-Did worker wait for correct amount of time (20-30 MINUTES according to manufacturer’s instruction)-560';;'If negative, did worker wait for correct incubation time according to manufacturer’s instruction?';'vErsNgYwszR';560;2.00;2.00;58;97;;24
+629;'MWI_MAL.QA-P&R RDTs-570';'MWI_MAL.QA-P&R RDTs-Obs 2-Was the control line visible?-570';;'Control line visible';'MJd2I0D6ibQ';570;0.00;0.00;58;53;;
 630;'MWI_MAL.QA-P&R RDTs-580';'MWI_MAL.QA-P&R RDTs-Obs 2-Reads test result correctly (supervisor verifies results)-580';;'Reads test result correctly (supervisor verifies results)';'ERodUxd0Sj4';580;2.00;2.00;58;53;;24
 631;'MWI_MAL.QA-P&R RDTs-590';'MWI_MAL.QA-P&R RDTs-Obs 2-Records results correctly in register-590';;'Records results correctly in register';'Q4e2XnoDWiP';590;2.00;2.00;58;53;;24
 632;'MWI_MAL.QA-P&R RDTs-600';'MWI_MAL.QA-P&R RDTs-Obs 2-RDT WASTE DISPOSAL-600';;'RDT WASTE DISPOSAL';'kMVZNzprecI';600;0.00;0.00;58;49;;
@@ -628,10 +604,10 @@
 637;'MWI_MAL.QA-P&R RDTs-650';'MWI_MAL.QA-P&R RDTs-Obs 3-Sex-650';;'Sex';'IVD56QHtv7N';650;0.00;0.00;59;73;636;
 638;'MWI_MAL.QA-P&R RDTs-660';'MWI_MAL.QA-P&R RDTs-Obs 3-Type of provider-660';;'Type of provider';'kalaIj915Jd';660;0.00;0.00;59;87;636;
 639;'MWI_MAL.QA-P&R RDTs-670';'MWI_MAL.QA-P&R RDTs-Obs 3-If other, specify-670';;'If other, specify';'sgqqicqpk5f';670;0.00;0.00;59;25;636;
-640;'MWI_MAL.QA-P&R RDTs-680';'MWI_MAL.QA-P&R RDTs-Obs 3-Has this worker been formally trained in RDTs?-680';;'Has this worker been formally trained in RDTs?';'B6M7Hf1roX7';680;0.00;0.00;59;53;636;
+640;'MWI_MAL.QA-P&R RDTs-680';'MWI_MAL.QA-P&R RDTs-Obs 3-Has this worker been formally trained in RDTs?-680';;'Has this worker been formally trained to use RDTs?';'B6M7Hf1roX7';680;0.00;0.00;59;53;636;
 641;'MWI_MAL.QA-P&R RDTs-690';'MWI_MAL.QA-P&R RDTs-Obs 3-RDT PREPARATION-690';;'RDT PREPARATION';'NR5sGqp87tz';690;0.00;0.00;59;49;;
-642;'MWI_MAL.QA-P&R RDTs-700';'MWI_MAL.QA-P&R RDTs-Obs 3-Was the expiry date checked?  -700';;'Was the expiry date checked?';'Z8o0oIWrwNE';700;1.00;1.00;59;53;;25
-643;'MWI_MAL.QA-P&R RDTs-710';'MWI_MAL.QA-P&R RDTs-Obs 3-Did the worker label the cassette?  -710';;'Did the worker label the cassette?';'Db4zDZv9aBC';710;1.00;1.00;59;53;;25
+642;'MWI_MAL.QA-P&R RDTs-700';'MWI_MAL.QA-P&R RDTs-Obs 3-Was the expiry date checked?  -700';;'Expiry date checked';'Z8o0oIWrwNE';700;1.00;1.00;59;53;;25
+643;'MWI_MAL.QA-P&R RDTs-710';'MWI_MAL.QA-P&R RDTs-Obs 3-Did the worker label the cassette?  -710';;'Cassette labeled with patient''s name/ID number';'Db4zDZv9aBC';710;1.00;1.00;59;53;;25
 644;'MWI_MAL.QA-P&R RDTs-720';'MWI_MAL.QA-P&R RDTs-Obs 3-PATIENT PREPARATION-720';;'PATIENT PREPARATION';'zGo00GJM5S0';720;0.00;0.00;59;49;;
 645;'MWI_MAL.QA-P&R RDTs-730';'MWI_MAL.QA-P&R RDTs-Obs 3-Patient identified and identification information recorded in register-730';;'Patient identified and identification information recorded in register';'djAH8VrLldU';730;1.00;1.00;59;53;;25
 646;'MWI_MAL.QA-P&R RDTs-740';'MWI_MAL.QA-P&R RDTs-Obs 3-Procedure explained to patient      -740';;'Procedure explained to patient';'bWWc2wDvD96';740;1.00;1.00;59;53;;25
@@ -643,8 +619,8 @@
 652;'MWI_MAL.QA-P&R RDTs-800';'MWI_MAL.QA-P&R RDTs-Obs 3-RDT PROCEDURE-800';;'RDT PROCEDURE';'CHWNuIp0dZB';800;0.00;0.00;59;49;;
 653;'MWI_MAL.QA-P&R RDTs-810';'MWI_MAL.QA-P&R RDTs-Obs 3-Buffer applied to correct well  of RDT device      -810';;'Buffer applied to correct well  of RDT device';'nALaZZDPGKI';810;1.00;1.00;59;53;;25
 654;'MWI_MAL.QA-P&R RDTs-820';'MWI_MAL.QA-P&R RDTs-Obs 3-Appropriate amount of buffer dispensed into well   -820';;'Appropriate amount of buffer dispensed into well';'Mjsrh1NRw9d';820;1.00;1.00;59;53;;25
-655;'MWI_MAL.QA-P&R RDTs-830';'MWI_MAL.QA-P&R RDTs-Obs 3-Did worker wait for correct amount of time (20-30 MINUTES according to manufacturer’s instruction)-830';;'Did worker wait for correct amount of time according to manufacturer’s instruction?';'bU8QScX1aOv';830;2.00;2.00;59;53;;25
-656;'MWI_MAL.QA-P&R RDTs-840';'MWI_MAL.QA-P&R RDTs-Obs 3-Was the control line visible?-840';;'Was the control line visible?';'VFhqMhQBrfO';840;0.00;0.00;59;53;;
+655;'MWI_MAL.QA-P&R RDTs-830';'MWI_MAL.QA-P&R RDTs-Obs 3-Did worker wait for correct amount of time (20-30 MINUTES according to manufacturer’s instruction)-830';;'If negative, did worker wait for correct incubation time according to manufacturer’s instruction?';'bU8QScX1aOv';830;2.00;2.00;59;97;;25
+656;'MWI_MAL.QA-P&R RDTs-840';'MWI_MAL.QA-P&R RDTs-Obs 3-Was the control line visible?-840';;'Control line visible';'VFhqMhQBrfO';840;0.00;0.00;59;53;;
 657;'MWI_MAL.QA-P&R RDTs-850';'MWI_MAL.QA-P&R RDTs-Obs 3-Reads test result correctly (supervisor verifies results)-850';;'Reads test result correctly (supervisor verifies results)';'lec1YrXXxhj';850;2.00;2.00;59;53;;25
 658;'MWI_MAL.QA-P&R RDTs-860';'MWI_MAL.QA-P&R RDTs-Obs 3-Records results correctly in register-860';;'Records results correctly in register';'EQGB1PJjumg';860;2.00;2.00;59;53;;25
 659;'MWI_MAL.QA-P&R RDTs-870';'MWI_MAL.QA-P&R RDTs-Obs 3-RDT WASTE DISPOSAL-870';;'RDT WASTE DISPOSAL';'F7dsusptKNu';870;0.00;0.00;59;49;;
@@ -668,7 +644,7 @@
 677;'MWI_MAL.QA-Micro Assess-250';'MWI_MAL.QA-Micro Assess-W&P supp-What is your usual water supply? (choose one)-250';;'What is your usual water supply? (choose one)';'fTPpTeCZEYa';250;3.00;3.00;62;11;;3
 678;'MWI_MAL.QA-Micro Assess-260';'MWI_MAL.QA-Micro Assess-W&P supp-POWER SUPPLY-260';;'POWER SUPPLY';'wuWEglKCaXJ';260;0.00;0.00;62;49;;
 679;'MWI_MAL.QA-Micro Assess-270';'MWI_MAL.QA-Micro Assess-W&P supp-Has there been any distruptions with the power supply lasting more than one day in the last two weeks?-270';;'Has there been any distruptions with the power supply lasting more than one day in the last two weeks?';'gsVZpYzZq62';270;5.00;5.00;62;74;;3
-680;'MWI_MAL.QA-Micro Assess-280';'MWI_MAL.QA-Micro Assess-W&P supp-What is your main source of power (choose one)-280';;'What is your main source of power (choose one)';'q1BHY5FnMJ2';280;0.00;0.00;62;64;;
+680;'MWI_MAL.QA-Micro Assess-280';'MWI_MAL.QA-Micro Assess-W&P supp-What is your main source of power (choose one)-280';;'What is your main source of power? (choose one)';'q1BHY5FnMJ2';280;0.00;0.00;62;64;;
 681;'MWI_MAL.QA-Micro Assess-290';'MWI_MAL.QA-Micro Assess-Stock_Mal Micro-Is there a stock out of any of th efollowing lab materials today?-290';;'Is there a stock out of any of the following lab materials today?';'mqtPpnhOLLT';290;0.00;0.00;63;49;;
 682;'MWI_MAL.QA-Micro Assess-300';'MWI_MAL.QA-Micro Assess-Stock_Mal Micro-Lancets/needles & syringes-300';;'Lancets/needles & syringes';'yhR0BVbLVOt';300;0.00;0.00;63;74;;
 683;'MWI_MAL.QA-Micro Assess-310';'MWI_MAL.QA-Micro Assess-Stock_Mal Micro-Methylated spirits -310';;'Methylated spirits';'Jzc6LtkjKEx';310;0.00;0.00;63;74;;
@@ -678,7 +654,7 @@
 687;'MWI_MAL.QA-Micro Assess-350';'MWI_MAL.QA-Micro Assess-Stock_Mal Micro-Microscope slides-350';;'Microscope slides';'CJvIjsdG6yY';350;0.00;0.00;63;74;;
 688;'MWI_MAL.QA-Micro Assess-360';'MWI_MAL.QA-Micro Assess-Stock_Mal Micro-Immersion oil-360';;'Immersion oil';'o1T1jV2beIv';360;0.00;0.00;63;74;;
 689;'MWI_MAL.QA-Micro Assess-370';'MWI_MAL.QA-Micro Assess-Stock_Mal Micro-pH paper/meter-370';;'pH paper/meter';'RfKEgGAZ5F2';370;0.00;0.00;63;74;;
-690;'MWI_MAL.QA-Micro Assess-380';'MWI_MAL.QA-Micro Assess-Stock_Mal Micro-Was there a stock out of any of the following for 7 consecutive days in the last 3 months-380';;'Was there a stock out of any of the following for 7 consecutive days in the last 3 months';'RKml2cJ85O4';380;0.00;0.00;63;49;;
+690;'MWI_MAL.QA-Micro Assess-380';'MWI_MAL.QA-Micro Assess-Stock_Mal Micro-Was there a stock out of any of the following for 7 consecutive days in the last 3 months-380';;'Was there a stock out of any of the following for 7 consecutive days in the last 3 months?';'RKml2cJ85O4';380;0.00;0.00;63;49;;
 691;'MWI_MAL.QA-Micro Assess-390';'MWI_MAL.QA-Micro Assess-Stock_Mal Micro-Lancets/needles & syringes-390';;'Lancets/needles & syringes';'I4RmLXEH8d7';390;1.00;1.00;63;74;;3
 692;'MWI_MAL.QA-Micro Assess-400';'MWI_MAL.QA-Micro Assess-Stock_Mal Micro-Methylated spirits -400';;'Methylated spirits';'yiEIgLfCD0I';400;1.00;1.00;63;74;;3
 693;'MWI_MAL.QA-Micro Assess-410';'MWI_MAL.QA-Micro Assess-Stock_Mal Micro-Glycerol-410';;'Glycerol';'nhtFb07xfjh';410;1.00;1.00;63;74;;3
@@ -688,10 +664,10 @@
 697;'MWI_MAL.QA-Micro Assess-450';'MWI_MAL.QA-Micro Assess-Stock_Mal Micro-Immersion oil-450';;'Immersion oil';'VLEJfqhh1zz';450;1.00;1.00;63;74;;3
 698;'MWI_MAL.QA-Micro Assess-460';'MWI_MAL.QA-Micro Assess-Stock_Mal Micro-pH paper/meter-460';;'pH paper/meter';'b5duitGP1UD';460;1.00;1.00;63;74;;3
 699;'MWI_MAL.QA-Micro Assess-470';'MWI_MAL.QA-Micro Assess-Stock_Mal Micro-Has this lab experienced a power outage during the last three months that limited the ability to perform malaria microscopy?-470';;'Has this lab experienced a power outage during the last three months that limited the ability to perform malaria microscopy?';'G1l7NCJwM5U';470;3.00;3.00;63;74;;3
-700;'MWI_MAL.QA-Micro Assess-480';'MWI_MAL.QA-Micro Assess-Micro, parts, main-Is there at least 1 functional microscope at the health facility?-480';;'Is there at least 1 functional microscope at the health facility?';'Vhtods3yaRl';480;10.00;10.00;64;53;;3
+700;'MWI_MAL.QA-Micro Assess-480';'MWI_MAL.QA-Micro Assess-Micro, parts, main-Is there at least 1 functional microscope at the health facility?-480';;'Is there at least one functional microscope at the health facility?';'Vhtods3yaRl';480;10.00;10.00;64;53;;3
 701;'MWI_MAL.QA-Micro Assess-490';'MWI_MAL.QA-Micro Assess-Micro, parts, main-Number of functional microscopes at the facility-490';;'Number of functional microscopes at the facility';'XWybB6TakRQ';490;0.00;0.00;64;24;700;
 702;'MWI_MAL.QA-Micro Assess-500';'MWI_MAL.QA-Micro Assess-Micro, parts, main-Number of non-functional microscopes at the facility-500';;'Number of non-functional microscopes at the facility';'ZrJyumsyuMj';500;0.00;0.00;64;24;;
-703;'MWI_MAL.QA-Micro Assess-510';'MWI_MAL.QA-Micro Assess-Micro, parts, main-Are there standard microscope repair kits-510';;'Are there standard microscope repair kits';'eJKE9jlTnPd';510;2.00;2.00;64;53;;3
+703;'MWI_MAL.QA-Micro Assess-510';'MWI_MAL.QA-Micro Assess-Micro, parts, main-Are there standard microscope repair kits-510';;'Are there standard microscope repair kits?';'eJKE9jlTnPd';510;2.00;2.00;64;53;;3
 704;'MWI_MAL.QA-Micro Assess-520';'MWI_MAL.QA-Micro Assess-Micro, parts, main-How many?-520';;'How many?';'kNiJq3xvbPX';520;0.00;0.00;64;24;703;
 705;'MWI_MAL.QA-Micro Assess-530';'MWI_MAL.QA-Micro Assess-Micro, parts, main-Are there spare bulbs in stock?-530';;'Are there spare bulbs in stock?';'xb5BPPSMrJP';530;1.00;1.00;64;53;;3
 706;'MWI_MAL.QA-Micro Assess-540';'MWI_MAL.QA-Micro Assess-Micro, parts, main-Are there fuses in stock? -540';;'Are there fuses in stock?';'iFrtXYD8D2D';540;1.00;1.00;64;53;;3
@@ -700,26 +676,26 @@
 709;'MWI_MAL.QA-Micro Assess-570';'MWI_MAL.QA-Micro Assess-Micro, parts, main-Quantity-570';;'Quantity';'uyRjDm7rFhp';570;0.00;0.00;64;25;707;
 713;'MWI_MAL.QA-Micro Assess-610';'MWI_MAL.QA-Micro Assess-Micro, parts, main-Does the laboratory staff conduct routine cleaning/maintenance of the microscope?-610';;'Does the laboratory staff conduct routine cleaning/maintenance of the microscope?';'Gw7XmgDuk80';610;1.00;1.00;64;53;;3
 714;'MWI_MAL.QA-Micro Assess-620';'MWI_MAL.QA-Micro Assess-Micro, parts, main-Are maintenance engineers or contractors available to complete microscope repair OR is someone in the facility trained in microcopy repair?-620';;'Are maintenance engineers or contractors available to complete microscope repair OR is someone in the facility trained in microcopy repair?';'fwgtnVUkmkB';620;1.00;1.00;64;53;;3
-715;'MWI_MAL.QA-Micro Assess-630';'MWI_MAL.QA-Micro Assess-Lab equip-Lab Coats / Aprons -630';;'Lab Coats / Aprons';'t717bUXY0Qt';630;1.00;1.00;65;6;;3
-716;'MWI_MAL.QA-Micro Assess-640';'MWI_MAL.QA-Micro Assess-Lab equip-Hemoglobin Meter -640';;'Hemoglobin Meter';'rt4FJa8b614';640;1.00;1.00;65;6;;3
-717;'MWI_MAL.QA-Micro Assess-650';'MWI_MAL.QA-Micro Assess-Lab equip-Glucometer -650';;'Glucometer';'CFDeptEzU1h';650;1.00;1.00;65;6;;3
-718;'MWI_MAL.QA-Micro Assess-660';'MWI_MAL.QA-Micro Assess-Lab equip-Urine Strips-660';;'Urine Strips';'J5zWMl1W1BF';660;1.00;1.00;65;6;;3
-719;'MWI_MAL.QA-Micro Assess-670';'MWI_MAL.QA-Micro Assess-Lab equip-Staining Racks-670';;'Staining Racks';'pGPP4EOn3YR';670;1.00;1.00;65;6;;3
-720;'MWI_MAL.QA-Micro Assess-680';'MWI_MAL.QA-Micro Assess-Lab equip-Staining Vessels-680';;'Staining Vessels';'Z3tEz6Kyw1R';680;1.00;1.00;65;6;;3
-721;'MWI_MAL.QA-Micro Assess-690';'MWI_MAL.QA-Micro Assess-Lab equip-Glass Staining Dishes-690';;'Glass Staining Dishes';'Zz3jlxxPpQ5';690;1.00;1.00;65;6;;3
-722;'MWI_MAL.QA-Micro Assess-700';'MWI_MAL.QA-Micro Assess-Lab equip-Slide Drying Racks-700';;'Slide Drying Racks';'mPtxRqzTlxP';700;1.00;1.00;65;6;;3
-723;'MWI_MAL.QA-Micro Assess-710';'MWI_MAL.QA-Micro Assess-Lab equip-Serological Pipets and Pipet Bulbs or Automated Pippetor-710';;'Serological Pipets and Pipet Bulbs or Automated Pippetor';'KDRcfrZi5Lm';710;1.00;1.00;65;6;;3
-724;'MWI_MAL.QA-Micro Assess-720';'MWI_MAL.QA-Micro Assess-Lab equip-Timers-720';;'Timers';'Kh4xzWdFKTE';720;1.00;1.00;65;6;;3
-725;'MWI_MAL.QA-Micro Assess-730';'MWI_MAL.QA-Micro Assess-Lab equip-Tally Counters-730';;'Tally Counters';'Pv2a7PY7k78';730;1.00;1.00;65;6;;3
-726;'MWI_MAL.QA-Micro Assess-740';'MWI_MAL.QA-Micro Assess-Lab equip-Slide Storage Boxes-740';;'Slide Storage Boxes';'X665YzQoIMW';740;1.00;1.00;65;6;;3
-727;'MWI_MAL.QA-Micro Assess-750';'MWI_MAL.QA-Micro Assess-Lab equip-Graduated Cylinder (50 mL)-750';;'Graduated Cylinder (50 mL)';'zFTVBVOZ3LR';750;1.00;1.00;65;6;;3
-728;'MWI_MAL.QA-Micro Assess-760';'MWI_MAL.QA-Micro Assess-Lab equip-Graduated Cylinder (250 mL)-760';;'Graduated Cylinder (250 mL)';'uE9jtJp1Orm';760;1.00;1.00;65;6;;3
-729;'MWI_MAL.QA-Micro Assess-770';'MWI_MAL.QA-Micro Assess-Lab equip-Graduated Cylinder (500 mL)-770';;'Graduated Cylinder (500 mL)';'zmF4ife3lvY';770;1.00;1.00;65;6;;3
-730;'MWI_MAL.QA-Micro Assess-780';'MWI_MAL.QA-Micro Assess-Lab equip-Weighing Scale-780';;'Weighing Scale';'YLMRXyVSKrh';780;1.00;1.00;65;6;;3
-731;'MWI_MAL.QA-Micro Assess-790';'MWI_MAL.QA-Micro Assess-Lab equip-Funnel-790';;'Funnel';'k3wlp1JcyFr';790;1.00;1.00;65;6;;3
-732;'MWI_MAL.QA-Micro Assess-800';'MWI_MAL.QA-Micro Assess-Lab equip-Blood Tube Roller/Mixer-800';;'Blood Tube Roller/Mixer';'yINXEbrTvHT';800;1.00;1.00;65;6;;3
+715;'MWI_MAL.QA-Micro Assess-630';'MWI_MAL.QA-Micro Assess-Lab equip-Lab Coats / Aprons -630';;'Lab Coats / Aprons';'t717bUXY0Qt';630;1.00;1.00;65;81;;3
+716;'MWI_MAL.QA-Micro Assess-640';'MWI_MAL.QA-Micro Assess-Lab equip-Hemoglobin Meter -640';;'Hemoglobin Meter';'rt4FJa8b614';640;1.00;1.00;65;81;;3
+717;'MWI_MAL.QA-Micro Assess-650';'MWI_MAL.QA-Micro Assess-Lab equip-Glucometer -650';;'Glucometer';'CFDeptEzU1h';650;1.00;1.00;65;81;;3
+718;'MWI_MAL.QA-Micro Assess-660';'MWI_MAL.QA-Micro Assess-Lab equip-Urine Strips-660';;'Urine Strips';'J5zWMl1W1BF';660;1.00;1.00;65;81;;3
+719;'MWI_MAL.QA-Micro Assess-670';'MWI_MAL.QA-Micro Assess-Lab equip-Staining Racks-670';;'Staining Racks';'pGPP4EOn3YR';670;1.00;1.00;65;81;;3
+720;'MWI_MAL.QA-Micro Assess-680';'MWI_MAL.QA-Micro Assess-Lab equip-Staining Vessels-680';;'Staining Vessels';'Z3tEz6Kyw1R';680;1.00;1.00;65;81;;3
+721;'MWI_MAL.QA-Micro Assess-690';'MWI_MAL.QA-Micro Assess-Lab equip-Glass Staining Dishes-690';;'Glass Staining Dishes';'Zz3jlxxPpQ5';690;1.00;1.00;65;81;;3
+722;'MWI_MAL.QA-Micro Assess-700';'MWI_MAL.QA-Micro Assess-Lab equip-Slide Drying Racks-700';;'Slide Drying Racks';'mPtxRqzTlxP';700;1.00;1.00;65;81;;3
+723;'MWI_MAL.QA-Micro Assess-710';'MWI_MAL.QA-Micro Assess-Lab equip-Serological Pipets and Pipet Bulbs or Automated Pippetor-710';;'Serological Pipets and Pipet Bulbs or Automated Pippetor';'KDRcfrZi5Lm';710;1.00;1.00;65;81;;3
+724;'MWI_MAL.QA-Micro Assess-720';'MWI_MAL.QA-Micro Assess-Lab equip-Timers-720';;'Timers';'Kh4xzWdFKTE';720;1.00;1.00;65;81;;3
+725;'MWI_MAL.QA-Micro Assess-730';'MWI_MAL.QA-Micro Assess-Lab equip-Tally Counters-730';;'Tally Counters';'Pv2a7PY7k78';730;1.00;1.00;65;81;;3
+726;'MWI_MAL.QA-Micro Assess-740';'MWI_MAL.QA-Micro Assess-Lab equip-Slide Storage Boxes-740';;'Slide Storage Boxes';'X665YzQoIMW';740;1.00;1.00;65;81;;3
+727;'MWI_MAL.QA-Micro Assess-750';'MWI_MAL.QA-Micro Assess-Lab equip-Graduated Cylinder (50 mL)-750';;'Graduated Cylinder (50 mL)';'zFTVBVOZ3LR';750;1.00;1.00;65;81;;3
+728;'MWI_MAL.QA-Micro Assess-760';'MWI_MAL.QA-Micro Assess-Lab equip-Graduated Cylinder (250 mL)-760';;'Graduated Cylinder (250 mL)';'uE9jtJp1Orm';760;1.00;1.00;65;81;;3
+729;'MWI_MAL.QA-Micro Assess-770';'MWI_MAL.QA-Micro Assess-Lab equip-Graduated Cylinder (500 mL)-770';;'Graduated Cylinder (500 mL)';'zmF4ife3lvY';770;1.00;1.00;65;81;;3
+730;'MWI_MAL.QA-Micro Assess-780';'MWI_MAL.QA-Micro Assess-Lab equip-Weighing Scale-780';;'Weighing Scale';'YLMRXyVSKrh';780;1.00;1.00;65;81;;3
+731;'MWI_MAL.QA-Micro Assess-790';'MWI_MAL.QA-Micro Assess-Lab equip-Funnel-790';;'Funnel';'k3wlp1JcyFr';790;1.00;1.00;65;81;;3
+732;'MWI_MAL.QA-Micro Assess-800';'MWI_MAL.QA-Micro Assess-Lab equip-Blood Tube Roller/Mixer-800';;'Blood Tube Roller/Mixer';'yINXEbrTvHT';800;1.00;1.00;65;81;;3
 733;'MWI_MAL.QA-Micro Assess-810';'MWI_MAL.QA-Micro Assess-IQA-Does this facility have a microscopy slide IQA program?-810';;'Does this facility have a microscopy slide IQA program?';'mjp4lre3QqW';810;2.00;2.00;66;53;;3
-734;'MWI_MAL.QA-Micro Assess-820';'MWI_MAL.QA-Micro Assess-IQA-(A facility must provide at least two negative slides and two weak positive slides for rechecking to be considered to have an IQA program)-820';;'(A facility must provide at least two negative slides and two weak positive slides for rechecking to be considered to have an IQA program)';'SEdy5qo1hqX';820;0.00;0.00;66;49;;
+734;'MWI_MAL.QA-Micro Assess-820';'MWI_MAL.QA-Micro Assess-IQA-(A facility must provide at least two negative slides and two weak positive slides for rechecking to be considered to have an IQA program)-820';;'(A facility must provide at least two negative slides and two weak positive slides for rechecking to be considered to have an IQA program.)';'SEdy5qo1hqX';820;0.00;0.00;66;49;;
 735;'MWI_MAL.QA-Micro Assess-830';'MWI_MAL.QA-Micro Assess-IQA-Are positive control slides available for testing new batches of stain?-830';;'Are positive control slides available for testing new batches of stain?';'dowIw1CDKYG';830;1.00;1.00;66;53;;3
 736;'MWI_MAL.QA-Micro Assess-840';'MWI_MAL.QA-Micro Assess-IQA-Are standards used to calibrate the pH meter?-840';;'Are standards used to calibrate the pH meter?';'jSzKczw8YlC';840;1.00;1.00;66;53;;3
 737;'MWI_MAL.QA-Micro Assess-850';'MWI_MAL.QA-Micro Assess-IQA-Are stained slides cross-checked by another laboratory staff member?-850';;'Are stained slides cross-checked by another laboratory staff member?';'uj7L0wDp6Sc';850;1.00;1.00;66;53;;3
@@ -738,7 +714,8 @@
 750;'MWI_MAL.QA-Micro Assess-980';'MWI_MAL.QA-Micro Assess-EQA-2) Date of last validation:  -980';;'2) Date of last validation:';'ztbCBKSr2IW';980;0.00;0.00;67;27;748;
 751;'MWI_MAL.QA-Micro Assess-990';'MWI_MAL.QA-Micro Assess-Mal timing-Is turnaround time for slide preparation and reading documented in the register?-990';;'Is turnaround time for slide preparation and reading documented in the register?';'Mcmgw4wRJzj';990;1.00;1.00;68;59;;3
 752;'MWI_MAL.QA-Micro Assess-1000';'MWI_MAL.QA-Micro Assess-Mal timing-What is the average turnaround time for the last week (in minutes)?-1000';;'What is the average turnaround time for the last week (in minutes)?';'nITwZF14r16';1000;0.00;0.00;68;26;751;
-753;'MWI_MAL.QA-Micro Assess-1010';'MWI_MAL.QA-Micro Assess-Ref mat_micro-Tick ''YES'' if you can verify that the following materials are physically available-1010';;'Tick ''YES'' if you can verify that the following materials are physically available';'r8SfJpOXZdq';1010;0.00;0.00;69;49;;
+753;'MWI_MAL.QA-Micro Assess-1010';'MWI_MAL.QA-Micro Assess-Ref mat_micro-Tick ''YES'' if you can verify that the following materials are physically available-1010';;'Are the following malaria reference materials available? 
+(Only tick ''Yes'' if you can verify that the following are physically available)';'r8SfJpOXZdq';1010;0.00;0.00;69;49;;
 754;'MWI_MAL.QA-Micro Assess-1020';'MWI_MAL.QA-Micro Assess-Ref mat_micro-MOH guidelines for microscopy-1020';;'MOH guidelines for microscopy';'wGsvUKZAb7O';1020;2.00;2.00;69;53;;3
 755;'MWI_MAL.QA-Micro Assess-1030';'MWI_MAL.QA-Micro Assess-Ref mat_micro-Is it the most recent version-1030';;'Is it the most recent version';'Xy8Oc0JR2mI';1030;0.00;0.00;69;53;754;
 756;'MWI_MAL.QA-Micro Assess-1040';'MWI_MAL.QA-Micro Assess-Ref mat_micro-SOP: microscopy-1040';;'SOP: microscopy';'FGECU149olp';1040;2.00;2.00;69;53;;3
@@ -757,7 +734,7 @@
 769;'MWI_MAL.QA-Prep Film-210';'MWI_MAL.QA-Prep Film-Obs 1-Finger cleaned with alcohol and allowed to dry  -210';;'Finger cleaned with alcohol and allowed to dry';'kXJJx6gTnei';210;2.00;2.00;70;53;768;28
 770;'MWI_MAL.QA-Prep Film-220';'MWI_MAL.QA-Prep Film-Obs 1-Finger pricked, first drop of blood wiped off, and subsequent drop placed on slide without touching finger   -220';;'Finger pricked, first drop of blood wiped off, and subsequent drop placed on slide without touching finger';'F2wjJ1kYxnL';220;2.00;2.00;70;53;768;28
 771;'MWI_MAL.QA-Prep Film-230';'MWI_MAL.QA-Prep Film-Obs 1-VENIPUNCTURE-230';;'VENIPUNCTURE';'ZT0mW8pyOz5';230;0.00;0.00;70;49;;
-772;'MWI_MAL.QA-Prep Film-240';'MWI_MAL.QA-Prep Film-Obs 1-Was collection via venipuncture-240';;'Was collection via venipuncture';'pJqqDjcdIte';240;1.00;1.00;70;53;;28
+772;'MWI_MAL.QA-Prep Film-240';'MWI_MAL.QA-Prep Film-Obs 1-Was collection via venipuncture-240';;'Was collection via venipuncture?';'pJqqDjcdIte';240;1.00;1.00;70;53;;28
 773;'MWI_MAL.QA-Prep Film-250';'MWI_MAL.QA-Prep Film-Obs 1-Label EDTA collection tube with date and patient’s name and/or number-250';;'Label EDTA collection tube with date and patient’s name and/or number';'eDdtq1WuktH';250;1.00;1.00;70;53;772;28
 774;'MWI_MAL.QA-Prep Film-260';'MWI_MAL.QA-Prep Film-Obs 1-Puncture site cleaned with alcohol and allowed to dry  -260';;'Puncture site cleaned with alcohol and allowed to dry';'XFO4kLTSHcc';260;1.00;1.00;70;53;772;28
 775;'MWI_MAL.QA-Prep Film-270';'MWI_MAL.QA-Prep Film-Obs 1-Sterile needle and syringe or vacutainer assembled-270';;'Sterile needle and syringe or vacutainer assembled';'fB9A9UJTwQd';270;1.00;1.00;70;53;772;28
@@ -785,7 +762,7 @@
 797;'MWI_MAL.QA-Prep Film-490';'MWI_MAL.QA-Prep Film-Obs 2-Finger cleaned with alcohol and allowed to dry  -490';;'Finger cleaned with alcohol and allowed to dry';'MlTsZMSuhKc';490;2.00;2.00;71;53;796;29
 798;'MWI_MAL.QA-Prep Film-500';'MWI_MAL.QA-Prep Film-Obs 2-Finger pricked, first drop of blood wiped off, and subsequent drop placed on slide without touching finger   -500';;'Finger pricked, first drop of blood wiped off, and subsequent drop placed on slide without touching finger';'EObLTAscJL2';500;2.00;2.00;71;53;796;29
 799;'MWI_MAL.QA-Prep Film-510';'MWI_MAL.QA-Prep Film-Obs 2-VENIPUNCTURE-510';;'VENIPUNCTURE';'cXnGs4KjDGK';510;0.00;0.00;71;49;;
-800;'MWI_MAL.QA-Prep Film-520';'MWI_MAL.QA-Prep Film-Obs 2-Was collection via venipuncture-520';;'Was collection via venipuncture';'nWnv0r3camO';520;1.00;1.00;71;53;;29
+800;'MWI_MAL.QA-Prep Film-520';'MWI_MAL.QA-Prep Film-Obs 2-Was collection via venipuncture-520';;'Was collection via venipuncture?';'nWnv0r3camO';520;1.00;1.00;71;53;;29
 801;'MWI_MAL.QA-Prep Film-530';'MWI_MAL.QA-Prep Film-Obs 2-Label EDTA collection tube with date and patient’s name and/or number-530';;'Label EDTA collection tube with date and patient’s name and/or number';'U9laLdK5xdH';530;1.00;1.00;71;53;800;29
 802;'MWI_MAL.QA-Prep Film-540';'MWI_MAL.QA-Prep Film-Obs 2-Puncture site cleaned with alcohol and allowed to dry  -540';;'Puncture site cleaned with alcohol and allowed to dry';'OnVMMMX9Gco';540;1.00;1.00;71;53;800;29
 803;'MWI_MAL.QA-Prep Film-550';'MWI_MAL.QA-Prep Film-Obs 2-Sterile needle and syringe or vacutainer assembled-550';;'Sterile needle and syringe or vacutainer assembled';'hmaW9BKeocH';550;1.00;1.00;71;53;800;29
@@ -813,7 +790,7 @@
 825;'MWI_MAL.QA-Prep Film-770';'MWI_MAL.QA-Prep Film-Obs 3-Finger cleaned with alcohol and allowed to dry  -770';;'Finger cleaned with alcohol and allowed to dry';'kQ2LX4xLPfC';770;2.00;2.00;72;53;824;30
 826;'MWI_MAL.QA-Prep Film-780';'MWI_MAL.QA-Prep Film-Obs 3-Finger pricked, first drop of blood wiped off, and subsequent drop placed on slide without touching finger   -780';;'Finger pricked, first drop of blood wiped off, and subsequent drop placed on slide without touching finger';'AiLy740j4Ci';780;2.00;2.00;72;53;824;30
 827;'MWI_MAL.QA-Prep Film-790';'MWI_MAL.QA-Prep Film-Obs 3-VENIPUNCTURE-790';;'VENIPUNCTURE';'cyRbjE0zSbJ';790;0.00;0.00;72;49;;
-828;'MWI_MAL.QA-Prep Film-800';'MWI_MAL.QA-Prep Film-Obs 3-Was collection via venipuncture-800';;'Was collection via venipuncture';'Ryr3rIri84I';800;1.00;1.00;72;53;;30
+828;'MWI_MAL.QA-Prep Film-800';'MWI_MAL.QA-Prep Film-Obs 3-Was collection via venipuncture-800';;'Was collection via venipuncture?';'Ryr3rIri84I';800;1.00;1.00;72;53;;30
 829;'MWI_MAL.QA-Prep Film-810';'MWI_MAL.QA-Prep Film-Obs 3-Label EDTA collection tube with date and patient’s name and/or number-810';;'Label EDTA collection tube with date and patient’s name and/or number';'qhp5jb4AZjG';810;1.00;1.00;72;53;828;30
 830;'MWI_MAL.QA-Prep Film-820';'MWI_MAL.QA-Prep Film-Obs 3-Puncture site cleaned with alcohol and allowed to dry  -820';;'Puncture site cleaned with alcohol and allowed to dry';'daPMu5Dahck';820;1.00;1.00;72;53;828;30
 831;'MWI_MAL.QA-Prep Film-830';'MWI_MAL.QA-Prep Film-Obs 3-Sterile needle and syringe or vacutainer assembled-830';;'Sterile needle and syringe or vacutainer assembled';'JxmYWBbAqBP';830;1.00;1.00;72;53;828;30
@@ -835,42 +812,42 @@
 847;'MWI_MAL.QA-Stain Film-160';'MWI_MAL.QA-Stain Film-Obs 1-PREPARATION OF GIEMSA STAINING SOLUTION-160';;'PREPARATION OF GIEMSA STAINING SOLUTION';'Jih9qjQr20E';160;0.00;0.00;73;49;845;
 848;'MWI_MAL.QA-Stain Film-170';'MWI_MAL.QA-Stain Film-Obs 1-Is a standard 10% Giemsa solution used?-170';;'Is a standard 10% Giemsa solution used?';'MsYzCH3MuFG';170;1.00;1.00;73;53;845;32
 849;'MWI_MAL.QA-Stain Film-180';'MWI_MAL.QA-Stain Film-Obs 1-If no, record % of solution used in this lab-180';;'If no, record % of solution used in this lab';'GEZhGJvIU2G';180;0.00;0.00;73;24;845;
-850;'MWI_MAL.QA-Stain Film-190';'MWI_MAL.QA-Stain Film-Obs 1-Was the preparation of fresh Giemsa staining solution Done properly or prepared on the day of observation-190';;'Was the preparation of fresh Giemsa staining solution Done properly or prepared on the day of observation';'QMBse01XYuv';190;2.00;2.00;73;53;845;32
-851;'MWI_MAL.QA-Stain Film-200';'MWI_MAL.QA-Stain Film-Obs 1-Were you (supervisor) Able to check pH with pH paper or pH meter-200';;'Were you (supervisor) Able to check pH with pH paper or pH meter';'OWgS19nM6mq';200;2.00;2.00;73;53;845;32
-852;'MWI_MAL.QA-Stain Film-210';'MWI_MAL.QA-Stain Film-Obs 1-If yes, was the pH of staining solution and record if pH is between 7.2 and 7.4:-210';;'If yes, was the pH of staining solution and record if pH is between 7.2 and 7.4:';'jEJ30jQcojl';210;1.00;1.00;73;58;845;32
-853;'MWI_MAL.QA-Stain Film-220';'MWI_MAL.QA-Stain Film-Obs 1-Stain is filtered prior to use?-220';;'Stain is filtered prior to use?';'dbVnF99GskF';220;2.00;2.00;73;53;845;32
+850;'MWI_MAL.QA-Stain Film-190';'MWI_MAL.QA-Stain Film-Obs 1-Was the preparation of fresh Giemsa staining solution Done properly or prepared on the day of observation-190';;'Was the preparation of fresh Giemsa staining solution done properly or prepared on the day of observation?';'QMBse01XYuv';190;2.00;2.00;73;53;845;32
+851;'MWI_MAL.QA-Stain Film-200';'MWI_MAL.QA-Stain Film-Obs 1-Were you (supervisor) Able to check pH with pH paper or pH meter-200';;'Supervisor: Were you able to check the pH with pH paper or pH meter?';'OWgS19nM6mq';200;2.00;2.00;73;53;845;32
+852;'MWI_MAL.QA-Stain Film-210';'MWI_MAL.QA-Stain Film-Obs 1-If yes, was the pH of staining solution and record if pH is between 7.2 and 7.4:-210';;'If yes, was the pH of staining solution between 7.2 and 7.4?';'jEJ30jQcojl';210;1.00;1.00;73;58;845;32
+853;'MWI_MAL.QA-Stain Film-220';'MWI_MAL.QA-Stain Film-Obs 1-Stain is filtered prior to use?-220';;'Stain is filtered prior to use';'dbVnF99GskF';220;2.00;2.00;73;53;845;32
 854;'MWI_MAL.QA-Stain Film-230';'MWI_MAL.QA-Stain Film-Obs 1-STAINING PROCEDURE THICK FILMS-230';;'STAINING PROCEDURE THICK FILMS';'j0F0kAJff1X';230;0.00;0.00;73;49;845;
 855;'MWI_MAL.QA-Stain Film-240';'MWI_MAL.QA-Stain Film-Obs 1-Slide immersed in 10% Giemsa stain for 10-15 minutes-240';;'Slide immersed in 10% Giemsa stain for 10-15 minutes';'dYtB3Q2XTZw';240;2.00;2.00;73;53;845;32
 856;'MWI_MAL.QA-Stain Film-250';'MWI_MAL.QA-Stain Film-Obs 1-Slide rinsed carefully with water (caution with thick smears since not fixed)-250';;'Slide rinsed carefully with water (caution with thick smears since not fixed)';'n61KX6LRRmY';250;2.00;2.00;73;53;845;32
 857;'MWI_MAL.QA-Stain Film-260';'MWI_MAL.QA-Stain Film-Obs 1-STAINING PROCEDURE THIN FILMS-260';;'STAINING PROCEDURE THIN FILMS';'VYbU7dFeW7V';260;0.00;0.00;73;49;845;
-858;'MWI_MAL.QA-Stain Film-270';'MWI_MAL.QA-Stain Film-Obs 1-(If not done in this laboratory, mark N/A in this section)-270';;'(If not done in this laboratory, mark N/A in this section)';'yi1mfQSBwNi';270;0.00;0.00;73;49;845;
+858;'MWI_MAL.QA-Stain Film-270';'MWI_MAL.QA-Stain Film-Obs 1-(If not done in this laboratory, mark N/A in this section)-270';;'(If thin films are not done in this laboratory, mark N/A in this section)';'yi1mfQSBwNi';270;0.00;0.00;73;49;845;
 859;'MWI_MAL.QA-Stain Film-280';'MWI_MAL.QA-Stain Film-Obs 1-Slide fixed with absolute methanol (2-3 seconds) and allowed to air dry-280';;'Slide fixed with absolute methanol (2-3 seconds) and allowed to air dry';'YgnZDZAeTty';280;2.00;2.00;73;57;845;32
 860;'MWI_MAL.QA-Stain Film-290';'MWI_MAL.QA-Stain Film-Obs 1-Slide immersed in 10% Giemsa stain for 10-15 minutes-290';;'Slide immersed in 10% Giemsa stain for 10-15 minutes';'GR61QxZm03E';290;2.00;2.00;73;57;845;32
 861;'MWI_MAL.QA-Stain Film-300';'MWI_MAL.QA-Stain Film-Obs 1-Slide rinsed carefully with water-300';;'Slide rinsed carefully with water';'QDWUt8CXHf0';300;2.00;2.00;73;57;845;32
 862;'MWI_MAL.QA-Stain Film-310';'MWI_MAL.QA-Stain Film-Obs 1-DRYING-310';;'DRYING';'Fd6yeKF62KM';310;0.00;0.00;73;49;845;
-863;'MWI_MAL.QA-Stain Film-320';'MWI_MAL.QA-Stain Film-Obs 1-Slide drained and air dried (avoid applying external heat)?-320';;'Slide drained and air dried (avoid applying external heat)?';'CBSBieUySsv';320;1.00;1.00;73;53;845;32
+863;'MWI_MAL.QA-Stain Film-320';'MWI_MAL.QA-Stain Film-Obs 1-Slide drained and air dried (avoid applying external heat)?-320';;'Slide drained and air dried (avoid applying external heat)';'CBSBieUySsv';320;1.00;1.00;73;53;845;32
 864;'MWI_MAL.QA-Stain Film-330';'MWI_MAL.QA-Stain Film-Obs 1-WASTE MANAGEMENT-330';;'WASTE MANAGEMENT';'xX4zG84jR0j';330;0.00;0.00;73;49;845;
 865;'MWI_MAL.QA-Stain Film-340';'MWI_MAL.QA-Stain Film-Obs 1-Sharps waste segregated and safely disposed in a safety box-340';;'Sharps waste segregated and safely disposed in a safety box';'RPD3QModZrz';340;1.00;1.00;73;53;845;32
 866;'MWI_MAL.QA-Stain Film-350';'MWI_MAL.QA-Stain Film-Obs 1-Infectious waste disposed of in appropriate waste containers-350';;'Infectious waste disposed of in appropriate waste containers';'e8Ss95wiBvu';350;1.00;1.00;73;53;845;32
 867;'MWI_MAL.QA-Stain Film-360';'MWI_MAL.QA-Stain Film-Obs 1-Liquid waste appropriately washed off/disinfected-360';;'Liquid waste appropriately washed off/disinfected';'tv0khGzNfOt';360;1.00;1.00;73;53;845;32
 868;'MWI_MAL.QA-Stain Film-370';'MWI_MAL.QA-Stain Film-Obs 1-PREPARATION OF FIELD STAINING SOLUTIONS-370';;'PREPARATION OF FIELD STAINING SOLUTIONS';'RypCH9SFcSX';370;0.00;0.00;73;49;846;
-869;'MWI_MAL.QA-Stain Film-380';'MWI_MAL.QA-Stain Film-Obs 1-Preparation of fresh Field stain A (methylene blue) done properly OR prepared on day of observation?-380';;'Preparation of fresh Field stain A (methylene blue) done properly OR prepared on day of observation?';'wCIQ63UjkJ7';380;2.00;2.00;73;53;846;32
-870;'MWI_MAL.QA-Stain Film-390';'MWI_MAL.QA-Stain Film-Obs 1-Preparation of fresh Field stain B (eosin) done properly OR prepared on day of observation?-390';;'Preparation of fresh Field stain B (eosin) done properly OR prepared on day of observation?';'hsgumlVVRTV';390;2.00;2.00;73;53;846;32
-871;'MWI_MAL.QA-Stain Film-400';'MWI_MAL.QA-Stain Film-Obs 1-Stain is filtered prior to use?-400';;'Stain is filtered prior to use?';'TFC8tUdfuXc';400;1.00;1.00;73;53;846;32
+869;'MWI_MAL.QA-Stain Film-380';'MWI_MAL.QA-Stain Film-Obs 1-Preparation of fresh Field stain A (methylene blue) done properly OR prepared on day of observation?-380';;'Preparation of fresh Field stain A (methylene blue) done properly OR prepared on day of observation';'wCIQ63UjkJ7';380;2.00;2.00;73;53;846;32
+870;'MWI_MAL.QA-Stain Film-390';'MWI_MAL.QA-Stain Film-Obs 1-Preparation of fresh Field stain B (eosin) done properly OR prepared on day of observation?-390';;'Preparation of fresh Field stain B (eosin) done properly OR prepared on day of observation';'hsgumlVVRTV';390;2.00;2.00;73;53;846;32
+871;'MWI_MAL.QA-Stain Film-400';'MWI_MAL.QA-Stain Film-Obs 1-Stain is filtered prior to use?-400';;'Stain is filtered prior to use';'TFC8tUdfuXc';400;1.00;1.00;73;53;846;32
 872;'MWI_MAL.QA-Stain Film-410';'MWI_MAL.QA-Stain Film-Obs 1-STAINING PROCEDURE THICK FILMS-410';;'STAINING PROCEDURE THICK FILMS';'IlrieFQYZF1';410;0.00;0.00;73;49;846;
 873;'MWI_MAL.QA-Stain Film-420';'MWI_MAL.QA-Stain Film-Obs 1-Slide immersed in Field stain A for 3 seconds-420';;'Slide immersed in Field stain A for 3 seconds';'iB9yCB23mYv';420;1.00;1.00;73;53;846;32
 874;'MWI_MAL.QA-Stain Film-430';'MWI_MAL.QA-Stain Film-Obs 1-Slide rinsed carefully with water (caution with thick smears since not fixed)-430';;'Slide rinsed carefully with water (caution with thick smears since not fixed)';'MaAeJzao8F0';430;1.00;1.00;73;53;846;32
 875;'MWI_MAL.QA-Stain Film-440';'MWI_MAL.QA-Stain Film-Obs 1-Slide immersed in Field stain B for 5 seconds-440';;'Slide immersed in Field stain B for 5 seconds';'hAqKbBaT01e';440;1.00;1.00;73;53;846;32
 876;'MWI_MAL.QA-Stain Film-450';'MWI_MAL.QA-Stain Film-Obs 1-Slide rinsed carefully with water-450';;'Slide rinsed carefully with water';'wM1G3cDu0xy';450;1.00;1.00;73;53;846;32
 877;'MWI_MAL.QA-Stain Film-460';'MWI_MAL.QA-Stain Film-Obs 1-STAINING PROCEDURE THIN FILMS-460';;'STAINING PROCEDURE THIN FILMS';'C7Z07JriUfu';460;0.00;0.00;73;49;846;
-878;'MWI_MAL.QA-Stain Film-470';'MWI_MAL.QA-Stain Film-Obs 1-(If commonly done in this laboratory - if not done, mark N/A in this section)-470';;'(If commonly done in this laboratory - if not done, mark N/A in this section)';'lRe487zeVy2';470;0.00;0.00;73;49;846;
+878;'MWI_MAL.QA-Stain Film-470';'MWI_MAL.QA-Stain Film-Obs 1-(If commonly done in this laboratory - if not done, mark N/A in this section)-470';;'(If thin films are not done in this laboratory, mark N/A in this section)';'lRe487zeVy2';470;0.00;0.00;73;49;846;
 879;'MWI_MAL.QA-Stain Film-480';'MWI_MAL.QA-Stain Film-Obs 1-Slide fixed with absolute methanol (2-3 seconds) and allowed to air dry-480';;'Slide fixed with absolute methanol (2-3 seconds) and allowed to air dry';'FA7wFRXg4iV';480;2.00;2.00;73;57;846;32
 880;'MWI_MAL.QA-Stain Film-490';'MWI_MAL.QA-Stain Film-Obs 1-Slide immersed in Field stain A for 3 seconds-490';;'Slide immersed in Field stain A for 3 seconds';'SVRgzghSKlM';490;2.00;2.00;73;57;846;32
 881;'MWI_MAL.QA-Stain Film-500';'MWI_MAL.QA-Stain Film-Obs 1-Slide rinsed carefully with water-500';;'Slide rinsed carefully with water';'DILVIRpoU5t';500;2.00;2.00;73;57;846;32
 882;'MWI_MAL.QA-Stain Film-510';'MWI_MAL.QA-Stain Film-Obs 1-Slide immersed in Field stain B for 5 seconds-510';;'Slide immersed in Field stain B for 5 seconds';'dBS9mzvcNml';510;2.00;2.00;73;57;846;32
 883;'MWI_MAL.QA-Stain Film-520';'MWI_MAL.QA-Stain Film-Obs 1-Slide rinsed carefully with water-520';;'Slide rinsed carefully with water';'emySne0wN4s';520;2.00;2.00;73;57;846;32
 884;'MWI_MAL.QA-Stain Film-530';'MWI_MAL.QA-Stain Film-Obs 1-DRYING-530';;'DRYING';'f1VJ7zQ1vx4';530;0.00;0.00;73;49;846;
-885;'MWI_MAL.QA-Stain Film-540';'MWI_MAL.QA-Stain Film-Obs 1-Slide drained and air dried (avoid applying external heat)?-540';;'Slide drained and air dried (avoid applying external heat)?';'OwBw1JQE9GM';540;1.00;1.00;73;53;846;32
+885;'MWI_MAL.QA-Stain Film-540';'MWI_MAL.QA-Stain Film-Obs 1-Slide drained and air dried (avoid applying external heat)?-540';;'Slide drained and air dried (avoid applying external heat)';'OwBw1JQE9GM';540;1.00;1.00;73;53;846;32
 886;'MWI_MAL.QA-Stain Film-550';'MWI_MAL.QA-Stain Film-Obs 1-WASTE MANAGEMENT-550';;'WASTE MANAGEMENT';'HyxeNRhZEvH';550;0.00;0.00;73;49;846;
 887;'MWI_MAL.QA-Stain Film-560';'MWI_MAL.QA-Stain Film-Obs 1-Sharps waste segregated and safely disposed in a safety box-560';;'Sharps waste segregated and safely disposed in a safety box';'rPvgRdg4yAR';560;1.00;1.00;73;53;846;32
 888;'MWI_MAL.QA-Stain Film-570';'MWI_MAL.QA-Stain Film-Obs 1-Infectious waste disposed of in appropriate waste containers-570';;'Infectious waste disposed of in appropriate waste containers';'pD66p4ffSmT';570;1.00;1.00;73;53;846;32
@@ -885,42 +862,42 @@
 897;'MWI_MAL.QA-Stain Film-660';'MWI_MAL.QA-Stain Film-Obs 2-PREPARATION OF GIEMSA STAINING SOLUTION-660';;'PREPARATION OF GIEMSA STAINING SOLUTION';'F2mfgOcvsxV';660;0.00;0.00;74;49;895;
 898;'MWI_MAL.QA-Stain Film-670';'MWI_MAL.QA-Stain Film-Obs 2-Is a standard 10% Giemsa solution used?-670';;'Is a standard 10% Giemsa solution used?';'s2fJJXRyB8F';670;1.00;1.00;74;53;895;33
 899;'MWI_MAL.QA-Stain Film-680';'MWI_MAL.QA-Stain Film-Obs 2-If no, record % of solution used in this lab-680';;'If no, record % of solution used in this lab';'jZAahTcQn5M';680;0.00;0.00;74;24;895;
-900;'MWI_MAL.QA-Stain Film-690';'MWI_MAL.QA-Stain Film-Obs 2-Was the preparation of fresh Giemsa staining solution Done properly or prepared on the day of observation-690';;'Was the preparation of fresh Giemsa staining solution Done properly or prepared on the day of observation';'j0RhDuXpZ0X';690;2.00;2.00;74;53;895;33
-901;'MWI_MAL.QA-Stain Film-700';'MWI_MAL.QA-Stain Film-Obs 2-Were you (supervisor) Able to check pH with pH paper or pH meter-700';;'Were you (supervisor) Able to check pH with pH paper or pH meter';'fUTWJGoJdec';700;2.00;2.00;74;53;895;33
-902;'MWI_MAL.QA-Stain Film-710';'MWI_MAL.QA-Stain Film-Obs 2-If yes, was the pH of staining solution and record if pH is between 7.2 and 7.4:-710';;'If yes, was the pH of staining solution and record if pH is between 7.2 and 7.4:';'Qr394YcaO8k';710;1.00;1.00;74;58;895;33
-903;'MWI_MAL.QA-Stain Film-720';'MWI_MAL.QA-Stain Film-Obs 2-Stain is filtered prior to use?-720';;'Stain is filtered prior to use?';'dkhevCPLJtC';720;2.00;2.00;74;53;895;33
+900;'MWI_MAL.QA-Stain Film-690';'MWI_MAL.QA-Stain Film-Obs 2-Was the preparation of fresh Giemsa staining solution Done properly or prepared on the day of observation-690';;'Was the preparation of fresh Giemsa staining solution done properly or prepared on the day of observation?';'j0RhDuXpZ0X';690;2.00;2.00;74;53;895;33
+901;'MWI_MAL.QA-Stain Film-700';'MWI_MAL.QA-Stain Film-Obs 2-Were you (supervisor) Able to check pH with pH paper or pH meter-700';;'Supervisor: Were you able to check the pH with pH paper or pH meter?';'fUTWJGoJdec';700;2.00;2.00;74;53;895;33
+902;'MWI_MAL.QA-Stain Film-710';'MWI_MAL.QA-Stain Film-Obs 2-If yes, was the pH of staining solution and record if pH is between 7.2 and 7.4:-710';;'If yes, was the pH of staining solution between 7.2 and 7.4?';'Qr394YcaO8k';710;1.00;1.00;74;58;895;33
+903;'MWI_MAL.QA-Stain Film-720';'MWI_MAL.QA-Stain Film-Obs 2-Stain is filtered prior to use?-720';;'Stain is filtered prior to use';'dkhevCPLJtC';720;2.00;2.00;74;53;895;33
 904;'MWI_MAL.QA-Stain Film-730';'MWI_MAL.QA-Stain Film-Obs 2-STAINING PROCEDURE THICK FILMS-730';;'STAINING PROCEDURE THICK FILMS';'h2tTNUtXG4L';730;0.00;0.00;74;49;895;
 905;'MWI_MAL.QA-Stain Film-740';'MWI_MAL.QA-Stain Film-Obs 2-Slide immersed in 10% Giemsa stain for 10-15 minutes-740';;'Slide immersed in 10% Giemsa stain for 10-15 minutes';'e8CVUBmPSMZ';740;2.00;2.00;74;53;895;33
 906;'MWI_MAL.QA-Stain Film-750';'MWI_MAL.QA-Stain Film-Obs 2-Slide rinsed carefully with water (caution with thick smears since not fixed)-750';;'Slide rinsed carefully with water (caution with thick smears since not fixed)';'UKK1YiMkzZT';750;2.00;2.00;74;53;895;33
 907;'MWI_MAL.QA-Stain Film-760';'MWI_MAL.QA-Stain Film-Obs 2-STAINING PROCEDURE THIN FILMS-760';;'STAINING PROCEDURE THIN FILMS';'f50MgElEf9i';760;0.00;0.00;74;49;895;
-908;'MWI_MAL.QA-Stain Film-770';'MWI_MAL.QA-Stain Film-Obs 2-(If not done in this laboratory, mark N/A in this section)-770';;'(If not done in this laboratory, mark N/A in this section)';'dDWvxIIECdl';770;0.00;0.00;74;49;895;
+908;'MWI_MAL.QA-Stain Film-770';'MWI_MAL.QA-Stain Film-Obs 2-(If not done in this laboratory, mark N/A in this section)-770';;'(If thin films are not done in this laboratory, mark N/A in this section)';'dDWvxIIECdl';770;0.00;0.00;74;49;895;
 909;'MWI_MAL.QA-Stain Film-780';'MWI_MAL.QA-Stain Film-Obs 2-Slide fixed with absolute methanol (2-3 seconds) and allowed to air dry-780';;'Slide fixed with absolute methanol (2-3 seconds) and allowed to air dry';'QkMuPwQcDpA';780;2.00;2.00;74;57;895;33
 910;'MWI_MAL.QA-Stain Film-790';'MWI_MAL.QA-Stain Film-Obs 2-Slide immersed in 10% Giemsa stain for 10-15 minutes-790';;'Slide immersed in 10% Giemsa stain for 10-15 minutes';'zJuivtnEPdX';790;2.00;2.00;74;57;895;33
 911;'MWI_MAL.QA-Stain Film-800';'MWI_MAL.QA-Stain Film-Obs 2-Slide rinsed carefully with water-800';;'Slide rinsed carefully with water';'UHdBxBeLgLB';800;2.00;2.00;74;57;895;33
 912;'MWI_MAL.QA-Stain Film-810';'MWI_MAL.QA-Stain Film-Obs 2-DRYING-810';;'DRYING';'bvjaHLKKile';810;0.00;0.00;74;49;895;
-913;'MWI_MAL.QA-Stain Film-820';'MWI_MAL.QA-Stain Film-Obs 2-Slide drained and air dried (avoid applying external heat)?-820';;'Slide drained and air dried (avoid applying external heat)?';'EvMhA64mm1T';820;1.00;1.00;74;53;895;33
+913;'MWI_MAL.QA-Stain Film-820';'MWI_MAL.QA-Stain Film-Obs 2-Slide drained and air dried (avoid applying external heat)?-820';;'Slide drained and air dried (avoid applying external heat)';'EvMhA64mm1T';820;1.00;1.00;74;53;895;33
 914;'MWI_MAL.QA-Stain Film-830';'MWI_MAL.QA-Stain Film-Obs 2-WASTE MANAGEMENT-830';;'WASTE MANAGEMENT';'db5IdcA6HGM';830;0.00;0.00;74;49;895;
 915;'MWI_MAL.QA-Stain Film-840';'MWI_MAL.QA-Stain Film-Obs 2-Sharps waste segregated and safely disposed in a safety box-840';;'Sharps waste segregated and safely disposed in a safety box';'U3OyxGknOf2';840;1.00;1.00;74;53;895;33
 916;'MWI_MAL.QA-Stain Film-850';'MWI_MAL.QA-Stain Film-Obs 2-Infectious waste disposed of in appropriate waste containers-850';;'Infectious waste disposed of in appropriate waste containers';'XxfPsRRE72F';850;1.00;1.00;74;53;895;33
 917;'MWI_MAL.QA-Stain Film-860';'MWI_MAL.QA-Stain Film-Obs 2-Liquid waste appropriately washed off/disinfected-860';;'Liquid waste appropriately washed off/disinfected';'GA30k3evlkv';860;1.00;1.00;74;53;895;33
 918;'MWI_MAL.QA-Stain Film-870';'MWI_MAL.QA-Stain Film-Obs 2-PREPARATION OF FIELD STAINING SOLUTIONS-870';;'PREPARATION OF FIELD STAINING SOLUTIONS';'VWd6Dr1ZFuD';870;0.00;0.00;74;49;896;
-919;'MWI_MAL.QA-Stain Film-880';'MWI_MAL.QA-Stain Film-Obs 2-Preparation of fresh Field stain A (methylene blue) done properly OR prepared on day of observation?-880';;'Preparation of fresh Field stain A (methylene blue) done properly OR prepared on day of observation?';'xc7jfVCJpdH';880;2.00;2.00;74;53;896;33
-920;'MWI_MAL.QA-Stain Film-890';'MWI_MAL.QA-Stain Film-Obs 2-Preparation of fresh Field stain B (eosin) done properly OR prepared on day of observation?-890';;'Preparation of fresh Field stain B (eosin) done properly OR prepared on day of observation?';'xrq6VpLubbm';890;2.00;2.00;74;53;896;33
-921;'MWI_MAL.QA-Stain Film-900';'MWI_MAL.QA-Stain Film-Obs 2-Stain is filtered prior to use?-900';;'Stain is filtered prior to use?';'pVSBK6rW5PE';900;1.00;1.00;74;53;896;33
+919;'MWI_MAL.QA-Stain Film-880';'MWI_MAL.QA-Stain Film-Obs 2-Preparation of fresh Field stain A (methylene blue) done properly OR prepared on day of observation?-880';;'Preparation of fresh Field stain A (methylene blue) done properly OR prepared on day of observation';'xc7jfVCJpdH';880;2.00;2.00;74;53;896;33
+920;'MWI_MAL.QA-Stain Film-890';'MWI_MAL.QA-Stain Film-Obs 2-Preparation of fresh Field stain B (eosin) done properly OR prepared on day of observation?-890';;'Preparation of fresh Field stain B (eosin) done properly OR prepared on day of observation';'xrq6VpLubbm';890;2.00;2.00;74;53;896;33
+921;'MWI_MAL.QA-Stain Film-900';'MWI_MAL.QA-Stain Film-Obs 2-Stain is filtered prior to use?-900';;'Stain is filtered prior to use';'pVSBK6rW5PE';900;1.00;1.00;74;53;896;33
 922;'MWI_MAL.QA-Stain Film-910';'MWI_MAL.QA-Stain Film-Obs 2-STAINING PROCEDURE THICK FILMS-910';;'STAINING PROCEDURE THICK FILMS';'RDvF2svmNWE';910;0.00;0.00;74;49;896;
 923;'MWI_MAL.QA-Stain Film-920';'MWI_MAL.QA-Stain Film-Obs 2-Slide immersed in Field stain A for 3 seconds-920';;'Slide immersed in Field stain A for 3 seconds';'Ox8dGVXO3lN';920;1.00;1.00;74;53;896;33
 924;'MWI_MAL.QA-Stain Film-930';'MWI_MAL.QA-Stain Film-Obs 2-Slide rinsed carefully with water (caution with thick smears since not fixed)-930';;'Slide rinsed carefully with water (caution with thick smears since not fixed)';'moGGiClnPmF';930;1.00;1.00;74;53;896;33
 925;'MWI_MAL.QA-Stain Film-940';'MWI_MAL.QA-Stain Film-Obs 2-Slide immersed in Field stain B for 5 seconds-940';;'Slide immersed in Field stain B for 5 seconds';'Us9o2N5k8PE';940;1.00;1.00;74;53;896;33
 926;'MWI_MAL.QA-Stain Film-950';'MWI_MAL.QA-Stain Film-Obs 2-Slide rinsed carefully with water-950';;'Slide rinsed carefully with water';'zZVbGnrqYp8';950;1.00;1.00;74;53;896;33
 927;'MWI_MAL.QA-Stain Film-960';'MWI_MAL.QA-Stain Film-Obs 2-STAINING PROCEDURE THIN FILMS-960';;'STAINING PROCEDURE THIN FILMS';'AZTpJ3rKyYW';960;0.00;0.00;74;49;896;
-928;'MWI_MAL.QA-Stain Film-970';'MWI_MAL.QA-Stain Film-Obs 2-(If commonly done in this laboratory - if not done, mark N/A in this section)-970';;'(If commonly done in this laboratory - if not done, mark N/A in this section)';'XHGOn5OzGFQ';970;0.00;0.00;74;49;896;
+928;'MWI_MAL.QA-Stain Film-970';'MWI_MAL.QA-Stain Film-Obs 2-(If commonly done in this laboratory - if not done, mark N/A in this section)-970';;'(If thin films are not done in this laboratory, mark N/A in this section)';'XHGOn5OzGFQ';970;0.00;0.00;74;49;896;
 929;'MWI_MAL.QA-Stain Film-980';'MWI_MAL.QA-Stain Film-Obs 2-Slide fixed with absolute methanol (2-3 seconds) and allowed to air dry-980';;'Slide fixed with absolute methanol (2-3 seconds) and allowed to air dry';'UFzTNljGAKO';980;2.00;2.00;74;57;896;33
 930;'MWI_MAL.QA-Stain Film-990';'MWI_MAL.QA-Stain Film-Obs 2-Slide immersed in Field stain A for 3 seconds-990';;'Slide immersed in Field stain A for 3 seconds';'xsBL0CwJfOH';990;2.00;2.00;74;57;896;33
 931;'MWI_MAL.QA-Stain Film-1000';'MWI_MAL.QA-Stain Film-Obs 2-Slide rinsed carefully with water-1000';;'Slide rinsed carefully with water';'mBFipTYQUog';1000;2.00;2.00;74;57;896;33
 932;'MWI_MAL.QA-Stain Film-1010';'MWI_MAL.QA-Stain Film-Obs 2-Slide immersed in Field stain B for 5 seconds-1010';;'Slide immersed in Field stain B for 5 seconds';'xBHceJa8xWj';1010;2.00;2.00;74;57;896;33
 933;'MWI_MAL.QA-Stain Film-1020';'MWI_MAL.QA-Stain Film-Obs 2-Slide rinsed carefully with water-1020';;'Slide rinsed carefully with water';'QE3cZamhm7A';1020;2.00;2.00;74;57;896;33
 934;'MWI_MAL.QA-Stain Film-1030';'MWI_MAL.QA-Stain Film-Obs 2-DRYING-1030';;'DRYING';'hjbTRQ1nDiZ';1030;0.00;0.00;74;49;896;
-935;'MWI_MAL.QA-Stain Film-1040';'MWI_MAL.QA-Stain Film-Obs 2-Slide drained and air dried (avoid applying external heat)?-1040';;'Slide drained and air dried (avoid applying external heat)?';'cK5vwVtWOzV';1040;1.00;1.00;74;53;896;33
+935;'MWI_MAL.QA-Stain Film-1040';'MWI_MAL.QA-Stain Film-Obs 2-Slide drained and air dried (avoid applying external heat)?-1040';;'Slide drained and air dried (avoid applying external heat)';'cK5vwVtWOzV';1040;1.00;1.00;74;53;896;33
 936;'MWI_MAL.QA-Stain Film-1050';'MWI_MAL.QA-Stain Film-Obs 2-WASTE MANAGEMENT-1050';;'WASTE MANAGEMENT';'qX654AbxBwa';1050;0.00;0.00;74;49;896;
 937;'MWI_MAL.QA-Stain Film-1060';'MWI_MAL.QA-Stain Film-Obs 2-Sharps waste segregated and safely disposed in a safety box-1060';;'Sharps waste segregated and safely disposed in a safety box';'NfBFbNbDD86';1060;1.00;1.00;74;53;896;33
 938;'MWI_MAL.QA-Stain Film-1070';'MWI_MAL.QA-Stain Film-Obs 2-Infectious waste disposed of in appropriate waste containers-1070';;'Infectious waste disposed of in appropriate waste containers';'IvuB5UEXIrD';1070;1.00;1.00;74;53;896;33
@@ -935,42 +912,42 @@
 947;'MWI_MAL.QA-Stain Film-1160';'MWI_MAL.QA-Stain Film-Obs 3-PREPARATIN OF GIEMSA STAINING SOLUTION-1160';;'PREPARATIN OF GIEMSA STAINING SOLUTION';'os8f3hRzLTj';1160;0.00;0.00;75;49;945;
 948;'MWI_MAL.QA-Stain Film-1170';'MWI_MAL.QA-Stain Film-Obs 3-Is a standard 10% Giemsa solution used?-1170';;'Is a standard 10% Giemsa solution used?';'f0jRq0j6b1e';1170;1.00;1.00;75;53;945;34
 949;'MWI_MAL.QA-Stain Film-1180';'MWI_MAL.QA-Stain Film-Obs 3-If no, record % of solution used in this lab-1180';;'If no, record % of solution used in this lab';'kpTv26hU4k5';1180;0.00;0.00;75;24;945;
-950;'MWI_MAL.QA-Stain Film-1190';'MWI_MAL.QA-Stain Film-Obs 3-Was the preparation of fresh Giemsa staining solution Done properly or prepared on the day of observation-1190';;'Was the preparation of fresh Giemsa staining solution Done properly or prepared on the day of observation';'BOUkA2F4EmK';1190;2.00;2.00;75;53;945;34
-951;'MWI_MAL.QA-Stain Film-1200';'MWI_MAL.QA-Stain Film-Obs 3-Were you (supervisor) Able to check pH with pH paper or pH meter-1200';;'Were you (supervisor) Able to check pH with pH paper or pH meter';'PNnlWxKI3XM';1200;2.00;2.00;75;53;945;34
-952;'MWI_MAL.QA-Stain Film-1210';'MWI_MAL.QA-Stain Film-Obs 3-If yes, was the pH of staining solution and record if pH is between 7.2 and 7.4:-1210';;'If yes, was the pH of staining solution and record if pH is between 7.2 and 7.4:';'V4soWPEPT0M';1210;1.00;1.00;75;58;945;34
-953;'MWI_MAL.QA-Stain Film-1220';'MWI_MAL.QA-Stain Film-Obs 3-Stain is filtered prior to use?-1220';;'Stain is filtered prior to use?';'WtVwhz1yGnZ';1220;2.00;2.00;75;53;945;34
+950;'MWI_MAL.QA-Stain Film-1190';'MWI_MAL.QA-Stain Film-Obs 3-Was the preparation of fresh Giemsa staining solution Done properly or prepared on the day of observation-1190';;'Was the preparation of fresh Giemsa staining solution done properly or prepared on the day of observation?';'BOUkA2F4EmK';1190;2.00;2.00;75;53;945;34
+951;'MWI_MAL.QA-Stain Film-1200';'MWI_MAL.QA-Stain Film-Obs 3-Were you (supervisor) Able to check pH with pH paper or pH meter-1200';;'Supervisor: Were you able to check the pH with pH paper or pH meter?';'PNnlWxKI3XM';1200;2.00;2.00;75;53;945;34
+952;'MWI_MAL.QA-Stain Film-1210';'MWI_MAL.QA-Stain Film-Obs 3-If yes, was the pH of staining solution and record if pH is between 7.2 and 7.4:-1210';;'If yes, was the pH of staining solution between 7.2 and 7.4?';'V4soWPEPT0M';1210;1.00;1.00;75;58;945;34
+953;'MWI_MAL.QA-Stain Film-1220';'MWI_MAL.QA-Stain Film-Obs 3-Stain is filtered prior to use?-1220';;'Stain is filtered prior to use';'WtVwhz1yGnZ';1220;2.00;2.00;75;53;945;34
 954;'MWI_MAL.QA-Stain Film-1230';'MWI_MAL.QA-Stain Film-Obs 3-STAINING PROCEDURE THICK FILMS-1230';;'STAINING PROCEDURE THICK FILMS';'JYElQks0Z1f';1230;0.00;0.00;75;49;945;
 955;'MWI_MAL.QA-Stain Film-1240';'MWI_MAL.QA-Stain Film-Obs 3-Slide immersed in 10% Giemsa stain for 10-15 minutes-1240';;'Slide immersed in 10% Giemsa stain for 10-15 minutes';'plVKImcZa8R';1240;2.00;2.00;75;53;945;34
 956;'MWI_MAL.QA-Stain Film-1250';'MWI_MAL.QA-Stain Film-Obs 3-Slide rinsed carefully with water (caution with thick smears since not fixed)-1250';;'Slide rinsed carefully with water (caution with thick smears since not fixed)';'epPeX7WlR7E';1250;2.00;2.00;75;53;945;34
 957;'MWI_MAL.QA-Stain Film-1260';'MWI_MAL.QA-Stain Film-Obs 3-STAINING PROCEDURE THIN FILMS-1260';;'STAINING PROCEDURE THIN FILMS';'cYQFkjlVGYs';1260;0.00;0.00;75;49;945;
-958;'MWI_MAL.QA-Stain Film-1270';'MWI_MAL.QA-Stain Film-Obs 3-(If not done in this laboratory, mark N/A in this section)-1270';;'(If not done in this laboratory, mark N/A in this section)';'FiPLVjUDFrp';1270;0.00;0.00;75;49;945;
+958;'MWI_MAL.QA-Stain Film-1270';'MWI_MAL.QA-Stain Film-Obs 3-(If not done in this laboratory, mark N/A in this section)-1270';;'(If thin films are not done in this laboratory, mark N/A in this section)';'FiPLVjUDFrp';1270;0.00;0.00;75;49;945;
 959;'MWI_MAL.QA-Stain Film-1280';'MWI_MAL.QA-Stain Film-Obs 3-Slide fixed with absolute methanol (2-3 seconds) and allowed to air dry-1280';;'Slide fixed with absolute methanol (2-3 seconds) and allowed to air dry';'YmSsp6iW9hg';1280;2.00;2.00;75;57;945;34
 960;'MWI_MAL.QA-Stain Film-1290';'MWI_MAL.QA-Stain Film-Obs 3-Slide immersed in 10% Giemsa stain for 10-15 minutes-1290';;'Slide immersed in 10% Giemsa stain for 10-15 minutes';'ADAUwXT5Q84';1290;2.00;2.00;75;57;945;34
 961;'MWI_MAL.QA-Stain Film-1300';'MWI_MAL.QA-Stain Film-Obs 3-Slide rinsed carefully with water-1300';;'Slide rinsed carefully with water';'jAj81MunbJB';1300;2.00;2.00;75;57;945;34
 962;'MWI_MAL.QA-Stain Film-1310';'MWI_MAL.QA-Stain Film-Obs 3-DRYING-1310';;'DRYING';'Hx14volEqdS';1310;0.00;0.00;75;49;945;
-963;'MWI_MAL.QA-Stain Film-1320';'MWI_MAL.QA-Stain Film-Obs 3-Slide drained and air dried (avoid applying external heat)?-1320';;'Slide drained and air dried (avoid applying external heat)?';'ZdXDDNq0NIK';1320;1.00;1.00;75;53;945;34
+963;'MWI_MAL.QA-Stain Film-1320';'MWI_MAL.QA-Stain Film-Obs 3-Slide drained and air dried (avoid applying external heat)?-1320';;'Slide drained and air dried (avoid applying external heat)';'ZdXDDNq0NIK';1320;1.00;1.00;75;53;945;34
 964;'MWI_MAL.QA-Stain Film-1330';'MWI_MAL.QA-Stain Film-Obs 3-WASTE MANAGEMENT-1330';;'WASTE MANAGEMENT';'sh1F0Yk2qnO';1330;0.00;0.00;75;49;945;
 965;'MWI_MAL.QA-Stain Film-1340';'MWI_MAL.QA-Stain Film-Obs 3-Sharps waste segregated and safely disposed in a safety box-1340';;'Sharps waste segregated and safely disposed in a safety box';'bLQHpdtRxtn';1340;1.00;1.00;75;53;945;34
 966;'MWI_MAL.QA-Stain Film-1350';'MWI_MAL.QA-Stain Film-Obs 3-Infectious waste disposed of in appropriate waste containers-1350';;'Infectious waste disposed of in appropriate waste containers';'Hr7q29C0Xub';1350;1.00;1.00;75;53;945;34
 967;'MWI_MAL.QA-Stain Film-1360';'MWI_MAL.QA-Stain Film-Obs 3-Liquid waste appropriately washed off/disinfected-1360';;'Liquid waste appropriately washed off/disinfected';'R1X8il7oohm';1360;1.00;1.00;75;53;945;34
 968;'MWI_MAL.QA-Stain Film-1370';'MWI_MAL.QA-Stain Film-Obs 3-PREPARATION OF FIELD STAINING SOLUTIONS-1370';;'PREPARATION OF FIELD STAINING SOLUTIONS';'xruYLXa9mYd';1370;0.00;0.00;75;49;946;
-969;'MWI_MAL.QA-Stain Film-1380';'MWI_MAL.QA-Stain Film-Obs 3-Preparation of fresh Field stain A (methylene blue) done properly OR prepared on day of observation?-1380';;'Preparation of fresh Field stain A (methylene blue) done properly OR prepared on day of observation?';'WusugKZM1z6';1380;2.00;2.00;75;53;946;34
-970;'MWI_MAL.QA-Stain Film-1390';'MWI_MAL.QA-Stain Film-Obs 3-Preparation of fresh Field stain B (eosin) done properly OR prepared on day of observation?-1390';;'Preparation of fresh Field stain B (eosin) done properly OR prepared on day of observation?';'SRPPfnMUsFz';1390;2.00;2.00;75;53;946;34
-971;'MWI_MAL.QA-Stain Film-1400';'MWI_MAL.QA-Stain Film-Obs 3-Stain is filtered prior to use?-1400';;'Stain is filtered prior to use?';'pE4We4NGONT';1400;1.00;1.00;75;53;946;34
+969;'MWI_MAL.QA-Stain Film-1380';'MWI_MAL.QA-Stain Film-Obs 3-Preparation of fresh Field stain A (methylene blue) done properly OR prepared on day of observation?-1380';;'Preparation of fresh Field stain A (methylene blue) done properly OR prepared on day of observation';'WusugKZM1z6';1380;2.00;2.00;75;53;946;34
+970;'MWI_MAL.QA-Stain Film-1390';'MWI_MAL.QA-Stain Film-Obs 3-Preparation of fresh Field stain B (eosin) done properly OR prepared on day of observation?-1390';;'Preparation of fresh Field stain B (eosin) done properly OR prepared on day of observation';'SRPPfnMUsFz';1390;2.00;2.00;75;53;946;34
+971;'MWI_MAL.QA-Stain Film-1400';'MWI_MAL.QA-Stain Film-Obs 3-Stain is filtered prior to use?-1400';;'Stain is filtered prior to use';'pE4We4NGONT';1400;1.00;1.00;75;53;946;34
 972;'MWI_MAL.QA-Stain Film-1410';'MWI_MAL.QA-Stain Film-Obs 3-STAINING PROCEDURE THICK FILMS-1410';;'STAINING PROCEDURE THICK FILMS';'bcRVgfzn17Q';1410;0.00;0.00;75;49;946;
 973;'MWI_MAL.QA-Stain Film-1420';'MWI_MAL.QA-Stain Film-Obs 3-Slide immersed in Field stain A for 3 seconds-1420';;'Slide immersed in Field stain A for 3 seconds';'AJVY3OorX4m';1420;1.00;1.00;75;53;946;34
 974;'MWI_MAL.QA-Stain Film-1430';'MWI_MAL.QA-Stain Film-Obs 3-Slide rinsed carefully with water (caution with thick smears since not fixed)-1430';;'Slide rinsed carefully with water (caution with thick smears since not fixed)';'mxz8gtY6Pxv';1430;1.00;1.00;75;53;946;34
 975;'MWI_MAL.QA-Stain Film-1440';'MWI_MAL.QA-Stain Film-Obs 3-Slide immersed in Field stain B for 5 seconds-1440';;'Slide immersed in Field stain B for 5 seconds';'isZnr2HzYE8';1440;1.00;1.00;75;53;946;34
 976;'MWI_MAL.QA-Stain Film-1450';'MWI_MAL.QA-Stain Film-Obs 3-Slide rinsed carefully with water-1450';;'Slide rinsed carefully with water';'sUoeJP47N34';1450;1.00;1.00;75;53;946;34
 977;'MWI_MAL.QA-Stain Film-1460';'MWI_MAL.QA-Stain Film-Obs 3-STAINING PROCEDURE THIN FILMS-1460';;'STAINING PROCEDURE THIN FILMS';'SQaQhG9RmkT';1460;0.00;0.00;75;49;946;
-978;'MWI_MAL.QA-Stain Film-1470';'MWI_MAL.QA-Stain Film-Obs 3-(If commonly done in this laboratory - if not done, mark N/A in this section)-1470';;'(If commonly done in this laboratory - if not done, mark N/A in this section)';'DcbKBeXGl9s';1470;0.00;0.00;75;49;946;
+978;'MWI_MAL.QA-Stain Film-1470';'MWI_MAL.QA-Stain Film-Obs 3-(If commonly done in this laboratory - if not done, mark N/A in this section)-1470';;'(If thin films are not done in this laboratory, mark N/A in this section)';'DcbKBeXGl9s';1470;0.00;0.00;75;49;946;
 979;'MWI_MAL.QA-Stain Film-1480';'MWI_MAL.QA-Stain Film-Obs 3-Slide fixed with absolute methanol (2-3 seconds) and allowed to air dry-1480';;'Slide fixed with absolute methanol (2-3 seconds) and allowed to air dry';'whylxGLhUhH';1480;2.00;2.00;75;57;946;34
 980;'MWI_MAL.QA-Stain Film-1490';'MWI_MAL.QA-Stain Film-Obs 3-Slide immersed in Field stain A for 3 seconds-1490';;'Slide immersed in Field stain A for 3 seconds';'KnkilyVWZg0';1490;2.00;2.00;75;57;946;34
 981;'MWI_MAL.QA-Stain Film-1500';'MWI_MAL.QA-Stain Film-Obs 3-Slide rinsed carefully with water-1500';;'Slide rinsed carefully with water';'rjs53XZGyhX';1500;2.00;2.00;75;57;946;34
 982;'MWI_MAL.QA-Stain Film-1510';'MWI_MAL.QA-Stain Film-Obs 3-Slide immersed in Field stain B for 5 seconds-1510';;'Slide immersed in Field stain B for 5 seconds';'qojfuBpaRk7';1510;2.00;2.00;75;57;946;34
 983;'MWI_MAL.QA-Stain Film-1520';'MWI_MAL.QA-Stain Film-Obs 3-Slide rinsed carefully with water-1520';;'Slide rinsed carefully with water';'qcso5lm5weX';1520;2.00;2.00;75;57;946;34
 984;'MWI_MAL.QA-Stain Film-1530';'MWI_MAL.QA-Stain Film-Obs 3-DRYING-1530';;'DRYING';'ArmAs6Kf708';1530;0.00;0.00;75;49;946;
-985;'MWI_MAL.QA-Stain Film-1540';'MWI_MAL.QA-Stain Film-Obs 3-Slide drained and air dried (avoid applying external heat)?-1540';;'Slide drained and air dried (avoid applying external heat)?';'jDPQ20Aw6KC';1540;1.00;1.00;75;53;946;34
+985;'MWI_MAL.QA-Stain Film-1540';'MWI_MAL.QA-Stain Film-Obs 3-Slide drained and air dried (avoid applying external heat)?-1540';;'Slide drained and air dried (avoid applying external heat)';'jDPQ20Aw6KC';1540;1.00;1.00;75;53;946;34
 986;'MWI_MAL.QA-Stain Film-1550';'MWI_MAL.QA-Stain Film-Obs 3-WASTE MANAGEMENT-1550';;'WASTE MANAGEMENT';'BOrgZx2lRv4';1550;0.00;0.00;75;49;946;
 987;'MWI_MAL.QA-Stain Film-1560';'MWI_MAL.QA-Stain Film-Obs 3-Sharps waste segregated and safely disposed in a safety box-1560';;'Sharps waste segregated and safely disposed in a safety box';'egGuJFIs7gd';1560;1.00;1.00;75;53;946;34
 988;'MWI_MAL.QA-Stain Film-1570';'MWI_MAL.QA-Stain Film-Obs 3-Infectious waste disposed of in appropriate waste containers-1570';;'Infectious waste disposed of in appropriate waste containers';'jSUxV41gxbc';1570;1.00;1.00;75;53;946;34
@@ -981,17 +958,17 @@
 993;'MWI_MAL.QA-Read Film-130';'MWI_MAL.QA-Read Film-Obs 1-What type of slide was prepared?-130';;'What type of slide was prepared?';'YPx6YPMP7o7';130;0.00;0.00;76;61;;
 994;'MWI_MAL.QA-Read Film-140';'MWI_MAL.QA-Read Film-Obs 1-READING SLIDE-140';;'READING SLIDE';'rkivBcFGnsw';140;0.00;0.00;76;49;;
 995;'MWI_MAL.QA-Read Film-150';'MWI_MAL.QA-Read Film-Obs 1-Thick Smear: Report slide as positive for parasites-150';;'Thick Smear: Report slide as positive for parasites';'qKWXf6qhT0R';150;0.00;0.00;76;7;;
-996;'MWI_MAL.QA-Read Film-160';'MWI_MAL.QA-Read Film-Obs 1-Does supervisor agree with assessment?-160';;'Does supervisor agree with assessment?';'cBx4Du4am9B';160;15.00;15.00;76;53;;36
+996;'MWI_MAL.QA-Read Film-160';'MWI_MAL.QA-Read Film-Obs 1-Does supervisor agree with assessment?-160';;'Supervisor: Do you agree with this assessment?';'cBx4Du4am9B';160;15.00;15.00;76;53;;36
 997;'MWI_MAL.QA-Read Film-170';'MWI_MAL.QA-Read Film-Obs 1-Thin Smear: Was speciation performed?-170';;'Thin Smear: Was speciation performed?';'qSjnvjcczaF';170;1.00;1.00;76;83;;36
 998;'MWI_MAL.QA-Read Film-180';'MWI_MAL.QA-Read Film-Obs 1-Report species of parasites-180';;'Report species of parasites';'Vh6VeznDMq1';180;0.00;0.00;76;40;997;
-999;'MWI_MAL.QA-Read Film-190';'MWI_MAL.QA-Read Film-Obs 1-Does supervisor agree with assessment?-190';;'Does supervisor agree with assessment?';'YpBGx15lRnX';190;15.00;15.00;76;53;997;36
-1000;'MWI_MAL.QA-Read Film-200';'MWI_MAL.QA-Read Film-Obs 1-Thin Smear: Was quantification performed?-200';;'Thin Smear: Was quantification performed?';'V1ACe5bPzs5';200;1.00;1.00;76;83;;36
+999;'MWI_MAL.QA-Read Film-190';'MWI_MAL.QA-Read Film-Obs 1-Does supervisor agree with assessment?-190';;'Supervisor: Do you agree with this assessment?';'YpBGx15lRnX';190;15.00;15.00;76;53;997;36
+1000;'MWI_MAL.QA-Read Film-200';'MWI_MAL.QA-Read Film-Obs 1-Thin Smear: Was quantification performed?-200';;'Thick Smear: Was quantification performed?';'V1ACe5bPzs5';200;1.00;1.00;76;83;;36
 1001;'MWI_MAL.QA-Read Film-210';'MWI_MAL.QA-Read Film-Obs 1-How was quantification supported?-210';;'How was quantification supported?';'v1FDMrl6qfE';210;0.00;0.00;76;85;1000;
 1002;'MWI_MAL.QA-Read Film-220';'MWI_MAL.QA-Read Film-Obs 1-Report Quantification-220';;'Report Quantification';'XGvHGo5A1ms';220;0.00;0.00;76;26;1000;
-1003;'MWI_MAL.QA-Read Film-230';'MWI_MAL.QA-Read Film-Obs 1-Does supervisor agree with assessment?-230';;'Does supervisor agree with assessment?';'thZJdnMp67G';230;15.00;15.00;76;53;1000;36
-1004;'MWI_MAL.QA-Read Film-240';'MWI_MAL.QA-Read Film-Obs 1-Was the quality of stain adequate? (adequate = did NOT require filtering due to heavy precipitate and was NOT too-pink or too-blue in appearance due to inappropriate pH-240';;'Was the quality of stain adequate? (adequate = did NOT require filtering due to heavy precipitate and was NOT too-pink or too-blue in appearance due to inappropriate pH';'OmkxV2IbjlF';240;0.00;0.00;76;53;;
+1003;'MWI_MAL.QA-Read Film-230';'MWI_MAL.QA-Read Film-Obs 1-Does supervisor agree with assessment?-230';;'Supervisor: Do you agree with this assessment?';'thZJdnMp67G';230;15.00;15.00;76;53;1000;36
+1004;'MWI_MAL.QA-Read Film-240';'MWI_MAL.QA-Read Film-Obs 1-Was the quality of stain adequate? (adequate = did NOT require filtering due to heavy precipitate and was NOT too-pink or too-blue in appearance due to inappropriate pH-240';;'Was the quality of stain adequate? (adequate = did NOT require filtering due to heavy precipitate and was NOT too-pink or too-blue in appearance due to inappropriate pH)';'OmkxV2IbjlF';240;0.00;0.00;76;53;;
 1005;'MWI_MAL.QA-Read Film-250';'MWI_MAL.QA-Read Film-Obs 1-WASTE MANAGEMENT-250';;'WASTE MANAGEMENT';'R1RF4pbVAXJ';250;0.00;0.00;76;49;;
-1006;'MWI_MAL.QA-Read Film-260';'MWI_MAL.QA-Read Film-Obs 1-Were the slides recycled?-260';;'Were the slides recycled?';'TQ9PyPKnfYG';260;1.00;1.00;76;53;;36
+1006;'MWI_MAL.QA-Read Film-260';'MWI_MAL.QA-Read Film-Obs 1-Were the slides recycled?-260';;'Slides recycled';'TQ9PyPKnfYG';260;1.00;1.00;76;53;;36
 1007;'MWI_MAL.QA-Read Film-270';'MWI_MAL.QA-Read Film-Obs 2-HEALTH WORKER INFORMATION-270';;'HEALTH WORKER INFORMATION';'Sp6Ql3ZckS0';270;0.00;0.00;77;49;;
 1008;'MWI_MAL.QA-Read Film-280';'MWI_MAL.QA-Read Film-Obs 2-Is this a new worker being observed?-280';;'Is this a new worker being observed?';'NVUjxQ9qR6b';280;0.00;0.00;77;53;;
 1009;'MWI_MAL.QA-Read Film-290';'MWI_MAL.QA-Read Film-Obs 2-Sex-290';;'Sex';'gcxK1PgBu68';290;0.00;0.00;77;73;1008;
@@ -999,17 +976,17 @@
 1011;'MWI_MAL.QA-Read Film-310';'MWI_MAL.QA-Read Film-Obs 2-What type of slide was prepared?-310';;'What type of slide was prepared?';'dsUVg2wrG3R';310;0.00;0.00;77;61;;
 1012;'MWI_MAL.QA-Read Film-320';'MWI_MAL.QA-Read Film-Obs 2-READING SLIDE-320';;'READING SLIDE';'OVfSDyPtjxv';320;0.00;0.00;77;49;;
 1013;'MWI_MAL.QA-Read Film-330';'MWI_MAL.QA-Read Film-Obs 2-Thick Smear: Report slide as positive for parasites-330';;'Thick Smear: Report slide as positive for parasites';'cqLIIc1iSCI';330;0.00;0.00;77;7;;
-1014;'MWI_MAL.QA-Read Film-340';'MWI_MAL.QA-Read Film-Obs 2-Does supervisor agree with assessment?-340';;'Does supervisor agree with assessment?';'N7DC0D3aL3M';340;15.00;15.00;77;53;;37
+1014;'MWI_MAL.QA-Read Film-340';'MWI_MAL.QA-Read Film-Obs 2-Does supervisor agree with assessment?-340';;'Supervisor: Do you agree with this assessment?';'N7DC0D3aL3M';340;15.00;15.00;77;53;;37
 1015;'MWI_MAL.QA-Read Film-350';'MWI_MAL.QA-Read Film-Obs 2-Thin Smear: Was speciation performed?-350';;'Thin Smear: Was speciation performed?';'YA14POv1EnR';350;1.00;1.00;77;83;;37
 1016;'MWI_MAL.QA-Read Film-360';'MWI_MAL.QA-Read Film-Obs 2-Report species of parasites-360';;'Report species of parasites';'qd9Q3DvjUCM';360;0.00;0.00;77;40;1015;
-1017;'MWI_MAL.QA-Read Film-370';'MWI_MAL.QA-Read Film-Obs 2-Does supervisor agree with assessment?-370';;'Does supervisor agree with assessment?';'g2YS57aNZDE';370;15.00;15.00;77;53;1015;37
-1018;'MWI_MAL.QA-Read Film-380';'MWI_MAL.QA-Read Film-Obs 2-Thin Smear: Was quantification performed?-380';;'Thin Smear: Was quantification performed?';'xaOS0KH2dRO';380;1.00;1.00;77;83;;37
+1017;'MWI_MAL.QA-Read Film-370';'MWI_MAL.QA-Read Film-Obs 2-Does supervisor agree with assessment?-370';;'Supervisor: Do you agree with this assessment?';'g2YS57aNZDE';370;15.00;15.00;77;53;1015;37
+1018;'MWI_MAL.QA-Read Film-380';'MWI_MAL.QA-Read Film-Obs 2-Thin Smear: Was quantification performed?-380';;'Thick Smear: Was quantification performed?';'xaOS0KH2dRO';380;1.00;1.00;77;83;;37
 1019;'MWI_MAL.QA-Read Film-390';'MWI_MAL.QA-Read Film-Obs 2-How was quantification supported?-390';;'How was quantification supported?';'SYwwaLYBTmV';390;0.00;0.00;77;85;1018;
 1020;'MWI_MAL.QA-Read Film-400';'MWI_MAL.QA-Read Film-Obs 2-Report Quantification-400';;'Report Quantification';'JcPPZDFEG1J';400;0.00;0.00;77;26;1018;
-1021;'MWI_MAL.QA-Read Film-410';'MWI_MAL.QA-Read Film-Obs 2-Does supervisor agree with assessment?-410';;'Does supervisor agree with assessment?';'uYAQ0wcvUKP';410;15.00;15.00;77;53;1018;37
-1022;'MWI_MAL.QA-Read Film-420';'MWI_MAL.QA-Read Film-Obs 2-Was the quality of stain adequate? (adequate = did NOT require filtering due to heavy precipitate and was NOT too-pink or too-blue in appearance due to inappropriate pH-420';;'Was the quality of stain adequate? (adequate = did NOT require filtering due to heavy precipitate and was NOT too-pink or too-blue in appearance due to inappropriate pH';'cS588Hidr4M';420;0.00;0.00;77;53;;
+1021;'MWI_MAL.QA-Read Film-410';'MWI_MAL.QA-Read Film-Obs 2-Does supervisor agree with assessment?-410';;'Supervisor: Do you agree with this assessment?';'uYAQ0wcvUKP';410;15.00;15.00;77;53;1018;37
+1022;'MWI_MAL.QA-Read Film-420';'MWI_MAL.QA-Read Film-Obs 2-Was the quality of stain adequate? (adequate = did NOT require filtering due to heavy precipitate and was NOT too-pink or too-blue in appearance due to inappropriate pH-420';;'Was the quality of stain adequate? (adequate = did NOT require filtering due to heavy precipitate and was NOT too-pink or too-blue in appearance due to inappropriate pH)';'cS588Hidr4M';420;0.00;0.00;77;53;;
 1023;'MWI_MAL.QA-Read Film-430';'MWI_MAL.QA-Read Film-Obs 2-WASTE MANAGEMENT-430';;'WASTE MANAGEMENT';'ssB7NE3EMy3';430;0.00;0.00;77;49;;
-1024;'MWI_MAL.QA-Read Film-440';'MWI_MAL.QA-Read Film-Obs 2-Were the slides recycled?-440';;'Were the slides recycled?';'sIgPsilTHYl';440;1.00;1.00;77;53;;37
+1024;'MWI_MAL.QA-Read Film-440';'MWI_MAL.QA-Read Film-Obs 2-Were the slides recycled?-440';;'Slides recycled';'sIgPsilTHYl';440;1.00;1.00;77;53;;37
 1025;'MWI_MAL.QA-Read Film-450';'MWI_MAL.QA-Read Film-Obs 3-HEALTH WORKER INFORMATION-450';;'HEALTH WORKER INFORMATION';'ez1iFjkarXu';450;0.00;0.00;78;49;;
 1026;'MWI_MAL.QA-Read Film-460';'MWI_MAL.QA-Read Film-Obs 3-Is this a new worker being observed?-460';;'Is this a new worker being observed?';'yJelmHEs4tw';460;0.00;0.00;78;53;;
 1027;'MWI_MAL.QA-Read Film-470';'MWI_MAL.QA-Read Film-Obs 3-Sex-470';;'Sex';'GA9iXy9Xx1H';470;0.00;0.00;78;73;1026;
@@ -1017,20 +994,20 @@
 1029;'MWI_MAL.QA-Read Film-490';'MWI_MAL.QA-Read Film-Obs 3-What type of slide was prepared?-490';;'What type of slide was prepared?';'K9t6mfgxmg6';490;0.00;0.00;78;61;;
 1030;'MWI_MAL.QA-Read Film-500';'MWI_MAL.QA-Read Film-Obs 3-READING SLIDE-500';;'READING SLIDE';'VeVEvANV4wN';500;0.00;0.00;78;49;;
 1031;'MWI_MAL.QA-Read Film-510';'MWI_MAL.QA-Read Film-Obs 3-Thick Smear: Report slide as positive for parasites-510';;'Thick Smear: Report slide as positive for parasites';'nPB0MaCJ6VG';510;0.00;0.00;78;7;;
-1032;'MWI_MAL.QA-Read Film-520';'MWI_MAL.QA-Read Film-Obs 3-Does supervisor agree with assessment?-520';;'Does supervisor agree with assessment?';'AiXVazuLM6N';520;15.00;15.00;78;53;;38
+1032;'MWI_MAL.QA-Read Film-520';'MWI_MAL.QA-Read Film-Obs 3-Does supervisor agree with assessment?-520';;'Supervisor: Do you agree with this assessment?';'AiXVazuLM6N';520;15.00;15.00;78;53;;38
 1033;'MWI_MAL.QA-Read Film-530';'MWI_MAL.QA-Read Film-Obs 3-Thin Smear: Was speciation performed?-530';;'Thin Smear: Was speciation performed?';'elv23WQvmta';530;1.00;1.00;78;83;;38
 1034;'MWI_MAL.QA-Read Film-540';'MWI_MAL.QA-Read Film-Obs 3-Report species of parasites-540';;'Report species of parasites';'q63WP6c4zPa';540;0.00;0.00;78;40;1033;
-1035;'MWI_MAL.QA-Read Film-550';'MWI_MAL.QA-Read Film-Obs 3-Does supervisor agree with assessment?-550';;'Does supervisor agree with assessment?';'QFl6O02lc4g';550;15.00;15.00;78;53;1033;38
-1036;'MWI_MAL.QA-Read Film-560';'MWI_MAL.QA-Read Film-Obs 3-Thin Smear: Was quantification performed?-560';;'Thin Smear: Was quantification performed?';'xdXXuXm5s72';560;1.00;1.00;78;83;;38
+1035;'MWI_MAL.QA-Read Film-550';'MWI_MAL.QA-Read Film-Obs 3-Does supervisor agree with assessment?-550';;'Supervisor: Do you agree with this assessment?';'QFl6O02lc4g';550;15.00;15.00;78;53;1033;38
+1036;'MWI_MAL.QA-Read Film-560';'MWI_MAL.QA-Read Film-Obs 3-Thin Smear: Was quantification performed?-560';;'Thick Smear: Was quantification performed?';'xdXXuXm5s72';560;1.00;1.00;78;83;;38
 1037;'MWI_MAL.QA-Read Film-570';'MWI_MAL.QA-Read Film-Obs 3-How was quantification supported?-570';;'How was quantification supported?';'bdrsjecUucu';570;0.00;0.00;78;85;1036;
 1038;'MWI_MAL.QA-Read Film-580';'MWI_MAL.QA-Read Film-Obs 3-Report Quantification-580';;'Report Quantification';'je6KeOHyl13';580;0.00;0.00;78;26;1036;
-1039;'MWI_MAL.QA-Read Film-590';'MWI_MAL.QA-Read Film-Obs 3-Does supervisor agree with assessment?-590';;'Does supervisor agree with assessment?';'I5uEFAght9G';590;15.00;15.00;78;53;1036;38
+1039;'MWI_MAL.QA-Read Film-590';'MWI_MAL.QA-Read Film-Obs 3-Does supervisor agree with assessment?-590';;'Supervisor: Do you agree with assessment?';'I5uEFAght9G';590;15.00;15.00;78;53;1036;38
 1040;'MWI_MAL.QA-Read Film-600';'MWI_MAL.QA-Read Film-Obs 3-Was the quality of stain adequate? (adequate = did NOT require filtering due to heavy precipitate and was NOT too-pink or too-blue in appearance due to inappropriate pH)-600';;'Was the quality of stain adequate? (adequate = did NOT require filtering due to heavy precipitate and was NOT too-pink or too-blue in appearance due to inappropriate pH)';'KLn2OqyLJia';600;0.00;0.00;78;53;;
 1041;'MWI_MAL.QA-Read Film-610';'MWI_MAL.QA-Read Film-Obs 3-WASTE MANAGEMENT-610';;'WASTE MANAGEMENT';'xoDr4P53thI';610;0.00;0.00;78;49;;
-1042;'MWI_MAL.QA-Read Film-620';'MWI_MAL.QA-Read Film-Obs 3-Were the slides recycled?-620';;'Were the slides recycled?';'Wr9Usmb69pK';620;1.00;1.00;78;53;;38
-1043;'MWI_MAL.QA-Feedback-100';'MWI_MAL.QA-Feedback-Feedback-WHAT WERE THE THREE BIGGEST PROBLEMS NOTED TODAY?-100';;'WHAT WERE THE THREE BIGGEST PROBLEMS NOTED TODAY?';'dWnoX8HMODu';100;0.00;0.00;79;49;;
-1044;'MWI_MAL.QA-Feedback-110';'MWI_MAL.QA-Feedback-Prob 1-Problem 1: Describe-110';;'Problem 1: Describe';'PlrsRmLavoz';110;0.00;0.00;79;25;;
-1045;'MWI_MAL.QA-Feedback-120';'MWI_MAL.QA-Feedback-Prob 1-Category of problem-120';;'Category of problem';'CJJQai6gy6p';120;0.00;0.00;79;49;;
+1042;'MWI_MAL.QA-Read Film-620';'MWI_MAL.QA-Read Film-Obs 3-Were the slides recycled?-620';;'Slides recycled';'Wr9Usmb69pK';620;1.00;1.00;78;53;;38
+1043;'MWI_MAL.QA-Feedback-100';'MWI_MAL.QA-Feedback-Feedback-WHAT WERE THE THREE BIGGEST PROBLEMS NOTED TODAY?-100';;'WHAT WERE THE THREE BIGGEST GAPS IDENTIFIED TODAY?';'dWnoX8HMODu';100;0.00;0.00;79;49;;
+1044;'MWI_MAL.QA-Feedback-110';'MWI_MAL.QA-Feedback-Prob 1-Problem 1: Describe-110';;'Gap 1: Describe';'PlrsRmLavoz';110;0.00;0.00;79;25;;
+1045;'MWI_MAL.QA-Feedback-120';'MWI_MAL.QA-Feedback-Prob 1-Category of problem-120';;'Category of gap';'CJJQai6gy6p';120;0.00;0.00;79;49;;
 1046;'MWI_MAL.QA-Feedback-130';'MWI_MAL.QA-Feedback-Prob 1-CLINICAL PRACTICES (select all that apply)-130';;'CLINICAL PRACTICES (select all that apply)';'Jwm0rteSxJS';130;0.00;0.00;79;49;;
 1047;'MWI_MAL.QA-Feedback-140';'MWI_MAL.QA-Feedback-Prob 1-General-140';;'General';'L5BaHWzOgrr';140;0.00;0.00;79;53;;
 1048;'MWI_MAL.QA-Feedback-150';'MWI_MAL.QA-Feedback-Prob 1-Adherence to malaria test results-150';;'Adherence to malaria test results';'MXqwASLvUpL';150;0.00;0.00;79;53;;
@@ -1047,9 +1024,9 @@
 1059;'MWI_MAL.QA-Feedback-260';'MWI_MAL.QA-Feedback-Prob 1-Other, specify:-260';;'Other, specify:';'TKa921bLK4q';260;0.00;0.00;79;26;;
 1060;'MWI_MAL.QA-Feedback-270';'MWI_MAL.QA-Feedback-Prob 1-Was immediate feedback provided?-270';;'Was immediate feedback provided?';'o805ezaymWA';270;0.00;0.00;79;53;;
 1061;'MWI_MAL.QA-Feedback-280';'MWI_MAL.QA-Feedback-Prob 1-How was the feedback provided?-280';;'How was the feedback provided?';'X9qZgtEb4Gi';280;0.00;0.00;79;36;1060;
-1062;'MWI_MAL.QA-Feedback-290';'MWI_MAL.QA-Feedback-Prob 1-What is the action plan for assessing whether the problem has been addressed?-290';;'What is the action plan for assessing whether the problem has been addressed?';'LoZYZNq1sO1';290;0.00;0.00;79;25;;
-1063;'MWI_MAL.QA-Feedback-300';'MWI_MAL.QA-Feedback-Prob 2-Problem 1: Describe-300';;'Problem 1: Describe';'RkHm1PuWhly';300;0.00;0.00;80;25;;
-1064;'MWI_MAL.QA-Feedback-310';'MWI_MAL.QA-Feedback-Prob 2-Category of problem-310';;'Category of problem';'np6LYiYZF0x';310;0.00;0.00;80;49;;
+1062;'MWI_MAL.QA-Feedback-290';'MWI_MAL.QA-Feedback-Prob 1-What is the action plan for assessing whether the problem has been addressed?-290';;'What is the action plan for assessing whether the gap has been addressed?';'LoZYZNq1sO1';290;0.00;0.00;79;25;;
+1063;'MWI_MAL.QA-Feedback-300';'MWI_MAL.QA-Feedback-Prob 2-Problem 1: Describe-300';;'Gap 2: Describe';'RkHm1PuWhly';300;0.00;0.00;80;25;;
+1064;'MWI_MAL.QA-Feedback-310';'MWI_MAL.QA-Feedback-Prob 2-Category of problem-310';;'Category of gap';'np6LYiYZF0x';310;0.00;0.00;80;49;;
 1065;'MWI_MAL.QA-Feedback-320';'MWI_MAL.QA-Feedback-Prob 2-CLINICAL PRACTICES (select all that apply)-320';;'CLINICAL PRACTICES (select all that apply)';'zd5BrEggJKh';320;0.00;0.00;80;49;;
 1066;'MWI_MAL.QA-Feedback-330';'MWI_MAL.QA-Feedback-Prob 2-General-330';;'General';'WvBV7aVd4wS';330;0.00;0.00;80;53;;
 1067;'MWI_MAL.QA-Feedback-340';'MWI_MAL.QA-Feedback-Prob 2-Adherence to malaria test results-340';;'Adherence to malaria test results';'vZBbusfSpWd';340;0.00;0.00;80;53;;
@@ -1066,9 +1043,9 @@
 1078;'MWI_MAL.QA-Feedback-450';'MWI_MAL.QA-Feedback-Prob 2-Other, specify:-450';;'Other, specify:';'WZ3OEXA9lUt';450;0.00;0.00;80;26;;
 1079;'MWI_MAL.QA-Feedback-460';'MWI_MAL.QA-Feedback-Prob 2-Was immediate feedback provided?-460';;'Was immediate feedback provided?';'v413cvws86g';460;0.00;0.00;80;53;;
 1080;'MWI_MAL.QA-Feedback-470';'MWI_MAL.QA-Feedback-Prob 2-How was the feedback provided?-470';;'How was the feedback provided?';'pux3ng78O2G';470;0.00;0.00;80;36;1079;
-1081;'MWI_MAL.QA-Feedback-480';'MWI_MAL.QA-Feedback-Prob 2-What is the action plan for assessing whether the problem has been addressed?-480';;'What is the action plan for assessing whether the problem has been addressed?';'mDoOnWnZrIT';480;0.00;0.00;80;25;;
-1082;'MWI_MAL.QA-Feedback-490';'MWI_MAL.QA-Feedback-Prob 3-Problem 1: Describe-490';;'Problem 1: Describe';'QbdRFxFM3qU';490;0.00;0.00;81;25;;
-1083;'MWI_MAL.QA-Feedback-500';'MWI_MAL.QA-Feedback-Prob 3-Category of problem-500';;'Category of problem';'vgPWIpbNroO';500;0.00;0.00;81;49;;
+1081;'MWI_MAL.QA-Feedback-480';'MWI_MAL.QA-Feedback-Prob 2-What is the action plan for assessing whether the problem has been addressed?-480';;'What is the action plan for assessing whether the gap has been addressed?';'mDoOnWnZrIT';480;0.00;0.00;80;25;;
+1082;'MWI_MAL.QA-Feedback-490';'MWI_MAL.QA-Feedback-Prob 3-Problem 1: Describe-490';;'Gap 3: Describe';'QbdRFxFM3qU';490;0.00;0.00;81;25;;
+1083;'MWI_MAL.QA-Feedback-500';'MWI_MAL.QA-Feedback-Prob 3-Category of problem-500';;'Category of gap';'vgPWIpbNroO';500;0.00;0.00;81;49;;
 1084;'MWI_MAL.QA-Feedback-510';'MWI_MAL.QA-Feedback-Prob 3-CLINICAL PRACTICES (select all that apply)-510';;'CLINICAL PRACTICES (select all that apply)';'iHE0nISzO9e';510;0.00;0.00;81;49;;
 1085;'MWI_MAL.QA-Feedback-520';'MWI_MAL.QA-Feedback-Prob 3-General-520';;'General';'Q4CyCMBeBHO';520;0.00;0.00;81;53;;
 1086;'MWI_MAL.QA-Feedback-530';'MWI_MAL.QA-Feedback-Prob 3-Adherence to malaria test results-530';;'Adherence to malaria test results';'TmzgzOvSVPk';530;0.00;0.00;81;53;;
@@ -1085,10 +1062,10 @@
 1097;'MWI_MAL.QA-Feedback-640';'MWI_MAL.QA-Feedback-Prob 3-Other, specify:-640';;'Other, specify:';'sriz4J45Zed';640;0.00;0.00;81;26;;
 1098;'MWI_MAL.QA-Feedback-650';'MWI_MAL.QA-Feedback-Prob 3-Was immediate feedback provided?-650';;'Was immediate feedback provided?';'FsqN9NCUmQp';650;0.00;0.00;81;53;;
 1099;'MWI_MAL.QA-Feedback-660';'MWI_MAL.QA-Feedback-Prob 3-How was the feedback provided?-660';;'How was the feedback provided?';'eijZ8K1Yt5D';660;0.00;0.00;81;36;1098;
-1100;'MWI_MAL.QA-Feedback-670';'MWI_MAL.QA-Feedback-Prob 3-What is the action plan for assessing whether the problem has been addressed?-670';;'What is the action plan for assessing whether the problem has been addressed?';'lJnBY68c434';670;0.00;0.00;81;25;;
+1100;'MWI_MAL.QA-Feedback-670';'MWI_MAL.QA-Feedback-Prob 3-What is the action plan for assessing whether the problem has been addressed?-670';;'What is the action plan for assessing whether the gap has been addressed?';'lJnBY68c434';670;0.00;0.00;81;25;;
 1101;'MWI_MAL.QA-Gen OTSS-231';'MWI_MAL.QA-Gen OTSS-HR_T-Other medical staff-231';;'Other medical staff';'v0qfTJGiqyZ';235;0.00;0.00;2;24;;
 1102;'MWI_MAL.QA-Gen OTSS-1091';'MWI_MAL.QA-Gen OTSS-Ph, St, Eq-Clindamycin-1091';;'Clindamycin';'juyRhsstbl1';1091;0.00;0.00;4;74;;
-1103;'MWI_MAL.QA-Gen OTSS-1211';'MWI_MAL.QA-Gen OTSS-Ph, St, Eq-Clindamycin-1211';;'Clindamycin';'eZdLKss3NtF';1211;0.00;0.00;4;74;;
+1103;'MWI_MAL.QA-Gen OTSS-1211';'MWI_MAL.QA-Gen OTSS-Ph, St, Eq-Clindamycin-1211';;'Clindamycin';'eZdLKss3NtF';1211;0.00;0.00;4;96;;
 1104;'MWI_MAL.QA-Gen OTSS-1560';'MWI_MAL.QA-Gen OTSS-RDT Assess-END OF TAB-1560';;'END OF TAB';'EEO6Ik2whjM';1560;0.00;0.00;6;49;;
 1105;'MWI_MAL.QA-CCM 1-1550';'MWI_MAL.QA-CCM 1-Sev dis-END OF TAB-1550';;'END OF TAB';'NghfABfFDQo';1550;0.00;0.00;24;49;;
 1106;'MWI_MAL.QA-CCM 2-1550';'MWI_MAL.QA-CCM 2-Sev dis-END OF TAB-1550';;'END OF TAB';'xXsoeajx7YU';1550;0.00;0.00;40;49;;
@@ -1098,6 +1075,48 @@
 1110;'MWI_MAL.QA-Prep Film-930';'MWI_MAL.QA-Prep Film-Obs 3-END OF TAB-930';;'END OF TAB';'GRrnQcRqrnd';930;0.00;0.00;72;49;;
 1111;'MWI_MAL.QA-Stain Film-1590';'MWI_MAL.QA-Stain Film-Obs 3-END OF TAB-1590';;'END OF TAB';'EvsA1PLNo0S';1590;0.00;0.00;75;49;;
 1112;'MWI_MAL.QA-Read Film-630';'MWI_MAL.QA-Read Film-Obs 3-END OF TAB-630';;'END OF TAB';'JwfPtK5cnuR';630;0.00;0.00;78;49;;
+1113;'MWI_MAL.QA-Gen OTSS-191';'MWI_MAL.QA-Gen OTSS-HR_T-Medical Assistant-191';;'Human Resources and Training';'BcWqvh2uKeL';191;0.00;0.00;2;24;;
+1114;'MWI_MAL.QA-CCM 1-1171';'MWI_MAL.QA-CCM 1-Diag Test res-Supervisor: Did you agree with the final diagnosis and disease severity assessment?-1171';;'Supervisor: Did you agree with the final diagnosis and disease severity assessment?';'OBWZJF1sguS';1171;0.00;0.00;20;90;;
+1115;'MWI_MAL.QA-CCM 2-1171';'MWI_MAL.QA-CCM 2-Diag Test res-Supervisor: Did you agree with the final diagnosis and disease severity assessment?-1171';;'Diagnostic test results';'lHJM0M5xakW';1171;0.00;0.00;36;90;;
+1116;'MWI_MAL.QA-CCM 3-1171';'MWI_MAL.QA-CCM 3-Diag Test res-Supervisor: Did you agree with the final diagnosis and disease severity assessment?-1171';;'Diagnostic test results';'XC2xiB9q8RK';1171;0.00;0.00;52;90;;
+1117;'MWI_MAL.QA-P&R RDTs-281';'MWI_MAL.QA-P&R RDTs-Obs 1-Was the test result positive or negative? -281';;'Was the test result positive or negative?';'C3ITojhbn4C';281;0.00;0.00;57;91;;
+1118;'MWI_MAL.QA-P&R RDTs-551';'MWI_MAL.QA-P&R RDTs-Obs 2-Was the test result positive or negative? -551';;'Was the test result positive or negative?';'Ph05ZuLYYjK';551;0.00;0.00;58;91;;
+1119;'MWI_MAL.QA-P&R RDTs-821';'MWI_MAL.QA-P&R RDTs-Obs 3-Was the test result positive or negative? -821';;'Was the test result positive or negative?';'cfc0I5Hhd5y';821;0.00;0.00;59;91;;
+1120;'MWI_MAL.QA-Micro Assess-131';'MWI_MAL.QA-Micro Assess-HSR_lab -Laboratory technologist-131';;'Laboratory technologist';'Cu9YOZT2pQa';131;0.00;0.00;60;24;;
+1121;'MWI_MAL.QA-Micro Assess-141';'MWI_MAL.QA-Micro Assess-HSR_lab -Microscopist-141';;'Microscopist';'aY1AdJSTP2X';141;0.00;0.00;60;24;;
+1122;'MWI_MAL.QA-Micro Assess-151';'MWI_MAL.QA-Micro Assess-HSR_lab -Other-151';;'Other';'LnbDyfgLr17';151;0.00;0.00;60;24;;
+1123;'MWI_MAL.QA-Prep Film-99';'MWI_MAL.QA-Prep Film-Obs 1-If other, explain-99';;'If other, explain';'MGNNFo7CtnI';99;0.00;0.00;70;26;;
+1124;'MWI_MAL.QA-Prep Film-369';'MWI_MAL.QA-Prep Film-Obs 2-If other, explain-369';;'If other, explain';'fJMniGhAtUX';369;0.00;0.00;71;26;;
+1125;'MWI_MAL.QA-Prep Film-649';'MWI_MAL.QA-Prep Film-Obs 3-If other, explain-649';;'If other, explain';'DLOO78cakkN';649;0.00;0.00;72;26;;
+1126;'MWI_MAL.QA-Stain Film-99';'MWI_MAL.QA-Stain Film-Obs 1-If other, explain-99';;'If other, explain';'tBBKE21TXdI';99;0.00;0.00;73;26;;
+1127;'MWI_MAL.QA-Stain Film-589';'MWI_MAL.QA-Stain Film-Obs 2-If other, explain-589';;'If other, explain';'JYi3M4GURoq';589;0.00;0.00;74;26;;
+1128;'MWI_MAL.QA-Stain Film-1089';'MWI_MAL.QA-Stain Film-Obs 3-If other, explain-1089';;'If other, explain';'iGkr53u9qlS';1089;0.00;0.00;75;26;;
+1129;'MWI_MAL.QA-Read Film-99';'MWI_MAL.QA-Read Film-Obs 1-If other, explain-99';;'If other, explain';'efcQOY4oTnd';99;0.00;0.00;76;26;;
+1130;'MWI_MAL.QA-Read Film-269';'MWI_MAL.QA-Read Film-Obs 2-If other, explain-269';;'If other, explain';'fEMxg6kx8ov';269;0.00;0.00;77;26;;
+1131;'MWI_MAL.QA-Read Film-449';'MWI_MAL.QA-Read Film-Obs 3-If other, explain-449';;'If other, explain';'KLvQ3TpLdDe';449;0.00;0.00;78;26;;
+1133;'MWI_MAL.QA-Prep Film-98';'MWI_MAL.QA-Prep Film-Obs 1-Reason if unable to conduct/complete microscopy preparation observation:-98';;'Reason if unable to conduct/complete microscopy preparation observation:';'DM13gBGiAky';98;0.00;0.00;70;92;;
+1134;'MWI_MAL.QA-Prep Film-368';'MWI_MAL.QA-Prep Film-Obs 2-Reason if unable to conduct/complete microscopy preparation observation:-368';;'Reason if unable to conduct/complete microscopy preparation observation:';'wdSjGLJjhEQ';368;0.00;0.00;71;92;;
+1135;'MWI_MAL.QA-Prep Film-648';'MWI_MAL.QA-Prep Film-Obs 3-Reason if unable to conduct/complete microscopy preparation observation:-648';;'Reason if unable to conduct/complete microscopy preparation observation:';'sQh1RiQ33y0';648;0.00;0.00;72;92;;
+1136;'MWI_MAL.QA-Stain Film-98';'MWI_MAL.QA-Stain Film-Obs 1-Reason if unable to conduct/complete microscopy preparation observation:-98';;'Reason if unable to conduct/complete microscopy preparation observation:';'yYUBq4PjGNt';98;0.00;0.00;73;92;;
+1137;'MWI_MAL.QA-Stain Film-588';'MWI_MAL.QA-Stain Film-Obs 2-Reason if unable to conduct/complete microscopy preparation observation:-588';;'Reason if unable to conduct/complete microscopy preparation observation:';'FPlC4rVpCiL';588;0.00;0.00;74;92;;
+1138;'MWI_MAL.QA-Stain Film-1088';'MWI_MAL.QA-Stain Film-Obs 3-Reason if unable to conduct/complete microscopy preparation observation:-1088';;'Reason if unable to conduct/complete microscopy preparation observation:';'MwJ2LpdjUbT';1088;0.00;0.00;75;92;;
+1139;'MWI_MAL.QA-Read Film-98';'MWI_MAL.QA-Read Film-Obs 1-Reason if unable to conduct/complete microscopy preparation observation:-98';;'Reason if unable to conduct/complete microscopy preparation observation:';'xE85VtLIZt2';98;0.00;0.00;76;92;;
+1140;'MWI_MAL.QA-Read Film-268';'MWI_MAL.QA-Read Film-Obs 2-Reason if unable to conduct/complete microscopy preparation observation:-268';;'Reason if unable to conduct/complete microscopy preparation observation:';'jggLT3PdnmF';268;0.00;0.00;77;92;;
+1141;'MWI_MAL.QA-Read Film-448';'MWI_MAL.QA-Read Film-Obs 3-Reason if unable to conduct/complete microscopy preparation observation:-448';;'Reason if unable to conduct/complete microscopy preparation observation:';'qnxgflrzdMg';448;0.00;0.00;78;92;;
+1142;'MWI_MAL.QA-Gen OTSS-1391';'MWI_MAL.QA-Gen OTSS-Mal Diag-How often does this facility use malaria microscopy for diagnosis?-1391';;'How often does this facility use malaria microscopy for diagnosis?';;1391;0.00;0.00;5;95;130;
+1143;'MWI_MAL.QA-Gen OTSS-1401';'MWI_MAL.QA-Gen OTSS-Mal Diag-How often does this facility use RDTs for diagnosis?-1401';;'How often does this facility use RDTs for diagnosis?';'SxIxJc7I6ne';1401;0.00;0.00;5;95;131;
+1144;'MWI_MAL.QA-CCM 1-98';'MWI_MAL.QA-CCM 1-Obs1-Reason if unable to conduct/complete clinical observation-98';;'Reason if unable to conduct/complete clinical observation';'U7EYTCnA9w1';98;0.00;0.00;87;94;;
+1145;'MWI_MAL.QA-CCM 1-99';'MWI_MAL.QA-CCM 1-Obs1-If other, explain-99';;'If other, explain';'QAR232YNOPk';99;0.00;0.00;87;26;;
+1146;'MWI_MAL.QA-CCM 2-98';'MWI_MAL.QA-CCM 2-Obs2-Reason if unable to conduct/complete clinical observation-98';;'Reason if unable to conduct/complete clinical observation';'AWW7t2Ki7v7';98;0.00;0.00;88;94;;
+1147;'MWI_MAL.QA-CCM 2-99';'MWI_MAL.QA-CCM 2-Obs2-If other, explain-99';;'If other, explain';'wO5EdWhy7iy';99;0.00;0.00;88;26;;
+1148;'MWI_MAL.QA-CCM 3-98';'MWI_MAL.QA-CCM 3-Obs3-Reason if unable to conduct/complete clinical observation-98';;'Reason if unable to conduct/complete clinical observation';'v9YpzX9UHcm';98;0.00;0.00;89;94;;
+1149;'MWI_MAL.QA-CCM 3-99';'MWI_MAL.QA-CCM 3-Obs3-If other, explain-99';;'If other, explain';'rXj841oeEDl';99;0.00;0.00;89;26;;
+1150;'MWI_MAL.QA-P&R RDTs-98';'MWI_MAL.QA-P&R RDTs-Obs 1-Reason if unable to conduct/complete RDT observation-98';;'Reason if unable to conduct/complete RDT observation';'o2n8cZwxP6Z';98;0.00;0.00;57;93;;
+1151;'MWI_MAL.QA-P&R RDTs-99';'MWI_MAL.QA-P&R RDTs-Obs 1-If other, explain-99';;'If other, explain';'LYRNIOkd16q';99;9.00;9.00;57;26;;
+1152;'MWI_MAL.QA-P&R RDTs-358';'MWI_MAL.QA-P&R RDTs-Obs 2-Reason if unable to conduct/complete RDT observation-358';;'Reason if unable to conduct/complete RDT observation';'Bg4ip6FGf1O';358;0.00;0.00;58;93;;
+1153;'MWI_MAL.QA-P&R RDTs-359';'MWI_MAL.QA-P&R RDTs-Obs 2-If other, explain-359';;'If other, explain';'PpYqIWGsdUP';359;0.00;0.00;58;26;;
+1154;'MWI_MAL.QA-P&R RDTs-628';'MWI_MAL.QA-P&R RDTs-Obs 3-Reason if unable to conduct/complete RDT observation-628';;'Reason if unable to conduct/complete RDT observation';'AF8jEgqsooS';628;0.00;0.00;59;93;;
+1155;'MWI_MAL.QA-P&R RDTs-629';'MWI_MAL.QA-P&R RDTs-Obs 3-If other, explain-629';;'If other, explain';'ieJow1sEdAG';629;0.00;0.00;59;26;;
 2001;'PQ-AT1-1';'PQ-AT1-1 Phantom Question 1';;'1';;1;0.00;0.00;82;;;
 2002;'MWI_MAL.QA-ADH-150';'PID';;;'LWPiMlbS8OW';2;0.00;0.00;82;26;2001;
 2003;'MWI_MAL.QA-ADH-170';'GD';;;'M5xtKbokumF';3;0.00;0.00;82;3;2001;
@@ -1358,23 +1377,23 @@
 2258;'MWI_MAL.QA-Slide Recheck-680';'TR';;;'Wdaj9racL8b';38;0.00;0.00;85;7;2257;
 2259;'MWI_MAL.QA-Slide Recheck-690';'PID';;;'Sw3h0iMfoLn';39;0.00;0.00;85;26;2257;
 2260;'MWI_MAL.QA-Slide Recheck-700';'SPECIES';;;'fZnpLUUcLEM';40;0.00;0.00;85;40;2257;
-2261;'PQ-IQAEQA3-1';'PQ-IQAEQA3-1';;'1';;1;0.00;0.00;86;;;
-2262;'MWI_MAL.QA-Slide Recheck-710';'MWI_MAL.QA-Slide Recheck-Slide Recheck-IQA-EQA Test 1 -  Positive/Negative Score-710';;;'GdtNRWNENpd';2;1.00;1.00;86;15;2261;5
-2263;'PQ-IQAEQA3-2';'PQ-IQAEQA3-2';;'2';;3;0.00;0.00;86;;;
-2264;'MWI_MAL.QA-Slide Recheck-720';'MWI_MAL.QA-Slide Recheck-Slide Recheck-IQA-EQA Test 2 -  Positive/Negative Score-720';;;'GWMArbECRil';4;1.00;1.00;86;15;2263;5
-2265;'PQ-IQAEQA3-3';'PQ-IQAEQA3-3';;'3';;5;0.00;0.00;86;;;
-2266;'MWI_MAL.QA-Slide Recheck-730';'MWI_MAL.QA-Slide Recheck-Slide Recheck-IQA-EQA Test 3 -  Positive/Negative Score-730';;;'HAvtnJHraUf';6;1.00;1.00;86;15;2265;5
-2267;'PQ-IQAEQA3-4';'PQ-IQAEQA3-4';;'4';;7;0.00;0.00;86;;;
-2268;'MWI_MAL.QA-Slide Recheck-740';'MWI_MAL.QA-Slide Recheck-Slide Recheck-IQA-EQA Test 4 - Positive/Negative Score-740';;;'vuVXdzR6Tgr';8;1.00;1.00;86;15;2267;5
-2269;'PQ-IQAEQA3-5';'PQ-IQAEQA3-5';;'5';;9;0.00;0.00;86;;;
-2270;'MWI_MAL.QA-Slide Recheck-750';'MWI_MAL.QA-Slide Recheck-Slide Recheck-IQA-EQA Test 5 - Positive/Negative Score-750';;;'M8Zzr4LBcH3';10;1.00;1.00;86;15;2269;5
-2271;'PQ-IQAEQA3-6';'PQ-IQAEQA3-6';;'6';;11;0.00;0.00;86;;;
-2272;'MWI_MAL.QA-Slide Recheck-760';'MWI_MAL.QA-Slide Recheck-Slide Recheck-IQA-EQA Test 6 - Positive/Negative Score-760';;;'C6mLa2xtMbH';12;1.00;1.00;86;15;2271;5
-2273;'PQ-IQAEQA3-7';'PQ-IQAEQA3-7';;'7';;13;0.00;0.00;86;;;
-2274;'MWI_MAL.QA-Slide Recheck-770';'MWI_MAL.QA-Slide Recheck-Slide Recheck-IQA-EQA Test 7 - Positive/Negative Score-770';;;'PJONzp9HwUa';14;1.00;1.00;86;15;2273;5
-2275;'PQ-IQAEQA3-8';'PQ-IQAEQA3-8';;'8';;15;0.00;0.00;86;;;
-2276;'MWI_MAL.QA-Slide Recheck-780';'MWI_MAL.QA-Slide Recheck-Slide Recheck-IQA-EQA Test 8 - Positive/Negative Score-780';;;'wGJO1q40tGI';16;1.00;1.00;86;15;2275;5
-2277;'PQ-IQAEQA3-9';'PQ-IQAEQA3-9';;'9';;17;0.00;0.00;86;;;
-2278;'MWI_MAL.QA-Slide Recheck-790';'MWI_MAL.QA-Slide Recheck-Slide Recheck-IQA-EQA Test 9 - Positive/Negative Score-790';;;'MGtSRmxZIFD';18;1.00;1.00;86;15;2277;5
-2279;'PQ-IQAEQA3-10';'PQ-IQAEQA3-10';;'10';;19;0.00;0.00;86;;;
-2280;'MWI_MAL.QA-Slide Recheck-800';'MWI_MAL.QA-Slide Recheck-Slide Recheck-IQA-EQA Test 10 - Positive/Negative Score-800';;;'T5m69ZTjkVt';20;1.00;1.00;86;15;2279;5
+2261;'PQ-IQAEQA3-1';'PQ-IQAEQA3-1';;'1';;1;0.00;0.00;90;;;
+2262;'MWI_MAL.QA-Slide Recheck-710';'MWI_MAL.QA-Slide Recheck-Slide Recheck-IQA-EQA Test 1 -  Positive/Negative Score-710';;;'GdtNRWNENpd';2;1.00;1.00;90;15;2261;5
+2263;'PQ-IQAEQA3-2';'PQ-IQAEQA3-2';;'2';;3;0.00;0.00;90;;;
+2264;'MWI_MAL.QA-Slide Recheck-720';'MWI_MAL.QA-Slide Recheck-Slide Recheck-IQA-EQA Test 2 -  Positive/Negative Score-720';;;'GWMArbECRil';4;1.00;1.00;90;15;2263;5
+2265;'PQ-IQAEQA3-3';'PQ-IQAEQA3-3';;'3';;5;0.00;0.00;90;;;
+2266;'MWI_MAL.QA-Slide Recheck-730';'MWI_MAL.QA-Slide Recheck-Slide Recheck-IQA-EQA Test 3 -  Positive/Negative Score-730';;;'HAvtnJHraUf';6;1.00;1.00;90;15;2265;5
+2267;'PQ-IQAEQA3-4';'PQ-IQAEQA3-4';;'4';;7;0.00;0.00;90;;;
+2268;'MWI_MAL.QA-Slide Recheck-740';'MWI_MAL.QA-Slide Recheck-Slide Recheck-IQA-EQA Test 4 - Positive/Negative Score-740';;;'vuVXdzR6Tgr';8;1.00;1.00;90;15;2267;5
+2269;'PQ-IQAEQA3-5';'PQ-IQAEQA3-5';;'5';;9;0.00;0.00;90;;;
+2270;'MWI_MAL.QA-Slide Recheck-750';'MWI_MAL.QA-Slide Recheck-Slide Recheck-IQA-EQA Test 5 - Positive/Negative Score-750';;;'M8Zzr4LBcH3';10;1.00;1.00;90;15;2269;5
+2271;'PQ-IQAEQA3-6';'PQ-IQAEQA3-6';;'6';;11;0.00;0.00;90;;;
+2272;'MWI_MAL.QA-Slide Recheck-760';'MWI_MAL.QA-Slide Recheck-Slide Recheck-IQA-EQA Test 6 - Positive/Negative Score-760';;;'C6mLa2xtMbH';12;1.00;1.00;90;15;2271;5
+2273;'PQ-IQAEQA3-7';'PQ-IQAEQA3-7';;'7';;13;0.00;0.00;90;;;
+2274;'MWI_MAL.QA-Slide Recheck-770';'MWI_MAL.QA-Slide Recheck-Slide Recheck-IQA-EQA Test 7 - Positive/Negative Score-770';;;'PJONzp9HwUa';14;1.00;1.00;90;15;2273;5
+2275;'PQ-IQAEQA3-8';'PQ-IQAEQA3-8';;'8';;15;0.00;0.00;90;;;
+2276;'MWI_MAL.QA-Slide Recheck-780';'MWI_MAL.QA-Slide Recheck-Slide Recheck-IQA-EQA Test 8 - Positive/Negative Score-780';;;'wGJO1q40tGI';16;1.00;1.00;90;15;2275;5
+2277;'PQ-IQAEQA3-9';'PQ-IQAEQA3-9';;'9';;17;0.00;0.00;90;;;
+2278;'MWI_MAL.QA-Slide Recheck-790';'MWI_MAL.QA-Slide Recheck-Slide Recheck-IQA-EQA Test 9 - Positive/Negative Score-790';;;'MGtSRmxZIFD';18;1.00;1.00;90;15;2277;5
+2279;'PQ-IQAEQA3-10';'PQ-IQAEQA3-10';;'10';;19;0.00;0.00;90;;;
+2280;'MWI_MAL.QA-Slide Recheck-800';'MWI_MAL.QA-Slide Recheck-Slide Recheck-IQA-EQA Test 10 - Positive/Negative Score-800';;;'T5m69ZTjkVt';20;1.00;1.00;90;15;2279;5
