@@ -130,7 +130,7 @@ public class SurveyService extends IntentService {
                 reloadDashboard();
                 break;
             case PRELOAD_TAB_ITEMS:
-                Log.e(".SurveyService", "Pre-loading tab: " + intent.getStringExtra("tab"));
+                Log.e(".SurveyService", "Pre-loading tab: " + intent.getLongExtra("tab", 0));
                 preLoadTabItems(intent.getLongExtra("tab", 0));
                 break;
         }
