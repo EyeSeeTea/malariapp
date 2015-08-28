@@ -145,7 +145,7 @@ public class Tab extends BaseModel {
      * @return
      */
     public boolean isCompositeScore(){
-        return getName().equals(Constants.COMPOSITE_SCORE_TAB_NAME);
+        return getType().equals(Constants.TAB_COMPOSITE_SCORE);
     }
 
     @Override
