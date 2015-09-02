@@ -105,7 +105,7 @@
     <string name="adherence_info_switchquestion">Existem registos farmacêuticos para TCA dispensada?</string>
     <string name="adherence_title_explanation">Avaliação do Provedor de adesão aos Resultados de teste de diagnóstico da malária</string>
     <string name="adherence_title_explanation_content">Passo 1: Anote os Nºs. de ID de 20 pacientes receitados com ACT, encontrados no Registo de Farmácia ou Registos Clínicos\nPasso 2: Localize a Identidade do paciente de 1) nos Registos Clínicos ou de Laboratório, e anote os resultados dos seus testes na coluna apropriada</string>
-    <string name="adherence_title2_explanation_content">"No Registo do Laboratório, registe os nrs. de ID de 20 pacientes conforme o seguinte:
+    <string name="adherence_title2_explanation_content">"Passo 1: No Registo do Laboratório, registe os nrs. de ID de 20 pacientes conforme o seguinte:
 5 pacientes que receberam um resultado positivo do TDR
 5 pacientes que receberam um resultado negativo do TDR
 5 pacientes que receberam um resultado microscópico positivo para malária
@@ -113,7 +113,7 @@
 </string>
     <string name="adherence_info_pharmacy_register">Registo de Farmacia</string>
     <string name="adherence_title_gender">Género</string>
-    <string name="adherence_title_age">Idade</string>
+    <string name="adherence_title_age">Idade (anos)</string>
     <string name="adherence_title_test_results">Resultados do teste</string>
     <string name="adherence_info_patient_id">Identidade do Paciente</string>
     <string name="adherence_info_prescribed">Foi receitada TCA?</string>
