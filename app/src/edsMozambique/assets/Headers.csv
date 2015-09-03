@@ -5,10 +5,10 @@
 6;'W&P supp';'Fornecimento de Electricidade e Água';3;10
 7;'Stock_Mal Micro';'Quebra de Stocks de Microscopia da Malária';4;10
 8;'Micro, parts, main';'Microscópios, Partes Suplentes, e Manutenção';5;10
-9;'Lab equip';'Equipamento Menor de Laboratório';6;10
+9;'Lab equip';'Consumiveis laboratoriais';6;10
 10;'IQA';'Avaliação Interna da Qualidade (AIQ)';7;10
 11;'EQA';'AEQ - Microscopia da Malária';8;10
-12;'Mal timing';'Timing dos Resultados de Testes da Malária';9;10
+12;'Mal timing';'Tempo dos Resultados dos Testes de Malaria';9;10
 13;'Ref mat_micro';'Material de Referência -Microscopia';10;10
 14;'Obs 1';'Observação 1';1;12
 15;'Obs 2';'Observação 2';2;12
@@ -73,7 +73,7 @@
 74;'Obs 3';'Observação 3';3;13
 75;'HF Info';'Informação da Unidade de Saúde';1;1
 76;'HR_T';'Recursos Humanos e Formação';2;1
-77;'HF Infra';'Infraestrutura da Unidade de Saúde';3;1
+77;'HF Infra';'Serviços da Unidade Sanitaria';3;1
 78;'Ph, St, Eq';'Farmácia, Stocks e Equipamento';4;1
 79;'Mal Diag';'Diagnósticos da  Malária';5;1
 80;'RDT Assess';'Avaliação de TDRs';6;1

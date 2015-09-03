@@ -103,9 +103,9 @@
 
     <!-- adherence -->
     <string name="adherence_info_switchquestion">Existem registos farmacêuticos para TCA dispensada?</string>
-    <string name="adherence_title_explanation">Evaluation of Provider Adherence to Malaria Diagnostic Test Results</string>
-    <string name="adherence_title_explanation_content">Step 1. Record below the patient ID numbers of 20 patients prescribed ACTs from the Pharmacy Register.\nStep 2. Locate the patient IDs from Step 1 in the Laboratory and/or Clinical Registers and record their test result in the appropriate column.</string>
-    <string name="adherence_title2_explanation_content">"No Registo do Laboratório, registe os nrs. de ID de 20 pacientes conforme o seguinte:
+    <string name="adherence_title_explanation">Avaliação do Provedor de adesão aos Resultados de teste de diagnóstico da malária</string>
+    <string name="adherence_title_explanation_content">Passo 1: Anote os Nºs. de ID de 20 pacientes receitados com ACT, encontrados no Registo de Farmácia ou Registos Clínicos\nPasso 2: Localize a Identidade do paciente de 1) nos Registos Clínicos ou de Laboratório, e anote os resultados dos seus testes na coluna apropriada</string>
+    <string name="adherence_title2_explanation_content">"Passo 1: No Registo do Laboratório, registe os nrs. de ID de 20 pacientes conforme o seguinte:
 5 pacientes que receberam um resultado positivo do TDR
 5 pacientes que receberam um resultado negativo do TDR
 5 pacientes que receberam um resultado microscópico positivo para malária
@@ -113,7 +113,7 @@
 </string>
     <string name="adherence_info_pharmacy_register">Registo de Farmacia</string>
     <string name="adherence_title_gender">Género</string>
-    <string name="adherence_title_age">Idade</string>
+    <string name="adherence_title_age">Idade (anos)</string>
     <string name="adherence_title_test_results">Resultados do teste</string>
     <string name="adherence_info_patient_id">Identidade do Paciente</string>
     <string name="adherence_info_prescribed">Foi receitada TCA?</string>
@@ -135,6 +135,7 @@
     <string name="reporting_info_register">Registo</string>
     <string name="reporting_info_monthly">Relatório/mensal</string>
     <string name="iqatab_info_supervisor_matches">O supervisor está de acordo com o pessoal de laboratório?</string>
+    <string name="iqatab_info_note">Nota : Revisão de Lâminas deve ser realizada na unidade de saúde durante OTSS na presença do pessoal do laboratório facilidade. As lâminas não deve ser removido a partir da instalação para este propósito.</string>
 
     <!-- score -->
     <string name="score_title_clinical_fever">Avaliação clínica/febre</string>
@@ -186,7 +187,6 @@
     <string name="dialog_title_incorrect_org_unit">Org Unit errado</string>
     <string name="dialog_content_incorrect_org_unit">Por favor seleccione uma org unit de final</string>
     <string name="create_info_tabs_group">Tab Group</string>
-    <string name="iqatab_info_note">Note: Slide rechecking should be carried out at the health facility during OTSS in the presence of the facility lab staff.  Slides should not be removed from the facility for this purpose.</string>
     <string name="settings_text_dhis_user">Utilizador DHIS</string>
 
 
