@@ -85,10 +85,8 @@ public class DashboardSentFragment extends ListFragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState){
-        super.onCreate(savedInstanceState);
-
         Log.d(TAG, "onCreate");
-        registerSurveysReceiver();
+        super.onCreate(savedInstanceState);
     }
 
     @Override
@@ -103,9 +101,9 @@ public class DashboardSentFragment extends ListFragment {
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
+        Log.d(TAG, "onActivityCreated");
         super.onActivityCreated(savedInstanceState);
 
-        Log.d(TAG, "onActivityCreated");
         initAdapter();
         initListView();
 
@@ -114,7 +112,7 @@ public class DashboardSentFragment extends ListFragment {
     @Override
     public void onResume(){
         Log.d(TAG, "onResume");
-//        getSurveysFromService();
+        registerSurveysReceiver();
         super.onResume();
     }
 
@@ -261,17 +259,6 @@ public class DashboardSentFragment extends ListFragment {
             LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(surveyReceiver);
             surveyReceiver=null;
         }
-    }
-
-    /**
-     * Asks SurveyService for the current list of surveys
-     */
-    private void getSurveysFromService(){
-        Log.d(TAG, "getSurveysFromService");
-        Activity activity=getActivity();
-        Intent surveysIntent=new Intent(activity, SurveyService.class);
-        surveysIntent.putExtra(SurveyService.SERVICE_METHOD,SurveyService.ALL_SENT_SURVEYS_ACTION);
-        activity.startService(surveysIntent);
     }
 
     public void reloadSurveys(List<Survey> newListSurveys){

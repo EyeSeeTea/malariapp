@@ -91,10 +91,8 @@ public class DashboardUnsentFragment extends ListFragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState){
-        super.onCreate(savedInstanceState);
-
         Log.d(TAG, "onCreate");
-        registerSurveysReceiver();
+        super.onCreate(savedInstanceState);
     }
 
     @Override
@@ -109,12 +107,18 @@ public class DashboardUnsentFragment extends ListFragment {
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-
         Log.d(TAG, "onActivityCreated");
+        super.onActivityCreated(savedInstanceState);
         initAdapter();
         initListView();
 
+    }
+
+    @Override
+    public void onResume(){
+        Log.d(TAG, "onResume");
+        registerSurveysReceiver();
+        super.onResume();
     }
 
     /**
@@ -284,6 +288,7 @@ public class DashboardUnsentFragment extends ListFragment {
      * It really important to do this, otherwise each receiver will invoke its code.
      */
     public void  unregisterSurveysReceiver(){
+        Log.d(TAG, "unregisterSurveysReceiver");
         if(surveyReceiver!=null){
             LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(surveyReceiver);
             surveyReceiver=null;
