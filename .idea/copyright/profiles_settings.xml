@@ -1,3 +1,7 @@
 <component name="CopyrightManager">
-  <settings default="" />
+  <settings default="gplv3">
+    <module2copyright>
+      <element module="All" copyright="gplv3" />
+    </module2copyright>
+  </settings>
 </component>
