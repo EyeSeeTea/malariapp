@@ -73,6 +73,13 @@
 85;'Yes1NA1No0';1
 86;'Yes0NA1No1';1
 87;'Counting method';1
-89;'TZ_Officer';1
-90;'TZ_Officer2';1
-91;'TZ_HealthFacilityLevel';1
+88;'TZ_HealthFacilityLevel';1
+90;'Yes1No0CBVertical';9
+91;'Yes0NA1No1CBHorizontal';8
+92;'TZ_Officer2';1
+94;'TZ_Officer';1
+95;'Frequency';1
+96;'CCMOptOut';1
+97;'RDTOptOut';1
+98;'MicroOptOut';1
+99;'PositiveNegativeCBVertical';9

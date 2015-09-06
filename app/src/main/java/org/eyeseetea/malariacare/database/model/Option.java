@@ -43,6 +43,8 @@ public class Option extends BaseModel {
     @PrimaryKey(autoincrement = true)
     long id_option;
     @Column
+    String code;
+    @Column
     String name;
     @Column
     Float factor;
@@ -64,6 +66,14 @@ public class Option extends BaseModel {
         this.answer = answer;
     }
 
+    public Option(String code, String name, Float factor, Answer answer) {
+        this.name = name;
+        this.factor = factor;
+        this.answer = answer;
+        this.code = code;
+    }
+
+
     public Option(String name) {
         this.name = name;
     }
@@ -75,6 +85,10 @@ public class Option extends BaseModel {
     public void setId_option(Long id_option) {
         this.id_option = id_option;
     }
+
+    public String getCode() {return code;}
+
+    public void setCode(String code) {this.code = code;}
 
     public String getName() {
         return name;
@@ -141,6 +155,7 @@ public class Option extends BaseModel {
     @Override
     public int hashCode() {
         int result = (int) (id_option ^ (id_option >>> 32));
+        result = 31 * result + code.hashCode();
         result = 31 * result + name.hashCode();
         result = 31 * result + (factor != null ? factor.hashCode() : 0);
         result = 31 * result + answer.hashCode();
@@ -151,6 +166,7 @@ public class Option extends BaseModel {
     public String toString() {
         return "Option{" +
                 "id=" + id_option +
+                ", code='" + code + '\'' +
                 ", name='" + name + '\'' +
                 ", factor=" + factor +
                 ", answer=" + answer +

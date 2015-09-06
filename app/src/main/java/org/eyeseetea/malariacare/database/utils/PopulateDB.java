@@ -102,9 +102,10 @@ public class PopulateDB {
                         break;
                     case OPTIONS_CSV:
                         Option option = new Option();
-                        option.setName(line[1]);
-                        option.setFactor(Float.valueOf(line[2]));
-                        option.setAnswer(answers.get(Integer.valueOf(line[3])));
+                        option.setCode(line[1]);
+                        option.setName(line[2]);
+                        option.setFactor(Float.valueOf(line[3]));
+                        option.setAnswer(answers.get(Integer.valueOf(line[4])));
                         options.put(Integer.valueOf(line[0]), option);
                         break;
                     case COMPOSITE_SCORES_CSV:
