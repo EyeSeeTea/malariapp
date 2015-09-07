@@ -70,6 +70,7 @@
         android:id="@+id/scoreContainer"
         android:padding="5dip"
         android:layout_gravity="center"
+        android:visibility="gone"
         android:layout_weight="0.2">
 
         <org.eyeseetea.malariacare.views.CustomTextView

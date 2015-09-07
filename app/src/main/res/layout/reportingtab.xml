@@ -182,6 +182,7 @@
                     android:gravity="center"
                     android:padding="5dip"
                     android:layout_weight="0.2"
+                    android:visibility="gone"
                     app:tDimension="@string/font_size_level1"
                     app:tFontName="@string/medium_font_name" />
         </LinearLayout>

@@ -220,7 +220,12 @@ public class PushClient {
     private JSONObject prepareValue(Value value) throws Exception{
         JSONObject elementObject = new JSONObject();
         elementObject.put(TAG_DATAELEMENT, value.getQuestion().getUid());
-        elementObject.put(TAG_VALUE, value.getValue());
+
+        if (value.getOption()!=null)
+            elementObject.put(TAG_VALUE, value.getOption().getCode());
+        else
+            elementObject.put(TAG_VALUE, value.getValue());
+
         return elementObject;
     }
 
