@@ -158,6 +158,8 @@
     <string name="title_activity_settings">Definições</string>
     <string name="settings_checkbox_show_num_dems">Mostrar numerador/denominador</string>
     <string name="settings_checkbox_description_show_num_dems">Quando activadas, as questões do inquérito mostram os seus numeradores e denominadores, usados para calcular resultados do inquérito</string>
+    <string name="settings_checkbox_location_required">Local requerido</string>
+    <string name="settings_checkbox_description_location_required">Quando ativada, a localização é um campo obrigatório para empurrar os dados para dhis servidor</string>
     <string name="settings_checkbox_customize_fonts">Personalizar tipos de letra?</string>
     <string name="settings_list_font_sizes">Tamanho dos tipos de letra</string>
     <string-array name="settings_array_titles_font_sizes">
@@ -184,6 +186,7 @@
     <string name="dialog_info_push_ok">Os dados da pesquisa foi enviado com sucesso para o servidor DHIS</string>
     <string name="dialog_info_push_bad_credentials">Bad credenciais</string>
     <string name="dialog_error_push_no_location">Localização indisponíveis</string>
+    <string name="dialog_error_push_no_location_and_required">Nenhum local disponível e é um campo obrigatório</string>
     <string name="dialog_title_incorrect_org_unit">Org Unit errado</string>
     <string name="dialog_content_incorrect_org_unit">Por favor seleccione uma org unit de final</string>
     <string name="create_info_tabs_group">Tab Group</string>
