@@ -50,6 +50,16 @@ public class Utils {
         return round(base, Utils.numberOfDecimals);
     }
 
+    public static boolean isACustomTab(Tab tab) {
+        boolean result = false;
+
+        if (tab.getType() == Constants.TAB_IQATAB || tab.getType() == Constants.TAB_ADHERENCE ||
+                tab.getType() == Constants.TAB_REPORTING)
+            result=true;
+
+        return result;
+    }
+
     public static List<BaseModel> convertTabToArrayCustom(Tab tab) {
         List<BaseModel> result = new ArrayList<BaseModel>();
 
