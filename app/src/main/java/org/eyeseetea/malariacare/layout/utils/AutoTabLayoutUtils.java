@@ -41,6 +41,7 @@ import org.eyeseetea.malariacare.database.model.QuestionRelation;
 import org.eyeseetea.malariacare.database.model.Value;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.ReadWriteDB;
+import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.layout.adapters.general.OptionArrayAdapter;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.utils.Constants;
@@ -102,17 +103,13 @@ public class AutoTabLayoutUtils {
         }
     }
 
+    /**
+     * Checks if given question should be hidden according to the current survey or not.
+     * @param question
+     * @return
+     */
     public static boolean isHidden(Question question) {
-        Question parent;
-        boolean hidden = false;
-
-        if ((parent = question.getQuestion()) != null) {
-            Value parentValue=parent.getValueBySession();
-            if ( parentValue == null || !parentValue.isAYes())
-                hidden = true;
-        }
-
-        return hidden;
+        return question.isHiddenBySurvey(Session.getSurvey());
     }
 
     /**

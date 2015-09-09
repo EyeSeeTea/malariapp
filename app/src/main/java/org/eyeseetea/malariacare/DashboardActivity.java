@@ -52,6 +52,7 @@ public class DashboardActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.d(TAG, "onCreate");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_dashboard);
 
@@ -85,14 +86,15 @@ public class DashboardActivity extends BaseActivity {
 
     @Override
     public void onResume(){
+        Log.d(TAG, "onResume");
         super.onResume();
-        getSurveysFromService();
-
         prepareLocationListener();
+        getSurveysFromService();
     }
 
     @Override
     public void onPause(){
+        Log.d(TAG, "onPause");
         super.onPause();
 
         //No locationListener working no need to unregister
@@ -134,7 +136,7 @@ public class DashboardActivity extends BaseActivity {
      */
     @Override
     public void onBackPressed() {
-        Log.d(".DashboardDetails", "back pressed");
+        Log.d(TAG, "back pressed");
         new AlertDialog.Builder(this)
                 .setTitle("Really Exit?")
                 .setMessage("Are you sure you want to exit the app?")

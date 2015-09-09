@@ -343,12 +343,19 @@ public class Question extends BaseModel{
      */
     public boolean isHiddenBySurvey(Survey survey){
         Question parent=this.getQuestion();
-        //There is a parent question and it is not answered
-        if (parent!= null && parent.getValueBySurvey(survey)==null) {
+        //No parent question: shown
+        if(parent==null){
+            return false;
+        }
+
+        Value value=parent.getValueBySurvey(survey);
+        //Parent NOT answered: hidden
+        if(value==null){
             return true;
         }
 
-        return false;
+        //Yes: Shown (false) | Else: Shown
+        return !value.isAYes();
     }
 
     /**

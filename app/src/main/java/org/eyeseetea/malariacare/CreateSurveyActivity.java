@@ -141,9 +141,13 @@ public class CreateSurveyActivity extends BaseActivity {
     }
 
     private boolean isEverythingFilled() {
-        boolean isEverythingFilled = (!realOrgUnitView.getSelectedItem().equals(orgUnitDefaultOption) && !programView.getSelectedItem().equals(programDefaultOption));
-        boolean isTabGroupFilled = !tabGroupView.getSelectedItem().equals(tabGroupDefaultOption);
-        return isEverythingFilled && isTabGroupFilled;
+        try {
+            boolean isEverythingFilled = (!realOrgUnitView.getSelectedItem().equals(orgUnitDefaultOption) && !programView.getSelectedItem().equals(programDefaultOption));
+            boolean isTabGroupFilled = !tabGroupView.getSelectedItem().equals(tabGroupDefaultOption);
+            return isEverythingFilled && isTabGroupFilled;
+        }catch(NullPointerException ex){
+            return false;
+        }
     }
 
     private boolean doesSurveyExist() {
