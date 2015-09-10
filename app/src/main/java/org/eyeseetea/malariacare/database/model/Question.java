@@ -30,6 +30,7 @@ import com.raizlabs.android.dbflow.sql.builder.Condition.In;
 import com.raizlabs.android.dbflow.sql.language.ColumnAlias;
 import com.raizlabs.android.dbflow.sql.language.Join;
 import com.raizlabs.android.dbflow.sql.language.Select;
+import com.raizlabs.android.dbflow.sql.language.Where;
 import com.raizlabs.android.dbflow.structure.BaseModel;
 
 import org.eyeseetea.malariacare.database.AppDatabase;
@@ -41,9 +42,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
 
 @Table(databaseName = AppDatabase.NAME)
-public class Question extends BaseModel{
+public class Question extends BaseModel {
 
     /**
      * Sql query that counts required questions in a program (required for % stats)
@@ -115,6 +117,10 @@ public class Question extends BaseModel{
 
     List<QuestionRelation> questionRelations;
 
+    Boolean parent;
+
+    List<Match> matches;
+
     public Question() {
     }
 
@@ -131,6 +137,7 @@ public class Question extends BaseModel{
         this.answer = answer;
         this.question = question;
         this.compositeScore = compositeScore;
+        this.parent = null;
     }
 
     public Long getId_question() {
@@ -229,12 +236,23 @@ public class Question extends BaseModel{
         this.question = question;
     }
 
-    public CompositeScore getCompositeScore() { return compositeScore; }
+    public CompositeScore getCompositeScore() {
+        return compositeScore;
+    }
 
-    public void setCompositeScore(CompositeScore compositeScore) { this.compositeScore = compositeScore; }
+    public void setCompositeScore(CompositeScore compositeScore) {
+        this.compositeScore = compositeScore;
+    }
 
-    public boolean hasParent(){
-        return getQuestion() != null;
+    public boolean hasParent() {
+        if (parent == null) {
+            long countChildQuestionRelations = new Select().count().from(QuestionRelation.class)
+                    .where(Condition.column(QuestionRelation$Table.QUESTION_ID_QUESTION).eq(this.getId_question()))
+                    .and(Condition.column(QuestionRelation$Table.OPERATION).eq(QuestionRelation.PARENT_CHILD))
+                    .count();
+            parent = countChildQuestionRelations > 0;
+        }
+        return parent;
     }
 
     @OneToMany(methods = {OneToMany.Method.SAVE, OneToMany.Method.DELETE}, variableName = "questionRelations")
@@ -247,9 +265,9 @@ public class Question extends BaseModel{
         return this.questionRelations;
     }
 
-   public boolean hasQuestionRelations(){
-       return !this.getQuestionRelations().isEmpty();
-   }
+    public boolean hasQuestionRelations() {
+        return !this.getQuestionRelations().isEmpty();
+    }
 
     public List<QuestionOption> getQuestionOption() {
         //if (this.children == null){
@@ -259,77 +277,129 @@ public class Question extends BaseModel{
         //}
     }
 
-    public boolean hasQuestionOption(){
+    public boolean hasQuestionOption() {
         return !this.getQuestionOption().isEmpty();
+    }
+
+    public List<Match> getMatches() {
+        if (matches == null) {
+            matches = new Select().from(Match.class).as("m")
+                    .join(QuestionOption.class, Join.JoinType.LEFT).as("qo")
+                    .on(
+                            Condition.column(ColumnAlias.columnWithTable("m", Match$Table.ID_MATCH))
+                                    .eq(ColumnAlias.columnWithTable("qo", QuestionOption$Table.MATCH_ID_MATCH)))
+                    .where(Condition.column(ColumnAlias.columnWithTable("qo", QuestionOption$Table.QUESTION_ID_QUESTION)).eq(this.getId_question())).queryList();
+        }
+        return matches;
     }
 
     @OneToMany(methods = {OneToMany.Method.SAVE, OneToMany.Method.DELETE}, variableName = "children")
     public List<Question> getChildren() {
-        if (this.children == null){
-            this.children = new Select().from(Question.class)
-                    .where(Condition.column(Question$Table.QUESTION_ID_PARENT).eq(this.getId_question()))
-                    .orderBy(Question$Table.ORDER_POS).queryList();
+        if (this.children == null) {
+
+            //No matches no children
+            List<Match> matches = getMatches();
+            if (matches.size() == 0) {
+                this.children = new ArrayList<>();
+                return this.children;
+            }
+
+            //Prepare a list of match_ids, (in operator not working in DBFlow)
+            List<Long> matchesIds = new ArrayList();
+            String questionMarks = "(";
+            for (int i = 0; i < matches.size(); i++) {
+                matchesIds.add(matches.get(i).getId_match());
+                questionMarks += "?";
+                if (i == (matches.size() - 1)) {
+                    questionMarks += ")";
+                } else {
+                    questionMarks += ",";
+                }
+            }
+
+            //Select question from questionrelation where operator=1 and id_match in (..)
+            Where<Question> where = new Select().from(Question.class).as("q")
+                    //Question + QuestioRelation
+                    .join(QuestionRelation.class, Join.JoinType.LEFT).as("qr")
+                    .on(Condition.column(ColumnAlias.columnWithTable("q", Question$Table.ID_QUESTION))
+                            .eq(ColumnAlias.columnWithTable("qr", QuestionRelation$Table.QUESTION_ID_QUESTION)))
+                            //+Match
+                    .join(Match.class, Join.JoinType.LEFT).as("m")
+                    .on(
+                            Condition.column(ColumnAlias.columnWithTable("qr", QuestionRelation$Table.ID_QUESTION_RELATION))
+                                    .eq(ColumnAlias.columnWithTable("m", Match$Table.QUESTIONRELATION_ID_QUESTION_RELATION)))
+                            //Parent child relationship
+                    .where()
+                            //In clause
+                    .whereClause("m.id_match in " + questionMarks, matchesIds.toArray(new Long[matchesIds.size()]))
+                    .and(Condition.column(ColumnAlias.columnWithTable("qr", QuestionRelation$Table.OPERATION)).eq(QuestionRelation.PARENT_CHILD));
+
+            this.children = where.queryList();
         }
         return this.children;
     }
 
-    public boolean hasChildren(){
+    public boolean hasChildren() {
         return !getChildren().isEmpty();
     }
 
     @OneToMany(methods = {OneToMany.Method.SAVE, OneToMany.Method.DELETE}, variableName = "values")
-    public List<Value> getValues(){
+    public List<Value> getValues() {
         return new Select().from(Value.class).where(Condition.column(Value$Table.QUESTION_ID_QUESTION).eq(this.getId_question())).queryList();
     }
 
     /**
      * Gets the value of this question in the current survey in session
+     *
      * @return
      */
-    public Value getValueBySession(){
+    public Value getValueBySession() {
         return this.getValueBySurvey(Session.getSurvey());
     }
 
     /**
      * Gets the value of this question in the given Survey
+     *
      * @param survey
      * @return
      */
-    public Value getValueBySurvey(Survey survey){
-        if(survey==null){
+    public Value getValueBySurvey(Survey survey) {
+        if (survey == null) {
             return null;
         }
         List<Value> returnValues = new Select().from(Value.class)
                 .where(Condition.column(Value$Table.QUESTION_ID_QUESTION).eq(this.getId_question()))
                 .and(Condition.column(Value$Table.SURVEY_ID_SURVEY).eq(survey.getId_survey())).queryList();
 
-        if (returnValues.size() == 0){
+        if (returnValues.size() == 0) {
             return null;
-        }else{
+        } else {
             return returnValues.get(0);
         }
     }
 
     /**
      * Gets the option of this question in the current survey in session
+     *
      * @return
      */
-    public Option getOptionBySession(){
+    public Option getOptionBySession() {
         return this.getOptionBySurvey(Session.getSurvey());
     }
 
     /**
      * Gets the option of this question in the given survey
+     *
      * @param survey
      * @return
      */
-    public Option getOptionBySurvey(Survey survey){
-        if(survey==null){
+    public Option getOptionBySurvey(Survey survey) {
+        if (survey == null) {
             return null;
         }
 
         Value value = this.getValueBySurvey(survey);
-        if(value==null){
+        if (value == null) {
             return null;
         }
 
@@ -338,32 +408,49 @@ public class Question extends BaseModel{
 
     /**
      * Checks if this question is shown according to the values of the given survey
+     *
      * @param survey
      * @return
      */
-    public boolean isHiddenBySurvey(Survey survey){
-        Question parent=this.getQuestion();
-        //No parent question: shown
-        if(parent==null){
+    public boolean isHiddenBySurvey(Survey survey) {
+        //No question relations
+        if (!hasParent()) {
             return false;
         }
+        long hasParentOptionActivated = new Select().count().from(Value.class).as("v")
+                .join(QuestionOption.class, Join.JoinType.LEFT).as("qo")
+                .on(
+                        Condition.column(ColumnAlias.columnWithTable("v", Value$Table.QUESTION_ID_QUESTION))
+                                .eq(ColumnAlias.columnWithTable("qo", QuestionOption$Table.QUESTION_ID_QUESTION)),
+                        Condition.column(ColumnAlias.columnWithTable("v", Value$Table.OPTION_ID_OPTION))
+                                .eq(ColumnAlias.columnWithTable("qo", QuestionOption$Table.OPTION_ID_OPTION)))
+                .join(Match.class, Join.JoinType.LEFT).as("m")
+                .on(
+                        Condition.column(ColumnAlias.columnWithTable("qo", QuestionOption$Table.MATCH_ID_MATCH))
+                                .eq(ColumnAlias.columnWithTable("m", Match$Table.ID_MATCH)))
+                .join(QuestionRelation.class, Join.JoinType.LEFT).as("qr")
+                .on(
+                        Condition.column(ColumnAlias.columnWithTable("m", Match$Table.QUESTIONRELATION_ID_QUESTION_RELATION))
+                                .eq(ColumnAlias.columnWithTable("qr", QuestionRelation$Table.ID_QUESTION_RELATION)))
+                        //Parent child relationship
+                .where(Condition.column(ColumnAlias.columnWithTable("qr", QuestionRelation$Table.OPERATION)).eq(1))
+                        //For the given survey
+                .and(Condition.column(ColumnAlias.columnWithTable("v", Value$Table.SURVEY_ID_SURVEY)).eq(survey.getId_survey()))
+                        //The child question in the relationship is 'this'
+                .and(Condition.column(ColumnAlias.columnWithTable("qr", QuestionRelation$Table.QUESTION_ID_QUESTION)).eq(this.getId_question()))
+                .count();
 
-        Value value=parent.getValueBySurvey(survey);
-        //Parent NOT answered: hidden
-        if(value==null){
-            return true;
-        }
-
-        //Yes: Shown (false) | Else: Shown
-        return !value.isAYes();
+        //Parent with the right value -> not hidden
+        return hasParentOptionActivated > 0 ? false : true;
     }
 
     /**
      * Add register to ScoreRegister if this is an scored question
+     *
      * @return List</Float> {num, den}
      */
     public List<Float> initScore(Survey survey) {
-        if (!this.isScored()){
+        if (!this.isScored()) {
             return null;
         }
 
@@ -375,11 +462,12 @@ public class Question extends BaseModel{
 
     /**
      * Counts the number of required questions (without a parent question).
+     *
      * @param tabGroup
      * @return
      */
-    public static int countRequiredByProgram(TabGroup tabGroup){
-        if(tabGroup==null || tabGroup.getId_tab_group()==null){
+    public static int countRequiredByProgram(TabGroup tabGroup) {
+        if (tabGroup == null || tabGroup.getId_tab_group() == null) {
             return 0;
         }
 
@@ -409,11 +497,12 @@ public class Question extends BaseModel{
 
     /**
      * Returns all the questions that belongs to a program
+     *
      * @param tabGroup
      * @return
      */
-    public static List<Question> listByTabGroup(TabGroup tabGroup){
-        if(tabGroup==null || tabGroup.getId_tab_group()==null){
+    public static List<Question> listByTabGroup(TabGroup tabGroup) {
+        if (tabGroup == null || tabGroup.getId_tab_group() == null) {
             return new ArrayList();
         }
 
@@ -421,7 +510,7 @@ public class Question extends BaseModel{
         //return Question.findWithQuery(Question.class, LIST_ALL_BY_PROGRAM, program.getId().toString());
 
 
-                return new Select().all().from(Question.class).as("q")
+        return new Select().all().from(Question.class).as("q")
                 .join(Header.class, Join.JoinType.LEFT).as("h")
                 .on(Condition.column(ColumnAlias.columnWithTable("q", Question$Table.HEADER_ID_HEADER))
                         .eq(ColumnAlias.columnWithTable("h", Header$Table.ID_HEADER)))
@@ -438,13 +527,13 @@ public class Question extends BaseModel{
 
     }
 
-    public static List<Question> listAllByTabs(List<Tab> tabs){
+    public static List<Question> listAllByTabs(List<Tab> tabs) {
 
-        if(tabs==null || tabs.size()==0){
+        if (tabs == null || tabs.size() == 0) {
             return new ArrayList();
         }
 
-        Iterator<Tab> iterator=tabs.iterator();
+        Iterator<Tab> iterator = tabs.iterator();
         In in = Condition.column(ColumnAlias.columnWithTable("t", Tab$Table.ID_TAB)).in(Long.toString(iterator.next().getId_tab()));
         while (iterator.hasNext()) {
             in.and(Long.toString(iterator.next().getId_tab()));
@@ -463,18 +552,18 @@ public class Question extends BaseModel{
     }
 
 
-
     /**
      * Checks if this question is scored or not.
+     *
      * @return true|false
      */
-    public boolean isScored(){
+    public boolean isScored() {
         try {
-            Integer output=getAnswer().getOutput();
-            return  output == Constants.DROPDOWN_LIST ||
+            Integer output = getAnswer().getOutput();
+            return output == Constants.DROPDOWN_LIST ||
                     output == Constants.RADIO_GROUP_HORIZONTAL ||
                     output == Constants.RADIO_GROUP_VERTICAL;
-        }catch(Exception e){
+        } catch (Exception e) {
             return false;
         }
     }
