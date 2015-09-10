@@ -254,7 +254,7 @@
 278;'ZMB_MAL.QA-CCM 1-1410';'ZMB_MAL.QA-CCM 1-Com: Unc disease-Advice given on malaria prevention measures-1410';;'Advice given on malaria prevention measures';'gKefzTok3ke';1410;1.00;1.00;22;85;274;15
 279;'ZMB_MAL.QA-CCM 1-1420';'ZMB_MAL.QA-CCM 1-Com: Unc disease-Caregiver and/or patient asked if they have any questions-1420';;'Caregiver and/or patient asked if they have any questions';'IwGyJXVuYoR';1420;1.00;1.00;22;85;274;15
 280;'ZMB_MAL.QA-CCM 1-1430';'ZMB_MAL.QA-CCM 1-Com: Sev disease-Was patient found to have severe disease-1430';;'Was patient found to have severe disease?';'USKEz788yP7';1430;0.00;0.00;23;85;;
-281;'ZMB_MAL.QA-CCM 1-1440';'ZMB_MAL.QA-CCM 1-Sev dis-Admission or Referral-1440';;'Admission or Referral';'mBtCogztlhP';1440;0.00;0.00;24;8;;
+281;'ZMB_MAL.QA-CCM 1-1440';'ZMB_MAL.QA-CCM 1-Sev dis-Admission or Referral-1440';;'Admission or Referral';'mBtCogztlhP';1440;0.00;0.00;24;8;280;
 282;'ZMB_MAL.QA-CCM 1-1450';'ZMB_MAL.QA-CCM 1-Sev dis-Was the patient referred or admitted for treatment?-1450';;'Was the patient referred or admitted for treatment?';'l5Zkukv1kxC';1450;3.00;3.00;24;85;280;15
 283;'ZMB_MAL.QA-CCM 1-1460';'ZMB_MAL.QA-CCM 1-Sev dis-If yes, where was the patient sent for treatment? -1460';;'If yes, where was the patient sent for treatment?';'fpmsofdADID';1460;0.00;0.00;24;8;280;
 284;'ZMB_MAL.QA-CCM 1-1470';'ZMB_MAL.QA-CCM 1-Sev dis-Referred to a higher level facility-1470';;'Referred to a higher level facility';'oyzuNlhiEAh';1470;0.00;0.00;24;85;280;
@@ -396,7 +396,7 @@
 423;'ZMB_MAL.QA-CCM 2-1410';'ZMB_MAL.QA-CCM 2-Com: Unc disease-Advice given on malaria prevention measures-1410';;'Advice given on malaria prevention measures';'pMsWTxZV0zB';1410;1.00;1.00;38;85;419;18
 424;'ZMB_MAL.QA-CCM 2-1420';'ZMB_MAL.QA-CCM 2-Com: Unc disease-Caregiver and/or patient asked if they have any questions-1420';;'Caregiver and/or patient asked if they have any questions';'IiGFIQHMw8R';1420;1.00;1.00;38;85;419;18
 425;'ZMB_MAL.QA-CCM 2-1430';'ZMB_MAL.QA-CCM 2-Com: Sev disease-Was patient found to have severe disease-1430';;'Was patient found to have severe disease?';'UI5GTzYdNSp';1430;0.00;0.00;39;85;;
-426;'ZMB_MAL.QA-CCM 2-1440';'ZMB_MAL.QA-CCM 2-Sev dis-Admission or Referral-1440';;'Admission or Referral';'T2rVKgP2Zmm';1440;0.00;0.00;40;8;;
+426;'ZMB_MAL.QA-CCM 2-1440';'ZMB_MAL.QA-CCM 2-Sev dis-Admission or Referral-1440';;'Admission or Referral';'T2rVKgP2Zmm';1440;0.00;0.00;40;8;425;
 427;'ZMB_MAL.QA-CCM 2-1450';'ZMB_MAL.QA-CCM 2-Sev dis-Was the patient referred or admitted for treatment?-1450';;'Was the patient referred or admitted for treatment?';'JR1rWE6tlc9';1450;3.00;3.00;40;85;425;18
 428;'ZMB_MAL.QA-CCM 2-1460';'ZMB_MAL.QA-CCM 2-Sev dis-If yes, where was the patient sent for treatment? -1460';;'If yes, where was the patient sent for treatment?';'w7v1YB5bKY6';1460;0.00;0.00;40;8;425;
 429;'ZMB_MAL.QA-CCM 2-1470';'ZMB_MAL.QA-CCM 2-Sev dis-Referred to a higher level facility-1470';;'Referred to a higher level facility';'Cz1TVtmUxDZ';1470;0.00;0.00;40;85;425;
@@ -538,7 +538,7 @@
 568;'ZMB_MAL.QA-CCM 3-1410';'ZMB_MAL.QA-CCM 3-Com: Unc disease-Advice given on malaria prevention measures-1410';;'Advice given on malaria prevention measures';'derd5xi79sS';1410;1.00;1.00;54;85;564;21
 569;'ZMB_MAL.QA-CCM 3-1420';'ZMB_MAL.QA-CCM 3-Com: Unc disease-Caregiver and/or patient asked if they have any questions-1420';;'Caregiver and/or patient asked if they have any questions';'EPdKuGmd3qs';1420;1.00;1.00;54;85;564;21
 570;'ZMB_MAL.QA-CCM 3-1430';'ZMB_MAL.QA-CCM 3-Com: Sev disease-Was patient found to have severe disease-1430';;'Was patient found to have severe disease?';'dPHqlMUCiml';1430;0.00;0.00;55;85;;
-571;'ZMB_MAL.QA-CCM 3-1440';'ZMB_MAL.QA-CCM 3-Sev dis-Admission or Referral-1440';;'Admission or Referral';'o6O1IU4xD8Y';1440;0.00;0.00;56;8;;
+571;'ZMB_MAL.QA-CCM 3-1440';'ZMB_MAL.QA-CCM 3-Sev dis-Admission or Referral-1440';;'Admission or Referral';'o6O1IU4xD8Y';1440;0.00;0.00;56;8;570;
 572;'ZMB_MAL.QA-CCM 3-1450';'ZMB_MAL.QA-CCM 3-Sev dis-Was the patient referred or admitted for treatment?-1450';;'Was the patient referred or admitted for treatment?';'g71v0P3R3zD';1450;3.00;3.00;56;85;570;21
 573;'ZMB_MAL.QA-CCM 3-1460';'ZMB_MAL.QA-CCM 3-Sev dis-If yes, where was the patient sent for treatment? -1460';;'If yes, where was the patient sent for treatment?';'IFycaRIdpYf';1460;0.00;0.00;56;8;570;
 574;'ZMB_MAL.QA-CCM 3-1470';'ZMB_MAL.QA-CCM 3-Sev dis-Referred to a higher level facility-1470';;'Referred to a higher level facility';'xDkPOAvg3dt';1470;0.00;0.00;56;85;570;
@@ -1110,6 +1110,9 @@
 1142;'ZMB_MAL.QA-Read Film-448';'ZMB_MAL.QA-Read Film-Obs 3-Reason if unable to conduct/complete microscopy preparation observation:-448';;'Reason if unable to conduct/complete microscopy preparation observation:';'tTwe9IJoe1c';448;0.00;0.00;78;27;;
 1143;'ZMB_MAL.QA-Read Film-449';'ZMB_MAL.QA-Read Film-Obs 3-If other, explain-449';;'If other, explain';'xrrvHVOp9Ol';449;0.00;0.00;78;13;;
 1144;'ZMB_MAL.QA-Read Film-630';'ZMB_MAL.QA-Read Film-Obs 3-END OF TAB-630';;'END OF TAB';'oAErdi092Gn';630;0.00;0.00;78;8;;
+1145;'ZMB_MAL.QA-CCM 1-1171';'ZMB_MAL.QA-CCM 1-Diag Test res-Supervisor: Did you agree with the final diagnosis and disease severity assessment?-1171';;'Supervisor: Did you agree with the final diagnosis and disease severity assessment?';'HhOLjB20oPI';1171;0.00;0.00;20;98;;
+1146;'ZMB_MAL.QA-CCM 2-1171';'ZMB_MAL.QA-CCM 2-Diag Test res-Supervisor: Did you agree with the final diagnosis and disease severity assessment?-1171';;'Supervisor: Did you agree with the final diagnosis and disease severity assessment?';'rY66XRd2joc';1171;0.00;0.00;36;98;;
+1147;'ZMB_MAL.QA-CCM 3-1171';'ZMB_MAL.QA-CCM 3-Diag Test res-Supervisor: Did you agree with the final diagnosis and disease severity assessment?-1171';;'Supervisor: Did you agree with the final diagnosis and disease severity assessment?';'J0tOzulhwxN';1171;0.00;0.00;52;98;;
 2001;'PQ-AT1-1';'PQ-AT1-1 Phantom Question 1';;'1';;1;0.00;0.00;82;;;
 2002;'ZMB_MAL.QA-ADH-150';'PID';;'Pat.1 - ID/Name';'NEMq1LFtSQM';2;0.00;0.00;82;13;2001;
 2003;'ZMB_MAL.QA-ADH-170';'GD';;'Pat.1 - Gender';'e0tEEV7Wg3o';3;0.00;0.00;82;18;2001;

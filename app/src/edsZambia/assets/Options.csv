@@ -2,30 +2,29 @@
 2;'ANC';'ANC';0.00;1
 3;'Specialized obstetrics clinic';'Specialized obstetrics clinic';0.00;1
 4;'Other';'Other';0.00;1
-5;'SP';'SP';0.00;2
-6;'Quinine (intramuscular)';'Quinine (intramuscular)';0.00;2
-7;'No antimalarial prescribed';'No antimalarial prescribed';0.00;2
-8;'ACT';'ACT';0.00;2
-9;'Artemisinin (intramuscular monotherapy)';'Artemisinin (intramuscular monotherapy)';0.00;2
-10;'Artemisinin (intravenous)';'Artemisinin (intravenous)';0.00;2
-11;'Artemisinin (oral monotherapy)';'Artemisinin (oral monotherapy)';0.00;2
-12;'Artemether (intramuscular)';'Artemether (intramuscular)';0.00;2
-13;'Artesunate (intramuscular monotherapy)';'Artesunate (intramuscular monotherapy)';0.00;2
-14;'Artesunate (rectal)';'Artesunate (rectal)';0.00;2
-15;'Quinine (oral)';'Quinine (oral)';0.00;2
-16;'Quinine (intravenous)';'Quinine (intravenous)';0.00;2
-17;'Chloroquine';'Chloroquine';0.00;2
+5;'No antimalarial prescribed';'No antimalarial prescribed';0.00;2
+6;'ACT';'ACT';0.00;2
+7;'Artemisinin (intramuscular monotherapy)';'Artemisinin (intramuscular monotherapy)';0.00;2
+8;'Artemisinin (intravenous)';'Artemisinin (intravenous)';0.00;2
+9;'Artemisinin (oral monotherapy)';'Artemisinin (oral monotherapy)';0.00;2
+10;'Artemether (intramuscular)';'Artemether (intramuscular)';0.00;2
+11;'Artesunate (intramuscular monotherapy)';'Artesunate (intramuscular monotherapy)';0.00;2
+12;'Artesunate (rectal)';'Artesunate (rectal)';0.00;2
+13;'Quinine (oral)';'Quinine (oral)';0.00;2
+14;'Quinine (intramuscular)';'Quinine (intramuscular)';0.00;2
+15;'Quinine (intravenous)';'Quinine (intravenous)';0.00;2
+16;'Chloroquine';'Chloroquine';0.00;2
+17;'SP';'SP';0.00;2
 18;'Other';'Other';0.00;2
-19;'Patient sent to lab; did not return';'Patient sent to lab; did not return';0.00;3
-20;'Not enough time during facility visit';'Not enough time during facility visit';0.00;3
-21;'No febrile patient available';'No febrile patient available';0.00;3
-22;'No clinician available';'No clinician available';0.00;3
-23;'Patient referred out';'Patient referred out';0.00;3
-24;'Stopped due to potential patient harm';'Stopped due to potential patient harm';0.00;3
-25;'Other';'Other';0.00;3
-26;'Plus System';'1. Plus System';0.00;4
-27;'Parasite uL';'2. Parasite uL';0.00;4
-28;'Against WBC';'3. Against WBC';0.00;4
+19;'No febrile patient available';'No febrile patient available';0.00;3
+20;'No clinician available';'No clinician available';0.00;3
+21;'Patient referred out';'Patient referred out';0.00;3
+22;'Stopped due to potential patient harm';'Stopped due to potential patient harm';0.00;3
+23;'Not enough time during facility visit';'Not enough time during facility visit';0.00;3
+24;'Other';'Other';0.00;3
+26;'Plus System';'Plus System';0.00;4
+27;'Parasite uL';'Parasite uL';0.00;4
+28;'Against WBC';'Against WBC';0.00;4
 29;'Done [1]';'Done';1.00;74
 30;'Not Done [0]';'Not Done';0.00;74
 31;'One day';'One day';0.00;15
@@ -36,11 +35,11 @@
 36;'Demonstration';'3. Demonstration';0.00;16
 37;'SOP Review';'4. SOP Review';0.00;16
 38;'Clinical mentoring';'5. Clinical mentoring';0.00;16
-39;'About half of the time';'About half of the time';0.00;17
-40;'More than half of the time';'More than half of the time';0.00;17
-41;'Always';'Always';0.00;17
-42;'Never';'Never';0.00;17
-43;'Less than half of the time';'Less than half of the time';0.00;17
+39;'Never';'Never';0.00;17
+40;'Less than half of the time';'Less than half of the time';0.00;17
+41;'About half of the time';'About half of the time';0.00;17
+42;'More than half of the time';'More than half of the time';0.00;17
+43;'Always';'Always';0.00;17
 44;'Male';'1. Male';0.00;18
 45;'Female';'2. Female';0.00;18
 46;'CHO/CHN';'CHO/CHN';0.00;19
@@ -67,30 +66,30 @@
 67;'Physician/Medical Assistant';'Physician/Medical Assistant';0.00;22
 68;'Medical Intern';'Medical Intern';0.00;22
 69;'Other';'Other';0.00;22
-70;'Other';'4. Other';0.00;23
-71;'1. Health Center';'1. Health Center';0.00;23
-72;'2. District Hospital';'2. District Hospital';0.00;23
-73;'3. Regional hospital';'3. Regional hospital';0.00;23
+70;'1. Health Center';'Health Center';0.00;23
+71;'2. District Hospital';'District Hospital';0.00;23
+72;'3. Regional hospital';'Regional hospital';0.00;23
+73;'Other';'Other';0.00;23
 74;'Yes [0]';'Yes';0.00;24
 75;'No [1]';'No';1.00;24
-76;'Mixed';'5. Mixed';0.00;25
-77;'N/A';'N/A';0.00;25
-78;'Pf';'1. Pf';0.00;25
-79;'Pv';'2. Pv';0.00;25
-80;'Pm';'3. Pm';0.00;25
-81;'Po';'4. Po';0.00;25
+76;'Pf';'Pf';0.00;25
+77;'Pv';'Pv';0.00;25
+78;'Pm';'Pm';0.00;25
+79;'Po';'Po';0.00;25
+80;'Mixed';'Mixed';0.00;25
+81;'N/A';'N/A';0.00;25
 82;'RDT + [1]';'RDT +';1.00;26
 83;'RDT - [0]';'RDT -';0.00;26
 84;'Microscopy + [1]';'Microscopy +';1.00;26
 85;'Microscopy - [0]';'Microscopy -';0.00;26
 86;'Not found [0]';'Not found';0.00;26
-87;'No lab staff who conduct malaria microscopy';'No lab staff who conduct malaria microscopy';0.00;27
-88;'Stopped due to potential patient harm';'Stopped due to potential patient harm';0.00;27
-89;'Other';'Other';0.00;27
-90;'Lack of power';'Lack of power';0.00;27
-91;'Not enough time during facility visit';'Not enough time during facility visit';0.00;27
-92;'Lack of supplies/equipment';'Lack of supplies/equipment';0.00;27
-93;'No malaria microscopy tests ordered';'No malaria microscopy tests ordered';0.00;27
+87;'Lack of supplies/equipment';'Lack of supplies/equipment';0.00;27
+88;'Lack of power';'Lack of power';0.00;27
+89;'No malaria microscopy tests ordered';'No malaria microscopy tests ordered';0.00;27
+90;'No lab staff who conduct malaria microscopy';'No lab staff who conduct malaria microscopy';0.00;27
+91;'Stopped due to potential patient harm';'Stopped due to potential patient harm';0.00;27
+92;'Not enough time during facility visit';'Not enough time during facility visit';0.00;27
+93;'Other';'Other';0.00;27
 94;'Artemisinin (oral monotherapy)';'Artemisinin (oral monotherapy)';0.00;28
 95;'Quinine (intravenous)';'Quinine (intravenous)';0.00;28
 96;'Artemether (intramuscular)';'Artemether (intramuscular)';0.00;28
@@ -158,7 +157,7 @@
 158;'Positive';'Positive';0.00;40
 159;'Negative';'Negative';0.00;40
 160;'Unknown';'Unknown/No Test Result';0.00;40
-161;'Main Power Supply';'Main Power Supply';0.00;41
+161;'Main Power Supply';'Main';0.00;41
 162;'Generator';'Generator';0.00;41
 163;'Solar';'Solar';0.00;41
 164;'Present & Functional [1]';'Present & Functional';1.00;42
@@ -167,9 +166,9 @@
 167;'No RDT tests ordered';'No RDT tests ordered';0.00;43
 168;'No health care workers who use RDTs';'No health care workers who use RDTs';0.00;43
 169;'No RDTs available';'No RDTs available';0.00;43
-170;'Not enough time during facility visit';'Not enough time during facility visit';0.00;43
-171;'Other';'Other';0.00;43
-172;'Stopped due to potential patient harm';'Stopped due to potential patient harm';0.00;43
+170;'Stopped due to potential patient harm';'Stopped due to potential patient harm';0.00;43
+171;'Not enough time during facility visit';'Not enough time during facility visit';0.00;43
+172;'Other';'Other';0.00;43
 173;'Paper reports on designated tally sheets';'Paper reports on designated tally sheets';0.00;44
 174;'Paper reports without tally sheets';'Paper reports without tally sheets';0.00;44
 175;'SMS-based reports';'SMS-based reports';0.00;44
@@ -183,13 +182,13 @@
 183;'RDT';'RDT';0.00;47
 184;'Microcopy Thick smear';'Microcopy Thick smear';0.00;47
 185;'Microscopy Thin smear';'Microscopy Thin smear';0.00;47
-186;'Both';'Both';0.00;47
+186;'Microscopy Thick and Thin smear';'Microscopy Thick and Thin smear';0.00;47
 187;'RDT';'RDT';0.00;48
 188;'Microscopy';'Microscopy';0.00;48
 189;'Test not available';'Test not available';0.00;48
 190;'Test not ordered';'Test not ordered';0.00;48
-191;'Thin smear';'Thin smear';0.00;49
-192;'Thick smear';'Thick smear';0.00;49
+191;'Thick smear';'Thick smear';0.00;49
+192;'Thin smear';'Thin smear';0.00;49
 193;'Both';'Both';0.00;49
 194;'Traditional treatment [1]';'Traditional treatment';1.00;50
 195;'Antimalarial treatment [1]';'Antimalarial treatment';1.00;50
@@ -223,7 +222,7 @@
 223;'Commercial Bottled water [1]';'Commercial Bottled water';1.00;54
 224;'Externally filled water tank [1]';'Externally filled water tank';1.00;54
 225;'Yes [0]';'Yes';0.00;55
-226;'N/A [1]';'N/A';1.00;55
+226;'N/A [1]';'NA';1.00;55
 227;'No [1]';'No';1.00;55
 228;'Yes [0]';'Yes';0.00;56
 229;'No [1]';'No';1.00;56
@@ -232,7 +231,7 @@
 232;'Apparent [1]';'Apparent';1.00;57
 233;'Not Asked [0]';'Not Asked';0.00;57
 234;'Yes [1]';'Yes';1.00;58
-235;'N/A [1]';'N/A';1.00;58
+235;'N/A [1]';'NA';1.00;58
 236;'No [0]';'No';0.00;58
 237;'Yes [1]';'Yes';1.00;59
 238;'No [0]';'No';0.00;59
@@ -277,13 +276,13 @@
 277;'1';'Yes';1.00;71
 278;'0';'No';0.00;71
 279;'0';'Unknown';0.00;71
-280;'Scientist / Lab Tech';'Scientist / Lab Tech';0.00;72
-281;'Microscopist';'Microscopist';0.00;72
-282;'Nurse';'Nurse';0.00;72
-283;'MD/Medical Officer/Physician';'MD/Medical Officer/Physician';0.00;72
-284;'Midwife';'Midwife';0.00;72
-285;'Other';'Other';0.00;72
-286;'Clinical Officer/Physician''s Assistant';'Clinical Officer/Physician''s Assistant';0.00;72
+280;'MD/Medical Officer/Physician';'MD/Medical Officer/Physician';0.00;72
+281;'Clinical Officer/Physician''s Assistant';'Clinical Officer/Physician''s Assistant';0.00;72
+282;'Scientist / Lab Tech';'Scientist / Lab Tech';0.00;72
+283;'Microscopist';'Microscopist';0.00;72
+284;'Nurse';'Nurse';0.00;72
+285;'Midwife';'Midwife';0.00;72
+286;'Other';'Other';0.00;72
 287;'Scientist / Lab Tech';'Scientist / Lab Tech';0.00;73
 288;'Microscopist';'Microscopist';0.00;73
 289;'Done [1]';'Done';1.00;75
@@ -292,8 +291,8 @@
 292;'Not Done [0]';'Not Done';0.00;76
 293;'Male';'Male';0.00;77
 294;'Female';'Female';0.00;77
-295;'Male';'Female';0.00;78
-296;'Male';'Female';0.00;78
+295;'Male';'Male';0.00;78
+296;'Female';'Female';0.00;78
 297;'Normal';'Normal';0.00;79
 298;'Abnormal';'Abnormal';0.00;79
 299;'Present & Functional [1]';'Present & Functional';1.00;80
@@ -310,10 +309,10 @@
 310;'No [0]';'No';0.00;85
 311;'Yes [1]';'Yes';1.00;86
 312;'No [0]';'No';0.00;86
-313;'N/A [1]';'N/A';1.00;86
+313;'N/A [1]';'NA';1.00;86
 314;'Yes [1]';'Yes';1.00;87
 315;'No [0]';'No';0.00;87
-316;'N/A [1]';'N/A';1.00;87
+316;'N/A [1]';'NA';1.00;87
 317;'Yes [1]';'Yes';1.00;88
 318;'No [0]';'No';0.00;88
 319;'Not Available [1]';'Not Available';1.00;88
@@ -340,7 +339,11 @@
 340;'Not Asked [0]';'Not Asked';0.00;95
 341;'Positive';'Positive';0.00;96
 342;'Negative';'Negative';0.00;96
-343;'Unknown';'Unknown/Not test result';0.00;96
+343;'Unknown';'Unknown/No test result';0.00;96
 344;'Yes [0]';'Yes';0.00;97
-345;'N/A [1]';'N/A';1.00;97
+345;'N/A [1]';'NA';1.00;97
 346;'No [1]';'No';1.00;97
+347;'Yes [1]';'Yes';1.00;98
+348;'No [0]';'No';0.00;98
+349;'None';'None';0.00;41
+350;'Both RDT and Microscopy (any type)';'Both RDT and Microscopy (any type)';0.00;47

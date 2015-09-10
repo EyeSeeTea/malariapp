@@ -74,9 +74,9 @@
 76;'Obs 1';'Observation 1';1;10
 77;'Obs 2';'Observation 2';2;10
 78;'Obs 3';'Observation 3';3;10
-79;'Prob 1';'Problem 1';1;12
-80;'Prob 2';'Problem 2';2;12
-81;'Prob 3';'Problem 3';3;12
+79;'gap1';'Gap 1';1;12
+80;'gap2';'Gap 2';2;12
+81;'gap3';'Gap 3';3;12
 82;'AdherenceTable1';'AdherenceTable1';1;2
 83;'AdherenceTable2';'AdherenceTable2';2;2
 84;'IQEQA1';'IQEQA1';1;11
