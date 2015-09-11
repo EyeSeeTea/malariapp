@@ -157,7 +157,7 @@
 180;'GHA_MAL.QA-CR Obs 1-660';'GHA_MAL.QA-CR Obs 1-Diag-Supervisor, do you agree with health worker''s decision to order or not order a malaria test?-660';;'Supervisor, do you agree with health worker''s decision to order or not order a malaria test?';'A3HTaSLNfWe';660;10.00;10.00;14;85;;5
 181;'GHA_MAL.QA-CR Obs 1-670';'GHA_MAL.QA-CR Obs 1-Diag-What is the test result?-670';;'What is the test result?';'xES3Jm84D8P';670;0.00;0.00;14;40;;
 182;'GHA_MAL.QA-CR Obs 1-680';'GHA_MAL.QA-CR Obs 1-Diag-Appropriately classify the illness?-680';;'Appropriately classify the illness?';'p2YBbmVKG4P';680;10.00;10.00;14;85;;5
-183;'GHA_MAL.QA-CR Obs 1-690';'GHA_MAL.QA-CR Obs 1-Diag-Decide on the correct case management, including referral if required?-690';;'Decide on the correct case management, including referral if required?';'KfQ9OSVkPlz';690;0.00;0.00;14;8;;
+183;'GHA_MAL.QA-CR Obs 1-690';'GHA_MAL.QA-CR Obs 1-Diag-Decide on the correct case management, including referral if required?-690';;'Decide on the correct case management, including referral if required?';'KfQ9OSVkPlz';690;0.00;0.00;14;85;;
 184;'GHA_MAL.QA-CR Obs 1-700';'GHA_MAL.QA-CR Obs 1-Tx-Was an anti-malarial prescribed?-700';;'Was an anti-malarial prescribed?';'zOIIvXqyPbn';700;0.00;0.00;15;85;;
 185;'GHA_MAL.QA-CR Obs 1-710';'GHA_MAL.QA-CR Obs 1-Tx-Supervisor, should an anti-malarial have been prescribed?-710';;'Supervisor, should an anti-malarial have been prescribed?';'ZiZJGF9CU9M';710;10.00;10.00;15;85;;5
 186;'GHA_MAL.QA-CR Obs 1-720';'GHA_MAL.QA-CR Obs 1-Tx-Was the antimalarial prescribed according to national guidelines?-720';;'Was the antimalarial prescribed according to national guidelines?';'DCXVWwhqD95';720;0.00;0.00;15;86;;
