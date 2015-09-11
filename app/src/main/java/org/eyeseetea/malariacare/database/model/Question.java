@@ -36,6 +36,7 @@ import org.eyeseetea.malariacare.database.AppDatabase;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.utils.Constants;
+import org.eyeseetea.malariacare.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -336,6 +337,13 @@ public class Question extends BaseModel{
         return value.getOption();
     }
 
+
+    /*Returns true if the question belongs to a Custom Tab*/
+    public boolean belongsToCustomTab() {
+
+        return getHeader().getTab().isACustomTab();
+    }
+
     /**
      * Checks if this question is shown according to the values of the given survey
      * @param survey
@@ -348,9 +356,8 @@ public class Question extends BaseModel{
             return false;
         }
 
-        Value value=parent.getValueBySurvey(survey);
-        //Parent NOT answered: hidden
-        if(value==null){
+        //There is a parent question and it is not answered and it is not a phantom question
+        if (parent!= null && parent.getValueBySurvey(survey)==null && !parent.belongsToCustomTab()) {
             return true;
         }
 
