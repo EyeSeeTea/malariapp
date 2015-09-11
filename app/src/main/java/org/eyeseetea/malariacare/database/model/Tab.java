@@ -148,6 +148,15 @@ public class Tab extends BaseModel {
         return getType().equals(Constants.TAB_COMPOSITE_SCORE);
     }
 
+    /**
+     * Checks if this tab is a custom tab
+     * @return
+     */
+    public boolean isACustomTab() {
+        return getType().equals(Constants.TAB_ADHERENCE) || getType().equals(Constants.TAB_IQATAB) ||
+        getType().equals(Constants.TAB_REPORTING);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

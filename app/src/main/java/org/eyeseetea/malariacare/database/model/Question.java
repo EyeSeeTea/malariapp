@@ -340,13 +340,8 @@ public class Question extends BaseModel{
 
     /*Returns true if the question belongs to a Custom Tab*/
     public boolean belongsToCustomTab() {
-        boolean result = false;
 
-        Tab tabQuestion = this.getHeader().getTab();
-        if (Utils.isACustomTab(tabQuestion))
-            result = true;
-
-        return result;
+        return getHeader().getTab().isACustomTab();
     }
 
     /**
