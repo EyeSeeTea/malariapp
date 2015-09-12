@@ -45,7 +45,6 @@ import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 import org.eyeseetea.malariacare.utils.Constants;
 import org.eyeseetea.malariacare.views.CustomTextView;
 
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -285,7 +284,7 @@ public class CreateSurveyActivity extends BaseActivity {
                         // Hide tab group tab selector
                         childView.setVisibility(View.GONE);
                     }
-                    if (entry.getKey().equals(((Spinner)viewHolder.component).getTag())){
+                    if (entry.getKey().equals((viewHolder.component).getTag())){
                         setInvisible = true;
                     }
                 }

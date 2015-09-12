@@ -47,6 +47,8 @@
 47;;'Health Facility Information';2;10
 48;;'Assessment';3;10
 49;;'Feedback and Action';1;11
-50;;'Problem 1';2;11
-51;;'Problem 2';3;11
-52;;'Problem 3';4;11
+50;;'Gap 1';2;11
+51;;'Gap 2';3;11
+52;;'Gap 3';4;11
+53;'AdherenceTable1';'AdherenceTable1';1;16
+54;'AdherenceTable2';'AdherenceTable2';2;16

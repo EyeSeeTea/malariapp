@@ -37,6 +37,7 @@ import org.eyeseetea.malariacare.database.AppDatabase;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.utils.Constants;
+import org.eyeseetea.malariacare.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -404,6 +405,13 @@ public class Question extends BaseModel {
         }
 
         return value.getOption();
+    }
+
+
+    /*Returns true if the question belongs to a Custom Tab*/
+    public boolean belongsToCustomTab() {
+
+        return getHeader().getTab().isACustomTab();
     }
 
     /**
