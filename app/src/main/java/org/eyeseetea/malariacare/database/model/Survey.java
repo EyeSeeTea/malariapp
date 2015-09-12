@@ -209,21 +209,51 @@ public class Survey extends BaseModel {
      */
     private SurveyAnsweredRatio reloadSurveyAnsweredRatio(){
         int numRequired = Question.countRequiredByProgram(this.getTabGroup());
-        int numOptional = 0;
+        int numOptional = (int)countNumOptionalQuestionsToAnswer();
         int numAnswered = Value.countBySurvey(this);
-
-        for (Value value : this.getValuesFromParentQuestions()) {
-            if (value.isAYes()) {
-                //There might be children no answer questions that should be skipped
-                for(Question childQuestion:value.getQuestion().getChildren()){
-                    numOptional+=(childQuestion.getAnswer().getOutput()==Constants.NO_ANSWER)?0:1;
-                }
-            }
-
-        }
         SurveyAnsweredRatio surveyAnsweredRatio=new SurveyAnsweredRatio(numRequired+numOptional, numAnswered);
         SurveyAnsweredRatioCache.put(this.id_survey, surveyAnsweredRatio);
         return surveyAnsweredRatio;
+    }
+
+    /**
+     * Return the number of child questions that should be answered according to the values of the parent questions.
+     * @return
+     */
+    private long countNumOptionalQuestionsToAnswer(){
+        long numOptionalQuestions = new Select().count().from(Question.class).as("q")
+                .join(QuestionRelation.class, Join.JoinType.LEFT).as("qr")
+                .on(
+                        Condition.column(ColumnAlias.columnWithTable("q", Question$Table.ID_QUESTION))
+                                .eq(ColumnAlias.columnWithTable("qr", QuestionRelation$Table.QUESTION_ID_QUESTION)))
+                .join(Answer.class, Join.JoinType.LEFT).as("a")
+                .on(
+                        Condition.column(ColumnAlias.columnWithTable("q", Question$Table.ANSWER_ID_ANSWER))
+                                .eq(ColumnAlias.columnWithTable("a", Answer$Table.ID_ANSWER)))
+                .join(Match.class, Join.JoinType.LEFT).as("m")
+                .on(
+                        Condition.column(ColumnAlias.columnWithTable("qr", QuestionRelation$Table.ID_QUESTION_RELATION))
+                                .eq(ColumnAlias.columnWithTable("m", Match$Table.QUESTIONRELATION_ID_QUESTION_RELATION)))
+                .join(QuestionOption.class, Join.JoinType.LEFT).as("qo")
+                .on(
+                        Condition.column(ColumnAlias.columnWithTable("m", Match$Table.ID_MATCH))
+                                .eq(ColumnAlias.columnWithTable("qo", QuestionOption$Table.MATCH_ID_MATCH)))
+                .join(Value.class, Join.JoinType.LEFT).as("v")
+                .on(
+                        Condition.column(ColumnAlias.columnWithTable("v", Value$Table.QUESTION_ID_QUESTION))
+                                .eq(ColumnAlias.columnWithTable("qo", QuestionOption$Table.QUESTION_ID_QUESTION)),
+                        Condition.column(ColumnAlias.columnWithTable("v", Value$Table.OPTION_ID_OPTION))
+                                .eq(ColumnAlias.columnWithTable("qo", QuestionOption$Table.OPTION_ID_OPTION)))
+                    //Parent Child relationship
+                .where(Condition.column(ColumnAlias.columnWithTable("qr", QuestionRelation$Table.OPERATION)).eq(1))
+                        //For the given survey
+                .and(Condition.column(ColumnAlias.columnWithTable("v", Value$Table.SURVEY_ID_SURVEY)).eq(this.getId_survey()))
+                        //The child question requires an answer
+                .and(Condition.column(ColumnAlias.columnWithTable("a", Answer$Table.OUTPUT)).isNot(Constants.NO_ANSWER))
+                .count();
+
+        //Parent with the right value -> not hidden
+        return numOptionalQuestions;
     }
 
     /**

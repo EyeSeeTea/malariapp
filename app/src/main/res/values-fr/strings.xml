@@ -149,6 +149,8 @@
     <string name="title_activity_settings">Parametres</string>
     <string name="settings_checkbox_show_num_dems">Montrer num/dems</string>
     <string name="settings_checkbox_description_show_num_dems">S\'il est actif, les questions du formulaire montrent ses numerateurs et denominateurs, usés pour calculer la ponctuation de l\'enquêtte</string>
+    <string name="settings_checkbox_location_required">Situation requis</string>
+    <string name="settings_checkbox_description_location_required">"Si elle est activée, l'emplacement est obligatoire de présenter les données sur les dhis serveur"</string>
     <string name="settings_checkbox_customize_fonts">Personaliser les fonts?</string>
     <string name="settings_list_font_sizes">Taille des fonts</string>
     <string-array name="settings_array_titles_font_sizes">
@@ -179,6 +181,7 @@
     <string name="assessment_sent_title_header">Evaluation(s) Envoyée(s)</string>
     <string name="assessment_sent_date">Date de remplissement</string>
     <string name="dialog_error_push_no_location">Aucun emplacement disponible</string>
+    <string name="dialog_error_push_no_location_and_required">Aucun emplacement disponible et il est un champ obligatoire</string>
     <string name="dialog_title_incorrect_org_unit">Org Unit erronées</string>
     <string name="dialog_content_incorrect_org_unit"></string>
     <string name="create_info_tabs_group">Tab Group</string>

@@ -41,6 +41,7 @@ import org.eyeseetea.malariacare.database.model.Question;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.model.Tab;
 import org.eyeseetea.malariacare.database.model.Value;
+import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.services.SurveyService;
@@ -137,6 +138,11 @@ public class PushClient {
         object.put(TAG_STOREDBY, survey.getUser().getName());
 
         Location lastLocation = Session.getLocation();
+        //If location is required but there is no location -> exception
+        if(PreferencesState.getInstance().isLocationRequired() && lastLocation==null){
+            throw new Exception(activity.getString(R.string.dialog_error_push_no_location_and_required));
+        }
+        //Otherwise (not required or there are coords)
         if (lastLocation!=null)
             object.put(TAG_COORDINATE, prepareCoordinates(lastLocation));
 

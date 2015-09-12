@@ -149,6 +149,8 @@
     <string name="title_activity_settings">Configuración</string>
     <string name="settings_checkbox_show_num_dems">Mostrar num/dems</string>
     <string name="settings_checkbox_description_show_num_dems">Si está activo, las preguntas del formulario muestran sus numeradores y denominadores, usados para calcular la puntuación total de la encuesta</string>
+    <string name="settings_checkbox_location_required">Localizacion obligatoria</string>
+    <string name="settings_checkbox_description_location_required">Si esta activo, la localizacion es obligatoria para enviar los datos al servidor dhis</string>
     <string name="settings_checkbox_customize_fonts">¿Personalizar fuentes?</string>
     <string name="settings_list_font_sizes">Tamaño de fuentes</string>
     <string-array name="settings_array_titles_font_sizes">
@@ -180,6 +182,7 @@
     <string name="assessment_sent_date">Fecha de llenado</string>
     <string name="dialog_title_incorrect_org_unit" >Org Unit Incorrecta</string>
     <string name="dialog_error_push_no_location">Localización no disponible</string>
+    <string name="dialog_error_push_no_location_and_required">Localización no disponible y es un campo obligatorio</string>
     <string name="dialog_content_incorrect_org_unit">Por favor seleccione una org unit final</string>
     <string name="iqatab_info_note">Note: Slide rechecking should be carried out at the health facility during OTSS in the presence of the facility lab staff.  Slides should not be removed from the facility for this purpose.</string>
     <string name="settings_text_dhis_user">Usuario DHIS</string>

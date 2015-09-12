@@ -186,6 +186,8 @@
     <string name="title_activity_settings">Settings</string>
     <string name="settings_checkbox_show_num_dems">Show num/dems</string>
     <string name="settings_checkbox_description_show_num_dems">When activated, survey questions show their numerators and denominators, used to calc the survey score</string>
+    <string name="settings_checkbox_location_required">Location required</string>
+    <string name="settings_checkbox_description_location_required">When activated, location is a required field for pushing data to dhis server</string>
     <string name="settings_checkbox_customize_fonts">Customize fonts?</string>
     <string name="settings_list_font_sizes">Fonts size</string>
     <string-array name="settings_array_titles_font_sizes">
@@ -227,6 +229,7 @@
     <string name="dialog_info_push_ok">Survey data has been successfully pushed to DHIS server</string>
     <string name="dialog_info_push_bad_credentials">Bad credentials for pushing</string>
     <string name="dialog_error_push_no_location">No location available</string>
+    <string name="dialog_error_push_no_location_and_required">No location available and it is a required field</string>
 
 
     <!-- Preference variable names -->
@@ -235,5 +238,6 @@
     <item name="font_sizes" type="string" translatable="false">font_sizes</item>
     <item name="dhis_url" type="string" translatable="false">dhis_url</item>
     <item name="dhis_user" type="string" translatable="false">dhis_user</item>
+    <item name="location_required" type="string" translatable="false">location_required</item>
 
 </resources>

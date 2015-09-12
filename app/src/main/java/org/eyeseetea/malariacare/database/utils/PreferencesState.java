@@ -57,6 +57,11 @@ public class PreferencesState {
      */
     private Map<String, Map<String, Float>> scaleDimensionsMap;
 
+    /**
+     * Flag that determines if the location is required for push
+     */
+    private boolean locationRequired;
+
     static Context context;
 
     private PreferencesState(){ }
@@ -74,7 +79,8 @@ public class PreferencesState {
     public void reloadPreferences(){
         scale= initScale();
         showNumDen=initShowNumDen();
-        Log.d(TAG,"reloadPreferences: scale:"+scale+" | showNumDen:"+showNumDen);
+        locationRequired=initLocationRequired();
+        Log.d(TAG,"reloadPreferences: scale:"+scale+" | showNumDen:"+showNumDen+" | locationRequired:"+locationRequired);
     }
 
     /**
@@ -97,6 +103,15 @@ public class PreferencesState {
     private boolean initShowNumDen(){
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(instance.getContext());
         return sharedPreferences.getBoolean(instance.getContext().getString(R.string.show_num_dems), false);
+    }
+
+    /**
+     * Inits location flag according to preferences
+     * @return
+     */
+    private boolean initLocationRequired(){
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(instance.getContext());
+        return sharedPreferences.getBoolean(instance.getContext().getString(R.string.location_required), false);
     }
 
     /**
@@ -171,6 +186,12 @@ public class PreferencesState {
 
     public void setShowNumDen(boolean value){
         this.showNumDen=value;
+    }
+
+    public boolean isLocationRequired(){return locationRequired;}
+
+    public void setLocationRequired(boolean value){
+        this.locationRequired=value;
     }
 
     public Float getFontSize(String scale,String dimension){

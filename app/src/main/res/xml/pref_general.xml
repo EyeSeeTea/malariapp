@@ -65,4 +65,10 @@
         android:singleLine="true"
         android:maxLines="1" />
 
+    <CheckBoxPreference
+        android:key="@string/location_required"
+        android:title="@string/settings_checkbox_location_required"
+        android:summary="@string/settings_checkbox_description_location_required"
+        android:defaultValue="false" />
+
 </PreferenceScreen>
