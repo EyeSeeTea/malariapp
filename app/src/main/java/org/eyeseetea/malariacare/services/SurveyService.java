@@ -27,6 +27,8 @@ import android.util.Log;
 import com.raizlabs.android.dbflow.sql.builder.Condition;
 import com.raizlabs.android.dbflow.sql.language.Select;
 
+import org.eyeseetea.malariacare.database.feedback.Feedback;
+import org.eyeseetea.malariacare.database.feedback.FeedbackBuilder;
 import org.eyeseetea.malariacare.database.model.CompositeScore;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.model.Survey$Table;
@@ -76,6 +78,11 @@ public class SurveyService extends IntentService {
     public static final String PREPARE_SURVEY_ACTION ="org.eyeseetea.malariacare.services.SurveyService.PREPARE_SURVEY_ACTION";
 
     /**
+     * Name of 'feedback' action
+     */
+    public static final String PREPARE_FEEDBACK_ACTION="org.eyeseetea.malariacare.services.SurveyService.PREPARE_FEEDBACK_ACTION";
+
+    /**
      * Key of composite scores entry in shared session
      */
     public static final String PREPARE_SURVEY_ACTION_COMPOSITE_SCORES ="org.eyeseetea.malariacare.services.SurveyService.PREPARE_SURVEY_ACTION_COMPOSITE_SCORES";
@@ -89,6 +96,11 @@ public class SurveyService extends IntentService {
      * Key of
      */
     public static final String PRELOAD_TAB_ITEMS ="org.eyeseetea.malariacare.services.SurveyService.PRELOAD_TAB_ITEMS";
+
+    /**
+     * Key of 'feedback' items in shared session
+     */
+    public static final String PREPARE_FEEDBACK_ACTION_ITEMS="org.eyeseetea.malariacare.services.SurveyService.PREPARE_FEEDBACK_ACTION_ITEMS";
 
     /**
      * Tag for logging
@@ -133,6 +145,9 @@ public class SurveyService extends IntentService {
                 Log.e(".SurveyService", "Pre-loading tab: " + intent.getLongExtra("tab", 0));
                 preLoadTabItems(intent.getLongExtra("tab", 0));
                 break;
+            case PREPARE_FEEDBACK_ACTION:
+                getFeedbackItems();
+                break;
         }
     }
 
@@ -167,6 +182,22 @@ public class SurveyService extends IntentService {
         LocalBroadcastManager.getInstance(this).sendBroadcast(new Intent(ALL_UNSENT_SURVEYS_ACTION));
         LocalBroadcastManager.getInstance(this).sendBroadcast(new Intent(ALL_SENT_SURVEYS_ACTION));
     }
+
+    /**
+     * Action that calculates the 'feedback' items corresponding to the current survey in session
+     */
+    private void getFeedbackItems(){
+        //Mock some items
+        List<Feedback> feedbackList= FeedbackBuilder.build(Session.getSurvey());
+
+        //Return result to anyone listening
+        Log.d(TAG, String.format("getFeedbackItems: %d", feedbackList.size()));
+
+        Session.putServiceValue(PREPARE_FEEDBACK_ACTION_ITEMS, feedbackList);
+        LocalBroadcastManager.getInstance(this).sendBroadcast(new Intent(PREPARE_FEEDBACK_ACTION));
+    }
+
+
 
     /**
      * Selects all pending surveys from database

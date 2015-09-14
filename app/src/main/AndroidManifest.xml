@@ -67,6 +67,18 @@
                 android:value=".DashboardActivity" />
         </activity>
         <activity
+            android:name="org.eyeseetea.malariacare.FeedbackActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:finishOnTaskLaunch="true"
+            android:label="@string/app_name"
+            android:windowSoftInputMode="adjustPan"
+            android:parentActivityName=".DashboardActivity" >
+
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".DashboardActivity" />
+        </activity>
+        <activity
             android:name="org.eyeseetea.malariacare.SettingsActivity"
             android:label="@string/title_activity_settings"
             android:configChanges="orientation|keyboardHidden|screenSize"

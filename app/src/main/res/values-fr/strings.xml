@@ -64,6 +64,8 @@
     <!-- XXX Should it be replaced by 'assessment_title_facility_date'?-->
     <string name="feedback_title_organization_unit_date">Org Unit / Date</string>
     <string name="feedback_title_header">Retour</string>
+    <string name="feedback_show_only_failed">"Afficher seulement échoué aux questions"</string>
+
 
     <!-- future -->
     <string name="future_title_facility">Centre</string>

@@ -214,4 +214,27 @@ public class ScoreRegister {
         return 0;
     }
 
+    /**
+     * Cleans, prepares, calculates and returns all the scores info for the given survey
+     * @param survey
+     * @return
+     */
+    public static List<CompositeScore> loadCompositeScores(Survey survey){
+        //Cleans score
+        ScoreRegister.clear();
+
+        //Register scores for tabs
+        List<Tab> tabs=survey.getTabGroup().getTabs();
+        ScoreRegister.registerTabScores(tabs);
+
+        //Register scores for composites
+        List<CompositeScore> compositeScoreList=CompositeScore.listByTabGroup(survey.getTabGroup());
+        ScoreRegister.registerCompositeScores(compositeScoreList);
+
+        //Initialize scores x question
+        ScoreRegister.initScoresForQuestions(Question.listByTabGroup(survey.getTabGroup()),survey);
+        
+        return compositeScoreList;
+    }
+
 }

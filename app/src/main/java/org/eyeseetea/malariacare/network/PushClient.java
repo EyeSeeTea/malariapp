@@ -195,19 +195,8 @@ public class PushClient {
 
     private JSONArray prepareCompositeScores(JSONArray values) throws Exception{
 
-        //Cleans score
-        ScoreRegister.clear();
-
-        //Register scores for tabs
-        List<Tab> tabs=survey.getTabGroup().getTabs();
-        ScoreRegister.registerTabScores(tabs);
-
-        //Register scores for composites
-        List<CompositeScore> compositeScoreList=CompositeScore.listByTabGroup(survey.getTabGroup());
-        ScoreRegister.registerCompositeScores(compositeScoreList);
-
-        //Initialize scores x question
-        ScoreRegister.initScoresForQuestions(Question.listByTabGroup(survey.getTabGroup()),survey);
+        //Prepare scores info
+        List<CompositeScore> compositeScoreList=ScoreRegister.loadCompositeScores(survey);
 
         //1 CompositeScore -> 1 dataValue
         for(CompositeScore compositeScore:compositeScoreList){
