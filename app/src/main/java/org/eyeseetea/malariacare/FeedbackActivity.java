@@ -80,13 +80,11 @@ public class FeedbackActivity extends BaseActivity{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         Log.d(TAG, "onCreate");
         setContentView(R.layout.feedback);
-        registerReceiver();
         createActionBar();
         prepareUI();
-        prepareSurveyInfo();
+
     }
 
     @Override
@@ -94,6 +92,8 @@ public class FeedbackActivity extends BaseActivity{
         Log.d(TAG, "onResume");
         super.onResume();
         startProgress();
+        registerReceiver();
+        prepareFeedbackInfo();
     }
 
     @Override
@@ -144,11 +144,23 @@ public class FeedbackActivity extends BaseActivity{
      * Gets a reference to the progress view in order to stop it later
      */
     private void prepareUI(){
+        //Get progress
         progressBar=(ProgressBar)findViewById(R.id.survey_progress);
-        chkFailed=(CheckBox)findViewById(R.id.chkFailed);
-        feedbackAdapter=new FeedbackAdapter();
+
+        //Set adapter and list
+        feedbackAdapter=new FeedbackAdapter(this);
         feedbackListView=(ListView)findViewById(R.id.feedbackListView);
         feedbackListView.setAdapter(feedbackAdapter);
+
+        //And checkbox listener
+        chkFailed=(CheckBox)findViewById(R.id.chkFailed);
+        chkFailed.setOnClickListener(new View.OnClickListener() {
+                                         @Override
+                                         public void onClick(View v) {
+                                             feedbackAdapter.toggleOnlyFailed();
+                                         }
+                                     }
+        );
     }
 
     private void loadItems(List<Feedback> items){
@@ -200,8 +212,8 @@ public class FeedbackActivity extends BaseActivity{
     /**
      * Asks SurveyService for the current list of surveys
      */
-    public void prepareSurveyInfo(){
-        Log.d(TAG, "prepareSurveyInfo");
+    public void prepareFeedbackInfo(){
+        Log.d(TAG, "prepareFeedbackInfo");
         Intent surveysIntent=new Intent(this, SurveyService.class);
         surveysIntent.putExtra(SurveyService.SERVICE_METHOD, SurveyService.PREPARE_FEEDBACK_ACTION);
         this.startService(surveysIntent);

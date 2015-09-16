@@ -38,5 +38,5 @@ public interface Feedback {
      * Returns if 'this' row has to hide according to its value
      * @return true|false
      */
-    boolean hasToHideByPassing();
+    boolean isPassed();
 }

@@ -19,6 +19,7 @@
 
 package org.eyeseetea.malariacare.database.feedback;
 
+import org.eyeseetea.malariacare.database.model.Question;
 import org.eyeseetea.malariacare.database.model.Value;
 
 /**
@@ -26,21 +27,66 @@ import org.eyeseetea.malariacare.database.model.Value;
  */
 public class QuestionFeedback implements Feedback {
 
+    /**
+     * Question referred by this feedback
+     */
+    private Question question;
+
+    /**
+     * Value associated to question in the current survey
+     */
     private Value value;
 
-    public QuestionFeedback(Value value){
+    /**
+     * Flag that indicates if this element has its feedback open or not
+     */
+    private boolean feedbackShown;
+
+    public QuestionFeedback(Question question, Value value){
+        this.question=question;
         this.value=value;
+        this.feedbackShown=false;
     }
 
     @Override
     public String getLabel() {
-        return this.value.getQuestion().getForm_name();
+        return this.question.getForm_name();
     }
 
     @Override
-    public boolean hasToHideByPassing() {
-        //If the selected option gives 'points' -> 'hideable'
-        return this.value.getOption().getFactor()>0;
+    public boolean isPassed() {
+        if(this.value==null){
+            return false;
+        }
+        return this.value.getOption().getFactor()==1;
+    }
+
+    /**
+     * Returns if this row has its feedback open or not
+     * @return
+     */
+    public boolean isFeedbackShown(){
+        return this.feedbackShown;
+    }
+
+    /**
+     * Toggles the feedbackshown flag
+     * @return return the new assigned value
+     */
+    public boolean toggleFeedbackShown(){
+        this.feedbackShown=!this.feedbackShown;
+        return this.feedbackShown;
+    }
+
+    /**
+     * Returns the value of the selected option, in other words the 'answer'
+     * @return
+     */
+    public String getOption(){
+        if(this.value==null){
+            return "";
+        }
+        return value.getValue();
     }
 
     /**
@@ -48,7 +94,16 @@ public class QuestionFeedback implements Feedback {
      * @return
      */
     public String getFeedback(){
-        //TODO Add feedback column to question|option
-        return "Something <b> important</b> needs to be done";
+        String questionFeedback=this.question.getFeedback();
+        //XXX Temporal hack to show some demo feedback
+        if(questionFeedback!=null && !questionFeedback.isEmpty()){
+            return questionFeedback;
+        }
+        return "Some <b>mocked</b> feedback that includes<br/> breaklines and some <a href='http://www.psi.org/'>links</a>";
+    }
+
+    @Override
+    public int hashCode() {
+        return this.question.hashCode();
     }
 }

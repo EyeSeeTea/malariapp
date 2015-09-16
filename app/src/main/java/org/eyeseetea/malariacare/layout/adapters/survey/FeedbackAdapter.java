@@ -19,11 +19,20 @@
 
 package org.eyeseetea.malariacare.layout.adapters.survey;
 
+import android.content.Context;
+import android.text.Html;
+import android.text.method.LinkMovementMethod;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
+import org.eyeseetea.malariacare.R;
+import org.eyeseetea.malariacare.database.feedback.CompositeScoreFeedback;
 import org.eyeseetea.malariacare.database.feedback.Feedback;
+import org.eyeseetea.malariacare.database.feedback.QuestionFeedback;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,32 +44,139 @@ public class FeedbackAdapter extends BaseAdapter {
 
     private List<Feedback> items;
 
-    public FeedbackAdapter(){
-        this(new ArrayList<Feedback>());
+    private Context context;
+
+    private boolean onlyFailed;
+
+    private boolean [] hiddenPositions;
+
+    public FeedbackAdapter(Context context){
+        this(new ArrayList<Feedback>(), context);
     }
 
-    public FeedbackAdapter(List<Feedback> items){
+    public FeedbackAdapter(List<Feedback> items, Context context){
         this.items=items;
+        this.context=context;
+        this.onlyFailed=false;
+        this.hiddenPositions= new boolean[this.items.size()];
     }
 
     @Override
     public int getCount() {
-        return 0;
+        int hiddenItems=this.onlyFailed?countHiddenUpTo(this.items.size()):0;
+        return this.items.size()-hiddenItems;
     }
 
     @Override
     public Object getItem(int position) {
-        return null;
+        //Show all -> direct
+        if(!onlyFailed){
+            return this.items.get(position);
+        }
+
+        //Find the visible item number 'position'
+        int visibleItems=0;
+        int i;
+        for(i=0;i<this.hiddenPositions.length;i++){
+            //Hidden, move on
+            if(this.hiddenPositions[i]){
+                continue;
+            }
+
+            //Visible, count it and check
+            visibleItems++;
+            if(visibleItems==position+1){
+                break;
+            }
+        }
+
+        return this.items.get(i);
     }
 
     @Override
     public long getItemId(int position) {
-        return 0;
+        return getItem(position).hashCode();
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        return null;
+        Feedback feedback=(Feedback)getItem(position);
+        if (feedback instanceof CompositeScoreFeedback){
+            return getViewByCompositeScoreFeedback((CompositeScoreFeedback)feedback, convertView, parent);
+        }else{
+            return getViewByQuestionFeedback((QuestionFeedback) feedback, convertView, parent);
+        }
+    }
+
+    private View getViewByCompositeScoreFeedback(CompositeScoreFeedback feedback, View convertView, ViewGroup parent){
+        LayoutInflater inflater=LayoutInflater.from(context);
+        LinearLayout rowLayout = (LinearLayout)inflater.inflate(R.layout.feedback_composite_score_row, parent, false);
+
+        //CompositeScore title
+        TextView textView=(TextView)rowLayout.findViewById(R.id.feedback_label);
+        textView.setText(feedback.getLabel());
+
+        //CompositeScore title
+        textView=(TextView)rowLayout.findViewById(R.id.feedback_score_label);
+        textView.setText(feedback.getPercentageAsString());
+        return rowLayout;
+    }
+
+    private View getViewByQuestionFeedback(QuestionFeedback feedback, View convertView, ViewGroup parent){
+        if(onlyFailed && feedback.isPassed()){
+            return null;
+        }
+
+        LayoutInflater inflater=LayoutInflater.from(context);
+        LinearLayout rowLayout = (LinearLayout)inflater.inflate(R.layout.feedback_question_row, parent, false);
+        rowLayout.setTag(feedback);
+
+        //Question label
+        TextView textView=(TextView)rowLayout.findViewById(R.id.feedback_question_label);
+        textView.setText(feedback.getLabel());
+
+        //Option label
+        textView=(TextView)rowLayout.findViewById(R.id.feedback_option_label);
+        textView.setText(feedback.getOption());
+
+        //Score label
+        textView=(TextView)rowLayout.findViewById(R.id.feedback_score_label);
+        int msgId=feedback.isPassed() ? R.string.feedback_info_passed : R.string.feedback_info_failed;
+        textView.setText(context.getString(msgId));
+        int textColor=context.getResources().getColor(feedback.isPassed() ? R.color.green : R.color.red);
+        textView.setTextColor(textColor);
+
+        //Feedback
+        textView=(TextView)rowLayout.findViewById(R.id.feedback_feedback_html);
+        textView.setText( Html.fromHtml(feedback.getFeedback()));
+        textView.setMovementMethod(LinkMovementMethod.getInstance());
+
+        //Hide/Show feedback according to its inner state
+        toggleFeedback(rowLayout, feedback.isFeedbackShown());
+
+        //Add listener to toggle feedback state
+        rowLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                QuestionFeedback questionFeedback=(QuestionFeedback)v.getTag();
+                if(questionFeedback==null){
+                    return;
+                }
+                toggleFeedback((LinearLayout)v, questionFeedback.toggleFeedbackShown());
+            }
+        });
+
+        return rowLayout;
+    }
+
+    private void toggleFeedback(LinearLayout rowLayout, boolean visible){
+        //Separator
+        View separator=rowLayout.findViewById(R.id.feedback_separator);
+        separator.setVisibility(visible?View.VISIBLE:View.GONE);
+
+        //Feedback itself
+        TextView feedbackTextView=(TextView)rowLayout.findViewById(R.id.feedback_feedback_html);
+        feedbackTextView.setVisibility(visible?View.VISIBLE:View.GONE);
     }
 
     /**
@@ -70,7 +186,45 @@ public class FeedbackAdapter extends BaseAdapter {
     public void setItems(List<Feedback> newItems){
         this.items.clear();
         this.items.addAll(newItems);
+
+        //init 'hiddenPositions'
+        reloadHiddenPositions();
         notifyDataSetChanged();
+    }
+
+    /**
+     * Toggles the state of the flag that determines if only 'failed' questions are shown
+     */
+    public void toggleOnlyFailed(){
+        this.onlyFailed=!this.onlyFailed;
+        notifyDataSetChanged();
+    }
+
+    /**
+     * Recalculates the array of hidden positions
+     */
+    private void reloadHiddenPositions(){
+        //a brand new array
+        this.hiddenPositions= new boolean[this.items.size()];
+
+        for(int i=0;i<this.hiddenPositions.length;i++){
+            //Passed items might get hidden
+            this.hiddenPositions[i]=this.items.get(i).isPassed();
+        }
+    }
+
+    /**
+     * Counts the number of hidden items up to the given position or the whole array if the given position is greater.
+     * @param position Upper index to check (included)
+     * @return
+     */
+    private int countHiddenUpTo(int position){
+        int iMax=(position<hiddenPositions.length-1)?position:(this.hiddenPositions.length-1);
+        int numHidden=0;
+        for(int i=0;i<=iMax;i++){
+            numHidden+=hiddenPositions[i]?1:0;
+        }
+        return numHidden;
     }
 
 }

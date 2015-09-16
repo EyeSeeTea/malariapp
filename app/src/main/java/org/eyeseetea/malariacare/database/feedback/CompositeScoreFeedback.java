@@ -39,7 +39,7 @@ public class CompositeScoreFeedback implements Feedback {
     }
 
     @Override
-    public boolean hasToHideByPassing() {
+    public boolean isPassed() {
         return false;
     }
 
@@ -49,6 +49,11 @@ public class CompositeScoreFeedback implements Feedback {
      */
     public String getPercentageAsString(){
         float score=ScoreRegister.getCompositeScore(this.compositeScore);
-        return String.format("%f %",score);
+        return String.format("%.2f %%",score);
+    }
+
+    @Override
+    public int hashCode() {
+        return this.compositeScore.hashCode();
     }
 }
