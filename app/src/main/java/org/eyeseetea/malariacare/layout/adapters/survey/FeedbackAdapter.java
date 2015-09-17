@@ -20,6 +20,8 @@
 package org.eyeseetea.malariacare.layout.adapters.survey;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
@@ -33,6 +35,7 @@ import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.feedback.CompositeScoreFeedback;
 import org.eyeseetea.malariacare.database.feedback.Feedback;
 import org.eyeseetea.malariacare.database.feedback.QuestionFeedback;
+import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -119,6 +122,16 @@ public class FeedbackAdapter extends BaseAdapter {
         //CompositeScore title
         textView=(TextView)rowLayout.findViewById(R.id.feedback_score_label);
         textView.setText(feedback.getPercentageAsString());
+
+        //Traffic light
+        View light=rowLayout.findViewById(R.id.feedback_light);
+        Drawable circleShape=context.getResources().getDrawable(LayoutUtils.trafficDrawable(feedback.getScore()));
+        if(android.os.Build.VERSION.SDK_INT> Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1){
+            light.setBackground(circleShape);
+        }else {
+            light.setBackgroundDrawable(circleShape);
+        }
+
         return rowLayout;
     }
 

@@ -44,12 +44,19 @@ public class CompositeScoreFeedback implements Feedback {
     }
 
     /**
+     * Returns the mark obtained for 'this' compositeScore
+     * @return
+     */
+    public float getScore() {
+        return ScoreRegister.getCompositeScore(this.compositeScore);
+    }
+
+    /**
      * Returns the mark obtained for 'this' compositeScore according to the current Survey in session
      * @return The percentage as a String
      */
     public String getPercentageAsString(){
-        float score=ScoreRegister.getCompositeScore(this.compositeScore);
-        return String.format("%.2f %%",score);
+        return String.format("%.2f %%",getScore());
     }
 
     @Override
