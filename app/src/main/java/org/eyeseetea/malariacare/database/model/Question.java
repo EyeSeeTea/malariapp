@@ -34,6 +34,7 @@ import com.raizlabs.android.dbflow.sql.language.Where;
 import com.raizlabs.android.dbflow.structure.BaseModel;
 
 import org.eyeseetea.malariacare.database.AppDatabase;
+import org.eyeseetea.malariacare.database.feedback.Feedback;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.utils.Constants;
@@ -87,6 +88,10 @@ public class Question extends BaseModel {
     Float numerator_w;
     @Column
     Float denominator_w;
+
+    @Column
+    String feedback;
+
     @Column
     @ForeignKey(references = {@ForeignKeyReference(columnName = "id_header",
             columnType = Long.class,
@@ -125,7 +130,7 @@ public class Question extends BaseModel {
     public Question() {
     }
 
-    public Question(String code, String de_name, String short_name, String form_name, String uid, Integer order_pos, Float numerator_w, Float denominator_w, Header header, Answer answer, Question question, CompositeScore compositeScore) {
+    public Question(String code, String de_name, String short_name, String form_name, String uid, Integer order_pos, Float numerator_w, Float denominator_w, String feedback, Header header, Answer answer, Question question, CompositeScore compositeScore) {
         this.code = code;
         this.de_name = de_name;
         this.short_name = short_name;
@@ -134,6 +139,7 @@ public class Question extends BaseModel {
         this.order_pos = order_pos;
         this.numerator_w = numerator_w;
         this.denominator_w = denominator_w;
+        this.feedback = feedback;
         this.header = header;
         this.answer = answer;
         this.question = question;
@@ -211,6 +217,14 @@ public class Question extends BaseModel {
 
     public void setDenominator_w(Float denominator_w) {
         this.denominator_w = denominator_w;
+    }
+
+    public String getFeedback() {
+        return feedback;
+    }
+
+    public void setFeedback(String feedback) {
+        this.feedback = feedback;
     }
 
     public Header getHeader() {
@@ -593,6 +607,8 @@ public class Question extends BaseModel {
             return false;
         if (denominator_w != null ? !denominator_w.equals(question1.denominator_w) : question1.denominator_w != null)
             return false;
+        if (feedback != null ? !feedback.equals(question1.feedback) : question1.feedback!= null)
+            return false;
         if (form_name != null ? !form_name.equals(question1.form_name) : question1.form_name != null)
             return false;
         if (header != null ? !header.equals(question1.header) : question1.header != null)
@@ -617,6 +633,7 @@ public class Question extends BaseModel {
         result = 31 * result + (de_name != null ? de_name.hashCode() : 0);
         result = 31 * result + (short_name != null ? short_name.hashCode() : 0);
         result = 31 * result + (form_name != null ? form_name.hashCode() : 0);
+        result = 31 * result + (feedback != null ? feedback.hashCode() : 0);
         result = 31 * result + (uid != null ? uid.hashCode() : 0);
         result = 31 * result + order_pos.hashCode();
         result = 31 * result + (numerator_w != null ? numerator_w.hashCode() : 0);
@@ -640,6 +657,7 @@ public class Question extends BaseModel {
                 ", order_pos=" + order_pos +
                 ", numerator_w=" + numerator_w +
                 ", denominator_w=" + denominator_w +
+                ", feedback=" + feedback +
                 ", header=" + header +
                 ", answer=" + answer +
                 ", question=" + question +

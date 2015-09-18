@@ -78,6 +78,9 @@
     <!-- XXX Should it be replaced by 'assessment_title_facility_date'?-->
     <string name="feedback_title_organization_unit_date">Org Unit / Date</string>
     <string name="feedback_title_header">Feedback</string>
+    <string name="feedback_show_only_failed">Show only failed questions</string>
+    <string name="feedback_info_passed">Passed</string>
+    <string name="feedback_info_failed">Failed</string>
 
     <!-- future -->
     <string name="future_title_facility">Facility</string>
@@ -230,7 +233,6 @@
     <string name="dialog_info_push_bad_credentials">Bad credentials for pushing</string>
     <string name="dialog_error_push_no_location">No location available</string>
     <string name="dialog_error_push_no_location_and_required">No location available and it is a required field</string>
-
 
     <!-- Preference variable names -->
     <item name="show_num_dems" type="string" translatable="false">show_num_dems</item>

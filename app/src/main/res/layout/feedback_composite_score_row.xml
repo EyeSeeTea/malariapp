@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2015.
+  ~
+  ~ This file is part of Facility QA Tool App.
+  ~
+  ~  Facility QA Tool App is free software: you can redistribute it and/or modify
+  ~  it under the terms of the GNU General Public License as published by
+  ~  the Free Software Foundation, either version 3 of the License, or
+  ~  (at your option) any later version.
+  ~
+  ~  Facility QA Tool App is distributed in the hope that it will be useful,
+  ~  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~  GNU General Public License for more details.
+  ~
+  ~  You should have received a copy of the GNU General Public License
+  ~  along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
+  -->
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/headerColor"
+    >
+    <TextView
+        android:id="@+id/feedback_label"
+        android:layout_width="0dp"
+        android:layout_weight=".80"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:typeface="sans"
+        android:textStyle="bold"
+        android:textSize="18sp"
+        android:paddingLeft="10dip"
+        android:paddingTop="10dip"
+        android:paddingBottom="10dip"
+        android:text="@string/lorem_ipsum"
+        />
+    <TextView
+        android:id="@+id/feedback_score_label"
+        android:layout_width="0dp"
+        android:layout_weight=".20"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:typeface="sans"
+        android:textStyle="bold"
+        android:textSize="18sp"
+        android:padding="10dip"
+        android:text="@string/lorem_ipsum"
+        />
+    <View
+        android:id="@+id/feedback_light"
+        android:layout_width="10dp"
+        android:layout_height="10dp"
+        android:background="@drawable/circle_shape_red"
+        android:layout_margin="15dp"
+        android:layout_marginTop="20dp" />
+</LinearLayout>
