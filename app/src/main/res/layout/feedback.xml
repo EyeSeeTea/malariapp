@@ -19,6 +19,7 @@
   -->
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="top">
@@ -30,15 +31,30 @@
         android:layout_centerInParent="true"
         android:indeterminate="true"
         />
-    <CheckBox
+    <!--<CheckBox-->
+        <!--android:id="@+id/chkFailed"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="@string/feedback_show_only_failed"-->
+        <!--android:layout_alignParentRight="true"-->
+        <!--android:layout_marginRight="10dp"-->
+        <!--android:layout_marginTop="10dp"-->
+        <!--android:layout_marginBottom="10dp" />-->
+
+    <org.eyeseetea.malariacare.views.CustomRadioButton
         android:id="@+id/chkFailed"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:button="@drawable/radiobutton"
         android:text="@string/feedback_show_only_failed"
         android:layout_alignParentRight="true"
         android:layout_marginRight="10dp"
         android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp" />
+        android:layout_marginBottom="10dp"
+        android:textColor="@color/darkGrey"
+        app:tDimension="@string/font_size_level1"
+        app:tFontName="@string/medium_font_name" />
+
     <ListView
         android:id="@+id/feedbackListView"
         android:layout_width="match_parent"

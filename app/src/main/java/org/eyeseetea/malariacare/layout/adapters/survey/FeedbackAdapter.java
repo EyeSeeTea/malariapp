@@ -207,6 +207,10 @@ public class FeedbackAdapter extends BaseAdapter {
         notifyDataSetChanged();
     }
 
+    public boolean isOnlyFailed() {
+        return onlyFailed;
+    }
+
     /**
      * Recalculates the array of hidden positions
      */
