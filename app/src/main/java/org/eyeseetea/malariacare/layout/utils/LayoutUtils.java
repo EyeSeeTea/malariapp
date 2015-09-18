@@ -19,8 +19,11 @@
 
 package org.eyeseetea.malariacare.layout.utils;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.support.v7.app.ActionBar;
 import android.view.View;
 import android.view.ViewGroup;
@@ -97,6 +100,15 @@ public class LayoutUtils {
         }
 
         return R.drawable.circle_shape_green;
+    }
+
+    public static void trafficView(Context context, float score, View view){
+        Drawable circleShape=context.getResources().getDrawable(trafficDrawable(score));
+        if(android.os.Build.VERSION.SDK_INT> Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1){
+            view.setBackground(circleShape);
+        }else {
+            view.setBackgroundDrawable(circleShape);
+        }
     }
 
 

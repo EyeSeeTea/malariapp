@@ -171,6 +171,7 @@ public class SurveyService extends IntentService {
                 survey.getAnsweredQuestionRatio();
             }else{
                 sentSurveys.add(survey);
+                survey.setMainScore(ScoreRegister.calculateMainScore(survey));
             }
         }
 

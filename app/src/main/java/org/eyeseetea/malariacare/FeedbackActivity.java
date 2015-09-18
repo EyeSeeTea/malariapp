@@ -31,6 +31,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 
@@ -42,6 +43,7 @@ import org.eyeseetea.malariacare.layout.adapters.survey.FeedbackAdapter;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 import org.eyeseetea.malariacare.services.SurveyService;
+import org.eyeseetea.malariacare.views.CustomRadioButton;
 
 import java.util.List;
 
@@ -65,7 +67,7 @@ public class FeedbackActivity extends BaseActivity{
     /**
      * Checkbox that toggle between all|failed questions
      */
-    private CheckBox chkFailed;
+    private CustomRadioButton chkFailed;
 
     /**
      * List view adapter for items
@@ -94,13 +96,6 @@ public class FeedbackActivity extends BaseActivity{
         startProgress();
         registerReceiver();
         prepareFeedbackInfo();
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_survey, menu);
-        return super.onCreateOptionsMenu(menu);
     }
 
     @Override
@@ -153,11 +148,12 @@ public class FeedbackActivity extends BaseActivity{
         feedbackListView.setAdapter(feedbackAdapter);
 
         //And checkbox listener
-        chkFailed=(CheckBox)findViewById(R.id.chkFailed);
+        chkFailed=(CustomRadioButton)findViewById(R.id.chkFailed);
         chkFailed.setOnClickListener(new View.OnClickListener() {
                                          @Override
                                          public void onClick(View v) {
                                              feedbackAdapter.toggleOnlyFailed();
+                                             ((CustomRadioButton) v).setChecked(feedbackAdapter.isOnlyFailed());
                                          }
                                      }
         );

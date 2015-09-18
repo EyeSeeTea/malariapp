@@ -237,4 +237,20 @@ public class ScoreRegister {
         return compositeScoreList;
     }
 
+    public static float calculateMainScore(Survey survey){
+        //Prepare all scores
+        List<CompositeScore> scores = loadCompositeScores(survey);
+
+        float sumScores=0;
+        float numParentScores=0;
+        for(CompositeScore score:scores){
+            //only parent scores are interesting
+            if(score.getComposite_score()==null){
+                sumScores+=getCompositeScore(score);
+                numParentScores++;
+            }
+        }
+        return sumScores/numParentScores;
+    }
+
 }

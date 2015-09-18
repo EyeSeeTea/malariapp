@@ -59,6 +59,7 @@
     <string name="assessment_title_state">% completo</string>
     <string name="assessment_sent_title_state">Estado</string>
     <string name="assessment_sent_date">Data de conclusao</string>
+    <string name="assessment_sent_score">Ponto</string>
     <string name="assessment_info_delete">Apagar</string>
     <string name="assessment_title_header">Avaliação activa</string>
     <string name="assessment_sent_title_header">Avaliação enviado</string>

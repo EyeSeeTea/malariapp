@@ -83,6 +83,11 @@ public class Survey extends BaseModel {
 
     SurveyAnsweredRatio answeredQuestionRatio;
 
+    /**
+     * Calculated main Score for this survey, is not persisted, just calculated on runtime
+     */
+    float mainScore;
+
     public Survey() {
     }
 
@@ -159,6 +164,14 @@ public class Survey extends BaseModel {
      */
     public boolean isSent(){
         return Constants.SURVEY_SENT==this.status;
+    }
+
+    public float getMainScore() {
+        return mainScore;
+    }
+
+    public void setMainScore(float mainScore) {
+        this.mainScore = mainScore;
     }
 
     /**

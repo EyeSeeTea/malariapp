@@ -125,13 +125,7 @@ public class FeedbackAdapter extends BaseAdapter {
 
         //Traffic light
         View light=rowLayout.findViewById(R.id.feedback_light);
-        Drawable circleShape=context.getResources().getDrawable(LayoutUtils.trafficDrawable(feedback.getScore()));
-        if(android.os.Build.VERSION.SDK_INT> Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1){
-            light.setBackground(circleShape);
-        }else {
-            light.setBackgroundDrawable(circleShape);
-        }
-
+        LayoutUtils.trafficView(context, feedback.getScore(), light);
         return rowLayout;
     }
 
@@ -211,6 +205,10 @@ public class FeedbackAdapter extends BaseAdapter {
     public void toggleOnlyFailed(){
         this.onlyFailed=!this.onlyFailed;
         notifyDataSetChanged();
+    }
+
+    public boolean isOnlyFailed() {
+        return onlyFailed;
     }
 
     /**
