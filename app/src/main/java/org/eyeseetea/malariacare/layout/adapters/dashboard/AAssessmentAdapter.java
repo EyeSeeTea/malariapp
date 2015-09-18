@@ -70,11 +70,15 @@ public abstract class AAssessmentAdapter extends ADashboardAdapter implements ID
         CustomTextView facilityName = (CustomTextView) rowView.findViewById(R.id.facility);
         CustomTextView surveyType = (CustomTextView) rowView.findViewById(R.id.survey_type);
         CustomTextView sentDate = (CustomTextView) rowView.findViewById(R.id.sentDate);
+        CustomTextView sentScore = (CustomTextView) rowView.findViewById(R.id.score);
+        View sentLight = rowView.findViewById(R.id.survey_light);
 
         if (sentDate != null){
             Date completionDate = survey.getCompletionDate();
             SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy");
             sentDate.setText(format.format(completionDate));
+            sentScore.setText(String.format("%.2f %%", survey.getMainScore()));
+            LayoutUtils.trafficView(context, survey.getMainScore(), sentLight);
         } else {
             //Status Cell
             ((CustomTextView) rowView.findViewById(R.id.score)).setText(getStatus(survey));
