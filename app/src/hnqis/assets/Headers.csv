@@ -4,7 +4,6 @@
 4;'Diag1';'Diagnosis 1';1;2
 5;'Diag2';'Diagnosis 2';2;2
 6;'Diag3';'Diagnosis 3';3;2
-7;'RDT';'RDT Procedure';1;3
 8;'Workplace';'Workplace';1;4
 9;'Equip, Sup, Cons';'Equipment, Supplies and Consumables';2;4
 10;'Doc & Rept';'Document and Reporting';3;4
@@ -13,45 +12,4 @@
 13;'Phys Exam';'Physical Examination';3;6
 14;'Dx and Tx';'Diagnosis and Treatment';4;6
 15;'Counseling';'Counseling';5;6
-16;'Contra Coun';'Contraceptive Counseling';1;7
-17;'OCP';'Oral Contraceptive Pills';2;7
-18;'Inj';'Injectables';3;7
-19;'IUCD Ins';'IUCD Insertion';4;7
-20;'IUCD Rem';'IUCD Removal';5;7
-21;'Imp Ins';'Implant Insertion';6;7
-22;'Imp Rem';'Implant Removal';7;7
-23;'Intro';'Introduction';1;8
-24;'Inq';'Inquiry';2;8
-25;'Phy Ex';'Physical Examination';3;8
-26;'Diag1';'Diagnosis 1';4;8
-27;'Diag2';'Diagnosis 2';5;8
-28;'Diag3';'Diagnosis 3';6;8
-29;'RDT';'RDT Procedure';1;9
-30;'Intro';'Introduction';1;10
-31;'Ask or Check';'Ask or Check';2;10
-32;'Care';'Care';3;10
-33;'Edu & Couns';'Client education and counseling';4;10
-34;'Pre-Ins';'Pre-Insertion (Clinical)';1;11
-35;'Ins';'Insertion';2;11
-36;'Post-Ins';'Post-insertion';3;11
-37;'Proc/Follow-up';'Procedure/Follow-up';4;11
-38;'Preg/del comp';'Pregnancy and delivery complications';1;12
-39;'PPH';'Management of Post Partum Haemorrhage';1;13
-40;'Pre-Del';'Pre-delivery';1;14
-41;'Del';'Delivery';2;14
-42;'Post-Del';'Immediate Post-delivery';3;14
-43;'Pre-Scr';'Pre-Screening';1;15
-44;'Pat scr';'Patient screening';2;15
-45;'Pre-Cryo';'Pre-Cryotherapy Counselling';3;15
-46;'Cryo';'Cryotherapy';4;15
-47;'Post Cryo';'Post Cryotherapy Procedures';5;15
-48;'Inq';'Inquiry';1;16
-49;'Exam';'Examination';2;16
-50;'Couns';'Counseling';4;16
-51;'Newborn Resus';'Newborn Resuscitation';1;17
-52;'HTC';'HIV Testing and Counseling';1;18
-53;'HIV Care & Tx';'HIV Care and Treatment';2;18
-55;'HTN';'HTN screening , classification and staging';1;19
-56;'Hist & assess';'History taking and assessment';2;19
-57;'Hist & assess';'Diagnosis and Management as per protocol';3;19
-58;'Treat';'Treatment';3;16
+59;'RDT';'RDT Procedure';4;1
