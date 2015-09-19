@@ -44,6 +44,7 @@ import org.eyeseetea.malariacare.database.model.Value;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
+import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 import org.eyeseetea.malariacare.services.SurveyService;
 import org.eyeseetea.malariacare.utils.Constants;
 import org.eyeseetea.malariacare.utils.Utils;
@@ -62,8 +63,6 @@ import java.util.Set;
  * Created by Jose on 20/06/2015.
  */
 public class PushClient {
-
-
 
     private static String TAG=".PushClient";
 
@@ -89,10 +88,6 @@ public class PushClient {
     private static String TAG_DATAELEMENT="dataElement";
     private static String TAG_VALUE="value";
 
-    Integer forwardOrderPosition;
-    Integer reverseOrderPosition;
-    Integer lastSurveyPosition;
-    Integer surveyUidPosition;
 
     Survey survey;
     Activity activity;
@@ -108,11 +103,15 @@ public class PushClient {
 
     public PushResult push() {
         try{
+            Map<String, JSONObject> controlData = prepareControlDataElement();
+
             JSONObject data = prepareMetadata();
-            data = prepareDataElements(data);
+            data = prepareDataElements(data, controlData.get(""));
+
             PushResult result = new PushResult(pushData(data));
             if(result.isSuccessful()){
-                JSONObject controlData = prepareControlDataElement();
+
+                pushControlDataElements(controlData);
                 updateSurveyState();
             }
             return result;
@@ -138,14 +137,12 @@ public class PushClient {
      * @return JSONObject with forward order, reverse order, last survey, overall score and overall class
      * @throws Exception
      */
-    private JSONObject prepareControlDataElement() throws Exception{
+    private Map<String, JSONObject> prepareControlDataElement() throws Exception{
         Log.d(TAG,"prepareControlDataElements for survey: " + survey.getId_survey());
 
         //Get control data elements for existing surveys
-        //FIXME: Date should be substitute by sth like LAST_12MONTHS
-        String url = DHIS_ANALYTICS_CONTROL_DATAELEMENT + survey.getTabGroup().getProgram().getUid() + ".json?startDate=2015-01-01&endDate=2015-12-12&dimension=ou:" + survey.getOrgUnit().getUid() + "&dimension=" +
-        //FIXME: This should be read from the props file
-                "dimension=FEkGksxhOpH&dimension=deeu8rjsqvH&dimension=iW2zVNwfDK6";
+        String url = DHIS_ANALYTICS_CONTROL_DATAELEMENT + survey.getTabGroup().getProgram().getUid() + ".json?dimension=pe:LAST_12_MONTHS&dimension=ou:" + survey.getOrgUnit().getUid() +
+                "&dimension=" + activity.getString(R.string.forward_order) + "&dimension=" + activity.getString(R.string.reverse_order) + "&dimension=" + activity.getString(R.string.last_survey);
         Response response = executeCall(null, url, "GET");
         if(!response.isSuccessful()){
             Log.e(TAG, "getAnalytics (" + response.code()+"): "+response.body().string());
@@ -154,83 +151,123 @@ public class PushClient {
 
         JSONObject responseBody = parseResponse(response.body().string());
 
-        //TODO: We can hide this logic in sth like PushResult.java
-        //Read the header to extract the position
-        JSONArray headers = responseBody.getJSONArray("headers");
-        for (int i = 0; i < headers.length(); i++){
-            String controlDEUid = headers.getJSONObject(i).getString("name");
-            //FIXME: This should be read from the props file
-//            if (controlDEUid.equals("FEkGksxhOpH")){
-//                forwardOrderPosition = i;
-//            }
-            if (controlDEUid.equals("deeu8rjsqvH")){
-                reverseOrderPosition = i;
-            }
-            else if (controlDEUid.equals("iW2zVNwfDK6")){
-                lastSurveyPosition = i;
-            }
-            else if (controlDEUid.equals("psi")){
-                //FIXME: Is this the survey uid position
-                surveyUidPosition = i;
-            }
-        }
-
-        // Read the rows
-        JSONArray rows = responseBody.getJSONArray("rows");
-        //TODO: We can hide this logic in sth like PushResult.java
         Integer maxReverseOrder = 1;
-        //FIXME: If it is the first survey?
         Map<String, JSONObject> controlDataElementsMap = new HashMap<>();
-        for (int i = 0; i < rows.length(); i++){
-            JSONObject controlDataElements = new JSONObject();
-            controlDataElements.put(TAG_PROGRAM, survey.getTabGroup().getProgram().getUid());
-            controlDataElements.put(TAG_ORG_UNIT, survey.getOrgUnit().getUid());
-            //FIXME: Do we need eventDate and status?
+        if (responseBody.getJSONArray("rows").length()>0) {
 
-            JSONArray controlDataElementsValue = new JSONArray();
 
-            JSONObject reserverOrderObject = new JSONObject();
-            reserverOrderObject.put(TAG_DATAELEMENT, "deeu8rjsqvH");
-            Integer newReverseOrder = rows.getJSONArray(i).getInt(reverseOrderPosition) + 1;
-            reserverOrderObject.put(TAG_VALUE, newReverseOrder);
-            if (newReverseOrder > maxReverseOrder)
-                maxReverseOrder = newReverseOrder;
-            controlDataElementsValue.put(reserverOrderObject);
-
-            boolean lastSurvey = rows.getJSONArray(i).getBoolean(lastSurveyPosition);
-            if (lastSurvey) {
-                JSONObject lastSurveyObject = new JSONObject();
-                lastSurveyObject.put(TAG_DATAELEMENT, "iW2zVNwfDK6");
-                lastSurveyObject.put(TAG_VALUE, false);
-                controlDataElementsValue.put(lastSurveyObject);
+            Integer reverseOrderPosition = 0;
+            Integer lastSurveyPosition = 0;
+            Integer surveyUidPosition = 0;
+            //TODO: We can hide this logic in sth like PushResult.java
+            //Read the header to extract the position
+            JSONArray headers = responseBody.getJSONArray("headers");
+            for (int i = 0; i < headers.length(); i++) {
+                String controlDEUid = headers.getJSONObject(i).getString("name");
+                if (controlDEUid.equals(activity.getString(R.string.reverse_order))) {
+                    reverseOrderPosition = i;
+                } else if (controlDEUid.equals(activity.getString(R.string.last_survey))) {
+                    lastSurveyPosition = i;
+                } else if (controlDEUid.equals("psi")) {
+                    //FIXME: Is this the survey uid position
+                    surveyUidPosition = i;
+                }
             }
 
-            //String forwardOrder = rows.getJSONArray(i).getString(forwardOrderPosition);
+            // Read the rows
+            JSONArray rows = responseBody.getJSONArray("rows");
+            //TODO: We can hide this logic in sth like PushResult.java
+            for (int i = 0; i < rows.length(); i++) {
+                JSONObject controlDataElements = new JSONObject();
+                controlDataElements.put(TAG_PROGRAM, survey.getTabGroup().getProgram().getUid());
+                controlDataElements.put(TAG_ORG_UNIT, survey.getOrgUnit().getUid());
 
-            controlDataElements.put(TAG_DATAVALUES, controlDataElementsValue);
+                JSONArray controlDataElementsValue = new JSONArray();
 
-            String surveyUid = rows.getJSONArray(i).getString(surveyUidPosition);
+                JSONObject reserverOrderObject = new JSONObject();
+                reserverOrderObject.put(TAG_DATAELEMENT, activity.getString(R.string.reverse_order));
+                Integer newReverseOrder = rows.getJSONArray(i).getInt(reverseOrderPosition) + 1;
+                reserverOrderObject.put(TAG_VALUE, newReverseOrder);
+                if (newReverseOrder > maxReverseOrder)
+                    maxReverseOrder = newReverseOrder;
+                controlDataElementsValue.put(reserverOrderObject);
 
-            controlDataElementsMap.put(surveyUid, controlDataElements);
+                boolean lastSurvey = rows.getJSONArray(i).getBoolean(lastSurveyPosition);
+                if (lastSurvey) {
+                    JSONObject lastSurveyObject = new JSONObject();
+                    lastSurveyObject.put(TAG_DATAELEMENT, activity.getString(R.string.last_survey));
+                    lastSurveyObject.put(TAG_VALUE, false);
+                    controlDataElementsValue.put(lastSurveyObject);
+                }
 
-        }
+                controlDataElements.put(TAG_DATAVALUES, controlDataElementsValue);
 
-        for (Map.Entry<String, JSONObject> controlDataElementEntry :controlDataElementsMap.entrySet()){
+                String surveyUid = rows.getJSONArray(i).getString(surveyUidPosition);
 
-            //Update control data elements
-            String url2 = DHIS_PUSH_CONTROL_DATAELEMENT + controlDataElementEntry.getKey();
-            Response response2 = executeCall(controlDataElementEntry.getValue(), url2, "POST");
-            if(!response2.isSuccessful()){
-                Log.e(TAG, "pushControlDataElement (" + response.code()+"): "+response.body().string());
-                throw new IOException(response.message());
+                controlDataElementsMap.put(surveyUid, controlDataElements);
+
             }
-            JSONObject responseBody2 = parseResponse(response2.body().string());
-            //FIXME: Check output
         }
 
-        //FIXME: Insert new control data element
+        JSONArray controlDataElementsValue = new JSONArray();
+        JSONObject forwardOrderObject = new JSONObject();
+        forwardOrderObject.put(TAG_DATAELEMENT, activity.getString(R.string.forward_order));
+        forwardOrderObject.put(TAG_VALUE, maxReverseOrder);
+        controlDataElementsValue.put(forwardOrderObject);
+        JSONObject reverseOrderObject = new JSONObject();
+        reverseOrderObject.put(TAG_DATAELEMENT, activity.getString(R.string.reverse_order));
+        reverseOrderObject.put(TAG_VALUE, 1);
+        controlDataElementsValue.put(reverseOrderObject);
+        JSONObject lastSurveyObject = new JSONObject();
+        lastSurveyObject.put(TAG_DATAELEMENT, activity.getString(R.string.last_survey));
+        lastSurveyObject.put(TAG_VALUE, true);
+        controlDataElementsValue.put(lastSurveyObject);
+        JSONObject overallScoreObject = new JSONObject();
+        overallScoreObject.put(TAG_DATAELEMENT, activity.getString(R.string.overall_score));
+        overallScoreObject.put(TAG_VALUE, survey.getMainScore());
+        controlDataElementsValue.put(overallScoreObject);
+        JSONObject overallClassObject = new JSONObject();
+        overallClassObject.put(TAG_DATAELEMENT, activity.getString(R.string.overall_class));
+        overallClassObject.put(TAG_VALUE, calculateOverallClass(survey.getMainScore()));
+        controlDataElementsValue.put(overallClassObject);
+
+        JSONObject newSurveyControlDataElementsValue = new JSONObject();
+        newSurveyControlDataElementsValue.put("root",controlDataElementsValue);
+        controlDataElementsMap.put("", newSurveyControlDataElementsValue);
+
 
         //Log.d(TAG, "prepareControlDataElements: " + object.toString());
+        return controlDataElementsMap;
+    }
+
+    private String calculateOverallClass(Float mainScore) throws Exception {
+        String overallClass = "A";
+        if (mainScore < LayoutUtils.MAX_AMBER){
+            overallClass = "B";
+        }
+        if (mainScore < LayoutUtils.MAX_FAILED){
+            overallClass = "C";
+        }
+        return overallClass;
+    }
+
+
+    private JSONObject pushControlDataElements(Map<String, JSONObject> controlDataElementsMap) throws Exception{
+
+        for (Map.Entry<String, JSONObject> controlDataElementEntry : controlDataElementsMap.entrySet()) {
+
+            if (controlDataElementEntry.getKey() != "") {
+                //Update control data elements
+                String url = DHIS_PUSH_CONTROL_DATAELEMENT + controlDataElementEntry.getKey();
+                Response response = executeCall(controlDataElementEntry.getValue(), url, "PUT");
+                if (!response.isSuccessful()) {
+                    Log.e(TAG, "pushControlDataElement (" + response.code() + "): " + response.body().string());
+                    throw new IOException(response.message());
+                }
+                //FIXME: Check output
+                //JSONObject responseBody = parseResponse(response.body().string());
+            }
+        }
         return null;
     }
 
@@ -278,11 +315,11 @@ public class PushClient {
      * @param data JSON object to update
      * @throws Exception
      */
-    private JSONObject prepareDataElements(JSONObject data)throws Exception{
+    private JSONObject prepareDataElements(JSONObject data, JSONObject controlDataElements)throws Exception{
         Log.d(TAG, "prepareDataElements for survey: " + survey.getId_survey());
 
         //Add dataElement per values
-        JSONArray values=prepareValues(new JSONArray());
+        JSONArray values=prepareValues(new JSONArray(), controlDataElements.getJSONArray("root"));
 
         //Add dataElement per compositeScores
         values=prepareCompositeScores(values);
@@ -298,9 +335,13 @@ public class PushClient {
      * @return
      * @throws Exception
      */
-    private JSONArray prepareValues(JSONArray values) throws Exception{
+    private JSONArray prepareValues(JSONArray values,JSONArray controlDataElements) throws Exception{
         for (Value value : survey.getValues()) {
             values.put(prepareValue(value));
+        }
+
+        for (int i = 0; i < controlDataElements.length(); i++){
+            values.put(controlDataElements.get(i));
         }
         return values;
     }
@@ -379,17 +420,24 @@ public class PushClient {
         BasicAuthenticator basicAuthenticator=new BasicAuthenticator();
         client.setAuthenticator(basicAuthenticator);
 
-        RequestBody body = RequestBody.create(JSON, data.toString());
         Request.Builder builder = new Request.Builder()
                 .header(basicAuthenticator.AUTHORIZATION_HEADER, basicAuthenticator.getCredentials())
                 .url(DHIS_URL);
 
-        if (method.equals("POST")){
-            builder.post(body);
+        switch (method){
+            case "POST":
+                RequestBody postBody = RequestBody.create(JSON, data.toString());
+                builder.post(postBody);
+                break;
+            case "PUT":
+                RequestBody putBody = RequestBody.create(JSON, data.toString());
+                builder.put(putBody);
+                break;
+            case "GET":
+                builder.get();
+                break;
         }
-        else{
-            builder.get();
-        }
+
         Request request = builder.build();
         return client.newCall(request).execute();
     }
