@@ -254,7 +254,7 @@ public class PushClient {
             }
 
             // Change last survey from true to false (the new survey will be set to true)
-            if (rows.getJSONArray(i).get(lastSurveyPosition) != null && rows.getJSONArray(i).getBoolean(lastSurveyPosition)) {
+            if (rows.getJSONArray(i).getBoolean(lastSurveyPosition)) {
                 JSONObject lastSurveyObject = new JSONObject();
                 lastSurveyObject.put(TAG_DATAELEMENT, activity.getString(R.string.last_survey));
                 lastSurveyObject.put(TAG_VALUE, false);
