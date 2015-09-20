@@ -34,37 +34,39 @@ import com.squareup.okhttp.Request;
 import com.squareup.okhttp.RequestBody;
 import com.squareup.okhttp.Response;
 
-import org.apache.http.auth.AuthenticationException;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.model.CompositeScore;
-import org.eyeseetea.malariacare.database.model.Question;
 import org.eyeseetea.malariacare.database.model.Survey;
-import org.eyeseetea.malariacare.database.model.Tab;
 import org.eyeseetea.malariacare.database.model.Value;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
+import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 import org.eyeseetea.malariacare.services.SurveyService;
 import org.eyeseetea.malariacare.utils.Constants;
 import org.eyeseetea.malariacare.utils.Utils;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
 import java.net.Proxy;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Jose on 20/06/2015.
  */
 public class PushClient {
 
-
-
     private static String TAG=".PushClient";
 
 
     private static String DHIS_PUSH_API="/api/events";
+
+    private static String DHIS_ANALYTICS_CONTROL_DATA ="/api/analytics/events/query/";
+    private static String DHIS_PUSH_CONTROL_DATA ="/api/events/";
 
     public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
 
@@ -82,7 +84,6 @@ public class PushClient {
     private static String TAG_DATAELEMENT="dataElement";
     private static String TAG_VALUE="value";
 
-
     Survey survey;
     Activity activity;
     String user;
@@ -97,10 +98,17 @@ public class PushClient {
 
     public PushResult push() {
         try{
+            //TODO: This should be removed once DHIS bug is solved
+            //Map<String, JSONObject> controlData = prepareControlData();
             JSONObject data = prepareMetadata();
-            data = prepareDataElements(data);
+            //TODO: This should be removed once DHIS bug is solved
+            //data = prepareDataElements(data, controlData.get(""));
+            data = prepareDataElements(data, null);
+
             PushResult result = new PushResult(pushData(data));
             if(result.isSuccessful()){
+                //TODO: This should be removed once DHIS bug is solved
+                //pushControlDataElements(controlData);
                 updateSurveyState();
             }
             return result;
@@ -122,15 +130,186 @@ public class PushClient {
     }
 
     /**
+     * Retrieve existing control data element
+     * @return JSONObject with forward order, reverse order, last survey, overall score and overall class
+     * @throws Exception
+     */
+    private Map<String, JSONObject> prepareControlData() throws Exception{
+        Log.d(TAG,"prepareControlData for survey: " + survey.getId_survey());
+        Map<String, JSONObject> controlDataMap = new HashMap<>();
+
+        //Get control data elements for existing surveys
+        String url = DHIS_ANALYTICS_CONTROL_DATA + survey.getTabGroup().getProgram().getUid() + ".json?dimension=pe:LAST_12_MONTHS&dimension=ou:" + survey.getOrgUnit().getUid() +
+                "&dimension=" + activity.getString(R.string.forward_order) + "&dimension=" + activity.getString(R.string.reverse_order) + "&dimension=" + activity.getString(R.string.last_survey);
+        Response response = executeCall(null, url, "GET");
+        if(!response.isSuccessful()){
+            Log.e(TAG, "getAnalytics (" + response.code()+"): "+response.body().string());
+            throw new IOException(response.message());
+        }
+        JSONObject responseBody = parseResponse(response.body().string());
+
+        // If there are previous surveys we prepare the metadata in order to update it
+        Integer maxReverseOrder = 1;
+        if (responseBody.getJSONArray("rows").length()>0)
+            maxReverseOrder = prepareControlDataForExistingSurveys(controlDataMap, responseBody);
+
+        // Prepare data for new survey
+        prepareControlDataForNewSurvey(controlDataMap, maxReverseOrder);
+
+        Log.d(TAG, "prepareControlData: " + controlDataMap.toString());
+        return controlDataMap;
+    }
+
+    /**
+     * Prepare control data for new survey
+     * @param controlDataMap control data map
+     * @param maxReverseOrder new reverse order
+     * @throws Exception
+     */
+    private void prepareControlDataForNewSurvey(Map<String, JSONObject> controlDataMap, Integer maxReverseOrder) throws Exception {
+        JSONArray controlDataElementsValue = new JSONArray();
+
+        // Forward Order
+        JSONObject forwardOrderObject = new JSONObject();
+        forwardOrderObject.put(TAG_DATAELEMENT, activity.getString(R.string.forward_order));
+        forwardOrderObject.put(TAG_VALUE, maxReverseOrder);
+        controlDataElementsValue.put(forwardOrderObject);
+
+        //Reverse Order
+        JSONObject reverseOrderObject = new JSONObject();
+        reverseOrderObject.put(TAG_DATAELEMENT, activity.getString(R.string.reverse_order));
+        reverseOrderObject.put(TAG_VALUE, 1);
+        controlDataElementsValue.put(reverseOrderObject);
+
+        //Last Survey
+        JSONObject lastSurveyObject = new JSONObject();
+        lastSurveyObject.put(TAG_DATAELEMENT, activity.getString(R.string.last_survey));
+        lastSurveyObject.put(TAG_VALUE, true);
+        controlDataElementsValue.put(lastSurveyObject);
+
+        // Main Score
+        JSONObject overallScoreObject = new JSONObject();
+        overallScoreObject.put(TAG_DATAELEMENT, activity.getString(R.string.overall_score));
+        overallScoreObject.put(TAG_VALUE, ScoreRegister.calculateMainScore(survey));
+        controlDataElementsValue.put(overallScoreObject);
+
+        // Overall class
+        JSONObject overallClassObject = new JSONObject();
+        overallClassObject.put(TAG_DATAELEMENT, activity.getString(R.string.overall_class));
+        overallClassObject.put(TAG_VALUE, calculateOverallClass(survey.getMainScore()));
+        controlDataElementsValue.put(overallClassObject);
+
+        // Keep in the control data map
+        JSONObject newSurveyControlDataElementsValue = new JSONObject();
+        newSurveyControlDataElementsValue.put("root",controlDataElementsValue);
+        controlDataMap.put("", newSurveyControlDataElementsValue);
+    }
+
+    /**
+     * Prepare control data for existing surveys
+     * @param controlDataMap conrtrol data map
+     * @param responseBody response from analytics
+     * @return Integer with maximun reverse order
+     * @throws Exception
+     */
+    private Integer prepareControlDataForExistingSurveys(Map<String, JSONObject> controlDataMap, JSONObject responseBody) throws JSONException {
+        Integer maxReverseOrder = 1;
+
+        //TODO: We can hide this logic in sth like PushResult.java
+        //Read the header to extract the reverse order, last survey and survey id (psi) position in the rows field
+        Integer reverseOrderPosition = 0;
+        Integer lastSurveyPosition = 0;
+        Integer surveyUidPosition = 0;
+        JSONArray headers = responseBody.getJSONArray("headers");
+        for (int i = 0; i < headers.length(); i++) {
+            String controlDEUid = headers.getJSONObject(i).getString("name");
+            if (controlDEUid.equals(activity.getString(R.string.reverse_order))) {
+                reverseOrderPosition = i;
+            } else if (controlDEUid.equals(activity.getString(R.string.last_survey))) {
+                lastSurveyPosition = i;
+            } else if (controlDEUid.equals("psi")) {
+                surveyUidPosition = i;
+            }
+        }
+
+        //TODO: We can hide this logic in sth like PushResult.java
+        // Read the rows and prepare control data for updating
+        JSONArray rows = responseBody.getJSONArray("rows");
+        for (int i = 0; i < rows.length(); i++) {
+            JSONObject controlDataObject = new JSONObject();
+            // General info: program and org unit
+            controlDataObject.put(TAG_PROGRAM, survey.getTabGroup().getProgram().getUid());
+            controlDataObject.put(TAG_ORG_UNIT, survey.getOrgUnit().getUid());
+
+            JSONArray controlDataElementsValue = new JSONArray();
+
+            // Reverse order
+            JSONObject reserveOrderObject = new JSONObject();
+            reserveOrderObject.put(TAG_DATAELEMENT, activity.getString(R.string.reverse_order));
+            Integer newReverseOrder = rows.getJSONArray(i).getInt(reverseOrderPosition) + 1;
+            reserveOrderObject.put(TAG_VALUE, newReverseOrder);
+            controlDataElementsValue.put(reserveOrderObject);
+
+            // Keep track of the maximum reverse order for the new order
+            if (newReverseOrder > maxReverseOrder) {
+                maxReverseOrder = newReverseOrder;
+            }
+
+            // Change last survey from true to false (the new survey will be set to true)
+            if (rows.getJSONArray(i).getBoolean(lastSurveyPosition)) {
+                JSONObject lastSurveyObject = new JSONObject();
+                lastSurveyObject.put(TAG_DATAELEMENT, activity.getString(R.string.last_survey));
+                lastSurveyObject.put(TAG_VALUE, false);
+                controlDataElementsValue.put(lastSurveyObject);
+            }
+            controlDataObject.put(TAG_DATAVALUES, controlDataElementsValue);
+
+            // Store in the control data map
+            controlDataMap.put(rows.getJSONArray(i).getString(surveyUidPosition), controlDataObject);
+        }
+        return maxReverseOrder;
+    }
+
+    private String calculateOverallClass(Float mainScore) throws Exception {
+        String overallClass = "A";
+        if (mainScore < LayoutUtils.MAX_AMBER){
+            overallClass = "B";
+        }
+        if (mainScore < LayoutUtils.MAX_FAILED){
+            overallClass = "C";
+        }
+        return overallClass;
+    }
+
+
+    private JSONObject pushControlDataElements(Map<String, JSONObject> controlDataElementsMap) throws Exception{
+
+        for (Map.Entry<String, JSONObject> controlDataElementEntry : controlDataElementsMap.entrySet()) {
+
+            if (controlDataElementEntry.getKey() != "") {
+                //Update control data elements
+                String url = DHIS_PUSH_CONTROL_DATA + controlDataElementEntry.getKey();
+                Response response = executeCall(controlDataElementEntry.getValue(), url, "PUT");
+                if (!response.isSuccessful()) {
+                    Log.e(TAG, "pushControlDataElement (" + response.code() + "): " + response.body().string());
+                    throw new IOException(response.message());
+                }
+                //FIXME: Check output
+                //JSONObject responseBody = parseResponse(response.body().string());
+            }
+        }
+        return null;
+    }
+
+    /**
      * Adds metadata info to json object
-     * @return JSONObject with progra, orgunit, eventdate and so on...
+     * @return JSONObject with program, orgunit, eventdate and so on...
      * @throws Exception
      */
     private JSONObject prepareMetadata() throws Exception{
-        Log.d(TAG,"prepareMetadata for survey: "+survey.getId_survey());
+        Log.d(TAG,"prepareMetadata for survey: " + survey.getId_survey());
 
         JSONObject object=new JSONObject();
-        //FIXME Do we want to push the program or the tab group or both? -> Answer: The tab group
         object.put(TAG_PROGRAM, survey.getTabGroup().getProgram().getUid());
         object.put(TAG_ORG_UNIT, survey.getOrgUnit().getUid());
         object.put(TAG_EVENTDATE, android.text.format.DateFormat.format("yyyy-MM-dd", survey.getCompletionDate()));
@@ -166,11 +345,13 @@ public class PushClient {
      * @param data JSON object to update
      * @throws Exception
      */
-    private JSONObject prepareDataElements(JSONObject data)throws Exception{
+    private JSONObject prepareDataElements(JSONObject data, JSONObject controlDataElements)throws Exception{
         Log.d(TAG, "prepareDataElements for survey: " + survey.getId_survey());
 
         //Add dataElement per values
-        JSONArray values=prepareValues(new JSONArray());
+        //TODO: This should be removed once DHIS bug is solved
+        //JSONArray values=prepareValues(new JSONArray(), controlDataElements.getJSONArray("root"));
+        JSONArray values=prepareValues(new JSONArray(), null);
 
         //Add dataElement per compositeScores
         values=prepareCompositeScores(values);
@@ -186,9 +367,16 @@ public class PushClient {
      * @return
      * @throws Exception
      */
-    private JSONArray prepareValues(JSONArray values) throws Exception{
+    private JSONArray prepareValues(JSONArray values,JSONArray controlDataElements) throws Exception{
         for (Value value : survey.getValues()) {
             values.put(prepareValue(value));
+        }
+
+        //TODO: This should be removed once DHIS bug is solved
+        if (controlDataElements != null) {
+            for (int i = 0; i < controlDataElements.length(); i++) {
+                values.put(controlDataElements.get(i));
+            }
         }
         return values;
     }
@@ -237,33 +425,56 @@ public class PushClient {
         elementObject.put(TAG_VALUE, Utils.round(ScoreRegister.getCompositeScore(compositeScore)));
         return elementObject;
     }
+
     /**
      * Pushes data to DHIS Server
      * @param data
      */
     private JSONObject pushData(JSONObject data)throws Exception {
 
+        Response response = executeCall(data, DHIS_PUSH_API, "POST");
+
+        if(!response.isSuccessful()){
+            Log.e(TAG, "pushData (" + response.code()+"): "+response.body().string());
+            throw new IOException(response.message());
+        }
+        return parseResponse(response.body().string());
+    }
+
+    /**
+     * Call to DHIS Server
+     * @param data
+     * @param url
+     */
+    private Response executeCall(JSONObject data, String url, String method) throws IOException {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(activity);
-        final String DHIS_URL=sharedPreferences.getString(activity.getString(R.string.dhis_url), activity.getString(R.string.login_info_dhis_default_server_url)) + DHIS_PUSH_API;
+        final String DHIS_URL=sharedPreferences.getString(activity.getString(R.string.dhis_url), activity.getString(R.string.login_info_dhis_default_server_url)) + url;
 
         OkHttpClient client= UnsafeOkHttpsClientFactory.getUnsafeOkHttpClient();
 
         BasicAuthenticator basicAuthenticator=new BasicAuthenticator();
         client.setAuthenticator(basicAuthenticator);
 
-        RequestBody body = RequestBody.create(JSON, data.toString());
-        Request request = new Request.Builder()
-                .header(basicAuthenticator.AUTHORIZATION_HEADER,basicAuthenticator.getCredentials())
-                .url(DHIS_URL)
-                .post(body)
-                .build();
+        Request.Builder builder = new Request.Builder()
+                .header(basicAuthenticator.AUTHORIZATION_HEADER, basicAuthenticator.getCredentials())
+                .url(DHIS_URL);
 
-        Response response = client.newCall(request).execute();
-        if(!response.isSuccessful()){
-            Log.e(TAG, "pushData (" + response.code()+"): "+response.body().string());
-            throw new IOException(response.message());
+        switch (method){
+            case "POST":
+                RequestBody postBody = RequestBody.create(JSON, data.toString());
+                builder.post(postBody);
+                break;
+            case "PUT":
+                RequestBody putBody = RequestBody.create(JSON, data.toString());
+                builder.put(putBody);
+                break;
+            case "GET":
+                builder.get();
+                break;
         }
-        return parseResponse(response.body().string());
+
+        Request request = builder.build();
+        return client.newCall(request).execute();
     }
 
     private JSONObject parseResponse(String responseData)throws Exception{

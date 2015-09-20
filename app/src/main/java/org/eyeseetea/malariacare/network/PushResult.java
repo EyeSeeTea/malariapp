@@ -75,7 +75,7 @@ public class PushResult {
 
     private String getValue(String key){
         try {
-            return jsonObject.get(key).toString();
+            return jsonObject.getString(key);
         } catch (JSONException e) {
             return "";
         }
