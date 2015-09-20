@@ -84,7 +84,6 @@ public class PushClient {
     private static String TAG_DATAELEMENT="dataElement";
     private static String TAG_VALUE="value";
 
-
     Survey survey;
     Activity activity;
     String user;
@@ -99,14 +98,17 @@ public class PushClient {
 
     public PushResult push() {
         try{
-            Map<String, JSONObject> controlData = prepareControlData();
+            //TODO: This should be removed once DHIS bug is solved
+            //Map<String, JSONObject> controlData = prepareControlData();
             JSONObject data = prepareMetadata();
-            data = prepareDataElements(data, controlData.get(""));
+            //TODO: This should be removed once DHIS bug is solved
+            //data = prepareDataElements(data, controlData.get(""));
+            data = prepareDataElements(data, null);
 
             PushResult result = new PushResult(pushData(data));
             if(result.isSuccessful()){
-
-                pushControlDataElements(controlData);
+                //TODO: This should be removed once DHIS bug is solved
+                //pushControlDataElements(controlData);
                 updateSurveyState();
             }
             return result;
@@ -347,7 +349,9 @@ public class PushClient {
         Log.d(TAG, "prepareDataElements for survey: " + survey.getId_survey());
 
         //Add dataElement per values
-        JSONArray values=prepareValues(new JSONArray(), controlDataElements.getJSONArray("root"));
+        //TODO: This should be removed once DHIS bug is solved
+        //JSONArray values=prepareValues(new JSONArray(), controlDataElements.getJSONArray("root"));
+        JSONArray values=prepareValues(new JSONArray(), null);
 
         //Add dataElement per compositeScores
         values=prepareCompositeScores(values);
@@ -368,8 +372,11 @@ public class PushClient {
             values.put(prepareValue(value));
         }
 
-        for (int i = 0; i < controlDataElements.length(); i++){
-            values.put(controlDataElements.get(i));
+        //TODO: This should be removed once DHIS bug is solved
+        if (controlDataElements != null) {
+            for (int i = 0; i < controlDataElements.length(); i++) {
+                values.put(controlDataElements.get(i));
+            }
         }
         return values;
     }
