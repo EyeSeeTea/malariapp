@@ -29,9 +29,8 @@ import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 
@@ -78,6 +77,11 @@ public class FeedbackActivity extends BaseActivity{
      * List view items
      */
     private ListView feedbackListView;
+
+    /**
+     * Menu of the activity
+     */
+    private Menu menu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -134,6 +138,25 @@ public class FeedbackActivity extends BaseActivity{
         LayoutUtils.setActionBarText(actionBar, survey.getOrgUnit().getName(), program.getName());
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        this.menu = menu;
+        getMenuInflater().inflate(R.menu.menu_feedback, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle presses on the action bar items
+        switch (item.getItemId()) {
+            case R.id.overall_score:
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
 
     /**
      * Gets a reference to the progress view in order to stop it later
@@ -161,8 +184,21 @@ public class FeedbackActivity extends BaseActivity{
 
     private void loadItems(List<Feedback> items){
         this.feedbackAdapter.setItems(items);
+        setOverallScore();
         stopProgress();
     }
+
+    /**
+     * Sets the overall composite score as an action button
+     */
+    private void setOverallScore(){
+        MenuItem item = menu.findItem(R.id.overall_score);
+        Survey survey = Session.getSurvey();
+        float average = survey.getMainScore();
+        item.setTitle(String.format("%.2f%%", average));
+    }
+
+
 
     /**
      * Stops progress view and shows real data
