@@ -124,16 +124,18 @@ public class PopulateDB {
                         question.setDe_name(line[2]);
                         question.setShort_name(line[3]);
                         question.setForm_name(line[4]);
-                        question.setUid(line[5]);
-                        question.setOrder_pos(Integer.valueOf(line[6]));
-                        question.setNumerator_w(Float.valueOf(line[7]));
-                        question.setDenominator_w(Float.valueOf(line[8]));
-                        question.setHeader(headers.get(Integer.valueOf(line[9])));
-                        if (!line[10].equals(""))
-                            question.setAnswer(answers.get(Integer.valueOf(line[10])));
+                        if (!line[5].equals(""))
+                            question.setFeedback(line[5]);
+                        question.setUid(line[6]);
+                        question.setOrder_pos(Integer.valueOf(line[7]));
+                        question.setNumerator_w(Float.valueOf(line[8]));
+                        question.setDenominator_w(Float.valueOf(line[9]));
+                        question.setHeader(headers.get(Integer.valueOf(line[10])));
                         if (!line[11].equals(""))
-                            question.setQuestion(questions.get(Integer.valueOf(line[11])));
-                        if (line.length == 13 && !line[12].equals("")) question.setCompositeScore(compositeScores.get(Integer.valueOf(line[12])));
+                            question.setAnswer(answers.get(Integer.valueOf(line[11])));
+                        if (!line[12].equals(""))
+                            question.setQuestion(questions.get(Integer.valueOf(line[12])));
+                        if (line.length == 14 && !line[13].equals("")) question.setCompositeScore(compositeScores.get(Integer.valueOf(line[13])));
                         questions.put(Integer.valueOf(line[0]), question);
                         break;
                     case QUESTION_RELATIONS_CSV:
