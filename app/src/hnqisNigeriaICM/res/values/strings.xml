@@ -26,4 +26,11 @@
     <!-- default server url -->
     <string name="login_info_dhis_default_server_url" translatable="false">https://hnqis.psi-mis.org</string>
 
+    <!-- Control Data Elements -->
+    <string name="forward_order" translatable="false">FEkGksxhOpH</string>
+    <string name="reverse_order" translatable="false">deeu8rjsqvH</string>
+    <string name="last_survey" translatable="false">iW2zVNwfDK6</string>
+    <string name="overall_score" translatable="false">Y8Nmpp7RhXw</string>
+    <string name="overall_class" translatable="false">ggrkfoq6nxA</string>
+
 </resources>
