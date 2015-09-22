@@ -71,6 +71,7 @@
     <string name="feedback_show_only_failed">"Mostrar só falhou perguntas"</string>
     <string name="feedback_info_passed">Aprovado</string>
     <string name="feedback_info_failed">Suspenso</string>
+    <string name="feedback_info_not_answered">"Não respondeu"</string>
 
     <!-- future -->
     <string name="future_title_facility">Unidade de Saúde</string>

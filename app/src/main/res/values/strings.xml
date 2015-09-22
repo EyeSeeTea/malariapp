@@ -80,8 +80,9 @@
     <string name="feedback_title_organization_unit_date">Org Unit / Date</string>
     <string name="feedback_title_header">Feedback</string>
     <string name="feedback_show_only_failed">Show only failed questions</string>
-    <string name="feedback_info_passed">Passed</string>
-    <string name="feedback_info_failed">Failed</string>
+    <string name="feedback_info_passed">Pass</string>
+    <string name="feedback_info_failed">Fail</string>
+    <string name="feedback_info_not_answered">Not answered</string>
 
     <!-- future -->
     <string name="future_title_facility">Facility</string>
