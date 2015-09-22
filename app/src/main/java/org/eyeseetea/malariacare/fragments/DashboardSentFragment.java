@@ -113,6 +113,9 @@ public class DashboardSentFragment extends ListFragment {
     @Override
     public void onResume(){
         Log.d(TAG, "onResume");
+        //Loading...
+        setListShown(false);
+        //Listen for data
         registerSurveysReceiver();
         super.onResume();
     }
@@ -233,8 +236,6 @@ public class DashboardSentFragment extends ListFragment {
         // Setting this scroll listener is required to ensure that during ListView scrolling,
         // we don't look for swipes.
         listView.setOnScrollListener(touchListener.makeScrollListener());
-
-        setListShown(false);
     }
 
 

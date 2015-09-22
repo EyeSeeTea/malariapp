@@ -117,6 +117,9 @@ public class DashboardUnsentFragment extends ListFragment {
     @Override
     public void onResume(){
         Log.d(TAG, "onResume");
+        //Loading...
+        setListShown(false);
+        //Listen for data
         registerSurveysReceiver();
         super.onResume();
     }
@@ -264,9 +267,6 @@ public class DashboardUnsentFragment extends ListFragment {
                 return true;
             }
         });
-
-
-        setListShown(false);
     }
 
 
@@ -305,9 +305,14 @@ public class DashboardUnsentFragment extends ListFragment {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data){
+        Log.d(TAG, "onActivityResult");
         // This captures the return code sent by Login Activity, to know whether or not the user got the authorization
         if(requestCode == Constants.AUTHORIZE_PUSH) {
             if(resultCode == Activity.RESULT_OK) {
+
+                //Tell the activity NOT to reload on next resume since the push itself will do it
+                ((DashboardActivity)getActivity()).setReloadOnResume(false);
+
                 // In case authorization was ok, we launch push action
                 Bundle extras = data.getExtras();
                 int position = extras.getInt("Survey", 0);
@@ -373,21 +378,7 @@ public class DashboardUnsentFragment extends ListFragment {
         @Override
         protected void onPostExecute(PushResult pushResult) {
             super.onPostExecute(pushResult);
-            setListShown(true);
             showResponse(pushResult);
-            if(pushResult.isSuccessful()) {
-                survey.setStatus(Constants.SURVEY_SENT);
-                survey.update();
-            }
-            // Launch service to update dashboard
-            Intent surveysIntent=new Intent(getActivity(), SurveyService.class);
-            surveysIntent.putExtra(SurveyService.SERVICE_METHOD, SurveyService.RELOAD_DASHBOARD_ACTION);
-            getActivity().startService(surveysIntent);
-            // Change adapters according to service answer
-            Session.getAdapterUnsent().setItems((List) Session.popServiceValue(SurveyService.ALL_UNSENT_SURVEYS_ACTION));
-            Session.getAdapterSent().setItems((List) Session.popServiceValue(SurveyService.ALL_SENT_SURVEYS_ACTION));
-            Session.getAdapterUnsent().notifyDataSetChanged();
-            Session.getAdapterSent().notifyDataSetChanged();
         }
 
         /**
