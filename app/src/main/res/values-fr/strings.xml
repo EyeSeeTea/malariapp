@@ -67,6 +67,8 @@
     <string name="feedback_show_only_failed">"Afficher seulement échoué aux questions"</string>
     <string name="feedback_info_passed">"Passé"</string>
     <string name="feedback_info_failed">"Manqué"</string>
+    <string name="feedback_info_not_answered">"Pas répondu"</string>
+
 
 
     <!-- future -->
