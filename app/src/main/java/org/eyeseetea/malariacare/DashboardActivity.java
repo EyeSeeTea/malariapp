@@ -50,6 +50,8 @@ public class DashboardActivity extends BaseActivity {
 
     private LocationListener locationListener;
 
+    private boolean reloadOnResume=true;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Log.d(TAG, "onCreate");
@@ -124,8 +126,17 @@ public class DashboardActivity extends BaseActivity {
         }
     }
 
+    public void setReloadOnResume(boolean doReload){
+        this.reloadOnResume=false;
+    }
+
     public void getSurveysFromService(){
-        Log.d(TAG, "getSurveysFromService");
+        Log.d(TAG, "getSurveysFromService ("+reloadOnResume+")");
+        if(!reloadOnResume){
+            //Flag is readjusted
+            reloadOnResume=true;
+            return;
+        }
         Intent surveysIntent=new Intent(this, SurveyService.class);
         surveysIntent.putExtra(SurveyService.SERVICE_METHOD, SurveyService.RELOAD_DASHBOARD_ACTION);
         this.startService(surveysIntent);
