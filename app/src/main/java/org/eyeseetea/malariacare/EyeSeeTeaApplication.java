@@ -27,6 +27,8 @@ import com.crashlytics.android.Crashlytics;
 import com.raizlabs.android.dbflow.config.FlowManager;
 
 import io.fabric.sdk.android.Fabric;
+
+import org.eyeseetea.malariacare.database.utils.LocationMemory;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
 
 /**
@@ -39,6 +41,7 @@ public class EyeSeeTeaApplication extends Application {
         super.onCreate();
         Fabric.with(this, new Crashlytics());
         PreferencesState.getInstance().init(getApplicationContext());
+        LocationMemory.getInstance().init(getApplicationContext());
         FlowManager.init(this);
     }
 
