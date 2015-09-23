@@ -133,7 +133,7 @@ public class DashboardActivity extends BaseActivity {
     public void getSurveysFromService(){
         Log.d(TAG, "getSurveysFromService ("+reloadOnResume+")");
         if(!reloadOnResume){
-            //El flag se consume
+            //Flag is readjusted
             reloadOnResume=true;
             return;
         }
