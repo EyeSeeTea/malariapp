@@ -27,6 +27,7 @@ import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebView;
 import android.widget.BaseAdapter;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -161,9 +162,11 @@ public class FeedbackAdapter extends BaseAdapter {
         textView.setTextColor(context.getResources().getColor(textColor));
 
         //Feedback
-        textView=(TextView)rowLayout.findViewById(R.id.feedback_feedback_html);
-        textView.setText( Html.fromHtml(feedback.getFeedback()));
-        textView.setMovementMethod(LinkMovementMethod.getInstance());
+        WebView webView = (WebView)rowLayout.findViewById(R.id.feedback_feedback_html);
+        webView.loadDataWithBaseURL(null, feedback.getFeedback(), "text/html", "utf-8", null);
+//        textView=(TextView)rowLayout.findViewById(R.id.feedback_feedback_html);
+//        textView.setText( Html.fromHtml(feedback.getFeedback()));
+//        textView.setMovementMethod(LinkMovementMethod.getInstance());
 
         //Hide/Show feedback according to its inner state
         toggleFeedback(rowLayout, feedback.isFeedbackShown());
@@ -189,7 +192,7 @@ public class FeedbackAdapter extends BaseAdapter {
         separator.setVisibility(visible?View.VISIBLE:View.GONE);
 
         //Feedback itself
-        TextView feedbackTextView=(TextView)rowLayout.findViewById(R.id.feedback_feedback_html);
+        WebView feedbackTextView=(WebView)rowLayout.findViewById(R.id.feedback_feedback_html);
         feedbackTextView.setVisibility(visible?View.VISIBLE:View.GONE);
     }
 
