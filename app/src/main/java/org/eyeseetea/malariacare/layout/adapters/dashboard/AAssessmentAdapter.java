@@ -77,7 +77,7 @@ public abstract class AAssessmentAdapter extends ADashboardAdapter implements ID
             Date completionDate = survey.getCompletionDate();
             SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy");
             sentDate.setText(format.format(completionDate));
-            sentScore.setText(String.format("%.2f %%", survey.getMainScore()));
+            sentScore.setText(String.format("%.1f %%", survey.getMainScore()));
             LayoutUtils.trafficView(context, survey.getMainScore(), sentLight);
         } else {
             //Status Cell

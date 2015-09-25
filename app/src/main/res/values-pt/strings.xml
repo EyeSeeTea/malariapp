@@ -72,6 +72,9 @@
     <string name="feedback_info_passed">Aprovado</string>
     <string name="feedback_info_failed">Suspenso</string>
     <string name="feedback_info_not_answered">"Não respondeu"</string>
+    <string name="feedback_info_no_feedback">Sem feedback</string>
+
+
 
     <!-- future -->
     <string name="future_title_facility">Unidade de Saúde</string>

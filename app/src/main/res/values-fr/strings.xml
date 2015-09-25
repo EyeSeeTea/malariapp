@@ -68,8 +68,7 @@
     <string name="feedback_info_passed">"Passé"</string>
     <string name="feedback_info_failed">"Manqué"</string>
     <string name="feedback_info_not_answered">"Pas répondu"</string>
-
-
+    <string name="feedback_info_no_feedback">Aucun commentaire</string>
 
     <!-- future -->
     <string name="future_title_facility">Centre</string>

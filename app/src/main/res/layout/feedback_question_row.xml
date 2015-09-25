@@ -28,7 +28,7 @@
         <org.eyeseetea.malariacare.views.CustomTextView
             android:id="@+id/feedback_question_label"
             android:layout_width="0dp"
-            android:layout_weight=".60"
+            android:layout_weight=".70"
             android:layout_height="wrap_content"
             android:paddingLeft="10dip"
             android:paddingTop="5dip"
@@ -40,7 +40,7 @@
         <org.eyeseetea.malariacare.views.CustomTextView
             android:id="@+id/feedback_option_label"
             android:layout_width="0dp"
-            android:layout_weight=".30"
+            android:layout_weight=".20"
             android:layout_height="wrap_content"
             android:paddingLeft="10dip"
             android:paddingTop="5dip"

@@ -48,6 +48,7 @@
         android:button="@drawable/radiobutton"
         android:text="@string/feedback_show_only_failed"
         android:layout_alignParentRight="true"
+        android:textSize="18sp"
         android:layout_marginRight="10dp"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"
