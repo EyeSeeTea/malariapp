@@ -23,6 +23,7 @@ import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.text.Html;
+import android.text.Spanned;
 import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -37,6 +38,7 @@ import org.eyeseetea.malariacare.database.feedback.CompositeScoreFeedback;
 import org.eyeseetea.malariacare.database.feedback.Feedback;
 import org.eyeseetea.malariacare.database.feedback.QuestionFeedback;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
+import org.eyeseetea.malariacare.network.URLImageParser;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -162,12 +164,10 @@ public class FeedbackAdapter extends BaseAdapter {
         textView.setTextColor(context.getResources().getColor(textColor));
 
         //Feedback
-        WebView webView = (WebView)rowLayout.findViewById(R.id.feedback_feedback_html);
-        webView.loadDataWithBaseURL(null, feedback.getFeedback(), "text/html", "utf-8", null);
-//        textView=(TextView)rowLayout.findViewById(R.id.feedback_feedback_html);
-//        textView.setText( Html.fromHtml(feedback.getFeedback()));
-//        textView.setMovementMethod(LinkMovementMethod.getInstance());
+        textView=(TextView)rowLayout.findViewById(R.id.feedback_feedback_html);
+        textView.setText(Html.fromHtml(feedback.getFeedback(), new URLImageParser(textView, this.context), null));
 
+        textView.setMovementMethod(LinkMovementMethod.getInstance());
         //Hide/Show feedback according to its inner state
         toggleFeedback(rowLayout, feedback.isFeedbackShown());
 
@@ -192,7 +192,7 @@ public class FeedbackAdapter extends BaseAdapter {
         separator.setVisibility(visible?View.VISIBLE:View.GONE);
 
         //Feedback itself
-        WebView feedbackTextView=(WebView)rowLayout.findViewById(R.id.feedback_feedback_html);
+        TextView feedbackTextView=(TextView)rowLayout.findViewById(R.id.feedback_feedback_html);
         feedbackTextView.setVisibility(visible?View.VISIBLE:View.GONE);
     }
 
