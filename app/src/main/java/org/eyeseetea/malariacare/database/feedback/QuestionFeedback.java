@@ -99,7 +99,11 @@ public class QuestionFeedback implements Feedback {
         if(questionFeedback!=null && !questionFeedback.isEmpty()){
             return questionFeedback;
         }
-        return "Some <b>mocked</b> feedback that includes<br/> breaklines and some <a href='http://www.psi.org/'>links</a>";
+        String mockData="Some <b>mocked</b> feedback that includes<br/> breaklines and some <a href='http://www.psi.org/'>links</a>";
+        mockData+="<br/>Lists are also possible: </br><ul><li>First Item</li><li>Second Item</li></ul>";
+        mockData+="<br/>Images can be also shown from network: <img src='http://i.imgur.com/IajSzu4.jpg'/>";
+        mockData+="<br/>Or locally using (<b>file:///android_asset/feedback/XXXX</b>): <img src='file:///android_asset/feedback/sample.jpg'/>";
+        return mockData;
     }
 
     @Override
