@@ -172,6 +172,7 @@ public class FeedbackActivity extends BaseActivity{
 
         //And checkbox listener
         chkFailed=(CustomRadioButton)findViewById(R.id.chkFailed);
+        chkFailed.setChecked(true);
         chkFailed.setOnClickListener(new View.OnClickListener() {
                                          @Override
                                          public void onClick(View v) {
@@ -195,7 +196,7 @@ public class FeedbackActivity extends BaseActivity{
         MenuItem item = menu.findItem(R.id.overall_score);
         Survey survey = Session.getSurvey();
         float average = survey.getMainScore();
-        item.setTitle(String.format("%.2f%%", average));
+        item.setTitle(String.format("%.1f%%", average));
     }
 
 

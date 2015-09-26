@@ -83,6 +83,8 @@
     <string name="feedback_info_passed">Pass</string>
     <string name="feedback_info_failed">Fail</string>
     <string name="feedback_info_not_answered">Not answered</string>
+    <string name="feedback_info_no_feedback">No feedback</string>
+
 
     <!-- future -->
     <string name="future_title_facility">Facility</string>
