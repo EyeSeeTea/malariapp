@@ -23,10 +23,12 @@ import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.text.Html;
+import android.text.Spanned;
 import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebView;
 import android.widget.BaseAdapter;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -36,6 +38,7 @@ import org.eyeseetea.malariacare.database.feedback.CompositeScoreFeedback;
 import org.eyeseetea.malariacare.database.feedback.Feedback;
 import org.eyeseetea.malariacare.database.feedback.QuestionFeedback;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
+import org.eyeseetea.malariacare.network.URLImageParser;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -167,7 +170,7 @@ public class FeedbackAdapter extends BaseAdapter {
         if(feedbackText==null){
             feedbackText=context.getString(R.string.feedback_info_no_feedback);
         }
-        textView.setText( Html.fromHtml(feedbackText));
+        textView.setText( Html.fromHtml(feedbackText, new URLImageParser(textView, this.context), null));
         textView.setMovementMethod(LinkMovementMethod.getInstance());
 
         //Hide/Show feedback according to its inner state
