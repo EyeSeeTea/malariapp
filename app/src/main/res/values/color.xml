@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="mainColor">#E0F8E0</color>
-    <color name="green">#40FF00</color>
-    <color name="amber">#FF8000</color>
-    <color name="red">#FF0000</color>
+    <color name="green">#84b467</color>
+    <color name="amber">#f1c232</color>
+    <color name="red">#ff060d</color>
     <color name="black">#000000</color>
     <color name="headerColor">#FF1D5288</color>
     <color name="transparent">#00000000</color>
@@ -16,4 +16,8 @@
     <color name="textFieldColor">#BEBEBE</color>
     <color name="darkGrey">#565656</color>
     <color name="formFooter">#429470</color>
+
+    <color name="scoreRoot">#0b5394</color>
+    <color name="scoreChild">#3d85c6</color>
+    <color name="scoreGrandson">#6fa8dc</color>
 </resources>

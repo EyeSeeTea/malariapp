@@ -63,7 +63,7 @@ public class FeedbackAdapter extends BaseAdapter {
     public FeedbackAdapter(List<Feedback> items, Context context){
         this.items=items;
         this.context=context;
-        this.onlyFailed=false;
+        this.onlyFailed=true;
         this.hiddenPositions= new boolean[this.items.size()];
     }
 
@@ -117,6 +117,7 @@ public class FeedbackAdapter extends BaseAdapter {
     private View getViewByCompositeScoreFeedback(CompositeScoreFeedback feedback, View convertView, ViewGroup parent){
         LayoutInflater inflater=LayoutInflater.from(context);
         LinearLayout rowLayout = (LinearLayout)inflater.inflate(R.layout.feedback_composite_score_row, parent, false);
+        rowLayout.setBackgroundResource(feedback.getBackgroundColor());
 
         //CompositeScore title
         TextView textView=(TextView)rowLayout.findViewById(R.id.feedback_label);
@@ -165,9 +166,13 @@ public class FeedbackAdapter extends BaseAdapter {
 
         //Feedback
         textView=(TextView)rowLayout.findViewById(R.id.feedback_feedback_html);
-        textView.setText(Html.fromHtml(feedback.getFeedback(), new URLImageParser(textView, this.context), null));
-
+        String feedbackText=feedback.getFeedback();
+        if(feedbackText==null){
+            feedbackText=context.getString(R.string.feedback_info_no_feedback);
+        }
+        textView.setText( Html.fromHtml(feedbackText, new URLImageParser(textView, this.context), null));
         textView.setMovementMethod(LinkMovementMethod.getInstance());
+
         //Hide/Show feedback according to its inner state
         toggleFeedback(rowLayout, feedback.isFeedbackShown());
 

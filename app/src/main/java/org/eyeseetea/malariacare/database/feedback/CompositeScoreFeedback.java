@@ -19,6 +19,7 @@
 
 package org.eyeseetea.malariacare.database.feedback;
 
+import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.model.CompositeScore;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 
@@ -35,7 +36,7 @@ public class CompositeScoreFeedback implements Feedback {
 
     @Override
     public String getLabel() {
-        return this.compositeScore.getLabel();
+        return this.compositeScore.getHierarchical_code()+" "+this.compositeScore.getLabel();
     }
 
     @Override
@@ -56,7 +57,28 @@ public class CompositeScoreFeedback implements Feedback {
      * @return The percentage as a String
      */
     public String getPercentageAsString(){
-        return String.format("%.2f %%",getScore());
+        return String.format("%.1f %%", getScore());
+    }
+
+    /**
+     * Returns the background color for this composite score row according to its hierarchy
+     * @return
+     */
+    public int getBackgroundColor(){
+        String code=this.compositeScore.getHierarchical_code();
+
+        //Count number of '.' in string
+        int numDots = code.length() - code.replace(".", "").length();
+
+        if(numDots==0){
+            return R.color.scoreRoot;
+        }
+
+        if(numDots==1){
+            return R.color.scoreChild;
+        }
+
+        return R.color.scoreGrandson;
     }
 
     @Override
