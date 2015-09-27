@@ -212,6 +212,7 @@
     </string-array>
     <string name="settings_text_dhis_server_url">DHIS Server URL</string>
     <string name="settings_text_dhis_user">DHIS user</string>
+    <string name="settings_text_dhis_password">DHIS password</string>
     <string name="pref_header_general">General</string>
 
     <string name="settings_array_values_font_sizes_def">@string/font_size_level2</string>
@@ -250,6 +251,7 @@
     <item name="font_sizes" type="string" translatable="false">font_sizes</item>
     <item name="dhis_url" type="string" translatable="false">dhis_url</item>
     <item name="dhis_user" type="string" translatable="false">dhis_user</item>
+    <item name="dhis_password" type="string" translatable="false">dhis_password</item>
     <item name="location_required" type="string" translatable="false">location_required</item>
 
 </resources>
