@@ -39,6 +39,7 @@ import android.widget.BaseAdapter;
 import android.widget.ListView;
 
 import org.eyeseetea.malariacare.DashboardActivity;
+import org.eyeseetea.malariacare.FeedbackActivity;
 import org.eyeseetea.malariacare.LoginActivity;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.SurveyActivity;
@@ -248,20 +249,35 @@ public class DashboardUnsentFragment extends ListFragment {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
 
-
                 new AlertDialog.Builder(getActivity())
-                        .setTitle("Pushing data")
-                        .setMessage("Are you sure? You can not undo this action")
-                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                        .setTitle(getActivity().getString(R.string.dialog_title_send_preview))
+                        .setMessage(getActivity().getString(R.string.dialog_content_send_preview))
+                        .setPositiveButton(getActivity().getString(R.string.send), new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface arg0, int arg1) {
-                                // We launch the login system, to authorize the push
-                                Intent authorizePush = new Intent(getActivity(), LoginActivity.class);
-                                authorizePush.putExtra("Action", Constants.AUTHORIZE_PUSH);
-                                authorizePush.putExtra("Survey", position);
-                                startActivityForResult(authorizePush, Constants.AUTHORIZE_PUSH);
+                                new AlertDialog.Builder(getActivity())
+                                        .setTitle(getActivity().getString(R.string.dialog_title_push_data))
+                                        .setMessage(getActivity().getString(R.string.dialog_content_push_data))
+                                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                                            public void onClick(DialogInterface arg0, int arg1) {
+                                                // We launch the login system, to authorize the push
+                                                Intent authorizePush = new Intent(getActivity(), LoginActivity.class);
+                                                authorizePush.putExtra("Action", Constants.AUTHORIZE_PUSH);
+                                                authorizePush.putExtra("Survey", position);
+                                                startActivityForResult(authorizePush, Constants.AUTHORIZE_PUSH);
+                                            }
+                                        })
+                                        .setNegativeButton(android.R.string.no, null).create().show();
                             }
                         })
-                        .setNegativeButton(android.R.string.no, null).create().show();
+                        .setNegativeButton(android.R.string.cancel, null)
+                        .setNeutralButton(getActivity().getString(R.string.dialog_button_preview_feedback), new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface arg0, int arg1) {
+                                // We launch the feedback activity for the selected survey
+                                startActivity(new Intent(getActivity(), FeedbackActivity.class));
+                            }
+                        }).create().show();
+
+
 
 
                 return true;
