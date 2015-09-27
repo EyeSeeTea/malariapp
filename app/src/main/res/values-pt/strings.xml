@@ -12,6 +12,7 @@
     <string name="fair">Suficiente</string>
     <string name="poor">Insuficiente</string>
     <string name="lorem_ipsum">Lorem ipsum dolor sit amet</string>
+    <string name="send">Enviar</string>
 
     <!-- settings -->
     <string name="settings_menu_about">Acerca de</string>
@@ -36,6 +37,11 @@
     <string name="dialog_title_existing_survey">Inquérito existente</string>
     <string name="dialog_content_existing_survey">Já existe um formato não enviado no sistema para essa Unid. Org.Inquérito</string>
     <string name="dialog_content_logout_confirmation">Se sair do sistema, todos os dados nao enviados serao apagados Ainda quer sair?</string>
+    <string name="dialog_title_send_preview">Envie Preview de ouro</string>
+    <string name="dialog_content_send_preview">Você quer enviar ou visualizar o feedback pesquisa?</string>
+    <string name="dialog_title_push_data">empurrando dados</string>
+    <string name="dialog_content_push_data">Tem certeza de que deseja enviar isso?</string>
+    <string name="dialog_button_preview_feedback">Pré-visualização de feedback</string>
 
     <!-- dashboard -->
     <string name="dashboard_info_feedback">Feedback</string>
