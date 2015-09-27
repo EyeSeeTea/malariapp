@@ -167,6 +167,7 @@
     </string-array>
     <string name="settings_text_dhis_server_url">URL du serveur DHIS</string>
     <string name="pref_header_general">General</string>
+    <string name="settings_text_dhis_password">Mot de passe DHIS</string>
 
     <string name="settings_array_values_font_sizes_def">@string/font_size_level2</string>
 
