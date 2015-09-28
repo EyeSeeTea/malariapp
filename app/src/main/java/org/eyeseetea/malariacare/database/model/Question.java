@@ -34,17 +34,14 @@ import com.raizlabs.android.dbflow.sql.language.Where;
 import com.raizlabs.android.dbflow.structure.BaseModel;
 
 import org.eyeseetea.malariacare.database.AppDatabase;
-import org.eyeseetea.malariacare.database.feedback.Feedback;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.utils.Constants;
-import org.eyeseetea.malariacare.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
-import java.util.concurrent.CountDownLatch;
 
 @Table(databaseName = AppDatabase.NAME)
 public class Question extends BaseModel {
@@ -493,10 +490,8 @@ public class Question extends BaseModel {
             return 0;
         }
 
-        /**
-         * Sql query that counts required questions in a program (required for % stats)
-         */
-        return (int) new Select().count().from(Question.class).as("q")
+        // Get all the quesions that may have an answer
+        List<Question> questions = new Select().from(Question.class).as("q")
                 .join(Answer.class, Join.JoinType.LEFT).as("a")
                 .on(Condition.column(ColumnAlias.columnWithTable("q", Question$Table.ANSWER_ID_ANSWER))
                         .eq(ColumnAlias.columnWithTable("a", Answer$Table.ID_ANSWER)))
@@ -512,9 +507,41 @@ public class Question extends BaseModel {
                 .join(Program.class, Join.JoinType.LEFT).as("p")
                 .on(Condition.column(ColumnAlias.columnWithTable("g", TabGroup$Table.PROGRAM_ID_PROGRAM))
                         .eq(ColumnAlias.columnWithTable("p", Program$Table.ID_PROGRAM)))
-                .where(Condition.column(ColumnAlias.columnWithTable("q", Question$Table.QUESTION_ID_PARENT)).isNull())
-                .and(Condition.column(ColumnAlias.columnWithTable("a", Answer$Table.OUTPUT)).isNot(Constants.NO_ANSWER))
-                .and(Condition.column(ColumnAlias.columnWithTable("g", TabGroup$Table.ID_TAB_GROUP)).eq(tabGroup.getId_tab_group())).count();
+                .where(Condition.column(ColumnAlias.columnWithTable("a", Answer$Table.OUTPUT)).isNot(Constants.NO_ANSWER))
+                .and(Condition.column(ColumnAlias.columnWithTable("g", TabGroup$Table.ID_TAB_GROUP)).eq(tabGroup.getId_tab_group())).queryList();
+
+        // Get children questions
+        List<Question> children = new Select().distinct().from(Question.class).as("q")
+                .join(Answer.class, Join.JoinType.LEFT).as("a")
+                .on(Condition.column(ColumnAlias.columnWithTable("q", Question$Table.ANSWER_ID_ANSWER))
+                        .eq(ColumnAlias.columnWithTable("a", Answer$Table.ID_ANSWER)))
+                .join(Header.class, Join.JoinType.LEFT).as("h")
+                .on(Condition.column(ColumnAlias.columnWithTable("q", Question$Table.HEADER_ID_HEADER))
+                        .eq(ColumnAlias.columnWithTable("h", Header$Table.ID_HEADER)))
+                .join(Tab.class, Join.JoinType.LEFT).as("t")
+                .on(Condition.column(ColumnAlias.columnWithTable("h", Header$Table.TAB_ID_TAB))
+                        .eq(ColumnAlias.columnWithTable("t", Tab$Table.ID_TAB)))
+                .join(TabGroup.class, Join.JoinType.LEFT).as("g")
+                .on(Condition.column(ColumnAlias.columnWithTable("t", Tab$Table.TABGROUP_ID_TAB_GROUP))
+                        .eq(ColumnAlias.columnWithTable("g", TabGroup$Table.ID_TAB_GROUP)))
+                .join(Program.class, Join.JoinType.LEFT).as("p")
+                .on(Condition.column(ColumnAlias.columnWithTable("g", TabGroup$Table.PROGRAM_ID_PROGRAM))
+                        .eq(ColumnAlias.columnWithTable("p", Program$Table.ID_PROGRAM)))
+                .join(QuestionRelation.class, Join.JoinType.LEFT).as("qr")
+                .on(Condition.column(ColumnAlias.columnWithTable("q", Question$Table.ID_QUESTION))
+                        .eq(ColumnAlias.columnWithTable("qr", QuestionRelation$Table.QUESTION_ID_QUESTION)))
+                .where(Condition.column(ColumnAlias.columnWithTable("a", Answer$Table.OUTPUT)).isNot(Constants.NO_ANSWER))
+                .and(Condition.column(ColumnAlias.columnWithTable("g", TabGroup$Table.ID_TAB_GROUP)).eq(tabGroup.getId_tab_group()))
+                .and(Condition.column(ColumnAlias.columnWithTable("q", Question$Table.ID_QUESTION)).isNot(0)).queryList();
+
+        // Remove from join those whose ID is 0 (not children)
+        ArrayList<Question> childrenQuestions = new ArrayList<>();
+        for(Question question: children){
+            if(question.getId_question()!=0) childrenQuestions.add(question);
+        }
+
+        // Return number of parents (total - children)
+        return questions.size()-childrenQuestions.size();
     }
 
     /**
