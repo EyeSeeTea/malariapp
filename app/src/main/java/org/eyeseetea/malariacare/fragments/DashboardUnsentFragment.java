@@ -272,8 +272,10 @@ public class DashboardUnsentFragment extends ListFragment {
                         .setNegativeButton(android.R.string.cancel, null)
                         .setNeutralButton(getActivity().getString(R.string.dialog_button_preview_feedback), new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface arg0, int arg1) {
-                                // We launch the feedback activity for the selected survey
-                                startActivity(new Intent(getActivity(), FeedbackActivity.class));
+                                //Put selected survey in session
+                                Session.setSurvey(surveys.get(position - 1));
+                                // Go to FeedbackActivity
+                                ((DashboardActivity) getActivity()).go(FeedbackActivity.class);
                             }
                         }).create().show();
 
