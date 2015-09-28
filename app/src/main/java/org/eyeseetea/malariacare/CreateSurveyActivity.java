@@ -20,6 +20,10 @@
 package org.eyeseetea.malariacare;
 
 import android.app.AlertDialog;
+import android.content.Context;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -37,21 +41,24 @@ import org.eyeseetea.malariacare.database.model.OrgUnitLevel;
 import org.eyeseetea.malariacare.database.model.Program;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.model.TabGroup;
+import org.eyeseetea.malariacare.database.utils.LocationMemory;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.layout.adapters.general.OrgUnitArrayAdapter;
 import org.eyeseetea.malariacare.layout.adapters.general.ProgramArrayAdapter;
 import org.eyeseetea.malariacare.layout.adapters.general.TabGroupArrayAdapter;
+import org.eyeseetea.malariacare.layout.listeners.SurveyLocationListener;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 import org.eyeseetea.malariacare.utils.Constants;
 import org.eyeseetea.malariacare.views.CustomTextView;
 
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
 
 public class CreateSurveyActivity extends BaseActivity {
+
+    private static String TAG=".CreateSurvey";
 
     // UI references.
     private Spinner orgUnitView;
@@ -72,6 +79,8 @@ public class CreateSurveyActivity extends BaseActivity {
     private TabGroup tabGroupDefaultOption;
 
     private LayoutInflater lInflater;
+
+    private SurveyLocationListener locationListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -141,9 +150,13 @@ public class CreateSurveyActivity extends BaseActivity {
     }
 
     private boolean isEverythingFilled() {
-        boolean isEverythingFilled = (!realOrgUnitView.getSelectedItem().equals(orgUnitDefaultOption) && !programView.getSelectedItem().equals(programDefaultOption));
-        boolean isTabGroupFilled = !tabGroupView.getSelectedItem().equals(tabGroupDefaultOption);
-        return isEverythingFilled && isTabGroupFilled;
+        try {
+            boolean isEverythingFilled = (!realOrgUnitView.getSelectedItem().equals(orgUnitDefaultOption) && !programView.getSelectedItem().equals(programDefaultOption));
+            boolean isTabGroupFilled = !tabGroupView.getSelectedItem().equals(tabGroupDefaultOption);
+            return isEverythingFilled && isTabGroupFilled;
+        }catch(NullPointerException ex){
+            return false;
+        }
     }
 
     private boolean doesSurveyExist() {
@@ -195,10 +208,34 @@ public class CreateSurveyActivity extends BaseActivity {
             survey.save();
             Session.setSurvey(survey);
 
+            //Look for coordinates
+            prepareLocationListener(survey);
+
+
             //Call Survey Activity
             finishAndGo(SurveyActivity.class);
         }
 
+    }
+
+    private void prepareLocationListener(Survey survey){
+
+
+        locationListener=new SurveyLocationListener(survey.getId_survey());
+        LocationManager locationManager=(LocationManager) LocationMemory.getContext().getSystemService(Context.LOCATION_SERVICE);
+        if(locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){
+            Log.d(TAG,"requestLocationUpdates via GPS");
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,0,0,locationListener);
+        }
+
+        if(locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)){
+            Log.d(TAG,"requestLocationUpdates via NETWORK");
+            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER,0,0,locationListener);
+        }else{
+            Location lastLocation=locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+            Log.d(TAG, "location not available via GPS|NETWORK, last know: " + lastLocation);
+            locationListener.saveLocation(lastLocation);
+        }
     }
 
     private class ProgramSpinnerListener implements AdapterView.OnItemSelectedListener {
@@ -281,7 +318,7 @@ public class CreateSurveyActivity extends BaseActivity {
                         // Hide tab group tab selector
                         childView.setVisibility(View.GONE);
                     }
-                    if (entry.getKey().equals(((Spinner)viewHolder.component).getTag())){
+                    if (entry.getKey().equals((viewHolder.component).getTag())){
                         setInvisible = true;
                     }
                 }

@@ -37,6 +37,7 @@ import android.widget.BaseAdapter;
 import android.widget.ListView;
 
 import org.eyeseetea.malariacare.DashboardActivity;
+import org.eyeseetea.malariacare.FeedbackActivity;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.SurveyActivity;
 import org.eyeseetea.malariacare.database.model.Survey;
@@ -148,7 +149,7 @@ public class DashboardSentFragment extends ListFragment {
         //Put selected survey in session
         Session.setSurvey(surveys.get(position - 1));
         // Go to SurveyActivity
-        ((DashboardActivity) getActivity()).go(SurveyActivity.class);
+        ((DashboardActivity) getActivity()).go(FeedbackActivity.class);
     }
 
     @Override

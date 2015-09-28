@@ -158,11 +158,8 @@ public class CompositeScore extends BaseModel {
             questions = new Select()
                     .from(Question.class)
                     .where(Condition.column(Question$Table.COMPOSITESCORE_ID_COMPOSITE_SCORE).eq(this.getId_composite_score()))
-                    .orderBy(CompositeScore$Table.ORDER_POS)
+                    .orderBy(true, Question$Table.ORDER_POS)
                     .queryList();
-            /*questions = Select.from(Question.class)
-                    .where(Condition.prop("composite_score")
-                    .eq(String.valueOf(this.getId()))).list();*/
         //}
         return questions;
     }
@@ -198,6 +195,7 @@ public class CompositeScore extends BaseModel {
                         .eq(ColumnAlias.columnWithTable("cs2", CompositeScore$Table.ID_COMPOSITE_SCORE)))
                 .where(Condition.column(ColumnAlias.columnWithTable("g", TabGroup$Table.ID_TAB_GROUP))
                         .eq(tabGroup.getId_tab_group()))
+                .orderBy(true, CompositeScore$Table.ORDER_POS)
                 .queryList();
 
 

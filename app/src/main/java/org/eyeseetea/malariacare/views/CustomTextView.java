@@ -58,10 +58,9 @@ public class CustomTextView extends TextView implements IEyeSeeView {
     }
 
     public void init(AttributeSet attrs, int defStyle) {
-        /*if(isInEditMode()){
-            this.setText(R.string.lorem_ipsum);
+        if(isInEditMode()){
             return;
-        }*/
+        }
         // Load attributes
         if (attrs != null) {
             a = context.obtainStyledAttributes(attrs, R.styleable.CustomTextView, defStyle, 0);

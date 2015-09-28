@@ -26,8 +26,8 @@ android {
         applicationId 'org.eyeseetea.malariacare'
         minSdkVersion 15
         targetSdkVersion 21
-        versionCode 10
-        versionName "10.0"
+        versionCode 11
+        versionName "11.0"
         multiDexEnabled true
         /*dexOptions {
             jumboMode = true
@@ -52,37 +52,49 @@ android {
     productFlavors {
         edsGhana {
             applicationId "org.eyeseetea.malariacare.eds"
-            versionName "10.0-eds-ghana"
+            versionName "11.0-eds-ghana"
             minSdkVersion 15
             targetSdkVersion 21
         }
         edsMalawi {
             applicationId "org.eyeseetea.malariacare.eds"
-            versionName "10.0-eds-malawi"
+            versionName "11.0-eds-malawi"
             minSdkVersion 15
             targetSdkVersion 21
         }
         edsMozambique {
             applicationId "org.eyeseetea.malariacare.eds"
-            versionName "10.0-eds-mozambique"
+            versionName "11.0-eds-mozambique"
             minSdkVersion 15
             targetSdkVersion 21
         }
         edsTanzania {
             applicationId "org.eyeseetea.malariacare.eds"
-            versionName "10.0-eds-tanzania"
+            versionName "11.0-eds-tanzania"
             minSdkVersion 15
             targetSdkVersion 21
         }
         edsZambia {
             applicationId "org.eyeseetea.malariacare.eds"
-            versionName "10.0-eds-zambia"
+            versionName "11.0-eds-zambia"
             minSdkVersion 15
             targetSdkVersion 21
         }
-        hnqis {
+        hnqisCongoICM {
             applicationId "org.eyeseetea.malariacare.hnqis"
-            versionName "10.0-hnqis"
+            versionName "11.0-hnqis-congo-icm"
+            minSdkVersion 15
+            targetSdkVersion 21
+        }
+        hnqisKenyaICM {
+            applicationId "org.eyeseetea.malariacare.hnqis"
+            versionName "11.0-hnqis-kenya-icm"
+            minSdkVersion 15
+            targetSdkVersion 21
+        }
+        hnqisNigeriaICM {
+            applicationId "org.eyeseetea.malariacare.hnqis"
+            versionName "11.0-hnqis-nigeria-icm"
             minSdkVersion 15
             targetSdkVersion 21
         }
@@ -109,7 +121,7 @@ dependencies {
     androidTestCompile 'com.android.support.test:rules:0.2'
     androidTestCompile 'com.android.support.test.espresso:espresso-core:2.1'
     androidTestCompile 'com.android.support.test.espresso:espresso-intents:2.1'
-    compile('com.crashlytics.sdk.android:crashlytics:2.5.1@aar') {
+    compile('com.crashlytics.sdk.android:crashlytics:2.5.2@aar') {
         transitive = true;
     }
 }

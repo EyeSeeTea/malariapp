@@ -38,8 +38,11 @@ import org.eyeseetea.malariacare.database.model.Option;
 import org.eyeseetea.malariacare.database.model.Question;
 import org.eyeseetea.malariacare.database.model.QuestionOption;
 import org.eyeseetea.malariacare.database.model.QuestionRelation;
+import org.eyeseetea.malariacare.database.model.Survey;
+import org.eyeseetea.malariacare.database.model.Value;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.ReadWriteDB;
+import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.layout.adapters.general.OptionArrayAdapter;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.utils.Constants;
@@ -101,16 +104,13 @@ public class AutoTabLayoutUtils {
         }
     }
 
+    /**
+     * Checks if given question should be hidden according to the current survey or not.
+     * @param question
+     * @return
+     */
     public static boolean isHidden(Question question) {
-        Question parent;
-        boolean hidden = false;
-
-        if ((parent = question.getQuestion()) != null) {
-            if (parent.getValueBySession() == null)
-                hidden = true;
-        }
-
-        return hidden;
+        return question.isHiddenBySurvey(Session.getSurvey());
     }
 
     /**
@@ -291,11 +291,9 @@ public class AutoTabLayoutUtils {
 
         // If parent relation found, toggle Children Spinner Visibility
         // If question has question-option, refresh the tab
-        // FIXME: the database should have the link from question to the option that triggers its show/hide action.
-        // FIXME: The db tables are there but we need to refactor the code.
         if (question.hasChildren() || question.hasQuestionOption()){
             if (question.hasChildren())
-                toggleChildrenVisibility(question, option.is(context.getString(R.string.yes)), elementInvisibility, totalNum, totalDenum);
+                toggleChildrenVisibility(question,elementInvisibility, totalNum, totalDenum);
             refreshTab = true;
         }
 
@@ -344,14 +342,16 @@ public class AutoTabLayoutUtils {
      * Given a question, make visible or invisible their children. In case all children in a header
      * became invisible, that header is also hidden
      * @param question the question whose children we want to show/hide
-     * @param visible true for make them visible, false for invisible
      */
-    private static void toggleChildrenVisibility(Question question, boolean visible, LinkedHashMap<BaseModel, Boolean> elementInvisibility, float totalNum, float totalDenum) {
+    private static void toggleChildrenVisibility(Question question, LinkedHashMap<BaseModel, Boolean> elementInvisibility, float totalNum, float totalDenum) {
         List<Question> children = question.getChildren();
         Question cachedQuestion = null;
+        Survey survey=Session.getSurvey();
+        boolean visible;
 
         for (Question child : children) {
             Header childHeader = child.getHeader();
+            visible=!child.isHiddenBySurvey(survey);
             elementInvisibility.put(child, !visible);
             if (!visible) {
                 List<Float> numdenum = ScoreRegister.getNumDenum(child);

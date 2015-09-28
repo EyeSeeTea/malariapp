@@ -53,6 +53,15 @@ public class QuestionRelation extends BaseModel {
 
     List<Match> matches;
 
+    /**
+     * Constant that reflects a parent child relationship
+     */
+    public static final int PARENT_CHILD=1;
+    /**
+     * Constant that reflects a match relationship
+     */
+    public static final int MATCH=0;
+
     @OneToMany(methods = {OneToMany.Method.SAVE, OneToMany.Method.DELETE}, variableName = "matches")
     public List<Match> getMatches() {
         //if (this.children == null){

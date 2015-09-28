@@ -12,6 +12,7 @@
     <string name="fair">Moyen</string>
     <string name="poor">Pauvre</string>
     <string name="lorem_ipsum">Lorem ipsum dolor sit amet</string>
+    <string name="send">Envoyer</string>
 
     <!-- settings -->
     <string name="settings_menu_about">A propos de cette app</string>
@@ -37,6 +38,11 @@
     <string name="dialog_title_existing_survey">Enquête existante</string>
     <string name="dialog_content_existing_survey">Il y a déjà une enquête pas encore envoyée dans le système pour le cabinet et tipe d\'enquête choisís</string>
     <string name="dialog_content_logout_confirmation">Si vous sortez du système, tous les donnés non envoyés seront perdus. Voulez-vous continuer encore ?</string>
+    <string name="dialog_title_send_preview">Envoyer ou afficher</string>
+    <string name="dialog_content_send_preview">Voulez-vous envoyer l\'enquêtte ou afficher le feedback ?</string>
+    <string name="dialog_title_push_data">Envoie des donnés</string>
+    <string name="dialog_content_push_data">Êtes-vous sûr de voulour envoyer ?</string>
+    <string name="dialog_button_preview_feedback">Afficher le Feedback</string>
 
     <!-- dashboard -->
     <string name="dashboard_info_feedback">Feedback</string>
@@ -64,6 +70,11 @@
     <!-- XXX Should it be replaced by 'assessment_title_facility_date'?-->
     <string name="feedback_title_organization_unit_date">Org Unit / Date</string>
     <string name="feedback_title_header">Retour</string>
+    <string name="feedback_show_only_failed">"Afficher seulement échoué aux questions"</string>
+    <string name="feedback_info_passed">"Passé"</string>
+    <string name="feedback_info_failed">"Manqué"</string>
+    <string name="feedback_info_not_answered">"Pas répondu"</string>
+    <string name="feedback_info_no_feedback">Aucun commentaire</string>
 
     <!-- future -->
     <string name="future_title_facility">Centre</string>
@@ -149,6 +160,8 @@
     <string name="title_activity_settings">Parametres</string>
     <string name="settings_checkbox_show_num_dems">Montrer num/dems</string>
     <string name="settings_checkbox_description_show_num_dems">S\'il est actif, les questions du formulaire montrent ses numerateurs et denominateurs, usés pour calculer la ponctuation de l\'enquêtte</string>
+    <string name="settings_checkbox_location_required">Situation requis</string>
+    <string name="settings_checkbox_description_location_required">"Si elle est activée, l'emplacement est obligatoire de présenter les données sur les dhis serveur"</string>
     <string name="settings_checkbox_customize_fonts">Personaliser les fonts?</string>
     <string name="settings_list_font_sizes">Taille des fonts</string>
     <string-array name="settings_array_titles_font_sizes">
@@ -160,6 +173,7 @@
     </string-array>
     <string name="settings_text_dhis_server_url">URL du serveur DHIS</string>
     <string name="pref_header_general">General</string>
+    <string name="settings_text_dhis_password">Mot de passe DHIS</string>
 
     <string name="settings_array_values_font_sizes_def">@string/font_size_level2</string>
 
@@ -178,7 +192,9 @@
     <string name="assessment_sent_title_state">État</string>
     <string name="assessment_sent_title_header">Evaluation(s) Envoyée(s)</string>
     <string name="assessment_sent_date">Date de remplissement</string>
+    <string name="assessment_sent_score">But</string>
     <string name="dialog_error_push_no_location">Aucun emplacement disponible</string>
+    <string name="dialog_error_push_no_location_and_required">Aucun emplacement disponible et il est un champ obligatoire</string>
     <string name="dialog_title_incorrect_org_unit">Org Unit erronées</string>
     <string name="dialog_content_incorrect_org_unit"></string>
     <string name="create_info_tabs_group">Tab Group</string>

@@ -85,4 +85,35 @@
 
     </LinearLayout>
 
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="0dp"
+        android:layout_height="fill_parent"
+        android:id="@+id/scoreContainer"
+        android:layout_weight="0.4"
+        android:layout_gravity="center"
+        android:gravity="center">
+
+        <org.eyeseetea.malariacare.views.CustomTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:id="@+id/score"
+            android:layout_gravity="center"
+            android:gravity="center_horizontal"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            app:tDimension="@string/font_size_level1"
+            app:tFontName="@string/medium_font_name" />
+
+        <View
+            android:id="@+id/survey_light"
+            android:layout_width="10dp"
+            android:layout_height="10dp"
+            android:background="@drawable/circle_shape_red"
+            android:layout_margin="15dp"
+            android:layout_marginTop="20dp" />
+
+    </LinearLayout>
+
 </TableRow>

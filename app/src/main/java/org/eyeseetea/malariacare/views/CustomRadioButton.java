@@ -88,6 +88,11 @@ public class CustomRadioButton extends RadioButton implements IEyeSeeView {
      * @param defStyle
      */
     public void init(AttributeSet attrs, int defStyle) {
+
+        if(isInEditMode()){
+            return;
+        }
+
         // Load attributes
         if (attrs != null) {
             a = context.obtainStyledAttributes(attrs, R.styleable.CustomRadioButton, defStyle, 0);
