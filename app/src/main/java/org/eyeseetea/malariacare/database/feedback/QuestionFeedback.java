@@ -94,12 +94,6 @@ public class QuestionFeedback implements Feedback {
      * @return
      */
     public String getFeedback(){
-
-        //Pass->null (cannot return 'No feedback' due to i18N
-        if(this.isPassed()){
-            return null;
-        }
-
         String questionFeedback=this.question.getFeedback();
         //XXX Temporal hack to show some demo feedback
         if(questionFeedback!=null && !questionFeedback.isEmpty()){
