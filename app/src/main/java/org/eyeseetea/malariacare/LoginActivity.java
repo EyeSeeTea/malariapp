@@ -89,6 +89,7 @@ public class LoginActivity extends BaseActivity implements LoaderCallbacks<Curso
         // Set up the login form.
         mUserView = (AutoCompleteTextView) findViewById(R.id.user);
         mServerUrlView = (AutoCompleteTextView) findViewById(R.id.dhis_url);
+        mPasswordView = (EditText) findViewById(R.id.password);
         populateAutoComplete();
 
         // In case the user set previously a different DHIS2 server URL or user in the settings, this is filled in automatically.
@@ -102,7 +103,11 @@ public class LoginActivity extends BaseActivity implements LoaderCallbacks<Curso
             mUserView.setText(userInPreferences);
         }
 
-        mPasswordView = (EditText) findViewById(R.id.password);
+        String passwordInPreferences = settings.getString(getApplicationContext().getString(R.string.dhis_password), "");
+        if (!passwordInPreferences.equals("")){
+            mPasswordView.setText(passwordInPreferences);
+        }
+
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
@@ -295,6 +300,7 @@ public class LoginActivity extends BaseActivity implements LoaderCallbacks<Curso
                 // restablish user with the data entered
                 initUser();
                 setDhisUserPreference();
+                setDhisPasswordPreference();
                 setDhisServerPreference();
             }catch(Exception ex) {
                 Log.e(".LoginActivity", "Error doInBackground login", ex);
@@ -368,6 +374,13 @@ public class LoginActivity extends BaseActivity implements LoaderCallbacks<Curso
          */
         private void setDhisUserPreference(){
             setPreference(mUserView, R.string.dhis_user);
+        }
+
+        /**
+         * Fill in the dhis password preference with what user selected in the login field
+         */
+        private void setDhisPasswordPreference(){
+            setPreference(mPasswordView, R.string.dhis_password);
         }
 
         /**

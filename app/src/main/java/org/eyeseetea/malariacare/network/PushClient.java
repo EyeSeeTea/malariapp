@@ -38,6 +38,7 @@ import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.model.CompositeScore;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.model.Value;
+import org.eyeseetea.malariacare.database.utils.LocationMemory;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
@@ -307,7 +308,7 @@ public class PushClient {
      * @throws Exception
      */
     private JSONObject prepareMetadata() throws Exception{
-        Log.d(TAG,"prepareMetadata for survey: " + survey.getId_survey());
+        Log.d(TAG, "prepareMetadata for survey: " + survey.getId_survey());
 
         JSONObject object=new JSONObject();
         object.put(TAG_PROGRAM, survey.getTabGroup().getProgram().getUid());
@@ -316,14 +317,13 @@ public class PushClient {
         object.put(TAG_STATUS,COMPLETED );
         object.put(TAG_STOREDBY, survey.getUser().getName());
 
-        Location lastLocation = Session.getLocation();
+        Location lastLocation = LocationMemory.get(survey.getId_survey());
         //If location is required but there is no location -> exception
         if(PreferencesState.getInstance().isLocationRequired() && lastLocation==null){
             throw new Exception(activity.getString(R.string.dialog_error_push_no_location_and_required));
         }
         //Otherwise (not required or there are coords)
-        if (lastLocation!=null)
-            object.put(TAG_COORDINATE, prepareCoordinates(lastLocation));
+        object.put(TAG_COORDINATE, prepareCoordinates(lastLocation));
 
         Log.d(TAG, "prepareMetadata: " + object.toString());
         return object;
@@ -333,8 +333,13 @@ public class PushClient {
 
         JSONObject coordinate = new JSONObject();
 
-        coordinate.put(TAG_COORDINATE_LAT, location.getLatitude());
-        coordinate.put(TAG_COORDINATE_LNG, location.getLongitude());
+        if(location==null){
+            coordinate.put(TAG_COORDINATE_LAT, JSONObject.NULL);
+            coordinate.put(TAG_COORDINATE_LNG, JSONObject.NULL);
+        }else{
+            coordinate.put(TAG_COORDINATE_LAT, location.getLatitude());
+            coordinate.put(TAG_COORDINATE_LNG, location.getLongitude());
+        }
 
         return coordinate;
     }

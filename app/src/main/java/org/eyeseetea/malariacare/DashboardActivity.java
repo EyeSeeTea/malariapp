@@ -21,12 +21,8 @@ package org.eyeseetea.malariacare;
 
 import android.app.AlertDialog;
 import android.app.FragmentTransaction;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -48,7 +44,7 @@ public class DashboardActivity extends BaseActivity {
 
     private final static String TAG=".DDetailsActivity";
 
-    private LocationListener locationListener;
+    private boolean reloadOnResume=true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,7 +84,6 @@ public class DashboardActivity extends BaseActivity {
     public void onResume(){
         Log.d(TAG, "onResume");
         super.onResume();
-        prepareLocationListener();
         getSurveysFromService();
     }
 
@@ -96,36 +91,21 @@ public class DashboardActivity extends BaseActivity {
     public void onPause(){
         Log.d(TAG, "onPause");
         super.onPause();
-
-        //No locationListener working no need to unregister
-        if(locationListener==null){
-            return;
-        }
-        LocationManager locationManager=(LocationManager)this.getSystemService(Context.LOCATION_SERVICE);
-        locationManager.removeUpdates(locationListener);
     }
 
-    private void prepareLocationListener(){
-        locationListener=new DashboardLocationListener();
-        LocationManager locationManager=(LocationManager)this.getSystemService(Context.LOCATION_SERVICE);
-        if(locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){
-            Log.d(TAG,"requestLocationUpdates via GPS");
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,0,0,locationListener);
-        }
 
-        if(locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)){
-            Log.d(TAG,"requestLocationUpdates via NETWORK");
-            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER,0,0,locationListener);
-        }else{
-            locationListener=null;
-            Location lastLocation=locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-            Log.d(TAG,"location not available via GPS|NETWORK, last know: "+lastLocation);
-            Session.setLocation(lastLocation);
-        }
+
+    public void setReloadOnResume(boolean doReload){
+        this.reloadOnResume=false;
     }
 
     public void getSurveysFromService(){
-        Log.d(TAG, "getSurveysFromService");
+        Log.d(TAG, "getSurveysFromService ("+reloadOnResume+")");
+        if(!reloadOnResume){
+            //Flag is readjusted
+            reloadOnResume=true;
+            return;
+        }
         Intent surveysIntent=new Intent(this, SurveyService.class);
         surveysIntent.putExtra(SurveyService.SERVICE_METHOD, SurveyService.RELOAD_DASHBOARD_ACTION);
         this.startService(surveysIntent);
@@ -150,30 +130,6 @@ public class DashboardActivity extends BaseActivity {
                         startActivity(intent);
                     }
                 }).create().show();
-    }
-
-    public class DashboardLocationListener implements LocationListener {
-
-        @Override
-        public void onLocationChanged(Location location) {
-            Log.d(TAG,"onLocationChanged "+location.toString());
-            Session.setLocation(location);
-        }
-
-        @Override
-        public void onStatusChanged(String provider, int status, Bundle extras) {
-
-        }
-
-        @Override
-        public void onProviderEnabled(String provider) {
-
-        }
-
-        @Override
-        public void onProviderDisabled(String provider) {
-
-        }
     }
 
 /**

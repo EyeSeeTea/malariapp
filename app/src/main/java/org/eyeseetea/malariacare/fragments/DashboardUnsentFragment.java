@@ -39,6 +39,7 @@ import android.widget.BaseAdapter;
 import android.widget.ListView;
 
 import org.eyeseetea.malariacare.DashboardActivity;
+import org.eyeseetea.malariacare.FeedbackActivity;
 import org.eyeseetea.malariacare.LoginActivity;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.SurveyActivity;
@@ -117,6 +118,9 @@ public class DashboardUnsentFragment extends ListFragment {
     @Override
     public void onResume(){
         Log.d(TAG, "onResume");
+        //Loading...
+        setListShown(false);
+        //Listen for data
         registerSurveysReceiver();
         super.onResume();
     }
@@ -245,28 +249,40 @@ public class DashboardUnsentFragment extends ListFragment {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
 
-
                 new AlertDialog.Builder(getActivity())
-                        .setTitle("Pushing data")
-                        .setMessage("Are you sure? You can not undo this action")
-                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                        .setTitle(getActivity().getString(R.string.dialog_title_send_preview))
+                        .setMessage(getActivity().getString(R.string.dialog_content_send_preview))
+                        .setPositiveButton(getActivity().getString(R.string.send), new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface arg0, int arg1) {
-                                // We launch the login system, to authorize the push
-                                Intent authorizePush = new Intent(getActivity(), LoginActivity.class);
-                                authorizePush.putExtra("Action", Constants.AUTHORIZE_PUSH);
-                                authorizePush.putExtra("Survey", position);
-                                startActivityForResult(authorizePush, Constants.AUTHORIZE_PUSH);
+                                new AlertDialog.Builder(getActivity())
+                                        .setTitle(getActivity().getString(R.string.dialog_title_push_data))
+                                        .setMessage(getActivity().getString(R.string.dialog_content_push_data))
+                                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                                            public void onClick(DialogInterface arg0, int arg1) {
+                                                // We launch the login system, to authorize the push
+                                                Intent authorizePush = new Intent(getActivity(), LoginActivity.class);
+                                                authorizePush.putExtra("Action", Constants.AUTHORIZE_PUSH);
+                                                authorizePush.putExtra("Survey", position);
+                                                startActivityForResult(authorizePush, Constants.AUTHORIZE_PUSH);
+                                            }
+                                        })
+                                        .setNegativeButton(android.R.string.no, null).create().show();
                             }
                         })
-                        .setNegativeButton(android.R.string.no, null).create().show();
+                        .setNegativeButton(android.R.string.cancel, null)
+                        .setNeutralButton(getActivity().getString(R.string.dialog_button_preview_feedback), new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface arg0, int arg1) {
+                                // We launch the feedback activity for the selected survey
+                                startActivity(new Intent(getActivity(), FeedbackActivity.class));
+                            }
+                        }).create().show();
+
+
 
 
                 return true;
             }
         });
-
-
-        setListShown(false);
     }
 
 
@@ -305,9 +321,14 @@ public class DashboardUnsentFragment extends ListFragment {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data){
+        Log.d(TAG, "onActivityResult");
         // This captures the return code sent by Login Activity, to know whether or not the user got the authorization
         if(requestCode == Constants.AUTHORIZE_PUSH) {
             if(resultCode == Activity.RESULT_OK) {
+
+                //Tell the activity NOT to reload on next resume since the push itself will do it
+                ((DashboardActivity)getActivity()).setReloadOnResume(false);
+
                 // In case authorization was ok, we launch push action
                 Bundle extras = data.getExtras();
                 int position = extras.getInt("Survey", 0);
@@ -373,21 +394,7 @@ public class DashboardUnsentFragment extends ListFragment {
         @Override
         protected void onPostExecute(PushResult pushResult) {
             super.onPostExecute(pushResult);
-            setListShown(true);
             showResponse(pushResult);
-            if(pushResult.isSuccessful()) {
-                survey.setStatus(Constants.SURVEY_SENT);
-                survey.update();
-            }
-            // Launch service to update dashboard
-            Intent surveysIntent=new Intent(getActivity(), SurveyService.class);
-            surveysIntent.putExtra(SurveyService.SERVICE_METHOD, SurveyService.RELOAD_DASHBOARD_ACTION);
-            getActivity().startService(surveysIntent);
-            // Change adapters according to service answer
-            Session.getAdapterUnsent().setItems((List) Session.popServiceValue(SurveyService.ALL_UNSENT_SURVEYS_ACTION));
-            Session.getAdapterSent().setItems((List) Session.popServiceValue(SurveyService.ALL_SENT_SURVEYS_ACTION));
-            Session.getAdapterUnsent().notifyDataSetChanged();
-            Session.getAdapterSent().notifyDataSetChanged();
         }
 
         /**

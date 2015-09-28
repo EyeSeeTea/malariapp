@@ -19,6 +19,7 @@
     <string name="poor">Poor</string>
     <string name="plus" translatable="false">+</string>
     <string name="lorem_ipsum">Lorem ipsum dolor sit amet</string>
+    <string name="send">Send</string>
 
     <!-- settings -->
     <string name="settings_menu_about">About</string>
@@ -46,6 +47,11 @@
     <string name="dialog_title_incorrect_org_unit">Incorrect Org Unit</string>
     <string name="dialog_content_incorrect_org_unit">Please select a final org unit</string>
     <string name="dialog_content_logout_confirmation">If you exit the system, all the not sent data will be deleted. Do you still want to exit?</string>
+    <string name="dialog_title_send_preview">Send or Preview</string>
+    <string name="dialog_content_send_preview">Do you want to send survey or preview the feedback?</string>
+    <string name="dialog_title_push_data">Pushing data</string>
+    <string name="dialog_content_push_data">Are you sure that you want to send? You cannot undo this action</string>
+    <string name="dialog_button_preview_feedback">Preview Feedback</string>
 
     <!-- dashboard -->
     <string name="dashboard_info_feedback">Feedback</string>
@@ -80,8 +86,11 @@
     <string name="feedback_title_organization_unit_date">Org Unit / Date</string>
     <string name="feedback_title_header">Feedback</string>
     <string name="feedback_show_only_failed">Show only failed questions</string>
-    <string name="feedback_info_passed">Passed</string>
-    <string name="feedback_info_failed">Failed</string>
+    <string name="feedback_info_passed">Pass</string>
+    <string name="feedback_info_failed">Fail</string>
+    <string name="feedback_info_not_answered">NA</string>
+    <string name="feedback_info_no_feedback">No feedback</string>
+
 
     <!-- future -->
     <string name="future_title_facility">Facility</string>
@@ -203,6 +212,7 @@
     </string-array>
     <string name="settings_text_dhis_server_url">DHIS Server URL</string>
     <string name="settings_text_dhis_user">DHIS user</string>
+    <string name="settings_text_dhis_password">DHIS password</string>
     <string name="pref_header_general">General</string>
 
     <string name="settings_array_values_font_sizes_def">@string/font_size_level2</string>
@@ -241,6 +251,7 @@
     <item name="font_sizes" type="string" translatable="false">font_sizes</item>
     <item name="dhis_url" type="string" translatable="false">dhis_url</item>
     <item name="dhis_user" type="string" translatable="false">dhis_user</item>
+    <item name="dhis_password" type="string" translatable="false">dhis_password</item>
     <item name="location_required" type="string" translatable="false">location_required</item>
 
 </resources>

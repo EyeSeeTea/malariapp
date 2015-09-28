@@ -94,12 +94,19 @@ public class QuestionFeedback implements Feedback {
      * @return
      */
     public String getFeedback(){
+
+        //Pass->null (cannot return 'No feedback' due to i18N
+        if(this.isPassed()){
+            return null;
+        }
+
         String questionFeedback=this.question.getFeedback();
         //XXX Temporal hack to show some demo feedback
         if(questionFeedback!=null && !questionFeedback.isEmpty()){
             return questionFeedback;
         }
-        return "Some <b>mocked</b> feedback that includes<br/> breaklines and some <a href='http://www.psi.org/'>links</a>";
+        String mockData="<p>No feedback available for this question.</p>";
+        return mockData;
     }
 
     @Override

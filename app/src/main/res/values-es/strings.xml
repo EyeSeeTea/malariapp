@@ -12,6 +12,7 @@
     <string name="fair">Normal</string>
     <string name="poor">Mal</string>
     <string name="lorem_ipsum">Lorem ipsum dolor sit amet</string>
+    <string name="send">Enviar</string>
 
     <!-- settings -->
     <string name="settings_menu_about">Acerca de</string>
@@ -36,6 +37,11 @@
     <string name="dialog_title_existing_survey">Encuesta existente</string>
     <string name="dialog_content_existing_survey">Ya existe una encuesta previa no enviada para esa centro/tipo de encuesta</string>
     <string name="dialog_content_logout_confirmation">Si se desconecta del sistema, se borrarán todas las encuestas no enviadas. ¿Quiere continuar?</string>
+    <string name="dialog_title_send_preview">Enviar o previsualizar</string>
+    <string name="dialog_content_send_preview">¿Desea enviar o previsualizar el feedback?</string>
+    <string name="dialog_title_push_data">Enviar los datos</string>
+    <string name="dialog_content_push_data">¿Está seguro de enviar? No podrá deshacer esta acción</string>
+    <string name="dialog_button_preview_feedback">Previsualizar Feedback</string>
 
     <!-- dashboard -->
     <string name="dashboard_info_feedback">Feedback</string>
@@ -67,6 +73,9 @@
     <string name="feedback_show_only_failed">Mostrar solo preguntas falladas</string>
     <string name="feedback_info_passed">Aprobado</string>
     <string name="feedback_info_failed">Suspenso</string>
+    <string name="feedback_info_not_answered">Sin respuesta</string>
+    <string name="feedback_info_no_feedback">No feedback</string>
+
 
     <!-- future -->
     <string name="future_title_facility">Centro de salud</string>
@@ -164,6 +173,7 @@
         <item>Extra grande</item>
     </string-array>
     <string name="settings_text_dhis_server_url">URL de servidor DHIS</string>
+    <string name="settings_text_dhis_password">Contraseña DHIS</string>
     <string name="pref_header_general">General</string>
 
     <string name="settings_array_values_font_sizes_def">@string/font_size_level2</string>

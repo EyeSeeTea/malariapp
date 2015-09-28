@@ -12,6 +12,7 @@
     <string name="fair">Suficiente</string>
     <string name="poor">Insuficiente</string>
     <string name="lorem_ipsum">Lorem ipsum dolor sit amet</string>
+    <string name="send">Enviar</string>
 
     <!-- settings -->
     <string name="settings_menu_about">Acerca de</string>
@@ -36,6 +37,11 @@
     <string name="dialog_title_existing_survey">Inquérito existente</string>
     <string name="dialog_content_existing_survey">Já existe um formato não enviado no sistema para essa Unid. Org.Inquérito</string>
     <string name="dialog_content_logout_confirmation">Se sair do sistema, todos os dados nao enviados serao apagados Ainda quer sair?</string>
+    <string name="dialog_title_send_preview">Envie Preview de ouro</string>
+    <string name="dialog_content_send_preview">Você quer enviar ou visualizar o feedback pesquisa?</string>
+    <string name="dialog_title_push_data">empurrando dados</string>
+    <string name="dialog_content_push_data">Tem certeza de que deseja enviar isso?</string>
+    <string name="dialog_button_preview_feedback">Pré-visualização de feedback</string>
 
     <!-- dashboard -->
     <string name="dashboard_info_feedback">Feedback</string>
@@ -71,6 +77,10 @@
     <string name="feedback_show_only_failed">"Mostrar só falhou perguntas"</string>
     <string name="feedback_info_passed">Aprovado</string>
     <string name="feedback_info_failed">Suspenso</string>
+    <string name="feedback_info_not_answered">"Não respondeu"</string>
+    <string name="feedback_info_no_feedback">Sem feedback</string>
+
+
 
     <!-- future -->
     <string name="future_title_facility">Unidade de Saúde</string>
@@ -175,6 +185,7 @@
     </string-array>
     <string name="settings_text_dhis_server_url">URL do servidor SISD</string>
     <string name="pref_header_general">Geral</string>
+    <string name="settings_text_dhis_password">Senha DHIS</string>
 
     <string name="settings_array_values_font_sizes_def">@string/font_size_level2</string>
 
