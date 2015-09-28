@@ -46,6 +46,9 @@ public class FeedbackBuilder {
         //Prepare scores
         List<CompositeScore> compositeScoreList= ScoreRegister.loadCompositeScores(Session.getSurvey());
 
+        //Calculate main score
+        survey.setMainScore(ScoreRegister.calculateMainScore(compositeScoreList));
+
         //For each score add proper items
         for(CompositeScore compositeScore:compositeScoreList){
             //add score
