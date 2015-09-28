@@ -73,7 +73,7 @@
     <string name="feedback_show_only_failed">Mostrar solo preguntas falladas</string>
     <string name="feedback_info_passed">Aprobado</string>
     <string name="feedback_info_failed">Suspenso</string>
-    <string name="feedback_info_not_answered">Sin responder</string>
+    <string name="feedback_info_not_answered">Sin respuesta</string>
     <string name="feedback_info_no_feedback">No feedback</string>
 
 

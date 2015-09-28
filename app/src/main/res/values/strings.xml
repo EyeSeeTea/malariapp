@@ -88,7 +88,7 @@
     <string name="feedback_show_only_failed">Show only failed questions</string>
     <string name="feedback_info_passed">Pass</string>
     <string name="feedback_info_failed">Fail</string>
-    <string name="feedback_info_not_answered">Not answered</string>
+    <string name="feedback_info_not_answered">NA</string>
     <string name="feedback_info_no_feedback">No feedback</string>
 
 
