@@ -27,6 +27,7 @@ import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -35,19 +36,36 @@ import java.util.List;
  */
 public class FeedbackBuilder {
 
-
     /**
      * Builds an ordered list of feedback items for the given survey
      * @param survey
      * @return
      */
     public static List<Feedback> build(Survey survey){
+        return build(survey, false);
+    }
+
+    /**
+     * Builds an ordered list of feedback items for the given survey
+     * @param survey
+     * @param parents true for representing every composite, including parents, otherwise parents are removed
+     * @return
+     */
+    public static List<Feedback> build(Survey survey, boolean parents){
         List<Feedback> feedbackList=new ArrayList<>();
         //Prepare scores
         List<CompositeScore> compositeScoreList= ScoreRegister.loadCompositeScores(Session.getSurvey());
 
         //Calculate main score
         survey.setMainScore(ScoreRegister.calculateMainScore(compositeScoreList));
+
+        if (!parents) {
+            //Remove parents from list (to avoid showing the parent composite that is there just to push the overall score)
+            for (Iterator<CompositeScore> iterator = compositeScoreList.iterator(); iterator.hasNext(); ) {
+                CompositeScore compositeScore = iterator.next();
+                if (!compositeScore.hasParent()) iterator.remove();
+            }
+        }
 
         //For each score add proper items
         for(CompositeScore compositeScore:compositeScoreList){
