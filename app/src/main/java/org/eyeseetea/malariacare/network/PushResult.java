@@ -29,6 +29,8 @@ public class PushResult {
     public static final String UPDATED = "updated";
     public static final String IMPORTED = "imported";
     public static final String IGNORED = "ignored";
+    public static final String DHIS220_RESPONSE = "response";
+
     private JSONObject jsonObject;
     private Exception exception;
 
@@ -75,7 +77,15 @@ public class PushResult {
 
     private String getValue(String key){
         try {
-            return jsonObject.get(key).toString();
+            //DHIS 2.19
+            return jsonObject.getString(key);
+        } catch (JSONException e){
+        }
+
+        try {
+            //DHIS 2.20
+            JSONObject response=jsonObject.getJSONObject(DHIS220_RESPONSE);
+            return response.getString(key);
         } catch (JSONException e) {
             return "";
         }
