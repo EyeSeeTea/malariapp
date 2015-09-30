@@ -20,6 +20,7 @@
 package org.eyeseetea.malariacare.layout.utils;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -60,6 +61,8 @@ import java.util.Map;
  * Created by adrian on 15/08/15.
  */
 public class AutoTabLayoutUtils {
+
+    private static final String TAG = ".ATLayoutUtils";
 
     //Store the Views references for each row (to avoid many calls to getViewById)
     public static class ViewHolder {
@@ -240,38 +243,11 @@ public class AutoTabLayoutUtils {
         return Booleans.countTrue(Booleans.toArray(elementInvisibility.values()));
     }
 
-    private static boolean checkMatches(Question question) {
-        for (QuestionRelation questionRelation : question.getQuestionRelations()){
-            Map<Question, Option> questionOptionMap = new HashMap<>();
-            for (Match match : questionRelation.getMatches()){
-                boolean isMatch = true;
-                for (QuestionOption questionOption : match.getQuestionOptions()){
-                    if  (!questionOptionMap.containsKey(questionOption.getQuestion())) {
-                        Option currentOption = ReadWriteDB.readOptionAnswered(questionOption.getQuestion());
-                        if (currentOption == null)
-                            return false;
-                        else
-                            questionOptionMap.put(questionOption.getQuestion(), currentOption);
-                    }
-
-                    if (!questionOptionMap.get(questionOption.getQuestion()).equals(questionOption.getOption())){
-                        isMatch= false;
-                        break;
-                    }
-                }
-                if (isMatch)
-                    return true;
-            }
-        }
-        return false;
-    }
-
     public static boolean autoFillAnswer(AutoTabLayoutUtils.ViewHolder viewHolder, AutoTabLayoutUtils.ScoreHolder scoreHolder, Question question, float totalNum, float totalDenum, Context context, LinkedHashMap<BaseModel, Boolean> elementInvisibility) {
+        //FIXME Yes|No are 'hardcoded' here by using options 0|1
+        int option=question.isTriggered(Session.getSurvey())?0:1;
 
-        int option = 1;
-        if (checkMatches(question))
-            option = 0;
-
+        //Select option according to trigger
         return itemSelected(viewHolder, scoreHolder, question, question.getAnswer().getOptions().get(option), totalNum, totalDenum, context, elementInvisibility);
     }
 
