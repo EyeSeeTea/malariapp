@@ -75,8 +75,10 @@ public class FeedbackBuilder {
             //add its questions
             List<Question> questions=compositeScore.getQuestions();
             for(Question question:questions){
-                Value valueInSurvey=question.getValueBySurvey(survey);
-                feedbackList.add(new QuestionFeedback(question, valueInSurvey));
+                if(!question.isHiddenBySurvey(survey)) {
+                    Value valueInSurvey = question.getValueBySurvey(survey);
+                    feedbackList.add(new QuestionFeedback(question, valueInSurvey));
+                }
             }
         }
         return feedbackList;
