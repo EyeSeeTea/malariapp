@@ -37,7 +37,6 @@ import org.eyeseetea.malariacare.database.AppDatabase;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.utils.Constants;
-import org.eyeseetea.malariacare.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -555,7 +554,7 @@ public class Question extends BaseModel {
                 .queryList();
 
         //No values no match
-        if(questionOptions.size()!=2){
+        if(questionOptions.size()==0){
             return false;
         }
 
