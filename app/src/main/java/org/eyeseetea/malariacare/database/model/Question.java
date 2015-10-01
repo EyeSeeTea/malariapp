@@ -490,8 +490,9 @@ public class Question extends BaseModel {
             return 0;
         }
 
-        // Get all the quesions that may have an answer
-        List<Question> questions = new Select().from(Question.class).as("q")
+        // Count all the quesions that may have an answer
+        long totalAnswerableQuestions = new Select().count()
+                .from(Question.class).as("q")
                 .join(Answer.class, Join.JoinType.LEFT).as("a")
                 .on(Condition.column(ColumnAlias.columnWithTable("q", Question$Table.ANSWER_ID_ANSWER))
                         .eq(ColumnAlias.columnWithTable("a", Answer$Table.ID_ANSWER)))
@@ -501,17 +502,15 @@ public class Question extends BaseModel {
                 .join(Tab.class, Join.JoinType.LEFT).as("t")
                 .on(Condition.column(ColumnAlias.columnWithTable("h", Header$Table.TAB_ID_TAB))
                         .eq(ColumnAlias.columnWithTable("t", Tab$Table.ID_TAB)))
-                .join(TabGroup.class, Join.JoinType.LEFT).as("g")
-                .on(Condition.column(ColumnAlias.columnWithTable("t", Tab$Table.TABGROUP_ID_TAB_GROUP))
-                        .eq(ColumnAlias.columnWithTable("g", TabGroup$Table.ID_TAB_GROUP)))
-                .join(Program.class, Join.JoinType.LEFT).as("p")
-                .on(Condition.column(ColumnAlias.columnWithTable("g", TabGroup$Table.PROGRAM_ID_PROGRAM))
-                        .eq(ColumnAlias.columnWithTable("p", Program$Table.ID_PROGRAM)))
                 .where(Condition.column(ColumnAlias.columnWithTable("a", Answer$Table.OUTPUT)).isNot(Constants.NO_ANSWER))
-                .and(Condition.column(ColumnAlias.columnWithTable("g", TabGroup$Table.ID_TAB_GROUP)).eq(tabGroup.getId_tab_group())).queryList();
+                .and(Condition.column(ColumnAlias.columnWithTable("t", Tab$Table.TABGROUP_ID_TAB_GROUP)).eq(tabGroup.getId_tab_group())).count();
 
-        // Get children questions
-        List<Question> children = new Select().distinct().from(Question.class).as("q")
+        // Count children questions from the given taggroup
+        long numChildrenQuestion = new Select().count()
+                .from(QuestionRelation.class).as("qr")
+                .join(Question.class, Join.JoinType.LEFT).as("q")
+                .on(Condition.column(ColumnAlias.columnWithTable("qr", QuestionRelation$Table.QUESTION_ID_QUESTION))
+                        .eq(ColumnAlias.columnWithTable("q", Question$Table.ID_QUESTION)))
                 .join(Answer.class, Join.JoinType.LEFT).as("a")
                 .on(Condition.column(ColumnAlias.columnWithTable("q", Question$Table.ANSWER_ID_ANSWER))
                         .eq(ColumnAlias.columnWithTable("a", Answer$Table.ID_ANSWER)))
@@ -521,27 +520,62 @@ public class Question extends BaseModel {
                 .join(Tab.class, Join.JoinType.LEFT).as("t")
                 .on(Condition.column(ColumnAlias.columnWithTable("h", Header$Table.TAB_ID_TAB))
                         .eq(ColumnAlias.columnWithTable("t", Tab$Table.ID_TAB)))
-                .join(TabGroup.class, Join.JoinType.LEFT).as("g")
-                .on(Condition.column(ColumnAlias.columnWithTable("t", Tab$Table.TABGROUP_ID_TAB_GROUP))
-                        .eq(ColumnAlias.columnWithTable("g", TabGroup$Table.ID_TAB_GROUP)))
-                .join(Program.class, Join.JoinType.LEFT).as("p")
-                .on(Condition.column(ColumnAlias.columnWithTable("g", TabGroup$Table.PROGRAM_ID_PROGRAM))
-                        .eq(ColumnAlias.columnWithTable("p", Program$Table.ID_PROGRAM)))
-                .join(QuestionRelation.class, Join.JoinType.LEFT).as("qr")
-                .on(Condition.column(ColumnAlias.columnWithTable("q", Question$Table.ID_QUESTION))
-                        .eq(ColumnAlias.columnWithTable("qr", QuestionRelation$Table.QUESTION_ID_QUESTION)))
                 .where(Condition.column(ColumnAlias.columnWithTable("a", Answer$Table.OUTPUT)).isNot(Constants.NO_ANSWER))
-                .and(Condition.column(ColumnAlias.columnWithTable("g", TabGroup$Table.ID_TAB_GROUP)).eq(tabGroup.getId_tab_group()))
-                .and(Condition.column(ColumnAlias.columnWithTable("q", Question$Table.ID_QUESTION)).isNot(0)).queryList();
-
-        // Remove from join those whose ID is 0 (not children)
-        ArrayList<Question> childrenQuestions = new ArrayList<>();
-        for(Question question: children){
-            if(question.getId_question()!=0) childrenQuestions.add(question);
-        }
+                .and(Condition.column(ColumnAlias.columnWithTable("t", Tab$Table.TABGROUP_ID_TAB_GROUP)).eq(tabGroup.getId_tab_group()))
+                .and(Condition.column(ColumnAlias.columnWithTable("qr", QuestionRelation$Table.OPERATION)).eq(Constants.OPERATION_TYPE_PARENT)).count();
 
         // Return number of parents (total - children)
-        return questions.size()-childrenQuestions.size();
+        return (int) (totalAnswerableQuestions-numChildrenQuestion);
+    }
+
+    /**
+     * Checks if this question is triggered according to the current values of the given survey.
+     * Only applies to question with answers DROPDOWN_DISABLED
+     *
+     * @param survey
+     * @return
+     */
+    public boolean isTriggered(Survey survey){
+
+        //No survey no party
+        if(survey==null || survey.getId_survey()==null){
+            return false;
+        }
+
+        //Only disabled dropdowns
+        if(this.getAnswer().getOutput()!=Constants.DROPDOWN_LIST_DISABLED){
+            return false;
+        }
+
+        //Find questionoptions for q1 and q2 and check same match
+        List<QuestionOption> questionOptions = new Select().from(QuestionOption.class).as("qo")
+                .join(Match.class, Join.JoinType.LEFT).as("m")
+                .on(Condition.column(ColumnAlias.columnWithTable("qo", QuestionOption$Table.MATCH_ID_MATCH)).eq(ColumnAlias.columnWithTable("m", Match$Table.ID_MATCH)))
+
+                .join(QuestionRelation.class, Join.JoinType.LEFT).as("qr")
+                .on(Condition.column(ColumnAlias.columnWithTable("m", Match$Table.QUESTIONRELATION_ID_QUESTION_RELATION)).eq(ColumnAlias.columnWithTable("qr", QuestionRelation$Table.ID_QUESTION_RELATION)))
+
+                .join(Value.class, Join.JoinType.LEFT).as("v")
+                .on(
+                        Condition.column(ColumnAlias.columnWithTable("v", Value$Table.QUESTION_ID_QUESTION))
+                                .eq(ColumnAlias.columnWithTable("qo", QuestionOption$Table.QUESTION_ID_QUESTION)),
+                        Condition.column(ColumnAlias.columnWithTable("v", Value$Table.OPTION_ID_OPTION))
+                                .eq(ColumnAlias.columnWithTable("qo", QuestionOption$Table.OPTION_ID_OPTION)))
+                .where(Condition.column(ColumnAlias.columnWithTable("v", Value$Table.SURVEY_ID_SURVEY)).eq(survey.getId_survey()))
+                .and(Condition.column(ColumnAlias.columnWithTable("qr", QuestionRelation$Table.QUESTION_ID_QUESTION)).eq(this.getId_question()))
+                .and(Condition.column(ColumnAlias.columnWithTable("qr", QuestionRelation$Table.OPERATION)).eq(Constants.OPERATION_TYPE_MATCH))
+                .queryList();
+
+        //No values no match
+        if(questionOptions.size()!=2){
+            return false;
+        }
+
+        //Match is triggered if questionoptions have same matchid
+        long idmatchQ1=questionOptions.get(0).getMatch().getId_match();
+        long idmatchQ2=questionOptions.get(1).getMatch().getId_match();
+        return idmatchQ1==idmatchQ2;
+
     }
 
     /**

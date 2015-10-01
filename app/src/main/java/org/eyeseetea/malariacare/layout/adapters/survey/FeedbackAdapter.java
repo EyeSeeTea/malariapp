@@ -148,17 +148,10 @@ public class FeedbackAdapter extends BaseAdapter {
 
         //Score label
         textView=(TextView)rowLayout.findViewById(R.id.feedback_score_label);
-        int msgId, textColor;
-        if(feedback.getOption()==null || feedback.getOption().isEmpty()){
-            msgId = R.string.feedback_info_not_answered;
-            textColor = R.color.amber;
-        }else {
-            msgId = feedback.isPassed() ? R.string.feedback_info_passed : R.string.feedback_info_failed;
-            textColor=feedback.isPassed() ? R.color.green : R.color.red;
+        if(feedback.hasGrade()) {
+            textView.setText(context.getString(feedback.getGrade()));
+            textView.setTextColor(context.getResources().getColor(feedback.getColor()));
         }
-
-        textView.setText(context.getString(msgId));
-        textView.setTextColor(context.getResources().getColor(textColor));
 
         //Feedback
         textView=(TextView)rowLayout.findViewById(R.id.feedback_feedback_html);
