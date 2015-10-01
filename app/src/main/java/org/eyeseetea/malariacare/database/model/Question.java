@@ -567,7 +567,7 @@ public class Question extends BaseModel {
                 .queryList();
 
         //No values no match
-        if(questionOptions.size()==0){
+        if(questionOptions.size()!=2){
             return false;
         }
 
