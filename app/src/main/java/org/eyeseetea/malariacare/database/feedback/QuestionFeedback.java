@@ -19,6 +19,7 @@
 
 package org.eyeseetea.malariacare.database.feedback;
 
+import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.model.Question;
 import org.eyeseetea.malariacare.database.model.Value;
 
@@ -101,6 +102,51 @@ public class QuestionFeedback implements Feedback {
         }
         String mockData="<p>No feedback available for this question.</p>";
         return mockData;
+    }
+
+    /**
+     * Returns the code of the grade to show for this item:
+     *  -Amber: Not answered
+     *  -Green: Pass
+     *  -Red: Fail
+     *  -Blank: Special question with neither numerator nor denominator
+     * @return
+     */
+    public int getGrade(){
+        int msgId;
+        if(this.getOption()==null || this.getOption().isEmpty()){
+            msgId = R.string.feedback_info_not_answered;
+        }else {
+            msgId = this.isPassed() ? R.string.feedback_info_passed : R.string.feedback_info_failed;
+        }
+        return msgId;
+    }
+
+    /**
+     * Returns the textcolor (code) of the grade to show for this item:
+     *  -Amber: Not answered
+     *  -Green: Pass
+     *  -Red: Fail
+     *  -Blank: Special question with neither numerator nor denominator
+     * @return
+     */
+    public int getColor(){
+        int textColor;
+        if(this.getOption()==null || this.getOption().isEmpty()){
+            textColor = R.color.amber;
+        }else {
+            textColor=this.isPassed() ? R.color.green : R.color.red;
+        }
+        return textColor;
+    }
+
+    /**
+     * Every question has a grade except those with numerator + denominator = 0.
+     * @return
+     */
+    public boolean hasGrade(){
+        //Some points -> Some grade
+        return this.question.getDenominator_w()!=0 || this.question.getNumerator_w()!=0;
     }
 
     @Override

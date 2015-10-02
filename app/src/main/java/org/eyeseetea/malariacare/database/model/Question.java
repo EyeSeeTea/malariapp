@@ -566,7 +566,7 @@ public class Question extends BaseModel {
                 .and(Condition.column(ColumnAlias.columnWithTable("qr", QuestionRelation$Table.OPERATION)).eq(Constants.OPERATION_TYPE_MATCH))
                 .queryList();
 
-        //No values no match | 1 match (1 value left)
+        //No values no match
         if(questionOptions.size()!=2){
             return false;
         }
