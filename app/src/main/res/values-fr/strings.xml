@@ -54,6 +54,9 @@
     <string name="dashboard_button_new_survey">Nouvelle enquête</string>
     <string name="dashboard_button_see_all">Voir toutes</string>
     <string name="dashboard_info_ready_to_upload">Prête pour envoyer</string>
+    <string name="dashboard_title_monitor">"Surveillance"</string>
+    <string name="dashboard_title_total_assessments">"Nombre total d'évaluations réalisées"</string>
+    <string name="dashboard_title_qa_assessments">"La qualité des soins"</string>
 
     <!-- create -->
     <string name="create_info_ok">Commencer Évaluation</string>

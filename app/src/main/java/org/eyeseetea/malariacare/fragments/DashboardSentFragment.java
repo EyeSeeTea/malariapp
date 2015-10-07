@@ -27,12 +27,16 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 
@@ -41,6 +45,8 @@ import org.eyeseetea.malariacare.FeedbackActivity;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.SurveyActivity;
 import org.eyeseetea.malariacare.database.model.Survey;
+import org.eyeseetea.malariacare.database.monitor.EntrySentSurveysChart;
+import org.eyeseetea.malariacare.database.monitor.SentSurveysBuilder;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.layout.adapters.dashboard.AssessmentSentAdapter;
 import org.eyeseetea.malariacare.layout.adapters.dashboard.IDashboardAdapter;
@@ -62,6 +68,7 @@ public class DashboardSentFragment extends ListFragment {
     private List<Survey> surveys;
     protected IDashboardAdapter adapter;
     private static int index = 0;
+    private WebView webView;
 
     public DashboardSentFragment(){
         this.adapter = Session.getAdapterSent();
@@ -156,7 +163,7 @@ public class DashboardSentFragment extends ListFragment {
     public void onStop(){
         Log.d(TAG, "onStop");
         unregisterSurveysReceiver();
-
+        stopMonitor();
         super.onStop();
     }
 
@@ -268,8 +275,61 @@ public class DashboardSentFragment extends ListFragment {
         this.surveys.clear();
         this.surveys.addAll(newListSurveys);
         this.adapter.notifyDataSetChanged();
+        reloadMonitor();
         setListShown(true);
     }
+
+    private void reloadMonitor(){
+        if(webView==null){
+            webView=initMonitor();
+        }
+        //Calculate data
+        final List<EntrySentSurveysChart> entries = SentSurveysBuilder.getInstance().build(surveys);
+
+        //onPageFinish load data
+        webView.setWebViewClient(new WebViewClient() {
+            @Override
+            public void onPageFinished(WebView view, String url) {
+                super.onPageFinished(view, url);
+                for(EntrySentSurveysChart entry:entries){
+                    Log.d(TAG,"adding: "+entry.getEntryAsJS());
+                    webView.loadUrl(entry.getEntryAsJS());
+                }
+            }
+        });
+
+        //Load html
+        webView.loadUrl("file:///android_asset/dashboard/line.chart.html");
+    }
+
+    private WebView initMonitor(){
+        WebView webView = (WebView) getActivity().findViewById(R.id.dashboard_monitor);
+        //Init webView settings
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN){
+            webView.getSettings().setAllowUniversalAccessFromFileURLs(true);
+            webView.getSettings().setAllowFileAccessFromFileURLs(true);
+        }
+        webView.getSettings().setJavaScriptEnabled(true);
+        webView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                return true;
+            }
+        });
+        return webView;
+    }
+
+    /**
+     * Stops webView gracefully
+     */
+    private void stopMonitor(){
+        try{
+            webView.stopLoading();
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+    }
+
     /**
      * Inner private class that receives the result from the service
      */

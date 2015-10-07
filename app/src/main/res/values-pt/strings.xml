@@ -54,6 +54,9 @@
     <string name="dashboard_button_see_all">Ver todos(as)</string>
     <string name="dashboard_info_ready_to_upload">Pronto para carregar</string>
     <string name="dashboard_info_sent">Enviei</string>
+    <string name="dashboard_title_monitor">"Monitoração"</string>
+    <string name="dashboard_title_total_assessments">"Número total de avaliações realizadas"</string>
+    <string name="dashboard_title_qa_assessments">"Qualidade dos cuidados"</string>
 
     <!-- create -->
     <string name="create_info_ok">Criar avaliação</string>
