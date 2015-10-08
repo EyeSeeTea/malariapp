@@ -19,6 +19,11 @@
 
 package org.eyeseetea.malariacare.database.monitor;
 
+import android.content.Context;
+import android.util.Log;
+import android.webkit.WebView;
+
+import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.model.Survey;
 
 import java.util.ArrayList;
@@ -34,7 +39,13 @@ import java.util.Map;
  */
 public class SentSurveysBuilder {
 
+    private static final String TAG=".SentSurveysBuilder";
     private static final int EXPECTED_SENT_SURVEYS_PER_MONTH=10;
+
+    /**
+     * Required to inyect title according to current language
+     */
+    private Context context;
 
     /**
      * Singleton instance
@@ -51,6 +62,10 @@ public class SentSurveysBuilder {
      */
     SentSurveysBuilder(){
         sentSurveysChartMap=new HashMap<>();
+    }
+
+    public void init(Context context){
+        this.context=context;
     }
 
     /**
@@ -75,6 +90,28 @@ public class SentSurveysBuilder {
         }
         List<EntrySentSurveysChart> orderedEntries=orderByDate(sentSurveysChartMap.values());
         return orderedEntries;
+    }
+
+    /**
+     * Inyects data into the sentSurveys chart
+     * @param webView Android webView where data is inyected
+     * @param entries List of entries for the chart
+     */
+    public void inyectDataInChart(WebView webView, List<EntrySentSurveysChart> entries){
+        //Set chart title
+        inyectChartTitle(webView);
+
+        //Add data to the chart
+        for(EntrySentSurveysChart entry:entries){
+            Log.d(TAG, entry.getEntryAsJS());
+            webView.loadUrl(entry.getEntryAsJS());
+        }
+    }
+
+    private void inyectChartTitle(WebView webView){
+        String updateChartJS=String.format("javascript:updateChartTitle('titleLineSpan','%s')",context.getString(R.string.dashboard_title_total_assessments));
+        Log.d(TAG, updateChartJS);
+        webView.loadUrl(updateChartJS);
     }
 
     /**

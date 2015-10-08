@@ -80,7 +80,7 @@ public class EntrySentSurveysChart implements Comparable<EntrySentSurveysChart>{
      * @return
      */
     public String getEntryAsJS(){
-        String inyectedJSData=String.format("javascript:myLineChart.addData([%d, %d], '%s')",sent,expected,getDateAsString());
+        String inyectedJSData=String.format("javascript:surveyXMonthChart.addData([%d, %d], '%s')",sent,expected,getDateAsString());
         return inyectedJSData;
     }
 

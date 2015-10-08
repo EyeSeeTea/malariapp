@@ -291,10 +291,7 @@ public class DashboardSentFragment extends ListFragment {
             @Override
             public void onPageFinished(WebView view, String url) {
                 super.onPageFinished(view, url);
-                for(EntrySentSurveysChart entry:entries){
-                    Log.d(TAG,"adding: "+entry.getEntryAsJS());
-                    webView.loadUrl(entry.getEntryAsJS());
-                }
+                SentSurveysBuilder.getInstance().inyectDataInChart(view,entries);
             }
         });
 

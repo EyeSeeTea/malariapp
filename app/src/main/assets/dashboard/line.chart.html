@@ -26,13 +26,28 @@
     body{
         background-color:#e5e5e5;
     }
+    .line-title{
+        float:right;
+    }
 </style>
 <body>
     <div>
-        <canvas id="myChart" style="width: 100%; height: 90%;"></canvas>
+        <!--Sent surveys x month-->
+        <!--title of the chart-->
+        <span class="line-title" id="titleLineSpan"></span>
+        <!--Multiline chart holder-->
+        <canvas id="surveyXMonthCanvas" style="width: 100%; height: 85%;"></canvas>
     </div>
     <script type = "text/javascript">
-        var data = {
+
+        /* Updates the text of the given html element*/
+        function updateChartTitle(id,text){
+	        document.getElementById(id).innerHTML=text;
+        }
+
+        /* Prepares 'sent surveys x month' chart*/
+        var ctx = document.getElementById("surveyXMonthCanvas").getContext("2d");
+        var surveyXMonthChart = new Chart(ctx).Line({
             labels: [],
             datasets: [
                 {
@@ -56,9 +71,9 @@
                     data: []
                 }
             ]
-        };
-        var ctx = document.getElementById("myChart").getContext("2d");
-        var myLineChart = new Chart(ctx).Line(data, {scaleBeginAtZero : true});
+        },{
+            scaleBeginAtZero : true,
+        });
     </script>
 
 </body>
