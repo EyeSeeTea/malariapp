@@ -41,6 +41,7 @@ public class SentSurveysBuilder {
 
     private static final String TAG=".SentSurveysBuilder";
     private static final int EXPECTED_SENT_SURVEYS_PER_MONTH=10;
+    public static final String JAVASCRIPT_UPDATE_CHART = "javascript:updateChartTitle('titleSent','%s')";
 
     /**
      * Required to inyect title according to current language
@@ -48,48 +49,33 @@ public class SentSurveysBuilder {
     private Context context;
 
     /**
-     * Singleton instance
+     * List of sent surveys
      */
-    private static SentSurveysBuilder instance;
+    private List<Survey> surveys;
 
     /**
-     * Map os entries per month
+     * Map of entries per month
      */
-    Map<String,EntrySentSurveysChart> sentSurveysChartMap;
+    private Map<String,EntrySentSurveysChart> sentSurveysChartMap;
 
     /**
      * Default constructor
      */
-    SentSurveysBuilder(){
-        sentSurveysChartMap=new HashMap<>();
-    }
-
-    public void init(Context context){
-        this.context=context;
-    }
-
-    /**
-     * Singleton method
-     * @return
-     */
-    public static SentSurveysBuilder getInstance(){
-        if(instance==null){
-            instance=new SentSurveysBuilder();
-        }
-        return instance;
+    public SentSurveysBuilder(List<Survey> surveys, Context context) {
+        sentSurveysChartMap = new HashMap<>();
+        this.surveys = surveys;
+        this.context = context;
     }
 
     /**
-     * Builds a list of entry points for the chart from the list of surveys
-     * @param surveys List of sent surveys to create the list
-     * @return
+     * Adds calculated entries to the given webView
+     * @param webView
      */
-    public final List<EntrySentSurveysChart> build(List<Survey> surveys){
-        for(Survey survey:surveys){
-            build(survey);
-        }
-        List<EntrySentSurveysChart> orderedEntries=orderByDate(sentSurveysChartMap.values());
-        return orderedEntries;
+    public void addDataInChart(WebView webView){
+        //Build entries
+        List<EntrySentSurveysChart> entries=build(surveys);
+        //Inyect entries in view
+        inyectDataInChart(webView,entries);
     }
 
     /**
@@ -97,7 +83,7 @@ public class SentSurveysBuilder {
      * @param webView Android webView where data is inyected
      * @param entries List of entries for the chart
      */
-    public void inyectDataInChart(WebView webView, List<EntrySentSurveysChart> entries){
+    private void inyectDataInChart(WebView webView, List<EntrySentSurveysChart> entries){
         //Set chart title
         inyectChartTitle(webView);
 
@@ -108,10 +94,27 @@ public class SentSurveysBuilder {
         }
     }
 
+    /**
+     * Updates the title of the sent chart according to current language
+     * @param webView
+     */
     private void inyectChartTitle(WebView webView){
-        String updateChartJS=String.format("javascript:updateChartTitle('titleLineSpan','%s')",context.getString(R.string.dashboard_title_total_assessments));
+        String updateChartJS=String.format(JAVASCRIPT_UPDATE_CHART,context.getString(R.string.dashboard_title_total_assessments));
         Log.d(TAG, updateChartJS);
         webView.loadUrl(updateChartJS);
+    }
+
+    /**
+     * Builds a list of entry points for the chart from the list of surveys
+     * @param surveys List of sent surveys to create the list
+     * @return
+     */
+    public List<EntrySentSurveysChart> build(List<Survey> surveys){
+        for(Survey survey:surveys){
+            build(survey);
+        }
+        List<EntrySentSurveysChart> orderedEntries=orderByDate(sentSurveysChartMap.values());
+        return orderedEntries;
     }
 
     /**
@@ -119,7 +122,7 @@ public class SentSurveysBuilder {
      * @param survey
      * @return
      */
-    private final EntrySentSurveysChart build(Survey survey){
+    private EntrySentSurveysChart build(Survey survey){
         //Get the month for the survey (key)
         String month=EntrySentSurveysChart.getDateAsString(survey.getCompletionDate());
 

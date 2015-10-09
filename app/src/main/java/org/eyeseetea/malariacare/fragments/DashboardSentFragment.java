@@ -46,6 +46,7 @@ import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.SurveyActivity;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.monitor.EntrySentSurveysChart;
+import org.eyeseetea.malariacare.database.monitor.PieProgramBuilder;
 import org.eyeseetea.malariacare.database.monitor.SentSurveysBuilder;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.layout.adapters.dashboard.AssessmentSentAdapter;
@@ -283,20 +284,22 @@ public class DashboardSentFragment extends ListFragment {
         if(webView==null){
             webView=initMonitor();
         }
-        //Calculate data
-        final List<EntrySentSurveysChart> entries = SentSurveysBuilder.getInstance().build(surveys);
 
         //onPageFinish load data
         webView.setWebViewClient(new WebViewClient() {
             @Override
             public void onPageFinished(WebView view, String url) {
                 super.onPageFinished(view, url);
-                SentSurveysBuilder.getInstance().inyectDataInChart(view,entries);
+                //Add line chart
+                new SentSurveysBuilder(surveys, getActivity()).addDataInChart(view);
+
+                //Add pie charts
+                new PieProgramBuilder(surveys,getActivity()).addDataInChart(view);
             }
         });
 
         //Load html
-        webView.loadUrl("file:///android_asset/dashboard/line.chart.html");
+        webView.loadUrl("file:///android_asset/dashboard/dashboard.html");
     }
 
     private WebView initMonitor(){
@@ -307,12 +310,7 @@ public class DashboardSentFragment extends ListFragment {
             webView.getSettings().setAllowFileAccessFromFileURLs(true);
         }
         webView.getSettings().setJavaScriptEnabled(true);
-        webView.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                return true;
-            }
-        });
+        webView.setVerticalScrollBarEnabled(true);
         return webView;
     }
 

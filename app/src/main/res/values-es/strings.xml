@@ -55,7 +55,7 @@
     <string name="dashboard_info_ready_to_upload">Lista para enviar</string>
     <string name="dashboard_title_monitor">Monitor</string>
     <string name="dashboard_title_total_assessments">"Número total evaluaciones realizadas"</string>
-    <string name="dashboard_title_qa_assessments">"Calidad de cuidados"</string>
+    <string name="dashboard_title_qa_assessments">"Calidad de cuidados: "</string>
 
     <!-- create -->
     <string name="create_info_ok">Empezar Evaluación</string>

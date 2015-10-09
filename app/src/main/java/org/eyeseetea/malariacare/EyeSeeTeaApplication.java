@@ -43,7 +43,6 @@ public class EyeSeeTeaApplication extends Application {
         Fabric.with(this, new Crashlytics());
         PreferencesState.getInstance().init(getApplicationContext());
         LocationMemory.getInstance().init(getApplicationContext());
-        SentSurveysBuilder.getInstance().init(getApplicationContext());
         FlowManager.init(this);
     }
 
