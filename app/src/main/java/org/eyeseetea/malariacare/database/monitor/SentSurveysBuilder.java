@@ -27,8 +27,8 @@ import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.model.Survey;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -42,6 +42,7 @@ public class SentSurveysBuilder {
     private static final String TAG=".SentSurveysBuilder";
     private static final int EXPECTED_SENT_SURVEYS_PER_MONTH=10;
     public static final String JAVASCRIPT_UPDATE_CHART = "javascript:updateChartTitle('titleSent','%s')";
+    private static final int MAX_MONTHS=6;
 
     /**
      * Required to inyect title according to current language
@@ -73,9 +74,46 @@ public class SentSurveysBuilder {
      */
     public void addDataInChart(WebView webView){
         //Build entries
-        List<EntrySentSurveysChart> entries=build(surveys);
+        build(surveys);
+        //Take only 6 months from now
+        List<EntrySentSurveysChart> entries = takeLast6Months();
         //Inyect entries in view
         inyectDataInChart(webView,entries);
+    }
+
+    /**
+     * Creates the list of entries for the last 6 months from 'now'
+     * @return
+     */
+    private List<EntrySentSurveysChart> takeLast6Months() {
+        List<EntrySentSurveysChart> last6entries=new ArrayList<>();
+        Date today = new Date();
+        //Loop over last 6 months
+        for(int i=0;i<MAX_MONTHS;i++){
+            Date iMonth= minusMonth(today, i);
+            String currentMonth=EntrySentSurveysChart.getDateAsString(iMonth);
+            EntrySentSurveysChart entryMonth=sentSurveysChartMap.get(currentMonth);
+            //No entry for this month ->0
+            if(entryMonth==null){
+                entryMonth=new EntrySentSurveysChart(EXPECTED_SENT_SURVEYS_PER_MONTH,iMonth);
+            }
+            //Whatever was calculated
+            last6entries.add(0,entryMonth);
+        }
+
+        return last6entries;
+    }
+
+    /**
+     * Returns 'date' - 1 month
+     * @param today
+     * @return
+     */
+    private Date minusMonth(Date today, int numMonths){
+        Calendar cal=Calendar.getInstance();
+        cal.setTime(today);
+        cal.add(Calendar.MONTH,-1*numMonths);
+        return cal.getTime();
     }
 
     /**
@@ -109,12 +147,10 @@ public class SentSurveysBuilder {
      * @param surveys List of sent surveys to create the list
      * @return
      */
-    public List<EntrySentSurveysChart> build(List<Survey> surveys){
+    public void build(List<Survey> surveys){
         for(Survey survey:surveys){
             build(survey);
         }
-        List<EntrySentSurveysChart> orderedEntries=orderByDate(sentSurveysChartMap.values());
-        return orderedEntries;
     }
 
     /**
@@ -122,7 +158,7 @@ public class SentSurveysBuilder {
      * @param survey
      * @return
      */
-    private EntrySentSurveysChart build(Survey survey){
+    private void build(Survey survey){
         //Get the month for the survey (key)
         String month=EntrySentSurveysChart.getDateAsString(survey.getCompletionDate());
 
@@ -136,14 +172,5 @@ public class SentSurveysBuilder {
         }
         //Increment surveys for that month
         entrySentSurveysChart.incSent();
-
-        //Returns the entry
-        return entrySentSurveysChart;
-    }
-
-    private List<EntrySentSurveysChart> orderByDate(Collection<EntrySentSurveysChart> unorderedCollection){
-        List orderedList = new ArrayList(unorderedCollection);
-        Collections.sort(orderedList);
-        return orderedList;
     }
 }

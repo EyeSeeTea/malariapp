@@ -309,8 +309,13 @@ public class DashboardSentFragment extends ListFragment {
             webView.getSettings().setAllowUniversalAccessFromFileURLs(true);
             webView.getSettings().setAllowFileAccessFromFileURLs(true);
         }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            WebView.setWebContentsDebuggingEnabled(true);
+        }
         webView.getSettings().setJavaScriptEnabled(true);
+        webView.setVerticalScrollbarOverlay(true);
         webView.setVerticalScrollBarEnabled(true);
+
         return webView;
     }
 
