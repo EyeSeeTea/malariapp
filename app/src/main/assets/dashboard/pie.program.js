@@ -52,7 +52,7 @@ function pieXProgramChart(data){
 
     //Update title
     updateChartTitle(titleDOMId,data.title);
-};
+}
 
 
 /*
@@ -80,7 +80,9 @@ function buildPieCharts(dataPies){
     var defaultTemplate= '<div> <span class="line-title" id="programTitle###"></span> <div> <canvas id="programCanvas###" style="width: 100%; height: auto;"></canvas> </div><div id="programLegend###" class="chart-legend"></div></div>';
 
     //For each pie
-    for(var dataPie of dataPies){
+
+    for(var i=0;i<dataPies.length;i++){
+        var dataPie = dataPies[i];
         //Create template with right ids
         var customTemplate=defaultTemplate.replace(/###/g, dataPie.idProgram);
         //Add DOM element
