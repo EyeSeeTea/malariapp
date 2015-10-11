@@ -16,7 +16,6 @@
   ~  You should have received a copy of the GNU General Public License
   ~  along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
   -->
-
 <html>
 <head>
     <meta name = "viewport" content = "width=device-width, initial-scale=1.0, user-scalable=no">
@@ -37,45 +36,20 @@
 	    margin-right: 5px;
 	} 
 
-  .chart-legend ul{
-    list-style-type: none;
-  }   
+    .chart-legend ul{
+        list-style-type: none;
+    }
 </style>
 <body>
     <!--Sent surveys x month-->
-    <div>        
+    <div>
         <!--title of the chart-->
         <span class="line-title" id="titleSent"></span>
         <!--Multiline chart holder-->
         <canvas id="surveyXMonthCanvas" style="width: 100%; height: auto;"></canvas>
     </div>
-
     <hr/>
-
     <script type = "text/javascript" src="file:///android_asset/dashboard/sent.month.js"> </script>
     <script type = "text/javascript" src="file:///android_asset/dashboard/pie.program.js"> </script>
-    <script type="text/javascript">
-
-    /*
-      buildPieCharts([
-        {
-            title:'Quality of care: First Program',
-            idProgram: 1,
-            valueA:14,
-            valueB:8,
-            valueC:10
-        },
-        {
-            title:'Quality of care: Second Program',
-            idProgram: 2,
-            valueA:24,
-            valueB:12,
-            valueC:10
-        }
-        ]);
-    */
-
-    </script>
-
 </body>
 </html>
