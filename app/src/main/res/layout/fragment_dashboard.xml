@@ -16,7 +16,8 @@
   ~  You should have received a copy of the GNU General Public License
   ~  along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
   -->
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="fill_parent"
@@ -85,4 +86,23 @@
 
         </TableLayout>
     </FrameLayout>
+
+    <org.eyeseetea.malariacare.views.CustomTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="@string/dashboard_title_monitor"
+        android:textColor="@color/black"
+        android:padding="5dip"
+        app:tDimension="@string/font_size_level2"
+        app:tFontName="@string/condensed_font_name" />
+
+    <WebView
+        android:id="@+id/dashboard_monitor"
+        android:layout_width="match_parent"
+        android:layout_height="400dp"
+        android:background="@color/light_grey"
+        >
+    </WebView>
+
 </LinearLayout>

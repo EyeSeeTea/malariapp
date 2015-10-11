@@ -1,0 +1,81 @@
+<!--
+  ~ Copyright (c) 2015.
+  ~
+  ~ This file is part of QA App.
+  ~
+  ~  Health Network QIS App is free software: you can redistribute it and/or modify
+  ~  it under the terms of the GNU General Public License as published by
+  ~  the Free Software Foundation, either version 3 of the License, or
+  ~  (at your option) any later version.
+  ~
+  ~  Health Network QIS App is distributed in the hope that it will be useful,
+  ~  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~  GNU General Public License for more details.
+  ~
+  ~  You should have received a copy of the GNU General Public License
+  ~  along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
+  -->
+
+<html>
+<head>
+    <meta name = "viewport" content = "width=device-width, initial-scale=1.0, user-scalable=no">
+    <script type = "text/javascript" src="file:///android_asset/dashboard/Chart.min.js"> </script>
+</head>
+<style>
+    body{
+        background-color:#e5e5e5;
+    }
+    .line-title{
+        float:right;
+    }
+
+	.chart-legend li span{
+	    display: inline-block;
+	    width: 12px;
+	    height: 12px;
+	    margin-right: 5px;
+	} 
+
+  .chart-legend ul{
+    list-style-type: none;
+  }   
+</style>
+<body>
+    <!--Sent surveys x month-->
+    <div>        
+        <!--title of the chart-->
+        <span class="line-title" id="titleSent"></span>
+        <!--Multiline chart holder-->
+        <canvas id="surveyXMonthCanvas" style="width: 100%; height: auto;"></canvas>
+    </div>
+
+    <hr/>
+
+    <script type = "text/javascript" src="file:///android_asset/dashboard/sent.month.js"> </script>
+    <script type = "text/javascript" src="file:///android_asset/dashboard/pie.program.js"> </script>
+    <script type="text/javascript">
+
+    /*
+      buildPieCharts([
+        {
+            title:'Quality of care: First Program',
+            idProgram: 1,
+            valueA:14,
+            valueB:8,
+            valueC:10
+        },
+        {
+            title:'Quality of care: Second Program',
+            idProgram: 2,
+            valueA:24,
+            valueB:12,
+            valueC:10
+        }
+        ]);
+    */
+
+    </script>
+
+</body>
+</html>

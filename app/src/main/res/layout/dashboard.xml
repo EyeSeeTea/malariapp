@@ -16,16 +16,15 @@
   ~  You should have received a copy of the GNU General Public License
   ~  along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
   -->
-
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/container"
-    android:layout_width="fill_parent" android:layout_height="fill_parent"
-    android:orientation="horizontal">
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical">
 
     <fragment android:name="org.eyeseetea.malariacare.fragments.DashboardUnsentFragment"
               android:id="@+id/dashboard_details_fragment"
               android:layout_width="fill_parent"
               android:layout_height="fill_parent" />
-
 </LinearLayout>

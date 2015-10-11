@@ -64,6 +64,9 @@
     <string name="dashboard_button_see_all">See all</string>
     <string name="dashboard_info_ready_to_upload">Ready to upload</string>
     <string name="dashboard_info_sent">Sent</string>
+    <string name="dashboard_title_monitor">Monitoring</string>
+    <string name="dashboard_title_total_assessments">Total number of assessments undertaken</string>
+    <string name="dashboard_title_qa_assessments">Quality of care: </string>
 
     <!-- create -->
     <string name="create_info_ok">Start Assessment</string>
