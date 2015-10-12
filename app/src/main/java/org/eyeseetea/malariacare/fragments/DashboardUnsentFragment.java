@@ -48,6 +48,7 @@ import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.layout.adapters.dashboard.AssessmentUnsentAdapter;
 import org.eyeseetea.malariacare.layout.adapters.dashboard.IDashboardAdapter;
 import org.eyeseetea.malariacare.layout.listeners.SwipeDismissListViewTouchListener;
+import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 import org.eyeseetea.malariacare.network.PushClient;
 import org.eyeseetea.malariacare.network.PushResult;
 import org.eyeseetea.malariacare.services.SurveyService;
@@ -280,11 +281,10 @@ public class DashboardUnsentFragment extends ListFragment {
                         }).create().show();
 
 
-
-
                 return true;
             }
         });
+
     }
 
 
@@ -318,6 +318,7 @@ public class DashboardUnsentFragment extends ListFragment {
         this.surveys.clear();
         this.surveys.addAll(newListSurveys);
         this.adapter.notifyDataSetChanged();
+        LayoutUtils.setListViewHeightBasedOnChildren(getListView());
         setListShown(true);
     }
 
@@ -363,6 +364,7 @@ public class DashboardUnsentFragment extends ListFragment {
             if(SurveyService.ALL_UNSENT_SURVEYS_ACTION.equals(intent.getAction())) {
                 List<Survey> surveysUnsentFromService = (List<Survey>) Session.popServiceValue(SurveyService.ALL_UNSENT_SURVEYS_ACTION);
                 reloadSurveys(surveysUnsentFromService);
+                LayoutUtils.setListViewHeightBasedOnChildren(getListView());
             }
         }
     }
