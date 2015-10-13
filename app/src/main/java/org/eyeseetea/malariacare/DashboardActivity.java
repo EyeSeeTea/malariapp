@@ -76,6 +76,15 @@ public class DashboardActivity extends BaseActivity {
     }
 
     @Override
+    protected void onPostResume() {
+        super.onPostResume();
+        // FIXME: ListView, ScrollView and WebView doesn't get on well. This forced reload makes layout to be recalculated twice. For any strange reason second time it does it well
+        Intent surveysIntent=new Intent(this, SurveyService.class);
+        surveysIntent.putExtra(SurveyService.SERVICE_METHOD, SurveyService.RELOAD_DASHBOARD_ACTION);
+        this.startService(surveysIntent);
+    }
+
+    @Override
     protected void initTransition(){
         this.overridePendingTransition(R.transition.anim_slide_in_right, R.transition.anim_slide_out_right);
     }

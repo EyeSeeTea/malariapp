@@ -284,7 +284,6 @@ public class DashboardUnsentFragment extends ListFragment {
                 return true;
             }
         });
-
     }
 
 
@@ -314,11 +313,10 @@ public class DashboardUnsentFragment extends ListFragment {
     }
 
     public void reloadSurveys(List<Survey> newListSurveys){
-        Log.d(TAG, "reloadSurveys (Thread: "+Thread.currentThread().getId()+"): " + newListSurveys.size());
+        Log.d(TAG, "reloadSurveys (Thread: " + Thread.currentThread().getId() + "): " + newListSurveys.size());
         this.surveys.clear();
         this.surveys.addAll(newListSurveys);
         this.adapter.notifyDataSetChanged();
-        LayoutUtils.setListViewHeightBasedOnChildren(getListView());
         setListShown(true);
     }
 

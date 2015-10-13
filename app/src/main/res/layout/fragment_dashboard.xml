@@ -26,22 +26,23 @@
 
     <LinearLayout
         android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
 
     <org.eyeseetea.malariacare.views.CustomTextView
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="@string/empty_string"
         android:textColor="@color/black"
         android:id="@+id/titleInProgress"
         android:padding="5dip"
+        android:textAppearance="?android:attr/textAppearanceMedium"
         app:tDimension="@string/font_size_level2"
         app:tFontName="@string/condensed_font_name" />
 
     <FrameLayout
-        android:orientation="vertical" android:layout_width="fill_parent"
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:paddingLeft="@dimen/activity_horizontal_margin"
         android:paddingRight="@dimen/activity_horizontal_margin"
@@ -55,7 +56,7 @@
             android:id="@+id/dashboard_details_table">
 
             <ListView
-                android:layout_width="match_parent"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/dashboard_details_list"/>
 
@@ -63,18 +64,19 @@
     </FrameLayout>
 
     <org.eyeseetea.malariacare.views.CustomTextView
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="@string/empty_string"
         android:textColor="@color/black"
         android:id="@+id/titleCompleted"
         android:padding="5dip"
+        android:textAppearance="?android:attr/textAppearanceMedium"
         app:tDimension="@string/font_size_level2"
         app:tFontName="@string/condensed_font_name" />
 
     <FrameLayout
-        android:orientation="vertical" android:layout_width="fill_parent"
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:paddingLeft="@dimen/activity_horizontal_margin"
         android:paddingRight="@dimen/activity_horizontal_margin"
@@ -88,7 +90,7 @@
             android:id="@+id/dashboard_details_table_sent">
 
             <ListView
-                android:layout_width="match_parent"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/dashboard_details_list_sent"/>
 
@@ -96,20 +98,19 @@
     </FrameLayout>
 
     <org.eyeseetea.malariacare.views.CustomTextView
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="@string/dashboard_title_monitor"
         android:textColor="@color/black"
         android:padding="5dip"
+        android:textAppearance="?android:attr/textAppearanceMedium"
         app:tDimension="@string/font_size_level2"
         app:tFontName="@string/condensed_font_name" />
 
     <WebView
         android:id="@+id/dashboard_monitor"
-        android:layout_width="match_parent"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        class="org.eyeseetea.malariacare.views.WrapContentHeightViewPager"
         android:background="@color/light_grey"
         >
     </WebView>

@@ -241,7 +241,6 @@ public class DashboardSentFragment extends ListFragment {
         // Setting this scroll listener is required to ensure that during ListView scrolling,
         // we don't look for swipes.
         listView.setOnScrollListener(touchListener.makeScrollListener());
-
     }
 
 
@@ -269,12 +268,11 @@ public class DashboardSentFragment extends ListFragment {
         }
     }
 
-    public void reloadSurveys(List<Survey> newListSurveys){
-        Log.d(TAG, "reloadSurveys (Thread: "+Thread.currentThread().getId()+"): " + newListSurveys.size());
+    public void reloadSurveys(List<Survey> newListSurveys) {
+        Log.d(TAG, "reloadSurveys (Thread: " + Thread.currentThread().getId() + "): " + newListSurveys.size());
         this.surveys.clear();
         this.surveys.addAll(newListSurveys);
         this.adapter.notifyDataSetChanged();
-        LayoutUtils.setListViewHeightBasedOnChildren(getListView());
         setListShown(true);
         reloadMonitor();
     }
@@ -312,8 +310,6 @@ public class DashboardSentFragment extends ListFragment {
             WebView.setWebContentsDebuggingEnabled(true);
         }
         webView.getSettings().setJavaScriptEnabled(true);
-        //webView.setVerticalScrollbarOverlay(true);
-        //webView.setVerticalScrollBarEnabled(true);
 
         return webView;
     }
@@ -342,6 +338,7 @@ public class DashboardSentFragment extends ListFragment {
             if(SurveyService.ALL_SENT_SURVEYS_ACTION.equals(intent.getAction())) {
                 List<Survey> surveysFromService = (List<Survey>) Session.popServiceValue(SurveyService.ALL_SENT_SURVEYS_ACTION);
                 reloadSurveys(surveysFromService);
+                LayoutUtils.setListViewHeightBasedOnChildren(getListView());
             }
         }
 
