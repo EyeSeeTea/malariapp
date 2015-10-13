@@ -103,9 +103,9 @@ android {
 
 dependencies {
     // App dependencies
-    compile 'com.android.support:support-v4:22.2.1'
-    compile 'com.android.support:appcompat-v7:22.2.1'
-    compile 'com.android.support:support-annotations:22.2.1'
+    compile 'com.android.support:support-v4:21.2.1'
+    compile 'com.android.support:appcompat-v7:21.2.1'
+    compile 'com.android.support:support-annotations:21.2.1'
     compile 'com.opencsv:opencsv:3.3'
     compile 'com.android.support:multidex:1.0.1'
     compile 'com.google.android.gms:play-services:8.1.0'
