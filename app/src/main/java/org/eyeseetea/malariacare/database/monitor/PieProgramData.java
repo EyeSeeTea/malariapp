@@ -20,6 +20,7 @@
 package org.eyeseetea.malariacare.database.monitor;
 
 import org.eyeseetea.malariacare.database.model.Program;
+import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 
 /**
@@ -62,12 +63,12 @@ public class PieProgramData {
      * @param score
      */
     public void incCounter(float score){
-        if(score<LayoutUtils.MAX_FAILED){
+        if(score< Survey.MAX_RED){
             numC++;
             return;
         }
 
-        if(score<LayoutUtils.MAX_AMBER){
+        if(score<Survey.MAX_AMBER){
             numB++;
             return;
         }

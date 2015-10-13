@@ -43,6 +43,8 @@ import java.util.List;
 
 @Table(databaseName = AppDatabase.NAME)
 public class Survey extends BaseModel {
+    public static final float MAX_AMBER = 80f;
+    public static final float MAX_RED = 50f;
 
 
     /*private static final String LIST_VALUES_PARENT_QUESTION = "select v.* from value v"+
@@ -172,6 +174,30 @@ public class Survey extends BaseModel {
 
     public void setMainScore(float mainScore) {
         this.mainScore = mainScore;
+    }
+
+    /**
+     * Returns this survey is type A (green)
+     * @return
+     */
+    public boolean isTypeA(){
+        return this.mainScore>= MAX_AMBER;
+    }
+
+    /**
+     * Returns this survey is type B (amber)
+     * @return
+     */
+    public boolean isTypeB(){
+        return this.mainScore>= MAX_RED && !isTypeA();
+    }
+
+    /**
+     * Returns this survey is type C (red)
+     * @return
+     */
+    public boolean isTypeC(){
+        return !isTypeA() && !isTypeB();
     }
 
     /**

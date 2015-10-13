@@ -31,6 +31,7 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 
 import org.eyeseetea.malariacare.R;
+import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.views.CustomTextView;
 
 /**
@@ -40,8 +41,6 @@ public class LayoutUtils {
 
     public static final int [] rowBackgrounds = {R.drawable.background_even, R.drawable.background_odd};
     public static final int [] rowBackgroundsNoBorder = {R.drawable.background_even_wo_border, R.drawable.background_odd_wo_border};
-    public static final float MAX_AMBER = 80.0F;
-    public static final float MAX_FAILED = 50.0F;
 
     // Given a index, this method return a background color
     public static int calculateBackgrounds(int index) {
@@ -60,11 +59,11 @@ public class LayoutUtils {
         int color=view.getContext().getResources().getColor(R.color.green);
         String tag=view.getContext().getResources().getString(R.string.good);
 
-        if (score < MAX_AMBER){
+        if (score < Survey.MAX_AMBER){
             color= view.getContext().getResources().getColor(R.color.amber);
             tag=view.getContext().getResources().getString(R.string.fair);
         }
-        if (score < MAX_FAILED){
+        if (score < Survey.MAX_RED){
             color= view.getContext().getResources().getColor(R.color.red);
             tag=view.getContext().getResources().getString(R.string.poor);
         }
@@ -83,11 +82,11 @@ public class LayoutUtils {
      * @return
      */
     public static int trafficDrawable(float score){
-        if(score<MAX_FAILED){
+        if(score<Survey.MAX_RED){
             return R.drawable.circle_shape_red;
         }
 
-        if(score<MAX_AMBER){
+        if(score<Survey.MAX_AMBER){
             return R.drawable.circle_shape_amber;
         }
 

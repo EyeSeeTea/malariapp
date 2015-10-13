@@ -273,10 +273,10 @@ public class PushClient {
 
     private String calculateOverallClass(Float mainScore) throws Exception {
         String overallClass = "A";
-        if (mainScore < LayoutUtils.MAX_AMBER){
+        if (mainScore < Survey.MAX_AMBER){
             overallClass = "B";
         }
-        if (mainScore < LayoutUtils.MAX_FAILED){
+        if (mainScore < Survey.MAX_RED){
             overallClass = "C";
         }
         return overallClass;
@@ -361,9 +361,50 @@ public class PushClient {
         //Add dataElement per compositeScores
         values=prepareCompositeScores(values);
 
+        //Add main scores values
+        values=prepareMainScoreValues(values);
+
         data.put(TAG_DATAVALUES, values);
         Log.d(TAG, "prepareDataElements result: " + data.toString());
         return data;
+    }
+
+    /**
+     * Adds 4 additional values:
+     *  - Main score
+     *  - Boolean flag is type A
+     *  - Boolean flag is type B
+     *  - Boolean flag is type C
+     * @param values
+     * @return
+     */
+    private JSONArray prepareMainScoreValues(JSONArray values) throws Exception{
+        JSONObject dataElement;
+        //Main score
+        dataElement = new JSONObject();
+        dataElement.put(TAG_DATAELEMENT, activity.getString(R.string.main_score));
+        dataElement.put(TAG_VALUE, Utils.round(survey.getMainScore()));
+        values.put(dataElement);
+
+        //Type A
+        dataElement = new JSONObject();
+        dataElement.put(TAG_DATAELEMENT, activity.getString(R.string.main_score_a));
+        dataElement.put(TAG_VALUE, survey.isTypeA());
+        values.put(dataElement);
+
+        //Type B
+        dataElement = new JSONObject();
+        dataElement.put(TAG_DATAELEMENT, activity.getString(R.string.main_score_b));
+        dataElement.put(TAG_VALUE, survey.isTypeB());
+        values.put(dataElement);
+
+        //Type C
+        dataElement = new JSONObject();
+        dataElement.put(TAG_DATAELEMENT, activity.getString(R.string.main_score_c));
+        dataElement.put(TAG_VALUE, survey.isTypeC());
+        values.put(dataElement);
+
+        return values;
     }
 
     /**
@@ -390,6 +431,9 @@ public class PushClient {
 
         //Prepare scores info
         List<CompositeScore> compositeScoreList=ScoreRegister.loadCompositeScores(survey);
+
+        //Calculate main score to push later
+        survey.setMainScore(ScoreRegister.calculateMainScore(compositeScoreList));
 
         //1 CompositeScore -> 1 dataValue
         for(CompositeScore compositeScore:compositeScoreList){
