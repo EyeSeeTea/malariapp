@@ -67,6 +67,7 @@
     <string name="dashboard_title_monitor">Monitoring</string>
     <string name="dashboard_title_total_assessments">Total number of assessments undertaken</string>
     <string name="dashboard_title_qa_assessments">Quality of care: </string>
+    <string name="dashboard_title_table_facilities">Quality of care: Last 12 months</string>
 
     <!-- create -->
     <string name="create_info_ok">Start Assessment</string>

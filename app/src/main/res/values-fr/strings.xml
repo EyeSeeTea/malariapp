@@ -57,6 +57,7 @@
     <string name="dashboard_title_monitor">"Surveillance"</string>
     <string name="dashboard_title_total_assessments">"Nombre total d'évaluations réalisées"</string>
     <string name="dashboard_title_qa_assessments">"La qualité des soins: "</string>
+    <string name="dashboard_title_table_facilities">"La qualité des soins: 12 derniers mois"</string>
 
     <!-- create -->
     <string name="create_info_ok">Commencer Évaluation</string>
