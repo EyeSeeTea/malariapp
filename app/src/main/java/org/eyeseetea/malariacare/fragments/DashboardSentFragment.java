@@ -156,6 +156,7 @@ public class DashboardSentFragment extends ListFragment {
         Session.setSurvey(surveys.get(position - 1));
         // Go to SurveyActivity
         ((DashboardActivity) getActivity()).go(FeedbackActivity.class);
+        getActivity().finish();
     }
 
     @Override
@@ -271,6 +272,11 @@ public class DashboardSentFragment extends ListFragment {
 
     public void reloadSurveys(List<Survey> newListSurveys) {
         Log.d(TAG, "reloadSurveys (Thread: " + Thread.currentThread().getId() + "): " + newListSurveys.size());
+        boolean hasSurveys=newListSurveys!=null && newListSurveys.size()>0;
+        ((DashboardActivity)getActivity()).hideOrShowSentInfo(hasSurveys);
+        if(!hasSurveys){
+            return;
+        }
         this.surveys.clear();
         this.surveys.addAll(newListSurveys);
         this.adapter.notifyDataSetChanged();
@@ -343,6 +349,7 @@ public class DashboardSentFragment extends ListFragment {
                 List<Survey> surveysFromService = (List<Survey>) Session.popServiceValue(SurveyService.ALL_SENT_SURVEYS_ACTION);
                 reloadSurveys(surveysFromService);
                 LayoutUtils.setListViewHeightBasedOnChildren(getListView());
+                ((DashboardActivity)getActivity()).loadFinished();
             }
         }
 

@@ -25,6 +25,9 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 
 import com.raizlabs.android.dbflow.sql.language.Select;
 
@@ -43,14 +46,17 @@ import java.util.List;
 public class DashboardActivity extends BaseActivity {
 
     private final static String TAG=".DDetailsActivity";
-
+    private ProgressBar progressBar;
     private boolean reloadOnResume=true;
+    private int counterLoaded=0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Log.d(TAG, "onCreate");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_dashboard);
+
+        this.progressBar=(ProgressBar)findViewById(R.id.dashboard_progress);
 
         try {
             initDataIfRequired();
@@ -75,6 +81,34 @@ public class DashboardActivity extends BaseActivity {
         }
     }
 
+    private void startProgress(){
+        ((RelativeLayout)this.progressBar.getParent()).setVisibility(View.VISIBLE);
+        this.progressBar.setEnabled(true);
+        this.counterLoaded=0;
+    }
+
+    public void loadFinished(){
+        this.counterLoaded++;
+        Log.d(TAG,String.format("loadFinished %d",counterLoaded));
+        if(counterLoaded>3){
+            stopProgress();
+        }
+    }
+
+    private void stopProgress(){
+        ((RelativeLayout) progressBar.getParent()).setVisibility(View.GONE);
+        progressBar.setEnabled(false);
+    }
+
+    public void hideOrShowSentInfo(boolean show){
+        int visibility=show?View.VISIBLE:View.GONE;
+        findViewById(R.id.titleCompleted).setVisibility(visibility);
+        findViewById(R.id.dashboard_completed_container).setVisibility(visibility);
+
+        findViewById(R.id.dashboard_title_monitor).setVisibility(visibility);
+        findViewById(R.id.dashboard_monitor).setVisibility(visibility);
+    }
+
     @Override
     protected void onPostResume() {
         super.onPostResume();
@@ -94,6 +128,7 @@ public class DashboardActivity extends BaseActivity {
         Log.d(TAG, "onResume");
         super.onResume();
         getSurveysFromService();
+        startProgress();
     }
 
     @Override
@@ -101,8 +136,6 @@ public class DashboardActivity extends BaseActivity {
         Log.d(TAG, "onPause");
         super.onPause();
     }
-
-
 
     public void setReloadOnResume(boolean doReload){
         this.reloadOnResume=false;
