@@ -274,8 +274,8 @@ public class DashboardSentFragment extends ListFragment {
         this.surveys.clear();
         this.surveys.addAll(newListSurveys);
         this.adapter.notifyDataSetChanged();
-        setListShown(true);
         reloadMonitor();
+        setListShown(true);
     }
 
     private void reloadMonitor(){
