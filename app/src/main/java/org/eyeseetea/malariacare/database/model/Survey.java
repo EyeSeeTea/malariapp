@@ -176,6 +176,13 @@ public class Survey extends BaseModel {
         this.mainScore = mainScore;
     }
 
+    public String getType(){
+        String type = "";
+        if (isTypeA()) type = "A";
+        else if (isTypeB()) type = "B";
+        else if (isTypeC()) type = "C";
+        return type;
+    }
     /**
      * Returns this survey is type A (green)
      * @return
