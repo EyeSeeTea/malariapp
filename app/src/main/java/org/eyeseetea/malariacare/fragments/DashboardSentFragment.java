@@ -42,6 +42,7 @@ import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.FeedbackActivity;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.model.Survey;
+import org.eyeseetea.malariacare.database.monitor.FacilityTableBuilder;
 import org.eyeseetea.malariacare.database.monitor.PieProgramBuilder;
 import org.eyeseetea.malariacare.database.monitor.SentSurveysBuilder;
 import org.eyeseetea.malariacare.database.utils.Session;
@@ -155,6 +156,7 @@ public class DashboardSentFragment extends ListFragment {
         Session.setSurvey(surveys.get(position - 1));
         // Go to SurveyActivity
         ((DashboardActivity) getActivity()).go(FeedbackActivity.class);
+        getActivity().finish();
     }
 
     @Override
@@ -270,11 +272,16 @@ public class DashboardSentFragment extends ListFragment {
 
     public void reloadSurveys(List<Survey> newListSurveys) {
         Log.d(TAG, "reloadSurveys (Thread: " + Thread.currentThread().getId() + "): " + newListSurveys.size());
+        boolean hasSurveys=newListSurveys!=null && newListSurveys.size()>0;
+        ((DashboardActivity)getActivity()).hideOrShowSentInfo(hasSurveys);
+        if(!hasSurveys){
+            return;
+        }
         this.surveys.clear();
         this.surveys.addAll(newListSurveys);
         this.adapter.notifyDataSetChanged();
-        setListShown(true);
         reloadMonitor();
+        setListShown(true);
     }
 
     private void reloadMonitor(){
@@ -292,6 +299,9 @@ public class DashboardSentFragment extends ListFragment {
 
                 //Add pie charts
                 new PieProgramBuilder(surveys,getActivity()).addDataInChart(view);
+
+                //Add table x facility
+                new FacilityTableBuilder(surveys,getActivity()).addDataInChart(view);
             }
         });
 
@@ -339,6 +349,7 @@ public class DashboardSentFragment extends ListFragment {
                 List<Survey> surveysFromService = (List<Survey>) Session.popServiceValue(SurveyService.ALL_SENT_SURVEYS_ACTION);
                 reloadSurveys(surveysFromService);
                 LayoutUtils.setListViewHeightBasedOnChildren(getListView());
+                ((DashboardActivity)getActivity()).loadFinished();
             }
         }
 

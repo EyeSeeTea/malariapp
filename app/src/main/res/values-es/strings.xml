@@ -56,6 +56,7 @@
     <string name="dashboard_title_monitor">Monitor</string>
     <string name="dashboard_title_total_assessments">"Número total evaluaciones realizadas"</string>
     <string name="dashboard_title_qa_assessments">"Calidad de cuidados: "</string>
+    <string name="dashboard_title_table_facilities">Calidad de cuidados: últimos 12 meses</string>
 
     <!-- create -->
     <string name="create_info_ok">Empezar Evaluación</string>

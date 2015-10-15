@@ -33,5 +33,11 @@
     <string name="overall_score" translatable="false">Y8Nmpp7RhXw</string>
     <string name="overall_class" translatable="false">ggrkfoq6nxA</string>
 
+    <!-- Main score elements-->
+    <string name="main_score" translatable="false">ggrkfoq6nxA</string>
+    <string name="main_score_a" translatable="false">TgCWRlUXbca</string>
+    <string name="main_score_b" translatable="false">zckZqXOQRHT</string>
+    <string name="main_score_c" translatable="false">DBUwlPCO0Hd</string>
+
 
 </resources>

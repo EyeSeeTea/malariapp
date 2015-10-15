@@ -156,6 +156,7 @@ public class DashboardUnsentFragment extends ListFragment {
         Session.setSurvey(surveys.get(position - 1));
         //Go to SurveyActivity
         ((DashboardActivity) getActivity()).go(SurveyActivity.class);
+        getActivity().finish();
     }
 
     @Override
@@ -277,6 +278,7 @@ public class DashboardUnsentFragment extends ListFragment {
                                 Session.setSurvey(surveys.get(position - 1));
                                 // Go to FeedbackActivity
                                 ((DashboardActivity) getActivity()).go(FeedbackActivity.class);
+                                getActivity().finish();
                             }
                         }).create().show();
 
@@ -363,6 +365,7 @@ public class DashboardUnsentFragment extends ListFragment {
                 List<Survey> surveysUnsentFromService = (List<Survey>) Session.popServiceValue(SurveyService.ALL_UNSENT_SURVEYS_ACTION);
                 reloadSurveys(surveysUnsentFromService);
                 LayoutUtils.setListViewHeightBasedOnChildren(getListView());
+                ((DashboardActivity)getActivity()).loadFinished();
             }
         }
     }

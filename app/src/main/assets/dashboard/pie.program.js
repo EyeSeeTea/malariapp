@@ -86,7 +86,7 @@ function buildPieCharts(dataPies){
         //Create template with right ids
         var customTemplate=defaultTemplate.replace(/###/g, dataPie.idProgram);
         //Add DOM element
-        document.body.insertAdjacentHTML("beforeend",customTemplate);
+        document.getElementById("hrSent").insertAdjacentHTML("beforeend",customTemplate);
         //Draw chart on it
         pieXProgramChart(dataPie);
     }
