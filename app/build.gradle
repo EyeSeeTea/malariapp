@@ -92,6 +92,12 @@ android {
             minSdkVersion 15
             targetSdkVersion 21
         }
+        hnqisKenyaSF {
+            applicationId "org.eyeseetea.malariacare.hnqis"
+            versionName "12.0-hnqis-kenya-sf"
+            minSdkVersion 15
+            targetSdkVersion 21
+        }
         hnqisNigeriaICM {
             applicationId "org.eyeseetea.malariacare.hnqis"
             versionName "12.0-hnqis-nigeria-icm"
