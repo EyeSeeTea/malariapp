@@ -44,27 +44,7 @@ import java.util.Iterator;
 import java.util.List;
 
 @Table(databaseName = AppDatabase.NAME)
-public class Question extends BaseModel {
-
-    /**
-     * Sql query that counts required questions in a program (required for % stats)
-     */
-    /*private static final String LIST_REQUIRED_BY_PROGRAM =
-            "select q.* from question q"+
-            " left join answer a on q.answer=a.id"+
-            " left join header h on q.header=h.id"+
-            " left join tab t on h.tab=t.id"+
-            " left join program p on t.program=p.id"+
-            " where q.question=0"+
-            " and a.output<>"+ Constants.NO_ANSWER+
-            " and p.id=?";*/
-
-    /*private static final String LIST_ALL_BY_PROGRAM =
-            "select q.* from question q"+
-            " left join header h on q.header=h.id"+
-            " left join tab t on h.tab=t.id"+
-            " left join program p on t.program=p.id"+
-            " and p.id=? order by t.orderpos, q.orderpos";*/
+public class Question extends BaseModel implements Visitable {
 
     @Column
     @PrimaryKey(autoincrement = true)
@@ -649,6 +629,11 @@ public class Question extends BaseModel {
         } catch (Exception e) {
             return false;
         }
+    }
+
+    @Override
+    public void accept(IConvertToSDKVisitor IConvertToSDKVisitor) {
+        IConvertToSDKVisitor.visit(this);
     }
 
     @Override

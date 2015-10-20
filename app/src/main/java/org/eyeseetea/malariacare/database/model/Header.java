@@ -34,7 +34,7 @@ import org.eyeseetea.malariacare.database.AppDatabase;
 import java.util.List;
 
 @Table(databaseName = AppDatabase.NAME)
-public class Header extends BaseModel{
+public class Header extends BaseModel implements Visitable {
 
     @Column
     @PrimaryKey(autoincrement = true)
@@ -53,9 +53,6 @@ public class Header extends BaseModel{
     Tab tab;
 
     List<Question> questions;
-
-//    @Ignore
-//    List<Question> _parentQuestions;
 
     public Header() {
     }
@@ -126,6 +123,11 @@ public class Header extends BaseModel{
         return new Select().count().from(Question.class)
                 .where(Condition.column(Question$Table.HEADER_ID_HEADER).eq(getId_header()))
                 .and(Condition.column(Question$Table.QUESTION_ID_PARENT).isNull()).count();
+    }
+
+    @Override
+    public void accept(IConvertToSDKVisitor IConvertToSDKVisitor) {
+        IConvertToSDKVisitor.visit(this);
     }
 
     @Override

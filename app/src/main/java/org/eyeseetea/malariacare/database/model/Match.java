@@ -37,7 +37,7 @@ import java.util.List;
  * Created by Jose on 25/05/2015.
  */
 @Table(databaseName = AppDatabase.NAME)
-public class Match extends BaseModel {
+public class Match extends BaseModel implements Visitable {
     @Column
     @PrimaryKey(autoincrement = true)
     long id_match;
@@ -75,6 +75,11 @@ public class Match extends BaseModel {
 
     public void setQuestionRelation(QuestionRelation questionRelation) {
         this.questionRelation = questionRelation;
+    }
+
+    @Override
+    public void accept(IConvertToSDKVisitor IConvertToSDKVisitor) {
+        IConvertToSDKVisitor.visit(this);
     }
 
     @Override

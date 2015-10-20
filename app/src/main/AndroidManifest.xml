@@ -8,14 +8,6 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
 
-    <!--
-     To retrieve OAuth 2.0 tokens or invalidate tokens to disconnect a user. This disconnect
-     option is required to comply with the Google+ Sign-In developer policies
-    -->
-    <uses-permission android:name="android.permission.USE_CREDENTIALS" /> <!-- To retrieve the account name (email) as part of sign-in: -->
-    <uses-permission android:name="android.permission.GET_ACCOUNTS" /> <!-- To auto-complete the email text field in the login form with the user's emails -->
-    <uses-permission android:name="android.permission.READ_PROFILE" />
-    <uses-permission android:name="android.permission.READ_CONTACTS" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" /> <!-- Needed to profile with Debug class -->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 

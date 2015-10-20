@@ -37,7 +37,7 @@ import java.util.List;
  * Created by Jose on 25/05/2015.
  */
 @Table(databaseName = AppDatabase.NAME)
-public class QuestionRelation extends BaseModel {
+public class QuestionRelation extends BaseModel implements Visitable {
     @Column
     @PrimaryKey(autoincrement = true)
     long id_question_relation;
@@ -103,6 +103,11 @@ public class QuestionRelation extends BaseModel {
 
     public void setOperation(int operation) {
         this.operation = operation;
+    }
+
+    @Override
+    public void accept(IConvertToSDKVisitor IConvertToSDKVisitor) {
+        IConvertToSDKVisitor.visit(this);
     }
 
     @Override

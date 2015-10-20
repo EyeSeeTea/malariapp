@@ -34,7 +34,7 @@ import org.eyeseetea.malariacare.database.AppDatabase;
 import java.util.List;
 
 @Table(databaseName = AppDatabase.NAME)
-public class OrgUnit extends BaseModel {
+public class OrgUnit extends BaseModel implements Visitable {
 
     @Column
     @PrimaryKey(autoincrement = true)
@@ -129,6 +129,11 @@ public class OrgUnit extends BaseModel {
                     .where(Condition.column(Survey$Table.ORGUNIT_ID_ORG_UNIT).eq(this.getId_org_unit())).queryList();
         //}
         return surveys;
+    }
+
+    @Override
+    public void accept(IConvertToSDKVisitor IConvertToSDKVisitor) {
+        IConvertToSDKVisitor.visit(this);
     }
 
     @Override

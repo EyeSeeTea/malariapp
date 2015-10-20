@@ -32,7 +32,7 @@ import org.eyeseetea.malariacare.database.AppDatabase;
 import java.util.List;
 
 @Table(databaseName = AppDatabase.NAME)
-public class Program extends BaseModel {
+public class Program extends BaseModel implements Visitable {
 
     @Column
     @PrimaryKey(autoincrement = true)
@@ -86,6 +86,11 @@ public class Program extends BaseModel {
                     .where(Condition.column(TabGroup$Table.PROGRAM_ID_PROGRAM).eq(this.getId_program()))
                     .queryList();
         return this.tabGroups;
+    }
+
+    @Override
+    public void accept(IConvertToSDKVisitor IConvertToSDKVisitor) {
+        IConvertToSDKVisitor.visit(this);
     }
 
     @Override

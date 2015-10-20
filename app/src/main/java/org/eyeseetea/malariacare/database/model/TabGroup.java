@@ -35,7 +35,7 @@ import org.eyeseetea.malariacare.database.utils.Session;
 import java.util.List;
 
 @Table(databaseName = AppDatabase.NAME)
-public class TabGroup extends BaseModel {
+public class TabGroup extends BaseModel implements Visitable {
 
     @Column
     @PrimaryKey(autoincrement = true)
@@ -111,6 +111,11 @@ public class TabGroup extends BaseModel {
         return new Select().from(Tab.class)
                 .where(Condition.column(Tab$Table.TABGROUP_ID_TAB_GROUP).eq(Session.getSurvey().getTabGroup().getProgram().getId_program()))
                 .orderBy(Tab$Table.ORDER_POS).queryList();
+    }
+
+    @Override
+    public void accept(IConvertToSDKVisitor IConvertToSDKVisitor) {
+        IConvertToSDKVisitor.visit(this);
     }
 
     @Override

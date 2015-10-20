@@ -32,7 +32,7 @@ import org.eyeseetea.malariacare.database.AppDatabase;
  * Created by Jose on 25/05/2015.
  */
 @Table(databaseName = AppDatabase.NAME)
-public class QuestionOption extends BaseModel {
+public class QuestionOption extends BaseModel implements Visitable {
     @Column
     @PrimaryKey(autoincrement = true)
     long id_question_option;
@@ -96,6 +96,11 @@ public class QuestionOption extends BaseModel {
 
     public void setMatch(Match match) {
         this.match = match;
+    }
+
+    @Override
+    public void accept(IConvertToSDKVisitor IConvertToSDKVisitor) {
+        IConvertToSDKVisitor.visit(this);
     }
 
     @Override

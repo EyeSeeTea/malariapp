@@ -41,14 +41,7 @@ import java.util.List;
 import java.util.Set;
 
 @Table(databaseName = AppDatabase.NAME)
-public class CompositeScore extends BaseModel {
-
-    /*private static final String LIST_BY_PROGRAM_SQL=
-            "select distinct cs.* from composite_score cs "+
-            "left join question q on q.composite_score=cs.id "+
-            "left join header h on q.header=h.id "+
-            "left join tab t on h.tab=t.id "+
-            "left join program p on t.program=p.id where p.id=?";*/
+public class CompositeScore extends BaseModel implements Visitable {
 
     @Column
     @PrimaryKey(autoincrement = true)
@@ -146,7 +139,6 @@ public class CompositeScore extends BaseModel {
                     .where(Condition.column(CompositeScore$Table.COMPOSITESCORE_ID_PARENT).eq(this.getId_composite_score()))
                     .orderBy(CompositeScore$Table.ORDER_POS)
                     .queryList();
-            //this.compositeScoreChildren = CompositeScore.find(CompositeScore.class, "composite_score = ?", String.valueOf(this.getId()));
         }
         return this.compositeScoreChildren;
     }
@@ -154,13 +146,11 @@ public class CompositeScore extends BaseModel {
     //TODO: to enable lazy loading, here we need to set Method.SAVE and Method.DELETE and use the .toModel() to specify when do we want to load the models
     @OneToMany(methods = {OneToMany.Method.SAVE, OneToMany.Method.DELETE}, variableName = "questions")
     public List<Question> getQuestions(){
-        //if (questions == null) {
-            questions = new Select()
-                    .from(Question.class)
-                    .where(Condition.column(Question$Table.COMPOSITESCORE_ID_COMPOSITE_SCORE).eq(this.getId_composite_score()))
-                    .orderBy(true, Question$Table.ORDER_POS)
-                    .queryList();
-        //}
+        questions = new Select()
+                .from(Question.class)
+                .where(Condition.column(Question$Table.COMPOSITESCORE_ID_COMPOSITE_SCORE).eq(this.getId_composite_score()))
+                .orderBy(true, Question$Table.ORDER_POS)
+                .queryList();
         return questions;
     }
 
@@ -247,6 +237,11 @@ public class CompositeScore extends BaseModel {
 
     public boolean hasChildren(){
         return !getCompositeScoreChildren().isEmpty();
+    }
+
+    @Override
+    public void accept(IConvertToSDKVisitor IConvertToSDKVisitor) {
+        IConvertToSDKVisitor.visit(this);
     }
 
     @Override

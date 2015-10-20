@@ -32,7 +32,7 @@ import org.eyeseetea.malariacare.database.AppDatabase;
  * Created by adrian on 14/02/15.
  */
 @Table(databaseName = AppDatabase.NAME)
-public class Score extends BaseModel {
+public class Score extends BaseModel implements Visitable {
 
     @Column
     @PrimaryKey(autoincrement = true)
@@ -76,6 +76,11 @@ public class Score extends BaseModel {
 
     public void setUid(String uid) {
         this.uid = uid;
+    }
+
+    @Override
+    public void accept(IConvertToSDKVisitor IConvertToSDKVisitor) {
+        IConvertToSDKVisitor.visit(this);
     }
 
     @Override

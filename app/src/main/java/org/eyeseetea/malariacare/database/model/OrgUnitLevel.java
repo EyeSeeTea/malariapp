@@ -32,7 +32,7 @@ import org.eyeseetea.malariacare.database.AppDatabase;
 import java.util.List;
 
 @Table(databaseName = AppDatabase.NAME)
-public class OrgUnitLevel extends BaseModel {
+public class OrgUnitLevel extends BaseModel implements Visitable {
 
     @Column
     @PrimaryKey(autoincrement = true)
@@ -77,6 +77,11 @@ public class OrgUnitLevel extends BaseModel {
         this.orgUnits = new Select().from(OrgUnit.class)
                 .where(Condition.column(OrgUnit$Table.ORGUNIT_ID_PARENT).eq(this.getId_org_unit_level())).queryList();
         return orgUnits;
+    }
+
+    @Override
+    public void accept(IConvertToSDKVisitor IConvertToSDKVisitor) {
+        IConvertToSDKVisitor.visit(this);
     }
 
     @Override

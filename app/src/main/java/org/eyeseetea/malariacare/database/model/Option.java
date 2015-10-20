@@ -34,7 +34,7 @@ import org.eyeseetea.malariacare.database.AppDatabase;
 import java.util.List;
 
 @Table(databaseName = AppDatabase.NAME)
-public class Option extends BaseModel {
+public class Option extends BaseModel implements Visitable {
 
     //FIXME A 'Yes' answer shows children questions, this should be configurable by some additional attribute in Option
     public static final String CHECKBOX_YES_OPTION="Yes";
@@ -136,6 +136,11 @@ public class Option extends BaseModel {
     public List<Value> getValues(){
         return new Select().from(Value.class)
                 .where(Condition.column(Value$Table.OPTION_ID_OPTION).eq(this.getId_option())).queryList();
+    }
+
+    @Override
+    public void accept(IConvertToSDKVisitor IConvertToSDKVisitor) {
+        IConvertToSDKVisitor.visit(this);
     }
 
     @Override

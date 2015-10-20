@@ -32,7 +32,7 @@ import org.eyeseetea.malariacare.database.AppDatabase;
 import java.util.List;
 
 @Table(databaseName = AppDatabase.NAME)
-public class Answer extends BaseModel {
+public class Answer extends BaseModel implements Visitable{
 
     @Column
     @PrimaryKey(autoincrement = true)
@@ -88,6 +88,11 @@ public class Answer extends BaseModel {
     @OneToMany(methods = {OneToMany.Method.SAVE, OneToMany.Method.DELETE}, variableName = "questions")
     public List<Question> getQuestions(){
         return new Select().from(Question.class).where(Condition.column(Question$Table.ANSWER_ID_ANSWER).eq(this.getId_answer())).queryList();
+    }
+
+    @Override
+    public void accept(IConvertToSDKVisitor IConvertToSDKVisitor) {
+        IConvertToSDKVisitor.visit(this);
     }
 
     @Override

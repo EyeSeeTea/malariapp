@@ -42,7 +42,7 @@ import java.util.Date;
 import java.util.List;
 
 @Table(databaseName = AppDatabase.NAME)
-public class Survey extends BaseModel {
+public class Survey extends BaseModel implements Visitable {
     public static final float MAX_AMBER = 80f;
     public static final float MAX_RED = 50f;
 
@@ -436,6 +436,11 @@ public class Survey extends BaseModel {
                 .limit(String.valueOf(limit))
                 .orderBy(Survey$Table.EVENTDATE)
                 .orderBy(Survey$Table.ORGUNIT_ID_ORG_UNIT).queryList();
+    }
+
+    @Override
+    public void accept(IConvertToSDKVisitor IConvertToSDKVisitor) {
+        IConvertToSDKVisitor.visit(this);
     }
 
     @Override

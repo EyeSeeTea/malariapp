@@ -31,7 +31,7 @@ import com.raizlabs.android.dbflow.structure.BaseModel;
 import org.eyeseetea.malariacare.database.AppDatabase;
 
 @Table(databaseName = AppDatabase.NAME)
-public class Value extends BaseModel {
+public class Value extends BaseModel implements Visitable {
 
     @Column
     @PrimaryKey(autoincrement = true)
@@ -145,8 +145,11 @@ public class Value extends BaseModel {
         return (int) new Select().count()
                 .from(Value.class)
                 .where(Condition.column(Value$Table.SURVEY_ID_SURVEY).eq(survey.getId_survey())).count();
-        //String[] whereArgs={survey.getId().toString()};
-        //Value.count(Value.class,"survey=?",whereArgs);
+    }
+
+    @Override
+    public void accept(IConvertToSDKVisitor IConvertToSDKVisitor) {
+        IConvertToSDKVisitor.visit(this);
     }
 
     @Override
