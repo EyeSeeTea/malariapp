@@ -53,10 +53,8 @@
     <string name="dashboard_button_new_survey">Nueva Encuesta</string>
     <string name="dashboard_button_see_all">Ver todas</string>
     <string name="dashboard_info_ready_to_upload">Lista para enviar</string>
-    <string name="dashboard_title_monitor">Monitor</string>
     <string name="dashboard_title_total_assessments">"Número total evaluaciones realizadas"</string>
-    <string name="dashboard_title_qa_assessments">"Calidad de cuidados: "</string>
-    <string name="dashboard_title_table_facilities">Calidad de cuidados: últimos 12 meses</string>
+    <string name="dashboard_title_table_facilities">Calidad de cuidados (basado en la última evaluación)</string>
 
     <!-- create -->
     <string name="create_info_ok">Empezar Evaluación</string>

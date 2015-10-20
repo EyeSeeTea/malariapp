@@ -40,7 +40,7 @@ import java.util.Map;
 public class SentSurveysBuilder {
 
     private static final String TAG=".SentSurveysBuilder";
-    private static final int EXPECTED_SENT_SURVEYS_PER_MONTH=10;
+    private static final int EXPECTED_SENT_SURVEYS_PER_MONTH=30;
     public static final String JAVASCRIPT_UPDATE_CHART = "javascript:updateChartTitle('titleSent','%s')";
     private static final int MAX_MONTHS=6;
 
