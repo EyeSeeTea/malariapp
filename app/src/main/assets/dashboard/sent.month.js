@@ -20,7 +20,7 @@ var surveyXMonthChart= (function SentXMonthChart(){
         labels: [],
         datasets: [
             {
-                label: "Sent",
+                label: "Assessment undertaken",
                 fillColor: "rgba(241,194,50,0)",
                 strokeColor: "rgba(241,194,50,1)",
                 pointColor: "rgba(241,194,50,1)",
