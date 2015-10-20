@@ -232,6 +232,7 @@ public class DashboardSentFragment extends ListFragment {
                                                     Intent surveysIntent=new Intent(getActivity(), SurveyService.class);
                                                     surveysIntent.putExtra(SurveyService.SERVICE_METHOD, SurveyService.RELOAD_DASHBOARD_ACTION);
                                                     getActivity().startService(surveysIntent);
+                                                    reloadMonitor();
                                                 }
                                             })
                                             .setNegativeButton(android.R.string.no, null).create().show();
@@ -275,13 +276,12 @@ public class DashboardSentFragment extends ListFragment {
     public void reloadSurveys(List<Survey> newListSurveys) {
         Log.d(TAG, "reloadSurveys (Thread: " + Thread.currentThread().getId() + "): " + newListSurveys.size());
         boolean hasSurveys=newListSurveys!=null && newListSurveys.size()>0;
-        if(!hasSurveys){
-            return;
-        }
         this.surveys.clear();
         this.surveys.addAll(newListSurveys);
         this.adapter.notifyDataSetChanged();
-        reloadMonitor();
+        if(hasSurveys){
+            reloadMonitor();
+        }
         setListShown(true);
     }
 
