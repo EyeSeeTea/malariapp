@@ -93,6 +93,7 @@ public class PushClient {
     }
 
     public PushResult push() {
+        PushResult pushResult;
         try{
             //TODO: This should be removed once DHIS bug is solved
             //Map<String, JSONObject> controlData = prepareControlData();
@@ -100,25 +101,31 @@ public class PushClient {
             //TODO: This should be removed once DHIS bug is solved
             //data = prepareDataElements(data, controlData.get(""));
             data = prepareDataElements(data, null);
-
-            PushResult result = new PushResult(pushData(data));
-            if(result.isSuccessful()){
+            pushResult = new PushResult(pushData(data));
+            if(pushResult.isSuccessful()){
                 //TODO: This should be removed once DHIS bug is solved
                 //pushControlDataElements(controlData);
                 updateSurveyState();
             }
-            return result;
         }catch(Exception ex){
             Log.e(TAG, ex.getMessage());
-            return new PushResult(ex);
+            pushResult=new PushResult(ex);
         }
+        finally {
+            //Success or not the dashboard must be reloaded
+            updateDashboard();
+        }
+        return  pushResult;
     }
 
     public void updateSurveyState(){
-        //Change status
+        //Change status and save mainScore
         this.survey.setStatus(Constants.SURVEY_SENT);
         this.survey.update();
+        this.survey.saveMainScore();
+    }
 
+    public void updateDashboard(){
         //Reload data using service
         Intent surveysIntent=new Intent(activity, SurveyService.class);
         surveysIntent.putExtra(SurveyService.SERVICE_METHOD, SurveyService.RELOAD_DASHBOARD_ACTION);
@@ -237,7 +244,12 @@ public class PushClient {
      * @throws Exception
      */
     private JSONArray prepareValues(JSONArray values,JSONArray controlDataElements) throws Exception{
-        for (Value value : survey.getValues()) {
+        List<Value> surveyValues=survey.getValues();
+        if(surveyValues==null || surveyValues.size()==0){
+            throw new Exception(activity.getString(R.string.dialog_info_push_empty_survey));
+        }
+
+        for (Value value : surveyValues) {
             values.put(prepareValue(value));
         }
 

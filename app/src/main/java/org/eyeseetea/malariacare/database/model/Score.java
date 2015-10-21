@@ -37,21 +37,27 @@ public class Score extends BaseModel {
     @Column
     @PrimaryKey(autoincrement = true)
     long id_score;
+
     @Column
-    @ForeignKey(references = {@ForeignKeyReference(columnName = "id_tab",
+    @ForeignKey(references = {@ForeignKeyReference(columnName = "id_survey",
             columnType = Long.class,
-            foreignColumnName = "id_tab")},
+            foreignColumnName = "id_survey")},
             saveForeignKeyModel = false)
-    Tab tab;
+    Survey survey;
+
     @Column
     String uid;
+
+    @Column
+    Float score;
 
     public Score() {
     }
 
-    public Score(Tab tab, String uid) {
-        this.tab = tab;
+    public Score(Survey survey, String uid, Float score) {
+        this.survey = survey;
         this.uid = uid;
+        this.score = score;
     }
 
     public Long getId_score() {
@@ -62,12 +68,12 @@ public class Score extends BaseModel {
         this.id_score = id_score;
     }
 
-    public Tab getTab() {
-        return tab;
+    public Survey getSurvey() {
+        return survey;
     }
 
-    public void setTab(Tab tab) {
-        this.tab = tab;
+    public void setSurvey(Survey survey) {
+        this.survey = survey;
     }
 
     public String getUid() {
@@ -78,33 +84,11 @@ public class Score extends BaseModel {
         this.uid = uid;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Score)) return false;
-
-        Score score = (Score) o;
-
-        if (id_score != score.id_score) return false;
-        if (!tab.equals(score.tab)) return false;
-        return !(uid != null ? !uid.equals(score.uid) : score.uid != null);
-
+    public Float getScore() {
+        return score;
     }
 
-    @Override
-    public int hashCode() {
-        int result = (int) (id_score ^ (id_score >>> 32));
-        result = 31 * result + tab.hashCode();
-        result = 31 * result + (uid != null ? uid.hashCode() : 0);
-        return result;
-    }
-
-    @Override
-    public String toString() {
-        return "Score{" +
-                "id=" + id_score +
-                ", tab=" + tab +
-                ", uid='" + uid + '\'' +
-                '}';
+    public void setScore(Float score) {
+        this.score = score;
     }
 }

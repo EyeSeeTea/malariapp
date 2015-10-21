@@ -202,5 +202,6 @@
     <string name="create_info_tabs_group">Tab Group</string>
     <string name="iqatab_info_note">Note: Slide rechecking should be carried out at the health facility during OTSS in the presence of the facility lab staff.  Slides should not be removed from the facility for this purpose.</string>
     <string name="settings_text_dhis_user">Utilisateur DHIS</string>
+    <string name="dialog_info_push_empty_survey">Enquêtes vides ne peuvent pas être poussés</string>
 
 </resources>
