@@ -22,7 +22,6 @@ package org.eyeseetea.malariacare;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
-import android.app.Activity;
 import android.app.LoaderManager.LoaderCallbacks;
 import android.content.CursorLoader;
 import android.content.Intent;
@@ -323,12 +322,11 @@ public class LoginActivity extends BaseActivity implements LoaderCallbacks<Curso
             Log.i(".LoginActivity", "Logged in!");
             // Set the user in the session
             Session.setUser(user);
-            // return back to the calling activity the survey position in the dashboard and the ok returncode
-            Intent resultData = new Intent();
-            resultData.putExtra("Survey", getIntent().getIntExtra("Survey", 0));
+            // Go to dashboard
+            Intent resultData = new Intent(getApplicationContext(), DashboardActivity.class);
             resultData.putExtra("User", mUserView.getText().toString());
             resultData.putExtra("Password", mPasswordView.getText().toString());
-            setResult(Activity.RESULT_OK, resultData);
+
             finish();
         }
 
