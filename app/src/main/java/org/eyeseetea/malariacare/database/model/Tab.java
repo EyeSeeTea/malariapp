@@ -56,8 +56,6 @@ public class Tab extends BaseModel {
 
     List<Header> headers;
 
-    List<Score> scores;
-
     public Tab() {
     }
 
@@ -114,13 +112,6 @@ public class Tab extends BaseModel {
         return new Select().from(Header.class)
                 .where(Condition.column(Header$Table.TAB_ID_TAB).eq(this.getId_tab()))
                 .orderBy(Header$Table.ORDER_POS).queryList();
-    }
-
-    //TODO: to enable lazy loading, here we need to set Method.SAVE and Method.DELETE and use the .toModel() to specify when do we want to load the models
-    @OneToMany(methods = {OneToMany.Method.SAVE, OneToMany.Method.DELETE}, variableName = "scores")
-    public List<Score> getScores(){
-        return new Select().from(Score.class)
-                .where(Condition.column(Score$Table.TAB_ID_TAB).eq(this.getId_tab())).queryList();
     }
 
     /*

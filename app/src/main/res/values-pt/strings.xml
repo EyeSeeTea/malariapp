@@ -208,4 +208,5 @@
     <string name="dialog_content_incorrect_org_unit">Por favor seleccione uma org unit de final</string>
     <string name="create_info_tabs_group">Tab Group</string>
     <string name="settings_text_dhis_user">Utilizador DHIS</string>
+    <string name="dialog_info_push_empty_survey">Inquéritos vazias não podem ser empurrados</string>
 </resources>
