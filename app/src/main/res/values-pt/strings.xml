@@ -54,10 +54,8 @@
     <string name="dashboard_button_see_all">Ver todos(as)</string>
     <string name="dashboard_info_ready_to_upload">Pronto para carregar</string>
     <string name="dashboard_info_sent">Enviei</string>
-    <string name="dashboard_title_monitor">"Monitoração"</string>
     <string name="dashboard_title_total_assessments">"Número total de avaliações realizadas"</string>
-    <string name="dashboard_title_qa_assessments">"Qualidade dos cuidados: "</string>
-    <string name="dashboard_title_table_facilities">"Qualidade dos cuidados: últimos 12 meses"</string>
+    <string name="dashboard_title_table_facilities">"Qualidade dos cuidados (com base na última avaliação)"</string>
 
     <!-- create -->
     <string name="create_info_ok">Criar avaliação</string>
@@ -210,4 +208,5 @@
     <string name="dialog_content_incorrect_org_unit">Por favor seleccione uma org unit de final</string>
     <string name="create_info_tabs_group">Tab Group</string>
     <string name="settings_text_dhis_user">Utilizador DHIS</string>
+    <string name="dialog_info_push_empty_survey">Inquéritos vazias não podem ser empurrados</string>
 </resources>

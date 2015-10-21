@@ -64,10 +64,8 @@
     <string name="dashboard_button_see_all">See all</string>
     <string name="dashboard_info_ready_to_upload">Ready to upload</string>
     <string name="dashboard_info_sent">Sent</string>
-    <string name="dashboard_title_monitor">Monitoring</string>
     <string name="dashboard_title_total_assessments">Total number of assessments undertaken</string>
-    <string name="dashboard_title_qa_assessments">Quality of care: </string>
-    <string name="dashboard_title_table_facilities">Quality of care: Last 12 months</string>
+    <string name="dashboard_title_table_facilities">Quality of care (based on last assessment)</string>
 
     <!-- create -->
     <string name="create_info_ok">Start Assessment</string>
@@ -246,8 +244,10 @@
     <string name="dialog_title_push_response">Push response</string>
     <string name="dialog_info_push_ok">Survey data has been successfully pushed to DHIS server</string>
     <string name="dialog_info_push_bad_credentials">Bad credentials for pushing</string>
+    <string name="dialog_info_push_empty_survey">Empty surveys cannot be pushed</string>
     <string name="dialog_error_push_no_location">No location available</string>
     <string name="dialog_error_push_no_location_and_required">No location available and it is a required field</string>
+
 
     <!-- Preference variable names -->
     <item name="show_num_dems" type="string" translatable="false">show_num_dems</item>

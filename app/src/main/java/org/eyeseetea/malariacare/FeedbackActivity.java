@@ -120,7 +120,8 @@ public class FeedbackActivity extends BaseActivity{
 
     @Override
     public void onPause(){
-        Session.getSurvey().updateSurveyStatus();
+        //XXX Since feedback is a readonly action there is no need to update anything
+//        Session.getSurvey().updateSurveyStatus();
         unregisterReceiver();
         super.onPause();
     }

@@ -877,3 +877,9 @@ Générale Publique Limitée GNU au lieu de cette Licence ; mais d’abord,
 veuillez lire <http://www.gnu.org/philosophy/why-not-lgpl.html>.
 
 _______________________________________________________________________
+
+                    CREDITS SUPPLEMENTAIRES
+                        Version 1, 20 Octobre ici à 2015
+   Ce logiciel utilise également une bibliothèque 3ème partie «Chart.js 'pour dessiner ses graphiques,
+ce logiciel est publié sous la MIT license.Please référer à ce lien pour plus de détails:
+<https://github.com/nnnick/Chart.js/blob/master/LICENSE.md>.

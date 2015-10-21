@@ -22,11 +22,24 @@
     <script type = "text/javascript" src="file:///android_asset/dashboard/Chart.min.js"> </script>
 </head>
 <style>
+    @font-face {
+        font-family: 'Roboto-Condensed';
+        src: url('file:///android_asset/fonts/Roboto-Condensed.ttf');
+        font-weight: bold;
+    }
     body{
         background-color:#e5e5e5;
+        font-family: 'Roboto-Condensed';
     }
     .line-title{
-        float:right;
+        float: left;
+        font-size: 18px;
+        padding: 10px;
+        padding-left: 0px;
+    }
+
+    canvas, table{
+        margin: 5px;
     }
 
 	.chart-legend li span{
@@ -47,7 +60,6 @@
 
     table, td, th {
         border: 1px solid black;
-        font-size: 0.8em;
         text-align: center;
     }
 
@@ -70,8 +82,10 @@
         <span class="line-title" id="titleSent"></span>
         <!--Multiline chart holder-->
         <canvas id="surveyXMonthCanvas" style="width: 100%; height: auto;"></canvas>
+        <!--Legend for this chart-->
+        <div id="sentLegend" class="chart-legend"></div>
     </div>
-    <hr id="hrSent"/>
+    <hr id="hrSent" />
 
     <!--Pie charts will be added right here-->
 

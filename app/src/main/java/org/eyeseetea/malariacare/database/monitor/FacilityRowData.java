@@ -33,7 +33,7 @@ import java.util.Map;
  * Created by arrizabalaga on 13/10/15.
  */
 public class FacilityRowData {
-    public static int NUM_MONTHS=12;
+    public static int NUM_MONTHS=6;
     private OrgUnit facility;
     List<FacilityColumnData> columnData;
     private Map<String,Integer> monthsIndex;

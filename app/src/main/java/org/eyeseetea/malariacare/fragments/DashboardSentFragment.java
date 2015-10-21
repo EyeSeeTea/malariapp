@@ -232,6 +232,7 @@ public class DashboardSentFragment extends ListFragment {
                                                     Intent surveysIntent=new Intent(getActivity(), SurveyService.class);
                                                     surveysIntent.putExtra(SurveyService.SERVICE_METHOD, SurveyService.RELOAD_DASHBOARD_ACTION);
                                                     getActivity().startService(surveysIntent);
+                                                    reloadMonitor();
                                                 }
                                             })
                                             .setNegativeButton(android.R.string.no, null).create().show();
@@ -243,6 +244,8 @@ public class DashboardSentFragment extends ListFragment {
         // Setting this scroll listener is required to ensure that during ListView scrolling,
         // we don't look for swipes.
         listView.setOnScrollListener(touchListener.makeScrollListener());
+
+        Session.listViewSent = listView;
     }
 
 
@@ -273,14 +276,12 @@ public class DashboardSentFragment extends ListFragment {
     public void reloadSurveys(List<Survey> newListSurveys) {
         Log.d(TAG, "reloadSurveys (Thread: " + Thread.currentThread().getId() + "): " + newListSurveys.size());
         boolean hasSurveys=newListSurveys!=null && newListSurveys.size()>0;
-        ((DashboardActivity)getActivity()).hideOrShowSentInfo(hasSurveys);
-        if(!hasSurveys){
-            return;
-        }
         this.surveys.clear();
         this.surveys.addAll(newListSurveys);
         this.adapter.notifyDataSetChanged();
-        reloadMonitor();
+        if(hasSurveys){
+            reloadMonitor();
+        }
         setListShown(true);
     }
 
@@ -302,6 +303,11 @@ public class DashboardSentFragment extends ListFragment {
 
                 //Add table x facility
                 new FacilityTableBuilder(surveys,getActivity()).addDataInChart(view);
+
+                // As WebView and ListView doesn't get on well, we need to calculate ListViews height
+                // after WebView is loaded to be able to properly represent it in the screen
+                LayoutUtils.setListViewHeightBasedOnChildren(Session.listViewSent);
+                LayoutUtils.setListViewHeightBasedOnChildren(Session.listViewUnsent);
             }
         });
 
@@ -348,8 +354,6 @@ public class DashboardSentFragment extends ListFragment {
             if(SurveyService.ALL_SENT_SURVEYS_ACTION.equals(intent.getAction())) {
                 List<Survey> surveysFromService = (List<Survey>) Session.popServiceValue(SurveyService.ALL_SENT_SURVEYS_ACTION);
                 reloadSurveys(surveysFromService);
-                LayoutUtils.setListViewHeightBasedOnChildren(getListView());
-                ((DashboardActivity)getActivity()).loadFinished();
             }
         }
 
