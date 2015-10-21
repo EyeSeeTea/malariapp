@@ -19,6 +19,8 @@ apply plugin: 'com.neenbedankt.android-apt'
 
 android {
     signingConfigs {
+        config {
+        }
     }
     compileSdkVersion 21
     buildToolsVersion "22.0.1"
@@ -35,6 +37,7 @@ android {
             javaMaxHeapSize "4g"
         }*/
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        signingConfig signingConfigs.config
     }
     buildTypes {
         release {
@@ -47,7 +50,12 @@ android {
     }
     //TODO This config is related to a known issue: http://stackoverflow.com/questions/20827885/android-studio-0-4-duplicate-files-copied-in-apk-meta-inf-license-txt
     packagingOptions {
-        exclude  'LICENSE.txt'
+        exclude 'LICENSE.txt'
+        //FIXME: This has been automatically suggested by AndroidStudio while sdk integration
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/NOTICE.txt'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/NOTICE'
     }
     productFlavors {
         edsGhana {
@@ -130,4 +138,5 @@ dependencies {
     compile('com.crashlytics.sdk.android:crashlytics:2.5.2@aar') {
         transitive = true;
     }
+    compile project(':sdk:app')
 }
