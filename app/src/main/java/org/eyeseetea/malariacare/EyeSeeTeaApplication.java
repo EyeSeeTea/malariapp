@@ -28,6 +28,7 @@ import com.raizlabs.android.dbflow.config.FlowManager;
 
 import io.fabric.sdk.android.Fabric;
 
+import org.eyeseetea.malariacare.database.monitor.SentSurveysBuilder;
 import org.eyeseetea.malariacare.database.utils.LocationMemory;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
 

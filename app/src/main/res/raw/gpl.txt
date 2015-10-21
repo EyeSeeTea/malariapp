@@ -672,3 +672,8 @@ may consider it more useful to permit linking proprietary applications with
 the library.  If this is what you want to do, use the GNU Lesser General
 Public License instead of this License.  But first, please read
 <http://www.gnu.org/philosophy/why-not-lgpl.html>.
+
+                    ADDITIONAL CREDITS
+                       Version 1, 20 October 2015
+  This software also uses a 3rd party library 'Chart.js' to draw its charts, this software is released under the MIT license.Please refer to this link for details:
+<https://github.com/nnnick/Chart.js/blob/master/LICENSE.md>.

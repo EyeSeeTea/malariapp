@@ -26,8 +26,8 @@ android {
         applicationId 'org.eyeseetea.malariacare'
         minSdkVersion 15
         targetSdkVersion 21
-        versionCode 11
-        versionName "11.0"
+        versionCode 12
+        versionName "12.0"
         multiDexEnabled true
         /*dexOptions {
             jumboMode = true
@@ -52,49 +52,55 @@ android {
     productFlavors {
         edsGhana {
             applicationId "org.eyeseetea.malariacare.eds"
-            versionName "11.0-eds-ghana"
+            versionName "12.0-eds-ghana"
             minSdkVersion 15
             targetSdkVersion 21
         }
         edsMalawi {
             applicationId "org.eyeseetea.malariacare.eds"
-            versionName "11.0-eds-malawi"
+            versionName "12.0-eds-malawi"
             minSdkVersion 15
             targetSdkVersion 21
         }
         edsMozambique {
             applicationId "org.eyeseetea.malariacare.eds"
-            versionName "11.0-eds-mozambique"
+            versionName "12.0-eds-mozambique"
             minSdkVersion 15
             targetSdkVersion 21
         }
         edsTanzania {
             applicationId "org.eyeseetea.malariacare.eds"
-            versionName "11.0-eds-tanzania"
+            versionName "12.0-eds-tanzania"
             minSdkVersion 15
             targetSdkVersion 21
         }
         edsZambia {
             applicationId "org.eyeseetea.malariacare.eds"
-            versionName "11.0-eds-zambia"
+            versionName "12.0-eds-zambia"
             minSdkVersion 15
             targetSdkVersion 21
         }
         hnqisCongoICM {
             applicationId "org.eyeseetea.malariacare.hnqis"
-            versionName "11.0-hnqis-congo-icm"
+            versionName "12.0-hnqis-congo-icm"
             minSdkVersion 15
             targetSdkVersion 21
         }
         hnqisKenyaICM {
             applicationId "org.eyeseetea.malariacare.hnqis"
-            versionName "11.0-hnqis-kenya-icm"
+            versionName "12.0-hnqis-kenya-icm"
+            minSdkVersion 15
+            targetSdkVersion 21
+        }
+        hnqisKenyaSF {
+            applicationId "org.eyeseetea.malariacare.hnqis"
+            versionName "12.0-hnqis-kenya-sf"
             minSdkVersion 15
             targetSdkVersion 21
         }
         hnqisNigeriaICM {
             applicationId "org.eyeseetea.malariacare.hnqis"
-            versionName "11.0-hnqis-nigeria-icm"
+            versionName "12.0-hnqis-nigeria-icm"
             minSdkVersion 15
             targetSdkVersion 21
         }
@@ -103,12 +109,12 @@ android {
 
 dependencies {
     // App dependencies
-    compile 'com.android.support:support-v4:22.2.1'
-    compile 'com.android.support:appcompat-v7:22.2.1'
-    compile 'com.android.support:support-annotations:22.2.1'
+    compile 'com.android.support:support-v4:21.2.1'
+    compile 'com.android.support:appcompat-v7:21.2.1'
+    compile 'com.android.support:support-annotations:21.2.1'
     compile 'com.opencsv:opencsv:3.3'
     compile 'com.android.support:multidex:1.0.1'
-    compile 'com.google.android.gms:play-services:7.8.0'
+    compile 'com.google.android.gms:play-services:8.1.0'
     compile 'com.google.guava:guava:18.0'
     compile 'com.squareup.okhttp:okhttp:2.2.0'
     apt 'com.raizlabs.android:DBFlow-Compiler:2.2.1'

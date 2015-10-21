@@ -19,7 +19,6 @@
 
 package org.eyeseetea.malariacare.fragments;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ListFragment;
 import android.content.BroadcastReceiver;
@@ -27,24 +26,30 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 
 import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.FeedbackActivity;
 import org.eyeseetea.malariacare.R;
-import org.eyeseetea.malariacare.SurveyActivity;
 import org.eyeseetea.malariacare.database.model.Survey;
+import org.eyeseetea.malariacare.database.monitor.FacilityTableBuilder;
+import org.eyeseetea.malariacare.database.monitor.PieProgramBuilder;
+import org.eyeseetea.malariacare.database.monitor.SentSurveysBuilder;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.layout.adapters.dashboard.AssessmentSentAdapter;
 import org.eyeseetea.malariacare.layout.adapters.dashboard.IDashboardAdapter;
 import org.eyeseetea.malariacare.layout.listeners.SwipeDismissListViewTouchListener;
+import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 import org.eyeseetea.malariacare.services.SurveyService;
 import org.eyeseetea.malariacare.views.CustomTextView;
 
@@ -62,6 +67,7 @@ public class DashboardSentFragment extends ListFragment {
     private List<Survey> surveys;
     protected IDashboardAdapter adapter;
     private static int index = 0;
+    private WebView webView;
 
     public DashboardSentFragment(){
         this.adapter = Session.getAdapterSent();
@@ -150,13 +156,14 @@ public class DashboardSentFragment extends ListFragment {
         Session.setSurvey(surveys.get(position - 1));
         // Go to SurveyActivity
         ((DashboardActivity) getActivity()).go(FeedbackActivity.class);
+        getActivity().finish();
     }
 
     @Override
     public void onStop(){
         Log.d(TAG, "onStop");
         unregisterSurveysReceiver();
-
+        stopMonitor();
         super.onStop();
     }
 
@@ -225,6 +232,7 @@ public class DashboardSentFragment extends ListFragment {
                                                     Intent surveysIntent=new Intent(getActivity(), SurveyService.class);
                                                     surveysIntent.putExtra(SurveyService.SERVICE_METHOD, SurveyService.RELOAD_DASHBOARD_ACTION);
                                                     getActivity().startService(surveysIntent);
+                                                    reloadMonitor();
                                                 }
                                             })
                                             .setNegativeButton(android.R.string.no, null).create().show();
@@ -236,6 +244,8 @@ public class DashboardSentFragment extends ListFragment {
         // Setting this scroll listener is required to ensure that during ListView scrolling,
         // we don't look for swipes.
         listView.setOnScrollListener(touchListener.makeScrollListener());
+
+        Session.listViewSent = listView;
     }
 
 
@@ -263,13 +273,74 @@ public class DashboardSentFragment extends ListFragment {
         }
     }
 
-    public void reloadSurveys(List<Survey> newListSurveys){
-        Log.d(TAG, "reloadSurveys (Thread: "+Thread.currentThread().getId()+"): " + newListSurveys.size());
+    public void reloadSurveys(List<Survey> newListSurveys) {
+        Log.d(TAG, "reloadSurveys (Thread: " + Thread.currentThread().getId() + "): " + newListSurveys.size());
+        boolean hasSurveys=newListSurveys!=null && newListSurveys.size()>0;
         this.surveys.clear();
         this.surveys.addAll(newListSurveys);
         this.adapter.notifyDataSetChanged();
+        if(hasSurveys){
+            reloadMonitor();
+        }
         setListShown(true);
     }
+
+    private void reloadMonitor(){
+        if(webView==null){
+            webView=initMonitor();
+        }
+
+        //onPageFinish load data
+        webView.setWebViewClient(new WebViewClient() {
+            @Override
+            public void onPageFinished(WebView view, String url) {
+                super.onPageFinished(view, url);
+                //Add line chart
+                new SentSurveysBuilder(surveys, getActivity()).addDataInChart(view);
+
+                //Add pie charts
+                new PieProgramBuilder(surveys,getActivity()).addDataInChart(view);
+
+                //Add table x facility
+                new FacilityTableBuilder(surveys,getActivity()).addDataInChart(view);
+
+                // As WebView and ListView doesn't get on well, we need to calculate ListViews height
+                // after WebView is loaded to be able to properly represent it in the screen
+                LayoutUtils.setListViewHeightBasedOnChildren(Session.listViewSent);
+                LayoutUtils.setListViewHeightBasedOnChildren(Session.listViewUnsent);
+            }
+        });
+
+        //Load html
+        webView.loadUrl("file:///android_asset/dashboard/dashboard.html");
+    }
+
+    private WebView initMonitor(){
+        WebView webView = (WebView) getActivity().findViewById(R.id.dashboard_monitor);
+        //Init webView settings
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN){
+            webView.getSettings().setAllowUniversalAccessFromFileURLs(true);
+            webView.getSettings().setAllowFileAccessFromFileURLs(true);
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            WebView.setWebContentsDebuggingEnabled(true);
+        }
+        webView.getSettings().setJavaScriptEnabled(true);
+
+        return webView;
+    }
+
+    /**
+     * Stops webView gracefully
+     */
+    private void stopMonitor(){
+        try{
+            webView.stopLoading();
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+    }
+
     /**
      * Inner private class that receives the result from the service
      */

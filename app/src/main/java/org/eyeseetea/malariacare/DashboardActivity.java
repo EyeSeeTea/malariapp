@@ -43,7 +43,6 @@ import java.util.List;
 public class DashboardActivity extends BaseActivity {
 
     private final static String TAG=".DDetailsActivity";
-
     private boolean reloadOnResume=true;
 
     @Override
@@ -76,6 +75,12 @@ public class DashboardActivity extends BaseActivity {
     }
 
     @Override
+    protected void onPostResume() {
+        super.onPostResume();
+
+    }
+
+    @Override
     protected void initTransition(){
         this.overridePendingTransition(R.transition.anim_slide_in_right, R.transition.anim_slide_out_right);
     }
@@ -92,8 +97,6 @@ public class DashboardActivity extends BaseActivity {
         Log.d(TAG, "onPause");
         super.onPause();
     }
-
-
 
     public void setReloadOnResume(boolean doReload){
         this.reloadOnResume=false;

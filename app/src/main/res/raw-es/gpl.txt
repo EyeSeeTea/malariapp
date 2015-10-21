@@ -793,3 +793,9 @@ hacer, utilice la GNU Lesser General Public License en vez de esta
 Licencia. Pero primero, por favor consulte
 http://www.gnu.org/philosophy/why-not-lgpl.html.
 
+
+                    CREDITOS ADICIONALES
+                       Version 1, 20 Octubre 2015
+  Este software usa una libreria de terceros 'Chart.js' para representar sus gráficas,
+dicho software esta liberado bajo licencia MIT. Consulte el siguiente enlace para ver los detalles:
+<https://github.com/nnnick/Chart.js/blob/master/LICENSE.md>.

@@ -155,6 +155,7 @@ public class DashboardUnsentFragment extends ListFragment {
         Session.setSurvey(surveys.get(position - 1));
         //Go to SurveyActivity
         ((DashboardActivity) getActivity()).go(SurveyActivity.class);
+        getActivity().finish();
     }
 
     @Override
@@ -276,15 +277,16 @@ public class DashboardUnsentFragment extends ListFragment {
                                 Session.setSurvey(surveys.get(position - 1));
                                 // Go to FeedbackActivity
                                 ((DashboardActivity) getActivity()).go(FeedbackActivity.class);
+                                getActivity().finish();
                             }
                         }).create().show();
-
-
 
 
                 return true;
             }
         });
+
+        Session.listViewUnsent = listView;
     }
 
 
@@ -314,7 +316,7 @@ public class DashboardUnsentFragment extends ListFragment {
     }
 
     public void reloadSurveys(List<Survey> newListSurveys){
-        Log.d(TAG, "reloadSurveys (Thread: "+Thread.currentThread().getId()+"): " + newListSurveys.size());
+        Log.d(TAG, "reloadSurveys (Thread: " + Thread.currentThread().getId() + "): " + newListSurveys.size());
         this.surveys.clear();
         this.surveys.addAll(newListSurveys);
         this.adapter.notifyDataSetChanged();

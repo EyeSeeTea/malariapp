@@ -27,19 +27,12 @@ import android.os.Build;
 import android.support.v7.app.ActionBar;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
-import android.widget.Spinner;
-import android.widget.TableLayout;
+import android.widget.ListAdapter;
+import android.widget.ListView;
 
 import org.eyeseetea.malariacare.R;
-import org.eyeseetea.malariacare.database.model.Question;
-import org.eyeseetea.malariacare.database.model.Value;
-import org.eyeseetea.malariacare.layout.score.ScoreRegister;
-import org.eyeseetea.malariacare.utils.Utils;
+import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.views.CustomTextView;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by Jose on 22/02/2015.
@@ -48,8 +41,6 @@ public class LayoutUtils {
 
     public static final int [] rowBackgrounds = {R.drawable.background_even, R.drawable.background_odd};
     public static final int [] rowBackgroundsNoBorder = {R.drawable.background_even_wo_border, R.drawable.background_odd_wo_border};
-    public static final float MAX_AMBER = 80.0F;
-    public static final float MAX_FAILED = 50.0F;
 
     // Given a index, this method return a background color
     public static int calculateBackgrounds(int index) {
@@ -68,11 +59,11 @@ public class LayoutUtils {
         int color=view.getContext().getResources().getColor(R.color.green);
         String tag=view.getContext().getResources().getString(R.string.good);
 
-        if (score < MAX_AMBER){
+        if (score < Survey.MAX_AMBER){
             color= view.getContext().getResources().getColor(R.color.amber);
             tag=view.getContext().getResources().getString(R.string.fair);
         }
-        if (score < MAX_FAILED){
+        if (score < Survey.MAX_RED){
             color= view.getContext().getResources().getColor(R.color.red);
             tag=view.getContext().getResources().getString(R.string.poor);
         }
@@ -91,11 +82,11 @@ public class LayoutUtils {
      * @return
      */
     public static int trafficDrawable(float score){
-        if(score<MAX_FAILED){
+        if(score<Survey.MAX_RED){
             return R.drawable.circle_shape_red;
         }
 
-        if(score<MAX_AMBER){
+        if(score<Survey.MAX_AMBER){
             return R.drawable.circle_shape_amber;
         }
 
@@ -130,5 +121,26 @@ public class LayoutUtils {
         // actionBar.setIcon(null);
         actionBar.setTitle(title);
         actionBar.setSubtitle(subtitle);
+    }
+
+    public static void setListViewHeightBasedOnChildren(ListView listView) {
+        ListAdapter listAdapter = listView.getAdapter();
+        if (listAdapter == null) {
+            // pre-condition
+            return;
+        }
+
+        int totalHeight = 0;
+        int desiredWidth = View.MeasureSpec.makeMeasureSpec(listView.getWidth(), View.MeasureSpec.AT_MOST);
+        for (int i = 0; i < listAdapter.getCount(); i++) {
+            View listItem = listAdapter.getView(i, null, listView);
+            listItem.measure(desiredWidth, View.MeasureSpec.UNSPECIFIED);
+            totalHeight += listItem.getMeasuredHeight();
+        }
+
+        ViewGroup.LayoutParams params = listView.getLayoutParams();
+        params.height = totalHeight + (listView.getDividerHeight() * (listAdapter.getCount() - 1));
+        listView.setLayoutParams(params);
+        listView.requestLayout();
     }
 }

@@ -54,6 +54,8 @@
     <string name="dashboard_button_new_survey">Nouvelle enquête</string>
     <string name="dashboard_button_see_all">Voir toutes</string>
     <string name="dashboard_info_ready_to_upload">Prête pour envoyer</string>
+    <string name="dashboard_title_total_assessments">"Nombre total d'évaluations réalisées"</string>
+    <string name="dashboard_title_table_facilities">"La qualité des soins (sur la base de la dernière évaluation)"</string>
 
     <!-- create -->
     <string name="create_info_ok">Commencer Évaluation</string>
@@ -200,5 +202,6 @@
     <string name="create_info_tabs_group">Tab Group</string>
     <string name="iqatab_info_note">Note: Slide rechecking should be carried out at the health facility during OTSS in the presence of the facility lab staff.  Slides should not be removed from the facility for this purpose.</string>
     <string name="settings_text_dhis_user">Utilisateur DHIS</string>
+    <string name="dialog_info_push_empty_survey">Enquêtes vides ne peuvent pas être poussés</string>
 
 </resources>
