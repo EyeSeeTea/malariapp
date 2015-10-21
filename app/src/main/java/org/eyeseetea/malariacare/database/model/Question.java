@@ -323,7 +323,7 @@ public class Question extends BaseModel implements Visitable {
                             //Parent child relationship
                     .where()
                             //In clause
-                    .whereClause("m.id_match in " + questionMarks, matchesIds.toArray(new Long[matchesIds.size()]))
+                    .whereClause("m.id_match in " + questionMarks, (Object[])matchesIds.toArray(new Long[matchesIds.size()]))
                     .and(Condition.column(ColumnAlias.columnWithTable("qr", QuestionRelation$Table.OPERATION)).eq(QuestionRelation.PARENT_CHILD));
 
             this.children = where.queryList();
