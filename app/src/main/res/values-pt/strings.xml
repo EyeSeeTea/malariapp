@@ -201,12 +201,17 @@
 
     <string name="dialog_title_push_response">Reposta</string>
     <string name="dialog_info_push_ok">Os dados da pesquisa foi enviado com sucesso para o servidor DHIS</string>
-    <string name="dialog_info_push_bad_credentials">Bad credenciais</string>
+    <string name="dialog_info_push_bad_credentials">Bad credenciais para empurrar</string>
     <string name="dialog_error_push_no_location">Localização indisponíveis</string>
     <string name="dialog_error_push_no_location_and_required">Nenhum local disponível e é um campo obrigatório</string>
+    <string name="dialog_error_push_uids">UIDs incorretas encontradas no impulso</string>
     <string name="dialog_title_incorrect_org_unit">Org Unit errado</string>
     <string name="dialog_content_incorrect_org_unit">Por favor seleccione uma org unit de final</string>
     <string name="create_info_tabs_group">Tab Group</string>
     <string name="settings_text_dhis_user">Utilizador DHIS</string>
     <string name="dialog_info_push_empty_survey">Inquéritos vazias não podem ser empurrados</string>
+    <string name="dialog_info_push_imported">Importado</string>
+    <string name="dialog_info_push_updated">Atualizado</string>
+    <string name="dialog_info_push_ignored">Ignorado</string>
+    <string name="dialog_info_push_stats">Os dados enviados para o servidor. Resultados:</string>
 </resources>

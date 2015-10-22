@@ -19,6 +19,10 @@
 
 package org.eyeseetea.malariacare.network;
 
+import android.app.Activity;
+import android.content.Context;
+
+import org.eyeseetea.malariacare.R;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -30,6 +34,9 @@ public class PushResult {
     public static final String IMPORTED = "imported";
     public static final String IGNORED = "ignored";
     public static final String DHIS220_RESPONSE = "response";
+
+    private static final String UNAUTHORIZED_EXCEPTION_MESSAGE="Unauthorized";
+    private static final String UIDS_EXCEPTION_MESSAGE="Conflict";
 
     private JSONObject jsonObject;
     private Exception exception;
@@ -75,6 +82,25 @@ public class PushResult {
         return exception;
     }
 
+    public String getExceptionLocalizedMessage(Context context){
+        if(exception==null || context==null){
+            return null;
+        }
+
+        //Bad credentials
+        if(UNAUTHORIZED_EXCEPTION_MESSAGE.equals(exception.getMessage())){
+            return context.getString(R.string.dialog_info_push_bad_credentials);
+        }
+
+        //Bad UIDs from any element
+        if(UIDS_EXCEPTION_MESSAGE.equals(exception.getMessage())){
+            return context.getString(R.string.dialog_error_push_uids);
+        }
+
+        //Other exception
+        return exception.getMessage();
+    }
+
     private String getValue(String key){
         try {
             //DHIS 2.19
@@ -92,4 +118,22 @@ public class PushResult {
     }
 
 
+    public String getLocalizedMessage(Context context) {
+        if(context==null){
+            return null;
+        }
+        //"Survey data pushed to server. Results: \n"
+        StringBuffer message=new StringBuffer(context.getString(R.string.dialog_info_push_stats));
+
+        String msgImported=context.getString(R.string.dialog_info_push_imported);
+        String msgUpdated=context.getString(R.string.dialog_info_push_updated);
+        String msgIgnored=context.getString(R.string.dialog_info_push_ignored);
+
+        //Imported: %s | Updated: %s | Ignored: %s
+        message.append("\n").append(String.format("%s: %s | %s: %s | %s: %s",
+                msgImported,getImported(),
+                msgUpdated,getUpdated(),
+                msgIgnored,getIgnored()));
+        return message.toString();
+    }
 }
