@@ -115,7 +115,7 @@ public class PieProgramBuilder {
         String arrayJSON="[";
         int i=0;
         for(PieProgramData pieProgramData:entries){
-            String pieJSON=pieProgramData.toJSON("");
+            String pieJSON=pieProgramData.toJSON(context.getString(R.string.dashboard_tip_pie_chart));
             arrayJSON+=pieJSON;
             i++;
             if(i!=entries.size()){
