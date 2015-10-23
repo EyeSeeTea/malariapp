@@ -12,7 +12,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     Usage:
    
     pieXProgramChart({
-        title:'Quality of care: Sample program',
+        title:'Sample program',
+        tip:'Quality of care(based on last assessment)',
         idProgram: 1,
         valueA:10,
         valueB:20,
@@ -26,6 +27,7 @@ function pieXProgramChart(data){
     var canvasDOMId="programCanvas"+data.idProgram;
     var legendDOMId="programLegend"+data.idProgram;
     var titleDOMId="programTitle"+data.idProgram;
+    var tipDOMId="programTip"+data.idProgram;
 
     //Chart
     var ctx = document.getElementById(canvasDOMId).getContext("2d");
@@ -58,10 +60,12 @@ function pieXProgramChart(data){
     );
 
     //Legend
-    document.getElementById(legendDOMId).innerHTML = myChart.generateLegend();    
+    document.getElementById(legendDOMId).insertAdjacentHTML("beforeend",myChart.generateLegend());
 
-    //Update title
+    //Update title && tip
     updateChartTitle(titleDOMId,data.title);
+    updateChartTitle(tipDOMId,data.tip);
+
 }
 
 
@@ -70,14 +74,16 @@ function pieXProgramChart(data){
 
       buildPieCharts([
         {
-            title:'Quality of care: First Program',
+            title:'Sample program',
+            tip:'Quality of care(based on last assessment)',
             idProgram: 1,
             valueA:14,
             valueB:8,
             valueC:10
         },
         {
-            title:'Quality of care: Second Program',
+            title:'Sample program',
+            tip:'Quality of care(based on last assessment)',
             idProgram: 2,
             valueA:24,
             valueB:12,
@@ -87,7 +93,7 @@ function pieXProgramChart(data){
 */
 
 function buildPieCharts(dataPies){
-    var defaultTemplate= '<div> <span class="line-title" id="programTitle###"></span> <div> <canvas id="programCanvas###" style="width: 100%; height: auto;"></canvas> </div><div id="programLegend###" class="chart-legend"></div></div>';
+    var defaultTemplate= '<div> <span class="line-title" id="programTitle###"></span> <div> <canvas id="programCanvas###" style="width: 100%; height: auto;"></canvas> </div><div id="programLegend###" class="chart-legend"><span class="tip" id="programTip###"></span></div></div>';
 
     //For each pie
 

@@ -42,7 +42,7 @@
     <string name="dialog_content_send_preview">Voulez-vous envoyer l\'enquêtte ou afficher le feedback ?</string>
     <string name="dialog_title_push_data">Envoie des donnés</string>
     <string name="dialog_content_push_data">Êtes-vous sûr de voulour envoyer ?</string>
-    <string name="dialog_button_preview_feedback">Afficher le Feedback</string>
+    <string name="dialog_button_preview_feedback">Voir évaluations</string>
 
     <!-- dashboard -->
     <string name="dashboard_info_feedback">Feedback</string>
@@ -55,7 +55,7 @@
     <string name="dashboard_button_see_all">Voir toutes</string>
     <string name="dashboard_info_ready_to_upload">Prête pour envoyer</string>
     <string name="dashboard_title_total_assessments">"Nombre total d'évaluations réalisées"</string>
-    <string name="dashboard_title_table_facilities">"La qualité des soins (sur la base de la dernière évaluation)"</string>
+    <string name="dashboard_title_table_facilities">"La qualité des soins (6 derniers mois)"</string>
 
     <!-- create -->
     <string name="create_info_ok">Commencer Évaluation</string>
@@ -208,5 +208,6 @@
     <string name="dialog_info_push_updated">Mise à jour</string>
     <string name="dialog_info_push_ignored">Ignoré</string>
     <string name="dialog_info_push_stats">Les données téléchargées vers le serveur. Résultats:</string>
+    <string name="dashboard_tip_pie_chart">La qualité des soins (basé sur la dernière évaluation)</string>
 
 </resources>
