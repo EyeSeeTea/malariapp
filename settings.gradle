@@ -1,1 +1,1 @@
-include ':app', ':sdk:app'
+include ':app', ':sdk:app', ':DBFlowORM:DBFlow-Compiler', ':DBFlowORM:DBFlow-Core', ':DBFlowORM:DBFlow'
