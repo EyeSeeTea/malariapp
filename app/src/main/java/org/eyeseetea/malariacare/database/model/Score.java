@@ -105,7 +105,7 @@ public class Score extends BaseModel implements Visitable {
         Score score = (Score) o;
 
         if (id_score != score.id_score) return false;
-        if (!tab.equals(score.tab)) return false;
+        if (!survey.equals(score.survey)) return false;
         return !(uid != null ? !uid.equals(score.uid) : score.uid != null);
 
     }
@@ -113,7 +113,7 @@ public class Score extends BaseModel implements Visitable {
     @Override
     public int hashCode() {
         int result = (int) (id_score ^ (id_score >>> 32));
-        result = 31 * result + tab.hashCode();
+        result = 31 * result + survey.hashCode();
         result = 31 * result + (uid != null ? uid.hashCode() : 0);
         return result;
     }
@@ -122,7 +122,7 @@ public class Score extends BaseModel implements Visitable {
     public String toString() {
         return "Score{" +
                 "id=" + id_score +
-                ", tab=" + tab +
+                ", survey=" + survey +
                 ", uid='" + uid + '\'' +
                 '}';
     }
