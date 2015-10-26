@@ -327,6 +327,8 @@ public class LoginActivity extends BaseActivity implements LoaderCallbacks<Curso
             resultData.putExtra("User", mUserView.getText().toString());
             resultData.putExtra("Password", mPasswordView.getText().toString());
 
+            startActivity(resultData);
+
             finish();
         }
 
