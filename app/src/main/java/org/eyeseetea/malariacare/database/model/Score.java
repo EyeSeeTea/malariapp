@@ -37,21 +37,27 @@ public class Score extends BaseModel implements Visitable {
     @Column
     @PrimaryKey(autoincrement = true)
     long id_score;
+
     @Column
-    @ForeignKey(references = {@ForeignKeyReference(columnName = "id_tab",
+    @ForeignKey(references = {@ForeignKeyReference(columnName = "id_survey",
             columnType = Long.class,
-            foreignColumnName = "id_tab")},
+            foreignColumnName = "id_survey")},
             saveForeignKeyModel = false)
-    Tab tab;
+    Survey survey;
+
     @Column
     String uid;
+
+    @Column
+    Float score;
 
     public Score() {
     }
 
-    public Score(Tab tab, String uid) {
-        this.tab = tab;
+    public Score(Survey survey, String uid, Float score) {
+        this.survey = survey;
         this.uid = uid;
+        this.score = score;
     }
 
     public Long getId_score() {
@@ -62,12 +68,12 @@ public class Score extends BaseModel implements Visitable {
         this.id_score = id_score;
     }
 
-    public Tab getTab() {
-        return tab;
+    public Survey getSurvey() {
+        return survey;
     }
 
-    public void setTab(Tab tab) {
-        this.tab = tab;
+    public void setSurvey(Survey survey) {
+        this.survey = survey;
     }
 
     public String getUid() {
@@ -76,6 +82,14 @@ public class Score extends BaseModel implements Visitable {
 
     public void setUid(String uid) {
         this.uid = uid;
+    }
+
+    public Float getScore() {
+        return score;
+    }
+
+    public void setScore(Float score) {
+        this.score = score;
     }
 
     @Override

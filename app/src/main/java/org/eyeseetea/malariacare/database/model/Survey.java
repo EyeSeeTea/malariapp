@@ -88,7 +88,7 @@ public class Survey extends BaseModel implements Visitable {
     /**
      * Calculated main Score for this survey, is not persisted, just calculated on runtime
      */
-    float mainScore;
+    Float mainScore;
 
     public Survey() {
     }
@@ -168,12 +168,43 @@ public class Survey extends BaseModel implements Visitable {
         return Constants.SURVEY_SENT==this.status;
     }
 
-    public float getMainScore() {
+    public Float getMainScore() {
+        //The main score is only return from a query 1 time
+        if(this.mainScore==null){
+            Score score=getScore();
+            this.mainScore=(score==null)?null:score.getScore();
+        }
         return mainScore;
     }
 
-    public void setMainScore(float mainScore) {
+    public void setMainScore(Float mainScore) {
         this.mainScore = mainScore;
+    }
+
+    public void saveMainScore(){
+
+        //No mainScore nothing to save
+        if(this.mainScore==null){
+            return;
+        }
+
+        Score score=new Score(this,"",this.mainScore);
+        score.save();
+    }
+
+    private Score getScore(){
+        return new Select()
+                .from(Score.class)
+                .where(Condition.column(Score$Table.SURVEY_ID_SURVEY).eq(this.getId_survey())).querySingle();
+    }
+
+    @Override
+    public void delete(){
+        Score score=getScore();
+        if(score!=null){
+            score.delete();
+        }
+        super.delete();
     }
 
     public String getType(){

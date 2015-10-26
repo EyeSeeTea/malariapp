@@ -112,11 +112,10 @@ public class PieProgramBuilder {
     }
 
     private String buildJSONArray(List<PieProgramData> entries){
-        String chartTitle=context.getString(R.string.dashboard_title_qa_assessments);
         String arrayJSON="[";
         int i=0;
         for(PieProgramData pieProgramData:entries){
-            String pieJSON=pieProgramData.toJSON(chartTitle);
+            String pieJSON=pieProgramData.toJSON(context.getString(R.string.dashboard_tip_pie_chart));
             arrayJSON+=pieJSON;
             i++;
             if(i!=entries.size()){

@@ -29,7 +29,7 @@ import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
  */
 public class PieProgramData {
 
-    private static final String JSONFORMAT="{title:'%s',idProgram: %d,valueA:%d,valueB:%d,valueC:%d}";
+    private static final String JSONFORMAT="{title:'%s',tip:'%s',idProgram: %d,valueA:%d,valueB:%d,valueC:%d}";
 
     /**
      * Type of program for this chart
@@ -88,9 +88,9 @@ public class PieProgramData {
      *  }
      * @return
      */
-    public String toJSON(String chartTitle){
-        String pieTitle=chartTitle+program.getName();
-        String json= String.format(JSONFORMAT, pieTitle, program.getId_program(), this.numA, this.numB, this.numC);
+    public String toJSON(String tipChat){
+        String pieTitle=program.getName();
+        String json= String.format(JSONFORMAT, pieTitle, tipChat,program.getId_program(), this.numA, this.numB, this.numC);
         return json;
     }
 

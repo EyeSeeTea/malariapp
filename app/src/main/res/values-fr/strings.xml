@@ -42,7 +42,7 @@
     <string name="dialog_content_send_preview">Voulez-vous envoyer l\'enquêtte ou afficher le feedback ?</string>
     <string name="dialog_title_push_data">Envoie des donnés</string>
     <string name="dialog_content_push_data">Êtes-vous sûr de voulour envoyer ?</string>
-    <string name="dialog_button_preview_feedback">Afficher le Feedback</string>
+    <string name="dialog_button_preview_feedback">Voir évaluations</string>
 
     <!-- dashboard -->
     <string name="dashboard_info_feedback">Feedback</string>
@@ -54,10 +54,8 @@
     <string name="dashboard_button_new_survey">Nouvelle enquête</string>
     <string name="dashboard_button_see_all">Voir toutes</string>
     <string name="dashboard_info_ready_to_upload">Prête pour envoyer</string>
-    <string name="dashboard_title_monitor">"Surveillance"</string>
     <string name="dashboard_title_total_assessments">"Nombre total d'évaluations réalisées"</string>
-    <string name="dashboard_title_qa_assessments">"La qualité des soins: "</string>
-    <string name="dashboard_title_table_facilities">"La qualité des soins: 12 derniers mois"</string>
+    <string name="dashboard_title_table_facilities">"La qualité des soins (6 derniers mois)"</string>
 
     <!-- create -->
     <string name="create_info_ok">Commencer Évaluation</string>
@@ -197,6 +195,7 @@
     <string name="assessment_sent_title_header">Evaluation(s) Envoyée(s)</string>
     <string name="assessment_sent_date">Date de remplissement</string>
     <string name="assessment_sent_score">But</string>
+    <string name="dialog_error_push_uids">UID incorrects trouvés en push</string>
     <string name="dialog_error_push_no_location">Aucun emplacement disponible</string>
     <string name="dialog_error_push_no_location_and_required">Aucun emplacement disponible et il est un champ obligatoire</string>
     <string name="dialog_title_incorrect_org_unit">Org Unit erronées</string>
@@ -204,5 +203,11 @@
     <string name="create_info_tabs_group">Tab Group</string>
     <string name="iqatab_info_note">Note: Slide rechecking should be carried out at the health facility during OTSS in the presence of the facility lab staff.  Slides should not be removed from the facility for this purpose.</string>
     <string name="settings_text_dhis_user">Utilisateur DHIS</string>
+    <string name="dialog_info_push_empty_survey">Enquêtes vides ne peuvent pas être poussés</string>
+    <string name="dialog_info_push_imported">Importé</string>
+    <string name="dialog_info_push_updated">Mise à jour</string>
+    <string name="dialog_info_push_ignored">Ignoré</string>
+    <string name="dialog_info_push_stats">Les données téléchargées vers le serveur. Résultats:</string>
+    <string name="dashboard_tip_pie_chart">La qualité des soins (basé sur la dernière évaluation)</string>
 
 </resources>

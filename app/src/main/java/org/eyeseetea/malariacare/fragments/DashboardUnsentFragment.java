@@ -408,9 +408,9 @@ public class DashboardUnsentFragment extends ListFragment {
         private void showResponse(PushResult pushResult){
             String msg="";
             if(pushResult.isSuccessful()){
-                msg="Survey data pushed to server. Results: \n"+String.format("Imported: %s | Updated: %s | Ignored: %s",pushResult.getImported(),pushResult.getUpdated(),pushResult.getIgnored());
+                msg=pushResult.getLocalizedMessage(getActivity());
             }else{
-                msg=pushResult.getException().getMessage();
+                msg=pushResult.getExceptionLocalizedMessage(getActivity());
             }
 
             new AlertDialog.Builder(getActivity())
