@@ -46,6 +46,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.raizlabs.android.dbflow.sql.language.Select;
+import com.squareup.otto.Subscribe;
 
 import org.eyeseetea.malariacare.database.model.User;
 import org.eyeseetea.malariacare.database.utils.Session;
@@ -79,6 +80,17 @@ public class LoginActivity extends org.hisp.dhis.android.sdk.ui.activities.Login
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
 
+    }
+
+    @Subscribe
+    public void onLoginFinished(NetworkJob.NetworkJobResult<ResourceType> result) {
+        if(result!=null && result.getResourceType().equals(ResourceType.USERS)) {
+            if(result.getResponseHolder().getApiException() == null) {
+                launchMainActivity();
+            } else {
+                onLoginFail(result.getResponseHolder().getApiException());
+            }
+        }
     }
 
     // UI references.
