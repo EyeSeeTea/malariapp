@@ -2,3 +2,6 @@
 	path = sdk
 	url = git@github.com:dhis2/dhis2-android-sdk.git
         branch = 1c9cafd74e4dcc823fe659a01e012539ded9b42f
+[submodule "DBFlowORM"]
+	path = DBFlowORM
+	url = https://github.com/EyeSeeTea/DBFlow.git
