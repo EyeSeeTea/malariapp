@@ -107,20 +107,34 @@
     <!--Pie charts will be added right here-->
 
     <!--Table 12 months-->
-    <hr/>
-    <div>
-        <span class="line-title" id="titleFacilities"></span>
-        <div>
-            <table>
-                <thead id="facilitiesHead">
-                </thead>
-                <tbody id="facilitiesBody">
-                </tbody>
-            </table>
-        </div>
-    </div>
     <script type = "text/javascript" src="file:///android_asset/dashboard/sent.month.js"> </script>
-    <script type = "text/javascript" src="file:///android_asset/dashboard/pie.program.js"> </script>
+    <script type = "text/javascript" src="file:///android_asset/dashboard/pie.tabgroup.js"> </script>
     <script type = "text/javascript" src="file:///android_asset/dashboard/table.facilities.js"> </script>
+
+    <!-- pie template with table-->
+    <script type = "text/html" id="pieTemplate">
+        <div>
+            <span class="line-title" id="tabgroupTitle###"></span>
+            <div>
+                <canvas id="tabgroupCanvas###" style="width: 100%; height: auto;"></canvas>
+            </div>
+            <div id="tabgroupLegend###" class="chart-legend">
+                <span id="tabgroupTip###" class="tip"></span>
+            </div>
+            <div>
+                <span class="line-title" id="titleFacilities###"></span>
+                <div>
+                    <table>
+                        <thead id="facilitiesHead###">
+                        </thead>
+                        <tbody id="facilitiesBody###">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <hr/>
+    </script>
+</script>
 </body>
 </html>
