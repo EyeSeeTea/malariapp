@@ -11,9 +11,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 /*
     Usage:
    
-    pieXProgramChart({
-        title:'Quality of care: Sample program',
-        idProgram: 1,
+    pieXTabGroupChart({
+        title:'Sample tabgroup',
+        tip:'Quality of care(based on last assessment)',
+        idTabGroup: 1,
         valueA:10,
         valueB:20,
         valueC:0
@@ -21,11 +22,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 */
 
-function pieXProgramChart(data){
+function pieXTabGroupChart(data){
 
-    var canvasDOMId="programCanvas"+data.idProgram;
-    var legendDOMId="programLegend"+data.idProgram;
-    var titleDOMId="programTitle"+data.idProgram;
+    var canvasDOMId="tabgroupCanvas"+data.idTabGroup;
+    var legendDOMId="tabgroupLegend"+data.idTabGroup;
+    var titleDOMId="tabgroupTitle"+data.idTabGroup;
+    var titleTableDOMId="tabgroupTip"+data.idTabGroup;
 
     //Chart
     var ctx = document.getElementById(canvasDOMId).getContext("2d");
@@ -45,7 +47,7 @@ function pieXProgramChart(data){
         }],
         {
             segmentShowStroke: false,
-            animateRotate: true,
+            animateRotate: false,
             animateScale: false,
             percentageInnerCutout: 50,
             tooltipTemplate: "<%= value %>",
@@ -58,10 +60,12 @@ function pieXProgramChart(data){
     );
 
     //Legend
-    document.getElementById(legendDOMId).innerHTML = myChart.generateLegend();    
+    document.getElementById(legendDOMId).insertAdjacentHTML("beforeend",myChart.generateLegend());
 
-    //Update title
+    //Update title && tip
     updateChartTitle(titleDOMId,data.title);
+    updateChartTitle(titleTableDOMId,data.tip);
+
 }
 
 
@@ -70,15 +74,17 @@ function pieXProgramChart(data){
 
       buildPieCharts([
         {
-            title:'Quality of care: First Program',
-            idProgram: 1,
+            title:'Sample tabgroup',
+            tip:'Quality of care(based on last assessment)',
+            idTabGroup: 1,
             valueA:14,
             valueB:8,
             valueC:10
         },
         {
-            title:'Quality of care: Second Program',
-            idProgram: 2,
+            title:'Sample tabgroup',
+            tip:'Quality of care(based on last assessment)',
+            idTabGroup: 2,
             valueA:24,
             valueB:12,
             valueC:10
@@ -87,18 +93,18 @@ function pieXProgramChart(data){
 */
 
 function buildPieCharts(dataPies){
-    var defaultTemplate= '<div> <span class="line-title" id="programTitle###"></span> <div> <canvas id="programCanvas###" style="width: 100%; height: auto;"></canvas> </div><div id="programLegend###" class="chart-legend"></div></div>';
+    var defaultTemplate= document.getElementById('pieTemplate').innerHTML;
 
     //For each pie
 
     for(var i=0;i<dataPies.length;i++){
         var dataPie = dataPies[i];
         //Create template with right ids
-        var customTemplate=defaultTemplate.replace(/###/g, dataPie.idProgram);
+        var customTemplate=defaultTemplate.replace(/###/g, dataPie.idTabGroup);
         //Add DOM element
         document.getElementById("hrSent").insertAdjacentHTML("afterend",customTemplate);
         //Draw chart on it
-        pieXProgramChart(dataPie);
+        pieXTabGroupChart(dataPie);
     }
 
 }

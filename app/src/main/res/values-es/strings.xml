@@ -41,7 +41,7 @@
     <string name="dialog_content_send_preview">¿Desea enviar o previsualizar el feedback?</string>
     <string name="dialog_title_push_data">Enviar los datos</string>
     <string name="dialog_content_push_data">¿Está seguro de enviar? No podrá deshacer esta acción</string>
-    <string name="dialog_button_preview_feedback">Previsualizar Feedback</string>
+    <string name="dialog_button_preview_feedback">Ver feedback</string>
 
     <!-- dashboard -->
     <string name="dashboard_info_feedback">Feedback</string>
@@ -54,7 +54,7 @@
     <string name="dashboard_button_see_all">Ver todas</string>
     <string name="dashboard_info_ready_to_upload">Lista para enviar</string>
     <string name="dashboard_title_total_assessments">"Número total evaluaciones realizadas"</string>
-    <string name="dashboard_title_table_facilities">Calidad de cuidados (basado en la última evaluación)</string>
+    <string name="dashboard_title_table_facilities">Calidad de cuidados (ultimos 6 meses)</string>
 
     <!-- create -->
     <string name="create_info_ok">Empezar Evaluación</string>
@@ -197,11 +197,17 @@
     <string name="assessment_sent_date">Fecha de llenado</string>
     <string name="assessment_sent_score">Puntos</string>
     <string name="dialog_title_incorrect_org_unit" >Org Unit Incorrecta</string>
+    <string name="dialog_error_push_uids">UIDs incorrectos encontrados en el envio</string>
     <string name="dialog_error_push_no_location">Localización no disponible</string>
     <string name="dialog_error_push_no_location_and_required">Localización no disponible y es un campo obligatorio</string>
     <string name="dialog_content_incorrect_org_unit">Por favor seleccione una org unit final</string>
     <string name="iqatab_info_note">Note: Slide rechecking should be carried out at the health facility during OTSS in the presence of the facility lab staff.  Slides should not be removed from the facility for this purpose.</string>
     <string name="settings_text_dhis_user">Usuario DHIS</string>
     <string name="dialog_info_push_empty_survey">Una evaluación vacia no pueden ser enviadas</string>
+    <string name="dialog_info_push_imported">Importados</string>
+    <string name="dialog_info_push_updated">Actualizados</string>
+    <string name="dialog_info_push_ignored">Ignorados</string>
+    <string name="dialog_info_push_stats">Datos subidos al servidor. Resultados:</string>
+    <string name="dashboard_tip_pie_chart">Calidad de cuidados (basado en la última evaluación)</string>
 
 </resources>

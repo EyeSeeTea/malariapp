@@ -31,22 +31,26 @@
 
 */
 
-function buildTableFacilities(dataFacilities){
+function buildTableFacilities(tabGroupId,dataFacilities){
+	var facilitiesHeadId="facilitiesHead"+tabGroupId;
+	var facilitiesBodyId="facilitiesBody"+tabGroupId;
+	var titleFacilitiesId="titleFacilities"+tabGroupId;
 	//Clear table
-	document.getElementById("facilitiesHead").innerHTML='';
-	document.getElementById("facilitiesBody").innerHTML='';
+	document.getElementById(facilitiesHeadId).innerHTML='';
+	document.getElementById(facilitiesBodyId).innerHTML='';
 
 	//Title to table
-	updateChartTitle("titleFacilities",dataFacilities.title);
+	updateChartTitle(titleFacilitiesId,dataFacilities.title);
 
 	//Add header
-	buildTableHeader(dataFacilities.months);
+	buildTableHeader(tabGroupId,dataFacilities.months);
 
 	//Add body
-	buildTableBody(dataFacilities.facilities);
+	buildTableBody(tabGroupId,dataFacilities.facilities);
 }
 
-function buildTableHeader(months){
+function buildTableHeader(tabGroupId,months){
+	var facilitiesHeadId="facilitiesHead"+tabGroupId;
 	var rowsHeader="<tr><th></th>";
 	for(var i=0;i<months.length;i++){
 		rowsHeader=rowsHeader+"<th>"+months[i]+"</th>";
@@ -54,13 +58,14 @@ function buildTableHeader(months){
 	rowsHeader=rowsHeader+"</tr>";
 
 	//Add tr to thead
-	document.getElementById("facilitiesHead").insertAdjacentHTML("beforeend",rowsHeader);
+	document.getElementById(facilitiesHeadId).insertAdjacentHTML("beforeend",rowsHeader);
 }
 
-function buildTableBody(facilities){
+function buildTableBody(tabGroupId,facilities){
+	var facilitiesBodyId="facilitiesBody"+tabGroupId;
 	for(var i=0;i<facilities.length;i++){
 		var rowFacility=buildRowFacility(facilities[i]);
-		document.getElementById("facilitiesBody").insertAdjacentHTML("beforeend",rowFacility);
+		document.getElementById(facilitiesBodyId).insertAdjacentHTML("beforeend",rowFacility);
 	}
 }
 
