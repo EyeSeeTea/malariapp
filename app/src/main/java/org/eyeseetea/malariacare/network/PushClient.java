@@ -56,8 +56,7 @@ import java.util.List;
  */
 public class PushClient {
 
-    private static String TAG=".PushClient";
-
+    private static final String TAG=".PushClient";
 
     private static String DHIS_PUSH_API="/api/events";
 

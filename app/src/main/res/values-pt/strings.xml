@@ -41,7 +41,7 @@
     <string name="dialog_content_send_preview">Você quer enviar ou visualizar o feedback pesquisa?</string>
     <string name="dialog_title_push_data">empurrando dados</string>
     <string name="dialog_content_push_data">Tem certeza de que deseja enviar isso?</string>
-    <string name="dialog_button_preview_feedback">Pré-visualização de feedback</string>
+    <string name="dialog_button_preview_feedback">Ver feedback</string>
 
     <!-- dashboard -->
     <string name="dashboard_info_feedback">Feedback</string>
@@ -55,7 +55,7 @@
     <string name="dashboard_info_ready_to_upload">Pronto para carregar</string>
     <string name="dashboard_info_sent">Enviei</string>
     <string name="dashboard_title_total_assessments">"Número total de avaliações realizadas"</string>
-    <string name="dashboard_title_table_facilities">"Qualidade dos cuidados (com base na última avaliação)"</string>
+    <string name="dashboard_title_table_facilities">"Qualidade dos cuidados (últimos 6 meses)"</string>
 
     <!-- create -->
     <string name="create_info_ok">Criar avaliação</string>
@@ -201,12 +201,18 @@
 
     <string name="dialog_title_push_response">Reposta</string>
     <string name="dialog_info_push_ok">Os dados da pesquisa foi enviado com sucesso para o servidor DHIS</string>
-    <string name="dialog_info_push_bad_credentials">Bad credenciais</string>
+    <string name="dialog_info_push_bad_credentials">Bad credenciais para empurrar</string>
     <string name="dialog_error_push_no_location">Localização indisponíveis</string>
     <string name="dialog_error_push_no_location_and_required">Nenhum local disponível e é um campo obrigatório</string>
+    <string name="dialog_error_push_uids">UIDs incorretas encontradas no impulso</string>
     <string name="dialog_title_incorrect_org_unit">Org Unit errado</string>
     <string name="dialog_content_incorrect_org_unit">Por favor seleccione uma org unit de final</string>
     <string name="create_info_tabs_group">Tab Group</string>
     <string name="settings_text_dhis_user">Utilizador DHIS</string>
     <string name="dialog_info_push_empty_survey">Inquéritos vazias não podem ser empurrados</string>
+    <string name="dialog_info_push_imported">Importado</string>
+    <string name="dialog_info_push_updated">Atualizado</string>
+    <string name="dialog_info_push_ignored">Ignorado</string>
+    <string name="dialog_info_push_stats">Os dados enviados para o servidor. Resultados:</string>
+    <string name="dashboard_tip_pie_chart">Qualidade dos cuidados (com base na última avaliação)</string>
 </resources>

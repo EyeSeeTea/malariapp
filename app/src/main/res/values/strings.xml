@@ -51,7 +51,7 @@
     <string name="dialog_content_send_preview">Do you want to send survey or preview the feedback?</string>
     <string name="dialog_title_push_data">Pushing data</string>
     <string name="dialog_content_push_data">Are you sure that you want to send? You cannot undo this action</string>
-    <string name="dialog_button_preview_feedback">Preview Feedback</string>
+    <string name="dialog_button_preview_feedback">View Feedback</string>
 
     <!-- dashboard -->
     <string name="dashboard_info_feedback">Feedback</string>
@@ -65,7 +65,7 @@
     <string name="dashboard_info_ready_to_upload">Ready to upload</string>
     <string name="dashboard_info_sent">Sent</string>
     <string name="dashboard_title_total_assessments">Total number of assessments undertaken</string>
-    <string name="dashboard_title_table_facilities">Quality of care (based on last assessment)</string>
+    <string name="dashboard_title_table_facilities">Quality of care (last 6 months)</string>
 
     <!-- create -->
     <string name="create_info_ok">Start Assessment</string>
@@ -245,8 +245,13 @@
     <string name="dialog_info_push_ok">Survey data has been successfully pushed to DHIS server</string>
     <string name="dialog_info_push_bad_credentials">Bad credentials for pushing</string>
     <string name="dialog_info_push_empty_survey">Empty surveys cannot be pushed</string>
+    <string name="dialog_error_push_uids">Incorrect UIDs found in push</string>
     <string name="dialog_error_push_no_location">No location available</string>
     <string name="dialog_error_push_no_location_and_required">No location available and it is a required field</string>
+    <string name="dialog_info_push_imported">Imported</string>
+    <string name="dialog_info_push_updated">Updated</string>
+    <string name="dialog_info_push_ignored">Ignored</string>
+    <string name="dialog_info_push_stats">Survey data pushed to server. Results:</string>
 
 
     <!-- Preference variable names -->
@@ -257,5 +262,6 @@
     <item name="dhis_user" type="string" translatable="false">dhis_user</item>
     <item name="dhis_password" type="string" translatable="false">dhis_password</item>
     <item name="location_required" type="string" translatable="false">location_required</item>
+    <string name="dashboard_tip_pie_chart">Quality of care (based on last assessment)</string>
 
 </resources>

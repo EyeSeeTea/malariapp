@@ -94,8 +94,8 @@ public abstract class AAssessmentAdapter extends ADashboardAdapter implements ID
             facilityName.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, 0, 0.5f));
             surveyType.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, 0, 0.5f));
         }
-        //FIXME Shall we use the tab group?
-        String surveyDescription = "- " + survey.getTabGroup().getProgram().getName() + ((multipleTabGroups) ? " : " + survey.getTabGroup().getName() : "");
+
+        String surveyDescription = "- " + survey.getTabGroup().getProgram().getName();
         surveyType.setText(surveyDescription);
 
         // check whether the following item belongs to the same org unit (to group the data related
@@ -112,6 +112,7 @@ public abstract class AAssessmentAdapter extends ADashboardAdapter implements ID
                 this.showNextFacilityName = true;
             }
         }  else {
+            this.showNextFacilityName = true;
             //show background with border
             rowView.setBackgroundResource(LayoutUtils.calculateBackgrounds(this.backIndex));
         }
@@ -144,4 +145,10 @@ public abstract class AAssessmentAdapter extends ADashboardAdapter implements ID
         this.showNextFacilityName = true;
         super.notifyDataSetChanged();
     }
+
+    public void clearShowNextFacility(){
+        this.showNextFacilityName = true;
+    }
+
+
 }
