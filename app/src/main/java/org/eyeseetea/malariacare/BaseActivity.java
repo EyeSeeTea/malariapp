@@ -39,6 +39,7 @@ import android.widget.TextView;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 import org.eyeseetea.malariacare.utils.Utils;
+import org.hisp.dhis.android.sdk.controllers.DhisService;
 
 import java.io.InputStream;
 
@@ -162,7 +163,8 @@ public abstract class BaseActivity extends ActionBarActivity {
                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface arg0, int arg1) {
                         Session.logout();
-                        finishAndGo(DashboardActivity.class);
+                        DhisService.logOutUser(BaseActivity.this);
+                        finishAndGo(LoginActivity.class);
                     }
                 })
                 .setNegativeButton(android.R.string.no, null).create().show();
