@@ -78,19 +78,14 @@ public class ScoreRegister {
 
     private static List<Float> getRecursiveScore(CompositeScore cScore, List<Float> result) {
 
-        if (!cScore.hasChildren()) {
+        //Sum its own records
+        result=compositeScoreMap.get(cScore).calculateNumDenTotal(result);
 
-            //FIXME this try catch just covers a error in data compositeScore: '4.2'
-            try{
-                return compositeScoreMap.get(cScore).calculateNumDenTotal(result);
-            }catch(Exception ex){
-                return Arrays.asList(new Float(0f),new Float(0f));
-            }
-        }else {
-            for (CompositeScore cScoreChildren : cScore.getCompositeScoreChildren())
-                result = getRecursiveScore(cScoreChildren, result);
-            return result;
+        //Sum records from children scores
+        for (CompositeScore cScoreChildren : cScore.getCompositeScoreChildren()) {
+            result = getRecursiveScore(cScoreChildren, result);
         }
+        return result;
     }
 
     public static List<Float> getNumDenum(Question question) {
@@ -98,11 +93,10 @@ public class ScoreRegister {
     }
 
     public static Float getCompositeScore(CompositeScore cScore) {
-        
-        List<Float>result = compositeScoreMap.get(cScore).calculateNumDenTotal(new ArrayList<>(Arrays.asList(0F, 0F)));
 
-        result = getRecursiveScore(cScore, result);
+        List<Float>result= getRecursiveScore(cScore, new ArrayList<>(Arrays.asList(0F, 0F)));
 
+        Log.d(TAG,String.format("getCompositeScore %s -> %s",cScore.getHierarchical_code(),result.toString()));
         return ScoreUtils.calculateScoreFromNumDen(result);
     }
 

@@ -624,6 +624,7 @@ public class Question extends BaseModel implements Visitable {
         try {
             Integer output = getAnswer().getOutput();
             return output == Constants.DROPDOWN_LIST ||
+                    output == Constants.DROPDOWN_LIST_DISABLED ||
                     output == Constants.RADIO_GROUP_HORIZONTAL ||
                     output == Constants.RADIO_GROUP_VERTICAL;
         } catch (Exception e) {
