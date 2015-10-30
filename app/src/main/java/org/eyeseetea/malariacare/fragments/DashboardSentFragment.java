@@ -43,7 +43,7 @@ import org.eyeseetea.malariacare.FeedbackActivity;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.monitor.FacilityTableBuilder;
-import org.eyeseetea.malariacare.database.monitor.PieProgramBuilder;
+import org.eyeseetea.malariacare.database.monitor.PieTabGroupBuilder;
 import org.eyeseetea.malariacare.database.monitor.SentSurveysBuilder;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.layout.adapters.dashboard.AssessmentSentAdapter;
@@ -299,7 +299,7 @@ public class DashboardSentFragment extends ListFragment {
                 new SentSurveysBuilder(surveys, getActivity()).addDataInChart(view);
 
                 //Add pie charts
-                new PieProgramBuilder(surveys,getActivity()).addDataInChart(view);
+                new PieTabGroupBuilder(surveys,getActivity()).addDataInChart(view);
 
                 //Add table x facility
                 new FacilityTableBuilder(surveys,getActivity()).addDataInChart(view);
