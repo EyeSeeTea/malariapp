@@ -1,0 +1,853 @@
+1;;'Test Zone';;1
+2;;'Test Region';1;2
+3;;'Test District';2;3
+4;;'Test Ward';3;4
+127;'hZzvPg6g04h';'Eastern';;1
+128;'EmAuuIEJLpR';'Coast';;1
+129;'HpZg9rSjgYn';'Western';;1
+130;'Koz92htYAXs';'Nairobi Region';;1
+131;'m1hFH3KVxOv';'Central';;1
+132;'pfR2EZZbWEV';'Rift Valley';;1
+133;'X1zmYE7if2v';'North Eastern';;1
+134;'vgZxf5EhudQ';'Nyanza';;1
+135;'bTgkBKPu6NJ';'Kiambu';131;2
+136;'WiB1ldhBvhy';'Kilifi';128;2
+137;'DPwR3kHUwwl';'Kisumu';134;2
+138;'EP3WuKIjo4Z';'Lamu';128;2
+139;'t8aX9IPzJPK';'Murang''a';131;2
+140;'fFzYiNkLap2';'Kakamega';129;2
+141;'IwPEjahAhWS';'Siaya';134;2
+142;'KXWx9fzzSn4';'Migori';134;2
+143;'jTrmelN74PI';'Nakuru';132;2
+144;'MwfeiMwSgmS';'Vihiga';129;2
+145;'GcjciKUfmu9';'Uasin Gishu';132;2
+146;'F6A8Dy31r4K';'Nyamira';134;2
+147;'F2d2voplstD';'Laikipia';132;2
+148;'swqS3K7FdNQ';'Tharaka';127;2
+149;'SsA0hToEdT9';'Garissa';133;2
+150;'HLi0J2ahkGi';'Nairobi';130;2
+151;'ZAy8bk3n9A9';'Kisii';134;2
+152;'FObzqMkbK08';'Kericho';132;2
+153;'X0gwoyLF0r7';'Makueni';127;2
+154;'FRZlGWLMxIT';'Mombasa';128;2
+155;'H5xexCW2UTW';'Machakos';127;2
+156;'VswnoHaovnX';'Kirinyaga';131;2
+157;'EW2A4592ukF';'Taita Taveta';128;2
+158;'uwiFJu4Iv9d';'Baringo';132;2
+159;'Q32OOLx5UAM';'Kitui';127;2
+160;'LdESbJLIS2K';'Meru';127;2
+161;'gp5T6Z8Em5n';'Narok';132;2
+162;'poTVsfK5NUJ';'Kajiado';132;2
+163;'xTlmi4Zo6oV';'Nandi';132;2
+164;'A7OXHO3iIm2';'Kwale';128;2
+165;'rYTKCDquSu8';'Embu';127;2
+166;'UtTWCMlc4fg';'Nyeri';131;2
+167;'L7eyPiO1qwt';'Homa Bay';134;2
+168;'c9BcSMuPGMb';'Busia';129;2
+169;'rrjdwsB8Yab';'Trans Nzoia';132;2
+170;'MbeqxENYPUB';'Isiolo';127;2
+171;'tnjibr7gMuJ';'Bungoma';129;2
+172;'uT8wpiR4bPQ';'Nyandarua';131;2
+173;'a5tOGw3yNQb';'Bomet';132;2
+174;'hgusWtbICBf';'Machakos districts';155;3
+175;'YMUgewREUar';'Meru districts';160;3
+176;'VSg5l0XPUdz';'Bomet districts';173;3
+177;'qEc1vnGNz9g';'Homa Bay districts';167;3
+178;'gKEvxPMCbL4';'Kisumu districts';137;3
+179;'KH5Rou6yZ1C';'Taita Taveta districts';157;3
+180;'zhQMy4L7JmS';'Nandi districts';163;3
+181;'AJHdVkNuFLI';'Tharaka districts';148;3
+182;'wV5syBB6NTN';'Kisii districts';151;3
+183;'gCAx5lWbrgS';'Lamu districts';138;3
+184;'djFqMBZNfvh';'Kwale districts';164;3
+185;'HofDphbMzVF';'Kajiado districts';162;3
+186;'z42pS2Qv2lf';'Nyandarua districts';172;3
+187;'L8lVUcxRlEO';'Laikipia districts';147;3
+188;'oEVLpBEpe3K';'Bungoma districts';171;3
+189;'Na5RZVhmyx7';'Mombasa districts';154;3
+190;'ndg8aFADrP9';'Kitui districts';159;3
+191;'WtJdp7Qg5Tw';'Kiambu districts';135;3
+192;'MC24M0UPiHJ';'Nyamira districts';146;3
+193;'LnQcvc9oAqM';'Isiolo districts';170;3
+194;'zQkditBIGgU';'Kirinyaga districts';156;3
+195;'KbJb0eCMi6v';'Busia districts';168;3
+196;'vzR6uDqysYH';'Kericho districts';152;3
+197;'NA9DxrGI4Qz';'Nakuru districts';143;3
+198;'P5FYa3AeMhE';'Garissa districts';149;3
+199;'wnBoAiaG16d';'Trans Nzoia districts';169;3
+200;'z6pZRMkOcBm';'Makueni districts';153;3
+201;'TEoVZIbmsfv';'Kakamega districts';140;3
+202;'E1U6qKHeLiH';'Baringo districts';158;3
+203;'irUcK64L2F7';'Narok districts';161;3
+204;'tUgWXCeWsSC';'Nairobi districts';150;3
+205;'sbW1kT6jaXG';'Nyeri districts';166;3
+206;'zUokeM64jbJ';'Siaya districts';141;3
+207;'KjaYKy0s4Yy';'Uasin Gishu districts';145;3
+208;'DXsn0rhW6wp';'Embu districts';165;3
+209;'RJAdjvv1QMp';'Kilifi districts';136;3
+210;'E3BjiqGqghl';'Migori districts';142;3
+211;'KeVFsRqixFh';'Vihiga districts';144;3
+212;'YX7JTjjhAfz';'Murang''a districts';139;3
+213;'TCSEZWkugUP';'EASTLEIGH NORTH (KE101050102)';204;4
+214;'mCIHwaFVcmO';'KANUNGA (KE201010802)';191;4
+215;'PSJNaiG5SqJ';'AHERO IRRIG SCHE. (KE612020301)';178;4
+216;'xibDoWPZVYT';'MUTOMA (KE808030203)';201;4
+217;'pTICy2HS6cJ';'UKUNDA (KE302041102)';184;4
+218;'cnnjRMe1P2f';'IBOONA (KE807020401)';211;4
+219;'NdRF5ZLM8ZL';'LIKONI (KE304030103)';189;4
+220;'rkcLtL5ckFH';'LUNYU (KE804030202)';201;4
+221;'oa3VGhq433v';'KIMATHI (KE101050401)';204;4
+222;'CU1WGhlAJGY';'MAKINA (KE101080102)';204;4
+223;'fNlIUyyY5yO';'NGANDO (KE101070502)';204;4
+224;'CEnaz5xGfjq';'KAYOLE (KE101040401)';204;4
+225;'rHYEXer6R8R';'KIHINGO (KE201010601)';191;4
+226;'kCty6cXOPM5';'WOODLY (KE101070603)';204;4
+227;'vduBovGUZpz';'SHIANDA (KE804020605)';201;4
+228;'FtooxJ3HokA';'SAGANA (KE202010205)';194;4
+229;'Na4ceAby6Cq';'LANET (KE709160201)';197;4
+230;'jgxFms1ycWo';'PAZIANI (KE301050302)';209;4
+231;'SeCbkGieWhR';'MAUNGU (KE305050301)';179;4
+232;'JSSdw203BcD';'SIAKAGO (KE407010402)';208;4
+233;'LLvd9xhbeLv';'KIANJAI (KE411130201)';175;4
+234;'rYbezIEhmiw';'GICHUNGO (KE204010301)';186;4
+235;'zO8Rz7Fywss';'KAPKONG (KE716060301)';207;4
+236;'BE45KMfV3Zk';'MANYATTA ''A'' (KE604030601)';178;4
+237;'y76U2FAUZSD';'MABROUKE (KE201030601)';191;4
+238;'TzgRY5d1Oj2';'KAKWAJUOK UPPER (KE608041101)';177;4
+239;'Gom5535XCnG';'KOMBOK (KE606040401)';210;4
+240;'IfU9zZelxex';'KWA SHEE (KE304040401)';189;4
+241;'i5f0sWlZhxd';'CHANGAMWE (KE304040101)';189;4
+242;'Wae728RjPm3';'MAJENGO KING''ORANI (KE304010103)';189;4
+243;'ukZdDTe1x6x';'UPPER MATASIA (KE704010601)';185;4
+244;'PFfF0Sl731w';'MAWENI (KE304020202)';189;4
+245;'tWztX7UPE9f';'BOFU (KE304030101)';189;4
+246;'rluMU8wowlr';'KIAMBAA (KE201010502)';191;4
+247;'nZbaYBVQUZs';'MUTHINGIINI (KE404160501)';200;4
+248;'DuqYYtknmSE';'NJORO (KE709110101)';197;4
+249;'MAwpZCU9EcX';'NEMBURE (KE401040103)';208;4
+250;'CRQmQETs1i6';'NANDARASI (KE204050102)';186;4
+251;'KMRUOb65jG8';'MUTHWANI (KE405070302)';174;4
+252;'vyFn1v4j9cf';'KAGONGO (KE205050101)';205;4
+253;'TVlBBlKFK4l';'OLALUI (KE713020101)';203;4
+254;'nzkDvyVrHM2';'TOWNSHIP (KE403030402)';190;4
+255;'LLYeYMpiUon';'KITUNI (KE801090201)';188;4
+256;'oLTvIqHp3Vc';'MAKILIVA (KE405080403)';174;4
+257;'M9shCFM32uN';'LAINI SABA (KE101080601)';204;4
+258;'snY4hUTLVku';'ESIKULU (KE802020102)';195;4
+259;'rcl0QU4dI46';'SAVANNAH (KE101040302)';204;4
+260;'Z1nHF3ZntFg';'UPPER IGOKI (KE408050101)';175;4
+261;'niFwTs5B9aA';'KITHIMU (KE401040203)';208;4
+262;'vXeJW4ptGSQ';'KIPTAIMES (KE807050303)';211;4
+263;'RMNxWWDPzxx';'UTITHINI (KE405100401)';174;4
+264;'wc7yTWgdlOm';'UGUNJA (KE609030504)';206;4
+265;'lO0U5hCTB2Q';'MILIMET (KE709030103)';197;4
+266;'gSMhwqoZVKb';'KANAMAI (KE301030103)';209;4
+267;'NavobuHsTJ2';'MARAIGUSHU (KE709140102)';197;4
+268;'xDzZj6mr1NZ';'DANDORA ''A'' (KE101040601)';204;4
+269;'P8Hy2pR8n3d';'MUGUTHA (KE206060202)';191;4
+270;'NDHJ1dMl866';'SABA SABA (KE207040101)';212;4
+271;'F2YX1yMfyXC';'LANET (KE709100301)';197;4
+272;'ON98NzsXHSK';'KIAMBOGO (KE408010202)';175;4
+273;'wYwUlXB6QcO';'TOWNSHIP (KE607010101)';192;4
+274;'nhQi2BqgRl0';'KASULE (KE604030201)';178;4
+275;'WgkJn7bDFFl';'KIMORORI (KE207040304)';212;4
+276;'fMTWBAkpkSu';'CENTRAL (KE307030105)';209;4
+277;'nAT3tRLAviq';'WATAMU (KE307030301)';209;4
+278;'Ss3zUErQK66';'MUKUYU (KE203010402)';212;4
+279;'yFtRwOXew4B';'MUGIRIRWA (KE413040601)';181;4
+280;'JMry8wTgtTU';'KIMININI (KE714050101)';199;4
+281;'dyxU3A5BRCS';'EMALI (KE404090101)';200;4
+282;'qPPbqeRkmPc';'MBIHI (KE807060201)';211;4
+283;'yryPQom1fQ4';'MALATANI (KE403050301)';190;4
+284;'XKWQAGhvP1b';'KISATIRU (KE807030304)';211;4
+285;'TxFo2B59GgY';'GITHURAI (KE101030401)';204;4
+286;'kpjJzFEXCMR';'KIAMARIGA (KE205030501)';205;4
+287;'gwmunggdrtz';'BAMBOO (KE204040204)';186;4
+288;'YyiNxe4ghYc';'KANJAI (KE201020102)';191;4
+289;'PRhjd4uSCXP';'WUNDANYI (KE305030703)';179;4
+290;'B37E324Zbhw';'ELBURGON (KE709070203)';197;4
+291;'GFSVgmb04ab';'KATANI (KE404090601)';200;4
+292;'EVyarI03N4n';'LOWER KABETE (KE201050501)';191;4
+293;'JsrnblOYcbW';'VIWANDA (KE101020402)';204;4
+294;'HnJQQRoKN5A';'NGUNGUINI (KE202010103)';194;4
+295;'NtgkGVMlM07';'KAMIU (KE401010202)';208;4
+296;'X88T66c7chu';'TARAKWA (KE716040602)';207;4
+297;'sQPZdD5PXhS';'KASARANI (KE101030702)';204;4
+298;'ZaR1p5qETlc';'MJINI (KE305010303)';179;4
+299;'amKs1NZe2gk';'DUJIS (KE501030301)';198;4
+300;'GVBHdiVTOGq';'LUSUMU (KE804010104)';201;4
+301;'TqqiJtCHlem';'CHOGORIA (KE413030401)';181;4
+302;'G20lpU1kB1s';'TOWNSHIP (KE808020203)';201;4
+303;'OM2uTET9dnA';'GATINA (KE101070402)';204;4
+304;'vhi7meS2bS1';'GITUNDU (KE205050301)';205;4
+305;'SX43prwGaq6';'GICHICHE (KE401050301)';208;4
+306;'a7k23j2zRCw';'SHELLA (KE307030104)';209;4
+307;'DkKvCRze65x';'BATHI (KE201040203)';191;4
+308;'s3vx9w0rgnG';'MAGOGONI (KE304020102)';189;4
+309;'WFZLupuRgkG';'SILIBWETI (KE204020202)';186;4
+310;'jFsHP5qGx9g';'MAJENGO (KE205070101)';205;4
+311;'YUROXuKJmvO';'MAZERAS/MUGUMO PATSA (KE301070304)';209;4
+312;'bsfkYDbvXun';'TOWNSHIP (KE710090401)';180;4
+313;'PvQXd0lQNG8';'KONGOWEA (KE304020201)';189;4
+314;'SSL2ObdN3ji';'KIHATHA (KE205070107)';205;4
+315;'vdGhf07b7tJ';'CENTRAL (KE303030101)';183;4
+316;'s1UMEJU8qlB';'MWATATE (KE305020503)';179;4
+317;'ocfeQRG5Deo';'EMBARO (KE607040104)';192;4
+318;'tGRqkaJ62S4';'KIRINDENE (KE408080302)';175;4
+319;'Dy6jghPCUn0';'MWEA (KE407040203)';208;4
+320;'OJ5sOnfdYkN';'KASGUNGA EAST (KE610010303)';177;4
+321;'Oy4wj28K2Sj';'KIZINGO (KE304010502)';189;4
+322;'A1MoIl5mUge';'NAROMORU (KE205020102)';205;4
+323;'JNl9t8zgI9n';'KULAMAWE (KE402030301)';193;4
+324;'tGB7cOjDl4u';'MUKOTHIMA (KE412030401)';181;4
+325;'xWjGymAC7QK';'KINGADOLE (KE802040301)';195;4
+326;'MO9eFb6VHkp';'MUGUGA (KE201050102)';191;4
+327;'jbGjY3TUQSK';'SHANZU (KE304020304)';189;4
+328;'AZiDdxKB9PN';'ESHIBULI (KE804060301)';201;4
+329;'tU8wb00TsKq';'MATOPE (KE302010101)';184;4
+330;'ypfKmXyOEml';'BAMBURI (KE304020301)';189;4
+331;'yamWGmmHSGm';'KIARUKUNGU (KE202040101)';194;4
+332;'kWpaFrav6nA';'NDUNYU (KE707050102)';186;4
+333;'LNTIAp4qvnK';'LAKE VIEW (KE709140202)';197;4
+334;'aAAEjFFHDAP';'NGACHI (KE803010202)';188;4
+335;'RaSiHyviXkt';'ZOWERANI (KE301010303)';209;4
+336;'HgS2HMihPcQ';'UMOJA (KE101040301)';204;4
+337;'JfrBQvza0WW';'GATUKUYU (KE206040401)';191;4
+338;'EJzfkqRDlEq';'DANDORA ''B'' (KE101040602)';204;4
+339;'kSyXFGP6vxY';'BOUR-ALGI (KE501010401)';198;4
+340;'f3ioVSm7ED0';'NUCLEUS (KE808020204)';201;4
+341;'nkPwQRLPBg8';'GANZE/TSANGALAWENI (KE301040402)';209;4
+342;'kT9IU9N6jhO';'EASTLEIGH (KE405010102)';174;4
+343;'WpoumHWP6oh';'WASWETA I (KE606010101)';210;4
+344;'MBUyKGtj4qf';'OFAFA (KE101020302)';204;4
+345;'rnmmO3SnVLj';'GAKIRA (KE203030403)';212;4
+346;'nuaH2Q7EPBU';'ESIANDUMBA (KE807010301)';211;4
+347;'lELKWcZMQCT';'BOOCHI (KE601060101)';182;4
+348;'yMxdhNeAAmg';'NTURUBA (KE411010301)';175;4
+349;'lGmrVaf9o3L';'KASEWE B 2 (KE608030502)';177;4
+350;'OYw7EO3xz2H';'CHEPSAITA (KE716060101)';207;4
+351;'yzzFcpFcwLe';'GAKOROMONE (KE408050203)';175;4
+352;'kIWNvAsAtKQ';'KIMAHURI (KE205020403)';205;4
+353;'gi7V5lq5N8V';'KYANGULUMI (KE405100101)';174;4
+354;'UbOW2qrGQA8';'NAMANGA (KE704050101)';185;4
+355;'wb8vKvVWRVu';'JOMVU KUU (KE304040502)';189;4
+356;'yD3rJYbkrhv';'BARANI (KE307030102)';209;4
+357;'UreIvjcpeYx';'NTULELE (KE711021101)';203;4
+358;'wD6elgjxx5w';'KAMAHUHA (KE207040103)';212;4
+359;'w5Ic0BojBWn';'S.KANDUYI (KE801040402)';188;4
+360;'q9iw0leWCi0';'MAINA (KE707050401)';187;4
+361;'dpHxXQWOuVG';'TOWNSHIP (KE801090403)';188;4
+362;'TmttHp04NLq';'EBUSHITINJI (KE808030402)';201;4
+363;'lGIDySmNrsl';'KIMANA (KE704060301)';185;4
+364;'hk7a90F9LVJ';'MUKURU KWA NJENGA (KE101040201)';204;4
+365;'YQRQZUSPJyJ';'IKOMERO (KE808040201)';201;4
+366;'Y2L8YisSCap';'GATIMU (KE204020103)';186;4
+367;'XcKQPpdn1kD';'MARINDI (KE606010601)';210;4
+368;'CUOemk90QqR';'SORI (KE606060201)';210;4
+369;'YZMB9YV1cOF';'OBISA (KE608010102)';177;4
+370;'T40NFXuYrzS';'MAHIAKALO (KE804070201)';201;4
+371;'XjfWzP8yJqI';'BABA NDOGO (KE101030102)';204;4
+372;'NYwXVAaG7Wz';'LANGATA (KE101080201)';204;4
+373;'SeQr0X6Zn4E';'GACHARU (KE202010204)';194;4
+374;'ENBgrfjboDY';'KAGONYA (KE609040301)';206;4
+375;'vqxS1Jt1wTz';'KAMATUNGU (KE412020102)';181;4
+376;'iorF6thG6K6';'RUIRU (KE206060203)';191;4
+377;'yveSB1qwT2r';'NYANCHWA (KE603010503)';182;4
+378;'VUk0Kh7aJiX';'GONGONI (KE307020203)';209;4
+379;'Hq6LDGs8lV8';'LUGARI (KE805020101)';201;4
+380;'RL3FpIgAdjk';'SHIASABA (KE804040404)';201;4
+381;'KWOhyiJV3kP';'KAMUNYOLO (KE404100102)';200;4
+382;'RCb2s340xG2';'RIRUTA (KE101070501)';204;4
+383;'m6Ywp0XsEfv';'MUTHIGA (KE707030102)';187;4
+384;'MXNtpHxn7wT';'TIMBWANI (KE304030102)';189;4
+385;'DbXiE5Y66AH';'KABATI (KE207020302)';212;4
+386;'zW31QyqgoLN';'SOKONI (KE709140201)';197;4
+387;'iMYB7PqfiMi';'MKOMANI (KE303010101)';183;4
+388;'sWeIZ5Fyu3c';'KARIOBANGI SOUTH (KE101040701)';204;4
+389;'qZPqdJLApHn';'KIRIMANGAI (KE204020403)';186;4
+390;'nUMNIIkOdZs';'KINYAMBU (KE404150401)';200;4
+391;'WVwU9ljPFe3';'KAKONENI (KE307030601)';209;4
+392;'kbkiyRsOKxY';'KARIOBANGI NORTH (KE101030101)';204;4
+393;'lthhMaaZBqF';'NYAGA (KE201020503)';191;4
+394;'EEnCAch9CeD';'JIMBA (KE307030302)';209;4
+395;'IYOzEM1UnTU';'SHIRERE (KE804070202)';201;4
+396;'BAUtSMmgKAP';'GATWIKIRA (KE101080701)';204;4
+397;'Hbf1zAUvcb5';'NYAYO (KE101030202)';204;4
+398;'d5BjVraYPaO';'SIREMBE (KE609060204)';206;4
+399;'t3sXyopOeLC';'SILIBWET (KE702010808)';176;4
+400;'InUkqRLmVAR';'OSORONGAI (KE716060102)';207;4
+401;'tSKCN81UosG';'WANJOHI (KE204030201)';186;4
+402;'Z4KqckIYdtE';'UNJIRU (KE205060402)';205;4
+403;'BPzbOUxIE8U';'BIDII (KE714030102)';199;4
+404;'tcpnoHgWCqw';'MOLO (KE709040201)';197;4
+405;'dxvb5ABg2wY';'KIRIGU (KE101070202)';204;4
+406;'GKZIuETSk0m';'CHEMILIL (KE612030101)';178;4
+407;'TmC8LnUotCj';'BAR KOWINO (KE611010102)';206;4
+408;'gmfFLPTdEwU';'LUBINU (KE808020305)';201;4
+409;'xVfYcPd6H4j';'GOROFANI/BONDENI (KE101050302)';204;4
+410;'b36RW6nE3st';'MATUNDA (KE805010204)';201;4
+411;'vYTgJaBWjTE';'SHIMO LA TEWA (KE301030102)';209;4
+412;'QmyRPsOE76M';'MUTITU (KE404020101)';200;4
+413;'JJerkyeCLRZ';'MUTUNYI (KE408010404)';175;4
+414;'adFBxmeO0Sp';'EMANDA (KE807060304)';211;4
+415;'TBoyZg1q3PW';'IGARE (KE601070101)';182;4
+416;'NlSUQhArowf';'KAMASENGERE WEST (KE610010101)';177;4
+417;'QHgUqARare2';'LABURA (KE205010103)';205;4
+418;'M3m2E6mu2rQ';'MIRITINI (KE304040501)';189;4
+419;'vDce9apVq3J';'S.NAMWELA (KE801070103)';188;4
+420;'eL1bI39d55Z';'MWITUBWI (KE807010303)';211;4
+421;'msjGxkr38RR';'EMBAKASI (KE101040101)';204;4
+422;'B2QFxdAkLMQ';'MAGENCHE (KE601020201)';182;4
+423;'VctRhDzsD4c';'KAGWE (KE201040301)';191;4
+424;'FcqfnMjE852';'MJINI (KE802010101)';195;4
+425;'PZs1fkqePUI';'ATHI RIVER TOWNSHIP (KE405070101)';174;4
+426;'TLG55pBnEwL';'NJIRU (KE101040501)';204;4
+427;'E2Z9ttZwO1g';'UTITHI (KE404150302)';200;4
+428;'YIiRt2Bh2wD';'KARAPUL (KE609020401)';206;4
+429;'V7F6W6xFADO';'AFRAHA (KE709160301)';197;4
+430;'o7beMwD7gSN';'GANJONI (KE304010501)';189;4
+431;'DzvpdzGoBjS';'TUNTU (KE408050102)';175;4
+432;'ncLfAbR83Fw';'MWINGI TOWNSHIP (KE410010101)';190;4
+433;'ozfi5CI7tR0';'KODERO BARA (KE606030102)';210;4
+434;'F00Wj5SmCOu';'WABERA (KE402020202)';193;4
+435;'cdXXcwyy88q';'KEWAMOI (KE701020501)';202;4
+436;'dqCBvBumYXb';'WAWARE NORTH (KE610010201)';177;4
+437;'GToc0MV2i4f';'TAPSAGOI (KE716060203)';207;4
+438;'vvJ2lZLFGAb';'BIASHARA (KE206050201)';191;4
+439;'lPr0oIYXgtB';'OLKARIA (KE709140801)';197;4
+440;'aCKrzvBPBsR';'KIHOYA (KE203040404)';212;4
+441;'GIzqXp6s0cz';'KADERA LWALA (KE606040102)';210;4
+442;'JdVobtYOJM3';'KIRINDINE (KE411040301)';175;4
+443;'UtrLIENBipl';'NORTHERN (KE604030903)';178;4
+444;'XCSWMfvVU0t';'KALOLENI (KE305050101)';179;4
+445;'yO9QWxJ9UdS';'LEMELEPO (KE704010702)';185;4
+446;'hwwYM8YIP11';'LARI SCHEME (KE201040102)';191;4
+447;'pkmkmRW7ZTL';'KANGEMI (KE101060403)';204;4
+448;'KEygaVZMzsB';'KIBICHIKU (KE201050502)';191;4
+449;'uhjepuqdpJD';'MASIMBANI (KE404150201)';200;4
+450;'z7zpValW7iG';'KIRIAINI (KE203040206)';212;4
+451;'TQw214ZdgW3';'RUAI (KE101040801)';204;4
+452;'G4Bhw72mHxi';'KAIBU (KE411020101)';175;4
+453;'b8miHL5httk';'SHIVIKHWA (KE804020204)';201;4
+454;'zRvmfNHWBY0';'KAPCHORUA (KE710050601)';180;4
+455;'BkXRBEI9OcI';'RURII (KE204010401)';186;4
+456;'BMbAPcuGI83';'ONGATA RONGAI (KE704010701)';185;4
+457;'ecekXpDqsth';'WIKILILYE (KE403030502)';190;4
+458;'X5nLwtm2mIh';'WABERI (KE501010301)';198;4
+459;'TMQ0RgNjJ4J';'KAGUYU (KE202010604)';194;4
+460;'FIXQW8RLXpZ';'LOWER KOMBEWA (KE604010203)';178;4
+461;'vkZlA33qyxg';'GACHANKA (KE408050301)';175;4
+462;'arq5px7Ci0w';'KIPYOYWANI (KE714040302)';199;4
+463;'NwHoxHFluob';'LUBAO (KE804030101)';201;4
+464;'l8zMlttY6gE';'RIRONI (KE204030203)';186;4
+465;'Gqa7Ybu2jsl';'MUTITU (KE407010302)';208;4
+466;'BcBil89YqRm';'GATHIGIRIRI (KE202040102)';194;4
+467;'aq7uoJsmrJe';'MARIAKANI/MITANGONI (KE301070501)';209;4
+468;'Pui7nu8r8Bq';'RUMURUTI (KE707060101)';187;4
+469;'OCw4qNuL6Q5';'MARINDA (KE801060302)';188;4
+470;'GeaqADvAsKq';'NJAMBINI (KE204040301)';186;4
+471;'VSf1tFuRPtG';'OLYMPIC (KE101080702)';204;4
+472;'zeNpenK2Epr';'GAKIIRI (KE408100201)';175;4
+473;'xzFUidU8Icc';'MUKAA (KE405100204)';174;4
+474;'AFvXUnbn7OI';'MUTISWA (KE404090602)';200;4
+475;'wFxnWlYip7Z';'NAROK TOWN (KE711010101)';203;4
+476;'rO4kOAHgJum';'KAMATONGU (KE205010203)';205;4
+477;'VhSXWHcgqiZ';'GITHUNGURI (KE201020101)';191;4
+478;'d51mCgHkUcM';'SYOKIMAU (KE405070202)';174;4
+479;'gR7iPJmqJeX';'KALOLENI (KE101020102)';204;4
+480;'huRlOeTtxmG';'GACHARAGE (KE207010103)';212;4
+481;'gnrIRKH4tgg';'HURUMA (KE101010402)';204;4
+482;'nqu4YgKFUwT';'KESSES (KE716040301)';207;4
+483;'KUoMEPI9YAo';'ARUJO (KE602050301)';177;4
+484;'A0NJJ7mNDwj';'MIHANGO (KE101040102)';204;4
+485;'YgCFGWNkJSf';'KAMUWONGO (KE410050401)';190;4
+486;'U2xrvZlmg1O';'MARERA (KE604020202)';178;4
+487;'abh1ANahLfl';'HOSPITAL (KE301010103)';209;4
+488;'NsEfWSvLKCF';'HAMZA (KE101020201)';204;4
+489;'w7v5mtzmqCj';'ALOBAI (KE806020203)';195;4
+490;'GTBziMt0w8Y';'DUNDORI (KE709100302)';197;4
+491;'qev5zCzXtMV';'SEGUTON (KE701020502)';202;4
+492;'L0mUw2P6fKu';'KOMU (KE206050203)';191;4
+493;'K0EhVNLuDul';'IFTIN (KE501010201)';198;4
+494;'QvKpNJ5DvnU';'N.KULISIRU (KE801070201)';188;4
+495;'DU99nu2WVvC';'OLJABET (KE707060501)';187;4
+496;'g9trjdR4xQ8';'KAUWI (KE403020101)';190;4
+497;'u4IWdbMFeaa';'KILOME (KE404050202)';200;4
+498;'OLvTYh7gRuL';'IKONGE (KE607020105)';192;4
+499;'kFGXCtzMlN4';'NYAWITA (KE604030603)';178;4
+500;'HRXZc3ZmsPU';'KEGATI (KE603010401)';182;4
+501;'lvua19A2cxq';'TOWNSHIP (KE804070102)';201;4
+502;'yy5ED8fcXKG';'KYAUME (KE405060302)';174;4
+503;'BVo2oVXz133';'KAMIIGUA (KE202020202)';194;4
+504;'jaaiD4Kb3eD';'DIM COM (KE707030402)';187;4
+505;'EbqSHtIgg6e';'MJINI (KE405010101)';174;4
+506;'JAHirBXO1qu';'NYANDIWA (KE610040401)';177;4
+507;'ipsCW7mweIz';'KASINGA (KE405010501)';174;4
+508;'UgX15CK8Q6N';'KOTIENO (KE602040802)';177;4
+509;'UGmSVm0CyOJ';'SHIMBA HILLS (KE302050301)';184;4
+510;'M7xNgduzJsU';'JEPTULU (KE807040101)';211;4
+511;'T0pAlJDA44U';'VIWANDA (KE709160401)';197;4
+512;'JuOdCnOfF0q';'KITENKELA (KE704040701)';185;4
+513;'I0KIp8aRmkJ';'MWONGORI (KE607030402)';192;4
+514;'cSwcXTItK0H';'KIIRI (KE207020203)';212;4
+515;'ifThhEFU5H9';'DALLAS/STADIUM (KE401010201)';208;4
+516;'YxvPuee0Do1';'KIPTAGICH (KE709010303)';197;4
+517;'kJFkPD9xvhK';'KIUU (KE206060201)';191;4
+518;'ZmvivoZoZTG';'KIMILILI (KE801050301)';188;4
+519;'M45ecUk9xqd';'MIVUMONI (KE302040401)';184;4
+520;'gC4haqrluE7';'MABASI (KE718020102)';176;4
+521;'lsdygXXiagE';'KISAUNI (KE304020101)';189;4
+522;'Boeu36u1Fsj';'SHIRU (KE807040106)';211;4
+523;'myQxdYh9Aui';'ATHIMBA (KE411030101)';175;4
+524;'C5y9j2bRwXk';'UPPER KIUNGONE (KE408090101)';175;4
+525;'NRGeiDTmk4K';'KAHAWA WEST/NJUA (KE101030302)';204;4
+526;'SxvvqRkHVS1';'CHEPTARIT (KE710030503)';180;4
+527;'uGcdv6gAu4u';'BONYANCHAIRE (KE603050304)';182;4
+528;'fH5jq148ghe';'TONSHIP (KE801040502)';188;4
+529;'Uv52n8lLjnW';'TOWNSHIP (KE501010103)';198;4
+530;'Q4rzE00t7f8';'KINANGO (KE302020101)';184;4
+531;'Uep4bMvMEQ0';'NZOIA (KE714010402)';199;4
+532;'AkdxPU36OH5';'MATUU (KE405110501)';174;4
+533;'x9SMGtu4tt8';'MIRERA (KE709140802)';197;4
+534;'S1owfU173Ti';'TOWNSHIP (KE705040102)';196;4
+535;'icjQzlnA1Bk';'ENKIRIGIRRI (KE704040601)';185;4
+536;'TMWbVT4RTIK';'MNARANI (KE301010104)';209;4
+537;'D0KDDRjRhsL';'KATHERA (KE408080202)';175;4
+538;'gMtyq3VHhbw';'KAURINE (KE411050303)';175;4
+539;'WXUO9cTQG2W';'MUHORONI EAST (KE612030501)';178;4
+540;'zPe0AWlBr8W';'KIPEVU (KE304040201)';189;4
+541;'KK3AeO4XNJp';'NGONG TOWNSHIP (KE704010201)';185;4
+542;'IksEVAgY9g3';'ICHUGA (KE205030106)';205;4
+543;'nhZ0JLNWqVZ';'KABATINI (KE709100103)';197;4
+544;'razmDHsy40f';'MARKET (KE704040101)';185;4
+545;'O7IvEfPh6YV';'KAPSAOS (KE716060501)';207;4
+546;'WAcpJiMXoYO';'LIMURU TOWN (KE201030101)';191;4
+547;'ORv90mw5cxp';'IRANDA (KE603040302)';182;4
+548;'QpDfWoSAZ56';'Ichuga Medical Clinic (KEPSI7065)';542;5
+549;'HgPT19j0uZE';'Lucimed Clinic (KEPSI6032)';332;5
+550;'hSG9qv6ZzfA';'Nyandarua North (KEPSI7036)';309;5
+551;'ocawZ4vltw2';'St. Annes Medical Centre (KEPSI7055)';292;5
+552;'L1hFqxEkNeA';'Alika Medical Clinic (KEPSI5049)';448;5
+553;'sf5j43E11sK';'Joster medical  Clinic (KEPSI5045)';445;5
+554;'f62ML5incIi';'Skans Healthcare (KEPSI1022)';308;5
+555;'va1m8vluYmb';'Elburgon Maternity Hospital (KEPSI6016)';290;5
+556;'gHKgYkGzqfy';'Scion Health Centre  -  (KEPSI5079)';364;5
+557;'Q3tW9l1WDMG';'Wayside Medical Clinic (KEPSI6022)';533;5
+558;'RR5GEQmxwr8';'Faith Medical Clinic (KEPSI4046)';379;5
+559;'ueu0y67B6Ly';'Mumias Sugar Company MCH (KEPSI4027)';340;5
+560;'YvU5tCz1pZR';'Kaune (Runyenjes) Medical Clinic (KEPSI2004)';305;5
+561;'xRP8mkM10Wo';'St. Hillarius Medical Clinic (KEPSI1002)';540;5
+562;'KtqVPEIyjo0';'Neema Hospital(Kitui) (KEPSI2049)';254;5
+563;'HizZkptuw1r';'Wananchi Nursing Home (KEPSI1060)';487;5
+564;'yXygSahnoS4';'Gazibay Medical Centre (KEPSI1046)';321;5
+565;'COUkEKde8Kg';'Kitui Quality Medicare Nursing Home (KEPSI2073)';432;5
+566;'DAX16Kbr0kO';'Lakeview Maternity & Nursing (KEPSI6030)';386;5
+567;'u0HiO3K88A3';'Equator Hospital - Busia (KEPSI4003)';424;5
+568;'DDZmSvtW0gJ';'Hema Medical Clinic (KEPSI4040)';262;5
+569;'aWhaJLFnaMn';'Afwan Medical Services (KEPSI5014)';409;5
+570;'DptWVxEzwSn';'Imani Medical Clinic-Central (KEPSI7018)';546;5
+571;'nCaKLMnpIAk';'Provide International(KEPSI5013)';224;5
+572;'o2nlgBuBEXY';'Meridian Medical Clinic (KEPSI6003)';456;5
+573;'yrYxqWBUpdG';'St. Patricks Health Services (KEPSI5041)';224;5
+574;'IlLq0vpo5GX';'New Mbita Clinic (KEPSI3023)';436;5
+575;'W2enuiK6KXA';'Community Medical Clinic (Ingavira) (KEPSI4045)';227;5
+576;'cEh02J60OcC';'Corban Healthcare (KEPSI5076)';336;5
+577;'qhdiLuF7mOG';'Wakibe Health Centre (KEPSI5036)';481;5
+578;'wL9MjBBHJw1';'Kasarani Maternity & Nursing Home (KEPSI5064)';297;5
+579;'URKYU4NzV63';'Likoni Nursing Home (KEPSI1015)';384;5
+580;'pFI72J8cfxb';'Annex Medical Clinic (KEPSI6057)';280;5
+581;'FqcyXCiaX3k';'Rachar Nursing Home (KEPSI3012)';539;5
+582;'W87cNM9l94W';'Chwele Clinic (KEPSI4055)';419;5
+583;'Wk2Sw9fskIu';'Kimaiga Medical Services (KEPSI3018)';273;5
+584;'HM2h1iclJfM';'Lugulu Hospital (KEPSI4053)';255;5
+585;'WXNWxclkUVT';'Emmanuel Community Health Clinic (KEPSI7064)';286;5
+586;'v8uuZQiG1kP';'MAKINA MEDICAL CLINIC (KEPSI1016)';222;5
+587;'fbBqYVynJHq';'Siri Medical Clinic (KEPSI4010)';501;5
+588;'VHqsFmyWqvN';'Township Clinic (KEPSI3031)';407;5
+589;'oN46d5NfPjU';'Tumaini Reproductive Health Care (KEPSI2037)';502;5
+590;'gEtwhabmjTT';'Courtesy CBHS Mlolongo (KEPSI5053)';478;5
+591;'I0EtpTboD0w';'Community Medical Centre (KEPSI3034)';483;5
+592;'gVNYViqPvmg';'Kima Mission Hospital (KEPSI4049)';218;5
+593;'ADWZP1AGPks';'Kiambogo Medical Cinic (KEPSI7048)';401;5
+594;'vGt7zkr37gj';'City Stadium Medical Clinic (KEPSI5070)';479;5
+595;'FYan9tXqs2t';'St. Andrews Medical Clinic (KEPSI1005)';378;5
+596;'yh17wc95G5B';'Seaside Medical Centre (KEPSI1039)';430;5
+597;'Ty6p9LzQbXN';'Nazareth Medical Clinic (KEPSI6048)';482;5
+598;'rF1sMAzVNmK';'KENLANDS HOSPITAL (Formerly Esther Memorial Hospital) (KEPSI6002)';543;5
+599;'yG5c8JInxS5';'Adoma Clinic (KEPSI3011)';239;5
+600;'XciFWbkNPc6';'Ponya Surgicals (KEPSI2026)';381;5
+601;'b6LQ9KooDsF';'Milele Medical Centre (KEPSI5060)';285;5
+602;'o2WcSKmtSBW';'Ebenezer Health Care Services-Coast (KEPSI1026)';356;5
+603;'PrZHmPJgEg8';'Shianda Medical Clinic (KEPSI4021)';408;5
+604;'iR6xCaaxh4x';'Great Lakes Medical Clinic  -  (KEPSI4062)';346;5
+605;'joSqE3oEWEs';'Melkasons Clinic (Formerly Sardines Clinic) (KEPSI3008)';460;5
+606;'lVzR4S4THZa';'Rosade Medical Clinic (KEPSI5035)';471;5
+607;'kXxTWf1gw3Z';'Sunview Maternity (KEPSI7056)';246;5
+608;'kzWlF8nZypK';'Oasis Medical Clinic(KEPSI5002)';268;5
+609;'CkVRtCcIHY9';'Joint Partner (Joshi) medical Clinic (KEPSI4039)';522;5
+610;'r7EZM6m3aZw';'Masinde Muliro University (KEPSI4030)';370;5
+611;'usGYuhDd67D';'Mama Uzima Clinic (KEPSI3002)';264;5
+612;'ySb1NCHdjfa';'Car Wash Community Clinic (KEPSI3019)';236;5
+613;'gsTcPW9Uzmb';'Provide International Clinic-Korogocho (KEPSI5058)';397;5
+614;'OSMvbJiMuSR';'Joy Nursing Home (KEPSI5074)';213;5
+615;'eCpjnDxllYA';'Chamalo Medical Clinic (KEPSI1034)';341;5
+616;'rmwrhM6AUrW';'Emmanuel Medical Clinic (KEPSI4054)';469;5
+617;'hCXBz5taHed';'Mufutu Medical Clinic (KEPSI4036)';379;5
+618;'FarW0jDHa4k';'Lina Medical Services (St. Thomas) (KEPSI5001)';336;5
+619;'zdPH9kdjavk';'Jamia Integrated Clinic (KEPSI8011)';458;5
+620;'RN6lkbfxWDu';'Siloam Medical Clinic (KEPSI4042)';395;5
+621;'webRHSzetAE';'Family Health Clinic-Western (KEPSI4006)';501;5
+622;'uhYbEzMmwkl';'St. Thomas Maternity & Nursing Home (KEPSI1062)';219;5
+623;'aOXGCc1Saym';'Sega Cortage Hospital (KEPSI3013)';374;5
+624;'Th4nyhjFcFn';'Biberion Medical Clinic (KEPSI6031)';410;5
+625;'cA87HWcKwRI';'Garissa Mother and Child Clinic (KEPSI8003)';529;5
+626;'j6mJPuNGzQW';'Mfariji Medical and Counselling Clinic (KEPSI2062)';283;5
+627;'eRPH002lcHy';'Warazo Medical Clinic (KEPSI7060)';285;5
+628;'apCscKKNhop';'Emmaus Medical Clinic (KEPSI7016)';480;5
+629;'TVFqCYVmj1n';'Diana Medical Clinic (KEPSI7026)';310;5
+630;'tUq98PNpPpU';'Kericho Nursing Home (KEPSI6011)';534;5
+631;'s5nGr4r431w';'Okitta Nursing & Maternity Home (KEPSI3025)';349;5
+632;'OATfiysRdtn';'Rapha Medical Centre (KEPSI6020)';229;5
+633;'gOI0TE0RXeD';'Kimilili Medical Clinic (KEPSI6019)';439;5
+634;'qK2SIYGATAi';'Githurai Medical Clinic (KEPSI5020)';285;5
+635;'vTj5JboRVHc';'Victoria Medical Clinic (KEPSI4020)';528;5
+636;'OrAVYWs8QsQ';'Jarra Medical Clinic (KEPSI4032)';424;5
+637;'suOQXnanHhN';'Immanuel Medical Clinic (KEPSI7039)';307;5
+638;'lZG3151URbI';'Roret Medical Clinic (KEPSI6036)';520;5
+639;'pmUfRyxAsZl';'Good Shepherds Medical Centre (KEPSI6059)';399;5
+640;'ipxTZmgrPWo';'St. Judes Clinic (KEPSI3021)';499;5
+641;'QU6CO4EBwGX';'Kariumba Medical Clinic (KEPSI7035)';314;5
+642;'W4UL0hOmMM4';'Burnt forest Private Clinic (KEPSI6050)';296;5
+643;'Q0dyWh26e2P';'Mtwapa Nursing Home (KEPSI1029)';411;5
+644;'i7etLWHwY23';'ClayCity Medical Centre (KEPSI5024)';297;5
+645;'Qbw1o1UvGyF';'Geca Medical Clinic (KEPSI1037)';219;5
+646;'oCBBr7AILdC';'Mavoko Medical Clinic (KEPSI2072)';425;5
+647;'gsm3Q1Y9CyQ';'K-Met Clinic (KEPSI3006)';274;5
+648;'QUgQb9nYZ34';'Boores Medical Clinic (KEPSI7002)';438;5
+649;'RclxpK8mULa';'Jamia Medical Centre (Western) (KEPSI4024)';302;5
+650;'Z8U4Rj4QdFl';'Liberty Medical Clinic (KEPSI7032)';214;5
+651;'ptbsTXPUNnn';'Bodaki Medical Centre (KEPSI5071)';303;5
+652;'uQmRJxUwwxb';'Landmawe Medical Services (KEPSI5008)';484;5
+653;'GyAqwqGT16a';'Karathe Precious Medical (KEPSI7011)';270;5
+654;'GkGtho6JWf9';'Voi Medical Centre (KEPSI1059)';444;5
+655;'pIC0dMLr9nY';'Family Life Promotions (KEPSI5039)';221;5
+656;'HpNxBZoFAhv';'Ahmadiya Clinic (KEPSI3009)';443;5
+657;'aYN43O6S7On';'Johpas Clinic (KEPSI3022)';508;5
+658;'jXQ7FxKrNVN';'Marimanti Medical Clinic (KEPSI2054)';375;5
+659;'XrG4W9EDafL';'Tumaini Mat & Nursing Home(Kibwezi) (KEPSI2065)';449;5
+660;'FeFll52DGV0';'Heri Medical Clinic (KEPSI1027)';335;5
+661;'KWF1y4jNXoZ';'Wayside Clinic (KEPSI4050)';282;5
+662;'VuazENzXdEc';'Gawa Medical Clinic (KEPSI7013)';492;5
+663;'z5wjQ6Fwb9D';'Bondo Medical Centre (KEPSI3005)';407;5
+664;'VPnlfNqSqGX';'Jamii Health Services (KEPSI2067)';301;5
+665;'X7eyR7kGyZl';'Abby Medical Clinic (KEPSI5037)';447;5
+666;'W2d08CI3qfU';'St. Jude Medical Clinic (KEPSI2068)';465;5
+667;'W04UicYu5EN';'Karma Health Services (KEPSI5065)';392;5
+668;'ByschrKpTNr';'Makutano Medical Health Centre-Embu (KEPSI2016)';260;5
+669;'tgfwW7Oepo2';'Plainsview Hospital (KEPSI7052)';376;5
+670;'Kn0jzJbpPqT';'Oloibon Medical Centre (KEPSI2071)';291;5
+671;'IF1osxeEj1j';'Nyahururu Private Hospital  -  (KEPSI6062)';366;5
+672;'W2uGlQN8HO6';'Mercy Medical Clinic (KEPSI2003)';261;5
+673;'HmzTbduVU3w';'Ushirika Medical Clinic (KEPSI5006)';372;5
+674;'xzL8q1nDbhf';'Mwatate Healthcare Clinic (KEPSI5069)';364;5
+675;'MSF48iEBXsU';'Home Base Medical Clinic (KEPSI1047)';530;5
+676;'BXgoduJJ6vv';'Igare Medical Clinic (KEPSI3033)';415;5
+677;'FxxFXU1Cjh8';'Sunrise Medical Clinic (KEPSI2010)';537;5
+678;'zTSgaBSQEZj';'Mundoro Medical Clinic(KEPSI5068)';268;5
+679;'NNgIDpZywSm';'Hope Medical Clinic - Central (KEPSI7045)';294;5
+680;'AesSst7wcTO';'Medipoint Medical Clinic- Mwiki (KEPSI5023)';388;5
+681;'djcmZBNMvTf';'Dr. Sagwa Medical Clinic (KEPSI7015)';278;5
+682;'LQZJrknpMZ6';'Zamzam Medical Services (KEPSI5010)';541;5
+683;'uS1pgyfj6Gw';'Bamburi Medicare Clinic (KEPSI1014)';521;5
+684;'eyr9N33csT2';'Enzai Afya Medical Clinic (KEPSI2074)';497;5
+685;'EOcCDAkXqY3';'Kings Medical Clinic (KEPSI3040)';369;5
+686;'Ga7ONf1PtCG';'Jamii Health clinic (KEPSI2060)';263;5
+687;'D36lt8FqVN3';'Nakuru West P.C.E.A. Health Centre (KEPSI6004)';511;5
+688;'O8YtWGuLxsA';'Migori Health Stiation (KEPSI3039)';343;5
+689;'C0A2FzlNkG7';'Your Family CFW Clinic (KEPSI4037)';258;5
+690;'PrmzK2RRPQ5';'Mount View Mat & Nursing Home (KEPSI1020)';444;5
+691;'d5ky0ywKdAI';'St. Mary''s Medical Clinic (KEPSI5061)';396;5
+692;'fAfqP4PLwKq';'New Kihoya Medical Clinic (KEPSI7005)';440;5
+693;'NbLJXcEMIY5';'Neema Medical Clinic (Kitale) (KEPSI6046)';403;5
+694;'YoremPEiaBe';'Gakira Medical Centre (KEPSI7059)';345;5
+695;'ktIMLVUqsWi';'Summit Medicare Limited (KEPSI3048)';513;5
+696;'dlQVmxxnD6K';'Jacky Medical Clinic (KEPSI2070)';324;5
+697;'eYircQDjtn3';'Beta Care Hospital (KEPSI7051)';288;5
+698;'FoPM18nmjye';'Wama NursingHome (KEPSI5009)';456;5
+699;'udWGRm2mOtt';'Iftin Medical Clinic (KEPSI8009)';339;5
+700;'AEKVNqZ8aAZ';'Wananchi Medical Services - Keruguya  (KEPSI7063)';459;5
+701;'H1yl5wiZEXZ';'Golden Life Victors  -  (KEPSI6064)';267;5
+702;'GVg59wyWShZ';'Samaritan Medical Clinic (KEPSI2051)';452;5
+703;'rsOZPnggCaw';'Nacohag Health Centre (KEPSI6029)';533;5
+704;'yDvWfpi74WU';'Solea Annex Medical & Maternity (KEPSI7004)';514;5
+705;'RBgNxjGZiqZ';'Uzima Medical Clinic (KEPSI1058)';315;5
+706;'GjOgZ9oXbWQ';'Good shepherd Med. Clinic (KEPSI5025)';405;5
+707;'d4S2OWjKP80';'St. David''s Health Care (KEPSI2041)';507;5
+708;'GhWi9TJTp9h';'Family Health Clinic-Eastern (KEPSI2007)';515;5
+709;'vBRHb26xT0e';'Saola Medical Centre (KEPSI5059)';257;5
+710;'eUzG6ddnsqA';'Kilome Nursing Home (KEPSI2020)';281;5
+711;'sJyvi1Gemnh';'Ajosa Medical clinic (KEPSI3037)';486;5
+712;'PvZ9wNCBQUS';'Good Hope Hospital (KEPSI6007)';534;5
+713;'A8D21aZ1dMs';'Roadside Medical Centre (KEPSI7006)';275;5
+714;'eNfViU0NTd3';'Maamba Medical Clinic (KEPSI1051)';266;5
+715;'Jal5qWX06LT';'Kabarnet Faith  Clinic (KEPSI6035)';491;5
+716;'XWMpDsqUF7k';'Nimoli Medical Services (KEPSI5038)';297;5
+717;'mYR7RdbRjzd';'Sagana Medical Clinic (KEPSI7040)';228;5
+718;'rHqo5K3SnAD';'Family Medicare Centre (KEPSI1032)';521;5
+719;'xQAExBOQIJC';'Jamii Medical Clinic (KEPSI5054)';354;5
+720;'zW1XSmFq5zX';'Gichiche Medical Clinic (KEPSI7010)';252;5
+721;'JQeqcVozb5v';'Gil medical clinic (KEPSI2044)';472;5
+722;'B0ZfpsagnEK';'Mariba Medical Clinic(KEPSI3052)';422;5
+723;'ZSR09jGLpaL';'Acode Medical Clinic (KEPSI1013)';231;5
+724;'fdFxMMjWJaI';'Mashambani Medical Clinic (KEPSI4059)';528;5
+725;'m3kgGLrQtt1';'Apex Medical Clinic (KEPSI4023)';489;5
+726;'nh1qI0HN892';'Mwingi Nursing Home (KEPSI2022)';432;5
+727;'stgp4pRitHk';'Babito (Rabura) Medical Clinic (KEPSI7025)';417;5
+728;'pEPZ39v3YjD';'Ideal Medical & Family Health Clinic (KEPSI2008)';351;5
+729;'LrV8UoznAwB';'Excel Health Services (KEPSI8002)';529;5
+730;'Qt0N7SjGZZR';'Huruma Nursing Home';481;5
+731;'qpA7ZqanR0K';'Upendo Medical Clinic (KEPSI4012)';300;5
+732;'zWdoBl3B3ZT';'Harmony Medical Clinic (KEPSI3043)';398;5
+733;'zDccV3CIHFI';'Hopespring Medical Clinic (KEPSI6040)';383;5
+734;'TCMDemuovQi';'Great Commission Hospital (KEPSI6023)';490;5
+735;'ghZDXSRCkGX';'Ichomba Health Care Services Centre (KEPSI2001)';524;5
+736;'t8dEnQRo3eL';'Mariakani Medical (KEPSI1052)';467;5
+737;'LeVLxZXTzK2';'Maweni Community Health Clinic (KEPSI1004)';306;5
+738;'sm7qUsP3vNw';'Nala Nursing Home (KEPSI4016)';501;5
+739;'dnWrs5grkA5';'Jevros Clinic (KEPSI3047)';441;5
+740;'fzTi7E6UrcJ';'Afya Medical Clinic (KEPSI7023)';440;5
+741;'vlugOZHqumT';'Barazani Medical Clinic (KEPSI2075)';474;5
+742;'Pw3HBczWvJf';'Dawa Point Clinic (KEPSI4048)';501;5
+743;'ae56KNELMy2';'St. Lukes Afya Clinic (Coast)  -  (KEPSI1064)';289;5
+744;'T6SgJSmSfGP';'Matongo Lutheran Medical Clinic (KEPSI3053)';498;5
+745;'wkuq9fUtHa3';'New Ngei Road M. Hospital (KEPSI2025)';505;5
+746;'cmUJ5EomjK3';'Bama Nursing Home (KEPSI3001)';428;5
+747;'jBeLKTPE5Ic';'Wananchi Jamii Nursing Home (KEPSI5027)';456;5
+748;'mtdjXAv9BLV';'Webuye Surgical Hospital (KEPSI4031)';361;5
+749;'Esm9ioBJqKS';'Kianugu Medical Clinic (KEPSI7041)';466;5
+750;'I6HrLwUpuu4';'New Tuloi Medical Clinic (KEPSI6054)';454;5
+751;'omST0UDmi6h';'Kulamawe Medical Clinic (KEPSI2069)';323;5
+752;'hSapi6XBJIQ';'Nyakoe medical Clinic (KEPSI3035)';547;5
+753;'pQBc9osfNDb';'Tsavo Medical Centre (KEPSI1056)';444;5
+754;'Q2CjFvESbut';'Mitunguu Market Clinic (KEPSI2006)';318;5
+755;'k8mtQvWdUk8';'Nakuru Maternity & N. Home (KEPSI6051)';429;5
+756;'F7WA1AeylIj';'Lumumba Medical Clinic (KEPSI5033)';488;5
+757;'WrlxkfLFlWq';'Mary Mission Medical Clinic (KEPSI5063)';223;5
+758;'CWUpsCD0NYl';'Garissa Nursing Home (KEPSI8001)';529;5
+759;'Z40dbfHaf3S';'Jamii Health Services (KEPSI4043)';463;5
+760;'BDAASNfhykz';'Prime Health Services` (KEPSI5048)';525;5
+761;'JwOm4tD3u3z';'Kabras Action Group Medical Clinic (KAG) (KEPSI4051)';453;5
+762;'dlG5k1asLfY';'Tunza Medical Clinic (Gibea) (KEPSI6005)';429;5
+763;'L0wHHxAfX54';'St. Michael Goodwill Medical Clinic (KEPSI7061)';269;5
+764;'lJJx7fwgLuj';'New Busia Maternity & Nursing Home (KEPSI4013)';424;5
+765;'ozL0EA8zcfe';'Sirisia Medical clinic (KEPSI4017)';494;5
+766;'uY9I2bIe7h2';'Kwa Maiko Health Clinic (KEPSI7031)';393;5
+767;'yqpKV4AcBjN';'Meswo Medical Services (KEPSI6024)';312;5
+768;'A2RlV8s4vLd';'Luma Health Care (KEPSI3003)';406;5
+769;'KhEYoiUOI3w';'Kiembeni Medical (KEPSI1048)';330;5
+770;'mINI0TXaQkL';'Kendu Bay Adventist Hospital (KEPSI3007)';238;5
+771;'tIYYTa3ow1m';'Able Clinic (KEPSI4001)';380;5
+772;'TQxeK4G2wIp';'Neema Medical Clinic (Turbo) (KEPSI6037)';235;5
+773;'MCfecqGqe4p';'Afya Health Care (Kasarani)  -  (KEPSI5078)';285;5
+774;'VCIEpO6Hq5m';'Upendo Healthcare (KEPSI1057)';391;5
+775;'mK55DA0i5lT';'Lamu Medical Clinic (KEPSI1049)';387;5
+776;'c84oEJkTmlI';'Oljabet Medical Centre (KEPSI6056)';495;5
+777;'iU2GJJtjtTu';'Amani Medical Clinic (KEPSI7046)';287;5
+778;'kUS54VMlSjH';'Mulimani Clinic (KEPSI4035)';350;5
+779;'Smm2QD89fwf';'Emali Manchester Clinic (KEPSI2059)';281;5
+780;'EVu78xamOgl';'St. Richards Clinic (KEPSI1055)';327;5
+781;'YJEFEhoxqX8';'Sondu Medical Clinic (KEPSI3016)';368;5
+782;'Yh0xbaam4Vf';'Romieva Medical Centre';421;5
+783;'i1Huh1VDaDs';'Miriga Mieru Medical Clinic (KEPSI2012)';351;5
+784;'PLXZDjVgOxP';'St. David Medical Clinic (KEPSI7047)';464;5
+785;'Z93CtP0DEqd';'St. James Medical Clinic (KEPSI6043)';290;5
+786;'e2LKOetyX1R';'St. Martin Medical Clinic (KEPSI2064)';427;5
+787;'I9PUmSxOss5';'Mukhuru Baptist Medical Centre (KEPSI4044)';220;5
+788;'xjD3c6BBsVy';'Taveta Meditech Centre (Meditech) (KEPSI1033)';298;5
+789;'NKyAqcu4JNA';'Susamed Medical Clinic (KEPSI5042)';426;5
+790;'xySlr3utOpy';'Ebenezer Reproductive Health Clinic (KEPSI6053)';475;5
+791;'mKPdmDhBHTc';'Obeys Medical Clinic (KEPSI6014)';450;5
+792;'OdV0LSDTUPz';'Samburu Medical Clinic (KEPSI1054)';329;5
+793;'B72ltQNtrTg';'St. Lukes Medical Centre (KEPSI5066)';517;5
+794;'tcAH3nA4vaa';'Siakago Health Care Clinic  -  (KEPSI2078)';232;5
+795;'eY1ZXBKsewd';'Akemo Medical Clinic (KEPSI1038)';219;5
+796;'orBnSpGubsN';'Sikong''o Clinic (KEPSI4041)';510;5
+797;'YTWryShoJHe';'Lamona Farm Medical Clinic (KEPSI6044)';533;5
+798;'ga6dVmnepo3';'Kadvan Clinic (KEPSI4004)';362;5
+799;'InBIvoqilSw';'Tawheed Community Nursing Home (KEPSI8012)';299;5
+800;'Etgh5rGRPPO';'Seth Medical Clinic (KEPSI7033)';237;5
+801;'o8E8b3DH2ll';'Plasse Family Dispensary (KEPSI3038)';416;5
+802;'HlpuACu8OHN';'Mama Plister Bonyo Health Centre  -  (KEPSI3056)';215;5
+803;'cmLd5poZ7J0';'Chelugat Legacy Medical Clinic (KEPSI3050)';506;5
+804;'y5gOlyAlvmq';'Ahadi Health care /Maternity (KEPSI7053)';423;5
+805;'ziChuRT0d51';'Rolex Medical Clinic (KEPSI2005)';442;5
+806;'CVTPWuHbMpH';'Tony (Kiptagich) Medical Clinic (KEPSI6039)';516;5
+807;'ujOXY14R0Bd';'Shepherds Medical Clinic (KEPSI5032)';344;5
+808;'m1QCSeC4hVq';'Mwedwa Medical Centre (KEPSI2032)';233;5
+809;'LfEPyLZ3RBd';'Safi Medical Clinic (KEPSI7043)';503;5
+810;'wleX9qYX19o';'Namasoli Clinic (KEPSI4026)';365;5
+811;'Htly4DvFNaA';'Medina Diagnostics (KEPSI8006)';529;5
+812;'wAFi86GHvZ0';'Coptic Nursing Home (KEPSI4038)';420;5
+813;'iSg7gYAvIiG';'Mama Vero medical clinic (KEPSI2050)';496;5
+814;'NDlx7ZCb8p0';'Jumuia Friends Hospital Kaimosi(KEPSI4034)';510;5
+815;'rIBBA887Li1';'Watamu Community Healthcare Clinic (KEPSI1025)';277;5
+816;'xROPUVZ1PYK';'Royal Medical Clinic - Central (KEPSI7030)';250;5
+817;'cUuIZAUjkKa';'Aqua Medical Clinic (KEPSI7050)';322;5
+818;'Q5vrgjHeQ4n';'Medical Link Clinic (Egetugi Medical) (KEPSI3032)';347;5
+819;'koGKtJIy73k';'Imani Yako Health (Wamunyu) (KEPSI2058)';353;5
+820;'aKUNK92x1p9';'Samaria Maternity - Central (KEPSI7037)';352;5
+821;'L0Je17iAQJH';'Neema Medical Clinic - Central (KEPSI7021)';270;5
+822;'hubDwBWZ7BV';'Jambo Medical Clinic (KEPSI1042)';313;5
+823;'hgV1aQYdDoD';'Githunguri Medical Plaza (KEPSI7017)';477;5
+824;'VZ6XmMLI6MN';'AIC mulango dispensary (KEPSI2048)';457;5
+825;'vhpzzx9wJsD';'Mwingi medicare centre (KEPSI2053)';432;5
+826;'MtRadgAwi2e';'Junction Medical Clinic (KEPSI4025)';284;5
+827;'x02qrPjLDDQ';'CCS Medical Clinic-Maua (KEPSI2018)';452;5
+828;'WFKAdzxKxn9';'Viagenco Clinic (KEPSI3026)';320;5
+829;'vNSY6TPb2aE';'Mwachande Medical Clinic (KEPSI1031)';519;5
+830;'pxxZEglY0GF';'Glaisa Medical Clinic (KEPSI7028)';234;5
+831;'P973XIu7LFK';'Kama medical clinic (KEPSI2043)';523;5
+832;'WWeqtd4PHqv';'Bombolulu Diagnostic Medical Clinic (KEPSI1063)';444;5
+833;'CiiHy1Nn2bb';'Women Initiative Health Care (KEPSI8014)';529;5
+834;'Nh6hi09on4n';'Dubai Medical Clinic (KEPSI6033)';271;5
+835;'WLxBzD1CXNW';'Poly Clinic (KEPSI6008)';386;5
+836;'gw5vptIoo0H';'St. Mathews Medical Clinic & Maternity (KEPSI6034)';512;5
+837;'fI0VgoA1kX6';'Shalom Community Hospital (KEPSI2063)';342;5
+838;'jBtmnim0run';'St. Annes Medical Clinic (KEPSI7009)';225;5
+839;'cyvj0ChsGcE';'Santa Maria Medical Clinic (KEPSI1061)';509;5
+840;'fq1DETqkrs0';'St. Lucy Medical Centre (KEPSI7058)';326;5
+841;'X3VRSDbCW5n';'County Medical Centre  -  (KEPSI2079)';515;5
+842;'ClD53XzThft';'Simaho MCH/FP Clinic (Sisters Maternity Home) (KEPSI8007)';529;5
+843;'bNq8Q2SI0yN';'St. Teresa Medical Clinic (KEPSI7054)';455;5
+844;'MUwsFWLjz3l';'Reddy''s Medical Clinic (Eshisiru NH) (KEPSI4008)';328;5
+845;'Bjr2smqXb1V';'Nightingale Hospital (KEPSI3004)';236;5
+846;'nBCmFxzQcTn';'Mwalimu Clinic (KEPSI4022)';501;5
+847;'ozdKSrJ2TDs';'Bamba Clinic (KEPSI1023)';230;5
+848;'lENr0wm3UsV';'Apostles Clinic (Shitswitswi) (KEPSI4015)';216;5
+849;'oNb8bgpnAHK';'Hamza Medical Clinic (KEPSI5034)';293;5
+850;'OGoJhFQI8Mw';'Hope Madical Clinic - Nyanza (KEPSI3041)';433;5
+851;'aOWltVKKLk8';'Nkeek Oudupa (KEPSI3029)';253;5
+852;'jYa4SJitVux';'St. Jude Thaddeus Medical Clinic (KEPSI6055)';462;5
+853;'YhWuCkTatLV';'Cedar Medical Clinic (KEPSI5056)';363;5
+854;'o8OGF7qMcfh';'Imani yako medical clinic (KEPSI2046)';251;5
+855;'HCSOdZA7qxu';'Dentomed MCH FP (KEPSI6015)';404;5
+856;'XY2i77ixMPi';'Mawepi Medical Services (KEPSI5028)';512;5
+857;'cMVfU6CptVp';'Kings Medical Centre (KEPSI6013)';429;5
+858;'j0CgxJgMOR0';'Westlands Medical Centre (KEPSI1008)';355;5
+859;'zw1ZbHHTyFC';'Kerol Health Services (KEPSI6017)';265;5
+860;'BEpE94Cl14S';'Glory Health Clinic (KEPSI5040)';382;5
+861;'DYf8bPFzoiI';'Huduma Health Centre (KEPSI5017)';471;5
+862;'dVQIU6K3YVJ';'Makandara Health Care (KEPSI2036)';425;5
+863;'KtYDp655KeS';'Nopri Medical Centre (KEPSI1035)';411;5
+864;'xJ5UZrWwx8Y';'Isiolo Central Medical Clinic (KEPSI2039)';434;5
+865;'FMGy3PcyCe7';'Mtangani Medical Clinic (KEPSI1053)';276;5
+866;'AcDtzyEm6FJ';'Wangu Medical clinic (KEPSI5050)';451;5
+867;'LFc6LrqJM2p';'Judy Medical Clinic (KEPSI1028)';418;5
+868;'Ss8kZTnEOJ6';'Kamwitha Health Centre (KEPSI5022)';285;5
+869;'p664xQz0Lbi';'Molo Dento Med (KEPSI6021)';404;5
+870;'c6WcGsAHHJR';'Deteni Medical Clinic (KEPSI1045)';311;5
+871;'HNSlny8JMgM';'Jehova Rapha Clinic (KEPSI4056)';340;5
+872;'F3nPMVU9D6W';'Webuye Nursing Home(Jamaa Nursing) (KEPSI4058)';361;5
+873;'AlGSZ0GlgAR';'Dr. Akatu Medical Clinic (KEPSI4011)';359;5
+874;'wGMZFOtiJEN';'Watamu Maternity and Nursing Home (KEPSI1010)';394;5
+875;'JybwOcXTXrA';'Quality Health Care Services (KEPSI6049)';333;5
+876;'FSeNhigrbev';'Penda Health (KEPSI5055)';512;5
+877;'X8AqLUMCe0C';'St. Micheal Maternity & Nursing Home (KEPSI2013)';305;5
+878;'agYn0jSlfUm';'Njoro P.C.E.A. Health Centre (KEPSI6006)';248;5
+879;'tSxRsTtG8km';'Delta Health Clinic (KEPSI5052)';338;5
+880;'neAQqHMxZdL';'8th street  Medical clinic (KEPSI5043)';535;5
+881;'DtL0vzcW3JG';'Kamfas Medical Clinic (KEPSI7044)';373;5
+882;'E7j21N03UnR';'Kigati Clinic (KEPSI3044)';500;5
+883;'WoVrNUZzRIp';'Ruai Family Medical Centre (KEPSI5077)';451;5
+884;'nnf4gxTqp1c';'Dandora Medical Centre (KEPSI5051)';338;5
+885;'zcvDAZ0kb49';'Good Hope Med Center (KEPSI6045)';360;5
+886;'H6HdjjBkZvf';'Dawida Maternity and Nursing home (KEPSI1001)';289;5
+887;'BFPf8c1Lst2';'Bridging Outpatient Clinic (KEPSI5075)';525;5
+888;'RslAqHrkOMz';'Kiima Kiu Medical Clinic(AIC Mukaa) (KEPSI2017)';473;5
+889;'v40y2LNu7MV';'Singawa Medical Clinic (KEPSI1024)';245;5
+890;'D6E09qhZqfa';'Msikiti Noor Medical Clinic (KEPSI1036)';540;5
+891;'K5UYJtuQXdY';'Alpha Medical Clinic (KEPSI7057)';402;5
+892;'Y4X54ox3173';'Anointed Clinic (KEPSI4007)';408;5
+893;'kxDIYmQJPUK';'Rosmegg Medical Clinic (KEPSI2002)';348;5
+894;'BGMrTHDQVSL';'Supili (Sipili) Mat & Nursing Home (KEPSI6042)';504;5
+895;'jVCS52E3gmW';'Matasia Nursing Home (KEPSI5046)';243;5
+896;'r5JPd7Xt9qq';'Nuru Medical Clinic (KEPSI1009)';411;5
+897;'uzPHSUfpMWe';'St. Immaculate Family Health Services (KEPSI2057)';478;5
+898;'tRI1XzsndIK';'Gennesaret Medical Clinic (KEPSI5031)';259;5
+899;'wLlbYcrfwVB';'Afya Medical Clinic(Timau Integrated M. Centre) (KEPSI2042)';272;5
+900;'Nn4hP2x3zjB';'Horesha Medical Clinic (KEPSI1030)';316;5
+901;'N2kpO57fcVI';'Baraka Afya Medical Clinic (KEPSI2077)';249;5
+902;'DukfyNjwehY';'Equator Hospital - Luanda (KEPSI4029)';420;5
+903;'tL7YqZYRluI';'Kisimani Healthcare Services (KEPSI1006)';244;5
+904;'jqB7Etv1vcS';'Socofas Medical Clinic (KEPSI1043)';217;5
+905;'D6UPpfVaPKl';'Njabini Maternity Home (KEPSI7049)';470;5
+906;'KusBFxYb92n';'La-tullah Medical Centre (KEPSI1050)';355;5
+907;'cdubmR0KSlQ';'Amani Medical Clinic-Coast (KEPSI1003)';536;5
+908;'pdXIlKPxVuC';'Paradise Medical Centre (KEPSI4057)';334;5
+909;'CiEzTXMDCWQ';'Location Medical Clinic (KEPSI6041)';468;5
+910;'N0TPudcRXh5';'Amani Clinic-Nyanza (KEPSI3010)';527;5
+911;'To2IhX5FgOq';'Barnet Memorial Hospital (KEPSI6025)';435;5
+912;'et7F23jW6Tq';'Eunice Medical Clinic (KEPSI7034)';304;5
+913;'FMVWUG3M695';'Rehoboth Maternity and Nursing Home (KEPSI2034)';485;5
+914;'mHdcO6oRJcE';'Imara Medical Clinic-Nairobi (KEPSI5007)';364;5
+915;'USupOYqtOA2';'Namayiana medical clinic (KEPSI5044)';544;5
+916;'G1RJGf4i5PA';'Mikindani Medical Clinic (KEPSI1019)';240;5
+917;'DDc8Jgjz8cI';'Focus Medical Clinic (KEPSI5004)';517;5
+918;'J5PwL2fo49P';'Frajoy Health Services (KEPSI7062)';319;5
+919;'e7HQerwwl8c';'Ukunda Medical Centre (KEPSI1011)';217;5
+920;'Y9WhgPHHSSs';'Modesty Outpatient   -  (KEPSI7066)';331;5
+921;'QqO6miMUIsZ';'DWA Health Centre (KEPSI2055)';449;5
+922;'AaDJeb2eJnl';'St. Valeria Medical Clinic (KEPSI1007)';241;5
+923;'SeSzb1PPdnn';'Matangwe Medical Centre (KEPSI3020)';407;5
+924;'iFBwxqwxJgW';'Lewa conservancy (KEPSI2045)';413;5
+925;'aamCXiKMcpn';'Chepterit Clinic (KEPSI4019)';400;5
+926;'eQfqMMrbEZF';'Tanaka Hospital (KEPSI4014)';424;5
+927;'HM01BrTyu7M';'AIC Mbooni Dispensary (KEPSI2052)';412;5
+928;'Q5XOLgVAYpq';'Ukweli Medical Clinic (KEPSI6028)';389;5
+929;'TaZgu1yNzt6';'Rafiki Medical Clinic (KEPSI3042)';374;5
+930;'QyxY6pkS8pP';'Kambu integrated Health clinic (KEPSI2047)';247;5
+931;'fAAmV7h27ni';'R - Care Health Services (KEPSI5067)';226;5
+932;'AmCEN9G6XGN';'Imani Medicare(Kwa Nthambe) (KEPSI2009)';461;5
+933;'E7SUJ51LISe';'Ndonyero Maternity & Medical clinic (KEPSI7003)';337;5
+934;'cgDRn4LJS9j';'Shekinah Medical Clinic (KEPSI6047)';531;5
+935;'HuO2z1b4KXY';'Royal Medical Clinic (KEPSI3036)';527;5
+936;'JtpcPgd5PH2';'Turning Point Medical Clinic (KEPSI4060)';325;5
+937;'FdIKIbXFpyu';'Liberty Maternity and Nursing Home (KEPSI2066)';295;5
+938;'Qpg038KZh7s';'Ebenezer Medical Clinic - Kiambu (KEPSI7038)';446;5
+939;'DzZRMEFkHSj';'By Faith Medical Clinic (KEPSI7042)';331;5
+940;'Dn5IjZKZ6Ub';'Kituneni med. Clinic (KEPSI2056)';256;5
+941;'uAUoslQOnYS';'Florex Medical Clinic (KEPSI6009)';229;5
+942;'nwCgjKgnLga';'Matuu Cottage Medical Centre (KEPSI2038)';532;5
+943;'GqV1RujedeM';'Sori Lakeside Maternity (KEPSI3017)';368;5
+944;'tBcLuMkNnOd';'Makutano Medical Health Clinic-Meru (KEPSI2024)';431;5
+945;'tMOnissfQGL';'Roadway Medical Services (KEPSI6026)';545;5
+946;'zQx1dnekLl1';'Jamii Clinic (KEPSI4002)';414;5
+947;'S5SPO43HzV3';'Top Care Nursing Home (KEPSI5047)';512;5
+948;'lLofE7yBhY5';'Kwitu Medical Clinic (KEPSI2076)';390;5
+949;'ocTxfYn3nxR';'Mukunga Maternity & Nursing Home (KEPSI5003)';388;5
+950;'BLDMd36RBt0';'Makande Healthcare Services (KEPSI1041)';242;5
+951;'awqn2RHAjsR';'Mweiga Rural Health Unit (KEPSI7008)';476;5
+952;'RyTMoHzWaDQ';'Firm View Medical Clinic  -  (KEPSI3054)';317;5
+953;'FZb23t9F8Ly';'Mamu Clinic (KEPSI3024)';367;5
+954;'xAVHqlgCu4D';'Pinnacle Flyover Hospital   -  (KEPSI7067)';287;5
+955;'X4wXgG0qXvr';'St. Raphael Archangel (KEPSI6038)';437;5
+956;'i8rl8OS3Ak7';'Karimbux Muslim Dispensary (KEPSI6001)';429;5
+957;'tYdTRZXdiww';'Nalepo Medical Clinic (KEPSI6027)';357;5
+958;'QFClhNwzDIK';'Meditrust h/care services (KEPSI1040)';521;5
+959;'VM9hDDFuNmE';'Padens Medicare (KEPSI5005)';447;5
+960;'JRzc1AxEjrr';'Hope Medical Clinic - Nairobi (KEPSI5062)';371;5
+961;'ovfYyFER3FP';'Bashal Islamic Community Health Initiative (KEPSI8004)';493;5
+962;'v6pPjkSwPFZ';'Mununga Health Clinic (KEPSI7020)';480;5
+963;'j6NqSXiA78e';'Kiengu Maternity & nursing Home (KEPSI2019)';538;5
+964;'opVFHxpsAXO';'Khamulati Clinic (KEPSI4052)';518;5
+965;'KuvcSLIw5RX';'Al-Khlas Medical Clinic (KEPSI8010)';458;5
+966;'Zu65cvq5NYy';'Khems Medical Clinic (KEPSI6052)';386;5
+967;'fJCtr1aIZ7D';'Kwa Nganga medical clinic (KEPSI7019)';358;5
+968;'EFKPFqWRkEI';'Rose Medical Clinic - Muranga (KEPSI7001)';385;5
+969;'mfND2zpGaiK';'St. Lucies Hospital (KEPSI2031)';279;5
+970;'lydsP1yihUu';'Mosoriot Medical Clinic (KEPSI6058)';526;5
+971;'SLsXNTOXClh';'Nyanchwa Medical Clinic (KEPSI3045)';377;5
+972;'O8rKi2EgyrS';'Imani Medical centre (Athi River) (KEPSI2061)';425;5
+973;'AroYK7psbGu';'Unison Medical Clinic (KEPSI6061)';468;5
+7992;'QS7sK8XzdQc';'KE - HNQIS SF pilot test facility 1';4;5
+7993;'xNLfNAtUXfA';'KE - HNQIS SF pilot test facility 2';4;5
