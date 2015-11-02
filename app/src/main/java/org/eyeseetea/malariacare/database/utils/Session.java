@@ -28,6 +28,8 @@ import com.raizlabs.android.dbflow.structure.BaseModel;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.model.User;
 import org.eyeseetea.malariacare.layout.adapters.dashboard.IDashboardAdapter;
+import org.hisp.dhis.android.sdk.controllers.DhisService;
+import org.hisp.dhis.android.sdk.network.Credentials;
 
 import java.util.HashMap;
 import java.util.List;
