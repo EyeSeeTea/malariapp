@@ -17,7 +17,7 @@
  *  along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.eyeseetea.malariacare.database.feedback;
+package org.eyeseetea.malariacare.database.utils.feedback;
 
 /**
  * Base class for every feedback row:

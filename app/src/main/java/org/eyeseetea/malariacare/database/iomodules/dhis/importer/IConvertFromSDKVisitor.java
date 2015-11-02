@@ -17,40 +17,10 @@
  *  along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.eyeseetea.malariacare.database.model;
+package org.eyeseetea.malariacare.database.iomodules.dhis.importer;
 
-public interface IConvertToSDKVisitor {
-    void visit(Answer answer);
+import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.ProgramStageSectionExtended;
 
-    void visit(CompositeScore compositeScore);
-
-    void visit(Header header);
-
-    void visit(Match match);
-
-    void visit(Option option);
-
-    void visit(OrgUnit orgUnit);
-
-    void visit(OrgUnitLevel orgUnitLevel);
-
-    void visit(Program program);
-
-    void visit(Question question);
-
-    void visit(QuestionOption questionOption);
-
-    void visit(QuestionRelation questionRelation);
-
-    void visit(Score score);
-
-    void visit(Survey survey);
-
-    void visit(Tab tab);
-
-    void visit(TabGroup tabGroup);
-
-    void visit(User user);
-
-    void visit(Value value);
+public interface IConvertFromSDKVisitor {
+    void visit(ProgramStageSectionExtended programStageSectionExtended);
 }

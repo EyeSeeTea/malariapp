@@ -17,8 +17,8 @@
  *  along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.eyeseetea.malariacare.database.model;
+package org.eyeseetea.malariacare.database.iomodules.dhis.exporter;
 
-public interface Visitable {
+public interface VisitableToSDK {
     void accept(IConvertToSDKVisitor IConvertToSDKVisitor);
 }

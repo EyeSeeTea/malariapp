@@ -25,10 +25,15 @@ import android.support.multidex.MultiDex;
 
 import com.crashlytics.android.Crashlytics;
 import com.raizlabs.android.dbflow.config.FlowManager;
+import com.raizlabs.android.dbflow.sql.language.Select;
 
+import org.eyeseetea.malariacare.database.iomodules.dhis.importer.ConvertFromSDKVisitor;
+import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.ProgramStageSectionExtended;
 import org.eyeseetea.malariacare.database.utils.LocationMemory;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.hisp.dhis.android.sdk.persistence.Dhis2Application;
+
+import java.util.List;
 
 import io.fabric.sdk.android.Fabric;
 
@@ -48,8 +53,8 @@ public class EyeSeeTeaApplication extends Dhis2Application  {
         PreferencesState.getInstance().init(getApplicationContext());
         LocationMemory.getInstance().init(getApplicationContext());
         FlowManager.init(this, "_EyeSeeTeaDB");
-
-
+        //dummyData();
+        //convertFromSDK();
     }
 
     @Override
@@ -62,5 +67,21 @@ public class EyeSeeTeaApplication extends Dhis2Application  {
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(base);
         MultiDex.install(this);
+    }
+
+    public void dummyData(){
+        ProgramStageSectionExtended tab = new ProgramStageSectionExtended();
+        tab.setSortOrder(1);
+        tab.setExternalAccess(true);
+        tab.setProgramStage("dummyTab");
+        tab.save();
+    }
+
+    public void convertFromSDK(){
+        ConvertFromSDKVisitor converter = new ConvertFromSDKVisitor();
+        List<ProgramStageSectionExtended> tabs = new Select().all().from(ProgramStageSectionExtended.class).queryList();
+        for (ProgramStageSectionExtended tab: tabs){
+            converter.visit(tab);
+        }
     }
 }
