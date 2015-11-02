@@ -85,6 +85,14 @@ public class LoginActivity extends org.hisp.dhis.android.sdk.ui.activities.Login
      */
     private String password;
 
+//    (EditText) findViewById(org.hisp.dhis.android.sdk.R.id.server_url);
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        EditText serverText = (EditText) findViewById(org.hisp.dhis.android.sdk.R.id.server_url);
+        serverText.setText(R.string.login_info_dhis_default_server_url);
+    }
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
