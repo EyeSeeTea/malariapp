@@ -22,7 +22,6 @@ package org.eyeseetea.malariacare;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.location.Location;
-import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
@@ -36,6 +35,7 @@ import com.raizlabs.android.dbflow.sql.builder.Condition;
 import com.raizlabs.android.dbflow.sql.language.Select;
 
 import org.eyeseetea.malariacare.database.model.OrgUnit;
+import org.eyeseetea.malariacare.database.model.OrgUnit$Table;
 import org.eyeseetea.malariacare.database.model.OrgUnitLevel;
 import org.eyeseetea.malariacare.database.model.Program;
 import org.eyeseetea.malariacare.database.model.Survey;

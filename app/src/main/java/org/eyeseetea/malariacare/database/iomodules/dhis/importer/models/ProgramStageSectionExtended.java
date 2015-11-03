@@ -35,14 +35,20 @@ import org.eyeseetea.malariacare.database.iomodules.dhis.importer.VisitableFromS
 import org.hisp.dhis.android.sdk.persistence.Dhis2Database;
 import org.hisp.dhis.android.sdk.persistence.models.ProgramStageSection;
 
-/**
- * @author Simen Skogly Russnes on 26.03.15.
- */
-@Table(databaseName = Dhis2Database.NAME)
-public class ProgramStageSectionExtended extends ProgramStageSection implements VisitableFromSDK {
+import java.util.List;
+
+public class ProgramStageSectionExtended<T extends ProgramStageSection> implements VisitableFromSDK {
+
+    private final List<T> tabs;
+
+    public ProgramStageSectionExtended(final List<T> tabs){
+        this.tabs = tabs;
+    }
 
     @Override
-    public void accept(IConvertFromSDKVisitor IConvertFromSDKVisitor) {
-        IConvertFromSDKVisitor.visit(this);
+    public void accept(final IConvertFromSDKVisitor IConvertFromSDKVisitor) {
+        for(T tab: tabs) {
+            IConvertFromSDKVisitor.visit(tab);
+        }
     }
 }

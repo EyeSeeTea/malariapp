@@ -20,7 +20,9 @@
 package org.eyeseetea.malariacare.database.iomodules.dhis.importer;
 
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.ProgramStageSectionExtended;
+import org.hisp.dhis.android.sdk.persistence.models.BaseMetaDataObject;
+import org.hisp.dhis.android.sdk.persistence.models.ProgramStageSection;
 
-public interface IConvertFromSDKVisitor {
-    void visit(ProgramStageSectionExtended programStageSectionExtended);
+public interface IConvertFromSDKVisitor<T> {
+    void visit(ProgramStageSection programStageSection);
 }

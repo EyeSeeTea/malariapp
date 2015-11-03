@@ -28,10 +28,13 @@ import com.raizlabs.android.dbflow.config.FlowManager;
 import com.raizlabs.android.dbflow.sql.language.Select;
 
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.ConvertFromSDKVisitor;
+import org.eyeseetea.malariacare.database.iomodules.dhis.importer.VisitableFromSDK;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.ProgramStageSectionExtended;
 import org.eyeseetea.malariacare.database.utils.LocationMemory;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.hisp.dhis.android.sdk.persistence.Dhis2Application;
+import org.hisp.dhis.android.sdk.persistence.models.BaseMetaDataObject;
+import org.hisp.dhis.android.sdk.persistence.models.ProgramStageSection;
 
 import java.util.List;
 
@@ -53,8 +56,8 @@ public class EyeSeeTeaApplication extends Dhis2Application  {
         PreferencesState.getInstance().init(getApplicationContext());
         LocationMemory.getInstance().init(getApplicationContext());
         FlowManager.init(this, "_EyeSeeTeaDB");
-        //dummyData();
-        //convertFromSDK();
+        dummyData();
+        convertFromSDK();
     }
 
     @Override
@@ -70,18 +73,17 @@ public class EyeSeeTeaApplication extends Dhis2Application  {
     }
 
     public void dummyData(){
-        ProgramStageSectionExtended tab = new ProgramStageSectionExtended();
+        ProgramStageSection tab = new ProgramStageSection();
         tab.setSortOrder(1);
         tab.setExternalAccess(true);
-        tab.setProgramStage("dummyTab");
+        tab.setName("dummyTab");
         tab.save();
     }
 
     public void convertFromSDK(){
         ConvertFromSDKVisitor converter = new ConvertFromSDKVisitor();
-        List<ProgramStageSectionExtended> tabs = new Select().all().from(ProgramStageSectionExtended.class).queryList();
-        for (ProgramStageSectionExtended tab: tabs){
-            converter.visit(tab);
-        }
+        List<ProgramStageSection> tabs = new Select().all().from(ProgramStageSection.class).queryList();
+        final VisitableFromSDK<ProgramStageSection> visitableFromSDK = new ProgramStageSectionExtended<>(tabs);
+        visitableFromSDK.accept(converter);
     }
 }

@@ -21,13 +21,16 @@ package org.eyeseetea.malariacare.database.iomodules.dhis.importer;
 
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.ProgramStageSectionExtended;
 import org.eyeseetea.malariacare.database.model.Tab;
+import org.hisp.dhis.android.sdk.persistence.models.BaseMetaDataObject;
+import org.hisp.dhis.android.sdk.persistence.models.ProgramStageSection;
 
-public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
+public class ConvertFromSDKVisitor<T extends BaseMetaDataObject> implements IConvertFromSDKVisitor<T> {
+
     @Override
-    public void visit(ProgramStageSectionExtended programStageSectionExtended) {
+    public void visit(ProgramStageSection programStageSection) {
         Tab tab = new Tab();
-        tab.setName(programStageSectionExtended.getName());
-        tab.setOrder_pos(programStageSectionExtended.getSortOrder());
+        tab.setName(programStageSection.getName());
+        tab.setOrder_pos(programStageSection.getSortOrder());
         tab.save();
     }
 }

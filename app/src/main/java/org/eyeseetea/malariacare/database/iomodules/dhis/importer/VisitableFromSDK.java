@@ -19,6 +19,6 @@
 
 package org.eyeseetea.malariacare.database.iomodules.dhis.importer;
 
-public interface VisitableFromSDK {
+public interface VisitableFromSDK<T> {
     void accept(IConvertFromSDKVisitor IConvertFromSDKVisitor);
 }
