@@ -30,11 +30,13 @@ import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.structure.BaseModel;
 
 import org.eyeseetea.malariacare.database.AppDatabase;
+import org.eyeseetea.malariacare.database.iomodules.dhis.exporter.IConvertToSDKVisitor;
+import org.eyeseetea.malariacare.database.iomodules.dhis.exporter.VisitableToSDK;
 
 import java.util.List;
 
 @Table(databaseName = AppDatabase.NAME)
-public class Header extends BaseModel implements Visitable {
+public class Header extends BaseModel implements VisitableToSDK {
 
     @Column
     @PrimaryKey(autoincrement = true)

@@ -27,12 +27,14 @@ import com.raizlabs.android.dbflow.annotation.Table;
 import com.raizlabs.android.dbflow.structure.BaseModel;
 
 import org.eyeseetea.malariacare.database.AppDatabase;
+import org.eyeseetea.malariacare.database.iomodules.dhis.exporter.IConvertToSDKVisitor;
+import org.eyeseetea.malariacare.database.iomodules.dhis.exporter.VisitableToSDK;
 
 /**
  * Created by adrian on 14/02/15.
  */
 @Table(databaseName = AppDatabase.NAME)
-public class Score extends BaseModel implements Visitable {
+public class Score extends BaseModel implements VisitableToSDK {
 
     @Column
     @PrimaryKey(autoincrement = true)
