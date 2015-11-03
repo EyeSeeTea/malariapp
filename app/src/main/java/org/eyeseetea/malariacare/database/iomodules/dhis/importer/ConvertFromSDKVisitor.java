@@ -20,8 +20,10 @@
 package org.eyeseetea.malariacare.database.iomodules.dhis.importer;
 
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.ProgramStageSectionExtended;
+import org.eyeseetea.malariacare.database.model.OrgUnit;
 import org.eyeseetea.malariacare.database.model.Tab;
 import org.hisp.dhis.android.sdk.persistence.models.BaseMetaDataObject;
+import org.hisp.dhis.android.sdk.persistence.models.OrganisationUnit;
 import org.hisp.dhis.android.sdk.persistence.models.ProgramStageSection;
 
 public class ConvertFromSDKVisitor<T extends BaseMetaDataObject> implements IConvertFromSDKVisitor<T> {
@@ -32,5 +34,12 @@ public class ConvertFromSDKVisitor<T extends BaseMetaDataObject> implements ICon
         tab.setName(programStageSection.getName());
         tab.setOrder_pos(programStageSection.getSortOrder());
         tab.save();
+    }
+
+    @Override
+    public void visit(OrganisationUnit organisationUnit){
+        OrgUnit orgUnit = new OrgUnit();
+        orgUnit.setName(organisationUnit.getLabel());
+        orgUnit.save();
     }
 }

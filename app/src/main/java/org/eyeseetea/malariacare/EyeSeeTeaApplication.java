@@ -29,11 +29,13 @@ import com.raizlabs.android.dbflow.sql.language.Select;
 
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.ConvertFromSDKVisitor;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.VisitableFromSDK;
+import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.OrganisationUnitExtended;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.ProgramStageSectionExtended;
 import org.eyeseetea.malariacare.database.utils.LocationMemory;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.hisp.dhis.android.sdk.persistence.Dhis2Application;
 import org.hisp.dhis.android.sdk.persistence.models.BaseMetaDataObject;
+import org.hisp.dhis.android.sdk.persistence.models.OrganisationUnit;
 import org.hisp.dhis.android.sdk.persistence.models.ProgramStageSection;
 
 import java.util.List;
@@ -56,8 +58,8 @@ public class EyeSeeTeaApplication extends Dhis2Application  {
         PreferencesState.getInstance().init(getApplicationContext());
         LocationMemory.getInstance().init(getApplicationContext());
         FlowManager.init(this, "_EyeSeeTeaDB");
-        dummyData();
-        convertFromSDK();
+        //dummyData();
+        //convertFromSDK();
     }
 
     @Override
@@ -78,12 +80,20 @@ public class EyeSeeTeaApplication extends Dhis2Application  {
         tab.setExternalAccess(true);
         tab.setName("dummyTab");
         tab.save();
+
+        OrganisationUnit organisationUnit = new OrganisationUnit();
+        organisationUnit.setLabel("dummyOrgUnit");
+        organisationUnit.save();
     }
 
     public void convertFromSDK(){
         ConvertFromSDKVisitor converter = new ConvertFromSDKVisitor();
         List<ProgramStageSection> tabs = new Select().all().from(ProgramStageSection.class).queryList();
-        final VisitableFromSDK<ProgramStageSection> visitableFromSDK = new ProgramStageSectionExtended<>(tabs);
-        visitableFromSDK.accept(converter);
+        final VisitableFromSDK<ProgramStageSection> visitableFromSDKTabs = new ProgramStageSectionExtended<>(tabs);
+        visitableFromSDKTabs.accept(converter);
+
+        List<OrganisationUnit> orgUnits = new Select().all().from(OrganisationUnit.class).queryList();
+        final VisitableFromSDK<OrganisationUnit> visitableFromSDKOrgUnits = new OrganisationUnitExtended<>(orgUnits);
+        visitableFromSDKOrgUnits.accept(converter);
     }
 }
