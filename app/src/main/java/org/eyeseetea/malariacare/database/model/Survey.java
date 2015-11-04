@@ -34,6 +34,8 @@ import com.raizlabs.android.dbflow.sql.language.Select;
 import com.raizlabs.android.dbflow.structure.BaseModel;
 
 import org.eyeseetea.malariacare.database.AppDatabase;
+import org.eyeseetea.malariacare.database.iomodules.dhis.exporter.IConvertToSDKVisitor;
+import org.eyeseetea.malariacare.database.iomodules.dhis.exporter.VisitableToSDK;
 import org.eyeseetea.malariacare.database.utils.SurveyAnsweredRatio;
 import org.eyeseetea.malariacare.database.utils.SurveyAnsweredRatioCache;
 import org.eyeseetea.malariacare.utils.Constants;
@@ -42,7 +44,7 @@ import java.util.Date;
 import java.util.List;
 
 @Table(databaseName = AppDatabase.NAME)
-public class Survey extends BaseModel implements Visitable {
+public class Survey extends BaseModel implements VisitableToSDK {
     public static final float MAX_AMBER = 80f;
     public static final float MAX_RED = 50f;
 

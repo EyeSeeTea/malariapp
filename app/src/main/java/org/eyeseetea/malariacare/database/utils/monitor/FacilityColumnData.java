@@ -17,7 +17,7 @@
  *  along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.eyeseetea.malariacare.database.monitor;
+package org.eyeseetea.malariacare.database.utils.monitor;
 
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.utils.Utils;

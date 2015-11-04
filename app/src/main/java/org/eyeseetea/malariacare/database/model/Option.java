@@ -30,11 +30,13 @@ import com.raizlabs.android.dbflow.sql.language.Select;
 import com.raizlabs.android.dbflow.structure.BaseModel;
 
 import org.eyeseetea.malariacare.database.AppDatabase;
+import org.eyeseetea.malariacare.database.iomodules.dhis.exporter.IConvertToSDKVisitor;
+import org.eyeseetea.malariacare.database.iomodules.dhis.exporter.VisitableToSDK;
 
 import java.util.List;
 
 @Table(databaseName = AppDatabase.NAME)
-public class Option extends BaseModel implements Visitable {
+public class Option extends BaseModel implements VisitableToSDK {
 
     //FIXME A 'Yes' answer shows children questions, this should be configurable by some additional attribute in Option
     public static final String CHECKBOX_YES_OPTION="Yes";

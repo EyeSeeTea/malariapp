@@ -27,8 +27,10 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -261,10 +263,7 @@ public class DashboardUnsentFragment extends ListFragment {
                                         .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                                             public void onClick(DialogInterface arg0, int arg1) {
                                                 // We launch the login system, to authorize the push
-                                                Intent authorizePush = new Intent(getActivity(), LoginActivity.class);
-                                                authorizePush.putExtra("Action", Constants.AUTHORIZE_PUSH);
-                                                authorizePush.putExtra("Survey", position);
-                                                startActivityForResult(authorizePush, Constants.AUTHORIZE_PUSH);
+                                            launchPush(position);
                                             }
                                         })
                                         .setNegativeButton(android.R.string.no, null).create().show();
@@ -287,6 +286,20 @@ public class DashboardUnsentFragment extends ListFragment {
         });
 
         Session.listViewUnsent = listView;
+    }
+
+    private void launchPush(int position){
+        //Get survey from position
+        final Survey survey = (Survey) adapter.getItem(position - 1);
+
+        //Get credentials from preferences
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        String user=sharedPreferences.getString(getActivity().getString(R.string.dhis_user), "");
+        String password=sharedPreferences.getString(getActivity().getString(R.string.dhis_password), "");
+
+        //Launch push
+        AsyncPush asyncPush = new AsyncPush(survey, user, password);
+        asyncPush.execute((Void) null);
     }
 
 
@@ -321,35 +334,6 @@ public class DashboardUnsentFragment extends ListFragment {
         this.surveys.addAll(newListSurveys);
         this.adapter.notifyDataSetChanged();
         setListShown(true);
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data){
-        Log.d(TAG, "onActivityResult");
-        // This captures the return code sent by Login Activity, to know whether or not the user got the authorization
-        if(requestCode == Constants.AUTHORIZE_PUSH) {
-            if(resultCode == Activity.RESULT_OK) {
-
-                //Tell the activity NOT to reload on next resume since the push itself will do it
-                ((DashboardActivity)getActivity()).setReloadOnResume(false);
-
-                // In case authorization was ok, we launch push action
-                Bundle extras = data.getExtras();
-                int position = extras.getInt("Survey", 0);
-                String user = extras.getString("User");
-                String password = extras.getString("Password");
-                final Survey survey = (Survey) adapter.getItem(position - 1);
-                AsyncPush asyncPush = new AsyncPush(survey, user, password);
-                asyncPush.execute((Void) null);
-            } else {
-                // Otherwise we notify and continue
-                new AlertDialog.Builder(getActivity())
-                        .setTitle("Authorization failed")
-                        .setMessage("User or password introduced are wrong. Push aborted.")
-                        .setPositiveButton(android.R.string.ok, null)
-                        .setNegativeButton(android.R.string.no, null).create().show();
-            }
-        }
     }
 
     /**

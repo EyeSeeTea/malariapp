@@ -17,8 +17,15 @@
  *  along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.eyeseetea.malariacare.database.model;
+package org.eyeseetea.malariacare.database.iomodules.dhis.importer;
 
-public interface Visitable {
-    void accept(IConvertToSDKVisitor IConvertToSDKVisitor);
+import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.ProgramStageSectionExtended;
+import org.hisp.dhis.android.sdk.persistence.models.BaseMetaDataObject;
+import org.hisp.dhis.android.sdk.persistence.models.OrganisationUnit;
+import org.hisp.dhis.android.sdk.persistence.models.ProgramStageSection;
+
+public interface IConvertFromSDKVisitor<T> {
+    void visit(ProgramStageSection programStageSection);
+
+    void visit(OrganisationUnit organisationUnit);
 }
