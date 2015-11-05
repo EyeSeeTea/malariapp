@@ -34,7 +34,7 @@ import android.view.View;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 
-import org.eyeseetea.malariacare.database.feedback.Feedback;
+import org.eyeseetea.malariacare.database.utils.feedback.Feedback;
 import org.eyeseetea.malariacare.database.model.Program;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.utils.Session;

@@ -25,7 +25,7 @@ android {
         }
     }
     compileSdkVersion 21
-    buildToolsVersion "22.0.1"
+    buildToolsVersion "21.0.1"
     defaultConfig {
         applicationId 'org.eyeseetea.malariacare'
         minSdkVersion 15

@@ -17,26 +17,8 @@
  *  along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.eyeseetea.malariacare.database.feedback;
+package org.eyeseetea.malariacare.database.iomodules.dhis.exporter;
 
-/**
- * Base class for every feedback row:
- *  - CompositeScore
- *  - Question
- *
- * Created by arrizabalaga on 14/09/15.
- */
-public interface Feedback {
-
-    /**
-     * Returns the Label to show in the row
-     * @return
-     */
-    String getLabel();
-
-    /**
-     * Returns if 'this' row has to hide according to its value
-     * @return true|false
-     */
-    boolean isPassed();
+public interface VisitableToSDK {
+    void accept(IConvertToSDKVisitor IConvertToSDKVisitor);
 }

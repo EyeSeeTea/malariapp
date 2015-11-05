@@ -34,6 +34,8 @@ import com.raizlabs.android.dbflow.sql.language.Where;
 import com.raizlabs.android.dbflow.structure.BaseModel;
 
 import org.eyeseetea.malariacare.database.AppDatabase;
+import org.eyeseetea.malariacare.database.iomodules.dhis.exporter.IConvertToSDKVisitor;
+import org.eyeseetea.malariacare.database.iomodules.dhis.exporter.VisitableToSDK;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.utils.Constants;
@@ -44,7 +46,7 @@ import java.util.Iterator;
 import java.util.List;
 
 @Table(databaseName = AppDatabase.NAME)
-public class Question extends BaseModel implements Visitable {
+public class Question extends BaseModel implements VisitableToSDK {
 
     @Column
     @PrimaryKey(autoincrement = true)
