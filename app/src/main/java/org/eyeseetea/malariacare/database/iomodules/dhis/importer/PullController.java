@@ -27,6 +27,7 @@ import com.raizlabs.android.dbflow.sql.language.Delete;
 import com.squareup.otto.Subscribe;
 
 import org.eyeseetea.malariacare.R;
+import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.ProgramVisitableFromSDK;
 import org.eyeseetea.malariacare.database.model.Answer;
 import org.eyeseetea.malariacare.database.model.CompositeScore;
 import org.eyeseetea.malariacare.database.model.Header;
@@ -99,6 +100,7 @@ public class PullController {
      * @param ctx
      */
     public void pull(Context ctx){
+        Log.d(TAG,"Starting PULL process...");
         context=ctx;
         enableMetaDataFlags();
         DhisService.loadData(context);
@@ -134,12 +136,14 @@ public class PullController {
         convertFromSDK();
         showStatus(context.getString(R.string.dialog_pull_success));
         unregister();
+        Log.d(TAG, "PULL process...OK");
     }
 
     /**
      * Erase data from app database
      */
     private void wipeDatabase(){
+        Log.d(TAG,"Deleting app database...");
         Delete.tables(
                 Value.class,
                 Score.class,
@@ -165,13 +169,12 @@ public class PullController {
      * Launches visitor that turns SDK data into APP data
      */
     private void convertFromSDK(){
-
+        Log.d(TAG,"Converting SDK into APP data");
         List<String> assignedProgramsIDs=MetaDataController.getAssignedPrograms();
         for(String assignedProgramID:assignedProgramsIDs){
             ConvertFromSDKVisitor converter = new ConvertFromSDKVisitor();
-            org.hisp.dhis.android.sdk.persistence.models.Program sdkProgram=MetaDataController.getProgram(assignedProgramID);
-            //TODO build extended sdkprogram
-            //sdkProgram.accept(converter);
+            ProgramVisitableFromSDK programVisitableFromSDK=new ProgramVisitableFromSDK(MetaDataController.getProgram(assignedProgramID));
+            programVisitableFromSDK.accept(converter);
         }
     }
 
