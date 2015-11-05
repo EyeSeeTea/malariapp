@@ -19,8 +19,14 @@
 
 package org.eyeseetea.malariacare.database.iomodules.dhis.importer;
 
+import com.raizlabs.android.dbflow.sql.builder.Condition;
+import com.raizlabs.android.dbflow.sql.language.Select;
+
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.ProgramStageSectionExtended;
 import org.eyeseetea.malariacare.database.model.OrgUnit;
+import org.eyeseetea.malariacare.database.model.OrgUnit$Table;
+import org.eyeseetea.malariacare.database.model.OrgUnitLevel;
+import org.eyeseetea.malariacare.database.model.OrgUnitLevel$Table;
 import org.eyeseetea.malariacare.database.model.Tab;
 import org.hisp.dhis.android.sdk.persistence.models.BaseMetaDataObject;
 import org.hisp.dhis.android.sdk.persistence.models.OrganisationUnit;
@@ -38,8 +44,45 @@ public class ConvertFromSDKVisitor<T extends BaseMetaDataObject> implements ICon
 
     @Override
     public void visit(OrganisationUnit organisationUnit){
-        OrgUnit orgUnit = new OrgUnit();
-        orgUnit.setName(organisationUnit.getLabel());
-        orgUnit.save();
+
+try{
+    OrgUnit orgUnit = new OrgUnit();
+    //Saving parent
+    Long parent_id=null;
+    try {
+        parent_id = Long.parseLong(organisationUnit.getParent());
+    }
+    catch(Exception e){}
+
+    if(parent_id!=null)
+    orgUnit.setOrgUnit(new Select().from(OrgUnit.class).where(Condition.column(OrgUnit$Table.ID_ORG_UNIT)
+            .eq(parent_id)).querySingle());
+    //Saving level
+    Long level_id=null;
+    try {
+        level_id = (long)organisationUnit.getLevel();
+    }
+    catch(Exception e){}
+
+    if(level_id!=null) {
+        OrgUnitLevel orgUnitLevel=new Select().from(OrgUnitLevel.class)
+                .where(Condition.column(OrgUnitLevel$Table.ID_ORG_UNIT_LEVEL).eq(level_id)).querySingle();
+        if(orgUnitLevel==null) {
+            orgUnitLevel = new OrgUnitLevel();
+            orgUnitLevel.setId_org_unit_level(level_id);
+            orgUnitLevel.setName("debug");
+        }
+        orgUnit.setOrgUnitLevel(orgUnitLevel);
+    }
+    //saving name
+    orgUnit.setName(organisationUnit.getLabel());
+    //Saving uid
+    //saving id
+    if(organisationUnit.getId().length()>0)
+        orgUnit.setId_org_unit(Long.parseLong((organisationUnit.getId())));
+        orgUnit.setId_org_unit((long) 1000);
+    orgUnit.save();
+}
+catch(Exception e){}
     }
 }
