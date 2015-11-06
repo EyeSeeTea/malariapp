@@ -17,16 +17,25 @@
  *  along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.eyeseetea.malariacare.database.iomodules.dhis.importer;
+package org.eyeseetea.malariacare.database.iomodules.dhis.importer.models;
 
-import org.hisp.dhis.android.sdk.persistence.models.OrganisationUnit;
-import org.hisp.dhis.android.sdk.persistence.models.Program;
+import org.eyeseetea.malariacare.database.iomodules.dhis.importer.IConvertFromSDKVisitor;
+import org.eyeseetea.malariacare.database.iomodules.dhis.importer.VisitableFromSDK;
 import org.hisp.dhis.android.sdk.persistence.models.ProgramStage;
 import org.hisp.dhis.android.sdk.persistence.models.ProgramStageSection;
 
-public interface IConvertFromSDKVisitor {
-    void visit(Program sdkProgram);
-    void visit(ProgramStage sdkProgramStage);
-    void visit(ProgramStageSection sdkProgramStageSection);
-    void visit(OrganisationUnit organisationUnit);
+/**
+ * Created by arrizabalaga on 5/11/15.
+ */
+public class ProgramStageSectionVisitableFromSDK implements VisitableFromSDK {
+    ProgramStageSection programStageSection;
+
+    public ProgramStageSectionVisitableFromSDK(ProgramStageSection programStageSection){
+        this.programStageSection=programStageSection;
+    }
+
+    @Override
+    public void accept(IConvertFromSDKVisitor visitor) {
+        visitor.visit(this.programStageSection);
+    }
 }

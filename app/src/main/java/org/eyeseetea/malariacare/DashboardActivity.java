@@ -25,9 +25,13 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 
 import com.raizlabs.android.dbflow.sql.language.Select;
 
+import org.eyeseetea.malariacare.database.iomodules.dhis.importer.PullController;
+import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.model.Tab;
 import org.eyeseetea.malariacare.database.model.User;
 import org.eyeseetea.malariacare.database.utils.PopulateDB;
@@ -35,6 +39,9 @@ import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.fragments.DashboardSentFragment;
 import org.eyeseetea.malariacare.fragments.DashboardUnsentFragment;
 import org.eyeseetea.malariacare.services.SurveyService;
+import org.hisp.dhis.android.sdk.controllers.DhisService;
+import org.hisp.dhis.android.sdk.controllers.LoadingController;
+import org.hisp.dhis.android.sdk.persistence.preferences.ResourceType;
 
 import java.io.IOException;
 import java.util.List;
@@ -72,6 +79,23 @@ public class DashboardActivity extends BaseActivity {
             ftr.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
             ftr.commit();
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_dashboard, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        if(item.getItemId()!=R.id.action_pull){
+            return super.onOptionsItemSelected(item);
+        }
+
+        PullController.getInstance().pull(this);
+        return true;
     }
 
     @Override
@@ -148,6 +172,8 @@ public class DashboardActivity extends BaseActivity {
 
         // This is only executed the first time the app is loaded
         try {
+            PullController.getInstance().pull(this);
+            //FIXME This will be removed once the pull is completed
             User user = new User();
             user.save();
             PopulateDB.populateDB(getAssets());
