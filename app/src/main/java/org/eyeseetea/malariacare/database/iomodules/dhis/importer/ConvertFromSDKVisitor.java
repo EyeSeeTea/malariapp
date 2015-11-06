@@ -22,6 +22,7 @@ package org.eyeseetea.malariacare.database.iomodules.dhis.importer;
 
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.ProgramStageSectionVisitableFromSDK;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.ProgramStageVisitableFromSDK;
+import org.eyeseetea.malariacare.database.model.OrgUnitLevel;
 import org.eyeseetea.malariacare.database.model.Tab;
 import org.eyeseetea.malariacare.database.model.TabGroup;
 import org.eyeseetea.malariacare.utils.Constants;
@@ -40,7 +41,6 @@ import java.util.Map;
 public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
 
     Map<String, Object> appMapObjects;
-
     public ConvertFromSDKVisitor() {
         appMapObjects = new HashMap();
     }
@@ -101,10 +101,11 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
         //Create and save OrgUnitLevel
         org.eyeseetea.malariacare.database.model.OrgUnitLevel orgUnitLevel = new org.eyeseetea.malariacare.database.model.OrgUnitLevel();
         //Fixme real name
-        orgUnitLevel.setName("");
-        orgUnitLevel.save();
-        appMapObjects.put(String.valueOf(organisationUnit.getLevel()), orgUnitLevel);
-
+        if(!appMapObjects.containsKey(String.valueOf(organisationUnit.getLevel()))) {
+            orgUnitLevel.setName(organisationUnit.getLabel());
+            orgUnitLevel.save();
+            appMapObjects.put(String.valueOf(organisationUnit.getLevel()), orgUnitLevel);
+        }
         //create the orgUnit
         org.eyeseetea.malariacare.database.model.OrgUnit appOrgUnit= new org.eyeseetea.malariacare.database.model.OrgUnit();
         //Set name
@@ -112,14 +113,7 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
         //Set uid
         appOrgUnit.setUid(organisationUnit.getId());
         //Set orgUnitLevel
-        Integer level_id=null;
-        try {
-            level_id = organisationUnit.getLevel();
-        }
-        catch(Exception e){}
-        if(level_id!=null && !level_id.equals("")) {
-            appOrgUnit.setOrgUnitLevel((org.eyeseetea.malariacare.database.model.OrgUnitLevel) appMapObjects.get(String.valueOf(level_id)));
-        }
+        appOrgUnit.setOrgUnitLevel((org.eyeseetea.malariacare.database.model.OrgUnitLevel) appMapObjects.get(String.valueOf(organisationUnit.getLevel())));
         //Set the parent
         //At this moment, the parent is a UID of a not pulled Org_unit , without the full org_unit the OrgUnit.orgUnit(parent) is null.
         String parent_id=null;
