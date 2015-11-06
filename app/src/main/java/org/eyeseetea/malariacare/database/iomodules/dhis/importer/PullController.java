@@ -27,6 +27,7 @@ import com.raizlabs.android.dbflow.sql.language.Delete;
 import com.squareup.otto.Subscribe;
 
 import org.eyeseetea.malariacare.R;
+import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.OrganisationUnitVisitableFromSDK;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.ProgramVisitableFromSDK;
 import org.eyeseetea.malariacare.database.model.Answer;
 import org.eyeseetea.malariacare.database.model.CompositeScore;
@@ -50,6 +51,7 @@ import org.hisp.dhis.android.sdk.controllers.LoadingController;
 import org.hisp.dhis.android.sdk.controllers.metadata.MetaDataController;
 import org.hisp.dhis.android.sdk.job.NetworkJob;
 import org.hisp.dhis.android.sdk.persistence.Dhis2Application;
+import org.hisp.dhis.android.sdk.persistence.models.OrganisationUnit;
 import org.hisp.dhis.android.sdk.persistence.preferences.ResourceType;
 import java.util.List;
 
@@ -170,11 +172,17 @@ public class PullController {
      */
     private void convertFromSDK(){
         Log.d(TAG,"Converting SDK into APP data");
-        List<String> assignedProgramsIDs=MetaDataController.getAssignedPrograms();
-        for(String assignedProgramID:assignedProgramsIDs){
+        //List<String> assignedProgramsIDs=MetaDataController.getAssignedPrograms();
+        //for(String assignedProgramID:assignedProgramsIDs){
+        //    ConvertFromSDKVisitor converter = new ConvertFromSDKVisitor();
+        //    ProgramVisitableFromSDK programVisitableFromSDK=new ProgramVisitableFromSDK(MetaDataController.getProgram(assignedProgramID));
+        //    programVisitableFromSDK.accept(converter);
+        //}
+        List<OrganisationUnit> assignedOrganisationsUnits=MetaDataController.getAssignedOrganisationUnits();
+        for(OrganisationUnit assignedOrganisationsUnit:assignedOrganisationsUnits){
             ConvertFromSDKVisitor converter = new ConvertFromSDKVisitor();
-            ProgramVisitableFromSDK programVisitableFromSDK=new ProgramVisitableFromSDK(MetaDataController.getProgram(assignedProgramID));
-            programVisitableFromSDK.accept(converter);
+            OrganisationUnitVisitableFromSDK organisationUnitFromSDK=new OrganisationUnitVisitableFromSDK(assignedOrganisationsUnit);
+            organisationUnitFromSDK.accept(converter);
         }
     }
 
