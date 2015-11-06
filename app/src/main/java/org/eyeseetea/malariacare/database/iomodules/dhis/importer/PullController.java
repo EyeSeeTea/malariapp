@@ -172,12 +172,12 @@ public class PullController {
      */
     private void convertFromSDK(){
         Log.d(TAG,"Converting SDK into APP data");
-        //List<String> assignedProgramsIDs=MetaDataController.getAssignedPrograms();
-        //for(String assignedProgramID:assignedProgramsIDs){
-        //    ConvertFromSDKVisitor converter = new ConvertFromSDKVisitor();
-        //    ProgramVisitableFromSDK programVisitableFromSDK=new ProgramVisitableFromSDK(MetaDataController.getProgram(assignedProgramID));
-        //    programVisitableFromSDK.accept(converter);
-        //}
+        List<String> assignedProgramsIDs=MetaDataController.getAssignedPrograms();
+        for(String assignedProgramID:assignedProgramsIDs){
+            ConvertFromSDKVisitor converter = new ConvertFromSDKVisitor();
+            ProgramVisitableFromSDK programVisitableFromSDK=new ProgramVisitableFromSDK(MetaDataController.getProgram(assignedProgramID));
+            programVisitableFromSDK.accept(converter);
+        }
         List<OrganisationUnit> assignedOrganisationsUnits=MetaDataController.getAssignedOrganisationUnits();
         for(OrganisationUnit assignedOrganisationsUnit:assignedOrganisationsUnits){
             ConvertFromSDKVisitor converter = new ConvertFromSDKVisitor();
