@@ -98,20 +98,19 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
      */
     @Override
     public void visit(OrganisationUnit organisationUnit) {
-
+        //Create and save OrgUnitLevel
         org.eyeseetea.malariacare.database.model.OrgUnitLevel orgUnitLevel = new org.eyeseetea.malariacare.database.model.OrgUnitLevel();
-        //fixme set name
         orgUnitLevel.setName(organisationUnit.getLabel());
-        long level=organisationUnit.getLevel();
-        orgUnitLevel.setId_org_unit_level(level);
         orgUnitLevel.save();
         appMapObjects.put(String.valueOf(organisationUnit.getLevel()), orgUnitLevel);
+
+        //create the orgUnit
         org.eyeseetea.malariacare.database.model.OrgUnit appOrgUnit= new org.eyeseetea.malariacare.database.model.OrgUnit();
         //Set name
         appOrgUnit.setName(organisationUnit.getLabel());
         //Set uid
         appOrgUnit.setUid(organisationUnit.getId());
-        //Create and set OrgUnitLevel
+        //Set orgUnitLevel
         Integer level_id=null;
         try {
             level_id = organisationUnit.getLevel();
@@ -121,6 +120,7 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
             appOrgUnit.setOrgUnitLevel((org.eyeseetea.malariacare.database.model.OrgUnitLevel) appMapObjects.get(String.valueOf(level_id)));
         }
         //Set the parent
+        //At this moment, the parent is a UID of a not pulled Org_unit , without the full org_unit the OrgUnit.orgUnit(parent) is null.
         String parent_id=null;
         parent_id = organisationUnit.getParent();
         if(parent_id!=null && !parent_id.equals("")) {
@@ -128,13 +128,7 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
         }
         else
             appOrgUnit.setOrgUnit(null);
-        //Save level
-        try {
-            appOrgUnit.save();
-        }
-        catch(Exception e){
-            e.printStackTrace();
-        }
+        appOrgUnit.save();
         //Annotate built orgunit
         appMapObjects.put(organisationUnit.getId(), appOrgUnit);
     }
