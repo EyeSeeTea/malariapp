@@ -100,9 +100,9 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
     public void visit(OrganisationUnit organisationUnit) {
         //Create and save OrgUnitLevel
         org.eyeseetea.malariacare.database.model.OrgUnitLevel orgUnitLevel = new org.eyeseetea.malariacare.database.model.OrgUnitLevel();
-        //Fixme real name
         if(!appMapObjects.containsKey(String.valueOf(organisationUnit.getLevel()))) {
-            orgUnitLevel.setName(organisationUnit.getLabel());
+            //Fixme I need real org_unit_level name
+            orgUnitLevel.setName("");
             orgUnitLevel.save();
             appMapObjects.put(String.valueOf(organisationUnit.getLevel()), orgUnitLevel);
         }
