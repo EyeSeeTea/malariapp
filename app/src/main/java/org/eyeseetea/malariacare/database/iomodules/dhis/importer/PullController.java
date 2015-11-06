@@ -179,8 +179,9 @@ public class PullController {
             programVisitableFromSDK.accept(converter);
         }
         List<OrganisationUnit> assignedOrganisationsUnits=MetaDataController.getAssignedOrganisationUnits();
+        //ConvertFromSDKVisitor is created only once, to keep the appMapObject , it is necessary to fill org_unit_level and id_parent with appMapObjects
+        ConvertFromSDKVisitor converter = new ConvertFromSDKVisitor();
         for(OrganisationUnit assignedOrganisationsUnit:assignedOrganisationsUnits){
-            ConvertFromSDKVisitor converter = new ConvertFromSDKVisitor();
             OrganisationUnitVisitableFromSDK organisationUnitFromSDK=new OrganisationUnitVisitableFromSDK(assignedOrganisationsUnit);
             organisationUnitFromSDK.accept(converter);
         }
