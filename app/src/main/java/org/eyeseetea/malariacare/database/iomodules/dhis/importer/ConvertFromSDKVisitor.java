@@ -19,13 +19,17 @@
 
 package org.eyeseetea.malariacare.database.iomodules.dhis.importer;
 
+import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.OptionVisitableFromSDK;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.ProgramStageSectionVisitableFromSDK;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.ProgramStageVisitableFromSDK;
+import org.eyeseetea.malariacare.database.model.Answer;
 import org.eyeseetea.malariacare.database.model.OrgUnit;
 import org.eyeseetea.malariacare.database.model.Tab;
 import org.eyeseetea.malariacare.database.model.TabGroup;
 import org.eyeseetea.malariacare.utils.Constants;
 import org.hisp.dhis.android.sdk.persistence.models.BaseMetaDataObject;
+import org.hisp.dhis.android.sdk.persistence.models.Option;
+import org.hisp.dhis.android.sdk.persistence.models.OptionSet;
 import org.hisp.dhis.android.sdk.persistence.models.OrganisationUnit;
 import org.hisp.dhis.android.sdk.persistence.models.Program;
 import org.hisp.dhis.android.sdk.persistence.models.ProgramStage;
@@ -33,9 +37,12 @@ import org.hisp.dhis.android.sdk.persistence.models.ProgramStageSection;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
 
+    private final static String REGEXP_FACTOR=".*\\[([0-9]*)\\]";
     Map<String,Object> appMapObjects;
 
     public ConvertFromSDKVisitor(){
@@ -72,7 +79,6 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
         //Build tabgroup
         org.eyeseetea.malariacare.database.model.Program appProgram=(org.eyeseetea.malariacare.database.model.Program)appMapObjects.get(sdkProgramStage.getProgram().getUid());
         TabGroup appTabGroup = new TabGroup();
-        //FIXME TabGroup has no UID right now
         appTabGroup.setName(sdkProgramStage.getDisplayName());
         appTabGroup.setProgram(appProgram);
         appTabGroup.save();
@@ -86,12 +92,15 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
         }
     }
 
+    /**
+     * Turns a sdk ProgramStageSection into a Tab
+     * @param sdkProgramStageSection
+     */
     @Override
     public void visit(ProgramStageSection sdkProgramStageSection) {
         //Build Tab
         org.eyeseetea.malariacare.database.model.TabGroup appTabGroup=(org.eyeseetea.malariacare.database.model.TabGroup)appMapObjects.get(sdkProgramStageSection.getProgramStage());
         Tab appTab = new Tab();
-        //FIXME TabGroup has no UID right now
         appTab.setName(sdkProgramStageSection.getDisplayName());
         appTab.setType(Constants.TAB_AUTOMATIC);
         appTab.setOrder_pos(sdkProgramStageSection.getSortOrder());
@@ -104,9 +113,73 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
         //TODO Headers,Questions,...
     }
 
+
+    /**
+     * Turns a sdk OptionSet into an Answer
+     * @param sdkOptionSet
+     */
+    @Override
+    public void visit(OptionSet sdkOptionSet) {
+        //Build answer
+        Answer appAnswer = new Answer();
+        appAnswer.setName(sdkOptionSet.getName());
+        //FIXME We need to find the right value for the output
+        appAnswer.setOutput(1);
+        appAnswer.save();
+
+        //Annotate built tabgroup
+        appMapObjects.put(sdkOptionSet.getUid(), appAnswer);
+
+        //Visit children
+        for(Option option:sdkOptionSet.getOptions()){
+            new OptionVisitableFromSDK(option).accept(this);
+        }
+    }
+
+    /**
+     * Turns a sdk Option into an Option
+     * @param sdkOption
+     */
+    @Override
+    public void visit(Option sdkOption) {
+        //Build option
+        Answer appAnswer=(Answer)appMapObjects.get(sdkOption.getOptionSet());
+        org.eyeseetea.malariacare.database.model.Option appOption= new org.eyeseetea.malariacare.database.model.Option();
+        appOption.setName(sdkOption.getName());
+        appOption.setCode(sdkOption.getCode());
+        appOption.setAnswer(appAnswer);
+        appOption.setFactor(extractFactor(sdkOption.getCode()));
+        appOption.save();
+    }
+
     @Override
     public void visit(OrganisationUnit organisationUnit) {
 
     }
+
+    /**
+     * The factor of an option is codified inside its code. Ex: Yes[1]
+     * @param code
+     * @return
+     */
+    private Float extractFactor(String code){
+        if(code==null || code.isEmpty()){
+            return 0f;
+        }
+
+        Pattern pattern = Pattern.compile(REGEXP_FACTOR);
+        Matcher matcher = pattern.matcher(code);
+
+        //No match
+        if(!matcher.matches()){
+            return 0f;
+        }
+
+        //Found a match
+        String factorStr=matcher.group(1);
+
+        return Float.parseFloat(factorStr);
+    }
+
 
 }

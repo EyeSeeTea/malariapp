@@ -27,6 +27,7 @@ import com.raizlabs.android.dbflow.sql.language.Delete;
 import com.squareup.otto.Subscribe;
 
 import org.eyeseetea.malariacare.R;
+import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.OptionSetVisitableFromSDK;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.ProgramVisitableFromSDK;
 import org.eyeseetea.malariacare.database.model.Answer;
 import org.eyeseetea.malariacare.database.model.CompositeScore;
@@ -50,6 +51,7 @@ import org.hisp.dhis.android.sdk.controllers.LoadingController;
 import org.hisp.dhis.android.sdk.controllers.metadata.MetaDataController;
 import org.hisp.dhis.android.sdk.job.NetworkJob;
 import org.hisp.dhis.android.sdk.persistence.Dhis2Application;
+import org.hisp.dhis.android.sdk.persistence.models.OptionSet;
 import org.hisp.dhis.android.sdk.persistence.preferences.ResourceType;
 import java.util.List;
 
@@ -71,9 +73,11 @@ public class PullController {
      * Constructs and register this pull controller to the event bus
      */
     PullController(){
-        Dhis2Application.bus.register(this);
     }
 
+    private void register(){
+        Dhis2Application.bus.register(this);
+    }
     /**
      * Unregister pull controller from bus events
      */
@@ -102,7 +106,13 @@ public class PullController {
     public void pull(Context ctx){
         Log.d(TAG,"Starting PULL process...");
         context=ctx;
+        //Register for event bus
+        register();
+        //Enabling resources to pull
         enableMetaDataFlags();
+        //Delete previous metadata
+        MetaDataController.wipe();
+        //Pull new metadata
         DhisService.loadData(context);
     }
 
@@ -110,11 +120,9 @@ public class PullController {
      * Enables loading all metadata
      */
     private void enableMetaDataFlags(){
-//        for(ResourceType resourceType: ResourceType.values()) {
-//            LoadingController.enableLoading(context, resourceType);
-//        }
         LoadingController.enableLoading(context, ResourceType.ASSIGNEDPROGRAMS);
         LoadingController.enableLoading(context, ResourceType.PROGRAMS);
+        LoadingController.enableLoading(context, ResourceType.OPTIONSETS);
     }
 
     @Subscribe
@@ -170,11 +178,21 @@ public class PullController {
      */
     private void convertFromSDK(){
         Log.d(TAG,"Converting SDK into APP data");
+
+        //Convert Programs, Tabgroups, Tabs
         List<String> assignedProgramsIDs=MetaDataController.getAssignedPrograms();
         for(String assignedProgramID:assignedProgramsIDs){
             ConvertFromSDKVisitor converter = new ConvertFromSDKVisitor();
             ProgramVisitableFromSDK programVisitableFromSDK=new ProgramVisitableFromSDK(MetaDataController.getProgram(assignedProgramID));
             programVisitableFromSDK.accept(converter);
+        }
+
+        //Convert Answers, Options
+        List<OptionSet> optionSets=MetaDataController.getOptionSets();
+        for(OptionSet optionSet:optionSets){
+            ConvertFromSDKVisitor converter = new ConvertFromSDKVisitor();
+            OptionSetVisitableFromSDK optionSetVisitableFromSDK=new OptionSetVisitableFromSDK(optionSet);
+            optionSetVisitableFromSDK.accept(converter);
         }
     }
 
