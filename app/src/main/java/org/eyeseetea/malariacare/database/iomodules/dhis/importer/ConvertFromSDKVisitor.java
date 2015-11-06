@@ -19,14 +19,13 @@
 
 package org.eyeseetea.malariacare.database.iomodules.dhis.importer;
 
-import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.ProgramStageSectionExtended;
-import org.eyeseetea.malariacare.database.model.OrgUnit;
-import org.eyeseetea.malariacare.database.model.OrgUnit$Table;
-import org.eyeseetea.malariacare.database.model.OrgUnitLevel;
-import org.eyeseetea.malariacare.database.model.OrgUnitLevel$Table;
+
+import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.ProgramStageSectionVisitableFromSDK;
+import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.ProgramStageVisitableFromSDK;
 import org.eyeseetea.malariacare.database.model.Tab;
 import org.eyeseetea.malariacare.database.model.TabGroup;
 import org.eyeseetea.malariacare.utils.Constants;
+import org.hisp.dhis.android.sdk.controllers.metadata.MetaDataController;
 import org.hisp.dhis.android.sdk.persistence.models.BaseMetaDataObject;
 import org.hisp.dhis.android.sdk.persistence.models.OrganisationUnit;
 import org.hisp.dhis.android.sdk.persistence.models.Program;
@@ -34,6 +33,8 @@ import org.hisp.dhis.android.sdk.persistence.models.ProgramStage;
 import org.hisp.dhis.android.sdk.persistence.models.ProgramStageSection;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
@@ -90,48 +91,52 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
         }
     }
 
+    /**
+     * Turns a sdk organisationUnit into an app OrgUnit
+     *
+     * @param organisationUnit
+     */
     @Override
     public void visit(OrganisationUnit organisationUnit) {
 
+        org.eyeseetea.malariacare.database.model.OrgUnitLevel orgUnitLevel = new org.eyeseetea.malariacare.database.model.OrgUnitLevel();
+        //fixme set name
+        orgUnitLevel.setName(organisationUnit.getLabel());
+        long level=organisationUnit.getLevel();
+        orgUnitLevel.setId_org_unit_level(level);
+        orgUnitLevel.save();
+        appMapObjects.put(String.valueOf(organisationUnit.getLevel()), orgUnitLevel);
+        org.eyeseetea.malariacare.database.model.OrgUnit appOrgUnit= new org.eyeseetea.malariacare.database.model.OrgUnit();
+        //Set name
+        appOrgUnit.setName(organisationUnit.getLabel());
+        //Set uid
+        appOrgUnit.setUid(organisationUnit.getId());
+        //Create and set OrgUnitLevel
+        Integer level_id=null;
         try {
-            OrgUnit orgUnit = new OrgUnit();
-            //Saving parent
-            Long parent_id = null;
-            try {
-                parent_id = Long.parseLong(organisationUnit.getParent());
-            } catch (Exception e) {
-            }
-
-            if (parent_id != null)
-                orgUnit.setOrgUnit(new Select().from(OrgUnit.class).where(Condition.column(OrgUnit$Table.ID_ORG_UNIT)
-                        .eq(parent_id)).querySingle());
-            //Saving level
-            Long level_id = null;
-            try {
-                level_id = (long) organisationUnit.getLevel();
-            } catch (Exception e) {
-            }
-
-            if (level_id != null) {
-                OrgUnitLevel orgUnitLevel = new Select().from(OrgUnitLevel.class)
-                        .where(Condition.column(OrgUnitLevel$Table.ID_ORG_UNIT_LEVEL).eq(level_id)).querySingle();
-                if (orgUnitLevel == null) {
-                    orgUnitLevel = new OrgUnitLevel();
-                    orgUnitLevel.setId_org_unit_level(level_id);
-                    orgUnitLevel.setName("debug");
-                }
-                orgUnit.setOrgUnitLevel(orgUnitLevel);
-            }
-            //saving name
-            orgUnit.setName(organisationUnit.getLabel());
-            //Saving uid
-            //saving id
-            if (organisationUnit.getId().length() > 0)
-                orgUnit.setId_org_unit(Long.parseLong((organisationUnit.getId())));
-            orgUnit.setId_org_unit((long) 1000);
-            orgUnit.save();
-        } catch (Exception e) {
+            level_id = organisationUnit.getLevel();
         }
+        catch(Exception e){}
+        if(level_id!=null && !level_id.equals("")) {
+            appOrgUnit.setOrgUnitLevel((org.eyeseetea.malariacare.database.model.OrgUnitLevel) appMapObjects.get(String.valueOf(level_id)));
+        }
+        //Set the parent
+        String parent_id=null;
+        parent_id = organisationUnit.getParent();
+        if(parent_id!=null && !parent_id.equals("")) {
+            appOrgUnit.setOrgUnit((org.eyeseetea.malariacare.database.model.OrgUnit) appMapObjects.get(String.valueOf(parent_id)));
+        }
+        else
+            appOrgUnit.setOrgUnit(null);
+        //Save level
+        try {
+            appOrgUnit.save();
+        }
+        catch(Exception e){
+            e.printStackTrace();
+        }
+        //Annotate built orgunit
+        appMapObjects.put(organisationUnit.getId(), appOrgUnit);
     }
 
     public void visit(ProgramStageSection sdkProgramStageSection) {
