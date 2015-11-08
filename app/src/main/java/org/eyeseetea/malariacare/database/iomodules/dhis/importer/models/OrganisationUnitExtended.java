@@ -35,11 +35,11 @@ import org.hisp.dhis.android.sdk.persistence.models.ProgramStageSection;
 
 import java.util.List;
 
-public class OrganisationUnitVisitableFromSDK implements VisitableFromSDK {
+public class OrganisationUnitExtended implements VisitableFromSDK {
 
     OrganisationUnit orgUnit;
 
-    public OrganisationUnitVisitableFromSDK(OrganisationUnit orgUnit){
+    public OrganisationUnitExtended(OrganisationUnit orgUnit){
         this.orgUnit = orgUnit;
     }
 
