@@ -27,7 +27,7 @@ import com.raizlabs.android.dbflow.sql.language.Delete;
 import com.squareup.otto.Subscribe;
 
 import org.eyeseetea.malariacare.R;
-import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.OrganisationUnitVisitableFromSDK;
+import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.OrganisationUnitExtended;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.ProgramVisitableFromSDK;
 import org.eyeseetea.malariacare.database.model.Answer;
 import org.eyeseetea.malariacare.database.model.CompositeScore;
@@ -182,8 +182,8 @@ public class PullController {
         //ConvertFromSDKVisitor is created only once, to keep the appMapObject , it is necessary to fill org_unit_level and id_parent with appMapObjects
         ConvertFromSDKVisitor converter = new ConvertFromSDKVisitor();
         for(OrganisationUnit assignedOrganisationsUnit:assignedOrganisationsUnits){
-            OrganisationUnitVisitableFromSDK organisationUnitFromSDK=new OrganisationUnitVisitableFromSDK(assignedOrganisationsUnit);
-            organisationUnitFromSDK.accept(converter);
+            OrganisationUnitExtended organisationUnitExtended=new OrganisationUnitExtended(assignedOrganisationsUnit);
+            organisationUnitExtended.accept(converter);
         }
     }
 
