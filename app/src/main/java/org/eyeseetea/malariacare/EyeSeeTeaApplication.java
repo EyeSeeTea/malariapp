@@ -25,20 +25,10 @@ import android.support.multidex.MultiDex;
 
 import com.crashlytics.android.Crashlytics;
 import com.raizlabs.android.dbflow.config.FlowManager;
-import com.raizlabs.android.dbflow.sql.language.Select;
 
-import org.eyeseetea.malariacare.database.iomodules.dhis.importer.ConvertFromSDKVisitor;
-import org.eyeseetea.malariacare.database.iomodules.dhis.importer.VisitableFromSDK;
-import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.OrganisationUnitExtended;
-import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.ProgramStageSectionExtended;
 import org.eyeseetea.malariacare.database.utils.LocationMemory;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.hisp.dhis.android.sdk.persistence.Dhis2Application;
-import org.hisp.dhis.android.sdk.persistence.models.BaseMetaDataObject;
-import org.hisp.dhis.android.sdk.persistence.models.OrganisationUnit;
-import org.hisp.dhis.android.sdk.persistence.models.ProgramStageSection;
-
-import java.util.List;
 
 import io.fabric.sdk.android.Fabric;
 
@@ -74,26 +64,26 @@ public class EyeSeeTeaApplication extends Dhis2Application  {
         MultiDex.install(this);
     }
 
-    public void dummyData(){
-        ProgramStageSection tab = new ProgramStageSection();
-        tab.setSortOrder(1);
-        tab.setExternalAccess(true);
-        tab.setName("dummyTab");
-        tab.save();
+//    public void dummyData(){
+//        ProgramStageSection tab = new ProgramStageSection();
+//        tab.setSortOrder(1);
+//        tab.setExternalAccess(true);
+//        tab.setName("dummyTab");
+//        tab.save();
+//
+//        OrganisationUnit organisationUnit = new OrganisationUnit();
+//        organisationUnit.setLabel("dummyOrgUnit");
+//        organisationUnit.save();
+//    }
 
-        OrganisationUnit organisationUnit = new OrganisationUnit();
-        organisationUnit.setLabel("dummyOrgUnit");
-        organisationUnit.save();
-    }
-
-    public void convertFromSDK(){
-        ConvertFromSDKVisitor converter = new ConvertFromSDKVisitor();
-        List<ProgramStageSection> tabs = new Select().all().from(ProgramStageSection.class).queryList();
-        final VisitableFromSDK<ProgramStageSection> visitableFromSDKTabs = new ProgramStageSectionExtended<>(tabs);
-        visitableFromSDKTabs.accept(converter);
-
-        List<OrganisationUnit> orgUnits = new Select().all().from(OrganisationUnit.class).queryList();
-        final VisitableFromSDK<OrganisationUnit> visitableFromSDKOrgUnits = new OrganisationUnitExtended<>(orgUnits);
-        visitableFromSDKOrgUnits.accept(converter);
-    }
+//    public void convertFromSDK(){
+//        ConvertFromSDKVisitor converter = new ConvertFromSDKVisitor();
+//        List<ProgramStageSection> tabs = new Select().all().from(ProgramStageSection.class).queryList();
+//        final VisitableFromSDK<ProgramStageSection> visitableFromSDKTabs = new ProgramStageSectionVisitableFromSDK<>(tabs);
+//        visitableFromSDKTabs.accept(converter);
+//
+//        List<OrganisationUnit> orgUnits = new Select().all().from(OrganisationUnit.class).queryList();
+//        final VisitableFromSDK<OrganisationUnit> visitableFromSDKOrgUnits = new OrganisationUnitExtended<>(orgUnits);
+//        visitableFromSDKOrgUnits.accept(converter);
+//    }
 }

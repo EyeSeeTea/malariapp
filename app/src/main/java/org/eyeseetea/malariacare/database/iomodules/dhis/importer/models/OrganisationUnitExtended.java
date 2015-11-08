@@ -35,18 +35,16 @@ import org.hisp.dhis.android.sdk.persistence.models.ProgramStageSection;
 
 import java.util.List;
 
-public class OrganisationUnitExtended<T extends OrganisationUnit> implements VisitableFromSDK {
+public class OrganisationUnitExtended implements VisitableFromSDK {
 
-    private final List<T> orgUnits;
+    OrganisationUnit orgUnit;
 
-    public OrganisationUnitExtended(final List<T> orgUnits){
-        this.orgUnits = orgUnits;
+    public OrganisationUnitExtended(OrganisationUnit orgUnit){
+        this.orgUnit = orgUnit;
     }
 
     @Override
-    public void accept(final IConvertFromSDKVisitor IConvertFromSDKVisitor) {
-        for(T orgUnit: orgUnits) {
-            IConvertFromSDKVisitor.visit(orgUnit);
-        }
+    public void accept(IConvertFromSDKVisitor visitor) {
+        visitor.visit(this.orgUnit);
     }
 }

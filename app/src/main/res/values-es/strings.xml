@@ -209,5 +209,9 @@
     <string name="dialog_info_push_ignored">Ignorados</string>
     <string name="dialog_info_push_stats">Datos subidos al servidor. Resultados:</string>
     <string name="dashboard_tip_pie_chart">Calidad de cuidados (basado en la última evaluación)</string>
+    <string name="dialog_pull_error">Error obteniendo metadatos del servidor dhis</string>
+    <string name="settings_menu_pull">Pull</string>
+    <string name="dialog_pull_success">Metadatos Dhis obtenidos del servidor con éxito</string>
+    <string name="dialog_title_pull_response">Pull status</string>
 
 </resources>
