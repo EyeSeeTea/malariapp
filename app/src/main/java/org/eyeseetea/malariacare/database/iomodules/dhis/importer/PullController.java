@@ -27,8 +27,8 @@ import com.raizlabs.android.dbflow.sql.language.Delete;
 import com.squareup.otto.Subscribe;
 
 import org.eyeseetea.malariacare.R;
-import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.OptionSetVisitableFromSDK;
-import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.ProgramVisitableFromSDK;
+import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.OptionSetExtended;
+import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.ProgramExtended;
 import org.eyeseetea.malariacare.database.model.Answer;
 import org.eyeseetea.malariacare.database.model.CompositeScore;
 import org.eyeseetea.malariacare.database.model.Header;
@@ -183,16 +183,16 @@ public class PullController {
         List<String> assignedProgramsIDs=MetaDataController.getAssignedPrograms();
         for(String assignedProgramID:assignedProgramsIDs){
             ConvertFromSDKVisitor converter = new ConvertFromSDKVisitor();
-            ProgramVisitableFromSDK programVisitableFromSDK=new ProgramVisitableFromSDK(MetaDataController.getProgram(assignedProgramID));
-            programVisitableFromSDK.accept(converter);
+            ProgramExtended programExtended =new ProgramExtended(MetaDataController.getProgram(assignedProgramID));
+            programExtended.accept(converter);
         }
 
         //Convert Answers, Options
         List<OptionSet> optionSets=MetaDataController.getOptionSets();
         for(OptionSet optionSet:optionSets){
             ConvertFromSDKVisitor converter = new ConvertFromSDKVisitor();
-            OptionSetVisitableFromSDK optionSetVisitableFromSDK=new OptionSetVisitableFromSDK(optionSet);
-            optionSetVisitableFromSDK.accept(converter);
+            OptionSetExtended optionSetExtended =new OptionSetExtended(optionSet);
+            optionSetExtended.accept(converter);
         }
     }
 

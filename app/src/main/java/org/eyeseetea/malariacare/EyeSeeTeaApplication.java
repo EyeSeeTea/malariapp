@@ -48,8 +48,6 @@ public class EyeSeeTeaApplication extends Dhis2Application  {
         PreferencesState.getInstance().init(getApplicationContext());
         LocationMemory.getInstance().init(getApplicationContext());
         FlowManager.init(this, "_EyeSeeTeaDB");
-        //dummyData();
-        //convertFromSDK();
     }
 
     @Override
@@ -63,27 +61,4 @@ public class EyeSeeTeaApplication extends Dhis2Application  {
         super.attachBaseContext(base);
         MultiDex.install(this);
     }
-
-//    public void dummyData(){
-//        ProgramStageSection tab = new ProgramStageSection();
-//        tab.setSortOrder(1);
-//        tab.setExternalAccess(true);
-//        tab.setName("dummyTab");
-//        tab.save();
-//
-//        OrganisationUnit organisationUnit = new OrganisationUnit();
-//        organisationUnit.setLabel("dummyOrgUnit");
-//        organisationUnit.save();
-//    }
-
-//    public void convertFromSDK(){
-//        ConvertFromSDKVisitor converter = new ConvertFromSDKVisitor();
-//        List<ProgramStageSection> tabs = new Select().all().from(ProgramStageSection.class).queryList();
-//        final VisitableFromSDK<ProgramStageSection> visitableFromSDKTabs = new ProgramStageSectionVisitableFromSDK<>(tabs);
-//        visitableFromSDKTabs.accept(converter);
-//
-//        List<OrganisationUnit> orgUnits = new Select().all().from(OrganisationUnit.class).queryList();
-//        final VisitableFromSDK<OrganisationUnit> visitableFromSDKOrgUnits = new OrganisationUnitExtended<>(orgUnits);
-//        visitableFromSDKOrgUnits.accept(converter);
-//    }
 }

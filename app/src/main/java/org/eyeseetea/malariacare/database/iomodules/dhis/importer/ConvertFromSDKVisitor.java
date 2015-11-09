@@ -19,15 +19,13 @@
 
 package org.eyeseetea.malariacare.database.iomodules.dhis.importer;
 
-import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.OptionVisitableFromSDK;
-import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.ProgramStageSectionVisitableFromSDK;
-import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.ProgramStageVisitableFromSDK;
+import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.OptionExtended;
+import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.ProgramStageSectionExtended;
+import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.ProgramStageExtended;
 import org.eyeseetea.malariacare.database.model.Answer;
-import org.eyeseetea.malariacare.database.model.OrgUnit;
 import org.eyeseetea.malariacare.database.model.Tab;
 import org.eyeseetea.malariacare.database.model.TabGroup;
 import org.eyeseetea.malariacare.utils.Constants;
-import org.hisp.dhis.android.sdk.persistence.models.BaseMetaDataObject;
 import org.hisp.dhis.android.sdk.persistence.models.Option;
 import org.hisp.dhis.android.sdk.persistence.models.OptionSet;
 import org.hisp.dhis.android.sdk.persistence.models.OrganisationUnit;
@@ -66,7 +64,7 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
 
         //Visit children
         for(ProgramStage ps:sdkProgram.getProgramStages()){
-            new ProgramStageVisitableFromSDK(ps).accept(this);
+            new ProgramStageExtended(ps).accept(this);
         }
     }
 
@@ -88,7 +86,7 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
 
         //Visit children
         for(ProgramStageSection pss:sdkProgramStage.getProgramStageSections()){
-            new ProgramStageSectionVisitableFromSDK(pss).accept(this);
+            new ProgramStageSectionExtended(pss).accept(this);
         }
     }
 
@@ -132,7 +130,7 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
 
         //Visit children
         for(Option option:sdkOptionSet.getOptions()){
-            new OptionVisitableFromSDK(option).accept(this);
+            new OptionExtended(option).accept(this);
         }
     }
 
