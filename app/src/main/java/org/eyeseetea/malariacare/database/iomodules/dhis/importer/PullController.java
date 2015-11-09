@@ -111,6 +111,7 @@ public class PullController {
         //Enabling resources to pull
         enableMetaDataFlags();
         //Delete previous metadata
+        MetaDataController.clearMetaDataLoadedFlags();
         MetaDataController.wipe();
         //Pull new metadata
         DhisService.loadData(context);
