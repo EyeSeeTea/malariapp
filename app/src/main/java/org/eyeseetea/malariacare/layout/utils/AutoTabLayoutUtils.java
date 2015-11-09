@@ -89,7 +89,7 @@ public class AutoTabLayoutUtils {
             }
 
             //Modern api -> delegate in its method
-            if(Build.VERSION.SDK_INT != Build.VERSION_CODES.JELLY_BEAN){
+            if(Build.VERSION.SDK_INT > Build.VERSION_CODES.JELLY_BEAN){
                 return (CustomRadioButton)component.findViewById(id);
             }
 

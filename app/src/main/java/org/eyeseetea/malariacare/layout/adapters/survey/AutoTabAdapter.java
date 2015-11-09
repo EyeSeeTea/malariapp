@@ -395,7 +395,6 @@ public class AutoTabAdapter extends ATabAdapter {
             Option option = new Option(Constants.DEFAULT_SELECT_OPTION);
             if (checkedId != -1) {
                 CustomRadioButton customRadioButton = this.viewHolder.findRadioButtonById(checkedId);
-//                CustomRadioButton customRadioButton = (CustomRadioButton) (this.viewHolder.component).findViewById(checkedId);
                 option = (Option) customRadioButton.getTag();
             }
             if (AutoTabLayoutUtils.itemSelected(viewHolder, scoreHolder, question, option, totalNum, totalDenum, getContext(), elementInvisibility))
