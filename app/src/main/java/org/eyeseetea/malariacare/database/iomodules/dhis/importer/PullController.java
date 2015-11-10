@@ -27,8 +27,7 @@ import com.raizlabs.android.dbflow.sql.language.Delete;
 import com.squareup.otto.Subscribe;
 
 import org.eyeseetea.malariacare.R;
-import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.OptionSetExtended;
-import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.ProgramExtended;
+import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.ProgramVisitableFromSDK;
 import org.eyeseetea.malariacare.database.model.Answer;
 import org.eyeseetea.malariacare.database.model.CompositeScore;
 import org.eyeseetea.malariacare.database.model.Header;
@@ -51,7 +50,6 @@ import org.hisp.dhis.android.sdk.controllers.LoadingController;
 import org.hisp.dhis.android.sdk.controllers.metadata.MetaDataController;
 import org.hisp.dhis.android.sdk.job.NetworkJob;
 import org.hisp.dhis.android.sdk.persistence.Dhis2Application;
-import org.hisp.dhis.android.sdk.persistence.models.OptionSet;
 import org.hisp.dhis.android.sdk.persistence.preferences.ResourceType;
 import java.util.List;
 
@@ -78,6 +76,7 @@ public class PullController {
     private void register(){
         Dhis2Application.bus.register(this);
     }
+
     /**
      * Unregister pull controller from bus events
      */
@@ -194,6 +193,13 @@ public class PullController {
             ConvertFromSDKVisitor converter = new ConvertFromSDKVisitor();
             OptionSetExtended optionSetExtended =new OptionSetExtended(optionSet);
             optionSetExtended.accept(converter);
+        }
+        List<OrganisationUnit> assignedOrganisationsUnits=MetaDataController.getAssignedOrganisationUnits();
+        //ConvertFromSDKVisitor is created only once, to keep the appMapObject , it is necessary to fill org_unit_level and id_parent with appMapObjects
+        ConvertFromSDKVisitor converter = new ConvertFromSDKVisitor();
+        for(OrganisationUnit assignedOrganisationsUnit:assignedOrganisationsUnits){
+            OrganisationUnitExtended organisationUnitExtended=new OrganisationUnitExtended(assignedOrganisationsUnit);
+            organisationUnitExtended.accept(converter);
         }
     }
 

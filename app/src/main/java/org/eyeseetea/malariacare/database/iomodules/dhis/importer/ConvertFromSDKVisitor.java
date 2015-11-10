@@ -19,15 +19,13 @@
 
 package org.eyeseetea.malariacare.database.iomodules.dhis.importer;
 
-import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.OptionExtended;
-import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.ProgramStageSectionExtended;
-import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.ProgramStageExtended;
-import org.eyeseetea.malariacare.database.model.Answer;
+import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.ProgramStageSectionVisitableFromSDK;
+import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.ProgramStageVisitableFromSDK;
+import org.eyeseetea.malariacare.database.model.OrgUnit;
 import org.eyeseetea.malariacare.database.model.Tab;
 import org.eyeseetea.malariacare.database.model.TabGroup;
 import org.eyeseetea.malariacare.utils.Constants;
-import org.hisp.dhis.android.sdk.persistence.models.Option;
-import org.hisp.dhis.android.sdk.persistence.models.OptionSet;
+import org.hisp.dhis.android.sdk.persistence.models.BaseMetaDataObject;
 import org.hisp.dhis.android.sdk.persistence.models.OrganisationUnit;
 import org.hisp.dhis.android.sdk.persistence.models.Program;
 import org.hisp.dhis.android.sdk.persistence.models.ProgramStage;
@@ -35,12 +33,9 @@ import org.hisp.dhis.android.sdk.persistence.models.ProgramStageSection;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
 
-    private final static String REGEXP_FACTOR=".*\\[([0-9]*)\\]";
     Map<String,Object> appMapObjects;
 
     public ConvertFromSDKVisitor(){
@@ -77,6 +72,7 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
         //Build tabgroup
         org.eyeseetea.malariacare.database.model.Program appProgram=(org.eyeseetea.malariacare.database.model.Program)appMapObjects.get(sdkProgramStage.getProgram().getUid());
         TabGroup appTabGroup = new TabGroup();
+        //FIXME TabGroup has no UID right now
         appTabGroup.setName(sdkProgramStage.getDisplayName());
         appTabGroup.setProgram(appProgram);
         appTabGroup.save();
@@ -91,6 +87,43 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
     }
 
     /**
+     * Turns a sdk organisationUnit into an app OrgUnit
+     *
+     * @param organisationUnit
+     */
+    @Override
+    public void visit(OrganisationUnit organisationUnit) {
+        //Create and save OrgUnitLevel
+        org.eyeseetea.malariacare.database.model.OrgUnitLevel orgUnitLevel = new org.eyeseetea.malariacare.database.model.OrgUnitLevel();
+        if(!appMapObjects.containsKey(String.valueOf(organisationUnit.getLevel()))) {
+            //Fixme I need real org_unit_level name
+            orgUnitLevel.setName("");
+            orgUnitLevel.save();
+            appMapObjects.put(String.valueOf(organisationUnit.getLevel()), orgUnitLevel);
+        }
+        //create the orgUnit
+        org.eyeseetea.malariacare.database.model.OrgUnit appOrgUnit= new org.eyeseetea.malariacare.database.model.OrgUnit();
+        //Set name
+        appOrgUnit.setName(organisationUnit.getLabel());
+        //Set uid
+        appOrgUnit.setUid(organisationUnit.getId());
+        //Set orgUnitLevel
+        appOrgUnit.setOrgUnitLevel((org.eyeseetea.malariacare.database.model.OrgUnitLevel) appMapObjects.get(String.valueOf(organisationUnit.getLevel())));
+        //Set the parent
+        //At this moment, the parent is a UID of a not pulled Org_unit , without the full org_unit the OrgUnit.orgUnit(parent) is null.
+        String parent_id=null;
+        parent_id = organisationUnit.getParent();
+        if(parent_id!=null && !parent_id.equals("")) {
+            appOrgUnit.setOrgUnit((org.eyeseetea.malariacare.database.model.OrgUnit) appMapObjects.get(String.valueOf(parent_id)));
+        }
+        else
+            appOrgUnit.setOrgUnit(null);
+        appOrgUnit.save();
+        //Annotate built orgunit
+        appMapObjects.put(organisationUnit.getId(), appOrgUnit);
+    }
+
+    /**
      * Turns a sdk ProgramStageSection into a Tab
      * @param sdkProgramStageSection
      */
@@ -99,6 +132,7 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
         //Build Tab
         org.eyeseetea.malariacare.database.model.TabGroup appTabGroup=(org.eyeseetea.malariacare.database.model.TabGroup)appMapObjects.get(sdkProgramStageSection.getProgramStage());
         Tab appTab = new Tab();
+        //FIXME TabGroup has no UID right now
         appTab.setName(sdkProgramStageSection.getDisplayName());
         appTab.setType(Constants.TAB_AUTOMATIC);
         appTab.setOrder_pos(sdkProgramStageSection.getSortOrder());
@@ -148,11 +182,6 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
         appOption.setAnswer(appAnswer);
         appOption.setFactor(extractFactor(sdkOption.getCode()));
         appOption.save();
-    }
-
-    @Override
-    public void visit(OrganisationUnit organisationUnit) {
-
     }
 
     /**
