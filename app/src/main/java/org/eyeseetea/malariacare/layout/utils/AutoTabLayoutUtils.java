@@ -20,6 +20,7 @@
 package org.eyeseetea.malariacare.layout.utils;
 
 import android.content.Context;
+import android.os.Build;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -75,6 +76,32 @@ public class AutoTabLayoutUtils {
         public CustomTextView num;
         public CustomTextView denum;
         public int type;
+
+        /**
+         * Fixes a bug in older apis where a RadioGroup cannot find its children by id
+         * @param id
+         * @return
+         */
+        public CustomRadioButton findRadioButtonById(int id){
+            //No component -> done
+            if (component==null || ! (component instanceof RadioGroup)){
+                return null;
+            }
+
+            //Modern api -> delegate in its method
+            if(Build.VERSION.SDK_INT > Build.VERSION_CODES.JELLY_BEAN){
+                return (CustomRadioButton)component.findViewById(id);
+            }
+
+            //Find button manually
+            for(int i=0;i<((RadioGroup) component).getChildCount();i++){
+                View button=((RadioGroup) component).getChildAt(i);
+                if(button.getId()==id){
+                    return (CustomRadioButton) button;
+                }
+            }
+            return null;
+        }
     }
 
     //Store the views references for each view in the footer
