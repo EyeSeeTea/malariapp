@@ -19,13 +19,17 @@
 
 package org.eyeseetea.malariacare.database.iomodules.dhis.importer;
 
-import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.ProgramStageSectionVisitableFromSDK;
-import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.ProgramStageVisitableFromSDK;
+import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.OptionExtended;
+import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.ProgramStageExtended;
+import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.ProgramStageSectionExtended;
+import org.eyeseetea.malariacare.database.model.Answer;
 import org.eyeseetea.malariacare.database.model.OrgUnit;
 import org.eyeseetea.malariacare.database.model.Tab;
 import org.eyeseetea.malariacare.database.model.TabGroup;
 import org.eyeseetea.malariacare.utils.Constants;
 import org.hisp.dhis.android.sdk.persistence.models.BaseMetaDataObject;
+import org.hisp.dhis.android.sdk.persistence.models.Option;
+import org.hisp.dhis.android.sdk.persistence.models.OptionSet;
 import org.hisp.dhis.android.sdk.persistence.models.OrganisationUnit;
 import org.hisp.dhis.android.sdk.persistence.models.Program;
 import org.hisp.dhis.android.sdk.persistence.models.ProgramStage;
@@ -33,9 +37,12 @@ import org.hisp.dhis.android.sdk.persistence.models.ProgramStageSection;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
 
+    private final static String REGEXP_FACTOR=".*\\[([0-9]*)\\]";
     Map<String,Object> appMapObjects;
 
     public ConvertFromSDKVisitor(){
