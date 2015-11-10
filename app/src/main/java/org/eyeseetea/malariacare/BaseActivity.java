@@ -36,10 +36,14 @@ import android.view.View;
 import android.view.Window;
 import android.widget.TextView;
 
+import com.squareup.otto.Subscribe;
+
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 import org.eyeseetea.malariacare.utils.Utils;
 import org.hisp.dhis.android.sdk.controllers.DhisService;
+import org.hisp.dhis.android.sdk.events.UiEvent;
+import org.hisp.dhis.android.sdk.persistence.Dhis2Application;
 
 import java.io.InputStream;
 
@@ -55,8 +59,9 @@ public abstract class BaseActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         requestWindowFeature(Window.FEATURE_ACTIVITY_TRANSITIONS);
-        super.onCreate(savedInstanceState);
 
+        Dhis2Application.bus.register(this);
+        super.onCreate(savedInstanceState);
         initView(savedInstanceState);
     }
 
@@ -143,6 +148,12 @@ public abstract class BaseActivity extends ActionBarActivity {
     }
 
     @Override
+    public void onStop(){
+        Dhis2Application.bus.unregister(this);
+        super.onStop();
+    }
+
+    @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
     }
@@ -162,12 +173,22 @@ public abstract class BaseActivity extends ActionBarActivity {
                 .setMessage(getApplicationContext().getString(R.string.dialog_content_logout_confirmation))
                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface arg0, int arg1) {
-                        Session.logout();
+                        //Start logout
+                        debugMessage("Logging out from sdk...");
                         DhisService.logOutUser(BaseActivity.this);
-                        finishAndGo(LoginActivity.class);
                     }
                 })
                 .setNegativeButton(android.R.string.no, null).create().show();
+    }
+
+    public void onLogoutFinished(UiEvent uiEvent){
+        //No event or not a logout event -> done
+        if(uiEvent==null || !uiEvent.getEventType().equals(UiEvent.UiEventType.USER_LOG_OUT)){
+            return;
+        }
+        debugMessage("Logging out from sdk...OK");
+        Session.logout();
+        finishAndGo(LoginActivity.class);
     }
 
 

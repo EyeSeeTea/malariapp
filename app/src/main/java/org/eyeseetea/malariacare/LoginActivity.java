@@ -66,11 +66,6 @@ import java.util.List;
 public class LoginActivity extends org.hisp.dhis.android.sdk.ui.activities.LoginActivity implements LoaderCallbacks<Cursor> {
 
     /**
-     * Keep track of the login task to ensure we can cancel it if requested.
-     */
-    //private UserLoginTask mAuthTask = null;
-
-    /**
      * DHIS server URL
      */
     private String serverUrl;
@@ -85,7 +80,6 @@ public class LoginActivity extends org.hisp.dhis.android.sdk.ui.activities.Login
      */
     private String password;
 
-//    (EditText) findViewById(org.hisp.dhis.android.sdk.R.id.server_url);
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
