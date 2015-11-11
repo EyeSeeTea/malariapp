@@ -29,6 +29,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.raizlabs.android.dbflow.sql.language.Select;
+import com.squareup.otto.Subscribe;
 
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.PullController;
 import org.eyeseetea.malariacare.database.model.Survey;
@@ -41,6 +42,7 @@ import org.eyeseetea.malariacare.fragments.DashboardUnsentFragment;
 import org.eyeseetea.malariacare.services.SurveyService;
 import org.hisp.dhis.android.sdk.controllers.DhisService;
 import org.hisp.dhis.android.sdk.controllers.LoadingController;
+import org.hisp.dhis.android.sdk.events.UiEvent;
 import org.hisp.dhis.android.sdk.persistence.preferences.ResourceType;
 
 import java.io.IOException;
@@ -159,29 +161,12 @@ public class DashboardActivity extends BaseActivity {
                 }).create().show();
     }
 
-/**
-     * In case data is not yet populated (detected by looking at the Tab table) we populate the data
-     * @throws IOException in case any IO error occurs while populating DB
+    /**
+     * PUll data from DHIS server and turn into our model
+     * @throws IOException
      */
     private void initDataIfRequired() throws IOException {
-        if (new Select().count().from(Tab.class).count()!=0) {
-            return;
-        }
-
-        Log.i(".DashboardActivity", "Populating DB");
-
-        // This is only executed the first time the app is loaded
-        try {
-            PullController.getInstance().pull(this);
-            //FIXME This will be removed once the pull is completed
-            User user = new User();
-            user.save();
-            PopulateDB.populateDB(getAssets());
-        } catch (IOException e) {
-            Log.e(".DashboardActivity", "Error populating DB", e);
-            throw e;
-        }
-        Log.i(".DashboardActivity", "DB populated");
+        PullController.getInstance().pull(this);
     }
 
     /**
@@ -199,5 +184,17 @@ public class DashboardActivity extends BaseActivity {
                 Session.setUser(users.get(0));
             }
         }
+    }
+
+    /**
+     * Logging out from sdk is an async method.
+     * Thus it is required a callback to finish logout gracefully.
+     *
+     * XXX: So far this @subscribe annotation does not work with inheritance since relies on 'getDeclaredMethods'
+     * @param uiEvent
+     */
+    @Subscribe
+    public void onLogoutFinished(UiEvent uiEvent){
+        super.onLogoutFinished(uiEvent);
     }
 }
