@@ -26,6 +26,7 @@ import org.eyeseetea.malariacare.database.model.Answer;
 import org.eyeseetea.malariacare.database.model.OrgUnit;
 import org.eyeseetea.malariacare.database.model.Tab;
 import org.eyeseetea.malariacare.database.model.TabGroup;
+import org.eyeseetea.malariacare.database.model.User;
 import org.eyeseetea.malariacare.utils.Constants;
 import org.hisp.dhis.android.sdk.persistence.models.BaseMetaDataObject;
 import org.hisp.dhis.android.sdk.persistence.models.Option;
@@ -34,6 +35,7 @@ import org.hisp.dhis.android.sdk.persistence.models.OrganisationUnit;
 import org.hisp.dhis.android.sdk.persistence.models.Program;
 import org.hisp.dhis.android.sdk.persistence.models.ProgramStage;
 import org.hisp.dhis.android.sdk.persistence.models.ProgramStageSection;
+import org.hisp.dhis.android.sdk.persistence.models.UserAccount;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -189,6 +191,18 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
         appOption.setAnswer(appAnswer);
         appOption.setFactor(extractFactor(sdkOption.getCode()));
         appOption.save();
+    }
+
+    /**
+     * Turns a sdk userAccount into a User
+     * @param userAccount
+     */
+    @Override
+    public void visit(UserAccount userAccount) {
+        User appUser = new User();
+        appUser.setUid(userAccount.getUId());
+        appUser.setName(userAccount.getName());
+        appUser.save();
     }
 
     /**

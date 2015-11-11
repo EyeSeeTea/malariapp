@@ -30,6 +30,7 @@ import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.OptionSetExtended;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.OrganisationUnitExtended;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.ProgramExtended;
+import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.UserAccountExtended;
 import org.eyeseetea.malariacare.database.model.Answer;
 import org.eyeseetea.malariacare.database.model.CompositeScore;
 import org.eyeseetea.malariacare.database.model.Header;
@@ -54,6 +55,7 @@ import org.hisp.dhis.android.sdk.job.NetworkJob;
 import org.hisp.dhis.android.sdk.persistence.Dhis2Application;
 import org.hisp.dhis.android.sdk.persistence.models.OptionSet;
 import org.hisp.dhis.android.sdk.persistence.models.OrganisationUnit;
+import org.hisp.dhis.android.sdk.persistence.models.UserAccount;
 import org.hisp.dhis.android.sdk.persistence.preferences.ResourceType;
 import java.util.List;
 
@@ -183,10 +185,12 @@ public class PullController {
     private void convertFromSDK(){
         Log.d(TAG,"Converting SDK into APP data");
 
+        //One shared converter to match parents within the hierarchy
+        ConvertFromSDKVisitor converter = new ConvertFromSDKVisitor();
+
         //Convert Programs, Tabgroups, Tabs
         List<String> assignedProgramsIDs=MetaDataController.getAssignedPrograms();
         for(String assignedProgramID:assignedProgramsIDs){
-            ConvertFromSDKVisitor converter = new ConvertFromSDKVisitor();
             ProgramExtended programExtended =new ProgramExtended(MetaDataController.getProgram(assignedProgramID));
             programExtended.accept(converter);
         }
@@ -194,17 +198,20 @@ public class PullController {
         //Convert Answers, Options
         List<OptionSet> optionSets=MetaDataController.getOptionSets();
         for(OptionSet optionSet:optionSets){
-            ConvertFromSDKVisitor converter = new ConvertFromSDKVisitor();
             OptionSetExtended optionSetExtended =new OptionSetExtended(optionSet);
             optionSetExtended.accept(converter);
         }
+
+        //OrganisationUnits
         List<OrganisationUnit> assignedOrganisationsUnits=MetaDataController.getAssignedOrganisationUnits();
-        //ConvertFromSDKVisitor is created only once, to keep the appMapObject , it is necessary to fill org_unit_level and id_parent with appMapObjects
-        ConvertFromSDKVisitor converter = new ConvertFromSDKVisitor();
         for(OrganisationUnit assignedOrganisationsUnit:assignedOrganisationsUnits){
             OrganisationUnitExtended organisationUnitExtended=new OrganisationUnitExtended(assignedOrganisationsUnit);
             organisationUnitExtended.accept(converter);
         }
+
+        //User (from UserAccount)
+        UserAccountExtended userAccountExtended = new UserAccountExtended(MetaDataController.getUserAccount());
+        userAccountExtended.accept(converter);
     }
 
     /**
