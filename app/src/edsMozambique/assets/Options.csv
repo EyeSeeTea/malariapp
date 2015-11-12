@@ -18,9 +18,6 @@
 18;'Clinical mentoring';'Tutoria Clínica';0.00;36
 19;'Male';'Masculino';0.00;3
 20;'Female';'Feminino';0.00;3
-21;'Posto de Saúde';'Posto de Saúde';0.00;37
-22;'Centro de Saúde';'Centro de Saúde';0.00;37
-23;'Hospital Distrital';'Hospital Distrital';0.00;37
 24;'Simple malaria';'Malária simples';0.00;38
 25;'Severe malaria';'Malária grave';0.00;38
 26;'Other';'Outro';0.00;38
@@ -166,7 +163,6 @@
 175;'Computerized record';'Registo informatizado';0.00;66
 176;'Other';'Outro';0.00;66
 177;'Técnico de Laboratório';'Técnico de Laboratório';0.00;67
-178;'Assistente de Laboratório';'Assistente de Laboratório';0.00;67
 179;'Normal';'Normal';0.00;68
 180;'Abnormal';'Anormal';0.00;68
 181;'RDT + [1]';'TDR +';1.00;69
@@ -221,14 +217,11 @@
 232;'N/A [1]';'NA';1.00;83
 233;'Not present [0]';'Não existe';0.00;81
 258;'Not asked';'Não questionado';0.00;80
-259;'Hospital Provincial/Regional';'Hospital Provincial/Regional';0.00;37
-260;'Laboratório de Referência';'Laboratório de Referência';0.00;37
 261;'Yes [0]';'Sim';0.00;88
 262;'No [1]';'Não';1.00;88
 263;'N/A [1]';'N/A';1.00;88
 264;'Posto de Saúde';'Posto de Saúde';0.00;89
 265;'Centro de Saúde';'Centro de Saúde';0.00;89
-266;'Central Hospital';'Central Hospital';0.00;89
 267;'Hospital Distrital';'Hospital Distrital';0.00;89
 268;'Hospital Rural';'Hospital Rural';0.00;89
 269;'Hospital Regional';'Hospital Regional';0.00;89
@@ -248,3 +241,22 @@
 283;'Yes [0]';'Sim';0.00;93
 284;'N/A [1]';'NA';1.00;93
 285;'No [1]';'Não';1.00;93
+286;'No febrile patient available';'Nao houve pacientes com sindrome feril hoje';0.00;94
+287;'No clinician available';'Nao existem clinicos desponiveis hoje';0.00;94
+288;'Patient referred out';'O paciente foi transferido durante a observacao';0.00;94
+289;'Stopped due to potential patient harm';'Interrompida a consulta devido o grande risco de lesao do paciente';0.00;94
+290;'Not enough time during facility visit';'Nao houve tempo suficiente durante a visita';0.00;94
+291;'Other';'Outros';0.00;94
+292;'Agente de Laboratório';'Agente de Laboratório';0.00;67
+293;'Outro';'Outro';0.00;67
+294;'Medico';'Medico';0.00;95
+295;'Tec. Medicina/ Agente de Medicina';'Tec. Medicina/ Agente de Medicina';0.00;95
+296;'Enfermeiro(a)';'Enfermeiro(a)';0.00;95
+297;'Parteira';'Parteira';0.00;95
+298;'Outro';'Outro';0.00;95
+299;'Not addressed';'Não resolvido';0.00;96
+300;'Partially addressed';'Parcialmente resolvido';0.00;96
+301;'Completely Addressed';'Completamente resolvido';0.00;96
+302;'Not addressed';'Não resolvido';0.00;97
+303;'Partially addressed';'Parcialmente resolvido';0.00;97
+304;'Completely Addressed';'Completamente resolvido';0.00;97

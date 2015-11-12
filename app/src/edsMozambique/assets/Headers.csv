@@ -2,12 +2,12 @@
 3;'Lab Reg';'Registo de Laboratório';2;2
 4;'HSR_lab';'Recursos Humanos– Pessoal de Laboratório';1;10
 5;'Train_lab';'Visão Geral da Formação– Laboratório';2;10
-6;'W&P supp';'Fornecimento de Electricidade e Água';3;10
+6;;;3;10
 7;'Stock_Mal Micro';'Quebra de Stocks de Microscopia da Malária';4;10
 8;'Micro, parts, main';'Microscópios, Partes Suplentes, e Manutenção';5;10
 9;'Lab equip';'Consumiveis laboratoriais';6;10
 10;'IQA';'Avaliação Interna da Qualidade (AIQ)';7;10
-11;'EQA';'AEQ - Microscopia da Malária';8;10
+11;'EQA';'GQE- Microscopia da Malária';8;10
 12;'Mal timing';'Tempo dos Resultados dos Testes de Malaria';9;10
 13;'Ref mat_micro';'Material de Referência -Microscopia';10;10
 14;'Obs 1';'Observação 1';1;12
@@ -16,63 +16,54 @@
 17;'Est';'ESTATÍSTICAS';1;3
 18;'Est';'ESTATÍSTICAS';1;4
 19;'Est';'ESTATÍSTICAS';1;5
-20;'Feedback';'Feedback e Acção';1;15
-21;'Prob 1';'Problema 1';2;15
-22;'Prob 2';'Problema 2';3;15
-23;'Prob 3';'Problema 3';4;15
+20;'PrevGap';'Problema Anterior';1;15
+21;'PrevGap1';'Problema Anterior 1';2;15
+22;'PrevGap2';'Problema Anterior 2';3;15
+23;'PrevGap3';'Problema Anterior 3';4;15
 24;'HW Info';'Informação do Trabalhador de Saúde';1;6
 25;'Rec';'Recepção';2;6
-26;'Signs Sev Dis';'Sinais de doença grave';3;6
-27;'Cl sev assess';'Avaliação clínica da gravidade';4;6
-28;'Cl hist';'Obter a história clínica do paciente';5;6
-29;'Prior Dx Tx';'Diagnósticos e Tratamentos Anteriores';6;6
-30;'Gen Ex';'Examinação Geral';7;6
-31;'Diag';'Diagnóstico Clínico Suspeito';8;6
-32;'Agr';'Acordo';9;6
-33;'Mal Test';'Teste da Malária';10;6
-34;'Oth Test';'Outros testes';11;6
-35;'Diag Test res';'Resultados de Testes de Diagnóstico';12;6
-36;'Tx';'Tratamento';13;6
-37;'Com: Unc disease';'Comunicação: Doença Não Complicada';14;6
-38;'Com: Sev disease';'Comunicação: Doença grave';15;6
-39;'Sev dis';'Doença grave';16;6
+26;'ClinHistGen';'História Clínica: Geral';3;6
+27;'ClinHistSev';'História Clínica: Sinais de doença grave';4;6
+28;'PhysExamSev';'Exame físico: Sinais de doença grave';5;6
+29;'PhysExamGen';'Exame físico: Geral';6;6
+30;'Mal Test';'Teste da Malária';7;6
+31;'Diag Test res';'Resultados de Testes de Diagnóstico';8;6
+32;'FinalDiag';'Diagnóstico Final';9;6
+33;'Tx';'Tratamento';10;6
+34;'Com: Unc disease';'Comunicação: Doença Não Complicada';11;6
+35;'Com: Sev disease';'Comunicação: Doença grave';12;6
+36;'Obs 1';'Retro-Informacao';13;6
 40;'HW Info';'Informação do Trabalhador de Saúde';1;7
 41;'Rec';'Recepção';2;7
-42;'Signs Sev Dis';'Sinais de doença grave';3;7
-43;'Cl sev assess';'Avaliação clínica da gravidade';4;7
-44;'Cl hist';'Obter a história clínica do paciente';5;7
-45;'Prior Dx Tx';'Diagnósticos e Tratamentos Anteriores';6;7
-46;'Gen Ex';'Examinação Geral';7;7
-47;'Diag';'Diagnóstico Clínico Suspeito';8;7
-48;'Agr';'Acordo';9;7
-49;'Mal Test';'Teste da Malária';10;7
-50;'Oth Test';'Outros testes';11;7
-51;'Diag Test res';'Resultados de Testes de Diagnóstico';12;7
-52;'Tx';'Tratamento';13;7
-53;'Com: Unc disease';'Comunicação: Doença Não Complicada';14;7
-54;'Com: Sev disease';'Comunicação: Doença grave';15;7
-55;'Sev dis';'Doença grave';16;7
+42;'ClinHistGen';'História Clínica: Geral';3;7
+43;'ClinHistSev';'História Clínica: Sinais de doença grave';4;7
+44;'PhysExamSev';'Exame físico: Sinais de doença grave';5;7
+45;'PhysExamGen';'Exame físico: Geral';6;7
+46;'Mal Test';'Teste da Malária';7;7
+47;'Diag Test res';'Resultados de Testes de Diagnóstico';8;7
+48;'FinalDiag';'Diagnóstico Final';9;7
+49;'Tx';'Tratamento';10;7
+50;'Com: Unc disease';'Comunicação: Doença Não Complicada';11;7
+51;'Com: Sev disease';'Comunicação: Doença grave';12;7
+52;'Obs 2';'Retro-Informacao';13;7
 56;'HW Info';'Informação do Trabalhador de Saúde';1;8
 57;'Rec';'Recepção';2;8
-58;'Signs Sev Dis';'Sinais de doença grave';3;8
-59;'Cl sev assess';'Avaliação clínica da gravidade';4;8
-60;'Cl hist';'Obter a história clínica do paciente';5;8
-61;'Prior Dx Tx';'Diagnósticos e Tratamentos Anteriores';6;8
-62;'Gen Ex';'Examinação Geral';7;8
-63;'Diag';'Diagnóstico Clínico Suspeito';8;8
-64;'Agr';'Acordo';9;8
-65;'Mal Test';'Teste da Malária';10;8
-66;'Oth Test';'Outros testes';11;8
-67;'Diag Test res';'Resultados de Testes de Diagnóstico';12;8
-68;'Tx';'Tratamento';13;8
-69;'Com: Unc disease';'Comunicação: Doença Não Complicada';14;8
-70;'Com: Sev disease';'Comunicação: Doença grave';15;8
-71;'Sev dis';'Doença grave';16;8
+58;'ClinHistGen';'História Clínica: Geral';3;8
+59;'ClinHistSev';'História Clínica: Sinais de doença grave';4;8
+60;'PhysExamSev';'Exame físico: Sinais de doença grave';5;8
+61;'PhysExamGen';'Exame físico: Geral';6;8
+62;'Mal Test';'Teste da Malária';7;8
+63;'Diag Test res';'Resultados de Testes de Diagnóstico';8;8
+64;'FinalDiag';'Diagnóstico Final';9;8
+65;'Tx';'Tratamento';10;8
+66;'Com: Unc disease';'Comunicação: Doença Não Complicada';11;8
+67;'Com: Sev disease';'Comunicação: Doença grave';12;8
+68;'Obs 3';'Retro-Informacao';13;8
 72;'Obs 1';'Observação 1';1;13
 73;'Obs 2';'Observação 2';2;13
 74;'Obs 3';'Observação 3';3;13
 75;'HF Info';'Informação da Unidade de Saúde';1;1
-76;'HR_T';'Recursos Humanos e Formação';2;1
+76;'HRT';'Recursos Humanos e Formação';2;1
 77;'HF Infra';'Serviços da Unidade Sanitaria';3;1
 78;'Ph, St, Eq';'Farmácia, Stocks e Equipamento';4;1
 79;'Mal Diag';'Diagnósticos da  Malária';5;1
@@ -89,3 +80,7 @@
 90;'Est';'Est2';2;3
 91;'Est';'Est2';2;4
 92;'Est';'Est3';2;5
+93;'Feedback';'Problema Hoje';5;15
+94;'Prob 1';'Problema 1';6;15
+95;'Prob 2';'Problema 2';7;15
+96;'Prob 3';'Problema 3';8;15
