@@ -17,22 +17,26 @@
  *  along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.eyeseetea.malariacare.database.iomodules.dhis.importer;
+package org.eyeseetea.malariacare.database.iomodules.dhis.importer.models;
 
+import org.eyeseetea.malariacare.database.iomodules.dhis.importer.IConvertFromSDKVisitor;
+import org.eyeseetea.malariacare.database.iomodules.dhis.importer.VisitableFromSDK;
 import org.hisp.dhis.android.sdk.persistence.models.Option;
-import org.hisp.dhis.android.sdk.persistence.models.OptionSet;
-import org.hisp.dhis.android.sdk.persistence.models.OrganisationUnit;
-import org.hisp.dhis.android.sdk.persistence.models.Program;
-import org.hisp.dhis.android.sdk.persistence.models.ProgramStage;
-import org.hisp.dhis.android.sdk.persistence.models.ProgramStageSection;
 import org.hisp.dhis.android.sdk.persistence.models.UserAccount;
 
-public interface IConvertFromSDKVisitor {
-    void visit(Program sdkProgram);
-    void visit(ProgramStage sdkProgramStage);
-    void visit(ProgramStageSection sdkProgramStageSection);
-    void visit(OrganisationUnit organisationUnit);
-    void visit(OptionSet optionSet);
-    void visit(Option option);
-    void visit(UserAccount userAccount);
+/**
+ * Created by arrizabalaga on 6/11/15.
+ */
+public class UserAccountExtended implements VisitableFromSDK {
+
+    UserAccount userAccount;
+
+    public UserAccountExtended(UserAccount userAccount){
+        this.userAccount=userAccount;
+    }
+
+    @Override
+    public void accept(IConvertFromSDKVisitor visitor) {
+        visitor.visit(userAccount);
+    }
 }
