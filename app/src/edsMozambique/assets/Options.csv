@@ -142,8 +142,8 @@
 154;'Yes [0]';'Sim';0.00;60
 155;'No [1]';'Não';1.00;60
 156;'Unknown [0]';'Desconhecido';0.00;60
-157;'Thick smear';'Esfregaço espesso';0.00;61
-158;'Thin smear';'Esfregaço fino';0.00;61
+157;'Thick smear';'Gota espessa';0.00;61
+158;'Thin smear';'Gota estendida';0.00;61
 159;'Both';'Ambos';0.00;61
 160;'RDT';'TDR';0.00;62
 161;'Microscopy';'Microscopia';0.00;62

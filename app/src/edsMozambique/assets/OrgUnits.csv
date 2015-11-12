@@ -1,39 +1,103 @@
-1;'OJ0QdTsu52k';'1. MOZ Test Region';;1
-2;'XSt74LmSChf';'Zambezia';;1
-3;'qC4pc2Jx4Qk';'MOZ Outlet 1';1;2
-4;'pqd0tpwMmmH';'MOZ Outlet 2';1;2
-5;'kkas4XXKZo7';'Cidade de Quelimane';2;2
-6;'EIf2GnnMMg6';'Ile';2;2
-7;'Fw1K3nvD9tF';'Lugela';2;2
-8;'Wxqq1fpAzbq';'Maganja da Costa';2;2
-9;'oDbzuQ0jVTQ';'Mocuba';2;2
-10;'ICiO90IDLZa';'Mocubela';2;2
-11;'on5XN2yVidd';'Mopeia';2;2
-12;'FYuCh2k5onU';'Morrumbala';2;2
-13;'oaufbpFlx8s';'Namacurra';2;2
-14;'ONWXcDE5YxH';'Nicoadala';2;2
-15;'DrEVEcoBj2H';'Pebane';2;2
-16;'Gx6z0qotikU';'MOZ outlet 1 test 1';3;3
-17;'N5ylkPj5VS2';'MOZ outlet 1 test 2';3;3
-18;'JUMPyvlnEob';'MOZ outlet 2 test 1';4;3
-19;'wZSedLBJgpf';'MOZ outlet 2 test 2';4;3
-20;'Bj6eef38Zh6';'Centro de saúde de 17 de Setembro';5;3
-21;'rAlTsVJ48ya';'Centro de saúde de 24 de Julho';5;3
-22;'CGyegDdxAJJ';'Centro de saúde de 4 de Dezembro';5;3
-23;'z9ZyThDF7v4';'Centro de saúde de Chabeco';5;3
-24;'gKSNVqB2QFH';'Centro de saúde de Incidua';5;3
-25;'xqyuSG6gT1t';'Centro de saúde de Namuinho';5;3
-26;'y2r7MnIF1k6';'Centro de saúde de Sangarivera';5;3
-27;'tNkNR3OfQ6M';'Hospital Províncial de Quelimane';5;3
-28;'Wdcm1cgfnPh';'Centro de saúde de Ile';6;3
-29;'iTlPsveDv8n';'Centro de saúde de Lugela';7;3
-30;'sdeLu47WbBj';'Hospital distrital de Maganja da Costa';8;3
-31;'sujQGfRiu24';'Centro de saúde de Mocuba';9;3
-32;'Dd6BXh8pEhA';'Hospital distrital de Mocuba';9;3
-33;'salw5G4YBFA';'Centro de saúde de Mocubela';10;3
-34;'VPCtryKVY7P';'Centro de saúde de Mopeia';11;3
-35;'dqv1LgnSOnS';'Hospital distrital de Morrumbala';12;3
-36;'wTSoXpG19x5';'Centro de saúde de Namacurra';13;3
-37;'WeH5nQM12eH';'Centro de saúde de Maquival Rio';14;3
-38;'vZ5BidRNYRA';'Centro de saúde de Nicoadala';14;3
-39;'fEytb3hPo3E';'Centro de saúde de Pebane';15;3
+56720;'XSt74LmSChf';'Zambezia';;1
+56721;'kkas4XXKZo7';'Cidade de Quelimane';56720;2
+56722;'EIf2GnnMMg6';'Ile';56720;2
+56723;'Fw1K3nvD9tF';'Lugela';56720;2
+56724;'Wxqq1fpAzbq';'Maganja da Costa';56720;2
+56725;'oDbzuQ0jVTQ';'Mocuba';56720;2
+56726;'on5XN2yVidd';'Mopeia';56720;2
+56727;'FYuCh2k5onU';'Morrumbala';56720;2
+56728;'oaufbpFlx8s';'Namacurra';56720;2
+56729;'ONWXcDE5YxH';'Nicoadala';56720;2
+56730;'DrEVEcoBj2H';'Pebane';56720;2
+56731;'ICiO90IDLZa';'Mocubela';56720;2
+56732;'tNkNR3OfQ6M';'HP Quelimane';56721;3
+56733;'Bj6eef38Zh6';'CS 17 de Setembro';56721;3
+56734;'rAlTsVJ48ya';'CS 24 de Julho';56721;3
+56735;'CGyegDdxAJJ';'CS 4 de Dezembro';56721;3
+56736;'xqyuSG6gT1t';'CS Namuinho';56721;3
+56737;'y2r7MnIF1k6';'CS Sangarivera';56721;3
+56739;'z9ZyThDF7v4';'CS Chabeco';56721;3
+56740;'gKSNVqB2QFH';'CS Incidua';56721;3
+56741;'Wdcm1cgfnPh';'CS Ile';56722;3
+56742;'iTlPsveDv8n';'CS Lugela';56723;3
+56743;'sdeLu47WbBj';'HD Maganja da Costa';56724;3
+56744;'Dd6BXh8pEhA';'HD Mocuba';56725;3
+56745;'sujQGfRiu24';'CS Mocuba';56725;3
+56746;'VPCtryKVY7P';'CS Mopeia';56726;3
+56747;'dqv1LgnSOnS';'HD Morrumbala';56727;3
+56748;'wTSoXpG19x5';'CS Namacurra';56728;3
+56749;'WeH5nQM12eH';'CS Maquival Rio';56729;3
+56750;'vZ5BidRNYRA';'CS Nicoadala';56729;3
+56751;'fEytb3hPo3E';'CS Pebane';56730;3
+56752;'salw5G4YBFA';'CS Mocubela';56731;3
+56759;'OJ0QdTsu52k';'1. MOZ Test Region';;1
+56760;'qC4pc2Jx4Qk';'MOZ Outlet 1';56759;2
+56761;'pqd0tpwMmmH';'MOZ Outlet 2';56759;2
+56762;'Gx6z0qotikU';'MOZ outlet 1 test 1';56760;3
+56763;'N5ylkPj5VS2';'MOZ outlet 1 test 2';56760;3
+56764;'JUMPyvlnEob';'MOZ outlet 2 test 1';56761;3
+56765;'wZSedLBJgpf';'MOZ outlet 2 test 2';56761;3
+67394;'C8mbVfM9ITZ';'Nampula';;1
+69138;'dWz0FmTWohc';'CS Coalane';56721;3
+69140;'tYmtRLAXORF';'Gurua';56720;2
+69141;'UvWyLcMUDkg';'HR Gurua';69140;3
+69142;'wakPFhhtFZe';'CS Lioma';69140;3
+69143;'gKPRdaS2eK2';'Inhasunge';56720;2
+69144;'jUMfOCdCKZE';'CS Inhasunge';69143;3
+69145;'LKXBuCOR5w6';'Milange';56720;2
+69146;'oFd38g73Q0j';'HR Milange';69145;3
+69147;'qSncpbqf0JN';'CS Maquival Sede';56729;3
+69148;'rx66mGjNUXB';'Angoche';67394;2
+69149;'M6O5t3Fg80J';'CS Namitoria';69148;3
+69150;'hDPPpekgapu';'HR Angoche';69148;3
+69151;'JRZwkr29Z4i';'Ciadade de Nampula';67394;2
+69152;'eFcOGi11AMW';'Erati';67394;2
+69153;'TzWH5sFouYo';'Ilha de Mosambique';67394;2
+69154;'N3qzVREnJmF';'Liupo';67394;2
+69155;'xCmJ04LI9RT';'Malema';67394;2
+69156;'iTT2GLZZ1DA';'Meconta';67394;2
+69157;'eNbqt6e4Zxf';'Mecuburi';67394;2
+69158;'sQr612P2tAO';'Memba';67394;2
+69159;'ZJqSjWis3Ek';'Mogovolas';67394;2
+69160;'DsLOyxtD8PF';'Monapo';67394;2
+69161;'w8kMzpeMtP2';'Muecate';67394;2
+69162;'xBCuqyiTfpw';'Murrupula';67394;2
+69163;'yMSwAUTUCn3';'Nacala-A-Velha';67394;2
+69164;'XRJYG2DJq6j';'Nacala-Porto';67394;2
+69165;'LaD3jwJJgzG';'Nacaroa';67394;2
+69166;'DTw2P1yMSy7';'Rapale';67394;2
+69167;'ZlwO4IR6Me7';'CS 1 de Maio';69151;3
+69168;'n3F8daYVRb8';'CS 25 de Setembro';69151;3
+69169;'DPoMDLqCRG7';'CS Anchilo';69151;3
+69170;'xqZjNEth1iz';'CS Muhala Expanso';69151;3
+69171;'OeTGdEvLQ5k';'HG Marrere';69151;3
+69173;'hL3KS1K5N5h';'PS Posto Do Hospital Psiquiatrico';69151;3
+69175;'FRsGM974BT6';'HD Alua';69152;3
+69176;'gFET5O6XSIK';'HR Namapa';69152;3
+69177;'PXgo7Mbh7mB';'CS Ilha de Mosambique';69153;3
+69178;'BGlvvrB0gl6';'CS Lumbo';69153;3
+69179;'ku0Dk3Z9sVZ';'CS Liupo';69154;3
+69180;'LuYrh5Tbn0s';'CS Malema';69155;3
+69181;'dpSaQTJCU42';'CS Corrane';69156;3
+69182;'DOIeFgwV24m';'CS Meconta';69156;3
+69183;'dbTqEzaF9cg';'CS Nacavala';69156;3
+69184;'q48CZb8myqy';'CS Namialo';69156;3
+69186;'KqdZZlJ31IL';'CS Memba';69158;3
+69187;'Ac7BFscCsWv';'CS Mecuburi';69157;3
+69188;'KBs1V9Q0Sc8';'CS Nametil';69159;3
+69189;'iofXv5BbFQ4';'CS Carapira';69160;3
+69190;'aJGVrq7JJRp';'CS Monapo';69160;3
+69191;'VPe1os8jYIf';'CS Natete';69160;3
+69192;'WU1hNibm9eA';'HR Monapo';69160;3
+69193;'SE17ZgJx58f';'CS Muecate';69161;3
+69194;'L7X8yfYGtc3';'CS Murrupula';69162;3
+69195;'NSiP8aWfO9g';'CS Mueria';69163;3
+69196;'AcUyDGou02c';'CS Nacala-A-Velha';69163;3
+69197;'LWBk3eGP40n';'CS Akume';69164;3
+69198;'NuAjwTuLCiI';'CS Urbano';69164;3
+69199;'y02nOkJ2Dxz';'HD Nacala-Porto';69164;3
+69200;'LPIVCz4ihax';'CS Nacaroa';69165;3
+69201;'TSQodWo8bcV';'CS Rapale';69166;3
+69202;'XSL3FwiruRM';'Ribaue';67394;2
+69203;'mk3fjEuQ5C6';'CS Iapala';69202;3
+69204;'evgb9GXfwaX';'HR Ribaue';69202;3
