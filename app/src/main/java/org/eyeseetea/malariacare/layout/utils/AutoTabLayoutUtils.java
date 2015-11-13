@@ -38,6 +38,7 @@ import org.eyeseetea.malariacare.database.model.Option;
 import org.eyeseetea.malariacare.database.model.Question;
 import org.eyeseetea.malariacare.database.model.QuestionOption;
 import org.eyeseetea.malariacare.database.model.QuestionRelation;
+import org.eyeseetea.malariacare.database.model.Value;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.ReadWriteDB;
 import org.eyeseetea.malariacare.layout.adapters.general.OptionArrayAdapter;
@@ -106,7 +107,8 @@ public class AutoTabLayoutUtils {
         boolean hidden = false;
 
         if ((parent = question.getQuestion()) != null) {
-            if (parent.getValueBySession() == null)
+            Value parentValue=parent.getValueBySession();
+                if ( parentValue == null || !parentValue.isAYes())
                 hidden = true;
         }
 
