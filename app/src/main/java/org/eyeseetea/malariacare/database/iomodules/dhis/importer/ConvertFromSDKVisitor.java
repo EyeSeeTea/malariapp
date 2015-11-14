@@ -23,12 +23,14 @@ import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.OptionE
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.ProgramStageExtended;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.ProgramStageSectionExtended;
 import org.eyeseetea.malariacare.database.model.Answer;
+import org.eyeseetea.malariacare.database.model.CompositeScore;
 import org.eyeseetea.malariacare.database.model.OrgUnit;
 import org.eyeseetea.malariacare.database.model.Tab;
 import org.eyeseetea.malariacare.database.model.TabGroup;
 import org.eyeseetea.malariacare.database.model.User;
 import org.eyeseetea.malariacare.utils.Constants;
 import org.hisp.dhis.android.sdk.persistence.models.BaseMetaDataObject;
+import org.hisp.dhis.android.sdk.persistence.models.DataElement;
 import org.hisp.dhis.android.sdk.persistence.models.Option;
 import org.hisp.dhis.android.sdk.persistence.models.OptionSet;
 import org.hisp.dhis.android.sdk.persistence.models.OrganisationUnit;
@@ -47,8 +49,14 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
     private final static String REGEXP_FACTOR=".*\\[([0-9]*)\\]";
     Map<String,Object> appMapObjects;
 
+    /**
+     * Builder that helps while linking compositeScores
+     */
+    CompositeScoreBuilder compositeScoreBuilder;
+
     public ConvertFromSDKVisitor(){
         appMapObjects = new HashMap();
+        compositeScoreBuilder = new CompositeScoreBuilder();
     }
 
     /**
@@ -205,6 +213,48 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
         appUser.save();
     }
 
+
+    /**
+     * Turns a dataElement into a question or a compositeScore
+     * @param dataElement
+     */
+    @Override
+    public void visit(DataElement dataElement) {
+        if(compositeScoreBuilder.isACompositeScore(dataElement)){
+            buildCompositeScore(dataElement);
+        }else{
+            buildQuestion(dataElement);
+        }
+    }
+
+    /**
+     * Turns a dataElement into a question
+     * @param dataElement
+     */
+    private void buildQuestion(DataElement dataElement){
+        //TODO Paste here @idelcano code here
+    }
+
+    /**
+     * Turns a dataElement into a question
+     * @param dataElement
+     */
+    private void buildCompositeScore(DataElement dataElement){
+        CompositeScore compositeScore = new CompositeScore();
+        compositeScore.setUid(dataElement.getUid());
+        compositeScore.setLabel(dataElement.getFormName());
+        compositeScore.setHierarchical_code(compositeScoreBuilder.findHierarchicalCode(dataElement));
+        //Parent score and Order can only be set once every score in saved
+        compositeScore.save();
+
+        compositeScoreBuilder.add(compositeScore);
+    }
+
+    @Override
+    public void buildScores() {
+        compositeScoreBuilder.buildScores();
+    }
+
     /**
      * The factor of an option is codified inside its code. Ex: Yes[1]
      * @param code
@@ -228,6 +278,8 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
 
         return Float.parseFloat(factorStr);
     }
+
+
 
 
 }

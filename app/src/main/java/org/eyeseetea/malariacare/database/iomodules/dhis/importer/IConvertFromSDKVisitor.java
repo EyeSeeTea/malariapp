@@ -19,6 +19,7 @@
 
 package org.eyeseetea.malariacare.database.iomodules.dhis.importer;
 
+import org.hisp.dhis.android.sdk.persistence.models.DataElement;
 import org.hisp.dhis.android.sdk.persistence.models.Option;
 import org.hisp.dhis.android.sdk.persistence.models.OptionSet;
 import org.hisp.dhis.android.sdk.persistence.models.OrganisationUnit;
@@ -35,4 +36,6 @@ public interface IConvertFromSDKVisitor {
     void visit(OptionSet optionSet);
     void visit(Option option);
     void visit(UserAccount userAccount);
+    void visit(DataElement dataElement);
+    void buildScores();
 }
