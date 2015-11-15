@@ -86,7 +86,27 @@ public class AttributeValueHelper {
                         //For the given survey
                 .and(Condition.column(ColumnAlias.columnWithTable("av", AttributeValue$Table.ATTRIBUTE_ATTRIBUTEID)).eq(attribute.getUid())).querySingle();
     }
-
+    /**
+     * Find the attribute in a dataelement for the given attribute
+     * @param dataElement
+     * @param code
+     * @return
+     */
+    public AttributeValue findAttributeValuefromDataElementCode(String code,DataElement dataElement){
+        //select * from Attribute join AttributeValue on Attribute.id = attributeValue.attributeId join DataElementAttributeValue on attributeValue.id=DataElementAttributeValue.attributeValueId where DataElementAttributeValue.dataElementId="vWgsPN1RPLl" and code="Order"
+        return new Select().from(AttributeValue.class).as("av")
+                .join(Attribute.class, Join.JoinType.LEFT).as("at")
+                .on(
+                        Condition.column(ColumnAlias.columnWithTable("at", Attribute$Table.ID))
+                                .eq(ColumnAlias.columnWithTable("av", AttributeValue$Table.ATTRIBUTE_ATTRIBUTEID)))
+                .join(DataElementAttributeValue.class, Join.JoinType.LEFT).as("dea")
+                .on(
+                        Condition.column(ColumnAlias.columnWithTable("dea", DataElementAttributeValue$Table.ATTRIBUTEVALUE_ATTRIBUTEVALUEID))
+                                .eq(ColumnAlias.columnWithTable("av", AttributeValue$Table.ID)))
+                .where(Condition.column(ColumnAlias.columnWithTable("dea", DataElementAttributeValue$Table.DATAELEMENTID)).eq(dataElement.getUid()))
+                        //For the given survey
+                .and(Condition.column(ColumnAlias.columnWithTable("at", Attribute$Table.CODE)).eq(code)).querySingle();
+    }
     /**
      * Finds the value of an attribute with the given code in a dataElement
      * @param code
