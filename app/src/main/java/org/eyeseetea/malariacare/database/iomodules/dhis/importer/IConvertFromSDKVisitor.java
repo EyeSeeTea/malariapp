@@ -28,6 +28,8 @@ import org.hisp.dhis.android.sdk.persistence.models.ProgramStage;
 import org.hisp.dhis.android.sdk.persistence.models.ProgramStageSection;
 import org.hisp.dhis.android.sdk.persistence.models.UserAccount;
 
+import java.util.List;
+
 public interface IConvertFromSDKVisitor {
     void visit(Program sdkProgram);
     void visit(ProgramStage sdkProgramStage);
@@ -38,4 +40,5 @@ public interface IConvertFromSDKVisitor {
     void visit(UserAccount userAccount);
     void visit(DataElement dataElement);
     void buildScores();
+
 }
