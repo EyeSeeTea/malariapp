@@ -24,13 +24,16 @@ import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.Program
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.ProgramStageSectionExtended;
 import org.eyeseetea.malariacare.database.model.Answer;
 import org.eyeseetea.malariacare.database.model.CompositeScore;
-import org.eyeseetea.malariacare.database.model.OrgUnit;
+import org.eyeseetea.malariacare.database.model.Question;
 import org.eyeseetea.malariacare.database.model.Tab;
 import org.eyeseetea.malariacare.database.model.TabGroup;
 import org.eyeseetea.malariacare.database.model.User;
 import org.eyeseetea.malariacare.utils.Constants;
-import org.hisp.dhis.android.sdk.persistence.models.BaseMetaDataObject;
+import org.hisp.dhis.android.sdk.controllers.metadata.MetaDataController;
+import org.hisp.dhis.android.sdk.persistence.models.Attribute;
+import org.hisp.dhis.android.sdk.persistence.models.AttributeValue;
 import org.hisp.dhis.android.sdk.persistence.models.DataElement;
+import org.hisp.dhis.android.sdk.persistence.models.DataElementAttributeValue;
 import org.hisp.dhis.android.sdk.persistence.models.Option;
 import org.hisp.dhis.android.sdk.persistence.models.OptionSet;
 import org.hisp.dhis.android.sdk.persistence.models.OrganisationUnit;
@@ -40,6 +43,7 @@ import org.hisp.dhis.android.sdk.persistence.models.ProgramStageSection;
 import org.hisp.dhis.android.sdk.persistence.models.UserAccount;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -47,16 +51,18 @@ import java.util.regex.Pattern;
 public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
 
     private final static String REGEXP_FACTOR=".*\\[([0-9]*)\\]";
-    Map<String,Object> appMapObjects;
+    static Map<String,Object> appMapObjects;
 
     /**
      * Builder that helps while linking compositeScores
      */
     CompositeScoreBuilder compositeScoreBuilder;
+    QuestionBuilder questionBuilder;
 
     public ConvertFromSDKVisitor(){
         appMapObjects = new HashMap();
         compositeScoreBuilder = new CompositeScoreBuilder();
+        questionBuilder = new QuestionBuilder();
     }
 
     /**
@@ -157,7 +163,9 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
         appTab.save();
 
         //Annotate build tab
-        appMapObjects.put(sdkProgramStageSection.getUid(),appTab);
+        appMapObjects.put(sdkProgramStageSection.getUid(), appTab);
+        appMapObjects.put(appTab.getClass() + appTab.getName(), appTab);
+
 
         //TODO Headers,Questions,...
     }
@@ -175,7 +183,6 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
         //FIXME We need to find the right value for the output
         appAnswer.setOutput(1);
         appAnswer.save();
-
         //Annotate built tabgroup
         appMapObjects.put(sdkOptionSet.getUid(), appAnswer);
 
@@ -226,13 +233,36 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
             buildQuestion(dataElement);
         }
     }
-
     /**
      * Turns a dataElement into a question
      * @param dataElement
      */
     private void buildQuestion(DataElement dataElement){
         //TODO Paste here @idelcano code here
+        Question appQuestion = new Question();
+        appQuestion.setDe_name(dataElement.getName());
+        appQuestion.setUid(dataElement.getUid());
+        appQuestion.setShort_name(dataElement.getShortName());
+        appQuestion.setForm_name(dataElement.getFormName());
+        appQuestion.setFeedback(dataElement.getDescription());
+        appQuestion.setCode(dataElement.getCode());
+        try {appQuestion.setOrder_pos(questionBuilder.findOrder(dataElement));}catch(Exception e){}
+        try{appQuestion.setNumerator_w(questionBuilder.findNumerator(dataElement));}catch(Exception e){}
+        try{appQuestion.setDenominator_w(questionBuilder.findDenominator(dataElement));}catch(Exception e){}
+        try{appQuestion.setCompositeScore(questionBuilder.findCompositeScore(dataElement));}catch(Exception e){}
+        try{
+            OptionSet anwserOption = MetaDataController.getOptionSet(dataElement.getOptionSet());
+            if (anwserOption != null) {
+            appQuestion.setAnswer((Answer) appMapObjects.get(dataElement.getOptionSet()));
+            }
+        }catch(Exception e){}
+        try{appQuestion.setHeader(questionBuilder.findHeader(dataElement));}catch(Exception e){}
+        try{questionBuilder.findParent(dataElement);}catch(Exception e){}
+        try{
+            appQuestion.save();
+            questionBuilder.add(appQuestion);
+        }catch(Exception e){
+        }
     }
 
     /**
@@ -255,6 +285,11 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
         compositeScoreBuilder.buildScores();
     }
 
+
+
+    public void buildRelations(DataElement dataElement) {
+        questionBuilder.addRelations(dataElement);
+    }
     /**
      * The factor of an option is codified inside its code. Ex: Yes[1]
      * @param code
