@@ -36,6 +36,10 @@ public class ProgramExtended implements VisitableFromSDK {
 
     @Override
     public void accept(IConvertFromSDKVisitor visitor) {
-        visitor.visit(program);
+        visitor.visit(this);
+    }
+
+    public Program getProgram(){
+        return this.program;
     }
 }

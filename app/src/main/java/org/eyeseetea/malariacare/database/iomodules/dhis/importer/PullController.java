@@ -24,9 +24,11 @@ import android.content.Context;
 import android.util.Log;
 
 import com.raizlabs.android.dbflow.sql.language.Delete;
+import com.raizlabs.android.dbflow.sql.language.Select;
 import com.squareup.otto.Subscribe;
 
 import org.eyeseetea.malariacare.R;
+import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.DataElementExtended;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.OptionSetExtended;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.OrganisationUnitExtended;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.ProgramExtended;
@@ -53,6 +55,7 @@ import org.hisp.dhis.android.sdk.controllers.LoadingController;
 import org.hisp.dhis.android.sdk.controllers.metadata.MetaDataController;
 import org.hisp.dhis.android.sdk.job.NetworkJob;
 import org.hisp.dhis.android.sdk.persistence.Dhis2Application;
+import org.hisp.dhis.android.sdk.persistence.models.DataElement;
 import org.hisp.dhis.android.sdk.persistence.models.OptionSet;
 import org.hisp.dhis.android.sdk.persistence.models.OrganisationUnit;
 import org.hisp.dhis.android.sdk.persistence.models.UserAccount;
@@ -129,6 +132,7 @@ public class PullController {
         LoadingController.enableLoading(context, ResourceType.ASSIGNEDPROGRAMS);
         LoadingController.enableLoading(context, ResourceType.PROGRAMS);
         LoadingController.enableLoading(context, ResourceType.OPTIONSETS);
+        LoadingController.enableLoading(context, ResourceType.ATTRIBUTEVALUES);
     }
 
     @Subscribe
@@ -212,6 +216,15 @@ public class PullController {
         //User (from UserAccount)
         UserAccountExtended userAccountExtended = new UserAccountExtended(MetaDataController.getUserAccount());
         userAccountExtended.accept(converter);
+
+        //Convert questions and compositeScores
+        List<DataElement> dataElementList=new Select().from(DataElement.class).queryList();
+        for(DataElement dataElement:dataElementList){
+            DataElementExtended dataElementExtended = new DataElementExtended(dataElement);
+            dataElementExtended.accept(converter);
+        }
+        //Fill order and parent scores
+        converter.buildScores();
     }
 
     /**
