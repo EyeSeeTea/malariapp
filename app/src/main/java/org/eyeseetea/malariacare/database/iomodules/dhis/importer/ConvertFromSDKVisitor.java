@@ -19,6 +19,8 @@
 
 package org.eyeseetea.malariacare.database.iomodules.dhis.importer;
 
+import android.util.Log;
+
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.DataElementExtended;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.OptionExtended;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.OptionSetExtended;
@@ -34,6 +36,7 @@ import org.eyeseetea.malariacare.database.model.Tab;
 import org.eyeseetea.malariacare.database.model.TabGroup;
 import org.eyeseetea.malariacare.database.model.User;
 import org.eyeseetea.malariacare.utils.Constants;
+import org.hisp.dhis.android.sdk.controllers.metadata.MetaDataController;
 import org.hisp.dhis.android.sdk.persistence.models.BaseMetaDataObject;
 import org.hisp.dhis.android.sdk.persistence.models.DataElement;
 import org.hisp.dhis.android.sdk.persistence.models.Option;
@@ -51,6 +54,7 @@ import java.util.regex.Pattern;
 
 public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
 
+    private final static String TAG=".ConvertFromSDKVisitor";
     private final static String REGEXP_FACTOR=".*\\[([0-9]*)\\]";
     Map<String,Object> appMapObjects;
 
@@ -180,8 +184,8 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
         OptionSet sdkOptionSet=sdkOptionSetExtended.getOptionSet();
         Answer appAnswer = new Answer();
         appAnswer.setName(sdkOptionSet.getName());
-        //FIXME We need to find the right value for the output
-        appAnswer.setOutput(1);
+        //Right type of answer comes from the questions
+        appAnswer.setOutput(CompositeScoreBuilder.DEFAULT_ANSWER_OUTPUT);
         appAnswer.save();
 
         //Annotate built tabgroup
@@ -234,6 +238,8 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
             buildCompositeScore(sdkDataElementExtended);
         }else{
             buildQuestion(sdkDataElementExtended);
+            //Question type is annotated in 'answer' from an attribute of the question
+            buildAnswerOutput(sdkDataElementExtended);
         }
     }
 
@@ -243,6 +249,36 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
      */
     private void buildQuestion(DataElementExtended dataElement){
         //TODO Paste here @idelcano code here
+    }
+
+    /**
+     * Fulfills the answer.output for this question
+     * @param dataElementExtended
+     */
+    private void buildAnswerOutput(DataElementExtended dataElementExtended){
+        DataElement dataElement = dataElementExtended.getDataElement();
+
+        String optionSetUID=dataElement.getOptionSet();
+        //No optionset nothing to fulfill
+        if(optionSetUID==null){
+            return;
+        }
+
+        Answer answer=(Answer)appMapObjects.get(optionSetUID);
+        //Answer not found
+        if(answer==null){
+            Log.e(TAG,String.format("Cannot fulfill output of answer with UID: %s",optionSetUID));
+            return;
+        }
+
+        //Answer output already set
+        if(!CompositeScoreBuilder.DEFAULT_ANSWER_OUTPUT.equals(answer.getOutput())){
+            return;
+        }
+
+        //Get type of dataelement
+        answer.setOutput(compositeScoreBuilder.findAnswerOutput(dataElementExtended));
+        answer.save();
     }
 
     /**

@@ -46,9 +46,18 @@ public class CompositeScoreBuilder {
     private static final String TAG=".CompositeScoreBuilder";
 
     /**
+     * Default mock answer.output value
+     */
+    public static final Integer DEFAULT_ANSWER_OUTPUT = -1;
+
+    /**
      * Expected value for the attributeValue DeQuesType in those dataElements which are a CompositeScore
      */
     private static final String COMPOSITE_SCORE_NAME ="COMPOSITE_SCORE";
+
+    /**
+     * Hierarquical code for any root compositeScore
+     */
     public static final String ROOT_NODE_CODE = "0";
     /**
      * Value of option 'COMPOSITE_SCORE'
@@ -128,6 +137,22 @@ public class CompositeScoreBuilder {
         }
 
         return typeQuestion.equals(COMPOSITE_SCORE_CODE);
+    }
+
+    /**
+     * Finds the type of question for the given dataElementExtended
+     * @param dataElementExtended
+     * @return
+     */
+    public int findAnswerOutput(DataElementExtended dataElementExtended){
+        String typeQuestion=dataElementExtended.findAttributeValueByCode(ATTRIBUTE_QUESTION_TYPE_CODE);
+
+        //Not found -> error type question
+        if(typeQuestion==null  || typeQuestion.equals(COMPOSITE_SCORE_CODE)){
+            return DEFAULT_ANSWER_OUTPUT;
+        }
+
+        return Integer.valueOf(typeQuestion);
     }
 
     public String findHierarchicalCode(DataElementExtended dataElementExtended){
