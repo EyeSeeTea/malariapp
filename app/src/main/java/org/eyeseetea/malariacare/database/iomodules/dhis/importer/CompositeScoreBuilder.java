@@ -21,11 +21,23 @@ package org.eyeseetea.malariacare.database.iomodules.dhis.importer;
 
 import android.util.Log;
 
+import com.raizlabs.android.dbflow.sql.builder.Condition;
+import com.raizlabs.android.dbflow.sql.language.Select;
+
 import org.eyeseetea.malariacare.database.model.CompositeScore;
+import org.hisp.dhis.android.sdk.persistence.models.Attribute$Table;
 import org.hisp.dhis.android.sdk.persistence.models.DataElement;
 import org.hisp.dhis.android.sdk.persistence.models.Option;
+import org.hisp.dhis.android.sdk.persistence.models.ProgramStageDataElement;
+import org.hisp.dhis.android.sdk.persistence.models.ProgramStageDataElement$Table;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -39,6 +51,7 @@ public class CompositeScoreBuilder {
      * Expected value for the attributeValue DeQuesType in those dataElements which are a CompositeScore
      */
     private static final String COMPOSITE_SCORE_NAME ="COMPOSITE_SCORE";
+    public static final String ROOT_NODE_CODE = "0";
     /**
      * Value of option 'COMPOSITE_SCORE'
      */
@@ -53,9 +66,10 @@ public class CompositeScoreBuilder {
     private static final String ATTRIBUTE_COMPOSITE_SCORE_CODE ="DECompositiveScore";
 
     /**
-     * Holds every compositeScore to calculate its order and parent
+     * Holds every compositeScore to calculate its order and parent according to its programStage and hierarchicalCode
+     * programstageId -> hierarchical code -> Score
      */
-    Map<String,CompositeScore> mapCompositeScores;
+    Map<String,Map<String,CompositeScore>> mapCompositeScores;
 
     /**
      * Helper required to deal with AttributeValues
@@ -78,7 +92,23 @@ public class CompositeScoreBuilder {
      * Registers a compositeScore in builder
      */
     public void add(CompositeScore compositeScore){
-        mapCompositeScores.put(compositeScore.getHierarchical_code(), compositeScore);
+
+        //Find the right 'tabgroup' to group scores by program
+        String programStageUID=findProgramStageByDataElementUID(compositeScore.getUid());
+        if(programStageUID==null){
+            Log.e(TAG,String.format("Cannot find tabgroup for composite score: %s",compositeScore.getLabel()));
+            return;
+        }
+
+        //Get the map of scores for that program&
+        Map<String,CompositeScore> compositeScoresXProgram=mapCompositeScores.get(programStageUID);
+        if(compositeScoresXProgram==null){
+            compositeScoresXProgram = new HashMap<String, CompositeScore>();
+            mapCompositeScores.put(programStageUID, compositeScoresXProgram);
+        }
+
+        //Annotate the composite score in its proper map (x tabgroup|program)
+        compositeScoresXProgram.put(compositeScore.getHierarchical_code(), compositeScore);
     }
 
     /**
@@ -86,8 +116,10 @@ public class CompositeScoreBuilder {
      * This operation requires that every composite score has already been registered and procesed and thus It cant be done during 'visit'
      */
     public void buildScores(){
-        buildOrder();
-        buildHierarchy();
+        for(Map.Entry<String,Map<String,CompositeScore>> mapXProgramStage: mapCompositeScores.entrySet()){
+            buildOrder(mapXProgramStage.getValue());
+            buildHierarchy(mapXProgramStage.getValue());
+        }
     }
 
     /**
@@ -113,21 +145,87 @@ public class CompositeScoreBuilder {
         }
 
         //Find the value of the attribute 'DECompositiveScore' for this dataElement
-        return attributeValueHelper.findAttributeValueByCode(ATTRIBUTE_COMPOSITE_SCORE_CODE,dataElement);
+        return attributeValueHelper.findAttributeValueByCode(ATTRIBUTE_COMPOSITE_SCORE_CODE, dataElement);
     }
 
     /**
      * Completes the orderBy attribute in compositeScore according to its hierarchical code
      */
-    private void buildOrder(){
-        //
+    private void buildOrder(Map<String,CompositeScore> compositeScoreMap){
+
+        //Order scores by its hierarchical code
+        List<CompositeScore> scores = new ArrayList<CompositeScore>(compositeScoreMap.values());
+        Collections.sort(scores,new CompositeScoreComparator());
+
+        int i=0;
+        for(CompositeScore score:scores){
+            score.setOrder_pos(Integer.valueOf(i));
+            score.save();
+            i++;
+        }
+
     }
 
     /**
      * Registers a compositeScore in builder
      */
-    private void buildHierarchy(){
+    private void buildHierarchy(Map<String,CompositeScore> compositeScoreMap){
+        CompositeScore rootScore=compositeScoreMap.get(ROOT_NODE_CODE);
+
+        //Find the parent of each score
+        for(CompositeScore compositeScore:compositeScoreMap.values()){
+
+            //Hierarchical code
+            String compositeScoreHierarchicalCode=compositeScore.getHierarchical_code();
+
+            //Root node has no parent
+            if(ROOT_NODE_CODE.equals(compositeScore.getHierarchical_code())){
+                continue;
+            }
+
+            //Count number of dots
+            int numDots = compositeScoreHierarchicalCode.length() - compositeScoreHierarchicalCode.replace(".", "").length();
+
+            //0 dots -> parent: root | X dots -> substring minus last index
+            String parentHierarchicalCode = (numDots==0)?ROOT_NODE_CODE:compositeScoreHierarchicalCode.substring(0,compositeScoreHierarchicalCode.length()-2);
+
+            compositeScore.setCompositeScore(compositeScoreMap.get(parentHierarchicalCode));
+            compositeScore.save();
+        }
 
     }
 
+    /**
+     * Find the associated prgoramStage (tabgroup) given a dataelement UID
+     * @param dataElementUID
+     * @return
+     */
+    private String findProgramStageByDataElementUID(String dataElementUID){
+        //Find the right 'tabgroup' to group scores by program
+        ProgramStageDataElement programStageDataElement = new Select().from(ProgramStageDataElement.class)
+                .where(Condition.column(ProgramStageDataElement$Table.DATAELEMENT)
+                        .is(dataElementUID)).querySingle();
+
+        if(programStageDataElement==null){
+            return null;
+        }
+
+        return programStageDataElement.getProgramStage();
+    }
+
+    /**
+     * Comparator that order composite score by its hierarchical code
+     */
+    class CompositeScoreComparator implements Comparator<CompositeScore>{
+
+        @Override
+        public int compare(CompositeScore lhs, CompositeScore rhs) {
+            return lhs.getHierarchical_code().compareTo(rhs.getHierarchical_code());
+        }
+
+        @Override
+        public boolean equals(Object object) {
+            return false;
+        }
+    }
 }
