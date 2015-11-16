@@ -19,8 +19,6 @@
 
 package org.eyeseetea.malariacare.database.iomodules.dhis.importer;
 
-import android.util.Log;
-
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.OptionExtended;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.ProgramStageExtended;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.ProgramStageSectionExtended;
@@ -252,13 +250,13 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
             appQuestion.setAnswer((Answer) appMapObjects.get(dataElement.getOptionSet()));
         }
         appQuestion.setHeader(questionBuilder.findHeader(dataElement));
-        questionBuilder.findParent(dataElement);
+        questionBuilder.RegisterParentChildRelations(dataElement);
         appQuestion.save();
         questionBuilder.add(appQuestion);
     }
 
     public void buildRelations(DataElement dataElement) {
-        questionBuilder.addRelations(dataElement,appMapObjects);
+        questionBuilder.addRelations(dataElement);
     }
 
     /**
@@ -273,7 +271,6 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
         //Parent score and Order can only be set once every score in saved
         compositeScore.save();
 
-        appMapObjects.put(compositeScore.getUid(), compositeScore);
         compositeScoreBuilder.add(compositeScore);
     }
 
