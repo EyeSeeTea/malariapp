@@ -28,7 +28,7 @@ import org.hisp.dhis.android.sdk.persistence.models.ProgramStageSection;
  * Created by arrizabalaga on 5/11/15.
  */
 public class ProgramStageSectionExtended implements VisitableFromSDK {
-    ProgramStageSection programStageSection;
+   ProgramStageSection programStageSection;
 
     public ProgramStageSectionExtended(ProgramStageSection programStageSection){
         this.programStageSection=programStageSection;
@@ -36,6 +36,11 @@ public class ProgramStageSectionExtended implements VisitableFromSDK {
 
     @Override
     public void accept(IConvertFromSDKVisitor visitor) {
-        visitor.visit(this.programStageSection);
+        visitor.visit(this);
     }
+
+    public ProgramStageSection getProgramStageSection() {
+        return programStageSection;
+    }
+
 }

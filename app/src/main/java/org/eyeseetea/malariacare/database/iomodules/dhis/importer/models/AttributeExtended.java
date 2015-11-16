@@ -22,39 +22,33 @@ package org.eyeseetea.malariacare.database.iomodules.dhis.importer.models;
 import com.raizlabs.android.dbflow.sql.builder.Condition;
 import com.raizlabs.android.dbflow.sql.language.Select;
 
-import org.eyeseetea.malariacare.database.iomodules.dhis.importer.IConvertFromSDKVisitor;
-import org.eyeseetea.malariacare.database.iomodules.dhis.importer.VisitableFromSDK;
 import org.eyeseetea.malariacare.database.model.Option$Table;
+import org.hisp.dhis.android.sdk.persistence.models.Attribute;
+import org.hisp.dhis.android.sdk.persistence.models.Attribute$Table;
 import org.hisp.dhis.android.sdk.persistence.models.Option;
-import org.hisp.dhis.android.sdk.persistence.models.OptionSet;
 
 /**
  * Created by arrizabalaga on 6/11/15.
  */
-public class OptionExtended implements VisitableFromSDK {
+public class AttributeExtended {
 
-    Option option;
+    Attribute attribute;
 
-    public OptionExtended(Option option){
-        this.option=option;
+    public AttributeExtended(Attribute attribute){
+        this.attribute=attribute;
     }
 
-    @Override
-    public void accept(IConvertFromSDKVisitor visitor) {
-        visitor.visit(this);
-    }
-
-    public Option getOption() {
-        return option;
+    public Attribute getAttribute() {
+        return attribute;
     }
 
     /**
-     * Some options have a 'hardcoded' name such as 'COMPOSITE_SCORE'. This method is a helper to recover the whole option with that name
-     * @param name
+     * Find an attribute by its code
+     * @param code
      * @return
      */
-    public static Option findOptionByName(String name){
-        return new Select().from(Option.class).where(Condition.column(Option$Table.NAME).
-                is(name)).querySingle();
+    public static Attribute findAttributeByCode(String code){
+        return new Select().from(Attribute.class).where(Condition.column(Attribute$Table.CODE).
+                is(code)).querySingle();
     }
 }

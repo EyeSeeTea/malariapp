@@ -19,9 +19,19 @@
 
 package org.eyeseetea.malariacare.database.iomodules.dhis.importer.models;
 
+import com.raizlabs.android.dbflow.sql.builder.Condition;
+import com.raizlabs.android.dbflow.sql.language.ColumnAlias;
+import com.raizlabs.android.dbflow.sql.language.Join;
+import com.raizlabs.android.dbflow.sql.language.Select;
+
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.IConvertFromSDKVisitor;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.VisitableFromSDK;
+import org.hisp.dhis.android.sdk.persistence.models.Attribute;
+import org.hisp.dhis.android.sdk.persistence.models.AttributeValue;
+import org.hisp.dhis.android.sdk.persistence.models.AttributeValue$Table;
 import org.hisp.dhis.android.sdk.persistence.models.DataElement;
+import org.hisp.dhis.android.sdk.persistence.models.DataElementAttributeValue;
+import org.hisp.dhis.android.sdk.persistence.models.DataElementAttributeValue$Table;
 import org.hisp.dhis.android.sdk.persistence.models.Program;
 
 /**
@@ -37,6 +47,51 @@ public class DataElementExtended implements VisitableFromSDK {
 
     @Override
     public void accept(IConvertFromSDKVisitor visitor) {
-        visitor.visit(dataElement);
+        visitor.visit(this);
     }
+
+
+    public DataElement getDataElement() {
+        return dataElement;
+    }
+
+    /**
+     * Find the attributevalue in a dataelement for the given attribute
+     * @param attribute
+     * @return
+     */
+    public AttributeValue findAttributeValue(Attribute attribute){
+        return new Select().from(AttributeValue.class).as("av")
+                .join(DataElementAttributeValue.class, Join.JoinType.LEFT).as("dea")
+                .on(
+                        Condition.column(ColumnAlias.columnWithTable("dea", DataElementAttributeValue$Table.ATTRIBUTEVALUE_ATTRIBUTEVALUEID))
+                                .eq(ColumnAlias.columnWithTable("av", AttributeValue$Table.ID)))
+                .where(Condition.column(ColumnAlias.columnWithTable("dea", DataElementAttributeValue$Table.DATAELEMENTID)).eq(dataElement.getUid()))
+                        //For the given survey
+                .and(Condition.column(ColumnAlias.columnWithTable("av", AttributeValue$Table.ATTRIBUTE_ATTRIBUTEID)).eq(attribute.getUid())).querySingle();
+    }
+
+
+    /**
+     * Finds the value of an attribute with the given code in a dataElement
+     * @param code
+     * @return
+     */
+    public  String findAttributeValueByCode(String code){
+
+        //Find the right attribute
+        Attribute attribute= AttributeExtended.findAttributeByCode(code);
+        //No such attribute -> done
+        if(attribute==null){
+            return null;
+        }
+
+        //Find its value for the given dataelement
+        AttributeValue attributeValue=findAttributeValue(attribute);
+        if(attributeValue==null){
+            return null;
+        }
+        return attributeValue.getValue();
+    }
+
 }
