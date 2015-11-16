@@ -69,7 +69,7 @@ public class CompositeScoreBuilder {
      * Holds every compositeScore to calculate its order and parent according to its programStage and hierarchicalCode
      * programstageId -> hierarchical code -> Score
      */
-    Map<String,Map<String,CompositeScore>> mapCompositeScores;
+    static Map<String,Map<String,CompositeScore>> mapCompositeScores;
 
     /**
      * Helper required to deal with AttributeValues
@@ -200,7 +200,7 @@ public class CompositeScoreBuilder {
      * @param dataElementUID
      * @return
      */
-    private String findProgramStageByDataElementUID(String dataElementUID){
+    private static String findProgramStageByDataElementUID(String dataElementUID){
         //Find the right 'tabgroup' to group scores by program
         ProgramStageDataElement programStageDataElement = new Select().from(ProgramStageDataElement.class)
                 .where(Condition.column(ProgramStageDataElement$Table.DATAELEMENT)
@@ -227,5 +227,12 @@ public class CompositeScoreBuilder {
         public boolean equals(Object object) {
             return false;
         }
+    }
+    public static CompositeScore getCompositeScoreFromDataElementAndHierarchicalCode(DataElement dataElement, String HierarchicalCode){
+        CompositeScore compositeScore=null;
+        String programId= findProgramStageByDataElementUID(dataElement.getUid());
+        Map<String,CompositeScore> compositeScoresInProgram=mapCompositeScores.get(programId);
+        compositeScore=compositeScoresInProgram.get(HierarchicalCode);
+        return compositeScore;
     }
 }
