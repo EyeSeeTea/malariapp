@@ -129,7 +129,23 @@ public class AttributeValueHelper {
         }
         return attributeValue.getValue();
     }
+    /**
+     * Return an attribute with the given code in a dataElement
+     * @param code
+     * @param dataElement
+     * @return
+     */
+    public Attribute findAttributeByCode(String code, DataElement dataElement) {
 
+        //Find the right attribute
+        Attribute attribute = findAttributeByCode(code);
+        //No such attribute -> done
+        if (attribute == null) {
+            return null;
+        }
+
+        return attribute;
+    }
 
 
 

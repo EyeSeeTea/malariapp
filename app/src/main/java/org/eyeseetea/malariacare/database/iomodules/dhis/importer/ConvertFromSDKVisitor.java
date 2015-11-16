@@ -19,6 +19,8 @@
 
 package org.eyeseetea.malariacare.database.iomodules.dhis.importer;
 
+import android.util.Log;
+
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.OptionExtended;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.ProgramStageExtended;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.ProgramStageSectionExtended;
@@ -242,23 +244,21 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
         appQuestion.setForm_name(dataElement.getFormName());
         appQuestion.setFeedback(dataElement.getDescription());
         appQuestion.setCode(dataElement.getCode());
-        try {appQuestion.setOrder_pos(questionBuilder.findOrder(dataElement));}catch(Exception e){}
-        try{appQuestion.setNumerator_w(questionBuilder.findNumerator(dataElement));}catch(Exception e){}
-        try{appQuestion.setDenominator_w(questionBuilder.findDenominator(dataElement));}catch(Exception e){}
-        try{appQuestion.setCompositeScore(questionBuilder.findCompositeScore(dataElement));}catch(Exception e){}
-        try{
-            OptionSet anwserOption = MetaDataController.getOptionSet(dataElement.getOptionSet());
-            if (anwserOption != null) {
+        appQuestion.setOrder_pos(questionBuilder.findOrder(dataElement));
+        appQuestion.setNumerator_w(questionBuilder.findNumerator(dataElement));
+        appQuestion.setDenominator_w(questionBuilder.findDenominator(dataElement));
+        OptionSet anwserOption = MetaDataController.getOptionSet(dataElement.getOptionSet());
+        if (anwserOption != null) {
             appQuestion.setAnswer((Answer) appMapObjects.get(dataElement.getOptionSet()));
-            }
-        }catch(Exception e){}
-        try{appQuestion.setHeader(questionBuilder.findHeader(dataElement));}catch(Exception e){}
-        try{questionBuilder.findParent(dataElement);}catch(Exception e){}
-        try{
-            appQuestion.save();
-            questionBuilder.add(appQuestion);
-        }catch(Exception e){
         }
+        appQuestion.setHeader(questionBuilder.findHeader(dataElement));
+        questionBuilder.findParent(dataElement);
+        appQuestion.save();
+        questionBuilder.add(appQuestion);
+    }
+
+    public void buildRelations(DataElement dataElement) {
+        questionBuilder.addRelations(dataElement,appMapObjects);
     }
 
     /**
@@ -273,6 +273,7 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
         //Parent score and Order can only be set once every score in saved
         compositeScore.save();
 
+        appMapObjects.put(compositeScore.getUid(), compositeScore);
         compositeScoreBuilder.add(compositeScore);
     }
 
@@ -283,9 +284,6 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
 
 
 
-    public void buildRelations(DataElement dataElement) {
-        questionBuilder.addRelations(dataElement);
-    }
     /**
      * The factor of an option is codified inside its code. Ex: Yes[1]
      * @param code

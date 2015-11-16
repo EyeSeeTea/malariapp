@@ -55,7 +55,7 @@ public class CompositeScoreBuilder {
     /**
      * Holds every compositeScore to calculate its order and parent
      */
-    static Map<String,CompositeScore> mapCompositeScores;
+    Map<String,CompositeScore> mapCompositeScores;
 
     /**
      * Helper required to deal with AttributeValues
@@ -78,7 +78,6 @@ public class CompositeScoreBuilder {
      * Registers a compositeScore in builder
      */
     public void add(CompositeScore compositeScore){
-        mapCompositeScores.put(compositeScore.getUid(), compositeScore);
         mapCompositeScores.put(compositeScore.getHierarchical_code(), compositeScore);
     }
 

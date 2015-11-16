@@ -27,6 +27,7 @@ import org.eyeseetea.malariacare.database.model.Header;
 import org.eyeseetea.malariacare.database.model.Question;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.hisp.dhis.android.sdk.controllers.metadata.MetaDataController;
+import org.hisp.dhis.android.sdk.persistence.models.Attribute;
 import org.hisp.dhis.android.sdk.persistence.models.AttributeValue;
 import org.hisp.dhis.android.sdk.persistence.models.DataElement;
 
@@ -154,21 +155,31 @@ public class QuestionBuilder {
     }
 
     public Integer findOrder(DataElement dataElement) {
-        String value = attributeValueHelper.findAttributeValuefromDataElementCode(ATTRIBUTE_ORDER, dataElement).getValue();
-        int order = Integer.valueOf(value);
-        return order;
+        String value = getValue(ATTRIBUTE_ORDER, dataElement);
+        if(value!=null) {
+            int order = Integer.valueOf(value);
+            return order;
+        }
+        return null;
     }
 
     public Float findNumerator(DataElement dataElement) {
-        String value = attributeValueHelper.findAttributeValuefromDataElementCode(ATTRIBUTE_NUMERATOR, dataElement).getValue();
-        float numinator = Float.valueOf(value);
-        return numinator;
+        String value = getValue(ATTRIBUTE_NUMERATOR, dataElement);
+        if(value!=null) {
+            float numinator = Float.valueOf(value);
+            return numinator;
+        }
+        else
+            return null;
     }
 
     public Float findDenominator(DataElement dataElement) {
-        String value = attributeValueHelper.findAttributeValuefromDataElementCode(ATTRIBUTE_DENUMERATOR, dataElement).getValue();
-        float denominator = Float.valueOf(value);
-        return denominator;
+        String value = getValue(ATTRIBUTE_DENUMERATOR, dataElement);
+        if(value!=null) {
+            float denominator = Float.valueOf(value);
+            return denominator;
+        }
+        return null;
     }
 
     /**
@@ -177,11 +188,20 @@ public class QuestionBuilder {
      *  The compositeScore is getted in mapCompositeScores in CompositeScoreBuilder.class
      *
      * @param dataElement
+     * @param appMapObjects
      * @return compositeScore question
      */
-    public CompositeScore findCompositeScore(DataElement dataElement) {
-        String value = attributeValueHelper.findAttributeValuefromDataElementCode(ATTRIBUTE_COMPOSITE_SCORE_CODE, dataElement).getValue();
-        CompositeScore compositeScore = CompositeScoreBuilder.mapCompositeScores.get(value);
+    public CompositeScore findCompositeScore(DataElement dataElement, Map<String, Object> appMapObjects) {
+        CompositeScore compositeScore =null;
+                Attribute attribute = getAttribute(ATTRIBUTE_COMPOSITE_SCORE_CODE, dataElement);
+        String value= attribute.getUid();
+        if(value!=null) {
+            try {
+                compositeScore=(CompositeScore) appMapObjects.get(value);
+            }catch(Exception e){
+                return compositeScore;
+            }
+        }
         return compositeScore;
     }
 
@@ -195,21 +215,23 @@ public class QuestionBuilder {
      */
     public Header findHeader(DataElement dataElement) {
         Header header = null;
-        String value = attributeValueHelper.findAttributeValuefromDataElementCode(ATTRIBUTE_HEADER_NAME, dataElement).getValue();
-        if (!mapHeader.containsKey(value)) {
-            header = new Header();
-            header.setName(value.trim());
-            header.setShort_name(value);
-            value = attributeValueHelper.findAttributeValueByCode(ATTRIBUTE_TAB_NAME, dataElement);
-            org.eyeseetea.malariacare.database.model.Tab questionTab = new org.eyeseetea.malariacare.database.model.Tab();
-            questionTab = (org.eyeseetea.malariacare.database.model.Tab) ConvertFromSDKVisitor.appMapObjects.get(questionTab.getClass() + value);
-            header.setOrder_pos(header_order);
-            header_order++;
-            header.setTab(questionTab);
-            header.save();
-            mapHeader.put(header.getName(), header);
-        } else
-            header = mapHeader.get(value);
+        String value = getValue(ATTRIBUTE_HEADER_NAME, dataElement);
+        if(value!=null) {
+            if (!mapHeader.containsKey(value)) {
+                header = new Header();
+                header.setName(value.trim());
+                header.setShort_name(value);
+                value = attributeValueHelper.findAttributeValueByCode(ATTRIBUTE_TAB_NAME, dataElement);
+                org.eyeseetea.malariacare.database.model.Tab questionTab = new org.eyeseetea.malariacare.database.model.Tab();
+                questionTab = (org.eyeseetea.malariacare.database.model.Tab) ConvertFromSDKVisitor.appMapObjects.get(questionTab.getClass() + value);
+                header.setOrder_pos(header_order);
+                header_order++;
+                header.setTab(questionTab);
+                header.save();
+                mapHeader.put(header.getName(), header);
+            } else
+                header = mapHeader.get(value);
+        }
         return header;
     }
 
@@ -251,11 +273,24 @@ public class QuestionBuilder {
      * Save Question id_parent QuestionOption QuestionRelation and Match
      *
      * @param dataElement
+     * @param appMapObjects
      */
-    public void addRelations(DataElement dataElement) {
+    public void addRelations(DataElement dataElement, Map<String, Object> appMapObjects) {
             addParent(dataElement);
             addQuestionRelations(dataElement);
+            addCompositeScores(dataElement,appMapObjects);
     }
+
+    private void addCompositeScores(DataElement dataElement, Map<String, Object> appMapObjects) {
+        CompositeScore compositeScore = findCompositeScore(dataElement,appMapObjects);
+        if(compositeScore!=null) {
+            org.eyeseetea.malariacare.database.model.Question appQuestion = (org.eyeseetea.malariacare.database.model.Question) mapQuestions.get(dataElement.getUid());
+            appQuestion.setCompositeScore(compositeScore);
+            appQuestion.save();
+            add(appQuestion);
+        }
+    }
+
     /**
      * Create QuestionOption QuestionRelation and Match relations
      *
@@ -318,6 +353,7 @@ public class QuestionBuilder {
             Question child = mapQuestions.get(dataElement.getUid());
             child.setQuestion(parent);
             child.save();
+            add(child);
         }
     }
 
@@ -336,5 +372,14 @@ public class QuestionBuilder {
         }
         return null;
     }
+    private Attribute getAttribute(String attributeCode, DataElement dataElement) {
+        Attribute attribute;
+        attribute =attributeValueHelper.findAttributeByCode(attributeCode, dataElement);
+        if(attribute!=null) {
+            return attribute;
+        }
+        return null;
+    }
+
 
 }
