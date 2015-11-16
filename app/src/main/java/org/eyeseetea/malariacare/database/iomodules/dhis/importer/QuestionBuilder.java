@@ -37,18 +37,8 @@ import java.util.Map;
  */
 public class QuestionBuilder {
 
-    private static final String TAG = ".CompositeScoreBuilder";
-
     /**
-     * Expected value for the attributeValue DeQuesType in those dataElements which are a CompositeScore
-     */
-    private static final String COMPOSITE_SCORE_NAME = "COMPOSITE_SCORE";
-    /**
-     * Value of option 'COMPOSITE_SCORE'
-     */
-    private static String COMPOSITE_SCORE_CODE;
-    /**
-     * Code of attribute Header name
+     * Code of attribute dheader unique name
      */
     private static final String ATTRIBUTE_HEADER_NAME = "DEHeader";
     /**
@@ -93,41 +83,41 @@ public class QuestionBuilder {
     private static final String CHILD = "CHILD";
 
     /**
-     * Code of attribute '35 Composite Score'
+     * Code of attribute 'Composite Score'
      */
     private static final String ATTRIBUTE_COMPOSITE_SCORE_CODE = "DECompositiveScore";
 
     /**
-     *
+     * Mapping all the questions
      */
     Map<String, Question> mapQuestions;
 
     /**
-     *
+     * Mapping all the question parents
      */
     Map<String, String> mapParent;
     /**
-     *
+     * Mapping all the question type(child/parent)
      */
     Map<String, String> mapType;
     /**
-     *
+     * Mapping all the question level(it is needed for know who are the parent)
      */
     Map<String, String> mapLevel;
     /**
-     *
+     * Mapping all the Match question parents
      */
     Map<String, String> mapMatchType;
     /**
-     *
+     * Mapping all the Match question type(child/parent)
      */
     Map<String, String> mapMatchLevel;
     /**
-     *
+     * Mapping all the Match question level(it is needed for know who are the parent)
      */
     Map<String, String> mapMatchParent;
     /**
-     *
+     * Mapping headers(it is needed for not duplicate data)
      */
     Map<String, Header> mapHeader;
     /**
@@ -135,7 +125,9 @@ public class QuestionBuilder {
      */
     AttributeValueHelper attributeValueHelper;
 
-
+    /**
+     * It is needed in the header order.
+     */
     private int header_order = 0;
 
     QuestionBuilder() {
@@ -177,15 +169,28 @@ public class QuestionBuilder {
         return denominator;
     }
 
+    /**
+     * Return a CompositeScore question
+     *
+     *  The compositeScore is getted in mapCompositeScores in CompositeScoreBuilder.class
+     *
+     * @param dataElement
+     * @return compositeScore question
+     */
     public CompositeScore findCompositeScore(DataElement dataElement) {
         String value = attributeValueHelper.findAttributeValuefromDataElementCode(ATTRIBUTE_COMPOSITE_SCORE_CODE, dataElement).getValue();
         CompositeScore compositeScore = CompositeScoreBuilder.mapCompositeScores.get(value);
-        if (compositeScore == null && value != null)
-            Log.d("composite sin poner", value);
         return compositeScore;
-        //return compositeScore;
     }
 
+    /**
+     * Save and return Header question
+     *
+     * The header check if exist before be saved.
+     *
+     * @param dataElement
+     * @return header question
+     */
     public Header findHeader(DataElement dataElement) {
         Header header = null;
         String value = attributeValueHelper.findAttributeValuefromDataElementCode(ATTRIBUTE_HEADER_NAME, dataElement).getValue();
@@ -205,8 +210,9 @@ public class QuestionBuilder {
             header = mapHeader.get(value);
         return header;
     }
+
     /**
-     * Registers a Parent/child relations in map
+     * Registers a Parent/child and Match Parent/child relations in maps
      *
      * @param dataElement
      */
@@ -248,7 +254,11 @@ public class QuestionBuilder {
             addParent(dataElement);
             addQuestionRelations(dataElement);
     }
-
+    /**
+     * Create QuestionOption QuestionRelation and Match relations
+     *
+     * @param dataElement
+     */
     private void addQuestionRelations(DataElement dataElement) {
         String matchRelationType = mapMatchType.get(dataElement.getUid());
         String matchRelationGroup = mapMatchLevel.get(dataElement.getUid());
@@ -273,11 +283,10 @@ public class QuestionBuilder {
                         List<org.eyeseetea.malariacare.database.model.Option> options = parentQuestion.getAnswer().getOptions();
                         for (org.eyeseetea.malariacare.database.model.Option option : options) {
                             org.eyeseetea.malariacare.database.model.QuestionOption questionOption = new org.eyeseetea.malariacare.database.model.QuestionOption();
-
+                            //fixme
                             questionOption.setOption(option);
                             questionOption.setQuestion(parentQuestion);
-                            //fixme
-                            //questionOption.setOption();
+
                             match.setQuestionRelation(questionRelation);
                             match.save();
                             questionOption.setMatch(match);
@@ -286,7 +295,6 @@ public class QuestionBuilder {
                     }
                 }
             } catch (Exception e) {
-                Log.d("MyExcepcion","addRelationsLevel2");
             }
         } else {
             org.eyeseetea.malariacare.database.model.QuestionRelation questionRelation = new org.eyeseetea.malariacare.database.model.QuestionRelation();
@@ -295,7 +303,11 @@ public class QuestionBuilder {
             questionRelation.save();
         }
     }
-
+    /**
+     * Save Question id_parent in Question
+     *
+     * @param dataElement
+     */
     private void addParent(DataElement dataElement) {
         String questionRelationType = mapType.get(dataElement.getUid());
         String questionRelationGroup = mapLevel.get(dataElement.getUid());
