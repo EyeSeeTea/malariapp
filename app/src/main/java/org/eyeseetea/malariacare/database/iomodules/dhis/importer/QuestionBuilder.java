@@ -267,9 +267,7 @@ public class QuestionBuilder {
 
         org.eyeseetea.malariacare.database.model.Question appQuestion = (org.eyeseetea.malariacare.database.model.Question) mapQuestions.get(dataElement.getUid());
 
-        if (matchRelationType != null && matchRelationType.equals(PARENT)) {
-
-        } else if (matchRelationType != null && matchRelationType.equals(CHILD)) {
+        if (matchRelationType != null && matchRelationType.equals(CHILD)) {
             try {
                 org.eyeseetea.malariacare.database.model.QuestionRelation questionRelation = new org.eyeseetea.malariacare.database.model.QuestionRelation();
                 org.eyeseetea.malariacare.database.model.Match match = new org.eyeseetea.malariacare.database.model.Match();
@@ -283,7 +281,7 @@ public class QuestionBuilder {
                         org.eyeseetea.malariacare.database.model.Question parentQuestion = (org.eyeseetea.malariacare.database.model.Question) mapQuestions.get(parentuid);
                         List<org.eyeseetea.malariacare.database.model.Option> options = parentQuestion.getAnswer().getOptions();
                         for (org.eyeseetea.malariacare.database.model.Option option : options) {
-                            if(option.getName().toLowerCase().equals(PreferencesState.getInstance().getContext().getResources().getString(R.string.yes))) {
+                            if(option.getName().equals(PreferencesState.getInstance().getContext().getResources().getString(R.string.yes))) {
                                 org.eyeseetea.malariacare.database.model.QuestionOption questionOption = new org.eyeseetea.malariacare.database.model.QuestionOption();
                                 questionOption.setOption(option);
                                 questionOption.setQuestion(parentQuestion);
@@ -299,7 +297,7 @@ public class QuestionBuilder {
                 }
             } catch (Exception e) {
             }
-        } else {
+        } else if(matchRelationType==null || (matchRelationType != null && !matchRelationType.equals(PARENT))){
             org.eyeseetea.malariacare.database.model.QuestionRelation questionRelation = new org.eyeseetea.malariacare.database.model.QuestionRelation();
             questionRelation.setOperation(0);
             questionRelation.setQuestion(appQuestion);
