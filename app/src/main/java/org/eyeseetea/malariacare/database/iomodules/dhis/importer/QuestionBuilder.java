@@ -21,9 +21,11 @@ package org.eyeseetea.malariacare.database.iomodules.dhis.importer;
 
 import android.util.Log;
 
+import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.model.CompositeScore;
 import org.eyeseetea.malariacare.database.model.Header;
 import org.eyeseetea.malariacare.database.model.Question;
+import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.hisp.dhis.android.sdk.controllers.metadata.MetaDataController;
 import org.hisp.dhis.android.sdk.persistence.models.AttributeValue;
 import org.hisp.dhis.android.sdk.persistence.models.DataElement;
@@ -276,21 +278,22 @@ public class QuestionBuilder {
                     questionRelation.setOperation(1);
                     questionRelation.setQuestion(appQuestion);
                     questionRelation.save();
-
                     String parentuid = mapMatchParent.get(matchRelationGroup);
                     if (parentuid != null) {
                         org.eyeseetea.malariacare.database.model.Question parentQuestion = (org.eyeseetea.malariacare.database.model.Question) mapQuestions.get(parentuid);
                         List<org.eyeseetea.malariacare.database.model.Option> options = parentQuestion.getAnswer().getOptions();
                         for (org.eyeseetea.malariacare.database.model.Option option : options) {
-                            org.eyeseetea.malariacare.database.model.QuestionOption questionOption = new org.eyeseetea.malariacare.database.model.QuestionOption();
-                            //fixme
-                            questionOption.setOption(option);
-                            questionOption.setQuestion(parentQuestion);
+                            if(option.getName().toLowerCase().equals(PreferencesState.getInstance().getContext().getResources().getString(R.string.yes))) {
+                                org.eyeseetea.malariacare.database.model.QuestionOption questionOption = new org.eyeseetea.malariacare.database.model.QuestionOption();
+                                questionOption.setOption(option);
+                                questionOption.setQuestion(parentQuestion);
 
-                            match.setQuestionRelation(questionRelation);
-                            match.save();
-                            questionOption.setMatch(match);
-                            questionOption.save();
+                                match.setQuestionRelation(questionRelation);
+                                match.save();
+
+                                questionOption.setMatch(match);
+                                questionOption.save();
+                            }
                         }
                     }
                 }
