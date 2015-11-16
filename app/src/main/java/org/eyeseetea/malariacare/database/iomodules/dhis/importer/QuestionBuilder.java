@@ -19,7 +19,10 @@
 
 package org.eyeseetea.malariacare.database.iomodules.dhis.importer;
 
+import android.provider.ContactsContract;
+
 import org.eyeseetea.malariacare.R;
+import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.DataElementExtended;
 import org.eyeseetea.malariacare.database.model.CompositeScore;
 import org.eyeseetea.malariacare.database.model.Header;
 import org.eyeseetea.malariacare.database.model.Question;
@@ -119,10 +122,6 @@ public class QuestionBuilder {
      * Mapping headers(it is needed for not duplicate data)
      */
     Map<String, Header> mapHeader;
-    /**
-     * Helper required to deal with AttributeValues
-     */
-    AttributeValueHelper attributeValueHelper;
 
     /**
      * It is needed in the header order.
@@ -138,7 +137,6 @@ public class QuestionBuilder {
         mapMatchLevel = new HashMap<>();
         mapMatchParent = new HashMap<>();
         mapMatchType = new HashMap<>();
-        attributeValueHelper = new AttributeValueHelper();
     }
 
     /**
@@ -150,8 +148,8 @@ public class QuestionBuilder {
         mapQuestions.put(question.getUid(), question);
     }
 
-    public Integer findOrder(DataElement dataElement) {
-        String value = getValue(ATTRIBUTE_ORDER, dataElement);
+    public Integer findOrder(DataElementExtended dataElementExtended) {
+        String value = getValue(ATTRIBUTE_ORDER, dataElementExtended);
         if(value!=null) {
             int order = Integer.valueOf(value);
             return order;
@@ -159,13 +157,13 @@ public class QuestionBuilder {
         return null;
     }
 
-    public String findCompositeScoreId(DataElement dataElement) {
-        String value = getValue(ATTRIBUTE_COMPOSITE_SCORE_CODE, dataElement);
+    public String findCompositeScoreId(DataElementExtended dataElementExtended) {
+        String value = getValue(ATTRIBUTE_COMPOSITE_SCORE_CODE, dataElementExtended);
         return value;
     }
 
-    public Float findNumerator(DataElement dataElement) {
-        String value = getValue(ATTRIBUTE_NUMERATOR, dataElement);
+    public Float findNumerator(DataElementExtended dataElementExtended) {
+        String value = getValue(ATTRIBUTE_NUMERATOR, dataElementExtended);
         if(value!=null) {
             float numinator = Float.valueOf(value);
             return numinator;
@@ -174,8 +172,8 @@ public class QuestionBuilder {
             return null;
     }
 
-    public Float findDenominator(DataElement dataElement) {
-        String value = getValue(ATTRIBUTE_DENUMERATOR, dataElement);
+    public Float findDenominator(DataElementExtended dataElementExtended) {
+        String value = getValue(ATTRIBUTE_DENUMERATOR, dataElementExtended);
         if(value!=null) {
             float denominator = Float.valueOf(value);
             return denominator;
@@ -188,16 +186,16 @@ public class QuestionBuilder {
      *
      *  The compositeScore is getted in mapCompositeScores in CompositeScoreBuilder.class
      *
-     * @param dataElement
+     * @param dataElementExtended
      * @return compositeScore question
      */
-    public CompositeScore findCompositeScore(DataElement dataElement) {
+    public CompositeScore findCompositeScore(DataElementExtended dataElementExtended) {
         CompositeScore compositeScore =null;
 
-        String value= findCompositeScoreId(dataElement);
+        String value= findCompositeScoreId(dataElementExtended);
         if(value!=null) {
             try {
-                compositeScore =CompositeScoreBuilder.getCompositeScoreFromDataElementAndHierarchicalCode(dataElement,value);
+                compositeScore =CompositeScoreBuilder.getCompositeScoreFromDataElementAndHierarchicalCode(dataElementExtended.getDataElement(),value);
             }catch(Exception e){
                 return compositeScore;
             }
@@ -210,18 +208,18 @@ public class QuestionBuilder {
      *
      * The header check if exist before be saved.
      *
-     * @param dataElement
+     * @param dataElementExtended
      * @return header question
      */
-    public Header findHeader(DataElement dataElement) {
+    public Header findHeader(DataElementExtended dataElementExtended) {
         Header header = null;
-        String value = getValue(ATTRIBUTE_HEADER_NAME, dataElement);
+        String value = getValue(ATTRIBUTE_HEADER_NAME, dataElementExtended);
         if(value!=null) {
             if (!mapHeader.containsKey(value)) {
                 header = new Header();
                 header.setName(value.trim());
                 header.setShort_name(value);
-                value = getValue(ATTRIBUTE_TAB_NAME, dataElement);
+                value = getValue(ATTRIBUTE_TAB_NAME, dataElementExtended);
                 org.eyeseetea.malariacare.database.model.Tab questionTab = new org.eyeseetea.malariacare.database.model.Tab();
                 questionTab = (org.eyeseetea.malariacare.database.model.Tab) ConvertFromSDKVisitor.appMapObjects.get(questionTab.getClass() + value);
                 header.setOrder_pos(header_order);
@@ -238,17 +236,18 @@ public class QuestionBuilder {
     /**
      * Registers a Parent/child and Match Parent/child relations in maps
      *
-     * @param dataElement
+     * @param dataElementExtended
      */
-    public void RegisterParentChildRelations(DataElement dataElement) {
+    public void RegisterParentChildRelations(DataElementExtended dataElementExtended) {
+        DataElement dataElement= dataElementExtended.getDataElement();
         String questionRelationType=null;
         String questionRelationGroup=null;
         String matchRelationType=null;
         String matchRelationGroup=null;
-        questionRelationType =getValue(ATTRIBUTE_HIDE_TYPE,dataElement);
-        questionRelationGroup =getValue(ATTRIBUTE_HIDE_GROUP, dataElement);
-        matchRelationType =getValue(ATTRIBUTE_MATCH_TYPE, dataElement);
-        matchRelationGroup =getValue(ATTRIBUTE_MATCH_GROUP, dataElement);
+        questionRelationType =getValue(ATTRIBUTE_HIDE_TYPE,dataElementExtended);
+        questionRelationGroup =getValue(ATTRIBUTE_HIDE_GROUP, dataElementExtended);
+        matchRelationType =getValue(ATTRIBUTE_MATCH_TYPE, dataElementExtended);
+        matchRelationGroup =getValue(ATTRIBUTE_MATCH_GROUP, dataElementExtended);
         Question questionParent = null;
         if (questionRelationType != null) {
             if (questionRelationType.equals(PARENT)) {
@@ -272,20 +271,20 @@ public class QuestionBuilder {
     /**
      * Save Question id_parent QuestionOption QuestionRelation and Match
      *
-     * @param dataElement
+     * @param dataElementExtended
      */
-    public void addRelations(DataElement dataElement) {
-        if(mapQuestions.containsKey(dataElement.getUid())) {
-            addParent(dataElement);
-            addQuestionRelations(dataElement);
-            addCompositeScores(dataElement);
+    public void addRelations(DataElementExtended dataElementExtended) {
+        if(mapQuestions.containsKey(dataElementExtended.getDataElement().getUid())) {
+            addParent(dataElementExtended.getDataElement());
+            addQuestionRelations(dataElementExtended.getDataElement());
+            addCompositeScores(dataElementExtended);
         }
     }
 
-    private void addCompositeScores(DataElement dataElement) {
-        CompositeScore compositeScore = findCompositeScore(dataElement);
+    private void addCompositeScores(DataElementExtended dataElementExtended) {
+        CompositeScore compositeScore = findCompositeScore(dataElementExtended);
         if(compositeScore!=null) {
-            org.eyeseetea.malariacare.database.model.Question appQuestion = (org.eyeseetea.malariacare.database.model.Question) mapQuestions.get(dataElement.getUid());
+            org.eyeseetea.malariacare.database.model.Question appQuestion = (org.eyeseetea.malariacare.database.model.Question) mapQuestions.get(dataElementExtended.getDataElement().getUid());
             if(appQuestion!=null) {
                 appQuestion.setCompositeScore(compositeScore);
                 appQuestion.save();
@@ -364,21 +363,15 @@ public class QuestionBuilder {
      * Gets value if the AttributeValue is not null
      *
      * @param attributeCode
-     * @param dataElement
+     * @param dataElementExtended
      * @return value
      */
-    private String getValue(String attributeCode, DataElement dataElement) {
+    private String getValue(String attributeCode, DataElementExtended dataElementExtended) {
         AttributeValue attributeValue;
-        attributeValue =attributeValueHelper.findAttributeValuefromDataElementCode(attributeCode, dataElement);
+        DataElement dataElement=dataElementExtended.getDataElement();
+        attributeValue =dataElementExtended.findAttributeValuefromDataElementCode(attributeCode, dataElement);
         if(attributeValue!=null) {
             return attributeValue.getValue();
-        }
-        return null;
-    }
-    private String getAttributeByCode(String attributeCode, DataElement dataElement) {
-        String attributeValue =attributeValueHelper.findAttributeValueByCode(attributeCode, dataElement);
-        if(attributeValue!=null) {
-            return attributeValue;
         }
         return null;
     }

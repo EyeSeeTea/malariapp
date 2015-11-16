@@ -24,16 +24,15 @@ import android.util.Log;
 import com.raizlabs.android.dbflow.sql.builder.Condition;
 import com.raizlabs.android.dbflow.sql.language.Select;
 
+import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.DataElementExtended;
+import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.OptionExtended;
 import org.eyeseetea.malariacare.database.model.CompositeScore;
-import org.hisp.dhis.android.sdk.persistence.models.Attribute$Table;
 import org.hisp.dhis.android.sdk.persistence.models.DataElement;
 import org.hisp.dhis.android.sdk.persistence.models.Option;
 import org.hisp.dhis.android.sdk.persistence.models.ProgramStageDataElement;
 import org.hisp.dhis.android.sdk.persistence.models.ProgramStageDataElement$Table;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -71,16 +70,10 @@ public class CompositeScoreBuilder {
      */
     static Map<String,Map<String,CompositeScore>> mapCompositeScores;
 
-    /**
-     * Helper required to deal with AttributeValues
-     */
-    AttributeValueHelper attributeValueHelper;
-
     CompositeScoreBuilder(){
         mapCompositeScores=new HashMap<>();
-        attributeValueHelper=new AttributeValueHelper();
 
-        Option optionCompositeScore=attributeValueHelper.findOptionByName(COMPOSITE_SCORE_NAME);
+        Option optionCompositeScore= OptionExtended.findOptionByName(COMPOSITE_SCORE_NAME);
         //No Option with COMPOSITE_SCORE -> error
         if(optionCompositeScore==null){
             Log.e(TAG,"There is no option named 'COMPOSITE_SCORE' which is a severe data error");
@@ -124,12 +117,12 @@ public class CompositeScoreBuilder {
 
     /**
      * Checks whether a dataElement is a question or a compositescore
-     * @param dataElement
+     * @param dataElementExtended
      * @return
      */
-    public boolean isACompositeScore(DataElement dataElement){
+    public boolean isACompositeScore(DataElementExtended dataElementExtended){
 
-        String typeQuestion=attributeValueHelper.findAttributeValueByCode(ATTRIBUTE_QUESTION_TYPE_CODE,dataElement);
+        String typeQuestion=dataElementExtended.findAttributeValueByCode(ATTRIBUTE_QUESTION_TYPE_CODE);
 
         if(typeQuestion==null){
             return false;
@@ -138,14 +131,14 @@ public class CompositeScoreBuilder {
         return typeQuestion.equals(COMPOSITE_SCORE_CODE);
     }
 
-    public String findHierarchicalCode(DataElement dataElement){
+    public String findHierarchicalCode(DataElementExtended dataElementExtended){
         //Not a composite -> done
-        if(!isACompositeScore(dataElement)){
+        if(!isACompositeScore(dataElementExtended)){
             return null;
         }
 
         //Find the value of the attribute 'DECompositiveScore' for this dataElement
-        return attributeValueHelper.findAttributeValueByCode(ATTRIBUTE_COMPOSITE_SCORE_CODE, dataElement);
+        return dataElementExtended.findAttributeValueByCode(ATTRIBUTE_COMPOSITE_SCORE_CODE);
     }
 
     /**

@@ -225,7 +225,8 @@ public class PullController {
 
         //Convert questions and compositeScores
         for(DataElement dataElement:dataElementList){
-            converter.buildRelations(dataElement);
+            DataElementExtended dataElementExtended = new DataElementExtended(dataElement);
+            converter.buildRelations(dataElementExtended);
         }
 
         //Fill order and parent scores

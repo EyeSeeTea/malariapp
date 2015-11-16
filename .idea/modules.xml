@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/DBFlowORM/DBFlow.iml" filepath="$PROJECT_DIR$/DBFlowORM/DBFlow.iml" />
+      <module fileurl="file://$PROJECT_DIR$/DBFlowORM/DBFlow/DBFlow.iml" filepath="$PROJECT_DIR$/DBFlowORM/DBFlow/DBFlow.iml" />
       <module fileurl="file://$PROJECT_DIR$/DBFlowORM/DBFlow-Compiler/DBFlow-Compiler.iml" filepath="$PROJECT_DIR$/DBFlowORM/DBFlow-Compiler/DBFlow-Compiler.iml" />
       <module fileurl="file://$PROJECT_DIR$/DBFlowORM/DBFlow-Core/DBFlow-Core.iml" filepath="$PROJECT_DIR$/DBFlowORM/DBFlow-Core/DBFlow-Core.iml" />
       <module fileurl="file://$PROJECT_DIR$/DBFlowORM/DBFlowORM.iml" filepath="$PROJECT_DIR$/DBFlowORM/DBFlowORM.iml" />

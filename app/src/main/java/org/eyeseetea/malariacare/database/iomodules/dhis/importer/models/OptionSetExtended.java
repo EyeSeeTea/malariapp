@@ -28,6 +28,8 @@ import org.hisp.dhis.android.sdk.persistence.models.OptionSet;
  */
 public class OptionSetExtended implements VisitableFromSDK {
 
+
+
     OptionSet optionSet;
 
     public OptionSetExtended(OptionSet optionSet){
@@ -36,6 +38,10 @@ public class OptionSetExtended implements VisitableFromSDK {
 
     @Override
     public void accept(IConvertFromSDKVisitor visitor) {
-        visitor.visit(optionSet);
+        visitor.visit(this);
+    }
+
+    public OptionSet getOptionSet() {
+        return optionSet;
     }
 }

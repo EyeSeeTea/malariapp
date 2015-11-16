@@ -19,6 +19,14 @@
 
 package org.eyeseetea.malariacare.database.iomodules.dhis.importer;
 
+import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.DataElementExtended;
+import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.OptionExtended;
+import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.OptionSetExtended;
+import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.OrganisationUnitExtended;
+import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.ProgramExtended;
+import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.ProgramStageExtended;
+import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.ProgramStageSectionExtended;
+import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.UserAccountExtended;
 import org.hisp.dhis.android.sdk.persistence.models.DataElement;
 import org.hisp.dhis.android.sdk.persistence.models.Option;
 import org.hisp.dhis.android.sdk.persistence.models.OptionSet;
@@ -31,14 +39,14 @@ import org.hisp.dhis.android.sdk.persistence.models.UserAccount;
 import java.util.List;
 
 public interface IConvertFromSDKVisitor {
-    void visit(Program sdkProgram);
-    void visit(ProgramStage sdkProgramStage);
-    void visit(ProgramStageSection sdkProgramStageSection);
-    void visit(OrganisationUnit organisationUnit);
-    void visit(OptionSet optionSet);
-    void visit(Option option);
-    void visit(UserAccount userAccount);
-    void visit(DataElement dataElement);
+    void visit(ProgramExtended sdkProgram);
+    void visit(ProgramStageExtended sdkProgramStage);
+    void visit(ProgramStageSectionExtended sdkProgramStageSection);
+    void visit(OrganisationUnitExtended organisationUnit);
+    void visit(OptionSetExtended optionSet);
+    void visit(OptionExtended option);
+    void visit(UserAccountExtended userAccount);
+    void visit(DataElementExtended dataElement);
     void buildScores();
 
 }
