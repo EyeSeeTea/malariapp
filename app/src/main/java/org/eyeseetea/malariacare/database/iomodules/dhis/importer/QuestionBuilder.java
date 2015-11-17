@@ -83,14 +83,6 @@ public class QuestionBuilder {
      */
     private static final String ATTRIBUTE_QUESTION_TYPE_CODE ="DEQuesType";
     /**
-     * Value to discard the dataelementcontrol
-     */
-    private static final String DATAELEMENTCONTROL_NAME ="CONTROL_DATAELEMENT";
-    /**
-     * Value to discard the dataelementcontrol
-     */
-    private static String DATAELEMENTCONTROL_CODE ="";
-    /**
      * Value parent
      */
     private static final String PARENT = "PARENT";
@@ -103,8 +95,24 @@ public class QuestionBuilder {
      * Code of attribute 'Composite Score'
      */
     private static final String ATTRIBUTE_COMPOSITE_SCORE_CODE = "DECompositiveScore";
+
+    //Fixme In the future, when isAQuestion check if is a question, it should be removed
+    /**
+     * Value to discard the dataelementcontrol
+     */
     private static final String COMPOSITE_SCORE_NAME ="COMPOSITE_SCORE" ;
+    /**
+     * Code to discard the dataelementcontrol
+     */
     private static String COMPOSITE_SCORE_CODE ="" ;
+    /**
+     * Value to discard the COMPOSITE_SCORE
+     */
+    private static final String DATAELEMENTCONTROL_NAME ="CONTROL_DATAELEMENT";
+    /**
+     * Code to discard the COMPOSITE_SCORE
+     */
+    private static String DATAELEMENTCONTROL_CODE ="";
 
     /**
      * Mapping all the questions
@@ -154,6 +162,7 @@ public class QuestionBuilder {
         mapMatchLevel = new HashMap<>();
         mapMatchParent = new HashMap<>();
         mapMatchType = new HashMap<>();
+        //Fixme In the future, when isAQuestion check if is a question, it should be removed
         Option optionDataElementControl= OptionExtended.findOptionByName(DATAELEMENTCONTROL_NAME);
         DATAELEMENTCONTROL_CODE=optionDataElementControl.getCode();
         Option optionCompositeScore= OptionExtended.findOptionByName(COMPOSITE_SCORE_NAME);
