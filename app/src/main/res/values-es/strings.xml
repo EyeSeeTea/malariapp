@@ -193,7 +193,7 @@
     <string name="dialog_info_push_ok">Datos subidos correctamente al servidor DHIS</string>
     <string name="dialog_info_push_bad_credentials">Credenciales incorrectas para el push</string>
     <string name="assessment_sent_title_state">Estado</string>
-    <string name="assessment_sent_title_header">Evaluación(es) Enviada(s)</string>
+    <string name="assessment_sent_title_header">Evaluación(es) Anterior(es)</string>
     <string name="assessment_sent_date">Fecha de llenado</string>
     <string name="assessment_sent_score">Puntos</string>
     <string name="dialog_title_incorrect_org_unit" >Org Unit Incorrecta</string>
