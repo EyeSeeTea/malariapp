@@ -81,7 +81,7 @@
     <string name="assessment_sent_score">Score</string>
     <string name="assessment_info_delete">Delete</string>
     <string name="assessment_title_header">Active Assessment(s)</string>
-    <string name="assessment_sent_title_header">Sent Assessment(s)</string>
+    <string name="assessment_sent_title_header">Previous Assessment(s)</string>
 
     <!-- feedback -->
     <!-- XXX Should it be replaced by 'assessment_title_facility_date'?-->
