@@ -58,7 +58,6 @@ import org.hisp.dhis.android.sdk.persistence.Dhis2Application;
 import org.hisp.dhis.android.sdk.persistence.models.DataElement;
 import org.hisp.dhis.android.sdk.persistence.models.OptionSet;
 import org.hisp.dhis.android.sdk.persistence.models.OrganisationUnit;
-import org.hisp.dhis.android.sdk.persistence.models.UserAccount;
 import org.hisp.dhis.android.sdk.persistence.preferences.ResourceType;
 import java.util.List;
 
@@ -223,6 +222,13 @@ public class PullController {
             DataElementExtended dataElementExtended = new DataElementExtended(dataElement);
             dataElementExtended.accept(converter);
         }
+
+        //Convert questions and compositeScores
+        for(DataElement dataElement:dataElementList){
+            DataElementExtended dataElementExtended = new DataElementExtended(dataElement);
+            converter.buildRelations(dataElementExtended);
+        }
+
         //Fill order and parent scores
         converter.buildScores();
     }

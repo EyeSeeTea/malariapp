@@ -51,4 +51,6 @@ public class AttributeExtended {
         return new Select().from(Attribute.class).where(Condition.column(Attribute$Table.CODE).
                 is(code)).querySingle();
     }
+
+
 }

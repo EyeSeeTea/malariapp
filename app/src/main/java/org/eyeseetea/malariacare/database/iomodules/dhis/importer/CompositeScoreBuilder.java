@@ -27,6 +27,7 @@ import com.raizlabs.android.dbflow.sql.language.Select;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.DataElementExtended;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.OptionExtended;
 import org.eyeseetea.malariacare.database.model.CompositeScore;
+import org.hisp.dhis.android.sdk.persistence.models.DataElement;
 import org.hisp.dhis.android.sdk.persistence.models.Option;
 import org.hisp.dhis.android.sdk.persistence.models.ProgramStageDataElement;
 import org.hisp.dhis.android.sdk.persistence.models.ProgramStageDataElement$Table;
@@ -76,7 +77,7 @@ public class CompositeScoreBuilder {
      * Holds every compositeScore to calculate its order and parent according to its programStage and hierarchicalCode
      * programstageId -> hierarchical code -> Score
      */
-    Map<String,Map<String,CompositeScore>> mapCompositeScores;
+    static Map<String,Map<String,CompositeScore>> mapCompositeScores;
 
     CompositeScoreBuilder(){
         mapCompositeScores=new HashMap<>();
@@ -217,7 +218,7 @@ public class CompositeScoreBuilder {
      * @param dataElementUID
      * @return
      */
-    private String findProgramStageByDataElementUID(String dataElementUID){
+    private static String findProgramStageByDataElementUID(String dataElementUID){
         //Find the right 'tabgroup' to group scores by program
         ProgramStageDataElement programStageDataElement = new Select().from(ProgramStageDataElement.class)
                 .where(Condition.column(ProgramStageDataElement$Table.DATAELEMENT)
@@ -244,5 +245,12 @@ public class CompositeScoreBuilder {
         public boolean equals(Object object) {
             return false;
         }
+    }
+    public static CompositeScore getCompositeScoreFromDataElementAndHierarchicalCode(DataElement dataElement, String HierarchicalCode){
+        CompositeScore compositeScore=null;
+        String programId= findProgramStageByDataElementUID(dataElement.getUid());
+        Map<String,CompositeScore> compositeScoresInProgram=mapCompositeScores.get(programId);
+        compositeScore=compositeScoresInProgram.get(HierarchicalCode);
+        return compositeScore;
     }
 }

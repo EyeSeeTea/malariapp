@@ -20,6 +20,7 @@
 package org.eyeseetea.malariacare.database.iomodules.dhis.importer;
 
 import android.util.Log;
+import android.provider.ContactsContract;
 
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.DataElementExtended;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.OptionExtended;
@@ -32,12 +33,13 @@ import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.UserAcc
 import org.eyeseetea.malariacare.database.model.Answer;
 import org.eyeseetea.malariacare.database.model.CompositeScore;
 import org.eyeseetea.malariacare.database.model.OrgUnit;
+import org.eyeseetea.malariacare.database.model.Question;
 import org.eyeseetea.malariacare.database.model.Tab;
 import org.eyeseetea.malariacare.database.model.TabGroup;
 import org.eyeseetea.malariacare.database.model.User;
 import org.eyeseetea.malariacare.utils.Constants;
-import org.hisp.dhis.android.sdk.controllers.metadata.MetaDataController;
 import org.hisp.dhis.android.sdk.persistence.models.BaseMetaDataObject;
+import org.hisp.dhis.android.sdk.controllers.metadata.MetaDataController;
 import org.hisp.dhis.android.sdk.persistence.models.DataElement;
 import org.hisp.dhis.android.sdk.persistence.models.Option;
 import org.hisp.dhis.android.sdk.persistence.models.OptionSet;
@@ -56,16 +58,19 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
 
     private final static String TAG=".ConvertFromSDKVisitor";
     private final static String REGEXP_FACTOR=".*\\[([0-9]*)\\]";
-    Map<String,Object> appMapObjects;
+    static Map<String,Object> appMapObjects;
 
     /**
-     * Builder that helps while linking compositeScores
+     * Builders that helps while linking compositeScores and questions
      */
     CompositeScoreBuilder compositeScoreBuilder;
+    QuestionBuilder questionBuilder;
+
 
     public ConvertFromSDKVisitor(){
         appMapObjects = new HashMap();
         compositeScoreBuilder = new CompositeScoreBuilder();
+        questionBuilder = new QuestionBuilder();
     }
 
     /**
@@ -170,6 +175,7 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
         appTab.save();
 
         //Annotate build tab
+        appMapObjects.put(appTab.getClass() + appTab.getName(), appTab);
         appMapObjects.put(programStageSection.getUid(),appTab);
     }
 
@@ -245,10 +251,28 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
 
     /**
      * Turns a dataElement into a question
-     * @param dataElement
+     * @param dataElementExtended
      */
-    private void buildQuestion(DataElementExtended dataElement){
-        //TODO Paste here @idelcano code here
+    private void buildQuestion(DataElementExtended dataElementExtended){
+        DataElement dataElement=dataElementExtended.getDataElement();
+        Question appQuestion = new Question();
+        appQuestion.setDe_name(dataElement.getName());
+        appQuestion.setUid(dataElement.getUid());
+        appQuestion.setShort_name(dataElement.getShortName());
+        appQuestion.setForm_name(dataElement.getFormName());
+        appQuestion.setFeedback(dataElement.getDescription());
+        appQuestion.setCode(dataElement.getCode());
+        appQuestion.setOrder_pos(questionBuilder.findOrder(dataElementExtended));
+        appQuestion.setNumerator_w(questionBuilder.findNumerator(dataElementExtended));
+        appQuestion.setDenominator_w(questionBuilder.findDenominator(dataElementExtended));
+        OptionSet anwserOption = MetaDataController.getOptionSet(dataElement.getOptionSet());
+        if (anwserOption != null) {
+            appQuestion.setAnswer((Answer) appMapObjects.get(dataElement.getOptionSet()));
+        }
+        appQuestion.setHeader(questionBuilder.findHeader(dataElementExtended));
+        questionBuilder.RegisterParentChildRelations(dataElementExtended);
+        appQuestion.save();
+        questionBuilder.add(appQuestion);
     }
 
     /**
@@ -267,7 +291,7 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
         Answer answer=(Answer)appMapObjects.get(optionSetUID);
         //Answer not found
         if(answer==null){
-            Log.e(TAG,String.format("Cannot fulfill output of answer with UID: %s",optionSetUID));
+            Log.e(TAG, String.format("Cannot fulfill output of answer with UID: %s",optionSetUID));
             return;
         }
 
@@ -279,6 +303,10 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
         //Get type of dataelement
         answer.setOutput(compositeScoreBuilder.findAnswerOutput(dataElementExtended));
         answer.save();
+    }
+
+    public void buildRelations(DataElementExtended dataElementExtended) {
+        questionBuilder.addRelations(dataElementExtended);
     }
 
     /**
