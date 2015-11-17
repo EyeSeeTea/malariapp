@@ -230,7 +230,7 @@ public class PullController {
         }
 
         //Fill order and parent scores
-        //converter.buildScores();
+        converter.buildScores();
     }
 
     /**
