@@ -398,17 +398,17 @@ public class QuestionBuilder {
     }
 
 
+    //Fixme isAQuestion is necessary to check the question when dataElements have a specific identifier for questions. Now it is detected by elimination
     public boolean isAQuestion(DataElementExtended dataElementExtended){
         if(isDataElementControl(dataElementExtended)){
           return false;
         }
         if(isCompositeScore(dataElementExtended)) {
             return false;
-            //check if is a question?
         }
         return true;
     }
-
+    //Fixme In the future it should be removed
     private boolean isCompositeScore(DataElementExtended dataElementExtended) {
         String typeQuestion=dataElementExtended.findAttributeValueByCode(ATTRIBUTE_QUESTION_TYPE_CODE);
 
@@ -418,7 +418,7 @@ public class QuestionBuilder {
 
         return typeQuestion.equals(COMPOSITE_SCORE_CODE);
     }
-
+//Fixme In the future it should be removed
     public boolean isDataElementControl(DataElementExtended dataElementExtended){
 
         String typeQuestion=dataElementExtended.findAttributeValueByCode(ATTRIBUTE_QUESTION_TYPE_CODE);
