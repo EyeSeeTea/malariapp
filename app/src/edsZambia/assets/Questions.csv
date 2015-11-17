@@ -71,7 +71,7 @@
 148;'ZMB-CCM 1-110';'ZMB-CCM 1-HW Info-110-Type of provider';'ZMB-CCM 1-HW Info-110-Type of provider';'Type of provider';'JWq1ioc3FwE';110;0.00;0.00;9;99;;
 149;'ZMB-CCM 1-120';'ZMB-CCM 1-HW Info-120-Has this provider been trained in malaria case management?';'ZMB-CCM 1-HW Info-120-Has this provider been train';'Has this provider been trained in malaria case management?';'Ud11tniHK4s';120;0.00;0.00;9;85;;
 150;'ZMB-CCM 1-130';'ZMB-CCM 1-Rec-130-Patient and care giver welcomed';'ZMB-CCM 1-Rec-130-Patient and care giver welcomed';'Patient and care giver welcomed';'apF9mm3TmG6';130;0.00;0.00;10;85;;
-151;'ZMB-CCM 1-140';'ZMB-CCM 1-Rec-140-Referred from another facility';'ZMB-CCM 1-Rec-140-Referred from another facility';'Referred from another facility';'NgfzmqZqlDV';140;0.00;0.00;10;95;;
+151;'ZMB-CCM 1-140';'ZMB-CCM 1-Rec-140-Referred from another facility';'ZMB-CCM 1-Rec-140-Referred from another facility';'Referred from another facility';'NgfzmqZqlDV';261;0.00;0.00;11;85;;
 152;'ZMB-CCM 1-150';'ZMB-CCM 1-Rec-150-Age of patient determined';'ZMB-CCM 1-Rec-150-Age of patient determined';'Age of patient determined';'KNxVORKBs2H';150;1.00;1.00;10;85;;14
 154;'ZMB-CCM 1-170';'ZMB-CCM 1-Rec-170-Weight of patient determined';'ZMB-CCM 1-Rec-170-Weight of patient determined';'Weight of patient determined';'f2yplRodiG1';170;1.00;1.00;10;85;;14
 156;'ZMB-CCM 1-300';'ZMB-CCM 1-ClinHistSev-300-Clinical History Signs of Severe Malaria';'ZMB-CCM 1-ClinHistSev-300-Clinical History Signs o';'Clinical History Signs of Severe Malaria';'RTdXdXKq1GI';300;0.00;0.00;12;8;;
@@ -148,7 +148,6 @@
 270;'ZMB-CCM 1-950';'ZMB-CCM 1-Tx-950-Paracetamol';'ZMB-CCM 1-Tx-950-Paracetamol';'Paracetamol';'mC8fxBBxXsA';950;0.00;0.00;18;85;269;
 271;'ZMB-CCM 1-960';'ZMB-CCM 1-Tx-960-Vitamins (specify)';'ZMB-CCM 1-Tx-960-Vitamins (specify)';'Vitamins (specify)';'Ptdt1sEHiiR';960;0.00;0.00;18;13;269;
 272;'ZMB-CCM 1-970';'ZMB-CCM 1-Tx-970-Other (specify)';'ZMB-CCM 1-Tx-970-Other (specify)';'Other (specify)';'yuICAdEYc5y';970;0.00;0.00;18;13;269;
-273;'ZMB-CCM 1-980';'ZMB-CCM 1-Com: Unc disease-980-Provider communication with the patient and caregiver';'ZMB-CCM 1-Com: Unc disease-980-Provider communicat';'Provider communication with the patient and caregiver';'HeR7kmnGULe';980;0.00;0.00;19;8;;
 274;'ZMB-CCM 1-990';'ZMB-CCM 1-Com: Unc disease-990-Was patient found to have uncomplicated disease?';'ZMB-CCM 1-Com: Unc disease-990-Was patient found t';'Was patient found to have uncomplicated disease?';'uBo5dIiWbW0';990;0.00;0.00;19;85;;
 275;'ZMB-CCM 1-1000';'ZMB-CCM 1-Com: Unc disease-1000-Caregiver/patient  informed on what is wrong with the patient';'ZMB-CCM 1-Com: Unc disease-1000-Caregiver/patient';'Caregiver/patient  informed on what is wrong with the patient';'GbK4AwhKbX7';1000;2.00;2.00;19;85;274;15
 276;'ZMB-CCM 1-1010';'ZMB-CCM 1-Com: Unc disease-1010-Advice given on how to take the prescribed medications';'ZMB-CCM 1-Com: Unc disease-1010-Advice given on ho';'Advice given on how to take the prescribed medications';'ZrdI3BdV3hE';1010;2.00;2.00;19;85;274;15
@@ -168,7 +167,7 @@
 290;'ZMB-CCM 1-1150';'ZMB-CCM 1-Com: Sev disease-1150-Caregiver informed about what will be done';'ZMB-CCM 1-Com: Sev disease-1150-Caregiver informed';'Caregiver informed about what will be done';'kyz1hlmQUt4';1150;1.00;1.00;20;85;280;15
 291;'ZMB-CCM 1-1160';'ZMB-CCM 1-Com: Sev disease-1160-Caregiver and/or patient asked if there are questions';'ZMB-CCM 1-Com: Sev disease-1160-Caregiver and/or p';'Caregiver and/or patient asked if there are questions';'BaCoD8xBHsF';1160;1.00;1.00;20;85;280;15
 295;'ZMB-CCM 2-130';'ZMB-CCM 2-Rec-130-Patient and care giver welcomed';'ZMB-CCM 2-Rec-130-Patient and care giver welcomed';'Patient and care giver welcomed';'HvmsrWFwKT7';130;0.00;0.00;26;85;;
-296;'ZMB-CCM 2-140';'ZMB-CCM 2-Rec-140-Referred from another facility';'ZMB-CCM 2-Rec-140-Referred from another facility';'Referred from another facility';'l0ZdrNEOK99';140;0.00;0.00;26;95;;
+296;'ZMB-CCM 2-140';'ZMB-CCM 2-Rec-140-Referred from another facility';'ZMB-CCM 2-Rec-140-Referred from another facility';'Referred from another facility';'l0ZdrNEOK99';261;0.00;0.00;27;85;;
 297;'ZMB-CCM 2-150';'ZMB-CCM 2-Rec-150-Age of patient determined';'ZMB-CCM 2-Rec-150-Age of patient determined';'Age of patient determined';'w2iMIGJkKQM';150;1.00;1.00;26;85;;17
 299;'ZMB-CCM 2-170';'ZMB-CCM 2-Rec-170-Weight of patient determined';'ZMB-CCM 2-Rec-170-Weight of patient determined';'Weight of patient determined';'zDZwceV0cy4';170;1.00;1.00;26;85;;17
 302;'ZMB-CCM 2-310';'ZMB-CCM 2-ClinHistSev-310-Does the health worker ask/check for any signs of severe disease?';'ZMB-CCM 2-ClinHistSev-310-Does the health worker a';'Does the health worker ask/check for any signs of severe disease?';'i7yHG4T0h2P';310;8.00;8.00;28;85;;17
@@ -244,7 +243,6 @@
 415;'ZMB-CCM 2-950';'ZMB-CCM 2-Tx-950-Paracetamol';'ZMB-CCM 2-Tx-950-Paracetamol';'Paracetamol';'XDiQmCVyzFG';950;0.00;0.00;34;85;414;
 416;'ZMB-CCM 2-960';'ZMB-CCM 2-Tx-960-Vitamins (specify)';'ZMB-CCM 2-Tx-960-Vitamins (specify)';'Vitamins (specify)';'VZvJS99hNO2';960;0.00;0.00;34;13;414;
 417;'ZMB-CCM 2-970';'ZMB-CCM 2-Tx-970-Other (specify)';'ZMB-CCM 2-Tx-970-Other (specify)';'Other (specify)';'MOKzDXx1pY9';970;0.00;0.00;34;13;414;
-418;'ZMB-CCM 2-980';'ZMB-CCM 2-Com: Unc disease-980-Provider communication with the patient and caregiver';'ZMB-CCM 2-Com: Unc disease-980-Provider communicat';'Provider communication with the patient and caregiver';'McTn1isRpNA';980;0.00;0.00;35;8;;
 419;'ZMB-CCM 2-990';'ZMB-CCM 2-Com: Unc disease-990-Was patient found to have uncomplicated disease?';'ZMB-CCM 2-Com: Unc disease-990-Was patient found t';'Was patient found to have uncomplicated disease?';'PNkCEMSXMIP';990;0.00;0.00;35;85;;
 420;'ZMB-CCM 2-1000';'ZMB-CCM 2-Com: Unc disease-1000-Caregiver/patient informed on what is wrong with the patient';'ZMB-CCM 2-Com: Unc disease-1000-Caregiver/patient';'Caregiver/patient informed on what is wrong with the patient';'yi5uft0jjuy';1000;2.00;2.00;35;85;419;18
 421;'ZMB-CCM 2-1010';'ZMB-CCM 2-Com: Unc disease-1010-Advice given on how to take the prescribed medications';'ZMB-CCM 2-Com: Unc disease-1010-Advice given on ho';'Advice given on how to take the prescribed medications';'XwEU2Y4AYZS';1010;2.00;2.00;35;85;419;18
@@ -264,7 +262,7 @@
 435;'ZMB-CCM 2-1150';'ZMB-CCM 2-Com: Sev disease-1150-Caregiver informed about what will be done';'ZMB-CCM 2-Com: Sev disease-1150-Caregiver informed';'Caregiver informed about what will be done';'rYKdFFayVTo';1150;1.00;1.00;36;85;425;18
 436;'ZMB-CCM 2-1160';'ZMB-CCM 2-Com: Sev disease-1160-Caregiver and/or patient asked if there are questions';'ZMB-CCM 2-Com: Sev disease-1160-Caregiver and/or p';'Caregiver and/or patient asked if there are questions';'xtD7P3Ceg2I';1160;1.00;1.00;36;85;425;18
 440;'ZMB-CCM 3-130';'ZMB-CCM 3-Rec-130-Patient and care giver welcomed';'ZMB-CCM 3-Rec-130-Patient and care giver welcomed';'Patient and care giver welcomed';'dDYnIRqXGE2';130;0.00;0.00;42;85;;
-441;'ZMB-CCM 3-140';'ZMB-CCM 3-Rec-140-Referred from another facility';'ZMB-CCM 3-Rec-140-Referred from another facility';'Referred from another facility';'IPA1BPIJhiW';140;0.00;0.00;42;95;;
+441;'ZMB-CCM 3-140';'ZMB-CCM 3-Rec-140-Referred from another facility';'ZMB-CCM 3-Rec-140-Referred from another facility';'Referred from another facility';'IPA1BPIJhiW';261;0.00;0.00;43;85;;
 442;'ZMB-CCM 3-150';'ZMB-CCM 3-Rec-150-Age of patient determined';'ZMB-CCM 3-Rec-150-Age of patient determined';'Age of patient determined';'usAibz9bPyr';150;1.00;1.00;42;85;;20
 444;'ZMB-CCM 3-170';'ZMB-CCM 3-Rec-170-Weight of patient determined';'ZMB-CCM 3-Rec-170-Weight of patient determined';'Weight of patient determined';'OqbHn07P6Ba';170;1.00;1.00;42;85;;20
 447;'ZMB-CCM 3-310';'ZMB-CCM 3-ClinHistSev-310-Does the health worker ask/check for signs of severe disease?';'ZMB-CCM 3-ClinHistSev-310-Does the health worker a';'Does the health worker ask/check for signs of severe disease?';'cR1oliEWICp';310;8.00;8.00;44;85;;20
@@ -340,7 +338,6 @@
 560;'ZMB-CCM 3-950';'ZMB-CCM 3-Tx-950-Paracetamol';'ZMB-CCM 3-Tx-950-Paracetamol';'Paracetamol';'sx5HTgEm8ZG';950;0.00;0.00;50;85;559;
 561;'ZMB-CCM 3-960';'ZMB-CCM 3-Tx-960-Vitamins (specify)';'ZMB-CCM 3-Tx-960-Vitamins (specify)';'Vitamins (specify)';'rWg5XeklqZb';960;0.00;0.00;50;13;559;
 562;'ZMB-CCM 3-970';'ZMB-CCM 3-Tx-970-Other (specify)';'ZMB-CCM 3-Tx-970-Other (specify)';'Other (specify)';'j9UXyyrICqD';970;0.00;0.00;50;13;559;
-563;'ZMB-CCM 3-980';'ZMB-CCM 3-Com: Unc disease-980-Provider communication with the patient and caregiver';'ZMB-CCM 3-Com: Unc disease-980-Provider communicat';'Provider communication with the patient and caregiver';'LfumHvBDh1M';980;0.00;0.00;51;8;;
 564;'ZMB-CCM 3-990';'ZMB-CCM 3-Com: Unc disease-990-Was patient found to have uncomplicated disease?';'ZMB-CCM 3-Com: Unc disease-990-Was patient found t';'Was patient found to have uncomplicated disease?';'Abn6R5Y286D';990;0.00;0.00;51;85;;
 565;'ZMB-CCM 3-1000';'ZMB-CCM 3-Com: Unc disease-1000-Caregiver/patient informed on what is wrong with the patient';'ZMB-CCM 3-Com: Unc disease-1000-Caregiver/patient';'Caregiver/patient informed on what is wrong with the patient';'gWrMUxCwgcP';1000;2.00;2.00;51;85;564;21
 566;'ZMB-CCM 3-1010';'ZMB-CCM 3-Com: Unc disease-1010-Advice given on how to take the prescribed medications';'ZMB-CCM 3-Com: Unc disease-1010-Advice given on ho';'Advice given on how to take the prescribed medications';'uLCPa5OFmiO';1010;2.00;2.00;51;85;564;21
