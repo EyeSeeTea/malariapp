@@ -19,6 +19,7 @@
 
 package org.eyeseetea.malariacare.database.iomodules.dhis.importer;
 
+import android.util.Log;
 import android.provider.ContactsContract;
 
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.DataElementExtended;
@@ -31,11 +32,13 @@ import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.Program
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.UserAccountExtended;
 import org.eyeseetea.malariacare.database.model.Answer;
 import org.eyeseetea.malariacare.database.model.CompositeScore;
+import org.eyeseetea.malariacare.database.model.OrgUnit;
 import org.eyeseetea.malariacare.database.model.Question;
 import org.eyeseetea.malariacare.database.model.Tab;
 import org.eyeseetea.malariacare.database.model.TabGroup;
 import org.eyeseetea.malariacare.database.model.User;
 import org.eyeseetea.malariacare.utils.Constants;
+import org.hisp.dhis.android.sdk.persistence.models.BaseMetaDataObject;
 import org.hisp.dhis.android.sdk.controllers.metadata.MetaDataController;
 import org.hisp.dhis.android.sdk.persistence.models.DataElement;
 import org.hisp.dhis.android.sdk.persistence.models.Option;
@@ -53,14 +56,16 @@ import java.util.regex.Pattern;
 
 public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
 
+    private final static String TAG=".ConvertFromSDKVisitor";
     private final static String REGEXP_FACTOR=".*\\[([0-9]*)\\]";
     static Map<String,Object> appMapObjects;
 
     /**
-     * Builder that helps while linking compositeScores
+     * Builders that helps while linking compositeScores and questions
      */
     CompositeScoreBuilder compositeScoreBuilder;
     QuestionBuilder questionBuilder;
+
 
     public ConvertFromSDKVisitor(){
         appMapObjects = new HashMap();
@@ -172,7 +177,6 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
         //Annotate build tab
         appMapObjects.put(appTab.getClass() + appTab.getName(), appTab);
         appMapObjects.put(programStageSection.getUid(),appTab);
-
     }
 
 
@@ -186,9 +190,10 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
         OptionSet sdkOptionSet=sdkOptionSetExtended.getOptionSet();
         Answer appAnswer = new Answer();
         appAnswer.setName(sdkOptionSet.getName());
-        //FIXME We need to find the right value for the output
-        appAnswer.setOutput(1);
+        //Right type of answer comes from the questions
+        appAnswer.setOutput(CompositeScoreBuilder.DEFAULT_ANSWER_OUTPUT);
         appAnswer.save();
+
         //Annotate built tabgroup
         appMapObjects.put(sdkOptionSet.getUid(), appAnswer);
 
@@ -239,15 +244,17 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
             buildCompositeScore(sdkDataElementExtended);
         }else{
             buildQuestion(sdkDataElementExtended);
+            //Question type is annotated in 'answer' from an attribute of the question
+            buildAnswerOutput(sdkDataElementExtended);
         }
     }
+
     /**
      * Turns a dataElement into a question
      * @param dataElementExtended
      */
     private void buildQuestion(DataElementExtended dataElementExtended){
         DataElement dataElement=dataElementExtended.getDataElement();
-        //TODO Paste here @idelcano code here
         Question appQuestion = new Question();
         appQuestion.setDe_name(dataElement.getName());
         appQuestion.setUid(dataElement.getUid());
@@ -266,6 +273,36 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
         questionBuilder.RegisterParentChildRelations(dataElementExtended);
         appQuestion.save();
         questionBuilder.add(appQuestion);
+    }
+
+    /**
+     * Fulfills the answer.output for this question
+     * @param dataElementExtended
+     */
+    private void buildAnswerOutput(DataElementExtended dataElementExtended){
+        DataElement dataElement = dataElementExtended.getDataElement();
+
+        String optionSetUID=dataElement.getOptionSet();
+        //No optionset nothing to fulfill
+        if(optionSetUID==null){
+            return;
+        }
+
+        Answer answer=(Answer)appMapObjects.get(optionSetUID);
+        //Answer not found
+        if(answer==null){
+            Log.e(TAG, String.format("Cannot fulfill output of answer with UID: %s",optionSetUID));
+            return;
+        }
+
+        //Answer output already set
+        if(!CompositeScoreBuilder.DEFAULT_ANSWER_OUTPUT.equals(answer.getOutput())){
+            return;
+        }
+
+        //Get type of dataelement
+        answer.setOutput(compositeScoreBuilder.findAnswerOutput(dataElementExtended));
+        answer.save();
     }
 
     public void buildRelations(DataElementExtended dataElementExtended) {
@@ -292,8 +329,6 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
     public void buildScores() {
         compositeScoreBuilder.buildScores();
     }
-
-
 
     /**
      * The factor of an option is codified inside its code. Ex: Yes[1]
