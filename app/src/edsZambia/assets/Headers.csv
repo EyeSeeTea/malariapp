@@ -6,46 +6,52 @@
 6;'RDT Assess';'RDT Assessment';6;1
 9;'HW Info';'Health Worker Information';2;3
 10;'Rec';'Reception';3;3
-11;'ClinHistGen';'Clinical History: General';4;3
-12;'ClinHistSev';'Clinical History: Signs of Severe Disease';5;3
-13;'PhysExamSev';'Physical Exam: Signs of Severe Disease';6;3
-14;'PhysExamGen';'Physical Exam: General';7;3
-15;'Mal Test';'Malaria Test';8;3
-16;'Diag Test res';'Diagnostic test results';9;3
-17;'FinalDiag';'Final Diagnosis';10;3
-18;'Tx';'Treatment';11;3
-19;'Com: Unc disease';'Communication: Uncomplicated disease';12;3
-20;'Com: Sev disease';'Communication: Severe disease';13;3
-21;'Fdbk';'Feedback';14;3
-22;'Obs1';'Observation 1';15;3
+11;'Signs Sev Dis';'Signs of severe disease';4;3
+12;'Cl sev assess';'Clinical severity assessment';5;3
+13;'Cl hist';'Taking a clinical history';6;3
+14;'Prior Dx Tx';'Prior Diagnosis and Treatment';7;3
+15;'Gen Ex';'General examination';8;3
+16;'Diag';'Clinically suspected diagnosis';9;3
+17;'Agr';'Agreement';10;3
+18;'Mal Test';'Malaria Test';11;3
+19;'Oth Test';'Other tests';12;3
+20;'Diag Test res';'Diagnostic test results';13;3
+21;'Tx';'Treatment';14;3
+22;'Com: Unc disease';'Communication: Uncomplicated disease';15;3
+23;'Com: Sev disease';'Communication: Severe disease';16;3
+24;'Sev dis';'Severe disease';17;3
 25;'HW Info';'Health Worker Information';2;4
 26;'Rec';'Reception';3;4
-27;'ClinHistGen';'Clinical History: General';4;4
-28;'ClinHistSev';'Clinical History: Signs of Severe Disease';5;4
-29;'PhysExamSev';'Physical Exam: Signs of Severe Disease';6;4
-30;'PhysExamGen';'Physical Exam: General';7;4
-31;'Mal Test';'Malaria Test';8;4
-32;'Diag Test res';'Diagnostic test results';9;4
-33;'FinalDiag';'Final Diagnosis';10;4
-34;'Tx';'Treatment';11;4
-35;'Com: Unc disease';'Communication: Uncomplicated disease';12;4
-36;'Com: Sev disease';'Communication: Severe disease';13;4
-37;'Fdbk';'Feedback';14;4
-38;'Obs2';'Observation 2';15;4
+27;'Signs Sev Dis';'Signs of severe disease';4;4
+28;'Cl sev assess';'Clinical severity assessment';5;4
+29;'Cl hist';'Taking a clinical history';6;4
+30;'Prior Dx Tx';'Prior Diagnosis and Treatment';7;4
+31;'Gen Ex';'General examination';8;4
+32;'Diag';'Clinically suspected diagnosis';9;4
+33;'Agr';'Agreement';10;4
+34;'Mal Test';'Malaria Test';11;4
+35;'Oth Test';'Other tests';12;4
+36;'Diag Test res';'Diagnostic test results';13;4
+37;'Tx';'Treatment';14;4
+38;'Com: Unc disease';'Communication: Uncomplicated disease';15;4
+39;'Com: Sev disease';'Communication: Severe disease';16;4
+40;'Sev dis';'Severe disease';17;4
 41;'HW Info';'Health Worker Information';2;5
 42;'Rec';'Reception';3;5
-43;'ClinHistGen';'Clinical History: General';4;5
-44;'ClinHistSev';'Clinical History: Signs of Severe Disease';5;5
-45;'PhysExamSev';'Physical Exam: Signs of Severe Disease';6;5
-46;'PhysExamGen';'Physical Exam: General';7;5
-47;'Mal Test';'Malaria Test';8;5
-48;'Diag Test res';'Diagnostic test results';9;5
-49;'FinalDiag';'Final Diagnosis';10;5
-50;'Tx';'Treatment';11;5
-51;'Com: Unc disease';'Communication: Uncomplicated disease';12;5
-52;'Com: Sev disease';'Communication: Severe disease';13;5
-53;'Fdbk';'Feedback';14;5
-54;'Obs3';'Observation 3';15;5
+43;'Signs Sev Dis';'Signs of severe disease';4;5
+44;'Cl sev assess';'Clinical severity assessment';5;5
+45;'Cl hist';'Taking a clinical history';6;5
+46;'Prior Dx Tx';'Prior Diagnosis and Treatment';7;5
+47;'Gen Ex';'General examination';8;5
+48;'Diag';'Clinically suspected diagnosis';9;5
+49;'Agr';'Agreement';10;5
+50;'Mal Test';'Malaria Test';11;5
+51;'Oth Test';'Other tests';12;5
+52;'Diag Test res';'Diagnostic test results';13;5
+53;'Tx';'Treatment';14;5
+54;'Com: Unc disease';'Communication: Uncomplicated disease';15;5
+55;'Com: Sev disease';'Communication: Severe disease';16;5
+56;'Sev dis';'Severe disease';17;5
 57;'Obs 1';'Observation 1';1;6
 58;'Obs 2';'Observation 2';2;6
 59;'Obs 3';'Observation 3';3;6
@@ -68,14 +74,14 @@
 76;'Obs 1';'Observation 1';1;10
 77;'Obs 2';'Observation 2';2;10
 78;'Obs 3';'Observation 3';3;10
-79;'PrevGap1';'Previous Gap 1';1;12
-80;'PrevGap2';'Previous Gap 2';2;12
-81;'PrevGap3';'Previous Gap 3';3;12
+79;'gap1';'Gap 1';1;12
+80;'gap2';'Gap 2';2;12
+81;'gap3';'Gap 3';3;12
 82;'AdherenceTable1';'AdherenceTable1';1;2
 83;'AdherenceTable2';'AdherenceTable2';2;2
 84;'IQEQA1';'IQEQA1';1;11
 85;'IQEQA2';'IQEQA2';2;11
 86;'IQEQA3';'IQEQA3';3;11
-90;'gap1';'Gap 1';4;12
-91;'gap2';'Gap 2';5;12
-92;'gap3';'Gap 3';6;12
+87;'Obs1';'Observation 1';1;3
+88;'Obs2';'Observation 2';1;4
+89;'Obs3';'Observation 3';1;5

@@ -347,15 +347,3 @@
 348;'No [0]';'No';0.00;98
 349;'None';'None';0.00;41
 350;'Both RDT and Microscopy (any type)';'Both RDT and Microscopy (any type)';0.00;47
-351;'MD/Medical Officer/Physician';'MD/Medical Officer/Physician';0.00;99
-352;'Clinical Officer/Physician''s Assistant';'Clinical Officer/Physician''s Assistant';0.00;99
-353;'Nurse';'Nurse';0.00;99
-354;'Midwife';'Midwife';0.00;99
-355;'Other';'Other';0.00;99
-356;'Lab Scientist';'Lab Scientist';0.00;100
-357;'Lab Tech';'Lab Tech';0.00;100
-358;'Lab Assistant';'Lab Assistant';0.00;100
-359;'Other';'Other';0.00;100
-360;'Not addressed';'Not addressed';1.00;101
-361;'Partially addressed';'Partially addressed';1.00;101
-362;'Completely Addressed';'Completely Addressed';1.00;101
