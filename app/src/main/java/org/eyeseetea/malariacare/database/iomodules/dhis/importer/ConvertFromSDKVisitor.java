@@ -242,7 +242,7 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
     public void visit(DataElementExtended sdkDataElementExtended) {
         if(compositeScoreBuilder.isACompositeScore(sdkDataElementExtended)){
             buildCompositeScore(sdkDataElementExtended);
-        }else{
+        }else if(questionBuilder.isAQuestion(sdkDataElementExtended)){
             buildQuestion(sdkDataElementExtended);
             //Question type is annotated in 'answer' from an attribute of the question
             buildAnswerOutput(sdkDataElementExtended);

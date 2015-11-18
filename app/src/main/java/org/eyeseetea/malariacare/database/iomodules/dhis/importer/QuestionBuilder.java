@@ -20,15 +20,18 @@
 package org.eyeseetea.malariacare.database.iomodules.dhis.importer;
 
 import android.provider.ContactsContract;
+import android.util.Log;
 
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.DataElementExtended;
+import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.OptionExtended;
 import org.eyeseetea.malariacare.database.model.CompositeScore;
 import org.eyeseetea.malariacare.database.model.Header;
 import org.eyeseetea.malariacare.database.model.Question;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.hisp.dhis.android.sdk.persistence.models.AttributeValue;
 import org.hisp.dhis.android.sdk.persistence.models.DataElement;
+import org.hisp.dhis.android.sdk.persistence.models.Option;
 
 import java.util.HashMap;
 import java.util.List;
@@ -76,6 +79,10 @@ public class QuestionBuilder {
      */
     private static final String ATTRIBUTE_TAB_NAME = "DETabName";
     /**
+     * Code of attribute '20 Question Type'
+     */
+    private static final String ATTRIBUTE_QUESTION_TYPE_CODE ="DEQuesType";
+    /**
      * Value parent
      */
     private static final String PARENT = "PARENT";
@@ -88,6 +95,24 @@ public class QuestionBuilder {
      * Code of attribute 'Composite Score'
      */
     private static final String ATTRIBUTE_COMPOSITE_SCORE_CODE = "DECompositiveScore";
+
+    //Fixme In the future, when isAQuestion check if is a question, it should be removed
+    /**
+     * Value to discard the dataelementcontrol
+     */
+    private static final String COMPOSITE_SCORE_NAME ="COMPOSITE_SCORE" ;
+    /**
+     * Code to discard the dataelementcontrol
+     */
+    private static String COMPOSITE_SCORE_CODE ="" ;
+    /**
+     * Value to discard the COMPOSITE_SCORE
+     */
+    private static final String DATAELEMENTCONTROL_NAME ="CONTROL_DATAELEMENT";
+    /**
+     * Code to discard the COMPOSITE_SCORE
+     */
+    private static String DATAELEMENTCONTROL_CODE ="";
 
     /**
      * Mapping all the questions
@@ -137,6 +162,11 @@ public class QuestionBuilder {
         mapMatchLevel = new HashMap<>();
         mapMatchParent = new HashMap<>();
         mapMatchType = new HashMap<>();
+        //Fixme In the future, when isAQuestion check if is a question, it should be removed
+        Option optionDataElementControl= OptionExtended.findOptionByName(DATAELEMENTCONTROL_NAME);
+        DATAELEMENTCONTROL_CODE=optionDataElementControl.getCode();
+        Option optionCompositeScore= OptionExtended.findOptionByName(COMPOSITE_SCORE_NAME);
+        COMPOSITE_SCORE_CODE=optionCompositeScore.getCode();
     }
 
     /**
@@ -377,4 +407,35 @@ public class QuestionBuilder {
     }
 
 
+    //Fixme isAQuestion is necessary to check the question when dataElements have a specific identifier for questions. Now it is detected by elimination
+    public boolean isAQuestion(DataElementExtended dataElementExtended){
+        if(isDataElementControl(dataElementExtended)){
+          return false;
+        }
+        if(isCompositeScore(dataElementExtended)) {
+            return false;
+        }
+        return true;
+    }
+    //Fixme In the future it should be removed
+    private boolean isCompositeScore(DataElementExtended dataElementExtended) {
+        String typeQuestion=dataElementExtended.findAttributeValueByCode(ATTRIBUTE_QUESTION_TYPE_CODE);
+
+        if(typeQuestion==null){
+            return false;
+        }
+
+        return typeQuestion.equals(COMPOSITE_SCORE_CODE);
+    }
+//Fixme In the future it should be removed
+    public boolean isDataElementControl(DataElementExtended dataElementExtended){
+
+        String typeQuestion=dataElementExtended.findAttributeValueByCode(ATTRIBUTE_QUESTION_TYPE_CODE);
+
+        if(typeQuestion==null){
+            return false;
+        }
+
+        return typeQuestion.equals(DATAELEMENTCONTROL_CODE);
+    }
 }
