@@ -234,7 +234,7 @@ public class DashboardSentFragment extends ListFragment {
                                                     ((Survey)adapter.getItem(position-1)).delete();
 
                                                     Intent surveysIntent=new Intent(getActivity(), SurveyService.class);
-                                                    surveysIntent.putExtra(SurveyService.SERVICE_METHOD, SurveyService.ALL_SENT_SURVEYS_ACTION);
+                                                    surveysIntent.putExtra(SurveyService.SERVICE_METHOD, SurveyService.RELOAD_DASHBOARD_ACTION);
                                                     getActivity().startService(surveysIntent);
                                                     reloadSentSurveys();
                                                     reloadMonitor();
