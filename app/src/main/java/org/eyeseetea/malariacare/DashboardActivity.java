@@ -176,20 +176,14 @@ public class DashboardActivity extends BaseActivity {
      * In case Session doesn't have the user set, here we set it to the first entry of User table
      */
     private void loadSessionIfRequired(){
-        //already a user in session -> done
+        // already a user in session -> done
         if(Session.getUser()!=null){
             return;
         }
 
-        //No user (take it from db)
-        User user = new Select().from(User.class).querySingle();
-        if (user==null){
-            //Mocked user (this should never happen)
-            user = new User();
-            user.setName("");
-            user.save();
-        }
-
+        // If we're in dashboard and User is not yet in session we have to put it
+        // FIXME: for the moment there will be only one user in the User table, but in the future we will have to think about tagging the logged user in the DB
+        User user = User.getLoggedUser();
         Session.setUser(user);
     }
 
