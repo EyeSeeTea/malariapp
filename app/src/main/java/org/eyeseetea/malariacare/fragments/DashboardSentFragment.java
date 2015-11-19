@@ -144,6 +144,16 @@ public class DashboardSentFragment extends ListFragment {
         this.adapter = adapterInSession;
         Session.setAdapterSent(this.adapter);
     }
+    /**
+     * Inits adapter.
+     * Most of times is just an AssessmentAdapter.
+     * In a version with several adapters in dashboard (like in 'mock' branch) a new one like the one in session is created.
+     */
+    private void resetAdapter(List<Survey> surveys){
+        IDashboardAdapter adapterInSession = new AssessmentSentAdapter(surveys, getActivity());
+        this.adapter = adapterInSession;
+        Session.setAdapterSent(this.adapter);
+    }
 
     @Override
     public void onListItemClick(ListView l, View v, int position, long id){
@@ -232,9 +242,11 @@ public class DashboardSentFragment extends ListFragment {
                                             .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                                                 public void onClick(DialogInterface arg0, int arg1) {
                                                     ((Survey)adapter.getItem(position-1)).delete();
+
                                                     Intent surveysIntent=new Intent(getActivity(), SurveyService.class);
-                                                    surveysIntent.putExtra(SurveyService.SERVICE_METHOD, SurveyService.RELOAD_DASHBOARD_ACTION);
+                                                    surveysIntent.putExtra(SurveyService.SERVICE_METHOD, SurveyService.ALL_SENT_SURVEYS_ACTION);
                                                     getActivity().startService(surveysIntent);
+                                                    reloadSentSurveys();
                                                     reloadMonitor();
                                                 }
                                             })
@@ -281,8 +293,7 @@ public class DashboardSentFragment extends ListFragment {
         boolean hasSurveys = newListSurveys != null && newListSurveys.size() > 0;
         this.surveys.clear();
         this.surveys.addAll(newListSurveys);
-
-        adapter.setItems(oneSurveyForOrgUnit);
+        adapter.setItems(newListSurveys);
         this.adapter.notifyDataSetChanged();
         if (hasSurveys) {
             reloadMonitor();
@@ -351,6 +362,7 @@ public class DashboardSentFragment extends ListFragment {
         surveysFromService = (List<Survey>) Session.popServiceValue(SurveyService.ALL_SENT_SURVEYS_ACTION);
         HashMap<String, Survey> orgUnits;
         orgUnits = new HashMap<>();
+        oneSurveyForOrgUnit = new ArrayList<>();
         for (Survey survey : surveysFromService) {
             if (survey.isSent()) {
                 if (survey.getOrgUnit() != null) {
@@ -383,6 +395,7 @@ public class DashboardSentFragment extends ListFragment {
             Log.d(TAG, "onReceive");
             //Listening only intents from this method
             if (SurveyService.ALL_SENT_SURVEYS_ACTION.equals(intent.getAction())) {
+                //Listen for
                 reloadSentSurveys();
             }
         }
