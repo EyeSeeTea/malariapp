@@ -70,7 +70,7 @@ public class DashboardSentFragment extends ListFragment {
     private static int index = 0;
     private WebView webView;
     List<Survey> oneSurveyForOrgUnit;
-    List<Survey> surveysFromService;
+    List<Survey> surveysForGraphic;
     public DashboardSentFragment() {
         this.adapter = Session.getAdapterSent();
         this.surveys = new ArrayList();
@@ -312,14 +312,14 @@ public class DashboardSentFragment extends ListFragment {
             public void onPageFinished(WebView view, String url) {
                 super.onPageFinished(view, url);
                 //Add line chart
-                new SentSurveysBuilder(surveysFromService, getActivity()).addDataInChart(view);
+                new SentSurveysBuilder(surveysForGraphic, getActivity()).addDataInChart(view);
 
                 //Add pie charts
-                new PieTabGroupBuilder(surveysFromService, getActivity()).addDataInChart(view);
+                new PieTabGroupBuilder(surveysForGraphic, getActivity()).addDataInChart(view);
 
 
                 //Add table x facility
-                new FacilityTableBuilder(surveysFromService, getActivity()).addDataInChart(view);
+                new FacilityTableBuilder(surveysForGraphic, getActivity()).addDataInChart(view);
 
                 // As WebView and ListView doesn't get on well, we need to calculate ListViews height
                 // after WebView is loaded to be able to properly represent it in the screen
@@ -360,12 +360,15 @@ public class DashboardSentFragment extends ListFragment {
         }
     }
 
+    /**
+     * filter the surveys for last survey in org unit, and set surveysForGraphic for the statistics
+     */
     public void reloadSentSurveys() {
-        surveysFromService = (List<Survey>) Session.popServiceValue(SurveyService.ALL_SENT_SURVEYS_ACTION);
+        surveysForGraphic = (List<Survey>) Session.popServiceValue(SurveyService.ALL_SENT_SURVEYS_ACTION);
         HashMap<String, Survey> orgUnits;
         orgUnits = new HashMap<>();
         oneSurveyForOrgUnit = new ArrayList<>();
-        for (Survey survey : surveysFromService) {
+        for (Survey survey : surveysForGraphic) {
             if (survey.isSent()) {
                 if (survey.getOrgUnit() != null) {
                     if (!orgUnits.containsKey(survey.getOrgUnit().getUid())) {
@@ -397,7 +400,6 @@ public class DashboardSentFragment extends ListFragment {
             Log.d(TAG, "onReceive");
             //Listening only intents from this method
             if (SurveyService.ALL_SENT_SURVEYS_ACTION.equals(intent.getAction())) {
-                //Listen for
                 reloadSentSurveys();
             }
         }
