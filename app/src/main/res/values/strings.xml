@@ -81,7 +81,7 @@
     <string name="assessment_sent_score">Score</string>
     <string name="assessment_info_delete">Delete</string>
     <string name="assessment_title_header">Active Assessment(s)</string>
-    <string name="assessment_sent_title_header">Sent Assessment(s)</string>
+    <string name="assessment_sent_title_header">Previous Assessment(s)</string>
 
     <!-- feedback -->
     <!-- XXX Should it be replaced by 'assessment_title_facility_date'?-->
@@ -263,5 +263,9 @@
     <item name="dhis_password" type="string" translatable="false">dhis_password</item>
     <item name="location_required" type="string" translatable="false">location_required</item>
     <string name="dashboard_tip_pie_chart">Quality of care (based on last assessment)</string>
+    <string name="dialog_pull_error">Error while trying to pull metadata from dhis server</string>
+    <string name="settings_menu_pull">Pull</string>
+    <string name="dialog_pull_success">Dhis metadata successfully pulled from server</string>
+    <string name="dialog_title_pull_response">Pull status</string>
 
 </resources>

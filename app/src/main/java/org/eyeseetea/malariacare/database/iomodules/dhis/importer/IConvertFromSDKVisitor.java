@@ -19,13 +19,34 @@
 
 package org.eyeseetea.malariacare.database.iomodules.dhis.importer;
 
+import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.DataElementExtended;
+import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.OptionExtended;
+import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.OptionSetExtended;
+import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.OrganisationUnitExtended;
+import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.ProgramExtended;
+import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.ProgramStageExtended;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.ProgramStageSectionExtended;
-import org.hisp.dhis.android.sdk.persistence.models.BaseMetaDataObject;
+import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.UserAccountExtended;
+import org.hisp.dhis.android.sdk.persistence.models.DataElement;
+import org.hisp.dhis.android.sdk.persistence.models.Option;
+import org.hisp.dhis.android.sdk.persistence.models.OptionSet;
 import org.hisp.dhis.android.sdk.persistence.models.OrganisationUnit;
+import org.hisp.dhis.android.sdk.persistence.models.Program;
+import org.hisp.dhis.android.sdk.persistence.models.ProgramStage;
 import org.hisp.dhis.android.sdk.persistence.models.ProgramStageSection;
+import org.hisp.dhis.android.sdk.persistence.models.UserAccount;
 
-public interface IConvertFromSDKVisitor<T> {
-    void visit(ProgramStageSection programStageSection);
+import java.util.List;
 
-    void visit(OrganisationUnit organisationUnit);
+public interface IConvertFromSDKVisitor {
+    void visit(ProgramExtended sdkProgram);
+    void visit(ProgramStageExtended sdkProgramStage);
+    void visit(ProgramStageSectionExtended sdkProgramStageSection);
+    void visit(OrganisationUnitExtended organisationUnit);
+    void visit(OptionSetExtended optionSet);
+    void visit(OptionExtended option);
+    void visit(UserAccountExtended userAccount);
+    void visit(DataElementExtended dataElement);
+    void buildScores();
+
 }

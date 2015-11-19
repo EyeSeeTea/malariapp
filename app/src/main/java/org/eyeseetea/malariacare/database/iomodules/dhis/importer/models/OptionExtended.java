@@ -19,19 +19,24 @@
 
 package org.eyeseetea.malariacare.database.iomodules.dhis.importer.models;
 
+import com.raizlabs.android.dbflow.sql.builder.Condition;
+import com.raizlabs.android.dbflow.sql.language.Select;
+
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.IConvertFromSDKVisitor;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.VisitableFromSDK;
-import org.hisp.dhis.android.sdk.persistence.models.ProgramStage;
-import org.hisp.dhis.android.sdk.persistence.models.ProgramStageSection;
+import org.eyeseetea.malariacare.database.model.Option$Table;
+import org.hisp.dhis.android.sdk.persistence.models.Option;
+import org.hisp.dhis.android.sdk.persistence.models.OptionSet;
 
 /**
- * Created by arrizabalaga on 5/11/15.
+ * Created by arrizabalaga on 6/11/15.
  */
-public class ProgramStageSectionExtended implements VisitableFromSDK {
-   ProgramStageSection programStageSection;
+public class OptionExtended implements VisitableFromSDK {
 
-    public ProgramStageSectionExtended(ProgramStageSection programStageSection){
-        this.programStageSection=programStageSection;
+    Option option;
+
+    public OptionExtended(Option option){
+        this.option=option;
     }
 
     @Override
@@ -39,8 +44,17 @@ public class ProgramStageSectionExtended implements VisitableFromSDK {
         visitor.visit(this);
     }
 
-    public ProgramStageSection getProgramStageSection() {
-        return programStageSection;
+    public Option getOption() {
+        return option;
     }
 
+    /**
+     * Some options have a 'hardcoded' name such as 'COMPOSITE_SCORE'. This method is a helper to recover the whole option with that name
+     * @param name
+     * @return
+     */
+    public static Option findOptionByName(String name){
+        return new Select().from(Option.class).where(Condition.column(Option$Table.NAME).
+                is(name)).querySingle();
+    }
 }

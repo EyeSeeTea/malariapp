@@ -350,10 +350,12 @@ public class DashboardSentFragment extends ListFragment {
     /**
      * Stops webView gracefully
      */
-    private void stopMonitor() {
-        try {
-            webView.stopLoading();
-        } catch (Exception e) {
+    private void stopMonitor(){
+        try{
+            if(webView!=null){
+                webView.stopLoading();
+            }
+        }catch(Exception e){
             e.printStackTrace();
         }
     }

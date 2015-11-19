@@ -21,17 +21,19 @@ package org.eyeseetea.malariacare.database.iomodules.dhis.importer.models;
 
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.IConvertFromSDKVisitor;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.VisitableFromSDK;
-import org.hisp.dhis.android.sdk.persistence.models.ProgramStage;
-import org.hisp.dhis.android.sdk.persistence.models.ProgramStageSection;
+import org.hisp.dhis.android.sdk.persistence.models.OptionSet;
 
 /**
- * Created by arrizabalaga on 5/11/15.
+ * Created by arrizabalaga on 6/11/15.
  */
-public class ProgramStageSectionExtended implements VisitableFromSDK {
-   ProgramStageSection programStageSection;
+public class OptionSetExtended implements VisitableFromSDK {
 
-    public ProgramStageSectionExtended(ProgramStageSection programStageSection){
-        this.programStageSection=programStageSection;
+
+
+    OptionSet optionSet;
+
+    public OptionSetExtended(OptionSet optionSet){
+        this.optionSet=optionSet;
     }
 
     @Override
@@ -39,8 +41,7 @@ public class ProgramStageSectionExtended implements VisitableFromSDK {
         visitor.visit(this);
     }
 
-    public ProgramStageSection getProgramStageSection() {
-        return programStageSection;
+    public OptionSet getOptionSet() {
+        return optionSet;
     }
-
 }

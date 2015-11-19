@@ -70,7 +70,7 @@
     <string name="assessment_sent_score">Ponto</string>
     <string name="assessment_info_delete">Apagar</string>
     <string name="assessment_title_header">Avaliação activa</string>
-    <string name="assessment_sent_title_header">Avaliação enviado</string>
+    <string name="assessment_sent_title_header">Avaliação anterior(es)</string>
 
     <!-- feedback -->
     <!-- XXX Should it be replaced by 'assessment_title_facility_date'?-->
@@ -215,4 +215,8 @@
     <string name="dialog_info_push_ignored">Ignorado</string>
     <string name="dialog_info_push_stats">Os dados enviados para o servidor. Resultados:</string>
     <string name="dashboard_tip_pie_chart">Qualidade dos cuidados (com base na última avaliação)</string>
+    <string name="dialog_pull_error">Erro ao tentar puxar os metadados de dhis servidor</string>
+    <string name="settings_menu_pull">Pull</string>
+    <string name="dialog_pull_success">Dhis metadados puxado com êxito a partir do servidor</string>
+    <string name="dialog_title_pull_response">Pull status</string>
 </resources>
