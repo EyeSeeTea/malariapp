@@ -249,11 +249,14 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
         Object questionOrCompositeScore;
         if(compositeScoreBuilder.isACompositeScore(sdkDataElementExtended)){
             questionOrCompositeScore=buildCompositeScore(sdkDataElementExtended);
-        }else{
+        }else if(questionBuilder.isAQuestion(sdkDataElementExtended)){
             questionOrCompositeScore=buildQuestion(sdkDataElementExtended);
             //Question type is annotated in 'answer' from an attribute of the question
             buildAnswerOutput(sdkDataElementExtended);
+        }else{
+            return;
         }
+
         //Both questions and scores are annotated
         appMapObjects.put(sdkDataElementExtended.getDataElement().getUid(), questionOrCompositeScore);
     }
@@ -265,7 +268,7 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
     @Override
     public void visit(EventExtended sdkEventExtended) {
         Event event=sdkEventExtended.getEvent();
-        OrgUnit orgUnit=(OrgUnit)appMapObjects.get(event.getOrganisationUnitId());
+        OrgUnit orgUnit =(OrgUnit)appMapObjects.get(event.getOrganisationUnitId());
         TabGroup tabGroup=(TabGroup)appMapObjects.get(event.getProgramStageId());
 
         Survey survey=new Survey();
