@@ -216,7 +216,7 @@
     <string name="dialog_info_push_stats">Os dados enviados para o servidor. Resultados:</string>
     <string name="dashboard_tip_pie_chart">Qualidade dos cuidados (com base na última avaliação)</string>
     <string name="dialog_pull_error">Erro ao tentar puxar os metadados de dhis servidor</string>
-    <string name="settings_menu_pull">Pull</string>
+    <string name="settings_menu_pull">Metadados de atualização</string>
     <string name="dialog_pull_success">Dhis metadados puxado com êxito a partir do servidor</string>
     <string name="dialog_title_pull_response">Pull status</string>
 </resources>

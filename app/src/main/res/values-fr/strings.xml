@@ -210,7 +210,7 @@
     <string name="dialog_info_push_stats">Les données téléchargées vers le serveur. Résultats:</string>
     <string name="dashboard_tip_pie_chart">La qualité des soins (basé sur la dernière évaluation)</string>
     <string name="dialog_pull_error">Erreur en essayant de tirer des métadonnées à partir dhis serveur</string>
-    <string name="settings_menu_pull">Pull</string>
+    <string name="settings_menu_pull">Métadonnées rafraîchissement</string>
     <string name="dialog_pull_success">Dhis métadonnées retiré avec succès de serveur</string>
     <string name="dialog_title_pull_response">Pull status</string>
 
