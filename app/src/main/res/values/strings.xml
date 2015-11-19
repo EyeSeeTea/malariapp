@@ -264,8 +264,9 @@
     <item name="location_required" type="string" translatable="false">location_required</item>
     <string name="dashboard_tip_pie_chart">Quality of care (based on last assessment)</string>
     <string name="dialog_pull_error">Error while trying to pull metadata from dhis server</string>
-    <string name="settings_menu_pull">Pull</string>
+    <string name="settings_menu_pull">Metadata refresh</string>
     <string name="dialog_pull_success">Dhis metadata successfully pulled from server</string>
     <string name="dialog_title_pull_response">Pull status</string>
+    <string name="dialog_ask_pending_surveys">Do you want to send the pending polls?</string>
 
 </resources>

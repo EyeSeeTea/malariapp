@@ -83,7 +83,7 @@ public class DashboardActivity extends BaseActivity {
         }
 
 
-        setTitle(getString(R.string.app_name) +" app - "+ Session.getUser().getName());
+        setTitle(getString(R.string.app_name) + " app - " + Session.getUser().getName());
     }
 
     @Override
@@ -98,9 +98,26 @@ public class DashboardActivity extends BaseActivity {
         if(item.getItemId()!=R.id.action_pull){
             return super.onOptionsItemSelected(item);
         }
+        List<Survey> surveysUnsentFromService = (List<Survey>) Session.popServiceValue(SurveyService.ALL_UNSENT_SURVEYS_ACTION);
+                if(surveysUnsentFromService.size()>0) {
+                    new AlertDialog.Builder(this)
+                            .setTitle(getBaseContext().getApplicationContext().getString(R.string.dialog_ask_pending_surveys))
+                            .setMessage(getBaseContext().getApplicationContext().getString(R.string.dialog_ask_pending_surveys))
+                            .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface arg0, int arg1) {
+                                    sentPendingSurveys();
+                                }
+                            })
+                            .setNegativeButton(android.R.string.no, null).create().show();
+                }
 
-        PullController.getInstance().pull(this);
+        Log.d(TAG,"do pull");
+        //PullController.getInstance().pull(getBaseContext().getApplicationContext());
         return true;
+    }
+
+    private void sentPendingSurveys() {
+        Log.d(TAG,"send pending surveys");
     }
 
     @Override
