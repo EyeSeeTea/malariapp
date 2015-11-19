@@ -144,16 +144,6 @@ public class DashboardSentFragment extends ListFragment {
         this.adapter = adapterInSession;
         Session.setAdapterSent(this.adapter);
     }
-    /**
-     * Inits adapter.
-     * Most of times is just an AssessmentAdapter.
-     * In a version with several adapters in dashboard (like in 'mock' branch) a new one like the one in session is created.
-     */
-    private void resetAdapter(List<Survey> surveys){
-        IDashboardAdapter adapterInSession = new AssessmentSentAdapter(surveys, getActivity());
-        this.adapter = adapterInSession;
-        Session.setAdapterSent(this.adapter);
-    }
 
     @Override
     public void onListItemClick(ListView l, View v, int position, long id){
