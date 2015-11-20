@@ -88,7 +88,7 @@ public class DashboardActivity extends BaseActivity {
         }
 
 
-        setTitle(getString(R.string.app_name) +" app - "+ Session.getUser().getName());
+        setTitle(getString(R.string.app_name) + " app - " + Session.getUser().getName());
     }
 
     @Override
@@ -111,23 +111,40 @@ public class DashboardActivity extends BaseActivity {
                     .setTitle("Push unsent surveys?")
                     .setMessage("Metadata refresh will delete your unsent data. You have "+unsentSurveys.size()+" unsent surveys. Do you to push them before refresh?")
                     .setNegativeButton(android.R.string.no, null)
+                    .setNeutralButton(activity.getString(R.string.no), new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            finishAndGo(ProgressActivity.class);
+                        }
+                    })
                     .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-
                         public void onClick(DialogInterface arg0, int arg1) {
                             //Get credentials from preferences
                             SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(activity);
-                            String user=sharedPreferences.getString(getString(R.string.dhis_user), "");
-                            String password=sharedPreferences.getString(getString(R.string.dhis_password), "");
-                            for (Survey survey: unsentSurveys){
+                            String user = sharedPreferences.getString(getString(R.string.dhis_user), "");
+                            String password = sharedPreferences.getString(getString(R.string.dhis_password), "");
+                            int success = 0;
+                            for (Survey survey : unsentSurveys) {
                                 PushClient pushClient = new PushClient(survey, activity, user, password);
-                                pushClient.push();
+                                if (pushClient.push().isSuccessful()) success++;
+                            }
+                            if (success == unsentSurveys.size()) {
+                                new AlertDialog.Builder(activity)
+                                        .setTitle("Surveys pushed")
+                                        .setMessage("All " + unsentSurveys.size() + " unsent surveys have been pushed without any error")
+                                        .setNeutralButton(android.R.string.ok, null).create().show();
+                                finishAndGo(ProgressActivity.class);
+                            } else {
+                                new AlertDialog.Builder(activity)
+                                        .setTitle("Problem pushing surveys")
+                                        .setMessage("Only " + success + " of " + unsentSurveys.size() + " unsent surveys have been pushed. Please try to push the rest manually. Aborting pull...")
+                                        .setNeutralButton(android.R.string.ok, null).create().show();
                             }
                         }
                     })
                     .setCancelable(true)
                     .create().show();
         }
-        finishAndGo(ProgressActivity.class);
         return true;
     }
 
