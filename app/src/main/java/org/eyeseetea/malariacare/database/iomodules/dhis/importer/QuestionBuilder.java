@@ -33,6 +33,7 @@ import org.hisp.dhis.android.sdk.persistence.models.AttributeValue;
 import org.hisp.dhis.android.sdk.persistence.models.DataElement;
 import org.hisp.dhis.android.sdk.persistence.models.Option;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -42,6 +43,7 @@ import java.util.Map;
  */
 public class QuestionBuilder {
 
+    private static final String TAG=".QuestionBuilder";
     /**
      * Code of attribute dheader unique name
      */
@@ -81,7 +83,7 @@ public class QuestionBuilder {
     /**
      * Code of attribute '20 Question Type'
      */
-    private static final String ATTRIBUTE_QUESTION_TYPE_CODE ="DEQuesType";
+    private static final String ATTRIBUTE_QUESTION_TYPE_CODE = "DEQuesType";
     /**
      * Value parent
      */
@@ -100,19 +102,19 @@ public class QuestionBuilder {
     /**
      * Value to discard the dataelementcontrol
      */
-    private static final String COMPOSITE_SCORE_NAME ="COMPOSITE_SCORE" ;
+    private static final String COMPOSITE_SCORE_NAME = "COMPOSITE_SCORE";
     /**
      * Code to discard the dataelementcontrol
      */
-    private static String COMPOSITE_SCORE_CODE ="" ;
+    private static String COMPOSITE_SCORE_CODE = "";
     /**
      * Value to discard the COMPOSITE_SCORE
      */
-    private static final String DATAELEMENTCONTROL_NAME ="CONTROL_DATAELEMENT";
+    private static final String DATAELEMENTCONTROL_NAME = "CONTROL_DATAELEMENT";
     /**
      * Code to discard the COMPOSITE_SCORE
      */
-    private static String DATAELEMENTCONTROL_CODE ="";
+    private static String DATAELEMENTCONTROL_CODE = "";
 
     /**
      * Mapping all the questions
@@ -144,6 +146,10 @@ public class QuestionBuilder {
      */
     Map<String, String> mapMatchParent;
     /**
+     * Mapping all the Match question level(it is needed for know who are the parent)
+     */
+    Map<String, List<String>> mapMatchChilds;
+    /**
      * Mapping headers(it is needed for not duplicate data)
      */
     Map<String, Header> mapHeader;
@@ -161,12 +167,14 @@ public class QuestionBuilder {
         mapParent = new HashMap<>();
         mapMatchLevel = new HashMap<>();
         mapMatchParent = new HashMap<>();
+        mapMatchChilds = new HashMap<>();
         mapMatchType = new HashMap<>();
+
         //Fixme In the future, when isAQuestion check if is a question, it should be removed
-        Option optionDataElementControl= OptionExtended.findOptionByName(DATAELEMENTCONTROL_NAME);
-        DATAELEMENTCONTROL_CODE=optionDataElementControl.getCode();
-        Option optionCompositeScore= OptionExtended.findOptionByName(COMPOSITE_SCORE_NAME);
-        COMPOSITE_SCORE_CODE=optionCompositeScore.getCode();
+        Option optionDataElementControl = OptionExtended.findOptionByName(DATAELEMENTCONTROL_NAME);
+        DATAELEMENTCONTROL_CODE = optionDataElementControl.getCode();
+        Option optionCompositeScore = OptionExtended.findOptionByName(COMPOSITE_SCORE_NAME);
+        COMPOSITE_SCORE_CODE = optionCompositeScore.getCode();
     }
 
     /**
@@ -180,7 +188,7 @@ public class QuestionBuilder {
 
     public Integer findOrder(DataElementExtended dataElementExtended) {
         String value = getValue(ATTRIBUTE_ORDER, dataElementExtended);
-        if(value!=null) {
+        if (value != null) {
             int order = Integer.valueOf(value);
             return order;
         }
@@ -194,17 +202,16 @@ public class QuestionBuilder {
 
     public Float findNumerator(DataElementExtended dataElementExtended) {
         String value = getValue(ATTRIBUTE_NUMERATOR, dataElementExtended);
-        if(value!=null) {
+        if (value != null) {
             float numinator = Float.valueOf(value);
             return numinator;
-        }
-        else
+        } else
             return null;
     }
 
     public Float findDenominator(DataElementExtended dataElementExtended) {
         String value = getValue(ATTRIBUTE_DENUMERATOR, dataElementExtended);
-        if(value!=null) {
+        if (value != null) {
             float denominator = Float.valueOf(value);
             return denominator;
         }
@@ -213,20 +220,20 @@ public class QuestionBuilder {
 
     /**
      * Return a CompositeScore question
-     *
-     *  The compositeScore is getted in mapCompositeScores in CompositeScoreBuilder.class
+     * <p/>
+     * The compositeScore is getted in mapCompositeScores in CompositeScoreBuilder.class
      *
      * @param dataElementExtended
      * @return compositeScore question
      */
     public CompositeScore findCompositeScore(DataElementExtended dataElementExtended) {
-        CompositeScore compositeScore =null;
+        CompositeScore compositeScore = null;
 
-        String value= findCompositeScoreId(dataElementExtended);
-        if(value!=null) {
+        String value = findCompositeScoreId(dataElementExtended);
+        if (value != null) {
             try {
-                compositeScore =CompositeScoreBuilder.getCompositeScoreFromDataElementAndHierarchicalCode(dataElementExtended.getDataElement(),value);
-            }catch(Exception e){
+                compositeScore = CompositeScoreBuilder.getCompositeScoreFromDataElementAndHierarchicalCode(dataElementExtended.getDataElement(), value);
+            } catch (Exception e) {
                 return compositeScore;
             }
         }
@@ -235,7 +242,7 @@ public class QuestionBuilder {
 
     /**
      * Save and return Header question
-     *
+     * <p/>
      * The header check if exist before be saved.
      *
      * @param dataElementExtended
@@ -244,7 +251,7 @@ public class QuestionBuilder {
     public Header findHeader(DataElementExtended dataElementExtended) {
         Header header = null;
         String value = getValue(ATTRIBUTE_HEADER_NAME, dataElementExtended);
-        if(value!=null) {
+        if (value != null) {
             if (!mapHeader.containsKey(value)) {
                 header = new Header();
                 header.setName(value.trim());
@@ -269,15 +276,15 @@ public class QuestionBuilder {
      * @param dataElementExtended
      */
     public void RegisterParentChildRelations(DataElementExtended dataElementExtended) {
-        DataElement dataElement= dataElementExtended.getDataElement();
-        String questionRelationType=null;
-        String questionRelationGroup=null;
-        String matchRelationType=null;
-        String matchRelationGroup=null;
-        questionRelationType =getValue(ATTRIBUTE_HIDE_TYPE,dataElementExtended);
-        questionRelationGroup =getValue(ATTRIBUTE_HIDE_GROUP, dataElementExtended);
-        matchRelationType =getValue(ATTRIBUTE_MATCH_TYPE, dataElementExtended);
-        matchRelationGroup =getValue(ATTRIBUTE_MATCH_GROUP, dataElementExtended);
+        DataElement dataElement = dataElementExtended.getDataElement();
+        String questionRelationType = null;
+        String questionRelationGroup = null;
+        String matchRelationType = null;
+        String matchRelationGroup = null;
+        questionRelationType = getValue(ATTRIBUTE_HIDE_TYPE, dataElementExtended);
+        questionRelationGroup = getValue(ATTRIBUTE_HIDE_GROUP, dataElementExtended);
+        matchRelationType = getValue(ATTRIBUTE_MATCH_TYPE, dataElementExtended);
+        matchRelationGroup = getValue(ATTRIBUTE_MATCH_GROUP, dataElementExtended);
         Question questionParent = null;
         if (questionRelationType != null) {
             if (questionRelationType.equals(PARENT)) {
@@ -285,17 +292,27 @@ public class QuestionBuilder {
             }
             mapType.put(dataElement.getUid(), questionRelationType);
             mapLevel.put(dataElement.getUid(), questionRelationGroup);
-        }
-        else if(questionRelationGroup!=null){
+        } else if (questionRelationGroup != null) {
             mapParent.put(questionRelationGroup, dataElement.getUid());
         }
         if (matchRelationType != null) {
             if (matchRelationType.equals(PARENT)) {
                 mapMatchParent.put(matchRelationGroup, dataElement.getUid());
+            } else if (matchRelationType.equals(CHILD)) {
+                Question questionChild = mapQuestions.get(dataElement.getUid());
+                List <String> childsUids;
+                if(mapMatchChilds.containsKey(matchRelationGroup)){
+                    childsUids=mapMatchChilds.get(matchRelationGroup);
+                }
+                else{
+                    childsUids = new ArrayList<>();
+                }
+                childsUids.add(dataElement.getUid());
+                mapMatchChilds.put(matchRelationGroup, childsUids);
             }
-            mapMatchType.put(dataElement.getUid(), matchRelationType);
-            mapMatchLevel.put(dataElement.getUid(), matchRelationGroup);
         }
+        mapMatchType.put(dataElement.getUid(), matchRelationType);
+        mapMatchLevel.put(dataElement.getUid(), matchRelationGroup);
     }
 
     /**
@@ -304,7 +321,7 @@ public class QuestionBuilder {
      * @param dataElementExtended
      */
     public void addRelations(DataElementExtended dataElementExtended) {
-        if(mapQuestions.containsKey(dataElementExtended.getDataElement().getUid())) {
+        if (mapQuestions.containsKey(dataElementExtended.getDataElement().getUid())) {
             addParent(dataElementExtended.getDataElement());
             addQuestionRelations(dataElementExtended.getDataElement());
             addCompositeScores(dataElementExtended);
@@ -313,9 +330,9 @@ public class QuestionBuilder {
 
     private void addCompositeScores(DataElementExtended dataElementExtended) {
         CompositeScore compositeScore = findCompositeScore(dataElementExtended);
-        if(compositeScore!=null) {
+        if (compositeScore != null) {
             org.eyeseetea.malariacare.database.model.Question appQuestion = (org.eyeseetea.malariacare.database.model.Question) mapQuestions.get(dataElementExtended.getDataElement().getUid());
-            if(appQuestion!=null) {
+            if (appQuestion != null) {
                 appQuestion.setCompositeScore(compositeScore);
                 appQuestion.save();
                 add(appQuestion);
@@ -328,27 +345,115 @@ public class QuestionBuilder {
      *
      * @param dataElement
      */
+    public static boolean debug=false;
     private void addQuestionRelations(DataElement dataElement) {
         String matchRelationType = mapMatchType.get(dataElement.getUid());
         String matchRelationGroup = mapMatchLevel.get(dataElement.getUid());
+        if(debug==false) {
+            Log.d(TAG, "MatchTypes:" + mapMatchType.size() + " MatchLevels" + mapMatchLevel + " MatchParents " + mapMatchParent.size() + " MapChildrens" + mapMatchChilds);
+            debug=true;
+        }
+        org.eyeseetea.malariacare.database.model.Question appQuestion = (org.eyeseetea.malariacare.database.model.Question) mapQuestions.get(dataElement.getUid());
+
+        if (matchRelationType != null && matchRelationType.equals(PARENT)) {
+            try {
+                if(debug==false)
+                Log.d(TAG,"Parent encontrado");
+                org.eyeseetea.malariacare.database.model.QuestionRelation questionRelation = new org.eyeseetea.malariacare.database.model.QuestionRelation();
+                org.eyeseetea.malariacare.database.model.Match match = new org.eyeseetea.malariacare.database.model.Match();
+                    questionRelation.setOperation(0);
+                Log.d(TAG, "QuestionRelation: 0-" + appQuestion.getUid());
+                    questionRelation.setQuestion(appQuestion);
+                    questionRelation.save();
+
+                    List<String> mapChilds = mapMatchChilds.get(matchRelationGroup);
+                Question child[] = new Question[mapChilds.size()];
+                if(debug==false)
+                Log.d(TAG, "Mapchilds size: " + mapChilds.size());
+                    int count = 0;
+                    for (String uid:mapChilds) {
+                        child[count] = mapQuestions.get(uid);
+                        Log.d(TAG, "count: "+count +" totalmapchilds:"+mapChilds.size()+" Child uid: " +uid + "hijo " + child[count].getHeader().getTab().getName() + " header "+child[count].getHeader().getName() +" othergroup "+child[count].getHeader().getTab().getTabGroup().getName());
+                        count++;
+                    }
+                    try {
+                        ArrayList<Float>  optionCode = getMatchOption(child[0], child[1]);
+                        Log.d(TAG, "Factor: " + optionCode);
+
+                        for (int i = 0; i < child.length; i++) {
+                            List<org.eyeseetea.malariacare.database.model.Option> options = child[i].getAnswer().getOptions();
+                            for (org.eyeseetea.malariacare.database.model.Option option : options) {
+                                if(debug==false)
+                                Log.d(TAG, "compare: factor-" +optionCode+ " option " +option.getFactor());
+                                if (optionCode.contains(option.getFactor())) {
+                                    org.eyeseetea.malariacare.database.model.QuestionOption questionOption = new org.eyeseetea.malariacare.database.model.QuestionOption();
+                                    questionOption.setOption(option);
+                                    questionOption.setQuestion(child[i]);
+                                    if(debug==false)
+                                    Log.d(TAG, "QuestionOption: option" + option.getName() + " question " + child[i].getUid());
+                                    match.setQuestionRelation(questionRelation);
+                                    if(debug==false)
+                                    Log.d(TAG, "QuestionRelation" + questionRelation.getId_question_relation());
+                                    match.save();
+
+                                    questionOption.setMatch(match);
+                                    if(debug==false)
+                                    Log.d(TAG, "Match:" + questionOption.getId_question_option());
+                                    questionOption.save();
+                                    Log.d(TAG, "All saved");
+                                }
+                            }
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private ArrayList<Float>  getMatchOption(Question question, Question question2) {
+        ArrayList<Float> optionFactors= new ArrayList<>();
+        List<org.eyeseetea.malariacare.database.model.Option> options = question.getAnswer().getOptions();
+        List<org.eyeseetea.malariacare.database.model.Option> options2 = question2.getAnswer().getOptions();
+        for (org.eyeseetea.malariacare.database.model.Option option : options) {
+            for (org.eyeseetea.malariacare.database.model.Option option2 : options2) {
+                if (option.getFactor().equals(option2.getFactor())) {
+                    if(!optionFactors.contains(option2.getFactor()))
+                    optionFactors.add(option.getFactor());
+                }
+            }
+        }
+        return optionFactors;
+    }
+
+    /**
+     * Save Question id_parent in Question
+     *
+     * @param dataElement
+     */
+    private void addParent(DataElement dataElement) {
+        String questionRelationType = mapType.get(dataElement.getUid());
+        String questionRelationGroup = mapLevel.get(dataElement.getUid());
 
         org.eyeseetea.malariacare.database.model.Question appQuestion = (org.eyeseetea.malariacare.database.model.Question) mapQuestions.get(dataElement.getUid());
 
-        if (matchRelationType != null && matchRelationType.equals(CHILD)) {
+        if (questionRelationType != null && questionRelationType.equals(CHILD)) {
             try {
                 org.eyeseetea.malariacare.database.model.QuestionRelation questionRelation = new org.eyeseetea.malariacare.database.model.QuestionRelation();
                 org.eyeseetea.malariacare.database.model.Match match = new org.eyeseetea.malariacare.database.model.Match();
 
-                if (matchRelationType.equals(CHILD)) {
+                if (questionRelationType.equals(CHILD)) {
                     questionRelation.setOperation(1);
                     questionRelation.setQuestion(appQuestion);
                     questionRelation.save();
-                    String parentuid = mapMatchParent.get(matchRelationGroup);
+                    String parentuid = mapParent.get(questionRelationGroup);
                     if (parentuid != null) {
                         org.eyeseetea.malariacare.database.model.Question parentQuestion = (org.eyeseetea.malariacare.database.model.Question) mapQuestions.get(parentuid);
                         List<org.eyeseetea.malariacare.database.model.Option> options = parentQuestion.getAnswer().getOptions();
                         for (org.eyeseetea.malariacare.database.model.Option option : options) {
-                            if(option.getName().equals(PreferencesState.getInstance().getContext().getResources().getString(R.string.yes))) {
+                            if (option.getName().equals(PreferencesState.getInstance().getContext().getResources().getString(R.string.yes))) {
                                 org.eyeseetea.malariacare.database.model.QuestionOption questionOption = new org.eyeseetea.malariacare.database.model.QuestionOption();
                                 questionOption.setOption(option);
                                 questionOption.setQuestion(parentQuestion);
@@ -364,28 +469,6 @@ public class QuestionBuilder {
                 }
             } catch (Exception e) {
             }
-        } else if(matchRelationType==null || (matchRelationType != null && !matchRelationType.equals(PARENT))){
-            org.eyeseetea.malariacare.database.model.QuestionRelation questionRelation = new org.eyeseetea.malariacare.database.model.QuestionRelation();
-            questionRelation.setOperation(0);
-            questionRelation.setQuestion(appQuestion);
-            questionRelation.save();
-        }
-    }
-    /**
-     * Save Question id_parent in Question
-     *
-     * @param dataElement
-     */
-    private void addParent(DataElement dataElement) {
-        String questionRelationType = mapType.get(dataElement.getUid());
-        String questionRelationGroup = mapLevel.get(dataElement.getUid());
-        if (questionRelationType!=null && questionRelationType.equals(CHILD)) {
-            String uid = mapParent.get(questionRelationGroup);
-            Question parent = mapQuestions.get(uid);
-            Question child = mapQuestions.get(dataElement.getUid());
-            child.setQuestion(parent);
-            child.save();
-            add(child);
         }
     }
 
@@ -398,9 +481,9 @@ public class QuestionBuilder {
      */
     private String getValue(String attributeCode, DataElementExtended dataElementExtended) {
         AttributeValue attributeValue;
-        DataElement dataElement=dataElementExtended.getDataElement();
-        attributeValue =dataElementExtended.findAttributeValuefromDataElementCode(attributeCode, dataElement);
-        if(attributeValue!=null) {
+        DataElement dataElement = dataElementExtended.getDataElement();
+        attributeValue = dataElementExtended.findAttributeValuefromDataElementCode(attributeCode, dataElement);
+        if (attributeValue != null) {
             return attributeValue.getValue();
         }
         return null;
@@ -408,31 +491,33 @@ public class QuestionBuilder {
 
 
     //Fixme isAQuestion is necessary to check the question when dataElements have a specific identifier for questions. Now it is detected by elimination
-    public boolean isAQuestion(DataElementExtended dataElementExtended){
-        if(isDataElementControl(dataElementExtended)){
-          return false;
+    public boolean isAQuestion(DataElementExtended dataElementExtended) {
+        if (isDataElementControl(dataElementExtended)) {
+            return false;
         }
-        if(isCompositeScore(dataElementExtended)) {
+        if (isCompositeScore(dataElementExtended)) {
             return false;
         }
         return true;
     }
+
     //Fixme In the future it should be removed
     private boolean isCompositeScore(DataElementExtended dataElementExtended) {
-        String typeQuestion=dataElementExtended.findAttributeValueByCode(ATTRIBUTE_QUESTION_TYPE_CODE);
+        String typeQuestion = dataElementExtended.findAttributeValueByCode(ATTRIBUTE_QUESTION_TYPE_CODE);
 
-        if(typeQuestion==null){
+        if (typeQuestion == null) {
             return false;
         }
 
         return typeQuestion.equals(COMPOSITE_SCORE_CODE);
     }
-//Fixme In the future it should be removed
-    public boolean isDataElementControl(DataElementExtended dataElementExtended){
 
-        String typeQuestion=dataElementExtended.findAttributeValueByCode(ATTRIBUTE_QUESTION_TYPE_CODE);
+    //Fixme In the future it should be removed
+    public boolean isDataElementControl(DataElementExtended dataElementExtended) {
 
-        if(typeQuestion==null){
+        String typeQuestion = dataElementExtended.findAttributeValueByCode(ATTRIBUTE_QUESTION_TYPE_CODE);
+
+        if (typeQuestion == null) {
             return false;
         }
 
