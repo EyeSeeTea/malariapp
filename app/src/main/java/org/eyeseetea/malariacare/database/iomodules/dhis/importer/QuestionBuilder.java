@@ -436,13 +436,12 @@ public class QuestionBuilder {
                     for (org.eyeseetea.malariacare.database.model.Option optionA : child[0].getAnswer().getOptions()) {
                         for (org.eyeseetea.malariacare.database.model.Option optionB : child[1].getAnswer().getOptions()) {
                             if(optionA.getFactor().equals(optionB.getFactor())){
+                                //Save all optiona factor optionb factor with the same match
                                 match = new org.eyeseetea.malariacare.database.model.Match();
                                 match.setQuestionRelation(questionRelation);
                                 match.save();
                                 saveQuestionRelation(match, child[0], optionA);
-                                Log.d(TAG, "code" + optionA.getFactor() + "factor" + child[0].getUid());
                                 saveQuestionRelation(match, child[1], optionB);
-                                Log.d(TAG, "code" + optionA.getFactor() + " child2 " + child[1].getUid() +"  match " + match.getId_match());
                             }
                         }
                 }
@@ -459,25 +458,6 @@ public class QuestionBuilder {
         questionOption.setQuestion(question);
         questionOption.setMatch(match);
         questionOption.save();
-        Log.d(TAG,"save");
-    }
-
-    private ArrayList<org.eyeseetea.malariacare.database.model.Option> getMatchOptionFactors(Question question, Question question2) {
-        ArrayList<org.eyeseetea.malariacare.database.model.Option> optionFactors = new ArrayList<>();
-        Log.d(TAG, question.getUid());
-        Log.d(TAG, question2.getUid());
-
-        List<org.eyeseetea.malariacare.database.model.Option> options = question.getAnswer().getOptions();
-        List<org.eyeseetea.malariacare.database.model.Option> options2 = question2.getAnswer().getOptions();
-        for (org.eyeseetea.malariacare.database.model.Option option : options) {
-            for (org.eyeseetea.malariacare.database.model.Option option2 : options2) {
-                if (option.getFactor().equals(option2.getFactor())) {
-                    if (!optionFactors.contains(option2.getFactor()))
-                        optionFactors.add(option);
-                }
-            }
-        }
-        return optionFactors;
     }
     /**
      * Gets value if the AttributeValue is not null
@@ -529,26 +509,6 @@ public class QuestionBuilder {
         }
 
         return typeQuestion.equals(DATAELEMENTCONTROL_CODE);
-    }
-
-
-    /**
-     * Find the associated prgoramStage (tabgroup) given a dataelement UID
-     *
-     * @param dataElementUID
-     * @return
-     */
-    private static String findProgramStageByDataElementUID(String dataElementUID) {
-        //Find the right 'tabgroup' to group scores by program
-        ProgramStageDataElement programStageDataElement = new Select().from(ProgramStageDataElement.class)
-                .where(Condition.column(ProgramStageDataElement$Table.DATAELEMENT)
-                        .is(dataElementUID)).querySingle();
-
-        if (programStageDataElement == null) {
-            return null;
-        }
-
-        return programStageDataElement.getProgramStage();
     }
 
     /**
