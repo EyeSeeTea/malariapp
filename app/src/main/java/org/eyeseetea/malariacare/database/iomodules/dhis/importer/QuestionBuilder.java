@@ -31,7 +31,7 @@ import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.DataElementExtended;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.OptionExtended;
 import org.eyeseetea.malariacare.database.model.CompositeScore;
-import org.eyeseetea.malariacare.database.model.Header; ;
+import org.eyeseetea.malariacare.database.model.Header;;
 import org.eyeseetea.malariacare.database.model.Question;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.hisp.dhis.android.sdk.persistence.models.AttributeValue;
@@ -56,7 +56,7 @@ import java.util.Map;
  */
 public class QuestionBuilder {
 
-    private static final String TAG=".QuestionBuilder";
+    private static final String TAG = ".QuestionBuilder";
     /**
      * Code of attribute dheader unique name
      */
@@ -285,7 +285,7 @@ public class QuestionBuilder {
 
     /**
      * Registers a Parent/child and Match Parent/child relations in maps
-     *
+     * Its need the programid to diferenciate between programs dataelements.
      * @param dataElementExtended
      */
     public void RegisterParentChildRelations(DataElementExtended dataElementExtended) {
@@ -299,32 +299,30 @@ public class QuestionBuilder {
         matchRelationType = getValue(ATTRIBUTE_MATCH_TYPE, dataElementExtended);
         matchRelationGroup = getValue(ATTRIBUTE_MATCH_GROUP, dataElementExtended);
         if (questionRelationType != null) {
-            String parentProgramUid=findProgramUIDByDataElementUID(dataElement.getUid());
+            String parentProgramUid = findProgramUIDByDataElementUID(dataElement.getUid());
             if (questionRelationType.equals(PARENT)) {
-                mapParent.put(parentProgramUid+questionRelationGroup, dataElement.getUid());
-            }
-            else {
+                mapParent.put(parentProgramUid + questionRelationGroup, dataElement.getUid());
+            } else {
                 mapType.put(parentProgramUid + dataElement.getUid(), questionRelationType);
                 mapLevel.put(parentProgramUid + dataElement.getUid(), questionRelationGroup);
             }
-    }
+        }
         if (matchRelationType != null) {
-            String parentProgramUid=findProgramUIDByDataElementUID(dataElement.getUid());
+            String parentProgramUid = findProgramUIDByDataElementUID(dataElement.getUid());
             if (matchRelationType.equals(PARENT)) {
-                mapMatchParent.put(parentProgramUid+matchRelationGroup, dataElement.getUid());
+                mapMatchParent.put(parentProgramUid + matchRelationGroup, dataElement.getUid());
             } else if (matchRelationType.equals(CHILD)) {
-                List <String> childsUids;
-                if(mapMatchChilds.containsKey(parentProgramUid+matchRelationGroup)){
-                    childsUids=mapMatchChilds.get(parentProgramUid+matchRelationGroup);
-                }
-                else{
+                List<String> childsUids;
+                if (mapMatchChilds.containsKey(parentProgramUid + matchRelationGroup)) {
+                    childsUids = mapMatchChilds.get(parentProgramUid + matchRelationGroup);
+                } else {
                     childsUids = new ArrayList<>();
                 }
                 childsUids.add(dataElement.getUid());
-                mapMatchChilds.put(parentProgramUid+matchRelationGroup, childsUids);
+                mapMatchChilds.put(parentProgramUid + matchRelationGroup, childsUids);
             }
             mapMatchType.put(parentProgramUid + dataElement.getUid(), matchRelationType);
-            mapMatchLevel.put(parentProgramUid+dataElement.getUid(), matchRelationGroup);
+            mapMatchLevel.put(parentProgramUid + dataElement.getUid(), matchRelationGroup);
 
         }
 
@@ -357,96 +355,75 @@ public class QuestionBuilder {
 
     /**
      * Create QuestionOption QuestionRelation and Match relations
-     *
+     * <p/>
      * checks if the dataElement is a parent(if is a parent it have mapMatchType and mapMatchLevel)
      * Later get the two childs and create the relation
      * it needs check what Options factors do match, and check it with method getMatchOption() .
+     *
      * @param dataElement
      */
-    public static boolean debug=false;
     private void addQuestionRelations(DataElement dataElement) {
 
-        String programUid=findProgramUIDByDataElementUID(dataElement.getUid());
-        String matchRelationType = mapMatchType.get(programUid+dataElement.getUid());
-        String matchRelationGroup = mapMatchLevel.get(programUid+dataElement.getUid());
-        if(debug==false) {
-            Log.d(TAG, "MatchTypes:" + mapMatchType.size() + " MatchLevels" + mapMatchLevel.size() + " MatchParents " + mapMatchParent.size() + " MapChildrens" + mapMatchChilds);
-            debug=true;
-        }
+        String programUid = findProgramUIDByDataElementUID(dataElement.getUid());
+        String matchRelationType = mapMatchType.get(programUid + dataElement.getUid());
+        String matchRelationGroup = mapMatchLevel.get(programUid + dataElement.getUid());
         org.eyeseetea.malariacare.database.model.Question appQuestion = (org.eyeseetea.malariacare.database.model.Question) mapQuestions.get(dataElement.getUid());
 
         if (matchRelationType != null && matchRelationType.equals(PARENT)) {
             try {
 
-                if(debug==false)
-                Log.d(TAG,"Parent encontrado");
                 org.eyeseetea.malariacare.database.model.QuestionRelation questionRelation = new org.eyeseetea.malariacare.database.model.QuestionRelation();
                 org.eyeseetea.malariacare.database.model.Match match = new org.eyeseetea.malariacare.database.model.Match();
-                    questionRelation.setOperation(0);
-                Log.d(TAG, "QuestionRelation: 0-" + appQuestion.getUid());
-                    questionRelation.setQuestion(appQuestion);
-                    questionRelation.save();
+                questionRelation.setOperation(0);
+                questionRelation.setQuestion(appQuestion);
+                questionRelation.save();
 
-                List<String> mapChilds = mapMatchChilds.get(programUid+matchRelationGroup);
+                List<String> mapChilds = mapMatchChilds.get(programUid + matchRelationGroup);
                 Question child[] = new Question[2];
-                if(debug==false)
-                Log.d(TAG, "Mapchilds size: " + mapChilds.size());
-                    int count = 0;
-                    for (String uid:mapChilds) {
-                        child[count] = mapQuestions.get(uid);
-                        count++;
-                    }
-                    try {
-                        ArrayList<Float>  optionCode = getMatchOption(child[0], child[1]);
-                        Log.d(TAG, "Factor: " + optionCode);
+                int count = 0;
+                for (String uid : mapChilds) {
+                    child[count] = mapQuestions.get(uid);
+                    count++;
+                }
+                try {
+                    ArrayList<Float> optionCode = getMatchOption(child[0], child[1]);
 
-                        for (int i = 0; i < child.length; i++) {
-                            List<org.eyeseetea.malariacare.database.model.Option> options = child[i].getAnswer().getOptions();
-                            for (org.eyeseetea.malariacare.database.model.Option option : options) {
-                                if(debug==false)
-                                Log.d(TAG, "compare: factor-" +optionCode+ " option " +option.getFactor());
-                                if (optionCode.contains(option.getFactor())) {
-                                    org.eyeseetea.malariacare.database.model.QuestionOption questionOption = new org.eyeseetea.malariacare.database.model.QuestionOption();
-                                    questionOption.setOption(option);
-                                    questionOption.setQuestion(child[i]);
-                                    if(debug==false)
-                                    Log.d(TAG, "QuestionOption: option" + option.getName() + " question " + child[i].getUid());
-                                    match.setQuestionRelation(questionRelation);
-                                    if(debug==false)
-                                    Log.d(TAG, "QuestionRelation" + questionRelation.getId_question_relation());
-                                    match.save();
+                    for (int i = 0; i < child.length; i++) {
+                        List<org.eyeseetea.malariacare.database.model.Option> options = child[i].getAnswer().getOptions();
+                        for (org.eyeseetea.malariacare.database.model.Option option : options) {
+                            if (optionCode.contains(option.getFactor())) {
+                                org.eyeseetea.malariacare.database.model.QuestionOption questionOption = new org.eyeseetea.malariacare.database.model.QuestionOption();
+                                questionOption.setOption(option);
+                                questionOption.setQuestion(child[i]);
+                                match.setQuestionRelation(questionRelation);
+                                match.save();
 
-                                    questionOption.setMatch(match);
-                                    if(debug==false)
-                                    Log.d(TAG, "Match:" + questionOption.getId_question_option());
-                                    questionOption.save();
-                                    Log.d(TAG, "All saved");
-                                }
+                                questionOption.setMatch(match);
+                                questionOption.save();
                             }
                         }
-                    } catch (Exception e) {
-                        Log.d(TAG, "Error not saved");
-                        e.printStackTrace();
                     }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             } catch (Exception e) {
-                Log.d(TAG, "Error not saved");
                 e.printStackTrace();
             }
         }
     }
 
-    private ArrayList<Float>  getMatchOption(Question question, Question question2) {
-        ArrayList<Float> optionFactors= new ArrayList<>();
-        Log.d(TAG,question.getUid());
-        Log.d(TAG,question2.getUid());
+    private ArrayList<Float> getMatchOption(Question question, Question question2) {
+        ArrayList<Float> optionFactors = new ArrayList<>();
+        Log.d(TAG, question.getUid());
+        Log.d(TAG, question2.getUid());
 
         List<org.eyeseetea.malariacare.database.model.Option> options = question.getAnswer().getOptions();
         List<org.eyeseetea.malariacare.database.model.Option> options2 = question2.getAnswer().getOptions();
         for (org.eyeseetea.malariacare.database.model.Option option : options) {
             for (org.eyeseetea.malariacare.database.model.Option option2 : options2) {
                 if (option.getFactor().equals(option2.getFactor())) {
-                    if(!optionFactors.contains(option2.getFactor()))
-                    optionFactors.add(option.getFactor());
+                    if (!optionFactors.contains(option2.getFactor()))
+                        optionFactors.add(option.getFactor());
                 }
             }
         }
@@ -459,9 +436,9 @@ public class QuestionBuilder {
      * @param dataElement
      */
     private void addParent(DataElement dataElement) {
-        String programUid=findProgramUIDByDataElementUID(dataElement.getUid());
-        String questionRelationType = mapType.get(programUid+dataElement.getUid());
-        String questionRelationGroup = mapLevel.get(programUid+dataElement.getUid());
+        String programUid = findProgramUIDByDataElementUID(dataElement.getUid());
+        String questionRelationType = mapType.get(programUid + dataElement.getUid());
+        String questionRelationGroup = mapLevel.get(programUid + dataElement.getUid());
 
         org.eyeseetea.malariacare.database.model.Question appQuestion = (org.eyeseetea.malariacare.database.model.Question) mapQuestions.get(dataElement.getUid());
 
@@ -475,7 +452,7 @@ public class QuestionBuilder {
                     questionRelation.setOperation(1);
                     questionRelation.setQuestion(appQuestion);
                     questionRelation.save();
-                    String parentuid = mapParent.get(programUid+questionRelationGroup);
+                    String parentuid = mapParent.get(programUid + questionRelationGroup);
                     if (parentuid != null) {
                         org.eyeseetea.malariacare.database.model.Question parentQuestion = (org.eyeseetea.malariacare.database.model.Question) mapQuestions.get(parentuid);
                         List<org.eyeseetea.malariacare.database.model.Option> options = parentQuestion.getAnswer().getOptions();
@@ -554,27 +531,30 @@ public class QuestionBuilder {
 
     /**
      * Find the associated prgoramStage (tabgroup) given a dataelement UID
+     *
      * @param dataElementUID
      * @return
      */
-    private static String findProgramStageByDataElementUID(String dataElementUID){
+    private static String findProgramStageByDataElementUID(String dataElementUID) {
         //Find the right 'tabgroup' to group scores by program
         ProgramStageDataElement programStageDataElement = new Select().from(ProgramStageDataElement.class)
                 .where(Condition.column(ProgramStageDataElement$Table.DATAELEMENT)
                         .is(dataElementUID)).querySingle();
 
-        if(programStageDataElement==null){
+        if (programStageDataElement == null) {
             return null;
         }
 
         return programStageDataElement.getProgramStage();
     }
+
     /**
      * Find the associated prgoramStage (tabgroup) given a dataelement UID
+     *
      * @param dataElementUID
      * @return
      */
-    private static String findProgramUIDByDataElementUID(String dataElementUID){
+    private static String findProgramUIDByDataElementUID(String dataElementUID) {
         //Find the right 'uid' of the dataelement program
         Program program = new Select().from(Program.class).as("p")
                 .join(ProgramStage.class, Join.JoinType.LEFT).as("ps")
@@ -583,9 +563,9 @@ public class QuestionBuilder {
                 .join(ProgramStageDataElement.class, Join.JoinType.LEFT).as("psd")
                 .on(Condition.column(ColumnAlias.columnWithTable("psd", ProgramStageDataElement$Table.PROGRAMSTAGE))
                         .eq(ColumnAlias.columnWithTable("ps", ProgramStage$Table.ID)))
-                        .where(Condition.column(ColumnAlias.columnWithTable("psd", ProgramStageDataElement$Table.DATAELEMENT)).eq(dataElementUID))
-                        .querySingle();
-        if(program==null){
+                .where(Condition.column(ColumnAlias.columnWithTable("psd", ProgramStageDataElement$Table.DATAELEMENT)).eq(dataElementUID))
+                .querySingle();
+        if (program == null) {
             return null;
         }
         return program.getUid();
