@@ -22,16 +22,29 @@ package org.eyeseetea.malariacare.database.iomodules.dhis.importer;
 import android.provider.ContactsContract;
 import android.util.Log;
 
+import com.raizlabs.android.dbflow.sql.builder.Condition;
+import com.raizlabs.android.dbflow.sql.language.ColumnAlias;
+import com.raizlabs.android.dbflow.sql.language.Join;
+import com.raizlabs.android.dbflow.sql.language.Select;
+
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.DataElementExtended;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.OptionExtended;
 import org.eyeseetea.malariacare.database.model.CompositeScore;
-import org.eyeseetea.malariacare.database.model.Header;
+import org.eyeseetea.malariacare.database.model.Header; ;
 import org.eyeseetea.malariacare.database.model.Question;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.hisp.dhis.android.sdk.persistence.models.AttributeValue;
 import org.hisp.dhis.android.sdk.persistence.models.DataElement;
 import org.hisp.dhis.android.sdk.persistence.models.Option;
+import org.hisp.dhis.android.sdk.persistence.models.ProgramStage;
+import org.hisp.dhis.android.sdk.persistence.models.ProgramStage$Table;
+import org.hisp.dhis.android.sdk.persistence.models.Program;
+import org.hisp.dhis.android.sdk.persistence.models.Program$Table;
+import org.hisp.dhis.android.sdk.persistence.models.ProgramStageDataElement;
+import org.hisp.dhis.android.sdk.persistence.models.ProgramStageDataElement$Table;
+import org.hisp.dhis.android.sdk.persistence.models.ProgramStageSection;
+import org.hisp.dhis.android.sdk.persistence.models.ProgramStageSection$Table;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -285,34 +298,36 @@ public class QuestionBuilder {
         questionRelationGroup = getValue(ATTRIBUTE_HIDE_GROUP, dataElementExtended);
         matchRelationType = getValue(ATTRIBUTE_MATCH_TYPE, dataElementExtended);
         matchRelationGroup = getValue(ATTRIBUTE_MATCH_GROUP, dataElementExtended);
-        Question questionParent = null;
         if (questionRelationType != null) {
+            String parentProgramUid=findProgramUIDByDataElementUID(dataElement.getUid());
             if (questionRelationType.equals(PARENT)) {
-                mapParent.put(questionRelationGroup, dataElement.getUid());
+                mapParent.put(parentProgramUid+questionRelationGroup, dataElement.getUid());
             }
-            mapType.put(dataElement.getUid(), questionRelationType);
-            mapLevel.put(dataElement.getUid(), questionRelationGroup);
-        } else if (questionRelationGroup != null) {
-            mapParent.put(questionRelationGroup, dataElement.getUid());
-        }
+            else {
+                mapType.put(parentProgramUid + dataElement.getUid(), questionRelationType);
+                mapLevel.put(parentProgramUid + dataElement.getUid(), questionRelationGroup);
+            }
+    }
         if (matchRelationType != null) {
+            String parentProgramUid=findProgramUIDByDataElementUID(dataElement.getUid());
             if (matchRelationType.equals(PARENT)) {
-                mapMatchParent.put(matchRelationGroup, dataElement.getUid());
+                mapMatchParent.put(parentProgramUid+matchRelationGroup, dataElement.getUid());
             } else if (matchRelationType.equals(CHILD)) {
-                Question questionChild = mapQuestions.get(dataElement.getUid());
                 List <String> childsUids;
-                if(mapMatchChilds.containsKey(matchRelationGroup)){
-                    childsUids=mapMatchChilds.get(matchRelationGroup);
+                if(mapMatchChilds.containsKey(parentProgramUid+matchRelationGroup)){
+                    childsUids=mapMatchChilds.get(parentProgramUid+matchRelationGroup);
                 }
                 else{
                     childsUids = new ArrayList<>();
                 }
                 childsUids.add(dataElement.getUid());
-                mapMatchChilds.put(matchRelationGroup, childsUids);
+                mapMatchChilds.put(parentProgramUid+matchRelationGroup, childsUids);
             }
+            mapMatchType.put(parentProgramUid + dataElement.getUid(), matchRelationType);
+            mapMatchLevel.put(parentProgramUid+dataElement.getUid(), matchRelationGroup);
+
         }
-        mapMatchType.put(dataElement.getUid(), matchRelationType);
-        mapMatchLevel.put(dataElement.getUid(), matchRelationGroup);
+
     }
 
     /**
@@ -343,20 +358,26 @@ public class QuestionBuilder {
     /**
      * Create QuestionOption QuestionRelation and Match relations
      *
+     * checks if the dataElement is a parent(if is a parent it have mapMatchType and mapMatchLevel)
+     * Later get the two childs and create the relation
+     * it needs check what Options factors do match, and check it with method getMatchOption() .
      * @param dataElement
      */
     public static boolean debug=false;
     private void addQuestionRelations(DataElement dataElement) {
-        String matchRelationType = mapMatchType.get(dataElement.getUid());
-        String matchRelationGroup = mapMatchLevel.get(dataElement.getUid());
+
+        String programUid=findProgramUIDByDataElementUID(dataElement.getUid());
+        String matchRelationType = mapMatchType.get(programUid+dataElement.getUid());
+        String matchRelationGroup = mapMatchLevel.get(programUid+dataElement.getUid());
         if(debug==false) {
-            Log.d(TAG, "MatchTypes:" + mapMatchType.size() + " MatchLevels" + mapMatchLevel + " MatchParents " + mapMatchParent.size() + " MapChildrens" + mapMatchChilds);
+            Log.d(TAG, "MatchTypes:" + mapMatchType.size() + " MatchLevels" + mapMatchLevel.size() + " MatchParents " + mapMatchParent.size() + " MapChildrens" + mapMatchChilds);
             debug=true;
         }
         org.eyeseetea.malariacare.database.model.Question appQuestion = (org.eyeseetea.malariacare.database.model.Question) mapQuestions.get(dataElement.getUid());
 
         if (matchRelationType != null && matchRelationType.equals(PARENT)) {
             try {
+
                 if(debug==false)
                 Log.d(TAG,"Parent encontrado");
                 org.eyeseetea.malariacare.database.model.QuestionRelation questionRelation = new org.eyeseetea.malariacare.database.model.QuestionRelation();
@@ -366,14 +387,13 @@ public class QuestionBuilder {
                     questionRelation.setQuestion(appQuestion);
                     questionRelation.save();
 
-                    List<String> mapChilds = mapMatchChilds.get(matchRelationGroup);
-                Question child[] = new Question[mapChilds.size()];
+                List<String> mapChilds = mapMatchChilds.get(programUid+matchRelationGroup);
+                Question child[] = new Question[2];
                 if(debug==false)
                 Log.d(TAG, "Mapchilds size: " + mapChilds.size());
                     int count = 0;
                     for (String uid:mapChilds) {
                         child[count] = mapQuestions.get(uid);
-                        Log.d(TAG, "count: "+count +" totalmapchilds:"+mapChilds.size()+" Child uid: " +uid + "hijo " + child[count].getHeader().getTab().getName() + " header "+child[count].getHeader().getName() +" othergroup "+child[count].getHeader().getTab().getTabGroup().getName());
                         count++;
                     }
                     try {
@@ -405,9 +425,11 @@ public class QuestionBuilder {
                             }
                         }
                     } catch (Exception e) {
+                        Log.d(TAG, "Error not saved");
                         e.printStackTrace();
                     }
             } catch (Exception e) {
+                Log.d(TAG, "Error not saved");
                 e.printStackTrace();
             }
         }
@@ -415,6 +437,9 @@ public class QuestionBuilder {
 
     private ArrayList<Float>  getMatchOption(Question question, Question question2) {
         ArrayList<Float> optionFactors= new ArrayList<>();
+        Log.d(TAG,question.getUid());
+        Log.d(TAG,question2.getUid());
+
         List<org.eyeseetea.malariacare.database.model.Option> options = question.getAnswer().getOptions();
         List<org.eyeseetea.malariacare.database.model.Option> options2 = question2.getAnswer().getOptions();
         for (org.eyeseetea.malariacare.database.model.Option option : options) {
@@ -434,13 +459,15 @@ public class QuestionBuilder {
      * @param dataElement
      */
     private void addParent(DataElement dataElement) {
-        String questionRelationType = mapType.get(dataElement.getUid());
-        String questionRelationGroup = mapLevel.get(dataElement.getUid());
+        String programUid=findProgramUIDByDataElementUID(dataElement.getUid());
+        String questionRelationType = mapType.get(programUid+dataElement.getUid());
+        String questionRelationGroup = mapLevel.get(programUid+dataElement.getUid());
 
         org.eyeseetea.malariacare.database.model.Question appQuestion = (org.eyeseetea.malariacare.database.model.Question) mapQuestions.get(dataElement.getUid());
 
         if (questionRelationType != null && questionRelationType.equals(CHILD)) {
             try {
+
                 org.eyeseetea.malariacare.database.model.QuestionRelation questionRelation = new org.eyeseetea.malariacare.database.model.QuestionRelation();
                 org.eyeseetea.malariacare.database.model.Match match = new org.eyeseetea.malariacare.database.model.Match();
 
@@ -448,7 +475,7 @@ public class QuestionBuilder {
                     questionRelation.setOperation(1);
                     questionRelation.setQuestion(appQuestion);
                     questionRelation.save();
-                    String parentuid = mapParent.get(questionRelationGroup);
+                    String parentuid = mapParent.get(programUid+questionRelationGroup);
                     if (parentuid != null) {
                         org.eyeseetea.malariacare.database.model.Question parentQuestion = (org.eyeseetea.malariacare.database.model.Question) mapQuestions.get(parentuid);
                         List<org.eyeseetea.malariacare.database.model.Option> options = parentQuestion.getAnswer().getOptions();
@@ -522,5 +549,45 @@ public class QuestionBuilder {
         }
 
         return typeQuestion.equals(DATAELEMENTCONTROL_CODE);
+    }
+
+
+    /**
+     * Find the associated prgoramStage (tabgroup) given a dataelement UID
+     * @param dataElementUID
+     * @return
+     */
+    private static String findProgramStageByDataElementUID(String dataElementUID){
+        //Find the right 'tabgroup' to group scores by program
+        ProgramStageDataElement programStageDataElement = new Select().from(ProgramStageDataElement.class)
+                .where(Condition.column(ProgramStageDataElement$Table.DATAELEMENT)
+                        .is(dataElementUID)).querySingle();
+
+        if(programStageDataElement==null){
+            return null;
+        }
+
+        return programStageDataElement.getProgramStage();
+    }
+    /**
+     * Find the associated prgoramStage (tabgroup) given a dataelement UID
+     * @param dataElementUID
+     * @return
+     */
+    private static String findProgramUIDByDataElementUID(String dataElementUID){
+        //Find the right 'uid' of the dataelement program
+        Program program = new Select().from(Program.class).as("p")
+                .join(ProgramStage.class, Join.JoinType.LEFT).as("ps")
+                .on(Condition.column(ColumnAlias.columnWithTable("p", Program$Table.ID))
+                        .eq(ColumnAlias.columnWithTable("ps", ProgramStage$Table.PROGRAM)))
+                .join(ProgramStageDataElement.class, Join.JoinType.LEFT).as("psd")
+                .on(Condition.column(ColumnAlias.columnWithTable("psd", ProgramStageDataElement$Table.PROGRAMSTAGE))
+                        .eq(ColumnAlias.columnWithTable("ps", ProgramStage$Table.ID)))
+                        .where(Condition.column(ColumnAlias.columnWithTable("psd", ProgramStageDataElement$Table.DATAELEMENT)).eq(dataElementUID))
+                        .querySingle();
+        if(program==null){
+            return null;
+        }
+        return program.getUid();
     }
 }
