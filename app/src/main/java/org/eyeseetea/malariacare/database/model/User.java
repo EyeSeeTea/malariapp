@@ -87,7 +87,10 @@ public class User extends BaseModel implements VisitableToSDK {
 
     public static User getLoggedUser(){
         // for the moment we return just the first entry assuming there will be only one entry,but in the future we will have to tag the logged user
-        return new Select().all().from(User.class).queryList().get(0);
+        List<User> users = new Select().all().from(User.class).queryList();
+        if (users != null && users.size() != 0)
+            return users.get(0);
+        return null;
     }
 
     @Override
