@@ -23,6 +23,8 @@ import android.util.Log;
 import android.provider.ContactsContract;
 
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.DataElementExtended;
+import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.DataValueExtended;
+import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.EventExtended;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.OptionExtended;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.OptionSetExtended;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.OrganisationUnitExtended;
@@ -34,13 +36,18 @@ import org.eyeseetea.malariacare.database.model.Answer;
 import org.eyeseetea.malariacare.database.model.CompositeScore;
 import org.eyeseetea.malariacare.database.model.OrgUnit;
 import org.eyeseetea.malariacare.database.model.Question;
+import org.eyeseetea.malariacare.database.model.Score;
+import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.model.Tab;
 import org.eyeseetea.malariacare.database.model.TabGroup;
 import org.eyeseetea.malariacare.database.model.User;
+import org.eyeseetea.malariacare.database.model.Value;
 import org.eyeseetea.malariacare.utils.Constants;
 import org.hisp.dhis.android.sdk.persistence.models.BaseMetaDataObject;
 import org.hisp.dhis.android.sdk.controllers.metadata.MetaDataController;
 import org.hisp.dhis.android.sdk.persistence.models.DataElement;
+import org.hisp.dhis.android.sdk.persistence.models.DataValue;
+import org.hisp.dhis.android.sdk.persistence.models.Event;
 import org.hisp.dhis.android.sdk.persistence.models.Option;
 import org.hisp.dhis.android.sdk.persistence.models.OptionSet;
 import org.hisp.dhis.android.sdk.persistence.models.OrganisationUnit;
@@ -57,7 +64,6 @@ import java.util.regex.Pattern;
 public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
 
     private final static String TAG=".ConvertFromSDKVisitor";
-    private final static String REGEXP_FACTOR=".*\\[([0-9]*)\\]";
     static Map<String,Object> appMapObjects;
 
     /**
@@ -216,7 +222,7 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
         appOption.setName(sdkOption.getName());
         appOption.setCode(sdkOption.getCode());
         appOption.setAnswer(appAnswer);
-        appOption.setFactor(extractFactor(sdkOption.getCode()));
+        appOption.setFactor(DataValueExtended.extractFactor(sdkOption.getCode()));
         appOption.save();
     }
 
@@ -240,20 +246,95 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
      */
     @Override
     public void visit(DataElementExtended sdkDataElementExtended) {
+        Object questionOrCompositeScore;
         if(compositeScoreBuilder.isACompositeScore(sdkDataElementExtended)){
-            buildCompositeScore(sdkDataElementExtended);
+            questionOrCompositeScore=buildCompositeScore(sdkDataElementExtended);
         }else if(questionBuilder.isAQuestion(sdkDataElementExtended)){
-            buildQuestion(sdkDataElementExtended);
+            questionOrCompositeScore=buildQuestion(sdkDataElementExtended);
             //Question type is annotated in 'answer' from an attribute of the question
             buildAnswerOutput(sdkDataElementExtended);
+        }else{
+            return;
         }
+
+        //Both questions and scores are annotated
+        appMapObjects.put(sdkDataElementExtended.getDataElement().getUid(), questionOrCompositeScore);
     }
+
+    /**
+     * Turns an event into a sent survey
+     * @param sdkEventExtended
+     */
+    @Override
+    public void visit(EventExtended sdkEventExtended) {
+        Event event=sdkEventExtended.getEvent();
+        OrgUnit orgUnit =(OrgUnit)appMapObjects.get(event.getOrganisationUnitId());
+        TabGroup tabGroup=(TabGroup)appMapObjects.get(event.getProgramStageId());
+
+        Survey survey=new Survey();
+        //Any survey that comes from the pull has been sent
+        survey.setStatus(Constants.SURVEY_SENT);
+        survey.setCompletionDate(sdkEventExtended.getCompletionDate());
+        survey.setEventDate(sdkEventExtended.getEventDate());
+        survey.setOrgUnit(orgUnit);
+        survey.setTabGroup(tabGroup);
+        survey.save();
+
+        //Annotate object in map
+        appMapObjects.put(event.getUid(), survey);
+
+        //Visit its values
+        for(DataValue dataValue:event.getDataValues()){
+            DataValueExtended dataValueExtended=new DataValueExtended(dataValue);
+            dataValueExtended.accept(this);
+        }
+
+    }
+
+    @Override
+    public void visit(DataValueExtended sdkDataValueExtended) {
+
+        DataValue dataValue=sdkDataValueExtended.getDataValue();
+        Survey survey=(Survey)appMapObjects.get(dataValue.getEvent());
+        //Data value is a value from compositeScore
+        if(appMapObjects.get(dataValue.getDataElement()) instanceof CompositeScore){
+            //CHeck if it is a root score -> score
+            CompositeScore compositeScore = (CompositeScore)appMapObjects.get(dataValue.getDataElement());
+            if(CompositeScoreBuilder.ROOT_NODE_CODE.equals(compositeScore.getHierarchical_code())){
+                Score score = new Score();
+                score.setScore(Float.parseFloat(dataValue.getValue()));
+                score.setUid(dataValue.getDataElement());
+                score.setSurvey(survey);
+                score.save();
+            }
+            return;
+        }
+
+        //Datavalue is a value from a question
+        Question question=(Question)appMapObjects.get(dataValue.getDataElement());
+
+        Value value=new Value();
+        value.setQuestion(question);
+        value.setSurvey(survey);
+
+        org.eyeseetea.malariacare.database.model.Option option=sdkDataValueExtended.findOptionByQuestion(question);
+        value.setOption(option);
+        //No option -> text question (straight value)
+        if(option==null){
+            value.setValue(dataValue.getValue());
+        }else{
+        //Option -> extract value from code
+            value.setValue(sdkDataValueExtended.extractValue());
+        }
+        value.save();
+    }
+
 
     /**
      * Turns a dataElement into a question
      * @param dataElementExtended
      */
-    private void buildQuestion(DataElementExtended dataElementExtended){
+    private Question buildQuestion(DataElementExtended dataElementExtended){
         DataElement dataElement=dataElementExtended.getDataElement();
         Question appQuestion = new Question();
         appQuestion.setDe_name(dataElement.getName());
@@ -273,6 +354,7 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
         questionBuilder.RegisterParentChildRelations(dataElementExtended);
         appQuestion.save();
         questionBuilder.add(appQuestion);
+        return appQuestion;
     }
 
     /**
@@ -313,7 +395,7 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
      * Turns a dataElement into a question
      * @param sdkDataElementExtended
      */
-    private void buildCompositeScore(DataElementExtended sdkDataElementExtended){
+    private CompositeScore buildCompositeScore(DataElementExtended sdkDataElementExtended){
         DataElement dataElement=sdkDataElementExtended.getDataElement();
         CompositeScore compositeScore = new CompositeScore();
         compositeScore.setUid(dataElement.getUid());
@@ -323,38 +405,12 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
         compositeScore.save();
 
         compositeScoreBuilder.add(compositeScore);
+        return compositeScore;
     }
 
     @Override
     public void buildScores() {
         compositeScoreBuilder.buildScores();
     }
-
-    /**
-     * The factor of an option is codified inside its code. Ex: Yes[1]
-     * @param code
-     * @return
-     */
-    private Float extractFactor(String code){
-        if(code==null || code.isEmpty()){
-            return 0f;
-        }
-
-        Pattern pattern = Pattern.compile(REGEXP_FACTOR);
-        Matcher matcher = pattern.matcher(code);
-
-        //No match
-        if(!matcher.matches()){
-            return 0f;
-        }
-
-        //Found a match
-        String factorStr=matcher.group(1);
-
-        return Float.parseFloat(factorStr);
-    }
-
-
-
 
 }

@@ -29,6 +29,7 @@ import com.squareup.otto.Subscribe;
 
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.DataElementExtended;
+import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.EventExtended;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.OptionSetExtended;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.OrganisationUnitExtended;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.ProgramExtended;
@@ -53,9 +54,11 @@ import org.eyeseetea.malariacare.database.model.Value;
 import org.hisp.dhis.android.sdk.controllers.DhisService;
 import org.hisp.dhis.android.sdk.controllers.LoadingController;
 import org.hisp.dhis.android.sdk.controllers.metadata.MetaDataController;
+import org.hisp.dhis.android.sdk.controllers.tracker.TrackerController;
 import org.hisp.dhis.android.sdk.job.NetworkJob;
 import org.hisp.dhis.android.sdk.persistence.Dhis2Application;
 import org.hisp.dhis.android.sdk.persistence.models.DataElement;
+import org.hisp.dhis.android.sdk.persistence.models.Event;
 import org.hisp.dhis.android.sdk.persistence.models.OptionSet;
 import org.hisp.dhis.android.sdk.persistence.models.OrganisationUnit;
 import org.hisp.dhis.android.sdk.persistence.preferences.ResourceType;
@@ -111,17 +114,24 @@ public class PullController {
      * @param ctx
      */
     public void pull(Context ctx){
-        Log.d(TAG,"Starting PULL process...");
+        Log.d(TAG, "Starting PULL process...");
         context=ctx;
-        //Register for event bus
-        register();
-        //Enabling resources to pull
-        enableMetaDataFlags();
-        //Delete previous metadata
-        MetaDataController.clearMetaDataLoadedFlags();
-        MetaDataController.wipe();
-        //Pull new metadata
-        DhisService.loadData(context);
+        try {
+            //Register for event bus
+            register();
+            //Enabling resources to pull
+            enableMetaDataFlags();
+            //Delete previous metadata
+            MetaDataController.clearMetaDataLoadedFlags();
+            MetaDataController.wipe();
+            //Pull new metadata
+            postProgress(context.getString(R.string.progress_pull_downloading));
+            DhisService.loadData(context);
+        }catch (Exception ex){
+            Log.e(TAG,"pull: "+ex.getLocalizedMessage());
+            unregister();
+            postException(ex);
+        }
     }
 
     /**
@@ -132,35 +142,47 @@ public class PullController {
         LoadingController.enableLoading(context, ResourceType.PROGRAMS);
         LoadingController.enableLoading(context, ResourceType.OPTIONSETS);
         LoadingController.enableLoading(context, ResourceType.ATTRIBUTEVALUES);
+        LoadingController.enableLoading(context, ResourceType.EVENTS);
     }
 
     @Subscribe
-    public void onLoadMetadataFinished(NetworkJob.NetworkJobResult<ResourceType> result) {
-        if(result==null){
-            Log.e(TAG,"onLoadMetadataFinished with null");
-            return;
-        }
+    public void onLoadMetadataFinished(final NetworkJob.NetworkJobResult<ResourceType> result) {
+        new Thread(){
+            @Override
+            public void run(){
+                try {
+                    if (result == null) {
+                        Log.e(TAG, "onLoadMetadataFinished with null");
+                        return;
+                    }
 
-        //Error while pulling
-        if(result.getResponseHolder()!=null && result.getResponseHolder().getApiException()!=null){
-            Log.e(TAG,result.getResponseHolder().getApiException().getMessage());
-            showStatus(context.getString(R.string.dialog_pull_error));
-            return;
-        }
+                    //Error while pulling
+                    if (result.getResponseHolder() != null && result.getResponseHolder().getApiException() != null) {
+                        Log.e(TAG, result.getResponseHolder().getApiException().getMessage());
+                        postException(new Exception(context.getString(R.string.dialog_pull_error)));
+                        return;
+                    }
 
-        //Ok
-        wipeDatabase();
-        convertFromSDK();
-        showStatus(context.getString(R.string.dialog_pull_success));
-        unregister();
-        Log.d(TAG, "PULL process...OK");
+                    //Ok
+                    wipeDatabase();
+                    convertFromSDK();
+                    postFinish();
+                    Log.d(TAG, "PULL process...OK");
+                }catch (Exception ex){
+                    Log.e(TAG,"onLoadMetadataFinished: "+ex.getLocalizedMessage());
+                    postException(ex);
+                }finally {
+                    unregister();
+                }
+            }
+        }.start();
     }
 
     /**
      * Erase data from app database
      */
     private void wipeDatabase(){
-        Log.d(TAG,"Deleting app database...");
+        Log.d(TAG, "Deleting app database...");
         Delete.tables(
                 Value.class,
                 Score.class,
@@ -190,8 +212,20 @@ public class PullController {
 
         //One shared converter to match parents within the hierarchy
         ConvertFromSDKVisitor converter = new ConvertFromSDKVisitor();
+        convertMetaData(converter);
+        convertDataValues(converter);
+
+    }
+
+    /**
+     * Turns sdk metadata into app metadata
+     * @param converter
+     */
+    private void convertMetaData(ConvertFromSDKVisitor converter){
 
         //Convert Programs, Tabgroups, Tabs
+        postProgress(context.getString(R.string.progress_pull_preparing_program));
+        Log.i(TAG,"Converting programs, tabgroups and tabs...");
         List<String> assignedProgramsIDs=MetaDataController.getAssignedPrograms();
         for(String assignedProgramID:assignedProgramsIDs){
             ProgramExtended programExtended =new ProgramExtended(MetaDataController.getProgram(assignedProgramID));
@@ -199,13 +233,17 @@ public class PullController {
         }
 
         //Convert Answers, Options
+        postProgress(context.getString(R.string.progress_pull_preparing_answers));
         List<OptionSet> optionSets=MetaDataController.getOptionSets();
+        Log.i(TAG,"Converting answers and options...");
         for(OptionSet optionSet:optionSets){
             OptionSetExtended optionSetExtended =new OptionSetExtended(optionSet);
             optionSetExtended.accept(converter);
         }
 
         //OrganisationUnits
+        postProgress(context.getString(R.string.progress_pull_preparing_orgs));
+        Log.i(TAG,"Converting organisationUnits...");
         List<OrganisationUnit> assignedOrganisationsUnits=MetaDataController.getAssignedOrganisationUnits();
         for(OrganisationUnit assignedOrganisationsUnit:assignedOrganisationsUnits){
             OrganisationUnitExtended organisationUnitExtended=new OrganisationUnitExtended(assignedOrganisationsUnit);
@@ -213,38 +251,77 @@ public class PullController {
         }
 
         //User (from UserAccount)
+        Log.i(TAG,"Converting user...");
         UserAccountExtended userAccountExtended = new UserAccountExtended(MetaDataController.getUserAccount());
         userAccountExtended.accept(converter);
 
         //Convert questions and compositeScores
+        postProgress(context.getString(R.string.progress_pull_questions));
+        Log.i(TAG,"Converting questions and compositeScores...");
         List<DataElement> dataElementList=new Select().from(DataElement.class).queryList();
         for(DataElement dataElement:dataElementList){
             DataElementExtended dataElementExtended = new DataElementExtended(dataElement);
             dataElementExtended.accept(converter);
         }
 
-        //Convert questions and compositeScores
+        //Build question relationships
+        Log.i(TAG,"Building question relationships...");
         for(DataElement dataElement:dataElementList){
             DataElementExtended dataElementExtended = new DataElementExtended(dataElement);
             converter.buildRelations(dataElementExtended);
         }
 
         //Fill order and parent scores
+        Log.i(TAG,"Building compositeScore relationships...");
         converter.buildScores();
+        Log.i(TAG, "MetaData successfully converted...");
     }
 
     /**
-     * Shows a dialog with the given message
-     * @param msg
+     * Turns events and datavalues into
+     * @param converter
      */
-    private void showStatus(String msg){
-        new AlertDialog.Builder(context)
-                .setTitle(context.getString(R.string.dialog_title_pull_response))
-                .setMessage(msg)
-                .setNeutralButton(android.R.string.yes,null).create().show();
+    private void convertDataValues(ConvertFromSDKVisitor converter){
+
+        postProgress(context.getString(R.string.progress_pull_surveys));
+        //XXX This is the right place to apply additional filters to data conversion (only predefined orgunit for instance)
+        //For each unit
+        for(OrganisationUnit organisationUnit:MetaDataController.getAssignedOrganisationUnits()){
+            //Each assigned program
+            for(org.hisp.dhis.android.sdk.persistence.models.Program program:MetaDataController.getProgramsForOrganisationUnit(organisationUnit.getId(),  org.hisp.dhis.android.sdk.persistence.models.Program.ProgramType.WITHOUT_REGISTRATION)){
+                List<Event> events= TrackerController.getEvents(organisationUnit.getId(),program.getUid());
+                Log.i(TAG, String.format("Converting surveys and values for orgUnit: %s | program: %s",organisationUnit.getLabel(),program.getDisplayName()));
+                for(Event event:events){
+                    EventExtended eventExtended = new EventExtended(event);
+                    eventExtended.accept(converter);
+                }
+            }
+        }
+
     }
 
+    /**
+     * Notifies a progress into the bus (the caller activity will be listening)
+     * @param msg
+     */
+    private void postProgress(String msg){
+        Dhis2Application.getEventBus().post(new PullProgressStatus(msg));
+    }
 
+    /**
+     * Notifies an exception while pulling
+     * @param ex
+     */
+    private void postException(Exception ex){
+        Dhis2Application.getEventBus().post(new PullProgressStatus(ex));
+    }
+
+    /**
+     * Notifies that the pull is over
+     */
+    private void postFinish(){
+        Dhis2Application.getEventBus().post(new PullProgressStatus());
+    }
 
 
 }

@@ -54,6 +54,7 @@ import org.eyeseetea.malariacare.database.utils.Session;
 import org.hisp.dhis.android.sdk.controllers.DhisService;
 import org.hisp.dhis.android.sdk.job.NetworkJob;
 import org.hisp.dhis.android.sdk.network.Credentials;
+import org.hisp.dhis.android.sdk.persistence.Dhis2Application;
 import org.hisp.dhis.android.sdk.persistence.preferences.ResourceType;
 
 import java.util.ArrayList;
@@ -83,6 +84,11 @@ public class LoginActivity extends org.hisp.dhis.android.sdk.ui.activities.Login
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (User.getLoggedUser() != null) {
+            startActivity(new Intent(LoginActivity.this,
+                    ((Dhis2Application) getApplication()).getMainActivity()));
+            finish();
+        }
 
         EditText serverText = (EditText) findViewById(org.hisp.dhis.android.sdk.R.id.server_url);
         serverText.setText(R.string.login_info_dhis_default_server_url);

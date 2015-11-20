@@ -216,8 +216,16 @@
     <string name="dialog_info_push_stats">Os dados enviados para o servidor. Resultados:</string>
     <string name="dashboard_tip_pie_chart">Qualidade dos cuidados (com base na última avaliação)</string>
     <string name="dialog_pull_error">Erro ao tentar puxar os metadados de dhis servidor</string>
-    <string name="settings_menu_pull">metadados de atualização</string>
+    <string name="settings_menu_pull">Metadados de atualização</string>
     <string name="dialog_pull_success">Dhis metadados puxado com êxito a partir do servidor</string>
     <string name="dialog_title_pull_response">Pull status</string>
+    <string name="progress_pull_connecting" >Conectando-se a servidor  DHIS ...</string>
+    <string name="progress_pull_downloading">Metadados actualização (isso pode levar alguns minutos) ...</string>
+    <string name="progress_pull_preparing_program">Carregando programas ...</string>
+    <string name="progress_pull_preparing_answers">Carregando respostas ...</string>
+    <string name="progress_pull_preparing_orgs">Carregando organizações ...</string>
+    <string name="progress_pull_questions">Carregando perguntas (isso pode levar alguns minutos) ...</string>
+    <string name="progress_pull_surveys">Carregando inquéritos ...</string>
+    <string name="progress_pull_done">Feito</string>
     <string name="dialog_ask_pending_surveys">Você quer enviar urnas pendentes?</string>
 </resources>

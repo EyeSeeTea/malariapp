@@ -19,15 +19,11 @@
 
 package org.eyeseetea.malariacare;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.FragmentTransaction;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -43,8 +39,6 @@ import org.eyeseetea.malariacare.database.utils.PopulateDB;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.fragments.DashboardSentFragment;
 import org.eyeseetea.malariacare.fragments.DashboardUnsentFragment;
-import org.eyeseetea.malariacare.network.PushClient;
-import org.eyeseetea.malariacare.network.PushResult;
 import org.eyeseetea.malariacare.services.SurveyService;
 import org.hisp.dhis.android.sdk.controllers.DhisService;
 import org.hisp.dhis.android.sdk.controllers.LoadingController;
@@ -89,7 +83,7 @@ public class DashboardActivity extends BaseActivity {
         }
 
 
-        setTitle(getString(R.string.app_name) + " app - " + Session.getUser().getName());
+        setTitle(getString(R.string.app_name) +" app - "+ Session.getUser().getName());
     }
 
     @Override
@@ -116,12 +110,12 @@ public class DashboardActivity extends BaseActivity {
                     })
                     .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface arg0, int arg1) {
-                            PullController.getInstance().pull(getBaseContext().getApplicationContext());
+                            finishAndGo(ProgressActivity.class);
                         }
                     }).create().show();
         }
         else
-        PullController.getInstance().pull(getBaseContext().getApplicationContext());
+            finishAndGo(ProgressActivity.class);
         return true;
     }
 
@@ -286,27 +280,21 @@ public class DashboardActivity extends BaseActivity {
      * @throws IOException
      */
     private void initDataIfRequired() throws IOException {
-        PullController.getInstance().pull(this);
+//        PullController.getInstance().pull(this);
     }
 
     /**
      * In case Session doesn't have the user set, here we set it to the first entry of User table
      */
     private void loadSessionIfRequired(){
-        //already a user in session -> done
+        // already a user in session -> done
         if(Session.getUser()!=null){
             return;
         }
 
-        //No user (take it from db)
-        User user = new Select().from(User.class).querySingle();
-        if (user==null){
-            //Mocked user (this should never happen)
-            user = new User();
-            user.setName("");
-            user.save();
-        }
-
+        // If we're in dashboard and User is not yet in session we have to put it
+        // FIXME: for the moment there will be only one user in the User table, but in the future we will have to think about tagging the logged user in the DB
+        User user = User.getLoggedUser();
         Session.setUser(user);
     }
 
