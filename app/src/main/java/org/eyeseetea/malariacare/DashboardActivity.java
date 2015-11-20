@@ -110,8 +110,8 @@ public class DashboardActivity extends BaseActivity {
             new AlertDialog.Builder(this)
                     .setTitle("Push unsent surveys?")
                     .setMessage("Metadata refresh will delete your unsent data. You have "+unsentSurveys.size()+" unsent surveys. Do you to push them before refresh?")
-                    .setNegativeButton(android.R.string.no, null)
-                    .setNeutralButton(activity.getString(R.string.no), new DialogInterface.OnClickListener() {
+                    .setNeutralButton(android.R.string.no, null)
+                    .setNegativeButton(activity.getString(R.string.no), new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             finishAndGo(ProgressActivity.class);
