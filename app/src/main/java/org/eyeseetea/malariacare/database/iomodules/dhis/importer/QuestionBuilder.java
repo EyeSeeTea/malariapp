@@ -19,7 +19,6 @@
 
 package org.eyeseetea.malariacare.database.iomodules.dhis.importer;
 
-import android.provider.ContactsContract;
 import android.util.Log;
 
 import com.raizlabs.android.dbflow.sql.builder.Condition;
@@ -32,7 +31,9 @@ import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.DataEle
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.OptionExtended;
 import org.eyeseetea.malariacare.database.model.CompositeScore;
 import org.eyeseetea.malariacare.database.model.Header;;
+import org.eyeseetea.malariacare.database.model.Match;
 import org.eyeseetea.malariacare.database.model.Question;
+import org.eyeseetea.malariacare.database.model.QuestionRelation;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.hisp.dhis.android.sdk.persistence.models.AttributeValue;
 import org.hisp.dhis.android.sdk.persistence.models.DataElement;
@@ -43,8 +44,6 @@ import org.hisp.dhis.android.sdk.persistence.models.Program;
 import org.hisp.dhis.android.sdk.persistence.models.Program$Table;
 import org.hisp.dhis.android.sdk.persistence.models.ProgramStageDataElement;
 import org.hisp.dhis.android.sdk.persistence.models.ProgramStageDataElement$Table;
-import org.hisp.dhis.android.sdk.persistence.models.ProgramStageSection;
-import org.hisp.dhis.android.sdk.persistence.models.ProgramStageSection$Table;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -286,6 +285,7 @@ public class QuestionBuilder {
     /**
      * Registers a Parent/child and Match Parent/child relations in maps
      * Its need the programid to diferenciate between programs dataelements.
+     *
      * @param dataElementExtended
      */
     public void RegisterParentChildRelations(DataElementExtended dataElementExtended) {
@@ -353,6 +353,45 @@ public class QuestionBuilder {
         }
     }
 
+
+    /**
+     * Save Question id_parent in Question
+     *
+     * @param dataElement
+     */
+    private void addParent(DataElement dataElement) {
+        String programUid = findProgramUIDByDataElementUID(dataElement.getUid());
+        String questionRelationType = mapType.get(programUid + dataElement.getUid());
+        String questionRelationGroup = mapLevel.get(programUid + dataElement.getUid());
+
+        org.eyeseetea.malariacare.database.model.Question appQuestion = (org.eyeseetea.malariacare.database.model.Question) mapQuestions.get(dataElement.getUid());
+
+        if (questionRelationType != null && questionRelationType.equals(CHILD)) {
+            try {
+                if (questionRelationType.equals(CHILD)) {
+                    org.eyeseetea.malariacare.database.model.QuestionRelation questionRelation = new org.eyeseetea.malariacare.database.model.QuestionRelation();
+                    questionRelation.setOperation(1);
+                    questionRelation.setQuestion(appQuestion);
+                    questionRelation.save();
+                    String parentuid = mapParent.get(programUid + questionRelationGroup);
+                    if (parentuid != null) {
+                        org.eyeseetea.malariacare.database.model.Question parentQuestion = mapQuestions.get(parentuid);
+                        List<org.eyeseetea.malariacare.database.model.Option> options = parentQuestion.getAnswer().getOptions();
+                        for (org.eyeseetea.malariacare.database.model.Option option : options) {
+                            if (option.getName().equals(PreferencesState.getInstance().getContext().getResources().getString(R.string.yes))) {
+                                org.eyeseetea.malariacare.database.model.Match match = new org.eyeseetea.malariacare.database.model.Match();
+                                match.setQuestionRelation(questionRelation);
+                                match.save();
+                                saveQuestionRelation(match, parentQuestion, option);
+                            }
+                        }
+                    }
+                }
+            } catch (Exception e) {
+            }
+        }
+    }
+
     /**
      * Create QuestionOption QuestionRelation and Match relations
      * <p/>
@@ -371,13 +410,6 @@ public class QuestionBuilder {
 
         if (matchRelationType != null && matchRelationType.equals(PARENT)) {
             try {
-
-                org.eyeseetea.malariacare.database.model.QuestionRelation questionRelation = new org.eyeseetea.malariacare.database.model.QuestionRelation();
-                org.eyeseetea.malariacare.database.model.Match match = new org.eyeseetea.malariacare.database.model.Match();
-                questionRelation.setOperation(0);
-                questionRelation.setQuestion(appQuestion);
-                questionRelation.save();
-
                 List<String> mapChilds = mapMatchChilds.get(programUid + matchRelationGroup);
                 Question child[] = new Question[2];
                 int count = 0;
@@ -385,26 +417,12 @@ public class QuestionBuilder {
                     child[count] = mapQuestions.get(uid);
                     count++;
                 }
-                try {
-                    ArrayList<Float> optionCode = getMatchOption(child[0], child[1]);
-
-                    for (int i = 0; i < child.length; i++) {
-                        List<org.eyeseetea.malariacare.database.model.Option> options = child[i].getAnswer().getOptions();
-                        for (org.eyeseetea.malariacare.database.model.Option option : options) {
-                            if (optionCode.contains(option.getFactor())) {
-                                org.eyeseetea.malariacare.database.model.QuestionOption questionOption = new org.eyeseetea.malariacare.database.model.QuestionOption();
-                                questionOption.setOption(option);
-                                questionOption.setQuestion(child[i]);
-                                match.setQuestionRelation(questionRelation);
-                                match.save();
-
-                                questionOption.setMatch(match);
-                                questionOption.save();
-                            }
-                        }
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
+                if (child[0] != null && child[1] != null) {
+                    org.eyeseetea.malariacare.database.model.QuestionRelation questionRelation = new org.eyeseetea.malariacare.database.model.QuestionRelation();
+                    questionRelation.setOperation(0);
+                    questionRelation.setQuestion(appQuestion);
+                    questionRelation.save();
+                    findAndCreateMatch(questionRelation, child);
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -412,7 +430,48 @@ public class QuestionBuilder {
         }
     }
 
-    private ArrayList<Float> getMatchOption(Question question, Question question2) {
+    private void findAndCreateMatch(QuestionRelation questionRelation, Question[] child) {
+        try {
+            ArrayList<Float> matchFactors = getMatchOptionFactors(child[0], child[1]);
+            Map<Float,org.eyeseetea.malariacare.database.model.Match> matchsRelation = new HashMap<>();
+            org.eyeseetea.malariacare.database.model.Match match;
+            for(float factor:matchFactors) {
+                match = new org.eyeseetea.malariacare.database.model.Match();
+                match.setQuestionRelation(questionRelation);
+                match.save();
+                matchsRelation.put(factor,match);
+            }
+            if (matchFactors.size() > 0) {
+                for (int i = 0; i < child.length; i++) {
+                    List<org.eyeseetea.malariacare.database.model.Option> options = child[i].getAnswer().getOptions();
+                    for (org.eyeseetea.malariacare.database.model.Option option : options) {
+                        for (float factor : matchFactors) {
+                            if (factor == option.getFactor()) {
+                                match=matchsRelation.get(factor);
+                                Log.d(TAG,"new match"+match.getId_match());
+                                Log.d(TAG, "code" + factor + "factor" + option.getFactor() + "nameMatch " + match.getId_match());
+                                Log.d(TAG, "child1" + child[0].getUid() + " child2 " + child[1].getUid());
+                                saveQuestionRelation(match, child[i], option);
+                            }
+                        }
+                    }
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    private void saveQuestionRelation(Match match, Question question, org.eyeseetea.malariacare.database.model.Option option) {
+        org.eyeseetea.malariacare.database.model.QuestionOption questionOption = new org.eyeseetea.malariacare.database.model.QuestionOption();
+        questionOption.setOption(option);
+        questionOption.setQuestion(question);
+        questionOption.setMatch(match);
+        questionOption.save();
+    }
+
+    private ArrayList<Float> getMatchOptionFactors(Question question, Question question2) {
         ArrayList<Float> optionFactors = new ArrayList<>();
         Log.d(TAG, question.getUid());
         Log.d(TAG, question2.getUid());
@@ -429,53 +488,6 @@ public class QuestionBuilder {
         }
         return optionFactors;
     }
-
-    /**
-     * Save Question id_parent in Question
-     *
-     * @param dataElement
-     */
-    private void addParent(DataElement dataElement) {
-        String programUid = findProgramUIDByDataElementUID(dataElement.getUid());
-        String questionRelationType = mapType.get(programUid + dataElement.getUid());
-        String questionRelationGroup = mapLevel.get(programUid + dataElement.getUid());
-
-        org.eyeseetea.malariacare.database.model.Question appQuestion = (org.eyeseetea.malariacare.database.model.Question) mapQuestions.get(dataElement.getUid());
-
-        if (questionRelationType != null && questionRelationType.equals(CHILD)) {
-            try {
-
-                org.eyeseetea.malariacare.database.model.QuestionRelation questionRelation = new org.eyeseetea.malariacare.database.model.QuestionRelation();
-                org.eyeseetea.malariacare.database.model.Match match = new org.eyeseetea.malariacare.database.model.Match();
-
-                if (questionRelationType.equals(CHILD)) {
-                    questionRelation.setOperation(1);
-                    questionRelation.setQuestion(appQuestion);
-                    questionRelation.save();
-                    String parentuid = mapParent.get(programUid + questionRelationGroup);
-                    if (parentuid != null) {
-                        org.eyeseetea.malariacare.database.model.Question parentQuestion = (org.eyeseetea.malariacare.database.model.Question) mapQuestions.get(parentuid);
-                        List<org.eyeseetea.malariacare.database.model.Option> options = parentQuestion.getAnswer().getOptions();
-                        for (org.eyeseetea.malariacare.database.model.Option option : options) {
-                            if (option.getName().equals(PreferencesState.getInstance().getContext().getResources().getString(R.string.yes))) {
-                                org.eyeseetea.malariacare.database.model.QuestionOption questionOption = new org.eyeseetea.malariacare.database.model.QuestionOption();
-                                questionOption.setOption(option);
-                                questionOption.setQuestion(parentQuestion);
-
-                                match.setQuestionRelation(questionRelation);
-                                match.save();
-
-                                questionOption.setMatch(match);
-                                questionOption.save();
-                            }
-                        }
-                    }
-                }
-            } catch (Exception e) {
-            }
-        }
-    }
-
     /**
      * Gets value if the AttributeValue is not null
      *
