@@ -99,7 +99,7 @@ public class DashboardActivity extends BaseActivity {
             return super.onOptionsItemSelected(item);
         }
 
-        PullController.getInstance().pull(this);
+        finishAndGo(ProgressActivity.class);
         return true;
     }
 
@@ -169,7 +169,7 @@ public class DashboardActivity extends BaseActivity {
      * @throws IOException
      */
     private void initDataIfRequired() throws IOException {
-        PullController.getInstance().pull(this);
+//        PullController.getInstance().pull(this);
     }
 
     /**

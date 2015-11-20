@@ -38,7 +38,8 @@ import io.fabric.sdk.android.Fabric;
 public class EyeSeeTeaApplication extends Dhis2Application  {
 
     public Class<? extends Activity> getMainActivity() {
-        return new DashboardActivity().getClass();
+//        return new DashboardActivity().getClass();
+        return ProgressActivity.class;
     }
 
     @Override
