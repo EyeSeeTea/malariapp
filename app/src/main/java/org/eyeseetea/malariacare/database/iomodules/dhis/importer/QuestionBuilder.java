@@ -432,32 +432,22 @@ public class QuestionBuilder {
 
     private void findAndCreateMatch(QuestionRelation questionRelation, Question[] child) {
         try {
-            ArrayList<Float> matchFactors = getMatchOptionFactors(child[0], child[1]);
-            Map<Float,org.eyeseetea.malariacare.database.model.Match> matchsRelation = new HashMap<>();
             org.eyeseetea.malariacare.database.model.Match match;
-            for(float factor:matchFactors) {
-                match = new org.eyeseetea.malariacare.database.model.Match();
-                match.setQuestionRelation(questionRelation);
-                match.save();
-                matchsRelation.put(factor,match);
-            }
-            if (matchFactors.size() > 0) {
-                for (int i = 0; i < child.length; i++) {
-                    List<org.eyeseetea.malariacare.database.model.Option> options = child[i].getAnswer().getOptions();
-                    for (org.eyeseetea.malariacare.database.model.Option option : options) {
-                        for (float factor : matchFactors) {
-                            if (factor == option.getFactor()) {
-                                match=matchsRelation.get(factor);
-                                Log.d(TAG,"new match"+match.getId_match());
-                                Log.d(TAG, "code" + factor + "factor" + option.getFactor() + "nameMatch " + match.getId_match());
-                                Log.d(TAG, "child1" + child[0].getUid() + " child2 " + child[1].getUid());
-                                saveQuestionRelation(match, child[i], option);
+                    for (org.eyeseetea.malariacare.database.model.Option optionA : child[0].getAnswer().getOptions()) {
+                        for (org.eyeseetea.malariacare.database.model.Option optionB : child[1].getAnswer().getOptions()) {
+                            if(optionA.getFactor().equals(optionB.getFactor())){
+                                match = new org.eyeseetea.malariacare.database.model.Match();
+                                match.setQuestionRelation(questionRelation);
+                                match.save();
+                                saveQuestionRelation(match, child[0], optionA);
+                                Log.d(TAG, "code" + optionA.getFactor() + "factor" + child[0].getUid());
+                                saveQuestionRelation(match, child[1], optionB);
+                                Log.d(TAG, "code" + optionA.getFactor() + " child2 " + child[1].getUid() +"  match " + match.getId_match());
                             }
                         }
-                    }
                 }
-            }
         } catch (Exception e) {
+            Log.d(TAG,"error");
             e.printStackTrace();
         }
     }
@@ -469,10 +459,11 @@ public class QuestionBuilder {
         questionOption.setQuestion(question);
         questionOption.setMatch(match);
         questionOption.save();
+        Log.d(TAG,"save");
     }
 
-    private ArrayList<Float> getMatchOptionFactors(Question question, Question question2) {
-        ArrayList<Float> optionFactors = new ArrayList<>();
+    private ArrayList<org.eyeseetea.malariacare.database.model.Option> getMatchOptionFactors(Question question, Question question2) {
+        ArrayList<org.eyeseetea.malariacare.database.model.Option> optionFactors = new ArrayList<>();
         Log.d(TAG, question.getUid());
         Log.d(TAG, question2.getUid());
 
@@ -482,7 +473,7 @@ public class QuestionBuilder {
             for (org.eyeseetea.malariacare.database.model.Option option2 : options2) {
                 if (option.getFactor().equals(option2.getFactor())) {
                     if (!optionFactors.contains(option2.getFactor()))
-                        optionFactors.add(option.getFactor());
+                        optionFactors.add(option);
                 }
             }
         }
