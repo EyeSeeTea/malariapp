@@ -85,6 +85,11 @@ public class User extends BaseModel implements VisitableToSDK {
                 .where(Condition.column(Survey$Table.USER_ID_USER).eq(this.getId_user())).queryList();
     }
 
+    public static User getLoggedUser(){
+        // for the moment we return just the first entry assuming there will be only one entry,but in the future we will have to tag the logged user
+        return new Select().all().from(User.class).queryList().get(0);
+    }
+
     @Override
     public void accept(IConvertToSDKVisitor IConvertToSDKVisitor) {
         IConvertToSDKVisitor.visit(this);
