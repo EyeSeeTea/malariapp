@@ -32,24 +32,18 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.raizlabs.android.dbflow.sql.language.Select;
 import com.squareup.otto.Subscribe;
 
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.PullController;
 import org.eyeseetea.malariacare.database.model.Survey;
-import org.eyeseetea.malariacare.database.model.Tab;
 import org.eyeseetea.malariacare.database.model.User;
-import org.eyeseetea.malariacare.database.utils.PopulateDB;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.fragments.DashboardSentFragment;
 import org.eyeseetea.malariacare.fragments.DashboardUnsentFragment;
 import org.eyeseetea.malariacare.network.PushClient;
 import org.eyeseetea.malariacare.network.PushResult;
 import org.eyeseetea.malariacare.services.SurveyService;
-import org.hisp.dhis.android.sdk.controllers.DhisService;
-import org.hisp.dhis.android.sdk.controllers.LoadingController;
 import org.hisp.dhis.android.sdk.events.UiEvent;
-import org.hisp.dhis.android.sdk.persistence.preferences.ResourceType;
 
 import java.io.IOException;
 import java.util.List;
@@ -111,21 +105,23 @@ public class DashboardActivity extends BaseActivity {
                     .setMessage(getBaseContext().getApplicationContext().getString(R.string.dialog_ask_pending_surveys))
                     .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface arg0, int arg1) {
-                            sentPendingSurveys(surveysUnsentFromService);
+                            sendPendingSurveys(surveysUnsentFromService);
                         }
                     })
                     .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface arg0, int arg1) {
                             finishAndGo(ProgressActivity.class);
                         }
-                    }).create().show();
+                    })
+                    .setCancelable(true)
+                    .create().show();
         }
         else
             finishAndGo(ProgressActivity.class);
         return true;
     }
 
-    private boolean sentPendingSurveys(List<Survey> surveysUnsentFromService) {
+    private boolean sendPendingSurveys(List<Survey> surveysUnsentFromService) {
         for(int i=surveysUnsentFromService.size()-1;i>=0;i--){
 
             //Get credentials from preferences
