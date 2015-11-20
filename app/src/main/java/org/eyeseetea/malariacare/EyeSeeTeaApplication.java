@@ -26,6 +26,7 @@ import android.support.multidex.MultiDex;
 import com.crashlytics.android.Crashlytics;
 import com.raizlabs.android.dbflow.config.FlowManager;
 
+import org.eyeseetea.malariacare.database.model.User;
 import org.eyeseetea.malariacare.database.utils.LocationMemory;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.hisp.dhis.android.sdk.persistence.Dhis2Application;
@@ -38,8 +39,8 @@ import io.fabric.sdk.android.Fabric;
 public class EyeSeeTeaApplication extends Dhis2Application  {
 
     public Class<? extends Activity> getMainActivity() {
-//        return new DashboardActivity().getClass();
-        return ProgressActivity.class;
+        if (User.getLoggedUser() != null) return new DashboardActivity().getClass();
+        else return new ProgressActivity().getClass();
     }
 
     @Override
