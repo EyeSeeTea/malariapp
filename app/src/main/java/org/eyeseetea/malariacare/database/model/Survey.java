@@ -174,7 +174,7 @@ public class Survey extends BaseModel implements VisitableToSDK {
         //The main score is only return from a query 1 time
         if(this.mainScore==null){
             Score score=getScore();
-            this.mainScore=(score==null)?null:score.getScore();
+            this.mainScore=(score==null)?0f:score.getScore();
         }
         return mainScore;
     }
