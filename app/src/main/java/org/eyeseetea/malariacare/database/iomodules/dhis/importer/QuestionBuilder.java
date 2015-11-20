@@ -364,21 +364,26 @@ public class QuestionBuilder {
         String questionRelationType = mapType.get(programUid + dataElement.getUid());
         String questionRelationGroup = mapLevel.get(programUid + dataElement.getUid());
 
-        org.eyeseetea.malariacare.database.model.Question appQuestion = (org.eyeseetea.malariacare.database.model.Question) mapQuestions.get(dataElement.getUid());
+        org.eyeseetea.malariacare.database.model.Question appQuestion = mapQuestions.get(dataElement.getUid());
 
         if (questionRelationType != null && questionRelationType.equals(CHILD)) {
             try {
                 if (questionRelationType.equals(CHILD)) {
-                    org.eyeseetea.malariacare.database.model.QuestionRelation questionRelation = new org.eyeseetea.malariacare.database.model.QuestionRelation();
-                    questionRelation.setOperation(1);
-                    questionRelation.setQuestion(appQuestion);
-                    questionRelation.save();
                     String parentuid = mapParent.get(programUid + questionRelationGroup);
+                    Log.d(TAG,"parent"+parentuid + "child:"+ appQuestion.getUid());
                     if (parentuid != null) {
+                        org.eyeseetea.malariacare.database.model.QuestionRelation questionRelation = new org.eyeseetea.malariacare.database.model.QuestionRelation();
+                        questionRelation.setOperation(1);
+                        questionRelation.setQuestion(appQuestion);
+                        boolean isSaved=false;
                         org.eyeseetea.malariacare.database.model.Question parentQuestion = mapQuestions.get(parentuid);
                         List<org.eyeseetea.malariacare.database.model.Option> options = parentQuestion.getAnswer().getOptions();
                         for (org.eyeseetea.malariacare.database.model.Option option : options) {
                             if (option.getName().equals(PreferencesState.getInstance().getContext().getResources().getString(R.string.yes))) {
+                                if(!isSaved) {
+                                    questionRelation.save();
+                                    isSaved=true;
+                                }
                                 org.eyeseetea.malariacare.database.model.Match match = new org.eyeseetea.malariacare.database.model.Match();
                                 match.setQuestionRelation(questionRelation);
                                 match.save();
@@ -388,6 +393,7 @@ public class QuestionBuilder {
                     }
                 }
             } catch (Exception e) {
+                e.printStackTrace();
             }
         }
     }
