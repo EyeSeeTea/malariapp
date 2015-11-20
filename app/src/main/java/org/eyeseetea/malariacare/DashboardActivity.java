@@ -19,11 +19,15 @@
 
 package org.eyeseetea.malariacare;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.FragmentTransaction;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -39,6 +43,7 @@ import org.eyeseetea.malariacare.database.utils.PopulateDB;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.fragments.DashboardSentFragment;
 import org.eyeseetea.malariacare.fragments.DashboardUnsentFragment;
+import org.eyeseetea.malariacare.network.PushClient;
 import org.eyeseetea.malariacare.services.SurveyService;
 import org.hisp.dhis.android.sdk.controllers.DhisService;
 import org.hisp.dhis.android.sdk.controllers.LoadingController;
@@ -99,6 +104,29 @@ public class DashboardActivity extends BaseActivity {
             return super.onOptionsItemSelected(item);
         }
 
+        final List<Survey> unsentSurveys = Survey.getAllUnsentSurveys();
+        if (unsentSurveys != null && unsentSurveys.size()!=0){
+            final Activity activity = this;
+            new AlertDialog.Builder(this)
+                    .setTitle("Push unsent surveys?")
+                    .setMessage("Metadata refresh will delete your unsent data. You have "+unsentSurveys.size()+" unsent surveys. Do you to push them before refresh?")
+                    .setNegativeButton(android.R.string.no, null)
+                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+
+                        public void onClick(DialogInterface arg0, int arg1) {
+                            //Get credentials from preferences
+                            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(activity);
+                            String user=sharedPreferences.getString(getString(R.string.dhis_user), "");
+                            String password=sharedPreferences.getString(getString(R.string.dhis_password), "");
+                            for (Survey survey: unsentSurveys){
+                                PushClient pushClient = new PushClient(survey, activity, user, password);
+                                pushClient.push();
+                            }
+                        }
+                    })
+                    .setCancelable(true)
+                    .create().show();
+        }
         finishAndGo(ProgressActivity.class);
         return true;
     }
