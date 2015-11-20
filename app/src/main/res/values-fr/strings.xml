@@ -199,7 +199,7 @@
     <string name="dialog_error_push_no_location">Aucun emplacement disponible</string>
     <string name="dialog_error_push_no_location_and_required">Aucun emplacement disponible et il est un champ obligatoire</string>
     <string name="dialog_title_incorrect_org_unit">Org Unit erronées</string>
-    <string name="dialog_content_incorrect_org_unit"></string>
+    <string name="dialog_content_incorrect_org_unit">"S'il vous plaît sélectionner une unité d'organisation finale"</string>
     <string name="create_info_tabs_group">Tab Group</string>
     <string name="iqatab_info_note">Note: Slide rechecking should be carried out at the health facility during OTSS in the presence of the facility lab staff.  Slides should not be removed from the facility for this purpose.</string>
     <string name="settings_text_dhis_user">Utilisateur DHIS</string>
@@ -213,5 +213,13 @@
     <string name="settings_menu_pull">Métadonnées rafraîchissement</string>
     <string name="dialog_pull_success">Dhis métadonnées retiré avec succès de serveur</string>
     <string name="dialog_title_pull_response">Pull status</string>
+    <string name="progress_pull_connecting" >La connexion à DHIS serveur ...</string>
+    <string name="progress_pull_downloading">Mise à jour des métadonnées (cela peut prendre quelques minutes) ...</string>
+    <string name="progress_pull_preparing_program">Programmes de chargement ...</string>
+    <string name="progress_pull_preparing_answers">Chargement des réponses ...</string>
+    <string name="progress_pull_preparing_orgs">Organisations de chargement ...</string>
+    <string name="progress_pull_questions">Chargement des questions (cela peut prendre quelques minutes) ...</string>
+    <string name="progress_pull_surveys">Enquêtes de chargement ...</string>
+    <string name="progress_pull_done">Terminé</string>
 
 </resources>

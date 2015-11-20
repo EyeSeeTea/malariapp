@@ -213,5 +213,13 @@
     <string name="settings_menu_pull">Refrescar metadata</string>
     <string name="dialog_pull_success">Metadatos Dhis obtenidos del servidor con éxito</string>
     <string name="dialog_title_pull_response">Pull status</string>
+    <string name="progress_pull_connecting" >Conectando a servidor DHIS</string>
+    <string name="progress_pull_downloading">Refrescando metadatos (esto puede llevar algunos minutos) ...</string>
+    <string name="progress_pull_preparing_program">Cargando programas ...</string>
+    <string name="progress_pull_preparing_answers">Cargando respuestas ...</string>
+    <string name="progress_pull_preparing_orgs">Cargando organizaciones ...</string>
+    <string name="progress_pull_questions">Cargando preguntas (esto puede llevar algunos minutos) ...</string>
+    <string name="progress_pull_surveys">Cargando encuestas ...</string>
+    <string name="progress_pull_done">Hecho</string>
 
 </resources>
