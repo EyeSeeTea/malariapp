@@ -221,5 +221,6 @@
     <string name="progress_pull_questions">Chargement des questions (cela peut prendre quelques minutes) ...</string>
     <string name="progress_pull_surveys">Enquêtes de chargement ...</string>
     <string name="progress_pull_done">Terminé</string>
+    <string name="dialog_ask_pending_surveys">Voulez-vous envoyer les sondages en attente?</string>
 
 </resources>

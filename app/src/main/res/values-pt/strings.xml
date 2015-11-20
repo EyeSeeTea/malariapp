@@ -227,4 +227,5 @@
     <string name="progress_pull_questions">Carregando perguntas (isso pode levar alguns minutos) ...</string>
     <string name="progress_pull_surveys">Carregando inquéritos ...</string>
     <string name="progress_pull_done">Feito</string>
+    <string name="dialog_ask_pending_surveys">Você quer enviar urnas pendentes?</string>
 </resources>
