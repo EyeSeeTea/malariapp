@@ -370,7 +370,6 @@ public class QuestionBuilder {
             try {
                 if (questionRelationType.equals(CHILD)) {
                     String parentuid = mapParent.get(programUid + questionRelationGroup);
-                    Log.d(TAG,"parent"+parentuid + "child:"+ appQuestion.getUid());
                     if (parentuid != null) {
                         org.eyeseetea.malariacare.database.model.QuestionRelation questionRelation = new org.eyeseetea.malariacare.database.model.QuestionRelation();
                         questionRelation.setOperation(1);
@@ -381,6 +380,7 @@ public class QuestionBuilder {
                         for (org.eyeseetea.malariacare.database.model.Option option : options) {
                             if (option.getName().equals(PreferencesState.getInstance().getContext().getResources().getString(R.string.yes))) {
                                 if(!isSaved) {
+                                    //the questionRelation only created if have child with yes option
                                     questionRelation.save();
                                     isSaved=true;
                                 }
