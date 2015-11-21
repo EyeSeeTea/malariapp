@@ -20,7 +20,6 @@
 package org.eyeseetea.malariacare.database.iomodules.dhis.importer;
 
 import android.util.Log;
-import android.provider.ContactsContract;
 
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.DataElementExtended;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.DataValueExtended;
@@ -43,7 +42,6 @@ import org.eyeseetea.malariacare.database.model.TabGroup;
 import org.eyeseetea.malariacare.database.model.User;
 import org.eyeseetea.malariacare.database.model.Value;
 import org.eyeseetea.malariacare.utils.Constants;
-import org.hisp.dhis.android.sdk.persistence.models.BaseMetaDataObject;
 import org.hisp.dhis.android.sdk.controllers.metadata.MetaDataController;
 import org.hisp.dhis.android.sdk.persistence.models.DataElement;
 import org.hisp.dhis.android.sdk.persistence.models.DataValue;
@@ -58,8 +56,6 @@ import org.hisp.dhis.android.sdk.persistence.models.UserAccount;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
 
@@ -249,7 +245,7 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
         Object questionOrCompositeScore;
         if(compositeScoreBuilder.isACompositeScore(sdkDataElementExtended)){
             questionOrCompositeScore=buildCompositeScore(sdkDataElementExtended);
-        }else if(questionBuilder.isAQuestion(sdkDataElementExtended)){
+        }else if(sdkDataElementExtended.isQuestion()){
             questionOrCompositeScore=buildQuestion(sdkDataElementExtended);
             //Question type is annotated in 'answer' from an attribute of the question
             buildAnswerOutput(sdkDataElementExtended);
@@ -343,9 +339,9 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
         appQuestion.setForm_name(dataElement.getFormName());
         appQuestion.setFeedback(dataElement.getDescription());
         appQuestion.setCode(dataElement.getCode());
-        appQuestion.setOrder_pos(questionBuilder.findOrder(dataElementExtended));
-        appQuestion.setNumerator_w(questionBuilder.findNumerator(dataElementExtended));
-        appQuestion.setDenominator_w(questionBuilder.findDenominator(dataElementExtended));
+        appQuestion.setOrder_pos(dataElementExtended.findOrder());
+        appQuestion.setNumerator_w(dataElementExtended.findNumerator());
+        appQuestion.setDenominator_w(dataElementExtended.findDenominator());
         OptionSet anwserOption = MetaDataController.getOptionSet(dataElement.getOptionSet());
         if (anwserOption != null) {
             appQuestion.setAnswer((Answer) appMapObjects.get(dataElement.getOptionSet()));
