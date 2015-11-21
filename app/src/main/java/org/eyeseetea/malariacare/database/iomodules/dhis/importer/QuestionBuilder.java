@@ -21,29 +21,18 @@ package org.eyeseetea.malariacare.database.iomodules.dhis.importer;
 
 import android.util.Log;
 
-import com.raizlabs.android.dbflow.sql.builder.Condition;
-import com.raizlabs.android.dbflow.sql.language.ColumnAlias;
-import com.raizlabs.android.dbflow.sql.language.Join;
-import com.raizlabs.android.dbflow.sql.language.Select;
-
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.DataElementExtended;
-import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.OptionExtended;
 import org.eyeseetea.malariacare.database.model.CompositeScore;
 import org.eyeseetea.malariacare.database.model.Header;;
 import org.eyeseetea.malariacare.database.model.Match;
+import org.eyeseetea.malariacare.database.model.Option;
 import org.eyeseetea.malariacare.database.model.Question;
+import org.eyeseetea.malariacare.database.model.QuestionOption;
 import org.eyeseetea.malariacare.database.model.QuestionRelation;
+import org.eyeseetea.malariacare.database.model.Tab;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
-import org.hisp.dhis.android.sdk.persistence.models.AttributeValue;
 import org.hisp.dhis.android.sdk.persistence.models.DataElement;
-import org.hisp.dhis.android.sdk.persistence.models.Option;
-import org.hisp.dhis.android.sdk.persistence.models.ProgramStage;
-import org.hisp.dhis.android.sdk.persistence.models.ProgramStage$Table;
-import org.hisp.dhis.android.sdk.persistence.models.Program;
-import org.hisp.dhis.android.sdk.persistence.models.Program$Table;
-import org.hisp.dhis.android.sdk.persistence.models.ProgramStageDataElement;
-import org.hisp.dhis.android.sdk.persistence.models.ProgramStageDataElement$Table;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -56,77 +45,6 @@ import java.util.Map;
 public class QuestionBuilder {
 
     private static final String TAG = ".QuestionBuilder";
-    /**
-     * Code of attribute dheader unique name
-     */
-    private static final String ATTRIBUTE_HEADER_NAME = "DEHeader";
-    /**
-     * Code of attribute order int
-     */
-    private static final String ATTRIBUTE_ORDER = "Order";
-    /**
-     * Code of attribute numerator float
-     */
-    private static final String ATTRIBUTE_NUMERATOR = "DENumerator";
-    /**
-     * Code of attribute denominator float
-     */
-    private static final String ATTRIBUTE_DENUMERATOR = "DEDenominator";
-    /**
-     * Code of attribute of group of patern/child relation
-     */
-    private static final String ATTRIBUTE_HIDE_GROUP = "DEHideGroup";
-    /**
-     * Code of attribute of type patern or child
-     */
-    private static final String ATTRIBUTE_HIDE_TYPE = "DEHideType";
-    /**
-     * Code of attribute of Match group of patern/child relation
-     */
-    private static final String ATTRIBUTE_MATCH_GROUP = "DEMatchGroup";
-    /**
-     * Code of attribute of Match type patern or child
-     */
-    private static final String ATTRIBUTE_MATCH_TYPE = "DEMatchType";
-    /**
-     * Code of attribute of DETabName for header
-     */
-    private static final String ATTRIBUTE_TAB_NAME = "DETabName";
-    /**
-     * Code of attribute '20 Question Type'
-     */
-    private static final String ATTRIBUTE_QUESTION_TYPE_CODE = "DEQuesType";
-    /**
-     * Value parent
-     */
-    private static final String PARENT = "PARENT";
-    /**
-     * Value child
-     */
-    private static final String CHILD = "CHILD";
-
-    /**
-     * Code of attribute 'Composite Score'
-     */
-    private static final String ATTRIBUTE_COMPOSITE_SCORE_CODE = "DECompositiveScore";
-
-    //Fixme In the future, when isAQuestion check if is a question, it should be removed
-    /**
-     * Value to discard the dataelementcontrol
-     */
-    private static final String COMPOSITE_SCORE_NAME = "COMPOSITE_SCORE";
-    /**
-     * Code to discard the dataelementcontrol
-     */
-    private static String COMPOSITE_SCORE_CODE = "";
-    /**
-     * Value to discard the COMPOSITE_SCORE
-     */
-    private static final String DATAELEMENTCONTROL_NAME = "CONTROL_DATAELEMENT";
-    /**
-     * Code to discard the COMPOSITE_SCORE
-     */
-    private static String DATAELEMENTCONTROL_CODE = "";
 
     /**
      * Mapping all the questions
@@ -181,12 +99,6 @@ public class QuestionBuilder {
         mapMatchParent = new HashMap<>();
         mapMatchChilds = new HashMap<>();
         mapMatchType = new HashMap<>();
-
-        //Fixme In the future, when isAQuestion check if is a question, it should be removed
-        Option optionDataElementControl = OptionExtended.findOptionByName(DATAELEMENTCONTROL_NAME);
-        DATAELEMENTCONTROL_CODE = optionDataElementControl.getCode();
-        Option optionCompositeScore = OptionExtended.findOptionByName(COMPOSITE_SCORE_NAME);
-        COMPOSITE_SCORE_CODE = optionCompositeScore.getCode();
     }
 
     /**
@@ -196,60 +108,6 @@ public class QuestionBuilder {
      */
     public void add(Question question) {
         mapQuestions.put(question.getUid(), question);
-    }
-
-    public Integer findOrder(DataElementExtended dataElementExtended) {
-        String value = getValue(ATTRIBUTE_ORDER, dataElementExtended);
-        if (value != null) {
-            int order = Integer.valueOf(value);
-            return order;
-        }
-        return null;
-    }
-
-    public String findCompositeScoreId(DataElementExtended dataElementExtended) {
-        String value = getValue(ATTRIBUTE_COMPOSITE_SCORE_CODE, dataElementExtended);
-        return value;
-    }
-
-    public Float findNumerator(DataElementExtended dataElementExtended) {
-        String value = getValue(ATTRIBUTE_NUMERATOR, dataElementExtended);
-        if (value != null) {
-            float numinator = Float.valueOf(value);
-            return numinator;
-        } else
-            return null;
-    }
-
-    public Float findDenominator(DataElementExtended dataElementExtended) {
-        String value = getValue(ATTRIBUTE_DENUMERATOR, dataElementExtended);
-        if (value != null) {
-            float denominator = Float.valueOf(value);
-            return denominator;
-        }
-        return null;
-    }
-
-    /**
-     * Return a CompositeScore question
-     * <p/>
-     * The compositeScore is getted in mapCompositeScores in CompositeScoreBuilder.class
-     *
-     * @param dataElementExtended
-     * @return compositeScore question
-     */
-    public CompositeScore findCompositeScore(DataElementExtended dataElementExtended) {
-        CompositeScore compositeScore = null;
-
-        String value = findCompositeScoreId(dataElementExtended);
-        if (value != null) {
-            try {
-                compositeScore = CompositeScoreBuilder.getCompositeScoreFromDataElementAndHierarchicalCode(dataElementExtended.getDataElement(), value);
-            } catch (Exception e) {
-                return compositeScore;
-            }
-        }
-        return compositeScore;
     }
 
     /**
@@ -262,15 +120,15 @@ public class QuestionBuilder {
      */
     public Header findHeader(DataElementExtended dataElementExtended) {
         Header header = null;
-        String value = getValue(ATTRIBUTE_HEADER_NAME, dataElementExtended);
+        String value = dataElementExtended.getValue(DataElementExtended.ATTRIBUTE_HEADER_NAME);
         if (value != null) {
             if (!mapHeader.containsKey(value)) {
                 header = new Header();
                 header.setName(value.trim());
                 header.setShort_name(value);
-                value = getValue(ATTRIBUTE_TAB_NAME, dataElementExtended);
-                org.eyeseetea.malariacare.database.model.Tab questionTab = new org.eyeseetea.malariacare.database.model.Tab();
-                questionTab = (org.eyeseetea.malariacare.database.model.Tab) ConvertFromSDKVisitor.appMapObjects.get(questionTab.getClass() + value);
+                value = dataElementExtended.getValue(DataElementExtended.ATTRIBUTE_TAB_NAME);
+                Tab questionTab = new Tab();
+                questionTab = (Tab) ConvertFromSDKVisitor.appMapObjects.get(questionTab.getClass() + value);
                 header.setOrder_pos(header_order);
                 header_order++;
                 header.setTab(questionTab);
@@ -294,13 +152,13 @@ public class QuestionBuilder {
         String questionRelationGroup = null;
         String matchRelationType = null;
         String matchRelationGroup = null;
-        questionRelationType = getValue(ATTRIBUTE_HIDE_TYPE, dataElementExtended);
-        questionRelationGroup = getValue(ATTRIBUTE_HIDE_GROUP, dataElementExtended);
-        matchRelationType = getValue(ATTRIBUTE_MATCH_TYPE, dataElementExtended);
-        matchRelationGroup = getValue(ATTRIBUTE_MATCH_GROUP, dataElementExtended);
+        questionRelationType = dataElementExtended.getValue(DataElementExtended.ATTRIBUTE_HIDE_TYPE);
+        questionRelationGroup = dataElementExtended.getValue(DataElementExtended.ATTRIBUTE_HIDE_GROUP);
+        matchRelationType = dataElementExtended.getValue(DataElementExtended.ATTRIBUTE_MATCH_TYPE);
+        matchRelationGroup = dataElementExtended.getValue(DataElementExtended.ATTRIBUTE_MATCH_GROUP);
         if (questionRelationType != null) {
-            String parentProgramUid = findProgramUIDByDataElementUID(dataElement.getUid());
-            if (questionRelationType.equals(PARENT)) {
+            String parentProgramUid = DataElementExtended.findProgramUIDByDataElementUID(dataElement.getUid());
+            if (questionRelationType.equals(DataElementExtended.PARENT)) {
                 mapParent.put(parentProgramUid + questionRelationGroup, dataElement.getUid());
             } else {
                 mapType.put(parentProgramUid + dataElement.getUid(), questionRelationType);
@@ -308,10 +166,10 @@ public class QuestionBuilder {
             }
         }
         if (matchRelationType != null) {
-            String parentProgramUid = findProgramUIDByDataElementUID(dataElement.getUid());
-            if (matchRelationType.equals(PARENT)) {
+            String parentProgramUid = DataElementExtended.findProgramUIDByDataElementUID(dataElement.getUid());
+            if (matchRelationType.equals(DataElementExtended.PARENT)) {
                 mapMatchParent.put(parentProgramUid + matchRelationGroup, dataElement.getUid());
-            } else if (matchRelationType.equals(CHILD)) {
+            } else if (matchRelationType.equals(DataElementExtended.CHILD)) {
                 List<String> childsUids;
                 if (mapMatchChilds.containsKey(parentProgramUid + matchRelationGroup)) {
                     childsUids = mapMatchChilds.get(parentProgramUid + matchRelationGroup);
@@ -342,9 +200,9 @@ public class QuestionBuilder {
     }
 
     private void addCompositeScores(DataElementExtended dataElementExtended) {
-        CompositeScore compositeScore = findCompositeScore(dataElementExtended);
+        CompositeScore compositeScore = dataElementExtended.findCompositeScore();
         if (compositeScore != null) {
-            org.eyeseetea.malariacare.database.model.Question appQuestion = (org.eyeseetea.malariacare.database.model.Question) mapQuestions.get(dataElementExtended.getDataElement().getUid());
+            Question appQuestion = mapQuestions.get(dataElementExtended.getDataElement().getUid());
             if (appQuestion != null) {
                 appQuestion.setCompositeScore(compositeScore);
                 appQuestion.save();
@@ -360,34 +218,34 @@ public class QuestionBuilder {
      * @param dataElement
      */
     private void addParent(DataElement dataElement) {
-        String programUid = findProgramUIDByDataElementUID(dataElement.getUid());
+        String programUid = DataElementExtended.findProgramUIDByDataElementUID(dataElement.getUid());
         String questionRelationType = mapType.get(programUid + dataElement.getUid());
         String questionRelationGroup = mapLevel.get(programUid + dataElement.getUid());
 
-        org.eyeseetea.malariacare.database.model.Question appQuestion = mapQuestions.get(dataElement.getUid());
+        Question appQuestion = mapQuestions.get(dataElement.getUid());
 
-        if (questionRelationType != null && questionRelationType.equals(CHILD)) {
+        if (questionRelationType != null && questionRelationType.equals(DataElementExtended.CHILD)) {
             try {
-                if (questionRelationType.equals(CHILD)) {
+                if (questionRelationType.equals(DataElementExtended.CHILD)) {
                     String parentuid = mapParent.get(programUid + questionRelationGroup);
                     if (parentuid != null) {
-                        org.eyeseetea.malariacare.database.model.QuestionRelation questionRelation = new org.eyeseetea.malariacare.database.model.QuestionRelation();
+                        QuestionRelation questionRelation = new QuestionRelation();
                         questionRelation.setOperation(1);
                         questionRelation.setQuestion(appQuestion);
                         boolean isSaved=false;
-                        org.eyeseetea.malariacare.database.model.Question parentQuestion = mapQuestions.get(parentuid);
-                        List<org.eyeseetea.malariacare.database.model.Option> options = parentQuestion.getAnswer().getOptions();
-                        for (org.eyeseetea.malariacare.database.model.Option option : options) {
+                        Question parentQuestion = mapQuestions.get(parentuid);
+                        List<Option> options = parentQuestion.getAnswer().getOptions();
+                        for (Option option : options) {
                             if (option.getName().equals(PreferencesState.getInstance().getContext().getResources().getString(R.string.yes))) {
                                 if(!isSaved) {
                                     //the questionRelation only created if have child with yes option
                                     questionRelation.save();
                                     isSaved=true;
                                 }
-                                org.eyeseetea.malariacare.database.model.Match match = new org.eyeseetea.malariacare.database.model.Match();
+                                Match match = new Match();
                                 match.setQuestionRelation(questionRelation);
                                 match.save();
-                                saveQuestionRelation(match, parentQuestion, option);
+                                new QuestionOption(option, parentQuestion, match).save();
                             }
                         }
                     }
@@ -409,134 +267,24 @@ public class QuestionBuilder {
      */
     private void addQuestionRelations(DataElement dataElement) {
 
-        String programUid = findProgramUIDByDataElementUID(dataElement.getUid());
+        String programUid = DataElementExtended.findProgramUIDByDataElementUID(dataElement.getUid());
         String matchRelationType = mapMatchType.get(programUid + dataElement.getUid());
         String matchRelationGroup = mapMatchLevel.get(programUid + dataElement.getUid());
-        org.eyeseetea.malariacare.database.model.Question appQuestion = (org.eyeseetea.malariacare.database.model.Question) mapQuestions.get(dataElement.getUid());
+        Question appQuestion = mapQuestions.get(dataElement.getUid());
 
-        if (matchRelationType != null && matchRelationType.equals(PARENT)) {
-            try {
-                List<String> mapChilds = mapMatchChilds.get(programUid + matchRelationGroup);
-                Question child[] = new Question[2];
-                int count = 0;
-                for (String uid : mapChilds) {
-                    child[count] = mapQuestions.get(uid);
-                    count++;
-                }
-                if (child[0] != null && child[1] != null) {
-                    org.eyeseetea.malariacare.database.model.QuestionRelation questionRelation = new org.eyeseetea.malariacare.database.model.QuestionRelation();
-                    questionRelation.setOperation(0);
-                    questionRelation.setQuestion(appQuestion);
-                    questionRelation.save();
-                    findAndCreateMatch(questionRelation, child);
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
+        if (matchRelationType != null && matchRelationType.equals(DataElementExtended.PARENT)) {
+            List<String> mapChilds = mapMatchChilds.get(programUid + matchRelationGroup);
+            List<Question> children = new ArrayList<>();
+            children.add(mapQuestions.get(mapChilds.get(0)));
+            children.add(mapQuestions.get(mapChilds.get(1)));
+
+            if (mapQuestions.get(mapChilds.get(0)) != null && mapQuestions.get(mapChilds.get(1)) != null) {
+                QuestionRelation questionRelation = new QuestionRelation();
+                questionRelation.setOperation(0);
+                questionRelation.setQuestion(appQuestion);
+                questionRelation.save();
+                questionRelation.createMatchFromQuestions(children);
             }
         }
-    }
-
-    private void findAndCreateMatch(QuestionRelation questionRelation, Question[] child) {
-        try {
-            org.eyeseetea.malariacare.database.model.Match match;
-                    for (org.eyeseetea.malariacare.database.model.Option optionA : child[0].getAnswer().getOptions()) {
-                        for (org.eyeseetea.malariacare.database.model.Option optionB : child[1].getAnswer().getOptions()) {
-                            if(optionA.getFactor().equals(optionB.getFactor())){
-                                //Save all optiona factor optionb factor with the same match
-                                match = new org.eyeseetea.malariacare.database.model.Match();
-                                match.setQuestionRelation(questionRelation);
-                                match.save();
-                                saveQuestionRelation(match, child[0], optionA);
-                                saveQuestionRelation(match, child[1], optionB);
-                            }
-                        }
-                }
-        } catch (Exception e) {
-            Log.d(TAG,"error");
-            e.printStackTrace();
-        }
-    }
-
-
-    private void saveQuestionRelation(Match match, Question question, org.eyeseetea.malariacare.database.model.Option option) {
-        org.eyeseetea.malariacare.database.model.QuestionOption questionOption = new org.eyeseetea.malariacare.database.model.QuestionOption();
-        questionOption.setOption(option);
-        questionOption.setQuestion(question);
-        questionOption.setMatch(match);
-        questionOption.save();
-    }
-    /**
-     * Gets value if the AttributeValue is not null
-     *
-     * @param attributeCode
-     * @param dataElementExtended
-     * @return value
-     */
-    private String getValue(String attributeCode, DataElementExtended dataElementExtended) {
-        AttributeValue attributeValue;
-        DataElement dataElement = dataElementExtended.getDataElement();
-        attributeValue = dataElementExtended.findAttributeValuefromDataElementCode(attributeCode, dataElement);
-        if (attributeValue != null) {
-            return attributeValue.getValue();
-        }
-        return null;
-    }
-
-
-    //Fixme isAQuestion is necessary to check the question when dataElements have a specific identifier for questions. Now it is detected by elimination
-    public boolean isAQuestion(DataElementExtended dataElementExtended) {
-        if (isDataElementControl(dataElementExtended)) {
-            return false;
-        }
-        if (isCompositeScore(dataElementExtended)) {
-            return false;
-        }
-        return true;
-    }
-
-    //Fixme In the future it should be removed
-    private boolean isCompositeScore(DataElementExtended dataElementExtended) {
-        String typeQuestion = dataElementExtended.findAttributeValueByCode(ATTRIBUTE_QUESTION_TYPE_CODE);
-
-        if (typeQuestion == null) {
-            return false;
-        }
-
-        return typeQuestion.equals(COMPOSITE_SCORE_CODE);
-    }
-
-    //Fixme In the future it should be removed
-    public boolean isDataElementControl(DataElementExtended dataElementExtended) {
-
-        String typeQuestion = dataElementExtended.findAttributeValueByCode(ATTRIBUTE_QUESTION_TYPE_CODE);
-
-        if (typeQuestion == null) {
-            return false;
-        }
-
-        return typeQuestion.equals(DATAELEMENTCONTROL_CODE);
-    }
-
-    /**
-     * Find the associated prgoramStage (tabgroup) given a dataelement UID
-     *
-     * @param dataElementUID
-     * @return
-     */
-    private static String findProgramUIDByDataElementUID(String dataElementUID) {
-        //Find the right 'uid' of the dataelement program
-        Program program = new Select().from(Program.class).as("p")
-                .join(ProgramStage.class, Join.JoinType.LEFT).as("ps")
-                .on(Condition.column(ColumnAlias.columnWithTable("p", Program$Table.ID))
-                        .eq(ColumnAlias.columnWithTable("ps", ProgramStage$Table.PROGRAM)))
-                .join(ProgramStageDataElement.class, Join.JoinType.LEFT).as("psd")
-                .on(Condition.column(ColumnAlias.columnWithTable("psd", ProgramStageDataElement$Table.PROGRAMSTAGE))
-                        .eq(ColumnAlias.columnWithTable("ps", ProgramStage$Table.ID)))
-                .where(Condition.column(ColumnAlias.columnWithTable("psd", ProgramStageDataElement$Table.DATAELEMENT)).eq(dataElementUID))
-                .querySingle();
-        if (program == null) {
-            return null;
-        }
-        return program.getUid();
     }
 }
