@@ -23,8 +23,11 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.PowerManager;
+import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.widget.ProgressBar;
@@ -51,6 +54,10 @@ public class ProgressActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_progress);
         prepareUI();
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(getString(R.string.first_pull), getString(R.string.incompleted_pull));
+        editor.commit();
     }
 
     @Override
@@ -126,6 +133,11 @@ public class ProgressActivity extends Activity {
      */
     private void showAndGoDashboard() {
         step(getString(R.string.progress_pull_done));
+
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(getString(R.string.first_pull),getString(R.string.completed_pull));
+        editor.commit();
         new AlertDialog.Builder(this)
                 .setTitle(getString(R.string.dialog_title_pull_response))
                 .setMessage(R.string.dialog_pull_success)
