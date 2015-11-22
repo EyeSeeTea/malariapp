@@ -275,5 +275,8 @@
     <string name="progress_pull_questions">Loading questions (this might take a few minutes) ...</string>
     <string name="progress_pull_surveys">Loading surveys ...</string>
     <string name="progress_pull_done">Done</string>
+    <item name="first_pull" type="string" translatable="false">fitst_pull</item>
+    <item name="completed_pull" type="string" translatable="false">completed_pull</item>
+    <item name="incompleted_pull" type="string" translatable="false">incompleted_pull</item>
 
 </resources>
