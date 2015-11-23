@@ -98,4 +98,14 @@ public class EventExtended implements VisitableFromSDK {
         }
     }
 
+    /**
+     * Turns a given date into a parseable String according to sdk date format
+     * @param date
+     * @return
+     */
+    public static String format(Date date){
+        SimpleDateFormat simpleDateFormat=new SimpleDateFormat(COMPLETION_DATE_FORMAT);
+        return simpleDateFormat.format(date);
+    }
+
 }

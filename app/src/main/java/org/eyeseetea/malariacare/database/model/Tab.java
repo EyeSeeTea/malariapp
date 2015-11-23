@@ -38,7 +38,7 @@ import org.eyeseetea.malariacare.utils.Constants;
 import java.util.List;
 
 @Table(databaseName = AppDatabase.NAME)
-public class Tab extends BaseModel implements VisitableToSDK {
+public class Tab extends BaseModel {
 
     @Column
     @PrimaryKey(autoincrement = true)
@@ -148,11 +148,6 @@ public class Tab extends BaseModel implements VisitableToSDK {
     public boolean isACustomTab() {
         return getType().equals(Constants.TAB_ADHERENCE) || getType().equals(Constants.TAB_IQATAB) ||
         getType().equals(Constants.TAB_REPORTING);
-    }
-
-    @Override
-    public void accept(IConvertToSDKVisitor IConvertToSDKVisitor) {
-        IConvertToSDKVisitor.visit(this);
     }
 
     @Override

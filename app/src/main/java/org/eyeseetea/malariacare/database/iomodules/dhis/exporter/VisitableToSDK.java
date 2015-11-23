@@ -20,5 +20,5 @@
 package org.eyeseetea.malariacare.database.iomodules.dhis.exporter;
 
 public interface VisitableToSDK {
-    void accept(IConvertToSDKVisitor IConvertToSDKVisitor);
+    void accept(IConvertToSDKVisitor IConvertToSDKVisitor) throws Exception;
 }

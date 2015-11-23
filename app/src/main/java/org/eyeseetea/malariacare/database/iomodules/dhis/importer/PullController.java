@@ -19,7 +19,6 @@
 
 package org.eyeseetea.malariacare.database.iomodules.dhis.importer;
 
-import android.app.AlertDialog;
 import android.content.Context;
 import android.util.Log;
 
@@ -305,7 +304,7 @@ public class PullController {
      * @param msg
      */
     private void postProgress(String msg){
-        Dhis2Application.getEventBus().post(new PullProgressStatus(msg));
+        Dhis2Application.getEventBus().post(new SyncProgressStatus(msg));
     }
 
     /**
@@ -313,14 +312,14 @@ public class PullController {
      * @param ex
      */
     private void postException(Exception ex){
-        Dhis2Application.getEventBus().post(new PullProgressStatus(ex));
+        Dhis2Application.getEventBus().post(new SyncProgressStatus(ex));
     }
 
     /**
      * Notifies that the pull is over
      */
     private void postFinish(){
-        Dhis2Application.getEventBus().post(new PullProgressStatus());
+        Dhis2Application.getEventBus().post(new SyncProgressStatus());
     }
 
 

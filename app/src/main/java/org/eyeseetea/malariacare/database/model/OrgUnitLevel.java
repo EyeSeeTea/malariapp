@@ -34,7 +34,7 @@ import org.eyeseetea.malariacare.database.iomodules.dhis.exporter.VisitableToSDK
 import java.util.List;
 
 @Table(databaseName = AppDatabase.NAME)
-public class OrgUnitLevel extends BaseModel implements VisitableToSDK {
+public class OrgUnitLevel extends BaseModel {
 
     @Column
     @PrimaryKey(autoincrement = true)
@@ -79,11 +79,6 @@ public class OrgUnitLevel extends BaseModel implements VisitableToSDK {
         this.orgUnits = new Select().from(OrgUnit.class)
                 .where(Condition.column(OrgUnit$Table.ORGUNIT_ID_PARENT).eq(this.getId_org_unit_level())).queryList();
         return orgUnits;
-    }
-
-    @Override
-    public void accept(IConvertToSDKVisitor IConvertToSDKVisitor) {
-        IConvertToSDKVisitor.visit(this);
     }
 
     @Override
