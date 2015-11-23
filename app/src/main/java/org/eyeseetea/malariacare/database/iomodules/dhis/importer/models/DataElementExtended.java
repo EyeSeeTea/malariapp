@@ -295,7 +295,7 @@ public class DataElementExtended implements VisitableFromSDK {
             float numinator = Float.valueOf(value);
             return numinator;
         } else
-            return null;
+            return 0.0f;
     }
 
     public Float findDenominator() {
@@ -304,7 +304,7 @@ public class DataElementExtended implements VisitableFromSDK {
             float denominator = Float.valueOf(value);
             return denominator;
         }
-        return null;
+        return 0.0f;
     }
 
     public CompositeScore findCompositeScore() {
