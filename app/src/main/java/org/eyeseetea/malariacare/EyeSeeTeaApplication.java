@@ -42,9 +42,7 @@ public class EyeSeeTeaApplication extends Dhis2Application  {
 
     public Class<? extends Activity> getMainActivity() {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        String key=getApplicationContext().getResources().getString(R.string.first_pull);
-        String pull = sharedPreferences.getString(key,getApplicationContext().getResources().getString(R.string.incompleted_pull));
-        if (User.getLoggedUser() != null && pull==getString(R.string.completed_pull)) return new DashboardActivity().getClass();
+        if (User.getLoggedUser() != null && sharedPreferences.getBoolean(getApplicationContext().getResources().getString(R.string.pull_metadata),false)) return new DashboardActivity().getClass();
         else return new ProgressActivity().getClass();
     }
 

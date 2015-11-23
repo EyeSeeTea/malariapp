@@ -56,7 +56,7 @@ public class ProgressActivity extends Activity {
         prepareUI();
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString(getString(R.string.first_pull), getString(R.string.incompleted_pull));
+        editor.putBoolean(getString(R.string.pull_metadata), false);
         editor.commit();
     }
 
@@ -136,7 +136,7 @@ public class ProgressActivity extends Activity {
 
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString(getString(R.string.first_pull),getString(R.string.completed_pull));
+        editor.putBoolean(getString(R.string.pull_metadata), true);
         editor.commit();
         new AlertDialog.Builder(this)
                 .setTitle(getString(R.string.dialog_title_pull_response))
