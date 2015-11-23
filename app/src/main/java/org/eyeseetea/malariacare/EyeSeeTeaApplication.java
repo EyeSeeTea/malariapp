@@ -21,6 +21,8 @@ package org.eyeseetea.malariacare;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.multidex.MultiDex;
 
 import com.crashlytics.android.Crashlytics;
@@ -39,7 +41,8 @@ import io.fabric.sdk.android.Fabric;
 public class EyeSeeTeaApplication extends Dhis2Application  {
 
     public Class<? extends Activity> getMainActivity() {
-        if (User.getLoggedUser() != null) return new DashboardActivity().getClass();
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        if (User.getLoggedUser() != null && sharedPreferences.getBoolean(getApplicationContext().getResources().getString(R.string.pull_metadata),false)) return new DashboardActivity().getClass();
         else return new ProgressActivity().getClass();
     }
 
