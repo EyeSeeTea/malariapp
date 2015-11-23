@@ -23,7 +23,13 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.PowerManager;
+import android.preference.PreferenceManager;
+import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -51,6 +57,10 @@ public class ProgressActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_progress);
         prepareUI();
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putBoolean(getString(R.string.pull_metadata), false);
+        editor.commit();
     }
 
     @Override
@@ -121,9 +131,10 @@ public class ProgressActivity extends Activity {
         String title=getDialogTitle(isAPush);
 
         new AlertDialog.Builder(this)
+                .setCancelable(false)
                 .setTitle(title)
                 .setMessage(msg)
-                .setNeutralButton(android.R.string.yes,null).create().show();
+                .setNeutralButton(android.R.string.yes, null).create().show();
     }
 
     /**
@@ -145,7 +156,15 @@ public class ProgressActivity extends Activity {
         int msg=isAPush?R.string.dialog_push_success:R.string.dialog_pull_success;
 
         step(getString(R.string.progress_pull_done));
+
+        //XXX If pull move this to a function
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putBoolean(getString(R.string.pull_metadata), true);
+        editor.commit();
+
         new AlertDialog.Builder(this)
+				.setCancelable(false)
                 .setTitle(title)
                 .setMessage(msg)
                 .setNeutralButton(android.R.string.yes, new DialogInterface.OnClickListener() {

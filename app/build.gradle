@@ -30,8 +30,8 @@ android {
         applicationId 'org.eyeseetea.malariacare'
         minSdkVersion 15
         targetSdkVersion 21
-        versionCode 12
-        versionName "12.0"
+        versionCode 13
+        versionName "13.0"
         multiDexEnabled true
         /*dexOptions {
             jumboMode = true
@@ -66,57 +66,15 @@ android {
         exclude 'META-INF/LGPL2.1'
     }
     productFlavors {
-        edsGhana {
+        eds {
             applicationId "org.eyeseetea.malariacare.eds"
-            versionName "12.0-eds-ghana"
+            versionName "13.0-eds"
             minSdkVersion 15
             targetSdkVersion 21
         }
-        edsMalawi {
-            applicationId "org.eyeseetea.malariacare.eds"
-            versionName "12.0-eds-malawi"
-            minSdkVersion 15
-            targetSdkVersion 21
-        }
-        edsMozambique {
-            applicationId "org.eyeseetea.malariacare.eds"
-            versionName "12.0-eds-mozambique"
-            minSdkVersion 15
-            targetSdkVersion 21
-        }
-        edsTanzania {
-            applicationId "org.eyeseetea.malariacare.eds"
-            versionName "12.0-eds-tanzania"
-            minSdkVersion 15
-            targetSdkVersion 21
-        }
-        edsZambia {
-            applicationId "org.eyeseetea.malariacare.eds"
-            versionName "12.0-eds-zambia"
-            minSdkVersion 15
-            targetSdkVersion 21
-        }
-        hnqisCongoICM {
+        hnqis {
             applicationId "org.eyeseetea.malariacare.hnqis"
-            versionName "12.0-hnqis-congo-icm"
-            minSdkVersion 15
-            targetSdkVersion 21
-        }
-        hnqisKenyaSF {
-            applicationId "org.eyeseetea.malariacare.hnqis"
-            versionName "12.0-hnqis-kenya-sf"
-            minSdkVersion 15
-            targetSdkVersion 21
-        }
-        hnqisTanzaniaSF {
-            applicationId "org.eyeseetea.malariacare.hnqis"
-            versionName "12.0-hnqis-tanzania-sf"
-            minSdkVersion 15
-            targetSdkVersion 21
-        }
-        hnqisNigeriaSF {
-            applicationId "org.eyeseetea.malariacare.hnqis"
-            versionName "12.0-hnqis-nigeria-sf"
+            versionName "13.0-hnqis"
             minSdkVersion 15
             targetSdkVersion 21
         }

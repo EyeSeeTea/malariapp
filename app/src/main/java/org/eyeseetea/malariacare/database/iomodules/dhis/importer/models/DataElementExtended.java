@@ -24,8 +24,10 @@ import com.raizlabs.android.dbflow.sql.language.ColumnAlias;
 import com.raizlabs.android.dbflow.sql.language.Join;
 import com.raizlabs.android.dbflow.sql.language.Select;
 
+import org.eyeseetea.malariacare.database.iomodules.dhis.importer.CompositeScoreBuilder;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.IConvertFromSDKVisitor;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.VisitableFromSDK;
+import org.eyeseetea.malariacare.database.model.CompositeScore;
 import org.hisp.dhis.android.sdk.persistence.models.Attribute;
 import org.hisp.dhis.android.sdk.persistence.models.Attribute$Table;
 import org.hisp.dhis.android.sdk.persistence.models.AttributeValue;
@@ -34,11 +36,86 @@ import org.hisp.dhis.android.sdk.persistence.models.DataElement;
 import org.hisp.dhis.android.sdk.persistence.models.DataElementAttributeValue;
 import org.hisp.dhis.android.sdk.persistence.models.DataElementAttributeValue$Table;
 import org.hisp.dhis.android.sdk.persistence.models.Program;
+import org.hisp.dhis.android.sdk.persistence.models.Program$Table;
+import org.hisp.dhis.android.sdk.persistence.models.ProgramStage;
+import org.hisp.dhis.android.sdk.persistence.models.ProgramStage$Table;
+import org.hisp.dhis.android.sdk.persistence.models.ProgramStageDataElement;
+import org.hisp.dhis.android.sdk.persistence.models.ProgramStageDataElement$Table;
 
 /**
  * Created by arrizabalaga on 5/11/15.
  */
 public class DataElementExtended implements VisitableFromSDK {
+
+    /**
+     * Code of attribute dheader unique name
+     */
+    public static final String ATTRIBUTE_HEADER_NAME = "DEHeader";
+    /**
+     * Code of attribute order int
+     */
+    public static final String ATTRIBUTE_ORDER = "Order";
+    /**
+     * Code of attribute numerator float
+     */
+    public static final String ATTRIBUTE_NUMERATOR = "DENumerator";
+    /**
+     * Code of attribute denominator float
+     */
+    public static final String ATTRIBUTE_DENUMERATOR = "DEDenominator";
+    /**
+     * Code of attribute of group of patern/child relation
+     */
+    public static final String ATTRIBUTE_HIDE_GROUP = "DEHideGroup";
+    /**
+     * Code of attribute of type patern or child
+     */
+    public static final String ATTRIBUTE_HIDE_TYPE = "DEHideType";
+    /**
+     * Code of attribute of Match group of patern/child relation
+     */
+    public static final String ATTRIBUTE_MATCH_GROUP = "DEMatchGroup";
+    /**
+     * Code of attribute of Match type patern or child
+     */
+    public static final String ATTRIBUTE_MATCH_TYPE = "DEMatchType";
+    /**
+     * Code of attribute of DETabName for header
+     */
+    public static final String ATTRIBUTE_TAB_NAME = "DETabName";
+    /**
+     * Code of attribute '20 Question Type'
+     */
+    public static final String ATTRIBUTE_QUESTION_TYPE_CODE = "DEQuesType";
+    /**
+     * Value to discard the COMPOSITE_SCORE
+     */
+    public static final String CONTROLDATAELEMENT_NAME = "CONTROL_DATAELEMENT";
+    /**
+     * Code of attribute 'Composite Score'
+     */
+    public static final String ATTRIBUTE_COMPOSITE_SCORE_CODE = "DECompositiveScore";
+    /**
+     * Value to discard the dataelementcontrol
+     */
+    public static final String COMPOSITE_SCORE_NAME = "COMPOSITE_SCORE";
+    /**
+     * Value parent
+     */
+    public static final String PARENT = "PARENT";
+    /**
+     * Value child
+     */
+    public static final String CHILD = "CHILD";
+
+    /**
+     * Code to identify control dataElements
+     */
+    private static String COMPOSITE_SCORE_CODE = "";
+    /**
+     * Code to identify composite scores
+     */
+    private static String CONTROL_DATAELEMENT_CODE = "";
 
     DataElement dataElement;
 
@@ -54,6 +131,56 @@ public class DataElementExtended implements VisitableFromSDK {
 
     public DataElement getDataElement() {
         return dataElement;
+    }
+
+    /**
+     * Gets value in the AttributeValue table
+     *
+     * @param attributeCode
+     * @return value
+     */
+    public String getValue(String attributeCode) {
+        AttributeValue attributeValue = findAttributeValuefromDataElementCode(attributeCode, getDataElement());
+        if (attributeValue != null) {
+            return attributeValue.getValue();
+        }
+        return null;
+    }
+
+    public boolean isCompositeScore() {
+        String typeQuestion = findAttributeValueByCode(ATTRIBUTE_QUESTION_TYPE_CODE);
+
+        if (typeQuestion == null) {
+            return false;
+        }
+
+        if (COMPOSITE_SCORE_CODE.equals("")) {
+            COMPOSITE_SCORE_CODE = OptionExtended.findOptionByName(COMPOSITE_SCORE_NAME).getCode();
+        }
+
+        return typeQuestion.equals(COMPOSITE_SCORE_CODE);
+    }
+
+    public boolean isControlDataElement() {
+
+        String typeQuestion = findAttributeValueByCode(ATTRIBUTE_QUESTION_TYPE_CODE);
+
+        if (typeQuestion == null) {
+            return false;
+        }
+
+        if (CONTROL_DATAELEMENT_CODE.equals("")) {
+            CONTROL_DATAELEMENT_CODE = OptionExtended.findOptionByName(CONTROLDATAELEMENT_NAME).getCode();
+        }
+
+        return typeQuestion.equals(CONTROL_DATAELEMENT_CODE);
+    }
+
+    public boolean isQuestion() {
+        if (isControlDataElement()) {
+            return false;
+        }
+        return !isCompositeScore();
     }
 
     /**
@@ -117,4 +244,80 @@ public class DataElementExtended implements VisitableFromSDK {
                 .and(Condition.column(ColumnAlias.columnWithTable("at", Attribute$Table.CODE)).eq(code)).querySingle();
     }
 
+    /**
+     * Find the associated prgoramStage (tabgroup)
+     *
+     * @return
+     */
+    public String findProgramUID(){
+        return DataElementExtended.findProgramUIDByDataElementUID(getDataElement().getUid());
+    }
+
+    /**
+     * Find the associated prgoramStage (tabgroup) given a dataelement UID
+     *
+     * @param dataElementUID
+     * @return
+     */
+    public static String findProgramUIDByDataElementUID(String dataElementUID) {
+        //Find the right 'uid' of the dataelement program
+        Program program = new Select().from(Program.class).as("p")
+                .join(ProgramStage.class, Join.JoinType.LEFT).as("ps")
+                .on(Condition.column(ColumnAlias.columnWithTable("p", Program$Table.ID))
+                        .eq(ColumnAlias.columnWithTable("ps", ProgramStage$Table.PROGRAM)))
+                .join(ProgramStageDataElement.class, Join.JoinType.LEFT).as("psd")
+                .on(Condition.column(ColumnAlias.columnWithTable("psd", ProgramStageDataElement$Table.PROGRAMSTAGE))
+                        .eq(ColumnAlias.columnWithTable("ps", ProgramStage$Table.ID)))
+                .where(Condition.column(ColumnAlias.columnWithTable("psd", ProgramStageDataElement$Table.DATAELEMENT)).eq(dataElementUID))
+                .querySingle();
+        if (program == null) {
+            return null;
+        }
+        return program.getUid();
+    }
+
+    public Integer findOrder() {
+        String value = getValue(ATTRIBUTE_ORDER);
+        if (value != null) {
+            int order = Integer.valueOf(value);
+            return order;
+        }
+        return null;
+    }
+
+    public String findCompositeScoreId() {
+        return getValue(ATTRIBUTE_COMPOSITE_SCORE_CODE);
+    }
+
+    public Float findNumerator() {
+        String value = getValue(ATTRIBUTE_NUMERATOR);
+        if (value != null) {
+            float numinator = Float.valueOf(value);
+            return numinator;
+        } else
+            return null;
+    }
+
+    public Float findDenominator() {
+        String value = getValue(ATTRIBUTE_DENUMERATOR);
+        if (value != null) {
+            float denominator = Float.valueOf(value);
+            return denominator;
+        }
+        return null;
+    }
+
+    public CompositeScore findCompositeScore() {
+        CompositeScore compositeScore = null;
+
+        String value = findCompositeScoreId();
+        if (value != null) {
+            try {
+                compositeScore = CompositeScoreBuilder.getCompositeScoreFromDataElementAndHierarchicalCode(getDataElement(), value);
+            } catch (Exception e) {
+                return compositeScore;
+            }
+        }
+        return compositeScore;
+    }
 }

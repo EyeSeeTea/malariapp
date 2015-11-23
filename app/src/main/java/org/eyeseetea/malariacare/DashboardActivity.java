@@ -19,11 +19,15 @@
 
 package org.eyeseetea.malariacare;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.FragmentTransaction;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -39,6 +43,7 @@ import org.eyeseetea.malariacare.database.utils.PopulateDB;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.fragments.DashboardSentFragment;
 import org.eyeseetea.malariacare.fragments.DashboardUnsentFragment;
+import org.eyeseetea.malariacare.network.PushClient;
 import org.eyeseetea.malariacare.services.SurveyService;
 import org.hisp.dhis.android.sdk.controllers.DhisService;
 import org.hisp.dhis.android.sdk.controllers.LoadingController;
@@ -83,7 +88,7 @@ public class DashboardActivity extends BaseActivity {
         }
 
 
-        setTitle(getString(R.string.app_name) +" app - "+ Session.getUser().getName());
+        setTitle(getString(R.string.app_name) + " app - " + Session.getUser().getName());
     }
 
     @Override
@@ -99,7 +104,47 @@ public class DashboardActivity extends BaseActivity {
             return super.onOptionsItemSelected(item);
         }
 
-        finishAndGo(ProgressActivity.class);
+        final List<Survey> unsentSurveys = Survey.getAllUnsentSurveys();
+        if (unsentSurveys != null && unsentSurveys.size()!=0){
+            final Activity activity = this;
+            new AlertDialog.Builder(this)
+                    .setTitle("Push unsent surveys?")
+                    .setMessage("Metadata refresh will delete your unsent data. You have "+unsentSurveys.size()+" unsent surveys. Do you to push them before refresh?")
+                    .setNeutralButton(android.R.string.no, null)
+                    .setNegativeButton(activity.getString(R.string.no), new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            finishAndGo(ProgressActivity.class);
+                        }
+                    })
+                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface arg0, int arg1) {
+                            //Get credentials from preferences
+                            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(activity);
+                            String user = sharedPreferences.getString(getString(R.string.dhis_user), "");
+                            String password = sharedPreferences.getString(getString(R.string.dhis_password), "");
+                            int success = 0;
+                            for (Survey survey : unsentSurveys) {
+                                PushClient pushClient = new PushClient(survey, activity, user, password);
+                                if (pushClient.push().isSuccessful()) success++;
+                            }
+                            if (success == unsentSurveys.size()) {
+                                new AlertDialog.Builder(activity)
+                                        .setTitle("Surveys pushed")
+                                        .setMessage("All " + unsentSurveys.size() + " unsent surveys have been pushed without any error")
+                                        .setNeutralButton(android.R.string.ok, null).create().show();
+                                finishAndGo(ProgressActivity.class);
+                            } else {
+                                new AlertDialog.Builder(activity)
+                                        .setTitle("Problem pushing surveys")
+                                        .setMessage("Only " + success + " of " + unsentSurveys.size() + " unsent surveys have been pushed. Please try to push the rest manually. Aborting pull...")
+                                        .setNeutralButton(android.R.string.ok, null).create().show();
+                            }
+                        }
+                    })
+                    .setCancelable(true)
+                    .create().show();
+        }
         return true;
     }
 

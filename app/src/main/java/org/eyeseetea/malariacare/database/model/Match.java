@@ -53,6 +53,12 @@ public class Match extends BaseModel {
 
     List<QuestionOption> questionOptions;
 
+    public Match(){}
+
+    public Match(QuestionRelation questionRelation){
+        setQuestionRelation(questionRelation);
+    }
+
     @OneToMany(methods = {OneToMany.Method.SAVE, OneToMany.Method.DELETE}, variableName = "questionOptions")
     public List<QuestionOption> getQuestionOptions() {
         //if (this.children == null){
