@@ -112,9 +112,10 @@ public class ProgressActivity extends Activity {
      */
     private void showStatus(String msg){
         new AlertDialog.Builder(this)
+                .setCancelable(false)
                 .setTitle(getString(R.string.dialog_title_pull_response))
                 .setMessage(msg)
-                .setNeutralButton(android.R.string.yes,null).create().show();
+                .setNeutralButton(android.R.string.yes, null).create().show();
     }
 
     /**
@@ -133,12 +134,12 @@ public class ProgressActivity extends Activity {
      */
     private void showAndGoDashboard() {
         step(getString(R.string.progress_pull_done));
-
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putBoolean(getString(R.string.pull_metadata), true);
         editor.commit();
         new AlertDialog.Builder(this)
+                .setCancelable(false)
                 .setTitle(getString(R.string.dialog_title_pull_response))
                 .setMessage(R.string.dialog_pull_success)
                 .setNeutralButton(android.R.string.yes, new DialogInterface.OnClickListener() {
