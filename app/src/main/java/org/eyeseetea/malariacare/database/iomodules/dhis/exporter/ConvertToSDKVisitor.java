@@ -21,6 +21,7 @@ package org.eyeseetea.malariacare.database.iomodules.dhis.exporter;
 
 import android.content.Context;
 import android.location.Location;
+import android.util.Log;
 
 import com.raizlabs.android.dbflow.sql.language.Select;
 
@@ -86,23 +87,27 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
     public void visit(Survey survey) throws Exception{
         //Turn survey into an event
         this.survey=survey;
+        Log.d(TAG,"Creating event...");
         this.event=buildEvent();
 
-
         //Calculates scores and update survey
+        Log.d(TAG,"Registering scores...");
         List<CompositeScore> compositeScores = ScoreRegister.loadCompositeScores(survey);
         updateSurvey(compositeScores);
 
         //Turn score values into dataValues
+        Log.d(TAG,"Creating datavalues from scores...");
         for(CompositeScore compositeScore:compositeScores){
             compositeScore.accept(this);
         }
 
         //Turn question values into dataValues
+        Log.d(TAG,"Creating datavalues from questions...");
         for(Value value:survey.getValues()){
             value.accept(this);
         }
 
+        Log.d(TAG,"Creating datavalues from other stuff...");
         buildMainScores(survey);
     }
 
@@ -146,16 +151,9 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
         event.setProgramStageId(survey.getTabGroup().getUid());
         updateEventLocation();
         updateEventDates();
-        updateEventLocalId();
+        Log.d(TAG, "Saving event "+event.toString());
+        event.save();
         return event;
-    }
-
-    /**
-     * Fullfilss the internal localId which max+1 from the db
-     */
-    private synchronized void updateEventLocalId() {
-        Event lastLocalId=new Select().method("MAX",Event$Table.LOCALID).from(Event.class).querySingle();
-        event.setLocalId(1l+lastLocalId.getLocalId());
     }
 
     /**
@@ -236,6 +234,12 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
             throw new Exception(context.getString(R.string.dialog_error_push_no_location_and_required));
         }
 
+        //No location + not required -> done
+        if(lastLocation==null){
+            return;
+        }
+
+        //location -> set lat/lng
         event.setLatitude(lastLocation.getLatitude());
         event.setLongitude(lastLocation.getLongitude());
     }
@@ -246,5 +250,8 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
     public void saveSurveyStatus(){
         survey.saveMainScore();
         survey.save();
+        //To avoid several pushes
+        event.setFromServer(true);
+        event.save();
     }
 }

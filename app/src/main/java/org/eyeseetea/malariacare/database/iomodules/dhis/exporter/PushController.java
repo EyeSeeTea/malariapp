@@ -137,10 +137,12 @@ public class PushController {
 
             //Converts app data into sdk events
             postProgress(context.getString(R.string.progress_push_preparing_survey));
+            Log.d(TAG, "Preparing survey for pushing...");
             convertToSDK(survey);
 
             //Asks sdk to push localdata
             postProgress(context.getString(R.string.progress_push_posting_survey));
+            Log.d(TAG, "Pushing survey data to server...");
             DhisService.sendData();
 
         }catch (Exception ex){
@@ -169,6 +171,7 @@ public class PushController {
                     }
                     //Ok: Updates
                     postProgress(context.getString(R.string.progress_push_updating_survey));
+                    Log.d(TAG, "Updating pushed survey data...");
                     converter.saveSurveyStatus();
 
                     postFinish();
