@@ -23,8 +23,11 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.PowerManager;
+import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.widget.ProgressBar;
@@ -51,6 +54,10 @@ public class ProgressActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_progress);
         prepareUI();
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putBoolean(getString(R.string.pull_metadata), false);
+        editor.commit();
     }
 
     @Override
@@ -105,9 +112,10 @@ public class ProgressActivity extends Activity {
      */
     private void showStatus(String msg){
         new AlertDialog.Builder(this)
+                .setCancelable(false)
                 .setTitle(getString(R.string.dialog_title_pull_response))
                 .setMessage(msg)
-                .setNeutralButton(android.R.string.yes,null).create().show();
+                .setNeutralButton(android.R.string.yes, null).create().show();
     }
 
     /**
@@ -126,7 +134,12 @@ public class ProgressActivity extends Activity {
      */
     private void showAndGoDashboard() {
         step(getString(R.string.progress_pull_done));
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putBoolean(getString(R.string.pull_metadata), true);
+        editor.commit();
         new AlertDialog.Builder(this)
+                .setCancelable(false)
                 .setTitle(getString(R.string.dialog_title_pull_response))
                 .setMessage(R.string.dialog_pull_success)
                 .setNeutralButton(android.R.string.yes, new DialogInterface.OnClickListener() {
