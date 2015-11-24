@@ -43,6 +43,7 @@ import org.eyeseetea.malariacare.database.model.User;
 import org.eyeseetea.malariacare.database.model.Value;
 import org.eyeseetea.malariacare.utils.Constants;
 import org.hisp.dhis.android.sdk.controllers.metadata.MetaDataController;
+import org.hisp.dhis.android.sdk.persistence.models.Constant;
 import org.hisp.dhis.android.sdk.persistence.models.DataElement;
 import org.hisp.dhis.android.sdk.persistence.models.DataValue;
 import org.hisp.dhis.android.sdk.persistence.models.Event;
@@ -166,6 +167,7 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
     @Override
     public void visit(ProgramStageSectionExtended sdkProgramStageSectionExtended) {
         //Build Tab
+
         ProgramStageSection programStageSection=sdkProgramStageSectionExtended.getProgramStageSection();
         org.eyeseetea.malariacare.database.model.TabGroup appTabGroup=(org.eyeseetea.malariacare.database.model.TabGroup)appMapObjects.get(programStageSection.getProgramStage());
         Tab appTab = new Tab();
@@ -175,8 +177,9 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
         appTab.setOrder_pos(programStageSection.getSortOrder());
         appTab.setTabGroup(appTabGroup);
         appTab.save();
-
         //Annotate build tab
+        Log.d("OnlyTaboptionname", programStageSection.getDisplayName());
+        Log.d("OnlyTaboptionname", appTab.getClass() + appTab.getName());
         appMapObjects.put(appTab.getClass() + appTab.getName(), appTab);
         appMapObjects.put(programStageSection.getUid(),appTab);
     }
@@ -248,13 +251,12 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
         }else if(sdkDataElementExtended.isQuestion()){
             questionOrCompositeScore=buildQuestion(sdkDataElementExtended);
             //Question type is annotated in 'answer' from an attribute of the question
-            buildAnswerOutput(sdkDataElementExtended);
         }else{
             return;
         }
 
-        //Both questions and scores are annotated
         appMapObjects.put(sdkDataElementExtended.getDataElement().getUid(), questionOrCompositeScore);
+        //Both questions and scores are annotated
     }
 
     /**
@@ -330,8 +332,8 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
      * Turns a dataElement into a question
      * @param dataElementExtended
      */
-    private Question buildQuestion(DataElementExtended dataElementExtended){
-        DataElement dataElement=dataElementExtended.getDataElement();
+    private Question buildQuestion(DataElementExtended dataElementExtended) {
+        DataElement dataElement = dataElementExtended.getDataElement();
         Question appQuestion = new Question();
         appQuestion.setDe_name(dataElement.getName());
         appQuestion.setUid(dataElement.getUid());
@@ -348,8 +350,8 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
         }
         appQuestion.setHeader(questionBuilder.findHeader(dataElementExtended));
         questionBuilder.RegisterParentChildRelations(dataElementExtended);
-        appQuestion.save();
-        questionBuilder.add(appQuestion);
+            appQuestion.save();
+            questionBuilder.add(appQuestion);
         return appQuestion;
     }
 
@@ -363,8 +365,34 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
         String optionSetUID=dataElement.getOptionSet();
         //No optionset nothing to fulfill
         if(optionSetUID==null){
+            Answer answer=new Answer();
+           //if(Constants.NO_ANSWER==compositeScoreBuilder.findAnswerOutput(dataElementExtended)){
+                String key=answer.getClass()+""+Constants.NO_ANSWER;
+                Question appQuestion=(Question)appMapObjects.get(dataElementExtended.getDataElement().getUid());
+                if(appMapObjects.containsKey(key)) {
+                    answer=(Answer)appMapObjects.get(key);
+                }
+                else
+                {
+                    answer=new Answer();
+                    answer.setOutput(compositeScoreBuilder.findAnswerOutput(dataElementExtended));
+                    answer.setName("Label");
+                    answer.save();
+                    appMapObjects.put(key, answer);
+                }
+            Log.d(TAG,"output"+compositeScoreBuilder.findAnswerOutput(dataElementExtended)+"");
+                if(answer!=null) {
+                    appQuestion.setAnswer(answer);
+                    appQuestion.save();
+                }
+
+            //}
+
+            //}
             return;
         }
+
+        Log.d(TAG,"output"+compositeScoreBuilder.findAnswerOutput(dataElementExtended)+"");
 
         Answer answer=(Answer)appMapObjects.get(optionSetUID);
         //Answer not found
@@ -379,11 +407,17 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
         }
 
         //Get type of dataelement
+
         answer.setOutput(compositeScoreBuilder.findAnswerOutput(dataElementExtended));
         answer.save();
     }
 
     public void buildRelations(DataElementExtended dataElementExtended) {
+
+         if(dataElementExtended.isQuestion()){
+            buildAnswerOutput(dataElementExtended);
+            //Question type is annotated in 'answer' from an attribute of the question
+        }
         questionBuilder.addRelations(dataElementExtended);
     }
 

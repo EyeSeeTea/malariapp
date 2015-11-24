@@ -62,7 +62,13 @@ import org.hisp.dhis.android.sdk.persistence.models.Event;
 import org.hisp.dhis.android.sdk.persistence.models.OptionSet;
 import org.hisp.dhis.android.sdk.persistence.models.OrganisationUnit;
 import org.hisp.dhis.android.sdk.persistence.preferences.ResourceType;
+
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 /**
  * A static controller that orchestrate the pull process
@@ -261,22 +267,43 @@ public class PullController {
         List<DataElement> dataElementList=new Select().from(DataElement.class).queryList();
         for(DataElement dataElement:dataElementList){
             DataElementExtended dataElementExtended = new DataElementExtended(dataElement);
-            dataElementExtended.accept(converter);
+            //dataElementExtended.accept(converter);
+            //converter.buildRelations(dataElementExtended);
         }
 
+        Map<String, DataElementExtended> unsortMap = new HashMap<String, DataElementExtended>();
         //Build question relationships
-        Log.i(TAG,"Building question relationships...");
+        Log.i(TAG, "Building question relationships...");
+        int order=-1;
         for(DataElement dataElement:dataElementList){
             DataElementExtended dataElementExtended = new DataElementExtended(dataElement);
+            try {
+                order = dataElementExtended.findOrder();
+            }
+            catch
+                    (Exception e){ e.printStackTrace();}
+             String programdataelementorder=dataElementExtended.findProgramStageDataElementOrderByDataElementUID(dataElementExtended.getDataElement().getUid());
+            unsortMap.put(programdataelementorder+order+dataElementExtended.getDataElement().getUid(), dataElementExtended);
+        }
+        //Ordered for header
+        Map<String, DataElementExtended> treeMap = new TreeMap<String, DataElementExtended>(unsortMap);
+        for (Map.Entry<String, DataElementExtended> entry : treeMap.entrySet()) {
+            Log.d("Bug",entry.getValue().getDataElement().getUid());
+            DataElementExtended dataElementExtended = new DataElementExtended(entry.getValue().getDataElement());
+            Log.d("Bug",dataElementExtended.findOrder()+" key "+entry.getKey());
+            dataElementExtended.accept(converter);
+        }
+        for (Map.Entry<String, DataElementExtended> entry : treeMap.entrySet()) {
+            DataElementExtended dataElementExtended = new DataElementExtended(entry.getValue().getDataElement());
+
+            Log.d("Bug",dataElementExtended.findOrder()+" key "+entry.getKey()+ "value" + entry.getValue().getDataElement().getUid());
             converter.buildRelations(dataElementExtended);
         }
-
         //Fill order and parent scores
         Log.i(TAG,"Building compositeScore relationships...");
         converter.buildScores();
         Log.i(TAG, "MetaData successfully converted...");
     }
-
     /**
      * Turns events and datavalues into
      * @param converter
