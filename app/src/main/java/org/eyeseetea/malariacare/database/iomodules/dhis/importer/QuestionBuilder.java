@@ -125,7 +125,6 @@ public class QuestionBuilder {
             Tab questionTab;
             String programUid = dataElementExtended.findProgramStageSectionUIDByDataElementUID(dataElementExtended.getDataElement().getUid());
             String tabUid = dataElementExtended.findProgramStageSectionUIDByDataElementUID(dataElementExtended.getDataElement().getUid());
-            Log.d("TABKEY",tabUid);
             if(ConvertFromSDKVisitor.appMapObjects.containsKey(tabUid)) {
                 questionTab = (Tab) ConvertFromSDKVisitor.appMapObjects.get(tabUid);
                 if(mapHeader.containsKey(programUid+attributeHeaderValue)){
@@ -143,12 +142,6 @@ public class QuestionBuilder {
                 header.setOrder_pos(header_order);
                 header_order++;
                 header.setTab(questionTab);
-                Log.d("Taboptionname", "Header: " + header.getShort_name() + " Header Value: " + attributeHeaderValue + " TabKey: " + tabUid);
-                try {
-                    Log.d("Taboptionname", " tab: " + questionTab.getName());
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
                 header.save();
                 mapHeader.put(tabUid+header.getName(), header);
             }
@@ -156,7 +149,6 @@ public class QuestionBuilder {
                 header=mapHeader.get(tabUid+attributeHeaderValue);
             }
             if(questionTab==null) {
-                Log.d("TABNULL", dataElementExtended.getDataElement().getUid());
                 header=null;
             }
 
