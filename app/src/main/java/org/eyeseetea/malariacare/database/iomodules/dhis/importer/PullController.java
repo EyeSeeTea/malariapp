@@ -20,9 +20,13 @@
 package org.eyeseetea.malariacare.database.iomodules.dhis.importer;
 
 import android.content.Context;
+import android.provider.ContactsContract;
 import android.util.Log;
 
+import com.raizlabs.android.dbflow.sql.builder.Condition;
+import com.raizlabs.android.dbflow.sql.language.ColumnAlias;
 import com.raizlabs.android.dbflow.sql.language.Delete;
+import com.raizlabs.android.dbflow.sql.language.Join;
 import com.raizlabs.android.dbflow.sql.language.Select;
 import com.squareup.otto.Subscribe;
 
@@ -41,6 +45,7 @@ import org.eyeseetea.malariacare.database.model.Option;
 import org.eyeseetea.malariacare.database.model.OrgUnit;
 import org.eyeseetea.malariacare.database.model.OrgUnitLevel;
 import org.eyeseetea.malariacare.database.model.Program;
+import org.eyeseetea.malariacare.database.model.Program$Table;
 import org.eyeseetea.malariacare.database.model.Question;
 import org.eyeseetea.malariacare.database.model.QuestionOption;
 import org.eyeseetea.malariacare.database.model.QuestionRelation;
@@ -56,14 +61,22 @@ import org.hisp.dhis.android.sdk.controllers.metadata.MetaDataController;
 import org.hisp.dhis.android.sdk.controllers.tracker.TrackerController;
 import org.hisp.dhis.android.sdk.job.NetworkJob;
 import org.hisp.dhis.android.sdk.persistence.Dhis2Application;
+import org.hisp.dhis.android.sdk.persistence.models.Attribute$Table;
+import org.hisp.dhis.android.sdk.persistence.models.AttributeValue$Table;
 import org.hisp.dhis.android.sdk.persistence.models.DataElement;
+import org.hisp.dhis.android.sdk.persistence.models.DataElement$Table;
+import org.hisp.dhis.android.sdk.persistence.models.DataElementAttributeValue$Table;
 import org.hisp.dhis.android.sdk.persistence.models.Event;
 import org.hisp.dhis.android.sdk.persistence.models.OptionSet;
 import org.hisp.dhis.android.sdk.persistence.models.OrganisationUnit;
 import org.hisp.dhis.android.sdk.persistence.models.ProgramStage;
+import org.hisp.dhis.android.sdk.persistence.models.ProgramStage$Table;
 import org.hisp.dhis.android.sdk.persistence.models.ProgramStageDataElement;
+import org.hisp.dhis.android.sdk.persistence.models.ProgramStageDataElement$Table;
 import org.hisp.dhis.android.sdk.persistence.preferences.ResourceType;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
@@ -77,7 +90,7 @@ import java.util.TreeSet;
  * Created by arrizabalaga on 4/11/15.
  */
 public class PullController {
-    private final String TAG=".PullController";
+    private final String TAG = ".PullController";
 
     private static PullController instance;
 
@@ -89,41 +102,43 @@ public class PullController {
     /**
      * Constructs and register this pull controller to the event bus
      */
-    PullController(){
+    PullController() {
     }
 
-    private void register(){
+    private void register() {
         Dhis2Application.bus.register(this);
     }
 
     /**
      * Unregister pull controller from bus events
      */
-    private void unregister(){
+    private void unregister() {
         Dhis2Application.bus.unregister(this);
     }
 
     /**
      * Singleton constructor
+     *
      * @return
      */
-    public static PullController getInstance(){
-        if(instance==null){
-            instance=new PullController();
+    public static PullController getInstance() {
+        if (instance == null) {
+            instance = new PullController();
         }
         return instance;
     }
 
     /**
      * Launches the pull process:
-     *  - Loads metadata from dhis2 server
-     *  - Wipes app database
-     *  - Turns SDK into APP data
+     * - Loads metadata from dhis2 server
+     * - Wipes app database
+     * - Turns SDK into APP data
+     *
      * @param ctx
      */
-    public void pull(Context ctx){
+    public void pull(Context ctx) {
         Log.d(TAG, "Starting PULL process...");
-        context=ctx;
+        context = ctx;
         try {
             //Register for event bus
             register();
@@ -135,8 +150,8 @@ public class PullController {
             //Pull new metadata
             postProgress(context.getString(R.string.progress_pull_downloading));
             DhisService.loadData(context);
-        }catch (Exception ex){
-            Log.e(TAG,"pull: "+ex.getLocalizedMessage());
+        } catch (Exception ex) {
+            Log.e(TAG, "pull: " + ex.getLocalizedMessage());
             unregister();
             postException(ex);
         }
@@ -145,7 +160,7 @@ public class PullController {
     /**
      * Enables loading all metadata
      */
-    private void enableMetaDataFlags(){
+    private void enableMetaDataFlags() {
         LoadingController.enableLoading(context, ResourceType.ASSIGNEDPROGRAMS);
         LoadingController.enableLoading(context, ResourceType.PROGRAMS);
         LoadingController.enableLoading(context, ResourceType.OPTIONSETS);
@@ -155,9 +170,9 @@ public class PullController {
 
     @Subscribe
     public void onLoadMetadataFinished(final NetworkJob.NetworkJobResult<ResourceType> result) {
-        new Thread(){
+        new Thread() {
             @Override
-            public void run(){
+            public void run() {
                 try {
                     if (result == null) {
                         Log.e(TAG, "onLoadMetadataFinished with null");
@@ -176,10 +191,10 @@ public class PullController {
                     convertFromSDK();
                     postFinish();
                     Log.d(TAG, "PULL process...OK");
-                }catch (Exception ex){
-                    Log.e(TAG,"onLoadMetadataFinished: "+ex.getLocalizedMessage());
+                } catch (Exception ex) {
+                    Log.e(TAG, "onLoadMetadataFinished: " + ex.getLocalizedMessage());
                     postException(ex);
-                }finally {
+                } finally {
                     unregister();
                 }
             }
@@ -189,7 +204,7 @@ public class PullController {
     /**
      * Erase data from app database
      */
-    private void wipeDatabase(){
+    private void wipeDatabase() {
         Log.d(TAG, "Deleting app database...");
         Delete.tables(
                 Value.class,
@@ -215,8 +230,8 @@ public class PullController {
     /**
      * Launches visitor that turns SDK data into APP data
      */
-    private void convertFromSDK(){
-        Log.d(TAG,"Converting SDK into APP data");
+    private void convertFromSDK() {
+        Log.d(TAG, "Converting SDK into APP data");
 
         //One shared converter to match parents within the hierarchy
         ConvertFromSDKVisitor converter = new ConvertFromSDKVisitor();
@@ -227,113 +242,139 @@ public class PullController {
 
     /**
      * Turns sdk metadata into app metadata
+     *
      * @param converter
      */
-    private void convertMetaData(ConvertFromSDKVisitor converter){
+    private void convertMetaData(ConvertFromSDKVisitor converter) {
 
         //Convert Programs, Tabgroups, Tabs
         postProgress(context.getString(R.string.progress_pull_preparing_program));
-        Log.i(TAG,"Converting programs, tabgroups and tabs...");
-        List<String> assignedProgramsIDs=MetaDataController.getAssignedPrograms();
-        for(String assignedProgramID:assignedProgramsIDs){
-            ProgramExtended programExtended =new ProgramExtended(MetaDataController.getProgram(assignedProgramID));
+        Log.i(TAG, "Converting programs, tabgroups and tabs...");
+        List<String> assignedProgramsIDs = MetaDataController.getAssignedPrograms();
+        for (String assignedProgramID : assignedProgramsIDs) {
+            ProgramExtended programExtended = new ProgramExtended(MetaDataController.getProgram(assignedProgramID));
             programExtended.accept(converter);
         }
 
         //Convert Answers, Options
         postProgress(context.getString(R.string.progress_pull_preparing_answers));
-        List<OptionSet> optionSets=MetaDataController.getOptionSets();
-        Log.i(TAG,"Converting answers and options...");
-        for(OptionSet optionSet:optionSets){
-            OptionSetExtended optionSetExtended =new OptionSetExtended(optionSet);
+        List<OptionSet> optionSets = MetaDataController.getOptionSets();
+        Log.i(TAG, "Converting answers and options...");
+        for (OptionSet optionSet : optionSets) {
+            OptionSetExtended optionSetExtended = new OptionSetExtended(optionSet);
             optionSetExtended.accept(converter);
         }
 
         //OrganisationUnits
         postProgress(context.getString(R.string.progress_pull_preparing_orgs));
-        Log.i(TAG,"Converting organisationUnits...");
-        List<OrganisationUnit> assignedOrganisationsUnits=MetaDataController.getAssignedOrganisationUnits();
-        for(OrganisationUnit assignedOrganisationsUnit:assignedOrganisationsUnits){
-            OrganisationUnitExtended organisationUnitExtended=new OrganisationUnitExtended(assignedOrganisationsUnit);
+        Log.i(TAG, "Converting organisationUnits...");
+        List<OrganisationUnit> assignedOrganisationsUnits = MetaDataController.getAssignedOrganisationUnits();
+        for (OrganisationUnit assignedOrganisationsUnit : assignedOrganisationsUnits) {
+            OrganisationUnitExtended organisationUnitExtended = new OrganisationUnitExtended(assignedOrganisationsUnit);
             organisationUnitExtended.accept(converter);
         }
 
         //User (from UserAccount)
-        Log.i(TAG,"Converting user...");
+        Log.i(TAG, "Converting user...");
         UserAccountExtended userAccountExtended = new UserAccountExtended(MetaDataController.getUserAccount());
         userAccountExtended.accept(converter);
 
         //Convert questions and compositeScores
         postProgress(context.getString(R.string.progress_pull_questions));
-        Log.i(TAG,"Converting questions and compositeScores...");
-        List<DataElement> dataElementList=new Select().from(DataElement.class).queryList();
-        for(DataElement dataElement:dataElementList){
-            DataElementExtended dataElementExtended = new DataElementExtended(dataElement);
-            //dataElementExtended.accept(converter);
-            //converter.buildRelations(dataElementExtended);
+        Log.i(TAG, "Converting questions and compositeScores...");
+
+        //Dataelements ordered by program.
+
+        List<org.hisp.dhis.android.sdk.persistence.models.Program> programs = new Select().from(org.hisp.dhis.android.sdk.persistence.models.Program.class).queryList();
+        Map<String, List<DataElement>> programsDataelements = new HashMap<>();
+        for (org.hisp.dhis.android.sdk.persistence.models.Program program : programs) {
+            List<DataElement> dataElements = new ArrayList<>();
+            String programUid=program.getUid();
+            Log.d("BUG","program"+program.getUid());
+            List<ProgramStage> programStages= program.getProgramStages();
+            for (org.hisp.dhis.android.sdk.persistence.models.ProgramStage programStage : programStages) {
+                List<ProgramStageDataElement> programStageDataElements= programStage.getProgramStageDataElements();
+                for(ProgramStageDataElement programStageDataElement:programStageDataElements){
+                    if(programStageDataElement.getDataElement().getUid()!=null)
+                    dataElements.add(programStageDataElement.getDataElement());
+                }
+            }
+            Log.d("BUG",dataElements.size()+"size");
+            Collections.sort(dataElements, new Comparator<DataElement>() {
+                public int compare(DataElement de1, DataElement de2) {
+                    DataElementExtended dataElementExtended1 = new DataElementExtended(de1);
+
+
+                    DataElementExtended dataElementExtended2 = new DataElementExtended(de2);
+                    Integer dataelementOrder1=-1, dataelementOrder2 = -1;
+                    try {
+                        dataelementOrder1 = dataElementExtended1.findOrder();
+                    } catch (Exception e) {
+                        dataelementOrder1=null;
+                    }
+                    try {
+                        dataelementOrder2 = dataElementExtended2.findOrder();
+                    }catch (Exception e){
+                        dataelementOrder2 = null;
+                    }
+                    if(dataelementOrder1==dataelementOrder2)
+                        return 0;
+                    else if (dataelementOrder1 == null)
+                        return 1;
+                    else if(dataelementOrder2==null)
+                        return -1;
+                    return dataelementOrder1.compareTo(dataelementOrder2);
+                }
+            });
+            programsDataelements.put(programUid, dataElements);
+            //DataElements ordered by code order
+
         }
 
-        Map<String, DataElementExtended> unsortMap = new HashMap<String, DataElementExtended>();
-        //Build question relationships
-        Log.i(TAG, "Building question relationships...");
-        int order=-1;
-        int lenght=10;
-        for(DataElement dataElement:dataElementList){
-            DataElementExtended dataElementExtended = new DataElementExtended(dataElement);
-            try {
-                order = dataElementExtended.findOrder();
-            } catch
-                    (Exception e){ e.printStackTrace();}
-            String programdataelementorder=dataElementExtended.findProgramStageSectionOrderDataElementOrderByDataElementUID(dataElementExtended.getDataElement().getUid());
-            //Fixme
-            int addnumber=lenght-programdataelementorder.length();
-            String cadena="";
-            while(addnumber!=0) {
-                cadena += "0";
-                addnumber--;
+
+        Log.i(TAG, "Building questions,compositescores,headers...");
+        for (org.hisp.dhis.android.sdk.persistence.models.Program program : programs) {
+            String programUid=program.getUid();
+            List<DataElement> sortDataElements = programsDataelements.get(programUid);
+
+            for (DataElement dataElement : sortDataElements) {
+                DataElementExtended dataElementExtended = new DataElementExtended(dataElement);
+                dataElementExtended.accept(converter);
             }
-            //Fixme
-            String orderstring=String.valueOf(order);
-            addnumber=lenght-orderstring.length();
-            String cadenaOrden="";
-            while(addnumber!=0) {
-                cadenaOrden += "0";
-                addnumber--;
+        }
+        Log.i(TAG, "Building relationships...");
+        for (org.hisp.dhis.android.sdk.persistence.models.Program program : programs) {
+            String programUid=program.getUid();
+            List<DataElement> sortDataElements = programsDataelements.get(programUid);
+
+            programsDataelements.put(programUid, sortDataElements);
+            for (DataElement dataElement : sortDataElements) {
+                DataElementExtended dataElementExtended = new DataElementExtended(dataElement);
+                converter.buildRelations(dataElementExtended);
             }
-            unsortMap.put(cadena + programdataelementorder + "+" +cadenaOrden+order+"+"+ dataElementExtended.getDataElement().getUid(), dataElementExtended);
-        }
-        //Ordered for header
-        Log.i(TAG,"Building questions,compositescores,headers...");
-        Map<String, DataElementExtended> treeMap = new TreeMap<String, DataElementExtended>(unsortMap);
-        for (Map.Entry<String, DataElementExtended> entry : treeMap.entrySet()) {
-            DataElementExtended dataElementExtended = new DataElementExtended(entry.getValue().getDataElement());
-            dataElementExtended.accept(converter);
-        }
-        Log.i(TAG,"Building relationships...");
-        for (Map.Entry<String, DataElementExtended> entry : treeMap.entrySet()) {
-            DataElementExtended dataElementExtended = new DataElementExtended(entry.getValue().getDataElement());
-            converter.buildRelations(dataElementExtended);
         }
         //Fill order and parent scores
-        Log.i(TAG,"Building compositeScore relationships...");
+        Log.i(TAG, "Building compositeScore relationships...");
         converter.buildScores();
         Log.i(TAG, "MetaData successfully converted...");
     }
+
     /**
      * Turns events and datavalues into
+     *
      * @param converter
      */
-    private void convertDataValues(ConvertFromSDKVisitor converter){
+    private void convertDataValues(ConvertFromSDKVisitor converter) {
 
         postProgress(context.getString(R.string.progress_pull_surveys));
         //XXX This is the right place to apply additional filters to data conversion (only predefined orgunit for instance)
         //For each unit
-        for(OrganisationUnit organisationUnit:MetaDataController.getAssignedOrganisationUnits()){
+        for (OrganisationUnit organisationUnit : MetaDataController.getAssignedOrganisationUnits()) {
             //Each assigned program
-            for(org.hisp.dhis.android.sdk.persistence.models.Program program:MetaDataController.getProgramsForOrganisationUnit(organisationUnit.getId(),  org.hisp.dhis.android.sdk.persistence.models.Program.ProgramType.WITHOUT_REGISTRATION)){
-                List<Event> events= TrackerController.getEvents(organisationUnit.getId(),program.getUid());
-                Log.i(TAG, String.format("Converting surveys and values for orgUnit: %s | program: %s",organisationUnit.getLabel(),program.getDisplayName()));
-                for(Event event:events){
+            for (org.hisp.dhis.android.sdk.persistence.models.Program program : MetaDataController.getProgramsForOrganisationUnit(organisationUnit.getId(), org.hisp.dhis.android.sdk.persistence.models.Program.ProgramType.WITHOUT_REGISTRATION)) {
+                List<Event> events = TrackerController.getEvents(organisationUnit.getId(), program.getUid());
+                Log.i(TAG, String.format("Converting surveys and values for orgUnit: %s | program: %s", organisationUnit.getLabel(), program.getDisplayName()));
+                for (Event event : events) {
                     EventExtended eventExtended = new EventExtended(event);
                     eventExtended.accept(converter);
                 }
@@ -344,24 +385,26 @@ public class PullController {
 
     /**
      * Notifies a progress into the bus (the caller activity will be listening)
+     *
      * @param msg
      */
-    private void postProgress(String msg){
+    private void postProgress(String msg) {
         Dhis2Application.getEventBus().post(new SyncProgressStatus(msg));
     }
 
     /**
      * Notifies an exception while pulling
+     *
      * @param ex
      */
-    private void postException(Exception ex){
+    private void postException(Exception ex) {
         Dhis2Application.getEventBus().post(new SyncProgressStatus(ex));
     }
 
     /**
      * Notifies that the pull is over
      */
-    private void postFinish(){
+    private void postFinish() {
         Dhis2Application.getEventBus().post(new SyncProgressStatus());
     }
 

@@ -180,7 +180,7 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
         appTab.save();
         //Annotate build tab
         appMapObjects.put(appTab.getClass() + appTab.getName(), appTab);
-        appMapObjects.put(programStageSection.getUid(),appTab);
+        appMapObjects.put(programStageSection.getUid(), appTab);
     }
 
 
@@ -196,10 +196,18 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
         appAnswer.setName(sdkOptionSet.getName());
         //Right type of answer comes from the questions
         appAnswer.setOutput(CompositeScoreBuilder.DEFAULT_ANSWER_OUTPUT);
-        appAnswer.save();
-
+        if(sdkOptionSet.getName().equals("OuiNon (to be removed)")) {
+            if(!appMapObjects.containsKey(appAnswer.getClass() + "OuiNon (to be removed)")){
+                appAnswer.save();
+                appMapObjects.put(appAnswer.getClass() + "OuiNon (to be removed)", appAnswer);
+            }
+        }
+        else {
+            appAnswer.save();
         //Annotate built tabgroup
         appMapObjects.put(sdkOptionSet.getUid(), appAnswer);
+
+        }
 
         //Visit children
         for(Option option:sdkOptionSet.getOptions()){
@@ -347,10 +355,19 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
         if (anwserOption != null) {
             appQuestion.setAnswer((Answer) appMapObjects.get(dataElement.getOptionSet()));
         }
+        else {
+            Answer answer=new Answer();
+            String key=answer.getClass() + "OuiNon (to be removed)";
+            if(appMapObjects.containsKey(key)) {
+                answer=(Answer)appMapObjects.get(key);
+                appQuestion.setAnswer(answer);
+            }
+        }
+
         appQuestion.setHeader(questionBuilder.findHeader(dataElementExtended));
         questionBuilder.RegisterParentChildRelations(dataElementExtended);
-            appQuestion.save();
-            questionBuilder.add(appQuestion);
+        appQuestion.save();
+        questionBuilder.add(appQuestion);
         return appQuestion;
     }
 
@@ -365,34 +382,44 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
         //No optionset nothing to fulfill
         if(optionSetUID==null){
             Answer answer=new Answer();
-           //if(Constants.NO_ANSWER==compositeScoreBuilder.findAnswerOutput(dataElementExtended)){
-                String key=answer.getClass()+""+Constants.NO_ANSWER;
-                Question appQuestion=(Question)appMapObjects.get(dataElementExtended.getDataElement().getUid());
-                if(appMapObjects.containsKey(key)) {
-                    answer=(Answer)appMapObjects.get(key);
-                }
-                else
-                {
-                    answer=new Answer();
-                    answer.setOutput(compositeScoreBuilder.findAnswerOutput(dataElementExtended));
-                    answer.setName("Label");
-                    answer.save();
-                    appMapObjects.put(key, answer);
-                }
-                if(answer!=null) {
-                    appQuestion.setAnswer(answer);
-                    appQuestion.save();
-                }
-
-            //}
-
-            //}
+            String key=answer.getClass()+""+Constants.NO_ANSWER;
+            Question appQuestion=(Question)appMapObjects.get(dataElementExtended.getDataElement().getUid());
+            if(appMapObjects.containsKey(key)) {
+                answer=(Answer)appMapObjects.get(key);
+            }
+            else
+            {
+                answer=new Answer();
+                answer.setOutput(compositeScoreBuilder.findAnswerOutput(dataElementExtended));
+                answer.setName("Label");
+                answer.save();
+                appMapObjects.put(key, answer);
+            }
+            appQuestion.setAnswer(answer);
+            appQuestion.save();
             return;
         }
 
         Answer answer=(Answer)appMapObjects.get(optionSetUID);
         //Answer not found
         if(answer==null){
+            answer=new Answer();
+
+            String key=answer.getClass() + "OuiNon (to be removed)";
+            Question appQuestion=(Question)appMapObjects.get(dataElementExtended.getDataElement().getUid());
+            if(appMapObjects.containsKey(key)) {
+                answer=(Answer)appMapObjects.get(key);
+            }
+            else
+            {
+                answer=new Answer();
+                answer.setOutput(compositeScoreBuilder.findAnswerOutput(dataElementExtended));
+                answer.setName("OuiNon (to be removed)");
+                answer.save();
+                appMapObjects.put(key, answer);
+            }
+            appQuestion.setAnswer(answer);
+            appQuestion.save();
             Log.e(TAG, String.format("Cannot fulfill output of answer with UID: %s",optionSetUID));
             return;
         }
