@@ -227,4 +227,10 @@
     <string name="progress_pull_questions">Carregando perguntas (isso pode levar alguns minutos) ...</string>
     <string name="progress_pull_surveys">Carregando inquéritos ...</string>
     <string name="progress_pull_done">Feito</string>
+    <string name="dialog_push_error">Erro ao tentar enviar dados para dhis servidor</string>
+    <string name="progress_push_posting_survey">Empurrando dados do inquérito ao servidor ...</string>
+    <string name="progress_push_preparing_survey">Preparando pesquisa para empurrar ...</string>
+    <string name="progress_push_updating_survey">Atualização empurrou dados da pesquisa ...</string>
+    <string name="dialog_push_success">Pesquisa empurrou com êxito para o servidor dhis</string>
+    <string name="progress_push_no_survey">Nenhuma pesquisa constatou para empurrar</string>
 </resources>

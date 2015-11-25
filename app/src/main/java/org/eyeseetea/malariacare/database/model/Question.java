@@ -46,7 +46,7 @@ import java.util.Iterator;
 import java.util.List;
 
 @Table(databaseName = AppDatabase.NAME)
-public class Question extends BaseModel implements VisitableToSDK {
+public class Question extends BaseModel {
 
     @Column
     @PrimaryKey(autoincrement = true)
@@ -632,11 +632,6 @@ public class Question extends BaseModel implements VisitableToSDK {
         } catch (Exception e) {
             return false;
         }
-    }
-
-    @Override
-    public void accept(IConvertToSDKVisitor IConvertToSDKVisitor) {
-        IConvertToSDKVisitor.visit(this);
     }
 
     @Override

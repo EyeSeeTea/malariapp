@@ -38,37 +38,7 @@ import org.eyeseetea.malariacare.database.model.User;
 import org.eyeseetea.malariacare.database.model.Value;
 
 public interface IConvertToSDKVisitor {
-    void visit(Answer answer);
-
+    void visit(Survey survey) throws Exception;
     void visit(CompositeScore compositeScore);
-
-    void visit(Header header);
-
-    void visit(Match match);
-
-    void visit(Option option);
-
-    void visit(OrgUnit orgUnit);
-
-    void visit(OrgUnitLevel orgUnitLevel);
-
-    void visit(Program program);
-
-    void visit(Question question);
-
-    void visit(QuestionOption questionOption);
-
-    void visit(QuestionRelation questionRelation);
-
-    void visit(Score score);
-
-    void visit(Survey survey);
-
-    void visit(Tab tab);
-
-    void visit(TabGroup tabGroup);
-
-    void visit(User user);
-
     void visit(Value value);
 }

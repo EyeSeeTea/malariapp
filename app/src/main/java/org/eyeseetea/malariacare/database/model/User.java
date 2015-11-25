@@ -34,7 +34,7 @@ import org.eyeseetea.malariacare.database.iomodules.dhis.exporter.VisitableToSDK
 import java.util.List;
 
 @Table(databaseName = AppDatabase.NAME)
-public class User extends BaseModel implements VisitableToSDK {
+public class User extends BaseModel {
 
     @Column
     @PrimaryKey(autoincrement = true)
@@ -91,11 +91,6 @@ public class User extends BaseModel implements VisitableToSDK {
         if (users != null && users.size() != 0)
             return users.get(0);
         return null;
-    }
-
-    @Override
-    public void accept(IConvertToSDKVisitor IConvertToSDKVisitor) {
-        IConvertToSDKVisitor.visit(this);
     }
 
     @Override
