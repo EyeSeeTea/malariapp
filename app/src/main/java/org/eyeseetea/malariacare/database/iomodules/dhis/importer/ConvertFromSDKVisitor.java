@@ -179,8 +179,6 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
         appTab.setTabGroup(appTabGroup);
         appTab.save();
         //Annotate build tab
-        Log.d("OnlyTaboptionname", programStageSection.getDisplayName());
-        Log.d("OnlyTaboptionname", appTab.getClass() + appTab.getName());
         appMapObjects.put(appTab.getClass() + appTab.getName(), appTab);
         appMapObjects.put(programStageSection.getUid(),appTab);
     }

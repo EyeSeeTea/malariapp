@@ -60,6 +60,8 @@ import org.hisp.dhis.android.sdk.persistence.models.DataElement;
 import org.hisp.dhis.android.sdk.persistence.models.Event;
 import org.hisp.dhis.android.sdk.persistence.models.OptionSet;
 import org.hisp.dhis.android.sdk.persistence.models.OrganisationUnit;
+import org.hisp.dhis.android.sdk.persistence.models.ProgramStage;
+import org.hisp.dhis.android.sdk.persistence.models.ProgramStageDataElement;
 import org.hisp.dhis.android.sdk.persistence.preferences.ResourceType;
 
 import java.util.Comparator;
@@ -280,8 +282,7 @@ public class PullController {
             DataElementExtended dataElementExtended = new DataElementExtended(dataElement);
             try {
                 order = dataElementExtended.findOrder();
-            }
-            catch
+            } catch
                     (Exception e){ e.printStackTrace();}
             String programdataelementorder=dataElementExtended.findProgramStageSectionOrderDataElementOrderByDataElementUID(dataElementExtended.getDataElement().getUid());
             int addnumber=lenght-programdataelementorder.length();
@@ -303,16 +304,12 @@ public class PullController {
         Log.i(TAG,"Building questions,compositescores,headers...");
         Map<String, DataElementExtended> treeMap = new TreeMap<String, DataElementExtended>(unsortMap);
         for (Map.Entry<String, DataElementExtended> entry : treeMap.entrySet()) {
-            Log.d("Bug",entry.getValue().getDataElement().getUid());
             DataElementExtended dataElementExtended = new DataElementExtended(entry.getValue().getDataElement());
-            Log.d("Bug","A"+dataElementExtended.findOrder()+" key "+entry.getKey());
             dataElementExtended.accept(converter);
         }
         Log.i(TAG,"Building relationships...");
         for (Map.Entry<String, DataElementExtended> entry : treeMap.entrySet()) {
             DataElementExtended dataElementExtended = new DataElementExtended(entry.getValue().getDataElement());
-
-            Log.d("Bug","B"+dataElementExtended.findOrder()+" key "+entry.getKey()+ "value" + entry.getValue().getDataElement().getUid());
             converter.buildRelations(dataElementExtended);
         }
         //Fill order and parent scores
