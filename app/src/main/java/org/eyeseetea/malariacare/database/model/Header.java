@@ -36,7 +36,7 @@ import org.eyeseetea.malariacare.database.iomodules.dhis.exporter.VisitableToSDK
 import java.util.List;
 
 @Table(databaseName = AppDatabase.NAME)
-public class Header extends BaseModel implements VisitableToSDK {
+public class Header extends BaseModel{
 
     @Column
     @PrimaryKey(autoincrement = true)
@@ -125,11 +125,6 @@ public class Header extends BaseModel implements VisitableToSDK {
         return new Select().count().from(Question.class)
                 .where(Condition.column(Question$Table.HEADER_ID_HEADER).eq(getId_header()))
                 .and(Condition.column(Question$Table.QUESTION_ID_PARENT).isNull()).count();
-    }
-
-    @Override
-    public void accept(IConvertToSDKVisitor IConvertToSDKVisitor) {
-        IConvertToSDKVisitor.visit(this);
     }
 
     @Override

@@ -35,16 +35,19 @@ import android.widget.TextView;
 
 import com.squareup.otto.Subscribe;
 
-import org.eyeseetea.malariacare.R;
+import org.eyeseetea.malariacare.database.iomodules.dhis.exporter.PushController;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.PullController;
-import org.eyeseetea.malariacare.database.iomodules.dhis.importer.PullProgressStatus;
-import org.hisp.dhis.android.sdk.job.NetworkJob;
+import org.eyeseetea.malariacare.database.iomodules.dhis.importer.SyncProgressStatus;
+import org.eyeseetea.malariacare.database.model.Survey;
+import org.eyeseetea.malariacare.database.utils.Session;
 import org.hisp.dhis.android.sdk.persistence.Dhis2Application;
-import org.hisp.dhis.android.sdk.persistence.preferences.ResourceType;
 
 public class ProgressActivity extends Activity {
 
     private static final String TAG=".ProgressActivity";
+    public static final String IS_A_PUSH = "EXTRA_IS_A_PUSH";
+    private static final int MAX_PULL_STEPS=7;
+    private static final int MAX_PUSH_STEPS=4;
 
     ProgressBar progressBar;
     TextView textView;
@@ -64,7 +67,7 @@ public class ProgressActivity extends Activity {
     public void onResume() {
         super.onResume();
         Dhis2Application.bus.register(this);
-        PullController.getInstance().pull(this);
+        launchAction();
     }
 
     @Override
@@ -75,35 +78,48 @@ public class ProgressActivity extends Activity {
 
     private void prepareUI(){
         progressBar=(ProgressBar)findViewById(R.id.pull_progress);
+        progressBar.setMax(isAPush()?MAX_PUSH_STEPS:MAX_PULL_STEPS);
         textView=(TextView)findViewById(R.id.pull_text);
     }
 
     @Subscribe
-    public void onPullProgressChange(final PullProgressStatus pullProgressStatus) {
-        if(pullProgressStatus==null){
+    public void onProgressChange(final SyncProgressStatus syncProgressStatus) {
+        if(syncProgressStatus ==null){
             return;
         }
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                if(pullProgressStatus.hasError()){
-                    showStatus(pullProgressStatus.getException().getMessage());
+                if (syncProgressStatus.hasError()) {
+                    showStatus(syncProgressStatus.getException().getMessage());
                     return;
                 }
 
                 //Step
-                if(pullProgressStatus.hasProgress()){
-                    step(pullProgressStatus.getMessage());
+                if (syncProgressStatus.hasProgress()) {
+                    step(syncProgressStatus.getMessage());
                     return;
                 }
 
                 //Finish
-                if(pullProgressStatus.isFinish()) {
+                if (syncProgressStatus.isFinish()) {
                     showAndGoDashboard();
                 }
             }
         });
+    }
 
+    /**
+     * Launches a pull or push according to an intent extra
+     */
+    private void launchAction(){
+        //Push or Pull according to extra param from intent
+        if(isAPush()){
+            Survey survey= Session.getSurvey();
+            PushController.getInstance().push(this,survey);
+        }else{
+            PullController.getInstance().pull(this);
+        }
     }
 
     /**
@@ -111,9 +127,12 @@ public class ProgressActivity extends Activity {
      * @param msg
      */
     private void showStatus(String msg){
+        boolean isAPush=isAPush();
+        String title=getDialogTitle(isAPush);
+
         new AlertDialog.Builder(this)
                 .setCancelable(false)
-                .setTitle(getString(R.string.dialog_title_pull_response))
+                .setTitle(title)
                 .setMessage(msg)
                 .setNeutralButton(android.R.string.yes, null).create().show();
     }
@@ -123,7 +142,6 @@ public class ProgressActivity extends Activity {
      * @param msg
      */
     private void step(final String msg) {
-        //Error
         final int currentProgress = progressBar.getProgress();
         progressBar.setProgress(currentProgress + 1);
         textView.setText(msg);
@@ -133,15 +151,22 @@ public class ProgressActivity extends Activity {
      * Shows a dialog to tell that pull is done and then moves into the dashboard
      */
     private void showAndGoDashboard() {
+        boolean isAPush=isAPush();
+        String title=getDialogTitle(isAPush);
+        int msg=isAPush?R.string.dialog_push_success:R.string.dialog_pull_success;
+
         step(getString(R.string.progress_pull_done));
+
+        //XXX If pull move this to a function
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putBoolean(getString(R.string.pull_metadata), true);
         editor.commit();
+
         new AlertDialog.Builder(this)
-                .setCancelable(false)
-                .setTitle(getString(R.string.dialog_title_pull_response))
-                .setMessage(R.string.dialog_pull_success)
+				.setCancelable(false)
+                .setTitle(title)
+                .setMessage(msg)
                 .setNeutralButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface arg0, int arg1) {
                         Intent i = new Intent(ProgressActivity.this, DashboardActivity.class);
@@ -149,6 +174,16 @@ public class ProgressActivity extends Activity {
                         finish();
                     }
                 }).create().show();
+    }
+
+    private boolean isAPush() {
+        Intent i=getIntent();
+        return (i!=null && i.getBooleanExtra(IS_A_PUSH,false));
+    }
+
+    private String getDialogTitle(boolean isAPush){
+        int stringId=isAPush?R.string.dialog_title_push_response:R.string.dialog_title_pull_response;
+        return getString(stringId);
     }
 
 

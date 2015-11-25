@@ -23,7 +23,7 @@ package org.eyeseetea.malariacare.database.iomodules.dhis.importer;
  * A simple VO that contains the progress of the pull sync
  * Created by arrizabalaga on 19/11/15.
  */
-public class PullProgressStatus {
+public class SyncProgressStatus {
     private String message;
     private Exception exception;
     private boolean finish;
@@ -32,7 +32,7 @@ public class PullProgressStatus {
      * Builds a step progress
      * @param message
      */
-    PullProgressStatus(String message){
+    public SyncProgressStatus(String message){
         this.message=message;
     }
 
@@ -40,14 +40,14 @@ public class PullProgressStatus {
      * Builds an error progress
      * @param exception
      */
-    PullProgressStatus(Exception exception){
+    public SyncProgressStatus(Exception exception){
         this.exception=exception;
     }
 
     /**
      * Builds a progress that notifies the process is done
      */
-    PullProgressStatus(){
+    public SyncProgressStatus(){
         this.finish=true;
     }
 

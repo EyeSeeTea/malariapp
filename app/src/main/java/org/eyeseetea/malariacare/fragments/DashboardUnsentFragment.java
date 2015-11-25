@@ -43,6 +43,7 @@ import android.widget.ListView;
 import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.FeedbackActivity;
 import org.eyeseetea.malariacare.LoginActivity;
+import org.eyeseetea.malariacare.ProgressActivity;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.SurveyActivity;
 import org.eyeseetea.malariacare.database.model.Survey;
@@ -291,15 +292,22 @@ public class DashboardUnsentFragment extends ListFragment {
     private void launchPush(int position){
         //Get survey from position
         final Survey survey = (Survey) adapter.getItem(position - 1);
+        Session.setSurvey(survey);
 
-        //Get credentials from preferences
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        String user=sharedPreferences.getString(getActivity().getString(R.string.dhis_user), "");
-        String password=sharedPreferences.getString(getActivity().getString(R.string.dhis_password), "");
+        //Pushing selected survey via sdk
+        Intent progressActivityIntent = new Intent(getActivity(), ProgressActivity.class);
+        progressActivityIntent.putExtra(ProgressActivity.IS_A_PUSH,true);
+        getActivity().finish();
+        startActivity(progressActivityIntent);
 
-        //Launch push
-        AsyncPush asyncPush = new AsyncPush(survey, user, password);
-        asyncPush.execute((Void) null);
+//        //Get credentials from preferences
+//        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+//        String user=sharedPreferences.getString(getActivity().getString(R.string.dhis_user), "");
+//        String password=sharedPreferences.getString(getActivity().getString(R.string.dhis_password), "");
+//
+//        //Launch push
+//        AsyncPush asyncPush = new AsyncPush(survey, user, password);
+//        asyncPush.execute((Void) null);
     }
 
 

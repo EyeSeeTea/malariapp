@@ -34,7 +34,7 @@ import org.eyeseetea.malariacare.database.iomodules.dhis.exporter.VisitableToSDK
 import java.util.List;
 
 @Table(databaseName = AppDatabase.NAME)
-public class Program extends BaseModel implements VisitableToSDK {
+public class Program extends BaseModel{
 
     @Column
     @PrimaryKey(autoincrement = true)
@@ -88,11 +88,6 @@ public class Program extends BaseModel implements VisitableToSDK {
                     .where(Condition.column(TabGroup$Table.PROGRAM_ID_PROGRAM).eq(this.getId_program()))
                     .queryList();
         return this.tabGroups;
-    }
-
-    @Override
-    public void accept(IConvertToSDKVisitor IConvertToSDKVisitor) {
-        IConvertToSDKVisitor.visit(this);
     }
 
     @Override

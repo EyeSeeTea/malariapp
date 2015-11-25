@@ -472,7 +472,7 @@ public class Survey extends BaseModel implements VisitableToSDK {
     }
 
     @Override
-    public void accept(IConvertToSDKVisitor IConvertToSDKVisitor) {
+    public void accept(IConvertToSDKVisitor IConvertToSDKVisitor) throws Exception{
         IConvertToSDKVisitor.visit(this);
     }
 

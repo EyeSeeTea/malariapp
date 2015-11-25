@@ -50,6 +50,7 @@ import com.squareup.okhttp.HttpUrl;
 import com.squareup.otto.Subscribe;
 
 import org.eyeseetea.malariacare.database.model.User;
+import org.eyeseetea.malariacare.database.utils.PopulateDB;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.hisp.dhis.android.sdk.controllers.DhisService;
 import org.hisp.dhis.android.sdk.job.NetworkJob;
@@ -125,6 +126,15 @@ public class LoginActivity extends org.hisp.dhis.android.sdk.ui.activities.Login
         if(result!=null && result.getResourceType().equals(ResourceType.USERS)) {
             if(result.getResponseHolder().getApiException() == null) {
                 saveUserDetails();
+                //FIXME remove when create survey is fixed
+//                try{
+//                    User user = new User();
+//                    user.save();
+//                    Session.setUser(user);
+//                    PopulateDB.populateDB(getAssets());
+//                }catch(Exception ex){
+//
+//                }
                 launchMainActivity();
             } else {
                 onLoginFail(result.getResponseHolder().getApiException());

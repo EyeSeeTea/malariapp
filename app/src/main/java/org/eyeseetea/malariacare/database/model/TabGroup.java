@@ -37,7 +37,7 @@ import org.eyeseetea.malariacare.database.utils.Session;
 import java.util.List;
 
 @Table(databaseName = AppDatabase.NAME)
-public class TabGroup extends BaseModel implements VisitableToSDK {
+public class TabGroup extends BaseModel {
 
     @Column
     @PrimaryKey(autoincrement = true)
@@ -50,6 +50,9 @@ public class TabGroup extends BaseModel implements VisitableToSDK {
             foreignColumnName = "id_program")},
             saveForeignKeyModel = false)
     Program program;
+
+    @Column
+    String uid;
 
     //OneToMany Relations
     List<Tab> tabs;
@@ -91,6 +94,14 @@ public class TabGroup extends BaseModel implements VisitableToSDK {
         this.program = program;
     }
 
+    public String getUid() {
+        return uid;
+    }
+
+    public void setUid(String uid) {
+        this.uid = uid;
+    }
+
     //TODO: to enable lazy loading, here we need to set Method.SAVE and Method.DELETE and use the .toModel() to specify when do we want to load the models
     @OneToMany(methods = {OneToMany.Method.SAVE, OneToMany.Method.DELETE}, variableName = "tabs")
     public List<Tab> getTabs(){
@@ -116,11 +127,6 @@ public class TabGroup extends BaseModel implements VisitableToSDK {
     }
 
     @Override
-    public void accept(IConvertToSDKVisitor IConvertToSDKVisitor) {
-        IConvertToSDKVisitor.visit(this);
-    }
-
-    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
@@ -128,26 +134,29 @@ public class TabGroup extends BaseModel implements VisitableToSDK {
         TabGroup tabGroup = (TabGroup) o;
 
         if (id_tab_group != tabGroup.id_tab_group) return false;
-        if (!name.equals(tabGroup.name)) return false;
+        if (name != null ? !name.equals(tabGroup.name) : tabGroup.name != null) return false;
         if (program != null ? !program.equals(tabGroup.program) : tabGroup.program != null)
             return false;
+        return !(uid != null ? !uid.equals(tabGroup.uid) : tabGroup.uid != null);
 
-        return true;
     }
 
     @Override
     public int hashCode() {
         int result = (int) (id_tab_group ^ (id_tab_group >>> 32));
-        result = 31 * result + name.hashCode();
+        result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (program != null ? program.hashCode() : 0);
+        result = 31 * result + (uid != null ? uid.hashCode() : 0);
         return result;
     }
 
     @Override
     public String toString() {
         return "TabGroup{" +
-                "id=" + id_tab_group +
+                "id_tab_group=" + id_tab_group +
                 ", name='" + name + '\'' +
+                ", uid='" + uid + '\'' +
                 '}';
     }
+
 }

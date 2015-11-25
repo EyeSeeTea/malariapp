@@ -34,7 +34,7 @@ import org.eyeseetea.malariacare.database.iomodules.dhis.exporter.VisitableToSDK
  * Created by adrian on 14/02/15.
  */
 @Table(databaseName = AppDatabase.NAME)
-public class Score extends BaseModel implements VisitableToSDK {
+public class Score extends BaseModel {
 
     @Column
     @PrimaryKey(autoincrement = true)
@@ -92,11 +92,6 @@ public class Score extends BaseModel implements VisitableToSDK {
 
     public void setScore(Float score) {
         this.score = score;
-    }
-
-    @Override
-    public void accept(IConvertToSDKVisitor IConvertToSDKVisitor) {
-        IConvertToSDKVisitor.visit(this);
     }
 
     @Override

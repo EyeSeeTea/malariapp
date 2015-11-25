@@ -110,6 +110,7 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
         //FIXME TabGroup has no UID right now
         appTabGroup.setName(programStage.getDisplayName());
         appTabGroup.setProgram(appProgram);
+        appTabGroup.setUid(programStage.getUid());
         appTabGroup.save();
 
         //Annotate built tabgroup
