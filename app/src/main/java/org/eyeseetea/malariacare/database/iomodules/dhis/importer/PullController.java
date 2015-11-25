@@ -285,12 +285,14 @@ public class PullController {
             } catch
                     (Exception e){ e.printStackTrace();}
             String programdataelementorder=dataElementExtended.findProgramStageSectionOrderDataElementOrderByDataElementUID(dataElementExtended.getDataElement().getUid());
+            //Fixme
             int addnumber=lenght-programdataelementorder.length();
             String cadena="";
             while(addnumber!=0) {
                 cadena += "0";
                 addnumber--;
             }
+            //Fixme
             String orderstring=String.valueOf(order);
             addnumber=lenght-orderstring.length();
             String cadenaOrden="";
