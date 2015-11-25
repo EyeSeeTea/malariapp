@@ -19,7 +19,6 @@
 
 package org.eyeseetea.malariacare.database.iomodules.dhis.importer;
 
-import android.app.AlertDialog;
 import android.content.Context;
 import android.util.Log;
 
@@ -63,12 +62,13 @@ import org.hisp.dhis.android.sdk.persistence.models.OptionSet;
 import org.hisp.dhis.android.sdk.persistence.models.OrganisationUnit;
 import org.hisp.dhis.android.sdk.persistence.preferences.ResourceType;
 
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.SortedSet;
 import java.util.TreeMap;
+import java.util.TreeSet;
 
 /**
  * A static controller that orchestrate the pull process
@@ -275,6 +275,7 @@ public class PullController {
         //Build question relationships
         Log.i(TAG, "Building question relationships...");
         int order=-1;
+        int lenght=10;
         for(DataElement dataElement:dataElementList){
             DataElementExtended dataElementExtended = new DataElementExtended(dataElement);
             try {
@@ -282,21 +283,36 @@ public class PullController {
             }
             catch
                     (Exception e){ e.printStackTrace();}
-             String programdataelementorder=dataElementExtended.findProgramStageDataElementOrderByDataElementUID(dataElementExtended.getDataElement().getUid());
-            unsortMap.put(programdataelementorder+order+dataElementExtended.getDataElement().getUid(), dataElementExtended);
+            String programdataelementorder=dataElementExtended.findProgramStageSectionOrderDataElementOrderByDataElementUID(dataElementExtended.getDataElement().getUid());
+            int addnumber=lenght-programdataelementorder.length();
+            String cadena="";
+            while(addnumber!=0) {
+                cadena += "0";
+                addnumber--;
+            }
+            String orderstring=String.valueOf(order);
+            addnumber=lenght-orderstring.length();
+            String cadenaOrden="";
+            while(addnumber!=0) {
+                cadenaOrden += "0";
+                addnumber--;
+            }
+            unsortMap.put(cadena + programdataelementorder + "+" +cadenaOrden+order+"+"+ dataElementExtended.getDataElement().getUid(), dataElementExtended);
         }
         //Ordered for header
+        Log.i(TAG,"Building questions,compositescores,headers...");
         Map<String, DataElementExtended> treeMap = new TreeMap<String, DataElementExtended>(unsortMap);
         for (Map.Entry<String, DataElementExtended> entry : treeMap.entrySet()) {
             Log.d("Bug",entry.getValue().getDataElement().getUid());
             DataElementExtended dataElementExtended = new DataElementExtended(entry.getValue().getDataElement());
-            Log.d("Bug",dataElementExtended.findOrder()+" key "+entry.getKey());
+            Log.d("Bug","A"+dataElementExtended.findOrder()+" key "+entry.getKey());
             dataElementExtended.accept(converter);
         }
+        Log.i(TAG,"Building relationships...");
         for (Map.Entry<String, DataElementExtended> entry : treeMap.entrySet()) {
             DataElementExtended dataElementExtended = new DataElementExtended(entry.getValue().getDataElement());
 
-            Log.d("Bug",dataElementExtended.findOrder()+" key "+entry.getKey()+ "value" + entry.getValue().getDataElement().getUid());
+            Log.d("Bug","B"+dataElementExtended.findOrder()+" key "+entry.getKey()+ "value" + entry.getValue().getDataElement().getUid());
             converter.buildRelations(dataElementExtended);
         }
         //Fill order and parent scores

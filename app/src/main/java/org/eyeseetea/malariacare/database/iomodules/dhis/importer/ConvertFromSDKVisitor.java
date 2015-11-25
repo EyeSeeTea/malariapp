@@ -380,7 +380,6 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
                     answer.save();
                     appMapObjects.put(key, answer);
                 }
-            Log.d(TAG,"output"+compositeScoreBuilder.findAnswerOutput(dataElementExtended)+"");
                 if(answer!=null) {
                     appQuestion.setAnswer(answer);
                     appQuestion.save();
@@ -391,8 +390,6 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
             //}
             return;
         }
-
-        Log.d(TAG,"output"+compositeScoreBuilder.findAnswerOutput(dataElementExtended)+"");
 
         Answer answer=(Answer)appMapObjects.get(optionSetUID);
         //Answer not found

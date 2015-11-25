@@ -19,6 +19,7 @@
 
 package org.eyeseetea.malariacare.database.iomodules.dhis.importer.models;
 
+import com.raizlabs.android.dbflow.annotation.Column;
 import com.raizlabs.android.dbflow.sql.builder.Condition;
 import com.raizlabs.android.dbflow.sql.language.ColumnAlias;
 import com.raizlabs.android.dbflow.sql.language.Join;
@@ -303,10 +304,13 @@ public class DataElementExtended implements VisitableFromSDK {
      * @param dataElementUID
      * @return
      */
-    public static String findProgramStageDataElementOrderByDataElementUID(String dataElementUID) {
+    public static String findProgramStageSectionOrderDataElementOrderByDataElementUID(String dataElementUID) {
         //Find the right 'uid' of the dataelement program
-        ProgramStageDataElement programSS = new Select().from(ProgramStageDataElement.class).as("pss")
-                .where(Condition.column(ColumnAlias.columnWithTable("pss", ProgramStageDataElement$Table.DATAELEMENT)).eq(dataElementUID))
+        ProgramStageSection programSS = new Select().from(ProgramStageSection.class).as("pss")
+                .join(ProgramStageDataElement.class, Join.JoinType.LEFT).as("psd")
+                .on(Condition.column(ColumnAlias.columnWithTable("psd", ProgramStageDataElement$Table.PROGRAMSTAGESECTION))
+                                .eq(ColumnAlias.columnWithTable("pss", ProgramStageSection$Table.ID)))
+                .where(Condition.column(ColumnAlias.columnWithTable("psd", ProgramStageDataElement$Table.DATAELEMENT)).eq(dataElementUID))
                 .querySingle();
         if (programSS == null) {
             return null;
