@@ -281,10 +281,9 @@ public class PullController {
 
         //Convert questions and compositeScores
         postProgress(context.getString(R.string.progress_pull_questions));
-        Log.i(TAG, "Converting questions and compositeScores...");
+        Log.i(TAG, "Ordering questions and compositeScores...");
 
         //Dataelements ordered by program.
-
         List<org.hisp.dhis.android.sdk.persistence.models.Program> programs = new Select().from(org.hisp.dhis.android.sdk.persistence.models.Program.class).queryList();
         Map<String, List<DataElement>> programsDataelements = new HashMap<>();
         for (org.hisp.dhis.android.sdk.persistence.models.Program program : programs) {
@@ -301,8 +300,6 @@ public class PullController {
             Collections.sort(dataElements, new Comparator<DataElement>() {
                 public int compare(DataElement de1, DataElement de2) {
                     DataElementExtended dataElementExtended1 = new DataElementExtended(de1);
-
-
                     DataElementExtended dataElementExtended2 = new DataElementExtended(de2);
                     Integer dataelementOrder1=-1, dataelementOrder2 = -1;
                     try {
@@ -325,8 +322,6 @@ public class PullController {
                 }
             });
             programsDataelements.put(programUid, dataElements);
-            //DataElements ordered by code order
-
         }
 
 
@@ -344,7 +339,6 @@ public class PullController {
         for (org.hisp.dhis.android.sdk.persistence.models.Program program : programs) {
             String programUid=program.getUid();
             List<DataElement> sortDataElements = programsDataelements.get(programUid);
-
             programsDataelements.put(programUid, sortDataElements);
             for (DataElement dataElement : sortDataElements) {
                 DataElementExtended dataElementExtended = new DataElementExtended(dataElement);
