@@ -134,7 +134,7 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
         OrganisationUnit organisationUnit=sdkOrganisationUnitExtended.getOrgUnit();
         org.eyeseetea.malariacare.database.model.OrgUnitLevel orgUnitLevel = new org.eyeseetea.malariacare.database.model.OrgUnitLevel();
         if(!appMapObjects.containsKey(String.valueOf(organisationUnit.getLevel()))) {
-            //Fixme I need real org_unit_level name
+            //FIXME I need real org_unit_level name
             orgUnitLevel.setName("");
             orgUnitLevel.save();
             appMapObjects.put(String.valueOf(organisationUnit.getLevel()), orgUnitLevel);
@@ -372,14 +372,14 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
         String optionSetUID=dataElement.getOptionSet();
         //No optionset nothing to fulfill
         if(optionSetUID==null){
-            saveLabelAnswer(dataElementExtended);
+            saveNullAnswer(dataElementExtended, Constants.LABEL);
             return;
         }
 
         Answer answer=(Answer)appMapObjects.get(optionSetUID);
         //Answer not found
         if(answer==null){
-                saveLabelAnswer(dataElementExtended);
+            saveNullAnswer(dataElementExtended, Constants.LABEL);
             Log.e(TAG, String.format("Cannot fulfill output of answer with UID: %s",optionSetUID));
             return;
         }
@@ -394,11 +394,11 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
         answer.setOutput(compositeScoreBuilder.findAnswerOutput(dataElementExtended));
         answer.save();
     }
-    //Fixme we need diferenciate LABEL or Answer to be removed.
-    public void saveToBeRemovedAnswer(DataElementExtended dataElementExtended) {
+    //FIXME we need diferenciate LABEL or Answer to be removed.
+    public void saveNullAnswer(DataElementExtended dataElementExtended,String name) {
         Answer answer=new Answer();
 
-        String key=answer.getClass() + Constants.TO_BE_REMOVED;
+        String key=answer.getClass() + name;
         Question appQuestion=(Question)appMapObjects.get(dataElementExtended.getDataElement().getUid());
         if(appMapObjects.containsKey(key)) {
             answer=(Answer)appMapObjects.get(key);
@@ -407,40 +407,13 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
         {
             answer=new Answer();
             answer.setOutput(compositeScoreBuilder.findAnswerOutput(dataElementExtended));
-            answer.setName(Constants.TO_BE_REMOVED);
+            answer.setName(name);
             answer.save();
             appMapObjects.put(key, answer);
         }
         appQuestion.setAnswer(answer);
         appQuestion.save();
     }
-    public void saveLabelAnswer(DataElementExtended dataElementExtended){
-
-        Answer answer=new Answer();
-        String key=answer.getClass()+""+Constants.LABEL;
-        Question appQuestion=(Question)appMapObjects.get(dataElementExtended.getDataElement().getUid());
-        if(appMapObjects.containsKey(key)) {
-            answer=(Answer)appMapObjects.get(key);
-        }
-        else
-        {
-            answer=new Answer();
-            answer.setOutput(compositeScoreBuilder.findAnswerOutput(dataElementExtended));
-            answer.setName(Constants.LABEL);
-            answer.save();
-            appMapObjects.put(key, answer);
-        }
-        appQuestion.setAnswer(answer);
-        appQuestion.save();
-    }
-    public void buildRelations(DataElementExtended dataElementExtended) {
-         if(dataElementExtended.isQuestion()){
-            buildAnswerOutput(dataElementExtended);
-            //Question type is annotated in 'answer' from an attribute of the question
-        }
-        questionBuilder.addRelations(dataElementExtended);
-    }
-
     /**
      * Turns a dataElement into a question
      * @param sdkDataElementExtended
@@ -451,7 +424,7 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
         compositeScore.setUid(dataElement.getUid());
         compositeScore.setLabel(dataElement.getFormName());
         String compositeScoreHierarchicalCode=compositeScoreBuilder.findHierarchicalCode(sdkDataElementExtended);
-        //Fixme remove it ==null=0, its a problem with a compositeScore without code value.
+        //FIXME remove it ==null=0, its a problem with a compositeScore without code value.
         if(compositeScoreHierarchicalCode==null) {
             compositeScore.setHierarchical_code("0");
         }
