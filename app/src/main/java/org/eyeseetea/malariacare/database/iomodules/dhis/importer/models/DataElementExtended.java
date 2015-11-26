@@ -19,6 +19,7 @@
 
 package org.eyeseetea.malariacare.database.iomodules.dhis.importer.models;
 
+import com.raizlabs.android.dbflow.annotation.Column;
 import com.raizlabs.android.dbflow.sql.builder.Condition;
 import com.raizlabs.android.dbflow.sql.language.ColumnAlias;
 import com.raizlabs.android.dbflow.sql.language.Join;
@@ -41,6 +42,8 @@ import org.hisp.dhis.android.sdk.persistence.models.ProgramStage;
 import org.hisp.dhis.android.sdk.persistence.models.ProgramStage$Table;
 import org.hisp.dhis.android.sdk.persistence.models.ProgramStageDataElement;
 import org.hisp.dhis.android.sdk.persistence.models.ProgramStageDataElement$Table;
+import org.hisp.dhis.android.sdk.persistence.models.ProgramStageSection;
+import org.hisp.dhis.android.sdk.persistence.models.ProgramStageSection$Table;
 
 /**
  * Created by arrizabalaga on 5/11/15.
@@ -254,7 +257,7 @@ public class DataElementExtended implements VisitableFromSDK {
     }
 
     /**
-     * Find the associated prgoramStage (tabgroup) given a dataelement UID
+     * Find the associated program (tabgroup) given a dataelement UID
      *
      * @param dataElementUID
      * @return
@@ -276,6 +279,44 @@ public class DataElementExtended implements VisitableFromSDK {
         return program.getUid();
     }
 
+    /**
+     * Find the associated programStageSection (tab) given a dataelement UID
+     *
+     * @param dataElementUID
+     * @return
+     */
+    public static String findProgramStageSectionUIDByDataElementUID(String dataElementUID) {
+        //Find the right 'uid' of the dataelement program
+        ProgramStageSection programSS = new Select().from(ProgramStageSection.class).as("pss")
+                .join(ProgramStageDataElement.class, Join.JoinType.LEFT).as("psde")
+                .on(Condition.column(ColumnAlias.columnWithTable("pss", ProgramStageSection$Table.ID))
+                        .eq(ColumnAlias.columnWithTable("psde", ProgramStageDataElement$Table.PROGRAMSTAGESECTION)))
+                .where(Condition.column(ColumnAlias.columnWithTable("psde", ProgramStageDataElement$Table.DATAELEMENT)).eq(dataElementUID))
+                .querySingle();
+        if (programSS == null) {
+            return null;
+        }
+        return programSS.getUid();
+    }
+    /**
+     * Find the order from dataelement in programStage
+     *
+     * @param dataElementUID
+     * @return
+     */
+    public static String findProgramStageSectionOrderDataElementOrderByDataElementUID(String dataElementUID) {
+        //Find the right 'uid' of the dataelement program
+        ProgramStageSection programSS = new Select().from(ProgramStageSection.class).as("pss")
+                .join(ProgramStageDataElement.class, Join.JoinType.LEFT).as("psd")
+                .on(Condition.column(ColumnAlias.columnWithTable("psd", ProgramStageDataElement$Table.PROGRAMSTAGESECTION))
+                                .eq(ColumnAlias.columnWithTable("pss", ProgramStageSection$Table.ID)))
+                .where(Condition.column(ColumnAlias.columnWithTable("psd", ProgramStageDataElement$Table.DATAELEMENT)).eq(dataElementUID))
+                .querySingle();
+        if (programSS == null) {
+            return null;
+        }
+        return programSS.getSortOrder()+"";
+    }
     public Integer findOrder() {
         String value = getValue(ATTRIBUTE_ORDER);
         if (value != null) {
@@ -295,7 +336,7 @@ public class DataElementExtended implements VisitableFromSDK {
             float numinator = Float.valueOf(value);
             return numinator;
         } else
-            return null;
+            return 0.0f;
     }
 
     public Float findDenominator() {
@@ -304,7 +345,7 @@ public class DataElementExtended implements VisitableFromSDK {
             float denominator = Float.valueOf(value);
             return denominator;
         }
-        return null;
+        return 0.0f;
     }
 
     public CompositeScore findCompositeScore() {

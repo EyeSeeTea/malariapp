@@ -28,6 +28,10 @@ public class Constants {
             TAB_IQATAB=7,
             TAB_REPORTING=8;
 
+    // ############# ANSWER TYPE ###############
+    public static final String TO_BE_REMOVED="OuiNon (to be removed)",
+    LABEL="Label";
+
     //FIXME So far the special sub type of composite scores is treated by name
     public static final String COMPOSITE_SCORE_TAB_NAME="Composite Scores";
 
