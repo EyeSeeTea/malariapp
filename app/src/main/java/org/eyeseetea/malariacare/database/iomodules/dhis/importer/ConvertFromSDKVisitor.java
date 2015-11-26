@@ -196,10 +196,10 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
         appAnswer.setName(sdkOptionSet.getName());
         //Right type of answer comes from the questions
         appAnswer.setOutput(CompositeScoreBuilder.DEFAULT_ANSWER_OUTPUT);
-        if(sdkOptionSet.getName().equals("OuiNon (to be removed)")) {
-            if(!appMapObjects.containsKey(appAnswer.getClass() + "OuiNon (to be removed)")){
+        if(sdkOptionSet.getName().equals(Constants.TO_BE_REMOVED)) {
+            if(!appMapObjects.containsKey(appAnswer.getClass() + Constants.TO_BE_REMOVED)){
                 appAnswer.save();
-                appMapObjects.put(appAnswer.getClass() + "OuiNon (to be removed)", appAnswer);
+                appMapObjects.put(appAnswer.getClass() + Constants.TO_BE_REMOVED, appAnswer);
             }
         }
         else {
@@ -261,7 +261,6 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
         }else{
             return;
         }
-
         appMapObjects.put(sdkDataElementExtended.getDataElement().getUid(), questionOrCompositeScore);
         //Both questions and scores are annotated
     }
@@ -355,14 +354,6 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
         if (anwserOption != null) {
             appQuestion.setAnswer((Answer) appMapObjects.get(dataElement.getOptionSet()));
         }
-        else {
-            Answer answer=new Answer();
-            String key=answer.getClass() + "OuiNon (to be removed)";
-            if(appMapObjects.containsKey(key)) {
-                answer=(Answer)appMapObjects.get(key);
-                appQuestion.setAnswer(answer);
-            }
-        }
 
         appQuestion.setHeader(questionBuilder.findHeader(dataElementExtended));
         questionBuilder.RegisterParentChildRelations(dataElementExtended);
@@ -381,45 +372,14 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
         String optionSetUID=dataElement.getOptionSet();
         //No optionset nothing to fulfill
         if(optionSetUID==null){
-            Answer answer=new Answer();
-            String key=answer.getClass()+""+Constants.NO_ANSWER;
-            Question appQuestion=(Question)appMapObjects.get(dataElementExtended.getDataElement().getUid());
-            if(appMapObjects.containsKey(key)) {
-                answer=(Answer)appMapObjects.get(key);
-            }
-            else
-            {
-                answer=new Answer();
-                answer.setOutput(compositeScoreBuilder.findAnswerOutput(dataElementExtended));
-                answer.setName("Label");
-                answer.save();
-                appMapObjects.put(key, answer);
-            }
-            appQuestion.setAnswer(answer);
-            appQuestion.save();
+            saveLabelAnswer(dataElementExtended);
             return;
         }
 
         Answer answer=(Answer)appMapObjects.get(optionSetUID);
         //Answer not found
         if(answer==null){
-            answer=new Answer();
-
-            String key=answer.getClass() + "OuiNon (to be removed)";
-            Question appQuestion=(Question)appMapObjects.get(dataElementExtended.getDataElement().getUid());
-            if(appMapObjects.containsKey(key)) {
-                answer=(Answer)appMapObjects.get(key);
-            }
-            else
-            {
-                answer=new Answer();
-                answer.setOutput(compositeScoreBuilder.findAnswerOutput(dataElementExtended));
-                answer.setName("OuiNon (to be removed)");
-                answer.save();
-                appMapObjects.put(key, answer);
-            }
-            appQuestion.setAnswer(answer);
-            appQuestion.save();
+                saveLabelAnswer(dataElementExtended);
             Log.e(TAG, String.format("Cannot fulfill output of answer with UID: %s",optionSetUID));
             return;
         }
@@ -434,9 +394,46 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
         answer.setOutput(compositeScoreBuilder.findAnswerOutput(dataElementExtended));
         answer.save();
     }
+    //Fixme we need diferenciate LABEL or Answer to be removed.
+    public void saveToBeRemovedAnswer(DataElementExtended dataElementExtended) {
+        Answer answer=new Answer();
 
+        String key=answer.getClass() + Constants.TO_BE_REMOVED;
+        Question appQuestion=(Question)appMapObjects.get(dataElementExtended.getDataElement().getUid());
+        if(appMapObjects.containsKey(key)) {
+            answer=(Answer)appMapObjects.get(key);
+        }
+        else
+        {
+            answer=new Answer();
+            answer.setOutput(compositeScoreBuilder.findAnswerOutput(dataElementExtended));
+            answer.setName(Constants.TO_BE_REMOVED);
+            answer.save();
+            appMapObjects.put(key, answer);
+        }
+        appQuestion.setAnswer(answer);
+        appQuestion.save();
+    }
+    public void saveLabelAnswer(DataElementExtended dataElementExtended){
+
+        Answer answer=new Answer();
+        String key=answer.getClass()+""+Constants.LABEL;
+        Question appQuestion=(Question)appMapObjects.get(dataElementExtended.getDataElement().getUid());
+        if(appMapObjects.containsKey(key)) {
+            answer=(Answer)appMapObjects.get(key);
+        }
+        else
+        {
+            answer=new Answer();
+            answer.setOutput(compositeScoreBuilder.findAnswerOutput(dataElementExtended));
+            answer.setName(Constants.LABEL);
+            answer.save();
+            appMapObjects.put(key, answer);
+        }
+        appQuestion.setAnswer(answer);
+        appQuestion.save();
+    }
     public void buildRelations(DataElementExtended dataElementExtended) {
-
          if(dataElementExtended.isQuestion()){
             buildAnswerOutput(dataElementExtended);
             //Question type is annotated in 'answer' from an attribute of the question
@@ -453,7 +450,14 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
         CompositeScore compositeScore = new CompositeScore();
         compositeScore.setUid(dataElement.getUid());
         compositeScore.setLabel(dataElement.getFormName());
-        compositeScore.setHierarchical_code(compositeScoreBuilder.findHierarchicalCode(sdkDataElementExtended));
+        String compositeScoreHierarchicalCode=compositeScoreBuilder.findHierarchicalCode(sdkDataElementExtended);
+        //Fixme remove it ==null=0, its a problem with a compositeScore without code value.
+        if(compositeScoreHierarchicalCode==null) {
+            compositeScore.setHierarchical_code("0");
+        }
+        else
+        compositeScore.setHierarchical_code(compositeScoreHierarchicalCode);
+
         //Parent score and Order can only be set once every score in saved
         compositeScore.save();
 

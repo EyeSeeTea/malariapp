@@ -290,7 +290,6 @@ public class PullController {
         for (org.hisp.dhis.android.sdk.persistence.models.Program program : programs) {
             List<DataElement> dataElements = new ArrayList<>();
             String programUid=program.getUid();
-            Log.d("BUG","program"+program.getUid());
             List<ProgramStage> programStages= program.getProgramStages();
             for (org.hisp.dhis.android.sdk.persistence.models.ProgramStage programStage : programStages) {
                 List<ProgramStageDataElement> programStageDataElements= programStage.getProgramStageDataElements();
@@ -299,7 +298,6 @@ public class PullController {
                     dataElements.add(programStageDataElement.getDataElement());
                 }
             }
-            Log.d("BUG",dataElements.size()+"size");
             Collections.sort(dataElements, new Comparator<DataElement>() {
                 public int compare(DataElement de1, DataElement de2) {
                     DataElementExtended dataElementExtended1 = new DataElementExtended(de1);
