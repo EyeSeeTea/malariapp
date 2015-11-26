@@ -227,5 +227,6 @@
     <string name="progress_push_updating_survey">Actualizando datos encuesta subida ...</string>
     <string name="dialog_push_success">Encuestra correctamente subida al servidor Dhis</string>
     <string name="progress_push_no_survey">No hay encuesta para subir</string>
+    <string name="dialog_push_before_pull_success">Encuestas correctamente subidas al servidor Dhis, inicializando actualización de metadatos</string>
 
 </resources>
