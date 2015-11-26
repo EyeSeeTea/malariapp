@@ -362,6 +362,15 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
         return appQuestion;
     }
 
+
+    public void buildRelations(DataElementExtended dataElementExtended) {
+        if(dataElementExtended.isQuestion()){
+            buildAnswerOutput(dataElementExtended);
+            //Question type is annotated in 'answer' from an attribute of the question
+        }
+        questionBuilder.addRelations(dataElementExtended);
+    }
+
     /**
      * Fulfills the answer.output for this question
      * @param dataElementExtended
