@@ -204,7 +204,7 @@ public class PullController {
     /**
      * Erase data from app database
      */
-    private void wipeDatabase() {
+    public void wipeDatabase(){
         Log.d(TAG, "Deleting app database...");
         Delete.tables(
                 Value.class,

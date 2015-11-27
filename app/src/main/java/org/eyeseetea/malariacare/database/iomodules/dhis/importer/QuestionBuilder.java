@@ -164,7 +164,7 @@ public class QuestionBuilder {
      *
      * @param dataElementExtended
      */
-    public void RegisterParentChildRelations(DataElementExtended dataElementExtended) {
+    public void registerParentChildRelations(DataElementExtended dataElementExtended) {
         DataElement dataElement = dataElementExtended.getDataElement();
         String questionRelationType = null;
         String questionRelationGroup = null;

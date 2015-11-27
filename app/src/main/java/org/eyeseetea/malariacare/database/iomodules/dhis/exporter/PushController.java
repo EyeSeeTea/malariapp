@@ -121,12 +121,12 @@ public class PushController {
      *  - Turns SDK into APP data
      * @param ctx
      */
-    public void push(Context ctx,Survey survey){
+    public void push(Context ctx,List<Survey> surveys){
         Log.d(TAG, "Starting PUSH process...");
         context=ctx;
 
         //No survey no push
-        if(survey==null){
+        if(surveys==null || surveys.size()==0){
             postException(new Exception(context.getString(R.string.progress_push_no_survey)));
             return;
         }
@@ -138,7 +138,7 @@ public class PushController {
             //Converts app data into sdk events
             postProgress(context.getString(R.string.progress_push_preparing_survey));
             Log.d(TAG, "Preparing survey for pushing...");
-            convertToSDK(survey);
+            convertToSDK(surveys);
 
             //Asks sdk to push localdata
             postProgress(context.getString(R.string.progress_push_posting_survey));
@@ -189,10 +189,12 @@ public class PushController {
     /**
      * Launches visitor that turns an APP survey into a SDK event
      */
-    private void convertToSDK(Survey survey)throws  Exception{
+    private void convertToSDK(List<Survey> surveys)throws  Exception{
         Log.d(TAG,"Converting APP survey into a SDK event");
         converter =new ConvertToSDKVisitor(context);
-        survey.accept(converter);
+        for(Survey survey:surveys){
+            survey.accept(converter);
+        }
     }
 
     /**

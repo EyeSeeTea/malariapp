@@ -296,18 +296,10 @@ public class DashboardUnsentFragment extends ListFragment {
 
         //Pushing selected survey via sdk
         Intent progressActivityIntent = new Intent(getActivity(), ProgressActivity.class);
-        progressActivityIntent.putExtra(ProgressActivity.IS_A_PUSH,true);
+        progressActivityIntent.putExtra(ProgressActivity.TYPE_OF_ACTION,ProgressActivity.ACTION_PUSH);
+
         getActivity().finish();
         startActivity(progressActivityIntent);
-
-//        //Get credentials from preferences
-//        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
-//        String user=sharedPreferences.getString(getActivity().getString(R.string.dhis_user), "");
-//        String password=sharedPreferences.getString(getActivity().getString(R.string.dhis_password), "");
-//
-//        //Launch push
-//        AsyncPush asyncPush = new AsyncPush(survey, user, password);
-//        asyncPush.execute((Void) null);
     }
 
 
