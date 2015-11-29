@@ -49,6 +49,7 @@ import com.raizlabs.android.dbflow.sql.language.Select;
 import com.squareup.okhttp.HttpUrl;
 import com.squareup.otto.Subscribe;
 
+import org.eyeseetea.malariacare.database.iomodules.dhis.importer.PullController;
 import org.eyeseetea.malariacare.database.model.User;
 import org.eyeseetea.malariacare.database.utils.PopulateDB;
 import org.eyeseetea.malariacare.database.utils.Session;
@@ -127,18 +128,26 @@ public class LoginActivity extends org.hisp.dhis.android.sdk.ui.activities.Login
             if(result.getResponseHolder().getApiException() == null) {
                 saveUserDetails();
                 //FIXME remove when create survey is fixed
-//                try{
-//                    User user = new User();
-//                    user.save();
-//                    Session.setUser(user);
-//                    PopulateDB.populateDB(getAssets());
-//                }catch(Exception ex){
-//
-//                }
+//                populateFromAssets();
                 launchMainActivity();
             } else {
                 onLoginFail(result.getResponseHolder().getApiException());
             }
+        }
+    }
+
+    /**
+     * Utility method to use while developing to avoid a real pull
+     */
+    private void populateFromAssets() {
+        try{
+            User user = new User();
+            user.save();
+            Session.setUser(user);
+            PullController.getInstance().wipeDatabase();
+            PopulateDB.populateDB(getAssets());
+        }catch(Exception ex){
+
         }
     }
 

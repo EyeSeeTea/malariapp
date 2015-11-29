@@ -42,8 +42,6 @@ import org.eyeseetea.malariacare.database.model.TabGroup;
 import org.eyeseetea.malariacare.database.model.User;
 import org.eyeseetea.malariacare.database.model.Value;
 import org.eyeseetea.malariacare.utils.Constants;
-import org.hisp.dhis.android.sdk.controllers.metadata.MetaDataController;
-import org.hisp.dhis.android.sdk.persistence.models.Constant;
 import org.hisp.dhis.android.sdk.persistence.models.DataElement;
 import org.hisp.dhis.android.sdk.persistence.models.DataValue;
 import org.hisp.dhis.android.sdk.persistence.models.Event;
@@ -196,18 +194,23 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
         appAnswer.setName(sdkOptionSet.getName());
         //Right type of answer comes from the questions
         appAnswer.setOutput(CompositeScoreBuilder.DEFAULT_ANSWER_OUTPUT);
-        if(sdkOptionSet.getName().equals(Constants.TO_BE_REMOVED)) {
-            if(!appMapObjects.containsKey(appAnswer.getClass() + Constants.TO_BE_REMOVED)){
-                appAnswer.save();
-                appMapObjects.put(appAnswer.getClass() + Constants.TO_BE_REMOVED, appAnswer);
-            }
-        }
-        else {
-            appAnswer.save();
-        //Annotate built tabgroup
-        appMapObjects.put(sdkOptionSet.getUid(), appAnswer);
+        //XXX This should be remove
+//        if(sdkOptionSet.getName().equals(Constants.TO_BE_REMOVED)) {
+//            if(!appMapObjects.containsKey(appAnswer.getClass() + Constants.TO_BE_REMOVED)){
+//                appAnswer.save();
+//                appMapObjects.put(appAnswer.getClass() + Constants.TO_BE_REMOVED, appAnswer);
+//            }
+//        }
+//        else {
+//            appAnswer.save();
+//        //Annotate built answer
+//            appMapObjects.put(sdkOptionSet.getUid(), appAnswer);
+//
+//        }
 
-        }
+        appAnswer.save();
+        //Annotate built answer
+        appMapObjects.put(sdkOptionSet.getUid(), appAnswer);
 
         //Visit children
         for(Option option:sdkOptionSet.getOptions()){
@@ -350,13 +353,14 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
         appQuestion.setOrder_pos(dataElementExtended.findOrder());
         appQuestion.setNumerator_w(dataElementExtended.findNumerator());
         appQuestion.setDenominator_w(dataElementExtended.findDenominator());
-        OptionSet anwserOption = MetaDataController.getOptionSet(dataElement.getOptionSet());
-        if (anwserOption != null) {
+        
+        //Label does not have an optionset
+        if (dataElement.getOptionSet() != null) {
             appQuestion.setAnswer((Answer) appMapObjects.get(dataElement.getOptionSet()));
         }
 
         appQuestion.setHeader(questionBuilder.findHeader(dataElementExtended));
-        questionBuilder.RegisterParentChildRelations(dataElementExtended);
+        questionBuilder.registerParentChildRelations(dataElementExtended);
         appQuestion.save();
         questionBuilder.add(appQuestion);
         return appQuestion;
@@ -379,47 +383,55 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
         DataElement dataElement = dataElementExtended.getDataElement();
 
         String optionSetUID=dataElement.getOptionSet();
-        //No optionset nothing to fulfill
+
+        //A question with NO optionSet is a Label Question
         if(optionSetUID==null){
-            saveNullAnswer(dataElementExtended, Constants.LABEL);
+            Log.d(TAG, String.format("Question (%s) is a LABEL", dataElement.getUid()));
+            buildAnswerLabel(dataElementExtended);
             return;
         }
 
         Answer answer=(Answer)appMapObjects.get(optionSetUID);
-        //Answer not found
+        //Answer not found -> this might raise an exception
         if(answer==null){
-            saveNullAnswer(dataElementExtended, Constants.LABEL);
-            Log.e(TAG, String.format("Cannot fulfill output of answer with UID: %s",optionSetUID));
+            Log.e(TAG, String.format("Question (%s) has no answer (%s)",dataElement.getUid(),optionSetUID));
             return;
         }
 
-        //Answer output already set
+        //Answer output already set -> nothing to do
         if(!CompositeScoreBuilder.DEFAULT_ANSWER_OUTPUT.equals(answer.getOutput())){
             return;
         }
 
-        //Get type of dataelement
-
+        //Set answer type according to the attribute of the dataelement
         answer.setOutput(compositeScoreBuilder.findAnswerOutput(dataElementExtended));
+
         answer.save();
     }
-    //FIXME we need diferenciate LABEL or Answer to be removed.
-    public void saveNullAnswer(DataElementExtended dataElementExtended,String name) {
-        Answer answer=new Answer();
 
-        String key=answer.getClass() + name;
+    /**
+     * A dataElement (question) without optionSet is a Label.
+     * This method inits the LABEL answer (the first time) and updates de question.answer to it
+     * @param dataElementExtended
+     */
+    public void buildAnswerLabel(DataElementExtended dataElementExtended) {
+
+        //Find the question
         Question appQuestion=(Question)appMapObjects.get(dataElementExtended.getDataElement().getUid());
-        if(appMapObjects.containsKey(key)) {
-            answer=(Answer)appMapObjects.get(key);
-        }
-        else
-        {
-            answer=new Answer();
-            answer.setOutput(compositeScoreBuilder.findAnswerOutput(dataElementExtended));
-            answer.setName(name);
+
+        //Build a sintetic Key (AnswerLABEL)
+        final String key=Answer.class+Constants.LABEL;
+        //Look for sintetic LABEL (answer) already created
+        Answer answer=(Answer)appMapObjects.get(key);
+
+        //First time no Label answer has been created
+        if(answer==null){
+            answer=new Answer(Constants.LABEL,Constants.NO_ANSWER);
             answer.save();
-            appMapObjects.put(key, answer);
+            appMapObjects.put(key,answer);
         }
+
+        //Set the answer to the given question
         appQuestion.setAnswer(answer);
         appQuestion.save();
     }

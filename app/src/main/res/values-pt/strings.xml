@@ -233,4 +233,5 @@
     <string name="progress_push_updating_survey">Atualização empurrou dados da pesquisa ...</string>
     <string name="dialog_push_success">Pesquisa empurrou com êxito para o servidor dhis</string>
     <string name="progress_push_no_survey">Nenhuma pesquisa constatou para empurrar</string>
+    <string name="dialog_push_before_pull_success">Pesquisa empurrou com êxito para o servidor dhis, começando a puxar metadados</string>
 </resources>

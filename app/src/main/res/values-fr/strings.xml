@@ -227,5 +227,6 @@
     <string name="progress_push_updating_survey">"Mise à jour poussé données de l'enquête ..."</string>
     <string name="dialog_push_success">Enquête poussé avec succès à dhis serveur</string>
     <string name="progress_push_no_survey">Aucune enquête a révélé pour pousser</string>
+    <string name="dialog_push_before_pull_success">Enquête poussé avec succès à dhis serveur, de commencer à tirer des métadonnées</string>
 
 </resources>
