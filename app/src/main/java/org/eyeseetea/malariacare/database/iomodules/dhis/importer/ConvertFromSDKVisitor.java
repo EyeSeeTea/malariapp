@@ -21,6 +21,7 @@ package org.eyeseetea.malariacare.database.iomodules.dhis.importer;
 
 import android.util.Log;
 
+import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.DataElementExtended;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.DataValueExtended;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.EventExtended;
@@ -41,6 +42,7 @@ import org.eyeseetea.malariacare.database.model.Tab;
 import org.eyeseetea.malariacare.database.model.TabGroup;
 import org.eyeseetea.malariacare.database.model.User;
 import org.eyeseetea.malariacare.database.model.Value;
+import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.utils.Constants;
 import org.hisp.dhis.android.sdk.persistence.models.DataElement;
 import org.hisp.dhis.android.sdk.persistence.models.DataValue;
@@ -132,8 +134,7 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
         OrganisationUnit organisationUnit=sdkOrganisationUnitExtended.getOrgUnit();
         org.eyeseetea.malariacare.database.model.OrgUnitLevel orgUnitLevel = new org.eyeseetea.malariacare.database.model.OrgUnitLevel();
         if(!appMapObjects.containsKey(String.valueOf(organisationUnit.getLevel()))) {
-            //FIXME I need real org_unit_level name
-            orgUnitLevel.setName("");
+            orgUnitLevel.setName(PreferencesState.getInstance().getContext().getResources().getString(R.string.create_info_zone));
             orgUnitLevel.save();
             appMapObjects.put(String.valueOf(organisationUnit.getLevel()), orgUnitLevel);
         }
@@ -353,7 +354,7 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
         appQuestion.setOrder_pos(dataElementExtended.findOrder());
         appQuestion.setNumerator_w(dataElementExtended.findNumerator());
         appQuestion.setDenominator_w(dataElementExtended.findDenominator());
-        
+
         //Label does not have an optionset
         if (dataElement.getOptionSet() != null) {
             appQuestion.setAnswer((Answer) appMapObjects.get(dataElement.getOptionSet()));
@@ -444,13 +445,7 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
         CompositeScore compositeScore = new CompositeScore();
         compositeScore.setUid(dataElement.getUid());
         compositeScore.setLabel(dataElement.getFormName());
-        String compositeScoreHierarchicalCode=compositeScoreBuilder.findHierarchicalCode(sdkDataElementExtended);
-        //FIXME remove it ==null=0, its a problem with a compositeScore without code value.
-        if(compositeScoreHierarchicalCode==null) {
-            compositeScore.setHierarchical_code("0");
-        }
-        else
-        compositeScore.setHierarchical_code(compositeScoreHierarchicalCode);
+        compositeScore.setHierarchical_code(compositeScoreBuilder.findHierarchicalCode(sdkDataElementExtended));
 
         //Parent score and Order can only be set once every score in saved
         compositeScore.save();

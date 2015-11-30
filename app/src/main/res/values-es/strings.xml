@@ -61,6 +61,7 @@
     <string name="create_info_organization_unit">Unidad de organización</string>
     <string name="create_info_survey">Formulario</string>
     <string name="create_info_tabs_group">Grupo de Pestañas</string>
+    <string name="create_info_zone">Zona</string>
 
     <!-- assessment -->
     <string name="assessment_title_facility_date">Centro de salud/ Fecha</string>
