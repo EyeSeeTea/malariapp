@@ -72,6 +72,8 @@
     <string name="create_info_organization_unit">Organisation Unit</string>
     <string name="create_info_survey">Survey</string>
     <string name="create_info_tabs_group">Tab Group</string>
+    <string name="create_info_zone">Zone</string>
+
 
     <!-- assessment -->
     <string name="assessment_title_facility_date">Facility / Survey</string>
