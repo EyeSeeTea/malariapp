@@ -26,6 +26,7 @@ import com.raizlabs.android.dbflow.sql.language.Select;
 
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.DataElementExtended;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.OptionExtended;
+import org.eyeseetea.malariacare.database.model.Answer;
 import org.eyeseetea.malariacare.database.model.CompositeScore;
 import org.hisp.dhis.android.sdk.persistence.models.DataElement;
 import org.hisp.dhis.android.sdk.persistence.models.Option;
@@ -45,11 +46,6 @@ import java.util.Map;
 public class CompositeScoreBuilder {
 
     private static final String TAG=".CompositeScoreBuilder";
-
-    /**
-     * Default mock answer.output value
-     */
-    public static final Integer DEFAULT_ANSWER_OUTPUT = -1;
 
     /**
      * Expected value for the attributeValue DeQuesType in those dataElements which are a CompositeScore
@@ -150,7 +146,7 @@ public class CompositeScoreBuilder {
 
         //Not found -> error type question
         if(typeQuestion==null  || typeQuestion.equals(COMPOSITE_SCORE_CODE)){
-            return DEFAULT_ANSWER_OUTPUT;
+            return Answer.DEFAULT_ANSWER_OUTPUT;
         }
 
         return Integer.valueOf(typeQuestion);

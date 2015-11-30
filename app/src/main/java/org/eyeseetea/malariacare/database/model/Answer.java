@@ -34,7 +34,12 @@ import org.eyeseetea.malariacare.database.iomodules.dhis.exporter.VisitableToSDK
 import java.util.List;
 
 @Table(databaseName = AppDatabase.NAME)
-public class Answer extends BaseModel {
+public class Answer extends BaseModel{
+
+    /**
+     * Default mock answer.output value
+     */
+    public static final Integer DEFAULT_ANSWER_OUTPUT = -1;
 
     @Column
     @PrimaryKey(autoincrement = true)
@@ -90,6 +95,32 @@ public class Answer extends BaseModel {
     @OneToMany(methods = {OneToMany.Method.SAVE, OneToMany.Method.DELETE}, variableName = "questions")
     public List<Question> getQuestions(){
         return new Select().from(Question.class).where(Condition.column(Question$Table.ANSWER_ID_ANSWER).eq(this.getId_answer())).queryList();
+    }
+
+    /**
+     * Checks if this answer has a real output
+     * @return
+     */
+    public boolean hasOutput(){
+        return output!=null && !DEFAULT_ANSWER_OUTPUT.equals(output);
+    }
+
+    /**
+     * Returns a copy of this answer and its options (if any)
+     * @return
+     */
+    public Answer copy(){
+        //Create a copy of this answer
+        Answer answerCopy=new Answer(name,DEFAULT_ANSWER_OUTPUT);
+        answerCopy.save();
+
+        //Copy options if any
+        for(Option option:getOptions()){
+            Option optionCopy=option.copy();
+            optionCopy.setAnswer(answerCopy);
+            optionCopy.save();
+        }
+        return answerCopy;
     }
 
     @Override
