@@ -193,7 +193,7 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
         Answer appAnswer = new Answer();
         appAnswer.setName(sdkOptionSet.getName());
         //Right type of answer comes from the questions
-        appAnswer.setOutput(CompositeScoreBuilder.DEFAULT_ANSWER_OUTPUT);
+        appAnswer.setOutput(Answer.DEFAULT_ANSWER_OUTPUT);
         //XXX This should be remove
 //        if(sdkOptionSet.getName().equals(Constants.TO_BE_REMOVED)) {
 //            if(!appMapObjects.containsKey(appAnswer.getClass() + Constants.TO_BE_REMOVED)){
@@ -392,21 +392,42 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
         }
 
         Answer answer=(Answer)appMapObjects.get(optionSetUID);
-        //Answer not found -> this might raise an exception
+        //Answer not found -> this raise an exception
         if(answer==null){
             Log.e(TAG, String.format("Question (%s) has no answer (%s)",dataElement.getUid(),optionSetUID));
             return;
         }
 
-        //Answer output already set -> nothing to do
-        if(!CompositeScoreBuilder.DEFAULT_ANSWER_OUTPUT.equals(answer.getOutput())){
+        //Find the output for this question
+        int output=compositeScoreBuilder.findAnswerOutput(dataElementExtended);
+
+        //Found question for this answer for the first time -> Update output
+        if(!answer.hasOutput()){
+            answer.setOutput(output);
+            answer.save();
             return;
         }
 
-        //Set answer type according to the attribute of the dataelement
-        answer.setOutput(compositeScoreBuilder.findAnswerOutput(dataElementExtended));
+        //UID+Output already created -> Nothing to update
+        if(answer.getOutput().equals(output)){
+            return;
+        }
 
-        answer.save();
+        //UID+output != Original Answer -> Look answer with the right output
+        String answerWithOutputUID=OptionSetExtended.getKeyWithOutput(optionSetUID, output);
+        Answer answerWithOutput=(Answer) appMapObjects.get(answerWithOutputUID);
+        Question question=(Question)appMapObjects.get(dataElement.getUid());
+
+        //First time UID+output -> clone answer with a different output + assign
+        if(answerWithOutput==null){
+            answerWithOutput=answer.copy();
+            answerWithOutput.setOutput(output);
+            answerWithOutput.save();
+            appMapObjects.put(answerWithOutputUID, answerWithOutput);
+        }
+
+        question.setAnswer(answerWithOutput);
+        question.save();
     }
 
     /**

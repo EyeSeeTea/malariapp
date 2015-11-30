@@ -28,7 +28,7 @@ import org.hisp.dhis.android.sdk.persistence.models.OptionSet;
  */
 public class OptionSetExtended implements VisitableFromSDK {
 
-
+    private final static String KEY_PREFFIX="@";
 
     OptionSet optionSet;
 
@@ -43,5 +43,15 @@ public class OptionSetExtended implements VisitableFromSDK {
 
     public OptionSet getOptionSet() {
         return optionSet;
+    }
+
+    /**
+     * Returns a sintetic UID for a given answer and an output
+     * @param uid
+     * @param output
+     * @return
+     */
+    public static String getKeyWithOutput(String uid,int output){
+        return uid+KEY_PREFFIX+output;
     }
 }

@@ -184,13 +184,11 @@ public class Survey extends BaseModel implements VisitableToSDK {
     }
 
     public void saveMainScore(){
-
-        //No mainScore nothing to save
-        if(this.mainScore==null){
-            return;
+        Float valScore=0f;
+        if(mainScore!=null){
+            valScore=mainScore;
         }
-
-        Score score=new Score(this,"",this.mainScore);
+        Score score=new Score(this,"",valScore);
         score.save();
     }
 
