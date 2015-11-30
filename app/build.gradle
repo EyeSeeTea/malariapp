@@ -73,7 +73,7 @@ android {
             targetSdkVersion 21
         }
         hnqis {
-            applicationId "org.eyeseetea.malariacare.hnqis-pull"
+            applicationId "org.eyeseetea.malariacare.hnqispull"
             versionName "13.0-hnqis"
             minSdkVersion 15
             targetSdkVersion 21
