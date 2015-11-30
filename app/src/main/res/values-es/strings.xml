@@ -43,6 +43,9 @@
     <string name="dialog_content_push_data">¿Está seguro de enviar? No podrá deshacer esta acción</string>
     <string name="dialog_button_preview_feedback">Ver feedback</string>
 
+    <!-- Toast -->
+    <string name="cancellingPull">El proceso se cancelara en unos segundos</string>
+
     <!-- dashboard -->
     <string name="dashboard_info_feedback">Feedback</string>
     <string name="dashboard_info_active_assessments">Evaluaciones activas</string>

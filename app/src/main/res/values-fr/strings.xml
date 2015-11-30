@@ -44,6 +44,9 @@
     <string name="dialog_content_push_data">Êtes-vous sûr de voulour envoyer ?</string>
     <string name="dialog_button_preview_feedback">Voir évaluations</string>
 
+    <!-- Toast -->
+    <string name="cancellingPull">Le processus est arrêté en quelques secondes</string>
+
     <!-- dashboard -->
     <string name="dashboard_info_feedback">Feedback</string>
     <string name="dashboard_info_active_assessments">Evaluations actives</string>

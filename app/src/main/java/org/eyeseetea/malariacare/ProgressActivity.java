@@ -27,6 +27,8 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -77,18 +79,30 @@ public class ProgressActivity extends Activity {
      * Num of expected steps while pushing
      */
     private static final int MAX_PUSH_STEPS=4;
+    public static Boolean active;
 
     ProgressBar progressBar;
     TextView textView;
-
     boolean pullAfterPushInProgress;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_progress);
+        active=true;
         prepareUI();
         annotateFirstPull(false);
+        final Button button = (Button) findViewById(R.id.cancelPullButton);
+        button.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                cancellPull();
+            }
+        });
+    }
+
+    private void cancellPull() {
+        active = false;
+        step(getBaseContext().getResources().getString(R.string.cancellingPull));
     }
 
     @Override
@@ -204,33 +218,45 @@ public class ProgressActivity extends Activity {
 
         final int msg=getDoneMessage();
 
-        //Show final step -> done
-        step(getString(R.string.progress_pull_done));
+
 
         //Annotate pull is done
         if(!isAPush) {
             annotateFirstPull(true);
         }
 
-        //Show message and go on -> pull or single push = dashboard | push before pull = start pull
-        new AlertDialog.Builder(this)
-				.setCancelable(false)
-                .setTitle(title)
-                .setMessage(msg)
-                .setNeutralButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface arg0, int arg1) {
 
-                        //Pull or Push(single)
-                        if (msg == R.string.dialog_pull_success || msg ==R.string.dialog_push_success) {
-                            finishAndGo(DashboardActivity.class);
-                            return;
+        //If is not active, we need restart the process
+        if(!active) {
+            annotateFirstPull(false);
+            finishAndGo(LoginActivity.class);
+        }
+        else {
+
+            //Show final step -> done
+            step(getString(R.string.progress_pull_done));
+
+            //Show message and go on -> pull or single push = dashboard | push before pull = start pull
+            new AlertDialog.Builder(this)
+                    .setCancelable(false)
+                    .setTitle(title)
+                    .setMessage(msg)
+                    .setNeutralButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface arg0, int arg1) {
+
+                            //Pull or Push(single)
+                            if (msg == R.string.dialog_pull_success || msg == R.string.dialog_push_success) {
+                                finishAndGo(DashboardActivity.class);
+                                return;
+                            }
+
+                            //Start pull after push
+                            pullAfterPushInProgress = true;
+                            launchPull();
                         }
+                    }).create().show();
+        }
 
-                        //Start pull after push
-                        pullAfterPushInProgress=true;
-                        launchPull();
-                    }
-                }).create().show();
     }
 
     /**
