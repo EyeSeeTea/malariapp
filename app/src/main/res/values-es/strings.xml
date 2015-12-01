@@ -4,7 +4,7 @@
     <!-- # general -->
     <string name="yes">Sí</string>
     <string name="no">No</string>
-    <string name="cancel">Annuler</string>
+    <string name="cancel">Cancelar</string>
     <string name="score">Puntuación</string>
     <string name="title_id">ID</string>
     <string name="title_name">Nombre</string>

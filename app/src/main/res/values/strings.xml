@@ -54,7 +54,7 @@
     <string name="dialog_button_preview_feedback">View Feedback</string>
 
     <!-- Toast -->
-    <string name="cancellingPull">The process will stopped in a few seconds </string>
+    <string name="cancellingPull">The process will be stopped in a few seconds </string>
 
     <!-- dashboard -->
     <string name="dashboard_info_feedback">Feedback</string>
