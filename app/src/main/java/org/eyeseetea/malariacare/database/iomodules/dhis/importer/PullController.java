@@ -20,13 +20,9 @@
 package org.eyeseetea.malariacare.database.iomodules.dhis.importer;
 
 import android.content.Context;
-import android.provider.ContactsContract;
 import android.util.Log;
 
-import com.raizlabs.android.dbflow.sql.builder.Condition;
-import com.raizlabs.android.dbflow.sql.language.ColumnAlias;
 import com.raizlabs.android.dbflow.sql.language.Delete;
-import com.raizlabs.android.dbflow.sql.language.Join;
 import com.raizlabs.android.dbflow.sql.language.Select;
 import com.squareup.otto.Subscribe;
 
@@ -46,7 +42,6 @@ import org.eyeseetea.malariacare.database.model.Option;
 import org.eyeseetea.malariacare.database.model.OrgUnit;
 import org.eyeseetea.malariacare.database.model.OrgUnitLevel;
 import org.eyeseetea.malariacare.database.model.Program;
-import org.eyeseetea.malariacare.database.model.Program$Table;
 import org.eyeseetea.malariacare.database.model.Question;
 import org.eyeseetea.malariacare.database.model.QuestionOption;
 import org.eyeseetea.malariacare.database.model.QuestionRelation;
@@ -62,18 +57,12 @@ import org.hisp.dhis.android.sdk.controllers.metadata.MetaDataController;
 import org.hisp.dhis.android.sdk.controllers.tracker.TrackerController;
 import org.hisp.dhis.android.sdk.job.NetworkJob;
 import org.hisp.dhis.android.sdk.persistence.Dhis2Application;
-import org.hisp.dhis.android.sdk.persistence.models.Attribute$Table;
-import org.hisp.dhis.android.sdk.persistence.models.AttributeValue$Table;
 import org.hisp.dhis.android.sdk.persistence.models.DataElement;
-import org.hisp.dhis.android.sdk.persistence.models.DataElement$Table;
-import org.hisp.dhis.android.sdk.persistence.models.DataElementAttributeValue$Table;
 import org.hisp.dhis.android.sdk.persistence.models.Event;
 import org.hisp.dhis.android.sdk.persistence.models.OptionSet;
 import org.hisp.dhis.android.sdk.persistence.models.OrganisationUnit;
 import org.hisp.dhis.android.sdk.persistence.models.ProgramStage;
-import org.hisp.dhis.android.sdk.persistence.models.ProgramStage$Table;
 import org.hisp.dhis.android.sdk.persistence.models.ProgramStageDataElement;
-import org.hisp.dhis.android.sdk.persistence.models.ProgramStageDataElement$Table;
 import org.hisp.dhis.android.sdk.persistence.preferences.ResourceType;
 
 import java.util.ArrayList;
@@ -82,9 +71,6 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.SortedSet;
-import java.util.TreeMap;
-import java.util.TreeSet;
 
 /**
  * A static controller that orchestrate the pull process
@@ -107,7 +93,12 @@ public class PullController {
     }
 
     private void register() {
-        Dhis2Application.bus.register(this);
+        try{
+            Dhis2Application.bus.register(this);
+            }catch(Exception e){
+            unregister();
+            Dhis2Application.bus.register(this);
+        }
     }
 
     /**
@@ -141,6 +132,7 @@ public class PullController {
         Log.d(TAG, "Starting PULL process...");
         context = ctx;
         try {
+
             //Register for event bus
             register();
             //Enabling resources to pull
@@ -150,9 +142,15 @@ public class PullController {
             MetaDataController.wipe();
             //Pull new metadata
             postProgress(context.getString(R.string.progress_pull_downloading));
-            DhisService.loadData(context);
+            try {
+                DhisService.loadData(context);
+            }
+            catch(Exception ex){
+                Log.d("BUG","error load data");
+                ex.printStackTrace();
+            }
         } catch (Exception ex) {
-            Log.e(TAG, "pull: " + ex.getLocalizedMessage());
+            Log.e(TAG, "pull failed: " + ex.getLocalizedMessage());
             unregister();
             postException(ex);
         }
@@ -188,10 +186,14 @@ public class PullController {
                     }
 
                     //Ok
+                    if(ProgressActivity.active)
                     wipeDatabase();
+                    if(ProgressActivity.active)
                     convertFromSDK();
                     postFinish();
-                    Log.d(TAG, "PULL process...OK");
+                    if(ProgressActivity.active) {
+                        Log.d(TAG, "PULL process...OK");
+                    }
                 } catch (Exception ex) {
                     Log.e(TAG, "onLoadMetadataFinished: " + ex.getLocalizedMessage());
                     postException(ex);
@@ -236,7 +238,9 @@ public class PullController {
 
         //One shared converter to match parents within the hierarchy
         ConvertFromSDKVisitor converter = new ConvertFromSDKVisitor();
+        if(ProgressActivity.active)
         convertMetaData(converter);
+        if(ProgressActivity.active)
         convertDataValues(converter);
 
     }
@@ -268,7 +272,6 @@ public class PullController {
                 optionSetExtended.accept(converter);
             }
         }
-
         if(ProgressActivity.active) {
             //OrganisationUnits
             postProgress(context.getString(R.string.progress_pull_preparing_orgs));

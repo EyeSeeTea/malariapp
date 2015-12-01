@@ -79,7 +79,15 @@ public class ProgressActivity extends Activity {
      * Num of expected steps while pushing
      */
     private static final int MAX_PUSH_STEPS=4;
-    public static Boolean active;
+    /**
+     * Used for control new steps
+     */
+    public static Boolean active=false;
+
+    /**
+     * Used for control autopull from login
+     */
+    public static Boolean cancelled=false;
 
     ProgressBar progressBar;
     TextView textView;
@@ -89,9 +97,15 @@ public class ProgressActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_progress);
-        active=true;
+        cancelled = false;
+        active = true;
+        if(isAPushWithoutPull()) {
+            annotateFirstPull(true);
+        }
+        else
+            annotateFirstPull(false);
         prepareUI();
-        annotateFirstPull(false);
+
         final Button button = (Button) findViewById(R.id.cancelPullButton);
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -101,6 +115,7 @@ public class ProgressActivity extends Activity {
     }
 
     private void cancellPull() {
+        cancelled=true;
         active = false;
         step(getBaseContext().getResources().getString(R.string.cancellingPull));
     }
@@ -115,7 +130,10 @@ public class ProgressActivity extends Activity {
     @Override
     public void onPause() {
         super.onPause();
-        Dhis2Application.bus.unregister(this);
+        try {
+            Dhis2Application.bus.unregister(this);
+            }catch(Exception e){e.printStackTrace();}
+        finishAndGo(LoginActivity.class);
     }
 
     private void prepareUI(){
@@ -222,15 +240,18 @@ public class ProgressActivity extends Activity {
 
         //Annotate pull is done
         if(!isAPush) {
+            //If is not active, we need restart the process
+            if(!active) {
+                try{Dhis2Application.bus.unregister(this);}
+                catch(Exception e){}
+                annotateFirstPull(false);
+                finishAndGo(LoginActivity.class);
+            }
             annotateFirstPull(true);
-        }
-
-
-        //If is not active, we need restart the process
-        if(!active) {
-            annotateFirstPull(false);
             finishAndGo(LoginActivity.class);
         }
+
+
         else {
 
             //Show final step -> done
@@ -272,15 +293,18 @@ public class ProgressActivity extends Activity {
 
         //Pull
         if(!isAPush){
+            Log.d("Bug","pullsucess");
             return R.string.dialog_pull_success;
         }
 
         //Push before pull
         if(hasAPullAfterPush()){
+            Log.d("Bug","beforepullsucess with pull");
             return R.string.dialog_push_before_pull_success;
         }
 
         //Push (single)
+        Log.d("Bug","pull");
         return R.string.dialog_push_success;
     }
 
@@ -306,6 +330,23 @@ public class ProgressActivity extends Activity {
         //Not a pull -> is a Push
         return (i!=null && i.getIntExtra(TYPE_OF_ACTION,ACTION_PULL)!=ACTION_PULL);
     }
+
+    /**
+     * Tells if is only a push
+     * @return
+     */
+    private boolean isAPushWithoutPull() {
+        //A push before pull
+        if(pullAfterPushInProgress){
+            return false;
+        }
+
+        //Check intent params
+        Intent i=getIntent();
+        //Not a pull -> is a Push
+        return (i!=null && i.getIntExtra(TYPE_OF_ACTION,ACTION_PUSH)==ACTION_PUSH);
+    }
+
 
     /**
      * Tells is the intent requires a Pull after the push is done
