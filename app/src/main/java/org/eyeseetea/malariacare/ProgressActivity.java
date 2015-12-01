@@ -125,7 +125,12 @@ public class ProgressActivity extends Activity {
     @Override
     public void onResume() {
         super.onResume();
+        try {
         Dhis2Application.bus.register(this);
+        }catch(Exception e){
+            Dhis2Application.bus.unregister(this);
+            Dhis2Application.bus.register(this);
+        }
         launchAction();
     }
 
@@ -244,40 +249,38 @@ public class ProgressActivity extends Activity {
                 annotateFirstPull(false);
                 finishAndGo(LoginActivity.class);
             }
-
             annotateFirstPull(true);
-            finishAndGo(LoginActivity.class);
         }
-        else {
-            //Show final step -> done
-            step(getString(R.string.progress_pull_done));
 
-            String title=getDialogTitle(isAPush);
+        //Show final step -> done
+        step(getString(R.string.progress_pull_done));
 
-            final int msg=getDoneMessage();
+        String title=getDialogTitle(isAPush);
 
-            //Show message and go on -> pull or single push = dashboard | push before pull = start pull
-            new AlertDialog.Builder(this)
-                    .setCancelable(false)
-                    .setTitle(title)
-                    .setMessage(msg)
-                    .setNeutralButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface arg0, int arg1) {
+        final int msg=getDoneMessage();
 
-                            //Pull or Push(single)
-                            if (msg == R.string.dialog_pull_success || msg == R.string.dialog_push_success) {
-                                finishAndGo(DashboardActivity.class);
-                                return;
-                            } else {
-                                //Start pull after push
-                                pullAfterPushInProgress = true;
-                                launchPull();
-                                return;
-                            }
+        //Show message and go on -> pull or single push = dashboard | push before pull = start pull
+        new AlertDialog.Builder(this)
+                .setCancelable(false)
+                .setTitle(title)
+                .setMessage(msg)
+                .setNeutralButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface arg0, int arg1) {
+                        //Pull or Push(single)
+                        if (msg == R.string.dialog_pull_success || msg == R.string.dialog_push_success) {
+                            try {
+                                Dhis2Application.bus.unregister(this);
+                            } catch (Exception e){}
+                            finishAndGo(DashboardActivity.class);
+                            return;
+                        } else {
+                            //Start pull after push
+                            pullAfterPushInProgress = true;
+                            launchPull();
+                            return;
                         }
-                    }).create().show();
-        }
-
+                    }
+                }).create().show();
     }
 
     /**
