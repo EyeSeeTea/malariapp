@@ -115,9 +115,11 @@ public class ProgressActivity extends Activity {
     }
 
     private void cancellPull() {
-        cancelled=true;
-        active = false;
-        step(getBaseContext().getResources().getString(R.string.cancellingPull));
+        if(active) {
+            cancelled = true;
+            active = false;
+            step(getBaseContext().getResources().getString(R.string.cancellingPull));
+        }
     }
 
     @Override
@@ -232,11 +234,6 @@ public class ProgressActivity extends Activity {
      */
     private void showAndMoveOn() {
         boolean isAPush=isAPush();
-        String title=getDialogTitle(isAPush);
-
-        final int msg=getDoneMessage();
-
-
 
         //Annotate pull is done
         if(!isAPush) {
@@ -247,15 +244,17 @@ public class ProgressActivity extends Activity {
                 annotateFirstPull(false);
                 finishAndGo(LoginActivity.class);
             }
+
             annotateFirstPull(true);
             finishAndGo(LoginActivity.class);
         }
-
-
         else {
-
             //Show final step -> done
             step(getString(R.string.progress_pull_done));
+
+            String title=getDialogTitle(isAPush);
+
+            final int msg=getDoneMessage();
 
             //Show message and go on -> pull or single push = dashboard | push before pull = start pull
             new AlertDialog.Builder(this)
@@ -269,11 +268,12 @@ public class ProgressActivity extends Activity {
                             if (msg == R.string.dialog_pull_success || msg == R.string.dialog_push_success) {
                                 finishAndGo(DashboardActivity.class);
                                 return;
+                            } else {
+                                //Start pull after push
+                                pullAfterPushInProgress = true;
+                                launchPull();
+                                return;
                             }
-
-                            //Start pull after push
-                            pullAfterPushInProgress = true;
-                            launchPull();
                         }
                     }).create().show();
         }
@@ -293,18 +293,15 @@ public class ProgressActivity extends Activity {
 
         //Pull
         if(!isAPush){
-            Log.d("Bug","pullsucess");
             return R.string.dialog_pull_success;
         }
 
         //Push before pull
         if(hasAPullAfterPush()){
-            Log.d("Bug","beforepullsucess with pull");
             return R.string.dialog_push_before_pull_success;
         }
 
         //Push (single)
-        Log.d("Bug","pull");
         return R.string.dialog_push_success;
     }
 
