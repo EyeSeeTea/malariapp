@@ -30,9 +30,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import org.eyeseetea.malariacare.R;
-import org.eyeseetea.malariacare.database.feedback.CompositeScoreFeedback;
-import org.eyeseetea.malariacare.database.feedback.Feedback;
-import org.eyeseetea.malariacare.database.feedback.QuestionFeedback;
+import org.eyeseetea.malariacare.database.utils.feedback.CompositeScoreFeedback;
+import org.eyeseetea.malariacare.database.utils.feedback.Feedback;
+import org.eyeseetea.malariacare.database.utils.feedback.QuestionFeedback;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 import org.eyeseetea.malariacare.network.CustomParser;
 

@@ -28,6 +28,8 @@ import com.raizlabs.android.dbflow.sql.language.Select;
 import com.raizlabs.android.dbflow.structure.BaseModel;
 
 import org.eyeseetea.malariacare.database.AppDatabase;
+import org.eyeseetea.malariacare.database.iomodules.dhis.exporter.IConvertToSDKVisitor;
+import org.eyeseetea.malariacare.database.iomodules.dhis.exporter.VisitableToSDK;
 
 import java.util.List;
 
@@ -81,6 +83,14 @@ public class User extends BaseModel {
     public List<Survey> getSurveys(){
         return new Select().from(Survey.class)
                 .where(Condition.column(Survey$Table.USER_ID_USER).eq(this.getId_user())).queryList();
+    }
+
+    public static User getLoggedUser(){
+        // for the moment we return just the first entry assuming there will be only one entry,but in the future we will have to tag the logged user
+        List<User> users = new Select().all().from(User.class).queryList();
+        if (users != null && users.size() != 0)
+            return users.get(0);
+        return null;
     }
 
     @Override

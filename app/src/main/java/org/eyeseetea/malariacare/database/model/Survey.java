@@ -34,6 +34,8 @@ import com.raizlabs.android.dbflow.sql.language.Select;
 import com.raizlabs.android.dbflow.structure.BaseModel;
 
 import org.eyeseetea.malariacare.database.AppDatabase;
+import org.eyeseetea.malariacare.database.iomodules.dhis.exporter.IConvertToSDKVisitor;
+import org.eyeseetea.malariacare.database.iomodules.dhis.exporter.VisitableToSDK;
 import org.eyeseetea.malariacare.database.utils.SurveyAnsweredRatio;
 import org.eyeseetea.malariacare.database.utils.SurveyAnsweredRatioCache;
 import org.eyeseetea.malariacare.utils.Constants;
@@ -42,7 +44,7 @@ import java.util.Date;
 import java.util.List;
 
 @Table(databaseName = AppDatabase.NAME)
-public class Survey extends BaseModel {
+public class Survey extends BaseModel implements VisitableToSDK {
     public static final float MAX_AMBER = 80f;
     public static final float MAX_RED = 50f;
 
@@ -172,7 +174,7 @@ public class Survey extends BaseModel {
         //The main score is only return from a query 1 time
         if(this.mainScore==null){
             Score score=getScore();
-            this.mainScore=(score==null)?null:score.getScore();
+            this.mainScore=(score==null)?0f:score.getScore();
         }
         return mainScore;
     }
@@ -182,13 +184,11 @@ public class Survey extends BaseModel {
     }
 
     public void saveMainScore(){
-
-        //No mainScore nothing to save
-        if(this.mainScore==null){
-            return;
+        Float valScore=0f;
+        if(mainScore!=null){
+            valScore=mainScore;
         }
-
-        Score score=new Score(this,"",this.mainScore);
+        Score score=new Score(this,"",valScore);
         score.save();
     }
 
@@ -467,6 +467,11 @@ public class Survey extends BaseModel {
                 .limit(String.valueOf(limit))
                 .orderBy(Survey$Table.EVENTDATE)
                 .orderBy(Survey$Table.ORGUNIT_ID_ORG_UNIT).queryList();
+    }
+
+    @Override
+    public void accept(IConvertToSDKVisitor IConvertToSDKVisitor) throws Exception{
+        IConvertToSDKVisitor.visit(this);
     }
 
     @Override

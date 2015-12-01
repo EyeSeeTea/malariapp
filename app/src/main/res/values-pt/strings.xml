@@ -61,6 +61,7 @@
     <string name="create_info_ok">Criar avaliação</string>
     <string name="create_info_organization_unit">Unidade da Organização – Unid. Org.</string>
     <string name="create_info_survey">Inquérito</string>
+    <string name="create_info_zone">Zona</string>
 
     <!-- assessment -->
     <string name="assessment_title_facility_date">Unidade de Saúde/Inquérito</string>
@@ -70,7 +71,7 @@
     <string name="assessment_sent_score">Ponto</string>
     <string name="assessment_info_delete">Apagar</string>
     <string name="assessment_title_header">Avaliação activa</string>
-    <string name="assessment_sent_title_header">Avaliação enviado</string>
+    <string name="assessment_sent_title_header">Avaliação anterior(es)</string>
 
     <!-- feedback -->
     <!-- XXX Should it be replaced by 'assessment_title_facility_date'?-->
@@ -215,4 +216,23 @@
     <string name="dialog_info_push_ignored">Ignorado</string>
     <string name="dialog_info_push_stats">Os dados enviados para o servidor. Resultados:</string>
     <string name="dashboard_tip_pie_chart">Qualidade dos cuidados (com base na última avaliação)</string>
+    <string name="dialog_pull_error">Erro ao tentar puxar os metadados de dhis servidor</string>
+    <string name="settings_menu_pull">Metadados de atualização</string>
+    <string name="dialog_pull_success">Dhis metadados puxado com êxito a partir do servidor</string>
+    <string name="dialog_title_pull_response">Pull status</string>
+    <string name="progress_pull_connecting" >Conectando-se a servidor  DHIS ...</string>
+    <string name="progress_pull_downloading">Metadados actualização (isso pode levar alguns minutos) ...</string>
+    <string name="progress_pull_preparing_program">Carregando programas ...</string>
+    <string name="progress_pull_preparing_answers">Carregando respostas ...</string>
+    <string name="progress_pull_preparing_orgs">Carregando organizações ...</string>
+    <string name="progress_pull_questions">Carregando perguntas (isso pode levar alguns minutos) ...</string>
+    <string name="progress_pull_surveys">Carregando inquéritos ...</string>
+    <string name="progress_pull_done">Feito</string>
+    <string name="dialog_push_error">Erro ao tentar enviar dados para dhis servidor</string>
+    <string name="progress_push_posting_survey">Empurrando dados do inquérito ao servidor ...</string>
+    <string name="progress_push_preparing_survey">Preparando pesquisa para empurrar ...</string>
+    <string name="progress_push_updating_survey">Atualização empurrou dados da pesquisa ...</string>
+    <string name="dialog_push_success">Pesquisa empurrou com êxito para o servidor dhis</string>
+    <string name="progress_push_no_survey">Nenhuma pesquisa constatou para empurrar</string>
+    <string name="dialog_push_before_pull_success">Pesquisa empurrou com êxito para o servidor dhis, começando a puxar metadados</string>
 </resources>

@@ -19,6 +19,8 @@
 
 package org.eyeseetea.malariacare.database.model;
 
+import android.util.Log;
+
 import com.raizlabs.android.dbflow.annotation.Column;
 import com.raizlabs.android.dbflow.annotation.ForeignKey;
 import com.raizlabs.android.dbflow.annotation.ForeignKeyReference;
@@ -30,6 +32,8 @@ import com.raizlabs.android.dbflow.sql.language.Select;
 import com.raizlabs.android.dbflow.structure.BaseModel;
 
 import org.eyeseetea.malariacare.database.AppDatabase;
+import org.eyeseetea.malariacare.database.iomodules.dhis.exporter.IConvertToSDKVisitor;
+import org.eyeseetea.malariacare.database.iomodules.dhis.exporter.VisitableToSDK;
 
 import java.util.List;
 
@@ -37,7 +41,19 @@ import java.util.List;
  * Created by Jose on 25/05/2015.
  */
 @Table(databaseName = AppDatabase.NAME)
+
 public class QuestionRelation extends BaseModel {
+
+    private static final String TAG = ".QuestionRelation";
+    /**
+     * Constant that reflects a parent child relationship
+     */
+    public static final int PARENT_CHILD=1;
+    /**
+     * Constant that reflects a match relationship
+     */
+    public static final int MATCH=0;
+
     @Column
     @PrimaryKey(autoincrement = true)
     long id_question_relation;
@@ -53,15 +69,6 @@ public class QuestionRelation extends BaseModel {
 
     List<Match> matches;
 
-    /**
-     * Constant that reflects a parent child relationship
-     */
-    public static final int PARENT_CHILD=1;
-    /**
-     * Constant that reflects a match relationship
-     */
-    public static final int MATCH=0;
-
     @OneToMany(methods = {OneToMany.Method.SAVE, OneToMany.Method.DELETE}, variableName = "matches")
     public List<Match> getMatches() {
         //if (this.children == null){
@@ -71,8 +78,6 @@ public class QuestionRelation extends BaseModel {
         //}
         return this.matches;
     }
-
-
 
     public QuestionRelation(){};
 
@@ -103,6 +108,25 @@ public class QuestionRelation extends BaseModel {
 
     public void setOperation(int operation) {
         this.operation = operation;
+    }
+
+    public void createMatchFromQuestions(List<Question> children){
+        if (children.size() != 2){
+            Log.e(TAG, "createMatchFromQuestions(): children must be 2. Match not created");
+            return;
+        }
+        Match match;
+        for (Option optionA : children.get(0).getAnswer().getOptions()) {
+            for (Option optionB : children.get(1).getAnswer().getOptions()) {
+                if(optionA.getFactor().equals(optionB.getFactor())){
+                    //Save all optiona factor optionb factor with the same match
+                    match = new Match(this);
+                    match.save();
+                    new QuestionOption(optionA, children.get(0), match).save();
+                    new QuestionOption(optionB, children.get(1), match).save();
+                }
+            }
+        }
     }
 
     @Override

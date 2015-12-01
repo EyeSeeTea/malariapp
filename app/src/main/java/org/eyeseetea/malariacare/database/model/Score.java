@@ -27,6 +27,8 @@ import com.raizlabs.android.dbflow.annotation.Table;
 import com.raizlabs.android.dbflow.structure.BaseModel;
 
 import org.eyeseetea.malariacare.database.AppDatabase;
+import org.eyeseetea.malariacare.database.iomodules.dhis.exporter.IConvertToSDKVisitor;
+import org.eyeseetea.malariacare.database.iomodules.dhis.exporter.VisitableToSDK;
 
 /**
  * Created by adrian on 14/02/15.
@@ -90,5 +92,35 @@ public class Score extends BaseModel {
 
     public void setScore(Float score) {
         this.score = score;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Score)) return false;
+
+        Score score = (Score) o;
+
+        if (id_score != score.id_score) return false;
+        if (!survey.equals(score.survey)) return false;
+        return !(uid != null ? !uid.equals(score.uid) : score.uid != null);
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = (int) (id_score ^ (id_score >>> 32));
+        result = 31 * result + survey.hashCode();
+        result = 31 * result + (uid != null ? uid.hashCode() : 0);
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Score{" +
+                "id=" + id_score +
+                ", survey=" + survey +
+                ", uid='" + uid + '\'' +
+                '}';
     }
 }

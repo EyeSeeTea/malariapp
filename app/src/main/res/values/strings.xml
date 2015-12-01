@@ -72,6 +72,8 @@
     <string name="create_info_organization_unit">Organisation Unit</string>
     <string name="create_info_survey">Survey</string>
     <string name="create_info_tabs_group">Tab Group</string>
+    <string name="create_info_zone">Zone</string>
+
 
     <!-- assessment -->
     <string name="assessment_title_facility_date">Facility / Survey</string>
@@ -81,7 +83,7 @@
     <string name="assessment_sent_score">Score</string>
     <string name="assessment_info_delete">Delete</string>
     <string name="assessment_title_header">Active Assessment(s)</string>
-    <string name="assessment_sent_title_header">Sent Assessment(s)</string>
+    <string name="assessment_sent_title_header">Previous Assessment(s)</string>
 
     <!-- feedback -->
     <!-- XXX Should it be replaced by 'assessment_title_facility_date'?-->
@@ -263,5 +265,26 @@
     <item name="dhis_password" type="string" translatable="false">dhis_password</item>
     <item name="location_required" type="string" translatable="false">location_required</item>
     <string name="dashboard_tip_pie_chart">Quality of care (based on last assessment)</string>
+    <string name="dialog_pull_error">Error while trying to pull metadata from dhis server</string>
+    <string name="settings_menu_pull">Refresh metadata</string>
+    <string name="dialog_pull_success">Dhis metadata successfully pulled from server</string>
+    <string name="dialog_title_pull_response">Pull status</string>
+    <string name="progress_pull_connecting" >Connecting to DHIS server...</string>
+    <string name="progress_pull_downloading">Refreshing metadata (this might take a few minutes) ...</string>
+    <string name="progress_pull_preparing_program">Loading programs ...</string>
+    <string name="progress_pull_preparing_answers">Loading answers ...</string>
+    <string name="progress_pull_preparing_orgs">Loading organisations ...</string>
+    <string name="progress_pull_questions">Loading questions (this might take a few minutes) ...</string>
+    <string name="progress_pull_surveys">Loading surveys ...</string>
+    <string name="progress_pull_done">Done</string>
+    <item name="pull_metadata" type="string" translatable="false">pull_metadata</item>
+
+    <string name="dialog_push_error">Error while trying to push data to dhis server</string>
+    <string name="dialog_push_success">Survey successfully pushed to dhis server</string>
+    <string name="progress_push_preparing_survey">Preparing survey for pushing ...</string>
+    <string name="progress_push_posting_survey">Pushing survey data to server...</string>
+    <string name="progress_push_updating_survey">Updating pushed survey data...</string>
+    <string name="progress_push_no_survey">No survey found for pushing</string>
+    <string name="dialog_push_before_pull_success">Surveys successfully pushed to dhis server, starting to pull metadata</string>
 
 </resources>

@@ -1,10 +1,12 @@
 buildscript {
     repositories {
         maven { url 'https://maven.fabric.io/public' }
+        mavenCentral()
     }
 
     dependencies {
         classpath 'io.fabric.tools:gradle:1.+'
+        classpath 'com.github.dcendents:android-maven-plugin:1.2'
     }
 }
 apply plugin: 'com.android.application'
@@ -15,19 +17,21 @@ repositories {
 
 }
 
-apply plugin: 'com.neenbedankt.android-apt'
+//apply plugin: 'com.neenbedankt.android-apt'
 
 android {
     signingConfigs {
+        config {
+        }
     }
     compileSdkVersion 21
-    buildToolsVersion "22.0.1"
+    buildToolsVersion "21.0.1"
     defaultConfig {
         applicationId 'org.eyeseetea.malariacare'
         minSdkVersion 15
         targetSdkVersion 21
-        versionCode 12
-        versionName "12.0"
+        versionCode 13
+        versionName "13.0"
         multiDexEnabled true
         /*dexOptions {
             jumboMode = true
@@ -35,6 +39,7 @@ android {
             javaMaxHeapSize "4g"
         }*/
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        signingConfig signingConfigs.config
     }
     buildTypes {
         release {
@@ -47,68 +52,48 @@ android {
     }
     //TODO This config is related to a known issue: http://stackoverflow.com/questions/20827885/android-studio-0-4-duplicate-files-copied-in-apk-meta-inf-license-txt
     packagingOptions {
-        exclude  'LICENSE.txt'
+        exclude 'LICENSE.txt'
+        //FIXME: This has been automatically suggested by AndroidStudio while sdk integration
+        exclude 'META-INF/DEPENDENCIES.txt'
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/NOTICE.txt'
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INF/notice.txt'
+        exclude 'META-INF/license.txt'
+        exclude 'META-INF/dependencies.txt'
+        exclude 'META-INF/LGPL2.1'
     }
     productFlavors {
-        edsGhana {
+        eds {
             applicationId "org.eyeseetea.malariacare.eds"
-            versionName "12.0-eds-ghana"
+            versionName "13.0-eds"
             minSdkVersion 15
             targetSdkVersion 21
         }
-        edsMalawi {
-            applicationId "org.eyeseetea.malariacare.eds"
-            versionName "12.0-eds-malawi"
-            minSdkVersion 15
-            targetSdkVersion 21
-        }
-        edsMozambique {
-            applicationId "org.eyeseetea.malariacare.eds"
-            versionName "12.0-eds-mozambique"
-            minSdkVersion 15
-            targetSdkVersion 21
-        }
-        edsTanzania {
-            applicationId "org.eyeseetea.malariacare.eds"
-            versionName "12.0-eds-tanzania"
-            minSdkVersion 15
-            targetSdkVersion 21
-        }
-        edsZambia {
-            applicationId "org.eyeseetea.malariacare.eds"
-            versionName "12.0-eds-zambia"
-            minSdkVersion 15
-            targetSdkVersion 21
-        }
-        hnqisCongoICM {
-            applicationId "org.eyeseetea.malariacare.hnqis"
-            versionName "12.0-hnqis-congo-icm"
-            minSdkVersion 15
-            targetSdkVersion 21
-        }
-        hnqisKenyaSF {
-            applicationId "org.eyeseetea.malariacare.hnqis"
-            versionName "12.0-hnqis-kenya-sf"
-            minSdkVersion 15
-            targetSdkVersion 21
-        }
-        hnqisTanzaniaSF {
-            applicationId "org.eyeseetea.malariacare.hnqis"
-            versionName "12.0-hnqis-tanzania-sf"
-            minSdkVersion 15
-            targetSdkVersion 21
-        }
-        hnqisNigeriaSF {
-            applicationId "org.eyeseetea.malariacare.hnqis"
-            versionName "12.0-hnqis-nigeria-sf"
+        hnqis {
+            applicationId "org.eyeseetea.malariacare.hnqispull"
+            versionName "13.0-hnqis"
             minSdkVersion 15
             targetSdkVersion 21
         }
     }
+    lintOptions {
+        disable 'RtlSymmetry', 'RtlHardcoded'
+    }
+
 }
 
 dependencies {
     // App dependencies
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    compile project(':sdk:app')
+    apply plugin: 'android-apt'
+    apply plugin: 'com.github.dcendents.android-maven'
+    apt project(':DBFlowORM:DBFlow-Compiler')
+    compile project(':DBFlowORM:DBFlow-Core')
+    compile project(':DBFlowORM:DBFlow')
     compile 'com.android.support:support-v4:21.2.1'
     compile 'com.android.support:appcompat-v7:21.2.1'
     compile 'com.android.support:support-annotations:21.2.1'
@@ -117,9 +102,10 @@ dependencies {
     compile 'com.google.android.gms:play-services:8.1.0'
     compile 'com.google.guava:guava:18.0'
     compile 'com.squareup.okhttp:okhttp:2.2.0'
-    apt 'com.raizlabs.android:DBFlow-Compiler:2.2.1'
-    compile 'com.raizlabs.android:DBFlow-Core:2.2.1'
-    compile 'com.raizlabs.android:DBFlow:2.2.1'
+//    apt 'com.raizlabs.android:DBFlow-Compiler:2.2.1'
+//    compile 'com.raizlabs.android:DBFlow-Core:2.2.1'
+//    compile 'com.raizlabs.android:DBFlow:2.2.1'
+//    compile project(':libs')
     // Unit testing dependencies
     testCompile 'junit:junit:4.12'
     // Instrumented tests dependencies
@@ -131,3 +117,6 @@ dependencies {
         transitive = true;
     }
 }
+
+
+

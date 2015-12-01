@@ -19,6 +19,8 @@
 
 package org.eyeseetea.malariacare.database.model;
 
+import android.util.Log;
+
 import com.raizlabs.android.dbflow.annotation.Column;
 import com.raizlabs.android.dbflow.annotation.ForeignKey;
 import com.raizlabs.android.dbflow.annotation.ForeignKeyReference;
@@ -34,6 +36,8 @@ import com.raizlabs.android.dbflow.sql.language.Where;
 import com.raizlabs.android.dbflow.structure.BaseModel;
 
 import org.eyeseetea.malariacare.database.AppDatabase;
+import org.eyeseetea.malariacare.database.iomodules.dhis.exporter.IConvertToSDKVisitor;
+import org.eyeseetea.malariacare.database.iomodules.dhis.exporter.VisitableToSDK;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.utils.Constants;
@@ -45,26 +49,6 @@ import java.util.List;
 
 @Table(databaseName = AppDatabase.NAME)
 public class Question extends BaseModel {
-
-    /**
-     * Sql query that counts required questions in a program (required for % stats)
-     */
-    /*private static final String LIST_REQUIRED_BY_PROGRAM =
-            "select q.* from question q"+
-            " left join answer a on q.answer=a.id"+
-            " left join header h on q.header=h.id"+
-            " left join tab t on h.tab=t.id"+
-            " left join program p on t.program=p.id"+
-            " where q.question=0"+
-            " and a.output<>"+ Constants.NO_ANSWER+
-            " and p.id=?";*/
-
-    /*private static final String LIST_ALL_BY_PROGRAM =
-            "select q.* from question q"+
-            " left join header h on q.header=h.id"+
-            " left join tab t on h.tab=t.id"+
-            " left join program p on t.program=p.id"+
-            " and p.id=? order by t.orderpos, q.orderpos";*/
 
     @Column
     @PrimaryKey(autoincrement = true)
@@ -310,43 +294,35 @@ public class Question extends BaseModel {
         if (this.children == null) {
 
             //No matches no children
+            if (getId_question() == 74){
+                Log.d("Question", "testing");
+            }
             List<Match> matches = getMatches();
             if (matches.size() == 0) {
                 this.children = new ArrayList<>();
                 return this.children;
             }
 
-            //Prepare a list of match_ids, (in operator not working in DBFlow)
-            List<Long> matchesIds = new ArrayList();
-            String questionMarks = "(";
-            for (int i = 0; i < matches.size(); i++) {
-                matchesIds.add(matches.get(i).getId_match());
-                questionMarks += "?";
-                if (i == (matches.size() - 1)) {
-                    questionMarks += ")";
-                } else {
-                    questionMarks += ",";
-                }
+            Iterator<Match> matchesIterator = matches.iterator();
+            In in = Condition.column(ColumnAlias.columnWithTable("m", Match$Table.ID_MATCH)).in(Long.toString(matchesIterator.next().getId_match()));
+            while (matchesIterator.hasNext()){
+                in.and(Long.toString(matchesIterator.next().getId_match()));
             }
 
             //Select question from questionrelation where operator=1 and id_match in (..)
-            Where<Question> where = new Select().from(Question.class).as("q")
+            return new Select().from(Question.class).as("q")
                     //Question + QuestioRelation
                     .join(QuestionRelation.class, Join.JoinType.LEFT).as("qr")
                     .on(Condition.column(ColumnAlias.columnWithTable("q", Question$Table.ID_QUESTION))
                             .eq(ColumnAlias.columnWithTable("qr", QuestionRelation$Table.QUESTION_ID_QUESTION)))
                             //+Match
                     .join(Match.class, Join.JoinType.LEFT).as("m")
-                    .on(
-                            Condition.column(ColumnAlias.columnWithTable("qr", QuestionRelation$Table.ID_QUESTION_RELATION))
+                    .on(Condition.column(ColumnAlias.columnWithTable("qr", QuestionRelation$Table.ID_QUESTION_RELATION))
                                     .eq(ColumnAlias.columnWithTable("m", Match$Table.QUESTIONRELATION_ID_QUESTION_RELATION)))
                             //Parent child relationship
-                    .where()
+                    .where(in)
                             //In clause
-                    .whereClause("m.id_match in " + questionMarks, matchesIds.toArray(new Long[matchesIds.size()]))
-                    .and(Condition.column(ColumnAlias.columnWithTable("qr", QuestionRelation$Table.OPERATION)).eq(QuestionRelation.PARENT_CHILD));
-
-            this.children = where.queryList();
+                    .and(Condition.column(ColumnAlias.columnWithTable("qr", QuestionRelation$Table.OPERATION)).eq(QuestionRelation.PARENT_CHILD)).queryList();
         }
         return this.children;
     }

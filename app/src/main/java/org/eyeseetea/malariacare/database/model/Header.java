@@ -30,6 +30,8 @@ import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.structure.BaseModel;
 
 import org.eyeseetea.malariacare.database.AppDatabase;
+import org.eyeseetea.malariacare.database.iomodules.dhis.exporter.IConvertToSDKVisitor;
+import org.eyeseetea.malariacare.database.iomodules.dhis.exporter.VisitableToSDK;
 
 import java.util.List;
 
@@ -53,9 +55,6 @@ public class Header extends BaseModel{
     Tab tab;
 
     List<Question> questions;
-
-//    @Ignore
-//    List<Question> _parentQuestions;
 
     public Header() {
     }

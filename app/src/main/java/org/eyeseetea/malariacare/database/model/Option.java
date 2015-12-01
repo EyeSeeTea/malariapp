@@ -30,6 +30,8 @@ import com.raizlabs.android.dbflow.sql.language.Select;
 import com.raizlabs.android.dbflow.structure.BaseModel;
 
 import org.eyeseetea.malariacare.database.AppDatabase;
+import org.eyeseetea.malariacare.database.iomodules.dhis.exporter.IConvertToSDKVisitor;
+import org.eyeseetea.malariacare.database.iomodules.dhis.exporter.VisitableToSDK;
 
 import java.util.List;
 
@@ -136,6 +138,16 @@ public class Option extends BaseModel {
     public List<Value> getValues(){
         return new Select().from(Value.class)
                 .where(Condition.column(Value$Table.OPTION_ID_OPTION).eq(this.getId_option())).queryList();
+    }
+
+    /**
+     * Returns a copy of this option
+     * @return
+     */
+    public Option copy(){
+        Option optionCopy=new Option(code,name,factor,answer);
+        optionCopy.save();
+        return optionCopy;
     }
 
     @Override

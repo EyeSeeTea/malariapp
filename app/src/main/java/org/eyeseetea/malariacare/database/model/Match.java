@@ -30,6 +30,8 @@ import com.raizlabs.android.dbflow.sql.language.Select;
 import com.raizlabs.android.dbflow.structure.BaseModel;
 
 import org.eyeseetea.malariacare.database.AppDatabase;
+import org.eyeseetea.malariacare.database.iomodules.dhis.exporter.IConvertToSDKVisitor;
+import org.eyeseetea.malariacare.database.iomodules.dhis.exporter.VisitableToSDK;
 
 import java.util.List;
 
@@ -50,6 +52,12 @@ public class Match extends BaseModel {
     QuestionRelation questionRelation;
 
     List<QuestionOption> questionOptions;
+
+    public Match(){}
+
+    public Match(QuestionRelation questionRelation){
+        setQuestionRelation(questionRelation);
+    }
 
     @OneToMany(methods = {OneToMany.Method.SAVE, OneToMany.Method.DELETE}, variableName = "questionOptions")
     public List<QuestionOption> getQuestionOptions() {

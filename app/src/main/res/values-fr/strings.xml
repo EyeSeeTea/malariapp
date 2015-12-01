@@ -61,6 +61,7 @@
     <string name="create_info_ok">Commencer Évaluation</string>
     <string name="create_info_organization_unit">Unité d\'organisation</string>
     <string name="create_info_survey">Enquête</string>
+    <string name="create_info_zone">Zone</string>
 
     <!-- assessment -->
     <string name="assessment_title_facility_date">Centre de santé / Date</string>
@@ -192,14 +193,14 @@
     <string name="dialog_info_push_ok">Les données du sondage a été poussé avec succès au serveur DHIS</string>
     <string name="dialog_info_push_bad_credentials">Identification incorrectes pour la poussée</string>
     <string name="assessment_sent_title_state">État</string>
-    <string name="assessment_sent_title_header">Evaluation(s) Envoyée(s)</string>
+    <string name="assessment_sent_title_header">Evaluation(s) antérieur(s)</string>
     <string name="assessment_sent_date">Date de remplissement</string>
     <string name="assessment_sent_score">But</string>
     <string name="dialog_error_push_uids">UID incorrects trouvés en push</string>
     <string name="dialog_error_push_no_location">Aucun emplacement disponible</string>
     <string name="dialog_error_push_no_location_and_required">Aucun emplacement disponible et il est un champ obligatoire</string>
     <string name="dialog_title_incorrect_org_unit">Org Unit erronées</string>
-    <string name="dialog_content_incorrect_org_unit"></string>
+    <string name="dialog_content_incorrect_org_unit">"S'il vous plaît sélectionner une unité d'organisation finale"</string>
     <string name="create_info_tabs_group">Tab Group</string>
     <string name="iqatab_info_note">Note: Slide rechecking should be carried out at the health facility during OTSS in the presence of the facility lab staff.  Slides should not be removed from the facility for this purpose.</string>
     <string name="settings_text_dhis_user">Utilisateur DHIS</string>
@@ -209,5 +210,24 @@
     <string name="dialog_info_push_ignored">Ignoré</string>
     <string name="dialog_info_push_stats">Les données téléchargées vers le serveur. Résultats:</string>
     <string name="dashboard_tip_pie_chart">La qualité des soins (basé sur la dernière évaluation)</string>
+    <string name="dialog_pull_error">Erreur en essayant de tirer des métadonnées à partir dhis serveur</string>
+    <string name="settings_menu_pull">Métadonnées rafraîchissement</string>
+    <string name="dialog_pull_success">Dhis métadonnées retiré avec succès de serveur</string>
+    <string name="dialog_title_pull_response">Pull status</string>
+    <string name="progress_pull_connecting" >La connexion à DHIS serveur ...</string>
+    <string name="progress_pull_downloading">Mise à jour des métadonnées (cela peut prendre quelques minutes) ...</string>
+    <string name="progress_pull_preparing_program">Programmes de chargement ...</string>
+    <string name="progress_pull_preparing_answers">Chargement des réponses ...</string>
+    <string name="progress_pull_preparing_orgs">Organisations de chargement ...</string>
+    <string name="progress_pull_questions">Chargement des questions (cela peut prendre quelques minutes) ...</string>
+    <string name="progress_pull_surveys">Enquêtes de chargement ...</string>
+    <string name="progress_pull_done">Terminé</string>
+    <string name="dialog_push_error">Erreur en essayant de pousser les données à dhis serveur</string>
+    <string name="progress_push_posting_survey">"Pousser les données d'enquête au serveur ..."</string>
+    <string name="progress_push_preparing_survey">"Préparation de l'enquête pour pousser ..."</string>
+    <string name="progress_push_updating_survey">"Mise à jour poussé données de l'enquête ..."</string>
+    <string name="dialog_push_success">Enquête poussé avec succès à dhis serveur</string>
+    <string name="progress_push_no_survey">Aucune enquête a révélé pour pousser</string>
+    <string name="dialog_push_before_pull_success">Enquête poussé avec succès à dhis serveur, de commencer à tirer des métadonnées</string>
 
 </resources>
