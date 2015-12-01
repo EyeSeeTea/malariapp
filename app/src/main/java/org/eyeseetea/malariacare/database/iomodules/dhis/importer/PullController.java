@@ -146,11 +146,10 @@ public class PullController {
                 DhisService.loadData(context);
             }
             catch(Exception ex){
-                Log.d("BUG","error load data");
                 ex.printStackTrace();
             }
         } catch (Exception ex) {
-            Log.e(TAG, "pull failed: " + ex.getLocalizedMessage());
+            Log.e(TAG, "pull: " + ex.getLocalizedMessage());
             unregister();
             postException(ex);
         }
