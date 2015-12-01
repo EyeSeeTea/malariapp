@@ -140,6 +140,16 @@ public class Option extends BaseModel {
                 .where(Condition.column(Value$Table.OPTION_ID_OPTION).eq(this.getId_option())).queryList();
     }
 
+    /**
+     * Returns a copy of this option
+     * @return
+     */
+    public Option copy(){
+        Option optionCopy=new Option(code,name,factor,answer);
+        optionCopy.save();
+        return optionCopy;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

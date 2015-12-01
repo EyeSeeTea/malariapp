@@ -64,6 +64,7 @@
     <string name="create_info_ok">Commencer Évaluation</string>
     <string name="create_info_organization_unit">Unité d\'organisation</string>
     <string name="create_info_survey">Enquête</string>
+    <string name="create_info_zone">Zone</string>
 
     <!-- assessment -->
     <string name="assessment_title_facility_date">Centre de santé / Date</string>

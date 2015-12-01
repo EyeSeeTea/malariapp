@@ -229,7 +229,6 @@ public class QuestionBuilder {
         }
     }
 
-
     /**
      * Save Question id_parent in Question
      *
