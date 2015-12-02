@@ -24,10 +24,13 @@ import android.content.Context;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.NumberPicker;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 
@@ -41,6 +44,7 @@ import org.eyeseetea.malariacare.database.model.Tab;
 import org.eyeseetea.malariacare.database.model.Value;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.ReadWriteDB;
+import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.layout.utils.AutoTabLayoutUtils;
 import org.eyeseetea.malariacare.utils.Constants;
@@ -175,7 +179,7 @@ public class AutoTabAdapter extends ATabAdapter {
         View rowView = null;
 
         final Object item = getItem(position);
-        Question question;
+        final Question question;
         AutoTabLayoutUtils.ViewHolder viewHolder = new AutoTabLayoutUtils.ViewHolder();
 
         if (item instanceof Question) {
@@ -193,16 +197,58 @@ public class AutoTabAdapter extends ATabAdapter {
                     rowView = AutoTabLayoutUtils.initialiseView(R.layout.label, parent, question, viewHolder, position, getInflater());
                     break;
                 case Constants.POSITIVE_INT:
-                    rowView = AutoTabLayoutUtils.initialiseView(R.layout.integer, parent, question, viewHolder, position, getInflater());
+                    rowView = AutoTabLayoutUtils.initialiseView(R.layout.numeric_picker, parent, question, viewHolder, position, getInflater());
+                    final NumberPicker numberPicker=(NumberPicker)rowView.findViewById(R.id.answer);
+                    //Without setMinValue, setMaxValue, setValue in this order, the setValue is not displayed in the screen.
+                    numberPicker.setMinValue(1);
+                    numberPicker.setMaxValue(99999);
+                    //get value
+                    String positiveIntValue = String.valueOf(numberPicker.getValue());
+                    numberPicker.setEnabled(false);
+                    numberPicker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
+                        @Override
+                        public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
+                            // do something here
+
+                        }
+                    });
+                    final Question numberQuestion=question;
+
                     //Add main component, set filters and listener
-                    ((CustomEditText) viewHolder.component).setFilters(new InputFilter[]{new InputFilter.LengthFilter(Constants.MAX_INT_CHARS),new MinMaxInputFilter(1, null)});
-                    ((CustomEditText) viewHolder.component).addTextChangedListener(new TextViewListener(false, question));
+                    ((NumberPicker) viewHolder.component).setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
+                        boolean viewCreated = false;
+
+                        @Override
+                        public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
+                            if (viewCreated) {
+                                ReadWriteDB.saveValuesText(numberQuestion, String.valueOf(newVal));
+                            } else {
+                                viewCreated = true;
+                            }
+                        }
+                    });
                     break;
                 case Constants.INT:
-                    rowView = AutoTabLayoutUtils.initialiseView(R.layout.integer, parent, question, viewHolder, position, getInflater());
+                    rowView = AutoTabLayoutUtils.initialiseView(R.layout.numeric_picker, parent, question, viewHolder, position, getInflater());
+                    final NumberPicker numberIntPicker=(NumberPicker)rowView.findViewById(R.id.answer);
+                    //Without setMinValue, setMaxValue, setValue in this order, the setValue is not displayed in the screen.
+                    numberIntPicker.setMinValue(1);
+                    numberIntPicker.setMaxValue(99999);
+                    final Question numberIntQuestion=question;
+
                     //Add main component, set filters and listener
-                    ((CustomEditText) viewHolder.component).setFilters(new InputFilter[]{new InputFilter.LengthFilter(Constants.MAX_INT_CHARS)});
-                    ((CustomEditText) viewHolder.component).addTextChangedListener(new TextViewListener(false, question));
+                    ((NumberPicker) viewHolder.component).setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
+                        boolean viewCreated = false;
+
+                        @Override
+                        public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
+                            if (viewCreated) {
+                                ReadWriteDB.saveValuesText(numberIntQuestion, String.valueOf(newVal));
+                            } else {
+                                viewCreated = true;
+                            }
+                        }
+                    });
                     break;
                 case Constants.DATE:
                     rowView = AutoTabLayoutUtils.initialiseView(R.layout.date, parent, question, viewHolder, position, getInflater());
@@ -270,10 +316,14 @@ public class AutoTabAdapter extends ATabAdapter {
         switch (question.getAnswer().getOutput()) {
             case Constants.DATE:
             case Constants.SHORT_TEXT:
-            case Constants.INT:
             case Constants.LONG_TEXT:
-            case Constants.POSITIVE_INT:
                 ((CustomEditText) viewHolder.component).setText(ReadWriteDB.readValueQuestion(question));
+                break;
+            case Constants.POSITIVE_INT:
+            case Constants.INT:
+                try {
+                    ((NumberPicker) viewHolder.component).setValue(Integer.valueOf(ReadWriteDB.readValueQuestion(question)));
+                }catch(Exception e){}
                 break;
             case Constants.DROPDOWN_LIST:
             case Constants.DROPDOWN_LIST_DISABLED:
