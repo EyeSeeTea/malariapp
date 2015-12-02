@@ -122,6 +122,7 @@ public class ProgressActivity extends Activity {
         try {
         Dhis2Application.bus.register(this);
         }catch(Exception e){
+            e.printStackTrace();
             Dhis2Application.bus.unregister(this);
             Dhis2Application.bus.register(this);
         }

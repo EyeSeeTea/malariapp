@@ -22,49 +22,18 @@ package org.eyeseetea.malariacare.database.iomodules.dhis.exporter;
 import android.content.Context;
 import android.util.Log;
 
-import com.raizlabs.android.dbflow.sql.language.Delete;
-import com.raizlabs.android.dbflow.sql.language.Select;
+
 import com.squareup.otto.Subscribe;
 
 import org.eyeseetea.malariacare.R;
-import org.eyeseetea.malariacare.database.iomodules.dhis.importer.ConvertFromSDKVisitor;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.SyncProgressStatus;
-import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.DataElementExtended;
-import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.EventExtended;
-import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.OptionSetExtended;
-import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.OrganisationUnitExtended;
-import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.ProgramExtended;
-import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.UserAccountExtended;
-import org.eyeseetea.malariacare.database.model.Answer;
-import org.eyeseetea.malariacare.database.model.CompositeScore;
-import org.eyeseetea.malariacare.database.model.Header;
-import org.eyeseetea.malariacare.database.model.Match;
-import org.eyeseetea.malariacare.database.model.Option;
-import org.eyeseetea.malariacare.database.model.OrgUnit;
-import org.eyeseetea.malariacare.database.model.OrgUnitLevel;
-import org.eyeseetea.malariacare.database.model.Program;
-import org.eyeseetea.malariacare.database.model.Question;
-import org.eyeseetea.malariacare.database.model.QuestionOption;
-import org.eyeseetea.malariacare.database.model.QuestionRelation;
-import org.eyeseetea.malariacare.database.model.Score;
 import org.eyeseetea.malariacare.database.model.Survey;
-import org.eyeseetea.malariacare.database.model.Tab;
-import org.eyeseetea.malariacare.database.model.TabGroup;
-import org.eyeseetea.malariacare.database.model.User;
-import org.eyeseetea.malariacare.database.model.Value;
 import org.hisp.dhis.android.sdk.controllers.DhisService;
-import org.hisp.dhis.android.sdk.controllers.LoadingController;
-import org.hisp.dhis.android.sdk.controllers.metadata.MetaDataController;
-import org.hisp.dhis.android.sdk.controllers.tracker.TrackerController;
 import org.hisp.dhis.android.sdk.job.NetworkJob;
 import org.hisp.dhis.android.sdk.persistence.Dhis2Application;
-import org.hisp.dhis.android.sdk.persistence.models.DataElement;
-import org.hisp.dhis.android.sdk.persistence.models.Event;
-import org.hisp.dhis.android.sdk.persistence.models.OptionSet;
-import org.hisp.dhis.android.sdk.persistence.models.OrganisationUnit;
 import org.hisp.dhis.android.sdk.persistence.preferences.ResourceType;
 
-import java.util.ArrayList;
+
 import java.util.List;
 
 /**
@@ -209,6 +178,7 @@ public class PushController {
      * @param ex
      */
     private void postException(Exception ex){
+        ex.printStackTrace();
         Dhis2Application.getEventBus().post(new SyncProgressStatus(ex));
     }
 
@@ -216,7 +186,12 @@ public class PushController {
      * Notifies that the pull is over
      */
     private void postFinish(){
-        Dhis2Application.getEventBus().post(new SyncProgressStatus());
+        try {
+            Dhis2Application.getEventBus().post(new SyncProgressStatus());
+        }
+        catch(Exception e){
+            e.printStackTrace();
+        }
     }
 
 

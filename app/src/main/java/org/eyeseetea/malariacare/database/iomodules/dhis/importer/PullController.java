@@ -51,6 +51,7 @@ import org.eyeseetea.malariacare.database.model.Tab;
 import org.eyeseetea.malariacare.database.model.TabGroup;
 import org.eyeseetea.malariacare.database.model.User;
 import org.eyeseetea.malariacare.database.model.Value;
+import org.eyeseetea.malariacare.database.utils.Session;
 import org.hisp.dhis.android.sdk.controllers.DhisService;
 import org.hisp.dhis.android.sdk.controllers.LoadingController;
 import org.hisp.dhis.android.sdk.controllers.metadata.MetaDataController;
@@ -105,7 +106,9 @@ public class PullController {
      * Unregister pull controller from bus events
      */
     private void unregister() {
-        Dhis2Application.bus.unregister(this);
+        try {
+            Dhis2Application.bus.unregister(this);
+        }catch(Exception e){}
     }
 
     /**
@@ -423,7 +426,15 @@ public class PullController {
      * Notifies that the pull is over
      */
     private void postFinish() {
-        Dhis2Application.getEventBus().post(new SyncProgressStatus());
+        //Fixme maybe it is not the best place to reload the logged user.(Without reload the user after pull, the user had diferent id and application crash).
+        User user = User.getLoggedUser();
+        Session.setUser(user);
+        try{
+            Dhis2Application.getEventBus().post(new SyncProgressStatus());
+        }
+        catch(Exception e){
+            e.printStackTrace();
+        }
     }
 
 
