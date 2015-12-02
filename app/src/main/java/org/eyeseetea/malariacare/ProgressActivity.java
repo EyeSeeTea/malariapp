@@ -99,7 +99,7 @@ public class ProgressActivity extends Activity {
         setContentView(R.layout.activity_progress);
         cancelled = false;
         active = true;
-        if(isOnlyOnePush()) {
+        if(isAPushWithoutPull()) {
             annotateFirstPull(true);
         }
         else
@@ -114,15 +114,6 @@ public class ProgressActivity extends Activity {
         });
     }
 
-    private void resetBus(){
-        try {
-            Dhis2Application.bus.register(this);
-        }catch(Exception e){
-            Dhis2Application.bus.unregister(this);
-            Dhis2Application.bus.register(this);
-        }
-    }
-
     private void cancellPull() {
         if(active) {
             cancelled = true;
@@ -134,7 +125,12 @@ public class ProgressActivity extends Activity {
     @Override
     public void onResume() {
         super.onResume();
-        resetBus();
+        try {
+        Dhis2Application.bus.register(this);
+        }catch(Exception e){
+            Dhis2Application.bus.unregister(this);
+            Dhis2Application.bus.register(this);
+        }
         launchAction();
     }
 
@@ -143,8 +139,7 @@ public class ProgressActivity extends Activity {
         super.onPause();
         try {
             Dhis2Application.bus.unregister(this);
-            }
-        catch(Exception e){e.printStackTrace();}
+            }catch(Exception e){e.printStackTrace();}
         finishAndGo(LoginActivity.class);
     }
 
@@ -340,7 +335,7 @@ public class ProgressActivity extends Activity {
      * Tells if is only a push
      * @return
      */
-    private boolean isOnlyOnePush() {
+    private boolean isAPushWithoutPull() {
         //A push before pull
         if(pullAfterPushInProgress){
             return false;
