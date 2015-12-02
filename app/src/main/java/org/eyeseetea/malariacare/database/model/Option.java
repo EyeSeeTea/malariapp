@@ -51,12 +51,16 @@ public class Option extends BaseModel {
     @Column
     Float factor;
     @Column
-    @ForeignKey(references = {@ForeignKeyReference(columnName = "id_answer",
-            columnType = Long.class,
-            foreignColumnName = "id_answer")},
-            saveForeignKeyModel = false)
+    Long id_answer;
+
+    /**
+     * Reference to parent answer (loaded lazily)
+     */
     Answer answer;
 
+    /**
+     * List of values that has choosen this option
+     */
     List<Value> values;
 
     public Option() {
@@ -65,14 +69,14 @@ public class Option extends BaseModel {
     public Option(String name, Float factor, Answer answer) {
         this.name = name;
         this.factor = factor;
-        this.answer = answer;
+        this.setAnswer(answer);
     }
 
     public Option(String code, String name, Float factor, Answer answer) {
         this.name = name;
         this.factor = factor;
-        this.answer = answer;
         this.code = code;
+        this.setAnswer(answer);
     }
 
 
@@ -109,11 +113,24 @@ public class Option extends BaseModel {
     }
 
     public Answer getAnswer() {
+        if(answer==null){
+            if(id_answer==null) return null;
+            answer = new Select()
+                    .from(Answer.class)
+                    .where(Condition.column(Answer$Table.ID_ANSWER)
+                            .is(id_answer)).querySingle();
+        }
         return answer;
     }
 
     public void setAnswer(Answer answer) {
         this.answer = answer;
+        this.id_answer = (answer!=null)?answer.getId_answer():null;
+    }
+
+    public void setAnswer(Long id_answer){
+        this.id_answer = id_answer;
+        this.answer = null;
     }
 
     /**
@@ -133,11 +150,12 @@ public class Option extends BaseModel {
         return given.equals(name);
     }
 
-    //TODO: to enable lazy loading, here we need to set Method.SAVE and Method.DELETE and use the .toModel() to specify when do we want to load the models
-    @OneToMany(methods = {OneToMany.Method.SAVE, OneToMany.Method.DELETE}, variableName = "values")
     public List<Value> getValues(){
-        return new Select().from(Value.class)
-                .where(Condition.column(Value$Table.OPTION_ID_OPTION).eq(this.getId_option())).queryList();
+        if(values==null){
+            values = new Select().from(Value.class)
+                    .where(Condition.column(Value$Table.OPTION_ID_OPTION).eq(this.getId_option())).queryList();
+        }
+        return values;
     }
 
     /**
@@ -153,35 +171,36 @@ public class Option extends BaseModel {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Option)) return false;
+        if (o == null || getClass() != o.getClass()) return false;
 
         Option option = (Option) o;
 
         if (id_option != option.id_option) return false;
-        if (!name.equals(option.name)) return false;
+        if (code != null ? !code.equals(option.code) : option.code != null) return false;
+        if (name != null ? !name.equals(option.name) : option.name != null) return false;
         if (factor != null ? !factor.equals(option.factor) : option.factor != null) return false;
-        return answer.equals(option.answer);
+        return !(id_answer != null ? !id_answer.equals(option.id_answer) : option.id_answer != null);
 
     }
 
     @Override
     public int hashCode() {
         int result = (int) (id_option ^ (id_option >>> 32));
-        result = 31 * result + code.hashCode();
-        result = 31 * result + name.hashCode();
+        result = 31 * result + (code != null ? code.hashCode() : 0);
+        result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (factor != null ? factor.hashCode() : 0);
-        result = 31 * result + answer.hashCode();
+        result = 31 * result + (id_answer != null ? id_answer.hashCode() : 0);
         return result;
     }
 
     @Override
     public String toString() {
         return "Option{" +
-                "id=" + id_option +
+                "id_option=" + id_option +
                 ", code='" + code + '\'' +
                 ", name='" + name + '\'' +
                 ", factor=" + factor +
-                ", answer=" + answer +
+                ", id_answer=" + id_answer +
                 '}';
     }
 }

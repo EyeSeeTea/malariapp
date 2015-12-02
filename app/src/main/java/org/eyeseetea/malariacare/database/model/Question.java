@@ -74,39 +74,58 @@ public class Question extends BaseModel {
     String feedback;
 
     @Column
-    @ForeignKey(references = {@ForeignKeyReference(columnName = "id_header",
-            columnType = Long.class,
-            foreignColumnName = "id_header")},
-            saveForeignKeyModel = false)
+    Long id_header;
+
+    /**
+     * Reference to the parent header (loaded lazily)
+     */
     Header header;
+
     @Column
-    @ForeignKey(references = {@ForeignKeyReference(columnName = "id_answer",
-            columnType = Long.class,
-            foreignColumnName = "id_answer")},
-            saveForeignKeyModel = false)
+    Long id_answer;
+
+    /**
+     * Reference to the associated answer (loaded lazily)
+     */
     Answer answer;
+
     @Column
-    @ForeignKey(references = {@ForeignKeyReference(columnName = "id_parent",
-            columnType = Long.class,
-            foreignColumnName = "id_question")},
-            saveForeignKeyModel = false)
+    Long id_parent;
+
+    /**
+     * Reference to parent question (loaded lazily, DEPRECATED??)
+     */
     Question question;
+
     @Column
-    @ForeignKey(references = {@ForeignKeyReference(columnName = "id_composite_score",
-            columnType = Long.class,
-            foreignColumnName = "id_composite_score")},
-            saveForeignKeyModel = false)
+    Long id_composite_score;
+
+    /**
+     * Reference to associated compositeScore for this question (loaded lazily)
+     */
     CompositeScore compositeScore;
 
+    /**
+     * List of children questions associated to this question
+     */
     List<Question> children;
 
+    /**
+     * List of values for this question
+     */
     List<Value> values;
 
+    /**
+     * List of questionRelations of this question
+     */
     List<QuestionRelation> questionRelations;
 
-    Boolean parent;
-
+    /**
+     * List of matches of this question
+     */
     List<Match> matches;
+
+    Boolean parent;
 
     public Question() {
     }
@@ -121,11 +140,12 @@ public class Question extends BaseModel {
         this.numerator_w = numerator_w;
         this.denominator_w = denominator_w;
         this.feedback = feedback;
-        this.header = header;
-        this.answer = answer;
-        this.question = question;
-        this.compositeScore = compositeScore;
         this.parent = null;
+
+        this.setHeader(header);
+        this.setAnswer(answer);
+        this.setCompositeScore(compositeScore);
+        this.setQuestion(question);
     }
 
     public Long getId_question() {
@@ -209,35 +229,86 @@ public class Question extends BaseModel {
     }
 
     public Header getHeader() {
+        if(header==null){
+            if(id_header==null) return null;
+            header = new Select()
+                    .from(Header.class)
+                    .where(Condition.column(Header$Table.ID_HEADER)
+                            .is(id_header)).querySingle();
+        }
         return header;
     }
 
     public void setHeader(Header header) {
         this.header = header;
+        this.id_header = (header!=null)?header.getId_header():null;
+    }
+
+    public void setHeader(Long id_header){
+        this.id_header = id_header;
+        this.header = null;
     }
 
     public Answer getAnswer() {
+        if(answer==null){
+            if(id_answer==null) return  null;
+            answer = new Select()
+                    .from(Answer.class)
+                    .where(Condition.column(Answer$Table.ID_ANSWER)
+                            .is(id_answer)).querySingle();
+        }
         return answer;
     }
 
     public void setAnswer(Answer answer) {
         this.answer = answer;
+        this.id_answer = (answer!=null)?answer.getId_answer():null;
+    }
+
+    public void setAnswer(Long id_answer){
+        this.id_answer = id_answer;
+        this.answer = null;
     }
 
     public Question getQuestion() {
+        if(question ==null){
+            question = new Select()
+                    .from(Question.class)
+                    .where(Condition.column(Question$Table.ID_QUESTION)
+                            .is(id_parent)).querySingle();
+        }
         return question;
     }
 
     public void setQuestion(Question question) {
         this.question = question;
+        this.id_parent = (question!=null)?question.getId_question():null;
+    }
+
+    public void setQuestion(Long id_parent){
+        this.id_parent = id_parent;
+        this.question = null;
     }
 
     public CompositeScore getCompositeScore() {
+        if(compositeScore ==null){
+            if(id_composite_score==null) return null;
+            compositeScore = new Select()
+                    .from(CompositeScore.class)
+                    .where(Condition.column(CompositeScore$Table.ID_COMPOSITE_SCORE)
+                            .is(id_composite_score)).querySingle();
+        }
         return compositeScore;
     }
 
     public void setCompositeScore(CompositeScore compositeScore) {
         this.compositeScore = compositeScore;
+        this.id_composite_score = (compositeScore!=null)?compositeScore.getId_composite_score():null;
+    }
+
+    public void setCompositeScore(Long id_composite_score){
+        this.id_composite_score = id_composite_score;
+        this.compositeScore = null;
     }
 
     public boolean hasParent() {
@@ -251,13 +322,14 @@ public class Question extends BaseModel {
         return parent;
     }
 
-    @OneToMany(methods = {OneToMany.Method.SAVE, OneToMany.Method.DELETE}, variableName = "questionRelations")
     public List<QuestionRelation> getQuestionRelations() {
-        //if (this.children == null){
-        this.questionRelations = new Select().from(QuestionRelation.class)
-                .where(Condition.column(QuestionRelation$Table.QUESTION_ID_QUESTION).eq(this.getId_question()))
-                .queryList();
-        //}
+        if(questionRelations ==null){
+            this.questionRelations = new Select()
+                    .from(QuestionRelation.class)
+                    .where(Condition.column(QuestionRelation$Table.QUESTION_ID_QUESTION)
+                            .eq(this.getId_question()))
+                    .queryList();
+        }
         return this.questionRelations;
     }
 
@@ -289,7 +361,6 @@ public class Question extends BaseModel {
         return matches;
     }
 
-    @OneToMany(methods = {OneToMany.Method.SAVE, OneToMany.Method.DELETE}, variableName = "children")
     public List<Question> getChildren() {
         if (this.children == null) {
 
@@ -333,7 +404,13 @@ public class Question extends BaseModel {
 
     @OneToMany(methods = {OneToMany.Method.SAVE, OneToMany.Method.DELETE}, variableName = "values")
     public List<Value> getValues() {
-        return new Select().from(Value.class).where(Condition.column(Value$Table.QUESTION_ID_QUESTION).eq(this.getId_question())).queryList();
+        if(values==null){
+            values = new Select()
+                    .from(Value.class)
+                    .where(Condition.column(Value$Table.QUESTION_ID_QUESTION)
+                            .eq(this.getId_question())).queryList();
+        }
+        return values;
     }
 
     /**
@@ -470,16 +547,16 @@ public class Question extends BaseModel {
         long totalAnswerableQuestions = new Select().count()
                 .from(Question.class).as("q")
                 .join(Answer.class, Join.JoinType.LEFT).as("a")
-                .on(Condition.column(ColumnAlias.columnWithTable("q", Question$Table.ANSWER_ID_ANSWER))
+                .on(Condition.column(ColumnAlias.columnWithTable("q", Question$Table.ID_ANSWER))
                         .eq(ColumnAlias.columnWithTable("a", Answer$Table.ID_ANSWER)))
                 .join(Header.class, Join.JoinType.LEFT).as("h")
-                .on(Condition.column(ColumnAlias.columnWithTable("q", Question$Table.HEADER_ID_HEADER))
+                .on(Condition.column(ColumnAlias.columnWithTable("q", Question$Table.ID_HEADER))
                         .eq(ColumnAlias.columnWithTable("h", Header$Table.ID_HEADER)))
                 .join(Tab.class, Join.JoinType.LEFT).as("t")
-                .on(Condition.column(ColumnAlias.columnWithTable("h", Header$Table.TAB_ID_TAB))
+                .on(Condition.column(ColumnAlias.columnWithTable("h", Header$Table.ID_TAB))
                         .eq(ColumnAlias.columnWithTable("t", Tab$Table.ID_TAB)))
                 .where(Condition.column(ColumnAlias.columnWithTable("a", Answer$Table.OUTPUT)).isNot(Constants.NO_ANSWER))
-                .and(Condition.column(ColumnAlias.columnWithTable("t", Tab$Table.TABGROUP_ID_TAB_GROUP)).eq(tabGroup.getId_tab_group())).count();
+                .and(Condition.column(ColumnAlias.columnWithTable("t", Tab$Table.ID_TAB_GROUP)).eq(tabGroup.getId_tab_group())).count();
 
         // Count children questions from the given taggroup
         long numChildrenQuestion = new Select().count()
@@ -488,16 +565,16 @@ public class Question extends BaseModel {
                 .on(Condition.column(ColumnAlias.columnWithTable("qr", QuestionRelation$Table.QUESTION_ID_QUESTION))
                         .eq(ColumnAlias.columnWithTable("q", Question$Table.ID_QUESTION)))
                 .join(Answer.class, Join.JoinType.LEFT).as("a")
-                .on(Condition.column(ColumnAlias.columnWithTable("q", Question$Table.ANSWER_ID_ANSWER))
+                .on(Condition.column(ColumnAlias.columnWithTable("q", Question$Table.ID_ANSWER))
                         .eq(ColumnAlias.columnWithTable("a", Answer$Table.ID_ANSWER)))
                 .join(Header.class, Join.JoinType.LEFT).as("h")
-                .on(Condition.column(ColumnAlias.columnWithTable("q", Question$Table.HEADER_ID_HEADER))
+                .on(Condition.column(ColumnAlias.columnWithTable("q", Question$Table.ID_HEADER))
                         .eq(ColumnAlias.columnWithTable("h", Header$Table.ID_HEADER)))
                 .join(Tab.class, Join.JoinType.LEFT).as("t")
-                .on(Condition.column(ColumnAlias.columnWithTable("h", Header$Table.TAB_ID_TAB))
+                .on(Condition.column(ColumnAlias.columnWithTable("h", Header$Table.ID_TAB))
                         .eq(ColumnAlias.columnWithTable("t", Tab$Table.ID_TAB)))
                 .where(Condition.column(ColumnAlias.columnWithTable("a", Answer$Table.OUTPUT)).isNot(Constants.NO_ANSWER))
-                .and(Condition.column(ColumnAlias.columnWithTable("t", Tab$Table.TABGROUP_ID_TAB_GROUP)).eq(tabGroup.getId_tab_group()))
+                .and(Condition.column(ColumnAlias.columnWithTable("t", Tab$Table.ID_TAB_GROUP)).eq(tabGroup.getId_tab_group()))
                 .and(Condition.column(ColumnAlias.columnWithTable("qr", QuestionRelation$Table.OPERATION)).eq(Constants.OPERATION_TYPE_PARENT)).count();
 
         // Return number of parents (total - children)
@@ -571,13 +648,13 @@ public class Question extends BaseModel {
 
         return new Select().all().from(Question.class).as("q")
                 .join(Header.class, Join.JoinType.LEFT).as("h")
-                .on(Condition.column(ColumnAlias.columnWithTable("q", Question$Table.HEADER_ID_HEADER))
+                .on(Condition.column(ColumnAlias.columnWithTable("q", Question$Table.ID_HEADER))
                         .eq(ColumnAlias.columnWithTable("h", Header$Table.ID_HEADER)))
                 .join(Tab.class, Join.JoinType.LEFT).as("t")
-                .on(Condition.column(ColumnAlias.columnWithTable("h", Header$Table.TAB_ID_TAB))
+                .on(Condition.column(ColumnAlias.columnWithTable("h", Header$Table.ID_TAB))
                         .eq(ColumnAlias.columnWithTable("t", Tab$Table.ID_TAB)))
                 .join(TabGroup.class, Join.JoinType.LEFT).as("tg")
-                .on(Condition.column(ColumnAlias.columnWithTable("t", Tab$Table.TABGROUP_ID_TAB_GROUP))
+                .on(Condition.column(ColumnAlias.columnWithTable("t", Tab$Table.ID_TAB_GROUP))
                         .eq(ColumnAlias.columnWithTable("tg", TabGroup$Table.ID_TAB_GROUP)))
                 .where(Condition.column(ColumnAlias.columnWithTable("tg", TabGroup$Table.ID_TAB_GROUP))
                         .eq(tabGroup.getId_tab_group()))
@@ -600,10 +677,10 @@ public class Question extends BaseModel {
 
         return new Select().from(Question.class).as("q")
                 .join(Header.class, Join.JoinType.LEFT).as("h")
-                .on(Condition.column(ColumnAlias.columnWithTable("q", Question$Table.HEADER_ID_HEADER))
+                .on(Condition.column(ColumnAlias.columnWithTable("q", Question$Table.ID_HEADER))
                         .eq(ColumnAlias.columnWithTable("h", Header$Table.ID_HEADER)))
                 .join(Tab.class, Join.JoinType.LEFT).as("t")
-                .on(Condition.column(ColumnAlias.columnWithTable("h", Header$Table.TAB_ID_TAB))
+                .on(Condition.column(ColumnAlias.columnWithTable("h", Header$Table.ID_TAB))
                         .eq(ColumnAlias.columnWithTable("t", Tab$Table.ID_TAB)))
                 .where(in)
                 .orderBy(Tab$Table.ORDER_POS)
@@ -633,35 +710,33 @@ public class Question extends BaseModel {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        Question question1 = (Question) o;
+        Question question = (Question) o;
 
-        if (id_question != question1.id_question) return false;
-        if (answer != null ? !answer.equals(question1.answer) : question1.answer != null)
+        if (id_question != question.id_question) return false;
+        if (code != null ? !code.equals(question.code) : question.code != null) return false;
+        if (de_name != null ? !de_name.equals(question.de_name) : question.de_name != null)
             return false;
-        if (code != null ? !code.equals(question1.code) : question1.code != null) return false;
-        if (compositeScore != null ? !compositeScore.equals(question1.compositeScore) : question1.compositeScore != null)
+        if (short_name != null ? !short_name.equals(question.short_name) : question.short_name != null)
             return false;
-        if (de_name != null ? !de_name.equals(question1.de_name) : question1.de_name != null)
+        if (form_name != null ? !form_name.equals(question.form_name) : question.form_name != null)
             return false;
-        if (denominator_w != null ? !denominator_w.equals(question1.denominator_w) : question1.denominator_w != null)
+        if (uid != null ? !uid.equals(question.uid) : question.uid != null) return false;
+        if (order_pos != null ? !order_pos.equals(question.order_pos) : question.order_pos != null)
             return false;
-        if (feedback != null ? !feedback.equals(question1.feedback) : question1.feedback!= null)
+        if (numerator_w != null ? !numerator_w.equals(question.numerator_w) : question.numerator_w != null)
             return false;
-        if (form_name != null ? !form_name.equals(question1.form_name) : question1.form_name != null)
+        if (denominator_w != null ? !denominator_w.equals(question.denominator_w) : question.denominator_w != null)
             return false;
-        if (header != null ? !header.equals(question1.header) : question1.header != null)
+        if (feedback != null ? !feedback.equals(question.feedback) : question.feedback != null)
             return false;
-        if (numerator_w != null ? !numerator_w.equals(question1.numerator_w) : question1.numerator_w != null)
+        if (id_header != null ? !id_header.equals(question.id_header) : question.id_header != null)
             return false;
-        if (order_pos != null ? !order_pos.equals(question1.order_pos) : question1.order_pos != null)
+        if (id_answer != null ? !id_answer.equals(question.id_answer) : question.id_answer != null)
             return false;
-        if (question != null ? !question.equals(question1.question) : question1.question != null)
+        if (id_parent != null ? !id_parent.equals(question.id_parent) : question.id_parent != null)
             return false;
-        if (short_name != null ? !short_name.equals(question1.short_name) : question1.short_name != null)
-            return false;
-        if (uid != null ? !uid.equals(question1.uid) : question1.uid != null) return false;
+        return !(id_composite_score != null ? !id_composite_score.equals(question.id_composite_score) : question.id_composite_score != null);
 
-        return true;
     }
 
     @Override
@@ -671,22 +746,22 @@ public class Question extends BaseModel {
         result = 31 * result + (de_name != null ? de_name.hashCode() : 0);
         result = 31 * result + (short_name != null ? short_name.hashCode() : 0);
         result = 31 * result + (form_name != null ? form_name.hashCode() : 0);
-        result = 31 * result + (feedback != null ? feedback.hashCode() : 0);
         result = 31 * result + (uid != null ? uid.hashCode() : 0);
-        result = 31 * result + order_pos.hashCode();
+        result = 31 * result + (order_pos != null ? order_pos.hashCode() : 0);
         result = 31 * result + (numerator_w != null ? numerator_w.hashCode() : 0);
         result = 31 * result + (denominator_w != null ? denominator_w.hashCode() : 0);
-        result = 31 * result + header.hashCode();
-        result = 31 * result + (answer != null ? answer.hashCode() : 0);
-        result = 31 * result + (question != null ? question.hashCode() : 0);
-        result = 31 * result + (compositeScore != null ? compositeScore.hashCode() : 0);
+        result = 31 * result + (feedback != null ? feedback.hashCode() : 0);
+        result = 31 * result + (id_header != null ? id_header.hashCode() : 0);
+        result = 31 * result + (id_answer != null ? id_answer.hashCode() : 0);
+        result = 31 * result + (id_parent != null ? id_parent.hashCode() : 0);
+        result = 31 * result + (id_composite_score != null ? id_composite_score.hashCode() : 0);
         return result;
     }
 
     @Override
     public String toString() {
         return "Question{" +
-                "id='" + id_question + '\'' +
+                "id_question=" + id_question +
                 ", code='" + code + '\'' +
                 ", de_name='" + de_name + '\'' +
                 ", short_name='" + short_name + '\'' +
@@ -695,11 +770,11 @@ public class Question extends BaseModel {
                 ", order_pos=" + order_pos +
                 ", numerator_w=" + numerator_w +
                 ", denominator_w=" + denominator_w +
-                ", feedback=" + feedback +
-                ", header=" + header +
-                ", answer=" + answer +
-                ", question=" + question +
-                ", compositeScore=" + compositeScore +
+                ", feedback='" + feedback + '\'' +
+                ", id_header=" + id_header +
+                ", id_answer=" + id_answer +
+                ", id_parent=" + id_parent +
+                ", id_composite_score=" + id_composite_score +
                 '}';
     }
 }

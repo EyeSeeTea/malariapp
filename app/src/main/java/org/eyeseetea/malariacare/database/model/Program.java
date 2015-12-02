@@ -44,6 +44,9 @@ public class Program extends BaseModel{
     @Column
     String name;
 
+    /**
+     * List of tabgroups for this program
+     */
     List<TabGroup> tabGroups;
 
     public Program() {
@@ -82,11 +85,12 @@ public class Program extends BaseModel{
         this.name = name;
     }
 
-    @OneToMany(methods = {OneToMany.Method.SAVE, OneToMany.Method.DELETE}, variableName = "tabGroups")
     public List<TabGroup> getTabGroups(){
-        this.tabGroups = new Select().from(TabGroup.class)
-                    .where(Condition.column(TabGroup$Table.PROGRAM_ID_PROGRAM).eq(this.getId_program()))
+        if(tabGroups==null){
+            this.tabGroups = new Select().from(TabGroup.class)
+                    .where(Condition.column(TabGroup$Table.ID_PROGRAM).eq(this.getId_program()))
                     .queryList();
+        }
         return this.tabGroups;
     }
 

@@ -50,12 +50,16 @@ public class Tab extends BaseModel {
     @Column
     Integer type;
     @Column
-    @ForeignKey(references = {@ForeignKeyReference(columnName = "id_tab_group",
-            columnType = Long.class,
-            foreignColumnName = "id_tab_group")},
-            saveForeignKeyModel = false)
+    Long id_tab_group;
+
+    /**
+     * Reference to parent tabgroup (loaded lazily)
+     */
     TabGroup tabGroup;
 
+    /**
+     * List of headers that belongs to this tab
+     */
     List<Header> headers;
 
     public Tab() {
@@ -65,7 +69,7 @@ public class Tab extends BaseModel {
         this.name = name;
         this.order_pos = order_pos;
         this.type = type;
-        this.tabGroup = tabGroup;
+        setTabGroup(tabGroup);
     }
 
     public Long getId_tab() {
@@ -101,19 +105,34 @@ public class Tab extends BaseModel {
     }
 
     public TabGroup getTabGroup() {
+        if(tabGroup==null){
+            if (id_tab_group == null) return null;
+
+            tabGroup= new Select()
+                    .from(TabGroup.class)
+                    .where(Condition.column(TabGroup$Table.ID_TAB_GROUP)
+                            .is(id_tab_group)).querySingle();
+        }
         return tabGroup;
+    }
+
+    public void setTabGroup(Long id_tab_group){
+        this.id_tab_group=id_tab_group;
+        this.tabGroup=null;
     }
 
     public void setTabGroup(TabGroup tabGroup) {
         this.tabGroup = tabGroup;
+        this.id_tab_group = (tabGroup!=null)?tabGroup.getId_tab_group():null;
     }
 
-    //TODO: to enable lazy loading, here we need to set Method.SAVE and Method.DELETE and use the .toModel() to specify when do we want to load the models
-    @OneToMany(methods = {OneToMany.Method.SAVE, OneToMany.Method.DELETE}, variableName = "headers")
     public List<Header> getHeaders(){
-        return new Select().from(Header.class)
-                .where(Condition.column(Header$Table.TAB_ID_TAB).eq(this.getId_tab()))
-                .orderBy(Header$Table.ORDER_POS).queryList();
+        if(headers==null){
+            headers =new Select().from(Header.class)
+                    .where(Condition.column(Header$Table.ID_TAB).eq(this.getId_tab()))
+                    .orderBy(Header$Table.ORDER_POS).queryList();
+        }
+        return headers;
     }
 
     /*
@@ -121,7 +140,7 @@ public class Tab extends BaseModel {
      */
     public static List<Tab> getTabsBySession(){
         return new Select().from(Tab.class)
-                .where(Condition.column(Tab$Table.TABGROUP_ID_TAB_GROUP).eq(Session.getSurvey().getTabGroup().getId_tab_group()))
+                .where(Condition.column(Tab$Table.ID_TAB_GROUP).eq(Session.getSurvey().getTabGroup().getId_tab_group()))
                 .orderBy(Tab$Table.ORDER_POS).queryList();
     }
 
@@ -153,15 +172,16 @@ public class Tab extends BaseModel {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Tab)) return false;
+        if (o == null || getClass() != o.getClass()) return false;
 
         Tab tab = (Tab) o;
 
         if (id_tab != tab.id_tab) return false;
         if (name != null ? !name.equals(tab.name) : tab.name != null) return false;
-        if (!order_pos.equals(tab.order_pos)) return false;
-        if (!tabGroup.equals(tab.tabGroup)) return false;
-        return type.equals(tab.type);
+        if (order_pos != null ? !order_pos.equals(tab.order_pos) : tab.order_pos != null)
+            return false;
+        if (type != null ? !type.equals(tab.type) : tab.type != null) return false;
+        return !(id_tab_group != null ? !id_tab_group.equals(tab.id_tab_group) : tab.id_tab_group != null);
 
     }
 
@@ -169,20 +189,21 @@ public class Tab extends BaseModel {
     public int hashCode() {
         int result = (int) (id_tab ^ (id_tab >>> 32));
         result = 31 * result + (name != null ? name.hashCode() : 0);
-        result = 31 * result + order_pos.hashCode();
-        result = 31 * result + tabGroup.hashCode();
-        result = 31 * result + type.hashCode();
+        result = 31 * result + (order_pos != null ? order_pos.hashCode() : 0);
+        result = 31 * result + (type != null ? type.hashCode() : 0);
+        result = 31 * result + (id_tab_group != null ? id_tab_group.hashCode() : 0);
         return result;
     }
+
 
     @Override
     public String toString() {
         return "Tab{" +
-                "id=" + id_tab +
+                "id_tab=" + id_tab +
                 ", name='" + name + '\'' +
                 ", order_pos=" + order_pos +
                 ", type=" + type +
-                ", tabGroup=" + tabGroup +
+                ", id_tab_group=" + id_tab_group +
                 '}';
     }
 }

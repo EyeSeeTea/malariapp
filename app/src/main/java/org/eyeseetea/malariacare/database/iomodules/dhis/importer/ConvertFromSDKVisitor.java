@@ -154,7 +154,7 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
             appOrgUnit.setOrgUnit((org.eyeseetea.malariacare.database.model.OrgUnit) appMapObjects.get(String.valueOf(parent_id)));
         }
         else
-            appOrgUnit.setOrgUnit(null);
+            appOrgUnit.setOrgUnit((OrgUnit)null);
         appOrgUnit.save();
         //Annotate built orgunit
         appMapObjects.put(organisationUnit.getId(), appOrgUnit);

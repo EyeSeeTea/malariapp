@@ -259,7 +259,7 @@ public class Survey extends BaseModel implements VisitableToSDK {
                         .eq(ColumnAlias.columnWithTable("q", Question$Table.ID_QUESTION)))
                 .where(Condition.column(ColumnAlias.columnWithTable("v", Value$Table.SURVEY_ID_SURVEY))
                         .eq(this.getId_survey()))
-                .and(Condition.column(ColumnAlias.columnWithTable("q", Question$Table.QUESTION_ID_PARENT)).isNull())
+                .and(Condition.column(ColumnAlias.columnWithTable("q", Question$Table.ID_PARENT)).isNull())
                 .and(Condition.column(ColumnAlias.columnWithTable("v", Value$Table.VALUE)).isNotNull())
                 .and(Condition.column(ColumnAlias.columnWithTable("v", Value$Table.VALUE)).isNot("")).queryList();
         //List<Value> values = Value.findWithQuery(Value.class, LIST_VALUES_PARENT_QUESTION, this.getId().toString());
@@ -305,7 +305,7 @@ public class Survey extends BaseModel implements VisitableToSDK {
                                 .eq(ColumnAlias.columnWithTable("qr", QuestionRelation$Table.QUESTION_ID_QUESTION)))
                 .join(Answer.class, Join.JoinType.LEFT).as("a")
                 .on(
-                        Condition.column(ColumnAlias.columnWithTable("q", Question$Table.ANSWER_ID_ANSWER))
+                        Condition.column(ColumnAlias.columnWithTable("q", Question$Table.ID_ANSWER))
                                 .eq(ColumnAlias.columnWithTable("a", Answer$Table.ID_ANSWER)))
                 .join(Match.class, Join.JoinType.LEFT).as("m")
                 .on(
