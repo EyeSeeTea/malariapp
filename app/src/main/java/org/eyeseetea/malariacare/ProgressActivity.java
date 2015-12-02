@@ -99,13 +99,7 @@ public class ProgressActivity extends Activity {
         setContentView(R.layout.activity_progress);
         cancelled = false;
         active = true;
-        if(isAPushWithoutPull()) {
-            annotateFirstPull(true);
-        }
-        else
-            annotateFirstPull(false);
         prepareUI();
-
         final Button button = (Button) findViewById(R.id.cancelPullButton);
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -187,7 +181,7 @@ public class ProgressActivity extends Activity {
         //Push or Pull according to extra param from intent
         if(isAPush()){
             launchPush();
-        }else{
+        }else {
             launchPull();
         }
     }
@@ -245,10 +239,12 @@ public class ProgressActivity extends Activity {
             //If is not active, we need restart the process
             if(!active) {
                 try{Dhis2Application.bus.unregister(this);}
-                catch(Exception e){}
-                annotateFirstPull(false);
+                catch(Exception e) {
+                }
                 finishAndGo(LoginActivity.class);
+                return;
             }
+            else
             annotateFirstPull(true);
         }
 
@@ -268,9 +264,6 @@ public class ProgressActivity extends Activity {
                     public void onClick(DialogInterface arg0, int arg1) {
                         //Pull or Push(single)
                         if (msg == R.string.dialog_pull_success || msg == R.string.dialog_push_success) {
-                            try {
-                                Dhis2Application.bus.unregister(this);
-                            } catch (Exception e){}
                             finishAndGo(DashboardActivity.class);
                             return;
                         } else {
@@ -331,22 +324,6 @@ public class ProgressActivity extends Activity {
         return (i!=null && i.getIntExtra(TYPE_OF_ACTION,ACTION_PULL)!=ACTION_PULL);
     }
 
-    /**
-     * Tells if is only a push
-     * @return
-     */
-    private boolean isAPushWithoutPull() {
-        //A push before pull
-        if(pullAfterPushInProgress){
-            return false;
-        }
-
-        //Check intent params
-        Intent i=getIntent();
-        //Not a pull -> is a Push
-        return (i!=null && i.getIntExtra(TYPE_OF_ACTION,ACTION_PUSH)==ACTION_PUSH);
-    }
-
 
     /**
      * Tells is the intent requires a Pull after the push is done
@@ -363,6 +340,7 @@ public class ProgressActivity extends Activity {
     }
 
     private void launchPull(){
+        annotateFirstPull(false);
         progressBar.setProgress(0);
         progressBar.setMax(MAX_PULL_STEPS);
         PullController.getInstance().pull(this);
@@ -372,6 +350,7 @@ public class ProgressActivity extends Activity {
      * Launches a push using the PushController according to the intent params
      */
     private void launchPush(){
+        annotateFirstPull(true);
         progressBar.setProgress(0);
         progressBar.setMax(MAX_PUSH_STEPS);
 

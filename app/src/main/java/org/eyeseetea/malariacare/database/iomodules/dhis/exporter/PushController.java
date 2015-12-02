@@ -173,13 +173,12 @@ public class PushController {
                     postProgress(context.getString(R.string.progress_push_updating_survey));
                     Log.d(TAG, "Updating pushed survey data...");
                     converter.saveSurveyStatus();
-
-                    postFinish();
                     Log.d(TAG, "PUSH process...OK");
                 }catch (Exception ex){
                     Log.e(TAG,"onSendDataFinished: "+ex.getLocalizedMessage());
                     postException(ex);
                 }finally {
+                    postFinish();
                     unregister();
                 }
             }

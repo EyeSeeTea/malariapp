@@ -62,7 +62,8 @@ public class LoginActivity extends org.hisp.dhis.android.sdk.ui.activities.Login
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (User.getLoggedUser() != null && !ProgressActivity.cancelled) {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        if (User.getLoggedUser() != null && !ProgressActivity.cancelled &&  sharedPreferences.getBoolean(getApplicationContext().getResources().getString(R.string.pull_metadata),false)) {
             startActivity(new Intent(LoginActivity.this,
                     ((Dhis2Application) getApplication()).getMainActivity()));
             finish();

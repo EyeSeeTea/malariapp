@@ -189,7 +189,6 @@ public class PullController {
                     wipeDatabase();
                     if(ProgressActivity.active)
                     convertFromSDK();
-                    postFinish();
                     if(ProgressActivity.active) {
                         Log.d(TAG, "PULL process...OK");
                     }
@@ -197,6 +196,7 @@ public class PullController {
                     Log.e(TAG, "onLoadMetadataFinished: " + ex.getLocalizedMessage());
                     postException(ex);
                 } finally {
+                    postFinish();
                     unregister();
                 }
             }
