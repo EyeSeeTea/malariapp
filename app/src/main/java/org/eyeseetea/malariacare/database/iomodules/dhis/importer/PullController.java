@@ -93,12 +93,7 @@ public class PullController {
     }
 
     private void register() {
-        try{
-            Dhis2Application.bus.register(this);
-            }catch(Exception e){
-            unregister();
-            Dhis2Application.bus.register(this);
-        }
+        Dhis2Application.bus.register(this);
     }
 
     /**
@@ -150,8 +145,9 @@ public class PullController {
             }
         } catch (Exception ex) {
             Log.e(TAG, "pull: " + ex.getLocalizedMessage());
-            unregister();
             postException(ex);
+        }finally {
+            unregister();
         }
     }
 
