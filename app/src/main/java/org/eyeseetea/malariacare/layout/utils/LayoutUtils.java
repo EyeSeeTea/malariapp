@@ -144,4 +144,5 @@ public class LayoutUtils {
         listView.setLayoutParams(params);
         listView.requestLayout();
     }
+
 }

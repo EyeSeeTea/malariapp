@@ -100,6 +100,7 @@ dependencies {
     compile 'com.opencsv:opencsv:3.3'
     compile 'com.android.support:multidex:1.0.1'
     compile 'com.google.android.gms:play-services:8.1.0'
+    compile 'com.googlecode.libphonenumber:libphonenumber:7.0.9'
     compile 'com.google.guava:guava:18.0'
     compile 'com.squareup.okhttp:okhttp:2.2.0'
 //    apt 'com.raizlabs.android:DBFlow-Compiler:2.2.1'

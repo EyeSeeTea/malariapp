@@ -124,6 +124,29 @@ public class Tab extends BaseModel {
                 .where(Condition.column(Tab$Table.TABGROUP_ID_TAB_GROUP).eq(Session.getSurvey().getTabGroup().getId_tab_group()))
                 .orderBy(Tab$Table.ORDER_POS).queryList();
     }
+    /**
+     * Checks if this tab is the adherence tab
+     * @return
+     */
+    public boolean isAdherenceTab(){
+        return getType() == Constants.TAB_ADHERENCE;
+    }
+
+    /**
+     * Checks if this tab is the IQA tab
+     * @return
+     */
+    public boolean isIQATab(){
+        return getType() == Constants.TAB_IQATAB;
+    }
+
+    /**
+     * Checks if this tab is a dynamic tab (sort of a wizard)
+     * @return
+     */
+    public boolean isDynamicTab(){
+        return getType() == Constants.TAB_DYNAMIC_AUTOMATIC_TAB;
+    }
 
     /**
      * Checks if this tab is a general score tab.

@@ -149,6 +149,21 @@ public class Value extends BaseModel implements VisitableToSDK {
                 .where(Condition.column(Value$Table.SURVEY_ID_SURVEY).eq(survey.getId_survey())).count();
     }
 
+    /**
+     * The value is 'Positive' from a dropdown
+     * @return true|false
+     */
+    public boolean isAPositive() {
+        return getOption() != null && getOption().getName().equals("Positive");
+    }
+
+    /**
+     * The value is 'Negative' from a dropdown
+     * @return true|false
+     */
+    public boolean isANegative() {
+        return getOption() != null && getOption().getName().equals("Negative");
+    }
     @Override
     public void accept(IConvertToSDKVisitor IConvertToSDKVisitor) {
         IConvertToSDKVisitor.visit(this);

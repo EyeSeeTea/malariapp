@@ -57,6 +57,18 @@ public class Option extends BaseModel {
             saveForeignKeyModel = false)
     Answer answer;
 
+    @Column
+    String path;
+
+    @Column
+    @ForeignKey(references = {@ForeignKeyReference(columnName = "id_option_attribute",
+            columnType = Long.class,
+            foreignColumnName = "id_option_attribute")},
+            saveForeignKeyModel = false)
+    OptionAttribute optionAttribute;
+
+    @Column
+    String background_colour;
     List<Value> values;
 
     public Option() {
@@ -75,6 +87,14 @@ public class Option extends BaseModel {
         this.code = code;
     }
 
+    public Option(String name, Float factor, Answer answer, String code, OptionAttribute optionAttribute, String background_colour) {
+        this.name = name;
+        this.factor = factor;
+        this.answer = answer;
+        this.code = code;
+        this.optionAttribute = optionAttribute;
+        this.background_colour = background_colour;
+    }
 
     public Option(String name) {
         this.name = name;
@@ -116,6 +136,30 @@ public class Option extends BaseModel {
         this.answer = answer;
     }
 
+
+    public String getPath() {
+        return path;
+    }
+
+    public void setPath(String path) {
+        this.path = path;
+    }
+
+    public OptionAttribute getOptionAttribute() {
+        return optionAttribute;
+    }
+
+    public void setOptionAttribute(OptionAttribute optionAttribute) {
+        this.optionAttribute = optionAttribute;
+    }
+
+    public String getBackground_colour() {
+        return background_colour;
+    }
+
+    public void setBackground_colour(String background_colour) {
+        this.background_colour = background_colour;
+    }
     /**
      * Checks if this option actives the children questions
      * @return true: Children questions should be shown, false: otherwise.
@@ -171,6 +215,9 @@ public class Option extends BaseModel {
         result = 31 * result + name.hashCode();
         result = 31 * result + (factor != null ? factor.hashCode() : 0);
         result = 31 * result + answer.hashCode();
+        result = 31 * result + (optionAttribute != null ? optionAttribute.hashCode() : 0);
+        result = 31 * result + (path != null ? path.hashCode() : 0);
+        result = 31 * result + (background_colour != null ? background_colour.hashCode() : 0);
         return result;
     }
 
@@ -182,6 +229,9 @@ public class Option extends BaseModel {
                 ", name='" + name + '\'' +
                 ", factor=" + factor +
                 ", answer=" + answer +
+                ", path=" + path +
+                ", optionAttribute=" + optionAttribute +
+                ", background_colour=" + background_colour +
                 '}';
     }
 }

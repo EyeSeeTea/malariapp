@@ -71,6 +71,13 @@ public class Survey extends BaseModel implements VisitableToSDK {
             saveForeignKeyModel = false)
     OrgUnit orgUnit;
     @Column
+    @ForeignKey(
+            references = {@ForeignKeyReference(columnName = "id_program",
+                    columnType = Long.class,
+                    foreignColumnName = "id_program")},
+            saveForeignKeyModel = false)
+    Program program;
+    @Column
     @ForeignKey(references = {@ForeignKeyReference(columnName = "id_user",
             columnType = Long.class,
             foreignColumnName = "id_user")},
@@ -162,6 +169,15 @@ public class Survey extends BaseModel implements VisitableToSDK {
         this.status = status;
     }
 
+    public Program getProgram() {
+        return program;
+    }
+
+    public void setProgram(Program program) {
+        this.program = program;
+    }
+
+
     /**
      * Checks if the survey has been sent or not
      * @return true|false
@@ -170,6 +186,29 @@ public class Survey extends BaseModel implements VisitableToSDK {
         return Constants.SURVEY_SENT==this.status;
     }
 
+    /**
+     * Checks if the survey has been hidden or not
+     * @return true|false
+     */
+    public boolean isHide(){
+        return Constants.SURVEY_HIDE==this.status;
+    }
+
+    /**
+     * Checks if the survey has been completed or not
+     * @return true|false
+     */
+    public boolean isCompleted(){
+        return Constants.SURVEY_COMPLETED==this.status;
+    }
+
+    /**
+     * Checks if the survey is in progress
+     * @return true|false
+     */
+    public boolean isInProgress(){
+        return !isSent() && !isCompleted()&& !isHide();
+    }
     public Float getMainScore() {
         //The main score is only return from a query 1 time
         if(this.mainScore==null){

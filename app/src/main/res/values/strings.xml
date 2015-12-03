@@ -287,4 +287,17 @@
     <string name="progress_push_no_survey">No survey found for pushing</string>
     <string name="dialog_push_before_pull_success">Surveys successfully pushed to dhis server, starting to pull metadata</string>
 
+    <!--Pictureapp-->
+
+    <string name="default_org_unit"></string>
+    <!-- Surveys -->
+    <string name="survey_info_exit_delete">The survey in progress will be deleted</string>
+    <!-- dynamic -->
+    <string name="dynamic_error_phone_format">Invalid format for phone number</string>
+    <!-- survey -->
+    <string name="survey_title_completed">Survey completed</string>
+    <string name="survey_info_completed">The survey has been successfully completed</string>
+    <!-- # general -->
+    <string name="review">Review</string>
+
 </resources>
