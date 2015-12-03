@@ -13,11 +13,12 @@ public class Constants {
             RADIO_GROUP_HORIZONTAL = 8,
             RADIO_GROUP_VERTICAL = 9,
             DROPDOWN_LIST_DISABLED = 10,
-            IMAGES_2 = 10,
+            IMAGES_2 = 15,//it was 10
+            IMAGES_3 = 14,
             IMAGES_4 = 11,
             IMAGES_6 = 12,
             PHONE = 13,
-            IMAGES_3 = 14;
+            NUMERIC_PICKER=16;
     //Fixme dropdown_list==images_2
 
 
