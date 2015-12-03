@@ -44,6 +44,9 @@ public class User extends BaseModel {
     @Column
     String name;
 
+    /**
+     * List of surveys of this user
+     */
     List<Survey> surveys;
 
     public User() {
@@ -78,11 +81,14 @@ public class User extends BaseModel {
         this.name = name;
     }
 
-    //TODO: to enable lazy loading, here we need to set Method.SAVE and Method.DELETE and use the .toModel() to specify when do we want to load the models
-    @OneToMany(methods = {OneToMany.Method.SAVE, OneToMany.Method.DELETE}, variableName = "surveys")
     public List<Survey> getSurveys(){
-        return new Select().from(Survey.class)
-                .where(Condition.column(Survey$Table.USER_ID_USER).eq(this.getId_user())).queryList();
+        if(surveys==null){
+            surveys = new Select()
+                    .from(Survey.class)
+                    .where(Condition.column(Survey$Table.ID_USER)
+                            .eq(this.getId_user())).queryList();
+        }
+        return surveys;
     }
 
     public static User getLoggedUser(){

@@ -40,23 +40,26 @@ public class Value extends BaseModel implements VisitableToSDK {
     long id_value;
     @Column
     String value;
+
     @Column
-    @ForeignKey(references = {@ForeignKeyReference(columnName = "id_question",
-            columnType = Long.class,
-            foreignColumnName = "id_question")},
-            saveForeignKeyModel = false)
+    Long id_question;
+    /**
+     * Reference to the question for this value (loaded lazily)
+     */
     Question question;
+
     @Column
-    @ForeignKey(references = {@ForeignKeyReference(columnName = "id_survey",
-            columnType = Long.class,
-            foreignColumnName = "id_survey")},
-            saveForeignKeyModel = false)
+    Long id_survey;
+    /**
+     * Reference to the survey of this value (loaded lazily)
+     */
     Survey survey;
+
     @Column
-    @ForeignKey(references = {@ForeignKeyReference(columnName = "id_option",
-            columnType = Long.class,
-            foreignColumnName = "id_option")},
-            saveForeignKeyModel = false)
+    Long id_option;
+    /**
+     * Reference to the option of this value (loaded lazily)
+     */
     Option option;
 
     public Value() {
@@ -64,16 +67,16 @@ public class Value extends BaseModel implements VisitableToSDK {
 
     public Value(String value, Question question, Survey survey) {
         this.option = null;
-        this.question = question;
         this.value = value;
-        this.survey = survey;
+        this.setQuestion(question);
+        this.setSurvey(survey);
     }
 
     public Value(Option option, Question question, Survey survey) {
-        this.option = option;
-        this.question = question;
-        this.value = option.getName();
-        this.survey = survey;
+        this.value = (option!=null)?option.getName():null;
+        this.setOption(option);
+        this.setQuestion(question);
+        this.setSurvey(survey);
     }
 
     public Long getId_value() {
@@ -85,19 +88,46 @@ public class Value extends BaseModel implements VisitableToSDK {
     }
 
     public Option getOption() {
+        if(option==null){
+            if(id_option==null) return null;
+            option = new Select()
+                    .from(Option.class)
+                    .where(Condition.column(Option$Table.ID_OPTION)
+                            .is(id_option)).querySingle();
+        }
         return option;
     }
 
     public void setOption(Option option) {
         this.option = option;
+        this.id_option=(option!=null)?option.getId_option():null;
+    }
+
+    public void setOption(Long id_option){
+        this.id_option=id_option;
+        this.option=null;
     }
 
     public Question getQuestion() {
+        if(question==null){
+            if(id_question==null) return null;
+            question = new Select()
+                    .from(Question.class)
+                    .where(Condition.column(Question$Table.ID_QUESTION)
+                            .is(id_question)).querySingle();
+        }
+
         return question;
     }
 
     public void setQuestion(Question question) {
         this.question = question;
+        this.id_question = (question!=null)?question.getId_question():null;
+    }
+
+    public void setQuestion(Long id_question){
+        this.id_question = id_question;
+        this.question = null;
     }
 
     public String getValue() {
@@ -109,11 +139,24 @@ public class Value extends BaseModel implements VisitableToSDK {
     }
 
     public Survey getSurvey() {
+        if(survey==null){
+            if(id_survey==null) return null;
+            survey = new Select()
+                    .from(Survey.class)
+                    .where(Condition.column(Survey$Table.ID_SURVEY)
+                            .is(id_survey)).querySingle();
+        }
         return survey;
     }
 
     public void setSurvey(Survey survey) {
         this.survey = survey;
+        this.id_survey = (survey!=null)?survey.getId_survey():null;
+    }
+
+    public void setSurvey(Long id_survey){
+        this.id_survey = id_survey;
+        this.survey = null;
     }
 
     /**
@@ -146,7 +189,7 @@ public class Value extends BaseModel implements VisitableToSDK {
         }
         return (int) new Select().count()
                 .from(Value.class)
-                .where(Condition.column(Value$Table.SURVEY_ID_SURVEY).eq(survey.getId_survey())).count();
+                .where(Condition.column(Value$Table.ID_SURVEY).eq(survey.getId_survey())).count();
     }
 
     @Override
@@ -157,36 +200,38 @@ public class Value extends BaseModel implements VisitableToSDK {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Value)) return false;
+        if (o == null || getClass() != o.getClass()) return false;
 
         Value value1 = (Value) o;
 
         if (id_value != value1.id_value) return false;
-        if (!value.equals(value1.value)) return false;
-        if (!question.equals(value1.question)) return false;
-        if (!survey.equals(value1.survey)) return false;
-        return !(option != null ? !option.equals(value1.option) : value1.option != null);
+        if (value != null ? !value.equals(value1.value) : value1.value != null) return false;
+        if (id_question != null ? !id_question.equals(value1.id_question) : value1.id_question != null)
+            return false;
+        if (id_survey != null ? !id_survey.equals(value1.id_survey) : value1.id_survey != null)
+            return false;
+        return !(id_option != null ? !id_option.equals(value1.id_option) : value1.id_option != null);
 
     }
 
     @Override
     public int hashCode() {
         int result = (int) (id_value ^ (id_value >>> 32));
-        result = 31 * result + value.hashCode();
-        result = 31 * result + question.hashCode();
-        result = 31 * result + survey.hashCode();
-        result = 31 * result + (option != null ? option.hashCode() : 0);
+        result = 31 * result + (value != null ? value.hashCode() : 0);
+        result = 31 * result + (id_question != null ? id_question.hashCode() : 0);
+        result = 31 * result + (id_survey != null ? id_survey.hashCode() : 0);
+        result = 31 * result + (id_option != null ? id_option.hashCode() : 0);
         return result;
     }
 
     @Override
     public String toString() {
         return "Value{" +
-                "id=" + id_value +
+                "id_value=" + id_value +
                 ", value='" + value + '\'' +
-                ", question=" + question +
-                ", survey=" + survey +
-                ", option=" + option +
+                ", id_question=" + id_question +
+                ", id_survey=" + id_survey +
+                ", id_option=" + id_option +
                 '}';
     }
 }

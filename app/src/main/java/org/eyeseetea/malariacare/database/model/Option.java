@@ -153,7 +153,7 @@ public class Option extends BaseModel {
     public List<Value> getValues(){
         if(values==null){
             values = new Select().from(Value.class)
-                    .where(Condition.column(Value$Table.OPTION_ID_OPTION).eq(this.getId_option())).queryList();
+                    .where(Condition.column(Value$Table.ID_OPTION).eq(this.getId_option())).queryList();
         }
         return values;
     }

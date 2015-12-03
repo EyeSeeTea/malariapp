@@ -24,6 +24,7 @@ import org.eyeseetea.malariacare.database.model.Question;
 import org.eyeseetea.malariacare.database.model.Value;
 import org.eyeseetea.malariacare.utils.Constants;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -48,7 +49,7 @@ public class ReadWriteDB {
         Value value = question.getValueBySession();
         if (value != null) {
 
-            List<Option> optionList = question.getAnswer().getOptions();
+            List<Option> optionList = new ArrayList<>(question.getAnswer().getOptions());
             optionList.add(0, new Option(Constants.DEFAULT_SELECT_OPTION));
             result = optionList.indexOf(value.getOption());
         }
@@ -94,7 +95,7 @@ public class ReadWriteDB {
             value = new Value(answer, question, Session.getSurvey());
             value.save();
         } else {
-            value.setOption(null);
+            value.setOption((Long)null);
             value.setValue(answer);
             value.update();
         }

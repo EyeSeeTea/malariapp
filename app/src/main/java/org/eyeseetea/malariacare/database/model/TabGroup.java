@@ -135,7 +135,7 @@ public class TabGroup extends BaseModel {
     public List<Survey> getSurveys(){
         if(surveys==null){
             this.surveys = new Select().from(Survey.class)
-                    .where(Condition.column(Survey$Table.TABGROUP_ID_TAB_GROUP).eq(this.getId_tab_group())).queryList();
+                    .where(Condition.column(Survey$Table.ID_TAB_GROUP).eq(this.getId_tab_group())).queryList();
         }
         return this.surveys;
     }

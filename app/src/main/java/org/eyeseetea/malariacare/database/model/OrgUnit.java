@@ -163,7 +163,7 @@ public class OrgUnit extends BaseModel {
     public List<Survey> getSurveys(){
         if(this.surveys==null){
             this.surveys = new Select().from(Survey.class)
-                    .where(Condition.column(Survey$Table.ORGUNIT_ID_ORG_UNIT).eq(this.getId_org_unit())).queryList();
+                    .where(Condition.column(Survey$Table.ID_ORG_UNIT).eq(this.getId_org_unit())).queryList();
         }
         return surveys;
     }

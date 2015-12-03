@@ -314,7 +314,7 @@ public class Question extends BaseModel {
     public boolean hasParent() {
         if (parent == null) {
             long countChildQuestionRelations = new Select().count().from(QuestionRelation.class)
-                    .where(Condition.column(QuestionRelation$Table.QUESTION_ID_QUESTION).eq(this.getId_question()))
+                    .where(Condition.column(QuestionRelation$Table.ID_QUESTION).eq(this.getId_question()))
                     .and(Condition.column(QuestionRelation$Table.OPERATION).eq(QuestionRelation.PARENT_CHILD))
                     .count();
             parent = countChildQuestionRelations > 0;
@@ -326,7 +326,7 @@ public class Question extends BaseModel {
         if(questionRelations ==null){
             this.questionRelations = new Select()
                     .from(QuestionRelation.class)
-                    .where(Condition.column(QuestionRelation$Table.QUESTION_ID_QUESTION)
+                    .where(Condition.column(QuestionRelation$Table.ID_QUESTION)
                             .eq(this.getId_question()))
                     .queryList();
         }
@@ -340,7 +340,7 @@ public class Question extends BaseModel {
     public List<QuestionOption> getQuestionOption() {
         //if (this.children == null){
         return new Select().from(QuestionOption.class)
-                .where(Condition.column(QuestionOption$Table.QUESTION_ID_QUESTION).eq(this.getId_question()))
+                .where(Condition.column(QuestionOption$Table.ID_QUESTION).eq(this.getId_question()))
                 .queryList();
         //}
     }
@@ -355,8 +355,8 @@ public class Question extends BaseModel {
                     .join(QuestionOption.class, Join.JoinType.LEFT).as("qo")
                     .on(
                             Condition.column(ColumnAlias.columnWithTable("m", Match$Table.ID_MATCH))
-                                    .eq(ColumnAlias.columnWithTable("qo", QuestionOption$Table.MATCH_ID_MATCH)))
-                    .where(Condition.column(ColumnAlias.columnWithTable("qo", QuestionOption$Table.QUESTION_ID_QUESTION)).eq(this.getId_question())).queryList();
+                                    .eq(ColumnAlias.columnWithTable("qo", QuestionOption$Table.ID_MATCH)))
+                    .where(Condition.column(ColumnAlias.columnWithTable("qo", QuestionOption$Table.ID_QUESTION)).eq(this.getId_question())).queryList();
         }
         return matches;
     }
@@ -385,11 +385,11 @@ public class Question extends BaseModel {
                     //Question + QuestioRelation
                     .join(QuestionRelation.class, Join.JoinType.LEFT).as("qr")
                     .on(Condition.column(ColumnAlias.columnWithTable("q", Question$Table.ID_QUESTION))
-                            .eq(ColumnAlias.columnWithTable("qr", QuestionRelation$Table.QUESTION_ID_QUESTION)))
+                            .eq(ColumnAlias.columnWithTable("qr", QuestionRelation$Table.ID_QUESTION)))
                             //+Match
                     .join(Match.class, Join.JoinType.LEFT).as("m")
                     .on(Condition.column(ColumnAlias.columnWithTable("qr", QuestionRelation$Table.ID_QUESTION_RELATION))
-                                    .eq(ColumnAlias.columnWithTable("m", Match$Table.QUESTIONRELATION_ID_QUESTION_RELATION)))
+                                    .eq(ColumnAlias.columnWithTable("m", Match$Table.ID_QUESTION_RELATION)))
                             //Parent child relationship
                     .where(in)
                             //In clause
@@ -407,7 +407,7 @@ public class Question extends BaseModel {
         if(values==null){
             values = new Select()
                     .from(Value.class)
-                    .where(Condition.column(Value$Table.QUESTION_ID_QUESTION)
+                    .where(Condition.column(Value$Table.ID_QUESTION)
                             .eq(this.getId_question())).queryList();
         }
         return values;
@@ -433,8 +433,8 @@ public class Question extends BaseModel {
             return null;
         }
         List<Value> returnValues = new Select().from(Value.class)
-                .where(Condition.column(Value$Table.QUESTION_ID_QUESTION).eq(this.getId_question()))
-                .and(Condition.column(Value$Table.SURVEY_ID_SURVEY).eq(survey.getId_survey())).queryList();
+                .where(Condition.column(Value$Table.ID_QUESTION).eq(this.getId_question()))
+                .and(Condition.column(Value$Table.ID_SURVEY).eq(survey.getId_survey())).queryList();
 
         if (returnValues.size() == 0) {
             return null;
@@ -492,24 +492,24 @@ public class Question extends BaseModel {
         long hasParentOptionActivated = new Select().count().from(Value.class).as("v")
                 .join(QuestionOption.class, Join.JoinType.LEFT).as("qo")
                 .on(
-                        Condition.column(ColumnAlias.columnWithTable("v", Value$Table.QUESTION_ID_QUESTION))
-                                .eq(ColumnAlias.columnWithTable("qo", QuestionOption$Table.QUESTION_ID_QUESTION)),
-                        Condition.column(ColumnAlias.columnWithTable("v", Value$Table.OPTION_ID_OPTION))
-                                .eq(ColumnAlias.columnWithTable("qo", QuestionOption$Table.OPTION_ID_OPTION)))
+                        Condition.column(ColumnAlias.columnWithTable("v", Value$Table.ID_QUESTION))
+                                .eq(ColumnAlias.columnWithTable("qo", QuestionOption$Table.ID_QUESTION)),
+                        Condition.column(ColumnAlias.columnWithTable("v", Value$Table.ID_OPTION))
+                                .eq(ColumnAlias.columnWithTable("qo", QuestionOption$Table.ID_OPTION)))
                 .join(Match.class, Join.JoinType.LEFT).as("m")
                 .on(
-                        Condition.column(ColumnAlias.columnWithTable("qo", QuestionOption$Table.MATCH_ID_MATCH))
+                        Condition.column(ColumnAlias.columnWithTable("qo", QuestionOption$Table.ID_MATCH))
                                 .eq(ColumnAlias.columnWithTable("m", Match$Table.ID_MATCH)))
                 .join(QuestionRelation.class, Join.JoinType.LEFT).as("qr")
                 .on(
-                        Condition.column(ColumnAlias.columnWithTable("m", Match$Table.QUESTIONRELATION_ID_QUESTION_RELATION))
+                        Condition.column(ColumnAlias.columnWithTable("m", Match$Table.ID_QUESTION_RELATION))
                                 .eq(ColumnAlias.columnWithTable("qr", QuestionRelation$Table.ID_QUESTION_RELATION)))
                         //Parent child relationship
                 .where(Condition.column(ColumnAlias.columnWithTable("qr", QuestionRelation$Table.OPERATION)).eq(1))
                         //For the given survey
-                .and(Condition.column(ColumnAlias.columnWithTable("v", Value$Table.SURVEY_ID_SURVEY)).eq(survey.getId_survey()))
+                .and(Condition.column(ColumnAlias.columnWithTable("v", Value$Table.ID_SURVEY)).eq(survey.getId_survey()))
                         //The child question in the relationship is 'this'
-                .and(Condition.column(ColumnAlias.columnWithTable("qr", QuestionRelation$Table.QUESTION_ID_QUESTION)).eq(this.getId_question()))
+                .and(Condition.column(ColumnAlias.columnWithTable("qr", QuestionRelation$Table.ID_QUESTION)).eq(this.getId_question()))
                 .count();
 
         //Parent with the right value -> not hidden
@@ -562,7 +562,7 @@ public class Question extends BaseModel {
         long numChildrenQuestion = new Select().count()
                 .from(QuestionRelation.class).as("qr")
                 .join(Question.class, Join.JoinType.LEFT).as("q")
-                .on(Condition.column(ColumnAlias.columnWithTable("qr", QuestionRelation$Table.QUESTION_ID_QUESTION))
+                .on(Condition.column(ColumnAlias.columnWithTable("qr", QuestionRelation$Table.ID_QUESTION))
                         .eq(ColumnAlias.columnWithTable("q", Question$Table.ID_QUESTION)))
                 .join(Answer.class, Join.JoinType.LEFT).as("a")
                 .on(Condition.column(ColumnAlias.columnWithTable("q", Question$Table.ID_ANSWER))
@@ -603,19 +603,19 @@ public class Question extends BaseModel {
         //Find questionoptions for q1 and q2 and check same match
         List<QuestionOption> questionOptions = new Select().from(QuestionOption.class).as("qo")
                 .join(Match.class, Join.JoinType.LEFT).as("m")
-                .on(Condition.column(ColumnAlias.columnWithTable("qo", QuestionOption$Table.MATCH_ID_MATCH)).eq(ColumnAlias.columnWithTable("m", Match$Table.ID_MATCH)))
+                .on(Condition.column(ColumnAlias.columnWithTable("qo", QuestionOption$Table.ID_MATCH)).eq(ColumnAlias.columnWithTable("m", Match$Table.ID_MATCH)))
 
                 .join(QuestionRelation.class, Join.JoinType.LEFT).as("qr")
-                .on(Condition.column(ColumnAlias.columnWithTable("m", Match$Table.QUESTIONRELATION_ID_QUESTION_RELATION)).eq(ColumnAlias.columnWithTable("qr", QuestionRelation$Table.ID_QUESTION_RELATION)))
+                .on(Condition.column(ColumnAlias.columnWithTable("m", Match$Table.ID_QUESTION_RELATION)).eq(ColumnAlias.columnWithTable("qr", QuestionRelation$Table.ID_QUESTION_RELATION)))
 
                 .join(Value.class, Join.JoinType.LEFT).as("v")
                 .on(
-                        Condition.column(ColumnAlias.columnWithTable("v", Value$Table.QUESTION_ID_QUESTION))
-                                .eq(ColumnAlias.columnWithTable("qo", QuestionOption$Table.QUESTION_ID_QUESTION)),
-                        Condition.column(ColumnAlias.columnWithTable("v", Value$Table.OPTION_ID_OPTION))
-                                .eq(ColumnAlias.columnWithTable("qo", QuestionOption$Table.OPTION_ID_OPTION)))
-                .where(Condition.column(ColumnAlias.columnWithTable("v", Value$Table.SURVEY_ID_SURVEY)).eq(survey.getId_survey()))
-                .and(Condition.column(ColumnAlias.columnWithTable("qr", QuestionRelation$Table.QUESTION_ID_QUESTION)).eq(this.getId_question()))
+                        Condition.column(ColumnAlias.columnWithTable("v", Value$Table.ID_QUESTION))
+                                .eq(ColumnAlias.columnWithTable("qo", QuestionOption$Table.ID_QUESTION)),
+                        Condition.column(ColumnAlias.columnWithTable("v", Value$Table.ID_OPTION))
+                                .eq(ColumnAlias.columnWithTable("qo", QuestionOption$Table.ID_OPTION)))
+                .where(Condition.column(ColumnAlias.columnWithTable("v", Value$Table.ID_SURVEY)).eq(survey.getId_survey()))
+                .and(Condition.column(ColumnAlias.columnWithTable("qr", QuestionRelation$Table.ID_QUESTION)).eq(this.getId_question()))
                 .and(Condition.column(ColumnAlias.columnWithTable("qr", QuestionRelation$Table.OPERATION)).eq(Constants.OPERATION_TYPE_MATCH))
                 .queryList();
 
