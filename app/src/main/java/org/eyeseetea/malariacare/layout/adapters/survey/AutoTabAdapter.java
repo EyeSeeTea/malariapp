@@ -197,44 +197,24 @@ public class AutoTabAdapter extends ATabAdapter {
                     rowView = AutoTabLayoutUtils.initialiseView(R.layout.label, parent, question, viewHolder, position, getInflater());
                     break;
                 case Constants.POSITIVE_INT:
-                    rowView = AutoTabLayoutUtils.initialiseView(R.layout.numeric_picker, parent, question, viewHolder, position, getInflater());
-                    final NumberPicker numberPicker=(NumberPicker)rowView.findViewById(R.id.answer);
-                    //Without setMinValue, setMaxValue, setValue in this order, the setValue is not displayed in the screen.
-                    numberPicker.setMinValue(1);
-                    numberPicker.setMaxValue(99999);
-                    //get value
-                    String positiveIntValue = String.valueOf(numberPicker.getValue());
-                    numberPicker.setEnabled(false);
-                    numberPicker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
-                        @Override
-                        public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
-                            // do something here
-
-                        }
-                    });
-                    final Question numberQuestion=question;
-
+                    rowView = AutoTabLayoutUtils.initialiseView(R.layout.integer, parent, question, viewHolder, position, getInflater());
                     //Add main component, set filters and listener
-                    ((NumberPicker) viewHolder.component).setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
-                        boolean viewCreated = false;
-
-                        @Override
-                        public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
-                            if (viewCreated) {
-                                ReadWriteDB.saveValuesText(numberQuestion, String.valueOf(newVal));
-                            } else {
-                                viewCreated = true;
-                            }
-                        }
-                    });
+                    ((CustomEditText) viewHolder.component).setFilters(new InputFilter[]{new InputFilter.LengthFilter(Constants.MAX_INT_CHARS), new MinMaxInputFilter(1, null)});
+                    ((CustomEditText) viewHolder.component).addTextChangedListener(new TextViewListener(false, question));
                     break;
                 case Constants.INT:
+                    rowView = AutoTabLayoutUtils.initialiseView(R.layout.integer, parent, question, viewHolder, position, getInflater());
+                    //Add main component, set filters and listener
+                    ((CustomEditText) viewHolder.component).setFilters(new InputFilter[]{new InputFilter.LengthFilter(Constants.MAX_INT_CHARS)});
+                    ((CustomEditText) viewHolder.component).addTextChangedListener(new TextViewListener(false, question));
+                    break;
+                case Constants.NUMERIC_PICKER:
                     rowView = AutoTabLayoutUtils.initialiseView(R.layout.numeric_picker, parent, question, viewHolder, position, getInflater());
-                    final NumberPicker numberIntPicker=(NumberPicker)rowView.findViewById(R.id.answer);
+                    final NumberPicker numericPicker=(NumberPicker)rowView.findViewById(R.id.answer);
                     //Without setMinValue, setMaxValue, setValue in this order, the setValue is not displayed in the screen.
-                    numberIntPicker.setMinValue(1);
-                    numberIntPicker.setMaxValue(99999);
-                    final Question numberIntQuestion=question;
+                    numericPicker.setMinValue(1);
+                    numericPicker.setMaxValue(99999);
+                    final Question numericPickerQuestion=question;
 
                     //Add main component, set filters and listener
                     ((NumberPicker) viewHolder.component).setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
@@ -243,7 +223,7 @@ public class AutoTabAdapter extends ATabAdapter {
                         @Override
                         public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
                             if (viewCreated) {
-                                ReadWriteDB.saveValuesText(numberIntQuestion, String.valueOf(newVal));
+                                ReadWriteDB.saveValuesText(numericPickerQuestion, String.valueOf(newVal));
                             } else {
                                 viewCreated = true;
                             }
@@ -317,10 +297,11 @@ public class AutoTabAdapter extends ATabAdapter {
             case Constants.DATE:
             case Constants.SHORT_TEXT:
             case Constants.LONG_TEXT:
-                ((CustomEditText) viewHolder.component).setText(ReadWriteDB.readValueQuestion(question));
-                break;
             case Constants.POSITIVE_INT:
             case Constants.INT:
+                ((CustomEditText) viewHolder.component).setText(ReadWriteDB.readValueQuestion(question));
+                break;
+            case Constants.NUMERIC_PICKER:
                 try {
                     ((NumberPicker) viewHolder.component).setValue(Integer.valueOf(ReadWriteDB.readValueQuestion(question)));
                 }catch(Exception e){}
