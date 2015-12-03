@@ -102,6 +102,17 @@ public class Survey extends BaseModel implements VisitableToSDK {
     public Survey() {
     }
 
+    public Survey(OrgUnit orgUnit, Program program, User user) {
+        this.orgUnit = orgUnit;
+        this.program = program;
+        this.user = user;
+        this.eventDate = new Date();
+        this.status = Constants.SURVEY_IN_PROGRESS; // Possibilities [ In progress | Completed | Sent ]
+        this.completionDate= this.eventDate;
+
+        Log.i(".Survey", Long.valueOf(this.completionDate.getTime()).toString());
+    }
+
     public Survey(OrgUnit orgUnit, TabGroup tabGroup, User user) {
         this.orgUnit = orgUnit;
         this.tabGroup = tabGroup;
@@ -508,6 +519,17 @@ public class Survey extends BaseModel implements VisitableToSDK {
                 .orderBy(Survey$Table.ORGUNIT_ID_ORG_UNIT).queryList();
     }
 
+    // Returns a concrete survey, if it exists
+    public static List<Survey> getUnsentSurveys(OrgUnit orgUnit, Program program) {
+        return new Select().from(Survey.class)
+                .where(Condition.column(Survey$Table.ORGUNIT_ID_ORG_UNIT).eq(orgUnit.getId_org_unit()))
+                .and(Condition.column(Survey$Table.PROGRAM_ID_PROGRAM).eq(program.getId_program()))
+                .and(Condition.column(Survey$Table.STATUS).isNot(Constants.SURVEY_SENT))
+                .and(Condition.column(Survey$Table.STATUS).isNot(Constants.SURVEY_HIDE))
+                .orderBy(Survey$Table.EVENTDATE)
+                .orderBy(Survey$Table.ORGUNIT_ID_ORG_UNIT).queryList();
+    }
+
     @Override
     public void accept(IConvertToSDKVisitor IConvertToSDKVisitor) throws Exception{
         IConvertToSDKVisitor.visit(this);
@@ -528,6 +550,7 @@ public class Survey extends BaseModel implements VisitableToSDK {
             return false;
         if (completionDate != null ? !completionDate.equals(survey.completionDate) : survey.completionDate != null)
             return false;
+        if (!program.equals(survey.program)) return false;
         return status.equals(survey.status);
 
     }
@@ -535,6 +558,7 @@ public class Survey extends BaseModel implements VisitableToSDK {
     @Override
     public int hashCode() {
         int result = (int) (id_survey ^ (id_survey >>> 32));
+        result = 31 * result + program.hashCode();
         result = 31 * result + tabGroup.hashCode();
         result = 31 * result + orgUnit.hashCode();
         result = 31 * result + user.hashCode();
@@ -549,6 +573,7 @@ public class Survey extends BaseModel implements VisitableToSDK {
         return "Survey{" +
                 "id=" + id_survey +
                 ", tabGroup=" + tabGroup +
+                ", program=" + program +
                 ", orgUnit=" + orgUnit +
                 ", user=" + user +
                 ", eventDate=" + eventDate +
