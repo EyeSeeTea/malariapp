@@ -69,6 +69,10 @@ public class OrgUnit extends BaseModel {
         this.name = name;
     }
 
+    public OrgUnit(String uid, String name) {
+        this.uid = uid;
+        this.name = name;
+    }
 
     public OrgUnit(String uid, String name, OrgUnit orgUnit, OrgUnitLevel orgUnitLevel) {
         this.uid = uid;

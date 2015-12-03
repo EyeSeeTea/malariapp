@@ -56,24 +56,51 @@ public class Tab extends BaseModel {
             saveForeignKeyModel = false)
     TabGroup tabGroup;
 
+    @Column
+    @ForeignKey(references = {@ForeignKeyReference(columnName = "id_program",
+            columnType = Long.class,
+            foreignColumnName = "id_program")},
+            saveForeignKeyModel = false)
+    Program program;
+
     List<Header> headers;
 
     public Tab() {
     }
 
+    public Tab(String name, Integer order_pos, Program program, Integer type) {
+        this.name = name;
+        this.order_pos = order_pos;
+        this.program = program;
+        this.type = type;
+    }
     public Tab(String name, Integer order_pos, Integer type, TabGroup tabGroup) {
         this.name = name;
         this.order_pos = order_pos;
         this.type = type;
         this.tabGroup = tabGroup;
     }
-
+    public Tab(String name, Integer order_pos, Integer type, TabGroup tabGroup,Program program) {
+        this.name = name;
+        this.order_pos = order_pos;
+        this.type = type;
+        this.tabGroup = tabGroup;
+        this.program=program;
+    }
     public Long getId_tab() {
         return id_tab;
     }
 
     public void setId_tab(Long id_tab) {
         this.id_tab = id_tab;
+    }
+
+    public Program getProgram() {
+        return program;
+    }
+
+    public void setProgram(Program program) {
+        this.program = program;
     }
 
     public String getName() {
