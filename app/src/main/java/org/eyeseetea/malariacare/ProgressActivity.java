@@ -82,12 +82,12 @@ public class ProgressActivity extends Activity {
     /**
      * Used for control new steps
      */
-    public static Boolean active=false;
+    public static Boolean PULL_IS_ACTIVE =false;
 
     /**
      * Used for control autopull from login
      */
-    public static Boolean cancelled=false;
+    public static Boolean PULL_CANCEL =false;
 
     ProgressBar progressBar;
     TextView textView;
@@ -97,8 +97,8 @@ public class ProgressActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_progress);
-        cancelled = false;
-        active = true;
+        PULL_CANCEL = false;
+        PULL_IS_ACTIVE = true;
         prepareUI();
         final Button button = (Button) findViewById(R.id.cancelPullButton);
         button.setOnClickListener(new View.OnClickListener() {
@@ -109,9 +109,9 @@ public class ProgressActivity extends Activity {
     }
 
     private void cancellPull() {
-        if(active) {
-            cancelled = true;
-            active = false;
+        if(PULL_IS_ACTIVE) {
+            PULL_CANCEL = true;
+            PULL_IS_ACTIVE = false;
             step(getBaseContext().getResources().getString(R.string.cancellingPull));
         }
     }
@@ -238,7 +238,7 @@ public class ProgressActivity extends Activity {
         //Annotate pull is done
         if(!isAPush) {
             //If is not active, we need restart the process
-            if(!active) {
+            if(!PULL_IS_ACTIVE) {
                 try{Dhis2Application.bus.unregister(this);}
                 catch(Exception e) {
                 }

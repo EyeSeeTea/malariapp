@@ -188,11 +188,11 @@ public class PullController {
                     }
 
                     //Ok
-                    if(ProgressActivity.active)
+                    if(ProgressActivity.PULL_IS_ACTIVE)
                     wipeDatabase();
-                    if(ProgressActivity.active)
+                    if(ProgressActivity.PULL_IS_ACTIVE)
                     convertFromSDK();
-                    if(ProgressActivity.active) {
+                    if(ProgressActivity.PULL_IS_ACTIVE) {
                         Log.d(TAG, "PULL process...OK");
                     }
                 } catch (Exception ex) {
@@ -240,9 +240,9 @@ public class PullController {
 
         //One shared converter to match parents within the hierarchy
         ConvertFromSDKVisitor converter = new ConvertFromSDKVisitor();
-        if(ProgressActivity.active)
+        if(ProgressActivity.PULL_IS_ACTIVE)
         convertMetaData(converter);
-        if(ProgressActivity.active)
+        if(ProgressActivity.PULL_IS_ACTIVE)
         convertDataValues(converter);
 
     }
@@ -253,7 +253,7 @@ public class PullController {
      * @param converter
      */
     private void convertMetaData(ConvertFromSDKVisitor converter) {
-        if(ProgressActivity.active) {
+        if(ProgressActivity.PULL_IS_ACTIVE) {
             //Convert Programs, Tabgroups, Tabs
             postProgress(context.getString(R.string.progress_pull_preparing_program));
             Log.i(TAG, "Converting programs, tabgroups and tabs...");
@@ -264,7 +264,7 @@ public class PullController {
             }
         }
 
-        if(ProgressActivity.active) {
+        if(ProgressActivity.PULL_IS_ACTIVE) {
             //Convert Answers, Options
             postProgress(context.getString(R.string.progress_pull_preparing_answers));
             List<OptionSet> optionSets = MetaDataController.getOptionSets();
@@ -274,7 +274,7 @@ public class PullController {
                 optionSetExtended.accept(converter);
             }
         }
-        if(ProgressActivity.active) {
+        if(ProgressActivity.PULL_IS_ACTIVE) {
             //OrganisationUnits
             postProgress(context.getString(R.string.progress_pull_preparing_orgs));
             Log.i(TAG, "Converting organisationUnits...");
@@ -285,14 +285,14 @@ public class PullController {
             }
         }
 
-        if(ProgressActivity.active) {
+        if(ProgressActivity.PULL_IS_ACTIVE) {
             //User (from UserAccount)
             Log.i(TAG, "Converting user...");
             UserAccountExtended userAccountExtended = new UserAccountExtended(MetaDataController.getUserAccount());
             userAccountExtended.accept(converter);
         }
 
-        if(ProgressActivity.active) {
+        if(ProgressActivity.PULL_IS_ACTIVE) {
             //Convert questions and compositeScores
             postProgress(context.getString(R.string.progress_pull_questions));
             Log.i(TAG, "Ordering questions and compositeScores...");
@@ -301,7 +301,7 @@ public class PullController {
         //Dataelements ordered by program.
         List<org.hisp.dhis.android.sdk.persistence.models.Program> programs = new Select().from(org.hisp.dhis.android.sdk.persistence.models.Program.class).queryList();
         Map<String, List<DataElement>> programsDataelements = new HashMap<>();
-        if(ProgressActivity.active) {
+        if(ProgressActivity.PULL_IS_ACTIVE) {
             for (org.hisp.dhis.android.sdk.persistence.models.Program program : programs) {
                 List<DataElement> dataElements = new ArrayList<>();
                 String programUid = program.getUid();
@@ -314,7 +314,7 @@ public class PullController {
                     }
                 }
 
-                if(ProgressActivity.active) {
+                if(ProgressActivity.PULL_IS_ACTIVE) {
                     Collections.sort(dataElements, new Comparator<DataElement>() {
                         public int compare(DataElement de1, DataElement de2) {
                             DataElementExtended dataElementExtended1 = new DataElementExtended(de1);
@@ -345,7 +345,7 @@ public class PullController {
         }
 
 
-        if(ProgressActivity.active) {
+        if(ProgressActivity.PULL_IS_ACTIVE) {
             Log.i(TAG, "Building questions,compositescores,headers...");
             for (org.hisp.dhis.android.sdk.persistence.models.Program program : programs) {
                 String programUid = program.getUid();
@@ -359,7 +359,7 @@ public class PullController {
         }
 
 
-        if(ProgressActivity.active) {
+        if(ProgressActivity.PULL_IS_ACTIVE) {
             Log.i(TAG, "Building relationships...");
             for (org.hisp.dhis.android.sdk.persistence.models.Program program : programs) {
                 String programUid = program.getUid();
@@ -372,7 +372,7 @@ public class PullController {
             }
         }
 
-        if(ProgressActivity.active) {
+        if(ProgressActivity.PULL_IS_ACTIVE) {
             //Fill order and parent scores
             Log.i(TAG, "Building compositeScore relationships...");
             converter.buildScores();

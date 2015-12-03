@@ -63,12 +63,12 @@ public class LoginActivity extends org.hisp.dhis.android.sdk.ui.activities.Login
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        if (User.getLoggedUser() != null && !ProgressActivity.cancelled &&  sharedPreferences.getBoolean(getApplicationContext().getResources().getString(R.string.pull_metadata),false)) {
+        if (User.getLoggedUser() != null && !ProgressActivity.PULL_CANCEL &&  sharedPreferences.getBoolean(getApplicationContext().getResources().getString(R.string.pull_metadata),false)) {
             startActivity(new Intent(LoginActivity.this,
                     ((Dhis2Application) getApplication()).getMainActivity()));
             finish();
         }
-        ProgressActivity.cancelled=false;
+        ProgressActivity.PULL_CANCEL =false;
         EditText serverText = (EditText) findViewById(org.hisp.dhis.android.sdk.R.id.server_url);
         serverText.setText(R.string.login_info_dhis_default_server_url);
     }
