@@ -39,5 +39,8 @@
     <string name="main_score_b" translatable="false">zckZqXOQRHT</string>
     <string name="main_score_c" translatable="false">DBUwlPCO0Hd</string>
 
+    <!-- Phone MetaData Attribute -->
+    <string name="phone_metadata" translatable="false">RuNZUhiAmlv</string>
+
 
 </resources>

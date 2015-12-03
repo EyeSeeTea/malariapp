@@ -23,6 +23,8 @@ import android.content.Context;
 import android.location.Location;
 import android.util.Log;
 
+import com.raizlabs.android.dbflow.sql.builder.Condition;
+import com.raizlabs.android.dbflow.sql.language.ColumnAlias;
 import com.raizlabs.android.dbflow.sql.language.Select;
 
 import org.eyeseetea.malariacare.R;
@@ -34,11 +36,18 @@ import org.eyeseetea.malariacare.database.utils.LocationMemory;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
+import org.eyeseetea.malariacare.phonemetadata.PhoneMetaData;
 import org.eyeseetea.malariacare.utils.Constants;
 import org.eyeseetea.malariacare.utils.Utils;
+import org.hisp.dhis.android.sdk.controllers.metadata.MetaDataController;
+import org.hisp.dhis.android.sdk.persistence.models.Attribute;
+import org.hisp.dhis.android.sdk.persistence.models.Attribute$Table;
+import org.hisp.dhis.android.sdk.persistence.models.AttributeValue;
+import org.hisp.dhis.android.sdk.persistence.models.AttributeValue$Table;
 import org.hisp.dhis.android.sdk.persistence.models.DataValue;
 import org.hisp.dhis.android.sdk.persistence.models.Event;
 import org.hisp.dhis.android.sdk.persistence.models.Event$Table;
+import org.hisp.dhis.android.sdk.persistence.models.ProgramStageDataElement;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -60,6 +69,8 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
     String mainScoreAUID;
     String mainScoreBUID;
     String mainScoreCUID;
+    String phoneMetadataCUID;
+
 
     /**
      * List of surveys that are going to be pushed
@@ -92,6 +103,8 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
         mainScoreAUID=context.getString(R.string.main_score_a);
         mainScoreBUID=context.getString(R.string.main_score_b);
         mainScoreCUID=context.getString(R.string.main_score_c);
+        phoneMetadataCUID=context.getString(R.string.phone_metadata);
+
         surveys = new ArrayList<>();
         events = new ArrayList<>();
     }
@@ -123,7 +136,7 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
 
         Log.d(TAG,"Creating datavalues from other stuff...");
         buildMainScores(survey);
-
+        buildPhoneMetaData();
         //Annotate both objects to update its state once the process is over
         annotateSurveyAndEvent();
     }
@@ -263,6 +276,21 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
         //location -> set lat/lng
         currentEvent.setLatitude(lastLocation.getLatitude());
         currentEvent.setLongitude(lastLocation.getLongitude());
+    }
+
+    private void buildPhoneMetaData() throws Exception{
+        //Fixme it need be checked
+        PhoneMetaData phoneMetaData=Session.getPhoneMetaData();
+        if(phoneMetaData==null)
+            return;
+        DataValue dataValue=new DataValue();
+        dataValue.setDataElement(phoneMetadataCUID);
+        dataValue.setLocalEventId(currentEvent.getLocalId());
+        dataValue.setEvent(currentEvent.getEvent());
+        dataValue.setProvidedElsewhere(false);
+        dataValue.setStoredBy(Session.getUser().getName());
+        dataValue.setValue(phoneMetaData.getPhone_metaData());
+        dataValue.save();
     }
 
     /**

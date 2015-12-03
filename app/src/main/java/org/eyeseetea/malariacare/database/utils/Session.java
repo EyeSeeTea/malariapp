@@ -28,6 +28,7 @@ import com.raizlabs.android.dbflow.structure.BaseModel;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.model.User;
 import org.eyeseetea.malariacare.layout.adapters.dashboard.IDashboardAdapter;
+import org.eyeseetea.malariacare.phonemetadata.PhoneMetaData;
 import org.hisp.dhis.android.sdk.controllers.DhisService;
 import org.hisp.dhis.android.sdk.network.Credentials;
 
@@ -58,6 +59,11 @@ public class Session {
      * The current location
      */
     private static Location location;
+
+    /**
+     * The current phone metadata
+     */
+    private static PhoneMetaData phoneMetaData;
 
     /**
      * Map that holds non serializable results from services
@@ -164,4 +170,9 @@ public class Session {
         Session.location = location;
     }
 
+    public static PhoneMetaData getPhoneMetaData(){return phoneMetaData;}
+
+    public static void setPhoneMetaData(PhoneMetaData phoneMetaData) {
+        Session.phoneMetaData = phoneMetaData;
+    }
 }

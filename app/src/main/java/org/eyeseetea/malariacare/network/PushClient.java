@@ -40,7 +40,9 @@ import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.model.Value;
 import org.eyeseetea.malariacare.database.utils.LocationMemory;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
+import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
+import org.eyeseetea.malariacare.phonemetadata.PhoneMetaData;
 import org.eyeseetea.malariacare.services.SurveyService;
 import org.eyeseetea.malariacare.utils.Constants;
 import org.eyeseetea.malariacare.utils.Utils;
@@ -79,6 +81,8 @@ public class PushClient {
     private static String TAG_DATAVALUES="dataValues";
     private static String TAG_DATAELEMENT="dataElement";
     private static String TAG_VALUE="value";
+    private static String TAG_PHONEMETADA="RuNZUhiAmlv";
+
 
     Survey survey;
     Activity activity;
@@ -161,8 +165,25 @@ public class PushClient {
         //Otherwise (not required or there are coords)
         object.put(TAG_COORDINATE, prepareCoordinates(lastLocation));
 
+        PhoneMetaData phoneMetaData= Session.getPhoneMetaData();
+        object.put(TAG_PHONEMETADA, phoneMetaData.getPhone_metaData());
+
         Log.d(TAG, "prepareMetadata: " + object.toString());
         return object;
+    }
+
+    /**
+     * Adds a pair dataElement|value according to the passed value.
+     * Format: {dataValues: [{dataElement:'234567',value:'34'}, ...]}
+     * @param value
+     * @return
+     * @throws Exception
+     */
+    private JSONObject preparePhoneValue(String uid, String value) throws Exception{
+        JSONObject elementObject = new JSONObject();
+        elementObject.put(TAG_DATAELEMENT, uid);
+        elementObject.put(TAG_VALUE, value);
+        return elementObject;
     }
 
     private JSONObject prepareCoordinates(Location location) throws Exception{
