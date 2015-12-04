@@ -269,6 +269,7 @@ public class PullController {
         }
 
         //Convert Answers, Options
+        if(!ProgressActivity.PULL_IS_ACTIVE) return;
         postProgress(context.getString(R.string.progress_pull_preparing_answers));
         List<OptionSet> optionSets = MetaDataController.getOptionSets();
         Log.i(TAG, "Converting answers and options...");
@@ -278,6 +279,7 @@ public class PullController {
             optionSetExtended.accept(converter);
         }
         //OrganisationUnits
+        if(!ProgressActivity.PULL_IS_ACTIVE) return;
         postProgress(context.getString(R.string.progress_pull_preparing_orgs));
         Log.i(TAG, "Converting organisationUnits...");
         List<OrganisationUnit> assignedOrganisationsUnits = MetaDataController.getAssignedOrganisationUnits();
