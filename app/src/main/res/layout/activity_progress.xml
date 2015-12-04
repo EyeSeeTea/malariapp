@@ -75,6 +75,7 @@
         android:layout_margin="6dp"
         app:tFontName="@string/bold_font_name"
         app:tDimension="@string/font_size_level1"
+        android:textSize="@dimen/medium_text_size"
         android:textColor="@color/white"
         android:background="@drawable/button_cancel_shape"
         android:textStyle="bold"/>
