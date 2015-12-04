@@ -61,7 +61,7 @@
         android:layout_above="@+id/pull_text"
         android:layout_centerHorizontal="true" />
 
-    <org.hisp.dhis.android.sdk.ui.views.FontButton
+    <org.eyeseetea.malariacare.views.CustomButton
         android:text="@string/cancel"
         android:id="@+id/cancelPullButton"
         android:layout_width="wrap_content"
@@ -70,9 +70,11 @@
         android:layout_alignRight="@+id/imageView"
         android:layout_alignEnd="@+id/imageView"
         android:layout_gravity="center_horizontal"
-        android:background="@drawable/button_blue_selector"
+        style="?android:textAppearanceSmall"
+        app:tFontName="@string/bold_font_name"
+        app:tDimension="@string/font_size_level1"
         android:textColor="@color/white"
-        android:textSize="@dimen/medium_text_size"
-        app:font="@string/bold_font_name"/>
+        android:background="@drawable/button_blue_selector"
+        android:textStyle="bold"/>
 
 </RelativeLayout>

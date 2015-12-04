@@ -113,6 +113,7 @@ public class ProgressActivity extends Activity {
             PULL_CANCEL = true;
             PULL_IS_ACTIVE = false;
             step(getBaseContext().getResources().getString(R.string.cancellingPull));
+            //PullController.getInstance().postCancel();
         }
     }
 
@@ -132,9 +133,7 @@ public class ProgressActivity extends Activity {
     @Override
     public void onPause() {
         super.onPause();
-        try {
-            Dhis2Application.bus.unregister(this);
-            }catch(Exception e){e.printStackTrace();}
+        try {Dhis2Application.bus.unregister(this);}catch(Exception e){e.printStackTrace();}
         finishAndGo(LoginActivity.class);
     }
 

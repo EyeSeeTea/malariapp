@@ -19,6 +19,8 @@
 
 package org.eyeseetea.malariacare.database.iomodules.dhis.importer;
 
+import android.app.job.JobScheduler;
+import android.app.job.JobService;
 import android.content.Context;
 import android.util.Log;
 
@@ -52,10 +54,14 @@ import org.eyeseetea.malariacare.database.model.TabGroup;
 import org.eyeseetea.malariacare.database.model.User;
 import org.eyeseetea.malariacare.database.model.Value;
 import org.eyeseetea.malariacare.database.utils.Session;
+import org.hisp.dhis.android.sdk.controllers.DhisController;
 import org.hisp.dhis.android.sdk.controllers.DhisService;
 import org.hisp.dhis.android.sdk.controllers.LoadingController;
 import org.hisp.dhis.android.sdk.controllers.metadata.MetaDataController;
 import org.hisp.dhis.android.sdk.controllers.tracker.TrackerController;
+import org.hisp.dhis.android.sdk.events.UiEvent;
+import org.hisp.dhis.android.sdk.job.Job;
+import org.hisp.dhis.android.sdk.job.JobExecutor;
 import org.hisp.dhis.android.sdk.job.NetworkJob;
 import org.hisp.dhis.android.sdk.persistence.Dhis2Application;
 import org.hisp.dhis.android.sdk.persistence.models.DataElement;
@@ -105,7 +111,7 @@ public class PullController {
     /**
      * Unregister pull controller from bus events
      */
-    private void unregister() {
+    public void unregister() {
         try {
             Dhis2Application.bus.unregister(this);
         }catch(Exception e){}
@@ -147,8 +153,8 @@ public class PullController {
             postProgress(context.getString(R.string.progress_pull_downloading));
             try {
                 DhisService.loadData(context);
-            }
-            catch(Exception ex){
+            } catch(Exception ex){
+                Log.e(TAG, "pullS: " + ex.getLocalizedMessage());
                 ex.printStackTrace();
             }
         } catch (Exception ex) {
@@ -188,9 +194,7 @@ public class PullController {
                     }
 
                     //Ok
-                    if(ProgressActivity.PULL_IS_ACTIVE)
                     wipeDatabase();
-                    if(ProgressActivity.PULL_IS_ACTIVE)
                     convertFromSDK();
                     if(ProgressActivity.PULL_IS_ACTIVE) {
                         Log.d(TAG, "PULL process...OK");
@@ -210,6 +214,7 @@ public class PullController {
      * Erase data from app database
      */
     public void wipeDatabase(){
+        if(!ProgressActivity.PULL_IS_ACTIVE) return;
         Log.d(TAG, "Deleting app database...");
         Delete.tables(
                 Value.class,
@@ -236,13 +241,13 @@ public class PullController {
      * Launches visitor that turns SDK data into APP data
      */
     private void convertFromSDK() {
+        if(!ProgressActivity.PULL_IS_ACTIVE) return;
         Log.d(TAG, "Converting SDK into APP data");
 
         //One shared converter to match parents within the hierarchy
         ConvertFromSDKVisitor converter = new ConvertFromSDKVisitor();
-        if(ProgressActivity.PULL_IS_ACTIVE)
         convertMetaData(converter);
-        if(ProgressActivity.PULL_IS_ACTIVE)
+        if(!ProgressActivity.PULL_IS_ACTIVE) return;
         convertDataValues(converter);
 
     }
@@ -253,131 +258,121 @@ public class PullController {
      * @param converter
      */
     private void convertMetaData(ConvertFromSDKVisitor converter) {
-        if(ProgressActivity.PULL_IS_ACTIVE) {
-            //Convert Programs, Tabgroups, Tabs
-            postProgress(context.getString(R.string.progress_pull_preparing_program));
-            Log.i(TAG, "Converting programs, tabgroups and tabs...");
-            List<String> assignedProgramsIDs = MetaDataController.getAssignedPrograms();
-            for (String assignedProgramID : assignedProgramsIDs) {
-                ProgramExtended programExtended = new ProgramExtended(MetaDataController.getProgram(assignedProgramID));
-                programExtended.accept(converter);
-            }
+        if(!ProgressActivity.PULL_IS_ACTIVE) return;
+        //Convert Programs, Tabgroups, Tabs
+        postProgress(context.getString(R.string.progress_pull_preparing_program));
+        Log.i(TAG, "Converting programs, tabgroups and tabs...");
+        List<String> assignedProgramsIDs = MetaDataController.getAssignedPrograms();
+        for (String assignedProgramID : assignedProgramsIDs) {
+            ProgramExtended programExtended = new ProgramExtended(MetaDataController.getProgram(assignedProgramID));
+            programExtended.accept(converter);
         }
 
-        if(ProgressActivity.PULL_IS_ACTIVE) {
-            //Convert Answers, Options
-            postProgress(context.getString(R.string.progress_pull_preparing_answers));
-            List<OptionSet> optionSets = MetaDataController.getOptionSets();
-            Log.i(TAG, "Converting answers and options...");
-            for (OptionSet optionSet : optionSets) {
-                OptionSetExtended optionSetExtended = new OptionSetExtended(optionSet);
-                optionSetExtended.accept(converter);
-            }
+        //Convert Answers, Options
+        postProgress(context.getString(R.string.progress_pull_preparing_answers));
+        List<OptionSet> optionSets = MetaDataController.getOptionSets();
+        Log.i(TAG, "Converting answers and options...");
+        for (OptionSet optionSet : optionSets) {
+            if(!ProgressActivity.PULL_IS_ACTIVE) return;
+            OptionSetExtended optionSetExtended = new OptionSetExtended(optionSet);
+            optionSetExtended.accept(converter);
         }
-        if(ProgressActivity.PULL_IS_ACTIVE) {
-            //OrganisationUnits
-            postProgress(context.getString(R.string.progress_pull_preparing_orgs));
-            Log.i(TAG, "Converting organisationUnits...");
-            List<OrganisationUnit> assignedOrganisationsUnits = MetaDataController.getAssignedOrganisationUnits();
-            for (OrganisationUnit assignedOrganisationsUnit : assignedOrganisationsUnits) {
-                OrganisationUnitExtended organisationUnitExtended = new OrganisationUnitExtended(assignedOrganisationsUnit);
-                organisationUnitExtended.accept(converter);
-            }
+        //OrganisationUnits
+        postProgress(context.getString(R.string.progress_pull_preparing_orgs));
+        Log.i(TAG, "Converting organisationUnits...");
+        List<OrganisationUnit> assignedOrganisationsUnits = MetaDataController.getAssignedOrganisationUnits();
+        for (OrganisationUnit assignedOrganisationsUnit : assignedOrganisationsUnits) {
+            if(!ProgressActivity.PULL_IS_ACTIVE) return;
+            OrganisationUnitExtended organisationUnitExtended = new OrganisationUnitExtended(assignedOrganisationsUnit);
+            organisationUnitExtended.accept(converter);
         }
 
-        if(ProgressActivity.PULL_IS_ACTIVE) {
-            //User (from UserAccount)
-            Log.i(TAG, "Converting user...");
-            UserAccountExtended userAccountExtended = new UserAccountExtended(MetaDataController.getUserAccount());
-            userAccountExtended.accept(converter);
-        }
+        if(!ProgressActivity.PULL_IS_ACTIVE) return;
+        //User (from UserAccount)
+        Log.i(TAG, "Converting user...");
+        UserAccountExtended userAccountExtended = new UserAccountExtended(MetaDataController.getUserAccount());
+        userAccountExtended.accept(converter);
 
-        if(ProgressActivity.PULL_IS_ACTIVE) {
+        if(!ProgressActivity.PULL_IS_ACTIVE) return;
             //Convert questions and compositeScores
-            postProgress(context.getString(R.string.progress_pull_questions));
-            Log.i(TAG, "Ordering questions and compositeScores...");
-        }
+        postProgress(context.getString(R.string.progress_pull_questions));
+        Log.i(TAG, "Ordering questions and compositeScores...");
 
         //Dataelements ordered by program.
         List<org.hisp.dhis.android.sdk.persistence.models.Program> programs = new Select().from(org.hisp.dhis.android.sdk.persistence.models.Program.class).queryList();
         Map<String, List<DataElement>> programsDataelements = new HashMap<>();
-        if(ProgressActivity.PULL_IS_ACTIVE) {
-            for (org.hisp.dhis.android.sdk.persistence.models.Program program : programs) {
-                List<DataElement> dataElements = new ArrayList<>();
-                String programUid = program.getUid();
-                List<ProgramStage> programStages = program.getProgramStages();
-                for (org.hisp.dhis.android.sdk.persistence.models.ProgramStage programStage : programStages) {
-                    List<ProgramStageDataElement> programStageDataElements = programStage.getProgramStageDataElements();
-                    for (ProgramStageDataElement programStageDataElement : programStageDataElements) {
-                        if (programStageDataElement.getDataElement().getUid() != null)
-                            dataElements.add(programStageDataElement.getDataElement());
+        if(!ProgressActivity.PULL_IS_ACTIVE) return;
+        for (org.hisp.dhis.android.sdk.persistence.models.Program program : programs) {
+            List<DataElement> dataElements = new ArrayList<>();
+            String programUid = program.getUid();
+            List<ProgramStage> programStages = program.getProgramStages();
+            for (org.hisp.dhis.android.sdk.persistence.models.ProgramStage programStage : programStages) {
+                List<ProgramStageDataElement> programStageDataElements = programStage.getProgramStageDataElements();
+                for (ProgramStageDataElement programStageDataElement : programStageDataElements) {
+                    if (programStageDataElement.getDataElement().getUid() != null) {
+                        if(!ProgressActivity.PULL_IS_ACTIVE) return;
+                        dataElements.add(programStageDataElement.getDataElement());
                     }
                 }
-
-                if(ProgressActivity.PULL_IS_ACTIVE) {
-                    Collections.sort(dataElements, new Comparator<DataElement>() {
-                        public int compare(DataElement de1, DataElement de2) {
-                            DataElementExtended dataElementExtended1 = new DataElementExtended(de1);
-                            DataElementExtended dataElementExtended2 = new DataElementExtended(de2);
-                            Integer dataelementOrder1 = -1, dataelementOrder2 = -1;
-                            try {
-                                dataelementOrder1 = dataElementExtended1.findOrder();
-                            } catch (Exception e) {
-                                dataelementOrder1 = null;
-                            }
-                            try {
-                                dataelementOrder2 = dataElementExtended2.findOrder();
-                            } catch (Exception e) {
-                                dataelementOrder2 = null;
-                            }
-                            if (dataelementOrder1 == dataelementOrder2)
-                                return 0;
-                            else if (dataelementOrder1 == null)
-                                return 1;
-                            else if (dataelementOrder2 == null)
-                                return -1;
-                            return dataelementOrder1.compareTo(dataelementOrder2);
-                        }
-                    });
-                    programsDataelements.put(programUid, dataElements);
+            }
+            if(!ProgressActivity.PULL_IS_ACTIVE) return;
+            Collections.sort(dataElements, new Comparator<DataElement>() {
+                public int compare(DataElement de1, DataElement de2) {
+                    DataElementExtended dataElementExtended1 = new DataElementExtended(de1);
+                    DataElementExtended dataElementExtended2 = new DataElementExtended(de2);
+                    Integer dataelementOrder1 = -1, dataelementOrder2 = -1;
+                    try {
+                        dataelementOrder1 = dataElementExtended1.findOrder();
+                    } catch (Exception e) {
+                        dataelementOrder1 = null;
+                    }
+                    try {
+                        dataelementOrder2 = dataElementExtended2.findOrder();
+                    } catch (Exception e) {
+                        dataelementOrder2 = null;
+                    }
+                    if (dataelementOrder1 == dataelementOrder2)
+                        return 0;
+                    else if (dataelementOrder1 == null)
+                        return 1;
+                    else if (dataelementOrder2 == null)
+                        return -1;
+                    return dataelementOrder1.compareTo(dataelementOrder2);
                 }
+            });
+            programsDataelements.put(programUid, dataElements);
+            }
+
+        if(!ProgressActivity.PULL_IS_ACTIVE) return;
+        Log.i(TAG, "Building questions,compositescores,headers...");
+        for (org.hisp.dhis.android.sdk.persistence.models.Program program : programs) {
+            String programUid = program.getUid();
+            List<DataElement> sortDataElements = programsDataelements.get(programUid);
+            for (DataElement dataElement : sortDataElements) {
+                if(!ProgressActivity.PULL_IS_ACTIVE) return;
+                DataElementExtended dataElementExtended = new DataElementExtended(dataElement);
+                dataElementExtended.accept(converter);
             }
         }
 
-
-        if(ProgressActivity.PULL_IS_ACTIVE) {
-            Log.i(TAG, "Building questions,compositescores,headers...");
-            for (org.hisp.dhis.android.sdk.persistence.models.Program program : programs) {
-                String programUid = program.getUid();
-                List<DataElement> sortDataElements = programsDataelements.get(programUid);
-
-                for (DataElement dataElement : sortDataElements) {
-                    DataElementExtended dataElementExtended = new DataElementExtended(dataElement);
-                    dataElementExtended.accept(converter);
-                }
+        if(!ProgressActivity.PULL_IS_ACTIVE) return;
+        Log.i(TAG, "Building relationships...");
+        for (org.hisp.dhis.android.sdk.persistence.models.Program program : programs) {
+            String programUid = program.getUid();
+            List<DataElement> sortDataElements = programsDataelements.get(programUid);
+            programsDataelements.put(programUid, sortDataElements);
+            for (DataElement dataElement : sortDataElements) {
+                if(!ProgressActivity.PULL_IS_ACTIVE) return;
+                DataElementExtended dataElementExtended = new DataElementExtended(dataElement);
+                converter.buildRelations(dataElementExtended);
             }
         }
 
-
-        if(ProgressActivity.PULL_IS_ACTIVE) {
-            Log.i(TAG, "Building relationships...");
-            for (org.hisp.dhis.android.sdk.persistence.models.Program program : programs) {
-                String programUid = program.getUid();
-                List<DataElement> sortDataElements = programsDataelements.get(programUid);
-                programsDataelements.put(programUid, sortDataElements);
-                for (DataElement dataElement : sortDataElements) {
-                    DataElementExtended dataElementExtended = new DataElementExtended(dataElement);
-                    converter.buildRelations(dataElementExtended);
-                }
-            }
-        }
-
-        if(ProgressActivity.PULL_IS_ACTIVE) {
-            //Fill order and parent scores
-            Log.i(TAG, "Building compositeScore relationships...");
-            converter.buildScores();
-            Log.i(TAG, "MetaData successfully converted...");
-        }
+        if(!ProgressActivity.PULL_IS_ACTIVE) return;
+        //Fill order and parent scores
+        Log.i(TAG, "Building compositeScore relationships...");
+        converter.buildScores();
+        Log.i(TAG, "MetaData successfully converted...");
     }
 
     /**
@@ -386,7 +381,7 @@ public class PullController {
      * @param converter
      */
     private void convertDataValues(ConvertFromSDKVisitor converter) {
-
+        if(!ProgressActivity.PULL_IS_ACTIVE) return;
         postProgress(context.getString(R.string.progress_pull_surveys));
         //XXX This is the right place to apply additional filters to data conversion (only predefined orgunit for instance)
         //For each unit
@@ -396,6 +391,7 @@ public class PullController {
                 List<Event> events = TrackerController.getEvents(organisationUnit.getId(), program.getUid());
                 Log.i(TAG, String.format("Converting surveys and values for orgUnit: %s | program: %s", organisationUnit.getLabel(), program.getDisplayName()));
                 for (Event event : events) {
+                    if(!ProgressActivity.PULL_IS_ACTIVE) return;
                     EventExtended eventExtended = new EventExtended(event);
                     eventExtended.accept(converter);
                 }
@@ -437,5 +433,17 @@ public class PullController {
         }
     }
 
+    /**
+     * Fixme: This metod should stops the dhis2 thread
+     */
+    public void postCancel() {
+        try{
+            Dhis2Application.getEventBus().unregister(new SyncProgressStatus());
+            Dhis2Application.getEventBus().post(new SyncProgressStatus());
+        }
+        catch(Exception e){
+            e.printStackTrace();
+        }
+    }
 
 }
