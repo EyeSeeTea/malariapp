@@ -20,11 +20,11 @@
 
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:state_enabled="true"
-        android:state_pressed="true" android:drawable="@color/headerColor" />
+        android:state_pressed="true" android:drawable="@color/custom_blue_light" />
     <item android:state_enabled="true"
-        android:state_focused="true" android:drawable="@color/darkGrey" />
+        android:state_focused="true" android:drawable="@color/custom_blue_light" />
     <item android:state_enabled="true"
-        android:state_selected="true" android:drawable="@color/dark_navy_blue" />
+        android:state_selected="true" android:drawable="@color/custom_blue_light" />
     <item
         android:drawable="@drawable/button_blue_selector" />
 </selector>
