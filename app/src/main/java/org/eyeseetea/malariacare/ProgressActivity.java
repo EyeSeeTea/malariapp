@@ -113,7 +113,6 @@ public class ProgressActivity extends Activity {
             PULL_CANCEL = true;
             PULL_IS_ACTIVE = false;
             step(getBaseContext().getResources().getString(R.string.cancellingPull));
-            //PullController.getInstance().postCancel();
         }
     }
 

@@ -433,17 +433,4 @@ public class PullController {
         }
     }
 
-    /**
-     * Fixme: This metod should stops the dhis2 thread
-     */
-    public void postCancel() {
-        try{
-            Dhis2Application.getEventBus().unregister(new SyncProgressStatus());
-            Dhis2Application.getEventBus().post(new SyncProgressStatus());
-        }
-        catch(Exception e){
-            e.printStackTrace();
-        }
-    }
-
 }
