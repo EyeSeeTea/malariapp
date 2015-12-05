@@ -53,6 +53,9 @@
     <string name="dialog_content_push_data">Are you sure that you want to send? You cannot undo this action</string>
     <string name="dialog_button_preview_feedback">View Feedback</string>
 
+    <!-- Toast -->
+    <string name="cancellingPull">The process will be stopped in a few seconds </string>
+
     <!-- dashboard -->
     <string name="dashboard_info_feedback">Feedback</string>
     <string name="dashboard_info_active_assessments">Active Assessments</string>

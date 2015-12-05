@@ -44,11 +44,15 @@ public class EyeSeeTeaApplication extends Dhis2Application  {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         if (User.getLoggedUser() != null && sharedPreferences.getBoolean(getApplicationContext().getResources().getString(R.string.pull_metadata),false)){
             return new DashboardActivity().getClass();
-        }else {
+        }else if(!ProgressActivity.PULL_CANCEL) {
             //FIXME Remove when create survey is fixed
 //            return new DashboardActivity().getClass();
             return new ProgressActivity().getClass();
         }
+        else{
+            return new LoginActivity().getClass();
+        }
+
     }
 
     @Override
