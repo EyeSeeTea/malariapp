@@ -27,6 +27,8 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -77,31 +79,61 @@ public class ProgressActivity extends Activity {
      * Num of expected steps while pushing
      */
     private static final int MAX_PUSH_STEPS=4;
+    /**
+     * Used for control new steps
+     */
+    public static Boolean PULL_IS_ACTIVE =false;
+
+    /**
+     * Used for control autopull from login
+     */
+    public static Boolean PULL_CANCEL =false;
 
     ProgressBar progressBar;
     TextView textView;
-
     boolean pullAfterPushInProgress;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_progress);
+        PULL_CANCEL = false;
+        PULL_IS_ACTIVE = true;
         prepareUI();
-        annotateFirstPull(false);
+        final Button button = (Button) findViewById(R.id.cancelPullButton);
+        button.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                cancellPull();
+            }
+        });
+    }
+
+    private void cancellPull() {
+        if(PULL_IS_ACTIVE) {
+            PULL_CANCEL = true;
+            PULL_IS_ACTIVE = false;
+            step(getBaseContext().getResources().getString(R.string.cancellingPull));
+        }
     }
 
     @Override
     public void onResume() {
         super.onResume();
+        try {
         Dhis2Application.bus.register(this);
+        }catch(Exception e){
+            e.printStackTrace();
+            Dhis2Application.bus.unregister(this);
+            Dhis2Application.bus.register(this);
+        }
         launchAction();
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        Dhis2Application.bus.unregister(this);
+        try {Dhis2Application.bus.unregister(this);}catch(Exception e){e.printStackTrace();}
+        finishAndGo(LoginActivity.class);
     }
 
     private void prepareUI(){
@@ -148,7 +180,7 @@ public class ProgressActivity extends Activity {
         //Push or Pull according to extra param from intent
         if(isAPush()){
             launchPush();
-        }else{
+        }else {
             launchPull();
         }
     }
@@ -200,35 +232,45 @@ public class ProgressActivity extends Activity {
      */
     private void showAndMoveOn() {
         boolean isAPush=isAPush();
-        String title=getDialogTitle(isAPush);
 
-        final int msg=getDoneMessage();
+        //Annotate pull is done
+        if(!isAPush) {
+            //If is not active, we need restart the process
+            if(!PULL_IS_ACTIVE) {
+                try{Dhis2Application.bus.unregister(this);}
+                catch(Exception e) {
+                }
+                finishAndGo(LoginActivity.class);
+                return;
+            }
+            else
+            annotateFirstPull(true);
+        }
 
         //Show final step -> done
         step(getString(R.string.progress_pull_done));
 
-        //Annotate pull is done
-        if(!isAPush) {
-            annotateFirstPull(true);
-        }
+        String title=getDialogTitle(isAPush);
+
+        final int msg=getDoneMessage();
 
         //Show message and go on -> pull or single push = dashboard | push before pull = start pull
         new AlertDialog.Builder(this)
-				.setCancelable(false)
+                .setCancelable(false)
                 .setTitle(title)
                 .setMessage(msg)
                 .setNeutralButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface arg0, int arg1) {
-
                         //Pull or Push(single)
-                        if (msg == R.string.dialog_pull_success || msg ==R.string.dialog_push_success) {
+                        if (msg == R.string.dialog_pull_success || msg == R.string.dialog_push_success) {
                             finishAndGo(DashboardActivity.class);
                             return;
+                        } else {
+                            //Start pull after push
+                            pullAfterPushInProgress = true;
+                            launchPull();
+                            return;
                         }
-
-                        //Start pull after push
-                        pullAfterPushInProgress=true;
-                        launchPull();
                     }
                 }).create().show();
     }
@@ -281,6 +323,7 @@ public class ProgressActivity extends Activity {
         return (i!=null && i.getIntExtra(TYPE_OF_ACTION,ACTION_PULL)!=ACTION_PULL);
     }
 
+
     /**
      * Tells is the intent requires a Pull after the push is done
      * @return
@@ -296,6 +339,7 @@ public class ProgressActivity extends Activity {
     }
 
     private void launchPull(){
+        annotateFirstPull(false);
         progressBar.setProgress(0);
         progressBar.setMax(MAX_PULL_STEPS);
         PullController.getInstance().pull(this);
@@ -305,6 +349,7 @@ public class ProgressActivity extends Activity {
      * Launches a push using the PushController according to the intent params
      */
     private void launchPush(){
+        annotateFirstPull(true);
         progressBar.setProgress(0);
         progressBar.setMax(MAX_PUSH_STEPS);
 

@@ -4,7 +4,7 @@
     <!-- # general -->
     <string name="yes">Sí</string>
     <string name="no">No</string>
-    <string name="cancel">Annuler</string>
+    <string name="cancel">Cancelar</string>
     <string name="score">Puntuación</string>
     <string name="title_id">ID</string>
     <string name="title_name">Nombre</string>
@@ -42,6 +42,9 @@
     <string name="dialog_title_push_data">Enviar los datos</string>
     <string name="dialog_content_push_data">¿Está seguro de enviar? No podrá deshacer esta acción</string>
     <string name="dialog_button_preview_feedback">Ver feedback</string>
+
+    <!-- Toast -->
+    <string name="cancellingPull">El proceso se cancelara en unos segundos</string>
 
     <!-- dashboard -->
     <string name="dashboard_info_feedback">Feedback</string>
