@@ -58,32 +58,25 @@ public class QuestionRelation extends BaseModel {
     @PrimaryKey(autoincrement = true)
     long id_question_relation;
     @Column
-    @ForeignKey(references = {@ForeignKeyReference(columnName = "id_question",
-            columnType = Long.class,
-            foreignColumnName = "id_question")},
-            saveForeignKeyModel = false)
+    Long id_question;
+    /**
+     * Reference to associated question (loaded lazily)
+     */
     Question question;
 
     @Column
     int operation;
 
+    /**
+     * List of matches associated to this questionRelation
+     */
     List<Match> matches;
 
-    @OneToMany(methods = {OneToMany.Method.SAVE, OneToMany.Method.DELETE}, variableName = "matches")
-    public List<Match> getMatches() {
-        //if (this.children == null){
-        this.matches = new Select().from(Match.class)
-                .where(Condition.column(Match$Table.QUESTIONRELATION_ID_QUESTION_RELATION).eq(this.getId_question_relation()))
-                .queryList();
-        //}
-        return this.matches;
-    }
-
-    public QuestionRelation(){};
+    public QuestionRelation(){}
 
     public QuestionRelation(Question question, int operation) {
-        this.question = question;
         this.operation = operation;
+        this.setQuestion(question);
     }
 
     public long getId_question_relation() {
@@ -95,11 +88,24 @@ public class QuestionRelation extends BaseModel {
     }
 
     public Question getQuestion() {
+        if(question==null){
+            if(id_question==null) return null;
+            question = new Select()
+                    .from(Question.class)
+                    .where(Condition.column(Question$Table.ID_QUESTION)
+                            .is(id_question)).querySingle();
+        }
         return question;
     }
 
     public void setQuestion(Question question) {
         this.question = question;
+        this.id_question = (question!=null)?question.getId_question():null;
+    }
+
+    public void setQuestion(Long id_question){
+        this.id_question = id_question;
+        this.question = null;
     }
 
     public int getOperation() {
@@ -129,6 +135,15 @@ public class QuestionRelation extends BaseModel {
         }
     }
 
+    public List<Match> getMatches() {
+        if(matches==null) {
+            this.matches = new Select().from(Match.class)
+                    .where(Condition.column(Match$Table.ID_QUESTION_RELATION).eq(this.getId_question_relation()))
+                    .queryList();
+        }
+        return this.matches;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -138,16 +153,14 @@ public class QuestionRelation extends BaseModel {
 
         if (id_question_relation != that.id_question_relation) return false;
         if (operation != that.operation) return false;
-        if (question != null ? !question.equals(that.question) : that.question != null)
-            return false;
+        return !(id_question != null ? !id_question.equals(that.id_question) : that.id_question != null);
 
-        return true;
     }
 
     @Override
     public int hashCode() {
         int result = (int) (id_question_relation ^ (id_question_relation >>> 32));
-        result = 31 * result + (question != null ? question.hashCode() : 0);
+        result = 31 * result + (id_question != null ? id_question.hashCode() : 0);
         result = 31 * result + operation;
         return result;
     }
@@ -155,8 +168,8 @@ public class QuestionRelation extends BaseModel {
     @Override
     public String toString() {
         return "QuestionRelation{" +
-                "id=" + id_question_relation +
-                ", question=" + question +
+                "id_question_relation=" + id_question_relation +
+                ", id_question=" + id_question +
                 ", operation=" + operation +
                 '}';
     }

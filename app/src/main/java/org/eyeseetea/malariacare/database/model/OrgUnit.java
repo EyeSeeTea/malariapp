@@ -46,20 +46,29 @@ public class OrgUnit extends BaseModel {
     @Column
     String name;
     @Column
-    @ForeignKey(references = {@ForeignKeyReference(columnName = "id_parent",
-            columnType = Long.class,
-            foreignColumnName = "id_org_unit")},
-            saveForeignKeyModel = false)
+    Long id_parent;
+
+    /**
+     * Refernce to parent orgUnit (loaded lazily)
+     */
     OrgUnit orgUnit;
+
     @Column
-    @ForeignKey(references = {@ForeignKeyReference(columnName = "id_org_unit_level",
-            columnType = Long.class,
-            foreignColumnName = "id_org_unit_level")},
-            saveForeignKeyModel = false)
+    Long id_org_unit_level;
+
+    /**
+     * Reference to the level of this orgUnit (loaded lazily)
+     */
     OrgUnitLevel orgUnitLevel;
 
+    /**
+     * List of surveys that belong to this orgunit
+     */
     List<Survey> surveys;
 
+    /**
+     * List of orgUnits that belong to this one
+     */
     List<OrgUnit> children;
 
     public OrgUnit() {
@@ -73,8 +82,8 @@ public class OrgUnit extends BaseModel {
     public OrgUnit(String uid, String name, OrgUnit orgUnit, OrgUnitLevel orgUnitLevel) {
         this.uid = uid;
         this.name = name;
-        this.orgUnit = orgUnit;
-        this.orgUnitLevel = orgUnitLevel;
+        this.setOrgUnit(orgUnit);
+        this.setOrgUnitLevel(orgUnitLevel);
     }
 
     public Long getId_org_unit() {
@@ -102,34 +111,60 @@ public class OrgUnit extends BaseModel {
     }
 
     public OrgUnit getOrgUnit() {
+        if(orgUnit==null){
+            if (this.id_parent == null) return null;
+            orgUnit = new Select()
+                    .from(OrgUnit.class)
+                    .where(Condition.column(OrgUnit$Table.ID_ORG_UNIT)
+                            .is(id_parent)).querySingle();
+        }
         return orgUnit;
     }
 
     public void setOrgUnit(OrgUnit orgUnit) {
         this.orgUnit = orgUnit;
+        this.id_parent = (orgUnit!=null)?orgUnit.getId_org_unit():null;
+    }
+
+    public void setOrgUnit(Long id_parent){
+        this.id_parent = id_parent;
+        this.orgUnit = null;
     }
 
     public OrgUnitLevel getOrgUnitLevel() {
+        if(orgUnitLevel==null){
+            if (this.id_org_unit_level==null) return null;
+            orgUnitLevel  = new Select()
+                    .from(OrgUnitLevel.class)
+                    .where(Condition.column(OrgUnitLevel$Table.ID_ORG_UNIT_LEVEL)
+                            .is(id_org_unit_level)).querySingle();
+        }
         return orgUnitLevel;
     }
 
     public void setOrgUnitLevel(OrgUnitLevel orgUnitLevel) {
         this.orgUnitLevel = orgUnitLevel;
+        this.id_org_unit_level = (orgUnitLevel!=null)?orgUnitLevel.getId_org_unit_level():null;
     }
 
-    @OneToMany(methods = {OneToMany.Method.SAVE, OneToMany.Method.DELETE}, variableName = "children")
+    public void setOrgUnitLevel(Long id_org_unit_level){
+        this.id_org_unit_level = id_org_unit_level;
+        this.orgUnitLevel = null;
+    }
+
     public List<OrgUnit> getChildren(){
-        this.children = new Select().from(OrgUnit.class)
-                .where(Condition.column(OrgUnit$Table.ORGUNIT_ID_PARENT).eq(this.getId_org_unit())).queryList();
+        if(this.children==null){
+            this.children = new Select().from(OrgUnit.class)
+                    .where(Condition.column(OrgUnit$Table.ID_PARENT).eq(this.getId_org_unit())).queryList();
+        }
         return children;
     }
 
-    @OneToMany(methods = {OneToMany.Method.SAVE, OneToMany.Method.DELETE}, variableName = "surveys")
     public List<Survey> getSurveys(){
-        //if(this.surveys == null){
+        if(this.surveys==null){
             this.surveys = new Select().from(Survey.class)
-                    .where(Condition.column(Survey$Table.ORGUNIT_ID_ORG_UNIT).eq(this.getId_org_unit())).queryList();
-        //}
+                    .where(Condition.column(Survey$Table.ID_ORG_UNIT).eq(this.getId_org_unit())).queryList();
+        }
         return surveys;
     }
 
@@ -138,14 +173,15 @@ public class OrgUnit extends BaseModel {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        OrgUnit orgUnit1 = (OrgUnit) o;
+        OrgUnit orgUnit = (OrgUnit) o;
 
-        if (id_org_unit != orgUnit1.id_org_unit) return false;
-        if (name != null ? !name.equals(orgUnit1.name) : orgUnit1.name != null) return false;
-        if (orgUnit != null ? !orgUnit.equals(orgUnit1.orgUnit) : orgUnit1.orgUnit != null)
+        if (id_org_unit != orgUnit.id_org_unit) return false;
+        if (uid != null ? !uid.equals(orgUnit.uid) : orgUnit.uid != null) return false;
+        if (name != null ? !name.equals(orgUnit.name) : orgUnit.name != null) return false;
+        if (id_parent != null ? !id_parent.equals(orgUnit.id_parent) : orgUnit.id_parent != null)
             return false;
-        if (uid != null ? !uid.equals(orgUnit1.uid) : orgUnit1.uid != null) return false;
-        return !(orgUnitLevel != null ? !orgUnitLevel.equals(orgUnit1.orgUnitLevel) : orgUnit1.orgUnitLevel != null);
+        return !(id_org_unit_level != null ? !id_org_unit_level.equals(orgUnit.id_org_unit_level) : orgUnit.id_org_unit_level != null);
+
     }
 
     @Override
@@ -153,19 +189,19 @@ public class OrgUnit extends BaseModel {
         int result = (int) (id_org_unit ^ (id_org_unit >>> 32));
         result = 31 * result + (uid != null ? uid.hashCode() : 0);
         result = 31 * result + (name != null ? name.hashCode() : 0);
-        result = 31 * result + (orgUnit != null ? orgUnit.hashCode() : 0);
-        result = 31 * result + (orgUnitLevel != null ? orgUnitLevel.hashCode() : 0);
+        result = 31 * result + (id_parent != null ? id_parent.hashCode() : 0);
+        result = 31 * result + (id_org_unit_level != null ? id_org_unit_level.hashCode() : 0);
         return result;
     }
 
     @Override
     public String toString() {
         return "OrgUnit{" +
-                "id=" + id_org_unit +
+                "id_org_unit=" + id_org_unit +
                 ", uid='" + uid + '\'' +
                 ", name='" + name + '\'' +
-                ", orgUnit='" + orgUnit + '\'' +
-                ", orgUnitLevel='" + orgUnitLevel + '\'' +
+                ", id_parent=" + id_parent +
+                ", id_org_unit_level=" + id_org_unit_level +
                 '}';
     }
 }
