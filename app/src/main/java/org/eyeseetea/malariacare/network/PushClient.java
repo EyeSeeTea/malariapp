@@ -240,6 +240,12 @@ public class PushClient {
         dataElement.put(TAG_VALUE, survey.isTypeC() ? "true" : "false");
         values.put(dataElement);
 
+        //Forward Order
+        dataElement = new JSONObject();
+        dataElement.put(TAG_DATAELEMENT, activity.getString(R.string.forward_order));
+        dataElement.put(TAG_VALUE, activity.getString(R.string.forward_order_value));
+        values.put(dataElement);
+
         return values;
     }
 
