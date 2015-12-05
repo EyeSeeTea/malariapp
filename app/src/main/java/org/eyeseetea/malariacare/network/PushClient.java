@@ -198,7 +198,7 @@ public class PushClient {
         values=prepareCompositeScores(values);
 
         //Add main scores values
-        values=prepareMainScoreValues(values);
+        values= prepareControlDataElementValues(values);
 
         data.put(TAG_DATAVALUES, values);
         Log.d(TAG, "prepareDataElements result: " + data.toString());
@@ -214,7 +214,7 @@ public class PushClient {
      * @param values
      * @return
      */
-    private JSONArray prepareMainScoreValues(JSONArray values) throws Exception{
+    private JSONArray prepareControlDataElementValues(JSONArray values) throws Exception{
         JSONObject dataElement;
         //Main score
         dataElement = new JSONObject();
