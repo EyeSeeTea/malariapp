@@ -100,6 +100,8 @@ public class Question extends BaseModel {
 
     List<Question> children;
 
+    List<Question> relatives;
+
     List<Value> values;
 
     List<QuestionRelation> questionRelations;

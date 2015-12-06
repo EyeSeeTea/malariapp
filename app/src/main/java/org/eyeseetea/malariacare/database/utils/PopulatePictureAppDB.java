@@ -173,10 +173,10 @@ public class PopulatePictureAppDB {
         TransactionManager.getInstance().saveOnSaveQueue(tabGroups.values());
         TransactionManager.getInstance().saveOnSaveQueue(tabList.values());
         TransactionManager.getInstance().saveOnSaveQueue(headerList.values());
-        TransactionManager.getInstance().saveOnSaveQueue(questionList.values());
-        TransactionManager.getInstance().saveOnSaveQueue(optionList.values());
-        TransactionManager.getInstance().saveOnSaveQueue(optionAttributeList.values());
         TransactionManager.getInstance().saveOnSaveQueue(answerList.values());
+        TransactionManager.getInstance().saveOnSaveQueue(optionAttributeList.values());
+        TransactionManager.getInstance().saveOnSaveQueue(optionList.values());
+        TransactionManager.getInstance().saveOnSaveQueue(questionList.values());
         TransactionManager.getInstance().saveOnSaveQueue(orgUnitLevels.values());
         TransactionManager.getInstance().saveOnSaveQueue(orgUnits.values());
     }

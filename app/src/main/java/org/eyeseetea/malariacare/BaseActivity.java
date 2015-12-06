@@ -22,8 +22,10 @@ package org.eyeseetea.malariacare;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBarActivity;
 import android.text.Html;
 import android.text.SpannableString;
@@ -196,7 +198,15 @@ public abstract class BaseActivity extends ActionBarActivity {
      * Called when the user clicks the New Survey button
      */
     public void newSurvey(View view) {
-        Intent targetActivityIntent = new Intent(this,CreateSurveyActivity.class);
+
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        Intent targetActivityIntent=null;
+        if (sharedPreferences.getBoolean(getApplicationContext().getResources().getString(R.string.picturebuild),true)){
+            targetActivityIntent = new Intent(this,CreateSurveyActivityPicture.class);
+        }else
+        {
+            targetActivityIntent = new Intent(this, CreateSurveyActivity.class);
+        }
         targetActivityIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(targetActivityIntent);
         finish();

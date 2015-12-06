@@ -288,6 +288,7 @@
     <string name="dialog_push_before_pull_success">Surveys successfully pushed to dhis server, starting to pull metadata</string>
 
     <!--Pictureapp-->
+    <string name="picturebuild" translatable="false">picturebuild</string>
 
     <string name="default_org_unit"></string>
     <!-- Surveys -->

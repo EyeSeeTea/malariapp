@@ -120,7 +120,7 @@ public class CreateSurveyActivityPicture extends BaseActivity {
             Session.setSurvey(survey);
 
             //Call Survey Activity
-            finishAndGo(SurveyActivity.class);
+            finishAndGo(SurveyActivityPictureapp.class);
         }
     }
 
