@@ -4,7 +4,7 @@
     <!-- # general -->
     <string name="yes">Sí</string>
     <string name="no">No</string>
-    <string name="cancel">Annuler</string>
+    <string name="cancel">Cancelar</string>
     <string name="score">Puntuación</string>
     <string name="title_id">ID</string>
     <string name="title_name">Nombre</string>
@@ -43,6 +43,9 @@
     <string name="dialog_content_push_data">¿Está seguro de enviar? No podrá deshacer esta acción</string>
     <string name="dialog_button_preview_feedback">Ver feedback</string>
 
+    <!-- Toast -->
+    <string name="cancellingPull">El proceso se cancelara en unos segundos</string>
+
     <!-- dashboard -->
     <string name="dashboard_info_feedback">Feedback</string>
     <string name="dashboard_info_active_assessments">Evaluaciones activas</string>
@@ -61,6 +64,7 @@
     <string name="create_info_organization_unit">Unidad de organización</string>
     <string name="create_info_survey">Formulario</string>
     <string name="create_info_tabs_group">Grupo de Pestañas</string>
+    <string name="create_info_zone">Zona</string>
 
     <!-- assessment -->
     <string name="assessment_title_facility_date">Centro de salud/ Fecha</string>
@@ -193,7 +197,7 @@
     <string name="dialog_info_push_ok">Datos subidos correctamente al servidor DHIS</string>
     <string name="dialog_info_push_bad_credentials">Credenciales incorrectas para el push</string>
     <string name="assessment_sent_title_state">Estado</string>
-    <string name="assessment_sent_title_header">Evaluación(es) Enviada(s)</string>
+    <string name="assessment_sent_title_header">Evaluación(es) Anterior(es)</string>
     <string name="assessment_sent_date">Fecha de llenado</string>
     <string name="assessment_sent_score">Puntos</string>
     <string name="dialog_title_incorrect_org_unit" >Org Unit Incorrecta</string>
@@ -209,5 +213,24 @@
     <string name="dialog_info_push_ignored">Ignorados</string>
     <string name="dialog_info_push_stats">Datos subidos al servidor. Resultados:</string>
     <string name="dashboard_tip_pie_chart">Calidad de cuidados (basado en la última evaluación)</string>
+    <string name="dialog_pull_error">Error obteniendo metadatos del servidor dhis</string>
+    <string name="settings_menu_pull">Refrescar metadata</string>
+    <string name="dialog_pull_success">Metadatos Dhis obtenidos del servidor con éxito</string>
+    <string name="dialog_title_pull_response">Pull status</string>
+    <string name="progress_pull_connecting" >Conectando a servidor DHIS</string>
+    <string name="progress_pull_downloading">Refrescando metadatos (esto puede llevar algunos minutos) ...</string>
+    <string name="progress_pull_preparing_program">Cargando programas ...</string>
+    <string name="progress_pull_preparing_answers">Cargando respuestas ...</string>
+    <string name="progress_pull_preparing_orgs">Cargando organizaciones ...</string>
+    <string name="progress_pull_questions">Cargando preguntas (esto puede llevar algunos minutos) ...</string>
+    <string name="progress_pull_surveys">Cargando encuestas ...</string>
+    <string name="progress_pull_done">Hecho</string>
+    <string name="dialog_push_error">Error subiendo datos al servidor Dhis</string>
+    <string name="progress_push_posting_survey">Subiendo datos al servidor...</string>
+    <string name="progress_push_preparing_survey">Preparando datos para la subida ...</string>
+    <string name="progress_push_updating_survey">Actualizando datos encuesta subida ...</string>
+    <string name="dialog_push_success">Encuestra correctamente subida al servidor Dhis</string>
+    <string name="progress_push_no_survey">No hay encuesta para subir</string>
+    <string name="dialog_push_before_pull_success">Encuestas correctamente subidas al servidor Dhis, inicializando actualización de metadatos</string>
 
 </resources>

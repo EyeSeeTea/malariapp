@@ -42,9 +42,9 @@ import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.FeedbackActivity;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.model.Survey;
-import org.eyeseetea.malariacare.database.monitor.FacilityTableBuilder;
-import org.eyeseetea.malariacare.database.monitor.PieTabGroupBuilder;
-import org.eyeseetea.malariacare.database.monitor.SentSurveysBuilder;
+import org.eyeseetea.malariacare.database.utils.monitor.FacilityTableBuilder;
+import org.eyeseetea.malariacare.database.utils.monitor.PieTabGroupBuilder;
+import org.eyeseetea.malariacare.database.utils.monitor.SentSurveysBuilder;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.layout.adapters.dashboard.AssessmentSentAdapter;
 import org.eyeseetea.malariacare.layout.adapters.dashboard.IDashboardAdapter;
@@ -54,6 +54,7 @@ import org.eyeseetea.malariacare.services.SurveyService;
 import org.eyeseetea.malariacare.views.CustomTextView;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -68,10 +69,12 @@ public class DashboardSentFragment extends ListFragment {
     protected IDashboardAdapter adapter;
     private static int index = 0;
     private WebView webView;
-
-    public DashboardSentFragment(){
+    List<Survey> oneSurveyForOrgUnit;
+    List<Survey> surveysForGraphic;
+    public DashboardSentFragment() {
         this.adapter = Session.getAdapterSent();
         this.surveys = new ArrayList();
+        oneSurveyForOrgUnit = new ArrayList<>();
     }
 
     public static DashboardSentFragment newInstance(int index) {
@@ -229,9 +232,11 @@ public class DashboardSentFragment extends ListFragment {
                                             .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                                                 public void onClick(DialogInterface arg0, int arg1) {
                                                     ((Survey)adapter.getItem(position-1)).delete();
+
                                                     Intent surveysIntent=new Intent(getActivity(), SurveyService.class);
                                                     surveysIntent.putExtra(SurveyService.SERVICE_METHOD, SurveyService.RELOAD_DASHBOARD_ACTION);
                                                     getActivity().startService(surveysIntent);
+                                                    reloadSentSurveys();
                                                     reloadMonitor();
                                                 }
                                             })
@@ -255,8 +260,8 @@ public class DashboardSentFragment extends ListFragment {
     private void registerSurveysReceiver() {
         Log.d(TAG, "registerSurveysReceiver");
 
-        if(surveyReceiver==null){
-            surveyReceiver=new SurveyReceiver();
+        if (surveyReceiver == null) {
+            surveyReceiver = new SurveyReceiver();
             LocalBroadcastManager.getInstance(getActivity()).registerReceiver(surveyReceiver, new IntentFilter(SurveyService.ALL_SENT_SURVEYS_ACTION));
         }
     }
@@ -266,28 +271,29 @@ public class DashboardSentFragment extends ListFragment {
      * Unregisters the survey receiver.
      * It really important to do this, otherwise each receiver will invoke its code.
      */
-    public void  unregisterSurveysReceiver(){
-        if(surveyReceiver!=null){
+    public void unregisterSurveysReceiver() {
+        if (surveyReceiver != null) {
             LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(surveyReceiver);
-            surveyReceiver=null;
+            surveyReceiver = null;
         }
     }
 
     public void reloadSurveys(List<Survey> newListSurveys) {
         Log.d(TAG, "reloadSurveys (Thread: " + Thread.currentThread().getId() + "): " + newListSurveys.size());
-        boolean hasSurveys=newListSurveys!=null && newListSurveys.size()>0;
+        boolean hasSurveys = newListSurveys != null && newListSurveys.size() > 0;
         this.surveys.clear();
         this.surveys.addAll(newListSurveys);
+        adapter.setItems(newListSurveys);
         this.adapter.notifyDataSetChanged();
-        if(hasSurveys){
+        if (hasSurveys) {
             reloadMonitor();
         }
         setListShown(true);
     }
 
-    private void reloadMonitor(){
-        if(webView==null){
-            webView=initMonitor();
+    private void reloadMonitor() {
+        if (webView == null) {
+            webView = initMonitor();
         }
 
         //onPageFinish load data
@@ -296,13 +302,14 @@ public class DashboardSentFragment extends ListFragment {
             public void onPageFinished(WebView view, String url) {
                 super.onPageFinished(view, url);
                 //Add line chart
-                new SentSurveysBuilder(surveys, getActivity()).addDataInChart(view);
+                new SentSurveysBuilder(surveysForGraphic, getActivity()).addDataInChart(view);
 
                 //Add pie charts
-                new PieTabGroupBuilder(surveys,getActivity()).addDataInChart(view);
+                new PieTabGroupBuilder(surveysForGraphic, getActivity()).addDataInChart(view);
+
 
                 //Add table x facility
-                new FacilityTableBuilder(surveys,getActivity()).addDataInChart(view);
+                new FacilityTableBuilder(surveysForGraphic, getActivity()).addDataInChart(view);
 
                 // As WebView and ListView doesn't get on well, we need to calculate ListViews height
                 // after WebView is loaded to be able to properly represent it in the screen
@@ -315,10 +322,10 @@ public class DashboardSentFragment extends ListFragment {
         webView.loadUrl("file:///android_asset/dashboard/dashboard.html");
     }
 
-    private WebView initMonitor(){
+    private WebView initMonitor() {
         WebView webView = (WebView) getActivity().findViewById(R.id.dashboard_monitor);
         //Init webView settings
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
             webView.getSettings().setAllowUniversalAccessFromFileURLs(true);
             webView.getSettings().setAllowFileAccessFromFileURLs(true);
         }
@@ -335,25 +342,55 @@ public class DashboardSentFragment extends ListFragment {
      */
     private void stopMonitor(){
         try{
-            webView.stopLoading();
+            if(webView!=null){
+                webView.stopLoading();
+            }
         }catch(Exception e){
             e.printStackTrace();
         }
     }
 
     /**
+     * filter the surveys for last survey in org unit, and set surveysForGraphic for the statistics
+     */
+    public void reloadSentSurveys() {
+        surveysForGraphic = (List<Survey>) Session.popServiceValue(SurveyService.ALL_SENT_SURVEYS_ACTION);
+        HashMap<String, Survey> orgUnits;
+        orgUnits = new HashMap<>();
+        oneSurveyForOrgUnit = new ArrayList<>();
+        for (Survey survey : surveysForGraphic) {
+            if (survey.isSent()) {
+                if (survey.getOrgUnit() != null) {
+                    if (!orgUnits.containsKey(survey.getOrgUnit().getUid())) {
+                        orgUnits.put(survey.getOrgUnit().getUid(), survey);
+                    } else {
+                        Survey surveyMapped = orgUnits.get(survey.getOrgUnit().getUid());
+                        if (surveyMapped.getCompletionDate().before(survey.getCompletionDate())) {
+                            orgUnits.put(survey.getOrgUnit().getUid(), survey);
+                        }
+                    }
+                }
+            }
+        }
+        for (Survey survey : orgUnits.values()) {
+            oneSurveyForOrgUnit.add(survey);
+        }
+        reloadSurveys(oneSurveyForOrgUnit);
+    }
+
+    /**
      * Inner private class that receives the result from the service
      */
-    private class SurveyReceiver extends BroadcastReceiver{
-        private SurveyReceiver(){}
+    private class SurveyReceiver extends BroadcastReceiver {
+        private SurveyReceiver() {
+        }
 
         @Override
         public void onReceive(Context context, Intent intent) {
             Log.d(TAG, "onReceive");
             //Listening only intents from this method
-            if(SurveyService.ALL_SENT_SURVEYS_ACTION.equals(intent.getAction())) {
-                List<Survey> surveysFromService = (List<Survey>) Session.popServiceValue(SurveyService.ALL_SENT_SURVEYS_ACTION);
-                reloadSurveys(surveysFromService);
+            if (SurveyService.ALL_SENT_SURVEYS_ACTION.equals(intent.getAction())) {
+                reloadSentSurveys();
             }
         }
 

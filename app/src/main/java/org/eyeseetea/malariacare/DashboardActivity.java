@@ -19,22 +19,25 @@
 
 package org.eyeseetea.malariacare;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.FragmentTransaction;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 
-import com.raizlabs.android.dbflow.sql.language.Select;
+import com.squareup.otto.Subscribe;
 
-import org.eyeseetea.malariacare.database.model.Tab;
+import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.model.User;
-import org.eyeseetea.malariacare.database.utils.PopulateDB;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.fragments.DashboardSentFragment;
 import org.eyeseetea.malariacare.fragments.DashboardUnsentFragment;
 import org.eyeseetea.malariacare.services.SurveyService;
+import org.hisp.dhis.android.sdk.events.UiEvent;
 
 import java.io.IOException;
 import java.util.List;
@@ -72,6 +75,69 @@ public class DashboardActivity extends BaseActivity {
             ftr.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
             ftr.commit();
         }
+
+
+        setTitle(getString(R.string.app_name) + " app - " + Session.getUser().getName());
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_dashboard, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        //Any common option
+        if(item.getItemId()!=R.id.action_pull){
+            return super.onOptionsItemSelected(item);
+        }
+
+        //Pull
+        final List<Survey> unsentSurveys = Survey.getAllUnsentSurveys();
+
+        //No unsent data -> pull (no confirmation)
+        if(unsentSurveys==null || unsentSurveys.size()==0){
+            pullMetadata();
+            return true;
+        }
+
+        //Unsent data -> ask if pull || push before pulling
+        final Activity activity = this;
+        new AlertDialog.Builder(this)
+                .setTitle("Push unsent surveys?")
+                .setMessage("Metadata refresh will delete your unsent data. You have "+unsentSurveys.size()+" unsent surveys. Do you to push them before refresh?")
+                .setNeutralButton(android.R.string.no, null)
+                .setNegativeButton(activity.getString(R.string.no), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        //Pull directly
+                        pullMetadata();
+                    }
+                })
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface arg0, int arg1) {
+                        //Try to push before pull
+                        pushUnsentBeforePull();
+                    }
+                })
+                .setCancelable(true)
+                .create().show();
+        return true;
+    }
+
+    private void pushUnsentBeforePull() {
+
+        //Launch Progress Push before pull
+        Intent progressActivityIntent = new Intent(this, ProgressActivity.class);
+        progressActivityIntent.putExtra(ProgressActivity.TYPE_OF_ACTION,ProgressActivity.ACTION_PUSH_BEFORE_PULL);
+        finish();
+        startActivity(progressActivityIntent);
+    }
+
+    private void pullMetadata(){
+        finishAndGo(ProgressActivity.class);
     }
 
     @Override
@@ -135,43 +201,38 @@ public class DashboardActivity extends BaseActivity {
                 }).create().show();
     }
 
-/**
-     * In case data is not yet populated (detected by looking at the Tab table) we populate the data
-     * @throws IOException in case any IO error occurs while populating DB
+    /**
+     * PUll data from DHIS server and turn into our model
+     * @throws IOException
      */
     private void initDataIfRequired() throws IOException {
-        if (new Select().count().from(Tab.class).count()!=0) {
-            return;
-        }
-
-        Log.i(".DashboardActivity", "Populating DB");
-
-        // This is only executed the first time the app is loaded
-        try {
-            User user = new User();
-            user.save();
-            PopulateDB.populateDB(getAssets());
-        } catch (IOException e) {
-            Log.e(".DashboardActivity", "Error populating DB", e);
-            throw e;
-        }
-        Log.i(".DashboardActivity", "DB populated");
+//        PullController.getInstance().pull(this);
     }
 
     /**
      * In case Session doesn't have the user set, here we set it to the first entry of User table
      */
     private void loadSessionIfRequired(){
-        if (Session.getUser() == null){
-            List<User> users = new Select().all().from(User.class).queryList();
-            if (users.size() == 0){
-                User user = new User();
-                user.setName("");
-                user.save();
-                Session.setUser(user);
-            } else {
-                Session.setUser(users.get(0));
-            }
+        // already a user in session -> done
+        if(Session.getUser()!=null){
+            return;
         }
+
+        // If we're in dashboard and User is not yet in session we have to put it
+        // FIXME: for the moment there will be only one user in the User table, but in the future we will have to think about tagging the logged user in the DB
+        User user = User.getLoggedUser();
+        Session.setUser(user);
+    }
+
+    /**
+     * Logging out from sdk is an async method.
+     * Thus it is required a callback to finish logout gracefully.
+     *
+     * XXX: So far this @subscribe annotation does not work with inheritance since relies on 'getDeclaredMethods'
+     * @param uiEvent
+     */
+    @Subscribe
+    public void onLogoutFinished(UiEvent uiEvent){
+        super.onLogoutFinished(uiEvent);
     }
 }

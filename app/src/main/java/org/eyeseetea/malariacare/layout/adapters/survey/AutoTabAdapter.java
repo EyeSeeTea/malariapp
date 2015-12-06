@@ -172,7 +172,6 @@ public class AutoTabAdapter extends ATabAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-//        Debug.startMethodTracing("auto_getview");
         View rowView = null;
 
         final Object item = getItem(position);
@@ -263,7 +262,6 @@ public class AutoTabAdapter extends ATabAdapter {
 
         }
 
-//        Debug.stopMethodTracing();
         return rowView;
     }
 

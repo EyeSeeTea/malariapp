@@ -22,7 +22,6 @@ package org.eyeseetea.malariacare;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.location.Location;
-import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
@@ -34,6 +33,7 @@ import android.widget.Spinner;
 
 import com.raizlabs.android.dbflow.sql.builder.Condition;
 import com.raizlabs.android.dbflow.sql.language.Select;
+import com.squareup.otto.Subscribe;
 
 import org.eyeseetea.malariacare.database.model.OrgUnit;
 import org.eyeseetea.malariacare.database.model.OrgUnit$Table;
@@ -50,6 +50,7 @@ import org.eyeseetea.malariacare.layout.listeners.SurveyLocationListener;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 import org.eyeseetea.malariacare.utils.Constants;
 import org.eyeseetea.malariacare.views.CustomTextView;
+import org.hisp.dhis.android.sdk.events.UiEvent;
 
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -99,7 +100,7 @@ public class CreateSurveyActivity extends BaseActivity {
 
         //Populate Organization Unit DDL
         ViewHolder viewHolder = new ViewHolder();
-        List<OrgUnit> orgUnitList = new Select().all().from(OrgUnit.class).where(Condition.column(OrgUnit$Table.ORGUNIT_ID_PARENT).isNull()).queryList();
+        List<OrgUnit> orgUnitList = new Select().all().from(OrgUnit.class).where(Condition.column(OrgUnit$Table.ID_PARENT).isNull()).queryList();
         orgUnitList.add(0, orgUnitDefaultOption);
         viewHolder.component = findViewById(R.id.org_unit);
         orgUnitView = (Spinner) viewHolder.component;
@@ -236,6 +237,11 @@ public class CreateSurveyActivity extends BaseActivity {
             Log.d(TAG, "location not available via GPS|NETWORK, last know: " + lastLocation);
             locationListener.saveLocation(lastLocation);
         }
+    }
+
+    @Subscribe
+    public void onLogoutFinished(UiEvent uiEvent){
+        super.onLogoutFinished(uiEvent);
     }
 
     private class ProgramSpinnerListener implements AdapterView.OnItemSelectedListener {

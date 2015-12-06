@@ -34,7 +34,9 @@ import android.view.View;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 
-import org.eyeseetea.malariacare.database.feedback.Feedback;
+import com.squareup.otto.Subscribe;
+
+import org.eyeseetea.malariacare.database.utils.feedback.Feedback;
 import org.eyeseetea.malariacare.database.model.Program;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.utils.Session;
@@ -43,6 +45,7 @@ import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 import org.eyeseetea.malariacare.services.SurveyService;
 import org.eyeseetea.malariacare.views.CustomRadioButton;
+import org.hisp.dhis.android.sdk.events.UiEvent;
 
 import java.util.List;
 
@@ -251,6 +254,11 @@ public class FeedbackActivity extends BaseActivity{
         Intent surveysIntent=new Intent(this, SurveyService.class);
         surveysIntent.putExtra(SurveyService.SERVICE_METHOD, SurveyService.PREPARE_FEEDBACK_ACTION);
         this.startService(surveysIntent);
+    }
+
+    @Subscribe
+    public void onLogoutFinished(UiEvent uiEvent){
+        super.onLogoutFinished(uiEvent);
     }
 
     /**

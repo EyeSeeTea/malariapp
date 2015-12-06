@@ -222,7 +222,7 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
 
     @Override
     protected void onPause() {
-        super.onResume();
+        super.onPause();
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         sharedPreferences.unregisterOnSharedPreferenceChangeListener(this);
 

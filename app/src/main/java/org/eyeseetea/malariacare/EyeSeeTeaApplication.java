@@ -19,23 +19,41 @@
 
 package org.eyeseetea.malariacare;
 
-import android.app.Application;
+import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.multidex.MultiDex;
 
 import com.crashlytics.android.Crashlytics;
 import com.raizlabs.android.dbflow.config.FlowManager;
 
-import io.fabric.sdk.android.Fabric;
-
-import org.eyeseetea.malariacare.database.monitor.SentSurveysBuilder;
+import org.eyeseetea.malariacare.database.model.User;
 import org.eyeseetea.malariacare.database.utils.LocationMemory;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
+import org.hisp.dhis.android.sdk.persistence.Dhis2Application;
+
+import io.fabric.sdk.android.Fabric;
 
 /**
  * Created by nacho on 04/08/15.
  */
-public class EyeSeeTeaApplication extends Application {
+public class EyeSeeTeaApplication extends Dhis2Application  {
+
+    public Class<? extends Activity> getMainActivity() {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        if (User.getLoggedUser() != null && sharedPreferences.getBoolean(getApplicationContext().getResources().getString(R.string.pull_metadata),false)){
+            return new DashboardActivity().getClass();
+        }else if(!ProgressActivity.PULL_CANCEL) {
+            //FIXME Remove when create survey is fixed
+//            return new DashboardActivity().getClass();
+            return new ProgressActivity().getClass();
+        }
+        else{
+            return new LoginActivity().getClass();
+        }
+
+    }
 
     @Override
     public void onCreate() {
@@ -43,7 +61,7 @@ public class EyeSeeTeaApplication extends Application {
         Fabric.with(this, new Crashlytics());
         PreferencesState.getInstance().init(getApplicationContext());
         LocationMemory.getInstance().init(getApplicationContext());
-        FlowManager.init(this);
+        FlowManager.init(this, "_EyeSeeTeaDB");
     }
 
     @Override

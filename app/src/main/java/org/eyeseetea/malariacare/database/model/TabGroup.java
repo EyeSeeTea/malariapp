@@ -30,6 +30,8 @@ import com.raizlabs.android.dbflow.sql.language.Select;
 import com.raizlabs.android.dbflow.structure.BaseModel;
 
 import org.eyeseetea.malariacare.database.AppDatabase;
+import org.eyeseetea.malariacare.database.iomodules.dhis.exporter.IConvertToSDKVisitor;
+import org.eyeseetea.malariacare.database.iomodules.dhis.exporter.VisitableToSDK;
 import org.eyeseetea.malariacare.database.utils.Session;
 
 import java.util.List;
@@ -42,15 +44,26 @@ public class TabGroup extends BaseModel {
     long id_tab_group;
     @Column
     String name;
+
     @Column
-    @ForeignKey(references = {@ForeignKeyReference(columnName = "id_program",
-            columnType = Long.class,
-            foreignColumnName = "id_program")},
-            saveForeignKeyModel = false)
+    Long id_program;
+
+    /**
+     * Reference to parent program (loaded lazily)
+     */
     Program program;
 
-    //OneToMany Relations
+    @Column
+    String uid;
+
+    /**
+     * List of tabs that belongs to this tabgroup
+     */
     List<Tab> tabs;
+
+    /**
+     * List of surveys that belongs to this tabgroup
+     */
     List<Survey> surveys;
 
     public TabGroup() {
@@ -62,7 +75,7 @@ public class TabGroup extends BaseModel {
 
     public TabGroup(String name, Program program) {
         this.name = name;
-        this.program = program;
+        setProgram(program);
     }
 
     public Long getId_tab_group() {
@@ -81,37 +94,52 @@ public class TabGroup extends BaseModel {
         this.name = name;
     }
 
+    public void setProgram(Long id_program){
+        this.id_program=id_program;
+        this.program=null;
+    }
+    public void setProgram(Program program) {
+        this.program = program;
+        this.id_program=(program!=null)?program.getId_program():null;
+    }
+
     public Program getProgram() {
+        if(program==null){
+            if (id_program == null) return null;
+            program= new Select()
+                    .from(Program.class)
+                    .where(Condition.column(Program$Table.ID_PROGRAM)
+                            .is(id_program)).querySingle();
+        }
         return program;
     }
 
-    public void setProgram(Program program) {
-        this.program = program;
+
+    public String getUid() {
+        return uid;
     }
 
-    //TODO: to enable lazy loading, here we need to set Method.SAVE and Method.DELETE and use the .toModel() to specify when do we want to load the models
-    @OneToMany(methods = {OneToMany.Method.SAVE, OneToMany.Method.DELETE}, variableName = "tabs")
+    public void setUid(String uid) {
+        this.uid = uid;
+    }
+
     public List<Tab> getTabs(){
-        return new Select().from(Tab.class)
-                .where(Condition.column(Tab$Table.TABGROUP_ID_TAB_GROUP).eq(this.getId_tab_group()))
-                .orderBy(Tab$Table.ORDER_POS).queryList();
+        if (tabs==null){
+            tabs=new Select().from(Tab.class)
+                    .where(Condition.column(Tab$Table.ID_TAB_GROUP).eq(this.getId_tab_group()))
+                    .orderBy(Tab$Table.ORDER_POS).queryList();
+        }
+        return tabs;
     }
 
-    @OneToMany(methods = {OneToMany.Method.SAVE, OneToMany.Method.DELETE}, variableName = "surveys")
     public List<Survey> getSurveys(){
-        this.surveys = new Select().from(Survey.class)
-                .where(Condition.column(Survey$Table.TABGROUP_ID_TAB_GROUP).eq(this.getId_tab_group())).queryList();
+        if(surveys==null){
+            this.surveys = new Select().from(Survey.class)
+                    .where(Condition.column(Survey$Table.ID_TAB_GROUP).eq(this.getId_tab_group())).queryList();
+        }
         return this.surveys;
     }
 
-    /*
-     * Return tabs filter by program and order by orderpos field
-     */
-    public static List<Tab> getTabsBySession(){
-        return new Select().from(Tab.class)
-                .where(Condition.column(Tab$Table.TABGROUP_ID_TAB_GROUP).eq(Session.getSurvey().getTabGroup().getProgram().getId_program()))
-                .orderBy(Tab$Table.ORDER_POS).queryList();
-    }
 
     @Override
     public boolean equals(Object o) {
@@ -121,26 +149,29 @@ public class TabGroup extends BaseModel {
         TabGroup tabGroup = (TabGroup) o;
 
         if (id_tab_group != tabGroup.id_tab_group) return false;
-        if (!name.equals(tabGroup.name)) return false;
-        if (program != null ? !program.equals(tabGroup.program) : tabGroup.program != null)
+        if (name != null ? !name.equals(tabGroup.name) : tabGroup.name != null) return false;
+        if (id_program != null ? !id_program.equals(tabGroup.id_program) : tabGroup.id_program != null)
             return false;
+        return !(uid != null ? !uid.equals(tabGroup.uid) : tabGroup.uid != null);
 
-        return true;
     }
 
     @Override
     public int hashCode() {
         int result = (int) (id_tab_group ^ (id_tab_group >>> 32));
-        result = 31 * result + name.hashCode();
-        result = 31 * result + (program != null ? program.hashCode() : 0);
+        result = 31 * result + (name != null ? name.hashCode() : 0);
+        result = 31 * result + (id_program != null ? id_program.hashCode() : 0);
+        result = 31 * result + (uid != null ? uid.hashCode() : 0);
         return result;
     }
 
     @Override
     public String toString() {
         return "TabGroup{" +
-                "id=" + id_tab_group +
+                "id_tab_group=" + id_tab_group +
                 ", name='" + name + '\'' +
+                ", id_program=" + id_program +
+                ", uid='" + uid + '\'' +
                 '}';
     }
 }

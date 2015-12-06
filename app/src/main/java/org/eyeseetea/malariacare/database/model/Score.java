@@ -24,9 +24,13 @@ import com.raizlabs.android.dbflow.annotation.ForeignKey;
 import com.raizlabs.android.dbflow.annotation.ForeignKeyReference;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;
+import com.raizlabs.android.dbflow.sql.builder.Condition;
+import com.raizlabs.android.dbflow.sql.language.Select;
 import com.raizlabs.android.dbflow.structure.BaseModel;
 
 import org.eyeseetea.malariacare.database.AppDatabase;
+import org.eyeseetea.malariacare.database.iomodules.dhis.exporter.IConvertToSDKVisitor;
+import org.eyeseetea.malariacare.database.iomodules.dhis.exporter.VisitableToSDK;
 
 /**
  * Created by adrian on 14/02/15.
@@ -39,10 +43,10 @@ public class Score extends BaseModel {
     long id_score;
 
     @Column
-    @ForeignKey(references = {@ForeignKeyReference(columnName = "id_survey",
-            columnType = Long.class,
-            foreignColumnName = "id_survey")},
-            saveForeignKeyModel = false)
+    Long id_survey;
+    /**
+     * Reference to the survey associated to this score (loaded lazily)
+     */
     Survey survey;
 
     @Column
@@ -55,9 +59,9 @@ public class Score extends BaseModel {
     }
 
     public Score(Survey survey, String uid, Float score) {
-        this.survey = survey;
         this.uid = uid;
         this.score = score;
+        this.setSurvey(survey);
     }
 
     public Long getId_score() {
@@ -69,11 +73,24 @@ public class Score extends BaseModel {
     }
 
     public Survey getSurvey() {
+        if(survey==null){
+            if(id_survey==null) return null;
+            survey = new Select()
+                    .from(Survey.class)
+                    .where(Condition.column(Survey$Table.ID_SURVEY)
+                            .is(id_survey)).querySingle();
+        }
         return survey;
     }
 
     public void setSurvey(Survey survey) {
         this.survey = survey;
+        this.id_survey = (survey!=null)?survey.getId_survey():null;
+    }
+
+    public void setSurvey(Long id_survey){
+        this.id_survey = id_survey;
+        this.survey = null;
     }
 
     public String getUid() {
@@ -90,5 +107,39 @@ public class Score extends BaseModel {
 
     public void setScore(Float score) {
         this.score = score;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Score score1 = (Score) o;
+
+        if (id_score != score1.id_score) return false;
+        if (id_survey != null ? !id_survey.equals(score1.id_survey) : score1.id_survey != null)
+            return false;
+        if (uid != null ? !uid.equals(score1.uid) : score1.uid != null) return false;
+        return !(score != null ? !score.equals(score1.score) : score1.score != null);
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = (int) (id_score ^ (id_score >>> 32));
+        result = 31 * result + (id_survey != null ? id_survey.hashCode() : 0);
+        result = 31 * result + (uid != null ? uid.hashCode() : 0);
+        result = 31 * result + (score != null ? score.hashCode() : 0);
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Score{" +
+                "id_score=" + id_score +
+                ", id_survey=" + id_survey +
+                ", uid='" + uid + '\'' +
+                ", score=" + score +
+                '}';
     }
 }

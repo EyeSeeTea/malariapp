@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2015.
+  ~
+  ~ This file is part of QA App.
+  ~
+  ~  Health Network QIS App is free software: you can redistribute it and/or modify
+  ~  it under the terms of the GNU General Public License as published by
+  ~  the Free Software Foundation, either version 3 of the License, or
+  ~  (at your option) any later version.
+  ~
+  ~  Health Network QIS App is distributed in the hope that it will be useful,
+  ~  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~  GNU General Public License for more details.
+  ~
+  ~  You should have received a copy of the GNU General Public License
+  ~  along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
+  -->
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="#1C5187"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:keepScreenOn="true"
+    tools:context="org.eyeseetea.malariacare.ProgressActivity">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="fill"
+        android:src="@drawable/dhis2_logo"
+        android:id="@+id/imageView" />
+
+
+    <TextView
+        android:id="@+id/pull_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/progress_pull_connecting"
+        android:textColor="@color/white"
+        android:paddingBottom="20dp"
+        android:layout_above="@+id/cancelPullButton"
+        android:layout_centerHorizontal="true" />
+
+    <ProgressBar
+        android:id="@+id/pull_progress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@android:style/Widget.ProgressBar.Horizontal"
+        android:max="7"
+        android:progress="0"
+        android:paddingTop="0dp"
+        android:indeterminate="false"
+        android:layout_above="@+id/pull_text"
+        android:layout_centerHorizontal="true" />
+
+    <org.eyeseetea.malariacare.views.CustomButton
+        android:text="@string/cancel"
+        android:id="@+id/cancelPullButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/imageView"
+        android:layout_alignRight="@+id/imageView"
+        android:layout_alignEnd="@+id/imageView"
+        android:layout_gravity="center_horizontal"
+        style="?android:textAppearanceSmall"
+        android:padding="12dp"
+        android:layout_margin="6dp"
+        app:tFontName="@string/bold_font_name"
+        app:tDimension="@string/font_size_level1"
+        android:textSize="@dimen/medium_text_size"
+        android:textColor="@color/white"
+        android:background="@drawable/button_cancel_shape"
+        android:textStyle="bold"/>
+
+</RelativeLayout>

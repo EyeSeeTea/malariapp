@@ -49,6 +49,7 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.net.Proxy;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -96,6 +97,7 @@ public class PushClient {
         try{
             //TODO: This should be removed once DHIS bug is solved
             //Map<String, JSONObject> controlData = prepareControlData();
+            prepareSurveyCompletionDate();
             JSONObject data = prepareMetadata();
             //TODO: This should be removed once DHIS bug is solved
             //data = prepareDataElements(data, controlData.get(""));
@@ -117,10 +119,16 @@ public class PushClient {
         return  pushResult;
     }
 
+    public void prepareSurveyCompletionDate(){
+        if(!this.survey.isSent()) {
+            this.survey.setCompletionDate(new Date());
+            this.survey.save();
+        }
+    }
+
     public void updateSurveyState(){
         //Change status and save mainScore
         this.survey.setStatus(Constants.SURVEY_SENT);
-        this.survey.update();
         this.survey.saveMainScore();
     }
 
@@ -138,7 +146,6 @@ public class PushClient {
      */
     private JSONObject prepareMetadata() throws Exception{
         Log.d(TAG, "prepareMetadata for survey: " + survey.getId_survey());
-
         JSONObject object=new JSONObject();
         object.put(TAG_PROGRAM, survey.getTabGroup().getProgram().getUid());
         object.put(TAG_ORG_UNIT, survey.getOrgUnit().getUid());
@@ -191,7 +198,7 @@ public class PushClient {
         values=prepareCompositeScores(values);
 
         //Add main scores values
-        values=prepareMainScoreValues(values);
+        values= prepareControlDataElementValues(values);
 
         data.put(TAG_DATAVALUES, values);
         Log.d(TAG, "prepareDataElements result: " + data.toString());
@@ -207,7 +214,7 @@ public class PushClient {
      * @param values
      * @return
      */
-    private JSONArray prepareMainScoreValues(JSONArray values) throws Exception{
+    private JSONArray prepareControlDataElementValues(JSONArray values) throws Exception{
         JSONObject dataElement;
         //Main score
         dataElement = new JSONObject();
@@ -231,6 +238,12 @@ public class PushClient {
         dataElement = new JSONObject();
         dataElement.put(TAG_DATAELEMENT, activity.getString(R.string.main_score_c));
         dataElement.put(TAG_VALUE, survey.isTypeC() ? "true" : "false");
+        values.put(dataElement);
+
+        //Forward Order
+        dataElement = new JSONObject();
+        dataElement.put(TAG_DATAELEMENT, activity.getString(R.string.forward_order));
+        dataElement.put(TAG_VALUE, activity.getString(R.string.forward_order_value));
         values.put(dataElement);
 
         return values;
