@@ -46,8 +46,8 @@ public class EyeSeeTeaApplication extends Dhis2Application  {
             return new DashboardActivity().getClass();
         }else {
             //FIXME Remove when create survey is fixed
-//            return new DashboardActivity().getClass();
-            return new ProgressActivity().getClass();
+//            return new ProgressActivity().getClass();
+            return new DashboardActivity().getClass();
         }
     }
 

@@ -52,6 +52,7 @@ import com.squareup.otto.Subscribe;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.PullController;
 import org.eyeseetea.malariacare.database.model.User;
 import org.eyeseetea.malariacare.database.utils.PopulateDB;
+import org.eyeseetea.malariacare.database.utils.PopulatePictureAppDB;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.hisp.dhis.android.sdk.controllers.DhisService;
 import org.hisp.dhis.android.sdk.job.NetworkJob;
@@ -129,6 +130,7 @@ public class LoginActivity extends org.hisp.dhis.android.sdk.ui.activities.Login
                 saveUserDetails();
                 //FIXME remove when create survey is fixed
 //                populateFromAssets();
+                populatePictureAppFromAssets();
                 launchMainActivity();
             } else {
                 onLoginFail(result.getResponseHolder().getApiException());
@@ -146,6 +148,21 @@ public class LoginActivity extends org.hisp.dhis.android.sdk.ui.activities.Login
             Session.setUser(user);
             PullController.getInstance().wipeDatabase();
             PopulateDB.populateDB(getAssets());
+        }catch(Exception ex){
+
+        }
+    }
+
+    /**
+     * Utility method to pictureApp Build
+     */
+    private void populatePictureAppFromAssets() {
+        try{
+            PullController.getInstance().wipeDatabase();
+            PopulatePictureAppDB.populateDB(getAssets());
+            User user = new User();
+            user.save();
+            Session.setUser(user);
         }catch(Exception ex){
 
         }

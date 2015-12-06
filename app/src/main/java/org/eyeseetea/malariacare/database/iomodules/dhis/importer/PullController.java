@@ -20,7 +20,6 @@
 package org.eyeseetea.malariacare.database.iomodules.dhis.importer;
 
 import android.content.Context;
-import android.provider.ContactsContract;
 import android.util.Log;
 
 import com.raizlabs.android.dbflow.sql.builder.Condition;
