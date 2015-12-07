@@ -19,12 +19,17 @@
 
 package org.eyeseetea.malariacare.utils;
 
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
+
 import com.raizlabs.android.dbflow.structure.BaseModel;
 
+import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.model.CompositeScore;
 import org.eyeseetea.malariacare.database.model.Header;
 import org.eyeseetea.malariacare.database.model.Question;
 import org.eyeseetea.malariacare.database.model.Tab;
+import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.Session;
 
 import java.io.BufferedReader;
@@ -108,5 +113,8 @@ public class Utils {
         }
         return result;
     }
-
+    public static boolean isPictureQuestion(){
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(PreferencesState.getInstance().getContext());
+        return sharedPreferences.getBoolean(PreferencesState.getInstance().getContext().getResources().getString(R.string.picturebuild), true);
+    }
 }

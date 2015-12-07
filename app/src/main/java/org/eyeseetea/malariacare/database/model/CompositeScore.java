@@ -236,6 +236,53 @@ public class CompositeScore extends BaseModel implements VisitableToSDK {
         }
         return parentScores;
     }
+    /**
+     * Select all composite score that belongs to a program
+     * @param program Program whose composite scores are searched.
+     * @return
+     */
+    public static List<CompositeScore> listAllByProgram(Program program){
+        if(program==null || program.getId_program()==null){
+            return new ArrayList<>();
+        }
+        //FIXME: Apparently there is a bug in DBFlow joins that affects here. Question has a column 'uid', and so do CompositeScore, so results are having Questions one, and should keep CompositeScore one. To solve it, we've introduced a last join with CompositeScore again and a HashSet to remove resulting duplicates
+        //Take scores associated to questions of the program ('leaves')
+        List<CompositeScore> compositeScoresByProgram = new Select().distinct().from(CompositeScore.class).as("cs")
+                .join(Question.class, Join.JoinType.LEFT).as("q")
+                .on(Condition.column(ColumnAlias.columnWithTable("cs", CompositeScore$Table.ID_COMPOSITE_SCORE))
+                        .eq(ColumnAlias.columnWithTable("q", Question$Table.COMPOSITESCORE_ID_COMPOSITE_SCORE)))
+                .join(Header.class, Join.JoinType.LEFT).as("h")
+                .on(Condition.column(ColumnAlias.columnWithTable("q", Question$Table.HEADER_ID_HEADER))
+                        .eq(ColumnAlias.columnWithTable("h", Header$Table.ID_HEADER)))
+                .join(Tab.class, Join.JoinType.LEFT).as("t")
+                .on(Condition.column(ColumnAlias.columnWithTable("h", Header$Table.TAB_ID_TAB))
+                        .eq(ColumnAlias.columnWithTable("t", Tab$Table.ID_TAB)))
+                .join(Program.class, Join.JoinType.LEFT).as("p")
+                .on(Condition.column(ColumnAlias.columnWithTable("t", Tab$Table.PROGRAM_ID_PROGRAM))
+                        .eq(ColumnAlias.columnWithTable("p", Program$Table.ID_PROGRAM)))
+                .join(CompositeScore.class, Join.JoinType.LEFT).as("cs2")
+                .on(Condition.column(ColumnAlias.columnWithTable("cs", CompositeScore$Table.ID_COMPOSITE_SCORE))
+                        .eq(ColumnAlias.columnWithTable("cs2", CompositeScore$Table.ID_COMPOSITE_SCORE)))
+                .where(Condition.column(ColumnAlias.columnWithTable("p", Program$Table.ID_PROGRAM))
+                        .eq(program.getId_program()))
+                .queryList();
+
+        // remove duplicates
+        Set<CompositeScore> uniqueCompositeScoresByProgram = new HashSet<>();
+        uniqueCompositeScoresByProgram.addAll(compositeScoresByProgram);
+        compositeScoresByProgram.clear();
+        compositeScoresByProgram.addAll(uniqueCompositeScoresByProgram);
+
+        //Find parent scores from 'leaves'
+        Set<CompositeScore> parentCompositeScores = new HashSet<>();
+        for(CompositeScore compositeScore: compositeScoresByProgram){
+            parentCompositeScores.addAll(listParentCompositeScores(compositeScore));
+        }
+        compositeScoresByProgram.addAll(parentCompositeScores);
+
+        //return all scores
+        return compositeScoresByProgram;
+    }
 
     public boolean hasChildren(){
         return !getCompositeScoreChildren().isEmpty();

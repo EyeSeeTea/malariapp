@@ -20,6 +20,8 @@
 package org.eyeseetea.malariacare.layout.adapters.dashboard;
 
 import android.content.Context;
+import android.content.res.Resources;
+import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,8 +34,11 @@ import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.model.TabGroup;
 import org.eyeseetea.malariacare.database.utils.SurveyAnsweredRatio;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
+import org.eyeseetea.malariacare.utils.Utils;
 import org.eyeseetea.malariacare.views.CustomTextView;
+import org.eyeseetea.malariacare.views.TextCard;
 
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -50,10 +55,21 @@ public abstract class AAssessmentAdapter extends ADashboardAdapter implements ID
         this.items = items;
         this.context = context;
         this.lInflater = LayoutInflater.from(context);
-        this.headerLayout = R.layout.assessment_header;
-        this.recordLayout = R.layout.assessment_record;
-        this.footerLayout = R.layout.assessment_footer;
-        this.title = context.getString(R.string.assessment_title_header);
+
+        if(Utils.isPictureQuestion()) {
+            this.headerLayout = R.layout.assessment_header_picture;
+            this.recordLayout = R.layout.assessment_record_picture;
+            this.footerLayout = R.layout.assessment_footer_picture;
+            this.title = context.getString(R.string.assessment_title_header);
+        }
+        else
+        {
+
+            this.headerLayout = R.layout.assessment_header;
+            this.recordLayout = R.layout.assessment_record;
+            this.footerLayout = R.layout.assessment_footer;
+            this.title = context.getString(R.string.assessment_title_header);
+        }
     }
 
     @Override
@@ -65,6 +81,43 @@ public abstract class AAssessmentAdapter extends ADashboardAdapter implements ID
         // Get the row layout
         View rowView = this.lInflater.inflate(getRecordLayout(), parent, false);
         rowView.setPadding(paddingDp, paddingDp, paddingDp, paddingDp);
+        if(Utils.isPictureQuestion()) {
+            //Completion Date
+            TextCard completionDate = (TextCard) rowView.findViewById(R.id.completionDate);
+            if (survey.getCompletionDate() != null) {
+                //it show dd/mm/yy in europe, mm/dd/yy in america, etc.
+                DateFormat formatter = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT, Resources.getSystem().getConfiguration().locale);
+
+                completionDate.setText(formatter.format(survey.getCompletionDate()));
+            }
+
+            //RDT
+            TextCard rdt = (TextCard) rowView.findViewById(R.id.rdt);
+            //Since there are three possible values first question (RDT):'Yes','No','Cancel'
+            //rdt.setText(survey.isRDT()?"+":"-");
+            String rdtValue = survey.getRDT();
+            String rdtSymbol = rdtValue;
+            if (rdtValue.equals(getContext().getResources().getString(R.string.rdtPositive))) {
+                rdtSymbol = getContext().getResources().getString(R.string.symbolPlus);
+            } else if (rdtValue.equals(getContext().getResources().getString(R.string.rdtNegative))) {
+                rdtSymbol = getContext().getResources().getString(R.string.symbolMinus);
+            } else if (rdtValue.equals(getContext().getResources().getString(R.string.rdtNotTested))) {
+                rdtSymbol = getContext().getResources().getString(R.string.symbolCross);
+            }
+            rdt.setText(rdtSymbol);
+
+            //INFO
+            TextCard info = (TextCard) rowView.findViewById(R.id.info);
+            //Load a font which support Khmer character
+            Typeface tf = Typeface.createFromAsset(context.getAssets(), "fonts/" + "KhmerOS.ttf");
+            info.setTypeface(tf);
+
+            info.setText(survey.getValuesToString());
+
+            rowView.setBackgroundResource(LayoutUtils.calculateBackgrounds(position));
+            return rowView;
+        }
+
 
         // Org Unit Cell
         CustomTextView facilityName = (CustomTextView) rowView.findViewById(R.id.facility);
@@ -94,8 +147,12 @@ public abstract class AAssessmentAdapter extends ADashboardAdapter implements ID
             facilityName.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, 0, 0.5f));
             surveyType.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, 0, 0.5f));
         }
-
-        String surveyDescription = "- " + survey.getTabGroup().getProgram().getName();
+        String surveyDescription;
+        if(!Utils.isPictureQuestion()) {
+            surveyDescription = "- " + survey.getTabGroup().getProgram().getName();
+        }
+        else
+            surveyDescription = "- " + survey.getProgram().getName();
         surveyType.setText(surveyDescription);
 
         // check whether the following item belongs to the same org unit (to group the data related

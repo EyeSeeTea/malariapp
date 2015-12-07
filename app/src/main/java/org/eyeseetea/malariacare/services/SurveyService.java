@@ -21,13 +21,17 @@ package org.eyeseetea.malariacare.services;
 
 import android.app.IntentService;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
 import com.raizlabs.android.dbflow.sql.builder.Condition;
 import com.raizlabs.android.dbflow.sql.language.Select;
 
+import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.model.CompositeScore;
+import org.eyeseetea.malariacare.database.model.Program;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.model.Survey$Table;
 import org.eyeseetea.malariacare.database.model.Tab;
@@ -287,20 +291,43 @@ public class SurveyService extends IntentService {
 
         //Get composite scores for current program & register them (scores)
         //List<CompositeScore> compositeScores = CompositeScore.listAllByProgram(program);
+        if(Utils.isPictureQuestion()){
+            Log.d(TAG, "prepareSurveyInfo (Thread:" + Thread.currentThread().getId() + ")");
 
-        List<CompositeScore> compositeScores = new Select().all().from(CompositeScore.class).queryList();
-        ScoreRegister.registerCompositeScores(compositeScores);
+            Survey survey=Session.getSurvey();
+            Program program=survey.getProgram();
 
-        //Get tabs for current program & register them (scores)
-        List<Tab> tabs = Tab.getTabsBySession();
-        ScoreRegister.registerTabScores(tabs);
+            //Get composite scores for current program & register them (scores)
+            List<CompositeScore> compositeScores = CompositeScore.listAllByProgram(program);
+            ScoreRegister.registerCompositeScores(compositeScores);
 
-        //Since intents does NOT admit NON serializable as values we use Session instead
-        Session.putServiceValue(PREPARE_SURVEY_ACTION_COMPOSITE_SCORES,compositeScores);
-        Session.putServiceValue(PREPARE_SURVEY_ACTION_TABS,tabs);
+            //Get tabs for current program & register them (scores)
+            List<Tab> tabs = Tab.getPictureTabsBySession();
+            ScoreRegister.registerTabScores(tabs);
 
-        //Returning result to anyone listening
-        Intent resultIntent= new Intent(PREPARE_SURVEY_ACTION);
-        LocalBroadcastManager.getInstance(this).sendBroadcast(resultIntent);
+            //Since intents does NOT admit NON serializable as values we use Session instead
+            Session.putServiceValue(PREPARE_SURVEY_ACTION_COMPOSITE_SCORES,compositeScores);
+            Session.putServiceValue(PREPARE_SURVEY_ACTION_TABS,tabs);
+
+            //Returning result to anyone listening
+            Intent resultIntent= new Intent(PREPARE_SURVEY_ACTION);
+            LocalBroadcastManager.getInstance(this).sendBroadcast(resultIntent);
+        }
+        else {
+            List<CompositeScore> compositeScores = new Select().all().from(CompositeScore.class).queryList();
+            ScoreRegister.registerCompositeScores(compositeScores);
+
+            //Get tabs for current program & register them (scores)
+            List<Tab> tabs = Tab.getTabsBySession();
+            ScoreRegister.registerTabScores(tabs);
+
+            //Since intents does NOT admit NON serializable as values we use Session instead
+            Session.putServiceValue(PREPARE_SURVEY_ACTION_COMPOSITE_SCORES, compositeScores);
+            Session.putServiceValue(PREPARE_SURVEY_ACTION_TABS, tabs);
+
+            //Returning result to anyone listening
+            Intent resultIntent = new Intent(PREPARE_SURVEY_ACTION);
+            LocalBroadcastManager.getInstance(this).sendBroadcast(resultIntent);
+        }
     }
 }

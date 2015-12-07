@@ -151,6 +151,15 @@ public class Tab extends BaseModel {
                 .where(Condition.column(Tab$Table.TABGROUP_ID_TAB_GROUP).eq(Session.getSurvey().getTabGroup().getId_tab_group()))
                 .orderBy(Tab$Table.ORDER_POS).queryList();
     }
+
+    /*
+ * Return tabs filter by program and order by orderpos field
+ */
+    public static List<Tab> getPictureTabsBySession() {
+        return new Select().from(Tab.class)
+                .where(Condition.column(Tab$Table.PROGRAM_ID_PROGRAM).eq(Session.getSurvey().getProgram().getId_program()))
+                .orderBy(Tab$Table.ORDER_POS).queryList();
+    }
     /**
      * Checks if this tab is the adherence tab
      * @return
@@ -211,6 +220,9 @@ public class Tab extends BaseModel {
         if (name != null ? !name.equals(tab.name) : tab.name != null) return false;
         if (!order_pos.equals(tab.order_pos)) return false;
         if (!tabGroup.equals(tab.tabGroup)) return false;
+        if (!program.equals(tab.program)) return false;
+        if (tabGroup != null ? !tabGroup.equals(tab.tabGroup) : tab.tabGroup != null) return false;
+        if (program != null ? !program.equals(tab.program) : tab.program != null) return false;
         return type.equals(tab.type);
 
     }
@@ -220,7 +232,8 @@ public class Tab extends BaseModel {
         int result = (int) (id_tab ^ (id_tab >>> 32));
         result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + order_pos.hashCode();
-        result = 31 * result + tabGroup.hashCode();
+        result = 31 * result + (tabGroup != null ? tabGroup.hashCode() : 0);
+        result = 31 * result + (program != null ? program.hashCode() : 0);
         result = 31 * result + type.hashCode();
         return result;
     }
@@ -233,6 +246,7 @@ public class Tab extends BaseModel {
                 ", order_pos=" + order_pos +
                 ", type=" + type +
                 ", tabGroup=" + tabGroup +
+                ", program=" + program +
                 '}';
     }
 }

@@ -31,6 +31,7 @@ import com.raizlabs.android.dbflow.config.FlowManager;
 import org.eyeseetea.malariacare.database.model.User;
 import org.eyeseetea.malariacare.database.utils.LocationMemory;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
+import org.eyeseetea.malariacare.utils.Utils;
 import org.hisp.dhis.android.sdk.persistence.Dhis2Application;
 
 import io.fabric.sdk.android.Fabric;
@@ -41,8 +42,7 @@ import io.fabric.sdk.android.Fabric;
 public class EyeSeeTeaApplication extends Dhis2Application  {
 
     public Class<? extends Activity> getMainActivity() {
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        if (User.getLoggedUser() != null && sharedPreferences.getBoolean(getApplicationContext().getResources().getString(R.string.pull_metadata),false)){
+        if(Utils.isPictureQuestion()){
             return new DashboardActivity().getClass();
         }else {
             //FIXME Remove when create survey is fixed
@@ -54,7 +54,7 @@ public class EyeSeeTeaApplication extends Dhis2Application  {
     @Override
     public void onCreate() {
         super.onCreate();
-        Fabric.with(this, new Crashlytics());
+        //Fabric.with(this, new Crashlytics());
         PreferencesState.getInstance().init(getApplicationContext());
         LocationMemory.getInstance().init(getApplicationContext());
         FlowManager.init(this, "_EyeSeeTeaDB");

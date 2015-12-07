@@ -58,7 +58,7 @@ public class PopulatePictureAppDB {
     public static final String ORG_UNIT_LEVELS_CSV = "OrgUnitLevels.csv";
     public static final String ORG_UNITS_CSV = "OrgUnits.csv";
     static Map<Integer, Program> programList = new LinkedHashMap<Integer, Program>();
-    static Map<Integer, TabGroup> tabGroups = new LinkedHashMap<Integer, TabGroup>();
+    static Map<Integer, TabGroup> tabGroupList = new LinkedHashMap<Integer, TabGroup>();
     static Map<Integer, Tab> tabList = new LinkedHashMap<Integer, Tab>();
     static Map<Integer, Header> headerList = new LinkedHashMap<Integer, Header>();
     static Map<Integer, Question> questionList = new LinkedHashMap<Integer, Question>();
@@ -90,7 +90,7 @@ public class PopulatePictureAppDB {
                         TabGroup tabGroup = new TabGroup();
                         tabGroup.setName(line[1]);
                         tabGroup.setProgram(programList.get(Integer.valueOf(line[2])));
-                        tabGroups.put(Integer.valueOf(line[0]), tabGroup);
+                        tabGroupList.put(Integer.valueOf(line[0]), tabGroup);
                         break;
                     case TABS_CSV:
                         Tab tab = new Tab();
@@ -98,6 +98,7 @@ public class PopulatePictureAppDB {
                         tab.setOrder_pos(Integer.valueOf(line[2]));
                         tab.setProgram(programList.get(Integer.valueOf(line[3])));
                         tab.setType(Integer.valueOf(line[4]));
+                        tab.setTabGroup(tabGroupList.get(Integer.valueOf(line[5])));//new value
                         tabList.put(Integer.valueOf(line[0]), tab);
                         break;
                     case HEADERS_CSV:
@@ -170,7 +171,7 @@ public class PopulatePictureAppDB {
         }
 
         TransactionManager.getInstance().saveOnSaveQueue(programList.values());
-        TransactionManager.getInstance().saveOnSaveQueue(tabGroups.values());
+        TransactionManager.getInstance().saveOnSaveQueue(tabGroupList.values());
         TransactionManager.getInstance().saveOnSaveQueue(tabList.values());
         TransactionManager.getInstance().saveOnSaveQueue(headerList.values());
         TransactionManager.getInstance().saveOnSaveQueue(answerList.values());

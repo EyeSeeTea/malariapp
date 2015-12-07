@@ -40,8 +40,12 @@ import org.eyeseetea.malariacare.database.utils.SurveyAnsweredRatio;
 import org.eyeseetea.malariacare.database.utils.SurveyAnsweredRatioCache;
 import org.eyeseetea.malariacare.utils.Constants;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 @Table(databaseName = AppDatabase.NAME)
 public class Survey extends BaseModel implements VisitableToSDK {
@@ -314,6 +318,74 @@ public class Survey extends BaseModel implements VisitableToSDK {
                 .and(Condition.column(ColumnAlias.columnWithTable("v", Value$Table.VALUE)).isNot("")).queryList();
         //List<Value> values = Value.findWithQuery(Value.class, LIST_VALUES_PARENT_QUESTION, this.getId().toString());
         return values;
+    }
+
+
+    /**
+     * Since there are three possible values first question (RDT):'Positive','Negative','Not Tested'
+     * @return String
+     */
+    public String getRDT() {
+        String rdtValue = "";
+        if (values == null) {
+            values = Value.listAllBySurvey(this);
+        }
+
+        if (values.size() > 0) {
+            Value firstValue = values.get(0);
+            rdtValue = firstValue.getOption().getName();
+        }
+        return rdtValue;
+    }
+
+    /**
+     * Turns all values from a survey into a string with values separated by commas
+     * @return String
+     */
+    public String getValuesToString(){
+        if(values==null || values.size()==0){
+            return "";
+        }
+
+        Iterator<Value> iterator=values.iterator();
+
+        String valuesStr="";
+        boolean valid = true;
+
+        //Define a filter to select which values will be turned into string by code_question
+        List<String> codeQuestionFilter = new ArrayList<String>() {{
+            add("Specie");  //4
+            add("Sex");     //2
+            add("Age");     //3
+        }};
+
+        Map mapa = new HashMap();
+        while(iterator.hasNext() && valid){
+            Value value = iterator.next();
+            String qCode = value.getQuestion().getCode();
+
+            // RDT is the first field: if it is not Positive no values are shown
+            if(("RDT").equals(qCode) && !value.isAPositive()){
+                valid = false;
+            }else{
+                if(codeQuestionFilter.contains(qCode)) {
+                    String val = (value.getOption()!=null)?value.getOption().getCode():value.getValue();
+                    mapa.put(qCode, val);
+                }
+            }
+        }
+
+        if(valid) {
+            //Sort values
+            for(int i=0; i<codeQuestionFilter.size(); i++){
+                valuesStr += mapa.get(codeQuestionFilter.get(i));
+                if (i < codeQuestionFilter.size()-1) {
+                    valuesStr += ", ";
+                }
+            }
+        }
+
+        return valuesStr;
     }
 
     /**

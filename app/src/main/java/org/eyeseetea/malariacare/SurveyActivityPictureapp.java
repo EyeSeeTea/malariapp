@@ -69,7 +69,7 @@ import java.util.Set;
  */
 public class SurveyActivityPictureapp extends BaseActivity {
 
-    public static final String TAG = ".SurveyActivityPictureapp";
+    public static final String TAG = ".SurveyActivityPict";
 
     /**
      * List of tabs that belongs to the current selected survey
