@@ -198,15 +198,7 @@ public abstract class BaseActivity extends ActionBarActivity {
      * Called when the user clicks the New Survey button
      */
     public void newSurvey(View view) {
-
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        Intent targetActivityIntent=null;
-        if (sharedPreferences.getBoolean(getApplicationContext().getResources().getString(R.string.picturebuild),true)){
-            targetActivityIntent = new Intent(this,CreateSurveyActivityPicture.class);
-        }else
-        {
-            targetActivityIntent = new Intent(this, CreateSurveyActivity.class);
-        }
+        Intent targetActivityIntent= new Intent(this,CreateSurveyActivity.class);
         targetActivityIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(targetActivityIntent);
         finish();

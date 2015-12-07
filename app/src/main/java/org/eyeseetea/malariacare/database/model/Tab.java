@@ -219,8 +219,6 @@ public class Tab extends BaseModel {
         if (id_tab != tab.id_tab) return false;
         if (name != null ? !name.equals(tab.name) : tab.name != null) return false;
         if (!order_pos.equals(tab.order_pos)) return false;
-        if (!tabGroup.equals(tab.tabGroup)) return false;
-        if (!program.equals(tab.program)) return false;
         if (tabGroup != null ? !tabGroup.equals(tab.tabGroup) : tab.tabGroup != null) return false;
         if (program != null ? !program.equals(tab.program) : tab.program != null) return false;
         return type.equals(tab.type);
