@@ -68,7 +68,7 @@ import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.layout.adapters.survey.progress.ProgressTabStatus;
 import org.eyeseetea.malariacare.utils.Constants;
 import org.eyeseetea.malariacare.utils.Utils;
-import org.eyeseetea.malariacare.views.TextCard;
+import org.eyeseetea.malariacare.views.CustomTextView;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -270,7 +270,7 @@ public class DynamicTabAdapter extends BaseAdapter implements ITabAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         //Inflate the layout
-        View rowView = lInflater.inflate(R.layout.dynamic_tab_grid_question_pictureapp, parent, false);
+        View rowView = lInflater.inflate(R.layout.dynamic_tab_grid_question, parent, false);
         rowView.getLayoutParams().height=parent.getHeight();
         rowView.requestLayout();
 
@@ -278,7 +278,7 @@ public class DynamicTabAdapter extends BaseAdapter implements ITabAdapter {
         Value value=question.getValueBySession();
 
         //Question
-        TextCard headerView=(TextCard) rowView.findViewById(R.id.question);
+        CustomTextView headerView=(CustomTextView) rowView.findViewById(R.id.question);
         //Load a font which support Khmer character
         Typeface tf = Typeface.createFromAsset(context.getAssets(), "fonts/" + "KhmerOS.ttf");
         headerView.setTypeface(tf);
@@ -307,7 +307,7 @@ public class DynamicTabAdapter extends BaseAdapter implements ITabAdapter {
                     int mod=i%2;
                     //First item per row requires a new row
                     if(mod==0){
-                        tableRow=(TableRow)lInflater.inflate(R.layout.dynamic_tab_row_pictureapp,tableLayout,false);
+                        tableRow=(TableRow)lInflater.inflate(R.layout.dynamic_tab_row,tableLayout,false);
                         tableLayout.addView(tableRow);
                     }
                     ImageView imageButton = (ImageView) tableRow.getChildAt(mod);
@@ -322,7 +322,7 @@ public class DynamicTabAdapter extends BaseAdapter implements ITabAdapter {
                 swipeTouchListener.clearClickableViews();
                 for(int i=0;i<opts.size();i++){
 
-                    tableRow=(TableRow)lInflater.inflate(R.layout.dynamic_tab_row_singleitem_pictureapp,tableLayout,false);
+                    tableRow=(TableRow)lInflater.inflate(R.layout.dynamic_tab_row_singleitem,tableLayout,false);
                     tableLayout.addView(tableRow);
 
                     ImageView imageButton = (ImageView) tableRow.getChildAt(0);
@@ -337,13 +337,13 @@ public class DynamicTabAdapter extends BaseAdapter implements ITabAdapter {
                 break;
             case Constants.PHONE:
                 swipeTouchListener.clearClickableViews();
-                tableRow=(TableRow)lInflater.inflate(R.layout.dynamic_tab_phone_row_pictureapp, tableLayout, false);
+                tableRow=(TableRow)lInflater.inflate(R.layout.dynamic_tab_phone_row, tableLayout, false);
                 tableLayout.addView(tableRow);
                 initPhoneValue(tableRow, value);
                 break;
             case Constants.POSITIVE_INT:
                 swipeTouchListener.clearClickableViews();
-                tableRow=(TableRow)lInflater.inflate(R.layout.dynamic_tab_positiveint_row_pictureapp, tableLayout, false);
+                tableRow=(TableRow)lInflater.inflate(R.layout.dynamic_tab_positiveint_row, tableLayout, false);
                 tableLayout.addView(tableRow);
                 initPositiveIntValue(tableRow, value);
                 break;

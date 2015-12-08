@@ -41,11 +41,21 @@ public class Score extends BaseModel {
     long id_score;
 
     @Column
+    Float value;
+
+    @Column
     @ForeignKey(references = {@ForeignKeyReference(columnName = "id_survey",
             columnType = Long.class,
             foreignColumnName = "id_survey")},
             saveForeignKeyModel = false)
     Survey survey;
+
+    @Column
+    @ForeignKey(references = {@ForeignKeyReference(columnName = "id_tab",
+            columnType = Long.class,
+            foreignColumnName = "id_tab")},
+            saveForeignKeyModel = false)
+    Tab tab;
 
     @Column
     String uid;
@@ -54,6 +64,11 @@ public class Score extends BaseModel {
     Float score;
 
     public Score() {
+    }
+    public Score(Float real, Tab tab, String uid) {
+        this.value = real;
+        this.tab = tab;
+        this.uid = uid;
     }
 
     public Score(Survey survey, String uid, Float score) {
@@ -68,6 +83,22 @@ public class Score extends BaseModel {
 
     public void setId_score(Long id_score) {
         this.id_score = id_score;
+    }
+
+    public Float getValue() {
+        return value;
+    }
+
+    public void setValue(Float real) {
+        this.value = real;
+    }
+
+    public Tab getTab() {
+        return tab;
+    }
+
+    public void setTab(Tab tab) {
+        this.tab = tab;
     }
 
     public Survey getSurvey() {

@@ -46,6 +46,7 @@ import com.squareup.otto.Subscribe;
 
 import org.eyeseetea.malariacare.database.model.CompositeScore;
 import org.eyeseetea.malariacare.database.model.Option;
+import org.eyeseetea.malariacare.database.model.OrgUnit;
 import org.eyeseetea.malariacare.database.model.Program;
 import org.eyeseetea.malariacare.database.model.Question;
 import org.eyeseetea.malariacare.database.model.Survey;
@@ -157,16 +158,19 @@ public class SurveyActivity extends BaseActivity {
 
         Log.d(TAG, "onCreate");
         if (Utils.isPictureQuestion()) {
-            setContentView(R.layout.survey);
-        } else {
             setContentView(R.layout.surveypictureapp);
+            registerReceiver();
+            createActionBar();
+            createProgress();
+        } else {
+            setContentView(R.layout.survey);
+            registerReceiver();
+            createActionBar();
+            createMenu();
+            createProgress();
+            prepareSurveyInfo();
         }
 
-        registerReceiver();
-        createActionBar();
-        createMenu();
-        createProgress();
-        prepareSurveyInfo();
     }
 
     public void onResume() {
@@ -396,8 +400,8 @@ public class SurveyActivity extends BaseActivity {
         android.support.v7.app.ActionBar actionBar = this.getSupportActionBar();
         LayoutUtils.setActionBarLogo(actionBar);
         if (Utils.isPictureQuestion()) {
-            Program program = survey.getProgram();
-            LayoutUtils.setActionBarText(actionBar, getApplicationContext().getResources().getString(R.string.organisation_unit), program.getName());
+            OrgUnit orgUnit = survey.getOrgUnit();
+            LayoutUtils.setActionBarText(actionBar, getApplicationContext().getResources().getString(R.string.organisation_unit), orgUnit.getName());
 
         } else {
             //FIXME: Shall we add the tab group?
@@ -411,8 +415,14 @@ public class SurveyActivity extends BaseActivity {
      * Gets a reference to the progress view in order to stop it later
      */
     private void createProgress() {
-        content = (LinearLayout) this.findViewById(R.id.content);
-        progressBar = (ProgressBar) findViewById(R.id.survey_progress);
+        if(Utils.isPictureQuestion()){
+            content = (LinearLayout) this.findViewById(R.id.content_pictureapp);
+            progressBar = (ProgressBar) findViewById(R.id.survey_progress_pictureapp);
+        }
+        else {
+            content = (LinearLayout) this.findViewById(R.id.content);
+            progressBar = (ProgressBar) findViewById(R.id.survey_progress);
+        }
     }
 
     /**
@@ -544,6 +554,7 @@ public class SurveyActivity extends BaseActivity {
      */
     private void stopProgress() {
         this.progressBar.setVisibility(View.GONE);
+        if(!Utils.isPictureQuestion())
         this.spinner.setVisibility(View.VISIBLE);
         this.content.setVisibility(View.VISIBLE);
 
@@ -704,7 +715,6 @@ public class SurveyActivity extends BaseActivity {
         public List<Tab> getNotLoadedTabs() {
             List<Tab> notLoadedTabs;
             if (Utils.isPictureQuestion()) {
-
                 notLoadedTabs = new ArrayList<Tab>();
             } else {
                 notLoadedTabs = new ArrayList<>();
@@ -733,7 +743,6 @@ public class SurveyActivity extends BaseActivity {
             Tab firstTab = tabs.get(0);
             this.adapters.clear();
             if (Utils.isPictureQuestion()) {
-
                 this.adapters.put(firstTab, buildAdapter(firstTab));
             } else {
                 this.adapters.put(firstTab, AutoTabAdapter.build(firstTab, SurveyActivity.this));
@@ -799,7 +808,6 @@ public class SurveyActivity extends BaseActivity {
                     return new DynamicTabAdapter(tab, SurveyActivity.this);
                 }
 
-                return AutoTabAdapter.build(tab, SurveyActivity.this);
             } else {
                 switch (tab.getType()) {
                     case Constants.TAB_COMPOSITE_SCORE:
@@ -811,9 +819,8 @@ public class SurveyActivity extends BaseActivity {
                     case Constants.TAB_REPORTING:
                         return CustomReportingAdapter.build(tab, SurveyActivity.this);
                 }
-
-                return AutoTabAdapter.build(tab, SurveyActivity.this);
             }
+            return AutoTabAdapter.build(tab, SurveyActivity.this);
         }
     }
 }

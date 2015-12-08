@@ -55,6 +55,7 @@ import org.eyeseetea.malariacare.network.PushClient;
 import org.eyeseetea.malariacare.network.PushResult;
 import org.eyeseetea.malariacare.services.SurveyService;
 import org.eyeseetea.malariacare.utils.Constants;
+import org.eyeseetea.malariacare.utils.Utils;
 import org.eyeseetea.malariacare.views.CustomTextView;
 
 import java.util.ArrayList;
@@ -158,6 +159,7 @@ public class DashboardUnsentFragment extends ListFragment {
         Session.setSurvey(surveys.get(position - 1));
         //Go to SurveyActivity
         ((DashboardActivity) getActivity()).go(SurveyActivity.class);
+        if(!Utils.isPictureQuestion())
         getActivity().finish();
     }
 

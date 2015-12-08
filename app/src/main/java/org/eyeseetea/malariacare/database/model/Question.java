@@ -34,6 +34,7 @@ import com.raizlabs.android.dbflow.sql.language.Join;
 import com.raizlabs.android.dbflow.sql.language.Select;
 import com.raizlabs.android.dbflow.sql.language.Where;
 import com.raizlabs.android.dbflow.structure.BaseModel;
+import com.squareup.okhttp.internal.Util;
 
 import org.eyeseetea.malariacare.database.AppDatabase;
 import org.eyeseetea.malariacare.database.iomodules.dhis.exporter.IConvertToSDKVisitor;
@@ -41,6 +42,7 @@ import org.eyeseetea.malariacare.database.iomodules.dhis.exporter.VisitableToSDK
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.utils.Constants;
+import org.eyeseetea.malariacare.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -100,8 +102,6 @@ public class Question extends BaseModel {
 
     List<Question> children;
 
-    List<Question> relatives;
-
     List<Value> values;
 
     List<QuestionRelation> questionRelations;
@@ -110,6 +110,9 @@ public class Question extends BaseModel {
 
     List<Match> matches;
 
+    List<Question> relatives;
+
+    List<Question> master;
     public Question() {
     }
 
@@ -128,6 +131,20 @@ public class Question extends BaseModel {
         this.question = question;
         this.compositeScore = compositeScore;
         this.parent = null;
+    }
+   public Question(String code, String de_name, String short_name, String form_name, String uid, Integer order_pos, Float numerator_w, Float denominator_w, Header header, Answer answer, Question question, CompositeScore compositeScore) {
+        this.code = code;
+        this.de_name = de_name;
+        this.short_name = short_name;
+        this.form_name = form_name;
+        this.uid = uid;
+        this.order_pos = order_pos;
+        this.numerator_w = numerator_w;
+        this.denominator_w = denominator_w;
+        this.header = header;
+        this.answer = answer;
+        this.question = question;
+        this.compositeScore = compositeScore;
     }
 
     public Long getId_question() {
@@ -243,6 +260,9 @@ public class Question extends BaseModel {
     }
 
     public boolean hasParent() {
+        if(Utils.isPictureQuestion()){
+            return getQuestion() != null;}
+        else{
         if (parent == null) {
             long countChildQuestionRelations = new Select().count().from(QuestionRelation.class)
                     .where(Condition.column(QuestionRelation$Table.QUESTION_ID_QUESTION).eq(this.getId_question()))
@@ -251,8 +271,18 @@ public class Question extends BaseModel {
             parent = countChildQuestionRelations > 0;
         }
         return parent;
+        }
     }
 
+   public List<Question> getQuestionChildren() {
+        if (this.children == null){
+            this.children = new Select().from(Question.class)
+                    .where(Condition.column(Question$Table.ID_QUESTION)
+                            .eq(this.getId_question()))
+                    .orderBy(true, Question$Table.ORDER_POS).queryList();
+        }
+        return this.children;
+    }
     @OneToMany(methods = {OneToMany.Method.SAVE, OneToMany.Method.DELETE}, variableName = "questionRelations")
     public List<QuestionRelation> getQuestionRelations() {
         //if (this.children == null){
@@ -291,12 +321,30 @@ public class Question extends BaseModel {
         return matches;
     }
 
+    public List<Question> getRelatives() {
+        if (this.relatives == null) {
+            List<QuestionRelation> questionRelations = new Select().from(QuestionRelation.class)
+                    .where(Condition.column(QuestionRelation$Table.QUESTION_ID_QUESTION)
+                    .eq(this.getId_question())).queryList();
+            if (questionRelations.size() == 0) return null;
+            Iterator<QuestionRelation> iterator = questionRelations.iterator();
+            In in = Condition.column(Question$Table.ID_QUESTION).in(Long.toString(iterator.next().getId_question_relation()));
+            while(iterator.hasNext()){
+                in.and(Long.toString(iterator.next().getId_question_relation()));
+            }
+         this.relatives = new Select().from(Question.class)
+                    .where(in).queryList();
+       }
+        return this.relatives;
+    }
+
+
     @OneToMany(methods = {OneToMany.Method.SAVE, OneToMany.Method.DELETE}, variableName = "children")
     public List<Question> getChildren() {
         if (this.children == null) {
 
             //No matches no children
-            if (getId_question() == 74){
+            if (getId_question() == 74) {
                 Log.d("Question", "testing");
             }
             List<Match> matches = getMatches();
@@ -304,6 +352,7 @@ public class Question extends BaseModel {
                 this.children = new ArrayList<>();
                 return this.children;
             }
+
 
             Iterator<Match> matchesIterator = matches.iterator();
             In in = Condition.column(ColumnAlias.columnWithTable("m", Match$Table.ID_MATCH)).in(Long.toString(matchesIterator.next().getId_match()));
@@ -320,7 +369,7 @@ public class Question extends BaseModel {
                             //+Match
                     .join(Match.class, Join.JoinType.LEFT).as("m")
                     .on(Condition.column(ColumnAlias.columnWithTable("qr", QuestionRelation$Table.ID_QUESTION_RELATION))
-                                    .eq(ColumnAlias.columnWithTable("m", Match$Table.QUESTIONRELATION_ID_QUESTION_RELATION)))
+                            .eq(ColumnAlias.columnWithTable("m", Match$Table.QUESTIONRELATION_ID_QUESTION_RELATION)))
                             //Parent child relationship
                     .where(in)
                             //In clause
@@ -329,8 +378,13 @@ public class Question extends BaseModel {
         return this.children;
     }
 
-    public boolean hasChildren() {
-        return !getChildren().isEmpty();
+    public boolean hasRelatives() {return !getRelatives().isEmpty(); }
+
+    public boolean hasChildren(){
+        if(Utils.isPictureQuestion()){
+            return !getQuestionChildren().isEmpty();
+        }
+            return !getChildren().isEmpty();
     }
 
     @OneToMany(methods = {OneToMany.Method.SAVE, OneToMany.Method.DELETE}, variableName = "values")
@@ -409,8 +463,24 @@ public class Question extends BaseModel {
      * @param survey
      * @return
      */
+    /**
+     * Checks if this question is shown according to the values of the given survey
+     * @param survey
+     * @return
+     */
     public boolean isHiddenBySurvey(Survey survey) {
         //No question relations
+        if(Utils.isPictureQuestion()){
+
+            Question parent=this.getQuestion();
+            //There is a parent question and it is not answered
+            if (parent!= null && parent.getValueBySurvey(survey)==null) {
+                return true;
+            }
+
+            return false;
+        }
+        else{
         if (!hasParent()) {
             return false;
         }
@@ -439,13 +509,8 @@ public class Question extends BaseModel {
 
         //Parent with the right value -> not hidden
         return hasParentOptionActivated > 0 ? false : true;
+        }
     }
-
-    /**
-     * Add register to ScoreRegister if this is an scored question
-     *
-     * @return List</Float> {num, den}
-     */
     public List<Float> initScore(Survey survey) {
         if (!this.isScored()) {
             return null;
@@ -455,6 +520,38 @@ public class Question extends BaseModel {
         Float denum = ScoreRegister.calcDenum(this, survey);
         ScoreRegister.addRecord(this, num, denum);
         return Arrays.asList(num, denum);
+    }
+
+    /**
+     * Counts the number of required questions (without a parent question).
+     * @param program
+     * @return
+     */
+    public static int countRequiredByProgram(Program program) {
+        if (program == null || program.getId_program() == null) {
+            return 0;
+        }
+        /**
+         * Sql query that counts required questions in a program (required for % stats)
+         */
+        List<Question> questionsByProgram = new Select().all().from(Question.class).as("q")
+                .join(Answer.class, Join.JoinType.LEFT).as("a")
+                .on(Condition.column(ColumnAlias.columnWithTable("q", Question$Table.ANSWER_ID_ANSWER))
+                        .eq(ColumnAlias.columnWithTable("a", Answer$Table.ID_ANSWER)))
+                .join(Header.class, Join.JoinType.LEFT).as("h")
+                .on(Condition.column(ColumnAlias.columnWithTable("q", Question$Table.HEADER_ID_HEADER))
+                        .eq(ColumnAlias.columnWithTable("h", Header$Table.ID_HEADER)))
+                .join(Tab.class, Join.JoinType.LEFT).as("t")
+                .on(Condition.column(ColumnAlias.columnWithTable("h", Header$Table.TAB_ID_TAB))
+                        .eq(ColumnAlias.columnWithTable("t", Tab$Table.ID_TAB)))
+                .join(Program.class, Join.JoinType.LEFT).as("p")
+                .on(Condition.column(ColumnAlias.columnWithTable("t", Tab$Table.PROGRAM_ID_PROGRAM))
+                        .eq(ColumnAlias.columnWithTable("p", Program$Table.ID_PROGRAM)))
+                .where(Condition.column(ColumnAlias.columnWithTable("q", Question$Table.QUESTION_ID_PARENT)).is(0))
+                .and(Condition.column(ColumnAlias.columnWithTable("a", Answer$Table.OUTPUT)).isNot(Constants.NO_ANSWER))
+                .and(Condition.column(ColumnAlias.columnWithTable("p", Program$Table.ID_PROGRAM)).is(program.getId_program())).queryList();
+
+        return questionsByProgram.size();
     }
 
     /**
@@ -567,13 +664,12 @@ public class Question extends BaseModel {
             return new ArrayList();
         }
 
-
         //return Question.findWithQuery(Question.class, LIST_ALL_BY_PROGRAM, program.getId().toString());
 
 
         return new Select().all().from(Question.class).as("q")
                 .join(Header.class, Join.JoinType.LEFT).as("h")
-                .on(Condition.column(ColumnAlias.columnWithTable("q", Question$Table.HEADER_ID_HEADER))
+                .on(Condition.column(ColumnAlias.columnWithTable("q", Question$Table.CODE))
                         .eq(ColumnAlias.columnWithTable("h", Header$Table.ID_HEADER)))
                 .join(Tab.class, Join.JoinType.LEFT).as("t")
                 .on(Condition.column(ColumnAlias.columnWithTable("h", Header$Table.TAB_ID_TAB))
@@ -602,7 +698,7 @@ public class Question extends BaseModel {
 
         return new Select().from(Question.class).as("q")
                 .join(Header.class, Join.JoinType.LEFT).as("h")
-                .on(Condition.column(ColumnAlias.columnWithTable("q", Question$Table.HEADER_ID_HEADER))
+                .on(Condition.column(ColumnAlias.columnWithTable("q", Question$Table.CODE))
                         .eq(ColumnAlias.columnWithTable("h", Header$Table.ID_HEADER)))
                 .join(Tab.class, Join.JoinType.LEFT).as("t")
                 .on(Condition.column(ColumnAlias.columnWithTable("h", Header$Table.TAB_ID_TAB))
@@ -629,7 +725,6 @@ public class Question extends BaseModel {
             return false;
         }
     }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

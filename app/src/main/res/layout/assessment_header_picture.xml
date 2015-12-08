@@ -25,7 +25,7 @@
     android:layout_height="fill_parent"
     android:gravity="center">
 
-    <org.eyeseetea.malariacare.views.TextCard
+    <org.eyeseetea.malariacare.views.CustomTextView
         android:layout_width="0dip"
         android:layout_height="fill_parent"
         android:textAppearance="?android:attr/textAppearanceSmall"
@@ -40,7 +40,7 @@
         app:tDimension="@string/font_size_level1"
         app:tFontName="@string/condensed_font_name" />
 
-    <org.eyeseetea.malariacare.views.TextCard
+    <org.eyeseetea.malariacare.views.CustomTextView
         android:layout_width="0dip"
         android:layout_height="fill_parent"
         android:textAppearance="?android:textAppearanceSmall"
@@ -55,7 +55,7 @@
         app:tDimension="@string/font_size_level1"
         app:tFontName="@string/condensed_font_name" />
 
-    <org.eyeseetea.malariacare.views.TextCard
+    <org.eyeseetea.malariacare.views.CustomTextView
         android:layout_width="0dip"
         android:layout_height="fill_parent"
         android:textAppearance="?android:textAppearanceSmall"

@@ -29,6 +29,7 @@ import android.widget.TextView;
 
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
+import org.eyeseetea.malariacare.utils.Utils;
 
 /**
  * TODO: document your custom view class.
@@ -59,6 +60,7 @@ public class CustomTextView extends TextView implements IEyeSeeView {
 
     public void init(AttributeSet attrs, int defStyle) {
         if(isInEditMode()){
+            this.setText(R.string.lorem_ipsum);
             return;
         }
         // Load attributes
@@ -109,6 +111,7 @@ public class CustomTextView extends TextView implements IEyeSeeView {
      */
     public void setmDimension(String mDimension) {
         this.mDimension = mDimension;
+if(!Utils.isPictureQuestion())
         if (getmScale() != getContext().getString(R.string.font_size_system))
             setTextSize(TypedValue.COMPLEX_UNIT_SP, PreferencesState.getInstance().getFontSize(mScale, mDimension));
     }
@@ -128,6 +131,8 @@ public class CustomTextView extends TextView implements IEyeSeeView {
      * @param mScale The example scale attribute value to use.
      */
     public void setmScale(String mScale) {
+
+        if(!Utils.isPictureQuestion())
         if (!mScale.equals(this.mScale))
             setTextSize(TypedValue.COMPLEX_UNIT_SP, PreferencesState.getInstance().getFontSize(mScale, mDimension));
         this.mScale = mScale;

@@ -21,11 +21,11 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/form_tab"
+    android:id="@+id/form_tab_pictureapp"
     android:gravity="top">
 
     <ProgressBar
-        android:id="@+id/survey_progress"
+        android:id="@+id/survey_progress_pictureapp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         style="?android:attr/progressBarStyleLarge"
@@ -36,7 +36,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/content"
+        android:id="@+id/content_pictureapp"
         android:orientation="vertical"
         android:gravity="top" />
 </RelativeLayout>

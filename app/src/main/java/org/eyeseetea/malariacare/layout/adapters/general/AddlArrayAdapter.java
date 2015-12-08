@@ -49,16 +49,15 @@ public abstract class AddlArrayAdapter<T> extends ArrayAdapter<T> {
 
     public abstract void drawText(CustomTextView customTextView, T object);
 
+
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         // Check if an existing view is being reused, otherwise inflate the view
         if (convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(this.layout, parent, false);
         }
-
-        //Set text item
-        drawText((CustomTextView) convertView.findViewById(android.R.id.text1), getItem(position));
-
+            //Set text item
+            drawText((CustomTextView) convertView.findViewById(android.R.id.text1), getItem(position));
         // Return the completed view to render on screen
         return convertView;
     }
@@ -71,8 +70,8 @@ public abstract class AddlArrayAdapter<T> extends ArrayAdapter<T> {
             convertView = LayoutInflater.from(getContext()).inflate(this.layout, parent, false);
         }
 
-        //Set text item
-        drawText((CustomTextView) convertView.findViewById(android.R.id.text1), getItem(position));
+            //Set text item
+            drawText((CustomTextView) convertView.findViewById(android.R.id.text1), getItem(position));
 
         // Return the completed view to render on screen
         return convertView;

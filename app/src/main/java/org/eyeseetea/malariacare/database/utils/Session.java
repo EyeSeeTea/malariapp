@@ -71,6 +71,9 @@ public class Session {
 
     public static ListView listViewUnsent, listViewSent;
 
+    //FIXME Probably no longer required
+    private static IDashboardAdapter adapterUncompleted, adapterCompleted;
+
     /**
      * Cache containing the list of ordered items that compounds each tab
      */
@@ -162,6 +165,23 @@ public class Session {
 
     public static void setLocation(Location location) {
         Session.location = location;
+    }
+
+
+    public static IDashboardAdapter getAdapterUncompleted() {
+        return adapterUncompleted;
+    }
+
+    public static void setAdapterUncompleted(IDashboardAdapter adapterUncompleted) {
+        Session.adapterUncompleted = adapterUncompleted;
+    }
+
+    public static IDashboardAdapter getAdapterCompleted() {
+        return adapterCompleted;
+    }
+
+    public static void setAdapterCompleted(IDashboardAdapter adapterCompleted) {
+        Session.adapterCompleted = adapterCompleted;
     }
 
 }

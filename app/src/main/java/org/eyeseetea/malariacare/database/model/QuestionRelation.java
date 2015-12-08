@@ -101,7 +101,6 @@ public class QuestionRelation extends BaseModel {
     public void setQuestion(Question question) {
         this.question = question;
     }
-
     public int getOperation() {
         return operation;
     }

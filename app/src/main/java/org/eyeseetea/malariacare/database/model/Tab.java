@@ -143,6 +143,11 @@ public class Tab extends BaseModel {
                 .orderBy(Header$Table.ORDER_POS).queryList();
     }
 
+    public List<Score> getScores(){
+        return new Select().from(Score.class)
+                .where(Condition.column(Score$Table.TAB_ID_TAB).eq(this.getId_tab())).queryList();
+    }
+
     /*
      * Return tabs filter by program and order by orderpos field
      */
@@ -151,7 +156,6 @@ public class Tab extends BaseModel {
                 .where(Condition.column(Tab$Table.TABGROUP_ID_TAB_GROUP).eq(Session.getSurvey().getTabGroup().getId_tab_group()))
                 .orderBy(Tab$Table.ORDER_POS).queryList();
     }
-
     /*
  * Return tabs filter by program and order by orderpos field
  */
@@ -160,6 +164,8 @@ public class Tab extends BaseModel {
                 .where(Condition.column(Tab$Table.PROGRAM_ID_PROGRAM).eq(Session.getSurvey().getProgram().getId_program()))
                 .orderBy(Tab$Table.ORDER_POS).queryList();
     }
+
+
     /**
      * Checks if this tab is the adherence tab
      * @return
@@ -198,6 +204,14 @@ public class Tab extends BaseModel {
      */
     public boolean isCompositeScore(){
         return getType().equals(Constants.TAB_COMPOSITE_SCORE);
+    }
+
+    /**
+     * Checks if this tab is the composite score tab
+     * @return
+     */
+    public boolean isPictureCompositeScore(){
+        return getType().equals(Constants.COMPOSITE_SCORE_TAB_NAME);
     }
 
     /**

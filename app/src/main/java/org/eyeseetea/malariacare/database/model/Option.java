@@ -108,10 +108,6 @@ public class Option extends BaseModel {
         this.id_option = id_option;
     }
 
-    public String getCode() {return code;}
-
-    public void setCode(String code) {this.code = code;}
-
     public String getName() {
         return name;
     }
@@ -126,6 +122,14 @@ public class Option extends BaseModel {
 
     public void setFactor(Float factor) {
         this.factor = factor;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
     }
 
     public Answer getAnswer() {
@@ -200,6 +204,11 @@ public class Option extends BaseModel {
         if (!(o instanceof Option)) return false;
 
         Option option = (Option) o;
+
+        if (code != null ? !code.equals(option.code) : option.code != null) return false;
+        if (path != null ? !path.equals(option.path) : option.path != null) return false;
+        if (optionAttribute != null ? !optionAttribute.equals(option.optionAttribute) : option.optionAttribute != null) return false;
+        if (background_colour != null ? !background_colour.equals(option.background_colour) : option.background_colour != null) return false;
 
         if (id_option != option.id_option) return false;
         if (!name.equals(option.name)) return false;

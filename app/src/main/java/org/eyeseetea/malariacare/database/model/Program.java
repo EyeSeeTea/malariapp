@@ -90,6 +90,13 @@ public class Program extends BaseModel{
         return this.tabGroups;
     }
 
+    public List<Tab> getTabs(){
+        return new Select().from(Tab.class)
+                .where(Condition.column(Tab$Table.PROGRAM_ID_PROGRAM)
+                        .eq(String.valueOf(this.getId_program())))
+                .orderBy(Tab$Table.ORDER_POS).queryList();
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

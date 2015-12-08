@@ -39,6 +39,7 @@ import org.eyeseetea.malariacare.database.iomodules.dhis.exporter.VisitableToSDK
 import org.eyeseetea.malariacare.database.utils.SurveyAnsweredRatio;
 import org.eyeseetea.malariacare.database.utils.SurveyAnsweredRatioCache;
 import org.eyeseetea.malariacare.utils.Constants;
+import org.eyeseetea.malariacare.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -109,6 +110,7 @@ public class Survey extends BaseModel implements VisitableToSDK {
     public Survey(OrgUnit orgUnit, Program program, User user) {
         this.orgUnit = orgUnit;
         this.program = program;
+        this.tabGroup=program.getTabGroups().get(0);
         this.user = user;
         this.eventDate = new Date();
         this.status = Constants.SURVEY_IN_PROGRESS; // Possibilities [ In progress | Completed | Sent ]
@@ -224,6 +226,7 @@ public class Survey extends BaseModel implements VisitableToSDK {
     public boolean isInProgress(){
         return !isSent() && !isCompleted()&& !isHide();
     }
+
     public Float getMainScore() {
         //The main score is only return from a query 1 time
         if(this.mainScore==null){
@@ -370,7 +373,7 @@ public class Survey extends BaseModel implements VisitableToSDK {
             }else{
                 if(codeQuestionFilter.contains(qCode)) {
                     String val = (value.getOption()!=null)?value.getOption().getCode():value.getValue();
-                    mapa.put(qCode, val);
+                        mapa.put(qCode, val);
                 }
             }
         }
@@ -407,12 +410,33 @@ public class Survey extends BaseModel implements VisitableToSDK {
      * @return SurveyAnsweredRatio that hold the total & answered questions.
      */
     private SurveyAnsweredRatio reloadSurveyAnsweredRatio(){
-        int numRequired = Question.countRequiredByProgram(this.getTabGroup());
-        int numOptional = (int)countNumOptionalQuestionsToAnswer();
-        int numAnswered = Value.countBySurvey(this);
-        SurveyAnsweredRatio surveyAnsweredRatio=new SurveyAnsweredRatio(numRequired+numOptional, numAnswered);
-        SurveyAnsweredRatioCache.put(this.id_survey, surveyAnsweredRatio);
-        return surveyAnsweredRatio;
+        if(Utils.isPictureQuestion()){
+
+            int numRequired= Question.countRequiredByProgram(this.getProgram());
+            int numOptional=0;
+            int numAnswered = Value.countBySurvey(this);
+
+            for (Value value : this.getValuesFromParentQuestions()) {
+                if (value.isAPositive()) {
+                    //There might be children no answer questions that should be skipped
+                    for(Question childQuestion:value.getQuestion().getQuestionChildren()){
+                        numOptional+=(childQuestion.getAnswer().getOutput()==Constants.NO_ANSWER)?0:1;
+                    }
+                }
+
+            }
+            SurveyAnsweredRatio surveyAnsweredRatio=new SurveyAnsweredRatio(numRequired+numOptional, numAnswered);
+            SurveyAnsweredRatioCache.put(this.getId_survey(), surveyAnsweredRatio);
+            return surveyAnsweredRatio;
+        }
+        else {
+            int numRequired = Question.countRequiredByProgram(this.getTabGroup());
+            int numOptional = (int) countNumOptionalQuestionsToAnswer();
+            int numAnswered = Value.countBySurvey(this);
+            SurveyAnsweredRatio surveyAnsweredRatio = new SurveyAnsweredRatio(numRequired + numOptional, numAnswered);
+            SurveyAnsweredRatioCache.put(this.id_survey, surveyAnsweredRatio);
+            return surveyAnsweredRatio;
+        }
     }
 
     /**
@@ -461,21 +485,38 @@ public class Survey extends BaseModel implements VisitableToSDK {
     public void updateSurveyStatus(){
 
         //Sent surveys are not updated
-        if(this.isSent()){
-            return;
+        if(Utils.isPictureQuestion()){
+            //Sent surveys are not updated
+            if(this.isSent() || this.isHide()){
+                return;
+            }
+        }
+        else {
+            if (this.isSent()) {
+                return;
+            }
         }
 
         SurveyAnsweredRatio answeredRatio=this.reloadSurveyAnsweredRatio();
-
-        //Update status & completionDate
-        if(answeredRatio.isCompleted()) {
-            this.setStatus(Constants.SURVEY_COMPLETED);
-            this.setCompletionDate(new Date());
-        }else{
-            this.setStatus(Constants.SURVEY_IN_PROGRESS);
-            this.setCompletionDate(this.eventDate);
+        if(Utils.isPictureQuestion()){
+            if((answeredRatio.getAnswered()==7) || (answeredRatio.getTotal()==0 && answeredRatio.getAnswered()==1)) {
+                this.setStatus(Constants.SURVEY_COMPLETED);
+                this.setCompletionDate(new Date());
+            }else {
+                this.setStatus(Constants.SURVEY_IN_PROGRESS);
+                this.setCompletionDate(this.eventDate);
+            }
         }
-
+        else {
+            //Update status & completionDate
+            if (answeredRatio.isCompleted()) {
+                this.setStatus(Constants.SURVEY_COMPLETED);
+                this.setCompletionDate(new Date());
+            } else {
+                this.setStatus(Constants.SURVEY_IN_PROGRESS);
+                this.setCompletionDate(this.eventDate);
+            }
+        }
         //Saves new status & completionDate
         this.save();
     }
@@ -495,15 +536,35 @@ public class Survey extends BaseModel implements VisitableToSDK {
                 .orderBy(Survey$Table.ORGUNIT_ID_ORG_UNIT).queryList();
     }
 
+    // Returns a concrete survey, if it exists
+    public static List<Survey> getUnsentSurveys(OrgUnit orgUnit, Program program) {
+        return new Select().from(Survey.class)
+                .where(Condition.column(Survey$Table.ORGUNIT_ID_ORG_UNIT).eq(orgUnit.getId_org_unit()))
+                .and(Condition.column(Survey$Table.PROGRAM_ID_PROGRAM).eq(program.getId_program()))
+                .and(Condition.column(Survey$Table.STATUS).isNot(Constants.SURVEY_SENT))
+                .and(Condition.column(Survey$Table.STATUS).isNot(Constants.SURVEY_HIDE))
+                .orderBy(Survey$Table.EVENTDATE)
+                .orderBy(Survey$Table.ORGUNIT_ID_ORG_UNIT).queryList();
+    }
+
     /**
      * Returns all the surveys with status yet not put to "Sent"
      * @return
      */
     public static List<Survey> getAllUnsentSurveys() {
-        return new Select().from(Survey.class)
-                .where(Condition.column(Survey$Table.STATUS).isNot(Constants.SURVEY_SENT))
-                .orderBy(Survey$Table.EVENTDATE)
-                .orderBy(Survey$Table.ORGUNIT_ID_ORG_UNIT).queryList();
+        if(Utils.isPictureQuestion()){
+            return new Select().from(Survey.class)
+                    .where(Condition.column(Survey$Table.STATUS).isNot(Constants.SURVEY_SENT))
+                    .and(Condition.column(Survey$Table.STATUS).isNot(Constants.SURVEY_HIDE))
+                    .orderBy(Survey$Table.EVENTDATE)
+                    .orderBy(Survey$Table.ORGUNIT_ID_ORG_UNIT).queryList();
+        }
+        else {
+            return new Select().from(Survey.class)
+                    .where(Condition.column(Survey$Table.STATUS).isNot(Constants.SURVEY_SENT))
+                    .orderBy(Survey$Table.EVENTDATE)
+                    .orderBy(Survey$Table.ORGUNIT_ID_ORG_UNIT).queryList();
+        }
     }
 
     /**
@@ -512,11 +573,20 @@ public class Survey extends BaseModel implements VisitableToSDK {
      * @return
      */
     public static List<Survey> getUnsentSurveys(int limit) {
-        return new Select().from(Survey.class)
+        if(Utils.isPictureQuestion()){        return new Select().from(Survey.class)
                 .where(Condition.column(Survey$Table.STATUS).isNot(Constants.SURVEY_SENT))
+                .and(Condition.column(Survey$Table.STATUS).isNot(Constants.SURVEY_HIDE))
                 .limit(String.valueOf(limit))
                 .orderBy(Survey$Table.EVENTDATE)
                 .orderBy(Survey$Table.ORGUNIT_ID_ORG_UNIT).queryList();
+        }
+        else {
+            return new Select().from(Survey.class)
+                    .where(Condition.column(Survey$Table.STATUS).isNot(Constants.SURVEY_SENT))
+                    .limit(String.valueOf(limit))
+                    .orderBy(Survey$Table.EVENTDATE)
+                    .orderBy(Survey$Table.ORGUNIT_ID_ORG_UNIT).queryList();
+        }
     }
 
     /**
@@ -536,12 +606,32 @@ public class Survey extends BaseModel implements VisitableToSDK {
      * @return
      */
     public static List<Survey> getSentSurveys(int limit) {
+        if(Utils.isPictureQuestion()){
+            return new Select().from(Survey.class)
+                    .where(Condition.column(Survey$Table.STATUS).eq(Constants.SURVEY_SENT))
+                    .or(Condition.column(Survey$Table.STATUS).eq(Constants.SURVEY_HIDE))
+                    .orderBy(Survey$Table.EVENTDATE)
+                    .orderBy(Survey$Table.ORGUNIT_ID_ORG_UNIT)
+                    .queryList();
+        }
+        else {
+            return new Select().from(Survey.class)
+                    .where(Condition.column(Survey$Table.STATUS).eq(Constants.SURVEY_SENT))
+                    .limit(String.valueOf(limit))
+                    .orderBy(Survey$Table.EVENTDATE)
+                    .orderBy(Survey$Table.ORGUNIT_ID_ORG_UNIT).queryList();
+        }
+    }
+   // Returns all the surveys with status put to "Hide"
+    public static List<Survey> getAllHideAndSentSurveys() {
         return new Select().from(Survey.class)
                 .where(Condition.column(Survey$Table.STATUS).eq(Constants.SURVEY_SENT))
-                .limit(String.valueOf(limit))
+                .or(Condition.column(Survey$Table.STATUS).eq(Constants.SURVEY_HIDE))
                 .orderBy(Survey$Table.EVENTDATE)
-                .orderBy(Survey$Table.ORGUNIT_ID_ORG_UNIT).queryList();
+                .orderBy(Survey$Table.ORGUNIT_ID_ORG_UNIT)
+                .queryList();
     }
+
 
     /**
      * Returns all the surveys with status put to "Completed"
@@ -587,17 +677,6 @@ public class Survey extends BaseModel implements VisitableToSDK {
         return new Select().from(Survey.class)
                 .where(Condition.column(Survey$Table.STATUS).eq(Constants.SURVEY_IN_PROGRESS))
                 .limit(String.valueOf(limit))
-                .orderBy(Survey$Table.EVENTDATE)
-                .orderBy(Survey$Table.ORGUNIT_ID_ORG_UNIT).queryList();
-    }
-
-    // Returns a concrete survey, if it exists
-    public static List<Survey> getUnsentSurveys(OrgUnit orgUnit, Program program) {
-        return new Select().from(Survey.class)
-                .where(Condition.column(Survey$Table.ORGUNIT_ID_ORG_UNIT).eq(orgUnit.getId_org_unit()))
-                .and(Condition.column(Survey$Table.PROGRAM_ID_PROGRAM).eq(program.getId_program()))
-                .and(Condition.column(Survey$Table.STATUS).isNot(Constants.SURVEY_SENT))
-                .and(Condition.column(Survey$Table.STATUS).isNot(Constants.SURVEY_HIDE))
                 .orderBy(Survey$Table.EVENTDATE)
                 .orderBy(Survey$Table.ORGUNIT_ID_ORG_UNIT).queryList();
     }
@@ -652,5 +731,12 @@ public class Survey extends BaseModel implements VisitableToSDK {
                 ", completionDate=" + completionDate +
                 ", status=" + status +
                 '}';
+    }
+
+    public static void removeInProgress() {
+        List<Survey> inProgressSurvey= getAllUncompletedSurveys();
+        for(int i=inProgressSurvey.size()-1;i>=0;i--){
+            inProgressSurvey.get(i).delete();
+        }
     }
 }

@@ -171,6 +171,13 @@ public class Value extends BaseModel implements VisitableToSDK {
     public void accept(IConvertToSDKVisitor IConvertToSDKVisitor) {
         IConvertToSDKVisitor.visit(this);
     }
+    /**
+     * The value is 'isANotTested' from a dropdown
+     * @return true|false
+     */
+    public boolean isANotTested() {
+        return getOption() != null && getOption().getName().equals("Not Tested");
+    }
 
     public static List<Value> listAllBySurvey(Survey survey){
         if(survey==null || survey.getId_survey()==null){
@@ -179,7 +186,7 @@ public class Value extends BaseModel implements VisitableToSDK {
         return new Select().from(Value.class).where(Condition.column(Survey$Table.ID_SURVEY).eq(survey.getId_survey())).queryList();
 
     }
-    @Override
+        @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Value)) return false;

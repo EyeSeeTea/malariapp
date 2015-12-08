@@ -47,6 +47,7 @@ import android.widget.TextView;
 
 import com.raizlabs.android.dbflow.sql.language.Select;
 import com.squareup.okhttp.HttpUrl;
+import com.squareup.okhttp.internal.Util;
 import com.squareup.otto.Subscribe;
 
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.PullController;
@@ -54,6 +55,7 @@ import org.eyeseetea.malariacare.database.model.User;
 import org.eyeseetea.malariacare.database.utils.PopulateDB;
 import org.eyeseetea.malariacare.database.utils.PopulatePictureAppDB;
 import org.eyeseetea.malariacare.database.utils.Session;
+import org.eyeseetea.malariacare.utils.Utils;
 import org.hisp.dhis.android.sdk.controllers.DhisService;
 import org.hisp.dhis.android.sdk.job.NetworkJob;
 import org.hisp.dhis.android.sdk.network.Credentials;
@@ -159,7 +161,10 @@ public class LoginActivity extends org.hisp.dhis.android.sdk.ui.activities.Login
     private void populatePictureAppFromAssets() {
         try{
             PullController.getInstance().wipeDatabase();
+            if(Utils.isPictureQuestion())
             PopulatePictureAppDB.populateDB(getAssets());
+            else
+            PopulateDB.populateDB(getAssets());
             User user = new User();
             user.save();
             Session.setUser(user);

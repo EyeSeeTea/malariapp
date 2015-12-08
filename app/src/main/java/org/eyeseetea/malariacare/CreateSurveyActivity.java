@@ -89,7 +89,11 @@ public class CreateSurveyActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         // Manage uncaught exceptions that may occur
         //Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(this));
-        setContentView(R.layout.activity_create_survey);
+
+        if(Utils.isPictureQuestion())
+            setContentView(R.layout.activity_create_survey_pictureapp);
+        else
+            setContentView(R.layout.activity_create_survey);
 
         android.support.v7.app.ActionBar actionBar = this.getSupportActionBar();
         LayoutUtils.setActionBarLogo(actionBar);
@@ -104,14 +108,16 @@ public class CreateSurveyActivity extends BaseActivity {
             //Populate Organization Unit DDL
             List<OrgUnit> orgUnitList = new Select().all().from(OrgUnit.class).queryList();
             orgUnitList.add(0, orgUnitDefaultOption);
-            orgUnitView = (Spinner) findViewById(R.id.org_unit);
-            orgUnitView.setAdapter(new OrgUnitArrayAdapter(this, orgUnitList));
+            orgUnitView = (Spinner) findViewById(R.id.org_unit_pictureapp);
+            OrgUnitArrayAdapter orgUnitAdapter=new OrgUnitArrayAdapter(this, orgUnitList);
+            orgUnitView.setAdapter(orgUnitAdapter);
 
             //Populate Program View DDL
             List<Program> programList = new Select().all().from(Program.class).queryList();
             programList.add(0, programDefaultOption);
-            programView = (Spinner) findViewById(R.id.program);
-            programView.setAdapter(new ProgramArrayAdapter(this, programList));
+            programView = (Spinner) findViewById(R.id.program_picture);
+            ProgramArrayAdapter programAdapter=new ProgramArrayAdapter(this, programList);
+            programView.setAdapter(programAdapter);
         } else {
 
             this.lInflater = LayoutInflater.from(this);
@@ -241,7 +247,7 @@ public class CreateSurveyActivity extends BaseActivity {
                 Session.setSurvey(survey);
 
                 //Call Survey Activity
-                finishAndGo(SurveyActivityPictureapp.class);
+                finishAndGo(SurveyActivity.class);
             }
         }
         else {

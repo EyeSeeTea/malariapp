@@ -39,5 +39,4 @@ public class TabArrayAdapter extends AddlArrayAdapter<Tab> {
     @Override public void drawText(CustomTextView customTextView, Tab tab) {
         customTextView.setText(tab.getName());
     }
-
 }
