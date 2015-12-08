@@ -30,7 +30,7 @@ public class Constants {
 
     // ############# TAB TYPE ###############
     public static final int TAB_AUTOMATIC = 0,
-            TAB_AUTOMATIC_NON_SCORED = 1,//we need to delete this
+            TAB_AUTOMATIC_NON_SCORED = 1,//we need to delete this1
             TAB_COMPOSITE_SCORE = 2,
             TAB_SCORE_SUMMARY = 4, //we need to delete this
             TAB_ADHERENCE = 6,

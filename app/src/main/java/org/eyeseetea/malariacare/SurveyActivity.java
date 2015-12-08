@@ -54,9 +54,11 @@ import org.eyeseetea.malariacare.database.model.Tab;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.layout.adapters.general.TabArrayAdapter;
 import org.eyeseetea.malariacare.layout.adapters.survey.AutoTabAdapter;
+import org.eyeseetea.malariacare.layout.adapters.survey.AutoTabAdapterPictureApp;
 import org.eyeseetea.malariacare.layout.adapters.survey.CompositeScoreAdapter;
 import org.eyeseetea.malariacare.layout.adapters.survey.CompositeScoreAdapterPictureApp;
 import org.eyeseetea.malariacare.layout.adapters.survey.CustomAdherenceAdapter;
+import org.eyeseetea.malariacare.layout.adapters.survey.CustomAdherenceAdapterPictureApp;
 import org.eyeseetea.malariacare.layout.adapters.survey.CustomIQTABAdapter;
 import org.eyeseetea.malariacare.layout.adapters.survey.CustomReportingAdapter;
 import org.eyeseetea.malariacare.layout.adapters.survey.DynamicTabAdapter;
@@ -155,21 +157,22 @@ public class SurveyActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        Log.d(TAG, "onCreate");
-        if (Utils.isPictureQuestion()) {
-            setContentView(R.layout.surveypictureapp);
-            registerReceiver();
-            createActionBar();
-            createProgress();
-        } else {
-            setContentView(R.layout.survey);
-            registerReceiver();
-            createActionBar();
-            createMenu();
-            createProgress();
-            prepareSurveyInfo();
-        }
+try {
+    Log.d(TAG, "onCreate");
+    if (Utils.isPictureQuestion()) {
+        setContentView(R.layout.surveypictureapp);
+        registerReceiver();
+        createActionBar();
+        createProgress();
+    } else {
+        setContentView(R.layout.survey);
+        registerReceiver();
+        createActionBar();
+        createMenu();
+        createProgress();
+        prepareSurveyInfo();
+    }
+    }catch (Exception ex) { Log.e(TAG, ex.toString());}
 
     }
 
@@ -255,28 +258,29 @@ public class SurveyActivity extends BaseActivity {
      * Adds the spinner for tabs
      */
     private void createMenu() {
+        if(!Utils.isPictureQuestion()) {
+            Log.d(TAG, "createMenu");
+            this.tabAdapter = new TabArrayAdapter(this, tabsList);
+            spinner = (Spinner) this.findViewById(R.id.tabSpinner);
 
-        Log.d(TAG, "createMenu");
-        this.tabAdapter = new TabArrayAdapter(this, tabsList);
-        spinner = (Spinner) this.findViewById(R.id.tabSpinner);
+            //Invisible until info ready
+            spinner.setVisibility(View.GONE);
+            spinner.setAdapter(this.tabAdapter);
+            spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    Log.d(TAG, "onItemSelected..");
+                    final Tab selectedTab = (Tab) spinner.getSelectedItem();
+                    new AsyncChangeTab(selectedTab).execute((Void) null);
+                    Log.d(TAG, "onItemSelected(" + Thread.currentThread().getId() + ")..DONE");
+                }
 
-        //Invisible until info ready
-        spinner.setVisibility(View.GONE);
-        spinner.setAdapter(this.tabAdapter);
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                Log.d(TAG, "onItemSelected..");
-                final Tab selectedTab = (Tab) spinner.getSelectedItem();
-                new AsyncChangeTab(selectedTab).execute((Void) null);
-                Log.d(TAG, "onItemSelected(" + Thread.currentThread().getId() + ")..DONE");
-            }
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
 
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
+                }
+            });
+        }
     }
 
     private void preLoadItems() {
@@ -354,38 +358,41 @@ public class SurveyActivity extends BaseActivity {
         @Override
         protected void onPostExecute(View viewContent) {
             super.onPostExecute(viewContent);
+            try {
+                content.removeAllViews();
+                content.addView(viewContent);
+                if (Utils.isPictureQuestion()) {
 
-            content.removeAllViews();
-            content.addView(viewContent);
-            if (Utils.isPictureQuestion()) {
-
-                ITabAdapter tabAdapter = tabAdaptersCache.findAdapter(tab);
-                if (tab.getType() == Constants.TAB_AUTOMATIC_SCORED ||
-                        tab.getType() == Constants.TAB_ADHERENCE ||
-                        tab.getType() == Constants.TAB_IQATAB ||
-                        tab.getType() == Constants.TAB_SCORE_SUMMARY) {
-                    tabAdapter.initializeSubscore();
+                    ITabAdapter tabAdapter = tabAdaptersCache.findAdapter(tab);
+                    if (tab.getType() == Constants.TAB_AUTOMATIC_SCORED ||
+                            tab.getType() == Constants.TAB_ADHERENCE ||
+                            tab.getType() == Constants.TAB_IQATAB ||
+                            tab.getType() == Constants.TAB_SCORE_SUMMARY) {
+                        tabAdapter.initializeSubscore();
+                    }
+                        ListView listViewTab = (ListView) SurveyActivity.this.findViewById(R.id.listView);
+                        if (tabAdapter instanceof DynamicTabAdapter) {
+                            ((DynamicTabAdapter) tabAdapter).addOnSwipeListener(listViewTab);
+                        }
+                        listViewTab.setAdapter((BaseAdapter) tabAdapter);
+                        stopProgress();
+                } else {
+                    ITabAdapter tabAdapter = tabAdaptersCache.findAdapter(tab);
+                    if (tab.getType() == Constants.TAB_AUTOMATIC ||
+                            tab.getType() == Constants.TAB_ADHERENCE ||
+                            tab.getType() == Constants.TAB_IQATAB ||
+                            tab.getType() == Constants.TAB_REPORTING ||
+                            tab.getType() == Constants.TAB_COMPOSITE_SCORE) {
+                        tabAdapter.initializeSubscore();
+                    }
+                    ListView mQuestions = (ListView) SurveyActivity.this.findViewById(R.id.listView);
+                    mQuestions.setAdapter((BaseAdapter) tabAdapter);
+                    UnfocusScrollListener unfocusScrollListener = new UnfocusScrollListener();
+                    mQuestions.setOnScrollListener(unfocusScrollListener);
+                    stopProgress();
                 }
-                ListView listViewTab = (ListView) SurveyActivity.this.findViewById(R.id.listView);
-                if (tabAdapter instanceof DynamicTabAdapter) {
-                    ((DynamicTabAdapter) tabAdapter).addOnSwipeListener(listViewTab);
-                }
-                listViewTab.setAdapter((BaseAdapter) tabAdapter);
-                stopProgress();
-            } else {
-                ITabAdapter tabAdapter = tabAdaptersCache.findAdapter(tab);
-                if (tab.getType() == Constants.TAB_AUTOMATIC ||
-                        tab.getType() == Constants.TAB_ADHERENCE ||
-                        tab.getType() == Constants.TAB_IQATAB ||
-                        tab.getType() == Constants.TAB_REPORTING ||
-                        tab.getType() == Constants.TAB_COMPOSITE_SCORE) {
-                    tabAdapter.initializeSubscore();
-                }
-                ListView mQuestions = (ListView) SurveyActivity.this.findViewById(R.id.listView);
-                mQuestions.setAdapter((BaseAdapter) tabAdapter);
-                UnfocusScrollListener unfocusScrollListener = new UnfocusScrollListener();
-                mQuestions.setOnScrollListener(unfocusScrollListener);
-                stopProgress();
+            } catch (Exception ex) {
+                Log.e(TAG, ex.toString());
             }
         }
     }
@@ -484,7 +491,11 @@ public class SurveyActivity extends BaseActivity {
         if (score == null) {
             return;
         }
-        Tab tab = ((AutoTabAdapter) adapter).getTab();
+        Tab tab;
+        if(Utils.isPictureQuestion())
+            tab = ((AutoTabAdapterPictureApp) adapter).getTab();
+        else
+            tab = ((AutoTabAdapter) adapter).getTab();
         int viewId = IDS_SCORES_IN_GENERAL_TAB[tab.getOrder_pos()];
         if (viewId != 0) {
             CustomTextView customTextView = ((CustomTextView) this.findViewById(viewId));
@@ -522,7 +533,11 @@ public class SurveyActivity extends BaseActivity {
         if (score == null) {
             return 0F;
         }
-        Tab tab = ((AutoTabAdapter) adapter).getTab();
+        Tab tab;
+        if(Utils.isPictureQuestion())
+            tab = ((AutoTabAdapterPictureApp) adapter).getTab();
+        else
+            tab = ((AutoTabAdapter) adapter).getTab();
         if (contains(indexToConsider, tab.getOrder_pos())) {
             return score;
         }
@@ -541,7 +556,7 @@ public class SurveyActivity extends BaseActivity {
     }
 
     private boolean isNotAutoTabAdapterOrNull(ITabAdapter adapter) {
-        return adapter == null || !(adapter instanceof AutoTabAdapter);
+        return adapter == null || !(adapter instanceof AutoTabAdapter) || (adapter instanceof  AutoTabAdapterPictureApp);
     }
 
     private void updateAvgInGeneralScores(int viewId, Float score) {
@@ -553,11 +568,13 @@ public class SurveyActivity extends BaseActivity {
      * Stops progress view and shows real form
      */
     private void stopProgress() {
+        try{
         this.progressBar.setVisibility(View.GONE);
         if(!Utils.isPictureQuestion())
         this.spinner.setVisibility(View.VISIBLE);
         this.content.setVisibility(View.VISIBLE);
 
+        }catch (Exception ex) { Log.e(TAG, ex.toString());}
     }
 
     private void startProgress() {
@@ -662,10 +679,11 @@ public class SurveyActivity extends BaseActivity {
             Log.d(TAG, "onReceive");
             List<CompositeScore> compositeScores = (List<CompositeScore>) Session.popServiceValue(SurveyService.PREPARE_SURVEY_ACTION_COMPOSITE_SCORES);
             List<Tab> tabs = (List<Tab>) Session.popServiceValue(SurveyService.PREPARE_SURVEY_ACTION_TABS);
-
-            tabAdaptersCache.reloadAdapters(tabs, compositeScores);
-            reloadTabs(tabs);
-            stopProgress();
+try {
+    tabAdaptersCache.reloadAdapters(tabs, compositeScores);
+    reloadTabs(tabs);
+    stopProgress();
+} catch(Exception ex) { Log.e(TAG, ex.toString());}
             if (!Utils.isPictureQuestion()) {
                 // After loading first tab we start the individual services that preload the items for the rest of tabs
                 preLoadItems();
@@ -743,6 +761,7 @@ public class SurveyActivity extends BaseActivity {
             Tab firstTab = tabs.get(0);
             this.adapters.clear();
             if (Utils.isPictureQuestion()) {
+                Log.d(TAG,firstTab.toString()+" AdapterTAB "+buildAdapter(firstTab).getAdapter().isEmpty()+"");
                 this.adapters.put(firstTab, buildAdapter(firstTab));
             } else {
                 this.adapters.put(firstTab, AutoTabAdapter.build(firstTab, SurveyActivity.this));
@@ -788,12 +807,13 @@ public class SurveyActivity extends BaseActivity {
          */
         private ITabAdapter buildAdapter(Tab tab) {
             if (Utils.isPictureQuestion()) {
+                Log.d(TAG,"Type: "+tab.getType());
                 if (tab.isCompositeScore())
                     return new CompositeScoreAdapterPictureApp(this.compositeScores, SurveyActivity.this, R.layout.composite_score_tab, tab.getName());
 
                 if (tab.isAdherenceTab()) {
                     Log.d(TAG, "Creating an Adherence Adapter");
-                    return CustomAdherenceAdapter.build(tab, SurveyActivity.this);
+                    return CustomAdherenceAdapterPictureApp.build(tab, SurveyActivity.this);
                 }
 
                 if (tab.isIQATab())
@@ -807,7 +827,7 @@ public class SurveyActivity extends BaseActivity {
                 if (tab.isDynamicTab()) {
                     return new DynamicTabAdapter(tab, SurveyActivity.this);
                 }
-
+                return AutoTabAdapterPictureApp.build(tab, SurveyActivity.this);
             } else {
                 switch (tab.getType()) {
                     case Constants.TAB_COMPOSITE_SCORE:
@@ -819,8 +839,8 @@ public class SurveyActivity extends BaseActivity {
                     case Constants.TAB_REPORTING:
                         return CustomReportingAdapter.build(tab, SurveyActivity.this);
                 }
+                return AutoTabAdapter.build(tab, SurveyActivity.this);
             }
-            return AutoTabAdapter.build(tab, SurveyActivity.this);
         }
     }
 }
