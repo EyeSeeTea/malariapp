@@ -222,7 +222,7 @@ else{
         List<Program> firstProgram = new Select().from(Program.class).where(Condition.column(Program$Table.ID_PROGRAM).eq(1)).queryList();
         // Put new survey in session
         Survey survey = new Survey(null, firstProgram.get(0), Session.getUser());
-        survey.save();
+        //survey.save();
         Session.setSurvey(survey);
 
         //Look for coordinates
