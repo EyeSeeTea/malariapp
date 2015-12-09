@@ -93,7 +93,7 @@ public class CreateSurveyActivity extends BaseActivity {
         if(Utils.isPictureQuestion())
             setContentView(R.layout.activity_create_survey_pictureapp);
         else
-            setContentView(R.layout.activity_create_survey_pictureapp);
+            setContentView(R.layout.activity_create_survey);
 
         android.support.v7.app.ActionBar actionBar = this.getSupportActionBar();
         LayoutUtils.setActionBarLogo(actionBar);

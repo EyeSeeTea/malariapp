@@ -87,7 +87,7 @@ public class CustomAdherenceAdapter extends ATabAdapter {
     public void initializeSubscore() {
         ListView lAdapter = (ListView) ((Activity) getContext()).findViewById(R.id.listView);
 
-        ViewGroup header = (ViewGroup) getInflater().inflate(R.layout.adherencetab_header0_pictureapp, lAdapter, false);
+        ViewGroup header = (ViewGroup) getInflater().inflate(R.layout.adherencetab_header0, lAdapter, false);
         lAdapter.addHeaderView(header);
 
         final Switch visibility = (Switch) ((Activity) getContext()).findViewById(R.id.visibilitySwitch);

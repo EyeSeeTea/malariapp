@@ -105,7 +105,7 @@ public class CustomAdherenceAdapterPictureApp extends BaseAdapter implements ITa
     public void initializeSubscore() {
         ListView lAdapter = (ListView) ((Activity) context).findViewById(R.id.listView);
 
-        ViewGroup header = (ViewGroup) lInflater.inflate(R.layout.adherencetab_header0_pictureapp, lAdapter, false);
+        ViewGroup header = (ViewGroup) lInflater.inflate(R.layout.adherencetab_header0, lAdapter, false);
         lAdapter.addHeaderView(header);
 
         final Switch visibility = (Switch) ((Activity) context).findViewById(R.id.visibilitySwitch);

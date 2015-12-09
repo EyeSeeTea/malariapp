@@ -51,6 +51,7 @@ import org.eyeseetea.malariacare.layout.adapters.dashboard.IDashboardAdapter;
 import org.eyeseetea.malariacare.layout.listeners.SwipeDismissListViewTouchListener;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 import org.eyeseetea.malariacare.services.SurveyService;
+import org.eyeseetea.malariacare.utils.Utils;
 import org.eyeseetea.malariacare.views.CustomTextView;
 
 import java.util.ArrayList;
@@ -323,17 +324,18 @@ public class DashboardSentFragment extends ListFragment {
     }
 
     private WebView initMonitor() {
-        //WebView webView = (WebView) getActivity().findViewById(R.id.dashboard_monitor);
-        //Init webView settings
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-            webView.getSettings().setAllowUniversalAccessFromFileURLs(true);
-            webView.getSettings().setAllowFileAccessFromFileURLs(true);
+        if(!Utils.isPictureQuestion()) {
+            WebView webView = (WebView) getActivity().findViewById(R.id.dashboard_monitor);
+            //Init webView settings
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                webView.getSettings().setAllowUniversalAccessFromFileURLs(true);
+                webView.getSettings().setAllowFileAccessFromFileURLs(true);
+            }
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                WebView.setWebContentsDebuggingEnabled(true);
+            }
+            webView.getSettings().setJavaScriptEnabled(true);
         }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            WebView.setWebContentsDebuggingEnabled(true);
-        }
-        webView.getSettings().setJavaScriptEnabled(true);
-
         return webView;
     }
 
