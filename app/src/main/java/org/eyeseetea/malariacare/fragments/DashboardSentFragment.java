@@ -361,12 +361,12 @@ public class DashboardSentFragment extends ListFragment {
         for (Survey survey : surveysForGraphic) {
             if (survey.isSent()) {
                 if (survey.getOrgUnit() != null) {
-                    if (!orgUnits.containsKey(survey.getOrgUnit().getUid())) {
-                        orgUnits.put(survey.getOrgUnit().getUid(), survey);
+                    if (!orgUnits.containsKey(survey.getTabGroup().getProgram().getUid()+survey.getOrgUnit().getUid())) {
+                        orgUnits.put(survey.getTabGroup().getProgram().getUid()+survey.getOrgUnit().getUid(), survey);
                     } else {
-                        Survey surveyMapped = orgUnits.get(survey.getOrgUnit().getUid());
+                        Survey surveyMapped = orgUnits.get(survey.getTabGroup().getProgram().getUid()+survey.getOrgUnit().getUid());
                         if (surveyMapped.getCompletionDate().before(survey.getCompletionDate())) {
-                            orgUnits.put(survey.getOrgUnit().getUid(), survey);
+                            orgUnits.put(survey.getTabGroup().getProgram().getUid()+survey.getOrgUnit().getUid(), survey);
                         }
                     }
                 }
