@@ -166,7 +166,7 @@ try {
         createActionBar();
         createProgress();
     } else {
-        setContentView(R.layout.survey);
+        setContentView(R.layout.survey_pictureapp);
         registerReceiver();
         createActionBar();
         createMenu();

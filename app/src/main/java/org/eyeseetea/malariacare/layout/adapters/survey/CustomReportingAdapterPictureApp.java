@@ -36,8 +36,6 @@ import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 import org.eyeseetea.malariacare.utils.Utils;
 import org.eyeseetea.malariacare.views.CustomEditText;
 import org.eyeseetea.malariacare.views.CustomTextView;
-import org.eyeseetea.malariacare.views.CustomEditText;
-import org.eyeseetea.malariacare.views.CustomTextView;
 
 import java.util.List;
 
@@ -236,7 +234,7 @@ public class CustomReportingAdapterPictureApp extends BaseAdapter implements ITa
 
         else
         {
-            rowView = lInflater.inflate(R.layout.reporting_record2, parent, false);
+            rowView = lInflater.inflate(R.layout.reporting_record2_pictureapp, parent, false);
             viewHolder.statement = (CustomTextView) rowView.findViewById(R.id.reportingQuestion);
             viewHolder.report = (CustomEditText) rowView.findViewById(R.id.monthlyReport);
             viewHolder.register = (CustomEditText) rowView.findViewById(R.id.register);

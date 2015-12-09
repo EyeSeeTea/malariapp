@@ -153,7 +153,7 @@ public class AutoTabAdapterPictureApp extends BaseAdapter implements ITabAdapter
      * @return
      */
     public static AutoTabAdapterPictureApp build(Tab tab, Context context) {
-        int idLayout = tab.getType() == Constants.TAB_AUTOMATIC_NON_SCORED ? R.layout.form_without_score : R.layout.form_with_score;
+        int idLayout = tab.getType() == Constants.TAB_AUTOMATIC_NON_SCORED ? R.layout.form_without_score_pictureapp : R.layout.form_with_score;
         return new AutoTabAdapterPictureApp(tab, context, idLayout);
     }
 
@@ -527,7 +527,7 @@ public class AutoTabAdapterPictureApp extends BaseAdapter implements ITabAdapter
             switch (question.getAnswer().getOutput()) {
 
                 case Constants.LONG_TEXT:
-                    rowView = initialiseView(R.layout.longtext, parent, question, viewHolder, position);
+                    rowView = initialiseView(R.layout.longtext_picureapp, parent, question, viewHolder, position);
 
                     //Add main component and listener
                     ((CustomEditText) viewHolder.component).addTextChangedListener(new TextViewListener(false, question));
@@ -536,7 +536,7 @@ public class AutoTabAdapterPictureApp extends BaseAdapter implements ITabAdapter
                     rowView = initialiseView(R.layout.label, parent, question, viewHolder, position);
                     break;
                 case Constants.POSITIVE_INT:
-                    rowView = initialiseView(R.layout.integer, parent, question, viewHolder, position);
+                    rowView = initialiseView(R.layout.integer_pictureapp, parent, question, viewHolder, position);
 
                     //Add main component, set filters and listener
                     ((CustomEditText) viewHolder.component).setFilters(new InputFilter[]{
@@ -547,7 +547,7 @@ public class AutoTabAdapterPictureApp extends BaseAdapter implements ITabAdapter
                     break;
                 case Constants.INT:
                 case Constants.PHONE:
-                    rowView = initialiseView(R.layout.integer, parent, question, viewHolder, position);
+                    rowView = initialiseView(R.layout.integer_pictureapp, parent, question, viewHolder, position);
 
                     //Add main component, set filters and listener
                     ((CustomEditText) viewHolder.component).setFilters(new InputFilter[]{
@@ -563,7 +563,7 @@ public class AutoTabAdapterPictureApp extends BaseAdapter implements ITabAdapter
                     break;
 
                 case Constants.SHORT_TEXT:
-                    rowView = initialiseView(R.layout.shorttext, parent, question, viewHolder, position);
+                    rowView = initialiseView(R.layout.shorttext_pictureapp, parent, question, viewHolder, position);
 
                     //Add main component and listener
                     ((CustomEditText) viewHolder.component).addTextChangedListener(new TextViewListener(false, question));
@@ -670,7 +670,7 @@ public class AutoTabAdapterPictureApp extends BaseAdapter implements ITabAdapter
         ((RadioGroup) viewHolder.component).setOrientation(orientation);
 
         for (Option option : question.getAnswer().getOptions()) {
-            UncheckeableRadioButton button = (UncheckeableRadioButton) lInflater.inflate(R.layout.uncheckeable_radiobutton, null);
+            UncheckeableRadioButton button = (UncheckeableRadioButton) lInflater.inflate(R.layout.uncheckeable_radiobutton_pictureapp, null);
             button.setOption(option);
             button.updateProperties(PreferencesState.getInstance().getScale(), this.context.getString(R.string.font_size_level1), this.context.getString(R.string.medium_font_name));
             ((RadioGroup) viewHolder.component).addView(button);

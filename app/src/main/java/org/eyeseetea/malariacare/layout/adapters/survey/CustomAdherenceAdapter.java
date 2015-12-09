@@ -229,14 +229,14 @@ public class CustomAdherenceAdapter extends ATabAdapter {
 
         if (position < position_secondheader) {
             if (item instanceof Header)
-                rowView = getInflater().inflate(R.layout.adherencetab_header1_pictureapp, parent, false);
+                rowView = getInflater().inflate(R.layout.adherencetab_header1, parent, false);
             else {
 
                 question = (Question) item;
 
                 final ViewHolder viewHolder = new ViewHolder();
 
-                rowView = getInflater().inflate(R.layout.pharmacy_register, parent, false);
+                rowView = getInflater().inflate(R.layout.pharmacy_register_pictureapp, parent, false);
                 viewHolder.number = (CustomTextView) rowView.findViewById(R.id.number);
                 viewHolder.gender = (Spinner) rowView.findViewById(R.id.gender);
                 viewHolder.age = (CustomEditText) rowView.findViewById(R.id.age);
@@ -344,14 +344,14 @@ public class CustomAdherenceAdapter extends ATabAdapter {
         else {
 
             if (item instanceof Header)
-                rowView = getInflater().inflate(R.layout.adherencetab_header2_pictureapp, parent, false);
+                rowView = getInflater().inflate(R.layout.adherencetab_header2, parent, false);
             else {
 
                 question = (Question) item;
 
                 final ViewHolder2 viewHolder2 = new ViewHolder2();
 
-                rowView = getInflater().inflate(R.layout.pharmacy_register2, parent, false);
+                rowView = getInflater().inflate(R.layout.pharmacy_register2_pictureapp, parent, false);
 
                 viewHolder2.number = (CustomTextView) rowView.findViewById(R.id.number);
                 viewHolder2.patientID = (CustomEditText) rowView.findViewById(R.id.patientId);

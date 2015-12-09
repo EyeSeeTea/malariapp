@@ -22,10 +22,8 @@ package org.eyeseetea.malariacare.layout.adapters.survey;
 import android.content.Context;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.model.Header;
@@ -33,11 +31,8 @@ import org.eyeseetea.malariacare.database.model.Question;
 import org.eyeseetea.malariacare.database.model.Tab;
 import org.eyeseetea.malariacare.database.utils.ReadWriteDB;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
-import org.eyeseetea.malariacare.utils.Utils;
 import org.eyeseetea.malariacare.views.CustomEditText;
 import org.eyeseetea.malariacare.views.CustomTextView;
-
-import java.util.List;
 
 /**
  * Created by Jose on 12/04/2015.
@@ -133,7 +128,7 @@ public class CustomReportingAdapter extends ATabAdapter {
 
         else
         {
-            rowView = getInflater().inflate(R.layout.reporting_record2, parent, false);
+            rowView = getInflater().inflate(R.layout.reporting_record2_pictureapp, parent, false);
             viewHolder.statement = (CustomTextView) rowView.findViewById(R.id.reportingQuestion);
             viewHolder.report = (CustomEditText) rowView.findViewById(R.id.monthlyReport);
             viewHolder.register = (CustomEditText) rowView.findViewById(R.id.register);

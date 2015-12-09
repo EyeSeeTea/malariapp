@@ -282,7 +282,7 @@ public class CustomAdherenceAdapterPictureApp extends BaseAdapter implements ITa
 
                 final ViewHolder viewHolder = new ViewHolder();
 
-                rowView = lInflater.inflate(R.layout.pharmacy_register, parent, false);
+                rowView = lInflater.inflate(R.layout.pharmacy_register_pictureapp, parent, false);
                 viewHolder.number = (CustomTextView) rowView.findViewById(R.id.number);
                 viewHolder.gender = (Spinner) rowView.findViewById(R.id.gender);
                 viewHolder.age = (CustomEditText) rowView.findViewById(R.id.age);
@@ -397,7 +397,7 @@ public class CustomAdherenceAdapterPictureApp extends BaseAdapter implements ITa
 
                 final ViewHolder2 viewHolder2 = new ViewHolder2();
 
-                rowView = lInflater.inflate(R.layout.pharmacy_register2, parent, false);
+                rowView = lInflater.inflate(R.layout.pharmacy_register2_pictureapp, parent, false);
 
                 viewHolder2.number = (CustomTextView) rowView.findViewById(R.id.number);
                 viewHolder2.patientID = (CustomEditText) rowView.findViewById(R.id.patientId);

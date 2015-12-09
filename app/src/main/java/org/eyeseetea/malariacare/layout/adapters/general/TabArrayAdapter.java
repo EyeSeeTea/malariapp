@@ -33,7 +33,7 @@ import java.util.List;
 public class TabArrayAdapter extends AddlArrayAdapter<Tab> {
 
     public TabArrayAdapter(Context context, List<Tab> tabs) {
-        super(context, R.layout.main_spinner_item, tabs);
+        super(context, R.layout.main_spinner_item_pictureapp, tabs);
     }
 
     @Override public void drawText(CustomTextView customTextView, Tab tab) {

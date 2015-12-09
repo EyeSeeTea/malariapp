@@ -24,11 +24,9 @@ import android.content.Context;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.NumberPicker;
 import android.widget.RadioGroup;
@@ -44,7 +42,6 @@ import org.eyeseetea.malariacare.database.model.Tab;
 import org.eyeseetea.malariacare.database.model.Value;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.ReadWriteDB;
-import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.layout.utils.AutoTabLayoutUtils;
 import org.eyeseetea.malariacare.utils.Constants;
@@ -105,7 +102,7 @@ public class AutoTabAdapter extends ATabAdapter {
      * @return
      */
     public static AutoTabAdapter build(Tab tab, Context context) {
-        int idLayout = tab.getType() == Constants.TAB_AUTOMATIC_NON_SCORED ? R.layout.form_without_score : R.layout.form_with_score;
+        int idLayout = tab.getType() == Constants.TAB_AUTOMATIC_NON_SCORED ? R.layout.form_without_score_pictureapp : R.layout.form_with_score;
         return new AutoTabAdapter(tab, context, idLayout);
     }
 
@@ -189,7 +186,7 @@ public class AutoTabAdapter extends ATabAdapter {
             switch (question.getAnswer().getOutput()) {
 
                 case Constants.LONG_TEXT:
-                    rowView = AutoTabLayoutUtils.initialiseView(R.layout.longtext, parent, question, viewHolder, position, getInflater());
+                    rowView = AutoTabLayoutUtils.initialiseView(R.layout.longtext_picureapp, parent, question, viewHolder, position, getInflater());
                     //Add main component and listener
                     ((CustomEditText) viewHolder.component).addTextChangedListener(new TextViewListener(false, question));
                     break;
@@ -237,7 +234,7 @@ public class AutoTabAdapter extends ATabAdapter {
                     break;
 
                 case Constants.SHORT_TEXT:
-                    rowView = AutoTabLayoutUtils.initialiseView(R.layout.shorttext, parent, question, viewHolder, position, getInflater());
+                    rowView = AutoTabLayoutUtils.initialiseView(R.layout.shorttext_pictureapp, parent, question, viewHolder, position, getInflater());
                     //Add main component and listener
                     ((CustomEditText) viewHolder.component).addTextChangedListener(new TextViewListener(false, question));
                     break;

@@ -116,7 +116,7 @@ public class DynamicTabAdapter extends BaseAdapter implements ITabAdapter {
     public DynamicTabAdapter(Tab tab, Context context) {
         this.lInflater = LayoutInflater.from(context);
         this.context = context;
-        this.id_layout = R.layout.form_without_score;
+        this.id_layout = R.layout.form_without_score_pictureapp;
 
         this.items=initItems(tab);
         List<Question> questions= initHeaderAndQuestions();
