@@ -485,16 +485,8 @@ public class Survey extends BaseModel implements VisitableToSDK {
     public void updateSurveyStatus(){
 
         //Sent surveys are not updated
-        if(Utils.isPictureQuestion()){
-            //Sent surveys are not updated
-            if(this.isSent() || this.isHide()){
-                return;
-            }
-        }
-        else {
-            if (this.isSent()) {
-                return;
-            }
+        if(this.isSent() || this.isHide()){
+            return;
         }
 
         SurveyAnsweredRatio answeredRatio=this.reloadSurveyAnsweredRatio();
@@ -695,13 +687,15 @@ public class Survey extends BaseModel implements VisitableToSDK {
 
         if (id_survey != survey.id_survey) return false;
         if (!tabGroup.equals(survey.tabGroup)) return false;
-        if (!orgUnit.equals(survey.orgUnit)) return false;
+        if (orgUnit !=null? !orgUnit.equals(survey.orgUnit): survey.orgUnit!=null)
+            return false;
         if (!user.equals(survey.user)) return false;
         if (eventDate != null ? !eventDate.equals(survey.eventDate) : survey.eventDate != null)
             return false;
         if (completionDate != null ? !completionDate.equals(survey.completionDate) : survey.completionDate != null)
             return false;
-        if (!program.equals(survey.program)) return false;
+        if (program !=null? !program.equals(survey.program): survey.program!=null)
+            return false;
         return status.equals(survey.status);
 
     }
@@ -709,9 +703,9 @@ public class Survey extends BaseModel implements VisitableToSDK {
     @Override
     public int hashCode() {
         int result = (int) (id_survey ^ (id_survey >>> 32));
-        result = 31 * result + program.hashCode();
+        result = 31 * result + (program != null ? program.hashCode() : 0);
         result = 31 * result + tabGroup.hashCode();
-        result = 31 * result + orgUnit.hashCode();
+        result = 31 * result + (orgUnit != null ? orgUnit.hashCode() : 0);
         result = 31 * result + user.hashCode();
         result = 31 * result + (eventDate != null ? eventDate.hashCode() : 0);
         result = 31 * result + (completionDate != null ? completionDate.hashCode() : 0);

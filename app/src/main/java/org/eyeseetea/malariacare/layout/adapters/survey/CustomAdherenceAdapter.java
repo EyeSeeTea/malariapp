@@ -236,7 +236,7 @@ public class CustomAdherenceAdapter extends ATabAdapter {
 
                 final ViewHolder viewHolder = new ViewHolder();
 
-                rowView = getInflater().inflate(R.layout.pharmacy_register_pictureapp, parent, false);
+                rowView = getInflater().inflate(R.layout.pharmacy_register, parent, false);
                 viewHolder.number = (CustomTextView) rowView.findViewById(R.id.number);
                 viewHolder.gender = (Spinner) rowView.findViewById(R.id.gender);
                 viewHolder.age = (CustomEditText) rowView.findViewById(R.id.age);
@@ -351,7 +351,7 @@ public class CustomAdherenceAdapter extends ATabAdapter {
 
                 final ViewHolder2 viewHolder2 = new ViewHolder2();
 
-                rowView = getInflater().inflate(R.layout.pharmacy_register2_pictureapp, parent, false);
+                rowView = getInflater().inflate(R.layout.pharmacy_register2, parent, false);
 
                 viewHolder2.number = (CustomTextView) rowView.findViewById(R.id.number);
                 viewHolder2.patientID = (CustomEditText) rowView.findViewById(R.id.patientId);

@@ -1,0 +1,30 @@
+<!--
+  ~ Copyright (c) 2015.
+  ~
+  ~ This file is part of Health Network QIS App.
+  ~
+  ~  Health Network QIS App is free software: you can redistribute it and/or modify
+  ~  it under the terms of the GNU General Public License as published by
+  ~  the Free Software Foundation, either version 3 of the License, or
+  ~  (at your option) any later version.
+  ~
+  ~  Health Network QIS App is distributed in the hope that it will be useful,
+  ~  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~  GNU General Public License for more details.
+  ~
+  ~  You should have received a copy of the GNU General Public License
+  ~  along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
+  -->
+
+    <org.eyeseetea.malariacare.views.CustomRadioButton
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:button="@drawable/radiobutton"
+        android:paddingEnd="10sp"
+        android:paddingRight="10sp"
+        android:textColor="@color/darkGrey"
+        app:tDimension="@string/font_size_level1"
+        app:tFontName="@string/medium_font_name" />

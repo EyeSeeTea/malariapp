@@ -166,7 +166,7 @@ try {
         createActionBar();
         createProgress();
     } else {
-        setContentView(R.layout.survey_pictureapp);
+        setContentView(R.layout.survey);
         registerReceiver();
         createActionBar();
         createMenu();
@@ -259,29 +259,27 @@ try {
      * Adds the spinner for tabs
      */
     private void createMenu() {
-        if(!Utils.isPictureQuestion()) {
-            Log.d(TAG, "createMenu");
-            this.tabAdapter = new TabArrayAdapter(this, tabsList);
-            spinner = (Spinner) this.findViewById(R.id.tabSpinner);
+        Log.d(TAG, "createMenu");
+        this.tabAdapter = new TabArrayAdapter(this, tabsList);
+        spinner = (Spinner) this.findViewById(R.id.tabSpinner);
 
-            //Invisible until info ready
-            spinner.setVisibility(View.GONE);
-            spinner.setAdapter(this.tabAdapter);
-            spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                @Override
-                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                    Log.d(TAG, "onItemSelected..");
-                    final Tab selectedTab = (Tab) spinner.getSelectedItem();
-                    new AsyncChangeTab(selectedTab).execute((Void) null);
-                    Log.d(TAG, "onItemSelected(" + Thread.currentThread().getId() + ")..DONE");
-                }
+        //Invisible until info ready
+        spinner.setVisibility(View.GONE);
+        spinner.setAdapter(this.tabAdapter);
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                Log.d(TAG, "onItemSelected..");
+                final Tab selectedTab = (Tab) spinner.getSelectedItem();
+                new AsyncChangeTab(selectedTab).execute((Void) null);
+                Log.d(TAG, "onItemSelected(" + Thread.currentThread().getId() + ")..DONE");
+            }
 
-                @Override
-                public void onNothingSelected(AdapterView<?> parent) {
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
 
-                }
-            });
-        }
+            }
+        });
     }
 
     private void preLoadItems() {
@@ -680,11 +678,9 @@ try {
             Log.d(TAG, "onReceive");
             List<CompositeScore> compositeScores = (List<CompositeScore>) Session.popServiceValue(SurveyService.PREPARE_SURVEY_ACTION_COMPOSITE_SCORES);
             List<Tab> tabs = (List<Tab>) Session.popServiceValue(SurveyService.PREPARE_SURVEY_ACTION_TABS);
-try {
-    tabAdaptersCache.reloadAdapters(tabs, compositeScores);
-    reloadTabs(tabs);
-    stopProgress();
-} catch(Exception ex) { Log.e(TAG, ex.toString());}
+            tabAdaptersCache.reloadAdapters(tabs, compositeScores);
+            reloadTabs(tabs);
+            stopProgress();
             if (!Utils.isPictureQuestion()) {
                 // After loading first tab we start the individual services that preload the items for the rest of tabs
                 preLoadItems();
@@ -754,7 +750,6 @@ try {
         /**
          * Resets the state of the cache.
          * Called form the receiver once data is ready.
-         *
          * @param tabs
          * @param compositeScores
          */

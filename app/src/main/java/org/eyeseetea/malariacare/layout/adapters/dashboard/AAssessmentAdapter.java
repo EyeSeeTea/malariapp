@@ -116,7 +116,6 @@ public abstract class AAssessmentAdapter extends ADashboardAdapter implements ID
             return rowView;
         }
 else {
-
             // Org Unit Cell
             CustomTextView facilityName = (CustomTextView) rowView.findViewById(R.id.facility);
             CustomTextView surveyType = (CustomTextView) rowView.findViewById(R.id.survey_type);

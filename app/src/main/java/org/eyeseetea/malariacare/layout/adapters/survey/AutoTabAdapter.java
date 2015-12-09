@@ -102,7 +102,7 @@ public class AutoTabAdapter extends ATabAdapter {
      * @return
      */
     public static AutoTabAdapter build(Tab tab, Context context) {
-        int idLayout = tab.getType() == Constants.TAB_AUTOMATIC_NON_SCORED ? R.layout.form_without_score_pictureapp : R.layout.form_with_score;
+        int idLayout = tab.getType() == Constants.TAB_AUTOMATIC_NON_SCORED ? R.layout.form_without_score : R.layout.form_with_score;
         return new AutoTabAdapter(tab, context, idLayout);
     }
 
@@ -234,7 +234,7 @@ public class AutoTabAdapter extends ATabAdapter {
                     break;
 
                 case Constants.SHORT_TEXT:
-                    rowView = AutoTabLayoutUtils.initialiseView(R.layout.shorttext_pictureapp, parent, question, viewHolder, position, getInflater());
+                    rowView = AutoTabLayoutUtils.initialiseView(R.layout.shorttext, parent, question, viewHolder, position, getInflater());
                     //Add main component and listener
                     ((CustomEditText) viewHolder.component).addTextChangedListener(new TextViewListener(false, question));
                     break;

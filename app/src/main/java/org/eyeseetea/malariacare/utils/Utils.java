@@ -127,6 +127,6 @@ public class Utils {
     }
     public static boolean isPictureQuestion(){
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(PreferencesState.getInstance().getContext());
-        return sharedPreferences.getBoolean(PreferencesState.getInstance().getContext().getResources().getString(R.string.picturebuild), true);
+        return sharedPreferences.getBoolean(PreferencesState.getInstance().getContext().getResources().getString(R.string.picturebuild), false);
     }
 }

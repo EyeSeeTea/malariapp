@@ -161,13 +161,13 @@ public class LoginActivity extends org.hisp.dhis.android.sdk.ui.activities.Login
     private void populatePictureAppFromAssets() {
         try{
             PullController.getInstance().wipeDatabase();
+            User user = new User();
+            user.save();
+            Session.setUser(user);
             if(Utils.isPictureQuestion())
             PopulatePictureAppDB.populateDB(getAssets());
             else
             PopulateDB.populateDB(getAssets());
-            User user = new User();
-            user.save();
-            Session.setUser(user);
         }catch(Exception ex){
 
         }

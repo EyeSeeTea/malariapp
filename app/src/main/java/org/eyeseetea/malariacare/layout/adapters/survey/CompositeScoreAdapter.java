@@ -50,14 +50,14 @@ public class CompositeScoreAdapter extends ATabAdapter {
      * @return
      */
     public static CompositeScoreAdapter build(Tab tab, Context context) {
-        return new CompositeScoreAdapter(tab, context, R.layout.composite_score_tab_pictureapp);
+        return new CompositeScoreAdapter(tab, context, R.layout.composite_score_tab);
     }
 
     @Override
     public void initializeSubscore() {
         ListView compositeScoreListView = (ListView) ((Activity) getContext()).findViewById(R.id.listView);
 
-        ViewGroup header = (ViewGroup) getInflater().inflate(R.layout.composite_score_header_pictureapp, compositeScoreListView, false);
+        ViewGroup header = (ViewGroup) getInflater().inflate(R.layout.composite_score_header, compositeScoreListView, false);
         compositeScoreListView.addHeaderView(header);
     }
 
@@ -68,7 +68,7 @@ public class CompositeScoreAdapter extends ATabAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        View rowView = getInflater().inflate(R.layout.composite_scores_record_pictureapp, parent, false);
+        View rowView = getInflater().inflate(R.layout.composite_scores_record, parent, false);
 
         CompositeScore item = (CompositeScore) getItem(position);
 

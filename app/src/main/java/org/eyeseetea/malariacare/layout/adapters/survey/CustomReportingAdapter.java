@@ -128,7 +128,7 @@ public class CustomReportingAdapter extends ATabAdapter {
 
         else
         {
-            rowView = getInflater().inflate(R.layout.reporting_record2_pictureapp, parent, false);
+            rowView = getInflater().inflate(R.layout.reporting_record2, parent, false);
             viewHolder.statement = (CustomTextView) rowView.findViewById(R.id.reportingQuestion);
             viewHolder.report = (CustomEditText) rowView.findViewById(R.id.monthlyReport);
             viewHolder.register = (CustomEditText) rowView.findViewById(R.id.register);
