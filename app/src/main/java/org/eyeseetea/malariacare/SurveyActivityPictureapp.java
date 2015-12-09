@@ -24,10 +24,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -44,10 +42,8 @@ import org.eyeseetea.malariacare.database.model.Program;
 import org.eyeseetea.malariacare.database.model.Question;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.model.Tab;
-import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.layout.adapters.survey.AutoTabAdapter;
-import org.eyeseetea.malariacare.layout.adapters.survey.CompositeScoreAdapter;
 import org.eyeseetea.malariacare.layout.adapters.survey.CompositeScoreAdapterPictureApp;
 import org.eyeseetea.malariacare.layout.adapters.survey.CustomAdherenceAdapter;
 import org.eyeseetea.malariacare.layout.adapters.survey.CustomIQTABAdapter;
@@ -465,7 +461,7 @@ public class SurveyActivityPictureapp extends BaseActivity {
          */
         private ITabAdapter buildAdapter(Tab tab){
             if (tab.isCompositeScore())
-                return new CompositeScoreAdapterPictureApp(this.compositeScores, SurveyActivityPictureapp.this, R.layout.composite_score_tab, tab.getName());
+                return new CompositeScoreAdapterPictureApp(this.compositeScores, SurveyActivityPictureapp.this, R.layout.composite_score_tab_pictureapp, tab.getName());
 
             if (tab.isAdherenceTab()) {
                 Log.d(TAG, "Creating an Adherence Adapter");

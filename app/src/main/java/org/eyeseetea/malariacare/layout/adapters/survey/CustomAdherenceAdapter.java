@@ -24,11 +24,9 @@ import android.content.Context;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.BaseAdapter;
 import android.widget.CompoundButton;
 import android.widget.ListView;
 import android.widget.Spinner;
@@ -45,7 +43,6 @@ import org.eyeseetea.malariacare.layout.adapters.general.OptionArrayAdapter;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 import org.eyeseetea.malariacare.utils.Constants;
-import org.eyeseetea.malariacare.utils.Utils;
 import org.eyeseetea.malariacare.views.CustomEditText;
 import org.eyeseetea.malariacare.views.CustomTextView;
 
@@ -90,7 +87,7 @@ public class CustomAdherenceAdapter extends ATabAdapter {
     public void initializeSubscore() {
         ListView lAdapter = (ListView) ((Activity) getContext()).findViewById(R.id.listView);
 
-        ViewGroup header = (ViewGroup) getInflater().inflate(R.layout.adherencetab_header0, lAdapter, false);
+        ViewGroup header = (ViewGroup) getInflater().inflate(R.layout.adherencetab_header0_pictureapp, lAdapter, false);
         lAdapter.addHeaderView(header);
 
         final Switch visibility = (Switch) ((Activity) getContext()).findViewById(R.id.visibilitySwitch);
@@ -232,7 +229,7 @@ public class CustomAdherenceAdapter extends ATabAdapter {
 
         if (position < position_secondheader) {
             if (item instanceof Header)
-                rowView = getInflater().inflate(R.layout.adherencetab_header1, parent, false);
+                rowView = getInflater().inflate(R.layout.adherencetab_header1_pictureapp, parent, false);
             else {
 
                 question = (Question) item;
@@ -347,7 +344,7 @@ public class CustomAdherenceAdapter extends ATabAdapter {
         else {
 
             if (item instanceof Header)
-                rowView = getInflater().inflate(R.layout.adherencetab_header2, parent, false);
+                rowView = getInflater().inflate(R.layout.adherencetab_header2_pictureapp, parent, false);
             else {
 
                 question = (Question) item;

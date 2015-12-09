@@ -13,7 +13,7 @@ public class Constants {
             RADIO_GROUP_HORIZONTAL = 8,
             RADIO_GROUP_VERTICAL = 9,
             DROPDOWN_LIST_DISABLED = 10,
-            IMAGES_2 = 15,//it was 10
+            IMAGES_2 = 10,//Fixme 10 value repeated
             IMAGES_3 = 14,
             IMAGES_4 = 11,
             IMAGES_6 = 12,

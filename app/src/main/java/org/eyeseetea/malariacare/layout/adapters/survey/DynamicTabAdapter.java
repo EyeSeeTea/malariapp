@@ -533,7 +533,7 @@ public class DynamicTabAdapter extends BaseAdapter implements ITabAdapter {
      * @param option
      */
     private void highlightSelection(View view, Option option){
-        Drawable selectedBackground = context.getResources().getDrawable(R.drawable.background_dynamic_clicked_option_pictureapp);
+        Drawable selectedBackground = context.getResources().getDrawable(R.drawable.background_dynamic_clicked_option);
         if (Build.VERSION.SDK_INT > Build.VERSION_CODES.JELLY_BEAN) {    //JELLY_BEAN=API16
             view.setBackground(selectedBackground);
         } else {

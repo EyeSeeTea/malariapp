@@ -21,10 +21,8 @@ package org.eyeseetea.malariacare.layout.adapters.survey;
 
 import android.app.Activity;
 import android.content.Context;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.ListView;
 
 import org.eyeseetea.malariacare.R;
@@ -34,8 +32,6 @@ import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 import org.eyeseetea.malariacare.utils.Utils;
 import org.eyeseetea.malariacare.views.CustomTextView;
-
-import java.util.List;
 
 /**
  * Created by Jose on 21/04/2015.
@@ -54,14 +50,14 @@ public class CompositeScoreAdapter extends ATabAdapter {
      * @return
      */
     public static CompositeScoreAdapter build(Tab tab, Context context) {
-        return new CompositeScoreAdapter(tab, context, R.layout.composite_score_tab);
+        return new CompositeScoreAdapter(tab, context, R.layout.composite_score_tab_pictureapp);
     }
 
     @Override
     public void initializeSubscore() {
         ListView compositeScoreListView = (ListView) ((Activity) getContext()).findViewById(R.id.listView);
 
-        ViewGroup header = (ViewGroup) getInflater().inflate(R.layout.composite_score_header, compositeScoreListView, false);
+        ViewGroup header = (ViewGroup) getInflater().inflate(R.layout.composite_score_header_pictureapp, compositeScoreListView, false);
         compositeScoreListView.addHeaderView(header);
     }
 
@@ -72,7 +68,7 @@ public class CompositeScoreAdapter extends ATabAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        View rowView = getInflater().inflate(R.layout.composite_scores_record, parent, false);
+        View rowView = getInflater().inflate(R.layout.composite_scores_record_pictureapp, parent, false);
 
         CompositeScore item = (CompositeScore) getItem(position);
 

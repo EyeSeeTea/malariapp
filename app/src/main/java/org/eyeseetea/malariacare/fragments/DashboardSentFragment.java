@@ -323,7 +323,7 @@ public class DashboardSentFragment extends ListFragment {
     }
 
     private WebView initMonitor() {
-        WebView webView = (WebView) getActivity().findViewById(R.id.dashboard_monitor);
+        //WebView webView = (WebView) getActivity().findViewById(R.id.dashboard_monitor);
         //Init webView settings
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
             webView.getSettings().setAllowUniversalAccessFromFileURLs(true);

@@ -61,7 +61,7 @@ public class CompositeScoreAdapterPictureApp extends BaseAdapter implements ITab
 
         ListView compositeScoreListView = (ListView) ((Activity) context).findViewById(R.id.listView);
 
-        ViewGroup header = (ViewGroup) lInflater.inflate(R.layout.composite_score_header, compositeScoreListView, false);
+        ViewGroup header = (ViewGroup) lInflater.inflate(R.layout.composite_score_header_pictureapp, compositeScoreListView, false);
         compositeScoreListView.addHeaderView(header);
 
     }
@@ -107,7 +107,7 @@ public class CompositeScoreAdapterPictureApp extends BaseAdapter implements ITab
 
         CompositeScore item = (CompositeScore) getItem(position);
 
-        rowView = lInflater.inflate(R.layout.composite_scores_record, parent, false);
+        rowView = lInflater.inflate(R.layout.composite_scores_record_pictureapp, parent, false);
 
         ((CustomTextView)rowView.findViewById(R.id.code)).setText(item.getHierarchical_code());
         ((CustomTextView)rowView.findViewById(R.id.label)).setText(item.getLabel());

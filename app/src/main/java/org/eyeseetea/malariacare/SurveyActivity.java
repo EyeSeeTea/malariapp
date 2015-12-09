@@ -60,6 +60,7 @@ import org.eyeseetea.malariacare.layout.adapters.survey.CompositeScoreAdapterPic
 import org.eyeseetea.malariacare.layout.adapters.survey.CustomAdherenceAdapter;
 import org.eyeseetea.malariacare.layout.adapters.survey.CustomAdherenceAdapterPictureApp;
 import org.eyeseetea.malariacare.layout.adapters.survey.CustomIQTABAdapter;
+import org.eyeseetea.malariacare.layout.adapters.survey.CustomIQTABAdapterPictureApp;
 import org.eyeseetea.malariacare.layout.adapters.survey.CustomReportingAdapter;
 import org.eyeseetea.malariacare.layout.adapters.survey.DynamicTabAdapter;
 import org.eyeseetea.malariacare.layout.adapters.survey.ITabAdapter;
@@ -782,7 +783,6 @@ try {
             }
             //Return full list of adapters
             if (Utils.isPictureQuestion()) {
-
                 return new ArrayList<ITabAdapter>(this.adapters.values());
             } else {
                 return new ArrayList<>(this.adapters.values());
@@ -809,7 +809,7 @@ try {
             if (Utils.isPictureQuestion()) {
                 Log.d(TAG,"Type: "+tab.getType());
                 if (tab.isCompositeScore())
-                    return new CompositeScoreAdapterPictureApp(this.compositeScores, SurveyActivity.this, R.layout.composite_score_tab, tab.getName());
+                    return new CompositeScoreAdapterPictureApp(this.compositeScores, SurveyActivity.this, R.layout.composite_score_tab_pictureapp, tab.getName());
 
                 if (tab.isAdherenceTab()) {
                     Log.d(TAG, "Creating an Adherence Adapter");
@@ -817,7 +817,7 @@ try {
                 }
 
                 if (tab.isIQATab())
-                    return CustomIQTABAdapter.build(tab, SurveyActivity.this);
+                    return CustomIQTABAdapterPictureApp.build(tab, SurveyActivity.this);
 
 
                 if (tab.isGeneralScore()) {

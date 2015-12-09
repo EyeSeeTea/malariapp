@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content">
+
+
+
+    <LinearLayout
+        android:layout_width="0dip"
+        android:layout_height="fill_parent"
+        android:layout_weight="0.05"
+        android:orientation="horizontal">
+
+        <org.eyeseetea.malariacare.views.CustomTextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:id="@+id/number"
+            android:paddingLeft="10dip"
+            app:tDimension="@string/font_size_level1"
+            app:tFontName="@string/medium_font_name" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="0dip"
+        android:layout_height="wrap_content"
+        android:id="@+id/testResultsContainer"
+        android:padding="5dip"
+        android:layout_weight="0.3">
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:background="#bebebe">
+
+            <Spinner
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/testRes"
+                android:tag="listener" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="0dip"
+        android:layout_height="fill_parent"
+        android:id="@+id/parasitesContainer"
+        android:padding="5dip"
+        android:layout_weight="0.3">
+
+        <org.eyeseetea.malariacare.views.CustomEditText
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:inputType="number"
+                android:id="@+id/parasites"
+                android:background="@drawable/background_textfield"
+            android:textSize="14sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="0dip"
+        android:layout_height="wrap_content"
+        android:id="@+id/speciesContainer"
+        android:padding="5dip"
+        android:layout_weight="0.3">
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:background="#bebebe">
+
+            <Spinner
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/species"
+                android:tag="listener" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+    <!-- <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="0dip"
+        android:layout_height="fill_parent"
+        android:id="@+id/speciesContainer"
+        android:padding="5dip"
+        android:layout_weight="0.3">
+
+        <EditText
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:inputType="number"
+                android:id="@+id/species"
+                android:background="@drawable/background_textfield"
+            android:textSize="14sp" />
+    </LinearLayout> -->
+
+
+</LinearLayout>

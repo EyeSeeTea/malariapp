@@ -48,8 +48,6 @@ import org.eyeseetea.malariacare.utils.Constants;
 import org.eyeseetea.malariacare.utils.Utils;
 import org.eyeseetea.malariacare.views.CustomEditText;
 import org.eyeseetea.malariacare.views.CustomTextView;
-import org.eyeseetea.malariacare.views.CustomEditText;
-import org.eyeseetea.malariacare.views.CustomTextView;
 
 import java.util.List;
 
@@ -107,7 +105,7 @@ public class CustomAdherenceAdapterPictureApp extends BaseAdapter implements ITa
     public void initializeSubscore() {
         ListView lAdapter = (ListView) ((Activity) context).findViewById(R.id.listView);
 
-        ViewGroup header = (ViewGroup) lInflater.inflate(R.layout.adherencetab_header0, lAdapter, false);
+        ViewGroup header = (ViewGroup) lInflater.inflate(R.layout.adherencetab_header0_pictureapp, lAdapter, false);
         lAdapter.addHeaderView(header);
 
         final Switch visibility = (Switch) ((Activity) context).findViewById(R.id.visibilitySwitch);
@@ -277,7 +275,7 @@ public class CustomAdherenceAdapterPictureApp extends BaseAdapter implements ITa
 
         if (position < position_secondheader) {
             if (item instanceof Header)
-                rowView = lInflater.inflate(R.layout.adherencetab_header1, parent, false);
+                rowView = lInflater.inflate(R.layout.adherencetab_header1_pictureapp, parent, false);
             else {
 
                 question = (Question) item;
@@ -392,7 +390,7 @@ public class CustomAdherenceAdapterPictureApp extends BaseAdapter implements ITa
         else {
 
             if (item instanceof Header)
-                rowView = lInflater.inflate(R.layout.adherencetab_header2, parent, false);
+                rowView = lInflater.inflate(R.layout.adherencetab_header2_pictureapp, parent, false);
             else {
 
                 question = (Question) item;

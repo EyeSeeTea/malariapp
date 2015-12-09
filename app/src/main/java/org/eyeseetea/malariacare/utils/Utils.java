@@ -68,7 +68,6 @@ public class Utils {
 
         return result;
     }
-
     public static List<Object> convertPictureTabToArrayCustom(Tab tab) {
         List<Object> result = new ArrayList<Object>();
 

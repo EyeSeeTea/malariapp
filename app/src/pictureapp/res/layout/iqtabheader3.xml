@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <Space
+        android:layout_width="fill_parent"
+        android:layout_height="40dip" />
+
+    <org.eyeseetea.malariacare.views.CustomTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="@string/iqatab_info_supervisor_matches"
+        android:id="@+id/matchTitle"
+        android:textStyle="bold"
+        android:paddingBottom="20dip"
+        app:tDimension="@string/font_size_level2"
+        app:tFontName="@string/condensed_font_name" />
+
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/matchHeaders"
+        android:layout_gravity="center"
+        android:background="@drawable/background_odd" >
+
+        <org.eyeseetea.malariacare.views.CustomTextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Results below are auto-calculated"
+            android:id="@+id/matchHeader"
+            android:background="@drawable/background_header"
+            android:textColor="#ffffff"
+            android:lines="2"
+            android:gravity="center"
+            android:padding="5dip"
+            android:layout_weight="1"
+            app:tDimension="@string/font_size_level2"
+            app:tFontName="@string/condensed_font_name" />
+
+    </LinearLayout>
+</LinearLayout>
