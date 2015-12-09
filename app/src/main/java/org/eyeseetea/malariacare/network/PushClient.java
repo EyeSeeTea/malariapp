@@ -101,6 +101,9 @@ public class PushClient {
             //data = prepareDataElements(data, controlData.get(""));
             data = prepareDataElements(data, null);
             pushResult = new PushResult(pushData(data));
+            if (pushResult.getImported().equals("0")){
+                throw new Exception("Server was not able to import the data. Please, report to the server admin.");
+            }
             if(pushResult.isSuccessful()){
                 //TODO: This should be removed once DHIS bug is solved
                 //pushControlDataElements(controlData);
