@@ -29,7 +29,7 @@ import android.widget.ListView;
 
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.model.CompositeScore;
-import org.eyeseetea.malariacare.layout.score.ScoreRegister;
+import org.eyeseetea.malariacare.layout.score.ScoreRegisterPictureApp;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 import org.eyeseetea.malariacare.utils.Utils;
 import org.eyeseetea.malariacare.views.CustomTextView;
@@ -112,7 +112,7 @@ public class CompositeScoreAdapterPictureApp extends BaseAdapter implements ITab
         ((CustomTextView)rowView.findViewById(R.id.code)).setText(item.getHierarchical_code());
         ((CustomTextView)rowView.findViewById(R.id.label)).setText(item.getLabel());
 
-        Float compositeScoreValue = ScoreRegister.getCompositeScore(item);
+        Float compositeScoreValue = ScoreRegisterPictureApp.getCompositeScore(item);
 
         if (compositeScoreValue == null)
             ((CustomTextView)rowView.findViewById(R.id.score)).setText(this.context.getString(R.string.number_zero));

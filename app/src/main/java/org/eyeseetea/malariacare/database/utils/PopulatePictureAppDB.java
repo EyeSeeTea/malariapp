@@ -47,16 +47,16 @@ import java.util.Map;
  */
 public class PopulatePictureAppDB {
 
-    public static final String PROGRAMS_CSV = "Programs.csv";
-    public static final String TAB_GROUPS_CSV = "TabGroups.csv";
-    public static final String TABS_CSV = "Tabs.csv";
-    public static final String HEADERS_CSV = "Headers.csv";
-    public static final String ANSWERS_CSV = "Answers.csv";
-    public static final String OPTION_ATTRIBUTES_CSV = "OptionAttributes.csv";
-    public static final String OPTIONS_CSV = "Options.csv";
-    public static final String QUESTIONS_CSV = "Questions.csv";
-    public static final String ORG_UNIT_LEVELS_CSV = "OrgUnitLevels.csv";
-    public static final String ORG_UNITS_CSV = "OrgUnits.csv";
+    public static final String PROGRAMS_CSV = "Programs_pictureapp.csv";
+    public static final String TAB_GROUPS_CSV = "TabGroups_pictureapp.csv";
+    public static final String TABS_CSV = "Tabs_pictureapp.csv";
+    public static final String HEADERS_CSV = "Headers_pictureapp.csv";
+    public static final String ANSWERS_CSV = "Answers_pictureapp.csv";
+    public static final String OPTION_ATTRIBUTES_CSV = "OptionAttributes_pictureapp.csv";
+    public static final String OPTIONS_CSV = "Options_pictureapp.csv";
+    public static final String QUESTIONS_CSV = "Questions_pictureapp.csv";
+    public static final String ORG_UNIT_LEVELS_CSV = "OrgUnitLevels_pictureapp.csv";
+    public static final String ORG_UNITS_CSV = "OrgUnits_pictureapp.csv";
     static Map<Integer, Program> programList = new LinkedHashMap<Integer, Program>();
     static Map<Integer, TabGroup> tabGroupList = new LinkedHashMap<Integer, TabGroup>();
     static Map<Integer, Tab> tabList = new LinkedHashMap<Integer, Tab>();

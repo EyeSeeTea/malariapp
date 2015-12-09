@@ -42,7 +42,7 @@ import org.eyeseetea.malariacare.database.model.Tab;
 import org.eyeseetea.malariacare.database.model.Value;
 import org.eyeseetea.malariacare.database.utils.ReadWriteDB;
 import org.eyeseetea.malariacare.layout.adapters.general.OptionArrayAdapter;
-import org.eyeseetea.malariacare.layout.score.ScoreRegister;
+import org.eyeseetea.malariacare.layout.score.ScoreRegisterPictureApp;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 import org.eyeseetea.malariacare.utils.Constants;
 import org.eyeseetea.malariacare.utils.Utils;
@@ -139,14 +139,14 @@ public class CustomAdherenceAdapterPictureApp extends BaseAdapter implements ITa
         for (int i=0;i<position_secondheader; i++) {
             if (items.get(i) instanceof Question) {
                 Question testResult = ((Question) items.get(i)).getQuestionChildren().get(3);
-                ScoreRegister.addRecord(testResult, ScoreRegister.calcNum(testResult), ScoreRegister.calcDenum(testResult));
+                ScoreRegisterPictureApp.addRecord(testResult, ScoreRegisterPictureApp.calcNum(testResult), ScoreRegisterPictureApp.calcDenum(testResult));
             }
         }
 
         for (int i = position_secondheader; i < items.size(); i++) {
             if (items.get(i) instanceof Question) {
                 Question act = ((Question) items.get(i)).getQuestionChildren().get(2);
-                ScoreRegister.addRecord(act, ScoreRegister.calcNum(act), ScoreRegister.calcDenum(act));
+                ScoreRegisterPictureApp.addRecord(act, ScoreRegisterPictureApp.calcNum(act), ScoreRegisterPictureApp.calcDenum(act));
                 calcScore((Question) items.get(i));
             }
         }
@@ -370,7 +370,7 @@ public class CustomAdherenceAdapterPictureApp extends BaseAdapter implements ITa
                         if (viewCreated.value) {
                             Question testResult = question.getQuestionChildren().get(3);
                             ReadWriteDB.saveValuesDDL(testResult, (Option) viewHolder.testResutl.getItemAtPosition(position));
-                            ScoreRegister.addRecord(testResult, ScoreRegister.calcNum(testResult), ScoreRegister.calcDenum(testResult));
+                            ScoreRegisterPictureApp.addRecord(testResult, ScoreRegisterPictureApp.calcNum(testResult), ScoreRegisterPictureApp.calcDenum(testResult));
                         }
                         else viewCreated.value = true;
                     }
@@ -443,7 +443,7 @@ public class CustomAdherenceAdapterPictureApp extends BaseAdapter implements ITa
                             ReadWriteDB.saveValuesDDL(act, (Option) viewHolder2.act.getItemAtPosition(pos));
                             calcScore(question);
                             viewHolder2.score.setText(Integer.toString(scores[items.indexOf(question) - position_secondheader]));
-                            ScoreRegister.addRecord(act, ScoreRegister.calcNum(act), ScoreRegister.calcDenum(act));
+                            ScoreRegisterPictureApp.addRecord(act, ScoreRegisterPictureApp.calcNum(act), ScoreRegisterPictureApp.calcDenum(act));
                         } else
                             viewCreated.value = true;
                     }

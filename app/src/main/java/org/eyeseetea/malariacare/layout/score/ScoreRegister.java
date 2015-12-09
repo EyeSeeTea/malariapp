@@ -27,7 +27,6 @@ import org.eyeseetea.malariacare.database.model.Question;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.model.Tab;
 import org.eyeseetea.malariacare.database.utils.Session;
-import org.eyeseetea.malariacare.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -59,8 +58,6 @@ public class ScoreRegister {
         for(Question question : questions){
             if(!question.isHiddenBySurvey(survey)) {
                 question.initScore(survey);
-            }else if(Utils.isPictureQuestion()){
-                addRecord(question, 0F, calcDenum(question));
             }
         }
     }
@@ -79,22 +76,6 @@ public class ScoreRegister {
         tabScoreMap.get(question.getHeader().getTab()).deleteRecord(question);
     }
 
-    private static List<Float> getPictureRecursiveScore(CompositeScore cScore, List<Float> result) {
-
-        if (!cScore.hasChildren()) {
-
-            //FIXME this try catch just covers a error in data compositeScore: '4.2'
-            try{
-                return compositeScoreMap.get(cScore).calculateNumDenTotal(result);
-            }catch(Exception ex){
-                return Arrays.asList(new Float(0f),new Float(0f));
-            }
-        }else {
-            for (CompositeScore cScoreChildren : cScore.getCompositeScoreChildren())
-                result = getPictureRecursiveScore(cScoreChildren, result);
-            return result;
-        }
-    }
     private static List<Float> getRecursiveScore(CompositeScore cScore, List<Float> result) {
 
         //Sum its own records
@@ -112,21 +93,11 @@ public class ScoreRegister {
     }
 
     public static Float getCompositeScore(CompositeScore cScore) {
-        List<Float>result;
-        if(Utils.isPictureQuestion()) {
-            result = compositeScoreMap.get(cScore).calculateNumDenTotal(new ArrayList<Float>(Arrays.asList(0F, 0F)));
 
-            result = getPictureRecursiveScore(cScore, result);
+        List<Float>result= getRecursiveScore(cScore, new ArrayList<>(Arrays.asList(0F, 0F)));
 
-            return ScoreUtils.calculateScoreFromNumDen(result);
-        }
-        else
-        {
-            result = getRecursiveScore(cScore, new ArrayList<>(Arrays.asList(0F, 0F)));
-
-            Log.d(TAG, String.format("getCompositeScore %s -> %s", cScore.getHierarchical_code(), result.toString()));
-            return ScoreUtils.calculateScoreFromNumDen(result);
-        }
+        Log.d(TAG,String.format("getCompositeScore %s -> %s",cScore.getHierarchical_code(),result.toString()));
+        return ScoreUtils.calculateScoreFromNumDen(result);
     }
 
 

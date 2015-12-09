@@ -229,7 +229,7 @@ else{
         prepareLocationListener(survey);
 
         //Call Survey Activity
-        finishAndGo(SurveyActivity.class);
+        finishAndGo(CreateSurveyActivity.class);
 }
     }
     private void prepareLocationListener(Survey survey){

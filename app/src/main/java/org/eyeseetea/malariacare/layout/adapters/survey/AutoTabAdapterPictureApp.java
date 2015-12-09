@@ -46,7 +46,7 @@ import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.ReadWriteDB;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.layout.adapters.general.OptionArrayAdapter;
-import org.eyeseetea.malariacare.layout.score.ScoreRegister;
+import org.eyeseetea.malariacare.layout.score.ScoreRegisterPictureApp;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 import org.eyeseetea.malariacare.utils.Constants;
 import org.eyeseetea.malariacare.utils.Utils;
@@ -130,7 +130,7 @@ public class AutoTabAdapterPictureApp extends BaseAdapter implements ITabAdapter
                 boolean hidden = isHidden((Question) item);
                 elementInvisibility.put(item, hidden);
                 if (!(hidden)) initScoreQuestion((Question) item);
-                else ScoreRegister.addRecord((Question) item, 0F, ScoreRegister.calcDenum((Question) item));
+                else ScoreRegisterPictureApp.addRecord((Question) item, 0F, ScoreRegisterPictureApp.calcDenum((Question) item));
                 Header header = ((Question) item).getHeader();
                 boolean headerVisibility = elementInvisibility.get(header);
                 elementInvisibility.put(header, headerVisibility && elementInvisibility.get(item));
@@ -232,7 +232,7 @@ public class AutoTabAdapterPictureApp extends BaseAdapter implements ITabAdapter
                 if (items.get(i) instanceof Question && !elementInvisibility.get(items.get(i))) {
                     Question question = (Question) items.get(i);
                     if (question.getAnswer().getOutput() == Constants.DROPDOWN_LIST)
-                        result = result + ScoreRegister.calcDenum((Question) items.get(i));
+                        result = result + ScoreRegisterPictureApp.calcDenum((Question) items.get(i));
                 }
 
             }
@@ -251,13 +251,13 @@ public class AutoTabAdapterPictureApp extends BaseAdapter implements ITabAdapter
         if (question.getAnswer().getOutput() == Constants.DROPDOWN_LIST || question.getAnswer().getOutput() == Constants.RADIO_GROUP_HORIZONTAL
                 || question.getAnswer().getOutput() == Constants.RADIO_GROUP_VERTICAL) {
 
-            Float num = ScoreRegister.calcNum(question);
-            Float denum = ScoreRegister.calcDenum(question);
+            Float num = ScoreRegisterPictureApp.calcNum(question);
+            Float denum = ScoreRegisterPictureApp.calcDenum(question);
 
             totalNum = totalNum + num;
             totalDenum = totalDenum + denum;
 
-            ScoreRegister.addRecord(question, num, denum);
+            ScoreRegisterPictureApp.addRecord(question, num, denum);
         }
 
     }
@@ -345,21 +345,21 @@ public class AutoTabAdapterPictureApp extends BaseAdapter implements ITabAdapter
             Header childHeader = child.getHeader();
             elementInvisibility.put(child, !visible);
             if (!visible) {
-                List<Float> numdenum = ScoreRegister.getNumDenum(child);
+                List<Float> numdenum = ScoreRegisterPictureApp.getNumDenum(child);
                 if (numdenum != null) {
                     // update scores
                     totalDenum = totalDenum - numdenum.get(1);
                     totalNum = totalNum - numdenum.get(0);
-                    ScoreRegister.deleteRecord(child);
+                    ScoreRegisterPictureApp.deleteRecord(child);
                 }
                 ReadWriteDB.deleteValue(child); // when we hide a question, we remove its value
                 // little cache to avoid double checking same
                 if(cachedQuestion == null || (cachedQuestion.getHeader().getId_header() != child.getHeader().getId_header()))
                     elementInvisibility.put(childHeader, hideHeader(childHeader));
             } else {
-                Float denum = ScoreRegister.calcDenum(child);
+                Float denum = ScoreRegisterPictureApp.calcDenum(child);
                 totalDenum = totalDenum + denum;
-                ScoreRegister.addRecord(child, 0F, denum);
+                ScoreRegisterPictureApp.addRecord(child, 0F, denum);
                 elementInvisibility.put(childHeader, false);
             }
             cachedQuestion = question;
@@ -385,13 +385,13 @@ public class AutoTabAdapterPictureApp extends BaseAdapter implements ITabAdapter
 
                 ((Spinner) viewHolder.component).setSelection(ReadWriteDB.readPositionOption(question));
 
-                List<Float> numdenum = ScoreRegister.getNumDenum(question);
+                List<Float> numdenum = ScoreRegisterPictureApp.getNumDenum(question);
                 if (numdenum != null) {
                     viewHolder.num.setText(Float.toString(numdenum.get(0)));
                     viewHolder.denum.setText(Float.toString(numdenum.get(1)));
                 } else {
                     viewHolder.num.setText(this.context.getString(R.string.number_zero));
-                    viewHolder.denum.setText(Float.toString(ScoreRegister.calcDenum(question)));
+                    viewHolder.denum.setText(Float.toString(ScoreRegisterPictureApp.calcDenum(question)));
                     ((Spinner) viewHolder.component).setSelection(0);
                 }
 
@@ -400,7 +400,7 @@ public class AutoTabAdapterPictureApp extends BaseAdapter implements ITabAdapter
             case Constants.RADIO_GROUP_VERTICAL:
                 //FIXME: it is almost the same as the previous case
                 Value value = question.getValueBySession();
-                List<Float> numdenumradiobutton = ScoreRegister.getNumDenum(question);
+                List<Float> numdenumradiobutton = ScoreRegisterPictureApp.getNumDenum(question);
                 if (value != null) {
                     ((UncheckeableRadioButton) viewHolder.component.findViewWithTag(value.getOption())).setChecked(true);
 
@@ -408,7 +408,7 @@ public class AutoTabAdapterPictureApp extends BaseAdapter implements ITabAdapter
                     viewHolder.denum.setText(Float.toString(numdenumradiobutton.get(1)));
                 } else {
                     viewHolder.num.setText(this.context.getString(R.string.number_zero));
-                    viewHolder.denum.setText(Float.toString(ScoreRegister.calcDenum(question)));
+                    viewHolder.denum.setText(Float.toString(ScoreRegisterPictureApp.calcDenum(question)));
                 }
                 break;
             default:
@@ -429,7 +429,7 @@ public class AutoTabAdapterPictureApp extends BaseAdapter implements ITabAdapter
     }
 
     private void resetTotalNumDenum(Question question) {
-        List<Float> numdenum = ScoreRegister.getNumDenum(question);
+        List<Float> numdenum = ScoreRegisterPictureApp.getNumDenum(question);
 
         if (numdenum != null) {
             totalNum = totalNum - numdenum.get(0);
@@ -497,8 +497,8 @@ public class AutoTabAdapterPictureApp extends BaseAdapter implements ITabAdapter
      * @param question question that change its values
      */
     private void recalculateScores(ViewHolder viewHolder, Question question) {
-        Float num = ScoreRegister.calcNum(question);
-        Float denum = ScoreRegister.calcDenum(question);
+        Float num = ScoreRegisterPictureApp.calcNum(question);
+        Float denum = ScoreRegisterPictureApp.calcDenum(question);
 
         viewHolder.num.setText(num.toString());
         viewHolder.denum.setText(denum.toString());
@@ -508,7 +508,7 @@ public class AutoTabAdapterPictureApp extends BaseAdapter implements ITabAdapter
         totalNum = totalNum + num;
         totalDenum = totalDenum + denum;
 
-        ScoreRegister.addRecord(question, num, denum);
+        ScoreRegisterPictureApp.addRecord(question, num, denum);
     }
 
     @Override

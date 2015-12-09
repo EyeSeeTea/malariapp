@@ -115,7 +115,7 @@ public abstract class AAssessmentAdapter extends ADashboardAdapter implements ID
             rowView.setBackgroundResource(LayoutUtils.calculateBackgrounds(position));
             return rowView;
         }
-else {
+        else {
             // Org Unit Cell
             CustomTextView facilityName = (CustomTextView) rowView.findViewById(R.id.facility);
             CustomTextView surveyType = (CustomTextView) rowView.findViewById(R.id.survey_type);

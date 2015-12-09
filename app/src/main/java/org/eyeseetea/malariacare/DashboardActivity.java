@@ -75,9 +75,10 @@ public class DashboardActivity extends BaseActivity {
             ftr.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
             ftr.commit();
         }
-
-
-        setTitle(getString(R.string.app_name) + " app - " + Session.getUser().getName());
+        String user="";
+        if(Session.getUser().getName()!=null && !Session.getUser().getName().equals("null"))
+            user =Session.getUser().getName();
+        setTitle(getString(R.string.app_name) + " app - " + user);
     }
 
     @Override
