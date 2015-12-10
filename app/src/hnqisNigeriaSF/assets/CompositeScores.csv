@@ -1,13 +1,93 @@
-69;'0';'Health Facility ICM QA score';;'jcKOyugwTMu';0
-1;'1';'ICM';69;'ienDAgkgeZw';1
-2;'1.1';'Inquiry';1;'w2L7ztygH2x';2
-3;'1.2';'Physical Examination';1;'wYD9nNnj4Iv';3
-70;'2';'Diagnosis, Treatment and Counseling';69;'kR94QfYAUUv';5
-4;'2.1';'Diagnosis, Treatment and Counseling, obs 1';70;'PpwNZ6Nm5mO';6
-5;'2.2';'Diagnosis, Treatment and Counseling, obs 2';70;'lhymcfXxSya';7
-6;'2.3';'Diagnosis, Treatment and Counseling, obs 3';70;'ZYeRLFnokBg';8
-7;'1.3';'RDT Procedure';1;'ibjI4Iy7pHS';4
-8;'3';'Work Environment';69;'aib5SagwZCJ';9
-9;'3.1';'Workplace';8;'PGAbwPDRHIW';10
-10;'3.2';'Equipment, Supplies and Consumables';8;'H8nqJR2uJtA';11
-11;'3.3';'Document and Reporting';8;'TXUdppgATOB';12
+71;'1';'FP all methods';;'S6NKChInonT';1
+72;'1.1';'Contraceptive Counseling';71;'uDyLf0FNrew';2
+73;'1.2';'Oral Contraceptive Pills';71;'vpDfPajhsvq';3
+74;'1.3';'Injectables';71;'FEbHqSkwgP5';4
+75;'1.4';'IUCD Insertion';71;'vopoZw5hw9s';5
+76;'1.5
+1.5';'IUCD Removal';71;'nYaS8nCsW4U';6
+77;'1.6';'Implant Insertion';71;'rAuizPQ1CUE';7
+78;'1.7';'Implant Removal';71;'Rqzt0hiRODU';8
+79;'0';'ICM';;'nDMuZnnpMZk';9
+80;'1';'Inquiry and Physical Examination';79;'fWkU1lYTg69';10
+81;'1.1';'Introduction';80;'iPDrMnEIHZU';11
+82;'1.2';'Inquiry';80;'BKMMvs8dplR';12
+83;'1.3';'Physical Examination';80;'Ul24cjDA4iQ';13
+84;'1.4';'RDT Procedure';80;'tLNrdAJwLyf';14
+85;'2';'Diagnosis, Treatment and Counseling';79;'pTUVjTP2ycy';15
+86;'2.1';'Diagnosis, Treatment and Counseling obs 1';85;'dpnxtwklH4I';16
+87;'2.2';'Diagnosis, Treatment and Counseling obs 2';85;'R4CPC77KAgU';17
+88;'2.3';'Diagnosis, Treatment and Counseling obs 3';85;'OUzzlZkwSe5';18
+89;'3';'Work Environment';79;'gY5PoUfsy5B';19
+90;'3.1';'Workplace';89;'HAKWBJItXMI';20
+91;'3.2';'Equipment, Supplies and Consumables';89;'WMblsA2KSaL';21
+92;'3.3';'Document and Reporting';89;'QnMMiaQCVVG';22
+93;'1';'Focused Antenatal Care';;'rSoMwTU9pNN';23
+94;'1.1';'Introduction';93;'vDojbapJ8uI';24
+95;'1.2';'Ask or Check';93;'Bd4trQD6YgS';25
+96;'1.3';'Care';93;'O5e2s8wepuu';26
+97;'1.4';'Client Education and counseling';93;'RQ35aiBao2q';27
+98;'1.5';'Work Environment';93;'wfXuG1qMKJQ';28
+99;'1';'Post Partum IUD';;'zQNlqxt60n3';29
+100;'1.1';'Pre-Insertion (Clinical)';99;'PvEDnqgPr1m';30
+101;'1.2';'Insertion';99;'lF8i0EuALXG';31
+102;'1.3';'Post-insertion';99;'rvUVi5ltWd9';32
+103;'1.4';'Procedure/Follow-up';99;'p6AbASLr2Kj';33
+104;'1.5';'Work Environment';99;'q32wpF66Ias';34
+105;'1';'Pregnancy and delivery complications';;'GdtcYr9yiJh';35
+106;'1.1';'Management of Pre-Eclampsia/Eclampsia';105;'amRArDAY8Hi';36
+107;'1.2';'Management of Antepartum Hemorrhage';105;'TRgoYM1wnOe';37
+108;'1.3';'Management of Post Partum Hemorrhage';105;'mb1ZJ1SONTR';38
+109;'1.4';'Work Environment';105;'z4fQzYOYHWV';39
+110;'1';'Labor and Delivery';;'viKDqRB4A2C';40
+111;'1.1';'Pre-delivery';110;'fjSrRw3Z5C6';41
+112;'1.2';'Delivery';110;'FPSo1uYQ4Wz';42
+113;'1.3';'Immediate Post-delivery';110;'dN33o086GtA';43
+114;'1.4';'Work Environment';110;'XqG9VsYWbm6';44
+115;'1';'Cervical Cancer';;'K5jl9a9pDIQ';45
+116;'1.1';'Pre-Screening';115;'hQ1GBCVK0Ix';46
+117;'1.2';'Patient screening';115;'ell3eHEJZdG';47
+118;'1.3';'Work Environment 1';115;'emCrpxAf5CU';48
+119;'1.4';'Pre-Cryotherapy Counselling';115;'lpPqqwIuYT1';48
+120;'1.5';'Cryotherapy';115;'L503YPkf0IZ';50
+121;'1.6';'Post Cryotherapy Procedures';115;'JRj7fwup3U8';51
+122;'1.7';'Work Environment 2';115;'SoLLG3GQJan';52
+123;'1';'Tuberculosis';;'pGfFCthQfmu';53
+124;'1.1';'Inquiry';123;'hO8u2Ls34aq';54
+125;'1.2';'Examination';123;'PF6FSs2KoAm';55
+126;'1.3';'Treatment';123;'orLlwKHxjiY';56
+127;'1.4';'Counseling';123;'QioOBaC3EJz';57
+128;'1.5';'Work Environment';123;'dBMh5AtGJEZ';58
+129;'1';'Newborn Resuscitation';;'q7rudlIg0O5';59
+130;'1.1';'Newborn Resuscitation';129;'cQ2aCOZ8Xbz';60
+131;'1';'HIV';;'e0rZ0YQzieW';61
+132;'1.1';'HIV Testing and Counseling';131;'Gq62ybDD3kd';62
+133;'1.2';'HIV Care and Treatment';131;'KEo4ZXyzP0R';63
+134;'1.3';'Work Environment';131;'Gc9HhmoLsZZ';64
+135;'1';'Hypertension';;'iLYk3PjdVsX';65
+136;'1.1';'HTN screening, classification and staging';135;'VENact5MkgW';66
+137;'1.2';'History taking and assessment';135;'QNci2WqSIfP';67
+138;'1.3';'Diagnosis and Management as per protocol';135;'JBLYnNm0BCz';68
+139;'1.4';'Work Environment';135;'TywBkGwgMEI';69
+140;'1';'Work Environment';;'SEP26PBMs9g';70
+141;'1.1';'Licenses';140;'sru0Y09d7DQ';71
+142;'1.2';'General Infrastructure and Equipment';140;'qZW5RPn7vYI';72
+143;'1.3';'Service delivery guidelines';140;'JEtQHhzKyyd';73
+144;'1.4';'Commodities';140;'LG8LLK8CneS';74
+145;'1.5';'Documentation';140;'lAwzwjJH8Ht';75
+146;'1';'Malaria in Adults';;'PkhLZ5aOOaw';76
+147;'1.1';'Inquiry and Physical Examination';146;'hVqGQVZfFYa';77
+155;'1.2';'RDT Procedure';146;'t7b9smZ89Rf';78
+156;'1.3';'Diagnosis, Treatment and Counseling';146;'fkeXsi7kxs7';79
+157;'1.3.1';'Diagnosis and Treatment';156;'nPQfNLn684Y';80
+158;'1.3.2';'Counseling';156;'RgUg4CHVi9A';81
+159;'1.4';'Work Environment';146;'cRoUjfZRLOY';82
+160;'1';'Post Abortion Care';;'aq3QSQV07nF';83
+161;'1.1';'Assess, Counsel, Medical Eval';160;'b08069P4Gye';84
+162;'1.2';'mPAC';160;'XQu2N2kVRSB';85
+163;'1.3';'MVA for PAC';160;'ZYc0pz6KO3M';86
+164;'1';'Sexually Transmitted Infections';;'lAHUKbH8yBg';87
+165;'1.1';'Inquiry and Physical Examination';164;'mLRjqQZj56c';88
+166;'1.2';'Diagnosis, Treatment and Counseling';164;'OOWLMKN5uEF';89
+167;'1.3';'Work Environment';164;'iAAd3QUlHMm';90
+168;'1.8';'Emergency Contraception';71;'alG1J2yq6QM';8
+169;'1.9';'IUD for Emergency Contraception';71;'FaSGYvVY8eh';9

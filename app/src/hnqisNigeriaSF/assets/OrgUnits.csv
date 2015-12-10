@@ -363,3 +363,1050 @@
 11095;'XJiI2Q0oeQC';'LIVINUS PATENT (011A)';10745;4
 11096;'kGZYoUT8Rtm';'CHIOMA CHEMIST SHOP (011H)';10745;4
 11097;'zNXV7pF9Z8j';'ELIJAH MEDICAL SHOP (011G)';10746;4
+52601;'DkoHZcJzK6P';'ab Abia State';;1
+52602;'RopN5PFNhS0';'bo Borno State';;1
+52603;'GgB4AyJKpQT';'ad Adamawa State';;1
+52604;'OWaPVq9QIos';'ak Akwa Ibom State';;1
+52605;'DziVJPwNPcA';'an Anambra State';;1
+52606;'wKxwIF3j1Du';'be Benue State';;1
+52607;'YWwUaUtX6M7';'cr Crossriver State';;1
+52608;'rkqBOoYljDK';'de Delta State';;1
+52610;'IKTexve9Cbu';'ed Edo State';;1
+52611;'TumDLHt1jUj';'en Enugu State';;1
+52612;'FqwlNwwdyZw';'fc Federal Capital territory';;1
+52613;'T8AaWM6lsmO';'go Gombe State';;1
+52614;'XInJn2VizzD';'im Imo State';;1
+52615;'Ud0BrUFSkPm';'kd Kaduna State';;1
+52616;'c8fAF2i2wdp';'kn Kano State';;1
+52617;'Dvr73dzfrKH';'kt Katsina State';;1
+52618;'NVyFrm1xA95';'la Lagos State';;1
+52619;'bQPgOBYqfDv';'na Nassarawa State';;1
+52620;'UHS6X0LpWqt';'ni Niger State';;1
+52621;'C8Vsg9kjGMQ';'og Ogun State (SF)';;1
+52622;'S2GSbqhkxkl';'os Osun State';;1
+52623;'QjakcqkGNlK';'oy Oyo State';;1
+52624;'CG6Qr8DFhyv';'ta Taraba State';;1
+52647;'OFHQW3YhJng';'ta Jalingo Local Government Area';52624;2
+52648;'ZKuZv46XN5a';'de Oshimlli South Local Government Area';52608;2
+52649;'QR9Lz4wRBU3';'de Ughelli North Local Government Area';52608;2
+52650;'CENsCqBHRjj';'de Uvwie Local Government Area';52608;2
+52651;'Q38jHvttPg1';'de Warri South Local Government Area';52608;2
+52652;'cXtcdsMUqKi';'ed Egor Local Government Area';52610;2
+52653;'sm3SxIs0nko';'ed Ikpoba Okha Local Government Area';52610;2
+52654;'KB11Yto5hCk';'ed Oredo Local Government Area';52610;2
+52655;'QH5TkefQheG';'ed Uhunmwonde Local Government Area';52610;2
+52656;'WxT5Oh4GZaw';'ak Eket Local Government Area';52604;2
+52657;'avSbZurnrcN';'ak Ibesikpo Asutan Local Government Area';52604;2
+52658;'uwTJ1dDRTQg';'ak Ikot Ikpene Local Government Area';52604;2
+52659;'H5eiv8HRCiH';'ak Uyo Local Government Area';52604;2
+52660;'TouvIy2ZKOS';'cr Akamkpa Local Government Area';52607;2
+52661;'zkJoBptoZlB';'cr Bekware Local Government Area';52607;2
+52662;'Q6zRS8fSiNg';'cr Boki Local Government Area';52607;2
+52663;'H0eZvRTUh0d';'cr Calabar Local Government Area';52607;2
+52664;'Jxgn5W1qoH9';'cr Calabar Municipal Local Government Area';52607;2
+52665;'DCwsbeJybmA';'cr Ikom Local Government Area';52607;2
+52666;'d2zC6R3y3yc';'cr Ogoja Local Government Area';52607;2
+52667;'kwu8mwxzEif';'cr Ugep Local Government Area';52607;2
+52668;'IyZHmzrCaM8';'an Aguata Local Government Area';52605;2
+52669;'DxwYVORwydR';'an Awka South Local Government Area';52605;2
+52670;'exC1OJrLwjv';'an Njikoka Local Government Area';52605;2
+52671;'IkyrwSxe65j';'an Nnewi North Local Government Area';52605;2
+52672;'tE03uilaaTN';'eb Abakaliki Local Government Area';10344;2
+52673;'fK0abDE8D3n';'eb Ohaukwu Local Government Area';10344;2
+52674;'TUgL2CHvGdi';'en Enugu East Local Government Area';52611;2
+52675;'OuyCYSYb2ww';'en Enugu Local Government Area';52611;2
+52676;'OGCoDP2jd3J';'en Enugu North Local Government Area';52611;2
+52677;'YVlzcVeZHkQ';'en Enugu South Local Government Area';52611;2
+52678;'XbUMPPa6vmA';'en Ezeagu Local Government Area';52611;2
+52679;'sVQrpE0wWR2';'en Igboetiti Local Government Area';52611;2
+52680;'tXvcPsc81hg';'en Igboeze South Local Government Area';52611;2
+52681;'FOr9mXkAi3R';'en Isi Uzo Local Government Area';52611;2
+52682;'dwK00ZD2F8c';'en Nkanu West Local Government Area';52611;2
+52683;'CO2RNztoWHb';'en Nsukka Local Government Area';52611;2
+52684;'O2ZeDkKPnVi';'en Orji River Local Government Area';52611;2
+52685;'Xa3jdXCWw7R';'en Udenu Local Government Area';52611;2
+52686;'KVAaELVbTP0';'en Udi Local Government Area';52611;2
+52687;'cOyTejmDcBT';'fc Abaji Local Government Area';52612;2
+52688;'lLkw3b6l9dM';'fc Abuja Municipal Area Council Local Government Area';52612;2
+52689;'jsQBRme2pHO';'fc Bwari Local Government Area';52612;2
+52690;'K379NM8raVU';'fc Gwagwalada Local Government Area';52612;2
+52691;'nZSlYZpAv89';'fc Kuje Local Government Area';52612;2
+52692;'WyrSLhF76aX';'fc Kwali Local Government Area';52612;2
+52693;'e6nQXrCVY25';'na Akwanga Local Government Area';52619;2
+52694;'g12ijiiZZ13';'na Karu Local Government Area';52619;2
+52695;'OVS605t4iww';'na Keffi Local Government Area';52619;2
+52696;'a1Gr9YfWHSt';'na Lafia Local Government Area';52619;2
+52697;'oAsdkzhBc65';'na Nasarrawa-Eggon Local Government Area';52619;2
+52698;'r2fCYbCTlG5';'ni Bida Local Government Area';52620;2
+52699;'rFE2Zhq1OKE';'ni Chanchaga Local Government Area';52620;2
+52700;'SMQWNjnqAWC';'ni Kontagora Local Government Area';52620;2
+52701;'Yx700OHUd7O';'ni Mokwa Local Government Area';52620;2
+52702;'XxmXuXmDNwZ';'ni Suleja Local Government Area';52620;2
+52703;'WSpmkovOQQ1';'os Ife Central LG A';52622;2
+52704;'W7pbb4wKxPf';'os Ife East Local Government Area';52622;2
+52705;'suIOXMqFCAF';'os Ife Local Government Area';52622;2
+52706;'ecqwbkCWSg7';'os Irepodun Local Government Area';52622;2
+52707;'zHEEK5j1qJ8';'os Olorunda Local Government Area';52622;2
+52708;'Rszg9ebLFgM';'os Oshogbo Local Government Area';52622;2
+52709;'bEzK8S4qx5W';'oy Atiba LGa';52623;2
+52710;'pcGM7fiyUgG';'oy Egbeda Local Government Area';52623;2
+52711;'L3JYl2wmZub';'oy Ibadan North East Local Governmet Area';52623;2
+52712;'WNXlhOonhu8';'oy Ibadan North Local Government Area';52623;2
+52713;'nmfj6HhvNMc';'oy Ibadan North South Local Governmet Area';52623;2
+52714;'Q4BD7UNWu6o';'oy Ibadan North West Local Government Area';52623;2
+52715;'DvAyEaPep6c';'oy Ibadan South West Local Government Area';52623;2
+52716;'NRbjNiYgZE4';'oy Ido Local Government Area';52623;2
+52717;'ksjJTj1mXaZ';'oy Ogbomoso North LGA';52623;2
+52718;'S5VJnHQhQwD';'oy Ogbomoso south LGA';52623;2
+52719;'q32QLo6CRVP';'oy Olorunda Local Government Area';52623;2
+52720;'DJMe3bF2z59';'oy Ona Ara Local Government Area';52623;2
+52721;'UReiINajYOL';'oy Oyo East LGA';52623;2
+52722;'Z6NO1dlq3hs';'oy Oyo Local Government Area';52623;2
+52723;'QqivPOQPgBI';'oy Oyo West Local Government';52623;2
+52724;'Qpc4SpdlE5c';'kd Chikun Local Government Area';52615;2
+52725;'wT8ZowQdfmL';'kd Igabi Local Government Area';52615;2
+52726;'bmBJFIPLOQf';'kd Jama''a Local Government Area';52615;2
+52727;'uEsqQ3ZVjuF';'kd Kachia Local Government Area';52615;2
+52728;'D68OkFHXyA0';'kd Kaduna North Local Government Area';52615;2
+52729;'f0CAn4XfU92';'kd Kaduna South Local Government Area';52615;2
+52730;'ufAt3Q2DKlt';'kd Kaura Local Government Area';52615;2
+52731;'ZzViJZYNdk9';'kd Lere Local Government Area';52615;2
+52732;'f65Aog51Fn4';'kd Saminaka Local Government Area';52615;2
+52733;'gJSObJumxbk';'kd Zaria Local Government Area';52615;2
+52734;'Lb6dfKthr1X';'kn Dala Local Government Area';52616;2
+52735;'u9eO7fn9lFB';'kn Faggae Local Government Area';52616;2
+52736;'n0lgdeUcwQg';'kn Funtua Local Government Area';52616;2
+52737;'IjMJRDBa2gP';'kn Katsina Local Government Area';52616;2
+52738;'rTwy8h1SLgN';'kn Nasarawa Local Government Area';52616;2
+52739;'YpCD6zaNXR1';'kn Tarauni Local Government Area';52616;2
+52740;'wuc7OBWUEFE';'kt Funtua Local Government Area';52617;2
+52741;'MH5MEo2dtyz';'kt Katsina Local Government Area';52617;2
+52742;'mSce0vy4w5F';'la Agege Local Government Area';52618;2
+52743;'PDWdmiicdqr';'la Ajeromi/Ifelodun Local Government Area';52618;2
+52744;'gBTl4tV5ojn';'la Alimosho Local Government Area';52618;2
+52745;'CzIGoAlO6sv';'la Amuwo-Odofin Local Government Area';52618;2
+52746;'vi7Lkvx6XpQ';'la Apapa Local Government Area';52618;2
+52747;'zW14uIJj8ao';'la Badagry Local Government Area';52618;2
+52748;'UHMLnuqeOCi';'la Ifako Ijaiye Local Government Area';52618;2
+52749;'DxjQECUHiD7';'la Ikeja Local Government Area';52618;2
+52750;'slCX7hGURKq';'la Ikorodu Local Government Area';52618;2
+52751;'sK4aS6j3NfD';'la Kosofe Local Government Area';52618;2
+52752;'aKU1Bzpo1YK';'la Lagos Mainland Local Government Area';52618;2
+52753;'FvWxICk6Dx9';'la Mushin Local Government Area';52618;2
+52754;'Ykp93g3OQRn';'la Ojo Local Governement Area';52618;2
+52755;'OmqOnFEaYgm';'la Oshodi/Isolo Local Government Area';52618;2
+52756;'fyOXxeALpvU';'la Somolu Local Government Area';52618;2
+52757;'TjllnzpVVmR';'la Surulere Local Government Area';52618;2
+52758;'zENuMnZDBYh';'be Gboko Local Government Area';52606;2
+52759;'lVGPRc844sx';'be Makurdi Local Government Area';52606;2
+52760;'ulV2QltoDx3';'be Otukpo Local Government Area';52606;2
+52761;'CMy5mUf1VS3';'be Ukum Local Government Area';52606;2
+52762;'Cha9XBesKyz';'og Abeokuta South LGA';52621;2
+52763;'usrjM4a9Y6d';'og Adodo-ota LGA';52621;2
+52764;'gZnp4Hqfgg4';'og Ifo LGA';52621;2
+52765;'NKYznRjz05B';'og Ijebu East LGA';52621;2
+52766;'bbQaisa6HkL';'og Ijebu ode LGA';52621;2
+52767;'AHBndKQlL1a';'og Ikenne LGA';52621;2
+52768;'MvRMYNc4Sjf';'og Imeko-afon LGA';52621;2
+52769;'kRii7qnE121';'og Ipokia LGA';52621;2
+52770;'Jvblk7zq1la';'og Odeda LGA';52621;2
+52771;'cDnW165XYiT';'Sagamu LGA';52621;2
+52772;'Camw5q319fJ';'Yewa South LGA';52621;2
+52773;'gPMhfGbkShY';'ab Aba North Local Government Area';52601;2
+52774;'P6KG7HMAS3b';'ab Aba South Local Government Area';52601;2
+52775;'fSWa9J4fPkf';'ab Osisioma Local Government Area';52601;2
+52776;'xgNMdUiurkX';'ab Umuahia North Local Government Area';52601;2
+52777;'GFTJrRkayR7';'im Ahiazu Mbaise Local Government Area';52614;2
+52778;'Rt8X6ptRPEW';'im Ngor Okpala Local Government Area';52614;2
+52779;'iXz7Z14Nq5t';'im Nworiebu Local Government Area';52614;2
+52780;'rODv7cSIkiE';'im Obowo Local Government Area';52614;2
+52781;'be7AO7r0YMN';'im Okigwe Local Government Area';52614;2
+52782;'vKkgUy9ielJ';'im Owerri Municipal Local Government Area';52614;2
+52783;'zL8LT5aafmE';'im Owerri North Local Government Area';52614;2
+52784;'AUiRHWLg9Pg';'ad Numan LGA';52603;2
+52785;'dSVXabIRRKo';'ad Yola Local Government Area';52603;2
+52786;'QcwpOTFz4xR';'Ab Tey-tey Ward';52602;2
+52787;'Mdf4v7BD6HN';'go Austina Ward';52602;2
+52788;'BoktSxdMWAi';'go Oga On Top Ward';52602;2
+52789;'xMfNG3atmsd';'go Wamco Ward';52602;2
+52790;'YSfOSCwi4Pj';'On Ondo Ward';52602;2
+52791;'wjLrcNbkR7y';'ri Muhammad Ward';52602;2
+52792;'CU7lDYhiPNc';'Ward';52602;2
+52793;'pvFVq6h9SKS';'go Funakaye LGA';52613;2
+52794;'W6G2QYDm1qA';'go Gombe Local Government Area';52613;2
+52796;'Qz5H6H711X8';'ab Aba North Local Government Area';52786;3
+52797;'Zhc6iLgrY4G';'ab Aba North Ward';52773;3
+52798;'jb2cO3Cl87f';'ab Aba South Ward';52774;3
+52799;'lNRcWuhcTxp';'ab Osisioma Ward';52775;3
+52800;'Cl4KdesRiD8';'ab Umuahia North Ward';52776;3
+52801;'RQVseK5qJva';'ad Gate way Hospital';52647;3
+52802;'vOPSZ1uigaC';'ad Wisdom Nursing home';52784;3
+52803;'Lb3Z8uSx5jd';'ad Yola Ward';52785;3
+52804;'XLtAMxSkR1n';'ak Eket Ward';52656;3
+52805;'mMwwyX4bD4b';'ak Ibesikpo Asutan Ward';52657;3
+52806;'MgzY09cwZdy';'ak Ikot Ikpene Ward';52658;3
+52807;'BzZ3ONeJWSz';'ak Uyo Ward';52659;3
+52808;'Ukb1BOmKAsv';'an Aguata Ward';52668;3
+52809;'XfwP3FOfMfU';'an Awka South Ward';52669;3
+52810;'U5Ei50M3TAW';'an Njikoka Ward';52670;3
+52811;'sHKIDPTW989';'an Nnewi North Ward';52671;3
+52812;'n30SkuzMx60';'be Gboko Ward';52758;3
+52813;'A2gXIc7nzE7';'be Makurdi Ward';52759;3
+52814;'MDSMWPZgjHM';'be Otukpo Ward';52760;3
+52815;'RJ44ix3rIIZ';'be Ukum Ward';52761;3
+52816;'SalCBqTePq6';'cr Akamkpa Ward';52660;3
+52817;'mZG4WoNsQDs';'cr Bekware Ward';52661;3
+52818;'vdgTV5MFvu5';'cr Boki Ward';52662;3
+52819;'MPPmGXJijwl';'cr Calaba Ward';52663;3
+52820;'U8KfZ3ioZaE';'cr Calabar Municipal Ward';52664;3
+52821;'M5qDWnfzdT9';'cr Ikom Ward';52665;3
+52822;'MPxHzU67JGd';'cr Ogoja Ward';52666;3
+52823;'Ed9tOVSm3eZ';'cr Ugep Ward';52667;3
+52824;'POjR8GlFSZe';'de Oshimlli South Ward';52648;3
+52825;'CB93Pt5uC1W';'de Ughelli North Ward';52649;3
+52826;'lp9cSieyHrJ';'de Uvwie Ward';52650;3
+52827;'uZrlZdBUYhR';'de Warri South Ward';52651;3
+52828;'SbglKCCRnJt';'eb Abakaliki Ward';52672;3
+52829;'D70kyuODRFT';'eb Ohaukwu Ward';52673;3
+52830;'FJwyx3Wz5zE';'ed Egor Ward';52652;3
+52831;'IJgELQvj7Tz';'ed Ikpoba Okha Ward';52653;3
+52832;'pfWC8kxbm9k';'ed Oredo Ward';52654;3
+52833;'bdnXegEYDrA';'ed Uhunmwonde Ward';52655;3
+52834;'xpMxb2dtVGa';'en Enugu East Ward';52674;3
+52835;'WwwQgYwm469';'en Enugu North Ward';52676;3
+52836;'oWPKzco84E9';'en Enugu South Ward';52677;3
+52837;'EYcPazZnsBQ';'en Enugu Ward';52675;3
+52838;'OW5eBu0zTg5';'en Ezeagu Ward';52678;3
+52839;'XvhcbixY4P3';'en Igboetiti Ward';52679;3
+52840;'bt02WNtXGQD';'en Igboeze South Ward';52680;3
+52841;'ydMCaljZkRL';'en Isi Uzo Ward';52681;3
+52842;'xMYPMEt7VdS';'en Nkanu West Ward';52682;3
+52843;'YENrO9or2v1';'en Nsukka Ward';52683;3
+52844;'cS7XNQt0rlK';'en Orji River Ward';52684;3
+52845;'nyENxcD5dPB';'en Udenu Ward';52685;3
+52846;'ckLTlsBA7SV';'en Udi Ward';52686;3
+52847;'SVAc2wx3kj5';'Facility 2';52786;3
+52848;'GqyP2axvv5q';'Facility D';52792;3
+52849;'hDKvNFFbNid';'Facility E';52792;3
+52850;'VJctXExYlKQ';'Facility F';52792;3
+52851;'Gx20dZ37caR';'Facility G';52792;3
+52852;'pI7478VFIO7';'Facility H';52792;3
+52853;'Qw1rTwsqXHI';'Facility I';52792;3
+52854;'SQ70iZoJWBW';'Facility j';52792;3
+52855;'iAAOzzyOesZ';'fc Abaji Ward';52687;3
+52856;'yo5GohfuTrf';'fc AMAC Ward';52688;3
+52857;'pRdkgAnJJNH';'fc Bwari Ward';52689;3
+52858;'O6huuevKyxz';'fc Gwagwalada Ward';52690;3
+52859;'A7e4681esSN';'fc Kuje Ward Ward';52691;3
+52860;'M4vGvHyJf8P';'fc Kwali Ward';52692;3
+52861;'XRkwYGVoLzl';'gb Ashaka cement clinic';52793;3
+52862;'Uf9qBaBA1Ub';'go Austina Facility';52787;3
+52863;'MjB4D035fbi';'go Austina Facility 2';52787;3
+52864;'ASM1GSHx26H';'go Facility A';52789;3
+52865;'PKd1T6q8Rts';'go Facility O';52788;3
+52866;'AGyNSqIK3AD';'go Gombe Ward';52794;3
+52867;'POfAfcaE4Rb';'im Ahiazu Mbaise Ward';52777;3
+52868;'F2FbOHKZf0w';'im Ngor Okpala Ward';52778;3
+52869;'qFGepnSHOIO';'im Nworiebu Ward';52779;3
+52870;'H2g9sRVwkuQ';'im Obowo Ward';52780;3
+52871;'uaQzymHGhXd';'im Okigwe Ward';52781;3
+52872;'b4nuKAkSX8L';'im Owerri Municipal Ward';52782;3
+52873;'XWvwe7Lz7Yc';'im Owerri North Ward';52783;3
+52874;'Gi2mQlJSJOn';'kd Chikun Ward';52724;3
+52875;'E5bGfUGwUFo';'kd Igabi Ward';52725;3
+52876;'po8ED4qUZqn';'kd Jama''a Ward';52726;3
+52877;'Omtg2s76xAX';'kd Kachia Ward';52727;3
+52878;'SJCRLPpS7Dp';'kd Kaduna North Ward';52728;3
+52879;'uwm3ow5OGC4';'kd Kaduna South Ward';52729;3
+52880;'FdJfDHBgJcS';'kd Kaura Ward';52730;3
+52881;'Xxnig8NgmL9';'kd Lere Ward';52731;3
+52882;'NHHaaOrGiAd';'kd Saminaka Ward';52732;3
+52883;'hPeoD7hzHUV';'kd Zaria Clinic and Medical Centre';52733;3
+52884;'ALDLn3tWBFe';'kd Zaria Ward';52733;3
+52885;'Ip9LnaRzmBb';'kn Dala Ward';52734;3
+52886;'kWoLfGYAZCr';'kn Faggae Ward';52735;3
+52887;'PBWtbM88jIS';'kn Funtua Ward';52736;3
+52888;'kzuBqSRfWgy';'kn Katsina Ward';52737;3
+52889;'VLR0b5NJQLj';'kn Nassarawa Ward';52738;3
+52890;'PS0PTXduPTB';'kn Tarauni Ward';52739;3
+52891;'Z5SqIpT1MPX';'kt Funtua Ward';52740;3
+52892;'HzCvyYlPodx';'kt Katsina Ward';52741;3
+52893;'iWGPFED05Vi';'la Agege Ward';52742;3
+52894;'IvDvkdhXLSf';'la Ajeromi/Ifelodun Ward';52743;3
+52895;'FFCyZ77Z6h2';'la Alimosho Ward';52744;3
+52896;'FC0RZq3qWVY';'la Amuwo-Odofin Ward';52745;3
+52897;'ayIccYYz906';'la Apapa Ward';52746;3
+52898;'BBI2DsJy6Kp';'la Badagry Ward';52747;3
+52899;'kmQsu9hbytY';'la Ifako Ijaiye Ward';52748;3
+52900;'NDsSlkW2Y2m';'la Ikeja Ward';52749;3
+52901;'nbEM4RcbliD';'la Ikorodu Ward';52750;3
+52902;'Rpp3SXDBIVo';'la Kosofe Ward';52751;3
+52903;'vIDE6GfdOJM';'la Lagos Mainland Ward';52752;3
+52904;'Buc0zYpyx7K';'la Mushin Ward';52753;3
+52905;'biAKrqFGhos';'la Ojo Ward';52754;3
+52906;'sCqYyQN4Eur';'la Oshodi/Isolo Ward';52755;3
+52907;'EMTBC2Np4ep';'la Somolu Ward';52756;3
+52908;'FKncr8SbVJa';'la Surulere Ward';52757;3
+52909;'mbQe8hXaoEv';'na Adonai Maternity and Hospital';52694;3
+52910;'dJadrcHdeOD';'na Akwanga Ward';52693;3
+52911;'ShMkapD2LeG';'na Keffi Ward';52695;3
+52912;'g60DOKMSxp0';'na Lafia Ward';52696;3
+52913;'NXdEvDadeEm';'na Nassarawa Eggon Ward';52697;3
+52914;'NdeehInXNDl';'ni Bida Ward';52698;3
+52915;'Xbs6nKsjU4o';'ni Chanchaga Ward';52699;3
+52916;'zt8YsF2sXgR';'ni Kotangora Ward';52700;3
+52917;'gOAB6HtZzmN';'ni Mokwa Ward';52701;3
+52918;'QWhI0uvviMr';'ni Suleja Ward';52702;3
+52919;'gKz2OWYv86I';'og Abeokuta South ward';52762;3
+52920;'BOMIgfnwmA8';'og ifo ward';52764;3
+52921;'RErlGGlye0e';'og Ijebu ward';52766;3
+52922;'W6HRco0D9SP';'og Ikenne ward';52767;3
+52923;'mDaiwh7dcKM';'og Ikeola Clinic and Maternity Home';52765;3
+52924;'nSA1ojVBuRo';'og Imeko-afon';52768;3
+52925;'tenyGwq7yEH';'og Ipokia ward';52769;3
+52926;'Yi0auJxMh4t';'og Ire-ayo Hospital';52765;3
+52927;'Ew0cHvimQXN';'og Odeda ward Ogun';52770;3
+52928;'x4NLUoW61j4';'og Ododo ward';52763;3
+52929;'oZ0CDJLUygN';'og Sagamu Ward';52771;3
+52930;'re0QpOnmJxu';'og Yewa ward';52772;3
+52931;'eOKe7MUCDzj';'On Facility';52790;3
+52932;'HBiCfgPiPJn';'os Ife Central Ward';52703;3
+52933;'LuDktTbilOI';'os Ife East Ward';52704;3
+52934;'TFliqhxvVid';'os Ife Ward';52705;3
+52935;'d1yjfHmJ4nU';'os Irepodun Ward';52706;3
+52936;'CsDqJZElrg2';'os Olorunda Ward';52707;3
+52937;'PhhUk5Njyz6';'os Oshogbo Ward';52708;3
+52938;'myeCcPhxUtV';'oy Alafia Hospital';52712;3
+52939;'eK9ZIY4Dfik';'oy Atiba ward';52709;3
+52940;'BjyfS2OyjDg';'oy Dolapo Health Service';52711;3
+52941;'B174g31SMUa';'oy Egbeda Ward';52710;3
+52942;'Naz4uqNuQpa';'oy Goodwill Clinic';52721;3
+52943;'ZPy3gGfgKqa';'oy Ibadan North East Ward';52711;3
+52944;'BMHl1mRbX1f';'oy Ibadan North South Ward';52713;3
+52945;'neO9U3Ew83f';'oy Ibadan North Ward';52712;3
+52946;'ua1JCTatttX';'oy Ibadan North West Ward';52714;3
+52947;'oX0w2jLmC91';'oy Ibadan South West Ward';52715;3
+52948;'MrWYZM76YNH';'oy Ido Ward';52716;3
+52949;'lsoQw7nzS3E';'oy Ogbomoso north ward';52717;3
+52950;'g7ASwxa8mG2';'oy Ogbomoso south ward';52718;3
+52951;'rpaG3T7bFAH';'oy Olomu Maternity and Infant Welfare Clinic';52723;3
+52952;'JUb4PbsS427';'oy olorunda ward';52719;3
+52953;'SNorlLGl6DI';'oy Ona Ara Ward';52720;3
+52954;'ZKzJJDJF3d0';'oy Oyo Ward';52722;3
+52955;'YKhuHPaErDa';'oyo Tofunmi Hospital';52712;3
+52956;'xkrd0uC2uQS';'ri Muhammad facility';52791;3
+52957;'wMJqDP90gBt';'ta Ashaka Clinic';52647;3
+52958;'xJQCSeJazzr';'ta Galbose Hospital';52647;3
+52959;'G6hIABrKWRJ';'ta Gate Way Hospital';52647;3
+52960;'oEByZaHHV3O';'ta Jinya Clinic';52647;3
+52961;'Q0d6hxGBauc';'ta Luther Care Clinic';52647;3
+52962;'Avu6gkyZNWe';'ta Mercy Land Hospital';52647;3
+52963;'tNqseWUxmn9';'ta Sauki Medical Centre';52647;3
+52964;'RnMGwWiKe5s';'ta Tudun-Wada Clinic';52647;3
+52965;'F1kN9CDN5sQ';'ta UMCN Clinic';52647;3
+52967;'ZpU0vAruFzH';'de Caiffy Maternity Clinic';52824;4
+52968;'FXu6sDbbH2Z';'de Divine Care Clinic';52824;4
+52969;'YAWgEPQ3jyB';'de Mother And Child Maternity';52824;4
+52970;'atLlCGxG6FT';'de St Micheals Clinic and Maternity';52824;4
+52971;'kznNIg6qJl3';'de Agori-Iwe Memorial Hospital';52825;4
+52972;'em1sLIn1ty6';'de Winnie Maternity';52825;4
+52973;'AWTKK40zZ1A';'de Day Spring Clinic';52826;4
+52974;'I4T9uI6b9Fj';'de First Rank Clinic';52826;4
+52975;'Hxi2b0JEoUa';'de Lily Hospital LMT';52826;4
+52976;'O0pQc26OWte';'de West End Hospital';52826;4
+52977;'K6wQf9iPhzq';'de Chrisek Clinic';52827;4
+52978;'xEP0LfSlxFa';'de Fairview Hospital';52827;4
+52979;'MBvE1qDP1Ha';'de St Andrew''s Hospital';52827;4
+52980;'hA9LU0WUjGo';'ed Erada Clinic';52827;4
+52981;'hUt7YyJx5bv';'ed Fareview Hospital';52827;4
+52982;'QHnJJTiylAW';'ed A1 Winners Hospital';52830;4
+52983;'IHqCHCe4pbx';'ed Bamby Children Hospital';52830;4
+52984;'rpmembisV1T';'ed Divine Nursing and Maternity';52830;4
+52985;'pA0v6lQe6bt';'ed Fortune Iyare Clinic';52830;4
+52986;'Sdh6sqIYDaw';'ed Mega Clinic And Maternity';52830;4
+52987;'KeG30nLnIcp';'ed Mount Gilead Hospital';52830;4
+52988;'kc1auqhLTGx';'ed Faithland Maternity';52831;4
+52989;'J1YU5nKfI9t';'ed General Medical Centre';52831;4
+52990;'O8l1prDlfPS';'ed Rise and Shine Maternity';52831;4
+52991;'LjyEhJOWarU';'ed Royal Crown Specialist';52831;4
+52992;'p2lSQHuxS52';'ed St. David Maternity';52831;4
+52993;'MajdxJ4POcW';'ed Bethel Faith Medical Centre';52832;4
+52994;'uR7ie4ZhFVx';'ed Chidex Clinic';52832;4
+52995;'gRpCYUUKXpi';'ed God''s Care Hospital';52832;4
+52996;'ptEWta0rDN8';'ed Irowa Medical Centre';52832;4
+52997;'SfBKHmIlpLq';'ed Vinda Medical Centre';52832;4
+52998;'R41vr2zQfBh';'ed Enofe Medical Centre';52833;4
+52999;'xtk5ClRmENH';'ak Abasiekeme Specialist';52804;4
+53000;'oC0SezmE8Wk';'ak Ekman Maternity Home';52804;4
+53001;'a3W6Zoju3Sv';'ak Eyusco Pharmacy';52804;4
+53002;'rvEJxxnxxsB';'ak Holifield Specialist';52804;4
+53003;'NPbHlFzY1Ns';'ak Lily Pharmacy';52804;4
+53004;'ZKT6LyMqXDI';'ak Morforein Pharmacy';52804;4
+53005;'dqISewblyii';'ak Nduye Medical Services';52804;4
+53006;'kRXqHqgAdOi';'ak Nepid Pharmacy';52804;4
+53007;'AEeTr4DnLzI';'ak Wills Memorial Medical Center';52804;4
+53008;'M2RId8xPoIH';'ak Bebeto Pharmacy';52805;4
+53009;'WabZC4xoyqy';'ak Ememobong Maternity Home';52806;4
+53010;'khGiV2gaRxB';'ak The Bridge clinic';52806;4
+53011;'Iwfn8hzrlCr';'ak Antocee Pharmacy';52807;4
+53012;'Zaht6hBYsNu';'ak Glofa Maternity Home';52807;4
+53013;'bMo4Gp4EuSc';'ak Joria Pharmacy';52807;4
+53014;'c7vemNJpL6s';'ak King Of Kings Clinic';52807;4
+53015;'y92bPDAqiN1';'ak Leadson Pharmacy';52807;4
+53016;'qfo3nzJidzW';'ak Mount Olive Clinic and Maternity';52807;4
+53017;'WvUYJYbbe1H';'ak Premier Hospital and Ultrasound';52807;4
+53018;'zYk9IYGm8qE';'ak Ubong Abasi Specialist';52807;4
+53019;'mjiGnPD1dEN';'ak Unwana Family Hospital';52807;4
+53020;'zIXX01ohZkx';'ak Uwakmfon Specialist Clinic';52807;4
+53021;'ZLEddcchw7a';'cr Oliver Proprietory Patent Medicine Vendor Stores';52816;4
+53022;'cxkXQoFDl2S';'cr Adibe Hospital and Maternity';52817;4
+53023;'C9V0tQlM2xO';'cr Devine Grace Hospital';52818;4
+53024;'UpFUu48iQ9E';'cr Omega Clinic/Maternity';52818;4
+53025;'GNyUIyq2zjS';'cr Ajayi Proprietory Patent Medicine Vendor Stores';52819;4
+53026;'yb1eOFU0Peb';'cr Amos Medicals Proprietory Patent Medicine Vendor Stores';52819;4
+53027;'lGk6IrYqArY';'cr Andy Pharmacy';52819;4
+53028;'cgcY6lJcLdD';'cr Anijah Pharmacy';52819;4
+53029;'BolIYCrDchR';'cr Anilas Proprietory Patent Medicine Vendor Stores';52819;4
+53030;'kXQiVcfESXU';'cr Avocet Pharmacy';52819;4
+53031;'txwRw1p9z7U';'cr Caro Proprietory Patent Medicine Vendor Stores';52819;4
+53032;'y2V4H89ZSyc';'cr Cletus Proprietory Patent Medicine Vendor Stores';52819;4
+53033;'jlGL4rsvDOu';'cr Comfort Proprietory Patent Medicine Vendor Stores';52819;4
+53034;'JR6zi9cOXzO';'cr Divine Favour Proprietory Patent Medicine Vendor Stores';52819;4
+53035;'aJuY1qrFd3D';'cr Dominion Pharmacy';52819;4
+53036;'TvMxVrua6xI';'cr Gadd Pharmacy';52819;4
+53037;'wiEbKhZ1OZV';'cr Glory Proprietory Patent Medicine Vendor Stores';52819;4
+53038;'MmY8YLMvxSf';'cr Godwin Proprietory Patent Medicine Vendor Stores';52819;4
+53039;'nxrBuDCtJyy';'cr Imecobas Pharmacy';52819;4
+53040;'jZf0Twb17SN';'cr Inyang Proprietory Patent Medicine Vendor Stores';52819;4
+53041;'mhjTfyg0MIX';'cr Isaac Edwards Pharmacy';52819;4
+53042;'BvzBlPXw5M3';'cr Israel Proprietory Patent Medicine Vendor Stores';52819;4
+53043;'cBobvPPpqGv';'cr Kamel Pharmacy';52819;4
+53044;'IIMSEEJzFat';'cr Kelvin Proprietory Patent Medicine Vendor Stores';52819;4
+53045;'n3aMoB0QhU1';'cr Kris Heart Pharmacy';52819;4
+53046;'uaW9IDcezTH';'cr Mambo Clinic';52819;4
+53047;'tr56omlJLc8';'cr Mission Hill Clinic';52819;4
+53048;'ZjG59u5frOQ';'cr Mt. Zion Medical Centre';52819;4
+53049;'SZfvvspWxWg';'cr Ndumex Pharmacy';52819;4
+53050;'ZvHTBT9CCBi';'cr Nikol Proprietory Patent Medicine Vendor Stores';52819;4
+53051;'vl5oMtZj55x';'cr Norini Pharmacy';52819;4
+53052;'GwuOiTWUZ0U';'cr Odarec Medical Consult';52819;4
+53053;'IWtusACKrLl';'cr Ok-Felma Proprietory Patent Medicine Vendor Stores';52819;4
+53054;'LXoUaXfQJtR';'cr Oparah Joseph Proprietory Patent Medicine Vendor Stores';52819;4
+53055;'l4A2ngBzy9E';'cr Peace Medical Center';52819;4
+53056;'dkJ600BQdqe';'cr Pontal Pharmacy';52819;4
+53057;'QmrtoojAklz';'cr Rabana Pharmacy';52819;4
+53058;'jENhMTr2Pbu';'cr Saco Proprietory Patent Medicine Vendor Stores';52819;4
+53059;'WpPkKg2b7Xx';'cr Samuel Proprietory Patent Medicine Vendor Stores';52819;4
+53060;'BQ3agenXiaZ';'cr Seun Proprietory Patent Medicine Vendor Stores';52819;4
+53061;'oGCOlwxCyRn';'cr Stanley Proprietory Patent Medicine Vendor Stores';52819;4
+53062;'EKy1andC6Wg';'cr Sunday Medicals Proprietory Patent Medicine Vendor Stores';52819;4
+53063;'IzXba9nTBcC';'cr Immanuel Infimary';52820;4
+53064;'bmZyZ77hg8n';'cr Testimony Medical Consult';52820;4
+53065;'C5zk7MOG80S';'cr Ukpong Clinic';52820;4
+53066;'z1PSOzfZ4nH';'cr Benson Clinic';52821;4
+53067;'sjXzx2A3uHr';'cr Calwell Pharmacy';52821;4
+53068;'wM7EORIcIeW';'cr Chima Proprietory Patent Medicine Vendor Stores';52821;4
+53069;'KcaH9myUv02';'cr Goshen Maternity';52821;4
+53070;'fAQ9qOiJTqm';'cr Hilary Proprietory Patent Medicine Vendor Stores';52821;4
+53071;'fod4PvOeDxa';'cr Mekason Pharmacy';52821;4
+53072;'QMzNiJh0Ajj';'cr Edoh Pharmaceuticals';52822;4
+53073;'QmwziN1gVYu';'cr Hilary Pharmacy';52822;4
+53074;'n8DDQpX1uCF';'cr Santa Maria Hospital';52822;4
+53075;'kG5cvbgSufB';'cr Angels Clinic';52823;4
+53076;'z2csJun14TQ';'cr Danex Clinic';52823;4
+53077;'l4MB72QtN6f';'cr Donason Proprietory Patent Medicine Vendor Stores';52823;4
+53078;'bNj8rrNDEw1';'cr Tony Medicals Proprietory Patent Medicine Vendor Stores';52823;4
+53079;'h3BpbTi7ioS';'an Rise Clinic Adazi Ani';52808;4
+53080;'Fo1RWQIHA3y';'an St Victoria Specialist Hospital';52808;4
+53081;'kY3TElFy5bz';'an Awka Medical Centre';52809;4
+53082;'nfqJ2AdJ31t';'an Belechukwu Memorial Hospital';52809;4
+53083;'YI7dpAU1DZK';'an Chidera Hospital and Maternity';52809;4
+53084;'yzSUdfIP2km';'an Harmony Specialist Hospital';52809;4
+53085;'PxFCgkXyXTf';'an Ifebi Medical Centre';52809;4
+53086;'E48yNaeiArr';'an Rock Foundation Hospital';52809;4
+53087;'fdcaT253GxC';'an Silgrey Royal Hospital';52809;4
+53088;'D9f9THjMIGB';'an Beluchukwu Memorial Hospital';52810;4
+53089;'O4obiBtdirv';'an Divine Care Specialist Hospital and Maternity';52811;4
+53090;'xGZbu9kjeRK';'an Life Specialist Hospital';52811;4
+53091;'GvRaJVwjHIG';'an NgoziChukwu Maternity';52811;4
+53092;'vXAF9f8UgCK';'an Obioma Specialist Hospita, Nnewi';52811;4
+53093;'gbzea0J2xqB';'eb Divine Mercy Maternity';52828;4
+53094;'tjHQpZjZVEC';'eb Doctors'' Specialist Clinic';52828;4
+53095;'JzB1ZrQnruS';'eb Fatima Specialist Hospital';52828;4
+53096;'wtN3uKJmSRW';'eb Holy Trinity Hospital Abakaliki';52828;4
+53097;'zAbZzWqN2qp';'eb Our Lady''s Clinic';52828;4
+53098;'RsklXxIGX0U';'eb Smile Specialist Hospital Abakaliki';52828;4
+53099;'CMPRQkp8sur';'eb Soner Specialist Hospital';52828;4
+53100;'Q7iekbF56G0';'eb Westend Maternity Abakaliki';52828;4
+53101;'fF0vXo9X0DJ';'eb Chima Maternity';52829;4
+53102;'TCCEnhQ4DUK';'en Aguata Pharmacy';52834;4
+53103;'SD9EwvSPDy1';'en Akachukukwu Spring Pharmacy';52834;4
+53104;'VHb9RlgIhbQ';'en Arlington Pharmacy';52834;4
+53105;'exEwHEEhEQB';'en Awka Medical Centre';52834;4
+53106;'pJWTrPjBCJu';'en Bertson Pharmacy';52834;4
+53107;'KvHzCvNZeul';'en Best Option Pharmacy';52834;4
+53108;'Wbnbf9Qr6xD';'en Bez Pharmacy';52834;4
+53109;'qlPooxcv3KE';'en Braunx Pharmacy';52834;4
+53110;'EnBLBDt4PFJ';'en Bretson 2 Pharmacy';52834;4
+53111;'i1QSpRyLa9N';'en Chidera Hospital and Maternity';52834;4
+53112;'mrzkDcjbK7U';'en Chi Proprietory Patent Medicine Vendor Stores';52834;4
+53113;'xZq6ekWI0Qz';'en Chukwu Asokam Maternity';52834;4
+53114;'d3ML5IZyWAM';'en Crown Point Pharmacy';52834;4
+53115;'GLo1gxmy6Mw';'en Dona Ville Pharmacy';52834;4
+53116;'DcW6oCROpWM';'en Feglomax Pharmacy';52834;4
+53117;'CvmwgobekOo';'en Gods Glory Pharmacy';52834;4
+53118;'Etx0WQUKrHF';'en God The High Tower Hospital and Maternity';52834;4
+53119;'waUyr3EnUJY';'en Golden Rule Pharmacy';52834;4
+53120;'htbBQmaMwHC';'en Gpex Pharmacy';52834;4
+53121;'kHdHEnpgiNB';'en Healthy Living Pharmacy';52834;4
+53122;'vhGpJlwlGt2';'en Infant Jesus Maternity';52834;4
+53123;'HbpR0cWYYTR';'en Ivy Pharmacy';52834;4
+53124;'gBkwGaJyKrS';'en Jeno Hospital';52834;4
+53125;'gMF9QMjFKoz';'en Julanka Pharmacy';52834;4
+53126;'TgsrmRsehBR';'en Kenechukwu Hospital and Maternity';52834;4
+53127;'K9uMnNUaBzU';'en Lafe Pharmacy';52834;4
+53128;'is8CVuBGb0s';'en Matthew Okezie Proprietory Patent Medicine Vendor Stores';52834;4
+53129;'ogfsiGEBHaZ';'en Monet Pharmacy';52834;4
+53130;'Tx3Hg5Jtkks';'en More Day Pharmacy';52834;4
+53131;'dyGSVH1aLu3';'en Nche Pharmacy';52834;4
+53132;'ltgIEgyAYaS';'en PPFN Enugu';52834;4
+53133;'ZkKQHl6jeR0';'en Redeemer Maternity';52834;4
+53134;'UEUuLAyqYdn';'en Safehand Community Pharmacy';52834;4
+53135;'bGIFQHtjrPv';'en Sajeb Pharmacy';52834;4
+53136;'M0PBpAVH7B9';'en Spectra Pharmacy';52834;4
+53137;'EL0pCreoaa0';'en St Mary''s Maternity';52834;4
+53138;'bV2IfiAo75R';'en Well Gate Pharmacy';52834;4
+53139;'WZsKXrH8z2o';'en First Metrodame';52835;4
+53140;'Is4DanPXMOZ';'en Mani Proprietory Patent Medicine Vendor Stores';52835;4
+53141;'jrtrWah3NEa';'en PPFN Enugu';52835;4
+53142;'B3jCeBOjjjE';'en Blessed Assurance Hospital';52836;4
+53143;'k2w0ZmHHayB';'en Chigozie Hospital and Maternity';52836;4
+53144;'jReByCAjFBa';'en Good Shepherd Hospital';52836;4
+53145;'sUGFXKbKESl';'en Ibezim Medical Centre';52836;4
+53146;'q8la2A7Fwqs';'en St Getrude Maternity';52836;4
+53147;'d1PcLNu3KZp';'en Jude Umeh Proprietory Patent Medicine Vendor Stores';52838;4
+53148;'PTu0avWcJif';'en Arinze Proprietory Patent Medicine Vendor Stores';52839;4
+53149;'Bx0uXqD1Vhg';'en Chemicho Proprietory Patent Medicine Vendor Stores';52839;4
+53150;'S73mdy1mjWp';'en Emma Mba Proprietory Patent Medicine Vendor Stores';52839;4
+53151;'u1nQL8rRgRe';'en God''s will Proprietory Patent Medicine Vendor Stores';52839;4
+53152;'MTgEmI5UOf8';'en Okoro Christopher Proprietory Patent Medicine Vendor Stores';52839;4
+53153;'k7LOIQQr75C';'en Titus Proprietory Patent Medicine Vendor Stores';52839;4
+53154;'F3Umi1AYXCZ';'en Agbedo Jude Proprietory Patent Medicine Vendor Stores';52840;4
+53155;'xa4bWvuySjN';'en Kins Proprietory Patent Medicine Vendor Stores';52840;4
+53156;'o4TfX92FB0r';'en Majesty Proprietory Patent Medicine Vendor Stores';52840;4
+53157;'GR8Fy5gLVst';'en Ogbu Chikaodili Proprietory Patent Medicine Vendor Stores';52840;4
+53158;'bc62GRTFmhA';'en Virgitex Proprietory Patent Medicine Vendor Stores';52840;4
+53159;'KMi0Kg2cBP0';'en Bentex Proprietory Patent Medicine Vendor Stores';52841;4
+53160;'AqUWMkds2il';'en Ugwu Austin Proprietory Patent Medicine Vendor Stores';52841;4
+53161;'KjB1TqOcEjV';'en Gabby Proprietory Patent Medicine Vendor Stores';52842;4
+53162;'tURT9qfGGBf';'en Divine Intervention Maternity';52843;4
+53163;'T1PZevwMNm7';'en Highman Proprietory Patent Medicine Vendor Stores';52843;4
+53164;'ZAi0YTp1tph';'en Renaissance Hospital and Maternity';52843;4
+53165;'ZJ8iTydS4Q8';'en Royal Cross Hospital and Maternity';52843;4
+53166;'WaPPGYZ0MKH';'en Amaechi Eneje Proprietory Patent Medicine Vendor Stores';52844;4
+53167;'a8RmJ18AqHq';'en Balm of Gilead Proprietory Patent Medicine Vendor Stores';52845;4
+53168;'NbbFVYnwpJi';'en Nwa Ossai Foundation Hospital';52845;4
+53169;'SEJU28PDbdc';'en Tobechuku Proprietory Patent Medicine Vendor Stores';52845;4
+53170;'sP0GQC3PQb6';'en Tochinos Maternity';52845;4
+53171;'sf1HT0I6Pei';'en Chumason Proprietory Patent Medicine Vendor Stores';52846;4
+53172;'roErQSDv9n9';'en Ifeanyichuku Proprietory Patent Medicine Vendor Stores';52846;4
+53173;'wvI07gFmFjW';'fc Access Hospital';52856;4
+53174;'sXypVMqFfB7';'fc Amana Medical Centre';52856;4
+53175;'c5VNZAagDEc';'fc Bismol Clinic and Maternity, Nyanya';52856;4
+53176;'UxrxF722EIw';'fc Bwari Medical Centre, Bwari';52856;4
+53177;'UedvvtDJhIH';'fc Fekosam Maternity and Clinic';52856;4
+53178;'XRs4TAwNGqg';'fc Lofaho Maternity Home, Jikwoyi';52856;4
+53179;'TWlCGeO4lCk';'fc Pan-Raf Hospital, Nyanya';52856;4
+53180;'j9BFu8DGI0P';'fc Royal Lords Hospital';52856;4
+53181;'Xmnl4zRBFQY';'fc Royal Lord''s Hospital, Dutse Alhaji';52856;4
+53182;'pO381i6Driv';'fc Saffron Hospital';52856;4
+53183;'Yeag0CmAbvV';'fc Sumit Hospital, Bwari';52856;4
+53184;'y9dwFyjMEJb';'fc The Crown Hospital';52856;4
+53185;'rRlVlN2QOy5';'fc Unity Hospital, Kubwa';52856;4
+53186;'a4qyoEFt4a4';'fc BMC Hospital';52857;4
+53187;'N49HSadlKzX';'fc Kubwa Muslim Community';52857;4
+53188;'BKPinVym0qG';'fc Royal Lord''s Hospital';52857;4
+53189;'zNceRujRM80';'fc Summit Hospital Limited Bwari';52857;4
+53190;'EqbuLGRfkUn';'fc Unity Clinic and Maternity';52857;4
+53191;'u7gYM4Rhlyk';'na ACM Hospitals';52910;4
+53192;'Y2N5x6YaELN';'na Adonai Hospital';52910;4
+53193;'eehzQH16oKY';'na Anointed Maternity and Clinic';52910;4
+53194;'n9WaiIKh4r9';'na Bisi Clinic and Maternity';52910;4
+53195;'KQYfeYzech5';'na Citizen Hospital, Suleja';52910;4
+53196;'aELcK1cgePY';'na Mayday Specialist Hospital';52910;4
+53197;'ufLjfpjJutZ';'na Pijau Maternity Home';52910;4
+53198;'HojgkWAthC8';'fc Nagari Allah Hospital';52911;4
+53199;'xds4xfp4KmB';'ni Bay Specialist Hospital, Minna';52914;4
+53200;'YrXsVEtanEV';'ni Bisi Clinic and Maternity';52914;4
+53201;'LDs6jSgAFqn';'ni Denyion Clinics, Madalla';52914;4
+53202;'Ahb9loayYFr';'ni Family Primary Health Centre, Paiko';52914;4
+53203;'CrEbIHI2C9x';'ni Standard Medical And Diagnostic Centre';52914;4
+53204;'iGdABJOMt3y';'ni Top Medical Centre, Minna';52914;4
+53205;'rKbGDDvCZ1H';'ni Bay Specialist Hospital';52915;4
+53206;'evx8rHuHDfx';'ni Bisi Clinic and Maternity';52915;4
+53207;'NuFehc6Rlk6';'ni Family Primary Health Centre';52915;4
+53208;'pdvfb4dwCfT';'ni PPFN Hospital';52915;4
+53209;'Eg4PVrdBLzu';'ni Standard Hospital';52915;4
+53210;'YJ0inNJqelD';'ni Top Medical Hospital';52915;4
+53211;'sCeKoJ5Syd1';'ni Citizen Hospital';52918;4
+53212;'eVLyvM8A5eF';'ni Denyim Hospital';52918;4
+53213;'Y6PglEwRvIa';'ni PPFN Clinic';52918;4
+53214;'pBMjIlCh2iK';'os Living Faith Hospital';52932;4
+53215;'b0t2uSBMpDE';'os Omotayo Clinic';52932;4
+53216;'NqXi5vv2KGg';'os Oluwaloni Clinic and Maternity';52933;4
+53217;'dKdEDOb2lt8';'os Seventh Day Adventist Hospital';52933;4
+53218;'Vw9zO4HzsOk';'os Medisa Discount Pharmacy';52934;4
+53219;'AJVMYHXYpSs';'os Mohas Pharmacy';52934;4
+53220;'jTPYTRaDPcI';'os Anu-Olu Hospital';52935;4
+53221;'BBPtjMCYTBT';'os Biket Medical Centre';52936;4
+53222;'mpgpPGks510';'os Gbonjubola Hospital';52936;4
+53223;'qzVaLNmm1TQ';'os Oroki Hospital';52936;4
+53224;'qcrdfkErjXI';'os Emmanuel Medical Centre';52937;4
+53225;'dDqBa5CGq6M';'os Ife-Olu Medical Centre';52937;4
+53226;'V9oSI2nSqHT';'os Onward Hospital';52937;4
+53227;'pjPfRjdjmDf';'os PPFN Clinic Osogbo';52937;4
+53228;'TmZJx2A1S4p';'oy Oroki Medical centre';52939;4
+53229;'CW7F6S0F7RQ';'oy Asvon Hospital';52941;4
+53230;'uPvK7TBwJGO';'oy PPFN Ibadan';52941;4
+53231;'j81VFWB7fFr';'oy Toun Specialist Hospital';52941;4
+53232;'YnhNoRCbFBY';'oy Vanguard Pharmacy';52941;4
+53233;'yV1owcPmWF0';'oy Araanfajo Medicine Store';52943;4
+53234;'V8NoT7XVELg';'oy AY Medicine Store';52943;4
+53235;'ACfU5ERAXDx';'oy BJ Medicine Store';52943;4
+53236;'bgXN4X5HqTJ';'oy Blessed Medicine Store';52943;4
+53237;'sV6Uqj4EY8k';'oy Blessed Singer Medicine Store';52943;4
+53238;'Q5ruFO35L5l';'oy City Chemist Pharmacy';52943;4
+53239;'agLLsvBP1yI';'oy Fountain Consultant Hospital';52943;4
+53240;'Fpd9PGsSap1';'oy Grace and Mercy Medicine Store';52943;4
+53241;'p55vsa44wrO';'oy Ibadan Central Hospital';52943;4
+53242;'XLyJ3xjL8Zx';'oy Ibadan City Medical Center';52943;4
+53243;'bkimXJ2W3a3';'oy Ibukun Oluwa Medicine Store';52943;4
+53244;'RU1S04BINA4';'oy Mobolaji Hospital, Oremeji';52943;4
+53245;'b4mFia94LiB';'oy OK Medicine Store';52943;4
+53246;'odgz9hX0tNX';'oy Praise God Medicine Store';52943;4
+53247;'ac2tErhIESu';'oy Tofunmi Medical Center';52943;4
+53248;'u882i0PIaLM';'oy Tomific Medicine Store';52943;4
+53249;'aK65zD81oSP';'oy Yemnik Medicine Store';52943;4
+53250;'IE9WYkK6R65';'oy Efunbola Pharmacy';52945;4
+53251;'bqJ1b6P1apb';'oy El-Gracious Pharmacy';52945;4
+53252;'UewpZkiuU0i';'oy Faith Medical Centre';52945;4
+53253;'O560e2yyah1';'oy Glorious Medicine Store';52945;4
+53254;'mrNORCgur8H';'oy King Of Condom Patent Medicine Store';52945;4
+53255;'UQaGD7nU7Tt';'oy Mercy Land Maternity and Child Welfare Clinic';52945;4
+53256;'w8rjbvhZfAX';'oyo Merciland Hospital';52945;4
+53257;'VeFgw2TPmYh';'oy Pharmalot Pharmacy';52945;4
+53258;'Wn8R0T6dbnU';'oy Q-Health Pharmacy';52945;4
+53259;'ua9h0L11INC';'oy Twins Clinic and Maternity';52945;4
+53260;'eza9QzdJJ0e';'oy Unity Medicine Store';52945;4
+53261;'bEOJLDgacyN';'oy Will Of God Medicine Store';52945;4
+53262;'BpKUCy8Vguz';'oy YB Pharmacy';52945;4
+53263;'eyEPtCg9yfY';'oy Obeki Pharmacy';52944;4
+53264;'OdhM9iBDfK0';'oy Ollan Pharmacy';52944;4
+53265;'wph34qDxBNL';'oy Troy Pharmacy';52944;4
+53266;'uVxjRiYf0GW';'oy Pharmadex Pharmacy';52946;4
+53267;'wNrfMGcSgue';'oy Alafia Hospital, Ibadan';52947;4
+53268;'sW8WnySEZW0';'oy Beem Medicine Store';52947;4
+53269;'yHRE0JTxZZu';'oy Chamile Pharmacy';52947;4
+53270;'yPXZpkzMgtX';'oy Fovic Pharmacy';52947;4
+53271;'U7R2kKwAi90';'oy Gilead Pharmacy';52947;4
+53272;'mn2ruUOAXW5';'oy Gods Mercy Medicine Store';52947;4
+53273;'WmNT08IWaek';'oy Ibadan Central Hospital';52947;4
+53274;'KM19LNFLnHY';'oy Ibadan Central Hospital Old Ife road';52947;4
+53275;'ZHx6bVwbOie';'oy Johnson Medicine Store';52947;4
+53276;'ZcdiMtP4yKJ';'oy Jolat Pharmacy';52947;4
+53277;'XfW8Oqo5RDW';'oy Jopec Pharmacy';52947;4
+53278;'lQx4YUUfrb5';'oy Mobolaji Hospital, Oke-Ado';52947;4
+53279;'B1c2eblDs0v';'oy Oke-Ado Hospital';52947;4
+53280;'Bk0NgcnwxeS';'oy Olaoluwa Medicine Store';52947;4
+53281;'UO32FrTKE8U';'oy Olly T Medicine Store';52947;4
+53282;'VKLHFqZk9h7';'oy Oluwaseun Medicine Store';52947;4
+53283;'bNiOTf6cTcS';'oy Oluwatoyin Medicine Store';52947;4
+53284;'FLpAhJgNhuz';'oy Omo Ireti Medicine Store';52947;4
+53285;'RQFMzqQR4Vg';'oy Peejay Pharmacy';52947;4
+53286;'RJT9iVOoTtR';'oy PPFN Clinic Ibadan';52947;4
+53287;'FVRb9AqoS42';'oy Sabfranc Pharmacy';52947;4
+53288;'IRw2E5hu2gZ';'oy St. Lucia Hospital';52947;4
+53289;'uEZvrrBVc69';'oy Suraj Medicine Store';52947;4
+53290;'LimxJzv5Sxv';'oy Tisco Medicine Store';52947;4
+53291;'FqXREAfbiTp';'oy Abraham and Maria Hospital Ibadan';52948;4
+53292;'BiYeCEbzLPv';'oy Alafiatayo Hospital';52948;4
+53293;'hrtTOkF3Fyh';'oy Garden of Eden Hospital, Ojoo';52948;4
+53294;'FhpNIMAyev3';'oy Lafia Hospital';52948;4
+53295;'z6OznYam7IF';'oy Twins Maternity and Clinic Ibadan';52948;4
+53296;'XtD82agtluU';'oy Unity Medical Center, Ibadan';52948;4
+53297;'ppnKFSiuzcc';'oy Faith medical centre Ogbomoso';52949;4
+53298;'yhBE3EfIDe9';'oy Oluwadara clinic';52950;4
+53299;'hV1SwLvD8t5';'oy Bowen University Teaching Hospital';52952;4
+53300;'blv6s3E7NHa';'oy Groupharma Pharmacy';52952;4
+53301;'RKZn5UTdRf3';'oy Shalom Hospital';52952;4
+53302;'kIFYZ3JbQbr';'oy Mobolaji Clinic';52953;4
+53303;'cHe3lmfootg';'oy Baptist hospital';52954;4
+53304;'XgwqmUpiucl';'oy BUTH Hospital';52954;4
+53305;'k2EgSxUaE6L';'oy Goodall Pharmacy';52954;4
+53306;'CLweORLaGxI';'oy Momoh Hospital';52954;4
+53307;'oyBKEfp1VJI';'oy Muslim hospital';52954;4
+53308;'f47Cadjb49f';'oy Omodunbi Pharmacy';52954;4
+53309;'a3qDLZZY8IB';'oy Peamak Hospital';52954;4
+53310;'wjQXDD2hafX';'oy Shekinah Glory Pharmacy';52954;4
+53311;'VLULfCCYZzK';'kd Dan Giwa Hospital';52874;4
+53312;'Z7nR8Z36mz3';'kd Eze 1 Proprietory Patent Medicine Vendor Stores';52874;4
+53313;'aHEK7bapwse';'kd Mega Hospital';52874;4
+53314;'TvFWZLokYeC';'kd Mio Prince Clinic';52874;4
+53315;'jsl5Xxv6J8F';'kd Perfect Hospital';52874;4
+53316;'gO73XfocuRi';'kd PPFN Day Clinic Kaduna';52874;4
+53317;'YGtttpouSoC';'kd PPFN Muazu';52874;4
+53318;'AwMLW37FRNJ';'kd Remzor Proprietory Patent Medicine Vendor Stores';52874;4
+53319;'Uj2jCjDjIiM';'kd Rubex Proprietory Patent Medicine Vendor Stores';52874;4
+53320;'BWbH0V0Dr9M';'kd Sunny Best Proprietory Patent Medicine Vendor Stores';52874;4
+53321;'g8LjzXFqBA4';'kd Trinity Nursing and Maternity';52874;4
+53322;'G1N6pYNsqXh';'kd Wilbasun Hospital';52874;4
+53323;'qwcWSpAp6qb';'kd HAWCO Clinic';52875;4
+53324;'fKc2ftE8qc2';'kd Ayosun Pharmaceuticals';52876;4
+53325;'knKJLZxHiqc';'kd Eagle Holdings Proprietory Patent Medicine Vendor Stores';52876;4
+53326;'nrVPD9TWICT';'kd New Era Hospital';52876;4
+53327;'cH4VO8o87cH';'kd Obi United Proprietory Patent Medicine Vendor Stores';52876;4
+53328;'A2rQNOUfNDV';'kd Ocean Proprietory Patent Medicine Vendor Stores';52876;4
+53329;'HtWzrqFph83';'kd Salem Hospital';52876;4
+53330;'OmMID0mgQ1x';'kd Sunny Proprietory Patent Medicine Vendor Stores';52877;4
+53331;'nMLNhl7IWle';'kd Aiitam Hospital';52878;4
+53332;'oD2qHyD7yd7';'kd Al- Amiru Pharmacy';52878;4
+53333;'zWmd2RVfIoh';'kd Boots and All Pharmacy';52878;4
+53334;'bHpNodzoDGa';'kd El-Mouktar Pharmacy';52878;4
+53335;'sh7lzctSPxs';'kd Ema Hospital and Maternity';52878;4
+53336;'M3LnBT5sC6n';'kd Emjaydee Pharmacy';52878;4
+53337;'PQp5x2lxmKh';'kd FOMWAN Hospital';52878;4
+53338;'VWcQw1i3FsJ';'kd Giwa Hospital';52878;4
+53339;'kzvFErlVd2V';'kd Ishaq Pharmacy';52878;4
+53340;'SvaZlM3jPfl';'kd Ishara Pharmacy';52878;4
+53341;'KGsU3BnZbcE';'kd Ismus Pharmacy';52878;4
+53342;'RjbV9IZ8ftE';'kd Joniks Pharmacy';52878;4
+53343;'RFFS271CQlb';'kd Kabala Hospital';52878;4
+53344;'vqiopDzXorN';'kd Kainnuwa Proprietory Patent Medicine Vendor Stores';52878;4
+53345;'NrV6SK1ODAf';'kd Mediforce Proprietory Patent Medicine Vendor Stores';52878;4
+53346;'PafgJs6wBTr';'kd Nana Pharmacy';52878;4
+53347;'p7y1mShbHuh';'kd Obichris Proprietory Patent Medicine Vendor Stores';52878;4
+53348;'y3Qugp3zHly';'kd Okytex Proprietory Patent Medicine Vendor Stores';52878;4
+53349;'iojQsaE8faA';'kd PPFN Clinic Kaduna';52878;4
+53350;'YEt6NezMYdE';'kd Restoration Hospital and Maternity';52878;4
+53351;'EEuFO5ROIOv';'kd Sufficient Pharmacy';52878;4
+53352;'WiWMmsVaz5m';'kd Suvit Pharmacy';52878;4
+53353;'xvM2FEJM1Mt';'kd Tada Pharmacy';52878;4
+53354;'XreGV99ky3n';'kd Tista Pharmacy';52878;4
+53355;'Rr0RRxJHQbg';'kd Trust Medicine Stores';52878;4
+53356;'Xghg4oboEim';'kd Aitam Hospital';52879;4
+53357;'n3ze5MtqXCU';'kd Amina Hospital';52879;4
+53358;'wJZV37RzLVY';'kd Arizona Proprietory Patent Medicine Vendor Stores';52879;4
+53359;'xWCXDg8mQk1';'kd Bengola Hospital';52879;4
+53360;'cWQX0fbVN9g';'kd Benim Pharmacy';52879;4
+53361;'q9tDCo7JDQ6';'kd Divine Cynco Pharmacy';52879;4
+53362;'oTnt9kjEFVR';'kd Edosit Proprietory Patent Medicine Vendor Stores';52879;4
+53363;'ydD75E3mc2r';'kd Faliko Pharmacy';52879;4
+53364;'lgSF8TR2xI1';'kd Giltooe Aries Hospital';52879;4
+53365;'FnC1DTdzPkf';'kd Godek Pharmacy';52879;4
+53366;'UMG9AGfUXsn';'kd GOVT SEC SCHOOL, Gamagira';52879;4
+53367;'lCVijSGj1fw';'kd Ikeson Patent Medicine Store';52879;4
+53368;'kfVqqsB0Jxc';'kd Iyke Proprietory Patent Medicine Vendor Stores';52879;4
+53369;'hT9yopJrQVy';'kd Jil Proprietory Patent Medicine Vendor Stores';52879;4
+53370;'Vdv96sHHxeh';'kd Larry Proprietory Patent Medicine Vendor Stores';52879;4
+53371;'qHYGogeSN1Q';'kd Maneks Pharmacy';52879;4
+53372;'cUbML61rMOh';'kd Mio Prince Clinic/Maternity Hospital';52879;4
+53373;'qeieU9uKR94';'kd Nefe Pharmacy';52879;4
+53374;'Y3qQb413LQz';'kd Okenwa Drugs';52879;4
+53375;'kkZsJXRdzir';'kd Petrovic Clinic & Maternity';52879;4
+53376;'kkFfMGjkRC4';'kd PPFN Clinic';52879;4
+53377;'T8PUlQOsePY';'kd Prince Faculty Proprietory Patent Medicine Vendor Stores';52879;4
+53378;'TMLqWNZbMP0';'kd Retna Pharmacy';52879;4
+53379;'rbSL8rMpZO3';'kd Salvation Hospital';52879;4
+53380;'IypvCdtyxNM';'kd Shekinnah Glory Proprietory Patent Medicine Vendor Stores';52879;4
+53381;'EvG5H8Z5j7Z';'kd Twinkle Pharmacy';52879;4
+53382;'nknUufm7MYV';'kd White Waters Pharmacy';52879;4
+53383;'LTnlf1MNpBj';'kd Wilbason Hospital';52879;4
+53384;'MHLnMsj4x1m';'kd E.C.W.A Clinic';52880;4
+53385;'wT4zi6Unhsc';'kd Rhema Proprietory Patent Medicine Vendor Stores Kagoro';52880;4
+53386;'Kl1UIK1arub';'kd FOMWAN Hospital Saminaka';52881;4
+53387;'XqfDzOQjsIF';'kd E.C.W.A Hospital Saminaka';52882;4
+53388;'ksf9JcFo22U';'kd Al-Husnah Pharmacy';52884;4
+53389;'F4m8AiyTym6';'kd Almubarak Pharmacy';52884;4
+53390;'xMfm3PlQgBS';'kd Frank Again Proprietory Patent Medicine Vendor Stores';52884;4
+53391;'JzYzDvBEdah';'kd Nwolisa Proprietory Patent Medicine Vendor Stores';52884;4
+53392;'nGZ8dIfe79a';'kd Pal Hospital';52884;4
+53393;'AMHkXlW36Wi';'kd St Luke''s Anglican Hospital';52884;4
+53394;'QhF4NojlXfy';'Kn El-Edris Clinic and Maternity Home';52885;4
+53395;'bU0Pzh0V1nP';'kn Getwell Women and Children Hospital';52885;4
+53396;'x3Azpu2AGdY';'kn Zakirai Nursing Home';52885;4
+53397;'SfXx9IiJIMk';'kn Alpha Clinic and Maternity';52886;4
+53398;'Qxlye01RxxZ';'kn E.C.W.A Clinic and Maternity';52886;4
+53399;'CthUeISaRJG';'kn Good Pasture Clinic and Maternity';52886;4
+53400;'mr0BmWu13bf';'kn Ideal Hospital';52886;4
+53401;'tbl0dE3vDEe';'kn International Clinics and Hospital';52886;4
+53402;'yhGF8Uam0Th';'kn Khadijat Memorial Hospital';52886;4
+53403;'NXlIidYBcH4';'kn Maryland Maternity Home';52886;4
+53404;'sezhRfuj0gT';'kn Modular Clinic and Maternity';52886;4
+53405;'S9U89h2kwA1';'kn PPFN Clinic Kano';52886;4
+53406;'LhztgNbMpLy';'kn Samira Clinic and Maternity';52886;4
+53407;'a1TPBoMv6pb';'kn Khadijat Medical Centre (Khamec)';52887;4
+53408;'m933MT7NIh1';'kn Alheri Clinic';52888;4
+53409;'eb67cfrURWN';'kn Allah Bamu Lafiya Clinic and Maternity';52888;4
+53410;'EypvZBd3uJ4';'kn Balkisu Maternity Home';52888;4
+53411;'VM8FkaPM08i';'kn K Dara Specialist Clinic';52888;4
+53412;'Fe8FJWGUBjq';'kn New Funtua Clinic and Maternity';52888;4
+53413;'EMn1oclxVTm';'kn Okmos Clinic and Maternity';52888;4
+53414;'hQ1zLyd3VKW';'kn PPFN Clinic Katsina';52888;4
+53415;'nMFisMfU1WK';'kn Sauki Clinic and Maternity';52888;4
+53416;'OBd213PD1JQ';'kn Ummul Khairi Maternity Home';52888;4
+53417;'BTlty8BNiN9';'kn Bamaiyi Sai Allah Clinic and Maternity';52889;4
+53418;'nassNaDk9bf';'kn Sanbell Clinic and Maternity';52889;4
+53419;'ERNl3yY0VVC';'kn Oasis Clinic and Maternity';52890;4
+53420;'yn88N1WwZGt';'kn Premier Clinics';52890;4
+53421;'EaOYn2G76YU';'kt Khadija Medical Centre';52891;4
+53422;'HXaPROGbM3A';'kt New Funtua Clinic Limited';52891;4
+53423;'tW2omU39WW4';'kt Alhaja Bilkisu Maternity Health Clinic';52892;4
+53424;'PH2NMMD5MNI';'kt Alheri Clinic';52892;4
+53425;'I8HVObOYS34';'kt Allah Bamu Lafiya Hospital';52892;4
+53426;'JbwNaohZQZc';'kt Dara Specialist Clinic Gidan Dawa';52892;4
+53427;'EKcbq6yul78';'kt K-Dara Specialist';52892;4
+53428;'iA8dKdCEZUi';'kt Oknos Clinic';52892;4
+53429;'DJUoD8yG8XR';'kt PPFN Clinic';52892;4
+53430;'UEslRC2Klbq';'kt Sanko Clinic';52892;4
+53431;'noxRgKl9XDf';'Kt Sauki Clinic';52892;4
+53432;'G48zd8J1pq2';'kt Ummulkhairi Maternity Home';52892;4
+53433;'d5E4NuajaUy';'la Beta Hospital, Agege';52893;4
+53434;'uNtCDfVKLpg';'la Caratiyah Pharmacy';52893;4
+53435;'UB3nOAVYknI';'la Mobonike Medical Centre, Dopemu';52893;4
+53436;'Xw4Ze7fhwn3';'lg Agege PHC Sango';52893;4
+53437;'E41xXYkMZUZ';'la Adebambo Hospital, Amukoko';52894;4
+53438;'Wr6dmzdsPeA';'la AMCPH Hospital Amukoko';52894;4
+53439;'QcvVlJYLDmq';'la Cifax Pharmacy';52894;4
+53440;'UYvYM4uiy1m';'la Divine Glory Medicine Store';52894;4
+53441;'U8iqxsAD9g6';'la Helen Jackson Medicine Store';52894;4
+53442;'UMv9bGeOiLh';'la Ife-Oluwa Family Health Centre, Ajegunle';52894;4
+53443;'RslQrWWowxJ';'la Jogen Pharmacy';52894;4
+53444;'qWs6msTzp58';'la Tolu Medical Centre, Ajegunle';52894;4
+53445;'ZSEaVFGMzbE';'la Tolu Medical Centre Olodi Apapa';52894;4
+53446;'LLyTitXWNCY';'la Acorn Pharmacy';52895;4
+53447;'dPe4RZe1ywg';'la Charther Pharmacy';52895;4
+53448;'WvcTcr9GeQw';'la Crest Hospital, Egan';52895;4
+53449;'VlvVkSTUr7g';'la El-Dunamis Medicals Limited';52895;4
+53450;'foT97hlxqx8';'la Engrace Pharmacy';52895;4
+53451;'gU9pNuuSQVZ';'la Epsilon Pharmacy';52895;4
+53452;'I797yY2FWxq';'la Kardinal Pharmacy';52895;4
+53453;'al0QvF5ceX3';'la Lota Medical Centre, Idimu';52895;4
+53454;'V5hVq68k4nA';'la Maciland Medical Centre, Ijegun';52895;4
+53455;'X8g7JwzzBRV';'la Precious Gift Clinic and Maternity, Egbe';52895;4
+53456;'q0jzBTtg5C6';'la Shefi Hospital, Egbeda';52895;4
+53457;'sAl15qGiJcd';'la Subol Hospital Idimu';52895;4
+53458;'RyTVNE7flpN';'la Adetunji Memorial Hospital, Maza-Maza';52896;4
+53459;'KjEk9XRBuCa';'la Blessed Assurance Maternity Home';52896;4
+53460;'Bduhah3kPbs';'la Sanlix Pharmacy';52896;4
+53461;'dcnWvl5bpC7';'la Abizak Convalescent Centre';52897;4
+53462;'GSfM4sv41pH';'la Chigozie Proprietory Patent Medicine Vendor Stores';52897;4
+53463;'fXfDfCmPctI';'la Jim-Sam Hospital';52897;4
+53464;'H7s4udqUiOR';'la Kunas Proprietory Patent Medicine Vendor Stores';52897;4
+53465;'yCuMOd1TClb';'la Oyeniyi Proprietory Patent Medicine Vendor Stores';52897;4
+53466;'zJXzAWfaB9p';'la Regina Proprietory Patent Medical Vendor Stores';52897;4
+53467;'HzbAwn904uS';'la Rosemus Pharmacy';52897;4
+53468;'CRzOqjt98ov';'la Agbara Medical Centre, Agbara';52898;4
+53469;'pf13vCLhQ0c';'la Christ Foundation Hospital, Morogbo';52898;4
+53470;'yceXqL6XoQC';'la Ola Oki Medical Centre, Badagry';52898;4
+53471;'tPNaQ7jKhGW';'la The Great Physician Hospital, Badagry';52898;4
+53472;'VvcCV9Jt4p3';'la Yankee Pharmacy';52898;4
+53473;'sFijoCSVEN1';'la Hirock Pharmacy';52899;4
+53474;'b6OUVTCZVgQ';'la Light House Pharmacy';52899;4
+53475;'f27IAPVU1I6';'la Multiscope Proprietory Patent Medicine Vendor Stores';52900;4
+53476;'EVT2QIUOTsc';'la Beat Pharmacy';52901;4
+53477;'ghLVjG9xEWs';'la God For Store';52901;4
+53478;'HC3Po656oeH';'la Jay Kay Convalescent and Nursing Home';52901;4
+53479;'k3ThVlTeZKf';'la Mapic 1 Pharmacy';52901;4
+53480;'MdpRJqixqyc';'la Mapic 2 Pharmacy';52901;4
+53481;'muTkaTFIGjC';'la Ololade Ventures Proprietory Patent Medicine Vendor Stores';52901;4
+53482;'ZM6tILoUaVX';'la Chrislad Healthcare';52902;4
+53483;'lDwNsx9bgf6';'la Demsol Pharmacy';52902;4
+53484;'mkxR3ln8YlF';'la Holy City Proprietory Patent Medicine Vendor Stores';52902;4
+53485;'ONCGH3DioIe';'la Kerson Pharmacy';52902;4
+53486;'OcwVPn9Tlr4';'la O King Clinics Mile 12 Ketu';52902;4
+53487;'RvCJ6mKCYK9';'la Roseline Store';52902;4
+53488;'hfGSWYjJtzW';'la Grasol Pharmacy';52903;4
+53489;'JMdsANKPZlO';'la Matan Pharmacy';52903;4
+53490;'uz6aceZdDba';'la Pill Box Pharmacy';52903;4
+53491;'ac7C4Ro4Tr3';'la Bristel Store';52904;4
+53492;'aVS4WX0qnlZ';'la CY Destiny Store';52904;4
+53493;'hGmvEVvgwGH';'la Eberechukwu Proprietory Patent Medicine Vendor Stores';52904;4
+53494;'EImLj6xX9xi';'la Shalom Stores';52904;4
+53495;'RB61M0JFwSb';'la De Marvel Hospital';52905;4
+53496;'F0yuiFsf9Ow';'la Kiladejo Hospital, Okoko-Maiko';52905;4
+53497;'LUK2Q2dnycJ';'la Manifel Medical Centre, Ikotun';52905;4
+53498;'IFi6NAyaOpA';'la Sabo Crown Hospital Ajangbadi';52905;4
+53499;'xqpQzp70JO0';'la Treasure Hospital, Unity Estate Iba';52905;4
+53500;'TYayziBYS1c';'la Vimek Pharmacy';52905;4
+53501;'WwvAbjvZhOc';'la Careview Pharmacy';52906;4
+53502;'f8Y3YxwnQhQ';'la Farimar Pharmacy';52906;4
+53503;'pwMUXhUuQPJ';'la PPFN Clinic Isolo and Annex';52906;4
+53504;'nNbx7UKcPV3';'la SOS Social Centre Ejigbo';52906;4
+53505;'epJa82rSyQE';'la Austin Benz Proprietory Patent Medicine Vendor Stores';52907;4
+53506;'T9fCvkEA93Z';'la Gabisco Proprietory Patent Medicine Vendor Stores';52907;4
+53507;'d5rlf6UNByW';'la Robson Pharmacy';52907;4
+53508;'iNx9u9T3ibe';'la Shallom Stores';52907;4
+53509;'aeCQRWfv9RB';'la Stanley Proprietory Patent Medicine Vendor Stores';52907;4
+53510;'Haqx6yKNlBy';'la Afro Health Pharmacy';52908;4
+53511;'xlrkJHPJLCO';'la Bee Hive Nursing Home Aguda';52908;4
+53512;'VNRs9mSgwW6';'la Frontliner Pharmacy';52908;4
+53513;'eDxTDfCX0wz';'la Mebik Pharmacy';52908;4
+53514;'ykttDscLTmH';'la Olasunkanmi Nursing Home, Ijesha- tedo';52908;4
+53515;'doHTVbZu694';'la Santus Pharmacy and Superstores';52908;4
+53516;'J6zjd8cZSKb';'be Atuna Clinic and Maternity';52812;4
+53517;'CpebUrTIRRP';'be Baki Clinic and Maternity';52812;4
+53518;'ssRwOrJXC7E';'be Fagwa Clinic and Hospital';52812;4
+53519;'HThLXA2NFiq';'be Fagwa Clinic and Maternity';52812;4
+53520;'BeGaGuGBcYu';'be Myom Clinic and Maternity';52812;4
+53521;'zs8AlfWkyIE';'be NKST Reproductive Health Mkar';52812;4
+53522;'iqZ4tyKyb7f';'be Victory Cilnic and Maternity General Hospital';52812;4
+53523;'S2VUossQgiF';'be Benue Women';52813;4
+53524;'OQz4R8OyDb7';'be Best Based Clinic and Maternity';52813;4
+53525;'wRfatFTsFEA';'be Hope Hospital Makurdi';52813;4
+53526;'ZJTroKNA5FF';'be Mulit Care Hospital Makurdi';52813;4
+53527;'AyaVwFaTKmP';'be Musab Hospital Makurdi';52813;4
+53528;'EMP9ou775gX';'be Queens Clinic Makurdi';52813;4
+53529;'Y4wBcxfjTF2';'be Shater Clinic';52813;4
+53530;'s1VgahNTNOy';'be Wuseter Clinic and Maternity';52813;4
+53531;'Y3lO0hGcprp';'be Christain Hospital and Maternity Home';52814;4
+53532;'VltqYrW3nTn';'be His Banner''s Clinic and Maternity';52814;4
+53533;'gv931npfbwN';'be Mount Zion Gate Otukpo';52814;4
+53534;'GLqkVY9h8SH';'be PPFN Clinic Otukpo';52814;4
+53535;'e7mveMUaSe0';'be St Daniel Hospital';52814;4
+53536;'rXsaliFsuK4';'be St Monica Clinic and Maternity';52814;4
+53537;'o8mkzQnKSXB';'be St Theresa Clinic And Maternity';52814;4
+53538;'hYab1FW2KjX';'be St Veronica Clinic and Maternity';52814;4
+53539;'fKcgNW40I5o';'be Akainewe Clinc and Maternity';52815;4
+53540;'Db5ZjUt3QKB';'be City Clinc and Maternity';52815;4
+53541;'IxJnhHjELbu';'be Jorda Clinic and Maternity';52815;4
+53542;'C5Nu4Iviagu';'be NKST Hospital Zaki/Biam';52815;4
+53543;'JM6vMufqqOL';'be Woma clinic and Maternity';52815;4
+53544;'U3MIChdDuwm';'og First Contact Specialist Hospital';52919;4
+53545;'psUJysb2FNL';'og Joseph and Christiana Specialist Hospital';52919;4
+53546;'JnfsB9CHgLK';'og Omotara Hospital';52919;4
+53547;'C0YgNArw2AZ';'og Yadsot Clinic';52919;4
+53548;'TTixQLUgYFO';'og Amda Hospital';52928;4
+53549;'l6LWG5GbCfx';'og Anu-olu Clinic and Maternity Home';52928;4
+53550;'hGcejsuCbkl';'og Ariset Medical Centre: Clinic and Maternity Home';52928;4
+53551;'qtA1E7Yi3Xt';'og De-Twins Clinic';52928;4
+53552;'oKFlGLIlecf';'og Kaytuns Clinic: Family Planning Unit and Maternity Home';52928;4
+53553;'ybzkyCQzPqs';'og Lifeline Medical Centre';52928;4
+53554;'EpdUwBZWxJi';'og Twins Specialist Hospital';52928;4
+53555;'Sof3WrUKW6m';'og Samsteven Hospital';52920;4
+53556;'Bn3Bwub6x8z';'og Total Health Hospital';52920;4
+53557;'fRQenLxv9y8';'og Ope-olu Clinic';52921;4
+53558;'bGvOBJUyhht';'og True vine Clinic';52921;4
+53559;'dd08su8duDL';'og Healing Spring Medical Centre';52922;4
+53560;'xzVC4pK0Aq2';'og Overcomers Specialist Hospital';52922;4
+53561;'DIXkmw57Ozi';'og Mak-Mercy Hospital';52924;4
+53562;'NksAETKDzg7';'og Otobi Clinic and Maternity Home';52924;4
+53563;'BoszGQIhNVB';'og God''s time Special Clinic and Maternity Centre';52925;4
+53564;'JBHaEGH2uxJ';'og Mayowa Hospital; Clinic and Maternity Home';52925;4
+53565;'G1MqhnAgdlb';'og Omo-arewa Health Care Foundation';52927;4
+53566;'eoQgl9qmHqs';'og Ade Maternity Home';52929;4
+53567;'HZuaqub6t9e';'og Phrontile Clinic';52929;4
+53568;'DTJ3PeMqZXJ';'og Tazan Maternity Home';52929;4
+53569;'D0Y5Dv6tGK1';'og Akinolu Faith Clinic and Maternity Home';52930;4
+53570;'ZlU9EY5Bn9f';'og Ore-ofe Clinic and Maternity Home';52930;4
+53571;'zeH5zl8qcdF';'ab Bonitas Pharmacy';52797;4
+53572;'Mwm4XQHwGJ2';'ab Chrisdom Pharmacy';52797;4
+53573;'kZNH5tpg3N6';'ab Euna Hospital';52797;4
+53574;'ywlcx9J3QZx';'ab Ezoni Pharmacy';52797;4
+53575;'p6nR2lESqlU';'ab Kelechi Hospital';52797;4
+53576;'noqKF88cFyi';'ab Melbe Proprietory Patent Medicine Vendor Stores';52797;4
+53577;'nsAXIHuCNB5';'ab Onyemaechi Maternity Home';52797;4
+53578;'SxUKqjGIpwE';'ab Promac Pharmacy';52797;4
+53579;'Rq6x5hh7QaF';'ab Rufus Obi Pharmacy';52797;4
+53580;'l3NuFRQMFvr';'ab Twiga Pharmacy';52797;4
+53581;'s2Pu5l8QJUK';'ab Ziga Pharmacy';52797;4
+53582;'Oxoio6gNmkC';'ab Chinwe Maternity Home';52798;4
+53583;'CORF1sU4O5Q';'ab Clehanson Hospital';52798;4
+53584;'sqEXmFapL7d';'ab Faith Foundation Hospital';52798;4
+53585;'x8aY64IYv2z';'ab God Gives Maternity Home';52798;4
+53586;'TvnHy0V0jkC';'ab Princess Mary Specialist Hosptial';52798;4
+53587;'dsDn5GXLLnX';'ab Rosevine Hospital';52798;4
+53588;'wfqiA9F29DE';'ab Sda Hospital and MBH';52798;4
+53589;'OxcoTnkaKCV';'ab Shammah Christian Hospital';52798;4
+53590;'OkBSvo5O99m';'ab St Anthony''s Hospital';52798;4
+53591;'WErsZuTTeIP';'ab Calvary Christian Hospital';52799;4
+53592;'tOnNSc5XfTu';'ab Calvary Cottage Hospital';52799;4
+53593;'mPNxmpIuVm3';'ab Ihunanya Specialist Hospital';52799;4
+53594;'ympA6EtgInb';'ab Simon Specialist Hospital';52799;4
+53595;'qs173udBCWZ';'ab St Andrews Maternity Home';52799;4
+53596;'zn335POAn99';'ab Yumed Pharmacy';52799;4
+53597;'KeNxAFCR4WG';'ab Anelechi Hospital';52800;4
+53598;'yx3t16d9Ehw';'ab Destiny Proprietory Patent Medicine Vendor Stores';52800;4
+53599;'EmWURb8H6Qm';'ab Divine Pharmacy';52800;4
+53600;'q4Upl33gMLf';'ab Ejike Proprietory Patent Medicine Vendor Stores';52800;4
+53601;'gRzYskfkndP';'ab Family Pharmacy';52800;4
+53602;'agQX8fz9N8Z';'ab Gods Favour Pharmacy';52800;4
+53603;'NV7muMyucGY';'ab Godwish Uche Pharmacy';52800;4
+53604;'wOwfQjPLagA';'ab Nwachinemere Hospital';52800;4
+53605;'Lry9WpbZW8R';'ab Thompson Pharmacy';52800;4
+53606;'WUJ5901cbrH';'im Ceejex Pharmacy';52867;4
+53607;'YKiSZKmduu3';'im Chinoyerem Maternity Home';52867;4
+53608;'Wh2vAniSap2';'im Crown Medical Centre';52867;4
+53609;'r1XSWfrQlmM';'im Mark of Glory Hospital and Maternity';52867;4
+53610;'SrsPPDH3RF3';'im Perpetual Hospital and MAternity Owerri';52867;4
+53611;'PEiXX43R1Og';'im St Charles Clinic Owerri';52867;4
+53612;'WhUzsQ3REFL';'im Umuowa Cottage Hospital';52868;4
+53613;'qb5ondn9yEU';'im Christian Medical Centre';52869;4
+53614;'x65R7Blj2ns';'im Longinus Proprietory Patent Medicine Vendor Stores';52870;4
+53615;'M0ASeLjs4Cp';'im Blessed Proprietory Patent Medicine Vendor Stores';52871;4
+53616;'zQ01g5LBzZB';'im Chiemeka Proprietory Patent Medicine Vendor Stores';52871;4
+53617;'BirnirxrLxs';'im Chikatony Pharmacy';52871;4
+53618;'NkI6kr2TZ2X';'im Chinwe Proprietory Patent Medicine Vendor Stores';52871;4
+53619;'iHGrhwYDMAS';'im Chi Proprietory Patent Medicine Vendor Stores';52871;4
+53620;'YYZYkEh5VBE';'im Destiny Proprietory Patent Medicine Vendor Stores';52871;4
+53621;'HVjYvgLBze0';'im Djons Pharmacy';52871;4
+53622;'rz9oFivFLGD';'im Eve Specialist Women Hospital';52871;4
+53623;'XURyVV5RurD';'im God Is Able Proprietory Patent Medicine Vendor Stores';52871;4
+53624;'nCLCqPK3Utu';'im Godwish Anyimoore Proprietory Patent Medicine Vendor Stores';52871;4
+53625;'sOfFYvDhjVs';'im Isseke Proprietory Patent Medicine Vendor Stores';52871;4
+53626;'ABa5TvqOAJB';'im Ivory Clinic';52871;4
+53627;'oxubo4YzY7x';'im Jeluke Proprietory Patent Medicine Vendor Stores';52871;4
+53628;'euOTCQBjAXP';'im Kelechukwu Proprietory Patent Medicine Vendor Stores';52871;4
+53629;'gYkNP9gVVxr';'im Natty Proprietory Patent Medicine Vendor Stores';52871;4
+53630;'wZ5Tu8ybMuR';'im Obinezu Proprietory Patent Medicine Vendor Stores';52871;4
+53631;'ZNlVt5mqo2c';'im Pinnacle Proprietory Patent Medicine Vendor Stores';52871;4
+53632;'eK5xrrGcUzc';'im Pottpouri Pharmacy';52871;4
+53633;'rpM1X9xLVO8';'im Aslem Proprietory Patent Medicine Vendor';52872;4
+53634;'CEe4iQeKVxm';'im Banax Pharmacy';52872;4
+53635;'oU6koHmqZLP';'im Belmont Specialist Hospital';52872;4
+53636;'WUwcQBAjspl';'im Cacy Pharmacy';52872;4
+53637;'g2eDqgLNOuR';'im Della Pharmacy';52872;4
+53638;'wB2tSNa4pCB';'im Drugwyse Pharmacy';52872;4
+53639;'UVrRhGbtSt7';'im Felicy Proprietory Patent Medicine Vendor Stores';52872;4
+53640;'ClLdqPSYh49';'im Mabel Proprietory Patent Medicine Vendor Stores';52872;4
+53641;'RImPzh30aY8';'im Pathway Pharmacy';52872;4
+53642;'XA31FBjoN5w';'im Pharmasense Pharmacy';52872;4
+53643;'TnRsNOo1fe8';'im Planned Parenthood Federation Of Nigeria';52872;4
+53644;'xCvPl7YZ3Wv';'im UC Golden Maternity Home';52872;4
+53645;'JnBfRqOnHCx';'im Vinedrug Pharmacy';52872;4
+53646;'A33FxE5uFJ7';'im Chadoma Pharmacy';52873;4
+53647;'anoUXIVkDPq';'im God''s Gift Maternity Home';52873;4
+53648;'Nv4ftVOKe7w';'im Jesus Redeemed People''s Hospital';52873;4
+53649;'h1bTxwxhjou';'im Ozondu Proprietory Patent Medicine Vendor Stores';52873;4
+53650;'FkWglhHTTxo';'im Prisca Proprietory Patent Medicine Vendor Stores';52873;4
+53651;'dfhPwGr6Wjo';'im Queen Jij Proprietory Patent Medicine Vendor Stores';52873;4
+53652;'F1DCZGkvi7z';'im Ricky Proprietory Patent Medicine Vendor Stores';52873;4
+53653;'O5h5TlL7VrS';'im Rosanna Medical Centre';52873;4
+53654;'ci6ZKXkMCRM';'im Ruth Proprietory Patent Medicine Vendor Stores';52873;4
+53655;'pD3cTQwdW1k';'ad Daama specialist hospital';52803;4
+53656;'GQRlhV6znsF';'ad Gal Bose Hospital';52803;4
+53657;'zy6qFrTO40e';'ad Gogo Abu Clinic and Maternity';52803;4
+53658;'dezoq5xq7xe';'ad Jimeta Clinic and Maternity';52803;4
+53659;'Fjx3DSU0MyP';'ad Luthercares Comprehensive Health Centre';52803;4
+53660;'BmySVrO95k9';'ad mercyland clinic';52803;4
+53661;'VcTzEgx8ORA';'ad NEW BOSHANG CLINIC';52803;4
+53662;'DyHOSsWJCND';'ad Peace Hospital Gombe';52803;4
+53663;'aVC8eu8Cugh';'ad Trust Medical Gombi';52803;4
+53664;'StKdCnQ5tpe';'ab Aba North Ward';52796;4
+53665;'abX67yoaOwj';'go Doma Hospital Gombe';52866;4
+53666;'RqmNyks4ScW';'go Hamdala specialist clinic and maternity';52866;4
+53667;'Gbedgc45clh';'go Jewel Specialist Hospital Gombe';52866;4
+53668;'rMnH796T2Uv';'go Miyetti Hospital';52866;4
+53669;'n8uXLM4QmX6';'go Musaba Medical Centre';52866;4
+53670;'dDDQGhEpfAO';'go PPFN Clinic Gombe';52866;4
+53671;'D9F1Ob5g2Up';'go Sabana Medical centre Gombe';52866;4
+53672;'NjG0cfECt3A';'go Yarma Hospital';52866;4
