@@ -22,12 +22,14 @@ package org.eyeseetea.malariacare;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.FragmentTransaction;
+import android.app.LocalActivityManager;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TabHost;
 
 import com.squareup.otto.Subscribe;
 
@@ -47,19 +49,22 @@ public class DashboardActivity extends BaseActivity {
 
     private final static String TAG=".DDetailsActivity";
     private boolean reloadOnResume=true;
+    TabHost tabHost;
+    LocalActivityManager mlam;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Log.d(TAG, "onCreate");
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.fragment_dashboard);
-
+        setContentView(R.layout.tab_dashboard);
         try {
             initDataIfRequired();
             loadSessionIfRequired();
         } catch (IOException e){
             Log.e(".DashboardActivity", e.getMessage());
         }
+        //Tabs
 
         if (savedInstanceState == null) {
             DashboardUnsentFragment detailsFragment = new DashboardUnsentFragment();
@@ -75,7 +80,40 @@ public class DashboardActivity extends BaseActivity {
             ftr.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
             ftr.commit();
         }
+        /* TabHost will have Tabs */
+        mlam = new LocalActivityManager(this, false);
+        tabHost = (TabHost)findViewById(R.id.tabHost);
+        mlam.dispatchCreate(savedInstanceState);
+        tabHost.setup(mlam );
+        /* TabSpec used to create a new tab.
+        * By using TabSpec only we can able to setContent to the tab.
+        * By using TabSpec setIndicator() we can set name to tab. */
 
+        TabHost.TabSpec tab_plan = tabHost.newTabSpec("tab_plan");
+        TabHost.TabSpec tab_monitor= tabHost.newTabSpec("tab_monitor");
+        TabHost.TabSpec tab_assess = tabHost.newTabSpec("tab_assess");
+        TabHost.TabSpec tab_improve= tabHost.newTabSpec("tab_improve");
+
+        /* TabSpec setContent() is used to set content for a particular tab. It can be a R.id.layout or a .Class */
+
+        tab_plan.setContent(R.id.tab_plan_layout);
+        tab_plan.setIndicator("", getResources().getDrawable(R.drawable.tab_plan));
+
+        tab_monitor.setContent(R.id.tab_monitor_layout);
+        tab_monitor.setIndicator("", getResources().getDrawable(R.drawable.tab_monitor));
+
+
+        tab_assess.setContent(R.id.tab_assess_layout);
+        tab_assess.setIndicator("", getResources().getDrawable(R.drawable.tab_assess));
+
+        tab_improve.setContent(R.id.tab_improve_layout);
+        tab_improve.setIndicator("", getResources().getDrawable(R.drawable.tab_improve));
+
+        /* Add tabSpec to the TabHost to display. */
+        tabHost.addTab(tab_assess);
+        tabHost.addTab(tab_improve);
+        tabHost.addTab(tab_plan);
+        tabHost.addTab(tab_monitor);
 
         setTitle(getString(R.string.app_name) + " app - " + Session.getUser().getName());
     }
@@ -156,12 +194,14 @@ public class DashboardActivity extends BaseActivity {
         Log.d(TAG, "onResume");
         super.onResume();
         getSurveysFromService();
+        mlam.dispatchResume();
     }
 
     @Override
     public void onPause(){
         Log.d(TAG, "onPause");
         super.onPause();
+        mlam.dispatchPause(isFinishing());
     }
 
     public void setReloadOnResume(boolean doReload){
