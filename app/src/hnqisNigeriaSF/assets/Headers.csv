@@ -8,3 +8,79 @@
 9;'Equip, Sup, Cons';'Equipment, Supplies and Consumables';2;4
 10;'Doc & Rept';'Document and Reporting';3;4
 59;'RDT';'RDT Procedure';4;1
+60;'Counsel';'Contraceptive Counseling';1;6
+61;'OCP';'Oral Contraceptive Pills';2;6
+62;'Inj';'Injectables';3;6
+63;'IUCD Ins';'IUCD Insertion';4;6
+64;'IUCD Rem';'IUCD Removal';5;6
+65;'Imp Ins';'Implant Insertion';6;6
+66;'Imp Rem';'Implant Removal';7;6
+67;'Intro';'Introduction';1;7
+68;'Ask or Check';'Ask or Check';2;7
+69;'Care';'Care';3;7
+70;'EC';'Client education and counseling';4;7
+71;'WE';'Work Environment';5;7
+72;'Pre-Ins';'Pre-Insertion (Clinical)';1;8
+73;'Ins';'Insertion';2;8
+74;'Post-Ins';'Post-insertion';3;8
+75;'Follow Up';'Procedure/Follow-up';4;8
+76;'WE';'Work Environment';5;8
+77;'MPE/E';'Management of Pre-Eclampsia/Eclampsia';1;9
+78;'MAH';'Management of Antepartum Hemorrhage';2;9
+79;'MPPH';'Management of Post Partum Hemorrhage';3;9
+80;'WE';'Work Environment';4;9
+81;'Pre-Del';'Pre-delivery';1;10
+82;'Del';'Delivery';2;10
+83;'Post-Del';'Immediate Post-delivery';3;10
+84;'WE';'Work Environment';4;10
+85;'Pre-Scr';'Pre-Screening';1;11
+86;'Pat scr';'Patient screening';2;11
+87;'WE1';'Work Environment 1';3;11
+88;'Pre-Cryo';'Pre-Cryotherapy Counselling';4;11
+89;'Cryo';'Cryotherapy';5;11
+90;'Inq';'Inquiry';1;12
+91;'Exam';'Examination';2;12
+92;'Treat';'Treatment';3;12
+93;'Couns';'Counseling';4;12
+94;'WE';'Work Environment';5;12
+95;'NR';'Newborn Resuscitation';1;13
+96;'HTC';'HIV Testing and Counseling';1;14
+97;'Care Tx';'HIV Care and Treatment';2;14
+98;'WE';'Work Environment';3;14
+99;'HTN';'HTN screening , classification and staging';1;15
+100;'Assess';'History taking and assessment';2;15
+101;'Diag_Mgmt';'Diagnosis and Management as per protocol';3;15
+102;'WE';'Work Environment';4;15
+103;'Licenses';'Licenses';1;16
+104;'GIE';'General Infrastructure and Equipment';2;16
+105;'SDGs';'Service delivery guidelines (job aids, algorithms etc.)';3;16
+106;'Commodities';'Commodities';4;16
+107;'Doc';'Documentation';5;16
+108;'Post Cryo';'Post Cryotherapy Procedures';6;11
+109;'WE2';'Work Environment 2';7;11
+110;;'Introduction';1;17
+111;;'Inquiry';2;17
+112;;'Physical Examination';3;17
+113;;'RDT Procedure';4;17
+114;;'Diagnosis and Treatment';5;17
+115;;'Counseling';6;17
+116;;'Work Environment';7;17
+117;;'Initial Assessment';1;18
+118;;'Counseling';2;18
+119;;'Medical evaluation';3;18
+120;;'Miso for Post Abortion Care (mPAC)';4;18
+121;;'Manual Vacuum Aspiration for Post Abortion Care';5;18
+133;;'Inquiry';1;19
+134;;'Physical Examination';2;19
+135;;'Post-examination';3;19
+136;;'Diagnosis and Treatment';4;19
+137;;'Counseling';5;19
+138;;'Work Environment';6;19
+139;;'Inquiry';7;19
+140;;'Physical Examination';8;19
+141;;'Post-examination';9;19
+142;;'Diagnosis and Treatment';10;19
+143;;'Counseling';11;19
+144;;'Work Environment';12;19
+145;;'Emergency Contraceptive Pills';8;6
+146;;'IUD for Emergency Contraception';9;6
