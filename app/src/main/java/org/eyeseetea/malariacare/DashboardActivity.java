@@ -30,6 +30,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TabHost;
+import android.widget.TextView;
 
 import com.squareup.otto.Subscribe;
 
@@ -128,6 +129,11 @@ public class DashboardActivity extends BaseActivity {
         };
         tabHost.setOnTabChangedListener(tabChangeListener);
         setTitle(getString(R.string.app_name) + " app - " + Session.getUser().getName());
+        android.support.v7.app.ActionBar actionBar =  getSupportActionBar();
+        actionBar.setDisplayShowCustomEnabled(true);
+        actionBar.setCustomView(R.layout.action_bar_title_layout);
+        ((TextView) findViewById(R.id.action_bar_title)).setText(getString(R.string.app_name));
+        ((TextView) findViewById(R.id.action_bar_subtitle)).setText(Session.getUser().getName() +"\n"+"line3"+"\n"+"line5");
     }
     public void initImprove(){
         unsentFragment = new DashboardUnsentFragment();

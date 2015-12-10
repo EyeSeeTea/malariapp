@@ -58,7 +58,7 @@ public class EyeSeeTeaApplication extends Dhis2Application  {
     @Override
     public void onCreate() {
         super.onCreate();
-        Fabric.with(this, new Crashlytics());
+        //Fabric.with(this, new Crashlytics());
         PreferencesState.getInstance().init(getApplicationContext());
         LocationMemory.getInstance().init(getApplicationContext());
         FlowManager.init(this, "_EyeSeeTeaDB");
