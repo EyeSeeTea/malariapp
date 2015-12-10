@@ -38,6 +38,7 @@ import org.eyeseetea.malariacare.database.model.User;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.fragments.DashboardSentFragment;
 import org.eyeseetea.malariacare.fragments.DashboardUnsentFragment;
+import org.eyeseetea.malariacare.fragments.MonitorFragment;
 import org.eyeseetea.malariacare.services.SurveyService;
 import org.hisp.dhis.android.sdk.events.UiEvent;
 
@@ -51,7 +52,9 @@ public class DashboardActivity extends BaseActivity {
     private boolean reloadOnResume=true;
     TabHost tabHost;
     LocalActivityManager mlam;
-
+    MonitorFragment monitorFragment;
+    DashboardUnsentFragment unsentFragment;
+    DashboardSentFragment sentFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,22 +67,12 @@ public class DashboardActivity extends BaseActivity {
         } catch (IOException e){
             Log.e(".DashboardActivity", e.getMessage());
         }
-        //Tabs
-
-        if (savedInstanceState == null) {
-            DashboardUnsentFragment detailsFragment = new DashboardUnsentFragment();
-            detailsFragment.setArguments(getIntent().getExtras());
-            FragmentTransaction ft = getFragmentManager().beginTransaction();
-            ft.add(R.id.dashboard_details_container, detailsFragment);
-            ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-            ft.commit();
-            DashboardSentFragment completedFragment = new DashboardSentFragment();
-            detailsFragment.setArguments(getIntent().getExtras());
-            FragmentTransaction ftr = getFragmentManager().beginTransaction();
-            ftr.add(R.id.dashboard_completed_container, completedFragment);
-            ftr.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-            ftr.commit();
+        if(savedInstanceState==null) {
+            initImprove();
+            initAssess();
+            initMonitor();
         }
+        //Tabs
         /* TabHost will have Tabs */
         mlam = new LocalActivityManager(this, false);
         tabHost = (TabHost)findViewById(R.id.tabHost);
@@ -110,14 +103,56 @@ public class DashboardActivity extends BaseActivity {
         tab_improve.setIndicator("", getResources().getDrawable(R.drawable.tab_improve));
 
         /* Add tabSpec to the TabHost to display. */
+        tabHost.addTab(tab_plan);
         tabHost.addTab(tab_assess);
         tabHost.addTab(tab_improve);
-        tabHost.addTab(tab_plan);
         tabHost.addTab(tab_monitor);
 
+        /** Defining Tab Change Listener event. This is invoked when tab is changed */
+        TabHost.OnTabChangeListener tabChangeListener = new TabHost.OnTabChangeListener() {
+
+            @Override
+            public void onTabChanged(String tabId) {
+
+                /** If current tab is android */
+                if(tabId.equalsIgnoreCase("tab_improve")){
+                    unsentFragment.reloadUnsentSurveys();
+                }else if(tabId.equalsIgnoreCase("tab_assess")){
+                    sentFragment.reloadSentSurveys();
+                }else if(tabId.equalsIgnoreCase("tab_plan")){
+                    //tab_plan on click code
+                }else if(tabId.equalsIgnoreCase("tab_monitor")){
+                        monitorFragment.reloadSentSurveys();
+                }
+            }
+        };
+        tabHost.setOnTabChangedListener(tabChangeListener);
         setTitle(getString(R.string.app_name) + " app - " + Session.getUser().getName());
     }
-
+    public void initImprove(){
+        unsentFragment = new DashboardUnsentFragment();
+        unsentFragment.setArguments(getIntent().getExtras());
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        ft.add(R.id.dashboard_details_container, unsentFragment);
+        ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+        ft.commit();
+    }
+    public void initAssess(){
+        sentFragment = new DashboardSentFragment();
+        unsentFragment.setArguments(getIntent().getExtras());
+        FragmentTransaction ftr = getFragmentManager().beginTransaction();
+        ftr.add(R.id.dashboard_completed_container, sentFragment);
+        ftr.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+        ftr.commit();
+    }
+    public void initMonitor(){
+        monitorFragment = new MonitorFragment();
+        monitorFragment.setArguments(getIntent().getExtras());
+        FragmentTransaction ftm = getFragmentManager().beginTransaction();
+        ftm.add(R.id.dashboard_charts_container, monitorFragment);
+        ftm.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+        ftm.commit();
+    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_dashboard, menu);
