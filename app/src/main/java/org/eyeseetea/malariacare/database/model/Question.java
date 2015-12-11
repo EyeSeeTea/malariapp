@@ -275,13 +275,18 @@ public class Question extends BaseModel {
     }
 
    public List<Question> getQuestionChildren() {
-        if (this.children == null){
-            this.children = new Select().from(Question.class)
-                    .where(Condition.column(Question$Table.ID_QUESTION)
-                            .eq(this.getId_question()))
-                    .orderBy(true, Question$Table.ORDER_POS).queryList();
-        }
-        return this.children;
+       if(Utils.isPictureQuestion()) {
+           if (this.children == null) {
+               this.children = new Select().from(Question.class)
+                       .where(Condition.column(Question$Table.ID_QUESTION)
+                               .eq(this.getId_question()))
+                       .orderBy(true, Question$Table.ORDER_POS).queryList();
+           }
+           return this.children;
+       }
+       else{
+           return getChildren();
+       }
     }
     @OneToMany(methods = {OneToMany.Method.SAVE, OneToMany.Method.DELETE}, variableName = "questionRelations")
     public List<QuestionRelation> getQuestionRelations() {
@@ -341,6 +346,8 @@ public class Question extends BaseModel {
 
     @OneToMany(methods = {OneToMany.Method.SAVE, OneToMany.Method.DELETE}, variableName = "children")
     public List<Question> getChildren() {
+        if(!Utils.isPictureQuestion()){
+
         if (this.children == null) {
 
             //No matches no children
@@ -376,6 +383,9 @@ public class Question extends BaseModel {
                     .and(Condition.column(ColumnAlias.columnWithTable("qr", QuestionRelation$Table.OPERATION)).eq(QuestionRelation.PARENT_CHILD)).queryList();
         }
         return this.children;
+
+        }
+        else{ return getQuestionChildren();}
     }
 
     public boolean hasRelatives() {return !getRelatives().isEmpty(); }

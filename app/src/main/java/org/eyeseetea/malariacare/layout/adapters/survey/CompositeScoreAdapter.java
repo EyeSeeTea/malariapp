@@ -33,32 +33,54 @@ import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 import org.eyeseetea.malariacare.utils.Utils;
 import org.eyeseetea.malariacare.views.CustomTextView;
 
+import java.util.List;
+
 /**
  * Created by Jose on 21/04/2015.
  */
 public class CompositeScoreAdapter extends ATabAdapter {
 
+
+    List<CompositeScore> items;
+    String tab_name;
+
+    public CompositeScoreAdapter(List<CompositeScore> items, Context context, int id_layout, Tab tab) {
+        super(tab, context, id_layout);
+        this.items = items;
+    }
+
     public CompositeScoreAdapter(Tab tab, Context context, int id_layout) {
         super(tab, context, id_layout);
     }
 
-    /**
-     * Factory method to build a scored/non scored layout according to tab type.
-     *
-     * @param tab
-     * @param context
-     * @return
-     */
     public static CompositeScoreAdapter build(Tab tab, Context context) {
+        if(Utils.isPictureQuestion())
+            return new CompositeScoreAdapter(tab, context, R.layout.composite_score_header_pictureapp);
         return new CompositeScoreAdapter(tab, context, R.layout.composite_score_tab);
+    }
+    @Override
+    public void initializeSubscore() {
+
+        ListView compositeScoreListView = (ListView) ((Activity) getContext()).findViewById(R.id.listView);
+        ViewGroup header;
+        if(Utils.isPictureQuestion()) {
+            header  = (ViewGroup) getInflater().inflate(R.layout.composite_score_header_pictureapp, compositeScoreListView, false);
+        }
+        else{
+            header = (ViewGroup) getInflater().inflate(R.layout.composite_score_header, compositeScoreListView, false);
+        }
+        compositeScoreListView.addHeaderView(header);
     }
 
     @Override
-    public void initializeSubscore() {
-        ListView compositeScoreListView = (ListView) ((Activity) getContext()).findViewById(R.id.listView);
+    public String getName() {
+        return tab_name;
+    }
 
-        ViewGroup header = (ViewGroup) getInflater().inflate(R.layout.composite_score_header, compositeScoreListView, false);
-        compositeScoreListView.addHeaderView(header);
+
+    @Override
+    public Object getItem(int position) {
+        return items.get(position);
     }
 
     @Override
@@ -68,9 +90,15 @@ public class CompositeScoreAdapter extends ATabAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        View rowView = getInflater().inflate(R.layout.composite_scores_record, parent, false);
+        View rowView = null;
 
         CompositeScore item = (CompositeScore) getItem(position);
+        if(Utils.isPictureQuestion()) {
+            rowView = getInflater().inflate(R.layout.composite_scores_record_pictureapp, parent, false);
+        }
+        else{
+            rowView = getInflater().inflate(R.layout.composite_scores_record, parent, false);
+        }
 
         ((CustomTextView)rowView.findViewById(R.id.code)).setText(item.getHierarchical_code());
         ((CustomTextView)rowView.findViewById(R.id.label)).setText(item.getLabel());

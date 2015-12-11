@@ -54,13 +54,9 @@ import org.eyeseetea.malariacare.database.model.Tab;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.layout.adapters.general.TabArrayAdapter;
 import org.eyeseetea.malariacare.layout.adapters.survey.AutoTabAdapter;
-import org.eyeseetea.malariacare.layout.adapters.survey.AutoTabAdapterPictureApp;
 import org.eyeseetea.malariacare.layout.adapters.survey.CompositeScoreAdapter;
-import org.eyeseetea.malariacare.layout.adapters.survey.CompositeScoreAdapterPictureApp;
 import org.eyeseetea.malariacare.layout.adapters.survey.CustomAdherenceAdapter;
-import org.eyeseetea.malariacare.layout.adapters.survey.CustomAdherenceAdapterPictureApp;
 import org.eyeseetea.malariacare.layout.adapters.survey.CustomIQTABAdapter;
-import org.eyeseetea.malariacare.layout.adapters.survey.CustomIQTABAdapterPictureApp;
 import org.eyeseetea.malariacare.layout.adapters.survey.CustomReportingAdapter;
 import org.eyeseetea.malariacare.layout.adapters.survey.DynamicTabAdapter;
 import org.eyeseetea.malariacare.layout.adapters.survey.ITabAdapter;
@@ -492,7 +488,7 @@ try {
         }
         Tab tab;
         if(Utils.isPictureQuestion())
-            tab = ((AutoTabAdapterPictureApp) adapter).getTab();
+            tab = ((AutoTabAdapter) adapter).getTab();
         else
             tab = ((AutoTabAdapter) adapter).getTab();
         int viewId = IDS_SCORES_IN_GENERAL_TAB[tab.getOrder_pos()];
@@ -534,7 +530,7 @@ try {
         }
         Tab tab;
         if(Utils.isPictureQuestion())
-            tab = ((AutoTabAdapterPictureApp) adapter).getTab();
+            tab = ((AutoTabAdapter) adapter).getTab();
         else
             tab = ((AutoTabAdapter) adapter).getTab();
         if (contains(indexToConsider, tab.getOrder_pos())) {
@@ -555,7 +551,7 @@ try {
     }
 
     private boolean isNotAutoTabAdapterOrNull(ITabAdapter adapter) {
-        return adapter == null || !(adapter instanceof AutoTabAdapter) || (adapter instanceof  AutoTabAdapterPictureApp);
+        return adapter == null || !(adapter instanceof AutoTabAdapter) || (adapter instanceof  AutoTabAdapter);
     }
 
     private void updateAvgInGeneralScores(int viewId, Float score) {
@@ -803,17 +799,21 @@ try {
         private ITabAdapter buildAdapter(Tab tab) {
             if (Utils.isPictureQuestion()) {
                 Log.d(TAG,"Type: "+tab.getType());
-                if (tab.isCompositeScore())
-                    return new CompositeScoreAdapterPictureApp(this.compositeScores, SurveyActivity.this, R.layout.composite_score_tab_pictureapp, tab.getName());
+                if (tab.isCompositeScore()) {
 
+                    Log.d(TAG, "Creating an Composite Adapter");
+                    return new CompositeScoreAdapter(this.compositeScores, SurveyActivity.this, R.layout.composite_score_tab_pictureapp, tab);
+                }
                 if (tab.isAdherenceTab()) {
                     Log.d(TAG, "Creating an Adherence Adapter");
-                    return CustomAdherenceAdapterPictureApp.build(tab, SurveyActivity.this);
+                    return CustomAdherenceAdapter.build(tab, SurveyActivity.this);
                 }
 
-                if (tab.isIQATab())
-                    return CustomIQTABAdapterPictureApp.build(tab, SurveyActivity.this);
+                if (tab.isIQATab()) {
 
+                    Log.d(TAG, "Creating an IQTAB Adapter");
+                    return CustomIQTABAdapter.build(tab, SurveyActivity.this);
+                }
 
                 if (tab.isGeneralScore()) {
                     return null;
@@ -822,16 +822,20 @@ try {
                 if (tab.isDynamicTab()) {
                     return new DynamicTabAdapter(tab, SurveyActivity.this);
                 }
-                return AutoTabAdapterPictureApp.build(tab, SurveyActivity.this);
+                return AutoTabAdapter.build(tab, SurveyActivity.this);
             } else {
                 switch (tab.getType()) {
                     case Constants.TAB_COMPOSITE_SCORE:
+                        Log.d(TAG, "Creating an CompositeScore Adapter");
                         return CompositeScoreAdapter.build(tab, SurveyActivity.this);
                     case Constants.TAB_IQATAB:
+                        Log.d(TAG, "Creating an IQTAB Adapter");
                         return CustomIQTABAdapter.build(tab, SurveyActivity.this);
                     case Constants.TAB_ADHERENCE:
+                        Log.d(TAG, "Creating an Adherence Adapter");
                         return CustomAdherenceAdapter.build(tab, SurveyActivity.this);
                     case Constants.TAB_REPORTING:
+                        Log.d(TAG, "Creating an Reporting Adapter");
                         return CustomReportingAdapter.build(tab, SurveyActivity.this);
                 }
                 return AutoTabAdapter.build(tab, SurveyActivity.this);
