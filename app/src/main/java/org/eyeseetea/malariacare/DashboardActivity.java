@@ -133,7 +133,7 @@ public class DashboardActivity extends BaseActivity {
         actionBar.setDisplayShowCustomEnabled(true);
         actionBar.setCustomView(R.layout.action_bar_title_layout);
         ((TextView) findViewById(R.id.action_bar_title)).setText(getString(R.string.app_name));
-        ((TextView) findViewById(R.id.action_bar_subtitle)).setText(Session.getUser().getName() +"\n"+"line3"+"\n"+"line5");
+        ((TextView) findViewById(R.id.action_bar_subtitle)).setText(Session.getUser().getName());
     }
     public void initImprove(){
         unsentFragment = new DashboardUnsentFragment();
