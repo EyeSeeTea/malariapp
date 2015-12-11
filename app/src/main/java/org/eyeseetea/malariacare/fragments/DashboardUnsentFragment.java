@@ -116,7 +116,6 @@ public class DashboardUnsentFragment extends ListFragment {
         super.onActivityCreated(savedInstanceState);
         initAdapter();
         initListView();
-
     }
 
     @Override
@@ -197,11 +196,7 @@ public class DashboardUnsentFragment extends ListFragment {
     private boolean isPositionFooter(int position){
         return position==(this.surveys.size()+1);
     }
-
-    /**
-     * Initializes the listview component, adding a listener for swiping right
-     */
-    private void initListView(){
+    private void initListView() {
         LayoutInflater inflater = LayoutInflater.from(getActivity());
         View header = inflater.inflate(this.adapter.getHeaderLayout(), null, false);
         View footer = inflater.inflate(this.adapter.getFooterLayout(), null, false);
@@ -211,6 +206,83 @@ public class DashboardUnsentFragment extends ListFragment {
         listView.addHeaderView(header);
         listView.addFooterView(footer);
         setListAdapter((BaseAdapter) adapter);
+        //The picture survey had a diferent dialogs and result
+        if(Utils.isPictureQuestion())
+            initPictureListView(listView);
+        else
+            initMalariaListView(listView);
+    }
+    private void initPictureListView(ListView listView){
+
+
+        // Create a ListView-specific touch listener. ListViews are given special treatment because
+        // by default they handle touches for their list items... i.e. they're in charge of drawing
+        // the pressed state (the list selector), handling list item clicks, etc.
+        SwipeDismissListViewTouchListener touchListener =
+                new SwipeDismissListViewTouchListener(
+                        listView,
+                        new SwipeDismissListViewTouchListener.DismissCallbacks() {
+                            @Override
+                            public boolean canDismiss(int position) {
+                                return position>0 && position<=surveys.size();
+                            }
+
+                            @Override
+                            public void onDismiss(ListView listView, int[] reverseSortedPositions) {
+                                for (final int position : reverseSortedPositions) {
+                                    new AlertDialog.Builder(getActivity())
+                                            .setTitle(getActivity().getString(R.string.dialog_title_delete_survey))
+                                            .setMessage(getActivity().getString(R.string.dialog_info_delete_survey))
+                                            .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                                                public void onClick(DialogInterface arg0, int arg1) {
+                                                    ((Survey)adapter.getItem(position-1)).delete();
+                                                    //Reload data using service
+                                                    Intent surveysIntent=new Intent(getActivity(), SurveyService.class);
+                                                    surveysIntent.putExtra(SurveyService.SERVICE_METHOD, SurveyService.RELOAD_DASHBOARD_ACTION);
+                                                    getActivity().startService(surveysIntent);
+                                                }
+                                            })
+                                            .setNegativeButton(android.R.string.no, null).create().show();
+                                }
+
+                            }
+                        });
+        listView.setOnTouchListener(touchListener);
+        // Setting this scroll listener is required to ensure that during ListView scrolling,
+        // we don't look for swipes.
+        listView.setOnScrollListener(touchListener.makeScrollListener());
+
+        listView.setLongClickable(true);
+
+        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
+
+
+                new AlertDialog.Builder(getActivity())
+                        .setTitle(R.string.dialog_title_push)
+                        .setMessage(R.string.dialog_info_push_confirm)
+                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface arg0, int arg1) {
+                                final Survey survey = (Survey) adapter.getItem(position - 1);
+                                //AsyncPush asyncPush=new AsyncPush(survey);
+                                //asyncPush.execute((Void) null);
+                            }
+                        })
+                        .setNegativeButton(android.R.string.no, null).create().show();
+
+
+                return true;
+            }
+        });
+
+
+        setListShown(false);
+    }
+    /**
+     * Initializes the listview component, adding a listener for swiping right
+     */
+    private void initMalariaListView(ListView listView){
 
         // Create a ListView-specific touch listener. ListViews are given special treatment because
         // by default they handle touches for their list items... i.e. they're in charge of drawing

@@ -41,6 +41,7 @@ import android.widget.ListView;
 import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.FeedbackActivity;
 import org.eyeseetea.malariacare.R;
+import org.eyeseetea.malariacare.SurveyActivity;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.utils.monitor.FacilityTableBuilder;
 import org.eyeseetea.malariacare.database.utils.monitor.PieTabGroupBuilder;
@@ -51,6 +52,7 @@ import org.eyeseetea.malariacare.layout.adapters.dashboard.IDashboardAdapter;
 import org.eyeseetea.malariacare.layout.listeners.SwipeDismissListViewTouchListener;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 import org.eyeseetea.malariacare.services.SurveyService;
+import org.eyeseetea.malariacare.utils.Utils;
 import org.eyeseetea.malariacare.views.CustomTextView;
 
 import java.util.ArrayList;
@@ -154,12 +156,15 @@ public class DashboardSentFragment extends ListFragment {
         if(!isPositionASurvey(position)){
             return;
         }
-
         //Put selected survey in session
         Session.setSurvey(surveys.get(position - 1));
         // Go to SurveyActivity
-        ((DashboardActivity) getActivity()).go(FeedbackActivity.class);
-        getActivity().finish();
+        if(Utils.isPictureQuestion()){//Go to SurveyActivity
+            ((DashboardActivity) getActivity()).go(SurveyActivity.class);
+        }else {
+            ((DashboardActivity) getActivity()).go(FeedbackActivity.class);
+            getActivity().finish();
+        }
     }
 
     @Override
