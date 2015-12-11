@@ -51,6 +51,7 @@ import org.eyeseetea.malariacare.database.model.Tab;
 import org.eyeseetea.malariacare.database.model.TabGroup;
 import org.eyeseetea.malariacare.database.model.User;
 import org.eyeseetea.malariacare.database.model.Value;
+import org.eyeseetea.malariacare.database.utils.PopulateDB;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.hisp.dhis.android.sdk.controllers.DhisService;
 import org.hisp.dhis.android.sdk.controllers.LoadingController;
@@ -210,25 +211,7 @@ public class PullController {
     public void wipeDatabase(){
         if(!ProgressActivity.PULL_IS_ACTIVE) return;
         Log.d(TAG, "Deleting app database...");
-        Delete.tables(
-                Value.class,
-                Score.class,
-                Survey.class,
-                OrgUnit.class,
-                OrgUnitLevel.class,
-                User.class,
-                QuestionOption.class,
-                Match.class,
-                QuestionRelation.class,
-                Question.class,
-                CompositeScore.class,
-                Option.class,
-                Answer.class,
-                Header.class,
-                Tab.class,
-                TabGroup.class,
-                Program.class
-        );
+        PopulateDB.wipeDatabase();
     }
 
     /**

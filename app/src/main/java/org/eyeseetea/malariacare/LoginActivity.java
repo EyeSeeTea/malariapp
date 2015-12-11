@@ -33,6 +33,7 @@ import com.squareup.otto.Subscribe;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.PullController;
 import org.eyeseetea.malariacare.database.model.User;
 import org.eyeseetea.malariacare.database.utils.PopulateDB;
+import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.hisp.dhis.android.sdk.job.NetworkJob;
 import org.hisp.dhis.android.sdk.persistence.Dhis2Application;
@@ -104,8 +105,9 @@ public class LoginActivity extends org.hisp.dhis.android.sdk.ui.activities.Login
         if(result!=null && result.getResourceType().equals(ResourceType.USERS)) {
             if(result.getResponseHolder().getApiException() == null) {
                 saveUserDetails();
-                //FIXME remove when create survey is fixed
-//                populateFromAssets();
+
+                populateFromAssetsIfRequired();
+
                 launchMainActivity();
             } else {
                 onLoginFail(result.getResponseHolder().getApiException());
@@ -116,15 +118,20 @@ public class LoginActivity extends org.hisp.dhis.android.sdk.ui.activities.Login
     /**
      * Utility method to use while developing to avoid a real pull
      */
-    private void populateFromAssets() {
+    private void populateFromAssetsIfRequired() {
+        //From server -> done
+        if(PreferencesState.getInstance().getPullFromServer()) {
+            return;
+        }
+
+        //Populate locally
         try{
+            PullController.getInstance().wipeDatabase();
             User user = new User();
             user.save();
             Session.setUser(user);
-            PullController.getInstance().wipeDatabase();
             PopulateDB.populateDB(getAssets());
         }catch(Exception ex){
-
         }
     }
 
