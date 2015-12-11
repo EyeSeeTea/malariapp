@@ -165,7 +165,6 @@ public class PullController {
         LoadingController.enableLoading(context, ResourceType.ASSIGNEDPROGRAMS);
         LoadingController.enableLoading(context, ResourceType.PROGRAMS);
         LoadingController.enableLoading(context, ResourceType.OPTIONSETS);
-        LoadingController.enableLoading(context, ResourceType.ATTRIBUTEVALUES);
         LoadingController.enableLoading(context, ResourceType.EVENTS);
     }
 
