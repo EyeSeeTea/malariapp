@@ -65,10 +65,34 @@ public class EventExtended implements VisitableFromSDK {
     }
 
     /**
-     * Returns the survey.completionDate associated with this event (@see PushClient)
+     * Returns the survey.creationDate associated with this event (created field)
+     * @return
+     */
+    public Date getCreationDate(){
+        if(event==null){
+            return null;
+        }
+
+        return parseDate(event.getCreated());
+    }
+
+    /**
+     * Returns the survey.completionDate associated with this event (lastUpdated field)
      * @return
      */
     public Date getCompletionDate(){
+        if(event==null){
+            return null;
+        }
+
+        return parseDate(event.getLastUpdated());
+    }
+
+    /**
+     * Returns the survey.eventDate associated with this event (eventDate field)
+     * @return
+     */
+    public Date getEventDate(){
         if(event==null){
             return null;
         }
@@ -77,18 +101,22 @@ public class EventExtended implements VisitableFromSDK {
     }
 
     /**
-     * Returns the survey.eventDate associated with this event (lastUpdated)
+     * Returns the survey.eventDate associated with this event (dueDate field)
      * @return
      */
-    public Date getEventDate(){
+    public Date getScheduledDate(){
         if(event==null){
             return null;
         }
 
-        return parseDate(event.getLastUpdated());
+        return parseDate(event.getDueDate());
     }
 
     private Date parseDate(String dateAsString){
+        if(dateAsString==null){
+            return null;
+        }
+
         SimpleDateFormat simpleDateFormat=new SimpleDateFormat(COMPLETION_DATE_FORMAT);
         try {
             return simpleDateFormat.parse(dateAsString);
@@ -104,6 +132,9 @@ public class EventExtended implements VisitableFromSDK {
      * @return
      */
     public static String format(Date date){
+        if(date==null){
+            return null;
+        }
         SimpleDateFormat simpleDateFormat=new SimpleDateFormat(COMPLETION_DATE_FORMAT);
         return simpleDateFormat.format(date);
     }
