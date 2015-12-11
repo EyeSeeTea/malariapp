@@ -154,7 +154,6 @@ public class DashboardActivity extends BaseActivity {
     }
 
     private void setActionbarTitle() {
-        setTitle(getString(R.string.app_name) + " app - " + Session.getUser().getName());
         android.support.v7.app.ActionBar actionBar =  getSupportActionBar();
         actionBar.setDisplayShowCustomEnabled(true);
         actionBar.setCustomView(R.layout.action_bar_title_layout);
