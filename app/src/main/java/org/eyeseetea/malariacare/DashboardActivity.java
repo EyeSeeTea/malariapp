@@ -22,9 +22,11 @@ package org.eyeseetea.malariacare;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.FragmentTransaction;
+import android.app.ListFragment;
 import android.app.LocalActivityManager;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -52,10 +54,10 @@ public class DashboardActivity extends BaseActivity {
     private final static String TAG=".DDetailsActivity";
     private boolean reloadOnResume=true;
     TabHost tabHost;
-    LocalActivityManager mlam;
     MonitorFragment monitorFragment;
     DashboardUnsentFragment unsentFragment;
     DashboardSentFragment sentFragment;
+    LocalActivityManager mlam;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,48 +75,17 @@ public class DashboardActivity extends BaseActivity {
             initAssess();
             initMonitor();
         }
-        //Tabs
-        /* TabHost will have Tabs */
-        mlam = new LocalActivityManager(this, false);
-        tabHost = (TabHost)findViewById(R.id.tabHost);
-        mlam.dispatchCreate(savedInstanceState);
-        tabHost.setup(mlam );
-        /* TabSpec used to create a new tab.
-        * By using TabSpec only we can able to setContent to the tab.
-        * By using TabSpec setIndicator() we can set name to tab. */
+        initTabHost(savedInstanceState);
+        /* set tabs in order */
+        setTab("tab_plan",R.id.tab_plan_layout,getResources().getDrawable(R.drawable.tab_plan));
+        setTab("tab_assess", R.id.tab_assess_layout, getResources().getDrawable(R.drawable.tab_assess));
+        setTab("tab_improve", R.id.tab_improve_layout, getResources().getDrawable(R.drawable.tab_improve));
+        setTab("tab_monitor", R.id.tab_monitor_layout, getResources().getDrawable(R.drawable.tab_monitor));
 
-        TabHost.TabSpec tab_plan = tabHost.newTabSpec("tab_plan");
-        TabHost.TabSpec tab_monitor= tabHost.newTabSpec("tab_monitor");
-        TabHost.TabSpec tab_assess = tabHost.newTabSpec("tab_assess");
-        TabHost.TabSpec tab_improve= tabHost.newTabSpec("tab_improve");
-
-        /* TabSpec setContent() is used to set content for a particular tab. It can be a R.id.layout or a .Class */
-
-        tab_plan.setContent(R.id.tab_plan_layout);
-        tab_plan.setIndicator("", getResources().getDrawable(R.drawable.tab_plan));
-
-        tab_monitor.setContent(R.id.tab_monitor_layout);
-        tab_monitor.setIndicator("", getResources().getDrawable(R.drawable.tab_monitor));
-
-
-        tab_assess.setContent(R.id.tab_assess_layout);
-        tab_assess.setIndicator("", getResources().getDrawable(R.drawable.tab_assess));
-
-        tab_improve.setContent(R.id.tab_improve_layout);
-        tab_improve.setIndicator("", getResources().getDrawable(R.drawable.tab_improve));
-
-        /* Add tabSpec to the TabHost to display. */
-        tabHost.addTab(tab_plan);
-        tabHost.addTab(tab_assess);
-        tabHost.addTab(tab_improve);
-        tabHost.addTab(tab_monitor);
-
-        /** Defining Tab Change Listener event. This is invoked when tab is changed */
-        TabHost.OnTabChangeListener tabChangeListener = new TabHost.OnTabChangeListener() {
+        tabHost.setOnTabChangedListener( new TabHost.OnTabChangeListener() {
 
             @Override
             public void onTabChanged(String tabId) {
-
                 /** If current tab is android */
                 if(tabId.equalsIgnoreCase("tab_improve")){
                     unsentFragment.reloadUnsentSurveys();
@@ -123,11 +94,66 @@ public class DashboardActivity extends BaseActivity {
                 }else if(tabId.equalsIgnoreCase("tab_plan")){
                     //tab_plan on click code
                 }else if(tabId.equalsIgnoreCase("tab_monitor")){
-                        monitorFragment.reloadSentSurveys();
+                    monitorFragment.reloadSentSurveys();
                 }
             }
-        };
-        tabHost.setOnTabChangedListener(tabChangeListener);
+        });
+        setActionbarTitle();
+    }
+
+    /**
+     * Init the conteiner for all the tabs
+     */
+    private void initTabHost(Bundle savedInstanceState) {
+        mlam = new LocalActivityManager(this, false);
+        tabHost = (TabHost)findViewById(R.id.tabHost);
+        mlam.dispatchCreate(savedInstanceState);
+        tabHost.setup(mlam);
+    }
+
+
+    /**
+     * Set tab in tabHost
+     * @param tab_plan is the name of the tab
+     * @param layout is the id of the layout
+     * @param image is the drawable with the tab icon image
+     */
+    private void setTab(String tab_plan, int layout,  Drawable image) {
+        TabHost.TabSpec tab = tabHost.newTabSpec(tab_plan);
+        tab.setContent(layout);
+        tab.setIndicator("", image);
+        tabHost.addTab(tab);
+
+    }
+
+    public void initImprove(){
+        unsentFragment = new DashboardUnsentFragment();
+        unsentFragment.setArguments(getIntent().getExtras());
+        setFragmentTransaction(R.id.dashboard_details_container, unsentFragment);
+    }
+    public void initAssess(){
+        sentFragment = new DashboardSentFragment();
+        sentFragment.setArguments(getIntent().getExtras());
+        setFragmentTransaction(R.id.dashboard_completed_container, sentFragment);
+    }
+
+    public void initMonitor(){
+        monitorFragment = new MonitorFragment();
+        monitorFragment.setArguments(getIntent().getExtras());
+        setFragmentTransaction(R.id.dashboard_charts_container, monitorFragment);
+    }
+
+    /**
+     * Init the fragments
+     */
+    private void setFragmentTransaction(int layout, ListFragment fragment) {
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        ft.add(layout, fragment);
+        ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+        ft.commit();
+    }
+
+    private void setActionbarTitle() {
         setTitle(getString(R.string.app_name) + " app - " + Session.getUser().getName());
         android.support.v7.app.ActionBar actionBar =  getSupportActionBar();
         actionBar.setDisplayShowCustomEnabled(true);
@@ -135,30 +161,7 @@ public class DashboardActivity extends BaseActivity {
         ((TextView) findViewById(R.id.action_bar_title)).setText(getString(R.string.app_name));
         ((TextView) findViewById(R.id.action_bar_subtitle)).setText(Session.getUser().getName());
     }
-    public void initImprove(){
-        unsentFragment = new DashboardUnsentFragment();
-        unsentFragment.setArguments(getIntent().getExtras());
-        FragmentTransaction ft = getFragmentManager().beginTransaction();
-        ft.add(R.id.dashboard_details_container, unsentFragment);
-        ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-        ft.commit();
-    }
-    public void initAssess(){
-        sentFragment = new DashboardSentFragment();
-        unsentFragment.setArguments(getIntent().getExtras());
-        FragmentTransaction ftr = getFragmentManager().beginTransaction();
-        ftr.add(R.id.dashboard_completed_container, sentFragment);
-        ftr.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-        ftr.commit();
-    }
-    public void initMonitor(){
-        monitorFragment = new MonitorFragment();
-        monitorFragment.setArguments(getIntent().getExtras());
-        FragmentTransaction ftm = getFragmentManager().beginTransaction();
-        ftm.add(R.id.dashboard_charts_container, monitorFragment);
-        ftm.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-        ftm.commit();
-    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_dashboard, menu);
