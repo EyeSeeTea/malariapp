@@ -234,7 +234,6 @@ public class DashboardSentFragment extends ListFragment {
                                                     surveysIntent.putExtra(SurveyService.SERVICE_METHOD, SurveyService.RELOAD_DASHBOARD_ACTION);
                                                     getActivity().startService(surveysIntent);
                                                     reloadSentSurveys();
-                                                    //fixme reload monitor                                                     reloadMonitor();
                                                 }
                                             })
                                             .setNegativeButton(android.R.string.no, null).create().show();
