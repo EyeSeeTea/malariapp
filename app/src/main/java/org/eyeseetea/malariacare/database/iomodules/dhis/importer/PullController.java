@@ -19,6 +19,7 @@
 
 package org.eyeseetea.malariacare.database.iomodules.dhis.importer;
 
+import android.app.job.JobService;
 import android.content.Context;
 import android.util.Log;
 
@@ -26,6 +27,7 @@ import com.raizlabs.android.dbflow.sql.language.Delete;
 import com.raizlabs.android.dbflow.sql.language.Select;
 import com.squareup.otto.Subscribe;
 
+import org.eyeseetea.malariacare.LoginActivity;
 import org.eyeseetea.malariacare.ProgressActivity;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.DataElementExtended;
@@ -57,6 +59,8 @@ import org.hisp.dhis.android.sdk.controllers.DhisService;
 import org.hisp.dhis.android.sdk.controllers.LoadingController;
 import org.hisp.dhis.android.sdk.controllers.metadata.MetaDataController;
 import org.hisp.dhis.android.sdk.controllers.tracker.TrackerController;
+import org.hisp.dhis.android.sdk.job.Job;
+import org.hisp.dhis.android.sdk.job.JobExecutor;
 import org.hisp.dhis.android.sdk.job.NetworkJob;
 import org.hisp.dhis.android.sdk.persistence.Dhis2Application;
 import org.hisp.dhis.android.sdk.persistence.models.DataElement;
@@ -83,6 +87,7 @@ public class PullController {
 
     private static PullController instance;
 
+    private static int jobId;
     /**
      * Context required to i18n error messages while pulling
      */
@@ -147,7 +152,7 @@ public class PullController {
             //Pull new metadata
             postProgress(context.getString(R.string.progress_pull_downloading));
             try {
-                DhisService.loadData(context);
+                jobId=DhisService.loadData(context);
             } catch(Exception ex){
                 Log.e(TAG, "pullS: " + ex.getLocalizedMessage());
                 ex.printStackTrace();
@@ -410,6 +415,21 @@ public class PullController {
         catch(Exception e){
             e.printStackTrace();
         }
+    }
+
+    //Returns true if the pull thead is finish
+    public boolean finishPullJob(){
+        if(JobExecutor.isJobRunning(jobId)) {
+
+            Log.d(TAG, "Job " + jobId + " is running");
+       try {
+           JobExecutor.getInstance().stop(jobId);}catch(Exception e){e.printStackTrace();}
+       finally {
+           return true;
+       }
+        }
+        return false;
+
     }
 
 }

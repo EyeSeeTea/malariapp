@@ -149,7 +149,9 @@ public abstract class BaseActivity extends ActionBarActivity {
 
     @Override
     public void onStop(){
-        Dhis2Application.bus.unregister(this);
+        try {
+            Dhis2Application.bus.unregister(this);
+        }catch(Exception e){}
         super.onStop();
     }
 
