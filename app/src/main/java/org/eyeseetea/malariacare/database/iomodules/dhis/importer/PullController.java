@@ -87,7 +87,7 @@ public class PullController {
 
     private static PullController instance;
 
-    private static int jobId;
+    private static Job job;
     /**
      * Context required to i18n error messages while pulling
      */
@@ -152,7 +152,7 @@ public class PullController {
             //Pull new metadata
             postProgress(context.getString(R.string.progress_pull_downloading));
             try {
-                jobId=DhisService.loadData(context);
+                job=DhisService.loadData(context);
             } catch(Exception ex){
                 Log.e(TAG, "pullS: " + ex.getLocalizedMessage());
                 ex.printStackTrace();
@@ -419,14 +419,14 @@ public class PullController {
 
     //Returns true if the pull thead is finish
     public boolean finishPullJob(){
-        if(JobExecutor.isJobRunning(jobId)) {
-
-            Log.d(TAG, "Job " + jobId + " is running");
-       try {
-           JobExecutor.getInstance().stop(jobId);}catch(Exception e){e.printStackTrace();}
-       finally {
-           return true;
-       }
+        if(JobExecutor.isJobRunning(job.getJobId())) {
+            try {
+                job.cancel(true);
+                Log.d(TAG, "Job " + job.getJobId() + " is running");
+            }catch(Exception e){e.printStackTrace();}
+            finally {
+                return true;
+            }
         }
         return false;
 
