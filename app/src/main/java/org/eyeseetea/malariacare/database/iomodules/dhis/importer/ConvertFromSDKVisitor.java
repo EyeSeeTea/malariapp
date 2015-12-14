@@ -193,23 +193,8 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
         OptionSet sdkOptionSet=sdkOptionSetExtended.getOptionSet();
         Answer appAnswer = new Answer();
         appAnswer.setName(sdkOptionSet.getName());
-        //Right type of answer comes from the questions
-        appAnswer.setOutput(Answer.DEFAULT_ANSWER_OUTPUT);
-        //XXX This should be remove
-//        if(sdkOptionSet.getName().equals(Constants.TO_BE_REMOVED)) {
-//            if(!appMapObjects.containsKey(appAnswer.getClass() + Constants.TO_BE_REMOVED)){
-//                appAnswer.save();
-//                appMapObjects.put(appAnswer.getClass() + Constants.TO_BE_REMOVED, appAnswer);
-//            }
-//        }
-//        else {
-//            appAnswer.save();
-//        //Annotate built answer
-//            appMapObjects.put(sdkOptionSet.getUid(), appAnswer);
-//
-//        }
-
         appAnswer.save();
+
         //Annotate built answer
         appMapObjects.put(sdkOptionSet.getUid(), appAnswer);
 
@@ -354,10 +339,15 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
         appQuestion.setOrder_pos(dataElementExtended.findOrder());
         appQuestion.setNumerator_w(dataElementExtended.findNumerator());
         appQuestion.setDenominator_w(dataElementExtended.findDenominator());
+        appQuestion.setOutput(compositeScoreBuilder.findAnswerOutput(dataElementExtended));
 
         //Label does not have an optionset
         if (dataElement.getOptionSet() != null) {
             appQuestion.setAnswer((Answer) appMapObjects.get(dataElement.getOptionSet()));
+        }else{
+            //A question with NO optionSet is a Label Question
+            Log.d(TAG, String.format("Question (%s) is a LABEL", dataElement.getUid()));
+            appQuestion.setAnswer(buildAnswerLabel());
         }
 
         appQuestion.setHeader(questionBuilder.findHeader(dataElementExtended));
@@ -369,77 +359,19 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
 
 
     public void buildRelations(DataElementExtended dataElementExtended) {
-        if(dataElementExtended.isQuestion()){
-            buildAnswerOutput(dataElementExtended);
-            //Question type is annotated in 'answer' from an attribute of the question
-        }
         questionBuilder.addRelations(dataElementExtended);
-    }
-
-    /**
-     * Fulfills the answer.output for this question
-     * @param dataElementExtended
-     */
-    private void buildAnswerOutput(DataElementExtended dataElementExtended){
-        DataElement dataElement = dataElementExtended.getDataElement();
-
-        String optionSetUID=dataElement.getOptionSet();
-
-        //A question with NO optionSet is a Label Question
-        if(optionSetUID==null){
-            Log.d(TAG, String.format("Question (%s) is a LABEL", dataElement.getUid()));
-            buildAnswerLabel(dataElementExtended);
-            return;
-        }
-
-        Answer answer=(Answer)appMapObjects.get(optionSetUID);
-        //Answer not found -> this raise an exception
-        if(answer==null){
-            Log.e(TAG, String.format("Question (%s) has no answer (%s)",dataElement.getUid(),optionSetUID));
-            return;
-        }
-
-        //Find the output for this question
-        int output=compositeScoreBuilder.findAnswerOutput(dataElementExtended);
-
-        //Found question for this answer for the first time -> Update output
-        if(!answer.hasOutput()){
-            answer.setOutput(output);
-            answer.save();
-            return;
-        }
-
-        //UID+Output already created -> Nothing to update
-        if(answer.getOutput().equals(output)){
-            return;
-        }
-
-        //UID+output != Original Answer -> Look answer with the right output
-        String answerWithOutputUID=OptionSetExtended.getKeyWithOutput(optionSetUID, output);
-        Answer answerWithOutput=(Answer) appMapObjects.get(answerWithOutputUID);
-        Question question=(Question)appMapObjects.get(dataElement.getUid());
-
-        //First time UID+output -> clone answer with a different output + assign
-        if(answerWithOutput==null){
-            answerWithOutput=answer.copy();
-            answerWithOutput.setOutput(output);
-            answerWithOutput.save();
-            appMapObjects.put(answerWithOutputUID, answerWithOutput);
-        }
-
-        question.setAnswer(answerWithOutput);
-        question.save();
     }
 
     /**
      * A dataElement (question) without optionSet is a Label.
      * This method inits the LABEL answer (the first time) and updates de question.answer to it
-     * @param dataElementExtended
      */
-    public void buildAnswerLabel(DataElementExtended dataElementExtended) {
 
-        //Find the question
-        Question appQuestion=(Question)appMapObjects.get(dataElementExtended.getDataElement().getUid());
+    /**
+     * Builds a synthetic answer 'LABEL'
+     * @return
+     */
+    public Answer buildAnswerLabel() {
 
         //Build a sintetic Key (AnswerLABEL)
         final String key=Answer.class+Constants.LABEL;
@@ -448,14 +380,12 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
 
         //First time no Label answer has been created
         if(answer==null){
-            answer=new Answer(Constants.LABEL,Constants.NO_ANSWER);
+            answer=new Answer(Constants.LABEL);
             answer.save();
             appMapObjects.put(key,answer);
         }
 
-        //Set the answer to the given question
-        appQuestion.setAnswer(answer);
-        appQuestion.save();
+        return answer;
     }
     /**
      * Turns a dataElement into a question

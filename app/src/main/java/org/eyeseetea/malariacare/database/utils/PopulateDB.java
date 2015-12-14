@@ -115,7 +115,7 @@ public class PopulateDB {
                     case ANSWERS_CSV:
                         Answer answer = new Answer();
                         answer.setName(line[1]);
-                        answer.setOutput(Integer.valueOf(line[2]));
+//                        answer.setOutput(Integer.valueOf(line[2]));
                         saveItem(answers, answer, Integer.valueOf(line[0]));
                         break;
                     case OPTIONS_CSV:
