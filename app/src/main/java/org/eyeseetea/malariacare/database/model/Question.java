@@ -249,6 +249,14 @@ public class Question extends BaseModel {
         this.header = null;
     }
 
+    public Integer getOutput(){
+        if(getAnswer()==null){
+            return null;
+        }
+
+        return getAnswer().getOutput();
+    }
+
     public Answer getAnswer() {
         if(answer==null){
             if(id_answer==null) return  null;
@@ -596,7 +604,7 @@ public class Question extends BaseModel {
         }
 
         //Only disabled dropdowns
-        if(this.getAnswer().getOutput()!=Constants.DROPDOWN_LIST_DISABLED){
+        if(this.getOutput()!=Constants.DROPDOWN_LIST_DISABLED){
             return false;
         }
 
@@ -694,15 +702,11 @@ public class Question extends BaseModel {
      * @return true|false
      */
     public boolean isScored() {
-        try {
-            Integer output = getAnswer().getOutput();
-            return output == Constants.DROPDOWN_LIST ||
-                    output == Constants.DROPDOWN_LIST_DISABLED ||
-                    output == Constants.RADIO_GROUP_HORIZONTAL ||
-                    output == Constants.RADIO_GROUP_VERTICAL;
-        } catch (Exception e) {
-            return false;
-        }
+        Integer output = getOutput();
+        return output == Constants.DROPDOWN_LIST ||
+                output == Constants.DROPDOWN_LIST_DISABLED ||
+                output == Constants.RADIO_GROUP_HORIZONTAL ||
+                output == Constants.RADIO_GROUP_VERTICAL;
     }
 
     @Override
