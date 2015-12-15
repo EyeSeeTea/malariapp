@@ -282,8 +282,12 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
         Survey survey=new Survey();
         //Any survey that comes from the pull has been sent
         survey.setStatus(Constants.SURVEY_SENT);
+        //Set dates
+        survey.setCreationDate(sdkEventExtended.getCreationDate());
         survey.setCompletionDate(sdkEventExtended.getCompletionDate());
         survey.setEventDate(sdkEventExtended.getEventDate());
+        survey.setScheduledDate(sdkEventExtended.getScheduledDate());
+        //Set fks
         survey.setOrgUnit(orgUnit);
         survey.setTabGroup(tabGroup);
         survey.save();
