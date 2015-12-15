@@ -357,23 +357,6 @@ public class LayoutUtils {
         //Suppose it is 'Good' && Green
         int color=view.getContext().getResources().getColor(R.color.green);
         String tag=view.getContext().getResources().getString(R.string.good);
-    if(Utils.isPictureQuestion()) {
-        if (score < 80.0F) {
-            color = view.getContext().getResources().getColor(R.color.amber);
-            tag = view.getContext().getResources().getString(R.string.fair);
-        }
-        if (score < 50.0F) {
-            color = view.getContext().getResources().getColor(R.color.red);
-            tag = view.getContext().getResources().getString(R.string.poor);
-        }
-        //Change color for number
-        ((CustomTextView) view).setTextColor(color);
-        //Change color& text for qualitative score
-        if (textCard != null) {
-            ((CustomTextView) textCard).setTextColor(color); // red
-            ((CustomTextView) textCard).setText(tag);
-        }
-    }else{
         if (score < Survey.MAX_AMBER){
             color= view.getContext().getResources().getColor(R.color.amber);
             tag=view.getContext().getResources().getString(R.string.fair);
@@ -389,7 +372,6 @@ public class LayoutUtils {
             ((CustomTextView)textCard).setTextColor(color); // red
             ((CustomTextView)textCard).setText(tag);
         }
-    }
     }
     public static int getNumberOfQuestionParentsHeader(Header header) {
         int result = 0;

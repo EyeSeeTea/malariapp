@@ -144,8 +144,10 @@ public class LoginActivity extends org.hisp.dhis.android.sdk.ui.activities.Login
             User user = new User();
             user.save();
             Session.setUser(user);
-            if(Utils.isPictureQuestion())
+            if(Utils.isPictureQuestion()) {
+                PopulatePictureAppDB.wipeDatabase();
                 PopulatePictureAppDB.populateDB(getAssets());
+            }
             else
                 PopulateDB.populateDB(getAssets());
         }catch(Exception ex){

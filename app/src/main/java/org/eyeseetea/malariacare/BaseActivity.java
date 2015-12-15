@@ -213,26 +213,26 @@ public abstract class BaseActivity extends ActionBarActivity {
      * Called when the user clicks the New Survey button
      */
     public void newSurvey(View view) {
-if(!Utils.isPictureQuestion()){
-        Intent targetActivityIntent= new Intent(this,CreateSurveyActivity.class);
-        targetActivityIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        startActivity(targetActivityIntent);
-        finish();
-}
-else{
-        //Get Programs from database
-        List<Program> firstProgram = new Select().from(Program.class).where(Condition.column(Program$Table.ID_PROGRAM).eq(1)).queryList();
-        // Put new survey in session
-        Survey survey = new Survey(null, firstProgram.get(0), Session.getUser());
-        //survey.save();
-        Session.setSurvey(survey);
+        if(!Utils.isPictureQuestion()){
+                Intent targetActivityIntent= new Intent(this,CreateSurveyActivity.class);
+                targetActivityIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(targetActivityIntent);
+                finish();
+        }
+        else{
+            //Get Programs from database
+            List<Program> firstProgram = new Select().from(Program.class).queryList();
+            // Put new survey in session
+            Survey survey = new Survey(null, firstProgram.get(0), Session.getUser());
+            //survey.save();
+            Session.setSurvey(survey);
 
-        //Look for coordinates
-        prepareLocationListener(survey);
+            //Look for coordinates
+            prepareLocationListener(survey);
 
-        //Call Survey Activity
-        finishAndGo(CreateSurveyActivity.class);
-}
+            //Call Survey Activity
+            finishAndGo(CreateSurveyActivity.class);
+        }
     }
     private void prepareLocationListener(Survey survey){
 

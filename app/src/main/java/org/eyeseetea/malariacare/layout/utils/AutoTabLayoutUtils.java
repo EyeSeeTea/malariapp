@@ -204,6 +204,7 @@ public class AutoTabLayoutUtils {
         configureViewByPreference(viewHolder);
     }
 
+
     /**
      * Set visibility of numerators and denominators depending on the user preference selected in the settings activity
      *

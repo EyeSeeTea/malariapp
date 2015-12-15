@@ -194,7 +194,7 @@ public class Tab extends BaseModel {
  */
     public static List<Tab> getPictureTabsBySession() {
         return new Select().from(Tab.class)
-                .where(Condition.column(Tab$Table.ID_PROGRAM).eq(Session.getSurvey().getProgram().getId_program()))
+                .where(Condition.column(Tab$Table.ID_TAB_GROUP).eq(Session.getSurvey().getTabGroup().getId_tab_group()))
                 .orderBy(Tab$Table.ORDER_POS).queryList();
     }
 

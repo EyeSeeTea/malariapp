@@ -59,15 +59,14 @@ public abstract class AAssessmentAdapter extends ADashboardAdapter implements ID
             this.headerLayout = R.layout.assessment_header_pictureapp;
             this.recordLayout = R.layout.assessment_record_pictureapp;
             this.footerLayout = R.layout.assessment_footer_pictureapp;
-            this.title = context.getString(R.string.assessment_title_header);
         }
         else
         {
             this.headerLayout = R.layout.assessment_header;
             this.recordLayout = R.layout.assessment_record;
             this.footerLayout = R.layout.assessment_footer;
-            this.title = context.getString(R.string.assessment_title_header);
         }
+        this.title = context.getString(R.string.assessment_title_header);
     }
 
     @Override

@@ -93,7 +93,14 @@ public class PopulatePictureAppDB {
                 Option.class,
                 Answer.class,
                 OrgUnitLevel.class,
-                OrgUnit.class
+                OrgUnit.class,
+                Value.class,
+                Score.class,
+                Survey.class,
+                QuestionOption.class,
+                Match.class,
+                QuestionRelation.class,
+                CompositeScore.class
         );
     }
     public static void populateDB(AssetManager assetManager) throws IOException {
