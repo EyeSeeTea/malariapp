@@ -59,6 +59,7 @@
                         android:orientation="vertical">
 
                         <!--Ivan layout here -->
+                        <include layout="@layout/tab_planning"/>
 
                     </LinearLayout>
 

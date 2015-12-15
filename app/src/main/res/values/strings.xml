@@ -69,6 +69,14 @@
     <string name="dashboard_info_sent">Sent</string>
     <string name="dashboard_title_total_assessments">Total number of assessments undertaken</string>
     <string name="dashboard_title_table_facilities">Quality of care (last 6 months)</string>
+    <string name="dashboard_title_planned_type_never">Never assessed</string>
+    <string name="dashboard_title_planned_type_overdue">Overdue</string>
+    <string name="dashboard_title_planned_type_next_30">Next 30 days</string>
+    <string name="dashboard_title_planned_type_future">Future</string>
+    <string name="dashboard_title_planned_productivity">Prd</string>
+    <string name="dashboard_title_planned_quality_of_care">QoC</string>
+    <string name="dashboard_title_planned_next_qa">Next QA</string>
+
 
     <!-- create -->
     <string name="create_info_ok">Start Assessment</string>

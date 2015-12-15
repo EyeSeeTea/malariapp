@@ -139,7 +139,7 @@ public class CreateSurveyActivity extends BaseActivity {
 
 
         //Populate Program View DDL
-        List<Program> programList = new Select().all().from(Program.class).queryList();;
+        List<Program> programList = new Select().all().from(Program.class).queryList();
         programList.add(0, programDefaultOption);
         programView = (Spinner) findViewById(R.id.program);
         programView.setAdapter(new ProgramArrayAdapter(this, programList));

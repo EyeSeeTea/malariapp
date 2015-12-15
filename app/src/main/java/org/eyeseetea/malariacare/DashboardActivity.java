@@ -24,10 +24,14 @@ import android.app.AlertDialog;
 import android.app.FragmentTransaction;
 import android.app.ListFragment;
 import android.app.LocalActivityManager;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -42,6 +46,7 @@ import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.fragments.DashboardSentFragment;
 import org.eyeseetea.malariacare.fragments.DashboardUnsentFragment;
 import org.eyeseetea.malariacare.fragments.MonitorFragment;
+import org.eyeseetea.malariacare.fragments.PlannedFragment;
 import org.eyeseetea.malariacare.services.SurveyService;
 import org.hisp.dhis.android.sdk.events.UiEvent;
 
@@ -54,6 +59,7 @@ public class DashboardActivity extends BaseActivity {
     private final static String TAG=".DDetailsActivity";
     private boolean reloadOnResume=true;
     TabHost tabHost;
+    PlannedFragment plannedFragment;
     MonitorFragment monitorFragment;
     DashboardUnsentFragment unsentFragment;
     DashboardSentFragment sentFragment;
@@ -92,7 +98,7 @@ public class DashboardActivity extends BaseActivity {
                 }else if(tabId.equalsIgnoreCase("tab_assess")){
                     sentFragment.reloadSentSurveys();
                 }else if(tabId.equalsIgnoreCase("tab_plan")){
-                    //tab_plan on click code
+                    plannedFragment.reloadPlannedSurveys();
                 }else if(tabId.equalsIgnoreCase("tab_monitor")){
                     monitorFragment.reloadSentSurveys();
                 }
@@ -318,4 +324,5 @@ public class DashboardActivity extends BaseActivity {
     public void onLogoutFinished(UiEvent uiEvent){
         super.onLogoutFinished(uiEvent);
     }
+
 }

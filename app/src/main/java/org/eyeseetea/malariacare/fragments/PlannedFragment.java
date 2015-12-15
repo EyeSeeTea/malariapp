@@ -33,6 +33,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.ListView;
 
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.model.Survey;
@@ -40,41 +41,29 @@ import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.database.utils.monitor.FacilityTableBuilder;
 import org.eyeseetea.malariacare.database.utils.monitor.PieTabGroupBuilder;
 import org.eyeseetea.malariacare.database.utils.monitor.SentSurveysBuilder;
-import org.eyeseetea.malariacare.layout.adapters.dashboard.AssessmentSentAdapter;
 import org.eyeseetea.malariacare.layout.adapters.dashboard.IDashboardAdapter;
-import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
+import org.eyeseetea.malariacare.layout.adapters.survey.PlannedAdapter;
 import org.eyeseetea.malariacare.services.SurveyService;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 /**
- * Created by ignac on 10/12/2015.
+ * Created by ivan.arrizabalaga on 15/12/2015.
  */
-public class MonitorFragment extends ListFragment {
-    List<Survey> surveysForGraphic;
-    public static final String TAG = ".MonitorFragment";
+public class PlannedFragment extends ListFragment {
+    public static final String TAG = ".PlannedFragment";
+
     private SurveyReceiver surveyReceiver;
+
+    private PlannedAdapter adapter;
+
     private List<Survey> surveys;
-    protected IDashboardAdapter adapter;
-    private static int index = 0;
-    private WebView webView;
-    public MonitorFragment() {
-        this.adapter = Session.getAdapterSent();
+
+    public PlannedFragment() {
         this.surveys = new ArrayList();
     }
 
-    public static MonitorFragment newInstance(int index) {
-        MonitorFragment f = new MonitorFragment();
-
-        // Supply index input as an argument.
-        Bundle args = new Bundle();
-        args.putInt("index", index);
-        f.setArguments(args);
-
-        return f;
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState){
@@ -96,6 +85,16 @@ public class MonitorFragment extends ListFragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         Log.d(TAG, "onActivityCreated");
         super.onActivityCreated(savedInstanceState);
+
+        prepareUI();
+    }
+
+    private void prepareUI() {
+        this.adapter = new PlannedAdapter(new ArrayList<>(),getActivity());
+        ListView listView = (ListView)getActivity().findViewById(R.id.dashboard_planning_list);
+        listView.setAdapter(this.adapter);
+        this.setListAdapter(adapter);
+
     }
 
     @Override
@@ -112,7 +111,6 @@ public class MonitorFragment extends ListFragment {
     public void onStop(){
         Log.d(TAG, "onStop");
         unregisterSurveysReceiver();
-        stopMonitor();
         super.onStop();
     }
     /**
@@ -123,7 +121,7 @@ public class MonitorFragment extends ListFragment {
 
         if (surveyReceiver == null) {
             surveyReceiver = new SurveyReceiver();
-            LocalBroadcastManager.getInstance(getActivity()).registerReceiver(surveyReceiver, new IntentFilter(SurveyService.ALL_SENT_SURVEYS_ACTION));
+            LocalBroadcastManager.getInstance(getActivity()).registerReceiver(surveyReceiver, new IntentFilter(SurveyService.PLANNED_SURVEYS_ACTION));
         }
     }
     /**
@@ -139,9 +137,9 @@ public class MonitorFragment extends ListFragment {
     /**
      * load and reload sent surveys
      */
-    public void reloadSentSurveys() {
-        surveysForGraphic = (List<Survey>) Session.popServiceValue(SurveyService.ALL_SENT_SURVEYS_ACTION);
-        reloadSurveys(surveysForGraphic);
+    public void reloadPlannedSurveys() {
+//        surveysForGraphic = (List<Survey>) Session.popServiceValue(SurveyService.ALL_SENT_SURVEYS_ACTION);
+//        reloadSurveys(surveysForGraphic);
     }
 
     public void reloadSurveys(List<Survey> newListSurveys) {
@@ -149,66 +147,8 @@ public class MonitorFragment extends ListFragment {
         boolean hasSurveys = newListSurveys != null && newListSurveys.size() > 0;
         this.surveys.clear();
         this.surveys.addAll(newListSurveys);
-        if (hasSurveys) {
-            reloadMonitor();
-        }
         setListShown(true);
     }
-
-    private void reloadMonitor() {
-        if (webView == null) {
-            webView = initMonitor();
-        }
-
-        //onPageFinish load data
-        webView.setWebViewClient(new WebViewClient() {
-            @Override
-            public void onPageFinished(WebView view, String url) {
-                super.onPageFinished(view, url);
-                //Add line chart
-                new SentSurveysBuilder(surveysForGraphic, getActivity()).addDataInChart(view);
-
-                //Add pie charts
-                new PieTabGroupBuilder(surveysForGraphic, getActivity()).addDataInChart(view);
-
-
-                //Add table x facility
-                new FacilityTableBuilder(surveysForGraphic, getActivity()).addDataInChart(view);
-            }
-        });
-
-        //Load html
-        webView.loadUrl("file:///android_asset/dashboard/dashboard.html");
-    }
-
-    private WebView initMonitor() {
-        WebView webView = (WebView) getActivity().findViewById(R.id.dashboard_monitor);
-        //Init webView settings
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-            webView.getSettings().setAllowUniversalAccessFromFileURLs(true);
-            webView.getSettings().setAllowFileAccessFromFileURLs(true);
-        }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            WebView.setWebContentsDebuggingEnabled(true);
-        }
-        webView.getSettings().setJavaScriptEnabled(true);
-
-        return webView;
-    }
-
-    /**
-     * Stops webView gracefully
-     */
-    private void stopMonitor(){
-        try{
-            if(webView!=null){
-                webView.stopLoading();
-            }
-        }catch(Exception e){
-            e.printStackTrace();
-        }
-    }
-
 
     /**
      * Inner private class that receives the result from the service
@@ -221,8 +161,8 @@ public class MonitorFragment extends ListFragment {
         public void onReceive(Context context, Intent intent) {
             Log.d(TAG, "onReceive");
             //Listening only intents from this method
-            if (SurveyService.ALL_SENT_SURVEYS_ACTION.equals(intent.getAction())) {
-                reloadSentSurveys();
+            if (SurveyService.PLANNED_SURVEYS_ACTION.equals(intent.getAction())) {
+                reloadPlannedSurveys();
             }
         }
     }

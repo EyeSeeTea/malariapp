@@ -53,6 +53,11 @@ public class SurveyService extends IntentService {
     public static final String SERVICE_METHOD="serviceMethod";
 
     /**
+     * Name of the parameter that holds every survey that goes into the planned tab
+     */
+    public static final String PLANNED_SURVEYS_ACTION="org.eyeseetea.malariacare.services.SurveyService.PLANNED_SURVEYS_ACTION";
+
+    /**
      * Name of 'list unsent' action
      */
     public static final String ALL_UNSENT_SURVEYS_ACTION ="org.eyeseetea.malariacare.services.SurveyService.ALL_UNSENT_SURVEYS_ACTION";
@@ -174,13 +179,17 @@ public class SurveyService extends IntentService {
             }
         }
 
+        //TODO Prepare surveys for planning
+
         //Since intents does NOT admit NON serializable as values we use Session instead
         Session.putServiceValue(ALL_UNSENT_SURVEYS_ACTION, unsentSurveys);
         Session.putServiceValue(ALL_SENT_SURVEYS_ACTION, sentSurveys);
+        Session.putServiceValue(PLANNED_SURVEYS_ACTION, surveys);
 
         //Returning result to anyone listening
         LocalBroadcastManager.getInstance(this).sendBroadcast(new Intent(ALL_UNSENT_SURVEYS_ACTION));
         LocalBroadcastManager.getInstance(this).sendBroadcast(new Intent(ALL_SENT_SURVEYS_ACTION));
+        LocalBroadcastManager.getInstance(this).sendBroadcast(new Intent(PLANNED_SURVEYS_ACTION));
     }
 
     /**
