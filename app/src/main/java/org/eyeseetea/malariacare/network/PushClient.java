@@ -103,7 +103,7 @@ public class PushClient {
             //data = prepareDataElements(data, controlData.get(""));
             data = prepareDataElements(data, null);
             pushResult = new PushResult(pushData(data));
-            if(pushResult.isSuccessful()){
+            if(pushResult.isSuccessful() && !pushResult.getImported().equals("0")){
                 //TODO: This should be removed once DHIS bug is solved
                 //pushControlDataElements(controlData);
                 updateSurveyState();

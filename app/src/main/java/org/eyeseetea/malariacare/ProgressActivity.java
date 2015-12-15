@@ -113,6 +113,8 @@ public class ProgressActivity extends Activity {
             PULL_CANCEL = true;
             PULL_IS_ACTIVE = false;
             step(getBaseContext().getResources().getString(R.string.cancellingPull));
+            if(PullController.getInstance().finishPullJob())
+                finishAndGo(LoginActivity.class);
         }
     }
 
@@ -133,7 +135,10 @@ public class ProgressActivity extends Activity {
     public void onPause() {
         super.onPause();
         try {Dhis2Application.bus.unregister(this);}catch(Exception e){e.printStackTrace();}
-        finishAndGo(LoginActivity.class);
+        if(PULL_CANCEL==true)
+            finishAndGo(LoginActivity.class);
+        else
+            finishAndGo(DashboardActivity.class);
     }
 
     private void prepareUI(){
