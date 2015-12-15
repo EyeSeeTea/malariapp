@@ -23,17 +23,27 @@ import android.content.res.AssetManager;
 
 import com.opencsv.CSVReader;
 import com.raizlabs.android.dbflow.runtime.TransactionManager;
+import com.raizlabs.android.dbflow.sql.language.Delete;
+import com.raizlabs.android.dbflow.structure.BaseModel;
 
 import org.eyeseetea.malariacare.database.model.Answer;
+import org.eyeseetea.malariacare.database.model.CompositeScore;
 import org.eyeseetea.malariacare.database.model.Header;
+import org.eyeseetea.malariacare.database.model.Match;
 import org.eyeseetea.malariacare.database.model.Option;
 import org.eyeseetea.malariacare.database.model.OptionAttribute;
 import org.eyeseetea.malariacare.database.model.OrgUnit;
 import org.eyeseetea.malariacare.database.model.OrgUnitLevel;
 import org.eyeseetea.malariacare.database.model.Program;
 import org.eyeseetea.malariacare.database.model.Question;
+import org.eyeseetea.malariacare.database.model.QuestionOption;
+import org.eyeseetea.malariacare.database.model.QuestionRelation;
+import org.eyeseetea.malariacare.database.model.Score;
+import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.model.Tab;
 import org.eyeseetea.malariacare.database.model.TabGroup;
+import org.eyeseetea.malariacare.database.model.User;
+import org.eyeseetea.malariacare.database.model.Value;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -65,10 +75,27 @@ public class PopulatePictureAppDB {
     static Map<Integer, OptionAttribute> optionAttributeList = new LinkedHashMap<Integer, OptionAttribute>();
     static Map<Integer, Option> optionList = new LinkedHashMap<Integer, Option>();
     static Map<Integer, Answer> answerList = new LinkedHashMap<Integer, Answer>();
-    static Map<Integer, OrgUnitLevel> orgUnitLevels = new LinkedHashMap<>();
-    static Map<Integer, OrgUnit> orgUnits = new LinkedHashMap<>();
+    static Map<Integer, OrgUnitLevel> orgUnitLevelList = new LinkedHashMap<>();
+    static Map<Integer, OrgUnit> orgUnitList = new LinkedHashMap<>();
 
 
+    /**
+     * Deletes all data from the app database
+     */
+    public static void wipeDatabase() {
+        Delete.tables(
+                Program.class,
+                TabGroup.class,
+                Tab.class,
+                Header.class,
+                Question.class,
+                OptionAttribute.class,
+                Option.class,
+                Answer.class,
+                OrgUnitLevel.class,
+                OrgUnit.class
+        );
+    }
     public static void populateDB(AssetManager assetManager) throws IOException {
 
         List<String> tables2populate = Arrays.asList(PROGRAMS_CSV, TAB_GROUPS_CSV,  TABS_CSV, HEADERS_CSV, ANSWERS_CSV, OPTION_ATTRIBUTES_CSV, OPTIONS_CSV, QUESTIONS_CSV, ORG_UNIT_LEVELS_CSV, ORG_UNITS_CSV);
@@ -84,13 +111,13 @@ public class PopulatePictureAppDB {
                         Program program = new Program();
                         program.setUid(line[1]);
                         program.setName(line[2]);
-                        programList.put(Integer.valueOf(line[0]), program);
+                        saveItem(programList, program, Integer.valueOf(line[0]));
                         break;
                     case TAB_GROUPS_CSV:
                         TabGroup tabGroup = new TabGroup();
                         tabGroup.setName(line[1]);
                         tabGroup.setProgram(programList.get(Integer.valueOf(line[2])));
-                        tabGroupList.put(Integer.valueOf(line[0]), tabGroup);
+                        saveItem(tabGroupList,tabGroup,Integer.valueOf(line[0]));
                         break;
                     case TABS_CSV:
                         Tab tab = new Tab();
@@ -99,7 +126,7 @@ public class PopulatePictureAppDB {
                         tab.setProgram(programList.get(Integer.valueOf(line[3])));
                         tab.setType(Integer.valueOf(line[4]));
                         tab.setTabGroup(tabGroupList.get(Integer.valueOf(line[5])));//new value
-                        tabList.put(Integer.valueOf(line[0]), tab);
+                        saveItem(tabList,tab,Integer.valueOf(line[0]));
                         break;
                     case HEADERS_CSV:
                         Header header = new Header();
@@ -107,18 +134,18 @@ public class PopulatePictureAppDB {
                         header.setName(line[2]);
                         header.setOrder_pos(Integer.valueOf(line[3]));
                         header.setTab(tabList.get(Integer.valueOf(line[4])));
-                        headerList.put(Integer.valueOf(line[0]), header);
+                        saveItem(headerList,header,Integer.valueOf(line[0]));
                         break;
                     case ANSWERS_CSV:
                         Answer answer = new Answer();
                         answer.setName(line[1]);
                         answer.setOutput(Integer.valueOf(line[2]));
-                        answerList.put(Integer.valueOf(line[0]), answer);
+                        saveItem(answerList,answer,Integer.valueOf(line[0]));
                         break;
                     case OPTION_ATTRIBUTES_CSV:
                         OptionAttribute optionAttribute = new OptionAttribute();
                         optionAttribute.setBackground_colour(line[1]);
-                        optionAttributeList.put(Integer.valueOf(line[0]), optionAttribute);
+                        saveItem(optionAttributeList,optionAttribute,Integer.valueOf(line[0]));
                         break;
                     case OPTIONS_CSV:
                         Option option = new Option();
@@ -130,7 +157,7 @@ public class PopulatePictureAppDB {
                         if (!line[6].equals(""))
                             option.setOptionAttribute(optionAttributeList.get(Integer.valueOf(line[6])));
                         option.setBackground_colour(line[7]);
-                        optionList.put(Integer.valueOf(line[0]), option);
+                        saveItem(optionList,option,Integer.valueOf(line[0]));
                         break;
                     case QUESTIONS_CSV:
                         Question question = new Question();
@@ -147,23 +174,25 @@ public class PopulatePictureAppDB {
                             question.setAnswer(answerList.get(Integer.valueOf(line[10])));
                         if (!line[11].equals(""))
                             question.setQuestion(questionList.get(Integer.valueOf(line[11])));
-                        questionList.put(Integer.valueOf(line[0]), question);
+                        saveItem(questionList,question,Integer.valueOf(line[0]));
                         break;
 
                     case ORG_UNIT_LEVELS_CSV:
                         OrgUnitLevel orgUnitLevel = new OrgUnitLevel();
                         orgUnitLevel.setName(line[1]);
-                        orgUnitLevels.put(Integer.valueOf(line[0]), orgUnitLevel);
+                        orgUnitLevelList.put(Integer.valueOf(line[0]), orgUnitLevel);
+                        saveItem(orgUnitLevelList,orgUnitLevel,Integer.valueOf(line[0]));
                         break;
                     case ORG_UNITS_CSV:
                         OrgUnit orgUnit = new OrgUnit();
                         orgUnit.setUid(line[1]);
                         orgUnit.setName(line[2]);
                         if (!line[3].equals(""))
-                            orgUnit.setOrgUnit(orgUnits.get(Integer.valueOf(line[3])));
+                            orgUnit.setOrgUnit(orgUnitList.get(Integer.valueOf(line[3])));
                         if (!line[4].equals(""))
-                            orgUnit.setOrgUnitLevel(orgUnitLevels.get(Integer.valueOf(line[4])));
-                        orgUnits.put(Integer.valueOf(line[0]), orgUnit);
+                            orgUnit.setOrgUnitLevel(orgUnitLevelList.get(Integer.valueOf(line[4])));
+                        orgUnitList.put(Integer.valueOf(line[0]), orgUnit);
+                        saveItem(orgUnitList,orgUnit,Integer.valueOf(line[0]));
                         break;
                 }
             }
@@ -178,8 +207,13 @@ public class PopulatePictureAppDB {
         TransactionManager.getInstance().saveOnSaveQueue(optionAttributeList.values());
         TransactionManager.getInstance().saveOnSaveQueue(optionList.values());
         TransactionManager.getInstance().saveOnSaveQueue(questionList.values());
-        TransactionManager.getInstance().saveOnSaveQueue(orgUnitLevels.values());
-        TransactionManager.getInstance().saveOnSaveQueue(orgUnits.values());
+        TransactionManager.getInstance().saveOnSaveQueue(orgUnitLevelList.values());
+        TransactionManager.getInstance().saveOnSaveQueue(orgUnitList.values());
+    }
+
+    protected static void saveItem(Map items, BaseModel model, Integer pk){
+        items.put(pk,model);
+        model.save();
     }
 
     public static void populateDummyData(){

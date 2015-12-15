@@ -130,10 +130,8 @@ public class AutoTabAdapter extends ATabAdapter {
                 if (item instanceof Question) {
                     boolean hidden = AutoTabLayoutUtils.isHidden((Question) item);
                     elementInvisibility.put(item, hidden);
-                    if (!(hidden))
-                        AutoTabLayoutUtils.initScoreQuestion((Question) item, totalNum, totalDenum);
-                    else
-                        ScoreRegister.addRecord((Question) item, 0F, ScoreRegister.calcDenum((Question) item));
+                    if (!(hidden)) AutoTabLayoutUtils.initScoreQuestion((Question) item, totalNum, totalDenum);
+                    else ScoreRegister.addRecord((Question) item, 0F, ScoreRegister.calcDenum((Question) item));
                     Header header = ((Question) item).getHeader();
                     boolean headerVisibility = elementInvisibility.get(header);
                     elementInvisibility.put(header, headerVisibility && elementInvisibility.get(item));
@@ -370,7 +368,7 @@ public class AutoTabAdapter extends ATabAdapter {
             case Constants.IMAGES_2:
             case Constants.IMAGES_4:
             case Constants.IMAGES_6:
-
+                //Images_2 == case Constants.DROPDOWN_LIST_DISABLED:
                 ((Spinner) viewHolder.component).setSelection(ReadWriteDB.readPositionOption(question));
 
                 List<Float> numdenum = ScoreRegister.getNumDenum(question);
@@ -394,7 +392,7 @@ public class AutoTabAdapter extends ATabAdapter {
                     }
                     if (value != null) {
                         if(Utils.isPictureQuestion()) {
-                        ((UncheckeableRadioButton) viewHolder.component.findViewWithTag(value.getOption())).setChecked(true);
+                            ((UncheckeableRadioButton) viewHolder.component.findViewWithTag(value.getOption())).setChecked(true);
                         }else {
                             ((CustomRadioButton) viewHolder.component.findViewWithTag(value.getOption())).setChecked(true);
                         }
@@ -539,10 +537,7 @@ public class AutoTabAdapter extends ATabAdapter {
                         rowView = AutoTabLayoutUtils.initialiseView(R.layout.integer, parent, question, viewHolder, position, getInflater());
 
                     //Add main component, set filters and listener
-                    ((CustomEditText) viewHolder.component).setFilters(new InputFilter[]{
-                            new InputFilter.LengthFilter(Constants.MAX_INT_CHARS),
-                            new MinMaxInputFilter(1, null)
-                    });
+                    ((CustomEditText) viewHolder.component).setFilters(new InputFilter[]{new InputFilter.LengthFilter(Constants.MAX_INT_CHARS),new MinMaxInputFilter(1, null)});
                     ((CustomEditText) viewHolder.component).addTextChangedListener(new TextViewListener(false, question));
                     break;
                 case Constants.INT:
@@ -552,9 +547,7 @@ public class AutoTabAdapter extends ATabAdapter {
                     else
                         rowView = AutoTabLayoutUtils.initialiseView(R.layout.integer, parent, question, viewHolder, position, getInflater());
                     //Add main component, set filters and listener
-                    ((CustomEditText) viewHolder.component).setFilters(new InputFilter[]{
-                            new InputFilter.LengthFilter(Constants.MAX_INT_CHARS)
-                    });
+                    ((CustomEditText) viewHolder.component).setFilters(new InputFilter[]{new InputFilter.LengthFilter(Constants.MAX_INT_CHARS)});
                     ((CustomEditText) viewHolder.component).addTextChangedListener(new TextViewListener(false, question));
                     break;
                 case Constants.NUMERIC_PICKER:
@@ -581,7 +574,6 @@ public class AutoTabAdapter extends ATabAdapter {
                     break;
                 case Constants.DATE:
                     rowView = AutoTabLayoutUtils.initialiseView(R.layout.date, parent, question, viewHolder, position, getInflater());
-
                     //Add main component and listener
                     ((CustomEditText) viewHolder.component).addTextChangedListener(new TextViewListener(false, question));
                     break;

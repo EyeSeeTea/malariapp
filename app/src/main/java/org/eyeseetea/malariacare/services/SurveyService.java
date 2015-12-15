@@ -165,7 +165,7 @@ public class SurveyService extends IntentService {
         Log.d(TAG, "reloadDashboard");
         List<Survey> surveys=new Select().all().from(Survey.class)
                 .orderBy(Survey$Table.EVENTDATE)
-                .orderBy(Survey$Table.ORGUNIT_ID_ORG_UNIT).queryList();
+                .orderBy(Survey$Table.ID_ORG_UNIT).queryList();
 
         List<Survey> unsentSurveys=new ArrayList<>();
         List<Survey> sentSurveys=new ArrayList<>();

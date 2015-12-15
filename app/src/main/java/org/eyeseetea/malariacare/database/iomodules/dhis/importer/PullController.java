@@ -19,16 +19,16 @@
 
 package org.eyeseetea.malariacare.database.iomodules.dhis.importer;
 
+import android.app.job.JobService;
 import android.content.Context;
 import android.util.Log;
 
-import com.raizlabs.android.dbflow.sql.builder.Condition;
-import com.raizlabs.android.dbflow.sql.language.ColumnAlias;
 import com.raizlabs.android.dbflow.sql.language.Delete;
-import com.raizlabs.android.dbflow.sql.language.Join;
 import com.raizlabs.android.dbflow.sql.language.Select;
 import com.squareup.otto.Subscribe;
 
+import org.eyeseetea.malariacare.LoginActivity;
+import org.eyeseetea.malariacare.ProgressActivity;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.DataElementExtended;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.EventExtended;
@@ -44,7 +44,6 @@ import org.eyeseetea.malariacare.database.model.Option;
 import org.eyeseetea.malariacare.database.model.OrgUnit;
 import org.eyeseetea.malariacare.database.model.OrgUnitLevel;
 import org.eyeseetea.malariacare.database.model.Program;
-import org.eyeseetea.malariacare.database.model.Program$Table;
 import org.eyeseetea.malariacare.database.model.Question;
 import org.eyeseetea.malariacare.database.model.QuestionOption;
 import org.eyeseetea.malariacare.database.model.QuestionRelation;
@@ -54,24 +53,24 @@ import org.eyeseetea.malariacare.database.model.Tab;
 import org.eyeseetea.malariacare.database.model.TabGroup;
 import org.eyeseetea.malariacare.database.model.User;
 import org.eyeseetea.malariacare.database.model.Value;
+import org.eyeseetea.malariacare.database.utils.PopulateDB;
+import org.eyeseetea.malariacare.database.utils.PopulatePictureAppDB;
+import org.eyeseetea.malariacare.database.utils.Session;
+import org.eyeseetea.malariacare.utils.Utils;
 import org.hisp.dhis.android.sdk.controllers.DhisService;
 import org.hisp.dhis.android.sdk.controllers.LoadingController;
 import org.hisp.dhis.android.sdk.controllers.metadata.MetaDataController;
 import org.hisp.dhis.android.sdk.controllers.tracker.TrackerController;
+import org.hisp.dhis.android.sdk.job.Job;
+import org.hisp.dhis.android.sdk.job.JobExecutor;
 import org.hisp.dhis.android.sdk.job.NetworkJob;
 import org.hisp.dhis.android.sdk.persistence.Dhis2Application;
-import org.hisp.dhis.android.sdk.persistence.models.Attribute$Table;
-import org.hisp.dhis.android.sdk.persistence.models.AttributeValue$Table;
 import org.hisp.dhis.android.sdk.persistence.models.DataElement;
-import org.hisp.dhis.android.sdk.persistence.models.DataElement$Table;
-import org.hisp.dhis.android.sdk.persistence.models.DataElementAttributeValue$Table;
 import org.hisp.dhis.android.sdk.persistence.models.Event;
 import org.hisp.dhis.android.sdk.persistence.models.OptionSet;
 import org.hisp.dhis.android.sdk.persistence.models.OrganisationUnit;
 import org.hisp.dhis.android.sdk.persistence.models.ProgramStage;
-import org.hisp.dhis.android.sdk.persistence.models.ProgramStage$Table;
 import org.hisp.dhis.android.sdk.persistence.models.ProgramStageDataElement;
-import org.hisp.dhis.android.sdk.persistence.models.ProgramStageDataElement$Table;
 import org.hisp.dhis.android.sdk.persistence.preferences.ResourceType;
 
 import java.util.ArrayList;
@@ -80,9 +79,6 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.SortedSet;
-import java.util.TreeMap;
-import java.util.TreeSet;
 
 /**
  * A static controller that orchestrate the pull process
@@ -93,6 +89,7 @@ public class PullController {
 
     private static PullController instance;
 
+    private static Job job;
     /**
      * Context required to i18n error messages while pulling
      */
@@ -105,14 +102,22 @@ public class PullController {
     }
 
     private void register() {
-        Dhis2Application.bus.register(this);
+        try {
+            Dhis2Application.bus.register(this);
+        } catch (Exception e) {
+            unregister();
+            Dhis2Application.bus.register(this);
+        }
     }
 
     /**
      * Unregister pull controller from bus events
      */
-    private void unregister() {
-        Dhis2Application.bus.unregister(this);
+    public void unregister() {
+        try {
+            Dhis2Application.bus.unregister(this);
+        } catch (Exception e) {
+        }
     }
 
     /**
@@ -139,6 +144,7 @@ public class PullController {
         Log.d(TAG, "Starting PULL process...");
         context = ctx;
         try {
+
             //Register for event bus
             register();
             //Enabling resources to pull
@@ -148,7 +154,12 @@ public class PullController {
             MetaDataController.wipe();
             //Pull new metadata
             postProgress(context.getString(R.string.progress_pull_downloading));
-            DhisService.loadData(context);
+            try {
+                job = DhisService.loadData(context);
+            } catch (Exception ex) {
+                Log.e(TAG, "pullS: " + ex.getLocalizedMessage());
+                ex.printStackTrace();
+            }
         } catch (Exception ex) {
             Log.e(TAG, "pull: " + ex.getLocalizedMessage());
             unregister();
@@ -163,7 +174,6 @@ public class PullController {
         LoadingController.enableLoading(context, ResourceType.ASSIGNEDPROGRAMS);
         LoadingController.enableLoading(context, ResourceType.PROGRAMS);
         LoadingController.enableLoading(context, ResourceType.OPTIONSETS);
-        LoadingController.enableLoading(context, ResourceType.ATTRIBUTEVALUES);
         LoadingController.enableLoading(context, ResourceType.EVENTS);
     }
 
@@ -188,12 +198,14 @@ public class PullController {
                     //Ok
                     wipeDatabase();
                     convertFromSDK();
-                    postFinish();
-                    Log.d(TAG, "PULL process...OK");
+                    if (ProgressActivity.PULL_IS_ACTIVE) {
+                        Log.d(TAG, "PULL process...OK");
+                    }
                 } catch (Exception ex) {
                     Log.e(TAG, "onLoadMetadataFinished: " + ex.getLocalizedMessage());
                     postException(ex);
                 } finally {
+                    postFinish();
                     unregister();
                 }
             }
@@ -203,38 +215,27 @@ public class PullController {
     /**
      * Erase data from app database
      */
-    public void wipeDatabase(){
+    public void wipeDatabase() {
+        if (!ProgressActivity.PULL_IS_ACTIVE) return;
         Log.d(TAG, "Deleting app database...");
-        Delete.tables(
-                Value.class,
-                Score.class,
-                Survey.class,
-                OrgUnit.class,
-                OrgUnitLevel.class,
-                User.class,
-                QuestionOption.class,
-                Match.class,
-                QuestionRelation.class,
-                Question.class,
-                CompositeScore.class,
-                Option.class,
-                Answer.class,
-                Header.class,
-                Tab.class,
-                TabGroup.class,
-                Program.class
-        );
+        if(Utils.isPictureQuestion()){
+            PopulatePictureAppDB.wipeDatabase();
+        }
+        else
+        PopulateDB.wipeDatabase();
     }
 
     /**
      * Launches visitor that turns SDK data into APP data
      */
     private void convertFromSDK() {
+        if (!ProgressActivity.PULL_IS_ACTIVE) return;
         Log.d(TAG, "Converting SDK into APP data");
 
         //One shared converter to match parents within the hierarchy
         ConvertFromSDKVisitor converter = new ConvertFromSDKVisitor();
         convertMetaData(converter);
+        if (!ProgressActivity.PULL_IS_ACTIVE) return;
         convertDataValues(converter);
 
     }
@@ -245,7 +246,7 @@ public class PullController {
      * @param converter
      */
     private void convertMetaData(ConvertFromSDKVisitor converter) {
-
+        if (!ProgressActivity.PULL_IS_ACTIVE) return;
         //Convert Programs, Tabgroups, Tabs
         postProgress(context.getString(R.string.progress_pull_preparing_program));
         Log.i(TAG, "Converting programs, tabgroups and tabs...");
@@ -256,28 +257,33 @@ public class PullController {
         }
 
         //Convert Answers, Options
+        if (!ProgressActivity.PULL_IS_ACTIVE) return;
         postProgress(context.getString(R.string.progress_pull_preparing_answers));
         List<OptionSet> optionSets = MetaDataController.getOptionSets();
         Log.i(TAG, "Converting answers and options...");
         for (OptionSet optionSet : optionSets) {
+            if (!ProgressActivity.PULL_IS_ACTIVE) return;
             OptionSetExtended optionSetExtended = new OptionSetExtended(optionSet);
             optionSetExtended.accept(converter);
         }
-
         //OrganisationUnits
+        if (!ProgressActivity.PULL_IS_ACTIVE) return;
         postProgress(context.getString(R.string.progress_pull_preparing_orgs));
         Log.i(TAG, "Converting organisationUnits...");
         List<OrganisationUnit> assignedOrganisationsUnits = MetaDataController.getAssignedOrganisationUnits();
         for (OrganisationUnit assignedOrganisationsUnit : assignedOrganisationsUnits) {
+            if (!ProgressActivity.PULL_IS_ACTIVE) return;
             OrganisationUnitExtended organisationUnitExtended = new OrganisationUnitExtended(assignedOrganisationsUnit);
             organisationUnitExtended.accept(converter);
         }
 
+        if (!ProgressActivity.PULL_IS_ACTIVE) return;
         //User (from UserAccount)
         Log.i(TAG, "Converting user...");
         UserAccountExtended userAccountExtended = new UserAccountExtended(MetaDataController.getUserAccount());
         userAccountExtended.accept(converter);
 
+        if (!ProgressActivity.PULL_IS_ACTIVE) return;
         //Convert questions and compositeScores
         postProgress(context.getString(R.string.progress_pull_questions));
         Log.i(TAG, "Ordering questions and compositeScores...");
@@ -285,37 +291,41 @@ public class PullController {
         //Dataelements ordered by program.
         List<org.hisp.dhis.android.sdk.persistence.models.Program> programs = new Select().from(org.hisp.dhis.android.sdk.persistence.models.Program.class).queryList();
         Map<String, List<DataElement>> programsDataelements = new HashMap<>();
+        if (!ProgressActivity.PULL_IS_ACTIVE) return;
         for (org.hisp.dhis.android.sdk.persistence.models.Program program : programs) {
             List<DataElement> dataElements = new ArrayList<>();
-            String programUid=program.getUid();
-            List<ProgramStage> programStages= program.getProgramStages();
+            String programUid = program.getUid();
+            List<ProgramStage> programStages = program.getProgramStages();
             for (org.hisp.dhis.android.sdk.persistence.models.ProgramStage programStage : programStages) {
-                List<ProgramStageDataElement> programStageDataElements= programStage.getProgramStageDataElements();
-                for(ProgramStageDataElement programStageDataElement:programStageDataElements){
-                    if(programStageDataElement.getDataElement().getUid()!=null)
-                    dataElements.add(programStageDataElement.getDataElement());
+                List<ProgramStageDataElement> programStageDataElements = programStage.getProgramStageDataElements();
+                for (ProgramStageDataElement programStageDataElement : programStageDataElements) {
+                    if (programStageDataElement.getDataElement().getUid() != null) {
+                        if (!ProgressActivity.PULL_IS_ACTIVE) return;
+                        dataElements.add(programStageDataElement.getDataElement());
+                    }
                 }
             }
+            if (!ProgressActivity.PULL_IS_ACTIVE) return;
             Collections.sort(dataElements, new Comparator<DataElement>() {
                 public int compare(DataElement de1, DataElement de2) {
                     DataElementExtended dataElementExtended1 = new DataElementExtended(de1);
                     DataElementExtended dataElementExtended2 = new DataElementExtended(de2);
-                    Integer dataelementOrder1=-1, dataelementOrder2 = -1;
+                    Integer dataelementOrder1 = -1, dataelementOrder2 = -1;
                     try {
                         dataelementOrder1 = dataElementExtended1.findOrder();
                     } catch (Exception e) {
-                        dataelementOrder1=null;
+                        dataelementOrder1 = null;
                     }
                     try {
                         dataelementOrder2 = dataElementExtended2.findOrder();
-                    }catch (Exception e){
+                    } catch (Exception e) {
                         dataelementOrder2 = null;
                     }
-                    if(dataelementOrder1==dataelementOrder2)
+                    if (dataelementOrder1 == dataelementOrder2)
                         return 0;
                     else if (dataelementOrder1 == null)
                         return 1;
-                    else if(dataelementOrder2==null)
+                    else if (dataelementOrder2 == null)
                         return -1;
                     return dataelementOrder1.compareTo(dataelementOrder2);
                 }
@@ -323,27 +333,32 @@ public class PullController {
             programsDataelements.put(programUid, dataElements);
         }
 
-
+        if (!ProgressActivity.PULL_IS_ACTIVE) return;
         Log.i(TAG, "Building questions,compositescores,headers...");
         for (org.hisp.dhis.android.sdk.persistence.models.Program program : programs) {
-            String programUid=program.getUid();
+            String programUid = program.getUid();
             List<DataElement> sortDataElements = programsDataelements.get(programUid);
-
             for (DataElement dataElement : sortDataElements) {
+                if (!ProgressActivity.PULL_IS_ACTIVE) return;
                 DataElementExtended dataElementExtended = new DataElementExtended(dataElement);
                 dataElementExtended.accept(converter);
             }
         }
+
+        if (!ProgressActivity.PULL_IS_ACTIVE) return;
         Log.i(TAG, "Building relationships...");
         for (org.hisp.dhis.android.sdk.persistence.models.Program program : programs) {
-            String programUid=program.getUid();
+            String programUid = program.getUid();
             List<DataElement> sortDataElements = programsDataelements.get(programUid);
             programsDataelements.put(programUid, sortDataElements);
             for (DataElement dataElement : sortDataElements) {
+                if (!ProgressActivity.PULL_IS_ACTIVE) return;
                 DataElementExtended dataElementExtended = new DataElementExtended(dataElement);
                 converter.buildRelations(dataElementExtended);
             }
         }
+
+        if (!ProgressActivity.PULL_IS_ACTIVE) return;
         //Fill order and parent scores
         Log.i(TAG, "Building compositeScore relationships...");
         converter.buildScores();
@@ -356,7 +371,7 @@ public class PullController {
      * @param converter
      */
     private void convertDataValues(ConvertFromSDKVisitor converter) {
-
+        if (!ProgressActivity.PULL_IS_ACTIVE) return;
         postProgress(context.getString(R.string.progress_pull_surveys));
         //XXX This is the right place to apply additional filters to data conversion (only predefined orgunit for instance)
         //For each unit
@@ -366,6 +381,7 @@ public class PullController {
                 List<Event> events = TrackerController.getEvents(organisationUnit.getId(), program.getUid());
                 Log.i(TAG, String.format("Converting surveys and values for orgUnit: %s | program: %s", organisationUnit.getLabel(), program.getDisplayName()));
                 for (Event event : events) {
+                    if (!ProgressActivity.PULL_IS_ACTIVE) return;
                     EventExtended eventExtended = new EventExtended(event);
                     eventExtended.accept(converter);
                 }
@@ -396,8 +412,32 @@ public class PullController {
      * Notifies that the pull is over
      */
     private void postFinish() {
-        Dhis2Application.getEventBus().post(new SyncProgressStatus());
+        //Fixme maybe it is not the best place to reload the logged user.(Without reload the user after pull, the user had diferent id and application crash).
+        User user = User.getLoggedUser();
+        Session.setUser(user);
+        try {
+            Dhis2Application.getEventBus().post(new SyncProgressStatus());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
+    //Returns true if the pull thead is finish
+    public boolean finishPullJob() {
+        if (JobExecutor.isJobRunning(job.getJobId())) {
+            Log.d(TAG, "Job " + job.getJobId() + " is running");
+            job.cancel(true);
+            try {
+                try {JobExecutor.getInstance().dequeueRunningJob(job);} catch (Exception e) {e.printStackTrace();}
+                job.cancel(true);
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                return true;
+            }
+        }
+        return false;
+
+    }
 
 }

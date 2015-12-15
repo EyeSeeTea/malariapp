@@ -19,31 +19,14 @@
 
 package org.eyeseetea.malariacare;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
-import android.annotation.TargetApi;
 import android.app.LoaderManager.LoaderCallbacks;
-import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.Loader;
 import android.content.SharedPreferences;
 import android.database.Cursor;
-import android.net.Uri;
-import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.provider.ContactsContract;
-import android.util.Log;
-import android.view.KeyEvent;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.inputmethod.EditorInfo;
-import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import com.raizlabs.android.dbflow.sql.language.Select;
 import com.squareup.okhttp.HttpUrl;
@@ -54,16 +37,14 @@ import org.eyeseetea.malariacare.database.iomodules.dhis.importer.PullController
 import org.eyeseetea.malariacare.database.model.User;
 import org.eyeseetea.malariacare.database.utils.PopulateDB;
 import org.eyeseetea.malariacare.database.utils.PopulatePictureAppDB;
+import org.eyeseetea.malariacare.database.utils.PreferencesState;
+import org.eyeseetea.malariacare.database.utils.PopulatePictureAppDB;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.utils.Utils;
 import org.hisp.dhis.android.sdk.controllers.DhisService;
 import org.hisp.dhis.android.sdk.job.NetworkJob;
-import org.hisp.dhis.android.sdk.network.Credentials;
 import org.hisp.dhis.android.sdk.persistence.Dhis2Application;
 import org.hisp.dhis.android.sdk.persistence.preferences.ResourceType;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Login Screen.
@@ -89,12 +70,13 @@ public class LoginActivity extends org.hisp.dhis.android.sdk.ui.activities.Login
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (User.getLoggedUser() != null) {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        if (User.getLoggedUser() != null && !ProgressActivity.PULL_CANCEL &&  sharedPreferences.getBoolean(getApplicationContext().getResources().getString(R.string.pull_metadata),false)) {
             startActivity(new Intent(LoginActivity.this,
                     ((Dhis2Application) getApplication()).getMainActivity()));
             finish();
         }
-
+        ProgressActivity.PULL_CANCEL =false;
         EditText serverText = (EditText) findViewById(org.hisp.dhis.android.sdk.R.id.server_url);
         serverText.setText(R.string.login_info_dhis_default_server_url);
     }
@@ -130,9 +112,9 @@ public class LoginActivity extends org.hisp.dhis.android.sdk.ui.activities.Login
         if(result!=null && result.getResourceType().equals(ResourceType.USERS)) {
             if(result.getResponseHolder().getApiException() == null) {
                 saveUserDetails();
-                //FIXME remove when create survey is fixed
-//                populateFromAssets();
-                populatePictureAppFromAssets();
+
+                populateFromAssetsIfRequired();
+
                 launchMainActivity();
             } else {
                 onLoginFail(result.getResponseHolder().getApiException());
@@ -143,33 +125,30 @@ public class LoginActivity extends org.hisp.dhis.android.sdk.ui.activities.Login
     /**
      * Utility method to use while developing to avoid a real pull
      */
-    private void populateFromAssets() {
-        try{
-            User user = new User();
-            user.save();
-            Session.setUser(user);
-            PullController.getInstance().wipeDatabase();
-            PopulateDB.populateDB(getAssets());
-        }catch(Exception ex){
-
+    private void populateFromAssetsIfRequired() {
+        //From server -> done
+        if(PreferencesState.getInstance().getPullFromServer()) {
+            return;
         }
+
+        //Populate locally
+        populate();
     }
 
     /**
-     * Utility method to pictureApp Build
+     * Utility method to populate from csv
      */
-    private void populatePictureAppFromAssets() {
+    private void populate() {
         try{
             PullController.getInstance().wipeDatabase();
             User user = new User();
             user.save();
             Session.setUser(user);
             if(Utils.isPictureQuestion())
-            PopulatePictureAppDB.populateDB(getAssets());
+                PopulatePictureAppDB.populateDB(getAssets());
             else
-            PopulateDB.populateDB(getAssets());
+                PopulateDB.populateDB(getAssets());
         }catch(Exception ex){
-
         }
     }
 

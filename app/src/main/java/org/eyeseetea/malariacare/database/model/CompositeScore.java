@@ -58,14 +58,21 @@ public class CompositeScore extends BaseModel implements VisitableToSDK {
     @Column
     Integer order_pos;
     @Column
-    @ForeignKey(references = {@ForeignKeyReference(columnName = "id_parent",
-            columnType = Long.class,
-            foreignColumnName = "id_composite_score")},
-            saveForeignKeyModel = false)
+    Long id_parent;
+
+    /**
+     * Reference to parent compositeScore (loaded lazily)
+     */
     CompositeScore compositeScore;
 
+    /**
+     * List of compositeScores that belongs to this one
+     */
     List<CompositeScore> compositeScoreChildren;
 
+    /**
+     * List of questions associated to this compositeScore
+     */
     List<Question> questions;
 
     public CompositeScore() {
@@ -74,16 +81,16 @@ public class CompositeScore extends BaseModel implements VisitableToSDK {
     public CompositeScore(String hierarchical_code, String label, CompositeScore compositeScore, Integer order_pos) {
         this.hierarchical_code = hierarchical_code;
         this.label = label;
-        this.compositeScore = compositeScore;
         this.order_pos = order_pos;
+        this.setCompositeScore(compositeScore);
     }
 
     public CompositeScore(String hierarchical_code, String label, String uid, CompositeScore compositeScore, Integer order_pos) {
         this.hierarchical_code = hierarchical_code;
         this.label = label;
         this.uid = uid;
-        this.compositeScore = compositeScore;
         this.order_pos = order_pos;
+        this.setCompositeScore(compositeScore);
     }
 
     public Long getId_composite_score() {
@@ -109,11 +116,24 @@ public class CompositeScore extends BaseModel implements VisitableToSDK {
     }
 
     public CompositeScore getComposite_score() {
+        if(compositeScore==null){
+            if (id_parent==null) return null;
+            compositeScore = new Select()
+                    .from(CompositeScore.class)
+                    .where(Condition.column(CompositeScore$Table.ID_COMPOSITE_SCORE)
+                            .is(id_parent)).querySingle();
+        }
         return compositeScore;
     }
 
     public void setCompositeScore(CompositeScore compositeScore) {
         this.compositeScore = compositeScore;
+        this.id_parent = (compositeScore!=null)?compositeScore.getId_composite_score():null;
+    }
+
+    public void setCompositeScore(Long id_parent){
+        this.id_parent = id_parent;
+        this.compositeScore = null;
     }
 
     public String getUid() {
@@ -136,26 +156,25 @@ public class CompositeScore extends BaseModel implements VisitableToSDK {
         return getComposite_score() != null;
     }
 
-    //TODO: to enable lazy loading, here we need to set Method.SAVE and Method.DELETE and use the .toModel() to specify when do we want to load the models
     public List<CompositeScore> getCompositeScoreChildren() {
         if (this.compositeScoreChildren == null){
             this.compositeScoreChildren = new Select()
                     .from(CompositeScore.class)
-                    .where(Condition.column(CompositeScore$Table.COMPOSITESCORE_ID_PARENT).eq(this.getId_composite_score()))
+                    .where(Condition.column(CompositeScore$Table.ID_PARENT).eq(this.getId_composite_score()))
                     .orderBy(CompositeScore$Table.ORDER_POS)
                     .queryList();
         }
         return this.compositeScoreChildren;
     }
 
-    //TODO: to enable lazy loading, here we need to set Method.SAVE and Method.DELETE and use the .toModel() to specify when do we want to load the models
-    @OneToMany(methods = {OneToMany.Method.SAVE, OneToMany.Method.DELETE}, variableName = "questions")
     public List<Question> getQuestions(){
-        questions = new Select()
-                .from(Question.class)
-                .where(Condition.column(Question$Table.COMPOSITESCORE_ID_COMPOSITE_SCORE).eq(this.getId_composite_score()))
-                .orderBy(true, Question$Table.ORDER_POS)
-                .queryList();
+        if(questions==null){
+            questions = new Select()
+                    .from(Question.class)
+                    .where(Condition.column(Question$Table.ID_COMPOSITE_SCORE).eq(this.getId_composite_score()))
+                    .orderBy(true, Question$Table.ORDER_POS)
+                    .queryList();
+        }
         return questions;
     }
 
@@ -186,15 +205,15 @@ public class CompositeScore extends BaseModel implements VisitableToSDK {
         List<CompositeScore> compositeScoresByProgram = new Select().distinct().from(CompositeScore.class).as("cs")
                 .join(Question.class, Join.JoinType.LEFT).as("q")
                 .on(Condition.column(ColumnAlias.columnWithTable("cs", CompositeScore$Table.ID_COMPOSITE_SCORE))
-                        .eq(ColumnAlias.columnWithTable("q", Question$Table.COMPOSITESCORE_ID_COMPOSITE_SCORE)))
+                        .eq(ColumnAlias.columnWithTable("q", Question$Table.ID_COMPOSITE_SCORE)))
                 .join(Header.class, Join.JoinType.LEFT).as("h")
-                .on(Condition.column(ColumnAlias.columnWithTable("q", Question$Table.HEADER_ID_HEADER))
+                .on(Condition.column(ColumnAlias.columnWithTable("q", Question$Table.ID_HEADER))
                         .eq(ColumnAlias.columnWithTable("h", Header$Table.ID_HEADER)))
                 .join(Tab.class, Join.JoinType.LEFT).as("t")
-                .on(Condition.column(ColumnAlias.columnWithTable("h", Header$Table.TAB_ID_TAB))
+                .on(Condition.column(ColumnAlias.columnWithTable("h", Header$Table.ID_TAB))
                         .eq(ColumnAlias.columnWithTable("t", Tab$Table.ID_TAB)))
                 .join(Program.class, Join.JoinType.LEFT).as("p")
-                .on(Condition.column(ColumnAlias.columnWithTable("t", Tab$Table.PROGRAM_ID_PROGRAM))
+                .on(Condition.column(ColumnAlias.columnWithTable("t", Tab$Table.ID_PROGRAM))
                         .eq(ColumnAlias.columnWithTable("p", Program$Table.ID_PROGRAM)))
                 .join(CompositeScore.class, Join.JoinType.LEFT).as("cs2")
                 .on(Condition.column(ColumnAlias.columnWithTable("cs", CompositeScore$Table.ID_COMPOSITE_SCORE))
@@ -236,15 +255,15 @@ public class CompositeScore extends BaseModel implements VisitableToSDK {
         List<CompositeScore> compositeScoresByProgram = new Select().distinct().from(CompositeScore.class).as("cs")
                 .join(Question.class, Join.JoinType.LEFT).as("q")
                 .on(Condition.column(ColumnAlias.columnWithTable("cs", CompositeScore$Table.ID_COMPOSITE_SCORE))
-                        .eq(ColumnAlias.columnWithTable("q", Question$Table.COMPOSITESCORE_ID_COMPOSITE_SCORE)))
+                        .eq(ColumnAlias.columnWithTable("q", Question$Table.ID_COMPOSITE_SCORE)))
                 .join(Header.class, Join.JoinType.LEFT).as("h")
-                .on(Condition.column(ColumnAlias.columnWithTable("q", Question$Table.HEADER_ID_HEADER))
+                .on(Condition.column(ColumnAlias.columnWithTable("q", Question$Table.ID_HEADER))
                         .eq(ColumnAlias.columnWithTable("h", Header$Table.ID_HEADER)))
                 .join(Tab.class, Join.JoinType.LEFT).as("t")
-                .on(Condition.column(ColumnAlias.columnWithTable("h", Header$Table.TAB_ID_TAB))
+                .on(Condition.column(ColumnAlias.columnWithTable("h", Header$Table.ID_TAB))
                         .eq(ColumnAlias.columnWithTable("t", Tab$Table.ID_TAB)))
                 .join(TabGroup.class, Join.JoinType.LEFT).as("g")
-                .on(Condition.column(ColumnAlias.columnWithTable("t", Tab$Table.TABGROUP_ID_TAB_GROUP))
+                .on(Condition.column(ColumnAlias.columnWithTable("t", Tab$Table.ID_TAB_GROUP))
                         .eq(ColumnAlias.columnWithTable("g", TabGroup$Table.ID_TAB_GROUP)))
                 .join(CompositeScore.class, Join.JoinType.LEFT).as("cs2")
                 .on(Condition.column(ColumnAlias.columnWithTable("cs", CompositeScore$Table.ID_COMPOSITE_SCORE))
@@ -298,39 +317,41 @@ public class CompositeScore extends BaseModel implements VisitableToSDK {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof CompositeScore)) return false;
+        if (o == null || getClass() != o.getClass()) return false;
 
         CompositeScore that = (CompositeScore) o;
 
         if (id_composite_score != that.id_composite_score) return false;
-        if (!hierarchical_code.equals(that.hierarchical_code)) return false;
+        if (hierarchical_code != null ? !hierarchical_code.equals(that.hierarchical_code) : that.hierarchical_code != null)
+            return false;
         if (label != null ? !label.equals(that.label) : that.label != null) return false;
         if (uid != null ? !uid.equals(that.uid) : that.uid != null) return false;
-        if (order_pos != null ? !order_pos.equals(that.order_pos) : that.order_pos != null) return false;
-        return !(compositeScore != null ? !compositeScore.equals(that.compositeScore) : that.compositeScore != null);
+        if (order_pos != null ? !order_pos.equals(that.order_pos) : that.order_pos != null)
+            return false;
+        return !(id_parent != null ? !id_parent.equals(that.id_parent) : that.id_parent != null);
 
     }
 
     @Override
     public int hashCode() {
         int result = (int) (id_composite_score ^ (id_composite_score >>> 32));
-        result = 31 * result + hierarchical_code.hashCode();
+        result = 31 * result + (hierarchical_code != null ? hierarchical_code.hashCode() : 0);
         result = 31 * result + (label != null ? label.hashCode() : 0);
         result = 31 * result + (uid != null ? uid.hashCode() : 0);
         result = 31 * result + (order_pos != null ? order_pos.hashCode() : 0);
-        result = 31 * result + (compositeScore != null ? compositeScore.hashCode() : 0);
+        result = 31 * result + (id_parent != null ? id_parent.hashCode() : 0);
         return result;
     }
 
     @Override
     public String toString() {
         return "CompositeScore{" +
-                "id=" + id_composite_score +
-                ", code='" + hierarchical_code + '\'' +
+                "id_composite_score=" + id_composite_score +
+                ", hierarchical_code='" + hierarchical_code + '\'' +
                 ", label='" + label + '\'' +
                 ", uid='" + uid + '\'' +
-                ", order_pos='" + order_pos + '\'' +
-                ", compositeScore=" + compositeScore +
+                ", order_pos=" + order_pos +
+                ", id_parent=" + id_parent +
                 '}';
     }
 }

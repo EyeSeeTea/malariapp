@@ -48,6 +48,7 @@ import org.eyeseetea.malariacare.views.CustomRadioButton;
 import org.eyeseetea.malariacare.views.CustomTextView;
 import org.eyeseetea.malariacare.views.UncheckeableRadioButton;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -173,7 +174,7 @@ public class AutoTabLayoutUtils {
         initialiseScorableComponent(rowView, viewHolder);
 
         // In case the option is selected, we will need to show num/dems
-        List<Option> optionList = question.getAnswer().getOptions();
+        List<Option> optionList = new ArrayList<>(question.getAnswer().getOptions());
         optionList.add(0, new Option(Constants.DEFAULT_SELECT_OPTION));
         Spinner spinner = (Spinner) viewHolder.component;
         spinner.setAdapter(new OptionArrayAdapter(context, optionList));

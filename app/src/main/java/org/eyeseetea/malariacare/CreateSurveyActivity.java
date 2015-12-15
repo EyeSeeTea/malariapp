@@ -126,7 +126,7 @@ public class CreateSurveyActivity extends BaseActivity {
 
             //Populate Organization Unit DDL
             ViewHolder viewHolder = new ViewHolder();
-            List<OrgUnit> orgUnitList = new Select().all().from(OrgUnit.class).where(Condition.column(OrgUnit$Table.ORGUNIT_ID_PARENT).isNull()).queryList();
+            List<OrgUnit> orgUnitList = new Select().all().from(OrgUnit.class).where(Condition.column(OrgUnit$Table.ID_PARENT).isNull()).queryList();
             orgUnitList.add(0, orgUnitDefaultOption);
             viewHolder.component = findViewById(R.id.org_unit);
             orgUnitView = (Spinner) viewHolder.component;

@@ -24,6 +24,8 @@ import com.raizlabs.android.dbflow.annotation.ForeignKey;
 import com.raizlabs.android.dbflow.annotation.ForeignKeyReference;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;
+import com.raizlabs.android.dbflow.sql.builder.Condition;
+import com.raizlabs.android.dbflow.sql.language.Select;
 import com.raizlabs.android.dbflow.structure.BaseModel;
 
 import org.eyeseetea.malariacare.database.AppDatabase;
@@ -38,34 +40,34 @@ public class QuestionOption extends BaseModel {
     @Column
     @PrimaryKey(autoincrement = true)
     long id_question_option;
+
     @Column
-    @ForeignKey(references = {@ForeignKeyReference(columnName = "id_option",
-            columnType = Long.class,
-            foreignColumnName = "id_option")},
-            saveForeignKeyModel = false)
+    Long id_option;
+    /**
+     * Reference to its option (lazy)
+     */
     Option option;
+
     @Column
-    @ForeignKey(references = {@ForeignKeyReference(columnName = "id_question",
-            columnType = Long.class,
-            foreignColumnName = "id_question")},
-            saveForeignKeyModel = false)
+    Long id_question;
+    /**
+     * Reference to its question (lazy)
+     */
     Question question;
+
     @Column
-    @ForeignKey(references = {@ForeignKeyReference(columnName = "id_match",
-            columnType = Long.class,
-            foreignColumnName = "id_match")},
-            saveForeignKeyModel = false)
+    Long id_match;
+    /**
+     * Reference to its match (lazy)
+     */
     Match match;
 
-
-    public QuestionOption(){
-
-    }
+    public QuestionOption(){}
 
     public QuestionOption(Option option, Question question, Match match) {
-        this.option = option;
-        this.question = question;
-        this.match = match;
+        setQuestion(question);
+        setOption(option);
+        setMatch(match);
     }
 
     public long getId_question_option() {
@@ -77,27 +79,66 @@ public class QuestionOption extends BaseModel {
     }
 
     public Option getOption() {
+        if(option==null){
+            if(id_option==null) return null;
+            option = new Select()
+                    .from(Option.class)
+                    .where(Condition.column(Option$Table.ID_OPTION)
+                            .is(id_option)).querySingle();
+        }
         return option;
     }
 
     public void setOption(Option option) {
         this.option = option;
+        this.id_option = (option!=null)?option.getId_option():null;
+    }
+
+    public void setOption(Long id_option){
+        this.id_option = id_option;
+        this.option = null;
     }
 
     public Question getQuestion() {
+        if(question==null){
+            if(id_question==null) return null;
+            question = new Select()
+                    .from(Question.class)
+                    .where(Condition.column(Question$Table.ID_QUESTION)
+                            .is(id_question)).querySingle();
+        }
         return question;
     }
 
     public void setQuestion(Question question) {
         this.question = question;
+        this.id_question = (question!=null)?question.getId_question():null;
+    }
+
+    public void setQuestion(Long id_question){
+        this.id_question = id_question;
+        this.question = null;
     }
 
     public Match getMatch() {
+        if(match==null){
+            if(id_match==null) return null;
+            match = new Select()
+                    .from(Match.class)
+                    .where(Condition.column(Match$Table.ID_MATCH)
+                            .is(id_match)).querySingle();
+        }
         return match;
     }
 
     public void setMatch(Match match) {
         this.match = match;
+        this.id_match = (match!=null)?match.getId_match():null;
+    }
+
+    public void setMatch(Long id_match){
+        this.id_match = id_match;
+        this.match = null;
     }
 
     @Override
@@ -108,30 +149,30 @@ public class QuestionOption extends BaseModel {
         QuestionOption that = (QuestionOption) o;
 
         if (id_question_option != that.id_question_option) return false;
-        if (match != null ? !match.equals(that.match) : that.match != null) return false;
-        if (option != null ? !option.equals(that.option) : that.option != null) return false;
-        if (question != null ? !question.equals(that.question) : that.question != null)
+        if (id_option != null ? !id_option.equals(that.id_option) : that.id_option != null)
             return false;
+        if (id_question != null ? !id_question.equals(that.id_question) : that.id_question != null)
+            return false;
+        return !(id_match != null ? !id_match.equals(that.id_match) : that.id_match != null);
 
-        return true;
     }
 
     @Override
     public int hashCode() {
         int result = (int) (id_question_option ^ (id_question_option >>> 32));
-        result = 31 * result + (option != null ? option.hashCode() : 0);
-        result = 31 * result + (question != null ? question.hashCode() : 0);
-        result = 31 * result + (match != null ? match.hashCode() : 0);
+        result = 31 * result + (id_option != null ? id_option.hashCode() : 0);
+        result = 31 * result + (id_question != null ? id_question.hashCode() : 0);
+        result = 31 * result + (id_match != null ? id_match.hashCode() : 0);
         return result;
     }
 
     @Override
     public String toString() {
-        return "QuestionRelation{" +
-                "id=" + id_question_option +
-                ", option=" + option +
-                ", question=" + question +
-                ", match=" + match +
+        return "QuestionOption{" +
+                "id_question_option=" + id_question_option +
+                ", id_option=" + id_option +
+                ", id_question=" + id_question +
+                ", id_match=" + id_match +
                 '}';
     }
 }

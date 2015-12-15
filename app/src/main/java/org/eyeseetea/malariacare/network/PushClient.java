@@ -103,7 +103,7 @@ public class PushClient {
             //data = prepareDataElements(data, controlData.get(""));
             data = prepareDataElements(data, null);
             pushResult = new PushResult(pushData(data));
-            if(pushResult.isSuccessful()){
+            if(pushResult.isSuccessful() && !pushResult.getImported().equals("0")){
                 //TODO: This should be removed once DHIS bug is solved
                 //pushControlDataElements(controlData);
                 updateSurveyState();
@@ -198,7 +198,7 @@ public class PushClient {
         values=prepareCompositeScores(values);
 
         //Add main scores values
-        values=prepareMainScoreValues(values);
+        values= prepareControlDataElementValues(values);
 
         data.put(TAG_DATAVALUES, values);
         Log.d(TAG, "prepareDataElements result: " + data.toString());
@@ -214,7 +214,7 @@ public class PushClient {
      * @param values
      * @return
      */
-    private JSONArray prepareMainScoreValues(JSONArray values) throws Exception{
+    private JSONArray prepareControlDataElementValues(JSONArray values) throws Exception{
         JSONObject dataElement;
         //Main score
         dataElement = new JSONObject();
@@ -238,6 +238,12 @@ public class PushClient {
         dataElement = new JSONObject();
         dataElement.put(TAG_DATAELEMENT, activity.getString(R.string.main_score_c));
         dataElement.put(TAG_VALUE, survey.isTypeC() ? "true" : "false");
+        values.put(dataElement);
+
+        //Forward Order
+        dataElement = new JSONObject();
+        dataElement.put(TAG_DATAELEMENT, activity.getString(R.string.forward_order));
+        dataElement.put(TAG_VALUE, activity.getString(R.string.forward_order_value));
         values.put(dataElement);
 
         return values;

@@ -48,12 +48,16 @@ public class Header extends BaseModel{
     @Column
     Integer order_pos;
     @Column
-    @ForeignKey(references = {@ForeignKeyReference(columnName = "id_tab",
-            columnType = Long.class,
-            foreignColumnName = "id_tab")},
-            saveForeignKeyModel = false)
+    Long id_tab;
+
+    /**
+     * Reference to parent tab (loaded lazily)
+     */
     Tab tab;
 
+    /**
+     * List of questions that belongs to this header
+     */
     List<Question> questions;
 
     public Header() {
@@ -63,7 +67,7 @@ public class Header extends BaseModel{
         this.short_name = short_name;
         this.name = name;
         this.order_pos = order_pos;
-        this.tab = tab;
+        setTab(tab);
     }
 
     public Long getId_header() {
@@ -99,19 +103,30 @@ public class Header extends BaseModel{
     }
 
     public Tab getTab() {
+        if(tab==null){
+            if(id_tab==null) return null;
+            tab = new Select()
+                    .from(Tab.class)
+                    .where(Condition.column(Tab$Table.ID_TAB)
+                            .is(id_tab)).querySingle();
+        }
         return tab;
     }
 
     public void setTab(Tab tab) {
         this.tab = tab;
+        this.id_tab = (tab!=null)?tab.getId_tab():null;
     }
 
-    //TODO: to enable lazy loading, here we need to set Method.SAVE and Method.DELETE and use the .toModel() to specify when do we want to load the models
-    @OneToMany(methods = {OneToMany.Method.SAVE, OneToMany.Method.DELETE}, variableName = "questions")
+    public void setTab(Long id_tab){
+        this.id_tab = id_tab;
+        this.tab = null;
+    }
+
     public List<Question> getQuestions(){
         if (this.questions == null){
             this.questions = new Select().from(Question.class)
-                    .where(Condition.column(Question$Table.HEADER_ID_HEADER).eq(this.getId_header()))
+                    .where(Condition.column(Question$Table.ID_HEADER).eq(this.getId_header()))
                     .orderBy(Question$Table.ORDER_POS).queryList();
         }
         return questions;
@@ -123,14 +138,14 @@ public class Header extends BaseModel{
      */
     public long getNumberOfQuestionParents() {
         return new Select().count().from(Question.class)
-                .where(Condition.column(Question$Table.HEADER_ID_HEADER).eq(getId_header()))
-                .and(Condition.column(Question$Table.QUESTION_ID_PARENT).isNull()).count();
+                .where(Condition.column(Question$Table.ID_HEADER).eq(getId_header()))
+                .and(Condition.column(Question$Table.ID_PARENT).isNull()).count();
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Header)) return false;
+        if (o == null || getClass() != o.getClass()) return false;
 
         Header header = (Header) o;
 
@@ -138,8 +153,9 @@ public class Header extends BaseModel{
         if (short_name != null ? !short_name.equals(header.short_name) : header.short_name != null)
             return false;
         if (name != null ? !name.equals(header.name) : header.name != null) return false;
-        if (!order_pos.equals(header.order_pos)) return false;
-        return tab.equals(header.tab);
+        if (order_pos != null ? !order_pos.equals(header.order_pos) : header.order_pos != null)
+            return false;
+        return !(id_tab != null ? !id_tab.equals(header.id_tab) : header.id_tab != null);
 
     }
 
@@ -148,19 +164,20 @@ public class Header extends BaseModel{
         int result = (int) (id_header ^ (id_header >>> 32));
         result = 31 * result + (short_name != null ? short_name.hashCode() : 0);
         result = 31 * result + (name != null ? name.hashCode() : 0);
-        result = 31 * result + order_pos.hashCode();
-        result = 31 * result + tab.hashCode();
+        result = 31 * result + (order_pos != null ? order_pos.hashCode() : 0);
+        result = 31 * result + (id_tab != null ? id_tab.hashCode() : 0);
         return result;
     }
+
 
     @Override
     public String toString() {
         return "Header{" +
-                "id=" + id_header +
+                "id_header=" + id_header +
                 ", short_name='" + short_name + '\'' +
                 ", name='" + name + '\'' +
                 ", order_pos=" + order_pos +
-                ", tab=" + tab +
+                ", id_tab=" + id_tab +
                 '}';
     }
 }

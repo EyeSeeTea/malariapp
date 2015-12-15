@@ -43,6 +43,10 @@
     <string name="dialog_content_push_data">Tem certeza de que deseja enviar isso?</string>
     <string name="dialog_button_preview_feedback">Ver feedback</string>
 
+    <!-- Toast -->
+    <string name="cancellingPull">O processo é interrompido em poucos segundos</string>
+
+
     <!-- dashboard -->
     <string name="dashboard_info_feedback">Feedback</string>
     <string name="dashboard_info_active_assessments">Avaliações activas</string>

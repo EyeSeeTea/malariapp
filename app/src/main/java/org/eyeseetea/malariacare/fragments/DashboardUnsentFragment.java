@@ -401,7 +401,10 @@ public class DashboardUnsentFragment extends ListFragment {
             surveyReceiver=null;
         }
     }
-
+    public void reloadUnsentSurveys(){
+        List<Survey> surveysUnsentFromService = (List<Survey>) Session.popServiceValue(SurveyService.ALL_UNSENT_SURVEYS_ACTION);
+        reloadSurveys(surveysUnsentFromService);
+    }
     public void reloadSurveys(List<Survey> newListSurveys){
         Log.d(TAG, "reloadSurveys (Thread: " + Thread.currentThread().getId() + "): " + newListSurveys.size());
         this.surveys.clear();
@@ -421,8 +424,7 @@ public class DashboardUnsentFragment extends ListFragment {
             Log.d(TAG, "onReceive");
             //Listening only intents from this method
             if(SurveyService.ALL_UNSENT_SURVEYS_ACTION.equals(intent.getAction())) {
-                List<Survey> surveysUnsentFromService = (List<Survey>) Session.popServiceValue(SurveyService.ALL_UNSENT_SURVEYS_ACTION);
-                reloadSurveys(surveysUnsentFromService);
+                reloadUnsentSurveys();
             }
         }
     }

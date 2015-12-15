@@ -20,9 +20,6 @@
 package org.eyeseetea.malariacare.database.model;
 
 import com.raizlabs.android.dbflow.annotation.Column;
-import com.raizlabs.android.dbflow.annotation.ForeignKey;
-import com.raizlabs.android.dbflow.annotation.ForeignKeyReference;
-import com.raizlabs.android.dbflow.annotation.OneToMany;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;
 import com.raizlabs.android.dbflow.sql.builder.Condition;
@@ -30,8 +27,6 @@ import com.raizlabs.android.dbflow.sql.language.Select;
 import com.raizlabs.android.dbflow.structure.BaseModel;
 
 import org.eyeseetea.malariacare.database.AppDatabase;
-import org.eyeseetea.malariacare.database.iomodules.dhis.exporter.IConvertToSDKVisitor;
-import org.eyeseetea.malariacare.database.iomodules.dhis.exporter.VisitableToSDK;
 
 import java.util.List;
 
@@ -51,24 +46,29 @@ public class Option extends BaseModel {
     @Column
     Float factor;
     @Column
-    @ForeignKey(references = {@ForeignKeyReference(columnName = "id_answer",
-            columnType = Long.class,
-            foreignColumnName = "id_answer")},
-            saveForeignKeyModel = false)
+    Long id_answer;
+
+    /**
+     * Reference to parent answer (loaded lazily)
+     */
     Answer answer;
 
     @Column
     String path;
 
     @Column
-    @ForeignKey(references = {@ForeignKeyReference(columnName = "id_option_attribute",
-            columnType = Long.class,
-            foreignColumnName = "id_option_attribute")},
-            saveForeignKeyModel = false)
+    Long id_optionAttribute;
+    
+    /**
+     * Reference to optionAttribute (loaded lazily)
+     */
     OptionAttribute optionAttribute;
 
     @Column
     String background_colour;
+    /**
+     * List of values that has choosen this option
+     */
     List<Value> values;
 
     public Option() {
@@ -77,22 +77,22 @@ public class Option extends BaseModel {
     public Option(String name, Float factor, Answer answer) {
         this.name = name;
         this.factor = factor;
-        this.answer = answer;
+        this.setAnswer(answer);
     }
 
     public Option(String code, String name, Float factor, Answer answer) {
         this.name = name;
         this.factor = factor;
-        this.answer = answer;
         this.code = code;
+        this.setAnswer(answer);
     }
 
     public Option(String name, Float factor, Answer answer, String code, OptionAttribute optionAttribute, String background_colour) {
         this.name = name;
         this.factor = factor;
-        this.answer = answer;
+        this.setAnswer(answer);
         this.code = code;
-        this.optionAttribute = optionAttribute;
+        this.setOptionAttribute(optionAttribute);
         this.background_colour = background_colour;
     }
 
@@ -133,11 +133,45 @@ public class Option extends BaseModel {
     }
 
     public Answer getAnswer() {
+        if(answer==null){
+            if(id_answer==null) return null;
+            answer = new Select()
+                    .from(Answer.class)
+                    .where(Condition.column(Answer$Table.ID_ANSWER)
+                            .is(id_answer)).querySingle();
+        }
         return answer;
     }
 
     public void setAnswer(Answer answer) {
         this.answer = answer;
+        this.id_answer = (answer!=null)?answer.getId_answer():null;
+    }
+
+    public void setAnswer(Long id_answer){
+        this.id_answer = id_answer;
+        this.answer = null;
+    }
+
+    public OptionAttribute getOptionAttribute() {
+        if(optionAttribute==null){
+            if(id_optionAttribute==null) return null;
+            optionAttribute = new Select()
+                    .from(OptionAttribute.class)
+                    .where(Condition.column(OptionAttribute$Table.ID_OPTION_ATTRIBUTE)
+                            .is(id_answer)).querySingle();
+        }
+        return optionAttribute;
+    }
+
+    public void setOptionAttribute(OptionAttribute optionAttribute) {
+        this.optionAttribute = optionAttribute;
+        this.id_optionAttribute = (optionAttribute!=null)?optionAttribute.getId_option_attribute():null;
+    }
+
+    public void setOptionAttribute(Long id_optionAttribute){
+        this.id_optionAttribute = id_optionAttribute;
+        this.optionAttribute = null;
     }
 
 
@@ -148,15 +182,7 @@ public class Option extends BaseModel {
     public void setPath(String path) {
         this.path = path;
     }
-
-    public OptionAttribute getOptionAttribute() {
-        return optionAttribute;
-    }
-
-    public void setOptionAttribute(OptionAttribute optionAttribute) {
-        this.optionAttribute = optionAttribute;
-    }
-
+    
     public String getBackground_colour() {
         return background_colour;
     }
@@ -181,11 +207,12 @@ public class Option extends BaseModel {
         return given.equals(name);
     }
 
-    //TODO: to enable lazy loading, here we need to set Method.SAVE and Method.DELETE and use the .toModel() to specify when do we want to load the models
-    @OneToMany(methods = {OneToMany.Method.SAVE, OneToMany.Method.DELETE}, variableName = "values")
     public List<Value> getValues(){
-        return new Select().from(Value.class)
-                .where(Condition.column(Value$Table.OPTION_ID_OPTION).eq(this.getId_option())).queryList();
+        if(values==null){
+            values = new Select().from(Value.class)
+                    .where(Condition.column(Value$Table.ID_OPTION).eq(this.getId_option())).queryList();
+        }
+        return values;
     }
 
     /**
@@ -201,30 +228,29 @@ public class Option extends BaseModel {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Option)) return false;
+        if (o == null || getClass() != o.getClass()) return false;
 
         Option option = (Option) o;
 
-        if (code != null ? !code.equals(option.code) : option.code != null) return false;
-        if (path != null ? !path.equals(option.path) : option.path != null) return false;
-        if (optionAttribute != null ? !optionAttribute.equals(option.optionAttribute) : option.optionAttribute != null) return false;
-        if (background_colour != null ? !background_colour.equals(option.background_colour) : option.background_colour != null) return false;
-
         if (id_option != option.id_option) return false;
-        if (!name.equals(option.name)) return false;
+        if (code != null ? !code.equals(option.code) : option.code != null) return false;
+        if (name != null ? !name.equals(option.name) : option.name != null) return false;
         if (factor != null ? !factor.equals(option.factor) : option.factor != null) return false;
-        return answer.equals(option.answer);
+        if (path != null ? !path.equals(option.path) : option.path != null) return false;
+        if (id_optionAttribute != null ? !id_optionAttribute.equals(option.id_optionAttribute) : option.id_optionAttribute != null) return false;
+        if (background_colour != null ? !background_colour.equals(option.background_colour) : option.background_colour != null) return false;
+        return !(id_answer != null ? !id_answer.equals(option.id_answer) : option.id_answer != null);
 
     }
 
     @Override
     public int hashCode() {
         int result = (int) (id_option ^ (id_option >>> 32));
-        result = 31 * result + code.hashCode();
-        result = 31 * result + name.hashCode();
+        result = 31 * result + (code != null ? code.hashCode() : 0);
+        result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (factor != null ? factor.hashCode() : 0);
-        result = 31 * result + answer.hashCode();
-        result = 31 * result + (optionAttribute != null ? optionAttribute.hashCode() : 0);
+        result = 31 * result + (id_answer != null ? id_answer.hashCode() : 0);
+        result = 31 * result + (id_optionAttribute != null ? id_optionAttribute.hashCode() : 0);
         result = 31 * result + (path != null ? path.hashCode() : 0);
         result = 31 * result + (background_colour != null ? background_colour.hashCode() : 0);
         return result;
@@ -233,7 +259,7 @@ public class Option extends BaseModel {
     @Override
     public String toString() {
         return "Option{" +
-                "id=" + id_option +
+                "id_option=" + id_option +
                 ", code='" + code + '\'' +
                 ", name='" + name + '\'' +
                 ", factor=" + factor +
@@ -241,6 +267,7 @@ public class Option extends BaseModel {
                 ", path=" + path +
                 ", optionAttribute=" + optionAttribute +
                 ", background_colour=" + background_colour +
+                ", id_answer=" + id_answer +
                 '}';
     }
 }

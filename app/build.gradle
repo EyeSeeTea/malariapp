@@ -30,7 +30,7 @@ android {
         applicationId 'org.eyeseetea.malariacare'
         minSdkVersion 15
         targetSdkVersion 21
-        versionCode 13
+        versionCode 16
         versionName "13.0"
         multiDexEnabled true
         /*dexOptions {

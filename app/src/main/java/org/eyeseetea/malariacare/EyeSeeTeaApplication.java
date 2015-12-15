@@ -42,19 +42,25 @@ import io.fabric.sdk.android.Fabric;
 public class EyeSeeTeaApplication extends Dhis2Application  {
 
     public Class<? extends Activity> getMainActivity() {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        //Fixme it is used to ispicturequestion populate
         if(Utils.isPictureQuestion()){
             return new DashboardActivity().getClass();
         }else {
-            //FIXME Remove when create survey is fixed
-//            return new ProgressActivity().getClass();
-            return new DashboardActivity().getClass();
+            if (User.getLoggedUser() != null && sharedPreferences.getBoolean(getApplicationContext().getResources().getString(R.string.pull_metadata), false)) {
+                return new DashboardActivity().getClass();
+            } else if (!ProgressActivity.PULL_CANCEL) {
+                return PreferencesState.getInstance().getMainActivity();
+            } else {
+                return LoginActivity.class;
+            }
         }
     }
 
     @Override
     public void onCreate() {
         super.onCreate();
-        Fabric.with(this, new Crashlytics());
+        //Fabric.with(this, new Crashlytics());
         PreferencesState.getInstance().init(getApplicationContext());
         LocationMemory.getInstance().init(getApplicationContext());
         FlowManager.init(this, "_EyeSeeTeaDB");

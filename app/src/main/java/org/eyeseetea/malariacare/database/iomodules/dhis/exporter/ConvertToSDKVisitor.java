@@ -23,8 +23,6 @@ import android.content.Context;
 import android.location.Location;
 import android.util.Log;
 
-import com.raizlabs.android.dbflow.sql.language.Select;
-
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.EventExtended;
 import org.eyeseetea.malariacare.database.model.CompositeScore;
@@ -38,7 +36,6 @@ import org.eyeseetea.malariacare.utils.Constants;
 import org.eyeseetea.malariacare.utils.Utils;
 import org.hisp.dhis.android.sdk.persistence.models.DataValue;
 import org.hisp.dhis.android.sdk.persistence.models.Event;
-import org.hisp.dhis.android.sdk.persistence.models.Event$Table;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -60,6 +57,7 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
     String mainScoreAUID;
     String mainScoreBUID;
     String mainScoreCUID;
+    String forwardOrderUID;
 
     /**
      * List of surveys that are going to be pushed
@@ -92,6 +90,7 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
         mainScoreAUID=context.getString(R.string.main_score_a);
         mainScoreBUID=context.getString(R.string.main_score_b);
         mainScoreCUID=context.getString(R.string.main_score_c);
+        forwardOrderUID=context.getString(R.string.forward_order);
         surveys = new ArrayList<>();
         events = new ArrayList<>();
     }
@@ -122,7 +121,7 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
         }
 
         Log.d(TAG,"Creating datavalues from other stuff...");
-        buildMainScores(survey);
+        buildControlDataElements(survey);
 
         //Annotate both objects to update its state once the process is over
         annotateSurveyAndEvent();
@@ -189,48 +188,33 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
      * Builds several datavalues from the mainScore of the survey
      * @param survey
      */
-    private void buildMainScores(Survey survey) {
+    private void buildControlDataElements(Survey survey) {
 
         //MainScoreUID
+        buildAndSaveDataValue(mainScoreUID, survey.getType());
+
+        //MainScore A
+        buildAndSaveDataValue(mainScoreAUID, survey.isTypeA() ? "true" : "false");
+
+        //MainScore B
+        buildAndSaveDataValue(mainScoreBUID, survey.isTypeB() ? "true" : "false");
+
+        //MainScoreC
+        buildAndSaveDataValue(mainScoreCUID, survey.isTypeC() ? "true" : "false");
+
+        //Forward Order
+        buildAndSaveDataValue(forwardOrderUID, context.getString(R.string.forward_order_value));
+    }
+
+    private void buildAndSaveDataValue(String UID, String value){
         DataValue dataValue=new DataValue();
-        dataValue.setDataElement(mainScoreUID);
+        dataValue.setDataElement(UID);
         dataValue.setLocalEventId(currentEvent.getLocalId());
         dataValue.setEvent(currentEvent.getEvent());
         dataValue.setProvidedElsewhere(false);
         dataValue.setStoredBy(Session.getUser().getName());
-        dataValue.setValue(survey.getType());
+        dataValue.setValue(value);
         dataValue.save();
-
-        //MainScore A
-        DataValue dataValueA=new DataValue();
-        dataValueA.setDataElement(mainScoreAUID);
-        dataValueA.setLocalEventId(currentEvent.getLocalId());
-        dataValueA.setEvent(currentEvent.getEvent());
-        dataValueA.setProvidedElsewhere(false);
-        dataValueA.setStoredBy(Session.getUser().getName());
-        dataValueA.setValue(survey.isTypeA() ? "true" : "false");
-        dataValueA.save();
-
-        //MainScore B
-        DataValue dataValueB=new DataValue();
-        dataValueB.setDataElement(mainScoreBUID);
-        dataValueB.setLocalEventId(currentEvent.getLocalId());
-        dataValueB.setEvent(currentEvent.getEvent());
-        dataValueB.setProvidedElsewhere(false);
-        dataValueB.setStoredBy(Session.getUser().getName());
-        dataValueB.setValue(survey.isTypeB() ? "true" : "false");
-        dataValueB.save();
-
-        //MainScoreC
-        DataValue dataValueC=new DataValue();
-        dataValueC.setDataElement(mainScoreCUID);
-        dataValueC.setLocalEventId(currentEvent.getLocalId());
-        dataValueC.setEvent(currentEvent.getEvent());
-        dataValueC.setProvidedElsewhere(false);
-        dataValueC.setStoredBy(Session.getUser().getName());
-        dataValueC.setValue(survey.isTypeC() ? "true" : "false");
-        dataValueC.save();
-
     }
 
     /**

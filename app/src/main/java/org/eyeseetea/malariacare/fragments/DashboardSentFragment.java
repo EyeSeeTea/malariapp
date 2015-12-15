@@ -70,9 +70,7 @@ public class DashboardSentFragment extends ListFragment {
     private List<Survey> surveys;
     protected IDashboardAdapter adapter;
     private static int index = 0;
-    private WebView webView;
     List<Survey> oneSurveyForOrgUnit;
-    List<Survey> surveysForGraphic;
     public DashboardSentFragment() {
         this.adapter = Session.getAdapterSent();
         this.surveys = new ArrayList();
@@ -171,7 +169,6 @@ public class DashboardSentFragment extends ListFragment {
     public void onStop(){
         Log.d(TAG, "onStop");
         unregisterSurveysReceiver();
-        stopMonitor();
         super.onStop();
     }
 
@@ -242,7 +239,6 @@ public class DashboardSentFragment extends ListFragment {
                                                     surveysIntent.putExtra(SurveyService.SERVICE_METHOD, SurveyService.RELOAD_DASHBOARD_ACTION);
                                                     getActivity().startService(surveysIntent);
                                                     reloadSentSurveys();
-                                                    reloadMonitor();
                                                 }
                                             })
                                             .setNegativeButton(android.R.string.no, null).create().show();
@@ -290,88 +286,27 @@ public class DashboardSentFragment extends ListFragment {
         this.surveys.addAll(newListSurveys);
         adapter.setItems(newListSurveys);
         this.adapter.notifyDataSetChanged();
-        if (hasSurveys) {
-            reloadMonitor();
-        }
         setListShown(true);
     }
 
-    private void reloadMonitor() {
-        if (webView == null) {
-            webView = initMonitor();
-        }
-
-        //onPageFinish load data
-        webView.setWebViewClient(new WebViewClient() {
-            @Override
-            public void onPageFinished(WebView view, String url) {
-                super.onPageFinished(view, url);
-                //Add line chart
-                new SentSurveysBuilder(surveysForGraphic, getActivity()).addDataInChart(view);
-
-                //Add pie charts
-                new PieTabGroupBuilder(surveysForGraphic, getActivity()).addDataInChart(view);
-
-
-                //Add table x facility
-                new FacilityTableBuilder(surveysForGraphic, getActivity()).addDataInChart(view);
-
-                // As WebView and ListView doesn't get on well, we need to calculate ListViews height
-                // after WebView is loaded to be able to properly represent it in the screen
-                LayoutUtils.setListViewHeightBasedOnChildren(Session.listViewSent);
-                LayoutUtils.setListViewHeightBasedOnChildren(Session.listViewUnsent);
-            }
-        });
-
-        //Load html
-        webView.loadUrl("file:///android_asset/dashboard/dashboard.html");
-    }
-
-    private WebView initMonitor() {
-        WebView webView = (WebView) getActivity().findViewById(R.id.dashboard_monitor);
-        //Init webView settings
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-            webView.getSettings().setAllowUniversalAccessFromFileURLs(true);
-            webView.getSettings().setAllowFileAccessFromFileURLs(true);
-        }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            WebView.setWebContentsDebuggingEnabled(true);
-        }
-        webView.getSettings().setJavaScriptEnabled(true);
-
-        return webView;
-    }
-
-    /**
-     * Stops webView gracefully
-     */
-    private void stopMonitor(){
-        try{
-            if(webView!=null){
-                webView.stopLoading();
-            }
-        }catch(Exception e){
-            e.printStackTrace();
-        }
-    }
 
     /**
      * filter the surveys for last survey in org unit, and set surveysForGraphic for the statistics
      */
     public void reloadSentSurveys() {
-        surveysForGraphic = (List<Survey>) Session.popServiceValue(SurveyService.ALL_SENT_SURVEYS_ACTION);
+        List<Survey> surveys = (List<Survey>) Session.popServiceValue(SurveyService.ALL_SENT_SURVEYS_ACTION);
         HashMap<String, Survey> orgUnits;
         orgUnits = new HashMap<>();
         oneSurveyForOrgUnit = new ArrayList<>();
-        for (Survey survey : surveysForGraphic) {
+        for (Survey survey : surveys) {
             if (survey.isSent()) {
                 if (survey.getOrgUnit() != null) {
-                    if (!orgUnits.containsKey(survey.getOrgUnit().getUid())) {
-                        orgUnits.put(survey.getOrgUnit().getUid(), survey);
+                    if (!orgUnits.containsKey(survey.getTabGroup().getProgram().getUid()+survey.getOrgUnit().getUid())) {
+                        orgUnits.put(survey.getTabGroup().getProgram().getUid()+survey.getOrgUnit().getUid(), survey);
                     } else {
-                        Survey surveyMapped = orgUnits.get(survey.getOrgUnit().getUid());
+                        Survey surveyMapped = orgUnits.get(survey.getTabGroup().getProgram().getUid()+survey.getOrgUnit().getUid());
                         if (surveyMapped.getCompletionDate().before(survey.getCompletionDate())) {
-                            orgUnits.put(survey.getOrgUnit().getUid(), survey);
+                            orgUnits.put(survey.getTabGroup().getProgram().getUid()+survey.getOrgUnit().getUid(), survey);
                         }
                     }
                 }

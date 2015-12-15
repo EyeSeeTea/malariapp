@@ -24,6 +24,8 @@ import com.raizlabs.android.dbflow.annotation.ForeignKey;
 import com.raizlabs.android.dbflow.annotation.ForeignKeyReference;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;
+import com.raizlabs.android.dbflow.sql.builder.Condition;
+import com.raizlabs.android.dbflow.sql.language.Select;
 import com.raizlabs.android.dbflow.structure.BaseModel;
 
 import org.eyeseetea.malariacare.database.AppDatabase;
@@ -42,21 +44,20 @@ public class Score extends BaseModel {
 
     @Column
     Float value;
-
+    
     @Column
-    @ForeignKey(references = {@ForeignKeyReference(columnName = "id_survey",
-            columnType = Long.class,
-            foreignColumnName = "id_survey")},
-            saveForeignKeyModel = false)
+    Long id_survey;
+    /**
+     * Reference to the survey associated to this score (loaded lazily)
+     */
     Survey survey;
 
     @Column
-    @ForeignKey(references = {@ForeignKeyReference(columnName = "id_tab",
-            columnType = Long.class,
-            foreignColumnName = "id_tab")},
-            saveForeignKeyModel = false)
+    Long id_tab;
+    /**
+     * Reference to the tab associated to this score (loaded lazily)
+     */
     Tab tab;
-
     @Column
     String uid;
 
@@ -67,14 +68,14 @@ public class Score extends BaseModel {
     }
     public Score(Float real, Tab tab, String uid) {
         this.value = real;
-        this.tab = tab;
+        this.setTab(tab);
         this.uid = uid;
     }
 
     public Score(Survey survey, String uid, Float score) {
-        this.survey = survey;
         this.uid = uid;
         this.score = score;
+        this.setSurvey(survey);
     }
 
     public Long getId_score() {
@@ -94,19 +95,45 @@ public class Score extends BaseModel {
     }
 
     public Tab getTab() {
+        if(tab==null){
+            if(id_tab==null) return null;
+            tab = new Select()
+                    .from(Tab.class)
+                    .where(Condition.column(Tab$Table.ID_TAB)
+                            .is(id_tab)).querySingle();
+        }
         return tab;
     }
 
     public void setTab(Tab tab) {
         this.tab = tab;
+        this.id_tab = (tab!=null)?tab.getId_tab():null;
     }
 
+    public void setTab(Long id_tab){
+        this.id_tab = id_tab;
+        this.tab = null;
+    }
+    
     public Survey getSurvey() {
+        if(survey==null){
+            if(id_survey==null) return null;
+            survey = new Select()
+                    .from(Survey.class)
+                    .where(Condition.column(Survey$Table.ID_SURVEY)
+                            .is(id_survey)).querySingle();
+        }
         return survey;
     }
 
     public void setSurvey(Survey survey) {
         this.survey = survey;
+        this.id_survey = (survey!=null)?survey.getId_survey():null;
+    }
+
+    public void setSurvey(Long id_survey){
+        this.id_survey = id_survey;
+        this.survey = null;
     }
 
     public String getUid() {
@@ -128,30 +155,39 @@ public class Score extends BaseModel {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Score)) return false;
+        if (o == null || getClass() != o.getClass()) return false;
 
-        Score score = (Score) o;
+        Score score1 = (Score) o;
 
-        if (id_score != score.id_score) return false;
-        if (!survey.equals(score.survey)) return false;
-        return !(uid != null ? !uid.equals(score.uid) : score.uid != null);
+        if (id_score != score1.id_score) return false;
+        if (id_survey != null ? !id_survey.equals(score1.id_survey) : score1.id_survey != null)
+            return false;
+        if (uid != null ? !uid.equals(score1.uid) : score1.uid != null) return false;
+        if (id_tab != null ? !id_tab.equals(score1.id_tab) : score1.id_tab != null)
+            return false;
+        if (value != null ? !uid.equals(score1.value) : score1.value != null) return false;
+        return !(score != null ? !score.equals(score1.score) : score1.score != null);
 
     }
 
     @Override
     public int hashCode() {
         int result = (int) (id_score ^ (id_score >>> 32));
-        result = 31 * result + survey.hashCode();
+        result = 31 * result + (id_survey != null ? id_survey.hashCode() : 0);
         result = 31 * result + (uid != null ? uid.hashCode() : 0);
+        result = 31 * result + (id_tab != null ? id_tab.hashCode() : 0);
+        result = 31 * result + (value != null ? value.hashCode() : 0);
+        result = 31 * result + (score != null ? score.hashCode() : 0);
         return result;
     }
 
     @Override
     public String toString() {
         return "Score{" +
-                "id=" + id_score +
-                ", survey=" + survey +
+                "id_score=" + id_score +
+                ", id_survey=" + id_survey +
                 ", uid='" + uid + '\'' +
+                ", score=" + score +
                 '}';
     }
 }

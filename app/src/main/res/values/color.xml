@@ -16,6 +16,8 @@
     <color name="textFieldColor">#BEBEBE</color>
     <color name="darkGrey">#565656</color>
     <color name="formFooter">#429470</color>
+    <color name="custom_blue_light">#1f70c3</color>
+    <color name="custom_background_grey">#3e3e3f</color>
 
     <color name="scoreRoot">#0b5394</color>
     <color name="scoreChild">#3d85c6</color>
