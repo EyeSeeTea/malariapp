@@ -56,7 +56,7 @@ import java.io.IOException;
 /**
  * Created by ignac on 30/11/2015.
  */
-@Migration(version = 2, databaseName = AppDatabase.NAME)
+@Migration(version = 3, databaseName = AppDatabase.NAME)
 public class Migration1RestartDB extends BaseMigration {
 
     private final static String TAG=".Migration";
@@ -85,7 +85,10 @@ public class Migration1RestartDB extends BaseMigration {
             Attribute.class,
             DataElement.class
     };
+
     public static final String DROP_TABLE_IF_EXISTS = "DROP TABLE IF EXISTS ";
+
+    public static final String ALTER_TABLE_ADD_COLUMN = "ALTER TABLE %s ADD COLUMN %s %s";
 
     public Migration1RestartDB() {
         super();
@@ -97,13 +100,19 @@ public class Migration1RestartDB extends BaseMigration {
 
     @Override
     public void migrate(SQLiteDatabase database) {
-        recreateTables(database,APP_TABLES_TO_UPDATE);
+        addColumn(database,Question.class,"output","integer");
         recreateTables(database,SDK_TABLES_TO_UPDATE);
     }
 
     @Override
     public void onPostMigrate() {
         //release migration resources
+    }
+
+
+    private void addColumn(SQLiteDatabase database, Class model, String columnName,String type){
+        ModelAdapter myAdapter = FlowManager.getModelAdapter(model);
+        database.execSQL(String.format(ALTER_TABLE_ADD_COLUMN, myAdapter.getTableName(),columnName,type) );
     }
 
     private void recreateTables(SQLiteDatabase database,Class[] tables){
