@@ -20,15 +20,19 @@
 
         package org.eyeseetea.malariacare.services;
 
-        import android.app.IntentService;
-        import android.content.Intent;
-        import android.util.Log;
+import android.app.IntentService;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
+import android.util.Log;
 
-        import org.eyeseetea.malariacare.database.model.Survey;
-        import org.eyeseetea.malariacare.network.PushClient;
-        import org.eyeseetea.malariacare.network.PushResult;
+import org.eyeseetea.malariacare.R;
+import org.eyeseetea.malariacare.database.model.Survey;
+import org.eyeseetea.malariacare.database.utils.Session;
+import org.eyeseetea.malariacare.network.PushClient;
+import org.eyeseetea.malariacare.network.PushResult;
 
-        import java.util.List;
+import java.util.List;
 
 /**
  * A service that runs pushing process for pending surveys.
@@ -88,7 +92,10 @@ public class PushService extends IntentService {
 
         if(surveys!=null && !surveys.isEmpty()){
             for(Survey survey : surveys){
-                PushClient pushClient=new PushClient(survey, getApplicationContext());
+                SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+                String user=sharedPreferences.getString(getString(R.string.dhis_user), "");
+                String password=sharedPreferences.getString(getString(R.string.dhis_password),"");
+                PushClient pushClient=new PushClient(survey, this.getApplicationContext(),user,password);
 
                 //Push  data
 

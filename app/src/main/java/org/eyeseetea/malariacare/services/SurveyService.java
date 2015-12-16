@@ -40,6 +40,7 @@ import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.database.utils.feedback.Feedback;
 import org.eyeseetea.malariacare.database.utils.feedback.FeedbackBuilder;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
+import org.eyeseetea.malariacare.utils.Constants;
 import org.eyeseetea.malariacare.utils.Utils;
 
 import java.util.ArrayList;
@@ -107,6 +108,11 @@ public class SurveyService extends IntentService {
     public static final String PREPARE_FEEDBACK_ACTION_ITEMS="org.eyeseetea.malariacare.services.SurveyService.PREPARE_FEEDBACK_ACTION_ITEMS";
 
     /**
+     * Name of 'remove list completed' action
+     */
+    public static final String REMOVE_SENT_SURVEYS_ACTION ="org.eyeseetea.malariacare.services.SurveyService.REMOVE_SENT_SURVEYS_ACTION";
+
+    /**
      * Tag for logging
      */
     public static final String TAG = ".SurveyService";
@@ -142,6 +148,9 @@ public class SurveyService extends IntentService {
             case ALL_SENT_SURVEYS_ACTION:
                 getAllSentSurveys();
                 break;
+            case REMOVE_SENT_SURVEYS_ACTION:
+                removeAllSentSurveys();
+                break;
             case RELOAD_DASHBOARD_ACTION:
                 reloadDashboard();
                 break;
@@ -170,7 +179,7 @@ public class SurveyService extends IntentService {
         List<Survey> unsentSurveys=new ArrayList<>();
         List<Survey> sentSurveys=new ArrayList<>();
         for(Survey survey:surveys){
-            if(!survey.isSent()){
+            if(!survey.isSent() && !survey.isHide() ){
                 unsentSurveys.add(survey);
                 survey.getAnsweredQuestionRatio();
             }else{
@@ -218,7 +227,7 @@ public class SurveyService extends IntentService {
         }
 
         //Since intents does NOT admit NON serializable as values we use Session instead
-        Session.putServiceValue(ALL_UNSENT_SURVEYS_ACTION,surveys);
+        Session.putServiceValue(ALL_UNSENT_SURVEYS_ACTION, surveys);
 
         //Returning result to anyone listening
         Intent resultIntent= new Intent(ALL_UNSENT_SURVEYS_ACTION);
@@ -242,6 +251,25 @@ public class SurveyService extends IntentService {
         LocalBroadcastManager.getInstance(this).sendBroadcast(resultIntent);
     }
 
+    /**
+     * Remove all sent surveys from database
+     */
+    private void removeAllSentSurveys(){
+        Log.d(TAG,"removeAllSentSurveys (Thread:"+Thread.currentThread().getId()+")");
+
+        //Select all sent surveys from sql and delete.
+        List<Survey> surveys = Survey.getAllSentSurveys();
+        for(int i=surveys.size()-1;i>=0;i--){
+            //If is over limit the survey be delete, if is in the limit the survey change the state to STATE_HIDE
+            if (Utils.isDateOverLimit(Utils.DateToCalendar(surveys.get(i).getEventDate()), 1)) {
+                surveys.get(i).delete();
+            }
+            else{
+                surveys.get(i).setStatus(Constants.SURVEY_HIDE);
+                surveys.get(i).save();
+            }
+        }
+    }
     private void getAllUncompletedSurveys(){
         Log.d(TAG,"getAllUnsentSurveys (Thread:"+Thread.currentThread().getId()+")");
 

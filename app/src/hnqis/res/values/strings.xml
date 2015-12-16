@@ -34,5 +34,8 @@
     <string name="forward_order" translatable="false">d1At6VgPNA6</string>
     <string name="forward_order_value" translatable="false">9999</string>
 
+    <!-- Phone MetaData Attribute -->
+    <string name="phone_metadata" translatable="false">RuNZUhiAmlv</string>
+
 
 </resources>

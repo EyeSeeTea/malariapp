@@ -108,7 +108,7 @@ public class Survey extends BaseModel implements VisitableToSDK {
     }
 
     public Survey(OrgUnit orgUnit, Program program, User user) {
-        this.program = program;
+        this.setProgram(program);
         this.eventDate = new Date();
         this.status = Constants.SURVEY_IN_PROGRESS; // Possibilities [ In progress | Completed | Sent ]
         this.completionDate= this.eventDate;

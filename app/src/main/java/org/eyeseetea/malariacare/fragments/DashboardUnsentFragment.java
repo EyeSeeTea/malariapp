@@ -53,6 +53,7 @@ import org.eyeseetea.malariacare.layout.adapters.dashboard.IDashboardAdapter;
 import org.eyeseetea.malariacare.layout.listeners.SwipeDismissListViewTouchListener;
 import org.eyeseetea.malariacare.network.PushClient;
 import org.eyeseetea.malariacare.network.PushResult;
+import org.eyeseetea.malariacare.receivers.AlarmPushReceiver;
 import org.eyeseetea.malariacare.services.SurveyService;
 import org.eyeseetea.malariacare.utils.Constants;
 import org.eyeseetea.malariacare.utils.Utils;
@@ -72,6 +73,7 @@ public class DashboardUnsentFragment extends ListFragment {
     private List<Survey> surveys;
     protected IDashboardAdapter adapter;
     private static int index = 0;
+    private AlarmPushReceiver alarmPush;
 
     public DashboardUnsentFragment(){
         this.adapter = Session.getAdapterUnsent();
@@ -97,6 +99,7 @@ public class DashboardUnsentFragment extends ListFragment {
     @Override
     public void onCreate(Bundle savedInstanceState){
         Log.d(TAG, "onCreate");
+        alarmPush = new AlarmPushReceiver();
         super.onCreate(savedInstanceState);
     }
 
@@ -206,14 +209,6 @@ public class DashboardUnsentFragment extends ListFragment {
         listView.addHeaderView(header);
         listView.addFooterView(footer);
         setListAdapter((BaseAdapter) adapter);
-        //The picture survey had a diferent dialogs and result
-        if(Utils.isPictureQuestion())
-            initPictureListView(listView);
-        else
-            initMalariaListView(listView);
-    }
-    private void initPictureListView(ListView listView){
-
 
         // Create a ListView-specific touch listener. ListViews are given special treatment because
         // by default they handle touches for their list items... i.e. they're in charge of drawing
@@ -254,6 +249,14 @@ public class DashboardUnsentFragment extends ListFragment {
 
         listView.setLongClickable(true);
 
+        //The picture survey had a diferent dialogs and result
+        if(Utils.isPictureQuestion())
+            initPictureListView(listView);
+        else
+            initMalariaListView(listView);
+    }
+    private void initPictureListView(ListView listView){
+
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
@@ -265,8 +268,12 @@ public class DashboardUnsentFragment extends ListFragment {
                         .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface arg0, int arg1) {
                                 final Survey survey = (Survey) adapter.getItem(position - 1);
-                                //AsyncPush asyncPush=new AsyncPush(survey);
-                                //asyncPush.execute((Void) null);
+
+                                SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext());
+                                String user = sharedPreferences.getString(getActivity().getApplicationContext().getResources().getString(R.string.dhis_user), "");
+                                String password = sharedPreferences.getString(getActivity().getApplicationContext().getResources().getString(R.string.dhis_password), "");
+                                AsyncPush asyncPush = new AsyncPush(survey, user, password);
+                                asyncPush.execute((Void) null);
                             }
                         })
                         .setNegativeButton(android.R.string.no, null).create().show();
@@ -283,46 +290,6 @@ public class DashboardUnsentFragment extends ListFragment {
      * Initializes the listview component, adding a listener for swiping right
      */
     private void initMalariaListView(ListView listView){
-
-        // Create a ListView-specific touch listener. ListViews are given special treatment because
-        // by default they handle touches for their list items... i.e. they're in charge of drawing
-        // the pressed state (the list selector), handling list item clicks, etc.
-        SwipeDismissListViewTouchListener touchListener =
-                new SwipeDismissListViewTouchListener(
-                        listView,
-                        new SwipeDismissListViewTouchListener.DismissCallbacks() {
-                            @Override
-                            public boolean canDismiss(int position) {
-                                return position>0 && position<=surveys.size();
-                            }
-
-                            @Override
-                            public void onDismiss(ListView listView, int[] reverseSortedPositions) {
-                                for (final int position : reverseSortedPositions) {
-                                    new AlertDialog.Builder(getActivity())
-                                            .setTitle(getActivity().getString(R.string.dialog_title_delete_survey))
-                                            .setMessage(getActivity().getString(R.string.dialog_info_delete_survey))
-                                            .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                                                public void onClick(DialogInterface arg0, int arg1) {
-                                                    ((Survey)adapter.getItem(position-1)).delete();
-                                                    //Reload data using service
-                                                    Intent surveysIntent=new Intent(getActivity(), SurveyService.class);
-                                                    surveysIntent.putExtra(SurveyService.SERVICE_METHOD, SurveyService.RELOAD_DASHBOARD_ACTION);
-                                                    getActivity().startService(surveysIntent);
-                                                }
-                                            })
-                                            .setNegativeButton(android.R.string.no, null).create().show();
-                                }
-
-                            }
-                        });
-        listView.setOnTouchListener(touchListener);
-        // Setting this scroll listener is required to ensure that during ListView scrolling,
-        // we don't look for swipes.
-        listView.setOnScrollListener(touchListener.makeScrollListener());
-
-        listView.setLongClickable(true);
-
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
@@ -338,7 +305,7 @@ public class DashboardUnsentFragment extends ListFragment {
                                         .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                                             public void onClick(DialogInterface arg0, int arg1) {
                                                 // We launch the login system, to authorize the push
-                                            launchPush(position);
+                                                launchPush(position);
                                             }
                                         })
                                         .setNegativeButton(android.R.string.no, null).create().show();
@@ -370,7 +337,7 @@ public class DashboardUnsentFragment extends ListFragment {
 
         //Pushing selected survey via sdk
         Intent progressActivityIntent = new Intent(getActivity(), ProgressActivity.class);
-        progressActivityIntent.putExtra(ProgressActivity.TYPE_OF_ACTION,ProgressActivity.ACTION_PUSH);
+        progressActivityIntent.putExtra(ProgressActivity.TYPE_OF_ACTION, ProgressActivity.ACTION_PUSH);
 
         getActivity().finish();
         startActivity(progressActivityIntent);
@@ -389,6 +356,24 @@ public class DashboardUnsentFragment extends ListFragment {
         }
     }
 
+    public void manageSurveysAlarm(List<Survey> newListSurveys){
+        Log.d(TAG, "setSurveysAlarm (Thread: " + Thread.currentThread().getId() + "): " + newListSurveys.size());
+
+        // if survey list is not empty, the org_unit is not valid, and the server is invalid: run periodic task for survey push otherwise cancel active alarm.
+        PushClient pushClient= new PushClient(getActivity().getApplicationContext());
+        //Fixme think other way to cancel the setPushAlarm in Malariaapp
+        Boolean a=newListSurveys.isEmpty();
+        Boolean b=pushClient.isValidOrgUnit();
+        Boolean c=pushClient.getIsInvalidServer();
+        //if(!newListSurveys.isEmpty()  && pushClient.isValidOrgUnit() && !pushClient.getIsInvalidServer() ) {
+        if(Utils.isPictureQuestion()) {
+            Survey.removeInProgress();//This is for remove the incompleted surveys before push.
+            alarmPush.setPushAlarm(getActivity());
+        }
+        //}else{
+        //    alarmPush.cancelPushAlarm(getActivity());
+        //}
+    }
 
     /**
      * Unregisters the survey receiver.
@@ -404,6 +389,8 @@ public class DashboardUnsentFragment extends ListFragment {
     public void reloadUnsentSurveys(){
         List<Survey> surveysUnsentFromService = (List<Survey>) Session.popServiceValue(SurveyService.ALL_UNSENT_SURVEYS_ACTION);
         reloadSurveys(surveysUnsentFromService);
+        if(Utils.isPictureQuestion())
+            manageSurveysAlarm(surveysUnsentFromService);
     }
     public void reloadSurveys(List<Survey> newListSurveys){
         Log.d(TAG, "reloadSurveys (Thread: " + Thread.currentThread().getId() + "): " + newListSurveys.size());
@@ -436,7 +423,7 @@ public class DashboardUnsentFragment extends ListFragment {
         private String password;
 
 
-        public AsyncPush(Survey survey, String user, String password) {
+        public AsyncPush(Survey survey,String user, String password) {
             this.survey = survey;
             this.user = user;
             this.password = password;
@@ -451,7 +438,7 @@ public class DashboardUnsentFragment extends ListFragment {
 
         @Override
         protected PushResult doInBackground(Void... params) {
-            PushClient pushClient=new PushClient(survey, getActivity(), user, password);
+            PushClient pushClient=new PushClient(survey, getActivity().getApplicationContext(), user, password);
             return pushClient.push();
         }
 

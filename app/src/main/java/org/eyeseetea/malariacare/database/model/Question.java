@@ -799,6 +799,32 @@ public class Question extends BaseModel {
                 .orderBy(Question$Table.ORDER_POS).queryList();
     }
 
+    /**
+     * Returns all the questions that belongs to a program
+     * @param program
+     * @return
+     */
+    public static List<Question> listAllByProgram(Program program){
+        if(program==null || program.getId_program()==null){
+            return new ArrayList();
+        }
+
+        return new Select().all().from(Question.class).as("q")
+                .join(Header.class, Join.JoinType.LEFT).as("h")
+                .on(Condition.column(ColumnAlias.columnWithTable("q", Question$Table.ID_HEADER))
+                        .eq(ColumnAlias.columnWithTable("h", Header$Table.ID_HEADER)))
+                .join(Tab.class, Join.JoinType.LEFT).as("t")
+                .on(Condition.column(ColumnAlias.columnWithTable("h", Header$Table.ID_TAB))
+                        .eq(ColumnAlias.columnWithTable("t", Tab$Table.ID_TAB)))
+                .join(Program.class, Join.JoinType.LEFT).as("p")
+                .on(Condition.column(ColumnAlias.columnWithTable("t", Tab$Table.ID_PROGRAM))
+                        .eq(ColumnAlias.columnWithTable("p", Program$Table.ID_PROGRAM)))
+                .where(Condition.column(ColumnAlias.columnWithTable("p", Program$Table.ID_PROGRAM))
+                        .eq(program.getId_program()))
+                .orderBy(Tab$Table.ORDER_POS)
+                .orderBy(Question$Table.ORDER_POS).queryList();
+    }
+
 
     /**
      * Checks if this question is scored or not.

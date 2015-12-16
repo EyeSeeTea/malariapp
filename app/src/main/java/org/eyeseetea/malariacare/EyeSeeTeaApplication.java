@@ -24,6 +24,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.support.multidex.MultiDex;
+import android.telephony.TelephonyManager;
 
 import com.crashlytics.android.Crashlytics;
 import com.raizlabs.android.dbflow.config.FlowManager;
@@ -32,6 +33,8 @@ import org.eyeseetea.malariacare.database.model.User;
 import org.eyeseetea.malariacare.database.utils.LocationMemory;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.utils.Utils;
+import org.eyeseetea.malariacare.database.utils.Session;
+import org.eyeseetea.malariacare.phonemetadata.PhoneMetaData;
 import org.hisp.dhis.android.sdk.persistence.Dhis2Application;
 
 import io.fabric.sdk.android.Fabric;
@@ -60,12 +63,27 @@ public class EyeSeeTeaApplication extends Dhis2Application  {
     @Override
     public void onCreate() {
         super.onCreate();
-        //Fabric.with(this, new Crashlytics());
+        Fabric.with(this, new Crashlytics());
         PreferencesState.getInstance().init(getApplicationContext());
         LocationMemory.getInstance().init(getApplicationContext());
         FlowManager.init(this, "_EyeSeeTeaDB");
+
+        //Set the Phone metadata
+        PhoneMetaData phoneMetaData=this.getPhoneMetadata();
+        Session.setPhoneMetaData(phoneMetaData);
     }
 
+    PhoneMetaData getPhoneMetadata(){
+        PhoneMetaData phoneMetaData=new PhoneMetaData();
+        TelephonyManager phoneManagerMetaData=(TelephonyManager)getSystemService(Context.TELEPHONY_SERVICE);
+        String imei = phoneManagerMetaData.getDeviceId();
+        String phone = phoneManagerMetaData.getLine1Number();
+        String serial = phoneManagerMetaData.getSimSerialNumber();
+        phoneMetaData.setImei(imei);
+        phoneMetaData.setPhone_number(phone);
+        phoneMetaData.setPhone_serial(serial);
+        return phoneMetaData;
+    }
     @Override
     public void onTerminate() {
         super.onTerminate();
