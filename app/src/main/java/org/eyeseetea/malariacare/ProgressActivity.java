@@ -42,7 +42,6 @@ import org.eyeseetea.malariacare.database.utils.Session;
 import org.hisp.dhis.android.sdk.controllers.DhisService;
 import org.hisp.dhis.android.sdk.events.UiEvent;
 import org.hisp.dhis.android.sdk.persistence.Dhis2Application;
-import org.hisp.dhis.android.sdk.persistence.models.Dashboard;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -71,9 +70,14 @@ public class ProgressActivity extends Activity {
     public static final int ACTION_PUSH=1;
 
     /**
+     * To dont show the survey pushed feedback
+     */
+    public static final int DONT_SHOW_FEEDBACK = 1;
+
+    /**
      * To show the survey pushed feedback
      */
-    public static final int SHOW_FEEDBACK = 3;
+    public static final int SHOW_FEEDBACK = 2;
     /**
      * To push every unsent data to server before pulling metadata
      */
@@ -271,7 +275,7 @@ public class ProgressActivity extends Activity {
         //Show message and go on -> pull or single push = dashboard | push before pull = start pull
         Intent i=getIntent();
         //Not a pull -> is a Push
-        if(i!=null && i.getIntExtra(AFTER_ACTION,SHOW_FEEDBACK)==SHOW_FEEDBACK) {
+        if(i!=null && (i.getIntExtra(ProgressActivity.AFTER_ACTION,ProgressActivity.DONT_SHOW_FEEDBACK)==ProgressActivity.SHOW_FEEDBACK)) {
             new AlertDialog.Builder(this)
                     .setCancelable(false)
                     .setTitle(title)
