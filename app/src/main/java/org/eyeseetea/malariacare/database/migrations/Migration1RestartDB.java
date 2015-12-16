@@ -101,6 +101,8 @@ public class Migration1RestartDB extends BaseMigration {
     @Override
     public void migrate(SQLiteDatabase database) {
         addColumn(database,Question.class,"output","integer");
+        addColumn(database, Survey.class, "creationDate", "integer");
+        addColumn(database, Survey.class, "scheduledDate", "integer");
         recreateTables(database,SDK_TABLES_TO_UPDATE);
     }
 
@@ -108,7 +110,6 @@ public class Migration1RestartDB extends BaseMigration {
     public void onPostMigrate() {
         //release migration resources
     }
-
 
     private void addColumn(SQLiteDatabase database, Class model, String columnName,String type){
         ModelAdapter myAdapter = FlowManager.getModelAdapter(model);
