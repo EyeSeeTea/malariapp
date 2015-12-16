@@ -42,6 +42,7 @@ import org.eyeseetea.malariacare.database.utils.Session;
 import org.hisp.dhis.android.sdk.controllers.DhisService;
 import org.hisp.dhis.android.sdk.events.UiEvent;
 import org.hisp.dhis.android.sdk.persistence.Dhis2Application;
+import org.hisp.dhis.android.sdk.persistence.models.Dashboard;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,6 +57,10 @@ public class ProgressActivity extends Activity {
     public static final String TYPE_OF_ACTION="TYPE_OF_ACTION";
 
     /**
+     * Intent param that tells what do before push
+     */
+    public static final String AFTER_ACTION="AFTER_ACTION";
+    /**
      * To pull data from server
      */
     public static final int ACTION_PULL=0;
@@ -65,6 +70,10 @@ public class ProgressActivity extends Activity {
      */
     public static final int ACTION_PUSH=1;
 
+    /**
+     * To show the survey pushed feedback
+     */
+    public static final int SHOW_FEEDBACK = 3;
     /**
      * To push every unsent data to server before pulling metadata
      */
@@ -260,13 +269,41 @@ public class ProgressActivity extends Activity {
         final int msg=getDoneMessage();
 
         //Show message and go on -> pull or single push = dashboard | push before pull = start pull
-        new AlertDialog.Builder(this)
-                .setCancelable(false)
-                .setTitle(title)
-                .setMessage(msg)
-                .setNeutralButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+        Intent i=getIntent();
+        //Not a pull -> is a Push
+        if(i!=null && i.getIntExtra(AFTER_ACTION,SHOW_FEEDBACK)==SHOW_FEEDBACK) {
+            new AlertDialog.Builder(this)
+                    .setCancelable(false)
+                    .setTitle(title)
+                    .setMessage(msg)
+                    .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface arg0, int arg1) {
+                            //Pull or Push(single)
+                            if (msg ==R.string.dialog_pull_success || msg == R.string.dialog_push_success) {
+                                finishAndGo(DashboardActivity.class);
+                                return;
+                            } else {
+                                //Start pull after push
+                                pullAfterPushInProgress = true;
+                                launchPull();
+                                return;
+                            }
+                        }
+                    })
+                    .setNeutralButton(getApplicationContext().getResources().getString(R.string.dialog_button_preview_feedback), new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface arg0, int arg1) {
+                            //I try using a intent to feedbackactivity but the dashboardsActivity was reloaded from the service.
+                            DashboardActivity.viewFeedback=true;
+                            finishAndGo(DashboardActivity.class);
+                        }
+                    }).create().show();
+        } else {
+            new AlertDialog.Builder(this)
+                    .setCancelable(false)
+                    .setTitle(title)
+                    .setMessage(msg)
+                .setNeutralButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface arg0, int arg1) {
-                        //Pull or Push(single)
                         if (msg == R.string.dialog_pull_success || msg == R.string.dialog_push_success) {
                             finishAndGo(DashboardActivity.class);
                             return;
@@ -278,6 +315,9 @@ public class ProgressActivity extends Activity {
                         }
                     }
                 }).create().show();
+
+
+        }
     }
 
     /**

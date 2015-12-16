@@ -58,11 +58,16 @@ public class DashboardActivity extends BaseActivity {
     DashboardUnsentFragment unsentFragment;
     DashboardSentFragment sentFragment;
     LocalActivityManager mlam;
+    static boolean viewFeedback;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Log.d(TAG, "onCreate");
         super.onCreate(savedInstanceState);
+        if(viewFeedback) {
+            viewFeedback=false;
+            finishAndGo(FeedbackActivity.class);
+        }
         setContentView(R.layout.tab_dashboard);
         try {
             initDataIfRequired();
@@ -88,7 +93,7 @@ public class DashboardActivity extends BaseActivity {
             public void onTabChanged(String tabId) {
                 /** If current tab is android */
                 if(tabId.equalsIgnoreCase("tab_improve")){
-                    unsentFragment.reloadUnsentSurveys();
+                    unsentFragment.reloadUncompletedUnsentSurveys();
                 }else if(tabId.equalsIgnoreCase("tab_assess")){
                     sentFragment.reloadSentSurveys();
                 }else if(tabId.equalsIgnoreCase("tab_plan")){

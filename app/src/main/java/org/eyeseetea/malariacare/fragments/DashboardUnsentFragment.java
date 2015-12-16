@@ -19,7 +19,6 @@
 
 package org.eyeseetea.malariacare.fragments;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ListFragment;
 import android.content.BroadcastReceiver;
@@ -27,10 +26,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -41,8 +38,6 @@ import android.widget.BaseAdapter;
 import android.widget.ListView;
 
 import org.eyeseetea.malariacare.DashboardActivity;
-import org.eyeseetea.malariacare.FeedbackActivity;
-import org.eyeseetea.malariacare.LoginActivity;
 import org.eyeseetea.malariacare.ProgressActivity;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.SurveyActivity;
@@ -54,7 +49,6 @@ import org.eyeseetea.malariacare.layout.listeners.SwipeDismissListViewTouchListe
 import org.eyeseetea.malariacare.network.PushClient;
 import org.eyeseetea.malariacare.network.PushResult;
 import org.eyeseetea.malariacare.services.SurveyService;
-import org.eyeseetea.malariacare.utils.Constants;
 import org.eyeseetea.malariacare.views.CustomTextView;
 
 import java.util.ArrayList;
@@ -271,15 +265,7 @@ public class DashboardUnsentFragment extends ListFragment {
                             }
                         })
                         .setNegativeButton(android.R.string.cancel, null)
-                        .setNeutralButton(getActivity().getString(R.string.dialog_button_preview_feedback), new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface arg0, int arg1) {
-                                //Put selected survey in session
-                                Session.setSurvey(surveys.get(position - 1));
-                                // Go to FeedbackActivity
-                                ((DashboardActivity) getActivity()).go(FeedbackActivity.class);
-                                getActivity().finish();
-                            }
-                        }).create().show();
+                .create().show();
 
 
                 return true;
@@ -296,6 +282,7 @@ public class DashboardUnsentFragment extends ListFragment {
 
         //Pushing selected survey via sdk
         Intent progressActivityIntent = new Intent(getActivity(), ProgressActivity.class);
+        progressActivityIntent.putExtra(ProgressActivity.AFTER_ACTION,ProgressActivity.SHOW_FEEDBACK);
         progressActivityIntent.putExtra(ProgressActivity.TYPE_OF_ACTION,ProgressActivity.ACTION_PUSH);
 
         getActivity().finish();
@@ -311,7 +298,7 @@ public class DashboardUnsentFragment extends ListFragment {
 
         if(surveyReceiver==null){
             surveyReceiver=new SurveyReceiver();
-            LocalBroadcastManager.getInstance(getActivity()).registerReceiver(surveyReceiver, new IntentFilter(SurveyService.ALL_UNSENT_SURVEYS_ACTION));
+            LocalBroadcastManager.getInstance(getActivity()).registerReceiver(surveyReceiver, new IntentFilter(SurveyService.ALL_UNCOMPLETED_UNSENT_SURVEYS_ACTION));
         }
     }
 
@@ -327,9 +314,9 @@ public class DashboardUnsentFragment extends ListFragment {
             surveyReceiver=null;
         }
     }
-    public void reloadUnsentSurveys(){
-        List<Survey> surveysUnsentFromService = (List<Survey>) Session.popServiceValue(SurveyService.ALL_UNSENT_SURVEYS_ACTION);
-        reloadSurveys(surveysUnsentFromService);
+    public void reloadUncompletedUnsentSurveys(){
+        List<Survey> surveysUncompletedUnsentFromService = (List<Survey>) Session.popServiceValue(SurveyService.ALL_UNCOMPLETED_UNSENT_SURVEYS_ACTION);
+        reloadSurveys(surveysUncompletedUnsentFromService);
     }
     public void reloadSurveys(List<Survey> newListSurveys){
         Log.d(TAG, "reloadSurveys (Thread: " + Thread.currentThread().getId() + "): " + newListSurveys.size());
@@ -349,8 +336,8 @@ public class DashboardUnsentFragment extends ListFragment {
         public void onReceive(Context context, Intent intent) {
             Log.d(TAG, "onReceive");
             //Listening only intents from this method
-            if(SurveyService.ALL_UNSENT_SURVEYS_ACTION.equals(intent.getAction())) {
-                reloadUnsentSurveys();
+            if(SurveyService.ALL_UNCOMPLETED_UNSENT_SURVEYS_ACTION.equals(intent.getAction())) {
+                reloadUncompletedUnsentSurveys();
             }
         }
     }

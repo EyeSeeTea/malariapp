@@ -48,7 +48,7 @@
     <string name="dialog_content_incorrect_org_unit">Please select a final org unit</string>
     <string name="dialog_content_logout_confirmation">If you exit the system, all the not sent data will be deleted. Do you still want to exit?</string>
     <string name="dialog_title_send_preview">Send or Preview</string>
-    <string name="dialog_content_send_preview">Do you want to send survey or preview the feedback?</string>
+    <string name="dialog_content_send_preview">Do you want to send survey?</string>
     <string name="dialog_title_push_data">Pushing data</string>
     <string name="dialog_content_push_data">Are you sure that you want to send? You cannot undo this action</string>
     <string name="dialog_button_preview_feedback">View Feedback</string>
