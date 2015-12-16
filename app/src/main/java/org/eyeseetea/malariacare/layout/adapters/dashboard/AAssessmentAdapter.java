@@ -22,6 +22,7 @@ package org.eyeseetea.malariacare.layout.adapters.dashboard;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Typeface;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -79,8 +80,25 @@ public abstract class AAssessmentAdapter extends ADashboardAdapter implements ID
         View rowView = this.lInflater.inflate(getRecordLayout(), parent, false);
         rowView.setPadding(paddingDp, paddingDp, paddingDp, paddingDp);
         if(Utils.isPictureQuestion()) {
+            //INFO
+            CustomTextView info;
+
             //Completion Date
-            CustomTextView completionDate = (CustomTextView) rowView.findViewById(R.id.completionDate);
+            CustomTextView completionDate;
+
+            //RDT
+            CustomTextView rdt;
+            //Fixme
+            if(survey.isSent()) {
+                completionDate = (CustomTextView) rowView.findViewById(R.id.score);
+                rdt = (CustomTextView) rowView.findViewById(R.id.sentDate);
+                info = (CustomTextView) rowView.findViewById(R.id.facility);
+            }
+            else{
+                completionDate = (CustomTextView) rowView.findViewById(R.id.completionDate);
+                rdt = (CustomTextView) rowView.findViewById(R.id.rdt);
+                info = (CustomTextView) rowView.findViewById(R.id.info);
+            }
             if (survey.getCompletionDate() != null) {
                 //it show dd/mm/yy in europe, mm/dd/yy in america, etc.
                 DateFormat formatter = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT, Resources.getSystem().getConfiguration().locale);
@@ -88,8 +106,6 @@ public abstract class AAssessmentAdapter extends ADashboardAdapter implements ID
                 completionDate.setText(formatter.format(survey.getCompletionDate()));
             }
 
-            //RDT
-            CustomTextView rdt = (CustomTextView) rowView.findViewById(R.id.rdt);
             //Since there are three possible values first question (RDT):'Yes','No','Cancel'
             //rdt.setText(survey.isRDT()?"+":"-");
             String rdtValue = survey.getRDT();
@@ -103,12 +119,10 @@ public abstract class AAssessmentAdapter extends ADashboardAdapter implements ID
             }
             rdt.setText(rdtSymbol);
 
-            //INFO
-            CustomTextView info = (CustomTextView) rowView.findViewById(R.id.info);
             //Load a font which support Khmer character
             Typeface tf = Typeface.createFromAsset(context.getAssets(), "fonts/" + "KhmerOS.ttf");
             info.setTypeface(tf);
-
+            Log.d("SentSurveyInfo", completionDate.getText() + "-info-" + info.getText() + "-rdt-" + rdt.getText());
             info.setText(survey.getValuesToString());
 
             rowView.setBackgroundResource(LayoutUtils.calculateBackgrounds(position));

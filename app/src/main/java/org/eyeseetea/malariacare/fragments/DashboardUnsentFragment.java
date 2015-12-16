@@ -390,7 +390,11 @@ public class DashboardUnsentFragment extends ListFragment {
         List<Survey> surveysUnsentFromService = (List<Survey>) Session.popServiceValue(SurveyService.ALL_UNSENT_SURVEYS_ACTION);
         reloadSurveys(surveysUnsentFromService);
         if(Utils.isPictureQuestion())
-            manageSurveysAlarm(surveysUnsentFromService);
+            if(surveysUnsentFromService.size()>0) {
+                manageSurveysAlarm(surveysUnsentFromService);
+            }
+        else
+                alarmPush.cancelPushAlarm(getActivity().getApplicationContext());
     }
     public void reloadSurveys(List<Survey> newListSurveys){
         Log.d(TAG, "reloadSurveys (Thread: " + Thread.currentThread().getId() + "): " + newListSurveys.size());
