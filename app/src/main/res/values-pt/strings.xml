@@ -239,4 +239,11 @@
     <string name="dialog_push_success">Pesquisa empurrou com êxito para o servidor dhis</string>
     <string name="progress_push_no_survey">Nenhuma pesquisa constatou para empurrar</string>
     <string name="dialog_push_before_pull_success">Pesquisa empurrou com êxito para o servidor dhis, começando a puxar metadados</string>
+    <string name="dashboard_title_planned_next_qa">Próxima avaliação</string>
+    <string name="dashboard_title_planned_productivity">Prd</string>
+    <string name="dashboard_title_planned_quality_of_care">QoC</string>
+    <string name="dashboard_title_planned_type_future">Futuro</string>
+    <string name="dashboard_title_planned_type_never">Eu nunca avaliado</string>
+    <string name="dashboard_title_planned_type_next_30">Próximos 30 dias</string>
+    <string name="dashboard_title_planned_type_overdue">Vencido</string>
 </resources>

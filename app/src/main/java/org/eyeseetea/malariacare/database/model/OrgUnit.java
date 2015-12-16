@@ -71,17 +71,24 @@ public class OrgUnit extends BaseModel {
      */
     List<OrgUnit> children;
 
+    /**
+     * Tells if this orgUnit has a lowProductivity (not ready yet)
+     */
+    boolean lowProductivity;
+
     public OrgUnit() {
     }
 
     public OrgUnit(String name) {
         this.name = name;
+        //TODO Remove this when ready
+        this.lowProductivity = Math.random()>0.5;
     }
 
 
     public OrgUnit(String uid, String name, OrgUnit orgUnit, OrgUnitLevel orgUnitLevel) {
+        this(name);
         this.uid = uid;
-        this.name = name;
         this.setOrgUnit(orgUnit);
         this.setOrgUnitLevel(orgUnitLevel);
     }
@@ -166,6 +173,10 @@ public class OrgUnit extends BaseModel {
                     .where(Condition.column(Survey$Table.ID_ORG_UNIT).eq(this.getId_org_unit())).queryList();
         }
         return surveys;
+    }
+
+    public boolean isLowProductivity(){
+        return lowProductivity;
     }
 
     @Override

@@ -77,6 +77,7 @@ public class DashboardActivity extends BaseActivity {
             Log.e(".DashboardActivity", e.getMessage());
         }
         if(savedInstanceState==null) {
+            initPlanned();
             initImprove();
             initAssess();
             initMonitor();
@@ -88,6 +89,7 @@ public class DashboardActivity extends BaseActivity {
         setTab("tab_improve", R.id.tab_improve_layout, getResources().getDrawable(R.drawable.tab_improve));
         setTab("tab_monitor", R.id.tab_monitor_layout, getResources().getDrawable(R.drawable.tab_monitor));
 
+        //XXX This might be unnecessary
         tabHost.setOnTabChangedListener( new TabHost.OnTabChangeListener() {
 
             @Override
@@ -98,7 +100,7 @@ public class DashboardActivity extends BaseActivity {
                 }else if(tabId.equalsIgnoreCase("tab_assess")){
                     sentFragment.reloadSentSurveys();
                 }else if(tabId.equalsIgnoreCase("tab_plan")){
-                    plannedFragment.reloadPlannedSurveys();
+                    plannedFragment.reloadPlannedItems();
                 }else if(tabId.equalsIgnoreCase("tab_monitor")){
                     monitorFragment.reloadSentSurveys();
                 }
@@ -130,6 +132,12 @@ public class DashboardActivity extends BaseActivity {
         tab.setIndicator("", image);
         tabHost.addTab(tab);
 
+    }
+
+    public void initPlanned(){
+        plannedFragment = new PlannedFragment();
+        plannedFragment.setArguments(getIntent().getExtras());
+        setFragmentTransaction(R.id.dashboard_planning_tab, plannedFragment);
     }
 
     public void initImprove(){

@@ -30,10 +30,11 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import org.eyeseetea.malariacare.R;
-import org.eyeseetea.malariacare.database.utils.feedback.CompositeScoreFeedback;
 import org.eyeseetea.malariacare.database.utils.feedback.Feedback;
 import org.eyeseetea.malariacare.database.utils.feedback.QuestionFeedback;
-import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
+import org.eyeseetea.malariacare.database.utils.planning.PlannedHeader;
+import org.eyeseetea.malariacare.database.utils.planning.PlannedItem;
+import org.eyeseetea.malariacare.database.utils.planning.PlannedSurvey;
 import org.eyeseetea.malariacare.network.CustomParser;
 
 import java.util.ArrayList;
@@ -44,7 +45,7 @@ import java.util.List;
  */
 public class PlannedAdapter extends BaseAdapter {
 
-    private List<Feedback> items;
+    private List<PlannedItem> items;
 
     private Context context;
 
@@ -53,10 +54,10 @@ public class PlannedAdapter extends BaseAdapter {
     private boolean [] hiddenPositions;
 
     public PlannedAdapter(Context context){
-        this(new ArrayList<Feedback>(), context);
+        this(new ArrayList<PlannedItem>(), context);
     }
 
-    public PlannedAdapter(List<Feedback> items, Context context){
+    public PlannedAdapter(List<PlannedItem> items, Context context){
         this.items=items;
         this.context=context;
         this.onlyFailed=true;
@@ -102,80 +103,77 @@ public class PlannedAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        Feedback feedback=(Feedback)getItem(position);
-        if (feedback instanceof CompositeScoreFeedback){
-            return getViewByCompositeScoreFeedback((CompositeScoreFeedback)feedback, convertView, parent);
+        PlannedItem plannedItem=(PlannedItem)getItem(position);
+        if (plannedItem instanceof PlannedHeader){
+            return getViewByPlannedHeader((PlannedHeader) plannedItem, convertView, parent);
         }else{
-            return getViewByQuestionFeedback((QuestionFeedback) feedback, convertView, parent);
+            return getViewByPlannedSurvey((PlannedSurvey) plannedItem, convertView, parent);
         }
     }
 
-    private View getViewByCompositeScoreFeedback(CompositeScoreFeedback feedback, View convertView, ViewGroup parent){
+    private View getViewByPlannedHeader(PlannedHeader feedback, View convertView, ViewGroup parent){
         LayoutInflater inflater=LayoutInflater.from(context);
         LinearLayout rowLayout = (LinearLayout)inflater.inflate(R.layout.feedback_composite_score_row, parent, false);
-        rowLayout.setBackgroundResource(feedback.getBackgroundColor());
-
-        //CompositeScore title
-        TextView textView=(TextView)rowLayout.findViewById(R.id.feedback_label);
-        textView.setText(feedback.getLabel());
-
-        //CompositeScore title
-        textView=(TextView)rowLayout.findViewById(R.id.feedback_score_label);
-        textView.setText(feedback.getPercentageAsString());
-
-        //Traffic light
-        View light=rowLayout.findViewById(R.id.feedback_light);
-        LayoutUtils.trafficView(context, feedback.getScore(), light);
+//        rowLayout.setBackgroundResource(feedback.getBackgroundColor());
+//
+//        //CompositeScore title
+//        TextView textView=(TextView)rowLayout.findViewById(R.id.feedback_label);
+//        textView.setText(feedback.getLabel());
+//
+//        //CompositeScore title
+//        textView=(TextView)rowLayout.findViewById(R.id.feedback_score_label);
+//        textView.setText(feedback.getPercentageAsString());
+//
+//        //Traffic light
+//        View light=rowLayout.findViewById(R.id.feedback_light);
+//        LayoutUtils.trafficView(context, feedback.getScore(), light);
         return rowLayout;
     }
 
-    private View getViewByQuestionFeedback(QuestionFeedback feedback, View convertView, ViewGroup parent){
-        if(onlyFailed && feedback.isPassed()){
-            return null;
-        }
+    private View getViewByPlannedSurvey(PlannedSurvey plannedSurvey, View convertView, ViewGroup parent){
 
         LayoutInflater inflater=LayoutInflater.from(context);
         LinearLayout rowLayout = (LinearLayout)inflater.inflate(R.layout.feedback_question_row, parent, false);
-        rowLayout.setTag(feedback);
-
-        //Question label
-        TextView textView=(TextView)rowLayout.findViewById(R.id.feedback_question_label);
-        textView.setText(feedback.getLabel());
-
-        //Option label
-        textView=(TextView)rowLayout.findViewById(R.id.feedback_option_label);
-        textView.setText(feedback.getOption());
-
-        //Score label
-        textView=(TextView)rowLayout.findViewById(R.id.feedback_score_label);
-        if(feedback.hasGrade()) {
-            textView.setText(context.getString(feedback.getGrade()));
-            textView.setTextColor(context.getResources().getColor(feedback.getColor()));
-        }
-
-        //Feedback
-        textView=(TextView)rowLayout.findViewById(R.id.feedback_feedback_html);
-        String feedbackText=feedback.getFeedback();
-        if(feedbackText==null){
-            feedbackText=context.getString(R.string.feedback_info_no_feedback);
-        }
-        textView.setText( Html.fromHtml(feedbackText, new CustomParser(textView, this.context), new CustomParser(textView, this.context)));
-        textView.setMovementMethod(LinkMovementMethod.getInstance());
-
-        //Hide/Show feedback according to its inner state
-        toggleFeedback(rowLayout, feedback.isFeedbackShown());
-
-        //Add listener to toggle feedback state
-        rowLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                QuestionFeedback questionFeedback=(QuestionFeedback)v.getTag();
-                if(questionFeedback==null){
-                    return;
-                }
-                toggleFeedback((LinearLayout)v, questionFeedback.toggleFeedbackShown());
-            }
-        });
+        rowLayout.setTag(plannedSurvey);
+//
+//        //Question label
+//        TextView textView=(TextView)rowLayout.findViewById(R.id.feedback_question_label);
+//        textView.setText(feedback.getLabel());
+//
+//        //Option label
+//        textView=(TextView)rowLayout.findViewById(R.id.feedback_option_label);
+//        textView.setText(feedback.getOption());
+//
+//        //Score label
+//        textView=(TextView)rowLayout.findViewById(R.id.feedback_score_label);
+//        if(feedback.hasGrade()) {
+//            textView.setText(context.getString(feedback.getGrade()));
+//            textView.setTextColor(context.getResources().getColor(feedback.getColor()));
+//        }
+//
+//        //Feedback
+//        textView=(TextView)rowLayout.findViewById(R.id.feedback_feedback_html);
+//        String feedbackText=feedback.getFeedback();
+//        if(feedbackText==null){
+//            feedbackText=context.getString(R.string.feedback_info_no_feedback);
+//        }
+//        textView.setText( Html.fromHtml(feedbackText, new CustomParser(textView, this.context), new CustomParser(textView, this.context)));
+//        textView.setMovementMethod(LinkMovementMethod.getInstance());
+//
+//        //Hide/Show feedback according to its inner state
+//        toggleFeedback(rowLayout, feedback.isFeedbackShown());
+//
+//        //Add listener to toggle feedback state
+//        rowLayout.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                QuestionFeedback questionFeedback=(QuestionFeedback)v.getTag();
+//                if(questionFeedback==null){
+//                    return;
+//                }
+//                toggleFeedback((LinearLayout)v, questionFeedback.toggleFeedbackShown());
+//            }
+//        });
 
         return rowLayout;
     }
@@ -188,44 +186,6 @@ public class PlannedAdapter extends BaseAdapter {
         //Feedback itself
         TextView feedbackTextView=(TextView)rowLayout.findViewById(R.id.feedback_feedback_html);
         feedbackTextView.setVisibility(visible?View.VISIBLE:View.GONE);
-    }
-
-    /**
-     * Reloads items into the adapter
-     * @param newItems
-     */
-    public void setItems(List<Feedback> newItems){
-        this.items.clear();
-        this.items.addAll(newItems);
-
-        //init 'hiddenPositions'
-        reloadHiddenPositions();
-        notifyDataSetChanged();
-    }
-
-    /**
-     * Toggles the state of the flag that determines if only 'failed' questions are shown
-     */
-    public void toggleOnlyFailed(){
-        this.onlyFailed=!this.onlyFailed;
-        notifyDataSetChanged();
-    }
-
-    public boolean isOnlyFailed() {
-        return onlyFailed;
-    }
-
-    /**
-     * Recalculates the array of hidden positions
-     */
-    private void reloadHiddenPositions(){
-        //a brand new array
-        this.hiddenPositions= new boolean[this.items.size()];
-
-        for(int i=0;i<this.hiddenPositions.length;i++){
-            //Passed items might get hidden
-            this.hiddenPositions[i]=this.items.get(i).isPassed();
-        }
     }
 
     /**

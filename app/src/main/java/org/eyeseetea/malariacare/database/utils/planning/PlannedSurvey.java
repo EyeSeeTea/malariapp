@@ -22,6 +22,8 @@ package org.eyeseetea.malariacare.database.utils.planning;
 import org.eyeseetea.malariacare.database.model.OrgUnit;
 import org.eyeseetea.malariacare.database.model.Survey;
 
+import java.util.Date;
+
 /**
  * Simple VO that wraps a survey in order to show it in the planned tab
  * Created by arrizabalaga on 15/12/15.
@@ -32,6 +34,8 @@ public class PlannedSurvey implements PlannedItem {
     private final static String HIGH_PRODUCTIVITY="H";
     private final static String LOW_PRODUCTIVITY="L";
     private final static String NO_QUALITY_OF_CARE="-";
+
+
 
     public PlannedSurvey(Survey survey) {
         this.survey = survey;
@@ -48,7 +52,7 @@ public class PlannedSurvey implements PlannedItem {
     }
 
     public String getProgram(){
-        if(survey==null || survey.getTabGroup()==null || survey.get){
+        if(survey==null){
             return null;
         }
         if(survey.getTabGroup()==null){
@@ -65,7 +69,11 @@ public class PlannedSurvey implements PlannedItem {
      * @return
      */
     public String getProductivity(){
-        return Math.random()>0.5?HIGH_PRODUCTIVITY:LOW_PRODUCTIVITY;
+        if(survey==null){
+            return "";
+        }
+
+        return survey.getOrgUnit().isLowProductivity()?LOW_PRODUCTIVITY:HIGH_PRODUCTIVITY;
     }
 
     /**
@@ -80,11 +88,10 @@ public class PlannedSurvey implements PlannedItem {
         return survey.getMainScore().toString();
     }
 
-    public String getNextAssesment(){
+    public Date getNextAssesment(){
         if(survey==null){
             return null;
         }
-        //TODO merge dates here to return scheduledDates
-        return null;
+        return survey.getScheduledDate();
     }
 }

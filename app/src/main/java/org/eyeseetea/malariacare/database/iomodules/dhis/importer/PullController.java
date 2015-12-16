@@ -55,6 +55,7 @@ import org.eyeseetea.malariacare.database.model.User;
 import org.eyeseetea.malariacare.database.model.Value;
 import org.eyeseetea.malariacare.database.utils.PopulateDB;
 import org.eyeseetea.malariacare.database.utils.Session;
+import org.eyeseetea.malariacare.database.utils.planning.SurveyPlanner;
 import org.hisp.dhis.android.sdk.controllers.DhisService;
 import org.hisp.dhis.android.sdk.controllers.LoadingController;
 import org.hisp.dhis.android.sdk.controllers.metadata.MetaDataController;
@@ -94,9 +95,15 @@ public class PullController {
     private Context context;
 
     /**
+     * Plans future surveys for those that have been loaded
+     */
+    private SurveyPlanner surveyPlanner;
+
+    /**
      * Constructs and register this pull controller to the event bus
      */
     PullController() {
+        surveyPlanner = new SurveyPlanner();
     }
 
     private void register() {
@@ -382,6 +389,8 @@ public class PullController {
             }
         }
 
+        //Plan surveys for the future
+        surveyPlanner.buildNext();
     }
 
     /**

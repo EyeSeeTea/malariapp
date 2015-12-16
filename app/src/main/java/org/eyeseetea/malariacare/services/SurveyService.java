@@ -35,6 +35,7 @@ import org.eyeseetea.malariacare.database.model.Tab$Table;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.database.utils.feedback.Feedback;
 import org.eyeseetea.malariacare.database.utils.feedback.FeedbackBuilder;
+import org.eyeseetea.malariacare.database.utils.planning.PlannedItemBuilder;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.utils.Utils;
 
@@ -107,6 +108,8 @@ public class SurveyService extends IntentService {
      */
     public static final String PREPARE_FEEDBACK_ACTION_ITEMS="org.eyeseetea.malariacare.services.SurveyService.PREPARE_FEEDBACK_ACTION_ITEMS";
 
+    private PlannedItemBuilder plannedItemBuilder;
+
     /**
      * Tag for logging
      */
@@ -117,6 +120,7 @@ public class SurveyService extends IntentService {
      */
     public SurveyService(){
         super(SurveyService.class.getSimpleName());
+        plannedItemBuilder = new PlannedItemBuilder();
     }
     /**
      * Creates an IntentService.  Invoked by your subclass's constructor.
@@ -179,12 +183,10 @@ public class SurveyService extends IntentService {
             }
         }
 
-        //TODO Prepare surveys for planning
-
         //Since intents does NOT admit NON serializable as values we use Session instead
         Session.putServiceValue(ALL_UNSENT_SURVEYS_ACTION, unsentSurveys);
         Session.putServiceValue(ALL_SENT_SURVEYS_ACTION, sentSurveys);
-        Session.putServiceValue(PLANNED_SURVEYS_ACTION, surveys);
+        Session.putServiceValue(PLANNED_SURVEYS_ACTION, plannedItemBuilder.buildPlannedItems());
 
         //Returning result to anyone listening
         LocalBroadcastManager.getInstance(this).sendBroadcast(new Intent(ALL_UNSENT_SURVEYS_ACTION));

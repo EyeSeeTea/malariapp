@@ -43,6 +43,7 @@ import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.model.TabGroup;
 import org.eyeseetea.malariacare.database.utils.LocationMemory;
 import org.eyeseetea.malariacare.database.utils.Session;
+import org.eyeseetea.malariacare.database.utils.planning.SurveyPlanner;
 import org.eyeseetea.malariacare.layout.adapters.general.OrgUnitArrayAdapter;
 import org.eyeseetea.malariacare.layout.adapters.general.ProgramArrayAdapter;
 import org.eyeseetea.malariacare.layout.adapters.general.TabGroupArrayAdapter;
@@ -82,6 +83,8 @@ public class CreateSurveyActivity extends BaseActivity {
     private LayoutInflater lInflater;
 
     private SurveyLocationListener locationListener;
+
+    private SurveyPlanner surveyPlanner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -205,8 +208,7 @@ public class CreateSurveyActivity extends BaseActivity {
             TabGroup tabGroup = (TabGroup) tabGroupView.getSelectedItem();
 
             // Put new survey in session
-            Survey survey = new Survey(orgUnit, tabGroup, Session.getUser());
-            survey.save();
+            Survey survey = surveyPlanner.startSurvey(orgUnit,tabGroup);
             Session.setSurvey(survey);
 
             //Look for coordinates

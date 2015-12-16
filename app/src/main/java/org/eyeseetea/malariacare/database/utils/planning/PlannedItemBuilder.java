@@ -1,0 +1,295 @@
+/*
+ * Copyright (c) 2015.
+ *
+ * This file is part of QA App.
+ *
+ *  Health Network QIS App is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  Health Network QIS App is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+package org.eyeseetea.malariacare.database.utils.planning;
+
+import android.content.Context;
+
+import com.raizlabs.android.dbflow.sql.builder.Condition;
+import com.raizlabs.android.dbflow.sql.language.Select;
+
+import org.eyeseetea.malariacare.database.model.OrgUnit;
+import org.eyeseetea.malariacare.database.model.Program;
+
+import org.eyeseetea.malariacare.database.model.Survey;
+import org.eyeseetea.malariacare.database.model.Survey$Table;
+import org.eyeseetea.malariacare.database.utils.PreferencesState;
+import org.eyeseetea.malariacare.utils.Constants;
+
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+/**
+ * Created by arrizabalaga on 16/12/15.
+ */
+public class PlannedItemBuilder {
+
+    private final String TAG=".PlannedItemBuilder";
+
+    /**
+     * Helper to plan new items
+     */
+    SurveyPlanner surveyPlanner;
+
+    /**
+     * Memo to find non existant combinations
+     */
+    Map<String,Survey> surveyMap;
+
+    /**
+     * List of surveys not sent
+     */
+    private List<PlannedItem> never;
+
+    /**
+     * List of surveys overdued
+     */
+    private List<PlannedItem> overdue;
+
+    /**
+     * List of surveys for the next 30 days
+     */
+    private List<PlannedItem> next30;
+
+    /**
+     * List of surveys beyond the next 30 days
+     */
+    private List<PlannedItem> future;
+
+    public PlannedItemBuilder(){
+        surveyPlanner = new SurveyPlanner();
+    }
+
+    /**
+     * Inits aux data structures
+     */
+    private void initBuilder(){
+        surveyMap = new HashMap<>();
+        Context ctx=PreferencesState.getInstance().getContext();
+
+        never = new ArrayList<>();
+        never.add(PlannedHeader.buildNeverHeader(ctx));
+
+        overdue = new ArrayList<>();
+        overdue.add(PlannedHeader.buildOverdueHeader(ctx));
+
+        next30 = new ArrayList<>();
+        next30.add(PlannedHeader.buildNext30Header(ctx));
+
+        future = new ArrayList<>();
+        future.add(PlannedHeader.buildFutureHeader(ctx));
+    }
+
+    /**
+     * Builds an ordered list of planned items (header + surveys)
+     * @return
+     */
+    public List<PlannedItem> buildPlannedItems(){
+
+        initBuilder();
+
+        //Find its place according to scheduleddate
+        for(Survey survey: findPlannedInProgressSurveys()){
+            findRightState(survey);
+        }
+
+        //Fill potential gaps (a brand new program or orgunit)
+        buildNonExistantCombinations();
+
+        //Join lists together (never + overdue + next30 + future)
+        return mergeLists();
+    }
+
+    private List<PlannedItem> mergeLists() {
+        List<PlannedItem> plannedItems = new ArrayList<>();
+        plannedItems.addAll(never);
+        plannedItems.addAll(overdue);
+        plannedItems.addAll(next30);
+        plannedItems.addAll(future);
+        return plannedItems;
+    }
+
+    /**
+     * Finds planned/in_progress surveys
+     * @return
+     */
+    private List<Survey> findPlannedInProgressSurveys(){
+        List<Survey> plannedSurveys=new Select()
+                .from(Survey.class)
+                .where(Condition.column(Survey$Table.STATUS).eq(Constants.SURVEY_PLANNED))
+                .or(Condition.column(Survey$Table.STATUS).eq(Constants.SURVEY_IN_PROGRESS))
+                .orderBy(true, Survey$Table.SCHEDULEDDATE)
+                .queryList();
+
+        return plannedSurveys;
+    }
+
+    /**
+     * Puts the survey in its right list
+     * @param survey
+     */
+    private void findRightState(Survey survey){
+        //Annotate this survey to fill its spot
+        annotateSurvey(survey);
+
+        //Check if belongs to NEVER section
+        if(processAsNever(survey)){
+            return;
+        }
+
+        //Check if belongs to NEVER section
+        if(processAsOverdue(survey)){
+            return;
+        }
+
+        //Check if belongs to NEVER section
+        if(processAsNext30(survey)){
+            return;
+        }
+
+        //Otherwise a future
+        future.add(new PlannedSurvey(survey));
+    }
+
+    /**
+     * Checks if the given survey belongs to the NEVER section
+     * @param survey
+     * @return
+     */
+    private boolean processAsNever(Survey survey){
+        Date scheduledDate = survey.getScheduledDate();
+        Date today = new Date();
+
+        //No Scheduled
+        if (scheduledDate==null) {
+            never.add(new PlannedSurvey(survey));
+            return true;
+        }
+
+        //in progress + in time
+        if(survey.getStatus()==Constants.SURVEY_IN_PROGRESS &&
+                today.before(scheduledDate)) {
+            never.add(new PlannedSurvey(survey));
+            return true;
+        }
+
+        //This survey does not belong to NEVER section
+        return false;
+    }
+
+    /**
+     * Checks if the given survey belongs to the OVERDUE section
+     * @param survey
+     * @return
+     */
+    private boolean processAsOverdue(Survey survey){
+        Date scheduledDate = survey.getScheduledDate();
+        Date today = new Date();
+
+        //scheduledDate<today
+        if(scheduledDate.before(today)){
+            overdue.add(new PlannedSurvey(survey));
+            return true;
+        }
+
+        //This survey does not belong to OVERDUE section
+        return false;
+    }
+
+    /**
+     * Checks if the given survey belongs to the NEXT30 section
+     * @param survey
+     * @return
+     */
+    private boolean processAsNext30(Survey survey){
+        Date scheduledDate = survey.getScheduledDate();
+        Date today = new Date();
+        Date today30 = getIn30Days(today);
+
+        //planned in less 30 days
+        if(scheduledDate.before(today30)){
+            next30.add(new PlannedSurvey(survey));
+            return true;
+        }
+
+        //This survey does not belong to NEXT30 section
+        return false;
+    }
+
+    /**
+     * Annotates the survey in the map
+     * @param survey
+     */
+    private void annotateSurvey(Survey survey){
+        String key= getSurveyKey(survey.getOrgUnit(), survey.getTabGroup().getProgram());
+        surveyMap.put(key,survey);
+    }
+
+    /**
+     * Buids a synthetic key for this survey
+     * @param orgUnit
+     * @param program
+     * @return
+     */
+    private String getSurveyKey(OrgUnit orgUnit,Program program) {
+        return orgUnit.getId_org_unit().toString()+"@"+program.getId_program().toString();
+    }
+
+    /**
+     * Returns +30 days from the given date
+     * @return
+     */
+    private Date getIn30Days(Date date){
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        calendar.add(Calendar.DATE,30);
+        return calendar.getTime();
+    }
+
+
+    /**
+     * Builds brand new combinations for those orgunit + program without a planned item
+     */
+    private void buildNonExistantCombinations() {
+
+        List<OrgUnit> orgUnits =new Select().from(OrgUnit.class).queryList();
+        List<Program> programs=new Select().from(Program.class).queryList();
+        for(OrgUnit orgUnit:orgUnits){
+            for(Program program:programs){
+                String key=getSurveyKey(orgUnit,program);
+                Survey survey=surveyMap.get(key);
+                //Already built
+                if(survey!=null){
+                    continue;
+                }
+
+                //NOT exists
+                survey=surveyPlanner.buildNext(orgUnit,program);
+
+                //Process like any other survey
+                findRightState(survey);
+            }
+        }
+    }
+
+}

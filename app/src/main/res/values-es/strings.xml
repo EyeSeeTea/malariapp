@@ -232,5 +232,12 @@
     <string name="dialog_push_success">Encuestra correctamente subida al servidor Dhis</string>
     <string name="progress_push_no_survey">No hay encuesta para subir</string>
     <string name="dialog_push_before_pull_success">Encuestas correctamente subidas al servidor Dhis, inicializando actualización de metadatos</string>
+    <string name="dashboard_title_planned_next_qa">Próxima evaluación</string>
+    <string name="dashboard_title_planned_productivity">Prd</string>
+    <string name="dashboard_title_planned_quality_of_care">QoC</string>
+    <string name="dashboard_title_planned_type_future">Futuro</string>
+    <string name="dashboard_title_planned_type_never">Nunca evaluado</string>
+    <string name="dashboard_title_planned_type_next_30">Próximos 30 dias</string>
+    <string name="dashboard_title_planned_type_overdue">Atrasado</string>
 
 </resources>

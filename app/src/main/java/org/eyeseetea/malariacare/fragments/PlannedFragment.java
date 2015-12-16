@@ -24,24 +24,18 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
 import android.widget.ListView;
 
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.utils.Session;
-import org.eyeseetea.malariacare.database.utils.monitor.FacilityTableBuilder;
-import org.eyeseetea.malariacare.database.utils.monitor.PieTabGroupBuilder;
-import org.eyeseetea.malariacare.database.utils.monitor.SentSurveysBuilder;
-import org.eyeseetea.malariacare.layout.adapters.dashboard.IDashboardAdapter;
+import org.eyeseetea.malariacare.database.utils.planning.PlannedItem;
 import org.eyeseetea.malariacare.layout.adapters.survey.PlannedAdapter;
 import org.eyeseetea.malariacare.services.SurveyService;
 
@@ -54,14 +48,15 @@ import java.util.List;
 public class PlannedFragment extends ListFragment {
     public static final String TAG = ".PlannedFragment";
 
-    private SurveyReceiver surveyReceiver;
+    private PlannedItemsReceiver plannedItemsReceiver;
 
     private PlannedAdapter adapter;
 
-    private List<Survey> surveys;
+    private List<PlannedItem> plannedItems;
+
 
     public PlannedFragment() {
-        this.surveys = new ArrayList();
+        this.plannedItems = new ArrayList();
     }
 
 
@@ -90,7 +85,7 @@ public class PlannedFragment extends ListFragment {
     }
 
     private void prepareUI() {
-        this.adapter = new PlannedAdapter(new ArrayList<>(),getActivity());
+        this.adapter = new PlannedAdapter(plannedItems,getActivity());
         ListView listView = (ListView)getActivity().findViewById(R.id.dashboard_planning_list);
         listView.setAdapter(this.adapter);
         this.setListAdapter(adapter);
@@ -103,58 +98,55 @@ public class PlannedFragment extends ListFragment {
         //Loading...
         setListShown(false);
         //Listen for data
-        registerSurveysReceiver();
+        registerPlannedItemsReceiver();
         super.onResume();
     }
 
     @Override
     public void onStop(){
         Log.d(TAG, "onStop");
-        unregisterSurveysReceiver();
+        unregisterPlannedItemsReceiver();
         super.onStop();
     }
     /**
-     * Register a survey receiver to load surveys into the listadapter
+     * Register a survey receiver to load plannedItems into the listadapter
      */
-    private void registerSurveysReceiver() {
-        Log.d(TAG, "registerSurveysReceiver");
+    private void registerPlannedItemsReceiver() {
+        Log.d(TAG, "registerPlannedItemsReceiver");
 
-        if (surveyReceiver == null) {
-            surveyReceiver = new SurveyReceiver();
-            LocalBroadcastManager.getInstance(getActivity()).registerReceiver(surveyReceiver, new IntentFilter(SurveyService.PLANNED_SURVEYS_ACTION));
+        if (plannedItemsReceiver == null) {
+            plannedItemsReceiver = new PlannedItemsReceiver();
+            LocalBroadcastManager.getInstance(getActivity()).registerReceiver(plannedItemsReceiver, new IntentFilter(SurveyService.PLANNED_SURVEYS_ACTION));
         }
     }
     /**
      * Unregisters the survey receiver.
      * It really important to do this, otherwise each receiver will invoke its code.
      */
-    public void unregisterSurveysReceiver() {
-        if (surveyReceiver != null) {
-            LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(surveyReceiver);
-            surveyReceiver = null;
+    public void unregisterPlannedItemsReceiver() {
+        if (plannedItemsReceiver != null) {
+            LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(plannedItemsReceiver);
+            plannedItemsReceiver = null;
         }
     }
-    /**
-     * load and reload sent surveys
-     */
-    public void reloadPlannedSurveys() {
-//        surveysForGraphic = (List<Survey>) Session.popServiceValue(SurveyService.ALL_SENT_SURVEYS_ACTION);
-//        reloadSurveys(surveysForGraphic);
+
+    public void reloadPlannedItems(){
+        reloadPlannedItems((List<PlannedItem>) Session.popServiceValue(SurveyService.PLANNED_SURVEYS_ACTION));
     }
 
-    public void reloadSurveys(List<Survey> newListSurveys) {
-        Log.d(TAG, "reloadSurveys (Thread: " + Thread.currentThread().getId() + "): " + newListSurveys.size());
-        boolean hasSurveys = newListSurveys != null && newListSurveys.size() > 0;
-        this.surveys.clear();
-        this.surveys.addAll(newListSurveys);
+    public void reloadPlannedItems(List<PlannedItem> plannedItemList) {
+        Log.d(TAG, "reloadPlannedItems : " + plannedItemList.size());
+        this.plannedItems.clear();
+        this.plannedItems.addAll(plannedItemList);
+        adapter.notifyDataSetChanged();
         setListShown(true);
     }
 
     /**
      * Inner private class that receives the result from the service
      */
-    private class SurveyReceiver extends BroadcastReceiver {
-        private SurveyReceiver() {
+    private class PlannedItemsReceiver extends BroadcastReceiver {
+        private PlannedItemsReceiver() {
         }
 
         @Override
@@ -162,7 +154,7 @@ public class PlannedFragment extends ListFragment {
             Log.d(TAG, "onReceive");
             //Listening only intents from this method
             if (SurveyService.PLANNED_SURVEYS_ACTION.equals(intent.getAction())) {
-                reloadPlannedSurveys();
+                reloadPlannedItems();
             }
         }
     }
