@@ -102,6 +102,7 @@ public class Migration1RestartDB extends BaseMigration {
     public void migrate(SQLiteDatabase database) {
         addColumn(database, Survey.class, "creationDate", "integer");
         addColumn(database, Survey.class, "scheduledDate", "integer");
+        addColumn(database, Question.class,"output","integer");
         recreateTables(database,SDK_TABLES_TO_UPDATE);
     }
 

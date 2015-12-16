@@ -379,10 +379,6 @@ public class Survey extends BaseModel implements VisitableToSDK {
                 .on(
                         Condition.column(ColumnAlias.columnWithTable("q", Question$Table.ID_QUESTION))
                                 .eq(ColumnAlias.columnWithTable("qr", QuestionRelation$Table.ID_QUESTION)))
-                .join(Answer.class, Join.JoinType.LEFT).as("a")
-                .on(
-                        Condition.column(ColumnAlias.columnWithTable("q", Question$Table.ID_ANSWER))
-                                .eq(ColumnAlias.columnWithTable("a", Answer$Table.ID_ANSWER)))
                 .join(Match.class, Join.JoinType.LEFT).as("m")
                 .on(
                         Condition.column(ColumnAlias.columnWithTable("qr", QuestionRelation$Table.ID_QUESTION_RELATION))
@@ -402,7 +398,7 @@ public class Survey extends BaseModel implements VisitableToSDK {
                         //For the given survey
                 .and(Condition.column(ColumnAlias.columnWithTable("v", Value$Table.ID_SURVEY)).eq(this.getId_survey()))
                         //The child question requires an answer
-                .and(Condition.column(ColumnAlias.columnWithTable("a", Answer$Table.OUTPUT)).isNot(Constants.NO_ANSWER))
+                .and(Condition.column(ColumnAlias.columnWithTable("q", Question$Table.OUTPUT)).isNot(Constants.NO_ANSWER))
                 .count();
 
         //Parent with the right value -> not hidden

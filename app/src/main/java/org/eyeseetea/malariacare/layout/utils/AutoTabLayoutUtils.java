@@ -381,8 +381,9 @@ public class AutoTabLayoutUtils {
 
     public static void initScoreQuestion(Question question, float totalNum, float totalDenum) {
 
-        if (question.getAnswer().getOutput() == Constants.DROPDOWN_LIST || question.getAnswer().getOutput() == Constants.RADIO_GROUP_HORIZONTAL
-                || question.getAnswer().getOutput() == Constants.RADIO_GROUP_VERTICAL) {
+        if (question.getOutput() == Constants.DROPDOWN_LIST
+                || question.getOutput() == Constants.RADIO_GROUP_HORIZONTAL
+                || question.getOutput() == Constants.RADIO_GROUP_VERTICAL) {
 
             Float num = ScoreRegister.calcNum(question);
             Float denum = ScoreRegister.calcDenum(question);
