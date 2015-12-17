@@ -308,7 +308,7 @@ public class ProgressActivity extends Activity {
                     .setMessage(msg)
                 .setNeutralButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface arg0, int arg1) {
-                        if (msg == R.string.dialog_pull_success || msg == R.string.dialog_push_success) {
+                        if ( !isAPush() || !hasAPullAfterPush()) {
                             finishAndGo(DashboardActivity.class);
                             return;
                         } else {
