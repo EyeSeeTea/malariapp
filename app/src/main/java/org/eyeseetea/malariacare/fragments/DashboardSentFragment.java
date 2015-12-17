@@ -361,7 +361,7 @@ public class DashboardSentFragment extends ListFragment {
 
         if (surveyReceiver == null) {
             surveyReceiver = new SurveyReceiver();
-            LocalBroadcastManager.getInstance(getActivity()).registerReceiver(surveyReceiver, new IntentFilter(SurveyService.ALL_SENT_SURVEYS_ACTION));
+            LocalBroadcastManager.getInstance(getActivity()).registerReceiver(surveyReceiver, new IntentFilter(SurveyService.ALL_SENT_OR_COMPLETED_SURVEYS_ACTION));
         }
     }
 
@@ -392,12 +392,15 @@ public class DashboardSentFragment extends ListFragment {
      * filter the surveys for last survey in org unit, and set surveysForGraphic for the statistics
      */
     public void reloadSentSurveys() {
-        List<Survey> surveys = (List<Survey>) Session.popServiceValue(SurveyService.ALL_SENT_SURVEYS_ACTION);
+        List<Survey> surveys = (List<Survey>) Session.popServiceValue(SurveyService.ALL_SENT_OR_COMPLETED_SURVEYS_ACTION);
         HashMap<String, Survey> orgUnits;
         orgUnits = new HashMap<>();
         oneSurveyForOrgUnit = new ArrayList<>();
+
         for (Survey survey : surveys) {
-            if (survey.isSent()) {
+            if(survey.isCompleted())
+                survey.getOrgUnit();
+            if (survey.isSent() || survey.isCompleted()) {
                 if (survey.getOrgUnit() != null) {
                     if (!orgUnits.containsKey(survey.getTabGroup().getProgram().getUid()+survey.getOrgUnit().getUid())) {
                         filterSurvey(orgUnits, survey);
@@ -451,7 +454,7 @@ public class DashboardSentFragment extends ListFragment {
         public void onReceive(Context context, Intent intent) {
             Log.d(TAG, "onReceive");
             //Listening only intents from this method
-            if (SurveyService.ALL_SENT_SURVEYS_ACTION.equals(intent.getAction())) {
+            if (SurveyService.ALL_SENT_OR_COMPLETED_SURVEYS_ACTION.equals(intent.getAction())) {
                 reloadSentSurveys();
             }
         }
