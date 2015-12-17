@@ -67,7 +67,8 @@ public class DashboardSentFragment extends ListFragment {
 
 
     public static final String TAG = ".CompletedFragment";
-    private final static String WITHOUT_FILTER ="All";
+    private final static String ORG_UNIT_WITHOUT_FILTER ="ALL ASSESSMENTS";
+    private final static String PROGRAM_WITHOUT_FILTER ="ALL ORG UNITS";
     private final static int WITHOUT_ORDER =0;
     private final static int FACILITY_ORDER =1;
     private final static int DATE_ORDER =2;
@@ -80,8 +81,8 @@ public class DashboardSentFragment extends ListFragment {
     List<Survey> oneSurveyForOrgUnit;
     Spinner filterSpinnerOrgUnit;
     Spinner filterSpinnerProgram;
-    String orgUnitFilter= WITHOUT_FILTER;
-    String programFilter= WITHOUT_FILTER;
+    String orgUnitFilter= ORG_UNIT_WITHOUT_FILTER;
+    String programFilter= PROGRAM_WITHOUT_FILTER;
     int orderBy=WITHOUT_ORDER;
 
     public DashboardSentFragment() {
@@ -135,7 +136,7 @@ public class DashboardSentFragment extends ListFragment {
         filterSpinnerProgram = (Spinner) getActivity().findViewById(R.id.filter_program);
 
         List<Program> programList = new Select().all().from(Program.class).queryList();
-        programList.add(0, new Program("All"));
+        programList.add(0, new Program(PROGRAM_WITHOUT_FILTER));
         filterSpinnerProgram.setAdapter(new ProgramArrayAdapter(this.getActivity().getApplicationContext(), programList));
         filterSpinnerProgram.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 
@@ -144,9 +145,9 @@ public class DashboardSentFragment extends ListFragment {
                                        int position, long id) {
                 Program program = (Program) parent.getItemAtPosition(position);
                 boolean reload = false;
-                if (program.getName().equals("All")) {
-                    if (programFilter != WITHOUT_FILTER) {
-                        programFilter = WITHOUT_FILTER;
+                if (program.getName().equals(PROGRAM_WITHOUT_FILTER)) {
+                    if (programFilter != PROGRAM_WITHOUT_FILTER) {
+                        programFilter = PROGRAM_WITHOUT_FILTER;
                         reload=true;
                     }
                 } else {
@@ -167,7 +168,7 @@ public class DashboardSentFragment extends ListFragment {
         filterSpinnerOrgUnit = (Spinner) getActivity().findViewById(R.id.filter_orgunit);
 
         List<OrgUnit> orgUnitList = new Select().all().from(OrgUnit.class).queryList();;
-        orgUnitList.add(0, new OrgUnit("All"));
+        orgUnitList.add(0, new OrgUnit(ORG_UNIT_WITHOUT_FILTER));
         filterSpinnerOrgUnit.setAdapter(new OrgUnitArrayAdapter(getActivity().getApplicationContext(), orgUnitList));
         filterSpinnerOrgUnit.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 
@@ -176,9 +177,9 @@ public class DashboardSentFragment extends ListFragment {
                                        int position, long id) {
                 OrgUnit orgUnit = (OrgUnit) parent.getItemAtPosition(position);
                 boolean reload = false;
-                if (orgUnit.getName().equals("All")) {
-                    if (orgUnitFilter != WITHOUT_FILTER) {
-                        orgUnitFilter = WITHOUT_FILTER;
+                if (orgUnit.getName().equals(ORG_UNIT_WITHOUT_FILTER)) {
+                    if (orgUnitFilter != ORG_UNIT_WITHOUT_FILTER) {
+                        orgUnitFilter = ORG_UNIT_WITHOUT_FILTER;
                         reload = true;
                     }
                 } else {
@@ -438,8 +439,8 @@ public class DashboardSentFragment extends ListFragment {
         reloadSurveys(oneSurveyForOrgUnit);
      }
     private void filterSurvey(HashMap<String, Survey> orgUnits, Survey survey) {
-        if(orgUnitFilter.equals(WITHOUT_FILTER) || orgUnitFilter.equals(survey.getOrgUnit().getUid()))
-            if(programFilter.equals(WITHOUT_FILTER) || programFilter.equals(survey.getTabGroup().getProgram().getUid()))
+        if(orgUnitFilter.equals(ORG_UNIT_WITHOUT_FILTER) || orgUnitFilter.equals(survey.getOrgUnit().getUid()))
+            if(programFilter.equals(PROGRAM_WITHOUT_FILTER) || programFilter.equals(survey.getTabGroup().getProgram().getUid()))
               orgUnits.put(survey.getTabGroup().getProgram().getUid()+survey.getOrgUnit().getUid(), survey);
     }
 
