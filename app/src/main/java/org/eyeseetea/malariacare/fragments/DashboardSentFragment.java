@@ -35,12 +35,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
+import android.widget.Spinner;
+
+import com.raizlabs.android.dbflow.sql.language.Select;
 
 import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.FeedbackActivity;
 import org.eyeseetea.malariacare.R;
+import org.eyeseetea.malariacare.database.model.OrgUnit;
+import org.eyeseetea.malariacare.database.model.Program;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.utils.monitor.FacilityTableBuilder;
 import org.eyeseetea.malariacare.database.utils.monitor.PieTabGroupBuilder;
@@ -48,6 +54,8 @@ import org.eyeseetea.malariacare.database.utils.monitor.SentSurveysBuilder;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.layout.adapters.dashboard.AssessmentSentAdapter;
 import org.eyeseetea.malariacare.layout.adapters.dashboard.IDashboardAdapter;
+import org.eyeseetea.malariacare.layout.adapters.general.OrgUnitArrayAdapter;
+import org.eyeseetea.malariacare.layout.adapters.general.ProgramArrayAdapter;
 import org.eyeseetea.malariacare.layout.listeners.SwipeDismissListViewTouchListener;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 import org.eyeseetea.malariacare.services.SurveyService;
@@ -69,6 +77,8 @@ public class DashboardSentFragment extends ListFragment {
     protected IDashboardAdapter adapter;
     private static int index = 0;
     List<Survey> oneSurveyForOrgUnit;
+    Spinner  filterOrgUnit;
+    Spinner  filterProgram;
     public DashboardSentFragment() {
         this.adapter = Session.getAdapterSent();
         this.surveys = new ArrayList();
@@ -114,9 +124,48 @@ public class DashboardSentFragment extends ListFragment {
 
         initAdapter();
         initListView();
-
+        initFilters(getView());
     }
+    private void initFilters(View view) {
+        filterProgram = (Spinner) getActivity().findViewById(R.id.filter_program);
 
+        List<Program> programList = new Select().all().from(Program.class).queryList();
+        programList.add(0, new Program("All"));
+        filterProgram.setAdapter(new ProgramArrayAdapter(this.getActivity().getApplicationContext(), programList));
+        filterProgram.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view,
+                                       int position, long id) {
+                Log.d(TAG, "click on " + position + "id" + id);
+                Log.d(TAG, filterProgram.getSelectedItemPosition() + "");
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> arg0) {
+
+            }
+        });
+        filterOrgUnit = (Spinner) getActivity().findViewById(R.id.filter_orgunit);
+
+        List<OrgUnit> orgUnitList = new Select().all().from(OrgUnit.class).queryList();;
+        orgUnitList.add(0, new OrgUnit("All"));
+        filterOrgUnit.setAdapter(new OrgUnitArrayAdapter(getActivity().getApplicationContext(), orgUnitList));
+        filterOrgUnit.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view,
+                                       int position, long id) {
+                Log.d(TAG, "click on " + position + "id" + id);
+                Log.d(TAG, filterOrgUnit.getSelectedItemPosition() + "");
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> arg0) {
+
+            }
+        });
+    }
     @Override
     public void onResume(){
         Log.d(TAG, "onResume");
