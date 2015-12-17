@@ -273,9 +273,9 @@ public class ProgressActivity extends Activity {
         final int msg=getDoneMessage();
 
         //Show message and go on -> pull or single push = dashboard | push before pull = start pull
-        Intent i=getIntent();
+        Intent intent=getIntent();
         //Not a pull -> is a Push
-        if(i!=null && (i.getIntExtra(ProgressActivity.AFTER_ACTION,ProgressActivity.DONT_SHOW_FEEDBACK)==ProgressActivity.SHOW_FEEDBACK)) {
+        if(intent!=null && (intent.getIntExtra(ProgressActivity.AFTER_ACTION,ProgressActivity.DONT_SHOW_FEEDBACK)==ProgressActivity.SHOW_FEEDBACK)) {
             new AlertDialog.Builder(this)
                     .setCancelable(false)
                     .setTitle(title)
@@ -283,7 +283,7 @@ public class ProgressActivity extends Activity {
                     .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface arg0, int arg1) {
                             //Pull or Push(single)
-                            if (msg ==R.string.dialog_pull_success || msg == R.string.dialog_push_success) {
+                            if ( !isAPush() || !hasAPullAfterPush()) {
                                 finishAndGo(DashboardActivity.class);
                                 return;
                             } else {
@@ -367,9 +367,9 @@ public class ProgressActivity extends Activity {
         }
 
         //Check intent params
-        Intent i=getIntent();
+        Intent intent=getIntent();
         //Not a pull -> is a Push
-        return (i!=null && i.getIntExtra(TYPE_OF_ACTION,ACTION_PULL)!=ACTION_PULL);
+        return (intent!=null && intent.getIntExtra(TYPE_OF_ACTION,ACTION_PULL)!=ACTION_PULL);
     }
 
 
@@ -378,8 +378,8 @@ public class ProgressActivity extends Activity {
      * @return
      */
     private boolean hasAPullAfterPush(){
-        Intent i=getIntent();
-        return (i!=null && i.getIntExtra(TYPE_OF_ACTION,ACTION_PULL)==ACTION_PUSH_BEFORE_PULL);
+        Intent intent=getIntent();
+        return (intent!=null && intent.getIntExtra(TYPE_OF_ACTION,ACTION_PULL)==ACTION_PUSH_BEFORE_PULL);
     }
 
     private String getDialogTitle(boolean isAPush){
