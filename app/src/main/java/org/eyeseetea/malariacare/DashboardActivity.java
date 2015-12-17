@@ -31,17 +31,25 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.Spinner;
 import android.widget.TabHost;
 import android.widget.TextView;
 
+import com.raizlabs.android.dbflow.sql.language.Select;
 import com.squareup.otto.Subscribe;
 
+import org.eyeseetea.malariacare.database.model.OrgUnit;
+import org.eyeseetea.malariacare.database.model.Program;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.model.User;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.fragments.DashboardSentFragment;
 import org.eyeseetea.malariacare.fragments.DashboardUnsentFragment;
 import org.eyeseetea.malariacare.fragments.MonitorFragment;
+import org.eyeseetea.malariacare.layout.adapters.general.OrgUnitArrayAdapter;
+import org.eyeseetea.malariacare.layout.adapters.general.ProgramArrayAdapter;
 import org.eyeseetea.malariacare.services.SurveyService;
 import org.hisp.dhis.android.sdk.events.UiEvent;
 
@@ -135,12 +143,32 @@ public class DashboardActivity extends BaseActivity {
         sentFragment = new DashboardSentFragment();
         sentFragment.setArguments(getIntent().getExtras());
         setFragmentTransaction(R.id.dashboard_completed_container, sentFragment);
+        //initFilters(sentFragment.getView());
     }
 
     public void initMonitor(){
         monitorFragment = new MonitorFragment();
         monitorFragment.setArguments(getIntent().getExtras());
         setFragmentTransaction(R.id.dashboard_charts_container, monitorFragment);
+    }
+
+
+    public void setScoreOrder(View v)
+    {
+        sentFragment.setScoreOrder();
+        sentFragment.reloadSentSurveys();
+    }
+
+    public void setFacilityOrder(View v)
+    {
+        sentFragment.setFacilityOrder();
+        sentFragment.reloadSentSurveys();
+    }
+
+    public void setDateOrder(View v)
+    {
+        sentFragment.setDateOrder();
+        sentFragment.reloadSentSurveys();
     }
 
     /**

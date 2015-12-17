@@ -55,6 +55,8 @@ import org.eyeseetea.malariacare.services.SurveyService;
 import org.eyeseetea.malariacare.views.CustomTextView;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 
@@ -65,7 +67,12 @@ public class DashboardSentFragment extends ListFragment {
 
 
     public static final String TAG = ".CompletedFragment";
-    private final static String ALL="All";
+    private final static String WITHOUT_FILTER ="All";
+    private final static int WITHOUT_ORDER =0;
+    private final static int FACILITY_ORDER =1;
+    private final static int DATE_ORDER =2;
+    private final static int SCORE_ORDER =3;
+    private final static int REVERSE_ORDER =4;
     private SurveyReceiver surveyReceiver;
     private List<Survey> surveys;
     protected IDashboardAdapter adapter;
@@ -73,9 +80,9 @@ public class DashboardSentFragment extends ListFragment {
     List<Survey> oneSurveyForOrgUnit;
     Spinner filterSpinnerOrgUnit;
     Spinner filterSpinnerProgram;
-    String orgUnitFilter=ALL;
-    String programFilter=ALL;
-    String orderBy="";
+    String orgUnitFilter= WITHOUT_FILTER;
+    String programFilter= WITHOUT_FILTER;
+    int orderBy=WITHOUT_ORDER;
 
     public DashboardSentFragment() {
         this.adapter = Session.getAdapterSent();
@@ -138,8 +145,8 @@ public class DashboardSentFragment extends ListFragment {
                 Program program = (Program) parent.getItemAtPosition(position);
                 boolean reload = false;
                 if (program.getName().equals("All")) {
-                    if (programFilter != ALL) {
-                        programFilter = ALL;
+                    if (programFilter != WITHOUT_FILTER) {
+                        programFilter = WITHOUT_FILTER;
                         reload=true;
                     }
                 } else {
@@ -170,17 +177,17 @@ public class DashboardSentFragment extends ListFragment {
                 OrgUnit orgUnit = (OrgUnit) parent.getItemAtPosition(position);
                 boolean reload = false;
                 if (orgUnit.getName().equals("All")) {
-                    if (orgUnitFilter != ALL) {
-                        orgUnitFilter = ALL;
-                        reload=true;
+                    if (orgUnitFilter != WITHOUT_FILTER) {
+                        orgUnitFilter = WITHOUT_FILTER;
+                        reload = true;
                     }
                 } else {
                     if (orgUnitFilter != orgUnit.getUid()) {
                         orgUnitFilter = orgUnit.getUid();
-                        reload=true;
+                        reload = true;
                     }
                 }
-                if(reload)
+                if (reload)
                     reloadSentSurveys();
             }
 
@@ -216,6 +223,29 @@ public class DashboardSentFragment extends ListFragment {
         Session.setAdapterSent(this.adapter);
     }
 
+    public void setScoreOrder()
+    {
+        if(orderBy==SCORE_ORDER)
+            orderBy=REVERSE_ORDER;
+        else
+            orderBy=SCORE_ORDER;
+    }
+
+    public void setFacilityOrder()
+    {
+        if(orderBy==FACILITY_ORDER)
+            orderBy=REVERSE_ORDER;
+        else
+            orderBy=FACILITY_ORDER;
+    }
+
+    public void setDateOrder()
+    {
+        if(orderBy==DATE_ORDER)
+            orderBy=REVERSE_ORDER;
+        else
+            orderBy=DATE_ORDER;
+    }
     @Override
     public void onListItemClick(ListView l, View v, int position, long id){
         Log.d(TAG, "onListItemClick");
@@ -383,12 +413,30 @@ public class DashboardSentFragment extends ListFragment {
         for (Survey survey : orgUnits.values()) {
             oneSurveyForOrgUnit.add(survey);
         }
+        if(orderBy!=WITHOUT_ORDER) {
+            if(orderBy==REVERSE_ORDER)
+                Collections.reverse(oneSurveyForOrgUnit);
+            else
+                Collections.sort(oneSurveyForOrgUnit, new Comparator<Survey>() {
+                    public int compare(Survey survey1, Survey survey2) {
+                        switch (orderBy) {
+                            case FACILITY_ORDER:
+                                return survey1.getType().compareTo(survey2.getType());
+                            case DATE_ORDER:
+                                return survey1.getCompletionDate().compareTo(survey2.getCompletionDate());
+                            case SCORE_ORDER:
+                                return survey1.getMainScore().compareTo(survey2.getMainScore());
+                            default:
+                                return survey1.getMainScore().compareTo(survey2.getMainScore());
+                        }
+                    }
+                });
+        }
         reloadSurveys(oneSurveyForOrgUnit);
-    }
-
+     }
     private void filterSurvey(HashMap<String, Survey> orgUnits, Survey survey) {
-        if(orgUnitFilter.equals(ALL) || orgUnitFilter.equals(survey.getOrgUnit().getUid()))
-            if(programFilter.equals(ALL) || programFilter.equals(survey.getTabGroup().getProgram().getUid()))
+        if(orgUnitFilter.equals(WITHOUT_FILTER) || orgUnitFilter.equals(survey.getOrgUnit().getUid()))
+            if(programFilter.equals(WITHOUT_FILTER) || programFilter.equals(survey.getTabGroup().getProgram().getUid()))
               orgUnits.put(survey.getTabGroup().getProgram().getUid()+survey.getOrgUnit().getUid(), survey);
     }
 
