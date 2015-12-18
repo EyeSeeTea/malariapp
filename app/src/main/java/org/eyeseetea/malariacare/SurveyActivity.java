@@ -218,7 +218,10 @@ public class SurveyActivity extends BaseActivity {
         if (Utils.isPictureQuestion()) {
             beforeExit();
         } else {
-            Session.getSurvey().updateSurveyStatus();
+            Survey survey = Session.getSurvey();
+            if(survey!=null){
+                survey.updateSurveyStatus();
+            }
             unregisterReceiver();
         }
         super.onPause();
@@ -284,34 +287,6 @@ public class SurveyActivity extends BaseActivity {
             preLoadService.putExtra("tab", tab.getId_tab());
             this.startService(preLoadService);
         }
-    }
-
-    /**
-     * Finds the option from the current answer associated with the given text.
-     * Only for dynamicTabAdapter, required for automated testing.
-     *
-     * @param text
-     * @return
-     */
-    public Option findOptionByText(String text) {
-        try {
-            //Find adapter
-            Tab tabZero = this.tabsList.get(0);
-            DynamicTabAdapter tabAdapter = (DynamicTabAdapter) this.tabAdaptersCache.findAdapter(tabZero);
-
-            //Get options from question
-            List<Option> options = tabAdapter.progressTabStatus.getCurrentQuestion().getAnswer().getOptions();
-
-            //Return proper option if possible
-            for (Option option : options) {
-                if (option.getName().equals(text)) {
-                    return option;
-                }
-            }
-        } catch (Exception ex) {
-            return null;
-        }
-        return null;
     }
 
     public class AsyncChangeTab extends AsyncTask<Void, Integer, View> {
@@ -415,14 +390,18 @@ public class SurveyActivity extends BaseActivity {
      * Gets a reference to the progress view in order to stop it later
      */
     private void createProgress() {
+        int layoutContent;
+        int layoutProgressBar;
         if(Utils.isPictureQuestion()){
-            content = (LinearLayout) this.findViewById(R.id.content_pictureapp);
-            progressBar = (ProgressBar) findViewById(R.id.survey_progress_pictureapp);
+            layoutContent=R.id.content_pictureapp;
+            layoutProgressBar=R.id.survey_progress_pictureapp;
         }
         else {
-            content = (LinearLayout) this.findViewById(R.id.content);
-            progressBar = (ProgressBar) findViewById(R.id.survey_progress);
+            layoutContent=R.id.content;
+            layoutProgressBar=R.id.survey_progress;
         }
+        content = (LinearLayout) this.findViewById(layoutContent);
+        progressBar = (ProgressBar) findViewById(layoutProgressBar);
     }
 
     /**
@@ -723,11 +702,7 @@ public class SurveyActivity extends BaseActivity {
 
         public List<Tab> getNotLoadedTabs() {
             List<Tab> notLoadedTabs;
-            if (Utils.isPictureQuestion()) {
-                notLoadedTabs = new ArrayList<Tab>();
-            } else {
-                notLoadedTabs = new ArrayList<>();
-            }
+            notLoadedTabs = new ArrayList<Tab>();
 
             //If has already been shown NOTHING to reload
             if (compositeScoreTabShown) {

@@ -336,17 +336,17 @@ public class AutoTabLayoutUtils {
 
         viewHolder.num.setText(num.toString());
         viewHolder.denum.setText(denum.toString());
+        //Fixed i think it is not used.
+        //if(Utils.isPictureQuestion())
+            //resetTotalNumDenum(question);
+        //else {
+            List<Float> numdenum = ScoreRegister.getNumDenum(question);
 
-        List<Float> numdenum = ScoreRegister.getNumDenum(question);
-
-        if (numdenum != null) {
-            totalNum = totalNum - numdenum.get(0);
-            totalDenum = totalDenum - numdenum.get(1);
-        }
-
-        totalNum = totalNum + num;
-        totalDenum = totalDenum + denum;
-
+            if (numdenum != null) {
+                totalNum = totalNum - numdenum.get(0);
+                totalDenum = totalDenum - numdenum.get(1);
+            }
+        //}
         ScoreRegister.addRecord(question, num, denum);
     }
 

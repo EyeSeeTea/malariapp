@@ -143,12 +143,14 @@ public class AutoTabAdapter extends ATabAdapter {
      */
     public static AutoTabAdapter build(Tab tab, Context context) {
         int idLayout;
+        int layoutWithoutScore;
         if(Utils.isPictureQuestion()) {
-            idLayout= tab.getType() == Constants.TAB_AUTOMATIC_NON_SCORED ? R.layout.form_without_score_pictureapp : R.layout.form_with_score;
+            layoutWithoutScore=R.layout.form_without_score_pictureapp;
         }
         else{
-            idLayout = tab.getType() == Constants.TAB_AUTOMATIC_NON_SCORED ? R.layout.form_without_score : R.layout.form_with_score;
+            layoutWithoutScore =  R.layout.form_without_score;
         }
+        idLayout= tab.getType() == Constants.TAB_AUTOMATIC_NON_SCORED ? layoutWithoutScore : R.layout.form_with_score;
         return new AutoTabAdapter(tab, context, idLayout);
     }
 
@@ -235,17 +237,6 @@ public class AutoTabAdapter extends ATabAdapter {
     @Override
     public long getItemId(int position) {
         return getItems().get(AutoTabLayoutUtils.getRealPosition(position, elementInvisibility, getItems())).hashCode();
-    }
-
-    /**
-     * Get the number of elements that are hidden until a given position
-     * @param position
-     * @return number of elements hidden (true in elementInvisibility Map)
-     */
-    private int getHiddenCountUpTo(int position) {
-        boolean [] upper = Arrays.copyOfRange(Booleans.toArray(elementInvisibility.values()), 0, position + 1);
-        int hiddens = Booleans.countTrue(upper);
-        return hiddens;
     }
 
     /**
@@ -355,18 +346,6 @@ public class AutoTabAdapter extends ATabAdapter {
         }
     }
 
-    private boolean isHidden(Question question) {
-        Question parent;
-        boolean hidden = false;
-
-        if ((parent = question.getQuestion()) != null) {
-            if (parent.getValueBySession() == null)
-                hidden = true;
-        }
-
-        return hidden;
-    }
-
     private void resetTotalNumDenum(Question question) {
         List<Float> numdenum = ScoreRegister.getNumDenum(question);
 
@@ -421,36 +400,8 @@ public class AutoTabAdapter extends ATabAdapter {
      * Fixme it need be in the AutoTabLayoutUtils
      */
     private void itemSelected(AutoTabLayoutUtils.ViewHolder viewHolder, Question question, Option option) {
-        // Write option to DB
-        ReadWriteDB.saveValuesDDL(question, option);
-
-        recalculateScores(viewHolder, question);
-
-        if (question.hasChildren()) {
-            toggleChildrenVisibility(question, option.isActiveChildren());
-        }
-
-        updateScore();
-    }
-
-    /**
-     * Recalculate num and denum of a quetsion, update them in cache vars and save the new num/denum in the score register associated with the question
-     * @param viewHolder views cache
-     * @param question question that change its values
-     */
-    private void recalculateScores(AutoTabLayoutUtils.ViewHolder viewHolder, Question question) {
-        Float num = ScoreRegister.calcNum(question);
-        Float denum = ScoreRegister.calcDenum(question);
-
-        viewHolder.num.setText(num.toString());
-        viewHolder.denum.setText(denum.toString());
-
-        resetTotalNumDenum(question);
-
-        totalNum = totalNum + num;
-        totalDenum = totalDenum + denum;
-
-        ScoreRegister.addRecord(question, num, denum);
+        //this is originally called by pictureapp
+        AutoTabLayoutUtils.itemSelected(viewHolder, scoreHolder, question, option, totalNum, totalDenum, getContext(), elementInvisibility);
     }
 
     @Override
