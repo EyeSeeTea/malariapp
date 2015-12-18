@@ -408,8 +408,10 @@ public class AutoTabLayoutUtils {
             Float num = ScoreRegister.calcNum(question);
             Float denum = ScoreRegister.calcDenum(question);
 
-            totalNum = totalNum + num;
-            totalDenum = totalDenum + denum;
+            if(!Utils.isPictureQuestion()) {
+                num = totalNum + num;
+                denum = totalDenum + denum;
+            }
 
             ScoreRegister.addRecord(question, num, denum);
         }
@@ -421,12 +423,13 @@ public class AutoTabLayoutUtils {
 
         for (Option option : question.getAnswer().getOptions()) {
             CustomRadioButton button;
-            if(Utils.isPictureQuestion()){
-                button= (CustomRadioButton) lInflater.inflate(R.layout.uncheckeable_radiobutton_pictureapp, null);
-            }
-            else {
-                button = (CustomRadioButton) lInflater.inflate(R.layout.uncheckeable_radiobutton, null);
-            }
+            int layoutId;
+            if(Utils.isPictureQuestion())
+                layoutId=R.layout.uncheckeable_radiobutton_pictureapp;
+            else
+                layoutId=R.layout.uncheckeable_radiobutton;
+
+            button= (CustomRadioButton) lInflater.inflate(layoutId, null);
             button.setOption(option);
             button.updateProperties(PreferencesState.getInstance().getScale(), context.getString(R.string.font_size_level1), context.getString(R.string.medium_font_name));
             ((RadioGroup) viewHolder.component).addView(button);

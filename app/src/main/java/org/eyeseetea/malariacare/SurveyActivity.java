@@ -155,23 +155,20 @@ public class SurveyActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-try {
-    Log.d(TAG, "onCreate");
-    if (Utils.isPictureQuestion()) {
-        setContentView(R.layout.surveypictureapp);
-        registerReceiver();
-        createActionBar();
-        createProgress();
-    } else {
-        setContentView(R.layout.survey);
-        registerReceiver();
-        createActionBar();
-        createMenu();
-        createProgress();
-        prepareSurveyInfo();
-    }
-    }catch (Exception ex) { Log.e(TAG, ex.toString());}
-
+        Log.d(TAG, "onCreate");
+        if (Utils.isPictureQuestion()) {
+            setContentView(R.layout.surveypictureapp);
+            registerReceiver();
+            createActionBar();
+            createProgress();
+        } else {
+            setContentView(R.layout.survey);
+            registerReceiver();
+            createActionBar();
+            createMenu();
+            createProgress();
+            prepareSurveyInfo();
+        }
     }
 
     public void onResume() {

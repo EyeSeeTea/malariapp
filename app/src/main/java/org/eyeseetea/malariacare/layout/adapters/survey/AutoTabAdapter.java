@@ -95,24 +95,9 @@ public class AutoTabAdapter extends ATabAdapter {
         this(tab, context, R.layout.form_with_score);
         if(Utils.isPictureQuestion()){
             this.items = Utils.convertTabToArray(tab);
-
             // Initialize the elementInvisibility HashMap by reading all questions and headers and decide
             // whether or not they must be visible
-            for (int i = 0; i < getItems().size(); i++) {
-                BaseModel item = getItems().get(i);
-                if (item instanceof Header)
-                    elementInvisibility.put((BaseModel)item, true);
-                if (item instanceof Question) {
-                    boolean hidden = isHidden((Question) item);
-                    elementInvisibility.put(item, hidden);
-                    if (!(hidden)) initScoreQuestion((Question) item);
-                    else
-                        ScoreRegister.addRecord((Question) item, 0F, ScoreRegister.calcDenum((Question) item));
-                    Header header = ((Question) item).getHeader();
-                    boolean headerVisibility = elementInvisibility.get(header);
-                    elementInvisibility.put(header, headerVisibility && elementInvisibility.get(item));
-                }
-            }
+            initElementInivisibility();
             this.readOnly = Session.getSurvey().isSent();
         }
     }
@@ -122,23 +107,33 @@ public class AutoTabAdapter extends ATabAdapter {
         // Initialize the elementInvisibility HashMap by reading all questions and headers and decide
         // whether or not they must be visible
         if(!Utils.isPictureQuestion()) {
-            for (int i = 0; i < getItems().size(); i++) {
-                BaseModel item = getItems().get(i);
-                if (item instanceof Header)
-                    elementInvisibility.put(item, true);
-                if (item instanceof Question) {
-                    boolean hidden = AutoTabLayoutUtils.isHidden((Question) item);
-                    elementInvisibility.put(item, hidden);
-                    if (!(hidden)) AutoTabLayoutUtils.initScoreQuestion((Question) item, totalNum, totalDenum);
-                    else ScoreRegister.addRecord((Question) item, 0F, ScoreRegister.calcDenum((Question) item));
-                    Header header = ((Question) item).getHeader();
-                    boolean headerVisibility = elementInvisibility.get(header);
-                    elementInvisibility.put(header, headerVisibility && elementInvisibility.get(item));
-                }
-            }
+            initElementInivisibility();
         }
     }
 
+    private void initElementInivisibility() {
+        Float num = totalNum;
+        Float denum = totalDenum;
+        for (int i = 0; i < getItems().size(); i++) {
+            BaseModel item = getItems().get(i);
+            if (item instanceof Header)
+                elementInvisibility.put(item, true);
+            if (item instanceof Question) {
+                if(Utils.isPictureQuestion()){
+                    num = ScoreRegister.calcNum((Question) item);
+                    denum = ScoreRegister.calcDenum((Question) item);
+                }
+                boolean hidden =  AutoTabLayoutUtils.isHidden((Question) item);
+                elementInvisibility.put(item, hidden);
+                if (!(hidden)) AutoTabLayoutUtils.initScoreQuestion((Question) item,num,denum);
+                else
+                    ScoreRegister.addRecord((Question) item, 0F, ScoreRegister.calcDenum((Question) item));
+                Header header = ((Question) item).getHeader();
+                boolean headerVisibility = elementInvisibility.get(header);
+                elementInvisibility.put(header, headerVisibility && elementInvisibility.get(item));
+            }
+        }
+    }
     /**
      * Factory method to build a scored/non scored layout according to tab type.
      *
@@ -242,31 +237,6 @@ public class AutoTabAdapter extends ATabAdapter {
         return getItems().get(AutoTabLayoutUtils.getRealPosition(position, elementInvisibility, getItems())).hashCode();
     }
 
-    private void initScoreQuestion(Question question) {
-
-        if (question.getAnswer().getOutput() == Constants.DROPDOWN_LIST || question.getAnswer().getOutput() == Constants.RADIO_GROUP_HORIZONTAL
-                || question.getAnswer().getOutput() == Constants.RADIO_GROUP_VERTICAL) {
-
-            Float num = ScoreRegister.calcNum(question);
-            Float denum = ScoreRegister.calcDenum(question);
-
-            totalNum = totalNum + num;
-            totalDenum = totalDenum + denum;
-
-            ScoreRegister.addRecord(question, num, denum);
-        }
-
-    }
-
-    /**
-     * Get the number of elements that are hidden
-     * @return number of elements hidden (true in elementInvisibility Map)
-     */
-    private int getHiddenCount() {
-        // using Guava library and its Booleans utility class
-        return Booleans.countTrue(Booleans.toArray(elementInvisibility.values()));
-    }
-
     /**
      * Get the number of elements that are hidden until a given position
      * @param position
@@ -276,24 +246,6 @@ public class AutoTabAdapter extends ATabAdapter {
         boolean [] upper = Arrays.copyOfRange(Booleans.toArray(elementInvisibility.values()), 0, position + 1);
         int hiddens = Booleans.countTrue(upper);
         return hiddens;
-    }
-
-    /**
-     * Given a desired position (that means, the position shown in the screen) of an element, get the
-     * real position (that means, the position in the stored items list taking into account the hidden
-     * elements)
-     * @param position
-     * @return the real position in the elements list
-     */
-    private int getRealPosition(int position){
-        int hElements = getHiddenCountUpTo(position);
-        int diff = 0;
-
-        for (int i = 0; i < hElements; i++) {
-            diff++;
-            if (elementInvisibility.get(items.get(position + diff))) i--;
-        }
-        return (position + diff);
     }
 
     /**
@@ -448,6 +400,7 @@ public class AutoTabAdapter extends ATabAdapter {
         return match;
     }
 
+    //Fixme move to AutoTabLayoutUtils
     private void autoFillAnswer(AutoTabLayoutUtils.ViewHolder viewHolder, Question question) {
 
         viewHolder.component.setEnabled(false);
@@ -459,6 +412,7 @@ public class AutoTabAdapter extends ATabAdapter {
 
     }
 
+    //Fixme move to AutoTabLayoutUtils
     /**
      * Do the logic after a DDL option change
      * @param viewHolder private class that acts like a cache to quickly access the different views
@@ -507,7 +461,7 @@ public class AutoTabAdapter extends ATabAdapter {
         final Object item = getItem(position);
         Question question;
         AutoTabLayoutUtils.ViewHolder viewHolder = new AutoTabLayoutUtils.ViewHolder();
-
+        int layoutId;
         if (item instanceof Question) {
             question = (Question) item;
 
@@ -516,9 +470,11 @@ public class AutoTabAdapter extends ATabAdapter {
 
                 case Constants.LONG_TEXT:
                     if(Utils.isPictureQuestion())
-                        rowView = AutoTabLayoutUtils.initialiseView(R.layout.longtext_picureapp, parent, question, viewHolder, position, getInflater());
+                        layoutId=R.layout.longtext_picureapp;
                     else
-                        rowView = AutoTabLayoutUtils.initialiseView(R.layout.longtext, parent, question, viewHolder, position, getInflater());
+                        layoutId=R.layout.longtext;
+
+                    rowView = AutoTabLayoutUtils.initialiseView(layoutId, parent, question, viewHolder, position, getInflater());
                     //Add main component and listener
                     ((CustomEditText) viewHolder.component).addTextChangedListener(new TextViewListener(false, question));
                     break;
@@ -527,9 +483,11 @@ public class AutoTabAdapter extends ATabAdapter {
                     break;
                 case Constants.POSITIVE_INT:
                     if(Utils.isPictureQuestion())
-                        rowView = AutoTabLayoutUtils.initialiseView(R.layout.integer_pictureapp, parent, question, viewHolder, position, getInflater());
+                        layoutId=R.layout.integer_pictureapp;
                     else
-                        rowView = AutoTabLayoutUtils.initialiseView(R.layout.integer, parent, question, viewHolder, position, getInflater());
+                        layoutId=R.layout.integer;
+
+                    rowView = AutoTabLayoutUtils.initialiseView(layoutId, parent, question, viewHolder, position, getInflater());
 
                     //Add main component, set filters and listener
                     ((CustomEditText) viewHolder.component).setFilters(new InputFilter[]{new InputFilter.LengthFilter(Constants.MAX_INT_CHARS),new MinMaxInputFilter(1, null)});
@@ -538,9 +496,12 @@ public class AutoTabAdapter extends ATabAdapter {
                 case Constants.INT:
                 case Constants.PHONE:
                     if(Utils.isPictureQuestion())
-                        rowView = AutoTabLayoutUtils.initialiseView(R.layout.integer_pictureapp, parent, question, viewHolder, position, getInflater());
+                        layoutId=R.layout.integer_pictureapp;
                     else
-                        rowView = AutoTabLayoutUtils.initialiseView(R.layout.integer, parent, question, viewHolder, position, getInflater());
+                        layoutId=R.layout.integer;
+
+                    rowView = AutoTabLayoutUtils.initialiseView(layoutId, parent, question, viewHolder, position, getInflater());
+
                     //Add main component, set filters and listener
                     ((CustomEditText) viewHolder.component).setFilters(new InputFilter[]{new InputFilter.LengthFilter(Constants.MAX_INT_CHARS)});
                     ((CustomEditText) viewHolder.component).addTextChangedListener(new TextViewListener(false, question));
@@ -575,9 +536,11 @@ public class AutoTabAdapter extends ATabAdapter {
 
                 case Constants.SHORT_TEXT:
                     if(Utils.isPictureQuestion())
-                        rowView = AutoTabLayoutUtils.initialiseView(R.layout.shorttext_pictureapp, parent, question, viewHolder, position, getInflater());
+                        layoutId=R.layout.shorttext_pictureapp;
                     else
-                        rowView = AutoTabLayoutUtils.initialiseView(R.layout.shorttext, parent, question, viewHolder, position, getInflater());
+                        layoutId=R.layout.shorttext;
+
+                    rowView = AutoTabLayoutUtils.initialiseView(layoutId, parent, question, viewHolder, position, getInflater());
 
                     //Add main component and listener
                     ((CustomEditText) viewHolder.component).addTextChangedListener(new TextViewListener(false, question));
@@ -692,32 +655,6 @@ public class AutoTabAdapter extends ATabAdapter {
         } else {
             view.setEnabled(!readOnly);
         }
-    }
-
-    /**
-     * Set visibility of numerators and denominators depending on the user preference selected in the settings activity
-     *
-     * @param viewHolder view that holds the component to be more efficient
-     */
-    private void configureViewByPreference(AutoTabLayoutUtils.ViewHolder viewHolder) {
-        int visibility = View.GONE;
-        float statementWeight = 0.65f;
-        float componentWeight = 0.35f;
-        float numDenWeight = 0.0f;
-
-        if (PreferencesState.getInstance().isShowNumDen()) {
-            visibility = View.VISIBLE;
-            statementWeight = 0.45f;
-            componentWeight = 0.25f;
-            numDenWeight = 0.15f;
-        }
-
-        viewHolder.num.setVisibility(visibility);
-        viewHolder.denum.setVisibility(visibility);
-        ((RelativeLayout) viewHolder.statement.getParent()).setLayoutParams(new LinearLayout.LayoutParams(0, RelativeLayout.LayoutParams.WRAP_CONTENT, statementWeight));
-        ((RelativeLayout) viewHolder.component.getParent().getParent()).setLayoutParams(new LinearLayout.LayoutParams(0, RelativeLayout.LayoutParams.WRAP_CONTENT, componentWeight));
-        ((RelativeLayout) viewHolder.num.getParent()).setLayoutParams(new LinearLayout.LayoutParams(0, RelativeLayout.LayoutParams.WRAP_CONTENT, numDenWeight));
-        ((RelativeLayout) viewHolder.denum.getParent()).setLayoutParams(new LinearLayout.LayoutParams(0, RelativeLayout.LayoutParams.WRAP_CONTENT, numDenWeight));
     }
 
     //////////////////////////////////////
