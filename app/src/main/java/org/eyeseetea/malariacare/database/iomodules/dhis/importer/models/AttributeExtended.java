@@ -42,6 +42,8 @@ public class AttributeExtended {
         return attribute;
     }
 
+    public AttributeExtended(){}
+
     /**
      * Find an attribute by its code
      * @param code
