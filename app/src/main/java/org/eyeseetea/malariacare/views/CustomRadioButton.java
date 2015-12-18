@@ -31,6 +31,7 @@ import android.widget.RadioGroup;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.model.Option;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
+import org.eyeseetea.malariacare.utils.Utils;
 
 /**
  * Created by adrian on 30/05/15.
@@ -186,6 +187,7 @@ public class CustomRadioButton extends RadioButton implements IEyeSeeView {
      */
     public void setmDimension(String mDimension) {
         this.mDimension = mDimension;
+        if(!Utils.isPictureQuestion())
         if (getmScale() != getContext().getString(R.string.font_size_system))
             setTextSize(TypedValue.COMPLEX_UNIT_SP, PreferencesState.getInstance().getFontSize(mScale, mDimension));
     }
@@ -198,6 +200,7 @@ public class CustomRadioButton extends RadioButton implements IEyeSeeView {
      */
     public String getmDimension() {
         return this.mDimension;
+
     }
 
     @Override
@@ -207,6 +210,7 @@ public class CustomRadioButton extends RadioButton implements IEyeSeeView {
      * @param mScale The scale for this component.
      */
     public void setmScale(String mScale) {
+        if(!Utils.isPictureQuestion())
         if (!mScale.equals(this.mScale))
             setTextSize(TypedValue.COMPLEX_UNIT_SP, PreferencesState.getInstance().getFontSize(mScale, mDimension));
         this.mScale = mScale;

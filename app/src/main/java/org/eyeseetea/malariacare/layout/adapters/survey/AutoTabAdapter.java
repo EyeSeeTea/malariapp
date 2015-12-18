@@ -56,7 +56,6 @@ import org.eyeseetea.malariacare.utils.Utils;
 import org.eyeseetea.malariacare.views.CustomEditText;
 import org.eyeseetea.malariacare.views.CustomRadioButton;
 import org.eyeseetea.malariacare.views.CustomTextView;
-import org.eyeseetea.malariacare.views.UncheckeableRadioButton;
 import org.eyeseetea.malariacare.views.filters.MinMaxInputFilter;
 
 import java.util.Arrays;
@@ -391,11 +390,7 @@ public class AutoTabAdapter extends ATabAdapter {
                         break;
                     }
                     if (value != null) {
-                        if(Utils.isPictureQuestion()) {
-                            ((UncheckeableRadioButton) viewHolder.component.findViewWithTag(value.getOption())).setChecked(true);
-                        }else {
-                            ((CustomRadioButton) viewHolder.component.findViewWithTag(value.getOption())).setChecked(true);
-                        }
+                        ((CustomRadioButton) viewHolder.component.findViewWithTag(value.getOption())).setChecked(true);
                         viewHolder.num.setText(Float.toString(numdenumradiobutton.get(0)));
                         viewHolder.denum.setText(Float.toString(numdenumradiobutton.get(1)));
                     } else {
@@ -616,36 +611,18 @@ public class AutoTabAdapter extends ATabAdapter {
                     createGraphicOutput(position, parent, question, viewHolder, getInflater(), getContext());
                     break;
                 case Constants.RADIO_GROUP_HORIZONTAL:
-                    if(Utils.isPictureQuestion()) {
-                        rowView = AutoTabLayoutUtils.initialiseView(R.layout.radio, parent, question, viewHolder, position, getInflater());
-
-                        AutoTabLayoutUtils.initialiseScorableComponent(rowView, viewHolder);
-
-                       createRadioGroupComponent(question, viewHolder, LinearLayout.HORIZONTAL);
-                    }
-                    else{
-                        rowView = AutoTabLayoutUtils.initialiseView(R.layout.radio, parent, question, viewHolder, position, getInflater());
-                        AutoTabLayoutUtils.initialiseScorableComponent(rowView, viewHolder);
-                        AutoTabLayoutUtils.createRadioGroupComponent(question, viewHolder, LinearLayout.HORIZONTAL, getInflater(), getContext());
-                        //Add Listener
-                        ((RadioGroup) viewHolder.component).setOnCheckedChangeListener(new RadioGroupListener(question, viewHolder));
-                    }
+                    rowView = AutoTabLayoutUtils.initialiseView(R.layout.radio, parent, question, viewHolder, position, getInflater());
+                    AutoTabLayoutUtils.initialiseScorableComponent(rowView, viewHolder);
+                    AutoTabLayoutUtils.createRadioGroupComponent(question, viewHolder, LinearLayout.HORIZONTAL, getInflater(), getContext());
+                    //Add Listener
+                    ((RadioGroup) viewHolder.component).setOnCheckedChangeListener(new RadioGroupListener(question, viewHolder));
                     break;
                 case Constants.RADIO_GROUP_VERTICAL:
-                    if(Utils.isPictureQuestion()){
-                        rowView = AutoTabLayoutUtils.initialiseView(R.layout.radio, parent, question, viewHolder, position, getInflater());
-
-                        AutoTabLayoutUtils.initialiseScorableComponent(rowView, viewHolder);
-
-                        createRadioGroupComponent(question, viewHolder, LinearLayout.VERTICAL);
-                    }
-                    else {
-                        rowView = AutoTabLayoutUtils.initialiseView(R.layout.radio, parent, question, viewHolder, position, getInflater());
-                        AutoTabLayoutUtils.initialiseScorableComponent(rowView, viewHolder);
-                        AutoTabLayoutUtils.createRadioGroupComponent(question, viewHolder, LinearLayout.HORIZONTAL, getInflater(), getContext());
-                        //Add Listener
-                        ((RadioGroup) viewHolder.component).setOnCheckedChangeListener(new RadioGroupListener(question, viewHolder));
-                    }
+                    rowView = AutoTabLayoutUtils.initialiseView(R.layout.radio, parent, question, viewHolder, position, getInflater());
+                    AutoTabLayoutUtils.initialiseScorableComponent(rowView, viewHolder);
+                    AutoTabLayoutUtils.createRadioGroupComponent(question, viewHolder, LinearLayout.HORIZONTAL, getInflater(), getContext());
+                    //Add Listener
+                    ((RadioGroup) viewHolder.component).setOnCheckedChangeListener(new RadioGroupListener(question, viewHolder));
                     break;
 
                 default:
@@ -715,20 +692,6 @@ public class AutoTabAdapter extends ATabAdapter {
         } else {
             view.setEnabled(!readOnly);
         }
-    }
-
-    private void createRadioGroupComponent(Question question, AutoTabLayoutUtils.ViewHolder viewHolder, int orientation) {
-        ((RadioGroup) viewHolder.component).setOrientation(orientation);
-
-        for (Option option : question.getAnswer().getOptions()) {
-            UncheckeableRadioButton button = (UncheckeableRadioButton) getInflater().inflate(R.layout.uncheckeable_radiobutton_pictureapp, null);
-            button.setOption(option);
-            button.updateProperties(PreferencesState.getInstance().getScale(), this.getContext().getString(R.string.font_size_level1), this.getContext().getString(R.string.medium_font_name));
-            ((RadioGroup) viewHolder.component).addView(button);
-        }
-
-        //Add Listener
-        ((RadioGroup) viewHolder.component).setOnCheckedChangeListener(new RadioGroupListener(question, viewHolder));
     }
 
     /**
@@ -836,14 +799,8 @@ public class AutoTabAdapter extends ATabAdapter {
 
             Option option = new Option(Constants.DEFAULT_SELECT_OPTION);
             if (checkedId != -1) {
-                if(Utils.isPictureQuestion()) {
-                    UncheckeableRadioButton uncheckeableRadioButton = (UncheckeableRadioButton) (this.viewHolder.component).findViewById(checkedId);
-                    option = (Option) uncheckeableRadioButton.getTag();
-                }
-                else{
                     CustomRadioButton customRadioButton = this.viewHolder.findRadioButtonById(checkedId);
                     option = (Option) customRadioButton.getTag();
-                }
             }
             if(Utils.isPictureQuestion()) {
                 itemSelected(viewHolder, question, option);

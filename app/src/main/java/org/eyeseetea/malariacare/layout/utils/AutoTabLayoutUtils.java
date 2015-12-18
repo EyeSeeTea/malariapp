@@ -46,7 +46,6 @@ import org.eyeseetea.malariacare.utils.Constants;
 import org.eyeseetea.malariacare.utils.Utils;
 import org.eyeseetea.malariacare.views.CustomRadioButton;
 import org.eyeseetea.malariacare.views.CustomTextView;
-import org.eyeseetea.malariacare.views.UncheckeableRadioButton;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -254,6 +253,29 @@ public class AutoTabLayoutUtils {
         // using Guava library and its Booleans utility class
         return Booleans.countTrue(Booleans.toArray(elementInvisibility.values()));
     }
+    private boolean checkMatches(Question question) {
+        boolean match = true;
+
+        List<Question> relatives = question.getRelatives();
+
+        if (relatives.size() > 0) {
+
+            Option option = ReadWriteDB.readOptionAnswered(relatives.get(0));
+
+            if (option == null) match = false;
+
+            for (int i = 1; i < relatives.size() && match; i++) {
+                Option currentOption = ReadWriteDB.readOptionAnswered(relatives.get(i));
+
+                if (currentOption == null) match = false;
+                else
+                    match = match && (Float.compare(option.getFactor(), currentOption.getFactor()) == 0);
+            }
+
+        }
+
+        return match;
+    }
 
     public static boolean autoFillAnswer(AutoTabLayoutUtils.ViewHolder viewHolder, AutoTabLayoutUtils.ScoreHolder scoreHolder, Question question, float totalNum, float totalDenum, Context context, LinkedHashMap<BaseModel, Boolean> elementInvisibility) {
         //FIXME Yes|No are 'hardcoded' here by using options 0|1
@@ -275,18 +297,32 @@ public class AutoTabLayoutUtils {
 
         // Write option to DB
         ReadWriteDB.saveValuesDDL(question, option);
-
-        recalculateScores(viewHolder, question, totalNum, totalDenum);
-
-        // If parent relation found, toggle Children Spinner Visibility
-        // If question has question-option, refresh the tab
-        if (question.hasChildren() || question.hasQuestionOption()){
-            if (question.hasChildren())
-                toggleChildrenVisibility(question,elementInvisibility, totalNum, totalDenum);
-            refreshTab = true;
+        Float num;
+        Float denum;
+        if(Utils.isPictureQuestion()) {
+            num = ScoreRegister.calcNum(question);
+            denum = ScoreRegister.calcDenum(question);
         }
-
-        updateScore(scoreHolder, totalNum, totalDenum, context);
+        else{
+            num=totalNum;
+            denum=totalDenum;
+        }
+        recalculateScores(viewHolder, question, num, denum);
+        if(Utils.isPictureQuestion()) {
+            if (question.hasChildren()) {
+                toggleChildrenVisibility(question, elementInvisibility, num, denum);
+            }
+        }
+        else{
+        // If parent relation found, toggle Children Spinner Visibility
+            // If question has question-option, refresh the tab
+            if (question.hasChildren() || question.hasQuestionOption()) {
+                if (question.hasChildren())
+                    toggleChildrenVisibility(question, elementInvisibility, num, denum);
+                refreshTab = true;
+            }
+        }
+        updateScore(scoreHolder, num, denum, context);
         return refreshTab;
     }
     /**
@@ -384,11 +420,18 @@ public class AutoTabLayoutUtils {
         ((RadioGroup) viewHolder.component).setOrientation(orientation);
 
         for (Option option : question.getAnswer().getOptions()) {
-            CustomRadioButton button = (CustomRadioButton) lInflater.inflate(R.layout.uncheckeable_radiobutton, null);
+            CustomRadioButton button;
+            if(Utils.isPictureQuestion()){
+                button= (CustomRadioButton) lInflater.inflate(R.layout.uncheckeable_radiobutton_pictureapp, null);
+            }
+            else {
+                button = (CustomRadioButton) lInflater.inflate(R.layout.uncheckeable_radiobutton, null);
+            }
             button.setOption(option);
             button.updateProperties(PreferencesState.getInstance().getScale(), context.getString(R.string.font_size_level1), context.getString(R.string.medium_font_name));
             ((RadioGroup) viewHolder.component).addView(button);
         }
     }
+
 
 }
