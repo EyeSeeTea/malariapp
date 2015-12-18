@@ -48,10 +48,6 @@ import java.util.List;
  */
 public class CustomIQTABAdapter extends ATabAdapter {
 
-    private List<Object> items;
-    Tab tab;
-
-
     //final ScoreHolder scoreHolder = new ScoreHolder();
 
     int number_rows_section;
@@ -81,44 +77,26 @@ public class CustomIQTABAdapter extends ATabAdapter {
         super(tab, context, R.layout.form_custom);
 
         if (Utils.isPictureQuestion()) {
-            this.items = Utils.convertPictureTabToArrayCustom(tab);
-
-            if (items.size() > 0)
-                number_rows_section = LayoutUtils.getNumberOfQuestionParentsHeader((Header) items.get(0)) + 1;
-
-            for (int i = 0; i < 2 * number_rows_section; i++) {
-                Object item = items.get(i);
-                if (item instanceof Question)
-                    calculateMatch((Question) item);
-
-
-            }
-
-            for (int i = 2 * number_rows_section; i < items.size(); i++) {
-                Object item = items.get(i);
-                if (item instanceof Question) {
-                    Question result = ((Question) item).getQuestionChildren().get(0);
-                    ScoreRegister.addRecord(result, ScoreRegister.calcNum(result), ScoreRegister.calcDenum(result));
-                }
-
-            }
-        } else {
+            super.setItems(Utils.convertTabToArrayCustom(tab));
 
             if (getItems().size() > 0)
+                number_rows_section = LayoutUtils.getNumberOfQuestionParentsHeader((Header) getItems().get(0)) + 1;
+        }
+        else {
+            if (getItems().size() > 0)
                 number_rows_section = (int) ((Header) getItems().get(0)).getNumberOfQuestionParents() + 1;
+        }
+        for (int i = 0; i < 2 * number_rows_section; i++) {
+            Object item = getItems().get(i);
+            if (item instanceof Question)
+                calculateMatch((Question) item);
+        }
 
-            for (int i = 0; i < 2 * number_rows_section; i++) {
-                Object item = getItems().get(i);
-                if (item instanceof Question)
-                    calculateMatch((Question) item);
-            }
-
-            for (int i = 2 * number_rows_section; i < getItems().size(); i++) {
-                Object item = getItems().get(i);
-                if (item instanceof Question) {
-                    Question result = ((Question) item).getChildren().get(0);
-                    ScoreRegister.addRecord(result, ScoreRegister.calcNum(result), ScoreRegister.calcDenum(result));
-                }
+        for (int i = 2 * number_rows_section; i < getItems().size(); i++) {
+            Object item = getItems().get(i);
+            if (item instanceof Question) {
+                Question result = ((Question) item).getChildren().get(0);
+                ScoreRegister.addRecord(result, ScoreRegister.calcNum(result), ScoreRegister.calcDenum(result));
             }
         }
     }
@@ -156,14 +134,9 @@ public class CustomIQTABAdapter extends ATabAdapter {
     @Override
     public int getCount() {
         if (Utils.isPictureQuestion()) {
-            return items.size();
+            return getItems().size();
         } else
             return 2 * number_rows_section;
-    }
-
-    private void resetResults() {
-        for (int i = 0; i < results.length; i++)
-            results[i] = 0;
     }
 
     public void updateScore() {
@@ -180,25 +153,11 @@ public class CustomIQTABAdapter extends ATabAdapter {
         scoreHolder.scoreText = (CustomTextView) ((Activity) context).findViewById(R.id.subtotalScoreText);*/
     }
 
-    @Override
-    public Object getItem(int position) {
-        return items.get(position);
-    }
-
-    @Override
-    public long getItemId(int position) {
-        return items.get(position).hashCode();
-    }
-
     public void calculateMatch(Question question) {
         int simetric_position;
         int result_position;
         int position;
-        if (Utils.isPictureQuestion()) {
-            position = items.indexOf(question);
-        } else {
-            position = getItems().indexOf(question);
-        }
+        position = getItems().indexOf(question);
 
 
         Question q1, q2;
@@ -211,15 +170,10 @@ public class CustomIQTABAdapter extends ATabAdapter {
             result_position = position - 1;
         }
         Question questionAnswer;
-        if (Utils.isPictureQuestion()) {
-            q1 = ((Question) items.get(position)).getQuestionChildren().get(0);
-            q2 = ((Question) items.get(simetric_position)).getQuestionChildren().get(0);
-            questionAnswer = (Question) items.get(2 * number_rows_section + result_position + 1);
-        } else {
-            q1 = ((Question) getItems().get(position)).getChildren().get(0);
-            q2 = ((Question) getItems().get(simetric_position)).getChildren().get(0);
-            questionAnswer = (Question) getItems().get(2 * number_rows_section + result_position + 1);
-        }
+        q1 = ((Question) getItems().get(position)).getChildren().get(0);
+        q2 = ((Question) getItems().get(simetric_position)).getChildren().get(0);
+        questionAnswer = (Question) getItems().get(2 * number_rows_section + result_position + 1);
+
         Question testResult = questionAnswer.getQuestionChildren().get(0);
 
         if (q1.getValueBySession() != null && q2.getValueBySession() != null &&
@@ -277,33 +231,21 @@ public class CustomIQTABAdapter extends ATabAdapter {
                 viewHolder.parasites = (CustomEditText) rowView.findViewById(R.id.parasites);
                 viewHolder.species = (Spinner) rowView.findViewById(R.id.species);
                 List<Option> optionList;
-                if (Utils.isPictureQuestion()) {
-                    optionList = ((Question) item).getQuestionChildren().get(0).getAnswer().getOptions();
-                } else {
-                    optionList = ((Question) item).getChildren().get(0).getAnswer().getOptions();
-                }
+                optionList = ((Question) item).getChildren().get(0).getAnswer().getOptions();
+
                 optionList.add(0, new Option(Constants.DEFAULT_SELECT_OPTION));
 
                 viewHolder.spinner.setAdapter(new OptionArrayAdapter(getContext(), optionList));
-                if (Utils.isPictureQuestion()) {
-                    optionList = ((Question) item).getQuestionChildren().get(2).getAnswer().getOptions();
-                } else {
-                    optionList = ((Question) item).getChildren().get(2).getAnswer().getOptions();
-                }
+                optionList = ((Question) item).getChildren().get(2).getAnswer().getOptions();
+
                 optionList.add(0, new Option(Constants.DEFAULT_SELECT_OPTION));
 
                 viewHolder.species.setAdapter(new OptionArrayAdapter(getContext(), optionList));
 
-                if (Utils.isPictureQuestion()) {
-                    test = question.getQuestionChildren().get(0);
-                    parasites = question.getQuestionChildren().get(1);
-                    species = question.getQuestionChildren().get(2);
-                } else {
-                    test = question.getChildren().get(0);
-                    parasites = question.getChildren().get(1);
-                    species = question.getChildren().get(2);
+                test = question.getChildren().get(0);
+                parasites = question.getChildren().get(1);
+                species = question.getChildren().get(2);
 
-                }
                 rowView.setBackgroundResource(LayoutUtils.calculateBackgrounds(position));
 
                 viewHolder.parasites.addTextChangedListener(new TextWatcher() {
@@ -366,14 +308,9 @@ public class CustomIQTABAdapter extends ATabAdapter {
                 });
 
                 setValues(viewHolder, question);
-
-
             }
-
         } else {
-
             final ViewHolder2 viewHolder2 = new ViewHolder2();
-
 
             if (position == 2 * number_rows_section) {
                 rowView = getInflater().inflate(R.layout.iqtabheader3, parent, false);
@@ -383,10 +320,8 @@ public class CustomIQTABAdapter extends ATabAdapter {
                 Question questionResult = (Question) getItem(position);
                 Question testResult = questionResult.getQuestionChildren().get(0);
 
-
                 viewHolder2.number = (CustomTextView) rowView.findViewById(R.id.number_result);
                 viewHolder2.result = (CustomTextView) rowView.findViewById(R.id.matches);
-
 
                 viewHolder2.number.setText(String.valueOf(questionResult.getForm_name()));
 

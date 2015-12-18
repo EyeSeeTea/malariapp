@@ -32,6 +32,8 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Switch;
 
+import com.raizlabs.android.dbflow.structure.BaseModel;
+
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.model.Header;
 import org.eyeseetea.malariacare.database.model.Option;
@@ -55,7 +57,6 @@ import java.util.List;
 public class CustomAdherenceAdapter extends ATabAdapter {
 
 
-    private List<Object> items;
     Tab tab;
 
     boolean visible = false;
@@ -119,15 +120,14 @@ public class CustomAdherenceAdapter extends ATabAdapter {
 
     public CustomAdherenceAdapter(Tab tab, Context context) {
         super(tab, context, R.layout.form_custom);
-
-        this.items= Utils.convertPictureTabToArrayCustom(tab);
-        if(Utils.isPictureQuestion()){
-            if (items.size()> 0)
-                position_secondheader = LayoutUtils.getNumberOfQuestionParentsHeader((Header) items.get(0)) +1 ;
-        }
-        else{
-            if (getItems().size()> 0)
-                position_secondheader = (int) ((Header) getItems().get(0)).getNumberOfQuestionParents() +1 ;
+        List<? extends BaseModel> items= Utils.convertTabToArrayCustom(tab);
+        super.setItems(items);
+        if (getItems().size()> 0) {
+            if (Utils.isPictureQuestion()) {
+                position_secondheader = LayoutUtils.getNumberOfQuestionParentsHeader((Header) items.get(0)) + 1;
+            } else {
+                position_secondheader = (int) ((Header) getItems().get(0)).getNumberOfQuestionParents() + 1;
+            }
         }
 
         Log.d("Second header", position_secondheader + "");
@@ -135,34 +135,16 @@ public class CustomAdherenceAdapter extends ATabAdapter {
         scores = new int[position_secondheader];
 
         for (int i=0;i<position_secondheader; i++) {
-            if(Utils.isPictureQuestion()) {
-                if (items.get(i) instanceof Question) {
-                    Question testResult = ((Question) items.get(i)).getQuestionChildren().get(3);
-                    ScoreRegister.addRecord(testResult, ScoreRegister.calcNum(testResult), ScoreRegister.calcDenum(testResult));
-                }
-            }
-            else{
-                if (getItems().get(i) instanceof Question) {
-                    Question testResult = ((Question) getItems().get(i)).getChildren().get(3);
-                    ScoreRegister.addRecord(testResult, ScoreRegister.calcNum(testResult), ScoreRegister.calcDenum(testResult));
-                }
+            if (items.get(i) instanceof Question) {
+                Question testResult = ((Question) getItems().get(i)).getChildren().get(3);
+                ScoreRegister.addRecord(testResult, ScoreRegister.calcNum(testResult), ScoreRegister.calcDenum(testResult));
             }
         }
-        if(Utils.isPictureQuestion()) {
-            for (int i = position_secondheader; i < items.size(); i++) {
-                if (items.get(i) instanceof Question) {
-                    Question act = ((Question) items.get(i)).getQuestionChildren().get(2);
-                    ScoreRegister.addRecord(act, ScoreRegister.calcNum(act), ScoreRegister.calcDenum(act));
-                    calcScore((Question) items.get(i));
-                }
-            }
-        }else{
-            for (int i = position_secondheader; i < getItems().size(); i++) {
-                if (getItems().get(i) instanceof Question) {
-                    Question act = ((Question) getItems().get(i)).getChildren().get(2);
-                    ScoreRegister.addRecord(act, ScoreRegister.calcNum(act), ScoreRegister.calcDenum(act));
-                    calcScore((Question) getItems().get(i));
-                }
+        for (int i = position_secondheader; i < getItems().size(); i++) {
+            if (getItems().get(i) instanceof Question) {
+                Question act = ((Question) getItems().get(i)).getChildren().get(2);
+                ScoreRegister.addRecord(act, ScoreRegister.calcNum(act), ScoreRegister.calcDenum(act));
+                calcScore((Question) getItems().get(i));
             }
         }
 
@@ -189,63 +171,33 @@ public class CustomAdherenceAdapter extends ATabAdapter {
     @Override
     public int getCount() {
         if (visible)
-            if(Utils.isPictureQuestion())
-                return items.size();
-            else
                 return getItems().size();
         else return 0;
     }
 
-    @Override
-    public Object getItem(int position) {
-        return items.get(position);
-    }
-
     private void setValues(ViewHolder viewHolder, Question question) {
         viewHolder.number.setText(question.getForm_name());
-        if(Utils.isPictureQuestion()) {
-            viewHolder.patientID.setText(ReadWriteDB.readValueQuestion(question.getQuestionChildren().get(0)));
-            viewHolder.age.setText(ReadWriteDB.readValueQuestion(question.getQuestionChildren().get(2)));
-            viewHolder.gender.setSelection(ReadWriteDB.readPositionOption(question.getQuestionChildren().get(1)));
-            viewHolder.testResutl.setSelection(ReadWriteDB.readPositionOption(question.getQuestionChildren().get(3)));
-        }
-        else{
-            viewHolder.patientID.setText(ReadWriteDB.readValueQuestion(question.getChildren().get(0)));
-            viewHolder.age.setText(ReadWriteDB.readValueQuestion(question.getChildren().get(2)));
-            viewHolder.gender.setSelection(ReadWriteDB.readPositionOption(question.getChildren().get(1)));
-            viewHolder.testResutl.setSelection(ReadWriteDB.readPositionOption(question.getChildren().get(3)));
-        }
+        viewHolder.patientID.setText(ReadWriteDB.readValueQuestion(question.getChildren().get(0)));
+        viewHolder.age.setText(ReadWriteDB.readValueQuestion(question.getChildren().get(2)));
+        viewHolder.gender.setSelection(ReadWriteDB.readPositionOption(question.getChildren().get(1)));
+        viewHolder.testResutl.setSelection(ReadWriteDB.readPositionOption(question.getChildren().get(3)));
     }
 
     private void setValues2(ViewHolder2 viewHolder, Question question) {
         calcScore(question);
-        if(Utils.isPictureQuestion()) {
-            viewHolder.score.setText(String.valueOf(scores[items.indexOf(question) - position_secondheader]));
-            viewHolder.patientID.setText(ReadWriteDB.readValueQuestion(question.getQuestionChildren().get(0)));
-            viewHolder.number.setText(question.getForm_name());
-            viewHolder.testResult.setText(question.getQuestionChildren().get(1).getForm_name());
-            viewHolder.act.setSelection(ReadWriteDB.readPositionOption(question.getQuestionChildren().get(2)));
-        }else{
-            viewHolder.score.setText(String.valueOf(scores[getItems().indexOf(question) - position_secondheader]));
-            viewHolder.patientID.setText(ReadWriteDB.readValueQuestion(question.getChildren().get(0)));
-            viewHolder.number.setText(question.getForm_name());
-            viewHolder.testResult.setText(question.getChildren().get(1).getForm_name());
-            viewHolder.act.setSelection(ReadWriteDB.readPositionOption(question.getChildren().get(2)));
-        }
-
+        viewHolder.score.setText(String.valueOf(scores[getItems().indexOf(question) - position_secondheader]));
+        viewHolder.patientID.setText(ReadWriteDB.readValueQuestion(question.getChildren().get(0)));
+        viewHolder.number.setText(question.getForm_name());
+        viewHolder.testResult.setText(question.getChildren().get(1).getForm_name());
+        viewHolder.act.setSelection(ReadWriteDB.readPositionOption(question.getChildren().get(2)));
     }
 
     private void calcScore(Question question) {
         Question act;
         Question test;
-        if(Utils.isPictureQuestion()) {
-            act = question.getQuestionChildren().get(2);
-            test = question.getQuestionChildren().get(1);
-        }
-        else{
-            act = question.getChildren().get(2);
-            test = question.getChildren().get(1);
-        }
+        act = question.getChildren().get(2);
+        test = question.getChildren().get(1);
+
         Value value = act.getValueBySession();
 
         if (value != null) {
@@ -254,63 +206,31 @@ public class CustomAdherenceAdapter extends ATabAdapter {
             optList.add(0, new Option(Constants.DEFAULT_SELECT_OPTION));
 
             int pos = optList.indexOf(value.getOption());
-
-            if(Utils.isPictureQuestion()) {
-                if (test.getForm_name().equals(this.getContext().getString(R.string.adherence_info_rdt_positive))
-                        || test.getForm_name().equals(this.getContext().getString(R.string.adherence_info_rdt_negative))) {
-                    if (pos == 1) {
-                        num = num - scores[items.indexOf(question) - position_secondheader] + 1;
-                        scores[items.indexOf(question) - position_secondheader] = 1;
-                    } else {
-                        num = num - scores[items.indexOf(question) - position_secondheader];
-                        scores[items.indexOf(question) - position_secondheader] = 0;
-                    }
+            if (test.getForm_name().equals(getContext().getString(R.string.adherence_info_rdt_positive))
+                    || test.getForm_name().equals(getContext().getString(R.string.adherence_info_rdt_negative))) {
+                if (pos == 1) {
+                    num = num - scores[getItems().indexOf(question) - position_secondheader] + 1;
+                    scores[getItems().indexOf(question) - position_secondheader] = 1;
                 } else {
-                    if (test.getForm_name().equals(this.getContext().getString(R.string.adherence_info_microscopy_positive))
-                            || test.getForm_name().equals(this.getContext().getString(R.string.adherence_info_microscopy_negative))) {
-                        if (pos == 2) {
-                            num = num - scores[items.indexOf(question) - position_secondheader] + 1;
-                            scores[items.indexOf(question) - position_secondheader] = 1;
-                        } else {
-                            num = num - scores[items.indexOf(question) - position_secondheader];
-                            scores[items.indexOf(question) - position_secondheader] = 0;
-                        }
-                    }
-
+                    num = num - scores[getItems().indexOf(question) - position_secondheader];
+                    scores[getItems().indexOf(question) - position_secondheader] = 0;
                 }
-            }else{
-                if (test.getForm_name().equals(getContext().getString(R.string.adherence_info_rdt_positive))
-                        || test.getForm_name().equals(getContext().getString(R.string.adherence_info_rdt_negative))) {
-                    if (pos == 1) {
+            } else {
+                if (test.getForm_name().equals(getContext().getString(R.string.adherence_info_microscopy_positive))
+                        || test.getForm_name().equals(getContext().getString(R.string.adherence_info_microscopy_negative))) {
+                    if (pos == 2) {
                         num = num - scores[getItems().indexOf(question) - position_secondheader] + 1;
                         scores[getItems().indexOf(question) - position_secondheader] = 1;
                     } else {
                         num = num - scores[getItems().indexOf(question) - position_secondheader];
                         scores[getItems().indexOf(question) - position_secondheader] = 0;
                     }
-                } else {
-                    if (test.getForm_name().equals(getContext().getString(R.string.adherence_info_microscopy_positive))
-                            || test.getForm_name().equals(getContext().getString(R.string.adherence_info_microscopy_negative))) {
-                        if (pos == 2) {
-                            num = num - scores[getItems().indexOf(question) - position_secondheader] + 1;
-                            scores[getItems().indexOf(question) - position_secondheader] = 1;
-                        } else {
-                            num = num - scores[getItems().indexOf(question) - position_secondheader];
-                            scores[getItems().indexOf(question) - position_secondheader] = 0;
-                        }
-                    }
-
                 }
 
-            }
+                }
         }
         else {
-            if(Utils.isPictureQuestion()) {
-                scores[items.indexOf(question) - position_secondheader] = 0;
-            }
-            else{
                 scores[getItems().indexOf(question) - position_secondheader] = 0;
-            }
         }
 
     }
@@ -325,21 +245,28 @@ public class CustomAdherenceAdapter extends ATabAdapter {
 
 
         if (position < position_secondheader) {
-            if (item instanceof Header)
-                if(Utils.isPictureQuestion())
-                    rowView = getInflater().inflate(R.layout.adherencetab_header1_pictureapp, parent, false);
+            if (item instanceof Header) {
+                int layoutId;
+                if (Utils.isPictureQuestion())
+                    layoutId = R.layout.adherencetab_header1_pictureapp;
                 else
-                    rowView = getInflater().inflate(R.layout.adherencetab_header1, parent, false);
+                    layoutId = R.layout.adherencetab_header1;
+                rowView = getInflater().inflate(layoutId, parent, false);
+            }
             else {
 
                 question = (Question) item;
 
                 final ViewHolder viewHolder = new ViewHolder();
-                if(Utils.isPictureQuestion()) {
-                    rowView = getInflater().inflate(R.layout.pharmacy_register_pictureapp, parent, false);
-                }
+
+                int layoutId;
+                if (Utils.isPictureQuestion())
+                    layoutId = R.layout.pharmacy_register_pictureapp;
                 else
-                    rowView = getInflater().inflate(R.layout.pharmacy_register, parent, false);
+                    layoutId = R.layout.pharmacy_register;
+
+                rowView = getInflater().inflate(layoutId, parent, false);
+
                 viewHolder.number = (CustomTextView) rowView.findViewById(R.id.number);
                 viewHolder.gender = (Spinner) rowView.findViewById(R.id.gender);
                 viewHolder.age = (CustomEditText) rowView.findViewById(R.id.age);
@@ -448,22 +375,27 @@ public class CustomAdherenceAdapter extends ATabAdapter {
 
         else {
 
-            if (item instanceof Header)
-                if(Utils.isPictureQuestion()) {
-                    rowView = getInflater().inflate(R.layout.adherencetab_header2_pictureapp, parent, false);
-                }
+            if (item instanceof Header) {
+                int layoutId;
+                if (Utils.isPictureQuestion())
+                    layoutId = R.layout.adherencetab_header2_pictureapp;
                 else
-                    rowView = getInflater().inflate(R.layout.adherencetab_header2, parent, false);
+                    layoutId = R.layout.adherencetab_header2;
+                rowView = getInflater().inflate(layoutId, parent, false);
+            }
             else {
 
                 question = (Question) item;
 
                 final ViewHolder2 viewHolder2 = new ViewHolder2();
-                if(Utils.isPictureQuestion()) {
-                    rowView = getInflater().inflate(R.layout.pharmacy_register2_pictureapp, parent, false);
-                }
+
+                int layoutId;
+                if (Utils.isPictureQuestion())
+                    layoutId = R.layout.pharmacy_register2_pictureapp;
                 else
-                    rowView = getInflater().inflate(R.layout.pharmacy_register2, parent, false);
+                    layoutId = R.layout.pharmacy_register2;
+
+                rowView = getInflater().inflate(layoutId, parent, false);
 
                 viewHolder2.number = (CustomTextView) rowView.findViewById(R.id.number);
                 viewHolder2.patientID = (CustomEditText) rowView.findViewById(R.id.patientId);
@@ -508,7 +440,7 @@ public class CustomAdherenceAdapter extends ATabAdapter {
                             Question act = question.getQuestionChildren().get(2);
                             ReadWriteDB.saveValuesDDL(act, (Option) viewHolder2.act.getItemAtPosition(pos));
                             calcScore(question);
-                            viewHolder2.score.setText(Integer.toString(scores[items.indexOf(question) - position_secondheader]));
+                            viewHolder2.score.setText(Integer.toString(scores[getItems().indexOf(question) - position_secondheader]));
                             ScoreRegister.addRecord(act, ScoreRegister.calcNum(act), ScoreRegister.calcDenum(act));
                         } else
                             viewCreated.value = true;
@@ -527,10 +459,4 @@ public class CustomAdherenceAdapter extends ATabAdapter {
 //        Debug.stopMethodTracing();
         return rowView;
     }
-
-    @Override
-    public long getItemId(int position) {
-        return items.get(position).hashCode();
-    }
-
 }

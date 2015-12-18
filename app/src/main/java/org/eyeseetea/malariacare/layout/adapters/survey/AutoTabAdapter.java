@@ -70,8 +70,6 @@ public class AutoTabAdapter extends ATabAdapter {
 
     private final static String TAG=".AutoTabAdapter";
 
-    //List of Headers and Questions. Each position contains an object to be showed in the listview
-    List<Object> items;
 
     final AutoTabLayoutUtils.ScoreHolder scoreHolder = new AutoTabLayoutUtils.ScoreHolder();
 
@@ -94,7 +92,7 @@ public class AutoTabAdapter extends ATabAdapter {
     public AutoTabAdapter(Tab tab, Context context) {
         this(tab, context, R.layout.form_with_score);
         if(Utils.isPictureQuestion()){
-            this.items = Utils.convertTabToArray(tab);
+            super.setItems(Utils.convertTabToArrayCustom(tab));
             // Initialize the elementInvisibility HashMap by reading all questions and headers and decide
             // whether or not they must be visible
             initElementInivisibility();

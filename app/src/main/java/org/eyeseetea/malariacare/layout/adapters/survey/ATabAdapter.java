@@ -25,6 +25,7 @@ import android.widget.BaseAdapter;
 
 import com.raizlabs.android.dbflow.structure.BaseModel;
 
+import org.eyeseetea.malariacare.database.model.CompositeScore;
 import org.eyeseetea.malariacare.database.model.Question;
 import org.eyeseetea.malariacare.database.model.Tab;
 import org.eyeseetea.malariacare.database.utils.Session;
@@ -116,4 +117,8 @@ public abstract class ATabAdapter extends BaseAdapter implements  ITabAdapter{
     }
 
     public List<? extends BaseModel> getItems(){ return this.items; }
+
+    public void setItems(List<? extends BaseModel>  items) {
+        this.items = items;
+    }
 }

@@ -40,13 +40,11 @@ import java.util.List;
  */
 public class CompositeScoreAdapter extends ATabAdapter {
 
-
-    List<CompositeScore> items;
     String tab_name;
 
     public CompositeScoreAdapter(List<CompositeScore> items, Context context, int id_layout, Tab tab) {
         super(tab, context, id_layout);
-        this.items = items;
+        super.setItems(items);
     }
 
     public CompositeScoreAdapter(Tab tab, Context context, int id_layout) {
@@ -54,33 +52,31 @@ public class CompositeScoreAdapter extends ATabAdapter {
     }
 
     public static CompositeScoreAdapter build(Tab tab, Context context) {
+        int layoutId;
         if(Utils.isPictureQuestion())
-            return new CompositeScoreAdapter(tab, context, R.layout.composite_score_header_pictureapp);
-        return new CompositeScoreAdapter(tab, context, R.layout.composite_score_tab);
+            layoutId=R.layout.composite_score_header_pictureapp;
+        else
+            layoutId=R.layout.composite_score_tab;
+        return new CompositeScoreAdapter(tab, context, layoutId);
     }
     @Override
     public void initializeSubscore() {
 
         ListView compositeScoreListView = (ListView) ((Activity) getContext()).findViewById(R.id.listView);
         ViewGroup header;
-        if(Utils.isPictureQuestion()) {
-            header  = (ViewGroup) getInflater().inflate(R.layout.composite_score_header_pictureapp, compositeScoreListView, false);
-        }
-        else{
-            header = (ViewGroup) getInflater().inflate(R.layout.composite_score_header, compositeScoreListView, false);
-        }
+        int layoutId;
+        if(Utils.isPictureQuestion())
+            layoutId=R.layout.composite_score_header_pictureapp;
+        else
+            layoutId=R.layout.composite_score_header;
+
+        header  = (ViewGroup) getInflater().inflate(layoutId, compositeScoreListView, false);
         compositeScoreListView.addHeaderView(header);
     }
 
     @Override
     public String getName() {
         return tab_name;
-    }
-
-
-    @Override
-    public Object getItem(int position) {
-        return items.get(position);
     }
 
     @Override
@@ -93,12 +89,14 @@ public class CompositeScoreAdapter extends ATabAdapter {
         View rowView = null;
 
         CompositeScore item = (CompositeScore) getItem(position);
-        if(Utils.isPictureQuestion()) {
-            rowView = getInflater().inflate(R.layout.composite_scores_record_pictureapp, parent, false);
-        }
-        else{
-            rowView = getInflater().inflate(R.layout.composite_scores_record, parent, false);
-        }
+
+        int layoutId;
+        if(Utils.isPictureQuestion())
+            layoutId=R.layout.composite_scores_record_pictureapp;
+        else
+            layoutId=R.layout.composite_scores_record;
+
+        rowView = getInflater().inflate(layoutId, parent, false);
 
         ((CustomTextView)rowView.findViewById(R.id.code)).setText(item.getHierarchical_code());
         ((CustomTextView)rowView.findViewById(R.id.label)).setText(item.getLabel());

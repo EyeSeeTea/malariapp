@@ -55,6 +55,7 @@ import android.widget.TextView;
 import com.google.i18n.phonenumbers.NumberParseException;
 import com.google.i18n.phonenumbers.PhoneNumberUtil;
 import com.google.i18n.phonenumbers.Phonenumber;
+import com.raizlabs.android.dbflow.structure.BaseModel;
 
 import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.R;
@@ -79,7 +80,7 @@ import java.util.Locale;
 /**
  * Created by Jose on 21/04/2015.
  */
-public class DynamicTabAdapter extends BaseAdapter implements ITabAdapter {
+public class DynamicTabAdapter  extends ATabAdapter {
 
     private final static String TAG=".DynamicTabAdapter";
 
@@ -99,14 +100,9 @@ public class DynamicTabAdapter extends BaseAdapter implements ITabAdapter {
     private OnSwipeTouchListener swipeTouchListener;
 
     //List of Headers and Questions. Each position contains an object to be showed in the listview
-    List<Object> items;
     Tab tab;
 
-    LayoutInflater lInflater;
 
-    private final Context context;
-
-    int id_layout;
 
     /**
      * Flag that indicates if the current survey in session is already sent or not (it affects readonly settings)
@@ -114,11 +110,10 @@ public class DynamicTabAdapter extends BaseAdapter implements ITabAdapter {
     private boolean readOnly;
 
     public DynamicTabAdapter(Tab tab, Context context) {
-        this.lInflater = LayoutInflater.from(context);
-        this.context = context;
-        this.id_layout = R.layout.form_without_score_pictureapp;
+        super(tab,context,R.layout.form_without_score_pictureapp);
 
-        this.items=initItems(tab);
+
+        super.setItems(initItems(tab));
         List<Question> questions= initHeaderAndQuestions();
         this.progressTabStatus=initProgress(questions);
         this.readOnly = !Session.getSurvey().isInProgress();
@@ -129,9 +124,9 @@ public class DynamicTabAdapter extends BaseAdapter implements ITabAdapter {
      * Turns a tab into an ordered list of headers+questions
      * @param tab
      */
-    private List<Object> initItems(Tab tab){
+    private List<? extends BaseModel> initItems(Tab tab){
         this.tab=tab;
-        return Utils.convertTabToArray(tab);
+        return Utils.convertTabToArrayCustom(tab);
     }
 
     /**
@@ -140,8 +135,8 @@ public class DynamicTabAdapter extends BaseAdapter implements ITabAdapter {
     private List<Question> initHeaderAndQuestions() {
         List<Question> questions=new ArrayList<Question>();
 
-        for(int i=1;i<this.items.size();i++){
-            questions.add((Question)this.items.get(i));
+        for(int i=1;i<getItems().size();i++){
+            questions.add((Question)getItems().get(i));
         }
 
         return questions;
@@ -161,7 +156,7 @@ public class DynamicTabAdapter extends BaseAdapter implements ITabAdapter {
             return;
         }
 
-        swipeTouchListener=new OnSwipeTouchListener(context) {
+        swipeTouchListener=new OnSwipeTouchListener(getContext()) {
             /**
              * Click listener for image option
              * @param view
@@ -225,31 +220,11 @@ public class DynamicTabAdapter extends BaseAdapter implements ITabAdapter {
         return this.tab;
     }
 
-    @Override
-    public BaseAdapter getAdapter() {
-        return this;
-    }
-
-    @Override
-    public int getLayout() {
-        return id_layout;
-    }
-
-    @Override
-    public Float getScore() {
-        return 0F;
-    }
-
     /**
      * No scores required
      */
     @Override
     public void initializeSubscore() {
-    }
-
-    @Override
-    public String getName() {
-        return tab.getName();
     }
 
     @Override
@@ -263,14 +238,9 @@ public class DynamicTabAdapter extends BaseAdapter implements ITabAdapter {
     }
 
     @Override
-    public long getItemId(int position) {
-        return getItem(position).hashCode();
-    }
-
-    @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         //Inflate the layout
-        View rowView = lInflater.inflate(R.layout.dynamic_tab_grid_question, parent, false);
+        View rowView = getInflater().inflate(R.layout.dynamic_tab_grid_question, parent, false);
         rowView.getLayoutParams().height=parent.getHeight();
         rowView.requestLayout();
 
@@ -280,7 +250,7 @@ public class DynamicTabAdapter extends BaseAdapter implements ITabAdapter {
         //Question
         CustomTextView headerView=(CustomTextView) rowView.findViewById(R.id.question);
         //Load a font which support Khmer character
-        Typeface tf = Typeface.createFromAsset(context.getAssets(), "fonts/" + "KhmerOS.ttf");
+        Typeface tf = Typeface.createFromAsset(getContext().getAssets(), "fonts/" + "KhmerOS.ttf");
         headerView.setTypeface(tf);
         headerView.setText(question.getForm_name());
 
@@ -307,7 +277,7 @@ public class DynamicTabAdapter extends BaseAdapter implements ITabAdapter {
                     int mod=i%2;
                     //First item per row requires a new row
                     if(mod==0){
-                        tableRow=(TableRow)lInflater.inflate(R.layout.dynamic_tab_row,tableLayout,false);
+                        tableRow=(TableRow)getInflater().inflate(R.layout.dynamic_tab_row,tableLayout,false);
                         tableLayout.addView(tableRow);
                     }
                     ImageView imageButton = (ImageView) tableRow.getChildAt(mod);
@@ -322,7 +292,7 @@ public class DynamicTabAdapter extends BaseAdapter implements ITabAdapter {
                 swipeTouchListener.clearClickableViews();
                 for(int i=0;i<opts.size();i++){
 
-                    tableRow=(TableRow)lInflater.inflate(R.layout.dynamic_tab_row_singleitem,tableLayout,false);
+                    tableRow=(TableRow)getInflater().inflate(R.layout.dynamic_tab_row_singleitem,tableLayout,false);
                     tableLayout.addView(tableRow);
 
                     ImageView imageButton = (ImageView) tableRow.getChildAt(0);
@@ -337,13 +307,13 @@ public class DynamicTabAdapter extends BaseAdapter implements ITabAdapter {
                 break;
             case Constants.PHONE:
                 swipeTouchListener.clearClickableViews();
-                tableRow=(TableRow)lInflater.inflate(R.layout.dynamic_tab_phone_row, tableLayout, false);
+                tableRow=(TableRow)getInflater().inflate(R.layout.dynamic_tab_phone_row, tableLayout, false);
                 tableLayout.addView(tableRow);
                 initPhoneValue(tableRow, value);
                 break;
             case Constants.POSITIVE_INT:
                 swipeTouchListener.clearClickableViews();
-                tableRow=(TableRow)lInflater.inflate(R.layout.dynamic_tab_positiveint_row, tableLayout, false);
+                tableRow=(TableRow)getInflater().inflate(R.layout.dynamic_tab_positiveint_row, tableLayout, false);
                 tableLayout.addView(tableRow);
                 initPositiveIntValue(tableRow, value);
                 break;
@@ -359,8 +329,8 @@ public class DynamicTabAdapter extends BaseAdapter implements ITabAdapter {
      */
     private String getLocaleProgressStatus(int currentPage, int totalPages){
 
-        String current = context.getResources().getString(context.getResources().getIdentifier("number_"+currentPage, "string", context.getPackageName()));
-        String total = context.getResources().getString(context.getResources().getIdentifier("number_"+totalPages, "string", context.getPackageName()));
+        String current = getContext().getResources().getString(getContext().getResources().getIdentifier("number_"+currentPage, "string", getContext().getPackageName()));
+        String total = getContext().getResources().getString(getContext().getResources().getIdentifier("number_"+totalPages, "string", getContext().getPackageName()));
         return current.concat("/").concat(total);
     }
 
@@ -452,14 +422,14 @@ public class DynamicTabAdapter extends BaseAdapter implements ITabAdapter {
                         // Check phone number format
                         Phonenumber.PhoneNumber phoneNumber = null;
                         try {
-                            Locale locale = context.getResources().getConfiguration().locale;
+                            Locale locale = getContext().getResources().getConfiguration().locale;
                             phoneNumber = PhoneNumberUtil.getInstance().parse(phoneValue, locale.getCountry());
                         } catch (NumberParseException e) {
-                            editText.setError(context.getString(R.string.dynamic_error_phone_format));
+                            editText.setError(getContext().getString(R.string.dynamic_error_phone_format));
                             return;
                         }
                         if(!PhoneNumberUtil.getInstance().isValidNumber(phoneNumber)){
-                            editText.setError(context.getString(R.string.dynamic_error_phone_format));
+                            editText.setError(getContext().getString(R.string.dynamic_error_phone_format));
                             return;
                         }
                     }
@@ -508,7 +478,7 @@ public class DynamicTabAdapter extends BaseAdapter implements ITabAdapter {
 
         //Put image
         try {
-            InputStream inputStream = context.getAssets().open(option.getPath());
+            InputStream inputStream = getContext().getAssets().open(option.getPath());
             Bitmap bmp = BitmapFactory.decodeStream(inputStream);
             button.setImageBitmap(bmp);
         } catch (IOException e) {
@@ -533,7 +503,7 @@ public class DynamicTabAdapter extends BaseAdapter implements ITabAdapter {
      * @param option
      */
     private void highlightSelection(View view, Option option){
-        Drawable selectedBackground = context.getResources().getDrawable(R.drawable.background_dynamic_clicked_option);
+        Drawable selectedBackground = getContext().getResources().getDrawable(R.drawable.background_dynamic_clicked_option);
         if (Build.VERSION.SDK_INT > Build.VERSION_CODES.JELLY_BEAN) {    //JELLY_BEAN=API16
             view.setBackground(selectedBackground);
         } else {
@@ -589,7 +559,7 @@ public class DynamicTabAdapter extends BaseAdapter implements ITabAdapter {
      * Show a final dialog to announce the survey is over
      */
     private void showDone(){
-        final Activity activity=(Activity)context;
+        final Activity activity=(Activity)getContext();
         AlertDialog.Builder msgConfirmation = new AlertDialog.Builder((activity))
                 .setTitle(R.string.survey_title_completed)
                 .setMessage(R.string.survey_info_completed)
