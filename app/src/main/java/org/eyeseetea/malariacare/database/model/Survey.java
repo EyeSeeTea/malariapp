@@ -242,6 +242,14 @@ public class Survey extends BaseModel implements VisitableToSDK {
         return Constants.SURVEY_SENT==this.status;
     }
 
+    /**
+     * Checks if the survey has been completed or not
+     * @return true|false
+     */
+    public boolean isCompleted(){
+        return Constants.SURVEY_COMPLETED==this.status;
+    }
+
     public Float getMainScore() {
         //The main score is only return from a query 1 time
         if(this.mainScore==null){
@@ -534,6 +542,18 @@ public class Survey extends BaseModel implements VisitableToSDK {
         return new Select().from(Survey.class)
                 .where(Condition.column(Survey$Table.STATUS).eq(Constants.SURVEY_IN_PROGRESS))
                 .limit(String.valueOf(limit))
+                .orderBy(Survey$Table.EVENTDATE)
+                .orderBy(Survey$Table.ID_ORG_UNIT).queryList();
+    }
+
+    /**
+     * Returns the last surveys (by date) with status Completed or sent
+     * @return
+     */
+    public static List<Survey> getAllUncompletedUnsentSurveys() {
+        return new Select().from(Survey.class)
+                .where(Condition.column(Survey$Table.STATUS).eq(Constants.SURVEY_COMPLETED))
+                .or(Condition.column(Survey$Table.STATUS).eq(Constants.SURVEY_SENT))
                 .orderBy(Survey$Table.EVENTDATE)
                 .orderBy(Survey$Table.ID_ORG_UNIT).queryList();
     }
