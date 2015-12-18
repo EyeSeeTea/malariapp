@@ -22,8 +22,6 @@ package org.eyeseetea.malariacare.database.model;
 import android.util.Log;
 
 import com.raizlabs.android.dbflow.annotation.Column;
-import com.raizlabs.android.dbflow.annotation.ForeignKey;
-import com.raizlabs.android.dbflow.annotation.ForeignKeyReference;
 import com.raizlabs.android.dbflow.annotation.OneToMany;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;
@@ -32,12 +30,9 @@ import com.raizlabs.android.dbflow.sql.builder.Condition.In;
 import com.raizlabs.android.dbflow.sql.language.ColumnAlias;
 import com.raizlabs.android.dbflow.sql.language.Join;
 import com.raizlabs.android.dbflow.sql.language.Select;
-import com.raizlabs.android.dbflow.sql.language.Where;
 import com.raizlabs.android.dbflow.structure.BaseModel;
 
 import org.eyeseetea.malariacare.database.AppDatabase;
-import org.eyeseetea.malariacare.database.iomodules.dhis.exporter.IConvertToSDKVisitor;
-import org.eyeseetea.malariacare.database.iomodules.dhis.exporter.VisitableToSDK;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.utils.Constants;
@@ -314,6 +309,7 @@ public class Question extends BaseModel {
     public boolean hasParent() {
         if (parent == null) {
             long countChildQuestionRelations = new Select().count().from(QuestionRelation.class)
+                    .indexedBy("QuestionRelation_operation")
                     .where(Condition.column(QuestionRelation$Table.ID_QUESTION).eq(this.getId_question()))
                     .and(Condition.column(QuestionRelation$Table.OPERATION).eq(QuestionRelation.PARENT_CHILD))
                     .count();
@@ -326,6 +322,7 @@ public class Question extends BaseModel {
         if(questionRelations ==null){
             this.questionRelations = new Select()
                     .from(QuestionRelation.class)
+                    .indexedBy("QuestionRelation_id_question")
                     .where(Condition.column(QuestionRelation$Table.ID_QUESTION)
                             .eq(this.getId_question()))
                     .queryList();
@@ -340,6 +337,7 @@ public class Question extends BaseModel {
     public List<QuestionOption> getQuestionOption() {
         //if (this.children == null){
         return new Select().from(QuestionOption.class)
+                .indexedBy("QuestionOption_id_question")
                 .where(Condition.column(QuestionOption$Table.ID_QUESTION).eq(this.getId_question()))
                 .queryList();
         //}
@@ -433,6 +431,7 @@ public class Question extends BaseModel {
             return null;
         }
         List<Value> returnValues = new Select().from(Value.class)
+                .indexedBy("Value_id_survey")
                 .where(Condition.column(Value$Table.ID_QUESTION).eq(this.getId_question()))
                 .and(Condition.column(Value$Table.ID_SURVEY).eq(survey.getId_survey())).queryList();
 

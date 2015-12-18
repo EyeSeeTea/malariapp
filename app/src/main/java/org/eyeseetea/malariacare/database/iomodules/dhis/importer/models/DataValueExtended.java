@@ -44,6 +44,8 @@ public class DataValueExtended implements VisitableFromSDK {
 
     DataValue dataValue;
 
+    public DataValueExtended(){}
+
     public DataValueExtended(DataValue dataValue){
         this.dataValue =dataValue;
     }

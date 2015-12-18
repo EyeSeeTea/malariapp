@@ -138,6 +138,7 @@ public class QuestionRelation extends BaseModel {
     public List<Match> getMatches() {
         if(matches==null) {
             this.matches = new Select().from(Match.class)
+                    .indexedBy("Match_id_question_relation")
                     .where(Condition.column(Match$Table.ID_QUESTION_RELATION).eq(this.getId_question_relation()))
                     .queryList();
         }

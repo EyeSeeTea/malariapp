@@ -360,7 +360,7 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
             appQuestion.setAnswer((Answer) appMapObjects.get(dataElement.getOptionSet()));
         }
 
-        appQuestion.setHeader(questionBuilder.findHeader(dataElementExtended));
+        appQuestion.setHeader(questionBuilder.saveHeader(dataElementExtended));
         questionBuilder.registerParentChildRelations(dataElementExtended);
         appQuestion.save();
         questionBuilder.add(appQuestion);

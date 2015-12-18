@@ -49,40 +49,40 @@ public class QuestionBuilder {
     /**
      * Mapping all the questions
      */
-    Map<String, Question> mapQuestions;
+    static Map<String, Question> mapQuestions;
 
     /**
      * Mapping all the question parents
      */
-    Map<String, String> mapParent;
+    static Map<String, String> mapParent;
     /**
      * Mapping all the question type(child/parent)
      */
-    Map<String, String> mapType;
+    static Map<String, String> mapType;
     /**
      * Mapping all the question level(it is needed for know who are the parent)
      */
-    Map<String, String> mapLevel;
+    static Map<String, String> mapLevel;
     /**
      * Mapping all the Match question parents
      */
-    Map<String, String> mapMatchType;
+    static Map<String, String> mapMatchType;
     /**
      * Mapping all the Match question type(child/parent)
      */
-    Map<String, String> mapMatchLevel;
+    static Map<String, String> mapMatchLevel;
     /**
      * Mapping all the Match question level(it is needed for know who are the parent)
      */
-    Map<String, String> mapMatchParent;
+    static Map<String, String> mapMatchParent;
     /**
      * Mapping all the Match question level(it is needed for know who are the parent)
      */
-    Map<String, List<String>> mapMatchChilds;
+    static Map<String, List<String>> mapMatchChilds;
     /**
      * Mapping headers(it is needed for not duplicate data)
      */
-    Map<String, Header> mapHeader;
+    static Map<String, Header> mapHeader;
 
     /**
      * It is needed in the header order.
@@ -111,14 +111,12 @@ public class QuestionBuilder {
     }
 
     /**
-     * Save and return Header question
-     * <p/>
-     * The header check if exist before be saved.
+     * Save and return the Header the question represented by the given DataElement belongs to
      *
      * @param dataElementExtended
-     * @return header question
+     * @return question header
      */
-    public Header findHeader(DataElementExtended dataElementExtended) {
+    public Header saveHeader(DataElementExtended dataElementExtended) {
         Header header = null;
         String attributeHeaderValue = dataElementExtended.getValue(DataElementExtended.ATTRIBUTE_HEADER_NAME);
         if (attributeHeaderValue != null) {
