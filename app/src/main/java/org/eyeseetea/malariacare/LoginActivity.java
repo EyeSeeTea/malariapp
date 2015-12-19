@@ -127,7 +127,7 @@ public class LoginActivity extends org.hisp.dhis.android.sdk.ui.activities.Login
      */
     private void populateFromAssetsIfRequired() {
         //From server -> done
-        if(PreferencesState.getInstance().getPullFromServer()) {
+        if(PreferencesState.getInstance().getPullFromServer() && !Utils.isPictureQuestion()) {
             return;
         }
 
@@ -140,16 +140,22 @@ public class LoginActivity extends org.hisp.dhis.android.sdk.ui.activities.Login
      */
     private void populate() {
         try{
-            PullController.getInstance().wipeDatabase();
-            User user = new User();
-            user.save();
-            Session.setUser(user);
-            if(Utils.isPictureQuestion()) {
-                PopulatePictureAppDB.wipeDatabase();
-                PopulatePictureAppDB.populateDB(getAssets());
+            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+            if(!sharedPreferences.getBoolean(getApplicationContext().getResources().getString(R.string.is_populate), false)) {
+                User user = new User();
+                user.save();
+                Session.setUser(user);
+                PullController.getInstance().wipeDatabase();
+                if (Utils.isPictureQuestion()) {
+                    PopulatePictureAppDB.populateDB(getAssets());
+                } else {
+                    PopulateDB.populateDB(getAssets());
+                }
+
+                SharedPreferences.Editor editor = getPreferencesEditor();
+                editor.putBoolean(getString(R.string.is_populate), true);
+                editor.commit();
             }
-            else
-                PopulateDB.populateDB(getAssets());
         }catch(Exception ex){
         }
     }
@@ -158,12 +164,16 @@ public class LoginActivity extends org.hisp.dhis.android.sdk.ui.activities.Login
      * Saves user credentials into preferences
      */
     private void saveUserDetails(){
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
+        SharedPreferences.Editor editor = getPreferencesEditor();
         editor.putString(getString(R.string.dhis_url), this.serverUrl);
         editor.putString(getString(R.string.dhis_user), this.username);
         editor.putString(getString(R.string.dhis_password), this.password);
         editor.commit();
+    }
+
+    private SharedPreferences.Editor getPreferencesEditor() {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        return sharedPreferences.edit();
     }
 
 }

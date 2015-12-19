@@ -47,16 +47,12 @@ public class EyeSeeTeaApplication extends Dhis2Application  {
     public Class<? extends Activity> getMainActivity() {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         //Fixme it is used to ispicturequestion populate
-        if(Utils.isPictureQuestion()){
+        if ((User.getLoggedUser() != null && (sharedPreferences.getBoolean(getApplicationContext().getResources().getString(R.string.pull_metadata), false)) || Utils.isPictureQuestion())) {
             return new DashboardActivity().getClass();
-        }else {
-            if (User.getLoggedUser() != null && sharedPreferences.getBoolean(getApplicationContext().getResources().getString(R.string.pull_metadata), false)) {
-                return new DashboardActivity().getClass();
-            } else if (!ProgressActivity.PULL_CANCEL) {
-                return PreferencesState.getInstance().getMainActivity();
-            } else {
-                return LoginActivity.class;
-            }
+        } else if (!ProgressActivity.PULL_CANCEL) {
+            return PreferencesState.getInstance().getMainActivity();
+        } else {
+            return LoginActivity.class;
         }
     }
 
