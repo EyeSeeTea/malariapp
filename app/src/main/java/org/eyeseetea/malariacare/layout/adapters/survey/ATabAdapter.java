@@ -118,7 +118,7 @@ public abstract class ATabAdapter extends BaseAdapter implements  ITabAdapter{
 
     public List<? extends BaseModel> getItems(){ return this.items; }
 
-    public void setItems(List<? extends BaseModel>  items) {
+    public void setItems(List<? extends BaseModel> items) {
         this.items = items;
     }
 }

@@ -21,6 +21,7 @@ package org.eyeseetea.malariacare.layout.adapters.survey;
 
 import android.app.Activity;
 import android.content.Context;
+import android.telephony.PhoneNumberFormattingTextWatcher;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.TextWatcher;
@@ -28,6 +29,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.NumberPicker;
 import android.widget.RadioGroup;
@@ -35,6 +37,9 @@ import android.widget.RelativeLayout;
 import android.widget.Spinner;
 
 import com.google.common.primitives.Booleans;
+import com.google.i18n.phonenumbers.NumberParseException;
+import com.google.i18n.phonenumbers.PhoneNumberUtil;
+import com.google.i18n.phonenumbers.Phonenumber;
 import com.raizlabs.android.dbflow.structure.BaseModel;
 
 import org.eyeseetea.malariacare.R;
@@ -61,6 +66,7 @@ import org.eyeseetea.malariacare.views.filters.MinMaxInputFilter;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Created by Jose on 21/04/2015.
@@ -296,7 +302,10 @@ public class AutoTabAdapter extends ATabAdapter {
             case Constants.INT:
             case Constants.LONG_TEXT:
             case Constants.POSITIVE_INT:
+                ((CustomEditText) viewHolder.component).setText(ReadWriteDB.readValueQuestion(question));
+                break;
             case Constants.PHONE:
+                //((CustomPhone) viewHolder.component).setText(ReadWriteDB.readValueQuestion(question));
                 ((CustomEditText) viewHolder.component).setText(ReadWriteDB.readValueQuestion(question));
                 break;
             case Constants.NUMERIC_PICKER:
@@ -439,11 +448,10 @@ public class AutoTabAdapter extends ATabAdapter {
                     rowView = AutoTabLayoutUtils.initialiseView(layoutId, parent, question, viewHolder, position, getInflater());
 
                     //Add main component, set filters and listener
-                    ((CustomEditText) viewHolder.component).setFilters(new InputFilter[]{new InputFilter.LengthFilter(Constants.MAX_INT_CHARS),new MinMaxInputFilter(1, null)});
+                    ((CustomEditText) viewHolder.component).setFilters(new InputFilter[]{new InputFilter.LengthFilter(Constants.MAX_INT_CHARS), new MinMaxInputFilter(1, null)});
                     ((CustomEditText) viewHolder.component).addTextChangedListener(new TextViewListener(false, question));
                     break;
                 case Constants.INT:
-                case Constants.PHONE:
                     if(Utils.isPictureQuestion())
                         layoutId=R.layout.integer_pictureapp;
                     else
@@ -454,6 +462,45 @@ public class AutoTabAdapter extends ATabAdapter {
                     //Add main component, set filters and listener
                     ((CustomEditText) viewHolder.component).setFilters(new InputFilter[]{new InputFilter.LengthFilter(Constants.MAX_INT_CHARS)});
                     ((CustomEditText) viewHolder.component).addTextChangedListener(new TextViewListener(false, question));
+                    break;
+                case Constants.PHONE:
+                    //Fixme not tried.
+                    if(Utils.isPictureQuestion())
+                        layoutId=R.layout.shorttext_pictureapp;
+                    else
+                        layoutId=R.layout.shorttext;
+
+                    rowView = AutoTabLayoutUtils.initialiseView(layoutId, parent, question, viewHolder, position, getInflater());
+
+                    ((CustomEditText) viewHolder.component).addTextChangedListener(new TextViewListener(false, question));
+                    ((CustomEditText) viewHolder.component).addTextChangedListener(new PhoneNumberFormattingTextWatcher());
+                    ((CustomEditText) viewHolder.component).setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            View parentView = (View) v.getParent();
+                            EditText editText = (EditText) parentView.findViewById(R.id.dynamic_phone_edit);
+                            String phoneValue = editText.getText().toString();
+
+                            //Optional, empty values allowed
+                            if (phoneValue == null || "".equals(phoneValue)) {
+                                phoneValue = "";
+                            } else {
+                                // Check phone number format
+                                Phonenumber.PhoneNumber phoneNumber = null;
+                                try {
+                                    Locale locale = getContext().getResources().getConfiguration().locale;
+                                    phoneNumber = PhoneNumberUtil.getInstance().parse(phoneValue, locale.getCountry());
+                                } catch (NumberParseException e) {
+                                    editText.setError(getContext().getString(R.string.dynamic_error_phone_format));
+                                    return;
+                                }
+                                if (!PhoneNumberUtil.getInstance().isValidNumber(phoneNumber)) {
+                                    editText.setError(getContext().getString(R.string.dynamic_error_phone_format));
+                                    return;
+                                }
+                            }
+                        }
+                    });
                     break;
                 case Constants.NUMERIC_PICKER:
                     rowView = AutoTabLayoutUtils.initialiseView(R.layout.numeric_picker, parent, question, viewHolder, position, getInflater());
@@ -568,21 +615,21 @@ public class AutoTabAdapter extends ATabAdapter {
 
     private void createGraphicOutput(int position, ViewGroup parent, Question question, AutoTabLayoutUtils.ViewHolder viewHolder, LayoutInflater inflater, Context context) {
 
-        View rowView = AutoTabLayoutUtils.initialiseView(R.layout.ddl, parent, question, this.viewHolder, position, getInflater());
+        View rowView = AutoTabLayoutUtils.initialiseView(R.layout.ddl, parent, question, viewHolder, position, getInflater());
 
-        AutoTabLayoutUtils.initialiseScorableComponent(rowView, this.viewHolder);
+        AutoTabLayoutUtils.initialiseScorableComponent(rowView, viewHolder);
 
         // In case the option is selected, we will need to show num/dems
         List<Option> optionList = question.getAnswer().getOptions();
         optionList.add(0, new Option(Constants.DEFAULT_SELECT_OPTION));
-        Spinner spinner = (Spinner) this.viewHolder.component;
+        Spinner spinner = (Spinner) viewHolder.component;
         spinner.setAdapter(new OptionArrayAdapter(getContext(), optionList));
 
         //Add Listener
         if (!question.hasRelatives())
-            ((Spinner) this.viewHolder.component).setOnItemSelectedListener(new SpinnerListener(false, question, this.viewHolder));
+            ((Spinner) viewHolder.component).setOnItemSelectedListener(new SpinnerListener(false, question, viewHolder));
         else
-            autoFillAnswer(this.viewHolder, question);
+            autoFillAnswer(viewHolder, question);
     }
 
     /**

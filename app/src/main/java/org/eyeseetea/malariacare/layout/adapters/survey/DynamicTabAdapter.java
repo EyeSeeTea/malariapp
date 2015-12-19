@@ -341,7 +341,7 @@ public class DynamicTabAdapter  extends ATabAdapter {
 
     }
 
-    private void hideKeyboard(Context c, View v){
+    private void hideKeyboard(Context c, View v) {
         InputMethodManager keyboard = (InputMethodManager) c.getSystemService(Context.INPUT_METHOD_SERVICE);
         keyboard.hideSoftInputFromWindow(v.getWindowToken(), 0);
     }
@@ -724,7 +724,7 @@ public class DynamicTabAdapter  extends ATabAdapter {
                     onClick(clickedView);
                     return true;
                 }
-                
+
                 //Not found, not consumed
                 return false;
             }
