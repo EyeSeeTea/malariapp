@@ -159,7 +159,7 @@ public class Option extends BaseModel {
             optionAttribute = new Select()
                     .from(OptionAttribute.class)
                     .where(Condition.column(OptionAttribute$Table.ID_OPTION_ATTRIBUTE)
-                            .is(id_answer)).querySingle();
+                            .is(id_optionAttribute)).querySingle();
         }
         return optionAttribute;
     }

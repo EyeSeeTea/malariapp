@@ -22,8 +22,6 @@ package org.eyeseetea.malariacare.database.model;
 import android.util.Log;
 
 import com.raizlabs.android.dbflow.annotation.Column;
-import com.raizlabs.android.dbflow.annotation.ForeignKey;
-import com.raizlabs.android.dbflow.annotation.ForeignKeyReference;
 import com.raizlabs.android.dbflow.annotation.OneToMany;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;
@@ -32,13 +30,9 @@ import com.raizlabs.android.dbflow.sql.builder.Condition.In;
 import com.raizlabs.android.dbflow.sql.language.ColumnAlias;
 import com.raizlabs.android.dbflow.sql.language.Join;
 import com.raizlabs.android.dbflow.sql.language.Select;
-import com.raizlabs.android.dbflow.sql.language.Where;
 import com.raizlabs.android.dbflow.structure.BaseModel;
-import com.squareup.okhttp.internal.Util;
 
 import org.eyeseetea.malariacare.database.AppDatabase;
-import org.eyeseetea.malariacare.database.iomodules.dhis.exporter.IConvertToSDKVisitor;
-import org.eyeseetea.malariacare.database.iomodules.dhis.exporter.VisitableToSDK;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.utils.Constants;
@@ -360,7 +354,7 @@ public class Question extends BaseModel {
            return getChildren();
        }
     }
-
+    //@OneToMany(methods = {OneToMany.Method.SAVE, OneToMany.Method.DELETE}, variableName = "questionRelations")
     public List<QuestionRelation> getQuestionRelations() {
         if(questionRelations ==null){
             this.questionRelations = new Select()
@@ -418,7 +412,7 @@ public class Question extends BaseModel {
     }
 
 
-    @OneToMany(methods = {OneToMany.Method.SAVE, OneToMany.Method.DELETE}, variableName = "children")
+    //@OneToMany(methods = {OneToMany.Method.SAVE, OneToMany.Method.DELETE}, variableName = "children")
     public List<Question> getChildren() {
         if(!Utils.isPictureQuestion()){
 
@@ -842,7 +836,7 @@ public class Question extends BaseModel {
             return false;
         }
     }
-    
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
