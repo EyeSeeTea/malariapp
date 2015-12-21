@@ -26,8 +26,8 @@ import org.eyeseetea.malariacare.database.model.Option;
 import org.eyeseetea.malariacare.database.model.Question;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.model.Tab;
+import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.Session;
-import org.eyeseetea.malariacare.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -60,7 +60,7 @@ public class ScoreRegister {
             if (!question.isHiddenBySurvey(survey)) {
                 question.initScore(survey);
             }
-            else if(Utils.isPictureQuestion())
+            else if(PreferencesState.isPictureQuestion())
                 addRecord(question, 0F, calcDenum(question));
         }
     }
@@ -80,7 +80,7 @@ public class ScoreRegister {
     }
 
     private static List<Float> getRecursiveScore(CompositeScore cScore, List<Float> result) {
-if(Utils.isPictureQuestion()){
+if(PreferencesState.isPictureQuestion()){
 
     if (!cScore.hasChildren()) {
 
@@ -113,7 +113,7 @@ if(Utils.isPictureQuestion()){
     }
 
     public static Float getCompositeScore(CompositeScore cScore) {
-    if(Utils.isPictureQuestion()){
+    if(PreferencesState.isPictureQuestion()){
         List<Float>result = compositeScoreMap.get(cScore).calculateNumDenTotal(new ArrayList<Float>(Arrays.asList(0F, 0F)));
         result = getRecursiveScore(cScore, result);
         return ScoreUtils.calculateScoreFromNumDen(result);

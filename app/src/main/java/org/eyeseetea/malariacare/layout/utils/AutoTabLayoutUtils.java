@@ -299,7 +299,7 @@ public class AutoTabLayoutUtils {
         ReadWriteDB.saveValuesDDL(question, option);
         Float num;
         Float denum;
-        if(Utils.isPictureQuestion()) {
+        if(PreferencesState.isPictureQuestion()) {
             num = ScoreRegister.calcNum(question);
             denum = ScoreRegister.calcDenum(question);
         }
@@ -308,7 +308,7 @@ public class AutoTabLayoutUtils {
             denum=totalDenum;
         }
         recalculateScores(viewHolder, question, num, denum);
-        if(Utils.isPictureQuestion()) {
+        if(PreferencesState.isPictureQuestion()) {
             if (question.hasChildren()) {
                 toggleChildrenVisibility(question, elementInvisibility, num, denum);
             }
@@ -409,7 +409,7 @@ public class AutoTabLayoutUtils {
             Float num = ScoreRegister.calcNum(question);
             Float denum = ScoreRegister.calcDenum(question);
 
-            if(!Utils.isPictureQuestion()) {
+            if(!PreferencesState.isPictureQuestion()) {
                 num = totalNum + num;
                 denum = totalDenum + denum;
             }
@@ -425,7 +425,7 @@ public class AutoTabLayoutUtils {
         for (Option option : question.getAnswer().getOptions()) {
             CustomRadioButton button;
             int layoutId;
-            if(Utils.isPictureQuestion())
+            if(PreferencesState.isPictureQuestion())
                 layoutId=R.layout.uncheckeable_radiobutton_pictureapp;
             else
                 layoutId=R.layout.uncheckeable_radiobutton;

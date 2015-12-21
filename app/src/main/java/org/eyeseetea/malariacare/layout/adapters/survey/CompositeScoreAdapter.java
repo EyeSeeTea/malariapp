@@ -28,6 +28,7 @@ import android.widget.ListView;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.model.CompositeScore;
 import org.eyeseetea.malariacare.database.model.Tab;
+import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 import org.eyeseetea.malariacare.utils.Utils;
@@ -53,7 +54,7 @@ public class CompositeScoreAdapter extends ATabAdapter {
 
     public static CompositeScoreAdapter build(Tab tab, Context context) {
         int layoutId;
-        if(Utils.isPictureQuestion())
+        if(PreferencesState.isPictureQuestion())
             layoutId=R.layout.composite_score_header_pictureapp;
         else
             layoutId=R.layout.composite_score_tab;
@@ -65,7 +66,7 @@ public class CompositeScoreAdapter extends ATabAdapter {
         ListView compositeScoreListView = (ListView) ((Activity) getContext()).findViewById(R.id.listView);
         ViewGroup header;
         int layoutId;
-        if(Utils.isPictureQuestion())
+        if(PreferencesState.isPictureQuestion())
             layoutId=R.layout.composite_score_header_pictureapp;
         else
             layoutId=R.layout.composite_score_header;
@@ -91,7 +92,7 @@ public class CompositeScoreAdapter extends ATabAdapter {
         CompositeScore item = (CompositeScore) getItem(position);
 
         int layoutId;
-        if(Utils.isPictureQuestion())
+        if(PreferencesState.isPictureQuestion())
             layoutId=R.layout.composite_scores_record_pictureapp;
         else
             layoutId=R.layout.composite_scores_record;

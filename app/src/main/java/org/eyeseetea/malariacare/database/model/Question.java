@@ -33,10 +33,10 @@ import com.raizlabs.android.dbflow.sql.language.Select;
 import com.raizlabs.android.dbflow.structure.BaseModel;
 
 import org.eyeseetea.malariacare.database.AppDatabase;
+import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.utils.Constants;
-import org.eyeseetea.malariacare.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -149,21 +149,6 @@ public class Question extends BaseModel {
         this.setAnswer(answer);
         this.setCompositeScore(compositeScore);
         this.setQuestion(question);
-    }
-   public Question(String code, String de_name, String short_name, String form_name, String uid, Integer order_pos, Float numerator_w, Float denominator_w, Header header, Answer answer, Question question, CompositeScore compositeScore) {
-       this.code = code;
-       this.de_name = de_name;
-       this.short_name = short_name;
-       this.form_name = form_name;
-       this.uid = uid;
-       this.order_pos = order_pos;
-       this.numerator_w = numerator_w;
-       this.denominator_w = denominator_w;
-       
-       this.setHeader(header);
-       this.setAnswer(answer);
-       this.setCompositeScore(compositeScore);
-       this.setQuestion(question);
     }
 
     public Long getId_question() {
@@ -338,7 +323,7 @@ public class Question extends BaseModel {
     }
 
     public boolean hasParent() {
-        if(Utils.isPictureQuestion()){
+        if(PreferencesState.isPictureQuestion()){
             return getQuestion() != null;}
         else{
         if (parent == null) {
@@ -354,7 +339,7 @@ public class Question extends BaseModel {
     }
 
    public List<Question> getQuestionChildren() {
-       if(Utils.isPictureQuestion()) {
+       if(PreferencesState.isPictureQuestion()) {
            if (this.children == null) {
                this.children = new Select().from(Question.class)
                        .where(Condition.column(Question$Table.ID_QUESTION)
@@ -429,7 +414,7 @@ public class Question extends BaseModel {
 
     //@OneToMany(methods = {OneToMany.Method.SAVE, OneToMany.Method.DELETE}, variableName = "children")
     public List<Question> getChildren() {
-        if(!Utils.isPictureQuestion()){
+        if(!PreferencesState.isPictureQuestion()){
 
         if (this.children == null) {
 
@@ -474,7 +459,7 @@ public class Question extends BaseModel {
     public boolean hasRelatives() {return !getRelatives().isEmpty(); }
 
     public boolean hasChildren(){
-        if(Utils.isPictureQuestion()){
+        if(PreferencesState.isPictureQuestion()){
             return !getQuestionChildren().isEmpty();
         }
             return !getChildren().isEmpty();
@@ -565,7 +550,7 @@ public class Question extends BaseModel {
      */
     public boolean isHiddenBySurvey(Survey survey) {
         //No question relations
-        if(Utils.isPictureQuestion()){
+        if(PreferencesState.isPictureQuestion()){
 
             Question parent=this.getQuestion();
             //There is a parent question and it is not answered
@@ -629,7 +614,7 @@ public class Question extends BaseModel {
      * @return
      */
     public static int countRequiredByProgram(Program program) {
-        if (program == null || program.getId_program() == null) {
+        if (program == null || program.getId_program() == null || PreferencesState.isPictureQuestion())  {
             return 0;
         }
         /**

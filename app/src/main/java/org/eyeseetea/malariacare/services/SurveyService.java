@@ -21,21 +21,19 @@ package org.eyeseetea.malariacare.services;
 
 import android.app.IntentService;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
 import com.raizlabs.android.dbflow.sql.builder.Condition;
 import com.raizlabs.android.dbflow.sql.language.Select;
 
-import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.model.CompositeScore;
 import org.eyeseetea.malariacare.database.model.Program;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.model.Survey$Table;
 import org.eyeseetea.malariacare.database.model.Tab;
 import org.eyeseetea.malariacare.database.model.Tab$Table;
+import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.database.utils.feedback.Feedback;
 import org.eyeseetea.malariacare.database.utils.feedback.FeedbackBuilder;
@@ -197,7 +195,7 @@ public class SurveyService extends IntentService {
 
         List<Survey> unsentSurveys=new ArrayList<>();
         List<Survey> sentSurveys=new ArrayList<>();
-        if(Utils.isPictureQuestion()) {
+        if(PreferencesState.isPictureQuestion()) {
             for (Survey survey : surveys) {
                 if (!survey.isSent() && !survey.isHide()) {
                     unsentSurveys.add(survey);
@@ -328,7 +326,7 @@ public class SurveyService extends IntentService {
 
         //Get composite scores for current program & register them (scores)
         //List<CompositeScore> compositeScores = CompositeScore.listAllByProgram(program);
-        if(Utils.isPictureQuestion()){
+        if(PreferencesState.isPictureQuestion()){
             Log.d(TAG, "prepareSurveyInfo (Thread:" + Thread.currentThread().getId() + ")");
 
             Survey survey=Session.getSurvey();

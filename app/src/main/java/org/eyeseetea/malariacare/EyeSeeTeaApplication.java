@@ -41,14 +41,9 @@ import org.eyeseetea.malariacare.database.model.Value;
 import org.eyeseetea.malariacare.database.model.Value$Table;
 import org.eyeseetea.malariacare.database.utils.LocationMemory;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
-import org.eyeseetea.malariacare.utils.Utils;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.phonemetadata.PhoneMetaData;
 import org.hisp.dhis.android.sdk.persistence.Dhis2Application;
-import org.hisp.dhis.android.sdk.persistence.models.Attribute;
-import org.hisp.dhis.android.sdk.persistence.models.Attribute$Table;
-import org.hisp.dhis.android.sdk.persistence.models.AttributeValue;
-import org.hisp.dhis.android.sdk.persistence.models.AttributeValue$Table;
 import org.hisp.dhis.android.sdk.persistence.models.ProgramStage;
 import org.hisp.dhis.android.sdk.persistence.models.ProgramStage$Table;
 import org.hisp.dhis.android.sdk.persistence.models.ProgramStageDataElement;
@@ -64,7 +59,7 @@ public class EyeSeeTeaApplication extends Dhis2Application  {
     public Class<? extends Activity> getMainActivity() {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         //Fixme it is used to ispicturequestion populate
-        if ((User.getLoggedUser() != null && (sharedPreferences.getBoolean(getApplicationContext().getResources().getString(R.string.pull_metadata), false)) || Utils.isPictureQuestion())) {
+        if ((User.getLoggedUser() != null && (sharedPreferences.getBoolean(getApplicationContext().getResources().getString(R.string.pull_metadata), false)) || PreferencesState.isPictureQuestion())) {
             return new DashboardActivity().getClass();
         } else if (!ProgressActivity.PULL_CANCEL) {
             return PreferencesState.getInstance().getMainActivity();
@@ -103,20 +98,6 @@ public class EyeSeeTeaApplication extends Dhis2Application  {
     public void onTerminate() {
         super.onTerminate();
         FlowManager.destroy();
-    }
-
-
-    public Class<? extends Activity> getMainActivity() {
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        if (User.getLoggedUser() != null && sharedPreferences.getBoolean(getApplicationContext().getResources().getString(R.string.pull_metadata),false)){
-            return new DashboardActivity().getClass();
-        }else if(!ProgressActivity.PULL_CANCEL) {
-            return PreferencesState.getInstance().getMainActivity();
-        }
-        else{
-            return LoginActivity.class;
-        }
-
     }
 
     private void createDBIndexes(){

@@ -24,7 +24,7 @@ import android.view.LayoutInflater;
 
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.model.Survey;
-import org.eyeseetea.malariacare.utils.Utils;
+import org.eyeseetea.malariacare.database.utils.PreferencesState;
 
 import java.util.List;
 
@@ -34,7 +34,7 @@ public class AssessmentSentAdapter extends AAssessmentAdapter implements IAssess
         this.items = items;
         this.context = context;
         this.lInflater = LayoutInflater.from(context);
-        if(Utils.isPictureQuestion()) {
+        if(PreferencesState.isPictureQuestion()) {
             this.headerLayout = R.layout.assessment_sent_header_pictureapp;
             this.footerLayout = R.layout.assessment_sent_footer_pictureapp;
         }

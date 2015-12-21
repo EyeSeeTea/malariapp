@@ -28,9 +28,6 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.widget.EditText;
 
-import com.raizlabs.android.dbflow.sql.language.Select;
-import com.squareup.okhttp.HttpUrl;
-import com.squareup.okhttp.internal.Util;
 import com.squareup.otto.Subscribe;
 
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.PullController;
@@ -38,10 +35,7 @@ import org.eyeseetea.malariacare.database.model.User;
 import org.eyeseetea.malariacare.database.utils.PopulateDB;
 import org.eyeseetea.malariacare.database.utils.PopulatePictureAppDB;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
-import org.eyeseetea.malariacare.database.utils.PopulatePictureAppDB;
 import org.eyeseetea.malariacare.database.utils.Session;
-import org.eyeseetea.malariacare.utils.Utils;
-import org.hisp.dhis.android.sdk.controllers.DhisService;
 import org.hisp.dhis.android.sdk.job.NetworkJob;
 import org.hisp.dhis.android.sdk.persistence.Dhis2Application;
 import org.hisp.dhis.android.sdk.persistence.preferences.ResourceType;
@@ -127,7 +121,7 @@ public class LoginActivity extends org.hisp.dhis.android.sdk.ui.activities.Login
      */
     private void populateFromAssetsIfRequired() {
         //From server -> done
-        if(PreferencesState.getInstance().getPullFromServer() && !Utils.isPictureQuestion()) {
+        if(PreferencesState.getInstance().getPullFromServer() && !PreferencesState.isPictureQuestion()) {
             return;
         }
 
@@ -146,7 +140,7 @@ public class LoginActivity extends org.hisp.dhis.android.sdk.ui.activities.Login
                 user.save();
                 Session.setUser(user);
                 PullController.getInstance().wipeDatabase();
-                if (Utils.isPictureQuestion()) {
+                if (PreferencesState.isPictureQuestion()) {
                     PopulatePictureAppDB.populateDB(getAssets());
                 } else {
                     PopulateDB.populateDB(getAssets());
@@ -165,7 +159,7 @@ public class LoginActivity extends org.hisp.dhis.android.sdk.ui.activities.Login
      */
     private void saveUserDetails(){
         SharedPreferences.Editor editor = getPreferencesEditor();
-        if(Utils.isPictureQuestion()){
+        if(PreferencesState.isPictureQuestion()){
             editor.putString(getString(R.string.dhis_url), "https://dev.psi-mis.org");
             editor.putString(getString(R.string.dhis_user), "KHMCS");
             editor.putString(getString(R.string.dhis_password), "KHMCSadmin1");

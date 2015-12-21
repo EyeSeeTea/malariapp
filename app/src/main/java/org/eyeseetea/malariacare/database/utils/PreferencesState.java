@@ -55,6 +55,7 @@ public class PreferencesState {
     private boolean showNumDen;
 
     private Boolean pullFromServer;
+    static Boolean isPicture;
 
     /**
      * Map that holds the relationship between a scale and a set of dimensions
@@ -220,5 +221,12 @@ public class PreferencesState {
         }
 
         return DashboardActivity.class;
+    }
+
+    public static boolean isPictureQuestion(){
+        if(isPicture==null){
+            isPicture = context.getResources().getBoolean(R.bool.picture);
+        }
+        return isPicture;
     }
 }

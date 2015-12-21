@@ -35,8 +35,8 @@ import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.UserAcc
 import org.eyeseetea.malariacare.database.model.User;
 import org.eyeseetea.malariacare.database.utils.PopulateDB;
 import org.eyeseetea.malariacare.database.utils.PopulatePictureAppDB;
+import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.Session;
-import org.eyeseetea.malariacare.utils.Utils;
 import org.hisp.dhis.android.sdk.controllers.DhisService;
 import org.hisp.dhis.android.sdk.controllers.LoadingController;
 import org.hisp.dhis.android.sdk.controllers.metadata.MetaDataController;
@@ -198,7 +198,7 @@ public class PullController {
     public void wipeDatabase() {
         if (!ProgressActivity.PULL_IS_ACTIVE) return;
         Log.d(TAG, "Deleting app database...");
-        if(Utils.isPictureQuestion()){
+        if(PreferencesState.isPictureQuestion()){
             PopulatePictureAppDB.wipeDatabase();
         }
         else

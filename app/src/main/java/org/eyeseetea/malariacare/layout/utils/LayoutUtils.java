@@ -38,6 +38,7 @@ import org.eyeseetea.malariacare.database.model.Header;
 import org.eyeseetea.malariacare.database.model.Question;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.model.Value;
+import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.utils.Utils;
 import org.eyeseetea.malariacare.views.CustomTextView;
@@ -95,7 +96,7 @@ public class LayoutUtils {
 
     // Used to setup the usual actionbar with the logo and the app name
     public static void setActionBarLogo(ActionBar actionBar){
-        if(Utils.isPictureQuestion()){
+        if(PreferencesState.isPictureQuestion()){
             //// FIXME: 08/12/2015
             //actionBar.setLogo(R.drawable.pictureapp_logo);
             //actionBar.setIcon(R.drawable.pictureapp_logo);

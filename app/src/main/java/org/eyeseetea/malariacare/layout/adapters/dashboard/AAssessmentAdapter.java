@@ -33,9 +33,9 @@ import com.raizlabs.android.dbflow.sql.language.Select;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.model.TabGroup;
+import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.SurveyAnsweredRatio;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
-import org.eyeseetea.malariacare.utils.Utils;
 import org.eyeseetea.malariacare.views.CustomTextView;
 
 import java.text.DateFormat;
@@ -56,7 +56,7 @@ public abstract class AAssessmentAdapter extends ADashboardAdapter implements ID
         this.context = context;
         this.lInflater = LayoutInflater.from(context);
 
-        if(Utils.isPictureQuestion()) {
+        if(PreferencesState.isPictureQuestion()) {
             this.headerLayout = R.layout.assessment_header_pictureapp;
             this.recordLayout = R.layout.assessment_record_pictureapp;
             this.footerLayout = R.layout.assessment_footer_pictureapp;
@@ -79,7 +79,7 @@ public abstract class AAssessmentAdapter extends ADashboardAdapter implements ID
         // Get the row layout
         View rowView = this.lInflater.inflate(getRecordLayout(), parent, false);
         rowView.setPadding(paddingDp, paddingDp, paddingDp, paddingDp);
-        if(Utils.isPictureQuestion()) {
+        if(PreferencesState.isPictureQuestion()) {
             //INFO
             CustomTextView info;
 

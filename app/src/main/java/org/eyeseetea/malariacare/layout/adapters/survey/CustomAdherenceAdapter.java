@@ -40,6 +40,7 @@ import org.eyeseetea.malariacare.database.model.Option;
 import org.eyeseetea.malariacare.database.model.Question;
 import org.eyeseetea.malariacare.database.model.Tab;
 import org.eyeseetea.malariacare.database.model.Value;
+import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.ReadWriteDB;
 import org.eyeseetea.malariacare.layout.adapters.general.OptionArrayAdapter;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
@@ -123,7 +124,7 @@ public class CustomAdherenceAdapter extends ATabAdapter {
         List<? extends BaseModel> items= Utils.convertTabToArrayCustom(tab);
         super.setItems(items);
         if (getItems().size()> 0) {
-            if (Utils.isPictureQuestion()) {
+            if (PreferencesState.isPictureQuestion()) {
                 position_secondheader = LayoutUtils.getNumberOfQuestionParentsHeader((Header) items.get(0)) + 1;
             } else {
                 position_secondheader = (int) ((Header) getItems().get(0)).getNumberOfQuestionParents() + 1;
@@ -247,7 +248,7 @@ public class CustomAdherenceAdapter extends ATabAdapter {
         if (position < position_secondheader) {
             if (item instanceof Header) {
                 int layoutId;
-                if (Utils.isPictureQuestion())
+                if (PreferencesState.isPictureQuestion())
                     layoutId = R.layout.adherencetab_header1_pictureapp;
                 else
                     layoutId = R.layout.adherencetab_header1;
@@ -260,7 +261,7 @@ public class CustomAdherenceAdapter extends ATabAdapter {
                 final ViewHolder viewHolder = new ViewHolder();
 
                 int layoutId;
-                if (Utils.isPictureQuestion())
+                if (PreferencesState.isPictureQuestion())
                     layoutId = R.layout.pharmacy_register_pictureapp;
                 else
                     layoutId = R.layout.pharmacy_register;
@@ -299,7 +300,7 @@ public class CustomAdherenceAdapter extends ATabAdapter {
                     @Override
                     public void onTextChanged(CharSequence s, int start, int before, int count) {
                         if (viewCreated.value) {
-                            if(Utils.isPictureQuestion())
+                            if(PreferencesState.isPictureQuestion())
                                 ReadWriteDB.saveValuesText(question.getQuestionChildren().get(2), s.toString());
                         } else viewCreated.value = true;
                     }
@@ -377,7 +378,7 @@ public class CustomAdherenceAdapter extends ATabAdapter {
 
             if (item instanceof Header) {
                 int layoutId;
-                if (Utils.isPictureQuestion())
+                if (PreferencesState.isPictureQuestion())
                     layoutId = R.layout.adherencetab_header2_pictureapp;
                 else
                     layoutId = R.layout.adherencetab_header2;
@@ -390,7 +391,7 @@ public class CustomAdherenceAdapter extends ATabAdapter {
                 final ViewHolder2 viewHolder2 = new ViewHolder2();
 
                 int layoutId;
-                if (Utils.isPictureQuestion())
+                if (PreferencesState.isPictureQuestion())
                     layoutId = R.layout.pharmacy_register2_pictureapp;
                 else
                     layoutId = R.layout.pharmacy_register2;

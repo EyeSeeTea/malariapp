@@ -45,12 +45,12 @@ import com.raizlabs.android.dbflow.sql.language.Select;
 import com.squareup.otto.Subscribe;
 
 import org.eyeseetea.malariacare.database.model.CompositeScore;
-import org.eyeseetea.malariacare.database.model.Option;
 import org.eyeseetea.malariacare.database.model.OrgUnit;
 import org.eyeseetea.malariacare.database.model.Program;
 import org.eyeseetea.malariacare.database.model.Question;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.model.Tab;
+import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.layout.adapters.general.TabArrayAdapter;
 import org.eyeseetea.malariacare.layout.adapters.survey.AutoTabAdapter;
@@ -62,7 +62,6 @@ import org.eyeseetea.malariacare.layout.adapters.survey.DynamicTabAdapter;
 import org.eyeseetea.malariacare.layout.adapters.survey.ITabAdapter;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
-import org.eyeseetea.malariacare.network.PushClient;
 import org.eyeseetea.malariacare.services.SurveyService;
 import org.eyeseetea.malariacare.utils.Constants;
 import org.eyeseetea.malariacare.utils.Utils;
@@ -156,7 +155,7 @@ public class SurveyActivity extends BaseActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d(TAG, "onCreate");
-        if (Utils.isPictureQuestion()) {
+        if (PreferencesState.isPictureQuestion()) {
             setContentView(R.layout.surveypictureapp);
             registerReceiver();
             createActionBar();
@@ -174,7 +173,7 @@ public class SurveyActivity extends BaseActivity{
     public void onResume() {
         Log.d(TAG, "onResume");
         super.onResume();
-        if (Utils.isPictureQuestion()) {
+        if (PreferencesState.isPictureQuestion()) {
             prepareSurveyInfo();
         } else
             this.tabAdapter.notifyDataSetChanged();
@@ -191,7 +190,7 @@ public class SurveyActivity extends BaseActivity{
     public void onBackPressed() {
         Log.d(TAG, "onBackPressed");
         int infoMessage;
-        if (Utils.isPictureQuestion()) {
+        if (PreferencesState.isPictureQuestion()) {
             Survey survey = Session.getSurvey();
             infoMessage = survey.isInProgress() ? R.string.survey_info_exit_delete : R.string.survey_info_exit;
         } else {
@@ -205,7 +204,7 @@ public class SurveyActivity extends BaseActivity{
                     public void onClick(DialogInterface dialog, int arg1) {
                         ScoreRegister.clear();
                         unregisterReceiver();
-                        if (Utils.isPictureQuestion()) {
+                        if (PreferencesState.isPictureQuestion()) {
                             isBackPressed = true;
                         }
                         finishAndGo(DashboardActivity.class);
@@ -215,7 +214,7 @@ public class SurveyActivity extends BaseActivity{
 
     @Override
     public void onPause() {
-        if (Utils.isPictureQuestion()) {
+        if (PreferencesState.isPictureQuestion()) {
             beforeExit();
         } else {
             Survey survey = Session.getSurvey();
@@ -311,7 +310,7 @@ public class SurveyActivity extends BaseActivity{
             Log.d(TAG, "doInBackground(" + Thread.currentThread().getId() + ")..");
 
             View view = null;
-            if (Utils.isPictureQuestion()) {
+            if (PreferencesState.isPictureQuestion()) {
                 view = prepareTab(tab);
             } else {
                 if (tab.isGeneralScore()) {
@@ -330,7 +329,7 @@ public class SurveyActivity extends BaseActivity{
             try {
                 content.removeAllViews();
                 content.addView(viewContent);
-                if (Utils.isPictureQuestion()) {
+                if (PreferencesState.isPictureQuestion()) {
 
                     ITabAdapter tabAdapter = tabAdaptersCache.findAdapter(tab);
                     if (tab.getType() == Constants.TAB_AUTOMATIC_SCORED ||
@@ -375,7 +374,7 @@ public class SurveyActivity extends BaseActivity{
 
         android.support.v7.app.ActionBar actionBar = this.getSupportActionBar();
         LayoutUtils.setActionBarLogo(actionBar);
-        if (Utils.isPictureQuestion()) {
+        if (PreferencesState.isPictureQuestion()) {
             OrgUnit orgUnit = survey.getOrgUnit();
             LayoutUtils.setActionBarText(actionBar, getApplicationContext().getResources().getString(R.string.organisation_unit), orgUnit.getName());
 
@@ -393,7 +392,7 @@ public class SurveyActivity extends BaseActivity{
     private void createProgress() {
         int layoutContent;
         int layoutProgressBar;
-        if(Utils.isPictureQuestion()){
+        if(PreferencesState.isPictureQuestion()){
             layoutContent=R.id.content_pictureapp;
             layoutProgressBar=R.id.survey_progress_pictureapp;
         }
@@ -533,7 +532,7 @@ public class SurveyActivity extends BaseActivity{
      */
     private void stopProgress(){
         this.progressBar.setVisibility(View.GONE);
-        if(!Utils.isPictureQuestion())
+        if(!PreferencesState.isPictureQuestion())
         this.spinner.setVisibility(View.VISIBLE);
         this.content.setVisibility(View.VISIBLE);
 
@@ -588,7 +587,7 @@ public class SurveyActivity extends BaseActivity{
 
         this.tabsList.clear();
         this.tabsList.addAll(tabs);
-        if (Utils.isPictureQuestion()) {
+        if (PreferencesState.isPictureQuestion()) {
             new AsyncChangeTab(tabs.get(0)).execute((Void) null);
         } else {
             this.tabAdapter.notifyDataSetChanged();
@@ -643,7 +642,7 @@ public class SurveyActivity extends BaseActivity{
             tabAdaptersCache.reloadAdapters(tabs, compositeScores);
             reloadTabs(tabs);
             stopProgress();
-            if (!Utils.isPictureQuestion()) {
+            if (!PreferencesState.isPictureQuestion()) {
                 // After loading first tab we start the individual services that preload the items for the rest of tabs
                 preLoadItems();
             }
@@ -711,7 +710,7 @@ public class SurveyActivity extends BaseActivity{
         public void reloadAdapters(List<Tab> tabs, List<CompositeScore> compositeScores){
             Tab firstTab=tabs.get(0);
             this.adapters.clear();
-            if (Utils.isPictureQuestion()) {
+            if (PreferencesState.isPictureQuestion()) {
                 Log.d(TAG,firstTab.toString()+" AdapterTAB "+buildAdapter(firstTab).getAdapter().isEmpty()+"");
                 this.adapters.put(firstTab, buildAdapter(firstTab));
             } else {
@@ -750,7 +749,7 @@ public class SurveyActivity extends BaseActivity{
          * @return
          */
         private ITabAdapter buildAdapter(Tab tab) {
-            if (Utils.isPictureQuestion()) {
+            if (PreferencesState.isPictureQuestion()) {
                 Log.d(TAG,"Type: "+tab.getType());
                 if (tab.isCompositeScore()) {
 

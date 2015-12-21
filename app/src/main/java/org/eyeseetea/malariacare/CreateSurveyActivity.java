@@ -42,6 +42,7 @@ import org.eyeseetea.malariacare.database.model.Program;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.model.TabGroup;
 import org.eyeseetea.malariacare.database.utils.LocationMemory;
+import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.layout.adapters.general.OrgUnitArrayAdapter;
 import org.eyeseetea.malariacare.layout.adapters.general.ProgramArrayAdapter;
@@ -49,7 +50,6 @@ import org.eyeseetea.malariacare.layout.adapters.general.TabGroupArrayAdapter;
 import org.eyeseetea.malariacare.layout.listeners.SurveyLocationListener;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 import org.eyeseetea.malariacare.utils.Constants;
-import org.eyeseetea.malariacare.utils.Utils;
 import org.eyeseetea.malariacare.views.CustomTextView;
 import org.hisp.dhis.android.sdk.events.UiEvent;
 
@@ -90,7 +90,7 @@ public class CreateSurveyActivity extends BaseActivity {
         // Manage uncaught exceptions that may occur
         //Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(this));
 
-        if(Utils.isPictureQuestion())
+        if(PreferencesState.isPictureQuestion())
             setContentView(R.layout.activity_create_survey_pictureapp);
         else
             setContentView(R.layout.activity_create_survey);
@@ -102,7 +102,7 @@ public class CreateSurveyActivity extends BaseActivity {
         orgUnitDefaultOption = new OrgUnit(Constants.DEFAULT_SELECT_OPTION);
         programDefaultOption = new Program(Constants.DEFAULT_SELECT_OPTION);
 
-        if (Utils.isPictureQuestion()) {
+        if (PreferencesState.isPictureQuestion()) {
 
 
             //Populate Organization Unit DDL
@@ -222,7 +222,7 @@ public class CreateSurveyActivity extends BaseActivity {
      * Called when the user clicks the Send button
      */
     public void createSurvey(View view) {
-        if(Utils.isPictureQuestion()) {
+        if(PreferencesState.isPictureQuestion()) {
 
             Log.i(".CreateSurveyActivity", "Saving survey and saving in session");
 

@@ -32,6 +32,7 @@ import org.eyeseetea.malariacare.database.model.Header;
 import org.eyeseetea.malariacare.database.model.Option;
 import org.eyeseetea.malariacare.database.model.Question;
 import org.eyeseetea.malariacare.database.model.Tab;
+import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.ReadWriteDB;
 import org.eyeseetea.malariacare.layout.adapters.general.OptionArrayAdapter;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
@@ -76,7 +77,7 @@ public class CustomIQTABAdapter extends ATabAdapter {
     public CustomIQTABAdapter(Tab tab, Context context) {
         super(tab, context, R.layout.form_custom);
 
-        if (Utils.isPictureQuestion()) {
+        if (PreferencesState.isPictureQuestion()) {
             super.setItems(Utils.convertTabToArrayCustom(tab));
 
             if (getItems().size() > 0)
@@ -133,7 +134,7 @@ public class CustomIQTABAdapter extends ATabAdapter {
 
     @Override
     public int getCount() {
-        if (Utils.isPictureQuestion()) {
+        if (PreferencesState.isPictureQuestion()) {
             return getItems().size();
         } else
             return 2 * number_rows_section;

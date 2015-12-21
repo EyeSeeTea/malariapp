@@ -33,11 +33,11 @@ import com.raizlabs.android.dbflow.structure.BaseModel;
 import org.eyeseetea.malariacare.database.AppDatabase;
 import org.eyeseetea.malariacare.database.iomodules.dhis.exporter.IConvertToSDKVisitor;
 import org.eyeseetea.malariacare.database.iomodules.dhis.exporter.VisitableToSDK;
+import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.SurveyAnsweredRatio;
 import org.eyeseetea.malariacare.database.utils.SurveyAnsweredRatioCache;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.utils.Constants;
-import org.eyeseetea.malariacare.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -494,9 +494,9 @@ public class Survey extends BaseModel implements VisitableToSDK {
      * @return SurveyAnsweredRatio that hold the total & answered questions.
      */
     private SurveyAnsweredRatio reloadSurveyAnsweredRatio(){
-        if(Utils.isPictureQuestion()){
+        if(PreferencesState.isPictureQuestion()){
 
-            int numRequired= Question.countRequiredByProgram(this.getProgram());
+            int numRequired= Question.countRequiredByProgram(this.getTabGroup().getProgram());
             int numOptional=0;
             int numAnswered = Value.countBySurvey(this);
 
@@ -570,7 +570,7 @@ public class Survey extends BaseModel implements VisitableToSDK {
         }
 
         SurveyAnsweredRatio answeredRatio=this.reloadSurveyAnsweredRatio();
-        if(Utils.isPictureQuestion()){
+        if(PreferencesState.isPictureQuestion()){
             if((answeredRatio.getAnswered()==7) || (answeredRatio.getTotal()==0 && answeredRatio.getAnswered()==1)) {
                 this.setStatus(Constants.SURVEY_COMPLETED);
                 this.setCompletionDate(new Date());
@@ -590,15 +590,17 @@ public class Survey extends BaseModel implements VisitableToSDK {
             }
         }
 
-        //Update status
-        this.setStatus(answeredRatio.isCompleted() ? Constants.SURVEY_COMPLETED : Constants.SURVEY_IN_PROGRESS);
+        if(!PreferencesState.isPictureQuestion()) {
+            //Update status
+            this.setStatus(answeredRatio.isCompleted() ? Constants.SURVEY_COMPLETED : Constants.SURVEY_IN_PROGRESS);
 
-        //CompletionDate
-        this.setCompletionDate(new Date());
+            //CompletionDate
+            this.setCompletionDate(new Date());
 
-        //it is needed for calculate the score in the completed surveys but not sent.
-        saveScore();
+            //it is needed for calculate the score in the completed surveys but not sent.
+            saveScore();
 
+        }
         //Saves new status & completionDate
         this.save();
     }
@@ -642,7 +644,7 @@ public class Survey extends BaseModel implements VisitableToSDK {
      * @return
      */
     public static List<Survey> getAllUnsentSurveys() {
-        if(Utils.isPictureQuestion()){
+        if(PreferencesState.isPictureQuestion()){
             return new Select().from(Survey.class)
                     .where(Condition.column(Survey$Table.STATUS).isNot(Constants.SURVEY_SENT))
                     .and(Condition.column(Survey$Table.STATUS).isNot(Constants.SURVEY_HIDE))
@@ -663,7 +665,7 @@ public class Survey extends BaseModel implements VisitableToSDK {
      * @return
      */
     public static List<Survey> getUnsentSurveys(int limit) {
-        if(Utils.isPictureQuestion()){        return new Select().from(Survey.class)
+        if(PreferencesState.isPictureQuestion()){        return new Select().from(Survey.class)
                 .where(Condition.column(Survey$Table.STATUS).isNot(Constants.SURVEY_SENT))
                 .and(Condition.column(Survey$Table.STATUS).isNot(Constants.SURVEY_HIDE))
                 .limit(String.valueOf(limit))
@@ -707,7 +709,7 @@ public class Survey extends BaseModel implements VisitableToSDK {
      * @return
      */
     public static List<Survey> getSentSurveys(int limit) {
-        if(Utils.isPictureQuestion()){
+        if(PreferencesState.isPictureQuestion()){
             return new Select().from(Survey.class)
                     .where(Condition.column(Survey$Table.STATUS).eq(Constants.SURVEY_SENT))
                     .or(Condition.column(Survey$Table.STATUS).eq(Constants.SURVEY_HIDE))

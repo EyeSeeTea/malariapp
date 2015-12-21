@@ -24,8 +24,6 @@ import android.content.Intent;
 import android.location.Location;
 import android.util.Log;
 
-import com.squareup.okhttp.Response;
-
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.model.CompositeScore;
 import org.eyeseetea.malariacare.database.model.Question;
@@ -44,7 +42,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 
@@ -178,7 +175,7 @@ public class PrepareData {
         values = prepareCompositeScores(values, survey);
 
         //Add main scores values
-        if (!Utils.isPictureQuestion())
+        if (!PreferencesState.isPictureQuestion())
             values = prepareControlDataElementValues(values, survey);
 
         data.put(TAG_DATAVALUES, values);
@@ -305,7 +302,7 @@ public class PrepareData {
 
     private JSONArray prepareCompositeScores(JSONArray values, Survey survey) throws Exception {
 
-        if (Utils.isPictureQuestion()) {
+        if (PreferencesState.isPictureQuestion()) {
             //Cleans score
             ScoreRegister.clear();
 
@@ -364,7 +361,7 @@ public class PrepareData {
     private JSONObject prepareValue(Value value) throws Exception {
         JSONObject elementObject = new JSONObject();
         elementObject.put(TAG_DATAELEMENT, value.getQuestion().getUid());
-        if (Utils.isPictureQuestion())
+        if (PreferencesState.isPictureQuestion())
             elementObject.put(TAG_VALUE, value.getValue());
 
         if (value.getOption() != null)
@@ -401,7 +398,7 @@ public class PrepareData {
     public void updateSurveyState(Survey survey){
         //Change status and save mainScore
         survey.setStatus(Constants.SURVEY_SENT);
-        if(Utils.isPictureQuestion()){
+        if(PreferencesState.isPictureQuestion()){
             survey.save();
             //Reload data using service
             Intent surveysIntent=new Intent(applicationContext, SurveyService.class);

@@ -44,6 +44,7 @@ import org.eyeseetea.malariacare.ProgressActivity;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.SurveyActivity;
 import org.eyeseetea.malariacare.database.model.Survey;
+import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.layout.adapters.dashboard.AssessmentUnsentAdapter;
 import org.eyeseetea.malariacare.layout.adapters.dashboard.IDashboardAdapter;
@@ -52,8 +53,6 @@ import org.eyeseetea.malariacare.network.PushClient;
 import org.eyeseetea.malariacare.network.PushResult;
 import org.eyeseetea.malariacare.receivers.AlarmPushReceiver;
 import org.eyeseetea.malariacare.services.SurveyService;
-import org.eyeseetea.malariacare.utils.Constants;
-import org.eyeseetea.malariacare.utils.Utils;
 import org.eyeseetea.malariacare.views.CustomTextView;
 
 import java.util.ArrayList;
@@ -158,7 +157,7 @@ public class DashboardUnsentFragment extends ListFragment {
         Session.setSurvey(surveys.get(position - 1));
         //Go to SurveyActivity
         ((DashboardActivity) getActivity()).go(SurveyActivity.class);
-        if(!Utils.isPictureQuestion())
+        if(!PreferencesState.isPictureQuestion())
         getActivity().finish();
     }
 
@@ -247,7 +246,7 @@ public class DashboardUnsentFragment extends ListFragment {
         listView.setLongClickable(true);
 
         //The picture survey had a diferent dialogs and result
-        if(Utils.isPictureQuestion())
+        if(PreferencesState.isPictureQuestion())
             initPictureListView(listView);
         else
             initMalariaListView(listView);
@@ -356,7 +355,7 @@ public class DashboardUnsentFragment extends ListFragment {
         Boolean b=pushClient.isValidOrgUnit();
         Boolean c=pushClient.getIsInvalidServer();
         //if(!newListSurveys.isEmpty()  && pushClient.isValidOrgUnit() && !pushClient.getIsInvalidServer() ) {
-        if(Utils.isPictureQuestion()) {
+        if(PreferencesState.isPictureQuestion()) {
             Survey.removeInProgress();//This is for remove the incompleted surveys before push.
             alarmPush.setPushAlarm(getActivity());
         }
@@ -379,7 +378,7 @@ public class DashboardUnsentFragment extends ListFragment {
     public void reloadUncompletedUnsentSurveys(){
         List<Survey> surveysUncompletedUnsentFromService = (List<Survey>) Session.popServiceValue(SurveyService.ALL_UNCOMPLETED_UNSENT_SURVEYS_ACTION);
         reloadSurveys(surveysUncompletedUnsentFromService);
-        if(Utils.isPictureQuestion())
+        if(PreferencesState.isPictureQuestion())
             if(surveysUncompletedUnsentFromService.size()>0) {
                 manageSurveysAlarm(surveysUncompletedUnsentFromService);
             }
