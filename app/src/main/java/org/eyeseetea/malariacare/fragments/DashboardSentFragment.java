@@ -137,7 +137,7 @@ public class DashboardSentFragment extends ListFragment {
     private void initFilters(View view) {
         filterSpinnerProgram = (Spinner) getActivity().findViewById(R.id.filter_program);
 
-        List<Program> programList = new Select().all().from(Program.class).queryList();
+        List<Program> programList = Program.getAllPrograms();
         programList.add(0, new Program(PROGRAM_WITHOUT_FILTER));
         filterSpinnerProgram.setAdapter(new ProgramArrayAdapter(this.getActivity().getApplicationContext(), programList));
         filterSpinnerProgram.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -169,7 +169,7 @@ public class DashboardSentFragment extends ListFragment {
         });
         filterSpinnerOrgUnit = (Spinner) getActivity().findViewById(R.id.filter_orgunit);
 
-        List<OrgUnit> orgUnitList = new Select().all().from(OrgUnit.class).queryList();;
+        List<OrgUnit> orgUnitList = OrgUnit.getAllOrgUnit();
         orgUnitList.add(0, new OrgUnit(ORG_UNIT_WITHOUT_FILTER));
         filterSpinnerOrgUnit.setAdapter(new OrgUnitArrayAdapter(getActivity().getApplicationContext(), orgUnitList));
         filterSpinnerOrgUnit.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {

@@ -168,6 +168,10 @@ public class OrgUnit extends BaseModel {
         return surveys;
     }
 
+    public static List<OrgUnit> getAllOrgUnit() {
+        return new Select().all().from(OrgUnit.class).queryList();
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

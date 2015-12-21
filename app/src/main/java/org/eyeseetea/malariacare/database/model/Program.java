@@ -94,6 +94,10 @@ public class Program extends BaseModel{
         return this.tabGroups;
     }
 
+    public static List<Program> getAllPrograms(){
+        return new Select().all().from(Program.class).queryList();
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
