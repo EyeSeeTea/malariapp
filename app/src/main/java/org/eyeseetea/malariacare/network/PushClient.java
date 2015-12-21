@@ -69,27 +69,6 @@ public class PushClient {
 
     private static String DHIS_PUSH_API="/api/events";
 
-    private static String DHIS_ANALYTICS_CONTROL_DATA ="/api/analytics/events/query/";
-    private static String DHIS_PUSH_CONTROL_DATA ="/api/events/";
-
-    public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
-
-    private static String COMPLETED="COMPLETED";
-
-    private static String TAG_PROGRAM="program";
-    private static String TAG_ORG_UNIT="orgUnit";
-    private static String TAG_EVENTDATE="eventDate";
-    private static String TAG_STATUS="status";
-    private static String TAG_STOREDBY="storedBy";
-    private static String TAG_COORDINATE="coordinate";
-    private static String TAG_COORDINATE_LAT="latitude";
-    private static String TAG_COORDINATE_LNG="longitude";
-    private static String TAG_DATAVALUES="dataValues";
-    private static String TAG_DATAELEMENT="dataElement";
-    private static String TAG_VALUE="value";
-
-//PictureQuestion
-
     private static String DHIS_SERVER ="https://www.psi-mis.org";
     private static final String DHIS_PULL_PROGRAM="/api/programs/";
     private static final String DHIS_PULL_ORG_UNIT_API ="/api/organisationUnits.json?paging=false&fields=id,closedDate&filter=code:eq:%s&filter:programs:id:eq:%s";
@@ -97,7 +76,6 @@ public class PushClient {
     private static final String DHIS_EXIST_PROGRAM=".json?fields=id";
     private static final String DHIS_PATCH_URL_CLOSED_DATE ="/api/organisationUnits/%s/closedDate";
     private static final String DHIS_PATCH_URL_DESCRIPTIONCLOSED_DATE="/api/organisationUnits/%s/description";
-    private static final String DHIS_PATCH_DESCRIPTIONCLOSED_DATE ="[%s] - Android Surveillance App set the closing date to %s because over 30 surveys were pushed within 1 hour.";
 
     //The boolean BANNED and INVALID_SERVER control if the org unit is banned or the server is invalid
     private static Boolean BANNED=false;
@@ -110,24 +88,26 @@ public class PushClient {
 
     public static String DHIS_UID_PROGRAM="";
 
-    private static String DHIS_USERNAME="KHMCS";
-    //Todo: introduce final password
-    private static String DHIS_PASSWORD="KHMCSadmin1";
-
     public static String DHIS_ORG_NAME ="";
     private static String DHIS_ORG_UID ="";
 
 
-    private static final String TAG_CLOSEDATA="closedDate";
-    private static final String TAG_DESCRIPTIONCLOSEDATA="description";
     private static final String TAG_ORGANISATIONUNIT="organisationUnits";
     private static final String TAG_ID = "id";
 
 
-    private static String TAG_PHONEMETADA="RuNZUhiAmlv";
+    private static final String TAG_CLOSEDATA="closedDate";
 
     private static int DHIS_LIMIT_SENT_SURVEYS_IN_ONE_HOUR=30;
     private static int DHIS_LIMIT_HOURS=1;
+
+
+    public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
+
+
+
+//PictureQuestion
+
 
     Survey survey;
     String user;
@@ -156,16 +136,16 @@ public class PushClient {
         try{
             //TODO: This should be removed once DHIS bug is solved
             //Map<String, JSONObject> controlData = prepareControlData();
-            prepareSurveyCompletionDate();
-            JSONObject data = prepareMetadata();
+            PrepareData.getInstance().prepareSurveyCompletionDate(survey);
+            JSONObject data = PrepareData.getInstance().prepareMetadata(survey);
             //TODO: This should be removed once DHIS bug is solved
             //data = prepareDataElements(data, controlData.get(""));
-            data = prepareDataElements(data, null);
+            data = PrepareData.getInstance().prepareDataElements(data, survey);
             pushResult = new PushResult(pushData(data));
             if(pushResult.isSuccessful() && !pushResult.getImported().equals("0")){
                 //TODO: This should be removed once DHIS bug is solved
                 //pushControlDataElements(controlData);
-                updateSurveyState();
+                PrepareData.getInstance().updateSurveyState(survey);
             }
         }catch(Exception ex){
             Log.e(TAG, ex.getMessage());
@@ -178,147 +158,11 @@ public class PushClient {
         return  pushResult;
     }
 
-    public void prepareSurveyCompletionDate(){
-        if(!this.survey.isSent()) {
-            this.survey.setCompletionDate(new Date());
-            this.survey.save();
-        }
-    }
-
     public void updateDashboard(){
         //Reload data using service
         Intent surveysIntent=new Intent(applicationContext, SurveyService.class);
         surveysIntent.putExtra(SurveyService.SERVICE_METHOD, SurveyService.RELOAD_DASHBOARD_ACTION);
         applicationContext.startService(surveysIntent);
-    }
-
-    /**
-     * Adds metadata info to json object
-     * @return JSONObject with program, orgunit, eventdate and so on...
-     * @throws Exception
-     */
-    private JSONObject prepareMetadata() throws Exception{
-        Log.d(TAG, "prepareMetadata for survey: " + survey.getId_survey());
-        JSONObject object=new JSONObject();
-        object.put(TAG_PROGRAM, survey.getTabGroup().getProgram().getUid());
-        object.put(TAG_ORG_UNIT, survey.getOrgUnit().getUid());
-        object.put(TAG_EVENTDATE, android.text.format.DateFormat.format("yyyy-MM-dd", survey.getCompletionDate()));
-        object.put(TAG_STATUS,COMPLETED );
-        object.put(TAG_STOREDBY, survey.getUser().getName());
-
-        Location lastLocation = LocationMemory.get(survey.getId_survey());
-        //If location is required but there is no location -> exception
-        if(PreferencesState.getInstance().isLocationRequired() && lastLocation==null){
-            throw new Exception(applicationContext.getString(R.string.dialog_error_push_no_location_and_required));
-        }
-        //Otherwise (not required or there are coords)
-        object.put(TAG_COORDINATE, prepareCoordinates(lastLocation));
-
-        //Fixme create phone metadata value
-        //PhoneMetaData phoneMetaData= Session.getPhoneMetaData();
-        //object.put(TAG_PHONEMETADA, phoneMetaData.getPhone_metaData());
-
-        Log.d(TAG, "prepareMetadata: " + object.toString());
-        return object;
-    }
-
-    /**
-     * Adds a pair dataElement|value according to the passed value.
-     * Format: {dataValues: [{dataElement:'234567',value:'34'}, ...]}
-     * @param value
-     * @return
-     * @throws Exception
-     */
-    private JSONObject preparePhoneValue(String uid, String value) throws Exception{
-        JSONObject elementObject = new JSONObject();
-        elementObject.put(TAG_DATAELEMENT, uid);
-        elementObject.put(TAG_VALUE, value);
-        return elementObject;
-    }
-
-    private JSONObject prepareCoordinates(Location location) throws Exception{
-
-        JSONObject coordinate = new JSONObject();
-
-        if(location==null){
-            coordinate.put(TAG_COORDINATE_LAT, JSONObject.NULL);
-            coordinate.put(TAG_COORDINATE_LNG, JSONObject.NULL);
-        }else{
-            coordinate.put(TAG_COORDINATE_LAT, location.getLatitude());
-            coordinate.put(TAG_COORDINATE_LNG, location.getLongitude());
-        }
-
-        return coordinate;
-    }
-
-    /**
-     * Adds questions and scores values to the JSON object
-     * Format: {dataValues: [{dataElement:'234567',value:'34'}, ...]}
-     * @param data JSON object to update
-     * @throws Exception
-     */
-    private JSONObject prepareDataElements(JSONObject data, JSONObject controlDataElements)throws Exception{
-        Log.d(TAG, "prepareDataElements for survey: " + survey.getId_survey());
-
-        //Add dataElement per values
-        //TODO: This should be removed once DHIS bug is solved
-        //JSONArray values=prepareValues(new JSONArray(), controlDataElements.getJSONArray("root"));
-        JSONArray values=prepareValues(new JSONArray(), null);
-
-        //Add dataElement per compositeScores
-        values=prepareCompositeScores(values);
-
-        //Add main scores values
-        if(!Utils.isPictureQuestion())
-        values= prepareControlDataElementValues(values);
-
-        data.put(TAG_DATAVALUES, values);
-        Log.d(TAG, "prepareDataElements result: " + data.toString());
-        return data;
-    }
-
-    /**
-     * Adds 4 additional values:
-     *  - Main score
-     *  - Boolean flag is type A
-     *  - Boolean flag is type B
-     *  - Boolean flag is type C
-     * @param values
-     * @return
-     */
-    private JSONArray prepareControlDataElementValues(JSONArray values) throws Exception{
-        JSONObject dataElement;
-        //Main score
-        dataElement = new JSONObject();
-        dataElement.put(TAG_DATAELEMENT, applicationContext.getString(R.string.main_score));
-        dataElement.put(TAG_VALUE, survey.getType());
-        values.put(dataElement);
-
-        //Type A
-        dataElement = new JSONObject();
-        dataElement.put(TAG_DATAELEMENT, applicationContext.getString(R.string.main_score_a));
-        dataElement.put(TAG_VALUE, survey.isTypeA() ? "true" : "false");
-        values.put(dataElement);
-
-        //Type B
-        dataElement = new JSONObject();
-        dataElement.put(TAG_DATAELEMENT, applicationContext.getString(R.string.main_score_b));
-        dataElement.put(TAG_VALUE, survey.isTypeB() ? "true" : "false");
-        values.put(dataElement);
-
-        //Type C
-        dataElement = new JSONObject();
-        dataElement.put(TAG_DATAELEMENT, applicationContext.getString(R.string.main_score_c));
-        dataElement.put(TAG_VALUE, survey.isTypeC() ? "true" : "false");
-        values.put(dataElement);
-
-        //Forward Order
-        dataElement = new JSONObject();
-        dataElement.put(TAG_DATAELEMENT, applicationContext.getString(R.string.forward_order));
-        dataElement.put(TAG_VALUE, applicationContext.getString(R.string.forward_order_value));
-        values.put(dataElement);
-
-        return values;
     }
 
     public PushResult pushBackground() {
@@ -329,8 +173,8 @@ public class PushClient {
         //if (isNetworkAvailable() && !INVALID_SERVER && isValidOrgUnit() &&  checkAll() && !BANNED  ) {
         if (isNetworkAvailable()) {
             try {
-                JSONObject data = prepareMetadata();
-                data = prepareDataElements(data);
+                JSONObject data = PrepareData.getInstance().prepareMetadata(survey);
+                data = PrepareData.getInstance().prepareDataElements(data, survey);
                 PushResult result = new PushResult(pushData(data));
                 if (result.isSuccessful()) {
                     this.survey.setStatus(Constants.SURVEY_SENT);
@@ -383,6 +227,20 @@ public class PushClient {
     }
 
     /**
+     * Pushes data to DHIS Server
+     * @param data
+     */
+    private JSONObject pushPictureData(JSONObject data)throws Exception {
+
+        Response response = executeCall(data, DHIS_PUSH_API, "POST");
+
+        if(!response.isSuccessful()){
+            Log.e(TAG, "pushData (" + response.code()+"): "+response.body().string());
+            throw new IOException(response.message());
+        }
+        return parseResponse(response.body().string());
+    }
+    /**
      * compares the dates of the surveys and checks if the dates are over the limit
      * @param surveyList all the sent surveys
      * @return true if the surveys are over the limit
@@ -424,104 +282,6 @@ public class PushClient {
             patchDescriptionClosedDate(getPatchClosedDescriptionUrl(url, orgid));
         } catch (Exception e) {
             e.printStackTrace();
-        }
-    }
-
-    //Patch the closedDate data in the server
-    private void patchClosedDate(String url){
-        //https://malariacare.psi.org/api/organisationUnits/u5jlxuod8xQ/closedDate
-        try {
-            String DHIS_PATCH_URL=url;
-            JSONObject data =prepareTodayDateValue();
-            Response response=executeCall(data, DHIS_PATCH_URL, "PATCH");
-            Log.e(TAG, "closingDatePatch (" + response.code() + "): " + response.body().string());
-            if(!response.isSuccessful()){
-                Log.e(TAG, "closingDatePatch (" + response.code() + "): " + response.body().string());
-                throw new IOException(response.message());
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-    /**
-     * Patch in the server the new description in a closed organisation
-     * @param url the patch url
-     */
-
-    private void patchDescriptionClosedDate(String url) throws Exception{
-        //https://malariacare.psi.org/api/organisationUnits/Pg91OgEIKIm/description
-        try {
-            String DHIS_PATCH_URL = url;
-            JSONObject data =prepareClosingDescriptionValue(url);
-
-            Response response=executeCall(data, DHIS_PATCH_URL, "PATCH");
-            if(!response.isSuccessful()){
-                Log.e(TAG, "closingDateDescriptionPatch (" + response.code() + "): " + response.body().string());
-                throw new IOException(response.message());
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    /**
-     * Pull the current description and adds new closed organization description.
-     * @url url for pull the current description
-     * @return new description.
-     */
-    private JSONObject prepareClosingDescriptionValue(String url) throws Exception{
-        String actualDescription= getCurrentDescription(url);
-        String dateFormatted=Utils.getClosingDateString("dd-MM-yyyy");
-        String dateTimestamp=Utils.getClosingDateTimestamp(Utils.getClosingDateString("dd-MM-yyyy")).getTime()+"";
-        String description=String.format(DHIS_PATCH_DESCRIPTIONCLOSED_DATE,dateTimestamp, dateFormatted);
-        StringBuilder sb = new StringBuilder();
-        sb.append(actualDescription);
-        sb.append("");//next line
-        sb.append("");//next line
-        sb.append(description);
-        description=sb.toString();
-        sb=null;
-        JSONObject elementObject = new JSONObject();
-        elementObject.put(TAG_DESCRIPTIONCLOSEDATA, description);
-        Log.d(TAG, "closingDateURL:Description:" + description);
-        return elementObject;
-    }
-    /**
-     * Prepare the closing value.
-     * @return Closing value as Json.
-     */
-    private JSONObject prepareClosingDateValue() throws Exception {
-        String dateFormatted=Utils.getClosingDateString("yyyy-MM-dd");
-        JSONObject elementObject = new JSONObject();
-        elementObject.put(TAG_CLOSEDATA, dateFormatted);
-        Log.d("closingDateURL", "closingDateURL:EndDate:" + dateFormatted);
-        return elementObject;
-    }
-
-    /**
-     * Prepare the closing value.
-     * @return Closing value as Json.
-     */
-    private JSONObject prepareTodayDateValue() throws Exception {
-        String dateFormatted=Utils.geTodayDataString("yyyy-MM-dd");
-        JSONObject elementObject = new JSONObject();
-        elementObject.put(TAG_CLOSEDATA, dateFormatted);
-        Log.d("closingDateURL", "closingDateURL:EndDate:" + dateFormatted);
-        return elementObject;
-    }
-
-    public void updateSurveyState(){
-        //Change status and save mainScore
-        this.survey.setStatus(Constants.SURVEY_SENT);
-        if(Utils.isPictureQuestion()){
-            this.survey.save();
-            //Reload data using service
-            Intent surveysIntent=new Intent(applicationContext, SurveyService.class);
-            surveysIntent.putExtra(SurveyService.SERVICE_METHOD, SurveyService.RELOAD_DASHBOARD_ACTION);
-            applicationContext.startService(surveysIntent);
-        }
-        else{
-            this.survey.saveMainScore();
         }
     }
 
@@ -654,7 +414,7 @@ public class PushClient {
         JSONArray responseArray=null;
         OkHttpClient client= UnsafeOkHttpsClientFactory.getUnsafeOkHttpClient();
 
-        Log.d(TAG,"Url"+DHIS_PULL_URL+"");
+        Log.d(TAG, "Url" + DHIS_PULL_URL + "");
         BasicAuthenticator basicAuthenticator =new BasicAuthenticator();
         client.setAuthenticator(basicAuthenticator);
         Log.d("URL",DHIS_PULL_URL);
@@ -794,7 +554,7 @@ public class PushClient {
         String DHIS_PULL_URL=url;
         OkHttpClient client= UnsafeOkHttpsClientFactory.getUnsafeOkHttpClient();
 
-        Log.d(TAG,"Url"+DHIS_PULL_URL+"");
+        Log.d(TAG, "Url" + DHIS_PULL_URL + "");
         BasicAuthenticator basicAuthenticator =new BasicAuthenticator();
         client.setAuthenticator(basicAuthenticator);
 
@@ -828,150 +588,40 @@ public class PushClient {
         return description;
     }
 
-    /**
-     * Adds questions and scores values to the JSON object
-     * Format: {dataValues: [{dataElement:'234567',value:'34'}, ...]}
-     * @param data JSON object to update
-     * @throws Exception
-     */
-    private JSONObject prepareDataElements(JSONObject data)throws Exception{
-        Log.d(TAG, "prepareDataElements for survey: " + survey.getId_survey());
-
-        //Add dataElement per values
-        JSONArray values=prepareValues(new JSONArray());
-
-        //Add dataElement per compositeScores
-        values=prepareCompositeScores(values);
-
-        data.put(TAG_DATAVALUES, values);
-        Log.d(TAG, "prepareDataElements result: " + data.toString());
-        return data;
-    }
-    /**
-     * Add a dataElement per value (answer)
-     * @param values
-     * @return
-     * @throws Exception
-     */
-    private JSONArray prepareValues(JSONArray values,JSONArray controlDataElements) throws Exception{
-        List<Value> surveyValues=survey.getValues();
-        if(surveyValues==null || surveyValues.size()==0){
-            throw new Exception(applicationContext.getString(R.string.dialog_info_push_empty_survey));
-        }
-
-        for (Value value : surveyValues) {
-            values.put(prepareValue(value));
-        }
-
-        //TODO: This should be removed once DHIS bug is solved
-        if (controlDataElements != null) {
-            for (int i = 0; i < controlDataElements.length(); i++) {
-                values.put(controlDataElements.get(i));
+    //Patch the closedDate data in the server
+    private void patchClosedDate(String url){
+        //https://malariacare.psi.org/api/organisationUnits/u5jlxuod8xQ/closedDate
+        try {
+            String DHIS_PATCH_URL=url;
+            JSONObject data =PrepareData.getInstance().prepareTodayDateValue();
+            Response response=executeCall(data, DHIS_PATCH_URL, "PATCH");
+            Log.e(TAG, "closingDatePatch (" + response.code() + "): " + response.body().string());
+            if(!response.isSuccessful()){
+                Log.e(TAG, "closingDatePatch (" + response.code() + "): " + response.body().string());
+                throw new IOException(response.message());
             }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        return values;
     }
     /**
-     *
-     * Add a dataElement per value (answer)
-     * @param values
-     * @return
-     * @throws Exception
+     * Patch in the server the new description in a closed organisation
+     * @param url the patch url
      */
-    private JSONArray prepareValues(JSONArray values) throws Exception{
-        for (Value value : survey.getValues()) {
-            values.put(prepareValue(value));
-        }
-        return values;
-    }
+    private void patchDescriptionClosedDate(String url) throws Exception{
+        //https://malariacare.psi.org/api/organisationUnits/Pg91OgEIKIm/description
+        try {
+            String DHIS_PATCH_URL = url;
+            JSONObject data =PrepareData.getInstance().prepareClosingDescriptionValue(url, getCurrentDescription(url));
 
-    private JSONArray prepareCompositeScores(JSONArray values) throws Exception{
-
-        if(Utils.isPictureQuestion()){
-            //Cleans score
-            ScoreRegister.clear();
-
-            //Register scores for tabs
-            List<Tab> tabs=survey.getTabGroup().getProgram().getTabs();
-            ScoreRegister.registerTabScores(tabs);
-
-            //Register scores for composites
-            List<CompositeScore> compositeScoreList=CompositeScore.listAllByProgram(survey.getTabGroup().getProgram());
-            ScoreRegister.registerCompositeScores(compositeScoreList);
-
-            //Initialize scores x question
-            ScoreRegister.initScoresForQuestions(Question.listAllByProgram(survey.getTabGroup().getProgram()), survey);
-
-            //1 CompositeScore -> 1 dataValue
-            for(CompositeScore compositeScore:compositeScoreList){
-                values.put(prepareValue(compositeScore));
+            Response response=executeCall(data, DHIS_PATCH_URL, "PATCH");
+            if(!response.isSuccessful()){
+                Log.e(TAG, "closingDateDescriptionPatch (" + response.code() + "): " + response.body().string());
+                throw new IOException(response.message());
             }
-
-            PhoneMetaData phoneMetaData= Session.getPhoneMetaData();
-            values.put(preparePhoneValue(TAG_PHONEMETADA, phoneMetaData.getPhone_metaData()));
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        else {
-            //Prepare scores info
-            List<CompositeScore> compositeScoreList = ScoreRegister.loadCompositeScores(survey);
-
-            //Calculate main score to push later
-            survey.setMainScore(ScoreRegister.calculateMainScore(compositeScoreList));
-
-            //1 CompositeScore -> 1 dataValue
-            for (CompositeScore compositeScore : compositeScoreList) {
-                values.put(prepareValue(compositeScore));
-            }
-        }
-        return values;
-    }
-
-    /**
-     * Adds a pair dataElement|value according to the passed value.
-     * Format: {dataValues: [{dataElement:'234567',value:'34'}, ...]}
-     * @param value
-     * @return
-     * @throws Exception
-     */
-    private JSONObject prepareValue(Value value) throws Exception{
-        JSONObject elementObject = new JSONObject();
-        elementObject.put(TAG_DATAELEMENT, value.getQuestion().getUid());
-        if(Utils.isPictureQuestion())
-            elementObject.put(TAG_VALUE, value.getValue());
-
-        if (value.getOption()!=null)
-            elementObject.put(TAG_VALUE, value.getOption().getCode());
-        else
-            elementObject.put(TAG_VALUE, value.getValue());
-
-        return elementObject;
-    }
-    /**
-     * Adds a pair dataElement|value according to the 'compositeScore' of the value.
-     * Format: {dataValues: [{dataElement:'234567',value:'34'}, ...]}
-     * @param compositeScore
-     * @return
-     * @throws Exception
-     */
-    private JSONObject prepareValue(CompositeScore compositeScore) throws Exception{
-        JSONObject elementObject = new JSONObject();
-        elementObject.put(TAG_DATAELEMENT, compositeScore.getUid());
-        elementObject.put(TAG_VALUE, Utils.round(ScoreRegister.getCompositeScore(compositeScore)));
-        return elementObject;
-    }
-
-    /**
-     * Pushes data to DHIS Server
-     * @param data
-     */
-    private JSONObject pushPictureData(JSONObject data)throws Exception {
-
-        Response response = executeCall(data, DHIS_PUSH_API, "POST");
-
-        if(!response.isSuccessful()){
-            Log.e(TAG, "pushData (" + response.code()+"): "+response.body().string());
-            throw new IOException(response.message());
-        }
-        return parseResponse(response.body().string());
     }
 
     /**
