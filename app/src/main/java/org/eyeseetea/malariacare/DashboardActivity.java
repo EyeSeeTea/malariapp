@@ -92,14 +92,15 @@ public class DashboardActivity extends BaseActivity {
             @Override
             public void onTabChanged(String tabId) {
                 /** If current tab is android */
-                if(tabId.equalsIgnoreCase("tab_improve")){
+                if (tabId.equalsIgnoreCase("tab_improve")) {
                     unsentFragment.reloadUncompletedUnsentSurveys();
-                }else if(tabId.equalsIgnoreCase("tab_assess")){
+                } else if (tabId.equalsIgnoreCase("tab_assess")) {
                     sentFragment.reloadSentSurveys();
-                }else if(tabId.equalsIgnoreCase("tab_plan")){
+                } else if (tabId.equalsIgnoreCase("tab_plan")) {
                     //tab_plan on click code
-                }else if(tabId.equalsIgnoreCase("tab_monitor")){
+                } else if (tabId.equalsIgnoreCase("tab_monitor")) {
                     monitorFragment.reloadSentSurveys();
+                    monitorFragment.reloadMonitor();
                 }
             }
         });

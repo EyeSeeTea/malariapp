@@ -29,20 +29,29 @@ import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebChromeClient;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.AdapterView;
+import android.widget.Spinner;
+
+import com.raizlabs.android.dbflow.sql.language.Select;
 
 import org.eyeseetea.malariacare.R;
+import org.eyeseetea.malariacare.database.model.OrgUnit;
+import org.eyeseetea.malariacare.database.model.Program;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.database.utils.monitor.FacilityTableBuilder;
 import org.eyeseetea.malariacare.database.utils.monitor.PieTabGroupBuilder;
 import org.eyeseetea.malariacare.database.utils.monitor.SentSurveysBuilder;
-import org.eyeseetea.malariacare.layout.adapters.dashboard.AssessmentSentAdapter;
 import org.eyeseetea.malariacare.layout.adapters.dashboard.IDashboardAdapter;
-import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
+import org.eyeseetea.malariacare.layout.adapters.general.OrgUnitArrayAdapter;
+import org.eyeseetea.malariacare.layout.adapters.general.ProgramArrayAdapter;
 import org.eyeseetea.malariacare.services.SurveyService;
 
 import java.util.ArrayList;
@@ -60,6 +69,10 @@ public class MonitorFragment extends ListFragment {
     protected IDashboardAdapter adapter;
     private static int index = 0;
     private WebView webView;
+    Spinner filterSpinnerProgram;
+    Spinner filterSpinnerOrgUnit;
+    String selectedOrgUnit;
+    String selectedProgram;
     public MonitorFragment() {
         this.adapter = Session.getAdapterSent();
         this.surveys = new ArrayList();
@@ -80,6 +93,7 @@ public class MonitorFragment extends ListFragment {
     public void onCreate(Bundle savedInstanceState){
         Log.d(TAG, "onCreate");
         super.onCreate(savedInstanceState);
+        initFilters();
     }
 
     @Override
@@ -144,6 +158,7 @@ public class MonitorFragment extends ListFragment {
         reloadSurveys(surveysForGraphic);
     }
 
+
     public void reloadSurveys(List<Survey> newListSurveys) {
         Log.d(TAG, "reloadSurveys (Thread: " + Thread.currentThread().getId() + "): " + newListSurveys.size());
         boolean hasSurveys = newListSurveys != null && newListSurveys.size() > 0;
@@ -155,25 +170,27 @@ public class MonitorFragment extends ListFragment {
         setListShown(true);
     }
 
-    private void reloadMonitor() {
+    public void reloadMonitor() {
         if (webView == null) {
             webView = initMonitor();
         }
-
+        webView = initMonitor();
         //onPageFinish load data
         webView.setWebViewClient(new WebViewClient() {
             @Override
             public void onPageFinished(WebView view, String url) {
                 super.onPageFinished(view, url);
                 //Add line chart
-                new SentSurveysBuilder(surveysForGraphic, getActivity()).addDataInChart(view);
+                List<Survey> surveysByProgram=filterSurveysByProgram(surveysForGraphic);
+                new SentSurveysBuilder(surveysByProgram, getActivity()).addDataInChart(view);
 
+                List<Survey> surveysByProgramAndOrgUnit=filterSurveysByProgramAndOrgUnit(surveysForGraphic);
                 //Add pie charts
-                new PieTabGroupBuilder(surveysForGraphic, getActivity()).addDataInChart(view);
+                new PieTabGroupBuilder(surveysByProgramAndOrgUnit, getActivity()).addDataInChart(view);
 
 
                 //Add table x facility
-                new FacilityTableBuilder(surveysForGraphic, getActivity()).addDataInChart(view);
+                new FacilityTableBuilder(surveysByProgramAndOrgUnit, getActivity()).addDataInChart(view);
             }
         });
 
@@ -196,6 +213,63 @@ public class MonitorFragment extends ListFragment {
         return webView;
     }
 
+    public void initFilters() {
+        filterSpinnerProgram = (Spinner) getActivity().findViewById(R.id.filter_program_monitor);
+
+        List<Program> programList = new Select().all().from(Program.class).queryList();
+        programList.add(0, programList.get(0));
+        selectedProgram=programList.get(0).getUid();
+        programList.remove(0);
+        filterSpinnerProgram.setAdapter(new ProgramArrayAdapter(this.getActivity().getApplicationContext(), programList));
+        filterSpinnerProgram.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view,
+                                       int position, long id) {
+                Program program = (Program) parent.getItemAtPosition(position);
+                boolean reload = false;
+                if (program.getUid() != selectedProgram) {
+                    selectedProgram = program.getUid();
+                    reload=true;
+                }
+                if(reload)
+                    reloadSentSurveys();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> arg0) {
+
+            }
+        });
+
+        filterSpinnerOrgUnit = (Spinner) getActivity().findViewById(R.id.filter_orgunit_monitor);
+
+        List<OrgUnit> orgUnitList = new Select().all().from(OrgUnit.class).queryList();
+        orgUnitList.add(0, orgUnitList.get(0));
+        selectedOrgUnit=orgUnitList.get(0).getUid();
+        orgUnitList.remove(0);
+        filterSpinnerOrgUnit.setAdapter(new OrgUnitArrayAdapter(getActivity().getApplicationContext(), orgUnitList));
+        filterSpinnerOrgUnit.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view,
+                                       int position, long id) {
+                OrgUnit orgUnit = (OrgUnit) parent.getItemAtPosition(position);
+                boolean reload = false;
+                if (selectedOrgUnit != orgUnit.getUid()) {
+                    selectedOrgUnit = orgUnit.getUid();
+                    reload = true;
+                }
+                if (reload)
+                    reloadSentSurveys();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> arg0) {
+
+            }
+        });
+    }
     /**
      * Stops webView gracefully
      */
@@ -225,5 +299,50 @@ public class MonitorFragment extends ListFragment {
                 reloadSentSurveys();
             }
         }
+    }
+
+    private List<Survey> filterSurveysByProgram(List<Survey> surveys) {
+        HashMap<String, Survey> filteredSurveys;
+        filteredSurveys = new HashMap<>();
+        surveysForGraphic = new ArrayList<>();
+        for (Survey survey : surveys) {
+                if (!filteredSurveys.containsKey(survey.getTabGroup().getProgram().getUid()+survey.getOrgUnit().getUid()+survey.getId_survey())) {
+                    if(filterSurveyByProgram(survey))
+                        filteredSurveys.put(survey.getTabGroup().getProgram().getUid()+survey.getOrgUnit().getUid()+survey.getId_survey(), survey);
+                }
+        }
+        for (Survey survey : filteredSurveys.values()) {
+            surveysForGraphic.add(survey);
+        }
+        Log.d(TAG, "size" + surveysForGraphic.size());
+        return surveysForGraphic;
+    }
+    private List<Survey> filterSurveysByProgramAndOrgUnit(List<Survey> surveys) {
+        HashMap<String, Survey> filteredSurveys;
+        filteredSurveys = new HashMap<>();
+        surveysForGraphic = new ArrayList<>();
+        for (Survey survey : surveys) {
+            if (!filteredSurveys.containsKey(survey.getTabGroup().getProgram().getUid()+survey.getOrgUnit().getUid()+survey.getId_survey())) {
+                if(filterSurveyByProgramAndOrgUnit(survey))
+                    filteredSurveys.put(survey.getTabGroup().getProgram().getUid()+survey.getOrgUnit().getUid()+survey.getId_survey(), survey);
+            }
+        }
+        for (Survey survey : filteredSurveys.values()) {
+            surveysForGraphic.add(survey);
+        }
+        Log.d(TAG, "size" + surveysForGraphic.size());
+        return surveysForGraphic;
+    }
+    private boolean filterSurveyByProgram(Survey survey) {
+        if(selectedProgram.equals(survey.getTabGroup().getProgram().getUid()))
+                return true;
+        return false;
+    }
+
+    private boolean filterSurveyByProgramAndOrgUnit(Survey survey) {
+        if(filterSurveyByProgram(survey))
+            if(selectedOrgUnit.equals(survey.getOrgUnit().getUid()))
+                return true;
+        return false;
     }
 }
