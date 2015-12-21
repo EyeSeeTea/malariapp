@@ -153,12 +153,12 @@
                              android:layout_width="match_parent"
                              android:layout_height="wrap_content">
                              <Spinner
-                                 android:id="@+id/filter_orgunit_monitor"
+                                 android:id="@+id/filter_program_monitor"
                                  android:layout_width="0dip"
                                  android:layout_weight="1"
                                  android:layout_height="wrap_content" />
                              <Spinner
-                                 android:id="@+id/filter_program_monitor"
+                                 android:id="@+id/filter_orgunit_monitor"
                                  android:layout_width="0dip"
                                  android:layout_weight="1"
                                  android:layout_height="wrap_content" />
