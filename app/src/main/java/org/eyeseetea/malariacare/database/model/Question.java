@@ -86,6 +86,9 @@ public class Question extends BaseModel {
     Answer answer;
 
     @Column
+    Integer output;
+
+    @Column
     Long id_parent;
 
     /**
@@ -129,7 +132,7 @@ public class Question extends BaseModel {
     public Question() {
     }
 
-    public Question(String code, String de_name, String short_name, String form_name, String uid, Integer order_pos, Float numerator_w, Float denominator_w, String feedback, Header header, Answer answer, Question question, CompositeScore compositeScore) {
+    public Question(String code, String de_name, String short_name, String form_name, String uid, Integer order_pos, Float numerator_w, Float denominator_w, String feedback, Integer output,Header header, Answer answer, Question question, CompositeScore compositeScore) {
         this.code = code;
         this.de_name = de_name;
         this.short_name = short_name;
@@ -139,6 +142,7 @@ public class Question extends BaseModel {
         this.numerator_w = numerator_w;
         this.denominator_w = denominator_w;
         this.feedback = feedback;
+        this.output = output;
         this.parent = null;
 
         this.setHeader(header);
@@ -263,6 +267,14 @@ public class Question extends BaseModel {
         this.header = null;
     }
 
+    public void setOutput(Integer output){
+        this.output = output;
+    }
+
+    public Integer getOutput(){
+        return output;
+    }
+
     public Answer getAnswer() {
         if(answer==null){
             if(id_answer==null) return  null;
@@ -331,6 +343,7 @@ public class Question extends BaseModel {
         else{
         if (parent == null) {
             long countChildQuestionRelations = new Select().count().from(QuestionRelation.class)
+                    .indexedBy("QuestionRelation_operation")
                     .where(Condition.column(QuestionRelation$Table.ID_QUESTION).eq(this.getId_question()))
                     .and(Condition.column(QuestionRelation$Table.OPERATION).eq(QuestionRelation.PARENT_CHILD))
                     .count();
@@ -359,6 +372,7 @@ public class Question extends BaseModel {
         if(questionRelations ==null){
             this.questionRelations = new Select()
                     .from(QuestionRelation.class)
+                    .indexedBy("QuestionRelation_id_question")
                     .where(Condition.column(QuestionRelation$Table.ID_QUESTION)
                             .eq(this.getId_question()))
                     .queryList();
@@ -373,6 +387,7 @@ public class Question extends BaseModel {
     public List<QuestionOption> getQuestionOption() {
         //if (this.children == null){
         return new Select().from(QuestionOption.class)
+                .indexedBy("QuestionOption_id_question")
                 .where(Condition.column(QuestionOption$Table.ID_QUESTION).eq(this.getId_question()))
                 .queryList();
         //}
@@ -496,6 +511,7 @@ public class Question extends BaseModel {
             return null;
         }
         List<Value> returnValues = new Select().from(Value.class)
+                .indexedBy("Value_id_survey")
                 .where(Condition.column(Value$Table.ID_QUESTION).eq(this.getId_question()))
                 .and(Condition.column(Value$Table.ID_SURVEY).eq(survey.getId_survey())).queryList();
 
@@ -653,16 +669,13 @@ public class Question extends BaseModel {
         // Count all the quesions that may have an answer
         long totalAnswerableQuestions = new Select().count()
                 .from(Question.class).as("q")
-                .join(Answer.class, Join.JoinType.LEFT).as("a")
-                .on(Condition.column(ColumnAlias.columnWithTable("q", Question$Table.ID_ANSWER))
-                        .eq(ColumnAlias.columnWithTable("a", Answer$Table.ID_ANSWER)))
                 .join(Header.class, Join.JoinType.LEFT).as("h")
                 .on(Condition.column(ColumnAlias.columnWithTable("q", Question$Table.ID_HEADER))
                         .eq(ColumnAlias.columnWithTable("h", Header$Table.ID_HEADER)))
                 .join(Tab.class, Join.JoinType.LEFT).as("t")
                 .on(Condition.column(ColumnAlias.columnWithTable("h", Header$Table.ID_TAB))
                         .eq(ColumnAlias.columnWithTable("t", Tab$Table.ID_TAB)))
-                .where(Condition.column(ColumnAlias.columnWithTable("a", Answer$Table.OUTPUT)).isNot(Constants.NO_ANSWER))
+                .where(Condition.column(ColumnAlias.columnWithTable("q", Question$Table.OUTPUT)).isNot(Constants.NO_ANSWER))
                 .and(Condition.column(ColumnAlias.columnWithTable("t", Tab$Table.ID_TAB_GROUP)).eq(tabGroup.getId_tab_group())).count();
 
         // Count children questions from the given taggroup
@@ -671,16 +684,13 @@ public class Question extends BaseModel {
                 .join(Question.class, Join.JoinType.LEFT).as("q")
                 .on(Condition.column(ColumnAlias.columnWithTable("qr", QuestionRelation$Table.ID_QUESTION))
                         .eq(ColumnAlias.columnWithTable("q", Question$Table.ID_QUESTION)))
-                .join(Answer.class, Join.JoinType.LEFT).as("a")
-                .on(Condition.column(ColumnAlias.columnWithTable("q", Question$Table.ID_ANSWER))
-                        .eq(ColumnAlias.columnWithTable("a", Answer$Table.ID_ANSWER)))
                 .join(Header.class, Join.JoinType.LEFT).as("h")
                 .on(Condition.column(ColumnAlias.columnWithTable("q", Question$Table.ID_HEADER))
                         .eq(ColumnAlias.columnWithTable("h", Header$Table.ID_HEADER)))
                 .join(Tab.class, Join.JoinType.LEFT).as("t")
                 .on(Condition.column(ColumnAlias.columnWithTable("h", Header$Table.ID_TAB))
                         .eq(ColumnAlias.columnWithTable("t", Tab$Table.ID_TAB)))
-                .where(Condition.column(ColumnAlias.columnWithTable("a", Answer$Table.OUTPUT)).isNot(Constants.NO_ANSWER))
+                .where(Condition.column(ColumnAlias.columnWithTable("q", Question$Table.OUTPUT)).isNot(Constants.NO_ANSWER))
                 .and(Condition.column(ColumnAlias.columnWithTable("t", Tab$Table.ID_TAB_GROUP)).eq(tabGroup.getId_tab_group()))
                 .and(Condition.column(ColumnAlias.columnWithTable("qr", QuestionRelation$Table.OPERATION)).eq(Constants.OPERATION_TYPE_PARENT)).count();
 
@@ -703,7 +713,7 @@ public class Question extends BaseModel {
         }
 
         //Only disabled dropdowns
-        if(this.getAnswer().getOutput()!=Constants.DROPDOWN_LIST_DISABLED){
+        if(this.getOutput()!=Constants.DROPDOWN_LIST_DISABLED){
             return false;
         }
 
@@ -826,15 +836,11 @@ public class Question extends BaseModel {
      * @return true|false
      */
     public boolean isScored() {
-        try {
-            Integer output = getAnswer().getOutput();
-            return output == Constants.DROPDOWN_LIST ||
-                    output == Constants.DROPDOWN_LIST_DISABLED ||
-                    output == Constants.RADIO_GROUP_HORIZONTAL ||
-                    output == Constants.RADIO_GROUP_VERTICAL;
-        } catch (Exception e) {
-            return false;
-        }
+        Integer output = getOutput();
+        return output == Constants.DROPDOWN_LIST ||
+                output == Constants.DROPDOWN_LIST_DISABLED ||
+                output == Constants.RADIO_GROUP_HORIZONTAL ||
+                output == Constants.RADIO_GROUP_VERTICAL;
     }
 
     @Override
@@ -865,6 +871,8 @@ public class Question extends BaseModel {
             return false;
         if (id_answer != null ? !id_answer.equals(question.id_answer) : question.id_answer != null)
             return false;
+        if (output != null ? !output.equals(question.output) : question.output != null)
+            return false;
         if (id_parent != null ? !id_parent.equals(question.id_parent) : question.id_parent != null)
             return false;
         return !(id_composite_score != null ? !id_composite_score.equals(question.id_composite_score) : question.id_composite_score != null);
@@ -885,6 +893,7 @@ public class Question extends BaseModel {
         result = 31 * result + (feedback != null ? feedback.hashCode() : 0);
         result = 31 * result + (id_header != null ? id_header.hashCode() : 0);
         result = 31 * result + (id_answer != null ? id_answer.hashCode() : 0);
+        result = 31 * result + (output != null ? output.hashCode() : 0);
         result = 31 * result + (id_parent != null ? id_parent.hashCode() : 0);
         result = 31 * result + (id_composite_score != null ? id_composite_score.hashCode() : 0);
         return result;
@@ -901,10 +910,11 @@ public class Question extends BaseModel {
                 ", uid='" + uid + '\'' +
                 ", order_pos=" + order_pos +
                 ", numerator_w=" + numerator_w +
-                ", denominator_w=" + denominator_w +
                 ", feedback='" + feedback + '\'' +
+                ", denominator_w=" + denominator_w +
                 ", id_header=" + id_header +
                 ", id_answer=" + id_answer +
+                ", output=" + output +
                 ", id_parent=" + id_parent +
                 ", id_composite_score=" + id_composite_score +
                 '}';

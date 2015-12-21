@@ -86,7 +86,6 @@ public class AutoTabAdapter extends ATabAdapter {
     // on this position is hidden (true) or visible (false)
 
     private final LinkedHashMap<BaseModel, Boolean> elementInvisibility = new LinkedHashMap<>();
-    //private final LinkedHashMap<Object, Boolean> elementInvisibility = new LinkedHashMap<>();
 
     /**
      * Flag that indicates if the current survey in session is already sent or not (it affects readonly settings)
@@ -138,6 +137,7 @@ public class AutoTabAdapter extends ATabAdapter {
             }
         }
     }
+
     /**
      * Factory method to build a scored/non scored layout according to tab type.
      *
@@ -218,7 +218,7 @@ public class AutoTabAdapter extends ATabAdapter {
             for (int i = 0; i < number_items; i++) {
                 if (getItems().get(i) instanceof Question && !elementInvisibility.get(getItems().get(i))) {
                     Question question = (Question) getItems().get(i);
-                    if (question.getAnswer().getOutput() == Constants.DROPDOWN_LIST)
+                    if (question.getOutput() == Constants.DROPDOWN_LIST)
                         result = result + ScoreRegister.calcDenum((Question) getItems().get(i));
                 }
 
@@ -296,7 +296,7 @@ public class AutoTabAdapter extends ATabAdapter {
 
     public void setValues(AutoTabLayoutUtils.ViewHolder viewHolder, Question question) {
 
-        switch (question.getAnswer().getOutput()) {
+        switch (question.getOutput()) {
             case Constants.DATE:
             case Constants.SHORT_TEXT:
             case Constants.INT:
@@ -413,7 +413,6 @@ public class AutoTabAdapter extends ATabAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-//        Debug.startMethodTracing("auto_getview");
         View rowView = null;
 
         final Object item = getItem(position);
@@ -424,7 +423,7 @@ public class AutoTabAdapter extends ATabAdapter {
             question = (Question) item;
 
             //FIXME This should be moved into its own class (Ex: ViewHolderFactory.getView(item))
-            switch (question.getAnswer().getOutput()) {
+            switch (question.getOutput()) {
 
                 case Constants.LONG_TEXT:
                     if(Utils.isPictureQuestion())
@@ -596,7 +595,7 @@ public class AutoTabAdapter extends ATabAdapter {
             }
             else{
                 //Disables component if survey has already been sent (except match spinner that are always disabled)
-                if(question.getAnswer().getOutput()==Constants.DROPDOWN_LIST_DISABLED){
+                if(question.getOutput()==Constants.DROPDOWN_LIST_DISABLED){
                     AutoTabLayoutUtils.updateReadOnly(viewHolder.component, true);
                 }else{
                     AutoTabLayoutUtils.updateReadOnly(viewHolder.component, getReadOnly());
@@ -609,10 +608,8 @@ public class AutoTabAdapter extends ATabAdapter {
 
         }
 
-//        Debug.stopMethodTracing();
         return rowView;
     }
-
     private void createGraphicOutput(int position, ViewGroup parent, Question question, AutoTabLayoutUtils.ViewHolder viewHolder, LayoutInflater inflater, Context context) {
 
         View rowView = AutoTabLayoutUtils.initialiseView(R.layout.ddl, parent, question, viewHolder, position, getInflater());
@@ -652,6 +649,7 @@ public class AutoTabAdapter extends ATabAdapter {
             view.setEnabled(!readOnly);
         }
     }
+
 
     //////////////////////////////////////
     /////////// LISTENERS ////////////////

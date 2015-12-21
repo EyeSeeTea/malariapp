@@ -39,7 +39,7 @@
     <string name="dialog_content_existing_survey">Il y a déjà une enquête pas encore envoyée dans le système pour le cabinet et tipe d\'enquête choisís</string>
     <string name="dialog_content_logout_confirmation">Si vous sortez du système, tous les donnés non envoyés seront perdus. Voulez-vous continuer encore ?</string>
     <string name="dialog_title_send_preview">Envoyer ou afficher</string>
-    <string name="dialog_content_send_preview">Voulez-vous envoyer l\'enquêtte ou afficher le feedback ?</string>
+    <string name="dialog_content_send_preview">Voulez-vous envoyer l\'enquêtte ?</string>
     <string name="dialog_title_push_data">Envoie des donnés</string>
     <string name="dialog_content_push_data">Êtes-vous sûr de voulour envoyer ?</string>
     <string name="dialog_button_preview_feedback">Voir évaluations</string>

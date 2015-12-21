@@ -35,6 +35,7 @@ import org.eyeseetea.malariacare.database.iomodules.dhis.exporter.IConvertToSDKV
 import org.eyeseetea.malariacare.database.iomodules.dhis.exporter.VisitableToSDK;
 import org.eyeseetea.malariacare.database.utils.SurveyAnsweredRatio;
 import org.eyeseetea.malariacare.database.utils.SurveyAnsweredRatioCache;
+import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.utils.Constants;
 import org.eyeseetea.malariacare.utils.Utils;
 
@@ -83,9 +84,17 @@ public class Survey extends BaseModel implements VisitableToSDK {
     Program program;
 
     @Column
-    Date eventDate;
+    Date creationDate;
+
     @Column
     Date completionDate;
+
+    @Column
+    Date eventDate;
+
+    @Column
+    Date scheduledDate;
+
     @Column
     Integer status;
 
@@ -105,6 +114,11 @@ public class Survey extends BaseModel implements VisitableToSDK {
     Float mainScore;
 
     public Survey() {
+        //Set dates
+        this.creationDate = new Date();
+        this.completionDate = this.creationDate;
+        this.eventDate = null;
+        this.scheduledDate = null;
     }
 
     public Survey(OrgUnit orgUnit, Program program, User user) {
@@ -120,11 +134,12 @@ public class Survey extends BaseModel implements VisitableToSDK {
     }
 
     public Survey(OrgUnit orgUnit, TabGroup tabGroup, User user) {
-        this.eventDate = new Date();
-        this.status = Constants.SURVEY_IN_PROGRESS; // Possibilities [ In progress | Completed | Sent ]
-        this.completionDate = this.eventDate;
-        Log.i(".Survey", Long.valueOf(this.completionDate.getTime()).toString());
+        this();
 
+        // Possibilities [ In progress | Completed | Sent ]
+        this.status = Constants.SURVEY_IN_PROGRESS;
+
+        //Set context of the survey
         this.setOrgUnit(orgUnit);
         this.setTabGroup(tabGroup);
         this.setUser(user);
@@ -221,20 +236,35 @@ public class Survey extends BaseModel implements VisitableToSDK {
         this.id_program = id_program;
         this.program = null;
     }
-    public Date getEventDate() {
-        return eventDate;
+    
+    public Date getCreationDate() {
+        return creationDate;
     }
-
+    public void setCreationDate(Date creationDate) {
+        this.creationDate = creationDate;
+    }
     public void setEventDate(Date eventDate) {
         this.eventDate = eventDate;
     }
 
+    public Date getEventDate(){
+        return eventDate;
+    }
+    
     public Date getCompletionDate(){
         return completionDate;
     }
-
+    
     public void setCompletionDate(Date completionDate){
         this.completionDate=completionDate;
+    }
+
+    public Date getScheduledDate() {
+        return scheduledDate;
+    }
+
+    public void setScheduledDate(Date scheduledDate) {
+        this.scheduledDate = scheduledDate;
     }
 
     public Integer getStatus() {
@@ -260,6 +290,14 @@ public class Survey extends BaseModel implements VisitableToSDK {
     public boolean isHide(){
         return Constants.SURVEY_HIDE==this.status;
     }
+    
+    /**
+     * Checks if the survey is in progress
+     * @return true|false
+     */
+    public boolean isInProgress(){
+        return !isSent() && !isCompleted()&& !isHide();
+    }
 
     /**
      * Checks if the survey has been completed or not
@@ -267,14 +305,6 @@ public class Survey extends BaseModel implements VisitableToSDK {
      */
     public boolean isCompleted(){
         return Constants.SURVEY_COMPLETED==this.status;
-    }
-
-    /**
-     * Checks if the survey is in progress
-     * @return true|false
-     */
-    public boolean isInProgress(){
-        return !isSent() && !isCompleted()&& !isHide();
     }
 
     public Float getMainScore() {
@@ -473,7 +503,7 @@ public class Survey extends BaseModel implements VisitableToSDK {
                 if (value.isAPositive()) {
                     //There might be children no answer questions that should be skipped
                     for(Question childQuestion:value.getQuestion().getQuestionChildren()){
-                        numOptional+=(childQuestion.getAnswer().getOutput()==Constants.NO_ANSWER)?0:1;
+                        numOptional+=(childQuestion.getOutput()==Constants.NO_ANSWER)?0:1;
                     }
                 }
 
@@ -502,10 +532,6 @@ public class Survey extends BaseModel implements VisitableToSDK {
                 .on(
                         Condition.column(ColumnAlias.columnWithTable("q", Question$Table.ID_QUESTION))
                                 .eq(ColumnAlias.columnWithTable("qr", QuestionRelation$Table.ID_QUESTION)))
-                .join(Answer.class, Join.JoinType.LEFT).as("a")
-                .on(
-                        Condition.column(ColumnAlias.columnWithTable("q", Question$Table.ID_ANSWER))
-                                .eq(ColumnAlias.columnWithTable("a", Answer$Table.ID_ANSWER)))
                 .join(Match.class, Join.JoinType.LEFT).as("m")
                 .on(
                         Condition.column(ColumnAlias.columnWithTable("qr", QuestionRelation$Table.ID_QUESTION_RELATION))
@@ -525,7 +551,7 @@ public class Survey extends BaseModel implements VisitableToSDK {
                         //For the given survey
                 .and(Condition.column(ColumnAlias.columnWithTable("v", Value$Table.ID_SURVEY)).eq(this.getId_survey()))
                         //The child question requires an answer
-                .and(Condition.column(ColumnAlias.columnWithTable("a", Answer$Table.OUTPUT)).isNot(Constants.NO_ANSWER))
+                .and(Condition.column(ColumnAlias.columnWithTable("q", Question$Table.OUTPUT)).isNot(Constants.NO_ANSWER))
                 .count();
 
         //Parent with the right value -> not hidden
@@ -562,8 +588,26 @@ public class Survey extends BaseModel implements VisitableToSDK {
                 this.setCompletionDate(this.eventDate);
             }
         }
+
+        //Update status
+        this.setStatus(answeredRatio.isCompleted() ? Constants.SURVEY_COMPLETED : Constants.SURVEY_IN_PROGRESS);
+
+        //CompletionDate
+        this.setCompletionDate(new Date());
+
+        //it is needed for calculate the score in the completed surveys but not sent.
+        saveScore();
+
         //Saves new status & completionDate
         this.save();
+    }
+
+    private void saveScore() {        //Prepare scores info
+        List<CompositeScore> compositeScoreList= ScoreRegister.loadCompositeScores(this);
+
+        //Calculate main score to push later
+        this.setMainScore(ScoreRegister.calculateMainScore(compositeScoreList));
+        this.saveMainScore();
     }
 
     /**
@@ -646,6 +690,17 @@ public class Survey extends BaseModel implements VisitableToSDK {
     }
 
     /**
+     * Returns all the surveys with status put to "Sent" or completed
+     * @return
+     */
+    public static List<Survey> getAllSentOrCompletedSurveys() {
+        return new Select().from(Survey.class)
+                .where(Condition.column(Survey$Table.STATUS).eq(Constants.SURVEY_SENT))
+                .or(Condition.column(Survey$Table.STATUS).eq(Constants.SURVEY_COMPLETED))
+                .orderBy(Survey$Table.EVENTDATE)
+                .orderBy(Survey$Table.ID_ORG_UNIT).queryList();
+    }
+    /**
      * Returns the last surveys (by date) with status put to "Sent"
      * @param limit
      * @return
@@ -675,7 +730,6 @@ public class Survey extends BaseModel implements VisitableToSDK {
                 .orderBy(Survey$Table.EVENTDATE)
                 .orderBy(Survey$Table.ID_ORG_UNIT).queryList();
     }
-
 
     /**
      * Returns all the surveys with status put to "Completed"
@@ -725,6 +779,18 @@ public class Survey extends BaseModel implements VisitableToSDK {
                 .orderBy(Survey$Table.ID_ORG_UNIT).queryList();
     }
 
+    /**
+     * Returns the last surveys (by date) with status Completed or sent
+     * @return
+     */
+    public static List<Survey> getAllUncompletedUnsentSurveys() {
+        return new Select().from(Survey.class)
+                .where(Condition.column(Survey$Table.STATUS).eq(Constants.SURVEY_COMPLETED))
+                .or(Condition.column(Survey$Table.STATUS).eq(Constants.SURVEY_SENT))
+                .orderBy(Survey$Table.EVENTDATE)
+                .orderBy(Survey$Table.ID_ORG_UNIT).queryList();
+    }
+
     @Override
     public void accept(IConvertToSDKVisitor IConvertToSDKVisitor) throws Exception{
         IConvertToSDKVisitor.visit(this);
@@ -742,14 +808,17 @@ public class Survey extends BaseModel implements VisitableToSDK {
             return false;   
         if (id_program != null ? !id_program.equals(survey.id_program) : survey.id_program != null)
             return false;
-
         if (id_org_unit != null ? !id_org_unit.equals(survey.id_org_unit) : survey.id_org_unit != null)
             return false;
         if (id_user != null ? !id_user.equals(survey.id_user) : survey.id_user != null)
             return false;
-        if (eventDate != null ? !eventDate.equals(survey.eventDate) : survey.eventDate != null)
+        if (creationDate != null ? !creationDate.equals(survey.creationDate) : survey.creationDate != null)
             return false;
         if (completionDate != null ? !completionDate.equals(survey.completionDate) : survey.completionDate != null)
+            return false;
+        if (eventDate != null ? !eventDate.equals(survey.eventDate) : survey.eventDate != null)
+            return false;
+        if (scheduledDate != null ? !scheduledDate.equals(survey.scheduledDate) : survey.scheduledDate != null)
             return false;
         return !(status != null ? !status.equals(survey.status) : survey.status != null);
 
@@ -762,8 +831,10 @@ public class Survey extends BaseModel implements VisitableToSDK {
         result = 31 * result + (id_program != null ? id_program.hashCode() : 0);
         result = 31 * result + (id_org_unit != null ? id_org_unit.hashCode() : 0);
         result = 31 * result + (id_user != null ? id_user.hashCode() : 0);
-        result = 31 * result + (eventDate != null ? eventDate.hashCode() : 0);
+        result = 31 * result + (creationDate != null ? creationDate.hashCode() : 0);
         result = 31 * result + (completionDate != null ? completionDate.hashCode() : 0);
+        result = 31 * result + (eventDate != null ? eventDate.hashCode() : 0);
+        result = 31 * result + (scheduledDate != null ? scheduledDate.hashCode() : 0);
         result = 31 * result + (status != null ? status.hashCode() : 0);
         return result;
     }
@@ -775,8 +846,10 @@ public class Survey extends BaseModel implements VisitableToSDK {
                 ", id_tab_group=" + id_tab_group +
                 ", id_org_unit=" + id_org_unit +
                 ", id_user=" + id_user +
-                ", eventDate=" + eventDate +
+                ", creationDate=" + creationDate +
                 ", completionDate=" + completionDate +
+                ", eventDate=" + eventDate +
+                ", scheduledDate=" + scheduledDate +
                 ", status=" + status +
                 '}';
     }

@@ -101,6 +101,10 @@ public class Program extends BaseModel{
                 .orderBy(Tab$Table.ORDER_POS).queryList();
     }
 
+    public static List<Program> getAllPrograms(){
+        return new Select().all().from(Program.class).queryList();
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -130,5 +134,4 @@ public class Program extends BaseModel{
                 ", name='" + name + '\'' +
                 '}';
     }
-
 }

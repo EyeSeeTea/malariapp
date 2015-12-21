@@ -40,13 +40,10 @@ import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.database.utils.monitor.FacilityTableBuilder;
 import org.eyeseetea.malariacare.database.utils.monitor.PieTabGroupBuilder;
 import org.eyeseetea.malariacare.database.utils.monitor.SentSurveysBuilder;
-import org.eyeseetea.malariacare.layout.adapters.dashboard.AssessmentSentAdapter;
 import org.eyeseetea.malariacare.layout.adapters.dashboard.IDashboardAdapter;
-import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 import org.eyeseetea.malariacare.services.SurveyService;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -123,7 +120,7 @@ public class MonitorFragment extends ListFragment {
 
         if (surveyReceiver == null) {
             surveyReceiver = new SurveyReceiver();
-            LocalBroadcastManager.getInstance(getActivity()).registerReceiver(surveyReceiver, new IntentFilter(SurveyService.ALL_SENT_SURVEYS_ACTION));
+            LocalBroadcastManager.getInstance(getActivity()).registerReceiver(surveyReceiver, new IntentFilter(SurveyService.ALL_SENT_OR_COMPLETED_SURVEYS_ACTION));
         }
     }
     /**
@@ -140,7 +137,7 @@ public class MonitorFragment extends ListFragment {
      * load and reload sent surveys
      */
     public void reloadSentSurveys() {
-        surveysForGraphic = (List<Survey>) Session.popServiceValue(SurveyService.ALL_SENT_SURVEYS_ACTION);
+        surveysForGraphic = (List<Survey>) Session.popServiceValue(SurveyService.ALL_SENT_OR_COMPLETED_SURVEYS_ACTION);
         reloadSurveys(surveysForGraphic);
     }
 
@@ -221,7 +218,7 @@ public class MonitorFragment extends ListFragment {
         public void onReceive(Context context, Intent intent) {
             Log.d(TAG, "onReceive");
             //Listening only intents from this method
-            if (SurveyService.ALL_SENT_SURVEYS_ACTION.equals(intent.getAction())) {
+            if (SurveyService.ALL_SENT_OR_COMPLETED_SURVEYS_ACTION.equals(intent.getAction())) {
                 reloadSentSurveys();
             }
         }

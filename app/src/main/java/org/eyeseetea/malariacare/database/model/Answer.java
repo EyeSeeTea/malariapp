@@ -46,8 +46,6 @@ public class Answer extends BaseModel{
     long id_answer;
     @Column
     String name;
-    @Column
-    Integer output;
 
     /**
      * List of options that belongs to this answer type
@@ -62,9 +60,8 @@ public class Answer extends BaseModel{
     public Answer() {
     }
 
-    public Answer(String name, Integer output) {
+    public Answer(String name) {
         this.name = name;
-        this.output = output;
     }
 
     public Long getId_answer() {
@@ -83,13 +80,6 @@ public class Answer extends BaseModel{
         this.name = name;
     }
 
-    public Integer getOutput() {
-        return output;
-    }
-
-    public void setOutput(Integer output) {
-        this.output = output;
-    }
 
     public List<Option> getOptions(){
         if(options==null){
@@ -111,42 +101,15 @@ public class Answer extends BaseModel{
         return questions;
     }
 
-    /**
-     * Checks if this answer has a real output
-     * @return
-     */
-    public boolean hasOutput(){
-        return output!=null && !DEFAULT_ANSWER_OUTPUT.equals(output);
-    }
-
-    /**
-     * Returns a copy of this answer and its options (if any)
-     * @return
-     */
-    public Answer copy(){
-        //Create a copy of this answer
-        Answer answerCopy=new Answer(name,DEFAULT_ANSWER_OUTPUT);
-        answerCopy.save();
-
-        //Copy options if any
-        for(Option option:getOptions()){
-            Option optionCopy=option.copy();
-            optionCopy.setAnswer(answerCopy);
-            optionCopy.save();
-        }
-        return answerCopy;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Answer)) return false;
+        if (o == null || getClass() != o.getClass()) return false;
 
         Answer answer = (Answer) o;
 
         if (id_answer != answer.id_answer) return false;
-        if (name != null ? !name.equals(answer.name) : answer.name != null) return false;
-        return output.equals(answer.output);
+        return !(name != null ? !name.equals(answer.name) : answer.name != null);
 
     }
 
@@ -154,16 +117,14 @@ public class Answer extends BaseModel{
     public int hashCode() {
         int result = (int) (id_answer ^ (id_answer >>> 32));
         result = 31 * result + (name != null ? name.hashCode() : 0);
-        result = 31 * result + output.hashCode();
         return result;
     }
 
     @Override
     public String toString() {
         return "Answer{" +
-                "id=" + id_answer +
+                "id_answer=" + id_answer +
                 ", name='" + name + '\'' +
-                ", output=" + output +
                 '}';
     }
 }
