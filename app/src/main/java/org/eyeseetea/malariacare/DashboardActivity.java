@@ -31,10 +31,12 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TabHost;
 import android.widget.TextView;
 
 import com.squareup.otto.Subscribe;
+
 
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.model.User;
@@ -146,6 +148,25 @@ public class DashboardActivity extends BaseActivity {
         monitorFragment = new MonitorFragment();
         monitorFragment.setArguments(getIntent().getExtras());
         setFragmentTransaction(R.id.dashboard_charts_container, monitorFragment);
+    }
+
+
+    public void setScoreOrder(View v)
+    {
+        sentFragment.setScoreOrder();
+        sentFragment.reloadSentSurveys();
+    }
+
+    public void setFacilityOrder(View v)
+    {
+        sentFragment.setFacilityOrder();
+        sentFragment.reloadSentSurveys();
+    }
+
+    public void setDateOrder(View v)
+    {
+        sentFragment.setDateOrder();
+        sentFragment.reloadSentSurveys();
     }
 
     /**
