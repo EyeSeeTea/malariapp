@@ -265,7 +265,7 @@ public class DynamicTabAdapter  extends ATabAdapter {
         TableLayout tableLayout=(TableLayout)rowView.findViewById(R.id.options_table);
 
         TableRow tableRow=null;
-        int typeQuestion=question.getAnswer().getOutput();
+        int typeQuestion=question.getOutput();
         switch (typeQuestion){
             case Constants.IMAGES_2:
             case Constants.IMAGES_4:

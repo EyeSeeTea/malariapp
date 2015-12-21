@@ -649,7 +649,7 @@ public class Question extends BaseModel {
                 .on(Condition.column(ColumnAlias.columnWithTable("t", Tab$Table.ID_PROGRAM))
                         .eq(ColumnAlias.columnWithTable("p", Program$Table.ID_PROGRAM)))
                 .where(Condition.column(ColumnAlias.columnWithTable("q", Question$Table.ID_PARENT)).is(0))
-                .and(Condition.column(ColumnAlias.columnWithTable("a", Answer$Table.OUTPUT)).isNot(Constants.NO_ANSWER))
+                .and(Condition.column(ColumnAlias.columnWithTable("a", Question$Table.OUTPUT)).isNot(Constants.NO_ANSWER))
                 .and(Condition.column(ColumnAlias.columnWithTable("p", Program$Table.ID_PROGRAM)).is(program.getId_program())).queryList();
 
         return questionsByProgram.size();

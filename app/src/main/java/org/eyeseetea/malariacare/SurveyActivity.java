@@ -519,8 +519,8 @@ public class SurveyActivity extends BaseActivity{
         return found;
     }
 
-    private boolean isNotAutoTabAdapterOrNull(ITabAdapter adapter){
-        return adapter==null || !(adapter instanceof AutoTabAdapter);
+    private boolean isNotAutoTabAdapterOrNull(ITabAdapter adapter) {
+        return adapter == null || !(adapter instanceof AutoTabAdapter) || (adapter instanceof  AutoTabAdapter);
     }
 
     private void updateAvgInGeneralScores(int viewId, Float score){

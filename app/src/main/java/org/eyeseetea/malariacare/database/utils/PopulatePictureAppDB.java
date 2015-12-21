@@ -146,7 +146,6 @@ public class PopulatePictureAppDB {
                     case ANSWERS_CSV:
                         Answer answer = new Answer();
                         answer.setName(line[1]);
-                        answer.setOutput(Integer.valueOf(line[2]));
                         saveItem(answerList,answer,Integer.valueOf(line[0]));
                         break;
                     case OPTION_ATTRIBUTES_CSV:
@@ -181,6 +180,7 @@ public class PopulatePictureAppDB {
                             question.setAnswer(answerList.get(Integer.valueOf(line[10])));
                         if (!line[11].equals(""))
                             question.setQuestion(questionList.get(Integer.valueOf(line[11])));
+                        question.setOutput(Integer.valueOf(line[12]));
                         saveItem(questionList,question,Integer.valueOf(line[0]));
                         break;
 
