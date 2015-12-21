@@ -366,5 +366,6 @@
     <!-- UID program-->
     <string name="UID_PROGRAM" translatable="false">IrppF3qERB7</string>
     <string name="DHIS_DEFAULT_SERVER" translatable="false">https://www.psi-mis.org</string>
+    <string name="is_populate" translatable="false">is_populate</string>
 
 </resources>

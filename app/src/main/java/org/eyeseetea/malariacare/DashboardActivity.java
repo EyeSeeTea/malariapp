@@ -155,7 +155,7 @@ public class DashboardActivity extends BaseActivity {
 
     private void setActionbarTitle() {
         String user="";
-        if(Session.getUser().getName()!=null && !Session.getUser().getName().equals("null"))
+        if(Session.getUser()!=null && Session.getUser().getName()!=null && !Session.getUser().getName().equals("null"))
             user =Session.getUser().getName();
         android.support.v7.app.ActionBar actionBar =  getSupportActionBar();
         actionBar.setDisplayShowCustomEnabled(true);

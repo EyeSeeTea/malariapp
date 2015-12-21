@@ -165,9 +165,16 @@ public class LoginActivity extends org.hisp.dhis.android.sdk.ui.activities.Login
      */
     private void saveUserDetails(){
         SharedPreferences.Editor editor = getPreferencesEditor();
-        editor.putString(getString(R.string.dhis_url), this.serverUrl);
-        editor.putString(getString(R.string.dhis_user), this.username);
-        editor.putString(getString(R.string.dhis_password), this.password);
+        if(Utils.isPictureQuestion()){
+            editor.putString(getString(R.string.dhis_url), "https://dev.psi-mis.org");
+            editor.putString(getString(R.string.dhis_user), "KHMCS");
+            editor.putString(getString(R.string.dhis_password), "KHMCSadmin1");
+        }
+        else {
+            editor.putString(getString(R.string.dhis_url), this.serverUrl);
+            editor.putString(getString(R.string.dhis_user), this.username);
+            editor.putString(getString(R.string.dhis_password), this.password);
+        }
         editor.commit();
     }
 
