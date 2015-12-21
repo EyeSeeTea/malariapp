@@ -59,7 +59,39 @@
                         android:orientation="vertical">
 
                         <!--Ivan layout here -->
-                        <include layout="@layout/tab_planning"/>
+                        <!--  <include layout="@layout/tab_planning"/> -->
+
+                         <LinearLayout
+                            android:id="@+id/dashboard_planning_tab"
+                            android:orientation="vertical" android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:background="@color/custom_background_grey">
+                                <Spinner
+                                    android:id="@+id/dashboard_planning_program"
+                                    android:layout_width="wrap_content"
+                                    android:spinnerMode="dialog"
+                                    android:layout_height="wrap_content"
+                                    android:backgroundTintMode="add"
+                                    android:backgroundTint="@color/custom_background_grey"></Spinner>
+                            </LinearLayout>
+                             <FrameLayout
+                                 android:orientation="vertical"
+                                 android:layout_width="fill_parent"
+                                 android:layout_height="wrap_content"
+                                 android:id="@+id/dashboard_planning_container">
+                                 <ListView
+                                     android:id="@+id/dashboard_planning_list"
+                                     android:layout_width="match_parent"
+                                     android:layout_height="wrap_content">
+                                 </ListView>
+                             </FrameLayout>
+
+                        </LinearLayout>
+
 
                     </LinearLayout>
 

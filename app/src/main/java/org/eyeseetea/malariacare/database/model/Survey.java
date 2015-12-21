@@ -242,6 +242,22 @@ public class Survey extends BaseModel implements VisitableToSDK {
         return Constants.SURVEY_SENT==this.status;
     }
 
+    /**
+     * Checks if the survey is PLANNED
+     * @return true|false
+     */
+    public boolean isPlanned(){
+        return Constants.SURVEY_PLANNED==this.status;
+    }
+
+    /**
+     * Checks if the survey is IN_PROGRESS
+     * @return true|false
+     */
+    public boolean isInProgress(){
+        return Constants.SURVEY_IN_PROGRESS==this.status;
+    }
+
     public Float getMainScore() {
         //The main score is only return from a query 1 time
         if(this.mainScore==null){
@@ -291,7 +307,7 @@ public class Survey extends BaseModel implements VisitableToSDK {
      * @return
      */
     public boolean isTypeA(){
-        return this.mainScore>= MAX_AMBER;
+        return this.getMainScore()>= MAX_AMBER;
     }
 
     /**
@@ -299,7 +315,7 @@ public class Survey extends BaseModel implements VisitableToSDK {
      * @return
      */
     public boolean isTypeB(){
-        return this.mainScore>= MAX_RED && !isTypeA();
+        return this.getMainScore()>= MAX_RED && !isTypeA();
     }
 
     /**
@@ -428,18 +444,18 @@ public class Survey extends BaseModel implements VisitableToSDK {
     }
 
     /**
-     * Returns a concrete survey, if it exists
+     * Returns a survey in progress for the given orgUnit and tabGroup
      * @param orgUnit
      * @param tabGroup
      * @return
      */
-    public static List<Survey> getUnsentSurveys(OrgUnit orgUnit, TabGroup tabGroup) {
+    public static Survey getInProgressSurveys(OrgUnit orgUnit, TabGroup tabGroup) {
         return new Select().from(Survey.class)
                 .where(Condition.column(Survey$Table.ID_ORG_UNIT).eq(orgUnit.getId_org_unit()))
                 .and(Condition.column(Survey$Table.ID_TAB_GROUP).eq(tabGroup.getId_tab_group()))
-                .and(Condition.column(Survey$Table.STATUS).isNot(Constants.SURVEY_SENT))
+                .and(Condition.column(Survey$Table.STATUS).isNot(Constants.SURVEY_IN_PROGRESS))
                 .orderBy(Survey$Table.EVENTDATE)
-                .orderBy(Survey$Table.ID_ORG_UNIT).queryList();
+                .orderBy(Survey$Table.ID_ORG_UNIT).querySingle();
     }
 
     /**

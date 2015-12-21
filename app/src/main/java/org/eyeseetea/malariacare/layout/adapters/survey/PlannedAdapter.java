@@ -20,38 +20,58 @@
 package org.eyeseetea.malariacare.layout.adapters.survey;
 
 import android.content.Context;
-import android.text.Html;
-import android.text.method.LinkMovementMethod;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import org.eyeseetea.malariacare.BaseActivity;
+import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.R;
-import org.eyeseetea.malariacare.database.utils.feedback.Feedback;
-import org.eyeseetea.malariacare.database.utils.feedback.QuestionFeedback;
+import org.eyeseetea.malariacare.SurveyActivity;
+import org.eyeseetea.malariacare.database.model.Program;
+import org.eyeseetea.malariacare.database.model.Survey;
+import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.database.utils.planning.PlannedHeader;
 import org.eyeseetea.malariacare.database.utils.planning.PlannedItem;
 import org.eyeseetea.malariacare.database.utils.planning.PlannedSurvey;
-import org.eyeseetea.malariacare.network.CustomParser;
+import org.eyeseetea.malariacare.database.utils.planning.SurveyPlanner;
+import org.eyeseetea.malariacare.utils.Constants;
 
+import java.text.DateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Created by arrizabalaga on 14/09/15.
  */
 public class PlannedAdapter extends BaseAdapter {
 
+    private final String TAG=".PlannedAdapter";
+
     private List<PlannedItem> items;
 
     private Context context;
 
-    private boolean onlyFailed;
+    /**
+     * Require to start or edit a selected survey
+     */
+    SurveyPlanner surveyPlanner;
+    /**
+     * Require to hide/show org_unit according to last one
+     */
+    String lastOrgUnit;
 
-    private boolean [] hiddenPositions;
+    /**
+     * Items filtered by this program
+     */
+    Program programFilter;
 
     public PlannedAdapter(Context context){
         this(new ArrayList<PlannedItem>(), context);
@@ -60,49 +80,80 @@ public class PlannedAdapter extends BaseAdapter {
     public PlannedAdapter(List<PlannedItem> items, Context context){
         this.items=items;
         this.context=context;
-        this.onlyFailed=true;
-        this.hiddenPositions= new boolean[this.items.size()];
+        this.surveyPlanner = new SurveyPlanner();
     }
 
     @Override
     public int getCount() {
-        int hiddenItems=this.onlyFailed?countHiddenUpTo(this.items.size()):0;
-        return this.items.size()-hiddenItems;
+        int numItems=0;
+        for(PlannedItem plannedItem:items){
+            //Headers are always shown
+            if(plannedItem instanceof PlannedHeader){
+                numItems=numItems+1+((PlannedHeader)plannedItem).getCounter();
+            }
+        }
+        //Contar x filtro
+        Log.d(TAG,"getCount "+numItems);
+        return numItems;
+    }
+
+    public void applyFilter(Program program){
+        programFilter=program;
+
+        //Update counters in header
+        for(PlannedItem plannedItem:items){
+            //Headers are always shown
+            if(plannedItem instanceof PlannedHeader){
+                ((PlannedHeader) plannedItem).resetCounter();
+                continue;
+            }
+            //Check match survey/program -> update header.counter
+            PlannedSurvey plannedSurvey = (PlannedSurvey)plannedItem;
+            if(plannedSurvey.isShownByProgram(program)){
+                plannedSurvey.incHeaderCounter();
+            }
+        }
+
+        //Refresh view
+        notifyDataSetChanged();
+
     }
 
     @Override
     public Object getItem(int position) {
-        //Show all -> direct
-        if(!onlyFailed){
+        //No filter
+        Log.d(TAG,"getItem pos:"+position);
+        if(programFilter==null) {
+            Log.d(TAG,"       pos:"+position+" -> No filter direct access");
             return this.items.get(position);
         }
 
-        //Find the visible item number 'position'
-        int visibleItems=0;
-        int i;
-        for(i=0;i<this.hiddenPositions.length;i++){
-            //Hidden, move on
-            if(this.hiddenPositions[i]){
-                continue;
+        //Loop and count
+        int numShownItems=0;
+        for(PlannedItem plannedItem:items){
+            //Found
+            Log.d(TAG,"       pos:"+position+" numShown:"+numShownItems);
+            if(position==numShownItems){
+                return plannedItem;
             }
-
-            //Visible, count it and check
-            visibleItems++;
-            if(visibleItems==position+1){
-                break;
+            //Not found -> increase counter if shown
+            if (plannedItem.isShownByProgram(programFilter)){
+                numShownItems++;
             }
         }
-
-        return this.items.get(i);
+        Log.d(TAG,"       pos:"+position+" -> Not found");
+        return null;
     }
 
     @Override
     public long getItemId(int position) {
+        Log.d(TAG,"getItemId pos:"+position);
         return getItem(position).hashCode();
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
+        Log.d(TAG,"getView pos:"+position);
         PlannedItem plannedItem=(PlannedItem)getItem(position);
         if (plannedItem instanceof PlannedHeader){
             return getViewByPlannedHeader((PlannedHeader) plannedItem, convertView, parent);
@@ -111,95 +162,106 @@ public class PlannedAdapter extends BaseAdapter {
         }
     }
 
-    private View getViewByPlannedHeader(PlannedHeader feedback, View convertView, ViewGroup parent){
+    private View getViewByPlannedHeader(PlannedHeader plannedHeader, View convertView, ViewGroup parent){
         LayoutInflater inflater=LayoutInflater.from(context);
-        LinearLayout rowLayout = (LinearLayout)inflater.inflate(R.layout.feedback_composite_score_row, parent, false);
-//        rowLayout.setBackgroundResource(feedback.getBackgroundColor());
-//
-//        //CompositeScore title
-//        TextView textView=(TextView)rowLayout.findViewById(R.id.feedback_label);
-//        textView.setText(feedback.getLabel());
-//
-//        //CompositeScore title
-//        textView=(TextView)rowLayout.findViewById(R.id.feedback_score_label);
-//        textView.setText(feedback.getPercentageAsString());
-//
-//        //Traffic light
-//        View light=rowLayout.findViewById(R.id.feedback_light);
-//        LayoutUtils.trafficView(context, feedback.getScore(), light);
+        LinearLayout rowLayout = (LinearLayout)inflater.inflate(R.layout.planning_header_row, parent, false);
+        rowLayout.setBackgroundResource(plannedHeader.getBackgroundColor());
+
+        //Title
+        TextView textView=(TextView)rowLayout.findViewById(R.id.planning_title);
+        textView.setText(plannedHeader.getTitleHeader());
+
+        //Productivity
+        textView=(TextView)rowLayout.findViewById(R.id.planning_prod);
+        textView.setText(plannedHeader.getProductivityHeader());
+
+        //Quality of Care
+        textView=(TextView)rowLayout.findViewById(R.id.planning_qoc);
+        textView.setText(plannedHeader.getQualityOfCareHeader());
+
+        //Next
+        textView=(TextView)rowLayout.findViewById(R.id.planning_next);
+        textView.setText(plannedHeader.getNextHeader());
+
+        //Resets last orgunit
+        lastOrgUnit=null;
         return rowLayout;
     }
 
-    private View getViewByPlannedSurvey(PlannedSurvey plannedSurvey, View convertView, ViewGroup parent){
+    private View getViewByPlannedSurvey(final PlannedSurvey plannedSurvey, View convertView, ViewGroup parent){
 
         LayoutInflater inflater=LayoutInflater.from(context);
-        LinearLayout rowLayout = (LinearLayout)inflater.inflate(R.layout.feedback_question_row, parent, false);
-        rowLayout.setTag(plannedSurvey);
-//
-//        //Question label
-//        TextView textView=(TextView)rowLayout.findViewById(R.id.feedback_question_label);
-//        textView.setText(feedback.getLabel());
-//
-//        //Option label
-//        textView=(TextView)rowLayout.findViewById(R.id.feedback_option_label);
-//        textView.setText(feedback.getOption());
-//
-//        //Score label
-//        textView=(TextView)rowLayout.findViewById(R.id.feedback_score_label);
-//        if(feedback.hasGrade()) {
-//            textView.setText(context.getString(feedback.getGrade()));
-//            textView.setTextColor(context.getResources().getColor(feedback.getColor()));
-//        }
-//
-//        //Feedback
-//        textView=(TextView)rowLayout.findViewById(R.id.feedback_feedback_html);
-//        String feedbackText=feedback.getFeedback();
-//        if(feedbackText==null){
-//            feedbackText=context.getString(R.string.feedback_info_no_feedback);
-//        }
-//        textView.setText( Html.fromHtml(feedbackText, new CustomParser(textView, this.context), new CustomParser(textView, this.context)));
-//        textView.setMovementMethod(LinkMovementMethod.getInstance());
-//
-//        //Hide/Show feedback according to its inner state
-//        toggleFeedback(rowLayout, feedback.isFeedbackShown());
-//
-//        //Add listener to toggle feedback state
-//        rowLayout.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                QuestionFeedback questionFeedback=(QuestionFeedback)v.getTag();
-//                if(questionFeedback==null){
-//                    return;
-//                }
-//                toggleFeedback((LinearLayout)v, questionFeedback.toggleFeedbackShown());
-//            }
-//        });
+        LinearLayout rowLayout = (LinearLayout)inflater.inflate(R.layout.planning_survey_row, parent, false);
+
+        //OrgUnit
+        TextView textView=(TextView)rowLayout.findViewById(R.id.planning_org_unit);
+        textView.setText(plannedSurvey.getOrgUnit());
+        if(lastOrgUnit!=null && lastOrgUnit.equals(plannedSurvey.getOrgUnit())){
+            textView.setVisibility(View.GONE);
+        }
+
+        //Program
+        textView=(TextView)rowLayout.findViewById(R.id.planning_program);
+        textView.setText(String.format("   - %s",plannedSurvey.getProgram()));
+
+        //Productivity
+        textView=(TextView)rowLayout.findViewById(R.id.planning_survey_prod);
+        textView.setText(plannedSurvey.getProductivity());
+
+        //QualityOfCare
+        textView=(TextView)rowLayout.findViewById(R.id.planning_survey_qoc);
+        textView.setText(plannedSurvey.getQualityOfCare());
+
+        //ScheduledDate
+        textView=(TextView)rowLayout.findViewById(R.id.planning_survey_schedule_date);
+        textView.setText(formatScheduledDate(plannedSurvey.getNextAssesment()));
+
+        //Action
+        ImageButton actionButton = (ImageButton)rowLayout.findViewById(R.id.planning_survey_action);
+        if(plannedSurvey.getSurvey().isInProgress()){
+            actionButton.setImageResource(R.drawable.ic_edit);
+        }
+
+        //Planned survey -> onclick startSurvey
+        actionButton.setOnClickListener(new CreateOrEditSurveyListener(plannedSurvey.getSurvey()));
+
+        //Annotate last orgunit
+        lastOrgUnit=plannedSurvey.getOrgUnit();
 
         return rowLayout;
     }
 
-    private void toggleFeedback(LinearLayout rowLayout, boolean visible){
-        //Separator
-        View separator=rowLayout.findViewById(R.id.feedback_separator);
-        separator.setVisibility(visible?View.VISIBLE:View.GONE);
-
-        //Feedback itself
-        TextView feedbackTextView=(TextView)rowLayout.findViewById(R.id.feedback_feedback_html);
-        feedbackTextView.setVisibility(visible?View.VISIBLE:View.GONE);
+    private String formatScheduledDate(Date date){
+        if(date==null){
+            return "-";
+        }
+        Locale locale = context.getResources().getConfiguration().locale;
+        DateFormat dateFormatter = DateFormat.getDateInstance(DateFormat.DEFAULT, locale);
+        return dateFormatter.format(date);
     }
 
     /**
-     * Counts the number of hidden items up to the given position or the whole array if the given position is greater.
-     * @param position Upper index to check (included)
-     * @return
+     * Listener that starts the given planned survey and goes to surveyActivity to start with edition
      */
-    private int countHiddenUpTo(int position){
-        int iMax=(position<hiddenPositions.length-1)?position:(this.hiddenPositions.length-1);
-        int numHidden=0;
-        for(int i=0;i<=iMax;i++){
-            numHidden+=hiddenPositions[i]?1:0;
+    class CreateOrEditSurveyListener implements View.OnClickListener {
+
+        Survey survey;
+
+        CreateOrEditSurveyListener(Survey survey){
+            this.survey=survey;
         }
-        return numHidden;
+
+        @Override
+        public void onClick(View v) {
+            BaseActivity activity = ((DashboardActivity) context);
+            if(survey.getStatus()==Constants.SURVEY_PLANNED){
+                survey=surveyPlanner.startSurvey(survey);
+            }
+
+            Session.setSurvey(survey);
+            activity.prepareLocationListener(survey);
+            activity.finishAndGo(SurveyActivity.class);
+        }
     }
 
 }

@@ -77,12 +77,13 @@ public class OrgUnit extends BaseModel {
     boolean lowProductivity;
 
     public OrgUnit() {
+        //TODO Remove this when ready
+        this.lowProductivity = Math.random()>0.5;
     }
 
     public OrgUnit(String name) {
+        this();
         this.name = name;
-        //TODO Remove this when ready
-        this.lowProductivity = Math.random()>0.5;
     }
 
 

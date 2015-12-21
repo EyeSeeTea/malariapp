@@ -19,6 +19,8 @@
 
 package org.eyeseetea.malariacare.database.utils.planning;
 
+import android.util.Log;
+
 import com.raizlabs.android.dbflow.sql.QueryBuilder;
 import com.raizlabs.android.dbflow.sql.builder.Condition;
 import com.raizlabs.android.dbflow.sql.language.Select;
@@ -44,6 +46,7 @@ public class SurveyPlanner {
     private final static int TYPE_A_NEXT_DATE=6;
     private final static int TYPE_BC_LOW_NEXT_DATE=4;
     private final static int TYPE_BC_HIGH_NEXT_DATE=2;
+    private static final String TAG = ".SurveyPlanner";
 
 
     /**
@@ -72,12 +75,17 @@ public class SurveyPlanner {
      */
     public Survey buildNext(Survey survey){
         Survey plannedSurvey = new Survey();
+        //Create and save a planned survey
         plannedSurvey.setStatus(Constants.SURVEY_PLANNED);
         plannedSurvey.setOrgUnit(survey.getOrgUnit());
         plannedSurvey.setUser(Session.getUser());
         plannedSurvey.setTabGroup(survey.getTabGroup());
+        plannedSurvey.setMainScore(survey.getMainScore());
         plannedSurvey.setScheduledDate(findScheduledDateBySurvey(survey));
         plannedSurvey.save();
+
+        //Save last main score
+        plannedSurvey.saveMainScore();
 
         return plannedSurvey;
     }
@@ -97,7 +105,15 @@ public class SurveyPlanner {
                 .and(Condition.column(Survey$Table.STATUS).eq(Constants.SURVEY_PLANNED))
                 .querySingle();
 
-        //There MUST be an already planned survey for this combo
+        return startSurvey(survey);
+    }
+
+    /**
+     * Starts a planned survey
+     * @param survey
+     * @return
+     */
+    public Survey startSurvey(Survey survey){
         survey.setCreationDate(new Date());
         survey.setStatus(Constants.SURVEY_IN_PROGRESS);
         survey.setUser(Session.getUser());
@@ -134,23 +150,26 @@ public class SurveyPlanner {
             return null;
         }
 
-        Date scheduledDate=survey.getScheduledDate();
-        if(scheduledDate==null){
+        Date eventDate=survey.getEventDate();
+        if(eventDate==null){
             return null;
         }
 
+        //Load main score
+        Log.d(TAG, String.format("finding scheduledDate for a survey with: eventDate: %s, score: %f , lowProductivity: %b", eventDate.toString(), survey.getMainScore(), survey.getOrgUnit().isLowProductivity()));
+
         //A -> 6 months
         if(survey.isTypeA()){
-            return getInXMonths(scheduledDate,TYPE_A_NEXT_DATE);
+            return getInXMonths(eventDate,TYPE_A_NEXT_DATE);
         }
 
         //BC + Low OrgUnit -> 4
         if(survey.getOrgUnit().isLowProductivity()){
-            return getInXMonths(scheduledDate,TYPE_BC_LOW_NEXT_DATE);
+            return getInXMonths(eventDate,TYPE_BC_LOW_NEXT_DATE);
         }
 
         //BC + High OrgUnit -> 2
-        return getInXMonths(scheduledDate,TYPE_BC_HIGH_NEXT_DATE);
+        return getInXMonths(eventDate,TYPE_BC_HIGH_NEXT_DATE);
     }
 
     /**

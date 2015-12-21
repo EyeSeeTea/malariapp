@@ -21,19 +21,25 @@ package org.eyeseetea.malariacare.database.utils.planning;
 
 import android.content.Context;
 
+import com.raizlabs.android.dbflow.structure.InternalAdapter;
+
 import org.eyeseetea.malariacare.R;
+import org.eyeseetea.malariacare.database.model.Program;
 
 /**
  * Simple VO to model the headers  the planned listview
  * Created by arrizabalaga on 15/12/15.
  */
 public class PlannedHeader implements PlannedItem {
-    private final String titleHeader;
+    private String titleHeader;
     private final String productivityHeader;
     private final String qualityOfCareHeader;
     private final String nextHeader;
     private final Integer backgroundColor;
 
+    /**
+     * Number of planned surveys under this category
+     */
     private Integer counter;
 
     public PlannedHeader(String titleHeader, String productivityHeader, String qualityOfCareHeader, String nextHeader, Integer backgroundColor) {
@@ -42,18 +48,30 @@ public class PlannedHeader implements PlannedItem {
         this.qualityOfCareHeader = qualityOfCareHeader;
         this.nextHeader = nextHeader;
         this.backgroundColor = backgroundColor;
+        this.counter=0;
+    }
+
+    public String getTitleHeader() {
+        return String.format("%s (%d)",titleHeader,counter);
+    }
+
+    public Integer getCounter() {
+        return counter;
     }
 
     public void setCounter(Integer counter) {
         this.counter = counter;
     }
 
-    public String getTitleHeader() {
-        return titleHeader;
+    /**
+     * Resets counter
+     */
+    public void resetCounter(){
+        setCounter(0);
     }
 
-    public Integer getCounter() {
-        return counter;
+    public void incCounter(){
+        counter++;
     }
 
     public String getProductivityHeader() {
@@ -70,6 +88,16 @@ public class PlannedHeader implements PlannedItem {
 
     public Integer getBackgroundColor(){
         return backgroundColor;
+    }
+
+    /**
+     * Headers are always shown
+     * @param filterProgram
+     * @return
+     */
+    @Override
+    public boolean isShownByProgram(Program filterProgram){
+        return true;
     }
 
     /**
@@ -126,5 +154,34 @@ public class PlannedHeader implements PlannedItem {
                 ctx.getString(R.string.dashboard_title_planned_quality_of_care),
                 ctx.getString(R.string.dashboard_title_planned_next_qa),
                 R.color.scoreGrandson);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        PlannedHeader that = (PlannedHeader) o;
+
+        if (titleHeader != null ? !titleHeader.equals(that.titleHeader) : that.titleHeader != null)
+            return false;
+        if (productivityHeader != null ? !productivityHeader.equals(that.productivityHeader) : that.productivityHeader != null)
+            return false;
+        if (qualityOfCareHeader != null ? !qualityOfCareHeader.equals(that.qualityOfCareHeader) : that.qualityOfCareHeader != null)
+            return false;
+        if (nextHeader != null ? !nextHeader.equals(that.nextHeader) : that.nextHeader != null)
+            return false;
+        return !(backgroundColor != null ? !backgroundColor.equals(that.backgroundColor) : that.backgroundColor != null);
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = titleHeader != null ? titleHeader.hashCode() : 0;
+        result = 31 * result + (productivityHeader != null ? productivityHeader.hashCode() : 0);
+        result = 31 * result + (qualityOfCareHeader != null ? qualityOfCareHeader.hashCode() : 0);
+        result = 31 * result + (nextHeader != null ? nextHeader.hashCode() : 0);
+        result = 31 * result + (backgroundColor != null ? backgroundColor.hashCode() : 0);
+        return result;
     }
 }

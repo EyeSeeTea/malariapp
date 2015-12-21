@@ -24,20 +24,29 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Spinner;
+import android.widget.TextView;
+
+import com.raizlabs.android.dbflow.sql.language.Select;
 
 import org.eyeseetea.malariacare.R;
+import org.eyeseetea.malariacare.database.model.Program;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.database.utils.planning.PlannedItem;
+import org.eyeseetea.malariacare.layout.adapters.general.ProgramArrayAdapter;
 import org.eyeseetea.malariacare.layout.adapters.survey.PlannedAdapter;
 import org.eyeseetea.malariacare.services.SurveyService;
+import org.eyeseetea.malariacare.utils.Constants;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,6 +63,8 @@ public class PlannedFragment extends ListFragment {
 
     private List<PlannedItem> plannedItems;
 
+    private Program programDefaultOption;
+
 
     public PlannedFragment() {
         this.plannedItems = new ArrayList();
@@ -64,6 +75,7 @@ public class PlannedFragment extends ListFragment {
     public void onCreate(Bundle savedInstanceState){
         Log.d(TAG, "onCreate");
         super.onCreate(savedInstanceState);
+        programDefaultOption = new Program(Constants.DEFAULT_SELECT_OPTION);
     }
 
     @Override
@@ -89,6 +101,27 @@ public class PlannedFragment extends ListFragment {
         ListView listView = (ListView)getActivity().findViewById(R.id.dashboard_planning_list);
         listView.setAdapter(this.adapter);
         this.setListAdapter(adapter);
+
+        Spinner programSpinner = (Spinner) getActivity().findViewById(R.id.dashboard_planning_program);
+        //Populate Program View DDL
+        List<Program> programList = new Select().all().from(Program.class).queryList();
+        programList.add(0, programDefaultOption);
+        programSpinner.setAdapter(new ProgramArrayAdapter(getActivity(), programList));
+        //Apply filter to listview
+        programSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                Spinner spinner=((Spinner) parent);
+                Program selectedProgram=position==0?null:(Program)spinner.getItemAtPosition(position);
+                ((TextView) parent.getChildAt(0)).setTextColor(Color.WHITE);
+                adapter.applyFilter(selectedProgram);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
 
     }
 
@@ -124,6 +157,7 @@ public class PlannedFragment extends ListFragment {
      * It really important to do this, otherwise each receiver will invoke its code.
      */
     public void unregisterPlannedItemsReceiver() {
+        Log.d(TAG, "unregisterPlannedItemsReceiver");
         if (plannedItemsReceiver != null) {
             LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(plannedItemsReceiver);
             plannedItemsReceiver = null;

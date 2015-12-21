@@ -19,10 +19,13 @@
 
 package org.eyeseetea.malariacare.database.utils.planning;
 
+import org.eyeseetea.malariacare.database.model.Program;
+
 /**
  * Just a marker interface to add headers and real items to a listview
  * Created by arrizabalaga on 15/12/15.
  */
 public interface PlannedItem {
 
+    boolean isShownByProgram(Program filterProgram);
 }

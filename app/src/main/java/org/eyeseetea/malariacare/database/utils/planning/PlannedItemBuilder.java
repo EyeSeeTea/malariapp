@@ -122,6 +122,13 @@ public class PlannedItemBuilder {
 
     private List<PlannedItem> mergeLists() {
         List<PlannedItem> plannedItems = new ArrayList<>();
+        //Annotate number of items per accordion
+        ((PlannedHeader)never.get(0)).setCounter(never.size()-1);
+        ((PlannedHeader)overdue.get(0)).setCounter(overdue.size()-1);
+        ((PlannedHeader)next30.get(0)).setCounter(next30.size()-1);
+        ((PlannedHeader)future.get(0)).setCounter(future.size() - 1);
+
+        //Put altogether in one list
         plannedItems.addAll(never);
         plannedItems.addAll(overdue);
         plannedItems.addAll(next30);
@@ -168,7 +175,7 @@ public class PlannedItemBuilder {
         }
 
         //Otherwise a future
-        future.add(new PlannedSurvey(survey));
+        addToSection(future, survey);
     }
 
     /**
@@ -182,14 +189,14 @@ public class PlannedItemBuilder {
 
         //No Scheduled
         if (scheduledDate==null) {
-            never.add(new PlannedSurvey(survey));
+            addToSection(never, survey);
             return true;
         }
 
         //in progress + in time
         if(survey.getStatus()==Constants.SURVEY_IN_PROGRESS &&
                 today.before(scheduledDate)) {
-            never.add(new PlannedSurvey(survey));
+            addToSection(never, survey);
             return true;
         }
 
@@ -208,7 +215,7 @@ public class PlannedItemBuilder {
 
         //scheduledDate<today
         if(scheduledDate.before(today)){
-            overdue.add(new PlannedSurvey(survey));
+            addToSection(overdue, survey);
             return true;
         }
 
@@ -227,8 +234,8 @@ public class PlannedItemBuilder {
         Date today30 = getIn30Days(today);
 
         //planned in less 30 days
-        if(scheduledDate.before(today30)){
-            next30.add(new PlannedSurvey(survey));
+        if(scheduledDate.before(today30)) {
+            addToSection(next30,survey);
             return true;
         }
 
@@ -290,6 +297,16 @@ public class PlannedItemBuilder {
                 findRightState(survey);
             }
         }
+    }
+
+    /**
+     * Adds a survey to the given list (section), linking the new item to its header
+     * @param section
+     * @param survey
+     */
+    private void addToSection(List<PlannedItem> section,Survey survey){
+        PlannedHeader header=(PlannedHeader)section.get(0);
+        section.add(new PlannedSurvey(survey,header));
     }
 
 }

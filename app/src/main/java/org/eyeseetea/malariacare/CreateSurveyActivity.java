@@ -20,9 +20,6 @@
 package org.eyeseetea.malariacare;
 
 import android.app.AlertDialog;
-import android.content.Context;
-import android.location.Location;
-import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -41,13 +38,11 @@ import org.eyeseetea.malariacare.database.model.OrgUnitLevel;
 import org.eyeseetea.malariacare.database.model.Program;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.model.TabGroup;
-import org.eyeseetea.malariacare.database.utils.LocationMemory;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.database.utils.planning.SurveyPlanner;
 import org.eyeseetea.malariacare.layout.adapters.general.OrgUnitArrayAdapter;
 import org.eyeseetea.malariacare.layout.adapters.general.ProgramArrayAdapter;
 import org.eyeseetea.malariacare.layout.adapters.general.TabGroupArrayAdapter;
-import org.eyeseetea.malariacare.layout.listeners.SurveyLocationListener;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 import org.eyeseetea.malariacare.utils.Constants;
 import org.eyeseetea.malariacare.views.CustomTextView;
@@ -81,8 +76,6 @@ public class CreateSurveyActivity extends BaseActivity {
     private TabGroup tabGroupDefaultOption;
 
     private LayoutInflater lInflater;
-
-    private SurveyLocationListener locationListener;
 
     private SurveyPlanner surveyPlanner;
 
@@ -163,12 +156,12 @@ public class CreateSurveyActivity extends BaseActivity {
         }
     }
 
-    private boolean doesSurveyExist() {
+    private boolean doesSurveyInProgressExist() {
         // Read Selected Items
         OrgUnit orgUnit = (OrgUnit) realOrgUnitView.getSelectedItem();
         TabGroup tabGroup = (TabGroup) tabGroupView.getSelectedItem();
-        List<Survey> existing = Survey.getUnsentSurveys(orgUnit, tabGroup);
-        return (existing != null && existing.size() != 0);
+        Survey survey = Survey.getInProgressSurveys(orgUnit, tabGroup);
+        return (survey != null);
     }
 
     private boolean validateForm(){
@@ -182,7 +175,7 @@ public class CreateSurveyActivity extends BaseActivity {
                         .setTitle(getApplicationContext().getString(R.string.dialog_title_incorrect_org_unit))
                         .setMessage(getApplicationContext().getString(R.string.dialog_content_incorrect_org_unit))
                         .setPositiveButton(android.R.string.ok, null).create().show();
-        } else if (doesSurveyExist()) {
+        } else if (doesSurveyInProgressExist()) {
                 new AlertDialog.Builder(this)
                         .setTitle(getApplicationContext().getString(R.string.dialog_title_existing_survey))
                         .setMessage(getApplicationContext().getString(R.string.dialog_content_existing_survey))
@@ -214,31 +207,10 @@ public class CreateSurveyActivity extends BaseActivity {
             //Look for coordinates
             prepareLocationListener(survey);
 
-
             //Call Survey Activity
             finishAndGo(SurveyActivity.class);
         }
 
-    }
-
-    private void prepareLocationListener(Survey survey){
-
-
-        locationListener=new SurveyLocationListener(survey.getId_survey());
-        LocationManager locationManager=(LocationManager) LocationMemory.getContext().getSystemService(Context.LOCATION_SERVICE);
-        if(locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){
-            Log.d(TAG,"requestLocationUpdates via GPS");
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,0,0,locationListener);
-        }
-
-        if(locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)){
-            Log.d(TAG,"requestLocationUpdates via NETWORK");
-            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER,0,0,locationListener);
-        }else{
-            Location lastLocation=locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-            Log.d(TAG, "location not available via GPS|NETWORK, last know: " + lastLocation);
-            locationListener.saveLocation(lastLocation);
-        }
     }
 
     @Subscribe

@@ -19,8 +19,9 @@
 
 package org.eyeseetea.malariacare.database.utils.planning;
 
-import org.eyeseetea.malariacare.database.model.OrgUnit;
+import org.eyeseetea.malariacare.database.model.Program;
 import org.eyeseetea.malariacare.database.model.Survey;
+import org.eyeseetea.malariacare.utils.Utils;
 
 import java.util.Date;
 
@@ -35,10 +36,14 @@ public class PlannedSurvey implements PlannedItem {
     private final static String LOW_PRODUCTIVITY="L";
     private final static String NO_QUALITY_OF_CARE="-";
 
+    /**
+     * The header where this item belongs
+     */
+    private PlannedHeader header;
 
-
-    public PlannedSurvey(Survey survey) {
+    public PlannedSurvey(Survey survey,PlannedHeader header) {
         this.survey = survey;
+        this.header = header;
     }
 
     public String getOrgUnit(){
@@ -84,8 +89,7 @@ public class PlannedSurvey implements PlannedItem {
         if(survey==null){
             return NO_QUALITY_OF_CARE;
         }
-
-        return survey.getMainScore().toString();
+        return Utils.round(survey.getMainScore());
     }
 
     public Date getNextAssesment(){
@@ -93,5 +97,53 @@ public class PlannedSurvey implements PlannedItem {
             return null;
         }
         return survey.getScheduledDate();
+    }
+
+    public Survey getSurvey(){
+        return survey;
+    }
+
+    public PlannedHeader getHeader(){
+        return header;
+    }
+
+    public void incHeaderCounter(){
+        this.header.incCounter();
+    }
+
+    /**
+     * Checks if this item can be shown according to the given filter
+     * @param filterProgram
+     * @return
+     */
+    @Override
+    public boolean isShownByProgram(Program filterProgram){
+        //No filter -> always show
+        if(filterProgram==null){
+            return false;
+        }
+
+        Program surveyProgram=survey.getTabGroup().getProgram();
+        //Returns if both match
+        return filterProgram.getId_program().equals(surveyProgram.getId_program());
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        PlannedSurvey that = (PlannedSurvey) o;
+
+        if (survey != null ? !survey.equals(that.survey) : that.survey != null) return false;
+        return !(header != null ? !header.equals(that.header) : that.header != null);
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = survey != null ? survey.hashCode() : 0;
+        result = 31 * result + (header != null ? header.hashCode() : 0);
+        return result;
     }
 }
