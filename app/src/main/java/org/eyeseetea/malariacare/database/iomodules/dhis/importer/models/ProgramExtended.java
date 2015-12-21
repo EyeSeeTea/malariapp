@@ -19,9 +19,13 @@
 
 package org.eyeseetea.malariacare.database.iomodules.dhis.importer.models;
 
+import com.raizlabs.android.dbflow.sql.language.Select;
+
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.IConvertFromSDKVisitor;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.VisitableFromSDK;
 import org.hisp.dhis.android.sdk.persistence.models.Program;
+
+import java.util.List;
 
 /**
  * Created by arrizabalaga on 5/11/15.
@@ -29,6 +33,8 @@ import org.hisp.dhis.android.sdk.persistence.models.Program;
 public class ProgramExtended implements VisitableFromSDK {
 
     Program program;
+
+    public ProgramExtended(){}
 
     public ProgramExtended(Program program){
         this.program=program;
@@ -41,5 +47,9 @@ public class ProgramExtended implements VisitableFromSDK {
 
     public Program getProgram(){
         return this.program;
+    }
+
+    public static List<Program> getAllPrograms(){
+        return new Select().from(Program.class).queryList();
     }
 }

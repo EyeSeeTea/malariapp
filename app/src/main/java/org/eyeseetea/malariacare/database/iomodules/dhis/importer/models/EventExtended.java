@@ -44,6 +44,8 @@ public class EventExtended implements VisitableFromSDK {
 
     Event event;
 
+    public EventExtended(){}
+
     public EventExtended(Event event){
         this.event =event;
     }

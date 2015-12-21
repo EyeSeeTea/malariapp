@@ -28,7 +28,9 @@ import org.hisp.dhis.android.sdk.persistence.models.ProgramStageSection;
  * Created by arrizabalaga on 5/11/15.
  */
 public class ProgramStageSectionExtended implements VisitableFromSDK {
-   ProgramStageSection programStageSection;
+    ProgramStageSection programStageSection;
+
+    public ProgramStageSectionExtended(){}
 
     public ProgramStageSectionExtended(ProgramStageSection programStageSection){
         this.programStageSection=programStageSection;
