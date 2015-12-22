@@ -98,8 +98,6 @@ public class PlannedFragment extends ListFragment {
 
     private void prepareUI() {
         this.adapter = new PlannedAdapter(plannedItems,getActivity());
-        ListView listView = (ListView)getActivity().findViewById(R.id.dashboard_planning_list);
-        listView.setAdapter(this.adapter);
         this.setListAdapter(adapter);
 
         Spinner programSpinner = (Spinner) getActivity().findViewById(R.id.dashboard_planning_program);

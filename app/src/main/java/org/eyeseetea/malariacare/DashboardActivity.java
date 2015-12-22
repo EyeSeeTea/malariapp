@@ -138,8 +138,7 @@ public class DashboardActivity extends BaseActivity {
         Log.d(TAG,"initPlanned");
         plannedFragment = new PlannedFragment();
         plannedFragment.setArguments(getIntent().getExtras());
-//        setFragmentTransaction(R.id.dashboard_planning_tab, plannedFragment);
-        setFragmentTransaction(R.id.dashboard_planning_container,plannedFragment);
+        setFragmentTransaction(R.id.dashboard_planning_tab, plannedFragment);
     }
 
     public void initImprove(){
