@@ -79,6 +79,7 @@ public class CreateSurveyActivity extends BaseActivity {
 
     private SurveyPlanner surveyPlanner;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -87,6 +88,7 @@ public class CreateSurveyActivity extends BaseActivity {
         android.support.v7.app.ActionBar actionBar = this.getSupportActionBar();
         LayoutUtils.setActionBarLogo(actionBar);
 
+        this.surveyPlanner = new SurveyPlanner();
         this.lInflater = LayoutInflater.from(this);
 
         //Create default options

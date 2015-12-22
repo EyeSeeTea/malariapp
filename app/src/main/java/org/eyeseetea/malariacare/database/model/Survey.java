@@ -276,7 +276,13 @@ public class Survey extends BaseModel implements VisitableToSDK {
         if(mainScore!=null){
             valScore=mainScore;
         }
-        Score score=new Score(this,"",valScore);
+        //Update or New row
+        Score score=getScore();
+        if(score==null){
+            score=new Score(this,"",valScore);
+        }else{
+            score.setScore(valScore);
+        }
         score.save();
     }
 
@@ -453,7 +459,7 @@ public class Survey extends BaseModel implements VisitableToSDK {
         return new Select().from(Survey.class)
                 .where(Condition.column(Survey$Table.ID_ORG_UNIT).eq(orgUnit.getId_org_unit()))
                 .and(Condition.column(Survey$Table.ID_TAB_GROUP).eq(tabGroup.getId_tab_group()))
-                .and(Condition.column(Survey$Table.STATUS).isNot(Constants.SURVEY_IN_PROGRESS))
+                .and(Condition.column(Survey$Table.STATUS).is(Constants.SURVEY_IN_PROGRESS))
                 .orderBy(Survey$Table.EVENTDATE)
                 .orderBy(Survey$Table.ID_ORG_UNIT).querySingle();
     }

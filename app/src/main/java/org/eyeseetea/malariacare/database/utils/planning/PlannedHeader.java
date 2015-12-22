@@ -101,6 +101,16 @@ public class PlannedHeader implements PlannedItem {
     }
 
     /**
+     * Headers are always shown
+     * @param plannedHeader
+     * @return
+     */
+    @Override
+    public boolean isShownByHeader(PlannedHeader plannedHeader){
+        return true;
+    }
+
+    /**
      * Builds the header for the never accordion
      * @param ctx
      * @return
@@ -183,5 +193,10 @@ public class PlannedHeader implements PlannedItem {
         result = 31 * result + (nextHeader != null ? nextHeader.hashCode() : 0);
         result = 31 * result + (backgroundColor != null ? backgroundColor.hashCode() : 0);
         return result;
+    }
+
+    @Override
+    public String toString(){
+        return titleHeader;
     }
 }

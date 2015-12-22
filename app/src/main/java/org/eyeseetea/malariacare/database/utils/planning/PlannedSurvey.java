@@ -120,12 +120,28 @@ public class PlannedSurvey implements PlannedItem {
     public boolean isShownByProgram(Program filterProgram){
         //No filter -> always show
         if(filterProgram==null){
-            return false;
+            return true;
         }
 
         Program surveyProgram=survey.getTabGroup().getProgram();
         //Returns if both match
         return filterProgram.getId_program().equals(surveyProgram.getId_program());
+    }
+
+    /**
+     * Headers are always shown
+     * @param plannedHeader
+     * @return
+     */
+    @Override
+    public boolean isShownByHeader(PlannedHeader plannedHeader){
+        //No filter -> always show
+        if(plannedHeader==null){
+            return true;
+        }
+
+        //Returns if both match
+        return this.header.equals(plannedHeader);
     }
 
     @Override
@@ -145,5 +161,12 @@ public class PlannedSurvey implements PlannedItem {
         int result = survey != null ? survey.hashCode() : 0;
         result = 31 * result + (header != null ? header.hashCode() : 0);
         return result;
+    }
+
+    @Override
+    public String toString() {
+        return "PlannedSurvey{" +
+                "survey=" + survey +
+                '}';
     }
 }

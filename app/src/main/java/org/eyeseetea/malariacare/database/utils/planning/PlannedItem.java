@@ -27,5 +27,17 @@ import org.eyeseetea.malariacare.database.model.Program;
  */
 public interface PlannedItem {
 
+    /**
+     * Tells if this item can be shown according to the given program as a filter
+     * @param filterProgram
+     * @return
+     */
     boolean isShownByProgram(Program filterProgram);
+
+    /**
+     * Tells if this item can be shown according to the given header as a filter
+     * @param currentSection
+     * @return
+     */
+    boolean isShownByHeader(PlannedHeader currentSection);
 }

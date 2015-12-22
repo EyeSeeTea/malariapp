@@ -167,10 +167,7 @@ public class PlannedFragment extends ListFragment {
     }
 
     public void reloadPlannedItems(List<PlannedItem> plannedItemList) {
-        Log.d(TAG, "reloadPlannedItems : " + plannedItemList.size());
-        this.plannedItems.clear();
-        this.plannedItems.addAll(plannedItemList);
-        adapter.notifyDataSetChanged();
+        adapter.reloadItems(plannedItemList);
         setListShown(true);
     }
 

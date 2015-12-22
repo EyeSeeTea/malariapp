@@ -63,43 +63,98 @@ public class PlannedAdapter extends BaseAdapter {
      * Require to start or edit a selected survey
      */
     SurveyPlanner surveyPlanner;
-    /**
-     * Require to hide/show org_unit according to last one
-     */
-    String lastOrgUnit;
 
     /**
      * Items filtered by this program
      */
     Program programFilter;
 
-    public PlannedAdapter(Context context){
-        this(new ArrayList<PlannedItem>(), context);
-    }
+    /**
+     * Current selected header (working like an accordeon)
+     */
+    PlannedHeader currentHeader;
+
+    /**
+     * Number of items shown according to the selected section and filter
+     */
+    int numShown;
 
     public PlannedAdapter(List<PlannedItem> items, Context context){
         this.items=items;
         this.context=context;
         this.surveyPlanner = new SurveyPlanner();
+        initDefaultSection();
+    }
+
+    private void initDefaultSection(){
+        if(items!=null && items.size()>0){
+            openSection((PlannedHeader)items.get(0));
+        }
+    }
+
+    private void openSection(PlannedHeader header){
+        //Annotate currentHeader
+        Log.d(TAG, "openSection: " + header);
+        currentHeader=header;
+        applyFilter(programFilter);
     }
 
     @Override
     public int getCount() {
+        return numShown;
+    }
+
+    public void reloadItems(List<PlannedItem> newItems){
+        Log.d(TAG, "reloadItems: " + newItems.size());
+        this.items.clear();
+        this.items.addAll(newItems);
+        initDefaultSection();
+        applyFilter(null);
+    }
+
+    public void applyFilter(Program program){
+        Log.d(TAG,"applyFilter:"+program);
+
+        //Annotate filter
+        programFilter=program;
+
+        //Update header counters according to new program filter
+        updateHeaderCounters();
+
+        //Update counter
+        updateNumShown();
+
+        //Refresh view
+        notifyDataSetChanged();
+    }
+
+    private void updateNumShown(){
+        Log.d(TAG, "updateNumShown");
+        //No list -> nothing to update
+        if(items==null){
+            numShown=0;
+            return;
+        }
+
+        //Loop over list annotating items that can be shown
         int numItems=0;
         for(PlannedItem plannedItem:items){
             //Headers are always shown
             if(plannedItem instanceof PlannedHeader){
-                numItems=numItems+1+((PlannedHeader)plannedItem).getCounter();
+                numItems++;
+            }else{
+                //Surveys are shown
+                if(plannedItem.isShownByProgram(programFilter) && plannedItem.isShownByHeader(currentHeader)){
+                    numItems++;
+                }
             }
         }
         //Contar x filtro
-        Log.d(TAG,"getCount "+numItems);
-        return numItems;
+        Log.d(TAG, "updateNumShown:" + numItems);
+        numShown=numItems;
     }
 
-    public void applyFilter(Program program){
-        programFilter=program;
-
+    private void updateHeaderCounters(){
         //Update counters in header
         for(PlannedItem plannedItem:items){
             //Headers are always shown
@@ -109,60 +164,49 @@ public class PlannedAdapter extends BaseAdapter {
             }
             //Check match survey/program -> update header.counter
             PlannedSurvey plannedSurvey = (PlannedSurvey)plannedItem;
-            if(plannedSurvey.isShownByProgram(program)){
+            if(plannedSurvey.isShownByProgram(programFilter)){
                 plannedSurvey.incHeaderCounter();
             }
         }
-
-        //Refresh view
-        notifyDataSetChanged();
-
     }
 
     @Override
     public Object getItem(int position) {
         //No filter
-        Log.d(TAG,"getItem pos:"+position);
-        if(programFilter==null) {
-            Log.d(TAG,"       pos:"+position+" -> No filter direct access");
-            return this.items.get(position);
-        }
+        Log.d(TAG, "getItem: "+position);
 
         //Loop and count
         int numShownItems=0;
-        for(PlannedItem plannedItem:items){
-            //Found
-            Log.d(TAG,"       pos:"+position+" numShown:"+numShownItems);
-            if(position==numShownItems){
-                return plannedItem;
-            }
-            //Not found -> increase counter if shown
-            if (plannedItem.isShownByProgram(programFilter)){
+        for(int i=0;i<items.size();i++){
+            PlannedItem plannedItem=items.get(i);
+
+            if(plannedItem.isShownByProgram(programFilter) && plannedItem.isShownByHeader(currentHeader)){
                 numShownItems++;
+                if(position==(numShownItems-1)) {
+                    return plannedItem;
+                }
             }
         }
-        Log.d(TAG,"       pos:"+position+" -> Not found");
         return null;
     }
 
     @Override
     public long getItemId(int position) {
-        Log.d(TAG,"getItemId pos:"+position);
         return getItem(position).hashCode();
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        Log.d(TAG,"getView pos:"+position);
+        Log.d(TAG,"getView: "+position);
         PlannedItem plannedItem=(PlannedItem)getItem(position);
         if (plannedItem instanceof PlannedHeader){
-            return getViewByPlannedHeader((PlannedHeader) plannedItem, convertView, parent);
+            return getViewByPlannedHeader((PlannedHeader) plannedItem, parent);
         }else{
-            return getViewByPlannedSurvey((PlannedSurvey) plannedItem, convertView, parent);
+            return getViewByPlannedSurvey(position,(PlannedSurvey) plannedItem, parent);
         }
     }
 
-    private View getViewByPlannedHeader(PlannedHeader plannedHeader, View convertView, ViewGroup parent){
+    private View getViewByPlannedHeader(PlannedHeader plannedHeader, ViewGroup parent){
         LayoutInflater inflater=LayoutInflater.from(context);
         LinearLayout rowLayout = (LinearLayout)inflater.inflate(R.layout.planning_header_row, parent, false);
         rowLayout.setBackgroundResource(plannedHeader.getBackgroundColor());
@@ -170,25 +214,41 @@ public class PlannedAdapter extends BaseAdapter {
         //Title
         TextView textView=(TextView)rowLayout.findViewById(R.id.planning_title);
         textView.setText(plannedHeader.getTitleHeader());
+        if(plannedHeader.equals(currentHeader)){
+            boldHeader(textView);
+        }
 
         //Productivity
         textView=(TextView)rowLayout.findViewById(R.id.planning_prod);
         textView.setText(plannedHeader.getProductivityHeader());
+        if(plannedHeader.equals(currentHeader)){
+            boldHeader(textView);
+        }
 
         //Quality of Care
         textView=(TextView)rowLayout.findViewById(R.id.planning_qoc);
         textView.setText(plannedHeader.getQualityOfCareHeader());
+        if(plannedHeader.equals(currentHeader)){
+            boldHeader(textView);
+        }
 
         //Next
         textView=(TextView)rowLayout.findViewById(R.id.planning_next);
         textView.setText(plannedHeader.getNextHeader());
+        if(plannedHeader.equals(currentHeader)){
+            boldHeader(textView);
+        }
 
-        //Resets last orgunit
-        lastOrgUnit=null;
+        //Planned header -> openSection
+        rowLayout.setOnClickListener(new OpenHeaderListener(plannedHeader));
         return rowLayout;
     }
 
-    private View getViewByPlannedSurvey(final PlannedSurvey plannedSurvey, View convertView, ViewGroup parent){
+    private void boldHeader(TextView textView){
+        textView.setTextColor(context.getResources().getColor(R.color.black));
+    }
+
+    private View getViewByPlannedSurvey(int position,final PlannedSurvey plannedSurvey, ViewGroup parent){
 
         LayoutInflater inflater=LayoutInflater.from(context);
         LinearLayout rowLayout = (LinearLayout)inflater.inflate(R.layout.planning_survey_row, parent, false);
@@ -196,7 +256,7 @@ public class PlannedAdapter extends BaseAdapter {
         //OrgUnit
         TextView textView=(TextView)rowLayout.findViewById(R.id.planning_org_unit);
         textView.setText(plannedSurvey.getOrgUnit());
-        if(lastOrgUnit!=null && lastOrgUnit.equals(plannedSurvey.getOrgUnit())){
+        if(isSameOrgUnit(plannedSurvey,position)){
             textView.setVisibility(View.GONE);
         }
 
@@ -225,10 +285,17 @@ public class PlannedAdapter extends BaseAdapter {
         //Planned survey -> onclick startSurvey
         actionButton.setOnClickListener(new CreateOrEditSurveyListener(plannedSurvey.getSurvey()));
 
-        //Annotate last orgunit
-        lastOrgUnit=plannedSurvey.getOrgUnit();
-
         return rowLayout;
+    }
+
+    private boolean isSameOrgUnit(PlannedSurvey plannedSurvey, int currentPosition){
+        PlannedItem plannedItem=(PlannedItem)getItem(currentPosition-1);
+
+        if(plannedItem instanceof PlannedHeader){
+            return false;
+        }
+        PlannedSurvey previousPlannedSurvey = (PlannedSurvey)plannedItem;
+        return plannedSurvey.getOrgUnit().equals(previousPlannedSurvey.getOrgUnit());
     }
 
     private String formatScheduledDate(Date date){
@@ -261,6 +328,23 @@ public class PlannedAdapter extends BaseAdapter {
             Session.setSurvey(survey);
             activity.prepareLocationListener(survey);
             activity.finishAndGo(SurveyActivity.class);
+        }
+    }
+
+    /**
+     * Listener that opens a section
+     */
+    class OpenHeaderListener implements View.OnClickListener {
+
+        PlannedHeader plannedHeader;
+
+        OpenHeaderListener(PlannedHeader plannedHeader){
+            this.plannedHeader=plannedHeader;
+        }
+
+        @Override
+        public void onClick(View v) {
+            openSection(plannedHeader);
         }
     }
 
