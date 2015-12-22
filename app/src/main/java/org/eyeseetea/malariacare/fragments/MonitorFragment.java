@@ -19,6 +19,7 @@
 
 package org.eyeseetea.malariacare.fragments;
 
+import android.app.Fragment;
 import android.app.ListFragment;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -28,12 +29,12 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.WebChromeClient;
-import android.webkit.WebSettings;
+import android.view.animation.AnimationUtils;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.AdapterView;
@@ -61,7 +62,7 @@ import java.util.List;
 /**
  * Created by ignac on 10/12/2015.
  */
-public class MonitorFragment extends ListFragment {
+public class MonitorFragment extends Fragment {
     List<Survey> surveysForGraphic;
     public static final String TAG = ".CompletedFragment";
     private SurveyReceiver surveyReceiver;
@@ -116,7 +117,7 @@ public class MonitorFragment extends ListFragment {
     public void onResume(){
         Log.d(TAG, "onResume");
         //Loading...
-        setListShown(false);
+        //setListShown(false);
         //Listen for data
         registerSurveysReceiver();
         super.onResume();
@@ -167,9 +168,9 @@ public class MonitorFragment extends ListFragment {
         if (hasSurveys) {
             reloadMonitor();
         }
-        setListShown(true);
-    }
 
+        //setListShownNoAnimation(false);
+    }
     public void reloadMonitor() {
         if (webView == null) {
             webView = initMonitor();
@@ -181,10 +182,10 @@ public class MonitorFragment extends ListFragment {
             public void onPageFinished(WebView view, String url) {
                 super.onPageFinished(view, url);
                 //Add line chart
-                List<Survey> surveysByProgram=filterSurveysByProgram(surveysForGraphic);
+                List<Survey> surveysByProgram = filterSurveysByProgram(surveysForGraphic);
                 new SentSurveysBuilder(surveysByProgram, getActivity()).addDataInChart(view);
 
-                List<Survey> surveysByProgramAndOrgUnit=filterSurveysByProgramAndOrgUnit(surveysForGraphic);
+                List<Survey> surveysByProgramAndOrgUnit = filterSurveysByProgramAndOrgUnit(surveysForGraphic);
                 //Add pie charts
                 new PieTabGroupBuilder(surveysByProgramAndOrgUnit, getActivity()).addDataInChart(view);
 
@@ -193,7 +194,6 @@ public class MonitorFragment extends ListFragment {
                 new FacilityTableBuilder(surveysByProgramAndOrgUnit, getActivity()).addDataInChart(view);
             }
         });
-
         //Load html
         webView.loadUrl("file:///android_asset/dashboard/dashboard.html");
     }
