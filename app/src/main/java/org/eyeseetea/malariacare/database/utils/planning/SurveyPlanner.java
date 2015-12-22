@@ -48,6 +48,14 @@ public class SurveyPlanner {
     private final static int TYPE_BC_HIGH_NEXT_DATE=2;
     private static final String TAG = ".SurveyPlanner";
 
+    private static SurveyPlanner instance;
+
+    public static SurveyPlanner getInstance(){
+        if(instance==null){
+            instance=new SurveyPlanner();
+        }
+        return instance;
+    }
 
     /**
      * Builds a 'NEVER' planned survey for the given combination

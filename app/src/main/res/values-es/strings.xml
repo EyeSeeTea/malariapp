@@ -239,5 +239,8 @@
     <string name="dashboard_title_planned_type_never">Nunca evaluado</string>
     <string name="dashboard_title_planned_type_next_30">Próximos 30 dias</string>
     <string name="dashboard_title_planned_type_overdue">Atrasado</string>
+    <string name="planning_title_dialog">Planificar evaluación</string>
+    <string name="planning_label_comment">* Comentario</string>
+    <string name="planning_label_schedule_date">* Fecha planificada</string>
 
 </resources>

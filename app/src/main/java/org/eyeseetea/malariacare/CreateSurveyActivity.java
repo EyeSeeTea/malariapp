@@ -77,9 +77,6 @@ public class CreateSurveyActivity extends BaseActivity {
 
     private LayoutInflater lInflater;
 
-    private SurveyPlanner surveyPlanner;
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -88,7 +85,6 @@ public class CreateSurveyActivity extends BaseActivity {
         android.support.v7.app.ActionBar actionBar = this.getSupportActionBar();
         LayoutUtils.setActionBarLogo(actionBar);
 
-        this.surveyPlanner = new SurveyPlanner();
         this.lInflater = LayoutInflater.from(this);
 
         //Create default options
@@ -203,7 +199,7 @@ public class CreateSurveyActivity extends BaseActivity {
             TabGroup tabGroup = (TabGroup) tabGroupView.getSelectedItem();
 
             // Put new survey in session
-            Survey survey = surveyPlanner.startSurvey(orgUnit,tabGroup);
+            Survey survey = SurveyPlanner.getInstance().startSurvey(orgUnit,tabGroup);
             Session.setSurvey(survey);
 
             //Look for coordinates

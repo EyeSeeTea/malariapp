@@ -19,12 +19,18 @@
 
 package org.eyeseetea.malariacare.layout.adapters.survey;
 
+import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
+import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -38,12 +44,15 @@ import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.database.utils.planning.PlannedHeader;
 import org.eyeseetea.malariacare.database.utils.planning.PlannedItem;
+import org.eyeseetea.malariacare.database.utils.planning.PlannedItemBuilder;
 import org.eyeseetea.malariacare.database.utils.planning.PlannedSurvey;
 import org.eyeseetea.malariacare.database.utils.planning.SurveyPlanner;
 import org.eyeseetea.malariacare.utils.Constants;
 
 import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -58,11 +67,6 @@ public class PlannedAdapter extends BaseAdapter {
     private List<PlannedItem> items;
 
     private Context context;
-
-    /**
-     * Require to start or edit a selected survey
-     */
-    SurveyPlanner surveyPlanner;
 
     /**
      * Items filtered by this program
@@ -82,7 +86,6 @@ public class PlannedAdapter extends BaseAdapter {
     public PlannedAdapter(List<PlannedItem> items, Context context){
         this.items=items;
         this.context=context;
-        this.surveyPlanner = new SurveyPlanner();
         initDefaultSection();
     }
 
@@ -262,7 +265,7 @@ public class PlannedAdapter extends BaseAdapter {
 
         //Program
         textView=(TextView)rowLayout.findViewById(R.id.planning_program);
-        textView.setText(String.format("   - %s",plannedSurvey.getProgram()));
+        textView.setText(String.format("   - %s", plannedSurvey.getProgram()));
 
         //Productivity
         textView=(TextView)rowLayout.findViewById(R.id.planning_survey_prod);
@@ -275,6 +278,7 @@ public class PlannedAdapter extends BaseAdapter {
         //ScheduledDate
         textView=(TextView)rowLayout.findViewById(R.id.planning_survey_schedule_date);
         textView.setText(formatScheduledDate(plannedSurvey.getNextAssesment()));
+        textView.setOnClickListener(new ScheduleListener(plannedSurvey.getSurvey()));
 
         //Action
         ImageButton actionButton = (ImageButton)rowLayout.findViewById(R.id.planning_survey_action);
@@ -322,7 +326,7 @@ public class PlannedAdapter extends BaseAdapter {
         public void onClick(View v) {
             BaseActivity activity = ((DashboardActivity) context);
             if(survey.getStatus()==Constants.SURVEY_PLANNED){
-                survey=surveyPlanner.startSurvey(survey);
+                survey=SurveyPlanner.getInstance().startSurvey(survey);
             }
 
             Session.setSurvey(survey);
@@ -346,6 +350,82 @@ public class PlannedAdapter extends BaseAdapter {
         public void onClick(View v) {
             openSection(plannedHeader);
         }
+    }
+
+    class ScheduleListener implements View.OnClickListener {
+        Survey survey;
+        Date newScheduledDate;
+
+        ScheduleListener(Survey survey){this.survey=survey;}
+
+        @Override
+        public void onClick(View v){
+            final Dialog dialog = new Dialog(context);
+            dialog.setContentView(R.layout.planning_schedule_dialog);
+            dialog.setTitle(R.string.planning_title_dialog);
+
+            //Set current date
+            final Button scheduleDatePickerButton=(Button)dialog.findViewById(R.id.planning_dialog_picker_button);
+            scheduleDatePickerButton.setText(formatScheduledDate(survey.getScheduledDate()));
+            //On Click open an specific DatePickerDialog
+            scheduleDatePickerButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //Init secondary datepicker with current date
+                    Calendar calendar = Calendar.getInstance();
+                    if(survey.getScheduledDate()!=null){
+                        calendar.setTime(survey.getScheduledDate());
+                    }
+                    //Show datepickerdialog -> updates newScheduledDate and button
+                    new DatePickerDialog(PlannedAdapter.this.context, new DatePickerDialog.OnDateSetListener() {
+
+                        public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                            Calendar newCalendar = Calendar.getInstance();
+                            newCalendar.set(year, monthOfYear, dayOfMonth);
+                            newScheduledDate = newCalendar.getTime();
+                            scheduleDatePickerButton.setText(formatScheduledDate(newScheduledDate));
+                        }
+
+                    },calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH)).show();
+                }
+            });
+
+            //Listens to close button
+            Button dialogButton = (Button) dialog.findViewById(R.id.planning_dialog_close_button);
+            dialogButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dialog.dismiss();
+                }
+            });
+
+            dialogButton = (Button) dialog.findViewById(R.id.planning_dialog_ok_button);
+            dialogButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //TODO do something
+                    //Check fields are ok
+                    String comment=((EditText)dialog.findViewById(R.id.planning_dialog_comment)).getText().toString();
+                    if(!validateFields(newScheduledDate,comment)){
+                        return;
+                    }
+                    //Reschedule survey
+                    survey.reschedule(newScheduledDate,comment);
+                    //Recalculate items
+                    reloadItems(PlannedItemBuilder.getInstance().buildPlannedItems());
+
+                    dialog.dismiss();
+                }
+            });
+
+            dialog.show();
+        }
+
+        private boolean validateFields(Date newDate,String comment){
+            return newDate!=null && comment!=null && comment.length()>0;
+        }
+
+
     }
 
 }

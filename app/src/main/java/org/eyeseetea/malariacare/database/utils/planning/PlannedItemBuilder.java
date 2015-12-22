@@ -47,11 +47,6 @@ public class PlannedItemBuilder {
     private final String TAG=".PlannedItemBuilder";
 
     /**
-     * Helper to plan new items
-     */
-    SurveyPlanner surveyPlanner;
-
-    /**
      * Memo to find non existant combinations
      */
     Map<String,Survey> surveyMap;
@@ -76,8 +71,13 @@ public class PlannedItemBuilder {
      */
     private List<PlannedItem> future;
 
-    public PlannedItemBuilder(){
-        surveyPlanner = new SurveyPlanner();
+    private static PlannedItemBuilder instance;
+
+    public static PlannedItemBuilder getInstance(){
+        if(instance==null){
+            instance=new PlannedItemBuilder();
+        }
+        return instance;
     }
 
     /**
@@ -98,6 +98,17 @@ public class PlannedItemBuilder {
 
         future = new ArrayList<>();
         future.add(PlannedHeader.buildFutureHeader(ctx));
+    }
+
+    /**
+     * Releases memory references
+     */
+    private void releaseState(){
+        surveyMap=null;
+        never=null;
+        overdue=null;
+        next30=null;
+        future=null;
     }
 
     /**
@@ -133,6 +144,9 @@ public class PlannedItemBuilder {
         plannedItems.addAll(overdue);
         plannedItems.addAll(next30);
         plannedItems.addAll(future);
+
+        //Release state references
+        releaseState();
         return plannedItems;
     }
 
@@ -280,9 +294,10 @@ public class PlannedItemBuilder {
     private void buildNonExistantCombinations() {
 
         List<OrgUnit> orgUnits =new Select().from(OrgUnit.class).queryList();
-        List<Program> programs=new Select().from(Program.class).queryList();
+        //Every orgunit
         for(OrgUnit orgUnit:orgUnits){
-            for(Program program:programs){
+            //Each authorized program
+            for(Program program:orgUnit.getPrograms()){
                 String key=getSurveyKey(orgUnit,program);
                 Survey survey=surveyMap.get(key);
                 //Already built
@@ -291,7 +306,7 @@ public class PlannedItemBuilder {
                 }
 
                 //NOT exists
-                survey=surveyPlanner.buildNext(orgUnit,program);
+                survey=SurveyPlanner.getInstance().buildNext(orgUnit,program);
 
                 //Process like any other survey
                 findRightState(survey);

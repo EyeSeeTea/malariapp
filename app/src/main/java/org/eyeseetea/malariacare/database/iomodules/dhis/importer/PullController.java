@@ -95,15 +95,9 @@ public class PullController {
     private Context context;
 
     /**
-     * Plans future surveys for those that have been loaded
-     */
-    private SurveyPlanner surveyPlanner;
-
-    /**
      * Constructs and register this pull controller to the event bus
      */
     PullController() {
-        surveyPlanner = new SurveyPlanner();
     }
 
     private void register() {
@@ -390,7 +384,7 @@ public class PullController {
         }
 
         //Plan surveys for the future
-        surveyPlanner.buildNext();
+        SurveyPlanner.getInstance().buildNext();
     }
 
     /**

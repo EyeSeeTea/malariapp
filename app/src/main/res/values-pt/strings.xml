@@ -246,4 +246,7 @@
     <string name="dashboard_title_planned_type_never">Eu nunca avaliado</string>
     <string name="dashboard_title_planned_type_next_30">Próximos 30 dias</string>
     <string name="dashboard_title_planned_type_overdue">Vencido</string>
+    <string name="planning_title_dialog">Schedule survey</string>
+    <string name="planning_label_schedule_date">* Data calendário</string>
+    <string name="planning_label_comment">* Comente</string>
 </resources>

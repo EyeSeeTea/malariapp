@@ -239,5 +239,8 @@
     <string name="dashboard_title_planned_type_never">Je ne évalué</string>
     <string name="dashboard_title_planned_type_next_30">30 prochains jours</string>
     <string name="dashboard_title_planned_type_overdue">En retard</string>
+    <string name="planning_title_dialog">Schedule survey</string>
+    <string name="planning_label_schedule_date">* Date de calendrier</string>
+    <string name="planning_label_comment">* Commentaire</string>
 
 </resources>

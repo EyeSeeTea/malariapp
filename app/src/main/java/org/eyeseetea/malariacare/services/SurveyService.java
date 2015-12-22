@@ -109,8 +109,6 @@ public class SurveyService extends IntentService {
      */
     public static final String PREPARE_FEEDBACK_ACTION_ITEMS="org.eyeseetea.malariacare.services.SurveyService.PREPARE_FEEDBACK_ACTION_ITEMS";
 
-    private PlannedItemBuilder plannedItemBuilder;
-
     /**
      * Tag for logging
      */
@@ -121,7 +119,6 @@ public class SurveyService extends IntentService {
      */
     public SurveyService(){
         super(SurveyService.class.getSimpleName());
-        plannedItemBuilder = new PlannedItemBuilder();
     }
     /**
      * Creates an IntentService.  Invoked by your subclass's constructor.
@@ -192,7 +189,7 @@ public class SurveyService extends IntentService {
         //Since intents does NOT admit NON serializable as values we use Session instead
         Session.putServiceValue(ALL_UNSENT_SURVEYS_ACTION, unsentSurveys);
         Session.putServiceValue(ALL_SENT_SURVEYS_ACTION, sentSurveys);
-        Session.putServiceValue(PLANNED_SURVEYS_ACTION, plannedItemBuilder.buildPlannedItems());
+        Session.putServiceValue(PLANNED_SURVEYS_ACTION, PlannedItemBuilder.getInstance().buildPlannedItems());
 
         //Returning result to anyone listening
         LocalBroadcastManager.getInstance(this).sendBroadcast(new Intent(ALL_UNSENT_SURVEYS_ACTION));

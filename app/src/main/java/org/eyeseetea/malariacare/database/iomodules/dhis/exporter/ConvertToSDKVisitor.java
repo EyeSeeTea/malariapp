@@ -50,11 +50,6 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
     private final static String TAG=".ConvertToSDKVisitor";
 
     /**
-     * Plans future surveys for those that have been pushed
-     */
-    private SurveyPlanner surveyPlanner;
-
-    /**
      * Context required to recover magic UID for mainScore dataElements
      */
     Context context;
@@ -94,7 +89,6 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
         forwardOrderUID=context.getString(R.string.forward_order);
         surveys = new ArrayList<>();
         events = new ArrayList<>();
-        surveyPlanner = new SurveyPlanner();
     }
 
     @Override
@@ -276,7 +270,7 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
             iSurvey.save();
 
             //Plan a new survey for the future
-            surveyPlanner.buildNext(iSurvey);
+            SurveyPlanner.getInstance().buildNext(iSurvey);
 
             //To avoid several pushes
             iEvent.setFromServer(true);

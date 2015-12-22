@@ -33,6 +33,7 @@ import org.eyeseetea.malariacare.database.AppDatabase;
 import org.eyeseetea.malariacare.database.iomodules.dhis.exporter.IConvertToSDKVisitor;
 import org.eyeseetea.malariacare.database.iomodules.dhis.exporter.VisitableToSDK;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Table(databaseName = AppDatabase.NAME)
@@ -70,6 +71,11 @@ public class OrgUnit extends BaseModel {
      * List of orgUnits that belong to this one
      */
     List<OrgUnit> children;
+
+    /**
+     * List of program authorized for this orgunit
+     */
+    List<Program> programs;
 
     /**
      * Tells if this orgUnit has a lowProductivity (not ready yet)
@@ -174,6 +180,33 @@ public class OrgUnit extends BaseModel {
                     .where(Condition.column(Survey$Table.ID_ORG_UNIT).eq(this.getId_org_unit())).queryList();
         }
         return surveys;
+    }
+
+    public List<Program> getPrograms(){
+        if(programs==null){
+            List<OrgUnitProgramRelation> orgUnitProgramRelations = new Select().from(OrgUnitProgramRelation.class)
+                    .where(Condition.column(OrgUnitProgramRelation$Table.ID_ORG_UNIT).eq(this.getId_org_unit()))
+                    .queryList();
+            this.programs= new ArrayList<>();
+            for(OrgUnitProgramRelation programRelation:orgUnitProgramRelations){
+                programs.add(programRelation.getProgram());
+            }
+        }
+        return programs;
+    }
+
+    public void addProgram(Program program){
+        //Null -> nothing
+        if(program==null){
+            return;
+        }
+
+        //Save a new relationship
+        OrgUnitProgramRelation orgUnitProgramRelation = new OrgUnitProgramRelation(this,program);
+        orgUnitProgramRelation.save();
+
+        //Clear cache to enable reloading
+        programs=null;
     }
 
     public boolean isLowProductivity(){
