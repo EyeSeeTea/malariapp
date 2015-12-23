@@ -107,6 +107,7 @@ public class QuestionRelation extends BaseModel {
         this.id_question = id_question;
         this.question = null;
     }
+
     public int getOperation() {
         return operation;
     }
