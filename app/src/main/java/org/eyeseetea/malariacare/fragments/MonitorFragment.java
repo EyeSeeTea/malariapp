@@ -55,7 +55,10 @@ import org.eyeseetea.malariacare.layout.adapters.general.OrgUnitArrayAdapter;
 import org.eyeseetea.malariacare.layout.adapters.general.ProgramArrayAdapter;
 import org.eyeseetea.malariacare.services.SurveyService;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 
@@ -94,7 +97,6 @@ public class MonitorFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState){
         Log.d(TAG, "onCreate");
         super.onCreate(savedInstanceState);
-        initFilters();
     }
 
     @Override
@@ -172,9 +174,6 @@ public class MonitorFragment extends Fragment {
         //setListShownNoAnimation(false);
     }
     public void reloadMonitor() {
-        if (webView == null) {
-            webView = initMonitor();
-        }
         webView = initMonitor();
         //onPageFinish load data
         webView.setWebViewClient(new WebViewClient() {
@@ -182,16 +181,28 @@ public class MonitorFragment extends Fragment {
             public void onPageFinished(WebView view, String url) {
                 super.onPageFinished(view, url);
                 //Add line chart
-                List<Survey> surveysByProgram = filterSurveysByProgram(surveysForGraphic);
-                new SentSurveysBuilder(surveysByProgram, getActivity()).addDataInChart(view);
+                HashMap<Program,ArrayList<Survey>> mapSurveysByProgram= new HashMap<Program,ArrayList<Survey>> ();
 
-                List<Survey> surveysByProgramAndOrgUnit = filterSurveysByProgramAndOrgUnit(surveysForGraphic);
+
+                final List<Program> programs=new ArrayList<Program>();
+                Collections.sort(surveysForGraphic, new Comparator<Survey>() {
+                    public int compare(Survey surveyA, Survey surveyB) {
+                        if (!programs.contains(surveyA.getTabGroup().getProgram())) {
+                            programs.add(surveyA.getTabGroup().getProgram());
+                        }
+                        return surveyA.getTabGroup().getProgram().getUid().compareTo(surveyB.getTabGroup().getProgram().getUid());
+                    }
+                });
+                new SentSurveysBuilder(surveysForGraphic, getActivity(),programs).addDataInChart(view);
+
+                SentSurveysBuilder.showData(view);
+                //List<Survey> surveysByProgramAndOrgUnit = filterSurveysByProgramAndOrgUnit(surveysForGraphic);
                 //Add pie charts
-                new PieTabGroupBuilder(surveysByProgramAndOrgUnit, getActivity()).addDataInChart(view);
+                new PieTabGroupBuilder(surveysForGraphic, getActivity()).addDataInChart(view);
 
 
                 //Add table x facility
-                new FacilityTableBuilder(surveysByProgramAndOrgUnit, getActivity()).addDataInChart(view);
+                new FacilityTableBuilder(surveysForGraphic, getActivity()).addDataInChart(view);
             }
         });
         //Load html
@@ -213,63 +224,6 @@ public class MonitorFragment extends Fragment {
         return webView;
     }
 
-    public void initFilters() {
-        filterSpinnerProgram = (Spinner) getActivity().findViewById(R.id.filter_program_monitor);
-
-        List<Program> programList = new Select().all().from(Program.class).queryList();
-        programList.add(0, programList.get(0));
-        selectedProgram=programList.get(0).getUid();
-        programList.remove(0);
-        filterSpinnerProgram.setAdapter(new ProgramArrayAdapter(this.getActivity().getApplicationContext(), programList));
-        filterSpinnerProgram.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view,
-                                       int position, long id) {
-                Program program = (Program) parent.getItemAtPosition(position);
-                boolean reload = false;
-                if (program.getUid() != selectedProgram) {
-                    selectedProgram = program.getUid();
-                    reload=true;
-                }
-                if(reload)
-                    reloadSentSurveys();
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> arg0) {
-
-            }
-        });
-
-        filterSpinnerOrgUnit = (Spinner) getActivity().findViewById(R.id.filter_orgunit_monitor);
-
-        List<OrgUnit> orgUnitList = new Select().all().from(OrgUnit.class).queryList();
-        orgUnitList.add(0, orgUnitList.get(0));
-        selectedOrgUnit=orgUnitList.get(0).getUid();
-        orgUnitList.remove(0);
-        filterSpinnerOrgUnit.setAdapter(new OrgUnitArrayAdapter(getActivity().getApplicationContext(), orgUnitList));
-        filterSpinnerOrgUnit.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view,
-                                       int position, long id) {
-                OrgUnit orgUnit = (OrgUnit) parent.getItemAtPosition(position);
-                boolean reload = false;
-                if (selectedOrgUnit != orgUnit.getUid()) {
-                    selectedOrgUnit = orgUnit.getUid();
-                    reload = true;
-                }
-                if (reload)
-                    reloadSentSurveys();
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> arg0) {
-
-            }
-        });
-    }
     /**
      * Stops webView gracefully
      */

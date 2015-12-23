@@ -93,11 +93,13 @@
     }
 </style>
 <body>
-    <!--Sent surveys x month-->
+<!--Sent surveys x month-->
     <div>
         <!--title of the chart-->
         <span class="line-title" id="titleSent"></span>
         <!--Legend for this chart-->
+
+        <br/><div id="selectProgram" class="horizontal"></div><br/>
         <div id="sentLegend" class="chart-legend horizontal"></div>
         <!--Multiline chart holder-->
         <canvas id="surveyXMonthCanvas" style="width: 100%; height: auto;"></canvas>
@@ -107,22 +109,28 @@
     <!--Pie charts will be added right here-->
 
     <!--Table 12 months-->
+
     <script type = "text/javascript" src="file:///android_asset/dashboard/sent.month.js"> </script>
+
     <script type = "text/javascript" src="file:///android_asset/dashboard/pie.tabgroup.js"> </script>
+
     <script type = "text/javascript" src="file:///android_asset/dashboard/table.facilities.js"> </script>
 
     <!-- pie template with table-->
     <script type = "text/html" id="pieTemplate">
         <div>
             <span class="line-title" id="tabgroupTitle###"></span>
+
+            <br/><div id=selectFacility" class=horizontal"></div><br/>
             <div>
-                <canvas id="tabgroupCanvas###" style="width: 100%; height: auto;"></canvas>
+               <canvas id="tabgroupCanvas###" style="width: 100%; height: auto;"></canvas>
             </div>
             <div id="tabgroupLegend###" class="chart-legend">
                 <span id="tabgroupTip###" class="tip"></span>
             </div>
             <div>
                 <span class="line-title" id="titleFacilities###"></span>
+1
                 <div>
                     <table>
                         <thead id="facilitiesHead###">

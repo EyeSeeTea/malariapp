@@ -107,7 +107,7 @@ public class FacilityTableBuilder {
 
         //Inyect in browser
         String updateChartJS=String.format(JAVASCRIPT_UPDATE_TABLE,tabGroup.getId_tab_group(),json);
-        Log.d(TAG, json);
+        Log.d(TAG, updateChartJS);
         webView.loadUrl(updateChartJS);
 
     }

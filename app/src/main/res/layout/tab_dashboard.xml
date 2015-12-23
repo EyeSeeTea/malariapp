@@ -149,20 +149,6 @@
                          android:layout_width="match_parent"
                          android:layout_height="match_parent"
                          android:orientation="vertical">
-                         <LinearLayout android:orientation="horizontal"
-                             android:layout_width="match_parent"
-                             android:layout_height="wrap_content">
-                             <Spinner
-                                 android:id="@+id/filter_program_monitor"
-                                 android:layout_width="0dip"
-                                 android:layout_weight="1"
-                                 android:layout_height="wrap_content" />
-                             <Spinner
-                                 android:id="@+id/filter_orgunit_monitor"
-                                 android:layout_width="0dip"
-                                 android:layout_weight="1"
-                                 android:layout_height="wrap_content" />
-                         </LinearLayout>
                          <FrameLayout
                              android:orientation="vertical"
                              android:layout_width="fill_parent"

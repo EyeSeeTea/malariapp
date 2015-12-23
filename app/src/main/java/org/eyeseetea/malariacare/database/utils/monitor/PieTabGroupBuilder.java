@@ -106,7 +106,7 @@ public class PieTabGroupBuilder {
 
         //Inyect in browser
         String updateChartJS=String.format(JAVASCRIPT_UPDATE_CHARTS,json);
-        Log.d(TAG, json);
+        Log.d(TAG, updateChartJS);
         webView.loadUrl(updateChartJS);
     }
 

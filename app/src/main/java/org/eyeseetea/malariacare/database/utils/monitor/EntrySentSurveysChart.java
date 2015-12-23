@@ -19,6 +19,8 @@
 
 package org.eyeseetea.malariacare.database.utils.monitor;
 
+import org.eyeseetea.malariacare.database.model.Program;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -26,7 +28,9 @@ import java.util.Date;
  * Created by arrizabalaga on 7/10/15.
  */
 public class EntrySentSurveysChart implements Comparable<EntrySentSurveysChart>{
-    public static final String JAVASCRIPT_ADD_DATA = "javascript:surveyXMonthChart.addData([%d, %d], '%s')";
+    //public static final String JAVASCRIPT_ADD_DATA = "javascript:surveyXMonthChart.addData([%d, %d], '%s', '%s','%s')";
+    public static final String JAVASCRIPT_ADD_DATA = "javascript:setData([%d, %d, '%s', '%s','%s'])";
+
     /**
      * Number of surveys sent this month
      */
@@ -40,12 +44,19 @@ public class EntrySentSurveysChart implements Comparable<EntrySentSurveysChart>{
      */
     private Date date;
 
+    /**
+     * The date whose month represents this point (day info is discarded)
+     */
+    private Program program;
+
+
     private static final String MONTH_FORMAT="MMM";
     private static final SimpleDateFormat SIMPLE_DATE_FORMAT=new SimpleDateFormat(MONTH_FORMAT);
 
-    public EntrySentSurveysChart(int expected, Date date) {
+    public EntrySentSurveysChart(int expected, Date date, Program program) {
         this.expected = expected;
         this.date = date;
+        this.program=program;
     }
 
     /**
@@ -63,6 +74,7 @@ public class EntrySentSurveysChart implements Comparable<EntrySentSurveysChart>{
         return getDateAsString(date);
     }
 
+    public Date getDate(){return date;}
     /**
      * Formats the date as the name of the Month
      * @param date
@@ -80,7 +92,7 @@ public class EntrySentSurveysChart implements Comparable<EntrySentSurveysChart>{
      * @return
      */
     public String getEntryAsJS(){
-        return String.format(JAVASCRIPT_ADD_DATA,sent,expected,getDateAsString());
+        return String.format(JAVASCRIPT_ADD_DATA,sent,expected,program.getName(),program.getUid(),getDateAsString());
     }
 
     @Override
