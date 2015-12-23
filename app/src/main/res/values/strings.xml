@@ -281,6 +281,8 @@
     <string name="progress_pull_surveys">Loading surveys ...</string>
     <string name="progress_pull_done">Done</string>
     <item name="pull_metadata" type="string" translatable="false">pull_metadata</item>
+    <item name="pull_csv" type="string" translatable="false">pull_csv</item>
+
 
     <string name="dialog_push_error">Error while trying to push data to dhis server</string>
     <string name="dialog_push_success">Survey successfully pushed to dhis server</string>

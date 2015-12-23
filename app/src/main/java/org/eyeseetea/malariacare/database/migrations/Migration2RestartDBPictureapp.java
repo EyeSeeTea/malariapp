@@ -51,23 +51,24 @@ import org.hisp.dhis.android.sdk.persistence.models.DataElement;
  * Created by ignac on 30/11/2015.
  */
 @Migration(version = 4, databaseName = AppDatabase.NAME)
-public class MigrationPictureapp extends BaseMigration {
+public class Migration2RestartDBPictureapp extends BaseMigration {
+
+    public static final String DROP_TABLE_IF_EXISTS = "DROP TABLE IF EXISTS ";
 
     public static final String ALTER_TABLE_ADD_COLUMN = "ALTER TABLE %s ADD COLUMN %s %s";
 
-    public MigrationPictureapp() {
+    public Migration2RestartDBPictureapp() {
         super();
     }
 
     public void onPreMigrate() {
-//        FlowManager.getDatabase(AppDatabase.NAME).reset(PreferencesState.getInstance().getContext());
     }
 
     @Override
     public void migrate(SQLiteDatabase database) {
         addColumn(database,Option.class,"path","string");
         addColumn(database,Option.class,"id_optionAttribute","long");
-        addColumn(database,Option.class,"background_color","string");
+        addColumn(database,Option.class,"background_colour","string");
         addColumn(database,Score.class,"value","float");
         addColumn(database,Score.class,"id_tab","long");
         addColumn(database,Survey.class,"id_program","long");
@@ -82,5 +83,13 @@ public class MigrationPictureapp extends BaseMigration {
     private void addColumn(SQLiteDatabase database, Class model, String columnName,String type){
         ModelAdapter myAdapter = FlowManager.getModelAdapter(model);
         database.execSQL(String.format(ALTER_TABLE_ADD_COLUMN, myAdapter.getTableName(),columnName,type) );
+    }
+
+    private void recreateTables(SQLiteDatabase database,Class[] tables){
+        for(int i=0;i<tables.length;i++){
+            ModelAdapter myAdapter = FlowManager.getModelAdapter(tables[i]);
+            database.execSQL(DROP_TABLE_IF_EXISTS + myAdapter.getTableName());
+            database.execSQL(myAdapter.getCreationQuery());
+        }
     }
 }

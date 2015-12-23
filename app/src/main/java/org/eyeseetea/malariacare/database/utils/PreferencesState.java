@@ -226,6 +226,11 @@ public class PreferencesState {
     public static boolean isPictureQuestion(){
         if(isPicture==null){
             isPicture = context.getResources().getBoolean(R.bool.picture);
+            if(isPicture==false){
+                SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putBoolean(context.getResources().getString(R.string.pull_csv), false);
+            }
         }
         return isPicture;
     }
