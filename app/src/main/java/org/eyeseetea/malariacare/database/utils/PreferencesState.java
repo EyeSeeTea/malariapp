@@ -226,11 +226,16 @@ public class PreferencesState {
     public static boolean isPictureQuestion(){
         if(isPicture==null){
             isPicture = context.getResources().getBoolean(R.bool.picture);
-            if(isPicture==false){
-                SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-                SharedPreferences.Editor editor = sharedPreferences.edit();
+            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            Log.d(TAG,"isPicture:"+isPicture+"");
+            if(isPicture){
+                editor.putBoolean(context.getResources().getString(R.string.pull_metadata), false);
+            }
+            else{
                 editor.putBoolean(context.getResources().getString(R.string.pull_csv), false);
             }
+            editor.commit();
         }
         return isPicture;
     }

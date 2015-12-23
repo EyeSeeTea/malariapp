@@ -196,13 +196,13 @@ public class PullController {
      * Erase data from app database
      */
     public void wipeDatabase() {
-        if (!ProgressActivity.PULL_IS_ACTIVE) return;
-        Log.d(TAG, "Deleting app database...");
         if(PreferencesState.isPictureQuestion()){
             PopulatePictureAppDB.wipeDatabase();
         }
+        if (!ProgressActivity.PULL_IS_ACTIVE) return;
         else
-        PopulateDB.wipeDatabase();
+            PopulateDB.wipeDatabase();
+        Log.d(TAG, " app database...");
     }
 
     /**

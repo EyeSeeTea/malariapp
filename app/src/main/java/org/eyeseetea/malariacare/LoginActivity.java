@@ -36,6 +36,7 @@ import org.eyeseetea.malariacare.database.utils.PopulateDB;
 import org.eyeseetea.malariacare.database.utils.PopulatePictureAppDB;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.Session;
+import org.eyeseetea.malariacare.utils.Utils;
 import org.hisp.dhis.android.sdk.job.NetworkJob;
 import org.hisp.dhis.android.sdk.persistence.Dhis2Application;
 import org.hisp.dhis.android.sdk.persistence.preferences.ResourceType;
@@ -65,6 +66,10 @@ public class LoginActivity extends org.hisp.dhis.android.sdk.ui.activities.Login
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        if( (PreferencesState.isPictureQuestion() && !sharedPreferences.getBoolean(getApplicationContext().getResources().getString(R.string.pull_csv),false) )){
+            populateFromAssetsIfRequired();
+
+        }
         if (User.getLoggedUser() != null && !ProgressActivity.PULL_CANCEL &&  sharedPreferences.getBoolean(getApplicationContext().getResources().getString(R.string.pull_metadata),false)) {
             startActivity(new Intent(LoginActivity.this,
                     ((Dhis2Application) getApplication()).getMainActivity()));
@@ -135,7 +140,7 @@ public class LoginActivity extends org.hisp.dhis.android.sdk.ui.activities.Login
     private void populate() {
         try{
             SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-            if(!sharedPreferences.getBoolean(getApplicationContext().getResources().getString(R.string.is_populate), false)) {
+            if(!sharedPreferences.getBoolean(getApplicationContext().getResources().getString(R.string.pull_csv), false)) {
                 User user = new User();
                 user.save();
                 Session.setUser(user);
@@ -147,7 +152,7 @@ public class LoginActivity extends org.hisp.dhis.android.sdk.ui.activities.Login
                 }
 
                 SharedPreferences.Editor editor = getPreferencesEditor();
-                editor.putBoolean(getString(R.string.is_populate), true);
+                editor.putBoolean(getString(R.string.pull_csv), true);
                 editor.commit();
             }
         }catch(Exception ex){
