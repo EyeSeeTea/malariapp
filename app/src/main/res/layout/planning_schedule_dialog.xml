@@ -30,8 +30,8 @@
     <org.eyeseetea.malariacare.views.CustomTextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:typeface="sans"
         android:textStyle="bold"
+        android:padding="@dimen/dashboard_planning_padding"
         android:text="@string/planning_label_schedule_date"
         app:tDimension="@string/font_size_level1"
         app:tFontName="@string/medium_font_name"
@@ -41,14 +41,14 @@
         android:id="@+id/planning_dialog_picker_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:typeface="sans"
+        android:padding="@dimen/dashboard_planning_padding"
         android:textStyle="bold"
         />
 
     <org.eyeseetea.malariacare.views.CustomTextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:typeface="sans"
+        android:padding="@dimen/dashboard_planning_padding"
         android:textStyle="bold"
         android:text="@string/planning_label_comment"
         app:tDimension="@string/font_size_level1"
@@ -59,7 +59,7 @@
         android:id="@+id/planning_dialog_comment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:typeface="sans"
+        android:padding="@dimen/dashboard_planning_padding"
         android:textStyle="bold"
         app:tDimension="@string/font_size_level1"
         app:tFontName="@string/medium_font_name"
@@ -69,7 +69,7 @@
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="5dp"
+        android:padding="@dimen/dashboard_row_padding"
         android:weightSum="1"
         >
         <View
@@ -81,7 +81,7 @@
             android:id="@+id/planning_dialog_close_button"
             android:layout_width="0dp"
             android:layout_weight="0.25"
-            android:padding="5dp"
+            android:padding="@dimen/dashboard_row_padding"
             android:layout_height="wrap_content"
             android:background="@null"
             android:text="@string/cancel"
@@ -91,7 +91,7 @@
             android:id="@+id/planning_dialog_ok_button"
             android:layout_width="0dp"
             android:layout_weight="0.25"
-            android:padding="5dp"
+            android:padding="@dimen/dashboard_row_padding"
             android:layout_height="wrap_content"
             android:background="@null"
             android:text="@string/ok"

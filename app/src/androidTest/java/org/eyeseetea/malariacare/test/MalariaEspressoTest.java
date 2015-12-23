@@ -148,7 +148,7 @@ public class MalariaEspressoTest {
 
     public static List<Survey> mockSurveys(int numOrgs, int numPrograms){
         List<OrgUnit> orgUnitList = new Select().all().from(OrgUnit.class).queryList();
-        List<Program> programList = new Select().all().from(Program.class).queryList();
+        List<Program> programList = Program.list();
         Program program=programList.get(numPrograms);
         User user =getSafeUser();
 
@@ -156,7 +156,7 @@ public class MalariaEspressoTest {
             Survey survey=new Survey(orgUnitList.get(i%numOrgs),program.getTabGroups().get(0),user);
             survey.save();
         }
-        List<Survey> surveys = new Select().from(Survey.class).where(Condition.column(Survey$Table.USER_ID_USER).eq(user.getId_user())).queryList();
+        List<Survey> surveys = new Select().from(Survey.class).where(Condition.column(Survey$Table.ID_USER).eq(user.getId_user())).queryList();
         Session.setAdapterUnsent(new AssessmentUnsentAdapter(surveys, InstrumentationRegistry.getTargetContext()));
         return surveys;
     }

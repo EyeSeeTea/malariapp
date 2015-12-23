@@ -128,6 +128,14 @@ public class Program extends BaseModel{
         orgUnits=null;
     }
 
+    /**
+     * List all programs
+     * @return
+     */
+    public static List<Program> list() {
+        return new Select().all().from(Program.class).queryList();
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -157,4 +165,5 @@ public class Program extends BaseModel{
                 ", name='" + name + '\'' +
                 '}';
     }
+
 }

@@ -102,7 +102,7 @@ public class PlannedFragment extends ListFragment {
 
         Spinner programSpinner = (Spinner) getActivity().findViewById(R.id.dashboard_planning_program);
         //Populate Program View DDL
-        List<Program> programList = new Select().all().from(Program.class).queryList();
+        List<Program> programList = Program.list();
         programList.add(0, programDefaultOption);
         programSpinner.setAdapter(new ProgramArrayAdapter(getActivity(), programList));
         //Apply filter to listview

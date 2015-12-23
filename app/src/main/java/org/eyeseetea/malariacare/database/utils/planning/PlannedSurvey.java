@@ -77,7 +77,7 @@ public class PlannedSurvey implements PlannedItem {
         if(survey==null){
             return "";
         }
-
+        //TODO Review whenever server is ready for real productivity
         return survey.getOrgUnit().isLowProductivity()?LOW_PRODUCTIVITY:HIGH_PRODUCTIVITY;
     }
 

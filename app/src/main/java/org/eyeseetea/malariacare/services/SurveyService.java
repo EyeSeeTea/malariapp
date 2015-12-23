@@ -159,21 +159,16 @@ public class SurveyService extends IntentService {
     }
 
     private void preLoadTabItems(Long tabID){
-        List<Tab> tabs = new Select().from(Tab.class).where(Condition.column(Tab$Table.ID_TAB).eq(tabID)).queryList();
-        if (tabs !=null && tabs.size()>=1)
-            Utils.preloadTabItems(tabs.get(0));
+        Tab tab = Tab.findById(tabID);
+        if (tab !=null) {
+            Utils.preloadTabItems(tab);
+        }
     }
 
     private void reloadDashboard(){
         Log.d(TAG, "reloadDashboard");
 
-        List<Survey> surveys=new Select()
-                .from(Survey.class)
-                .where(Condition.column(Survey$Table.STATUS).eq(Constants.SURVEY_IN_PROGRESS))
-                .or(Condition.column(Survey$Table.STATUS).eq(Constants.SURVEY_SENT))
-                .orderBy(Survey$Table.EVENTDATE)
-                .orderBy(Survey$Table.ID_ORG_UNIT)
-                .queryList();
+        List<Survey> surveys=Survey.findInProgressOrSent();
 
         List<Survey> unsentSurveys=new ArrayList<>();
         List<Survey> sentSurveys=new ArrayList<>();
@@ -296,13 +291,7 @@ public class SurveyService extends IntentService {
     private void prepareSurveyInfo(){
         Log.d(TAG, "prepareSurveyInfo (Thread:" + Thread.currentThread().getId() + ")");
 
-//        Survey survey=Session.getSurvey();
-//        Program program=survey.getProgram();
-
-        //Get composite scores for current program & register them (scores)
-        //List<CompositeScore> compositeScores = CompositeScore.listAllByProgram(program);
-
-        List<CompositeScore> compositeScores = new Select().all().from(CompositeScore.class).queryList();
+        List<CompositeScore> compositeScores = CompositeScore.list();
         ScoreRegister.registerCompositeScores(compositeScores);
 
         //Get tabs for current program & register them (scores)

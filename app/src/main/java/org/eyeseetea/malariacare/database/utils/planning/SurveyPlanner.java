@@ -106,13 +106,7 @@ public class SurveyPlanner {
      */
     public Survey startSurvey(OrgUnit orgUnit,TabGroup tabGroup){
         //Find planned survey
-        Survey survey = new Select()
-                .from(Survey.class)
-                .where(Condition.column(Survey$Table.ID_ORG_UNIT).eq(orgUnit.getId_org_unit()))
-                .and(Condition.column(Survey$Table.ID_TAB_GROUP).eq(tabGroup.getId_tab_group()))
-                .and(Condition.column(Survey$Table.STATUS).eq(Constants.SURVEY_PLANNED))
-                .querySingle();
-
+        Survey survey = Survey.findByOrgUnitAndTabGroup(orgUnit,tabGroup);
         return startSurvey(survey);
     }
 
@@ -137,17 +131,8 @@ public class SurveyPlanner {
      * Plans a new survey according to the last surveys that has been sent for each combo orgunit + program
      */
     public void buildNext(){
-
-        //Select last sent survey for each combination
-        List<Survey> surveys = new Select()
-                .from(Survey.class)
-                .where()
-                .groupBy(new QueryBuilder().appendQuotedArray(Survey$Table.ID_ORG_UNIT, Survey$Table.ID_TAB_GROUP))
-                .having(Condition.columnsWithFunction("max", "eventDate"))
-                .queryList();
-
         //Plan a copy according to that survey
-        for(Survey survey:surveys){
+        for(Survey survey:Survey.listLastByOrgUnitTabGroup()){
             buildNext(survey);
         }
 

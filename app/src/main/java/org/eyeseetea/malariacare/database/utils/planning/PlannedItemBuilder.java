@@ -120,7 +120,7 @@ public class PlannedItemBuilder {
         initBuilder();
 
         //Find its place according to scheduleddate
-        for(Survey survey: findPlannedInProgressSurveys()){
+        for(Survey survey: Survey.findPlannedOrInProgress()){
             findRightState(survey);
         }
 
@@ -148,21 +148,6 @@ public class PlannedItemBuilder {
         //Release state references
         releaseState();
         return plannedItems;
-    }
-
-    /**
-     * Finds planned/in_progress surveys
-     * @return
-     */
-    private List<Survey> findPlannedInProgressSurveys(){
-        List<Survey> plannedSurveys=new Select()
-                .from(Survey.class)
-                .where(Condition.column(Survey$Table.STATUS).eq(Constants.SURVEY_PLANNED))
-                .or(Condition.column(Survey$Table.STATUS).eq(Constants.SURVEY_IN_PROGRESS))
-                .orderBy(true, Survey$Table.SCHEDULEDDATE)
-                .queryList();
-
-        return plannedSurveys;
     }
 
     /**
@@ -267,7 +252,7 @@ public class PlannedItemBuilder {
     }
 
     /**
-     * Buids a synthetic key for this survey
+     * Builds a synthetic key for this survey
      * @param orgUnit
      * @param program
      * @return
@@ -293,9 +278,8 @@ public class PlannedItemBuilder {
      */
     private void buildNonExistantCombinations() {
 
-        List<OrgUnit> orgUnits =new Select().from(OrgUnit.class).queryList();
         //Every orgunit
-        for(OrgUnit orgUnit:orgUnits){
+        for(OrgUnit orgUnit:OrgUnit.list()){
             //Each authorized program
             for(Program program:orgUnit.getPrograms()){
                 String key=getSurveyKey(orgUnit,program);

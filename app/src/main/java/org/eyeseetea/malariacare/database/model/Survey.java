@@ -27,6 +27,7 @@ import com.raizlabs.android.dbflow.annotation.ForeignKeyReference;
 import com.raizlabs.android.dbflow.annotation.OneToMany;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;
+import com.raizlabs.android.dbflow.sql.QueryBuilder;
 import com.raizlabs.android.dbflow.sql.builder.Condition;
 import com.raizlabs.android.dbflow.sql.language.ColumnAlias;
 import com.raizlabs.android.dbflow.sql.language.Join;
@@ -584,6 +585,82 @@ public class Survey extends BaseModel implements VisitableToSDK {
         IConvertToSDKVisitor.visit(this);
     }
 
+    /**
+     * Moves the schedule date for this survey to a new given date due to a given reason (comment)
+     * @param newScheduledDate
+     * @param comment
+     */
+    public void reschedule(Date newScheduledDate, String comment) {
+        //Take currentDate
+        Date currentScheduleDate=this.getScheduledDate();
+
+        //Add a history
+        SurveySchedule previousSchedule=new SurveySchedule(this,currentScheduleDate,comment);
+        previousSchedule.save();
+
+        //Clean inner lazy schedulelist
+        surveySchedules=null;
+
+        //Move scheduledate and save
+        this.scheduledDate=newScheduledDate;
+        this.save();
+    }
+
+    /**
+     * Returns all surveys which status is 'planned' or 'in progress'
+     * @return
+     */
+    public static List<Survey> findPlannedOrInProgress(){
+        return new Select()
+                .from(Survey.class)
+                .where(Condition.column(Survey$Table.STATUS).eq(Constants.SURVEY_PLANNED))
+                .or(Condition.column(Survey$Table.STATUS).eq(Constants.SURVEY_IN_PROGRESS))
+                .orderBy(true, Survey$Table.SCHEDULEDDATE)
+                .queryList();
+    }
+
+    /**
+     * Returns survey which state is 'in progress' or 'sent'
+     * @return
+     */
+    public static List<Survey> findInProgressOrSent() {
+        return new Select()
+                .from(Survey.class)
+                .where(Condition.column(Survey$Table.STATUS).eq(Constants.SURVEY_IN_PROGRESS))
+                .or(Condition.column(Survey$Table.STATUS).eq(Constants.SURVEY_SENT))
+                .orderBy(Survey$Table.EVENTDATE)
+                .orderBy(Survey$Table.ID_ORG_UNIT)
+                .queryList();
+    }
+
+    /**
+     * Finds a survey with a given orgunit and tabgroup
+     * @param orgUnit
+     * @param tabGroup
+     * @return
+     */
+    public static Survey findByOrgUnitAndTabGroup(OrgUnit orgUnit, TabGroup tabGroup) {
+        return new Select()
+                .from(Survey.class)
+                .where(Condition.column(Survey$Table.ID_ORG_UNIT).eq(orgUnit.getId_org_unit()))
+                .and(Condition.column(Survey$Table.ID_TAB_GROUP).eq(tabGroup.getId_tab_group()))
+                .and(Condition.column(Survey$Table.STATUS).eq(Constants.SURVEY_PLANNED))
+                .querySingle();
+    }
+
+    /**
+     * Find the last survey that has been sent for each orgunit+tabgroup combination
+     * @return
+     */
+    public static List<Survey> listLastByOrgUnitTabGroup() {
+        return new Select()
+                .from(Survey.class)
+                .where()
+                .groupBy(new QueryBuilder().appendQuotedArray(Survey$Table.ID_ORG_UNIT, Survey$Table.ID_TAB_GROUP))
+                .having(Condition.columnsWithFunction("max", "eventDate"))
+                .queryList();
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -639,24 +716,4 @@ public class Survey extends BaseModel implements VisitableToSDK {
                 '}';
     }
 
-    /**
-     * Moves the schedule date for this survey to a new given date due to a given reason (comment)
-     * @param newScheduledDate
-     * @param comment
-     */
-    public void reschedule(Date newScheduledDate, String comment) {
-        //Take currentDate
-        Date currentScheduleDate=this.getScheduledDate();
-
-        //Add a history
-        SurveySchedule previousSchedule=new SurveySchedule(this,currentScheduleDate,comment);
-        previousSchedule.save();
-
-        //Clean inner lazy schedulelist
-        surveySchedules=null;
-
-        //Move scheduledate and save
-        this.scheduledDate=newScheduledDate;
-        this.save();
-    }
 }

@@ -22,11 +22,11 @@ package org.eyeseetea.malariacare.layout.adapters.survey;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -50,8 +50,6 @@ import org.eyeseetea.malariacare.database.utils.planning.SurveyPlanner;
 import org.eyeseetea.malariacare.utils.Constants;
 
 import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -96,6 +94,12 @@ public class PlannedAdapter extends BaseAdapter {
     }
 
     private void openSection(PlannedHeader header){
+
+        //An empty section cannot be open
+        if(header==null || header.getCounter()==0){
+            return;
+        }
+
         //Annotate currentHeader
         Log.d(TAG, "openSection: " + header);
         currentHeader=header;
@@ -405,12 +409,12 @@ public class PlannedAdapter extends BaseAdapter {
                 public void onClick(View v) {
                     //TODO do something
                     //Check fields are ok
-                    String comment=((EditText)dialog.findViewById(R.id.planning_dialog_comment)).getText().toString();
-                    if(!validateFields(newScheduledDate,comment)){
+                    String comment = ((EditText) dialog.findViewById(R.id.planning_dialog_comment)).getText().toString();
+                    if (!validateFields(newScheduledDate, comment)) {
                         return;
                     }
                     //Reschedule survey
-                    survey.reschedule(newScheduledDate,comment);
+                    survey.reschedule(newScheduledDate, comment);
                     //Recalculate items
                     reloadItems(PlannedItemBuilder.getInstance().buildPlannedItems());
 

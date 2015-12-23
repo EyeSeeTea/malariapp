@@ -210,7 +210,16 @@ public class OrgUnit extends BaseModel {
     }
 
     public boolean isLowProductivity(){
+        //TODO Review whenever server is ready for real productivity
         return lowProductivity;
+    }
+
+    /**
+     * Returns all orgunits
+     * @return
+     */
+    public static List<OrgUnit> list(){
+        return new Select().from(OrgUnit.class).queryList();
     }
 
     @Override
