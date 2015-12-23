@@ -63,7 +63,6 @@ public class DashboardActivity extends BaseActivity {
     MonitorFragment monitorFragment;
     DashboardUnsentFragment unsentFragment;
     DashboardSentFragment sentFragment;
-    LocalActivityManager mlam;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -113,10 +112,8 @@ public class DashboardActivity extends BaseActivity {
      * Init the conteiner for all the tabs
      */
     private void initTabHost(Bundle savedInstanceState) {
-        mlam = new LocalActivityManager(this, false);
         tabHost = (TabHost)findViewById(R.id.tabHost);
-        mlam.dispatchCreate(savedInstanceState);
-        tabHost.setup(mlam);
+        tabHost.setup();
     }
 
 
@@ -252,14 +249,12 @@ public class DashboardActivity extends BaseActivity {
         Log.d(TAG, "onResume");
         super.onResume();
         getSurveysFromService();
-        mlam.dispatchResume();
     }
 
     @Override
     public void onPause(){
         Log.d(TAG, "onPause");
         super.onPause();
-        mlam.dispatchPause(isFinishing());
     }
 
     public void setReloadOnResume(boolean doReload){
