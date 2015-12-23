@@ -101,7 +101,6 @@ public class DashboardActivity extends BaseActivity {
                     //tab_plan on click code
                 } else if (tabId.equalsIgnoreCase("tab_monitor")) {
                     monitorFragment.reloadSentSurveys();
-                    monitorFragment.reloadMonitor();
                 }
             }
         });
