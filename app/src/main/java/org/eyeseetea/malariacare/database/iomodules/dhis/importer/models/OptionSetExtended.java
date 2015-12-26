@@ -32,6 +32,8 @@ public class OptionSetExtended implements VisitableFromSDK {
 
     OptionSet optionSet;
 
+    public OptionSetExtended(){}
+
     public OptionSetExtended(OptionSet optionSet){
         this.optionSet=optionSet;
     }

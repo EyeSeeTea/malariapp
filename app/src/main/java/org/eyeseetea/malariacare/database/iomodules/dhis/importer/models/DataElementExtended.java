@@ -118,6 +118,8 @@ public class DataElementExtended implements VisitableFromSDK {
 
     DataElement dataElement;
 
+    public DataElementExtended(){}
+
     public DataElementExtended(DataElement dataElement){
         this.dataElement =dataElement;
     }

@@ -109,6 +109,24 @@
                         android:layout_height="match_parent"
                         android:orientation="vertical">
 
+
+
+                        <LinearLayout android:orientation="horizontal"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+                            <Spinner
+                                android:id="@+id/filter_orgunit"
+                                android:layout_width="0dip"
+                                android:layout_weight="1"
+                                android:layout_height="wrap_content" />
+
+                            <Spinner
+                                android:id="@+id/filter_program"
+                                android:layout_width="0dip"
+                                android:layout_weight="1"
+                                android:layout_height="wrap_content" />
+                        </LinearLayout>
+
                         <org.eyeseetea.malariacare.views.CustomTextView
                             android:layout_width="fill_parent"
                             android:layout_height="wrap_content"
@@ -120,6 +138,12 @@
                             app:tDimension="@string/font_size_level2"
                             app:tFontName="@string/condensed_font_name" />
 
+                        <ScrollView
+                            android:id="@+id/dashboard_scroll_sent"
+                            android:orientation="vertical"
+                            android:layout_width="fill_parent"
+                            android:layout_height="fill_parent"
+                            android:fillViewport="true">
                         <FrameLayout
                             android:orientation="vertical"
                             android:layout_width="fill_parent"
@@ -142,7 +166,7 @@
 
                             </TableLayout>
                         </FrameLayout>
-
+                    </ScrollView>
                      </LinearLayout>
                      <LinearLayout
                          android:id="@+id/tab_monitor_layout"

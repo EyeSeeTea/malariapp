@@ -35,6 +35,8 @@ public class OptionExtended implements VisitableFromSDK {
 
     Option option;
 
+    public OptionExtended(){}
+
     public OptionExtended(Option option){
         this.option=option;
     }
