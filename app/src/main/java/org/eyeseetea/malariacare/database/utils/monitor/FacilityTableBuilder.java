@@ -38,6 +38,7 @@ public class FacilityTableBuilder {
 
     public static final String JAVASCRIPT_UPDATE_TABLE = "javascript:buildTableFacilities(%d,%s)";
     private static final String TAG=".FacilityTableBuilder";
+    public static final String JAVASCRIPT_SHOW = "javascript:renderPieCharts()";
 
     /**
      * Required to inyect title according to current language
@@ -92,7 +93,7 @@ public class FacilityTableBuilder {
 
             //Init entry first time of a tabgroup
             if(facilityTableData==null){
-                facilityTableData=new FacilityTableData(tabGroup.getName());
+                facilityTableData=new FacilityTableData(tabGroup);
                 facilityTableDataMap.put(survey.getTabGroup(),facilityTableData);
             }
 
@@ -110,5 +111,10 @@ public class FacilityTableBuilder {
         Log.d(TAG, updateChartJS);
         webView.loadUrl(updateChartJS);
 
+    }
+
+    public static void showFacilities(WebView webView) {
+        Log.d(TAG, JAVASCRIPT_SHOW);
+        webView.loadUrl(String.format(JAVASCRIPT_SHOW));
     }
 }

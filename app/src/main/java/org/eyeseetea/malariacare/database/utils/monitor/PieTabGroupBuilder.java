@@ -40,6 +40,7 @@ public class PieTabGroupBuilder {
 
     public static final String JAVASCRIPT_UPDATE_CHARTS = "javascript:buildPieCharts(%s)";
     private static final String TAG=".PieTabGroupBuilder";
+    public static final String JAVASCRIPT_SHOW = "javascript:rebuildTableFacilities()";
 
     /**
      * Required to inyect title according to current language
@@ -105,7 +106,7 @@ public class PieTabGroupBuilder {
         String json=buildJSONArray(entries);
 
         //Inyect in browser
-        String updateChartJS=String.format(JAVASCRIPT_UPDATE_CHARTS,json);
+        String updateChartJS=String.format(JAVASCRIPT_UPDATE_CHARTS, json);
         Log.d(TAG, updateChartJS);
         webView.loadUrl(updateChartJS);
     }
@@ -123,6 +124,12 @@ public class PieTabGroupBuilder {
         }
         arrayJSON+="]";
         return arrayJSON;
+    }
+
+    public static void showPieTab(WebView webView){
+        //Set chart title
+        Log.d(TAG, JAVASCRIPT_SHOW);
+        webView.loadUrl(String.format(JAVASCRIPT_SHOW));
     }
 
 }

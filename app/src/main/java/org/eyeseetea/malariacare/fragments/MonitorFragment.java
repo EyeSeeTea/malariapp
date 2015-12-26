@@ -197,12 +197,19 @@ public class MonitorFragment extends Fragment {
 
                 SentSurveysBuilder.showData(view);
                 //List<Survey> surveysByProgramAndOrgUnit = filterSurveysByProgramAndOrgUnit(surveysForGraphic);
-                //Add pie charts
-                new PieTabGroupBuilder(surveysForGraphic, getActivity()).addDataInChart(view);
 
 
                 //Add table x facility
                 new FacilityTableBuilder(surveysForGraphic, getActivity()).addDataInChart(view);
+
+                //Add pie charts
+                new PieTabGroupBuilder(surveysForGraphic, getActivity()).addDataInChart(view);
+
+                //Render the table and pie.
+                PieTabGroupBuilder.showPieTab(view);
+                FacilityTableBuilder.showFacilities(view);
+
+
             }
         });
         //Load html

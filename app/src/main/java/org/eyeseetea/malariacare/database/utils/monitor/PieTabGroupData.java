@@ -28,7 +28,7 @@ import org.eyeseetea.malariacare.database.model.TabGroup;
  */
 public class PieTabGroupData {
 
-    private static final String JSONFORMAT="{title:'%s',tip:'%s',idTabGroup: %d,valueA:%d,valueB:%d,valueC:%d}";
+    private static final String JSONFORMAT="{title:'%s',tip:'%s',idTabGroup: %d,valueA:%d,valueB:%d,valueC:%d,uidprogram:'%s',uidorgunit:'%s'}";
 
     /**
      * Type of program for this chart
@@ -89,7 +89,7 @@ public class PieTabGroupData {
      */
     public String toJSON(String tipChat){
         String pieTitle=String.format("%s (%s)",tabGroup.getName(),tabGroup.getProgram().getName());
-        String json= String.format(JSONFORMAT, pieTitle, tipChat,tabGroup.getId_tab_group(), this.numA, this.numB, this.numC);
+        String json= String.format(JSONFORMAT, pieTitle, tipChat,tabGroup.getId_tab_group(), this.numA, this.numB, this.numC, tabGroup.getProgram().getUid(),tabGroup.getUid());
         return json;
     }
 
