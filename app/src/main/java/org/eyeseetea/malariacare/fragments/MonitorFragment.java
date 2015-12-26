@@ -47,9 +47,6 @@ import org.eyeseetea.malariacare.layout.adapters.dashboard.IDashboardAdapter;
 import org.eyeseetea.malariacare.services.SurveyService;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -63,10 +60,7 @@ public class MonitorFragment extends Fragment {
     protected IDashboardAdapter adapter;
     private static int index = 0;
     private WebView webView;
-    Spinner filterSpinnerProgram;
-    Spinner filterSpinnerOrgUnit;
-    String selectedOrgUnit;
-    String selectedProgram;
+    
     public MonitorFragment() {
         this.adapter = Session.getAdapterSent();
         this.surveys = new ArrayList();
