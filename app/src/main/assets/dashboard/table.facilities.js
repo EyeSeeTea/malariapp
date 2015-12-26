@@ -30,27 +30,40 @@
 		);
 
 */
-
+var inputDataFacilities=[];
 function buildTableFacilities(tabGroupId,dataFacilities){
-	var facilitiesHeadId="facilitiesHead"+tabGroupId;
-	var facilitiesBodyId="facilitiesBody"+tabGroupId;
-	var titleFacilitiesId="titleFacilities"+tabGroupId;
-	//Clear table
-	document.getElementById(facilitiesHeadId).innerHTML='';
-	document.getElementById(facilitiesBodyId).innerHTML='';
-
-	//Title to table
-	updateChartTitle(titleFacilitiesId,dataFacilities.title);
-
-	//Add header
-	buildTableHeader(tabGroupId,dataFacilities.months);
-
-	//Add body
-	buildTableBody(tabGroupId,dataFacilities.facilities);
+	console.log(tabGroupId);
+	inputDataFacilities.push(dataFacilities);
 }
 
+function rebuildTableFacilities(){
+	for(i=0;i<inputDataFacilities.length;i++){
+		if(inputDataFacilities[i].tableuid==selectedOrgUnit){
+		var id=inputDataFacilities[i].id;
+			var facilitiesHeadId="facilitiesHead";
+			var facilitiesBodyId="facilitiesBody";
+			var titleFacilitiesId="titleFacilities";
+			//Clear table
+			document.getElementById(facilitiesHeadId).innerHTML='';
+			document.getElementById(facilitiesBodyId).innerHTML='';
+
+			//Title to table
+			updateChartTitle(titleFacilitiesId,inputDataFacilities[i].title);
+
+			//Add header
+			buildTableHeader(id,inputDataFacilities[i].months);
+
+			//Add body
+			buildTableBody(id,inputDataFacilities[i].facilities);
+
+		}	
+	//}
+	}
+}
+
+
 function buildTableHeader(tabGroupId,months){
-	var facilitiesHeadId="facilitiesHead"+tabGroupId;
+	var facilitiesHeadId="facilitiesHead";
 	var rowsHeader="<tr><th></th>";
 	for(var i=0;i<months.length;i++){
 		rowsHeader=rowsHeader+"<th>"+months[i]+"</th>";
@@ -62,7 +75,7 @@ function buildTableHeader(tabGroupId,months){
 }
 
 function buildTableBody(tabGroupId,facilities){
-	var facilitiesBodyId="facilitiesBody"+tabGroupId;
+	var facilitiesBodyId="facilitiesBody";
 	for(var i=0;i<facilities.length;i++){
 		var rowFacility=buildRowFacility(facilities[i]);
 		document.getElementById(facilitiesBodyId).insertAdjacentHTML("beforeend",rowFacility);

@@ -11,32 +11,69 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 /* Updates the text of the given html element*/
 
     var input = [];
-    var selectedProgram="";
+	var inputall = [];
+	var allAssessment="AllAssessment";
+    var selectedProgram=allAssessment;
+	var chart=null;
+	
 function updateChartTitle(id,text){
     document.getElementById(id).innerHTML=text;
 }
+
 function setData(data){
-    input.push(data);
+	var temp=data.slice();
+	setAllAssassement(temp)
+	input.push(data);
 }
+
+function setAllAssassement(data){
+	var exist=false;
+	for(i=0;i<Object.keys(inputall).length;i++){
+		if(inputall[i][4]==data[4]){
+			exist=true;
+			inputall[i][0]+=data[0]; 
+			inputall[i][2]="All assetments";
+			inputall[i][3]=allAssessment;
+		}
+	}
+	if(exist==false)
+		inputall.push(data);
+}
+
 function showData(){
-  removeData( );
+    removeData();
 	for(i=0;i<input.length;i++){
-		if(selectedProgram=="")
-			selectedProgram=input[i][3];
         if(input[i].indexOf(selectedProgram) > -1){
-            surveyXMonthChart.addData([input[i][0], input[i][1]], input[i][4]);
+		if(selectedProgram==allAssessment){
+			surveyXMonthChart.addData([inputall[i][0], inputall[i][1]], inputall[i][4]);
+		}
+		else
+			surveyXMonthChart.addData([input[i][0], input[i][1]], input[i][4]);
         }
+	}
+	
+	for(i=0;i<inputall.length;i++){
+        if(inputall[i].indexOf(selectedProgram) > -1){
+			surveyXMonthChart.addData([inputall[i][0], inputall[i][1]], inputall[i][4]);
+		}
 	}
 	createSelectProgram();
 }
+
 function createSelectProgram(){
 	var selectHtml='<select onchange="changeProgram()" id="changeProgram">';
-	var selected="selected";
+	var selected="";
+	if(selectedProgram==="AllAssessment")
+		selected="selected";
+	selectHtml+="<option "+selected+" value="+allAssessment+">"+"All Assessment"+"</option>";
+	selected="selected";
 	for(i=0;i<input.length;i++){
 		if(!(selectHtml.indexOf(input[i][3]) > -1) && !(input[i][3]=== undefined)){
 		if(input[i][3]==selectedProgram){
 			selected="selected";
 		}
+		else
+			selected="";
 
 		selectHtml+="<option "+selected+" value="+input[i][3]+">"+input[i][2]+"</option>";
 		if(selected==="selected"){
@@ -46,7 +83,6 @@ function createSelectProgram(){
 	}
 	selectHtml+="</select>";
 	document.getElementById('selectProgram').innerHTML = selectHtml;
-
 }
 
 function changeProgram(){
@@ -54,10 +90,12 @@ function changeProgram(){
   selectedProgram=(myselect.options[myselect.selectedIndex].value);
 
   showData();
+  showPie();
+  changedOrgunit()
 }
-var chart=null;
-function removeData()
-{chart.update();
+
+function removeData(){
+chart.update();
 
   var oldChart = document.getElementById("surveyXMonthCanvas");
   var newChart = document.createElement("canvas");

@@ -91,24 +91,75 @@ function pieXTabGroupChart(data){
         }        
         ]);    
 */
-
-function buildPieCharts(dataPies){
-    var defaultTemplate= document.getElementById('pieTemplate').innerHTML;
-
-    //For each pie
-
-    for(var i=0;i<dataPies.length;i++){
-        var dataPie = dataPies[i];
-        //Create template with right ids
-        var customTemplate=defaultTemplate.replace(/###/g, dataPie.idTabGroup);
-        //Add DOM element
-        document.getElementById("hrSent").insertAdjacentHTML("afterend",customTemplate);
-        //Draw chart on it
-        pieXTabGroupChart(dataPie);
-    }
-
+var selectedOrgUnit;
+var inputOrgUnit;
+function showPie(){
+	changedOrgunit();
 }
 
+function setFacilityData(data){
+    inputOrgUnit=data;
+}
+function createSelectOrgUnit(){
+	var selectHtml='<select onchange="changedOrgunit()" id="changeOrgUnit">';
+	var selected="selected";
+	for(i=0;i<Object.keys(inputOrgUnit).length;i++){
+		if(inputOrgUnit[i].uidprogram==selectedProgram || selectedProgram==allAssessment){
+		if(inputOrgUnit[i].uidorgunit==selectedOrgUnit){
+			selected="selected";
+		}
+		selectHtml+="<option "+selected+" value="+inputOrgUnit[i].uidorgunit+">"+inputOrgUnit[i].title+"</option>";
+		if(selected==="selected"){			
+			selected="";
+		}
+	}}
+	selectHtml+="</select>";
+	document.getElementById('selectFacility').innerHTML = selectHtml;
+	rebuildTableFacilities();
+}
 
+function changedOrgunit(){
+  var myselect = document.getElementById("changeOrgUnit");
+  selectedOrgUnit=(myselect.options[myselect.selectedIndex].value);
+  console.log("new"+selectedOrgUnit);
+  renderPieCharts();
+  rebuildTableFacilities();
+}
+function buildPieCharts(dataPies){
+    //For each pie
+	setFacilityData(dataPies);
+	}
+function renderPieCharts(){
+	
+	console.log("Renderpie");
+    for(var i=0;i<inputOrgUnit.length;i++){
+		if(selectedOrgUnit===undefined){
+			console.log("undefined");
+			showDataPie(inputOrgUnit[0]);
+			selectedOrgUnit=inputOrgUnit[0].uidorgunit;
+		}
+		  if (inputOrgUnit[i].uidorgunit==selectedOrgUnit)
+		{
+			console.log("render correct orgunit");
+			showDataPie(inputOrgUnit[i]);
+		} 
+		else{ 
+			console.log("not moved"+selectedOrgUnit);
+		}
+	}
+	createSelectOrgUnit();
+}
+function showDataPie(dataPie){
+	
+    var defaultTemplate= document.getElementById('pieTemplate').innerHTML;
+	document.getElementById("pieChartContent").innerHTML=defaultTemplate;
+			//Create template with right ids
+			var customTemplate=defaultTemplate.replace(/###/g, dataPie.idTabGroup);
+			//Add DOM element
+			document.getElementById("pieChartContent").innerHTML=customTemplate;
+			//Draw chart on it
+			pieXTabGroupChart(dataPie);
+			
+}
 
 
