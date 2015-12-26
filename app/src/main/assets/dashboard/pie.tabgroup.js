@@ -93,13 +93,15 @@ function pieXTabGroupChart(data){
 */
 var selectedOrgUnit;
 var inputOrgUnit;
+//Show orgUnit, it is called from changedProgram.
 function showPie(){
 	changedOrgunit();
 }
-
+//Save the facility data in inputOrgUnit
 function setFacilityData(data){
     inputOrgUnit=data;
 }
+//Create the select options for select diferentes org unit
 function createSelectOrgUnit(){
 	var selectHtml='<select onchange="changedOrgunit()" id="changeOrgUnit">';
 	var selected="selected";
@@ -118,6 +120,7 @@ function createSelectOrgUnit(){
 	rebuildTableFacilities();
 }
 
+//event on click select/or to change the selected orgunit and reload.
 function changedOrgunit(){
   var myselect = document.getElementById("changeOrgUnit");
   selectedOrgUnit=(myselect.options[myselect.selectedIndex].value);
@@ -125,10 +128,13 @@ function changedOrgunit(){
   renderPieCharts();
   rebuildTableFacilities();
 }
+//Save the data of the pies
 function buildPieCharts(dataPies){
     //For each pie
 	setFacilityData(dataPies);
 	}
+
+//Render the pie and create the select options
 function renderPieCharts(){
 	
 	console.log("Renderpie");
@@ -149,6 +155,8 @@ function renderPieCharts(){
 	}
 	createSelectOrgUnit();
 }
+
+//Insert the pie in the html
 function showDataPie(dataPie){
 	
     var defaultTemplate= document.getElementById('pieTemplate').innerHTML;

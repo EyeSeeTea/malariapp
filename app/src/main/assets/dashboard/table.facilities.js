@@ -31,11 +31,12 @@
 
 */
 var inputDataFacilities=[];
+//Save the table data
 function buildTableFacilities(tabGroupId,dataFacilities){
 	console.log(tabGroupId);
 	inputDataFacilities.push(dataFacilities);
 }
-
+//Build the correct table
 function rebuildTableFacilities(){
 	for(i=0;i<inputDataFacilities.length;i++){
 		if(inputDataFacilities[i].tableuid==selectedOrgUnit){

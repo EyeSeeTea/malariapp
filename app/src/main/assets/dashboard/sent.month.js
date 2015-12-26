@@ -20,12 +20,13 @@ function updateChartTitle(id,text){
     document.getElementById(id).innerHTML=text;
 }
 
+//Save the data of the stats
 function setData(data){
 	var temp=data.slice();
 	setAllAssassement(temp)
 	input.push(data);
 }
-
+//Save and merge a All assassement object with the stats of all the programs merged
 function setAllAssassement(data){
 	var exist=false;
 	for(i=0;i<Object.keys(inputall).length;i++){
@@ -39,7 +40,7 @@ function setAllAssassement(data){
 	if(exist==false)
 		inputall.push(data);
 }
-
+//show the data in the table.
 function showData(){
     removeData();
 	for(i=0;i<input.length;i++){
@@ -59,7 +60,7 @@ function showData(){
 	}
 	createSelectProgram();
 }
-
+//Create the select options for select the program
 function createSelectProgram(){
 	var selectHtml='<select onchange="changeProgram()" id="changeProgram">';
 	var selected="";
@@ -84,7 +85,7 @@ function createSelectProgram(){
 	selectHtml+="</select>";
 	document.getElementById('selectProgram').innerHTML = selectHtml;
 }
-
+//change program, change table, and change pie to load the pie from the new progra
 function changeProgram(){
   var myselect = document.getElementById("changeProgram");
   selectedProgram=(myselect.options[myselect.selectedIndex].value);
@@ -93,7 +94,7 @@ function changeProgram(){
   showPie();
   changedOrgunit()
 }
-
+//Remove and re-iniciate the table of the general stats
 function removeData(){
 chart.update();
 

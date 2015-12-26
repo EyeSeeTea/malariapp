@@ -28,7 +28,6 @@ import java.util.Date;
  * Created by arrizabalaga on 7/10/15.
  */
 public class EntrySentSurveysChart implements Comparable<EntrySentSurveysChart>{
-    //public static final String JAVASCRIPT_ADD_DATA = "javascript:surveyXMonthChart.addData([%d, %d], '%s', '%s','%s')";
     public static final String JAVASCRIPT_ADD_DATA = "javascript:setData([%d, %d, '%s', '%s','%s'])";
 
     /**

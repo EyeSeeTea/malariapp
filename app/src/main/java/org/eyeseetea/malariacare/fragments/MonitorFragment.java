@@ -20,7 +20,6 @@
 package org.eyeseetea.malariacare.fragments;
 
 import android.app.Fragment;
-import android.app.ListFragment;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -29,21 +28,15 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AnimationUtils;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.AdapterView;
 import android.widget.Spinner;
 
-import com.raizlabs.android.dbflow.sql.language.Select;
 
 import org.eyeseetea.malariacare.R;
-import org.eyeseetea.malariacare.database.model.OrgUnit;
 import org.eyeseetea.malariacare.database.model.Program;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.utils.Session;
@@ -51,11 +44,8 @@ import org.eyeseetea.malariacare.database.utils.monitor.FacilityTableBuilder;
 import org.eyeseetea.malariacare.database.utils.monitor.PieTabGroupBuilder;
 import org.eyeseetea.malariacare.database.utils.monitor.SentSurveysBuilder;
 import org.eyeseetea.malariacare.layout.adapters.dashboard.IDashboardAdapter;
-import org.eyeseetea.malariacare.layout.adapters.general.OrgUnitArrayAdapter;
-import org.eyeseetea.malariacare.layout.adapters.general.ProgramArrayAdapter;
 import org.eyeseetea.malariacare.services.SurveyService;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -179,24 +169,14 @@ public class MonitorFragment extends Fragment {
             @Override
             public void onPageFinished(WebView view, String url) {
                 super.onPageFinished(view, url);
+
+                final List<Program> programs=Program.getAllPrograms();
+
                 //Add line chart
-                HashMap<Program,ArrayList<Survey>> mapSurveysByProgram= new HashMap<Program,ArrayList<Survey>> ();
-
-
-                final List<Program> programs=new ArrayList<Program>();
-                Collections.sort(surveysForGraphic, new Comparator<Survey>() {
-                    public int compare(Survey surveyA, Survey surveyB) {
-                        if (!programs.contains(surveyA.getTabGroup().getProgram())) {
-                            programs.add(surveyA.getTabGroup().getProgram());
-                        }
-                        return surveyA.getTabGroup().getProgram().getUid().compareTo(surveyB.getTabGroup().getProgram().getUid());
-                    }
-                });
                 new SentSurveysBuilder(surveysForGraphic, getActivity(),programs).addDataInChart(view);
 
+                //Show stats by program
                 SentSurveysBuilder.showData(view);
-                //List<Survey> surveysByProgramAndOrgUnit = filterSurveysByProgramAndOrgUnit(surveysForGraphic);
-
 
                 //Add table x facility
                 new FacilityTableBuilder(surveysForGraphic, getActivity()).addDataInChart(view);
@@ -259,50 +239,5 @@ public class MonitorFragment extends Fragment {
                 reloadSentSurveys();
             }
         }
-    }
-
-    private List<Survey> filterSurveysByProgram(List<Survey> surveys) {
-        HashMap<String, Survey> filteredSurveys;
-        filteredSurveys = new HashMap<>();
-        surveysForGraphic = new ArrayList<>();
-        for (Survey survey : surveys) {
-                if (!filteredSurveys.containsKey(survey.getTabGroup().getProgram().getUid()+survey.getOrgUnit().getUid()+survey.getId_survey())) {
-                    if(filterSurveyByProgram(survey))
-                        filteredSurveys.put(survey.getTabGroup().getProgram().getUid()+survey.getOrgUnit().getUid()+survey.getId_survey(), survey);
-                }
-        }
-        for (Survey survey : filteredSurveys.values()) {
-            surveysForGraphic.add(survey);
-        }
-        Log.d(TAG, "size" + surveysForGraphic.size());
-        return surveysForGraphic;
-    }
-    private List<Survey> filterSurveysByProgramAndOrgUnit(List<Survey> surveys) {
-        HashMap<String, Survey> filteredSurveys;
-        filteredSurveys = new HashMap<>();
-        surveysForGraphic = new ArrayList<>();
-        for (Survey survey : surveys) {
-            if (!filteredSurveys.containsKey(survey.getTabGroup().getProgram().getUid()+survey.getOrgUnit().getUid()+survey.getId_survey())) {
-                if(filterSurveyByProgramAndOrgUnit(survey))
-                    filteredSurveys.put(survey.getTabGroup().getProgram().getUid()+survey.getOrgUnit().getUid()+survey.getId_survey(), survey);
-            }
-        }
-        for (Survey survey : filteredSurveys.values()) {
-            surveysForGraphic.add(survey);
-        }
-        Log.d(TAG, "size" + surveysForGraphic.size());
-        return surveysForGraphic;
-    }
-    private boolean filterSurveyByProgram(Survey survey) {
-        if(selectedProgram.equals(survey.getTabGroup().getProgram().getUid()))
-                return true;
-        return false;
-    }
-
-    private boolean filterSurveyByProgramAndOrgUnit(Survey survey) {
-        if(filterSurveyByProgram(survey))
-            if(selectedOrgUnit.equals(survey.getOrgUnit().getUid()))
-                return true;
-        return false;
     }
 }
