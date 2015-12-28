@@ -49,7 +49,7 @@ function rebuildTableFacilities(){
 			document.getElementById(facilitiesBodyId).innerHTML='';
 
 			//Title to table
-			updateChartTitle(titleFacilitiesId,inputDataFacilities[i].title);
+			updateChartTitle(titleFacilitiesId,"Quality of care: Last "+inputDataFacilities[i].months.length+" months");
 
 			//Add header
 			buildTableHeader(id,inputDataFacilities[i].months);
@@ -57,7 +57,7 @@ function rebuildTableFacilities(){
 			//Add body
 			buildTableBody(id,inputDataFacilities[i].facilities);
 
-		}	
+		}
 	//}
 	}
 }
@@ -65,12 +65,11 @@ function rebuildTableFacilities(){
 
 function buildTableHeader(tabGroupId,months){
 	var facilitiesHeadId="facilitiesHead";
-	var rowsHeader="<tr><th></th>";
+	var rowsHeader="<tr>";
 	for(var i=0;i<months.length;i++){
 		rowsHeader=rowsHeader+"<th>"+months[i]+"</th>";
 	}
 	rowsHeader=rowsHeader+"</tr>";
-
 	//Add tr to thead
 	document.getElementById(facilitiesHeadId).insertAdjacentHTML("beforeend",rowsHeader);
 }
@@ -87,7 +86,7 @@ function buildRowFacility(facility){
 	//start row
 	var row="<tr>";
 	//name
-	row=row+"<td>"+facility.name+"</td>";
+	row=row+"<td  colspan="+facility.values.length+" style='background:#3e3e3f; color:white;' >"+facility.name+"</td></tr><tr>";
 	//value x month
 	for(var i=0;i<facility.values.length;i++){
 		var iValue=facility.values[i];
@@ -104,14 +103,14 @@ function buildColorXScore(value){
 	}
 
 	if(value<50){
-		return "class='red'";
+		return "class='redcircle'";
 	}
 
 	if(value<80){
-		return "class='amber'";
+		return "class='ambercircle'";
 	}
 
-	return "class='green'";
+	return "class='greencircle'";
 }
 
 function buildCellXScore(value){

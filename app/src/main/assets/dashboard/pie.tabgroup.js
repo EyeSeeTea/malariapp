@@ -34,15 +34,15 @@ function pieXTabGroupChart(data){
     var myChart = new Chart(ctx).Doughnut(
         [{
             value: data.valueA,
-            color: "#84b467",
+            color: "#81980d",
             label: "A (>80)"
         }, {
             value: data.valueB,
-            color: "#f1c232",
+            color: "#00b4e3",
             label: "B (50-80)"
         }, {
             value: data.valueC,
-            color: "#ff060d",
+            color: "#fa8900",
             label: "C (<50)"
         }],
         {
@@ -106,7 +106,6 @@ function createSelectOrgUnit(){
 	var selectHtml='<select onchange="changedOrgunit()" id="changeOrgUnit">';
 	var selected="selected";
 	for(i=0;i<Object.keys(inputOrgUnit).length;i++){
-		if(inputOrgUnit[i].uidprogram==selectedProgram || selectedProgram==allAssessment){
 		if(inputOrgUnit[i].uidorgunit==selectedOrgUnit){
 			selected="selected";
 		}
@@ -114,7 +113,7 @@ function createSelectOrgUnit(){
 		if(selected==="selected"){			
 			selected="";
 		}
-	}}
+	}
 	selectHtml+="</select>";
 	document.getElementById('selectFacility').innerHTML = selectHtml;
 	rebuildTableFacilities();
@@ -136,8 +135,6 @@ function buildPieCharts(dataPies){
 
 //Render the pie and create the select options
 function renderPieCharts(){
-	
-	console.log("Renderpie");
     for(var i=0;i<inputOrgUnit.length;i++){
 		if(selectedOrgUnit===undefined){
 			console.log("undefined");
@@ -146,11 +143,7 @@ function renderPieCharts(){
 		}
 		  if (inputOrgUnit[i].uidorgunit==selectedOrgUnit)
 		{
-			console.log("render correct orgunit");
 			showDataPie(inputOrgUnit[i]);
-		} 
-		else{ 
-			console.log("not moved"+selectedOrgUnit);
 		}
 	}
 	createSelectOrgUnit();

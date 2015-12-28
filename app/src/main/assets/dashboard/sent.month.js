@@ -91,8 +91,9 @@ function changeProgram(){
   selectedProgram=(myselect.options[myselect.selectedIndex].value);
 
   showData();
-  showPie();
-  changedOrgunit()
+  //Uncoment it for make the pie and chart program dependent.
+  //showPie();
+  //changedOrgunit();
 }
 //Remove and re-iniciate the table of the general stats
 function removeData(){
@@ -112,9 +113,9 @@ surveyXMonthChart= (function SentXMonthChart(){
         datasets: [
             {
                 label: "Assessment undertaken",
-                fillColor: "rgba(241,194,50,0)",
-                strokeColor: "rgba(241,194,50,1)",
-                pointColor: "rgba(241,194,50,1)",
+                fillColor: "rgba(132,180,103,0)",
+                strokeColor: "#81980d",
+                pointColor: "#81980d",
                 pointStrokeColor: "#fff",
                 pointHighlightFill: "#fff",
                 pointHighlightStroke: "rgba(241,194,50,1)",
@@ -123,8 +124,8 @@ surveyXMonthChart= (function SentXMonthChart(){
             {
                 label: "Target",
                 fillColor: "rgba(132,180,103,0)",
-                strokeColor: "rgba(132,180,103,1)",
-                pointColor: "rgba(132,180,103,1)",
+                strokeColor: "#00b4e3",
+                pointColor: "#00b4e3",
                 pointStrokeColor: "#fff",
                 pointHighlightFill: "#fff",
                 pointHighlightStroke: "rgba(151,187,205,1)",
@@ -151,12 +152,12 @@ var surveyXMonthChart= (function SentXMonthChart(){
     var ctx = document.getElementById("surveyXMonthCanvas").getContext("2d");
     chart = new Chart(ctx).Line({
         labels: [],
-        datasets: [
+		datasets: [
             {
                 label: "Assessment undertaken",
-                fillColor: "rgba(241,194,50,0)",
-                strokeColor: "rgba(241,194,50,1)",
-                pointColor: "rgba(241,194,50,1)",
+                fillColor: "rgba(132,180,103,0)",
+                strokeColor: "#81980d",
+                pointColor: "#81980d",
                 pointStrokeColor: "#fff",
                 pointHighlightFill: "#fff",
                 pointHighlightStroke: "rgba(241,194,50,1)",
@@ -165,8 +166,8 @@ var surveyXMonthChart= (function SentXMonthChart(){
             {
                 label: "Target",
                 fillColor: "rgba(132,180,103,0)",
-                strokeColor: "rgba(132,180,103,1)",
-                pointColor: "rgba(132,180,103,1)",
+                strokeColor: "#00b4e3",
+                pointColor: "#00b4e3",
                 pointStrokeColor: "#fff",
                 pointHighlightFill: "#fff",
                 pointHighlightStroke: "rgba(151,187,205,1)",

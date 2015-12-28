@@ -22,6 +22,17 @@
     <script type = "text/javascript" src="Chart.min.js"> </script>
 </head>
 <style>
+    select{
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    font-size: 20px;
+    padding: 0 0 0 20px;
+    width: 102%;
+    background: url(img/select.png) no-repeat right #3e3e3f;
+    color: white;
+    margin-left: -9px;
+    }
     @font-face {
     font-family: 'Roboto-Condensed';
     src: url('Roboto-Condensed.ttf');;
@@ -76,21 +87,40 @@
     }
 
     table, td, th {
-    border: 1px solid black;
+    border: 0px solid black;
     text-align: center;
     }
-
     td.green{
-    background-color: #84b467;
+    background-color: #81980d;
     }
 
     td.amber{
-    background-color: #f1c232;
+    background-color: #00b4e3;
     }
 
     td.red{
-    background-color: #ff060d;
+    background-color: #fa8900;
     }
+    td.greencircle{
+
+    border-radius: 50%;
+    height:60px;
+    background-color: #81980d;
+    color:white;
+    }
+
+    td.ambercircle{
+    border-radius: 50%;
+    height:60px;
+    background-color: #00b4e3;
+    color:white;
+    }
+
+    td.redcircle{
+    border-radius: 50%;
+    height:60px;
+    background-color: #fa8900;
+    color:white;}
 </style>
 <body>
 <!--Sent surveys x month-->
@@ -130,7 +160,9 @@
         </div>
         <div>
             <span class="line-title" id="titleFacilities"></span>
-            1
+            <hr style="background-color:#81980d;
+			width:100%;
+    height: 2px;"/>
             <div>
                 <table>
                     <thead id="facilitiesHead">
