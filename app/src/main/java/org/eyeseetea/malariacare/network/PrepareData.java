@@ -407,6 +407,7 @@ public class PrepareData {
         }
         else{
             survey.saveMainScore();
+            survey.save();
         }
     }
 

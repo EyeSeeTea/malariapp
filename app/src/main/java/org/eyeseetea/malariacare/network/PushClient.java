@@ -121,7 +121,49 @@ public class PushClient {
         this.applicationContext = applicationContext;
     }
 
-    public PushResult push() {
+
+    public void updateDashboard(){
+        //Reload data using service
+        Intent surveysIntent=new Intent(applicationContext, SurveyService.class);
+        surveysIntent.putExtra(SurveyService.SERVICE_METHOD, SurveyService.RELOAD_DASHBOARD_ACTION);
+        applicationContext.startService(surveysIntent);
+    }
+
+    public PushResult pushBackground() {
+        if (isNetworkAvailable()) {
+            if (PreferencesState.isPictureQuestion()) {
+                return picturePush();
+            }
+            else{
+                return malariappPush();
+            }
+        }
+        return new PushResult();
+    }
+
+    public PushResult picturePush(){
+        try {
+            JSONObject data = PrepareData.getInstance().prepareMetadata(survey);
+            data = PrepareData.getInstance().prepareDataElements(data, survey);
+            PushResult result = new PushResult(pushData(data));
+            if (result.isSuccessful()) {
+                this.survey.setStatus(Constants.SURVEY_SENT);
+                this.survey.save();
+                //Change status
+                //check if the user was sent more than the limit
+                List<Survey> sentSurveys = Survey.getAllHideAndSentSurveys();
+                if (isSurveyOverLimit(sentSurveys)) {
+                    banOrg(DHIS_ORG_NAME);
+                }
+            }
+            return result;
+        } catch (Exception ex) {
+            //Log.e(TAG, ex.getMessage());
+            return new PushResult(ex);
+        }
+    }
+
+    public PushResult malariappPush() {
         PushResult pushResult;
         try{
             //TODO: This should be removed once DHIS bug is solved
@@ -147,45 +189,6 @@ public class PushClient {
         }
         return  pushResult;
     }
-
-    public void updateDashboard(){
-        //Reload data using service
-        Intent surveysIntent=new Intent(applicationContext, SurveyService.class);
-        surveysIntent.putExtra(SurveyService.SERVICE_METHOD, SurveyService.RELOAD_DASHBOARD_ACTION);
-        applicationContext.startService(surveysIntent);
-    }
-
-    public PushResult pushBackground() {
-        //Check if the static DHIS_UNEXISTENT_ORG_UNIT is the same than the used DHIS_ORG_NAME.
-        //If DHIS_UNEXISTENT_ORG_UNIT!=DHIS_ORG_NAME is the same, the UID not exist, and it was be checked.
-        //hasOrgUnitValidCode check the code the program and the closedDate
-        //This if is evaluating every push from SurveyService.
-        //if (isNetworkAvailable() && !INVALID_SERVER && isValidOrgUnit() &&  checkAll() && !BANNED  ) {
-        if (isNetworkAvailable()) {
-            try {
-                JSONObject data = PrepareData.getInstance().prepareMetadata(survey);
-                data = PrepareData.getInstance().prepareDataElements(data, survey);
-                PushResult result = new PushResult(pushData(data));
-                if (result.isSuccessful()) {
-                    this.survey.setStatus(Constants.SURVEY_SENT);
-                    this.survey.save();
-                    //Change status
-                    //check if the user was sent more than the limit
-                    List<Survey> sentSurveys = Survey.getAllHideAndSentSurveys();
-                    if(isSurveyOverLimit(sentSurveys))
-                    {
-                        banOrg(DHIS_ORG_NAME);
-                    }
-                }
-                return result;
-            } catch (Exception ex) {
-                //Log.e(TAG, ex.getMessage());
-                return new PushResult(ex);
-            }
-        }
-        return new PushResult();
-    }
-
     /**
      * Pushes data to DHIS Server
      * @param data

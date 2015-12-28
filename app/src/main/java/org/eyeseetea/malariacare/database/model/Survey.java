@@ -117,7 +117,7 @@ public class Survey extends BaseModel implements VisitableToSDK {
         //Set dates
         this.creationDate = new Date();
         this.completionDate = this.creationDate;
-        this.eventDate = null;
+        this.eventDate = new Date();
         this.scheduledDate = null;
     }
 
@@ -693,17 +693,6 @@ public class Survey extends BaseModel implements VisitableToSDK {
     }
 
     /**
-     * Returns all the surveys with status put to "Sent" or completed
-     * @return
-     */
-    public static List<Survey> getAllSentOrCompletedSurveys() {
-        return new Select().from(Survey.class)
-                .where(Condition.column(Survey$Table.STATUS).eq(Constants.SURVEY_SENT))
-                .or(Condition.column(Survey$Table.STATUS).eq(Constants.SURVEY_COMPLETED))
-                .orderBy(Survey$Table.EVENTDATE)
-                .orderBy(Survey$Table.ID_ORG_UNIT).queryList();
-    }
-    /**
      * Returns the last surveys (by date) with status put to "Sent"
      * @param limit
      * @return
@@ -764,7 +753,9 @@ public class Survey extends BaseModel implements VisitableToSDK {
      */
     public static List<Survey> getAllUncompletedSurveys() {
         return new Select().from(Survey.class)
-                .where(Condition.column(Survey$Table.STATUS).eq(Constants.SURVEY_IN_PROGRESS))
+                .where(Condition.column(Survey$Table.STATUS).isNot(Constants.SURVEY_SENT))
+                .and(Condition.column(Survey$Table.STATUS).isNot(Constants.SURVEY_HIDE))
+                .and(Condition.column(Survey$Table.STATUS).isNot(Constants.SURVEY_COMPLETED))
                 .orderBy(Survey$Table.EVENTDATE)
                 .orderBy(Survey$Table.ID_ORG_UNIT).queryList();
     }
@@ -788,12 +779,35 @@ public class Survey extends BaseModel implements VisitableToSDK {
      */
     public static List<Survey> getAllUncompletedUnsentSurveys() {
         return new Select().from(Survey.class)
-                .where(Condition.column(Survey$Table.STATUS).eq(Constants.SURVEY_COMPLETED))
-                .or(Condition.column(Survey$Table.STATUS).eq(Constants.SURVEY_SENT))
+                .where(Condition.column(Survey$Table.STATUS).isNot(Constants.SURVEY_COMPLETED))
+                .or(Condition.column(Survey$Table.STATUS).isNot(Constants.SURVEY_SENT))
+                .or(Condition.column(Survey$Table.STATUS).isNot(Constants.SURVEY_HIDE))
                 .orderBy(Survey$Table.EVENTDATE)
                 .orderBy(Survey$Table.ID_ORG_UNIT).queryList();
     }
-
+    /**
+     * Returns the last surveys (by date) with status Completed or sent
+     * @return
+     */
+    public static List<Survey> getAllCompletedUnsentSurveys() {
+        return new Select().from(Survey.class)
+                .where(Condition.column(Survey$Table.STATUS).is(Constants.SURVEY_COMPLETED))
+                .or(Condition.column(Survey$Table.STATUS).isNot(Constants.SURVEY_SENT))
+                .or(Condition.column(Survey$Table.STATUS).isNot(Constants.SURVEY_HIDE))
+                .orderBy(Survey$Table.EVENTDATE)
+                .orderBy(Survey$Table.ID_ORG_UNIT).queryList();
+    }
+    /**
+     * Returns all the surveys with status put to "Sent" or completed
+     * @return
+     */
+    public static List<Survey> getAllSentOrCompletedSurveys() {
+        return new Select().from(Survey.class)
+                .where(Condition.column(Survey$Table.STATUS).eq(Constants.SURVEY_SENT))
+                .or(Condition.column(Survey$Table.STATUS).eq(Constants.SURVEY_COMPLETED))
+                .orderBy(Survey$Table.EVENTDATE)
+                .orderBy(Survey$Table.ID_ORG_UNIT).queryList();
+    }
     @Override
     public void accept(IConvertToSDKVisitor IConvertToSDKVisitor) throws Exception{
         IConvertToSDKVisitor.visit(this);

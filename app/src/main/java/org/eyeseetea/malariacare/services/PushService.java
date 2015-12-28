@@ -28,6 +28,7 @@ import android.util.Log;
 
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.model.Survey;
+import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.network.PushClient;
 import org.eyeseetea.malariacare.network.PushResult;
@@ -92,28 +93,36 @@ public class PushService extends IntentService {
 
         if(surveys!=null && !surveys.isEmpty()){
             for(Survey survey : surveys){
-                SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-                String user=sharedPreferences.getString(getString(R.string.dhis_user), "");
-                String password=sharedPreferences.getString(getString(R.string.dhis_password),"");
-                PushClient pushClient=new PushClient(survey, this.getApplicationContext(),user,password);
-
-                //Push  data
-
-                PushResult result = pushClient.pushBackground();
-                if(result.isSuccessful()){
-                    Log.d(TAG, "Estado del push: OK");
-
-
-                    //Reload data using service
-                    Intent surveysIntent=new Intent(this, SurveyService.class);
-                    surveysIntent.putExtra(SurveyService.SERVICE_METHOD, SurveyService.RELOAD_DASHBOARD_ACTION);
-                    this.startService(surveysIntent);
+                if(PreferencesState.isPictureQuestion()){
+                 sendPush(survey);
                 }else{
-                    Log.d(TAG, "Estado del push: ERROR");
+                    if(survey.isCompleted()){
+                        sendPush(survey);
+                    }
                 }
             }
         }
+    }
 
+    private void sendPush (Survey survey) {
+            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+    String user=sharedPreferences.getString(getString(R.string.dhis_user), "");
+    String password=sharedPreferences.getString(getString(R.string.dhis_password),"");
+    PushClient pushClient=new PushClient(survey, this.getApplicationContext(),user,password);
+
+    //Push  data
+    PushResult result = pushClient.pushBackground();
+    if(result.isSuccessful()){
+        Log.d(TAG, "Estado del push: OK");
+
+
+        //Reload data using service
+        Intent surveysIntent=new Intent(this, SurveyService.class);
+        surveysIntent.putExtra(SurveyService.SERVICE_METHOD, SurveyService.RELOAD_DASHBOARD_ACTION);
+        this.startService(surveysIntent);
+    }else{
+        Log.d(TAG, "Estado del push: ERROR");
+    }
     }
 
 }
