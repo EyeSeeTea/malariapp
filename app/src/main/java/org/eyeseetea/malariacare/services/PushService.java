@@ -93,12 +93,8 @@ public class PushService extends IntentService {
 
         if(surveys!=null && !surveys.isEmpty()){
             for(Survey survey : surveys){
-                if(PreferencesState.isPictureQuestion()){
-                 sendPush(survey);
-                }else{
-                    if(survey.isCompleted()){
-                        sendPush(survey);
-                    }
+                if(survey.isCompleted()){
+                    sendPush(survey);
                 }
             }
         }

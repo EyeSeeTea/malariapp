@@ -223,57 +223,6 @@ public class PrepareData {
         return values;
     }
 
-
-    /**
-     * Pull the current description and adds new closed organization description.
-     *
-     * @return new description.
-     * @url url for pull the current description
-     */
-    public JSONObject prepareClosingDescriptionValue(String url, String actualDescription) throws Exception {
-        String dateFormatted = Utils.getClosingDateString("dd-MM-yyyy");
-        String dateTimestamp = Utils.getClosingDateTimestamp(Utils.getClosingDateString("dd-MM-yyyy")).getTime() + "";
-        String description = String.format(DHIS_PATCH_DESCRIPTIONCLOSED_DATE, dateTimestamp, dateFormatted);
-        StringBuilder sb = new StringBuilder();
-        sb.append(actualDescription);
-        sb.append("");//next line
-        sb.append("");//next line
-        sb.append(description);
-        description = sb.toString();
-        sb = null;
-        JSONObject elementObject = new JSONObject();
-        elementObject.put(TAG_DESCRIPTIONCLOSEDATA, description);
-        Log.d(TAG, "closingDateURL:Description:" + description);
-        return elementObject;
-    }
-
-    /**
-     * Prepare the closing value.
-     *
-     * @return Closing value as Json.
-     */
-    public JSONObject prepareClosingDateValue() throws Exception {
-        String dateFormatted = Utils.getClosingDateString("yyyy-MM-dd");
-        JSONObject elementObject = new JSONObject();
-        elementObject.put(TAG_CLOSEDATA, dateFormatted);
-        Log.d("closingDateURL", "closingDateURL:EndDate:" + dateFormatted);
-        return elementObject;
-    }
-
-    /**
-     * Prepare the closing value.
-     *
-     * @return Closing value as Json.
-     */
-    public JSONObject prepareTodayDateValue() throws Exception {
-        String dateFormatted = Utils.geTodayDataString("yyyy-MM-dd");
-        JSONObject elementObject = new JSONObject();
-        elementObject.put(TAG_CLOSEDATA, dateFormatted);
-        Log.d("closingDateURL", "closingDateURL:EndDate:" + dateFormatted);
-        return elementObject;
-    }
-
-
     /**
      * Add a dataElement per value (answer)
      *

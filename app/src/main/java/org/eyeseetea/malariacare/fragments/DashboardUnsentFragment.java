@@ -254,39 +254,6 @@ public class DashboardUnsentFragment extends ListFragment {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
 
-
-                new AlertDialog.Builder(getActivity())
-                        .setTitle(R.string.dialog_title_push)
-                        .setMessage(R.string.dialog_info_push_confirm)
-                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface arg0, int arg1) {
-                                final Survey survey = (Survey) adapter.getItem(position - 1);
-
-                                SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext());
-                                String user = sharedPreferences.getString(getActivity().getApplicationContext().getResources().getString(R.string.dhis_user), "");
-                                String password = sharedPreferences.getString(getActivity().getApplicationContext().getResources().getString(R.string.dhis_password), "");
-                                AsyncPush asyncPush = new AsyncPush(survey, user, password);
-                                asyncPush.execute((Void) null);
-                            }
-                        })
-                        .setNegativeButton(android.R.string.no, null).create().show();
-
-
-                return true;
-            }
-        });
-
-
-        setListShown(false);
-    }
-    /**
-     * Initializes the listview component, adding a listener for swiping right
-     */
-    private void initMalariaListView(ListView listView){
-        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
-
                 new AlertDialog.Builder(getActivity())
                         .setTitle(getActivity().getString(R.string.dialog_title_send_preview))
                         .setMessage(getActivity().getString(R.string.dialog_content_send_preview))
