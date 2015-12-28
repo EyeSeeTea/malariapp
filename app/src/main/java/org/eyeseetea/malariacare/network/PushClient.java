@@ -64,36 +64,12 @@ public class PushClient {
     private static String DHIS_PUSH_API="/api/events";
 
     private static String DHIS_SERVER ="https://www.psi-mis.org";
-    private static final String DHIS_PULL_PROGRAM="/api/programs/";
-    private static final String DHIS_PULL_ORG_UNIT_API ="/api/organisationUnits.json?paging=false&fields=id,closedDate&filter=code:eq:%s&filter:programs:id:eq:%s";
-    private static final String DHIS_PULL_ORG_UNITS_API=".json?fields=organisationUnits";
-    private static final String DHIS_EXIST_PROGRAM=".json?fields=id";
-    private static final String DHIS_PATCH_URL_CLOSED_DATE ="/api/organisationUnits/%s/closedDate";
-    private static final String DHIS_PATCH_URL_DESCRIPTIONCLOSED_DATE="/api/organisationUnits/%s/description";
-
-    //The boolean BANNED and INVALID_SERVER control if the org unit is banned or the server is invalid
-    private static Boolean BANNED=false;
-    private static Boolean INVALID_SERVER=false;
-
-    //The strings DHIS_INVALID_URL DHIS_UNEXISTENT_ORG_UNIT stored the last bad url and org unit.
-    //They are used as a control to avoid requests to the server if no new values ​​for the url or to the organization.
-    private static String DHIS_INVALID_URL="";
-    private static String DHIS_UNEXISTENT_ORG_UNIT=null;
 
     public static String DHIS_UID_PROGRAM="";
 
     public static String DHIS_ORG_NAME ="";
     private static String DHIS_ORG_UID ="";
 
-
-    private static final String TAG_ORGANISATIONUNIT="organisationUnits";
-    private static final String TAG_ID = "id";
-
-
-    private static final String TAG_CLOSEDATA="closedDate";
-
-    private static int DHIS_LIMIT_SENT_SURVEYS_IN_ONE_HOUR=30;
-    private static int DHIS_LIMIT_HOURS=1;
 
 
     public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
@@ -158,18 +134,6 @@ public class PushClient {
         }
         return  pushResult;
     }
-    public void prepareSurveyCompletionDate(){
-        if(!this.survey.isSent()) {
-            this.survey.setCompletionDate(new Date());
-            this.survey.save();
-        }
-    }
-
-    public void updateSurveyState(){
-        //Change status and save mainScore
-        this.survey.setStatus(Constants.SURVEY_SENT);
-        this.survey.saveMainScore();
-    }
 
     /**
      * Pushes data to DHIS Server
@@ -223,27 +187,6 @@ public class PushClient {
             return false;
         return true;
     }
-    /**
-     * This method check the org_unit not is invalid, and is not banned, and later check if the server is valid.
-     * @return return true if all is correct.
-     */
-    public boolean isValidOrgUnit() {
-        boolean result=false;
-        if(DHIS_UNEXISTENT_ORG_UNIT!=null) {
-            if (!DHIS_ORG_NAME.equals(""))
-                if (!(DHIS_UNEXISTENT_ORG_UNIT.equals(DHIS_ORG_NAME)))
-                    if (!BANNED)
-                        if (!INVALID_SERVER)
-                            result = true;
-        }
-        else if(!DHIS_ORG_NAME.equals(""))
-            if(!BANNED)
-                if(!INVALID_SERVER)
-                    result= true;
-
-        return result;
-    }
-
 
     /**
      * Call to DHIS Server
