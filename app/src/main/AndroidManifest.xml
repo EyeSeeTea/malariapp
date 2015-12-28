@@ -7,6 +7,7 @@
 
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission
         android:name="android.permission.GET_ACCOUNTS"
         tools:node="remove" />
@@ -36,6 +37,10 @@
         <service
             android:name=".services.SurveyService"
             android:exported="false" />
+
+        <service
+            android:name=".services.PushService"
+            android:exported="false"/>
 
         <activity
             android:name=".LoginActivity"
@@ -98,6 +103,7 @@
                 android:value=".DashboardActivity" />
         </activity>
 
+        <receiver android:name="org.eyeseetea.malariacare.receivers.AlarmPushReceiver"></receiver>
         <meta-data
             android:name="nextClassName"
             android:value="org.eyeseetea.malariacare.DashboardActivity" />

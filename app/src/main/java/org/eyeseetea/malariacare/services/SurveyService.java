@@ -56,6 +56,10 @@ public class SurveyService extends IntentService {
      * Name of 'list unsent' action
      */
     public static final String ALL_UNCOMPLETED_UNSENT_SURVEYS_ACTION ="org.eyeseetea.malariacare.services.SurveyService.ALL_UNCOMPLETED_UNSENT_SURVEYS_ACTION";
+    /**
+     * Name of 'list completed (and unsent)' action
+     */
+    public static final String ALL_COMPLETED_SURVEYS_ACTION ="org.eyeseetea.malariacare.services.SurveyService.ALL_COMPLETED_SURVEYS_ACTION";
 
     /**
      * Name of 'list uncompleted' action
@@ -138,6 +142,9 @@ public class SurveyService extends IntentService {
             case ALL_SENT_OR_COMPLETED_SURVEYS_ACTION:
                 getAllSentOrCompletedSurveys();
                 break;
+            case ALL_COMPLETED_SURVEYS_ACTION:
+                getAllCompletedSurveys();
+                break;
             case RELOAD_DASHBOARD_ACTION:
                 reloadDashboard();
                 break;
@@ -182,11 +189,14 @@ public class SurveyService extends IntentService {
                 .orderBy(Survey$Table.EVENTDATE)
                 .orderBy(Survey$Table.ID_ORG_UNIT).queryList();
 
+        List<Survey> completedUnsentSurveys=new ArrayList<>();
         List<Survey> unsentSurveys=new ArrayList<>();
         List<Survey> sentSurveys=new ArrayList<>();
         for(Survey survey:surveys){
             if(survey.isSent() || survey.isCompleted()){
                 sentSurveys.add(survey);
+                if(survey.isCompleted())
+                    completedUnsentSurveys.add(survey);
             }else{
                 unsentSurveys.add(survey);
                 survey.getAnsweredQuestionRatio();
@@ -195,10 +205,12 @@ public class SurveyService extends IntentService {
 
         //Since intents does NOT admit NON serializable as values we use Session instead
         Session.putServiceValue(ALL_UNCOMPLETED_UNSENT_SURVEYS_ACTION, unsentSurveys);
+        Session.putServiceValue(ALL_COMPLETED_SURVEYS_ACTION, completedUnsentSurveys);
         Session.putServiceValue(ALL_SENT_OR_COMPLETED_SURVEYS_ACTION, sentSurveys);
 
         //Returning result to anyone listening
         LocalBroadcastManager.getInstance(this).sendBroadcast(new Intent(ALL_UNCOMPLETED_UNSENT_SURVEYS_ACTION));
+        LocalBroadcastManager.getInstance(this).sendBroadcast(new Intent(ALL_COMPLETED_SURVEYS_ACTION));
         LocalBroadcastManager.getInstance(this).sendBroadcast(new Intent(ALL_SENT_OR_COMPLETED_SURVEYS_ACTION));
     }
 
@@ -265,10 +277,10 @@ public class SurveyService extends IntentService {
         }
 
         //Since intents does NOT admit NON serializable as values we use Session instead
-        Session.putServiceValue(ALL_SENT_OR_COMPLETED_SURVEYS_ACTION,surveys);
+        Session.putServiceValue(ALL_COMPLETED_SURVEYS_ACTION,surveys);
 
         //Returning result to anyone listening
-        Intent resultIntent= new Intent(ALL_SENT_OR_COMPLETED_SURVEYS_ACTION);
+        Intent resultIntent= new Intent(ALL_COMPLETED_SURVEYS_ACTION);
         LocalBroadcastManager.getInstance(this).sendBroadcast(resultIntent);
     }
 
@@ -292,11 +304,10 @@ public class SurveyService extends IntentService {
         ScoreRegister.registerTabScores(tabs);
 
         //Since intents does NOT admit NON serializable as values we use Session instead
-        Session.putServiceValue(PREPARE_SURVEY_ACTION_COMPOSITE_SCORES,compositeScores);
-        Session.putServiceValue(PREPARE_SURVEY_ACTION_TABS,tabs);
-
+        Session.putServiceValue(PREPARE_SURVEY_ACTION_COMPOSITE_SCORES, compositeScores);
+        Session.putServiceValue(PREPARE_SURVEY_ACTION_TABS, tabs);
         //Returning result to anyone listening
-        Intent resultIntent= new Intent(PREPARE_SURVEY_ACTION);
+        Intent resultIntent = new Intent(PREPARE_SURVEY_ACTION);
         LocalBroadcastManager.getInstance(this).sendBroadcast(resultIntent);
     }
 }
