@@ -21,8 +21,11 @@ package org.eyeseetea.malariacare.layout.adapters.general;
 
 import android.content.Context;
 
+import com.squareup.okhttp.internal.Util;
+
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.model.Tab;
+import org.eyeseetea.malariacare.utils.Utils;
 import org.eyeseetea.malariacare.views.CustomTextView;
 
 import java.util.List;
@@ -39,5 +42,4 @@ public class TabArrayAdapter extends AddlArrayAdapter<Tab> {
     @Override public void drawText(CustomTextView customTextView, Tab tab) {
         customTextView.setText(tab.getName());
     }
-
 }

@@ -39,4 +39,5 @@ public class OptionArrayAdapter extends AddlArrayAdapter<Option> {
         customTextView.setText(option.getName());
     }
 
+
 }

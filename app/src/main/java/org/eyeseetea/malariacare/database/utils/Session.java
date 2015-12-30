@@ -28,6 +28,7 @@ import com.raizlabs.android.dbflow.structure.BaseModel;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.model.User;
 import org.eyeseetea.malariacare.layout.adapters.dashboard.IDashboardAdapter;
+import org.eyeseetea.malariacare.phonemetadata.PhoneMetaData;
 import org.hisp.dhis.android.sdk.controllers.DhisService;
 import org.hisp.dhis.android.sdk.network.Credentials;
 
@@ -60,6 +61,11 @@ public class Session {
     private static Location location;
 
     /**
+     * The current phone metadata
+     */
+    private static PhoneMetaData phoneMetaData;
+
+    /**
      * Map that holds non serializable results from services
      */
     private static Map<String,Object> serviceValues = new HashMap<>();
@@ -70,6 +76,9 @@ public class Session {
     private static IDashboardAdapter adapterUnsent, adapterSent;
 
     public static ListView listViewUnsent, listViewSent;
+
+    //FIXME Probably no longer required
+    private static IDashboardAdapter adapterUncompleted, adapterCompleted;
 
     /**
      * Cache containing the list of ordered items that compounds each tab
@@ -164,4 +173,26 @@ public class Session {
         Session.location = location;
     }
 
+
+    public static IDashboardAdapter getAdapterUncompleted() {
+        return adapterUncompleted;
+    }
+
+    public static void setAdapterUncompleted(IDashboardAdapter adapterUncompleted) {
+        Session.adapterUncompleted = adapterUncompleted;
+    }
+
+    public static IDashboardAdapter getAdapterCompleted() {
+        return adapterCompleted;
+    }
+
+    public static void setAdapterCompleted(IDashboardAdapter adapterCompleted) {
+        Session.adapterCompleted = adapterCompleted;
+    }
+
+    public static PhoneMetaData getPhoneMetaData(){return phoneMetaData;}
+
+    public static void setPhoneMetaData(PhoneMetaData phoneMetaData) {
+        Session.phoneMetaData = phoneMetaData;
+    }
 }

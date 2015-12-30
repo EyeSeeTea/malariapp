@@ -281,6 +281,8 @@
     <string name="progress_pull_surveys">Loading surveys ...</string>
     <string name="progress_pull_done">Done</string>
     <item name="pull_metadata" type="string" translatable="false">pull_metadata</item>
+    <item name="pull_csv" type="string" translatable="false">pull_csv</item>
+
 
     <string name="dialog_push_error">Error while trying to push data to dhis server</string>
     <string name="dialog_push_success">Survey successfully pushed to dhis server</string>
@@ -289,5 +291,83 @@
     <string name="progress_push_updating_survey">Updating pushed survey data...</string>
     <string name="progress_push_no_survey">No survey found for pushing</string>
     <string name="dialog_push_before_pull_success">Surveys successfully pushed to dhis server, starting to pull metadata</string>
+
+    <!--Pictureapp-->
+    <string name="picturebuild" translatable="false">picturebuild</string>
+
+    <string name="default_org_unit"></string>
+    <!-- Surveys -->
+    <string name="survey_info_exit_delete">The survey in progress will be deleted</string>
+    <!-- dynamic -->
+    <string name="dynamic_error_phone_format">Invalid format for phone number</string>
+    <!-- survey -->
+    <string name="survey_title_completed">Survey completed</string>
+    <string name="survey_info_completed">The survey has been successfully completed</string>
+    <!-- # general -->
+    <string name="review">Review</string>
+    <string name="symbolPlus" translatable="false">+</string>
+    <string name="symbolMinus" translatable="false">-</string>
+    <string name="symbolCross" translatable="false">X</string>
+    <string name="rdtPositive" translatable="false">Positive</string>
+    <string name="rdtNegative" translatable="false">Negative</string>
+    <string name="rdtNotTested" translatable="false">Not Tested</string>
+    <string name="rdtCancel" translatable="false">Cancel</string>
+
+    <string name="assessment_title_rdt">RDT</string>
+    <string name="assessment_title_info">Info</string>
+
+    <!-- # dialogs -->
+    <string name="dialog_title_delete_surveys">Are you sure that you want to remove all sent surveys?</string>
+    <!-- exceptions -->
+    <string name="exception_org_unit_not_valid">Outlet Code is not active for program. Contact PSI at 123456789</string>
+    <string name="exception_org_unit_banned">Outlet is closed or blocked. Contact PSI at 123456789</string>
+
+    <!-- dynamic -->
+    <string name="dynamic_required_field">This field is required</string>
+    <string name="dynamic_error_age">Invalid age</string>
+
+    <string name="dialog_title_push">Pushing data</string>
+    <string name="dialog_info_push_confirm">Are you sure? You can not undo this action</string>
+    <string name="dialog_error_push_no_org_unit">No Organization Unit code has been set. Please check settings to push.</string>
+    <string name="dialog_error_push_no_uid">No UID found in server for code </string>
+
+    <!-- Preference variable names -->
+    <item name="org_unit" type="string" translatable="false">org_unit</item>
+    <string name="remove_sent_surveys" translatable="false">remove_sent_surveys</string>
+    <string name="pref_data">Data</string>
+    <string name="pref_server">Server</string>
+    <string name="pref_visual">Visual</string>
+    <string name="assessment_title_date_completion">Date</string>
+
+    <!-- numbers: hardcoded to khmer -->
+    <string name="number_0">0</string>
+    <string name="number_1">1</string>
+    <string name="number_2">2</string>
+    <string name="number_3">3</string>
+    <string name="number_4">4</string>
+    <string name="number_5">5</string>
+    <string name="number_6">6</string>
+    <string name="number_7">7</string>
+    <string name="number_8">8</string>
+    <string name="number_9">9</string>
+
+    <!-- async push -->
+    <string name="PUSH_PERIOD" translatable="false">10</string>
+
+    <!-- gps location -->
+    <string name="GPS_PROVIDER_DEFAULT" translatable="false">default</string>
+    <string name="GPS_LATITUDE_DEFAULT" translatable="false">10.0</string>
+    <string name="GPS_LONGITUDE_DEFAULT" translatable="false">103.0</string>
+
+
+    <!-- PhoneMetadata UIDS -->
+    <string name="PHONENUMBER_UID" translatable="false">UkGuMlmNtJH</string>
+    <string name="PHONEIMEI_UID" translatable="false">RuNZUhiAmlv</string>
+    <string name="PHONESERIAL_UID" translatable="false">zZ1LFI0FplS</string>
+
+    <!-- UID program-->
+    <string name="UID_PROGRAM" translatable="false">IrppF3qERB7</string>
+    <string name="DHIS_DEFAULT_SERVER" translatable="false">https://www.psi-mis.org</string>
+    <string name="is_populate" translatable="false">is_populate</string>
 
 </resources>

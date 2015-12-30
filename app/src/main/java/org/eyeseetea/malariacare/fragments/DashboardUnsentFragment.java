@@ -26,14 +26,17 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 
@@ -42,12 +45,14 @@ import org.eyeseetea.malariacare.ProgressActivity;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.SurveyActivity;
 import org.eyeseetea.malariacare.database.model.Survey;
+import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.layout.adapters.dashboard.AssessmentUnsentAdapter;
 import org.eyeseetea.malariacare.layout.adapters.dashboard.IDashboardAdapter;
 import org.eyeseetea.malariacare.layout.listeners.SwipeDismissListViewTouchListener;
 import org.eyeseetea.malariacare.network.PushClient;
 import org.eyeseetea.malariacare.network.PushResult;
+import org.eyeseetea.malariacare.receivers.AlarmPushReceiver;
 import org.eyeseetea.malariacare.services.SurveyService;
 import org.eyeseetea.malariacare.views.CustomTextView;
 
@@ -65,6 +70,7 @@ public class DashboardUnsentFragment extends ListFragment {
     private List<Survey> surveys;
     protected IDashboardAdapter adapter;
     private static int index = 0;
+    private AlarmPushReceiver alarmPush;
 
     public DashboardUnsentFragment(){
         this.adapter = Session.getAdapterUnsent();
@@ -90,6 +96,7 @@ public class DashboardUnsentFragment extends ListFragment {
     @Override
     public void onCreate(Bundle savedInstanceState){
         Log.d(TAG, "onCreate");
+        alarmPush = new AlarmPushReceiver();
         super.onCreate(savedInstanceState);
     }
 
@@ -109,7 +116,6 @@ public class DashboardUnsentFragment extends ListFragment {
         super.onActivityCreated(savedInstanceState);
         initAdapter();
         initListView();
-
     }
 
     @Override
@@ -152,6 +158,7 @@ public class DashboardUnsentFragment extends ListFragment {
         Session.setSurvey(surveys.get(position - 1));
         //Go to SurveyActivity
         ((DashboardActivity) getActivity()).go(SurveyActivity.class);
+        if(!PreferencesState.isPictureQuestion())
         getActivity().finish();
     }
 
@@ -189,11 +196,7 @@ public class DashboardUnsentFragment extends ListFragment {
     private boolean isPositionFooter(int position){
         return position==(this.surveys.size()+1);
     }
-
-    /**
-     * Initializes the listview component, adding a listener for swiping right
-     */
-    private void initListView(){
+    private void initListView() {
         LayoutInflater inflater = LayoutInflater.from(getActivity());
         View header = inflater.inflate(this.adapter.getHeaderLayout(), null, false);
         View footer = inflater.inflate(this.adapter.getFooterLayout(), null, false);
@@ -243,6 +246,40 @@ public class DashboardUnsentFragment extends ListFragment {
 
         listView.setLongClickable(true);
 
+        //The picture survey had a diferent dialogs and result
+        if(PreferencesState.isPictureQuestion())
+            initPictureListView(listView);
+        else
+            initMalariaListView(listView);
+    }
+    private void initPictureListView(ListView listView){
+
+        listView.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void  onItemClick(AdapterView<?> parent, View view, final int position, long id) {
+
+
+                new AlertDialog.Builder(getActivity())
+                        .setTitle(R.string.dialog_title_push)
+                        .setMessage(R.string.dialog_info_push_confirm)
+                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface arg0, int arg1) {
+                                final Survey survey = (Survey) adapter.getItem(position - 1);
+                                //Click --> Contextual menu with options (Edit / Mark as complete / Delete)
+
+                            }
+                        })
+                        .setNegativeButton(android.R.string.no, null).create().show();
+            }
+        });
+
+
+        setListShown(false);
+    }
+    /**
+     * Initializes the listview component, adding a listener for swiping right
+     */
+    private void initMalariaListView(ListView listView){
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
@@ -258,14 +295,14 @@ public class DashboardUnsentFragment extends ListFragment {
                                         .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                                             public void onClick(DialogInterface arg0, int arg1) {
                                                 // We launch the login system, to authorize the push
-                                            launchPush(position);
+                                                launchPush(position);
                                             }
                                         })
                                         .setNegativeButton(android.R.string.no, null).create().show();
                             }
                         })
                         .setNegativeButton(android.R.string.cancel, null)
-                .create().show();
+                        .create().show();
 
 
                 return true;
@@ -298,10 +335,24 @@ public class DashboardUnsentFragment extends ListFragment {
 
         if(surveyReceiver==null){
             surveyReceiver=new SurveyReceiver();
-            LocalBroadcastManager.getInstance(getActivity()).registerReceiver(surveyReceiver, new IntentFilter(SurveyService.ALL_UNCOMPLETED_UNSENT_SURVEYS_ACTION));
+            if(PreferencesState.isPictureQuestion()) {
+                LocalBroadcastManager.getInstance(getActivity()).registerReceiver(surveyReceiver, new IntentFilter(SurveyService.ALL_UNCOMPLETED_UNSENT_SURVEYS_ACTION));
+            }
+            else{
+                LocalBroadcastManager.getInstance(getActivity()).registerReceiver(surveyReceiver, new IntentFilter(SurveyService.ALL_UNCOMPLETED_UNSENT_SURVEYS_ACTION));
+                LocalBroadcastManager.getInstance(getActivity()).registerReceiver(surveyReceiver, new IntentFilter(SurveyService.ALL_COMPLETED_SURVEYS_ACTION));
+            }
         }
     }
 
+    public void manageSurveysAlarm(List<Survey> newListSurveys){
+        Log.d(TAG, "setSurveysAlarm (Thread: " + Thread.currentThread().getId() + "): " + newListSurveys.size());
+        //Fixme think other way to cancel the setPushAlarm in Malariaapp
+        if(PreferencesState.isPictureQuestion()) {
+            Survey.removeInProgress();//This is for remove the incompleted surveys before push.
+        }
+            alarmPush.setPushAlarm(getActivity());
+    }
 
     /**
      * Unregisters the survey receiver.
@@ -317,7 +368,27 @@ public class DashboardUnsentFragment extends ListFragment {
     public void reloadUncompletedUnsentSurveys(){
         List<Survey> surveysUncompletedUnsentFromService = (List<Survey>) Session.popServiceValue(SurveyService.ALL_UNCOMPLETED_UNSENT_SURVEYS_ACTION);
         reloadSurveys(surveysUncompletedUnsentFromService);
+        if(PreferencesState.isPictureQuestion()) {
+            if (surveysUncompletedUnsentFromService.size() > 0) {
+                manageSurveysAlarm(surveysUncompletedUnsentFromService);
+            } else
+                alarmPush.cancelPushAlarm(getActivity().getApplicationContext());
+        }
+        else {
+            //set alarm if is malariaapp question
+            reloadCompletedUnsentSurveys();
+        }
     }
+    public void reloadCompletedUnsentSurveys(){
+        List<Survey> surveysCompletedFromService = (List<Survey>) Session.popServiceValue(SurveyService.ALL_COMPLETED_SURVEYS_ACTION);
+        if(surveysCompletedFromService!=null) {
+            if (surveysCompletedFromService.size() > 0) {
+                manageSurveysAlarm(surveysCompletedFromService);
+            } else
+                alarmPush.cancelPushAlarm(getActivity().getApplicationContext());
+        }
+    }
+
     public void reloadSurveys(List<Survey> newListSurveys){
         Log.d(TAG, "reloadSurveys (Thread: " + Thread.currentThread().getId() + "): " + newListSurveys.size());
         this.surveys.clear();
@@ -339,58 +410,11 @@ public class DashboardUnsentFragment extends ListFragment {
             if(SurveyService.ALL_UNCOMPLETED_UNSENT_SURVEYS_ACTION.equals(intent.getAction())) {
                 reloadUncompletedUnsentSurveys();
             }
-        }
-    }
-
-    public class AsyncPush extends AsyncTask<Void, Integer, PushResult> {
-
-        private Survey survey;
-        private String user;
-        private String password;
-
-
-        public AsyncPush(Survey survey, String user, String password) {
-            this.survey = survey;
-            this.user = user;
-            this.password = password;
-        }
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            //spinner
-            setListShown(false);
-        }
-
-        @Override
-        protected PushResult doInBackground(Void... params) {
-            PushClient pushClient=new PushClient(survey, getActivity(), user, password);
-            return pushClient.push();
-        }
-
-        @Override
-        protected void onPostExecute(PushResult pushResult) {
-            super.onPostExecute(pushResult);
-            showResponse(pushResult);
-        }
-
-        /**
-         * Shows the proper response message
-         * @param pushResult
-         */
-        private void showResponse(PushResult pushResult){
-            String msg="";
-            if(pushResult.isSuccessful()){
-                msg=pushResult.getLocalizedMessage(getActivity());
-            }else{
-                msg=pushResult.getExceptionLocalizedMessage(getActivity());
+            //Listening only intents from this method
+            //if the state is completed, the state is not sent.
+            if(SurveyService.ALL_COMPLETED_SURVEYS_ACTION.equals(intent.getAction())) {
+                reloadCompletedUnsentSurveys();
             }
-
-            new AlertDialog.Builder(getActivity())
-                    .setTitle(getActivity().getString(R.string.dialog_title_push_response))
-                    .setMessage(msg)
-                    .setNeutralButton(android.R.string.yes,null).create().show();
-
         }
     }
 

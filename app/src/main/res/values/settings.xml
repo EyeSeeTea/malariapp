@@ -20,5 +20,6 @@
 
 <resources>
     <!--  Flag that indicates that metadata is taken from a DHIS server-->
-    <bool name="pullFromServer">true</bool>
+    <bool name="pullFromServer">false</bool>
+    <bool name="picture">true</bool>
 </resources>

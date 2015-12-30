@@ -193,11 +193,14 @@ public class DashboardActivity extends BaseActivity {
     }
 
     private void setActionbarTitle() {
+        String user="";
+        if(Session.getUser()!=null && Session.getUser().getName()!=null && !Session.getUser().getName().equals("null"))
+            user =Session.getUser().getName();
         android.support.v7.app.ActionBar actionBar =  getSupportActionBar();
         actionBar.setDisplayShowCustomEnabled(true);
         actionBar.setCustomView(R.layout.action_bar_title_layout);
         ((TextView) findViewById(R.id.action_bar_title)).setText(getString(R.string.app_name));
-        ((TextView) findViewById(R.id.action_bar_subtitle)).setText(Session.getUser().getName());
+        ((TextView) findViewById(R.id.action_bar_subtitle)).setText(user);
     }
 
     @Override

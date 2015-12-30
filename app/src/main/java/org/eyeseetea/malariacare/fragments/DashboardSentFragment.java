@@ -37,14 +37,14 @@ import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.Spinner;
 
-import com.raizlabs.android.dbflow.sql.language.Select;
-
 import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.FeedbackActivity;
 import org.eyeseetea.malariacare.R;
+import org.eyeseetea.malariacare.SurveyActivity;
 import org.eyeseetea.malariacare.database.model.OrgUnit;
 import org.eyeseetea.malariacare.database.model.Program;
 import org.eyeseetea.malariacare.database.model.Survey;
+import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.layout.adapters.dashboard.AssessmentSentAdapter;
 import org.eyeseetea.malariacare.layout.adapters.dashboard.IDashboardAdapter;
@@ -249,12 +249,15 @@ public class DashboardSentFragment extends ListFragment {
         if(!isPositionASurvey(position)){
             return;
         }
-
         //Put selected survey in session
         Session.setSurvey(surveys.get(position - 1));
         // Go to SurveyActivity
-        ((DashboardActivity) getActivity()).go(FeedbackActivity.class);
-        getActivity().finish();
+        if(PreferencesState.isPictureQuestion()){//Go to SurveyActivity
+            ((DashboardActivity) getActivity()).go(SurveyActivity.class);
+        }else {
+            ((DashboardActivity) getActivity()).go(FeedbackActivity.class);
+            getActivity().finish();
+        }
     }
 
     @Override

@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="0dip"
+        android:layout_height="wrap_content"
+        android:padding="5dip"
+        android:id="@+id/linearLayout"
+        android:layout_weight="0.4">
+
+        <org.eyeseetea.malariacare.views.CustomTextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:id="@+id/reportingQuestion"
+            android:padding="5dip"
+            app:tDimension="@string/font_size_level1"
+            app:tFontName="@string/medium_font_name" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="0dip"
+        android:layout_height="wrap_content"
+        android:id="@+id/registerContainer"
+        android:padding="5dip"
+        android:layout_gravity="center"
+        android:layout_weight="0.2">
+
+        <org.eyeseetea.malariacare.views.CustomEditText
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:id="@+id/register"
+                android:background="@drawable/background_textfield"
+                android:tag="listener"
+                app:tDimension="@string/font_size_level1"
+                app:tFontName="@string/medium_font_name" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="0dip"
+        android:layout_height="wrap_content"
+        android:id="@+id/monthlyReportContainer"
+        android:padding="5dip"
+        android:layout_gravity="center"
+        android:layout_weight="0.2">
+
+        <org.eyeseetea.malariacare.views.CustomEditText
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:id="@+id/monthlyReport"
+                android:background="@drawable/background_textfield"
+                android:tag="listener"
+                app:tDimension="@string/font_size_level1"
+                app:tFontName="@string/medium_font_name" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="0dip"
+        android:layout_height="wrap_content"
+        android:id="@+id/scoreContainer"
+        android:padding="5dip"
+        android:layout_gravity="center"
+        android:layout_weight="0.2">
+
+        <org.eyeseetea.malariacare.views.CustomTextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:id="@+id/scoreValue"
+            android:padding="5dip"
+            android:layout_gravity="center"
+            android:text="@string/number_zero"
+            android:gravity="center_horizontal"
+            app:tDimension="@string/font_size_level1"
+            app:tFontName="@string/medium_font_name" />
+    </LinearLayout>
+
+</LinearLayout>

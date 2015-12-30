@@ -43,6 +43,9 @@ public class Score extends BaseModel {
     long id_score;
 
     @Column
+    Float value;
+    
+    @Column
     Long id_survey;
     /**
      * Reference to the survey associated to this score (loaded lazily)
@@ -50,12 +53,23 @@ public class Score extends BaseModel {
     Survey survey;
 
     @Column
+    Long id_tab;
+    /**
+     * Reference to the tab associated to this score (loaded lazily)
+     */
+    Tab tab;
+    @Column
     String uid;
 
     @Column
     Float score;
 
     public Score() {
+    }
+    public Score(Float real, Tab tab, String uid) {
+        this.value = real;
+        this.setTab(tab);
+        this.uid = uid;
     }
 
     public Score(Survey survey, String uid, Float score) {
@@ -72,6 +86,35 @@ public class Score extends BaseModel {
         this.id_score = id_score;
     }
 
+    public Float getValue() {
+        return value;
+    }
+
+    public void setValue(Float real) {
+        this.value = real;
+    }
+
+    public Tab getTab() {
+        if(tab==null){
+            if(id_tab==null) return null;
+            tab = new Select()
+                    .from(Tab.class)
+                    .where(Condition.column(Tab$Table.ID_TAB)
+                            .is(id_tab)).querySingle();
+        }
+        return tab;
+    }
+
+    public void setTab(Tab tab) {
+        this.tab = tab;
+        this.id_tab = (tab!=null)?tab.getId_tab():null;
+    }
+
+    public void setTab(Long id_tab){
+        this.id_tab = id_tab;
+        this.tab = null;
+    }
+    
     public Survey getSurvey() {
         if(survey==null){
             if(id_survey==null) return null;
@@ -120,6 +163,9 @@ public class Score extends BaseModel {
         if (id_survey != null ? !id_survey.equals(score1.id_survey) : score1.id_survey != null)
             return false;
         if (uid != null ? !uid.equals(score1.uid) : score1.uid != null) return false;
+        if (id_tab != null ? !id_tab.equals(score1.id_tab) : score1.id_tab != null)
+            return false;
+        if (value != null ? !uid.equals(score1.value) : score1.value != null) return false;
         return !(score != null ? !score.equals(score1.score) : score1.score != null);
 
     }
@@ -129,6 +175,8 @@ public class Score extends BaseModel {
         int result = (int) (id_score ^ (id_score >>> 32));
         result = 31 * result + (id_survey != null ? id_survey.hashCode() : 0);
         result = 31 * result + (uid != null ? uid.hashCode() : 0);
+        result = 31 * result + (id_tab != null ? id_tab.hashCode() : 0);
+        result = 31 * result + (value != null ? value.hashCode() : 0);
         result = 31 * result + (score != null ? score.hashCode() : 0);
         return result;
     }

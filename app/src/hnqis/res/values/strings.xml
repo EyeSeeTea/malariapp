@@ -24,7 +24,7 @@
     <string name="app_name" translatable="false">HNQIS</string>
 
     <!-- default server url -->
-    <string name="login_info_dhis_default_server_url" translatable="false">https://hnqis.psi-mis.org</string>
+    <string name="login_info_dhis_default_server_url" translatable="false">https://hnqis-dev.psi-mis.org</string>
 
     <!-- Control Data Elements -->
     <string name="main_score" translatable="false">ggrkfoq6nxA</string>
@@ -33,6 +33,9 @@
     <string name="main_score_c" translatable="false">DBUwlPCO0Hd</string>
     <string name="forward_order" translatable="false">d1At6VgPNA6</string>
     <string name="forward_order_value" translatable="false">9999</string>
+
+    <!-- Phone MetaData Attribute -->
+    <string name="phone_metadata" translatable="false">RuNZUhiAmlv</string>
 
 
 </resources>

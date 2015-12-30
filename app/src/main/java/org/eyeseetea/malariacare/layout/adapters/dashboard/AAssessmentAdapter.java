@@ -20,6 +20,9 @@
 package org.eyeseetea.malariacare.layout.adapters.dashboard;
 
 import android.content.Context;
+import android.content.res.Resources;
+import android.graphics.Typeface;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,10 +33,12 @@ import com.raizlabs.android.dbflow.sql.language.Select;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.model.TabGroup;
+import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.SurveyAnsweredRatio;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 import org.eyeseetea.malariacare.views.CustomTextView;
 
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -50,9 +55,18 @@ public abstract class AAssessmentAdapter extends ADashboardAdapter implements ID
         this.items = items;
         this.context = context;
         this.lInflater = LayoutInflater.from(context);
-        this.headerLayout = R.layout.assessment_header;
-        this.recordLayout = R.layout.assessment_record;
-        this.footerLayout = R.layout.assessment_footer;
+
+        if(PreferencesState.isPictureQuestion()) {
+            this.headerLayout = R.layout.assessment_header_pictureapp;
+            this.recordLayout = R.layout.assessment_record_pictureapp;
+            this.footerLayout = R.layout.assessment_footer_pictureapp;
+        }
+        else
+        {
+            this.headerLayout = R.layout.assessment_header;
+            this.recordLayout = R.layout.assessment_record;
+            this.footerLayout = R.layout.assessment_footer;
+        }
         this.title = context.getString(R.string.assessment_title_header);
     }
 
@@ -65,59 +79,113 @@ public abstract class AAssessmentAdapter extends ADashboardAdapter implements ID
         // Get the row layout
         View rowView = this.lInflater.inflate(getRecordLayout(), parent, false);
         rowView.setPadding(paddingDp, paddingDp, paddingDp, paddingDp);
+        if(PreferencesState.isPictureQuestion()) {
+            //INFO
+            CustomTextView info;
 
-        // Org Unit Cell
-        CustomTextView facilityName = (CustomTextView) rowView.findViewById(R.id.facility);
-        CustomTextView surveyType = (CustomTextView) rowView.findViewById(R.id.survey_type);
-        CustomTextView sentDate = (CustomTextView) rowView.findViewById(R.id.sentDate);
-        CustomTextView sentScore = (CustomTextView) rowView.findViewById(R.id.score);
-        View sentLight = rowView.findViewById(R.id.survey_light);
+            //Completion Date
+            CustomTextView completionDate;
 
-        if (sentDate != null){
-            Date completionDate = survey.getCompletionDate();
-            SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy");
-            sentDate.setText(format.format(completionDate));
-            sentScore.setText(String.format("%.1f %%", survey.getMainScore()));
-            LayoutUtils.trafficView(context, survey.getMainScore(), sentLight);
-        } else {
-            //Status Cell
-            ((CustomTextView) rowView.findViewById(R.id.score)).setText(getStatus(survey));
-        }
-
-        // show facility name (or not) and write survey type name
-        if (!showNextFacilityName) {
-            facilityName.setVisibility(View.GONE);
-            facilityName.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, 0, 0f));
-            surveyType.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, 0, 1f));
-        } else {
-            facilityName.setText(survey.getOrgUnit().getName());
-            facilityName.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, 0, 0.5f));
-            surveyType.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, 0, 0.5f));
-        }
-
-        String surveyDescription = "- " + survey.getTabGroup().getProgram().getName();
-        surveyType.setText(surveyDescription);
-
-        // check whether the following item belongs to the same org unit (to group the data related
-        // to same org unit with the same background)
-        if (position < (this.items.size()-1)) {
-            if (this.items.get(position+1).getOrgUnit().equals((this.items.get(position)).getOrgUnit())){
-                // show background without border and tell the system that next survey belongs to the same org unit, so its name doesn't need to be shown
-                rowView.setBackgroundResource(LayoutUtils.calculateBackgroundsNoBorder(this.backIndex));
-                this.showNextFacilityName = false;
-            } else {
-                // show background with border and switch background for the next row
-                rowView.setBackgroundResource(LayoutUtils.calculateBackgrounds(this.backIndex));
-                this.backIndex++;
-                this.showNextFacilityName = true;
+            //RDT
+            CustomTextView rdt;
+            //Fixme
+            if(survey.isSent()) {
+                completionDate = (CustomTextView) rowView.findViewById(R.id.score);
+                rdt = (CustomTextView) rowView.findViewById(R.id.sentDate);
+                info = (CustomTextView) rowView.findViewById(R.id.facility);
             }
-        }  else {
-            this.showNextFacilityName = true;
-            //show background with border
-            rowView.setBackgroundResource(LayoutUtils.calculateBackgrounds(this.backIndex));
-        }
+            else{
+                completionDate = (CustomTextView) rowView.findViewById(R.id.completionDate);
+                rdt = (CustomTextView) rowView.findViewById(R.id.rdt);
+                info = (CustomTextView) rowView.findViewById(R.id.info);
+            }
+            if (survey.getCompletionDate() != null) {
+                //it show dd/mm/yy in europe, mm/dd/yy in america, etc.
+                DateFormat formatter = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT, Resources.getSystem().getConfiguration().locale);
 
-        return rowView;
+                completionDate.setText(formatter.format(survey.getCompletionDate()));
+            }
+
+            //Since there are three possible values first question (RDT):'Yes','No','Cancel'
+            //rdt.setText(survey.isRDT()?"+":"-");
+            String rdtValue = survey.getRDT();
+            String rdtSymbol = rdtValue;
+            if (rdtValue.equals(getContext().getResources().getString(R.string.rdtPositive))) {
+                rdtSymbol = getContext().getResources().getString(R.string.symbolPlus);
+            } else if (rdtValue.equals(getContext().getResources().getString(R.string.rdtNegative))) {
+                rdtSymbol = getContext().getResources().getString(R.string.symbolMinus);
+            } else if (rdtValue.equals(getContext().getResources().getString(R.string.rdtNotTested))) {
+                rdtSymbol = getContext().getResources().getString(R.string.symbolCross);
+            }
+            rdt.setText(rdtSymbol);
+
+            //Load a font which support Khmer character
+            Typeface tf = Typeface.createFromAsset(context.getAssets(), "fonts/" + "KhmerOS.ttf");
+            info.setTypeface(tf);
+            Log.d("SentSurveyInfo", completionDate.getText() + "-info-" + info.getText() + "-rdt-" + rdt.getText());
+            info.setText(survey.getValuesToString());
+
+            rowView.setBackgroundResource(LayoutUtils.calculateBackgrounds(position));
+            return rowView;
+        }
+        else {
+            // Org Unit Cell
+            CustomTextView facilityName = (CustomTextView) rowView.findViewById(R.id.facility);
+            CustomTextView surveyType = (CustomTextView) rowView.findViewById(R.id.survey_type);
+            CustomTextView sentDate = (CustomTextView) rowView.findViewById(R.id.sentDate);
+            CustomTextView sentScore = (CustomTextView) rowView.findViewById(R.id.score);
+            View sentLight = rowView.findViewById(R.id.survey_light);
+
+            if (sentDate != null) {
+                Date completionDate = survey.getCompletionDate();
+                SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy");
+                sentDate.setText(format.format(completionDate));
+                sentScore.setText(String.format("%.1f %%", survey.getMainScore()));
+                LayoutUtils.trafficView(context, survey.getMainScore(), sentLight);
+            } else {
+                //Status Cell
+                ((CustomTextView) rowView.findViewById(R.id.score)).setText(getStatus(survey));
+            }
+
+            // show facility name (or not) and write survey type name
+            if (!showNextFacilityName) {
+                facilityName.setVisibility(View.GONE);
+                facilityName.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, 0, 0f));
+                surveyType.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, 0, 1f));
+            } else {
+                facilityName.setText(survey.getOrgUnit().getName());
+                facilityName.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, 0, 0.5f));
+                surveyType.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, 0, 0.5f));
+            }
+            String surveyDescription;
+
+            if(survey.getTabGroup()!=null || survey.getTabGroup().getProgram()!=null)
+                surveyDescription = "- " +survey.getTabGroup().getProgram().getName();
+            else
+                surveyDescription = "- " +"Program Null";
+            surveyType.setText(surveyDescription);
+
+            // check whether the following item belongs to the same org unit (to group the data related
+            // to same org unit with the same background)
+            if (position < (this.items.size() - 1)) {
+                if (this.items.get(position + 1).getOrgUnit().equals((this.items.get(position)).getOrgUnit())) {
+                    // show background without border and tell the system that next survey belongs to the same org unit, so its name doesn't need to be shown
+                    rowView.setBackgroundResource(LayoutUtils.calculateBackgroundsNoBorder(this.backIndex));
+                    this.showNextFacilityName = false;
+                } else {
+                    // show background with border and switch background for the next row
+                    rowView.setBackgroundResource(LayoutUtils.calculateBackgrounds(this.backIndex));
+                    this.backIndex++;
+                    this.showNextFacilityName = true;
+                }
+            } else {
+                this.showNextFacilityName = true;
+                //show background with border
+                rowView.setBackgroundResource(LayoutUtils.calculateBackgrounds(this.backIndex));
+            }
+
+            return rowView;
+        }
     }
 
     /**

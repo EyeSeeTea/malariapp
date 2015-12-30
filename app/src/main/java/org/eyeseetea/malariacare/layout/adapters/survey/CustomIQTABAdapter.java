@@ -32,11 +32,13 @@ import org.eyeseetea.malariacare.database.model.Header;
 import org.eyeseetea.malariacare.database.model.Option;
 import org.eyeseetea.malariacare.database.model.Question;
 import org.eyeseetea.malariacare.database.model.Tab;
+import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.ReadWriteDB;
 import org.eyeseetea.malariacare.layout.adapters.general.OptionArrayAdapter;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 import org.eyeseetea.malariacare.utils.Constants;
+import org.eyeseetea.malariacare.utils.Utils;
 import org.eyeseetea.malariacare.views.CustomEditText;
 import org.eyeseetea.malariacare.views.CustomTextView;
 
@@ -47,7 +49,13 @@ import java.util.List;
  */
 public class CustomIQTABAdapter extends ATabAdapter {
 
+    //final ScoreHolder scoreHolder = new ScoreHolder();
+
     int number_rows_section;
+
+    int id_layout;
+
+    int[] results;
 
     static class ViewHolder {
         public CustomTextView number;
@@ -56,19 +64,36 @@ public class CustomIQTABAdapter extends ATabAdapter {
         public Spinner species;
     }
 
+    static class ViewHolder2 {
+        public CustomTextView number;
+        public CustomTextView result;
+    }
+
+    /*static class ScoreHolder {
+        public CustomTextView scoreText;
+        public CustomTextView score;
+        public CustomTextView cualitativeScore;
+    }*/
     public CustomIQTABAdapter(Tab tab, Context context) {
         super(tab, context, R.layout.form_custom);
 
-        if (getItems().size()>0)
-            number_rows_section = (int) ((Header) getItems().get(0)).getNumberOfQuestionParents() +1;
+        if (PreferencesState.isPictureQuestion()) {
+            super.setItems(Utils.convertTabToArrayCustom(tab));
 
+            if (getItems().size() > 0)
+                number_rows_section = LayoutUtils.getNumberOfQuestionParentsHeader((Header) getItems().get(0)) + 1;
+        }
+        else {
+            if (getItems().size() > 0)
+                number_rows_section = (int) ((Header) getItems().get(0)).getNumberOfQuestionParents() + 1;
+        }
         for (int i = 0; i < 2 * number_rows_section; i++) {
             Object item = getItems().get(i);
             if (item instanceof Question)
                 calculateMatch((Question) item);
         }
 
-        for (int i = 2 * number_rows_section; i<getItems().size();i++) {
+        for (int i = 2 * number_rows_section; i < getItems().size(); i++) {
             Object item = getItems().get(i);
             if (item instanceof Question) {
                 Question result = ((Question) item).getChildren().get(0);
@@ -83,7 +108,7 @@ public class CustomIQTABAdapter extends ATabAdapter {
      * @param context
      * @return
      */
-    public static CustomIQTABAdapter build(Tab tab, Context context){
+    public static CustomIQTABAdapter build(Tab tab, Context context) {
         return new CustomIQTABAdapter(tab, context);
     }
 
@@ -109,14 +134,32 @@ public class CustomIQTABAdapter extends ATabAdapter {
 
     @Override
     public int getCount() {
-        return 2*number_rows_section;
+        if (PreferencesState.isPictureQuestion()) {
+            return getItems().size();
+        } else
+            return 2 * number_rows_section;
+    }
+
+    public void updateScore() {
+        //scoreHolder.score.setText(Utils.round(num / denum));
+    }
+
+    public void initializeSubscore() {
+        initializeScoreViews();
+        updateScore();
+    }
+    private void initializeScoreViews() {
+        /*scoreHolder.score = (CustomTextView) ((Activity) context).findViewById(R.id.score);
+        scoreHolder.cualitativeScore = (CustomTextView) ((Activity) context).findViewById(R.id.qualitativeScore);
+        scoreHolder.scoreText = (CustomTextView) ((Activity) context).findViewById(R.id.subtotalScoreText);*/
     }
 
     public void calculateMatch(Question question) {
         int simetric_position;
         int result_position;
+        int position;
+        position = getItems().indexOf(question);
 
-        int position = getItems().indexOf(question);
 
         Question q1, q2;
 
@@ -127,17 +170,17 @@ public class CustomIQTABAdapter extends ATabAdapter {
             simetric_position = position + number_rows_section;
             result_position = position - 1;
         }
-
+        Question questionAnswer;
         q1 = ((Question) getItems().get(position)).getChildren().get(0);
         q2 = ((Question) getItems().get(simetric_position)).getChildren().get(0);
+        questionAnswer = (Question) getItems().get(2 * number_rows_section + result_position + 1);
 
-        Question questionAnswer =  (Question) getItems().get(2*number_rows_section+result_position+1);
-        Question testResult = questionAnswer.getChildren().get(0);
+        Question testResult = questionAnswer.getQuestionChildren().get(0);
 
         if (q1.getValueBySession() != null && q2.getValueBySession() != null &&
                 q1.getValueBySession().getOption().equals(q2.getValueBySession().getOption())) {
 
-            ReadWriteDB.saveValuesDDL(testResult,  testResult.getAnswer().getOptions().get(0));
+            ReadWriteDB.saveValuesDDL(testResult, testResult.getAnswer().getOptions().get(0));
             ScoreRegister.addRecord(testResult, ScoreRegister.calcNum(testResult), ScoreRegister.calcNum(testResult));
 
         } else {
@@ -145,18 +188,18 @@ public class CustomIQTABAdapter extends ATabAdapter {
             ScoreRegister.addRecord(testResult, 0F, ScoreRegister.calcDenum(testResult));
 
             if (q1.getValueBySession() != null && q2.getValueBySession() != null) {
-                ReadWriteDB.saveValuesDDL(testResult,  testResult.getAnswer().getOptions().get(1));
-            }
-            else
+                ReadWriteDB.saveValuesDDL(testResult, testResult.getAnswer().getOptions().get(1));
+            } else
                 ReadWriteDB.deleteValue(testResult);
         }
+        notifyDataSetChanged();
     }
 
     private void setValues(ViewHolder viewHolder, Question question) {
         viewHolder.number.setText(question.getForm_name());
-        viewHolder.species.setSelection(ReadWriteDB.readPositionOption(question.getChildren().get(2)));
-        viewHolder.parasites.setText(ReadWriteDB.readValueQuestion(question.getChildren().get(1)));
-        viewHolder.spinner.setSelection(ReadWriteDB.readPositionOption(question.getChildren().get(0)));
+        viewHolder.species.setSelection(ReadWriteDB.readPositionOption(question.getQuestionChildren().get(2)));
+        viewHolder.parasites.setText(ReadWriteDB.readValueQuestion(question.getQuestionChildren().get(1)));
+        viewHolder.spinner.setSelection(ReadWriteDB.readPositionOption(question.getQuestionChildren().get(0)));
     }
 
 
@@ -188,13 +231,14 @@ public class CustomIQTABAdapter extends ATabAdapter {
                 viewHolder.spinner = (Spinner) rowView.findViewById(R.id.testRes);
                 viewHolder.parasites = (CustomEditText) rowView.findViewById(R.id.parasites);
                 viewHolder.species = (Spinner) rowView.findViewById(R.id.species);
+                List<Option> optionList;
+                optionList = ((Question) item).getChildren().get(0).getAnswer().getOptions();
 
-                List<Option> optionList = ((Question) item).getChildren().get(0).getAnswer().getOptions();
                 optionList.add(0, new Option(Constants.DEFAULT_SELECT_OPTION));
 
                 viewHolder.spinner.setAdapter(new OptionArrayAdapter(getContext(), optionList));
-
                 optionList = ((Question) item).getChildren().get(2).getAnswer().getOptions();
+
                 optionList.add(0, new Option(Constants.DEFAULT_SELECT_OPTION));
 
                 viewHolder.species.setAdapter(new OptionArrayAdapter(getContext(), optionList));
@@ -253,6 +297,7 @@ public class CustomIQTABAdapter extends ATabAdapter {
                         if (viewCreated.value) {
                             ReadWriteDB.saveValuesDDL(test, (Option) viewHolder.spinner.getItemAtPosition(pos));
                             calculateMatch(question);
+                            updateScore();
                         } else viewCreated.value = true;
 
                     }
@@ -264,12 +309,33 @@ public class CustomIQTABAdapter extends ATabAdapter {
                 });
 
                 setValues(viewHolder, question);
+            }
+        } else {
+            final ViewHolder2 viewHolder2 = new ViewHolder2();
+
+            if (position == 2 * number_rows_section) {
+                rowView = getInflater().inflate(R.layout.iqtabheader3, parent, false);
+            } else {
+                rowView = getInflater().inflate(R.layout.iqatab_results, parent, false);
+
+                Question questionResult = (Question) getItem(position);
+                Question testResult = questionResult.getQuestionChildren().get(0);
+
+                viewHolder2.number = (CustomTextView) rowView.findViewById(R.id.number_result);
+                viewHolder2.result = (CustomTextView) rowView.findViewById(R.id.matches);
+
+                viewHolder2.number.setText(String.valueOf(questionResult.getForm_name()));
+
+                Option option = ReadWriteDB.readOptionAnswered(testResult);
+
+                if (option != null && option.getName().equals("Yes"))
+                    viewHolder2.result.setText("1");
+                else
+                    viewHolder2.result.setText("0");
 
 
             }
-
         }
-
         return rowView;
     }
 }

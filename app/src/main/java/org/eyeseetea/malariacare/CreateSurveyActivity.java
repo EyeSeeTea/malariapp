@@ -42,6 +42,7 @@ import org.eyeseetea.malariacare.database.model.Program;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.model.TabGroup;
 import org.eyeseetea.malariacare.database.utils.LocationMemory;
+import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.layout.adapters.general.OrgUnitArrayAdapter;
 import org.eyeseetea.malariacare.layout.adapters.general.ProgramArrayAdapter;
@@ -86,68 +87,93 @@ public class CreateSurveyActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_create_survey);
+        // Manage uncaught exceptions that may occur
+        //Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(this));
+
+        if(PreferencesState.isPictureQuestion())
+            setContentView(R.layout.activity_create_survey_pictureapp);
+        else
+            setContentView(R.layout.activity_create_survey);
 
         android.support.v7.app.ActionBar actionBar = this.getSupportActionBar();
         LayoutUtils.setActionBarLogo(actionBar);
 
-        this.lInflater = LayoutInflater.from(this);
-
         //Create default options
         orgUnitDefaultOption = new OrgUnit(Constants.DEFAULT_SELECT_OPTION);
         programDefaultOption = new Program(Constants.DEFAULT_SELECT_OPTION);
-        tabGroupDefaultOption = new TabGroup(Constants.DEFAULT_SELECT_OPTION);
 
-        //Populate Organization Unit DDL
-        ViewHolder viewHolder = new ViewHolder();
-        List<OrgUnit> orgUnitList = new Select().all().from(OrgUnit.class).where(Condition.column(OrgUnit$Table.ID_PARENT).isNull()).queryList();
-        orgUnitList.add(0, orgUnitDefaultOption);
-        viewHolder.component = findViewById(R.id.org_unit);
-        orgUnitView = (Spinner) viewHolder.component;
-        orgUnitView.setTag(orgUnitList.get(1).getOrgUnitLevel());
-        orgUnitView.setAdapter(new OrgUnitArrayAdapter(this, orgUnitList));
-        orgUnitView.setOnItemSelectedListener(new OrgUnitSpinnerListener(viewHolder));
-
-        View childView =findViewById(R.id.org_unit_container);
-        CustomTextView childViewTextView= (CustomTextView) childView.findViewById(R.id.textView2);
-        childViewTextView.setText(orgUnitList.get(1).getOrgUnitLevel().getName());
+        if (PreferencesState.isPictureQuestion()) {
 
 
-        //Put in org unit hierarchy map
-        orgUnitHierarchyView = new LinkedHashMap<>();
-        orgUnitHierarchyView.put(orgUnitList.get(1).getOrgUnitLevel(), childView);
+            //Populate Organization Unit DDL
+            List<OrgUnit> orgUnitList = new Select().all().from(OrgUnit.class).queryList();
+            orgUnitList.add(0, orgUnitDefaultOption);
+            orgUnitView = (Spinner) findViewById(R.id.org_unit);
+            OrgUnitArrayAdapter orgUnitAdapter=new OrgUnitArrayAdapter(this, orgUnitList);
+            orgUnitView.setAdapter(orgUnitAdapter);
 
-        //Prepare Organization Unit Item DDL
-        orgUnitContainerItems = findViewById(R.id.org_unit_container_items);
+            //Populate Program View DDL
+            List<Program> programList = new Select().all().from(Program.class).queryList();
+            programList.add(0, programDefaultOption);
+            programView = (Spinner) findViewById(R.id.program);
+            ProgramArrayAdapter programAdapter=new ProgramArrayAdapter(this, programList);
+            programView.setAdapter(programAdapter);
+        } else {
 
-        List<OrgUnitLevel> orgUnitLevelList= new Select().all().from(OrgUnitLevel.class).queryList();
-        for (OrgUnitLevel orgUnitLevel : orgUnitLevelList) {
-            if (!orgUnitLevel.equals(orgUnitList.get(1).getOrgUnitLevel())) {
-                childView = lInflater.inflate(R.layout.activity_create_survey_org_unit_item, (LinearLayout) orgUnitContainerItems, false);
-                childViewTextView= (CustomTextView) childView.findViewById(R.id.textView);
-                childViewTextView.setText(orgUnitLevel.getName());
+            this.lInflater = LayoutInflater.from(this);
 
-                Spinner childViewSpinner= (Spinner) childView.findViewById(R.id.org_unit_item_spinner);
-                childViewSpinner.setTag(orgUnitLevel);
-                childView.setVisibility(View.GONE);
-                ((LinearLayout) orgUnitContainerItems).addView(childView);
-                //Put in org unit hierarchy map
-                orgUnitHierarchyView.put(orgUnitLevel, childView);
+            tabGroupDefaultOption = new TabGroup(Constants.DEFAULT_SELECT_OPTION);
+
+            //Populate Organization Unit DDL
+            ViewHolder viewHolder = new ViewHolder();
+            List<OrgUnit> orgUnitList = new Select().all().from(OrgUnit.class).where(Condition.column(OrgUnit$Table.ID_PARENT).isNull()).queryList();
+            orgUnitList.add(0, orgUnitDefaultOption);
+            viewHolder.component = findViewById(R.id.org_unit);
+            orgUnitView = (Spinner) viewHolder.component;
+            orgUnitView.setTag(orgUnitList.get(1).getOrgUnitLevel());
+            orgUnitView.setAdapter(new OrgUnitArrayAdapter(this, orgUnitList));
+            orgUnitView.setOnItemSelectedListener(new OrgUnitSpinnerListener(viewHolder));
+
+            View childView = findViewById(R.id.org_unit_container);
+            CustomTextView childViewTextView = (CustomTextView) childView.findViewById(R.id.textView2);
+            childViewTextView.setText(orgUnitList.get(1).getOrgUnitLevel().getName());
+
+
+            //Put in org unit hierarchy map
+            orgUnitHierarchyView = new LinkedHashMap<>();
+            orgUnitHierarchyView.put(orgUnitList.get(1).getOrgUnitLevel(), childView);
+
+            //Prepare Organization Unit Item DDL
+            orgUnitContainerItems = findViewById(R.id.org_unit_container_items);
+
+            List<OrgUnitLevel> orgUnitLevelList = new Select().all().from(OrgUnitLevel.class).queryList();
+            for (OrgUnitLevel orgUnitLevel : orgUnitLevelList) {
+                if (!orgUnitLevel.equals(orgUnitList.get(1).getOrgUnitLevel())) {
+                    childView = lInflater.inflate(R.layout.activity_create_survey_org_unit_item, (LinearLayout) orgUnitContainerItems, false);
+                    childViewTextView = (CustomTextView) childView.findViewById(R.id.textView);
+                    childViewTextView.setText(orgUnitLevel.getName());
+
+                    Spinner childViewSpinner = (Spinner) childView.findViewById(R.id.org_unit_item_spinner);
+                    childViewSpinner.setTag(orgUnitLevel);
+                    childView.setVisibility(View.GONE);
+                    ((LinearLayout) orgUnitContainerItems).addView(childView);
+                    //Put in org unit hierarchy map
+                    orgUnitHierarchyView.put(orgUnitLevel, childView);
+                }
             }
+
+
+            //Populate Program View DDL
+            List<Program> programList = new Select().all().from(Program.class).queryList();
+            programList.add(0, programDefaultOption);
+            programView = (Spinner) findViewById(R.id.program);
+            programView.setAdapter(new ProgramArrayAdapter(this, programList));
+            programView.setOnItemSelectedListener(new ProgramSpinnerListener());
+
+            //Create Tab Group View DDL. Not populated and not visible.
+            tabGroupContainer = findViewById(R.id.tab_group_container);
+            tabGroupView = (Spinner) findViewById(R.id.tab_group);
         }
-
-
-
-        //Populate Program View DDL
-        List<Program> programList = new Select().all().from(Program.class).queryList();;
-        programList.add(0, programDefaultOption);
-        programView = (Spinner) findViewById(R.id.program);
-        programView.setAdapter(new ProgramArrayAdapter(this, programList));
-        programView.setOnItemSelectedListener(new ProgramSpinnerListener());
-
-        //Create Tab Group View DDL. Not populated and not visible.
-        tabGroupContainer = findViewById(R.id.tab_group_container);
-        tabGroupView = (Spinner) findViewById(R.id.tab_group);
     }
 
     private boolean isEverythingFilled() {
@@ -196,27 +222,74 @@ public class CreateSurveyActivity extends BaseActivity {
      * Called when the user clicks the Send button
      */
     public void createSurvey(View view) {
-        Log.i(".CreateSurveyActivity", "Saving survey and saving in session");
+        if(PreferencesState.isPictureQuestion()) {
 
-        if (validateForm()){
+            Log.i(".CreateSurveyActivity", "Saving survey and saving in session");
+
             // Read Selected Items
-            OrgUnit orgUnit = (OrgUnit) realOrgUnitView.getSelectedItem();
-            //Read Tab Group
-            TabGroup tabGroup = (TabGroup) tabGroupView.getSelectedItem();
+            OrgUnit orgUnit = (OrgUnit) orgUnitView.getSelectedItem();
+            Program program = (Program) programView.getSelectedItem();
 
-            // Put new survey in session
-            Survey survey = new Survey(orgUnit, tabGroup, Session.getUser());
-            survey.save();
-            Session.setSurvey(survey);
+            if (!checkEverythingFilled()) {
+                new AlertDialog.Builder(this)
+                        .setTitle(getApplicationContext().getString(R.string.dialog_title_missing_selection))
+                        .setMessage(getApplicationContext().getString(R.string.dialog_content_missing_selection))
+                        .setPositiveButton(android.R.string.ok, null).create().show();
+            } else if (!checkSurveyDoesntExist()) {
+                new AlertDialog.Builder(this)
+                        .setTitle(getApplicationContext().getString(R.string.dialog_title_existing_survey))
+                        .setMessage(getApplicationContext().getString(R.string.dialog_content_existing_survey))
+                        .setPositiveButton(android.R.string.ok, null).create().show();
+            } else {
+                // Put new survey in session
+                Survey survey = new Survey(orgUnit, program, Session.getUser());
+                survey.save();
+                Session.setSurvey(survey);
 
-            //Look for coordinates
-            prepareLocationListener(survey);
+                //Call Survey Activity
+                finishAndGo(SurveyActivity.class);
+            }
+        }
+        else {
+            Log.i(".CreateSurveyActivity", "Saving survey and saving in session");
+
+            if (validateForm()) {
+                // Read Selected Items
+                OrgUnit orgUnit = (OrgUnit) realOrgUnitView.getSelectedItem();
+                //Read Tab Group
+                TabGroup tabGroup = (TabGroup) tabGroupView.getSelectedItem();
+
+                // Put new survey in session
+                Survey survey = new Survey(orgUnit, tabGroup, Session.getUser());
+                survey.save();
+                Session.setSurvey(survey);
+
+                //Look for coordinates
+                prepareLocationListener(survey);
 
 
-            //Call Survey Activity
-            finishAndGo(SurveyActivity.class);
+                //Call Survey Activity
+                finishAndGo(SurveyActivity.class);
+            }
         }
 
+    }
+
+    public boolean checkEverythingFilled() {
+        try {
+            return (!orgUnitView.getSelectedItem().equals(this.orgUnitDefaultOption) && !programView.getSelectedItem().equals(this.programDefaultOption));
+        } catch (Exception ex) {
+            return false;
+        }
+    }
+
+    public boolean checkSurveyDoesntExist() {
+        // Read Selected Items
+        OrgUnit orgUnit = (OrgUnit) orgUnitView.getSelectedItem();
+        Program program = (Program) programView.getSelectedItem();
+
+        List<Survey> existing = Survey.getUnsentSurveys(orgUnit, program);
+        return (existing == null || existing.size() == 0);
     }
 
     private void prepareLocationListener(Survey survey){

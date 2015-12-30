@@ -20,9 +20,6 @@
 package org.eyeseetea.malariacare.database.model;
 
 import com.raizlabs.android.dbflow.annotation.Column;
-import com.raizlabs.android.dbflow.annotation.ForeignKey;
-import com.raizlabs.android.dbflow.annotation.ForeignKeyReference;
-import com.raizlabs.android.dbflow.annotation.OneToMany;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;
 import com.raizlabs.android.dbflow.sql.builder.Condition;
@@ -30,8 +27,6 @@ import com.raizlabs.android.dbflow.sql.language.Select;
 import com.raizlabs.android.dbflow.structure.BaseModel;
 
 import org.eyeseetea.malariacare.database.AppDatabase;
-import org.eyeseetea.malariacare.database.iomodules.dhis.exporter.IConvertToSDKVisitor;
-import org.eyeseetea.malariacare.database.iomodules.dhis.exporter.VisitableToSDK;
 
 import java.util.List;
 
@@ -58,9 +53,17 @@ public class Option extends BaseModel {
      */
     Answer answer;
 
+    @Column
+    String path;
+
+    @Column
+    Long id_optionAttribute;
+    
     /**
-     * List of values that has choosen this option
+     * Reference to optionAttribute (loaded lazily)
      */
+    OptionAttribute optionAttribute;
+
     List<Value> values;
 
     public Option() {
@@ -79,6 +82,13 @@ public class Option extends BaseModel {
         this.setAnswer(answer);
     }
 
+    public Option(String name, Float factor, Answer answer, String code, OptionAttribute optionAttribute) {
+        this.name = name;
+        this.factor = factor;
+        this.setAnswer(answer);
+        this.code = code;
+        this.setOptionAttribute(optionAttribute);
+    }
 
     public Option(String name) {
         this.name = name;
@@ -91,10 +101,6 @@ public class Option extends BaseModel {
     public void setId_option(Long id_option) {
         this.id_option = id_option;
     }
-
-    public String getCode() {return code;}
-
-    public void setCode(String code) {this.code = code;}
 
     public String getName() {
         return name;
@@ -110,6 +116,14 @@ public class Option extends BaseModel {
 
     public void setFactor(Float factor) {
         this.factor = factor;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
     }
 
     public Answer getAnswer() {
@@ -133,6 +147,35 @@ public class Option extends BaseModel {
         this.answer = null;
     }
 
+    public OptionAttribute getOptionAttribute() {
+        if(optionAttribute==null){
+            if(id_optionAttribute==null) return null;
+            optionAttribute = new Select()
+                    .from(OptionAttribute.class)
+                    .where(Condition.column(OptionAttribute$Table.ID_OPTION_ATTRIBUTE)
+                            .is(id_optionAttribute)).querySingle();
+        }
+        return optionAttribute;
+    }
+
+    public void setOptionAttribute(OptionAttribute optionAttribute) {
+        this.optionAttribute = optionAttribute;
+        this.id_optionAttribute = (optionAttribute!=null)?optionAttribute.getId_option_attribute():null;
+    }
+
+    public void setOptionAttribute(Long id_optionAttribute){
+        this.id_optionAttribute = id_optionAttribute;
+        this.optionAttribute = null;
+    }
+
+
+    public String getPath() {
+        return path;
+    }
+
+    public void setPath(String path) {
+        this.path = path;
+    }
     /**
      * Checks if this option actives the children questions
      * @return true: Children questions should be shown, false: otherwise.
@@ -169,6 +212,8 @@ public class Option extends BaseModel {
         if (code != null ? !code.equals(option.code) : option.code != null) return false;
         if (name != null ? !name.equals(option.name) : option.name != null) return false;
         if (factor != null ? !factor.equals(option.factor) : option.factor != null) return false;
+        if (path != null ? !path.equals(option.path) : option.path != null) return false;
+        if (id_optionAttribute != null ? !id_optionAttribute.equals(option.id_optionAttribute) : option.id_optionAttribute != null) return false;
         return !(id_answer != null ? !id_answer.equals(option.id_answer) : option.id_answer != null);
 
     }
@@ -180,6 +225,8 @@ public class Option extends BaseModel {
         result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (factor != null ? factor.hashCode() : 0);
         result = 31 * result + (id_answer != null ? id_answer.hashCode() : 0);
+        result = 31 * result + (id_optionAttribute != null ? id_optionAttribute.hashCode() : 0);
+        result = 31 * result + (path != null ? path.hashCode() : 0);
         return result;
     }
 
@@ -190,6 +237,9 @@ public class Option extends BaseModel {
                 ", code='" + code + '\'' +
                 ", name='" + name + '\'' +
                 ", factor=" + factor +
+                ", answer=" + answer +
+                ", path=" + path +
+                ", optionAttribute=" + optionAttribute +
                 ", id_answer=" + id_answer +
                 '}';
     }

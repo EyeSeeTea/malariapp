@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background_textfield">
+
+    <RelativeLayout
+        android:layout_width="0dip"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.5"
+        android:layout_gravity="center_vertical"
+        android:padding="5dip">
+        <org.eyeseetea.malariacare.views.CustomTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/widget_info_empty_statement"
+            android:id="@+id/statement"
+            android:paddingLeft="@dimen/question_padding_left"
+            android:paddingRight="@dimen/question_padding_left"
+            android:textColor="@color/black"
+            app:tDimension="@string/font_size_level1"
+            app:tFontName="@string/medium_font_name"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_toLeftOf="@+id/answer"
+            android:layout_toStartOf="@+id/answer"
+            android:layout_alignTop="@+id/answer"
+            android:layout_alignBottom="@+id/answer" />
+
+        <NumberPicker
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:inputType="number"
+            android:id="@+id/answer"
+            android:background="@drawable/background_textfield"
+            android:textColor="@color/darkGrey"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
+    </RelativeLayout>
+
+</LinearLayout>

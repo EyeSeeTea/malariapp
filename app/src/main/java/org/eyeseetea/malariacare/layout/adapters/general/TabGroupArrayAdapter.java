@@ -41,5 +41,4 @@ public class TabGroupArrayAdapter extends AddlArrayAdapter<TabGroup> {
             customTextView.setTextSize(16);
         customTextView.setText(tabGroup.getName());
     }
-
 }

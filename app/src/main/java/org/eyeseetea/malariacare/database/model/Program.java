@@ -94,6 +94,13 @@ public class Program extends BaseModel{
         return this.tabGroups;
     }
 
+    public List<Tab> getTabs(){
+        return new Select().from(Tab.class)
+                .where(Condition.column(Tab$Table.ID_PROGRAM)
+                        .eq(String.valueOf(this.getId_program())))
+                .orderBy(Tab$Table.ORDER_POS).queryList();
+    }
+
     public static List<Program> getAllPrograms(){
         return new Select().all().from(Program.class).queryList();
     }

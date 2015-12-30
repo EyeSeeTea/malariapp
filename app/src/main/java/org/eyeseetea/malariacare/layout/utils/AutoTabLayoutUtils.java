@@ -21,7 +21,6 @@ package org.eyeseetea.malariacare.layout.utils;
 
 import android.content.Context;
 import android.os.Build;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,13 +34,9 @@ import com.raizlabs.android.dbflow.structure.BaseModel;
 
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.model.Header;
-import org.eyeseetea.malariacare.database.model.Match;
 import org.eyeseetea.malariacare.database.model.Option;
 import org.eyeseetea.malariacare.database.model.Question;
-import org.eyeseetea.malariacare.database.model.QuestionOption;
-import org.eyeseetea.malariacare.database.model.QuestionRelation;
 import org.eyeseetea.malariacare.database.model.Survey;
-import org.eyeseetea.malariacare.database.model.Value;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.ReadWriteDB;
 import org.eyeseetea.malariacare.database.utils.Session;
@@ -54,10 +49,8 @@ import org.eyeseetea.malariacare.views.CustomTextView;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by adrian on 15/08/15.
@@ -210,16 +203,6 @@ public class AutoTabLayoutUtils {
         configureViewByPreference(viewHolder);
     }
 
-    public static void createRadioGroupComponent(Question question, ViewHolder viewHolder, int orientation, LayoutInflater lInflater, Context context) {
-        ((RadioGroup) viewHolder.component).setOrientation(orientation);
-
-        for (Option option : question.getAnswer().getOptions()) {
-            CustomRadioButton button = (CustomRadioButton) lInflater.inflate(R.layout.uncheckeable_radiobutton, null);
-            button.setOption(option);
-            button.updateProperties(PreferencesState.getInstance().getScale(), context.getString(R.string.font_size_level1), context.getString(R.string.medium_font_name));
-            ((RadioGroup) viewHolder.component).addView(button);
-        }
-    }
 
     /**
      * Set visibility of numerators and denominators depending on the user preference selected in the settings activity
@@ -270,6 +253,29 @@ public class AutoTabLayoutUtils {
         // using Guava library and its Booleans utility class
         return Booleans.countTrue(Booleans.toArray(elementInvisibility.values()));
     }
+    private boolean checkMatches(Question question) {
+        boolean match = true;
+
+        List<Question> relatives = question.getRelatives();
+
+        if (relatives.size() > 0) {
+
+            Option option = ReadWriteDB.readOptionAnswered(relatives.get(0));
+
+            if (option == null) match = false;
+
+            for (int i = 1; i < relatives.size() && match; i++) {
+                Option currentOption = ReadWriteDB.readOptionAnswered(relatives.get(i));
+
+                if (currentOption == null) match = false;
+                else
+                    match = match && (Float.compare(option.getFactor(), currentOption.getFactor()) == 0);
+            }
+
+        }
+
+        return match;
+    }
 
     public static boolean autoFillAnswer(AutoTabLayoutUtils.ViewHolder viewHolder, AutoTabLayoutUtils.ScoreHolder scoreHolder, Question question, float totalNum, float totalDenum, Context context, LinkedHashMap<BaseModel, Boolean> elementInvisibility) {
         //FIXME Yes|No are 'hardcoded' here by using options 0|1
@@ -285,23 +291,38 @@ public class AutoTabLayoutUtils {
      * @param question the question that changes his value
      * @param option the option that has been selected
      */
+
     public static boolean itemSelected(AutoTabLayoutUtils.ViewHolder viewHolder, AutoTabLayoutUtils.ScoreHolder scoreHolder, Question question, Option option, float totalNum, float totalDenum, Context context, LinkedHashMap<BaseModel, Boolean> elementInvisibility) {
         boolean refreshTab = false;
 
         // Write option to DB
         ReadWriteDB.saveValuesDDL(question, option);
-
-        recalculateScores(viewHolder, question, totalNum, totalDenum);
-
-        // If parent relation found, toggle Children Spinner Visibility
-        // If question has question-option, refresh the tab
-        if (question.hasChildren() || question.hasQuestionOption()){
-            if (question.hasChildren())
-                toggleChildrenVisibility(question,elementInvisibility, totalNum, totalDenum);
-            refreshTab = true;
+        Float num;
+        Float denum;
+        if(PreferencesState.isPictureQuestion()) {
+            num = ScoreRegister.calcNum(question);
+            denum = ScoreRegister.calcDenum(question);
         }
-
-        updateScore(scoreHolder, totalNum, totalDenum, context);
+        else{
+            num=totalNum;
+            denum=totalDenum;
+        }
+        recalculateScores(viewHolder, question, num, denum);
+        if(PreferencesState.isPictureQuestion()) {
+            if (question.hasChildren()) {
+                toggleChildrenVisibility(question, elementInvisibility, num, denum);
+            }
+        }
+        else{
+        // If parent relation found, toggle Children Spinner Visibility
+            // If question has question-option, refresh the tab
+            if (question.hasChildren() || question.hasQuestionOption()) {
+                if (question.hasChildren())
+                    toggleChildrenVisibility(question, elementInvisibility, num, denum);
+                refreshTab = true;
+            }
+        }
+        updateScore(scoreHolder, num, denum, context);
         return refreshTab;
     }
     /**
@@ -315,17 +336,17 @@ public class AutoTabLayoutUtils {
 
         viewHolder.num.setText(num.toString());
         viewHolder.denum.setText(denum.toString());
+        //Fixed i think it is not used.
+        //if(Utils.isPictureQuestion())
+            //resetTotalNumDenum(question);
+        //else {
+            List<Float> numdenum = ScoreRegister.getNumDenum(question);
 
-        List<Float> numdenum = ScoreRegister.getNumDenum(question);
-
-        if (numdenum != null) {
-            totalNum = totalNum - numdenum.get(0);
-            totalDenum = totalDenum - numdenum.get(1);
-        }
-
-        totalNum = totalNum + num;
-        totalDenum = totalDenum + denum;
-
+            if (numdenum != null) {
+                totalNum = totalNum - numdenum.get(0);
+                totalDenum = totalDenum - numdenum.get(1);
+            }
+        //}
         ScoreRegister.addRecord(question, num, denum);
     }
 
@@ -388,11 +409,33 @@ public class AutoTabLayoutUtils {
             Float num = ScoreRegister.calcNum(question);
             Float denum = ScoreRegister.calcDenum(question);
 
-            totalNum = totalNum + num;
-            totalDenum = totalDenum + denum;
+            if(!PreferencesState.isPictureQuestion()) {
+                num = totalNum + num;
+                denum = totalDenum + denum;
+            }
 
             ScoreRegister.addRecord(question, num, denum);
         }
 
+
+  }
+    public static void createRadioGroupComponent(Question question, ViewHolder viewHolder, int orientation, LayoutInflater lInflater, Context context) {
+        ((RadioGroup) viewHolder.component).setOrientation(orientation);
+
+        for (Option option : question.getAnswer().getOptions()) {
+            CustomRadioButton button;
+            int layoutId;
+            if(PreferencesState.isPictureQuestion())
+                layoutId=R.layout.uncheckeable_radiobutton_pictureapp;
+            else
+                layoutId=R.layout.uncheckeable_radiobutton;
+
+            button= (CustomRadioButton) lInflater.inflate(layoutId, null);
+            button.setOption(option);
+            button.updateProperties(PreferencesState.getInstance().getScale(), context.getString(R.string.font_size_level1), context.getString(R.string.medium_font_name));
+            ((RadioGroup) viewHolder.component).addView(button);
+        }
     }
+
+
 }

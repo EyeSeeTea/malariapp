@@ -32,6 +32,9 @@ import org.eyeseetea.malariacare.database.AppDatabase;
 import org.eyeseetea.malariacare.database.iomodules.dhis.exporter.IConvertToSDKVisitor;
 import org.eyeseetea.malariacare.database.iomodules.dhis.exporter.VisitableToSDK;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Table(databaseName = AppDatabase.NAME)
 public class Value extends BaseModel implements VisitableToSDK {
 
@@ -192,12 +195,41 @@ public class Value extends BaseModel implements VisitableToSDK {
                 .where(Condition.column(Value$Table.ID_SURVEY).eq(survey.getId_survey())).count();
     }
 
+    /**
+     * The value is 'Positive' from a dropdown
+     * @return true|false
+     */
+    public boolean isAPositive() {
+        return getOption() != null && getOption().getName().equals("Positive");
+    }
+
+    /**
+     * The value is 'Negative' from a dropdown
+     * @return true|false
+     */
+    public boolean isANegative() {
+        return getOption() != null && getOption().getName().equals("Negative");
+    }
     @Override
     public void accept(IConvertToSDKVisitor IConvertToSDKVisitor) {
         IConvertToSDKVisitor.visit(this);
     }
+    /**
+     * The value is 'isANotTested' from a dropdown
+     * @return true|false
+     */
+    public boolean isANotTested() {
+        return getOption() != null && getOption().getName().equals("Not Tested");
+    }
 
-    @Override
+    public static List<Value> listAllBySurvey(Survey survey){
+        if(survey==null || survey.getId_survey()==null){
+            return new ArrayList<>();
+        }
+        return new Select().from(Value.class).where(Condition.column(Survey$Table.ID_SURVEY).eq(survey.getId_survey())).queryList();
+
+    }
+        @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;

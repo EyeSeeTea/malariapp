@@ -33,8 +33,10 @@ import com.squareup.otto.Subscribe;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.PullController;
 import org.eyeseetea.malariacare.database.model.User;
 import org.eyeseetea.malariacare.database.utils.PopulateDB;
+import org.eyeseetea.malariacare.database.utils.PopulatePictureAppDB;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.Session;
+import org.eyeseetea.malariacare.utils.Utils;
 import org.hisp.dhis.android.sdk.job.NetworkJob;
 import org.hisp.dhis.android.sdk.persistence.Dhis2Application;
 import org.hisp.dhis.android.sdk.persistence.preferences.ResourceType;
@@ -64,6 +66,10 @@ public class LoginActivity extends org.hisp.dhis.android.sdk.ui.activities.Login
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        if( (PreferencesState.isPictureQuestion() && !sharedPreferences.getBoolean(getApplicationContext().getResources().getString(R.string.pull_csv),false) )){
+            populateFromAssetsIfRequired();
+
+        }
         if (User.getLoggedUser() != null && !ProgressActivity.PULL_CANCEL &&  sharedPreferences.getBoolean(getApplicationContext().getResources().getString(R.string.pull_metadata),false)) {
             startActivity(new Intent(LoginActivity.this,
                     ((Dhis2Application) getApplication()).getMainActivity()));
@@ -120,17 +126,35 @@ public class LoginActivity extends org.hisp.dhis.android.sdk.ui.activities.Login
      */
     private void populateFromAssetsIfRequired() {
         //From server -> done
-        if(PreferencesState.getInstance().getPullFromServer()) {
+        if(PreferencesState.getInstance().getPullFromServer() && !PreferencesState.isPictureQuestion()) {
             return;
         }
 
         //Populate locally
+        populate();
+    }
+
+    /**
+     * Utility method to populate from csv
+     */
+    private void populate() {
         try{
-            PullController.getInstance().wipeDatabase();
-            User user = new User();
-            user.save();
-            Session.setUser(user);
-            PopulateDB.populateDB(getAssets());
+            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+            if(!sharedPreferences.getBoolean(getApplicationContext().getResources().getString(R.string.pull_csv), false)) {
+                User user = new User();
+                user.save();
+                Session.setUser(user);
+                PullController.getInstance().wipeDatabase();
+                if (PreferencesState.isPictureQuestion()) {
+                    PopulatePictureAppDB.populateDB(getAssets());
+                } else {
+                    PopulateDB.populateDB(getAssets());
+                }
+
+                SharedPreferences.Editor editor = getPreferencesEditor();
+                editor.putBoolean(getString(R.string.pull_csv), true);
+                editor.commit();
+            }
         }catch(Exception ex){
         }
     }
@@ -139,12 +163,23 @@ public class LoginActivity extends org.hisp.dhis.android.sdk.ui.activities.Login
      * Saves user credentials into preferences
      */
     private void saveUserDetails(){
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString(getString(R.string.dhis_url), this.serverUrl);
-        editor.putString(getString(R.string.dhis_user), this.username);
-        editor.putString(getString(R.string.dhis_password), this.password);
+        SharedPreferences.Editor editor = getPreferencesEditor();
+        if(PreferencesState.isPictureQuestion()){
+            editor.putString(getString(R.string.dhis_url), "https://dev.psi-mis.org");
+            editor.putString(getString(R.string.dhis_user), "KHMCS");
+            editor.putString(getString(R.string.dhis_password), "KHMCSadmin1");
+        }
+        else {
+            editor.putString(getString(R.string.dhis_url), this.serverUrl);
+            editor.putString(getString(R.string.dhis_user), this.username);
+            editor.putString(getString(R.string.dhis_password), this.password);
+        }
         editor.commit();
+    }
+
+    private SharedPreferences.Editor getPreferencesEditor() {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        return sharedPreferences.edit();
     }
 
 }

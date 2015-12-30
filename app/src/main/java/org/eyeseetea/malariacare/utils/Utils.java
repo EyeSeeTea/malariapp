@@ -19,21 +19,35 @@
 
 package org.eyeseetea.malariacare.utils;
 
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
+
 import com.raizlabs.android.dbflow.structure.BaseModel;
 
+import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.model.CompositeScore;
 import org.eyeseetea.malariacare.database.model.Header;
 import org.eyeseetea.malariacare.database.model.Question;
 import org.eyeseetea.malariacare.database.model.Tab;
+import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.Session;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.math.BigDecimal;
+import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class Utils {
 
@@ -63,7 +77,19 @@ public class Utils {
 
         return result;
     }
+    public static List<Object> convertPictureTabToArrayCustom(Tab tab) {
+        List<Object> result = new ArrayList<Object>();
 
+        for (Header header : tab.getHeaders()) {
+            result.add(header);
+            for (Question question : header.getQuestions()) {
+                if (question.hasChildren())
+                    result.add(question);
+            }
+        }
+
+        return result;
+    }
     public static List<? extends BaseModel> preloadTabItems(Tab tab){
         List<? extends BaseModel> items = Session.getTabsCache().get(tab.getId_tab());
 
@@ -96,6 +122,143 @@ public class Utils {
         }
 
         return stringBuilder;
+    }
+    public static List<Object> convertTabToArray(Tab tab) {
+        List<Object> result = new ArrayList<Object>();
+
+        for (Header header : tab.getHeaders()) {
+            result.add(header);
+            for (Question question : header.getQuestions())
+                result.add(question);
+
+        }
+        return result;
+    }
+
+    //From pictureapp, logic to ban
+
+    /**
+     * returns the system data and the event data difference in hours
+     * @param limit is the time in hours
+     * @param date is the Date to compare with system Date
+     * @return if the difference is up than the time in hours
+     * @throws Exception
+     */
+    public static boolean isDateOverLimit(Calendar date,int limit) {
+        Calendar sysDate = Calendar.getInstance();
+        sysDate.setTime(new Date());
+        if(differenceInHours((Date) sysDate.getTime(), (Date) date.getTime())<limit){
+            return false;
+        }
+        else
+            return true;
+    }
+    /**
+     * returns the system data and the event data difference in hours
+     * @param limit is the time in hours
+     * @param surveyDate is the Date to compare with nextDate
+     * @param nextDate is the Date to compare with surveyDate
+     * @return if the difference is up than the time in hours
+     * @throws Exception
+     */
+    public static boolean isDateOverLimit(Calendar surveyDate,Calendar nextDate,int limit) {
+        Calendar sysDate = Calendar.getInstance();
+        sysDate.setTime(new Date());
+        int difference=differenceInHours((Date) nextDate.getTime(), (Date) surveyDate.getTime());
+        if(difference>=0 && difference<limit){
+            return false;
+        }
+        else
+            return true;
+    }
+
+    //Check if the provided date is under the system data.
+    public static boolean isDateOverSystemDate(Calendar closedDate) {
+        if(closedDate!=null) {
+            Calendar sysDate = Calendar.getInstance();
+            sysDate.setTime(new Date());
+            if (sysDate.after(closedDate)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public static int differenceInHours(Date higherData, Date minisData) {
+        long differenceInMs = higherData.getTime() - minisData.getTime();
+        long hours = differenceInMs / (1000 * 60 * 60);
+        return (int) hours;
+    }
+
+    public static Calendar parseStringToCalendar(String datestring){
+        Calendar date = Calendar.getInstance();
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
+        try {
+            date.setTime(format.parse(datestring));// all done
+        } catch (ParseException e) {
+            date=null;
+            e.printStackTrace();
+        }
+        return date;
+    }
+
+    public static String getClosingDateString(String format){
+        Calendar sysDate = Calendar.getInstance();
+        sysDate.setTime(new Date());
+        sysDate.set(Calendar.HOUR, sysDate.get(Calendar.HOUR) - 24);
+        SimpleDateFormat formated = new SimpleDateFormat(format);
+        String dateFormatted = formated.format(sysDate.getTime());
+        return dateFormatted;
+    }
+
+    public static Timestamp getClosingDateTimestamp(String format){
+        Calendar sysDate = Calendar.getInstance();
+        sysDate.setTime(new Date());
+        sysDate.set(Calendar.HOUR, sysDate.get(Calendar.HOUR) - 24);
+        Timestamp timestamp=new Timestamp(sysDate.getTime().getTime());
+        return timestamp;
+    }
+    public static String geTodayDataString(String format){
+        Calendar sysDate = Calendar.getInstance();
+        sysDate.setTime(new Date());
+        SimpleDateFormat formated = new SimpleDateFormat(format);
+        String dateFormatted = formated.format(sysDate.getTime());
+        return dateFormatted;
+    }
+    public static Calendar DateToCalendar(Date date){
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        return cal;
+    }
+    /**
+     * Get a JSONArray and returns a String array from a key value()
+     * @param value is the key in the first level.
+     * @param json is JSONArray
+     * @throws Exception
+     */
+    public static String[] jsonArrayToStringArray(JSONArray json,String value) {
+        int size=0;
+        for (int i = 0; i < json.length(); ++i) {
+            JSONObject row = null;
+            try {
+                row = json.getJSONObject(i);
+                if(row.getString(value)!=null)
+                    size++;
+            } catch (JSONException e) {
+            }
+        }
+        int position=0;
+        String[] strings=new String[size];
+        for (int i = 0; i < json.length(); ++i) {
+            JSONObject row = null;
+            try {
+                row = json.getJSONObject(i);
+                if(row.getString(value)!=null)
+                    strings[position++] = row.getString(value);
+            } catch (JSONException e) {
+            }
+        }
+        return strings;
     }
 
 }
