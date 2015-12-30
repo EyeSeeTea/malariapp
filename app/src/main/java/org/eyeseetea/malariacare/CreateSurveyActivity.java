@@ -170,7 +170,6 @@ public class CreateSurveyActivity extends BaseActivity {
                 tempListOrgUnits=lastOrgUnit.getUid();
         //Load the lastorgUnit/firstOrgUnit(if we have orgUnitLevels).
         if(!tempListOrgUnits.equals("")){
-
             String[] list=tempListOrgUnits.split(SEPARECHAR);
             if(list.length>0){
                 try {
@@ -186,6 +185,8 @@ public class CreateSurveyActivity extends BaseActivity {
         }
         else if(lastOrgUnit!=null)
             orgUnitView.setSelection(getIndex(orgUnitView, lastOrgUnit.getName()));
+
+        //Uncoment to remember the tabgroup and program.
         //if(lastTabGroup!=null)
            // programView.setSelection(getIndex(programView, lastTabGroup.getProgram().getName()));
        // if(lastTabGroup!=null)
@@ -371,28 +372,27 @@ public class CreateSurveyActivity extends BaseActivity {
         public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
 
             OrgUnit selectedOrgUnit = (OrgUnit) ((Spinner)viewHolder.component).getItemAtPosition(pos);
-            //save selected items (If the orgUnit has not child, is the parent).
+
 
             realOrgUnitView = ((Spinner) viewHolder.component);
             selectedOrgUnit=(OrgUnit) realOrgUnitView.getSelectedItem();
+            //save selected items (If the orgUnit has not child, is the parent).
             if(selectedOrgUnit!=null)
             if(selectedOrgUnit.getUid()!=null && selectedOrgUnit.getChildren().isEmpty() && selectedOrgUnit.getOrgUnit()==null){
                 lastOrgUnit=selectedOrgUnit;
                 lastOrgUnits=SEPARECHAR;
             }
             else if(selectedOrgUnit.getOrgUnit()==null && selectedOrgUnit.getUid()!=null){
-                Log.d(TAG,"padre "+selectedOrgUnit.getUid());
+                //parent
                 lastOrgUnits = selectedOrgUnit.getUid();
             }
             else if(selectedOrgUnit.getUid()!=null) {
-                Log.d(TAG,"read "+selectedOrgUnit.getUid());
                 if (lastOrgUnits == null) {
                     lastOrgUnits = selectedOrgUnit.getUid();
                 } else if (!lastOrgUnits.contains(selectedOrgUnit.getUid())) {
                     lastOrgUnits = lastOrgUnits + SEPARECHAR + selectedOrgUnit.getUid();
                 }
             }
-            Log.d(TAG,"estado lista"+lastOrgUnits);
             // Populate child view. If it exists in org unit map, grab it; otherwise inflate it
             List<OrgUnit> orgUnitList = selectedOrgUnit.getChildren();
 
@@ -410,7 +410,7 @@ public class CreateSurveyActivity extends BaseActivity {
                 spinner.setOnItemSelectedListener(new OrgUnitSpinnerListener(subViewHolder));
 
                 //If the orgUnit had OrgUnit levels, it should be load one - to -one.
-                Log.d(TAG,"temporal list "+tempListOrgUnits);
+                //Select the saved orgUnitTree
                 if(!tempListOrgUnits.equals("")){
 
                     String[] list=tempListOrgUnits.split(SEPARECHAR);
@@ -488,6 +488,7 @@ public class CreateSurveyActivity extends BaseActivity {
                 lastOrgUnits = lastOrgUnits.replaceFirst(SEPARECHAR, "");
                 lastOrgUnits = lastOrgUnits.replace(SEPARECHAR + SEPARECHAR, SEPARECHAR);
             }
+            //remove the repeat uid.
             lastOrgUnits=lastOrgUnits.replace(lastOrgUnit.getUid()+SEPARECHAR + lastOrgUnit.getUid(),lastOrgUnit.getUid());
             Log.d(TAG, "save:" + lastOrgUnits+"finish");
             saveOrgUnitList(lastOrgUnits);
