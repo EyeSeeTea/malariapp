@@ -232,5 +232,7 @@
     <string name="dialog_push_success">Encuestra correctamente subida al servidor Dhis</string>
     <string name="progress_push_no_survey">No hay encuesta para subir</string>
     <string name="dialog_push_before_pull_success">Encuestas correctamente subidas al servidor Dhis, inicializando actualización de metadatos</string>
-
+    <string name="option_edit">Editar</string>
+    <string name="option_mark_completed">Marcar como completa</string>
+    <string name="option_delete">Borrar</string>
 </resources>
