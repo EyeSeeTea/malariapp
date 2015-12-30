@@ -47,8 +47,8 @@ import java.util.List;
 /**
  * Created by ignac on 21/12/2015.
  */
-public class PrepareData {
-    private static final String TAG = ".PrepareData";
+public class PushUtils {
+    private static final String TAG = ".PushUtils";
     private static String COMPLETED = "COMPLETED";
 
     private static String TAG_PROGRAM = "program";
@@ -60,35 +60,24 @@ public class PrepareData {
     private static String TAG_COORDINATE_LAT = "latitude";
     private static String TAG_COORDINATE_LNG = "longitude";
 
-
-    private static final String DHIS_PATCH_DESCRIPTIONCLOSED_DATE = "[%s] - Android Surveillance App set the closing date to %s because over 30 surveys were pushed within 1 hour.";
-
-    private static String DHIS_ANALYTICS_CONTROL_DATA = "/api/analytics/events/query/";
-    private static String DHIS_PUSH_CONTROL_DATA = "/api/events/";
-
-
     private static String TAG_DATAVALUES = "dataValues";
     private static String TAG_DATAELEMENT = "dataElement";
     private static String TAG_VALUE = "value";
-    private static String TAG_PHONEMETADA = "RuNZUhiAmlv";
-
-    private static final String TAG_CLOSEDATA = "closedDate";
-    private static final String TAG_DESCRIPTIONCLOSEDATA = "description";
 
     /**
      * Singleton reference
      */
-    private static PrepareData instance;
+    private static PushUtils instance;
 
     static Context applicationContext;
 
-    public PrepareData(Context applicationContext) {
+    public PushUtils(Context applicationContext) {
         this.applicationContext = applicationContext;
     }
 
-    public static PrepareData getInstance() {
+    public static PushUtils getInstance() {
         if (instance == null) {
-            instance = new PrepareData(PreferencesState.getInstance().getContext());
+            instance = new PushUtils(PreferencesState.getInstance().getContext());
         }
         return instance;
     }
@@ -124,21 +113,6 @@ public class PrepareData {
         return object;
     }
 
-    /**
-     * Adds a pair dataElement|value according to the passed value.
-     * Format: {dataValues: [{dataElement:'234567',value:'34'}, ...]}
-     *
-     * @param value
-     * @return
-     * @throws Exception
-     */
-    public JSONObject preparePhoneValue(String uid, String value) throws Exception {
-        JSONObject elementObject = new JSONObject();
-        elementObject.put(TAG_DATAELEMENT, uid);
-        elementObject.put(TAG_VALUE, value);
-        return elementObject;
-    }
-
     private JSONObject prepareCoordinates(Location location) throws Exception {
 
         JSONObject coordinate = new JSONObject();
@@ -161,8 +135,8 @@ public class PrepareData {
      * @param data JSON object to update
      * @throws Exception
      */
-    public JSONObject prepareDataElements(JSONObject data, Survey survey) throws Exception {
-        Log.d(TAG, "prepareDataElements for survey: " + survey.getId_survey());
+    public JSONObject PushUtilsElements(JSONObject data, Survey survey) throws Exception {
+        Log.d(TAG, "PushUtilsElements for survey: " + survey.getId_survey());
 
         //Add dataElement per values
         //TODO: This should be removed once DHIS bug is solved
@@ -174,53 +148,8 @@ public class PrepareData {
         values = prepareCompositeScores(values, survey);
 
         data.put(TAG_DATAVALUES, values);
-        Log.d(TAG, "prepareDataElements result: " + data.toString());
+        Log.d(TAG, "PushUtilsElements result: " + data.toString());
         return data;
-    }
-
-    /**
-     * Adds 4 additional values:
-     * - Main score
-     * - Boolean flag is type A
-     * - Boolean flag is type B
-     * - Boolean flag is type C
-     *
-     * @param values
-     * @return
-     */
-    public JSONArray prepareControlDataElementValues(JSONArray values, Survey survey) throws Exception {
-        JSONObject dataElement;
-        //Main score
-        dataElement = new JSONObject();
-        dataElement.put(TAG_DATAELEMENT, applicationContext.getString(R.string.main_score));
-        dataElement.put(TAG_VALUE, survey.getType());
-        values.put(dataElement);
-
-        //Type A
-        dataElement = new JSONObject();
-        dataElement.put(TAG_DATAELEMENT, applicationContext.getString(R.string.main_score_a));
-        dataElement.put(TAG_VALUE, survey.isTypeA() ? "true" : "false");
-        values.put(dataElement);
-
-        //Type B
-        dataElement = new JSONObject();
-        dataElement.put(TAG_DATAELEMENT, applicationContext.getString(R.string.main_score_b));
-        dataElement.put(TAG_VALUE, survey.isTypeB() ? "true" : "false");
-        values.put(dataElement);
-
-        //Type C
-        dataElement = new JSONObject();
-        dataElement.put(TAG_DATAELEMENT, applicationContext.getString(R.string.main_score_c));
-        dataElement.put(TAG_VALUE, survey.isTypeC() ? "true" : "false");
-        values.put(dataElement);
-
-        //Forward Order
-        dataElement = new JSONObject();
-        dataElement.put(TAG_DATAELEMENT, applicationContext.getString(R.string.forward_order));
-        dataElement.put(TAG_VALUE, applicationContext.getString(R.string.forward_order_value));
-        values.put(dataElement);
-
-        return values;
     }
 
     /**
@@ -303,21 +232,6 @@ public class PrepareData {
         elementObject.put(TAG_DATAELEMENT, compositeScore.getUid());
         elementObject.put(TAG_VALUE, Utils.round(ScoreRegister.getCompositeScore(compositeScore)));
         return elementObject;
-    }
-
-    public void prepareSurveyCompletionDate(Survey survey) {
-        if (!survey.isSent()) {
-            survey.setCompletionDate(new Date());
-            survey.save();
-        }
-    }
-
-
-    public void updateSurveyState(Survey survey){
-        //Change status and save mainScore
-        survey.setStatus(Constants.SURVEY_SENT);
-            survey.save();
-            survey.saveMainScore();
     }
 
 }

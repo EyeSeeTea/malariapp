@@ -113,16 +113,16 @@ public class PushClient {
         try{
             //TODO: This should be removed once DHIS bug is solved
             //Map<String, JSONObject> controlData = prepareControlData();
-            PrepareData.getInstance().prepareSurveyCompletionDate(survey);
-            JSONObject data = PrepareData.getInstance().prepareMetadata(survey);
+            PushUtils.getInstance().prepareSurveyCompletionDate(survey);
+            JSONObject data = PushUtils.getInstance().prepareMetadata(survey);
             //TODO: This should be removed once DHIS bug is solved
-            //data = prepareDataElements(data, controlData.get(""));
-            data = PrepareData.getInstance().prepareDataElements(data, survey);
+            //data = PushUtilsElements(data, controlData.get(""));
+            data = PushUtils.getInstance().PushUtilsElements(data, survey);
             pushResult = new PushResult(pushData(data));
             if(pushResult.isSuccessful() && !pushResult.getImported().equals("0")){
                 //TODO: This should be removed once DHIS bug is solved
                 //pushControlDataElements(controlData);
-                PrepareData.getInstance().updateSurveyState(survey);
+                PushUtils.getInstance().updateSurveyState(survey);
             }
         }catch(Exception ex){
             Log.e(TAG, ex.getMessage());
