@@ -250,51 +250,9 @@ public class DashboardUnsentFragment extends ListFragment {
 
         listView.setLongClickable(true);
 
-        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
-
-                new AlertDialog.Builder(getActivity())
-                        .setTitle(getActivity().getString(R.string.dialog_title_send_preview))
-                        .setMessage(getActivity().getString(R.string.dialog_content_send_preview))
-                        .setPositiveButton(getActivity().getString(R.string.send), new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface arg0, int arg1) {
-                                new AlertDialog.Builder(getActivity())
-                                        .setTitle(getActivity().getString(R.string.dialog_title_push_data))
-                                        .setMessage(getActivity().getString(R.string.dialog_content_push_data))
-                                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                                            public void onClick(DialogInterface arg0, int arg1) {
-                                                // We launch the login system, to authorize the push
-                                                launchPush(position);
-                                            }
-                                        })
-                                        .setNegativeButton(android.R.string.no, null).create().show();
-                            }
-                        })
-                        .setNegativeButton(android.R.string.cancel, null)
-                        .create().show();
-
-
-                return true;
-            }
-        });
-
         Session.listViewUnsent = listView;
     }
 
-    private void launchPush(int position){
-        //Get survey from position
-        final Survey survey = (Survey) adapter.getItem(position - 1);
-        Session.setSurvey(survey);
-
-        //Pushing selected survey via sdk
-        Intent progressActivityIntent = new Intent(getActivity(), ProgressActivity.class);
-        progressActivityIntent.putExtra(ProgressActivity.AFTER_ACTION,ProgressActivity.SHOW_FEEDBACK);
-        progressActivityIntent.putExtra(ProgressActivity.TYPE_OF_ACTION,ProgressActivity.ACTION_PUSH);
-
-        getActivity().finish();
-        startActivity(progressActivityIntent);
-    }
 
 
     /**
