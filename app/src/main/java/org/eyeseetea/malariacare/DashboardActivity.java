@@ -21,6 +21,7 @@ package org.eyeseetea.malariacare;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.app.ListFragment;
 import android.app.LocalActivityManager;
@@ -94,17 +95,20 @@ public class DashboardActivity extends BaseActivity {
             @Override
             public void onTabChanged(String tabId) {
                 /** If current tab is android */
-                if(tabId.equalsIgnoreCase("tab_improve")){
+                if (tabId.equalsIgnoreCase("tab_improve")) {
                     unsentFragment.reloadUncompletedUnsentSurveys();
-                }else if(tabId.equalsIgnoreCase("tab_assess")){
+                } else if (tabId.equalsIgnoreCase("tab_assess")) {
                     sentFragment.reloadSentSurveys();
-                }else if(tabId.equalsIgnoreCase("tab_plan")){
+                } else if (tabId.equalsIgnoreCase("tab_plan")) {
                     //tab_plan on click code
-                }else if(tabId.equalsIgnoreCase("tab_monitor")){
+                } else if (tabId.equalsIgnoreCase("tab_monitor")) {
                     monitorFragment.reloadSentSurveys();
                 }
             }
         });
+        for(int i=0;i<tabHost.getTabWidget().getChildCount();i++){
+            tabHost.getTabWidget().getChildAt(i).setFocusable(false);
+        }
         setActionbarTitle();
     }
 
@@ -145,9 +149,18 @@ public class DashboardActivity extends BaseActivity {
     }
 
     public void initMonitor(){
-        monitorFragment = new MonitorFragment();
-        monitorFragment.setArguments(getIntent().getExtras());
-        setFragmentTransaction(R.id.dashboard_charts_container, monitorFragment);
+        int mStackLevel=0;
+        mStackLevel++;
+
+        monitorFragment = MonitorFragment.newInstance(mStackLevel);
+
+        // Add the fragment to the activity, pushing this transaction
+        // on to the back stack.
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        ft.replace(R.id.dashboard_charts_container, monitorFragment);
+        ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+        ft.addToBackStack(null);
+        ft.commit();
     }
 
 
