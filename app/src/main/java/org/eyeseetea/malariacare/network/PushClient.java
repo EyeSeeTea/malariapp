@@ -19,10 +19,11 @@
 
 package org.eyeseetea.malariacare.network;
 
-import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.location.Location;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
@@ -49,6 +50,7 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.net.Proxy;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -61,52 +63,66 @@ public class PushClient {
 
     private static String DHIS_PUSH_API="/api/events";
 
-    private static String DHIS_ANALYTICS_CONTROL_DATA ="/api/analytics/events/query/";
-    private static String DHIS_PUSH_CONTROL_DATA ="/api/events/";
+    private static String DHIS_SERVER ="https://www.psi-mis.org";
+
+    public static String DHIS_UID_PROGRAM="";
+
+    public static String DHIS_ORG_NAME ="";
+    private static String DHIS_ORG_UID ="";
+
+
 
     public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
 
-    private static String COMPLETED="COMPLETED";
 
-    private static String TAG_PROGRAM="program";
-    private static String TAG_ORG_UNIT="orgUnit";
-    private static String TAG_EVENTDATE="eventDate";
-    private static String TAG_STATUS="status";
-    private static String TAG_STOREDBY="storedBy";
-    private static String TAG_COORDINATE="coordinate";
-    private static String TAG_COORDINATE_LAT="latitude";
-    private static String TAG_COORDINATE_LNG="longitude";
-    private static String TAG_DATAVALUES="dataValues";
-    private static String TAG_DATAELEMENT="dataElement";
-    private static String TAG_VALUE="value";
+
+//PictureQuestion
+
 
     Survey survey;
-    Activity activity;
     String user;
     String password;
+    Context applicationContext;
 
-    public PushClient(Survey survey, Activity activity, String user, String password) {
+    public PushClient(Survey survey, Context applicationContext, String user, String password) {
         this.survey = survey;
-        this.activity = activity;
+        this.applicationContext = applicationContext;
         this.user = user;
         this.password = password;
+        DHIS_UID_PROGRAM=survey.getTabGroup().getProgram().getUid();
+        DHIS_ORG_NAME=survey.getOrgUnit().getName();
+        DHIS_ORG_UID=survey.getOrgUnit().getUid();
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(applicationContext);
+        DHIS_SERVER =sharedPreferences.getString(applicationContext.getResources().getString(R.string.dhis_url),"");
+        Log.d(TAG,"User: "+this.user+" Program: "+DHIS_UID_PROGRAM+" OrgUnit:"+DHIS_ORG_NAME+"OrgUnitUid:"+DHIS_ORG_UID+"Survey:"+survey.getId_survey());
     }
 
-    public PushResult push() {
+    public PushClient(Context applicationContext) {
+        this.applicationContext = applicationContext;
+    }
+
+    public PushResult pushBackground() {
+        if (isNetworkAvailable()) {
+                return malariappPush();
+        }
+        return new PushResult();
+    }
+
+    public PushResult malariappPush() {
         PushResult pushResult;
         try{
             //TODO: This should be removed once DHIS bug is solved
             //Map<String, JSONObject> controlData = prepareControlData();
-            prepareSurveyCompletionDate();
-            JSONObject data = prepareMetadata();
+            survey.prepareSurveyCompletionDate();
+            JSONObject data = PushUtils.getInstance().prepareMetadata(survey);
             //TODO: This should be removed once DHIS bug is solved
-            //data = prepareDataElements(data, controlData.get(""));
-            data = prepareDataElements(data, null);
+            //data = PushUtilsElements(data, controlData.get(""));
+            data = PushUtils.getInstance().PushUtilsElements(data, survey);
             pushResult = new PushResult(pushData(data));
             if(pushResult.isSuccessful() && !pushResult.getImported().equals("0")){
                 //TODO: This should be removed once DHIS bug is solved
                 //pushControlDataElements(controlData);
-                updateSurveyState();
+                survey.updateSurveyState();
             }
         }catch(Exception ex){
             Log.e(TAG, ex.getMessage());
@@ -119,222 +135,57 @@ public class PushClient {
         return  pushResult;
     }
 
-    public void prepareSurveyCompletionDate(){
-        if(!this.survey.isSent()) {
-            this.survey.setCompletionDate(new Date());
-            this.survey.save();
-        }
-    }
-
-    public void updateSurveyState(){
-        //Change status and save mainScore
-        this.survey.setStatus(Constants.SURVEY_SENT);
-        this.survey.saveMainScore();
-    }
-
-    public void updateDashboard(){
-        //Reload data using service
-        Intent surveysIntent=new Intent(activity, SurveyService.class);
-        surveysIntent.putExtra(SurveyService.SERVICE_METHOD, SurveyService.RELOAD_DASHBOARD_ACTION);
-        activity.startService(surveysIntent);
-    }
-
-    /**
-     * Adds metadata info to json object
-     * @return JSONObject with program, orgunit, eventdate and so on...
-     * @throws Exception
-     */
-    private JSONObject prepareMetadata() throws Exception{
-        Log.d(TAG, "prepareMetadata for survey: " + survey.getId_survey());
-        JSONObject object=new JSONObject();
-        object.put(TAG_PROGRAM, survey.getTabGroup().getProgram().getUid());
-        object.put(TAG_ORG_UNIT, survey.getOrgUnit().getUid());
-        object.put(TAG_EVENTDATE, android.text.format.DateFormat.format("yyyy-MM-dd", survey.getCompletionDate()));
-        object.put(TAG_STATUS,COMPLETED );
-        object.put(TAG_STOREDBY, survey.getUser().getName());
-
-        Location lastLocation = LocationMemory.get(survey.getId_survey());
-        //If location is required but there is no location -> exception
-        if(PreferencesState.getInstance().isLocationRequired() && lastLocation==null){
-            throw new Exception(activity.getString(R.string.dialog_error_push_no_location_and_required));
-        }
-        //Otherwise (not required or there are coords)
-        object.put(TAG_COORDINATE, prepareCoordinates(lastLocation));
-
-        Log.d(TAG, "prepareMetadata: " + object.toString());
-        return object;
-    }
-
-    private JSONObject prepareCoordinates(Location location) throws Exception{
-
-        JSONObject coordinate = new JSONObject();
-
-        if(location==null){
-            coordinate.put(TAG_COORDINATE_LAT, JSONObject.NULL);
-            coordinate.put(TAG_COORDINATE_LNG, JSONObject.NULL);
-        }else{
-            coordinate.put(TAG_COORDINATE_LAT, location.getLatitude());
-            coordinate.put(TAG_COORDINATE_LNG, location.getLongitude());
-        }
-
-        return coordinate;
-    }
-
-    /**
-     * Adds questions and scores values to the JSON object
-     * Format: {dataValues: [{dataElement:'234567',value:'34'}, ...]}
-     * @param data JSON object to update
-     * @throws Exception
-     */
-    private JSONObject prepareDataElements(JSONObject data, JSONObject controlDataElements)throws Exception{
-        Log.d(TAG, "prepareDataElements for survey: " + survey.getId_survey());
-
-        //Add dataElement per values
-        //TODO: This should be removed once DHIS bug is solved
-        //JSONArray values=prepareValues(new JSONArray(), controlDataElements.getJSONArray("root"));
-        JSONArray values=prepareValues(new JSONArray(), null);
-
-        //Add dataElement per compositeScores
-        values=prepareCompositeScores(values);
-
-        //Add main scores values
-        values= prepareControlDataElementValues(values);
-
-        data.put(TAG_DATAVALUES, values);
-        Log.d(TAG, "prepareDataElements result: " + data.toString());
-        return data;
-    }
-
-    /**
-     * Adds 4 additional values:
-     *  - Main score
-     *  - Boolean flag is type A
-     *  - Boolean flag is type B
-     *  - Boolean flag is type C
-     * @param values
-     * @return
-     */
-    private JSONArray prepareControlDataElementValues(JSONArray values) throws Exception{
-        JSONObject dataElement;
-        //Main score
-        dataElement = new JSONObject();
-        dataElement.put(TAG_DATAELEMENT, activity.getString(R.string.main_score));
-        dataElement.put(TAG_VALUE, survey.getType());
-        values.put(dataElement);
-
-        //Type A
-        dataElement = new JSONObject();
-        dataElement.put(TAG_DATAELEMENT, activity.getString(R.string.main_score_a));
-        dataElement.put(TAG_VALUE, survey.isTypeA() ? "true" : "false");
-        values.put(dataElement);
-
-        //Type B
-        dataElement = new JSONObject();
-        dataElement.put(TAG_DATAELEMENT, activity.getString(R.string.main_score_b));
-        dataElement.put(TAG_VALUE, survey.isTypeB() ? "true" : "false");
-        values.put(dataElement);
-
-        //Type C
-        dataElement = new JSONObject();
-        dataElement.put(TAG_DATAELEMENT, activity.getString(R.string.main_score_c));
-        dataElement.put(TAG_VALUE, survey.isTypeC() ? "true" : "false");
-        values.put(dataElement);
-
-        //Forward Order
-        dataElement = new JSONObject();
-        dataElement.put(TAG_DATAELEMENT, activity.getString(R.string.forward_order));
-        dataElement.put(TAG_VALUE, activity.getString(R.string.forward_order_value));
-        values.put(dataElement);
-
-        return values;
-    }
-
-    /**
-     * Add a dataElement per value (answer)
-     * @param values
-     * @return
-     * @throws Exception
-     */
-    private JSONArray prepareValues(JSONArray values,JSONArray controlDataElements) throws Exception{
-        List<Value> surveyValues=survey.getValues();
-        if(surveyValues==null || surveyValues.size()==0){
-            throw new Exception(activity.getString(R.string.dialog_info_push_empty_survey));
-        }
-
-        for (Value value : surveyValues) {
-            values.put(prepareValue(value));
-        }
-
-        //TODO: This should be removed once DHIS bug is solved
-        if (controlDataElements != null) {
-            for (int i = 0; i < controlDataElements.length(); i++) {
-                values.put(controlDataElements.get(i));
-            }
-        }
-        return values;
-    }
-
-    private JSONArray prepareCompositeScores(JSONArray values) throws Exception{
-
-        //Prepare scores info
-        List<CompositeScore> compositeScoreList=ScoreRegister.loadCompositeScores(survey);
-
-        //Calculate main score to push later
-        survey.setMainScore(ScoreRegister.calculateMainScore(compositeScoreList));
-
-        //1 CompositeScore -> 1 dataValue
-        for(CompositeScore compositeScore:compositeScoreList){
-            values.put(prepareValue(compositeScore));
-        }
-        return values;
-    }
-
-    /**
-     * Adds a pair dataElement|value according to the passed value.
-     * Format: {dataValues: [{dataElement:'234567',value:'34'}, ...]}
-     * @param value
-     * @return
-     * @throws Exception
-     */
-    private JSONObject prepareValue(Value value) throws Exception{
-        JSONObject elementObject = new JSONObject();
-        elementObject.put(TAG_DATAELEMENT, value.getQuestion().getUid());
-
-        if (value.getOption()!=null)
-            elementObject.put(TAG_VALUE, value.getOption().getCode());
-        else
-            elementObject.put(TAG_VALUE, value.getValue());
-
-        return elementObject;
-    }
-
-    /**
-     * Adds a pair dataElement|value according to the 'compositeScore' of the value.
-     * Format: {dataValues: [{dataElement:'234567',value:'34'}, ...]}
-     * @param compositeScore
-     * @return
-     * @throws Exception
-     */
-    private JSONObject prepareValue(CompositeScore compositeScore) throws Exception{
-        JSONObject elementObject = new JSONObject();
-        elementObject.put(TAG_DATAELEMENT, compositeScore.getUid());
-        elementObject.put(TAG_VALUE, Utils.round(ScoreRegister.getCompositeScore(compositeScore)));
-        return elementObject;
-    }
-
     /**
      * Pushes data to DHIS Server
      * @param data
      */
     private JSONObject pushData(JSONObject data)throws Exception {
+        Response response = null;
 
-        Response response = executeCall(data, DHIS_PUSH_API, "POST");
+        final String DHIS_URL = getDhisURL()+DHIS_PUSH_API;
 
-        if(!response.isSuccessful()){
-            Log.e(TAG, "pushData (" + response.code()+"): "+response.body().string());
+        OkHttpClient client = UnsafeOkHttpsClientFactory.getUnsafeOkHttpClient();
+
+        BasicAuthenticator basicAuthenticator = new BasicAuthenticator();
+        client.setAuthenticator(basicAuthenticator);
+
+        Log.d(TAG, "Url" + DHIS_URL + "");
+        RequestBody body = RequestBody.create(JSON, data.toString());
+        Request request = new Request.Builder()
+                .header(basicAuthenticator.AUTHORIZATION_HEADER, basicAuthenticator.getCredentials())
+                .url(DHIS_URL)
+                .post(body)
+                .build();
+
+        response = client.newCall(request).execute();
+        if (!response.isSuccessful()) {
+            Log.e(TAG, "pushData (" + response.code() + "): " + response.body().string());
             throw new IOException(response.message());
         }
-        return parseResponse(response.body().string());
+        return  parseResponse(response.body().string());
+    }
+
+    public void updateDashboard(){
+        //Reload data using service
+        Intent surveysIntent=new Intent(applicationContext, SurveyService.class);
+        surveysIntent.putExtra(SurveyService.SERVICE_METHOD, SurveyService.RELOAD_DASHBOARD_ACTION);
+        applicationContext.startService(surveysIntent);
+    }
+
+    /**
+     * This method check the org_unit not is invalid, and is not banned, and later check if the server is valid.
+     * @return return true if all is correct.
+     */
+    public boolean isNetworkAvailable(){
+        ConnectivityManager conMgr = (ConnectivityManager) applicationContext.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo i = conMgr.getActiveNetworkInfo();
+        if (i == null)
+            return false;
+        if (!i.isConnected())
+            return false;
+        if (!i.isAvailable())
+            return false;
+        return true;
     }
 
     /**
@@ -343,8 +194,8 @@ public class PushClient {
      * @param url
      */
     private Response executeCall(JSONObject data, String url, String method) throws IOException {
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(activity);
-        final String DHIS_URL=sharedPreferences.getString(activity.getString(R.string.dhis_url), activity.getString(R.string.login_info_dhis_default_server_url)) + url;
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(applicationContext);
+        final String DHIS_URL=sharedPreferences.getString(applicationContext.getString(R.string.dhis_url), applicationContext.getString(R.string.login_info_dhis_default_server_url)) + url;
 
         OkHttpClient client= UnsafeOkHttpsClientFactory.getUnsafeOkHttpClient();
 
@@ -364,6 +215,10 @@ public class PushClient {
                 RequestBody putBody = RequestBody.create(JSON, data.toString());
                 builder.put(putBody);
                 break;
+            case "PATCH":
+                RequestBody patchBody = RequestBody.create(JSON, data.toString());
+                builder.patch(patchBody);
+                break;
             case "GET":
                 builder.get();
                 break;
@@ -379,8 +234,13 @@ public class PushClient {
             Log.i(TAG, "parseResponse: " + jsonResponse);
             return jsonResponse;
         }catch(Exception ex){
-            throw new Exception(activity.getString(R.string.dialog_info_push_bad_credentials));
+            throw new Exception(applicationContext.getString(R.string.dialog_info_push_bad_credentials));
         }
+    }
+
+    public String getDhisURL() {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(applicationContext);
+        return sharedPreferences.getString(applicationContext.getResources().getString(R.string.dhis_url),"");
     }
 
     /**
@@ -413,7 +273,6 @@ public class PushClient {
         public String getCredentials(){
             return credentials;
         }
-
 
     }
 

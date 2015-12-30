@@ -38,7 +38,8 @@ public class Constants {
     // ############# SURVEY STATUS ###############
     public static final int SURVEY_IN_PROGRESS = 0,
             SURVEY_COMPLETED = 1,
-            SURVEY_SENT = 2;
+            SURVEY_SENT = 2,
+            SURVEY_HIDE = 3;
 
     //############# OPERATION TYPE ##############
     public static final int OPERATION_TYPE_MATCH = 0,
