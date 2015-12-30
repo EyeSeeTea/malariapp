@@ -595,6 +595,22 @@ public class Survey extends BaseModel implements VisitableToSDK {
                 .orderBy(Survey$Table.EVENTDATE)
                 .orderBy(Survey$Table.ID_ORG_UNIT).queryList();
     }
+
+
+    public void prepareSurveyCompletionDate() {
+        if (!isSent()) {
+            setCompletionDate(new Date());
+            save();
+        }
+    }
+
+    public void updateSurveyState(){
+        //Change status and save mainScore
+        setStatus(Constants.SURVEY_SENT);
+        save();
+        saveMainScore();
+    }
+
     @Override
     public void accept(IConvertToSDKVisitor IConvertToSDKVisitor) throws Exception{
         IConvertToSDKVisitor.visit(this);

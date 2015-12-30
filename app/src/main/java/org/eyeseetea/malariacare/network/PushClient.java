@@ -113,7 +113,7 @@ public class PushClient {
         try{
             //TODO: This should be removed once DHIS bug is solved
             //Map<String, JSONObject> controlData = prepareControlData();
-            PushUtils.getInstance().prepareSurveyCompletionDate(survey);
+            survey.prepareSurveyCompletionDate();
             JSONObject data = PushUtils.getInstance().prepareMetadata(survey);
             //TODO: This should be removed once DHIS bug is solved
             //data = PushUtilsElements(data, controlData.get(""));
@@ -122,7 +122,7 @@ public class PushClient {
             if(pushResult.isSuccessful() && !pushResult.getImported().equals("0")){
                 //TODO: This should be removed once DHIS bug is solved
                 //pushControlDataElements(controlData);
-                PushUtils.getInstance().updateSurveyState(survey);
+                survey.updateSurveyState();
             }
         }catch(Exception ex){
             Log.e(TAG, ex.getMessage());
