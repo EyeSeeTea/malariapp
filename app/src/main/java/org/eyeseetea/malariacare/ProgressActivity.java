@@ -56,6 +56,10 @@ public class ProgressActivity extends Activity {
     public static final String TYPE_OF_ACTION="TYPE_OF_ACTION";
 
     /**
+     * Intent param that tells what do before push
+     */
+    public static final String AFTER_ACTION="AFTER_ACTION";
+    /**
      * To pull data from server
      */
     public static final int ACTION_PULL=0;
@@ -65,6 +69,15 @@ public class ProgressActivity extends Activity {
      */
     public static final int ACTION_PUSH=1;
 
+    /**
+     * To dont show the survey pushed feedback
+     */
+    public static final int DONT_SHOW_FEEDBACK = 1;
+
+    /**
+     * To show the survey pushed feedback
+     */
+    public static final int SHOW_FEEDBACK = 2;
     /**
      * To push every unsent data to server before pulling metadata
      */
@@ -113,6 +126,8 @@ public class ProgressActivity extends Activity {
             PULL_CANCEL = true;
             PULL_IS_ACTIVE = false;
             step(getBaseContext().getResources().getString(R.string.cancellingPull));
+            if(PullController.getInstance().finishPullJob())
+                finishAndGo(LoginActivity.class);
         }
     }
 
@@ -133,7 +148,10 @@ public class ProgressActivity extends Activity {
     public void onPause() {
         super.onPause();
         try {Dhis2Application.bus.unregister(this);}catch(Exception e){e.printStackTrace();}
-        finishAndGo(LoginActivity.class);
+        if(PULL_CANCEL==true)
+            finishAndGo(LoginActivity.class);
+        else
+            finishAndGo(DashboardActivity.class);
     }
 
     private void prepareUI(){
@@ -255,14 +273,42 @@ public class ProgressActivity extends Activity {
         final int msg=getDoneMessage();
 
         //Show message and go on -> pull or single push = dashboard | push before pull = start pull
-        new AlertDialog.Builder(this)
-                .setCancelable(false)
-                .setTitle(title)
-                .setMessage(msg)
-                .setNeutralButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+        Intent intent=getIntent();
+        //Not a pull -> is a Push
+        if(intent!=null && (intent.getIntExtra(ProgressActivity.AFTER_ACTION,ProgressActivity.DONT_SHOW_FEEDBACK)==ProgressActivity.SHOW_FEEDBACK)) {
+            new AlertDialog.Builder(this)
+                    .setCancelable(false)
+                    .setTitle(title)
+                    .setMessage(msg)
+                    .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface arg0, int arg1) {
+                            //Pull or Push(single)
+                            if ( !isAPush() || !hasAPullAfterPush()) {
+                                finishAndGo(DashboardActivity.class);
+                                return;
+                            } else {
+                                //Start pull after push
+                                pullAfterPushInProgress = true;
+                                launchPull();
+                                return;
+                            }
+                        }
+                    })
+                    .setNeutralButton(getApplicationContext().getResources().getString(R.string.dialog_button_preview_feedback), new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface arg0, int arg1) {
+                            //I try using a intent to feedbackactivity but the dashboardsActivity was reloaded from the service.
+                            DashboardActivity.viewFeedback=true;
+                            finishAndGo(DashboardActivity.class);
+                        }
+                    }).create().show();
+        } else {
+            new AlertDialog.Builder(this)
+                    .setCancelable(false)
+                    .setTitle(title)
+                    .setMessage(msg)
+                .setNeutralButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface arg0, int arg1) {
-                        //Pull or Push(single)
-                        if (msg == R.string.dialog_pull_success || msg == R.string.dialog_push_success) {
+                        if ( !isAPush() || !hasAPullAfterPush()) {
                             finishAndGo(DashboardActivity.class);
                             return;
                         } else {
@@ -273,6 +319,9 @@ public class ProgressActivity extends Activity {
                         }
                     }
                 }).create().show();
+
+
+        }
     }
 
     /**
@@ -318,9 +367,9 @@ public class ProgressActivity extends Activity {
         }
 
         //Check intent params
-        Intent i=getIntent();
+        Intent intent=getIntent();
         //Not a pull -> is a Push
-        return (i!=null && i.getIntExtra(TYPE_OF_ACTION,ACTION_PULL)!=ACTION_PULL);
+        return (intent!=null && intent.getIntExtra(TYPE_OF_ACTION,ACTION_PULL)!=ACTION_PULL);
     }
 
 
@@ -329,8 +378,8 @@ public class ProgressActivity extends Activity {
      * @return
      */
     private boolean hasAPullAfterPush(){
-        Intent i=getIntent();
-        return (i!=null && i.getIntExtra(TYPE_OF_ACTION,ACTION_PULL)==ACTION_PUSH_BEFORE_PULL);
+        Intent intent=getIntent();
+        return (intent!=null && intent.getIntExtra(TYPE_OF_ACTION,ACTION_PULL)==ACTION_PUSH_BEFORE_PULL);
     }
 
     private String getDialogTitle(boolean isAPush){

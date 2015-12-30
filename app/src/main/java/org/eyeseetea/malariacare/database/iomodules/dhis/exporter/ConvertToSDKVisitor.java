@@ -79,11 +79,6 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
      */
     Event currentEvent;
 
-    /**
-     * Timestamp that captures the moment when the survey is converted right before being sent
-     */
-    Date completionDate;
-
     ConvertToSDKVisitor(Context context){
         this.context=context;
         mainScoreUID=context.getString(R.string.main_score);
@@ -178,10 +173,14 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
      * Fulfills the dates of the event
      */
     private void updateEventDates() {
-        completionDate=new Date();
-        String completionDateStr=EventExtended.format(completionDate);
-        currentEvent.setEventDate(completionDateStr);
-        currentEvent.setLastUpdated(completionDateStr);
+
+        //Sent date 'now' (this change will be saves after successful push)
+        currentSurvey.setEventDate(new Date());
+
+        currentEvent.setCreated(EventExtended.format(currentSurvey.getCreationDate()));
+        currentEvent.setLastUpdated(EventExtended.format(currentSurvey.getCompletionDate()));
+        currentEvent.setEventDate(EventExtended.format(currentSurvey.getEventDate()));
+        currentEvent.setDueDate(EventExtended.format(currentSurvey.getScheduledDate()));
     }
 
     /**
@@ -225,7 +224,6 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
     private void updateSurvey(List<CompositeScore> compositeScores){
         currentSurvey.setMainScore(ScoreRegister.calculateMainScore(compositeScores));
         currentSurvey.setStatus(Constants.SURVEY_SENT);
-        currentSurvey.setCompletionDate(completionDate);
     }
 
     /**

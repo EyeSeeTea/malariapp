@@ -24,6 +24,8 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
+import org.eyeseetea.malariacare.DashboardActivity;
+import org.eyeseetea.malariacare.ProgressActivity;
 import org.eyeseetea.malariacare.R;
 
 import java.util.HashMap;
@@ -51,6 +53,8 @@ public class PreferencesState {
      * Flag that determines if numerator/denominator are shown in scores.
      */
     private boolean showNumDen;
+
+    private Boolean pullFromServer;
 
     /**
      * Map that holds the relationship between a scale and a set of dimensions
@@ -196,5 +200,25 @@ public class PreferencesState {
 
     public Float getFontSize(String scale,String dimension){
         return scaleDimensionsMap.get(scale).get(dimension);
+    }
+
+
+    /**
+     * Tells if metaData is pulled from server or locally populated
+     * @return
+     */
+    public Boolean getPullFromServer() {
+        if(pullFromServer==null){
+            pullFromServer = context.getResources().getBoolean(R.bool.pullFromServer);
+        }
+        return pullFromServer;
+    }
+
+    public Class getMainActivity(){
+        if(getPullFromServer()){
+            return ProgressActivity.class;
+        }
+
+        return DashboardActivity.class;
     }
 }

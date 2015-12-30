@@ -188,7 +188,10 @@ public class SurveyActivity extends BaseActivity{
 
     @Override
     public void onPause(){
-        Session.getSurvey().updateSurveyStatus();
+        Survey survey = Session.getSurvey();
+        if(survey!=null){
+            survey.updateSurveyStatus();
+        }
         unregisterReceiver();
         super.onPause();
     }

@@ -65,6 +65,7 @@ public class Match extends BaseModel {
     public List<QuestionOption> getQuestionOptions() {
         if(questionOptions==null){
             this.questionOptions = new Select().from(QuestionOption.class)
+                    .indexedBy("QuestionOption_id_question")
                     .where(Condition.column(QuestionOption$Table.ID_MATCH).eq(this.getId_match()))
                     .queryList();
         }
@@ -84,6 +85,7 @@ public class Match extends BaseModel {
             if(id_question_relation==null) return null;
             questionRelation = new Select()
                     .from(QuestionRelation.class)
+                    .indexedBy("QuestionRelation_operation")
                     .where(Condition.column(QuestionRelation$Table.ID_QUESTION_RELATION)
                             .is(id_question_relation)).querySingle();
         }

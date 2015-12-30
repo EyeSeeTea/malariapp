@@ -22,8 +22,6 @@ package org.eyeseetea.malariacare.database.iomodules.dhis.importer;
 import android.content.Context;
 import android.util.Log;
 
-import com.raizlabs.android.dbflow.sql.language.Delete;
-import com.raizlabs.android.dbflow.sql.language.Select;
 import com.squareup.otto.Subscribe;
 
 import org.eyeseetea.malariacare.ProgressActivity;
@@ -34,28 +32,15 @@ import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.OptionS
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.OrganisationUnitExtended;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.ProgramExtended;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.UserAccountExtended;
-import org.eyeseetea.malariacare.database.model.Answer;
-import org.eyeseetea.malariacare.database.model.CompositeScore;
-import org.eyeseetea.malariacare.database.model.Header;
-import org.eyeseetea.malariacare.database.model.Match;
-import org.eyeseetea.malariacare.database.model.Option;
-import org.eyeseetea.malariacare.database.model.OrgUnit;
-import org.eyeseetea.malariacare.database.model.OrgUnitLevel;
-import org.eyeseetea.malariacare.database.model.Program;
-import org.eyeseetea.malariacare.database.model.Question;
-import org.eyeseetea.malariacare.database.model.QuestionOption;
-import org.eyeseetea.malariacare.database.model.QuestionRelation;
-import org.eyeseetea.malariacare.database.model.Score;
-import org.eyeseetea.malariacare.database.model.Survey;
-import org.eyeseetea.malariacare.database.model.Tab;
-import org.eyeseetea.malariacare.database.model.TabGroup;
 import org.eyeseetea.malariacare.database.model.User;
-import org.eyeseetea.malariacare.database.model.Value;
+import org.eyeseetea.malariacare.database.utils.PopulateDB;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.hisp.dhis.android.sdk.controllers.DhisService;
 import org.hisp.dhis.android.sdk.controllers.LoadingController;
 import org.hisp.dhis.android.sdk.controllers.metadata.MetaDataController;
 import org.hisp.dhis.android.sdk.controllers.tracker.TrackerController;
+import org.hisp.dhis.android.sdk.job.Job;
+import org.hisp.dhis.android.sdk.job.JobExecutor;
 import org.hisp.dhis.android.sdk.job.NetworkJob;
 import org.hisp.dhis.android.sdk.persistence.Dhis2Application;
 import org.hisp.dhis.android.sdk.persistence.models.DataElement;
@@ -82,6 +67,7 @@ public class PullController {
 
     private static PullController instance;
 
+    private static Job job;
     /**
      * Context required to i18n error messages while pulling
      */
@@ -94,9 +80,9 @@ public class PullController {
     }
 
     private void register() {
-        try{
+        try {
             Dhis2Application.bus.register(this);
-            }catch(Exception e){
+        } catch (Exception e) {
             unregister();
             Dhis2Application.bus.register(this);
         }
@@ -108,7 +94,8 @@ public class PullController {
     public void unregister() {
         try {
             Dhis2Application.bus.unregister(this);
-        }catch(Exception e){}
+        } catch (Exception e) {
+        }
     }
 
     /**
@@ -146,8 +133,8 @@ public class PullController {
             //Pull new metadata
             postProgress(context.getString(R.string.progress_pull_downloading));
             try {
-                DhisService.loadData(context);
-            } catch(Exception ex){
+                job = DhisService.loadData(context);
+            } catch (Exception ex) {
                 Log.e(TAG, "pullS: " + ex.getLocalizedMessage());
                 ex.printStackTrace();
             }
@@ -189,7 +176,7 @@ public class PullController {
                     //Ok
                     wipeDatabase();
                     convertFromSDK();
-                    if(ProgressActivity.PULL_IS_ACTIVE) {
+                    if (ProgressActivity.PULL_IS_ACTIVE) {
                         Log.d(TAG, "PULL process...OK");
                     }
                 } catch (Exception ex) {
@@ -206,41 +193,23 @@ public class PullController {
     /**
      * Erase data from app database
      */
-    public void wipeDatabase(){
-        if(!ProgressActivity.PULL_IS_ACTIVE) return;
+    public void wipeDatabase() {
+        if (!ProgressActivity.PULL_IS_ACTIVE) return;
         Log.d(TAG, "Deleting app database...");
-        Delete.tables(
-                Value.class,
-                Score.class,
-                Survey.class,
-                OrgUnit.class,
-                OrgUnitLevel.class,
-                User.class,
-                QuestionOption.class,
-                Match.class,
-                QuestionRelation.class,
-                Question.class,
-                CompositeScore.class,
-                Option.class,
-                Answer.class,
-                Header.class,
-                Tab.class,
-                TabGroup.class,
-                Program.class
-        );
+        PopulateDB.wipeDatabase();
     }
 
     /**
      * Launches visitor that turns SDK data into APP data
      */
     private void convertFromSDK() {
-        if(!ProgressActivity.PULL_IS_ACTIVE) return;
+        if (!ProgressActivity.PULL_IS_ACTIVE) return;
         Log.d(TAG, "Converting SDK into APP data");
 
         //One shared converter to match parents within the hierarchy
         ConvertFromSDKVisitor converter = new ConvertFromSDKVisitor();
         convertMetaData(converter);
-        if(!ProgressActivity.PULL_IS_ACTIVE) return;
+        if (!ProgressActivity.PULL_IS_ACTIVE) return;
         convertDataValues(converter);
 
     }
@@ -251,7 +220,7 @@ public class PullController {
      * @param converter
      */
     private void convertMetaData(ConvertFromSDKVisitor converter) {
-        if(!ProgressActivity.PULL_IS_ACTIVE) return;
+        if (!ProgressActivity.PULL_IS_ACTIVE) return;
         //Convert Programs, Tabgroups, Tabs
         postProgress(context.getString(R.string.progress_pull_preparing_program));
         Log.i(TAG, "Converting programs, tabgroups and tabs...");
@@ -262,41 +231,41 @@ public class PullController {
         }
 
         //Convert Answers, Options
-        if(!ProgressActivity.PULL_IS_ACTIVE) return;
+        if (!ProgressActivity.PULL_IS_ACTIVE) return;
         postProgress(context.getString(R.string.progress_pull_preparing_answers));
         List<OptionSet> optionSets = MetaDataController.getOptionSets();
         Log.i(TAG, "Converting answers and options...");
         for (OptionSet optionSet : optionSets) {
-            if(!ProgressActivity.PULL_IS_ACTIVE) return;
+            if (!ProgressActivity.PULL_IS_ACTIVE) return;
             OptionSetExtended optionSetExtended = new OptionSetExtended(optionSet);
             optionSetExtended.accept(converter);
         }
         //OrganisationUnits
-        if(!ProgressActivity.PULL_IS_ACTIVE) return;
+        if (!ProgressActivity.PULL_IS_ACTIVE) return;
         postProgress(context.getString(R.string.progress_pull_preparing_orgs));
         Log.i(TAG, "Converting organisationUnits...");
         List<OrganisationUnit> assignedOrganisationsUnits = MetaDataController.getAssignedOrganisationUnits();
         for (OrganisationUnit assignedOrganisationsUnit : assignedOrganisationsUnits) {
-            if(!ProgressActivity.PULL_IS_ACTIVE) return;
+            if (!ProgressActivity.PULL_IS_ACTIVE) return;
             OrganisationUnitExtended organisationUnitExtended = new OrganisationUnitExtended(assignedOrganisationsUnit);
             organisationUnitExtended.accept(converter);
         }
 
-        if(!ProgressActivity.PULL_IS_ACTIVE) return;
+        if (!ProgressActivity.PULL_IS_ACTIVE) return;
         //User (from UserAccount)
         Log.i(TAG, "Converting user...");
         UserAccountExtended userAccountExtended = new UserAccountExtended(MetaDataController.getUserAccount());
         userAccountExtended.accept(converter);
 
-        if(!ProgressActivity.PULL_IS_ACTIVE) return;
-            //Convert questions and compositeScores
+        if (!ProgressActivity.PULL_IS_ACTIVE) return;
+        //Convert questions and compositeScores
         postProgress(context.getString(R.string.progress_pull_questions));
         Log.i(TAG, "Ordering questions and compositeScores...");
 
         //Dataelements ordered by program.
-        List<org.hisp.dhis.android.sdk.persistence.models.Program> programs = new Select().from(org.hisp.dhis.android.sdk.persistence.models.Program.class).queryList();
+        List<org.hisp.dhis.android.sdk.persistence.models.Program> programs = ProgramExtended.getAllPrograms();
         Map<String, List<DataElement>> programsDataelements = new HashMap<>();
-        if(!ProgressActivity.PULL_IS_ACTIVE) return;
+        if (!ProgressActivity.PULL_IS_ACTIVE) return;
         for (org.hisp.dhis.android.sdk.persistence.models.Program program : programs) {
             List<DataElement> dataElements = new ArrayList<>();
             String programUid = program.getUid();
@@ -305,12 +274,12 @@ public class PullController {
                 List<ProgramStageDataElement> programStageDataElements = programStage.getProgramStageDataElements();
                 for (ProgramStageDataElement programStageDataElement : programStageDataElements) {
                     if (programStageDataElement.getDataElement().getUid() != null) {
-                        if(!ProgressActivity.PULL_IS_ACTIVE) return;
+                        if (!ProgressActivity.PULL_IS_ACTIVE) return;
                         dataElements.add(programStageDataElement.getDataElement());
                     }
                 }
             }
-            if(!ProgressActivity.PULL_IS_ACTIVE) return;
+            if (!ProgressActivity.PULL_IS_ACTIVE) return;
             Collections.sort(dataElements, new Comparator<DataElement>() {
                 public int compare(DataElement de1, DataElement de2) {
                     DataElementExtended dataElementExtended1 = new DataElementExtended(de1);
@@ -336,34 +305,34 @@ public class PullController {
                 }
             });
             programsDataelements.put(programUid, dataElements);
-            }
+        }
 
-        if(!ProgressActivity.PULL_IS_ACTIVE) return;
+        if (!ProgressActivity.PULL_IS_ACTIVE) return;
         Log.i(TAG, "Building questions,compositescores,headers...");
         for (org.hisp.dhis.android.sdk.persistence.models.Program program : programs) {
             String programUid = program.getUid();
             List<DataElement> sortDataElements = programsDataelements.get(programUid);
             for (DataElement dataElement : sortDataElements) {
-                if(!ProgressActivity.PULL_IS_ACTIVE) return;
+                if (!ProgressActivity.PULL_IS_ACTIVE) return;
                 DataElementExtended dataElementExtended = new DataElementExtended(dataElement);
                 dataElementExtended.accept(converter);
             }
         }
 
-        if(!ProgressActivity.PULL_IS_ACTIVE) return;
+        if (!ProgressActivity.PULL_IS_ACTIVE) return;
         Log.i(TAG, "Building relationships...");
         for (org.hisp.dhis.android.sdk.persistence.models.Program program : programs) {
             String programUid = program.getUid();
             List<DataElement> sortDataElements = programsDataelements.get(programUid);
             programsDataelements.put(programUid, sortDataElements);
             for (DataElement dataElement : sortDataElements) {
-                if(!ProgressActivity.PULL_IS_ACTIVE) return;
+                if (!ProgressActivity.PULL_IS_ACTIVE) return;
                 DataElementExtended dataElementExtended = new DataElementExtended(dataElement);
                 converter.buildRelations(dataElementExtended);
             }
         }
 
-        if(!ProgressActivity.PULL_IS_ACTIVE) return;
+        if (!ProgressActivity.PULL_IS_ACTIVE) return;
         //Fill order and parent scores
         Log.i(TAG, "Building compositeScore relationships...");
         converter.buildScores();
@@ -376,7 +345,7 @@ public class PullController {
      * @param converter
      */
     private void convertDataValues(ConvertFromSDKVisitor converter) {
-        if(!ProgressActivity.PULL_IS_ACTIVE) return;
+        if (!ProgressActivity.PULL_IS_ACTIVE) return;
         postProgress(context.getString(R.string.progress_pull_surveys));
         //XXX This is the right place to apply additional filters to data conversion (only predefined orgunit for instance)
         //For each unit
@@ -386,7 +355,7 @@ public class PullController {
                 List<Event> events = TrackerController.getEvents(organisationUnit.getId(), program.getUid());
                 Log.i(TAG, String.format("Converting surveys and values for orgUnit: %s | program: %s", organisationUnit.getLabel(), program.getDisplayName()));
                 for (Event event : events) {
-                    if(!ProgressActivity.PULL_IS_ACTIVE) return;
+                    if (!ProgressActivity.PULL_IS_ACTIVE) return;
                     EventExtended eventExtended = new EventExtended(event);
                     eventExtended.accept(converter);
                 }
@@ -420,12 +389,29 @@ public class PullController {
         //Fixme maybe it is not the best place to reload the logged user.(Without reload the user after pull, the user had diferent id and application crash).
         User user = User.getLoggedUser();
         Session.setUser(user);
-        try{
+        try {
             Dhis2Application.getEventBus().post(new SyncProgressStatus());
-        }
-        catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    //Returns true if the pull thead is finish
+    public boolean finishPullJob() {
+        if (JobExecutor.isJobRunning(job.getJobId())) {
+            Log.d(TAG, "Job " + job.getJobId() + " is running");
+            job.cancel(true);
+            try {
+                try {JobExecutor.getInstance().dequeueRunningJob(job);} catch (Exception e) {e.printStackTrace();}
+                job.cancel(true);
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                return true;
+            }
+        }
+        return false;
+
     }
 
 }

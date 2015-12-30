@@ -37,6 +37,7 @@
         android:padding="5dip"
         android:layout_weight="0.6"
         android:layout_gravity="center"
+        android:onClick="setFacilityOrder"
         app:tDimension="@string/font_size_level1"
         app:tFontName="@string/condensed_font_name" />
 
@@ -53,6 +54,7 @@
         android:layout_weight="0.4"
         android:layout_gravity="center"
         android:autoText="false"
+        android:onClick="setDateOrder"
         app:tDimension="@string/font_size_level1"
         app:tFontName="@string/condensed_font_name" />
 
@@ -69,6 +71,7 @@
         android:layout_weight="0.4"
         android:layout_gravity="center"
         android:autoText="false"
+        android:onClick="setScoreOrder"
         app:tDimension="@string/font_size_level1"
         app:tFontName="@string/condensed_font_name" />
 

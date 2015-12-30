@@ -38,7 +38,7 @@
     <string name="dialog_content_existing_survey">Já existe um formato não enviado no sistema para essa Unid. Org.Inquérito</string>
     <string name="dialog_content_logout_confirmation">Se sair do sistema, todos os dados nao enviados serao apagados Ainda quer sair?</string>
     <string name="dialog_title_send_preview">Envie Preview de ouro</string>
-    <string name="dialog_content_send_preview">Você quer enviar ou visualizar o feedback pesquisa?</string>
+    <string name="dialog_content_send_preview">Você quer enviar?</string>
     <string name="dialog_title_push_data">empurrando dados</string>
     <string name="dialog_content_push_data">Tem certeza de que deseja enviar isso?</string>
     <string name="dialog_button_preview_feedback">Ver feedback</string>
@@ -239,4 +239,7 @@
     <string name="dialog_push_success">Pesquisa empurrou com êxito para o servidor dhis</string>
     <string name="progress_push_no_survey">Nenhuma pesquisa constatou para empurrar</string>
     <string name="dialog_push_before_pull_success">Pesquisa empurrou com êxito para o servidor dhis, começando a puxar metadados</string>
+    <string name="option_edit">Editar</string>
+    <string name="option_mark_completed">Marcar como concluída</string>
+    <string name="option_delete">Excluir</string>
 </resources>
