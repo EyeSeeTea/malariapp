@@ -33,6 +33,7 @@ import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -69,9 +70,6 @@ public class DashboardUnsentFragment extends ListFragment {
     private List<Survey> surveys;
     protected IDashboardAdapter adapter;
     private static int index = 0;
-    private static final int EDIT=0;
-    private static final int MARK_COMPLETED=1;
-    private static final int DELETE=2;
     private static int selectedPosition=0;
 
     public DashboardUnsentFragment(){
@@ -150,12 +148,8 @@ public class DashboardUnsentFragment extends ListFragment {
     public void onCreateContextMenu(ContextMenu menu, View v,
                                     ContextMenu.ContextMenuInfo menuInfo) {
         if(isPositionASurvey(selectedPosition)) {
-
-        String[] menuItems = getResources().getStringArray(R.array.unsent_menu_array);
-        for (int i = 0; i<menuItems.length; i++) {
-            menu.add(Menu.NONE, i, i, menuItems[i]);
-        }
-
+            MenuInflater inflater=getActivity().getMenuInflater();
+            inflater.inflate(R.menu.unsent_options,menu);
         }
     }
 
@@ -163,20 +157,21 @@ public class DashboardUnsentFragment extends ListFragment {
     @Override
     public boolean onContextItemSelected(MenuItem item) {
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+        Log.d(TAG,"id"+item.getItemId());
         switch (item.getItemId()) {
-            case EDIT:
+            case R.id.option_edit:
                 //Put selected survey in session
                 Session.setSurvey(surveys.get(selectedPosition-1));
                 //Go to SurveyActivity
                 ((DashboardActivity) getActivity()).go(SurveyActivity.class);
                 getActivity().finish();
                 return true;
-            case MARK_COMPLETED:
+            case R.id.option_mark_completed:
                 ((Survey)adapter.getItem(selectedPosition-1)).setStatus(Constants.SURVEY_COMPLETED);
                 ((Survey)adapter.getItem(selectedPosition-1)).save();
                 reloadData();
                 return true;
-            case DELETE:
+            case R.id.option_delete:
                 Log.d(TAG, "removing item pos=" + selectedPosition);
                 ((Survey)adapter.getItem(selectedPosition-1)).delete();
                 reloadData();
