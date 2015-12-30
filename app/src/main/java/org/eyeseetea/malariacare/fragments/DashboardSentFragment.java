@@ -29,9 +29,7 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
-import android.view.ContextMenu;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -44,7 +42,6 @@ import com.raizlabs.android.dbflow.sql.language.Select;
 import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.FeedbackActivity;
 import org.eyeseetea.malariacare.R;
-import org.eyeseetea.malariacare.SurveyActivity;
 import org.eyeseetea.malariacare.database.model.OrgUnit;
 import org.eyeseetea.malariacare.database.model.Program;
 import org.eyeseetea.malariacare.database.model.Survey;
@@ -152,15 +149,15 @@ public class DashboardSentFragment extends ListFragment {
                 if (program.getName().equals(PROGRAM_WITHOUT_FILTER)) {
                     if (programFilter != PROGRAM_WITHOUT_FILTER) {
                         programFilter = PROGRAM_WITHOUT_FILTER;
-                        reload = true;
+                        reload=true;
                     }
                 } else {
                     if (programFilter != program.getUid()) {
                         programFilter = program.getUid();
-                        reload = true;
+                        reload=true;
                     }
                 }
-                if (reload)
+                if(reload)
                     reloadSentSurveys();
             }
 
@@ -242,6 +239,22 @@ public class DashboardSentFragment extends ListFragment {
     {
             orderBy=DATE_ORDER;
     }
+    @Override
+    public void onListItemClick(ListView l, View v, int position, long id){
+        Log.d(TAG, "onListItemClick");
+        super.onListItemClick(l, v, position, id);
+
+        //Discard clicks on header|footer (which is attended on newSurvey via super)
+        if(!isPositionASurvey(position)){
+            return;
+        }
+
+        //Put selected survey in session
+        Session.setSurvey(surveys.get(position - 1));
+        // Go to SurveyActivity
+        ((DashboardActivity) getActivity()).go(FeedbackActivity.class);
+        getActivity().finish();
+    }
 
     @Override
     public void onStop(){
@@ -294,22 +307,6 @@ public class DashboardSentFragment extends ListFragment {
     }
 
 
-    @Override
-    public void onListItemClick(ListView l, View v, int position, long id){
-        Log.d(TAG, "onListItemClick");
-        super.onListItemClick(l, v, position, id);
-
-        //Discard clicks on header|footer (which is attendend on newSurvey via super)
-        if(!isPositionASurvey(position)){
-            return;
-        }
-
-        //Put selected survey in session
-        Session.setSurvey(surveys.get(position - 1));
-        //Go to SurveyActivity
-        ((DashboardActivity) getActivity()).go(SurveyActivity.class);
-        getActivity().finish();
-    }
     /**
      * Register a survey receiver to load surveys into the listadapter
      */
