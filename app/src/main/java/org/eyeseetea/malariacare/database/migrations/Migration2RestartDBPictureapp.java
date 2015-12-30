@@ -68,7 +68,6 @@ public class Migration2RestartDBPictureapp extends BaseMigration {
     public void migrate(SQLiteDatabase database) {
         addColumn(database,Option.class,"path","string");
         addColumn(database,Option.class,"id_optionAttribute","long");
-        addColumn(database,Option.class,"background_colour","string");
         addColumn(database,Score.class,"value","float");
         addColumn(database,Score.class,"id_tab","long");
         addColumn(database,Survey.class,"id_program","long");

@@ -64,11 +64,6 @@ public class Option extends BaseModel {
      */
     OptionAttribute optionAttribute;
 
-    @Column
-    String background_colour;
-    /**
-     * List of values that has choosen this option
-     */
     List<Value> values;
 
     public Option() {
@@ -87,13 +82,12 @@ public class Option extends BaseModel {
         this.setAnswer(answer);
     }
 
-    public Option(String name, Float factor, Answer answer, String code, OptionAttribute optionAttribute, String background_colour) {
+    public Option(String name, Float factor, Answer answer, String code, OptionAttribute optionAttribute) {
         this.name = name;
         this.factor = factor;
         this.setAnswer(answer);
         this.code = code;
         this.setOptionAttribute(optionAttribute);
-        this.background_colour = background_colour;
     }
 
     public Option(String name) {
@@ -182,14 +176,6 @@ public class Option extends BaseModel {
     public void setPath(String path) {
         this.path = path;
     }
-    
-    public String getBackground_colour() {
-        return background_colour;
-    }
-
-    public void setBackground_colour(String background_colour) {
-        this.background_colour = background_colour;
-    }
     /**
      * Checks if this option actives the children questions
      * @return true: Children questions should be shown, false: otherwise.
@@ -228,7 +214,6 @@ public class Option extends BaseModel {
         if (factor != null ? !factor.equals(option.factor) : option.factor != null) return false;
         if (path != null ? !path.equals(option.path) : option.path != null) return false;
         if (id_optionAttribute != null ? !id_optionAttribute.equals(option.id_optionAttribute) : option.id_optionAttribute != null) return false;
-        if (background_colour != null ? !background_colour.equals(option.background_colour) : option.background_colour != null) return false;
         return !(id_answer != null ? !id_answer.equals(option.id_answer) : option.id_answer != null);
 
     }
@@ -242,7 +227,6 @@ public class Option extends BaseModel {
         result = 31 * result + (id_answer != null ? id_answer.hashCode() : 0);
         result = 31 * result + (id_optionAttribute != null ? id_optionAttribute.hashCode() : 0);
         result = 31 * result + (path != null ? path.hashCode() : 0);
-        result = 31 * result + (background_colour != null ? background_colour.hashCode() : 0);
         return result;
     }
 
@@ -256,7 +240,6 @@ public class Option extends BaseModel {
                 ", answer=" + answer +
                 ", path=" + path +
                 ", optionAttribute=" + optionAttribute +
-                ", background_colour=" + background_colour +
                 ", id_answer=" + id_answer +
                 '}';
     }

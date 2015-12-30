@@ -281,9 +281,10 @@ public class DynamicTabAdapter  extends ATabAdapter {
                         tableLayout.addView(tableRow);
                     }
                     ImageView imageButton = (ImageView) tableRow.getChildAt(mod);
-                    String backGColor = currentOption.getOptionAttribute() != null ? currentOption.getOptionAttribute().getBackground_colour() : currentOption.getBackground_colour();
-                    imageButton.setBackgroundColor(Color.parseColor("#" + backGColor));
-
+                    if(currentOption.getOptionAttribute()!=null) {
+                        String backGColor = currentOption.getOptionAttribute().getBackground_colour();
+                        imageButton.setBackgroundColor(Color.parseColor("#" + backGColor));
+                    }
                     initOptionButton(imageButton, currentOption, value, parent);
                 }
                 break;
@@ -299,9 +300,10 @@ public class DynamicTabAdapter  extends ATabAdapter {
 
                     Option currentOption = opts.get(i);
 
-                    String backGColor = currentOption.getOptionAttribute() != null ? currentOption.getOptionAttribute().getBackground_colour() : currentOption.getBackground_colour();
-                    imageButton.setBackgroundColor(Color.parseColor("#" + backGColor));
-
+                    if(currentOption.getOptionAttribute()!=null) {
+                        String backGColor = currentOption.getOptionAttribute().getBackground_colour();
+                        imageButton.setBackgroundColor(Color.parseColor("#" + backGColor));
+                    }
                     initOptionButton(imageButton, currentOption, value, parent);
                 }
                 break;
@@ -511,9 +513,10 @@ public class DynamicTabAdapter  extends ATabAdapter {
         }
 
         GradientDrawable bgShape = (GradientDrawable)view.getBackground();
-        String backGColor = option.getOptionAttribute() != null ? option.getOptionAttribute().getBackground_colour() : option.getBackground_colour();
-        bgShape.setColor(Color.parseColor("#" + backGColor));
-
+        if(option.getOptionAttribute()!=null) {
+            String backGColor = option.getOptionAttribute().getBackground_colour();
+            bgShape.setColor(Color.parseColor("#" + backGColor));
+        }
         bgShape.setStroke(3, Color.WHITE);
 
         ImageView v = (ImageView) view;

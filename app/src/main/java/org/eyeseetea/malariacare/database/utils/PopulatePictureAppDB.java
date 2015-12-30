@@ -162,7 +162,7 @@ public class PopulatePictureAppDB {
                         option.setPath(line[5]);
                         if (!line[6].equals(""))
                             option.setOptionAttribute(optionAttributeList.get(Integer.valueOf(line[6])));
-                        option.setBackground_colour(line[7]);
+                        //option.setBackground_colour(line[7]);
                         saveItem(optionList,option,Integer.valueOf(line[0]));
                         break;
                     case QUESTIONS_CSV:
