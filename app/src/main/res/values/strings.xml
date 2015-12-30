@@ -281,6 +281,11 @@
     <string name="progress_pull_surveys">Loading surveys ...</string>
     <string name="progress_pull_done">Done</string>
     <item name="pull_metadata" type="string" translatable="false">pull_metadata</item>
+    <item name="default_tabGroup" type="string" translatable="false">default_tabGroup</item>
+    <item name="default_program" type="string" translatable="false">default_program</item>
+    <item name="default_orgUnit" type="string" translatable="false">default_orgUnit</item>
+    <item name="default_orgUnits" type="string" translatable="false">default_orgUnits</item>
+
 
     <string name="dialog_push_error">Error while trying to push data to dhis server</string>
     <string name="dialog_push_success">Survey successfully pushed to dhis server</string>

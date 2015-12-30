@@ -172,6 +172,15 @@ public class OrgUnit extends BaseModel {
         return new Select().all().from(OrgUnit.class).queryList();
     }
 
+
+    public static OrgUnit getOrgUnit(String uid) {
+            OrgUnit orgUnit = new Select()
+                    .from(OrgUnit.class)
+                    .where(Condition.column(OrgUnit$Table.UID)
+                            .is(uid)).querySingle();
+        return orgUnit;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
