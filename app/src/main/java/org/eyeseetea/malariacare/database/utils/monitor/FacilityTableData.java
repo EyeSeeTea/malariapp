@@ -21,6 +21,7 @@ package org.eyeseetea.malariacare.database.utils.monitor;
 
 import org.eyeseetea.malariacare.database.model.OrgUnit;
 import org.eyeseetea.malariacare.database.model.Survey;
+import org.eyeseetea.malariacare.database.model.TabGroup;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -37,10 +38,15 @@ public class FacilityTableData {
 
     private String title;
 
+    private String uid;
+
+    private String id;
     Map<OrgUnit,FacilityRowData> rowData;
 
-    public FacilityTableData(String title){
-        this.title=title;
+    public FacilityTableData(TabGroup tabGroup){
+        this.title=tabGroup.getName();
+        this.uid=tabGroup.getUid();
+        this.id=String.valueOf(tabGroup.getId_tab_group());
         rowData=new HashMap<>();
     }
 
@@ -58,7 +64,7 @@ public class FacilityTableData {
     }
 
     public String getAsJSON(){
-        return String.format("{title:'%s',months:%s,facilities:%s}",title,getMonthsAsJSONArray(),getFacilitiesAsJSONArray());
+        return String.format("{title:'%s',months:%s,facilities:%s,tableuid:'%s',id:'%s'}",title,getMonthsAsJSONArray(),getFacilitiesAsJSONArray(),uid,id);
     }
 
     /**
