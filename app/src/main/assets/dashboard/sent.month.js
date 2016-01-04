@@ -9,21 +9,113 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 **/
 
 /* Updates the text of the given html element*/
+
+    var input = [];
+	var inputall = [];
+	var allAssessment="AllAssessment";
+    var selectedProgram=allAssessment;
+	var chart=null;
+	
 function updateChartTitle(id,text){
     document.getElementById(id).innerHTML=text;
 }
 
-var surveyXMonthChart= (function SentXMonthChart(){
+//Save the data of the stats
+function setData(data){
+	var temp=data.slice();
+	setAllAssassement(temp)
+	input.push(data);
+}
+//Save and merge a All assassement object with the stats of all the programs merged
+function setAllAssassement(data){
+	var exist=false;
+	for(i=0;i<Object.keys(inputall).length;i++){
+		if(inputall[i][4]==data[4]){
+			exist=true;
+			inputall[i][0]+=data[0]; 
+			inputall[i][2]="All assetments";
+			inputall[i][3]=allAssessment;
+		}
+	}
+	if(exist==false)
+		inputall.push(data);
+}
+//show the data in the table.
+function showData(){
+    removeData();
+	for(i=0;i<input.length;i++){
+        if(input[i].indexOf(selectedProgram) > -1){
+		if(selectedProgram==allAssessment){
+			surveyXMonthChart.addData([inputall[i][0], inputall[i][1]], inputall[i][4]);
+		}
+		else
+			surveyXMonthChart.addData([input[i][0], input[i][1]], input[i][4]);
+        }
+	}
+	
+	for(i=0;i<inputall.length;i++){
+        if(inputall[i].indexOf(selectedProgram) > -1){
+			surveyXMonthChart.addData([inputall[i][0], inputall[i][1]], inputall[i][4]);
+		}
+	}
+	createSelectProgram();
+}
+//Create the select options for select the program
+function createSelectProgram(){
+	var selectHtml='<select onchange="changeProgram()" id="changeProgram">';
+	var selected="";
+	if(selectedProgram==="AllAssessment")
+		selected="selected";
+	selectHtml+="<option "+selected+" value="+allAssessment+">"+"All Assessment"+"</option>";
+	selected="selected";
+	for(i=0;i<input.length;i++){
+		if(!(selectHtml.indexOf(input[i][3]) > -1) && !(input[i][3]=== undefined)){
+		if(input[i][3]==selectedProgram){
+			selected="selected";
+		}
+		else
+			selected="";
+
+		selectHtml+="<option "+selected+" value="+input[i][3]+">"+input[i][2]+"</option>";
+		if(selected==="selected"){
+			selected="";
+		}
+		}
+	}
+	selectHtml+="</select>";
+	document.getElementById('selectProgram').innerHTML = selectHtml;
+}
+//change program, change table, and change pie to load the pie from the new progra
+function changeProgram(){
+  var myselect = document.getElementById("changeProgram");
+  selectedProgram=(myselect.options[myselect.selectedIndex].value);
+
+  showData();
+  //Uncoment it for make the pie and chart program dependent.
+  //showPie();
+  //changedOrgunit();
+}
+//Remove and re-iniciate the table of the general stats
+function removeData(){
+chart.update();
+
+  var oldChart = document.getElementById("surveyXMonthCanvas");
+  var newChart = document.createElement("canvas");
+  newChart.setAttribute("id","surveyXMonthCanvas");
+  newChart.setAttribute("style","width: 100%; height: auto;");
+  oldChart.parentNode.replaceChild(newChart, oldChart);
+
+surveyXMonthChart= (function SentXMonthChart(){
     /* Prepares 'sent surveys x month' chart*/
     var ctx = document.getElementById("surveyXMonthCanvas").getContext("2d");
-    var chart = new Chart(ctx).Line({
+    chart = new Chart(ctx).Line({
         labels: [],
         datasets: [
             {
                 label: "Assessment undertaken",
-                fillColor: "rgba(241,194,50,0)",
-                strokeColor: "rgba(241,194,50,1)",
-                pointColor: "rgba(241,194,50,1)",
+                fillColor: "rgba(132,180,103,0)",
+                strokeColor: "#81980d",
+                pointColor: "#81980d",
                 pointStrokeColor: "#fff",
                 pointHighlightFill: "#fff",
                 pointHighlightStroke: "rgba(241,194,50,1)",
@@ -32,8 +124,8 @@ var surveyXMonthChart= (function SentXMonthChart(){
             {
                 label: "Target",
                 fillColor: "rgba(132,180,103,0)",
-                strokeColor: "rgba(132,180,103,1)",
-                pointColor: "rgba(132,180,103,1)",
+                strokeColor: "#00b4e3",
+                pointColor: "#00b4e3",
                 pointStrokeColor: "#fff",
                 pointHighlightFill: "#fff",
                 pointHighlightStroke: "rgba(151,187,205,1)",
@@ -53,9 +145,51 @@ var surveyXMonthChart= (function SentXMonthChart(){
     return chart;
 })();
 
-/* Use: 
+}
 
-	Updates title of a chart 
+var surveyXMonthChart= (function SentXMonthChart(){
+    /* Prepares 'sent surveys x month' chart*/
+    var ctx = document.getElementById("surveyXMonthCanvas").getContext("2d");
+    chart = new Chart(ctx).Line({
+        labels: [],
+		datasets: [
+            {
+                label: "Assessment undertaken",
+                fillColor: "rgba(132,180,103,0)",
+                strokeColor: "#81980d",
+                pointColor: "#81980d",
+                pointStrokeColor: "#fff",
+                pointHighlightFill: "#fff",
+                pointHighlightStroke: "rgba(241,194,50,1)",
+                data: []
+            },
+            {
+                label: "Target",
+                fillColor: "rgba(132,180,103,0)",
+                strokeColor: "#00b4e3",
+                pointColor: "#00b4e3",
+                pointStrokeColor: "#fff",
+                pointHighlightFill: "#fff",
+                pointHighlightStroke: "rgba(151,187,205,1)",
+                data: []
+            }
+        ]
+    },{
+        scaleBeginAtZero : true,
+        scaleFontSize: 18,
+        scaleFontFamily: "'Roboto-Condensed'",
+        scaleFontStyle: "bold",
+        scaleFontColor: "#000",
+    });
+
+    //Adds legend to chart
+    document.getElementById('sentLegend').innerHTML = chart.generateLegend();
+    return chart;
+})();
+
+/* Use:
+
+	Updates title of a chart
 		javascript:updateChartTitle('titleLineSpan','%s')
 	Adds data to line chart
 		javascript:surveyXMonthChart.addData([%d, %d], '%s')

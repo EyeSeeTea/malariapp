@@ -247,6 +247,7 @@
     <string name="textcard_default_scale" translatable="false">system</string>
     <string name="textcard_default_dimension" translatable="false">medium</string>
     <string name="dialog_title_push_response">Push response</string>
+    <string name="dialog_info_push_confirm">Are you sure? You can not undo this action</string>
     <string name="dialog_info_push_ok">Survey data has been successfully pushed to DHIS server</string>
     <string name="dialog_info_push_bad_credentials">Bad credentials for pushing</string>
     <string name="dialog_info_push_empty_survey">Empty surveys cannot be pushed</string>
@@ -292,4 +293,7 @@
     <string name="option_edit">Edit</string>
     <string name="option_mark_completed">Mark as completed</string>
     <string name="option_delete">Delete</string>
+
+    <!-- async push -->
+    <string name="PUSH_PERIOD" translatable="false">10</string>
 </resources>

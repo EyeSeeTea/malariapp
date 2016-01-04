@@ -41,6 +41,8 @@ public class PushResult {
     private JSONObject jsonObject;
     private Exception exception;
 
+    public PushResult() {}
+
 
     public PushResult(JSONObject jsonObject) {
         this.jsonObject = jsonObject;

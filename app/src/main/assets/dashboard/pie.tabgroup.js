@@ -34,15 +34,15 @@ function pieXTabGroupChart(data){
     var myChart = new Chart(ctx).Doughnut(
         [{
             value: data.valueA,
-            color: "#84b467",
+            color: "#81980d",
             label: "A (>80)"
         }, {
             value: data.valueB,
-            color: "#f1c232",
+            color: "#00b4e3",
             label: "B (50-80)"
         }, {
             value: data.valueC,
-            color: "#ff060d",
+            color: "#fa8900",
             label: "C (<50)"
         }],
         {
@@ -91,24 +91,76 @@ function pieXTabGroupChart(data){
         }        
         ]);    
 */
-
-function buildPieCharts(dataPies){
-    var defaultTemplate= document.getElementById('pieTemplate').innerHTML;
-
-    //For each pie
-
-    for(var i=0;i<dataPies.length;i++){
-        var dataPie = dataPies[i];
-        //Create template with right ids
-        var customTemplate=defaultTemplate.replace(/###/g, dataPie.idTabGroup);
-        //Add DOM element
-        document.getElementById("hrSent").insertAdjacentHTML("afterend",customTemplate);
-        //Draw chart on it
-        pieXTabGroupChart(dataPie);
-    }
-
+var selectedOrgUnit;
+var inputOrgUnit;
+//Show orgUnit, it is called from changedProgram.
+function showPie(){
+	changedOrgunit();
+}
+//Save the facility data in inputOrgUnit
+function setFacilityData(data){
+    inputOrgUnit=data;
+}
+//Create the select options for select diferentes org unit
+function createSelectOrgUnit(){
+	var selectHtml='<select onchange="changedOrgunit()" id="changeOrgUnit">';
+	var selected="selected";
+	for(i=0;i<Object.keys(inputOrgUnit).length;i++){
+		if(inputOrgUnit[i].uidorgunit==selectedOrgUnit){
+			selected="selected";
+		}
+		selectHtml+="<option "+selected+" value="+inputOrgUnit[i].uidorgunit+">"+inputOrgUnit[i].title+"</option>";
+		if(selected==="selected"){			
+			selected="";
+		}
+	}
+	selectHtml+="</select>";
+	document.getElementById('selectFacility').innerHTML = selectHtml;
+	rebuildTableFacilities();
 }
 
+//event on click select/or to change the selected orgunit and reload.
+function changedOrgunit(){
+  var myselect = document.getElementById("changeOrgUnit");
+  selectedOrgUnit=(myselect.options[myselect.selectedIndex].value);
+  console.log("new"+selectedOrgUnit);
+  renderPieCharts();
+  rebuildTableFacilities();
+}
+//Save the data of the pies
+function buildPieCharts(dataPies){
+    //For each pie
+	setFacilityData(dataPies);
+	}
 
+//Render the pie and create the select options
+function renderPieCharts(){
+    for(var i=0;i<inputOrgUnit.length;i++){
+		if(selectedOrgUnit===undefined){
+			console.log("undefined");
+			showDataPie(inputOrgUnit[0]);
+			selectedOrgUnit=inputOrgUnit[0].uidorgunit;
+		}
+		  if (inputOrgUnit[i].uidorgunit==selectedOrgUnit)
+		{
+			showDataPie(inputOrgUnit[i]);
+		}
+	}
+	createSelectOrgUnit();
+}
+
+//Insert the pie in the html
+function showDataPie(dataPie){
+	
+    var defaultTemplate= document.getElementById('pieTemplate').innerHTML;
+	document.getElementById("pieChartContent").innerHTML=defaultTemplate;
+			//Create template with right ids
+			var customTemplate=defaultTemplate.replace(/###/g, dataPie.idTabGroup);
+			//Add DOM element
+			document.getElementById("pieChartContent").innerHTML=customTemplate;
+			//Draw chart on it
+			pieXTabGroupChart(dataPie);
+			
+}
 
 
