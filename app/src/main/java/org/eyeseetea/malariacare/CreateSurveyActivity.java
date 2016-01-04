@@ -185,13 +185,6 @@ public class CreateSurveyActivity extends BaseActivity {
         }
         else if(lastOrgUnit!=null)
             orgUnitView.setSelection(getIndex(orgUnitView, lastOrgUnit.getName()));
-
-        //Uncoment to remember the tabgroup and program.
-        //if(lastTabGroup!=null)
-           // programView.setSelection(getIndex(programView, lastTabGroup.getProgram().getName()));
-       // if(lastTabGroup!=null)
-            //tabGroupView.setSelection(getIndex(tabGroupView, lastTabGroup.getName()));
-
     }
 
     //select the default item.
@@ -281,8 +274,6 @@ public class CreateSurveyActivity extends BaseActivity {
             prepareLocationListener(survey);
 
             lastOrgUnit=orgUnit;
-            lastTabGroup=tabGroup;
-            lastProgram=tabGroup.getProgram();
 
             saveOrgUnit();
             if(!lastOrgUnits.contains(orgUnit.getUid())) {
@@ -457,29 +448,25 @@ public class CreateSurveyActivity extends BaseActivity {
     }
 
     private void saveOrgUnitList(String list){
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
+        SharedPreferences.Editor editor = getEditor();
         editor.putString(getString(R.string.default_orgUnits), list);
         editor.commit();
     }
+
     /**
      * Saves the orgUnit/Program/TabGroup
      */
     private void saveOrgUnit(){
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
+        SharedPreferences.Editor editor = getEditor();
         if(lastOrgUnit!=null) {
             editor.putString(getString(R.string.default_orgUnit), this.lastOrgUnit.getUid());
         }
-        if (lastProgram!=null)
-            editor.putString(getString(R.string.default_program), this.lastProgram.getUid());
-        if(lastTabGroup!=null)
-            editor.putString(getString(R.string.default_tabGroup), this.lastTabGroup.getUid());
         editor.commit();
         changeOrgUnitList();
     }
 
     private void changeOrgUnitList() {
+        Log.d(TAG,"CHANGEORGUNIT"+lastOrgUnits+" END;");
         if (!lastOrgUnits.equals("") && !lastOrgUnits.equals(SEPARECHAR)) {
             lastOrgUnits=lastOrgUnits+SEPARECHAR+lastOrgUnit.getUid();
             //If the Start word is SEPARECHAR, or it had two SEPARECHAR it should be removed.
@@ -505,15 +492,22 @@ public class CreateSurveyActivity extends BaseActivity {
 
     //Get the default orgUnit/program/tab
     private void getDefaultOrgUnit() {
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences sharedPreferences = getSharedPreferences();
         this.lastOrgUnit=OrgUnit.getOrgUnit(sharedPreferences.getString(getApplicationContext().getResources().getString(R.string.default_orgUnit), ""));
-        this.lastProgram = Program.getProgram(sharedPreferences.getString(getApplicationContext().getResources().getString(R.string.default_program), ""));
-        this.lastTabGroup = TabGroup.getTabGroup(sharedPreferences.getString(getApplicationContext().getResources().getString(R.string.default_tabGroup), ""));
     }
+
     //Gets the default orgUnitLevels
     private String getListOrgUnits(){
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences sharedPreferences = getSharedPreferences();
         return sharedPreferences.getString(getApplicationContext().getResources().getString(R.string.default_orgUnits), "");
     }
 
+    private SharedPreferences getSharedPreferences() {
+        return PreferenceManager.getDefaultSharedPreferences(this);
+    }
+
+    private SharedPreferences.Editor getEditor() {
+        SharedPreferences sharedPreferences = getSharedPreferences();
+        return sharedPreferences.edit();
+    }
 }
