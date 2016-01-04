@@ -42,7 +42,6 @@ import org.eyeseetea.malariacare.database.model.OrgUnit$Table;
 import org.eyeseetea.malariacare.database.model.OrgUnitLevel;
 import org.eyeseetea.malariacare.database.model.Program;
 import org.eyeseetea.malariacare.database.model.Survey;
-import org.eyeseetea.malariacare.database.model.Tab;
 import org.eyeseetea.malariacare.database.model.TabGroup;
 import org.eyeseetea.malariacare.database.utils.LocationMemory;
 import org.eyeseetea.malariacare.database.utils.Session;
@@ -55,7 +54,6 @@ import org.eyeseetea.malariacare.utils.Constants;
 import org.eyeseetea.malariacare.views.CustomTextView;
 import org.hisp.dhis.android.sdk.events.UiEvent;
 
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -85,7 +83,7 @@ public class CreateSurveyActivity extends BaseActivity {
     private Program programDefaultOption;
     private TabGroup tabGroupDefaultOption;
 
-    private OrgUnit lastOrgUnit;
+    private OrgUnit lastSelectedOrgUnit;
     private String lastOrgUnits=SEPARECHAR;
     private Program lastProgram;
     private TabGroup lastTabGroup;
@@ -161,30 +159,31 @@ public class CreateSurveyActivity extends BaseActivity {
         tabGroupContainer = findViewById(R.id.tab_group_container);
         tabGroupView = (Spinner) findViewById(R.id.tab_group);
 
+        //init the lastOrgUnits
         lastOrgUnits=SEPARECHAR;
+
+        //get the lastSelectedOrgUnit
         getDefaultOrgUnit();
+
+        //get the list of org units for be pulled in the spinner.
         tempListOrgUnits=getListOrgUnits();
-        //if the list starts with separechar or contains 3 separechars it should be overwritte with the last orgUnit.
-        if(tempListOrgUnits.startsWith(SEPARECHAR) || tempListOrgUnits.contains(SEPARECHAR + SEPARECHAR + SEPARECHAR))
-            if(lastOrgUnit!=null)
-                tempListOrgUnits=lastOrgUnit.getUid();
-        //Load the lastorgUnit/firstOrgUnit(if we have orgUnitLevels).
+
+        // If the list is empty(with SEPARECHAR), The list is overwritte by the lastSelectedOrgUnit(for saved orgunits without tree).
+        // In the first time, the application not have lastSelectedOrgUnit, it only need be saved if exist.
+        if(tempListOrgUnits.startsWith(SEPARECHAR))
+            if(lastSelectedOrgUnit !=null)
+                tempListOrgUnits= lastSelectedOrgUnit.getUid();
+
+        //Load the root lastorgUnit/firstOrgUnit(if we have orgUnitLevels).
         if(!tempListOrgUnits.equals("")){
             String[] list=tempListOrgUnits.split(SEPARECHAR);
             if(list.length>0){
-                try {
-                    if(tempListOrgUnits.startsWith(SEPARECHAR)) {
-                        orgUnitView.setSelection(getIndex(orgUnitView, OrgUnit.getOrgUnit(list[1]).getName()));
-                        tempListOrgUnits = removeLastOrgUnits(tempListOrgUnits, list[1] + SEPARECHAR);
-                    }else{
-                        orgUnitView.setSelection(getIndex(orgUnitView, OrgUnit.getOrgUnit(list[0]).getName()));
-                        tempListOrgUnits = removeLastOrgUnits(tempListOrgUnits, list[0] + SEPARECHAR);
-                    }
-                }catch(Exception e){}
+                orgUnitView.setSelection(getIndex(orgUnitView, OrgUnit.getOrgUnit(list[0]).getName()));
+                tempListOrgUnits = removeLastOrgUnits(tempListOrgUnits, list[0] + SEPARECHAR);
             }
         }
-        else if(lastOrgUnit!=null)
-            orgUnitView.setSelection(getIndex(orgUnitView, lastOrgUnit.getName()));
+        else if(lastSelectedOrgUnit !=null)
+            orgUnitView.setSelection(getIndex(orgUnitView, lastSelectedOrgUnit.getName()));
     }
 
     //select the default item.
@@ -273,16 +272,17 @@ public class CreateSurveyActivity extends BaseActivity {
             //Look for coordinates
             prepareLocationListener(survey);
 
-            lastOrgUnit=orgUnit;
+            lastSelectedOrgUnit =orgUnit;
 
+            //save the lastSelectedOrgUnit and the list of orgUnits
             saveOrgUnit();
+            //if the list not cointain the selected orgUnit(if it is root withoutchilds)
+            // set the list of orgUnitsLevels to "SEPARECHAR"
             if(!lastOrgUnits.contains(orgUnit.getUid())) {
                 saveOrgUnitList(SEPARECHAR);
             }
-            else if(lastOrgUnits.contains(orgUnit.getUid()+SEPARECHAR+orgUnit.getUid()) && lastOrgUnits.startsWith(SEPARECHAR)) {
-                saveOrgUnitList(orgUnit.getUid());
-            }
-            Log.d(TAG,"finish:<-> "+lastOrgUnits);
+            Log.d(TAG,"finish List:"+lastOrgUnits);
+            Log.d(TAG,"rootOrgUnit:"+lastSelectedOrgUnit);
             //Call Survey Activity
             finishAndGo(SurveyActivity.class);
         }
@@ -361,27 +361,25 @@ public class CreateSurveyActivity extends BaseActivity {
 
         @Override
         public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
-
             OrgUnit selectedOrgUnit = (OrgUnit) ((Spinner)viewHolder.component).getItemAtPosition(pos);
-
-
             realOrgUnitView = ((Spinner) viewHolder.component);
-            selectedOrgUnit=(OrgUnit) realOrgUnitView.getSelectedItem();
-            //save selected items (If the orgUnit has not child, is the parent).
-            if(selectedOrgUnit!=null)
-            if(selectedOrgUnit.getUid()!=null && selectedOrgUnit.getChildren().isEmpty() && selectedOrgUnit.getOrgUnit()==null){
-                lastOrgUnit=selectedOrgUnit;
-                lastOrgUnits=SEPARECHAR;
-            }
-            else if(selectedOrgUnit.getOrgUnit()==null && selectedOrgUnit.getUid()!=null){
-                //parent
-                lastOrgUnits = selectedOrgUnit.getUid();
-            }
-            else if(selectedOrgUnit.getUid()!=null) {
-                if (lastOrgUnits == null) {
+
+            if(selectedOrgUnit!=null) {
+                if (selectedOrgUnit.getUid() != null && selectedOrgUnit.getChildren().isEmpty() && selectedOrgUnit.getOrgUnit() == null) {
+                    //without parent without childs
+                    lastSelectedOrgUnit = selectedOrgUnit;
+                    lastOrgUnits = SEPARECHAR;
+                } else if (selectedOrgUnit.getOrgUnit() == null && selectedOrgUnit.getUid() != null) {
+                    //parent
+                    lastSelectedOrgUnit = selectedOrgUnit;
                     lastOrgUnits = selectedOrgUnit.getUid();
-                } else if (!lastOrgUnits.contains(selectedOrgUnit.getUid())) {
-                    lastOrgUnits = lastOrgUnits + SEPARECHAR + selectedOrgUnit.getUid();
+                } else if (selectedOrgUnit.getUid() != null) {
+                    //it is a child
+                    if (lastOrgUnits == null) {
+                        lastOrgUnits = selectedOrgUnit.getUid();
+                    } else if (!lastOrgUnits.contains(selectedOrgUnit.getUid())) {
+                        lastOrgUnits = lastOrgUnits + SEPARECHAR + selectedOrgUnit.getUid();
+                    }
                 }
             }
             // Populate child view. If it exists in org unit map, grab it; otherwise inflate it
@@ -401,12 +399,10 @@ public class CreateSurveyActivity extends BaseActivity {
                 spinner.setOnItemSelectedListener(new OrgUnitSpinnerListener(subViewHolder));
 
                 //If the orgUnit had OrgUnit levels, it should be load one - to -one.
-                //Select the saved orgUnitTree
+                //Select the saved orgUnitTree. It gets the first orgUnit(by uid), and remove it from templistorgunits (the next loop gets the next).
                 if(!tempListOrgUnits.equals("")){
-
                     String[] list=tempListOrgUnits.split(SEPARECHAR);
                     for(int i=0;i<list.length;i++){
-
                         if(!list[i].equals("") && !list[i].equals(SEPARECHAR)) {
                             try {
                                 spinner.setSelection(getIndex(spinner, OrgUnit.getOrgUnit(list[i]).getName()));
@@ -458,31 +454,24 @@ public class CreateSurveyActivity extends BaseActivity {
      */
     private void saveOrgUnit(){
         SharedPreferences.Editor editor = getEditor();
-        if(lastOrgUnit!=null) {
-            editor.putString(getString(R.string.default_orgUnit), this.lastOrgUnit.getUid());
+        if(lastSelectedOrgUnit !=null) {
+            editor.putString(getString(R.string.default_orgUnit), this.lastSelectedOrgUnit.getUid());
         }
         editor.commit();
         changeOrgUnitList();
     }
 
     private void changeOrgUnitList() {
-        Log.d(TAG,"CHANGEORGUNIT"+lastOrgUnits+" END;");
+        //if the lastorgUnits is "" o Separechar is not saved in sharedpreferences.
         if (!lastOrgUnits.equals("") && !lastOrgUnits.equals(SEPARECHAR)) {
-            lastOrgUnits=lastOrgUnits+SEPARECHAR+lastOrgUnit.getUid();
-            //If the Start word is SEPARECHAR, or it had two SEPARECHAR it should be removed.
-            //The click/no click flow generate it.
-            if (lastOrgUnits.indexOf(SEPARECHAR) == 0) {
-                lastOrgUnits = lastOrgUnits.replaceFirst(SEPARECHAR, "");
-                lastOrgUnits = lastOrgUnits.replace(SEPARECHAR + SEPARECHAR, SEPARECHAR);
-            }
-            //remove the repeat uid.
-            lastOrgUnits=lastOrgUnits.replace(lastOrgUnit.getUid()+SEPARECHAR + lastOrgUnit.getUid(),lastOrgUnit.getUid());
-            Log.d(TAG, "save:" + lastOrgUnits+"finish");
+            lastOrgUnits=lastOrgUnits+SEPARECHAR+ lastSelectedOrgUnit.getUid();
+            //remove the repeat root.
+            lastOrgUnits=lastOrgUnits.replace(lastSelectedOrgUnit.getUid()+SEPARECHAR + lastSelectedOrgUnit.getUid(), lastSelectedOrgUnit.getUid());
             saveOrgUnitList(lastOrgUnits);
         }
     }
 
-    //Remove the populate orgUnit in order.
+    //Remove the populate orgUnit in order.(the snippers always get the first position).
     private String removeLastOrgUnits(String list,String orgUnit){
         if(!orgUnit.equals("") && !orgUnit.equals(SEPARECHAR)) {
             list = list.replace(orgUnit, "");
@@ -493,7 +482,7 @@ public class CreateSurveyActivity extends BaseActivity {
     //Get the default orgUnit/program/tab
     private void getDefaultOrgUnit() {
         SharedPreferences sharedPreferences = getSharedPreferences();
-        this.lastOrgUnit=OrgUnit.getOrgUnit(sharedPreferences.getString(getApplicationContext().getResources().getString(R.string.default_orgUnit), ""));
+        this.lastSelectedOrgUnit =OrgUnit.getOrgUnit(sharedPreferences.getString(getApplicationContext().getResources().getString(R.string.default_orgUnit), ""));
     }
 
     //Gets the default orgUnitLevels
