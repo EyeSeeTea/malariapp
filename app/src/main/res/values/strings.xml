@@ -296,5 +296,5 @@
 
     <!-- async push -->
     <string name="PUSH_PERIOD" translatable="false">10</string>
-    <string name="PUSH_FAILED_PERIOD" translatable="false">100</string>
+    <string name="PUSH_FAILED_PERIOD" translatable="false">300</string>
 </resources>
