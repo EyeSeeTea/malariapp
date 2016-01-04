@@ -88,6 +88,9 @@ public class Question extends BaseModel {
     Integer output;
 
     @Column
+    Boolean compulsory;
+
+    @Column
     Long id_parent;
 
     /**
@@ -128,7 +131,7 @@ public class Question extends BaseModel {
     public Question() {
     }
 
-    public Question(String code, String de_name, String short_name, String form_name, String uid, Integer order_pos, Float numerator_w, Float denominator_w, String feedback, Integer output,Header header, Answer answer, Question question, CompositeScore compositeScore) {
+    public Question(String code, String de_name, String short_name, String form_name, String uid, Integer order_pos, Float numerator_w, Float denominator_w, String feedback, Integer output,Header header, Answer answer, Question question, CompositeScore compositeScore,Boolean compulsory) {
         this.code = code;
         this.de_name = de_name;
         this.short_name = short_name;
@@ -140,6 +143,7 @@ public class Question extends BaseModel {
         this.feedback = feedback;
         this.output = output;
         this.parent = null;
+        this.compulsory=compulsory;
 
         this.setHeader(header);
         this.setAnswer(answer);
@@ -225,6 +229,14 @@ public class Question extends BaseModel {
 
     public void setFeedback(String feedback) {
         this.feedback = feedback;
+    }
+
+    public void setCompulsory(Boolean compulsory) {
+        this.compulsory = compulsory;
+    }
+
+    public Boolean getCompulsory() {
+        return compulsory;
     }
 
     public Header getHeader() {
