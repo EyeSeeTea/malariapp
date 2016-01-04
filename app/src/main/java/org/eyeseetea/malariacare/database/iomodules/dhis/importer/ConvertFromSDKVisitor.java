@@ -52,6 +52,7 @@ import org.hisp.dhis.android.sdk.persistence.models.OptionSet;
 import org.hisp.dhis.android.sdk.persistence.models.OrganisationUnit;
 import org.hisp.dhis.android.sdk.persistence.models.Program;
 import org.hisp.dhis.android.sdk.persistence.models.ProgramStage;
+import org.hisp.dhis.android.sdk.persistence.models.ProgramStageDataElement;
 import org.hisp.dhis.android.sdk.persistence.models.ProgramStageSection;
 import org.hisp.dhis.android.sdk.persistence.models.UserAccount;
 
@@ -354,6 +355,8 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
             appQuestion.setAnswer(buildAnswerLabel());
         }
 
+        ProgramStageDataElement programStageDataElement = DataElementExtended.findProgramStageDataElementByDataElementUID(dataElement.getUid());
+        appQuestion.setCompulsory(programStageDataElement.getCompulsory());
         appQuestion.setHeader(questionBuilder.saveHeader(dataElementExtended));
         questionBuilder.registerParentChildRelations(dataElementExtended);
         appQuestion.save();
