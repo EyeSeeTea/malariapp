@@ -42,6 +42,7 @@ import org.eyeseetea.malariacare.database.model.Value;
 import org.eyeseetea.malariacare.database.utils.LocationMemory;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
+import org.eyeseetea.malariacare.receivers.AlarmPushReceiver;
 import org.eyeseetea.malariacare.services.SurveyService;
 import org.eyeseetea.malariacare.utils.Constants;
 import org.eyeseetea.malariacare.utils.Utils;
@@ -69,7 +70,6 @@ public class PushClient {
 
     public static String DHIS_ORG_NAME ="";
     private static String DHIS_ORG_UID ="";
-
 
 
     public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
@@ -123,8 +123,13 @@ public class PushClient {
                 //TODO: This should be removed once DHIS bug is solved
                 //pushControlDataElements(controlData);
                 survey.updateSurveyState();
+                AlarmPushReceiver.setFail(false);
+            }
+            else{
+                AlarmPushReceiver.setFail(true);
             }
         }catch(Exception ex){
+            AlarmPushReceiver.setFail(true);
             Log.e(TAG, ex.getMessage());
             pushResult=new PushResult(ex);
         }
