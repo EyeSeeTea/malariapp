@@ -49,7 +49,6 @@ import org.eyeseetea.malariacare.database.model.Program;
 import org.eyeseetea.malariacare.database.model.Question;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.model.Tab;
-import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.database.utils.SurveyAnsweredRatio;
 import org.eyeseetea.malariacare.layout.adapters.general.TabArrayAdapter;
@@ -199,7 +198,7 @@ public class SurveyActivity extends BaseActivity{
                 .setMessage(R.string.survey_info_exit).setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int arg1) {
                         Survey survey=Session.getSurvey();
-                        survey.completeSurvey();
+                        survey.setCompleteSurveyState();
                         exit();
                     }
                 })
@@ -216,7 +215,7 @@ public class SurveyActivity extends BaseActivity{
                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int arg1) {
                         Survey survey = Session.getSurvey();
-                        survey.completeSurvey();
+                        survey.setCompleteSurveyState();
                         exit();
                     }
                 }).create().show();

@@ -111,7 +111,7 @@ public class PushClient {
             if(pushResult.isSuccessful() && !pushResult.getImported().equals("0")){
                 //TODO: This should be removed once DHIS bug is solved
                 //pushControlDataElements(controlData);
-                survey.sentSurvey();
+                survey.setSentSurveyState();
             }
         }catch(Exception ex){
             Log.e(TAG, ex.getMessage());

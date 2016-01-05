@@ -611,16 +611,15 @@ public class Survey extends BaseModel implements VisitableToSDK {
         }
     }
 
-    public void sentSurvey(){
+    public void setSentSurveyState(){
         //Change status and save mainScore
         setStatus(Constants.SURVEY_SENT);
         save();
         saveMainScore();
     }
 
-    public void completeSurvey(){
+    public void setCompleteSurveyState(){
         setStatus(Constants.SURVEY_COMPLETED);
-        Log.d("SURVEY", "Stado:" + getStatus());
         save();
         saveMainScore();
     }
