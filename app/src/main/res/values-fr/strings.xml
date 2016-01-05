@@ -43,6 +43,10 @@
     <string name="dialog_title_push_data">Envoie des donnés</string>
     <string name="dialog_content_push_data">Êtes-vous sûr de voulour envoyer ?</string>
     <string name="dialog_button_preview_feedback">Voir évaluations</string>
+    <string name="dialog_ask_complete_survey">Aimeriez-vous participer à ce sondage?</string>
+    <string name="dialog_continue_later_option">Continuer plus tard</string>
+    <string name="dialog_complete_option">Achevée</string>
+    <string name="dialog_are_you_sure_complete_survey">Es-tu sûr? Cette action ne peut pas être annulée et vous ne sera plus en mesure de modifier ou de supprimer cette enquête</string>
 
     <!-- Toast -->
     <string name="cancellingPull">Le processus est arrêté en quelques secondes</string>
