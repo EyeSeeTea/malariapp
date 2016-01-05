@@ -37,10 +37,7 @@ import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 
-import org.eyeseetea.malariacare.DashboardActivity;
-import org.eyeseetea.malariacare.ProgressActivity;
 import org.eyeseetea.malariacare.R;
-import org.eyeseetea.malariacare.SurveyActivity;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.layout.adapters.dashboard.AssessmentUnsentAdapter;
@@ -115,6 +112,12 @@ public class DashboardUnsentFragment extends ListFragment {
     }
 
     @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        reloadUncompletedUnsentSurveys();
+    }
+
+    @Override
     public void onResume(){
         Log.d(TAG, "onResume");
         //Loading...
@@ -159,8 +162,10 @@ public class DashboardUnsentFragment extends ListFragment {
                 //Put selected survey in session
                 Session.setSurvey(surveys.get(selectedPosition-1));
                 //Go to SurveyActivity
-                ((DashboardActivity) getActivity()).go(SurveyActivity.class);
-                getActivity().finish();
+                //Fixme (add interfac to control it from the dashboardactivity)
+                //((DashboardActivity) getActivity()).go(SurveyActivity.class);
+                //getActivity().finish();
+
                 return true;
             case R.id.option_mark_completed:
                 ((Survey)adapter.getItem(selectedPosition-1)).setStatus(Constants.SURVEY_COMPLETED);
@@ -239,20 +244,6 @@ public class DashboardUnsentFragment extends ListFragment {
         selectedPosition=position;
         l.showContextMenuForChild(v);
     }
-    private void launchPush(int position){
-        //Get survey from position
-        final Survey survey = (Survey) adapter.getItem(position - 1);
-        Session.setSurvey(survey);
-
-        //Pushing selected survey via sdk
-        Intent progressActivityIntent = new Intent(getActivity(), ProgressActivity.class);
-        progressActivityIntent.putExtra(ProgressActivity.AFTER_ACTION,ProgressActivity.SHOW_FEEDBACK);
-        progressActivityIntent.putExtra(ProgressActivity.TYPE_OF_ACTION,ProgressActivity.ACTION_PUSH);
-
-        getActivity().finish();
-        startActivity(progressActivityIntent);
-    }
-
 
     /**
      * Register a survey receiver to load surveys into the listadapter
@@ -301,11 +292,13 @@ public class DashboardUnsentFragment extends ListFragment {
     }
 
     public void reloadSurveys(List<Survey> newListSurveys){
-        Log.d(TAG, "reloadSurveys (Thread: " + Thread.currentThread().getId() + "): " + newListSurveys.size());
-        this.surveys.clear();
-        this.surveys.addAll(newListSurveys);
-        this.adapter.notifyDataSetChanged();
-        setListShown(true);
+        if(newListSurveys!=null) {
+            Log.d(TAG, "reloadSurveys (Thread: " + Thread.currentThread().getId() + "): " + newListSurveys.size());
+            this.surveys.clear();
+            this.surveys.addAll(newListSurveys);
+            this.adapter.notifyDataSetChanged();
+            setListShown(true);
+        }
     }
 
     /**
