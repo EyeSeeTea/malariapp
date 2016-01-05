@@ -36,23 +36,12 @@ import com.squareup.okhttp.RequestBody;
 import com.squareup.okhttp.Response;
 
 import org.eyeseetea.malariacare.R;
-import org.eyeseetea.malariacare.database.model.CompositeScore;
 import org.eyeseetea.malariacare.database.model.Survey;
-import org.eyeseetea.malariacare.database.model.Value;
-import org.eyeseetea.malariacare.database.utils.LocationMemory;
-import org.eyeseetea.malariacare.database.utils.PreferencesState;
-import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.services.SurveyService;
-import org.eyeseetea.malariacare.utils.Constants;
-import org.eyeseetea.malariacare.utils.Utils;
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.IOException;
 import java.net.Proxy;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
 
 /**
  * Created by Jose on 20/06/2015.
@@ -122,7 +111,7 @@ public class PushClient {
             if(pushResult.isSuccessful() && !pushResult.getImported().equals("0")){
                 //TODO: This should be removed once DHIS bug is solved
                 //pushControlDataElements(controlData);
-                survey.updateSurveyState();
+                survey.sentSurvey();
             }
         }catch(Exception ex){
             Log.e(TAG, ex.getMessage());
