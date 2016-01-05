@@ -376,7 +376,6 @@ public class Survey extends BaseModel implements VisitableToSDK {
         int numOptional = (int)countNumOptionalQuestionsToAnswer();
         int numAnswered = Value.countBySurvey(this);
         int numCompulsoryAnswered = Value.countCompulsoryBySurvey(this);
-        Log.d("Surveycompulsory","obligatorias"+numCompulsory+"respondidas"+numCompulsoryAnswered);
         SurveyAnsweredRatio surveyAnsweredRatio=new SurveyAnsweredRatio(numRequired+numOptional, numAnswered,numCompulsory,numCompulsoryAnswered);
         SurveyAnsweredRatioCache.put(this.id_survey, surveyAnsweredRatio);
         return surveyAnsweredRatio;
@@ -428,11 +427,15 @@ public class Survey extends BaseModel implements VisitableToSDK {
             return;
         }
 
-        SurveyAnsweredRatio answeredRatio=this.reloadSurveyAnsweredRatio();
 
-        //Update status
-        this.setStatus(answeredRatio.isCompleted() ? Constants.SURVEY_COMPLETED : Constants.SURVEY_IN_PROGRESS);
+        SurveyAnsweredRatio answeredRatio = this.reloadSurveyAnsweredRatio();
 
+        SurveyAnsweredRatio surveyAnsweredRatio = this.getAnsweredQuestionRatio();
+        if (surveyAnsweredRatio.getTotalCompulsory()==0) {
+            //Update status
+            this.setStatus(answeredRatio.isCompleted() ? Constants.SURVEY_COMPLETED : Constants.SURVEY_IN_PROGRESS);
+
+        }
         //CompletionDate
         this.setCompletionDate(new Date());
 
@@ -611,6 +614,13 @@ public class Survey extends BaseModel implements VisitableToSDK {
     public void updateSurveyState(){
         //Change status and save mainScore
         setStatus(Constants.SURVEY_SENT);
+        save();
+        saveMainScore();
+    }
+
+    public void completeSurvey(){
+        setStatus(Constants.SURVEY_COMPLETED);
+        Log.d("SURVEY", "Stado:" + getStatus());
         save();
         saveMainScore();
     }
