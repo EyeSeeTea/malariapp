@@ -28,11 +28,9 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
@@ -46,13 +44,9 @@ import android.widget.RelativeLayout;
 import android.widget.Spinner;
 
 import com.raizlabs.android.dbflow.sql.language.Select;
-import com.squareup.otto.Subscribe;
 
-import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.R;
-import org.eyeseetea.malariacare.SurveyActivity;
 import org.eyeseetea.malariacare.database.model.CompositeScore;
-import org.eyeseetea.malariacare.database.model.Program;
 import org.eyeseetea.malariacare.database.model.Question;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.model.Tab;
@@ -70,7 +64,6 @@ import org.eyeseetea.malariacare.services.SurveyService;
 import org.eyeseetea.malariacare.utils.Constants;
 import org.eyeseetea.malariacare.utils.Utils;
 import org.eyeseetea.malariacare.views.CustomTextView;
-import org.hisp.dhis.android.sdk.events.UiEvent;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -81,7 +74,7 @@ import java.util.Set;
 /**
  * Created by ignac on 05/01/2016.
  */
-public class SurveyFragment extends Fragment {
+public class SurveyFragment extends  Fragment {
     private String TAG=".SurveyFragment";
     //FIXME Better than a bunch of 'ifs' worse than it should
     private static final int ORDER_PROFILE=2;
@@ -112,10 +105,6 @@ public class SurveyFragment extends Fragment {
             R.id.envAndMatScore     //10
     };
 
-    /**
-     * Used to know the result of the dialog on onBackPressed()
-     */
-    private boolean goBack;
     /**
      * List of tabs that belongs to the current selected survey
      */
@@ -178,7 +167,6 @@ public class SurveyFragment extends Fragment {
         if (container == null) {
             return null;
         }
-        FragmentActivity    faActivity  = (FragmentActivity)    super.getActivity();
         // Replace LinearLayout by the type of the root element of the layout you're trying to load
         llLayout    = (RelativeLayout)    inflater.inflate(R.layout.survey, container, false);
         // Of course you will want to faActivity and llLayout in the class and not this method to access them in the rest of
@@ -209,24 +197,6 @@ public class SurveyFragment extends Fragment {
         super.onResume();
 
         this.tabAdapter.notifyDataSetChanged();
-    }
-
-   // @Override
-    public boolean onBackPressed() {
-        Log.d(TAG, "onBackPressed");
-        goBack=false;
-        new AlertDialog.Builder( getActivity())
-                .setTitle(R.string.survey_title_exit)
-                .setMessage(R.string.survey_info_exit)
-                .setNegativeButton(android.R.string.no, null)
-                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int arg1) {
-                        ScoreRegister.clear();
-                        unregisterReceiver();
-                        goBack=true;
-                    }
-                }).create().show();
-        return goBack;
     }
 
     @Override
