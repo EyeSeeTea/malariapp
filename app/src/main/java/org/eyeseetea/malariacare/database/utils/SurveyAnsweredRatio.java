@@ -38,9 +38,22 @@ public class SurveyAnsweredRatio {
      */
     private int answered;
 
-    public SurveyAnsweredRatio(int total, int answered) {
+    /**
+     * Total number of compulsory questions
+     */
+    private int compulsory;
+    /**
+     * Total number of compulsory questions
+     */
+    private int totalCompulsory;
+
+
+
+    public SurveyAnsweredRatio(int total, int answered, int totalCompulsory, int compulsory) {
         this.total = total;
         this.answered = answered;
+        this.totalCompulsory=totalCompulsory;
+        this.compulsory=compulsory;
     }
 
     public int getAnswered() {
@@ -59,6 +72,21 @@ public class SurveyAnsweredRatio {
         this.total = total;
     }
 
+    public int getTotalCompulsory() {
+        return totalCompulsory;
+    }
+
+    public void setTotalCompulsory(int totalCompulsory) {
+        this.totalCompulsory = totalCompulsory;
+    }
+
+    public int getCompulsory() {
+        return compulsory;
+    }
+
+    public void setCompulsory(int compulsory) {
+        this.compulsory = compulsory;
+    }
     /**
      * Return the ratio of completion
      * @return answered/total
@@ -75,7 +103,22 @@ public class SurveyAnsweredRatio {
 
         return (float)answered/total;
     }
+    /**
+     * Return the ratio of completion compulsory
+     * @return answered/total
+     */
+    public float getCompulsoryRatio(){
+        if (totalCompulsory==0){
+            //Not correct from a math perspective but most practical approach
+            return 0;
+        }
 
+        if(isCompleted()){
+            return 1;
+        }
+
+        return (float)compulsory/totalCompulsory;
+    }
     /**
      * Checks if the related survey is completed or not.
      * If there are NO questions it returns false.

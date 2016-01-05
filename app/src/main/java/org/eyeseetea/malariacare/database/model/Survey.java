@@ -19,6 +19,7 @@
 
 package org.eyeseetea.malariacare.database.model;
 
+import android.nfc.Tag;
 import android.util.Log;
 
 import com.raizlabs.android.dbflow.annotation.Column;
@@ -371,9 +372,12 @@ public class Survey extends BaseModel implements VisitableToSDK {
      */
     private SurveyAnsweredRatio reloadSurveyAnsweredRatio(){
         int numRequired = Question.countRequiredByProgram(this.getTabGroup());
+        int numCompulsory=Question.countCompulsoryByProgram(this.getTabGroup());
         int numOptional = (int)countNumOptionalQuestionsToAnswer();
         int numAnswered = Value.countBySurvey(this);
-        SurveyAnsweredRatio surveyAnsweredRatio=new SurveyAnsweredRatio(numRequired+numOptional, numAnswered);
+        int numCompulsoryAnswered = Value.countCompulsoryBySurvey(this);
+        Log.d("Surveycompulsory","obligatorias"+numCompulsory+"respondidas"+numCompulsoryAnswered);
+        SurveyAnsweredRatio surveyAnsweredRatio=new SurveyAnsweredRatio(numRequired+numOptional, numAnswered,numCompulsory,numCompulsoryAnswered);
         SurveyAnsweredRatioCache.put(this.id_survey, surveyAnsweredRatio);
         return surveyAnsweredRatio;
     }
