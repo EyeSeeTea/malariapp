@@ -198,10 +198,11 @@ public abstract class BaseActivity extends ActionBarActivity {
      * Called when the user clicks the New Survey button
      */
     public void newSurvey(View view) {
-        Intent targetActivityIntent = new Intent(this,CreateSurveyActivity.class);
-        targetActivityIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        startActivity(targetActivityIntent);
-        finish();
+        //Fixme
+        //Intent targetActivityIntent = new Intent(this,CreateSurveyActivity.class);
+        //targetActivityIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        //startActivity(targetActivityIntent);
+        //finish();
     }
 
     /**
