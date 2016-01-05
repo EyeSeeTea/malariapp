@@ -19,10 +19,6 @@
 
 package org.eyeseetea.malariacare.database.utils;
 
-import org.eyeseetea.malariacare.database.model.Option;
-import org.eyeseetea.malariacare.database.model.Question;
-import org.eyeseetea.malariacare.database.model.Survey;
-
 /**
  * VO that holds the completion ratio of answered/expected questions
  * Created by arrizabalaga on 1/07/15.
@@ -39,21 +35,21 @@ public class SurveyAnsweredRatio {
     private int answered;
 
     /**
-     * Total number of compulsory questions
+     * Total number of compulsoryAnswered questions
      */
-    private int compulsory;
+    private int compulsoryAnswered;
     /**
-     * Total number of compulsory questions
+     * Total number of compulsoryAnswered questions
      */
     private int totalCompulsory;
 
 
 
-    public SurveyAnsweredRatio(int total, int answered, int totalCompulsory, int compulsory) {
+    public SurveyAnsweredRatio(int total, int answered, int totalCompulsory, int compulsoryAnswered) {
         this.total = total;
         this.answered = answered;
         this.totalCompulsory=totalCompulsory;
-        this.compulsory=compulsory;
+        this.compulsoryAnswered = compulsoryAnswered;
     }
 
     public int getAnswered() {
@@ -80,12 +76,12 @@ public class SurveyAnsweredRatio {
         this.totalCompulsory = totalCompulsory;
     }
 
-    public int getCompulsory() {
-        return compulsory;
+    public int getCompulsoryAnswered() {
+        return compulsoryAnswered;
     }
 
-    public void setCompulsory(int compulsory) {
-        this.compulsory = compulsory;
+    public void setCompulsoryAnswered(int compulsoryAnswered) {
+        this.compulsoryAnswered = compulsoryAnswered;
     }
     /**
      * Return the ratio of completion
@@ -104,7 +100,7 @@ public class SurveyAnsweredRatio {
         return (float)answered/total;
     }
     /**
-     * Return the ratio of completion compulsory
+     * Return the ratio of completion compulsoryAnswered
      * @return answered/total
      */
     public float getCompulsoryRatio(){
@@ -117,7 +113,7 @@ public class SurveyAnsweredRatio {
             return 1;
         }
 
-        return (float)compulsory/totalCompulsory;
+        return (float) compulsoryAnswered /totalCompulsory;
     }
     /**
      * Checks if the related survey is completed or not.
