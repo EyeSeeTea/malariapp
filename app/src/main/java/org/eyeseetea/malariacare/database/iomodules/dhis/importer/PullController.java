@@ -50,6 +50,7 @@ import org.hisp.dhis.android.sdk.persistence.models.OrganisationUnit;
 import org.hisp.dhis.android.sdk.persistence.models.ProgramStage;
 import org.hisp.dhis.android.sdk.persistence.models.ProgramStageDataElement;
 import org.hisp.dhis.android.sdk.persistence.preferences.ResourceType;
+import org.hisp.dhis.android.sdk.utils.api.ProgramType;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -351,7 +352,7 @@ public class PullController {
         //For each unit
         for (OrganisationUnit organisationUnit : MetaDataController.getAssignedOrganisationUnits()) {
             //Each assigned program
-            for (org.hisp.dhis.android.sdk.persistence.models.Program program : MetaDataController.getProgramsForOrganisationUnit(organisationUnit.getId(), org.hisp.dhis.android.sdk.persistence.models.Program.ProgramType.WITHOUT_REGISTRATION)) {
+            for (org.hisp.dhis.android.sdk.persistence.models.Program program : MetaDataController.getProgramsForOrganisationUnit(organisationUnit.getId(), ProgramType.WITHOUT_REGISTRATION)) {
                 List<Event> events = TrackerController.getEvents(organisationUnit.getId(), program.getUid());
                 Log.i(TAG, String.format("Converting surveys and values for orgUnit: %s | program: %s", organisationUnit.getLabel(), program.getDisplayName()));
                 for (Event event : events) {
