@@ -370,7 +370,7 @@ public class Survey extends BaseModel implements VisitableToSDK {
      * Calculates the current ratio of completion for this survey
      * @return SurveyAnsweredRatio that hold the total & answered questions.
      */
-    private SurveyAnsweredRatio reloadSurveyAnsweredRatio(){
+    public SurveyAnsweredRatio reloadSurveyAnsweredRatio(){
         int numRequired = Question.countRequiredByProgram(this.getTabGroup());
         int numCompulsory=Question.countCompulsoryByProgram(this.getTabGroup());
         int numOptional = (int)countNumOptionalQuestionsToAnswer();
@@ -435,6 +435,9 @@ public class Survey extends BaseModel implements VisitableToSDK {
             //Update status
             this.setStatus(answeredRatio.isCompleted() ? Constants.SURVEY_COMPLETED : Constants.SURVEY_IN_PROGRESS);
 
+        }
+        else if(surveyAnsweredRatio.getCompulsoryAnswered()==0){
+            this.setStatus(Constants.SURVEY_IN_PROGRESS);
         }
         //CompletionDate
         this.setCompletionDate(new Date());

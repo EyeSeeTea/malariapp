@@ -176,7 +176,8 @@ public class SurveyActivity extends BaseActivity{
         Log.d(TAG, "onBackPressed");
 
         Survey survey = Session.getSurvey();
-        SurveyAnsweredRatio surveyAnsweredRatio=survey.getAnsweredQuestionRatio();
+
+        SurveyAnsweredRatio surveyAnsweredRatio=survey.reloadSurveyAnsweredRatio();
         if(surveyAnsweredRatio.getCompulsoryAnswered()>0){
             new AlertDialog.Builder(this)
                     .setMessage(R.string.dialog_ask_complete_survey)
@@ -198,7 +199,7 @@ public class SurveyActivity extends BaseActivity{
                 .setMessage(R.string.survey_info_exit).setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int arg1) {
                         Survey survey=Session.getSurvey();
-                        survey.setCompleteSurveyState();
+                        survey.updateSurveyStatus();
                         exit();
                     }
                 })
