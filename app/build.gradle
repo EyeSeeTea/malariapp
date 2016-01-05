@@ -30,8 +30,8 @@ android {
         applicationId 'org.eyeseetea.malariacare'
         minSdkVersion 15
         targetSdkVersion 21
-        versionCode 16
-        versionName "13.0"
+        versionCode 17
+        versionName "14.0"
         multiDexEnabled true
         /*dexOptions {
             jumboMode = true
@@ -68,13 +68,13 @@ android {
     productFlavors {
         eds {
             applicationId "org.eyeseetea.malariacare.eds"
-            versionName "13.0-eds"
+            versionName "14.0-eds"
             minSdkVersion 15
             targetSdkVersion 21
         }
         hnqis {
             applicationId "org.eyeseetea.malariacare.hnqispull"
-            versionName "13.0-hnqis"
+            versionName "14.0-hnqis"
             minSdkVersion 15
             targetSdkVersion 21
         }
