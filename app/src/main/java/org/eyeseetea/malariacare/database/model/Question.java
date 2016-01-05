@@ -794,6 +794,8 @@ public class Question extends BaseModel {
             return false;
         if (id_parent != null ? !id_parent.equals(question.id_parent) : question.id_parent != null)
             return false;
+        if (compulsory != null ? !compulsory.equals(question.compulsory) : question.compulsory != null)
+            return false;
         return !(id_composite_score != null ? !id_composite_score.equals(question.id_composite_score) : question.id_composite_score != null);
 
     }
@@ -814,6 +816,7 @@ public class Question extends BaseModel {
         result = 31 * result + (id_answer != null ? id_answer.hashCode() : 0);
         result = 31 * result + (output != null ? output.hashCode() : 0);
         result = 31 * result + (id_parent != null ? id_parent.hashCode() : 0);
+        result = 31 * result + (compulsory != null ? compulsory.hashCode() : 0);
         result = 31 * result + (id_composite_score != null ? id_composite_score.hashCode() : 0);
         return result;
     }
@@ -834,6 +837,7 @@ public class Question extends BaseModel {
                 ", id_header=" + id_header +
                 ", id_answer=" + id_answer +
                 ", output=" + output +
+                ", compulsory=" + compulsory +
                 ", id_parent=" + id_parent +
                 ", id_composite_score=" + id_composite_score +
                 '}';
