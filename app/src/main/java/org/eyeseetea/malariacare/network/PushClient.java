@@ -97,7 +97,7 @@ public class PushClient {
         this.password = password;
     }
 
-    public PushResult push() {
+    public PushResult push(int state){
         try{
             //TODO: This should be removed once DHIS bug is solved
             //Map<String, JSONObject> controlData = prepareControlData();
@@ -107,10 +107,13 @@ public class PushClient {
             data = prepareDataElements(data, null);
 
             PushResult result = new PushResult(pushData(data));
+            if (state!=Constants.SURVEY_SENT && result.getImported().equals("0")){
+                throw new Exception("Server was not able to import the data. Please, report to the server admin.");
+            }
             if(result.isSuccessful()){
                 //TODO: This should be removed once DHIS bug is solved
                 //pushControlDataElements(controlData);
-                updateSurveyState();
+                updateSurveyState(state);
             }
             return result;
         }catch(Exception ex){
@@ -119,9 +122,13 @@ public class PushClient {
         }
     }
 
-    public void updateSurveyState(){
+    public PushResult push() {
+        return push(Constants.SURVEY_SENT);
+    }
+
+    public void updateSurveyState(int state){
         //Change status
-        this.survey.setStatus(Constants.SURVEY_SENT);
+        this.survey.setStatus(state);
         this.survey.update();
 
         //Reload data using service

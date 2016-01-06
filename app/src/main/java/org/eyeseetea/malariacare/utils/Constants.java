@@ -32,7 +32,8 @@ public class Constants {
     public static final String COMPOSITE_SCORE_TAB_NAME="Composite Scores";
 
     // ############# SURVEY STATUS ###############
-    public static final int SURVEY_IN_PROGRESS = 0,
+    public static final int SURVEY_RESENT = -1,
+            SURVEY_IN_PROGRESS = 0,
             SURVEY_COMPLETED = 1,
             SURVEY_SENT = 2;
 
