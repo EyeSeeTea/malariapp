@@ -166,10 +166,10 @@ public class SurveyService extends IntentService {
         List<Survey> unsentSurveys=new ArrayList<>();
         List<Survey> sentSurveys=new ArrayList<>();
         for(Survey survey:surveys){
-            if(!survey.isSent()){
+            if(!survey.isSent() && !survey.isResent()){
                 unsentSurveys.add(survey);
                 survey.getAnsweredQuestionRatio();
-            }else{
+            }else if (!survey.isResent()){
                 sentSurveys.add(survey);
                 survey.setMainScore(ScoreRegister.calculateMainScore(survey));
             }

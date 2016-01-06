@@ -166,6 +166,10 @@ public class Survey extends BaseModel {
         return Constants.SURVEY_SENT==this.status;
     }
 
+    public boolean isResent() {
+        return Constants.SURVEY_RESENT==this.status;
+    }
+
     public float getMainScore() {
         return mainScore;
     }
@@ -305,6 +309,7 @@ public class Survey extends BaseModel {
                 .where(Condition.column(Survey$Table.ORGUNIT_ID_ORG_UNIT).eq(orgUnit.getId_org_unit()))
                 .and(Condition.column(Survey$Table.TABGROUP_ID_TAB_GROUP).eq(tabGroup.getId_tab_group()))
                 .and(Condition.column(Survey$Table.STATUS).isNot(Constants.SURVEY_SENT))
+                .and(Condition.column(Survey$Table.STATUS).isNot(Constants.SURVEY_RESENT))
                 .orderBy(Survey$Table.EVENTDATE)
                 .orderBy(Survey$Table.ORGUNIT_ID_ORG_UNIT).queryList();
     }
@@ -316,6 +321,7 @@ public class Survey extends BaseModel {
     public static List<Survey> getAllUnsentSurveys() {
         return new Select().from(Survey.class)
                 .where(Condition.column(Survey$Table.STATUS).isNot(Constants.SURVEY_SENT))
+                .and(Condition.column(Survey$Table.STATUS).isNot(Constants.SURVEY_RESENT))
                 .orderBy(Survey$Table.EVENTDATE)
                 .orderBy(Survey$Table.ORGUNIT_ID_ORG_UNIT).queryList();
     }
@@ -328,6 +334,7 @@ public class Survey extends BaseModel {
     public static List<Survey> getUnsentSurveys(int limit) {
         return new Select().from(Survey.class)
                 .where(Condition.column(Survey$Table.STATUS).isNot(Constants.SURVEY_SENT))
+                .and(Condition.column(Survey$Table.STATUS).isNot(Constants.SURVEY_RESENT))
                 .limit(String.valueOf(limit))
                 .orderBy(Survey$Table.EVENTDATE)
                 .orderBy(Survey$Table.ORGUNIT_ID_ORG_UNIT).queryList();
