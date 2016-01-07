@@ -32,6 +32,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.TabHost;
 import android.widget.TextView;
@@ -39,9 +40,7 @@ import android.widget.TextView;
 import com.squareup.otto.Subscribe;
 
 
-import org.eyeseetea.malariacare.database.model.OrgUnit;
 import org.eyeseetea.malariacare.database.model.Survey;
-import org.eyeseetea.malariacare.database.model.TabGroup;
 import org.eyeseetea.malariacare.database.model.User;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.fragments.CreateSurveyFragment;
@@ -57,7 +56,7 @@ import java.io.IOException;
 import java.util.List;
 
 
-public class DashboardActivity extends BaseActivity {
+public class DashboardActivity extends BaseActivity implements DashboardUnsentFragment.OnSurveySelectedListener {
 
     private final static String TAG=".DDetailsActivity";
     private boolean reloadOnResume=true;
@@ -69,6 +68,11 @@ public class DashboardActivity extends BaseActivity {
     SurveyFragment surveyFragment;
     LocalActivityManager mlam;
     static boolean viewFeedback;
+    String TAB_PLAN="tab_plan";
+    String TAB_ASSESS="tab_assess";
+    String TAB_IMPROVE="tab_improve";
+    String TAB_MONITOR="tab_monitor";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Log.d(TAG, "onCreate");
@@ -91,23 +95,23 @@ public class DashboardActivity extends BaseActivity {
         }
         initTabHost(savedInstanceState);
         /* set tabs in order */
-        setTab("tab_plan", R.id.tab_plan_layout, getResources().getDrawable(R.drawable.tab_plan));
-        setTab("tab_assess", R.id.tab_assess_layout, getResources().getDrawable(R.drawable.tab_assess));
-        setTab("tab_improve", R.id.tab_improve_layout, getResources().getDrawable(R.drawable.tab_improve));
-        setTab("tab_monitor", R.id.tab_monitor_layout, getResources().getDrawable(R.drawable.tab_monitor));
+        setTab(TAB_PLAN, R.id.tab_plan_layout, getResources().getDrawable(R.drawable.tab_plan));
+        setTab(TAB_ASSESS, R.id.tab_assess_layout, getResources().getDrawable(R.drawable.tab_assess));
+        setTab(TAB_IMPROVE, R.id.tab_improve_layout, getResources().getDrawable(R.drawable.tab_improve));
+        setTab(TAB_MONITOR, R.id.tab_monitor_layout, getResources().getDrawable(R.drawable.tab_monitor));
 
         tabHost.setOnTabChangedListener( new TabHost.OnTabChangeListener() {
 
             @Override
             public void onTabChanged(String tabId) {
                 /** If current tab is android */
-                if (tabId.equalsIgnoreCase("tab_improve")) {
-                    unsentFragment.reloadUncompletedUnsentSurveys();
-                } else if (tabId.equalsIgnoreCase("tab_assess")) {
+                if (tabId.equalsIgnoreCase(TAB_IMPROVE)) {
                     sentFragment.reloadSentSurveys();
-                } else if (tabId.equalsIgnoreCase("tab_plan")) {
+                } else if (tabId.equalsIgnoreCase(TAB_ASSESS)) {
+                    unsentFragment.reloadData();
+                } else if (tabId.equalsIgnoreCase(TAB_PLAN)) {
                     //tab_plan on click code
-                } else if (tabId.equalsIgnoreCase("tab_monitor")) {
+                } else if (tabId.equalsIgnoreCase(TAB_MONITOR)) {
                     monitorFragment.reloadSentSurveys();
                 }
             }
@@ -371,8 +375,6 @@ public class DashboardActivity extends BaseActivity {
                             ScoreRegister.clear();
                             surveyFragment.unregisterReceiver();
                             initImprove();
-                            int currentTabId = tabHost.getCurrentTab();
-                            tabHost.setCurrentTab(currentTabId);
                             unsentFragment.reloadData();
                         }
                     }).create().show();
@@ -452,5 +454,13 @@ public class DashboardActivity extends BaseActivity {
     @Subscribe
     public void onLogoutFinished(UiEvent uiEvent){
         super.onLogoutFinished(uiEvent);
+    }
+
+    @Override
+    public void onSurveySelected(Survey survey) {
+        //Put selected survey in session
+        Session.setSurvey(survey);
+        tabHost.setCurrentTabByTag(TAB_ASSESS);
+        initSurvey();
     }
 }

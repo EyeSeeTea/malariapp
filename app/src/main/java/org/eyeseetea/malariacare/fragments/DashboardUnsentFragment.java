@@ -19,6 +19,7 @@
 
 package org.eyeseetea.malariacare.fragments;
 
+import android.app.Activity;
 import android.app.ListFragment;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -64,6 +65,8 @@ public class DashboardUnsentFragment extends ListFragment {
     private static int index = 0;
     private static int selectedPosition=0;
     private AlarmPushReceiver alarmPush;
+    OnSurveySelectedListener mCallback;
+
 
     public DashboardUnsentFragment(){
         this.adapter = Session.getAdapterUnsent();
@@ -147,6 +150,24 @@ public class DashboardUnsentFragment extends ListFragment {
         }
     }
 
+    // Container Activity must implement this interface
+    public interface OnSurveySelectedListener {
+        public void onSurveySelected(Survey survey);
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+
+        // This makes sure that the container activity has implemented
+        // the callback interface. If not, it throws an exception
+        try {
+            mCallback = (OnSurveySelectedListener) activity;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(activity.toString()
+                    + " must implement OnSurveySelectedListener");
+        }
+    }
 
     @Override
     public boolean onContextItemSelected(MenuItem item) {
@@ -154,8 +175,9 @@ public class DashboardUnsentFragment extends ListFragment {
         Log.d(TAG,"id"+item.getItemId());
         switch (item.getItemId()) {
             case R.id.option_edit:
-                //Put selected survey in session
-                Session.setSurvey(surveys.get(selectedPosition-1));
+
+                mCallback.onSurveySelected(surveys.get(selectedPosition-1));
+
                 //Go to SurveyActivity
                 //Fixme (add interfac to control it from the dashboardactivity)
                 //((DashboardActivity) getActivity()).go(SurveyActivity.class);
