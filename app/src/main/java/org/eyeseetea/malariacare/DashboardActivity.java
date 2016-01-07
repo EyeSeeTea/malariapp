@@ -32,7 +32,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.TabHost;
 import android.widget.TextView;
@@ -72,6 +71,8 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
     String TAB_ASSESS="tab_assess";
     String TAB_IMPROVE="tab_improve";
     String TAB_MONITOR="tab_monitor";
+    String currentTab;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,8 +90,8 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
             Log.e(".DashboardActivity", e.getMessage());
         }
         if(savedInstanceState==null) {
-            initImprove();
             initAssess();
+            initImprove();
             initMonitor();
         }
         initTabHost(savedInstanceState);
@@ -105,6 +106,7 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
             @Override
             public void onTabChanged(String tabId) {
                 /** If current tab is android */
+                currentTab=tabId;
                 if (tabId.equalsIgnoreCase(TAB_IMPROVE)) {
                     sentFragment.reloadSentSurveys();
                 } else if (tabId.equalsIgnoreCase(TAB_ASSESS)) {
@@ -148,14 +150,14 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
 
     }
 
-    public void initImprove(){
+    public void initAssess(){
         if(unsentFragment==null) {
             unsentFragment = new DashboardUnsentFragment();
             unsentFragment.setArguments(getIntent().getExtras());
         }
         replaceListFragment(R.id.dashboard_details_container, unsentFragment);
     }
-    public void initAssess(){
+    public void initImprove(){
         if(sentFragment==null) {
             sentFragment = new DashboardSentFragment();
             sentFragment.setArguments(getIntent().getExtras());
@@ -358,13 +360,13 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
      */
     @Override
     public void onBackPressed() {
-        if(isCreateSurveyFragmentActive()) {
+        if(isCreateSurveyFragmentActive() && currentTab==TAB_ASSESS) {
             Log.d(TAG, "CreateSurveyFragment->Back");
-            initImprove();
+            initAssess();
             unsentFragment.reloadData();
 
         }
-        else if(isSurveyFragmentActive()){
+        else if(isSurveyFragmentActive() && currentTab==TAB_ASSESS){
             new AlertDialog.Builder(this)
                     .setTitle(R.string.survey_title_exit)
                     .setMessage(R.string.survey_info_exit)
@@ -374,7 +376,7 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
                         public void onClick(DialogInterface dialog, int arg1) {
                             ScoreRegister.clear();
                             surveyFragment.unregisterReceiver();
-                            initImprove();
+                            initAssess();
                             unsentFragment.reloadData();
                         }
                     }).create().show();
