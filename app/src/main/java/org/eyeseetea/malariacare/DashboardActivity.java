@@ -33,7 +33,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TabHost;
 import android.widget.TextView;
@@ -67,6 +66,7 @@ public class DashboardActivity extends BaseActivity implements DashboardSentFrag
     LocalActivityManager mlam;
     static boolean viewFeedback;
     FeedbackFragment feedbackFragment;
+    String currentTab;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,8 +81,8 @@ public class DashboardActivity extends BaseActivity implements DashboardSentFrag
             Log.e(".DashboardActivity", e.getMessage());
         }
         if(savedInstanceState==null) {
-            initImprove();
             initAssess();
+            initImprove();
             initMonitor();
         }
         initTabHost(savedInstanceState);
@@ -97,6 +97,7 @@ public class DashboardActivity extends BaseActivity implements DashboardSentFrag
             @Override
             public void onTabChanged(String tabId) {
                 /** If current tab is android */
+                currentTab=tabId;
                 if (tabId.equalsIgnoreCase("tab_improve")) {
                     sentFragment.reloadData();
                 } else if (tabId.equalsIgnoreCase("tab_assess")) {
@@ -140,12 +141,12 @@ public class DashboardActivity extends BaseActivity implements DashboardSentFrag
 
     }
 
-    public void initImprove(){
+    public void initAssess(){
         unsentFragment = new DashboardUnsentFragment();
         unsentFragment.setArguments(getIntent().getExtras());
         replaceListFragment(R.id.dashboard_details_container, unsentFragment);
     }
-    public void initAssess(){
+    public void initImprove(){
         sentFragment = new DashboardSentFragment();
         sentFragment.setArguments(getIntent().getExtras());
         try{
@@ -348,11 +349,11 @@ public class DashboardActivity extends BaseActivity implements DashboardSentFrag
     @Override
     public void onBackPressed() {
         Log.d(TAG, "back pressed");
-        if(isFeedbackFragmentActive()){
+        if(isFeedbackFragmentActive() && currentTab=="tab_improve"){
             ScoreRegister.clear();
             feedbackFragment.unregisterReceiver();
             feedbackFragment.getView().setVisibility(View.GONE);
-            initAssess();
+            initImprove();
             sentFragment.reloadData();
         }
         else {
