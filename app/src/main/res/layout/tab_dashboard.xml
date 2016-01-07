@@ -110,10 +110,16 @@
                         android:orientation="vertical">
 
 
-
-                        <LinearLayout android:orientation="horizontal"
+                        <LinearLayout
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:id="@+id/filters_sentSurveys">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
                             <Spinner
                                 android:id="@+id/filter_orgunit"
                                 android:layout_width="0dip"
@@ -137,6 +143,7 @@
                             android:textAppearance="?android:attr/textAppearanceMedium"
                             app:tDimension="@string/font_size_level2"
                             app:tFontName="@string/condensed_font_name" />
+                    </LinearLayout>
 
                         <ScrollView
                             android:id="@+id/dashboard_scroll_sent"

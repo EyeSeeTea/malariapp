@@ -33,6 +33,8 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TabHost;
 import android.widget.TextView;
 
@@ -70,7 +72,7 @@ public class DashboardActivity extends BaseActivity implements DashboardSentFrag
     protected void onCreate(Bundle savedInstanceState) {
         Log.d(TAG, "onCreate");
         super.onCreate(savedInstanceState);
-        
+
         setContentView(R.layout.tab_dashboard);
         try {
             initDataIfRequired();
@@ -139,30 +141,40 @@ public class DashboardActivity extends BaseActivity implements DashboardSentFrag
     }
 
     public void initImprove(){
-            unsentFragment = new DashboardUnsentFragment();
-            unsentFragment.setArguments(getIntent().getExtras());
+        unsentFragment = new DashboardUnsentFragment();
+        unsentFragment.setArguments(getIntent().getExtras());
         replaceListFragment(R.id.dashboard_details_container, unsentFragment);
     }
     public void initAssess(){
-        if(sentFragment==null) {
-            sentFragment = new DashboardSentFragment();
-            sentFragment.setArguments(getIntent().getExtras());
-        }
+        sentFragment = new DashboardSentFragment();
+        sentFragment.setArguments(getIntent().getExtras());
+        try{
+            View vg = findViewById (R.id.dashboard_completed_container);
+            vg.invalidate();
+
+        }catch (Exception e){}
         setFragmentTransaction(R.id.dashboard_completed_container, sentFragment);
+        try {
+            LinearLayout filters = (LinearLayout) findViewById(R.id.filters_sentSurveys);
+            filters.setVisibility(View.VISIBLE);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
     }
 
     private void initFeedback() {
         int  mStackLevel=0;
         mStackLevel++;
-        if(feedbackFragment==null)
-            feedbackFragment = FeedbackFragment.newInstance(mStackLevel);
+        try {
+            LinearLayout filters = (LinearLayout) findViewById(R.id.filters_sentSurveys);
+            filters.setVisibility(View.GONE);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        feedbackFragment = FeedbackFragment.newInstance(mStackLevel);
         // Add the fragment to the activity, pushing this transaction
         // on to the back stack.
-
-        FragmentTransaction ft = getFragmentManager().beginTransaction();
-        ft.add(R.id.dashboard_completed_container, feedbackFragment);
-        ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-        ft.commit();
+        replaceFragment(R.id.dashboard_completed_container, feedbackFragment);
     }
 
     public void initMonitor(){
@@ -180,11 +192,18 @@ public class DashboardActivity extends BaseActivity implements DashboardSentFrag
         ft.commit();
     }
 
+    private void replaceFragment(int layout,  Fragment fragment) {
+         FragmentTransaction ft = getFragmentManager ().beginTransaction();
+        ft.replace(layout, fragment);
+        ft.commit();
+    }
+
     private void replaceListFragment(int layout,  ListFragment fragment) {
         FragmentTransaction ft = getFragmentManager ().beginTransaction();
         ft.replace(layout, fragment);
         ft.commit();
     }
+
     public void setScoreOrder(View v)
     {
         sentFragment.setScoreOrder();
@@ -332,6 +351,7 @@ public class DashboardActivity extends BaseActivity implements DashboardSentFrag
         if(isFeedbackFragmentActive()){
             ScoreRegister.clear();
             feedbackFragment.unregisterReceiver();
+            feedbackFragment.getView().setVisibility(View.GONE);
             initAssess();
             sentFragment.reloadData();
         }
@@ -387,9 +407,10 @@ public class DashboardActivity extends BaseActivity implements DashboardSentFrag
         super.onLogoutFinished(uiEvent);
     }
     @Override
-         public void onFeedbackSelected(Survey survey) {
+    public void onFeedbackSelected(Survey survey) {
         Session.setSurvey(survey);
         tabHost.setCurrentTabByTag("tab_improve");
+        sentFragment.getView().setVisibility(View.GONE);
         initFeedback();
     }
     private boolean isFeedbackFragmentActive() {
