@@ -19,11 +19,9 @@
 
 package org.eyeseetea.malariacare.fragments;
 
-import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
@@ -35,25 +33,18 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 
-import com.squareup.otto.Subscribe;
 
-import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.R;
-import org.eyeseetea.malariacare.database.model.Program;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.database.utils.feedback.Feedback;
 import org.eyeseetea.malariacare.layout.adapters.survey.FeedbackAdapter;
-import org.eyeseetea.malariacare.layout.score.ScoreRegister;
-import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 import org.eyeseetea.malariacare.services.SurveyService;
 import org.eyeseetea.malariacare.views.CustomRadioButton;
-import org.hisp.dhis.android.sdk.events.UiEvent;
 
 import java.util.List;
 
@@ -127,7 +118,6 @@ public class FeedbackFragment extends Fragment {
 
     }
 
-
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         Log.d(TAG, "onActivityCreated");
@@ -144,7 +134,7 @@ public class FeedbackFragment extends Fragment {
     @Override
     public void onPause(){
         //XXX Since feedback is a readonly action there is no need to update anything
-//        Session.getSurvey().updateSurveyStatus();
+        //Session.getSurvey().updateSurveyStatus();
         unregisterReceiver();
         super.onPause();
     }
@@ -196,10 +186,9 @@ public class FeedbackFragment extends Fragment {
      * Sets the overall composite score as an action button
      */
     private void setOverallScore(){
-        //MenuItem item = menu.findItem(R.id.overall_score);
         Survey survey = Session.getSurvey();
         float average = survey.getMainScore();
-      //  item.setTitle(String.format("%.1f%%", average));
+        //  item.setTitle(String.format("%.1f%%", average));
     }
 
 

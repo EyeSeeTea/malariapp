@@ -20,6 +20,7 @@
 package org.eyeseetea.malariacare.layout.adapters.survey;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
@@ -29,7 +30,9 @@ import android.widget.BaseAdapter;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import org.eyeseetea.malariacare.ProgressActivity;
 import org.eyeseetea.malariacare.R;
+import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.feedback.CompositeScoreFeedback;
 import org.eyeseetea.malariacare.database.utils.feedback.Feedback;
 import org.eyeseetea.malariacare.database.utils.feedback.QuestionFeedback;
@@ -117,10 +120,14 @@ public class FeedbackAdapter extends BaseAdapter {
 
         //CompositeScore title
         TextView textView=(TextView)rowLayout.findViewById(R.id.feedback_label);
+        if(feedback.getLabel().matches("^[0-9].*"))
+            textView.setTextColor(PreferencesState.getInstance().getContext().getResources().getColor(R.color.white));
         textView.setText(feedback.getLabel());
 
         //CompositeScore title
         textView=(TextView)rowLayout.findViewById(R.id.feedback_score_label);
+        if(feedback.getLabel().matches("^[0-9].*"))
+            textView.setTextColor(PreferencesState.getInstance().getContext().getResources().getColor(R.color.white));
         textView.setText(feedback.getPercentageAsString());
 
         //Traffic light
@@ -140,10 +147,12 @@ public class FeedbackAdapter extends BaseAdapter {
 
         //Question label
         TextView textView=(TextView)rowLayout.findViewById(R.id.feedback_question_label);
+        textView.setTextColor(PreferencesState.getInstance().getContext().getResources().getColor(R.color.darkGrey));
         textView.setText(feedback.getLabel());
 
         //Option label
         textView=(TextView)rowLayout.findViewById(R.id.feedback_option_label);
+        textView.setTextColor(PreferencesState.getInstance().getContext().getResources().getColor(R.color.darkGrey));
         textView.setText(feedback.getOption());
 
         //Score label
