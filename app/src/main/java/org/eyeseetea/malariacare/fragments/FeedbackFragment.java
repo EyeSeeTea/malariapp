@@ -186,7 +186,7 @@ public class FeedbackFragment extends Fragment {
      * Sets the overall composite score as an action button
      */
     private void setOverallScore(){
-        Survey survey = Session.getSurvey();
+        Survey survey = Session.getSurveyFeedback();
         float average = survey.getMainScore();
         //  item.setTitle(String.format("%.1f%%", average));
     }

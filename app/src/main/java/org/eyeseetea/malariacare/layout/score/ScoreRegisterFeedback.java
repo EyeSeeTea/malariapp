@@ -37,7 +37,7 @@ import java.util.Map;
 /**
  * Utility class for storing and dealing with survey scores.
  */
-public class ScoreRegister {
+public class ScoreRegisterFeedback {
 
     /**
      * Tag for logging
@@ -48,11 +48,6 @@ public class ScoreRegister {
      * Map of scores for each compositescore
      */
     private static final Map<CompositeScore, CompositeNumDenRecord> compositeScoreMap = new HashMap<>();
-
-    /**
-     * Map of scores for feedback compositescore
-     */
-    private static final Map<CompositeScore, CompositeNumDenRecord> compositeScoreMapFeedback = new HashMap<>();
 
     /**
      * Map of scores for each tab
@@ -66,7 +61,7 @@ public class ScoreRegister {
     public static void initScoresForQuestions(List<Question> questions, Survey survey){
         for(Question question : questions){
             if(!question.isHiddenBySurvey(survey)) {
-                question.initScore(survey);
+                question.initFeedbackScore(survey);
             }
         }
     }
@@ -146,22 +141,13 @@ public class ScoreRegister {
         tabScoreMap.clear();
     }
 
-
-    /**
-     * Clears every score in session
-     */
-    public static void clearFeedback(){
-        compositeScoreMapFeedback.clear();
-        tabScoreMapFeedback.clear();
-    }
-
     /**
      * Calculates the numerator of the given question in the current survey
      * @param question
      * @return
      */
     public static float calcNum(Question question) {
-        return calcNum(question,Session.getSurvey());
+        return calcNum(question,Session.getSurveyFeedback());
     }
 
     /**
@@ -188,7 +174,7 @@ public class ScoreRegister {
      * @return
      */
     public static float calcDenum(Question question) {
-        return calcDenum(question,Session.getSurvey());
+        return calcDenum(question,Session.getSurveyFeedback());
     }
 
     /**
@@ -231,19 +217,19 @@ public class ScoreRegister {
      */
     public static List<CompositeScore> loadCompositeScores(Survey survey){
         //Cleans score
-        ScoreRegister.clear();
+        ScoreRegisterFeedback.clear();
 
         //Register scores for tabs
         List<Tab> tabs=survey.getTabGroup().getTabs();
-        ScoreRegister.registerTabScores(tabs);
+        ScoreRegisterFeedback.registerTabScores(tabs);
 
         //Register scores for composites
         List<CompositeScore> compositeScoreList=CompositeScore.listByTabGroup(survey.getTabGroup());
-        ScoreRegister.registerCompositeScores(compositeScoreList);
+        ScoreRegisterFeedback.registerCompositeScores(compositeScoreList);
 
         //Initialize scores x question
-        ScoreRegister.initScoresForQuestions(Question.listByTabGroup(survey.getTabGroup()),survey);
-        
+        ScoreRegisterFeedback.initScoresForQuestions(Question.listByTabGroup(survey.getTabGroup()),survey);
+
         return compositeScoreList;
     }
 

@@ -35,6 +35,7 @@ import com.raizlabs.android.dbflow.structure.BaseModel;
 import org.eyeseetea.malariacare.database.AppDatabase;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
+import org.eyeseetea.malariacare.layout.score.ScoreRegisterFeedback;
 import org.eyeseetea.malariacare.utils.Constants;
 
 import java.util.ArrayList;
@@ -540,6 +541,21 @@ public class Question extends BaseModel {
         Float num = ScoreRegister.calcNum(this, survey);
         Float denum = ScoreRegister.calcDenum(this, survey);
         ScoreRegister.addRecord(this, num, denum);
+        return Arrays.asList(num, denum);
+    }
+    /**
+     * Add register to ScoreRegisterFeedback if this is an scored question
+     *
+     * @return List</Float> {num, den}
+     */
+    public List<Float> initFeedbackScore(Survey survey) {
+        if (!this.isScored()) {
+            return null;
+        }
+
+        Float num = ScoreRegisterFeedback.calcNum(this, survey);
+        Float denum = ScoreRegisterFeedback.calcDenum(this, survey);
+        ScoreRegisterFeedback.addRecord(this, num, denum);
         return Arrays.asList(num, denum);
     }
 

@@ -408,7 +408,7 @@ public class DashboardActivity extends BaseActivity implements DashboardSentFrag
     }
     @Override
     public void onFeedbackSelected(Survey survey) {
-        Session.setSurvey(survey);
+        Session.setSurveyFeedback(survey);
         tabHost.setCurrentTabByTag("tab_improve");
         sentFragment.getView().setVisibility(View.GONE);
         initFeedback();
