@@ -151,10 +151,8 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
     }
 
     public void initAssess(){
-        if(unsentFragment==null) {
-            unsentFragment = new DashboardUnsentFragment();
-            unsentFragment.setArguments(getIntent().getExtras());
-        }
+        unsentFragment = new DashboardUnsentFragment();
+        unsentFragment.setArguments(getIntent().getExtras());
         replaceListFragment(R.id.dashboard_details_container, unsentFragment);
     }
     public void initImprove(){
