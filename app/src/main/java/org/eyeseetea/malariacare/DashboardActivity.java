@@ -357,7 +357,7 @@ public class DashboardActivity extends BaseActivity {
         if(isCreateSurveyFragmentActive()) {
             Log.d(TAG, "CreateSurveyFragment->Back");
             initImprove();
-            unsentFragment.reloadUncompletedUnsentSurveys();
+            unsentFragment.reloadData();
 
         }
         else if(isSurveyFragmentActive()){
@@ -373,6 +373,7 @@ public class DashboardActivity extends BaseActivity {
                             initImprove();
                             int currentTabId = tabHost.getCurrentTab();
                             tabHost.setCurrentTab(currentTabId);
+                            unsentFragment.reloadData();
                         }
                     }).create().show();
         }

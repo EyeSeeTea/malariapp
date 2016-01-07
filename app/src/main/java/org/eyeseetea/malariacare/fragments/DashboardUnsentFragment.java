@@ -39,6 +39,7 @@ import android.widget.ListView;
 
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.model.Survey;
+import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.layout.adapters.dashboard.AssessmentUnsentAdapter;
 import org.eyeseetea.malariacare.layout.adapters.dashboard.IDashboardAdapter;
@@ -112,12 +113,6 @@ public class DashboardUnsentFragment extends ListFragment {
     }
 
     @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        reloadUncompletedUnsentSurveys();
-    }
-
-    @Override
     public void onResume(){
         Log.d(TAG, "onResume");
         //Loading...
@@ -165,7 +160,6 @@ public class DashboardUnsentFragment extends ListFragment {
                 //Fixme (add interfac to control it from the dashboardactivity)
                 //((DashboardActivity) getActivity()).go(SurveyActivity.class);
                 //getActivity().finish();
-
                 return true;
             case R.id.option_mark_completed:
                 ((Survey)adapter.getItem(selectedPosition-1)).setStatus(Constants.SURVEY_COMPLETED);
@@ -183,9 +177,9 @@ public class DashboardUnsentFragment extends ListFragment {
     }
     public void reloadData(){
         //Reload data using service
-        Intent surveysIntent=new Intent(getActivity(), SurveyService.class);
+        Intent surveysIntent=new Intent(PreferencesState.getInstance().getContext().getApplicationContext(), SurveyService.class);
         surveysIntent.putExtra(SurveyService.SERVICE_METHOD, SurveyService.RELOAD_DASHBOARD_ACTION);
-        getActivity().startService(surveysIntent);
+        PreferencesState.getInstance().getContext().getApplicationContext().startService(surveysIntent);
     }
     @Override
     public void onStop(){
