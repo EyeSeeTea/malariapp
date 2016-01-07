@@ -175,13 +175,8 @@ public class DashboardUnsentFragment extends ListFragment {
         Log.d(TAG,"id"+item.getItemId());
         switch (item.getItemId()) {
             case R.id.option_edit:
-
                 mCallback.onSurveySelected(surveys.get(selectedPosition-1));
 
-                //Go to SurveyActivity
-                //Fixme (add interfac to control it from the dashboardactivity)
-                //((DashboardActivity) getActivity()).go(SurveyActivity.class);
-                //getActivity().finish();
                 return true;
             case R.id.option_mark_completed:
                 ((Survey)adapter.getItem(selectedPosition-1)).setStatus(Constants.SURVEY_COMPLETED);
