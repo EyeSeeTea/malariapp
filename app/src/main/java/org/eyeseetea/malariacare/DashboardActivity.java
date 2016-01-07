@@ -44,7 +44,9 @@ import org.eyeseetea.malariacare.database.model.User;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.fragments.DashboardSentFragment;
 import org.eyeseetea.malariacare.fragments.DashboardUnsentFragment;
+import org.eyeseetea.malariacare.fragments.FeedbackFragment;
 import org.eyeseetea.malariacare.fragments.MonitorFragment;
+import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.services.SurveyService;
 import org.hisp.dhis.android.sdk.events.UiEvent;
 
@@ -52,7 +54,7 @@ import java.io.IOException;
 import java.util.List;
 
 
-public class DashboardActivity extends BaseActivity {
+public class DashboardActivity extends BaseActivity implements DashboardSentFragment.OnFeedbackSelectedListener {
 
     private final static String TAG=".DDetailsActivity";
     private boolean reloadOnResume=true;
@@ -62,15 +64,13 @@ public class DashboardActivity extends BaseActivity {
     DashboardSentFragment sentFragment;
     LocalActivityManager mlam;
     static boolean viewFeedback;
+    FeedbackFragment feedbackFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Log.d(TAG, "onCreate");
         super.onCreate(savedInstanceState);
-        if(viewFeedback) {
-            viewFeedback=false;
-            finishAndGo(FeedbackActivity.class);
-        }
+        
         setContentView(R.layout.tab_dashboard);
         try {
             initDataIfRequired();
@@ -96,9 +96,9 @@ public class DashboardActivity extends BaseActivity {
             public void onTabChanged(String tabId) {
                 /** If current tab is android */
                 if (tabId.equalsIgnoreCase("tab_improve")) {
-                    unsentFragment.reloadUncompletedUnsentSurveys();
+                    sentFragment.reloadData();
                 } else if (tabId.equalsIgnoreCase("tab_assess")) {
-                    sentFragment.reloadSentSurveys();
+                    unsentFragment.reloadUncompletedUnsentSurveys();
                 } else if (tabId.equalsIgnoreCase("tab_plan")) {
                     //tab_plan on click code
                 } else if (tabId.equalsIgnoreCase("tab_monitor")) {
@@ -109,6 +109,7 @@ public class DashboardActivity extends BaseActivity {
         for(int i=0;i<tabHost.getTabWidget().getChildCount();i++){
             tabHost.getTabWidget().getChildAt(i).setFocusable(false);
         }
+        tabHost.refreshDrawableState();
         setActionbarTitle();
     }
 
@@ -138,14 +139,30 @@ public class DashboardActivity extends BaseActivity {
     }
 
     public void initImprove(){
-        unsentFragment = new DashboardUnsentFragment();
-        unsentFragment.setArguments(getIntent().getExtras());
-        setFragmentTransaction(R.id.dashboard_details_container, unsentFragment);
+            unsentFragment = new DashboardUnsentFragment();
+            unsentFragment.setArguments(getIntent().getExtras());
+        replaceListFragment(R.id.dashboard_details_container, unsentFragment);
     }
     public void initAssess(){
-        sentFragment = new DashboardSentFragment();
-        sentFragment.setArguments(getIntent().getExtras());
+        if(sentFragment==null) {
+            sentFragment = new DashboardSentFragment();
+            sentFragment.setArguments(getIntent().getExtras());
+        }
         setFragmentTransaction(R.id.dashboard_completed_container, sentFragment);
+    }
+
+    private void initFeedback() {
+        int  mStackLevel=0;
+        mStackLevel++;
+        if(feedbackFragment==null)
+            feedbackFragment = FeedbackFragment.newInstance(mStackLevel);
+        // Add the fragment to the activity, pushing this transaction
+        // on to the back stack.
+
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        ft.add(R.id.dashboard_completed_container, feedbackFragment);
+        ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+        ft.commit();
     }
 
     public void initMonitor(){
@@ -163,7 +180,11 @@ public class DashboardActivity extends BaseActivity {
         ft.commit();
     }
 
-
+    private void replaceListFragment(int layout,  ListFragment fragment) {
+        FragmentTransaction ft = getFragmentManager ().beginTransaction();
+        ft.replace(layout, fragment);
+        ft.commit();
+    }
     public void setScoreOrder(View v)
     {
         sentFragment.setScoreOrder();
@@ -308,19 +329,27 @@ public class DashboardActivity extends BaseActivity {
     @Override
     public void onBackPressed() {
         Log.d(TAG, "back pressed");
-        new AlertDialog.Builder(this)
-                .setTitle("Really Exit?")
-                .setMessage("Are you sure you want to exit the app?")
-                .setNegativeButton(android.R.string.no, null)
-                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+        if(isFeedbackFragmentActive()){
+            ScoreRegister.clear();
+            feedbackFragment.unregisterReceiver();
+            initAssess();
+            sentFragment.reloadData();
+        }
+        else {
+            new AlertDialog.Builder(this)
+                    .setTitle("Really Exit?")
+                    .setMessage("Are you sure you want to exit the app?")
+                    .setNegativeButton(android.R.string.no, null)
+                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
 
-                    public void onClick(DialogInterface arg0, int arg1) {
-                        Intent intent = new Intent(Intent.ACTION_MAIN);
-                        intent.addCategory(Intent.CATEGORY_HOME);
-                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        startActivity(intent);
-                    }
-                }).create().show();
+                        public void onClick(DialogInterface arg0, int arg1) {
+                            Intent intent = new Intent(Intent.ACTION_MAIN);
+                            intent.addCategory(Intent.CATEGORY_HOME);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            startActivity(intent);
+                        }
+                    }).create().show();
+        }
     }
 
     /**
@@ -356,5 +385,19 @@ public class DashboardActivity extends BaseActivity {
     @Subscribe
     public void onLogoutFinished(UiEvent uiEvent){
         super.onLogoutFinished(uiEvent);
+    }
+    @Override
+         public void onFeedbackSelected(Survey survey) {
+        Session.setSurvey(survey);
+        tabHost.setCurrentTabByTag("tab_improve");
+        initFeedback();
+    }
+    private boolean isFeedbackFragmentActive() {
+        Fragment currentFragment = this.getFragmentManager ().findFragmentById(R.id.dashboard_completed_container);
+        if (currentFragment instanceof FeedbackFragment) {
+            Log.v(TAG, "find the current fragment"+"Feedback");
+            return true;
+        }
+        return false;
     }
 }

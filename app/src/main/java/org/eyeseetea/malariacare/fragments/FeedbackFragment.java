@@ -1,14 +1,14 @@
 /*
- * Copyright (c) 2015.
+ * Copyright (c) 2016.
  *
- * This file is part of Facility QA Tool App.
+ * This file is part of QA App.
  *
- *  Facility QA Tool App is free software: you can redistribute it and/or modify
+ *  Health Network QIS App is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
  *  the Free Software Foundation, either version 3 of the License, or
  *  (at your option) any later version.
  *
- *  Facility QA Tool App is distributed in the hope that it will be useful,
+ *  Health Network QIS App is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *  GNU General Public License for more details.
@@ -17,29 +17,37 @@
  *  along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.eyeseetea.malariacare;
+package org.eyeseetea.malariacare.fragments;
 
 import android.app.AlertDialog;
+import android.app.Fragment;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 
 import com.squareup.otto.Subscribe;
 
-import org.eyeseetea.malariacare.database.utils.feedback.Feedback;
+import org.eyeseetea.malariacare.DashboardActivity;
+import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.model.Program;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.utils.Session;
+import org.eyeseetea.malariacare.database.utils.feedback.Feedback;
 import org.eyeseetea.malariacare.layout.adapters.survey.FeedbackAdapter;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
@@ -50,9 +58,9 @@ import org.hisp.dhis.android.sdk.events.UiEvent;
 import java.util.List;
 
 /**
- * Activity that supports the data entry for the surveys.
+ * Created by ignac on 07/01/2016.
  */
-public class FeedbackActivity extends BaseActivity{
+public class FeedbackFragment extends Fragment {
 
     public static final String TAG = ".FeedbackActivity";
 
@@ -86,16 +94,45 @@ public class FeedbackActivity extends BaseActivity{
      */
     private Menu menu;
 
+
+    /**
+     * Parent layout
+     */
+    RelativeLayout llLayout;
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        Log.d(TAG, "onCreate");
-        setContentView(R.layout.feedback);
-        createActionBar();
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        FragmentActivity    faActivity  = (FragmentActivity)    super.getActivity();
+        // Replace LinearLayout by the type of the root element of the layout you're trying to load
+        llLayout    = (RelativeLayout)    inflater.inflate(R.layout.feedback, container, false);
         prepareUI();
+
+        return llLayout; // We must return the loaded Layout
+    }
+
+    public static FeedbackFragment newInstance(int index) {
+        FeedbackFragment f = new FeedbackFragment();
+
+        // Supply index input as an argument.
+        Bundle args = new Bundle();
+        args.putInt("index", index);
+        f.setArguments(args);
+
+        return f;
+    }
+    @Override
+    public void onCreate(Bundle savedInstanceState){
+        Log.d(TAG, "onCreate");
+        super.onCreate(savedInstanceState);
 
     }
 
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        Log.d(TAG, "onActivityCreated");
+        super.onActivityCreated(savedInstanceState);
+    }
     @Override
     public void onResume() {
         Log.d(TAG, "onResume");
@@ -104,50 +141,12 @@ public class FeedbackActivity extends BaseActivity{
         registerReceiver();
         prepareFeedbackInfo();
     }
-
-    @Override
-    public void onBackPressed() {
-        Log.d(TAG, "onBackPressed");
-        new AlertDialog.Builder(this)
-                .setTitle(R.string.survey_title_exit)
-                .setMessage(R.string.survey_info_exit)
-                .setNegativeButton(android.R.string.no, null)
-                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int arg1) {
-                        ScoreRegister.clear();
-                        unregisterReceiver();
-                        finishAndGo(DashboardActivity.class);
-                    }
-                }).create().show();
-    }
-
     @Override
     public void onPause(){
         //XXX Since feedback is a readonly action there is no need to update anything
 //        Session.getSurvey().updateSurveyStatus();
         unregisterReceiver();
         super.onPause();
-    }
-
-    /**
-     * Adds actionbar to the activity
-     */
-    private void createActionBar(){
-        Survey survey = Session.getSurvey();
-        //FIXME: Shall we add the tab group?
-        Program program = survey.getTabGroup().getProgram();
-
-        android.support.v7.app.ActionBar actionBar = this.getSupportActionBar();
-        LayoutUtils.setActionBarLogo(actionBar);
-        LayoutUtils.setActionBarText(actionBar, survey.getOrgUnit().getName(), program.getName());
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        this.menu = menu;
-        getMenuInflater().inflate(R.menu.menu_feedback, menu);
-        return super.onCreateOptionsMenu(menu);
     }
 
     @Override
@@ -167,15 +166,15 @@ public class FeedbackActivity extends BaseActivity{
      */
     private void prepareUI(){
         //Get progress
-        progressBar=(ProgressBar)findViewById(R.id.survey_progress);
+        progressBar=(ProgressBar)llLayout.findViewById(R.id.survey_progress);
 
         //Set adapter and list
-        feedbackAdapter=new FeedbackAdapter(this);
-        feedbackListView=(ListView)findViewById(R.id.feedbackListView);
+        feedbackAdapter=new FeedbackAdapter(getActivity().getApplicationContext());
+        feedbackListView=(ListView)llLayout.findViewById(R.id.feedbackListView);
         feedbackListView.setAdapter(feedbackAdapter);
 
         //And checkbox listener
-        chkFailed=(CustomRadioButton)findViewById(R.id.chkFailed);
+        chkFailed=(CustomRadioButton)llLayout.findViewById(R.id.chkFailed);
         chkFailed.setChecked(true);
         chkFailed.setOnClickListener(new View.OnClickListener() {
                                          @Override
@@ -197,10 +196,10 @@ public class FeedbackActivity extends BaseActivity{
      * Sets the overall composite score as an action button
      */
     private void setOverallScore(){
-        MenuItem item = menu.findItem(R.id.overall_score);
+        //MenuItem item = menu.findItem(R.id.overall_score);
         Survey survey = Session.getSurvey();
         float average = survey.getMainScore();
-        item.setTitle(String.format("%.1f%%", average));
+      //  item.setTitle(String.format("%.1f%%", average));
     }
 
 
@@ -230,7 +229,7 @@ public class FeedbackActivity extends BaseActivity{
 
         if(surveyReceiver==null){
             surveyReceiver=new SurveyReceiver();
-            LocalBroadcastManager.getInstance(this).registerReceiver(surveyReceiver, new IntentFilter(SurveyService.PREPARE_FEEDBACK_ACTION));
+            LocalBroadcastManager.getInstance(getActivity()).registerReceiver(surveyReceiver, new IntentFilter(SurveyService.PREPARE_FEEDBACK_ACTION));
         }
     }
 
@@ -241,7 +240,7 @@ public class FeedbackActivity extends BaseActivity{
     public void  unregisterReceiver(){
         Log.d(TAG, "unregisterReceiver");
         if(surveyReceiver!=null){
-            LocalBroadcastManager.getInstance(this).unregisterReceiver(surveyReceiver);
+            LocalBroadcastManager.getInstance(getActivity().getApplicationContext()).unregisterReceiver(surveyReceiver);
             surveyReceiver=null;
         }
     }
@@ -251,14 +250,9 @@ public class FeedbackActivity extends BaseActivity{
      */
     public void prepareFeedbackInfo(){
         Log.d(TAG, "prepareFeedbackInfo");
-        Intent surveysIntent=new Intent(this, SurveyService.class);
+        Intent surveysIntent=new Intent(getActivity().getApplicationContext(), SurveyService.class);
         surveysIntent.putExtra(SurveyService.SERVICE_METHOD, SurveyService.PREPARE_FEEDBACK_ACTION);
-        this.startService(surveysIntent);
-    }
-
-    @Subscribe
-    public void onLogoutFinished(UiEvent uiEvent){
-        super.onLogoutFinished(uiEvent);
+        getActivity().getApplicationContext().startService(surveysIntent);
     }
 
     /**

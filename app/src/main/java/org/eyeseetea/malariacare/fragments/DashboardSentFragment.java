@@ -19,6 +19,7 @@
 
 package org.eyeseetea.malariacare.fragments;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ListFragment;
 import android.content.BroadcastReceiver;
@@ -37,20 +38,16 @@ import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.Spinner;
 
-import com.raizlabs.android.dbflow.sql.language.Select;
-
-import org.eyeseetea.malariacare.DashboardActivity;
-import org.eyeseetea.malariacare.FeedbackActivity;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.model.OrgUnit;
 import org.eyeseetea.malariacare.database.model.Program;
 import org.eyeseetea.malariacare.database.model.Survey;
+import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.layout.adapters.dashboard.AssessmentSentAdapter;
 import org.eyeseetea.malariacare.layout.adapters.dashboard.IDashboardAdapter;
 import org.eyeseetea.malariacare.layout.adapters.general.OrgUnitArrayAdapter;
 import org.eyeseetea.malariacare.layout.adapters.general.ProgramArrayAdapter;
-import org.eyeseetea.malariacare.layout.listeners.SwipeDismissListViewTouchListener;
 import org.eyeseetea.malariacare.services.SurveyService;
 import org.eyeseetea.malariacare.views.CustomTextView;
 
@@ -85,6 +82,7 @@ public class DashboardSentFragment extends ListFragment {
     String programFilter= PROGRAM_WITHOUT_FILTER;
     int orderBy=WITHOUT_ORDER;
     static boolean reverse=false;
+    OnFeedbackSelectedListener mCallback;
 
     public DashboardSentFragment() {
         this.adapter = Session.getAdapterSent();
@@ -103,6 +101,26 @@ public class DashboardSentFragment extends ListFragment {
         return f;
     }
 
+
+    // Container Activity must implement this interface
+    public interface OnFeedbackSelectedListener {
+        public void onFeedbackSelected(Survey survey);
+    }
+
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+
+        // This makes sure that the container activity has implemented
+        // the callback interface. If not, it throws an exception
+        try {
+            mCallback = (OnFeedbackSelectedListener) activity;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(activity.toString()
+                    + " must implement OnSurveySelectedListener");
+        }
+    }
 
     public int getShownIndex() {
         return getArguments().getInt("index", 0);
@@ -149,15 +167,15 @@ public class DashboardSentFragment extends ListFragment {
                 if (program.getName().equals(PROGRAM_WITHOUT_FILTER)) {
                     if (programFilter != PROGRAM_WITHOUT_FILTER) {
                         programFilter = PROGRAM_WITHOUT_FILTER;
-                        reload=true;
+                        reload = true;
                     }
                 } else {
                     if (programFilter != program.getUid()) {
                         programFilter = program.getUid();
-                        reload=true;
+                        reload = true;
                     }
                 }
-                if(reload)
+                if (reload)
                     reloadSentSurveys();
             }
 
@@ -227,17 +245,17 @@ public class DashboardSentFragment extends ListFragment {
 
     public void setScoreOrder()
     {
-            orderBy=SCORE_ORDER;
+        orderBy=SCORE_ORDER;
     }
 
     public void setFacilityOrder()
     {
-            orderBy=FACILITY_ORDER;
+        orderBy=FACILITY_ORDER;
     }
 
     public void setDateOrder()
     {
-            orderBy=DATE_ORDER;
+        orderBy=DATE_ORDER;
     }
     @Override
     public void onListItemClick(ListView l, View v, int position, long id){
@@ -250,10 +268,10 @@ public class DashboardSentFragment extends ListFragment {
         }
 
         //Put selected survey in session
-        Session.setSurvey(surveys.get(position - 1));
+        //Session.setSurvey(surveys.get(position - 1));
         // Go to SurveyActivity
-        ((DashboardActivity) getActivity()).go(FeedbackActivity.class);
-        getActivity().finish();
+
+        mCallback.onFeedbackSelected(surveys.get(position - 1));
     }
 
     @Override
@@ -341,7 +359,12 @@ public class DashboardSentFragment extends ListFragment {
         setListShown(true);
     }
 
-
+    public void reloadData(){
+        //Reload data using service
+        Intent surveysIntent=new Intent(PreferencesState.getInstance().getContext().getApplicationContext(), SurveyService.class);
+        surveysIntent.putExtra(SurveyService.SERVICE_METHOD, SurveyService.RELOAD_DASHBOARD_ACTION);
+        PreferencesState.getInstance().getContext().getApplicationContext().startService(surveysIntent);
+    }
     /**
      * filter the surveys for last survey in org unit, and set surveysForGraphic for the statistics
      */
@@ -412,7 +435,7 @@ public class DashboardSentFragment extends ListFragment {
     private HashMap<String, Survey> filterSurvey(HashMap<String, Survey> orgUnits, Survey survey) {
         if(orgUnitFilter.equals(ORG_UNIT_WITHOUT_FILTER) || orgUnitFilter.equals(survey.getOrgUnit().getUid()))
             if(programFilter.equals(PROGRAM_WITHOUT_FILTER) || programFilter.equals(survey.getTabGroup().getProgram().getUid()))
-              orgUnits.put(survey.getTabGroup().getProgram().getUid()+survey.getOrgUnit().getUid(), survey);
+                orgUnits.put(survey.getTabGroup().getProgram().getUid()+survey.getOrgUnit().getUid(), survey);
         return orgUnits;
     }
 
