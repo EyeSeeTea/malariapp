@@ -369,10 +369,8 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
     @Override
     public void onBackPressed() {
         if(isCreateSurveyFragmentActive() && currentTab==TAB_ASSESS) {
-            Log.d(TAG, "CreateSurveyFragment->Back");
             initAssess();
             unsentFragment.reloadData();
-
         }
         else if(isSurveyFragmentActive() && currentTab==TAB_ASSESS){
             new AlertDialog.Builder(this)
@@ -390,7 +388,6 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
                     }).create().show();
         }
         else {
-            Log.d(TAG, "back pressed");
             new AlertDialog.Builder(this)
                     .setTitle("Really Exit?")
                     .setMessage("Are you sure you want to exit the app?")
@@ -414,19 +411,26 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
     public void newSurvey(View view) {
         initCreateSurvey();
     }
+
+
+    /**
+     * Checks if a survey fragment is active
+     */
     private boolean isSurveyFragmentActive() {
          Fragment currentFragment = this.getFragmentManager ().findFragmentById(R.id.dashboard_details_container);
         if (currentFragment instanceof SurveyFragment) {
-            Log.v(TAG, "find the current fragment"+"Survey");
             return true;
         }
         return false;
     }
 
+
+    /**
+     * Checks if a createsurveyfragment is active
+     */
     private boolean isCreateSurveyFragmentActive() {
          Fragment currentFragment = this.getFragmentManager ().findFragmentById(R.id.dashboard_details_container);
         if (currentFragment instanceof CreateSurveyFragment) {
-            Log.v(TAG, "find the current fragment"+"Create");
             return true;
         }
         return false;
