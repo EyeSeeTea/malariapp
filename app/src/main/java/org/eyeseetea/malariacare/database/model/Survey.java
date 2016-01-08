@@ -433,7 +433,8 @@ public class Survey extends BaseModel implements VisitableToSDK {
         SurveyAnsweredRatio surveyAnsweredRatio = this.getAnsweredQuestionRatio();
         if (surveyAnsweredRatio.getTotalCompulsory()==0) {
             //Update status
-            this.setStatus(answeredRatio.isCompleted() ? Constants.SURVEY_COMPLETED : Constants.SURVEY_IN_PROGRESS);
+            if(!answeredRatio.isCompleted())
+            this.setStatus(Constants.SURVEY_IN_PROGRESS);
 
         }
         else if(surveyAnsweredRatio.getCompulsoryAnswered()==0){
