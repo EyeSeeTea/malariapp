@@ -27,8 +27,10 @@ import android.app.ListFragment;
 import android.app.LocalActivityManager;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -67,12 +69,20 @@ public class DashboardActivity extends BaseActivity implements DashboardSentFrag
     static boolean viewFeedback;
     FeedbackFragment feedbackFragment;
     String currentTab;
+    String TAB_PLAN;
+    String TAB_ASSESS;
+    String TAB_IMPROVE;
+    String TAB_MONITOR;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Log.d(TAG, "onCreate");
         super.onCreate(savedInstanceState);
-
+        getTags();
+        if(viewFeedback) {
+            viewFeedback=false;
+            //finishAndGo(FeedbackActivity.class);
+        }
         setContentView(R.layout.tab_dashboard);
         try {
             initDataIfRequired();
@@ -87,10 +97,10 @@ public class DashboardActivity extends BaseActivity implements DashboardSentFrag
         }
         initTabHost(savedInstanceState);
         /* set tabs in order */
-        setTab("tab_plan",R.id.tab_plan_layout,getResources().getDrawable(R.drawable.tab_plan));
-        setTab("tab_assess", R.id.tab_assess_layout, getResources().getDrawable(R.drawable.tab_assess));
-        setTab("tab_improve", R.id.tab_improve_layout, getResources().getDrawable(R.drawable.tab_improve));
-        setTab("tab_monitor", R.id.tab_monitor_layout, getResources().getDrawable(R.drawable.tab_monitor));
+        setTab(TAB_PLAN,R.id.tab_plan_layout,getResources().getDrawable(R.drawable.tab_plan));
+        setTab(TAB_ASSESS, R.id.tab_assess_layout, getResources().getDrawable(R.drawable.tab_assess));
+        setTab(TAB_IMPROVE, R.id.tab_improve_layout, getResources().getDrawable(R.drawable.tab_improve));
+        setTab(TAB_MONITOR, R.id.tab_monitor_layout, getResources().getDrawable(R.drawable.tab_monitor));
 
         tabHost.setOnTabChangedListener( new TabHost.OnTabChangeListener() {
 
@@ -98,13 +108,13 @@ public class DashboardActivity extends BaseActivity implements DashboardSentFrag
             public void onTabChanged(String tabId) {
                 /** If current tab is android */
                 currentTab=tabId;
-                if (tabId.equalsIgnoreCase("tab_improve")) {
+                if (tabId.equalsIgnoreCase(TAB_IMPROVE)) {
                     sentFragment.reloadData();
-                } else if (tabId.equalsIgnoreCase("tab_assess")) {
+                } else if (tabId.equalsIgnoreCase(TAB_ASSESS)) {
                     unsentFragment.reloadUncompletedUnsentSurveys();
-                } else if (tabId.equalsIgnoreCase("tab_plan")) {
+                } else if (tabId.equalsIgnoreCase(TAB_PLAN)) {
                     //tab_plan on click code
-                } else if (tabId.equalsIgnoreCase("tab_monitor")) {
+                } else if (tabId.equalsIgnoreCase(TAB_MONITOR)) {
                     monitorFragment.reloadSentSurveys();
                 }
             }
@@ -114,6 +124,13 @@ public class DashboardActivity extends BaseActivity implements DashboardSentFrag
         }
         tabHost.refreshDrawableState();
         setActionbarTitle();
+    }
+
+    private void getTags() {
+        TAB_PLAN=getResources().getString(R.string.tab_plan);
+        TAB_ASSESS=getResources().getString(R.string.tab_assess);
+        TAB_IMPROVE=getResources().getString(R.string.tab_improve);
+        TAB_MONITOR=getResources().getString(R.string.tab_monitor);
     }
 
     /**
@@ -349,7 +366,7 @@ public class DashboardActivity extends BaseActivity implements DashboardSentFrag
     @Override
     public void onBackPressed() {
         Log.d(TAG, "back pressed");
-        if(isFeedbackFragmentActive() && currentTab=="tab_improve"){
+        if(isFeedbackFragmentActive() && currentTab==TAB_IMPROVE){
             ScoreRegister.clear();
             feedbackFragment.unregisterReceiver();
             feedbackFragment.getView().setVisibility(View.GONE);
@@ -410,7 +427,7 @@ public class DashboardActivity extends BaseActivity implements DashboardSentFrag
     @Override
     public void onFeedbackSelected(Survey survey) {
         Session.setSurveyFeedback(survey);
-        tabHost.setCurrentTabByTag("tab_improve");
+        tabHost.setCurrentTabByTag(TAB_IMPROVE);
         sentFragment.getView().setVisibility(View.GONE);
         initFeedback();
     }
