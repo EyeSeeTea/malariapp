@@ -19,24 +19,21 @@
 
 package org.eyeseetea.malariacare.fragments;
 
-import android.app.AlertDialog;
 import android.app.ListFragment;
 import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.SharedPreferences;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 
@@ -45,15 +42,12 @@ import org.eyeseetea.malariacare.ProgressActivity;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.SurveyActivity;
 import org.eyeseetea.malariacare.database.model.Survey;
-import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.layout.adapters.dashboard.AssessmentUnsentAdapter;
 import org.eyeseetea.malariacare.layout.adapters.dashboard.IDashboardAdapter;
-import org.eyeseetea.malariacare.layout.listeners.SwipeDismissListViewTouchListener;
-import org.eyeseetea.malariacare.network.PushClient;
-import org.eyeseetea.malariacare.network.PushResult;
 import org.eyeseetea.malariacare.receivers.AlarmPushReceiver;
 import org.eyeseetea.malariacare.services.SurveyService;
+import org.eyeseetea.malariacare.utils.Constants;
 import org.eyeseetea.malariacare.views.CustomTextView;
 
 import java.util.ArrayList;
@@ -70,6 +64,7 @@ public class DashboardUnsentFragment extends ListFragment {
     private List<Survey> surveys;
     protected IDashboardAdapter adapter;
     private static int index = 0;
+    private static int selectedPosition=0;
     private AlarmPushReceiver alarmPush;
 
     public DashboardUnsentFragment(){
@@ -116,7 +111,7 @@ public class DashboardUnsentFragment extends ListFragment {
         super.onActivityCreated(savedInstanceState);
         initAdapter();
         initListView();
-
+        registerForContextMenu(getListView());
     }
 
     @Override
@@ -146,22 +141,47 @@ public class DashboardUnsentFragment extends ListFragment {
     }
 
     @Override
-    public void onListItemClick(ListView l, View v, int position, long id){
-        Log.d(TAG, "onListItemClick");
-        super.onListItemClick(l, v, position, id);
-
-        //Discard clicks on header|footer (which is attendend on newSurvey via super)
-        if(!isPositionASurvey(position)){
-            return;
+    public void onCreateContextMenu(ContextMenu menu, View v,
+                                    ContextMenu.ContextMenuInfo menuInfo) {
+        if(isPositionASurvey(selectedPosition)) {
+            MenuInflater inflater=getActivity().getMenuInflater();
+            inflater.inflate(R.menu.unsent_options,menu);
         }
-
-        //Put selected survey in session
-        Session.setSurvey(surveys.get(position - 1));
-        //Go to SurveyActivity
-        ((DashboardActivity) getActivity()).go(SurveyActivity.class);
-        getActivity().finish();
     }
 
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+        Log.d(TAG,"id"+item.getItemId());
+        switch (item.getItemId()) {
+            case R.id.option_edit:
+                //Put selected survey in session
+                Session.setSurvey(surveys.get(selectedPosition-1));
+                //Go to SurveyActivity
+                ((DashboardActivity) getActivity()).go(SurveyActivity.class);
+                getActivity().finish();
+                return true;
+            case R.id.option_mark_completed:
+                ((Survey)adapter.getItem(selectedPosition-1)).setStatus(Constants.SURVEY_COMPLETED);
+                ((Survey)adapter.getItem(selectedPosition-1)).save();
+                reloadData();
+                return true;
+            case R.id.option_delete:
+                Log.d(TAG, "removing item pos=" + selectedPosition);
+                ((Survey)adapter.getItem(selectedPosition-1)).delete();
+                reloadData();
+                return true;
+            default:
+                return super.onContextItemSelected(item);
+        }
+    }
+    public void reloadData(){
+        //Reload data using service
+        Intent surveysIntent=new Intent(getActivity(), SurveyService.class);
+        surveysIntent.putExtra(SurveyService.SERVICE_METHOD, SurveyService.RELOAD_DASHBOARD_ACTION);
+        getActivity().startService(surveysIntent);
+    }
     @Override
     public void onStop(){
         Log.d(TAG, "onStop");
@@ -210,49 +230,28 @@ public class DashboardUnsentFragment extends ListFragment {
         listView.addHeaderView(header);
         listView.addFooterView(footer);
         setListAdapter((BaseAdapter) adapter);
-
-        // Create a ListView-specific touch listener. ListViews are given special treatment because
-        // by default they handle touches for their list items... i.e. they're in charge of drawing
-        // the pressed state (the list selector), handling list item clicks, etc.
-        SwipeDismissListViewTouchListener touchListener =
-                new SwipeDismissListViewTouchListener(
-                        listView,
-                        new SwipeDismissListViewTouchListener.DismissCallbacks() {
-                            @Override
-                            public boolean canDismiss(int position) {
-                                return position>0 && position<=surveys.size();
-                            }
-
-                            @Override
-                            public void onDismiss(ListView listView, int[] reverseSortedPositions) {
-                                for (final int position : reverseSortedPositions) {
-                                    new AlertDialog.Builder(getActivity())
-                                            .setTitle(getActivity().getString(R.string.dialog_title_delete_survey))
-                                            .setMessage(getActivity().getString(R.string.dialog_info_delete_survey))
-                                            .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                                                public void onClick(DialogInterface arg0, int arg1) {
-                                                    ((Survey)adapter.getItem(position-1)).delete();
-                                                    //Reload data using service
-                                                    Intent surveysIntent=new Intent(getActivity(), SurveyService.class);
-                                                    surveysIntent.putExtra(SurveyService.SERVICE_METHOD, SurveyService.RELOAD_DASHBOARD_ACTION);
-                                                    getActivity().startService(surveysIntent);
-                                                }
-                                            })
-                                            .setNegativeButton(android.R.string.no, null).create().show();
-                                }
-
-                            }
-                        });
-        listView.setOnTouchListener(touchListener);
-        // Setting this scroll listener is required to ensure that during ListView scrolling,
-        // we don't look for swipes.
-        listView.setOnScrollListener(touchListener.makeScrollListener());
-
-        listView.setLongClickable(true);
-
         Session.listViewUnsent = listView;
     }
 
+    @Override
+    public void onListItemClick(ListView l, View v, int position, long id){
+        //Discard clicks on header|footer (which is attendend on newSurvey via super)
+        selectedPosition=position;
+        l.showContextMenuForChild(v);
+    }
+    private void launchPush(int position){
+        //Get survey from position
+        final Survey survey = (Survey) adapter.getItem(position - 1);
+        Session.setSurvey(survey);
+
+        //Pushing selected survey via sdk
+        Intent progressActivityIntent = new Intent(getActivity(), ProgressActivity.class);
+        progressActivityIntent.putExtra(ProgressActivity.AFTER_ACTION,ProgressActivity.SHOW_FEEDBACK);
+        progressActivityIntent.putExtra(ProgressActivity.TYPE_OF_ACTION,ProgressActivity.ACTION_PUSH);
+
+        getActivity().finish();
+        startActivity(progressActivityIntent);
+    }
 
 
     /**
@@ -289,9 +288,9 @@ public class DashboardUnsentFragment extends ListFragment {
         List<Survey> surveysUncompletedUnsentFromService = (List<Survey>) Session.popServiceValue(SurveyService.ALL_UNCOMPLETED_UNSENT_SURVEYS_ACTION);
         reloadSurveys(surveysUncompletedUnsentFromService);
             //set alarm if is malariaapp question
-            reloadCompletedUnsentSurveys();
+            reloadCompletedSurveys();
     }
-    public void reloadCompletedUnsentSurveys(){
+    public void reloadCompletedSurveys(){
         List<Survey> surveysCompletedFromService = (List<Survey>) Session.popServiceValue(SurveyService.ALL_COMPLETED_SURVEYS_ACTION);
         if(surveysCompletedFromService!=null) {
             if (surveysCompletedFromService.size() > 0) {
@@ -325,7 +324,7 @@ public class DashboardUnsentFragment extends ListFragment {
             //Listening only intents from this method
             //if the state is completed, the state is not sent.
             if (SurveyService.ALL_COMPLETED_SURVEYS_ACTION.equals(intent.getAction())) {
-                reloadCompletedUnsentSurveys();
+                reloadCompletedSurveys();
             }
         }
     }

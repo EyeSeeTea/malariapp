@@ -293,7 +293,11 @@
     <string name="progress_push_updating_survey">Updating pushed survey data...</string>
     <string name="progress_push_no_survey">No survey found for pushing</string>
     <string name="dialog_push_before_pull_success">Surveys successfully pushed to dhis server, starting to pull metadata</string>
+    <string name="option_edit">Edit</string>
+    <string name="option_mark_completed">Mark as completed</string>
+    <string name="option_delete">Delete</string>
 
     <!-- async push -->
     <string name="PUSH_PERIOD" translatable="false">10</string>
+    <string name="PUSH_FAILED_PERIOD" translatable="false">300</string>
 </resources>

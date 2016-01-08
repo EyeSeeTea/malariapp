@@ -236,5 +236,7 @@
     <string name="dialog_push_success">Enquête poussé avec succès à dhis serveur</string>
     <string name="progress_push_no_survey">Aucune enquête a révélé pour pousser</string>
     <string name="dialog_push_before_pull_success">Enquête poussé avec succès à dhis serveur, de commencer à tirer des métadonnées</string>
-
+    <string name="option_edit">Modifier</string>
+    <string name="option_mark_completed">Marquer comme terminée</string>
+    <string name="option_delete">Effacer</string>
 </resources>

@@ -40,6 +40,11 @@ public class AlarmPushReceiver extends BroadcastReceiver {
 
     //TODO: period has to be parameterized
     private static final long SECONDS = 1000;
+    private static boolean fail;
+
+    public static void setFail(boolean fail) {
+        AlarmPushReceiver.fail = fail;
+    }
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -53,8 +58,13 @@ public class AlarmPushReceiver extends BroadcastReceiver {
 
     public void setPushAlarm(Context context) {
         Log.d(TAG, "setPushAlarm");
-
-        long pushPeriod = Long.parseLong(context.getString(R.string.PUSH_PERIOD));
+        long pushPeriod;
+        if(fail) {
+            pushPeriod= Long.parseLong(context.getString(R.string.PUSH_FAILED_PERIOD));
+        }
+        else{
+            pushPeriod= Long.parseLong(context.getString(R.string.PUSH_PERIOD));
+        }
         AlarmManager am = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent(context, AlarmPushReceiver.class);
         //Note FLAG_UPDATE_CURRENT
