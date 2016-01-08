@@ -27,8 +27,10 @@ import android.app.ListFragment;
 import android.app.LocalActivityManager;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -67,17 +69,18 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
     SurveyFragment surveyFragment;
     LocalActivityManager mlam;
     static boolean viewFeedback;
-    String TAB_PLAN="tab_plan";
-    String TAB_ASSESS="tab_assess";
-    String TAB_IMPROVE="tab_improve";
-    String TAB_MONITOR="tab_monitor";
     String currentTab;
+    String TAB_PLAN;
+    String TAB_ASSESS;
+    String TAB_IMPROVE;
+    String TAB_MONITOR;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Log.d(TAG, "onCreate");
         super.onCreate(savedInstanceState);
+        getTags();
         if(viewFeedback) {
             viewFeedback=false;
             finishAndGo(FeedbackActivity.class);
@@ -123,6 +126,13 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
         }
         tabHost.refreshDrawableState();
         setActionbarTitle();
+    }
+
+    private void getTags() {
+        TAB_PLAN=getResources().getString(R.string.tab_plan);
+        TAB_ASSESS=getResources().getString(R.string.tab_assess);
+        TAB_IMPROVE=getResources().getString(R.string.tab_improve);
+        TAB_MONITOR=getResources().getString(R.string.tab_monitor);
     }
 
     /**
