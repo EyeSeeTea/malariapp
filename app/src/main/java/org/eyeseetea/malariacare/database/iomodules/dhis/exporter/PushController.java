@@ -90,19 +90,24 @@ public class PushController {
      *  - Turns SDK into APP data
      * @param ctx
      */
-    public void push(Context ctx,List<Survey> surveys){
+    public boolean push(Context ctx,List<Survey> surveys){
         Log.d(TAG, "Starting PUSH process...");
         context=ctx;
 
         //No survey no push
         if(surveys==null || surveys.size()==0){
             postException(new Exception(context.getString(R.string.progress_push_no_survey)));
-            return;
+            return false;
         }
 
         try {
             //Register for event bus
-            register();
+            try {
+                register();
+            }catch(Exception e){
+                unregister();
+                register();
+            }
 
             //Converts app data into sdk events
             postProgress(context.getString(R.string.progress_push_preparing_survey));
@@ -118,7 +123,9 @@ public class PushController {
             Log.e(TAG,"push: "+ex.getLocalizedMessage());
             unregister();
             postException(ex);
+            return false;
         }
+        return true;
     }
 
     @Subscribe
