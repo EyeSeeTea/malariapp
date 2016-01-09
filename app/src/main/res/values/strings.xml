@@ -52,7 +52,7 @@
     <string name="dialog_title_push_data">Pushing data</string>
     <string name="dialog_content_push_data">Are you sure that you want to send? You cannot undo this action</string>
     <string name="dialog_button_preview_feedback">View Feedback</string>
-    <string name="dialog_ask_complete_survey">Would you like to complete this survey?</string>
+    <string name="dialog_question_complete_survey">All compulsory questions were completed. Would you like to mark this survey as completed?</string>
     <string name="dialog_continue_later_option">Continue Later</string>
     <string name="dialog_complete_option">Complete</string>
     <string name="dialog_are_you_sure_complete_survey">Are you sure? This action cannot be undone and you will no longer be able to edit or delete this survey</string>

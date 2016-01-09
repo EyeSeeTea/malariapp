@@ -42,7 +42,7 @@
     <string name="dialog_title_push_data">empurrando dados</string>
     <string name="dialog_content_push_data">Tem certeza de que deseja enviar isso?</string>
     <string name="dialog_button_preview_feedback">Ver feedback</string>
-    <string name="dialog_ask_complete_survey">Gostaria de concluir esta pesquisa?</string>
+    <string name="dialog_question_complete_survey">Todas as questões obrigatórias foram concluídos. Você quer fazer o levantamento mais abrangente?</string>
     <string name="dialog_continue_later_option">Adiar</string>
     <string name="dialog_complete_option">Completo</string>
     <string name="dialog_are_you_sure_complete_survey">Você tem certeza? Essa ação não pode ser desfeita e você não será mais capaz de editar ou excluir essa pesquisa</string>
@@ -246,4 +246,5 @@
     <string name="option_edit">Editar</string>
     <string name="option_mark_completed">Marcar como concluída</string>
     <string name="option_delete">Excluir</string>
+    <string name="dialog_info_push_confirm">Você tem certeza? Você não pode desfazer esta ação</string>
 </resources>

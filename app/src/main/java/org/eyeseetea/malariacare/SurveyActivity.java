@@ -180,7 +180,7 @@ public class SurveyActivity extends BaseActivity{
         SurveyAnsweredRatio surveyAnsweredRatio=survey.reloadSurveyAnsweredRatio();
         if(surveyAnsweredRatio.getCompulsoryAnswered()==surveyAnsweredRatio.getTotalCompulsory()){
             new AlertDialog.Builder(this)
-                    .setMessage(R.string.dialog_ask_complete_survey)
+                    .setMessage(R.string.dialog_question_complete_survey)
                     .setNegativeButton(R.string.dialog_complete_option,  new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int arg1) {
                             confirmDialog();
