@@ -19,12 +19,7 @@
 
 package org.eyeseetea.malariacare.database.model;
 
-import android.util.Log;
-
 import com.raizlabs.android.dbflow.annotation.Column;
-import com.raizlabs.android.dbflow.annotation.ForeignKey;
-import com.raizlabs.android.dbflow.annotation.ForeignKeyReference;
-import com.raizlabs.android.dbflow.annotation.OneToMany;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;
 import com.raizlabs.android.dbflow.sql.builder.Condition;
@@ -369,11 +364,13 @@ public class Survey extends BaseModel implements VisitableToSDK {
      * Calculates the current ratio of completion for this survey
      * @return SurveyAnsweredRatio that hold the total & answered questions.
      */
-    private SurveyAnsweredRatio reloadSurveyAnsweredRatio(){
+    public SurveyAnsweredRatio reloadSurveyAnsweredRatio(){
         int numRequired = Question.countRequiredByProgram(this.getTabGroup());
+        int numCompulsory=Question.countCompulsoryByProgram(this.getTabGroup());
         int numOptional = (int)countNumOptionalQuestionsToAnswer();
         int numAnswered = Value.countBySurvey(this);
-        SurveyAnsweredRatio surveyAnsweredRatio=new SurveyAnsweredRatio(numRequired+numOptional, numAnswered);
+        int numCompulsoryAnswered = Value.countCompulsoryBySurvey(this);
+        SurveyAnsweredRatio surveyAnsweredRatio=new SurveyAnsweredRatio(numRequired+numOptional, numAnswered,numCompulsory,numCompulsoryAnswered);
         SurveyAnsweredRatioCache.put(this.id_survey, surveyAnsweredRatio);
         return surveyAnsweredRatio;
     }
@@ -424,16 +421,22 @@ public class Survey extends BaseModel implements VisitableToSDK {
             return;
         }
 
-        SurveyAnsweredRatio answeredRatio=this.reloadSurveyAnsweredRatio();
 
-        //Update status
-        this.setStatus(answeredRatio.isCompleted() ? Constants.SURVEY_COMPLETED : Constants.SURVEY_IN_PROGRESS);
+        SurveyAnsweredRatio answeredRatio = this.reloadSurveyAnsweredRatio();
 
+        SurveyAnsweredRatio surveyAnsweredRatio = this.getAnsweredQuestionRatio();
+        if (surveyAnsweredRatio.getTotalCompulsory()==0) {
+            //Update status
+            if(!answeredRatio.isCompleted())
+            this.setStatus(Constants.SURVEY_IN_PROGRESS);
+
+        }
+        else if(surveyAnsweredRatio.getCompulsoryAnswered()==0){
+            this.setStatus(Constants.SURVEY_IN_PROGRESS);
+        }
         //CompletionDate
         this.setCompletionDate(new Date());
 
-        //it is needed for calculate the score in the completed surveys but not sent.
-        saveScore();
 
         //Saves new status & completionDate
         this.save();
@@ -604,9 +607,16 @@ public class Survey extends BaseModel implements VisitableToSDK {
         }
     }
 
-    public void updateSurveyState(){
+    public void setSentSurveyState(){
         //Change status and save mainScore
         setStatus(Constants.SURVEY_SENT);
+        save();
+        saveMainScore();
+    }
+
+    public void setCompleteSurveyState(){
+        setStatus(Constants.SURVEY_COMPLETED);
+        saveScore();
         save();
         saveMainScore();
     }

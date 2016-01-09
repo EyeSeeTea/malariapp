@@ -42,6 +42,10 @@
     <string name="dialog_title_push_data">Enviar los datos</string>
     <string name="dialog_content_push_data">¿Está seguro de enviar? No podrá deshacer esta acción</string>
     <string name="dialog_button_preview_feedback">Ver feedback</string>
+    <string name="dialog_question_complete_survey">Todas las preguntas obligatorias han sido rellenadas. ¿Quiere marcar esta encuesta como completa?</string>
+    <string name="dialog_continue_later_option">Continuar despues</string>
+    <string name="dialog_complete_option">Completar</string>
+    <string name="dialog_are_you_sure_complete_survey">¿Está seguro? Esta acción no se puede deshacer y usted ya no será capaz de editar o borrar la encuesta</string>
 
     <!-- Toast -->
     <string name="cancellingPull">El proceso se cancelara en unos segundos</string>
@@ -235,4 +239,5 @@
     <string name="option_edit">Editar</string>
     <string name="option_mark_completed">Marcar como completa</string>
     <string name="option_delete">Borrar</string>
+    <string name="dialog_info_push_confirm">estás seguro? No podrás deshacer esta acción</string>
 </resources>

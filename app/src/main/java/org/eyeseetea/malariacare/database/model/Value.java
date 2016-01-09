@@ -25,6 +25,8 @@ import com.raizlabs.android.dbflow.annotation.ForeignKeyReference;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;
 import com.raizlabs.android.dbflow.sql.builder.Condition;
+import com.raizlabs.android.dbflow.sql.language.ColumnAlias;
+import com.raizlabs.android.dbflow.sql.language.Join;
 import com.raizlabs.android.dbflow.sql.language.Select;
 import com.raizlabs.android.dbflow.structure.BaseModel;
 
@@ -192,6 +194,17 @@ public class Value extends BaseModel implements VisitableToSDK {
                 .where(Condition.column(Value$Table.ID_SURVEY).eq(survey.getId_survey())).count();
     }
 
+    public static int countCompulsoryBySurvey(Survey survey){
+        if(survey==null || survey.getId_survey()==null){
+            return 0;
+        }
+        return (int) new Select().count()
+                .from(Value.class).as("v")
+                .join(Question.class, Join.JoinType.LEFT).as("q")
+                .on(Condition.column(ColumnAlias.columnWithTable("v", Value$Table.ID_QUESTION)).eq(ColumnAlias.columnWithTable("q", Question$Table.ID_QUESTION)))
+                .where(Condition.column(Question$Table.COMPULSORY).eq(true))
+                .and((Condition.column(Value$Table.ID_SURVEY).eq(survey.getId_survey()))).count();
+    }
     @Override
     public void accept(IConvertToSDKVisitor IConvertToSDKVisitor) {
         IConvertToSDKVisitor.visit(this);

@@ -121,12 +121,11 @@ public class QuestionBuilder {
         String attributeHeaderValue = dataElementExtended.getValue(DataElementExtended.ATTRIBUTE_HEADER_NAME);
         if (attributeHeaderValue != null) {
             Tab questionTab;
-            String programUid = dataElementExtended.findProgramStageSectionUIDByDataElementUID(dataElementExtended.getDataElement().getUid());
             String tabUid = dataElementExtended.findProgramStageSectionUIDByDataElementUID(dataElementExtended.getDataElement().getUid());
             if(ConvertFromSDKVisitor.appMapObjects.containsKey(tabUid)) {
                 questionTab = (Tab) ConvertFromSDKVisitor.appMapObjects.get(tabUid);
-                if(mapHeader.containsKey(programUid+attributeHeaderValue)){
-                        if(!mapHeader.get(programUid+attributeHeaderValue).getTab().getName().equals(questionTab.getName()))
+                if(mapHeader.containsKey(tabUid+attributeHeaderValue)){
+                        if(!mapHeader.get(tabUid+attributeHeaderValue).getTab().getName().equals(questionTab.getName()))
                             Log.d("Bug","Header with other tab"+header.getName()+" othertab "+questionTab.getName()+ "uid" + dataElementExtended.getDataElement().getUid());
                 }
             }
