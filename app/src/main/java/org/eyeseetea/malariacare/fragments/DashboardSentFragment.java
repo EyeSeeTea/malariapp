@@ -128,7 +128,6 @@ public class DashboardSentFragment extends ListFragment {
         initListView();
         initFilters(getView());
     }
-
     private void initFilters(View view) {
         filterSpinnerProgram = (Spinner) getActivity().findViewById(R.id.filter_program);
 
@@ -145,15 +144,15 @@ public class DashboardSentFragment extends ListFragment {
                 if (program.getName().equals(PROGRAM_WITHOUT_FILTER)) {
                     if (programFilter != PROGRAM_WITHOUT_FILTER) {
                         programFilter = PROGRAM_WITHOUT_FILTER;
-                        reload = true;
+                        reload=true;
                     }
                 } else {
                     if (programFilter != program.getUid()) {
                         programFilter = program.getUid();
-                        reload = true;
+                        reload=true;
                     }
                 }
-                if (reload)
+                if(reload)
                     reloadSentSurveys();
             }
 
