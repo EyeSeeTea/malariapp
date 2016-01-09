@@ -444,13 +444,13 @@ public class Survey extends BaseModel implements VisitableToSDK {
         this.setCompletionDate(new Date());
 
         //it is needed for calculate the score in the completed surveys but not sent.
-        saveScore();
+        //saveScore();
 
         //Saves new status & completionDate
         this.save();
     }
 
-    private void saveScore() {        //Prepare scores info
+    public void saveScore() {        //Prepare scores info
         List<CompositeScore> compositeScoreList= ScoreRegister.loadCompositeScores(this);
 
         //Calculate main score to push later
@@ -622,8 +622,9 @@ public class Survey extends BaseModel implements VisitableToSDK {
         saveMainScore();
     }
 
-    public void setCompleteSurveyState(){
+    public void setCompleteSurveyState() {
         setStatus(Constants.SURVEY_COMPLETED);
+        saveScore();
         save();
         saveMainScore();
     }
