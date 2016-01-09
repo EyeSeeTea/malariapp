@@ -46,6 +46,7 @@ import org.eyeseetea.malariacare.database.model.OrgUnit;
 import org.eyeseetea.malariacare.database.model.Program;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.utils.Session;
+import org.eyeseetea.malariacare.layout.adapters.dashboard.AAssessmentAdapter;
 import org.eyeseetea.malariacare.layout.adapters.dashboard.AssessmentSentAdapter;
 import org.eyeseetea.malariacare.layout.adapters.dashboard.IDashboardAdapter;
 import org.eyeseetea.malariacare.layout.adapters.general.OrgUnitArrayAdapter;
@@ -133,6 +134,39 @@ public class DashboardSentFragment extends ListFragment {
         initListView();
         initFilters(getView());
     }
+
+    //Adds the clicklistener to the header CustomTextView.
+    private View initFilterOrder(View header) {
+        CustomTextView ctv = (CustomTextView) header.findViewById(R.id.statusHeader);
+
+        ctv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setDateOrder();
+            }
+        });
+        CustomTextView ctv2 = (CustomTextView) header.findViewById(R.id.scoreHeader);
+
+        ctv2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setScoreOrder();
+            }
+        });
+
+        CustomTextView ctv3 = (CustomTextView) header.findViewById(R.id.idHeader);
+
+        ctv3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setFacilityOrder();
+            }
+        });
+
+
+        return header;
+    }
+
     private void initFilters(View view) {
         filterSpinnerProgram = (Spinner) getActivity().findViewById(R.id.filter_program);
 
@@ -227,17 +261,20 @@ public class DashboardSentFragment extends ListFragment {
 
     public void setScoreOrder()
     {
-            orderBy=SCORE_ORDER;
+        orderBy=SCORE_ORDER;
+        reloadSentSurveys();
     }
 
     public void setFacilityOrder()
     {
-            orderBy=FACILITY_ORDER;
+        orderBy=FACILITY_ORDER;
+        reloadSentSurveys();
     }
 
     public void setDateOrder()
     {
-            orderBy=DATE_ORDER;
+        orderBy=DATE_ORDER;
+        reloadSentSurveys();
     }
     @Override
     public void onListItemClick(ListView l, View v, int position, long id){
@@ -299,6 +336,7 @@ public class DashboardSentFragment extends ListFragment {
         View footer = inflater.inflate(this.adapter.getFooterLayout(), null, false);
         CustomTextView title = (CustomTextView) getActivity().findViewById(R.id.titleCompleted);
         title.setText(adapter.getTitle());
+        header=initFilterOrder(header);
         ListView listView = getListView();
         listView.addHeaderView(header);
         listView.addFooterView(footer);
