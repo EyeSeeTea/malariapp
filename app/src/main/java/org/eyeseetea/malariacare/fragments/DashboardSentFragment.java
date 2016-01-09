@@ -129,37 +129,6 @@ public class DashboardSentFragment extends ListFragment {
         initFilters(getView());
     }
 
-    //Adds the clicklistener to the header CustomTextView.
-    private View initFilterOrder(View header) {
-
-        CustomTextView statusctv = (CustomTextView) header.findViewById(R.id.statusHeader);
-
-        statusctv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                setDateOrder();
-            }
-        });
-        CustomTextView scorectv = (CustomTextView) header.findViewById(R.id.scoreHeader);
-
-        scorectv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                setScoreOrder();
-            }
-        });
-
-        CustomTextView facilityctv = (CustomTextView) header.findViewById(R.id.idHeader);
-
-        facilityctv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                setFacilityOrder();
-            }
-        });
-        return header;
-    }
-
     private void initFilters(View view) {
         filterSpinnerProgram = (Spinner) getActivity().findViewById(R.id.filter_program);
 
@@ -176,15 +145,15 @@ public class DashboardSentFragment extends ListFragment {
                 if (program.getName().equals(PROGRAM_WITHOUT_FILTER)) {
                     if (programFilter != PROGRAM_WITHOUT_FILTER) {
                         programFilter = PROGRAM_WITHOUT_FILTER;
-                        reload=true;
+                        reload = true;
                     }
                 } else {
                     if (programFilter != program.getUid()) {
                         programFilter = program.getUid();
-                        reload=true;
+                        reload = true;
                     }
                 }
-                if(reload)
+                if (reload)
                     reloadSentSurveys();
             }
 
@@ -336,7 +305,37 @@ public class DashboardSentFragment extends ListFragment {
         setListAdapter((BaseAdapter) adapter);
         Session.listViewSent = listView;
     }
+    
+    //Adds the clicklistener to the header CustomTextView.
+    private View initFilterOrder(View header) {
 
+        CustomTextView statusctv = (CustomTextView) header.findViewById(R.id.statusHeader);
+
+        statusctv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setDateOrder();
+            }
+        });
+        CustomTextView scorectv = (CustomTextView) header.findViewById(R.id.scoreHeader);
+
+        scorectv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setScoreOrder();
+            }
+        });
+
+        CustomTextView facilityctv = (CustomTextView) header.findViewById(R.id.idHeader);
+
+        facilityctv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setFacilityOrder();
+            }
+        });
+        return header;
+    }
 
     /**
      * Register a survey receiver to load surveys into the listadapter
