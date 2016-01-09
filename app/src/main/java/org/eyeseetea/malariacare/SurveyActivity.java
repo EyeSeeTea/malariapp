@@ -178,7 +178,7 @@ public class SurveyActivity extends BaseActivity{
         Survey survey = Session.getSurvey();
 
         SurveyAnsweredRatio surveyAnsweredRatio=survey.reloadSurveyAnsweredRatio();
-        if(surveyAnsweredRatio.getCompulsoryAnswered()==surveyAnsweredRatio.getTotalCompulsory()){
+        if(surveyAnsweredRatio.getCompulsoryAnswered()==surveyAnsweredRatio.getTotalCompulsory() && surveyAnsweredRatio.getTotalCompulsory()!=0 ){
             new AlertDialog.Builder(this)
                     .setMessage(R.string.dialog_question_complete_survey)
                     .setNegativeButton(R.string.dialog_complete_option,  new DialogInterface.OnClickListener() {
