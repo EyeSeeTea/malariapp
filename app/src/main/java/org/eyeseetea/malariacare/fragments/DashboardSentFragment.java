@@ -19,11 +19,9 @@
 
 package org.eyeseetea.malariacare.fragments;
 
-import android.app.AlertDialog;
 import android.app.ListFragment;
 import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
@@ -37,8 +35,6 @@ import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.Spinner;
 
-import com.raizlabs.android.dbflow.sql.language.Select;
-
 import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.FeedbackActivity;
 import org.eyeseetea.malariacare.R;
@@ -46,12 +42,10 @@ import org.eyeseetea.malariacare.database.model.OrgUnit;
 import org.eyeseetea.malariacare.database.model.Program;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.utils.Session;
-import org.eyeseetea.malariacare.layout.adapters.dashboard.AAssessmentAdapter;
 import org.eyeseetea.malariacare.layout.adapters.dashboard.AssessmentSentAdapter;
 import org.eyeseetea.malariacare.layout.adapters.dashboard.IDashboardAdapter;
 import org.eyeseetea.malariacare.layout.adapters.general.OrgUnitArrayAdapter;
 import org.eyeseetea.malariacare.layout.adapters.general.ProgramArrayAdapter;
-import org.eyeseetea.malariacare.layout.listeners.SwipeDismissListViewTouchListener;
 import org.eyeseetea.malariacare.services.SurveyService;
 import org.eyeseetea.malariacare.views.CustomTextView;
 
@@ -137,33 +131,32 @@ public class DashboardSentFragment extends ListFragment {
 
     //Adds the clicklistener to the header CustomTextView.
     private View initFilterOrder(View header) {
-        CustomTextView ctv = (CustomTextView) header.findViewById(R.id.statusHeader);
 
-        ctv.setOnClickListener(new View.OnClickListener() {
+        CustomTextView statusctv = (CustomTextView) header.findViewById(R.id.statusHeader);
+
+        statusctv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 setDateOrder();
             }
         });
-        CustomTextView ctv2 = (CustomTextView) header.findViewById(R.id.scoreHeader);
+        CustomTextView scorectv = (CustomTextView) header.findViewById(R.id.scoreHeader);
 
-        ctv2.setOnClickListener(new View.OnClickListener() {
+        scorectv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 setScoreOrder();
             }
         });
 
-        CustomTextView ctv3 = (CustomTextView) header.findViewById(R.id.idHeader);
+        CustomTextView facilityctv = (CustomTextView) header.findViewById(R.id.idHeader);
 
-        ctv3.setOnClickListener(new View.OnClickListener() {
+        facilityctv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 setFacilityOrder();
             }
         });
-
-
         return header;
     }
 
