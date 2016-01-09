@@ -19,13 +19,7 @@
 
 package org.eyeseetea.malariacare.database.model;
 
-import android.nfc.Tag;
-import android.util.Log;
-
 import com.raizlabs.android.dbflow.annotation.Column;
-import com.raizlabs.android.dbflow.annotation.ForeignKey;
-import com.raizlabs.android.dbflow.annotation.ForeignKeyReference;
-import com.raizlabs.android.dbflow.annotation.OneToMany;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;
 import com.raizlabs.android.dbflow.sql.builder.Condition;
@@ -443,14 +437,12 @@ public class Survey extends BaseModel implements VisitableToSDK {
         //CompletionDate
         this.setCompletionDate(new Date());
 
-        //it is needed for calculate the score in the completed surveys but not sent.
-        //saveScore();
 
         //Saves new status & completionDate
         this.save();
     }
 
-    public void saveScore() {        //Prepare scores info
+    private void saveScore() {        //Prepare scores info
         List<CompositeScore> compositeScoreList= ScoreRegister.loadCompositeScores(this);
 
         //Calculate main score to push later
@@ -622,7 +614,7 @@ public class Survey extends BaseModel implements VisitableToSDK {
         saveMainScore();
     }
 
-    public void setCompleteSurveyState() {
+    public void setCompleteSurveyState(){
         setStatus(Constants.SURVEY_COMPLETED);
         saveScore();
         save();
