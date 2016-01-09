@@ -136,8 +136,14 @@ public abstract class AAssessmentAdapter extends ADashboardAdapter implements ID
         if (surveyAnsweredRatio.isCompleted()) {
             return getContext().getString(R.string.dashboard_info_ready_to_upload);
         } else {
-            if(surveyAnsweredRatio.getTotalCompulsory()>0)
-            return String.format("%d", Float.valueOf(100*surveyAnsweredRatio.getCompulsoryRatio()).intValue());
+            if(surveyAnsweredRatio.getTotalCompulsory()>0) {
+                float value=Float.valueOf(100 * surveyAnsweredRatio.getCompulsoryRatio()).intValue();
+                if(value>=100){
+                    return getContext().getString(R.string.dashboard_info_ready_to_upload);
+                }
+                else
+                return String.format("%d", value);
+            }
             return String.format("%d", Float.valueOf(100*surveyAnsweredRatio.getRatio()).intValue());
         }
     }
