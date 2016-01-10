@@ -98,6 +98,14 @@ public class Program extends BaseModel{
         return new Select().all().from(Program.class).queryList();
     }
 
+    public static Program getProgram(String uid) {
+        Program program = new Select()
+                .from(Program.class)
+                .where(Condition.column(Program$Table.UID)
+                        .is(uid)).querySingle();
+        return program;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -127,4 +135,5 @@ public class Program extends BaseModel{
                 ", name='" + name + '\'' +
                 '}';
     }
+
 }
