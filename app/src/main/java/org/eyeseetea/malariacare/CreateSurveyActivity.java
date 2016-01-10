@@ -63,11 +63,10 @@ public class CreateSurveyActivity extends BaseActivity {
 
     private static String TAG=".CreateSurvey";
 
-    // UI references.
     private Spinner orgUnitView;
     private View orgUnitContainerItems;
-    private String SEPARECHAR=";";
-    private String tempListOrgUnits="";
+    private String TOKEN = ";";
+    private String orgUnitStorage = "";
     static class ViewHolder{
         public View component;
     }
@@ -84,9 +83,7 @@ public class CreateSurveyActivity extends BaseActivity {
     private TabGroup tabGroupDefaultOption;
 
     private OrgUnit lastSelectedOrgUnit;
-    private String lastOrgUnits=SEPARECHAR;
-    private Program lastProgram;
-    private TabGroup lastTabGroup;
+    private String lastOrgUnits = TOKEN;
 
     private LayoutInflater lInflater;
 
@@ -160,26 +157,26 @@ public class CreateSurveyActivity extends BaseActivity {
         tabGroupView = (Spinner) findViewById(R.id.tab_group);
 
         //init the lastOrgUnits
-        lastOrgUnits=SEPARECHAR;
+        lastOrgUnits= TOKEN;
 
         //get the lastSelectedOrgUnit
-        getDefaultOrgUnit();
+        setDefaultOrgUnit();
 
         //get the list of org units for be pulled in the spinner.
-        tempListOrgUnits=getListOrgUnits();
+        orgUnitStorage =getListOrgUnits();
 
-        // If the list is empty(with SEPARECHAR), The list is overwritte by the lastSelectedOrgUnit(for saved orgunits without tree).
+        // If the list is empty(with TOKEN), The list is overwritte by the lastSelectedOrgUnit(for saved orgunits without tree).
         // In the first time, the application not have lastSelectedOrgUnit, it only need be saved if exist.
-        if(tempListOrgUnits.startsWith(SEPARECHAR))
+        if(orgUnitStorage.startsWith(TOKEN))
             if(lastSelectedOrgUnit !=null)
-                tempListOrgUnits= lastSelectedOrgUnit.getUid();
+                orgUnitStorage = lastSelectedOrgUnit.getUid();
 
         //Load the root lastorgUnit/firstOrgUnit(if we have orgUnitLevels).
-        if(!tempListOrgUnits.equals("")){
-            String[] list=tempListOrgUnits.split(SEPARECHAR);
+        if(!orgUnitStorage.equals("")){
+            String[] list= orgUnitStorage.split(TOKEN);
             if(list.length>0){
                 orgUnitView.setSelection(getIndex(orgUnitView, OrgUnit.getOrgUnit(list[0]).getName()));
-                tempListOrgUnits = removeLastOrgUnits(tempListOrgUnits, list[0] + SEPARECHAR);
+                orgUnitStorage = removeLastOrgUnits(orgUnitStorage, list[0] + TOKEN);
             }
         }
         else if(lastSelectedOrgUnit !=null)
@@ -277,9 +274,9 @@ public class CreateSurveyActivity extends BaseActivity {
             //save the lastSelectedOrgUnit and the list of orgUnits
             saveOrgUnit();
             //if the list not cointain the selected orgUnit(if it is root withoutchilds)
-            // set the list of orgUnitsLevels to "SEPARECHAR"
+            // set the list of orgUnitsLevels to "TOKEN"
             if(!lastOrgUnits.contains(orgUnit.getUid())) {
-                saveOrgUnitList(SEPARECHAR);
+                saveOrgUnitList(TOKEN);
             }
             Log.d(TAG,"finish List:"+lastOrgUnits);
             Log.d(TAG,"rootOrgUnit:"+lastSelectedOrgUnit);
@@ -368,7 +365,7 @@ public class CreateSurveyActivity extends BaseActivity {
                 if (selectedOrgUnit.getUid() != null && selectedOrgUnit.getChildren().isEmpty() && selectedOrgUnit.getOrgUnit() == null) {
                     //without parent without childs
                     lastSelectedOrgUnit = selectedOrgUnit;
-                    lastOrgUnits = SEPARECHAR;
+                    lastOrgUnits = TOKEN;
                 } else if (selectedOrgUnit.getOrgUnit() == null && selectedOrgUnit.getUid() != null) {
                     //parent
                     lastSelectedOrgUnit = selectedOrgUnit;
@@ -378,7 +375,7 @@ public class CreateSurveyActivity extends BaseActivity {
                     if (lastOrgUnits == null) {
                         lastOrgUnits = selectedOrgUnit.getUid();
                     } else if (!lastOrgUnits.contains(selectedOrgUnit.getUid())) {
-                        lastOrgUnits = lastOrgUnits + SEPARECHAR + selectedOrgUnit.getUid();
+                        lastOrgUnits = lastOrgUnits + TOKEN + selectedOrgUnit.getUid();
                     }
                 }
             }
@@ -400,16 +397,16 @@ public class CreateSurveyActivity extends BaseActivity {
 
                 //If the orgUnit had OrgUnit levels, it should be load one - to -one.
                 //Select the saved orgUnitTree. It gets the first orgUnit(by uid), and remove it from templistorgunits (the next loop gets the next).
-                if(!tempListOrgUnits.equals("")){
-                    String[] list=tempListOrgUnits.split(SEPARECHAR);
+                if(!orgUnitStorage.equals("")){
+                    String[] list= orgUnitStorage.split(TOKEN);
                     for(int i=0;i<list.length;i++){
-                        if(!list[i].equals("") && !list[i].equals(SEPARECHAR)) {
+                        if(!list[i].equals("") && !list[i].equals(TOKEN)) {
                             try {
                                 spinner.setSelection(getIndex(spinner, OrgUnit.getOrgUnit(list[i]).getName()));
                             } catch (Exception e) {
                             }
-                            tempListOrgUnits=tempListOrgUnits.replaceFirst(SEPARECHAR,"");
-                            tempListOrgUnits = removeLastOrgUnits(tempListOrgUnits, list[i]);
+                            orgUnitStorage = orgUnitStorage.replaceFirst(TOKEN,"");
+                            orgUnitStorage = removeLastOrgUnits(orgUnitStorage, list[i]);
                             break;
                         }
                     }
@@ -463,29 +460,29 @@ public class CreateSurveyActivity extends BaseActivity {
 
     private void changeOrgUnitList() {
         //if the lastorgUnits is "" o Separechar is not saved in sharedpreferences.
-        if (!lastOrgUnits.equals("") && !lastOrgUnits.equals(SEPARECHAR)) {
-            lastOrgUnits=lastOrgUnits+SEPARECHAR+ lastSelectedOrgUnit.getUid();
+        if (!lastOrgUnits.equals("") && !lastOrgUnits.equals(TOKEN)) {
+            lastOrgUnits=lastOrgUnits+ TOKEN + lastSelectedOrgUnit.getUid();
             //remove the repeat root.
-            lastOrgUnits=lastOrgUnits.replace(lastSelectedOrgUnit.getUid()+SEPARECHAR + lastSelectedOrgUnit.getUid(), lastSelectedOrgUnit.getUid());
+            lastOrgUnits=lastOrgUnits.replace(lastSelectedOrgUnit.getUid()+ TOKEN + lastSelectedOrgUnit.getUid(), lastSelectedOrgUnit.getUid());
             saveOrgUnitList(lastOrgUnits);
         }
     }
 
     //Remove the populate orgUnit in order.(the snippers always get the first position).
     private String removeLastOrgUnits(String list,String orgUnit){
-        if(!orgUnit.equals("") && !orgUnit.equals(SEPARECHAR)) {
+        if(!orgUnit.equals("") && !orgUnit.equals(TOKEN)) {
             list = list.replace(orgUnit, "");
         }
         return list;
     }
 
     //Get the default orgUnit/program/tab
-    private void getDefaultOrgUnit() {
+    private void setDefaultOrgUnit() {
         SharedPreferences sharedPreferences = getSharedPreferences();
-        this.lastSelectedOrgUnit =OrgUnit.getOrgUnit(sharedPreferences.getString(getApplicationContext().getResources().getString(R.string.default_orgUnit), ""));
+        this.lastSelectedOrgUnit = OrgUnit.getOrgUnit(sharedPreferences.getString(getApplicationContext().getResources().getString(R.string.default_orgUnit), ""));
     }
 
-    //Gets the default orgUnitLevels
+    //Get the default orgUnitLevels
     private String getListOrgUnits(){
         SharedPreferences sharedPreferences = getSharedPreferences();
         return sharedPreferences.getString(getApplicationContext().getResources().getString(R.string.default_orgUnits), "");
