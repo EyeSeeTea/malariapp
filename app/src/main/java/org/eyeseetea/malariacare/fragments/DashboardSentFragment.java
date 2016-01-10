@@ -19,11 +19,9 @@
 
 package org.eyeseetea.malariacare.fragments;
 
-import android.app.AlertDialog;
 import android.app.ListFragment;
 import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
@@ -37,8 +35,6 @@ import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.Spinner;
 
-import com.raizlabs.android.dbflow.sql.language.Select;
-
 import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.FeedbackActivity;
 import org.eyeseetea.malariacare.R;
@@ -50,7 +46,6 @@ import org.eyeseetea.malariacare.layout.adapters.dashboard.AssessmentSentAdapter
 import org.eyeseetea.malariacare.layout.adapters.dashboard.IDashboardAdapter;
 import org.eyeseetea.malariacare.layout.adapters.general.OrgUnitArrayAdapter;
 import org.eyeseetea.malariacare.layout.adapters.general.ProgramArrayAdapter;
-import org.eyeseetea.malariacare.layout.listeners.SwipeDismissListViewTouchListener;
 import org.eyeseetea.malariacare.services.SurveyService;
 import org.eyeseetea.malariacare.views.CustomTextView;
 
@@ -227,17 +222,20 @@ public class DashboardSentFragment extends ListFragment {
 
     public void setScoreOrder()
     {
-            orderBy=SCORE_ORDER;
+        orderBy=SCORE_ORDER;
+        reloadSentSurveys();
     }
 
     public void setFacilityOrder()
     {
-            orderBy=FACILITY_ORDER;
+        orderBy=FACILITY_ORDER;
+        reloadSentSurveys();
     }
 
     public void setDateOrder()
     {
-            orderBy=DATE_ORDER;
+        orderBy=DATE_ORDER;
+        reloadSentSurveys();
     }
     @Override
     public void onListItemClick(ListView l, View v, int position, long id){
@@ -299,13 +297,44 @@ public class DashboardSentFragment extends ListFragment {
         View footer = inflater.inflate(this.adapter.getFooterLayout(), null, false);
         CustomTextView title = (CustomTextView) getActivity().findViewById(R.id.titleCompleted);
         title.setText(adapter.getTitle());
+        header=initFilterOrder(header);
         ListView listView = getListView();
         listView.addHeaderView(header);
         listView.addFooterView(footer);
         setListAdapter((BaseAdapter) adapter);
         Session.listViewSent = listView;
     }
+    
+    //Adds the clicklistener to the header CustomTextView.
+    private View initFilterOrder(View header) {
 
+        CustomTextView statusctv = (CustomTextView) header.findViewById(R.id.statusHeader);
+
+        statusctv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setDateOrder();
+            }
+        });
+        CustomTextView scorectv = (CustomTextView) header.findViewById(R.id.scoreHeader);
+
+        scorectv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setScoreOrder();
+            }
+        });
+
+        CustomTextView facilityctv = (CustomTextView) header.findViewById(R.id.idHeader);
+
+        facilityctv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setFacilityOrder();
+            }
+        });
+        return header;
+    }
 
     /**
      * Register a survey receiver to load surveys into the listadapter

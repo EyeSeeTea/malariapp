@@ -163,25 +163,6 @@ public class DashboardActivity extends BaseActivity {
         ft.commit();
     }
 
-
-    public void setScoreOrder(View v)
-    {
-        sentFragment.setScoreOrder();
-        sentFragment.reloadSentSurveys();
-    }
-
-    public void setFacilityOrder(View v)
-    {
-        sentFragment.setFacilityOrder();
-        sentFragment.reloadSentSurveys();
-    }
-
-    public void setDateOrder(View v)
-    {
-        sentFragment.setDateOrder();
-        sentFragment.reloadSentSurveys();
-    }
-
     /**
      * Init the fragments
      */
