@@ -28,10 +28,7 @@ import android.util.Log;
 
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.model.Survey;
-import org.eyeseetea.malariacare.database.utils.PreferencesState;
-import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.network.PushClient;
-import org.eyeseetea.malariacare.network.PushResult;
 
 import java.util.List;
 
@@ -89,7 +86,7 @@ public class PushService extends IntentService {
         Log.d(TAG, "pushAllPendingSurveys (Thread:" + Thread.currentThread().getId() + ")");
 
         //Select surveys from sql
-        List<Survey> surveys = Survey.getAllUnsentSurveys();
+        List<Survey> surveys = Survey.getAllUnsentUnplannedSurveys();
 
         if(surveys!=null && !surveys.isEmpty()){
             for(Survey survey : surveys){

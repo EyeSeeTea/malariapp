@@ -412,7 +412,7 @@ public class ProgressActivity extends Activity {
      */
     private List<Survey> findSurveysToPush(){
         if(hasAPullAfterPush()){
-            return Survey.getAllUnsentSurveys();
+            return Survey.getAllUnsentUnplannedSurveys();
         }
 
         List<Survey> surveys=new ArrayList<>();
