@@ -95,7 +95,7 @@ public class DashboardActivity extends BaseActivity {
             public void onTabChanged(String tabId) {
                 /** If current tab is android */
                 if(tabId.equalsIgnoreCase("tab_improve")){
-                    unsentFragment.reloadUncompletedUnsentSurveys();
+                    unsentFragment.reloadInProgressSurveys();
                 }else if(tabId.equalsIgnoreCase("tab_assess")){
                     sentFragment.reloadSentSurveys();
                 }else if(tabId.equalsIgnoreCase("tab_plan")){

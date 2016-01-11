@@ -289,11 +289,11 @@ public class DashboardUnsentFragment extends ListFragment {
             surveyReceiver=null;
         }
     }
-    public void reloadUncompletedUnsentSurveys(){
-        List<Survey> surveysUncompletedUnsentFromService = (List<Survey>) Session.popServiceValue(SurveyService.ALL_IN_PROGRESS_SURVEYS_ACTION);
-        reloadSurveys(surveysUncompletedUnsentFromService);
-            //set alarm if is malariaapp question
-            reloadCompletedSurveys();
+    public void reloadInProgressSurveys(){
+        List<Survey> surveysInProgressFromService = (List<Survey>) Session.popServiceValue(SurveyService.ALL_IN_PROGRESS_SURVEYS_ACTION);
+        reloadSurveys(surveysInProgressFromService);
+        //set alarm if is malariaapp question
+        reloadCompletedSurveys();
     }
 
     public void reloadCompletedSurveys(){
@@ -325,7 +325,7 @@ public class DashboardUnsentFragment extends ListFragment {
             Log.d(TAG, "onReceive");
             //Listening only intents from this method
             if(SurveyService.ALL_IN_PROGRESS_SURVEYS_ACTION.equals(intent.getAction())) {
-                reloadUncompletedUnsentSurveys();
+                reloadInProgressSurveys();
             }
             //Listening only intents from this method
             //if the state is completed, the state is not sent.
