@@ -177,7 +177,7 @@ public class PushController {
 
     private void saveCreationDateInSDK(List<Survey> surveys) {
         Log.d(TAG,"Saving complete date");
-
+        //TODO is necesary check if the event was successfully uploaded before do this. It will be doing in sdk 2.21
         for(Survey survey:surveys){
             if(converter.mapRelation.containsKey(survey)){
                 converter.mapRelation.get(survey).setCreated(EventExtended.format(survey.getCompletionDate()));
