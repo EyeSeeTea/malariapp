@@ -27,10 +27,8 @@ import android.app.ListFragment;
 import android.app.LocalActivityManager;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -49,6 +47,7 @@ import org.eyeseetea.malariacare.fragments.DashboardSentFragment;
 import org.eyeseetea.malariacare.fragments.DashboardUnsentFragment;
 import org.eyeseetea.malariacare.fragments.FeedbackFragment;
 import org.eyeseetea.malariacare.fragments.MonitorFragment;
+import org.eyeseetea.malariacare.fragments.PlannedFragment;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.services.SurveyService;
 import org.hisp.dhis.android.sdk.events.UiEvent;
@@ -62,6 +61,7 @@ public class DashboardActivity extends BaseActivity implements DashboardSentFrag
     private final static String TAG=".DDetailsActivity";
     private boolean reloadOnResume=true;
     TabHost tabHost;
+    PlannedFragment plannedFragment;
     MonitorFragment monitorFragment;
     DashboardUnsentFragment unsentFragment;
     DashboardSentFragment sentFragment;
@@ -91,8 +91,9 @@ public class DashboardActivity extends BaseActivity implements DashboardSentFrag
             Log.e(".DashboardActivity", e.getMessage());
         }
         if(savedInstanceState==null) {
-            initAssess();
+            initPlanned();
             initImprove();
+            initAssess();
             initMonitor();
         }
         initTabHost(savedInstanceState);
@@ -113,7 +114,7 @@ public class DashboardActivity extends BaseActivity implements DashboardSentFrag
                 } else if (tabId.equalsIgnoreCase(TAB_ASSESS)) {
                     unsentFragment.reloadUncompletedUnsentSurveys();
                 } else if (tabId.equalsIgnoreCase(TAB_PLAN)) {
-                    //tab_plan on click code
+                    plannedFragment.reloadPlannedItems();
                 } else if (tabId.equalsIgnoreCase(TAB_MONITOR)) {
                     monitorFragment.reloadSentSurveys();
                 }
@@ -158,6 +159,13 @@ public class DashboardActivity extends BaseActivity implements DashboardSentFrag
 
     }
 
+    public void initPlanned(){
+        Log.d(TAG,"initPlanned");
+        plannedFragment = new PlannedFragment();
+        plannedFragment.setArguments(getIntent().getExtras());
+        setFragmentTransaction(R.id.dashboard_planning_tab, plannedFragment);
+    }
+    
     public void initAssess(){
         unsentFragment = new DashboardUnsentFragment();
         unsentFragment.setArguments(getIntent().getExtras());

@@ -17,16 +17,27 @@
  *  along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.eyeseetea.malariacare.database;
+package org.eyeseetea.malariacare.database.utils.planning;
 
-import com.raizlabs.android.dbflow.annotation.Database;
+import org.eyeseetea.malariacare.database.model.Program;
 
 /**
- * Created by nacho on 02/08/15.
+ * Just a marker interface to add headers and real items to a listview
+ * Created by arrizabalaga on 15/12/15.
  */
-@Database(name = AppDatabase.NAME, version = AppDatabase.VERSION, foreignKeysSupported = true, holderClassSuffix = AppDatabase.HOLDERCLASSSUFFIX)
-public class AppDatabase {
-    public static final String NAME = "EyeSeeTeaDB";
-    public static final int VERSION = 4;
-    public static final String HOLDERCLASSSUFFIX = "_EyeSeeTeaDB";
+public interface PlannedItem {
+
+    /**
+     * Tells if this item can be shown according to the given program as a filter
+     * @param filterProgram
+     * @return
+     */
+    boolean isShownByProgram(Program filterProgram);
+
+    /**
+     * Tells if this item can be shown according to the given header as a filter
+     * @param currentSection
+     * @return
+     */
+    boolean isShownByHeader(PlannedHeader currentSection);
 }
