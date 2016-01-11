@@ -29,6 +29,7 @@ import android.util.Log;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.network.PushClient;
+import org.eyeseetea.malariacare.network.PushResult;
 
 import java.util.List;
 
@@ -98,13 +99,40 @@ public class PushService extends IntentService {
     }
 
     private void sendPush (Survey survey) {
-            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-    String user=sharedPreferences.getString(getString(R.string.dhis_user), "");
-    String password=sharedPreferences.getString(getString(R.string.dhis_password),"");
-    PushClient pushClient=new PushClient(survey, this.getApplicationContext(),user,password);
+        //Push in background with SDK
+        sendSDKPush(survey);
+        //Push in background with API
+        //sendAPIPush(survey);
+    }
 
-    //Push  data
-    pushClient.pushBackground();
+    private void sendSDKPush(Survey survey) {
+        PushClient pushClient = getPushClient(survey);
+        //Push  data
+        pushClient.pushSDK();
+    }
+
+    private void sendAPIPush(Survey survey) {
+        //Push  data
+        PushClient pushClient = getPushClient(survey);
+        PushResult result = pushClient.pushAPI();
+        if(result.isSuccessful()){
+            Log.d(TAG, "Estado del push: OK");
+
+
+            //Reload data using service
+            Intent surveysIntent=new Intent(this, SurveyService.class);
+            surveysIntent.putExtra(SurveyService.SERVICE_METHOD, SurveyService.RELOAD_DASHBOARD_ACTION);
+            this.startService(surveysIntent);
+        }else{
+            Log.d(TAG, "Estado del push: ERROR");
+        }
+    }
+
+    private PushClient getPushClient(Survey survey) {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        String user=sharedPreferences.getString(getString(R.string.dhis_user), "");
+        String password=sharedPreferences.getString(getString(R.string.dhis_password), "");
+        return new PushClient(survey, this.getApplicationContext(),user,password);
     }
 
 }

@@ -47,8 +47,6 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.net.Proxy;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -105,13 +103,20 @@ public class PushClient {
         this.applicationContext = applicationContext;
     }
 
-    public void pushBackground() {
+    public void pushSDK() {
         if (isNetworkAvailable()) {
-                malariappPush();
+            malariaSdkPush();
         }
     }
 
-    public void malariappPush() {
+    public PushResult pushAPI() {
+        if (isNetworkAvailable()) {
+               return malariaApiPush();
+        }
+        return new PushResult();
+    }
+
+    public void malariaSdkPush() {
         try{
 
             if(launchPush(survey)){
@@ -131,6 +136,38 @@ public class PushClient {
             //Success or not the dashboard must be reloaded
             updateDashboard();
         }
+    }
+
+    public PushResult malariaApiPush() {
+        PushResult pushResult;
+        try{
+            //TODO: This should be removed once DHIS bug is solved
+            //Map<String, JSONObject> controlData = prepareControlData();
+            survey.prepareSurveyCompletionDate();
+            JSONObject data = PushUtils.getInstance().prepareMetadata(survey);
+            //TODO: This should be removed once DHIS bug is solved
+            //data = PushUtilsElements(data, controlData.get(""));
+            data = PushUtils.getInstance().PushUtilsElements(data, survey);
+            pushResult = new PushResult(pushData(data));
+            if(pushResult.isSuccessful() && !pushResult.getImported().equals("0")){
+                //TODO: This should be removed once DHIS bug is solved
+                //pushControlDataElements(controlData);
+                survey.setSentSurveyState();
+                AlarmPushReceiver.setFail(false);
+            }
+            else{
+                AlarmPushReceiver.setFail(true);
+            }
+        }catch(Exception ex){
+            AlarmPushReceiver.setFail(true);
+            Log.e(TAG, ex.getMessage());
+            pushResult=new PushResult(ex);
+        }
+        finally {
+            //Success or not the dashboard must be reloaded
+            updateDashboard();
+        }
+        return  pushResult;
     }
 
     /**
