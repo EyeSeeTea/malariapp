@@ -178,10 +178,16 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
      * Fulfills the dates of the event
      */
     private void updateEventDates() {
+
+        //Sent date 'now' (this change will be saves after successful push)
+        currentSurvey.setEventDate(new Date());
+
         completionDate=new Date();
-        String completionDateStr=EventExtended.format(completionDate);
-        currentEvent.setEventDate(completionDateStr);
-        currentEvent.setLastUpdated(completionDateStr);
+
+        //currentEvent.setCreated(EventExtended.format(currentSurvey.getCreationDate()));
+        currentEvent.setLastUpdated(EventExtended.format(currentSurvey.getCompletionDate()));
+        currentEvent.setEventDate(EventExtended.format(currentSurvey.getEventDate()));
+        currentEvent.setDueDate(EventExtended.format(currentSurvey.getScheduledDate()));
     }
 
     /**
