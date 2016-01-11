@@ -21,6 +21,7 @@ package org.eyeseetea.malariacare;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.app.ListFragment;
 import android.app.LocalActivityManager;
@@ -35,10 +36,12 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TabHost;
 import android.widget.TextView;
 
 import com.squareup.otto.Subscribe;
+
 
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.model.User;
@@ -68,6 +71,10 @@ public class DashboardActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         Log.d(TAG, "onCreate");
         super.onCreate(savedInstanceState);
+        if(viewFeedback) {
+            viewFeedback=false;
+            finishAndGo(FeedbackActivity.class);
+        }
         setContentView(R.layout.tab_dashboard);
         try {
             initDataIfRequired();
@@ -88,7 +95,6 @@ public class DashboardActivity extends BaseActivity {
         setTab("tab_improve", R.id.tab_improve_layout, getResources().getDrawable(R.drawable.tab_improve));
         setTab("tab_monitor", R.id.tab_monitor_layout, getResources().getDrawable(R.drawable.tab_monitor));
 
-        //XXX This might be unnecessary
         tabHost.setOnTabChangedListener( new TabHost.OnTabChangeListener() {
 
             @Override
@@ -150,9 +156,18 @@ public class DashboardActivity extends BaseActivity {
     }
 
     public void initMonitor(){
-        monitorFragment = new MonitorFragment();
-        monitorFragment.setArguments(getIntent().getExtras());
-        setFragmentTransaction(R.id.dashboard_charts_container, monitorFragment);
+        int mStackLevel=0;
+        mStackLevel++;
+
+        monitorFragment = MonitorFragment.newInstance(mStackLevel);
+
+        // Add the fragment to the activity, pushing this transaction
+        // on to the back stack.
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        ft.replace(R.id.dashboard_charts_container, monitorFragment);
+        ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+        ft.addToBackStack(null);
+        ft.commit();
     }
 
     /**
@@ -328,5 +343,4 @@ public class DashboardActivity extends BaseActivity {
     public void onLogoutFinished(UiEvent uiEvent){
         super.onLogoutFinished(uiEvent);
     }
-
 }

@@ -19,6 +19,7 @@
     <color name="custom_blue_light">#1f70c3</color>
     <color name="custom_background_grey">#3e3e3f</color>
     <color name="dialog_button_text">#06988a</color>
+    <color name="customBlue">#ccf2ff</color>
     <color name="scoreRoot">#0b5394</color>
     <color name="scoreChild">#3d85c6</color>
     <color name="scoreGrandson">#6fa8dc</color>

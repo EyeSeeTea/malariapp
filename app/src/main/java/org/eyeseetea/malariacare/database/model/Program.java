@@ -101,6 +101,18 @@ public class Program extends BaseModel{
         return this.tabGroups;
     }
 
+    public static List<Program> getAllPrograms(){
+        return new Select().all().from(Program.class).queryList();
+    }
+
+    public static Program getProgram(String uid) {
+        Program program = new Select()
+                .from(Program.class)
+                .where(Condition.column(Program$Table.UID)
+                        .is(uid)).querySingle();
+        return program;
+    }
+
     public List<OrgUnit> getOrgUnits(){
         if(orgUnits==null){
             List<OrgUnitProgramRelation> orgUnitProgramRelations = new Select().from(OrgUnitProgramRelation.class)
@@ -165,5 +177,4 @@ public class Program extends BaseModel{
                 ", name='" + name + '\'' +
                 '}';
     }
-
 }

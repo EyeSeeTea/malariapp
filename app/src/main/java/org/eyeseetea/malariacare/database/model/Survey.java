@@ -39,6 +39,7 @@ import org.eyeseetea.malariacare.database.iomodules.dhis.exporter.IConvertToSDKV
 import org.eyeseetea.malariacare.database.iomodules.dhis.exporter.VisitableToSDK;
 import org.eyeseetea.malariacare.database.utils.SurveyAnsweredRatio;
 import org.eyeseetea.malariacare.database.utils.SurveyAnsweredRatioCache;
+import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.utils.Constants;
 
 import java.util.Date;
@@ -113,7 +114,7 @@ public class Survey extends BaseModel implements VisitableToSDK {
         //Set dates
         this.creationDate = new Date();
         this.completionDate = this.creationDate;
-        this.eventDate = null;
+        this.eventDate = new Date();
         this.scheduledDate = null;
     }
 
@@ -264,6 +265,14 @@ public class Survey extends BaseModel implements VisitableToSDK {
         return Constants.SURVEY_IN_PROGRESS==this.status;
     }
 
+    /**
+     * Checks if the survey has been completed or not
+     * @return true|false
+     */
+    public boolean isCompleted(){
+        return Constants.SURVEY_COMPLETED==this.status;
+    }
+
     public Float getMainScore() {
         //The main score is only return from a query 1 time
         if(this.mainScore==null){
@@ -402,11 +411,13 @@ public class Survey extends BaseModel implements VisitableToSDK {
      * Calculates the current ratio of completion for this survey
      * @return SurveyAnsweredRatio that hold the total & answered questions.
      */
-    private SurveyAnsweredRatio reloadSurveyAnsweredRatio(){
+    public SurveyAnsweredRatio reloadSurveyAnsweredRatio(){
         int numRequired = Question.countRequiredByProgram(this.getTabGroup());
+        int numCompulsory=Question.countCompulsoryByProgram(this.getTabGroup());
         int numOptional = (int)countNumOptionalQuestionsToAnswer();
         int numAnswered = Value.countBySurvey(this);
-        SurveyAnsweredRatio surveyAnsweredRatio=new SurveyAnsweredRatio(numRequired+numOptional, numAnswered);
+        int numCompulsoryAnswered = Value.countCompulsoryBySurvey(this);
+        SurveyAnsweredRatio surveyAnsweredRatio=new SurveyAnsweredRatio(numRequired+numOptional, numAnswered,numCompulsory,numCompulsoryAnswered);
         SurveyAnsweredRatioCache.put(this.id_survey, surveyAnsweredRatio);
         return surveyAnsweredRatio;
     }
@@ -457,16 +468,33 @@ public class Survey extends BaseModel implements VisitableToSDK {
             return;
         }
 
-        SurveyAnsweredRatio answeredRatio=this.reloadSurveyAnsweredRatio();
 
-        //Update status
-        this.setStatus(answeredRatio.isCompleted()?Constants.SURVEY_COMPLETED:Constants.SURVEY_IN_PROGRESS);
+        SurveyAnsweredRatio answeredRatio = this.reloadSurveyAnsweredRatio();
 
+        SurveyAnsweredRatio surveyAnsweredRatio = this.getAnsweredQuestionRatio();
+        if (surveyAnsweredRatio.getTotalCompulsory()==0) {
+            //Update status
+            if(!answeredRatio.isCompleted())
+            this.setStatus(Constants.SURVEY_IN_PROGRESS);
+
+        }
+        else if(surveyAnsweredRatio.getCompulsoryAnswered()==0){
+            this.setStatus(Constants.SURVEY_IN_PROGRESS);
+        }
         //CompletionDate
         this.setCompletionDate(new Date());
 
+
         //Saves new status & completionDate
         this.save();
+    }
+
+    private void saveScore() {        //Prepare scores info
+        List<CompositeScore> compositeScoreList= ScoreRegister.loadCompositeScores(this);
+
+        //Calculate main score to push later
+        this.setMainScore(ScoreRegister.calculateMainScore(compositeScoreList));
+        this.saveMainScore();
     }
 
     /**
@@ -562,7 +590,9 @@ public class Survey extends BaseModel implements VisitableToSDK {
      */
     public static List<Survey> getAllUncompletedSurveys() {
         return new Select().from(Survey.class)
-                .where(Condition.column(Survey$Table.STATUS).eq(Constants.SURVEY_IN_PROGRESS))
+                .where(Condition.column(Survey$Table.STATUS).isNot(Constants.SURVEY_SENT))
+                .and(Condition.column(Survey$Table.STATUS).isNot(Constants.SURVEY_HIDE))
+                .and(Condition.column(Survey$Table.STATUS).isNot(Constants.SURVEY_COMPLETED))
                 .orderBy(Survey$Table.EVENTDATE)
                 .orderBy(Survey$Table.ID_ORG_UNIT).queryList();
     }
@@ -583,6 +613,64 @@ public class Survey extends BaseModel implements VisitableToSDK {
     @Override
     public void accept(IConvertToSDKVisitor IConvertToSDKVisitor) throws Exception{
         IConvertToSDKVisitor.visit(this);
+    }
+
+    /**
+     * Returns the last surveys (by date) with status Completed or sent
+     * @return
+     */
+    public static List<Survey> getAllUncompletedUnsentSurveys() {
+        return new Select().from(Survey.class)
+                .where(Condition.column(Survey$Table.STATUS).isNot(Constants.SURVEY_COMPLETED))
+                .or(Condition.column(Survey$Table.STATUS).isNot(Constants.SURVEY_SENT))
+                .or(Condition.column(Survey$Table.STATUS).isNot(Constants.SURVEY_HIDE))
+                .orderBy(Survey$Table.EVENTDATE)
+                .orderBy(Survey$Table.ID_ORG_UNIT).queryList();
+    }
+    /**
+     * Returns the last surveys (by date) with status Completed or sent
+     * @return
+     */
+    public static List<Survey> getAllCompletedUnsentSurveys() {
+        return new Select().from(Survey.class)
+                .where(Condition.column(Survey$Table.STATUS).is(Constants.SURVEY_COMPLETED))
+                .or(Condition.column(Survey$Table.STATUS).isNot(Constants.SURVEY_SENT))
+                .or(Condition.column(Survey$Table.STATUS).isNot(Constants.SURVEY_HIDE))
+                .orderBy(Survey$Table.EVENTDATE)
+                .orderBy(Survey$Table.ID_ORG_UNIT).queryList();
+    }
+    /**
+     * Returns all the surveys with status put to "Sent" or completed
+     * @return
+     */
+    public static List<Survey> getAllSentOrCompletedSurveys() {
+        return new Select().from(Survey.class)
+                .where(Condition.column(Survey$Table.STATUS).eq(Constants.SURVEY_SENT))
+                .or(Condition.column(Survey$Table.STATUS).eq(Constants.SURVEY_COMPLETED))
+                .orderBy(Survey$Table.EVENTDATE)
+                .orderBy(Survey$Table.ID_ORG_UNIT).queryList();
+    }
+
+
+    public void prepareSurveyCompletionDate() {
+        if (!isSent()) {
+            setCompletionDate(new Date());
+            save();
+        }
+    }
+
+    public void setSentSurveyState(){
+        //Change status and save mainScore
+        setStatus(Constants.SURVEY_SENT);
+        save();
+        saveMainScore();
+    }
+
+    public void setCompleteSurveyState(){
+        setStatus(Constants.SURVEY_COMPLETED);
+        saveScore();
+        save();
+        saveMainScore();
     }
 
     /**
@@ -715,5 +803,4 @@ public class Survey extends BaseModel implements VisitableToSDK {
                 ", status=" + status +
                 '}';
     }
-
 }

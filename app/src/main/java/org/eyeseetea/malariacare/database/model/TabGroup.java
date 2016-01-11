@@ -141,6 +141,14 @@ public class TabGroup extends BaseModel {
     }
 
 
+    public static TabGroup getTabGroup(String uid) {
+        TabGroup tabGroup = new Select()
+                .from(TabGroup.class)
+                .where(Condition.column(TabGroup$Table.UID)
+                        .is(uid)).querySingle();
+        return tabGroup;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -174,4 +182,5 @@ public class TabGroup extends BaseModel {
                 ", uid='" + uid + '\'' +
                 '}';
     }
+
 }

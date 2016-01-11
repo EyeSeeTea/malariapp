@@ -19,10 +19,6 @@
 
 package org.eyeseetea.malariacare.database.utils;
 
-import org.eyeseetea.malariacare.database.model.Option;
-import org.eyeseetea.malariacare.database.model.Question;
-import org.eyeseetea.malariacare.database.model.Survey;
-
 /**
  * VO that holds the completion ratio of answered/expected questions
  * Created by arrizabalaga on 1/07/15.
@@ -38,9 +34,22 @@ public class SurveyAnsweredRatio {
      */
     private int answered;
 
-    public SurveyAnsweredRatio(int total, int answered) {
+    /**
+     * Total number of compulsoryAnswered questions
+     */
+    private int compulsoryAnswered;
+    /**
+     * Total number of compulsoryAnswered questions
+     */
+    private int totalCompulsory;
+
+
+
+    public SurveyAnsweredRatio(int total, int answered, int totalCompulsory, int compulsoryAnswered) {
         this.total = total;
         this.answered = answered;
+        this.totalCompulsory=totalCompulsory;
+        this.compulsoryAnswered = compulsoryAnswered;
     }
 
     public int getAnswered() {
@@ -59,6 +68,21 @@ public class SurveyAnsweredRatio {
         this.total = total;
     }
 
+    public int getTotalCompulsory() {
+        return totalCompulsory;
+    }
+
+    public void setTotalCompulsory(int totalCompulsory) {
+        this.totalCompulsory = totalCompulsory;
+    }
+
+    public int getCompulsoryAnswered() {
+        return compulsoryAnswered;
+    }
+
+    public void setCompulsoryAnswered(int compulsoryAnswered) {
+        this.compulsoryAnswered = compulsoryAnswered;
+    }
     /**
      * Return the ratio of completion
      * @return answered/total
@@ -75,7 +99,22 @@ public class SurveyAnsweredRatio {
 
         return (float)answered/total;
     }
+    /**
+     * Return the ratio of completion compulsoryAnswered
+     * @return answered/total
+     */
+    public float getCompulsoryRatio(){
+        if (totalCompulsory==0){
+            //Not correct from a math perspective but most practical approach
+            return 0;
+        }
 
+        if(isCompleted()){
+            return 1;
+        }
+
+        return (float) compulsoryAnswered /totalCompulsory;
+    }
     /**
      * Checks if the related survey is completed or not.
      * If there are NO questions it returns false.

@@ -39,10 +39,14 @@
     <string name="dialog_content_existing_survey">Il y a déjà une enquête pas encore envoyée dans le système pour le cabinet et tipe d\'enquête choisís</string>
     <string name="dialog_content_logout_confirmation">Si vous sortez du système, tous les donnés non envoyés seront perdus. Voulez-vous continuer encore ?</string>
     <string name="dialog_title_send_preview">Envoyer ou afficher</string>
-    <string name="dialog_content_send_preview">Voulez-vous envoyer l\'enquêtte ou afficher le feedback ?</string>
+    <string name="dialog_content_send_preview">Voulez-vous envoyer l\'enquêtte ?</string>
     <string name="dialog_title_push_data">Envoie des donnés</string>
     <string name="dialog_content_push_data">Êtes-vous sûr de voulour envoyer ?</string>
     <string name="dialog_button_preview_feedback">Voir évaluations</string>
+    <string name="dialog_question_complete_survey">Toutes les questions obligatoires ont été remplies. Aimeriez-vous marquer cette sondage comme complet?</string>
+    <string name="dialog_continue_later_option">Continuer plus tard</string>
+    <string name="dialog_complete_option">Achevée</string>
+    <string name="dialog_are_you_sure_complete_survey">Es-tu sûr? Cette action ne peut pas être annulée et vous ne sera plus en mesure de modifier ou de supprimer cette enquête</string>
 
     <!-- Toast -->
     <string name="cancellingPull">Le processus est arrêté en quelques secondes</string>
@@ -242,5 +246,8 @@
     <string name="planning_title_dialog">Schedule survey</string>
     <string name="planning_label_schedule_date">* Date de calendrier</string>
     <string name="planning_label_comment">* Commentaire</string>
-
+    <string name="option_edit">Modifier</string>
+    <string name="option_mark_completed">Marquer comme terminée</string>
+    <string name="option_delete">Effacer</string>
+    <string name="dialog_info_push_confirm">Êtes-vous sûr ? Vous ne pourrez pas annuler cette action</string>
 </resources>

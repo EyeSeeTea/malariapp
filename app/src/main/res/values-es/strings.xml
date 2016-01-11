@@ -38,10 +38,14 @@
     <string name="dialog_content_existing_survey">Ya existe una encuesta previa no enviada para esa centro/tipo de encuesta</string>
     <string name="dialog_content_logout_confirmation">Si se desconecta del sistema, se borrarán todas las encuestas no enviadas. ¿Quiere continuar?</string>
     <string name="dialog_title_send_preview">Enviar o previsualizar</string>
-    <string name="dialog_content_send_preview">¿Desea enviar o previsualizar el feedback?</string>
+    <string name="dialog_content_send_preview">¿Desea enviar?</string>
     <string name="dialog_title_push_data">Enviar los datos</string>
     <string name="dialog_content_push_data">¿Está seguro de enviar? No podrá deshacer esta acción</string>
     <string name="dialog_button_preview_feedback">Ver feedback</string>
+    <string name="dialog_question_complete_survey">Todas las preguntas obligatorias han sido rellenadas. ¿Quiere marcar esta encuesta como completa?</string>
+    <string name="dialog_continue_later_option">Continuar despues</string>
+    <string name="dialog_complete_option">Completar</string>
+    <string name="dialog_are_you_sure_complete_survey">¿Está seguro? Esta acción no se puede deshacer y usted ya no será capaz de editar o borrar la encuesta</string>
 
     <!-- Toast -->
     <string name="cancellingPull">El proceso se cancelara en unos segundos</string>
@@ -242,5 +246,8 @@
     <string name="planning_title_dialog">Planificar evaluación</string>
     <string name="planning_label_comment">* Comentario</string>
     <string name="planning_label_schedule_date">* Fecha planificada</string>
-
+    <string name="option_edit">Editar</string>
+    <string name="option_mark_completed">Marcar como completa</string>
+    <string name="option_delete">Borrar</string>
+    <string name="dialog_info_push_confirm">estás seguro? No podrás deshacer esta acción</string>
 </resources>

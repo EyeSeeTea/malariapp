@@ -195,6 +195,10 @@ public class OrgUnit extends BaseModel {
         return programs;
     }
 
+    public static List<OrgUnit> getAllOrgUnit() {
+        return new Select().all().from(OrgUnit.class).queryList();
+    }
+
     public void addProgram(Program program){
         //Null -> nothing
         if(program==null){
@@ -220,6 +224,14 @@ public class OrgUnit extends BaseModel {
      */
     public static List<OrgUnit> list(){
         return new Select().from(OrgUnit.class).queryList();
+    }
+
+    public static OrgUnit getOrgUnit(String uid) {
+            OrgUnit orgUnit = new Select()
+                    .from(OrgUnit.class)
+                    .where(Condition.column(OrgUnit$Table.UID)
+                            .is(uid)).querySingle();
+        return orgUnit;
     }
 
     @Override

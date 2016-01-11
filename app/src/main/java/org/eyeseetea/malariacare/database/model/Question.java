@@ -22,8 +22,6 @@ package org.eyeseetea.malariacare.database.model;
 import android.util.Log;
 
 import com.raizlabs.android.dbflow.annotation.Column;
-import com.raizlabs.android.dbflow.annotation.ForeignKey;
-import com.raizlabs.android.dbflow.annotation.ForeignKeyReference;
 import com.raizlabs.android.dbflow.annotation.OneToMany;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;
@@ -32,12 +30,9 @@ import com.raizlabs.android.dbflow.sql.builder.Condition.In;
 import com.raizlabs.android.dbflow.sql.language.ColumnAlias;
 import com.raizlabs.android.dbflow.sql.language.Join;
 import com.raizlabs.android.dbflow.sql.language.Select;
-import com.raizlabs.android.dbflow.sql.language.Where;
 import com.raizlabs.android.dbflow.structure.BaseModel;
 
 import org.eyeseetea.malariacare.database.AppDatabase;
-import org.eyeseetea.malariacare.database.iomodules.dhis.exporter.IConvertToSDKVisitor;
-import org.eyeseetea.malariacare.database.iomodules.dhis.exporter.VisitableToSDK;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.utils.Constants;
@@ -93,6 +88,9 @@ public class Question extends BaseModel {
     Integer output;
 
     @Column
+    Boolean compulsory;
+
+    @Column
     Long id_parent;
 
     /**
@@ -133,7 +131,7 @@ public class Question extends BaseModel {
     public Question() {
     }
 
-    public Question(String code, String de_name, String short_name, String form_name, String uid, Integer order_pos, Float numerator_w, Float denominator_w, String feedback, Integer output,Header header, Answer answer, Question question, CompositeScore compositeScore) {
+    public Question(String code, String de_name, String short_name, String form_name, String uid, Integer order_pos, Float numerator_w, Float denominator_w, String feedback, Integer output,Header header, Answer answer, Question question, CompositeScore compositeScore,Boolean compulsory) {
         this.code = code;
         this.de_name = de_name;
         this.short_name = short_name;
@@ -145,6 +143,7 @@ public class Question extends BaseModel {
         this.feedback = feedback;
         this.output = output;
         this.parent = null;
+        this.compulsory=compulsory;
 
         this.setHeader(header);
         this.setAnswer(answer);
@@ -230,6 +229,14 @@ public class Question extends BaseModel {
 
     public void setFeedback(String feedback) {
         this.feedback = feedback;
+    }
+
+    public void setCompulsory(Boolean compulsory) {
+        this.compulsory = compulsory;
+    }
+
+    public Boolean getCompulsory() {
+        return compulsory;
     }
 
     public Header getHeader() {
@@ -326,6 +333,7 @@ public class Question extends BaseModel {
     public boolean hasParent() {
         if (parent == null) {
             long countChildQuestionRelations = new Select().count().from(QuestionRelation.class)
+                    .indexedBy("QuestionRelation_operation")
                     .where(Condition.column(QuestionRelation$Table.ID_QUESTION).eq(this.getId_question()))
                     .and(Condition.column(QuestionRelation$Table.OPERATION).eq(QuestionRelation.PARENT_CHILD))
                     .count();
@@ -338,6 +346,7 @@ public class Question extends BaseModel {
         if(questionRelations ==null){
             this.questionRelations = new Select()
                     .from(QuestionRelation.class)
+                    .indexedBy("QuestionRelation_id_question")
                     .where(Condition.column(QuestionRelation$Table.ID_QUESTION)
                             .eq(this.getId_question()))
                     .queryList();
@@ -352,6 +361,7 @@ public class Question extends BaseModel {
     public List<QuestionOption> getQuestionOption() {
         //if (this.children == null){
         return new Select().from(QuestionOption.class)
+                .indexedBy("QuestionOption_id_question")
                 .where(Condition.column(QuestionOption$Table.ID_QUESTION).eq(this.getId_question()))
                 .queryList();
         //}
@@ -445,6 +455,7 @@ public class Question extends BaseModel {
             return null;
         }
         List<Value> returnValues = new Select().from(Value.class)
+                .indexedBy("Value_id_survey")
                 .where(Condition.column(Value$Table.ID_QUESTION).eq(this.getId_question()))
                 .and(Condition.column(Value$Table.ID_SURVEY).eq(survey.getId_survey())).queryList();
 
@@ -586,6 +597,50 @@ public class Question extends BaseModel {
         // Return number of parents (total - children)
         return (int) (totalAnswerableQuestions-numChildrenQuestion);
     }
+
+    /**
+     * Counts the number of compulsory questions (without a parent question).
+     *
+     * @param tabGroup
+     * @return
+     */
+    public static int countCompulsoryByProgram(TabGroup tabGroup) {
+        if (tabGroup == null || tabGroup.getId_tab_group() == null) {
+            return 0;
+        }
+
+        // Count all the quesions that may have an answer
+        long totalAnswerableQuestions = new Select().count()
+                .from(Question.class).as("q")
+                .join(Header.class, Join.JoinType.LEFT).as("h")
+                .on(Condition.column(ColumnAlias.columnWithTable("q", Question$Table.ID_HEADER))
+                        .eq(ColumnAlias.columnWithTable("h", Header$Table.ID_HEADER)))
+                .join(Tab.class, Join.JoinType.LEFT).as("t")
+                .on(Condition.column(ColumnAlias.columnWithTable("h", Header$Table.ID_TAB))
+                        .eq(ColumnAlias.columnWithTable("t", Tab$Table.ID_TAB)))
+                .where(Condition.column(ColumnAlias.columnWithTable("q", Question$Table.COMPULSORY)).is(true))
+                .and(Condition.column(ColumnAlias.columnWithTable("t", Tab$Table.ID_TAB_GROUP)).eq(tabGroup.getId_tab_group())).count();
+
+        // Count children questions from the given taggroup
+        long numChildrenQuestion = new Select().count()
+                .from(QuestionRelation.class).as("qr")
+                .join(Question.class, Join.JoinType.LEFT).as("q")
+                .on(Condition.column(ColumnAlias.columnWithTable("qr", QuestionRelation$Table.ID_QUESTION))
+                        .eq(ColumnAlias.columnWithTable("q", Question$Table.ID_QUESTION)))
+                .join(Header.class, Join.JoinType.LEFT).as("h")
+                .on(Condition.column(ColumnAlias.columnWithTable("q", Question$Table.ID_HEADER))
+                        .eq(ColumnAlias.columnWithTable("h", Header$Table.ID_HEADER)))
+                .join(Tab.class, Join.JoinType.LEFT).as("t")
+                .on(Condition.column(ColumnAlias.columnWithTable("h", Header$Table.ID_TAB))
+                        .eq(ColumnAlias.columnWithTable("t", Tab$Table.ID_TAB)))
+                .where(Condition.column(ColumnAlias.columnWithTable("q", Question$Table.COMPULSORY)).is(true))
+                .and(Condition.column(ColumnAlias.columnWithTable("t", Tab$Table.ID_TAB_GROUP)).eq(tabGroup.getId_tab_group()))
+                .and(Condition.column(ColumnAlias.columnWithTable("qr", QuestionRelation$Table.OPERATION)).eq(Constants.OPERATION_TYPE_PARENT)).count();
+
+        // Return number of parents (total - children)
+        return (int) (totalAnswerableQuestions-numChildrenQuestion);
+    }
+
 
     /**
      * Checks if this question is triggered according to the current values of the given survey.
@@ -739,6 +794,8 @@ public class Question extends BaseModel {
             return false;
         if (id_parent != null ? !id_parent.equals(question.id_parent) : question.id_parent != null)
             return false;
+        if (compulsory != null ? !compulsory.equals(question.compulsory) : question.compulsory != null)
+            return false;
         return !(id_composite_score != null ? !id_composite_score.equals(question.id_composite_score) : question.id_composite_score != null);
 
     }
@@ -759,6 +816,7 @@ public class Question extends BaseModel {
         result = 31 * result + (id_answer != null ? id_answer.hashCode() : 0);
         result = 31 * result + (output != null ? output.hashCode() : 0);
         result = 31 * result + (id_parent != null ? id_parent.hashCode() : 0);
+        result = 31 * result + (compulsory != null ? compulsory.hashCode() : 0);
         result = 31 * result + (id_composite_score != null ? id_composite_score.hashCode() : 0);
         return result;
     }
@@ -779,6 +837,7 @@ public class Question extends BaseModel {
                 ", id_header=" + id_header +
                 ", id_answer=" + id_answer +
                 ", output=" + output +
+                ", compulsory=" + compulsory +
                 ", id_parent=" + id_parent +
                 ", id_composite_score=" + id_composite_score +
                 '}';

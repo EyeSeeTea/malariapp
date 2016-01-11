@@ -217,8 +217,8 @@ public class CompositeScoreBuilder {
     private static String findProgramStageByDataElementUID(String dataElementUID){
         //Find the right 'tabgroup' to group scores by program
         ProgramStageDataElement programStageDataElement = new Select().from(ProgramStageDataElement.class)
-                .where(Condition.column(ProgramStageDataElement$Table.DATAELEMENT)
-                        .is(dataElementUID)).querySingle();
+                .indexedBy("ProgramStageDataElement_DataElement")
+                .where(Condition.column(ProgramStageDataElement$Table.DATAELEMENT).is(dataElementUID)).orderBy(true, ProgramStageDataElement$Table.SORTORDER).querySingle();
 
         if(programStageDataElement==null){
             return null;

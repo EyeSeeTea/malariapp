@@ -19,7 +19,7 @@
 
 package org.eyeseetea.malariacare.fragments;
 
-import android.app.ListFragment;
+import android.app.Fragment;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -33,26 +33,26 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.Spinner;
+
 
 import org.eyeseetea.malariacare.R;
+import org.eyeseetea.malariacare.database.model.Program;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.database.utils.monitor.FacilityTableBuilder;
 import org.eyeseetea.malariacare.database.utils.monitor.PieTabGroupBuilder;
 import org.eyeseetea.malariacare.database.utils.monitor.SentSurveysBuilder;
-import org.eyeseetea.malariacare.layout.adapters.dashboard.AssessmentSentAdapter;
 import org.eyeseetea.malariacare.layout.adapters.dashboard.IDashboardAdapter;
-import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 import org.eyeseetea.malariacare.services.SurveyService;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 /**
  * Created by ignac on 10/12/2015.
  */
-public class MonitorFragment extends ListFragment {
+public class MonitorFragment extends Fragment {
     List<Survey> surveysForGraphic;
     public static final String TAG = ".MonitorFragment";
     private SurveyReceiver surveyReceiver;
@@ -60,6 +60,7 @@ public class MonitorFragment extends ListFragment {
     protected IDashboardAdapter adapter;
     private static int index = 0;
     private WebView webView;
+    
     public MonitorFragment() {
         this.adapter = Session.getAdapterSent();
         this.surveys = new ArrayList();
@@ -102,7 +103,7 @@ public class MonitorFragment extends ListFragment {
     public void onResume(){
         Log.d(TAG, "onResume");
         //Loading...
-        setListShown(false);
+        //setListShown(false);
         //Listen for data
         registerSurveysReceiver();
         super.onResume();
@@ -123,7 +124,7 @@ public class MonitorFragment extends ListFragment {
 
         if (surveyReceiver == null) {
             surveyReceiver = new SurveyReceiver();
-            LocalBroadcastManager.getInstance(getActivity()).registerReceiver(surveyReceiver, new IntentFilter(SurveyService.ALL_SENT_SURVEYS_ACTION));
+            LocalBroadcastManager.getInstance(getActivity()).registerReceiver(surveyReceiver, new IntentFilter(SurveyService.ALL_SENT_OR_COMPLETED_SURVEYS_ACTION));
         }
     }
     /**
@@ -140,7 +141,7 @@ public class MonitorFragment extends ListFragment {
      * load and reload sent surveys
      */
     public void reloadSentSurveys() {
-        surveysForGraphic = (List<Survey>) Session.popServiceValue(SurveyService.ALL_SENT_SURVEYS_ACTION);
+        surveysForGraphic = (List<Survey>) Session.popServiceValue(SurveyService.ALL_SENT_OR_COMPLETED_SURVEYS_ACTION);
         reloadSurveys(surveysForGraphic);
     }
 
@@ -152,31 +153,38 @@ public class MonitorFragment extends ListFragment {
         if (hasSurveys) {
             reloadMonitor();
         }
-        setListShown(true);
+
+        //setListShownNoAnimation(false);
     }
-
-    private void reloadMonitor() {
-        if (webView == null) {
-            webView = initMonitor();
-        }
-
+    public void reloadMonitor() {
+        webView = initMonitor();
         //onPageFinish load data
         webView.setWebViewClient(new WebViewClient() {
             @Override
             public void onPageFinished(WebView view, String url) {
                 super.onPageFinished(view, url);
+
+                final List<Program> programs=Program.getAllPrograms();
+
                 //Add line chart
-                new SentSurveysBuilder(surveysForGraphic, getActivity()).addDataInChart(view);
+                new SentSurveysBuilder(surveysForGraphic, getActivity(),programs).addDataInChart(view);
+
+                //Show stats by program
+                SentSurveysBuilder.showData(view);
+
+                //Add table x facility
+                new FacilityTableBuilder(surveysForGraphic, getActivity()).addDataInChart(view);
 
                 //Add pie charts
                 new PieTabGroupBuilder(surveysForGraphic, getActivity()).addDataInChart(view);
 
+                //Render the table and pie.
+                PieTabGroupBuilder.showPieTab(view);
+                FacilityTableBuilder.showFacilities(view);
 
-                //Add table x facility
-                new FacilityTableBuilder(surveysForGraphic, getActivity()).addDataInChart(view);
+
             }
         });
-
         //Load html
         webView.loadUrl("file:///android_asset/dashboard/dashboard.html");
     }
@@ -221,7 +229,7 @@ public class MonitorFragment extends ListFragment {
         public void onReceive(Context context, Intent intent) {
             Log.d(TAG, "onReceive");
             //Listening only intents from this method
-            if (SurveyService.ALL_SENT_SURVEYS_ACTION.equals(intent.getAction())) {
+            if (SurveyService.ALL_SENT_OR_COMPLETED_SURVEYS_ACTION.equals(intent.getAction())) {
                 reloadSentSurveys();
             }
         }

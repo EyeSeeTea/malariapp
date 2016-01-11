@@ -48,11 +48,14 @@
     <string name="dialog_content_incorrect_org_unit">Please select a final org unit</string>
     <string name="dialog_content_logout_confirmation">If you exit the system, all the not sent data will be deleted. Do you still want to exit?</string>
     <string name="dialog_title_send_preview">Send or Preview</string>
-    <string name="dialog_content_send_preview">Do you want to send survey or preview the feedback?</string>
+    <string name="dialog_content_send_preview">Do you want to send survey?</string>
     <string name="dialog_title_push_data">Pushing data</string>
     <string name="dialog_content_push_data">Are you sure that you want to send? You cannot undo this action</string>
     <string name="dialog_button_preview_feedback">View Feedback</string>
-
+    <string name="dialog_question_complete_survey">All compulsory questions were completed. Would you like to mark this survey as completed?</string>
+    <string name="dialog_continue_later_option">Continue Later</string>
+    <string name="dialog_complete_option">Complete</string>
+    <string name="dialog_are_you_sure_complete_survey">Are you sure? This action cannot be undone and you will no longer be able to edit or delete this survey</string>
     <!-- Toast -->
     <string name="cancellingPull">The process will be stopped in a few seconds </string>
 
@@ -255,6 +258,7 @@
     <string name="textcard_default_scale" translatable="false">system</string>
     <string name="textcard_default_dimension" translatable="false">medium</string>
     <string name="dialog_title_push_response">Push response</string>
+    <string name="dialog_info_push_confirm">Are you sure? You can not undo this action</string>
     <string name="dialog_info_push_ok">Survey data has been successfully pushed to DHIS server</string>
     <string name="dialog_info_push_bad_credentials">Bad credentials for pushing</string>
     <string name="dialog_info_push_empty_survey">Empty surveys cannot be pushed</string>
@@ -289,6 +293,11 @@
     <string name="progress_pull_surveys">Loading surveys ...</string>
     <string name="progress_pull_done">Done</string>
     <item name="pull_metadata" type="string" translatable="false">pull_metadata</item>
+    <item name="default_tabGroup" type="string" translatable="false">default_tabGroup</item>
+    <item name="default_program" type="string" translatable="false">default_program</item>
+    <item name="default_orgUnit" type="string" translatable="false">default_orgUnit</item>
+    <item name="default_orgUnits" type="string" translatable="false">default_orgUnits</item>
+
 
     <string name="dialog_push_error">Error while trying to push data to dhis server</string>
     <string name="dialog_push_success">Survey successfully pushed to dhis server</string>
@@ -300,5 +309,11 @@
     <string name="planning_title_dialog">Schedule survey</string>
     <string name="planning_label_comment">* Comment</string>
     <string name="planning_label_schedule_date">* Scheduled Date</string>
+    <string name="option_edit">Edit</string>
+    <string name="option_mark_completed">Mark as completed</string>
+    <string name="option_delete">Delete</string>
 
+    <!-- async push -->
+    <string name="PUSH_PERIOD" translatable="false">10</string>
+    <string name="PUSH_FAILED_PERIOD" translatable="false">300</string>
 </resources>
