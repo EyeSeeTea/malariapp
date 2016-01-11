@@ -40,7 +40,9 @@ import org.hisp.dhis.android.sdk.persistence.models.Event;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Turns a given survey into its corresponding events+datavalues.
@@ -70,6 +72,7 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
      */
     List<Event> events;
 
+
     /**
      * The last survey that it is being translated
      */
@@ -85,7 +88,13 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
      */
     Date completionDate;
 
+    /**
+     * Timestamp that captures the moment when the survey is converted right before being sent
+     */
+    static Map<Survey, Event> mapRelation;
+
     ConvertToSDKVisitor(Context context){
+        mapRelation = new HashMap<>();
         this.context=context;
         mainScoreUID=context.getString(R.string.main_score);
         mainScoreAUID=context.getString(R.string.main_score_a);
@@ -183,7 +192,7 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
         //Sent date 'now' (this change will be saves after successful push)
         currentSurvey.setEventDate(new Date());
 
-        completionDate=new Date();
+        completionDate=currentSurvey.getCreationDate();
 
         //currentEvent.setCreated(EventExtended.format(currentSurvey.getCreationDate()));
         currentEvent.setLastUpdated(EventExtended.format(currentSurvey.getCompletionDate()));
@@ -262,7 +271,7 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
     private void annotateSurveyAndEvent() {
         surveys.add(currentSurvey);
         events.add(currentEvent);
-
+        mapRelation.put(currentSurvey, currentEvent);
         Log.d(TAG,String.format("%d surveys converted so far",surveys.size()));
     }
 
