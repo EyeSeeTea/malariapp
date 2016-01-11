@@ -66,6 +66,7 @@ public class DashboardActivity extends BaseActivity {
     MonitorFragment monitorFragment;
     DashboardUnsentFragment unsentFragment;
     DashboardSentFragment sentFragment;
+    static boolean viewFeedback;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,7 +102,7 @@ public class DashboardActivity extends BaseActivity {
             public void onTabChanged(String tabId) {
                 /** If current tab is android */
                 if(tabId.equalsIgnoreCase("tab_improve")){
-                    unsentFragment.reloadUnsentSurveys();
+                    unsentFragment.reloadUncompletedUnsentSurveys();
                 }else if(tabId.equalsIgnoreCase("tab_assess")){
                     sentFragment.reloadSentSurveys();
                 }else if(tabId.equalsIgnoreCase("tab_plan")){
