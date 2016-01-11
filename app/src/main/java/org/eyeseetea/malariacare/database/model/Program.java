@@ -30,7 +30,9 @@ import com.raizlabs.android.dbflow.structure.BaseModel;
 import org.eyeseetea.malariacare.database.AppDatabase;
 import org.eyeseetea.malariacare.database.iomodules.dhis.exporter.IConvertToSDKVisitor;
 import org.eyeseetea.malariacare.database.iomodules.dhis.exporter.VisitableToSDK;
+import org.hisp.dhis.android.sdk.persistence.models.OrganisationUnitProgramRelationship;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Table(databaseName = AppDatabase.NAME)
@@ -48,6 +50,11 @@ public class Program extends BaseModel{
      * List of tabgroups for this program
      */
     List<TabGroup> tabGroups;
+
+    /**
+     * List of orgUnit authorized for this program
+     */
+    List<OrgUnit> orgUnits;
 
     public Program() {
     }
@@ -106,6 +113,41 @@ public class Program extends BaseModel{
         return program;
     }
 
+    public List<OrgUnit> getOrgUnits(){
+        if(orgUnits==null){
+            List<OrgUnitProgramRelation> orgUnitProgramRelations = new Select().from(OrgUnitProgramRelation.class)
+                    .where(Condition.column(OrgUnitProgramRelation$Table.ID_PROGRAM).eq(this.getId_program()))
+                    .queryList();
+            this.orgUnits = new ArrayList<>();
+            for(OrgUnitProgramRelation programRelation:orgUnitProgramRelations){
+                orgUnits.add(programRelation.getOrgUnit());
+            }
+        }
+        return orgUnits;
+    }
+
+    public void addOrgUnit(OrgUnit orgUnit){
+        //Null -> nothing
+        if(orgUnit==null){
+            return;
+        }
+
+        //Save a new relationship
+        OrgUnitProgramRelation orgUnitProgramRelation = new OrgUnitProgramRelation(orgUnit,this);
+        orgUnitProgramRelation.save();
+
+        //Clear cache to enable reloading
+        orgUnits=null;
+    }
+
+    /**
+     * List all programs
+     * @return
+     */
+    public static List<Program> list() {
+        return new Select().all().from(Program.class).queryList();
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -135,5 +177,4 @@ public class Program extends BaseModel{
                 ", name='" + name + '\'' +
                 '}';
     }
-
 }

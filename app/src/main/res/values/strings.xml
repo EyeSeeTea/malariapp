@@ -72,6 +72,14 @@
     <string name="dashboard_info_sent">Sent</string>
     <string name="dashboard_title_total_assessments">Total number of assessments undertaken</string>
     <string name="dashboard_title_table_facilities">Quality of care (last 6 months)</string>
+    <string name="dashboard_title_planned_type_never">Never assessed</string>
+    <string name="dashboard_title_planned_type_overdue">Overdue</string>
+    <string name="dashboard_title_planned_type_next_30">Next 30 days</string>
+    <string name="dashboard_title_planned_type_future">Future</string>
+    <string name="dashboard_title_planned_productivity">Prd</string>
+    <string name="dashboard_title_planned_quality_of_care">QoC</string>
+    <string name="dashboard_title_planned_next_qa">Next QA</string>
+
 
     <!-- create -->
     <string name="create_info_ok">Start Assessment</string>
@@ -298,6 +306,9 @@
     <string name="progress_push_updating_survey">Updating pushed survey data...</string>
     <string name="progress_push_no_survey">No survey found for pushing</string>
     <string name="dialog_push_before_pull_success">Surveys successfully pushed to dhis server, starting to pull metadata</string>
+    <string name="planning_title_dialog">Schedule survey</string>
+    <string name="planning_label_comment">* Comment</string>
+    <string name="planning_label_schedule_date">* Scheduled Date</string>
     <string name="option_edit">Edit</string>
     <string name="option_mark_completed">Mark as completed</string>
     <string name="option_delete">Delete</string>

@@ -236,6 +236,16 @@
     <string name="dialog_push_success">Enquête poussé avec succès à dhis serveur</string>
     <string name="progress_push_no_survey">Aucune enquête a révélé pour pousser</string>
     <string name="dialog_push_before_pull_success">Enquête poussé avec succès à dhis serveur, de commencer à tirer des métadonnées</string>
+    <string name="dashboard_title_planned_next_qa"> Prochaine évaluation</string>
+    <string name="dashboard_title_planned_productivity">Prd</string>
+    <string name="dashboard_title_planned_quality_of_care">QoC</string>
+    <string name="dashboard_title_planned_type_future"> Avenir</string>
+    <string name="dashboard_title_planned_type_never">Je ne évalué</string>
+    <string name="dashboard_title_planned_type_next_30">30 prochains jours</string>
+    <string name="dashboard_title_planned_type_overdue">En retard</string>
+    <string name="planning_title_dialog">Schedule survey</string>
+    <string name="planning_label_schedule_date">* Date de calendrier</string>
+    <string name="planning_label_comment">* Commentaire</string>
     <string name="option_edit">Modifier</string>
     <string name="option_mark_completed">Marquer comme terminée</string>
     <string name="option_delete">Effacer</string>

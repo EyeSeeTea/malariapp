@@ -45,6 +45,7 @@ import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.model.TabGroup;
 import org.eyeseetea.malariacare.database.utils.LocationMemory;
 import org.eyeseetea.malariacare.database.utils.Session;
+import org.eyeseetea.malariacare.database.utils.planning.SurveyPlanner;
 import org.eyeseetea.malariacare.layout.adapters.general.OrgUnitArrayAdapter;
 import org.eyeseetea.malariacare.layout.adapters.general.ProgramArrayAdapter;
 import org.eyeseetea.malariacare.layout.adapters.general.TabGroupArrayAdapter;
@@ -98,6 +99,7 @@ public class CreateSurveyActivity extends BaseActivity {
         LayoutUtils.setActionBarLogo(actionBar);
 
         this.lInflater = LayoutInflater.from(this);
+
         //Create default options
         orgUnitDefaultOption = new OrgUnit(Constants.DEFAULT_SELECT_OPTION);
         programDefaultOption = new Program(Constants.DEFAULT_SELECT_OPTION);
@@ -143,14 +145,12 @@ public class CreateSurveyActivity extends BaseActivity {
 
 
 
-
         //Populate Program View DDL
-        List<Program> programList = new Select().all().from(Program.class).queryList();;
+        List<Program> programList = Program.list();
         programList.add(0, programDefaultOption);
         programView = (Spinner) findViewById(R.id.program);
         programView.setAdapter(new ProgramArrayAdapter(this, programList));
         programView.setOnItemSelectedListener(new ProgramSpinnerListener());
-
 
         //Create Tab Group View DDL. Not populated and not visible.
         tabGroupContainer = findViewById(R.id.tab_group_container);
@@ -217,12 +217,12 @@ public class CreateSurveyActivity extends BaseActivity {
         }
     }
 
-    private boolean doesSurveyExist() {
+    private boolean doesSurveyInProgressExist() {
         // Read Selected Items
         OrgUnit orgUnit = (OrgUnit) realOrgUnitView.getSelectedItem();
         TabGroup tabGroup = (TabGroup) tabGroupView.getSelectedItem();
-        List<Survey> existing = Survey.getUnsentSurveys(orgUnit, tabGroup);
-        return (existing != null && existing.size() != 0);
+        Survey survey = Survey.getInProgressSurveys(orgUnit, tabGroup);
+        return (survey != null);
     }
 
     private boolean validateForm(){
@@ -236,7 +236,7 @@ public class CreateSurveyActivity extends BaseActivity {
                         .setTitle(getApplicationContext().getString(R.string.dialog_title_incorrect_org_unit))
                         .setMessage(getApplicationContext().getString(R.string.dialog_content_incorrect_org_unit))
                         .setPositiveButton(android.R.string.ok, null).create().show();
-        } else if (doesSurveyExist()) {
+        } else if (doesSurveyInProgressExist()) {
                 new AlertDialog.Builder(this)
                         .setTitle(getApplicationContext().getString(R.string.dialog_title_existing_survey))
                         .setMessage(getApplicationContext().getString(R.string.dialog_content_existing_survey))
@@ -262,48 +262,17 @@ public class CreateSurveyActivity extends BaseActivity {
             TabGroup tabGroup = (TabGroup) tabGroupView.getSelectedItem();
 
             // Put new survey in session
-            Survey survey = new Survey(orgUnit, tabGroup, Session.getUser());
-            survey.save();
+            Survey survey = SurveyPlanner.getInstance().startSurvey(orgUnit,tabGroup);
             Session.setSurvey(survey);
 
             //Look for coordinates
             prepareLocationListener(survey);
 
-            lastSelectedOrgUnit =orgUnit;
 
-            //save the lastSelectedOrgUnit and the list of orgUnits
-            saveOrgUnit();
-            //if the list not cointain the selected orgUnit(if it is root withoutchilds)
-            // set the list of orgUnitsLevels to "TOKEN"
-            if(!lastOrgUnits.contains(orgUnit.getUid())) {
-                saveOrgUnitList(TOKEN);
-            }
-            Log.d(TAG,"finish List:"+lastOrgUnits);
-            Log.d(TAG,"rootOrgUnit:"+lastSelectedOrgUnit);
             //Call Survey Activity
             finishAndGo(SurveyActivity.class);
         }
 
-    }
-
-    private void prepareLocationListener(Survey survey){
-
-
-        locationListener=new SurveyLocationListener(survey.getId_survey());
-        LocationManager locationManager=(LocationManager) LocationMemory.getContext().getSystemService(Context.LOCATION_SERVICE);
-        if(locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){
-            Log.d(TAG,"requestLocationUpdates via GPS");
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,0,0,locationListener);
-        }
-
-        if(locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)){
-            Log.d(TAG,"requestLocationUpdates via NETWORK");
-            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER,0,0,locationListener);
-        }else{
-            Location lastLocation=locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-            Log.d(TAG, "location not available via GPS|NETWORK, last know: " + lastLocation);
-            locationListener.saveLocation(lastLocation);
-        }
     }
 
     @Subscribe
@@ -358,6 +327,7 @@ public class CreateSurveyActivity extends BaseActivity {
 
         @Override
         public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
+
             OrgUnit selectedOrgUnit = (OrgUnit) ((Spinner)viewHolder.component).getItemAtPosition(pos);
             realOrgUnitView = ((Spinner) viewHolder.component);
 
@@ -381,7 +351,6 @@ public class CreateSurveyActivity extends BaseActivity {
             }
             // Populate child view. If it exists in org unit map, grab it; otherwise inflate it
             List<OrgUnit> orgUnitList = selectedOrgUnit.getChildren();
-
 
             // If there are children create spinner or populate it otherwise hide existing one
             if (orgUnitList.size() > 0){

@@ -54,7 +54,7 @@ import java.util.List;
  */
 public class MonitorFragment extends Fragment {
     List<Survey> surveysForGraphic;
-    public static final String TAG = ".CompletedFragment";
+    public static final String TAG = ".MonitorFragment";
     private SurveyReceiver surveyReceiver;
     private List<Survey> surveys;
     protected IDashboardAdapter adapter;

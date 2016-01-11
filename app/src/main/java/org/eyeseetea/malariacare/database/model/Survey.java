@@ -19,9 +19,15 @@
 
 package org.eyeseetea.malariacare.database.model;
 
+import android.util.Log;
+
 import com.raizlabs.android.dbflow.annotation.Column;
+import com.raizlabs.android.dbflow.annotation.ForeignKey;
+import com.raizlabs.android.dbflow.annotation.ForeignKeyReference;
+import com.raizlabs.android.dbflow.annotation.OneToMany;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;
+import com.raizlabs.android.dbflow.sql.QueryBuilder;
 import com.raizlabs.android.dbflow.sql.builder.Condition;
 import com.raizlabs.android.dbflow.sql.language.ColumnAlias;
 import com.raizlabs.android.dbflow.sql.language.Join;
@@ -88,6 +94,11 @@ public class Survey extends BaseModel implements VisitableToSDK {
      * List of values for this survey
      */
     List<Value> values;
+
+    /**
+     * List of historic previous schedules
+     */
+    List<SurveySchedule> surveySchedules;
 
     /**
      * Calculated answered ratio for this survey according to its values
@@ -239,6 +250,22 @@ public class Survey extends BaseModel implements VisitableToSDK {
     }
 
     /**
+     * Checks if the survey is PLANNED
+     * @return true|false
+     */
+    public boolean isPlanned(){
+        return Constants.SURVEY_PLANNED==this.status;
+    }
+
+    /**
+     * Checks if the survey is IN_PROGRESS
+     * @return true|false
+     */
+    public boolean isInProgress(){
+        return Constants.SURVEY_IN_PROGRESS==this.status;
+    }
+
+    /**
      * Checks if the survey has been completed or not
      * @return true|false
      */
@@ -264,7 +291,13 @@ public class Survey extends BaseModel implements VisitableToSDK {
         if(mainScore!=null){
             valScore=mainScore;
         }
-        Score score=new Score(this,"",valScore);
+        //Update or New row
+        Score score=getScore();
+        if(score==null){
+            score=new Score(this,"",valScore);
+        }else{
+            score.setScore(valScore);
+        }
         score.save();
     }
 
@@ -295,7 +328,7 @@ public class Survey extends BaseModel implements VisitableToSDK {
      * @return
      */
     public boolean isTypeA(){
-        return this.mainScore>= MAX_AMBER;
+        return this.getMainScore()>= MAX_AMBER;
     }
 
     /**
@@ -303,7 +336,7 @@ public class Survey extends BaseModel implements VisitableToSDK {
      * @return
      */
     public boolean isTypeB(){
-        return this.mainScore>= MAX_RED && !isTypeA();
+        return this.getMainScore()>= MAX_RED && !isTypeA();
     }
 
     /**
@@ -326,6 +359,20 @@ public class Survey extends BaseModel implements VisitableToSDK {
                             .eq(this.getId_survey())).queryList();
         }
         return values;
+    }
+
+    /**
+     * Returns the list of previous schedules for this survey
+     * @return
+     */
+    public List<SurveySchedule> getSurveySchedules(){
+        if(surveySchedules==null){
+            surveySchedules = new Select()
+                    .from(SurveySchedule.class)
+                    .where(Condition.column(SurveySchedule$Table.ID_SURVEY)
+                            .eq(this.getId_survey())).queryList();
+        }
+        return surveySchedules;
     }
 
     /**
@@ -451,18 +498,18 @@ public class Survey extends BaseModel implements VisitableToSDK {
     }
 
     /**
-     * Returns a concrete survey, if it exists
+     * Returns a survey in progress for the given orgUnit and tabGroup
      * @param orgUnit
      * @param tabGroup
      * @return
      */
-    public static List<Survey> getUnsentSurveys(OrgUnit orgUnit, TabGroup tabGroup) {
+    public static Survey getInProgressSurveys(OrgUnit orgUnit, TabGroup tabGroup) {
         return new Select().from(Survey.class)
                 .where(Condition.column(Survey$Table.ID_ORG_UNIT).eq(orgUnit.getId_org_unit()))
                 .and(Condition.column(Survey$Table.ID_TAB_GROUP).eq(tabGroup.getId_tab_group()))
-                .and(Condition.column(Survey$Table.STATUS).isNot(Constants.SURVEY_SENT))
+                .and(Condition.column(Survey$Table.STATUS).is(Constants.SURVEY_IN_PROGRESS))
                 .orderBy(Survey$Table.EVENTDATE)
-                .orderBy(Survey$Table.ID_ORG_UNIT).queryList();
+                .orderBy(Survey$Table.ID_ORG_UNIT).querySingle();
     }
 
     /**
@@ -563,6 +610,11 @@ public class Survey extends BaseModel implements VisitableToSDK {
                 .orderBy(Survey$Table.ID_ORG_UNIT).queryList();
     }
 
+    @Override
+    public void accept(IConvertToSDKVisitor IConvertToSDKVisitor) throws Exception{
+        IConvertToSDKVisitor.visit(this);
+    }
+
     /**
      * Returns the last surveys (by date) with status Completed or sent
      * @return
@@ -621,9 +673,80 @@ public class Survey extends BaseModel implements VisitableToSDK {
         saveMainScore();
     }
 
-    @Override
-    public void accept(IConvertToSDKVisitor IConvertToSDKVisitor) throws Exception{
-        IConvertToSDKVisitor.visit(this);
+    /**
+     * Moves the schedule date for this survey to a new given date due to a given reason (comment)
+     * @param newScheduledDate
+     * @param comment
+     */
+    public void reschedule(Date newScheduledDate, String comment) {
+        //Take currentDate
+        Date currentScheduleDate=this.getScheduledDate();
+
+        //Add a history
+        SurveySchedule previousSchedule=new SurveySchedule(this,currentScheduleDate,comment);
+        previousSchedule.save();
+
+        //Clean inner lazy schedulelist
+        surveySchedules=null;
+
+        //Move scheduledate and save
+        this.scheduledDate=newScheduledDate;
+        this.save();
+    }
+
+    /**
+     * Returns all surveys which status is 'planned' or 'in progress'
+     * @return
+     */
+    public static List<Survey> findPlannedOrInProgress(){
+        return new Select()
+                .from(Survey.class)
+                .where(Condition.column(Survey$Table.STATUS).eq(Constants.SURVEY_PLANNED))
+                .or(Condition.column(Survey$Table.STATUS).eq(Constants.SURVEY_IN_PROGRESS))
+                .orderBy(true, Survey$Table.SCHEDULEDDATE)
+                .queryList();
+    }
+
+    /**
+     * Returns survey which state is 'in progress' or 'sent'
+     * @return
+     */
+    public static List<Survey> findInProgressOrSent() {
+        return new Select()
+                .from(Survey.class)
+                .where(Condition.column(Survey$Table.STATUS).eq(Constants.SURVEY_IN_PROGRESS))
+                .or(Condition.column(Survey$Table.STATUS).eq(Constants.SURVEY_SENT))
+                .orderBy(Survey$Table.EVENTDATE)
+                .orderBy(Survey$Table.ID_ORG_UNIT)
+                .queryList();
+    }
+
+    /**
+     * Finds a survey with a given orgunit and tabgroup
+     * @param orgUnit
+     * @param tabGroup
+     * @return
+     */
+    public static Survey findByOrgUnitAndTabGroup(OrgUnit orgUnit, TabGroup tabGroup) {
+        return new Select()
+                .from(Survey.class)
+                .where(Condition.column(Survey$Table.ID_ORG_UNIT).eq(orgUnit.getId_org_unit()))
+                .and(Condition.column(Survey$Table.ID_TAB_GROUP).eq(tabGroup.getId_tab_group()))
+                .and(Condition.column(Survey$Table.STATUS).eq(Constants.SURVEY_PLANNED))
+                .querySingle();
+    }
+
+    /**
+     * Find the last survey that has been sent for each orgunit+tabgroup combination
+     * @return
+     */
+    public static List<Survey> listLastByOrgUnitTabGroup() {
+        return new Select()
+                .from(Survey.class)
+                .where()
+                .groupBy(new QueryBuilder().appendQuotedArray(Survey$Table.ID_ORG_UNIT, Survey$Table.ID_TAB_GROUP))
+                .having(Condition.columnsWithFunction("max", "eventDate"))
+                .queryList();
     }
 
     @Override
