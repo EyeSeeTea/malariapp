@@ -1,14 +1,14 @@
 /*
- * Copyright (c) 2016.
+ * Copyright (c) 2015.
  *
- * This file is part of QA App.
+ * This file is part of Facility QA Tool App.
  *
- *  Health Network QIS App is free software: you can redistribute it and/or modify
+ *  Facility QA Tool App is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
  *  the Free Software Foundation, either version 3 of the License, or
  *  (at your option) any later version.
  *
- *  Health Network QIS App is distributed in the hope that it will be useful,
+ *  Facility QA Tool App is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *  GNU General Public License for more details.
@@ -30,7 +30,6 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
@@ -49,6 +48,7 @@ import org.eyeseetea.malariacare.database.model.Question;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.model.Tab;
 import org.eyeseetea.malariacare.database.utils.Session;
+import org.eyeseetea.malariacare.database.utils.SurveyAnsweredRatio;
 import org.eyeseetea.malariacare.layout.adapters.general.TabArrayAdapter;
 import org.eyeseetea.malariacare.layout.adapters.survey.AutoTabAdapter;
 import org.eyeseetea.malariacare.layout.adapters.survey.CompositeScoreAdapter;
@@ -186,6 +186,69 @@ public class SurveyFragment extends  Fragment {
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_survey, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public void onBackPressed() {
+        Log.d(TAG, "onBackPressed");
+
+        Survey survey = Session.getSurvey();
+
+        SurveyAnsweredRatio surveyAnsweredRatio=survey.reloadSurveyAnsweredRatio();
+        if(surveyAnsweredRatio.getCompulsoryAnswered()==surveyAnsweredRatio.getTotalCompulsory() && surveyAnsweredRatio.getTotalCompulsory()!=0 ){
+            new AlertDialog.Builder(this)
+                    .setMessage(R.string.dialog_question_complete_survey)
+                    .setNegativeButton(R.string.dialog_complete_option,  new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int arg1) {
+                            confirmDialog();
+                        }
+                    })
+                    .setPositiveButton(R.string.dialog_continue_later_option, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int arg1) {
+                            exit();
+                        }
+                    }).create().show();
+
+        }
+        else
+        new AlertDialog.Builder(this)
+                .setTitle(R.string.survey_title_exit)
+                .setMessage(R.string.survey_info_exit).setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int arg1) {
+                        Survey survey=Session.getSurvey();
+                        survey.updateSurveyStatus();
+                        exit();
+                    }
+                })
+                .setNegativeButton(android.R.string.cancel, null)
+                .create().show();
+
+    }
+
+    public void confirmDialog(){
+        //if you select complete_option, this dialog will showed.
+        new AlertDialog.Builder(this)
+                .setMessage(R.string.dialog_are_you_sure_complete_survey)
+                .setNegativeButton(android.R.string.no, null)
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int arg1) {
+                        Survey survey = Session.getSurvey();
+                        survey.setCompleteSurveyState();
+                        exit();
+                    }
+                }).create().show();
+    }
+
+    public void exit(){
+        ScoreRegister.clear();
+        unregisterReceiver();
+        finishAndGo(DashboardActivity.class);
+    }
+    @Override
     public void onPause(){
         Survey survey = Session.getSurvey();
         if(survey!=null){
@@ -293,6 +356,18 @@ public class SurveyFragment extends  Fragment {
 
 
 
+    /**
+     * Adds actionbar to the activity
+     */
+    private void createActionBar(){
+        Survey survey = Session.getSurvey();
+        //FIXME: Shall we add the tab group?
+        Program program = survey.getTabGroup().getProgram();
+
+        android.support.v7.app.ActionBar actionBar = this.getSupportActionBar();
+        LayoutUtils.setActionBarLogo(actionBar);
+        LayoutUtils.setActionBarText(actionBar, survey.getOrgUnit().getName(), program.getName());
+    }
 
 
     /**
@@ -651,5 +726,4 @@ public class SurveyFragment extends  Fragment {
             return AutoTabAdapter.build(tab, getActivity());
         }
     }
-
 }

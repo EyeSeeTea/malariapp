@@ -25,12 +25,12 @@ import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.app.ListFragment;
 import android.app.LocalActivityManager;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -50,6 +50,7 @@ import org.eyeseetea.malariacare.fragments.DashboardUnsentFragment;
 import org.eyeseetea.malariacare.fragments.MonitorFragment;
 import org.eyeseetea.malariacare.fragments.SurveyFragment;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
+import org.eyeseetea.malariacare.fragments.PlannedFragment;
 import org.eyeseetea.malariacare.services.SurveyService;
 import org.hisp.dhis.android.sdk.events.UiEvent;
 
@@ -62,6 +63,7 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
     private final static String TAG=".DDetailsActivity";
     private boolean reloadOnResume=true;
     TabHost tabHost;
+    PlannedFragment plannedFragment;
     MonitorFragment monitorFragment;
     DashboardUnsentFragment unsentFragment;
     DashboardSentFragment sentFragment;
@@ -74,7 +76,6 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
     String TAB_ASSESS;
     String TAB_IMPROVE;
     String TAB_MONITOR;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,8 +94,9 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
             Log.e(".DashboardActivity", e.getMessage());
         }
         if(savedInstanceState==null) {
-            initAssess();
+            initPlanned();
             initImprove();
+            initAssess();
             initMonitor();
         }
         initTabHost(savedInstanceState);
@@ -115,7 +117,7 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
                 } else if (tabId.equalsIgnoreCase(TAB_ASSESS)) {
                     unsentFragment.reloadData();
                 } else if (tabId.equalsIgnoreCase(TAB_PLAN)) {
-                    //tab_plan on click code
+                    plannedFragment.reloadPlannedItems();
                 } else if (tabId.equalsIgnoreCase(TAB_MONITOR)) {
                     monitorFragment.reloadSentSurveys();
                 }
@@ -160,6 +162,13 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
 
     }
 
+    public void initPlanned(){
+        Log.d(TAG,"initPlanned");
+        plannedFragment = new PlannedFragment();
+        plannedFragment.setArguments(getIntent().getExtras());
+        setFragmentTransaction(R.id.dashboard_planning_tab, plannedFragment);
+    }
+    
     public void initAssess(){
         unsentFragment = new DashboardUnsentFragment();
         unsentFragment.setArguments(getIntent().getExtras());
@@ -178,7 +187,7 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
         mStackLevel++;
 
         if(createSurveyFragment==null)
-        createSurveyFragment = CreateSurveyFragment.newInstance(mStackLevel);
+            createSurveyFragment = CreateSurveyFragment.newInstance(mStackLevel);
         replaceFragment(R.id.dashboard_details_container, createSurveyFragment);
     }
 
@@ -186,7 +195,7 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
         int  mStackLevel=0;
         mStackLevel++;
         if(surveyFragment==null)
-        surveyFragment = SurveyFragment.newInstance(mStackLevel);
+            surveyFragment = SurveyFragment.newInstance(mStackLevel);
         // Add the fragment to the activity, pushing this transaction
         // on to the back stack.
         replaceFragment(R.id.dashboard_details_container, surveyFragment);
@@ -196,30 +205,8 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
         int mStackLevel=0;
         mStackLevel++;
         if(monitorFragment==null)
-        monitorFragment = MonitorFragment.newInstance(mStackLevel);
+            monitorFragment = MonitorFragment.newInstance(mStackLevel);
         replaceFragment(R.id.dashboard_charts_container, monitorFragment);
-    }
-
-
-    /**
-     * Called when the user clicks the Send button
-     */
-    public void createSurvey(View view) {
-        Log.i(".CreateSurveyActivity", "Saving survey and saving in session");
-        if(createSurveyFragment.createSurvey(view)){
-            initSurvey();
-        }
-
-    }
-
-    /**
-     * Init the fragments
-     */
-    private void setFragmentTransaction(int layout, ListFragment fragment) {
-        FragmentTransaction ft = getFragmentManager().beginTransaction();
-        ft.add(layout, fragment);
-        ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-        ft.commit();
     }
 
     private void replaceFragment(int layout,  Fragment fragment) {
@@ -253,6 +240,15 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
         sentFragment.reloadSentSurveys();
     }
 
+    /**
+     * Init the fragments
+     */
+    private void setFragmentTransaction(int layout, ListFragment fragment) {
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        ft.add(layout, fragment);
+        ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+        ft.commit();
+    }
 
     private void setActionbarTitle() {
         android.support.v7.app.ActionBar actionBar =  getSupportActionBar();

@@ -35,7 +35,9 @@ import org.eyeseetea.malariacare.database.model.Tab$Table;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.database.utils.feedback.Feedback;
 import org.eyeseetea.malariacare.database.utils.feedback.FeedbackBuilder;
+import org.eyeseetea.malariacare.database.utils.planning.PlannedItemBuilder;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
+import org.eyeseetea.malariacare.utils.Constants;
 import org.eyeseetea.malariacare.utils.Utils;
 
 import java.util.ArrayList;
@@ -51,6 +53,11 @@ public class SurveyService extends IntentService {
      * Constant added to the intent in order to reuse the service for different 'methods'
      */
     public static final String SERVICE_METHOD="serviceMethod";
+
+    /**
+     * Name of the parameter that holds every survey that goes into the planned tab
+     */
+    public static final String PLANNED_SURVEYS_ACTION="org.eyeseetea.malariacare.services.SurveyService.PLANNED_SURVEYS_ACTION";
 
     /**
      * Name of 'list unsent' action
@@ -178,16 +185,16 @@ public class SurveyService extends IntentService {
     }
 
     private void preLoadTabItems(Long tabID){
-        List<Tab> tabs = new Select().from(Tab.class).where(Condition.column(Tab$Table.ID_TAB).eq(tabID)).queryList();
-        if (tabs !=null && tabs.size()>=1)
-            Utils.preloadTabItems(tabs.get(0));
+        Tab tab = Tab.findById(tabID);
+        if (tab !=null) {
+            Utils.preloadTabItems(tab);
+        }
     }
 
     private void reloadDashboard(){
         Log.d(TAG, "reloadDashboard");
-        List<Survey> surveys=new Select().all().from(Survey.class)
-                .orderBy(Survey$Table.EVENTDATE)
-                .orderBy(Survey$Table.ID_ORG_UNIT).queryList();
+
+        List<Survey> surveys=Survey.findInProgressOrSent();
 
         List<Survey> completedUnsentSurveys=new ArrayList<>();
         List<Survey> unsentSurveys=new ArrayList<>();
@@ -207,11 +214,13 @@ public class SurveyService extends IntentService {
         Session.putServiceValue(ALL_UNCOMPLETED_UNSENT_SURVEYS_ACTION, unsentSurveys);
         Session.putServiceValue(ALL_COMPLETED_SURVEYS_ACTION, completedUnsentSurveys);
         Session.putServiceValue(ALL_SENT_OR_COMPLETED_SURVEYS_ACTION, sentSurveys);
+        Session.putServiceValue(PLANNED_SURVEYS_ACTION, PlannedItemBuilder.getInstance().buildPlannedItems());
 
         //Returning result to anyone listening
         LocalBroadcastManager.getInstance(this).sendBroadcast(new Intent(ALL_UNCOMPLETED_UNSENT_SURVEYS_ACTION));
         LocalBroadcastManager.getInstance(this).sendBroadcast(new Intent(ALL_COMPLETED_SURVEYS_ACTION));
         LocalBroadcastManager.getInstance(this).sendBroadcast(new Intent(ALL_SENT_OR_COMPLETED_SURVEYS_ACTION));
+        LocalBroadcastManager.getInstance(this).sendBroadcast(new Intent(PLANNED_SURVEYS_ACTION));
     }
 
     /**
@@ -227,7 +236,6 @@ public class SurveyService extends IntentService {
         Session.putServiceValue(PREPARE_FEEDBACK_ACTION_ITEMS, feedbackList);
         LocalBroadcastManager.getInstance(this).sendBroadcast(new Intent(PREPARE_FEEDBACK_ACTION));
     }
-    
 
     /**
      * Selects all sent surveys from database
@@ -290,13 +298,7 @@ public class SurveyService extends IntentService {
     private void prepareSurveyInfo(){
         Log.d(TAG, "prepareSurveyInfo (Thread:" + Thread.currentThread().getId() + ")");
 
-//        Survey survey=Session.getSurvey();
-//        Program program=survey.getProgram();
-
-        //Get composite scores for current program & register them (scores)
-        //List<CompositeScore> compositeScores = CompositeScore.listAllByProgram(program);
-
-        List<CompositeScore> compositeScores = new Select().all().from(CompositeScore.class).queryList();
+        List<CompositeScore> compositeScores = CompositeScore.list();
         ScoreRegister.registerCompositeScores(compositeScores);
 
         //Get tabs for current program & register them (scores)

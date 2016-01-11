@@ -1,14 +1,14 @@
 /*
- * Copyright (c) 2016.
+ * Copyright (c) 2015.
  *
- * This file is part of QA App.
+ * This file is part of Facility QA Tool App.
  *
- *  Health Network QIS App is free software: you can redistribute it and/or modify
+ *  Facility QA Tool App is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
  *  the Free Software Foundation, either version 3 of the License, or
  *  (at your option) any later version.
  *
- *  Health Network QIS App is distributed in the hope that it will be useful,
+ *  Facility QA Tool App is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *  GNU General Public License for more details.
@@ -22,9 +22,11 @@ package org.eyeseetea.malariacare.fragments;
 import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -45,12 +47,15 @@ import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.model.TabGroup;
 import org.eyeseetea.malariacare.database.utils.LocationMemory;
 import org.eyeseetea.malariacare.database.utils.Session;
+import org.eyeseetea.malariacare.database.utils.planning.SurveyPlanner;
 import org.eyeseetea.malariacare.layout.adapters.general.OrgUnitArrayAdapter;
 import org.eyeseetea.malariacare.layout.adapters.general.ProgramArrayAdapter;
 import org.eyeseetea.malariacare.layout.adapters.general.TabGroupArrayAdapter;
 import org.eyeseetea.malariacare.layout.listeners.SurveyLocationListener;
+import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 import org.eyeseetea.malariacare.utils.Constants;
 import org.eyeseetea.malariacare.views.CustomTextView;
+import org.hisp.dhis.android.sdk.events.UiEvent;
 
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -61,11 +66,13 @@ import java.util.Map;
  */
 public class CreateSurveyFragment extends Fragment {
 
-    private static String TAG = ".CreateSurvey";
+    private static String TAG = ".CreateSurveyFragment";
 
     // UI references.
     private Spinner orgUnitView;
     private View orgUnitContainerItems;
+    private String TOKEN = ";";
+    private String orgUnitStorage = "";
 
     static class ViewHolder {
         public View component;
@@ -82,6 +89,9 @@ public class CreateSurveyFragment extends Fragment {
     private OrgUnit orgUnitDefaultOption;
     private Program programDefaultOption;
     private TabGroup tabGroupDefaultOption;
+
+    private OrgUnit lastSelectedOrgUnit;
+    private String lastOrgUnits = TOKEN;
 
     private LayoutInflater lInflater;
     LinearLayout        llLayout;
@@ -183,8 +193,7 @@ public class CreateSurveyFragment extends Fragment {
 
 
         //Populate Program View DDL
-        List<Program> programList = new Select().all().from(Program.class).queryList();
-        ;
+        List<Program> programList = Program.list();
         programList.add(0, programDefaultOption);
         programView = (Spinner)  llLayout.findViewById(R.id.program);
         programView.setAdapter(new ProgramArrayAdapter( getActivity(), programList));
@@ -193,6 +202,34 @@ public class CreateSurveyFragment extends Fragment {
         //Create Tab Group View DDL. Not populated and not visible.
         tabGroupContainer =  llLayout.findViewById(R.id.tab_group_container);
         tabGroupView = (Spinner)  llLayout.findViewById(R.id.tab_group);
+        tabGroupContainer = findViewById(R.id.tab_group_container);
+        tabGroupView = (Spinner) findViewById(R.id.tab_group);
+
+        //init the lastOrgUnits
+        lastOrgUnits= TOKEN;
+
+        //get the lastSelectedOrgUnit
+        setDefaultOrgUnit();
+
+        //get the list of org units for be pulled in the spinner.
+        orgUnitStorage =getListOrgUnits();
+
+        // If the list is empty(with TOKEN), The list is overwritte by the lastSelectedOrgUnit(for saved orgunits without tree).
+        // In the first time, the application not have lastSelectedOrgUnit, it only need be saved if exist.
+        if(orgUnitStorage.startsWith(TOKEN))
+            if(lastSelectedOrgUnit !=null)
+                orgUnitStorage = lastSelectedOrgUnit.getUid();
+
+        //Load the root lastorgUnit/firstOrgUnit(if we have orgUnitLevels).
+        if(!orgUnitStorage.equals("")){
+            String[] list= orgUnitStorage.split(TOKEN);
+            if(list.length>0){
+                orgUnitView.setSelection(getIndex(orgUnitView, OrgUnit.getOrgUnit(list[0]).getName()));
+                orgUnitStorage = removeLastOrgUnits(orgUnitStorage, list[0] + TOKEN);
+            }
+        }
+        else if(lastSelectedOrgUnit !=null)
+            orgUnitView.setSelection(getIndex(orgUnitView, lastSelectedOrgUnit.getName()));
     }
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -201,25 +238,49 @@ public class CreateSurveyFragment extends Fragment {
 
     }
 
+    //select the default item.
+    private int getIndex(Spinner spinner, String myString)
+    {
+        int index = 0;
+        for (int i=0;i<spinner.getCount();i++){
+            Object objectRow= spinner.getItemAtPosition(i);
+            String value="";
+            if(objectRow instanceof Program) {
+                value= ((Program) objectRow).getName();
+            }
+            if(objectRow instanceof OrgUnit) {
+                value= ((OrgUnit) objectRow).getName();
+            }
+            if(objectRow instanceof TabGroup) {
+                value= ((TabGroup) objectRow).getName();
+            }
+            if (value.equalsIgnoreCase(myString)){
+                index = i;
+                break;
+            }
+        }
+        return index;
+    }
+
     private boolean isEverythingFilled() {
         try {
             boolean isEverythingFilled = (!realOrgUnitView.getSelectedItem().equals(orgUnitDefaultOption) && !programView.getSelectedItem().equals(programDefaultOption));
             boolean isTabGroupFilled = !tabGroupView.getSelectedItem().equals(tabGroupDefaultOption);
             return isEverythingFilled && isTabGroupFilled;
-        } catch (NullPointerException ex) {
+        }catch(NullPointerException ex){
             return false;
         }
     }
 
-    private boolean doesSurveyExist() {
+    private boolean doesSurveyInProgressExist() {
         // Read Selected Items
         OrgUnit orgUnit = (OrgUnit) realOrgUnitView.getSelectedItem();
         TabGroup tabGroup = (TabGroup) tabGroupView.getSelectedItem();
-        List<Survey> existing = Survey.getUnsentSurveys(orgUnit, tabGroup);
-        return (existing != null && existing.size() != 0);
+        Survey survey = Survey.getInProgressSurveys(orgUnit, tabGroup);
+        return (survey != null);
     }
 
-    private boolean validateForm() {
+    private boolean validateForm(){
         if (!isEverythingFilled()) {
             new AlertDialog.Builder( getActivity())
                     .setTitle( getActivity().getApplicationContext().getString(R.string.dialog_title_missing_selection))
@@ -227,13 +288,13 @@ public class CreateSurveyFragment extends Fragment {
                     .setPositiveButton(android.R.string.ok, null).create().show();
         } else if ((((OrgUnit) realOrgUnitView.getSelectedItem()).getChildren() != null && ((OrgUnit) realOrgUnitView.getSelectedItem()).getChildren().size() > 0)) {
             new AlertDialog.Builder( getActivity())
-                    .setTitle( getActivity().getApplicationContext().getString(R.string.dialog_title_incorrect_org_unit))
-                    .setMessage( getActivity().getApplicationContext().getString(R.string.dialog_content_incorrect_org_unit))
+                    .setTitle(getActivity().getApplicationContext().getString(R.string.dialog_title_incorrect_org_unit))
+                    .setMessage(getActivity().getApplicationContext().getString(R.string.dialog_content_incorrect_org_unit))
                     .setPositiveButton(android.R.string.ok, null).create().show();
-        } else if (doesSurveyExist()) {
+        } else if (doesSurveyInProgressExist()) {
             new AlertDialog.Builder( getActivity())
-                    .setTitle( getActivity().getApplicationContext().getString(R.string.dialog_title_existing_survey))
-                    .setMessage( getActivity().getApplicationContext().getString(R.string.dialog_content_existing_survey))
+                    .setTitle(getActivity().getApplicationContext().getString(R.string.dialog_title_existing_survey))
+                    .setMessage(getActivity().getApplicationContext().getString(R.string.dialog_content_existing_survey))
                     .setPositiveButton(android.R.string.ok, null).create().show();
         } else {
             return true;
@@ -255,8 +316,10 @@ public class CreateSurveyFragment extends Fragment {
             TabGroup tabGroup = (TabGroup) tabGroupView.getSelectedItem();
 
             // Put new survey in session
-            Survey survey = new Survey(orgUnit, tabGroup, Session.getUser());
-            survey.save();
+            Survey survey = SurveyPlanner.getInstance().startSurvey(orgUnit,tabGroup);
+            //TODO remove
+            //Survey survey = new Survey(orgUnit, tabGroup, Session.getUser());
+            //survey.save();
             Session.setSurvey(survey);
 
             //Look for coordinates
@@ -304,14 +367,15 @@ public class CreateSurveyFragment extends Fragment {
         public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
             Program selectedProgram = (Program) programView.getSelectedItem();
             List<TabGroup> tabGroupList = selectedProgram.getTabGroups();
-            if (tabGroupList.size() > 1) {
+            if (tabGroupList.size() > 1){
                 // Populate tab group spinner
                 tabGroupList.add(0, tabGroupDefaultOption);
                 tabGroupView.setAdapter(new TabGroupArrayAdapter( getActivity().getApplicationContext(), tabGroupList));
                 //Show tab group select
                 tabGroupContainer.setVisibility(View.VISIBLE);
-            } else {
-                if (tabGroupList.size() == 1) {
+            }
+            else{
+                if (tabGroupList.size() == 1){
                     tabGroupList.add(0, tabGroupDefaultOption);
                     tabGroupView.setAdapter(new TabGroupArrayAdapter( getActivity().getApplicationContext(), tabGroupList));
                     tabGroupView.setSelection(1);
@@ -320,7 +384,7 @@ public class CreateSurveyFragment extends Fragment {
                     tabGroupView.setSelection(0);
                 }
                 //Hide tab group selector
-                tabGroupContainer.setVisibility(View.GONE);
+               tabGroupContainer.setVisibility(View.GONE);
             }
         }
 
@@ -341,22 +405,58 @@ public class CreateSurveyFragment extends Fragment {
         @Override
         public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
 
-            OrgUnit selectedOrgUnit = (OrgUnit) ((Spinner) viewHolder.component).getItemAtPosition(pos);
+            OrgUnit selectedOrgUnit = (OrgUnit) ((Spinner)viewHolder.component).getItemAtPosition(pos);
             realOrgUnitView = ((Spinner) viewHolder.component);
 
+            if(selectedOrgUnit!=null) {
+                if (selectedOrgUnit.getUid() != null && selectedOrgUnit.getChildren().isEmpty() && selectedOrgUnit.getOrgUnit() == null) {
+                    //without parent without childs
+                    lastSelectedOrgUnit = selectedOrgUnit;
+                    lastOrgUnits = TOKEN;
+                } else if (selectedOrgUnit.getOrgUnit() == null && selectedOrgUnit.getUid() != null) {
+                    //parent
+                    lastSelectedOrgUnit = selectedOrgUnit;
+                    lastOrgUnits = selectedOrgUnit.getUid();
+                } else if (selectedOrgUnit.getUid() != null) {
+                    //it is a child
+                    if (lastOrgUnits == null) {
+                        lastOrgUnits = selectedOrgUnit.getUid();
+                    } else if (!lastOrgUnits.contains(selectedOrgUnit.getUid())) {
+                        lastOrgUnits = lastOrgUnits + TOKEN + selectedOrgUnit.getUid();
+                    }
+                }
+            }
             // Populate child view. If it exists in org unit map, grab it; otherwise inflate it
             List<OrgUnit> orgUnitList = selectedOrgUnit.getChildren();
 
             // If there are children create spinner or populate it otherwise hide existing one
-            if (orgUnitList.size() > 0) {
+            if (orgUnitList.size() > 0){
                 View childView = orgUnitHierarchyView.get(orgUnitList.get(0).getOrgUnitLevel());
                 ViewHolder subViewHolder = new ViewHolder();
                 subViewHolder.component = childView.findViewById(R.id.org_unit_item_spinner);
 
                 //Show tab group select and populate tab group spinner
                 orgUnitList.add(0, orgUnitDefaultOption);
-                ((Spinner) subViewHolder.component).setAdapter(new OrgUnitArrayAdapter( getActivity(), orgUnitList));
-                ((Spinner) subViewHolder.component).setOnItemSelectedListener(new OrgUnitSpinnerListener(subViewHolder));
+                Spinner spinner=((Spinner) subViewHolder.component);
+                spinner.setAdapter(new OrgUnitArrayAdapter(getActivity(), orgUnitList));
+                spinner.setOnItemSelectedListener(new OrgUnitSpinnerListener(subViewHolder));
+
+                //If the orgUnit had OrgUnit levels, it should be load one - to -one.
+                //Select the saved orgUnitTree. It gets the first orgUnit(by uid), and remove it from templistorgunits (the next loop gets the next).
+                if(!orgUnitStorage.equals("")){
+                    String[] list= orgUnitStorage.split(TOKEN);
+                    for(int i=0;i<list.length;i++){
+                        if(!list[i].equals("") && !list[i].equals(TOKEN)) {
+                            try {
+                                spinner.setSelection(getIndex(spinner, OrgUnit.getOrgUnit(list[i]).getName()));
+                            } catch (Exception e) {
+                            }
+                            orgUnitStorage = orgUnitStorage.replaceFirst(TOKEN,"");
+                            orgUnitStorage = removeLastOrgUnits(orgUnitStorage, list[i]);
+                            break;
+                        }
+                    }
+                }
 
                 //Hide org unit selector
                 childView.setVisibility(View.VISIBLE);
@@ -385,5 +485,60 @@ public class CreateSurveyFragment extends Fragment {
         }
     }
 
+    private void saveOrgUnitList(String list){
+        SharedPreferences.Editor editor = getEditor();
+        editor.putString(getString(R.string.default_orgUnits), list);
+        editor.commit();
+    }
 
+    /**
+     * Saves the orgUnit/Program/TabGroup
+     */
+    private void saveOrgUnit(){
+        SharedPreferences.Editor editor = getEditor();
+        if(lastSelectedOrgUnit !=null) {
+            editor.putString(getString(R.string.default_orgUnit), this.lastSelectedOrgUnit.getUid());
+        }
+        editor.commit();
+        changeOrgUnitList();
+    }
+
+    private void changeOrgUnitList() {
+        //if the lastorgUnits is "" o Separechar is not saved in sharedpreferences.
+        if (!lastOrgUnits.equals("") && !lastOrgUnits.equals(TOKEN)) {
+            lastOrgUnits=lastOrgUnits+ TOKEN + lastSelectedOrgUnit.getUid();
+            //remove the repeat root.
+            lastOrgUnits=lastOrgUnits.replace(lastSelectedOrgUnit.getUid()+ TOKEN + lastSelectedOrgUnit.getUid(), lastSelectedOrgUnit.getUid());
+            saveOrgUnitList(lastOrgUnits);
+        }
+    }
+
+    //Remove the populate orgUnit in order.(the snippers always get the first position).
+    private String removeLastOrgUnits(String list,String orgUnit){
+        if(!orgUnit.equals("") && !orgUnit.equals(TOKEN)) {
+            list = list.replace(orgUnit, "");
+        }
+        return list;
+    }
+
+    //Get the default orgUnit/program/tab
+    private void setDefaultOrgUnit() {
+        SharedPreferences sharedPreferences = getSharedPreferences();
+        this.lastSelectedOrgUnit = OrgUnit.getOrgUnit(sharedPreferences.getString(getActivity().getApplicationContext().getResources().getString(R.string.default_orgUnit), ""));
+    }
+
+    //Get the default orgUnitLevels
+    private String getListOrgUnits(){
+        SharedPreferences sharedPreferences = getSharedPreferences();
+        return sharedPreferences.getString(getActivity().getApplicationContext().getResources().getString(R.string.default_orgUnits), "");
+    }
+
+    private SharedPreferences getSharedPreferences() {
+        return PreferenceManager.getDefaultSharedPreferences(getActivity());
+    }
+
+    private SharedPreferences.Editor getEditor() {
+        SharedPreferences sharedPreferences = getSharedPreferences();
+        return sharedPreferences.edit();
+    }
 }
