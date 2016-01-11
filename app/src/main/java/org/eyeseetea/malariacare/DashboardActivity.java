@@ -25,8 +25,6 @@ import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.app.ListFragment;
 import android.app.LocalActivityManager;
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
@@ -191,6 +189,11 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
         replaceFragment(R.id.dashboard_details_container, createSurveyFragment);
     }
 
+    public void initSurveyFromPlanning(){
+        tabHost.setCurrentTabByTag(TAB_ASSESS);
+        initSurvey();
+    }
+
     public void initSurvey(){
         int  mStackLevel=0;
         mStackLevel++;
@@ -231,25 +234,6 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
          FragmentTransaction ft = getFragmentManager ().beginTransaction();
         ft.replace(layout, fragment);
         ft.commit();
-    }
-
-
-    public void setScoreOrder(View v)
-    {
-        sentFragment.setScoreOrder();
-        sentFragment.reloadSentSurveys();
-    }
-
-    public void setFacilityOrder(View v)
-    {
-        sentFragment.setFacilityOrder();
-        sentFragment.reloadSentSurveys();
-    }
-
-    public void setDateOrder(View v)
-    {
-        sentFragment.setDateOrder();
-        sentFragment.reloadSentSurveys();
     }
 
     /**

@@ -26,7 +26,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -35,7 +34,6 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import org.eyeseetea.malariacare.BaseActivity;
 import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.model.Program;
@@ -327,7 +325,7 @@ public class PlannedAdapter extends BaseAdapter {
 
         @Override
         public void onClick(View v) {
-            BaseActivity activity = ((DashboardActivity) context);
+            DashboardActivity activity = ((DashboardActivity) context);
             if(survey.getStatus()==Constants.SURVEY_PLANNED){
                 survey=SurveyPlanner.getInstance().startSurvey(survey);
             }
@@ -335,7 +333,8 @@ public class PlannedAdapter extends BaseAdapter {
             Session.setSurvey(survey);
             activity.prepareLocationListener(survey);
             //FIXME
-            //activity.finishAndGo(SurveyActivity.class);
+
+            activity.initSurveyFromPlanning();
         }
     }
 
