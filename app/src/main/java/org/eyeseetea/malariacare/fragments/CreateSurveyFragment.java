@@ -202,8 +202,6 @@ public class CreateSurveyFragment extends Fragment {
         //Create Tab Group View DDL. Not populated and not visible.
         tabGroupContainer =  llLayout.findViewById(R.id.tab_group_container);
         tabGroupView = (Spinner)  llLayout.findViewById(R.id.tab_group);
-        tabGroupContainer = findViewById(R.id.tab_group_container);
-        tabGroupView = (Spinner) findViewById(R.id.tab_group);
 
         //init the lastOrgUnits
         lastOrgUnits= TOKEN;
@@ -306,7 +304,7 @@ public class CreateSurveyFragment extends Fragment {
     /**
      * Called when the user clicks the Send button
      */
-    public boolean createSurvey(View view) {
+    public boolean createNewSurvey(View view) {
         Log.i(".CreateSurveyActivity", "Saving survey and saving in session");
 
         if (validateForm()) {

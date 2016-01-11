@@ -38,7 +38,6 @@ import android.widget.TextView;
 import org.eyeseetea.malariacare.BaseActivity;
 import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.R;
-import org.eyeseetea.malariacare.SurveyActivity;
 import org.eyeseetea.malariacare.database.model.Program;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.utils.Session;
@@ -335,7 +334,8 @@ public class PlannedAdapter extends BaseAdapter {
 
             Session.setSurvey(survey);
             activity.prepareLocationListener(survey);
-            activity.finishAndGo(SurveyActivity.class);
+            //FIXME
+            //activity.finishAndGo(SurveyActivity.class);
         }
     }
 

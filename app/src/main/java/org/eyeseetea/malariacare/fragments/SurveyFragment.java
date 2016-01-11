@@ -30,6 +30,7 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
@@ -185,68 +186,9 @@ public class SurveyFragment extends  Fragment {
         this.tabAdapter.notifyDataSetChanged();
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_survey, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    @Override
-    public void onBackPressed() {
-        Log.d(TAG, "onBackPressed");
-
-        Survey survey = Session.getSurvey();
-
-        SurveyAnsweredRatio surveyAnsweredRatio=survey.reloadSurveyAnsweredRatio();
-        if(surveyAnsweredRatio.getCompulsoryAnswered()==surveyAnsweredRatio.getTotalCompulsory() && surveyAnsweredRatio.getTotalCompulsory()!=0 ){
-            new AlertDialog.Builder(this)
-                    .setMessage(R.string.dialog_question_complete_survey)
-                    .setNegativeButton(R.string.dialog_complete_option,  new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int arg1) {
-                            confirmDialog();
-                        }
-                    })
-                    .setPositiveButton(R.string.dialog_continue_later_option, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int arg1) {
-                            exit();
-                        }
-                    }).create().show();
-
-        }
-        else
-        new AlertDialog.Builder(this)
-                .setTitle(R.string.survey_title_exit)
-                .setMessage(R.string.survey_info_exit).setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int arg1) {
-                        Survey survey=Session.getSurvey();
-                        survey.updateSurveyStatus();
-                        exit();
-                    }
-                })
-                .setNegativeButton(android.R.string.cancel, null)
-                .create().show();
-
-    }
-
-    public void confirmDialog(){
-        //if you select complete_option, this dialog will showed.
-        new AlertDialog.Builder(this)
-                .setMessage(R.string.dialog_are_you_sure_complete_survey)
-                .setNegativeButton(android.R.string.no, null)
-                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int arg1) {
-                        Survey survey = Session.getSurvey();
-                        survey.setCompleteSurveyState();
-                        exit();
-                    }
-                }).create().show();
-    }
-
     public void exit(){
         ScoreRegister.clear();
         unregisterReceiver();
-        finishAndGo(DashboardActivity.class);
     }
     @Override
     public void onPause(){
@@ -353,22 +295,6 @@ public class SurveyFragment extends  Fragment {
             stopProgress();
         }
     }
-
-
-
-    /**
-     * Adds actionbar to the activity
-     */
-    private void createActionBar(){
-        Survey survey = Session.getSurvey();
-        //FIXME: Shall we add the tab group?
-        Program program = survey.getTabGroup().getProgram();
-
-        android.support.v7.app.ActionBar actionBar = this.getSupportActionBar();
-        LayoutUtils.setActionBarLogo(actionBar);
-        LayoutUtils.setActionBarText(actionBar, survey.getOrgUnit().getName(), program.getName());
-    }
-
 
     /**
      * Gets a reference to the progress view in order to stop it later

@@ -209,6 +209,18 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
         replaceFragment(R.id.dashboard_charts_container, monitorFragment);
     }
 
+
+    /**
+     * Called when the user clicks the Send button
+     */
+    public void createSurvey(View view) {
+        Log.i(".CreateSurveyActivity", "Saving survey and saving in session");
+        if(createSurveyFragment.createNewSurvey(view)){
+            initSurvey();
+        }
+
+    }
+
     private void replaceFragment(int layout,  Fragment fragment) {
          FragmentTransaction ft = getFragmentManager ().beginTransaction();
         ft.replace(layout, fragment);
