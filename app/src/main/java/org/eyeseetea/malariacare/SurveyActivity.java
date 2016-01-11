@@ -50,6 +50,7 @@ import org.eyeseetea.malariacare.database.model.Question;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.model.Tab;
 import org.eyeseetea.malariacare.database.utils.Session;
+import org.eyeseetea.malariacare.database.utils.SurveyAnsweredRatio;
 import org.eyeseetea.malariacare.layout.adapters.general.TabArrayAdapter;
 import org.eyeseetea.malariacare.layout.adapters.survey.AutoTabAdapter;
 import org.eyeseetea.malariacare.layout.adapters.survey.CompositeScoreAdapter;
@@ -173,19 +174,59 @@ public class SurveyActivity extends BaseActivity{
     @Override
     public void onBackPressed() {
         Log.d(TAG, "onBackPressed");
+
+        Survey survey = Session.getSurvey();
+
+        SurveyAnsweredRatio surveyAnsweredRatio=survey.reloadSurveyAnsweredRatio();
+        if(surveyAnsweredRatio.getCompulsoryAnswered()==surveyAnsweredRatio.getTotalCompulsory() && surveyAnsweredRatio.getTotalCompulsory()!=0 ){
+            new AlertDialog.Builder(this)
+                    .setMessage(R.string.dialog_question_complete_survey)
+                    .setNegativeButton(R.string.dialog_complete_option,  new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int arg1) {
+                            confirmDialog();
+                        }
+                    })
+                    .setPositiveButton(R.string.dialog_continue_later_option, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int arg1) {
+                            exit();
+                        }
+                    }).create().show();
+
+        }
+        else
         new AlertDialog.Builder(this)
                 .setTitle(R.string.survey_title_exit)
-                .setMessage(R.string.survey_info_exit)
+                .setMessage(R.string.survey_info_exit).setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int arg1) {
+                        Survey survey=Session.getSurvey();
+                        survey.updateSurveyStatus();
+                        exit();
+                    }
+                })
+                .setNegativeButton(android.R.string.cancel, null)
+                .create().show();
+
+    }
+
+    public void confirmDialog(){
+        //if you select complete_option, this dialog will showed.
+        new AlertDialog.Builder(this)
+                .setMessage(R.string.dialog_are_you_sure_complete_survey)
                 .setNegativeButton(android.R.string.no, null)
                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int arg1) {
-                        ScoreRegister.clear();
-                        unregisterReceiver();
-                        finishAndGo(DashboardActivity.class);
+                        Survey survey = Session.getSurvey();
+                        survey.setCompleteSurveyState();
+                        exit();
                     }
                 }).create().show();
     }
 
+    public void exit(){
+        ScoreRegister.clear();
+        unregisterReceiver();
+        finishAndGo(DashboardActivity.class);
+    }
     @Override
     public void onPause(){
         Survey survey = Session.getSurvey();

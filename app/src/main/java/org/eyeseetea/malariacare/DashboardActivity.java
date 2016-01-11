@@ -25,10 +25,14 @@ import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.app.ListFragment;
 import android.app.LocalActivityManager;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -45,6 +49,7 @@ import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.fragments.DashboardSentFragment;
 import org.eyeseetea.malariacare.fragments.DashboardUnsentFragment;
 import org.eyeseetea.malariacare.fragments.MonitorFragment;
+import org.eyeseetea.malariacare.fragments.PlannedFragment;
 import org.eyeseetea.malariacare.services.SurveyService;
 import org.hisp.dhis.android.sdk.events.UiEvent;
 
@@ -57,10 +62,10 @@ public class DashboardActivity extends BaseActivity {
     private final static String TAG=".DDetailsActivity";
     private boolean reloadOnResume=true;
     TabHost tabHost;
+    PlannedFragment plannedFragment;
     MonitorFragment monitorFragment;
     DashboardUnsentFragment unsentFragment;
     DashboardSentFragment sentFragment;
-    LocalActivityManager mlam;
     static boolean viewFeedback;
 
     @Override
@@ -79,6 +84,7 @@ public class DashboardActivity extends BaseActivity {
             Log.e(".DashboardActivity", e.getMessage());
         }
         if(savedInstanceState==null) {
+            initPlanned();
             initImprove();
             initAssess();
             initMonitor();
@@ -95,20 +101,17 @@ public class DashboardActivity extends BaseActivity {
             @Override
             public void onTabChanged(String tabId) {
                 /** If current tab is android */
-                if (tabId.equalsIgnoreCase("tab_improve")) {
+                if(tabId.equalsIgnoreCase("tab_improve")){
                     unsentFragment.reloadUncompletedUnsentSurveys();
-                } else if (tabId.equalsIgnoreCase("tab_assess")) {
+                }else if(tabId.equalsIgnoreCase("tab_assess")){
                     sentFragment.reloadSentSurveys();
-                } else if (tabId.equalsIgnoreCase("tab_plan")) {
-                    //tab_plan on click code
-                } else if (tabId.equalsIgnoreCase("tab_monitor")) {
+                }else if(tabId.equalsIgnoreCase("tab_plan")){
+                    plannedFragment.reloadPlannedItems();
+                }else if(tabId.equalsIgnoreCase("tab_monitor")){
                     monitorFragment.reloadSentSurveys();
                 }
             }
         });
-        for(int i=0;i<tabHost.getTabWidget().getChildCount();i++){
-            tabHost.getTabWidget().getChildAt(i).setFocusable(false);
-        }
         setActionbarTitle();
     }
 
@@ -116,10 +119,8 @@ public class DashboardActivity extends BaseActivity {
      * Init the conteiner for all the tabs
      */
     private void initTabHost(Bundle savedInstanceState) {
-        mlam = new LocalActivityManager(this, false);
         tabHost = (TabHost)findViewById(R.id.tabHost);
-        mlam.dispatchCreate(savedInstanceState);
-        tabHost.setup(mlam);
+        tabHost.setup();
     }
 
 
@@ -135,6 +136,13 @@ public class DashboardActivity extends BaseActivity {
         tab.setIndicator("", image);
         tabHost.addTab(tab);
 
+    }
+
+    public void initPlanned(){
+        Log.d(TAG,"initPlanned");
+        plannedFragment = new PlannedFragment();
+        plannedFragment.setArguments(getIntent().getExtras());
+        setFragmentTransaction(R.id.dashboard_planning_tab, plannedFragment);
     }
 
     public void initImprove(){
@@ -161,25 +169,6 @@ public class DashboardActivity extends BaseActivity {
         ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
         ft.addToBackStack(null);
         ft.commit();
-    }
-
-
-    public void setScoreOrder(View v)
-    {
-        sentFragment.setScoreOrder();
-        sentFragment.reloadSentSurveys();
-    }
-
-    public void setFacilityOrder(View v)
-    {
-        sentFragment.setFacilityOrder();
-        sentFragment.reloadSentSurveys();
-    }
-
-    public void setDateOrder(View v)
-    {
-        sentFragment.setDateOrder();
-        sentFragment.reloadSentSurveys();
     }
 
     /**
@@ -276,14 +265,12 @@ public class DashboardActivity extends BaseActivity {
         Log.d(TAG, "onResume");
         super.onResume();
         getSurveysFromService();
-        mlam.dispatchResume();
     }
 
     @Override
     public void onPause(){
         Log.d(TAG, "onPause");
         super.onPause();
-        mlam.dispatchPause(isFinishing());
     }
 
     public void setReloadOnResume(boolean doReload){

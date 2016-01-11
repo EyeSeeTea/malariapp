@@ -31,6 +31,7 @@ import org.eyeseetea.malariacare.database.model.Value;
 import org.eyeseetea.malariacare.database.utils.LocationMemory;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.Session;
+import org.eyeseetea.malariacare.database.utils.planning.SurveyPlanner;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.utils.Constants;
 import org.eyeseetea.malariacare.utils.Utils;
@@ -275,6 +276,10 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
 
             iSurvey.saveMainScore();
             iSurvey.save();
+
+            //Plan a new survey for the future
+            SurveyPlanner.getInstance().buildNext(iSurvey);
+
             //To avoid several pushes
             iEvent.setFromServer(true);
             iEvent.save();

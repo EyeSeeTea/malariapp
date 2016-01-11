@@ -265,6 +265,14 @@ public class CompositeScore extends BaseModel implements VisitableToSDK {
         IConvertToSDKVisitor.visit(this);
     }
 
+    /**
+     * List of compositeScores
+     * @return
+     */
+    public static List<CompositeScore> list() {
+        return new Select().all().from(CompositeScore.class).queryList();
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -305,4 +313,5 @@ public class CompositeScore extends BaseModel implements VisitableToSDK {
                 ", id_parent=" + id_parent +
                 '}';
     }
+
 }

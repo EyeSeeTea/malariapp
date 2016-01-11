@@ -145,6 +145,15 @@ public class Tab extends BaseModel {
     }
 
     /**
+     * Returns the tab with the given id
+     * @param tabID
+     * @return
+     */
+    public static Tab findById(Long tabID) {
+        return new Select().from(Tab.class).where(Condition.column(Tab$Table.ID_TAB).eq(tabID)).querySingle();
+    }
+
+    /**
      * Checks if this tab is a general score tab.
      * @return
      */
@@ -206,4 +215,5 @@ public class Tab extends BaseModel {
                 ", id_tab_group=" + id_tab_group +
                 '}';
     }
+
 }

@@ -58,7 +58,27 @@
                         android:layout_height="match_parent"
                         android:orientation="vertical">
 
-                        <!--Ivan layout here -->
+                         <LinearLayout
+                            android:id="@+id/dashboard_planning_tab"
+                            android:orientation="vertical" android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:background="@color/custom_background_grey">
+                                <Spinner
+                                    android:id="@+id/dashboard_planning_program"
+                                    android:layout_width="wrap_content"
+                                    android:spinnerMode="dialog"
+                                    android:layout_height="wrap_content"
+                                    android:backgroundTintMode="add"
+                                    android:backgroundTint="@color/custom_background_grey"></Spinner>
+                            </LinearLayout>
+                            <!-- list view will be automatically added here by the list fragment -->
+
+                        </LinearLayout>
+
 
                     </LinearLayout>
 
