@@ -122,21 +122,17 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
                 setActionBarDashboard();
                 if (tabId.equalsIgnoreCase(TAB_PLAN)) {
                     currentTabName=getString(R.string.plan);
-                    currentView.setAnimation(inFromRightAnimation());
                     plannedFragment.reloadPlannedItems();
                 } else if (tabId.equalsIgnoreCase(TAB_ASSESS)) {
                     currentTabName=getString(R.string.assess);
                     if(isSurveyFragmentActive())
                         setActionBarTitleForSurveyFragment();
-                    currentView.setAnimation(inFromRightAnimation());
                     unsentFragment.reloadData();
                 } else if (tabId.equalsIgnoreCase(TAB_IMPROVE)) {
                     currentTabName=getString(R.string.improve);
-                    currentView.setAnimation(outToLeftAnimation());
                     sentFragment.reloadSentSurveys();
                 } else if (tabId.equalsIgnoreCase(TAB_MONITOR)) {
                     currentTabName=getString(R.string.monitor);
-                    currentView.setAnimation(outToLeftAnimation());
                     monitorFragment.reloadSentSurveys();
                 }
             }
@@ -189,28 +185,6 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
         ((TextView) findViewById(R.id.action_bar_multititle_subtitle)).setText(title2);
         ((TextView) findViewById(R.id.action_bar_multititle_subtitle2)).setText(title3);
         ((TextView) findViewById(R.id.action_bar_multititle_subtitle3)).setText(title4);
-    }
-    public Animation inFromRightAnimation() {
-
-        Animation inFromRight = new TranslateAnimation(
-                Animation.RELATIVE_TO_PARENT, +1.0f,
-                Animation.RELATIVE_TO_PARENT, 0.0f,
-                Animation.RELATIVE_TO_PARENT, 0.0f,
-                Animation.RELATIVE_TO_PARENT, 0.0f);
-        inFromRight.setDuration(600);
-        inFromRight.setInterpolator(new AccelerateInterpolator());
-        return inFromRight;
-    }
-
-    public Animation outToLeftAnimation() {
-        Animation outtoLeft = new TranslateAnimation(
-                Animation.RELATIVE_TO_PARENT, -1.0f,
-                Animation.RELATIVE_TO_PARENT, 0.0f,
-                Animation.RELATIVE_TO_PARENT, 0.0f,
-                Animation.RELATIVE_TO_PARENT, 0.0f);
-        outtoLeft.setDuration(600);
-        outtoLeft.setInterpolator(new AccelerateInterpolator());
-        return outtoLeft;
     }
 
     private void getTags() {
