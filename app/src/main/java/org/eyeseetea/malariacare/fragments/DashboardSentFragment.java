@@ -20,7 +20,6 @@
 package org.eyeseetea.malariacare.fragments;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.ListFragment;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -166,15 +165,15 @@ public class DashboardSentFragment extends ListFragment {
                 if (program.getName().equals(PROGRAM_WITHOUT_FILTER)) {
                     if (programFilter != PROGRAM_WITHOUT_FILTER) {
                         programFilter = PROGRAM_WITHOUT_FILTER;
-                        reload = true;
+                        reload=true;
                     }
                 } else {
                     if (programFilter != program.getUid()) {
                         programFilter = program.getUid();
-                        reload = true;
+                        reload=true;
                     }
                 }
-                if (reload)
+                if(reload)
                     reloadSentSurveys();
             }
 
@@ -269,9 +268,7 @@ public class DashboardSentFragment extends ListFragment {
             return;
         }
 
-        //Put selected survey in session
-        //Session.setSurvey(surveys.get(position - 1));
-        // Go to SurveyActivity
+        // call feedbackselected function(and it call surveyfragment)
 
         mCallback.onFeedbackSelected(surveys.get(position - 1));
     }
@@ -468,7 +465,7 @@ public class DashboardSentFragment extends ListFragment {
     private HashMap<String, Survey> filterSurvey(HashMap<String, Survey> orgUnits, Survey survey) {
         if(orgUnitFilter.equals(ORG_UNIT_WITHOUT_FILTER) || orgUnitFilter.equals(survey.getOrgUnit().getUid()))
             if(programFilter.equals(PROGRAM_WITHOUT_FILTER) || programFilter.equals(survey.getTabGroup().getProgram().getUid()))
-                orgUnits.put(survey.getTabGroup().getProgram().getUid()+survey.getOrgUnit().getUid(), survey);
+              orgUnits.put(survey.getTabGroup().getProgram().getUid()+survey.getOrgUnit().getUid(), survey);
         return orgUnits;
     }
 
