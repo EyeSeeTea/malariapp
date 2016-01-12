@@ -46,7 +46,6 @@ import org.eyeseetea.malariacare.layout.adapters.dashboard.AssessmentUnsentAdapt
 import org.eyeseetea.malariacare.layout.adapters.dashboard.IDashboardAdapter;
 import org.eyeseetea.malariacare.receivers.AlarmPushReceiver;
 import org.eyeseetea.malariacare.services.SurveyService;
-import org.eyeseetea.malariacare.utils.Constants;
 import org.eyeseetea.malariacare.views.CustomTextView;
 
 import java.util.ArrayList;
@@ -179,8 +178,7 @@ public class DashboardUnsentFragment extends ListFragment {
 
                 return true;
             case R.id.option_mark_completed:
-                ((Survey)adapter.getItem(selectedPosition-1)).setStatus(Constants.SURVEY_COMPLETED);
-                ((Survey)adapter.getItem(selectedPosition-1)).save();
+                ((Survey)adapter.getItem(selectedPosition-1)).setCompleteSurveyState();
                 reloadData();
                 return true;
             case R.id.option_delete:
@@ -197,6 +195,13 @@ public class DashboardUnsentFragment extends ListFragment {
         Intent surveysIntent=new Intent(PreferencesState.getInstance().getContext().getApplicationContext(), SurveyService.class);
         surveysIntent.putExtra(SurveyService.SERVICE_METHOD, SurveyService.RELOAD_DASHBOARD_ACTION);
         PreferencesState.getInstance().getContext().getApplicationContext().startService(surveysIntent);
+    }
+
+    public void reloadToSend(){
+        //Reload data using service
+        Intent surveysIntent=new Intent(getActivity(), SurveyService.class);
+        surveysIntent.putExtra(SurveyService.SERVICE_METHOD, SurveyService.ALL_COMPLETED_SURVEYS_ACTION);
+        getActivity().startService(surveysIntent);
     }
     @Override
     public void onStop(){
@@ -264,7 +269,7 @@ public class DashboardUnsentFragment extends ListFragment {
 
         if(surveyReceiver==null){
             surveyReceiver=new SurveyReceiver();
-                LocalBroadcastManager.getInstance(getActivity()).registerReceiver(surveyReceiver, new IntentFilter(SurveyService.ALL_UNCOMPLETED_UNSENT_SURVEYS_ACTION));
+                LocalBroadcastManager.getInstance(getActivity()).registerReceiver(surveyReceiver, new IntentFilter(SurveyService.ALL_IN_PROGRESS_SURVEYS_ACTION));
                 LocalBroadcastManager.getInstance(getActivity()).registerReceiver(surveyReceiver, new IntentFilter(SurveyService.ALL_COMPLETED_SURVEYS_ACTION));
         }
     }
@@ -286,12 +291,13 @@ public class DashboardUnsentFragment extends ListFragment {
             surveyReceiver=null;
         }
     }
-    public void reloadUncompletedUnsentSurveys(){
-        List<Survey> surveysUncompletedUnsentFromService = (List<Survey>) Session.popServiceValue(SurveyService.ALL_UNCOMPLETED_UNSENT_SURVEYS_ACTION);
-        reloadSurveys(surveysUncompletedUnsentFromService);
-            //set alarm if is malariaapp question
-            reloadCompletedSurveys();
+    public void reloadInProgressSurveys(){
+        List<Survey> surveysInProgressFromService = (List<Survey>) Session.popServiceValue(SurveyService.ALL_IN_PROGRESS_SURVEYS_ACTION);
+        reloadSurveys(surveysInProgressFromService);
+        //set alarm if is malariaapp question
+        reloadCompletedSurveys();
     }
+
     public void reloadCompletedSurveys(){
         List<Survey> surveysCompletedFromService = (List<Survey>) Session.popServiceValue(SurveyService.ALL_COMPLETED_SURVEYS_ACTION);
         if(surveysCompletedFromService!=null) {
@@ -322,8 +328,8 @@ public class DashboardUnsentFragment extends ListFragment {
         public void onReceive(Context context, Intent intent) {
             Log.d(TAG, "onReceive");
             //Listening only intents from this method
-            if(SurveyService.ALL_UNCOMPLETED_UNSENT_SURVEYS_ACTION.equals(intent.getAction())) {
-                reloadUncompletedUnsentSurveys();
+            if(SurveyService.ALL_IN_PROGRESS_SURVEYS_ACTION.equals(intent.getAction())) {
+                reloadInProgressSurveys();
             }
             //Listening only intents from this method
             //if the state is completed, the state is not sent.

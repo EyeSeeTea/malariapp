@@ -28,8 +28,6 @@ import com.raizlabs.android.dbflow.structure.BaseModel;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.model.User;
 import org.eyeseetea.malariacare.layout.adapters.dashboard.IDashboardAdapter;
-import org.hisp.dhis.android.sdk.controllers.DhisService;
-import org.hisp.dhis.android.sdk.network.Credentials;
 
 import java.util.HashMap;
 import java.util.List;
@@ -116,7 +114,7 @@ public class Session {
      * Closes the current session when the user logs out
      */
     public static void logout(){
-        List<Survey> surveys = Survey.getAllUnsentSurveys();
+        List<Survey> surveys = Survey.getAllUnsentUnplannedSurveys();
         for (Survey survey : surveys) {
             survey.delete();
         }
