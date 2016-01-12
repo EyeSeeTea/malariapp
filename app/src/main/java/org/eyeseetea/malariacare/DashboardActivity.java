@@ -29,6 +29,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.text.Html;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -74,6 +75,7 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
     LocalActivityManager mlam;
     static boolean viewFeedback;
     String currentTab;
+    String currentTabName;
     String TAB_PLAN;
     String TAB_ASSESS;
     String TAB_IMPROVE;
@@ -119,17 +121,21 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
                 currentTab = tabId;
                 setActionBarDashboard();
                 if (tabId.equalsIgnoreCase(TAB_PLAN)) {
+                    currentTabName=getString(R.string.plan);
                     currentView.setAnimation(inFromRightAnimation());
                     plannedFragment.reloadPlannedItems();
                 } else if (tabId.equalsIgnoreCase(TAB_ASSESS)) {
+                    currentTabName=getString(R.string.assess);
                     if(isSurveyFragmentActive())
                         setActionBarTitleForSurveyFragment();
                     currentView.setAnimation(inFromRightAnimation());
                     unsentFragment.reloadData();
                 } else if (tabId.equalsIgnoreCase(TAB_IMPROVE)) {
+                    currentTabName=getString(R.string.improve);
                     currentView.setAnimation(outToLeftAnimation());
                     sentFragment.reloadSentSurveys();
                 } else if (tabId.equalsIgnoreCase(TAB_MONITOR)) {
+                    currentTabName=getString(R.string.monitor);
                     currentView.setAnimation(outToLeftAnimation());
                     monitorFragment.reloadSentSurveys();
                 }
@@ -138,21 +144,33 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
         for(int i=0;i<tabHost.getTabWidget().getChildCount();i++){
             tabHost.getTabWidget().getChildAt(i).setFocusable(false);
         }
+        currentTabName=getString(R.string.plan);
         setActionBarDashboard();
     }
+
     public void setActionBarDashboard(){
-        invalidateOptionsMenu();
         String title=getString(R.string.app_name);
-        String subtitle="Not valid user";
+        String subtitle="";
         if(Session.getUser()!=null && Session.getUser().getName()!=null)
             subtitle=Session.getUser().getName();
         setActionbarTitle(title,subtitle);
     }
+
     public void setActionBarTitleForSurveyFragment(){
-        invalidateOptionsMenu();
+        String title=getString(R.string.app_name)+": "+currentTabName.toUpperCase();
+        String subtitle="";
+
+        if(Session.getUser()!=null && Session.getUser().getName()!=null)
+            subtitle=Session.getUser().getName();
         Survey survey= Session.getSurvey();
         Program program = survey.getTabGroup().getProgram();
-        setActionbarTitle( survey.getOrgUnit().getName(), program.getName());
+        String subtitle2="";
+        String subtitle3="";
+        if(survey.getOrgUnit().getName()!=null)
+            subtitle2=survey.getOrgUnit().getName();
+        if(program.getName()!=null)
+            subtitle3=program.getName();
+        setActionbarMultiTitle(title,subtitle,subtitle2,subtitle3);
     }
 
     public void setActionbarTitle(String title1, String title2) {
@@ -163,6 +181,15 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
         ((TextView) findViewById(R.id.action_bar_subtitle)).setText(title2);
     }
 
+    public void setActionbarMultiTitle(String title1, String title2,String title3, String title4) {
+        android.support.v7.app.ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayShowCustomEnabled(true);
+        actionBar.setCustomView(R.layout.action_bar_four_title_layout);
+        ((TextView) findViewById(R.id.action_bar_multititle_title)).setText(title1);
+        ((TextView) findViewById(R.id.action_bar_multititle_subtitle)).setText(title2);
+        ((TextView) findViewById(R.id.action_bar_multititle_subtitle2)).setText(title3);
+        ((TextView) findViewById(R.id.action_bar_multititle_subtitle3)).setText(title4);
+    }
     public Animation inFromRightAnimation() {
 
         Animation inFromRight = new TranslateAnimation(
