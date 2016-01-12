@@ -31,8 +31,7 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 
 import org.eyeseetea.malariacare.R;
-import org.eyeseetea.malariacare.database.model.Survey;
-import org.eyeseetea.malariacare.layout.adapters.dashboard.AAssessmentAdapter;
+import org.eyeseetea.malariacare.utils.Constants;
 import org.eyeseetea.malariacare.views.CustomTextView;
 
 /**
@@ -60,11 +59,11 @@ public class LayoutUtils {
         int color=view.getContext().getResources().getColor(R.color.green);
         String tag=view.getContext().getResources().getString(R.string.good);
 
-        if (score < Survey.MAX_AMBER){
+        if (score < Constants.MAX_AMBER){
             color= view.getContext().getResources().getColor(R.color.amber);
             tag=view.getContext().getResources().getString(R.string.fair);
         }
-        if (score < Survey.MAX_RED){
+        if (score < Constants.MAX_RED){
             color= view.getContext().getResources().getColor(R.color.red);
             tag=view.getContext().getResources().getString(R.string.poor);
         }
@@ -83,11 +82,11 @@ public class LayoutUtils {
      * @return
      */
     public static int trafficDrawable(float score){
-        if(score<Survey.MAX_RED){
+        if(score< Constants.MAX_RED){
             return R.drawable.circle_shape_red;
         }
 
-        if(score<Survey.MAX_AMBER){
+        if(score< Constants.MAX_AMBER){
             return R.drawable.circle_shape_amber;
         }
 

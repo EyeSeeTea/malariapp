@@ -20,7 +20,6 @@
 package org.eyeseetea.malariacare.layout.adapters.survey;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
@@ -30,7 +29,6 @@ import android.widget.BaseAdapter;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import org.eyeseetea.malariacare.ProgressActivity;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.feedback.CompositeScoreFeedback;
@@ -38,6 +36,7 @@ import org.eyeseetea.malariacare.database.utils.feedback.Feedback;
 import org.eyeseetea.malariacare.database.utils.feedback.QuestionFeedback;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 import org.eyeseetea.malariacare.network.CustomParser;
+import org.eyeseetea.malariacare.utils.Constants;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -126,13 +125,14 @@ public class FeedbackAdapter extends BaseAdapter {
 
         //CompositeScore title
         textView=(TextView)rowLayout.findViewById(R.id.feedback_score_label);
-        if(feedback.getLabel().matches("^[0-9].*"))
-            textView.setTextColor(PreferencesState.getInstance().getContext().getResources().getColor(R.color.white));
+        if(feedback.getScore()< Constants.MAX_AMBER)
+            textView.setTextColor(PreferencesState.getInstance().getContext().getResources().getColor(R.color.amber));
+        else if(feedback.getScore()< Constants.MAX_RED)
+            textView.setTextColor(PreferencesState.getInstance().getContext().getResources().getColor(R.color.newRed));
+        else
+            textView.setTextColor(PreferencesState.getInstance().getContext().getResources().getColor(R.color.newGreen));
         textView.setText(feedback.getPercentageAsString());
 
-        //Traffic light
-        View light=rowLayout.findViewById(R.id.feedback_light);
-        LayoutUtils.trafficView(context, feedback.getScore(), light);
         return rowLayout;
     }
 
