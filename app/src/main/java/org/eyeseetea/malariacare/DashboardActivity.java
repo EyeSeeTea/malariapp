@@ -33,6 +33,9 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.Animation;
+import android.view.animation.TranslateAnimation;
 import android.widget.TabHost;
 import android.widget.TextView;
 
@@ -93,8 +96,8 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
         }
         if(savedInstanceState==null) {
             initPlanned();
-            initImprove();
             initAssess();
+            initImprove();
             initMonitor();
         }
         initTabHost(savedInstanceState);
@@ -104,19 +107,24 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
         setTab(TAB_IMPROVE, R.id.tab_improve_layout, getResources().getDrawable(R.drawable.tab_improve));
         setTab(TAB_MONITOR, R.id.tab_monitor_layout, getResources().getDrawable(R.drawable.tab_monitor));
 
-        tabHost.setOnTabChangedListener( new TabHost.OnTabChangeListener() {
+        tabHost.setOnTabChangedListener(new TabHost.OnTabChangeListener() {
 
             @Override
             public void onTabChanged(String tabId) {
                 /** If current tab is android */
-                currentTab=tabId;
-                if (tabId.equalsIgnoreCase(TAB_IMPROVE)) {
-                    sentFragment.reloadSentSurveys();
-                } else if (tabId.equalsIgnoreCase(TAB_ASSESS)) {
-                    unsentFragment.reloadData();
-                } else if (tabId.equalsIgnoreCase(TAB_PLAN)) {
+
+                View currentView = tabHost.getCurrentView();
+
+                currentTab = tabId;
+                if (tabId.equalsIgnoreCase(TAB_PLAN)) {
+                    currentView.setAnimation(inFromRightAnimation());
                     plannedFragment.reloadPlannedItems();
-                } else if (tabId.equalsIgnoreCase(TAB_MONITOR)) {
+                } else if (tabId.equalsIgnoreCase(TAB_ASSESS)) {
+                    currentView.setAnimation(inFromRightAnimation());
+                    unsentFragment.reloadData();
+                } else if (tabId.equalsIgnoreCase(TAB_IMPROVE)) {currentView.setAnimation(outToLeftAnimation());
+                    sentFragment.reloadSentSurveys();
+                } else if (tabId.equalsIgnoreCase(TAB_MONITOR)) {currentView.setAnimation(outToLeftAnimation());
                     monitorFragment.reloadSentSurveys();
                 }
             }
@@ -124,10 +132,31 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
         for(int i=0;i<tabHost.getTabWidget().getChildCount();i++){
             tabHost.getTabWidget().getChildAt(i).setFocusable(false);
         }
-        tabHost.refreshDrawableState();
         setActionbarTitle();
     }
 
+    public Animation inFromRightAnimation() {
+
+        Animation inFromRight = new TranslateAnimation(
+                Animation.RELATIVE_TO_PARENT, +1.0f,
+                Animation.RELATIVE_TO_PARENT, 0.0f,
+                Animation.RELATIVE_TO_PARENT, 0.0f,
+                Animation.RELATIVE_TO_PARENT, 0.0f);
+        inFromRight.setDuration(600);
+        inFromRight.setInterpolator(new AccelerateInterpolator());
+        return inFromRight;
+    }
+
+    public Animation outToLeftAnimation() {
+        Animation outtoLeft = new TranslateAnimation(
+                Animation.RELATIVE_TO_PARENT, -1.0f,
+                Animation.RELATIVE_TO_PARENT, 0.0f,
+                Animation.RELATIVE_TO_PARENT, 0.0f,
+                Animation.RELATIVE_TO_PARENT, 0.0f);
+        outtoLeft.setDuration(600);
+        outtoLeft.setInterpolator(new AccelerateInterpolator());
+        return outtoLeft;
+    }
     private void getTags() {
         TAB_PLAN=getResources().getString(R.string.tab_plan);
         TAB_ASSESS=getResources().getString(R.string.tab_assess);
@@ -164,12 +193,20 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
         Log.d(TAG,"initPlanned");
         plannedFragment = new PlannedFragment();
         plannedFragment.setArguments(getIntent().getExtras());
-        setFragmentTransaction(R.id.dashboard_planning_tab, plannedFragment);
+        try{
+            View vg = findViewById (R.id.dashboard_planning_tab);
+            vg.invalidate();
+        }catch (Exception e){}
+        replaceListFragment(R.id.dashboard_planning_tab, plannedFragment);
     }
     
     public void initAssess(){
         unsentFragment = new DashboardUnsentFragment();
         unsentFragment.setArguments(getIntent().getExtras());
+        try{
+            View vg = findViewById (R.id.dashboard_details_container);
+            vg.invalidate();
+        }catch (Exception e){}
         replaceListFragment(R.id.dashboard_details_container, unsentFragment);
     }
     public void initImprove(){
@@ -177,7 +214,11 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
             sentFragment = new DashboardSentFragment();
             sentFragment.setArguments(getIntent().getExtras());
         }
-        setFragmentTransaction(R.id.dashboard_completed_container, sentFragment);
+        try{
+            View vg = findViewById (R.id.dashboard_completed_container);
+            vg.invalidate();
+        }catch (Exception e){}
+        replaceListFragment(R.id.dashboard_completed_container, sentFragment);
     }
 
     public void initCreateSurvey(){
@@ -190,8 +231,8 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
     }
 
     public void initSurveyFromPlanning(){
-        tabHost.setCurrentTabByTag(TAB_ASSESS);
         initSurvey();
+        tabHost.setCurrentTabByTag(TAB_ASSESS);
     }
 
     public void initSurvey(){
@@ -226,28 +267,22 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
 
     private void replaceFragment(int layout,  Fragment fragment) {
          FragmentTransaction ft = getFragmentManager ().beginTransaction();
+        ft.setCustomAnimations(R.animator.anim_slide_in_right, R.animator.anim_slide_out_right);
+        ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
         ft.replace(layout, fragment);
         ft.commit();
     }
 
     private void replaceListFragment(int layout,  ListFragment fragment) {
-         FragmentTransaction ft = getFragmentManager ().beginTransaction();
-        ft.replace(layout, fragment);
-        ft.commit();
-    }
-
-    /**
-     * Init the fragments
-     */
-    private void setFragmentTransaction(int layout, ListFragment fragment) {
-        FragmentTransaction ft = getFragmentManager().beginTransaction();
-        ft.add(layout, fragment);
+        FragmentTransaction ft = getFragmentManager ().beginTransaction();
+        ft.setCustomAnimations(R.animator.anim_slide_in_right,  R.animator.anim_slide_out_right);
         ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+       ft.replace(layout, fragment);
         ft.commit();
     }
 
     private void setActionbarTitle() {
-        android.support.v7.app.ActionBar actionBar =  getSupportActionBar();
+        android.support.v7.app.ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayShowCustomEnabled(true);
         actionBar.setCustomView(R.layout.action_bar_title_layout);
         ((TextView) findViewById(R.id.action_bar_title)).setText(getString(R.string.app_name));
@@ -321,7 +356,7 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
     }
 
     @Override
-    protected void initTransition(){
+    protected void initTransition() {
         this.overridePendingTransition(R.transition.anim_slide_in_right, R.transition.anim_slide_out_right);
     }
 
@@ -466,7 +501,6 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
     public void onSurveySelected(Survey survey) {
         //Put selected survey in session
         Session.setSurvey(survey);
-        tabHost.setCurrentTabByTag(TAB_ASSESS);
         initSurvey();
     }
 }
