@@ -102,15 +102,15 @@ public class PushController {
             return false;
         }
 
+        //Register for event bus
         try {
-            //Register for event bus
-            try {
-                register();
-            }catch(Exception e){
-                unregister();
-                register();
-            }
+            register();
+        }catch(Exception e){
+            unregister();
+            register();
+        }
 
+        try {
             //Converts app data into sdk events
             postProgress(context.getString(R.string.progress_push_preparing_survey));
             Log.d(TAG, "Preparing survey for pushing...");
