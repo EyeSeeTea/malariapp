@@ -516,9 +516,10 @@ public class Survey extends BaseModel implements VisitableToSDK {
      * Returns all the surveys with status yet not put to "Sent"
      * @return
      */
-    public static List<Survey> getAllUnsentSurveys() {
+    public static List<Survey> getAllUnsentUnplannedSurveys() {
         return new Select().from(Survey.class)
                 .where(Condition.column(Survey$Table.STATUS).isNot(Constants.SURVEY_SENT))
+                .and(Condition.column(Survey$Table.STATUS).isNot(Constants.SURVEY_PLANNED))
                 .orderBy(Survey$Table.EVENTDATE)
                 .orderBy(Survey$Table.ID_ORG_UNIT).queryList();
     }
@@ -584,18 +585,6 @@ public class Survey extends BaseModel implements VisitableToSDK {
                 .orderBy(Survey$Table.ID_ORG_UNIT).queryList();
     }
 
-    /**
-     * Returns all the surveys with status put to "In progress"
-     * @return
-     */
-    public static List<Survey> getAllUncompletedSurveys() {
-        return new Select().from(Survey.class)
-                .where(Condition.column(Survey$Table.STATUS).isNot(Constants.SURVEY_SENT))
-                .and(Condition.column(Survey$Table.STATUS).isNot(Constants.SURVEY_HIDE))
-                .and(Condition.column(Survey$Table.STATUS).isNot(Constants.SURVEY_COMPLETED))
-                .orderBy(Survey$Table.EVENTDATE)
-                .orderBy(Survey$Table.ID_ORG_UNIT).queryList();
-    }
 
     /**
      * Returns the last surveys (by date) with status put to "In progress"
@@ -616,14 +605,12 @@ public class Survey extends BaseModel implements VisitableToSDK {
     }
 
     /**
-     * Returns the last surveys (by date) with status Completed or sent
+     * Returns the last surveys (by date) without status Completed or sent
      * @return
      */
-    public static List<Survey> getAllUncompletedUnsentSurveys() {
+    public static List<Survey> getAllInProgressSurveys() {
         return new Select().from(Survey.class)
-                .where(Condition.column(Survey$Table.STATUS).isNot(Constants.SURVEY_COMPLETED))
-                .or(Condition.column(Survey$Table.STATUS).isNot(Constants.SURVEY_SENT))
-                .or(Condition.column(Survey$Table.STATUS).isNot(Constants.SURVEY_HIDE))
+                .where(Condition.column(Survey$Table.STATUS).is(Constants.SURVEY_IN_PROGRESS))
                 .orderBy(Survey$Table.EVENTDATE)
                 .orderBy(Survey$Table.ID_ORG_UNIT).queryList();
     }
@@ -634,8 +621,6 @@ public class Survey extends BaseModel implements VisitableToSDK {
     public static List<Survey> getAllCompletedUnsentSurveys() {
         return new Select().from(Survey.class)
                 .where(Condition.column(Survey$Table.STATUS).is(Constants.SURVEY_COMPLETED))
-                .or(Condition.column(Survey$Table.STATUS).isNot(Constants.SURVEY_SENT))
-                .or(Condition.column(Survey$Table.STATUS).isNot(Constants.SURVEY_HIDE))
                 .orderBy(Survey$Table.EVENTDATE)
                 .orderBy(Survey$Table.ID_ORG_UNIT).queryList();
     }

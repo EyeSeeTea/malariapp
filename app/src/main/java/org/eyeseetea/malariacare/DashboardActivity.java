@@ -281,7 +281,7 @@ public class DashboardActivity extends BaseActivity implements DashboardSentFrag
         }
 
         //Pull
-        final List<Survey> unsentSurveys = Survey.getAllUnsentSurveys();
+        final List<Survey> unsentSurveys = Survey.getAllUnsentUnplannedSurveys();
 
         //No unsent data -> pull (no confirmation)
         if(unsentSurveys==null || unsentSurveys.size()==0){

@@ -36,17 +36,18 @@ import com.squareup.okhttp.RequestBody;
 import com.squareup.okhttp.Response;
 
 import org.eyeseetea.malariacare.R;
+import org.eyeseetea.malariacare.database.iomodules.dhis.exporter.PushController;
 import org.eyeseetea.malariacare.database.model.Survey;
-import org.eyeseetea.malariacare.database.model.Value;
-import org.eyeseetea.malariacare.database.utils.LocationMemory;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
-import org.eyeseetea.malariacare.layout.score.ScoreRegister;
+import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.receivers.AlarmPushReceiver;
 import org.eyeseetea.malariacare.services.SurveyService;
 import org.json.JSONObject;
 
 import java.io.IOException;
 import java.net.Proxy;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Jose on 20/06/2015.
@@ -90,18 +91,54 @@ public class PushClient {
         Log.d(TAG,"User: "+this.user+" Program: "+DHIS_UID_PROGRAM+" OrgUnit:"+DHIS_ORG_NAME+"OrgUnitUid:"+DHIS_ORG_UID+"Survey:"+survey.getId_survey());
     }
 
+    private boolean launchPush(Survey survey) {
+        Session.setSurvey(survey);
+        //Pushing selected survey via sdk
+        List<Survey> surveys = new ArrayList<>();
+        surveys.add(survey);
+        return PushController.getInstance().push(PreferencesState.getInstance().getContext(), surveys);
+    }
+
     public PushClient(Context applicationContext) {
         this.applicationContext = applicationContext;
     }
 
-    public PushResult pushBackground() {
+    public void pushSDK() {
         if (isNetworkAvailable()) {
-                return malariappPush();
+            malariaSdkPush();
+        }
+    }
+
+    public PushResult pushAPI() {
+        if (isNetworkAvailable()) {
+               return malariaApiPush();
         }
         return new PushResult();
     }
 
-    public PushResult malariappPush() {
+    public void malariaSdkPush() {
+        try{
+
+            if(launchPush(survey)){
+                //TODO: This should be removed once DHIS bug is solved
+                //pushControlDataElements(controlData);
+                survey.setSentSurveyState();
+                AlarmPushReceiver.setFail(false);
+            }
+            else{
+                AlarmPushReceiver.setFail(true);
+            }
+        }catch(Exception ex){
+            AlarmPushReceiver.setFail(true);
+            Log.e(TAG, ex.getMessage());
+        }
+        finally {
+            //Success or not the dashboard must be reloaded
+            updateDashboard();
+        }
+    }
+
+    public PushResult malariaApiPush() {
         PushResult pushResult;
         try{
             //TODO: This should be removed once DHIS bug is solved
