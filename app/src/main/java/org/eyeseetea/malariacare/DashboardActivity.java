@@ -112,7 +112,7 @@ public class DashboardActivity extends BaseActivity implements DashboardSentFrag
                 if (tabId.equalsIgnoreCase(TAB_IMPROVE)) {
                     sentFragment.reloadData();
                 } else if (tabId.equalsIgnoreCase(TAB_ASSESS)) {
-                    unsentFragment.reloadUncompletedUnsentSurveys();
+                    unsentFragment.reloadData();
                 } else if (tabId.equalsIgnoreCase(TAB_PLAN)) {
                     plannedFragment.reloadPlannedItems();
                 } else if (tabId.equalsIgnoreCase(TAB_MONITOR)) {
