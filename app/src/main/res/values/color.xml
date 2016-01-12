@@ -23,4 +23,8 @@
     <color name="scoreRoot">#0b5394</color>
     <color name="scoreChild">#3d85c6</color>
     <color name="scoreGrandson">#6fa8dc</color>
+    <color name="newGreen">#adda19</color>
+    <color name="newRed">#d11b39</color>
+    <color name="newBlue">#00b3e3</color>
+    <color name="customNewBlue">#00b3e3</color>
 </resources>
