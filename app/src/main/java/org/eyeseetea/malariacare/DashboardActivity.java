@@ -21,22 +21,15 @@ package org.eyeseetea.malariacare;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.app.ListFragment;
-import android.app.LocalActivityManager;
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.TabHost;
 import android.widget.TextView;
 
@@ -102,7 +95,7 @@ public class DashboardActivity extends BaseActivity {
             public void onTabChanged(String tabId) {
                 /** If current tab is android */
                 if(tabId.equalsIgnoreCase("tab_improve")){
-                    unsentFragment.reloadUncompletedUnsentSurveys();
+                    unsentFragment.reloadInProgressSurveys();
                 }else if(tabId.equalsIgnoreCase("tab_assess")){
                     sentFragment.reloadSentSurveys();
                 }else if(tabId.equalsIgnoreCase("tab_plan")){
@@ -204,7 +197,7 @@ public class DashboardActivity extends BaseActivity {
         }
 
         //Pull
-        final List<Survey> unsentSurveys = Survey.getAllUnsentSurveys();
+        final List<Survey> unsentSurveys = Survey.getAllUnsentUnplannedSurveys();
 
         //No unsent data -> pull (no confirmation)
         if(unsentSurveys==null || unsentSurveys.size()==0){
