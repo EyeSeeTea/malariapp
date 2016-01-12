@@ -446,7 +446,6 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
     /**
      * Called when the user clicks the New Survey button
      */
-    @Override
     public void newSurvey(View view) {
         initCreateSurvey();
     }
