@@ -19,6 +19,7 @@
 
 package org.eyeseetea.malariacare.fragments;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.Context;
@@ -52,10 +53,9 @@ import org.eyeseetea.malariacare.layout.adapters.general.OrgUnitArrayAdapter;
 import org.eyeseetea.malariacare.layout.adapters.general.ProgramArrayAdapter;
 import org.eyeseetea.malariacare.layout.adapters.general.TabGroupArrayAdapter;
 import org.eyeseetea.malariacare.layout.listeners.SurveyLocationListener;
-import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 import org.eyeseetea.malariacare.utils.Constants;
+import org.eyeseetea.malariacare.views.CustomButton;
 import org.eyeseetea.malariacare.views.CustomTextView;
-import org.hisp.dhis.android.sdk.events.UiEvent;
 
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -97,6 +97,8 @@ public class CreateSurveyFragment extends Fragment {
     LinearLayout        llLayout;
     private SurveyLocationListener locationListener;
 
+    OnCreatedSurveyListener mCallback;
+
     public CreateSurveyFragment() {
     }
 
@@ -128,24 +130,21 @@ public class CreateSurveyFragment extends Fragment {
         if (container == null) {
             return null;
         }
-        //FragmentActivity    faActivity  = (FragmentActivity)    super.getActivity();
-        // Replace LinearLayout by the type of the root element of the layout you're trying to load
         llLayout    = (LinearLayout)    inflater.inflate(R.layout.activity_create_survey, container, false);
-        // Of course you will want to faActivity and llLayout in the class and not this method to access them in the rest of
-        // the class, just initialize them here
-
-        // Content of activity onCreate() here
         create();
-        // Don't use this method, it's handled by inflater.inflate() above :
-        // setContentView(R.layout.activity_layout);
-
-        // The FragmentActivity doesn't contain the layout directly so we must use our instance of     LinearLayout :
-        // Instead of :
-        // findViewById(R.id.someGuiElement);
         return llLayout; // We must return the loaded Layout
     }
     public void create(){
-
+        CustomButton createButton = (CustomButton) llLayout.findViewById(R.id.create_form_button);
+        createButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //If the survey is validate, it send the order of create survey fragment from this fragment to the activity.
+                if(setValidSurvey()) {
+                    mCallback.onCreateSurvey();
+                }
+            }
+        });
         this.lInflater = LayoutInflater.from(getActivity());
 
         //Create default options
@@ -229,6 +228,28 @@ public class CreateSurveyFragment extends Fragment {
         else if(lastSelectedOrgUnit !=null)
             orgUnitView.setSelection(getIndex(orgUnitView, lastSelectedOrgUnit.getName()));
     }
+
+
+    // Container Activity must implement this interface
+    public interface OnCreatedSurveyListener {
+        public void onCreateSurvey();
+    }
+
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+
+        // This makes sure that the container activity has implemented
+        // the callback interface. If not, it throws an exception
+        try {
+            mCallback = (OnCreatedSurveyListener) activity;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(activity.toString()
+                    + " must implement OnSurveySelectedListener");
+        }
+    }
+
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         Log.d(TAG, "onActivityCreated");
@@ -304,7 +325,7 @@ public class CreateSurveyFragment extends Fragment {
     /**
      * Called when the user clicks the Send button
      */
-    public boolean createNewSurvey(View view) {
+    public boolean setValidSurvey() {
         Log.i(".CreateSurveyActivity", "Saving survey and saving in session");
 
         if (validateForm()) {
