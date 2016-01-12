@@ -15,7 +15,7 @@
         android:textColor="@color/black"
         android:typeface="sans"
         android:textStyle="bold"
-        android:textSize="28sp"
+        android:textSize="@dimen/extra_xsmall_text_size"
         android:background="@color/assess_yellow"
         android:paddingLeft="10dip"
         app:tDimension="@string/font_size_level2"

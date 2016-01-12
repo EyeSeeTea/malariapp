@@ -12,7 +12,7 @@
     <color name="navy_blue">#FF1F70C3</color>
     <color name="dark_navy_blue">#FF1D5288</color>
     <color name="light_grey">#FFE5E5E5</color>
-    <color name="parentColor">#DAF2FF</color>
+    <color name="parentColor">#eff1d5</color>
     <color name="textFieldColor">#BEBEBE</color>
     <color name="darkGrey">#565656</color>
     <color name="formFooter">#429470</color>
@@ -23,4 +23,6 @@
     <color name="scoreRoot">#0b5394</color>
     <color name="scoreChild">#3d85c6</color>
     <color name="scoreGrandson">#6fa8dc</color>
+    <color name="assess_yellow">#dbe444</color>
+    <color name="assess_grey">#4f4c4c</color>
 </resources>

@@ -4,9 +4,6 @@
         <shape
             android:shape="rectangle" >
             <solid android:color="@color/evenRows" /> <!--background color-->
-            <stroke
-                android:width="2dip"
-                android:color="@color/headerColor"/> <!--line color-->
         </shape>
     </item>
 </layer-list>
