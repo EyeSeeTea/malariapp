@@ -50,18 +50,9 @@ public class ScoreRegister {
     private static final Map<CompositeScore, CompositeNumDenRecord> compositeScoreMap = new HashMap<>();
 
     /**
-     * Map of scores for feedback compositescore
-     */
-    private static final Map<CompositeScore, CompositeNumDenRecord> compositeScoreMapFeedback = new HashMap<>();
-
-    /**
      * Map of scores for each tab
      */
     private static final Map<Tab, TabNumDenRecord> tabScoreMap = new HashMap<>();
-    /**
-     * Map of scores for each feedback tab
-     */
-    private static final Map<Tab, TabNumDenRecord> tabScoreMapFeedback = new HashMap<>();
 
     public static void initScoresForQuestions(List<Question> questions, Survey survey){
         for(Question question : questions){
@@ -144,15 +135,6 @@ public class ScoreRegister {
     public static void clear(){
         compositeScoreMap.clear();
         tabScoreMap.clear();
-    }
-
-
-    /**
-     * Clears every score in session
-     */
-    public static void clearFeedback(){
-        compositeScoreMapFeedback.clear();
-        tabScoreMapFeedback.clear();
     }
 
     /**

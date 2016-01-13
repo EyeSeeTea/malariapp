@@ -34,7 +34,6 @@ import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.feedback.CompositeScoreFeedback;
 import org.eyeseetea.malariacare.database.utils.feedback.Feedback;
 import org.eyeseetea.malariacare.database.utils.feedback.QuestionFeedback;
-import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 import org.eyeseetea.malariacare.network.CustomParser;
 import org.eyeseetea.malariacare.utils.Constants;
 
@@ -128,9 +127,9 @@ public class FeedbackAdapter extends BaseAdapter {
         if(feedback.getScore()< Constants.MAX_AMBER)
             textView.setTextColor(PreferencesState.getInstance().getContext().getResources().getColor(R.color.amber));
         else if(feedback.getScore()< Constants.MAX_RED)
-            textView.setTextColor(PreferencesState.getInstance().getContext().getResources().getColor(R.color.newRed));
+            textView.setTextColor(PreferencesState.getInstance().getContext().getResources().getColor(R.color.darkRed));
         else
-            textView.setTextColor(PreferencesState.getInstance().getContext().getResources().getColor(R.color.newGreen));
+            textView.setTextColor(PreferencesState.getInstance().getContext().getResources().getColor(R.color.lightGreen));
         textView.setText(feedback.getPercentageAsString());
 
         return rowLayout;
