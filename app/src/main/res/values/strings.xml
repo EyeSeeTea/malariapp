@@ -317,11 +317,11 @@
     <string name="PUSH_PERIOD" translatable="false">10</string>
     <string name="PUSH_FAILED_PERIOD" translatable="false">300</string>
 
-    <!-- tabstag -->
-    <string name="tab_plan" translatable="false">tab_plan</string>
-    <string name="tab_assess" translatable="false">tab_assess</string>
-    <string name="tab_improve" translatable="false">tab_improve</string>
-    <string name="tab_monitor" translatable="false">tab_monitor</string>
+    <!-- tab tags -->
+    <string name="tab_tag_plan" translatable="false">tab_plan</string>
+    <string name="tab_tag_assess" translatable="false">tab_assess</string>
+    <string name="tab_tag_improve" translatable="false">tab_improve</string>
+    <string name="tab_tag_monitor" translatable="false">tab_monitor</string>
 
 
     <string name="plan">plan</string>
