@@ -247,7 +247,7 @@ public class CreateSurveyFragment extends Fragment {
             mCallback = (OnCreatedSurveyListener) activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString()
-                    + " must implement OnSurveySelectedListener");
+                    + " must implement OnCreatedSurveyListener");
         }
     }
 
