@@ -28,6 +28,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -70,6 +71,7 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
     static boolean viewFeedback;
     String currentTab;
     String currentTabName;
+    boolean isMoveToLeft;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -268,19 +270,28 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
     }
 
     private void replaceFragment(int layout,  Fragment fragment) {
-         FragmentTransaction ft = getFragmentManager ().beginTransaction();
-        ft.setCustomAnimations(R.animator.anim_slide_in_right, R.animator.anim_slide_out_right);
-        ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+        FragmentTransaction ft = getFragmentTransaction();
         ft.replace(layout, fragment);
         ft.commit();
     }
 
     private void replaceListFragment(int layout,  ListFragment fragment) {
-        FragmentTransaction ft = getFragmentManager ().beginTransaction();
-        ft.setCustomAnimations(R.animator.anim_slide_in_right, R.animator.anim_slide_out_right);
-        ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-       ft.replace(layout, fragment);
+        FragmentTransaction ft = getFragmentTransaction();
+        ft.replace(layout, fragment);
         ft.commit();
+    }
+
+    @NonNull
+    private FragmentTransaction getFragmentTransaction() {
+        FragmentTransaction ft = getFragmentManager ().beginTransaction();
+        if(isMoveToLeft) {
+            isMoveToLeft =false;
+            ft.setCustomAnimations(R.animator.anim_slide_in_right, R.animator.anim_slide_out_right);
+        }
+        else
+            ft.setCustomAnimations(R.animator.anim_slide_in_left, R.animator.anim_slide_out_left);
+        ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+        return ft;
     }
 
     @Override
@@ -387,6 +398,7 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
      */
     @Override
     public void onBackPressed() {
+        isMoveToLeft =true;
         if(isCreateSurveyFragmentActive() && currentTab==getResources().getString(R.string.tab_tag_assess)) {
             initAssess();
             unsentFragment.reloadData();
