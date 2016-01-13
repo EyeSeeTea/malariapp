@@ -413,6 +413,7 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
                             surveyFragment.unregisterReceiver();
                             initAssess();
                             unsentFragment.reloadData();
+                            setActionBarDashboard();
                         }
                     }).create().show();
         }
