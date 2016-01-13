@@ -116,7 +116,7 @@ public class DashboardSentFragment extends ListFragment {
             mCallback = (OnFeedbackSelectedListener) activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString()
-                    + " must implement OnSurveySelectedListener");
+                    + " must implement OnFeedbackSelectedListener");
         }
     }
 
