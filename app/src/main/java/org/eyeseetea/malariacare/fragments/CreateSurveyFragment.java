@@ -336,9 +336,6 @@ public class CreateSurveyFragment extends Fragment {
 
             // Put new survey in session
             Survey survey = SurveyPlanner.getInstance().startSurvey(orgUnit,tabGroup);
-            //TODO remove
-            //Survey survey = new Survey(orgUnit, tabGroup, Session.getUser());
-            //survey.save();
             Session.setSurvey(survey);
 
             //Look for coordinates
@@ -368,11 +365,6 @@ public class CreateSurveyFragment extends Fragment {
             locationListener.saveLocation(lastLocation);
         }
     }
-
-    //@Subscribe
-    //public void onLogoutFinished(UiEvent uiEvent) {
-        //super.onLogoutFinished(uiEvent);
-    //}
 
     private class ProgramSpinnerListener implements AdapterView.OnItemSelectedListener {
 
