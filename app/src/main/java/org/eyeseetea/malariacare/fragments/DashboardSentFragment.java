@@ -19,6 +19,7 @@
 
 package org.eyeseetea.malariacare.fragments;
 
+import android.app.Activity;
 import android.app.ListFragment;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -35,12 +36,11 @@ import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.Spinner;
 
-import org.eyeseetea.malariacare.DashboardActivity;
-import org.eyeseetea.malariacare.FeedbackActivity;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.model.OrgUnit;
 import org.eyeseetea.malariacare.database.model.Program;
 import org.eyeseetea.malariacare.database.model.Survey;
+import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.layout.adapters.dashboard.AssessmentSentAdapter;
 import org.eyeseetea.malariacare.layout.adapters.dashboard.IDashboardAdapter;
@@ -80,6 +80,7 @@ public class DashboardSentFragment extends ListFragment {
     String programFilter= PROGRAM_WITHOUT_FILTER;
     int orderBy=WITHOUT_ORDER;
     static boolean reverse=false;
+    OnFeedbackSelectedListener mCallback;
 
     public DashboardSentFragment() {
         this.adapter = Session.getAdapterSent();
@@ -98,6 +99,26 @@ public class DashboardSentFragment extends ListFragment {
         return f;
     }
 
+
+    // Container Activity must implement this interface
+    public interface OnFeedbackSelectedListener {
+        public void onFeedbackSelected(Survey survey);
+    }
+
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+
+        // This makes sure that the container activity has implemented
+        // the callback interface. If not, it throws an exception
+        try {
+            mCallback = (OnFeedbackSelectedListener) activity;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(activity.toString()
+                    + " must implement OnFeedbackSelectedListener");
+        }
+    }
 
     public int getShownIndex() {
         return getArguments().getInt("index", 0);
@@ -247,11 +268,9 @@ public class DashboardSentFragment extends ListFragment {
             return;
         }
 
-        //Put selected survey in session
-        Session.setSurvey(surveys.get(position - 1));
-        // Go to SurveyActivity
-        ((DashboardActivity) getActivity()).go(FeedbackActivity.class);
-        getActivity().finish();
+        // call feedbackselected function(and it call surveyfragment)
+
+        mCallback.onFeedbackSelected(surveys.get(position - 1));
     }
 
     @Override
@@ -370,7 +389,12 @@ public class DashboardSentFragment extends ListFragment {
         setListShown(true);
     }
 
-
+    public void reloadData(){
+        //Reload data using service
+        Intent surveysIntent=new Intent(PreferencesState.getInstance().getContext().getApplicationContext(), SurveyService.class);
+        surveysIntent.putExtra(SurveyService.SERVICE_METHOD, SurveyService.RELOAD_DASHBOARD_ACTION);
+        PreferencesState.getInstance().getContext().getApplicationContext().startService(surveysIntent);
+    }
     /**
      * filter the surveys for last survey in org unit, and set surveysForGraphic for the statistics
      */

@@ -55,4 +55,6 @@ public class Constants {
 
     public static final String CHECKBOX_YES_OPTION="Yes";
 
+    public static final float MAX_AMBER = 80f;
+    public static final float MAX_RED = 50f;
 }

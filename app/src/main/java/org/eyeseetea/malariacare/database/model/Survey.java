@@ -19,12 +19,7 @@
 
 package org.eyeseetea.malariacare.database.model;
 
-import android.util.Log;
-
 import com.raizlabs.android.dbflow.annotation.Column;
-import com.raizlabs.android.dbflow.annotation.ForeignKey;
-import com.raizlabs.android.dbflow.annotation.ForeignKeyReference;
-import com.raizlabs.android.dbflow.annotation.OneToMany;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;
 import com.raizlabs.android.dbflow.sql.QueryBuilder;
@@ -47,8 +42,6 @@ import java.util.List;
 
 @Table(databaseName = AppDatabase.NAME)
 public class Survey extends BaseModel implements VisitableToSDK {
-    public static final float MAX_AMBER = 80f;
-    public static final float MAX_RED = 50f;
 
     @Column
     @PrimaryKey(autoincrement = true)
@@ -328,7 +321,7 @@ public class Survey extends BaseModel implements VisitableToSDK {
      * @return
      */
     public boolean isTypeA(){
-        return this.getMainScore()>= MAX_AMBER;
+        return this.getMainScore()>= Constants.MAX_AMBER;
     }
 
     /**
@@ -336,7 +329,7 @@ public class Survey extends BaseModel implements VisitableToSDK {
      * @return
      */
     public boolean isTypeB(){
-        return this.getMainScore()>= MAX_RED && !isTypeA();
+        return this.getMainScore()>= Constants.MAX_RED && !isTypeA();
     }
 
     /**
