@@ -90,3 +90,12 @@
 96;'PositiveNegativeCBVertical';9
 97;'Yes0NA1No1CBHorizontal';8
 98;'Yes1No0CBVertical';9
+99;'DHMIS2_Access';1
+100;'DM_DataEntry';1
+101;'DM_Transfer';1
+102;'DM_Valid';1
+104;'RDTOptOut';1
+105;'PharmOptOut';1
+106;'Yes1No0ANP1';1
+107;'GapAddressed';9
+108;'Yes1No0Disabled';10
