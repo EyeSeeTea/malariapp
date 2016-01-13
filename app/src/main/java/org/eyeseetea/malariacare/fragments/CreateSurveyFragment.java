@@ -17,9 +17,11 @@
  *  along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.eyeseetea.malariacare;
+package org.eyeseetea.malariacare.fragments;
 
+import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Fragment;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.location.Location;
@@ -29,14 +31,15 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 
 import com.raizlabs.android.dbflow.sql.builder.Condition;
 import com.raizlabs.android.dbflow.sql.language.Select;
-import com.squareup.otto.Subscribe;
 
+import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.model.OrgUnit;
 import org.eyeseetea.malariacare.database.model.OrgUnit$Table;
 import org.eyeseetea.malariacare.database.model.OrgUnitLevel;
@@ -50,27 +53,31 @@ import org.eyeseetea.malariacare.layout.adapters.general.OrgUnitArrayAdapter;
 import org.eyeseetea.malariacare.layout.adapters.general.ProgramArrayAdapter;
 import org.eyeseetea.malariacare.layout.adapters.general.TabGroupArrayAdapter;
 import org.eyeseetea.malariacare.layout.listeners.SurveyLocationListener;
-import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 import org.eyeseetea.malariacare.utils.Constants;
+import org.eyeseetea.malariacare.views.CustomButton;
 import org.eyeseetea.malariacare.views.CustomTextView;
-import org.hisp.dhis.android.sdk.events.UiEvent;
 
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Created by ignac on 05/01/2016.
+ */
+public class CreateSurveyFragment extends Fragment {
 
-public class CreateSurveyActivity extends BaseActivity {
+    private static String TAG = ".CreateSurveyFragment";
 
-    private static String TAG=".CreateSurvey";
-
+    // UI references.
     private Spinner orgUnitView;
     private View orgUnitContainerItems;
     private String TOKEN = ";";
     private String orgUnitStorage = "";
-    static class ViewHolder{
+
+    static class ViewHolder {
         public View component;
     }
+
     private LinkedHashMap<OrgUnitLevel, View> orgUnitHierarchyView;
     private Spinner realOrgUnitView;
 
@@ -87,18 +94,59 @@ public class CreateSurveyActivity extends BaseActivity {
     private String lastOrgUnits = TOKEN;
 
     private LayoutInflater lInflater;
-
+    LinearLayout llLayout;
     private SurveyLocationListener locationListener;
 
+    OnCreatedSurveyListener mCallback;
+
+    public CreateSurveyFragment() {
+    }
+
+    public static CreateSurveyFragment newInstance(int index) {
+        CreateSurveyFragment f = new CreateSurveyFragment();
+
+        // Supply index input as an argument.
+        Bundle args = new Bundle();
+        args.putInt("index", index);
+        f.setArguments(args);
+
+        return f;
+    }
+
+
+    public int getShownIndex() {
+        return getArguments().getInt("index", 0);
+    }
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState){
+        Log.d(TAG, "onCreate");
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_create_survey);
+    }
 
-        android.support.v7.app.ActionBar actionBar = this.getSupportActionBar();
-        LayoutUtils.setActionBarLogo(actionBar);
-
-        this.lInflater = LayoutInflater.from(this);
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
+        Log.d(TAG, "onCreateView");
+        if (container == null) {
+            return null;
+        }
+        llLayout = (LinearLayout) inflater.inflate(R.layout.activity_create_survey, container, false);
+        create();
+        return llLayout; // We must return the loaded Layout
+    }
+    public void create(){
+        CustomButton createButton = (CustomButton) llLayout.findViewById(R.id.create_form_button);
+        createButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //If the survey is validate, it send the order of create survey fragment from this fragment to the activity.
+                if(validateForm()) {
+                    createSurvey();
+                    mCallback.onCreateSurvey();
+                }
+            }
+        });
+        this.lInflater = LayoutInflater.from(getActivity());
 
         //Create default options
         orgUnitDefaultOption = new OrgUnit(Constants.DEFAULT_SELECT_OPTION);
@@ -109,14 +157,14 @@ public class CreateSurveyActivity extends BaseActivity {
         ViewHolder viewHolder = new ViewHolder();
         List<OrgUnit> orgUnitList = new Select().all().from(OrgUnit.class).where(Condition.column(OrgUnit$Table.ID_PARENT).isNull()).queryList();
         orgUnitList.add(0, orgUnitDefaultOption);
-        viewHolder.component = findViewById(R.id.org_unit);
+        viewHolder.component = llLayout.findViewById(R.id.org_unit);
         orgUnitView = (Spinner) viewHolder.component;
         orgUnitView.setTag(orgUnitList.get(1).getOrgUnitLevel());
-        orgUnitView.setAdapter(new OrgUnitArrayAdapter(this, orgUnitList));
+        orgUnitView.setAdapter(new OrgUnitArrayAdapter( getActivity(), orgUnitList));
         orgUnitView.setOnItemSelectedListener(new OrgUnitSpinnerListener(viewHolder));
 
-        View childView =findViewById(R.id.org_unit_container);
-        CustomTextView childViewTextView= (CustomTextView) childView.findViewById(R.id.textView2);
+        View childView = llLayout.findViewById(R.id.org_unit_container);
+        CustomTextView childViewTextView = (CustomTextView) childView.findViewById(R.id.textView2);
         childViewTextView.setText(orgUnitList.get(1).getOrgUnitLevel().getName());
 
 
@@ -125,16 +173,16 @@ public class CreateSurveyActivity extends BaseActivity {
         orgUnitHierarchyView.put(orgUnitList.get(1).getOrgUnitLevel(), childView);
 
         //Prepare Organization Unit Item DDL
-        orgUnitContainerItems = findViewById(R.id.org_unit_container_items);
+        orgUnitContainerItems = llLayout.findViewById(R.id.org_unit_container_items);
 
-        List<OrgUnitLevel> orgUnitLevelList= new Select().all().from(OrgUnitLevel.class).queryList();
+        List<OrgUnitLevel> orgUnitLevelList = new Select().all().from(OrgUnitLevel.class).queryList();
         for (OrgUnitLevel orgUnitLevel : orgUnitLevelList) {
             if (!orgUnitLevel.equals(orgUnitList.get(1).getOrgUnitLevel())) {
                 childView = lInflater.inflate(R.layout.activity_create_survey_org_unit_item, (LinearLayout) orgUnitContainerItems, false);
-                childViewTextView= (CustomTextView) childView.findViewById(R.id.textView);
+                childViewTextView = (CustomTextView) childView.findViewById(R.id.textView);
                 childViewTextView.setText(orgUnitLevel.getName());
 
-                Spinner childViewSpinner= (Spinner) childView.findViewById(R.id.org_unit_item_spinner);
+                Spinner childViewSpinner = (Spinner) childView.findViewById(R.id.org_unit_item_spinner);
                 childViewSpinner.setTag(orgUnitLevel);
                 childView.setVisibility(View.GONE);
                 ((LinearLayout) orgUnitContainerItems).addView(childView);
@@ -144,17 +192,16 @@ public class CreateSurveyActivity extends BaseActivity {
         }
 
 
-
         //Populate Program View DDL
         List<Program> programList = Program.list();
         programList.add(0, programDefaultOption);
-        programView = (Spinner) findViewById(R.id.program);
-        programView.setAdapter(new ProgramArrayAdapter(this, programList));
+        programView = (Spinner)  llLayout.findViewById(R.id.program);
+        programView.setAdapter(new ProgramArrayAdapter( getActivity(), programList));
         programView.setOnItemSelectedListener(new ProgramSpinnerListener());
 
         //Create Tab Group View DDL. Not populated and not visible.
-        tabGroupContainer = findViewById(R.id.tab_group_container);
-        tabGroupView = (Spinner) findViewById(R.id.tab_group);
+        tabGroupContainer = llLayout.findViewById(R.id.tab_group_container);
+        tabGroupView = (Spinner) llLayout.findViewById(R.id.tab_group);
 
         //init the lastOrgUnits
         lastOrgUnits= TOKEN;
@@ -181,6 +228,34 @@ public class CreateSurveyActivity extends BaseActivity {
         }
         else if(lastSelectedOrgUnit !=null)
             orgUnitView.setSelection(getIndex(orgUnitView, lastSelectedOrgUnit.getName()));
+    }
+
+
+    // Container Activity must implement this interface
+    public interface OnCreatedSurveyListener {
+        public void onCreateSurvey();
+    }
+
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+
+        // This makes sure that the container activity has implemented
+        // the callback interface. If not, it throws an exception
+        try {
+            mCallback = (OnCreatedSurveyListener) activity;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(activity.toString()
+                    + " must implement OnSurveySelectedListener");
+        }
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        Log.d(TAG, "onActivityCreated");
+        super.onActivityCreated(savedInstanceState);
+
     }
 
     //select the default item.
@@ -227,22 +302,21 @@ public class CreateSurveyActivity extends BaseActivity {
 
     private boolean validateForm(){
         if (!isEverythingFilled()) {
-            new AlertDialog.Builder(this)
-                    .setTitle(getApplicationContext().getString(R.string.dialog_title_missing_selection))
-                    .setMessage(getApplicationContext().getString(R.string.dialog_content_missing_selection))
+            new AlertDialog.Builder( getActivity())
+                    .setTitle( getActivity().getApplicationContext().getString(R.string.dialog_title_missing_selection))
+                    .setMessage( getActivity().getApplicationContext().getString(R.string.dialog_content_missing_selection))
                     .setPositiveButton(android.R.string.ok, null).create().show();
         } else if ((((OrgUnit) realOrgUnitView.getSelectedItem()).getChildren() != null && ((OrgUnit) realOrgUnitView.getSelectedItem()).getChildren().size() > 0)) {
-                new AlertDialog.Builder(this)
-                        .setTitle(getApplicationContext().getString(R.string.dialog_title_incorrect_org_unit))
-                        .setMessage(getApplicationContext().getString(R.string.dialog_content_incorrect_org_unit))
-                        .setPositiveButton(android.R.string.ok, null).create().show();
+            new AlertDialog.Builder( getActivity())
+                    .setTitle(getActivity().getApplicationContext().getString(R.string.dialog_title_incorrect_org_unit))
+                    .setMessage(getActivity().getApplicationContext().getString(R.string.dialog_content_incorrect_org_unit))
+                    .setPositiveButton(android.R.string.ok, null).create().show();
         } else if (doesSurveyInProgressExist()) {
-                new AlertDialog.Builder(this)
-                        .setTitle(getApplicationContext().getString(R.string.dialog_title_existing_survey))
-                        .setMessage(getApplicationContext().getString(R.string.dialog_content_existing_survey))
-                        .setPositiveButton(android.R.string.ok, null).create().show();
-        }
-        else{
+            new AlertDialog.Builder( getActivity())
+                    .setTitle(getActivity().getApplicationContext().getString(R.string.dialog_title_existing_survey))
+                    .setMessage(getActivity().getApplicationContext().getString(R.string.dialog_content_existing_survey))
+                    .setPositiveButton(android.R.string.ok, null).create().show();
+        } else {
             return true;
         }
 
@@ -251,33 +325,42 @@ public class CreateSurveyActivity extends BaseActivity {
 
     /**
      * Called when the user clicks the Send button
+     * Gets the survey with the SURVEY_PLANNED state and set the createdate, user, SURVEY_IN_PROGRESS, and reset main score, and save the survey in session
      */
-    public void createSurvey(View view) {
+    public void createSurvey() {
         Log.i(".CreateSurveyActivity", "Saving survey and saving in session");
 
-        if (validateForm()){
-            // Read Selected Items
-            OrgUnit orgUnit = (OrgUnit) realOrgUnitView.getSelectedItem();
-            //Read Tab Group
-            TabGroup tabGroup = (TabGroup) tabGroupView.getSelectedItem();
+        // Read Selected Items
+        OrgUnit orgUnit = (OrgUnit) realOrgUnitView.getSelectedItem();
+        //Read Tab Group
+        TabGroup tabGroup = (TabGroup) tabGroupView.getSelectedItem();
 
-            // Put new survey in session
-            Survey survey = SurveyPlanner.getInstance().startSurvey(orgUnit,tabGroup);
-            Session.setSurvey(survey);
+        // Put new survey in session
+        Survey survey = SurveyPlanner.getInstance().startSurvey(orgUnit,tabGroup);
+        Session.setSurvey(survey);
 
-            //Look for coordinates
-            prepareLocationListener(survey);
-
-
-            //Call Survey Activity
-            finishAndGo(SurveyActivity.class);
-        }
-
+        //Look for coordinates
+        prepareLocationListener(survey);
     }
 
-    @Subscribe
-    public void onLogoutFinished(UiEvent uiEvent){
-        super.onLogoutFinished(uiEvent);
+    private void prepareLocationListener(Survey survey) {
+
+
+        locationListener = new SurveyLocationListener(survey.getId_survey());
+        LocationManager locationManager = (LocationManager) LocationMemory.getContext().getSystemService(Context.LOCATION_SERVICE);
+        if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+            Log.d(TAG, "requestLocationUpdates via GPS");
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
+        }
+
+        if (locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
+            Log.d(TAG, "requestLocationUpdates via NETWORK");
+            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
+        } else {
+            Location lastLocation = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+            Log.d(TAG, "location not available via GPS|NETWORK, last know: " + lastLocation);
+            locationListener.saveLocation(lastLocation);
+        }
     }
 
     private class ProgramSpinnerListener implements AdapterView.OnItemSelectedListener {
@@ -292,17 +375,16 @@ public class CreateSurveyActivity extends BaseActivity {
             if (tabGroupList.size() > 1){
                 // Populate tab group spinner
                 tabGroupList.add(0, tabGroupDefaultOption);
-                tabGroupView.setAdapter(new TabGroupArrayAdapter(getApplicationContext(), tabGroupList));
+                tabGroupView.setAdapter(new TabGroupArrayAdapter( getActivity().getApplicationContext(), tabGroupList));
                 //Show tab group select
                 tabGroupContainer.setVisibility(View.VISIBLE);
             }
             else{
                 if (tabGroupList.size() == 1){
                     tabGroupList.add(0, tabGroupDefaultOption);
-                    tabGroupView.setAdapter(new TabGroupArrayAdapter(getApplicationContext(), tabGroupList));
+                    tabGroupView.setAdapter(new TabGroupArrayAdapter( getActivity().getApplicationContext(), tabGroupList));
                     tabGroupView.setSelection(1);
-                }
-                else {
+                } else {
                     // Select single tab group
                     tabGroupView.setSelection(0);
                 }
@@ -361,7 +443,7 @@ public class CreateSurveyActivity extends BaseActivity {
                 //Show tab group select and populate tab group spinner
                 orgUnitList.add(0, orgUnitDefaultOption);
                 Spinner spinner=((Spinner) subViewHolder.component);
-                spinner.setAdapter(new OrgUnitArrayAdapter(CreateSurveyActivity.this, orgUnitList));
+                spinner.setAdapter(new OrgUnitArrayAdapter(getActivity(), orgUnitList));
                 spinner.setOnItemSelectedListener(new OrgUnitSpinnerListener(subViewHolder));
 
                 //If the orgUnit had OrgUnit levels, it should be load one - to -one.
@@ -383,20 +465,19 @@ public class CreateSurveyActivity extends BaseActivity {
 
                 //Hide org unit selector
                 childView.setVisibility(View.VISIBLE);
-            }
-            else{
+            } else {
                 //If there is not any children, iterate over the org units spinners and hide non needed
                 //FIXME This code is horrible. We need a more elegant way
                 Boolean setInvisible = false;
-                for (Map.Entry<OrgUnitLevel, View> entry : orgUnitHierarchyView.entrySet()){
-                    if (setInvisible){
+                for (Map.Entry<OrgUnitLevel, View> entry : orgUnitHierarchyView.entrySet()) {
+                    if (setInvisible) {
                         View childView = entry.getValue();
                         // Select single tab group
                         ((Spinner) childView.findViewById(R.id.org_unit_item_spinner)).setSelection(0, true);
                         // Hide tab group tab selector
                         childView.setVisibility(View.GONE);
                     }
-                    if (entry.getKey().equals((viewHolder.component).getTag())){
+                    if (entry.getKey().equals((viewHolder.component).getTag())) {
                         setInvisible = true;
                     }
                 }
@@ -448,17 +529,17 @@ public class CreateSurveyActivity extends BaseActivity {
     //Get the default orgUnit/program/tab
     private void setDefaultOrgUnit() {
         SharedPreferences sharedPreferences = getSharedPreferences();
-        this.lastSelectedOrgUnit = OrgUnit.getOrgUnit(sharedPreferences.getString(getApplicationContext().getResources().getString(R.string.default_orgUnit), ""));
+        this.lastSelectedOrgUnit = OrgUnit.getOrgUnit(sharedPreferences.getString(getActivity().getApplicationContext().getResources().getString(R.string.default_orgUnit), ""));
     }
 
     //Get the default orgUnitLevels
     private String getListOrgUnits(){
         SharedPreferences sharedPreferences = getSharedPreferences();
-        return sharedPreferences.getString(getApplicationContext().getResources().getString(R.string.default_orgUnits), "");
+        return sharedPreferences.getString(getActivity().getApplicationContext().getResources().getString(R.string.default_orgUnits), "");
     }
 
     private SharedPreferences getSharedPreferences() {
-        return PreferenceManager.getDefaultSharedPreferences(this);
+        return PreferenceManager.getDefaultSharedPreferences(getActivity());
     }
 
     private SharedPreferences.Editor getEditor() {
