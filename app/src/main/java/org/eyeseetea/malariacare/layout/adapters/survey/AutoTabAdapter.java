@@ -191,7 +191,6 @@ public class AutoTabAdapter extends ATabAdapter {
                     break;
                 case Constants.NO_ANSWER:
                     rowView = AutoTabLayoutUtils.initialiseView(R.layout.label, parent, question, viewHolder, position, getInflater());
-                    rowView.setBackgroundColor(getContext().getResources().getColor(R.color.assess_yellow));
                     break;
                 case Constants.POSITIVE_INT:
                     rowView = AutoTabLayoutUtils.initialiseView(R.layout.integer, parent, question, viewHolder, position, getInflater());
