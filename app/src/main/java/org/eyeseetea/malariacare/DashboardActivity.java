@@ -217,10 +217,6 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
     public void initAssess(){
         unsentFragment = new DashboardUnsentFragment();
         unsentFragment.setArguments(getIntent().getExtras());
-        try{
-            View vg = findViewById (R.id.dashboard_details_container);
-            vg.invalidate();
-        }catch (Exception e){}
         replaceListFragment(R.id.dashboard_details_container, unsentFragment);
     }
     
@@ -229,10 +225,6 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
             sentFragment = new DashboardSentFragment();
             sentFragment.setArguments(getIntent().getExtras());
         }
-        try{
-            View vg = findViewById (R.id.dashboard_completed_container);
-            vg.invalidate();
-        }catch (Exception e){}
         replaceListFragment(R.id.dashboard_completed_container, sentFragment);
     }
 
@@ -255,8 +247,6 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
         mStackLevel++;
         if(surveyFragment==null)
             surveyFragment = SurveyFragment.newInstance(mStackLevel);
-        // Add the fragment to the activity, pushing this transaction
-        // on to the back stack.
         replaceFragment(R.id.dashboard_details_container, surveyFragment);
         setActionBarTitleForSurveyFragment();
     }
@@ -269,6 +259,9 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
         replaceFragment(R.id.dashboard_charts_container, monitorFragment);
     }
 
+
+    // Add the fragment to the activity, pushing this transaction
+    // on to the back stack.
     private void replaceFragment(int layout,  Fragment fragment) {
         FragmentTransaction ft = getFragmentTransaction();
         ft.replace(layout, fragment);
@@ -276,6 +269,11 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
     }
 
     private void replaceListFragment(int layout,  ListFragment fragment) {
+        try{
+            //fix some visual problems
+            View vg = findViewById (layout);
+            vg.invalidate();
+        }catch (Exception e){}
         FragmentTransaction ft = getFragmentTransaction();
         ft.replace(layout, fragment);
         ft.commit();
