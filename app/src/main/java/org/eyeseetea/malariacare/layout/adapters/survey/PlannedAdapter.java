@@ -26,7 +26,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -35,10 +34,8 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import org.eyeseetea.malariacare.BaseActivity;
 import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.R;
-import org.eyeseetea.malariacare.SurveyActivity;
 import org.eyeseetea.malariacare.database.model.Program;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.utils.Session;
@@ -84,16 +81,9 @@ public class PlannedAdapter extends BaseAdapter {
     public PlannedAdapter(List<PlannedItem> items, Context context){
         this.items=items;
         this.context=context;
-        initDefaultSection();
     }
 
-    private void initDefaultSection(){
-        if(items!=null && items.size()>0){
-            openSection((PlannedHeader)items.get(0));
-        }
-    }
-
-    private void openSection(PlannedHeader header){
+    private void toggleSection(PlannedHeader header){
 
         //An empty section cannot be open
         if(header==null || header.getCounter()==0){
@@ -101,8 +91,8 @@ public class PlannedAdapter extends BaseAdapter {
         }
 
         //Annotate currentHeader
-        Log.d(TAG, "openSection: " + header);
-        currentHeader=header;
+        Log.d(TAG, "toggleSection: " + header);
+        currentHeader = (currentHeader==header)  ? null : header;
         applyFilter(programFilter);
     }
 
@@ -115,7 +105,6 @@ public class PlannedAdapter extends BaseAdapter {
         Log.d(TAG, "reloadItems: " + newItems.size());
         this.items.clear();
         this.items.addAll(newItems);
-        initDefaultSection();
         applyFilter(null);
     }
 
@@ -209,7 +198,7 @@ public class PlannedAdapter extends BaseAdapter {
         if (plannedItem instanceof PlannedHeader){
             return getViewByPlannedHeader((PlannedHeader) plannedItem, parent);
         }else{
-            return getViewByPlannedSurvey(position,(PlannedSurvey) plannedItem, parent);
+            return getViewByPlannedSurvey(position, (PlannedSurvey) plannedItem, parent);
         }
     }
 
@@ -246,7 +235,7 @@ public class PlannedAdapter extends BaseAdapter {
             boldHeader(textView);
         }
 
-        //Planned header -> openSection
+        //Planned header -> toggleSection
         rowLayout.setOnClickListener(new OpenHeaderListener(plannedHeader));
         return rowLayout;
     }
@@ -328,14 +317,16 @@ public class PlannedAdapter extends BaseAdapter {
 
         @Override
         public void onClick(View v) {
-            BaseActivity activity = ((DashboardActivity) context);
+            DashboardActivity activity = ((DashboardActivity) context);
             if(survey.getStatus()==Constants.SURVEY_PLANNED){
                 survey=SurveyPlanner.getInstance().startSurvey(survey);
             }
 
             Session.setSurvey(survey);
             activity.prepareLocationListener(survey);
-            activity.finishAndGo(SurveyActivity.class);
+            //FIXME
+
+            activity.initSurveyFromPlanning();
         }
     }
 
@@ -352,7 +343,7 @@ public class PlannedAdapter extends BaseAdapter {
 
         @Override
         public void onClick(View v) {
-            openSection(plannedHeader);
+            toggleSection(plannedHeader);
         }
     }
 

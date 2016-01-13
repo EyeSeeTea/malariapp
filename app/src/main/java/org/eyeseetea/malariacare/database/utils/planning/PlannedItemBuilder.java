@@ -192,13 +192,6 @@ public class PlannedItemBuilder {
             return true;
         }
 
-        //in progress + in time
-        if(survey.getStatus()==Constants.SURVEY_IN_PROGRESS &&
-                today.before(scheduledDate)) {
-            addToSection(never, survey);
-            return true;
-        }
-
         //This survey does not belong to NEVER section
         return false;
     }

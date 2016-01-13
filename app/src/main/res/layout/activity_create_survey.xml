@@ -196,7 +196,6 @@
                     android:layout_width="match_parent" android:layout_height="wrap_content"
                     android:layout_marginTop="16dp" android:text="@string/create_info_ok"
                     android:textStyle="bold"
-                    android:onClick="createSurvey"
                     android:background="@color/headerColor"
                     android:textColor="@color/white"
                     app:bDimension="@string/font_size_level2"
