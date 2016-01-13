@@ -95,7 +95,7 @@ public class FeedbackFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         FragmentActivity    faActivity  = (FragmentActivity)    super.getActivity();
         // Replace LinearLayout by the type of the root element of the layout you're trying to load
-        llLayout    = (RelativeLayout)    inflater.inflate(R.layout.feedback, container, false);
+        llLayout = (RelativeLayout) inflater.inflate(R.layout.feedback, container, false);
         prepareUI();
 
         return llLayout; // We must return the loaded Layout
@@ -133,8 +133,6 @@ public class FeedbackFragment extends Fragment {
     }
     @Override
     public void onPause(){
-        //XXX Since feedback is a readonly action there is no need to update anything
-        //Session.getSurvey().updateSurveyStatus();
         unregisterReceiver();
         super.onPause();
     }
@@ -178,20 +176,8 @@ public class FeedbackFragment extends Fragment {
 
     private void loadItems(List<Feedback> items){
         this.feedbackAdapter.setItems(items);
-        setOverallScore();
         stopProgress();
     }
-
-    /**
-     * Sets the overall composite score as an action button
-     */
-    private void setOverallScore(){
-        Survey survey = Session.getSurveyFeedback();
-        float average = survey.getMainScore();
-        //  item.setTitle(String.format("%.1f%%", average));
-    }
-
-
 
     /**
      * Stops progress view and shows real data
