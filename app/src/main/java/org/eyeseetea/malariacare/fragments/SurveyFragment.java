@@ -490,11 +490,6 @@ public class SurveyFragment extends  Fragment {
         Log.d(TAG, "reloadTabs(" + tabs.size() + ")..DONE");
     }
 
-    //@Subscribe
-    //public void onLogoutFinished(UiEvent uiEvent){
-       // super.onLogoutFinished(uiEvent);
-   // }
-
     /*
     * ScrollListener added to avoid bug ocurred when checkbox pressed in a listview after this view is gone out from the focus
     * see more here: http://stackoverflow.com/questions/7100555/preventing-catching-illegalargumentexception-parameter-must-be-a-descendant-of
