@@ -344,6 +344,13 @@ public class CreateSurveyFragment extends Fragment {
             //Look for coordinates
             prepareLocationListener(survey);
 
+            //save the lastSelectedOrgUnit and the list of orgUnits
+            saveOrgUnit();
+            //if the list not cointain the selected orgUnit(if it is root withoutchilds)
+            // set the list of orgUnitsLevels to "SEPARECHAR"
+            if(!lastOrgUnits.contains(orgUnit.getUid())) {
+                saveOrgUnitList(TOKEN);
+            }
 
             //Call Survey Activity
             //finishAndGo(SurveyActivity.class);
@@ -386,6 +393,14 @@ public class CreateSurveyFragment extends Fragment {
         public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
             Program selectedProgram = (Program) programView.getSelectedItem();
             List<TabGroup> tabGroupList = selectedProgram.getTabGroups();
+            //remove null tabgrouplist
+            if (tabGroupList.size() > 1) {
+                for (int i = tabGroupList.size() - 1; i >= 0; i--) {
+                    if (tabGroupList.get(i).getUid() == null) {
+                        tabGroupList.remove(i);
+                    }
+                }
+            }
             if (tabGroupList.size() > 1){
                 // Populate tab group spinner
                 tabGroupList.add(0, tabGroupDefaultOption);
