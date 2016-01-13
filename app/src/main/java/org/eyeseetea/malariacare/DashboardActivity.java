@@ -126,6 +126,8 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
                 }
             }
         });
+
+        // init tabHost
         for(int i=0;i<tabHost.getTabWidget().getChildCount();i++){
             tabHost.getTabWidget().getChildAt(i).setFocusable(false);
         }
