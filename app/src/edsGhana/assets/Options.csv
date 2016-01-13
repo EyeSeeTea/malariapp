@@ -43,11 +43,11 @@
 44;'Male';'1. Male';0.00;18
 45;'Female';'2. Female';0.00;18
 46;'CHO/CHN';'CHO/CHN';0.00;19
-47;'EN/RN/SRN';'EN/RN/SRN';0.00;19
-48;'PA/MA';'PA/MA';0.00;19
+47;'Clinical Nurse';'Clinical Nurse';0.00;19
+48;'Physician/Medical Assistant';'Physician/Medical Assistant';0.00;19
 49;'Medical Officer';'Medical Officer';0.00;19
-50;'Mid Wife';'Mid Wife';0.00;19
-51;'Lab Tech';'Lab Tech';0.00;19
+50;'Midwife';'Midwife';0.00;19
+51;'Medical Intern';'Medical Intern';0.00;19
 52;'Quasi-Govt';'Quasi-Govt';0.00;20
 53;'Govt';'Govt';0.00;20
 54;'Mission (CHAG)';'Mission (CHAG)';0.00;20
@@ -274,8 +274,8 @@
 275;'Yes [1]';'Yes';1.00;70
 276;'No [0]';'No';0.00;70
 277;'1';'Yes';1.00;71
-278;'0';'No';0.00;71
-279;'0';'Unknown';0.00;71
+278;'No [0]';'No';0.00;71
+279;'Unknown [0]';'Unknown';0.00;71
 280;'MD/Medical Officer/Physician';'MD/Medical Officer/Physician';0.00;72
 281;'Clinical Officer/Physician''s Assistant';'Clinical Officer/Physician''s Assistant';0.00;72
 282;'Scientist / Lab Tech';'Scientist / Lab Tech';0.00;72
@@ -347,3 +347,42 @@
 348;'No [0]';'No';0.00;98
 349;'None';'None';0.00;41
 350;'Both RDT and Microscopy (any type)';'Both RDT and Microscopy (any type)';0.00;47
+351;'Less than one week ago';'Less than one week ago';0.00;99
+352;'1 week to 1 month ago';'1 week to 1 month ago';0.00;99
+353;'1-3 months ago';'1-3 months ago';0.00;99
+354;'Greater than 3 months ago';'Greater than 3 months ago';0.00;99
+355;'Facility head has never access DHIMS2';'Facility head has never access DHIMS2';0.00;99
+356;'Facility head does nto have access to DHIMS2';'Facility head does nto have access to DHIMS2';0.00;99
+357;'Computer';'Computer';0.00;100
+358;'Tablets';'Tablets';0.00;100
+359;'Facility doesn’t enter data directly into DHIMS2';'Facility doesn’t enter data directly into DHIMS2';0.00;100
+360;'Enters directly into DHIMS2';'Enters directly into DHIMS2';0.00;101
+361;'Sends paper-based summary sheets to DHIO';'Sends paper-based summary sheets to DHIO';0.00;101
+362;'Other';'Other';0.00;101
+363;'Facility-based data validation';'Facility-based data validation';0.00;102
+364;'Sub-district data validation';'Sub-district data validation';0.00;102
+365;'Data sent without validation';'Data sent without validation';0.00;102
+366;'Pharmacist';'Pharmacist';0.00;19
+367;'Pharmacy Assistant';'Pharmacy Assistant';0.00;19
+368;'Lab Tech';'Lab Tech';0.00;19
+369;'Other';'Other';0.00;19
+370;'No RDT tests ordered';'No RDT tests ordered';0.00;104
+371;'No health care workers who use RDTs';'No health care workers who use RDTs';0.00;104
+372;'No RDTs available';'No RDTs available';0.00;104
+373;'Stopped due to potential patient harm';'Stopped due to potential patient harm';0.00;104
+374;'Not enough time during facility visit';'Not enough time during facility visit';0.00;104
+375;'Other';'Other';0.00;104
+376;'No treatments prescribed';'No treatments prescribed';0.00;105
+377;'No health care workers who dispense treatments';'No health care workers who dispense treatments';0.00;105
+378;'No treatments available';'No treatments available';0.00;105
+379;'Stopped due to potential patient harm';'Stopped due to potential patient harm';0.00;105
+380;'Not enough time during facility visit';'Not enough time during facility visit';0.00;105
+381;'Other';'Other';0.00;105
+382;'Yes [1]';'Yes';1.00;106
+383;'Antimalarial Not Prescribed [1]';'Antimalarial Not Prescribed';1.00;106
+384;'No [0]';'No';0.00;106
+385;'Not addressed';'Not addressed';0.00;107
+386;'Partially addressed';'Partially addressed';0.00;107
+387;'Yes [1]';'Yes';1.00;108
+388;'No [0]';'No';0.00;108
+389;'Completely Addressed';'Completely Addressed';0.00;107

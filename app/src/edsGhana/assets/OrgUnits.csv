@@ -10,13 +10,13 @@
 60509;'Dc2e7sGhtyU';'Eastern';;1
 60510;'P8T5rB556W8';'Upper West';;1
 60511;'GewnAwhLql5';'Brong Ahafo';;1
-60513;'YHOXAGgvbHl';'Ejisu-Juaben Municipal';60507;2
-60514;'HyaQ4EP2pRr';'Sekyere Afram Plains';60507;2
+60513;'YHOXAGgvbHl';'Ejisu-Juaben';60507;2
+60514;'HyaQ4EP2pRr';'Sekyere-Afram Plains';60507;2
 60515;'vsLag01tPyO';'Builsa North';60508;2
-60516;'eUDJP7N21MR';'Kassena Nankana Mun';60508;2
-60517;'VKnyzTGj2nm';'NSAWAM ADOAGYIRI';60509;2
-60518;'vyRPJPQ2R2W';'AKUAPEM SOUTH';60509;2
-60519;'dTGOWbaC4S2';'Wa';60510;2
+60516;'eUDJP7N21MR';'Kasena-Nankana Municipal';60508;2
+60517;'VKnyzTGj2nm';'Nsawam-Adoagyiri';60509;2
+60518;'vyRPJPQ2R2W';'Akwapim South';60509;2
+60519;'dTGOWbaC4S2';'Wa Municipal';60510;2
 60520;'ip5bNE7AVlA';'Jirapa';60510;2
 60521;'VVKRgCNTPp3';'Atebubu-Amanten';60511;2
 60522;'WAbNRlhylgV';'Sene West';60511;2
@@ -233,8 +233,8 @@
 60734;'DiKtl7pzzd1';'Murunchus CHPS';60521;3
 60735;'kiSHOZQWvGn';'Nyomoase CHPSc';60521;3
 60736;'XaO0Ac4OMeU';'Bantama CHPS';60522;3
-60737;'SbZEFLN4PC3';'Mframa CHPS Zone';60522;3
-60738;'nCmNvs1G9Fh';'Wiase CHPS Zone';60522;3
+60737;'SbZEFLN4PC3';'Mframa chps Zone';60522;3
+60738;'nCmNvs1G9Fh';'Wiase Chps Zone';60522;3
 60739;'VEI5cbUEYDC';'Kanto CHPS Zone';60522;3
 60740;'z3KFwGWey4n';'DROBE CHPS';60522;3
 60741;'ZR6EsD0is4z';'Lemu CHPS';60522;3
@@ -252,3 +252,3250 @@
 60753;'LFvNG8R4Woy';'Tato Bator CHPS';60522;3
 60754;'MAvycqSgosa';'Dava CHPS';60522;3
 60755;'OnIFwecvB0i';'Lassi Health Centre';60522;3
+89622;'gGatVtiFRac';'Adansi North';60507;2
+89623;'GOIOj3eb7d4';'Adansi South';60507;2
+89624;'bcmkkPnEGek';'Afigya-Kwabre';60507;2
+89625;'oaFcvkCjdWb';'Ahafo-Ano North';60507;2
+89626;'NS5VkRpGBOm';'Ahafo-Ano South';60507;2
+89627;'J8tXNGZ0nG1';'Akwapim North';60509;2
+89628;'iC8bVcF2RgH';'Akyemansa';60509;2
+89629;'V83xiYFcvej';'Amansie Central';60507;2
+89630;'OoQqNR0O4aL';'Amansie West';60507;2
+89631;'PfLEFCQY4b9';'Asante-Akim Central';60507;2
+89632;'tJRtWCU1aIS';'Asante-Akim North';60507;2
+89633;'CSrk0QasxEP';'Asante-Akim South';60507;2
+89634;'G9CEB1hFZ61';'Asante-Mampong';60507;2
+89635;'SxjGBV71yRs';'Asokore-Mampong';60507;2
+89636;'qRJVOyp0psW';'Asunafo North';60511;2
+89637;'rGTNFlaOpvV';'Asunafo South';60511;2
+89638;'IqqfiSpTJYB';'Asuogyaman';60509;2
+89639;'eOjlAyuhBqU';'Asutifi North';60511;2
+89640;'UsONlYS3jcd';'Asutifi South';60511;2
+89641;'DGEPssVwO6Z';'Atiwa';60509;2
+89642;'QIRZrGHqAaV';'Atwima-Kwanwoma';60507;2
+89643;'Ksq1oH08xcv';'Atwima-Mponua';60507;2
+89644;'xXenVwnRCUE';'Atwima-Nwabiagya';60507;2
+89645;'uCskSD6rDxd';'Ayensuano';60509;2
+89646;'pjnOpbjhhDF';'Banda';60511;2
+89647;'iDSzTNKOMDK';'Bawku Municipal';60508;2
+89648;'yEkjEwQ7M5J';'Bawku West';60508;2
+89649;'qTyFrXDqCNY';'Bekwai';60507;2
+89650;'x3KOfFlCo2M';'Berekum';60511;2
+89651;'i0C9HyAVM0Y';'Binduri';60508;2
+89652;'MTMzVcrej9f';'Birim Central';60509;2
+89653;'HQ8KNzl3ofF';'Birim North';60509;2
+89654;'y56j7oRUiZe';'Birim South';60509;2
+89655;'gRi5LpcUd9R';'Bolgatanga Municipal';60508;2
+89656;'SOWpFNLKf4y';'Bongo';60508;2
+89657;'KHxVBUZGx35';'Bosome-Freho';60507;2
+89658;'U3znSFnjg4s';'Bosomtwi';60507;2
+89659;'QaZaYUYoDI3';'Builsa South';60508;2
+89660;'fkIEgPuofE5';'Daffiama Bussie Issa';60510;2
+89661;'wNeT2eumZlz';'Denkyembour';60509;2
+89662;'dTyGJrqGqwN';'Dormaa';60511;2
+89663;'tr096ZnQgYZ';'Dormaa East';60511;2
+89664;'OWzXj6SK7dk';'Dormaa West';60511;2
+89665;'RyDVxIP416z';'East Akim';60509;2
+89666;'y9UVYzVdAv1';'Ejura-Sekyedumase';60507;2
+89667;'T1MkysWdILm';'Fanteakwa';60509;2
+89668;'kUjuIweBtHm';'Garu-Tempane';60508;2
+89669;'K3QcMj82Uoo';'Jaman North';60511;2
+89670;'DzzxOhkIX06';'Jaman South';60511;2
+89671;'NZeJJ892CvI';'Kasena-Nankana West';60508;2
+89672;'iP1XYs0uuZh';'Kintampo North';60511;2
+89673;'gOx64sMHiDA';'Kintampo South';60511;2
+89674;'fCbYrDhxdLB';'Kumasi';60507;2
+89675;'jZnuXDq8Ow7';'Kwabre East';60507;2
+89676;'Iu2J0OgSIk6';'Kwaebibirem';60509;2
+89677;'uABAVqz5BbB';'Kwahu Afram Plains North';60509;2
+89678;'wFrxibxYZyk';'Kwahu East';60509;2
+89679;'AcArUOJsjtd';'Kwahu North';60509;2
+89680;'mF2dKo1W0m8';'Kwahu South';60509;2
+89681;'NtySbV9mjtG';'Kwahu West';60509;2
+89682;'Ki1bH9EugTu';'Lambussie-Karni';60510;2
+89683;'BWnyxFmgpUK';'Lawra';60510;2
+89684;'nTd3qoDyVwO';'Lower-Manya Krobo';60509;2
+89685;'caFtPXDTpq6';'Nabdam';60508;2
+89686;'eJ1HsjwFzOg';'Nadowli';60510;2
+89687;'Lxhi6Gg1B1t';'Nandom';60510;2
+89688;'rgzPi0Divsz';'New Juaben';60509;2
+89689;'XOysdSrpoan';'Nkoranza North';60511;2
+89690;'TmdhvWw7Qr3';'Nkoranza South';60511;2
+89691;'IsAC8UHU8tG';'Obuasi';60507;2
+89692;'enyknVCNATu';'Offinso';60507;2
+89693;'Iuc3YOWjzNP';'Offinso North';60507;2
+89694;'ypo5EDbhP31';'Pru';60511;2
+89695;'ziTPmTsl9ZY';'Pusiga';60508;2
+89696;'RyJKBcI8G1A';'Sekyere Central';60507;2
+89697;'Y1co8j56ytE';'Sekyere East';60507;2
+89698;'MiXfi0jncwK';'Sekyere South';60507;2
+89699;'iqZtnCBbCXE';'Sekyere-Kumawu';60507;2
+89700;'XQOCLFfvqt5';'Sene East';60511;2
+89701;'MCiinusJEkm';'Sissala East';60510;2
+89702;'qZHOmhqUHyc';'Sissala West';60510;2
+89703;'Ptq2OReBYKY';'Suhum';60509;2
+89704;'cCSjqxcr7hY';'Sunyani';60511;2
+89705;'YuI07nuovku';'Sunyani West';60511;2
+89706;'RD1FpFPglOL';'Tain';60511;2
+89707;'vCzbAEpni8x';'Talensi';60508;2
+89708;'ZOJBD3ukLNt';'Tano North';60511;2
+89709;'pujL3YUer7R';'Tano South';60511;2
+89710;'kKRmXuO67yD';'Techiman';60511;2
+89711;'DWh57rj5wlK';'Techiman North';60511;2
+89712;'Rzir2vv9DsO';'Upper Manya-Krobo';60509;2
+89713;'vSei7bOM5Nc';'Upper West Akim';60509;2
+89714;'w8d07Yycoxn';'Wa East';60510;2
+89715;'I8He23R8Yh9';'Wa West';60510;2
+89716;'VDhIzOUNgH7';'Wenchi Municipal';60511;2
+89717;'npH1uJ1zhzY';'West Akim';60509;2
+89718;'hEribdA0h8Z';'Yilo-Krobo';60509;2
+89782;'VjOcHMiHk4L';'Aboabo  Health Centre (Adansi North)';89622;3
+89783;'yTUPJVLmABJ';'Aboabo1 CHPS Zone';89622;3
+89784;'b7DAC6kPdru';'Adomanu  CHPS Compound (Adansi North)';89622;3
+89785;'KBVYQ6Dne5X';'Ahinsan CHPS Zone';89622;3
+89786;'St4hppiYSlN';'Akrofuom CHPS Zone';89622;3
+89787;'TQuQsoOtJMM';'Akrokerri Health Centre';89622;3
+89788;'kohqdLuRFRi';'Akrokerrifie CHPS Zone';89622;3
+89789;'A0G4arPS5af';'Akwansrem CHPS Zone';89622;3
+89790;'tysSqlobzbj';'Anhwiaso Health Centre (Adansi North)';89622;3
+89791;'TQ9Bet0MmUs';'Anomabo CHPS Zone';89622;3
+89792;'ySK9OX6uLcB';'Anwona CHPS Zone';89622;3
+89793;'rIPVrfUVvL9';'Appiah Nkwanta CHPS Zone';89622;3
+89794;'HFThozugljB';'Asokwa CHPS Zone';89622;3
+89795;'CATcwfxrFvT';'Asokwa Health Centre';89622;3
+89796;'Y3FdGfx6xF4';'Benito Menni Hospital';89622;3
+89797;'W5P1BHSzBRj';'Biakwaso CHPS Zone';89622;3
+89798;'bBuy7tzYN2p';'Bobriase CHPS Zone';89622;3
+89799;'hQWL7FAO0PJ';'Brofoyedru CHPS Zone (Adansi North)';89622;3
+89800;'fL5axoosp1P';'Bronikrom CHPS Zone';89622;3
+89801;'mPqywxAY8ey';'Dasubimadwen CHPS Zone';89622;3
+89802;'ldutfG6XD5j';'Dompoase I CHPS Zone';89622;3
+89803;'Es8CcQp5VEF';'Fomena CHPS Zone';89622;3
+89804;'JZJtsD84eQM';'Fomena Health Centre';89622;3
+89805;'r8sRg9sNKdg';'Fumso CHPS Zone';89622;3
+89806;'y7k95sQgYme';'Fumso Health Centre';89622;3
+89807;'VMkCFHTsuSw';'Fumso Ketewa CHPS Compound';89622;3
+89808;'LIIygyqUjc6';'Hwiremoase CHPS Zone';89622;3
+89809;'NXqgBj5Syyy';'Konsimua CHPS Zone';89622;3
+89810;'m1aEv9xQ20e';'Kusa CHPS Zone';89622;3
+89811;'XyECkDosLwp';'Kwadwo Nkwanta CHPS Zone';89622;3
+89812;'DkGpQrm5tIz';'Kyekyewere CHPS Zone';89622;3
+89813;'oUlviY4Ylal';'Medoma CHPS Zone (Adansi North) Zone';89622;3
+89814;'DN2ShkTbdzK';'Nyamekrom CHPS Zone';89622;3
+89815;'aH25tGVyNhc';'Nyankomase CHPS Zone';89622;3
+89816;'SZictKFpzVe';'Nyankomasu CHPS Zone';89622;3
+89817;'kjY9vfwhvj4';'Odem CHPS Zone';89622;3
+89818;'AkFT8aprWrY';'Old Ayaase CHPS Zone';89622;3
+89819;'DzWnPtaJKYI';'Patakro CHPS Zone';89622;3
+89820;'s8FVrPtiOHn';'Pipiiso CHPS Zone';89622;3
+89821;'p2IOoh51UUT';'Saponso CHPS Zone';89622;3
+89822;'eMJVEZ2iEu7';'Sodua CHPS Zone';89622;3
+89823;'xjqbCbFcGqP';'St. Louis Health Centre';89622;3
+89824;'GbtIixwkOBz';'Tawiakrom CHPS Zone';89622;3
+89825;'DeRI2rRZ4AG';'Tewobaabi CHPS Zone';89622;3
+89826;'SPts2qtR7ys';'Wioso Health Centre (Adansi North)';89622;3
+89827;'kfexpKVs4Vb';'Aburaso CHPS Zone (Adansi South)';89623;3
+89828;'z0BY4ACtk2Y';'Acheasewa CHPS Zone';89623;3
+89829;'Aumsg8s6HFD';'Adamso CHPS Zone';89623;3
+89830;'CNSncQ1Jrgf';'Akrofuom Health Centre';89623;3
+89831;'mAawtzpV3JY';'Akutreso Health Centre';89623;3
+89832;'T1BKzwYkO5e';'Ampunyase Health Centre';89623;3
+89833;'vBjQTC1t4Yf';'Amudurase CHPS Zone';89623;3
+89834;'ROJWSZzlgl5';'Apagya East CHPS Zone';89623;3
+89835;'ZRWpT2zEuNq';'Apagya South CHPS Zone';89623;3
+89836;'MMPL8cQKYOs';'Apagya West CHPS Zone';89623;3
+89837;'c0dgjdXwktv';'Asamanya CHPS Zone';89623;3
+89838;'c2B2NJQIqWz';'Ataase Health Centre';89623;3
+89839;'n6b8bcfjLiR';'Atobiase East CHPS Zone';89623;3
+89840;'To9dkzUuZ6C';'Atobiase West CHPS Zone';89623;3
+89841;'W2QQl0Qo7El';'Atwereboana CHPS Compound';89623;3
+89842;'ES1lEcjllcx';'Botwekrom CHPS Zone';89623;3
+89843;'poFj0t9bxsL';'Dwendama CHPS Zone';89623;3
+89844;'oiPr9qrAFXR';'Fahiakobo CHPS Zone (Adansi South)';89623;3
+89845;'TprtVKJSbG5';'Grumesa CHPS Compound';89623;3
+89846;'I1UhAOadvEh';'Hwidiem  CHPS Compound (Adansi South)';89623;3
+89847;'xblHO7TNRRJ';'Kramokrom CHPS Zone (Adansi South)';89623;3
+89848;'xrKUV1CHlXi';'Menang CHPS Zone';89623;3
+89849;'fA2mj5QBjMu';'Mensonso CHPS Compound';89623;3
+89850;'krvx9xJcqRK';'New Edubiase Government Hospital';89623;3
+89851;'pnZqV3WRxiZ';'Nkoransa CHPS Zone (Adansi South)';89623;3
+89852;'fNnpLBbrf5J';'Nsata Subriso CHPS Zone';89623;3
+89853;'sjGmk4VQKSe';'Obonsu CHPS Compound';89623;3
+89854;'p7HfAqFQu9q';'Old Asaman CHPS Zone';89623;3
+89855;'X8qHgUMYQar';'Petenyinase CHPS Zone';89623;3
+89856;'gNGcUw3tv19';'Praso CHPS Zone';89623;3
+89857;'OzgXkFKzYur';'Sikaman St. Anthony CHPS Compound';89623;3
+89858;'jPBX3XwhurY';'Subriso CHPS Zone (Adansi South)';89623;3
+89859;'TnRflXBjggp';'Tonkoase CHPS Zone';89623;3
+89860;'xHUev7N0QI1';'Wamase CHPS Compound';89623;3
+89861;'bKTFlAUUkuJ';'Wuriyie West CHPS Zone';89623;3
+89862;'dIWt32mG1BJ';'Wuruyie East CHPS Compound';89623;3
+89863;'q7Pwm9XdNjJ';'Abijan CHPS Zone';89624;3
+89864;'NXI84NrLMOX';'Aboabogya Health Centre';89624;3
+89865;'Csz9MtbMbhm';'Abroma CHPS Zone';89624;3
+89866;'gejQ4FOt3OT';'Abuohia Tophill Hospital';89624;3
+89867;'a3E4ZGffrSx';'Adubinsu CHPS Zone';89624;3
+89868;'kg81aLfbzBa';'Adukro CHPS Zone';89624;3
+89869;'zxDdLwL6O5B';'Aduman CHPS Zone';89624;3
+89870;'UxYJzhL2fU5';'Adwumakaase Health Centre';89624;3
+89871;'reGEw74dX7J';'Afrancho Health Centre';89624;3
+89872;'YQ3PIUy8bQH';'Ahenkro Health Centre';89624;3
+89873;'XPTTk9o3jQr';'Akom CHPS Zone';89624;3
+89874;'wXN20qXyZAn';'Akrowa CHPS Zone';89624;3
+89875;'BUG5JrM2J17';'Amoako CHPS Zone';89624;3
+89876;'I7SNvxD0jZU';'Amponsakrom CHPS Zone (Kyekyewere)';89624;3
+89877;'Abdtpgqd37C';'Ankaase CHPS Zone (Afigya-Kwabre)';89624;3
+89878;'oTG0HScM3py';'Ankaase Zongo CHPS Zone';89624;3
+89879;'cIB1qMVaIOK';'Apagya CHPS Zone';89624;3
+89880;'jF1HKkEDdui';'Atimatim East CHPS Zone';89624;3
+89881;'EFPHUtDtAZ1';'Atimatim West CHPS Zone';89624;3
+89882;'ArsRPgsA0rD';'Banko CHPS Zone';89624;3
+89883;'RJh0KuqlLst';'Boamang Health Centre';89624;3
+89884;'zHp7GuMdjIw';'Bomso CHPS Zone';89624;3
+89885;'bxdvsNL4UoI';'Brofoyedru Health Centre';89624;3
+89886;'x8NqUVU8H2T';'Bronkong CHPS Zone';89624;3
+89887;'hgVMl4kKhei';'Buoho Wioso CHPS Zone';89624;3
+89888;'CajMU5wSPyP';'Denase CHPS Zone';89624;3
+89889;'dizQIAu9w7w';'Duaponkor CHPS Zone';89624;3
+89890;'yNaCO7q79D2';'Ebom Bomfa CHPS Zone';89624;3
+89891;'QBeblbAbfGS';'Ejuratia CHPS Zone';89624;3
+89892;'ySM4blgrj3o';'Family Care Hospital';89624;3
+89893;'eeP94vL9rFD';'Gladys Maternity Home';89624;3
+89894;'SAZNohmPk7L';'Hemang CHPS Zone';89624;3
+89895;'A4z8axhtfZS';'Jeloa Maternity Home';89624;3
+89896;'UlvJO6wQtxe';'Kodie CHPS Zone';89624;3
+89897;'O5v8MabVW3a';'Kwamang Health Centre (Afigya-Kwabre)';89624;3
+89898;'ApREND1MCD2';'Kyekyere CHPS Zone';89624;3
+89899;'kyY0gS9qdu6';'Kyekyewere Health Centre (Afigya-Kwabre)';89624;3
+89900;'uofdwasZQLl';'Maase CHPS Zone (Boamang) Zone';89624;3
+89901;'xqHTiMWOYfJ';'Maase CHPS Zone (Brofoyedru)';89624;3
+89902;'r54aGNfDq4g';'Methodist Faith Healing Hospital';89624;3
+89903;'jp5bnpRi3zK';'Mpobi Health Centre';89624;3
+89904;'uhh7z0HAdtK';'Neduasa CHPS Zone';89624;3
+89905;'dGPLYhJfCCH';'Nkwanta - Kese CHPS Compound';89624;3
+89906;'hY4UmfOuKZs';'Ntiri-Buoho CHPS Zone';89624;3
+89907;'TOaePD3Yjzt';'Old Atimatim CHPS Zone';89624;3
+89908;'WEJYp3UeA7K';'Owusua Mem Maternity Home';89624;3
+89909;'Xuy0UPdagqN';'Penteng CHPS Zone';89624;3
+89910;'puLqhRwpju1';'St Theresa''s Maternity (Afigya-Kwabre)';89624;3
+89911;'lDPX0mheP20';'Tetrem Health Centre';89624;3
+89912;'WdGY8Zjc0gE';'Wawase CHPS Zone';89624;3
+89913;'cNmarLFugzi';'Abonsuaso CHPS Zone';89625;3
+89914;'wAwAAfUQh2M';'Achina CHPS Zone';89625;3
+89915;'KxsObEikNbi';'Akrofonso CHPS Zone';89625;3
+89916;'yXrqvhTlUeX';'Akwasiase CHPS Compound';89625;3
+89917;'tR8Bu2yp0wA';'Akwasiase Zongo CHPS Zone';89625;3
+89918;'DRbpvImqeJZ';'Ama Tettehkrom CHPS Compound';89625;3
+89919;'NEdHhkY3rCh';'Anane Aya Maternity';89625;3
+89920;'cU6tQsgTx3r';'Ankaase CHPS Zone (Ahafo-Ano North)';89625;3
+89921;'VeVCNP0qhH5';'Anyinasuso CHPS Zone';89625;3
+89922;'GKDlXDEauxz';'Anyinasuso Health Centre';89625;3
+89923;'vrUqvhUEtHP';'Asuhyiae CHPS Compound';89625;3
+89924;'plq03zn2DDg';'Asuhyiae CHPS Zone';89625;3
+89925;'eWiiiIWYf9e';'Beposo CHPS Zone (Ahafo-Ano North)';89625;3
+89926;'qHQTdsvSPYK';'Betiako CHPS Zone';89625;3
+89927;'lT12dldqSx0';'Betiako Health Centre';89625;3
+89928;'gEDyJyMXFcg';'Boagyaa No. 1 CHPS Zone';89625;3
+89929;'R0n5BdJStAV';'Boagyaa No. 2 CHPS Zone';89625;3
+89930;'N69OrzLvaBx';'Bonkrom CHPS Zone';89625;3
+89931;'dhorVaXBVuB';'Bosikese CHPS Zone';89625;3
+89932;'ByTDHnq95e2';'Dotoam CHPS Zone';89625;3
+89933;'IwriPTCgEIw';'Dwaaho CHPS Zone';89625;3
+89934;'wKJk9tacNeG';'Gyamenakrom CHPS Zone';89625;3
+89935;'nybndudW5tn';'Jacobu CHPS Zone';89625;3
+89936;'d0vZwgGf0Ws';'Katabo CHPS Zone (Ward 1)';89625;3
+89937;'FWwmMAIXmh3';'Katapei CHPS Zone';89625;3
+89938;'a59UgS0kFMZ';'Keniago CHPS Zone (Ahafo Ano North)';89625;3
+89939;'CHFeTj5Y4sJ';'Krakosua CHPS Compound';89625;3
+89940;'IzdoO3L5YYy';'Kruboa CHPS Zone';89625;3
+89941;'VzyRV1ElzNP';'Kyekyewere CHPS Zone (Ahafo-Ano North)';89625;3
+89942;'JqGcX7MXp0i';'Mabang Clinic';89625;3
+89943;'g0wg6vkliXT';'Manfo CHPS Zone';89625;3
+89944;'ErRWfAXOrXu';'Manfo Health Centre';89625;3
+89945;'rPif2d2jzIT';'Marbang CHPS Zone';89625;3
+89946;'eN4nQzH2lDK';'Mmofranfadwen CHPS Zone';89625;3
+89947;'YYgDEB3nq8C';'Nfanibu CHPS Zone';89625;3
+89948;'hM8ZlO4pxix';'Nfanti CHPS Zone';89625;3
+89949;'UZYinhY5HiM';'Numasua CHPS Zone';89625;3
+89950;'QFzgZSTzmUn';'Odumase  CHPS compound (Ward 2)';89625;3
+89951;'m2VvoO1CrwE';'Odumase CHPS Zone';89625;3
+89952;'ouK9aA7Mshx';'Subriso CHPS Zone (Ahafo-Ano North)';89625;3
+89953;'SGkospnNDdH';'Subriso Health Centre';89625;3
+89954;'TfyA8KHB7Cf';'Suponso CHPS Zone';89625;3
+89955;'TehOrJ6xpiN';'Tafo CHPS Zone (Betiako)';89625;3
+89956;'YIt62uVnJ02';'Tepa Government Hospital';89625;3
+89957;'W05xT9XeowD';'Tepa Zongo CHPS Zone';89625;3
+89958;'D5Wfi1NiNpk';'Twabidi CHPS Zone';89625;3
+89959;'SdxD4mpZXdO';'Twabidi Health Centre';89625;3
+89960;'s49emJv0t4E';'Ward 4 CHPS Zone';89625;3
+89961;'j6mmcvc3zuz';'Wawase CHPS compound  (Ward 3)';89625;3
+89962;'Lcrj7qZqPIv';'Abesewa CHPS Zone';89626;3
+89963;'ATTXwr5DAAd';'Adeambra CHPS Zone';89626;3
+89964;'v8B7yB9x9qs';'Adom Maternity (Ahafo Ano South)';89626;3
+89965;'IcAQ7KLgbrA';'Adukrom CHPS Zone';89626;3
+89966;'RnRwrrBjyLl';'Afresini CHPS Zone';89626;3
+89967;'PlRj9gHyy4d';'Agyebi CHPS Zone';89626;3
+89968;'P4KlmkPOpra';'Ahwerewam CHPS Zone';89626;3
+89969;'rpHm2znDFXA';'Anitemfe CHPS Zone';89626;3
+89970;'QJiTG964eQ8';'Asempanaye CHPS Zone';89626;3
+89971;'BlMAZvZVy54';'Asuodei CHPS Zone';89626;3
+89972;'PtJkmqNSvkC';'Barniekrom CHPS Zone';89626;3
+89973;'vFgFJ1ZoWsH';'Biemso No. 2 CHPS Compound';89626;3
+89974;'Cbl3gpDiChE';'Biemso RCH';89626;3
+89975;'oKFRvrVD0u9';'Bonkwaso CHPS Zone';89626;3
+89976;'yayGIpbT11U';'Bonsukrom CHPS Zone';89626;3
+89977;'HlzWmiPlWDa';'Domeabra CHPS Zone';89626;3
+89978;'WAGVnx8gm19';'Dwinyama CHPS Zone';89626;3
+89979;'TBX4tpW1LPf';'Essienkyem CHPS Zone';89626;3
+89980;'EP28JTdCYn8';'Kunsu Camp CHPS Zone';89626;3
+89981;'gTA3MuwWhOF';'Kunsu Dotiem CHPS Zone';89626;3
+89982;'lu2K1rpA10y';'Mankranso CHPS Zone';89626;3
+89983;'l4E3Ap2wE10';'Mankranso Government Hospital';89626;3
+89984;'bVgsaav2yvg';'Maranatha Clinic (Ahafo-Ano South)';89626;3
+89985;'JCCmUpPnDRN';'Mpasaso CHPS Zone';89626;3
+89986;'jDAOZhSyXBO';'Mpasaso Health Centre';89626;3
+89987;'hwjcahlhZZG';'Mpasaso-Dotiem CHPS Zone';89626;3
+89988;'PNVMUsceOxj';'Nana Afua Kobi Hospital';89626;3
+89989;'XrkHdSQwqjX';'Nkyensedanho CHPS Zone';89626;3
+89990;'mdNiyRNE7dT';'Nsuta CHPS Zone';89626;3
+89991;'w3C6eR5IB7l';'Nyameadom CHPS Zone';89626;3
+89992;'TU1EXOPidog';'Nyinanufu CHPS Zone';89626;3
+89993;'HV82Mody7LY';'Pokukrom CHPS Zone';89626;3
+89994;'imma3EdfZcM';'Pokukrom Health Centre';89626;3
+89995;'B6QOWuCKRYU';'Sabronum CHPS Zone';89626;3
+89996;'JwyPsuTElc6';'Sabronum Health Centre';89626;3
+89997;'WaItE1pGo2R';'St. Ann''s Clinic';89626;3
+89998;'i6GcFmq0IdK';'St. Edward''s Clinic';89626;3
+89999;'xXiuDeyBZao';'St. John''s Clinic';89626;3
+90000;'DzIeUB0O2Sd';'Wioso CHPS Zone';89626;3
+90001;'tNSuuEp6ui3';'Wioso Health Centre';89626;3
+90002;'y4SLhFuEA0u';'Abiriw Clinic';89627;3
+90003;'xwgsgPGS3mK';'Abonse CHPS Compound';89627;3
+90004;'z8Bhs9j1RiD';'Adawso Health Centre';89627;3
+90005;'U0FZUanenRE';'Ados Maternity';89627;3
+90006;'uG5Bs3Z0xjK';'Adukrom Health Centre';89627;3
+90007;'Sp83wYzuVP2';'Akuni chps compound';89627;3
+90008;'VrasLmnTmpa';'Akyeremateng CHPS Compound';89627;3
+90009;'jqSIl1t6QCW';'All Saint Mat Home';89627;3
+90010;'UhnXEYUhetz';'Amanfro Clinic';89627;3
+90011;'WNjbnCjT7rZ';'Asenema CHPS Compound';89627;3
+90012;'PcWKQKXoBoz';'Aseseeso Clinic';89627;3
+90013;'xZOqoQqRxgg';'BAWARE CHPS Compound';89627;3
+90014;'bAbFOTM9qbM';'Behenase CHPS Compound';89627;3
+90015;'PLRNZzOFIhy';'Bryan Lowe Orthopaedic Hospital';89627;3
+90016;'fWzHZWW6okS';'Centre For Scientific Research Into Plant Medicine';89627;3
+90017;'ZbTASr1XOfG';'Gboloo Kofi chps compound';89627;3
+90018;'KSLf7KCztD0';'Kwamoso CHPS Compound';89627;3
+90019;'PHRUk4eBxcS';'Larteh Health Centre';89627;3
+90020;'dC6UAtoMRTJ';'Mampong Urban CHPS Compound';89627;3
+90021;'omEiKYGyn01';'Mangoase Health Centre (Akwapim North)';89627;3
+90022;'DLjl7Qmw6j6';'Nanabanin CHPS Compound';89627;3
+90023;'J0ZGcngDh66';'Nyarkoa Maternity Home';89627;3
+90024;'sHT33bX6nmr';'Obosomase Clinic';89627;3
+90025;'h0p8FaHFPvF';'Okrakwadjo Health Centre';89627;3
+90026;'Jev2HamIFwf';'Okuapeman East Orange Clinic';89627;3
+90027;'xDZM8rZSxvU';'Osabene CHPS Compound';89627;3
+90028;'VPDXgPH50sV';'Rhi Medical Centre';89627;3
+90029;'KFqW3lf4XhS';'Tadankro CHPS Compound';89627;3
+90030;'e7L4OsQ90YJ';'Tetteh Quarshie Memorial Hospital';89627;3
+90031;'h83yTdG0bQB';'Tinkong CHPS Compound';89627;3
+90032;'rmh74mUpoI1';'Tutu CHPS Compound';89627;3
+90033;'PEbhHF33jSI';'Twum Guaso CHPS Compound';89627;3
+90034;'e0l3bpkfk5D';'Adamorobe CHPS Compound';60518;3
+90035;'t1JxSSjbEOD';'Agyementi CHPS Compound';60518;3
+90036;'egRUsLvmzG2';'Ahwerease CHPS Compound';60518;3
+90037;'ypmsVDUedns';'Asheresu CHPS Compound';60518;3
+90038;'dw3tgCEp9q0';'Asuafum CHPS Compound';60518;3
+90039;'v0HXmc2rUWp';'Dego CHPS Compound';60518;3
+90040;'KKPZ6cx3E7P';'Fahiakor CHPS Compound';60518;3
+90041;'PmdI4jakvPB';'Kitase CHPS Compound';60518;3
+90042;'TkRfzaX3WG4';'Konkonuru CHPS Compound';60518;3
+90043;'L4nD0IrQU35';'Nkumkrom CHPS Compound';60518;3
+90044;'LddTTX4LE5b';'Nsakye CHPS Compound';60518;3
+90045;'NP6VqlefRtE';'Oboadaka CHPS Compound';60518;3
+90046;'N57w8UCGdCI';'Obossono CHPS Compound';60518;3
+90047;'HuMyJNhS7GK';'Pakro Zongo CHPS Compound';60518;3
+90048;'nzu8VX0rN7j';'Yaw Duodu CHPS Compound';60518;3
+90049;'Aj4XfkpoxGN';'Abenase Health Centre';89628;3
+90050;'kH06gdU5IAw';'Adubiase CHPS Compound';89628;3
+90051;'LnfnELXQnRg';'Adwafo CHPS Compound';89628;3
+90052;'vMrtVlhYlSt';'Adwobue CHPS Compound';89628;3
+90053;'Vzp3odv4lV1';'Akokoaso Rch';89628;3
+90054;'YitRH33qeTQ';'Akyekrom CHPS Compound';89628;3
+90055;'CKH7K1g3fxf';'Akyem Takyiman CHPS Compound';89628;3
+90056;'B51Oa3vekTs';'Anyinase Health Centre';89628;3
+90057;'yUFNL9gYbD0';'Asabidie CHPS Compound';89628;3
+90058;'tOHdUPsTfkk';'Asuboa North CHPS Compound';89628;3
+90059;'AOAUU15w2wh';'Ayirebi Health Centre';89628;3
+90060;'JsVAnrBmJDt';'Bontodiase CHPS Compound';89628;3
+90061;'ACQqLAFwoHJ';'Boso Villa CHPS Compound';89628;3
+90062;'MrERkj07v3o';'Brenase Health Centre';89628;3
+90063;'W7LhE9N6AcQ';'Chia CHPS Compound';89628;3
+90064;'ebhUZxkd4tA';'Gyaha Clinic';89628;3
+90065;'qV2jZUw0F2q';'Gyewani Nkwanta CHPS Compound';89628;3
+90066;'IRABY0NChHV';'Holy Horniel Maternity Clinic';89628;3
+90067;'tL05NnMEAcG';'Kofi Nimo CHPS Compound';89628;3
+90068;'oIXyK94Qmpk';'Kotokuom  CHPS Compound (Akyemansa)';89628;3
+90069;'oNnkNYcrm8d';'Kwaboadi No 2';89628;3
+90070;'nimXlRpJIBN';'Mukyia CHPS Compound';89628;3
+90071;'MIDcfqMoxhO';'Nyamebekyere CHPS Compound  (Akyemansa)';89628;3
+90072;'qx13uTj1C4K';'Odumase CHPS Compound';89628;3
+90073;'S8JoYza0N6g';'Ofoase Urban CHPS Compound';89628;3
+90074;'y8gPp8TVHrj';'Otwereso Clinic';89628;3
+90075;'qZFEJKrjWk0';'St Johns  Clinic (Akyemansa)';89628;3
+90076;'CvwDRVTKIuS';'Zevor CHPS Compound';89628;3
+90077;'EqaL6RZzjt9';'Aboagyekrom CHPS Zone';89629;3
+90078;'bp5NPUnGE2Z';'Abuakwaa CHPS Zone';89629;3
+90079;'DdNfJKLeEyi';'Abuakwaa Health Centre';89629;3
+90080;'bURArjoFNIp';'Abuntunsu CHPS Zone';89629;3
+90081;'ThR29Ho4Vfk';'Adowa CHPS Zone';89629;3
+90082;'U0ooQaD6hvp';'Afoako CHPS Zone';89629;3
+90083;'n4pHwVt6Ch2';'Aketechieso CHPS Zone';89629;3
+90084;'eKqlYceP77N';'Aketechieso Clinic';89629;3
+90085;'sl7QdYeo1PP';'Akrofrom CHPS Zone';89629;3
+90086;'MYUQsnILN0x';'Apitisu Health Centre';89629;3
+90087;'kXpwovSSzRV';'Asikasu CHPS Zone';89629;3
+90088;'GSeQQwmIh3C';'Atobiase  Health Centre (Amansie Central)';89629;3
+90089;'XwKRYtvR5Uo';'Bepotenten CHPS Zone';89629;3
+90090;'tePvIqwVqqi';'Biribiwomanmu CHPS Zone';89629;3
+90091;'Ey16Z3XGLv8';'Donkoase CHPS Zone';89629;3
+90092;'CEDzW8rSz9R';'Fahiakobo CHPS Zone';89629;3
+90093;'RE8rhoFeHxb';'Fenaso CHPS Compound';89629;3
+90094;'u7puqTYaw5Y';'Fiankoma CHPS Zone';89629;3
+90095;'jFgjmK2GAcN';'Fiankoma Clinic';89629;3
+90096;'bgPk7ufTe2q';'Hia CHPS Zone';89629;3
+90097;'AoOuJUdQ1Kp';'Hiayeya CHPS Zone';89629;3
+90098;'pMB6tIk0O6j';'Huu CHPS Zone';89629;3
+90099;'qne7WdV1OKJ';'Krofrom CHPS Zone';89629;3
+90100;'oW4OakMyIAb';'Marben  Maternity Home (Amansie Central)';89629;3
+90101;'GwwMCjqpSe6';'Mile 14 Health Centre';89629;3
+90102;'sMPfdmmZLgd';'Mile 9 CHPS Zone';89629;3
+90103;'EgFaJ15RaAT';'Numereso CHPS Zone';89629;3
+90104;'Szk5NQP1L1W';'Numereso Health Centre';89629;3
+90105;'Lt7jb5IZdAG';'Odumase/Monsie CHPS  zone';89629;3
+90106;'wsVChRXqNKq';'Odumto CHPS Zone';89629;3
+90107;'iHtSTc5TOsY';'Oseikrom CHPS Zone';89629;3
+90108;'DWyQFE8AHoG';'St. Peter''s Catholic Hospital';89629;3
+90109;'XBIpIXuOPV4';'St. Thomas Health Centre';89629;3
+90110;'C9lByV8ddi3';'Suhyenso CHPS Zone';89629;3
+90111;'QKSnju3ay8s';'Tweapease CHPS Zone';89629;3
+90112;'K2bl3aHIFXd';'Tweapease Health Centre (Amansie Central)';89629;3
+90113;'ojAmO747Dm6';'Abiram CHPS Zone';89630;3
+90114;'sUtbAt3cmfN';'Aboaboso CHPS Zone';89630;3
+90115;'DWci2Dx9bYJ';'Abodom CHPS Zone (Amansie West)';89630;3
+90116;'O9kFHgZDbBz';'Abonkase-Maternity Home';89630;3
+90117;'NLwJjPJ7ttR';'Abore Health Centre';89630;3
+90118;'wJYqaSogO5u';'Abore-Brofoyedru CHPS Zone';89630;3
+90119;'dwDMeB8GIS8';'Abore-Ebom CHPS Zone';89630;3
+90120;'BZh4T9stCao';'Abuoso CHPS Zone';89630;3
+90121;'QWQ0HE4YVqV';'Adimposo II CHPS Zone';89630;3
+90122;'p62EMMBTAyp';'Afedie CHPS Zone';89630;3
+90123;'CVJATxHnkMg';'Agroyesum CHPS Zone';89630;3
+90124;'DfxT42Os5bb';'Ahwerewa CHPS Zone (Amansie West)';89630;3
+90125;'xbmp4CttnVU';'Akropong CHPS Zone (Amansie West)';89630;3
+90126;'JRZaH7oexGL';'Akyekyerekrom CHPS Zone';89630;3
+90127;'j6YMk4RBz0f';'Ankam CHPS Zone';89630;3
+90128;'YWPeAKYF9fS';'Ankam CHPS Zone (Amansie West)';89630;3
+90129;'MjEqfcItJl2';'Antoakrom CHPS Zone';89630;3
+90130;'dsYKV7q25oZ';'Antoakrom Health Centre';89630;3
+90131;'FJr38wAPoRn';'Apenimadi CHPS Zone';89630;3
+90132;'rUTeabzLDkr';'Asarekrom CHPS Zone';89630;3
+90133;'s3R9oci3tP1';'Atobiase CHPS Zone (Amansie West)';89630;3
+90134;'ufQWwvnWyXi';'Atwere CHPS Zone';89630;3
+90135;'e3uxbSN3YlN';'Datano CHPS Zone';89630;3
+90136;'DcMFfScph27';'Dawusaso CHPS Zone';89630;3
+90137;'s9U98qjTV3z';'Dominase CHPS Zone (Amansie West)';89630;3
+90138;'xg9UCglquPR';'Dora''s Maternity Home (Amansie West)';89630;3
+90139;'cjqXGhtsH4g';'Edubia Health Centre';89630;3
+90140;'vX1VIIrRGT7';'Ekoso-Manso Nkwanta CHPS Zone';89630;3
+90141;'hj69hk6TUba';'Esaase-Dominase CHPS Zone';89630;3
+90142;'IovVBHi6una';'Esaase-South CHPS Zone';89630;3
+90143;'T994FnulZwt';'Essuowin Health Centre';89630;3
+90144;'K4frmDtdJAO';'Gyeduako CHPS Zone';89630;3
+90145;'SSMCX4JMqgO';'Gyeninso CHPS Zone';89630;3
+90146;'BeLx7m8BlRO';'Hiakose CHPS Zone';89630;3
+90147;'eExxFzVFPr2';'Keniago Health Centre';89630;3
+90148;'MuSpFULBTZ2';'Kensere CHPS Zone';89630;3
+90149;'daLQFRuKbnU';'Kumpese CHPS Zone';89630;3
+90150;'KMUX6DJyIp6';'Kwabenaso CHPS Zone';89630;3
+90151;'y4JMOvwU5Vu';'Kyenkyenase CHPS Zone';89630;3
+90152;'JSZyIzcpn2c';'Manso Asamang CHPS Zone';89630;3
+90153;'UHNODtpxHPd';'Manso Nkran CHPS Zone';89630;3
+90154;'ymH7Oc5bC2d';'Manso Nkwanta Health Centre';89630;3
+90155;'r9w7hgXOxtD';'Mim CHPS Zone (Amansie West)';89630;3
+90156;'rMfo2LU6jhM';'Moseaso CHPS Zone';89630;3
+90157;'kwXU1JxC7tR';'Mother Of God Health Centre';89630;3
+90158;'IeVHak3VYYo';'Mpatuom East CHPS Zone';89630;3
+90159;'amCfJGlMc3B';'Mpatuom West CHPS Zone';89630;3
+90160;'lzVE9VxBVLk';'Mpraniase CHPS Zone';89630;3
+90161;'QltFnaT9GxS';'Nnipankyeremia CHPS Zone';89630;3
+90162;'wlG42KwtQ56';'Nsiana CHPS Zone';89630;3
+90163;'K13cerWP0u3';'Nweneso CHPS Zone';89630;3
+90164;'nkoPEVFPsIf';'Odaho CHPS Zone';89630;3
+90165;'vwin69XYLKP';'Offinho Asamang CHPS Zone';89630;3
+90166;'h2nOmgY5G6n';'Omanadwareye CHPS Zone';89630;3
+90167;'adqXod9l3oZ';'Onyame Akwan Maternity Home';89630;3
+90168;'Mw9ftu12nuH';'Pakyi I CHPS Zone';89630;3
+90169;'hNJfUaQa9MX';'Pakyi Ii CHPS Zone';89630;3
+90170;'nSnOpYoDqZw';'St. Martin''s Catholic Hospital (Amansie West)';89630;3
+90171;'QXUXAoND68E';'Takorase CHPS Zone';89630;3
+90172;'XuYYEW3K6xn';'Tontokrom Health Centre';89630;3
+90173;'IHKsdoYhAxd';'Watreso CHPS Zone';89630;3
+90174;'fdw7H1jhxYt';'Yawkrom CHPS Zone (Amansie West)';89630;3
+90175;'vMN3tJZSeF9';'Anurusu/Adumkrom chps zone';89631;3
+90176;'ZtQG7s88auh';'Dwaese Ahenbronum CHPS Zone';89631;3
+90177;'HCGNFZxTjxM';'Dwease Health Centre';89631;3
+90178;'TczEL92j1R7';'Dwease New Town CHPS Zone';89631;3
+90179;'hb6tYaPMsu2';'First Klass Hospital';89631;3
+90180;'tVf7I1hJrPt';'Konongo - Odumasi Government Hospital';89631;3
+90181;'h9g2QSLMJoX';'Konongo Abosomtweagya CHPS Zone';89631;3
+90182;'P7pUa4pwTD0';'Konongo Extension(Amefa)';89631;3
+90183;'Xb8kNtY10Eq';'Konongo Free Town CHPS Zone';89631;3
+90184;'IbVK5MFbAnS';'Konongo New Town CHPS Zone';89631;3
+90185;'iJTfwwvQU7l';'Konongo Zongo Efam CHPS Zone';89631;3
+90186;'rvI0ZyQ9y4s';'Konongo Zongo Esoro CHPS Zone';89631;3
+90187;'IsusGM1qCK4';'Nsiakrom CHPS Zone';89631;3
+90188;'Y5lyCGHjIsw';'Nyaboo CHPS Zone';89631;3
+90189;'Nho6AFoLalJ';'Obenimase CHPS Zone';89631;3
+90190;'cvQBeNnRfS1';'Odumase Apebuoso CHPS Zone';89631;3
+90191;'cAlnWl2DpBb';'Odumase New Town CHPS Zone';89631;3
+90192;'kFw7fkaXyqN';'Odumase Santreso CHPS Zone';89631;3
+90193;'tWu9on7QZIO';'Odumase Zongo CHPS Zone';89631;3
+90194;'PwHr0RhSmt5';'Patience Clinic';89631;3
+90195;'WR4M3B82ren';'Patriensa Ahenbronum CHPS Zone';89631;3
+90196;'v94NB5prl1G';'Patriensa East CHPS Zone';89631;3
+90197;'gzux7eceF22';'Patriensa West CHPS Zone';89631;3
+90198;'J5mQw4uiT61';'Praaso East CHPS Zone';89631;3
+90199;'RBc7l9MvTlx';'Praaso Health Centre';89631;3
+90200;'WdZS2m3Bsrz';'Praaso West CHPS Zone';89631;3
+90201;'MEJcnkxLMvD';'Sabs Clinic';89631;3
+90202;'FxKLwXYi3qe';'Abrewapong CHPS Zone';89632;3
+90203;'Yf4KqTCVLUz';'Afrisere CHPS Zone';89632;3
+90204;'Cx7MCHmkSgf';'Agogo Presby Hospital (Asante Akim North)';89632;3
+90205;'jfkdudzqiKD';'Agogo Zongo CHPS Zone';89632;3
+90206;'sbuG32MFSjs';'Akutuase CHPS Zone';89632;3
+90207;'zCQA1CzopxA';'Amantena CHPS Zone';89632;3
+90208;'Ar3leTY1ww6';'Amantenaman Health Centre';89632;3
+90209;'Ju8uSvvcBxU';'Ananekrom Health Centre';89632;3
+90210;'KmwMyJZG7l0';'Apetenyinase CHPS Zone';89632;3
+90211;'ZJnKWpB1jXb';'Bebome CHPS Zone';89632;3
+90212;'HYjfX6F7cZ1';'Bontodiase CHPS Zone (Asante Akim North)';89632;3
+90213;'oFytAUmYwE8';'Domeabra Newtown CHPS Zone';89632;3
+90214;'iBgNmMvCnX7';'Domeabra Tweneboase CHPS Zone';89632;3
+90215;'ICFb9T8OmqG';'Hwidiem CHPS Zone';89632;3
+90216;'mJWyPKa6gCQ';'Juansa Health Centre';89632;3
+90217;'sDwJeyWmzgF';'Juansa North Mentukwa CHPS Zone';89632;3
+90218;'k61lVkSi9fA';'Juansa South CHPS Zone (Nyamebekyere)';89632;3
+90219;'fqJCsaOmzd0';'New Town CHPS Zone';89632;3
+90220;'IyeLbomfbrQ';'Obuasi-Gyidim CHPS Zone';89632;3
+90221;'jIZbvTw9fli';'Pataban-Onyemso CHPS Zone';89632;3
+90222;'Ubnq8mCdAzR';'Pekyerekye CHPS Zone';89632;3
+90223;'fjdJZUCtsEN';'Sukuumu CHPS Zone';89632;3
+90224;'pm9pvneBf4t';'Wioso CHPS Zone (Asante Akim North)';89632;3
+90225;'Cm8PmUKLW6R';'Woranponso CHPS Zone';89632;3
+90226;'DsSeoQ44OZO';'Adomfe EPI Centre';89633;3
+90227;'iadsJhDJhjW';'Ahenbronum, Dwendwenase CHPS Zone';89633;3
+90228;'FxULDilUU3B';'Amantia CHPS Zone';89633;3
+90229;'hQLf6rKVl5Z';'Asankare CHPS Zone';89633;3
+90230;'ej1WQ07lBgS';'Asikafoamantem-Juaso CHPS Zone';89633;3
+90231;'EcdD4sYE8hP';'Asuboa CHPS Zone';89633;3
+90232;'ocLLf0SMwlO';'Atiemo CHPS Zone';89633;3
+90233;'XPnIsWFu1fN';'Atwedie CHPS Zone';89633;3
+90234;'ePYSDALBtgp';'Banka CHPS Zone';89633;3
+90235;'Vt9mycix0nH';'Banka Health Centre';89633;3
+90236;'euuih01uVhb';'Bankame CHPS Zone';89633;3
+90237;'sYemckAfx8V';'Banso CHPS Zone';89633;3
+90238;'TQpYyND0ZSh';'Banso East CHPS Zone';89633;3
+90239;'oJ4oq0etFum';'Banso West CHPS Zone';89633;3
+90240;'xCjbBH1s3Ly';'Besease-Morso CHPS Zone';89633;3
+90241;'ejh3ty1Lqh1';'Bompata East CHPS Zone';89633;3
+90242;'LsGjJIFQaz8';'Bompata Health Centre';89633;3
+90243;'BGntIHLec94';'Bompata West CHPS Zone';89633;3
+90244;'aBBPDnz702v';'Breku CHPS Zone';89633;3
+90245;'oCSRK9qESlZ';'Dampong CHPS Zone';89633;3
+90246;'PNKLRyzwltD';'Debiaso-Juaso CHPS Zone';89633;3
+90247;'UtgE4TjcBAR';'Dwendwenase Health Centre';89633;3
+90248;'lMQ1kQfhg6I';'Dwendwenase Old Town CHPS Zone';89633;3
+90249;'gttTvTP6TIl';'Juaso Ahenbronom CHPS Zone';89633;3
+90250;'xaayiO5fAkh';'Juaso Government Hospital';89633;3
+90251;'DwIo8qZT6j5';'Juaso New Site CHPS Zone';89633;3
+90252;'eDnvVdkZtK5';'Koikrom CHPS Zone';89633;3
+90253;'PJ0apXywM9O';'Kokwado/Yawkwei CHPS Zone';89633;3
+90254;'zMLbPNb29pE';'Komeso CHPS Zone';89633;3
+90255;'O1AlDkKpd3p';'Komeso Health Centre';89633;3
+90256;'kWo8dMXpzPh';'Kpone Praso CHPS Zone';89633;3
+90257;'dV4FCwbP0pd';'Kroboline-Obogu CHPS Zone';89633;3
+90258;'wfhfYLa0QUQ';'Kurofa East CHPS Zone';89633;3
+90259;'r3UxxGCBuyJ';'Kurofa West CHPS Zone';89633;3
+90260;'qVe93k89Q2z';'Kyempo Epi Centre';89633;3
+90261;'eafvPfGdffq';'Morso CHPS Zone';89633;3
+90262;'jDeS57dNPcT';'Morso Community Clinic';89633;3
+90263;'ZdEi0DQI9Sr';'Muramura CHPS Zone';89633;3
+90264;'iltK6v2ajI4';'Muranaim CHPS Zone';89633;3
+90265;'KCHAd1C9Uc9';'Muronam Health Centre';89633;3
+90266;'Y2Cd6Pc4oHg';'Nnadieso CHPS Zone';89633;3
+90267;'Haq2V2zy4Gh';'Nnadieso Health Centre';89633;3
+90268;'QflQl1JXpuv';'Obogu East CHPS Zone';89633;3
+90269;'pBVYTkZ3xXA';'Obogu Health Centre';89633;3
+90270;'sbG876Zt3DR';'Obogu West CHPS Zone';89633;3
+90271;'FN8ZfxsO0L8';'Ofoase East CHPS Zone';89633;3
+90272;'N0LuR1jkdyR';'Ofoase Health Centre';89633;3
+90273;'Bk4Rz33r33J';'Ofoase West CHPS Zone';89633;3
+90274;'xWsH4oj1zt9';'Pra-River CHPS Zone';89633;3
+90275;'A1b3TOivYxE';'Roses Maternity Home';89633;3
+90276;'SiYi4eOAex8';'Saabo CHPS Zone';89633;3
+90277;'ybDCRwKnMXD';'Saalem-Obogu CHPS Zone';89633;3
+90278;'bDKyUjEmkFT';'St. Padre Pio''s Hospital';89633;3
+90279;'JrUKdIkA3HW';'Stewards Hospital And Mortuary';89633;3
+90280;'DVf0S96cDEF';'Takyikrom/Sobinso CHPS Zone';89633;3
+90281;'FMObUFZF9vQ';'Tokwai Asuboi CHPS Zone';89633;3
+90282;'s3Hvw0AMVeO';'Tokwai CHPS Zone';89633;3
+90283;'KGK9YpEmpsB';'Wenkyi CHPS Zone (Asante Akim South)';89633;3
+90284;'Jg0i1leEZWE';'Yaw Barimakrom CHPS Zone';89633;3
+90285;'v4uT4zftYJ8';'Yaw Bronyakrom CHPS Zone';89633;3
+90286;'XPc2B0F0BJV';'Aboantem CHPS Zone';89634;3
+90287;'v8LP8JHowS4';'Abrukutuaso CHPS Zone';89634;3
+90288;'cuUhVnwayLz';'Adidwan CHPS Compound';89634;3
+90289;'g9qOwrMHa5d';'Adidwan Health Centre';89634;3
+90290;'V72HI662Coh';'Adiembra CHPS Zone (Asante Mampong)';89634;3
+90291;'MFseR2yLhkV';'Ahenbronum CHPS Zone';89634;3
+90292;'O11OIqr02LR';'Akyeremade CHPS Zone (Asante Mampong)';89634;3
+90293;'du2pg4BVpa1';'Anyankamamu CHPS Zone';89634;3
+90294;'aGjPur3QwtH';'Apaa SDA Clinic';89634;3
+90295;'aKynMYBsf6C';'Apaah CHPS Zone';89634;3
+90296;'AoKZAhxz5n9';'Asaam A CHPS Zone';89634;3
+90297;'eBbg4ufRHbv';'Asaam Health Centre';89634;3
+90298;'yY5yHoXgF4d';'Atonoso B CHPS Zone';89634;3
+90299;'z5JKqjD1ilI';'Atonsuagya CHPS Zone';89634;3
+90300;'mUA10EABFW7';'Benim Health Centre';89634;3
+90301;'GJWNylvuLtv';'Bosofour CHPS Zone';89634;3
+90302;'g7hXXXcroaH';'Bosomkyekye CHPS Zone';89634;3
+90303;'ORIKtGeYSJw';'Calvary Health Services (Mampong)';89634;3
+90304;'h8S3KsW9P5Q';'Daaho CHPS Zone';89634;3
+90305;'n0J25hbM1BM';'Eboum CHPS Zone';89634;3
+90306;'v5b3SX1ZWRf';'Hwediem CHPS Zone';89634;3
+90307;'n21vV3Fwqhj';'Kofiase Health Centre';89634;3
+90308;'kSwizNKNkHK';'Krobo/Dadease Health Centre (Mampong)';89634;3
+90309;'L3RkXzLge8t';'Krobo Health Centre (Mampong)';89634;3
+90310;'kB2jn0jYBJH';'Mampong Government Hospital';89634;3
+90311;'jQQ4HVlQP7U';'Mampong Methodist CHPS Zone';89634;3
+90312;'XUvtcNrRK6i';'Mprim CHPS Zone';89634;3
+90313;'cvMa6RHZFM4';'Nadaworoma Clinic';89634;3
+90314;'Yh5yceKDn54';'New Damang CHPS Zone';89634;3
+90315;'NT4Dt5LWQaq';'New Town CHPS Zone (Asante Mampong)';89634;3
+90316;'mp1Kf595oOH';'Ninting CHPS Zone';89634;3
+90317;'cJlFRj4hSH6';'Nyinampong CHPS Zone';89634;3
+90318;'Gb0bRqWKutG';'Pampaso CHPS Zone';89634;3
+90319;'NhjGOdsGdlI';'Quality Health Care Clinic (Mampong)';89634;3
+90320;'mCHSjznizdy';'Sister Phillipah Maternity Home';89634;3
+90321;'bBSiyomw37z';'Tunsuom CHPS Zone';89634;3
+90322;'EAVPoqAh0BW';'Worakese CHPS Zone';89634;3
+90323;'ZQOiEuvPXXa';'Woraso CHPS Zone';89634;3
+90324;'QF99Bg53X3j';'Yonso CHPS Zone';89634;3
+90325;'Ls37xaX3VG2';'Yonso Clinic';89634;3
+90326;'Jhdbn7U4kcv';'Zongo East CHPS Zone';89634;3
+90327;'Qlre8tKUOnO';'Zongo West CHPS Zone (Asante Mampong)';89634;3
+90328;'hkaasgXzTOZ';'Affordable CHPS Zone';89635;3
+90329;'gD6vpKcEgU6';'Afoagya CHPS Zone';89635;3
+90330;'qDlcdtGTn2i';'Akorem CHPS Zone';89635;3
+90331;'FPYyFobf5Or';'Akwatia Line CHPS Zone';89635;3
+90332;'PY0oFYfTIsm';'Amaamata Maternity';89635;3
+90333;'vMSWq7wUpPH';'Anwiam Hospital Annex';89635;3
+90334;'tbV5lS6dCjc';'Asabi CHPS Zone';89635;3
+90335;'oJTvXwEl7du';'Asawase CHPS Zone';89635;3
+90336;'lFoM4NOwnsz';'Asokore Mampong Dhd Data';89635;3
+90337;'PVkjUSnYZ1N';'Boakye Dankwa Hospital';89635;3
+90338;'NEvLwdx9bWf';'Boubai Community Clinic';89635;3
+90339;'bInKiMQNwPu';'C.C.C. CHPS Zone';89635;3
+90340;'J026NwiNfU4';'Dr. Osei Maternity';89635;3
+90341;'H4R8qGsPnXJ';'Garden City Hospital';89635;3
+90342;'v4lQ0WDDZU4';'Mesewam Presbyterian Clinic';89635;3
+90343;'n9oLclP6gqn';'My Paradise Maternity Home';89635;3
+90344;'EgtRf2mnsrp';'New Zongo CHPSZone';89635;3
+90345;'zIOrawTnsm1';'Nima Moke CHPS Zone';89635;3
+90346;'P2y47tglwdd';'Owusuaa Maternity Home';89635;3
+90347;'gmuDL7HmQwv';'Prince Of Peace Clinic';89635;3
+90348;'qdShBFbz71k';'Roman Catholic CHPS Zone';89635;3
+90349;'hoNWvwNTgDO';'Sawaba CHPS Zone';89635;3
+90350;'QxNvL2WuTAc';'Sepe-Dote Health Centre';89635;3
+90351;'kFejwWBjoXW';'Sesala Line CHPS Zone';89635;3
+90352;'h3YA2nl1c3p';'St. Helena Maternity Home';89635;3
+90353;'yiMazMKkkXf';'Timpom CHPS Zone';89635;3
+90354;'fXKEzVAXjEQ';'Agyei Mensah Maternity Home';89636;3
+90355;'w0iRhXJ4QH3';'Ahmadiyya Muslim Hospital';89636;3
+90356;'dncx5qFiaUu';'Akrodie Health Centre';89636;3
+90357;'p07HYhpwHNg';'Ampenkro Health Centre';89636;3
+90358;'OJ9uPWOjRai';'Asumura Health Centre';89636;3
+90359;'FIZKLHVsB2p';'Ayomso Health Centre';89636;3
+90360;'VowGkey5WgU';'Ayum Forest Products';89636;3
+90361;'w8fCrLv15o2';'Bitre CHPS Compound Compound';89636;3
+90362;'HaXb5Z7VUxT';'C.O.P. Clinic';89636;3
+90363;'W8PvZv1eLwz';'Dankwa Maternity Home';89636;3
+90364;'XzVNwOSgZRi';'Dankwa Maternity';89636;3
+90365;'Kn7cT3WPyXy';'Dominase chps zone';89636;3
+90366;'CisMS4lpRrH';'Fawohoyeden Health Centre';89636;3
+90367;'xvcNlwYxzRX';'Goaso Municipal Hospital';89636;3
+90368;'hHWpYTH2TiA';'Gyasikrom - CHPS Compound';89636;3
+90369;'TgEJCGwRzsg';'Mim Health Centre';89636;3
+90370;'zjK3YaJ0r5E';'Shabasha Clinic';89636;3
+90371;'DEj5Dw8E6Jl';'Wam CHPS Compound';89636;3
+90372;'XD0DRwiM4ql';'Abuom Rural Clinic';89637;3
+90373;'AdMdQbgiFvw';'Asarekrom Clinic';89637;3
+90374;'qYVmWPq5H8B';'Beposo CHPS Compound';89637;3
+90375;'mYQ4XwsU71a';'Cocoa Clinic-1000 Acres';89637;3
+90376;'fQygmGBtrCi';'Kokooso Rural Clinic';89637;3
+90377;'ukV69HBmWpz';'Kukuom Health Centre';89637;3
+90378;'whUa1gyPJHT';'Kwapong Rural Clinic';89637;3
+90379;'SZ77sWwdWJO';'Nakete CHPS Compound';89637;3
+90380;'zKXqu89izK4';'New Sawereso CHPS Compound';89637;3
+90381;'Xl0fW3oyaVf';'Noberkaw CHPS Compound';89637;3
+90382;'YYHu7K03RA5';'Sankore Health Centre';89637;3
+90383;'qiBF26u6hJP';'Siana CHPS Compound';89637;3
+90384;'bisMno97GDT';'Star Of Light Hospital';89637;3
+90385;'FKcQcQGsgpi';'Victoria (Asunafo South) Maternity Home';89637;3
+90386;'u1OUWLxWGBk';'Aboasa CHPS Compound';89638;3
+90387;'B5NqYDf2Cer';'Adjena Health Centre';89638;3
+90388;'toq5YZ4mYOq';'Akosombo Vra Hospital';89638;3
+90389;'SdxALhmuyB1';'Akwamufie Health Centre';89638;3
+90390;'CWV41X4PdAP';'Anum Boso chps compound';89638;3
+90391;'ivnhZaYRaN1';'Anum Boso Salvation Army Clinic';89638;3
+90392;'SMotAaf3qBw';'Apeguso Clinic';89638;3
+90393;'wBS5PM64noY';'Asikuma CHPS Compound';89638;3
+90394;'Wsp2vIVV6pI';'Atimpoku Rch';89638;3
+90395;'i9DpmbOe27E';'Ayensu CHPS Compound';89638;3
+90396;'cimCq3X6O2F';'Boso Health Centre';89638;3
+90397;'XVu3TTgb34j';'Dodi Asantekrom CHPS Compound';89638;3
+90398;'dT6OhbTa12c';'Dzidzorkope CHPS Compound';89638;3
+90399;'C2tZylfZrh1';'Frankadua Clinic';89638;3
+90400;'JbZi7seczya';'Ghanakpe CHPS Compound';89638;3
+90401;'rBfG3DhBJd3';'Gyakiti Clinic';89638;3
+90402;'pVLvWWxyQwm';'Hedwigs Clinic';89638;3
+90403;'RtQgtFRJH35';'Kudi Kope CHPS Compound';89638;3
+90404;'mzOzXxNgcKN';'Mangoase  CHPS Compound (Asuogyaman)';89638;3
+90405;'Z5uFgWtUmQB';'Naabs Clinic';89638;3
+90406;'U9O6uIzna5u';'New Akrade CHPS Compound';89638;3
+90407;'FghWFDFVxWz';'New Dodi CHPS Compound';89638;3
+90408;'M7F5BiNRAeE';'New Senchi Rch';89638;3
+90409;'ZCux2WCX5yg';'Old Akrade CHPS Compound';89638;3
+90410;'wmG86jjQMZ7';'Osiabura CHPS Compound';89638;3
+90411;'VDnt2xtpJB9';'Sappor CHPS Compound';89638;3
+90412;'nEWnFffP8oB';'Sedorm CHPS Compound';89638;3
+90413;'DG9WVvbPC1E';'Senchi Ferry Asuogyaman';89638;3
+90414;'BulREFNGZOC';'Small London clinic';89638;3
+90415;'QqTJG1JQSQs';'Small London Mw';89638;3
+90416;'xnrZwtJcFp0';'South Senchi Clinic';89638;3
+90417;'HXKJMvEB1Mg';'Tortibo CHPS Compound';89638;3
+90418;'JmMBqNDOGxY';'Biaso CHPS Compound';89639;3
+90419;'wAKjgv8mLNR';'Esther Maternity Home';89639;3
+90420;'hb9yQ5Mh05O';'Gambia Health Centre';89639;3
+90421;'WKKrUf2wL0F';'Goamu Koforidua CHPS Compound';89639;3
+90422;'untyhJMLSEz';'Gyedu Health Centre';89639;3
+90423;'CKHtr77BOGh';'Isos  Clinic (Asutifi)';89639;3
+90424;'Dt5fgoh0nrg';'Kenyasi Health Centre';89639;3
+90425;'GOhcB0yunrd';'Kenyasi St Elizbeth Maternity Home';89639;3
+90426;'L5mCmoFbX7N';'Acherensua Health Centre';89640;3
+90427;'GLY9bKmWLB1';'Apenemadi CHPS Compound';89640;3
+90428;'qRXW2skgKv5';'Blessed Family Maternity Home';89640;3
+90429;'HIkNmeL91yF';'Dadiesoaba Health Centre';89640;3
+90430;'r7HlXq24car';'Hwidiem St Elizabeth Hospital';89640;3
+90431;'AB8MvCzDTHS';'Hwidiem Township RCH (Asutifi)';89640;3
+90432;'lnSM2WQCPJr';'Nkaseim CHPS Compound';89640;3
+90433;'rKhTeEmAcid';'Nkaseim Community Clinic';89640;3
+90434;'IG0AYRAd9r7';'Sienchem Rural Clinic';89640;3
+90435;'GPSdJQlq38c';'Abamba CHPS Compound';60521;3
+90436;'w1eMSNhz66X';'Akokoa Health Centre';60521;3
+90437;'LulHJKNfFMq';'Amanten Health Centre';60521;3
+90438;'FAO1LofaSe9';'Fakwesi CHPS Compound';60521;3
+90439;'vkweB9UvoQK';'Garadima CHPS Compound';60521;3
+90440;'tEEKYscPA8x';'Kokofu CHPS Compound (Atebubu)';60521;3
+90441;'XPeTgbLy65I';'Mem CHPS Compound';60521;3
+90442;'usd2ZSsvCLK';'Murunchus CHPS Compound';60521;3
+90443;'IRv7kFPHOqx';'Nyomoase CHPS Compoundc';60521;3
+90444;'kdHn4MC5WY3';'Abekwase CHPS Compound';89641;3
+90445;'dTowEah9j8D';'Abomosu Health Centre';89641;3
+90446;'uSuU2gefk4z';'Adasawase CHPS Compound';89641;3
+90447;'oHUX8ZUKhRO';'Aggie Maternity  (Atiwa)';89641;3
+90448;'EUpBLacywCU';'Akakom CHPS Compound';89641;3
+90449;'YJ6ojBBjgj9';'Akrofufu CHPS Compound';89641;3
+90450;'S8CWdu4S6F7';'Akropong  CHPS Compound (Atiwa)';89641;3
+90451;'kOpgzrGC7O0';'Akutuase  CHPS Compound (Atiwa)';89641;3
+90452;'GQHWrdsJdGj';'Akwaduusu CHPS Compound';89641;3
+90453;'lm3jo6yp8oQ';'Anyinam Health Centre';89641;3
+90454;'dZU52nk9ZtW';'Asamang Tamfoe CHPS Compound';89641;3
+90455;'X6Xzarw8nwv';'Asamanma CHPS Compound';89641;3
+90456;'zjlFceEQ348';'Asunafo  CHPS Compound (Atiwa)';89641;3
+90457;'uZSQwxdZ8Tq';'Awenare Health Centre';89641;3
+90458;'dSkLiww7kLW';'Awosoase CHPS Compound';89641;3
+90459;'x5GpjOMwQxF';'Bomaa CHPS Compound';89641;3
+90460;'A8esC68AmsQ';'Enyiresi Hospital';89641;3
+90461;'F7Fis8KM8ZF';'Healthline Medical Centre';89641;3
+90462;'GDnpWjZmHs6';'Kadewaso CHPS Compound';89641;3
+90463;'ZjUSRULQ9ws';'Kwabeng  Health Centre (Atiwa)';89641;3
+90464;'DhAay5EJpQq';'Larbikrom CHPS Compound (Atiwa)';89641;3
+90465;'WijWnGOhupS';'Moseaso CHPS Compound (Atiwa)';89641;3
+90466;'y3VH7pyCpPe';'New Jejeti Health Centre';89641;3
+90467;'r83KebtQhHm';'Pemeng CHPS Compound';89641;3
+90468;'It9o8IqsM5m';'Sekyere CHPS Compound';89641;3
+90469;'aaQlSUukuqU';'Tiawia CHPS Compound';89641;3
+90470;'ZvMOdmZFjlB';'Tumfa CHPS Compound';89641;3
+90471;'uNmwPXhPQ1C';'Abotiaso CHPS Zone';89642;3
+90472;'R63GcvRWJ8s';'Aburaso CHPSZone';89642;3
+90473;'gaYMPM8MsmD';'Aburaso Methodist Clinic';89642;3
+90474;'k0QXrOLnZaW';'Afrancho CHPS Zone';89642;3
+90475;'y7AsefU5fop';'Afratia CHPS Zone';89642;3
+90476;'gbcySHzn3Xa';'Ahenema Kokoben CHPS Zone';89642;3
+90477;'nycUXbDVEXF';'Ahenema Kokoben Health Centre';89642;3
+90478;'AaVFNgpc0zi';'Akyeramade CHPS Zone';89642;3
+90479;'rE9qEW2PvYY';'Ampabame No. 2 CHPS Zone';89642;3
+90480;'gblvaYxmICW';'Ampayo-Asaago CHPS Zone';89642;3
+90481;'AqFaJfqejyh';'Apemanim CHPS Zone';89642;3
+90482;'ZwoXUezdiZi';'Asafo Boakye Specialist Hospital';89642;3
+90483;'JPkYgND1UkR';'Bebu CHPS Zone';89642;3
+90484;'QIf7gtiz0Au';'Bekwaimin CHPS Zone';89642;3
+90485;'QbROzqHYCWi';'Boko CHPS Zone';89642;3
+90486;'FwIA4FcmQys';'Brofoyedu CHPS Zone';89642;3
+90487;'eq7HnJZPaO0';'Chichibon CHPS Zone';89642;3
+90488;'o1iZBWgnDE0';'Dida CHPS Zone';89642;3
+90489;'QPOHhelM88b';'Dufie Memorial Clinic';89642;3
+90490;'irTnwyUHTsV';'Emmanuel Methodist Clinic (Bebu)';89642;3
+90491;'KwICOaTvM5L';'Eye Adom Clinic (Brofoyedru)';89642;3
+90492;'cgypSMRv49p';'Foase CHPS Zone';89642;3
+90493;'bWjivqZiFRJ';'Foase Health Centre';89642;3
+90494;'I9lFecqL4fN';'Foase-Kobriso CHPS Zone';89642;3
+90495;'Ks4u6VtcGQs';'Garry Marvin Memorial Hospital';89642;3
+90496;'oGiIgBQAxm6';'Hemang ï¿½ Ampatia CHPS Zone';89642;3
+90497;'NciD9ruUTNA';'Jechi CHPS Zone';89642;3
+90498;'CsecqV1OvMD';'Kotwi CHPS Zone';89642;3
+90499;'qRGWYx0sNUq';'Krofofrom CHPS Zone';89642;3
+90500;'qnZpoaGx5Fi';'Kromoase CHPS Zone';89642;3
+90501;'Gcj8AELkmvX';'Kwanwoma CHPS Zone';89642;3
+90502;'ICZxi3VP5oZ';'Kwanwoma Health Centre';89642;3
+90503;'Tr7FquE7uNK';'Millennium Hospital';89642;3
+90504;'Subvw8NxfZV';'Mpatasie CHPS Zone';89642;3
+90505;'vZuJ0xw8dnN';'New Aduampong CHPS Zone';89642;3
+90506;'hj2R8TFiXGS';'Nkoranza CHPS Zone';89642;3
+90507;'cvf7D0FZQ2S';'Nweneso No. 1 CHPS Zone';89642;3
+90508;'jy42MoMZauO';'Nweneso No. 2 CHPS Zone';89642;3
+90509;'lGLy4W4kMu5';'Nweneso No. 3 CHPS';89642;3
+90510;'tQQPLJ4HsAI';'Royal Lawuzy Hospital';89642;3
+90511;'sXVARiGn7Qo';'Traboum Health Centre';89642;3
+90512;'Sr4RRwdkd46';'Trabuom CHPS Zone';89642;3
+90513;'QOwjq5LvEkj';'Trede CHPS Zone';89642;3
+90514;'ZOwudkHViVA';'Trede Health Centre';89642;3
+90515;'ay70iJBcEP2';'Trinity Specialist Hospital';89642;3
+90516;'YBFXcgpmH9z';'Twedie CHPS Zone';89642;3
+90517;'WodnRgea3nZ';'Yabi CHPS Zone';89642;3
+90518;'bf6sEQfekd5';'Abasua CHPS Zone';89643;3
+90519;'xJYWRm3hUSZ';'Achiase CHPS Zone';89643;3
+90520;'BiImOoJUdRI';'Agogoso CHPS Zone';89643;3
+90521;'cJTbmr15Zmf';'Ahyiresu CHPS Zone';89643;3
+90522;'gDrRlOUt93m';'Akomfre CHPS Zone';89643;3
+90523;'YpEu8lpCMFM';'Akonkye CHPS Zone';89643;3
+90524;'xlr19CG0DmG';'Akoraboukrom CHPS Zone';89643;3
+90525;'TYyEMQQIEfm';'Anansu CHPS Zone';89643;3
+90526;'pHHiViIofRk';'Anglican Health Centre';89643;3
+90527;'TBYN2pbDmVi';'Antwi Agyei Krom CHPS Zone';89643;3
+90528;'g6liiQQ9EBT';'Anwiafutu CHPS Zone';89643;3
+90529;'IUzmHBqsNDn';'Awisasu CHPS Zone';89643;3
+90530;'FFhWqb9MOVG';'Bayerebon Health Centre';89643;3
+90531;'QwgGbBk0KM1';'Bayerebon No.3 CHPS Zone';89643;3
+90532;'Rx8YLFCjhWn';'Chc Clinic';89643;3
+90533;'lZip81UEP3h';'Debra CHPS Zone';89643;3
+90534;'Xds45ouJeNj';'Erica Maternity Home (Atwima Mponua)';89643;3
+90535;'HSVQCg7h1Qs';'Gyereso Health Centre';89643;3
+90536;'CUajp45KK7I';'Kotokuom Health Centre (Atwima Mponua)';89643;3
+90537;'rS5Buc0caES';'Mother Of John Maternity Home';89643;3
+90538;'VMYIX8mAUbg';'Mpasatia CHPS Zone';89643;3
+90539;'xcu84gYIRCn';'Nagodey Health Centre';89643;3
+90540;'iFpAKb7s0bA';'Nkroma CHPS Compound';89643;3
+90541;'kUYsYqoXxEs';'Nyinahin Government Hospital';89643;3
+90542;'JAlnlBqi4oQ';'Oboasekrom CHPS Zone';89643;3
+90543;'XF4vWEZsCMU';'Okyerekrom CHPS Zone';89643;3
+90544;'ixTWrgoJhLR';'Otaakrom CHPS Zone';89643;3
+90545;'R7YYUEXtzsV';'Saakrom Health Centre';89643;3
+90546;'khZESREmOWB';'Serebuoso CHPS Zone';89643;3
+90547;'mwizdfFmQxI';'Sreso Health Centre';89643;3
+90548;'qnVbGvwAsmQ';'St. Peter''s Clinic (Atwima Mponua)';89643;3
+90549;'W4b7GFiMaWW';'Victory Maternity Home (Atwima Mponua)';89643;3
+90550;'b2HgO8Ertva';'Wansamire CHPS Zone';89643;3
+90551;'TqClqFkWoIr';'Abuakwa CHPS Zone';89644;3
+90552;'qvF7lZhbplP';'Abuakwa Health Centre';89644;3
+90553;'mmXjrtTq0gV';'Achiase-Nyama Maternity Home';89644;3
+90554;'B0Rg1hJDfK1';'Adankwame CHPS Zone';89644;3
+90555;'CUknQBDmx6T';'Adankwame Nana Frema Maternity Home';89644;3
+90556;'gDi672k5V62';'Adankwame-Esaso CHPS Zone';89644;3
+90557;'IsoPxjxLVgj';'Afari CHPS Zone';89644;3
+90558;'YAWQDZgGv1q';'Afari Community Hospital';89644;3
+90559;'a3u817n4zgK';'Agogo CHPS Zone (Atwima Nwabiagya)';89644;3
+90560;'Q7yXVZukQDo';'Akropong CHPS Zone';89644;3
+90561;'Ms1AEhOSkV6';'Akropong Health Centre (Atwima Nwabiagya)';89644;3
+90562;'IQpYVWauxX5';'Akropong Maternity Home (Atwima Nwabiagya)';89644;3
+90563;'DarRInNTbpU';'Amanchia CHPS Zone';89644;3
+90564;'IHzBwWPoLdy';'Amanfrom Hospital';89644;3
+90565;'NDDCY6gACxF';'Asakrakra CHPS Zone';89644;3
+90566;'CW423z6ppR2';'Asamang CHPS (Atwima-Nwabiagya)';89644;3
+90567;'rQtNH221mRW';'Asenemanso CHPS Zone';89644;3
+90568;'IVvcZltYjCk';'Asuofua CHPS Zone';89644;3
+90569;'TvlyjqZXSlw';'Asuofua Health Centre';89644;3
+90570;'tW0lKLsoiCJ';'Atwima Koforidua CHPS Zone';89644;3
+90571;'ZxTZR9eZoQe';'Atwima Maakro Hospital';89644;3
+90572;'tJY18JHwON5';'Barekese CHPS Zone';89644;3
+90573;'SAoCdfZPUzz';'Barekese Health Centre';89644;3
+90574;'HMBl5EMUa29';'Barekuma CHPS Zone';89644;3
+90575;'s9Aw8qraaKt';'Bokankye CHPS Zone';89644;3
+90576;'AgYenGjaTKa';'Cedar Crest Hospital';89644;3
+90577;'AkJcML6FS2R';'Dabaa CHPS Zone';89644;3
+90578;'krx06RhI523';'Dabaa Hope Medical Centre';89644;3
+90579;'nvHz729xnMA';'Dadiase CHPS Zone';89644;3
+90580;'PUd129a09vs';'Fufuo CHPS Zone';89644;3
+90581;'JfnrNELE6Ba';'Gyankobaa CHPS Zone';89644;3
+90582;'G5lX1x5DZ9D';'Hiawu - Besease CHPS Zone';89644;3
+90583;'AK303gwJntI';'Jilf Health Services';89644;3
+90584;'A58Vq5gnk9a';'Kobeng /Seidi CHPS Zone';89644;3
+90585;'FA90lfX1Tjf';'Koforidua Antwi''s Maternity Home';89644;3
+90586;'mEwL3wBFwfE';'Maakro CHPS Zone';89644;3
+90587;'oWUBpVe2lhh';'Madonna Health Services';89644;3
+90588;'nYdM6h6yQXK';'Manhyia CHPS Zone (Atwima Nwabiagya)';89644;3
+90589;'oWbtXcv5Tin';'Marban CHPS Zone';89644;3
+90590;'GiEPmM9vnuL';'Mfensi CHPS Zone';89644;3
+90591;'xT1RwQD6XCB';'Mount Sinai Hospital';89644;3
+90592;'HhJX0hKQXId';'Nerebehin CHPS Zone';89644;3
+90593;'lflN0BeIIxl';'Nkawie Clinic';89644;3
+90594;'UNWT5VGeDDF';'Nkawie Kuma CHPS Zone';89644;3
+90595;'VFK4yk8rSoG';'Nkawie Panin CHPS Zone';89644;3
+90596;'I6Cy72YabQv';'Nkawie-Toase Government Hospital';89644;3
+90597;'wUDlC5SOj4Z';'Ntabanu CHPS Zone';89644;3
+90598;'KvUe2wV90WN';'Sepaase CHPS Zone';89644;3
+90599;'PZUCWU5fXMO';'Sepaase God Is Able Maternity Home';89644;3
+90600;'u1zhDFOuU9Q';'Tabre CHPS Zone';89644;3
+90601;'KFclkITABBq';'Toase CHPS Zone';89644;3
+90602;'w6aoNskJgmz';'Toase Medical Centre';89644;3
+90603;'ZJrGOJJGgEb';'Wurapong CHPS Zone';89644;3
+90604;'A07Lefja9fO';'Amanase Health Centre';89645;3
+90605;'YQfx8qD89ba';'Anum Apapam Rch';89645;3
+90606;'ANIHBkNCUkm';'Apau-Wawase CHPS Compound';89645;3
+90607;'n8zXf8ma3Jd';'Asuboi Health Centre';89645;3
+90608;'NXKPiTm8JGX';'Bepoase Coaltar CHPS Compound';89645;3
+90609;'Q40Tr1IIbRC';'Coaltar Rch';89645;3
+90610;'JA4Dl2ibl5T';'Dodukrom CHPS Compound';89645;3
+90611;'EaXTHvohanO';'Dokrokyiwa Health Centre';89645;3
+90612;'t2GVKQkeIQT';'Dome/Achiansa CHPS Compound';89645;3
+90613;'LI48kuhn1rR';'Kofi Pare Rch';89645;3
+90614;'MuNoFSHxdEP';'Kwaboanta CHPS Compound';89645;3
+90615;'BazX6cnXuD8';'Marfo Rch';89645;3
+90616;'un7RJBz6Ppq';'Mfranta CHPS Compound';89645;3
+90617;'hxXUbOvCULC';'Obuoho CHPS Compound';89645;3
+90618;'hmdWqqhiBHu';'Obuohu CHPS Compound';89645;3
+90619;'u2omrZbFvxZ';'Otoase CHPS Compound';89645;3
+90620;'dTa3wUItFVI';'Teacher Mante CHPS Compound';89645;3
+90621;'M21VyTYPTII';'Banda Ahenkro Health Centre';89646;3
+90622;'RrWnNVcwriC';'Boase CHPS Compound';89646;3
+90623;'XvNshvEKPRo';'Bongase Rural Clinic';89646;3
+90624;'aLhdezO4v3K';'Bui CHPS Compound 1';89646;3
+90625;'H49SG8I3vWK';'Bui Medical Centre';89646;3
+90626;'ilV0RmxdSvr';'Bui Rural Clinic';89646;3
+90627;'SODawU5l23Z';'Dorbor CHPS Compound';89646;3
+90628;'dUsjBFO0eOB';'Sabiye Health Centre';89646;3
+90629;'dghTvwltzKm';'Asikiri CHPS Compound';89647;3
+90630;'lfsasL72Xot';'Bador CHPS Compound';89647;3
+90631;'QV7ZMgXlZVR';'Baribari CHPS Compound';89647;3
+90632;'Z0vEMxdQfk9';'Bawku Presby Hospital';89647;3
+90633;'ikdmGXrhZ6L';'Bugre Corner Health Centre';89647;3
+90634;'jTl3ZCetTxp';'Bugzunde CHPS Compound';89647;3
+90635;'lEkjwELjmVM';'Case Medical Centre';89647;3
+90636;'ySAtsq4yZZP';'Dan S Clinic';89647;3
+90637;'brBwTak7Q9x';'Everjoy Health Centre';89647;3
+90638;'tq2luF17BmI';'Gentiga CHPS Compound';89647;3
+90639;'p4SdO7UXwMI';'Islam Matenity';89647;3
+90640;'XpDX6yhK1zM';'Kpalore CHPS Compound';89647;3
+90641;'jJ8FhVC1cSG';'Kuka CHPS Compound';89647;3
+90642;'Ac0rYrhc4OK';'Megogo CHPS Compound';89647;3
+90643;'uYzHqbxoIFp';'Millennium Laafi Doog';89647;3
+90644;'H65HDENt8AY';'Mognori Health Centre';89647;3
+90645;'HqGaEGEQTAg';'Quality  Medical Centre (Bawku)';89647;3
+90646;'O00S5LJaEeL';'Tensungu CHPS Compound';89647;3
+90647;'RCmhSIfl9dR';'Urban (Bawku) Health Centre';89647;3
+90648;'Wv12E2H6nEM';'Urban West Health Centre (Bawku)';89647;3
+90649;'PSZyAQPAS7g';'Vineyard Health Centre';89647;3
+90650;'jrJ3LnrMHAo';'Agatusi CHPS Compound';89648;3
+90651;'dpDfjZ5VITv';'Apodapogo CHPS Compound';89648;3
+90652;'V0rXKXseiFZ';'Azuwera CHPS Compound';89648;3
+90653;'r0QOrKH64i0';'Binaba Health Centre';89648;3
+90654;'bLmvOtRVTqd';'Biringu CHPS Compound';89648;3
+90655;'Afm2NgOXwZS';'Boya CHPS Compound';89648;3
+90656;'wVxrcFAz5pz';'Dagunba CHPS Compound';89648;3
+90657;'dxZuoGQBFC3';'Faith  Clinic (Bawku West)';89648;3
+90658;'oP4KpmZql7C';'Galaka CHPS Compound';89648;3
+90659;'tVavlX93jQT';'Gbantango Clinic';89648;3
+90660;'Fhu45cdWOng';'Googo Clinic';89648;3
+90661;'VbuB6zvZUde';'Gossips Clinic';89648;3
+90662;'xOEGB8me9Cy';'Gozeisi CHPS Compound';89648;3
+90663;'WYVNGdUFbV4';'Kansoongu CHPS Compound';89648;3
+90664;'YOKIkhBGIUl';'Kopella CHPS Compound';89648;3
+90665;'KP0EuRp2Xlq';'Naaba Akparibilla Medical Centre';89648;3
+90666;'igMcAZczKU3';'Salpiiga CHPS Compound';89648;3
+90667;'chtvOTtI1Na';'Sapelliga Health Centre';89648;3
+90668;'KhdcTWjmenf';'Soogo CHPS Compound';89648;3
+90669;'rufV0YAeUYy';'Tanga CHPS Compound';89648;3
+90670;'TqEP1NlFyV0';'Tarikom CHPS Compound';89648;3
+90671;'Qd9KFv9P1Hz';'Teshie CHPS Compound';89648;3
+90672;'eUKejdYgRVc';'Tilli Clinic';89648;3
+90673;'uoEYXOOpJBb';'Timonde Health Centre';89648;3
+90674;'Tcar6Piy9hc';'Tonde CHPS Compound';89648;3
+90675;'ENvFiPv62sy';'Widnaba Clinic';89648;3
+90676;'eiB08gCUWyX';'Yarigu CHPS Compound';89648;3
+90677;'UurHu3FqagJ';'Yelwoko Clinic';89648;3
+90678;'pmCsB4MILdD';'Zebilla Hospital';89648;3
+90679;'k4pRmbmuWo6';'Zebilla RCH';89648;3
+90680;'bXwgs2nyFO4';'Zebilla Shs Clinic';89648;3
+90681;'l8954h69jIP';'Zebilla Town Clinic';89648;3
+90682;'kGAu371G6vo';'Zongoire CHPS Compound';89648;3
+90683;'naIvg7fhHh7';'Zongoire Health Centre';89648;3
+90684;'OMBAyyJznK6';'Abenkyiman Hospital';89649;3
+90685;'QSt7JovLUp6';'Abodom CHPS (Bekwai)';89649;3
+90686;'m5WDD0IRksE';'Adankraja CHPS Zone';89649;3
+90687;'l141s42oSca';'Adjamasu CHPS Zone';89649;3
+90688;'InAy00Gezit';'Ahmadiyya Muslim Hospital (Bekwai)';89649;3
+90689;'HjMaZtJEkUi';'Ahwene Memorial Hospital';89649;3
+90690;'zmhVnWsXqcN';'Akomaah Memorial Hospital';89649;3
+90691;'KKONzw9Z8ZH';'Akyeremade CHPS Zone';89649;3
+90692;'iSx3xc0rDk7';'Amansie Hospital';89649;3
+90693;'KZNcVSpRMm9';'Amoaful CHPS Zone';89649;3
+90694;'DrIC8za6Ddi';'Anidaso Clinic';89649;3
+90695;'A7R2RkMFSF0';'Anwia Nkwanta CHPS Zone';89649;3
+90696;'Hz0FEJPvPQp';'Asamang CHPS (Bekwai)';89649;3
+90697;'Woc6z5ugUrk';'Asanso- Feyiase CHPS Zone';89649;3
+90698;'GiHwpeWIK3k';'Asokore CHPS Zone';89649;3
+90699;'LPKDbOG4sWk';'Asokwa Tunsuom CHPS Zone';89649;3
+90700;'MCsSFvMLh41';'Bekwai Municipal Hospital';89649;3
+90701;'PjpykOBkAkF';'Bogyawe CHPS Zone';89649;3
+90702;'P5lg009jOmh';'Dadease CHPS Zone';89649;3
+90703;'EtUIEn06p0W';'Dominase CHPS Zone';89649;3
+90704;'HDmZ2ROqHF2';'Dominase SDA Hospital';89649;3
+90705;'wGHeUCNyzOw';'Dotom CHPS Zone';89649;3
+90706;'KhOfq5UviHK';'Dwoamin CHPS Zone';89649;3
+90707;'M8CLiJdcCzu';'Essumeja CHPS Zone';89649;3
+90708;'OwJgKvXjp6x';'Gyasikrom Health Centre';89649;3
+90709;'zSuWqnKoaGZ';'Huntado CHPS Zone';89649;3
+90710;'fmoLbVbedDO';'Kensere CHPS Compound';89649;3
+90711;'Yi72jRbSJ2O';'Kokofu CHPS Zone';89649;3
+90712;'HQLAWKK1MOR';'Kokofu General Hospital';89649;3
+90713;'yH0SLQiZe77';'Kokotro CHPS Zone';89649;3
+90714;'SYvpPTfJ9RU';'Kwaman CHPS Zone';89649;3
+90715;'iflNoudaTbf';'Nampansa CHPS Zone';89649;3
+90716;'XSPpYDgaCEa';'Ntinanko CHPS Zone';89649;3
+90717;'UxJlVb20W7U';'Ofoase Kokoben CHPS Zone';89649;3
+90718;'tu74dW4SC7x';'Pepedan Akwabetoso CHPS Zone';89649;3
+90719;'IJNCknHvDZI';'Poano CHPS Zone';89649;3
+90720;'diAYhVYp0iR';'Sanfo Aduam CHPS Zone';89649;3
+90721;'sCqDbJeKIAG';'Sarfokrom CHPS (Bekwai)';89649;3
+90722;'fkUgze0PutD';'Saviour Community Clinic (Bekwai)';89649;3
+90723;'So5FpYqgjxE';'Senfi CHPS Zone';89649;3
+90724;'YrZz3dbtlRS';'Tenkwaamah Maternity Home';89649;3
+90725;'mMIURyKgJwi';'Abts Clinic';89650;3
+90726;'gXiavJYRmnv';'Aggie  Maternity (Berekum)';89650;3
+90727;'cYnE9eBVLS1';'Akrofro CHPS Compound';89650;3
+90728;'IpAIbANQpm7';'Amomaso Clinic';89650;3
+90729;'DdUEnmLKgrS';'Angels Maternity';89650;3
+90730;'Bk7wxLlsWGn';'Anyinasu CHPS Compound (Berekum)';89650;3
+90731;'GR6eZLMa388';'Betco Clinic';89650;3
+90732;'tGn0Jf17Pl8';'Botokrom Rural Clinic';89650;3
+90733;'baNvWhzqr2X';'Christian Eye Care (Berekum)';89650;3
+90734;'FZ0sQAkqwqk';'Christie Maternity Home';89650;3
+90735;'N29iYfIfnVv';'Clean Hands  Maternity (Berekum)';89650;3
+90736;'M9BPLEd4gUA';'Dr Larbi Clinic';89650;3
+90737;'OTD7zL4pSEW';'Emi Maternity';89650;3
+90738;'VSBTccmvADB';'Fetentaa CHPS Compound';89650;3
+90739;'jrrFC1vwDvO';'Holy Family  Hospital (Berekum)';89650;3
+90740;'aeQRlQaKVjv';'Jinjini Health Centre';89650;3
+90741;'X5iFXePJPNV';'Kato CHPS Compound';89650;3
+90742;'L4FQrKviMzJ';'Koraso Health Centre';89650;3
+90743;'wAF81s5a3fz';'Kutre I CHPS Compound';89650;3
+90744;'RUkM6G6jUsJ';'Mercy Clinic (Berekum)';89650;3
+90745;'VWvrt7rSe0M';'Mpatasie Rehab Centre';89650;3
+90746;'ZmoJp3fhbCi';'Namasua CHPS Compound';89650;3
+90747;'fVoMvZfG57l';'Nkyekyemam CHPS Compound';89650;3
+90748;'Q4FigIgyomZ';'Palm Avenue Maternity';89650;3
+90749;'niRGPFGuDmP';'Philomina Maternity';89650;3
+90750;'ImfgoUyVPPs';'Rch/Dhd  Clinic (Berekum)';89650;3
+90751;'JKgUwVwMKyT';'Senase CHPS Compound';89650;3
+90752;'rlqxDA3I3Fc';'Tewbabi CHPS Compound';89650;3
+90753;'ESuWgjGorAr';'Zongo Clinic  (Berekum)';89650;3
+90754;'Ck6J7my6Hyv';'Aniisi CHPS Compound';89651;3
+90755;'wlfYJIH1sUN';'Asugtaaba Clinic';89651;3
+90756;'GTDP3o0LFRH';'Atuba CHPS Compound';89651;3
+90757;'oIrZLSRJ8fd';'Azum-Sapeliga CHPS Compound';89651;3
+90758;'wN6fmnKje6Z';'Bansi CHPS Compound';89651;3
+90759;'l9kFGOkLNaa';'Bazua Clinic';89651;3
+90760;'zwD0Yk5if4Z';'Binduri Health Centre';89651;3
+90761;'RmgIkgLXsyM';'Bok-Sapeliga CHPS Compound';89651;3
+90762;'ekrrVLF5TJG';'Goore Clinic';89651;3
+90763;'ARwJNNBRV6i';'Kaadi CHPS Compound';89651;3
+90764;'GlG6hoXkktn';'Kpalugu CHPS Compound';89651;3
+90765;'QU4belFgwQD';'Kukparigu CHPS Compound';89651;3
+90766;'rcwhHTiHvgC';'Manga CHPS Compound';89651;3
+90767;'AA3SpbzV3YN';'Nafkolga CHPS Compound';89651;3
+90768;'Y81Y8wFUqlh';'Narango CHPS Compound';89651;3
+90769;'uxPrNcHeRxv';'Sakpare CHPS Compound';89651;3
+90770;'qblXMIQqf2V';'Tambiigu CHPS Compound';89651;3
+90771;'zV95VYMPbGI';'Yalugu CHPS Compound';89651;3
+90772;'OX0cpl6Qe10';'Yarigungu CHPS Compound';89651;3
+90773;'ZUjOAIkikLJ';'Zawse CHPS Compound';89651;3
+90774;'kD7dP3eVS5Y';'Aboabo CHPS Compound';89652;3
+90775;'qd3YxBEPhmJ';'Akroso Health Centre';89652;3
+90776;'sa4hteQtee9';'Amanfrom CHPS Compound (Birim Central)';89652;3
+90777;'BcjqLuYwCPP';'Asanteman CHPS Compound';89652;3
+90778;'zGcKnpW8HQA';'Asene CHPS Compound';89652;3
+90779;'jUJBhxEbvmT';'Asuboa CHPS Compound';89652;3
+90780;'S18qNkRUXT8';'Asuoso CHPS Compound';89652;3
+90781;'qJ1BM2u5uSh';'Atiankama CHPS Compound';89652;3
+90782;'yJvAuXo3VSl';'Badukrom CHPS Compound';89652;3
+90783;'bgCxquuH4L0';'Boafo Mobile Clinic';89652;3
+90784;'M3M6OrrD3KJ';'Community 6 CHPS Compound';89652;3
+90785;'vo8bMqtHP1R';'Diabetic Clinic';89652;3
+90786;'PMmGg9IbILY';'Emmanuel Maternity Clinic';89652;3
+90787;'mCZ7scnxLVp';'Emmauel Maternity';89652;3
+90788;'hcdyGI73H9J';'Epl CHPS Compound';89652;3
+90789;'oke4dwtnOpv';'Eshiem CHPS Compound';89652;3
+90790;'t6q9PyHZVhm';'Essam CHPS Compound';89652;3
+90791;'LmXk3zIs9a2';'God Lives Clinic';89652;3
+90792;'vioHOCkQcEf';'Gyadam CHPS Compound';89652;3
+90793;'xh8qFY3W7ud';'Gyedi Clinic';89652;3
+90794;'PrC6iK6QlPz';'Herald Foundation CHPS Compound';89652;3
+90795;'bl3p4RZOuIP';'Jewins Clinic';89652;3
+90796;'JJixyA3xIXg';'Jubilee Hospital (Bic)';89652;3
+90797;'LKRMMOw0fdI';'Kyeremase CHPS Compound';89652;3
+90798;'yurG4Fpf6IC';'Manso CHPS Compound';89652;3
+90799;'OxdBaeIeWx3';'Mawuli / Quarters CHPS Compound';89652;3
+90800;'LOUJvwvvrBl';'Mofram CHPS Compound';89652;3
+90801;'GVljcZF5M5g';'Ntoboase Maternity Clinic';89652;3
+90802;'uqzFcPkKJpu';'Nyame Nti CHPS Compound';89652;3
+90803;'vYvxX5bAToC';'Oda Hospital';89652;3
+90804;'oEy0HDJl2Ma';'Oda Nkwanta CHPS Compound';89652;3
+90805;'VWETFiIJYS3';'Oda Old Town CHPS Compound';89652;3
+90806;'RiJURT7FOas';'Oda RCH';89652;3
+90807;'xTqhD0beWEI';'Old Premier CHPS Compound (Oda New Town)';89652;3
+90808;'BwG670M49Bu';'Old Premier CHPS Compound';89652;3
+90809;'fuKUpoBsSKQ';'Onomabo CHPS Compound';89652;3
+90810;'Y3Nxxy6BPts';'Owusu Memorial Clinic';89652;3
+90811;'GjNACQVAImS';'St Theresa Clinic (Bic)';89652;3
+90812;'DtzHlpLTdkk';'Tabita CHPS Compound';89652;3
+90813;'udGsTuSbBxR';'The Community Hospital';89652;3
+90814;'uJJx7jcFwDd';'Abodom CHPS Compound (Birim North)';89653;3
+90815;'DarG6uHV602';'Abokyikrom CHPS Compound';89653;3
+90816;'TJfquXLEkhk';'Adausena CHPS Compound';89653;3
+90817;'P7I6PklQDzG';'Afosu Health Centre';89653;3
+90818;'COBnhubRVES';'Akoase CHPS Compound';89653;3
+90819;'MIPnekyweWH';'Akyem Isos Clinic';89653;3
+90820;'EHPVq41D5BL';'Amenam CHPS Compound';89653;3
+90821;'aaf5kaSVfEd';'Amuana Praso Hc';89653;3
+90822;'l8OYlh23Kos';'Bramkrom CHPS Compound';89653;3
+90823;'slKwSJdQzdD';'I & I Clinic';89653;3
+90824;'smtCeRSjqNb';'Kyenkyenku CHPS Compound';89653;3
+90825;'IIa0xzhcExP';'Mamanso CHPS Compound';89653;3
+90826;'UY1C0pDWRPG';'Mpintimpi CHPS Compound';89653;3
+90827;'zID2hy3LDLc';'New Abirem Hospital';89653;3
+90828;'i3p5uAryaLh';'Nkwateng Health Centre';89653;3
+90829;'lAfzNC3AoAP';'Noyem CHPS Compound';89653;3
+90830;'JCq9V9JvqTZ';'Nyafoman CHPS Compound';89653;3
+90831;'g2UREgfCqDS';'Okaikrom CHPS Compound';89653;3
+90832;'BTCo6zEq8p6';'Pankese CHPS Compound';89653;3
+90833;'Ur6JhUUi6TS';'Praso Kuma CHPS Compound';89653;3
+90834;'gJkGGVW0BsI';'St Michaels Health Centre';89653;3
+90835;'m4CteVdmSOq';'Tweapease HC';89653;3
+90836;'ip9zW3LRqL5';'Abodom CHPS Compound (Birim Sorth)';89654;3
+90837;'NV3FuTNJ77K';'Achiase Cluster 1 CHPS Compound  (Birim South)';89654;3
+90838;'SleDdE2Hep4';'Achiase  Cluster 2 CHPS Compound (Birim South)';89654;3
+90839;'ePiJk9tvZ8o';'Achiase  Cluster 3 CHPS Compound (Birim South)';89654;3
+90840;'GRgL17HCEcC';'Achiase Health Centre';89654;3
+90841;'rZWNNtx8d4I';'Aduasa CHPS Compound';89654;3
+90842;'oUUea8GdBaG';'Akenkensu CHPS Compound';89654;3
+90843;'CV7cNlU2mvI';'Akortekrom CHPS Compound';89654;3
+90844;'i5z8S4A6Ehu';'Anamase CHPS Compound';89654;3
+90845;'LwsLB9bA2WV';'Anyinam CHPS Compound';89654;3
+90846;'SIbot1hYbw4';'Aperade Health Centre';89654;3
+90847;'hnBPMjE6I0M';'Apoli CHPS Compound';89654;3
+90848;'IAIuNR5YqdB';'Apoli Ningo CHPS Compound';89654;3
+90849;'ZHx9ahH8z3P';'Awisa CHPS Compound';89654;3
+90850;'gEor9vegMIi';'Bieni CHPS Compound';89654;3
+90851;'GvFDxaQxmrQ';'Duakon CHPS Compound';89654;3
+90852;'f5DqZbId1ed';'Kokobeng CHPS Compound';89654;3
+90853;'dg4xcgPRq7G';'Nsuansa CHPS Compound';89654;3
+90854;'SJtB8Ijn45U';'Oforikrom CHPS Compound';89654;3
+90855;'yIJxwftk9NM';'Osoroase CHPS Compound';89654;3
+90856;'lGHbFV5ZO6D';'Swedru Catholic Clinic';89654;3
+90857;'elTgJi1xRRG';'Takyi CHPS Compound';89654;3
+90858;'edVE7OQf24Z';'Teshieman CHPS Compound';89654;3
+90859;'uvGpY7LE1Qq';'Afrikids Medical Centre';89655;3
+90860;'NZgmBbx7NRO';'Aguusi CHPS Compound';89655;3
+90861;'NOyZTTFwqxB';'Amiah Clinic';89655;3
+90862;'zIr3Z6GNUxt';'Anateem CHPS Compound';89655;3
+90863;'zASFeG9UmXM';'Asakunde Memorial Clinic';89655;3
+90864;'ndUZHoP7xeU';'Azorebisi CHPS Compound';89655;3
+90865;'yjBzW2OXzi2';'Bolga Health Centre';89655;3
+90866;'l49zU6kfSpO';'Coronation Health Centre';89655;3
+90867;'nSfunbWlGtf';'Dachio CHPS Compound';89655;3
+90868;'MwQIYU3GsKd';'Dorongo CHPS Compound';89655;3
+90869;'dst0DgfnJPM';'Dulugu CHPS Compound';89655;3
+90870;'EXnQlpyMjrz';'Gambibgo Clinic';89655;3
+90871;'LqaCIixOOa4';'Kalbeo CHPS Compound';89655;3
+90872;'KbNMzOCIci0';'Katanga CHPS Compound';89655;3
+90873;'eJ7Ysv9iSNF';'Kumbosco CHPS Compound';89655;3
+90874;'Xi2rTp2JseX';'Kunkwa CHPS Compound';89655;3
+90875;'mnLegohGuJL';'Madina CHPS Compound';89655;3
+90876;'gslX3YqwuEB';'Nyariga Clinic';89655;3
+90877;'LZLhO2S3sqZ';'Nyokorko CHPS Compound';89655;3
+90878;'MOX18WefCrq';'Police Clinic, Bolgatanga';89655;3
+90879;'fPEiudHLRM8';'Presby Clinic';89655;3
+90880;'JQk9wwYiAmq';'Regional Hospital, Bolgatanga';89655;3
+90881;'hQcl9gJRdFR';'Rhema Maternity';89655;3
+90882;'FaRgH5VlIdf';'Sherigu Health Centre';89655;3
+90883;'opvX9KR8lJY';'Sokabisi Health Centre';89655;3
+90884;'MiM04yhQ4pV';'Sumbrungu Health Centre';89655;3
+90885;'Vv4UfATW0d3';'Tindonsobligo CHPS Compound';89655;3
+90886;'gc8DQYso4Lq';'Yarigabisi CHPS Compound';89655;3
+90887;'xK7BAwhhrQP';'Yikene CHPS Compound';89655;3
+90888;'ffp4X4yDF7B';'Yipala (Bolga) CHPS Compound';89655;3
+90889;'ijZkmgUFMPf';'Yorogo CHPS Compound';89655;3
+90890;'ZOEYnuu43SY';'Zono CHPS Compound';89655;3
+90891;'t8yBXG1PByz';'Zuarungu Health Centre';89655;3
+90892;'iXmKyUCyisi';'Zuarungu-Moshie Clinic';89655;3
+90893;'pa0TYnWxvPy';'Abokobisi CHPS Compound';89656;3
+90894;'mmNWQ0AV7em';'Adaboya CHPS Compound';89656;3
+90895;'Z9nSPntPvGO';'Akolposiga CHPS Compound';89656;3
+90896;'zMDqognwCA5';'Amanga CHPS Compound';89656;3
+90897;'gRogySGMJDH';'Anafobisi CHPS Compound';89656;3
+90898;'NR6GEoYJDMd';'Anafobisi Clinic';89656;3
+90899;'uCtaKD6cXVj';'Apatanga CHPS Compound';89656;3
+90900;'hgJYF5GwO1G';'Apuwongo CHPS Compound';89656;3
+90901;'rtkPjzdQBoR';'Asologo CHPS Compound';89656;3
+90902;'C0bhOMtNtay';'Atampintin CHPS Compound';89656;3
+90903;'DpUsHinVfpX';'Atampisi CHPS Compound';89656;3
+90904;'q6xxgycZPic';'AtansekaCHPS Compound';89656;3
+90905;'G8IDiPfLwGD';'Awisi CHPS Compound';89656;3
+90906;'ij6g6WcdUpA';'Ayelbia CHPS Compound';89656;3
+90907;'qKfyuBhD6jE';'Ayopia CHPS Compound';89656;3
+90908;'HNHUv6NnRRK';'Balungu CHPS Compound';89656;3
+90909;'dVFY5vK8Ux1';'Beo Tanko CHPS Compound';89656;3
+90910;'raeTltPSv31';'Boko CHPS Compound';89656;3
+90911;'iQpBvCSx3TV';'Bongo Hospital';89656;3
+90912;'FB7DpFRnEtg';'Bongo Soe Health Centre';89656;3
+90913;'FIoi6SFqXfl';'Borigo CHPS Compound';89656;3
+90914;'zF0fDMrOUXh';'Dua Health Centre';89656;3
+90915;'oSPr0tGKqPF';'Feo CHPS Compound';89656;3
+90916;'yXXAdQnJ0Df';'Gamborogo CHPS Compound';89656;3
+90917;'jNNH00hK1Xx';'Goo Awaa CHPS Compound';89656;3
+90918;'os7QHQvxI3h';'Gowrie CHPS Compound';89656;3
+90919;'K35M3jvbrJ6';'Kabre CHPS Compound';89656;3
+90920;'oSDlyaCYqgj';'Kadare CHPS Compound';89656;3
+90921;'at6yvTMj3OP';'Kodorogo CHPS Compound';89656;3
+90922;'iaLQ3TKqCKA';'Kulpelliga CHPS Compound';89656;3
+90923;'Tfb5m5jQli1';'Kunkua CHPS Compound';89656;3
+90924;'CiJNybsE4Sw';'Kuyelgo CHPS Compound';89656;3
+90925;'dBR0Rtr4qrT';'Lungu CHPS Compound';89656;3
+90926;'Mh2keEpnAed';'Namoo Health Centre';89656;3
+90927;'OB6yge93w4q';'Nayorigo CHPS Compound';89656;3
+90928;'QNerFDiNC9L';'Nyariga CHPS Compound';89656;3
+90929;'rcwzq1VHyBQ';'Sambolgo-Moo CHPS Compound';89656;3
+90930;'Ud2hY9JymZz';'Sikabisi CHPS Compound';89656;3
+90931;'OlfE0CnhUmL';'Tangapore CHPS Compound';89656;3
+90932;'GvK2N6jXqCU';'TarongoCHPS Compound';89656;3
+90933;'dTRdiv8masF';'Vea Health Centre';89656;3
+90934;'R0aEQUEMmsh';'Wagliga CHPS Compound';89656;3
+90935;'hfGyh1HinMH';'Zorko Health Centre';89656;3
+90936;'coIWpfSI0L8';'Abosamso CHPS Zone';89657;3
+90937;'QkOr4lu9IOv';'Adeito CHPS Zone';89657;3
+90938;'tjGQmsuUr3B';'Ampento CHPS Zone';89657;3
+90939;'CjuP04EN0tt';'Ankaase CHPS Zone';89657;3
+90940;'rRvVGhO3TMM';'Anomawobi CHPS Zone';89657;3
+90941;'DshQER6Rq0d';'Anumso CHPS Zone';89657;3
+90942;'S0eaHV4ILPg';'Anyanso CHPS Zone';89657;3
+90943;'CePYrASJmjw';'Anyinase CHPS Zone';89657;3
+90944;'k6oYH66CToJ';'Apewu CHPS Zone';89657;3
+90945;'lQzdeQ9YBnG';'Asiwa CHPS Zone';89657;3
+90946;'BoeGSKiRyCb';'Asiwa Health Centre';89657;3
+90947;'mBKRQhgHJtJ';'Brofoyedru CHPS (Bosome-Freho)';89657;3
+90948;'jcsDPPHwHaU';'Dajanso CHPS Zone';89657;3
+90949;'bL8jCDXvmwk';'Damascus CHPS Zone';89657;3
+90950;'BOkS47Srpxo';'Danso CHPS Zone';89657;3
+90951;'t6QxVNqUIfp';'Duase CHPS Zone';89657;3
+90952;'MxhYaxn1Fjt';'Dunkura Health Centre';89657;3
+90953;'NIR3OFQMS9y';'Fereso CHPS Zone';89657;3
+90954;'NJjRFE9Jmq7';'Freboye CHPS Zone';89657;3
+90955;'ZeKXkzLsrhG';'Gyimakyi CHPS Compound';89657;3
+90956;'KoX97OcmChI';'Korchikrom CHPS Zone';89657;3
+90957;'YQdKlSu1FRG';'Mmorontuo CHPS Zone';89657;3
+90958;'HtqvE38PsMs';'Nancy Powels CHPS Compound';89657;3
+90959;'lZxG5vbEAxC';'Nsese CHPS Zone';89657;3
+90960;'lqLeCga1Eau';'Nsuaem  CHPS Compound (Bosome Freho)';89657;3
+90961;'kTb7IEeF5Pk';'Nsuta CHPS Compound  (Bosome Freho)';89657;3
+90962;'JoThLYFSe9g';'Nsutem CHPS Zone';89657;3
+90963;'kEFVkRCsInr';'St. Mary  Clinic (Bosome Freho)';89657;3
+90964;'nH99V8gu11y';'Tebeso I CHPS Zone';89657;3
+90965;'EjVj4GFthKZ';'Yapesa/Kokobin CHPS Zone';89657;3
+90966;'qZXx81ODvMg';'Abodom CHPS (Bosomtwi)';89658;3
+90967;'QqAGjWB71BK';'Abono CHPS Compound';89658;3
+90968;'Zuw4coVyydi';'Abountem CHPS Zone';89658;3
+90969;'GnxPuU3wFmo';'Abrankese CHPS Zone';89658;3
+90970;'xpvmd9xniwB';'Adagya CHPS Zone';89658;3
+90971;'KBfoOx4Hwig';'Aduaden CHPS Zone';89658;3
+90972;'YsIesbScGg7';'Adunku CHPS Zone';89658;3
+90973;'VRw8xWbWkC7';'Akokofe CHPS Compound';89658;3
+90974;'ofDT6mjzQT6';'Akwaduo CHPS Zone';89658;3
+90975;'kaNdL3rh0sb';'Amakom  CHPS (Bosomwe)';89658;3
+90976;'tfnP9cHcUFe';'Anyinatiase CHPS Zone';89658;3
+90977;'epxsV2r0tnY';'Apinkra CHPS Zone';89658;3
+90978;'M4uaPwBeD88';'Apinkra St. Mary''s Anglican Clinic';89658;3
+90979;'zBNtRLrkbZX';'Aputuogya CHPS Zone';89658;3
+90980;'C7V4efgFKZI';'Aputuogya RCH';89658;3
+90981;'xCP5pcZEeIQ';'Asisiriwa Mim CHPS Zone';89658;3
+90982;'oEwa8EVkQeV';'Ayush Memorial Hospital';89658;3
+90983;'DMZ1zLzG06A';'Bonkokor Boneagya CHPS Zone';89658;3
+90984;'NDtbgLcVjsF';'Brodekwano CHPS Zone';89658;3
+90985;'a3szQS9ATsI';'Brodekwano Methodist Clinic';89658;3
+90986;'Sra2zcTEd5o';'Comfap Maternity Clinic';89658;3
+90987;'RkorhpLUFw3';'Divine Mercy Hospital';89658;3
+90988;'ksBxLWHAfHG';'Esereso RCH';89658;3
+90989;'HCGl3NghoYj';'Esreso East CHPS Zone';89658;3
+90990;'SCil7H92xXS';'Esreso West CHPS Zone';89658;3
+90991;'SWIeDEsRLXt';'Feyiase CHPS Zone';89658;3
+90992;'jIV4zZZ2GyE';'Gods Grace Maternity';89658;3
+90993;'Sm4qReIA67I';'Jachie East CHPS Zone';89658;3
+90994;'VvgrawLEFEe';'Jachie Health Centre';89658;3
+90995;'nkWptV70J4c';'Jachie West CHPS Zone';89658;3
+90996;'aEmhNfYXSMH';'Konkoma CHPS Zone';89658;3
+90997;'Q4PsCyL8coW';'Konkoma Sda Clinic';89658;3
+90998;'IMy1TClqI0B';'Kuntanase CHPS Zone';89658;3
+90999;'T6iKhaNhXn7';'Kuntanase Government Hospital';89658;3
+91000;'LvIYyUp4r3B';'Lake Bosomtwe Methodist Clinic';89658;3
+91001;'lQQTqrbYeuF';'New Behenase CHPS Zone';89658;3
+91002;'iHoOHUArvKx';'Nkowi CHPS Zone';89658;3
+91003;'gzkYiihzeP7';'Nkwanta CHPS Zone';89658;3
+91004;'UTyBNhCR68s';'Nuaso CHPS Zone';89658;3
+91005;'I3zREmj7i1j';'Nyameani CHPS Zone';89658;3
+91006;'vWtvwb3x5g8';'Nyameani Methodist Clinic';89658;3
+91007;'pPEPXAG2quU';'Oyoko CHPS Compound';89658;3
+91008;'n3Q1whRRBt6';'Piase CHPS Compound';89658;3
+91009;'xBUvALvuvzN';'Pramso CHPS Zone';89658;3
+91010;'MpBP4061BmL';'Sewua CHPS Zone';89658;3
+91011;'LPNjLLhEwCQ';'Sewua Health Centre';89658;3
+91012;'rxp3i4u3eCX';'St. Michael''s  Catholic Hospital (Bosumtwe)';89658;3
+91013;'mG0FVoncqeU';'Tetrefu CHPS Zone';89658;3
+91014;'KdRW960W8GY';'Tetrefu Health Centre';89658;3
+91015;'M8dTiijNpoB';'Woarakese CHPS Zone';89658;3
+91016;'fYXyVAmINmA';'Yaase chps compound';89658;3
+91017;'Y3XLNYpeoEi';'Achanyeri-Goayie CHPS Compound';60515;3
+91018;'w7Imq9c93wD';'Azuayeri CHPS Compound';60515;3
+91019;'V7NE2q9leqn';'Bilinsa CHPS Compound (SANTEC)';60515;3
+91020;'SS7Q060LLtr';'Chiok CHPS Compound';60515;3
+91021;'pbId3KNuqSN';'Chuchuliga Yipaala CHPS Compound';60515;3
+91022;'RiFicUMyC9L';'Farinsa CHPS Compound';60515;3
+91023;'QkP93UULKh1';'Kaasa CHPS Compound';60515;3
+91024;'GvuuoElhLhl';'Kadema CHPS Compound';60515;3
+91025;'KZfeNCFMcoq';'Kalijiisa CHPS Compound';60515;3
+91026;'nXwxlLe3Oxs';'Kandema CHPS Compound';60515;3
+91027;'rDCfbYLqrR4';'Kom CHPS Compound';60515;3
+91028;'BQ1kjGd4oH4';'Kori CHPS Compound';60515;3
+91029;'I2NMvRuUVQm';'Mutiensa CHPS Compound';60515;3
+91030;'pBDkp9jo4Sv';'Namonsa CHPS Compound';60515;3
+91031;'u5I8U7b7ECd';'Nanjupiung CHPS Compound';60515;3
+91032;'pzYyb59UMf0';'Presby Urban Health Centre';60515;3
+91033;'s6P3NB6Vy3n';'Sanwaasa CHPS Compound';60515;3
+91034;'ggVVxaLu4vk';'St. Lucas Health Centre';60515;3
+91035;'ynx1jJ3OjQ1';'Suwarinsa CHPS Compound (SANSEC)';60515;3
+91036;'Ya0n96pSqdt';'Yikpieng/Jansa CHPS Compound';60515;3
+91037;'v9tXkIStirs';'Yimonsa CHPS Compound';60515;3
+91038;'BWLCDpNbbik';'Zaring/Bulba CHPS Compound';60515;3
+91039;'fzF8nHRSLqJ';'Zundema CHPS Compound';60515;3
+91040;'zjOa2CVeELw';'Bachongsa CHPS Compound';89659;3
+91041;'HQJ3TUcZfcn';'Chansa CHPS Compound';89659;3
+91042;'FoEzH4U2KWu';'Doninga Health Centre';89659;3
+91043;'kHRJIZ9SR4A';'Fumbisi Health Centre';89659;3
+91044;'yaZLpBYmhf4';'Gbedema CHPS Compound';89659;3
+91045;'MDKBGX0K0rD';'Gbedemblisi CHPS Compound';89659;3
+91046;'XPEqjtdenkC';'Jagsa CHPS Compound';89659;3
+91047;'YrmfdoPt1iP';'Jiningsa CHPS Compound';89659;3
+91048;'uTPP3PgHFPy';'Kanjarga Health Centre';89659;3
+91049;'WszddGYUs5D';'Kasiesa CHPS Compound';89659;3
+91050;'QG3qBZhAMpp';'Kunkwak CHPS Compound';89659;3
+91051;'Svepp6tEEiT';'Luisa CHPS Compound';89659;3
+91052;'XcZDsGaQil9';'Musidema CHPS Compound';89659;3
+91053;'S4UOybPkMxB';'Opus Dei Medical Centre';89659;3
+91054;'gMt3G2iM9Qz';'Uwasi CHPS Compound';89659;3
+91055;'pBuivxSF4mZ';'Wiesi CHPS Compound';89659;3
+91056;'WWPueIBFMIs';'Wupiensa CHPS Compound';89659;3
+91057;'M6V4g44PMNh';'Zamsa CHPS Compound';89659;3
+91058;'QIw1IqUEX8c';'Bussie Health Centre';89660;3
+91059;'aC8v6yZ8gj1';'Challa CHPS Compound';89660;3
+91060;'T4cnvZAqZls';'Daffiama Health Centre';89660;3
+91061;'dpSYFZJPEUG';'Dakyie CHPS Compound Zone';89660;3
+91062;'gvHWlc5zlfY';'Duang CHPS Compound';89660;3
+91063;'hQGeY6hWvDw';'Fian Health Centre';89660;3
+91064;'GFqDTpEcSD9';'Issa Health Centre';89660;3
+91065;'spRdOSGwiQ2';'Jenpensi CHPS Compound';89660;3
+91066;'SeCIyuqpRrO';'Jollinyiri CHPS Compound Zone';89660;3
+91067;'QR5wYmYVZfA';'Kamahegu CHPS Compound';89660;3
+91068;'KtyZnymVdOf';'Kojokpere Health Centre';89660;3
+91069;'kpMZ8UK5bZR';'Konzokala CHPS Compound';89660;3
+91070;'w9Fy4oJGGdl';'Owlo CHPS Compound';89660;3
+91071;'tTLnR0MBvhs';'Samanbo CHPS Compound';89660;3
+91072;'n8iTA5KMMB2';'Tabiesi CHPS Compound';89660;3
+91073;'ejz5Cbp6uxk';'Tuori- Woogberi CHPS Compound Zone';89660;3
+91074;'TA8SMF2yXEM';'Wogu CHPS Compound';89660;3
+91075;'Fy2zx6PoLF3';'Aboabo CHPS Compound (Denkyembou)';89661;3
+91076;'vtzZsCNIpmR';'Akim Wenchi Salvation Army Health Centre';89661;3
+91077;'jCUdSSCznYc';'Akwatia CHPS Compound';89661;3
+91078;'IanpvUrU1gN';'Anweaso No. 4 CHPS Compound';89661;3
+91079;'F8ogvNZDhGt';'Apinamang CHPS Compound';89661;3
+91080;'XCqE77EQBMo';'Apraku CHPS Compound';89661;3
+91081;'Vu7zhMM5S5s';'Bamanase CHPS Compound';89661;3
+91082;'uVwLFJFuB5r';'Boadua CHPS Compound';89661;3
+91083;'Vty7LV0iEMR';'Dwenease Health Centre';89661;3
+91084;'BAe2oRmHUkN';'Gcd Hospital';89661;3
+91085;'UfKK4BN3Pcy';'Kusi CHPS Compound';89661;3
+91086;'H9fAbfoMJfV';'Okumaning CHPS Compound';89661;3
+91087;'X8b5obCsHJW';'Sakyikrom CHPS Compound';89661;3
+91088;'ihKratEi8Uv';'St Dominic Hospital';89661;3
+91089;'TQS1Roe7nMV';'St Dominic Phc';89661;3
+91090;'uQ2hO1O6gpW';'Takrowase Health Centre';89661;3
+91091;'iVfT8hyLrQi';'Topremang CHPS Compound';89661;3
+91092;'VB9G6LBJEM0';'Aboabo Presby Health Centre';89662;3
+91093;'UL4rM4rfn5s';'Abonsrakrom CHPS Compound';89662;3
+91094;'az50rnE0Tb9';'Amasu Health Centre';89662;3
+91095;'LHyha9i8LGh';'Antwirifo Presby Clinic';89662;3
+91096;'kvHmyPfalg6';'Asikasu/Nsuhia Health Centre';89662;3
+91097;'zbnbVGmbyMm';'Danyame Health Centre';89662;3
+91098;'WCjniCbXWQW';'Dormaa Ahenkro Rch';89662;3
+91099;'TjB9OArIx30';'Dormaa Presby Hosp';89662;3
+91100;'ouaZrns3M5l';'Florence Maternity Home';89662;3
+91101;'sZmLj1SW3GE';'Gonokrom CHPS Compound';89662;3
+91102;'vX4QRcIeOku';'Kofiasua Community Clinic';89662;3
+91103;'kxv1T26A0qD';'Kwameasua Presby Health Centre';89662;3
+91104;'THqku2njk6Z';'Nsesereso Community Clinic';89662;3
+91105;'dQd8rVeE15m';'Ohenewaa Memorial Clinic';89662;3
+91106;'eXmWi1zyAoL';'Saviour Clinic';89662;3
+91107;'INGwQdP4JHL';'Tronang CHPS Compound';89662;3
+91108;'DUr8JlITGfL';'Twumkrom CHPS Compound';89662;3
+91109;'tSrzM5b1vzH';'Ahenboboano CHPS Compound Compound';89663;3
+91110;'ZRKeFnezfzg';'Akontanim CHPS Compound Compound';89663;3
+91111;'bJHcv9Q9cmB';'Ampenkro CHPS Compound';89663;3
+91112;'pCsJI3loHz0';'Asuotiano CHPS Compound Compound';89663;3
+91113;'aqWdXm16PkD';'Bishop Matthew Gyamfi Clinic';89663;3
+91114;'XUQ7yZi2yQh';'Bronikrom CHPS Compound';89663;3
+91115;'xn0bqIjnu6K';'Dormaa Akwamu Health Centre';89663;3
+91116;'FdSWcNly4Xi';'Habitat CHPS Compound';89663;3
+91117;'jTtXhC5GlTK';'Kobedi Asupra CHPS Compound';89663;3
+91118;'mI656ZUBuyR';'Kofibourkrom CHPS Compound';89663;3
+91119;'ypw7q34JcRk';'Kyeremasu Presby Clinic';89663;3
+91120;'cNdkQ2Wj9oH';'Nseseresu Asuhyiae CHPS Compound';89663;3
+91121;'DwXJB33Q8TX';'Otu Park CHPS Compound';89663;3
+91122;'sU48GUwbQ0p';'Peprah CHPS Compound';89663;3
+91123;'fhDoUI2i0pI';'Poultry CHPS Compound';89663;3
+91124;'EsATtBLOzuv';'Rachel Maternity Home';89663;3
+91125;'zmhXgpNZYsB';'Sawmill CHPS Compound';89663;3
+91126;'fnotaib98KH';'Wamfie Polyclinic';89663;3
+91127;'unw0OvylTD1';'Awiakrom Clinic';89664;3
+91128;'Cli9Lg5oBp7';'Ceci. Maternity Home';89664;3
+91129;'lwfOLyldA2y';'Diabaakrom CHPS Compound';89664;3
+91130;'CttZUJMicNy';'Krakrom CHPS Compound';89664;3
+91131;'wGSUZIVZUzX';'Kwabenadwomokrom Health Centre';89664;3
+91132;'oj1PmCFVyaN';'Kwadwokumikrom Presby Clinic';89664;3
+91133;'qNDkWKYDEie';'Kwakuanya Ebenezer Methodist Clinic';89664;3
+91134;'P4hmbxU5BCR';'Kwame Yeboah Krom CHPS Compound';89664;3
+91135;'AeEMk2AsbTv';'New Chiraa Health Centre';89664;3
+91136;'XehSgmB2NYB';'Nkrankwanta Health Centre';89664;3
+91137;'YfBsqom0onS';'Yaakrom Presby Health Centre';89664;3
+91138;'XTJpTJgvQUR';'Addonkwanta CHPS Compound';89665;3
+91139;'hgJMYBqSsQo';'Adukrom CHPS Compound (East Akim)';89665;3
+91140;'dDcNgJaZ9Wx';'Agyapomaa CHPS Compound';89665;3
+91141;'JVP1MBQ9aCU';'Akokoo CHPS Compound';89665;3
+91142;'XxwpNHVveYs';'Amanfrom  CHPS Compound (East Akim)';89665;3
+91143;'x4LuTBBwb2A';'Anweabeng CHPS Compound';89665;3
+91144;'hxjvyEnRjS9';'Anyinasin CHPS Compound';89665;3
+91145;'W5nM9dh6Ncs';'Apapam CHPS Compound';89665;3
+91146;'U51INpjt0ae';'Apedwa Health Centre';89665;3
+91147;'hhVCfCmla59';'Apedwa Rch';89665;3
+91148;'lT2oQO8jvt2';'Asafo Health Centre  (East Akim)';89665;3
+91149;'XeszH4OMRib';'Asafo Rch';89665;3
+91150;'woBYBEST7FM';'Asiakwa Health Centre';89665;3
+91151;'gL8ejDiObmO';'Asiakwa Rch';89665;3
+91152;'E6Pd6UYtPD4';'Asikam CHPS Compound';89665;3
+91153;'S3zBTxcQi7O';'Bomponso CHPS Compound';89665;3
+91154;'pEXe1mm7RUE';'Bomponso No. 2 CHPS Compound';89665;3
+91155;'yGnlqCmKTOy';'Bunso  Health Centre (East Akim)';89665;3
+91156;'xPio1r5qUTz';'Bunso Rch';89665;3
+91157;'UDzKYVLvh2U';'Crig Clinic';89665;3
+91158;'GJMt2wmxjpT';'Hawa Memorial Saviour Hospital';89665;3
+91159;'Wdj4EpzKsiF';'Kibi Government Hospital';89665;3
+91160;'CvU4Z3dErIq';'Kibi Rch';89665;3
+91161;'S33Zq0gTa8B';'Kukurantumi CHPS Compound';89665;3
+91162;'u2wT8kaa9Hu';'Kwasikomfo CHPS Compound';89665;3
+91163;'huWrGlXHHqX';'Maase CHPS Compound';89665;3
+91164;'bHEuegxng4N';'New Tafo Government Hospital';89665;3
+91165;'zCHS0o80GUQ';'Odumase CHPS Compound(East Akim)';89665;3
+91166;'Xvw2RZdxa5Q';'Old Tafo CHPS Compound';89665;3
+91167;'ruD81yWISwX';'Osiem CHPS Compound';89665;3
+91168;'e86LIAjcWZy';'Potrase CHPS Compound';89665;3
+91169;'IxDiAV2Mpha';'Reliance Maternity Home';89665;3
+91170;'aUJHp8QOXOb';'Sagyemase CHPS Compound';89665;3
+91171;'DTn15Og4Mx4';'Sos Clinic';89665;3
+91172;'E8sqFWf6iei';'Tafo Rch';89665;3
+91173;'lB1p3FBirut';'Tontro CHPS Compound';89665;3
+91174;'mIJNArFrtQr';'Willie Kings Maternity Home';89665;3
+91175;'Ph1nEEsV0yo';'Abenase CHPS Compound';60513;3
+91176;'VYXUU71Xi1L';'Aboanim Krofofrom CHPS';60513;3
+91177;'UtJH8bybBpB';'Achiase Nsomeaso CHPS';60513;3
+91178;'ebLuv0v4JBv';'Achiase Odumase CHPS';60513;3
+91179;'NmqJDlPkeEf';'Achinakrom CHPS';60513;3
+91180;'ZdRiZbanlJh';'Adako-Jachie Abankro CHPS';60513;3
+91181;'TqvIYeEtB1X';'Adumasa Krofrom CHPS';60513;3
+91182;'OegLz2QnBKB';'Adumase Ahenbronum CHPS';60513;3
+91183;'tV5pGwxnSwJ';'Akyawkrom CHPS';60513;3
+91184;'Ek39V8pzpxU';'Akyeremade CHPS';60513;3
+91185;'LH0VjduiVJJ';'Amoaman Achiase CHPS';60513;3
+91186;'lRUTPlasQcy';'Ampabame Adadientem CHPS';60513;3
+91187;'CVRYqef98Wu';'Apromase CHPS';60513;3
+91188;'PeMYd53bDkt';'Asotwe CHPS Compound';60513;3
+91189;'qMXpqauT903';'Atia CHPS compound';60513;3
+91190;'KMT2gkf77fO';'Besease CHPS (Ejisu-Juaben)';60513;3
+91191;'bB1FklTSZ3Q';'Bomfa Penipa CHPS';60513;3
+91192;'b1lHDGGO8Ug';'Bonwire North CHPS';60513;3
+91193;'wPkYIjGQF4j';'Bonwire South CHPS';60513;3
+91194;'vA80zPetLsv';'Dakopon Hospital Kwamo';60513;3
+91195;'aBx2L8bJY4I';'Damang CHPS (Ejisu-Juaben)';60513;3
+91196;'FhP4BGXRrwo';'Domeabra CHPS';60513;3
+91197;'N24p0JtaSnJ';'Duampompo-Bomfa CHPS';60513;3
+91198;'M15ksuME8Kf';'Ejisu Government Hospital';60513;3
+91199;'FY4Hff3vBh0';'Ejisu Newtown CHPS';60513;3
+91200;'ySLDPweXMdH';'Ejisu Zongo CHPS';60513;3
+91201;'dXnxTz88gIT';'Esaase CHPS (Ejisu-Juaben)';60513;3
+91202;'sY65vbfFp8G';'Essienimpong CHPS';60513;3
+91203;'nfmpsItcGjh';'Fumesua CHPS';60513;3
+91204;'bSRgB63BoUa';'Huttel Health Centre';60513;3
+91205;'DwuoHlGtlja';'Hwereso CHPS';60513;3
+91206;'w9WSG0FBdrw';'Juaben Government Hospital';60513;3
+91207;'yUZYvnllzuB';'Juaben Mmorontua CHPS';60513;3
+91208;'F5tKCbkMSaJ';'Krapa CHPS compound';60513;3
+91209;'GBH4S8UsuqO';'Kubease CHPS compound';60513;3
+91210;'sZP2HmMtdUb';'Kwamo CHPS compound';60513;3
+91211;'U9q6FNjtRjJ';'Kwaso Denteso CHPS';60513;3
+91212;'huUobNG98Vo';'Kwaso Kurotia CHPS';60513;3
+91213;'P04qFNpxOKo';'New Koforidua CHPS';60513;3
+91214;'ZaDNlwJFN7N';'Nkwantanan CHPS';60513;3
+91215;'HvDPdstXAUN';'Nkyerepoaso CHPS';60513;3
+91216;'HdaGLVa0y7G';'Nobewam CHPS';60513;3
+91217;'MPR834NQ6MY';'Nobewam Sda Clinic';60513;3
+91218;'UX74wnUlT7o';'Ofoase Abetenim CHPS';60513;3
+91219;'K8aEcrp4DR9';'Okyerekrom Kokobra CHPS';60513;3
+91220;'gF8rxaxIDPj';'Peminase CHPS';60513;3
+91221;'awSz9KpVkbR';'Rev. Walker Clinic Kokobra';60513;3
+91222;'pHz6ea9vU4L';'St. Anns Clinic Donyina';60513;3
+91223;'Pme7q7uqHD4';'Tikrom CHPS compound';60513;3
+91224;'QYZPFM7hKp4';'Wabiri-Akronwie CHPS';60513;3
+91225;'NEdyzc2D66j';'Wontonase Aburaso CHPS';60513;3
+91226;'s8wqhyFLWor';'Abota CHPS Zone';89666;3
+91227;'e9QEroBRLdW';'Adiembra CHPS Zone';89666;3
+91228;'dvpl9cX4bAU';'Aframso CHPS Compound';89666;3
+91229;'ePDwMCiQrVI';'Aheneboboano CHPS Zone';89666;3
+91230;'dE7XOumnuZL';'Amenamu CHPS Zone';89666;3
+91231;'TWD1SFzQhci';'Anyinasu East CHPS Zone';89666;3
+91232;'dgYQ80LkqA9';'Anyinasu West CHPS Zone';89666;3
+91233;'I572BWqlhj1';'Appiaso CHPS Zone';89666;3
+91234;'yFmY6TfHePK';'Asensemu CHPS Zone';89666;3
+91235;'xkWM9XhbNpw';'Asumeng CHPS Zone';89666;3
+91236;'I6jlMTMi4BP';'Asuogya-Gyankaka CHPS Zone';89666;3
+91237;'RHqU9SQJhoM';'Atta Akura CHPS Zone';89666;3
+91238;'O3wDCGj1HEJ';'Babaso CHPS Zone';89666;3
+91239;'VKImV8N4lE6';'Bemi CHPS Zone';89666;3
+91240;'mm5Fj9LwPKC';'Bonyon CHPS Zone';89666;3
+91241;'fqwZZdA0RZw';'Community Centre CHPS Zone';89666;3
+91242;'y2LQXdwK8lw';'Dagombaline CHPS Zone';89666;3
+91243;'EH5lpy8NlJb';'Dapaafo CHPS Zone';89666;3
+91244;'Xoa41lNJRks';'Drobong CHPS Zone';89666;3
+91245;'MACRb1qKJEx';'Dromankuma CHPS Zone';89666;3
+91246;'kR3JgFMd4Z7';'Ebuom CHPS Zone';89666;3
+91247;'yIzKO0BI35O';'Ejura Government Hospital';89666;3
+91248;'nyE5a4VeO4i';'Ejura Government Hospital-Rch';89666;3
+91249;'IkHotdUmuaw';'Ejura Old Market Centre CHPS Zone';89666;3
+91250;'o9Nfts5MDJv';'Frante CHPS Compound';89666;3
+91251;'hpYz1vk45bh';'Frante CHPS Zone';89666;3
+91252;'tDdQgsaU9G6';'Frante Zongo CHPS Zone';89666;3
+91253;'WsOeFMI1PNd';'Hiawoanwu CHPS Zone';89666;3
+91254;'DnMbUZmIFRD';'Homako CHPS Compound';89666;3
+91255;'WhmjMfqFif0';'Homako CHPS Compound-Rch';89666;3
+91256;'EMSvPE4zWYI';'Juaho CHPS Zone';89666;3
+91257;'CD3uFY83inI';'Kasei CHPS Zone';89666;3
+91258;'swaA2Li6OC4';'Kasim CHPS Zone';89666;3
+91259;'XDs4la6TMbI';'Kobriti CHPS Zone';89666;3
+91260;'TdQKLfEZod0';'Kyenkyenkura CHPS Compound';89666;3
+91261;'Ll3AptpS0yw';'Kyenkyenkura CHPS Compound Rch';89666;3
+91262;'MGXwvNambk6';'Low Cost CHPS Zone';89666;3
+91263;'VDRxF3ExvHx';'Masuo CHPS Zone';89666;3
+91264;'ske6iPbZ8ek';'Mempeasem CHPS Zone';89666;3
+91265;'mcH8Vf4Y4YY';'Mimunaso CHPS Zone';89666;3
+91266;'azmq0ipBWns';'Nkyensie CHPS Zone';89666;3
+91267;'GYnYdMTTYHJ';'Nokwareasa CHPS Rch Zone';89666;3
+91268;'Z3auFqrhMo1';'Nokwareasa CHPS Zone';89666;3
+91269;'wIwx88MwHsV';'Nokwreasa CHPS Compound';89666;3
+91270;'YEIxEvnUtK2';'Nyamebekyere CHPS Zone';89666;3
+91271;'O9dfO3SfA3W';'Sabonline CHPS Zone';89666;3
+91272;'DtbK5qcvrNO';'Sekyedumase Health Centre';89666;3
+91273;'ik96Vn70h3N';'Sekyedumase Heath Centre-Rch';89666;3
+91274;'aTSAsluwAqT';'Sekyedumase Zongo CHPS Zone';89666;3
+91275;'e1lI4SYmtKr';'Srichikura CHPS Zone';89666;3
+91276;'WoXM1jh2pJY';'St. Anthony Maternity Clinic';89666;3
+91277;'m7dqJPiIvjG';'St. Anthony Maternity Clinic Rch';89666;3
+91278;'uo5SHlU78D8';'St. Luke Hospital';89666;3
+91279;'OCCQnSNQSIX';'St. Luke Hospital-Rch';89666;3
+91280;'VraNr0Z59cR';'Sunkweye CHPS';89666;3
+91281;'fS5dqDc5fFu';'Teacherkrom CHPS Zone';89666;3
+91282;'Y0c89fDFjSz';'Abourso Clinic';89667;3
+91283;'tbup0jg47hT';'Addokrom CHPS Compound';89667;3
+91284;'y1r3u3jSaC7';'Adolescent Unit';89667;3
+91285;'qK1pZ6xiBlE';'Ahomahomaso Clinic';89667;3
+91286;'WViu0dq17Iu';'Akwanserem CHPS Compound';89667;3
+91287;'NR8bewpGMXp';'Ame Zion Health Centre Eastern';89667;3
+91288;'HSX4sbz0n4l';'Asarekwao CHPS Compound';89667;3
+91289;'pWPPGOo5oQ0';'Asirebuso Clinic';89667;3
+91290;'Huv2GtOW03z';'Begoro Clinic';89667;3
+91291;'ZkgS4nvZkMG';'Begoro Hospital';89667;3
+91292;'PolAA8aLTbU';'Begoro Salvation Army Clinic';89667;3
+91293;'IEpe8dBtqXH';'Bosuso Health Centre';89667;3
+91294;'Gu6VLQt4jdm';'Dedeso Clinic';89667;3
+91295;'r2hK3KAnvBS';'Dominase CHPS Compound';89667;3
+91296;'tc9OIbxbiuZ';'Dwenase (Fanteakwa) CHPS Compound';89667;3
+91297;'U3JYvSIJRa4';'Ehiamankyene  Clinic (Fanteakwa)';89667;3
+91298;'xr4PHxKjAVW';'Hemang  CHPS Compound (Fanteakwa)';89667;3
+91299;'cS1hi5vakcX';'His Grace Maternity Home';89667;3
+91300;'tUwu1UCcsOs';'Nkankama CHPS Compound';89667;3
+91301;'fjAL98lf9qd';'Nsutam CHPS Compound';89667;3
+91302;'OODrzPqEcpt';'Otuater CHPS Compound';89667;3
+91303;'pybP3LrjS6d';'Saamang CHPS Compound';89667;3
+91304;'lXMxJcsiwwB';'Akara CHPS Compound';89668;3
+91305;'tL317XwNsSZ';'Aloko CHPS Compound';89668;3
+91306;'LSUFK6Zua3I';'Basyonde Health Centre';89668;3
+91307;'HIhEVTe445c';'Bimpella CHPS Compound';89668;3
+91308;'TbQT7LLmiQ8';'Bimpella CHPS Compound (Delete From Dhims))';89668;3
+91309;'eCXmjRuKe1n';'Bugpiegu CHPS Compound';89668;3
+91310;'juHLb6xz3nD';'Bugri Health Centre';89668;3
+91311;'niwy06FX31r';'Bulpielsi CHPS Compound';89668;3
+91312;'DpmMmvkL92J';'Dabilla CHPS Compound';89668;3
+91313;'av8PQHF5qpw';'Denugu CHPS Compound';89668;3
+91314;'DGGRtCLs3yR';'Denugu Clinic';89668;3
+91315;'bBY0eNoI2O0';'Dusbuliga CHPS Compound';89668;3
+91316;'zlrJvayAfG8';'Duuri CHPS Compound';89668;3
+91317;'TXNENpl9Zmi';'Fame Clinic';89668;3
+91318;'HLQZakFDMmj';'Farfar CHPS Compound';89668;3
+91319;'JZpgzZRfqMJ';'Gagbiri CHPS Compound';89668;3
+91320;'V9uhEpcsoPG';'Garu Health Centre';89668;3
+91321;'fVKHNr7irn7';'Goum CHPS Compound';89668;3
+91322;'RY33iGhz7Pr';'Greater Light Clinic';89668;3
+91323;'ziwsU7kF08j';'Kolmasug CHPS Compound';89668;3
+91324;'q3jTSgiBhN0';'Kongo CHPS Compound';89668;3
+91325;'z3om7qwSEqP';'Kongo Clinic';89668;3
+91326;'vW4kXPDgvc2';'Konkomadan CHPS Compound';89668;3
+91327;'DS8PFb21Vaf';'Kpatia  CHPS Compound (Garu Tampane)';89668;3
+91328;'fmRR4eMOztN';'Kpatua CHPS Compound';89668;3
+91329;'vMla7cf3LUZ';'Kpenkpanyoung CHPS Compound';89668;3
+91330;'nwjo7kGu2dx';'Kpikpira CHPS Compound';89668;3
+91331;'eXW7NRUPwHV';'Kugasheigu CHPS Compound';89668;3
+91332;'hgudGialbNm';'Kugri CHPS Compound';89668;3
+91333;'gtOHkxaAkMo';'Kugzua CHPS Compound';89668;3
+91334;'AehCtu1s4cr';'Lord Clinic';89668;3
+91335;'Mg6CcYVhGlH';'Nadigri CHPS Compound';89668;3
+91336;'VBkSpf00MxJ';'Nagani CHPS Compound';89668;3
+91337;'gu029QOLkpF';'Ninsum CHPS Compound';89668;3
+91338;'uutcELWZbkM';'Pialugu CHPS Compound';89668;3
+91339;'JLId715HUiW';'Quality Medical Centre';89668;3
+91340;'edHia3PtkS0';'Rabito Clinic  (Garu)';89668;3
+91341;'GRchsTDVBxE';'Senebaga CHPS Compound';89668;3
+91342;'WUH1s3gwFs6';'SIISI CHPS Compound';89668;3
+91343;'vGrJJ67fwzY';'Songo Health Centre';89668;3
+91344;'oRRwcVVNr4i';'Suamvus CHPS Compound';89668;3
+91345;'SRdhXRp9yyg';'Sumaduri Clinic';89668;3
+91346;'JL8Akvzp1lK';'Sumaduri-Tubong CHPS Compound';89668;3
+91347;'LqQYwXrFq80';'Tariganga CHPS Compound';89668;3
+91348;'rX681ALmIj2';'Tarivago CHPS Compound';89668;3
+91349;'SWhNbpUHRvn';'Tempane CHPS Compound';89668;3
+91350;'MIT4uMTMGvH';'Wadugu CHPS Compound';89668;3
+91351;'oVorN8rlVAn';'Werichengo CHPS Compound';89668;3
+91352;'DLbZaKTdDNW';'Worikambo Health Centre';89668;3
+91353;'RbuK6fsaEhj';'Woriyanga Health Centre';89668;3
+91354;'YABDXvpYB69';'Yabrago CHPS Compound';89668;3
+91355;'MaKGE0RWSLV';'Yeogo CHPS Compound';89668;3
+91356;'QN56wYFnLBs';'Yizidug CHPS Compound';89668;3
+91357;'QMAJJW0le4G';'Adadiem Health Centre';89669;3
+91358;'Mi1Tqo1jF8H';'Amanfoso CHPS Compound';89669;3
+91359;'hoplcdDguWA';'Asiri CHPS Compound';89669;3
+91360;'M2ZX3fajbZ5';'Asuokor Health Centre';89669;3
+91361;'z94yHjkmIgA';'Bonakire CHPS Compound';89669;3
+91362;'rOlPXdj8gqc';'Buni CHPS Compound';89669;3
+91363;'eX90gM48d6w';'Dawiri CHPS Compound';89669;3
+91364;'grVBoodqyOt';'Duadaso Health Centre';89669;3
+91365;'NGdGrL4bfas';'Fountain Care Hospital';89669;3
+91366;'x4sRfDij3wv';'Goka Health Centre';89669;3
+91367;'JPkpWSmbMnt';'Holy Daniel''s Clinic, Sampa';89669;3
+91368;'bjWCIIgRKjT';'Jamera CHPS Compound';89669;3
+91369;'PDaJKF4Q3hv';'Johnson''s Clinic';89669;3
+91370;'rAF98txjTno';'Kabile CHPS Compound';89669;3
+91371;'UkbG8YrCjEt';'Kokoa Health Centre';89669;3
+91372;'vvC1trGFjgK';'Kokosua CHPS Compound';89669;3
+91373;'IV6RW7Wvs7r';'Mayera CHPS Compound';89669;3
+91374;'d0skCbKIyvE';'Nsonsomea CHPS Compound';89669;3
+91375;'ecfkXlbeoX9';'Rch/Disease Control Clinic';89669;3
+91376;'G2nWOJo5Xvi';'Sampa Government Hospital';89669;3
+91377;'Rzoyv9SlPiq';'Seketia Health Centre';89669;3
+91378;'a17w0zr6CDa';'Suma Presby Health Centre';89669;3
+91379;'lqME7wKYAFl';'Abirikasu Health Centre';89670;3
+91380;'C3JgxyjDt6n';'Abuokrom Chips';89670;3
+91381;'Ijy8ehaLpb3';'Adamsu Health Centre';89670;3
+91382;'uQhzaLsC4o9';'Adiokor Rural Clinic';89670;3
+91383;'Z58lOLCfrsO';'Angel Mat Home';89670;3
+91384;'x8xAtqAApLw';'Asare Rural Clinic';89670;3
+91385;'OOG2ux4iEeB';'Asempanaye CHPS Compound';89670;3
+91386;'zx3wqiVsoox';'Atuna CHPS Compound';89670;3
+91387;'ef4ff6eSqCt';'Baano Rural Clinic';89670;3
+91388;'SgNXs4MF1D7';'Bodaa Rural Clinic';89670;3
+91389;'VeqWpLusFh8';'Drobo Polyclinic';89670;3
+91390;'r1HR06TnT9f';'Drobo Rch';89670;3
+91391;'YrRRdhYtVeF';'Drobo St Mary Hospital';89670;3
+91392;'ghm0R47CTJz';'Dwenem Rural Clinic';89670;3
+91393;'zie3bebWVlw';'Gonasua Health Centre';89670;3
+91394;'bCTaAT9uFr3';'Lizzy  Maternity Home (Jaman South)';89670;3
+91395;'zBIWxlrVluO';'Presbyterian Clinic  (Jaman South)';89670;3
+91396;'fYcvTtOi80F';'Psychiatric Unit';89670;3
+91397;'Cx4pU1ULW3m';'Pyschiatic Clinic';89670;3
+91398;'psQPMoolemR';'Saviour  Maternity Home (Jaman South)';89670;3
+91399;'zHK6ZDOwjpM';'St Michael  Mat Home (Jaman South)';89670;3
+91400;'LuLsFXSf0nW';'Tekese Chps compound';89670;3
+91401;'ViufuoY5lm7';'Vida Maternity Home';89670;3
+91402;'xHk4Yfa6OO2';'Yaamansa CHPS Compound';89670;3
+91403;'K8iEqsFQ4DY';'Zezera Health Centre';89670;3
+91404;'gbobrMpf2uG';'Chapuri CHPS Compound';60520;3
+91405;'IkxsBaa5BYA';'Degri CHPS Compound';60520;3
+91406;'iZFyXPtmuNu';'Gbare CHPS Compound';60520;3
+91407;'qKbDKGU8YPA';'Guoripuo CHPS Compound';60520;3
+91408;'Dk0wjIdTgwj';'Kogri CHPS Compound';60520;3
+91409;'KkZXoQhbC2L';'Kuncheni CHPS Compound';60520;3
+91410;'DQiPgCvwlRi';'Nambeg CHPS Compound';60520;3
+91411;'jD4goMwra6s';'Ping CHPS Compound';60520;3
+91412;'uIV0D60yP2I';'Saawie CHPS Compound';60520;3
+91413;'rGiR2RfK8Uf';'Sabuli Health Centre(Queen Of Peace)';60520;3
+91414;'XdIgHhFpobO';'Sigri CHPS Compound';60520;3
+91415;'DGqmzpI1JhL';'Somboro CHPS Compound';60520;3
+91416;'RqqKUJZrjfC';'St. Joseph''s Hospital';60520;3
+91417;'JNkUeqEwPcI';'Tamapuo CHPS Compound';60520;3
+91418;'R2W0mBK2kmE';'Tampaala CHPS Compound';60520;3
+91419;'E9xA0BPBqIY';'Tizza Health Centre';60520;3
+91420;'DFP9Q5sDj5q';'Ulkpong CHPS Compound';60520;3
+91421;'C4e3uXR7Dbq';'AFA Memorial Clinic';60516;3
+91422;'FlR4GtMHwGy';'Biu CHPS Compound';60516;3
+91423;'PTZgNs58NF7';'Doba CHPS Compound';60516;3
+91424;'l37Ewk1ZwPe';'Gia CHPS Compound';60516;3
+91425;'HEm4PZWSGNJ';'Gongnia CHPS Compound';60516;3
+91426;'x3kN0eDbFfA';'Gumongo CHPS Compound';60516;3
+91427;'vlggOHOmHnM';'Kapania CHPS Compound';60516;3
+91428;'TmeoC6GdFyV';'Kassena Nankana CHPS Compound';60516;3
+91429;'ztgBxAW0SIh';'Korania CHPS Compound';60516;3
+91430;'HSRnpTzs3rz';'Manyoro CHPS Compound';60516;3
+91431;'EoC4BDlbB3A';'Naaga CHPS Compound';60516;3
+91432;'tBu5OgVY7TC';'Natugnia CHPS Compound';60516;3
+91433;'ZQm4VkGPTxM';'Nayagnia CHPS Compound';60516;3
+91434;'QnHGECKhpMH';'Nyangua CHPS Compound';60516;3
+91435;'rV2Q9AUOJgN';'Pindaa CHPS Compound';60516;3
+91436;'sF8wrmYLmkE';'Pungu North CHPS Compound';60516;3
+91437;'cXax2MyqpGQ';'Pungu South CHPS Compound';60516;3
+91438;'aj2OiVdUkdb';'Vunania CHPS Compound';60516;3
+91439;'BTyVArtitWd';'War Memorial Hospital';60516;3
+91440;'MqOkLNwhsSu';'Wuru CHPS Compound (Kasena-Nankana Municipal)';60516;3
+91441;'sVjlOq9pDvJ';'Yua CHPS Compound';60516;3
+91442;'Es2jZfbAINH';'Zoongo CHPS Compound';60516;3
+91443;'GO85pWVndKB';'Zuo CHPS Compound';60516;3
+91444;'VPe6f0bLK1E';'Amuntanga CHC';89671;3
+91445;'R5K3Ky25cWf';'Apiagumongo CHC';89671;3
+91446;'CfpU1PHlXsI';'Ateyorum CHC';89671;3
+91447;'n2Uus3PAnAZ';'Azinzoka CHC';89671;3
+91448;'wshbMdustSX';'Babile-Nyania CHPS Compound';89671;3
+91449;'C19DTDoyzCB';'Busungu Chc';89671;3
+91450;'tE85lVpE87t';'Channia CHC';89671;3
+91451;'e6vUGreY2Qp';'Chiana Health Centre';89671;3
+91452;'rhle8YujBdx';'Gonum CHC';89671;3
+91453;'FXaBHin3Owm';'Gwenia Vornia CHC';89671;3
+91454;'BhW2NkX0Znj';'Kaasi CHC';89671;3
+91455;'ZCx5LTa6y33';'Kajelo Chc';89671;3
+91456;'dWhCX3S4cUi';'Kalvio Chc';89671;3
+91457;'fq8gwl1B2VU';'Kalvio-Gugoro CHPS Compound';89671;3
+91458;'BZoDu2wfgnD';'Kanania Chc';89671;3
+91459;'ji6ECRHdyzv';'Kandiga Health Centre';89671;3
+91460;'ei6GNbyGClb';'Katiu Chc';89671;3
+91461;'bRJpwRXDBTS';'Kayoro Health Centre';89671;3
+91462;'sD3qQlPKYxP';'Kuliya CHC';89671;3
+91463;'hdf1ppoxWA6';'Kurugu Chc';89671;3
+91464;'V0Ojmf8Z7hy';'Longo CHC';89671;3
+91465;'hr3MqGK987G';'Mirigu Chc';89671;3
+91466;'uHALKoaGSAM';'Nabango CHC';89671;3
+91467;'hcenRmqkapy';'Nakolo Health Centre';89671;3
+91468;'Xu0mxmEjYYN';'Nakong Chc';89671;3
+91469;'sKOe4IOa7ME';'Nania CHC';89671;3
+91470;'u38nG5tobGL';'Navio/Badunu CHC';89671;3
+91471;'ey2YBXwgCqH';'Navio/Navio Chc';89671;3
+91472;'OQIAPr9p0eG';'Navio/Sakaa CHC';89671;3
+91473;'zNq6quxIfRV';'Nyangania Chc';89671;3
+91474;'yolrBBtmyWe';'Paga Health Centre';89671;3
+91475;'mcWRYEXimVA';'Saa CHC';89671;3
+91476;'L1DZ9LNdhff';'Sirigu Health Centre';89671;3
+91477;'Dqbk98VcxYt';'Wedam Medical Centre';89671;3
+91478;'akcAzaMU4fn';'Wisdom Clinic (Kassena Nankana West)';89671;3
+91479;'ZXZCmLND7xi';'Wuru CHC';89671;3
+91480;'pwld9oqazrk';'Zenga CHPS Compound';89671;3
+91481;'f7pXHaRR0ye';'Annor Asare Hospital';89672;3
+91482;'u6ZuEUrABnN';'Asantekwa CHPS Compound';89672;3
+91483;'c0WS0L5C6T6';'Atta Akura CHPS Compound';89672;3
+91484;'wKq0hAZedhX';'Babator CHPS Compound';89672;3
+91485;'foMpFmQUnA5';'Baniantwe CHPS Compound';89672;3
+91486;'mPKe6Fp5gIM';'Busuama Rural Clinc';89672;3
+91487;'mNNCDZiBnC8';'Dawadawa Heath Centre';89672;3
+91488;'mRVpTy7WHR9';'Dwere/Gomboi CHPS Compound';89672;3
+91489;'BGjk415yqjD';'Glory Prince Of Peace Maternity';89672;3
+91490;'vlSNgKT1OqG';'Gulumpe CHPS Compound';89672;3
+91491;'RbrcYCs0vPp';'Japan House CHPS Compound';89672;3
+91492;'rFUuL1VSWp0';'Kadelso CHPS Compound';89672;3
+91493;'c94eaYVqqqx';'Kawampe CHPS Compound';89672;3
+91494;'pVoopW8C2QX';'Kintampo Muni Hospital';89672;3
+91495;'swceNjp1Cvk';'Kintampo Rch';89672;3
+91496;'EVhoKTcE20F';'Kobeda NO. 2 CHPS Compound';89672;3
+91497;'xB1hC8ByFK1';'Kunsu Health Centre';89672;3
+91498;'urDa10Bwa2E';'Kurawura-Akura CHPS Compound';89672;3
+91499;'zi5Jn20bAaf';'Kyeremankuma CHPS Compound';89672;3
+91500;'YmynHn21Scf';'Miawani CHPS Compound';89672;3
+91501;'LONjYrnE9ng';'Mps CHPS Compound';89672;3
+91502;'WPlPzdlFPwu';'New Longoro Health Centre';89672;3
+91503;'CnCO30o35uf';'Nutrition Rehabilitation Centre';89672;3
+91504;'zcvxArQ4D9L';'Portor CHPS Compound';89672;3
+91505;'Y5DKftqo16K';'Sunkwa  Clinic (Kintampo North)';89672;3
+91506;'I5efWLJPTER';'Yezura Hospital';89672;3
+91507;'BSQnIgqtfUW';'Agyegyemakunu CHPS Compound Cpd';89673;3
+91508;'KZ30gOf9jnr';'Agyina CHPS Compound';89673;3
+91509;'iG994yG4R83';'Amoma East CHPS Compound';89673;3
+91510;'SQJb8pWaPkp';'Amoma Health Centre';89673;3
+91511;'YxjlTYofsTk';'Amoma West CHPS Compound';89673;3
+91512;'AyRlyIgXj1X';'Ampoma CHPS Compound Cpd';89673;3
+91513;'DLThjlP5Ll6';'Anyima East CHPS Compound';89673;3
+91514;'unU4pJ7WLT1';'Anyima Health Centre';89673;3
+91515;'rPI70FmiWqT';'Anyima West CHPS Compound';89673;3
+91516;'XC1rtB8dtuE';'Apaaso CHPS Compound';89673;3
+91517;'Tsxu1m4UL8e';'Apesika CHPS Compound';89673;3
+91518;'zWisAy4s5qW';'Apesika East CHPS Compound';89673;3
+91519;'J4L3mrvXHGG';'Apesika West CHPS Compound';89673;3
+91520;'Q7DGM8MV6Te';'Ayorya CHPS Compound Cpd';89673;3
+91521;'hkT11ZeAv1E';'Bredi CHPS Compound Cpd';89673;3
+91522;'Zcv5ecnlehZ';'Chirehin CHPS Compound Cpd';89673;3
+91523;'dimLeEGP7GB';'Dumso Bethel CHPS Compound';89673;3
+91524;'BlHPdVKnHA6';'Hyireso CHPS Compound';89673;3
+91525;'Yjw1SIJnKyP';'Jema East CHPS Compound';89673;3
+91526;'hs3HQTHLYTY';'Jema Nkwanta CHPS Compound';89673;3
+91527;'x40X8lqy7wI';'Jema RCH';89673;3
+91528;'SdzUh2zALZh';'Jema West CHPS Compound';89673;3
+91529;'nSUd4JgPSFU';'Kintampo South District Hospital';89673;3
+91530;'QcVcsVaZRGL';'Kokuma CHPS Compound';89673;3
+91531;'rtlVB8nXlN6';'Krabonso CHPS Compound Cpd';89673;3
+91532;'P8mgtoluwOT';'Kwabia CHPS Compound Cpd';89673;3
+91533;'oaCf4DkxY9b';'Mansie CHPS Compound Cpd';89673;3
+91534;'vBvkVD69pBd';'Nante CHPS Compound Cpd';89673;3
+91535;'VcKvx0CU7JQ';'Ntankoro CHPS Compound Cpd';89673;3
+91536;'rQ91PHYXbuK';'Pamdu CHPS Compound';89673;3
+91537;'ojnvck0GJXL';'Paninamisa CHPS Compound';89673;3
+91538;'Cc7sz4UqcYt';'Perpetual Help Mat Home';89673;3
+91539;'vBXEKOhKatE';'Pramposo CHPS Compound';89673;3
+91540;'kMOYEtd0bWg';'Sabule CHPS Compound Cpd';89673;3
+91541;'SkCAznb4MLh';'Weila CHPS Compound';89673;3
+91542;'C4hrxiZ53Rq';'31st December Women Movement CHPS Zone';89674;3
+91543;'E8lzB5k8Iao';'4Medical Reception Station Clinic';89674;3
+91544;'nruFc7F6L2K';'Abed CHPS Zone';89674;3
+91545;'mTqkvAdP2FU';'Aboahia CHPS';89674;3
+91546;'aJT85X5yFNo';'Abrafi Memorial Clinic';89674;3
+91547;'iOIbw5AUFm1';'Abusuakruwa CHPS';89674;3
+91548;'sAlLqqmlNPt';'Adabie Medical Centre';89674;3
+91549;'JnBUnYsH9K9';'Adabraka CHPS';89674;3
+91550;'PgQmA2wmIrL';'Adabsab Maternity Home';89674;3
+91551;'aUanYkv5Y49';'Adiembra-TUC CHPS Zone';89674;3
+91552;'YAvpoLp8NCJ';'Adoato-Adomanu CHPS Zone';89674;3
+91553;'sW8hHYYOOuC';'Adompom CHPS';89674;3
+91554;'gbxtNK0is1I';'Afful Nkwanta CHPS Zone';89674;3
+91555;'kELwiLPp3in';'Agric -Nzema Junction CHPS Zone';89674;3
+91556;'aKBSG02LJnn';'Ahenebronum North CHPS';89674;3
+91557;'gMbZn9SStds';'Ahenebronum South CHPS';89674;3
+91558;'h0sCcNpMJ9p';'Ahmadiyya Homeopatic Acupunture And Herbal Clinic';89674;3
+91559;'M0hZL9qV9Yk';'Ahodwo -Dabaan CHPS Zone';89674;3
+91560;'o7JZh3ZqJgN';'Allen Clinic';89674;3
+91561;'WinREXZV0bh';'Ama Dansowaa Clinic';89674;3
+91562;'BFYVmrDT1CZ';'Amakom CHPS Zone';89674;3
+91563;'jesx30N9hF7';'Amoah Memorial Clinic';89674;3
+91564;'JtYkrD58aSx';'Ampabame Clinic';89674;3
+91565;'SucgxZyTPDb';'Aninwaah Medical Centre';89674;3
+91566;'wCbOfbf4uko';'Anlo Fante New Town CHPS Zone';89674;3
+91567;'IfZxwWqF4jL';'Anloga CHPS Compound';89674;3
+91568;'Yn5558vrtPI';'Anomangye CHPS';89674;3
+91569;'SElwLUKzAt5';'Anwiam Clinic';89674;3
+91570;'YwIDmwBjCx8';'Anwomaso CHPS Zone';89674;3
+91571;'eMMzilKBUE8';'Anwomaso Health Centre';89674;3
+91572;'E3GY2dpQUsH';'Anyinam CHPS Zone';89674;3
+91573;'w89MW7CbEpP';'Apatrapa CHPS Zone';89674;3
+91574;'UfRdE8zk0Xc';'Apatrapa Health Centre';89674;3
+91575;'GE0bRZtjOvJ';'Apemso CHPS Zone';89674;3
+91576;'FMQ0rnNSySI';'Appiadu CHPS Zone';89674;3
+91577;'b2Znb6YLTEJ';'Aprabon CHPS Zone';89674;3
+91578;'vWkjlfWNg5b';'Aprade CHPS Zone';89674;3
+91579;'Swy5fl9z4YK';'Asafo Agyei Hospital';89674;3
+91580;'oTrpdhGr8e6';'Asafo CHPS Zone';89674;3
+91581;'r03HHy6q7dK';'Asem CHPS Zone';89674;3
+91582;'Wqxnz2PIMAO';'Asihene Maternity Home';89674;3
+91583;'c2d6LAiaSto';'Asuoyeboah Hospital';89674;3
+91584;'BJZAIyciiqV';'Atasomanso Hospital';89674;3
+91585;'byrkrOvEOmY';'Awurade Adom Maternity Home';89674;3
+91586;'XSDx7fW1eye';'Ayeduase CHPS Zone';89674;3
+91587;'OscJaYQRx5v';'Ayeduase Health Centre';89674;3
+91588;'aAKMxUERSZD';'Ayigye Ahinbronon CHPS Zone';89674;3
+91589;'bhywXrZPPYA';'Ayigye Zongo CHPS Zone';89674;3
+91590;'k2jsfQOv11m';'Ayiwa Memorial Maternity';89674;3
+91591;'Q04XVNVMTsk';'Baby Pearl Maternity';89674;3
+91592;'ZBvX88xZ0Vv';'Bantama CHPS (Kumasi)';89674;3
+91593;'opqY8QZG2c3';'Bebre CHPS Zone';89674;3
+91594;'r28Q69PfL3g';'Bohyen-Abrepo CHPS';89674;3
+91595;'D7koYX2YPnI';'Bokro CHPS Zone';89674;3
+91596;'N2xkcwTiPTD';'Bomso Clinic';89674;3
+91597;'dfjzSm7LBW6';'Bremang Central CHPS';89674;3
+91598;'CuOq6yiV23w';'Bremang West CHPS';89674;3
+91599;'uiKLlKUmL0z';'Buokrom Estate  CHPS (Kumasi)';89674;3
+91600;'HAqpy90fs9g';'Central Market CHPS Zone';89674;3
+91601;'LIB54EVxPBq';'Central Maternity Home Annex';89674;3
+91602;'YvK0hI63MEt';'Chirapatre CHPS Zone';89674;3
+91603;'EbVJaEO0ct4';'Christ The King Hospital';89674;3
+91604;'oasak3TiH9B';'City Hospital';89674;3
+91605;'TJHWWFb8vPe';'Clinic Ash Town';89674;3
+91606;'NaJJ0TdDWEz';'Cocoa Clinic (Kumasi)';89674;3
+91607;'FmJkv5eKq5G';'Dadiesoaba CHPS Zone';89674;3
+91608;'rjhOGX4CUEU';'Deduako CHPS Zone';89674;3
+91609;'yN7gO26GP88';'Deeper Life CHPS Zone';89674;3
+91610;'M3hLnIaebuU';'Dichemso CHPS Zone';89674;3
+91611;'J9KkyFNDMNx';'Domenase CHPS Zone';89674;3
+91612;'ccmUS0QaoSk';'Dompoase CHPS Zone';89674;3
+91613;'U1CSu4gzMrp';'Dr. Ampadu CHPS Zone';89674;3
+91614;'pa8YGAIZVnq';'Duasi New Site CHPS Zone';89674;3
+91615;'CW6f8j03Y39';'Duasi Old Site CHPS Zone';89674;3
+91616;'fe7BZmWalQN';'Emena chps zone (Kumasi)';89674;3
+91617;'xlnXBy8IhRW';'Emena CHPS Zone';89674;3
+91618;'HRdgLblvcJy';'Fankyenebra Clinic';89674;3
+91619;'B3nq4WScbjm';'Fante New Town CHPS Zone';89674;3
+91620;'IbcwQyouk1X';'First Care Hospital';89674;3
+91621;'qR29Gj74mOq';'Florence (Kumasi) Maternity Home';89674;3
+91622;'szXTcqnbnBx';'Gansmens Medical Centre';89674;3
+91623;'U3gK1WrUdxJ';'Garrages Clinic';89674;3
+91624;'KlclWU5gqeB';'Gods Glory Hospital';89674;3
+91625;'TgFukPHXJfj';'Grace Krapeanam Maternity Home Clinic';89674;3
+91626;'J2N03LTvEK8';'Gyinyase CHPS Zone';89674;3
+91627;'NDK9F9SkZcb';'Happy Day Maternity Home';89674;3
+91628;'FOJx1U0GmLF';'Happyday Maternity Annex';89674;3
+91629;'iR814kgounn';'Holy Rosary Maternity Home';89674;3
+91630;'atEwZ0P6bYJ';'Horizon Hospital';89674;3
+91631;'OHj9jvWskPc';'Humble  Maternity Home (Kumasi)';89674;3
+91632;'OrmFvEyO4AU';'Jomo Medical Centre';89674;3
+91633;'uB46t4sbh6H';'Kaase CHPS Zone';89674;3
+91634;'OlN8rpJlwpe';'Kaase Maternity Home';89674;3
+91635;'v9UXOldMgJh';'Kama Clinic';89674;3
+91636;'ahMCOe9C47Z';'Keffam Hospital';89674;3
+91637;'S8ntlqdecEm';'Kentinkrono CHPS Zone';89674;3
+91638;'QMz2vRmdJno';'Kezia Maternity Home';89674;3
+91639;'VRcKQtyTKwh';'Kma Clinic';89674;3
+91640;'fpQey7F9KdZ';'Knust CHPS Zone';89674;3
+91641;'XVXHwOv81a4';'Knust Hospital';89674;3
+91642;'PnyybXdwfOZ';'Kogloko CHPS Zone';89674;3
+91643;'xwcOzuL7Oze';'Kokoben CHPS Zone';89674;3
+91644;'ZRnZmaw2GHE';'Komfo Anokye Teaching Hospital';89674;3
+91645;'dJJXVBM44yJ';'Kotei CHPS Zone';89674;3
+91646;'ddyKtmkLs5k';'Krofrom CHPS compound';89674;3
+91647;'kG0nbPaHPSV';'Krofrom Cpc CHPS';89674;3
+91648;'u9B3b0D33wQ';'Krofrom West CHPS';89674;3
+91649;'iOdo5YdkIz5';'Kropo Charity Hospital';89674;3
+91650;'gFnNq8hhCTw';'Kuffuor Clinic';89674;3
+91651;'xmWJlWUXYQu';'Kumaning Medical Centre';89674;3
+91652;'npMrf4VO7Fi';'Kumasi Children''s Hospital';89674;3
+91653;'bdc1bQtiLyk';'Kumasi Church Of Christ Clinic';89674;3
+91654;'FuZ0ggWyqlT';'Kumasi Comfort Maternity Home';89674;3
+91655;'kk0tDZ78Dus';'Kumasi County Hospital';89674;3
+91656;'gzJNAl5Vjby';'Kumasi Police Clinic';89674;3
+91657;'UEr1QR6lBRt';'Kumasi South Hospital';89674;3
+91658;'FMQx6Cu5GYP';'Kuwait CHPS Zone';89674;3
+91659;'IA5ponspOPB';'Kwadaso Sda Hospital';89674;3
+91660;'PuuxGbdiDb7';'Kwadaso-Owhimase CHPS';89674;3
+91661;'OeUc1BMOu3m';'Kwapra CHPS';89674;3
+91662;'TZBayOBRfRr';'Lady Of Grace Hospital';89674;3
+91663;'hdRDUeOEtD7';'Living Waters Maternity Home';89674;3
+91664;'FbTojMIuuvT';'Maakro CHPS';89674;3
+91665;'iMxBQlNLOEp';'Maame Serwaa Maternity';89674;3
+91666;'r96x8uNxm9J';'Magazine Hospital';89674;3
+91667;'VVpns7Up31U';'Manhyia Government Hospital';89674;3
+91668;'h6SQlyct6cC';'Maranatha Hospital';89674;3
+91669;'KOvqkbXuwzy';'Marboah Hospital';89674;3
+91670;'BG9rzVqczPP';'Marie Stopes clinic';89674;3
+91671;'VYB9bFsDrhk';'Mater Dei Hospital';89674;3
+91672;'NzqhdgzMFYL';'Maternal And Child Health Hospital';89674;3
+91673;'gsTCWoigZjM';'Maud''s Maternity Home';89674;3
+91674;'POaMnVZSxSj';'Mommie Maternity Home';89674;3
+91675;'pNzJAOs7epn';'Moshie Chief CHPS Zone';89674;3
+91676;'ngnU5YQLxZ5';'Moshie Zongo Anyaano CHPS Zone';89674;3
+91677;'b7XdD4bO750';'Moshie Zongo Health Centre';89674;3
+91678;'KEl7RGj70It';'Mpatsie CHPS';89674;3
+91679;'h9capRds6si';'New Asokwa CHPS Zone';89674;3
+91680;'imX5uPmVNLP';'New Cross Hospital';89674;3
+91681;'yb3XSetWuBj';'New Life  Maternity Home (Kumasi)';89674;3
+91682;'suZ1i8Kflfo';'New Suame CHPS';89674;3
+91683;'uJbPEp8LKTd';'New York CHPS';89674;3
+91684;'kfvKbKnOrWn';'Nhyiaso-Danyame CHPS';89674;3
+91685;'U5e8Dbq3sab';'Nkontwima Clinic';89674;3
+91686;'pKJk0zNGqgV';'Nsenie CHPS Zone';89674;3
+91687;'bIn9VomFPod';'Nsuase CHPS Zone';89674;3
+91688;'BhMUQetx8AS';'Nyankyerenease-Apesika CHPS';89674;3
+91689;'AHoD5prz2lI';'Odoum CHPS Zone';89674;3
+91690;'qRXpDdnPOEW';'Oforikrom  Clinic (Kumasi)';89674;3
+91691;'YqbZjcsXWI4';'Oforikrom East CHPS Zone';89674;3
+91692;'OzLnaHt8Ljv';'Oforikrom West CHPS Zone';89674;3
+91693;'GS89gK5HeqE';'Old Asokwa CHPS Zone';89674;3
+91694;'OA3LTTThoVH';'Old Suame CHPS';89674;3
+91695;'MxL1ign0Bn2';'Olfoss CHPS';89674;3
+91696;'nv7NozquHlm';'Patasi-Kwadaso Estate CHPS';89674;3
+91697;'dvnv1pi2S0l';'Peace And Love Hospital';89674;3
+91698;'pdUgTFPRvI3';'Philopo Maternity Home';89674;3
+91699;'ekauvcYCUEt';'Pima Hospital';89674;3
+91700;'OulzvwHeRHq';'Poku Transport Children''s Hospital';89674;3
+91701;'IXx9AOpUBQv';'Ppag Suame Clinic';89674;3
+91702;'Pva0JqpYraW';'Presby CHPS Zone';89674;3
+91703;'rNTCkCEUiRB';'Quality Health Care Clinic  (Kumasi)';89674;3
+91704;'mdNTCscc1AH';'Queen Victoria Maternity Home';89674;3
+91705;'FLnAglpCMuB';'Queens Hospital  (Kumasi)';89674;3
+91706;'ZZjFhwNQtLn';'Ramseyer CHPS Zone';89674;3
+91707;'w2X9OxZlgOk';'Red Hill Medical Centre';89674;3
+91708;'BZ37uC0WyEV';'Regional Police Clinic';89674;3
+91709;'LwB2k7mcCYy';'Royal Medical Agency';89674;3
+91710;'GvoK3ssuhyq';'Ruma Specialist Hospital';89674;3
+91711;'pCxxVX7Ctpy';'Safo Adu Hospital';89674;3
+91712;'Dxeo0UwtTRL';'Santan CHPS compound';89674;3
+91713;'v4HK9o9JEE2';'Santasi-Atasamanso CHPS';89674;3
+91714;'e22UGYgn6rq';'Sepe Buokrom CHPS Zone';89674;3
+91715;'dcO8mHm7MRg';'Sepe Buokrom Health Centre';89674;3
+91716;'SZsGKi8YFnz';'Shalom Maternity Home';89674;3
+91717;'IhX7OPgjK3D';'Siaw Larbi Hospital';89674;3
+91718;'NOJTK7proR0';'Siloam Hospital';89674;3
+91719;'tz7KxXRqIoq';'S-Line CHPS Zone';89674;3
+91720;'KL0eSA6mKQ9';'South Patasi Hospital';89674;3
+91721;'NrSp1OOrahw';'St. Augustine Hospital';89674;3
+91722;'jrY0z6xCcm8';'St. Benedict Hospital';89674;3
+91723;'GdXsgrkFKrF';'St. John Clinic (Kumasi)';89674;3
+91724;'K06nT05C3UI';'St. John Homeopathic Clinic';89674;3
+91725;'uri2QFD8dJc';'Stadium Clinic';89674;3
+91726;'OMuPAArAKMW';'Suame Kotoko CHPS';89674;3
+91727;'kjUqmP3yEGE';'Suame Nkwanta Hospital';89674;3
+91728;'AqsYJo3UhBq';'Suntreso Government Hospital';89674;3
+91729;'mNZrwjZUuhL';'Susankyi CHPS Zone';89674;3
+91730;'aF83VacuH8l';'Tafo Government Hospital';89674;3
+91731;'sc3c1Plm6Tv';'Tanoso Community Hospital';89674;3
+91732;'QItcrPkGRoT';'Tanoso-Denchemuoso CHPS Zone';89674;3
+91733;'AfITpagSGPf';'Tessy Ebenezer Maternity Home';89674;3
+91734;'TEzFkvrVtep';'The Word Maternity Home';89674;3
+91735;'r9vo2KHxStU';'Tiwaa Memorial Hospital';89674;3
+91736;'Wsk6EsTGCGO';'Trinity Clinic';89674;3
+91737;'VjzSZKjGem9';'True Vine Hospital';89674;3
+91738;'e2GSd4X1tHT';'Trust Care Hospital';89674;3
+91739;'kAgrYV8XW64';'Twumduase CHPS Zone';89674;3
+91740;'GUPMboDJeUw';'Uew - K Clinic';89674;3
+91741;'qh5T7kmdcjw';'Ugc CHPS';89674;3
+91742;'plrKvKExFeG';'Vibro Maternity Home';89674;3
+91743;'kstpbzUZynD';'Victory  Maternity Home (Kumasi)';89674;3
+91744;'SQ80BE9wqef';'Victory CHPS Zone';89674;3
+91745;'nyvJAdOfpXR';'Well Point Medical Centre';89674;3
+91746;'Mid07IlsioL';'Wesley Cathedral Clinic  (Kumasi)';89674;3
+91747;'BRRpfZDuFrL';'West End Hospital';89674;3
+91748;'bszzf4k7rMf';'Wisdom Hospital (Kumasi)';89674;3
+91749;'xgfPtccrfDU';'Wood Village Clinic';89674;3
+91750;'eNeKgnmZ3ZA';'Yentumi Boitey Clinic';89674;3
+91751;'zKY5TIVsRni';'Zeeba CHPS Zone';89674;3
+91752;'gHHXP5rcES1';'Aboaso Health Centre';89675;3
+91753;'u5D9fAllWkD';'Adom Mmoroso Maternity Home';89675;3
+91754;'lkpXh3TqnF9';'African Diaspora Clinic';89675;3
+91755;'R8uz7x5m5pQ';'Antoa Health Centre';89675;3
+91756;'AlrweV504K7';'Asonomaso Government Hospital';89675;3
+91757;'NgvevCA3KOx';'Christ Our Hope Maternity';89675;3
+91758;'hb1xOLFI0k8';'Gyamfi Wonoo CHPS Zone';89675;3
+91759;'ptgbyBj6ldc';'Joy  Maternity Home (Kwabre)';89675;3
+91760;'kI4g15vm8Dz';'Kenyase Health Centre';89675;3
+91761;'RZeSefopW4n';'Maame Rose Maternity Home';89675;3
+91762;'W6kULBMsOGC';'Mamponteng Health Centre';89675;3
+91763;'WIZamzlRiuS';'Meduma Clinic';89675;3
+91764;'E33j61UJS4L';'Ntonso Atoase CHPS Zone';89675;3
+91765;'OcmGXhjbvqM';'Ntonso CHPS Zone';89675;3
+91766;'T8mDWQyOxRo';'Ntonso Ehinase CHPS Zone';89675;3
+91767;'UuR6bqOCau4';'Right Care Health Service';89675;3
+91768;'SxMtV3z9Xe2';'Royal Place Clinic';89675;3
+91769;'Ss3hNnEqihy';'Sakora Wonoo Health Centre';89675;3
+91770;'Tv6nu6LoOJK';'St. Joseph Clinic (Abira)';89675;3
+91771;'znHPuAeXLjB';'Wadie Adumakase CHPS Zone';89675;3
+91772;'n9BKOd2ytYT';'Abaam CHPS Compound';89676;3
+91773;'o0QJfXmJ9Ee';'Abehenease CHPS Compound';89676;3
+91774;'eS02aOwkQxA';'Abenaso CHPS Compound';89676;3
+91775;'SJAgOURPSi9';'Abodom CHPS Compound (Kwaebibirem)';89676;3
+91776;'KTuDm6cOlyg';'Abompe CHPS Compound';89676;3
+91777;'FIo7dtCVBlV';'Adankrono CHPS Compound';89676;3
+91778;'whO8yBQOgKd';'Akim Kwamang CHPS Compound';89676;3
+91779;'TsBb6UMIMoU';'Anweam CHPS Compound (Kwaebibirem)';89676;3
+91780;'JQwQYGWE8Fg';'Asuom Health Centre';89676;3
+91781;'KP9vG1mMUoR';'Atobriso CHPS Compound';89676;3
+91782;'qrGjTXKdDtE';'Bomso  CHPS Compound (Kwaebibirem)';89676;3
+91783;'OxTndEr4vMj';'Gopdc Clinic';89676;3
+91784;'YeND76LJOgh';'James Town CHPS Compound (Kwaebibirem)';89676;3
+91785;'EAF48ZUVXWG';'Kade Daakye CHPS Compound';89676;3
+91786;'jtvok50YvF4';'Kade Govt Hospital';89676;3
+91787;'IcjIRDBMz9l';'Kade Guggisburg CHPS Compound';89676;3
+91788;'YCnkDVv1Rim';'Kade Zongo CHPS Compound';89676;3
+91789;'yqrcWKlu4ls';'Kwae CHPS Compound';89676;3
+91790;'osYi3QFVc0k';'Larbikrom CHPS Compound (Kwaebibirem)';89676;3
+91791;'YGPukuHoUkD';'Mintabomeng Koka CHPS Compound';89676;3
+91792;'kpHacziwhIc';'Nkwantanang CHPS Compound (Kwaebibirem)';89676;3
+91793;'wQiJcyEQf2M';'Okyinso CHPS Compound';89676;3
+91794;'ROvvDgtcvMq';'Old Ntronang CHPS Compound';89676;3
+91795;'Rv0aKhGDg8h';'Otumi CHPS Compound';89676;3
+91796;'Yn46FnXAqfD';'Pramkese Health Centre';89676;3
+91797;'AKm8lO4K1LW';'Subi Health Centre';89676;3
+91798;'TbtxSYh9GXl';'Takyiman CHPS Compound';89676;3
+91799;'f6BfrFVhlmx';'Tweapease  CHPS Compound (Kwarbibirem)';89676;3
+91800;'MxqRHlgnrHf';'Twumwusu CHPS Compound';89676;3
+91801;'hi2CNT35a0r';'Abundant Life Health Services';89677;3
+91802;'cFSM3fDzYsv';'Agyata CHPS Compound';89677;3
+91803;'Ku7MnaCJ6pV';'Asanyanso Health Centre';89677;3
+91804;'sz5cJtqR7wr';'Bonkrom CHPS Compound';89677;3
+91805;'EmChUcZTHLV';'Dim Sikabo CHPS Compound';89677;3
+91806;'lRi1VozNJRl';'Dome CHPS Compound';89677;3
+91807;'PNKt1yjc9fr';'Dunkro CHPS Compound';89677;3
+91808;'z7NgTJKSG3g';'Ekye Central CHPS Compound';89677;3
+91809;'a2ODPNBfVjt';'Ekye Health Centre';89677;3
+91810;'fcTfbs2rCLg';'Ekye Island CHPS Compound';89677;3
+91811;'YLJ5BWTRVRE';'Forifori Health Centre';89677;3
+91812;'geCp6qCyTHo';'Fosu CHPS Compound';89677;3
+91813;'cKB8kswgyC6';'Gadorkope chps compound';89677;3
+91814;'zJ8kw3vFryi';'Koranteng CHPS Compound';89677;3
+91815;'iJo2xyxAykk';'Koranteng Krachi CHPS Compound';89677;3
+91816;'KLqwHtGttvl';'Kwame Dwamena CHPS Compound';89677;3
+91817;'LJ5ssLHaBtC';'Kwasi Addae CHPS Compound';89677;3
+91818;'HbeNWnnI1TO';'Kwasi Fante Health Centre';89677;3
+91819;'HEyRUs1onfj';'Maame Krobo Health Centre';89677;3
+91820;'Sc2sJgnqisJ';'Nsuogyaso CHPS Compound';89677;3
+91821;'WU9NqSPWtzC';'Samanhyia CHPS Compound';89677;3
+91822;'c8Tk41vxYGZ';'Tease Health Centre';89677;3
+91823;'A6wIRdmevrv';'Tease Island CHPS Compound';89677;3
+91824;'mJBAGoOIJMn';'Twerefo Faaso CHPS Compound';89677;3
+91825;'th3RyKAsELw';'Abene CHPS Compound';89678;3
+91826;'Z6Vjvn3OVFR';'Abetifi Health Centre';89678;3
+91827;'aihmSpIeMol';'Aduamoa CHPS Compound';89678;3
+91828;'rX7ucspcK5G';'Aduhima CHPS Compound';89678;3
+91829;'MbZSUgDwU7l';'Aguadzekope CHPS Compound';89678;3
+91830;'GiZHhX9lJP0';'Akwasiho Health Centre';89678;3
+91831;'ogp3jn2e8SP';'Amanfrom Clinic';89678;3
+91832;'bmhGO4mswjq';'Amanfrom Urban CHPS Compound';89678;3
+91833;'ARPTBfLASkH';'Ankoma CHPS Compound';89678;3
+91834;'dyGNEO8b9L6';'Ante Adwoa Maternity Home';89678;3
+91835;'bqSQBcWrqxG';'Bonkrase CHPS Compound';89678;3
+91836;'sVtd71xOP7v';'Dwerebease CHPS Compound';89678;3
+91837;'F3PgiLTCRTJ';'Hweehwee CHPS Compound';89678;3
+91838;'Jqx6pFqG1b2';'Hyewohoden CHPS Compound';89678;3
+91839;'X2BHwb5pkT0';'Kotoso CHPS Compound';89678;3
+91840;'Zadf0PtBB5N';'Kotoso Rh Clinic';89678;3
+91841;'EfWgJZW21FK';'Nkwantanang CHPS Compound';89678;3
+91842;'NHhs3IlhoAh';'Nkwatia Health Centre';89678;3
+91843;'nqOYU6CeHjM';'Oframase Maternity Home';89678;3
+91844;'ybC5LMPbTo2';'Onyame Adom Maternity Home';89678;3
+91845;'Vnl5gaT1qQ3';'Onyemso CHPS Compound';89678;3
+91846;'O96EU72A2vB';'Oworobong CHPS Compound';89678;3
+91847;'riy3kdvNU1g';'Pepease Health Centre';89678;3
+91848;'d72fUHHhXg1';'Sempoa CHPS Compound';89678;3
+91849;'rfrMTNncqeI';'St Joseph  Clinic (Kwe)';89678;3
+91850;'Zxfqu4st1o9';'St Michaels Maternity Home (Kwahu East)';89678;3
+91851;'ZUqOotEcgSu';'Suminakese CHPS Compound';89678;3
+91852;'FrB55JJFgt4';'Abomasarefo CHPS Compound';89679;3
+91853;'SN5I8QubAES';'Abotanso CHPS Compound (Kwahu North)';89679;3
+91854;'RjObNArjxOF';'Adukrom CHPS Compound (Kwahu North)';89679;3
+91855;'zjlOJuhErbi';'Agordeke CHPS Compound';89679;3
+91856;'JUVN5Ffpv3e';'Amankwa CHPS Compound';89679;3
+91857;'GN8Ph9kklgc';'Anidzi CHPS Compound';89679;3
+91858;'VwixqsMkNhe';'Asikasu CHPS Compound';89679;3
+91859;'I8HeRwo6GOF';'Atakora CHPS Compound';89679;3
+91860;'tCsUiZPqXSp';'Bruben CHPS Compound';89679;3
+91861;'XbYY7Friyb7';'Cedikope CHPS Compound';89679;3
+91862;'KV22gw0A95k';'Digya CHPS Compound';89679;3
+91863;'Q6uAK6zCeig';'Dodi Island CHPS Compound';89679;3
+91864;'TKRoYz7cS8W';'Donkorkrom Central CHPS Compound';89679;3
+91865;'tDi75FBqRDV';'Donkorkrom RCH';89679;3
+91866;'m8qLodYGnzk';'Dwarf Island CHPS Compound';89679;3
+91867;'waE3qNZF3gn';'Faaso Battor CHPS Compound';89679;3
+91868;'rXjDsIL6UIm';'Galelia CHPS Compound';89679;3
+91869;'JxDmjXdDQYd';'Kodidi CHPS Compound';89679;3
+91870;'eYS4tGm2ri0';'Kokrobuta CHPS Compound';89679;3
+91871;'AqU5TxT5rGT';'Kpala CHPS Compound';89679;3
+91872;'CoDneohZSM1';'Kwaekese CHPS Compound';89679;3
+91873;'qPxJl2dkQel';'Manchare CHPS Compound';89679;3
+91874;'Ee8gwAq6QqM';'Memchemfre Island CHPS Compound';89679;3
+91875;'pc9dVEr0g9T';'Memchenfre Health Centre';89679;3
+91876;'C6iwts631OV';'Ntonaboma CHPS Compound';89679;3
+91877;'E0p4kYAvZks';'Nyankuikope CHPS Compound';89679;3
+91878;'TNU0najZYBK';'Presbyterian Hospital -Donkorkrom';89679;3
+91879;'y5hREfOBqge';'Supom CHPS Compound';89679;3
+91880;'AbecL99Zo0m';'Tsetsekpo CHPS Compound';89679;3
+91881;'v6CK903O0Vf';'Amartey CHPS Compound';89680;3
+91882;'v7zspZy00Fe';'Asakraka Rch';89680;3
+91883;'UwYXvAgwJSr';'Asubone CHPS Compound';89680;3
+91884;'T34FCoMnYS6';'Atuobikrom Rch';89680;3
+91885;'QUtV052KNwe';'Bepong Rch';89680;3
+91886;'SKiZVRnCai9';'Besease CHPS Compound (Kwahu South)';89680;3
+91887;'GUWXmybdttL';'Kwahu Amanfrom CHPS Compound';89680;3
+91888;'rZDqapYhvRw';'Kwahu Government Hospital';89680;3
+91889;'XTZQjEcRBkv';'Kwahu Praso Presby Health Centre';89680;3
+91890;'izC0kv46Xjl';'Nketepa CHPS Compound';89680;3
+91891;'d9rEDxDfPCn';'Nketepa Comfort Maternity Home';89680;3
+91892;'BmtyYke7BWk';'Nkyenenkyene Health Centre';89680;3
+91893;'xuE8hhr72RU';'Ntomem CHPS Compound';89680;3
+91894;'yrlTOL0zHtZ';'Obo Health Centre';89680;3
+91895;'axDC08oEKbC';'Obomeng RCH';89680;3
+91896;'cXJuzedr0Q8';'Osubeng CHPS Compound';89680;3
+91897;'h8aiiOLJn5z';'Sukwa CHPS Compound';89680;3
+91898;'ZZhb0SoeocX';'Twenedurase RCH';89680;3
+91899;'m4XqOuYFaY1';'Agyakwa Hospital';89681;3
+91900;'wjSK1U8Tnyl';'Ampeha CHPS Compound';89681;3
+91901;'dp7wXV247Fi';'Ampekrom CHPS Compound';89681;3
+91902;'S6ZYEbODtOD';'Aprabonsu CHPS Compound';89681;3
+91903;'LwHRc2ngARV';'Apradang Heath Centre';89681;3
+91904;'ic0fX08TU9I';'Asona CHPS Compound';89681;3
+91905;'bH0bcW5hYL6';'Asuboni Rails Health Centre';89681;3
+91906;'I6OWWJ0mgGb';'Atawase CHPS Compound';89681;3
+91907;'pEM41tEVkPt';'Atibie Nkwanta CHPS Compound';89681;3
+91908;'LYg2j1cnh1B';'Atwedie CHPS Compound';89681;3
+91909;'fleAD2qzFDt';'Aweregya Heath Centre';89681;3
+91910;'wTUqwi2slyw';'Danteng Health Centre';89681;3
+91911;'eAznkXos3Y1';'Ekawso CHPS Compound';89681;3
+91912;'ArM1NoctyGw';'Esaase CHPS Compound (Kwahu West)';89681;3
+91913;'fALoSrJSdXS';'Fodoa CHPS Compound';89681;3
+91914;'fU2COkLxqYx';'Holy Family  District Hospital (Kwahu West)';89681;3
+91915;'gmv3J206hyN';'Holy Family  Phc (Kwahu West)';89681;3
+91916;'gD9lrZZ6czk';'Jamasi No 1 CHPS Compound';89681;3
+91917;'mVEGeq5hTub';'Jamasi No 2 CHPS Compound';89681;3
+91918;'AAFx9UeqdSv';'Kofi Dede CHPS Compound';89681;3
+91919;'iRmSWyRxERW';'Kwahu Jejeti Health Centre';89681;3
+91920;'MTgfwfnN1Es';'Kwahu Nsaba CHPS Compound';89681;3
+91921;'G7Pd7XfK7jQ';'Kwahu West Ppag';89681;3
+91922;'ldnao1AxdLS';'Nkawanda No 1 CHPS Compound';89681;3
+91923;'h6xCZ3NJ3oL';'Nkawanda No 2 Rch';89681;3
+91924;'Eh98thgyCw1';'Nkawkaw Amanfrom CHPS Compound';89681;3
+91925;'JTanqsCx44c';'Nkawkaw Health Centre';89681;3
+91926;'SCJxhWISPkl';'Nkawkaw Sti Clinic';89681;3
+91927;'QMJ9Ef8a300';'Nya Akoma Maternity Home';89681;3
+91928;'dKzpiDyXpvb';'Owusukrom CHPS Compound';89681;3
+91929;'MYXBIbmr5yN';'Wawase CHPS Compound';89681;3
+91930;'JKJoN0hLmdL';'Wisiwisi CHPS Compound';89681;3
+91931;'UHPiUXA76UD';'Billaw Health Centre';89682;3
+91932;'H11tXcpHCwd';'Cheboggu CHPS Compound';89682;3
+91933;'luUGh8WviJw';'Chetu CHPS Compound';89682;3
+91934;'gnyYW2fXYTS';'Chognuor CHPS Compound';89682;3
+91935;'JDrTo7A48MI';'Dahile CHPS Compound';89682;3
+91936;'vjvVCBo2hSX';'Hamile Health Centre';89682;3
+91937;'pxdZ74XCNeV';'Happah B-Line CHPS Compound';89682;3
+91938;'SsJs7dYidwM';'Hinenteng CHPS Compound';89682;3
+91939;'Y0oc6t6ppvV';'Kanyiri Maternity Home';89682;3
+91940;'lOQpdl0fJMt';'Karne Health Centre';89682;3
+91941;'qklSbUSJFa0';'Koro CHPS Compound';89682;3
+91942;'qx0aAdKUvtF';'Kpaare CHPS Compound';89682;3
+91943;'jMQcekOv3xL';'Kukuo CHPS Compound';89682;3
+91944;'x69l05vxRBD';'Kulkarni CHPS Compound';89682;3
+91945;'CHQeJ7wMkcF';'Lambussie Polyclinic';89682;3
+91946;'IftlBj4rPTB';'Muslim Clinic';89682;3
+91947;'hmejttsH8Yo';'Piina Health Centre';89682;3
+91948;'z1rekGxWOzo';'Samoa Health Centre';89682;3
+91949;'PzKhdjQVqfy';'Sentu CHPS Compound';89682;3
+91950;'sdomKghMSl3';'Suke CHPS Compound';89682;3
+91951;'JJleLGVR4TA';'Babile Polyclinic';89683;3
+91952;'t3otubl14kV';'Bagri CHPS Compound';89683;3
+91953;'REpaWz6gOAq';'Biro CHPS Compound';89683;3
+91954;'cLteY4HECqf';'Boo CHPS Compound';89683;3
+91955;'jVxWBTqrP9a';'Dazuuri CHPS Compound';89683;3
+91956;'Ns3bOfEBn3O';'Dikpe CHPS Compound';89683;3
+91957;'Y61T4caAMHy';'Domwine Health Centre';89683;3
+91958;'NnGBxj2xmtZ';'Eremon Health Centre';89683;3
+91959;'LV1KzEyLAl3';'Gbier CHPS Compound';89683;3
+91960;'AC5zMyWwGCE';'Kalsagri CHPS Compound';89683;3
+91961;'MiewAvWkh1z';'Lawra District Hospital';89683;3
+91962;'oo4HvHaKaoQ';'Lawra Urban Health Centre';89683;3
+91963;'mhHNvCV27wT';'Lyssah CHPS Compound';89683;3
+91964;'bW5fnwKUgjh';'Methodist Clinic';89683;3
+91965;'PcUTJzm7kqe';'Methor Buo CHPS Compound';89683;3
+91966;'kWquVB8HyYd';'Nanyaare CHPS Compound';89683;3
+91967;'q6K1uiZIhXz';'Tanchara CHPS Compound';89683;3
+91968;'ITmjDDWtxBn';'Zambo Health Centre';89683;3
+91969;'nShlC3yKGzU';'Agormanya Health Centre';89684;3
+91970;'YW7Wjz0Cdzb';'Akuse Government Hospital';89684;3
+91971;'fliIWeOjua1';'Akuse RCH';89684;3
+91972;'feY2hYaDqgQ';'Akuse Vra Clinic';89684;3
+91973;'jGHj5v793bM';'Asitey Health Centre';89684;3
+91974;'vYl0VkkGzqV';'Atua Government Hospital';89684;3
+91975;'l26hwz3GgCW';'Ayermesu CHPS Compound';89684;3
+91976;'pwTboQipZ3O';'Ayermesu K CHPS Compound';89684;3
+91977;'F2jMfvPVgR1';'Djekiti CHPS Compound';89684;3
+91978;'VsDYVXdHGJc';'K Wawase CHPS Compound';89684;3
+91979;'G6OErB0DIY1';'Kodjonya CHPS Compound';89684;3
+91980;'ket4mAYCEPO';'Kpong Health Centre';89684;3
+91981;'wHSq5QtLnRA';'Kpong West CHPS Compound';89684;3
+91982;'PLn9zEZvmtd';'Kporgunor CHPS Compound';89684;3
+91983;'O4MLvqgTn8U';'Lydia Maternity Home';89684;3
+91984;'uE9aqxm9hbf';'Nuaso CHPS Compound';89684;3
+91985;'RFvLrZJJvgf';'Oborpa Health Centre';89684;3
+91986;'PYt9YXL0Pje';'Odumase  Health Centre (Lower Manya Krobo)';89684;3
+91987;'cyspPYWvL8O';'Okwenya CHPS Compound';89684;3
+91988;'yCSQyU85tVF';'Parkson chps compound';89684;3
+91989;'BhrNyFl0KBC';'Partehunya CHPS Compound';89684;3
+91990;'CCCCkMTrxKJ';'St Martin''s  Hospital (Lower Manya)';89684;3
+91991;'JXkKthfN2jB';'Tseledorm CHPS Compound';89684;3
+91992;'Ldgooh1Yzak';'Yokwenor CHPS Compound';89684;3
+91993;'qM7TM9jpP2Z';'Yonguase CHPS Compound';89684;3
+91994;'N9A4xcZdLuz';'AMC Nangodi';89685;3
+91995;'tpeXZgVb7d3';'Dasobligo CHPS Compound';89685;3
+91996;'VDUYirRFDMT';'Kongo Logre Clinic';89685;3
+91997;'SKDjlnueuAR';'Kotintabig CHPS Compound';89685;3
+91998;'OUX3QYjUZvt';'Miboug CHPS Compound';89685;3
+91999;'OVtKCkLJuJt';'Nangodi Health Centre';89685;3
+92000;'BdmoXX6m7rs';'Nygbare CHPS Compound';89685;3
+92001;'rBJL0Znf9es';'Nyorboko CHPS Compound';89685;3
+92002;'yNgXOrAmHd8';'Pelungu Clinic';89685;3
+92003;'YRWZa1TheoB';'Pitanga CHPS Compound';89685;3
+92004;'k2Hp0DwNYfR';'Sakote CHPS Compound';89685;3
+92005;'xdpe7buFwr7';'Yakote CHPS Compound';89685;3
+92006;'CNKN0SOVMmp';'Zanlerigu CHPS Compound';89685;3
+92007;'oWms5Et8a7G';'Zogabre CHPS Compound';89685;3
+92008;'PskB3RnBm4N';'Zua CHPS Compound';89685;3
+92009;'QvInO2rnrk6';'Ahmadiya Mission Hospital';89686;3
+92010;'sgORgtB8VmI';'Charikpong Health Centre';89686;3
+92011;'tBnJAOdXJyB';'Cheri-Sombo CHPS Compound';89686;3
+92012;'cuRmDVNgr9X';'Dapuoh CHPS Compound';89686;3
+92013;'haixqKf76Wn';'Dapuori Health Centre';89686;3
+92014;'PgGd1BE3cVD';'Duong CHPS Compound';89686;3
+92015;'CBblTqdqpCN';'Gbankor CHPS Compound';89686;3
+92016;'LJ70l5UmDRX';'Goli CHPS Compound';89686;3
+92017;'AmCn7l7TJIl';'Jang Health Centre';89686;3
+92018;'SmaHqcnM8wq';'Kaaha Ombo CHPS Compound';89686;3
+92019;'wwkH01RWKk8';'Kaleo Health Centre';89686;3
+92020;'Ca1gLFHfLNh';'Kaleo Health Centre (Immaculate Conception)';89686;3
+92021;'So8t3ZS16A2';'Kalsegra Health Centre';89686;3
+92022;'FnttMMWJhfZ';'Kanyini CHPS Compound';89686;3
+92023;'q68rSYKEp92';'Kpazie CHPS Compound';89686;3
+92024;'KVG6JX8ljHK';'Kulpieni CHPS Compound';89686;3
+92025;'Bnbd6t1pe5W';'Loho (Old & New) CHPS Compound';89686;3
+92026;'T9z1VD71onp';'Maguo Mantaari CHPS Compound';89686;3
+92027;'xNhYggBRTOd';'Mwaawaare Baamaara CHPS Compound';89686;3
+92028;'X99czpm5mlT';'Nadowli District Hospital';89686;3
+92029;'BK6RevGOmMs';'Nadowli Subdistrict Health Centre';89686;3
+92030;'Z9mAvP4VMEF';'Nanvilli Health Centre';89686;3
+92031;'hObLpk81hY0';'Naro CHPS Compound';89686;3
+92032;'bRZnZ9vUa9Y';'Nator CHPS Compound';89686;3
+92033;'Dz9rplc7nbH';'Nyembale CHPS Compound';89686;3
+92034;'eGv5VHOzHlx';'Nyiree Penetobo CHPS Compound';89686;3
+92035;'UQD1NhYRXNE';'Papuo CHPS Compound';89686;3
+92036;'EhXCsR2fCWC';'Piree Kangu CHPS Compound';89686;3
+92037;'M9aX5HWlQoU';'Sampina CHPS Compound';89686;3
+92038;'sGyO6W8z5ED';'Sankana CHPS Compound';89686;3
+92039;'UU4DagraArz';'Sombo Health Centre';89686;3
+92040;'F1cAH3ReiUa';'Takpo Health Centre';89686;3
+92041;'baza3Oi0Q3n';'Tangasie CHPS Compound';89686;3
+92042;'TspbGwXJHja';'Tibani Zambogu CHPS Compound';89686;3
+92043;'vMPI8R8sNps';'Voggoni/GoriyiriCHPS Compound';89686;3
+92044;'ncxFbUSCSZR';'Bu CHPS Compound';89687;3
+92045;'mXjyXKiuCUV';'Gengenkpe Health Centre';89687;3
+92046;'N5L9H6NXtmq';'Good Shepherd Maternity Home (Nandom)';89687;3
+92047;'Ridwih3Q4qt';'Guo CHPS Compound';89687;3
+92048;'Jar6KG1GsmQ';'Ketuo Health Centre';89687;3
+92049;'TuiQKTiMyJD';'Ko Polyclinic';89687;3
+92050;'lOdydWEymvK';'Kokoligu CHPS Compound';89687;3
+92051;'UqDdDPVOd2J';'Naapaal CHPS Compound';89687;3
+92052;'QFmGdpbVcuc';'Nandom Hospital';89687;3
+92053;'lzjxEcBcomR';'Nandom RCH';89687;3
+92054;'lOk4nv9Yew4';'Piiri Health Centre';89687;3
+92055;'iZ9R09ViW0G';'Sonne CHPS Compound';89687;3
+92056;'ql0tRiPlaCg';'Tankyara CHPS Compound';89687;3
+92057;'xV0PekTBn1d';'Tom CHPS Compound';89687;3
+92058;'jRi8E5IIXXf';'Tuopare CHPS Compound';89687;3
+92059;'OHKV6LmeYnf';'Yirpelle CHPS Compound';89687;3
+92060;'wGMWD3PaDq7';'Abogiri CHPS Compound';89688;3
+92061;'kKBCsYKxF0R';'Abotanso CHPS Compound (New Juaben)';89688;3
+92062;'aWNZ3J6TTxg';'Adaniagya CHPS Compound';89688;3
+92063;'XDlulp0LHQL';'Adweso Clinic';89688;3
+92064;'TDlFeozj0WO';'Adweso Estate  CHPS Compound (Ssnit)';89688;3
+92065;'GB75oEjIE7Q';'Agavenya CHPS Compound';89688;3
+92066;'jrPpIwrxe9P';'Akwadum RCH';89688;3
+92067;'DAIEKpzK8IG';'Anglican CHPS Compound';89688;3
+92068;'Q2dz1Rea1IB';'Anglo Town CHPS Compound';89688;3
+92069;'SpLywDiIkQW';'Anglo Town South CHPS Compound';89688;3
+92070;'QGVycFhHdM0';'Ankwesu Asibey CHPS Compound';89688;3
+92071;'e9EzLaoF5gE';'Asiedu Memorial Clinic';89688;3
+92072;'nrJy0WkgiPD';'Asikasu CHPS Compound (New Juabeng)';89688;3
+92073;'fcnlyFPlN7R';'Asokore Fofie CHPS Compound';89688;3
+92074;'kMpanpPVMAC';'Asokore Kuma CHPS Compound';89688;3
+92075;'P8e2ZOlqMBv';'Asokore Rch';89688;3
+92076;'T9U3JWnemAk';'Asokore Zongo CHPS Compound';89688;3
+92077;'ebJAtEaL9UZ';'Asokore-Abrodua CHPS Compound';89688;3
+92078;'dFwaRMfv4Yy';'Asuofiri-Betom CHPS Compound';89688;3
+92079;'bzhsTrUVkjh';'Bonna Clinic';89688;3
+92080;'mhaxFJCIG6y';'Bornya CHPS Compound';89688;3
+92081;'NVKwuEYg00G';'Cosmos/Damien Clinic';89688;3
+92082;'P1VuC1V5yaO';'Damang CHPS Compound (New Juaben)';89688;3
+92083;'hkcXvxnpm5q';'Debrakrom CHPS Compound';89688;3
+92084;'IkgfYDIjGh3';'Densuano Clinic';89688;3
+92085;'xBRH5tw8FQj';'Dr. Asomani Clinic';89688;3
+92086;'fzPSmEBB7Lb';'Eastern Regional Hospital';89688;3
+92087;'Jx1913aynhL';'Eddiemensah CHPS Compound';89688;3
+92088;'znmNtlPYZ8e';'Effiduase Oguaa CHPS Compound';89688;3
+92089;'QpPVAiMUFig';'Effiduase Sukuumu CHPS Compound';89688;3
+92090;'f3VzaZAJsze';'Eunice Memorial Clinic';89688;3
+92091;'kaKFUIf2Fgz';'Gyemfikrom CHPS Compound';89688;3
+92092;'eT1N6N5iOCt';'Jumapo Health Centre';89688;3
+92093;'vru3OBzPo67';'Jumapo Yeene CHPS Compound';89688;3
+92094;'urJ83LVdnDd';'Kantudu CHPS Compound';89688;3
+92095;'KHd62GkuL4P';'Koforidua Clinic';89688;3
+92096;'gSN1KV17zRE';'Koforidua Poly Clinic';89688;3
+92097;'eGY0J6ImtgX';'Koforidua Poly School Clinic';89688;3
+92098;'VMFD0qzA6OC';'Koforidua Sda Hospital';89688;3
+92099;'BZNZkweMDHK';'Magazine  CHPS Compound (New Juabeng)';89688;3
+92100;'XrLJKI2VnTi';'Medical Village Rch';89688;3
+92101;'N4YgqXpQd5T';'Mile50-Kyakyea CHPS Compound';89688;3
+92102;'CNXgdckP1zN';'New Juabeng Effiduase Rch';89688;3
+92103;'IMBlrLVt7OY';'New Juabeng Police Clinic';89688;3
+92104;'Vhobc1QmpkM';'Nifa-Nifa CHPS Compound';89688;3
+92105;'sdQ5Yb5CKap';'Nsukwawso CHPS Compound';89688;3
+92106;'MR2Zolue9Xd';'Nyamekrom CHPS Compound';89688;3
+92107;'Chqlyi927vx';'Ohenmaa Park CHPS Compound';89688;3
+92108;'TLSPceNdXl0';'Old Estate Abotanso CHPS Compound';89688;3
+92109;'KhOSJMWSMrT';'Old Estate CHPS Compound';89688;3
+92110;'bL7H3Zn3W4v';'Old Estate Ogua CHPS Compound';89688;3
+92111;'ycUZZrWZjUq';'Old Estates Railway CHPS Compound';89688;3
+92112;'BiurbElFD3m';'Oman Clinic';89688;3
+92113;'MtwtAyy8K7D';'Oyoko  Health Centre (New Juabeng)';89688;3
+92114;'sPap0zDQUSr';'Oyoko Zongo CHPS Compound';89688;3
+92115;'eUQgYZYHNgL';'Pats Maternity Home';89688;3
+92116;'AgArEpsGWU6';'Providence Clinic';89688;3
+92117;'VThqFfcmYeS';'Residential-Atekyem CHPS Compound';89688;3
+92118;'voG9JYryJIz';'School Town CHPS Compound';89688;3
+92119;'Mt8roeD4ERk';'Sempoamiensa CHPS Compound';89688;3
+92120;'LJzUoLBreGQ';'Social Welfare CHPS Compound';89688;3
+92121;'k9fgfPQH5mS';'St Joseph''s  Hospital (New Juabeng)';89688;3
+92122;'ucfQQ1aBu0n';'Suhyen CHPS Compound';89688;3
+92123;'qmsM4ib110Q';'Tanoso CHPS Compound';89688;3
+92124;'DALwZDZ7Ie9';'Two Stream CHPS Compound';89688;3
+92125;'A9pJEMG6E0n';'Yaw Kyerema CHPS Compound';89688;3
+92126;'xHAyMsNBg3V';'Zongo  Health Centre (New Juabeng)';89688;3
+92127;'XpQH1RgqZFQ';'Zongo Community A & B CHPS Compound';89688;3
+92128;'EuL60xdquVG';'Zongo Community C CHPS Compound';89688;3
+92129;'fEhoxmMX1vp';'Zongo Community D & E CHPS Compound';89688;3
+92130;'XonW5QatRAG';'Anyinakofi/Ahenbrono CHPS Compound';89689;3
+92131;'h175HhRMA4j';'Asekye CHPS Compound';89689;3
+92132;'fGpT8K5OseD';'Asuofu/Pado CHPS Compound';89689;3
+92133;'GsI8BiUokUG';'Boana CHPS Compound';89689;3
+92134;'ZoKhq1ovVgF';'Bodom CHPS Compound';89689;3
+92135;'r8JGG6TO06X';'Bomini CHPS Compound';89689;3
+92136;'GVRVmXjOYQF';'Bono Manso CHPS Compound';89689;3
+92137;'sLK6CBsXIOM';'Bonte CHPS Compound';89689;3
+92138;'mPq9oM0MsC9';'Busunya Health Centre';89689;3
+92139;'RKNBXu0OtfM';'Busunya-Odumase CHPS Compound';89689;3
+92140;'QZeB5KTokaa';'Dromankese Health Centre';89689;3
+92141;'UaBws5JeMd6';'Dromankuma CHPS Compound';89689;3
+92142;'n7zQsLYp8W7';'Dwenewoho CHPS Compound';89689;3
+92143;'fGxkF9Z076e';'Fiema CHPS Compound';89689;3
+92144;'hh8WOusf329';'Kranka Health Centre';89689;3
+92145;'mPOjl52PhF1';'Kuuso/Dinkra CHPS Compound';89689;3
+92146;'TMR1KAaejK1';'Pieyiennah CHPS Compound';89689;3
+92147;'cfGhF3sFdyu';'Pinihin CHPS Compound';89689;3
+92148;'gxwaE6myRtz';'Senya CHPS Compound';89689;3
+92149;'f1VQ141YRxv';'Sikaa CHPS Compound';89689;3
+92150;'c7uQR8KuewE';'Tankor/Domeabra CHPS Compound';89689;3
+92151;'hEbQPc96cYR';'Timeabu/Taaho CHPS Compound';89689;3
+92152;'EmdgUORwyy5';'Tom/Adoe CHPS Compound';89689;3
+92153;'uVDPj8BXl7u';'Yefri Health Centre';89689;3
+92154;'dLilNHgdLoK';'Africa Libera Health Centre';89690;3
+92155;'zeUNg0E4oo4';'Ahyiayem Health Centre';89690;3
+92156;'VnfB49v5UIq';'Akropong CHPS Compound';89690;3
+92157;'NSR2tmXRdP8';'Akuma Health Centre';89690;3
+92158;'X9LP39EqoK3';'Akumsa Domase CHPS Compound';89690;3
+92159;'jq0QZXBFxvS';'Asonkwaa CHPS Compound';89690;3
+92160;'fmu5uNroUg2';'Ayerede Health Centre';89690;3
+92161;'hQdnZVKQIMl';'Bonsu  Health Centre (Nkoranza South)';89690;3
+92162;'dgppFYNfTwG';'Bredi CHPS Compound';89690;3
+92163;'p2GhE8Jd3GC';'Brehoho CHPS Compound';89690;3
+92164;'lfX17bdybDn';'Dandwa CHPS Compound';89690;3
+92165;'ZWutp1oICTV';'Dasagua CHPS Compound';89690;3
+92166;'t0UYjEsxGaj';'Donkro Nkwanta Health Centre';89690;3
+92167;'lWft0WguRZN';'Dotobaa CHPS Compound';89690;3
+92168;'M5zdxN21sLh';'Estate CHPS Compound';89690;3
+92169;'awvO5CgSlQG';'Hwediem CHPS Compound';89690;3
+92170;'cwhcv2Cq6sf';'Kyirefene CHPS Compound';89690;3
+92171;'y9jMM8hODKK';'Makyinmabre CHPS Compound';89690;3
+92172;'DUcyvQSp7Ue';'New Town CHPS Compound';89690;3
+92173;'In1Z8nUTQ3M';'Nkoranza Health Centre';89690;3
+92174;'ex8ePwDi5KE';'Nkwabeng Health Centre';89690;3
+92175;'l2TXpGatbfW';'Nsunensa CHPS Compound';89690;3
+92176;'JFGSYnolIzW';'Ntanaaso CHPS Compound';89690;3
+92177;'EQHrp0o6DX6';'Nyinase CHPS Compound';89690;3
+92178;'CsMTmddoieP';'Patmos Medical Centre';89690;3
+92179;'OMQBzdKxR1B';'Pruso CHPS Compound';89690;3
+92180;'X8OOlEIz7jB';'Salamkrom CHPS Compound';89690;3
+92181;'I0XLRzQmUUl';'Sessiman CHPS Compound';89690;3
+92182;'gtuO1MFQCw0';'St Theresas Hospital-Nkoranza';89690;3
+92183;'Y4PXUSJFBcD';'Subodum CHPS Compound';89690;3
+92184;'v3zpIrmsCd2';'Wagadugu CHPS Compound';89690;3
+92185;'dtigTZYISiD';'Afutu Lantei chps compound';60517;3
+92186;'jN2HtqGt3TN';'Ahodjo CHPS Compound';60517;3
+92187;'DO2G2LoTDjO';'Akramang CHPS Compound';60517;3
+92188;'RCY5JJNWp0p';'Asante Akura chps compound';60517;3
+92189;'bhWCVKshfDD';'Avaga CHPS Compound';60517;3
+92190;'wGIkc2Et03b';'Banaman Hospital';60517;3
+92191;'TncB2xzR1BW';'Boahenekrom CHPS Compound';60517;3
+92192;'tBAPznkEXVN';'Boahenkrom chps compound';60517;3
+92193;'hrVCm5In1PF';'Chinto CHPS Compound';60517;3
+92194;'ag4GuvCpJun';'Darmang CHPS Compound';60517;3
+92195;'OiUTSZJnQJK';'Dobro CHPS Compound';60517;3
+92196;'G4cfyeNG6kU';'Duayeden CHPS Compound';60517;3
+92197;'ss8zv5TQB51';'Fotobi CHPS Compound';60517;3
+92198;'l82vabZP7QT';'Kofisah CHPS Compound';60517;3
+92199;'xOjGtIwAQnj';'Krokese CHPS Compound';60517;3
+92200;'IcPgLg8nKup';'Kwakyekrom CHPS zone';60517;3
+92201;'wPSWhQc3tZ8';'Kwakyekrom CHPS Compound';60517;3
+92202;'G5edZLJoAyx';'Nacolis Medical Centre';60517;3
+92203;'ywo1GJeg8sr';'Ningo CHPS Compound';60517;3
+92204;'nCJs6CUcwbH';'Ntoaso CHPS Compound';60517;3
+92205;'yIngivFFxPS';'Oparekrom CHPS Compound';60517;3
+92206;'ygIhWA9TnfY';'Papito CHPS Compound';60517;3
+92207;'um6DNzMJT6o';'Signboard chps compound';60517;3
+92208;'xvKgUxAL3OT';'Smarts Clinic';60517;3
+92209;'uu5H9y6iNSB';'Wofapaye CHPS Compound';60517;3
+92210;'UjoqGiSt3gV';'Adaase CHPS Compound';89691;3
+92211;'vDeSrRFamkm';'Amansan Clinic';89691;3
+92212;'lJW0yMeqDgM';'Anglogold Ashanti Hospital';89691;3
+92213;'q5svhzXlavY';'Anyinamadukrom CHPS Zone';89691;3
+92214;'vRZXK4kDHUr';'Bediem CHPS Zone';89691;3
+92215;'ASLERmxEH8G';'Bedieso CHPS Zone';89691;3
+92216;'ncvKTY5vbTr';'Binsere CHPS Zone';89691;3
+92217;'U7yOcno6YQH';'Brahabebome RCH';89691;3
+92218;'RtpndUb8N3D';'Bryant Mission Hospital';89691;3
+92219;'T0DfB5eO6D9';'Central Market Health Centre';89691;3
+92220;'JJhzbO3JoA2';'Diawuoso CHPS Zone';89691;3
+92221;'NzPKV9SGDZw';'Divine Souls Clinic';89691;3
+92222;'DM9uufoFmvF';'Emmanuel (Obuasi) Maternity Home';89691;3
+92223;'rxYXN1Azl5Q';'Gauso RCH';89691;3
+92224;'nMtq9vqEYFT';'Gausu East CHPS Zone';89691;3
+92225;'xIDorpx67ju';'Koffiekrom CHPS Zone';89691;3
+92226;'kYMPOF2DjNS';'Kokoteasua CHPS Zone';89691;3
+92227;'uvIs5HC4IUO';'Kriki CHPS Zone';89691;3
+92228;'lVKGZcwR7Ge';'Kunka CHPS Zone';89691;3
+92229;'NyrhWubhN8C';'Kunka Health Centre';89691;3
+92230;'TCuNS71oYTb';'Kwabenakwa CHPS Zone';89691;3
+92231;'kunXLz2DwU0';'Kwabrafoso RCH';89691;3
+92232;'xkYyZCNY6fO';'Kwabrafoso West CHPS Zone';89691;3
+92233;'lA5TEFgKlKC';'Mampamhwe CHPS Zone';89691;3
+92234;'s21xvJo9TzA';'Nana Ponkoh CHPS Zone';89691;3
+92235;'kE58Drt1mhY';'Neighbourhood Hospital';89691;3
+92236;'bMecniuVz6L';'New Abompe CHPS Zone';89691;3
+92237;'bwe5fiHL4rb';'New Estate CHPS Zone';89691;3
+92238;'JKrlvtFmTRU';'New Nsuta Rch';89691;3
+92239;'m1h6503byzm';'Nkamprom CHPS Zone';89691;3
+92240;'OdMhUmtAPRo';'Nyameso CHPS Zone';89691;3
+92241;'VKFqBZX04PF';'Nyhieso CHPS Zone';89691;3
+92242;'rNQIdBMAAvt';'Obuasi Diagnostic Centre';89691;3
+92243;'lwSwHZ9Nr4b';'Obuasi Government Hospital';89691;3
+92244;'kBGOcb0dwxf';'Obuasi Sda Hospital';89691;3
+92245;'VPhfznyiBRh';'Queens  Maternity (Obuasi)';89691;3
+92246;'Acpuo2HNxIm';'Ridge  Clinic (Obuasi)';89691;3
+92247;'FLzKz4Vasm1';'Sanso CHPS Zone';89691;3
+92248;'irSdAgtmdEd';'St. Cecilia Maternity Home';89691;3
+92249;'sLSWEbHLxhD';'St. John''s Maternity (Obuasi)';89691;3
+92250;'ji4h6iNiiL6';'St. Jude (Obuasi) Hospital';89691;3
+92251;'b9taV1WMI8R';'Tutuka RCH';89691;3
+92252;'rNz4tF2zspQ';'Twumwaa Maternity Home';89691;3
+92253;'jHDexee7hia';'Zongo CHPS  (Obuasi)';89691;3
+92254;'Zt4n8yQ0Wc3';'Abofour Health Centre';89692;3
+92255;'eHzOviZeGOw';'Anyinasuso Sda Clinic';89692;3
+92256;'dZNM3O1cDvL';'Bonsua Health Centre';89692;3
+92257;'CfhtRE7pFsn';'Kwagyekrom CHPS Compound';89692;3
+92258;'xnEevv4YrGb';'Namong Sda Hospital';89692;3
+92259;'gxwaI9TgeNd';'Offinso Community Clinic';89692;3
+92260;'hcqYIGjUJGn';'Offinso Health Centre';89692;3
+92261;'aymIvcgTtyq';'St. Patrick''s Catholic Hospital';89692;3
+92262;'DQd3tYYL1O5';'Ahenbronum  CHPS compound (Afrancho)';89693;3
+92263;'MSSrUv7WZyr';'Akrofoa CHPS Zone';89693;3
+92264;'mgZ5aJriOPT';'Akumadan Health Centre';89693;3
+92265;'q6TF9xBJNvH';'AME Zion Health Centre Ashanti';89693;3
+92266;'RwQSvIfwkyT';'Amponsakrom CHPS Zone';89693;3
+92267;'LxDbVbHwtPC';'Darso CHPS Zone';89693;3
+92268;'O46rgTVaGud';'Esoro CHPS Compound';89693;3
+92269;'kE8sE6fF6Yd';'Kobreso Health Centre';89693;3
+92270;'ulcKyHOySvX';'Krofofrom  CHPS compound (Afrancho)';89693;3
+92271;'OAYcCZR5yuL';'Mankramso CHPS Zone';89693;3
+92272;'SHGGeGqklLt';'New Atwene CHPS Zone';89693;3
+92273;'VEFkT7UiNSR';'New Mireku CHPS Zone';89693;3
+92274;'sRrjf5wIjqu';'Nkenkaasu Government Hospital';89693;3
+92275;'KgZROjgzYEr';'Nkwakwaa CHPS Zone';89693;3
+92276;'VCX0Iski2Rx';'Nsenoafie CHPS Zone';89693;3
+92277;'uiSkx1VnMVK';'Nsuase  CHPS Compound (Afrancho)';89693;3
+92278;'GBDnMOn7k2z';'Nyamebekyere No. 1 CHPS Zone';89693;3
+92279;'pbFAFHBb57v';'Nyinatase CHPS Zone';89693;3
+92280;'f5dPBOPaXzR';'Old Atwene CHPS Zone';89693;3
+92281;'r9tbDzvk2Dg';'Old Mireku CHPS Zone';89693;3
+92282;'eMT6kTkdOZ9';'Papasi CHPS Zone';89693;3
+92283;'O2PEF3WnOTm';'Sarfokrom CHPS (Offinso North)';89693;3
+92284;'EvpllTuirYl';'Tanokwaem CHPS Compound';89693;3
+92285;'q2a9BEvLrNp';'Zongo CHPS Zone';89693;3
+92286;'EZ3VLRxwR8j';'Abease Primary Health Care';89694;3
+92287;'zyTzmee7NeE';'Bernice  Maternity (Pru)';89694;3
+92288;'y9TInLYDKmg';'Harbour Clinic';89694;3
+92289;'C8HFHZIUVkZ';'Kamampa CHPS Compound';89694;3
+92290;'i1uzjiVZN39';'Mathias Hospital Yeji';89694;3
+92291;'Kx8lFHYhWw4';'Nyame Bekyere Maternity Home';89694;3
+92292;'fo2W03PZ0AD';'Parambo Health Centre';89694;3
+92293;'YZKTLkn2W8g';'Prang Health Centre';89694;3
+92294;'UqEAxC1sWwf';'Savanna Clinic';89694;3
+92295;'mk15dphU6qH';'Yeji Rch';89694;3
+92296;'yTcZimEYBT2';'Zabrama Health Centre';89694;3
+92297;'SKAXYj4kFzk';'Akunye Clinic';89695;3
+92298;'AKHCMR1TQgl';'Bengular CHPS Compound';89695;3
+92299;'YtldRirJgY1';'Bulugu CHPS Compound';89695;3
+92300;'tntUI44DyMx';'Dan New Life Clinic';89695;3
+92301;'Te2CKKkwkQX';'Kuitamsi CHPS Compound';89695;3
+92302;'p0KhQY8g3Gg';'Kuitamsi Clinic';89695;3
+92303;'lnEsUOGPAje';'Kulungungu Health Centre';89695;3
+92304;'EeQGW8SKMSo';'Nakom CHPS Compound';89695;3
+92305;'g4DdC6Cx2RT';'Pusiga Health Centre';89695;3
+92306;'rRX54xMmFdW';'Salifu Memorial Clinic';89695;3
+92307;'C6BToSgwBRc';'Sarabogo CHPS Compound';89695;3
+92308;'oD8NoYmnijr';'Tindanatinga CHPS Compound';89695;3
+92309;'kaYObmTM8Op';'Widana Health Centre';89695;3
+92310;'Ajxbpv199kO';'Zuabuliga CHPS Compound';89695;3
+92311;'yJsJphdHzuL';'Abasua CHPS Compound';89696;3
+92312;'VciCPD6bwrn';'Abonkosu';89696;3
+92313;'msG9GNQTKjt';'Abordease CHPS Zone';89696;3
+92314;'ItMhvXfPkpT';'Adutwam CHPS Compound';89696;3
+92315;'CnV3K8Wq0xN';'Aframso Health Centre';89696;3
+92316;'kZvWRxtW7vo';'Amoamang CHPS Zone';89696;3
+92317;'npDHQ1rHA7D';'Ankamadoa CHPS Zone';89696;3
+92318;'aNyLd1WRkIY';'Asuafu CHPS Zone';89696;3
+92319;'GE9TcLqnb7g';'Asubuasu Clinic';89696;3
+92320;'GSsIeABg5ev';'Atonsu Clinic';89696;3
+92321;'Y6l0Q8PgUOf';'Beposo East CHPS Zone';89696;3
+92322;'ikHThFSMZYd';'Beposo Health Centre';89696;3
+92323;'HMatyG4iWgZ';'Birem Clinic';89696;3
+92324;'twoif49jE4a';'Bonkrong CHPS Zone';89696;3
+92325;'Qml2rPNLfz3';'Domi No. 2 CHPS';89696;3
+92326;'hATD3OTA2EU';'Jeduako CHPS Zone';89696;3
+92327;'GraaIs86Sof';'Kwamang East CHPS Zone';89696;3
+92328;'J8kwu88TgYx';'Kwamang Health Centre';89696;3
+92329;'h7ERYSJ8xhM';'Kyebi CHPS Compound';89696;3
+92330;'JdFD3aisJhN';'Kyeyiase CHPS';89696;3
+92331;'On0SUeLwvMo';'Mpentuase CHPS Zone';89696;3
+92332;'jQD8KPoKfqT';'Nkujua CHPS Zone';89696;3
+92333;'Y1pqW5z6IQ2';'Nkwabirem CHPS Zone';89696;3
+92334;'xnzn1yYh4Ku';'Nsuta Health Centre (Sekyere Central)';89696;3
+92335;'sVruGPe7e4L';'Oku Catholic Clinic';89696;3
+92336;'aP2yvnesGKt';'Ahensan CHPS Zone';89697;3
+92337;'GgrEynKyrSi';'Ahmadiya  Hospital (Sekyere East)';89697;3
+92338;'mwmDqPHvgzt';'Ahwerewa CHPS Compound';89697;3
+92339;'RIIZvDsA83p';'Akokoaso Health Centre';89697;3
+92340;'sJV3XiArzzc';'Akwamu CHPS Zone';89697;3
+92341;'ACw3Jitk9Gy';'Asokore East CHPS Zone';89697;3
+92342;'yEyb0ROnLjI';'Asokore North CHPS Zone';89697;3
+92343;'LgTDelb5Grz';'Asokore South CHPS Zone';89697;3
+92344;'tK0HbhogLv3';'Awaham Brofedu Akuakrom CHPS';89697;3
+92345;'tEMSxnqKT76';'Bimma CHPS Zone';89697;3
+92346;'dcDwPytAm4b';'Boya Tetekaso CHPS Zone';89697;3
+92347;'nth58kphNp1';'Capital Clinic';89697;3
+92348;'yyzScUO5pJ6';'Daaman CHPS Zone';89697;3
+92349;'fvzwycaZiSa';'Divine Grace Clinic (Sekyere East)';89697;3
+92350;'FEZ9iZEqKGx';'Effiduase East CHPS Zone';89697;3
+92351;'uSjTFrQz4Ja';'Effiduase Government Hospital';89697;3
+92352;'vIG7UXXwl9M';'Effiduase North CHPS';89697;3
+92353;'iMdLVY3M54W';'Naama CHPS Zone';89697;3
+92354;'y9XT24jW7FD';'Nkwankwaanua CHPS';89697;3
+92355;'bAJ6oODZTNx';'Ntumkumso CHPS';89697;3
+92356;'JQVSGdZdv8i';'Odurokrom CHPS';89697;3
+92357;'ApeXxCmWiML';'Oguaa CHPS';89697;3
+92358;'lMk7Lqq53rf';'Okaikrom (Sekyere East) Health Centre';89697;3
+92359;'Wi2CBZB6GzI';'Owramso CHPS Zone';89697;3
+92360;'RsKNRQId3eO';'Senchi Methodist (Sekyere East) Clinic';89697;3
+92361;'wTk8FFLTuv4';'St. Luke''s Health Centre  (Sekyere East)';89697;3
+92362;'szT8OxDMfJO';'Afamanaso CHPS';89698;3
+92363;'YffFnKLqa7Y';'Agona Asikafoamantem CHPS';89698;3
+92364;'u1RqVHH2axK';'Agona Ayawoase CHPS';89698;3
+92365;'gYsuc2FzeVJ';'Agona Government Hospital';89698;3
+92366;'cfVH6m9nVc1';'Agona Owuoso CHPS';89698;3
+92367;'RSol7JKUXXu';'Agona West CHPS';89698;3
+92368;'ynrN39NILaS';'Akrofonso CHPS';89698;3
+92369;'HYEVV500rVd';'Asamang Aburaso CHPS';89698;3
+92370;'L45Qg2YBSVe';'Asamang Sda Hospital';89698;3
+92371;'qx422LyPCPF';'Asamang Seawuo CHPS';89698;3
+92372;'CeTo5cUG8YN';'Bedomase CHPS';89698;3
+92373;'hQm1c226C1R';'Bepoase New Town CHPS Zone';89698;3
+92374;'OmpykaDwHNb';'Bepoase Old Town CHPS Zone';89698;3
+92375;'C37FLhUHdqT';'Bipoa South CHPS';89698;3
+92376;'nfPvGgWHk88';'Bipoa West CHPS';89698;3
+92377;'Y63lSoAARCy';'Boanim Health Centre';89698;3
+92378;'BHn0wA34avd';'Boanim North CHPS Zone';89698;3
+92379;'guUOM1td1jp';'Boanim South CHPS';89698;3
+92380;'xF8lUD3adxO';'Dawu/Tabre Chps compound';89698;3
+92381;'kC0OkQvYgfq';'Dome/Amenase CHPS Compound';89698;3
+92382;'ennZplr7xHz';'Domeabra/Krakrom CHPS';89698;3
+92383;'i3PoItSAgKu';'Domeabra Health Centre';89698;3
+92384;'dOkBaSECqyY';'Funifuni CHPS Zone';89698;3
+92385;'nbu8VXjOZOw';'Jamasi Central CHPS';89698;3
+92386;'KlbxxhIKZ46';'Jamasi East CHPS';89698;3
+92387;'cAgyL52uRbs';'Jamasi Health Centre';89698;3
+92388;'ULZE1cnvewE';'Jamasi Tunsuom CHPS';89698;3
+92389;'HeZHng8KrFF';'Kofikrom CHPS';89698;3
+92390;'n1a7FLrzRxA';'Kona Addoagyiri CHPS';89698;3
+92391;'vePk6qXdgyt';'Kona Brehoma CHPS';89698;3
+92392;'OjrWzMm9RpH';'Kona Health Centre';89698;3
+92393;'uIz67iDTwYT';'Kona Seade CHPS';89698;3
+92394;'Zo1f26wJkp7';'Montonsua CHPS';89698;3
+92395;'kZ5D7opgoGo';'Sacred Heart Health Centre';89698;3
+92396;'ru9bNWofeX1';'Salvation Army Health Centre';89698;3
+92397;'NcDzN5UlQ79';'Tano-Odumase Ahenbronum CHPS';89698;3
+92398;'yMrDMNfLLl2';'Tano-Odumase Ebeye Yie CHPS';89698;3
+92399;'f5kU5UhsROI';'Wiamoase Amangoase CHPS Zone';89698;3
+92400;'VPYYL4hI3hJ';'Wiamoase Ankaase CHPS Zone';89698;3
+92401;'QamNMOn73OJ';'Wiamoase Dominase South CHPS Zone';89698;3
+92402;'FQrhhu1s0qp';'Wiamoase Dominase West CHPS Zone';89698;3
+92403;'uq10MDLjEem';'Wiamoase Gyidim Mission CHPS Zone';89698;3
+92404;'FZbOjweiuia';'Wiamoase Sda Hospital';89698;3
+92405;'BLa6enckP18';'Abdulai CHPS Zone';60514;3
+92406;'dpIFcoGX6at';'Adonso CHPS Zone';60514;3
+92407;'wwSjGeWN89V';'Akoma CHPS Zone';60514;3
+92408;'AcG3hLvtXDR';'Alhaji CHPS Zone';60514;3
+92409;'hurVbOut3WD';'Bomofour CHPS Zone';60514;3
+92410;'SyOwfZfUGt4';'Dagomba CHPS Zone';60514;3
+92411;'T0sQ3EQ4vGC';'Dawia CHPS Zone';60514;3
+92412;'hduAOsETtHq';'Drobonso CHPS Zone';60514;3
+92413;'q4p1en9pZeZ';'Drobonso Rch Zone';60514;3
+92414;'u9rm5ANejHC';'Funsua CHPS Zone';60514;3
+92415;'XfAtE7HEBsA';'Funsua Health Post';60514;3
+92416;'I0SJjAScHg0';'Hamidu CHPS Zone';60514;3
+92417;'WUhzkPKvDzi';'Issakrom CHPS Zone';60514;3
+92418;'VrJWCLJJ0sw';'Mamprusi I CHPS Zone';60514;3
+92419;'sWSX3HnmICV';'Mempekasa CHPS Zone';60514;3
+92420;'YFgp8BCYZJW';'Nyameama No. 2 CHPS Zone';60514;3
+92421;'ibQr1TtL78K';'Offe CHPS Zone';60514;3
+92422;'pOxQ94wyoad';'Saabum CHPS Zone';60514;3
+92423;'GmGwPya0TAt';'Saabuso CHPS Zone';60514;3
+92424;'rk9Rspnnxgs';'Samso CHPS Zone';60514;3
+92425;'rZo9ssN3roi';'Seneso CHPS Zone';60514;3
+92426;'xdZVb4N7KLK';'St. Vincent''s Catholic Clinic';60514;3
+92427;'HxobhfVo59M';'Wenamda CHPS Zone';60514;3
+92428;'A6aLQ0qVHZD';'Yakubu CHPS Zone';60514;3
+92429;'HlFMya72Uo7';'Abotanso CHPS Compound';89699;3
+92430;'NjSYLXTVGPD';'Ahenbonoano CHPS';89699;3
+92431;'I7LlD9BTpZQ';'Akotosu Abreso CHPS';89699;3
+92432;'iIaEfcm9hav';'Akrokyere CHPS Zone';89699;3
+92433;'LFX2f1ZOQuL';'Ananinya CHPS';89699;3
+92434;'o7feASDMKmC';'Asekyerewa CHPS';89699;3
+92435;'nyPTHP64qzu';'Bahankra CHPS';89699;3
+92436;'yuq5KkaOR4E';'Banko Health Centre';89699;3
+92437;'dT0zNxXC0YH';'Banko-Foase CHPS';89699;3
+92438;'yvndUJh9v2f';'Banko-Pramaso CHPS';89699;3
+92439;'BojTpjOFLV9';'Bodomase Community Clinic';89699;3
+92440;'ERlGVfM4675';'Bodomase Sawmill CHPS';89699;3
+92441;'k5rOucS131u';'Bomeng CHPS';89699;3
+92442;'B1VLCzew2nr';'Dadiase Amangoase CHPS';89699;3
+92443;'Zb1yQ5JP7KW';'Jesus Care Voluntary Clinic';89699;3
+92444;'TSNzRST8hdi';'Kumawu Etia CHPS';89699;3
+92445;'RtMIp2Jt6Xg';'Kumawu Health Centre';89699;3
+92446;'SPC4Dix2fFf';'Kumawu Market Square CHPS';89699;3
+92447;'p6WeZy6dWqB';'Oyoko Clinic';89699;3
+92448;'iLGJmoDz7XZ';'Peace And Comfort Maternity Home';89699;3
+92449;'qhI8sHC3c0S';'Pepease CHPS Zone';89699;3
+92450;'SGjKJRtiGX2';'Sekyereman Community Clinic';89699;3
+92451;'SPpOcZ9dqpk';'Temate-Nkwanta CHPS Zone';89699;3
+92452;'vr6aJgyR7m5';'Westphalian Hospital';89699;3
+92453;'QXTiR2AtBDI';'Wonoo CHPS compound';89699;3
+92454;'zzooDLMVuc6';'Wuraso Health Centre';89699;3
+92455;'FCjcLO8hWvX';'Asuoso CHPS Compound (Bassa)';89700;3
+92456;'pYfjyYFaXL1';'Bassa Health Centre';89700;3
+92457;'fEEf1EJ00S5';'Kajaji Health Centre';89700;3
+92458;'SVEGNPhQJTu';'Kojokrom  Health Centre (Sene)';89700;3
+92459;'NageKFK4SQ4';'Nyankontre CHPS Compound';89700;3
+92460;'emVO8apKNoW';'Premuase CHPS Compound';89700;3
+92461;'woUXtHehQeG';'Akento/Kanto Zone';60522;3
+92462;'igKWjrQeFoJ';'Bantama CHPS Compound (Sene West)';60522;3
+92463;'O9R3y3J822j';'Dava CHPS Compound';60522;3
+92464;'sRadYvubfP5';'Drobe CHPS Compound';60522;3
+92465;'ylNRCfzId6d';'Jasipo CHPS Compound';60522;3
+92466;'MXtLwe10F4l';'Kyeamekrom CHPS Compound';60522;3
+92467;'hdNoiTgQsXH';'Lemu CHPS Compound';60522;3
+92468;'zPL6RKvAlrr';'Lemu Congo CHPS Zone';60522;3
+92469;'FtOtELUAJWL';'Tato Bator CHPS Compound';60522;3
+92470;'SoTxuDzdLiT';'Wiri Kofi Chps Zone';60522;3
+92471;'FQX5HRAFtpw';'Bandei CHPS Compound';89701;3
+92472;'sS6nZLBjaq6';'Banu CHPS Compound';89701;3
+92473;'dqsksbFfqXR';'Bawiesibelle CHPS Compound';89701;3
+92474;'JXR6MnpuKOC';'Bichembelle CHPS Compound';89701;3
+92475;'GnXpBW4B9FB';'Bugubelle CHPS Compound';89701;3
+92476;'ojNKDh25qUb';'Bujan CHPS Compound';89701;3
+92477;'XA66yQkVS5V';'Challu CHPS Compound';89701;3
+92478;'f6kWVpw10JD';'Chinchang CHPS Compound';89701;3
+92479;'CaoBfIrwchr';'Dimajan CHPS Compound';89701;3
+92480;'qENNqU2OSo5';'Dolibizon CHPS Compound';89701;3
+92481;'hbiu0BFmqSz';'Duu East CHPS Compound';89701;3
+92482;'nC3rNkOdBEp';'Guosi CHPS Compound';89701;3
+92483;'XrTI2h8r7rp';'Jijen CHPS Compound';89701;3
+92484;'oZ5uSq1aMR3';'Kasana CHPS Compound';89701;3
+92485;'GensZIvBHvT';'Kong CHPS Compound';89701;3
+92486;'SQ5dU7nO4XQ';'Kulfuo Health Centre';89701;3
+92487;'U5aXd9jq2DN';'Kunchogu Health Centre';89701;3
+92488;'Etc6G86Kp13';'Lilixi CHPS Compound';89701;3
+92489;'I123FBAZxNw';'Mama Mary Maternity Home';89701;3
+92490;'L6idO2JMHpk';'Nabugubelle Health Centre';89701;3
+92491;'Kzl3dS4V53f';'Nabulo Health Centre';89701;3
+92492;'VLT746gCWtE';'Nmanduonu CHPS Compound';89701;3
+92493;'Ttqd7F7QBj6';'Pieng CHPS Compound';89701;3
+92494;'ThS1MiEAodD';'Pina CHPS Compound';89701;3
+92495;'kNxVr2E55Nq';'Sakai Health Centre';89701;3
+92496;'xv8GUi5mVjA';'Santijan CHPS Compound';89701;3
+92497;'FJe6rcPeNVp';'Sentie CHPS Compound';89701;3
+92498;'Vkq5Bkgx6Fw';'Tarsaw chps compound';89701;3
+92499;'urmp9c7gGoy';'Tumu Health Centre';89701;3
+92500;'RX9SBZWcbm4';'Tumu Hospital';89701;3
+92501;'XTpyBm4eWX7';'Virtue Medical Centre';89701;3
+92502;'kjUJMJEDo6q';'Wellembelle Health Centre';89701;3
+92503;'WEiF8fqERxU';'Wuru CHPS Compound (Sissala East)';89701;3
+92504;'bpEX1R0PBJh';'Yigantu CHPS Compound';89701;3
+92505;'gPUZqzdrfUm';'Buo CHPS Compound';89702;3
+92506;'YADHiCQ1v05';'Du-West CHPS Compound';89702;3
+92507;'J0MWlzmcrKr';'Duwie CHPS Compound';89702;3
+92508;'DosLfHjygWV';'Fatchu CHPS Compound';89702;3
+92509;'AmoUnMRQCgW';'Fielmuo Health Centre (St. Gerhard)';89702;3
+92510;'lrrr9MZF30Z';'Gwollu Health Centre';89702;3
+92511;'riHSBPbrpld';'Gwollu Hospital';89702;3
+92512;'iv8ctd3YxoU';'Jawia CHPS Compound';89702;3
+92513;'Mcjigz6iMaC';'Jeffisi Health Centre';89702;3
+92514;'qywOiCFhceP';'Kupulima CHPS Compound';89702;3
+92515;'k1EUGc39Rt1';'Pulima CHPS Compound';89702;3
+92516;'TOrfTsdxuxK';'Sorbelle CHPS Compound';89702;3
+92517;'Yf0h9UlkaIG';'Tiwii CHPS Compound';89702;3
+92518;'GUaPK3q9jaG';'Zini Health Centre';89702;3
+92519;'PncosxbspwE';'Akorabo Rch';89703;3
+92520;'wumbLfjNGhc';'Akote CHPS Compound';89703;3
+92521;'uQVDbmPZgJy';'Aponoapono CHPS Compound';89703;3
+92522;'ylgEB5RRwvu';'Frida Memorial Clinic';89703;3
+92523;'yBRO4HxY3tQ';'Gojiase CHPS Compound';89703;3
+92524;'flimitl85oF';'Koransang CHPS Compound';89703;3
+92525;'iIywZw3Rxmt';'Kukua CHPS Compound';89703;3
+92526;'l0vxLYofIHQ';'Nankese Rch';89703;3
+92527;'XFIDGpc2pSV';'Ntunkum CHPS Compound';89703;3
+92528;'wsCrPAodUOz';'Obomofodensua CHPS Compound';89703;3
+92529;'VPxTABK2K1E';'Obretema CHPS Compound';89703;3
+92530;'rVnunjszcwz';'Providence Medical Centre';89703;3
+92531;'q48lOo7W7n7';'Rev. Bidi-S Memorial Hospital';89703;3
+92532;'jpTkZWGRDt6';'Sra Health Centre';89703;3
+92533;'wQJ9yqOwXmh';'Suhum District Hospital';89703;3
+92534;'jQXTc5iNP5o';'Suhum Rch';89703;3
+92535;'Pn8svKylFtb';'Supresu CHPS Compound';89703;3
+92536;'fEicBhLkppF';'3Medical Reception Station Sunyani';89704;3
+92537;'SwbJDMleBWA';'Abesim Health Centre';89704;3
+92538;'sUNMmt4YkTc';'Abetifi CHPS Compound';89704;3
+92539;'B3O8PNg50JJ';'Abonsuam CHPS Compound';89704;3
+92540;'MDMpHCmYYJf';'Ahenboboano CHPS Compound';89704;3
+92541;'AmUlGmjyxuJ';'Akokorakwadwo CHPS Compound';89704;3
+92542;'P7cl6uB0Wtu';'Akuoko CHPS Compound';89704;3
+92543;'fYa0QvQDYSe';'Ankobia CHPS Compound';89704;3
+92544;'kM5lR6AlHEG';'Antwimkrom Health Centre';89704;3
+92545;'lLY2d1AfBh6';'Aspire Clinic';89704;3
+92546;'PsUnWhTyBtF';'Asuakwaa CHPS Compound (Sunyani)';89704;3
+92547;'HeVEqn1d5yc';'Asufufu CHPS Compound';89704;3
+92548;'NNuWYhHCFCM';'Atoase CHPS Compound';89704;3
+92549;'qEU1sy4hBg9';'Atronie CHPS Compound';89704;3
+92550;'DZ3I4dYZ4jP';'Atuahenekrom Clinic';89704;3
+92551;'oNjjNufbTE0';'Baakoniaba CHPS Compound';89704;3
+92552;'BEp0WZHqN2N';'Benu-Nkwanta CHPS Compound';89704;3
+92553;'JVnjPM2KQ0a';'Central Mosque';89704;3
+92554;'mQR0xzmRQ10';'Christian Eye Centre (Sunyani)';89704;3
+92555;'JXa0fBYuW6U';'Dexter Medical Centre';89704;3
+92556;'NGBC7EdyaXd';'Emmavick Eye Clinic';89704;3
+92557;'ZhfTrkmzKpP';'Florence Mat Home  (Sunyani)';89704;3
+92558;'VprByAnovlE';'Fofie Memorial Clinic';89704;3
+92559;'y9SRTx9jlr7';'Green Hill Clinic';89704;3
+92560;'Ji6VyXt2GhJ';'Gyaase CHPS Compound';89704;3
+92561;'p3oFWHNZb6z';'Health Lane Hospital';89704;3
+92562;'aiQNpn2niH4';'Holy Daniels  Clinic (Sunyani Municipal)';89704;3
+92563;'Cclx1dgzPzy';'Kenam Clinic';89704;3
+92564;'MIANRd5kxo4';'Knust Clinic';89704;3
+92565;'jwMrNcXsGii';'Koonsua CHPS Compound';89704;3
+92566;'NlFraL5uXsC';'Kotokrom CHPS Compound';89704;3
+92567;'iNoggjB6DO2';'Magazine CHPS Compound';89704;3
+92568;'EQRWuZCatYn';'Mereku CHPS Compound';89704;3
+92569;'TcC4W5W4OAG';'Methodist Health Centre';89704;3
+92570;'ttC3s0LQRyJ';'Monicas Mat Home';89704;3
+92571;'Xgbhs4yLdN6';'New Dormaa  CHPS Compound (Mangogroove)';89704;3
+92572;'hi8QErf4YHF';'New Dormaa East CHPS Compound';89704;3
+92573;'cQjjRpxjffk';'New Dormaa Rch';89704;3
+92574;'LWSB8VgJu0Q';'Newtown Estate CHPS Compound';89704;3
+92575;'bsb7N0Y2JTp';'Nkrankrom CHPS Compound';89704;3
+92576;'xoPCOWgD9xg';'Nkwabeng North CHPS Compound';89704;3
+92577;'NaukBR4lxW4';'Nkwabeng South CHPS Compound';89704;3
+92578;'j129JlN2E1K';'Nwawasua CHPS Compound';89704;3
+92579;'RmFlCaZuVDQ';'Ohene Djan CHPS Compound';89704;3
+92580;'gr67j1VDOJA';'Opoku Clinic';89704;3
+92581;'n22JdXiUynr';'Owusu Memorial Hospital (Sunyani)';89704;3
+92582;'HxoCO42lnsT';'Peace  Maternity (Sunyani)';89704;3
+92583;'ZOPR58SChC9';'Penkwase CHPS Compound';89704;3
+92584;'rZp7Ul6p1Oz';'Penkwasi Clinic';89704;3
+92585;'gtOkJx3uQdX';'Rafchik Clinic';89704;3
+92586;'xRHllr5CbpJ';'Ridge Experimental School  Clinic (Sunyani)';89704;3
+92587;'R1KWpffxk4W';'St James Clinic';89704;3
+92588;'q9s4k1rkJVR';'Sunyani Central Rch';89704;3
+92589;'kDZq4JmL2D6';'Sunyani Municipal Hosp';89704;3
+92590;'JjYTG7HJCOj';'Sunyani Police Clinic';89704;3
+92591;'alKaoGgTQdb';'Sunyani Poly Clinic';89704;3
+92592;'QC5wSJU1ozh';'Sunyani Prisons Clinic';89704;3
+92593;'sv5s9qvT53U';'Sunyani Regional Hospital';89704;3
+92594;'vWfHrUA8tCL';'Sunyani Sda Hospital';89704;3
+92595;'XBZZ1VbCCfg';'Sunyani Secondary School Clinic';89704;3
+92596;'GkC2eMD7nNf';'Yawhima CHPS Compound';89704;3
+92597;'OunCmnNbHKW';'Yawhima Health Centre';89704;3
+92598;'YLXJ1ZMkU4H';'Adantia CHPS Compound';89705;3
+92599;'dthnUFmZaoy';'Addoe CHPS Compound';89705;3
+92600;'zsgJ1N0t8L9';'Adounya CHPS Compound';89705;3
+92601;'ddNprNTppbI';'Amponsah Mat Home';89705;3
+92602;'i6ioO1zxJF2';'Asuakwaa CHPS Compound (Sunyani West)';89705;3
+92603;'OTt5v4cYIY1';'Ayakomaso CHPS Compound';89705;3
+92604;'F6hwqZ0Auyj';'Berlin Top CHPS Compound';89705;3
+92605;'gOE6ETHX80I';'Bofourkrom Health Centre';89705;3
+92606;'N6ZaQezYxEU';'Boreso CHPS Compound';89705;3
+92607;'RGT1rifkE5M';'Chiraa Health Centre';89705;3
+92608;'hyEY6u4XVWa';'Dumasua CHPS Compound';89705;3
+92609;'Pb1oXFoPi1l';'Fiapre Health Centre';89705;3
+92610;'oK2q2bR31K2';'Fiapre Sda Clinic';89705;3
+92611;'aBT0cjuMgIP';'Fiapre Zongo CHPS Compound';89705;3
+92612;'yDTg2YfzNlj';'Gubre CHPS Compound';89705;3
+92613;'CYQRLtvIXsX';'Hannas Mat Home';89705;3
+92614;'Iba62QE2Lwn';'Holy Daniels  Clinic (Sunyani West)';89705;3
+92615;'MSmxJqrZjHT';'Kobedi CHPS Compound';89705;3
+92616;'PyVATdcOKBu';'Kwabenakuma CHPS Compound';89705;3
+92617;'Y3oS6DI07ij';'Kwatire Polyclinic';89705;3
+92618;'htpBrSOo0Jv';'Louise Banks Griffin Clinic';89705;3
+92619;'tbEan86doRQ';'Mantukwa CHPS Compound';89705;3
+92620;'fz9CArr8vIn';'Mercy  Maternity Home (Sunyani West)';89705;3
+92621;'KZIly1pO9Jf';'Notre Dame Clinic (Sunyani West)';89705;3
+92622;'Gj2R0xj9qxd';'Nsoatre Health Centre';89705;3
+92623;'FHbjWAo1kpT';'Obiri Yeboah CHPS Compound';89705;3
+92624;'zacPOMu5sta';'Odumase  Rch (Sunyani West)';89705;3
+92625;'IuZ3lYhbhYP';'Tanom CHPS Compound';89705;3
+92626;'GMnw8PGFcLU';'Yoyooso CHPS Compound';89705;3
+92627;'ATju6QKKS5w';'Adamu CHPS Compound';89706;3
+92628;'KXCrCWQU36A';'Badu Health Centre';89706;3
+92629;'taPJp50AKID';'Bonita Health Centre';89706;3
+92630;'PD6cCMqYGvg';'Brohani Clinic';89706;3
+92631;'enLC7vpw4Rd';'Debibi Health Centre';89706;3
+92632;'luOO7mBgp2B';'Hani CHPS Compound';89706;3
+92633;'Bfm5WEOKA9c';'Menji Rural Clinic';89706;3
+92634;'BL0DrZ45Cm3';'Namasa Rual Clinic';89706;3
+92635;'LTMCn0A1pu9';'Nsawkaw Hospital';89706;3
+92636;'sL8qd1WswGE';'Nyarko Maternity Home';89706;3
+92637;'zYEqUBzbwIM';'Seikwa Health Centre';89706;3
+92638;'EcpeUJeYz2E';'Tafsiru Maternity Home';89706;3
+92639;'gGTFNl2qDSA';'Awaredone CHPS Compound';89707;3
+92640;'xavtA5zrmcN';'Big Boss Clinic';89707;3
+92641;'IwREp1YRJR8';'Datoku Clinic';89707;3
+92642;'sytJh53tTH0';'Duusi CHPS Compound';89707;3
+92643;'jIr1IbiNvqa';'Gbani CHPS Compound';89707;3
+92644;'rYk4pnIHpov';'Gorogo Sub/Gorogo CHPS Compound';89707;3
+92645;'mkBxdMBp7bt';'Gorogo Sub/TENZUUG CHPS Compound';89707;3
+92646;'Wgyq8U0PVgH';'Kpatia  CHPS Compound (Talensi Nabdam)';89707;3
+92647;'Gvhl0DCPdCO';'Kulpeliga CHPS Compound';89707;3
+92648;'s187m3Scwz8';'Namolgo Clinic';89707;3
+92649;'af6tFeoqVA2';'Nungu CHPS Compound';89707;3
+92650;'IcB9fib7eZb';'Pwalugu Sub/Balungu CHPS Compound';89707;3
+92651;'B0ulTHSPq7k';'Pwalugu Sub/Pwalugu Health Centre';89707;3
+92652;'R0aerbZTfiz';'Pwalugu Sub/Yinduri CHPS Compound';89707;3
+92653;'fQMn3yt4EJO';'Shia CHPS Compound';89707;3
+92654;'PVJbwrGm1zd';'Talensi District Hospital';89707;3
+92655;'x06j48EQHJo';'Tolla CHPS Compound';89707;3
+92656;'EtX2eDUHZHk';'Tongo Beo CHPS Compound';89707;3
+92657;'u0L51GXCRvC';'Winkongo CHPS Compound';89707;3
+92658;'yCkzab27vK0';'Yameriga CHPS Compound';89707;3
+92659;'I4Esy2AeNuw';'Adrobaa Health Centre';89708;3
+92660;'GskT4ziH7gw';'Bomaa Polyclinic';89708;3
+92661;'sqmhvMNAdFR';'Buokukuruwa RCH';89708;3
+92662;'dQMvbIM57Mg';'Duayaw Nkwanta St John Of God Hospital';89708;3
+92663;'UgjcveeobD4';'Dwenase (Tano North) CHPS Compound';89708;3
+92664;'SWLq2JzIgAc';'Mankranho CHPS Compound';89708;3
+92665;'mfnDsSn2cQn';'Subreso CHPS Compound';89708;3
+92666;'o60333u8m4j';'Tanoso  Health Centre (Tano North)';89708;3
+92667;'A3I7Ft7IjpE';'Techere CHPS Compound';89708;3
+92668;'TOExvEDOHr2';'Yamfo  Health Centre (Tano North)';89708;3
+92669;'gn8nTLmc7QU';'Bechem Govt Hospital';89709;3
+92670;'LYVD6JRDWnO';'Brosankro Health Centre';89709;3
+92671;'NiBCXve2Wpl';'Derma Health Centre';89709;3
+92672;'TKBMLuuud2i';'Mawaninso CHPS Compound';89709;3
+92673;'no3ksDSTGje';'Nsuta CHPS Compound';89709;3
+92674;'xF5i3ap9dFs';'Subriso CHPS Compound Compound';89709;3
+92675;'SN4PTaED1kn';'Techimantia Polyclinic';89709;3
+92676;'wNO3BocLZ8V';'Ahmadiyyah  Mission Hospital (Techiman)';89710;3
+92677;'Z8FM2PUobQb';'Alice Maternity Clinic';89710;3
+92678;'Ijr4NtQgf3j';'Arms Maternity Clinic';89710;3
+92679;'lituFbx942v';'Asanatanso CHPS Compound';89710;3
+92680;'NLFVpwqT2hq';'Awurade N Aye Maternityclinic';89710;3
+92681;'nf1HDsfXm4d';'Bamiri CHPS Compound';89710;3
+92682;'UMffdq5ldBK';'Clean Hands Clinic (Techiman)';89710;3
+92683;'Fl4zMpCzKHd';'Fiaso CHPS Compound';89710;3
+92684;'UAyWgBElds1';'Gina Maternity  (Techiman)';89710;3
+92685;'gdKaHHPlV2y';'Koranteng Memorial Clinic';89710;3
+92686;'XyUpTAmfx3Z';'Mangoase CHPS Compound';89710;3
+92687;'bGCl768kREY';'Mili-Med Clinic';89710;3
+92688;'qGyoQL6dYew';'Mt Olive Clinic';89710;3
+92689;'YArJ0aAYbX1';'Nkwa Hia Maternity Clinic';89710;3
+92690;'YrHo2K5N3Io';'Nkwaeso CHPS Compound';89710;3
+92691;'u9sKwSB921q';'Nsuta Health Centre (Techiman)';89710;3
+92692;'YF4RBuGYSwn';'Oforikrom  Health Centre (Techiman)';89710;3
+92693;'uNx3rgDNy1F';'Opoku Agyeman Hospital';89710;3
+92694;'HxixOJ92ezR';'Station Clinic';89710;3
+92695;'gmVQ7C0C21Y';'Tadieso CHPS Compound';89710;3
+92696;'XX2W97oIItS';'Tanonafo CHPS Compound';89710;3
+92697;'bYF0wL4tUan';'Tanoso  Health Centre (Techiman)';89710;3
+92698;'Tx7WRXGwEOn';'Techiman East Zone';89710;3
+92699;'gnZtfE2GjpV';'Techiman Health Centre';89710;3
+92700;'uRuQfPa9F5w';'Techiman Holy Family Hospital';89710;3
+92701;'HoXazodqmkH';'Techiman Market CHPS Compound';89710;3
+92702;'qfu4NVq6iK1';'Techiman North Zone';89710;3
+92703;'Krv6b5hRMiD';'Techiman Senior High School Clinic';89710;3
+92704;'BWTJbeWXALw';'Asubinja CHPS Compound';89711;3
+92705;'uBxvi0pFBsV';'Asueyi CHPS Compound';89711;3
+92706;'WI3WvHEOntK';'Aworowa Health Centre';89711;3
+92707;'Zr4bvOc8tNH';'Ayeasu CHPS Compound';89711;3
+92708;'z20Wobqprtp';'Buoyem Health Centre';89711;3
+92709;'IMOzKpFGCwB';'Mesidan CHPS Compound';89711;3
+92710;'ohZvKLY4wUC';'Nyansuaka CHPS Compound';89711;3
+92711;'I01jSPh2i5S';'Offuman Health Centre';89711;3
+92712;'WD1mzjkiQ51';'Tanoboase CHPS Compound';89711;3
+92713;'WQOuP1CG8ZX';'Tuobodom Health Centre';89711;3
+92714;'UQy8vgUvIct';'Akateng Health Centre';89712;3
+92715;'sylYTAOlGMx';'Alidor Maternity Home';89712;3
+92716;'IKdxpTomYHP';'Anyaboni Health Centre';89712;3
+92717;'pS4HviPccCk';'Asesewa Government Hospital';89712;3
+92718;'IG1Filp4qjb';'Asesewa Rch';89712;3
+92719;'Q6FblVYWqPI';'Daales Maternity Home';89712;3
+92720;'zGCqQVPD6ce';'Dzamam CHPS Compound';89712;3
+92721;'JKCWpHoxsPg';'Konkoney CHPS Compound';89712;3
+92722;'D1u0u3bjbri';'Maryend Maternity Home';89712;3
+92723;'DNZbTx3hIyz';'Osonson CHPS Compound';89712;3
+92724;'GnpxWLxEdwF';'Otrokper Health Centre';89712;3
+92725;'s3det0IPF0e';'Samlesi CHPS Compound';89712;3
+92726;'XOyz7ncROj1';'Sekesua Health Centre';89712;3
+92727;'gdfOg6Tqkei';'Sisiamang CHPS Compound';89712;3
+92728;'mSSnQ02hcty';'Terguanya CHPS Compound';89712;3
+92729;'cy5fxx4O4w4';'Abamkrom Central CHPS Compound';89713;3
+92730;'GsW2RBb1ppk';'Abamkrom Health Centre';89713;3
+92731;'MoyiUyEfVTm';'Adeiso Central CHPS Compound';89713;3
+92732;'EJPTnUt2JFv';'Adeiso Health Centre';89713;3
+92733;'zJ28IEWYPxX';'Adu Kofi CHPS Compound';89713;3
+92734;'Fi411IBGiHa';'Afabeng CHPS Compound';89713;3
+92735;'DZzzn8MsiCI';'Agyirkwa CHPS Compound';89713;3
+92736;'fDtHx011pC6';'Amonkrom CHPS Compound';89713;3
+92737;'TbOCd4mDEvt';'Asikasu  CHPS Compound (Upper West Akim)';89713;3
+92738;'rg8oOtX9Gr9';'Asuaba CHPS Compound';89713;3
+92739;'hSeUItumPWm';'Asuokaw CHPS Compound';89713;3
+92740;'kQdogDIFZXK';'Atimatim CHPS Compound';89713;3
+92741;'jFm9iV9mM6k';'Ayisikrom CHPS Compound';89713;3
+92742;'oyZHcMG4FXi';'Breman CHPS Compound';89713;3
+92743;'VzAEdRbQbhn';'Danso CHPS Compound';89713;3
+92744;'UknT9qTkxHs';'Edith  Maternity Home (Upper West Akim)';89713;3
+92745;'r1iKWVKY2sR';'End Well Clinic';89713;3
+92746;'kiiNTLCwmX4';'Home Mission Clinic';89713;3
+92747;'IMN5gt4fkoT';'Kumikrom CHPS Compound';89713;3
+92748;'EhjEemru3Zd';'Mepom Central CHPS Compound';89713;3
+92749;'UQIz0215RH3';'Mepom Health Centre';89713;3
+92750;'ElSinOu5pRY';'Nyanua CHPS Compound';89713;3
+92751;'pHUSLurrBBZ';'Odumkere Darmang CHPS Compound';89713;3
+92752;'c85niPcl3Ql';'Odumkyere Health Centre';89713;3
+92753;'iwFVQKAAALD';'Okurase CHPS Compound';89713;3
+92754;'iuzNVpX5svw';'Oppong CHPS Compound';89713;3
+92755;'dAXDMMxx6k7';'Owurakessim CHPS Compound';89713;3
+92756;'cMnkRpfjpZS';'Paerl Saviour Clinic';89713;3
+92757;'hZfEYqBQMS9';'St. Paul Roland Clinic';89713;3
+92758;'hIZ2Ql4Y8bA';'Sukrong Awamfi CHPS Compound';89713;3
+92759;'y5I8b3SmQcI';'Victory Clinic';89713;3
+92760;'fNdwIeeaAUW';'Biintenge CHPS Compound';89714;3
+92761;'dmxoG7wdfxH';'Buffiamah CHPS Compound';89714;3
+92762;'mm6DOY8NCq9';'Bulenga Health Centre';89714;3
+92763;'syUJtKpVONA';'Chaggupaani CHPS Compound';89714;3
+92764;'kOdKzmFrS3g';'Danyawkura CHPS Compound';89714;3
+92765;'IrANWgixZzo';'Ducie CHPS Compound';89714;3
+92766;'OpiVXaMuzr0';'Duu West CHPS Compound';89714;3
+92767;'TN4RZIaG6jd';'Funsi Health Centre (St. John''s)';89714;3
+92768;'wJIqrSb9kfe';'Goh CHPS Compound';89714;3
+92769;'DxfqNXb9Sry';'Goripie CHPS Compound';89714;3
+92770;'M8Mu1QP686W';'Holomuni Health Centre';89714;3
+92771;'oIIGNxo1kMY';'Jeyiri CHPS Compound';89714;3
+92772;'t35CRCHedhA';'Kattaa CHPS Compound';89714;3
+92773;'nO09h7q7Tow';'Katua CHPS Compound';89714;3
+92774;'vjEFKmRYig4';'Kpaglahi CHPS Compound';89714;3
+92775;'uw0TG3bedAu';'Kulkpong CHPS Compound';89714;3
+92776;'D4jiXVgucur';'Kundugu Health Centre';89714;3
+92777;'kB5TPYZRY01';'Loggu Health Centre';89714;3
+92778;'UryueQ5vBqK';'Manwe CHPS Compound';89714;3
+92779;'G2Z76qGtBX6';'Naaha Health Centre';89714;3
+92780;'cgoRqK47mHj';'Samuel Seidu Memorial Clinic';89714;3
+92781;'ESZmNCqHkoZ';'Yaala Health Centre';89714;3
+92782;'g7Ajii3ZkIg';'Adolescent Health Centre';60519;3
+92783;'FdwHGDAlNMX';'Ahmadiya (Wa) Clinic';60519;3
+92784;'HUtJxoSK4fz';'Arch Bishop Dery Memorial Hospital';60519;3
+92785;'CbXLJiMOJup';'Bamahu CHPS Compound';60519;3
+92786;'x3T1aIdSluz';'Bamahu Health Centre';60519;3
+92787;'XlVOdiMe0Zz';'Biihee CHPS Compound';60519;3
+92788;'rk2DtfLLXKx';'Boli CHPS Compound';60519;3
+92789;'FCjabaRmvas';'Busa Health Centre';60519;3
+92790;'RqtVMrM9Kzx';'Charia Health Centre';60519;3
+92791;'pTMYqHxauds';'Charingu Health Centre';60519;3
+92792;'P7L2oVITWgk';'Dandafuro CHPS Compound';60519;3
+92793;'ugFS0mexNf5';'Dobile North CHPS Compound';60519;3
+92794;'qDf2dXzhZr8';'Dobile South CHPS Compound';60519;3
+92795;'kgJOkswFXlS';'Dokpng CHPS Compound';60519;3
+92796;'G6jnCfROFn3';'Dondoli CHPS Compound';60519;3
+92797;'zTN3nAX7U7n';'Gbegru CHPS Compound';60519;3
+92798;'E7aF1U6rQAC';'Good Shepherd Maternity Home (Wa Municipal)';60519;3
+92799;'BZf69FPsQCA';'Jonga CHPS Compound';60519;3
+92800;'jNmQFb9rcQw';'Kambali Health Centre';60519;3
+92801;'MS6JkRWcPgj';'Konjiehi CHPS Compound';60519;3
+92802;'ovabp6i35Ey';'Konta North Clinic';60519;3
+92803;'IZrEuVOOlvC';'Kperisi CHPS Compound';60519;3
+92804;'dOr7RYdXian';'Kpongu CHPS Compound';60519;3
+92805;'b0Srs1RbH3V';'Kumbiehi CHPS Compound';60519;3
+92806;'jw8ytBSbgks';'Mangu CHPS Compound';60519;3
+92807;'dNywD6k5Duc';'Nakore CHPS Compound (NA-CHAN-TA)';60519;3
+92808;'RJVCj5Euwgb';'Nyagli CHPS Compound';60519;3
+92809;'yzXU3zbw2A7';'Piisi  CHPS Compound (Wa)';60519;3
+92810;'ah2T7RMLzgd';'Sing CHPS Compound';60519;3
+92811;'dsZCR6bJWPp';'Sombo CHPS Compound';60519;3
+92812;'MsyJ8KIWfUr';'Tampalipaani CHPS Compound';60519;3
+92813;'ieuJvySGCaI';'Upper West Reg. Police Clinic';60519;3
+92814;'sNAri60UTmt';'Upper West Regional Hospital';60519;3
+92815;'lFNMUf2N2Yy';'Wa Market Clinic';60519;3
+92816;'xy78VRrxBH1';'Wa Polytechnic Clinic';60519;3
+92817;'mulGJVRjji7';'Wa SDA Clinic';60519;3
+92818;'KqVDCJMuLSf';'Wa Urban Health Centre';60519;3
+92819;'ypftiUd3Z4Q';'Yibile CHPS Compound';60519;3
+92820;'kDIbtWjVtnl';'Asse CHPS Compound';89715;3
+92821;'KKG0KU154vd';'Bamkpama CHPS Compound';89715;3
+92822;'nMkCDiZorKL';'Buli CHPS Compound';89715;3
+92823;'wlGm8n1fCCG';'Bultuo CHPS Compound';89715;3
+92824;'CWX0M9nKvNY';'Chogsia CHPS Compound';89715;3
+92825;'oLtenJGyBB0';'Dabo CHPS Compound';89715;3
+92826;'pyy1F55fGua';'Da-E-Yiri CHPS Compound';89715;3
+92827;'ygKWWFFMvxi';'Domangyli CHPS Compound';89715;3
+92828;'o6kK87CtjuF';'Domawa CHPS Compound';89715;3
+92829;'INxMNWKXUNW';'Dorimon Health Centre';89715;3
+92830;'epg0g8R712R';'Dornye CHPS Compound';89715;3
+92831;'tSJWRopXw1I';'Eggu Health Centre';89715;3
+92832;'iE1FIr3UrWI';'Ga  CHPS Compound (Wa West)';89715;3
+92833;'xDcmQopfgPM';'Gurungu Health Centre';89715;3
+92834;'zMRHyYCtmeX';'Jambusi';89715;3
+92835;'hLxBMkCOTMJ';'Jenebob CHPS Compound';89715;3
+92836;'RdaHCBf9YQs';'Kangba CHPS Compound';89715;3
+92837;'aR7CXyQcdWO';'Kunchelleyiri CHPS Compound';89715;3
+92838;'x7ESPxHjOCD';'Lassia Health Centre';89715;3
+92839;'cnevMqLvAMV';'Manyeyiri CHPS Compound';89715;3
+92840;'psj87VlhEEC';'Metteu CHPS Compound';89715;3
+92841;'KH2TfKXDkMI';'Olli CHPS Compound';89715;3
+92842;'o5u9pMYFAmB';'Piisie CHPS Compound  (Wa West)';89715;3
+92843;'F3HiqV8sMtX';'Poyentanga Health Centre';89715;3
+92844;'DhwvjoM5WGp';'Progress Maternity Home';89715;3
+92845;'gvtCKxMPczY';'Siriyire CHPS Compound';89715;3
+92846;'DLHO7fhqn19';'St Ignatius Clinic';89715;3
+92847;'r6uTYHrcNZI';'Talawona CHPS Compound';89715;3
+92848;'scvI8OSgb2K';'Tanina CHPS Compound';89715;3
+92849;'V3tt6QicegV';'Tegme-Tuole CHPS Compound';89715;3
+92850;'CyzINpu0ovu';'Tieyiri CHPS Compound';89715;3
+92851;'M0eNWPqB1Cm';'Varimpare CHPS Compound';89715;3
+92852;'SNwznWGQ7B3';'Vieri CHPS Compound';89715;3
+92853;'mbWwIUB8y14';'Vieri Heallth Centre';89715;3
+92854;'IEYVOtF9IA3';'Wechau Polyclinic';89715;3
+92855;'mbCP0Wzj2yQ';'Yuonuuri CHPS Compound (Wa West Gurungu)';89715;3
+92856;'sP9mRBl8il3';'Yuonuuri CHPS Compound (Wa West Wechaiu)';89715;3
+92857;'jwvHL4R32uS';'Agubie CHPS Compound';89716;3
+92858;'p7sJSvWxD5d';'Amposakrom CHPS Compound';89716;3
+92859;'dU0KTG3NBJf';'Awisa CHPS Compound Cpd';89716;3
+92860;'DZq7Tnekb4i';'Droboso Health Centre';89716;3
+92861;'GxlfdSHcNhP';'Emil Memorial Hospital';89716;3
+92862;'XKapDfSBIxE';'Nchiraa Health Centre';89716;3
+92863;'bHcQOb8R0F7';'Nyaase Royals Maternity Home';89716;3
+92864;'QlvymoOmaFl';'St. Joseph Clinic';89716;3
+92865;'msXeGl0sqk0';'Subinso Health Centre';89716;3
+92866;'TkCLR6ExAZh';'Tromeso CHPS Compound';89716;3
+92867;'M564LDud0iA';'Twum Barima Infirmary';89716;3
+92868;'silksdsRab3';'Wenchi Fp Centre Rch';89716;3
+92869;'U3L3uXlQ4p2';'Wenchi Methodist Hospital';89716;3
+92870;'OL78vwHxYbt';'Abaase CHPS Compound';89717;3
+92871;'R94LYhye1Uq';'Adiembra CHPS Compound (West Akim)';89717;3
+92872;'FFsnCk7Dsv0';'Akanteng Community Clinic';89717;3
+92873;'ukjMsnrPDE7';'Amanfrom  CHPS Compound (West Akim)';89717;3
+92874;'V2wwp8fTH2d';'Ammarko CHPS Compound';89717;3
+92875;'l0PWdEh4Z0x';'Anoma Kojo CHPS Compound';89717;3
+92876;'a69NOtSffdT';'Anum CHPS Compound';89717;3
+92877;'dxDRrUa6ES8';'Asamankese Government Hospital';89717;3
+92878;'CxoXQtHsiH7';'Asamankese Health Centre';89717;3
+92879;'JqR9ckodAtT';'Asuofori CHPS Compound';89717;3
+92880;'FMlGoJQLxgK';'Awaham CHPS Compound';89717;3
+92881;'Z22FaYgSndj';'Aworasa CHPS Compound';89717;3
+92882;'bVvzKZHn2Rp';'Blue Diamond CHPS Compound';89717;3
+92883;'ksSCQnqIk6T';'Brekumanso Clinic';89717;3
+92884;'KPMDszV6pqd';'Bunsu CHPS Compound (West Akim)';89717;3
+92885;'ySDNcqetD4e';'Ekoso Clinic';89717;3
+92886;'H8lTb6XwC9t';'Health For All Herbal Clininc';89717;3
+92887;'hQhjBeft9mX';'Kobriso CHPS Compound';89717;3
+92888;'E4ZXHWM33S2';'Krofofrom CHPS Compound';89717;3
+92889;'hCKL7KTBQml';'Kwametia CHPS Compound';89717;3
+92890;'GXigNpCxfma';'Odjarde CHPS Compound';89717;3
+92891;'MHejnOk2z5H';'Osenase Health Centre';89717;3
+92892;'jEfgA0Gv9Lx';'Oworam CHPS Compound';89717;3
+92893;'YfWzxrI1Xcy';'Pabi CHPS Compound';89717;3
+92894;'CJzOpXPWIGJ';'Quarshie CHPS Compound';89717;3
+92895;'E9LbZHVKMHd';'Roman Down CHPS Compound';89717;3
+92896;'Z7pr8lZFwR0';'Sabon Zongo CHPS Compound';89717;3
+92897;'AG2KVOk6eH7';'St Anthony Maternity Home  (Asamankese)';89717;3
+92898;'ZTjf4uDrZHx';'St Luke  Clinic (West Akim)';89717;3
+92899;'UNCmpshaWYX';'St Patrick Solo  Clinic (West Akim)';89717;3
+92900;'jQDS8V9w2xf';'St. Thomas Area CHPS Compound';89717;3
+92901;'kkBDuJdTzrX';'Topease CHPS Compound';89717;3
+92902;'BwOWk7FswZk';'Vision View Clinic';89717;3
+92903;'Mce5sEzmYSS';'Yaw Tano CHPS Compound';89717;3
+92904;'qWisBrzMLrj';'Aboabo  CHPS Compound (Yilo Krobo)';89718;3
+92905;'SxoKGo094YZ';'Adjikpo CHPS Compound';89718;3
+92906;'jgHXy9fbE0M';'Agogo Health Centre  (Yilo Krobo)';89718;3
+92907;'ZSiPr4Kql7g';'Ahinkwa CHPS Compound';89718;3
+92908;'wrhmc5lcI7V';'Akorwu Bana chps compound';89718;3
+92909;'spWlEvyLqci';'Akpamu CHPS Compound';89718;3
+92910;'LmxtoQC74y9';'Akpo CHPS Compound';89718;3
+92911;'MVIggbkqSPh';'Bethel  Maternity Home (Yilo Krobo)';89718;3
+92912;'ayzqJbtVAcP';'Boti Health Centre';89718;3
+92913;'TlganAPQvXd';'Bukunor Health Centre';89718;3
+92914;'vMjupVnLua7';'Elshadai  Maternity Home (Yilo Krobo)';89718;3
+92915;'eWf6viXV8dG';'Huhunya Health Centre';89718;3
+92916;'rQgdAuTRKcn';'Labolabo Health Centre';89718;3
+92917;'U5VvJKQF2xX';'New Life  Clinic (Yilo Krobo)';89718;3
+92918;'GMLwxVeKapN';'Nkurakan Health Centre';89718;3
+92919;'T206yMJBibU';'Nsutapong Health Centre';89718;3
+92920;'OGaWgquBRjf';'Obawale Health Centre';89718;3
+92921;'HF0euDHlcEG';'Obenyemi CHPS Compound';89718;3
+92922;'tBcivGtCNPT';'Opersika Health Centre';89718;3
+92923;'sVSxGPwE9Wz';'Oterkpolu Health Centre';89718;3
+92924;'qaxCFT3RWTX';'Ponponya CHPS Compound';89718;3
+92925;'YMV87nt6vcu';'Samilesi CHPS Compound';89718;3
+92926;'O6TOsCdb4tD';'Somanya Health Centre';89718;3
+92927;'XV0q2VZmLIe';'Somanya Polyclinic';89718;3
+92928;'g4Ea5EGMhpr';'Sotech Sick Bay clinic';89718;3
+92929;'ObLemnODgN6';'Unity Maternity Home';89718;3
+92930;'rhoq8rDBxDv';'Winners Clinic';89718;3
+92931;'ZwKzUGqb0Qs';'Wurapong CHPS Compound';89718;3

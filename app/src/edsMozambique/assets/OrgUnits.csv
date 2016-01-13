@@ -10,26 +10,26 @@
 56729;'ONWXcDE5YxH';'Nicoadala';56720;2
 56730;'DrEVEcoBj2H';'Pebane';56720;2
 56731;'ICiO90IDLZa';'Mocubela';56720;2
-56732;'tNkNR3OfQ6M';'HP Quelimane';56721;3
-56733;'Bj6eef38Zh6';'CS 17 de Setembro';56721;3
-56734;'rAlTsVJ48ya';'CS 24 de Julho';56721;3
-56735;'CGyegDdxAJJ';'CS 4 de Dezembro';56721;3
-56736;'xqyuSG6gT1t';'CS Namuinho';56721;3
-56737;'y2r7MnIF1k6';'CS Sangarivera';56721;3
-56739;'z9ZyThDF7v4';'CS Chabeco';56721;3
-56740;'gKSNVqB2QFH';'CS Incidua';56721;3
-56741;'Wdcm1cgfnPh';'CS Ile';56722;3
-56742;'iTlPsveDv8n';'CS Lugela';56723;3
-56743;'sdeLu47WbBj';'HD Maganja da Costa';56724;3
-56744;'Dd6BXh8pEhA';'HD Mocuba';56725;3
-56745;'sujQGfRiu24';'CS Mocuba';56725;3
-56746;'VPCtryKVY7P';'CS Mopeia';56726;3
-56747;'dqv1LgnSOnS';'HD Morrumbala';56727;3
-56748;'wTSoXpG19x5';'CS Namacurra';56728;3
-56749;'WeH5nQM12eH';'CS Maquival Rio';56729;3
-56750;'vZ5BidRNYRA';'CS Nicoadala';56729;3
-56751;'fEytb3hPo3E';'CS Pebane';56730;3
-56752;'salw5G4YBFA';'CS Mocubela';56731;3
+56732;'tNkNR3OfQ6M';'HP Quelimane (Cidade de Quelimane)';56721;3
+56733;'Bj6eef38Zh6';'CS 17 De Setembro (Cidade de Quelimane)';56721;3
+56734;'rAlTsVJ48ya';'CS 24 De Julho (Cidade de Quelimane)';56721;3
+56735;'CGyegDdxAJJ';'CS 4 De Dezembro (Cidade de Quelimane)';56721;3
+56736;'xqyuSG6gT1t';'CS Namuinho (Cidade de Quelimane)';56721;3
+56737;'y2r7MnIF1k6';'CS Sangarivera (Cidade de Quelimane)';56721;3
+56739;'z9ZyThDF7v4';'CS Chabeco (Cidade de Quelimane)';56721;3
+56740;'gKSNVqB2QFH';'CS Incidua (Cidade de Quelimane)';56721;3
+56741;'Wdcm1cgfnPh';'CS Ile (Ile)';56722;3
+56742;'iTlPsveDv8n';'CS Lugela (Lugela)';56723;3
+56743;'sdeLu47WbBj';'HD Maganja Da Costa (Maganja da Costa)';56724;3
+56744;'Dd6BXh8pEhA';'HD Mocuba (Mocuba)';56725;3
+56745;'sujQGfRiu24';'CS Mocuba (Mocuba)';56725;3
+56746;'VPCtryKVY7P';'CS Mopeia (Mopeia)';56726;3
+56747;'dqv1LgnSOnS';'HD Morrumbala (Morrumbala)';56727;3
+56748;'wTSoXpG19x5';'CS Namacurra (Namacurra)';56728;3
+56749;'WeH5nQM12eH';'CS Maquival Rio (Nicoadala)';56729;3
+56750;'vZ5BidRNYRA';'CS Nicoadala (Nicoadala)';56729;3
+56751;'fEytb3hPo3E';'CS Pebane (Pebane)';56730;3
+56752;'salw5G4YBFA';'CS Mocubela (Maganja da Costa)';56724;3
 56759;'OJ0QdTsu52k';'1. MOZ Test Region';;1
 56760;'qC4pc2Jx4Qk';'MOZ Outlet 1';56759;2
 56761;'pqd0tpwMmmH';'MOZ Outlet 2';56759;2
@@ -38,21 +38,21 @@
 56764;'JUMPyvlnEob';'MOZ outlet 2 test 1';56761;3
 56765;'wZSedLBJgpf';'MOZ outlet 2 test 2';56761;3
 67394;'C8mbVfM9ITZ';'Nampula';;1
-69138;'dWz0FmTWohc';'CS Coalane';56721;3
-69140;'tYmtRLAXORF';'Gurua';56720;2
-69141;'UvWyLcMUDkg';'HR Gurua';69140;3
-69142;'wakPFhhtFZe';'CS Lioma';69140;3
+69138;'dWz0FmTWohc';'CS Coalane (Cidade de Quelimane)';56721;3
+69140;'tYmtRLAXORF';'Gurue';56720;2
+69141;'UvWyLcMUDkg';'HR Gurue';69140;3
+69142;'wakPFhhtFZe';'CS Lioma (Gurua)';69140;3
 69143;'gKPRdaS2eK2';'Inhasunge';56720;2
 69144;'jUMfOCdCKZE';'CS Inhasunge';69143;3
 69145;'LKXBuCOR5w6';'Milange';56720;2
-69146;'oFd38g73Q0j';'HR Milange';69145;3
-69147;'qSncpbqf0JN';'CS Maquival Sede';56729;3
+69146;'oFd38g73Q0j';'HR Milange (Milange)';69145;3
+69147;'qSncpbqf0JN';'CS Maquival Sede (Nicoadala)';56729;3
 69148;'rx66mGjNUXB';'Angoche';67394;2
-69149;'M6O5t3Fg80J';'CS Namitoria';69148;3
-69150;'hDPPpekgapu';'HR Angoche';69148;3
+69149;'M6O5t3Fg80J';'CS Namitoria (Angoche)';69148;3
+69150;'hDPPpekgapu';'HR Angoche (Angoche)';69148;3
 69151;'JRZwkr29Z4i';'Ciadade de Nampula';67394;2
 69152;'eFcOGi11AMW';'Erati';67394;2
-69153;'TzWH5sFouYo';'Ilha de Mosambique';67394;2
+69153;'TzWH5sFouYo';'Ilha de Mozambique';67394;2
 69154;'N3qzVREnJmF';'Liupo';67394;2
 69155;'xCmJ04LI9RT';'Malema';67394;2
 69156;'iTT2GLZZ1DA';'Meconta';67394;2
@@ -66,41 +66,40 @@
 69164;'XRJYG2DJq6j';'Nacala-Porto';67394;2
 69165;'LaD3jwJJgzG';'Nacaroa';67394;2
 69166;'DTw2P1yMSy7';'Rapale';67394;2
-69167;'ZlwO4IR6Me7';'CS 1 de Maio';69151;3
-69168;'n3F8daYVRb8';'CS 25 de Setembro';69151;3
-69169;'DPoMDLqCRG7';'CS Anchilo';69151;3
-69170;'xqZjNEth1iz';'CS Muhala Expanso';69151;3
-69171;'OeTGdEvLQ5k';'HG Marrere';69151;3
-69173;'hL3KS1K5N5h';'PS Posto Do Hospital Psiquiatrico';69151;3
-69175;'FRsGM974BT6';'HD Alua';69152;3
-69176;'gFET5O6XSIK';'HR Namapa';69152;3
-69177;'PXgo7Mbh7mB';'CS Ilha de Mosambique';69153;3
-69178;'BGlvvrB0gl6';'CS Lumbo';69153;3
-69179;'ku0Dk3Z9sVZ';'CS Liupo';69154;3
-69180;'LuYrh5Tbn0s';'CS Malema';69155;3
-69181;'dpSaQTJCU42';'CS Corrane';69156;3
-69182;'DOIeFgwV24m';'CS Meconta';69156;3
-69183;'dbTqEzaF9cg';'CS Nacavala';69156;3
-69184;'q48CZb8myqy';'CS Namialo';69156;3
-69186;'KqdZZlJ31IL';'CS Memba';69158;3
-69187;'Ac7BFscCsWv';'CS Mecuburi';69157;3
-69188;'KBs1V9Q0Sc8';'CS Nametil';69159;3
-69189;'iofXv5BbFQ4';'CS Carapira';69160;3
-69190;'aJGVrq7JJRp';'CS Monapo';69160;3
-69191;'VPe1os8jYIf';'CS Natete';69160;3
-69192;'WU1hNibm9eA';'HR Monapo';69160;3
-69193;'SE17ZgJx58f';'CS Muecate';69161;3
-69194;'L7X8yfYGtc3';'CS Murrupula';69162;3
-69195;'NSiP8aWfO9g';'CS Mueria';69163;3
-69196;'AcUyDGou02c';'CS Nacala-A-Velha';69163;3
-69197;'LWBk3eGP40n';'CS Akume';69164;3
-69198;'NuAjwTuLCiI';'CS Urbano';69164;3
+69167;'ZlwO4IR6Me7';'CS 1 De Maio (Cidade de Nampula)';69151;3
+69169;'DPoMDLqCRG7';'CS Anchilo (Cidade de Nampula)';69151;3
+69170;'xqZjNEth1iz';'CS Muhala Expansao';69151;3
+69171;'OeTGdEvLQ5k';'HG Marrere (Cidade de Nampula)';69151;3
+69173;'hL3KS1K5N5h';'PS Posto Do Hospital Psiquiatrico (Cidade de Nampula)';69151;3
+69175;'FRsGM974BT6';'HD Alua (Erati)';69152;3
+69176;'gFET5O6XSIK';'HR Namapa (Erati)';69152;3
+69177;'PXgo7Mbh7mB';'CS Ilha de Mozambique';69153;3
+69178;'BGlvvrB0gl6';'CS Lumbo (Ilha de Mozambique)';69153;3
+69179;'ku0Dk3Z9sVZ';'CS Liupo (Liupo)';69154;3
+69180;'LuYrh5Tbn0s';'CS Malema (Pebane)';56730;3
+69181;'dpSaQTJCU42';'CS Corrane (Meconta)';69156;3
+69182;'DOIeFgwV24m';'CS Meconta (Meconta)';69156;3
+69183;'dbTqEzaF9cg';'CS Nacavala (Meconta)';69156;3
+69184;'q48CZb8myqy';'CS Namialo (Meconta)';69156;3
+69186;'KqdZZlJ31IL';'CS Memba (Memba)';69158;3
+69187;'Ac7BFscCsWv';'CS Mecuburi (Mecuburi)';69157;3
+69188;'KBs1V9Q0Sc8';'CS Nametil (Mogovolas)';69159;3
+69189;'iofXv5BbFQ4';'CS Carapira (Monapo)';69160;3
+69190;'aJGVrq7JJRp';'CS Monapo (Monapo)';69160;3
+69191;'VPe1os8jYIf';'CS Natete (Monapo)';69160;3
+69192;'WU1hNibm9eA';'HR Monapo (Monapo)';69160;3
+69193;'SE17ZgJx58f';'CS Muecate (Muecate)';69161;3
+69194;'L7X8yfYGtc3';'CS Murrupula (Murrupula)';69162;3
+69195;'NSiP8aWfO9g';'CS Mueria (Nacala-A-Velha)';69163;3
+69196;'AcUyDGou02c';'CS Nacala-A-Velha (Nacala-A-Velha)';69163;3
+69197;'LWBk3eGP40n';'CS Akume (Nacala-Porto)';69164;3
+69198;'NuAjwTuLCiI';'CS Urbano (Nacala-Porto)';69164;3
 69199;'y02nOkJ2Dxz';'HD Nacala-Porto';69164;3
-69200;'LPIVCz4ihax';'CS Nacaroa';69165;3
-69201;'TSQodWo8bcV';'CS Rapale';69166;3
+69200;'LPIVCz4ihax';'CS Nacaroa (Nacaroa)';69165;3
+69201;'TSQodWo8bcV';'CS Rapale (Rapale)';69166;3
 69202;'XSL3FwiruRM';'Ribaue';67394;2
-69203;'mk3fjEuQ5C6';'CS Iapala';69202;3
-69204;'evgb9GXfwaX';'HR Ribaue';69202;3
+69203;'mk3fjEuQ5C6';'CS Iapala (Ribaue)';69202;3
+69204;'evgb9GXfwaX';'HR Ribaue (Ribaue)';69202;3
 83504;'W2zHuNHxkYV';'Cabo Delgado';;1
 83505;'BoKqI65NdYo';'Chiare';83504;2
 83506;'RRT3qr0bwIr';'Cidade de Pemba';83504;2
@@ -113,35 +112,645 @@
 83513;'F8aKzmOP1gi';'Muidumbe';83504;2
 83514;'nJcYmKfDV7e';'Metuge';83504;2
 83515;'tyZA0iBDBg9';'Quissanga';83504;2
-83516;'EyXE5rQurON';'CS Chiare-Velho';83505;3
-83517;'O2BB4QZshhY';'CS Ocoa';83505;3
+83516;'EyXE5rQurON';'CS Chiure-Velho';83505;3
+83517;'O2BB4QZshhY';'CS Ocua';83505;3
 83518;'tqYjRNGYpLp';'HR Chiare';83505;3
-83519;'SIHA7bnjsKU';'CS Natite';83506;3
-83520;'gJ6IjpI6hkP';'HP Pemba';83506;3
-83523;'J6XCJ48gfFZ';'CS Macomia';83509;3
-83524;'aG3rZv1N5xg';'CS Mucojo';83509;3
-83525;'d8FCx9x7ox4';'CS Chai';83509;3
-83526;'X8gbo1fgPMe';'CS Metuge';83514;3
-83527;'hwzsBrHsnMz';'CS Mieze';83514;3
-83528;'epAmHBa6qPl';'CS Nanlia';83514;3
-83529;'eXXxsU3pEIs';'CS Diaca';83510;3
-83530;'QPWHOOrU4vY';'CS Mbau';83510;3
+83519;'SIHA7bnjsKU';'CS Natite (Cidade de Pemba)';83506;3
+83520;'gJ6IjpI6hkP';'HP Pemba (Cidade de Pemba)';83506;3
+83523;'J6XCJ48gfFZ';'CS Macomia (Macomia)';83509;3
+83524;'aG3rZv1N5xg';'CS Mucojo (Macomia)';83509;3
+83525;'d8FCx9x7ox4';'CS Chai (Macomia)';83509;3
+83526;'X8gbo1fgPMe';'CS Metuge (Metuge)';83514;3
+83527;'hwzsBrHsnMz';'CS Mieze (Metuge)';83514;3
+83528;'epAmHBa6qPl';'CS Nanlia (Metuge)';83514;3
+83529;'eXXxsU3pEIs';'CS Diaca (Mocambua da Praia)';83510;3
+83530;'QPWHOOrU4vY';'CS Mbau (Mocambua da Praia)';83510;3
 83531;'QMiANpnVhZf';'HR Mocamboa Praia';83510;3
-83532;'u2a7KRdEc6F';'CS Mapupulo';83507;3
-83533;'y99RVetx82s';'CS Montepuez';83507;3
-83534;'cSlu0c9fYPf';'CS Namanhumbire';83507;3
-83535;'ylHzYYgnMle';'CS Mpeme';83512;3
+83532;'u2a7KRdEc6F';'CS Montepeuz Sede';83507;3
+83533;'y99RVetx82s';'HD Montepuez (Montepuez)';83507;3
+83534;'cSlu0c9fYPf';'CS Namanhumbire (Montepuez)';83507;3
+83535;'ylHzYYgnMle';'CS Mpeme (Mueda)';83512;3
 83536;'A3U2oH1g4R6';'CS Negomano';83512;3
-83537;'kKzgvBWPpyi';'HR Mueda';83512;3
-83538;'U3fhQGTyjwe';'CS Miangawela';83513;3
-83539;'i5vdpaRbKs1';'CS Muambula';83513;3
-83540;'ccMb7IAqrYg';'CS Muidumbe';83513;3
-83541;'EKjGPBhFpy4';'CS Namuno';83508;3
-83542;'msWiyoofJSU';'CS Ncumpe';83508;3
-83543;'PmYBUBssx6Q';'CS Machoca';83508;3
-83544;'kXydfkesZUS';'CS Olumbe';83511;3
-83545;'q47wIEMlRrp';'CS Palma';83511;3
-83546;'B77Fd0Uqxib';'CS Quionga';83511;3
-83547;'uThCHj68Nex';'CS Bilibiza';83515;3
-83548;'BQ6LayvHMuq';'CS Mahate';83515;3
-83549;'FgD1XKt6IEe';'CS Quissanga';83515;3
+83537;'kKzgvBWPpyi';'HR Mueda (Mueda)';83512;3
+83538;'U3fhQGTyjwe';'CS Miangawela (Muidumbe)';83513;3
+83539;'i5vdpaRbKs1';'CS Muambula (Muidumbe)';83513;3
+83540;'ccMb7IAqrYg';'CS Muidumbe (Muidumbe)';83513;3
+83541;'EKjGPBhFpy4';'CS Namuno (Namuno)';83508;3
+83542;'msWiyoofJSU';'CS Ncumpe (Namuno)';83508;3
+83543;'PmYBUBssx6Q';'CS Machoca (Namuno)';83508;3
+83544;'kXydfkesZUS';'CS Olumbe (Palma)';83511;3
+83545;'q47wIEMlRrp';'CS Palma (Palma)';83511;3
+83546;'B77Fd0Uqxib';'CS Quionga (Palma)';83511;3
+83547;'uThCHj68Nex';'CS Bilibiza (Quissanga)';83515;3
+83548;'BQ6LayvHMuq';'CS Mahate (Quissanga)';83515;3
+83549;'FgD1XKt6IEe';'CS Quissanga (Quissanga)';83515;3
+89598;'BFB1enkSwbK';'Moma';67394;2
+89599;'FaDI5MpYJHd';'HD Moma (Moma)';89598;3
+89600;'iwzJs7dWqgP';'Lalaua';67394;2
+89601;'XA8FPlz3G1Y';'CS Lalaua (Lalaua)';89600;3
+89602;'kjdHUTKGbNK';'Mogincual';67394;2
+89603;'LtH08KNyg9V';'CS Mogincual (Mogincual)';89602;3
+89604;'IQbIasdQhfj';'CS Larde (Moma)';89598;3
+89605;'RRTteU50ZRl';'Alto Molocue';56720;2
+89609;'Q0lyKXpk9c5';'HR Alto Molacao';89605;3
+89610;'eiqT0qNtW8K';'Mulevala';56720;2
+89611;'NdYHwNDM39c';'CS Mulevala (Ile)';56722;3
+92938;'bttZAPQWTFH';'Tete';;1
+92969;'T29dejuvp31';'Ancuabe';83504;2
+92970;'wHWV46igqxN';'Balama';83504;2
+92972;'uCYVvRtqjly';'Ibo';83504;2
+92973;'OdhyFp52XEc';'Mecufi';83504;2
+92974;'XktWPMzYbHJ';'Meluco';83504;2
+92976;'EQFGXaGjg9p';'Nangade';83504;2
+92979;'YjwIfn5YFrE';'Mossuril';67394;2
+92981;'f1tAgYlAPT7';'Chinde';56720;2
+92982;'AAYp3foeIat';'Gilao';56720;2
+92985;'R5v8qFMocdo';'Namarroi';56720;2
+92986;'M0q2TCDfjmz';'Cidade de Tete';92938;2
+92987;'p7yOv9cM9Y1';'Angania';92938;2
+92988;'JykL0HdD1Ee';'Cahora Bassa';92938;2
+92989;'qz8Aw2GmgQL';'Changara';92938;2
+92990;'NdrhKtT7NQg';'Chifunde';92938;2
+92991;'iUOYLt1Lb9S';'Chiuta';92938;2
+92992;'tJ7VwDAUeY0';'Macanga';92938;2
+92993;'tFKwppQyHEN';'Magoa';92938;2
+92994;'qMy00FY6Tbp';'Maravia';92938;2
+92995;'Fv6E0IHEvNR';'Moatize';92938;2
+92996;'Y1O5tPYEJ9D';'Mutarara';92938;2
+92997;'C7FJIinq16f';'Tsangano';92938;2
+92998;'nAKSDKxKlNU';'Zumbo';92938;2
+93020;'NxvcIs300KV';'CS Cariaco (Cidade de Pemba)';83506;3
+93021;'dQc0BCjKs9W';'CS Ingonane (Cidade de Pemba)';83506;3
+93022;'muEyq8YF3vm';'CS Cimento (Cidade de Pemba)';83506;3
+93023;'xfvMmF8Zlmq';'CS Eduardo Mondlane (Cidade de Pemba)';83506;3
+93024;'eVAawztK7Qb';'CS Muxara (Cidade de Pemba)';83506;3
+93025;'ojApZCKKV2T';'CS Chiuba (Cidade de Pemba)';83506;3
+93026;'qJVPSnlr9kv';'CS Paquite (Cidade de Pemba)';83506;3
+93027;'aQj6pmFnsqT';'CS Ancuabe (Ancuabe)';92969;3
+93028;'g67iJzfNFF7';'CS Mariri (Ancuabe)';92969;3
+93029;'A2pv4fF69rM';'CS Metoro (Ancuabe)';92969;3
+93030;'N4ixD5wywi4';'CS Meza (Ancuabe)';92969;3
+93031;'nAeehtNUA8m';'CS Minhewene (Ancuabe)';92969;3
+93032;'AVXBU6mkPos';'CS Ngewe (Ancuabe)';92969;3
+93033;'PlruKNBeL5X';'CS Balama (Balama)';92970;3
+93034;'gaitVv074Kl';'CS Impiri (Balama)';92970;3
+93035;'ImoDv0mvgZU';'CS Kuekue (Balama)';92970;3
+93036;'EGNqSrzAFXp';'CS Mavala (Balama)';92970;3
+93037;'EQ7rCvgxTSD';'CS Ntete (Balama)';92970;3
+93038;'zqwZ17jHSLj';'PS Metata (Balama)';92970;3
+93039;'fY3lnmMKi02';'CS Murripa (Balama)';92970;3
+93040;'xqZJoJjwPzE';'HR Chiure (Chiure)';83505;3
+93041;'TE2w17Oums6';'CS Chiure-Velho (Chiure)';83505;3
+93042;'gbu6LpMkGE3';'PS Bilibiza (Chiare)';83505;3
+93043;'eDJmGuAlwWa';'CS Catapua (Chiure)';83505;3
+93044;'i0vrP9FYuyg';'CS Mazeze (Chiure)';83505;3
+93045;'pOgEbahpR2l';'CS Ocoa (Chiure)';83505;3
+93046;'EhDDgX5Hs7p';'CS M''mala (Chiure)';83505;3
+93047;'StQBhRrqke8';'CS Namogelia (Chiure)';83505;3
+93048;'JFQ2fyfU3nM';'CS Muege (Chiure)';83505;3
+93049;'Xg8sORMlCcX';'CS Nakoto (Chiure)';83505;3
+93050;'jVYp7baLMfV';'CS Samora Machel (Chiure)';83505;3
+93051;'ezGHD8lpWwB';'CS Ibo (Ibo)';92972;3
+93052;'ZZUs6l4M3w2';'PS Matemo (Ibo)';92972;3
+93053;'RKDaFFQsiGt';'CS Quirimba (Ibo)';92972;3
+93054;'dLIrCiuEcid';'CS Quiterajo (Macomia)';83509;3
+93055;'VCwYzOAt0tf';'CS Nguida (Macomia)';83509;3
+93056;'yyeAckYUWA7';'CS Naunde (Macomia)';83509;3
+93057;'oOpqmofGjqd';'CS Piquewe (Macomia)';83509;3
+93058;'bikXfdGPu08';'CS Mecufi (Mecufi)';92973;3
+93059;'njzdWkPjJaq';'CS Murrebue (Mecufi)';92973;3
+93060;'AKYweH5G6cL';'CS Natuco (Mecufi)';92973;3
+93061;'oeflwIf2rTA';'CS Muaguide (Meluco)';92974;3
+93062;'fMhZvolO2vW';'CS Ibanda (Meluco)';92974;3
+93063;'x6xFDg0dyrE';'CS Minhanha (Meluco)';92974;3
+93064;'GPymJriF0OU';'CS Meluco (Meluco)';92974;3
+93065;'hLm1p0qqPIl';'CS Ravia (Meluco)';92974;3
+93066;'ZnBePoYcrIS';'HR Mocamboa Praia (Mocambua da Praia)';83510;3
+93067;'ntr91ADyUpI';'CS Quelimane (Mocambua da Praia)';83510;3
+93068;'b37edXbbMWq';'CS Mangoma (Mocambua da Praia)';83510;3
+93069;'fp8nxi2kaPe';'CS Nanduandua (Mocambua da Praia)';83510;3
+93070;'I1xpuStWtux';'CS Milamba (Mocambua da Praia)';83510;3
+93071;'NYGqpKjJuuW';'CS Montepuez Sede (Montepuez)';83507;3
+93072;'NSPifdw7s3T';'CS Mapupulo (Montepuez)';83507;3
+93073;'tjnwv9ju2cy';'CS Mirate (Montepuez)';83507;3
+93074;'lH3hoiib5Zr';'CS Linde (Montepuez)';83507;3
+93075;'yUzvXZ5fHlr';'CS Nairoto (Montepuez)';83507;3
+93076;'KGUtquD20RX';'CS Namueto (Montepuez)';83507;3
+93077;'FbJN7diH5t7';'CS Nropa (Montepuez)';83507;3
+93078;'mKN0TM8gDWF';'CS Niuhula (Montepuez)';83507;3
+93079;'jFp24nV9mpI';'CS Ntapata (Montepuez)';83507;3
+93080;'HbnXKsYGjaI';'CS Chilinde (Mueda)';83512;3
+93081;'jIFE2jMy4nO';'CS Chapa (Mueda)';83512;3
+93082;'OKDNx2cND1X';'CS Namatil (Mueda)';83512;3
+93083;'VEHrATMzFlf';'PS Negomano (Mueda)';83512;3
+93084;'URqtj9FaFj4';'CS N''gapa (Mueda)';83512;3
+93085;'kPjesU3HXA5';'CS Mbuo (Mueda)';83512;3
+93086;'BuyRiErmWO2';'CS Chitunda (Muidumbe)';83513;3
+93087;'sNIpyyPAdLu';'CS Muatide (Muidumbe)';83513;3
+93088;'KwZelmG1nQm';'CS Miteda (Muidumbe)';83513;3
+93089;'d3Y451t14B8';'CS Namacande (Muidumbe)';83513;3
+93090;'rNEdov4mVGO';'CS Hocula (Namuno)';83508;3
+93091;'DypllOLEuW6';'CS Meloco (Namuno)';83508;3
+93092;'snAsp0TwiZD';'CS EP2-Nanrapa (Namuno)';83508;3
+93093;'Wx2ULy8WzQ3';'CS Papai (Namuno)';83508;3
+93094;'FTXAvTijlIp';'CS Nicuita (Namuno)';83508;3
+93095;'rSaVIoqygfZ';'CS Nangade (Nangade)';92976;3
+93096;'b1qoF1TJavO';'CS N''tamba (Nangade)';92976;3
+93097;'omT6x3cEOsb';'CS N''toli (Nangade)';92976;3
+93098;'f33d8txszpC';'CS Nkonga (Nangade)';92976;3
+93099;'qQMTCYG9ill';'CS Muhia (Nangade)';92976;3
+93100;'rNdJ3XRMkV7';'CS Muite (Palma)';83511;3
+93101;'yyjARDbs2Do';'CS Maganja (Palma)';83511;3
+93102;'R9I44J3SqdR';'CS Pundanhari (Palma)';83511;3
+93103;'qOIyLYobpGJ';'CS Nacuta (Metuge)';83514;3
+93104;'kDPuBY2LUHq';'CS Ntessa (Metuge)';83514;3
+93105;'aAOiOuNA36M';'CS Cagembe (Quissanga)';83515;3
+93106;'FE30eTB0k4j';'PS Namaluco (Quissanga)';83515;3
+93107;'CneGAKNYNnX';'PS Tororo (Quissanga)';83515;3
+93108;'wAV5gfzs7rR';'CS Nacoba (Quissanga)';83515;3
+93109;'QMDMHsSRgP3';'HC Nampula (Cidade de Nampula)';69151;3
+93110;'zcsVnGPTuTK';'HM Nampula (Cidade de Nampula)';69151;3
+93111;'t3blViY0sAd';'PS Napipine (Cidade de Nampula)';69151;3
+93112;'Jc9hJ6pTgfi';'PS Muhala (Cidade de Nampula)';69151;3
+93113;'jyWnGyu4eE1';'PS Namutequeliua (Cidade de Nampula)';69151;3
+93114;'QvBjCmd2jxQ';'PS Namicopo (Cidade de Nampula)';69151;3
+93115;'hNl8ztTeDdp';'PS O.T.M. (Cidade de Nampula)';69151;3
+93116;'Rr8T3Il3hmY';'PS Texmoque (Cidade de Nampula)';69151;3
+93117;'R3oy5l8Un5b';'CS Muhala Expansao (Cidade de Nampula)';69151;3
+93118;'ttRNQ6g5oPW';'PS Penitenciaria (Cidade de Nampula)';69151;3
+93119;'T4v5u64Wc8z';'CS Mutava Rex (Cidade de Nampula)';69151;3
+93120;'D7ILZddzmf1';'CS Inguri (Angoche)';69148;3
+93121;'cw6X123so4j';'CS Namaponda (Angoche)';69148;3
+93122;'qZqigccYF5R';'CS Natir (Angoche)';69148;3
+93123;'JNqJM1B5Pak';'CS Aube (Angoche)';69148;3
+93124;'IRFfiIrfHMm';'PS Mepapata (Angoche)';69148;3
+93125;'vXqle4CYoib';'PS Merrere (Angoche)';69148;3
+93126;'oC8DYjGUL9s';'PS Nacopa (Angoche)';69148;3
+93127;'cINsiGRvpKf';'PS Napruma (Angoche)';69148;3
+93128;'Ifvlz7TOvm0';'CS Quilua (Angoche)';69148;3
+93129;'yRGStRFdVjX';'CS Sangage (Angoche)';69148;3
+93130;'RuoQyHkQaQt';'PS Malatane (Angoche)';69148;3
+93131;'MSmo6NkFlCG';'CS Catamoio (Angoche)';69148;3
+93132;'eKJMG4gL8SP';'CS Mirrepe (Angoche)';69148;3
+93133;'L7cxjhUJq8K';'PS Quelelene (Angoche)';69148;3
+93134;'y55wlGNj617';'CS Gelo (Angoche)';69148;3
+93135;'yaN9Tdc4IdY';'CS Mirrote (Erati)';69152;3
+93136;'Mg1iwoPt8g3';'CS Namiroa (Erati)';69152;3
+93137;'qQEZ0BiL2yr';'PS Nantoge (Erati)';69152;3
+93138;'vOWHAPcp43T';'CS Samora Machel (Erati)';69152;3
+93139;'gpMYZhOsKo0';'CS Odinepa (Erati)';69152;3
+93140;'yGQkHqFHX81';'CS Kutua (Erati)';69152;3
+93141;'D750N8LR4jg';'CS 25 De Junho (Erati)';69152;3
+93142;'JJ4SMYAoHLV';'CS Ilha De Moz. (Ilha de Mozambique)';69153;3
+93143;'cF3rOFyqPgX';'PS Ampapa (Ilha de Mozambique)';69153;3
+93144;'d3lF3xF1A3n';'PS Muchelia (Ilha de Mozambique)';69153;3
+93145;'HYqbL11JRL6';'PS Lurio (Lalaua)';89600;3
+93146;'tgJvPvMrpQC';'CS Meti (Lalaua)';89600;3
+93147;'OXAXLLvp5hV';'PS Naquessa (Lalaua)';89600;3
+93148;'zTbg0bvB3d7';'CS Mueseleque (Lalaua)';89600;3
+93149;'n9VQHW73DjI';'CS Mutuali (Malema)';69155;3
+93150;'OYpbFDkTvnb';'CS Chuhulo (Malema)';69155;3
+93151;'lVIiiqLpfdo';'PS Cunvarre (Malema)';69155;3
+93152;'q3ILbR3mxnT';'PS Murralelo (Malema)';69155;3
+93153;'TbD3uVCSwMq';'PS Murripa (Malema)';69155;3
+93154;'YiNHxbMLeRl';'CS Nataleia (Malema)';69155;3
+93155;'NGNkMqaJjxZ';'CS Nacata (Malema)';69155;3
+93156;'dFjqRNCdAY0';'PS Teterrene (Meconta)';69156;3
+93157;'BQ28x8Ypz2r';'CS Japir (Meconta)';69156;3
+93158;'E7SMtdnxotj';'CS Mecua (Meconta)';69156;3
+93159;'QE1sdAiyjFT';'PS Milhana (Mecuburi)';69157;3
+93160;'JgMq4fRf9Op';'CS Namina (Mecuburi)';69157;3
+93161;'piCZQQzWFUl';'PS Momane (Mecuburi)';69157;3
+93162;'iXkqzkcjWxN';'CS Muite (Mecuburi)';69157;3
+93163;'eld2SZ5aTfq';'CS Napai (Mecuburi)';69157;3
+93164;'uVxA2vlVemp';'PS Popue (Mecuburi)';69157;3
+93165;'V4HC0XQeaH0';'CS Issipe (Mecuburi)';69157;3
+93166;'ltSbYbWMkhi';'CS Malithe (Mecuburi)';69157;3
+93167;'fYzKCQecuxq';'CS Mualua (Mecuburi)';69157;3
+93168;'HQKukImq9QP';'CS Nahipa (Mecuburi)';69157;3
+93169;'PDZsCwIs7OZ';'CS Ratane (Mecuburi)';69157;3
+93170;'fVqF26FlaMz';'PS Unidade Mocambicana (Mecuburi)';69157;3
+93171;'sSzs4BZgRGb';'CS Chipene (Memba)';69158;3
+93172;'akYzALztz2I';'CS Namahaca (Memba)';69158;3
+93173;'AWTh3Wi76yv';'PS Lurio (Memba)';69158;3
+93174;'U8nY2jC0c8W';'PS Mazua (Memba)';69158;3
+93175;'PtXZbsK57Zf';'PS Napila (Memba)';69158;3
+93176;'Qkl1XPV1d2w';'PS Simuco (Memba)';69158;3
+93177;'ObVdUMXujxh';'PS Cava (Memba)';69158;3
+93178;'OYlm1xwz2Nl';'CS Geba (Memba)';69158;3
+93179;'kyyCRR9KIQ6';'CS Caleia (Memba)';69158;3
+93180;'WjyPgcC8ox8';'CS Baixo Pinda (Memba)';69158;3
+93181;'mZwaB4Bf6nu';'CS Pavala (Memba)';69158;3
+93182;'FCQcirrxNSp';'CS Namige (Mogincual)';89602;3
+93183;'C6nBaPWCN8g';'CS Quinga (Mogincual)';89602;3
+93184;'hEcORMqbe4e';'CS Quixaxe (Mogincual)';89602;3
+93185;'MGYzkjUSCRv';'CS Nakakana (Mogincual)';89602;3
+93186;'oA58fYxKD3d';'CS Mepeone  (Mogincual)';89602;3
+93187;'SHQwLpljS2R';'CS Perequexo (Mogincual)';89602;3
+93188;'al1Zqbf2OIf';'CS Xa-Selemane (Mogincual)';89602;3
+93189;'sjIn4fzeJTQ';'CS Xa-Momade (Mogincual)';89602;3
+93190;'iGJ8sbtlxh4';'CS Calipo (Mogovolas)';69159;3
+93191;'rqUmsrYzxK1';'CS Iuluti (Mogovolas)';69159;3
+93192;'mMpK2CmK4In';'CS Muatua (Mogovolas)';69159;3
+93193;'ah7bMgfBAnT';'CS Nanhupo Rio (Mogovolas)';69159;3
+93194;'iu43pNotekC';'PS Mecutamala (Mogovolas)';69159;3
+93195;'jArZYQ16cxs';'CS Murrirrimue (Mogovolas)';69159;3
+93196;'UfpN9d6myAZ';'CS Chalaua (Moma)';89598;3
+93197;'sVJbF6A2xCF';'CS Briganha (Moma)';89598;3
+93198;'j4B9GcaAKWz';'CS Guarneia (Moma)';89598;3
+93199;'wrtp3Qw9qT9';'CS Ligonha (Mucoroge) (Moma)';89598;3
+93200;'rlgdHam3Mfq';'PS M''pago (Moma)';89598;3
+93201;'WxA0eWgwYAk';'PS Metil (Moma)';89598;3
+93202;'L2XJ3F2FKlh';'PS Nambilane (Moma)';89598;3
+93203;'inMdZYauwXv';'CS Pilivili (Moma)';89598;3
+93204;'Yd82gIAoQCI';'PS Savara (Moma)';89598;3
+93205;'fRxycaSKADs';'PS Uala (Moma)';89598;3
+93206;'i73YJTDcow5';'CS Micane (Moma)';89598;3
+93207;'GzdXnX14nlJ';'CS Mavuco (Moma)';89598;3
+93208;'dVMBvv9fVH9';'CS Marrupanama (Moma)';89598;3
+93209;'EQCQgVNXqkr';'CS Itoculo (Monapo)';69160;3
+93210;'IFeGBuXG9mo';'CS Mugica (Monapo)';69160;3
+93211;'gc3tjZyNbmR';'CS Netia (Monapo)';69160;3
+93212;'aRBfZ5k5tEi';'PS Centro Prisional (Monapo)';69160;3
+93213;'FjCDcMeP232';'PS Jagaia (Monapo)';69160;3
+93214;'r8mS8uL2tEq';'CS Mecuco (Monapo)';69160;3
+93215;'TrMXOZfCyru';'PS Meserpane (Monapo)';69160;3
+93216;'G2Aidn5Pgfk';'PS Metocheria (Monapo)';69160;3
+93217;'sQ4nV6JFhJj';'CS Ramiane (Monapo)';69160;3
+93218;'M17ELK8FJUm';'PS Centro Presional (Monapo)';69160;3
+93219;'p7I6G9I8QOA';'CS Mucujua (Monapo)';69160;3
+93220;'BVQUuamnwlG';'CS Namapa (Monapo)';69160;3
+93221;'DlVQMmIk3oB';'CS Mossuril (Mossuril)';92979;3
+93222;'tzPAbBaW5OL';'CS Nacuxa (Mossuril)';92979;3
+93223;'saxr979F5s4';'PS Cabaceira Grande (Mossuril)';92979;3
+93224;'fa9w6S8JHN0';'CS Chocas-Mar (Mossuril)';92979;3
+93225;'AS03IHrj9Ci';'CS Lunga (Mossuril)';92979;3
+93226;'rkhJ6Kx3oSC';'CS Matibane (Mossuril)';92979;3
+93227;'kqRYW6nKUJ0';'PS Namige (Mossuril)';92979;3
+93228;'kSXzcCWKBMJ';'CS Cabeceira Pequena (Mossuril)';92979;3
+93229;'Isqc1vkJ0GN';'CS Muaualo (Mossuril)';92979;3
+93230;'Qv1l4lES7og';'CS Imala (Muecate)';69161;3
+93231;'jZaWW0ijpjP';'PS Namahia (Muecate)';69161;3
+93232;'hugCuUCTwNr';'PS Chinamane (Muecate)';69161;3
+93233;'Wg4IvojOXtJ';'CS Muculuone (Muecate)';69161;3
+93234;'Uvz7tNIJ59Y';'CS Napala (Muecate)';69161;3
+93235;'Jm4b9YOJDVn';'CS Gracio (Muecate)';69161;3
+93236;'dhm4mKZ2854';'CS Kuvula (Muecate)';69161;3
+93237;'VosS43FAKDD';'CS Chereque (Muecate)';69161;3
+93238;'ZBnzPB3ILJ0';'CS Nihessine (Murrupula)';69162;3
+93239;'HiDzzCXrNaI';'PS Chinga (Murrupula)';69162;3
+93240;'KL1e92OfWRi';'PS Umuato (Murrupula)';69162;3
+93241;'nfscqJlNaAf';'CS Cazuzu (Murrupula)';69162;3
+93242;'ABeDfDpgmeW';'CS Tiponha (Murrupula)';69162;3
+93243;'GX8DGYkVyVq';'CS Nacala-Porto (Nacala-Porto)';69164;3
+93244;'NuqVHCVaHWZ';'HD Nacala-Porto Hd (Nacala-Porto)';69164;3
+93245;'eUtv8OceHmI';'PS Mathapue (Nacala-Porto)';69164;3
+93246;'NLcI3zM2Sq8';'CS Quissimajulo (Nacala-Porto)';69164;3
+93247;'E1v9PYhVErA';'CS Murrupelane (Nacala-Porto)';69164;3
+93248;'Gjyw0YdsK2Q';'PS Naherengue (Nacala-Porto)';69164;3
+93249;'m3dxkxdgJkO';'PS Muzuane (Nacala-Porto)';69164;3
+93250;'Cz03FQL7pA1';'CS CFM (Nacala-Porto)';69164;3
+93251;'wnXkuH4aCo2';'CS Cimentos (Nacala-Porto)';69164;3
+93252;'kQ5c49Pdvdp';'PS Cife (Nacala-Porto)';69164;3
+93253;'VsM6LdnsLln';'CS C.A.M.I.N.A (Nacala-Porto)';69164;3
+93254;'cf6TECAt7LE';'CS Mahelene (Nacala-Porto)';69164;3
+93255;'zVjx0C97aen';'CS Barragem (Nacala-A-Velha)';69163;3
+93256;'iJNVDGlRXEK';'PS Salina (Nacala-A-Velha)';69163;3
+93257;'O4ouRCKXkRd';'CS Namalala (Nacala-A-Velha)';69163;3
+93258;'b7wXMxgYNw2';'CS Covo (Nacala-A-Velha)';69163;3
+93259;'Gi92SKAeoc1';'CS Nachere (Nacaroa)';69165;3
+93260;'jwSKauCTPA0';'PS Saua-Saua (Nacaroa)';69165;3
+93261;'eoQqan0AqL1';'CS Nahadje (Nacaroa)';69165;3
+93262;'OfxuqxyiAKD';'CS Muchico (Nacaroa)';69165;3
+93263;'OdcVrZH4nCx';'CS Namaita (Rapale)';69166;3
+93264;'ymye0Zx2uJC';'PS Caramaja (Rapale)';69166;3
+93265;'GN8MoZ4JJh0';'CS Mutivaze (Rapale)';69166;3
+93266;'nAHY4SKGBIf';'PS Mutolo (Rapale)';69166;3
+93267;'k2ZoDw76I5V';'PS Naholoco (Rapale)';69166;3
+93268;'hI3cR0Lxfyk';'PS Namachilo (Momala) (Rapale)';69166;3
+93269;'KDuOVvzfKzL';'PS Namiconha (Rapale)';69166;3
+93270;'zEFWAf5R2vc';'PS Namucaua (Rapale)';69166;3
+93271;'o1zw2wVR0rr';'PS Natoa (Rapale)';69166;3
+93272;'A8L98C2KjLb';'CS Maratane (Rapale)';69166;3
+93273;'zDBmpyjRTVz';'PS Saua Saua (Rapale)';69166;3
+93274;'IPuZ7yRyfoi';'PS Mucova (Rapale)';69166;3
+93275;'vBFB5ko5srU';'PS Muleheia (Rapale)';69166;3
+93276;'cJuqC77MTsf';'PS Chica (Ribaue)';69202;3
+93277;'Mf8v8Nabtmw';'CS Iapala Estacao (Ribaue)';69202;3
+93278;'ZtPFctlbbTQ';'PS Mecuasse (Ribaue)';69202;3
+93279;'s7ceBosixie';'CS Namiconha (Ribaue)';69202;3
+93280;'oq4JMiWta56';'PS Riane (Ribaue)';69202;3
+93281;'VXKboQDCI4m';'PS Esc.Bas.Agraria (Ribaue)';69202;3
+93282;'CSZs2UP0zXh';'CS Cunle (Ribaue)';69202;3
+93283;'JZ3ej4lLNWh';'PS Cadeia Civil (Cidade de Quelimane)';56721;3
+93284;'OV72uaLrhdt';'PS Zalala-Mar (Cidade de Quelimane)';56721;3
+93285;'wUbD7c76Zsu';'CS Micajune (Cidade de Quelimane)';56721;3
+93286;'o4fkunI3oHe';'HR Alto Molocue  (Alto Molocue)';89605;3
+93287;'k4gOGDB64Dz';'CS Alto Molocue (Alto Molocue)';89605;3
+93288;'merYjdZMCsD';'CS Caiaia (Alto Molocue)';89605;3
+93289;'JAuS6nx6Og9';'CS Chapala (Alto Molocue)';89605;3
+93290;'mG7g0scwMYg';'CS Granja (Alto Molocue)';89605;3
+93291;'XV8AiVMALfP';'PS Malua (Alto Molocue)';89605;3
+93292;'wFYaKDc3zWW';'CS Mohiua (Alto Molocue)';89605;3
+93293;'mifThdEbfvf';'CS Mutala (Alto Molocue)';89605;3
+93294;'K78lIgapzws';'CS Nauela (Alto Molocue)';89605;3
+93295;'f16zKmrrIDW';'PS Nivava (Alto Molocue)';89605;3
+93296;'DchxmZtlhhh';'CS Mugema (Alto Molocue)';89605;3
+93297;'K6Wc2kdM9Ey';'CS Ecole (Alto Molocue)';89605;3
+93298;'QziF7X1xEQo';'CS Cololo (Alto Molocue)';89605;3
+93299;'R8gJXIaJjl6';'CS Novanana (Alto Molocue)';89605;3
+93300;'ongxWWavymr';'CS Nimala (Alto Molocue)';89605;3
+93301;'V7UkPu7UxlK';'CS Nacuaca (Alto Molocue)';89605;3
+93302;'b25WKkXPOrJ';'CS Bonifacio Groveta (Alto Molocue)';89605;3
+93303;'OvYOw3mD4PZ';'CS Chinde (Chinde)';92981;3
+93304;'O9gsaNvcLA8';'CS Luabo (Chinde)';92981;3
+93305;'HDPimkTbl6L';'CS Madal (Chinde)';92981;3
+93306;'zm4Zt8shmSf';'CS Matilde (Chinde)';92981;3
+93307;'K9zqQMW4ikX';'CS Micaune (Chinde)';92981;3
+93308;'qyJ6ifFXA4m';'PS Mitange (Chinde)';92981;3
+93309;'tquVBhnb41B';'CS Pambane (Chinde)';92981;3
+93310;'SkYPwmxOJwV';'CS Bento (Chinde)';92981;3
+93311;'SqWvwgw9EYC';'CS Mutequela (Gile)';92982;3
+93312;'wJZ83xjcQqA';'CS Alto Lingonha (Gile)';92982;3
+93313;'SWY1BwklL06';'HD Gile (Gile)';92982;3
+93314;'ndxQrBDfm1d';'CS Moneia (Gile)';92982;3
+93315;'DpJBJrbhyyM';'CS Muiane (Gile)';92982;3
+93316;'VbTgw1IvbnB';'CS Uapao (Gile)';92982;3
+93317;'qX4rOSJPymP';'CS Kayane (Gile)';92982;3
+93318;'DIjAh5YiJ8W';'CS Mamala (Gile)';92982;3
+93319;'OtkSaTm20CE';'CS Pury (Gile)';92982;3
+93320;'OsBSOTusLSD';'HR Guruel (Guruel)';69140;3
+93321;'nCv3GQcaU3t';'CS Guruel (Guruel)';69140;3
+93322;'bmk7f7l6prG';'CS Mepuagiua (Guruel)';69140;3
+93323;'yxjw23R6j3k';'CS Ruace (Guruel)';69140;3
+93324;'M2sTp3FEPRd';'CS Serra (Guruel)';69140;3
+93325;'QiHhCIaz1cs';'CS Tetete (Guruel)';69140;3
+93326;'lyQHPwr3A6E';'CS U.P.10 (Guruel)';69140;3
+93327;'tHZd1jHCVNp';'CS U.P.4 (Guruel)';69140;3
+93328;'ta6JISSAarD';'CS Muagiua (Guruel)';69140;3
+93329;'dazrmwumm3n';'CS Carico (Guruel)';69140;3
+93330;'PH9WReNXtlz';'CS Invinha (Guruel)';69140;3
+93331;'deKxO3cAfNq';'CS Macuarro (Guruel)';69140;3
+93332;'c11hhbM19aB';'CS Nintulo (Guruel)';69140;3
+93333;'Qk3kkv8dBUx';'CS Chiraco (Ile)';56722;3
+93334;'MgTxRRhJXHQ';'CS Phalane (Ile)';56722;3
+93335;'Ny3GJ3EGjRa';'CS Mugulama (Ile)';56722;3
+93336;'pYPbfgpkikY';'CS Muliquela (Ile)';56722;3
+93337;'BkyIpggDlA9';'CS Tebo (Ile)';56722;3
+93338;'YKjn37vmmhC';'PS Nipiode (Ile)';56722;3
+93339;'DRNECYt0TND';'CS Socone (Ile)';56722;3
+93340;'La6wNyJoVsC';'CS Jajo (Ile)';56722;3
+93341;'mSJxidLVs7J';'CS Niboia (Ile)';56722;3
+93342;'C3SzbCHF8v2';'CS Massira (Ile)';56722;3
+93343;'vjz0ZKVfYKO';'CS Curuane (Ile)';56722;3
+93344;'Lp413QvFAPr';'CS Mucuaba (Ile)';56722;3
+93345;'Ccy0qdnkEyk';'CS Walasse (Ile)';56722;3
+93346;'cZRHbmqLUOc';'CS Morrua (Ile)';56722;3
+93347;'dTbs52jDUaZ';'CS Musarawa/Tebo (Ile)';56722;3
+93348;'boqO1IMVPNB';'CS Chirimane (Inhassunge)';69143;3
+93349;'kkyUp1cM8Ow';'CS Gonhane (Inhassunge)';69143;3
+93350;'OgyoAGSAERU';'CS Inhassunge (Inhassunge)';69143;3
+93351;'KjqxZOyKROQ';'CS Matulune (Inhassunge)';69143;3
+93352;'JdZOkbGhXvQ';'CS Olinda (Inhassunge)';69143;3
+93353;'jfk85xsJmSD';'CS Bingagira (Inhassunge)';69143;3
+93354;'UW9YjXmOqli';'CS Ilova (Inhassunge)';69143;3
+93355;'TJd8Hgl7HNj';'CS Munhamade (Lugela)';56723;3
+93356;'XRk5mhZbU6S';'CS Namagoa (Lugela)';56723;3
+93357;'dWepu5P7rs4';'CS Erurune (Lugela)';56723;3
+93358;'ZiXhFUGoFDP';'PS Limbue (Lugela)';56723;3
+93359;'DUO3R8fREP2';'CS Muabanama (Lugela)';56723;3
+93360;'EgOJYyFZzV3';'CS Mungulune (Lugela)';56723;3
+93361;'ErioSZ2Mlx8';'PS Nigau (Lugela)';56723;3
+93362;'yiw6YG3iwjf';'PS Putine (Lugela)';56723;3
+93363;'WJUs1p58yxl';'CS Tacuane (Lugela)';56723;3
+93364;'y4H8XMUz1TZ';'CS Mucube (Lugela)';56723;3
+93365;'HCIzV1nrWwZ';'CS Mulide (Lugela)';56723;3
+93366;'GncLsJqeB3x';'PS Bajone (Maganja da Costa)';56724;3
+93367;'NZ6Arxaralj';'CS Mabala (Maganja da Costa)';56724;3
+93368;'dgGU00po45h';'CS Matacurro (Maganja da Costa)';56724;3
+93369;'gecWIV6YPAI';'CS Nante (Maganja da Costa)';56724;3
+93370;'QEfRFsaF9S5';'CS Tapata (Maganja da Costa)';56724;3
+93371;'UkYNwUfUz0A';'CS Cariua (Maganja da Costa)';56724;3
+93372;'pVEDa9Bgazl';'CS Maneia (Maganja da Costa)';56724;3
+93373;'zl2o7QwoQSW';'CS Vila Valdez (Maganja da Costa)';56724;3
+93374;'YsqDhhDodme';'CS Alto Mutola (Maganja da Costa)';56724;3
+93375;'JPRMIUwZ4kB';'CS Gurai (Maganja da Costa)';56724;3
+93376;'IE70q0UdEcA';'PS Missal (Maganja da Costa)';56724;3
+93377;'vyFoM5sPUFe';'PS Mapira (Maganja da Costa)';56724;3
+93378;'buYPcZqpnEZ';'PS Moneia (Maganja da Costa)';56724;3
+93379;'xa4VJ7JfuIz';'CS Muzo (Maganja da Costa)';56724;3
+93380;'Jede61Uy5f6';'CS Milange (Milange)';69145;3
+93381;'VuYT1m0sQiG';'CS Carico (Milange)';69145;3
+93382;'uYFSbsv9MyO';'CS Cazimbe (Milange)';69145;3
+93383;'gz8TZWCjF8y';'CS Corromana (Milange)';69145;3
+93384;'I5CrJVca9QW';'CS Majaua (Milange)';69145;3
+93385;'tDQy39rPu79';'CS Dulanha (Milange)';69145;3
+93386;'oVCUQJwKaSY';'CS Tengua (Milange)';69145;3
+93387;'jXZdWVIMJF1';'PS Vulalo (Milange)';69145;3
+93388;'vyi1WirxzDu';'CS Liciro (Milange)';69145;3
+93389;'PMin4jL9WJa';'CS Mongue (Milange)';69145;3
+93390;'sD4onzmk0a3';'CS Dachudua (Milange)';69145;3
+93391;'GgZ1QnslnkS';'PS Nambuzi (Milange)';69145;3
+93392;'hk4FmMByr8O';'CS Nantuto (Milange)';69145;3
+93393;'R6eThYEypN3';'CS Molumbo (Milange)';69145;3
+93394;'GsMVnKNK4w6';'CS Sabelua (Milange)';69145;3
+93395;'k9lUXgr4HMd';'CS Mocuba Sisal (Mocuba)';56725;3
+93396;'v4qeCkqYo6d';'CS Mugeba (Mocuba)';56725;3
+93397;'rbZWf41aTdV';'CS Muaquiua (Mocuba)';56725;3
+93398;'W6Y44if0Whk';'CS Caiave (Mocuba)';56725;3
+93399;'krnQJCSAfjT';'CS Padre Usera (Mocuba)';56725;3
+93400;'LbDIrQv7F1V';'CS Moloe (Mocuba)';56725;3
+93401;'uzMXFbIYzBD';'CS Intome (Mocuba)';56725;3
+93402;'oxtocXonLo8';'CS Alto Benfica (Mocuba)';56725;3
+93403;'NmBsiIxkIDW';'CS Posto AgrÃ­cola (Mocuba)';56725;3
+93404;'ygY7DdI1EDT';'CS Namanjavira (Mocuba)';56725;3
+93405;'kOt5oJBYOml';'CS Munhiba (Mocuba)';56725;3
+93406;'lIVSvcEiTD9';'CS Nhaluanda (Mocuba)';56725;3
+93407;'GGugsWRUD5p';'CS Magogodo (Mocuba)';56725;3
+93408;'EPIOHLFoPnp';'CS Muanaco (Mocuba)';56725;3
+93409;'Dw1hDrnQblE';'CS 16 De Junho (Mocuba)';56725;3
+93410;'HgSX2G7qEBi';'PS Chimuara (Mopeia)';56726;3
+93411;'Od6W20UwqD8';'PS Gulamo (Mopeia)';56726;3
+93412;'T4Y7J5DnTOW';'CS Lua-Lua (Mopeia)';56726;3
+93413;'wHjWgKjBD8c';'CS Posto Campo (Mopeia)';56726;3
+93414;'RKXLlMihzQM';'PS Nhacatundo (Mopeia)';56726;3
+93415;'fwZ3mYABCpZ';'CS Campo (Mopeia)';56726;3
+93416;'JjSWS3U7IEt';'CS Noere (Mopeia)';56726;3
+93417;'In3NVG3hwpY';'CS 8 De Marco (Mopeia)';56726;3
+93418;'wgax4J2LaDy';'CS Catale (Mopeia)';56726;3
+93419;'sRnIL1krmst';'CS Morrumbala (Morrumbala)';56727;3
+93420;'JpgEKyJgrcL';'CS Boroma (Morrumbala)';56727;3
+93421;'uCWW0K3aFzQ';'CS Cumbapo (Morrumbala)';56727;3
+93422;'vUmZzDcfXmv';'CS Derre (Morrumbala)';56727;3
+93423;'Nv4TDV6dLnr';'CS Guerissa (Morrumbala)';56727;3
+93424;'IyIpUDIRblX';'CS Megaza (Morrumbala)';56727;3
+93425;'AMTUA3J9QPi';'CS Mepinha (Morrumbala)';56727;3
+93426;'XRPWAQNiEdP';'CS Pinda (Morrumbala)';56727;3
+93427;'NZPzofxANb9';'CS Sabe (Morrumbala)';56727;3
+93428;'FIEAsvHfYeX';'CS Chire (Morrumbala)';56727;3
+93429;'mGTSp6gIWcG';'CS Muandiua (Morrumbala)';56727;3
+93430;'MV9LLgcLAUO';'CS Djasse (Morrumbala)';56727;3
+93431;'JnkpQ47h4Qb';'CS Fabrica (Morrumbala)';56727;3
+93432;'RjqX6QSMSd2';'CS Micaula (Morrumbala)';56727;3
+93433;'JraCieU2zIz';'CS Gaute (Morrumbala)';56727;3
+93434;'et5EGjmDS3X';'CS Reis (Morrumbala)';56727;3
+93435;'ntdmGV7SFrn';'CS Muerra (Morrumbala)';56727;3
+93436;'OnxMyYbXZSi';'CS Chilomo (Morrumbala)';56727;3
+93437;'FN4VfKlqspi';'CS Machindo (Morrumbala)';56727;3
+93438;'uIVQP7LrKdK';'PS Furquia (Namacurra)';56728;3
+93439;'Uw9yBCCvMVN';'CS Macuse (Namacurra)';56728;3
+93440;'EmLyaGe1dBO';'CS Malei (Namacurra)';56728;3
+93441;'mfDY0Fez3jS';'CS Mixixine (Namacurra)';56728;3
+93442;'yU86XvODFzn';'PS Naciaia (Namacurra)';56728;3
+93443;'AQeDfJ7R0R5';'CS M''baua (Namacurra)';56728;3
+93444;'XJsXTl9WwPg';'CS Muebele (Namacurra)';56728;3
+93445;'qOUXDCr6TGh';'PS Mutange (Namacurra)';56728;3
+93446;'XWS3hUxFuO7';'CS Muceliua (Namacurra)';56728;3
+93447;'a6LKu8QxzBQ';'CS Mugubia (Namacurra)';56728;3
+93448;'IaQcfDiYkdB';'CS Chinde (Namacurra)';56728;3
+93449;'ISfZ0lwAuNE';'CS Regone (Namarroi)';92985;3
+93450;'X4Eb7KhRw2E';'CS Namarroi (Namarroi)';92985;3
+93451;'dniKORCmU4M';'CS Mutepua (Namarroi)';92985;3
+93452;'P7HtQujdDqM';'CS Marea (Namarroi)';92985;3
+93453;'n1sXWBJKFaq';'CS Lipale (Namarroi)';92985;3
+93454;'zVm8teM36Yt';'CS Mutatala (Namarroi)';92985;3
+93455;'xFqzhBWxidA';'CS Mudine (Namarroi)';92985;3
+93456;'uFVIUN2djaW';'CS Rumala (Namarroi)';92985;3
+93457;'hWz1d0l3OaX';'CS Ilalane (Nicoadala)';56729;3
+93458;'pxaCu051GJ5';'CS Inhangulue (Nicoadala)';56729;3
+93459;'KOugOpj5wea';'CS Ionge (Nicoadala)';56729;3
+93460;'tM1dDDyzVtb';'CS Licuare (Nicoadala)';56729;3
+93461;'S1KdvGo8v18';'PS Marrongane (Nicoadala)';56729;3
+93462;'DWaPAzrWd5B';'CS Namacata (Nicoadala)';56729;3
+93463;'N5a2eWJooKT';'CS Varela (Nicoadala)';56729;3
+93464;'YNPKZyTXZjP';'CS Quintq Girassol (Nicoadala)';56729;3
+93465;'UlV6RNPWKxF';'CS Amorro (Nicoadala)';56729;3
+93466;'Z2wlNG8kWOE';'CS Domela (Nicoadala)';56729;3
+93467;'kC9qOpG3vPF';'CS Madal (Nicoadala)';56729;3
+93468;'CBJL0917i9I';'CS Estasao Malanha (Nicoadala)';56729;3
+93469;'cRFqc2O3pur';'PS Cutale (Pebane)';56730;3
+93470;'jXIsM5TbGUa';'CS Magiga (Pebane)';56730;3
+93471;'Wu0pnZ6f20i';'CS Mulela (Pebane)';56730;3
+93472;'a6G61kH4ljd';'CS Muligode (Pebane)';56730;3
+93473;'LPj526tN17T';'CS Naburi (Pebane)';56730;3
+93474;'USuheIGiIt0';'CS 7 De Abril (Pebane)';56730;3
+93475;'VlIcqiDp6vf';'CS Impaca (Pebane)';56730;3
+93476;'JTNSNlDWtKr';'CS Tomeia (Pebane)';56730;3
+93477;'e7OVgWByuer';'CS Txalalane (Pebane)';56730;3
+93478;'eLRvG51L7oQ';'CS Pele-Pele (Pebane)';56730;3
+93479;'KMrllRqlSGD';'CS Maganha (Pebane)';56730;3
+93480;'gXCccbhQ4vy';'HP Tete (Cidade de Tete)';92986;3
+93481;'PimWz9q2vLv';'CS Nº 1 - Bairro Magaia (Cidade de Tete)';92986;3
+93482;'asOPObN79Dd';'CS Nº 2 - Bairro Matundo (Cidade de Tete)';92986;3
+93483;'grjGPSRTPey';'CS Nº 3 - Bairro Manyanga (Cidade de Tete)';92986;3
+93484;'p13Fwg5tGJS';'CS Nº 4 - Bairro Muthemba (Cidade de Tete)';92986;3
+93485;'fes7D6zNFew';'CS Boroma (Cidade de Tete)';92986;3
+93486;'lWA4h5X42vQ';'PS Cadeia (Cidade de Tete)';92986;3
+93487;'R3Izdak2cZh';'CS Dague (Cidade de Tete)';92986;3
+93488;'SDs7xXO82cM';'CS Mpadue (Cidade de Tete)';92986;3
+93489;'qaOMrAcBZdc';'CS Mufa (Cidade de Tete)';92986;3
+93490;'DneRQbvl9Xl';'HR Ulongue (Angonia)';92987;3
+93491;'IE2vk6BCH0C';'CS Ulongue (Angonia)';92987;3
+93492;'WdxqVhai50x';'CS Domue (Angonia)';92987;3
+93493;'qDb0vDiBFQk';'CS Chimuala (Angonia)';92987;3
+93494;'n31TY5ZyIGH';'CS Lifidzi (Angonia)';92987;3
+93495;'LFKcr1OVKyl';'CS Mpenha (Angonia)';92987;3
+93496;'AnVPrvPziq3';'CS Seze (Angonia)';92987;3
+93497;'q26hGwZWerA';'CS Vila-Velha (Angonia)';92987;3
+93498;'oZ8SAissN8w';'CS Mpandula (Angonia)';92987;3
+93499;'pRxlmtiXB63';'CS Catondo (Angonia)';92987;3
+93500;'GwedI9rP2hd';'CS Nsendedza (Angonia)';92987;3
+93501;'iXbFnxmiL9f';'HR Songo (Cahora Bassa)';92988;3
+93502;'glVSAlQ7qYH';'CS Chinhanda (Cahora Bassa)';92988;3
+93503;'CJPjzkHNh16';'CS Chitima (Cahora Bassa)';92988;3
+93504;'JxrneJqQykV';'CS Chirodze-Ponte (Cahora Bassa)';92988;3
+93505;'VDcdH9gvq64';'CS Nhacapiriri (Cahora Bassa)';92988;3
+93506;'aS3Lj5F4Cx9';'CS Songo (Cahora Bassa)';92988;3
+93507;'SdAb50htt06';'CS Maroeira (Cahora Bassa)';92988;3
+93508;'aoZEwHyvVTB';'CS Chintholo (Cahora Bassa)';92988;3
+93509;'a3kuc1e2ZbK';'CS Chipalapala (Cahora Bassa)';92988;3
+93510;'hp1F4UG9X2P';'CS Changara (Changara)';92989;3
+93511;'c7GGA8icQNY';'CS Chioco (Changara)';92989;3
+93512;'o7T070GV0SJ';'CS Chipembere (Changara)';92989;3
+93513;'JUNqZUjg2wD';'CS Dzunga (Changara)';92989;3
+93514;'LyO4DVrM7fj';'CS Goba (Changara)';92989;3
+93515;'ScUkvQ6r1H8';'CS Mazoe-Ponte (Changara)';92989;3
+93516;'jHHuSeasZSX';'CS Cachembe (Changara)';92989;3
+93517;'q8iRdcMklQ0';'CS Ntemangau (Changara)';92989;3
+93518;'TkSroR1lqPP';'CS Marara (Changara)';92989;3
+93519;'rUhcgPPYu51';'CS Masaua (Changara)';92989;3
+93520;'wt5NJDazbHY';'CS Matambo (Changara)';92989;3
+93521;'JzsEG8mKomD';'CS Phalamabue (Changara)';92989;3
+93522;'F3E6SmcTIGR';'CS Chifunde (Chifunde)';92990;3
+93523;'PY68HuirL7I';'CS Luia (Chifunde)';92990;3
+93524;'hpdM55SsaLK';'CS Tsadzo (Chifunde)';92990;3
+93525;'oRXsg7cpFLE';'CS Thequesse (Chifunde)';92990;3
+93526;'W8ovqN69l6N';'CS Vila-Mualadzi (Chifunde)';92990;3
+93527;'iN3VnvFtDzr';'CS Nkantha (Chifunde)';92990;3
+93528;'BJy6pvWmJl3';'CS Nkamande (Chifunde)';92990;3
+93529;'MMwe83CE4ag';'CS Cazula (Chiuta)';92991;3
+93530;'MTjb8JtA3w2';'CS Kaunda (Chiuta)';92991;3
+93531;'RNhEzTSVM4N';'CS Manje (Chiuta)';92991;3
+93532;'PrzCRonITDe';'CS Mavudzi-Ponte (Chiuta)';92991;3
+93533;'w7nf805jCAj';'CS Matenje (Chiuta)';92991;3
+93534;'XJMGossI7kB';'CS Furancungo (Macanga)';92992;3
+93535;'IqN9dDQLsev';'CS Chidzolomondo (Macanga)';92992;3
+93536;'T8lwDdTCFg9';'CS Macanga (Macanga)';92992;3
+93537;'so4jvCrSw4c';'CS Namadende (Macanga)';92992;3
+93538;'wjCN2zVsYpX';'CS Miwanga (Macanga)';92992;3
+93539;'R7EQkq0PB0e';'CS Mtchoncho (Macanga)';92992;3
+93540;'HMbZrWr8TGn';'CS Baue (Macanga)';92992;3
+93541;'VHZo3I3NtBH';'CS Campala (Macanga)';92992;3
+93542;'PoexqlOTDTK';'CS Cazindira (Magoe)';92993;3
+93543;'GgazP2jCm53';'CS Chinthopo (Magoe)';92993;3
+93544;'lwTN6eR2QKP';'CS Chitete (Magoe)';92993;3
+93545;'ovrhbjZFx3W';'CS Daque (Magoe)';92993;3
+93546;'ptgYthf8i0m';'CS Magoe (Magoe)';92993;3
+93547;'w3oO03yWFXt';'CS Mucumbura (Magoe)';92993;3
+93548;'S0lOwQWVcKi';'CS Mussenguezi (Magoe)';92993;3
+93549;'o7y4PWcy645';'CS Chiputo (Maravia)';92994;3
+93550;'iGYKbjjAAJP';'CS Fingoe (Maravia)';92994;3
+93551;'KjJhcdB2KaI';'CS Maloera (Maravia)';92994;3
+93552;'ELTYR5VaKsM';'CS Uncanha (Maravia)';92994;3
+93553;'ortRgEc9N2w';'CS Kassuende (Maravia)';92994;3
+93554;'wljhNjCyqs7';'CS Chipera (Maravia)';92994;3
+93555;'zaz3X1k6Hty';'CS Zabue (Moatize)';92995;3
+93556;'TYB8BsAyHpi';'CS Mameme Ii (Moatize)';92995;3
+93557;'dBxNvhuYKdv';'CS Moatize (Moatize)';92995;3
+93558;'GdBw0iEnFCc';'CS Benga (Moatize)';92995;3
+93559;'DHv1Z6IhQWl';'CS Cambulatsitsi (Moatize)';92995;3
+93560;'AP43oP5KfA4';'CS Capirizange (Moatize)';92995;3
+93561;'UHjHh5iNfJ1';'CS Nkhanga (Moatize)';92995;3
+93562;'rv2X4CfIkk5';'CS CFM (Moatize)';92995;3
+93563;'IVWa2EXC2dT';'CS Ncondedzi (Moatize)';92995;3
+93564;'Xf4QhxjrpPx';'CS Micunga (Moatize)';92995;3
+93565;'LMXfZSoKlWE';'CS Samoa (Moatize)';92995;3
+93566;'nKXhagScFlr';'CS Cateme (Moatize)';92995;3
+93567;'xocfY1tYNPs';'CS Mualazi (Moatize)';92995;3
+93568;'ctukwtUsyXI';'HR Mutarara (Mutarara)';92996;3
+93569;'wFgidW0cFjf';'CS Mutarara (Mutarara)';92996;3
+93570;'c4zmuArss6h';'CS Traquino (Mutarara)';92996;3
+93571;'NVDVqVrxUcj';'CS Ancuaze (Mutarara)';92996;3
+93572;'VvrQnb5wfrU';'CS Charre (Mutarara)';92996;3
+93573;'ZTBQ3e4Fm6o';'CS Doa (Mutarara)';92996;3
+93574;'CzgPFjvVVbt';'CS Inhangoma (Mutarara)';92996;3
+93575;'zdH9idCoqU9';'CS Jardim (Mutarara)';92996;3
+93576;'ipwKyvSpiJq';'CS Mutarara-Velha (Mutarara)';92996;3
+93577;'zZqzYpXnnkx';'CS Sinjal (Mutarara)';92996;3
+93578;'fMHoblGZ6jP';'CS Vila Nova Fronteira (Mutarara)';92996;3
+93579;'OIObucNj1Mi';'CS Chueza (Mutarara)';92996;3
+93580;'rPRlxgV8SgN';'CS Kalipale (Tsangano)';92997;3
+93581;'Rw5QJlGJ0jJ';'CS Ntengombalame (Tsangano)';92997;3
+93582;'ZS0EZi4h1nX';'CS Tsangano (Tsangano)';92997;3
+93583;'iie4OgwNyrG';'CS Maconge (Tsangano)';92997;3
+93584;'YtVXmjfEGPS';'CS Chinvano (Tsangano)';92997;3
+93585;'OCmUMtusawJ';'CS Fonte-Boa (Tsangano)';92997;3
+93586;'Wz6BJ3Af1ud';'CS Banga (Tsangano)';92997;3
+93587;'q5HdRL6iceC';'CS Caembua (Zumbo)';92998;3
+93588;'al6HYKTQ4op';'CS Muze (Zumbo)';92998;3
+93589;'MXgT9CaflRE';'CS Zambue (Zumbo)';92998;3
+93590;'yZVSGLo4fb4';'HD Zumbo (Zumbo)';92998;3
+93591;'NC9Ys68b409';'CS Mucangazi (Zumbo)';92998;3
+93592;'eKF4nW1jMzw';'CS Chissavo (Zumbo)';92998;3
+93593;'Qvp828AyCSO';'CS Minga (Zumbo)';92998;3
+93594;'bNudzy4Oj98';'CS Tongue (Zumbo)';92998;3

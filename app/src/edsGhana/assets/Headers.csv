@@ -1,8 +1,7 @@
-1;;'Health Facility Information';1;2
+1;;'Supervisor Information';1;2
 2;;'Human Resources and Training';2;2
 3;;'Health Facility Infrastructure';3;2
-4;;'Pharmacy, Stocks & Equipment';4;2
-5;;'Pharmacy Observation';5;2
+4;;'Stocks & Equipment';4;2
 6;;'Objectives';1;1
 7;;'Observation 1';1;3
 8;;'Health Worker Information';2;3
@@ -22,8 +21,8 @@
 22;;'General Examination';7;4
 23;;'Diagnosis';8;4
 24;;'Treatment';9;4
-25;;'Observation 3';1;5
-26;;'Health Worker Information';2;5
+25;;'Observation 3';2;5
+26;;'Health Worker Information';1;5
 27;;'Reception';3;5
 28;;'Clinical History';4;5
 29;;'Signs of Severe Malaria';5;5
@@ -34,21 +33,43 @@
 34;;'Instructions';1;6
 35;;'Health Facility Information';2;6
 36;;'Assessment';3;6
-37;;'Instructions';1;7
 38;;'Health Facility Information';2;7
 39;;'Assessment';3;7
-40;;'Instructions';1;8
 41;;'Health Facility Information';2;8
 42;;'Assessment';3;8
-43;;'Instructions';1;9
-44;;'Health Facility Information';2;9
-45;;'Assessment';3;9
-46;;'Instructions';1;10
-47;;'Health Facility Information';2;10
-48;;'Assessment';3;10
-49;;'Feedback and Action';1;11
-50;;'Gap 1';2;11
-51;;'Gap 2';3;11
-52;;'Gap 3';4;11
 53;'AdherenceTable1';'AdherenceTable1';1;16
 54;'AdherenceTable2';'AdherenceTable2';2;16
+55;'GO_Fdbk_TV';'General OTSS Gap This Visit';3;17
+56;'Pharm Asst';'Pharmacy Infrastructure Assessment';2;18
+58;'Obs 1';'Pharmacy Observation 1';2;19
+59;'Pharm_Fdbk_TV';'Pharmacy Feedback and Action Plan';1;20
+60;'CR_Fdbk_TV';'Consulting Room Gap Last Visit';2;22
+61;'GO_Fdbk';'General OTSS Feedback and Action Plan';1;17
+62;;'Supervisor Information';1;18
+63;;'Health Worker Information, Obs 1';1;19
+65;;'Health Worker Information, Obs 2';3;19
+66;;'Pharmacy Observation 2';4;19
+67;;'Health Worker Information, Obs 3';5;19
+68;;'Pharmacy Observation 3';6;19
+69;;'Pharmacy Gap Last Visit';2;20
+70;;'Pharmacy Gap This Visit';3;20
+71;;'Supervisor Information';0;3
+75;;'Consulting Room Feedback and Action Plan';1;22
+76;;'Consulting Room Gap This Visit';3;22
+77;;'Supervisor Information';0;6
+78;;'Supervisor Information';1;27
+79;;'Facilty Records Staff';2;27
+80;;'DHIS2 Data Management';3;27
+81;;'Data Validation & Use';4;27
+82;;'Reporting Tools: Completeness & Accuracy';5;27
+83;;'Malaria Data Verification';6;27
+86;;'Data Management Feedback and Action Plan';1;28
+87;;'Data Management Gap Last Visit';2;28
+88;;'Data Management GapThis Visit';3;28
+89;;'General OTSS Gap Last Visit';2;17
+90;;'RDT Feedback and Action Plan';1;24
+91;;'RDT Gap Last Visit';2;24
+92;;'RDT Gap This Visit';3;24
+94;;'Observation 1 - Close';10;3
+95;;'Observation 2 - Close';10;4
+96;;'Observation 3 - Close';10;5
