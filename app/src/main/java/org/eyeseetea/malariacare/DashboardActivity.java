@@ -24,19 +24,14 @@ import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.app.ListFragment;
-import android.app.LocalActivityManager;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.text.Html;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.animation.AccelerateInterpolator;
-import android.view.animation.Animation;
-import android.view.animation.TranslateAnimation;
 import android.widget.TabHost;
 import android.widget.TextView;
 
@@ -72,20 +67,14 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
     DashboardSentFragment sentFragment;
     CreateSurveyFragment createSurveyFragment;
     SurveyFragment surveyFragment;
-    LocalActivityManager mlam;
     static boolean viewFeedback;
     String currentTab;
     String currentTabName;
-    String TAB_PLAN;
-    String TAB_ASSESS;
-    String TAB_IMPROVE;
-    String TAB_MONITOR;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Log.d(TAG, "onCreate");
         super.onCreate(savedInstanceState);
-        getTags();
         if(viewFeedback) {
             viewFeedback=false;
             finishAndGo(FeedbackActivity.class);
@@ -105,10 +94,10 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
         }
         initTabHost(savedInstanceState);
         /* set tabs in order */
-        setTab(TAB_PLAN, R.id.tab_plan_layout, getResources().getDrawable(R.drawable.tab_plan));
-        setTab(TAB_ASSESS, R.id.tab_assess_layout, getResources().getDrawable(R.drawable.tab_assess));
-        setTab(TAB_IMPROVE, R.id.tab_improve_layout, getResources().getDrawable(R.drawable.tab_improve));
-        setTab(TAB_MONITOR, R.id.tab_monitor_layout, getResources().getDrawable(R.drawable.tab_monitor));
+        setTab(getResources().getString(R.string.tab_tag_plan), R.id.tab_plan_layout, getResources().getDrawable(R.drawable.tab_plan));
+        setTab(getResources().getString(R.string.tab_tag_assess), R.id.tab_assess_layout, getResources().getDrawable(R.drawable.tab_assess));
+        setTab(getResources().getString(R.string.tab_tag_improve), R.id.tab_improve_layout, getResources().getDrawable(R.drawable.tab_improve));
+        setTab(getResources().getString(R.string.tab_tag_monitor), R.id.tab_monitor_layout, getResources().getDrawable(R.drawable.tab_monitor));
 
         tabHost.setOnTabChangedListener(new TabHost.OnTabChangeListener() {
 
@@ -120,23 +109,25 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
 
                 currentTab = tabId;
                 setActionBarDashboard();
-                if (tabId.equalsIgnoreCase(TAB_PLAN)) {
+                if (tabId.equalsIgnoreCase(getResources().getString(R.string.tab_tag_plan))) {
                     currentTabName=getString(R.string.plan);
                     plannedFragment.reloadPlannedItems();
-                } else if (tabId.equalsIgnoreCase(TAB_ASSESS)) {
+                } else if (tabId.equalsIgnoreCase(getResources().getString(R.string.tab_tag_assess))) {
                     currentTabName=getString(R.string.assess);
                     if(isSurveyFragmentActive())
                         setActionBarTitleForSurveyFragment();
                     unsentFragment.reloadData();
-                } else if (tabId.equalsIgnoreCase(TAB_IMPROVE)) {
+                } else if (tabId.equalsIgnoreCase(getResources().getString(R.string.tab_tag_improve))) {
                     currentTabName=getString(R.string.improve);
                     sentFragment.reloadSentSurveys();
-                } else if (tabId.equalsIgnoreCase(TAB_MONITOR)) {
+                } else if (tabId.equalsIgnoreCase(getResources().getString(R.string.tab_tag_monitor))) {
                     currentTabName=getString(R.string.monitor);
                     monitorFragment.reloadSentSurveys();
                 }
             }
         });
+
+        // init tabHost
         for(int i=0;i<tabHost.getTabWidget().getChildCount();i++){
             tabHost.getTabWidget().getChildAt(i).setFocusable(false);
         }
@@ -149,7 +140,7 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
         String subtitle="";
         if(Session.getUser()!=null && Session.getUser().getName()!=null)
             subtitle=Session.getUser().getName();
-        setActionbarTitle(title,subtitle);
+        setActionbarTitle(title, subtitle);
     }
 
     public void setActionBarTitleForSurveyFragment(){
@@ -166,7 +157,7 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
             subtitle2=survey.getOrgUnit().getName();
         if(program.getName()!=null)
             subtitle3=program.getName();
-        setActionbarMultiTitle(title,subtitle,subtitle2,subtitle3);
+        setActionbarMultiTitle(title, subtitle, subtitle2, subtitle3);
     }
 
     public void setActionbarTitle(String title1, String title2) {
@@ -187,21 +178,12 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
         ((TextView) findViewById(R.id.action_bar_multititle_subtitle3)).setText(title4);
     }
 
-    private void getTags() {
-        TAB_PLAN=getResources().getString(R.string.tab_plan);
-        TAB_ASSESS=getResources().getString(R.string.tab_assess);
-        TAB_IMPROVE=getResources().getString(R.string.tab_improve);
-        TAB_MONITOR=getResources().getString(R.string.tab_monitor);
-    }
-
     /**
      * Init the conteiner for all the tabs
      */
     private void initTabHost(Bundle savedInstanceState) {
-        mlam = new LocalActivityManager(this, false);
         tabHost = (TabHost)findViewById(R.id.tabHost);
-        mlam.dispatchCreate(savedInstanceState);
-        tabHost.setup(mlam);
+        tabHost.setup();
     }
 
 
@@ -263,7 +245,7 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
 
     public void initSurveyFromPlanning(){
         initSurvey();
-        tabHost.setCurrentTabByTag(TAB_ASSESS);
+        tabHost.setCurrentTabByTag(getResources().getString(R.string.tab_tag_assess));
     }
 
     public void initSurvey(){
@@ -377,14 +359,12 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
         Log.d(TAG, "onResume");
         super.onResume();
         getSurveysFromService();
-        mlam.dispatchResume();
     }
 
     @Override
     public void onPause(){
         Log.d(TAG, "onPause");
         super.onPause();
-        mlam.dispatchPause(isFinishing());
     }
 
     public void setReloadOnResume(boolean doReload){
@@ -407,11 +387,11 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
      */
     @Override
     public void onBackPressed() {
-        if(isCreateSurveyFragmentActive() && currentTab==TAB_ASSESS) {
+        if(isCreateSurveyFragmentActive() && currentTab==getResources().getString(R.string.tab_tag_assess)) {
             initAssess();
             unsentFragment.reloadData();
         }
-        else if(isSurveyFragmentActive() && currentTab==TAB_ASSESS){
+        else if(isSurveyFragmentActive() && currentTab==getResources().getString(R.string.tab_tag_assess)){
             new AlertDialog.Builder(this)
                     .setTitle(R.string.survey_title_exit)
                     .setMessage(R.string.survey_info_exit)
