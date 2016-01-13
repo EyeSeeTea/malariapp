@@ -72,7 +72,6 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
     DashboardSentFragment sentFragment;
     CreateSurveyFragment createSurveyFragment;
     SurveyFragment surveyFragment;
-    LocalActivityManager mlam;
     static boolean viewFeedback;
     String currentTab;
     String currentTabName;
@@ -198,10 +197,8 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
      * Init the conteiner for all the tabs
      */
     private void initTabHost(Bundle savedInstanceState) {
-        mlam = new LocalActivityManager(this, false);
         tabHost = (TabHost)findViewById(R.id.tabHost);
-        mlam.dispatchCreate(savedInstanceState);
-        tabHost.setup(mlam);
+        tabHost.setup();
     }
 
 
@@ -377,14 +374,12 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
         Log.d(TAG, "onResume");
         super.onResume();
         getSurveysFromService();
-        mlam.dispatchResume();
     }
 
     @Override
     public void onPause(){
         Log.d(TAG, "onPause");
         super.onPause();
-        mlam.dispatchPause(isFinishing());
     }
 
     public void setReloadOnResume(boolean doReload){
