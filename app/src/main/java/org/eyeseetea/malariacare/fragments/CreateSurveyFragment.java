@@ -140,7 +140,8 @@ public class CreateSurveyFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 //If the survey is validate, it send the order of create survey fragment from this fragment to the activity.
-                if(setValidSurvey()) {
+                if(validateForm()) {
+                    createSurvey();
                     mCallback.onCreateSurvey();
                 }
             }
@@ -324,26 +325,22 @@ public class CreateSurveyFragment extends Fragment {
 
     /**
      * Called when the user clicks the Send button
+     * Gets the survey with the SURVEY_PLANNED state and set the createdate, user, SURVEY_IN_PROGRESS, and reset main score, and save the survey in session
      */
-    public boolean setValidSurvey() {
+    public void createSurvey() {
         Log.i(".CreateSurveyActivity", "Saving survey and saving in session");
 
-        if (validateForm()) {
-            // Read Selected Items
-            OrgUnit orgUnit = (OrgUnit) realOrgUnitView.getSelectedItem();
-            //Read Tab Group
-            TabGroup tabGroup = (TabGroup) tabGroupView.getSelectedItem();
+        // Read Selected Items
+        OrgUnit orgUnit = (OrgUnit) realOrgUnitView.getSelectedItem();
+        //Read Tab Group
+        TabGroup tabGroup = (TabGroup) tabGroupView.getSelectedItem();
 
-            // Put new survey in session
-            Survey survey = SurveyPlanner.getInstance().startSurvey(orgUnit,tabGroup);
-            Session.setSurvey(survey);
+        // Put new survey in session
+        Survey survey = SurveyPlanner.getInstance().startSurvey(orgUnit,tabGroup);
+        Session.setSurvey(survey);
 
-            //Look for coordinates
-            prepareLocationListener(survey);
-
-            return true;
-        }
-        return false;
+        //Look for coordinates
+        prepareLocationListener(survey);
     }
 
     private void prepareLocationListener(Survey survey) {
