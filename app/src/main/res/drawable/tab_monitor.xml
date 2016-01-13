@@ -24,7 +24,7 @@
         <item
             android:state_selected="true"
             android:state_pressed="false"
-            android:drawable="@drawable/graphselected" />
+            android:drawable="@drawable/monitorselected" />
         <item
-            android:drawable="@drawable/graph" />
+            android:drawable="@drawable/monitor" />
 </selector>
