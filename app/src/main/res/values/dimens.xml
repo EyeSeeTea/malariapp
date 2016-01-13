@@ -12,7 +12,8 @@
     <dimen name="dashboard_row_padding">5dp</dimen>
 
     <!-- Planning -->
-    <dimen name="dashboard_planning_padding">10dip</dimen>
+    <dimen name="dashboard_planning_padding">10dp</dimen>
+    <dimen name="dashboard_planning_alert_width">300dp</dimen>
 
     <!-- XSMALL selected sizes -->
     <dimen name="xsmall_xsmall_text_size">1sp</dimen>

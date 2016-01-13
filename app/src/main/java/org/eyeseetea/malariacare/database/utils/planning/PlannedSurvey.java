@@ -137,7 +137,7 @@ public class PlannedSurvey implements PlannedItem {
     public boolean isShownByHeader(PlannedHeader plannedHeader){
         //No filter -> always show
         if(plannedHeader==null){
-            return true;
+            return false;
         }
 
         //Returns if both match
