@@ -140,7 +140,7 @@ public class SurveyFragment extends  Fragment {
      */
     private LinearLayout content;
 
-    RelativeLayout        llLayout;
+    RelativeLayout llLayout;
 
 
     public static SurveyFragment newInstance(int index) {
@@ -166,7 +166,7 @@ public class SurveyFragment extends  Fragment {
         if (container == null) {
             return null;
         }
-        llLayout    = (RelativeLayout)    inflater.inflate(R.layout.survey, container, false);
+        llLayout = (RelativeLayout) inflater.inflate(R.layout.survey, container, false);
         registerReceiver();
         createMenu();
         createProgress();

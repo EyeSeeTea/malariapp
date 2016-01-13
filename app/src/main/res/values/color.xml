@@ -2,8 +2,8 @@
 <resources>
     <color name="mainColor">#E0F8E0</color>
     <color name="green">#84b467</color>
-    <color name="amber">#f1c232</color>
-    <color name="red">#ff060d</color>
+    <color name="amber">#F1C232</color>
+    <color name="red">#ff060D</color>
     <color name="black">#000000</color>
     <color name="headerColor">#FF1D5288</color>
     <color name="transparent">#00000000</color>
@@ -12,7 +12,7 @@
     <color name="navy_blue">#FF1F70C3</color>
     <color name="dark_navy_blue">#FF1D5288</color>
     <color name="light_grey">#FFE5E5E5</color>
-    <color name="parentColor">#eff1d5</color>
+    <color name="parentColor">#EFF1D5</color>
     <color name="textFieldColor">#BEBEBE</color>
     <color name="darkGrey">#565656</color>
     <color name="formFooter">#429470</color>

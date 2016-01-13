@@ -94,7 +94,7 @@ public class CreateSurveyFragment extends Fragment {
     private String lastOrgUnits = TOKEN;
 
     private LayoutInflater lInflater;
-    LinearLayout        llLayout;
+    LinearLayout llLayout;
     private SurveyLocationListener locationListener;
 
     OnCreatedSurveyListener mCallback;
@@ -130,7 +130,7 @@ public class CreateSurveyFragment extends Fragment {
         if (container == null) {
             return null;
         }
-        llLayout    = (LinearLayout)    inflater.inflate(R.layout.activity_create_survey, container, false);
+        llLayout = (LinearLayout) inflater.inflate(R.layout.activity_create_survey, container, false);
         create();
         return llLayout; // We must return the loaded Layout
     }
@@ -162,7 +162,7 @@ public class CreateSurveyFragment extends Fragment {
         orgUnitView.setAdapter(new OrgUnitArrayAdapter( getActivity(), orgUnitList));
         orgUnitView.setOnItemSelectedListener(new OrgUnitSpinnerListener(viewHolder));
 
-        View childView =  llLayout.findViewById(R.id.org_unit_container);
+        View childView = llLayout.findViewById(R.id.org_unit_container);
         CustomTextView childViewTextView = (CustomTextView) childView.findViewById(R.id.textView2);
         childViewTextView.setText(orgUnitList.get(1).getOrgUnitLevel().getName());
 
@@ -172,7 +172,7 @@ public class CreateSurveyFragment extends Fragment {
         orgUnitHierarchyView.put(orgUnitList.get(1).getOrgUnitLevel(), childView);
 
         //Prepare Organization Unit Item DDL
-        orgUnitContainerItems =  llLayout.findViewById(R.id.org_unit_container_items);
+        orgUnitContainerItems = llLayout.findViewById(R.id.org_unit_container_items);
 
         List<OrgUnitLevel> orgUnitLevelList = new Select().all().from(OrgUnitLevel.class).queryList();
         for (OrgUnitLevel orgUnitLevel : orgUnitLevelList) {
@@ -199,8 +199,8 @@ public class CreateSurveyFragment extends Fragment {
         programView.setOnItemSelectedListener(new ProgramSpinnerListener());
 
         //Create Tab Group View DDL. Not populated and not visible.
-        tabGroupContainer =  llLayout.findViewById(R.id.tab_group_container);
-        tabGroupView = (Spinner)  llLayout.findViewById(R.id.tab_group);
+        tabGroupContainer = llLayout.findViewById(R.id.tab_group_container);
+        tabGroupView = (Spinner) llLayout.findViewById(R.id.tab_group);
 
         //init the lastOrgUnits
         lastOrgUnits= TOKEN;
@@ -344,9 +344,6 @@ public class CreateSurveyFragment extends Fragment {
             //Look for coordinates
             prepareLocationListener(survey);
 
-
-            //Call Survey Activity
-            //finishAndGo(SurveyActivity.class);
             return true;
         }
         return false;
