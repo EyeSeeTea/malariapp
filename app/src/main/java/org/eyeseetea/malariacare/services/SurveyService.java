@@ -180,7 +180,7 @@ public class SurveyService extends IntentService {
         Log.d(TAG, "reloadDashboard");
 
         List<Survey> completedUnsentSurveys=Survey.getAllCompletedUnsentSurveys();
-        List<Survey> unsentSurveys=Survey.getAllUnsentUnplannedSurveys();
+        List<Survey> unsentSurveys=Survey.getAllInProgressSurveys();
         List<Survey> sentSurveys=Survey.getAllSentSurveys();
         for(Survey survey:unsentSurveys){
                 survey.getAnsweredQuestionRatio();
