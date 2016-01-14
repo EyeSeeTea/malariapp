@@ -36,7 +36,7 @@ public class AssessmentSentAdapter extends AAssessmentAdapter implements IAssess
         this.headerLayout = R.layout.assessment_sent_header;
         this.recordLayout = R.layout.assessment_sent_record;
         this.footerLayout = R.layout.assessment_sent_footer;
-        this.title = context.getString(R.string.assessment_sent_title_header);
+        //this.title = context.getString(R.string.assessment_sent_title_header);
     }
 
     @Override
