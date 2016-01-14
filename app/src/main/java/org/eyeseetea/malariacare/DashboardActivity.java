@@ -109,23 +109,27 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
                 View currentView = tabHost.getCurrentView();
 
                 currentTab = tabId;
-                setActionBarDashboard();
+                if(isSurveyFragmentActive())
+                    closeSurveyFragment();
+                if(isFeedbackFragmentActive())
+                    closeFeedbackFragment();
                 if (tabId.equalsIgnoreCase(getResources().getString(R.string.tab_tag_plan))) {
+                    setActionBarDashboard();
                     currentTabName=getString(R.string.plan);
                     plannedFragment.reloadPlannedItems();
                 } else if (tabId.equalsIgnoreCase(getResources().getString(R.string.tab_tag_assess))) {
+                    if(isCreateSurveyFragmentActive() ||isDashboardUnsentFragmentActive())
+                        setActionBarDashboard();
                     currentTabName=getString(R.string.assess);
-                    if(isSurveyFragmentActive())
-                        setActionBarTitleForSurvey(Session.getSurvey());
                     unsentFragment.reloadData();
                 } else if (tabId.equalsIgnoreCase(getResources().getString(R.string.tab_tag_improve))) {
                     currentTabName=getString(R.string.improve);
-
-                    if(!isFeedbackFragmentActive())
+                    if(!isFeedbackFragmentActive()){
+                        setActionBarDashboard();
                         sentFragment.reloadSentSurveys();
-                    else
-                        setActionBarTitleForSurvey(Session.getSurveyFeedback());
+                    }
                 } else if (tabId.equalsIgnoreCase(getResources().getString(R.string.tab_tag_monitor))) {
+                    setActionBarDashboard();
                     currentTabName=getString(R.string.monitor);
                     monitorFragment.reloadSentSurveys();
                 }
@@ -255,8 +259,8 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
     }
 
     public void initSurveyFromPlanning(){
-        initSurvey();
         tabHost.setCurrentTabByTag(getResources().getString(R.string.tab_tag_assess));
+        initSurvey();
     }
 
     public void initSurvey(){
@@ -445,21 +449,12 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
                     .setNegativeButton(android.R.string.no, null)
                     .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int arg1) {
-                            ScoreRegister.clear();
-                            surveyFragment.unregisterReceiver();
-                            initAssess();
-                            unsentFragment.reloadData();
-                            setActionBarDashboard();
+                            closeSurveyFragment();
                         }
                     }).create().show();
         }
         else if(isFeedbackFragmentActive() && currentTab==getResources().getString(R.string.tab_tag_improve)){
-            ScoreRegister.clear();
-            feedbackFragment.unregisterReceiver();
-            feedbackFragment.getView().setVisibility(View.GONE);
-            initImprove();
-            sentFragment.reloadData();
-            setActionBarDashboard();
+            closeFeedbackFragment();
         }
         else {
             new AlertDialog.Builder(this)
@@ -476,6 +471,23 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
                         }
                     }).create().show();
         }
+    }
+
+    private void closeSurveyFragment() {
+        ScoreRegister.clear();
+        surveyFragment.unregisterReceiver();
+        initAssess();
+        unsentFragment.reloadData();
+        setActionBarDashboard();
+    }
+
+    private void closeFeedbackFragment() {
+        ScoreRegister.clear();
+        feedbackFragment.unregisterReceiver();
+        feedbackFragment.getView().setVisibility(View.GONE);
+        initImprove();
+        sentFragment.reloadData();
+        setActionBarDashboard();
     }
 
     /**
@@ -509,6 +521,16 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
         return false;
     }
 
+    /**
+     * Checks if a dashboardUnsentFragment is active
+     */
+    private boolean isDashboardUnsentFragmentActive() {
+        Fragment currentFragment = this.getFragmentManager ().findFragmentById(R.id.dashboard_details_container);
+        if (currentFragment instanceof DashboardUnsentFragment) {
+            return true;
+        }
+        return false;
+    }
     /**
      * Checks if a feedbackfragment is active
      */
