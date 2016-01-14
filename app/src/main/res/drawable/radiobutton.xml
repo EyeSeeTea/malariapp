@@ -22,8 +22,8 @@
   -->
 
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:state_checked="true" android:state_pressed="false" android:drawable="@drawable/checkboxchecked"/>
-    <item android:state_checked="false" android:state_pressed="false" android:drawable="@drawable/checkbox"/>
-    <item android:state_checked="true" android:state_pressed="true" android:drawable="@drawable/checkboxcheckedpressed"/>
-    <item android:state_checked="false" android:state_pressed="true" android:drawable="@drawable/checkboxpressed"/>
+    <item android:state_checked="true" android:state_pressed="false" android:drawable="@drawable/radio_on"/>
+    <item android:state_checked="false" android:state_pressed="false" android:drawable="@drawable/radio_off"/>
+    <item android:state_checked="true" android:state_pressed="true" android:drawable="@drawable/radio_on_pressed"/>
+    <item android:state_checked="false" android:state_pressed="true" android:drawable="@drawable/radio_off_pressed"/>
 </selector>
