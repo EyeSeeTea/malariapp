@@ -96,7 +96,7 @@ public class CreateSurveyFragment extends Fragment {
     private String lastOrgUnits = TOKEN;
 
     private LayoutInflater lInflater;
-    LinearLayout        llLayout;
+    LinearLayout llLayout;
     private SurveyLocationListener locationListener;
 
     OnCreatedSurveyListener mCallback;
@@ -132,7 +132,7 @@ public class CreateSurveyFragment extends Fragment {
         if (container == null) {
             return null;
         }
-        llLayout    = (LinearLayout)    inflater.inflate(R.layout.activity_create_survey, container, false);
+        llLayout = (LinearLayout) inflater.inflate(R.layout.activity_create_survey, container, false);
         create();
         return llLayout; // We must return the loaded Layout
     }
@@ -142,7 +142,8 @@ public class CreateSurveyFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 //If the survey is validate, it send the order of create survey fragment from this fragment to the activity.
-                if(setValidSurvey()) {
+                if(validateForm()) {
+                    createSurvey();
                     mCallback.onCreateSurvey();
                 }
             }
@@ -164,7 +165,7 @@ public class CreateSurveyFragment extends Fragment {
         orgUnitView.setAdapter(new OrgUnitArrayAdapter( getActivity(), orgUnitList));
         orgUnitView.setOnItemSelectedListener(new OrgUnitSpinnerListener(viewHolder));
 
-        View childView =  llLayout.findViewById(R.id.org_unit_container);
+        View childView = llLayout.findViewById(R.id.org_unit_container);
         CustomTextView childViewTextView = (CustomTextView) childView.findViewById(R.id.textView2);
         childViewTextView.setText(orgUnitList.get(1).getOrgUnitLevel().getName());
 
@@ -174,7 +175,7 @@ public class CreateSurveyFragment extends Fragment {
         orgUnitHierarchyView.put(orgUnitList.get(1).getOrgUnitLevel(), childView);
 
         //Prepare Organization Unit Item DDL
-        orgUnitContainerItems =  llLayout.findViewById(R.id.org_unit_container_items);
+        orgUnitContainerItems = llLayout.findViewById(R.id.org_unit_container_items);
 
         List<OrgUnitLevel> orgUnitLevelList = new Select().all().from(OrgUnitLevel.class).queryList();
         for (OrgUnitLevel orgUnitLevel : orgUnitLevelList) {
@@ -250,7 +251,7 @@ public class CreateSurveyFragment extends Fragment {
             mCallback = (OnCreatedSurveyListener) activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString()
-                    + " must implement OnSurveySelectedListener");
+                    + " must implement OnCreatedSurveyListener");
         }
     }
 
@@ -328,39 +329,30 @@ public class CreateSurveyFragment extends Fragment {
 
     /**
      * Called when the user clicks the Send button
+     * Gets the survey with the SURVEY_PLANNED state and set the createdate, user, SURVEY_IN_PROGRESS, and reset main score, and save the survey in session
      */
-    public boolean setValidSurvey() {
+    public void createSurvey() {
         Log.i(".CreateSurveyActivity", "Saving survey and saving in session");
 
-        if (validateForm()) {
-            // Read Selected Items
-            OrgUnit orgUnit = (OrgUnit) realOrgUnitView.getSelectedItem();
-            //Read Tab Group
-            TabGroup tabGroup = (TabGroup) tabGroupView.getSelectedItem();
+        // Read Selected Items
+        OrgUnit orgUnit = (OrgUnit) realOrgUnitView.getSelectedItem();
+        //Read Tab Group
+        TabGroup tabGroup = (TabGroup) tabGroupView.getSelectedItem();
 
-            // Put new survey in session
-            Survey survey = SurveyPlanner.getInstance().startSurvey(orgUnit,tabGroup);
-            //TODO remove
-            //Survey survey = new Survey(orgUnit, tabGroup, Session.getUser());
-            //survey.save();
-            Session.setSurvey(survey);
+        // Put new survey in session
+        Survey survey = SurveyPlanner.getInstance().startSurvey(orgUnit,tabGroup);
+        Session.setSurvey(survey);
 
-            //Look for coordinates
-            prepareLocationListener(survey);
+        //Look for coordinates
+        prepareLocationListener(survey);
 
-            //save the lastSelectedOrgUnit and the list of orgUnits
-            saveOrgUnit();
-            //if the list not cointain the selected orgUnit(if it is root withoutchilds)
-            // set the list of orgUnitsLevels to "SEPARECHAR"
-            if(!lastOrgUnits.contains(orgUnit.getUid())) {
-                saveOrgUnitList(TOKEN);
-            }
-
-            //Call Survey Activity
-            //finishAndGo(SurveyActivity.class);
-            return true;
+        //save the lastSelectedOrgUnit and the list of orgUnits
+        saveOrgUnit();
+        //if the list not cointain the selected orgUnit(if it is root withoutchilds)
+        // set the list of orgUnitsLevels to "SEPARECHAR"
+        if(!lastOrgUnits.contains(orgUnit.getUid())) {
+            saveOrgUnitList(TOKEN);
         }
-        return false;
     }
 
     private void prepareLocationListener(Survey survey) {
@@ -382,11 +374,6 @@ public class CreateSurveyFragment extends Fragment {
             locationListener.saveLocation(lastLocation);
         }
     }
-
-    //@Subscribe
-    //public void onLogoutFinished(UiEvent uiEvent) {
-        //super.onLogoutFinished(uiEvent);
-    //}
 
     private class ProgramSpinnerListener implements AdapterView.OnItemSelectedListener {
 

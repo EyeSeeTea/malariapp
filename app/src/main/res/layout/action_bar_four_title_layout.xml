@@ -18,30 +18,34 @@
   ~  along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
   -->
 
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
-    <TextView android:id="@+id/action_bar_multititle_title"
+    <org.eyeseetea.malariacare.views.CustomTextView android:id="@+id/action_bar_multititle_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textStyle="bold"
         android:paddingLeft="20dp"
-        android:textSize="@dimen/small_xlarge_text_size"/>
-    <TextView android:id="@+id/action_bar_multititle_subtitle"
+        app:tFontName="@string/medium_font_name"
+        android:textSize="@dimen/small_large_text_size"/>
+    <org.eyeseetea.malariacare.views.CustomTextView android:id="@+id/action_bar_multititle_subtitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingLeft="20dp"
-        android:textSize="@dimen/small_xlarge_text_size" />
-    <TextView android:id="@+id/action_bar_multititle_subtitle2"
+        app:tFontName="@string/medium_font_name"
+        android:textSize="@dimen/small_large_text_size" />
+    <org.eyeseetea.malariacare.views.CustomTextView  android:id="@+id/action_bar_multititle_subtitle2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingLeft="20dp"
-        android:textSize="@dimen/small_xlarge_text_size" />
-    <TextView android:id="@+id/action_bar_multititle_subtitle3"
+        app:tFontName="@string/medium_font_name"
+        android:textSize="@dimen/small_large_text_size" />
+    <org.eyeseetea.malariacare.views.CustomTextView android:id="@+id/action_bar_multititle_subtitle3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingLeft="20dp"
-        android:textSize="@dimen/small_xlarge_text_size"/>
+        app:tFontName="@string/medium_font_name"
+        android:textSize="@dimen/small_large_text_size"/>
 </LinearLayout>

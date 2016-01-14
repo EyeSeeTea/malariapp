@@ -140,7 +140,7 @@ public class SurveyFragment extends  Fragment {
      */
     private LinearLayout content;
 
-    RelativeLayout        llLayout;
+    RelativeLayout llLayout;
 
 
     public static SurveyFragment newInstance(int index) {
@@ -166,7 +166,7 @@ public class SurveyFragment extends  Fragment {
         if (container == null) {
             return null;
         }
-        llLayout    = (RelativeLayout)    inflater.inflate(R.layout.survey, container, false);
+        llLayout = (RelativeLayout) inflater.inflate(R.layout.survey, container, false);
         registerReceiver();
         createMenu();
         createProgress();
@@ -489,11 +489,6 @@ public class SurveyFragment extends  Fragment {
 
         Log.d(TAG, "reloadTabs(" + tabs.size() + ")..DONE");
     }
-
-    //@Subscribe
-    //public void onLogoutFinished(UiEvent uiEvent){
-       // super.onLogoutFinished(uiEvent);
-   // }
 
     /*
     * ScrollListener added to avoid bug ocurred when checkbox pressed in a listview after this view is gone out from the focus

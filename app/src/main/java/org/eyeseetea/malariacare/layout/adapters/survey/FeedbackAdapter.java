@@ -30,11 +30,12 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import org.eyeseetea.malariacare.R;
+import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.feedback.CompositeScoreFeedback;
 import org.eyeseetea.malariacare.database.utils.feedback.Feedback;
 import org.eyeseetea.malariacare.database.utils.feedback.QuestionFeedback;
-import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 import org.eyeseetea.malariacare.network.CustomParser;
+import org.eyeseetea.malariacare.utils.Constants;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -117,15 +118,20 @@ public class FeedbackAdapter extends BaseAdapter {
 
         //CompositeScore title
         TextView textView=(TextView)rowLayout.findViewById(R.id.feedback_label);
+        if(feedback.getLabel().matches("^[0-9].*"))
+            textView.setTextColor(PreferencesState.getInstance().getContext().getResources().getColor(R.color.white));
         textView.setText(feedback.getLabel());
 
         //CompositeScore title
         textView=(TextView)rowLayout.findViewById(R.id.feedback_score_label);
+        if(feedback.getScore()< Constants.MAX_AMBER)
+            textView.setTextColor(PreferencesState.getInstance().getContext().getResources().getColor(R.color.amber));
+        else if(feedback.getScore()< Constants.MAX_RED)
+            textView.setTextColor(PreferencesState.getInstance().getContext().getResources().getColor(R.color.darkRed));
+        else
+            textView.setTextColor(PreferencesState.getInstance().getContext().getResources().getColor(R.color.lightGreen));
         textView.setText(feedback.getPercentageAsString());
 
-        //Traffic light
-        View light=rowLayout.findViewById(R.id.feedback_light);
-        LayoutUtils.trafficView(context, feedback.getScore(), light);
         return rowLayout;
     }
 
@@ -140,10 +146,12 @@ public class FeedbackAdapter extends BaseAdapter {
 
         //Question label
         TextView textView=(TextView)rowLayout.findViewById(R.id.feedback_question_label);
+        textView.setTextColor(PreferencesState.getInstance().getContext().getResources().getColor(R.color.darkGrey));
         textView.setText(feedback.getLabel());
 
         //Option label
         textView=(TextView)rowLayout.findViewById(R.id.feedback_option_label);
+        textView.setTextColor(PreferencesState.getInstance().getContext().getResources().getColor(R.color.darkGrey));
         textView.setText(feedback.getOption());
 
         //Score label

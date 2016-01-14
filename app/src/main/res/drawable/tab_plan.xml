@@ -23,7 +23,7 @@
 <item
     android:state_selected="true"
     android:state_pressed="false"
-    android:drawable="@drawable/cruzselected" />
+    android:drawable="@drawable/crossselected" />
 <item
-    android:drawable="@drawable/cruz" />
+    android:drawable="@drawable/cross" />
 </selector>
