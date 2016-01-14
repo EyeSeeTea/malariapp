@@ -57,6 +57,7 @@ import org.eyeseetea.malariacare.utils.Constants;
 import org.eyeseetea.malariacare.views.CustomButton;
 import org.eyeseetea.malariacare.views.CustomTextView;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -85,6 +86,7 @@ public class CreateSurveyFragment extends Fragment {
     private Spinner programView;
     private View tabGroupContainer;
     private Spinner tabGroupView;
+    List<Program> allProgramList;
 
     private OrgUnit orgUnitDefaultOption;
     private Program programDefaultOption;
@@ -193,15 +195,17 @@ public class CreateSurveyFragment extends Fragment {
 
 
         //Populate Program View DDL
-        List<Program> programList = Program.list();
-        programList.add(0, programDefaultOption);
+        //get all the programs from a DB query only one time.
+        allProgramList = Program.list();
+        List<Program> initProgram=new ArrayList<>();
+        initProgram.add(0, programDefaultOption);
         programView = (Spinner)  llLayout.findViewById(R.id.program);
-        programView.setAdapter(new ProgramArrayAdapter( getActivity(), programList));
+        programView.setAdapter(new ProgramArrayAdapter( getActivity(), initProgram));
         programView.setOnItemSelectedListener(new ProgramSpinnerListener());
 
         //Create Tab Group View DDL. Not populated and not visible.
-        tabGroupContainer = llLayout.findViewById(R.id.tab_group_container);
-        tabGroupView = (Spinner) llLayout.findViewById(R.id.tab_group);
+        tabGroupContainer =  llLayout.findViewById(R.id.tab_group_container);
+        tabGroupView = (Spinner)  llLayout.findViewById(R.id.tab_group);
 
         //init the lastOrgUnits
         lastOrgUnits= TOKEN;
@@ -341,6 +345,14 @@ public class CreateSurveyFragment extends Fragment {
 
         //Look for coordinates
         prepareLocationListener(survey);
+
+        //save the lastSelectedOrgUnit and the list of orgUnits
+        saveOrgUnit();
+        //if the list not cointain the selected orgUnit(if it is root withoutchilds)
+        // set the list of orgUnitsLevels to "SEPARECHAR"
+        if(!lastOrgUnits.contains(orgUnit.getUid())) {
+            saveOrgUnitList(TOKEN);
+        }
     }
 
     private void prepareLocationListener(Survey survey) {
@@ -372,6 +384,14 @@ public class CreateSurveyFragment extends Fragment {
         public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
             Program selectedProgram = (Program) programView.getSelectedItem();
             List<TabGroup> tabGroupList = selectedProgram.getTabGroups();
+            //remove null tabgrouplist
+            if (tabGroupList.size() > 1) {
+                for (int i = tabGroupList.size() - 1; i >= 0; i--) {
+                    if (tabGroupList.get(i).getUid() == null) {
+                        tabGroupList.remove(i);
+                    }
+                }
+            }
             if (tabGroupList.size() > 1){
                 // Populate tab group spinner
                 tabGroupList.add(0, tabGroupDefaultOption);
@@ -414,6 +434,7 @@ public class CreateSurveyFragment extends Fragment {
             realOrgUnitView = ((Spinner) viewHolder.component);
 
             if(selectedOrgUnit!=null) {
+                filterPrograms(selectedOrgUnit);
                 if (selectedOrgUnit.getUid() != null && selectedOrgUnit.getChildren().isEmpty() && selectedOrgUnit.getOrgUnit() == null) {
                     //without parent without childs
                     lastSelectedOrgUnit = selectedOrgUnit;
@@ -488,6 +509,21 @@ public class CreateSurveyFragment extends Fragment {
         public void onNothingSelected(AdapterView<?> parent) {
 
         }
+    }
+    //filter programs by orgUnit
+    private void filterPrograms(OrgUnit selectedOrgUnit) {
+
+        List<Program> initProgram= new ArrayList<>();
+        for(Program orgUnitProgram: selectedOrgUnit.getPrograms()){
+            for(Program program:allProgramList ){
+                if(orgUnitProgram.equals(program))
+                    initProgram.add(orgUnitProgram);
+            }
+        }
+        initProgram.add(0, programDefaultOption);
+        programView = (Spinner)  llLayout.findViewById(R.id.program);
+        programView.setAdapter(new ProgramArrayAdapter( getActivity(), initProgram));
+        programView.setOnItemSelectedListener(new ProgramSpinnerListener());
     }
 
     private void saveOrgUnitList(String list){
