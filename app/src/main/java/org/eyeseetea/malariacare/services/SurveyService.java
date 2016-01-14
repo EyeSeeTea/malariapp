@@ -204,7 +204,7 @@ public class SurveyService extends IntentService {
      */
     private void getFeedbackItems(){
         //Mock some items
-        List<Feedback> feedbackList= FeedbackBuilder.build(Session.getSurveyFeedback());
+        List<Feedback> feedbackList= FeedbackBuilder.build(Session.getSurvey());
 
         //Return result to anyone listening
         Log.d(TAG, String.format("getFeedbackItems: %d", feedbackList.size()));

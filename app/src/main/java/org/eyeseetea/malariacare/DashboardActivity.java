@@ -246,7 +246,7 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
         // Add the fragment to the activity, pushing this transaction
         // on to the back stack.
         replaceFragment(R.id.dashboard_completed_container, feedbackFragment);
-        setActionBarTitleForSurvey(Session.getSurveyFeedback());
+        setActionBarTitleForSurvey(Session.getSurvey());
     }
 
     public void initCreateSurvey(){
@@ -579,7 +579,7 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
 
     @Override
     public void onFeedbackSelected(Survey survey) {
-        Session.setSurveyFeedback(survey);
+        Session.setSurvey(survey);
         tabHost.setCurrentTabByTag(getResources().getString(R.string.tab_tag_improve));
         sentFragment.getView().setVisibility(View.GONE);
         initFeedback();
