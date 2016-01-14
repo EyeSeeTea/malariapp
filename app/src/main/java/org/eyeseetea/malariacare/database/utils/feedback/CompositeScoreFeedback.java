@@ -71,11 +71,11 @@ public class CompositeScoreFeedback implements Feedback {
         int numDots = code.length() - code.replace(".", "").length();
 
         if(numDots==0){
-            return R.color.newBlue;
+            return R.color.feedbackDarkBlue;
         }
 
         if(numDots==1){
-            return R.color.customNewBlue;
+            return R.color.feedbackLightBlue;
         }
 
         return R.color.scoreGrandson;

@@ -24,9 +24,9 @@
     <color name="scoreChild">#3d85c6</color>
     <color name="scoreGrandson">#6fa8dc</color>
     <color name="lightGreen">#adda19</color>
-    <color name="darkRed">#d11b39</color>
-    <color name="newBlue">#00b3e3</color>
-    <color name="customNewBlue">#00b3e3</color>
+    <color name="darkRed">#d1213c</color>
+    <color name="feedbackDarkBlue">#00b4e3</color>
+    <color name="feedbackLightBlue">#aae0f4</color>
     <color name="assess_yellow">#dbe444</color>
     <color name="assess_grey">#4f4c4c</color>
 </resources>
