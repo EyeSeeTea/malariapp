@@ -106,19 +106,24 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
             public void onTabChanged(String tabId) {
                 /** If current tab is android */
 
-                View currentView = tabHost.getCurrentView();
-
+                //set the tabs background as transparent
+                for(int i=0;i<tabHost.getTabWidget().getChildCount();i++){
+                    tabHost.getTabWidget().getChildAt(i).setBackgroundColor(getResources().getColor(R.color.transparent));
+                }
                 currentTab = tabId;
                 setActionBarDashboard();
                 if (tabId.equalsIgnoreCase(getResources().getString(R.string.tab_tag_plan))) {
+                    tabHost.getCurrentTabView().setBackgroundColor(getResources().getColor(R.color.tab_orange_plan));
                     currentTabName=getString(R.string.plan);
                     plannedFragment.reloadPlannedItems();
                 } else if (tabId.equalsIgnoreCase(getResources().getString(R.string.tab_tag_assess))) {
+                    tabHost.getCurrentTabView().setBackgroundColor(getResources().getColor(R.color.tab_yellow_assess));
                     currentTabName=getString(R.string.assess);
                     if(isSurveyFragmentActive())
                         setActionBarTitleForSurvey(Session.getSurvey());
                     unsentFragment.reloadData();
                 } else if (tabId.equalsIgnoreCase(getResources().getString(R.string.tab_tag_improve))) {
+                    tabHost.getCurrentTabView().setBackgroundColor(getResources().getColor(R.color.tab_blue_improve));
                     currentTabName=getString(R.string.improve);
 
                     if(!isFeedbackFragmentActive())
@@ -126,6 +131,7 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
                     else
                         setActionBarTitleForSurvey(Session.getSurveyFeedback());
                 } else if (tabId.equalsIgnoreCase(getResources().getString(R.string.tab_tag_monitor))) {
+                    tabHost.getCurrentTabView().setBackgroundColor(getResources().getColor(R.color.tab_green_monitor));
                     currentTabName=getString(R.string.monitor);
                     monitorFragment.reloadSentSurveys();
                 }
@@ -136,6 +142,8 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
         for(int i=0;i<tabHost.getTabWidget().getChildCount();i++){
             tabHost.getTabWidget().getChildAt(i).setFocusable(false);
         }
+        //set the initial selected tab background
+        tabHost.getTabWidget().getChildAt(0).setBackgroundColor(getResources().getColor(R.color.tab_orange_plan));
         currentTabName=getString(R.string.plan);
         setActionBarDashboard();
     }
