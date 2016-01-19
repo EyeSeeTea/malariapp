@@ -44,8 +44,8 @@ import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.layout.adapters.dashboard.AssessmentSentAdapter;
 import org.eyeseetea.malariacare.layout.adapters.dashboard.IDashboardAdapter;
-import org.eyeseetea.malariacare.layout.adapters.general.OrgUnitArrayAdapter;
-import org.eyeseetea.malariacare.layout.adapters.general.ProgramArrayAdapter;
+import org.eyeseetea.malariacare.layout.adapters.filters.FilterOrgUnitArrayAdapter;
+import org.eyeseetea.malariacare.layout.adapters.filters.FilterProgramArrayAdapter;
 import org.eyeseetea.malariacare.services.SurveyService;
 import org.eyeseetea.malariacare.views.CustomTextView;
 
@@ -147,14 +147,14 @@ public class DashboardSentFragment extends ListFragment {
 
         initAdapter();
         initListView();
-        initFilters(getView());
+        initFilters();
     }
-    private void initFilters(View view) {
+    private void initFilters() {
         filterSpinnerProgram = (Spinner) getActivity().findViewById(R.id.filter_program);
 
         List<Program> programList = Program.getAllPrograms();
         programList.add(0, new Program(PROGRAM_WITHOUT_FILTER));
-        filterSpinnerProgram.setAdapter(new ProgramArrayAdapter(this.getActivity().getApplicationContext(), programList));
+        filterSpinnerProgram.setAdapter(new FilterProgramArrayAdapter(this.getActivity().getApplicationContext(), programList));
         filterSpinnerProgram.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 
             @Override
@@ -186,7 +186,7 @@ public class DashboardSentFragment extends ListFragment {
 
         List<OrgUnit> orgUnitList = OrgUnit.getAllOrgUnit();
         orgUnitList.add(0, new OrgUnit(ORG_UNIT_WITHOUT_FILTER));
-        filterSpinnerOrgUnit.setAdapter(new OrgUnitArrayAdapter(getActivity().getApplicationContext(), orgUnitList));
+        filterSpinnerOrgUnit.setAdapter(new FilterOrgUnitArrayAdapter(getActivity().getApplicationContext(), orgUnitList));
         filterSpinnerOrgUnit.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 
             @Override
@@ -314,8 +314,6 @@ public class DashboardSentFragment extends ListFragment {
         LayoutInflater inflater = LayoutInflater.from(getActivity());
         View header = inflater.inflate(this.adapter.getHeaderLayout(), null, false);
         View footer = inflater.inflate(this.adapter.getFooterLayout(), null, false);
-        CustomTextView title = (CustomTextView) getActivity().findViewById(R.id.titleCompleted);
-        title.setText(adapter.getTitle());
         header=initFilterOrder(header);
         ListView listView = getListView();
         listView.addHeaderView(header);
