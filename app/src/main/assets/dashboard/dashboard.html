@@ -1,5 +1,5 @@
 <!--
-  ~ Copyright (c) 2015.
+  ~ Copyright (c) 2016.
   ~
   ~ This file is part of QA App.
   ~
@@ -23,118 +23,119 @@
 </head>
 <style>
     select{
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
-    font-size: 20px;
-    padding: 0 0 0 20px;
-    width: 102%;
-    background: url(img/select.png) no-repeat right #3e3e3f;
-    color: white;
-    margin-left: -9px;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        font-size: 20px;
+        padding: 0 0 0 20px;
+        width: 102%;
+        background: url(img/select.png) no-repeat right #3e3e3f;
+        color: white;
+        margin-left: -9px;
     }
     @font-face {
-    font-family: 'Roboto-Condensed';
-    src: url('Roboto-Condensed.ttf');;
-    font-weight: bold;
+        font-family: 'Roboto-Condensed';
+        src: url('Roboto-Condensed.ttf');;
+    font-weight:    bold;
     }
     body{
-    background-color:#e5e5e5;
-    font-family: 'Roboto-Condensed';
-    margin-top:20px;
+        background-color:#e5e5e5;
+        font-family: 'Roboto-Condensed';
+        margin-top:20px;
     }
     .line-title{
-    float: left;
-    font-size: 20px;
-    padding: 10px;
-    padding-left: 0px;
+        float: left;
+        font-size: 20px;
+        padding: 10px;
+        padding-left: 0px;
     }
 
     .tip{
-    float:right;
+        float:right;
     }
 
     canvas, table{
-    margin: 5px;
+        margin: 5px;
     }
 
     .chart-legend li span{
-    display: inline-block;
-    width: 12px;
-    height: 12px;
-    margin-right: 5px;
+        display: inline-block;
+        width: 12px;
+        height: 12px;
+        margin-right: 5px;
     }
 
     .chart-legend ul{
-    list-style-type: none;
+        list-style-type: none;
     }
 
     .horizontal{
-    text-align:center;
-    clear:both;
+        text-align:center;
+        clear:both;
     }
 
     .horizontal li{
-    display:inline;
-    padding-right:5px;
+        display:inline;
+        padding-right:5px;
     }
 
-
-
     table {
-    width: 100%;
-    border-collapse: collapse;
+        width: 100%;
+        border-collapse: collapse;
     }
 
     table, td, th {
-    border: 0px solid black;
-    text-align: center;
+        border: 0px solid black;
+        text-align: center;
     }
     td.green{
-    background-color: #81980d;
+        background-color: #81980d;
     }
 
     td.amber{
-    background-color: #00b4e3;
+        background-color: #00b4e3;
     }
 
     td.red{
-    background-color: #fa8900;
+        background-color: #fa8900;
     }
     td.greencircle{
-
-    border-radius: 50%;
-    height:60px;
-    background-color: #81980d;
-    color:white;
+        border-radius: 50%;
+        height:60px;
+        background-color: #81980d;
+        color:white;
     }
 
     td.ambercircle{
-    border-radius: 50%;
-    height:60px;
-    background-color: #00b4e3;
-    color:white;
+        border-radius: 50%;
+        height:60px;
+        background-color: #00b4e3;
+        color:white;
     }
-
     td.redcircle{
-    border-radius: 50%;
-    height:60px;
-    background-color: #fa8900;
-    color:white;}
+        border-radius: 50%;
+        height:60px;
+        background-color: #fa8900;
+        color:white;
+    }
+    .hide {
+    display:none;
+    }
+    .show {
+    display:block;
+    }
 </style>
 <body>
-<!--Sent surveys x month-->
-<div>
-    <!--title of the chart-->
-    <span class="line-title" id="titleSent"></span>
     <!--Legend for this chart-->
-
-    <br/><div id="selectProgram" class="horizontal"></div><br/>
-    <div id="sentLegend" class="chart-legend horizontal"></div>
+    <div id="selectProgram" class="horizontal"></div>
+<!--Sent surveys x month-->
+<div id="tableCanvas" class="show">
+    <!--title of the chart-->
+    <span class="line-title" id="titleSent" style="display:none!important;"></span>
+    <div id="sentLegend" class="chart-legend horizontal"  style="display:none!important;"></div>
     <!--Multiline chart holder-->
     <canvas id="surveyXMonthCanvas" style="width: 100%; height: auto;"></canvas>
 </div>
-<hr id="hrSent" />
 <div id="pieChartContent"></div>
 <!--Pie charts will be added right here-->
 
@@ -148,10 +149,7 @@
 
 <!-- pie template with table-->
 <script type = "text/html" id="pieTemplate">
-    <div>
-        <span class="line-title" id="tabgroupTitle###"></span>
-
-        <br/><div id="selectFacility" class="horizontal"></div><br/>
+    <div id="graphicCanvas">
         <div>
             <canvas id="tabgroupCanvas###" style="width: 100%; height: auto;"></canvas>
         </div>
@@ -162,9 +160,9 @@
             <span class="line-title" id="titleFacilities"></span>
             <hr style="background-color:#81980d;
 			width:100%;
-    height: 2px;"/>
+            height: 2px;"/>
             <div>
-                <table>
+                <table style="display: table-cell!important;">
                     <thead id="facilitiesHead">
                     </thead>
                     <tbody id="facilitiesBody">
