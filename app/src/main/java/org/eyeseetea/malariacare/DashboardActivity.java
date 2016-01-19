@@ -104,13 +104,9 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
 
             @Override
             public void onTabChanged(String tabId) {
-                /** If current tab is android */
-
-                View currentView = tabHost.getCurrentView();
-
                 currentTab = tabId;
                 if(isSurveyFragmentActive())
-                    closeSurveyFragment();
+                    onExitFromSurvey();
                 if(isFeedbackFragmentActive())
                     closeFeedbackFragment();
                 if (tabId.equalsIgnoreCase(getResources().getString(R.string.tab_tag_plan))) {
@@ -461,6 +457,31 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
         }
     }
 
+    /**
+     * Ask to send the survey or close the survey.
+     * It is called when the user change the tab
+     */
+    private void onExitFromSurvey(){
+        Survey survey = Session.getSurvey();
+        SurveyAnsweredRatio surveyAnsweredRatio = survey.reloadSurveyAnsweredRatio();
+        if (surveyAnsweredRatio.getCompulsoryAnswered() == surveyAnsweredRatio.getTotalCompulsory() && surveyAnsweredRatio.getTotalCompulsory() != 0) {
+            new AlertDialog.Builder(this)
+                    .setMessage(R.string.dialog_question_complete_survey)
+                    .setNegativeButton(R.string.dialog_complete_option, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int arg1) {
+                            confirmCompleteSurveyDialog();
+                        }
+                    })
+                    .setPositiveButton(R.string.dialog_continue_later_option, null).create().show();
+
+        }
+        closeSurveyFragment();
+    }
+
+
+    /**
+     * It is called when the user press back in a surveyFragment
+     */
     private void onSurveyBackPressed() {
         Survey survey = Session.getSurvey();
         SurveyAnsweredRatio surveyAnsweredRatio = survey.reloadSurveyAnsweredRatio();
@@ -497,6 +518,9 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
 
     }
 
+    /**
+     * It is called to confirm before set a survey as complete
+     */
     public void confirmCompleteSurveyDialog() {
         //if you select complete_option, this dialog will showed.
         new AlertDialog.Builder(this)
