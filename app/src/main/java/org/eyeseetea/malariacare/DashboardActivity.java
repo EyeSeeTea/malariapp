@@ -441,19 +441,7 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
         } else if (isFeedbackFragmentActive() && currentTab == getResources().getString(R.string.tab_tag_improve)) {
             closeFeedbackFragment();
         } else {
-            new AlertDialog.Builder(this)
-                    .setTitle("Really Exit?")
-                    .setMessage("Are you sure you want to exit the app?")
-                    .setNegativeButton(android.R.string.no, null)
-                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-
-                        public void onClick(DialogInterface arg0, int arg1) {
-                            Intent intent = new Intent(Intent.ACTION_MAIN);
-                            intent.addCategory(Intent.CATEGORY_HOME);
-                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                            startActivity(intent);
-                        }
-                    }).create().show();
+            confirmExitApp();
         }
     }
 
@@ -465,18 +453,12 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
         Survey survey = Session.getSurvey();
         SurveyAnsweredRatio surveyAnsweredRatio = survey.reloadSurveyAnsweredRatio();
         if (surveyAnsweredRatio.getCompulsoryAnswered() == surveyAnsweredRatio.getTotalCompulsory() && surveyAnsweredRatio.getTotalCompulsory() != 0) {
-            new AlertDialog.Builder(this)
-                    .setMessage(R.string.dialog_question_complete_survey)
-                    .setNegativeButton(R.string.dialog_complete_option, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int arg1) {
-                            confirmCompleteSurveyDialog();
-                        }
-                    })
-                    .setPositiveButton(R.string.dialog_continue_later_option, null).create().show();
+            askToSendCompulsoryCompletedSurvey();
 
         }
         closeSurveyFragment();
     }
+
 
 
     /**
@@ -486,42 +468,68 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
         Survey survey = Session.getSurvey();
         SurveyAnsweredRatio surveyAnsweredRatio = survey.reloadSurveyAnsweredRatio();
         if (surveyAnsweredRatio.getCompulsoryAnswered() == surveyAnsweredRatio.getTotalCompulsory() && surveyAnsweredRatio.getTotalCompulsory() != 0) {
-            new AlertDialog.Builder(this)
-                    .setMessage(R.string.dialog_question_complete_survey)
-                    .setNegativeButton(R.string.dialog_complete_option, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int arg1) {
-                            confirmCompleteSurveyDialog();
-                        }
-                    })
-                    .setPositiveButton(R.string.dialog_continue_later_option, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int arg1) {
-                            closeSurveyFragment();
-                        }
-                    }).create().show();
+            askToSendCompulsoryCompletedSurvey();
 
         } else
-            new AlertDialog.Builder(this)
-                    .setTitle(R.string.survey_title_exit)
-                    .setMessage(R.string.survey_info_exit).setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int arg1) {
-                    Survey survey = Session.getSurvey();
-                    survey.updateSurveyStatus();
-                    closeSurveyFragment();
-                }
-            })
-                    .setNegativeButton(android.R.string.cancel,  new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int arg1) {
-                            unsentFragment.reloadData();
-                        }
-                    })
-                    .create().show();
+            askToCloseSurvey();
+    }
 
+    private void confirmExitApp() {
+        new AlertDialog.Builder(this)
+                .setTitle("Really Exit?")
+                .setMessage("Are you sure you want to exit the app?")
+                .setNegativeButton(android.R.string.no, null)
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+
+                    public void onClick(DialogInterface arg0, int arg1) {
+                        Intent intent = new Intent(Intent.ACTION_MAIN);
+                        intent.addCategory(Intent.CATEGORY_HOME);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(intent);
+                    }
+                }).create().show();
+    }
+    /**
+     * This dialog is called when the user have a survey open, and close this survey, or when the user change of tab
+     */
+    private void askToCloseSurvey() {
+        new AlertDialog.Builder(this)
+                .setTitle(R.string.survey_title_exit)
+                .setMessage(R.string.survey_info_exit).setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int arg1) {
+                        Survey survey = Session.getSurvey();
+                        survey.updateSurveyStatus();
+                        closeSurveyFragment();
+                    }
+                })
+                .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int arg1) {
+                        unsentFragment.reloadData();
+                    }
+                }).create().show();
     }
 
     /**
-     * It is called to confirm before set a survey as complete
+     * This dialog is called when the user have a survey open, with compulsory questions completed, and close this survey, or when the user change of tab
      */
-    public void confirmCompleteSurveyDialog() {
+    private void askToSendCompulsoryCompletedSurvey() {
+        new AlertDialog.Builder(this)
+                .setMessage(R.string.dialog_question_complete_survey)
+                .setNegativeButton(R.string.dialog_complete_option, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int arg1) {
+                        confirmSendCompleteSurvey();
+                    }
+                })
+                .setPositiveButton(R.string.dialog_continue_later_option, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int arg1) {
+                        closeSurveyFragment();
+                    }
+                }).create().show();
+    }
+    /**
+     * This dialog is called to confirm before set a survey as complete
+     */
+    public void confirmSendCompleteSurvey() {
         //if you select complete_option, this dialog will showed.
         new AlertDialog.Builder(this)
                 .setMessage(R.string.dialog_are_you_sure_complete_survey)
