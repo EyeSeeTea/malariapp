@@ -132,7 +132,7 @@ public class CreateSurveyFragment extends Fragment {
         if (container == null) {
             return null;
         }
-        llLayout = (LinearLayout) inflater.inflate(R.layout.activity_create_survey, container, false);
+        llLayout = (LinearLayout) inflater.inflate(R.layout.create_survey_fragment, container, false);
         create();
         return llLayout; // We must return the loaded Layout
     }
@@ -180,7 +180,7 @@ public class CreateSurveyFragment extends Fragment {
         List<OrgUnitLevel> orgUnitLevelList = new Select().all().from(OrgUnitLevel.class).queryList();
         for (OrgUnitLevel orgUnitLevel : orgUnitLevelList) {
             if (!orgUnitLevel.equals(orgUnitList.get(1).getOrgUnitLevel())) {
-                childView = lInflater.inflate(R.layout.activity_create_survey_org_unit_item, (LinearLayout) orgUnitContainerItems, false);
+                childView = lInflater.inflate(R.layout.create_survey_org_unit_item_fragment, (LinearLayout) orgUnitContainerItems, false);
                 childViewTextView = (CustomTextView) childView.findViewById(R.id.textView);
                 childViewTextView.setText(orgUnitLevel.getName());
 
