@@ -43,8 +43,10 @@ import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.database.utils.feedback.Feedback;
 import org.eyeseetea.malariacare.layout.adapters.survey.FeedbackAdapter;
+import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 import org.eyeseetea.malariacare.services.SurveyService;
 import org.eyeseetea.malariacare.views.CustomRadioButton;
+import org.eyeseetea.malariacare.views.CustomTextView;
 
 import java.util.List;
 
@@ -172,6 +174,24 @@ public class FeedbackFragment extends Fragment {
                                          }
                                      }
         );
+
+
+        //Set mainscore and color.
+        //// FIXME: 20/01/2016 Removed when the surveyfeedback has been removed
+        Survey survey;
+        float average;
+        try {
+            survey = Session.getSurvey();
+            average = survey.getMainScore();
+        }
+        catch(Exception e){
+            survey = Session.getSurveyFeedback();
+            average = survey.getMainScore();
+        }
+        CustomTextView item= (CustomTextView)llLayout.findViewById(R.id.feedback_total_score);
+        item.setText(String.format("%.1f%%", average));
+        int colorId= LayoutUtils.trafficColor(average);
+        item.setTextColor(getResources().getColor(colorId));
     }
 
     private void loadItems(List<Feedback> items){

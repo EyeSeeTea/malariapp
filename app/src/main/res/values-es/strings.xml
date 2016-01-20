@@ -81,6 +81,8 @@
     <string name="feedback_title_organization_unit_date">Unidad de organización/ Date</string>
     <string name="feedback_title_header">Realimentación</string>
     <string name="feedback_show_only_failed">Mostrar solo preguntas falladas</string>
+    <string name="feedback_return">Regresar a todas las evaluaciones</string>
+    <string name="quality_of_care">Calidad de la Asistencia (QoC) Puntuación:</string>
     <string name="feedback_info_passed">Aprobado</string>
     <string name="feedback_info_failed">Suspenso</string>
     <string name="feedback_info_not_answered">Sin respuesta</string>

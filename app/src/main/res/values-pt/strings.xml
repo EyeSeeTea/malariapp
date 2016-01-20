@@ -86,6 +86,8 @@
     <string name="feedback_title_organization_unit_date">Unid. Org.Data</string>
     <string name="feedback_title_header">Feedback</string>
     <string name="feedback_show_only_failed">"Mostrar só falhou perguntas"</string>
+    <string name="feedback_return">Voltar para todas as avaliações</string>
+    <string name="quality_of_care">Qualidade da Assistência (QoC) Pontuação:</string>
     <string name="feedback_info_passed">Aprovado</string>
     <string name="feedback_info_failed">Suspenso</string>
     <string name="feedback_info_not_answered">"Não respondeu"</string>
