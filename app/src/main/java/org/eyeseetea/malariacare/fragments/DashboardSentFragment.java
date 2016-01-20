@@ -316,6 +316,7 @@ public class DashboardSentFragment extends ListFragment {
         View footer = inflater.inflate(this.adapter.getFooterLayout(), null, false);
         header=initFilterOrder(header);
         ListView listView = getListView();
+        listView.setBackgroundColor(getResources().getColor(R.color.feedbackDarkBlue));
         listView.addHeaderView(header);
         listView.addFooterView(footer);
         setListAdapter((BaseAdapter) adapter);
