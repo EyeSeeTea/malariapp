@@ -55,7 +55,7 @@
         android:layout_marginTop="8dp"
         android:layout_marginLeft="15dp"
         android:gravity="left"
-        android:button="@drawable/arrow_improve"
+        android:button="@drawable/arrow_improve_left"
         android:text="@string/feedback_return"
         android:textAllCaps="true"
         android:textColor="@color/white"
@@ -66,14 +66,15 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_weight="0.7"
-        android:gravity="right"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="8dp"
         android:layout_marginRight="15dp"
-        android:button="@drawable/radiobutton"
+        android:button="@drawable/radiobutton_feedback"
         android:text="@string/feedback_show_only_failed"
         android:textColor="@color/white"
         app:tDimension="@string/font_size_level1"
-        app:tFontName="@string/medium_font_name"/>
+        app:tFontName="@string/medium_font_name"
+        android:gravity="right|center_vertical"
+        android:layout_gravity="center_vertical|right" />
 </LinearLayout>
 
     <LinearLayout
