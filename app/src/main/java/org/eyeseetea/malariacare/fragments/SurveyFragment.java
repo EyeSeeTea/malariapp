@@ -146,17 +146,6 @@ public class SurveyFragment extends  Fragment {
      */
     RelativeLayout llLayout;
 
-    /**
-     * Next button
-     */
-    ImageButton nextButton;
-
-    /**
-     * previous button
-     */
-
-    ImageButton previousButton;
-
     public static SurveyFragment newInstance(int index) {
         SurveyFragment f = new SurveyFragment();
 
@@ -247,8 +236,8 @@ public class SurveyFragment extends  Fragment {
             }
         });
 
-        nextButton = (ImageButton) llLayout.findViewById(R.id.next_tab);
-        previousButton = (ImageButton) llLayout.findViewById(R.id.previous_tab);
+        ImageButton nextButton = (ImageButton) llLayout.findViewById(R.id.next_tab);
+        ImageButton previousButton = (ImageButton) llLayout.findViewById(R.id.previous_tab);
         nextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
