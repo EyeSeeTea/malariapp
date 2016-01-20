@@ -75,7 +75,7 @@ public class PlannedFragment extends ListFragment {
     public void onCreate(Bundle savedInstanceState){
         Log.d(TAG, "onCreate");
         super.onCreate(savedInstanceState);
-        programDefaultOption = new Program(Constants.DEFAULT_SELECT_OPTION);
+        programDefaultOption = new Program(getResources().getString(R.string.select_assessment).toUpperCase());
     }
 
     @Override
