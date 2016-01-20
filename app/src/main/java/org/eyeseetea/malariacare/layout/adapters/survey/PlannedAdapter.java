@@ -218,7 +218,10 @@ public class PlannedAdapter extends BaseAdapter {
             boldHeader(textView);
         }
         else{
-            img.setColorFilter(PreferencesState.getInstance().getContext().getResources().getColor(R.color.white));
+            if(plannedHeader.getCounter()==0)
+                img.setColorFilter(PreferencesState.getInstance().getContext().getResources().getColor(plannedHeader.getBackgroundColor()));
+            else
+                img.setColorFilter(PreferencesState.getInstance().getContext().getResources().getColor(R.color.white));
         }
 
         //Productivity
