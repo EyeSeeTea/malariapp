@@ -258,8 +258,6 @@ public class DashboardUnsentFragment extends ListFragment {
         LayoutInflater inflater = LayoutInflater.from(getActivity());
         View header = inflater.inflate(this.adapter.getHeaderLayout(), null, false);
         View footer = inflater.inflate(this.adapter.getFooterLayout(), null, false);
-        CustomTextView title = (CustomTextView) getActivity().findViewById(R.id.titleInProgress);
-        title.setText(adapter.getTitle());
         ListView listView = getListView();
         listView.addHeaderView(header);
         listView.addFooterView(footer);
