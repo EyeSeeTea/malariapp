@@ -283,9 +283,15 @@ public class PlannedAdapter extends BaseAdapter {
         textView.setText(formatScheduledDate(plannedSurvey.getNextAssesment()));
         textView.setOnClickListener(new ScheduleListener(plannedSurvey.getSurvey()));
 
+        //background color
+        int colorId=plannedSurvey.getPlannedHeader().getSecondaryColor();
+        if(position==0 || position%2==0)
+            rowLayout.setBackgroundColor(PreferencesState.getInstance().getContext().getResources().getColor(R.color.white));
+        else
+            rowLayout.setBackgroundColor(PreferencesState.getInstance().getContext().getResources().getColor(colorId));
         //Action
         ImageButton actionButton = (ImageButton)rowLayout.findViewById(R.id.planning_survey_action);
-        int colorId=plannedSurvey.getPlannedHeader().getBackgroundColor();
+        colorId=plannedSurvey.getPlannedHeader().getBackgroundColor();
         if(plannedSurvey.getSurvey().isInProgress()){
             actionButton.setImageResource(R.drawable.ic_edit);
         }

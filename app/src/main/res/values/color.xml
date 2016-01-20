@@ -29,4 +29,10 @@
     <color name="feedbackLightBlue">#aae0f4</color>
     <color name="assess_yellow">#dbe444</color>
     <color name="assess_grey">#4f4c4c</color>
+    <color name="background">#e5e5e5</color>
+    <color name="tab_orange_plan">#f38b00</color>
+    <color name="tab_yellow_assess">#dce442</color>
+    <color name="tab_green_monitor">#799900</color>
+    <color name="tab_blue_improve">#00b3e3</color>
+    <color name="light_red">#e9a69a</color>
 </resources>
