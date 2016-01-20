@@ -111,9 +111,8 @@
         android:paddingTop="@dimen/dashboard_planning_padding"
         android:paddingBottom="@dimen/dashboard_planning_padding"
         android:src="@drawable/ic_media_play"
-        android:tint="@color/headerColor"
         android:background="@null"
-    />
+        android:tintMode="src_over" />
 
 
 

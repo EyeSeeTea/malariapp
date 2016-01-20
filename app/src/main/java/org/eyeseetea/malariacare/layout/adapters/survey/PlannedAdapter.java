@@ -285,9 +285,14 @@ public class PlannedAdapter extends BaseAdapter {
 
         //Action
         ImageButton actionButton = (ImageButton)rowLayout.findViewById(R.id.planning_survey_action);
+        int colorId=plannedSurvey.getPlannedHeader().getBackgroundColor();
         if(plannedSurvey.getSurvey().isInProgress()){
             actionButton.setImageResource(R.drawable.ic_edit);
         }
+        else{
+            actionButton.setImageResource(R.drawable.red_circle_cross);
+        }
+        actionButton.setColorFilter(PreferencesState.getInstance().getContext().getResources().getColor(colorId));
 
         //Planned survey -> onclick startSurvey
         actionButton.setOnClickListener(new CreateOrEditSurveyListener(plannedSurvey.getSurvey()));
