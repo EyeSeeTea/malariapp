@@ -31,6 +31,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -38,6 +39,7 @@ import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.model.Program;
 import org.eyeseetea.malariacare.database.model.Survey;
+import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.database.utils.planning.PlannedHeader;
 import org.eyeseetea.malariacare.database.utils.planning.PlannedItem;
@@ -210,8 +212,13 @@ public class PlannedAdapter extends BaseAdapter {
         //Title
         TextView textView=(TextView)rowLayout.findViewById(R.id.planning_title);
         textView.setText(plannedHeader.getTitleHeader());
+        ImageView img=(ImageView)rowLayout.findViewById(R.id.planning_image_cross);
         if(plannedHeader.equals(currentHeader)){
+            img.setColorFilter(PreferencesState.getInstance().getContext().getResources().getColor(plannedHeader.getBackgroundColor()));
             boldHeader(textView);
+        }
+        else{
+            img.setColorFilter(PreferencesState.getInstance().getContext().getResources().getColor(R.color.white));
         }
 
         //Productivity
