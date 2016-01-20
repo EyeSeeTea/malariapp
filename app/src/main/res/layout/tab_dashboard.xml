@@ -158,32 +158,13 @@
                                 android:paddingBottom="5dip"/>
                         </LinearLayout>
                     </LinearLayout>
-
-                        <ScrollView
-                            android:id="@+id/dashboard_scroll_sent"
-                            android:orientation="vertical"
-                            android:layout_width="fill_parent"
-                            android:layout_height="fill_parent"
-                            android:fillViewport="true">
                         <FrameLayout
                             android:orientation="vertical"
-                            android:layout_width="fill_parent"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:id="@+id/dashboard_completed_container">
-
-                            <TableLayout
-                                android:layout_width="fill_parent"
-                                android:layout_height="wrap_content"
-                                android:id="@+id/dashboard_details_table_sent">
-
-                                <ListView
-                                    android:layout_width="fill_parent"
-                                    android:layout_height="wrap_content"
-                                    android:id="@+id/dashboard_details_list_sent"/>
-
-                            </TableLayout>
                         </FrameLayout>
-                    </ScrollView>
+                        <!-- list view will be automatically added here by the list fragment -->
                      </LinearLayout>
                      <LinearLayout
                          android:id="@+id/tab_monitor_layout"
