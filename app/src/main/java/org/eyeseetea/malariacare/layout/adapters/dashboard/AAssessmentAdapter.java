@@ -20,6 +20,7 @@
 package org.eyeseetea.malariacare.layout.adapters.dashboard;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -71,14 +72,15 @@ public abstract class AAssessmentAdapter extends ADashboardAdapter implements ID
         CustomTextView surveyType = (CustomTextView) rowView.findViewById(R.id.survey_type);
         CustomTextView sentDate = (CustomTextView) rowView.findViewById(R.id.sentDate);
         CustomTextView sentScore = (CustomTextView) rowView.findViewById(R.id.score);
-        View sentLight = rowView.findViewById(R.id.survey_light);
+
 
         if (sentDate != null){
             Date completionDate = survey.getCompletionDate();
             SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy");
             sentDate.setText(format.format(completionDate));
             sentScore.setText(String.format("%.1f %%", survey.getMainScore()));
-            LayoutUtils.trafficView(context, survey.getMainScore(), sentLight);
+            int colorId=LayoutUtils.trafficColor(survey.getMainScore());
+            sentScore.setTextColor(getContext().getResources().getColor(colorId));
         } else {
             //Status Cell
             ((CustomTextView) rowView.findViewById(R.id.score)).setText(getStatus(survey));
@@ -103,18 +105,31 @@ public abstract class AAssessmentAdapter extends ADashboardAdapter implements ID
         if (position < (this.items.size()-1)) {
             if (this.items.get(position+1).getOrgUnit().equals((this.items.get(position)).getOrgUnit())){
                 // show background without border and tell the system that next survey belongs to the same org unit, so its name doesn't need to be shown
+                if(items.get(position+1).isCompleted() || items.get(position+1).isSent()) {
+                    rowView.setBackgroundResource(LayoutUtils.calculateBackgroundsNoBorderImprove(this.backIndex));
+                }
+                else
                 rowView.setBackgroundResource(LayoutUtils.calculateBackgroundsNoBorder(this.backIndex));
                 this.showNextFacilityName = false;
             } else {
                 // show background with border and switch background for the next row
-                rowView.setBackgroundResource(LayoutUtils.calculateBackgrounds(this.backIndex));
+                if(items.get(position+1).isCompleted() || items.get(position+1).isSent()) {
+                    rowView.setBackgroundResource(LayoutUtils.calculateBackgroundsImprove(this.backIndex));
+                }
+                else
+                    rowView.setBackgroundResource(LayoutUtils.calculateBackgrounds(this.backIndex));
                 this.backIndex++;
                 this.showNextFacilityName = true;
             }
         }  else {
             this.showNextFacilityName = true;
             //show background with border
-            rowView.setBackgroundResource(LayoutUtils.calculateBackgrounds(this.backIndex));
+
+            if(items.get(position).isCompleted() || items.get(position).isSent()) {
+                rowView.setBackgroundResource(LayoutUtils.calculateBackgroundsImprove(this.backIndex));
+            }
+            else
+                rowView.setBackgroundResource(LayoutUtils.calculateBackgrounds(this.backIndex));
         }
 
         return rowView;

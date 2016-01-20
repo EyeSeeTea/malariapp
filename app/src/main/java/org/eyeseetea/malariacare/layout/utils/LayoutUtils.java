@@ -41,10 +41,17 @@ public class LayoutUtils {
 
     public static final int [] rowBackgrounds = {R.drawable.background_even, R.drawable.background_odd};
     public static final int [] rowBackgroundsNoBorder = {R.drawable.background_even_wo_border, R.drawable.background_odd_wo_border};
+    public static final int [] rowBackgroundsImprove = {R.drawable.background_even_improve, R.drawable.background_odd};
+    public static final int [] rowBackgroundsNoBorderImprove = {R.drawable.background_even_wo_border_improve, R.drawable.background_odd_wo_border};
 
     // Given a index, this method return a background color
     public static int calculateBackgrounds(int index) {
         return LayoutUtils.rowBackgrounds[index % LayoutUtils.rowBackgrounds.length];
+    }
+
+    // Given a index, this method return a background color
+    public static int calculateBackgroundsImprove(int index) {
+        return LayoutUtils.rowBackgroundsImprove[index % LayoutUtils.rowBackgroundsImprove.length];
     }
 
     // Given an index, this method returns a background color but without a cell border
@@ -52,6 +59,10 @@ public class LayoutUtils {
         return LayoutUtils.rowBackgroundsNoBorder[index % LayoutUtils.rowBackgroundsNoBorder.length];
     }
 
+    // Given an index, this method returns a background color but without a cell border
+    public static int calculateBackgroundsNoBorderImprove(int index) {
+        return LayoutUtils.rowBackgroundsNoBorderImprove[index % LayoutUtils.rowBackgroundsNoBorderImprove.length];
+    }
     // Depending on a score sets the first view color (0<x<50:poor ; 50<x<80:fare ; 80<x<100:good)
     // If a second view is given, it also writes the text good, fare or given there
     public static void trafficLight(View view, float score, View textCard){
@@ -81,25 +92,16 @@ public class LayoutUtils {
      * @param score
      * @return
      */
-    public static int trafficDrawable(float score){
+    public static int trafficColor(float score){
         if(score< Constants.MAX_RED){
-            return R.drawable.circle_shape_red;
+            return R.color.darkRed;
         }
 
         if(score< Constants.MAX_AMBER){
-            return R.drawable.circle_shape_amber;
+            return R.color.assess_yellow;
         }
 
-        return R.drawable.circle_shape_green;
-    }
-
-    public static void trafficView(Context context, float score, View view){
-        Drawable circleShape=context.getResources().getDrawable(trafficDrawable(score));
-        if(android.os.Build.VERSION.SDK_INT> Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1){
-            view.setBackground(circleShape);
-        }else {
-            view.setBackgroundDrawable(circleShape);
-        }
+        return R.color.lightGreen;
     }
 
 
