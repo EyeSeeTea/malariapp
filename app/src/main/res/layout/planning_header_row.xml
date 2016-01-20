@@ -26,6 +26,7 @@
     android:weightSum="1">
     <org.eyeseetea.malariacare.views.CustomTextView
         android:id="@+id/planning_title"
+        android:textAppearance="?android:attr/textAppearanceLarge"
         android:layout_width="0dp"
         android:layout_weight=".40"
         android:layout_height="wrap_content"
@@ -34,12 +35,15 @@
         android:paddingLeft="@dimen/dashboard_planning_padding"
         android:paddingTop="@dimen/dashboard_planning_padding"
         android:paddingBottom="@dimen/dashboard_planning_padding"
+        android:textColor="@color/white"
         android:text="@string/lorem_ipsum"
-        app:tDimension="@string/font_size_level1"
+        android:textAllCaps="true"
+        app:tDimension="@string/font_size_level4"
         app:tFontName="@string/medium_font_name"
         />
     <org.eyeseetea.malariacare.views.CustomTextView
         android:id="@+id/planning_prod"
+        android:textAppearance="?android:attr/textAppearanceLarge"
         android:layout_width="0dp"
         android:layout_weight=".15"
         android:layout_height="wrap_content"
@@ -48,12 +52,14 @@
         android:paddingLeft="@dimen/dashboard_planning_padding"
         android:paddingTop="@dimen/dashboard_planning_padding"
         android:paddingBottom="@dimen/dashboard_planning_padding"
+        android:textColor="@color/white"
         android:text="@string/lorem_ipsum"
-        app:tDimension="@string/font_size_level1"
+        app:tDimension="@string/font_size_level4"
         app:tFontName="@string/medium_font_name"
         />
     <org.eyeseetea.malariacare.views.CustomTextView
         android:id="@+id/planning_qoc"
+        android:textAppearance="?android:attr/textAppearanceLarge"
         android:layout_width="0dp"
         android:layout_weight=".15"
         android:layout_height="wrap_content"
@@ -62,12 +68,14 @@
         android:paddingLeft="@dimen/dashboard_planning_padding"
         android:paddingTop="@dimen/dashboard_planning_padding"
         android:paddingBottom="@dimen/dashboard_planning_padding"
+        android:textColor="@color/white"
         android:text="@string/lorem_ipsum"
-        app:tDimension="@string/font_size_level1"
+        app:tDimension="@string/font_size_level4"
         app:tFontName="@string/medium_font_name"
         />
     <org.eyeseetea.malariacare.views.CustomTextView
         android:id="@+id/planning_next"
+        android:textAppearance="?android:attr/textAppearanceLarge"
         android:layout_width="0dp"
         android:layout_weight=".15"
         android:layout_height="wrap_content"
@@ -76,8 +84,10 @@
         android:paddingLeft="@dimen/dashboard_planning_padding"
         android:paddingTop="@dimen/dashboard_planning_padding"
         android:paddingBottom="@dimen/dashboard_planning_padding"
+        android:textColor="@color/white"
         android:text="@string/lorem_ipsum"
-        app:tDimension="@string/font_size_level1"
+        android:textAllCaps="true"
+        app:tDimension="@string/font_size_level4"
         app:tFontName="@string/medium_font_name"
         />
 

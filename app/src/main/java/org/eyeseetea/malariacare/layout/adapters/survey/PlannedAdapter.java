@@ -22,6 +22,7 @@ package org.eyeseetea.malariacare.layout.adapters.survey;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Context;
+import android.graphics.Typeface;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -213,9 +214,10 @@ public class PlannedAdapter extends BaseAdapter {
         TextView textView=(TextView)rowLayout.findViewById(R.id.planning_title);
         textView.setText(plannedHeader.getTitleHeader());
         ImageView img=(ImageView)rowLayout.findViewById(R.id.planning_image_cross);
+
+        //Set image color
         if(plannedHeader.equals(currentHeader)){
             img.setColorFilter(PreferencesState.getInstance().getContext().getResources().getColor(plannedHeader.getBackgroundColor()));
-            boldHeader(textView);
         }
         else{
             if(plannedHeader.getCounter()==0)
@@ -227,31 +229,18 @@ public class PlannedAdapter extends BaseAdapter {
         //Productivity
         textView=(TextView)rowLayout.findViewById(R.id.planning_prod);
         textView.setText(plannedHeader.getProductivityHeader());
-        if(plannedHeader.equals(currentHeader)){
-            boldHeader(textView);
-        }
 
         //Quality of Care
         textView=(TextView)rowLayout.findViewById(R.id.planning_qoc);
         textView.setText(plannedHeader.getQualityOfCareHeader());
-        if(plannedHeader.equals(currentHeader)){
-            boldHeader(textView);
-        }
 
         //Next
         textView=(TextView)rowLayout.findViewById(R.id.planning_next);
         textView.setText(plannedHeader.getNextHeader());
-        if(plannedHeader.equals(currentHeader)){
-            boldHeader(textView);
-        }
 
         //Planned header -> toggleSection
         rowLayout.setOnClickListener(new OpenHeaderListener(plannedHeader));
         return rowLayout;
-    }
-
-    private void boldHeader(TextView textView){
-        textView.setTextColor(context.getResources().getColor(R.color.black));
     }
 
     private View getViewByPlannedSurvey(int position,final PlannedSurvey plannedSurvey, ViewGroup parent){
