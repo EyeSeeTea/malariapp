@@ -24,7 +24,7 @@ import org.eyeseetea.malariacare.database.model.Question;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.model.Value;
 import org.eyeseetea.malariacare.database.utils.Session;
-import org.eyeseetea.malariacare.layout.score.ScoreRegisterFeedback;
+import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -54,10 +54,10 @@ public class FeedbackBuilder {
     public static List<Feedback> build(Survey survey, boolean parents){
         List<Feedback> feedbackList=new ArrayList<>();
         //Prepare scores
-        List<CompositeScore> compositeScoreList= ScoreRegisterFeedback.loadCompositeScores(Session.getSurveyFeedback());
+        List<CompositeScore> compositeScoreList= ScoreRegister.loadCompositeScores(Session.getSurvey());
 
         //Calculate main score
-        survey.setMainScore(ScoreRegisterFeedback.calculateMainScore(compositeScoreList));
+        survey.setMainScore(ScoreRegister.calculateMainScore(compositeScoreList));
 
         if (!parents) {
             //Remove parents from list (to avoid showing the parent composite that is there just to push the overall score)

@@ -21,7 +21,7 @@ package org.eyeseetea.malariacare.database.utils.feedback;
 
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.model.CompositeScore;
-import org.eyeseetea.malariacare.layout.score.ScoreRegisterFeedback;
+import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 
 /**
  * Created by arrizabalaga on 14/09/15.
@@ -49,7 +49,7 @@ public class CompositeScoreFeedback implements Feedback {
      * @return
      */
     public float getScore() {
-        return ScoreRegisterFeedback.getCompositeScore(this.compositeScore);
+        return ScoreRegister.getCompositeScore(this.compositeScore);
     }
 
     /**

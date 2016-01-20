@@ -42,6 +42,7 @@ import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.Session;
+import org.eyeseetea.malariacare.database.utils.SurveyAnsweredRatio;
 import org.eyeseetea.malariacare.layout.adapters.dashboard.AssessmentUnsentAdapter;
 import org.eyeseetea.malariacare.layout.adapters.dashboard.IDashboardAdapter;
 import org.eyeseetea.malariacare.receivers.AlarmPushReceiver;
@@ -178,8 +179,20 @@ public class DashboardUnsentFragment extends ListFragment {
 
                 return true;
             case R.id.option_mark_completed:
-                ((Survey)adapter.getItem(selectedPosition-1)).setCompleteSurveyState();
+                Survey survey=(Survey)adapter.getItem(selectedPosition-1);
+
+                SurveyAnsweredRatio surveyAnsweredRatio=survey.getAnsweredQuestionRatio();
+
+                if(surveyAnsweredRatio.getTotalCompulsory()>0) {
+                    if(Float.valueOf(100 * surveyAnsweredRatio.getCompulsoryRatio()).intValue()>=100) {
+                        survey.setCompleteSurveyState();
+                        reloadData();
+                    }
+                }
+                else {
+                survey.setCompleteSurveyState();
                 reloadData();
+                }
                 return true;
             case R.id.option_delete:
                 Log.d(TAG, "removing item pos=" + selectedPosition);
