@@ -36,18 +36,20 @@ public class PlannedHeader implements PlannedItem {
     private final String qualityOfCareHeader;
     private final String nextHeader;
     private final Integer backgroundColor;
+    private final Integer secondaryColor;
 
     /**
      * Number of planned surveys under this category
      */
     private Integer counter;
 
-    public PlannedHeader(String titleHeader, String productivityHeader, String qualityOfCareHeader, String nextHeader, Integer backgroundColor) {
+    public PlannedHeader(String titleHeader, String productivityHeader, String qualityOfCareHeader, String nextHeader, Integer backgroundColor, Integer secondaryColor) {
         this.titleHeader = titleHeader;
         this.productivityHeader = productivityHeader;
         this.qualityOfCareHeader = qualityOfCareHeader;
         this.nextHeader = nextHeader;
         this.backgroundColor = backgroundColor;
+        this.secondaryColor = secondaryColor;
         this.counter=0;
     }
 
@@ -90,6 +92,9 @@ public class PlannedHeader implements PlannedItem {
         return backgroundColor;
     }
 
+    public Integer getSecondaryColor() {
+        return secondaryColor;
+    }
     /**
      * Headers are always shown
      * @param filterProgram
@@ -121,7 +126,8 @@ public class PlannedHeader implements PlannedItem {
                 ctx.getString(R.string.dashboard_title_planned_productivity),
                 ctx.getString(R.string.dashboard_title_planned_quality_of_care),
                 ctx.getString(R.string.dashboard_title_planned_next_qa),
-                R.color.red);
+                R.color.red,
+                R.color.light_red);
     }
 
     /**
@@ -135,7 +141,8 @@ public class PlannedHeader implements PlannedItem {
                 ctx.getString(R.string.dashboard_title_planned_productivity),
                 ctx.getString(R.string.dashboard_title_planned_quality_of_care),
                 ctx.getString(R.string.dashboard_title_planned_next_qa),
-                R.color.amber);
+                R.color.amber,
+                R.color.tab_yellow_assess);
     }
 
     /**
@@ -149,7 +156,8 @@ public class PlannedHeader implements PlannedItem {
                 ctx.getString(R.string.dashboard_title_planned_productivity),
                 ctx.getString(R.string.dashboard_title_planned_quality_of_care),
                 ctx.getString(R.string.dashboard_title_planned_next_qa),
-                R.color.green);
+                R.color.green,
+                R.color.lightGreen);
     }
 
     /**
@@ -163,7 +171,8 @@ public class PlannedHeader implements PlannedItem {
                 ctx.getString(R.string.dashboard_title_planned_productivity),
                 ctx.getString(R.string.dashboard_title_planned_quality_of_care),
                 ctx.getString(R.string.dashboard_title_planned_next_qa),
-                R.color.scoreGrandson);
+                R.color.scoreGrandson,
+                R.color.feedbackLightBlue);
     }
 
     @Override
@@ -199,4 +208,5 @@ public class PlannedHeader implements PlannedItem {
     public String toString(){
         return titleHeader;
     }
+
 }

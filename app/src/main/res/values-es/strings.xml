@@ -75,6 +75,7 @@
     <string name="assessment_title_state">Estado</string>
     <string name="assessment_info_delete">Eliminar</string>
     <string name="assessment_title_header">Evaluación(es) Activa(s)</string>
+    <string name="select_assessment">Elegir evaluación</string>
 
     <!-- feedback -->
     <!-- XXX Should it be replaced by 'assessment_title_facility_date'?-->
