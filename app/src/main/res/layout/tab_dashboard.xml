@@ -35,8 +35,7 @@
             <RelativeLayout
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
-                android:orientation="vertical"
-                android:padding="3dp">
+                android:orientation="vertical">
 
                 <TabWidget
                     android:id="@android:id/tabs"
@@ -88,25 +87,10 @@
                         android:layout_height="match_parent"
                         android:orientation="vertical">
 
-                        <org.eyeseetea.malariacare.views.CustomTextView
-                            android:layout_width="fill_parent"
-                            android:layout_height="wrap_content"
-                            android:text="@string/empty_string"
-                            android:textColor="@color/black"
-                            android:id="@+id/titleInProgress"
-                            android:padding="5dip"
-                            android:textAppearance="?android:attr/textAppearanceMedium"
-                            app:tDimension="@string/font_size_level2"
-                            app:tFontName="@string/condensed_font_name" />
-
                         <FrameLayout
                             android:orientation="vertical"
                             android:layout_width="fill_parent"
                             android:layout_height="wrap_content"
-                            android:paddingLeft="@dimen/activity_horizontal_margin"
-                            android:paddingRight="@dimen/activity_horizontal_margin"
-                            android:paddingTop="@dimen/activity_vertical_margin"
-                            android:paddingBottom="@dimen/activity_vertical_margin"
                             android:id="@+id/dashboard_details_container">
 
                             <TableLayout
@@ -159,7 +143,6 @@
                             android:text="@string/empty_string"
                             android:textColor="@color/black"
                             android:id="@+id/titleCompleted"
-                            android:padding="5dip"
                             android:textAppearance="?android:attr/textAppearanceMedium"
                             app:tDimension="@string/font_size_level2"
                             app:tFontName="@string/condensed_font_name" />
@@ -175,10 +158,6 @@
                             android:orientation="vertical"
                             android:layout_width="fill_parent"
                             android:layout_height="wrap_content"
-                            android:paddingLeft="@dimen/activity_horizontal_margin"
-                            android:paddingRight="@dimen/activity_horizontal_margin"
-                            android:paddingTop="@dimen/activity_vertical_margin"
-                            android:paddingBottom="@dimen/activity_vertical_margin"
                             android:id="@+id/dashboard_completed_container">
 
                             <TableLayout
@@ -211,8 +190,6 @@
                                      android:layout_width="fill_parent"
                                      android:layout_height="fill_parent"
                                      android:background="@color/light_grey"
-                                     android:paddingTop="@dimen/activity_vertical_margin"
-                                     android:paddingBottom="@dimen/activity_vertical_margin"
                                      android:focusable="true"
                                      >
                                  </WebView>

@@ -22,10 +22,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent" android:gravity="center"
-    android:orientation="vertical" android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
+    android:orientation="vertical"
     tools:context="org.eyeseetea.malariacare.CreateSurveyActivity">
 
     <!-- Login progress -->
@@ -48,33 +45,40 @@
 
                 <LinearLayout
                     android:orientation="vertical"
-                    android:layout_width="fill_parent"
+                    android:layout_width="match_parent"
                     android:layout_height="fill_parent"
                     android:id="@+id/org_unit_container">
 
                     <LinearLayout
                         android:orientation="horizontal"
-                        android:layout_width="fill_parent"
-                        android:layout_height="fill_parent">
+                        android:layout_width="match_parent"
+                        android:layout_height="fill_parent"
+                        android:background="@color/assess_grey"
+                        android:gravity="center">
 
                         <org.eyeseetea.malariacare.views.CustomTextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:textAppearance="?android:attr/textAppearanceLarge"
                             android:text="@string/create_info_organization_unit"
-                            app:tDimension="@string/font_size_level2"
+                            app:tDimension="@string/font_size_level4"
                             app:tFontName="@string/medium_font_name"
-                            android:id="@+id/textView2" />
+                            android:textAllCaps="true"
+                            android:id="@+id/textView2"
+                            android:background="@color/assess_grey"
+                            android:textColor="@color/White"
+                            android:gravity="center" />
                     </LinearLayout>
 
-                    <LinearLayout
+                    <RelativeLayout
                         android:orientation="horizontal"
                         android:layout_width="fill_parent"
                         android:layout_height="fill_parent"
                         android:background="@drawable/background_textfield">
 
                         <Spinner
-                            android:layout_width="fill_parent"
+                            android:dropDownWidth="match_parent"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:id="@+id/org_unit"
                             android:spinnerMode="dropdown"
@@ -83,9 +87,17 @@
                             android:paddingTop="2dip"
                             android:paddingRight="20dip"
                             android:paddingBottom="2dip"
-                            android:backgroundTint="@color/headerColor"
+                            android:background="@null"
                             android:gravity="right"/>
-                    </LinearLayout>
+                        <ImageView
+                            android:src="@drawable/arrow_assess"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingBottom="2dip"
+                            android:paddingRight="20dip"
+                            android:layout_alignParentBottom="true"
+                            android:layout_alignParentRight="true"  />
+                    </RelativeLayout>
 
                 </LinearLayout>
 
@@ -99,35 +111,37 @@
                 <LinearLayout
                     android:orientation="vertical"
                     android:layout_width="fill_parent"
+                    android:background="@color/assess_grey"
                     android:layout_height="fill_parent">
-
-                    <Space
-                        android:layout_width="20px"
-                        android:layout_height="20px" />
 
                     <LinearLayout
                         android:orientation="horizontal"
                         android:layout_width="fill_parent"
-                        android:layout_height="fill_parent" >
+                        android:layout_height="fill_parent"
+                        android:gravity="center">
 
                         <org.eyeseetea.malariacare.views.CustomTextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:textAppearance="?android:attr/textAppearanceLarge"
                             android:text="@string/create_info_survey"
                             android:id="@+id/textView3"
-                            app:tDimension="@string/font_size_level2"
+                            android:textAllCaps="true"
+                            android:textColor="@color/White"
+                            app:tDimension="@string/font_size_level4"
                             app:tFontName="@string/medium_font_name"/>
                     </LinearLayout>
 
-                    <LinearLayout
+
+                    <RelativeLayout
                         android:orientation="horizontal"
                         android:layout_width="fill_parent"
                         android:layout_height="fill_parent"
                         android:background="@drawable/background_textfield">
 
                         <Spinner
-                            android:layout_width="fill_parent"
+                            android:dropDownWidth="match_parent"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:id="@+id/program"
                             android:spinnerMode="dropdown"
@@ -136,9 +150,18 @@
                             android:paddingTop="2dip"
                             android:paddingRight="20dip"
                             android:paddingBottom="2dip"
-                            android:backgroundTint="@color/headerColor"
-                            android:gravity="right"/>
-                    </LinearLayout>
+                            android:background="@null"
+                            android:gravity="right"
+                            />
+                        <ImageView
+                            android:src="@drawable/arrow_assess"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingBottom="2dip"
+                            android:paddingRight="20dip"
+                            android:layout_alignParentBottom="true"
+                            android:layout_alignParentRight="true"  />
+                    </RelativeLayout>
                 </LinearLayout>
 
                 <LinearLayout
@@ -159,21 +182,24 @@
                         <org.eyeseetea.malariacare.views.CustomTextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:textAppearance="?android:attr/textAppearanceLarge"
                             android:text="@string/create_info_tabs_group"
                             android:id="@+id/textView4"
-                            app:tDimension="@string/font_size_level2"
+                            android:textAllCaps="true"
+                            android:textColor="@color/White"
+                            app:tDimension="@string/font_size_level4"
                             app:tFontName="@string/medium_font_name"/>
                     </LinearLayout>
 
-                    <LinearLayout
+                    <RelativeLayout
                         android:orientation="horizontal"
                         android:layout_width="fill_parent"
                         android:layout_height="fill_parent"
                         android:background="@drawable/background_textfield">
 
                         <Spinner
-                            android:layout_width="fill_parent"
+                            android:dropDownWidth="match_parent"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:id="@+id/tab_group"
                             android:spinnerMode="dropdown"
@@ -182,9 +208,16 @@
                             android:paddingTop="2dip"
                             android:paddingRight="20dip"
                             android:paddingBottom="2dip"
-                            android:backgroundTint="@color/headerColor"
-                            android:gravity="right"/>
-                    </LinearLayout>
+                            android:background="@null"/>
+                        <ImageView
+                            android:src="@drawable/arrow_assess"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingBottom="2dip"
+                            android:paddingRight="20dip"
+                            android:layout_alignParentBottom="true"
+                            android:layout_alignParentRight="true"  />
+                    </RelativeLayout>
                 </LinearLayout>
 
                 <Space
@@ -193,15 +226,15 @@
 
                 <org.eyeseetea.malariacare.views.CustomButton
                     android:id="@+id/create_form_button" style="?android:textAppearanceMedium"
-                    android:layout_width="match_parent" android:layout_height="wrap_content"
+                    android:layout_width="170dp" android:layout_height="wrap_content"
                     android:layout_marginTop="16dp" android:text="@string/create_info_ok"
                     android:textStyle="bold"
-                    android:background="@color/headerColor"
-                    android:textColor="@color/white"
+                    android:textColor="@color/assess_grey"
+                    android:background="@drawable/button_round_border"
                     app:bDimension="@string/font_size_level2"
-                    app:bFontName="@string/condensed_font_name">
-                </org.eyeseetea.malariacare.views.CustomButton>
-
+                    app:bFontName="@string/medium_font_name"
+                    android:layout_gravity="center_horizontal"
+                    />
             </LinearLayout>
 
         </LinearLayout>

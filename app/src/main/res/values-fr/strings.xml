@@ -65,7 +65,7 @@
     <string name="dashboard_title_table_facilities">"La qualité des soins (6 derniers mois)"</string>
 
     <!-- create -->
-    <string name="create_info_ok">Commencer Évaluation</string>
+    <string name="create_info_ok">Commencer</string>
     <string name="create_info_organization_unit">Unité d\'organisation</string>
     <string name="create_info_survey">Enquête</string>
     <string name="create_info_zone">Zone</string>

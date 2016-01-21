@@ -6,11 +6,11 @@
         android:right="-3dp"
         android:left="-3dp">
         <shape android:shape="rectangle" >
-            <solid android:color="@color/headerColor" />
+            <solid android:color="@color/transparent" />
 
             <stroke
                 android:width="3dp"
-                android:color="@color/material_blue_grey_900" />
+                android:color="@color/transparent" />
         </shape>
     </item>
 
