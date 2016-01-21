@@ -40,6 +40,7 @@ import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.model.OrgUnit;
 import org.eyeseetea.malariacare.database.model.Program;
 import org.eyeseetea.malariacare.database.model.Survey;
+import org.eyeseetea.malariacare.database.utils.PopulateDB;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.layout.adapters.dashboard.AssessmentSentAdapter;
@@ -74,6 +75,8 @@ public class DashboardSentFragment extends ListFragment {
     protected IDashboardAdapter adapter;
     private static int index = 0;
     List<Survey> oneSurveyForOrgUnit;
+    List<OrgUnit> orgUnitList;
+    List <Program> programList;
     Spinner filterSpinnerOrgUnit;
     Spinner filterSpinnerProgram;
     String orgUnitFilter= ORG_UNIT_WITHOUT_FILTER;
@@ -147,12 +150,9 @@ public class DashboardSentFragment extends ListFragment {
 
         initAdapter();
         initListView();
-        initFilters(getView());
     }
     private void initFilters(View view) {
         filterSpinnerProgram = (Spinner) getActivity().findViewById(R.id.filter_program);
-
-        List<Program> programList = Program.getAllPrograms();
         programList.add(0, new Program(PROGRAM_WITHOUT_FILTER));
         filterSpinnerProgram.setAdapter(new ProgramArrayAdapter(this.getActivity().getApplicationContext(), programList));
         filterSpinnerProgram.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -184,7 +184,6 @@ public class DashboardSentFragment extends ListFragment {
         });
         filterSpinnerOrgUnit = (Spinner) getActivity().findViewById(R.id.filter_orgunit);
 
-        List<OrgUnit> orgUnitList = OrgUnit.getAllOrgUnit();
         orgUnitList.add(0, new OrgUnit(ORG_UNIT_WITHOUT_FILTER));
         filterSpinnerOrgUnit.setAdapter(new OrgUnitArrayAdapter(getActivity().getApplicationContext(), orgUnitList));
         filterSpinnerOrgUnit.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -364,6 +363,7 @@ public class DashboardSentFragment extends ListFragment {
         if (surveyReceiver == null) {
             surveyReceiver = new SurveyReceiver();
             LocalBroadcastManager.getInstance(getActivity()).registerReceiver(surveyReceiver, new IntentFilter(SurveyService.ALL_SENT_OR_COMPLETED_SURVEYS_ACTION));
+            LocalBroadcastManager.getInstance(getActivity()).registerReceiver(surveyReceiver, new IntentFilter(SurveyService.ALL_ORG_UNITS_AND_PROGRAMS_ACTION));
         }
     }
 
@@ -483,7 +483,19 @@ public class DashboardSentFragment extends ListFragment {
             if (SurveyService.ALL_SENT_OR_COMPLETED_SURVEYS_ACTION.equals(intent.getAction())) {
                 reloadSentSurveys();
             }
+            if(SurveyService.ALL_ORG_UNITS_AND_PROGRAMS_ACTION.equals(intent.getAction())){
+                getOrgUnitAndProgram();
+                initFilters(getView());
+            }
         }
 
     }
+    public void getOrgUnitAndProgram(){
+        Object[] data=(Object[]) Session.popServiceValue(SurveyService.ALL_ORG_UNITS_AND_PROGRAMS_ACTION);
+        orgUnitList=(List<OrgUnit>)data[0];
+        programList=(List<Program>)data[1];
+    }
+
+
+
 }

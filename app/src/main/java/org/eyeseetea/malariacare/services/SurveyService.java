@@ -25,6 +25,7 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
 import org.eyeseetea.malariacare.database.model.CompositeScore;
+import org.eyeseetea.malariacare.database.model.OrgUnit;
 import org.eyeseetea.malariacare.database.model.Program;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.model.Tab;
@@ -83,9 +84,14 @@ public class SurveyService extends IntentService {
     public static final String PREPARE_FEEDBACK_ACTION="org.eyeseetea.malariacare.services.SurveyService.PREPARE_FEEDBACK_ACTION";
 
     /**
-     * Name of 'Allprogram' action
+     * Name of 'All monitor data' action
      */
     public static final String ALL_MONITOR_DATA_ACTION ="org.eyeseetea.malariacare.services.SurveyService.ALL_MONITOR_DATA_ACTION";
+
+    /**
+     * Name of 'All filter sentfragment' action
+     */
+    public static final String ALL_ORG_UNITS_AND_PROGRAMS_ACTION ="org.eyeseetea.malariacare.services.SurveyService.ALL_ORG_UNITS_AND_PROGRAMS_ACTION";
 
     /**
      * Key of composite scores entry in shared session
@@ -155,7 +161,27 @@ public class SurveyService extends IntentService {
                 break;
             case ALL_MONITOR_DATA_ACTION:
                 getAllPrograms();
+                break;
+            case ALL_ORG_UNITS_AND_PROGRAMS_ACTION:
+                getAllOrgUnitsAndPrograms();
+                break;
         }
+    }
+
+    private void getAllOrgUnitsAndPrograms() {
+        Log.d(TAG,"getAllOrgUnitAndPrograms (Thread:"+Thread.currentThread().getId()+")");
+        List<OrgUnit> orgUnitList=OrgUnit.getAllOrgUnit();
+        List<Program> programList=Program.getAllPrograms();
+        Object[] orgUnitsAndPrograms=new Object[2];
+        orgUnitsAndPrograms[0]=orgUnitList;
+        orgUnitsAndPrograms[1]=programList;
+        //Since intents does NOT admit NON serializable as values we use Session instead
+        Session.putServiceValue(ALL_ORG_UNITS_AND_PROGRAMS_ACTION, orgUnitsAndPrograms);
+
+        //Returning result to anyone listening
+        Intent resultIntent= new Intent(ALL_ORG_UNITS_AND_PROGRAMS_ACTION);
+        LocalBroadcastManager.getInstance(this).sendBroadcast(resultIntent);
+
     }
 
     private void getAllPrograms() {
@@ -202,6 +228,7 @@ public class SurveyService extends IntentService {
     private void reloadDashboard(){
         Log.d(TAG, "reloadDashboard");
         List<Program> programList=Program.getAllPrograms();
+        List<OrgUnit> orgUnitList=OrgUnit.getAllOrgUnit();
         List<Survey> completedUnsentSurveys=Survey.getAllCompletedUnsentSurveys();
         List<Survey> unsentSurveys=Survey.getAllInProgressSurveys();
         List<Survey> sentSurveys=Survey.getAllSentSurveys();
@@ -213,11 +240,15 @@ public class SurveyService extends IntentService {
         Object[] monitorData=new Object[2];
         monitorData[0]=sentSurveys;
         monitorData[1]=programList;
+        Object[] orgUnitsAndPrograms=new Object[2];
+        orgUnitsAndPrograms[0]=orgUnitList;
+        orgUnitsAndPrograms[1]=programList;
         Session.putServiceValue(ALL_MONITOR_DATA_ACTION,monitorData);
         Session.putServiceValue(ALL_IN_PROGRESS_SURVEYS_ACTION, unsentSurveys);
         Session.putServiceValue(ALL_COMPLETED_SURVEYS_ACTION, completedUnsentSurveys);
         Session.putServiceValue(ALL_SENT_OR_COMPLETED_SURVEYS_ACTION, sentSurveys);
         Session.putServiceValue(PLANNED_SURVEYS_ACTION, PlannedItemBuilder.getInstance().buildPlannedItems());
+        Session.putServiceValue(ALL_ORG_UNITS_AND_PROGRAMS_ACTION,orgUnitsAndPrograms);
 
         //Returning result to anyone listening
 
@@ -226,6 +257,8 @@ public class SurveyService extends IntentService {
         LocalBroadcastManager.getInstance(this).sendBroadcast(new Intent(ALL_COMPLETED_SURVEYS_ACTION));
         LocalBroadcastManager.getInstance(this).sendBroadcast(new Intent(ALL_SENT_OR_COMPLETED_SURVEYS_ACTION));
         LocalBroadcastManager.getInstance(this).sendBroadcast(new Intent(PLANNED_SURVEYS_ACTION));
+        LocalBroadcastManager.getInstance(this).sendBroadcast(new Intent(ALL_ORG_UNITS_AND_PROGRAMS_ACTION));
+
     }
 
     /**
