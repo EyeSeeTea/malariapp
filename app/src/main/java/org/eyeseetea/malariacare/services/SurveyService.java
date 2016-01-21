@@ -25,6 +25,7 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
 import org.eyeseetea.malariacare.database.model.CompositeScore;
+import org.eyeseetea.malariacare.database.model.Program;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.model.Tab;
 import org.eyeseetea.malariacare.database.utils.Session;
@@ -80,6 +81,11 @@ public class SurveyService extends IntentService {
      * Name of 'feedback' action
      */
     public static final String PREPARE_FEEDBACK_ACTION="org.eyeseetea.malariacare.services.SurveyService.PREPARE_FEEDBACK_ACTION";
+
+    /**
+     * Name of 'Allprogram' action
+     */
+    public static final String ALL_MONITOR_DATA_ACTION ="org.eyeseetea.malariacare.services.SurveyService.ALL_MONITOR_DATA_ACTION";
 
     /**
      * Key of composite scores entry in shared session
@@ -147,7 +153,24 @@ public class SurveyService extends IntentService {
             case PREPARE_FEEDBACK_ACTION:
                 getFeedbackItems();
                 break;
+            case ALL_MONITOR_DATA_ACTION:
+                getAllPrograms();
         }
+    }
+
+    private void getAllPrograms() {
+        Log.d(TAG,"getAllPrograms (Thread:"+Thread.currentThread().getId()+")");
+        List<Program> programList=Program.getAllPrograms();
+        List<Survey> sentSurveys=Survey.getAllSentSurveys();
+        Object[] monitorData=new Object[2];
+        monitorData[0]=sentSurveys;
+        monitorData[1]=programList;
+        //Since intents does NOT admit NON serializable as values we use Session instead
+        Session.putServiceValue(ALL_MONITOR_DATA_ACTION, monitorData);
+
+        //Returning result to anyone listening
+        Intent resultIntent= new Intent(ALL_MONITOR_DATA_ACTION);
+        LocalBroadcastManager.getInstance(this).sendBroadcast(resultIntent);
     }
 
     private void getAllInProgressSurveys() {
@@ -178,7 +201,7 @@ public class SurveyService extends IntentService {
 
     private void reloadDashboard(){
         Log.d(TAG, "reloadDashboard");
-
+        List<Program> programList=Program.getAllPrograms();
         List<Survey> completedUnsentSurveys=Survey.getAllCompletedUnsentSurveys();
         List<Survey> unsentSurveys=Survey.getAllInProgressSurveys();
         List<Survey> sentSurveys=Survey.getAllSentSurveys();
@@ -187,12 +210,18 @@ public class SurveyService extends IntentService {
         }
 
         //Since intents does NOT admit NON serializable as values we use Session instead
+        Object[] monitorData=new Object[2];
+        monitorData[0]=sentSurveys;
+        monitorData[1]=programList;
+        Session.putServiceValue(ALL_MONITOR_DATA_ACTION,monitorData);
         Session.putServiceValue(ALL_IN_PROGRESS_SURVEYS_ACTION, unsentSurveys);
         Session.putServiceValue(ALL_COMPLETED_SURVEYS_ACTION, completedUnsentSurveys);
         Session.putServiceValue(ALL_SENT_OR_COMPLETED_SURVEYS_ACTION, sentSurveys);
         Session.putServiceValue(PLANNED_SURVEYS_ACTION, PlannedItemBuilder.getInstance().buildPlannedItems());
 
         //Returning result to anyone listening
+
+        LocalBroadcastManager.getInstance(this).sendBroadcast(new Intent(ALL_MONITOR_DATA_ACTION));
         LocalBroadcastManager.getInstance(this).sendBroadcast(new Intent(ALL_IN_PROGRESS_SURVEYS_ACTION));
         LocalBroadcastManager.getInstance(this).sendBroadcast(new Intent(ALL_COMPLETED_SURVEYS_ACTION));
         LocalBroadcastManager.getInstance(this).sendBroadcast(new Intent(ALL_SENT_OR_COMPLETED_SURVEYS_ACTION));
