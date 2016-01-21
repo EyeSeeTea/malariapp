@@ -132,7 +132,6 @@
 167;'GHA-CR Obs 1-530';'GHA-CR Obs 1-Cl sev assess-530-Shock: Weak & thready pulse, Cold extremities, capillary refill ≥ 3 s or hypotension (Systolic BP < 70 mm Hg in children, < 90 mmHg in Adult)';;'Shock: Weak & thready pulse, Cold extremities, capillary refill ≥ 3 s or hypotension (Systolic BP < 70 mm Hg in children, < 90 mmHg in Adult)';'UdqbxabyOEj';530;0.00;0.00;12;85;;
 168;'GHA-CR Obs 1-540';'GHA-CR Obs 1-Cl sev assess-540-Altered consciousness';;'Altered consciousness';'beARbrEttI5';540;0.00;0.00;12;85;;
 169;'GHA-CR Obs 1-550';'GHA-CR Obs 1-Gen Ex-550-Does the health worker conduct a general physical exam, including:';;'Does the health worker conduct a general physical exam, including:';'KPZUU2ZZIr4';550;0.00;0.00;13;8;;
-170;'GHA-CR Obs 1-560';'GHA-CR Obs 1-Gen Ex-560-Eye, ear, nose, and throat exam';;'Eye, ear, nose, and throat exam';'a9pRpbbza06';560;0.25;0.25;13;85;;36
 171;'GHA-CR Obs 1-570';'GHA-CR Obs 1-Gen Ex-570-Neck exam';;'Neck exam';'sDlf7pX0WHm';570;1.00;1.00;13;85;;36
 172;'GHA-CR Obs 1-580';'GHA-CR Obs 1-Gen Ex-580-Lung exam';;'Lung exam';'tDr9fs6XsYC';580;1.00;1.00;13;85;;36
 173;'GHA-CR Obs 1-590';'GHA-CR Obs 1-Gen Ex-590-Heart exam';;'Heart exam';'fSZ0V5CPmJE';590;0.25;0.25;13;85;;36
@@ -146,7 +145,7 @@
 182;'GHA-CR Obs 1-680';'GHA-CR Obs 1-Diag-680-Did health worker appropriately classify the illness according to disease diagnosis and severity?';;'Did health worker appropriately classify the illness according to disease diagnosis and severity?';'p2YBbmVKG4P';680;10.00;10.00;14;85;;36
 184;'GHA-CR Obs 1-700';'GHA-CR Obs 1-Tx-700-Was an anti-malarial prescribed?';;'Was an anti-malarial prescribed?';'zOIIvXqyPbn';700;0.00;0.00;15;85;;
 185;'GHA-CR Obs 1-710';'GHA-CR Obs 1-Tx-710-Supervisor, should an anti-malarial have been prescribed?';;'Supervisor, should an anti-malarial have been prescribed?';'ZiZJGF9CU9M';710;10.00;10.00;15;85;;
-186;'GHA-CR Obs 1-705';'GHA-CR Obs 1-Tx-705-If prescribed, was the antimalarial prescribed according to national guidelines (correct drug, dosage, number of days)?';;'If prescribed, was the antimalarial prescribed according to national guidelines (correct drug, dosage, number of days)?';'DCXVWwhqD95';705;0.00;0.00;15;86;;36
+186;'GHA-CR Obs 1-705';'GHA-CR Obs 1-Tx-705-If prescribed, was the antimalarial prescribed according to national guidelines (correct drug, dosage, number of days)?';;'If prescribed, was the antimalarial prescribed according to national guidelines (correct drug, dosage, number of days)?';'DCXVWwhqD95';705;0.00;0.00;15;89;;36
 189;'GHA-CR Obs 1-750';'GHA-CR Obs 1-Tx-750-Was the patient referred or admitted?';;'Was the patient referred or admitted?';'kdC89ulSbdI';750;0.00;0.00;15;85;;
 190;'GHA-CR Obs 1-760';'GHA-CR Obs 1-Tx-760-Was the patient treated as an outpatient (NOT referred or admitted)?';;'Was the patient treated as an outpatient (NOT referred or admitted)?';'jJt5eRGRva9';760;0.00;0.00;15;85;;
 191;'GHA-CR Obs 1-770';'GHA-CR Obs 1-Tx-770-For NON-referral and NON-admitted cases ONLY: Was caregiver/patient';;'For NON-referral and NON-admitted cases ONLY: Was caregiver/patient';'eN2nGbb5wLG';770;0.00;0.00;15;8;190;
@@ -198,7 +197,6 @@
 245;'GHA-CR Obs 2-530';'GHA-CR Obs 2-Cl sev assess-530-Shock: Weak & thready pulse, Cold extremities, capillary refill ≥ 3 s or hypotension (Systolic BP < 70 mm Hg in children, < 90 mmHg in Adult)';;'Shock: Weak & thready pulse, Cold extremities, capillary refill ≥ 3 s or hypotension (Systolic BP < 70 mm Hg in children, < 90 mmHg in Adult)';'nMTHdBVEBAN';530;0.00;0.00;21;85;;
 246;'GHA-CR Obs 2-540';'GHA-CR Obs 2-Cl sev assess-540-Altered consciousness';;'Altered consciousness';'aWPWA8LRcB6';540;0.00;0.00;21;85;;
 247;'GHA-CR Obs 2-550';'GHA-CR Obs 2-Gen Ex-550-Does the health worker conduct a general physical exam, including:';;'Does the health worker conduct a general physical exam, including:';'fuAKrLn9XAb';550;0.00;0.00;22;8;;
-248;'GHA-CR Obs 2-560';'GHA-CR Obs 2-Gen Ex-560-Eye, ear, nose, and throat exam';;'Eye, ear, nose, and throat exam';'gw3NtsvQi6z';560;0.25;0.25;22;85;;37
 249;'GHA-CR Obs 2-570';'GHA-CR Obs 2-Gen Ex-570-Neck exam';;'Neck exam';'d2z4hHM95IW';570;1.00;1.00;22;85;;37
 250;'GHA-CR Obs 2-580';'GHA-CR Obs 2-Gen Ex-580-Lung exam';;'Lung exam';'N0WS7TEF0iW';580;1.00;1.00;22;85;;37
 251;'GHA-CR Obs 2-590';'GHA-CR Obs 2-Gen Ex-590-Heart exam';;'Heart exam';'i0fEPGnZnic';590;0.25;0.25;22;85;;37
@@ -212,7 +210,7 @@
 260;'GHA-CR Obs 2-680';'GHA-CR Obs 2-Diag-680-Did health worker appropriately classify the illness according to disease diagnosis and severity?';;'Did health worker appropriately classify the illness according to disease diagnosis and severity?';'jPBI4JvK6z6';680;10.00;10.00;23;85;;37
 262;'GHA-CR Obs 2-700';'GHA-CR Obs 2-Tx-700-Was an anti-malarial prescribed?';;'Was an anti-malarial prescribed?';'AIv3QCYEqw5';700;0.00;0.00;24;85;;
 263;'GHA-CR Obs 2-710';'GHA-CR Obs 2-Tx-710-Supervisor, should an anti-malarial have been prescribed?';;'Supervisor, should an anti-malarial have been prescribed?';'II7N3PH8mXc';710;10.00;10.00;24;85;;
-264;'GHA-CR Obs 2-705';'GHA-CR Obs 2-Tx-705-If prescribed, was the antimalarial prescribed according to national guidelines (correct drug, dosage, number of days)?';;'If prescribed, was the antimalarial prescribed according to national guidelines (correct drug, dosage, number of days)?';'QFTO6ESRaRg';705;0.00;0.00;24;86;;37
+264;'GHA-CR Obs 2-705';'GHA-CR Obs 2-Tx-705-If prescribed, was the antimalarial prescribed according to national guidelines (correct drug, dosage, number of days)?';;'If prescribed, was the antimalarial prescribed according to national guidelines (correct drug, dosage, number of days)?';'QFTO6ESRaRg';705;0.00;0.00;24;89;;37
 267;'GHA-CR Obs 2-750';'GHA-CR Obs 2-Tx-750-Was the patient referred or admitted?';;'Was the patient referred or admitted?';'pb3W9oVJz41';750;0.00;0.00;24;85;;
 268;'GHA-CR Obs 2-760';'GHA-CR Obs 2-Tx-760-Was the patient treated as an outpatient (NOT referred or admitted)?';;'Was the patient treated as an outpatient (NOT referred or admitted)?';'pgNBzCH97EZ';760;0.00;0.00;24;85;;
 269;'GHA-CR Obs 2-770';'GHA-CR Obs 2-Tx-770-For NON-referral and NON-admitted cases ONLY: Was caregiver/patient';;'For NON-referral and NON-admitted cases ONLY: Was caregiver/patient';'ZxdHUb26ALy';770;0.00;0.00;24;8;268;
@@ -264,7 +262,6 @@
 323;'GHA-CR Obs 3-530';'GHA-CR Obs 3-Cl sev assess-530-Shock: Weak & thready pulse, Cold extremities, capillary refill ≥ 3 s or hypotension (Systolic BP < 70 mm Hg in children, < 90 mmHg in Adult)';;'Shock: Weak & thready pulse, Cold extremities, capillary refill ≥ 3 s or hypotension (Systolic BP < 70 mm Hg in children, < 90 mmHg in Adult)';'nWIYzd3sO45';530;0.00;0.00;30;85;;
 324;'GHA-CR Obs 3-540';'GHA-CR Obs 3-Cl sev assess-540-Altered consciousness';;'Altered consciousness';'aXx38hIsmaC';540;0.00;0.00;30;85;;
 325;'GHA-CR Obs 3-550';'GHA-CR Obs 3-Gen Ex-550-Does the health worker conduct a general physical exam, including:';;'Does the health worker conduct a general physical exam, including:';'ZEiz3EErcYR';550;0.00;0.00;31;8;;
-326;'GHA-CR Obs 3-560';'GHA-CR Obs 3-Gen Ex-560-Eye, ear, nose, and throat exam';;'Eye, ear, nose, and throat exam';'mSWsIKKulF6';560;0.25;0.25;31;85;;38
 327;'GHA-CR Obs 3-570';'GHA-CR Obs 3-Gen Ex-570-Neck exam';;'Neck exam';'C4PPBHpg6cJ';570;1.00;1.00;31;85;;38
 328;'GHA-CR Obs 3-580';'GHA-CR Obs 3-Gen Ex-580-Lung exam';;'Lung exam';'bRzqwTQF9iI';580;1.00;1.00;31;85;;38
 329;'GHA-CR Obs 3-590';'GHA-CR Obs 3-Gen Ex-590-Heart exam';;'Heart exam';'HenYZQJKOjT';590;0.25;0.25;31;85;;38
@@ -278,7 +275,7 @@
 338;'GHA-CR Obs 3-680';'GHA-CR Obs 3-Diag-680-Did health worker appropriately classify the illness according to disease diagnosis and severity?';;'Did health worker appropriately classify the illness according to disease diagnosis and severity?';'HqO84Jiv1VB';680;10.00;10.00;32;85;;38
 340;'GHA-CR Obs 3-700';'GHA-CR Obs 3-Tx-700-Was an anti-malarial prescribed?';;'Was an anti-malarial prescribed?';'DiT9sKwLLoY';700;0.00;0.00;33;85;;
 341;'GHA-CR Obs 3-710';'GHA-CR Obs 3-Tx-710-Supervisor, should an anti-malarial have been prescribed?';;'Supervisor, should an anti-malarial have been prescribed?';'xQhK0m7UtFT';710;10.00;10.00;33;85;;
-342;'GHA-CR Obs 3-705';'GHA-CR Obs 3-Tx-705-If prescribed, was the antimalarial prescribed according to national guidelines (correct drug, dosage, number of days)?';;'If prescribed, was the antimalarial prescribed according to national guidelines (correct drug, dosage, number of days)?';'SzZbB5jmwpw';705;0.00;0.00;33;86;;38
+342;'GHA-CR Obs 3-705';'GHA-CR Obs 3-Tx-705-If prescribed, was the antimalarial prescribed according to national guidelines (correct drug, dosage, number of days)?';;'If prescribed, was the antimalarial prescribed according to national guidelines (correct drug, dosage, number of days)?';'SzZbB5jmwpw';705;0.00;0.00;33;89;;38
 345;'GHA-CR Obs 3-750';'GHA-CR Obs 3-Tx-750-Was the patient referred or admitted?';;'Was the patient referred or admitted?';'q6a0Vpj0v7f';750;0.00;0.00;33;85;;
 346;'GHA-CR Obs 3-760';'GHA-CR Obs 3-Tx-760-Was the patient treated as an outpatient (NOT referred or admitted)?';;'Was the patient treated as an outpatient (NOT referred or admitted)?';'wAWwdXbVwhA';760;0.00;0.00;33;85;;
 347;'GHA-CR Obs 3-770';'GHA-CR Obs 3-Tx-770-For NON-referral and NON-admitted cases ONLY: Was caregiver/patient';;'For NON-referral and NON-admitted cases ONLY: Was caregiver/patient';'VdN4CZkBoPw';770;0.00;0.00;33;8;346;
@@ -505,13 +502,13 @@
 659;'GHA-CR Obs 1-281';'GHA-CR Obs 1-Cl hist-281-Whether patient was referred from another facility?';;'Whether patient was referred from another facility?';'ZQp5W9msBz0';281;1.00;1.00;10;85;;36
 660;'GHA-CR Obs 1-282';'GHA-CR Obs 1-Cl hist-282-Whether this is the patient’s first visit with current illness?';;'Whether this is the patient’s first visit with current illness?';'n5imj65wsIG';282;1.00;1.00;10;85;;36
 661;'GHA-CR Obs 1-295';'GHA-CR Obs 1-Cl hist-295-Did health worker ask about type of treatment?';;'Did health worker ask about type of treatment?';'smHihuL4p51';295;1.00;1.00;10;85;;36
-662;'GHA-CR Obs 1-660';'GHA-CR Obs 1-Diag-660-Supervisor, should a malaria test have been orderd?';;'Supervisor, should a malaria test have been orderd?';'nTI0Tt69OX1';660;0.00;0.00;14;85;;
+662;'GHA-CR Obs 1-660';'GHA-CR Obs 1-Diag-660-Supervisor, should a malaria test have been ordered?';;'Supervisor, should a malaria test have been ordered?';'nTI0Tt69OX1';660;0.00;0.00;14;85;;
 663;'GHA-CR Obs 1-670';'GHA-CR Obs 1-Diag-670-Agreement on whether a malaria test should have been ordered (do not answer)';;'Agreement on whether a malaria test should have been ordered (do not answer)';'vZVRIWgzt0R';670;16.00;16.00;14;108;;36
 664;'GHA-CR Obs 1-711';'GHA-CR Obs 1-Tx-711-Agreement on whether an anti-malaria should have been prescribed (do not answer)';;'Agreement on whether an anti-malaria should have been prescribed (do not answer)';'lTUIEPRWQxJ';711;16.00;16.00;15;108;;36
 665;'GHA-CR Obs 1-720';'GHA-CR Obs 1-Tx-720-Were other medications prescribed for any other conditions?';;'Were other medications prescribed for any other conditions?';'QpQaJg6Um4X';720;0.00;0.00;15;85;;
 666;'GHA-CR Obs 1-730';'GHA-CR Obs 1-Tx-730-Were these prescribed according to standard treatment guidelines?';;'Were these prescribed according to standard treatment guidelines?';'csH4UF3l2zB';730;1.00;1.00;15;85;665;36
 667;'GHA-CR Obs 1-755';'GHA-CR Obs 1-Tx-755-Supervisor, should this patient be referred or admitted?';;'Supervisor, should this patient be referred or admitted?';'maTJ1gSGb9i';755;0.00;0.00;15;85;;
-668;'GHA-CR Obs 1-756';'GHA-CR Obs 1-Tx-756-Agreement on whether patient should be referred or admitted (do not answer)';;'Agreement on whether patient should be referred or admitted (do not answer)';'z6sgXBWdRQP';756;1.00;1.00;15;108;667;36
+668;'GHA-CR Obs 1-756';'GHA-CR Obs 1-Tx-756-Agreement on whether patient should be referred or admitted (do not answer)';;'Agreement on whether patient should be referred or admitted (do not answer)';'z6sgXBWdRQP';756;1.00;1.00;15;108;;36
 669;'GHA-CR Obs 1-865';'GHA-CR Obs 1-Tx-865-Provided with referral note, if applicable?';;'Provided with referral note, if applicable?';'AMxPSCCFALN';865;1.00;1.00;15;86;189;36
 670;'GHA-CR Obs 1-880';'GHA-CR Obs 1-Obs 1-880-Comments';;'Comments';'OuczW8YbUO0';880;0.00;0.00;94;14;;
 671;'GHA-CR Obs 1-885';'GHA-CR Obs 1-Obs 1-885-Supervisor: Did you provide feedback to staff on issues identified during observation?';;'Supervisor: Did you provide feedback to staff on issues identified during observation?';'gB0vp6v5n6y';885;0.00;0.00;94;86;;
@@ -569,7 +566,6 @@
  If not addressed or partially addressed, describe the new action plan to address the gap:';;'If addressed, explain action taken. 
  If not addressed or partially addressed, describe the new action plan to address the gap:';'VpLq9wR02RB';240;0.00;0.00;60;14;;
 723;'GHA-CR Obs Fdbk-250';'GHA-CR Obs Fdbk-CR_Fdbk_TV-250-What was the biggest gap identified today?';;'What was the biggest gap identified today?';'h746R4sLBQb';250;0.00;0.00;76;8;;
-724;'GHA-CR Obs Fdbk-280';'GHA-CR Obs Fdbk-CR_Fdbk_TV-280-HR Capacity/Training';;'HR Capacity/Training';'bVvWvhuybtx';280;0.00;0.00;76;85;;
 725;'GHA-CR Obs Fdbk-290';'GHA-CR Obs Fdbk-CR_Fdbk_TV-290-Requesting for tests:  Malaria Microscopy';;'Requesting for tests:  Malaria Microscopy';'ZfBUuaFoD0T';290;0.00;0.00;76;85;;
 726;'GHA-CR Obs Fdbk-300';'GHA-CR Obs Fdbk-CR_Fdbk_TV-300-Requesting for tests:  RDT';;'Requesting for tests:  RDT';'ZsclDfCjguI';300;0.00;0.00;76;85;;
 727;'GHA-CR Obs Fdbk-310';'GHA-CR Obs Fdbk-CR_Fdbk_TV-310-Requesting for tests:  Other lab tests';;'Requesting for tests:  Other lab tests';'HJCe4KYFJVz';310;0.00;0.00;76;85;;
@@ -755,6 +751,9 @@
 903;'GHA-Data Mgmt-720';'GHA-Data Mgmt-Data Ver-720-INSTRUCTIONS: For data varification from source documents, validate all indicators from summary documents to DHIS2';;'INSTRUCTIONS: For data varification from source documents, validate all indicators from summary documents to DHIS2';'b3PbAdPhFLG';720;0.00;0.00;83;8;;
 904;'GHA-Data Mgmt-721';'GHA-Data Mgmt-Data Ver-721-in addition perform data verifiation for all indicators from the registers for two months prior to the current month';;'in addition perform data verifiation for all indicators from the registers for two months prior to the current month';'awtUt9etgQG';721;0.00;0.00;83;8;;
 905;'GHA-Data Mgmt-722';'GHA-Data Mgmt-Data Ver-722-(example: if March review all data for January). Follow the protocols outlined in the SOPs to make the necessary changes in DHIS2.';;'(example: if March review all data for January). Follow the protocols outlined in the SOPs to make the necessary changes in DHIS2.';'zkQZ2hEpmyi';722;0.00;0.00;83;8;;
+906;'GHA-CR Obs 1-791';'GHA-CR Obs 1-Tx-791-Informed about danger signs and need to report immediately?';;'Informed about danger signs and need to report immediately?';'bBmFLHzNGkT';791;1.00;1.00;15;85;190;36
+907;'GHA-CR Obs 2-791';'GHA-CR Obs 2-Tx-791-Informed about danger signs and need to report immediately';;'Informed about danger signs and need to report immediately?';'mZeZIChgLIJ';791;1.00;1.00;24;85;268;37
+908;'GHA-CR Obs 3-791';'GHA-CR Obs 3-Tx-791-Informed about danger signs and need to report immediately';;'Informed about danger signs and need to report immediately?';'jNVcyVppUdC';791;1.00;1.00;33;85;346;38
 1001;'GHA-Gen OTSS-230';'GHA-Gen OTSS-HR_T-230-Number of clinical staff trained on RDTs in last 2 years';;'Number of clinical staff trained on RDTs in last 2 years';'ntU6u0UJ5yj';230;0.00;0.00;2;10;26;
 1204;'GHA-CR Obs 2-120';'GHA-CR Obs 2-HW Info-120-Name of Health Worker';;'Name of Health Worker';'uNleadfJ5kq';120;0.00;0.00;17;13;540;
 1205;'GHA-CR Obs 2-130';'GHA-CR Obs 2-HW Info-130-Sex';;'Sex';'tOMPdaph2am';130;0.00;0.00;17;77;540;
