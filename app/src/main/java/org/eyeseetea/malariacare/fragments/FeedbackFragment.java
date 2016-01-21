@@ -183,18 +183,10 @@ public class FeedbackFragment extends Fragment {
                                       }
                                   }
         );
+        
         //Set mainscore and color.
-        //// FIXME: 20/01/2016 Removed when the surveyfeedback has been removed
-        Survey survey;
-        float average;
-        try {
-            survey = Session.getSurvey();
-            average = survey.getMainScore();
-        }
-        catch(Exception e){
-            survey = Session.getSurveyFeedback();
-            average = survey.getMainScore();
-        }
+        Survey survey = Session.getSurvey();
+        float average = survey.getMainScore();
         CustomTextView item= (CustomTextView)llLayout.findViewById(R.id.feedback_total_score);
         item.setText(String.format("%.1f%%", average));
         int colorId= LayoutUtils.trafficColor(average);
