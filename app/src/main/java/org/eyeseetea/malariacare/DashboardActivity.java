@@ -45,6 +45,7 @@ import org.eyeseetea.malariacare.database.model.Program;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.model.User;
 import org.eyeseetea.malariacare.database.utils.Session;
+import org.eyeseetea.malariacare.database.utils.SurveyAnsweredRatio;
 import org.eyeseetea.malariacare.fragments.CreateSurveyFragment;
 import org.eyeseetea.malariacare.fragments.DashboardSentFragment;
 import org.eyeseetea.malariacare.fragments.DashboardUnsentFragment;
@@ -111,13 +112,19 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
                     tabHost.getTabWidget().getChildAt(i).setBackgroundColor(getResources().getColor(R.color.transparent));
                 }
                 currentTab = tabId;
-                setActionBarDashboard();
+                if(isSurveyFragmentActive())
+                    onExitFromSurvey();
+                if(isFeedbackFragmentActive())
+                    closeFeedbackFragment();
                 if (tabId.equalsIgnoreCase(getResources().getString(R.string.tab_tag_plan))) {
                     tabHost.getCurrentTabView().setBackgroundColor(getResources().getColor(R.color.tab_orange_plan));
+                    setActionBarDashboard();
                     currentTabName=getString(R.string.plan);
                     plannedFragment.reloadPlannedItems();
                 } else if (tabId.equalsIgnoreCase(getResources().getString(R.string.tab_tag_assess))) {
                     tabHost.getCurrentTabView().setBackgroundColor(getResources().getColor(R.color.tab_yellow_assess));
+                    if(isCreateSurveyFragmentActive() ||isDashboardUnsentFragmentActive())
+                        setActionBarDashboard();
                     currentTabName=getString(R.string.assess);
                     if(isSurveyFragmentActive())
                         setActionBarTitleForSurvey(Session.getSurvey());
@@ -125,13 +132,13 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
                 } else if (tabId.equalsIgnoreCase(getResources().getString(R.string.tab_tag_improve))) {
                     tabHost.getCurrentTabView().setBackgroundColor(getResources().getColor(R.color.tab_blue_improve));
                     currentTabName=getString(R.string.improve);
-
-                    if(!isFeedbackFragmentActive())
+                    if(!isFeedbackFragmentActive()){
+                        setActionBarDashboard();
                         sentFragment.reloadSentSurveys();
-                    else
-                        setActionBarTitleForSurvey(Session.getSurveyFeedback());
+                    }
                 } else if (tabId.equalsIgnoreCase(getResources().getString(R.string.tab_tag_monitor))) {
                     tabHost.getCurrentTabView().setBackgroundColor(getResources().getColor(R.color.tab_green_monitor));
+                    setActionBarDashboard();
                     currentTabName=getString(R.string.monitor);
                     monitorFragment.reloadSentSurveys();
                 }
@@ -250,7 +257,7 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
         // Add the fragment to the activity, pushing this transaction
         // on to the back stack.
         replaceFragment(R.id.dashboard_completed_container, feedbackFragment);
-        setActionBarTitleForSurvey(Session.getSurveyFeedback());
+        setActionBarTitleForSurvey(Session.getSurvey());
     }
 
     public void initCreateSurvey(){
@@ -263,8 +270,8 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
     }
 
     public void initSurveyFromPlanning(){
-        initSurvey();
         tabHost.setCurrentTabByTag(getResources().getString(R.string.tab_tag_assess));
+        initSurvey();
     }
 
     public void initSurvey(){
@@ -444,46 +451,128 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
         if(isCreateSurveyFragmentActive() && currentTab==getResources().getString(R.string.tab_tag_assess)) {
             initAssess();
             unsentFragment.reloadData();
+        } else if (isSurveyFragmentActive() && currentTab == getResources().getString(R.string.tab_tag_assess)) {
+            onSurveyBackPressed();
+        } else if (isFeedbackFragmentActive() && currentTab == getResources().getString(R.string.tab_tag_improve)) {
+            closeFeedbackFragment();
+        } else {
+            confirmExitApp();
         }
-        else if(isSurveyFragmentActive() && currentTab==getResources().getString(R.string.tab_tag_assess)){
-            new AlertDialog.Builder(this)
-                    .setTitle(R.string.survey_title_exit)
-                    .setMessage(R.string.survey_info_exit)
-                    .setCancelable(false)
-                    .setNegativeButton(android.R.string.no, null)
-                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int arg1) {
-                            ScoreRegister.clear();
-                            surveyFragment.unregisterReceiver();
-                            initAssess();
-                            unsentFragment.reloadData();
-                            setActionBarDashboard();
-                        }
-                    }).create().show();
-        }
-        else if(isFeedbackFragmentActive() && currentTab==getResources().getString(R.string.tab_tag_improve)){
-            ScoreRegister.clear();
-            feedbackFragment.unregisterReceiver();
-            feedbackFragment.getView().setVisibility(View.GONE);
-            initImprove();
-            sentFragment.reloadData();
-            setActionBarDashboard();
-        }
-        else {
-            new AlertDialog.Builder(this)
-                    .setTitle("Really Exit?")
-                    .setMessage("Are you sure you want to exit the app?")
-                    .setNegativeButton(android.R.string.no, null)
-                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+    }
 
-                        public void onClick(DialogInterface arg0, int arg1) {
-                            Intent intent = new Intent(Intent.ACTION_MAIN);
-                            intent.addCategory(Intent.CATEGORY_HOME);
-                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                            startActivity(intent);
-                        }
-                    }).create().show();
+    /**
+     * Ask to send the survey or close the survey.
+     * It is called when the user change the tab
+     */
+    private void onExitFromSurvey(){
+        Survey survey = Session.getSurvey();
+        SurveyAnsweredRatio surveyAnsweredRatio = survey.reloadSurveyAnsweredRatio();
+        if (surveyAnsweredRatio.getCompulsoryAnswered() == surveyAnsweredRatio.getTotalCompulsory() && surveyAnsweredRatio.getTotalCompulsory() != 0) {
+            askToSendCompulsoryCompletedSurvey();
+
         }
+        closeSurveyFragment();
+    }
+
+
+
+    /**
+     * It is called when the user press back in a surveyFragment
+     */
+    private void onSurveyBackPressed() {
+        Survey survey = Session.getSurvey();
+        SurveyAnsweredRatio surveyAnsweredRatio = survey.reloadSurveyAnsweredRatio();
+        if (surveyAnsweredRatio.getCompulsoryAnswered() == surveyAnsweredRatio.getTotalCompulsory() && surveyAnsweredRatio.getTotalCompulsory() != 0) {
+            askToSendCompulsoryCompletedSurvey();
+
+        } else
+            askToCloseSurvey();
+    }
+
+    private void confirmExitApp() {
+        new AlertDialog.Builder(this)
+                .setTitle("Really Exit?")
+                .setMessage("Are you sure you want to exit the app?")
+                .setNegativeButton(android.R.string.no, null)
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+
+                    public void onClick(DialogInterface arg0, int arg1) {
+                        Intent intent = new Intent(Intent.ACTION_MAIN);
+                        intent.addCategory(Intent.CATEGORY_HOME);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(intent);
+                    }
+                }).create().show();
+    }
+    /**
+     * This dialog is called when the user have a survey open, and close this survey, or when the user change of tab
+     */
+    private void askToCloseSurvey() {
+        new AlertDialog.Builder(this)
+                .setTitle(R.string.survey_title_exit)
+                .setMessage(R.string.survey_info_exit).setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int arg1) {
+                        Survey survey = Session.getSurvey();
+                        survey.updateSurveyStatus();
+                        closeSurveyFragment();
+                    }
+                })
+                .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int arg1) {
+                        unsentFragment.reloadData();
+                    }
+                }).create().show();
+    }
+
+    /**
+     * This dialog is called when the user have a survey open, with compulsory questions completed, and close this survey, or when the user change of tab
+     */
+    private void askToSendCompulsoryCompletedSurvey() {
+        new AlertDialog.Builder(this)
+                .setMessage(R.string.dialog_question_complete_survey)
+                .setNegativeButton(R.string.dialog_complete_option, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int arg1) {
+                        confirmSendCompleteSurvey();
+                    }
+                })
+                .setPositiveButton(R.string.dialog_continue_later_option, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int arg1) {
+                        closeSurveyFragment();
+                    }
+                }).create().show();
+    }
+    /**
+     * This dialog is called to confirm before set a survey as complete
+     */
+    public void confirmSendCompleteSurvey() {
+        //if you select complete_option, this dialog will showed.
+        new AlertDialog.Builder(this)
+                .setMessage(R.string.dialog_are_you_sure_complete_survey)
+                .setNegativeButton(android.R.string.no, null)
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int arg1) {
+                        Survey survey = Session.getSurvey();
+                        survey.setCompleteSurveyState();
+                        closeSurveyFragment();
+                    }
+                }).create().show();
+    }
+
+    public void closeSurveyFragment(){
+        ScoreRegister.clear();
+        surveyFragment.unregisterReceiver();
+        initAssess();
+        unsentFragment.reloadData();
+        setActionBarDashboard();
+    }
+
+    private void closeFeedbackFragment() {
+        ScoreRegister.clear();
+        feedbackFragment.unregisterReceiver();
+        feedbackFragment.getView().setVisibility(View.GONE);
+        initImprove();
+        sentFragment.reloadData();
+        setActionBarDashboard();
     }
 
     /**
@@ -517,6 +606,16 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
         return false;
     }
 
+    /**
+     * Checks if a dashboardUnsentFragment is active
+     */
+    private boolean isDashboardUnsentFragmentActive() {
+        Fragment currentFragment = this.getFragmentManager ().findFragmentById(R.id.dashboard_details_container);
+        if (currentFragment instanceof DashboardUnsentFragment) {
+            return true;
+        }
+        return false;
+    }
     /**
      * Checks if a feedbackfragment is active
      */
@@ -565,7 +664,7 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
 
     @Override
     public void onFeedbackSelected(Survey survey) {
-        Session.setSurveyFeedback(survey);
+        Session.setSurvey(survey);
         tabHost.setCurrentTabByTag(getResources().getString(R.string.tab_tag_improve));
         sentFragment.getView().setVisibility(View.GONE);
         initFeedback();

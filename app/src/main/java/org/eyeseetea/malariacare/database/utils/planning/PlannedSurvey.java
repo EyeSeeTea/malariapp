@@ -41,6 +41,9 @@ public class PlannedSurvey implements PlannedItem {
      */
     private PlannedHeader header;
 
+    public PlannedHeader getPlannedHeader(){
+        return header;
+    }
     public PlannedSurvey(Survey survey,PlannedHeader header) {
         this.survey = survey;
         this.header = header;

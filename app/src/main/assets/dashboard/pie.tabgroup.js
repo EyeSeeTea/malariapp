@@ -63,7 +63,6 @@ function pieXTabGroupChart(data){
     document.getElementById(legendDOMId).insertAdjacentHTML("beforeend",myChart.generateLegend());
 
     //Update title && tip
-    updateChartTitle(titleDOMId,data.title);
     updateChartTitle(titleTableDOMId,data.tip);
 
 }
@@ -103,29 +102,21 @@ function setFacilityData(data){
 }
 //Create the select options for select diferentes org unit
 function createSelectOrgUnit(){
-	var selectHtml='<select onchange="changedOrgunit()" id="changeOrgUnit">';
-	var selected="selected";
-	for(i=0;i<Object.keys(inputOrgUnit).length;i++){
-		if(inputOrgUnit[i].uidorgunit==selectedOrgUnit){
-			selected="selected";
-		}
-		selectHtml+="<option "+selected+" value="+inputOrgUnit[i].uidorgunit+">"+inputOrgUnit[i].title+"</option>";
-		if(selected==="selected"){			
-			selected="";
-		}
-	}
-	selectHtml+="</select>";
-	document.getElementById('selectFacility').innerHTML = selectHtml;
 	rebuildTableFacilities();
 }
 
 //event on click select/or to change the selected orgunit and reload.
 function changedOrgunit(){
-  var myselect = document.getElementById("changeOrgUnit");
-  selectedOrgUnit=(myselect.options[myselect.selectedIndex].value);
-  console.log("new"+selectedOrgUnit);
+	selectedOrgUnit=="";
+	for(i=0;i<Object.keys(inputOrgUnit).length;i++){
+		if(inputOrgUnit[i].uidprogram==selectedProgram){
+			selectedOrgUnit=inputOrgUnit[i].uidorgunit;
+		}
+	}  
+if(selectedProgram==="AllAssessment")
+	rebuildTableFacilities();
+else
   renderPieCharts();
-  rebuildTableFacilities();
 }
 //Save the data of the pies
 function buildPieCharts(dataPies){
@@ -136,17 +127,13 @@ function buildPieCharts(dataPies){
 //Render the pie and create the select options
 function renderPieCharts(){
     for(var i=0;i<inputOrgUnit.length;i++){
-		if(selectedOrgUnit===undefined){
-			console.log("undefined");
-			showDataPie(inputOrgUnit[0]);
-			selectedOrgUnit=inputOrgUnit[0].uidorgunit;
-		}
 		  if (inputOrgUnit[i].uidorgunit==selectedOrgUnit)
 		{
 			showDataPie(inputOrgUnit[i]);
+			createSelectOrgUnit();
 		}
 	}
-	createSelectOrgUnit();
+    createSelectProgram();
 }
 
 //Insert the pie in the html

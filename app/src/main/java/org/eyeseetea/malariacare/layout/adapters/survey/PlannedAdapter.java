@@ -22,6 +22,7 @@ package org.eyeseetea.malariacare.layout.adapters.survey;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Context;
+import android.graphics.Typeface;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,6 +32,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -38,6 +40,7 @@ import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.model.Program;
 import org.eyeseetea.malariacare.database.model.Survey;
+import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.database.utils.planning.PlannedHeader;
 import org.eyeseetea.malariacare.database.utils.planning.PlannedItem;
@@ -210,38 +213,34 @@ public class PlannedAdapter extends BaseAdapter {
         //Title
         TextView textView=(TextView)rowLayout.findViewById(R.id.planning_title);
         textView.setText(plannedHeader.getTitleHeader());
+        ImageView img=(ImageView)rowLayout.findViewById(R.id.planning_image_cross);
+
+        //Set image color
         if(plannedHeader.equals(currentHeader)){
-            boldHeader(textView);
+            img.setColorFilter(PreferencesState.getInstance().getContext().getResources().getColor(plannedHeader.getBackgroundColor()));
+        }
+        else{
+            if(plannedHeader.getCounter()==0)
+                img.setColorFilter(PreferencesState.getInstance().getContext().getResources().getColor(plannedHeader.getBackgroundColor()));
+            else
+                img.setColorFilter(PreferencesState.getInstance().getContext().getResources().getColor(R.color.white));
         }
 
         //Productivity
         textView=(TextView)rowLayout.findViewById(R.id.planning_prod);
         textView.setText(plannedHeader.getProductivityHeader());
-        if(plannedHeader.equals(currentHeader)){
-            boldHeader(textView);
-        }
 
         //Quality of Care
         textView=(TextView)rowLayout.findViewById(R.id.planning_qoc);
         textView.setText(plannedHeader.getQualityOfCareHeader());
-        if(plannedHeader.equals(currentHeader)){
-            boldHeader(textView);
-        }
 
         //Next
         textView=(TextView)rowLayout.findViewById(R.id.planning_next);
         textView.setText(plannedHeader.getNextHeader());
-        if(plannedHeader.equals(currentHeader)){
-            boldHeader(textView);
-        }
 
         //Planned header -> toggleSection
         rowLayout.setOnClickListener(new OpenHeaderListener(plannedHeader));
         return rowLayout;
-    }
-
-    private void boldHeader(TextView textView){
-        textView.setTextColor(context.getResources().getColor(R.color.black));
     }
 
     private View getViewByPlannedSurvey(int position,final PlannedSurvey plannedSurvey, ViewGroup parent){
@@ -273,11 +272,22 @@ public class PlannedAdapter extends BaseAdapter {
         textView.setText(formatScheduledDate(plannedSurvey.getNextAssesment()));
         textView.setOnClickListener(new ScheduleListener(plannedSurvey.getSurvey()));
 
+        //background color
+        int colorId=plannedSurvey.getPlannedHeader().getSecondaryColor();
+        if(position==0 || position%2==0)
+            rowLayout.setBackgroundColor(PreferencesState.getInstance().getContext().getResources().getColor(R.color.white));
+        else
+            rowLayout.setBackgroundColor(PreferencesState.getInstance().getContext().getResources().getColor(colorId));
         //Action
         ImageButton actionButton = (ImageButton)rowLayout.findViewById(R.id.planning_survey_action);
+        colorId=plannedSurvey.getPlannedHeader().getBackgroundColor();
         if(plannedSurvey.getSurvey().isInProgress()){
             actionButton.setImageResource(R.drawable.ic_edit);
         }
+        else{
+            actionButton.setImageResource(R.drawable.red_circle_cross);
+        }
+        actionButton.setColorFilter(PreferencesState.getInstance().getContext().getResources().getColor(colorId));
 
         //Planned survey -> onclick startSurvey
         actionButton.setOnClickListener(new CreateOrEditSurveyListener(plannedSurvey.getSurvey()));

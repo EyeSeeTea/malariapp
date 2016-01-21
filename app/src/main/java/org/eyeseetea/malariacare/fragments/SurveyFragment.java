@@ -35,6 +35,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
@@ -140,8 +141,10 @@ public class SurveyFragment extends  Fragment {
      */
     private LinearLayout content;
 
+    /**
+     * Actual layout to be accessible in the fragment
+     */
     RelativeLayout llLayout;
-
 
     public static SurveyFragment newInstance(int index) {
         SurveyFragment f = new SurveyFragment();
@@ -208,14 +211,13 @@ public class SurveyFragment extends  Fragment {
     }
 
     /**
-     * Adds the spinner for tabs
+     * Adds the spinner and imagebutons for tabs
      */
     private void createMenu() {
 
         Log.d(TAG, "createMenu");
         this.tabAdapter=new TabArrayAdapter(getActivity().getApplicationContext(), tabsList);
         spinner = (Spinner) llLayout.findViewById(R.id.tabSpinner);
-
         //Invisible until info ready
         spinner.setVisibility(View.GONE);
         spinner.setAdapter(this.tabAdapter);
@@ -233,6 +235,43 @@ public class SurveyFragment extends  Fragment {
 
             }
         });
+
+        ImageButton nextButton = (ImageButton) llLayout.findViewById(R.id.next_tab);
+        ImageButton previousButton = (ImageButton) llLayout.findViewById(R.id.previous_tab);
+        nextButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int position = currentTabPosition();
+                position++;
+                if (position < spinner.getAdapter().getCount())
+                    setCurrentTab(position);
+            }
+        });
+        previousButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int position = currentTabPosition();
+                position--;
+                if (position >= 0)
+                setCurrentTab(position);
+            }
+        });
+    }
+
+
+    /**
+     * set the current tab to the position
+     */
+    private void setCurrentTab(int position) {
+        spinner.setSelection(position);
+        final Tab selectedTab = (Tab) spinner.getSelectedItem();
+        new AsyncChangeTab(selectedTab).execute((Void) null);
+        Log.d(TAG, "onItemSelected(" + Thread.currentThread().getId() + ")..DONE");
+    }
+
+    private int currentTabPosition() {
+        Log.d(TAG, "onItemSelect(" + spinner.getSelectedItemPosition() + ")");
+        return spinner.getSelectedItemPosition();
     }
 
     private void preLoadItems(){
