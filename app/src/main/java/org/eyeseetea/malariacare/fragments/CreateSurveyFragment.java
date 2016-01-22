@@ -40,12 +40,8 @@ import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 
-import com.raizlabs.android.dbflow.sql.builder.Condition;
-import com.raizlabs.android.dbflow.sql.language.Select;
-
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.model.OrgUnit;
-import org.eyeseetea.malariacare.database.model.OrgUnit$Table;
 import org.eyeseetea.malariacare.database.model.OrgUnitLevel;
 import org.eyeseetea.malariacare.database.model.Program;
 import org.eyeseetea.malariacare.database.model.Survey;
@@ -64,6 +60,7 @@ import org.eyeseetea.malariacare.views.CustomButton;
 import org.eyeseetea.malariacare.views.CustomTextView;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -654,10 +651,10 @@ public class CreateSurveyFragment extends Fragment {
             Log.d(TAG, "onReceive");
             //Listening only intents from this method
             if (SurveyService.ALL_CREATE_SURVEY_DATA_ACTION.equals(intent.getAction())) {
-                Object[] data=(Object[]) Session.popServiceValue(SurveyService.ALL_CREATE_SURVEY_DATA_ACTION);
-                orgUnitList=(List<OrgUnit>)data[0];
-                orgUnitLevelList=(List<OrgUnitLevel>)data[1];
-                allProgramList=(List<Program>)data[2];
+                HashMap<String,List> data=(HashMap<String,List>) Session.popServiceValue(SurveyService.ALL_CREATE_SURVEY_DATA_ACTION);
+                orgUnitList=data.get(SurveyService.PREPARE_ORG_UNIT);
+                orgUnitLevelList=data.get(SurveyService.PREPARE_ORG_UNIT_LEVEL);
+                allProgramList=data.get(SurveyService.PREPARE_PROGRAMS);
                 create();
             }
         }

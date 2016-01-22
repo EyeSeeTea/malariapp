@@ -63,6 +63,8 @@ public class PlannedFragment extends ListFragment {
 
     private List<PlannedItem> plannedItems;
 
+    private Program programDefaultOption;
+
     private List<Program> programList;
 
     private final static String ORG_UNIT_WITHOUT_FILTER ="ALL ASSESSMENTS";
@@ -76,6 +78,7 @@ public class PlannedFragment extends ListFragment {
     public void onCreate(Bundle savedInstanceState){
         Log.d(TAG, "onCreate");
         super.onCreate(savedInstanceState);
+        programDefaultOption = new Program(getResources().getString(R.string.all_assessment).toUpperCase());
     }
 
     @Override
@@ -101,6 +104,7 @@ public class PlannedFragment extends ListFragment {
 
         Spinner programSpinner = (Spinner) getActivity().findViewById(R.id.dashboard_planning_program);
         //Populate Program View DDL
+        programList.add(0, programDefaultOption);
         programSpinner.setAdapter(new ProgramArrayAdapter(getActivity(), programList));
         //Apply filter to listview
         programSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {

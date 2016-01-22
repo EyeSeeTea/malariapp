@@ -153,8 +153,10 @@ public class DashboardSentFragment extends ListFragment {
     }
     private void initFilters(View view) {
         filterSpinnerProgram = (Spinner) getActivity().findViewById(R.id.filter_program);
-        programList.add(0, new Program(PROGRAM_WITHOUT_FILTER));
-        filterSpinnerProgram.setAdapter(new ProgramArrayAdapter(this.getActivity().getApplicationContext(), programList));
+        List<Program> filterProgramList=programList;
+        filterProgramList.add(0, new Program(PROGRAM_WITHOUT_FILTER));
+
+        filterSpinnerProgram.setAdapter(new ProgramArrayAdapter(this.getActivity().getApplicationContext(), filterProgramList));
         filterSpinnerProgram.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 
             @Override
@@ -491,9 +493,9 @@ public class DashboardSentFragment extends ListFragment {
 
     }
     public void getOrgUnitAndProgram(){
-        Object[] data=(Object[]) Session.popServiceValue(SurveyService.ALL_ORG_UNITS_AND_PROGRAMS_ACTION);
-        orgUnitList=(List<OrgUnit>)data[0];
-        programList=(List<Program>)data[1];
+        HashMap<String,List> data=(HashMap) Session.popServiceValue(SurveyService.ALL_ORG_UNITS_AND_PROGRAMS_ACTION);
+        orgUnitList=data.get(SurveyService.PREPARE_ORG_UNIT);
+        programList=data.get(SurveyService.PREPARE_PROGRAMS);
     }
 
 

@@ -41,6 +41,7 @@ import org.eyeseetea.malariacare.database.utils.planning.PlannedItemBuilder;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.utils.Utils;
 
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -119,6 +120,22 @@ public class SurveyService extends IntentService {
      * Key of tabs entry in shared session
      */
     public static final String PREPARE_ALL_TABS ="org.eyeseetea.malariacare.services.SurveyService.PREPARE_ALL_TABS";
+    /**
+     * Key of programs entry in shared session
+     */
+    public static final String PREPARE_PROGRAMS ="org.eyeseetea.malariacare.services.SurveyService.PREPARE_PROGRAMS";
+    /**
+     * Key of surveys entry in shared session
+     */
+    public static final String PREPARE_SURVEYS ="org.eyeseetea.malariacare.services.SurveyService.PREPARE_SURVEYS";
+    /**
+     * Key of org unit entry in shared session
+     */
+    public static final String PREPARE_ORG_UNIT ="org.eyeseetea.malariacare.services.SurveyService.PREPARE_ORG_UNIT";
+    /**
+     * Key of org unit level entry in shared session
+     */
+    public static final String PREPARE_ORG_UNIT_LEVEL ="org.eyeseetea.malariacare.services.SurveyService.PREPARE_ORG_UNIT_LEVEL";
 
     /**
      * Key of
@@ -196,10 +213,12 @@ public class SurveyService extends IntentService {
         List<OrgUnit> orgUnitList = new Select().all().from(OrgUnit.class).where(Condition.column(OrgUnit$Table.ID_PARENT).isNull()).queryList();
         List<OrgUnitLevel> orgUnitLevelList = new Select().all().from(OrgUnitLevel.class).queryList();
         List<Program> programList = Program.list();
-        Object[] orgCreateSurveyData=new Object[3];
-        orgCreateSurveyData[0]=orgUnitList;
-        orgCreateSurveyData[1]=orgUnitLevelList;
-        orgCreateSurveyData[2]=programList;
+
+        HashMap<String,List> orgCreateSurveyData=new HashMap<>();
+        orgCreateSurveyData.put(PREPARE_ORG_UNIT, orgUnitList);
+        orgCreateSurveyData.put(PREPARE_ORG_UNIT_LEVEL, orgUnitLevelList);
+        orgCreateSurveyData.put(PREPARE_PROGRAMS, programList);
+
         //Since intents does NOT admit NON serializable as values we use Session instead
         Session.putServiceValue(ALL_CREATE_SURVEY_DATA_ACTION, orgCreateSurveyData);
 
@@ -212,9 +231,10 @@ public class SurveyService extends IntentService {
         Log.d(TAG,"getAllOrgUnitAndPrograms (Thread:"+Thread.currentThread().getId()+")");
         List<OrgUnit> orgUnitList=OrgUnit.getAllOrgUnit();
         List<Program> programList=Program.getAllPrograms();
-        Object[] orgUnitsAndPrograms=new Object[2];
-        orgUnitsAndPrograms[0]=orgUnitList;
-        orgUnitsAndPrograms[1]=programList;
+
+        HashMap<String,List> orgUnitsAndPrograms=new HashMap<>();
+        orgUnitsAndPrograms.put(PREPARE_ORG_UNIT, orgUnitList);
+        orgUnitsAndPrograms.put(PREPARE_PROGRAMS, programList);
         //Since intents does NOT admit NON serializable as values we use Session instead
         Session.putServiceValue(ALL_ORG_UNITS_AND_PROGRAMS_ACTION, orgUnitsAndPrograms);
 
@@ -228,11 +248,12 @@ public class SurveyService extends IntentService {
         Log.d(TAG,"getAllMonitorData (Thread:"+Thread.currentThread().getId()+")");
         List<Program> programList=Program.getAllPrograms();
         List<Survey> sentSurveys=Survey.getAllSentSurveys();
-        Object[] monitorData=new Object[2];
-        monitorData[0]=sentSurveys;
-        monitorData[1]=programList;
+
+        HashMap<String,List> monitorMap=new HashMap<>();
+        monitorMap.put(PREPARE_SURVEYS, sentSurveys);
+        monitorMap.put(PREPARE_PROGRAMS, programList);
         //Since intents does NOT admit NON serializable as values we use Session instead
-        Session.putServiceValue(ALL_MONITOR_DATA_ACTION, monitorData);
+        Session.putServiceValue(ALL_MONITOR_DATA_ACTION, monitorMap);
 
         //Returning result to anyone listening
         Intent resultIntent= new Intent(ALL_MONITOR_DATA_ACTION);
@@ -280,7 +301,6 @@ public class SurveyService extends IntentService {
         Log.d(TAG, "reloadDashboard");
         List<OrgUnit> orgUnitListParents = new Select().all().from(OrgUnit.class).where(Condition.column(OrgUnit$Table.ID_PARENT).isNull()).queryList();
         List<OrgUnitLevel> orgUnitLevelList = new Select().all().from(OrgUnitLevel.class).queryList();
-        List<Program> programList=Program.getAllPrograms();
         List<OrgUnit> orgUnitList=OrgUnit.getAllOrgUnit();
         List<Survey> completedUnsentSurveys=Survey.getAllCompletedUnsentSurveys();
         List<Survey> unsentSurveys=Survey.getAllInProgressSurveys();
@@ -290,25 +310,27 @@ public class SurveyService extends IntentService {
         }
 
         //Since intents does NOT admit NON serializable as values we use Session instead
-        Object[] monitorData=new Object[2];
-        monitorData[0]=sentSurveys;
-        monitorData[1]=programList;
-        Object[] orgUnitsAndPrograms=new Object[2];
-        orgUnitsAndPrograms[0]=orgUnitList;
-        orgUnitsAndPrograms[1]=programList;
-        Object[] orgCreateSurveyData=new Object[3];
-        orgCreateSurveyData[0]=orgUnitListParents;
-        orgCreateSurveyData[1]=orgUnitLevelList;
-        orgCreateSurveyData[2]=programList;
+        HashMap<String,List> monitorMap=new HashMap<>();
+        monitorMap.put(PREPARE_SURVEYS, sentSurveys);
+        monitorMap.put(PREPARE_PROGRAMS, Program.getAllPrograms());
+
+        HashMap<String,List> orgUnitsAndPrograms=new HashMap<>();
+        orgUnitsAndPrograms.put(PREPARE_ORG_UNIT, orgUnitList);
+        orgUnitsAndPrograms.put(PREPARE_PROGRAMS, Program.getAllPrograms());
+
+        HashMap<String,List> orgCreateSurveyData=new HashMap<>();
+        orgCreateSurveyData.put(PREPARE_ORG_UNIT, orgUnitListParents);
+        orgCreateSurveyData.put(PREPARE_ORG_UNIT_LEVEL, orgUnitLevelList);
+        orgCreateSurveyData.put(PREPARE_PROGRAMS, Program.getAllPrograms());
         //Since intents does NOT admit NON serializable as values we use Session instead
         Session.putServiceValue(ALL_CREATE_SURVEY_DATA_ACTION, orgCreateSurveyData);
-        Session.putServiceValue(ALL_MONITOR_DATA_ACTION,monitorData);
+        Session.putServiceValue(ALL_MONITOR_DATA_ACTION,monitorMap);
         Session.putServiceValue(ALL_IN_PROGRESS_SURVEYS_ACTION, unsentSurveys);
         Session.putServiceValue(ALL_COMPLETED_SURVEYS_ACTION, completedUnsentSurveys);
         Session.putServiceValue(ALL_SENT_OR_COMPLETED_SURVEYS_ACTION, sentSurveys);
         Session.putServiceValue(PLANNED_SURVEYS_ACTION, PlannedItemBuilder.getInstance().buildPlannedItems());
         Session.putServiceValue(ALL_ORG_UNITS_AND_PROGRAMS_ACTION,orgUnitsAndPrograms);
-        Session.putServiceValue(ALL_PROGRAMS_ACTION,programList);
+        Session.putServiceValue(ALL_PROGRAMS_ACTION,Program.getAllPrograms());
 
         //Returning result to anyone listening
 
