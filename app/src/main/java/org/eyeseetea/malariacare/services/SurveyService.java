@@ -111,6 +111,10 @@ public class SurveyService extends IntentService {
      * Key of tabs entry in shared session
      */
     public static final String PREPARE_SURVEY_ACTION_TABS ="org.eyeseetea.malariacare.services.SurveyService.PREPARE_SURVEY_ACTION_TABS";
+    /**
+     * Key of tabs entry in shared session
+     */
+    public static final String PREPARE_ALL_TABS ="org.eyeseetea.malariacare.services.SurveyService.PREPARE_ALL_TABS";
 
     /**
      * Key of
@@ -360,11 +364,14 @@ public class SurveyService extends IntentService {
 
         //Get tabs for current program & register them (scores)
         List<Tab> tabs = Tab.getTabsBySession();
+        List<Tab> allTabs = new Select().all().from(Tab.class).queryList();
+
         ScoreRegister.registerTabScores(tabs);
 
         //Since intents does NOT admit NON serializable as values we use Session instead
         Session.putServiceValue(PREPARE_SURVEY_ACTION_COMPOSITE_SCORES, compositeScores);
         Session.putServiceValue(PREPARE_SURVEY_ACTION_TABS, tabs);
+        Session.putServiceValue(PREPARE_ALL_TABS, allTabs);
         //Returning result to anyone listening
         Intent resultIntent = new Intent(PREPARE_SURVEY_ACTION);
         LocalBroadcastManager.getInstance(this).sendBroadcast(resultIntent);
