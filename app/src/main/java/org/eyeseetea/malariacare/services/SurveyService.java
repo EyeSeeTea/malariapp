@@ -24,8 +24,13 @@ import android.content.Intent;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
+import com.raizlabs.android.dbflow.sql.builder.Condition;
+import com.raizlabs.android.dbflow.sql.language.Select;
+
 import org.eyeseetea.malariacare.database.model.CompositeScore;
 import org.eyeseetea.malariacare.database.model.OrgUnit;
+import org.eyeseetea.malariacare.database.model.OrgUnit$Table;
+import org.eyeseetea.malariacare.database.model.OrgUnitLevel;
 import org.eyeseetea.malariacare.database.model.Program;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.model.Tab;
@@ -92,6 +97,10 @@ public class SurveyService extends IntentService {
      * Name of 'All filter sentfragment' action
      */
     public static final String ALL_ORG_UNITS_AND_PROGRAMS_ACTION ="org.eyeseetea.malariacare.services.SurveyService.ALL_ORG_UNITS_AND_PROGRAMS_ACTION";
+    /**
+     * Name of 'All create survey data' action
+     */
+    public static final String ALL_CREATE_SURVEY_DATA_ACTION ="org.eyeseetea.malariacare.services.SurveyService.ALL_CREATE_SURVEY_DATA_ACTION";
 
     /**
      * Key of composite scores entry in shared session
@@ -165,7 +174,27 @@ public class SurveyService extends IntentService {
             case ALL_ORG_UNITS_AND_PROGRAMS_ACTION:
                 getAllOrgUnitsAndPrograms();
                 break;
+            case ALL_CREATE_SURVEY_DATA_ACTION:
+                getAllCreateSurveyData();
+                break;
         }
+    }
+
+    private void getAllCreateSurveyData() {
+        Log.d(TAG,"getAllCreateSurveyData (Thread:"+Thread.currentThread().getId()+")");
+        List<OrgUnit> orgUnitList = new Select().all().from(OrgUnit.class).where(Condition.column(OrgUnit$Table.ID_PARENT).isNull()).queryList();
+        List<OrgUnitLevel> orgUnitLevelList = new Select().all().from(OrgUnitLevel.class).queryList();
+        List<Program> programList = Program.list();
+        Object[] orgCreateSurveyData=new Object[3];
+        orgCreateSurveyData[0]=orgUnitList;
+        orgCreateSurveyData[1]=orgUnitLevelList;
+        orgCreateSurveyData[2]=programList;
+        //Since intents does NOT admit NON serializable as values we use Session instead
+        Session.putServiceValue(ALL_CREATE_SURVEY_DATA_ACTION, orgCreateSurveyData);
+
+        //Returning result to anyone listening
+        Intent resultIntent= new Intent(ALL_CREATE_SURVEY_DATA_ACTION);
+        LocalBroadcastManager.getInstance(this).sendBroadcast(resultIntent);
     }
 
     private void getAllOrgUnitsAndPrograms() {
@@ -227,6 +256,8 @@ public class SurveyService extends IntentService {
 
     private void reloadDashboard(){
         Log.d(TAG, "reloadDashboard");
+        List<OrgUnit> orgUnitListParents = new Select().all().from(OrgUnit.class).where(Condition.column(OrgUnit$Table.ID_PARENT).isNull()).queryList();
+        List<OrgUnitLevel> orgUnitLevelList = new Select().all().from(OrgUnitLevel.class).queryList();
         List<Program> programList=Program.getAllPrograms();
         List<OrgUnit> orgUnitList=OrgUnit.getAllOrgUnit();
         List<Survey> completedUnsentSurveys=Survey.getAllCompletedUnsentSurveys();
@@ -243,6 +274,12 @@ public class SurveyService extends IntentService {
         Object[] orgUnitsAndPrograms=new Object[2];
         orgUnitsAndPrograms[0]=orgUnitList;
         orgUnitsAndPrograms[1]=programList;
+        Object[] orgCreateSurveyData=new Object[3];
+        orgCreateSurveyData[0]=orgUnitListParents;
+        orgCreateSurveyData[1]=orgUnitLevelList;
+        orgCreateSurveyData[2]=programList;
+        //Since intents does NOT admit NON serializable as values we use Session instead
+        Session.putServiceValue(ALL_CREATE_SURVEY_DATA_ACTION, orgCreateSurveyData);
         Session.putServiceValue(ALL_MONITOR_DATA_ACTION,monitorData);
         Session.putServiceValue(ALL_IN_PROGRESS_SURVEYS_ACTION, unsentSurveys);
         Session.putServiceValue(ALL_COMPLETED_SURVEYS_ACTION, completedUnsentSurveys);
@@ -252,6 +289,7 @@ public class SurveyService extends IntentService {
 
         //Returning result to anyone listening
 
+        LocalBroadcastManager.getInstance(this).sendBroadcast(new Intent(ALL_CREATE_SURVEY_DATA_ACTION));
         LocalBroadcastManager.getInstance(this).sendBroadcast(new Intent(ALL_MONITOR_DATA_ACTION));
         LocalBroadcastManager.getInstance(this).sendBroadcast(new Intent(ALL_IN_PROGRESS_SURVEYS_ACTION));
         LocalBroadcastManager.getInstance(this).sendBroadcast(new Intent(ALL_COMPLETED_SURVEYS_ACTION));
