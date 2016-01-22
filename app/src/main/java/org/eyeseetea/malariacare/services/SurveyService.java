@@ -101,6 +101,10 @@ public class SurveyService extends IntentService {
      * Name of 'All create survey data' action
      */
     public static final String ALL_CREATE_SURVEY_DATA_ACTION ="org.eyeseetea.malariacare.services.SurveyService.ALL_CREATE_SURVEY_DATA_ACTION";
+    /**
+     * Name of 'All programs' action
+     */
+    public static final String ALL_PROGRAMS_ACTION ="org.eyeseetea.malariacare.services.SurveyService.ALL_PROGRAMS_ACTION";
 
     /**
      * Key of composite scores entry in shared session
@@ -173,13 +177,16 @@ public class SurveyService extends IntentService {
                 getFeedbackItems();
                 break;
             case ALL_MONITOR_DATA_ACTION:
-                getAllPrograms();
+                getAllMonitorData();
                 break;
             case ALL_ORG_UNITS_AND_PROGRAMS_ACTION:
                 getAllOrgUnitsAndPrograms();
                 break;
             case ALL_CREATE_SURVEY_DATA_ACTION:
                 getAllCreateSurveyData();
+                break;
+            case ALL_PROGRAMS_ACTION:
+                getAllPrograms();
                 break;
         }
     }
@@ -217,8 +224,8 @@ public class SurveyService extends IntentService {
 
     }
 
-    private void getAllPrograms() {
-        Log.d(TAG,"getAllPrograms (Thread:"+Thread.currentThread().getId()+")");
+    private void getAllMonitorData() {
+        Log.d(TAG,"getAllMonitorData (Thread:"+Thread.currentThread().getId()+")");
         List<Program> programList=Program.getAllPrograms();
         List<Survey> sentSurveys=Survey.getAllSentSurveys();
         Object[] monitorData=new Object[2];
@@ -229,6 +236,17 @@ public class SurveyService extends IntentService {
 
         //Returning result to anyone listening
         Intent resultIntent= new Intent(ALL_MONITOR_DATA_ACTION);
+        LocalBroadcastManager.getInstance(this).sendBroadcast(resultIntent);
+    }
+
+    private void getAllPrograms() {
+        Log.d(TAG,"getAllPrograms (Thread:"+Thread.currentThread().getId()+")");
+        List<Program> programList=Program.getAllPrograms();
+        //Since intents does NOT admit NON serializable as values we use Session instead
+        Session.putServiceValue(ALL_PROGRAMS_ACTION, programList);
+
+        //Returning result to anyone listening
+        Intent resultIntent= new Intent(ALL_PROGRAMS_ACTION);
         LocalBroadcastManager.getInstance(this).sendBroadcast(resultIntent);
     }
 
@@ -290,9 +308,11 @@ public class SurveyService extends IntentService {
         Session.putServiceValue(ALL_SENT_OR_COMPLETED_SURVEYS_ACTION, sentSurveys);
         Session.putServiceValue(PLANNED_SURVEYS_ACTION, PlannedItemBuilder.getInstance().buildPlannedItems());
         Session.putServiceValue(ALL_ORG_UNITS_AND_PROGRAMS_ACTION,orgUnitsAndPrograms);
+        Session.putServiceValue(ALL_PROGRAMS_ACTION,programList);
 
         //Returning result to anyone listening
 
+        LocalBroadcastManager.getInstance(this).sendBroadcast(new Intent(ALL_PROGRAMS_ACTION));
         LocalBroadcastManager.getInstance(this).sendBroadcast(new Intent(ALL_CREATE_SURVEY_DATA_ACTION));
         LocalBroadcastManager.getInstance(this).sendBroadcast(new Intent(ALL_MONITOR_DATA_ACTION));
         LocalBroadcastManager.getInstance(this).sendBroadcast(new Intent(ALL_IN_PROGRESS_SURVEYS_ACTION));
