@@ -125,13 +125,12 @@
                             android:layout_height="wrap_content"
                             android:orientation="horizontal">
                             <Spinner
-                                android:id="@+id/filter_orgunit"
+                                android:id="@+id/filter_program"
                                 android:layout_width="0dip"
                                 android:layout_weight="1"
                                 android:layout_height="wrap_content" />
-
                             <Spinner
-                                android:id="@+id/filter_program"
+                                android:id="@+id/filter_orgunit"
                                 android:layout_width="0dip"
                                 android:layout_weight="1"
                                 android:layout_height="wrap_content" />
