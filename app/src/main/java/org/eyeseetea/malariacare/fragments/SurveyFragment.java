@@ -214,7 +214,6 @@ public class SurveyFragment extends  Fragment {
         unregisterReceiver();
         super.onStop();
     }
-
     /**
      * Adds the spinner and imagebutons for tabs
      */

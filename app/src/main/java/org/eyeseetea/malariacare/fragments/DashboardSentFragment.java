@@ -280,7 +280,13 @@ public class DashboardSentFragment extends ListFragment {
         unregisterSurveysReceiver();
         super.onStop();
     }
+    @Override
+    public void onPause(){
+        Log.d(TAG, "onPause");
+        unregisterSurveysReceiver();
 
+        super.onPause();
+    }
     /**
      * Checks if the given position points to a real survey instead of a footer or header of the listview.
      * @param position

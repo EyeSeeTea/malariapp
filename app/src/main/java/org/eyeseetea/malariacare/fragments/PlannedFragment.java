@@ -140,6 +140,15 @@ public class PlannedFragment extends ListFragment {
         unregisterPlannedItemsReceiver();
         super.onStop();
     }
+
+    @Override
+    public void onPause(){
+        Log.d(TAG, "onPause");
+        unregisterPlannedItemsReceiver();
+
+        super.onPause();
+    }
+
     /**
      * Register a survey receiver to load plannedItems into the listadapter
      */

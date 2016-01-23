@@ -117,6 +117,13 @@ public class MonitorFragment extends Fragment {
         stopMonitor();
         super.onStop();
     }
+    @Override
+    public void onPause(){
+        Log.d(TAG, "onPause");
+        unregisterSurveysReceiver();
+
+        super.onPause();
+    }
     /**
      * Register a survey receiver to load surveys into the listadapter
      */
