@@ -26,6 +26,7 @@ import org.eyeseetea.malariacare.database.model.Option;
 import org.eyeseetea.malariacare.database.model.Question;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.model.Tab;
+import org.eyeseetea.malariacare.database.model.Value;
 import org.eyeseetea.malariacare.database.utils.Session;
 
 import java.util.ArrayList;
@@ -81,13 +82,7 @@ public class ScoreRegister {
     private static List<Float> getRecursiveScore(CompositeScore cScore, List<Float> result) {
 
         if (!cScore.hasChildren()) {
-
-            //FIXME this try catch just covers a error in data compositeScore: '4.2'
-            try{
-                return compositeScoreMap.get(cScore).calculateNumDenTotal(result);
-            }catch(Exception ex){
-                return Arrays.asList(new Float(0f),new Float(0f));
-            }
+            return compositeScoreMap.get(cScore).calculateNumDenTotal(result);
         }else {
             for (CompositeScore cScoreChildren : cScore.getCompositeScoreChildren())
                 result = getRecursiveScore(cScoreChildren, result);
@@ -100,7 +95,7 @@ public class ScoreRegister {
     }
 
     public static Float getCompositeScore(CompositeScore cScore) {
-        
+
         List<Float>result = compositeScoreMap.get(cScore).calculateNumDenTotal(new ArrayList<>(Arrays.asList(0F, 0F)));
 
         result = getRecursiveScore(cScore, result);

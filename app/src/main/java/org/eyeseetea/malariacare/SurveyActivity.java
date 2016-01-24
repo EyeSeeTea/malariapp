@@ -48,6 +48,7 @@ import org.eyeseetea.malariacare.database.model.Program;
 import org.eyeseetea.malariacare.database.model.Question;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.model.Tab;
+import org.eyeseetea.malariacare.database.model.Value;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.layout.adapters.general.TabArrayAdapter;
 import org.eyeseetea.malariacare.layout.adapters.survey.AutoTabAdapter;
@@ -253,16 +254,8 @@ public class SurveyActivity extends BaseActivity{
 
         @Override
         protected View doInBackground(Void... params) {
-
             Log.d(TAG, "doInBackground("+Thread.currentThread().getId()+")..");
-            View view=null;
-            if (tab.isGeneralScore()) {
-                showGeneralScores();
-            } else {
-                view=prepareTab(tab);
-            }
-            Log.d(TAG, "doInBackground(" + Thread.currentThread().getId() + ")..DONE");
-            return view;
+            return prepareTab(tab);
         }
 
         @Override
@@ -320,62 +313,15 @@ public class SurveyActivity extends BaseActivity{
         LayoutInflater inflater = LayoutInflater.from(this);
 
         if(selectedTab.isCompositeScore()){
-            //Initialize scores x question not loaded yet
-            List<Tab> notLoadedTabs=tabAdaptersCache.getNotLoadedTabs();
-            ScoreRegister.initScoresForQuestions(Question.listAllByTabs(notLoadedTabs), Session.getSurvey());
+            //Register scores for composites
+            List<CompositeScore> compositeScoreList=CompositeScore.listByTabGroup(Session.getSurvey().getTabGroup());
+            ScoreRegister.registerCompositeScores(compositeScoreList);
+
+            ScoreRegister.initScoresForQuestions(Question.listAllByTabs(tabsList), Session.getSurvey());
         }
         ITabAdapter tabAdapter=tabAdaptersCache.findAdapter(selectedTab);
 
         return inflater.inflate(tabAdapter.getLayout(), content, false);
-    }
-
-    /**
-     * Shows the special 'Score' tab
-     */
-    private void showGeneralScores() {
-        LayoutInflater inflater = LayoutInflater.from(this);
-
-        content.removeAllViews();
-        View view = inflater.inflate(R.layout.scoretab, content, false);
-        content.addView(view);
-
-        List<ITabAdapter> adaptersList = tabAdaptersCache.list();
-        Float avgClinical = 0F;
-        Float avgRdt = 0F;
-        Float avgOverall = 0F;
-        for(ITabAdapter adapter:adaptersList){
-            updateViewInGeneralScores(adapter);
-            avgClinical += valueForClinical(adapter);
-            avgRdt += valueForRdt(adapter);
-            avgOverall += valueForOverall(adapter);
-        }
-
-        avgClinical = avgClinical/3;
-        avgRdt = avgRdt/3;
-        avgOverall = (avgOverall+avgClinical+avgRdt)/5;
-
-        updateAvgInGeneralScores(R.id.clinicalAvg, avgClinical);
-        updateAvgInGeneralScores(R.id.rdtAvg, avgRdt);
-        updateAvgInGeneralScores(R.id.totalScore, avgOverall);
-    }
-
-    private void updateViewInGeneralScores(ITabAdapter adapter){
-
-        if(isNotAutoTabAdapterOrNull(adapter)){
-            return;
-        }
-
-        Float score=adapter.getScore();
-        if(score==null){
-            return;
-        }
-        Tab tab=((AutoTabAdapter)adapter).getTab();
-        int viewId=IDS_SCORES_IN_GENERAL_TAB[tab.getOrder_pos()];
-        if(viewId!=0) {
-            CustomTextView customTextView =((CustomTextView) this.findViewById(viewId));
-            customTextView.setText(Utils.round(score));
-            LayoutUtils.trafficLight(customTextView, score, null);
-        }
     }
 
     private Float valueForClinical(ITabAdapter adapter){
@@ -426,11 +372,6 @@ public class SurveyActivity extends BaseActivity{
 
     private boolean isNotAutoTabAdapterOrNull(ITabAdapter adapter){
         return adapter==null || !(adapter instanceof AutoTabAdapter);
-    }
-
-    private void updateAvgInGeneralScores(int viewId, Float score){
-        ((CustomTextView) this.findViewById(viewId)).setText(Utils.round(score));
-        LayoutUtils.trafficLight(this.findViewById(viewId), score, null);
     }
 
     /**
