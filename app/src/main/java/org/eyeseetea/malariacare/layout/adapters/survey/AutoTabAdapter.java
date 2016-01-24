@@ -254,8 +254,12 @@ public class AutoTabAdapter extends ATabAdapter {
 
             //Put current value in the component
             setValues(viewHolder, question);
-            //Disables component if survey has already been sent
-            AutoTabLayoutUtils.updateReadOnly(viewHolder.component, getReadOnly());
+            //Disables component if survey has already been sent (except match spinner that are always disabled)
+            if(question.getAnswer().getOutput()==Constants.DROPDOWN_LIST_DISABLED){
+                AutoTabLayoutUtils.updateReadOnly(viewHolder.component, true);
+            }else{
+                AutoTabLayoutUtils.updateReadOnly(viewHolder.component, getReadOnly());
+            }
         } else {
             rowView = getInflater().inflate(R.layout.headers, parent, false);
             viewHolder.statement = (CustomTextView) rowView.findViewById(R.id.headerName);

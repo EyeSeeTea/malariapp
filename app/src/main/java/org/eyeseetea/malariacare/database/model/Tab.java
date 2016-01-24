@@ -133,14 +133,6 @@ public class Tab extends BaseModel {
     }
 
     /**
-     * Checks if this tab is a general score tab.
-     * @return
-     */
-    public boolean isGeneralScore(){
-        return getType() == Constants.TAB_SCORE_SUMMARY && !isCompositeScore();
-    }
-
-    /**
      * Checks if this tab is the composite score tab
      * @return
      */

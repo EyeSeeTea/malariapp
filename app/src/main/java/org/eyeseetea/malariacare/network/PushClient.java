@@ -201,7 +201,7 @@ public class PushClient {
         ScoreRegister.registerCompositeScores(compositeScoreList);
 
         //Initialize scores x question
-        ScoreRegister.initScoresForQuestions(Question.listByTabGroup(survey.getTabGroup()),survey);
+        ScoreRegister.initScoresForQuestions(Question.listByTabGroup(survey.getTabGroup()), survey);
 
         //1 CompositeScore -> 1 dataValue
         for(CompositeScore compositeScore:compositeScoreList){
