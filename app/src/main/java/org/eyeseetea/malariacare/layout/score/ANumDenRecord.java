@@ -54,4 +54,8 @@ public abstract class ANumDenRecord {
 
     }
 
+    public void clearRecords(){
+        numDenRecord.clear();
+    }
+
 }

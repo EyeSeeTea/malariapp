@@ -39,6 +39,7 @@ import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.fragments.DashboardSentFragment;
 import org.eyeseetea.malariacare.fragments.DashboardUnsentFragment;
 import org.eyeseetea.malariacare.services.SurveyService;
+import org.eyeseetea.malariacare.utils.Constants;
 
 import java.io.IOException;
 import java.util.List;
@@ -56,6 +57,9 @@ public class DashboardActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_dashboard);
+
+        // Set the value that will hide questions
+        Constants.HIDE_VALUE = getString(R.string.no);
 
         try {
             initDataIfRequired();
