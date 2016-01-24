@@ -686,6 +686,20 @@ public class Survey extends BaseModel implements VisitableToSDK {
     }
 
     /**
+     * Find the last survey that has been sent for each orgunit+tabgroup combination
+     * @return
+     */
+    public static List<Survey> findPlannedOrInProgressLastByOrgUnitTabGroup() {
+        return new Select()
+                .from(Survey.class)
+                .where(Condition.column(Survey$Table.STATUS).eq(Constants.SURVEY_PLANNED))
+                .or(Condition.column(Survey$Table.STATUS).eq(Constants.SURVEY_IN_PROGRESS))
+                .groupBy(new QueryBuilder().appendQuotedArray(Survey$Table.ID_ORG_UNIT, Survey$Table.ID_TAB_GROUP))
+                .orderBy(true, Survey$Table.SCHEDULEDDATE)
+                .queryList();
+    }
+
+    /**
      * Returns survey which state is 'in progress' or 'sent'
      * @return
      */
