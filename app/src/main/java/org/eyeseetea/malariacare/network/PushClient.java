@@ -99,6 +99,9 @@ public class PushClient {
             JSONObject data = prepareMetadata();
             data = prepareDataElements(data);
             PushResult result = new PushResult(pushData(data));
+            if (result.getImported().equals("0")){
+                throw new Exception(activity.getString(R.string.dialog_info_push_not_imported));
+            }
             if(result.isSuccessful()){
                 updateSurveyState();
             }
@@ -181,7 +184,11 @@ public class PushClient {
      * @throws Exception
      */
     private JSONArray prepareValues(JSONArray values) throws Exception{
-        for (Value value : survey.getValues()) {
+        List<Value> surveyValues=survey.getValues();
+        if(surveyValues==null || surveyValues.size()==0){
+            throw new Exception(activity.getString(R.string.dialog_info_push_empty_survey));
+        }
+        for (Value value : surveyValues) {
             values.put(prepareValue(value));
         }
         return values;
