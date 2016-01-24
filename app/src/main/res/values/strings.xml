@@ -227,6 +227,8 @@
     <string name="dialog_info_push_ok">Survey data has been successfully pushed to DHIS server</string>
     <string name="dialog_info_push_bad_credentials">Bad credentials for pushing</string>
     <string name="dialog_error_push_no_location">No location available</string>
+    <string name="dialog_info_push_empty_survey">Empty surveys cannot be pushed</string>
+    <string name="dialog_info_push_not_imported">Server was not able to import the data. Please, report to the server admin.</string>
 
 
     <!-- Preference variable names -->
