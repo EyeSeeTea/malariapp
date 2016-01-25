@@ -21,11 +21,16 @@ package org.eyeseetea.malariacare.database.utils.planning;
 
 import android.content.Context;
 
+import com.raizlabs.android.dbflow.sql.builder.Condition;
+import com.raizlabs.android.dbflow.sql.language.Select;
+
 import org.eyeseetea.malariacare.database.model.OrgUnit;
 import org.eyeseetea.malariacare.database.model.Program;
 
 import org.eyeseetea.malariacare.database.model.Survey;
+import org.eyeseetea.malariacare.database.model.Survey$Table;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
+import org.eyeseetea.malariacare.utils.Constants;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -115,7 +120,7 @@ public class PlannedItemBuilder {
         initBuilder();
 
         //Find its place according to scheduleddate
-       for(Survey survey: Survey.findPlannedOrInProgress()){
+        for(Survey survey: Survey.findPlannedOrInProgress()){
             findRightState(survey);
         }
 
@@ -236,7 +241,6 @@ public class PlannedItemBuilder {
      */
     private void annotateSurvey(Survey survey){
         String key= getSurveyKey(survey.getOrgUnit(), survey.getTabGroup().getProgram());
-        if(!surveyMap.containsKey(key))
         surveyMap.put(key,survey);
     }
 
