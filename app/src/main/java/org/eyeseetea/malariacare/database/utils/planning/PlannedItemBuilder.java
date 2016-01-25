@@ -115,7 +115,7 @@ public class PlannedItemBuilder {
         initBuilder();
 
         //Find its place according to scheduleddate
-       for(Survey survey: Survey.findPlannedOrInProgressLastByOrgUnitTabGroup()){
+       for(Survey survey: Survey.findPlannedOrInProgress()){
             findRightState(survey);
         }
 
