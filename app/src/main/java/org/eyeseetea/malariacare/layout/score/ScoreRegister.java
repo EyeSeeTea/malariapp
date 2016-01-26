@@ -26,7 +26,6 @@ import org.eyeseetea.malariacare.database.model.Option;
 import org.eyeseetea.malariacare.database.model.Question;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.model.Tab;
-import org.eyeseetea.malariacare.database.model.Value;
 import org.eyeseetea.malariacare.database.utils.Session;
 
 import java.util.ArrayList;
@@ -59,8 +58,6 @@ public class ScoreRegister {
         for(Question question : questions){
             if(!question.isHiddenBySurvey(survey)) {
                 question.initScore(survey);
-            }else{
-                addRecord(question, 0F, calcDenum(question));
             }
         }
     }
@@ -81,13 +78,14 @@ public class ScoreRegister {
 
     private static List<Float> getRecursiveScore(CompositeScore cScore, List<Float> result) {
 
-        if (!cScore.hasChildren()) {
-            return compositeScoreMap.get(cScore).calculateNumDenTotal(result);
-        }else {
-            for (CompositeScore cScoreChildren : cScore.getCompositeScoreChildren())
-                result = getRecursiveScore(cScoreChildren, result);
-            return result;
+        //Sum its own records
+        result=compositeScoreMap.get(cScore).calculateNumDenTotal(result);
+
+        //Sum records from children scores
+        for (CompositeScore cScoreChildren : cScore.getCompositeScoreChildren()) {
+            result = getRecursiveScore(cScoreChildren, result);
         }
+        return result;
     }
 
     public static List<Float> getNumDenum(Question question) {
@@ -96,10 +94,9 @@ public class ScoreRegister {
 
     public static Float getCompositeScore(CompositeScore cScore) {
 
-        List<Float>result = compositeScoreMap.get(cScore).calculateNumDenTotal(new ArrayList<>(Arrays.asList(0F, 0F)));
+        List<Float>result= getRecursiveScore(cScore, new ArrayList<>(Arrays.asList(0F, 0F)));
 
-        result = getRecursiveScore(cScore, result);
-
+        Log.d(TAG,String.format("getCompositeScore %s -> %s",cScore.getHierarchical_code(),result.toString()));
         return ScoreUtils.calculateScoreFromNumDen(result);
     }
 
@@ -207,6 +204,50 @@ public class ScoreRegister {
             return factor * denum;
         }
         return 0;
+    }
+
+    /**
+     * Cleans, prepares, calculates and returns all the scores info for the given survey
+     * @param survey
+     * @return
+     */
+    public static List<CompositeScore> loadCompositeScores(Survey survey){
+        //Cleans score
+        ScoreRegister.clear();
+
+        //Register scores for tabs
+        List<Tab> tabs=survey.getTabGroup().getTabs();
+        ScoreRegister.registerTabScores(tabs);
+
+        //Register scores for composites
+        List<CompositeScore> compositeScoreList=CompositeScore.listByTabGroup(survey.getTabGroup());
+        ScoreRegister.registerCompositeScores(compositeScoreList);
+
+        //Initialize scores x question
+        ScoreRegister.initScoresForQuestions(Question.listByTabGroup(survey.getTabGroup()),survey);
+        
+        return compositeScoreList;
+    }
+
+    public static float calculateMainScore(List<CompositeScore> scores){
+        float sumScores=0;
+        float numParentScores=0;
+        for(CompositeScore score:scores){
+            //only parent scores are interesting
+            if(score.getComposite_score()==null){
+                sumScores+=getCompositeScore(score);
+                numParentScores++;
+            }
+        }
+        return sumScores/numParentScores;
+    }
+
+
+    public static float calculateMainScore(Survey survey){
+        //Prepare all scores
+        List<CompositeScore> scores = loadCompositeScores(survey);
+
+        return calculateMainScore(scores);
     }
 
 }
