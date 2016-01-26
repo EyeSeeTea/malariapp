@@ -59,8 +59,8 @@ public class ScoreRegister {
         for(Question question : questions){
             if(!question.isHiddenBySurvey(survey)) {
                 question.initScore(survey);
-            }else{
-                addRecord(question, 0F, calcDenum(question));
+//            }else{
+//                addRecord(question, 0F, calcDenum(question));
             }
         }
     }
