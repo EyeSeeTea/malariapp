@@ -356,10 +356,6 @@ public class Question extends BaseModel{
         if (parent!= null && parent.getValueBySurvey(survey)==null && !parent.belongsToCustomTab()) {
             return true;
         }
-        //There is a parent question and it is answered but answered with the value that hides the child question and it is not a phantom question
-        if (parent!= null && parent.getValueBySurvey(survey).getValue()==Constants.HIDE_VALUE && !parent.belongsToCustomTab()) {
-            return true;
-        }
 
         return false;
     }
