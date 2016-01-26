@@ -21,8 +21,8 @@
 22;;'General Examination';7;4
 23;;'Diagnosis';8;4
 24;;'Treatment';9;4
-25;;'Observation 3';2;5
-26;;'Health Worker Information';1;5
+25;;'Observation 3';1;5
+26;;'Health Worker Information';2;5
 27;;'Reception';3;5
 28;;'Clinical History';4;5
 29;;'Signs of Severe Malaria';5;5
