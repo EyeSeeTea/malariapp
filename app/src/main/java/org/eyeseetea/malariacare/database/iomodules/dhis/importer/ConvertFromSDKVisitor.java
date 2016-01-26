@@ -58,6 +58,7 @@ import org.hisp.dhis.android.sdk.persistence.models.ProgramStage;
 import org.hisp.dhis.android.sdk.persistence.models.ProgramStageDataElement;
 import org.hisp.dhis.android.sdk.persistence.models.ProgramStageSection;
 import org.hisp.dhis.android.sdk.persistence.models.UserAccount;
+import org.hisp.dhis.android.sdk.utils.api.ProgramType;
 
 import java.util.HashMap;
 import java.util.List;
@@ -425,7 +426,7 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
     public void buildOrgUnitProgramRelationships(OrgUnit appOrgUnit){
         Log.d(TAG,"buildOrgUnitProgramRelationships "+appOrgUnit.getName());
         //Each assigned program
-        for (org.hisp.dhis.android.sdk.persistence.models.Program program : MetaDataController.getProgramsForOrganisationUnit(appOrgUnit.getUid(), org.hisp.dhis.android.sdk.persistence.models.Program.ProgramType.WITHOUT_REGISTRATION)) {
+        for (org.hisp.dhis.android.sdk.persistence.models.Program program : MetaDataController.getProgramsForOrganisationUnit(appOrgUnit.getUid(), ProgramType.WITHOUT_REGISTRATION)) {
             org.eyeseetea.malariacare.database.model.Program appProgram = (org.eyeseetea.malariacare.database.model.Program) appMapObjects.get(program.getUid());
             appProgram.addOrgUnit(appOrgUnit);
         }
