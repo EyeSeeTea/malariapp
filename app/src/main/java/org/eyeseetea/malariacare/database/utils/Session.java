@@ -21,6 +21,7 @@ package org.eyeseetea.malariacare.database.utils;
 
 import android.location.Location;
 import android.util.Log;
+import android.widget.ListView;
 
 import com.raizlabs.android.dbflow.structure.BaseModel;
 
@@ -65,6 +66,11 @@ public class Session {
      * Adapters that hold dashboard sent and unset surveys adapters
      */
     private static IDashboardAdapter adapterUnsent, adapterSent;
+
+    /**
+     * ListViews that hold dashboard sent and unsent surveys listviews
+     */
+    public static ListView listViewSent, listViewUnsent;
 
     /**
      * Cache containing the list of ordered items that compounds each tab

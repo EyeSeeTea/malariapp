@@ -43,7 +43,8 @@ import java.util.List;
 
 @Table(databaseName = AppDatabase.NAME)
 public class Survey extends BaseModel {
-
+    public static final float MAX_AMBER = 80f;
+    public static final float MAX_RED = 50f;
 
     /*private static final String LIST_VALUES_PARENT_QUESTION = "select v.* from value v"+
             " left join question q on v.question=q.id"+

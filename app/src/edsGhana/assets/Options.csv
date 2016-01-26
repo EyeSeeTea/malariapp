@@ -241,7 +241,7 @@
 242;'Not available [1]';'Not available';1.00;60
 243;'Yes [1]';'Yes';1.00;61
 244;'No [0]';'No';0.00;61
-245;'Antimalarial not prescribed [1]';'Antimalarial not prescribed';1.00;61
+245;'Antimalarial Not Prescribed [1]';'Antimalarial Not Prescribed';1.00;61
 246;'Yes [1]';'Yes';1.00;62
 247;'No [1]';'No';1.00;62
 248;'Not Asked [0]';'Not Asked';0.00;62
@@ -318,7 +318,7 @@
 319;'Not Available [1]';'Not Available';1.00;88
 320;'Yes [1]';'Yes';1.00;89
 321;'No [0]';'No';0.00;89
-322;'Antimalarial not prescribed [1]';'Antimalarial not prescribed';1.00;89
+322;'Antimalarial Not Prescribed [1]';'Antimalarial Not Prescribed';1.00;89
 323;'Yes [1]';'Yes';1.00;90
 324;'No [1]';'No';1.00;90
 325;'Not Asked [0]';'Not Asked';0.00;90

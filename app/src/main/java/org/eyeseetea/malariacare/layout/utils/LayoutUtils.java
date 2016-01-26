@@ -19,17 +19,23 @@
 
 package org.eyeseetea.malariacare.layout.utils;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.support.v7.app.ActionBar;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ListAdapter;
+import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TableLayout;
 
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.model.Question;
+import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.model.Value;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.utils.Utils;
@@ -160,95 +166,6 @@ public class LayoutUtils {
         setScore(score, scoreView, null, null);
     }
 
-    public static List<View> getAllChildren(View v) {
-
-        if (!(v instanceof ViewGroup)) {
-            List<View> viewArrayList = new ArrayList<View>();
-            viewArrayList.add(v);
-            return viewArrayList;
-        }
-
-        List<View> result = new ArrayList<View>();
-
-        ViewGroup vg = (ViewGroup) v;
-        for (int i = 0; i < vg.getChildCount(); i++) {
-            View child = vg.getChildAt(i);
-
-            List<View> viewArrayList = new ArrayList<View>();
-            viewArrayList.add(v);
-            viewArrayList.addAll(getAllChildren(child));
-
-            result.addAll(viewArrayList);
-        }
-        return result;
-    }
-
-    // Searchs for every children that is instance of TableLayout.
-    public static List<View> getTableChildren(ViewGroup root){
-        List<View> views = new ArrayList<View>();
-        final int childCount = root.getChildCount();
-        for (int i = 0; i < childCount; i++) {
-            final View child = root.getChildAt(i);
-            if (child instanceof ViewGroup) {
-                views.addAll(getTableChildren((ViewGroup) child));
-            }
-
-            if (child != null) {
-                if (child instanceof TableLayout) {
-                    views.add(child);
-                }
-            }
-        }
-        return views;
-    }
-
-    // Searchs for every children that is instance of EditText.
-    public static List<View> getEditChildren(ViewGroup root){
-        List<View> views = new ArrayList<View>();
-        final int childCount = root.getChildCount();
-        for (int i = 0; i < childCount; i++) {
-            final View child = root.getChildAt(i);
-            if (child instanceof ViewGroup) {
-                views.addAll(getEditChildren((ViewGroup) child));
-            }
-
-            if (child != null) {
-                if (child instanceof EditText) {
-                    views.add(child);
-                }
-            }
-        }
-        return views;
-    }
-
-    // Searchs for every children that contain the given tag.
-    // If tag equals null search for every view with the key. Otherwise, checks key equals the object tag
-    // If key equals null doesn't retrieve a key but it calls to getTag() assuming only one tag is set
-    public static List<View> getChildrenByTag(ViewGroup root, Integer key, Object tag){
-        List<View> views = new ArrayList<View>();
-        final int childCount = root.getChildCount();
-        for (int i = 0; i < childCount; i++) {
-            final View child = root.getChildAt(i);
-            if (child instanceof ViewGroup) {
-                views.addAll(getChildrenByTag((ViewGroup) child, key, tag));
-            }
-
-            Object tagObj = null;
-            if ( key == null) tagObj = child.getTag();
-            else tagObj = child.getTag(key);
-            if (tagObj != null){
-                if (tag != null) {
-                    if (tagObj.equals(tag)) {
-                        views.add(child);
-                    }
-                } else {
-                    views.add(child);
-                }
-            }
-        }
-        return views;
-    }
-
     public static boolean isHeaderEmpty(List<Question> parentList, List<Question> childrenList){
         boolean isContained;
         for (Question child : childrenList){
@@ -272,11 +189,11 @@ public class LayoutUtils {
         int color=view.getContext().getResources().getColor(R.color.green);
         String tag=view.getContext().getResources().getString(R.string.good);
 
-        if (score < 80.0F){
+        if (score < Survey.MAX_AMBER){
             color= view.getContext().getResources().getColor(R.color.amber);
             tag=view.getContext().getResources().getString(R.string.fair);
         }
-        if (score < 50.0F){
+        if (score < Survey.MAX_RED){
             color= view.getContext().getResources().getColor(R.color.red);
             tag=view.getContext().getResources().getString(R.string.poor);
         }
@@ -288,6 +205,7 @@ public class LayoutUtils {
             ((CustomTextView)textCard).setText(tag);
         }
     }
+
 
     // Used to setup the usual actionbar with the logo and the app name
     public static void setActionBarLogo(ActionBar actionBar){
@@ -306,5 +224,26 @@ public class LayoutUtils {
         // actionBar.setIcon(null);
         actionBar.setTitle(title);
         actionBar.setSubtitle(subtitle);
+    }
+
+    public static void setListViewHeightBasedOnChildren(ListView listView) {
+        ListAdapter listAdapter = listView.getAdapter();
+        if (listAdapter == null) {
+            // pre-condition
+            return;
+        }
+
+        int totalHeight = 0;
+        int desiredWidth = View.MeasureSpec.makeMeasureSpec(listView.getWidth(), View.MeasureSpec.AT_MOST);
+        for (int i = 0; i < listAdapter.getCount(); i++) {
+            View listItem = listAdapter.getView(i, null, listView);
+            listItem.measure(desiredWidth, View.MeasureSpec.UNSPECIFIED);
+            totalHeight += listItem.getMeasuredHeight();
+        }
+
+        ViewGroup.LayoutParams params = listView.getLayoutParams();
+        params.height = totalHeight + (listView.getDividerHeight() * (listAdapter.getCount() - 1));
+        listView.setLayoutParams(params);
+        listView.requestLayout();
     }
 }
