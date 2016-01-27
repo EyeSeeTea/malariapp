@@ -251,4 +251,8 @@
     <string name="option_mark_completed">Marquer comme terminée</string>
     <string name="option_delete">Effacer</string>
     <string name="dialog_info_push_confirm">Êtes-vous sûr ? Vous ne pourrez pas annuler cette action</string>
+
+
+    <string name="hide_planning_tab_title" >"Masquer l'onglet Planification"</string>
+    <string name="hide_planning_tab_summary" >Cochez cette case pour masquer onglet de planification</string>
 </resources>

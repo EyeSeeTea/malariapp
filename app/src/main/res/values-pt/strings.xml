@@ -258,4 +258,7 @@
     <string name="option_mark_completed">Marcar como concluída</string>
     <string name="option_delete">Excluir</string>
     <string name="dialog_info_push_confirm">Você tem certeza? Você não pode desfazer esta ação</string>
+
+    <string name="hide_planning_tab_title" >Ocultar guia planejamento</string>
+    <string name="hide_planning_tab_summary" >Marque esta caixa para ocultar a guia de planejamento</string>
 </resources>
