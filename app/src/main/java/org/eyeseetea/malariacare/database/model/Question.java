@@ -376,35 +376,25 @@ public class Question extends BaseModel {
      * @return
      */
     public boolean isHiddenBySurvey(Survey survey) {
+        Question parent=this.getQuestion();
         //No question relations
-        if (!hasParent() || getQuestion().belongsToCustomTab()) {
+        if (parent!= null && parent.getValueBySurvey(survey)==null && !parent.belongsToCustomTab()) {
+            return true;
+        } else if (parent !=null && parent.belongsToCustomTab()){
             return false;
         }
-        long hasParentOptionActivated = new Select().count().from(Value.class).as("v")
-                .join(QuestionOption.class, Join.JoinType.LEFT).as("qo")
-                .on(
-                        Condition.column(ColumnAlias.columnWithTable("v", Value$Table.QUESTION_ID_QUESTION))
-                                .eq(ColumnAlias.columnWithTable("qo", QuestionOption$Table.QUESTION_ID_QUESTION)),
-                        Condition.column(ColumnAlias.columnWithTable("v", Value$Table.OPTION_ID_OPTION))
-                                .eq(ColumnAlias.columnWithTable("qo", QuestionOption$Table.OPTION_ID_OPTION)))
-                .join(Match.class, Join.JoinType.LEFT).as("m")
-                .on(
-                        Condition.column(ColumnAlias.columnWithTable("qo", QuestionOption$Table.MATCH_ID_MATCH))
-                                .eq(ColumnAlias.columnWithTable("m", Match$Table.ID_MATCH)))
-                .join(QuestionRelation.class, Join.JoinType.LEFT).as("qr")
-                .on(
-                        Condition.column(ColumnAlias.columnWithTable("m", Match$Table.QUESTIONRELATION_ID_QUESTION_RELATION))
-                                .eq(ColumnAlias.columnWithTable("qr", QuestionRelation$Table.ID_QUESTION_RELATION)))
-                        //Parent child relationship
-                .where(Condition.column(ColumnAlias.columnWithTable("qr", QuestionRelation$Table.OPERATION)).eq(1))
-                        //For the given survey
-                .and(Condition.column(ColumnAlias.columnWithTable("v", Value$Table.SURVEY_ID_SURVEY)).eq(survey.getId_survey()))
-                        //The child question in the relationship is 'this'
-                .and(Condition.column(ColumnAlias.columnWithTable("qr", QuestionRelation$Table.QUESTION_ID_QUESTION)).eq(this.getId_question()))
-                .count();
 
-        //Parent with the right value -> not hidden
-        return hasParentOptionActivated > 0 ? false : true;
+        if (parent == null)
+            return false;
+        if (parent.getValueBySurvey(survey) == null)
+            return true;
+        if (parent.getValueBySurvey(survey).getValue() == null)
+            return true;
+        if (parent.getValueBySurvey(survey).getValue().equals(Constants.HIDE_VALUE))
+            return true;
+        if (parent.getValueBySurvey(survey).getValue().equals(Constants.SHOW_VALUE))
+            return false;
+        return false;
     }
 
     /**
