@@ -83,8 +83,6 @@ public class OrgUnit extends BaseModel {
     boolean lowProductivity;
 
     public OrgUnit() {
-        //TODO Remove this when ready
-        this.lowProductivity = Math.random()>0.5;
     }
 
     public OrgUnit(String name) {
@@ -213,6 +211,10 @@ public class OrgUnit extends BaseModel {
         programs=null;
     }
 
+    public boolean setLowProductivity(boolean lowProductivity){
+        //TODO Review whenever server is ready for real productivity
+        return this.lowProductivity=lowProductivity;
+    }
     public boolean isLowProductivity(){
         //TODO Review whenever server is ready for real productivity
         return lowProductivity;
