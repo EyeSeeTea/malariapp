@@ -60,6 +60,7 @@ public class DashboardActivity extends BaseActivity {
 
         // Set the value that will hide questions
         Constants.HIDE_VALUE = getString(R.string.no);
+        Constants.SHOW_VALUE = getString(R.string.yes);
 
         try {
             initDataIfRequired();

@@ -50,5 +50,6 @@ public class Constants {
     public static final String CHECKBOX_YES_OPTION="Yes";
 
     public static String HIDE_VALUE;
+    public static String SHOW_VALUE;
 
 }
