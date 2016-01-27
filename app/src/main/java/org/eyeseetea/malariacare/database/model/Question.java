@@ -244,14 +244,7 @@ public class Question extends BaseModel {
     }
 
     public boolean hasParent() {
-        if (parent == null) {
-            long countChildQuestionRelations = new Select().count().from(QuestionRelation.class)
-                    .where(Condition.column(QuestionRelation$Table.QUESTION_ID_QUESTION).eq(this.getId_question()))
-                    .and(Condition.column(QuestionRelation$Table.OPERATION).eq(QuestionRelation.PARENT_CHILD))
-                    .count();
-            parent = countChildQuestionRelations > 0;
-        }
-        return parent;
+        return getQuestion() != null;
     }
 
     @OneToMany(methods = {OneToMany.Method.SAVE, OneToMany.Method.DELETE}, variableName = "questionRelations")
