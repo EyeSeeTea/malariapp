@@ -288,45 +288,9 @@ public class Question extends BaseModel {
     @OneToMany(methods = {OneToMany.Method.SAVE, OneToMany.Method.DELETE}, variableName = "children")
     public List<Question> getChildren() {
         if (this.children == null) {
-
-            //No matches no children
-            List<Match> matches = getMatches();
-            if (matches.size() == 0) {
-                this.children = new ArrayList<>();
-                return this.children;
-            }
-
-            //Prepare a list of match_ids, (in operator not working in DBFlow)
-            List<Long> matchesIds = new ArrayList();
-            String questionMarks = "(";
-            for (int i = 0; i < matches.size(); i++) {
-                matchesIds.add(matches.get(i).getId_match());
-                questionMarks += "?";
-                if (i == (matches.size() - 1)) {
-                    questionMarks += ")";
-                } else {
-                    questionMarks += ",";
-                }
-            }
-
-            //Select question from questionrelation where operator=1 and id_match in (..)
-            Where<Question> where = new Select().from(Question.class).as("q")
-                    //Question + QuestioRelation
-                    .join(QuestionRelation.class, Join.JoinType.LEFT).as("qr")
-                    .on(Condition.column(ColumnAlias.columnWithTable("q", Question$Table.ID_QUESTION))
-                            .eq(ColumnAlias.columnWithTable("qr", QuestionRelation$Table.QUESTION_ID_QUESTION)))
-                            //+Match
-                    .join(Match.class, Join.JoinType.LEFT).as("m")
-                    .on(
-                            Condition.column(ColumnAlias.columnWithTable("qr", QuestionRelation$Table.ID_QUESTION_RELATION))
-                                    .eq(ColumnAlias.columnWithTable("m", Match$Table.QUESTIONRELATION_ID_QUESTION_RELATION)))
-                            //Parent child relationship
-                    .where()
-                            //In clause
-                    .whereClause("m.id_match in " + questionMarks, matchesIds.toArray(new Long[matchesIds.size()]))
-                    .and(Condition.column(ColumnAlias.columnWithTable("qr", QuestionRelation$Table.OPERATION)).eq(QuestionRelation.PARENT_CHILD));
-
-            this.children = where.queryList();
+            this.children = new Select().from(Question.class)
+                    .where(Condition.column(Question$Table.QUESTION_ID_PARENT).eq(this.getId_question()))
+                    .orderBy(Question$Table.ORDER_POS).queryList();
         }
         return this.children;
     }
