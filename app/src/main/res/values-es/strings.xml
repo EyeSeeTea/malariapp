@@ -251,4 +251,8 @@
     <string name="option_mark_completed">Marcar como completa</string>
     <string name="option_delete">Borrar</string>
     <string name="dialog_info_push_confirm">estás seguro? No podrás deshacer esta acción</string>
+
+
+    <string name="hide_planning_tab_title" >Ocultar ficha planificación</string>
+    <string name="hide_planning_tab_summary" >Marque esta casilla para ocultar ficha de planificación</string>
 </resources>
