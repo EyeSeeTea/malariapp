@@ -377,7 +377,7 @@ public class Question extends BaseModel {
      */
     public boolean isHiddenBySurvey(Survey survey) {
         //No question relations
-        if (!hasParent()) {
+        if (!hasParent() || getQuestion().belongsToCustomTab()) {
             return false;
         }
         long hasParentOptionActivated = new Select().count().from(Value.class).as("v")
