@@ -44,7 +44,7 @@ import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.layout.adapters.dashboard.AssessmentSentAdapter;
 import org.eyeseetea.malariacare.layout.adapters.dashboard.IDashboardAdapter;
-import org.eyeseetea.malariacare.layout.adapters.general.OrgUnitArrayAdapter;
+import org.eyeseetea.malariacare.layout.adapters.filters.FilterOrgUnitArrayAdapter;
 import org.eyeseetea.malariacare.layout.adapters.general.ProgramArrayAdapter;
 import org.eyeseetea.malariacare.services.SurveyService;
 import org.eyeseetea.malariacare.views.CustomTextView;
@@ -62,8 +62,6 @@ public class DashboardSentFragment extends ListFragment {
 
 
     public static final String TAG = ".CompletedFragment";
-    private final static String ORG_UNIT_WITHOUT_FILTER ="ALL ORG UNITS";
-    private final static String PROGRAM_WITHOUT_FILTER ="ALL ASSESSMENTS";
     private final static int WITHOUT_ORDER =0;
     private final static int FACILITY_ORDER =1;
     private final static int DATE_ORDER =2;
@@ -78,8 +76,8 @@ public class DashboardSentFragment extends ListFragment {
     List <Program> programList;
     Spinner filterSpinnerOrgUnit;
     Spinner filterSpinnerProgram;
-    String orgUnitFilter= ORG_UNIT_WITHOUT_FILTER;
-    String programFilter= PROGRAM_WITHOUT_FILTER;
+    String orgUnitFilter;
+    String programFilter;
     int orderBy=WITHOUT_ORDER;
     static boolean reverse=false;
     OnFeedbackSelectedListener mCallback;
@@ -130,6 +128,8 @@ public class DashboardSentFragment extends ListFragment {
     public void onCreate(Bundle savedInstanceState){
         Log.d(TAG, "onCreate");
         super.onCreate(savedInstanceState);
+        orgUnitFilter= getActivity().getString(R.string.filter_all_org_units_upper);
+        programFilter= getActivity().getString(R.string.filter_all_org_assessments_upper);
     }
 
     @Override
@@ -153,7 +153,7 @@ public class DashboardSentFragment extends ListFragment {
     private void initFilters() {
         filterSpinnerProgram = (Spinner) getActivity().findViewById(R.id.filter_program);
         List<Program> filterProgramList=programList;
-        filterProgramList.add(0, new Program(PROGRAM_WITHOUT_FILTER));
+        filterProgramList.add(0, new Program(getActivity().getString(R.string.filter_all_org_assessments_upper)));
 
         filterSpinnerProgram.setAdapter(new ProgramArrayAdapter(this.getActivity().getApplicationContext(), filterProgramList));
         filterSpinnerProgram.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -163,9 +163,9 @@ public class DashboardSentFragment extends ListFragment {
                                        int position, long id) {
                 Program program = (Program) parent.getItemAtPosition(position);
                 boolean reload = false;
-                if (program.getName().equals(PROGRAM_WITHOUT_FILTER)) {
-                    if (programFilter != PROGRAM_WITHOUT_FILTER) {
-                        programFilter = PROGRAM_WITHOUT_FILTER;
+                if (program.getName().equals(getActivity().getString(R.string.filter_all_org_assessments_upper))) {
+                    if (programFilter != getActivity().getString(R.string.filter_all_org_assessments_upper)) {
+                        programFilter = getActivity().getString(R.string.filter_all_org_assessments_upper);
                         reload=true;
                     }
                 } else {
@@ -185,7 +185,7 @@ public class DashboardSentFragment extends ListFragment {
         });
         filterSpinnerOrgUnit = (Spinner) getActivity().findViewById(R.id.filter_orgunit);
 
-        orgUnitList.add(0, new OrgUnit(ORG_UNIT_WITHOUT_FILTER));
+        orgUnitList.add(0, new OrgUnit(getActivity().getString(R.string.filter_all_org_units_upper)));
         filterSpinnerOrgUnit.setAdapter(new FilterOrgUnitArrayAdapter(getActivity().getApplicationContext(), orgUnitList));
         filterSpinnerOrgUnit.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 
@@ -194,9 +194,9 @@ public class DashboardSentFragment extends ListFragment {
                                        int position, long id) {
                 OrgUnit orgUnit = (OrgUnit) parent.getItemAtPosition(position);
                 boolean reload = false;
-                if (orgUnit.getName().equals(ORG_UNIT_WITHOUT_FILTER)) {
-                    if (orgUnitFilter != ORG_UNIT_WITHOUT_FILTER) {
-                        orgUnitFilter = ORG_UNIT_WITHOUT_FILTER;
+                if (orgUnit.getName().equals(getActivity().getString(R.string.filter_all_org_units_upper))) {
+                    if (orgUnitFilter != getActivity().getString(R.string.filter_all_org_units_upper)) {
+                        orgUnitFilter = getActivity().getString(R.string.filter_all_org_units_upper);
                         reload = true;
                     }
                 } else {
@@ -477,8 +477,8 @@ public class DashboardSentFragment extends ListFragment {
     }
 
     private HashMap<String, Survey> filterSurvey(HashMap<String, Survey> orgUnits, Survey survey) {
-        if(orgUnitFilter.equals(ORG_UNIT_WITHOUT_FILTER) || orgUnitFilter.equals(survey.getOrgUnit().getUid()))
-            if(programFilter.equals(PROGRAM_WITHOUT_FILTER) || programFilter.equals(survey.getTabGroup().getProgram().getUid()))
+        if(orgUnitFilter.equals(getActivity().getString(R.string.filter_all_org_units_upper)) || orgUnitFilter.equals(survey.getOrgUnit().getUid()))
+            if(programFilter.equals(getActivity().getString(R.string.filter_all_org_assessments_upper)) || programFilter.equals(survey.getTabGroup().getProgram().getUid()))
               orgUnits.put(survey.getTabGroup().getProgram().getUid()+survey.getOrgUnit().getUid(), survey);
         return orgUnits;
     }
@@ -499,7 +499,7 @@ public class DashboardSentFragment extends ListFragment {
             }
             if(SurveyService.ALL_ORG_UNITS_AND_PROGRAMS_ACTION.equals(intent.getAction())){
                 getOrgUnitAndProgram();
-                initFilters(getView());
+                initFilters();
             }
         }
     }

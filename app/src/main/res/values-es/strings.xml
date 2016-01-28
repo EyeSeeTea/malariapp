@@ -257,4 +257,9 @@
 
     <string name="hide_planning_tab_title" >Ocultar ficha planificación</string>
     <string name="hide_planning_tab_summary" >Marque esta casilla para ocultar ficha de planificación</string>
+
+
+    <!-- filters text -->
+    <string name="filter_all_org_units_upper">TODAS LAS UNIDADES ORGANIZATIVAS</string>
+    <string name="filter_all_org_assessments_upper">TODAS LAS EVALUACIONES</string>
 </resources>

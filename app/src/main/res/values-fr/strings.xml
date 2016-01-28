@@ -257,4 +257,9 @@
 
     <string name="hide_planning_tab_title" >"Masquer l'onglet Planification"</string>
     <string name="hide_planning_tab_summary" >Cochez cette case pour masquer onglet de planification</string>
+
+
+    <!-- filters text -->
+    <string name="filter_all_org_units_upper">TOUTES LES UNITÉES D\'ORGANISATION</string>
+    <string name="filter_all_org_assessments_upper">TOUTES LES SONDAGES</string>
 </resources>

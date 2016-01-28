@@ -332,4 +332,8 @@
     <string name="assess">assess</string>
     <string name="improve">improve</string>
     <string name="monitor">monitor</string>
+
+    <!-- filters text -->
+    <string name="filter_all_org_units_upper">ALL ORG UNITS</string>
+    <string name="filter_all_org_assessments_upper">ALL ASSESSMENTS</string>
 </resources>
