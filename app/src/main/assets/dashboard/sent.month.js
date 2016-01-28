@@ -42,23 +42,11 @@ function setAllAssassement(data){
 }
 //show the data in the table.
 function showData(){
-    removeData();
-	for(i=0;i<input.length;i++){
-        if(input[i].indexOf(selectedProgram) > -1){
-		if(selectedProgram==allAssessment){
-			surveyXMonthChart.addData([inputall[i][0], inputall[i][1]], inputall[i][4]);
-		}
-		else
-			surveyXMonthChart.addData([input[i][0], input[i][1]], input[i][4]);
-        }
-	}
-	
 	for(i=0;i<inputall.length;i++){
         if(inputall[i].indexOf(selectedProgram) > -1){
 			surveyXMonthChart.addData([inputall[i][0], inputall[i][1]], inputall[i][4]);
 		}
 	}
-	createSelectProgram();
 }
 //Create the select options for select the program
 function createSelectProgram(){
@@ -75,7 +63,6 @@ function createSelectProgram(){
 		}
 		else
 			selected="";
-
 		selectHtml+="<option "+selected+" value="+input[i][3]+">"+input[i][2]+"</option>";
 		if(selected==="selected"){
 			selected="";
@@ -89,62 +76,25 @@ function createSelectProgram(){
 function changeProgram(){
   var myselect = document.getElementById("changeProgram");
   selectedProgram=(myselect.options[myselect.selectedIndex].value);
-
-  showData();
-  //Uncoment it for make the pie and chart program dependent.
-  //showPie();
-  //changedOrgunit();
-}
-//Remove and re-iniciate the table of the general stats
-function removeData(){
-chart.update();
-
-  var oldChart = document.getElementById("surveyXMonthCanvas");
-  var newChart = document.createElement("canvas");
-  newChart.setAttribute("id","surveyXMonthCanvas");
-  newChart.setAttribute("style","width: 100%; height: auto;");
-  oldChart.parentNode.replaceChild(newChart, oldChart);
-
-surveyXMonthChart= (function SentXMonthChart(){
-    /* Prepares 'sent surveys x month' chart*/
-    var ctx = document.getElementById("surveyXMonthCanvas").getContext("2d");
-    chart = new Chart(ctx).Line({
-        labels: [],
-        datasets: [
-            {
-                label: "Assessment undertaken",
-                fillColor: "rgba(132,180,103,0)",
-                strokeColor: "#81980d",
-                pointColor: "#81980d",
-                pointStrokeColor: "#fff",
-                pointHighlightFill: "#fff",
-                pointHighlightStroke: "rgba(241,194,50,1)",
-                data: []
-            },
-            {
-                label: "Target",
-                fillColor: "rgba(132,180,103,0)",
-                strokeColor: "#00b4e3",
-                pointColor: "#00b4e3",
-                pointStrokeColor: "#fff",
-                pointHighlightFill: "#fff",
-                pointHighlightStroke: "rgba(151,187,205,1)",
-                data: []
-            }
-        ]
-    },{
-        scaleBeginAtZero : true,
-        scaleFontSize: 18,
-        scaleFontFamily: "'Roboto-Condensed'",
-        scaleFontStyle: "bold",
-        scaleFontColor: "#000",
-    });
-
-    //Adds legend to chart
-    document.getElementById('sentLegend').innerHTML = chart.generateLegend();
-    return chart;
-})();
-
+	var hidden=false;
+	if(selectedProgram==="AllAssessment"){
+		hidden=true;
+	}
+	if(hidden==true){
+		//Uncoment it for make the pie and chart program dependent.  
+		document.getElementById("tableCanvas").classList.remove("hide");
+		document.getElementById("tableCanvas").classList.add("show");
+		document.getElementById("graphicCanvas").classList.remove("show");
+		document.getElementById("graphicCanvas").classList.add("hide");
+	}
+	else{
+		showPie();
+		changedOrgunit();
+		document.getElementById("tableCanvas").classList.remove("show");
+		document.getElementById("tableCanvas").classList.add("hide");
+		document.getElementById("graphicCanvas").classList.remove("hide");
+		document.getElementById("graphicCanvas").classList.add("show");
+	}
 }
 
 var surveyXMonthChart= (function SentXMonthChart(){

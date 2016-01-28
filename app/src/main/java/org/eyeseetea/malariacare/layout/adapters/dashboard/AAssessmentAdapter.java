@@ -53,7 +53,7 @@ public abstract class AAssessmentAdapter extends ADashboardAdapter implements ID
         this.headerLayout = R.layout.assessment_header;
         this.recordLayout = R.layout.assessment_record;
         this.footerLayout = R.layout.assessment_footer;
-        this.title = context.getString(R.string.assessment_title_header);
+        //this.title = context.getString(R.string.assessment_title_header);
     }
 
     @Override
@@ -136,6 +136,14 @@ public abstract class AAssessmentAdapter extends ADashboardAdapter implements ID
         if (surveyAnsweredRatio.isCompleted()) {
             return getContext().getString(R.string.dashboard_info_ready_to_upload);
         } else {
+            if(surveyAnsweredRatio.getTotalCompulsory()>0) {
+                int value=Float.valueOf(100 * surveyAnsweredRatio.getCompulsoryRatio()).intValue();
+                if(value>=100){
+                    return getContext().getString(R.string.dashboard_info_ready_to_upload);
+                }
+                else
+                return String.format("%d", value);
+            }
             return String.format("%d", Float.valueOf(100*surveyAnsweredRatio.getRatio()).intValue());
         }
     }

@@ -297,7 +297,6 @@ public class ProgressActivity extends Activity {
                     .setNeutralButton(getApplicationContext().getResources().getString(R.string.dialog_button_preview_feedback), new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface arg0, int arg1) {
                             //I try using a intent to feedbackactivity but the dashboardsActivity was reloaded from the service.
-                            DashboardActivity.viewFeedback=true;
                             finishAndGo(DashboardActivity.class);
                         }
                     }).create().show();
@@ -412,7 +411,7 @@ public class ProgressActivity extends Activity {
      */
     private List<Survey> findSurveysToPush(){
         if(hasAPullAfterPush()){
-            return Survey.getAllUnsentSurveys();
+            return Survey.getAllUnsentUnplannedSurveys();
         }
 
         List<Survey> surveys=new ArrayList<>();

@@ -106,6 +106,11 @@ public class DataElementExtended implements VisitableFromSDK {
      * Value child
      */
     public static final String CHILD = "CHILD";
+    /**
+     * Value compulsory
+     */
+    public static final String COMPULSORY = "Compulsory";
+
 
     /**
      * Code to identify control dataElements
@@ -269,7 +274,7 @@ public class DataElementExtended implements VisitableFromSDK {
     }
 
     /**
-     * Find the associated programStageSection (tab) given a dataelement UID
+     * Find the associated programStageSection (tab)UID given a dataelement UID
      *
      * @param dataElementUID
      * @return
@@ -286,6 +291,24 @@ public class DataElementExtended implements VisitableFromSDK {
             return null;
         }
         return programSS.getUid();
+    }
+
+
+    /**
+     * Find the associated ProgramStageDataElement (tab) given a dataelement UID
+     *
+     * @param dataElementUID
+     * @return
+     */
+    public static ProgramStageDataElement findProgramStageDataElementByDataElementUID(String dataElementUID) {
+        //Find the right 'uid' of the dataelement program
+        ProgramStageDataElement programDE = new Select().from(ProgramStageDataElement.class).as("psde")
+                .where(Condition.column(ColumnAlias.columnWithTable("psde", ProgramStageDataElement$Table.DATAELEMENT)).eq(dataElementUID))
+                .querySingle();
+        if (programDE == null) {
+            return null;
+        }
+        return programDE;
     }
     /**
      * Find the order from dataelement in programStage

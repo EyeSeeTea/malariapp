@@ -52,7 +52,10 @@
     <string name="dialog_title_push_data">Pushing data</string>
     <string name="dialog_content_push_data">Are you sure that you want to send? You cannot undo this action</string>
     <string name="dialog_button_preview_feedback">View Feedback</string>
-
+    <string name="dialog_question_complete_survey">All compulsory questions were completed. Would you like to mark this survey as completed?</string>
+    <string name="dialog_continue_later_option">Continue Later</string>
+    <string name="dialog_complete_option">Complete</string>
+    <string name="dialog_are_you_sure_complete_survey">Are you sure? This action cannot be undone and you will no longer be able to edit or delete this survey</string>
     <!-- Toast -->
     <string name="cancellingPull">The process will be stopped in a few seconds </string>
 
@@ -69,9 +72,17 @@
     <string name="dashboard_info_sent">Sent</string>
     <string name="dashboard_title_total_assessments">Total number of assessments undertaken</string>
     <string name="dashboard_title_table_facilities">Quality of care (last 6 months)</string>
+    <string name="dashboard_title_planned_type_never">Never assessed</string>
+    <string name="dashboard_title_planned_type_overdue">Overdue</string>
+    <string name="dashboard_title_planned_type_next_30">Next 30 days</string>
+    <string name="dashboard_title_planned_type_future">Future</string>
+    <string name="dashboard_title_planned_productivity">Prd</string>
+    <string name="dashboard_title_planned_quality_of_care">QoC</string>
+    <string name="dashboard_title_planned_next_qa">Next QA</string>
+
 
     <!-- create -->
-    <string name="create_info_ok">Start Assessment</string>
+    <string name="create_info_ok">Start</string>
     <string name="create_info_organization_unit">Organisation Unit</string>
     <string name="create_info_survey">Survey</string>
     <string name="create_info_tabs_group">Tab Group</string>
@@ -87,14 +98,15 @@
     <string name="assessment_info_delete">Delete</string>
     <string name="assessment_title_header">Active Assessment(s)</string>
     <string name="assessment_sent_title_header">Previous Assessment(s)</string>
+    <string name="select_assessment">Select Assessment</string>
 
     <!-- feedback -->
     <!-- XXX Should it be replaced by 'assessment_title_facility_date'?-->
     <string name="feedback_title_organization_unit_date">Org Unit / Date</string>
     <string name="feedback_title_header">Feedback</string>
     <string name="feedback_show_only_failed">Show only failed questions</string>
-    <string name="feedback_info_passed">Pass</string>
-    <string name="feedback_info_failed">Fail</string>
+    <string name="feedback_info_passed">WIN</string>
+    <string name="feedback_info_failed">FAIL</string>
     <string name="feedback_info_not_answered">NA</string>
     <string name="feedback_info_no_feedback">No feedback</string>
 
@@ -282,6 +294,11 @@
     <string name="progress_pull_surveys">Loading surveys ...</string>
     <string name="progress_pull_done">Done</string>
     <item name="pull_metadata" type="string" translatable="false">pull_metadata</item>
+    <item name="default_tabGroup" type="string" translatable="false">default_tabGroup</item>
+    <item name="default_program" type="string" translatable="false">default_program</item>
+    <item name="default_orgUnit" type="string" translatable="false">default_orgUnit</item>
+    <item name="default_orgUnits" type="string" translatable="false">default_orgUnits</item>
+
 
     <string name="dialog_push_error">Error while trying to push data to dhis server</string>
     <string name="dialog_push_success">Survey successfully pushed to dhis server</string>
@@ -290,7 +307,27 @@
     <string name="progress_push_updating_survey">Updating pushed survey data...</string>
     <string name="progress_push_no_survey">No survey found for pushing</string>
     <string name="dialog_push_before_pull_success">Surveys successfully pushed to dhis server, starting to pull metadata</string>
+    <string name="planning_title_dialog">Schedule survey</string>
+    <string name="planning_label_comment">* Comment</string>
+    <string name="planning_label_schedule_date">* Scheduled Date</string>
+    <string name="option_edit">Edit</string>
+    <string name="option_mark_completed">Mark as completed</string>
+    <string name="option_delete">Delete</string>
 
     <!-- async push -->
     <string name="PUSH_PERIOD" translatable="false">10</string>
+    <string name="PUSH_FAILED_PERIOD" translatable="false">300</string>
+
+    <!-- tab tags -->
+    <string name="tab_tag_plan" translatable="false">tab_plan</string>
+    <string name="tab_tag_assess" translatable="false">tab_assess</string>
+    <string name="tab_tag_improve" translatable="false">tab_improve</string>
+    <string name="tab_tag_monitor" translatable="false">tab_monitor</string>
+    <string name="hide_planning_tab_key" translatable="false">tab_hide</string>
+    <string name="hide_planning_tab_title" >Hide planning tab</string>
+    <string name="hide_planning_tab_summary" >Check this box for hide planning tab</string>
+    <string name="plan">plan</string>
+    <string name="assess">assess</string>
+    <string name="improve">improve</string>
+    <string name="monitor">monitor</string>
 </resources>

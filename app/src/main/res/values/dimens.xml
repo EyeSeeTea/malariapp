@@ -6,10 +6,14 @@
     <dimen name="question_padding_all">5dip</dimen>
     <dimen name="survey_heading_padding_all">5dip</dimen>
     <dimen name="survey_main_spinner_padding_leftright">40dip</dimen>
-    <dimen name="survey_main_spinner_padding_updown">5dip</dimen>
+    <dimen name="survey_main_spinner_padding_updown">10dip</dimen>
 
     <!-- Dashboard -->
     <dimen name="dashboard_row_padding">5dp</dimen>
+
+    <!-- Planning -->
+    <dimen name="dashboard_planning_padding">10dp</dimen>
+    <dimen name="dashboard_planning_alert_width">300dp</dimen>
 
     <!-- XSMALL selected sizes -->
     <dimen name="xsmall_xsmall_text_size">1sp</dimen>

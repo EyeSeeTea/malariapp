@@ -35,6 +35,7 @@ import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.UserAcc
 import org.eyeseetea.malariacare.database.model.User;
 import org.eyeseetea.malariacare.database.utils.PopulateDB;
 import org.eyeseetea.malariacare.database.utils.Session;
+import org.eyeseetea.malariacare.database.utils.planning.SurveyPlanner;
 import org.hisp.dhis.android.sdk.controllers.DhisService;
 import org.hisp.dhis.android.sdk.controllers.LoadingController;
 import org.hisp.dhis.android.sdk.controllers.metadata.MetaDataController;
@@ -363,6 +364,8 @@ public class PullController {
             }
         }
 
+        //Plan surveys for the future
+        SurveyPlanner.getInstance().buildNext();
     }
 
     /**

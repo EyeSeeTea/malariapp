@@ -19,8 +19,8 @@
 
 package org.eyeseetea.malariacare.database.utils.monitor;
 
-import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.model.TabGroup;
+import org.eyeseetea.malariacare.utils.Constants;
 
 /**
  * VO thats hold the info of a single pie chart
@@ -62,12 +62,12 @@ public class PieTabGroupData {
      * @param score
      */
     public void incCounter(float score){
-        if(score< Survey.MAX_RED){
+        if(score< Constants.MAX_RED){
             numC++;
             return;
         }
 
-        if(score<Survey.MAX_AMBER){
+        if(score< Constants.MAX_AMBER){
             numB++;
             return;
         }

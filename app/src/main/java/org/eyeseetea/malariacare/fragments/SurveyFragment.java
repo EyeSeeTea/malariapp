@@ -17,12 +17,11 @@
  *  along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.eyeseetea.malariacare;
+package org.eyeseetea.malariacare.fragments;
 
-import android.app.AlertDialog;
+import android.app.Fragment;
 import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.AsyncTask;
@@ -30,26 +29,28 @@ import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 
 import com.raizlabs.android.dbflow.sql.language.Select;
-import com.squareup.otto.Subscribe;
 
+import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.model.CompositeScore;
-import org.eyeseetea.malariacare.database.model.Program;
 import org.eyeseetea.malariacare.database.model.Question;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.model.Tab;
 import org.eyeseetea.malariacare.database.utils.Session;
+import org.eyeseetea.malariacare.database.utils.SurveyAnsweredRatio;
 import org.eyeseetea.malariacare.layout.adapters.general.TabArrayAdapter;
 import org.eyeseetea.malariacare.layout.adapters.survey.AutoTabAdapter;
 import org.eyeseetea.malariacare.layout.adapters.survey.CompositeScoreAdapter;
@@ -63,7 +64,6 @@ import org.eyeseetea.malariacare.services.SurveyService;
 import org.eyeseetea.malariacare.utils.Constants;
 import org.eyeseetea.malariacare.utils.Utils;
 import org.eyeseetea.malariacare.views.CustomTextView;
-import org.hisp.dhis.android.sdk.events.UiEvent;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -72,12 +72,10 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * Activity that supports the data entry for the surveys.
+ * Created by ignac on 05/01/2016.
  */
-public class SurveyActivity extends BaseActivity{
-
-    public static final String TAG = ".SurveyActivity";
-
+public class SurveyFragment extends  Fragment {
+    private String TAG=".SurveyFragment";
     //FIXME Better than a bunch of 'ifs' worse than it should
     private static final int ORDER_PROFILE=2;
     private static final int ORDER_C1_CLINICAL=3;
@@ -143,19 +141,47 @@ public class SurveyActivity extends BaseActivity{
      */
     private LinearLayout content;
 
+    /**
+     * Actual layout to be accessible in the fragment
+     */
+    RelativeLayout llLayout;
+
+    public static SurveyFragment newInstance(int index) {
+        SurveyFragment f = new SurveyFragment();
+
+        // Supply index input as an argument.
+        Bundle args = new Bundle();
+        args.putInt("index", index);
+        f.setArguments(args);
+
+        return f;
+    }
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+         public void onCreate(Bundle savedInstanceState){
+        Log.d(TAG, "onCreate");
         super.onCreate(savedInstanceState);
 
-        Log.d(TAG, "onCreate");
-        setContentView(R.layout.survey);
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
+        Log.d(TAG, "onCreateView");
+        if (container == null) {
+            return null;
+        }
+        llLayout = (RelativeLayout) inflater.inflate(R.layout.survey, container, false);
         registerReceiver();
-        createActionBar();
         createMenu();
         createProgress();
         prepareSurveyInfo();
+        return llLayout;
     }
 
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        Log.d(TAG, "onActivityCreated");
+        super.onActivityCreated(savedInstanceState);
+    }
     public void onResume() {
         Log.d(TAG, "onResume");
         super.onResume();
@@ -163,29 +189,10 @@ public class SurveyActivity extends BaseActivity{
         this.tabAdapter.notifyDataSetChanged();
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_survey, menu);
-        return super.onCreateOptionsMenu(menu);
+    public void exit(){
+        ScoreRegister.clear();
+        unregisterReceiver();
     }
-
-    @Override
-    public void onBackPressed() {
-        Log.d(TAG, "onBackPressed");
-        new AlertDialog.Builder(this)
-                .setTitle(R.string.survey_title_exit)
-                .setMessage(R.string.survey_info_exit)
-                .setNegativeButton(android.R.string.no, null)
-                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int arg1) {
-                        ScoreRegister.clear();
-                        unregisterReceiver();
-                        finishAndGo(DashboardActivity.class);
-                    }
-                }).create().show();
-    }
-
     @Override
     public void onPause(){
         Survey survey = Session.getSurvey();
@@ -204,14 +211,13 @@ public class SurveyActivity extends BaseActivity{
     }
 
     /**
-     * Adds the spinner for tabs
+     * Adds the spinner and imagebutons for tabs
      */
     private void createMenu() {
 
         Log.d(TAG, "createMenu");
-        this.tabAdapter=new TabArrayAdapter(this, tabsList);
-        spinner= (Spinner) this.findViewById(R.id.tabSpinner);
-
+        this.tabAdapter=new TabArrayAdapter(getActivity().getApplicationContext(), tabsList);
+        spinner = (Spinner) llLayout.findViewById(R.id.tabSpinner);
         //Invisible until info ready
         spinner.setVisibility(View.GONE);
         spinner.setAdapter(this.tabAdapter);
@@ -229,15 +235,52 @@ public class SurveyActivity extends BaseActivity{
 
             }
         });
+
+        ImageButton nextButton = (ImageButton) llLayout.findViewById(R.id.next_tab);
+        ImageButton previousButton = (ImageButton) llLayout.findViewById(R.id.previous_tab);
+        nextButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int position = currentTabPosition();
+                position++;
+                if (position < spinner.getAdapter().getCount())
+                    setCurrentTab(position);
+            }
+        });
+        previousButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int position = currentTabPosition();
+                position--;
+                if (position >= 0)
+                setCurrentTab(position);
+            }
+        });
+    }
+
+
+    /**
+     * set the current tab to the position
+     */
+    private void setCurrentTab(int position) {
+        spinner.setSelection(position);
+        final Tab selectedTab = (Tab) spinner.getSelectedItem();
+        new AsyncChangeTab(selectedTab).execute((Void) null);
+        Log.d(TAG, "onItemSelected(" + Thread.currentThread().getId() + ")..DONE");
+    }
+
+    private int currentTabPosition() {
+        Log.d(TAG, "onItemSelect(" + spinner.getSelectedItemPosition() + ")");
+        return spinner.getSelectedItemPosition();
     }
 
     private void preLoadItems(){
         List<Tab> tabs = new Select().all().from(Tab.class).queryList();
         for(Tab tab: tabs) {
-            Intent preLoadService = new Intent(this, SurveyService.class);
+            Intent preLoadService = new Intent(getActivity().getApplicationContext(), SurveyService.class);
             preLoadService.putExtra(SurveyService.SERVICE_METHOD, SurveyService.PRELOAD_TAB_ITEMS);
             preLoadService.putExtra("tab", tab.getId_tab());
-            this.startService(preLoadService);
+            getActivity().getApplicationContext().startService(preLoadService);
         }
     }
 
@@ -284,7 +327,7 @@ public class SurveyActivity extends BaseActivity{
                     tab.getType() == Constants.TAB_COMPOSITE_SCORE) {
                 tabAdapter.initializeSubscore();
             }
-            ListView mQuestions = (ListView) SurveyActivity.this.findViewById(R.id.listView);
+            ListView mQuestions = (ListView)  llLayout.findViewById(R.id.listView);
             mQuestions.setAdapter((BaseAdapter) tabAdapter);
             UnfocusScrollListener unfocusScrollListener = new UnfocusScrollListener();
             mQuestions.setOnScrollListener(unfocusScrollListener);
@@ -292,28 +335,12 @@ public class SurveyActivity extends BaseActivity{
         }
     }
 
-
-
-    /**
-     * Adds actionbar to the activity
-     */
-    private void createActionBar(){
-        Survey survey = Session.getSurvey();
-        //FIXME: Shall we add the tab group?
-        Program program = survey.getTabGroup().getProgram();
-
-        android.support.v7.app.ActionBar actionBar = this.getSupportActionBar();
-        LayoutUtils.setActionBarLogo(actionBar);
-        LayoutUtils.setActionBarText(actionBar, survey.getOrgUnit().getName(), program.getName());
-    }
-
-
     /**
      * Gets a reference to the progress view in order to stop it later
      */
     private void createProgress(){
-        content = (LinearLayout) this.findViewById(R.id.content);
-        progressBar=(ProgressBar)findViewById(R.id.survey_progress);
+        content = (LinearLayout)  llLayout.findViewById(R.id.content);
+        progressBar = (ProgressBar) llLayout.findViewById(R.id.survey_progress);
     }
 
     /**
@@ -322,7 +349,7 @@ public class SurveyActivity extends BaseActivity{
      * @return
      */
     private View prepareTab(Tab selectedTab) {
-        LayoutInflater inflater = LayoutInflater.from(this);
+        LayoutInflater inflater = LayoutInflater.from(getActivity().getApplicationContext());
 
         if(selectedTab.isCompositeScore()){
             //Initialize scores x question not loaded yet
@@ -338,7 +365,7 @@ public class SurveyActivity extends BaseActivity{
      * Shows the special 'Score' tab
      */
     private void showGeneralScores() {
-        LayoutInflater inflater = LayoutInflater.from(this);
+        LayoutInflater inflater = LayoutInflater.from(getActivity().getApplicationContext());
 
         content.removeAllViews();
         View view = inflater.inflate(R.layout.scoretab, content, false);
@@ -377,7 +404,7 @@ public class SurveyActivity extends BaseActivity{
         Tab tab=((AutoTabAdapter)adapter).getTab();
         int viewId=IDS_SCORES_IN_GENERAL_TAB[tab.getOrder_pos()];
         if(viewId!=0) {
-            CustomTextView customTextView =((CustomTextView) this.findViewById(viewId));
+            CustomTextView customTextView =((CustomTextView) llLayout.findViewById(viewId));
             customTextView.setText(Utils.round(score));
             LayoutUtils.trafficLight(customTextView, score, null);
         }
@@ -434,8 +461,8 @@ public class SurveyActivity extends BaseActivity{
     }
 
     private void updateAvgInGeneralScores(int viewId, Float score){
-        ((CustomTextView) this.findViewById(viewId)).setText(Utils.round(score));
-        LayoutUtils.trafficLight(this.findViewById(viewId), score, null);
+        ((CustomTextView) llLayout.findViewById(viewId)).setText(Utils.round(score));
+        LayoutUtils.trafficLight(llLayout.findViewById(viewId), score, null);
     }
 
     /**
@@ -462,7 +489,7 @@ public class SurveyActivity extends BaseActivity{
 
         if(surveyReceiver==null){
             surveyReceiver=new SurveyReceiver();
-            LocalBroadcastManager.getInstance(this).registerReceiver(surveyReceiver, new IntentFilter(SurveyService.PREPARE_SURVEY_ACTION));
+            LocalBroadcastManager.getInstance( getActivity()).registerReceiver(surveyReceiver, new IntentFilter(SurveyService.PREPARE_SURVEY_ACTION));
         }
     }
 
@@ -473,7 +500,7 @@ public class SurveyActivity extends BaseActivity{
     public void  unregisterReceiver(){
         Log.d(TAG, "unregisterReceiver");
         if(surveyReceiver!=null){
-            LocalBroadcastManager.getInstance(this).unregisterReceiver(surveyReceiver);
+            LocalBroadcastManager.getInstance( getActivity()).unregisterReceiver(surveyReceiver);
             surveyReceiver=null;
         }
     }
@@ -483,9 +510,9 @@ public class SurveyActivity extends BaseActivity{
      */
     public void prepareSurveyInfo(){
         Log.d(TAG, "prepareSurveyInfo");
-        Intent surveysIntent=new Intent(this, SurveyService.class);
+        Intent surveysIntent=new Intent(getActivity().getApplicationContext(), SurveyService.class);
         surveysIntent.putExtra(SurveyService.SERVICE_METHOD,SurveyService.PREPARE_SURVEY_ACTION);
-        this.startService(surveysIntent);
+        getActivity().getApplicationContext().startService(surveysIntent);
     }
 
     /**
@@ -500,11 +527,6 @@ public class SurveyActivity extends BaseActivity{
         this.tabAdapter.notifyDataSetChanged();
 
         Log.d(TAG, "reloadTabs(" + tabs.size() + ")..DONE");
-    }
-
-    @Subscribe
-    public void onLogoutFinished(UiEvent uiEvent){
-        super.onLogoutFinished(uiEvent);
     }
 
     /*
@@ -522,11 +544,11 @@ public class SurveyActivity extends BaseActivity{
         @Override
         public void onScrollStateChanged(AbsListView view, int scrollState) {
             if (SCROLL_STATE_TOUCH_SCROLL == scrollState) {
-                View currentFocus = getCurrentFocus();
+                View currentFocus =  getActivity().getCurrentFocus();
                 if (currentFocus != null) {
                     currentFocus.clearFocus();
                     // Remove the virtual keyboard from the screen
-                    InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                    InputMethodManager imm = (InputMethodManager)getActivity().getApplicationContext().getSystemService(Context.INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
                 }
             }
@@ -616,7 +638,7 @@ public class SurveyActivity extends BaseActivity{
         public void reloadAdapters(List<Tab> tabs, List<CompositeScore> compositeScores){
             Tab firstTab=tabs.get(0);
             this.adapters.clear();
-            this.adapters.put(firstTab, AutoTabAdapter.build(firstTab, SurveyActivity.this));
+            this.adapters.put(firstTab, AutoTabAdapter.build(firstTab, getActivity()));
             this.compositeScores=compositeScores;
         }
 
@@ -652,16 +674,16 @@ public class SurveyActivity extends BaseActivity{
         private ITabAdapter buildAdapter(Tab tab){
             switch (tab.getType()) {
                 case Constants.TAB_COMPOSITE_SCORE:
-                    return CompositeScoreAdapter.build(tab, SurveyActivity.this);
+                    return CompositeScoreAdapter.build(tab, getActivity());
                 case Constants.TAB_IQATAB:
-                    return CustomIQTABAdapter.build(tab, SurveyActivity.this);
+                    return CustomIQTABAdapter.build(tab,  getActivity());
                 case Constants.TAB_ADHERENCE:
-                    return CustomAdherenceAdapter.build(tab, SurveyActivity.this);
+                    return CustomAdherenceAdapter.build(tab,  getActivity());
                 case Constants.TAB_REPORTING:
-                    return CustomReportingAdapter.build(tab, SurveyActivity.this);
+                    return CustomReportingAdapter.build(tab,  getActivity());
             }
 
-            return AutoTabAdapter.build(tab,SurveyActivity.this);
+            return AutoTabAdapter.build(tab, getActivity());
         }
     }
 }

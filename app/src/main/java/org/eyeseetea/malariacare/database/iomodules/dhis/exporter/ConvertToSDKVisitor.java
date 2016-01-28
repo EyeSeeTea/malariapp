@@ -31,6 +31,7 @@ import org.eyeseetea.malariacare.database.model.Value;
 import org.eyeseetea.malariacare.database.utils.LocationMemory;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.Session;
+import org.eyeseetea.malariacare.database.utils.planning.SurveyPlanner;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.utils.Constants;
 import org.eyeseetea.malariacare.utils.Utils;
@@ -40,6 +41,7 @@ import org.hisp.dhis.android.sdk.persistence.models.ImportSummary;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -81,7 +83,18 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
      */
     Event currentEvent;
 
+    /**
+     * Timestamp that captures the moment when the survey is converted right before being sent
+     */
+    Date completionDate;
+
+    /**
+     * Timestamp that captures the moment when the survey is converted right before being sent
+     */
+    static Map<Survey, Event> mapRelation;
+
     ConvertToSDKVisitor(Context context){
+        mapRelation = new HashMap<>();
         this.context=context;
         mainScoreUID=context.getString(R.string.main_score);
         mainScoreAUID=context.getString(R.string.main_score_a);
@@ -179,7 +192,9 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
         //Sent date 'now' (this change will be saves after successful push)
         currentSurvey.setEventDate(new Date());
 
-        currentEvent.setCreated(EventExtended.format(currentSurvey.getCreationDate()));
+        completionDate=currentSurvey.getCreationDate();
+
+        // NOTE: do not try to set the event creation date. SDK will try to update the event in the next push instead of creating it and that will crash
         currentEvent.setLastUpdated(EventExtended.format(currentSurvey.getCompletionDate()));
         currentEvent.setEventDate(EventExtended.format(currentSurvey.getEventDate()));
         currentEvent.setDueDate(EventExtended.format(currentSurvey.getScheduledDate()));
@@ -226,6 +241,7 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
     private void updateSurvey(List<CompositeScore> compositeScores){
         currentSurvey.setMainScore(ScoreRegister.calculateMainScore(compositeScores));
         currentSurvey.setStatus(Constants.SURVEY_SENT);
+        currentSurvey.setCompletionDate(completionDate);
     }
 
     /**
@@ -255,13 +271,12 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
     private void annotateSurveyAndEvent() {
         surveys.add(currentSurvey);
         events.add(currentEvent);
-
+        mapRelation.put(currentSurvey, currentEvent);
         Log.d(TAG, String.format("%d surveys converted so far", surveys.size()));
     }
 
     /**
      * Saves changes in the survey (supposedly after a successfull push)
-     * @param importSummaryMap
      */
     public void saveSurveyStatus(Map<Long,ImportSummary> importSummaryMap){
         for(int i=0;i<surveys.size();i++){
@@ -278,6 +293,10 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
             }else{
                 iSurvey.saveMainScore();
                 iSurvey.save();
+
+                //Plan a new survey for the future
+                SurveyPlanner.getInstance().buildNext(iSurvey);
+
                 //To avoid several pushes
                 iEvent.setFromServer(true);
                 iEvent.save();

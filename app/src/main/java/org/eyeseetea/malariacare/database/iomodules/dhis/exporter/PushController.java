@@ -27,7 +27,9 @@ import com.squareup.otto.Subscribe;
 
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.SyncProgressStatus;
+import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.EventExtended;
 import org.eyeseetea.malariacare.database.model.Survey;
+import org.eyeseetea.malariacare.database.utils.planning.SurveyPlanner;
 import org.hisp.dhis.android.sdk.controllers.DhisService;
 import org.hisp.dhis.android.sdk.job.NetworkJob;
 import org.hisp.dhis.android.sdk.network.ResponseHolder;
@@ -94,20 +96,25 @@ public class PushController {
      *  - Turns SDK into APP data
      * @param ctx
      */
-    public void push(Context ctx,List<Survey> surveys){
+    public boolean push(Context ctx,List<Survey> surveys){
         Log.d(TAG, "Starting PUSH process...");
         context=ctx;
 
         //No survey no push
         if(surveys==null || surveys.size()==0){
             postException(new Exception(context.getString(R.string.progress_push_no_survey)));
-            return;
+            return false;
+        }
+
+        //Register for event bus
+        try {
+            register();
+        }catch(Exception e){
+            unregister();
+            register();
         }
 
         try {
-            //Register for event bus
-            register();
-
             //Converts app data into sdk events
             postProgress(context.getString(R.string.progress_push_preparing_survey));
             Log.d(TAG, "Preparing survey for pushing...");
@@ -122,7 +129,9 @@ public class PushController {
             Log.e(TAG,"push: "+ex.getLocalizedMessage());
             unregister();
             postException(ex);
+            return false;
         }
+        return true;
     }
 
     @Subscribe
@@ -192,6 +201,16 @@ public class PushController {
         }
 
         return responseHolder.getItem();
+    }
+
+    private void saveCreationDateInSDK(List<Survey> surveys) {
+        Log.d(TAG,"Saving complete date");
+        //TODO is necesary check if the event was successfully uploaded before do this. It will be doing in sdk 2.21
+        for(Survey survey:surveys){
+            if(converter.mapRelation.containsKey(survey)){
+                converter.mapRelation.get(survey).setCreated(EventExtended.format(survey.getCompletionDate()));
+            }
+        }
     }
 
     /**

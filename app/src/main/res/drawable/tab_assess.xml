@@ -23,7 +23,7 @@
     <item
         android:state_selected="true"
         android:state_pressed="false"
-        android:drawable="@drawable/lapizselected" />
+        android:drawable="@drawable/assessselected" />
     <item
-        android:drawable="@drawable/lapiz" />
+        android:drawable="@drawable/assess" />
 </selector>

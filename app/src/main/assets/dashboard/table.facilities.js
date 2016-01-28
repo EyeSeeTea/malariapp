@@ -90,7 +90,8 @@ function buildRowFacility(facility){
 	//value x month
 	for(var i=0;i<facility.values.length;i++){
 		var iValue=facility.values[i];
-		row=row+"<td "+buildColorXScore(iValue)+">"+buildCellXScore(iValue)+"</td>";
+row=row+"<td "+buildColorXScore(iValue)+"><div class='circlerow'><span class='centerspan'>"+buildCellXScore(iValue)+"</span></div></td>";
+	
 	}
 	//end row
 	row=row+"</tr>";

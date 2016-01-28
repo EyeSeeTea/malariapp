@@ -21,6 +21,7 @@ package org.eyeseetea.malariacare.database.iomodules.dhis.importer;
 
 import android.util.Log;
 
+import org.eyeseetea.malariacare.ProgressActivity;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.DataElementExtended;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.DataValueExtended;
@@ -44,6 +45,8 @@ import org.eyeseetea.malariacare.database.model.User;
 import org.eyeseetea.malariacare.database.model.Value;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.utils.Constants;
+import org.hisp.dhis.android.sdk.controllers.metadata.MetaDataController;
+import org.hisp.dhis.android.sdk.controllers.tracker.TrackerController;
 import org.hisp.dhis.android.sdk.persistence.models.DataElement;
 import org.hisp.dhis.android.sdk.persistence.models.DataValue;
 import org.hisp.dhis.android.sdk.persistence.models.Event;
@@ -52,10 +55,13 @@ import org.hisp.dhis.android.sdk.persistence.models.OptionSet;
 import org.hisp.dhis.android.sdk.persistence.models.OrganisationUnit;
 import org.hisp.dhis.android.sdk.persistence.models.Program;
 import org.hisp.dhis.android.sdk.persistence.models.ProgramStage;
+import org.hisp.dhis.android.sdk.persistence.models.ProgramStageDataElement;
 import org.hisp.dhis.android.sdk.persistence.models.ProgramStageSection;
 import org.hisp.dhis.android.sdk.persistence.models.UserAccount;
+import org.hisp.dhis.android.sdk.utils.api.ProgramType;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
@@ -158,6 +164,9 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
         appOrgUnit.save();
         //Annotate built orgunit
         appMapObjects.put(organisationUnit.getId(), appOrgUnit);
+
+        //Associate programs
+        buildOrgUnitProgramRelationships(appOrgUnit);
     }
 
     /**
@@ -354,6 +363,8 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
             appQuestion.setAnswer(buildAnswerLabel());
         }
 
+        ProgramStageDataElement programStageDataElement = DataElementExtended.findProgramStageDataElementByDataElementUID(dataElement.getUid());
+        appQuestion.setCompulsory(programStageDataElement.getCompulsory());
         appQuestion.setHeader(questionBuilder.saveHeader(dataElementExtended));
         questionBuilder.registerParentChildRelations(dataElementExtended);
         appQuestion.save();
@@ -407,6 +418,18 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
 
         compositeScoreBuilder.add(compositeScore);
         return compositeScore;
+    }
+
+    /**
+     * Due to permissions programs 'belongs' to a given orgunit
+     */
+    public void buildOrgUnitProgramRelationships(OrgUnit appOrgUnit){
+        Log.d(TAG,"buildOrgUnitProgramRelationships "+appOrgUnit.getName());
+        //Each assigned program
+        for (org.hisp.dhis.android.sdk.persistence.models.Program program : MetaDataController.getProgramsForOrganisationUnit(appOrgUnit.getUid(), ProgramType.WITHOUT_REGISTRATION)) {
+            org.eyeseetea.malariacare.database.model.Program appProgram = (org.eyeseetea.malariacare.database.model.Program) appMapObjects.get(program.getUid());
+            appProgram.addOrgUnit(appOrgUnit);
+        }
     }
 
     @Override

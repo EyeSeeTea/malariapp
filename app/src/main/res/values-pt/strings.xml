@@ -42,6 +42,10 @@
     <string name="dialog_title_push_data">empurrando dados</string>
     <string name="dialog_content_push_data">Tem certeza de que deseja enviar isso?</string>
     <string name="dialog_button_preview_feedback">Ver feedback</string>
+    <string name="dialog_question_complete_survey">Todas as questões obrigatórias foram concluídos. Você quer fazer o levantamento mais abrangente?</string>
+    <string name="dialog_continue_later_option">Adiar</string>
+    <string name="dialog_complete_option">Completo</string>
+    <string name="dialog_are_you_sure_complete_survey">Você tem certeza? Essa ação não pode ser desfeita e você não será mais capaz de editar ou excluir essa pesquisa</string>
 
     <!-- Toast -->
     <string name="cancellingPull">O processo é interrompido em poucos segundos</string>
@@ -62,7 +66,7 @@
     <string name="dashboard_title_table_facilities">"Qualidade dos cuidados (últimos 6 meses)"</string>
 
     <!-- create -->
-    <string name="create_info_ok">Criar avaliação</string>
+    <string name="create_info_ok">Criar</string>
     <string name="create_info_organization_unit">Unidade da Organização – Unid. Org.</string>
     <string name="create_info_survey">Inquérito</string>
     <string name="create_info_zone">Zona</string>
@@ -76,6 +80,7 @@
     <string name="assessment_info_delete">Apagar</string>
     <string name="assessment_title_header">Avaliação activa</string>
     <string name="assessment_sent_title_header">Avaliação anterior(es)</string>
+    <string name="select_assessment">Selecione a avaliação</string>
 
     <!-- feedback -->
     <!-- XXX Should it be replaced by 'assessment_title_facility_date'?-->
@@ -239,4 +244,21 @@
     <string name="dialog_push_success">Pesquisa empurrou com êxito para o servidor dhis</string>
     <string name="progress_push_no_survey">Nenhuma pesquisa constatou para empurrar</string>
     <string name="dialog_push_before_pull_success">Pesquisa empurrou com êxito para o servidor dhis, começando a puxar metadados</string>
+    <string name="dashboard_title_planned_next_qa">Próxima avaliação</string>
+    <string name="dashboard_title_planned_productivity">Prd</string>
+    <string name="dashboard_title_planned_quality_of_care">QoC</string>
+    <string name="dashboard_title_planned_type_future">Futuro</string>
+    <string name="dashboard_title_planned_type_never">Eu nunca avaliado</string>
+    <string name="dashboard_title_planned_type_next_30">Próximos 30 dias</string>
+    <string name="dashboard_title_planned_type_overdue">Vencido</string>
+    <string name="planning_title_dialog">Schedule survey</string>
+    <string name="planning_label_schedule_date">* Data calendário</string>
+    <string name="planning_label_comment">* Comente</string>
+    <string name="option_edit">Editar</string>
+    <string name="option_mark_completed">Marcar como concluída</string>
+    <string name="option_delete">Excluir</string>
+    <string name="dialog_info_push_confirm">Você tem certeza? Você não pode desfazer esta ação</string>
+
+    <string name="hide_planning_tab_title" >Ocultar guia planejamento</string>
+    <string name="hide_planning_tab_summary" >Marque esta caixa para ocultar a guia de planejamento</string>
 </resources>
