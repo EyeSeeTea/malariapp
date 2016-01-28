@@ -82,6 +82,8 @@
     <string name="feedback_title_organization_unit_date">Org Unit / Date</string>
     <string name="feedback_title_header">Retour</string>
     <string name="feedback_show_only_failed">"Afficher seulement échoué aux questions"</string>
+    <string name="feedback_return">Retour à toutes les évaluations</string>
+    <string name="quality_of_care">Qualité des soins (QoC) Score:</string>
     <string name="feedback_info_passed">"Passé"</string>
     <string name="feedback_info_failed">"Manqué"</string>
     <string name="feedback_info_not_answered">"Pas répondu"</string>
