@@ -40,7 +40,6 @@ import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.model.OrgUnit;
 import org.eyeseetea.malariacare.database.model.Program;
 import org.eyeseetea.malariacare.database.model.Survey;
-import org.eyeseetea.malariacare.database.utils.PopulateDB;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.layout.adapters.dashboard.AssessmentSentAdapter;
@@ -162,16 +161,16 @@ public class DashboardSentFragment extends ListFragment {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view,
                                        int position, long id) {
-                Program program=(Program) parent.getItemAtPosition(position);
-                boolean reload=false;
-                if(program.getName().equals(PROGRAM_WITHOUT_FILTER)) {
-                    if(programFilter != PROGRAM_WITHOUT_FILTER) {
-                        programFilter=PROGRAM_WITHOUT_FILTER;
+                Program program = (Program) parent.getItemAtPosition(position);
+                boolean reload = false;
+                if (program.getName().equals(PROGRAM_WITHOUT_FILTER)) {
+                    if (programFilter != PROGRAM_WITHOUT_FILTER) {
+                        programFilter = PROGRAM_WITHOUT_FILTER;
                         reload=true;
                     }
                 } else {
-                    if(programFilter != program.getUid()) {
-                        programFilter=program.getUid();
+                    if (programFilter != program.getUid()) {
+                        programFilter = program.getUid();
                         reload=true;
                     }
                 }
@@ -193,20 +192,20 @@ public class DashboardSentFragment extends ListFragment {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view,
                                        int position, long id) {
-                OrgUnit orgUnit=(OrgUnit) parent.getItemAtPosition(position);
-                boolean reload=false;
-                if(orgUnit.getName().equals(ORG_UNIT_WITHOUT_FILTER)) {
-                    if(orgUnitFilter != ORG_UNIT_WITHOUT_FILTER) {
-                        orgUnitFilter=ORG_UNIT_WITHOUT_FILTER;
-                        reload=true;
+                OrgUnit orgUnit = (OrgUnit) parent.getItemAtPosition(position);
+                boolean reload = false;
+                if (orgUnit.getName().equals(ORG_UNIT_WITHOUT_FILTER)) {
+                    if (orgUnitFilter != ORG_UNIT_WITHOUT_FILTER) {
+                        orgUnitFilter = ORG_UNIT_WITHOUT_FILTER;
+                        reload = true;
                     }
                 } else {
-                    if(orgUnitFilter != orgUnit.getUid()) {
-                        orgUnitFilter=orgUnit.getUid();
-                        reload=true;
+                    if (orgUnitFilter != orgUnit.getUid()) {
+                        orgUnitFilter = orgUnit.getUid();
+                        reload = true;
                     }
                 }
-                if(reload)
+                if (reload)
                     reloadSentSurveys();
             }
 

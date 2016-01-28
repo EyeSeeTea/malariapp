@@ -270,7 +270,7 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
         replaceFragment(R.id.dashboard_details_container, createSurveyFragment);
     }
 
-    public void initSurveyFromPlanning() {
+    public void initSurveyFromPlanning(){
         tabHost.setCurrentTabByTag(getResources().getString(R.string.tab_tag_assess));
         initSurvey();
     }
@@ -329,7 +329,7 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
      * Init the fragments
      */
     private void setFragmentTransaction(int layout, ListFragment fragment) {
-        FragmentTransaction ft =getFragmentManager().beginTransaction();
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
         ft.add(layout, fragment);
         ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
         ft.commit();
@@ -399,7 +399,7 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
         startActivity(progressActivityIntent);
     }
 
-    private void pullMetadata() {
+    private void pullMetadata(){
         finishAndGo(ProgressActivity.class);
     }
 
