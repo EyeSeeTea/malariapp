@@ -126,7 +126,7 @@
                             android:orientation="horizontal"
                             android:background="@color/assess_grey">
                             <Spinner
-                                android:id="@+id/filter_orgunit"
+                                android:id="@+id/filter_program"
                                 android:layout_width="wrap_content"
                                 android:layout_weight="1"
                                 android:layout_height="wrap_content"
@@ -141,7 +141,7 @@
                                 android:paddingBottom="5dip"/>
 
                             <Spinner
-                                android:id="@+id/filter_program"
+                                android:id="@+id/filter_orgunit"
                                 android:layout_width="wrap_content"
                                 android:layout_weight="1"
                                 android:layout_height="wrap_content"

@@ -62,8 +62,8 @@ public class DashboardSentFragment extends ListFragment {
 
 
     public static final String TAG = ".CompletedFragment";
-    private final static String ORG_UNIT_WITHOUT_FILTER ="ALL ASSESSMENTS";
-    private final static String PROGRAM_WITHOUT_FILTER ="ALL ORG UNITS";
+    private final static String ORG_UNIT_WITHOUT_FILTER ="ALL ORG UNITS";
+    private final static String PROGRAM_WITHOUT_FILTER ="ALL ASSESSMENTS";
     private final static int WITHOUT_ORDER =0;
     private final static int FACILITY_ORDER =1;
     private final static int DATE_ORDER =2;
