@@ -24,11 +24,12 @@ import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.app.ListFragment;
-import android.app.LocalActivityManager;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.Menu;
@@ -89,14 +90,16 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
             Log.e(".DashboardActivity", e.getMessage());
         }
         if(savedInstanceState==null) {
-            initPlanned();
+            if(!isPlanningTabHide())
+                initPlanned();
             initAssess();
             initImprove();
             initMonitor();
         }
         initTabHost(savedInstanceState);
         /* set tabs in order */
-        setTab(getResources().getString(R.string.tab_tag_plan), R.id.tab_plan_layout, getResources().getDrawable(R.drawable.tab_plan));
+        if(!isPlanningTabHide())
+            setTab(getResources().getString(R.string.tab_tag_plan), R.id.tab_plan_layout, getResources().getDrawable(R.drawable.tab_plan));
         setTab(getResources().getString(R.string.tab_tag_assess), R.id.tab_assess_layout, getResources().getDrawable(R.drawable.tab_assess));
         setTab(getResources().getString(R.string.tab_tag_improve), R.id.tab_improve_layout, getResources().getDrawable(R.drawable.tab_improve));
         setTab(getResources().getString(R.string.tab_tag_monitor), R.id.tab_monitor_layout, getResources().getDrawable(R.drawable.tab_monitor));
@@ -150,9 +153,18 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
             tabHost.getTabWidget().getChildAt(i).setFocusable(false);
         }
         //set the initial selected tab background
-        tabHost.getTabWidget().getChildAt(0).setBackgroundColor(getResources().getColor(R.color.tab_orange_plan));
+        if(!isPlanningTabHide()) {
+            tabHost.getTabWidget().getChildAt(0).setBackgroundColor(getResources().getColor(R.color.tab_orange_plan));
+        }
+        else
+            tabHost.getTabWidget().getChildAt(0).setBackgroundColor(getResources().getColor(R.color.tab_yellow_assess));
         currentTabName=getString(R.string.plan);
         setActionBarDashboard();
+    }
+
+    public boolean isPlanningTabHide(){
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        return sharedPreferences.getBoolean(getApplicationContext().getResources().getString(R.string.hide_planning_tab_key),false);
     }
 
     public void setActionBarDashboard(){
