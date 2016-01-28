@@ -195,7 +195,7 @@ public class SurveyService extends IntentService {
                 getAllInProgressSurveys();
                 break;
             case ALL_SENT_OR_COMPLETED_SURVEYS_ACTION:
-                getAllSentOrCompletedSurveys(ALL_SENT_OR_COMPLETED_SURVEYS_ACTION);
+                getAllSentOrCompletedSurveys();
                 break;
             case ALL_COMPLETED_SURVEYS_ACTION:
                 getAllCompletedSurveys();
@@ -308,7 +308,7 @@ public class SurveyService extends IntentService {
         }
 
         //Since intents does NOT admit NON serializable as values we use Session instead
-        Session.putServiceValue(ALL_IN_PROGRESS_SURVEYS_ACTION, surveys);
+        Session.putServiceValue(ALL_IN_PROGRESS_SURVEYS_ACTION,surveys);
 
         //Returning result to anyone listening
         Intent resultIntent= new Intent(ALL_IN_PROGRESS_SURVEYS_ACTION);
@@ -325,7 +325,7 @@ public class SurveyService extends IntentService {
     private void getSentDashboard() {
         Log.d(TAG, "SentDashboard");
 
-        getAllSentOrCompletedSurveys(ALL_SENT_OR_COMPLETED_SURVEYS_ACTION);
+        getAllSentOrCompletedSurveys();
         getAllOrgUnitsAndPrograms();
     }
 
@@ -355,7 +355,7 @@ public class SurveyService extends IntentService {
         getAllMonitorData();
         getAllInProgressSurveys();
         getAllCompletedSurveys();
-        getAllSentOrCompletedSurveys(ALL_SENT_OR_COMPLETED_SURVEYS_ACTION);
+        getAllSentOrCompletedSurveys();
         getAllOrgUnitsAndPrograms();
         getAllPlannedSurveys();
 
@@ -378,17 +378,17 @@ public class SurveyService extends IntentService {
     /**
      * Selects all sent surveys from database
      */
-    private void getAllSentOrCompletedSurveys(String service){
+    private void getAllSentOrCompletedSurveys(){
         Log.d(TAG,"getAllSentOrCompletedSurveys (Thread:"+Thread.currentThread().getId()+")");
 
         //Select surveys from sql
         List<Survey> surveys = Survey.getAllSentOrCompletedSurveys();
 
         //Since intents does NOT admit NON serializable as values we use Session instead
-        Session.putServiceValue(service,surveys);
+        Session.putServiceValue(ALL_SENT_OR_COMPLETED_SURVEYS_ACTION,surveys);
 
         //Returning result to anyone listening
-        Intent resultIntent= new Intent(service);
+        Intent resultIntent= new Intent(ALL_SENT_OR_COMPLETED_SURVEYS_ACTION);
         LocalBroadcastManager.getInstance(this).sendBroadcast(resultIntent);
     }
 
