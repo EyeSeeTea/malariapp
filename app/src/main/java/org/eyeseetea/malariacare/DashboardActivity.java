@@ -523,12 +523,12 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
         new AlertDialog.Builder(this)
                 .setTitle(R.string.survey_title_exit)
                 .setMessage(R.string.survey_info_exit).setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int arg1) {
-                Survey survey=Session.getSurvey();
-                survey.updateSurveyStatus();
-                closeSurveyFragment();
-            }
-        })
+                    public void onClick(DialogInterface dialog, int arg1) {
+                        Survey survey = Session.getSurvey();
+                        survey.updateSurveyStatus();
+                        closeSurveyFragment();
+                    }
+                })
                 .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int arg1) {
                         unsentFragment.reloadData();
