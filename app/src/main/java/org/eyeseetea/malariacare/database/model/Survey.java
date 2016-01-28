@@ -84,6 +84,9 @@ public class Survey extends BaseModel implements VisitableToSDK {
     @Column
     Integer status;
 
+    @Column
+    String eventuid;
+
     /**
      * List of values for this survey
      */
@@ -130,6 +133,14 @@ public class Survey extends BaseModel implements VisitableToSDK {
 
     public void setId_survey(Long id_survey) {
         this.id_survey = id_survey;
+    }
+
+    public String getEventUid() {
+        return eventuid;
+    }
+
+    public void setEventUid(String eventuid) {
+        this.eventuid = eventuid;
     }
 
     public OrgUnit getOrgUnit() {
@@ -750,6 +761,8 @@ public class Survey extends BaseModel implements VisitableToSDK {
             return false;
         if (eventDate != null ? !eventDate.equals(survey.eventDate) : survey.eventDate != null)
             return false;
+        if (eventuid != null ? !eventuid.equals(survey.eventuid) : survey.eventuid != null)
+            return false;
         if (scheduledDate != null ? !scheduledDate.equals(survey.scheduledDate) : survey.scheduledDate != null)
             return false;
         return !(status != null ? !status.equals(survey.status) : survey.status != null);
@@ -764,7 +777,8 @@ public class Survey extends BaseModel implements VisitableToSDK {
         result = 31 * result + (id_user != null ? id_user.hashCode() : 0);
         result = 31 * result + (creationDate != null ? creationDate.hashCode() : 0);
         result = 31 * result + (completionDate != null ? completionDate.hashCode() : 0);
-        result = 31 * result + (eventDate != null ? eventDate.hashCode() : 0);
+                result = 31 * result + (eventDate != null ? eventDate.hashCode() : 0);
+        result = 31 * result + (eventuid != null ? eventuid.hashCode() : 0);
         result = 31 * result + (scheduledDate != null ? scheduledDate.hashCode() : 0);
         result = 31 * result + (status != null ? status.hashCode() : 0);
         return result;
@@ -782,6 +796,7 @@ public class Survey extends BaseModel implements VisitableToSDK {
                 ", eventDate=" + eventDate +
                 ", scheduledDate=" + scheduledDate +
                 ", status=" + status +
+                ", eventuid="+eventuid+
                 '}';
     }
 }

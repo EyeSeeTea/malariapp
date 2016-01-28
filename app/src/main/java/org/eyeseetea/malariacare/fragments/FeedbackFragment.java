@@ -35,6 +35,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 
 
@@ -43,8 +44,10 @@ import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.database.utils.feedback.Feedback;
 import org.eyeseetea.malariacare.layout.adapters.survey.FeedbackAdapter;
+import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 import org.eyeseetea.malariacare.services.SurveyService;
 import org.eyeseetea.malariacare.views.CustomRadioButton;
+import org.eyeseetea.malariacare.views.CustomTextView;
 
 import java.util.List;
 
@@ -172,6 +175,22 @@ public class FeedbackFragment extends Fragment {
                                          }
                                      }
         );
+        CustomRadioButton goback=(CustomRadioButton)llLayout.findViewById(R.id.backToSentSurveys);
+        goback.setOnClickListener(new View.OnClickListener() {
+                                      @Override
+                                      public void onClick(View v) {
+                                          getActivity().onBackPressed();
+                                      }
+                                  }
+        );
+        
+        //Set mainscore and color.
+        Survey survey = Session.getSurvey();
+        float average = survey.getMainScore();
+        CustomTextView item= (CustomTextView)llLayout.findViewById(R.id.feedback_total_score);
+        item.setText(String.format("%.1f%%", average));
+        int colorId= LayoutUtils.trafficColor(average);
+        item.setTextColor(getResources().getColor(colorId));
     }
 
     private void loadItems(List<Feedback> items){

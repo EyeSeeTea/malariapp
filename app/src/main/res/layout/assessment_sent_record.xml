@@ -101,14 +101,6 @@
             app:tDimension="@string/font_size_level1"
             app:tFontName="@string/medium_font_name" />
 
-        <View
-            android:id="@+id/survey_light"
-            android:layout_width="10dp"
-            android:layout_height="10dp"
-            android:background="@drawable/circle_shape_red"
-            android:layout_margin="15dp"
-            android:layout_marginTop="20dp" />
-
     </LinearLayout>
 
 </TableRow>

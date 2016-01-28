@@ -80,4 +80,9 @@
         android:summary="@string/settings_checkbox_description_location_required"
         android:defaultValue="false" />
 
+    <CheckBoxPreference
+        android:key="@string/hide_planning_tab_key"
+        android:title="@string/hide_planning_tab_title"
+        android:summary="@string/hide_planning_tab_summary"
+        android:defaultValue="false" />
 </PreferenceScreen>
