@@ -122,6 +122,7 @@ public class DashboardUnsentFragment extends ListFragment {
         setListShown(false);
         //Listen for data
         registerSurveysReceiver();
+        reloadData();
         super.onResume();
     }
 
@@ -206,16 +207,10 @@ public class DashboardUnsentFragment extends ListFragment {
     public void reloadData(){
         //Reload data using service
         Intent surveysIntent=new Intent(PreferencesState.getInstance().getContext().getApplicationContext(), SurveyService.class);
-        surveysIntent.putExtra(SurveyService.SERVICE_METHOD, SurveyService.RELOAD_DASHBOARD_ACTION);
+        surveysIntent.putExtra(SurveyService.SERVICE_METHOD, SurveyService.UNSENT_DASHBOARD_ACTION);
         PreferencesState.getInstance().getContext().getApplicationContext().startService(surveysIntent);
     }
 
-    public void reloadToSend(){
-        //Reload data using service
-        Intent surveysIntent=new Intent(getActivity(), SurveyService.class);
-        surveysIntent.putExtra(SurveyService.SERVICE_METHOD, SurveyService.ALL_COMPLETED_SURVEYS_ACTION);
-        getActivity().startService(surveysIntent);
-    }
     @Override
     public void onPause(){
         Log.d(TAG, "onPause");
