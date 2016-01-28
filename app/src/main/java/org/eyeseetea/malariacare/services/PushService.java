@@ -117,12 +117,6 @@ public class PushService extends IntentService {
         PushResult result = pushClient.pushAPI();
         if(result.isSuccessful()){
             Log.d(TAG, "Estado del push: OK");
-
-
-            //Reload data using service
-            Intent surveysIntent=new Intent(this, SurveyService.class);
-            surveysIntent.putExtra(SurveyService.SERVICE_METHOD, SurveyService.RELOAD_DASHBOARD_ACTION);
-            this.startService(surveysIntent);
         }else{
             Log.d(TAG, "Estado del push: ERROR");
         }
