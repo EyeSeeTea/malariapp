@@ -323,8 +323,9 @@
     <string name="tab_tag_assess" translatable="false">tab_assess</string>
     <string name="tab_tag_improve" translatable="false">tab_improve</string>
     <string name="tab_tag_monitor" translatable="false">tab_monitor</string>
-
-
+    <string name="hide_planning_tab_key" translatable="false">tab_hide</string>
+    <string name="hide_planning_tab_title" >Hide planning tab</string>
+    <string name="hide_planning_tab_summary" >Check this box for hide planning tab</string>
     <string name="plan">plan</string>
     <string name="assess">assess</string>
     <string name="improve">improve</string>
