@@ -34,6 +34,7 @@ import org.eyeseetea.malariacare.database.iomodules.dhis.exporter.IConvertToSDKV
 import org.eyeseetea.malariacare.database.iomodules.dhis.exporter.VisitableToSDK;
 import org.eyeseetea.malariacare.database.utils.SurveyAnsweredRatio;
 import org.eyeseetea.malariacare.database.utils.SurveyAnsweredRatioCache;
+import org.eyeseetea.malariacare.database.utils.planning.SurveyPlanner;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.utils.Constants;
 
@@ -660,6 +661,8 @@ public class Survey extends BaseModel implements VisitableToSDK {
         saveScore();
         save();
         saveMainScore();
+        //Plan a new survey for the future
+        SurveyPlanner.getInstance().buildNext(this);
     }
 
     /**

@@ -73,6 +73,7 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
      */
     List<Event> events;
 
+
     /**
      * The last survey that it is being translated
      */
@@ -287,9 +288,6 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
             }else{
                 iSurvey.saveMainScore();
                 iSurvey.save();
-
-                //Plan a new survey for the future
-                SurveyPlanner.getInstance().buildNext(iSurvey);
 
                 //To avoid several pushes
                 iEvent.setFromServer(true);
