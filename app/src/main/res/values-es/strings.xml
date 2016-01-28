@@ -82,6 +82,8 @@
     <string name="feedback_title_organization_unit_date">Unidad de organización/ Date</string>
     <string name="feedback_title_header">Realimentación</string>
     <string name="feedback_show_only_failed">Mostrar solo preguntas falladas</string>
+    <string name="feedback_return">Regresar a todas las evaluaciones</string>
+    <string name="quality_of_care">Calidad de la Asistencia (QoC) Puntuación:</string>
     <string name="feedback_info_passed">Aprobado</string>
     <string name="feedback_info_failed">Suspenso</string>
     <string name="feedback_info_not_answered">Sin respuesta</string>
@@ -251,4 +253,8 @@
     <string name="option_mark_completed">Marcar como completa</string>
     <string name="option_delete">Borrar</string>
     <string name="dialog_info_push_confirm">estás seguro? No podrás deshacer esta acción</string>
+
+
+    <string name="hide_planning_tab_title" >Ocultar ficha planificación</string>
+    <string name="hide_planning_tab_summary" >Marque esta casilla para ocultar ficha de planificación</string>
 </resources>

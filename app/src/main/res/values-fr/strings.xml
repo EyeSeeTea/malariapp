@@ -82,6 +82,8 @@
     <string name="feedback_title_organization_unit_date">Org Unit / Date</string>
     <string name="feedback_title_header">Retour</string>
     <string name="feedback_show_only_failed">"Afficher seulement échoué aux questions"</string>
+    <string name="feedback_return">Retour à toutes les évaluations</string>
+    <string name="quality_of_care">Qualité des soins (QoC) Score:</string>
     <string name="feedback_info_passed">"Passé"</string>
     <string name="feedback_info_failed">"Manqué"</string>
     <string name="feedback_info_not_answered">"Pas répondu"</string>
@@ -251,4 +253,8 @@
     <string name="option_mark_completed">Marquer comme terminée</string>
     <string name="option_delete">Effacer</string>
     <string name="dialog_info_push_confirm">Êtes-vous sûr ? Vous ne pourrez pas annuler cette action</string>
+
+
+    <string name="hide_planning_tab_title" >"Masquer l'onglet Planification"</string>
+    <string name="hide_planning_tab_summary" >Cochez cette case pour masquer onglet de planification</string>
 </resources>

@@ -23,12 +23,15 @@
     android:orientation="horizontal"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
+    android:paddingTop="10dip"
+    android:paddingBottom="10dip"
+    android:background="@color/feedbackDarkBlue"
     android:gravity="center">
 
     <org.eyeseetea.malariacare.views.CustomTextView
         android:layout_width="0dip"
         android:layout_height="fill_parent"
-        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="@string/assessment_title_facility_date"
         android:id="@+id/idHeader"
         android:background="@color/feedbackDarkBlue"
@@ -42,7 +45,7 @@
     <org.eyeseetea.malariacare.views.CustomTextView
         android:layout_width="0dip"
         android:layout_height="fill_parent"
-        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="@string/assessment_sent_date"
         android:id="@+id/statusHeader"
         android:background="@color/feedbackDarkBlue"
@@ -57,7 +60,7 @@
     <org.eyeseetea.malariacare.views.CustomTextView
         android:layout_width="0dip"
         android:layout_height="fill_parent"
-        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="@string/assessment_sent_score"
         android:id="@+id/scoreHeader"
         android:background="@color/feedbackDarkBlue"
