@@ -111,6 +111,11 @@ public class SurveyFragment extends  Fragment {
     private List<Tab> tabsList=new ArrayList<>();
 
     /**
+     * List of all tabs
+     */
+    List<Tab> allTabs;
+
+    /**
      * Map of adapters, each tab requires a different adapter to show its form
      */
     private Map<Tab, ITabAdapter> adaptersMap = new HashMap<Tab, ITabAdapter>();
@@ -209,7 +214,6 @@ public class SurveyFragment extends  Fragment {
         unregisterReceiver();
         super.onStop();
     }
-
     /**
      * Adds the spinner and imagebutons for tabs
      */
@@ -275,8 +279,7 @@ public class SurveyFragment extends  Fragment {
     }
 
     private void preLoadItems(){
-        List<Tab> tabs = new Select().all().from(Tab.class).queryList();
-        for(Tab tab: tabs) {
+        for(Tab tab: allTabs) {
             Intent preLoadService = new Intent(getActivity().getApplicationContext(), SurveyService.class);
             preLoadService.putExtra(SurveyService.SERVICE_METHOD, SurveyService.PRELOAD_TAB_ITEMS);
             preLoadService.putExtra("tab", tab.getId_tab());
@@ -572,6 +575,7 @@ public class SurveyFragment extends  Fragment {
             reloadTabs(tabs);
             stopProgress();
 
+            allTabs=(List<Tab>)Session.popServiceValue(SurveyService.PREPARE_ALL_TABS);
             // After loading first tab we start the individual services that preload the items for the rest of tabs
             preLoadItems();
         }

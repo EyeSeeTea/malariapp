@@ -115,6 +115,8 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
                     tabHost.getTabWidget().getChildAt(i).setBackgroundColor(getResources().getColor(R.color.transparent));
                 }
                 currentTab = tabId;
+
+                //If change of tab from surveyFragment or FeedbackFragment they could be closed.
                 if(isSurveyFragmentActive())
                     onExitFromSurvey();
                 if(isFeedbackFragmentActive())

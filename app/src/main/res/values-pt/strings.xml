@@ -80,7 +80,7 @@
     <string name="assessment_info_delete">Apagar</string>
     <string name="assessment_title_header">Avaliação activa</string>
     <string name="assessment_sent_title_header">Avaliação anterior(es)</string>
-    <string name="select_assessment">Selecione a avaliação</string>
+    <string name="all_assessment">Todas as avaliações</string>
 
     <!-- feedback -->
     <!-- XXX Should it be replaced by 'assessment_title_facility_date'?-->
@@ -263,4 +263,8 @@
 
     <string name="hide_planning_tab_title" >Ocultar guia planejamento</string>
     <string name="hide_planning_tab_summary" >Marque esta caixa para ocultar a guia de planejamento</string>
+
+    <!-- filters text -->
+    <string name="filter_all_org_units_upper">TODAS AS UNIDADES DE ORGANIZAÇÃO</string>
+    <string name="filter_all_org_assessments_upper">TODAS AS AVALIAÇÕES</string>
 </resources>
