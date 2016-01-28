@@ -35,6 +35,7 @@ import org.hisp.dhis.android.sdk.job.NetworkJob;
 import org.hisp.dhis.android.sdk.network.ResponseHolder;
 import org.hisp.dhis.android.sdk.persistence.Dhis2Application;
 import org.hisp.dhis.android.sdk.persistence.models.ImportSummary;
+import org.hisp.dhis.android.sdk.persistence.models.Event;
 import org.hisp.dhis.android.sdk.persistence.preferences.ResourceType;
 
 
@@ -124,9 +125,9 @@ public class PushController {
             postProgress(context.getString(R.string.progress_push_posting_survey));
             Log.d(TAG, "Pushing survey data to server...");
             DhisService.sendEventChanges();
-
-        }catch (Exception ex){
-            Log.e(TAG,"push: "+ex.getLocalizedMessage());
+            saveCreationDateInSDK(surveys);
+        }catch (Exception ex) {
+            Log.e(TAG, "push: " + ex.getLocalizedMessage());
             unregister();
             postException(ex);
             return false;
@@ -207,12 +208,13 @@ public class PushController {
         Log.d(TAG,"Saving complete date");
         //TODO is necesary check if the event was successfully uploaded before do this. It will be doing in sdk 2.21
         for(Survey survey:surveys){
-            if(converter.mapRelation.containsKey(survey)){
-                converter.mapRelation.get(survey).setCreated(EventExtended.format(survey.getCompletionDate()));
+            for(int i=0;i<converter.events.size();i++){
+                if(survey.getEventUid().equals(converter.events.get(i).getUid())) {
+                    converter.events.get(i).setCreated(EventExtended.format(survey.getCompletionDate()));
+                }
             }
         }
     }
-
     /**
      * Notifies a progress into the bus (the caller activity will be listening)
      * @param msg

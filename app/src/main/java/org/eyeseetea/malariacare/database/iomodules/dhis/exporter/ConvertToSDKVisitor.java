@@ -88,13 +88,7 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
      */
     Date completionDate;
 
-    /**
-     * Timestamp that captures the moment when the survey is converted right before being sent
-     */
-    static Map<Survey, Event> mapRelation;
-
     ConvertToSDKVisitor(Context context){
-        mapRelation = new HashMap<>();
         this.context=context;
         mainScoreUID=context.getString(R.string.main_score);
         mainScoreAUID=context.getString(R.string.main_score_a);
@@ -242,6 +236,7 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
         currentSurvey.setMainScore(ScoreRegister.calculateMainScore(compositeScores));
         currentSurvey.setStatus(Constants.SURVEY_SENT);
         currentSurvey.setCompletionDate(completionDate);
+        currentSurvey.setEventUid(currentEvent.getUid());
     }
 
     /**
@@ -271,7 +266,6 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
     private void annotateSurveyAndEvent() {
         surveys.add(currentSurvey);
         events.add(currentEvent);
-        mapRelation.put(currentSurvey, currentEvent);
         Log.d(TAG, String.format("%d surveys converted so far", surveys.size()));
     }
 
