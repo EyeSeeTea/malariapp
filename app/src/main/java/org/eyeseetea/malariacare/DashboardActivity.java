@@ -45,6 +45,7 @@ import com.squareup.otto.Subscribe;
 import org.eyeseetea.malariacare.database.model.Program;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.model.User;
+import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.database.utils.SurveyAnsweredRatio;
 import org.eyeseetea.malariacare.fragments.CreateSurveyFragment;
@@ -62,7 +63,7 @@ import java.io.IOException;
 import java.util.List;
 
 
-public class DashboardActivity extends BaseActivity implements DashboardUnsentFragment.OnSurveySelectedListener,CreateSurveyFragment.OnCreatedSurveyListener,DashboardSentFragment.OnFeedbackSelectedListener {
+public class DashboardActivity extends BaseActivity implements DashboardUnsentFragment.OnUnsentDashboardListener,CreateSurveyFragment.OnCreatedSurveyListener,DashboardSentFragment.OnFeedbackSelectedListener {
 
     private final static String TAG=".DDetailsActivity";
     private boolean reloadOnResume=true;
@@ -509,7 +510,7 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
 
                     public void onClick(DialogInterface arg0, int arg1) {
-                        Intent intent = new Intent(Intent.ACTION_MAIN);
+                        Intent intent=new Intent(Intent.ACTION_MAIN);
                         intent.addCategory(Intent.CATEGORY_HOME);
                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         startActivity(intent);
@@ -523,12 +524,12 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
         new AlertDialog.Builder(this)
                 .setTitle(R.string.survey_title_exit)
                 .setMessage(R.string.survey_info_exit).setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int arg1) {
-                        Survey survey = Session.getSurvey();
-                        survey.updateSurveyStatus();
-                        closeSurveyFragment();
-                    }
-                })
+            public void onClick(DialogInterface dialog, int arg1) {
+                Survey survey=Session.getSurvey();
+                survey.updateSurveyStatus();
+                closeSurveyFragment();
+            }
+        })
                 .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int arg1) {
                         unsentFragment.reloadData();
@@ -687,6 +688,13 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
         //Put selected survey in session
         Session.setSurvey(survey);
         initSurvey();
+    }
+
+    @Override
+    public void dialogCompulsoryQuestionIncompleted() {
+        new AlertDialog.Builder(this)
+                .setMessage(getApplicationContext().getResources().getString(R.string.dialog_incompleted_compulsory_survey))
+                .create().show();
     }
 
     @Override
