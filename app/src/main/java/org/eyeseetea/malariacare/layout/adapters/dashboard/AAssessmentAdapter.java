@@ -105,36 +105,42 @@ public abstract class AAssessmentAdapter extends ADashboardAdapter implements ID
         if (position < (this.items.size()-1)) {
             if (this.items.get(position+1).getOrgUnit().equals((this.items.get(position)).getOrgUnit())){
                 // show background without border and tell the system that next survey belongs to the same org unit, so its name doesn't need to be shown
-                if(items.get(position+1).isCompleted() || items.get(position+1).isSent()) {
-                    rowView.setBackgroundResource(LayoutUtils.calculateBackgroundsNoBorderImprove(this.backIndex));
-                }
-                else
-                rowView.setBackgroundResource(LayoutUtils.calculateBackgroundsNoBorder(this.backIndex));
+                rowView=setBackground(position+1,rowView);
                 this.showNextFacilityName = false;
             } else {
                 // show background with border and switch background for the next row
-                if(items.get(position+1).isCompleted() || items.get(position+1).isSent()) {
-                    rowView.setBackgroundResource(LayoutUtils.calculateBackgroundsImprove(this.backIndex));
-                }
-                else
-                    rowView.setBackgroundResource(LayoutUtils.calculateBackgrounds(this.backIndex));
+                rowView=setBackgroundWithBorder(position + 1, rowView);
                 this.backIndex++;
                 this.showNextFacilityName = true;
             }
         }  else {
             this.showNextFacilityName = true;
             //show background with border
-
-            if(items.get(position).isCompleted() || items.get(position).isSent()) {
-                rowView.setBackgroundResource(LayoutUtils.calculateBackgroundsImprove(this.backIndex));
-            }
-            else
-                rowView.setBackgroundResource(LayoutUtils.calculateBackgrounds(this.backIndex));
+            rowView=setBackgroundWithBorder(position, rowView);
         }
 
         return rowView;
     }
 
+    private View setBackgroundWithBorder(int position, View rowView) {
+        if(items.get(position).isCompleted() || items.get(position).isSent()) {
+            rowView.setBackgroundResource(LayoutUtils.calculateBackgroundsImprove(this.backIndex));
+        }
+        else {
+            rowView.setBackgroundResource(LayoutUtils.calculateBackgrounds(this.backIndex));
+        }
+        return rowView;
+    }
+
+    private View setBackground(int position, View rowView) {
+        if(items.get(position).isCompleted() || items.get(position).isSent()) {
+            rowView.setBackgroundResource(LayoutUtils.calculateBackgroundsImprove(this.backIndex));
+        }
+        else {
+            rowView.setBackgroundResource(LayoutUtils.calculateBackgrounds(this.backIndex));
+        }
+        return rowView;
+    }
     /**
      * Returns the proper status value (% or ready to send) according to the level of completion of the survey
      * @param survey
