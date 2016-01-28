@@ -284,6 +284,7 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
         //Set fks
         survey.setOrgUnit(orgUnit);
         survey.setTabGroup(tabGroup);
+        survey.setEventUid(event.getUid());
         survey.save();
 
         //Annotate object in map

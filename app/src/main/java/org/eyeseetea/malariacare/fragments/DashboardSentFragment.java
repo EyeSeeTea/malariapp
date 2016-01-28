@@ -40,7 +40,6 @@ import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.model.OrgUnit;
 import org.eyeseetea.malariacare.database.model.Program;
 import org.eyeseetea.malariacare.database.model.Survey;
-import org.eyeseetea.malariacare.database.utils.PopulateDB;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.layout.adapters.dashboard.AssessmentSentAdapter;
@@ -63,8 +62,8 @@ public class DashboardSentFragment extends ListFragment {
 
 
     public static final String TAG = ".CompletedFragment";
-    private final static String ORG_UNIT_WITHOUT_FILTER ="ALL ASSESSMENTS";
-    private final static String PROGRAM_WITHOUT_FILTER ="ALL ORG UNITS";
+    private final static String ORG_UNIT_WITHOUT_FILTER ="ALL ORG UNITS";
+    private final static String PROGRAM_WITHOUT_FILTER ="ALL ASSESSMENTS";
     private final static int WITHOUT_ORDER =0;
     private final static int FACILITY_ORDER =1;
     private final static int DATE_ORDER =2;
@@ -151,7 +150,7 @@ public class DashboardSentFragment extends ListFragment {
         initAdapter();
         initListView();
     }
-    private void initFilters(View view) {
+    private void initFilters() {
         filterSpinnerProgram = (Spinner) getActivity().findViewById(R.id.filter_program);
         List<Program> filterProgramList=programList;
         filterProgramList.add(0, new Program(PROGRAM_WITHOUT_FILTER));
@@ -187,7 +186,7 @@ public class DashboardSentFragment extends ListFragment {
         filterSpinnerOrgUnit = (Spinner) getActivity().findViewById(R.id.filter_orgunit);
 
         orgUnitList.add(0, new OrgUnit(ORG_UNIT_WITHOUT_FILTER));
-        filterSpinnerOrgUnit.setAdapter(new OrgUnitArrayAdapter(getActivity().getApplicationContext(), orgUnitList));
+        filterSpinnerOrgUnit.setAdapter(new FilterOrgUnitArrayAdapter(getActivity().getApplicationContext(), orgUnitList));
         filterSpinnerOrgUnit.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 
             @Override
@@ -321,10 +320,9 @@ public class DashboardSentFragment extends ListFragment {
         LayoutInflater inflater = LayoutInflater.from(getActivity());
         View header = inflater.inflate(this.adapter.getHeaderLayout(), null, false);
         View footer = inflater.inflate(this.adapter.getFooterLayout(), null, false);
-        CustomTextView title = (CustomTextView) getActivity().findViewById(R.id.titleCompleted);
-        title.setText(adapter.getTitle());
         header=initFilterOrder(header);
         ListView listView = getListView();
+        listView.setBackgroundColor(getResources().getColor(R.color.feedbackDarkBlue));
         listView.addHeaderView(header);
         listView.addFooterView(footer);
         setListAdapter((BaseAdapter) adapter);
@@ -403,6 +401,7 @@ public class DashboardSentFragment extends ListFragment {
         surveysIntent.putExtra(SurveyService.SERVICE_METHOD, SurveyService.RELOAD_DASHBOARD_ACTION);
         PreferencesState.getInstance().getContext().getApplicationContext().startService(surveysIntent);
     }
+
     /**
      * filter the surveys for last survey in org unit, and set surveysForGraphic for the statistics
      */
@@ -470,6 +469,13 @@ public class DashboardSentFragment extends ListFragment {
         }
         reloadSurveys(oneSurveyForOrgUnit);
     }
+
+    public void getOrgUnitAndProgram(){
+        HashMap<String,List> data=(HashMap) Session.popServiceValue(SurveyService.ALL_ORG_UNITS_AND_PROGRAMS_ACTION);
+        orgUnitList=data.get(SurveyService.PREPARE_ORG_UNIT);
+        programList=data.get(SurveyService.PREPARE_PROGRAMS);
+    }
+
     private HashMap<String, Survey> filterSurvey(HashMap<String, Survey> orgUnits, Survey survey) {
         if(orgUnitFilter.equals(ORG_UNIT_WITHOUT_FILTER) || orgUnitFilter.equals(survey.getOrgUnit().getUid()))
             if(programFilter.equals(PROGRAM_WITHOUT_FILTER) || programFilter.equals(survey.getTabGroup().getProgram().getUid()))
@@ -496,14 +502,5 @@ public class DashboardSentFragment extends ListFragment {
                 initFilters(getView());
             }
         }
-
     }
-    public void getOrgUnitAndProgram(){
-        HashMap<String,List> data=(HashMap) Session.popServiceValue(SurveyService.ALL_ORG_UNITS_AND_PROGRAMS_ACTION);
-        orgUnitList=data.get(SurveyService.PREPARE_ORG_UNIT);
-        programList=data.get(SurveyService.PREPARE_PROGRAMS);
-    }
-
-
-
 }
