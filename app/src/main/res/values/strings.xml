@@ -56,6 +56,8 @@
     <string name="dialog_continue_later_option">Continue Later</string>
     <string name="dialog_complete_option">Complete</string>
     <string name="dialog_are_you_sure_complete_survey">Are you sure? This action cannot be undone and you will no longer be able to edit or delete this survey</string>
+    <string name="dialog_incompleted_compulsory_survey">This survey cannot be sent yet. Please answer at least all the compulsory questions</string>
+
     <!-- Toast -->
     <string name="cancellingPull">The process will be stopped in a few seconds </string>
 
