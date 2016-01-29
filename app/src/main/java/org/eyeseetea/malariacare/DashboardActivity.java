@@ -122,29 +122,29 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
                 if(isFeedbackFragmentActive())
                     closeFeedbackFragment();
                 if (tabId.equalsIgnoreCase(getResources().getString(R.string.tab_tag_plan))) {
+                    currentTabName=getString(R.string.plan);
                     tabHost.getCurrentTabView().setBackgroundColor(getResources().getColor(R.color.tab_orange_plan));
                     setActionBarDashboard();
-                    currentTabName=getString(R.string.plan);
                     plannedFragment.reloadPlannedItems();
                 } else if (tabId.equalsIgnoreCase(getResources().getString(R.string.tab_tag_assess))) {
+                    currentTabName=getString(R.string.assess);
                     tabHost.getCurrentTabView().setBackgroundColor(getResources().getColor(R.color.tab_yellow_assess));
                     if(isCreateSurveyFragmentActive() ||isDashboardUnsentFragmentActive())
                         setActionBarDashboard();
-                    currentTabName=getString(R.string.assess);
                     if(isSurveyFragmentActive())
                         setActionBarTitleForSurvey(Session.getSurvey());
                     unsentFragment.reloadData();
                 } else if (tabId.equalsIgnoreCase(getResources().getString(R.string.tab_tag_improve))) {
-                    tabHost.getCurrentTabView().setBackgroundColor(getResources().getColor(R.color.tab_blue_improve));
                     currentTabName=getString(R.string.improve);
+                    tabHost.getCurrentTabView().setBackgroundColor(getResources().getColor(R.color.tab_blue_improve));
                     if(!isFeedbackFragmentActive()){
                         setActionBarDashboard();
                         sentFragment.reloadSentSurveys();
                     }
                 } else if (tabId.equalsIgnoreCase(getResources().getString(R.string.tab_tag_monitor))) {
+                    currentTabName=getString(R.string.monitor);
                     tabHost.getCurrentTabView().setBackgroundColor(getResources().getColor(R.color.tab_green_monitor));
                     setActionBarDashboard();
-                    currentTabName=getString(R.string.monitor);
                     monitorFragment.reloadSentSurveys();
                 }
             }
@@ -157,10 +157,12 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
         //set the initial selected tab background
         if(!isPlanningTabHide()) {
             tabHost.getTabWidget().getChildAt(0).setBackgroundColor(getResources().getColor(R.color.tab_orange_plan));
+            currentTabName=getString(R.string.plan);
         }
-        else
+        else {
             tabHost.getTabWidget().getChildAt(0).setBackgroundColor(getResources().getColor(R.color.tab_yellow_assess));
-        currentTabName=getString(R.string.plan);
+            currentTabName=getString(R.string.assess);
+        }
         setActionBarDashboard();
     }
 
@@ -170,46 +172,36 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
     }
 
     public void setActionBarDashboard(){
-        String title=getString(R.string.app_name);
-        String subtitle="";
+        String title="";
         if(Session.getUser()!=null && Session.getUser().getName()!=null)
-            subtitle=Session.getUser().getName();
-        setActionbarTitle(title, subtitle);
+            title=Session.getUser().getName().toUpperCase();
+        title=title+": "+currentTabName.toUpperCase();
+        setActionbarMultiTitle("",title,"");
     }
 
     public void setActionBarTitleForSurvey(Survey survey){
-        String title=getString(R.string.app_name)+": "+currentTabName.toUpperCase();
+        String title="";
         String subtitle="";
-
+        String subtitle2="";
         if(Session.getUser()!=null && Session.getUser().getName()!=null)
-            subtitle=Session.getUser().getName();
+            title=Session.getUser().getName().toUpperCase();
+        title=title+": "+currentTabName.toUpperCase();
 
         Program program = survey.getTabGroup().getProgram();
-        String subtitle2="";
-        String subtitle3="";
         if(survey.getOrgUnit().getName()!=null)
-            subtitle2=survey.getOrgUnit().getName();
+            subtitle=survey.getOrgUnit().getName();
         if(program.getName()!=null)
-            subtitle3=program.getName();
-        setActionbarMultiTitle(title, subtitle, subtitle2, subtitle3);
+            subtitle2=program.getName();
+        setActionbarMultiTitle(title, subtitle, subtitle2);
     }
 
-    public void setActionbarTitle(String title1, String title2) {
+    public void setActionbarMultiTitle(String title1, String title2,String title3) {
         android.support.v7.app.ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayShowCustomEnabled(true);
-        actionBar.setCustomView(R.layout.action_bar_title_layout);
-        ((TextView) findViewById(R.id.action_bar_title)).setText(title1);
-        ((TextView) findViewById(R.id.action_bar_subtitle)).setText(title2);
-    }
-
-    public void setActionbarMultiTitle(String title1, String title2,String title3, String title4) {
-        android.support.v7.app.ActionBar actionBar = getSupportActionBar();
-        actionBar.setDisplayShowCustomEnabled(true);
-        actionBar.setCustomView(R.layout.action_bar_four_title_layout);
+        actionBar.setCustomView(R.layout.action_bar_three_title_layout);
         ((TextView) findViewById(R.id.action_bar_multititle_title)).setText(title1);
         ((TextView) findViewById(R.id.action_bar_multititle_subtitle)).setText(title2);
         ((TextView) findViewById(R.id.action_bar_multititle_subtitle2)).setText(title3);
-        ((TextView) findViewById(R.id.action_bar_multititle_subtitle3)).setText(title4);
     }
 
     /**
@@ -346,14 +338,6 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
         ft.add(layout, fragment);
         ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
         ft.commit();
-    }
-
-    private void setActionbarTitle() {
-        android.support.v7.app.ActionBar actionBar =  getSupportActionBar();
-        actionBar.setDisplayShowCustomEnabled(true);
-        actionBar.setCustomView(R.layout.action_bar_title_layout);
-        ((TextView) findViewById(R.id.action_bar_title)).setText(getString(R.string.app_name));
-        ((TextView) findViewById(R.id.action_bar_subtitle)).setText(Session.getUser().getName());
     }
 
     @Override
@@ -525,12 +509,12 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
         new AlertDialog.Builder(this)
                 .setTitle(R.string.survey_title_exit)
                 .setMessage(R.string.survey_info_exit).setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int arg1) {
-                        Survey survey = Session.getSurvey();
-                        survey.updateSurveyStatus();
-                        closeSurveyFragment();
-                    }
-                })
+            public void onClick(DialogInterface dialog, int arg1) {
+                Survey survey=Session.getSurvey();
+                survey.updateSurveyStatus();
+                closeSurveyFragment();
+            }
+        })
                 .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int arg1) {
                         unsentFragment.reloadData();
@@ -565,7 +549,7 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
                 .setNegativeButton(android.R.string.no, null)
                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int arg1) {
-                        Survey survey = Session.getSurvey();
+                        Survey survey=Session.getSurvey();
                         survey.setCompleteSurveyState();
                         closeSurveyFragment();
                     }
