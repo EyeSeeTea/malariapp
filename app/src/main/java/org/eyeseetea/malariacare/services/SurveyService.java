@@ -56,9 +56,35 @@ public class SurveyService extends IntentService {
     public static final String SERVICE_METHOD="serviceMethod";
 
     /**
+     * Name of the parameter that holds every lists that goes into the planned tab
+     */
+    public static final String PLANNED_ACTION="org.eyeseetea.malariacare.services.SurveyService.PLANNED_ACTION";
+
+    /**
+     * Name of 'All monitor data' action
+     */
+    public static final String ALL_MONITOR_DATA_ACTION ="org.eyeseetea.malariacare.services.SurveyService.ALL_MONITOR_DATA_ACTION";
+
+    /**
+     *
+     * Name of the parameter that holds every survey that goes into the DashboardUnsentFragment
+     */
+    public static final String UNSENT_DASHBOARD_ACTION="org.eyeseetea.malariacare.services.SurveyService.UNSENT_DASHBOARD_ACTION";
+    /**
+     *
+     * Name of the parameter that holds every survey that goes into the DashboardSentFragment
+     */
+    public static final String SENT_DASHBOARD_ACTION="org.eyeseetea.malariacare.services.SurveyService.SENT_DASHBOARD_ACTION";
+
+    /**
+     * Name of 'All create survey data' action
+     */
+    public static final String ALL_CREATE_SURVEY_DATA_ACTION ="org.eyeseetea.malariacare.services.SurveyService.ALL_CREATE_SURVEY_DATA_ACTION";
+
+    /**
      * Name of the parameter that holds every survey that goes into the planned tab
      */
-    public static final String PLANNED_SURVEYS_ACTION="org.eyeseetea.malariacare.services.SurveyService.PLANNED_SURVEYS_ACTION";
+    public static final String PLANNED_SURVEYS="org.eyeseetea.malariacare.services.SurveyService.PLANNED_SURVEYS";
 
     /**
      * Name of 'list unsent or uncompleted' action
@@ -70,7 +96,7 @@ public class SurveyService extends IntentService {
     public static final String ALL_COMPLETED_SURVEYS_ACTION ="org.eyeseetea.malariacare.services.SurveyService.ALL_COMPLETED_SURVEYS_ACTION";
 
     /**
-     * Name of 'list completed' action
+     * Name of 'list completed' action (Used in DashboardSentFragment)
      */
     public static final String ALL_SENT_OR_COMPLETED_SURVEYS_ACTION ="org.eyeseetea.malariacare.services.SurveyService.ALL_SENT_OR_COMPLETED_SURVEYS_ACTION";
 
@@ -90,22 +116,13 @@ public class SurveyService extends IntentService {
     public static final String PREPARE_FEEDBACK_ACTION="org.eyeseetea.malariacare.services.SurveyService.PREPARE_FEEDBACK_ACTION";
 
     /**
-     * Name of 'All monitor data' action
-     */
-    public static final String ALL_MONITOR_DATA_ACTION ="org.eyeseetea.malariacare.services.SurveyService.ALL_MONITOR_DATA_ACTION";
-
-    /**
      * Name of 'All filter sentfragment' action
      */
     public static final String ALL_ORG_UNITS_AND_PROGRAMS_ACTION ="org.eyeseetea.malariacare.services.SurveyService.ALL_ORG_UNITS_AND_PROGRAMS_ACTION";
     /**
-     * Name of 'All create survey data' action
-     */
-    public static final String ALL_CREATE_SURVEY_DATA_ACTION ="org.eyeseetea.malariacare.services.SurveyService.ALL_CREATE_SURVEY_DATA_ACTION";
-    /**
      * Name of 'All programs' action
      */
-    public static final String ALL_PROGRAMS_ACTION ="org.eyeseetea.malariacare.services.SurveyService.ALL_PROGRAMS_ACTION";
+    public static final String ALL_PROGRAMS="org.eyeseetea.malariacare.services.SurveyService.ALL_PROGRAMS";
 
     /**
      * Key of composite scores entry in shared session
@@ -202,8 +219,17 @@ public class SurveyService extends IntentService {
             case ALL_CREATE_SURVEY_DATA_ACTION:
                 getAllCreateSurveyData();
                 break;
-            case ALL_PROGRAMS_ACTION:
+            case ALL_PROGRAMS:
                 getAllPrograms();
+                break;
+            case PLANNED_ACTION:
+                getPlannedSurveys();
+                break;
+            case UNSENT_DASHBOARD_ACTION:
+                getUnsentDashboard();
+                break;
+            case SENT_DASHBOARD_ACTION:
+                getSentDashboard();
                 break;
         }
     }
@@ -261,13 +287,12 @@ public class SurveyService extends IntentService {
     }
 
     private void getAllPrograms() {
-        Log.d(TAG,"getAllPrograms (Thread:"+Thread.currentThread().getId()+")");
-        List<Program> programList=Program.getAllPrograms();
+        Log.d(TAG, "getAllPrograms (Thread:" + Thread.currentThread().getId() + ")");
         //Since intents does NOT admit NON serializable as values we use Session instead
-        Session.putServiceValue(ALL_PROGRAMS_ACTION, programList);
+        Session.putServiceValue(ALL_PROGRAMS, Program.getAllPrograms());
 
         //Returning result to anyone listening
-        Intent resultIntent= new Intent(ALL_PROGRAMS_ACTION);
+        Intent resultIntent= new Intent(ALL_PROGRAMS);
         LocalBroadcastManager.getInstance(this).sendBroadcast(resultIntent);
     }
 
@@ -297,51 +322,42 @@ public class SurveyService extends IntentService {
         }
     }
 
+    private void getSentDashboard() {
+        Log.d(TAG, "SentDashboard");
+
+        getAllSentOrCompletedSurveys();
+        getAllOrgUnitsAndPrograms();
+    }
+
+    private void getUnsentDashboard() {
+        Log.d(TAG, "UnsentDashboard");
+
+        getAllInProgressSurveys();
+        getAllCompletedSurveys();
+    }
+
+    private void getPlannedSurveys() {
+        Log.d(TAG, "PlannedSurveys");
+        getAllPlannedSurveys();
+        getAllPrograms();
+    }
+
+    private void getAllPlannedSurveys(){
+        Session.putServiceValue(PLANNED_SURVEYS, PlannedItemBuilder.getInstance().buildPlannedItems());
+        LocalBroadcastManager.getInstance(this).sendBroadcast(new Intent(PLANNED_SURVEYS));
+    }
+
     private void reloadDashboard(){
         Log.d(TAG, "reloadDashboard");
-        List<OrgUnit> orgUnitListParents = new Select().all().from(OrgUnit.class).where(Condition.column(OrgUnit$Table.ID_PARENT).isNull()).queryList();
-        List<OrgUnitLevel> orgUnitLevelList = new Select().all().from(OrgUnitLevel.class).queryList();
-        List<OrgUnit> orgUnitList=OrgUnit.getAllOrgUnit();
-        List<Survey> completedUnsentSurveys=Survey.getAllCompletedUnsentSurveys();
-        List<Survey> unsentSurveys=Survey.getAllInProgressSurveys();
-        List<Survey> sentSurveys=Survey.getAllSentSurveys();
-        for(Survey survey:unsentSurveys){
-                survey.getAnsweredQuestionRatio();
-        }
-
-        //Since intents does NOT admit NON serializable as values we use Session instead
-        HashMap<String,List> monitorMap=new HashMap<>();
-        monitorMap.put(PREPARE_SURVEYS, sentSurveys);
-        monitorMap.put(PREPARE_PROGRAMS, Program.getAllPrograms());
-
-        HashMap<String,List> orgUnitsAndPrograms=new HashMap<>();
-        orgUnitsAndPrograms.put(PREPARE_ORG_UNIT, orgUnitList);
-        orgUnitsAndPrograms.put(PREPARE_PROGRAMS, Program.getAllPrograms());
-
-        HashMap<String,List> orgCreateSurveyData=new HashMap<>();
-        orgCreateSurveyData.put(PREPARE_ORG_UNIT, orgUnitListParents);
-        orgCreateSurveyData.put(PREPARE_ORG_UNIT_LEVEL, orgUnitLevelList);
-        orgCreateSurveyData.put(PREPARE_PROGRAMS, Program.getAllPrograms());
-        //Since intents does NOT admit NON serializable as values we use Session instead
-        Session.putServiceValue(ALL_CREATE_SURVEY_DATA_ACTION, orgCreateSurveyData);
-        Session.putServiceValue(ALL_MONITOR_DATA_ACTION,monitorMap);
-        Session.putServiceValue(ALL_IN_PROGRESS_SURVEYS_ACTION, unsentSurveys);
-        Session.putServiceValue(ALL_COMPLETED_SURVEYS_ACTION, completedUnsentSurveys);
-        Session.putServiceValue(ALL_SENT_OR_COMPLETED_SURVEYS_ACTION, sentSurveys);
-        Session.putServiceValue(PLANNED_SURVEYS_ACTION, PlannedItemBuilder.getInstance().buildPlannedItems());
-        Session.putServiceValue(ALL_ORG_UNITS_AND_PROGRAMS_ACTION,orgUnitsAndPrograms);
-        Session.putServiceValue(ALL_PROGRAMS_ACTION,Program.getAllPrograms());
-
         //Returning result to anyone listening
-
-        LocalBroadcastManager.getInstance(this).sendBroadcast(new Intent(ALL_PROGRAMS_ACTION));
-        LocalBroadcastManager.getInstance(this).sendBroadcast(new Intent(ALL_CREATE_SURVEY_DATA_ACTION));
-        LocalBroadcastManager.getInstance(this).sendBroadcast(new Intent(ALL_MONITOR_DATA_ACTION));
-        LocalBroadcastManager.getInstance(this).sendBroadcast(new Intent(ALL_IN_PROGRESS_SURVEYS_ACTION));
-        LocalBroadcastManager.getInstance(this).sendBroadcast(new Intent(ALL_COMPLETED_SURVEYS_ACTION));
-        LocalBroadcastManager.getInstance(this).sendBroadcast(new Intent(ALL_SENT_OR_COMPLETED_SURVEYS_ACTION));
-        LocalBroadcastManager.getInstance(this).sendBroadcast(new Intent(PLANNED_SURVEYS_ACTION));
-        LocalBroadcastManager.getInstance(this).sendBroadcast(new Intent(ALL_ORG_UNITS_AND_PROGRAMS_ACTION));
+        getAllPrograms();
+        getAllCreateSurveyData();
+        getAllMonitorData();
+        getAllInProgressSurveys();
+        getAllCompletedSurveys();
+        getAllSentOrCompletedSurveys();
+        getAllOrgUnitsAndPrograms();
+        getAllPlannedSurveys();
 
     }
 

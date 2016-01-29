@@ -65,7 +65,6 @@ import java.util.List;
 public class DashboardActivity extends BaseActivity implements DashboardUnsentFragment.onSurveySelectedListener,CreateSurveyFragment.OnCreatedSurveyListener,DashboardSentFragment.OnFeedbackSelectedListener {
 
     private final static String TAG=".DDetailsActivity";
-    private boolean reloadOnResume=true;
     TabHost tabHost;
     PlannedFragment plannedFragment;
     MonitorFragment monitorFragment;
@@ -125,7 +124,7 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
                     tabHost.getCurrentTabView().setBackgroundColor(getResources().getColor(R.color.tab_orange_plan));
                     setActionBarDashboard();
                     currentTabName=getString(R.string.plan);
-                    plannedFragment.reloadPlannedItems();
+                    plannedFragment.reloadData();
                 } else if (tabId.equalsIgnoreCase(getResources().getString(R.string.tab_tag_assess))) {
                     tabHost.getCurrentTabView().setBackgroundColor(getResources().getColor(R.color.tab_yellow_assess));
                     if(isCreateSurveyFragmentActive() ||isDashboardUnsentFragmentActive())
@@ -139,13 +138,13 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
                     currentTabName=getString(R.string.improve);
                     if(!isFeedbackFragmentActive()){
                         setActionBarDashboard();
-                        sentFragment.reloadSentSurveys();
+                        sentFragment.reloadData();
                     }
                 } else if (tabId.equalsIgnoreCase(getResources().getString(R.string.tab_tag_monitor))) {
                     tabHost.getCurrentTabView().setBackgroundColor(getResources().getColor(R.color.tab_green_monitor));
                     setActionBarDashboard();
                     currentTabName=getString(R.string.monitor);
-                    monitorFragment.reloadSentSurveys();
+                    monitorFragment.reloadData();
                 }
             }
         });
@@ -431,29 +430,12 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
     public void onResume(){
         Log.d(TAG, "onResume");
         super.onResume();
-        getSurveysFromService();
     }
 
     @Override
     public void onPause(){
         Log.d(TAG, "onPause");
         super.onPause();
-    }
-
-    public void setReloadOnResume(boolean doReload){
-        this.reloadOnResume=false;
-    }
-
-    public void getSurveysFromService(){
-        Log.d(TAG, "getSurveysFromService ("+reloadOnResume+")");
-        if(!reloadOnResume){
-            //Flag is readjusted
-            reloadOnResume=true;
-            return;
-        }
-        Intent surveysIntent=new Intent(this, SurveyService.class);
-        surveysIntent.putExtra(SurveyService.SERVICE_METHOD, SurveyService.RELOAD_DASHBOARD_ACTION);
-        this.startService(surveysIntent);
     }
 
     /**

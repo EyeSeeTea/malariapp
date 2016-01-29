@@ -134,7 +134,8 @@ public class PushClient {
         }
         finally {
             //Success or not the dashboard must be reloaded
-            updateDashboard();
+            //It is not needed anymore
+            //updateDashboard();
         }
     }
 
@@ -165,7 +166,8 @@ public class PushClient {
         }
         finally {
             //Success or not the dashboard must be reloaded
-            updateDashboard();
+            //It is not needed anymore
+            //updateDashboard();
         }
         return  pushResult;
     }

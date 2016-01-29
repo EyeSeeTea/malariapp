@@ -32,21 +32,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.raizlabs.android.dbflow.sql.language.Select;
-
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.model.Program;
-import org.eyeseetea.malariacare.database.model.Survey;
+import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.database.utils.planning.PlannedItem;
 import org.eyeseetea.malariacare.layout.adapters.general.ProgramArrayAdapter;
 import org.eyeseetea.malariacare.layout.adapters.survey.PlannedAdapter;
 import org.eyeseetea.malariacare.services.SurveyService;
-import org.eyeseetea.malariacare.utils.Constants;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -97,7 +93,6 @@ public class PlannedFragment extends ListFragment {
     }
 
     private void prepareUI() {
-        this.adapter = new PlannedAdapter(plannedItems,getActivity());
         this.setListAdapter(adapter);
 
         Spinner programSpinner = (Spinner) getActivity().findViewById(R.id.dashboard_planning_program);
@@ -129,6 +124,7 @@ public class PlannedFragment extends ListFragment {
         setListShown(false);
         //Listen for data
         registerPlannedItemsReceiver();
+        reloadData();
         super.onResume();
     }
 
@@ -155,8 +151,8 @@ public class PlannedFragment extends ListFragment {
 
         if (plannedItemsReceiver == null) {
             plannedItemsReceiver = new PlannedItemsReceiver();
-            LocalBroadcastManager.getInstance(getActivity()).registerReceiver(plannedItemsReceiver, new IntentFilter(SurveyService.PLANNED_SURVEYS_ACTION));
-            LocalBroadcastManager.getInstance(getActivity()).registerReceiver(plannedItemsReceiver, new IntentFilter(SurveyService.ALL_PROGRAMS_ACTION));
+            LocalBroadcastManager.getInstance(getActivity()).registerReceiver(plannedItemsReceiver, new IntentFilter(SurveyService.PLANNED_SURVEYS));
+            LocalBroadcastManager.getInstance(getActivity()).registerReceiver(plannedItemsReceiver, new IntentFilter(SurveyService.ALL_PROGRAMS));
         }
     }
     /**
@@ -172,14 +168,23 @@ public class PlannedFragment extends ListFragment {
     }
 
     public void reloadPlannedItems(){
-        reloadPlannedItems((List<PlannedItem>) Session.popServiceValue(SurveyService.PLANNED_SURVEYS_ACTION));
+        reloadPlannedItems((List<PlannedItem>) Session.popServiceValue(SurveyService.PLANNED_SURVEYS));
     }
 
     public void reloadPlannedItems(List<PlannedItem> plannedItemList) {
-        adapter.reloadItems(plannedItemList);
+        if(adapter==null)
+            this.adapter = new PlannedAdapter(plannedItemList,getActivity());
+        else
+            adapter.reloadItems(plannedItemList);
         setListShown(true);
     }
 
+    public void reloadData(){
+        //Reload data using service
+        Intent surveysIntent=new Intent(PreferencesState.getInstance().getContext().getApplicationContext(), SurveyService.class);
+        surveysIntent.putExtra(SurveyService.SERVICE_METHOD, SurveyService.PLANNED_ACTION);
+        PreferencesState.getInstance().getContext().getApplicationContext().startService(surveysIntent);
+    }
     /**
      * Inner private class that receives the result from the service
      */
@@ -191,12 +196,12 @@ public class PlannedFragment extends ListFragment {
         public void onReceive(Context context, Intent intent) {
             Log.d(TAG, "onReceive");
             //Listening only intents from this method
-            if(SurveyService.ALL_PROGRAMS_ACTION.equals(intent.getAction())){
-                programList = (List<Program>)Session.popServiceValue(SurveyService.ALL_PROGRAMS_ACTION);
-                prepareUI();
-            }
-            if (SurveyService.PLANNED_SURVEYS_ACTION.equals(intent.getAction())) {
+            if (SurveyService.PLANNED_SURVEYS.equals(intent.getAction())) {
                 reloadPlannedItems();
+            }
+            if(SurveyService.ALL_PROGRAMS.equals(intent.getAction())){
+                programList = (List<Program>)Session.popServiceValue(SurveyService.ALL_PROGRAMS);
+                prepareUI();
             }
         }
     }

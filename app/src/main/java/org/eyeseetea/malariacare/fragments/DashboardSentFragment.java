@@ -222,6 +222,7 @@ public class DashboardSentFragment extends ListFragment {
         setListShown(false);
         //Listen for data
         registerSurveysReceiver();
+        reloadData();
         super.onResume();
     }
 
@@ -398,7 +399,7 @@ public class DashboardSentFragment extends ListFragment {
     public void reloadData(){
         //Reload data using service
         Intent surveysIntent=new Intent(PreferencesState.getInstance().getContext().getApplicationContext(), SurveyService.class);
-        surveysIntent.putExtra(SurveyService.SERVICE_METHOD, SurveyService.RELOAD_DASHBOARD_ACTION);
+        surveysIntent.putExtra(SurveyService.SERVICE_METHOD, SurveyService.SENT_DASHBOARD_ACTION);
         PreferencesState.getInstance().getContext().getApplicationContext().startService(surveysIntent);
     }
 

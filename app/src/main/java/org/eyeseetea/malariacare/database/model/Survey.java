@@ -619,16 +619,7 @@ public class Survey extends BaseModel implements VisitableToSDK {
                 .orderBy(Survey$Table.EVENTDATE)
                 .orderBy(Survey$Table.ID_ORG_UNIT).queryList();
     }
-    /**
-     * Returns the last surveys (by date) with status Completed or sent
-     * @return
-     */
-    public static List<Survey> getAllCompletedUnsentSurveys() {
-        return new Select().from(Survey.class)
-                .where(Condition.column(Survey$Table.STATUS).is(Constants.SURVEY_COMPLETED))
-                .orderBy(Survey$Table.EVENTDATE)
-                .orderBy(Survey$Table.ID_ORG_UNIT).queryList();
-    }
+
     /**
      * Returns all the surveys with status put to "Sent" or completed
      * @return

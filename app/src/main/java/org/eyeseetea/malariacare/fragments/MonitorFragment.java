@@ -38,6 +38,7 @@ import android.webkit.WebViewClient;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.model.Program;
 import org.eyeseetea.malariacare.database.model.Survey;
+import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.database.utils.monitor.FacilityTableBuilder;
 import org.eyeseetea.malariacare.database.utils.monitor.PieTabGroupBuilder;
@@ -132,7 +133,7 @@ public class MonitorFragment extends Fragment {
 
         if (surveyReceiver == null) {
             surveyReceiver = new SurveyReceiver();
-            LocalBroadcastManager.getInstance(getActivity()).registerReceiver(surveyReceiver, new IntentFilter(SurveyService.ALL_SENT_OR_COMPLETED_SURVEYS_ACTION));
+            LocalBroadcastManager.getInstance(getActivity()).registerReceiver(surveyReceiver, new IntentFilter(SurveyService.ALL_MONITOR_DATA_ACTION));
         }
     }
     /**
@@ -145,6 +146,14 @@ public class MonitorFragment extends Fragment {
             surveyReceiver = null;
         }
     }
+
+    public void reloadData(){
+        //Reload data using service
+        Intent surveysIntent=new Intent(PreferencesState.getInstance().getContext().getApplicationContext(), SurveyService.class);
+        surveysIntent.putExtra(SurveyService.SERVICE_METHOD, SurveyService.ALL_MONITOR_DATA_ACTION);
+        PreferencesState.getInstance().getContext().getApplicationContext().startService(surveysIntent);
+    }
+
     /**
      * load and reload sent surveys
      */
