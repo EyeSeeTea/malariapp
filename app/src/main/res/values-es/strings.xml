@@ -47,7 +47,8 @@
     <string name="dialog_complete_option">Completar</string>
     <string name="dialog_are_you_sure_complete_survey">¿Está seguro? Esta acción no se puede deshacer y usted ya no será capaz de editar o borrar la encuesta</string>
     <string name="dialog_incompleted_compulsory_survey">Esta encuesta no puede ser enviado todavía. Por favor responda al menos todas las preguntas obligatorias</string>
-
+    <string name="dialog_incompleted_compulsory_pulling">La actualización de los metadatos requiere eliminar o completar sus datos enviados. Por favor responda al menos todas las preguntas obligatorias</string>
+    <string name="dialog_sent_survey_on_refresh_metadata">La actualización de metadatos borrará los datos enviados. Usted tiene %s encuestas no enviada/s. ¿Desea usted enviarlas antes de actualizar los metadatos?</string>
     <!-- Toast -->
     <string name="cancellingPull">El proceso se cancelara en unos segundos</string>
 
