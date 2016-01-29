@@ -48,6 +48,8 @@ public class OrgUnit extends BaseModel {
     String name;
     @Column
     Long id_parent;
+    @Column
+    Integer productivity;
 
     /**
      * Refernce to parent orgUnit (loaded lazily)
@@ -77,14 +79,7 @@ public class OrgUnit extends BaseModel {
      */
     List<Program> programs;
 
-    /**
-     * Tells if this orgUnit has a lowProductivity (not ready yet)
-     */
-    boolean lowProductivity;
-
     public OrgUnit() {
-        //TODO Remove this when ready
-        this.lowProductivity = Math.random()>0.5;
     }
 
     public OrgUnit(String name) {
@@ -213,9 +208,16 @@ public class OrgUnit extends BaseModel {
         programs=null;
     }
 
+    public Integer getProductivity(){
+        return productivity;
+    }
+
+    public void setProductivity(Integer productivity){
+        this.productivity=productivity;
+    }
+
     public boolean isLowProductivity(){
-        //TODO Review whenever server is ready for real productivity
-        return lowProductivity;
+        return productivity<5;
     }
 
     /**
@@ -244,6 +246,7 @@ public class OrgUnit extends BaseModel {
         if (id_org_unit != orgUnit.id_org_unit) return false;
         if (uid != null ? !uid.equals(orgUnit.uid) : orgUnit.uid != null) return false;
         if (name != null ? !name.equals(orgUnit.name) : orgUnit.name != null) return false;
+        if (productivity != null ? !productivity.equals(orgUnit.productivity) : orgUnit.productivity != null) return false;
         if (id_parent != null ? !id_parent.equals(orgUnit.id_parent) : orgUnit.id_parent != null)
             return false;
         return !(id_org_unit_level != null ? !id_org_unit_level.equals(orgUnit.id_org_unit_level) : orgUnit.id_org_unit_level != null);
@@ -256,6 +259,7 @@ public class OrgUnit extends BaseModel {
         result = 31 * result + (uid != null ? uid.hashCode() : 0);
         result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (id_parent != null ? id_parent.hashCode() : 0);
+        result = 31 * result + (productivity != null ? productivity.hashCode() : 0);
         result = 31 * result + (id_org_unit_level != null ? id_org_unit_level.hashCode() : 0);
         return result;
     }
@@ -268,6 +272,7 @@ public class OrgUnit extends BaseModel {
                 ", name='" + name + '\'' +
                 ", id_parent=" + id_parent +
                 ", id_org_unit_level=" + id_org_unit_level +
+                ", productivity=" + productivity +
                 '}';
     }
 }

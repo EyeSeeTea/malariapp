@@ -41,10 +41,6 @@ import org.eyeseetea.malariacare.database.model.Value$Table;
 import org.eyeseetea.malariacare.database.utils.LocationMemory;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.hisp.dhis.android.sdk.persistence.Dhis2Application;
-import org.hisp.dhis.android.sdk.persistence.models.Attribute;
-import org.hisp.dhis.android.sdk.persistence.models.Attribute$Table;
-import org.hisp.dhis.android.sdk.persistence.models.AttributeValue;
-import org.hisp.dhis.android.sdk.persistence.models.AttributeValue$Table;
 import org.hisp.dhis.android.sdk.persistence.models.ProgramStage;
 import org.hisp.dhis.android.sdk.persistence.models.ProgramStage$Table;
 import org.hisp.dhis.android.sdk.persistence.models.ProgramStageDataElement;
@@ -89,6 +85,7 @@ public class EyeSeeTeaApplication extends Dhis2Application  {
     }
 
     private void createDBIndexes(){
+        // NOTE: This is to speed up some DB requests, and avoid some anoying messages from the DB on execution time
         new Index<ProgramStageDataElement>("ProgramStageDataElement_DataElement").on(ProgramStageDataElement.class, ProgramStageDataElement$Table.DATAELEMENT).enable();
         new Index<ProgramStageDataElement>("ProgramStageDataElement_ProgramStage").on(ProgramStageDataElement.class, ProgramStageDataElement$Table.PROGRAMSTAGE).enable();
         new Index<ProgramStageDataElement>("ProgramStageDataElement_ProgramStageSection").on(ProgramStageDataElement.class, ProgramStageDataElement$Table.PROGRAMSTAGESECTION).enable();

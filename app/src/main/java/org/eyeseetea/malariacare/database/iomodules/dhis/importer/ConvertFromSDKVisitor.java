@@ -21,7 +21,6 @@ package org.eyeseetea.malariacare.database.iomodules.dhis.importer;
 
 import android.util.Log;
 
-import org.eyeseetea.malariacare.ProgressActivity;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.DataElementExtended;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.DataValueExtended;
@@ -46,13 +45,14 @@ import org.eyeseetea.malariacare.database.model.Value;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.utils.Constants;
 import org.hisp.dhis.android.sdk.controllers.metadata.MetaDataController;
-import org.hisp.dhis.android.sdk.controllers.tracker.TrackerController;
+import org.hisp.dhis.android.sdk.persistence.models.Attribute;
 import org.hisp.dhis.android.sdk.persistence.models.DataElement;
 import org.hisp.dhis.android.sdk.persistence.models.DataValue;
 import org.hisp.dhis.android.sdk.persistence.models.Event;
 import org.hisp.dhis.android.sdk.persistence.models.Option;
 import org.hisp.dhis.android.sdk.persistence.models.OptionSet;
 import org.hisp.dhis.android.sdk.persistence.models.OrganisationUnit;
+import org.hisp.dhis.android.sdk.persistence.models.OrganisationUnitAttributeValue;
 import org.hisp.dhis.android.sdk.persistence.models.Program;
 import org.hisp.dhis.android.sdk.persistence.models.ProgramStage;
 import org.hisp.dhis.android.sdk.persistence.models.ProgramStageDataElement;
@@ -61,7 +61,6 @@ import org.hisp.dhis.android.sdk.persistence.models.UserAccount;
 import org.hisp.dhis.android.sdk.utils.api.ProgramType;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
@@ -74,6 +73,7 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
      */
     CompositeScoreBuilder compositeScoreBuilder;
     QuestionBuilder questionBuilder;
+    private final String ATTRIBUTE_PRODUCTIVITY_CODE="OUProductivity";
 
 
     public ConvertFromSDKVisitor(){
@@ -152,6 +152,16 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
         appOrgUnit.setUid(organisationUnit.getId());
         //Set orgUnitLevel
         appOrgUnit.setOrgUnitLevel((org.eyeseetea.malariacare.database.model.OrgUnitLevel) appMapObjects.get(String.valueOf(organisationUnit.getLevel())));
+        //Set default productivity
+        appOrgUnit.setProductivity(0);
+        //if exist in the server set productivity
+        for(OrganisationUnitAttributeValue organisationUnitAttributeValue:organisationUnit.getAttributeValues())
+        {
+            Attribute attribute= MetaDataController.getAttribute(organisationUnitAttributeValue.getAttributeId());
+            if(attribute.getCode().equals(ATTRIBUTE_PRODUCTIVITY_CODE)) {
+                appOrgUnit.setProductivity(Integer.parseInt(organisationUnitAttributeValue.getValue()));
+            }
+        }
         //Set the parent
         //At this moment, the parent is a UID of a not pulled Org_unit , without the full org_unit the OrgUnit.orgUnit(parent) is null.
         String parent_id=null;

@@ -47,7 +47,6 @@ import org.eyeseetea.malariacare.layout.adapters.dashboard.AssessmentUnsentAdapt
 import org.eyeseetea.malariacare.layout.adapters.dashboard.IDashboardAdapter;
 import org.eyeseetea.malariacare.receivers.AlarmPushReceiver;
 import org.eyeseetea.malariacare.services.SurveyService;
-import org.eyeseetea.malariacare.views.CustomTextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -65,7 +64,7 @@ public class DashboardUnsentFragment extends ListFragment {
     private static int index = 0;
     private static int selectedPosition=0;
     private AlarmPushReceiver alarmPush;
-    OnSurveySelectedListener mCallback;
+    onSurveySelectedListener mCallback;
 
 
     public DashboardUnsentFragment(){
@@ -152,8 +151,10 @@ public class DashboardUnsentFragment extends ListFragment {
     }
 
     // Container Activity must implement this interface
-    public interface OnSurveySelectedListener {
+    public interface onSurveySelectedListener {
         public void onSurveySelected(Survey survey);
+
+        void dialogCompulsoryQuestionIncompleted();
     }
 
     @Override
@@ -163,10 +164,10 @@ public class DashboardUnsentFragment extends ListFragment {
         // This makes sure that the container activity has implemented
         // the callback interface. If not, it throws an exception
         try {
-            mCallback = (OnSurveySelectedListener) activity;
+            mCallback = (onSurveySelectedListener) activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString()
-                    + " must implement OnSurveySelectedListener");
+                    + " must implement OnUnsentDashboardListener");
         }
     }
 
@@ -189,6 +190,9 @@ public class DashboardUnsentFragment extends ListFragment {
                         survey.setCompleteSurveyState();
                         reloadData();
                     }
+                    else{
+                        mCallback.dialogCompulsoryQuestionIncompleted();
+                    }
                 }
                 else {
                 survey.setCompleteSurveyState();
@@ -204,6 +208,7 @@ public class DashboardUnsentFragment extends ListFragment {
                 return super.onContextItemSelected(item);
         }
     }
+
     public void reloadData(){
         //Reload data using service
         Intent surveysIntent=new Intent(PreferencesState.getInstance().getContext().getApplicationContext(), SurveyService.class);
