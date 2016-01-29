@@ -62,7 +62,7 @@ import java.io.IOException;
 import java.util.List;
 
 
-public class DashboardActivity extends BaseActivity implements DashboardUnsentFragment.OnUnsentDashboardListener,CreateSurveyFragment.OnCreatedSurveyListener,DashboardSentFragment.OnFeedbackSelectedListener {
+public class DashboardActivity extends BaseActivity implements DashboardUnsentFragment.onSurveySelectedListener,CreateSurveyFragment.OnCreatedSurveyListener,DashboardSentFragment.OnFeedbackSelectedListener {
 
     private final static String TAG=".DDetailsActivity";
     private boolean reloadOnResume=true;

@@ -64,7 +64,7 @@ public class DashboardUnsentFragment extends ListFragment {
     private static int index = 0;
     private static int selectedPosition=0;
     private AlarmPushReceiver alarmPush;
-    OnUnsentDashboardListener mCallback;
+    onSurveySelectedListener mCallback;
 
 
     public DashboardUnsentFragment(){
@@ -150,7 +150,7 @@ public class DashboardUnsentFragment extends ListFragment {
     }
 
     // Container Activity must implement this interface
-    public interface OnUnsentDashboardListener {
+    public interface onSurveySelectedListener {
         public void onSurveySelected(Survey survey);
 
         void dialogCompulsoryQuestionIncompleted();
@@ -163,7 +163,7 @@ public class DashboardUnsentFragment extends ListFragment {
         // This makes sure that the container activity has implemented
         // the callback interface. If not, it throws an exception
         try {
-            mCallback = (OnUnsentDashboardListener) activity;
+            mCallback = (onSurveySelectedListener) activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString()
                     + " must implement OnUnsentDashboardListener");
