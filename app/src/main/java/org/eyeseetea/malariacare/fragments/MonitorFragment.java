@@ -33,7 +33,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.Spinner;
 
 
 import org.eyeseetea.malariacare.R;
@@ -47,6 +46,7 @@ import org.eyeseetea.malariacare.layout.adapters.dashboard.IDashboardAdapter;
 import org.eyeseetea.malariacare.services.SurveyService;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -57,6 +57,7 @@ public class MonitorFragment extends Fragment {
     public static final String TAG = ".MonitorFragment";
     private SurveyReceiver surveyReceiver;
     private List<Survey> surveys;
+    private List<Program> programs;
     protected IDashboardAdapter adapter;
     private static int index = 0;
     private WebView webView;
@@ -116,6 +117,13 @@ public class MonitorFragment extends Fragment {
         stopMonitor();
         super.onStop();
     }
+    @Override
+    public void onPause(){
+        Log.d(TAG, "onPause");
+        unregisterSurveysReceiver();
+
+        super.onPause();
+    }
     /**
      * Register a survey receiver to load surveys into the listadapter
      */
@@ -141,16 +149,22 @@ public class MonitorFragment extends Fragment {
      * load and reload sent surveys
      */
     public void reloadSentSurveys() {
-        surveysForGraphic = (List<Survey>) Session.popServiceValue(SurveyService.ALL_SENT_OR_COMPLETED_SURVEYS_ACTION);
-        reloadSurveys(surveysForGraphic);
+        HashMap<String,List> data= (HashMap<String,List>) Session.popServiceValue(SurveyService.ALL_MONITOR_DATA_ACTION);
+
+        surveysForGraphic = data.get(SurveyService.PREPARE_SURVEYS);
+        programs = data.get(SurveyService.PREPARE_PROGRAMS);
+        reloadSurveys(surveysForGraphic,programs);
     }
 
-    public void reloadSurveys(List<Survey> newListSurveys) {
+    public void reloadSurveys(List<Survey> newListSurveys,List<Program> newListPrograms) {
         Log.d(TAG, "reloadSurveys (Thread: " + Thread.currentThread().getId() + "): " + newListSurveys.size());
         boolean hasSurveys = newListSurveys != null && newListSurveys.size() > 0;
+        boolean hasPrograms = newListPrograms != null && newListPrograms.size() > 0;
         this.surveys.clear();
         this.surveys.addAll(newListSurveys);
-        if (hasSurveys) {
+        if(this.programs==null)
+            this.programs.addAll(newListPrograms);
+        if (hasPrograms && hasSurveys) {
             reloadMonitor();
         }
 
@@ -163,8 +177,6 @@ public class MonitorFragment extends Fragment {
             @Override
             public void onPageFinished(WebView view, String url) {
                 super.onPageFinished(view, url);
-
-                final List<Program> programs=Program.getAllPrograms();
 
                 //Add line chart
                 new SentSurveysBuilder(surveysForGraphic, getActivity(),programs).addDataInChart(view);
@@ -229,7 +241,7 @@ public class MonitorFragment extends Fragment {
         public void onReceive(Context context, Intent intent) {
             Log.d(TAG, "onReceive");
             //Listening only intents from this method
-            if (SurveyService.ALL_SENT_OR_COMPLETED_SURVEYS_ACTION.equals(intent.getAction())) {
+            if (SurveyService.ALL_MONITOR_DATA_ACTION.equals(intent.getAction())) {
                 reloadSentSurveys();
             }
         }

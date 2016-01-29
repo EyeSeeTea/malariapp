@@ -65,6 +65,7 @@ public class PlannedFragment extends ListFragment {
 
     private Program programDefaultOption;
 
+    private List<Program> programList;
 
     public PlannedFragment() {
         this.plannedItems = new ArrayList();
@@ -75,7 +76,7 @@ public class PlannedFragment extends ListFragment {
     public void onCreate(Bundle savedInstanceState){
         Log.d(TAG, "onCreate");
         super.onCreate(savedInstanceState);
-        programDefaultOption = new Program(getResources().getString(R.string.select_assessment).toUpperCase());
+        programDefaultOption = new Program(getResources().getString(R.string.all_assessment).toUpperCase());
     }
 
     @Override
@@ -93,7 +94,6 @@ public class PlannedFragment extends ListFragment {
         Log.d(TAG, "onActivityCreated");
         super.onActivityCreated(savedInstanceState);
 
-        prepareUI();
     }
 
     private void prepareUI() {
@@ -102,7 +102,6 @@ public class PlannedFragment extends ListFragment {
 
         Spinner programSpinner = (Spinner) getActivity().findViewById(R.id.dashboard_planning_program);
         //Populate Program View DDL
-        List<Program> programList = Program.list();
         programList.add(0, programDefaultOption);
         programSpinner.setAdapter(new ProgramArrayAdapter(getActivity(), programList));
         //Apply filter to listview
@@ -139,6 +138,15 @@ public class PlannedFragment extends ListFragment {
         unregisterPlannedItemsReceiver();
         super.onStop();
     }
+
+    @Override
+    public void onPause(){
+        Log.d(TAG, "onPause");
+        unregisterPlannedItemsReceiver();
+
+        super.onPause();
+    }
+
     /**
      * Register a survey receiver to load plannedItems into the listadapter
      */
@@ -148,6 +156,7 @@ public class PlannedFragment extends ListFragment {
         if (plannedItemsReceiver == null) {
             plannedItemsReceiver = new PlannedItemsReceiver();
             LocalBroadcastManager.getInstance(getActivity()).registerReceiver(plannedItemsReceiver, new IntentFilter(SurveyService.PLANNED_SURVEYS_ACTION));
+            LocalBroadcastManager.getInstance(getActivity()).registerReceiver(plannedItemsReceiver, new IntentFilter(SurveyService.ALL_PROGRAMS_ACTION));
         }
     }
     /**
@@ -182,6 +191,10 @@ public class PlannedFragment extends ListFragment {
         public void onReceive(Context context, Intent intent) {
             Log.d(TAG, "onReceive");
             //Listening only intents from this method
+            if(SurveyService.ALL_PROGRAMS_ACTION.equals(intent.getAction())){
+                programList = (List<Program>)Session.popServiceValue(SurveyService.ALL_PROGRAMS_ACTION);
+                prepareUI();
+            }
             if (SurveyService.PLANNED_SURVEYS_ACTION.equals(intent.getAction())) {
                 reloadPlannedItems();
             }
