@@ -46,7 +46,7 @@
     <string name="dialog_continue_later_option">Adiar</string>
     <string name="dialog_complete_option">Completo</string>
     <string name="dialog_are_you_sure_complete_survey">Você tem certeza? Essa ação não pode ser desfeita e você não será mais capaz de editar ou excluir essa pesquisa</string>
-
+    <string name="dialog_incompleted_compulsory_survey">Este inquérito não podem ser enviados ainda. Por favor, responda pelo menos todas as questões obrigatórias</string>
     <!-- Toast -->
     <string name="cancellingPull">O processo é interrompido em poucos segundos</string>
 

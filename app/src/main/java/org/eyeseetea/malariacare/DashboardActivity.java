@@ -62,7 +62,7 @@ import java.io.IOException;
 import java.util.List;
 
 
-public class DashboardActivity extends BaseActivity implements DashboardUnsentFragment.OnSurveySelectedListener,CreateSurveyFragment.OnCreatedSurveyListener,DashboardSentFragment.OnFeedbackSelectedListener {
+public class DashboardActivity extends BaseActivity implements DashboardUnsentFragment.onSurveySelectedListener,CreateSurveyFragment.OnCreatedSurveyListener,DashboardSentFragment.OnFeedbackSelectedListener {
 
     private final static String TAG=".DDetailsActivity";
     private boolean reloadOnResume=true;
@@ -689,6 +689,14 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
         //Put selected survey in session
         Session.setSurvey(survey);
         initSurvey();
+    }
+
+    @Override
+    public void dialogCompulsoryQuestionIncompleted() {
+        new AlertDialog.Builder(this)
+                .setMessage(getApplicationContext().getResources().getString(R.string.dialog_incompleted_compulsory_survey))
+                .setPositiveButton(getApplicationContext().getString(R.string.accept), null)
+                .create().show();
     }
 
     @Override

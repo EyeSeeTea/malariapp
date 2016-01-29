@@ -85,6 +85,7 @@ public class EyeSeeTeaApplication extends Dhis2Application  {
     }
 
     private void createDBIndexes(){
+        // NOTE: This is to speed up some DB requests, and avoid some anoying messages from the DB on execution time
         new Index<ProgramStageDataElement>("ProgramStageDataElement_DataElement").on(ProgramStageDataElement.class, ProgramStageDataElement$Table.DATAELEMENT).enable();
         new Index<ProgramStageDataElement>("ProgramStageDataElement_ProgramStage").on(ProgramStageDataElement.class, ProgramStageDataElement$Table.PROGRAMSTAGE).enable();
         new Index<ProgramStageDataElement>("ProgramStageDataElement_ProgramStageSection").on(ProgramStageDataElement.class, ProgramStageDataElement$Table.PROGRAMSTAGESECTION).enable();

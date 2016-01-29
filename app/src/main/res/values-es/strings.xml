@@ -46,6 +46,7 @@
     <string name="dialog_continue_later_option">Continuar despues</string>
     <string name="dialog_complete_option">Completar</string>
     <string name="dialog_are_you_sure_complete_survey">¿Está seguro? Esta acción no se puede deshacer y usted ya no será capaz de editar o borrar la encuesta</string>
+    <string name="dialog_incompleted_compulsory_survey">Esta encuesta no puede ser enviado todavía. Por favor responda al menos todas las preguntas obligatorias</string>
 
     <!-- Toast -->
     <string name="cancellingPull">El proceso se cancelara en unos segundos</string>
