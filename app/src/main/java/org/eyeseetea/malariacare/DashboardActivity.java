@@ -370,7 +370,7 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
             if (surveyAnsweredRatio.getTotalCompulsory()>0 && surveyAnsweredRatio.getCompulsoryAnswered() != surveyAnsweredRatio.getTotalCompulsory() ) {
                 new AlertDialog.Builder(this)
                         .setTitle("Unsent surveys")
-                        .setMessage("Metadata refresh require delete or complete your unsent data. Please answer at least all the compulsory questions")
+                        .setMessage(getApplicationContext().getResources().getString(R.string.dialog_incompleted_compulsory_pulling))
                         .setPositiveButton(android.R.string.ok, null)
                         .setCancelable(true)
                         .create().show();
@@ -380,7 +380,7 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
         //Unsent data -> ask if pull || push before pulling
         new AlertDialog.Builder(this)
                 .setTitle("Push unsent surveys?")
-                .setMessage("Metadata refresh will delete your unsent data. You have "+unsentSurveys.size()+" unsent surveys. Do you to push them before refresh?")
+                .setMessage(String.format(getResources().getString(R.string.dialog_sent_survey_on_refresh_metadata), unsentSurveys.size() + ""))
                 .setNeutralButton(android.R.string.no, null)
                 .setNegativeButton(activity.getString(R.string.no), new DialogInterface.OnClickListener() {
                     @Override
