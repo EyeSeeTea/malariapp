@@ -39,7 +39,7 @@ public class FilterOrgUnitArrayAdapter extends AddlArrayAdapter<OrgUnit> {
 
     @Override public void drawText(CustomTextView customTextView, OrgUnit orgUnit) {
         if (customTextView.getmScale().equals(getContext().getString(R.string.font_size_system)))
-            customTextView.setTextSize(18);
+            customTextView.setTextSize(16);
         customTextView.setText(orgUnit.getName());
         customTextView.setTextColor(getContext().getResources().getColor(R.color.white));
         customTextView.setBackgroundColor(getContext().getResources().getColor(R.color.assess_grey));

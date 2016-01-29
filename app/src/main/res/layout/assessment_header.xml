@@ -20,10 +20,13 @@
 
 <TableRow xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="horizontal"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:gravity="center">
+          android:orientation="horizontal"
+          android:layout_width="fill_parent"
+          android:layout_height="fill_parent"
+          android:paddingTop="10dip"
+          android:paddingBottom="10dip"
+          android:background="@color/assess_yellow"
+          android:gravity="center">
 
     <org.eyeseetea.malariacare.views.CustomTextView
         android:layout_width="0dip"
@@ -52,6 +55,6 @@
         android:layout_gravity="center"
         android:autoText="false"
         app:tDimension="@string/font_size_level4"
-        app:tFontName="@string/condensed_font_name" />
+        app:tFontName="@string/condensed_font_name"/>
 
 </TableRow>
