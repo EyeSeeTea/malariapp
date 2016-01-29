@@ -100,13 +100,15 @@
     <string name="assessment_info_delete">Delete</string>
     <string name="assessment_title_header">Active Assessment(s)</string>
     <string name="assessment_sent_title_header">Previous Assessment(s)</string>
-    <string name="select_assessment">Select Assessment</string>
+    <string name="all_assessment">All Assessment</string>
 
     <!-- feedback -->
     <!-- XXX Should it be replaced by 'assessment_title_facility_date'?-->
     <string name="feedback_title_organization_unit_date">Org Unit / Date</string>
     <string name="feedback_title_header">Feedback</string>
     <string name="feedback_show_only_failed">Show only failed questions</string>
+    <string name="feedback_return">Return to all assessments</string>
+    <string name="quality_of_care">Quality of Care (QoC) Score:</string>
     <string name="feedback_info_passed">WIN</string>
     <string name="feedback_info_failed">FAIL</string>
     <string name="feedback_info_not_answered">NA</string>
@@ -332,4 +334,8 @@
     <string name="assess">assess</string>
     <string name="improve">improve</string>
     <string name="monitor">monitor</string>
+
+    <!-- filters text -->
+    <string name="filter_all_org_units_upper">ALL ORG UNITS</string>
+    <string name="filter_all_org_assessments_upper">ALL ASSESSMENTS</string>
 </resources>
