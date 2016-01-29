@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright (c) 2015.
+  ~ Copyright (c) 2016.
   ~
   ~ This file is part of QA App.
   ~
@@ -23,18 +23,24 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
-    <org.eyeseetea.malariacare.views.CustomTextView android:id="@+id/action_bar_title"
+    <org.eyeseetea.malariacare.views.CustomTextView android:id="@+id/action_bar_multititle_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textStyle="bold"
+        android:paddingTop="6.6dp"
         android:paddingLeft="20dp"
         app:tFontName="@string/medium_font_name"
-        android:textAppearance="@dimen/small_large_text_size" />
-
-    <org.eyeseetea.malariacare.views.CustomTextView android:id="@+id/action_bar_subtitle"
+        android:textSize="@dimen/small_large_text_size"/>
+    <org.eyeseetea.malariacare.views.CustomTextView android:id="@+id/action_bar_multititle_subtitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingLeft="20dp"
-        app:tFontName="@string/light_font"
-        android:textAppearance="@dimen/small_large_text_size" />
+        app:tFontName="@string/medium_font_name"
+        android:textSize="@dimen/small_large_text_size" />
+    <org.eyeseetea.malariacare.views.CustomTextView  android:id="@+id/action_bar_multititle_subtitle2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="20dp"
+        app:tFontName="@string/medium_font_name"
+        android:textSize="@dimen/small_large_text_size" />
 </LinearLayout>
