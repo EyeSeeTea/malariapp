@@ -79,11 +79,6 @@ public class OrgUnit extends BaseModel {
      */
     List<Program> programs;
 
-    /**
-     * Tells if this orgUnit has a lowProductivity (not ready yet)
-     */
-    boolean lowProductivity;
-
     public OrgUnit() {
     }
 
@@ -222,10 +217,7 @@ public class OrgUnit extends BaseModel {
     }
 
     public boolean isLowProductivity(){
-        boolean lowProductivity=true;
-        if(productivity==10)
-            lowProductivity=false;
-        return lowProductivity;
+        return productivity<5;
     }
 
     /**
