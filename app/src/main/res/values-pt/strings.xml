@@ -87,6 +87,8 @@
     <string name="feedback_title_organization_unit_date">Unid. Org.Data</string>
     <string name="feedback_title_header">Feedback</string>
     <string name="feedback_show_only_failed">"Mostrar só falhou perguntas"</string>
+    <string name="feedback_return">Voltar para todas as avaliações</string>
+    <string name="quality_of_care">Qualidade da Assistência (QoC) Pontuação:</string>
     <string name="feedback_info_passed">Aprovado</string>
     <string name="feedback_info_failed">Suspenso</string>
     <string name="feedback_info_not_answered">"Não respondeu"</string>
@@ -261,4 +263,8 @@
 
     <string name="hide_planning_tab_title" >Ocultar guia planejamento</string>
     <string name="hide_planning_tab_summary" >Marque esta caixa para ocultar a guia de planejamento</string>
+
+    <!-- filters text -->
+    <string name="filter_all_org_units_upper">TODAS AS UNIDADES DE ORGANIZAÇÃO</string>
+    <string name="filter_all_org_assessments_upper">TODAS AS AVALIAÇÕES</string>
 </resources>

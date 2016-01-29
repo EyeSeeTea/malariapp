@@ -63,8 +63,6 @@ public class PlannedFragment extends ListFragment {
 
     private List<Program> programList;
 
-    private final static String ORG_UNIT_WITHOUT_FILTER ="ALL ASSESSMENTS";
-
     public PlannedFragment() {
         this.plannedItems = new ArrayList();
     }
