@@ -727,7 +727,22 @@ public class Survey extends BaseModel implements VisitableToSDK {
                 .and(Condition.column(Survey$Table.STATUS).eq(Constants.SURVEY_PLANNED))
                 .querySingle();
     }
-
+    /**
+     * Finds last survey with a given orgunit and tabgroup when SCHEDULEDDATE not null
+     * @param orgUnit
+     * @param tabGroup
+     * @return
+     */
+    public static Survey findLastSurvyeByOrgUnitAndTabGroup(OrgUnit orgUnit, TabGroup tabGroup) {
+        return new Select()
+                .from(Survey.class)
+                .where(Condition.column(Survey$Table.ID_ORG_UNIT).eq(orgUnit.getId_org_unit()))
+                .and(Condition.column(Survey$Table.ID_TAB_GROUP).eq(tabGroup.getId_tab_group()))
+                .and(Condition.column(Survey$Table.SCHEDULEDDATE).isNotNull())
+                .groupBy(new QueryBuilder().appendQuotedArray(Survey$Table.ID_ORG_UNIT, Survey$Table.ID_TAB_GROUP))
+                .having(Condition.columnsWithFunction("max", "eventDate"))
+                .querySingle();
+    }
     /**
      * Find the last survey that has been sent for each orgunit+tabgroup combination
      * @return
