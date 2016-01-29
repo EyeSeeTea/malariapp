@@ -281,10 +281,16 @@ public class PlannedItemBuilder {
                 if(survey!=null){
                     continue;
                 }
-
-                //NOT exists
-                survey=SurveyPlanner.getInstance().buildNext(orgUnit,program);
-
+                //check if really not exist.
+                Survey lastSurvey=Survey.findLastSurvyeByOrgUnitAndTabGroup(orgUnit, program.getTabGroups().get(0));
+                if(lastSurvey!=null) {
+                    survey=lastSurvey;
+                    SurveyPlanner.getInstance().buildNext(survey);
+                }
+                else {
+                    //NOT exists
+                    survey=SurveyPlanner.getInstance().buildNext(orgUnit, program);
+                }
                 //Process like any other survey
                 findRightState(survey);
             }
