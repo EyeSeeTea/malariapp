@@ -49,7 +49,6 @@ public class MigrationAddProductivity extends BaseMigration {
     }
 
     public void onPreMigrate() {
-//        FlowManager.getDatabase(AppDatabase.NAME).reset(PreferencesState.getInstance().getContext());
     }
 
     @Override
@@ -60,7 +59,6 @@ public class MigrationAddProductivity extends BaseMigration {
 
     @Override
     public void onPostMigrate() {
-        //release migration resources
     }
 
     private void addColumn(SQLiteDatabase database, Class model, String columnName,String type){
