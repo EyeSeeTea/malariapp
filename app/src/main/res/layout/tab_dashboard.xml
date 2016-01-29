@@ -65,14 +65,28 @@
                             <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:background="@color/custom_background_grey">
+                                android:background="@color/assess_grey">
                                 <Spinner
                                     android:id="@+id/dashboard_planning_program"
                                     android:layout_width="wrap_content"
-                                    android:spinnerMode="dialog"
+                                    android:layout_weight="0.4"
                                     android:layout_height="wrap_content"
-                                    android:backgroundTintMode="add"
-                                    android:backgroundTint="@color/custom_background_grey"></Spinner>
+                                    android:background="@color/assess_grey"
+                                    android:paddingTop="5dip"
+                                    android:paddingBottom="5dip"></Spinner>
+
+                                <ImageView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:src="@drawable/arrow_improve"
+                                    android:paddingTop="5dip"
+                                    android:paddingBottom="5dip"/>
+                                <View
+                                    android:layout_width="match_parent"
+                                    android:layout_height="0dp"
+                                    android:layout_weight="0.6"
+                                    android:background="@color/assess_grey"
+                                    />
                             </LinearLayout>
                             <!-- list view will be automatically added here by the list fragment -->
 
