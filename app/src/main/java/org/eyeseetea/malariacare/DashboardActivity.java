@@ -122,29 +122,29 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
                 if(isFeedbackFragmentActive())
                     closeFeedbackFragment();
                 if (tabId.equalsIgnoreCase(getResources().getString(R.string.tab_tag_plan))) {
+                    currentTabName=getString(R.string.plan);
                     tabHost.getCurrentTabView().setBackgroundColor(getResources().getColor(R.color.tab_orange_plan));
                     setActionBarDashboard();
-                    currentTabName=getString(R.string.plan);
                     plannedFragment.reloadPlannedItems();
                 } else if (tabId.equalsIgnoreCase(getResources().getString(R.string.tab_tag_assess))) {
+                    currentTabName=getString(R.string.assess);
                     tabHost.getCurrentTabView().setBackgroundColor(getResources().getColor(R.color.tab_yellow_assess));
                     if(isCreateSurveyFragmentActive() ||isDashboardUnsentFragmentActive())
                         setActionBarDashboard();
-                    currentTabName=getString(R.string.assess);
                     if(isSurveyFragmentActive())
                         setActionBarTitleForSurvey(Session.getSurvey());
                     unsentFragment.reloadData();
                 } else if (tabId.equalsIgnoreCase(getResources().getString(R.string.tab_tag_improve))) {
-                    tabHost.getCurrentTabView().setBackgroundColor(getResources().getColor(R.color.tab_blue_improve));
                     currentTabName=getString(R.string.improve);
+                    tabHost.getCurrentTabView().setBackgroundColor(getResources().getColor(R.color.tab_blue_improve));
                     if(!isFeedbackFragmentActive()){
                         setActionBarDashboard();
                         sentFragment.reloadSentSurveys();
                     }
                 } else if (tabId.equalsIgnoreCase(getResources().getString(R.string.tab_tag_monitor))) {
+                    currentTabName=getString(R.string.monitor);
                     tabHost.getCurrentTabView().setBackgroundColor(getResources().getColor(R.color.tab_green_monitor));
                     setActionBarDashboard();
-                    currentTabName=getString(R.string.monitor);
                     monitorFragment.reloadSentSurveys();
                 }
             }
@@ -157,10 +157,12 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
         //set the initial selected tab background
         if(!isPlanningTabHide()) {
             tabHost.getTabWidget().getChildAt(0).setBackgroundColor(getResources().getColor(R.color.tab_orange_plan));
+            currentTabName=getString(R.string.plan);
         }
-        else
+        else {
             tabHost.getTabWidget().getChildAt(0).setBackgroundColor(getResources().getColor(R.color.tab_yellow_assess));
-        currentTabName=getString(R.string.plan);
+            currentTabName=getString(R.string.assess);
+        }
         setActionBarDashboard();
     }
 
