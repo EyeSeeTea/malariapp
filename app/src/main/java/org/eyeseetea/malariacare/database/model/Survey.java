@@ -739,7 +739,7 @@ public class Survey extends BaseModel implements VisitableToSDK {
                 .and(Condition.column(Survey$Table.STATUS).eq(Constants.SURVEY_PLANNED))
                 .querySingle();
     }
-    
+
     /**
      * Find the last survey that has been sent for each orgunit+tabgroup combination
      * @return

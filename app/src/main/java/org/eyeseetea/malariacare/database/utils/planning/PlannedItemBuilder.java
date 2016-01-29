@@ -282,8 +282,8 @@ public class PlannedItemBuilder {
                     continue;
                 }
 
-                //if really NOT exists
-                survey=SurveyPlanner.getInstance().buildNext(orgUnit, program);
+                //NOT exists
+                survey=SurveyPlanner.getInstance().buildNext(orgUnit,program);
 
                 //Process like any other survey
                 findRightState(survey);
