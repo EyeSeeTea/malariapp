@@ -43,7 +43,7 @@ import org.eyeseetea.malariacare.database.model.Program;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.database.utils.planning.PlannedItem;
-import org.eyeseetea.malariacare.layout.adapters.general.ProgramArrayAdapter;
+import org.eyeseetea.malariacare.layout.adapters.filters.FilterProgramArrayAdapter;
 import org.eyeseetea.malariacare.layout.adapters.survey.PlannedAdapter;
 import org.eyeseetea.malariacare.services.SurveyService;
 import org.eyeseetea.malariacare.utils.Constants;
@@ -103,7 +103,7 @@ public class PlannedFragment extends ListFragment {
         Spinner programSpinner = (Spinner) getActivity().findViewById(R.id.dashboard_planning_program);
         //Populate Program View DDL
         programList.add(0, programDefaultOption);
-        programSpinner.setAdapter(new ProgramArrayAdapter(getActivity(), programList));
+        programSpinner.setAdapter(new FilterProgramArrayAdapter(getActivity(), programList));
         //Apply filter to listview
         programSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
