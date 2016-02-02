@@ -55,6 +55,7 @@ import org.eyeseetea.malariacare.fragments.MonitorFragment;
 import org.eyeseetea.malariacare.fragments.SurveyFragment;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.fragments.PlannedFragment;
+import org.eyeseetea.malariacare.receivers.AlarmPushReceiver;
 import org.eyeseetea.malariacare.services.SurveyService;
 import org.hisp.dhis.android.sdk.events.UiEvent;
 
@@ -164,6 +165,7 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
             currentTabName=getString(R.string.assess);
         }
         setActionBarDashboard();
+        setAlarm();
     }
 
     public boolean isPlanningTabHide(){
@@ -367,7 +369,7 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
         final Activity activity = this;
         new AlertDialog.Builder(this)
                 .setTitle("Push unsent surveys?")
-                .setMessage("Metadata refresh will delete your unsent data. You have "+unsentSurveys.size()+" unsent surveys. Do you to push them before refresh?")
+                .setMessage("Metadata refresh will delete your unsent data. You have " + unsentSurveys.size() + " unsent surveys. Do you to push them before refresh?")
                 .setNeutralButton(android.R.string.no, null)
                 .setNegativeButton(activity.getString(R.string.no), new DialogInterface.OnClickListener() {
                     @Override
@@ -549,7 +551,7 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
                 .setNegativeButton(android.R.string.no, null)
                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int arg1) {
-                        Survey survey=Session.getSurvey();
+                        Survey survey = Session.getSurvey();
                         survey.setCompleteSurveyState();
                         closeSurveyFragment();
                     }
@@ -686,5 +688,12 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
     @Override
     public void onCreateSurvey() {
         initSurvey();
+    }
+
+    /**
+     * The alarm is always set in applicatin init.
+     */
+    public void setAlarm() {
+        AlarmPushReceiver.getInstance().setPushAlarm(this);
     }
 }
