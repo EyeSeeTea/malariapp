@@ -258,6 +258,10 @@
 
     <string name="hide_planning_tab_title" >Ocultar ficha planificación</string>
     <string name="hide_planning_tab_summary" >Marque esta casilla para ocultar ficha de planificación</string>
+    <string name="plan">planificación</string>
+    <string name="assess">encuesta</string>
+    <string name="improve">mejora</string>
+    <string name="monitor">monitorización</string>
 
 
     <!-- filters text -->

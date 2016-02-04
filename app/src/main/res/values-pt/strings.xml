@@ -263,6 +263,10 @@
 
     <string name="hide_planning_tab_title" >Ocultar guia planejamento</string>
     <string name="hide_planning_tab_summary" >Marque esta caixa para ocultar a guia de planejamento</string>
+    <string name="plan">plano</string>
+    <string name="assess">avaliar</string>
+    <string name="improve">melhorar</string>
+    <string name="monitor">monitor</string>
 
     <!-- filters text -->
     <string name="filter_all_org_units_upper">TODAS AS UNIDADES DE ORGANIZAÇÃO</string>
