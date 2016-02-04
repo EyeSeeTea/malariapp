@@ -47,6 +47,8 @@
     <string name="dialog_complete_option">Completo</string>
     <string name="dialog_are_you_sure_complete_survey">Você tem certeza? Essa ação não pode ser desfeita e você não será mais capaz de editar ou excluir essa pesquisa</string>
     <string name="dialog_incompleted_compulsory_survey">Este inquérito não podem ser enviados ainda. Por favor, responda pelo menos todas as questões obrigatórias</string>
+    <string name="dialog_incompleted_compulsory_pulling">Metadados de atualização exigem excluir ou completar os seus dados não enviados. Por favor, responda pelo menos todas as questões obrigatórias</string>
+    <string name="dialog_sent_survey_on_refresh_metadata">Metadados de atualização irá apagar seus dados não enviados. Você tem %s pesquisas não enviadas. Você empurrá-los antes de atualização?</string>  
     <!-- Toast -->
     <string name="cancellingPull">O processo é interrompido em poucos segundos</string>
 
