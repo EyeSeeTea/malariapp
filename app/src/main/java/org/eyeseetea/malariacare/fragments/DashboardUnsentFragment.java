@@ -43,6 +43,7 @@ import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.database.utils.SurveyAnsweredRatio;
+import org.eyeseetea.malariacare.database.utils.planning.SurveyPlanner;
 import org.eyeseetea.malariacare.layout.adapters.dashboard.AssessmentUnsentAdapter;
 import org.eyeseetea.malariacare.layout.adapters.dashboard.IDashboardAdapter;
 import org.eyeseetea.malariacare.receivers.AlarmPushReceiver;
@@ -198,7 +199,8 @@ public class DashboardUnsentFragment extends ListFragment {
                 return true;
             case R.id.option_delete:
                 Log.d(TAG, "removing item pos=" + selectedPosition);
-                ((Survey)adapter.getItem(selectedPosition-1)).delete();
+                //this method create a new survey geting the getScheduledDate date of the oldsurvey, and remove it.
+                SurveyPlanner.getInstance().deleteSurveyAndBuildNext((Survey)adapter.getItem(selectedPosition-1));
                 reloadData();
                 return true;
             default:
