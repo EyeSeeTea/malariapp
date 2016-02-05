@@ -55,6 +55,7 @@ import org.eyeseetea.malariacare.fragments.MonitorFragment;
 import org.eyeseetea.malariacare.fragments.SurveyFragment;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.fragments.PlannedFragment;
+import org.eyeseetea.malariacare.receivers.AlarmPushReceiver;
 import org.eyeseetea.malariacare.services.SurveyService;
 import org.hisp.dhis.android.sdk.events.UiEvent;
 
@@ -164,6 +165,7 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
             currentTabName=getString(R.string.assess);
         }
         setActionBarDashboard();
+        setAlarm();
     }
 
     public boolean isPlanningTabHide(){
@@ -699,5 +701,12 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
     @Override
     public void onCreateSurvey() {
         initSurvey();
+    }
+
+    /**
+     * The alarm is always set in applicatin init.
+     */
+    public void setAlarm() {
+        AlarmPushReceiver.getInstance().setPushAlarm(this);
     }
 }

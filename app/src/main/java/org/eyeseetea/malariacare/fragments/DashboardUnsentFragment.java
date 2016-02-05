@@ -64,7 +64,6 @@ public class DashboardUnsentFragment extends ListFragment {
     protected IDashboardAdapter adapter;
     private static int index = 0;
     private static int selectedPosition=0;
-    private AlarmPushReceiver alarmPush;
     onSurveySelectedListener mCallback;
 
 
@@ -92,7 +91,6 @@ public class DashboardUnsentFragment extends ListFragment {
     @Override
     public void onCreate(Bundle savedInstanceState){
         Log.d(TAG, "onCreate");
-        alarmPush = new AlarmPushReceiver();
         super.onCreate(savedInstanceState);
     }
 
@@ -295,7 +293,7 @@ public class DashboardUnsentFragment extends ListFragment {
     public void manageSurveysAlarm(List<Survey> newListSurveys){
         Log.d(TAG, "setSurveysAlarm (Thread: " + Thread.currentThread().getId() + "): " + newListSurveys.size());
         //Fixme think other way to cancel the setPushAlarm in Malariaapp
-        alarmPush.setPushAlarm(getActivity());
+        AlarmPushReceiver.getInstance().setPushAlarm(getActivity());
     }
 
     /**
@@ -322,7 +320,7 @@ public class DashboardUnsentFragment extends ListFragment {
             if (surveysCompletedFromService.size() > 0) {
                 manageSurveysAlarm(surveysCompletedFromService);
             } else
-                alarmPush.cancelPushAlarm(getActivity().getApplicationContext());
+                AlarmPushReceiver.getInstance().cancelPushAlarm(getActivity().getApplicationContext());
         }
     }
 
