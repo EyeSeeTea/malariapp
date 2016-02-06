@@ -102,9 +102,20 @@ public class ProgressActivity extends Activity {
      */
     public static Boolean PULL_CANCEL =false;
 
+    /**
+     * Reference to progress indicator
+     */
     ProgressBar progressBar;
+    /**
+     * Reference to progress message
+     */
     TextView textView;
+    /**
+     * Reference required for testing purposes
+     */
+    AlertDialog alertDialog;
     boolean pullAfterPushInProgress;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -211,7 +222,7 @@ public class ProgressActivity extends Activity {
         final boolean isAPush=isAPush();
         String title=getDialogTitle(isAPush);
 
-        new AlertDialog.Builder(this)
+        this.alertDialog=new AlertDialog.Builder(this)
                 .setCancelable(false)
                 .setTitle(title)
                 .setMessage(msg)
@@ -229,9 +240,8 @@ public class ProgressActivity extends Activity {
                             DhisService.logOutUser(ProgressActivity.this);
                         }
                     }
-                })
-                .create()
-                .show();
+                }).create();
+        alertDialog.show();
     }
 
     /**
@@ -276,7 +286,7 @@ public class ProgressActivity extends Activity {
         Intent intent=getIntent();
         //Not a pull -> is a Push
         if(intent!=null && (intent.getIntExtra(ProgressActivity.AFTER_ACTION,ProgressActivity.DONT_SHOW_FEEDBACK)==ProgressActivity.SHOW_FEEDBACK)) {
-            new AlertDialog.Builder(this)
+            this.alertDialog=new AlertDialog.Builder(this)
                     .setCancelable(false)
                     .setTitle(title)
                     .setMessage(msg)
@@ -299,9 +309,10 @@ public class ProgressActivity extends Activity {
                             //I try using a intent to feedbackactivity but the dashboardsActivity was reloaded from the service.
                             finishAndGo(DashboardActivity.class);
                         }
-                    }).create().show();
+                    }).create();
+            alertDialog.show();
         } else {
-            new AlertDialog.Builder(this)
+            this.alertDialog=new AlertDialog.Builder(this)
                     .setCancelable(false)
                     .setTitle(title)
                     .setMessage(msg)
@@ -317,9 +328,8 @@ public class ProgressActivity extends Activity {
                             return;
                         }
                     }
-                }).create().show();
-
-
+                }).create();
+            alertDialog.show();
         }
     }
 
@@ -441,4 +451,13 @@ public class ProgressActivity extends Activity {
         startActivity(targetActivityIntent);
     }
 
+    /**
+     * Checks if a dialog is being shown (for testing purposes)
+     * @return
+     */
+    public boolean isDialogShowing(){
+        boolean isShowing=this.alertDialog!=null && this.alertDialog.isShowing();
+        Log.d(TAG,"isDialogShowing ->"+isShowing);
+        return isShowing;
+    }
 }
