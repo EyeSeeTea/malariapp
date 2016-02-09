@@ -43,6 +43,7 @@ import org.eyeseetea.malariacare.utils.Constants;
 import org.hamcrest.Matchers;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import static android.support.test.espresso.Espresso.onData;
@@ -182,6 +183,15 @@ public class SDKTestUtils {
                 .where(Condition.column(Program$Table.NAME)
                         .eq(name))
                 .querySingle();
+    }
+
+
+    public static List<org.hisp.dhis.android.sdk.persistence.models.OrganisationUnit> getAllSDKOrganisationUnits() {
+        return new Select().all().from(org.hisp.dhis.android.sdk.persistence.models.OrganisationUnit.class).queryList();
+    }
+
+    public static List<org.hisp.dhis.android.sdk.persistence.models.Program> getAllSDKPrograms() {
+        return new Select().all().from(org.hisp.dhis.android.sdk.persistence.models.Program.class).queryList();
     }
 
     public static Activity getActivityInstance() {
