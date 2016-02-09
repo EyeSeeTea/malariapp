@@ -28,7 +28,9 @@ import com.raizlabs.android.dbflow.sql.language.Select;
 
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.model.OrgUnit;
+import org.eyeseetea.malariacare.database.model.OrgUnit$Table;
 import org.eyeseetea.malariacare.database.model.Program;
+import org.eyeseetea.malariacare.database.model.Program$Table;
 import org.eyeseetea.malariacare.database.model.Question;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.model.Survey$Table;
@@ -56,8 +58,8 @@ public class SDKTestUtils {
     public static final String TEST_USERNAME_NO_PERMISSION = "test";
     public static final String TEST_PASSWORD_NO_PERMISSION = "testN0permission";
 
-    public static final String TEST_USERNAME_WITH_PERMISSION = "iarrizabalaga";
-    public static final String TEST_PASSWORD_WITH_PERMISSION = "Arrizabalaga2015";
+    public static final String TEST_USERNAME_WITH_PERMISSION = "";
+    public static final String TEST_PASSWORD_WITH_PERMISSION = "";
 
     public static final String MARK_AS_COMPLETED = "Mark as completed";
 
@@ -77,6 +79,10 @@ public class SDKTestUtils {
         IdlingResource idlingResource = new ElapsedTimeIdlingResource(secs * 1000);
         Espresso.registerIdlingResources(idlingResource);
 
+        try{
+            Thread.sleep(secs*2*1000);
+        }catch(Exception ex){
+        }
         onView(withText(android.R.string.ok)).perform(click());
 
         Espresso.unregisterIdlingResources(idlingResource);
@@ -142,6 +148,20 @@ public class SDKTestUtils {
                 .from(Survey.class)
                 .where(Condition.column(Survey$Table.STATUS)
                         .eq(Constants.SURVEY_IN_PROGRESS))
+                .querySingle();
+    }
+    public static  OrgUnit getOrgUnit(String name){
+        return new Select()
+                .from(OrgUnit.class)
+                .where(Condition.column(OrgUnit$Table.NAME)
+                        .eq(name))
+                .querySingle();
+    }
+    public static Program getProgram(String name){
+        return new Select()
+                .from(Program.class)
+                .where(Condition.column(Program$Table.NAME)
+                        .eq(name))
                 .querySingle();
     }
 
