@@ -20,7 +20,7 @@
     <uses-permission
         android:name="android.permission.WRITE_EXTERNAL_STORAGE"
         tools:node="remove" />
-
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
     <application
         android:name=".EyeSeeTeaApplication"
         android:allowBackup="true"
