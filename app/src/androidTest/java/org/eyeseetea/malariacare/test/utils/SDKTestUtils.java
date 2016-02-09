@@ -19,9 +19,14 @@
 
 package org.eyeseetea.malariacare.test.utils;
 
+import android.app.Activity;
+import android.app.Instrumentation;
+import android.support.test.InstrumentationRegistry;
 import android.support.test.espresso.Espresso;
 import android.support.test.espresso.IdlingPolicies;
 import android.support.test.espresso.IdlingResource;
+import android.support.test.runner.lifecycle.ActivityLifecycleMonitorRegistry;
+import android.support.test.runner.lifecycle.Stage;
 
 import com.raizlabs.android.dbflow.sql.builder.Condition;
 import com.raizlabs.android.dbflow.sql.language.Select;
@@ -37,6 +42,7 @@ import org.eyeseetea.malariacare.database.model.Survey$Table;
 import org.eyeseetea.malariacare.utils.Constants;
 import org.hamcrest.Matchers;
 
+import java.util.Collection;
 import java.util.concurrent.TimeUnit;
 
 import static android.support.test.espresso.Espresso.onData;
@@ -87,7 +93,20 @@ public class SDKTestUtils {
 
         Espresso.unregisterIdlingResources(idlingResource);
     }
+    public static void cancellPull(int secs) {
+        //then: wait for progressactivity + dialog + ok (to move to dashboard)
+        IdlingResource idlingResource = new ElapsedTimeIdlingResource(secs * 1000);
+        Espresso.registerIdlingResources(idlingResource);
 
+        try{
+            Thread.sleep(secs*1000);
+        }catch(Exception ex){
+        }
+
+        onView(withText(android.R.string.cancel)).perform(click());
+
+        Espresso.unregisterIdlingResources(idlingResource);
+    }
     public static Survey waitForPush(int secs, Long idSurvey){
         //then: wait for pushservice
         try{
@@ -165,4 +184,19 @@ public class SDKTestUtils {
                 .querySingle();
     }
 
+    public static Activity getActivityInstance() {
+        final Activity[] activity = new Activity[1];
+        Instrumentation instrumentation = InstrumentationRegistry.getInstrumentation();
+        instrumentation.waitForIdleSync();
+        instrumentation.runOnMainSync(new Runnable() {
+            public void run() {
+                Collection resumedActivities = ActivityLifecycleMonitorRegistry.getInstance().getActivitiesInStage(Stage.RESUMED);
+                if (resumedActivities.iterator().hasNext()) {
+                    activity[0] = (Activity) resumedActivities.iterator().next();
+                }
+            }
+        });
+
+        return activity[0];
+    }
 }
