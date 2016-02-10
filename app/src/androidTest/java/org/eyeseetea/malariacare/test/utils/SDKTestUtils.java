@@ -66,13 +66,16 @@ import static org.hamcrest.Matchers.is;
 public class SDKTestUtils {
 
     public static final String HNQIS_DEV_STAGING = "https://hnqis-dev-staging.psi-mis.org";
-    public static final String TEST_USERNAME_NO_PERMISSION = "test";
-    public static final String TEST_PASSWORD_NO_PERMISSION = "testN0permission";
+    public static final String TEST_USERNAME_NO_PERMISSION = "testFAIL";
+    public static final String TEST_PASSWORD_NO_PERMISSION = "testN0P3rmission";
 
-    public static final String TEST_USERNAME_WITH_PERMISSION = "idelcano";
-    public static final String TEST_PASSWORD_WITH_PERMISSION = "Ignacio2015xx";
+    public static final String TEST_USERNAME_WITH_PERMISSION = "testOK";
+    public static final String TEST_PASSWORD_WITH_PERMISSION = "testP3rmission";
+
 
     public static final String MARK_AS_COMPLETED = "Mark as completed";
+
+    public static final String UNABLE_TO_LOGIN = "Unable to log in due to an invalid username or password.";
 
 
     public static void login(String server, String user, String password) {

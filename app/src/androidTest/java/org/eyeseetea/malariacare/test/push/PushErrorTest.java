@@ -68,10 +68,12 @@ public class PushErrorTest {
         fillSurvey(7, "No");
         Long idSurvey=markInProgressAsCompleted();
 
-        //then: Check row is gone BUT Survey is not pushed (NO UID)
+        //then: Survey is NOT pushed (no UID)
+        Survey survey=waitForPush(20,idSurvey);
+        assertTrue(survey.getEventUid() == null);
+
+        //then: Row is gone
         onView(withId(R.id.score)).check(doesNotExist());
-        Survey survey=waitForPush(10,idSurvey);
-        assertTrue(survey.getEventUid()==null);
     }
 
 }

@@ -87,6 +87,7 @@ public class Session {
     }
 
     public static void setUser(User user) {
+        Log.d(TAG,"setUser: "+user);
         Session.user = user;
     }
 

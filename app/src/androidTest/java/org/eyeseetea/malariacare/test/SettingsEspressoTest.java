@@ -51,64 +51,64 @@ public class SettingsEspressoTest extends MalariaEspressoTest{
 
     private static String TAG=".SettingsEspressoTest";
 
-    @Rule
-    public IntentsTestRule<SettingsActivity> mActivityRule = new IntentsTestRule<>(
-            SettingsActivity.class);
-
-    @BeforeClass
-    public static void init(){
-        clearSharedPreferences();
-    }
-
-    @Test
-    public void form_views() {
-        Log.i(TAG,"------form_views------");
-        //THEN
-        onView(withText("Show num/dems")).check(matches(isDisplayed()));
-        onView(withText("Customize fonts?")).check(matches(isDisplayed()));
-    }
-
-    @Test
-    public void change_font(){
-        Log.i(TAG, "------change_font------");
-
-        //WHEN
-        whenFontSizeChange(3);
-        pressBack();
-
-        //THEN
-        Assert.assertEquals(getActivityInstance().getString(R.string.font_size_level2), PreferencesState.getInstance().getScale());
-    }
-
-    @Test
-    public void change_num_den(){
-        Log.i(TAG, "------change_num_den------");
-
-        //WHEN
-        whenToggleShowHideNumDem();
-        pressBack();
-
-        //THEN
-        Assert.assertEquals(true, PreferencesState.getInstance().isShowNumDen());
-    }
-
-    /**
-     * Change font size
-     * @param num font size in a discrete int scale [0: xsmall - 1: small - 2: medium - 3: large - 4: xlarge]
-     */
-    private void whenFontSizeChange(int num) {
-        SettingsActivity settingsActivity=(SettingsActivity)getActivityInstance();
-        onView(withText(settingsActivity.getString(R.string.settings_checkbox_customize_fonts))).perform(click());
-        onView(withText(settingsActivity.getString(R.string.settings_list_font_sizes))).perform(click());
-        onView(withText((settingsActivity.getResources().getStringArray(R.array.settings_array_titles_font_sizes))[num])).perform(click());
-    }
-
-    /**
-     * Change show/hide num/dem preference
-     */
-    private void whenToggleShowHideNumDem() {
-        SettingsActivity settingsActivity=(SettingsActivity)getActivityInstance();
-        onView(withText(settingsActivity.getString(R.string.settings_checkbox_show_num_dems))).perform(click());
-    }
+//    @Rule
+//    public IntentsTestRule<SettingsActivity> mActivityRule = new IntentsTestRule<>(
+//            SettingsActivity.class);
+//
+//    @BeforeClass
+//    public static void init(){
+//        clearSharedPreferences();
+//    }
+//
+//    @Test
+//    public void form_views() {
+//        Log.i(TAG,"------form_views------");
+//        //THEN
+//        onView(withText("Show num/dems")).check(matches(isDisplayed()));
+//        onView(withText("Customize fonts?")).check(matches(isDisplayed()));
+//    }
+//
+//    @Test
+//    public void change_font(){
+//        Log.i(TAG, "------change_font------");
+//
+//        //WHEN
+//        whenFontSizeChange(3);
+//        pressBack();
+//
+//        //THEN
+//        Assert.assertEquals(getActivityInstance().getString(R.string.font_size_level2), PreferencesState.getInstance().getScale());
+//    }
+//
+//    @Test
+//    public void change_num_den(){
+//        Log.i(TAG, "------change_num_den------");
+//
+//        //WHEN
+//        whenToggleShowHideNumDem();
+//        pressBack();
+//
+//        //THEN
+//        Assert.assertEquals(true, PreferencesState.getInstance().isShowNumDen());
+//    }
+//
+//    /**
+//     * Change font size
+//     * @param num font size in a discrete int scale [0: xsmall - 1: small - 2: medium - 3: large - 4: xlarge]
+//     */
+//    private void whenFontSizeChange(int num) {
+//        SettingsActivity settingsActivity=(SettingsActivity)getActivityInstance();
+//        onView(withText(settingsActivity.getString(R.string.settings_checkbox_customize_fonts))).perform(click());
+//        onView(withText(settingsActivity.getString(R.string.settings_list_font_sizes))).perform(click());
+//        onView(withText((settingsActivity.getResources().getStringArray(R.array.settings_array_titles_font_sizes))[num])).perform(click());
+//    }
+//
+//    /**
+//     * Change show/hide num/dem preference
+//     */
+//    private void whenToggleShowHideNumDem() {
+//        SettingsActivity settingsActivity=(SettingsActivity)getActivityInstance();
+//        onView(withText(settingsActivity.getString(R.string.settings_checkbox_show_num_dems))).perform(click());
+//    }
 
 }
