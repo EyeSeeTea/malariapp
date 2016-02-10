@@ -10,6 +10,7 @@ import org.eyeseetea.malariacare.database.utils.PopulateDB;
 import org.eyeseetea.malariacare.test.utils.SDKTestUtils;
 import org.hisp.dhis.android.sdk.controllers.metadata.MetaDataController;
 import org.hisp.dhis.android.sdk.persistence.models.OrganisationUnitAttributeValue;
+import org.hisp.dhis.android.sdk.persistence.models.ProgramAttributeValue;
 import org.hisp.dhis.android.sdk.utils.api.ProgramType;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -21,8 +22,6 @@ import java.util.List;
 
 import static junit.framework.Assert.assertTrue;
 import static org.eyeseetea.malariacare.test.utils.SDKTestUtils.HNQIS_DEV_STAGING;
-import static org.eyeseetea.malariacare.test.utils.SDKTestUtils.TEST_PASSWORD_NO_PERMISSION;
-import static org.eyeseetea.malariacare.test.utils.SDKTestUtils.TEST_USERNAME_NO_PERMISSION;
 import static org.eyeseetea.malariacare.test.utils.SDKTestUtils.TEST_USERNAME_WITH_PERMISSION;
 import static org.eyeseetea.malariacare.test.utils.SDKTestUtils.TEST_PASSWORD_WITH_PERMISSION;
 import static org.eyeseetea.malariacare.test.utils.SDKTestUtils.login;
@@ -35,6 +34,10 @@ import static org.eyeseetea.malariacare.test.utils.SDKTestUtils.waitForPull;
 public class PullTranslationSDKToAppDBTest {
 
     private final String ATTRIBUTE_PRODUCTIVITY_CODE="OUProductivity";
+
+    private final String ATTRIBUTE_SUPERVISION_CODE="PSupervisor";
+    private final String ATTRIBUTE_SUPERVISION_VALUE="Adrian Quintana";
+    private final String ATTRIBUTE_SUPERVISION_ID="zG5T2x5Yjrx";
     @Rule
     public ActivityTestRule<LoginActivity> mActivityRule = new ActivityTestRule<>(
             LoginActivity.class);
@@ -51,8 +54,7 @@ public class PullTranslationSDKToAppDBTest {
 
     @Test
     public void pullTranslationSDKToAppDB(){
-        login(HNQIS_DEV_STAGING, TEST_USERNAME_NO_PERMISSION, TEST_PASSWORD_NO_PERMISSION);
-        //login(HNQIS_DEV_STAGING, TEST_USERNAME_WITH_PERMISSION, TEST_PASSWORD_WITH_PERMISSION);
+        login(HNQIS_DEV_STAGING, TEST_USERNAME_WITH_PERMISSION, TEST_PASSWORD_WITH_PERMISSION);
         waitForPull(20);
 
         List<OrgUnit> orgUnitList= OrgUnit.getAllOrgUnit();
@@ -62,7 +64,7 @@ public class PullTranslationSDKToAppDBTest {
         List<org.hisp.dhis.android.sdk.persistence.models.OrganisationUnit> orgUnitSdkList= SDKTestUtils.getAllSDKOrganisationUnits();
         List<org.hisp.dhis.android.sdk.persistence.models.Program> programsSdkList= SDKTestUtils.getAllSDKPrograms();
 
-        //Get all the organisation units saved in the sdk, and checks if is saved in our DB
+        //Get all the organisation units saved in the sdk, and tests if is saved in our DB
         for(org.hisp.dhis.android.sdk.persistence.models.OrganisationUnit organisationUnit:orgUnitSdkList){
             boolean isOrgUnitUid=false;
             boolean isOrgUnitName=false;
@@ -107,14 +109,27 @@ public class PullTranslationSDKToAppDBTest {
             //assertTrue("Checking organisationUnit orgUnitLevel",isOrgUnitOrgUnitLevel);
         }
 
-        //We check for all the sdk programs if is saved in our DB
+
+
+        //Loop all the sdk programs and test if is saved in our DB
         for(org.hisp.dhis.android.sdk.persistence.models.Program programSDK:programsSdkList){
             boolean isProgramUid=false;
+            boolean isProgramSupervisor=false;
             for(Program program : programList) {
+                List<ProgramAttributeValue> attributeValues=programSDK.getAttributeValues();
+                for(ProgramAttributeValue programAttributeValue:attributeValues) {
+                    if (programAttributeValue.getAttribute().getCode().equals(ATTRIBUTE_SUPERVISION_CODE) && programAttributeValue.getAttribute().getUid().equals(ATTRIBUTE_SUPERVISION_ID)) {
+                        if(programAttributeValue.getValue().equals(ATTRIBUTE_SUPERVISION_VALUE)){
+                            isProgramSupervisor=true;
+                            //Fixme here we need check if the attribute of the program is translate to our app db. But at this moment is not converted from the sdk.
+                        }
+                    }
+                }
                 if(programSDK.getUid().equals(program.getUid())){
                     isProgramUid=true;
                 }
             }
+            assertTrue("Checking program Supervisor Code",isProgramSupervisor);
             assertTrue("Checking program name",isProgramUid);
         }
 
