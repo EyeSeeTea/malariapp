@@ -74,8 +74,8 @@ public class PushOKTest {
     public void pushWithPermissionsDoesPush(){
         //XXX Change TEST_USER_WITH_PERMISSION credentials to a good ones to make this pass
         login(HNQIS_DEV_STAGING, TEST_USERNAME_WITH_PERMISSION, TEST_PASSWORD_WITH_PERMISSION);
-        waitForPull(20);
-        startSurvey(1, 6);
+        waitForPull(15);
+        startSurvey(1, 1);
         fillSurvey(7, "No");
         Long idSurvey=markInProgressAsCompleted();
 
