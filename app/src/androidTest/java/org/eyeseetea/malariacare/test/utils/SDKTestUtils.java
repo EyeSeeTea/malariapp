@@ -32,6 +32,7 @@ import android.support.test.espresso.IdlingResource;
 import android.support.test.runner.lifecycle.ActivityLifecycleMonitorRegistry;
 import android.support.test.runner.lifecycle.Stage;
 
+import com.google.android.gms.fitness.data.DataSet;
 import com.raizlabs.android.dbflow.sql.builder.Condition;
 import com.raizlabs.android.dbflow.sql.language.Select;
 
@@ -45,6 +46,12 @@ import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.model.Survey$Table;
 import org.eyeseetea.malariacare.utils.Constants;
 import org.hamcrest.Matchers;
+import org.hisp.dhis.android.sdk.persistence.models.OrganisationUnit;
+import org.hisp.dhis.android.sdk.persistence.models.OrganisationUnit$Table;
+import org.hisp.dhis.android.sdk.persistence.models.OrganisationUnitDataSet;
+import org.hisp.dhis.android.sdk.persistence.models.OrganisationUnitDataSet$Table;
+import org.hisp.dhis.android.sdk.persistence.models.OrganisationUnitGroup;
+import org.hisp.dhis.android.sdk.persistence.models.OrganisationUnitGroup$Table;
 
 import java.util.Collection;
 import java.util.List;
@@ -182,21 +189,52 @@ public class SDKTestUtils {
                         .eq(Constants.SURVEY_IN_PROGRESS))
                 .querySingle();
     }
-    public static  OrgUnit getOrgUnit(String name){
+    public static  OrgUnit getOrgUnit(String id){
         return new Select()
                 .from(OrgUnit.class)
-                .where(Condition.column(OrgUnit$Table.NAME)
-                        .eq(name))
+                .where(Condition.column(OrgUnit$Table.UID)
+                        .eq(id))
                 .querySingle();
     }
-    public static Program getProgram(String name){
+    public static OrganisationUnit getOrganisationUnit(String id){
         return new Select()
-                .from(Program.class)
-                .where(Condition.column(Program$Table.NAME)
-                        .eq(name))
+                .from(OrganisationUnit.class)
+                .where(Condition.column(OrganisationUnit$Table.ID)
+                        .eq(id))
                 .querySingle();
     }
 
+    public static List<OrganisationUnitGroup> getOrganisationUnitGroups(String id){
+        return new Select()
+                .from(OrganisationUnitGroup.class)
+                .where(Condition.column(OrganisationUnitGroup$Table.ORGANISATIONUNITID)
+                        .eq(id))
+                .queryList();
+    }
+
+    public static List<OrganisationUnitDataSet> getOrganisationUnitDataSets(String id){
+        return new Select()
+                .from(OrganisationUnitDataSet.class)
+                .where(Condition.column(OrganisationUnitDataSet$Table.ORGANISATIONUNITID)
+                        .eq(id))
+                .queryList();
+    }
+
+    public static Program getProgram(String id){
+        return new Select()
+                .from(Program.class)
+                .where(Condition.column(Program$Table.UID)
+                        .eq(id))
+                .querySingle();
+    }
+
+    public static org.hisp.dhis.android.sdk.persistence.models.Program getSDKProgram(String id){
+        return new Select()
+                .from(org.hisp.dhis.android.sdk.persistence.models.Program.class)
+                .where(Condition.column(org.hisp.dhis.android.sdk.persistence.models.Program$Table.ID)
+                        .eq(id))
+                .querySingle();
+    }
 
     public static List<org.hisp.dhis.android.sdk.persistence.models.OrganisationUnit> getAllSDKOrganisationUnits() {
         return new Select().all().from(org.hisp.dhis.android.sdk.persistence.models.OrganisationUnit.class).queryList();
