@@ -142,6 +142,7 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
     public void visit(OrganisationUnitLevelExtended sdkOrganisationUnitLevelExtended){
         OrganisationUnitLevel organisationUnitLevel = sdkOrganisationUnitLevelExtended.getOrganisationUnitLevel();
         OrgUnitLevel orgUnitLevel = new OrgUnitLevel();
+        orgUnitLevel.setUid(organisationUnitLevel.getId());
         orgUnitLevel.setName(organisationUnitLevel.getDisplayName());
         orgUnitLevel.save();
 
@@ -442,7 +443,7 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
     /**
      * Due to permissions programs 'belongs' to a given orgunit
      */
-    public void buildOrgUnitProgramRelationships(OrgUnit appOrgUnit){
+    public void buildOrgUnitProgramRelationships(OrgUnit appOrgUnit) {
         Log.d(TAG, "buildOrgUnitProgramRelationships " + appOrgUnit.getName());
         //Each assigned program
         for (org.hisp.dhis.android.sdk.persistence.models.Program program : MetaDataController.getProgramsForOrganisationUnit(appOrgUnit.getUid(), ProgramType.WITHOUT_REGISTRATION)) {
