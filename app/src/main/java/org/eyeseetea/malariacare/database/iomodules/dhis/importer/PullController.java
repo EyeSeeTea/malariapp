@@ -52,6 +52,8 @@ import org.hisp.dhis.android.sdk.persistence.models.ProgramStage;
 import org.hisp.dhis.android.sdk.persistence.models.ProgramStageDataElement;
 import org.hisp.dhis.android.sdk.persistence.preferences.ResourceType;
 import org.hisp.dhis.android.sdk.utils.api.ProgramType;
+import org.hisp.dhis.android.sdk.utils.log.LogMessage;
+import org.hisp.dhis.android.sdk.utils.log.SdkLogger;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -175,6 +177,25 @@ public class PullController {
                         return;
                     }
 
+                    //Get SdkLogger messages
+                    if(result.getResponseHolder().getItem()!=null) {
+                        Object item=(Object) result.getResponseHolder().getItem();
+                        List<LogMessage> messagesList = (List<LogMessage>) item;
+                        for (LogMessage message:messagesList){
+                            switch (message.getType()){
+                                case SdkLogger.INFO:
+                                    Log.d(TAG,"info"+message.getMessage());
+                                    break;
+                                case SdkLogger.WARNING:
+                                    Log.d(TAG,"Warning"+message.getMessage());
+                                    break;
+                                case SdkLogger.ERROR:
+                                    Log.d(TAG, "Error" + message.getMessage());
+                                    cancelPull("Error" + message.getMessage());
+                                    return;
+                            }
+                        }
+                    }
                     //Ok
                     wipeDatabase();
                     convertFromSDK();
@@ -190,6 +211,10 @@ public class PullController {
                 }
             }
         }.start();
+    }
+
+    public void cancelPull(String errorMessage){
+        ProgressActivity.cancellPull(errorMessage);
     }
 
     /**
