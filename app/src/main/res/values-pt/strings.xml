@@ -273,4 +273,5 @@
     <!-- filters text -->
     <string name="filter_all_org_units_upper">TODAS AS UNIDADES DE ORGANIZAÇÃO</string>
     <string name="filter_all_org_assessments_upper">TODAS AS AVALIAÇÕES</string>
+    <string name="settings_text_dhis_max_items">DHIS max carregado inquéritos</string>
 </resources>

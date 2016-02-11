@@ -89,6 +89,7 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
         // to reflect the new value, per the Android Design guidelines.
         bindPreferenceSummaryToValue(findPreference(getApplicationContext().getString(R.string.font_sizes)));
         bindPreferenceSummaryToValue(findPreference(getApplicationContext().getString(R.string.dhis_url)));
+        bindPreferenceSummaryToValue(findPreference(getString(R.string.dhis_max_items)));
     }
 
     /**
@@ -205,6 +206,7 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
             // guidelines.
             bindPreferenceSummaryToValue(findPreference(getString(R.string.font_sizes)));
             bindPreferenceSummaryToValue(findPreference(getString(R.string.dhis_url)));
+            bindPreferenceSummaryToValue(findPreference(getString(R.string.dhis_max_items)));
         }
     }
 

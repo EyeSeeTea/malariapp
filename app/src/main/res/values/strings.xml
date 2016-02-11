@@ -238,6 +238,7 @@
     <string name="settings_text_dhis_server_url">DHIS Server URL</string>
     <string name="settings_text_dhis_user">DHIS user</string>
     <string name="settings_text_dhis_password">DHIS password</string>
+    <string name="settings_text_dhis_max_items">DHIS max loaded surveys</string>
     <string name="pref_header_general">General</string>
 
     <string name="settings_array_values_font_sizes_def">@string/font_size_level2</string>
@@ -285,6 +286,7 @@
     <item name="dhis_url" type="string" translatable="false">dhis_url</item>
     <item name="dhis_user" type="string" translatable="false">dhis_user</item>
     <item name="dhis_password" type="string" translatable="false">dhis_password</item>
+    <item name="dhis_max_items" type="string" translatable="false">dhis_max_items</item>
     <item name="location_required" type="string" translatable="false">location_required</item>
     <string name="dashboard_tip_pie_chart">Quality of care (based on last assessment)</string>
     <string name="dialog_pull_error">Error while trying to pull metadata from dhis server</string>
