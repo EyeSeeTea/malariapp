@@ -260,7 +260,7 @@
     <string name="hide_planning_tab_title" >"Masquer l'onglet Planification"</string>
     <string name="hide_planning_tab_summary" >Cochez cette case pour masquer onglet de planification</string>
     <string name="plan">planification</string>
-    <string name="assess">sondage</string>
+    <string name="assess">"sondage - enquêtes actives"</string>
     <string name="improve">ameilleurement</string>
     <string name="monitor">monitorisation</string>
 

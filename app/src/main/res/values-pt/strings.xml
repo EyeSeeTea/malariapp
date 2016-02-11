@@ -266,7 +266,7 @@
     <string name="hide_planning_tab_title" >Ocultar guia planejamento</string>
     <string name="hide_planning_tab_summary" >Marque esta caixa para ocultar a guia de planejamento</string>
     <string name="plan">plano</string>
-    <string name="assess">avaliar</string>
+    <string name="assess">avaliar - pesquisas ativas</string>
     <string name="improve">melhorar</string>
     <string name="monitor">monitor</string>
 
