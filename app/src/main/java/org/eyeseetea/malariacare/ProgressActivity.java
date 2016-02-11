@@ -106,6 +106,10 @@ public class ProgressActivity extends Activity {
      */
     public static Boolean PULL_CANCEL =false;
 
+    /**
+     * Used for control error in pull
+     */
+    public static Boolean PULL_ERROR =false;
     ProgressBar progressBar;
     TextView textView;
     boolean pullAfterPushInProgress;
@@ -124,6 +128,8 @@ public class ProgressActivity extends Activity {
                 cancellPull();
             }
         });
+
+        //the handler and the static activity is needed to show the dialog with the pull controller error.
         handler = new Handler(Looper.getMainLooper());
         progressActivity=this;
     }
@@ -256,6 +262,10 @@ public class ProgressActivity extends Activity {
      *
      */
     private void showAndMoveOn() {
+        if(PULL_ERROR) {
+            PULL_ERROR = false;
+            return;
+        }
         boolean isAPush=isAPush();
 
         //Annotate pull is done
@@ -449,14 +459,14 @@ public class ProgressActivity extends Activity {
     }
 
     public static void cancellPull(final String errorMessage){
-
+        PULL_ERROR=true;
 
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
                 // Run your task here
-                ProgressActivity.PULL_CANCEL=false;
-                ProgressActivity.PULL_IS_ACTIVE=false;
+                PULL_CANCEL=true;
+                PULL_IS_ACTIVE=false;
                 new Handler(Looper.getMainLooper()).post(new Runnable() {
                     @Override
                     public void run() {
@@ -468,6 +478,7 @@ public class ProgressActivity extends Activity {
                                 .setNeutralButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface arg0, int arg1) {
                                         Intent targetActivityIntent = new Intent(progressActivity, LoginActivity.class);
+                                        targetActivityIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                         progressActivity.getApplicationContext().startActivity(targetActivityIntent);
                                         return;
                                     }
