@@ -25,12 +25,15 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.squareup.otto.Subscribe;
 
@@ -38,6 +41,7 @@ import org.eyeseetea.malariacare.database.iomodules.dhis.exporter.PushController
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.PullController;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.SyncProgressStatus;
 import org.eyeseetea.malariacare.database.model.Survey;
+import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.hisp.dhis.android.sdk.controllers.DhisService;
 import org.hisp.dhis.android.sdk.events.UiEvent;
@@ -105,7 +109,8 @@ public class ProgressActivity extends Activity {
     ProgressBar progressBar;
     TextView textView;
     boolean pullAfterPushInProgress;
-
+    static Handler handler;
+    static Activity progressActivity;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -119,6 +124,8 @@ public class ProgressActivity extends Activity {
                 cancellPull();
             }
         });
+        handler = new Handler(Looper.getMainLooper());
+        progressActivity=this;
     }
 
     private void cancellPull() {
@@ -441,4 +448,33 @@ public class ProgressActivity extends Activity {
         startActivity(targetActivityIntent);
     }
 
+    public static void cancellPull(final String errorMessage){
+
+
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                // Run your task here
+                ProgressActivity.PULL_CANCEL=false;
+                ProgressActivity.PULL_IS_ACTIVE=false;
+                new Handler(Looper.getMainLooper()).post(new Runnable() {
+                    @Override
+                    public void run() {
+                        Log.d("entra",errorMessage);
+                        new AlertDialog.Builder(progressActivity)
+                                .setCancelable(false)
+                                .setTitle("Error")
+                                .setMessage(errorMessage)
+                                .setNeutralButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface arg0, int arg1) {
+                                        Intent targetActivityIntent = new Intent(progressActivity, LoginActivity.class);
+                                        progressActivity.getApplicationContext().startActivity(targetActivityIntent);
+                                        return;
+                                    }
+                                }).create().show();
+                    }
+                });
+            }
+        }, 1000 );
+    }
 }
