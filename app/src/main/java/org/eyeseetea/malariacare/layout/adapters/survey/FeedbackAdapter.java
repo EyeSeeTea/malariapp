@@ -118,7 +118,8 @@ public class FeedbackAdapter extends BaseAdapter {
 
         //CompositeScore title
         TextView textView=(TextView)rowLayout.findViewById(R.id.feedback_label);
-        if(feedback.getLabel().matches("^[0-9]*[.].*")) {
+        String pattern="^[0-9]+[.][0-9]+.*"; // the format "1.1" for the second level header
+        if(feedback.getLabel().matches(pattern)) {
             textView.setTextColor(PreferencesState.getInstance().getContext().getResources().getColor(R.color.darkGrey));
             textView.setTextSize(context.getResources().getDimension(R.dimen.medium_small_text_size));
         }
