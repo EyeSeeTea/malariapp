@@ -96,7 +96,7 @@
         android:paddingTop="@dimen/dashboard_planning_padding"
         android:paddingBottom="@dimen/dashboard_planning_padding"
         android:text="@string/lorem_ipsum"
-        app:tDimension="@string/font_size_level1"
+        app:tDimension="@string/font_size_level2"
         app:tFontName="@string/medium_font_name"
         />
 
