@@ -118,8 +118,10 @@ public class FeedbackAdapter extends BaseAdapter {
 
         //CompositeScore title
         TextView textView=(TextView)rowLayout.findViewById(R.id.feedback_label);
-        if(feedback.getLabel().matches("^[0-9].*"))
-            textView.setTextColor(PreferencesState.getInstance().getContext().getResources().getColor(R.color.white));
+        if(feedback.getLabel().matches("^[0-9]*[.].*")) {
+            textView.setTextColor(PreferencesState.getInstance().getContext().getResources().getColor(R.color.darkGrey));
+            textView.setTextSize(context.getResources().getDimension(R.dimen.medium_small_text_size));
+        }
         textView.setText(feedback.getLabel());
 
         //CompositeScore title
