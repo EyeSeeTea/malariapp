@@ -458,8 +458,8 @@ public class ProgressActivity extends Activity {
         startActivity(targetActivityIntent);
     }
 
-    public static void cancellPull(final String errorMessage){
-        PULL_ERROR=true;
+    public static void cancellPull(final String title, final String errorMessage) {
+        PULL_ERROR = true;
 
         handler.postDelayed(new Runnable() {
             @Override
@@ -470,11 +470,16 @@ public class ProgressActivity extends Activity {
                 new Handler(Looper.getMainLooper()).post(new Runnable() {
                     @Override
                     public void run() {
-                        Log.d("entra",errorMessage);
+                        Log.d("entra", errorMessage);
+                        String dialogTitle="",dialogMessage="";
+                        if(title!=null)
+                            dialogTitle=title;
+                        if(errorMessage!=null)
+                            dialogMessage=errorMessage;
                         new AlertDialog.Builder(progressActivity)
                                 .setCancelable(false)
-                                .setTitle("Error")
-                                .setMessage(errorMessage)
+                                .setTitle(dialogTitle)
+                                .setMessage(dialogMessage)
                                 .setNeutralButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface arg0, int arg1) {
                                         Intent targetActivityIntent = new Intent(progressActivity, LoginActivity.class);

@@ -191,7 +191,7 @@ public class PullController {
                                     break;
                                 case SdkLogger.ERROR:
                                     Log.d(TAG, "Error" + message.getMessage());
-                                    cancelPull("Error" + message.getMessage());
+                                    ProgressActivity.cancellPull(message.getException().getMessage(), message.getMessage());
                                     return;
                             }
                         }
@@ -213,8 +213,7 @@ public class PullController {
         }.start();
     }
 
-    public void cancelPull(String errorMessage){
-        ProgressActivity.cancellPull(errorMessage);
+    public void cancelPull(String title,String errorMessage){
     }
 
     /**
