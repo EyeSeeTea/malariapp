@@ -22,6 +22,7 @@ package org.eyeseetea.malariacare.database.iomodules.dhis.importer;
 import android.content.Context;
 import android.util.Log;
 
+import com.raizlabs.android.dbflow.sql.language.Select;
 import com.squareup.otto.Subscribe;
 
 import org.eyeseetea.malariacare.ProgressActivity;
@@ -32,6 +33,7 @@ import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.OptionS
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.OrganisationUnitExtended;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.ProgramExtended;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.UserAccountExtended;
+import org.eyeseetea.malariacare.database.model.OrgUnit$Table;
 import org.eyeseetea.malariacare.database.model.User;
 import org.eyeseetea.malariacare.database.utils.PopulateDB;
 import org.eyeseetea.malariacare.database.utils.Session;
@@ -68,6 +70,20 @@ import java.util.Map;
  */
 public class PullController {
     private final String TAG = ".PullController";
+
+    private final static Class APP_TABLES_TO_CHECK[] = {
+            org.hisp.dhis.android.sdk.persistence.models.Attribute.class,
+            org.hisp.dhis.android.sdk.persistence.models.DataElement.class,
+            org.hisp.dhis.android.sdk.persistence.models.DataElementAttributeValue.class,
+            org.hisp.dhis.android.sdk.persistence.models.Option.class,
+            org.hisp.dhis.android.sdk.persistence.models.OptionSet.class,
+            org.hisp.dhis.android.sdk.persistence.models.UserAccount.class,
+            org.hisp.dhis.android.sdk.persistence.models.OrganisationUnit.class,
+            org.hisp.dhis.android.sdk.persistence.models.OrganisationUnitProgramRelationship.class,
+            org.hisp.dhis.android.sdk.persistence.models.ProgramStage.class,
+            org.hisp.dhis.android.sdk.persistence.models.ProgramStageDataElement.class,
+            org.hisp.dhis.android.sdk.persistence.models.ProgramStageSection.class
+    };
 
     private static PullController instance;
 
@@ -173,6 +189,7 @@ public class PullController {
                     //Error while pulling
                     if (result.getResponseHolder() != null && result.getResponseHolder().getApiException() != null) {
                         Log.e(TAG, result.getResponseHolder().getApiException().getMessage());
+                        ProgressActivity.cancellPull(context.getString(R.string.dialog_pull_error),result.getResponseHolder().getApiException().getMessage());
                         postException(new Exception(context.getString(R.string.dialog_pull_error)));
                         return;
                     }
@@ -192,12 +209,17 @@ public class PullController {
                                 case SdkLogger.ERROR:
                                     Log.d(TAG, "Error" + message.getMessage());
                                     ProgressActivity.cancellPull(message.getException().getMessage(), message.getMessage());
+                                    postException(new Exception(context.getString(R.string.dialog_pull_error)));
                                     return;
                             }
                         }
                     }
                     //Ok
                     wipeDatabase();
+
+                    if(!isNecesaryMetadata())
+                        ProgressActivity.cancellPull("Error", "Error downloading metadata");
+
                     convertFromSDK();
                     if (ProgressActivity.PULL_IS_ACTIVE) {
                         Log.d(TAG, "PULL process...OK");
@@ -213,7 +235,17 @@ public class PullController {
         }.start();
     }
 
-    public void cancelPull(String title,String errorMessage){
+    private boolean isNecesaryMetadata(){
+
+        for(int i=0;i<APP_TABLES_TO_CHECK.length;i++) {
+            int count = (int) new Select().count()
+                    .from(APP_TABLES_TO_CHECK[i]).count();
+            if (count == 0) {
+                Log.d(TAG, "Error null " + APP_TABLES_TO_CHECK[i].getName());
+                return false;
+            }
+        }
+        return true;
     }
 
     /**
