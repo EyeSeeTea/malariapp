@@ -19,6 +19,7 @@
 
 package org.eyeseetea.malariacare;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Fragment;
@@ -200,6 +201,7 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
     public void setActionbarMultiTitle(String title1, String title2,String title3) {
         android.support.v7.app.ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayShowCustomEnabled(true);
+        actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setCustomView(R.layout.action_bar_three_title_layout);
         ((TextView) findViewById(R.id.action_bar_multititle_title)).setText(title1);
         ((TextView) findViewById(R.id.action_bar_multititle_subtitle)).setText(title2);
@@ -351,6 +353,9 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
+        if(item.getItemId()==android.R.id.home){
+            getFragmentManager().popBackStack();
+        }
         //Any common option
         if(item.getItemId()!=R.id.action_pull){
             return super.onOptionsItemSelected(item);
