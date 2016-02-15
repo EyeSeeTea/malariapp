@@ -55,6 +55,8 @@ public class PreferencesState {
     private boolean showNumDen;
 
     private Boolean pullFromServer;
+    
+    private Boolean eds;
 
     /**
      * Map that holds the relationship between a scale and a set of dimensions
@@ -106,7 +108,7 @@ public class PreferencesState {
      */
     private boolean initShowNumDen(){
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(instance.getContext());
-        return sharedPreferences.getBoolean(instance.getContext().getString(R.string.show_num_dems), false);
+        return sharedPreferences.getBoolean(instance.getContext().getString(R.string.show_num_dems),false);
     }
 
     /**
@@ -214,6 +216,16 @@ public class PreferencesState {
         return pullFromServer;
     }
 
+    /**
+     * Tells if the application is EDS
+     * @return
+     */
+    public Boolean isEds() {
+        if(eds==null){
+            eds = context.getResources().getBoolean(R.bool.eds);
+        }
+        return eds;
+    }
     public Class getMainActivity(){
         if(getPullFromServer()){
             return ProgressActivity.class;
