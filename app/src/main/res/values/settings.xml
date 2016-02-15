@@ -22,5 +22,5 @@
     <!--  Flag that indicates that metadata is taken from a DHIS server-->
     <bool name="pullFromServer">true</bool>
     <!--  Flag that indicates EDS model or HNQIS Model-->
-    <bool name="eds">true</bool>
+    <bool name="vertical">true</bool>
 </resources>

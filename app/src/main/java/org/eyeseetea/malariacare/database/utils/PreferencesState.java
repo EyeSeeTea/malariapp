@@ -55,8 +55,8 @@ public class PreferencesState {
     private boolean showNumDen;
 
     private Boolean pullFromServer;
-    
-    private Boolean eds;
+
+    private Boolean verticalDashboard;
 
     /**
      * Map that holds the relationship between a scale and a set of dimensions
@@ -217,15 +217,16 @@ public class PreferencesState {
     }
 
     /**
-     * Tells if the application is EDS
+     * Tells if the application is Vertical or horizontall
      * @return
      */
-    public Boolean isEds() {
-        if(eds==null){
-            eds = context.getResources().getBoolean(R.bool.eds);
+    public Boolean isVerticalDashboard() {
+        if(verticalDashboard==null){
+            verticalDashboard= context.getResources().getBoolean(R.bool.vertical);
         }
-        return eds;
+        return verticalDashboard;
     }
+
     public Class getMainActivity(){
         if(getPullFromServer()){
             return ProgressActivity.class;
