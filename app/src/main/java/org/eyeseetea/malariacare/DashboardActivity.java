@@ -45,14 +45,17 @@ import com.squareup.otto.Subscribe;
 import org.eyeseetea.malariacare.database.model.Program;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.model.User;
+import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.database.utils.SurveyAnsweredRatio;
 import org.eyeseetea.malariacare.fragments.CreateSurveyFragment;
+import org.eyeseetea.malariacare.fragments.DashboardConteinerFragment;
 import org.eyeseetea.malariacare.fragments.DashboardSentFragment;
 import org.eyeseetea.malariacare.fragments.DashboardUnsentFragment;
 import org.eyeseetea.malariacare.fragments.FeedbackFragment;
 import org.eyeseetea.malariacare.fragments.MonitorFragment;
 import org.eyeseetea.malariacare.fragments.SurveyFragment;
+import org.eyeseetea.malariacare.layout.Module;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.fragments.PlannedFragment;
 import org.eyeseetea.malariacare.receivers.AlarmPushReceiver;
@@ -60,6 +63,7 @@ import org.eyeseetea.malariacare.services.SurveyService;
 import org.hisp.dhis.android.sdk.events.UiEvent;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -68,28 +72,65 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
     private final static String TAG=".DDetailsActivity";
     private boolean reloadOnResume=true;
     TabHost tabHost;
+    List<Module> modules;
     PlannedFragment plannedFragment;
     MonitorFragment monitorFragment;
     DashboardUnsentFragment unsentFragment;
     DashboardSentFragment sentFragment;
+    DashboardConteinerFragment edsConteinerFragment;
     CreateSurveyFragment createSurveyFragment;
     SurveyFragment surveyFragment;
     FeedbackFragment feedbackFragment;
-    String currentTab;
-    String currentTabName;
+    String currentTab="";
+    String currentTabName="";
     boolean isMoveToLeft;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Log.d(TAG, "onCreate");
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.tab_dashboard);
+        modules=new ArrayList();
+        if(PreferencesState.getInstance().isVerticalDashboard())
+            setContentView(R.layout.vertical_dashboard);
+        else
+            setContentView(R.layout.tab_dashboard);
         try {
             initDataIfRequired();
             loadSessionIfRequired();
         } catch (IOException e){
             Log.e(".DashboardActivity", e.getMessage());
         }
+        if(PreferencesState.getInstance().isVerticalDashboard())
+            initEDS(savedInstanceState);
+        else
+            initHNQIS(savedInstanceState);
+
+        setActionBarDashboard();
+        setAlarm();
+    }
+
+    private void reloadEds(){
+        modules.add(new Module(new DashboardConteinerFragment(),true,R.id.vertical_conteiner,null,null));
+
+        initEDS_main();
+        initAssess();
+        unsentFragment.reloadData();
+        initImprove();
+        sentFragment.reloadData();
+    }
+    private void initEDS(Bundle savedInstanceState){
+        if(savedInstanceState==null) {
+            initEDS_main();
+            initAssess();
+            initImprove();
+        }
+//        unsentFragment.reloadData();
+//        sentFragment.reloadSentSurveys();
+//        monitorFragment.reloadSentSurveys();
+//        setActionBarDashboard();
+    }
+
+    private void initHNQIS(Bundle savedInstanceState){
         if(savedInstanceState==null) {
             if(!isPlanningTabHide())
                 initPlanned();
@@ -164,8 +205,7 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
             tabHost.getTabWidget().getChildAt(0).setBackgroundColor(getResources().getColor(R.color.tab_yellow_assess));
             currentTabName=getString(R.string.assess);
         }
-        setActionBarDashboard();
-        setAlarm();
+
     }
 
     public boolean isPlanningTabHide(){
@@ -227,6 +267,12 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
         tab.setIndicator("", image);
         tabHost.addTab(tab);
 
+    }
+
+    public void initEDS_main(){
+        edsConteinerFragment = new DashboardConteinerFragment();
+        edsConteinerFragment.setArguments(getIntent().getExtras());
+        replaceFragment(R.id.vertical_conteiner,edsConteinerFragment);
     }
 
     public void initPlanned(){
@@ -461,7 +507,22 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
     @Override
     public void onBackPressed() {
         isMoveToLeft =true;
-        if(isCreateSurveyFragmentActive() && currentTab==getResources().getString(R.string.tab_tag_assess)) {
+        if(isCreateSurveyFragmentActive() && PreferencesState.getInstance().isVerticalDashboard() ) {
+            reloadEds();
+        }
+        else if (isSurveyFragmentActive() && PreferencesState.getInstance().isVerticalDashboard() ) {
+            Survey survey=Session.getSurvey();
+            survey.updateSurveyStatus();
+            ScoreRegister.clear();
+            surveyFragment.unregisterReceiver();
+            reloadEds();
+         } else if (isFeedbackFragmentActive() && PreferencesState.getInstance().isVerticalDashboard() ) {
+            ScoreRegister.clear();
+            feedbackFragment.unregisterReceiver();
+            feedbackFragment.getView().setVisibility(View.GONE);
+            reloadEds();
+           }
+        else if(isCreateSurveyFragmentActive() && (currentTab==getResources().getString(R.string.tab_tag_assess)) ) {
             initAssess();
             unsentFragment.reloadData();
         } else if (isSurveyFragmentActive() && currentTab == getResources().getString(R.string.tab_tag_assess)) {
@@ -678,9 +739,15 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
     @Override
     public void onFeedbackSelected(Survey survey) {
         Session.setSurvey(survey);
-        tabHost.setCurrentTabByTag(getResources().getString(R.string.tab_tag_improve));
-        sentFragment.getView().setVisibility(View.GONE);
-        initFeedback();
+        if(PreferencesState.getInstance().isVerticalDashboard()){
+            initFeedback();
+        }
+        else{
+            tabHost.setCurrentTabByTag(getResources().getString(R.string.tab_tag_improve));
+            sentFragment.getView().setVisibility(View.GONE);
+            initFeedback();
+        }
+
     }
 
     @Override
