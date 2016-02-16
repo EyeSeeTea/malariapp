@@ -51,6 +51,10 @@ public class PullCancelTest {
 
         login(HNQIS_DEV_STAGING,TEST_USERNAME_WITH_PERMISSION,TEST_PASSWORD_WITH_PERMISSION);
         onView(withText(android.R.string.cancel)).perform(click());
+        try{
+            Thread.sleep(5000);
+        }catch(Exception ex){
+        }
         assertEquals(LoginActivity.class,SDKTestUtils.getActivityInstance().getClass());
     }
 }
