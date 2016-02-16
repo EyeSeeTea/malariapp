@@ -31,6 +31,8 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
+import android.text.Html;
+import android.text.Spanned;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -183,8 +185,8 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
         StringBuilder tabtemp = new StringBuilder(currentTabName.toLowerCase());
         tabtemp.setCharAt(0, Character.toUpperCase(tabtemp.charAt(0)));
         title = tabtemp.toString();
-        title=getResources().getString(R.string.app_name)+ " | "+ title;
-        setActionbarTitle(title, user);
+        Spanned spannedTitle=Html.fromHtml("<b>"+getResources().getString(R.string.app_name)+ "</b> | "+ title);
+        setActionbarTitle(spannedTitle, user);
     }
 
     public void setActionBarTitleForSurvey(Survey survey){
@@ -195,10 +197,11 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
             title=survey.getOrgUnit().getName();
         if(program.getName()!=null)
             subtitle=program.getName();
-        setActionbarTitle(title, subtitle);
+        Spanned spannedTitle=Html.fromHtml("<b>"+title+"</b>");
+        setActionbarTitle(spannedTitle, subtitle);
     }
 
-    public void setActionbarTitle(String title, String subtitle) {
+    public void setActionbarTitle(Spanned title, String subtitle) {
         android.support.v7.app.ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayShowCustomEnabled(true);
         actionBar.setCustomView(R.layout.custom_action_bar);
