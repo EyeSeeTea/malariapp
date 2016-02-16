@@ -86,7 +86,7 @@ public class SDKTestUtils {
 
 
     public static void login(String server, String user, String password) {
-        IdlingPolicies.setIdlingResourceTimeout(60, TimeUnit.SECONDS);
+        IdlingPolicies.setIdlingResourceTimeout(25, TimeUnit.SECONDS);
 
         //when: login
         onView(withId(org.hisp.dhis.android.sdk.R.id.server_url)).perform(replaceText(server));
@@ -113,20 +113,7 @@ public class SDKTestUtils {
 
         Espresso.unregisterIdlingResources(idlingResource);
     }
-    public static void cancellPull(int secs) {
-        //then: wait for progressactivity + dialog + ok (to move to dashboard)
-        IdlingResource idlingResource = new ElapsedTimeIdlingResource(secs * 1000);
-        Espresso.registerIdlingResources(idlingResource);
 
-        try{
-            Thread.sleep(secs*1000);
-        }catch(Exception ex){
-        }
-
-        onView(withText(android.R.string.cancel)).perform(click());
-
-        Espresso.unregisterIdlingResources(idlingResource);
-    }
     public static Survey waitForPush(int secs, Long idSurvey){
         //then: wait for pushservice
         try{
