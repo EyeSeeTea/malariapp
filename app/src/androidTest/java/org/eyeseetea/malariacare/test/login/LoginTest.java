@@ -101,6 +101,7 @@ public class LoginTest {
         intended(hasComponent(ProgressActivity.class.getName()));
 
         Intents.release();
+        waitForPull(20);
     }
 
     @Test
