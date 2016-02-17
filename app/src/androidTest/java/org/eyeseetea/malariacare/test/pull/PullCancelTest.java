@@ -49,12 +49,16 @@ public class PullCancelTest {
     @Test
     public void pullCancelledReturnsLogin() {
 
+        //GIVEN
         login(HNQIS_DEV_STAGING,TEST_USERNAME_WITH_PERMISSION,TEST_PASSWORD_WITH_PERMISSION);
+
+        //WHEN
         onView(withText(android.R.string.cancel)).perform(click());
         try{
             Thread.sleep(5000);
         }catch(Exception ex){
         }
+        //THEN
         assertEquals(LoginActivity.class,SDKTestUtils.getActivityInstance().getClass());
     }
 }

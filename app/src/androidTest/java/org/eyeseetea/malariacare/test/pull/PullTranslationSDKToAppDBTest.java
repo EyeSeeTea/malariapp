@@ -54,6 +54,9 @@ public class PullTranslationSDKToAppDBTest {
 
     @Test
     public void pullTranslationSDKToAppDB(){
+
+        //GIVEN
+
         login(HNQIS_DEV_STAGING, TEST_USERNAME_WITH_PERMISSION, TEST_PASSWORD_WITH_PERMISSION);
         waitForPull(20);
 
@@ -64,6 +67,7 @@ public class PullTranslationSDKToAppDBTest {
         List<org.hisp.dhis.android.sdk.persistence.models.OrganisationUnit> orgUnitSdkList= SDKTestUtils.getAllSDKOrganisationUnits();
         List<org.hisp.dhis.android.sdk.persistence.models.Program> programsSdkList= SDKTestUtils.getAllSDKPrograms();
 
+
         //Get all the organisation units saved in the sdk, and tests if is saved in our DB
         for(org.hisp.dhis.android.sdk.persistence.models.OrganisationUnit organisationUnit:orgUnitSdkList){
             boolean isOrgUnitUid=false;
@@ -71,6 +75,7 @@ public class PullTranslationSDKToAppDBTest {
             boolean isOrgUnitProductivity=false;
             boolean isProgramListInOrgUnit=false;
             boolean isOrgUnitOrgUnitLevel=false;
+            //WHEN
             for(OrgUnit orgUnit:orgUnitList){
                 if(organisationUnit.getId().equals(orgUnit.getUid())){
                     isOrgUnitUid=true;
@@ -101,6 +106,8 @@ public class PullTranslationSDKToAppDBTest {
                         }
                     }
                 }
+
+            //THEN
             assertTrue("Checking organisationUnit uid",isOrgUnitUid);
             assertTrue("Checking organisationUnit name",isOrgUnitName);
             assertTrue("Checking organisationUnit productivity",isOrgUnitProductivity);
@@ -115,6 +122,7 @@ public class PullTranslationSDKToAppDBTest {
         for(org.hisp.dhis.android.sdk.persistence.models.Program programSDK:programsSdkList){
             boolean isProgramUid=false;
             boolean isProgramSupervisor=false;
+            //WHEN
             for(Program program : programList) {
                 List<ProgramAttributeValue> attributeValues=programSDK.getAttributeValues();
                 for(ProgramAttributeValue programAttributeValue:attributeValues) {
@@ -129,6 +137,7 @@ public class PullTranslationSDKToAppDBTest {
                     isProgramUid=true;
                 }
             }
+            //THEN
             assertTrue("Checking program Supervisor Code",isProgramSupervisor);
             assertTrue("Checking program name",isProgramUid);
         }
