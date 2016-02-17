@@ -22,6 +22,7 @@ package org.eyeseetea.malariacare.layout.adapters.survey;
 import android.content.Context;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -118,8 +119,15 @@ public class FeedbackAdapter extends BaseAdapter {
 
         //CompositeScore title
         TextView textView=(TextView)rowLayout.findViewById(R.id.feedback_label);
-        if(feedback.getLabel().matches("^[0-9].*"))
-            textView.setTextColor(PreferencesState.getInstance().getContext().getResources().getColor(R.color.white));
+        String pattern="^[0-9]+[.][0-9]+.*"; // the format "1.1" for the second level header
+        if(feedback.getLabel().matches(pattern)) {
+            textView.setTextColor(PreferencesState.getInstance().getContext().getResources().getColor(R.color.darkGrey));
+            //Calculate the size of the second header, with the pixels size between question label and header label.
+            LinearLayout questionLayout = (LinearLayout)inflater.inflate(R.layout.feedback_question_row, parent, false);
+            TextView questionTextView=(TextView)questionLayout.findViewById(R.id.feedback_question_label);
+            float size=(textView.getTextSize()+questionTextView.getTextSize())/2;
+            textView.setTextSize(TypedValue.COMPLEX_UNIT_PX,size);
+        }
         textView.setText(feedback.getLabel());
 
         //CompositeScore title
