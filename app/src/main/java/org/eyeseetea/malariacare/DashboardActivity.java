@@ -185,19 +185,23 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
         StringBuilder tabtemp = new StringBuilder(currentTabName.toLowerCase());
         tabtemp.setCharAt(0, Character.toUpperCase(tabtemp.charAt(0)));
         title = tabtemp.toString();
-        Spanned spannedTitle=Html.fromHtml("<b>"+getResources().getString(R.string.app_name)+ "</b> | "+ title);
+        int appNameColor = getResources().getColor(R.color.appNameColor);
+        String appNameColorString = String.format("%X", appNameColor).substring(2);
+        Spanned spannedTitle=Html.fromHtml(String.format("<font color=\"#%s\"><b>", appNameColorString)+getResources().getString(R.string.app_name)+ "</b></font> | "+ title);
         setActionbarTitle(spannedTitle, user);
     }
 
     public void setActionBarTitleForSurvey(Survey survey){
         String title="";
         String subtitle="";
+        int appNameColor = getResources().getColor(R.color.appNameColor);
+        String appNameColorString = String.format("%X", appNameColor).substring(2);
         Program program = survey.getTabGroup().getProgram();
         if(survey.getOrgUnit().getName()!=null)
             title=survey.getOrgUnit().getName();
         if(program.getName()!=null)
             subtitle=program.getName();
-        Spanned spannedTitle=Html.fromHtml("<b>"+title+"</b>");
+        Spanned spannedTitle=Html.fromHtml(String.format("<font color=\"#%s\"><b>", appNameColorString)+title+"</b></font>");
         setActionbarTitle(spannedTitle, subtitle);
     }
 
