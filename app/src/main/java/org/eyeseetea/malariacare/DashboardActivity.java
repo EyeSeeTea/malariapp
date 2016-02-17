@@ -49,7 +49,6 @@ import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.database.utils.SurveyAnsweredRatio;
 import org.eyeseetea.malariacare.fragments.CreateSurveyFragment;
-import org.eyeseetea.malariacare.fragments.DashboardConteinerFragment;
 import org.eyeseetea.malariacare.fragments.DashboardSentFragment;
 import org.eyeseetea.malariacare.fragments.DashboardUnsentFragment;
 import org.eyeseetea.malariacare.fragments.FeedbackFragment;
@@ -77,7 +76,6 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
     MonitorFragment monitorFragment;
     DashboardUnsentFragment unsentFragment;
     DashboardSentFragment sentFragment;
-    DashboardConteinerFragment edsConteinerFragment;
     CreateSurveyFragment createSurveyFragment;
     SurveyFragment surveyFragment;
     FeedbackFragment feedbackFragment;
@@ -91,7 +89,7 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
         super.onCreate(savedInstanceState);
         modules=new ArrayList();
         if(PreferencesState.getInstance().isVerticalDashboard())
-            setContentView(R.layout.vertical_dashboard);
+            setContentView(R.layout.vertical_main);
         else
             setContentView(R.layout.tab_dashboard);
         try {
@@ -110,15 +108,14 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
     }
 
     private void reloadEds(){
-        initEDS_main();
         initAssess();
         unsentFragment.reloadData();
         initImprove();
         sentFragment.reloadData();
     }
+
     private void initEDS(Bundle savedInstanceState){
         if(savedInstanceState==null) {
-            initEDS_main();
             initAssess();
             initImprove();
         }
@@ -265,12 +262,6 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
         tab.setIndicator("", image);
         tabHost.addTab(tab);
 
-    }
-
-    public void initEDS_main(){
-        edsConteinerFragment = new DashboardConteinerFragment();
-        edsConteinerFragment.setArguments(getIntent().getExtras());
-        replaceFragment(R.id.vertical_conteiner,edsConteinerFragment);
     }
 
     public void initPlanned(){
@@ -584,7 +575,7 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
                 .setTitle(R.string.survey_title_exit)
                 .setMessage(R.string.survey_info_exit).setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int arg1) {
-                Survey survey=Session.getSurvey();
+                Survey survey = Session.getSurvey();
                 survey.updateSurveyStatus();
                 closeSurveyFragment();
             }
@@ -651,11 +642,19 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
      * Called when the user clicks the New Survey button
      */
     public void newSurvey(View view) {
-        if(PreferencesState.getInstance().isVerticalDashboard())
+        if(PreferencesState.getInstance().isVerticalDashboard()) {
+            hideImprove();
             initCreateSurvey(R.id.dashboard_details_container);
+        }
         else{
             initCreateSurvey(R.id.dashboard_details_container);
         }
+    }
+
+    private void hideImprove() {
+        FragmentTransaction ft = getFragmentTransaction();
+        ft.hide(sentFragment);
+        ft.commit();
     }
 
 
