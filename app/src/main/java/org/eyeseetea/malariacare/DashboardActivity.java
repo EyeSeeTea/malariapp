@@ -32,6 +32,8 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
+import android.text.Html;
+import android.text.Spanned;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -176,36 +178,41 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
 
     public void setActionBarDashboard(){
         String title="";
+        String user="";
         if(Session.getUser()!=null && Session.getUser().getName()!=null)
-            title=Session.getUser().getName().toUpperCase();
-        title=title+": "+currentTabName.toUpperCase();
-        setActionbarMultiTitle("",title,"");
+            user=Session.getUser().getName();
+
+        //Capitalize tab name
+        StringBuilder tabtemp = new StringBuilder(currentTabName.toLowerCase());
+        tabtemp.setCharAt(0, Character.toUpperCase(tabtemp.charAt(0)));
+        title = tabtemp.toString();
+        int appNameColor = getResources().getColor(R.color.appNameColor);
+        String appNameColorString = String.format("%X", appNameColor).substring(2);
+        Spanned spannedTitle=Html.fromHtml(String.format("<font color=\"#%s\"><b>", appNameColorString)+getResources().getString(R.string.app_name)+ "</b></font> | "+ title);
+        setActionbarTitle(spannedTitle, user);
     }
 
     public void setActionBarTitleForSurvey(Survey survey){
         String title="";
         String subtitle="";
-        String subtitle2="";
-        if(Session.getUser()!=null && Session.getUser().getName()!=null)
-            title=Session.getUser().getName().toUpperCase();
-        title=title+": "+currentTabName.toUpperCase();
-
+        int appNameColor = getResources().getColor(R.color.appNameColor);
+        String appNameColorString = String.format("%X", appNameColor).substring(2);
         Program program = survey.getTabGroup().getProgram();
         if(survey.getOrgUnit().getName()!=null)
-            subtitle=survey.getOrgUnit().getName();
+            title=survey.getOrgUnit().getName();
         if(program.getName()!=null)
-            subtitle2=program.getName();
-        setActionbarMultiTitle(title, subtitle, subtitle2);
+            subtitle=program.getName();
+        Spanned spannedTitle=Html.fromHtml(String.format("<font color=\"#%s\"><b>", appNameColorString)+title+"</b></font>");
+        setActionbarTitle(spannedTitle, subtitle);
     }
 
-    public void setActionbarMultiTitle(String title1, String title2,String title3) {
+    public void setActionbarTitle(Spanned title, String subtitle) {
         android.support.v7.app.ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayShowCustomEnabled(true);
         actionBar.setDisplayHomeAsUpEnabled(true);
-        actionBar.setCustomView(R.layout.action_bar_three_title_layout);
-        ((TextView) findViewById(R.id.action_bar_multititle_title)).setText(title1);
-        ((TextView) findViewById(R.id.action_bar_multititle_subtitle)).setText(title2);
-        ((TextView) findViewById(R.id.action_bar_multititle_subtitle2)).setText(title3);
+        actionBar.setCustomView(R.layout.custom_action_bar);
+        ((TextView) findViewById(R.id.action_bar_multititle_title)).setText(title);
+        ((TextView) findViewById(R.id.action_bar_multititle_subtitle)).setText(subtitle);
     }
 
     /**
