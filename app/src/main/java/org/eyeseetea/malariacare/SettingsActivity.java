@@ -129,6 +129,7 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
         // their values. When their values change, their summaries are updated
         // to reflect the new value, per the Android Design guidelines.
         bindPreferenceSummaryToValue(findPreference(getApplicationContext().getString(R.string.font_sizes)));
+        bindPreferenceSummaryToValue(findPreference(getString(R.string.dhis_max_items)));
 
         Preference serverUrlPreference = (Preference)findPreference(getResources().getString(R.string.dhis_url));
         Preference userPreference = (Preference)findPreference(getResources().getString(R.string.dhis_user));
@@ -256,6 +257,7 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
             // guidelines.
             bindPreferenceSummaryToValue(findPreference(getString(R.string.font_sizes)));
             bindPreferenceSummaryToValue(findPreference(getString(R.string.dhis_url)));
+            bindPreferenceSummaryToValue(findPreference(getString(R.string.dhis_max_items)));
 
             Preference serverUrlPreference = (Preference)findPreference(getResources().getString(R.string.dhis_url));
             Preference userPreference = (Preference)findPreference(getResources().getString(R.string.dhis_user));

@@ -259,14 +259,15 @@
 
     <string name="hide_planning_tab_title" >"Masquer l'onglet Planification"</string>
     <string name="hide_planning_tab_summary" >Cochez cette case pour masquer onglet de planification</string>
-    <string name="plan">planification</string>
-    <string name="assess">"sondage - enquêtes actives"</string>
-    <string name="improve">ameilleurement</string>
-    <string name="monitor">monitorisation</string>
+    <string name="plan">Planification</string>
+    <string name="assess">Sondage - enquêtes actives</string>
+    <string name="improve">Ameilleurement</string>
+    <string name="monitor">Monitorisation</string>
 
 
     <!-- filters text -->
     <string name="filter_all_org_units_upper">TOUTES LES UNITÉES D\'ORGANISATION</string>
     <string name="filter_all_org_assessments_upper">TOUTES LES SONDAGES</string>
     <string name="dialog_content_dhis_preference_login">Modification du serveur doit se reconnecter. Chaque enquête non envoyé sera supprimé. Es-tu sûr de vouloir continuer?</string>
+    <string name="settings_text_dhis_max_items">DHIS max chargé des enquêtes</string>
 </resources>
