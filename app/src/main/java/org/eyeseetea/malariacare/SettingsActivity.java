@@ -20,7 +20,9 @@
 package org.eyeseetea.malariacare;
 
 import android.annotation.TargetApi;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
@@ -31,8 +33,15 @@ import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
+import android.util.Log;
+
+import com.squareup.otto.Subscribe;
 
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
+import org.eyeseetea.malariacare.database.utils.Session;
+import org.hisp.dhis.android.sdk.controllers.DhisService;
+import org.hisp.dhis.android.sdk.events.UiEvent;
+import org.hisp.dhis.android.sdk.persistence.Dhis2Application;
 
 import java.util.List;
 
@@ -56,8 +65,21 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
      */
     private static final boolean ALWAYS_SIMPLE_PREFS = false;
 
+    private static final String TAG=".SettingsActivity";
+
     protected void onCreate(Bundle savedInstanceState) {
+        //Register into sdk bug for listening to logout events
+        Dhis2Application.bus.register(this);
         super.onCreate(savedInstanceState);
+    }
+
+    @Override
+    public void onStop(){
+        try {
+            //Unregister from bus before leaving
+            Dhis2Application.bus.unregister(this);
+        }catch(Exception e){}
+        super.onStop();
     }
 
 
@@ -66,6 +88,25 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
         super.onPostCreate(savedInstanceState);
 
         setupSimplePreferencesScreen();
+    }
+
+    /**
+     * Logging out from sdk is an async method.
+     * Thus it is required a callback to finish logout gracefully.
+     *
+     * @param uiEvent
+     */
+    @Subscribe
+    public void onLogoutFinished(UiEvent uiEvent){
+        //No event or not a logout event -> done
+        if(uiEvent==null || !uiEvent.getEventType().equals(UiEvent.UiEventType.USER_LOG_OUT)){
+            return;
+        }
+        Log.i(TAG, "Logging out from sdk...OK");
+        Session.logout();
+        Intent loginIntent = new Intent(this,LoginActivity.class);
+        finish();
+        startActivity(loginIntent);
     }
 
     /**
@@ -88,7 +129,17 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
         // their values. When their values change, their summaries are updated
         // to reflect the new value, per the Android Design guidelines.
         bindPreferenceSummaryToValue(findPreference(getApplicationContext().getString(R.string.font_sizes)));
-        bindPreferenceSummaryToValue(findPreference(getApplicationContext().getString(R.string.dhis_url)));
+
+        Preference serverUrlPreference = (Preference)findPreference(getResources().getString(R.string.dhis_url));
+        Preference userPreference = (Preference)findPreference(getResources().getString(R.string.dhis_user));
+        Preference passwordPreference = (Preference)findPreference(getResources().getString(R.string.dhis_password));
+
+        bindPreferenceSummaryToValue(serverUrlPreference);
+        bindPreferenceSummaryToValue(userPreference);
+
+        serverUrlPreference.setOnPreferenceClickListener(new LoginRequiredOnPreferenceClickListener(this));
+        userPreference.setOnPreferenceClickListener(new LoginRequiredOnPreferenceClickListener(this));
+        passwordPreference.setOnPreferenceClickListener(new LoginRequiredOnPreferenceClickListener(this));
     }
 
     /**
@@ -205,6 +256,18 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
             // guidelines.
             bindPreferenceSummaryToValue(findPreference(getString(R.string.font_sizes)));
             bindPreferenceSummaryToValue(findPreference(getString(R.string.dhis_url)));
+
+            Preference serverUrlPreference = (Preference)findPreference(getResources().getString(R.string.dhis_url));
+            Preference userPreference = (Preference)findPreference(getResources().getString(R.string.dhis_user));
+            Preference passwordPreference = (Preference)findPreference(getResources().getString(R.string.dhis_password));
+
+            bindPreferenceSummaryToValue(serverUrlPreference);
+            bindPreferenceSummaryToValue(userPreference);
+
+            SettingsActivity settingsActivity = (SettingsActivity)getActivity();
+            serverUrlPreference.setOnPreferenceClickListener(new LoginRequiredOnPreferenceClickListener(settingsActivity));
+            userPreference.setOnPreferenceClickListener(new LoginRequiredOnPreferenceClickListener(settingsActivity));
+            passwordPreference.setOnPreferenceClickListener(new LoginRequiredOnPreferenceClickListener(settingsActivity));
         }
     }
 
@@ -251,4 +314,42 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
         return callerActivity;
     }
 
+}
+
+/**
+ * Listener that moves to the LoginActivity before changing DHIS config
+ */
+class LoginRequiredOnPreferenceClickListener implements Preference.OnPreferenceClickListener{
+
+    private static final String TAG="LoginPreferenceListener";
+
+    /**
+     * Reference to the activity so you can use this from the activity or the fragment
+     */
+    SettingsActivity activity;
+
+    LoginRequiredOnPreferenceClickListener(SettingsActivity activity){
+        this.activity=activity;
+    }
+
+    @Override
+    public boolean onPreferenceClick(Preference preference) {
+        new AlertDialog.Builder(activity)
+                .setTitle(activity.getString(R.string.settings_menu_logout))
+                .setMessage(activity.getString(R.string.dialog_content_dhis_preference_login))
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface arg0, int arg1) {
+                        //finish activity and go to login
+                        Log.i(TAG, "Logging out from sdk...");
+                        DhisService.logOutUser(activity);
+                    }
+                })
+                .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                }).create().show();
+        Log.i(TAG, "Returning from dialog -> true");
+        return true;
+    }
 }

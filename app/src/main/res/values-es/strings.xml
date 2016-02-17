@@ -268,4 +268,5 @@
     <!-- filters text -->
     <string name="filter_all_org_units_upper">TODAS LAS UNIDADES ORGANIZATIVAS</string>
     <string name="filter_all_org_assessments_upper">TODAS LAS EVALUACIONES</string>
+    <string name="dialog_content_dhis_preference_login">Cambiar el servidor implica volver a iniciar sesión. Se eliminarán todas las encuestas no enviadas. ¿Estás seguro de que quieres continuar?</string>
 </resources>
