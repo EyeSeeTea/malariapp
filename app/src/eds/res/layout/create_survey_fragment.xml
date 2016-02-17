@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2015.
+  ~
+  ~ This file is part of Facility QA Tool App.
+  ~
+  ~  Facility QA Tool App is free software: you can redistribute it and/or modify
+  ~  it under the terms of the GNU General Public License as published by
+  ~  the Free Software Foundation, either version 3 of the License, or
+  ~  (at your option) any later version.
+  ~
+  ~  Facility QA Tool App is distributed in the hope that it will be useful,
+  ~  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~  GNU General Public License for more details.
+  ~
+  ~  You should have received a copy of the GNU General Public License
+  ~  along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
+  -->
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent" android:gravity="center"
+    android:orientation="vertical" android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="org.eyeseetea.malariacare.CreateSurveyActivity">
+
+    <!-- Login progress -->
+    <ProgressBar android:id="@+id/create_progress" style="?android:attr/progressBarStyleLarge"
+        android:layout_width="wrap_content" android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp" android:visibility="gone"
+        android:layout_gravity="center" />
+
+    <ScrollView android:id="@+id/login_form" android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center">
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center">
+
+            <LinearLayout android:id="@+id/create_survey_form" android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:orientation="vertical"
+                android:layout_gravity="center"
+                android:gravity="center">
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:id="@+id/org_unit_container">
+
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent">
+
+                        <org.eyeseetea.malariacare.views.CustomTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:text="@string/create_info_organization_unit"
+                            app:tDimension="@string/font_size_level2"
+                            app:tFontName="@string/medium_font_name"
+                            android:id="@+id/textView2" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:background="@drawable/background_textfield">
+
+                        <Spinner
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/org_unit"
+                            android:spinnerMode="dropdown"
+                            android:backgroundTintMode="add"
+                            android:paddingLeft="2dip"
+                            android:paddingTop="2dip"
+                            android:paddingRight="20dip"
+                            android:paddingBottom="2dip"
+                            android:backgroundTint="@color/headerColor"
+                            android:gravity="right"/>
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:id="@+id/org_unit_container_items">
+                </LinearLayout>
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent">
+
+                    <Space
+                        android:layout_width="20px"
+                        android:layout_height="20px" />
+
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent" >
+
+                        <org.eyeseetea.malariacare.views.CustomTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:text="@string/create_info_survey"
+                            android:id="@+id/textView3"
+                            app:tDimension="@string/font_size_level2"
+                            app:tFontName="@string/medium_font_name"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:background="@drawable/background_textfield">
+
+                        <Spinner
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/program"
+                            android:spinnerMode="dropdown"
+                            android:backgroundTintMode="add"
+                            android:paddingLeft="2dip"
+                            android:paddingTop="2dip"
+                            android:paddingRight="20dip"
+                            android:paddingBottom="2dip"
+                            android:backgroundTint="@color/headerColor"
+                            android:gravity="right"/>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:id="@+id/tab_group_container"
+                    android:visibility="gone">
+                    <Space
+                        android:layout_width="20px"
+                        android:layout_height="20px" />
+
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent">
+
+                        <org.eyeseetea.malariacare.views.CustomTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:text="@string/create_info_tabs_group"
+                            android:id="@+id/textView4"
+                            app:tDimension="@string/font_size_level2"
+                            app:tFontName="@string/medium_font_name"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:background="@drawable/background_textfield">
+
+                        <Spinner
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/tab_group"
+                            android:spinnerMode="dropdown"
+                            android:backgroundTintMode="add"
+                            android:paddingLeft="2dip"
+                            android:paddingTop="2dip"
+                            android:paddingRight="20dip"
+                            android:paddingBottom="2dip"
+                            android:backgroundTint="@color/headerColor"
+                            android:gravity="right"/>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <Space
+                    android:layout_width="20px"
+                    android:layout_height="20px" />
+
+                <org.eyeseetea.malariacare.views.CustomButton
+                    android:id="@+id/create_form_button" style="?android:textAppearanceMedium"
+                    android:layout_width="match_parent" android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp" android:text="@string/create_info_ok"
+                    android:textStyle="bold"
+                    android:onClick="createSurvey"
+                    android:background="@color/headerColor"
+                    android:textColor="@color/white"
+                    app:bDimension="@string/font_size_level2"
+                    app:bFontName="@string/condensed_font_name">
+                </org.eyeseetea.malariacare.views.CustomButton>
+
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>
