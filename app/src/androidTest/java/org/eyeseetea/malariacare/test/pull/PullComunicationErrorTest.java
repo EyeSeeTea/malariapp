@@ -16,15 +16,19 @@ import org.junit.runner.RunWith;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
+import static android.support.test.espresso.action.ViewActions.replaceText;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertFalse;
 import static junit.framework.Assert.assertTrue;
 import static org.eyeseetea.malariacare.test.utils.SDKTestUtils.HNQIS_DEV_STAGING;
 import static org.eyeseetea.malariacare.test.utils.SDKTestUtils.TEST_PASSWORD_NO_PERMISSION;
+import static org.eyeseetea.malariacare.test.utils.SDKTestUtils.TEST_PASSWORD_WITH_PERMISSION;
 import static org.eyeseetea.malariacare.test.utils.SDKTestUtils.TEST_USERNAME_NO_PERMISSION;
+import static org.eyeseetea.malariacare.test.utils.SDKTestUtils.TEST_USERNAME_WITH_PERMISSION;
 import static org.eyeseetea.malariacare.test.utils.SDKTestUtils.login;
 import static org.eyeseetea.malariacare.test.utils.SDKTestUtils.forceDisconnection;
 
@@ -50,15 +54,19 @@ public class PullComunicationErrorTest {
         SDKTestUtils.setWifiEnabled(true);
 
         Assert.assertTrue("Is the network disconnected?", SDKTestUtils.networkState());
-        login(HNQIS_DEV_STAGING, TEST_USERNAME_NO_PERMISSION, TEST_PASSWORD_NO_PERMISSION);
+        //login(HNQIS_DEV_STAGING, TEST_USERNAME_WITH_PERMISSION, TEST_PASSWORD_WITH_PERMISSION,10);
+
+        onView(withId(org.hisp.dhis.android.sdk.R.id.server_url)).perform(replaceText(HNQIS_DEV_STAGING));
+        onView(withId(org.hisp.dhis.android.sdk.R.id.username)).perform(replaceText("idelcano"));
+        onView(withId(org.hisp.dhis.android.sdk.R.id.password)).perform(replaceText("Ignacio2015xx"));
+        onView(withId(org.hisp.dhis.android.sdk.R.id.login_button)).perform(click());
+        forceDisconnection();
+        boolean isAlertShowed=true;
 
         //the tester should disconect the network.
 
 
         //WHEN
-        forceDisconnection();
-        boolean isAlertShowed=true;
-
         //Fixme this test is waiting the funcionallity:
         try {
             try{

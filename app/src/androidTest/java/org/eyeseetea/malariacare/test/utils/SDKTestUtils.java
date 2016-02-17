@@ -85,8 +85,8 @@ public class SDKTestUtils {
     public static final String UNABLE_TO_LOGIN = "Unable to log in due to an invalid username or password.";
 
 
-    public static void login(String server, String user, String password) {
-        IdlingPolicies.setIdlingResourceTimeout(25, TimeUnit.SECONDS);
+    public static void login(String server, String user, String password,int secs) {
+        IdlingPolicies.setIdlingResourceTimeout(secs, TimeUnit.SECONDS);
 
         //when: login
         onView(withId(org.hisp.dhis.android.sdk.R.id.server_url)).perform(replaceText(server));
@@ -105,10 +105,6 @@ public class SDKTestUtils {
         IdlingResource idlingResource = new ElapsedTimeIdlingResource(secs * 1000);
         Espresso.registerIdlingResources(idlingResource);
 
-        try{
-            Thread.sleep(secs*2*1000);
-        }catch(Exception ex){
-        }
         onView(withText(android.R.string.ok)).perform(click());
 
         Espresso.unregisterIdlingResources(idlingResource);
@@ -205,14 +201,6 @@ public class SDKTestUtils {
                 .where(Condition.column(OrganisationUnitDataSet$Table.ORGANISATIONUNITID)
                         .eq(id))
                 .queryList();
-    }
-
-    public static Program getProgram(String id){
-        return new Select()
-                .from(Program.class)
-                .where(Condition.column(Program$Table.UID)
-                        .eq(id))
-                .querySingle();
     }
 
     public static org.hisp.dhis.android.sdk.persistence.models.Program getSDKProgram(String id){

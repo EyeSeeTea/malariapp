@@ -62,7 +62,7 @@ public class PushErrorTest {
 
     @Test
     public void pushWithOutPermissionsDoesNOTPush(){
-        login(HNQIS_DEV_STAGING, TEST_USERNAME_NO_PERMISSION, TEST_PASSWORD_NO_PERMISSION);
+        login(HNQIS_DEV_STAGING, TEST_USERNAME_NO_PERMISSION, TEST_PASSWORD_NO_PERMISSION,60);
         waitForPull(15);
         startSurvey(1, 1);
         fillSurvey(7, "No");

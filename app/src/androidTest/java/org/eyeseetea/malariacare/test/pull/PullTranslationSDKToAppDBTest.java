@@ -57,7 +57,7 @@ public class PullTranslationSDKToAppDBTest {
 
         //GIVEN
 
-        login(HNQIS_DEV_STAGING, TEST_USERNAME_WITH_PERMISSION, TEST_PASSWORD_WITH_PERMISSION);
+        login(HNQIS_DEV_STAGING, TEST_USERNAME_WITH_PERMISSION, TEST_PASSWORD_WITH_PERMISSION,60);
         waitForPull(20);
 
         List<OrgUnit> orgUnitList= OrgUnit.getAllOrgUnit();
