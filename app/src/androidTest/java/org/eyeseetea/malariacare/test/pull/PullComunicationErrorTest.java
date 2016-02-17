@@ -41,9 +41,9 @@ public class PullComunicationErrorTest {
     }
 
     @Test
-    public void pullDisconnectedReturnsLogin() {
-        //Fixme it need the 403 error dialog in sdk solved
-        /*
+    public void pullDisconnexionReturnsLogin() {
+
+        //GIVEN
         SDKTestUtils.setWifiEnabled(true);
 
         Assert.assertTrue("Is the network disconnected?", SDKTestUtils.networkState());
@@ -51,9 +51,9 @@ public class PullComunicationErrorTest {
 
         //the tester should disconect the network.
 
+
+        //WHEN
         forceDisconnection();
-
-
         boolean isAlertShowed=true;
 
         //Fixme this test is waiting the funcionallity:
@@ -68,11 +68,14 @@ public class PullComunicationErrorTest {
         catch(Exception e){
             isAlertShowed=false;
         }
+
         Assert.assertFalse("Is connected?", SDKTestUtils.networkState());
         Log.d("Test", "" + isAlertShowed);
+
+        //THEN
         assertEquals(LoginActivity.class, SDKTestUtils.getActivityInstance().getClass());
         //restore wifi
         SDKTestUtils.setWifiEnabled(true);
-        */
+
     }
 }
