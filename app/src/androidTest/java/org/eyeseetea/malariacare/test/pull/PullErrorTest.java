@@ -48,10 +48,9 @@ public class PullErrorTest {
     public void pullError403Login() {
 
         //GIVEN
-        login(HNQIS_DEV_STAGING,TEST_USERNAME_NO_PERMISSION,TEST_PASSWORD_NO_PERMISSION,60);
-        waitForPull(20);
+        login(HNQIS_DEV_STAGING, TEST_USERNAME_NO_PERMISSION, TEST_PASSWORD_NO_PERMISSION, 60);
         //WHEN
-        onView(withText(android.R.string.ok)).perform(click());
+        waitForPull(20);
         //THEN
         assertEquals(LoginActivity.class, SDKTestUtils.getActivityInstance().getClass());
     }
