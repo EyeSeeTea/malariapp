@@ -25,6 +25,7 @@ import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.EventEx
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.OptionExtended;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.OptionSetExtended;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.OrganisationUnitExtended;
+import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.OrganisationUnitLevelExtended;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.ProgramExtended;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.ProgramStageExtended;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.ProgramStageSectionExtended;
@@ -35,6 +36,7 @@ public interface IConvertFromSDKVisitor {
     void visit(ProgramStageExtended sdkProgramStage);
     void visit(ProgramStageSectionExtended sdkProgramStageSection);
     void visit(OrganisationUnitExtended organisationUnit);
+    void visit(OrganisationUnitLevelExtended organisationUnitLevel);
     void visit(OptionSetExtended optionSet);
     void visit(OptionExtended option);
     void visit(UserAccountExtended userAccount);

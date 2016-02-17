@@ -217,7 +217,8 @@ public class PlannedAdapter extends BaseAdapter {
 
         //Set image color
         if(plannedHeader.equals(currentHeader)){
-            img.setColorFilter(PreferencesState.getInstance().getContext().getResources().getColor(plannedHeader.getBackgroundColor()));
+            img.setImageResource(R.drawable.ic_media_arrow_up);
+            img.setColorFilter(PreferencesState.getInstance().getContext().getResources().getColor(R.color.white));
         }
         else{
             if(plannedHeader.getCounter()==0)
@@ -225,7 +226,7 @@ public class PlannedAdapter extends BaseAdapter {
             else
                 img.setColorFilter(PreferencesState.getInstance().getContext().getResources().getColor(R.color.white));
         }
-
+/*
         //Productivity
         textView=(TextView)rowLayout.findViewById(R.id.planning_prod);
         textView.setText(plannedHeader.getProductivityHeader());
@@ -236,7 +237,7 @@ public class PlannedAdapter extends BaseAdapter {
 
         //Next
         textView=(TextView)rowLayout.findViewById(R.id.planning_next);
-        textView.setText(plannedHeader.getNextHeader());
+        textView.setText(plannedHeader.getNextHeader());*/
 
         //Planned header -> toggleSection
         rowLayout.setOnClickListener(new OpenHeaderListener(plannedHeader));

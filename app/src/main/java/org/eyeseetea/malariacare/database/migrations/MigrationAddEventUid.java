@@ -47,21 +47,19 @@ import org.eyeseetea.malariacare.database.model.Value;
 import org.hisp.dhis.android.sdk.persistence.models.Attribute;
 import org.hisp.dhis.android.sdk.persistence.models.DataElement;
 
+import static org.eyeseetea.malariacare.database.migrations.MigrationUtils.addColumn;
+
 /**
  * Created by ignac on 30/11/2015.
  */
 @Migration(version = 5, databaseName = AppDatabase.NAME)
 public class MigrationAddEventUid extends BaseMigration {
-    private final static String TAG = ".Migration";
-
-    public static final String ALTER_TABLE_ADD_COLUMN = "ALTER TABLE %s ADD COLUMN %s %s";
 
     public MigrationAddEventUid() {
         super();
     }
 
     public void onPreMigrate() {
-//        FlowManager.getDatabase(AppDatabase.NAME).reset(PreferencesState.getInstance().getContext());
     }
 
     @Override
@@ -73,10 +71,4 @@ public class MigrationAddEventUid extends BaseMigration {
     public void onPostMigrate() {
         //release migration resources
     }
-
-    private void addColumn(SQLiteDatabase database, Class model, String columnName, String type) {
-        ModelAdapter myAdapter = FlowManager.getModelAdapter(model);
-        database.execSQL(String.format(ALTER_TABLE_ADD_COLUMN, myAdapter.getTableName(), columnName, type));
-    }
-
 }

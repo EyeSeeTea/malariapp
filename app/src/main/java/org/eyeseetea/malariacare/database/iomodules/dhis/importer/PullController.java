@@ -30,6 +30,7 @@ import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.DataEle
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.EventExtended;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.OptionSetExtended;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.OrganisationUnitExtended;
+import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.OrganisationUnitLevelExtended;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.ProgramExtended;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.UserAccountExtended;
 import org.eyeseetea.malariacare.database.model.User;
@@ -49,6 +50,7 @@ import org.hisp.dhis.android.sdk.persistence.models.DataElement;
 import org.hisp.dhis.android.sdk.persistence.models.Event;
 import org.hisp.dhis.android.sdk.persistence.models.OptionSet;
 import org.hisp.dhis.android.sdk.persistence.models.OrganisationUnit;
+import org.hisp.dhis.android.sdk.persistence.models.OrganisationUnitLevel;
 import org.hisp.dhis.android.sdk.persistence.models.ProgramStage;
 import org.hisp.dhis.android.sdk.persistence.models.ProgramStageDataElement;
 import org.hisp.dhis.android.sdk.persistence.preferences.ResourceType;
@@ -246,14 +248,7 @@ public class PullController {
         }
         //OrganisationUnits
         if (!ProgressActivity.PULL_IS_ACTIVE) return;
-        postProgress(context.getString(R.string.progress_pull_preparing_orgs));
-        Log.i(TAG, "Converting organisationUnits...");
-        List<OrganisationUnit> assignedOrganisationsUnits = MetaDataController.getAssignedOrganisationUnits();
-        for (OrganisationUnit assignedOrganisationsUnit : assignedOrganisationsUnits) {
-            if (!ProgressActivity.PULL_IS_ACTIVE) return;
-            OrganisationUnitExtended organisationUnitExtended = new OrganisationUnitExtended(assignedOrganisationsUnit);
-            organisationUnitExtended.accept(converter);
-        }
+        if (!convertOrgUnits(converter)) return;
 
         if (!ProgressActivity.PULL_IS_ACTIVE) return;
         //User (from UserAccount)
@@ -341,6 +336,33 @@ public class PullController {
         Log.i(TAG, "Building compositeScore relationships...");
         converter.buildScores();
         Log.i(TAG, "MetaData successfully converted...");
+    }
+
+    /**
+     * Turns sdk organisationUnit and levels into app info
+     * @param converter
+     * @return
+     */
+    private boolean convertOrgUnits(ConvertFromSDKVisitor converter) {
+        postProgress(context.getString(R.string.progress_pull_preparing_orgs));
+        Log.i(TAG, "Converting organisationUnitLevels...");
+        List<OrganisationUnitLevel> organisationUnitLevels = MetaDataController.getOrganisationUnitLevels();
+        for(OrganisationUnitLevel organisationUnitLevel:organisationUnitLevels){
+            if(!ProgressActivity.PULL_IS_ACTIVE) return false;
+            OrganisationUnitLevelExtended organisationUnitLevelExtended = new OrganisationUnitLevelExtended(organisationUnitLevel);
+            organisationUnitLevelExtended.accept(converter);
+        }
+
+        Log.i(TAG, "Converting organisationUnits...");
+        List<OrganisationUnit> assignedOrganisationsUnits = MetaDataController.getAssignedOrganisationUnits();
+        for (OrganisationUnit assignedOrganisationsUnit : assignedOrganisationsUnits) {
+            if (!ProgressActivity.PULL_IS_ACTIVE) return false;
+            OrganisationUnitExtended organisationUnitExtended = new OrganisationUnitExtended(assignedOrganisationsUnit);
+            organisationUnitExtended.accept(converter);
+        }
+
+        Log.i(TAG,"Building orgunit hierarchy...");
+        return converter.buildOrgUnitHierarchy(assignedOrganisationsUnits);
     }
 
     /**

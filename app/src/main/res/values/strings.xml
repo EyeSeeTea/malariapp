@@ -334,12 +334,13 @@
     <string name="hide_planning_tab_key" translatable="false">tab_hide</string>
     <string name="hide_planning_tab_title" >Hide planning tab</string>
     <string name="hide_planning_tab_summary" >Check this box for hide planning tab</string>
-    <string name="plan">plan</string>
-    <string name="assess">assess</string>
-    <string name="improve">improve</string>
-    <string name="monitor">monitor</string>
+    <string name="plan">Plan</string>
+    <string name="assess">Assess - active surveys</string>
+    <string name="improve">Improve</string>
+    <string name="monitor">Monitor</string>
 
     <!-- filters text -->
     <string name="filter_all_org_units_upper">ALL ORG UNITS</string>
     <string name="filter_all_org_assessments_upper">ALL ASSESSMENTS</string>
+    <string name="dialog_content_dhis_preference_login">Changing the server needs to re-login. Every not-sent survey will be deleted. Are you sure you want to continue?</string>
 </resources>
