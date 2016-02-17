@@ -118,18 +118,21 @@ public class FeedbackAdapter extends BaseAdapter {
 
         //CompositeScore title
         TextView textView=(TextView)rowLayout.findViewById(R.id.feedback_label);
+        if(!PreferencesState.getInstance().isVerticalDashboard())
         if(feedback.getLabel().matches("^[0-9].*"))
             textView.setTextColor(PreferencesState.getInstance().getContext().getResources().getColor(R.color.white));
         textView.setText(feedback.getLabel());
 
         //CompositeScore title
         textView=(TextView)rowLayout.findViewById(R.id.feedback_score_label);
-        if(feedback.getScore()< Constants.MAX_AMBER)
-            textView.setTextColor(PreferencesState.getInstance().getContext().getResources().getColor(R.color.amber));
-        else if(feedback.getScore()< Constants.MAX_RED)
-            textView.setTextColor(PreferencesState.getInstance().getContext().getResources().getColor(R.color.darkRed));
-        else
-            textView.setTextColor(PreferencesState.getInstance().getContext().getResources().getColor(R.color.lightGreen));
+        if(!PreferencesState.getInstance().isVerticalDashboard()) {
+            if (feedback.getScore() < Constants.MAX_AMBER)
+                textView.setTextColor(PreferencesState.getInstance().getContext().getResources().getColor(R.color.amber));
+            else if (feedback.getScore() < Constants.MAX_RED)
+                textView.setTextColor(PreferencesState.getInstance().getContext().getResources().getColor(R.color.darkRed));
+            else
+                textView.setTextColor(PreferencesState.getInstance().getContext().getResources().getColor(R.color.lightGreen));
+        }
         textView.setText(feedback.getPercentageAsString());
 
         return rowLayout;
@@ -146,12 +149,14 @@ public class FeedbackAdapter extends BaseAdapter {
 
         //Question label
         TextView textView=(TextView)rowLayout.findViewById(R.id.feedback_question_label);
-        textView.setTextColor(PreferencesState.getInstance().getContext().getResources().getColor(R.color.darkGrey));
+        if(!PreferencesState.getInstance().isVerticalDashboard())
+            textView.setTextColor(PreferencesState.getInstance().getContext().getResources().getColor(R.color.darkGrey));
         textView.setText(feedback.getLabel());
 
         //Option label
         textView=(TextView)rowLayout.findViewById(R.id.feedback_option_label);
-        textView.setTextColor(PreferencesState.getInstance().getContext().getResources().getColor(R.color.darkGrey));
+        if(!PreferencesState.getInstance().isVerticalDashboard())
+            textView.setTextColor(PreferencesState.getInstance().getContext().getResources().getColor(R.color.darkGrey));
         textView.setText(feedback.getOption());
 
         //Score label
