@@ -24,7 +24,7 @@
     <string name="app_name" translatable="false">EDS</string>
 
     <!-- default server url -->
-    <string name="login_info_dhis_default_server_url" translatable="false">https://hnqis-dev-staging.psi-mis.org</string>
+    <string name="login_info_dhis_default_server_url" translatable="false">https://eds.psi-mis.org</string>
 
     <!-- Control Data Elements (This data should be changed once these uid are uploaded to the server)-->
     <string name="main_score" translatable="false">ggrkfoq6nxA</string>
