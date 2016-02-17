@@ -33,7 +33,6 @@ import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.OptionS
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.OrganisationUnitExtended;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.ProgramExtended;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.UserAccountExtended;
-import org.eyeseetea.malariacare.database.model.OrgUnit$Table;
 import org.eyeseetea.malariacare.database.model.User;
 import org.eyeseetea.malariacare.database.utils.PopulateDB;
 import org.eyeseetea.malariacare.database.utils.Session;
@@ -71,7 +70,7 @@ import java.util.Map;
 public class PullController {
     private final String TAG = ".PullController";
 
-    private final static Class APP_TABLES_TO_CHECK[] = {
+    private final static Class MANDATORY_METADATA_TABLES[] = {
             org.hisp.dhis.android.sdk.persistence.models.Attribute.class,
             org.hisp.dhis.android.sdk.persistence.models.DataElement.class,
             org.hisp.dhis.android.sdk.persistence.models.DataElementAttributeValue.class,
@@ -217,7 +216,7 @@ public class PullController {
                     //Ok
                     wipeDatabase();
 
-                    if(!isNecesaryMetadata())
+                    if(!mandatoryMetadataTablesNotEmpty())
                         ProgressActivity.cancellPull("Error", "Error downloading metadata");
 
                     convertFromSDK();
@@ -235,13 +234,14 @@ public class PullController {
         }.start();
     }
 
-    private boolean isNecesaryMetadata(){
+    private boolean mandatoryMetadataTablesNotEmpty(){
 
-        for(int i=0;i<APP_TABLES_TO_CHECK.length;i++) {
-            int count = (int) new Select().count()
-                    .from(APP_TABLES_TO_CHECK[i]).count();
-            if (count == 0) {
-                Log.d(TAG, "Error null " + APP_TABLES_TO_CHECK[i].getName());
+        int elementsInTable = 0;
+        for(Class table: MANDATORY_METADATA_TABLES) {
+            elementsInTable = (int) new Select().count()
+                    .from(table).count();
+            if (elementsInTable == 0) {
+                Log.d(TAG, "Error empty table: " + table.getName());
                 return false;
             }
         }
