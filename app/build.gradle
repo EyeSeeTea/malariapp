@@ -118,8 +118,12 @@ dependencies {
     androidTestCompile "com.android.support.test:rules:$rootProject.ext.runnerVersion"
 
     // Espresso UI Testing dependencies.
-    androidTestCompile "com.android.support.test.espresso:espresso-core:$rootProject.ext.espressoVersion"    
+    androidTestCompile "com.android.support.test.espresso:espresso-core:$rootProject.ext.espressoVersion"
     androidTestCompile "com.android.support.test.espresso:espresso-intents:$rootProject.ext.espressoVersion"
+    // Espresso-idling-resource for synchronization with background jobs
+    androidTestCompile "com.android.support.test.espresso:espresso-idling-resource:$rootProject.ext.espressoVersion"
+    // Espresso-web for WebView support
+    androidTestCompile "com.android.support.test.espresso:espresso-web:$rootProject.ext.espressoVersion"
 
     //Tracking crashes
     compile("com.crashlytics.sdk.android:crashlytics:$rootProject.ext.crashlyticsVersion") {
