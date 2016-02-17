@@ -48,7 +48,7 @@ ext {
     supportLibraryVersion = '21.2.1'
     gmsPlayVersion = '8.1.0'
 
-    // App dependencies versions    
+    // App dependencies versions
     guavaVersion = '18.0'
     okhttpVersion = '2.2.0'
     crashlyticsVersion = '2.5.2@aar'

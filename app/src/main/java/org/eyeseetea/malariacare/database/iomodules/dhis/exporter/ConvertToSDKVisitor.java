@@ -279,9 +279,8 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
             Event iEvent=events.get(i);
             ImportSummary importSummary=importSummaryMap.get(iEvent.getLocalId());
             if(hasImportSummaryErrors(importSummary)){
-                //Some error happened -> move back to completed
+                //Some error while pushing should be done again
                 iSurvey.setStatus(Constants.SURVEY_COMPLETED);
-                iSurvey.setEventUid(null);
                 iSurvey.save();
 
                 //Generated event must be remove too

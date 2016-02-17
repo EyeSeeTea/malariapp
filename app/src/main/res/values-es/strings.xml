@@ -47,7 +47,8 @@
     <string name="dialog_complete_option">Completar</string>
     <string name="dialog_are_you_sure_complete_survey">¿Está seguro? Esta acción no se puede deshacer y usted ya no será capaz de editar o borrar la encuesta</string>
     <string name="dialog_incompleted_compulsory_survey">Esta encuesta no puede ser enviado todavía. Por favor responda al menos todas las preguntas obligatorias</string>
-
+    <string name="dialog_incompleted_compulsory_pulling">La actualización de los metadatos requiere eliminar o completar sus datos enviados. Por favor responda al menos todas las preguntas obligatorias</string>
+    <string name="dialog_sent_survey_on_refresh_metadata">La actualización de metadatos borrará los datos enviados. Usted tiene %s encuestas no enviada/s. ¿Desea usted enviarlas antes de actualizar los metadatos?</string>
     <!-- Toast -->
     <string name="cancellingPull">El proceso se cancelara en unos segundos</string>
 
@@ -258,13 +259,15 @@
 
     <string name="hide_planning_tab_title" >Ocultar ficha planificación</string>
     <string name="hide_planning_tab_summary" >Marque esta casilla para ocultar ficha de planificación</string>
-    <string name="plan">planificación</string>
-    <string name="assess">encuesta</string>
-    <string name="improve">mejora</string>
-    <string name="monitor">monitorización</string>
+    <string name="plan">Planificación</string>
+    <string name="assess">Evaluación - encuestas activas</string>
+    <string name="improve">Mejora</string>
+    <string name="monitor">Monitorización</string>
 
 
     <!-- filters text -->
     <string name="filter_all_org_units_upper">TODAS LAS UNIDADES ORGANIZATIVAS</string>
     <string name="filter_all_org_assessments_upper">TODAS LAS EVALUACIONES</string>
+    <string name="dialog_content_dhis_preference_login">Cambiar el servidor implica volver a iniciar sesión. Se eliminarán todas las encuestas no enviadas. ¿Estás seguro de que quieres continuar?</string>
+    <string name="settings_text_dhis_max_items">DHIS max encuestas descargadas</string>
 </resources>

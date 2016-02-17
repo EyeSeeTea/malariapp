@@ -22,6 +22,7 @@ package org.eyeseetea.malariacare.database.iomodules.dhis.importer;
 import android.content.Context;
 import android.util.Log;
 
+import com.raizlabs.android.dbflow.sql.language.Select;
 import com.squareup.otto.Subscribe;
 
 import org.eyeseetea.malariacare.ProgressActivity;
@@ -30,10 +31,12 @@ import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.DataEle
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.EventExtended;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.OptionSetExtended;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.OrganisationUnitExtended;
+import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.OrganisationUnitLevelExtended;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.ProgramExtended;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.UserAccountExtended;
 import org.eyeseetea.malariacare.database.model.User;
 import org.eyeseetea.malariacare.database.utils.PopulateDB;
+import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.database.utils.planning.SurveyPlanner;
 import org.hisp.dhis.android.sdk.controllers.DhisService;
@@ -48,10 +51,13 @@ import org.hisp.dhis.android.sdk.persistence.models.DataElement;
 import org.hisp.dhis.android.sdk.persistence.models.Event;
 import org.hisp.dhis.android.sdk.persistence.models.OptionSet;
 import org.hisp.dhis.android.sdk.persistence.models.OrganisationUnit;
+import org.hisp.dhis.android.sdk.persistence.models.OrganisationUnitLevel;
 import org.hisp.dhis.android.sdk.persistence.models.ProgramStage;
 import org.hisp.dhis.android.sdk.persistence.models.ProgramStageDataElement;
 import org.hisp.dhis.android.sdk.persistence.preferences.ResourceType;
 import org.hisp.dhis.android.sdk.utils.api.ProgramType;
+import org.hisp.dhis.android.sdk.utils.log.LogMessage;
+import org.hisp.dhis.android.sdk.utils.log.SdkLogger;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -66,6 +72,20 @@ import java.util.Map;
  */
 public class PullController {
     private final String TAG = ".PullController";
+
+    private final static Class MANDATORY_METADATA_TABLES[] = {
+            org.hisp.dhis.android.sdk.persistence.models.Attribute.class,
+            org.hisp.dhis.android.sdk.persistence.models.DataElement.class,
+            org.hisp.dhis.android.sdk.persistence.models.DataElementAttributeValue.class,
+            org.hisp.dhis.android.sdk.persistence.models.Option.class,
+            org.hisp.dhis.android.sdk.persistence.models.OptionSet.class,
+            org.hisp.dhis.android.sdk.persistence.models.UserAccount.class,
+            org.hisp.dhis.android.sdk.persistence.models.OrganisationUnit.class,
+            org.hisp.dhis.android.sdk.persistence.models.OrganisationUnitProgramRelationship.class,
+            org.hisp.dhis.android.sdk.persistence.models.ProgramStage.class,
+            org.hisp.dhis.android.sdk.persistence.models.ProgramStageDataElement.class,
+            org.hisp.dhis.android.sdk.persistence.models.ProgramStageSection.class
+    };
 
     private static PullController instance;
 
@@ -130,6 +150,7 @@ public class PullController {
             //Enabling resources to pull
             enableMetaDataFlags();
             //Delete previous metadata
+            TrackerController.setMaxEvents(PreferencesState.getInstance().getMaxEvents());
             MetaDataController.clearMetaDataLoadedFlags();
             MetaDataController.wipe();
             //Pull new metadata
@@ -171,12 +192,37 @@ public class PullController {
                     //Error while pulling
                     if (result.getResponseHolder() != null && result.getResponseHolder().getApiException() != null) {
                         Log.e(TAG, result.getResponseHolder().getApiException().getMessage());
+                        ProgressActivity.cancellPull(context.getString(R.string.dialog_pull_error),result.getResponseHolder().getApiException().getMessage());
                         postException(new Exception(context.getString(R.string.dialog_pull_error)));
                         return;
                     }
 
+                    //Get SdkLogger messages
+                    if(result.getResponseHolder().getItem()!=null) {
+                        Object item=(Object) result.getResponseHolder().getItem();
+                        List<LogMessage> messagesList = (List<LogMessage>) item;
+                        for (LogMessage message:messagesList){
+                            switch (message.getType()){
+                                case SdkLogger.INFO:
+                                    Log.d(TAG,"info"+message.getMessage());
+                                    break;
+                                case SdkLogger.WARNING:
+                                    Log.d(TAG,"Warning"+message.getMessage());
+                                    break;
+                                case SdkLogger.ERROR:
+                                    Log.d(TAG, "Error" + message.getMessage());
+                                    ProgressActivity.cancellPull(message.getException().getMessage(), message.getMessage());
+                                    postException(new Exception(context.getString(R.string.dialog_pull_error)));
+                                    return;
+                            }
+                        }
+                    }
                     //Ok
                     wipeDatabase();
+
+                    if(!mandatoryMetadataTablesNotEmpty())
+                        ProgressActivity.cancellPull("Error", "Error downloading metadata");
+
                     convertFromSDK();
                     if (ProgressActivity.PULL_IS_ACTIVE) {
                         Log.d(TAG, "PULL process...OK");
@@ -190,6 +236,20 @@ public class PullController {
                 }
             }
         }.start();
+    }
+
+    private boolean mandatoryMetadataTablesNotEmpty(){
+
+        int elementsInTable = 0;
+        for(Class table: MANDATORY_METADATA_TABLES) {
+            elementsInTable = (int) new Select().count()
+                    .from(table).count();
+            if (elementsInTable == 0) {
+                Log.d(TAG, "Error empty table: " + table.getName());
+                return false;
+            }
+        }
+        return true;
     }
 
     /**
@@ -244,14 +304,7 @@ public class PullController {
         }
         //OrganisationUnits
         if (!ProgressActivity.PULL_IS_ACTIVE) return;
-        postProgress(context.getString(R.string.progress_pull_preparing_orgs));
-        Log.i(TAG, "Converting organisationUnits...");
-        List<OrganisationUnit> assignedOrganisationsUnits = MetaDataController.getAssignedOrganisationUnits();
-        for (OrganisationUnit assignedOrganisationsUnit : assignedOrganisationsUnits) {
-            if (!ProgressActivity.PULL_IS_ACTIVE) return;
-            OrganisationUnitExtended organisationUnitExtended = new OrganisationUnitExtended(assignedOrganisationsUnit);
-            organisationUnitExtended.accept(converter);
-        }
+        if (!convertOrgUnits(converter)) return;
 
         if (!ProgressActivity.PULL_IS_ACTIVE) return;
         //User (from UserAccount)
@@ -339,6 +392,33 @@ public class PullController {
         Log.i(TAG, "Building compositeScore relationships...");
         converter.buildScores();
         Log.i(TAG, "MetaData successfully converted...");
+    }
+
+    /**
+     * Turns sdk organisationUnit and levels into app info
+     * @param converter
+     * @return
+     */
+    private boolean convertOrgUnits(ConvertFromSDKVisitor converter) {
+        postProgress(context.getString(R.string.progress_pull_preparing_orgs));
+        Log.i(TAG, "Converting organisationUnitLevels...");
+        List<OrganisationUnitLevel> organisationUnitLevels = MetaDataController.getOrganisationUnitLevels();
+        for(OrganisationUnitLevel organisationUnitLevel:organisationUnitLevels){
+            if(!ProgressActivity.PULL_IS_ACTIVE) return false;
+            OrganisationUnitLevelExtended organisationUnitLevelExtended = new OrganisationUnitLevelExtended(organisationUnitLevel);
+            organisationUnitLevelExtended.accept(converter);
+        }
+
+        Log.i(TAG, "Converting organisationUnits...");
+        List<OrganisationUnit> assignedOrganisationsUnits = MetaDataController.getAssignedOrganisationUnits();
+        for (OrganisationUnit assignedOrganisationsUnit : assignedOrganisationsUnits) {
+            if (!ProgressActivity.PULL_IS_ACTIVE) return false;
+            OrganisationUnitExtended organisationUnitExtended = new OrganisationUnitExtended(assignedOrganisationsUnit);
+            organisationUnitExtended.accept(converter);
+        }
+
+        Log.i(TAG,"Building orgunit hierarchy...");
+        return converter.buildOrgUnitHierarchy(assignedOrganisationsUnits);
     }
 
     /**
