@@ -1,16 +1,10 @@
 1;'Years';'Years';0.00;1
 2;'Months';'Months';0.00;1
-3;'OPD';'OPD';0.00;33
-4;'ANC';'ANC';0.00;33
-5;'Specialized obstetrics clinic';'Specialized obstetrics clinic';0.00;33
-6;'Other';'Other';0.00;33
 7;'Asked [1]';'Asked';1.00;34
 8;'Not Asked [0]';'Not Asked';0.00;34
 9;'Not available [0]';'Not available';0.00;2
 10;'Available [0.5]';'Available';0.50;2
 11;'Most recent [1]';'Most recent';1.00;2
-12;'Done [1]';'Done';1.00;35
-13;'Not Done [0]';'Not Done';0.00;35
 14;'Guideline review';'Guideline review';0.00;36
 15;'Lecture';'Lecture';0.00;36
 16;'Demonstration';'Demonstration';0.00;36
@@ -57,11 +51,6 @@
 58;'Malaria treatment';'Malaria treatment';0.00;42
 59;'RDT';'RDT';0.00;42
 60;'Other';'Other';0.00;42
-61;'Paper reports on designated tally sheets';'Paper reports on designated tally sheets';0.00;9
-62;'Paper reports without tally sheets';'Paper reports without tally sheets';0.00;9
-63;'SMS-based reports';'SMS-based reports';0.00;9
-64;'Direct computer entry into designated form';'Direct computer entry into designated form';0.00;9
-65;'Email';'Email';0.00;9
 66;'Yes, a day or greater [1]';'Yes, a day or greater';1.00;43
 67;'No [1]';'No';1.00;43
 68;'Not Asked [0]';'Not Asked';0.00;43
@@ -72,26 +61,12 @@
 73;'Microcopy Thick smear';'Microcopy Thick smear';0.00;10
 74;'Microscopy Thin smear';'Microscopy Thin smear';0.00;10
 75;'Microscopy Thick and Thin smear';'Microscopy Thick and Thin smear';0.00;10
-76;'Traditional treatment [1]';'Traditional treatment';1.00;12
-77;'Antimalarial treatment [1]';'Antimalarial treatment';1.00;12
-78;'Other/  Unknown [1]';'Other/  Unknown';1.00;12
-79;'Not Asked [0]';'Not Asked';0.00;12
-80;'Running tap water [1]';'Running tap water';1.00;11
-81;'Rain water [0.33]';'Rain water';0.33;11
-82;'Well [1]';'Well';1.00;11
-83;'Bore hole [1]';'Bore hole';1.00;11
-84;'Stream/ river [0.33]';'Stream/ river';0.33;11
-85;'Commercial Bottled water [1]';'Commercial Bottled water';1.00;11
-86;'Externally filled water tank [1]';'Externally filled water tank';1.00;11
 87;'Yes [0]';'Yes';0.00;13
 88;'No [1]';'No';1.00;13
 89;'Yes [0]';'Yes';0.00;48
 90;'No [1]';'No';1.00;48
 91;'Not Asked [0]';'Not Asked';0.00;48
 92;'N/A [1]';'N/A';1.00;48
-93;'Yes [1]';'Yes';1.00;14
-94;'Apparent [1]';'Apparent';1.00;14
-95;'Not Asked [0]';'Not Asked';0.00;14
 96;'Yes [1]';'Yes';1.00;15
 97;'No [0]';'No';0.00;15
 98;'Yes [1]';'Yes';1.00;46
@@ -100,13 +75,6 @@
 101;'Yes [1]';'Yes';1.00;45
 102;'No [0]';'No';0.00;45
 103;'N/A [0]';'N/A';0.00;45
-104;'Yes [1]';'Yes';1.00;16
-105;'No [1]';'No';1.00;16
-106;'Not Asked [0]';'Not Asked';0.00;16
-107;'Yes [1]';'Yes';1.00;17
-108;'No [1]';'No';1.00;17
-109;'Unknown [1]';'Unknown';1.00;17
-110;'Not Asked [0]';'Not Asked';0.00;17
 111;'Yes [1]';'Yes';1.00;19
 112;'Not Available [1]';'Not Available';1.00;19
 113;'No [0]';'No';0.00;19
@@ -133,10 +101,6 @@
 135;'No [1]';'No';1.00;54
 136;'Unknown [1]';'Unknown';1.00;54
 137;'Not Asked [0]';'Not Asked';0.00;54
-138;'Yes [1]';'Yes';1.00;55
-139;'No [1]';'No';1.00;55
-140;'Not asked [0]';'Not asked';0.00;55
-141;'Not applicable [1]';'Not applicable';1.00;55
 142;'Yes [1]';'Yes';1.00;56
 143;'No [0]';'No';0.00;56
 144;'Antimalarial not prescribed [1]';'Antimalarial not prescribed';1.00;56
@@ -146,9 +110,6 @@
 148;'Yes [1]';'Yes';1.00;58
 149;'No [0]';'No';0.00;58
 150;'Not available [1]';'Not available';1.00;58
-151;'Yes [1]';'Yes';1.00;59
-152;'No [0]';'No';0.00;59
-153;'Not Applicable [1]';'Not Applicable';1.00;59
 154;'Yes [0]';'Yes';0.00;60
 155;'No [1]';'No';1.00;60
 156;'Unknown [0]';'Unknown';0.00;60
@@ -161,21 +122,11 @@
 163;'Test not ordered';'Test not ordered';0.00;62
 164;'Severe disease';'Severe disease';0.00;63
 165;'Non-severe disease';'Non-severe disease';0.00;63
-166;'Main';'Main';0.00;64
-167;'Generator';'Generator';0.00;64
-168;'Solar';'Solar';0.00;64
-169;'None';'None';0.00;64
 170;'Pharmacy';'Pharmacy';0.00;65
 171;'Clinical';'Clinical';0.00;65
 172;'Neither Pharmacy nor Clinical Records Available';'Neither Pharmacy nor Clinical Records Available';0.00;65
-173;'Unofficial register';'Unofficial register';0.00;66
-174;'Loose paper sheets';'Loose paper sheets';0.00;66
-175;'Computerized record';'Computerized record';0.00;66
-176;'Other';'Other';0.00;66
 177;'Lab Tech';'Lab Tech';0.00;67
 178;'Microscopist';'Microscopist';0.00;67
-179;'Normal';'Normal';0.00;68
-180;'Abnormal';'Abnormal';0.00;68
 181;'RDT + [1]';'RDT +';1.00;69
 182;'RDT - [0]';'RDT -';0.00;69
 183;'Microscopy + [1]';'Microscopy +';1.00;69
@@ -212,17 +163,10 @@
 216;'Yes [1]';'Yes';1.00;77
 217;'No [1]';'No';1.00;77
 218;'Asked [0]';'Asked';0.00;77
-219;'Yes [1]';'Yes';1.00;78
-220;'No [1]';'No';1.00;78
-221;'Not Asked [0]';'Not Asked';0.00;78
 222;'Parasite uL';'Parasite uL';0.00;79
 223;'Plus System';'Plus System';0.00;79
-224;'One day';'One day';0.00;80
-225;'Greater than one day';'Greater than one day';0.00;80
 226;'Present & Functional [1]';'Present & Functional';1.00;81
 227;'Present & Non-functional [0]';'Present & Non-functional';0.00;81
-228;'Done [1]';'Done';1.00;82
-229;'Not Done [0]';'Not Done';0.00;82
 230;'Yes [1]';'Yes';1.00;83
 231;'No [0]';'No';0.00;83
 232;'NA [1]';'NA';1.00;83
@@ -242,27 +186,9 @@
 246;'Medical Intern';'Medical Intern';0.00;87
 247;'Nurse';'Nurse';0.00;87
 248;'Students on Attachment';'Students on Attachment';0.00;87
-249;'Lab Assistant';'Lab Assistant';0.00;87
-250;'Other';'Other';0.00;87
 251;'Lab Tech';'Lab Tech';0.00;88
 252;'Lab Assistant';'Lab Assistant';0.00;88
 253;'Other';'Other';0.00;88
-254;'Not asked';'Not asked';0.00;80
-255;'No antimalarial prescribed';'No antimalarial prescribed';0.00;89
-256;'ACT';'ACT';0.00;89
-257;'Artemisinin (intramuscular monotherapy)';'Artemisinin (intramuscular monotherapy)';0.00;89
-258;'Artemisinin (intravenous)';'Artemisinin (intravenous)';0.00;89
-259;'Artemisinin (oral monotherapy)';'Artemisinin (oral monotherapy)';0.00;89
-260;'Artemether (intramuscular)';'Artemether (intramuscular)';0.00;89
-261;'Artesunate (intramuscular monotherapy)';'Artesunate (intramuscular monotherapy)';0.00;89
-262;'Artesunate (rectal)';'Artesunate (rectal)';0.00;89
-263;'Quinine (oral)';'Quinine (oral)';0.00;89
-264;'Quinine (intramuscular)';'Quinine (intramuscular)';0.00;89
-265;'Quinine (intravenous)';'Quinine (intravenous)';0.00;89
-266;'Quinine (oral) + Clindamycin';'Quinine (oral) + Clindamycin';0.00;89
-267;'Chloroquine';'Chloroquine';0.00;89
-268;'SP';'SP';0.00;89
-269;'Other';'Other';0.00;89
 270;'Yes [1]';'Yes';1.00;90
 271;'No [0]';'No';0.00;90
 272;'Positive';'Positive';0.00;91
@@ -286,11 +212,6 @@
 290;'Stopped due to potential patient harm';'Stopped due to potential patient harm';0.00;94
 291;'Not enough time during facility visit';'Not enough time during facility visit';0.00;94
 292;'Other';'Other';0.00;94
-293;'Never';'Never';0.00;95
-294;'Less than half of the time';'Less than half of the time';0.00;95
-295;'About half of the time';'About half of the time';0.00;95
-296;'More than half of the time';'More than half of the time';0.00;95
-297;'Always';'Always';0.00;95
 298;'Other';'Other';0.00;37
 299;'N/A [0]';'N/A';0.00;40
 300;'Yes [0]';'Yes';0.00;96
@@ -300,3 +221,58 @@
 304;'NA [1]';'NA';1.00;97
 305;'No [0]';'No';0.00;97
 306;'Against WBC';'Against WBC';0.00;79
+307;'No antimalarial prescribed';'No antimalarial prescribed';0.00;89
+308;'LA';'LA';0.00;89
+309;'ASAQ';'ASAQ';0.00;89
+310;'Artesunate (intramuscular monotherapy)';'Injectable Artesunate';0.00;89
+311;'Quinine (intramuscular)';'Injectable Quinine';0.00;89
+312;'Artesunate (rectal)';'Rectal Artesunate';0.00;89
+313;'Quinine (oral)';'Oral Quinine';0.00;89
+314;'Quinine (oral) + Clindamycin';'Oral Quinine + Clindamycin';0.00;89
+315;'SP';'SP';0.00;89
+316;'Chloroquine';'Chloroquine';0.00;89
+317;'Other';'Other';0.00;89
+318;'Medical Officer';'Medical Officer';0.00;98
+319;'Medical Assistant';'Medical Assistant';0.00;98
+320;'Clinical Officer';'Clinical Officer';0.00;98
+321;'Medical Intern';'Medical Intern';0.00;98
+322;'Nurse';'Nurse';0.00;98
+323;'Students on Attachment';'Students on Attachment';0.00;98
+324;'Other';'Other';0.00;98
+325;'Lab Tech';'Lab Tech';0.00;87
+326;'Lab Assistant';'Lab Assistant';0.00;87
+327;'Other';'Other';0.00;87
+328;'Injectable Artesunate';'Injectable Artesunate';0.00;99
+329;'Injectable Quinine';'Injectable Quinine';0.00;99
+330;'Other';'Other';0.00;99
+331;'0';'Unsatisfactory';0.00;100
+332;'1';'Fair';0.33;100
+333;'2';'Satifactory';0.66;100
+334;'3';'Excellent';1.00;100
+335;'Referred to higher level facility';'Referred to higher level facility';0.00;101
+336;'Admitted to inpatient unit';'Admitted to inpatient unit';0.00;101
+337;'Clinical Supervisor';'Clinical Supervisor';0.00;102
+338;'Laboratory Supervisor';'Laboratory Supervisor';0.00;102
+339;'Other';'Other';0.00;102
+340;'Burning (incinerator or protected environment)  [1]';'Burning (incinerator or protected environment)';1.00;103
+341;'Dump without burning (protected environment)  [1]';'Dump without burning (protected environment)';1.00;103
+342;'Any disposal in unprotected environment  [0]';'Any disposal in unprotected environment';0.00;103
+343;'Other [0]';'Other';0.00;103
+344;'Not addressed';'Not addressed';0.00;104
+345;'Partially addressed';'Partially addressed';0.00;104
+346;'Completely Addressed';'Completely Addressed';0.00;104
+347;'Trimethoprim-sulfamethoxazole (cotrimoxazole)';'Trimethoprim-sulfamethoxazole (cotrimoxazole)';0.00;105
+348;'Amoxicillin';'Amoxicillin';0.00;105
+349;'Other oral antibiotic';'Other oral antibiotic';0.00;105
+350;'Other IM/IV antibiotic';'Other IM/IV antibiotic';0.00;105
+351;'No antibiotic prescribed';'No antibiotic prescribed';0.00;105
+352;'Plus System';'Plus System';0.00;106
+353;'Parasite uL';'Parasite uL';0.00;106
+354;'% RBC infected with malaria parasites';'% RBC infected with malaria parasites';0.00;106
+355;'Referred to higher level facility';'Referred to higher level facility';0.00;107
+356;'Admitted to inpatient unit';'Admitted to inpatient unit';0.00;107
+357;'Yes [1]';'Yes';1.00;108
+358;'No [0]';'No';0.00;108
+359;'Yes [0]';'Yes';0.00;109
+360;'NA [1]';'NA';1.00;109
+361;'No [1]';'No';1.00;109
