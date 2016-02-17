@@ -110,8 +110,6 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
     }
 
     private void reloadEds(){
-        modules.add(new Module(new DashboardConteinerFragment(),true,R.id.vertical_conteiner,null,null));
-
         initEDS_main();
         initAssess();
         unsentFragment.reloadData();
@@ -314,13 +312,13 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
         setActionBarTitleForSurvey(Session.getSurvey());
     }
 
-    public void initCreateSurvey(){
+    public void initCreateSurvey(int layout){
         int mStackLevel=0;
         mStackLevel++;
 
         if(createSurveyFragment==null)
             createSurveyFragment = CreateSurveyFragment.newInstance(mStackLevel);
-        replaceFragment(R.id.dashboard_details_container, createSurveyFragment);
+        replaceFragment(layout, createSurveyFragment);
     }
 
     public void initSurveyFromPlanning(){
@@ -653,7 +651,11 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
      * Called when the user clicks the New Survey button
      */
     public void newSurvey(View view) {
-        initCreateSurvey();
+        if(PreferencesState.getInstance().isVerticalDashboard())
+            initCreateSurvey(R.id.dashboard_details_container);
+        else{
+            initCreateSurvey(R.id.dashboard_details_container);
+        }
     }
 
 
@@ -740,7 +742,7 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
     public void onFeedbackSelected(Survey survey) {
         Session.setSurvey(survey);
         if(PreferencesState.getInstance().isVerticalDashboard()){
-            initFeedback();
+            initSurvey();
         }
         else{
             tabHost.setCurrentTabByTag(getResources().getString(R.string.tab_tag_improve));
