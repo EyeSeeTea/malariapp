@@ -52,54 +52,54 @@ import static org.eyeseetea.malariacare.test.utils.ErrorTextMatcher.hasErrorText
 @RunWith(AndroidJUnit4.class)
 public class LoginActivityEspressoTest extends MalariaEspressoTest{
 
-//    @Rule
-//    public IntentsTestRule<LoginActivity> mActivityRule = new IntentsTestRule<>(
-//            LoginActivity.class);
-//
-//
-//    @BeforeClass
-//    public static void init(){
-//        MalariaEspressoTest.init();
-//    }
-//
-//    @Before
-//    public void setup(){
-//        super.setup();
-//    }
-//
-//    @Test
-//    public void form_views() {
-//        onView(withId(R.id.user)).check(matches(isDisplayed()));
-//        onView(withId(R.id.password)).check(matches(isDisplayed()));
-//    }
-//
-//    @Test
-//    public void login_bad_credentials(){
-//        //GIVEN
-//        onView(withId(R.id.user)).perform(typeText("bad"), closeSoftKeyboard());
-//        onView(withId(R.id.password)).perform(typeText("bad"), closeSoftKeyboard());
-//
-//        //WHEN
-//        onView(withId(R.id.email_sign_in_button)).perform(click());
-//
-//        //THEN
-//        onView(withId(R.id.user)).check(matches(hasErrorText(res.getString(R.string.login_error_bad_credentials))));
-//    }
-//
-//    @Test
-//    @LargeTest
-//    public void login_with_good_credentials(){
-//        //GIVEN
-//        cleanDB();
-//        onView(withId(R.id.user)).perform(typeText("user"), closeSoftKeyboard());
-//        onView(withId(R.id.password)).perform(typeText("user"), closeSoftKeyboard());
-//
-//        //WHEN
-//        onView(withId(R.id.email_sign_in_button)).perform(click());
-//
-//        //THEN
-//        intended(anyIntent());
-//        assertNotNull(Session.getUser());
-//    }
+    @Rule
+    public IntentsTestRule<LoginActivity> mActivityRule = new IntentsTestRule<>(
+            LoginActivity.class);
+
+
+    @BeforeClass
+    public static void init(){
+        MalariaEspressoTest.init();
+    }
+
+    @Before
+    public void setup(){
+        super.setup();
+    }
+
+    @Test
+    public void form_views() {
+        onView(withId(R.id.user)).check(matches(isDisplayed()));
+        onView(withId(R.id.password)).check(matches(isDisplayed()));
+    }
+
+    @Test
+    public void login_bad_credentials(){
+        //GIVEN
+        onView(withId(R.id.user)).perform(typeText("bad"), closeSoftKeyboard());
+        onView(withId(R.id.password)).perform(typeText("bad"), closeSoftKeyboard());
+
+        //WHEN
+        onView(withId(R.id.email_sign_in_button)).perform(click());
+
+        //THEN
+        onView(withId(R.id.user)).check(matches(hasErrorText(res.getString(R.string.login_error_bad_credentials))));
+    }
+
+    @Test
+    @LargeTest
+    public void login_with_good_credentials(){
+        //GIVEN
+        cleanDB();
+        onView(withId(R.id.user)).perform(typeText("user"), closeSoftKeyboard());
+        onView(withId(R.id.password)).perform(typeText("user"), closeSoftKeyboard());
+
+        //WHEN
+        onView(withId(R.id.email_sign_in_button)).perform(click());
+
+        //THEN
+        intended(anyIntent());
+        assertNotNull(Session.getUser());
+    }
 
 }

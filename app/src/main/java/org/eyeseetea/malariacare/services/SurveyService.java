@@ -305,6 +305,7 @@ public class SurveyService extends IntentService {
         List<Survey> completedUnsentSurveys=Survey.getAllCompletedUnsentSurveys();
         List<Survey> unsentSurveys=Survey.getAllInProgressSurveys();
         List<Survey> sentSurveys=Survey.getAllSentSurveys();
+        List<Survey> sentAndCompletedSurveys=Survey.getAllSentOrCompletedSurveys();
         for(Survey survey:unsentSurveys){
                 survey.getAnsweredQuestionRatio();
         }
@@ -327,7 +328,7 @@ public class SurveyService extends IntentService {
         Session.putServiceValue(ALL_MONITOR_DATA_ACTION,monitorMap);
         Session.putServiceValue(ALL_IN_PROGRESS_SURVEYS_ACTION, unsentSurveys);
         Session.putServiceValue(ALL_COMPLETED_SURVEYS_ACTION, completedUnsentSurveys);
-        Session.putServiceValue(ALL_SENT_OR_COMPLETED_SURVEYS_ACTION, sentSurveys);
+        Session.putServiceValue(ALL_SENT_OR_COMPLETED_SURVEYS_ACTION, sentAndCompletedSurveys);
         Session.putServiceValue(PLANNED_SURVEYS_ACTION, PlannedItemBuilder.getInstance().buildPlannedItems());
         Session.putServiceValue(ALL_ORG_UNITS_AND_PROGRAMS_ACTION,orgUnitsAndPrograms);
         Session.putServiceValue(ALL_PROGRAMS_ACTION,Program.getAllPrograms());

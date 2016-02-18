@@ -25,7 +25,8 @@ import org.eyeseetea.malariacare.views.CustomTextView;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
-import static com.google.common.base.Preconditions.checkNotNull;
+
+import static com.google.android.apps.common.testing.deps.guava.base.Preconditions.checkNotNull;
 
 /**
  * Created by arrizabalaga on 25/05/15.

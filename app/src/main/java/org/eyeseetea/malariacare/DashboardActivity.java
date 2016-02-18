@@ -19,6 +19,7 @@
 
 package org.eyeseetea.malariacare;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Fragment;
@@ -31,14 +32,14 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
+import android.text.Html;
+import android.text.Spanned;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TabHost;
-import android.widget.TabWidget;
 import android.widget.TextView;
 
 import com.squareup.otto.Subscribe;
@@ -57,6 +58,7 @@ import org.eyeseetea.malariacare.fragments.MonitorFragment;
 import org.eyeseetea.malariacare.fragments.SurveyFragment;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.fragments.PlannedFragment;
+import org.eyeseetea.malariacare.receivers.AlarmPushReceiver;
 import org.eyeseetea.malariacare.services.SurveyService;
 import org.hisp.dhis.android.sdk.events.UiEvent;
 
@@ -166,6 +168,7 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
             currentTabName=getString(R.string.assess);
         }
         setActionBarDashboard();
+        setAlarm();
     }
 
     public boolean isPlanningTabHide(){
@@ -175,35 +178,41 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
 
     public void setActionBarDashboard(){
         String title="";
+        String user="";
         if(Session.getUser()!=null && Session.getUser().getName()!=null)
-            title=Session.getUser().getName().toUpperCase();
-        title=title+": "+currentTabName.toUpperCase();
-        setActionbarMultiTitle("",title,"");
+            user=Session.getUser().getName();
+
+        //Capitalize tab name
+        StringBuilder tabtemp = new StringBuilder(currentTabName.toLowerCase());
+        tabtemp.setCharAt(0, Character.toUpperCase(tabtemp.charAt(0)));
+        title = tabtemp.toString();
+        int appNameColor = getResources().getColor(R.color.appNameColor);
+        String appNameColorString = String.format("%X", appNameColor).substring(2);
+        Spanned spannedTitle=Html.fromHtml(String.format("<font color=\"#%s\"><b>", appNameColorString)+getResources().getString(R.string.app_name)+ "</b></font> | "+ title);
+        setActionbarTitle(spannedTitle, user);
     }
 
     public void setActionBarTitleForSurvey(Survey survey){
         String title="";
         String subtitle="";
-        String subtitle2="";
-        if(Session.getUser()!=null && Session.getUser().getName()!=null)
-            title=Session.getUser().getName().toUpperCase();
-        title=title+": "+currentTabName.toUpperCase();
-
+        int appNameColor = getResources().getColor(R.color.appNameColor);
+        String appNameColorString = String.format("%X", appNameColor).substring(2);
         Program program = survey.getTabGroup().getProgram();
         if(survey.getOrgUnit().getName()!=null)
-            subtitle=survey.getOrgUnit().getName();
+            title=survey.getOrgUnit().getName();
         if(program.getName()!=null)
-            subtitle2=program.getName();
-        setActionbarMultiTitle(title, subtitle, subtitle2);
+            subtitle=program.getName();
+        Spanned spannedTitle=Html.fromHtml(String.format("<font color=\"#%s\"><b>", appNameColorString)+title+"</b></font>");
+        setActionbarTitle(spannedTitle, subtitle);
     }
 
-    public void setActionbarMultiTitle(String title1, String title2,String title3) {
+    public void setActionbarTitle(Spanned title, String subtitle) {
         android.support.v7.app.ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayShowCustomEnabled(true);
-        actionBar.setCustomView(R.layout.action_bar_three_title_layout);
-        ((TextView) findViewById(R.id.action_bar_multititle_title)).setText(title1);
-        ((TextView) findViewById(R.id.action_bar_multititle_subtitle)).setText(title2);
-        ((TextView) findViewById(R.id.action_bar_multititle_subtitle2)).setText(title3);
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setCustomView(R.layout.custom_action_bar);
+        ((TextView) findViewById(R.id.action_bar_multititle_title)).setText(title);
+        ((TextView) findViewById(R.id.action_bar_multititle_subtitle)).setText(subtitle);
     }
 
     /**
@@ -217,25 +226,16 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
 
     /**
      * Set tab in tabHost
-     * @param tabName is the name of the tab
+     * @param tab_plan is the name of the tab
      * @param layout is the id of the layout
      * @param image is the drawable with the tab icon image
      */
-    private void setTab(String tabName, int layout,  Drawable image) {
-        TabHost.TabSpec tab = tabHost.newTabSpec(tabName);
+    private void setTab(String tab_plan, int layout,  Drawable image) {
+        TabHost.TabSpec tab = tabHost.newTabSpec(tab_plan);
         tab.setContent(layout);
         tab.setIndicator("", image);
         tabHost.addTab(tab);
-        addTagToLastTab(tabName);
-    }
 
-    private void addTagToLastTab(String tabName){
-        TabWidget tabWidget=tabHost.getTabWidget();
-        int numTabs=tabWidget.getTabCount();
-        LinearLayout tabIndicator=(LinearLayout)tabWidget.getChildTabViewAt(numTabs - 1);
-
-        ImageView imageView = (ImageView)tabIndicator.getChildAt(0);
-        imageView.setTag(tabName);
     }
 
     public void initPlanned(){
@@ -360,6 +360,9 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
+        if(item.getItemId()==android.R.id.home){
+            getFragmentManager().popBackStack();
+        }
         //Any common option
         if(item.getItemId()!=R.id.action_pull){
             return super.onOptionsItemSelected(item);
@@ -374,11 +377,24 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
             return true;
         }
 
-        //Unsent data -> ask if pull || push before pulling
         final Activity activity = this;
+        //check if exist a compulsory question without awnser before push and pull.
+        for(Survey survey:unsentSurveys){
+            SurveyAnsweredRatio surveyAnsweredRatio = survey.reloadSurveyAnsweredRatio();
+            if (surveyAnsweredRatio.getTotalCompulsory()>0 && surveyAnsweredRatio.getCompulsoryAnswered() != surveyAnsweredRatio.getTotalCompulsory() ) {
+                new AlertDialog.Builder(this)
+                        .setTitle("Unsent surveys")
+                        .setMessage(getApplicationContext().getResources().getString(R.string.dialog_incompleted_compulsory_pulling))
+                        .setPositiveButton(android.R.string.ok, null)
+                        .setCancelable(true)
+                        .create().show();
+                return true;
+            }
+        }
+        //Unsent data -> ask if pull || push before pulling
         new AlertDialog.Builder(this)
                 .setTitle("Push unsent surveys?")
-                .setMessage("Metadata refresh will delete your unsent data. You have "+unsentSurveys.size()+" unsent surveys. Do you to push them before refresh?")
+                .setMessage(String.format(getResources().getString(R.string.dialog_sent_survey_on_refresh_metadata), unsentSurveys.size() + ""))
                 .setNeutralButton(android.R.string.no, null)
                 .setNegativeButton(activity.getString(R.string.no), new DialogInterface.OnClickListener() {
                     @Override
@@ -697,5 +713,12 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
     @Override
     public void onCreateSurvey() {
         initSurvey();
+    }
+
+    /**
+     * The alarm is always set in applicatin init.
+     */
+    public void setAlarm() {
+        AlarmPushReceiver.getInstance().setPushAlarm(this);
     }
 }
