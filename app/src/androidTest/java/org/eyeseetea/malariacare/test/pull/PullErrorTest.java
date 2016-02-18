@@ -45,7 +45,7 @@ public class PullErrorTest {
     }
 
     @Test
-    public void pullError403Login() {
+    public void pullWithOutPermissionDoesNotPull() {
 
         //GIVEN
         login(HNQIS_DEV_STAGING, TEST_USERNAME_NO_PERMISSION, TEST_PASSWORD_NO_PERMISSION, 60);

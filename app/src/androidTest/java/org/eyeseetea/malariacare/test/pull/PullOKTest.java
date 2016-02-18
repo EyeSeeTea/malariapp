@@ -70,7 +70,7 @@ public class PullOKTest {
     }
 
     @Test
-    public void pullWithPermissionDoesNotPull(){
+    public void pullWithPermissionDoesPull(){
 
         //GIVEN
         login(HNQIS_DEV_STAGING, TEST_USERNAME_WITH_PERMISSION, TEST_PASSWORD_WITH_PERMISSION,60);
