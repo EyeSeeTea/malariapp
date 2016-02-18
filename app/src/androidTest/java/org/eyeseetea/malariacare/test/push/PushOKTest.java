@@ -71,7 +71,7 @@ public class PushOKTest {
     }
 
     @Test
-    public void pushWithoutPermissionsDoesPush(){
+    public void pushWithPermissionsDoesPush(){
         //XXX Change TEST_USER_WITH_PERMISSION credentials to a good ones to make this pass
         login(HNQIS_DEV_STAGING, TEST_USERNAME_WITH_PERMISSION, TEST_PASSWORD_WITH_PERMISSION,60);
         waitForPull(15);
