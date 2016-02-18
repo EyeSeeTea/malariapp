@@ -49,7 +49,7 @@
         android:layout_above="@+id/cancelPullButton"
         android:layout_centerHorizontal="true" />
 
-    <ProgressBar
+    <org.eyeseetea.malariacare.views.CustomProgressBar
         android:id="@+id/pull_progress"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
