@@ -85,6 +85,9 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
         appMapObjects = new HashMap();
         compositeScoreBuilder = new CompositeScoreBuilder();
         questionBuilder = new QuestionBuilder();
+
+        //Reload static dataElement codes
+        DataElementExtended.reloadDataElementTypeCodes();
     }
 
     /**
@@ -270,7 +273,7 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
     @Override
     public void visit(DataElementExtended sdkDataElementExtended) {
         Object questionOrCompositeScore;
-        if(compositeScoreBuilder.isACompositeScore(sdkDataElementExtended)){
+        if(sdkDataElementExtended.isCompositeScore()){
             questionOrCompositeScore=buildCompositeScore(sdkDataElementExtended);
         }else if(sdkDataElementExtended.isQuestion()){
             questionOrCompositeScore=buildQuestion(sdkDataElementExtended);
