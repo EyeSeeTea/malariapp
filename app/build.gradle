@@ -25,7 +25,7 @@ android {
         }
     }
     compileSdkVersion 21
-    buildToolsVersion "21.1.2"
+    buildToolsVersion "21.0.1"
     defaultConfig {
         applicationId 'org.eyeseetea.malariacare'
         minSdkVersion 15
@@ -94,9 +94,9 @@ dependencies {
     apt project(':DBFlowORM:DBFlow-Compiler')
     compile project(':DBFlowORM:DBFlow-Core')
     compile project(':DBFlowORM:DBFlow')
-    compile 'com.android.support:support-v4:21.1.2'
-    compile 'com.android.support:appcompat-v7:21.1.2'
-    compile 'com.android.support:support-annotations:21.1.2'
+    compile 'com.android.support:support-v4:21.2.1'
+    compile 'com.android.support:appcompat-v7:21.2.1'
+    compile 'com.android.support:support-annotations:21.2.1'
     compile 'com.opencsv:opencsv:3.3'
     compile 'com.android.support:multidex:1.0.1'
     compile 'com.google.android.gms:play-services:8.1.0'
