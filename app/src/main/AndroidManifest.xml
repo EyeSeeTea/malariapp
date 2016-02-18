@@ -20,6 +20,7 @@
     <uses-permission
         android:name="android.permission.WRITE_EXTERNAL_STORAGE"
         tools:node="remove" />
+
     <application
         android:name=".EyeSeeTeaApplication"
         android:allowBackup="true"
