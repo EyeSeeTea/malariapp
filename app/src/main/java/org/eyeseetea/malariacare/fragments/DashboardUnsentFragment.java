@@ -43,7 +43,6 @@ import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.database.utils.SurveyAnsweredRatio;
-import org.eyeseetea.malariacare.database.utils.planning.SurveyPlanner;
 import org.eyeseetea.malariacare.layout.adapters.dashboard.AssessmentUnsentAdapter;
 import org.eyeseetea.malariacare.layout.adapters.dashboard.IDashboardAdapter;
 import org.eyeseetea.malariacare.receivers.AlarmPushReceiver;
@@ -64,6 +63,7 @@ public class DashboardUnsentFragment extends ListFragment {
     protected IDashboardAdapter adapter;
     private static int index = 0;
     private static int selectedPosition=0;
+    private AlarmPushReceiver alarmPush;
     onSurveySelectedListener mCallback;
 
 
@@ -91,6 +91,7 @@ public class DashboardUnsentFragment extends ListFragment {
     @Override
     public void onCreate(Bundle savedInstanceState){
         Log.d(TAG, "onCreate");
+        alarmPush = new AlarmPushReceiver();
         super.onCreate(savedInstanceState);
     }
 
@@ -199,8 +200,7 @@ public class DashboardUnsentFragment extends ListFragment {
                 return true;
             case R.id.option_delete:
                 Log.d(TAG, "removing item pos=" + selectedPosition);
-                //this method create a new survey geting the getScheduledDate date of the oldsurvey, and remove it.
-                SurveyPlanner.getInstance().deleteSurveyAndBuildNext((Survey)adapter.getItem(selectedPosition-1));
+                ((Survey)adapter.getItem(selectedPosition-1)).delete();
                 reloadData();
                 return true;
             default:
@@ -293,7 +293,7 @@ public class DashboardUnsentFragment extends ListFragment {
     public void manageSurveysAlarm(List<Survey> newListSurveys){
         Log.d(TAG, "setSurveysAlarm (Thread: " + Thread.currentThread().getId() + "): " + newListSurveys.size());
         //Fixme think other way to cancel the setPushAlarm in Malariaapp
-        AlarmPushReceiver.getInstance().setPushAlarm(getActivity());
+        alarmPush.setPushAlarm(getActivity());
     }
 
     /**
@@ -320,7 +320,7 @@ public class DashboardUnsentFragment extends ListFragment {
             if (surveysCompletedFromService.size() > 0) {
                 manageSurveysAlarm(surveysCompletedFromService);
             } else
-                AlarmPushReceiver.getInstance().cancelPushAlarm(getActivity().getApplicationContext());
+                alarmPush.cancelPushAlarm(getActivity().getApplicationContext());
         }
     }
 

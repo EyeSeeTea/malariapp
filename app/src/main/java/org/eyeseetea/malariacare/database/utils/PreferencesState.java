@@ -66,11 +66,6 @@ public class PreferencesState {
      */
     private boolean locationRequired;
 
-    /**
-     * Sets the max number of events to download from dhis server
-     */
-    private int maxEvents;
-
     static Context context;
 
     private PreferencesState(){ }
@@ -89,8 +84,7 @@ public class PreferencesState {
         scale= initScale();
         showNumDen=initShowNumDen();
         locationRequired=initLocationRequired();
-        maxEvents=initMaxEvents();
-        Log.d(TAG,String.format("reloadPreferences: scale: %s | showNumDen: %b | locationRequired: %b | maxEvents: %d",scale,showNumDen,locationRequired,maxEvents));
+        Log.d(TAG,"reloadPreferences: scale:"+scale+" | showNumDen:"+showNumDen+" | locationRequired:"+locationRequired);
     }
 
     /**
@@ -122,16 +116,6 @@ public class PreferencesState {
     private boolean initLocationRequired(){
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(instance.getContext());
         return sharedPreferences.getBoolean(instance.getContext().getString(R.string.location_required), false);
-    }
-
-    /**
-     * Inits maxEvents settings
-     * @return
-     */
-    private int initMaxEvents(){
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(instance.getContext());
-        String maxValue=sharedPreferences.getString(instance.getContext().getString(R.string.dhis_max_items), "200");
-        return Integer.valueOf(maxValue);
     }
 
     /**
@@ -212,14 +196,6 @@ public class PreferencesState {
 
     public void setLocationRequired(boolean value){
         this.locationRequired=value;
-    }
-
-    public int getMaxEvents(){
-        return this.maxEvents;
-    }
-
-    public void setMaxEvents(int maxEvents){
-        this.maxEvents=maxEvents;
     }
 
     public Float getFontSize(String scale,String dimension){

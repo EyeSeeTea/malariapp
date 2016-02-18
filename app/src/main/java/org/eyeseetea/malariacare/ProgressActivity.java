@@ -25,15 +25,12 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.squareup.otto.Subscribe;
 
@@ -41,7 +38,6 @@ import org.eyeseetea.malariacare.database.iomodules.dhis.exporter.PushController
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.PullController;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.SyncProgressStatus;
 import org.eyeseetea.malariacare.database.model.Survey;
-import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.hisp.dhis.android.sdk.controllers.DhisService;
 import org.hisp.dhis.android.sdk.events.UiEvent;
@@ -107,14 +103,20 @@ public class ProgressActivity extends Activity {
     public static Boolean PULL_CANCEL =false;
 
     /**
-     * Used for control error in pull
+     * Reference to progress indicator
      */
-    public static Boolean PULL_ERROR =false;
     ProgressBar progressBar;
+    /**
+     * Reference to progress message
+     */
     TextView textView;
+    /**
+     * Reference required for testing purposes
+     */
+    AlertDialog alertDialog;
     boolean pullAfterPushInProgress;
-    static Handler handler;
-    static Activity progressActivity;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -128,10 +130,6 @@ public class ProgressActivity extends Activity {
                 cancellPull();
             }
         });
-
-        //the handler and the static activity is needed to show the dialog with the pull controller error.
-        handler = new Handler(Looper.getMainLooper());
-        progressActivity=this;
     }
 
     private void cancellPull() {
@@ -224,7 +222,7 @@ public class ProgressActivity extends Activity {
         final boolean isAPush=isAPush();
         String title=getDialogTitle(isAPush);
 
-        new AlertDialog.Builder(this)
+        this.alertDialog=new AlertDialog.Builder(this)
                 .setCancelable(false)
                 .setTitle(title)
                 .setMessage(msg)
@@ -242,9 +240,8 @@ public class ProgressActivity extends Activity {
                             DhisService.logOutUser(ProgressActivity.this);
                         }
                     }
-                })
-                .create()
-                .show();
+                }).create();
+        alertDialog.show();
     }
 
     /**
@@ -262,10 +259,6 @@ public class ProgressActivity extends Activity {
      *
      */
     private void showAndMoveOn() {
-        if(PULL_ERROR) {
-            PULL_ERROR = false;
-            return;
-        }
         boolean isAPush=isAPush();
 
         //Annotate pull is done
@@ -293,7 +286,7 @@ public class ProgressActivity extends Activity {
         Intent intent=getIntent();
         //Not a pull -> is a Push
         if(intent!=null && (intent.getIntExtra(ProgressActivity.AFTER_ACTION,ProgressActivity.DONT_SHOW_FEEDBACK)==ProgressActivity.SHOW_FEEDBACK)) {
-            new AlertDialog.Builder(this)
+            this.alertDialog=new AlertDialog.Builder(this)
                     .setCancelable(false)
                     .setTitle(title)
                     .setMessage(msg)
@@ -316,9 +309,10 @@ public class ProgressActivity extends Activity {
                             //I try using a intent to feedbackactivity but the dashboardsActivity was reloaded from the service.
                             finishAndGo(DashboardActivity.class);
                         }
-                    }).create().show();
+                    }).create();
+            alertDialog.show();
         } else {
-            new AlertDialog.Builder(this)
+            this.alertDialog=new AlertDialog.Builder(this)
                     .setCancelable(false)
                     .setTitle(title)
                     .setMessage(msg)
@@ -334,9 +328,8 @@ public class ProgressActivity extends Activity {
                             return;
                         }
                     }
-                }).create().show();
-
-
+                }).create();
+            alertDialog.show();
         }
     }
 
@@ -458,39 +451,13 @@ public class ProgressActivity extends Activity {
         startActivity(targetActivityIntent);
     }
 
-    public static void cancellPull(final String title, final String errorMessage) {
-        PULL_ERROR = true;
-
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                // Run your task here
-                PULL_CANCEL=true;
-                PULL_IS_ACTIVE=false;
-                new Handler(Looper.getMainLooper()).post(new Runnable() {
-                    @Override
-                    public void run() {
-                        Log.d("entra", errorMessage);
-                        String dialogTitle="",dialogMessage="";
-                        if(title!=null)
-                            dialogTitle=title;
-                        if(errorMessage!=null)
-                            dialogMessage=errorMessage;
-                        new AlertDialog.Builder(progressActivity)
-                                .setCancelable(false)
-                                .setTitle(dialogTitle)
-                                .setMessage(dialogMessage)
-                                .setNeutralButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface arg0, int arg1) {
-                                        Intent targetActivityIntent = new Intent(progressActivity, LoginActivity.class);
-                                        targetActivityIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                        progressActivity.getApplicationContext().startActivity(targetActivityIntent);
-                                        return;
-                                    }
-                                }).create().show();
-                    }
-                });
-            }
-        }, 1000 );
+    /**
+     * Checks if a dialog is being shown (for testing purposes)
+     * @return
+     */
+    public boolean isDialogShowing(){
+        boolean isShowing=this.alertDialog!=null && this.alertDialog.isShowing();
+        Log.d(TAG,"isDialogShowing ->"+isShowing);
+        return isShowing;
     }
 }

@@ -76,30 +76,6 @@ public class SurveyPlanner {
         return survey;
     }
 
-
-    /**
-     * Builds a 'NEW' planned survey and delete the send survey
-     * @param oldSurvey
-     * @return newSurvey
-     */
-    public Survey deleteSurveyAndBuildNext(Survey oldSurvey){
-        Survey newSurvey = new Survey();
-        newSurvey.setStatus(Constants.SURVEY_PLANNED);
-        newSurvey.setOrgUnit(oldSurvey.getOrgUnit());
-        newSurvey.setUser(oldSurvey.getUser());
-
-        newSurvey.setTabGroup(oldSurvey.getTabGroup());
-        newSurvey.setScheduledDate(oldSurvey.getScheduledDate());
-        newSurvey.setMainScore(oldSurvey.getMainScore());
-        oldSurvey.setSurveyScheduleToSurvey(newSurvey);
-        newSurvey.save();
-
-        //remove oldSurvey
-        oldSurvey.delete();
-        return newSurvey;
-    }
-
-
     /**
      * Plans a new survey according to the given sent survey and its values
      * @param survey

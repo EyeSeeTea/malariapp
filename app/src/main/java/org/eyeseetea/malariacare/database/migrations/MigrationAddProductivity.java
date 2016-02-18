@@ -33,14 +33,16 @@ import org.eyeseetea.malariacare.database.model.OrgUnit;
 import org.eyeseetea.malariacare.database.model.OrgUnit$Table;
 import org.eyeseetea.malariacare.database.model.Question;
 
-import static org.eyeseetea.malariacare.database.migrations.MigrationUtils.addColumn;
-import static org.eyeseetea.malariacare.database.migrations.MigrationUtils.updateColumn;
-
 /**
  * Created by idelcano on 27/01/2016.
  */
 @Migration(version = 5, databaseName = AppDatabase.NAME)
 public class MigrationAddProductivity extends BaseMigration {
+
+    private final static String TAG=".Migration";
+
+    public static final String ALTER_TABLE_ADD_COLUMN = "ALTER TABLE %s ADD COLUMN %s %s";
+    public static final String UPDATE_COLUMN = "UPDATE %s SET %s =\"%s\"";
 
     public MigrationAddProductivity() {
         super();
@@ -59,4 +61,15 @@ public class MigrationAddProductivity extends BaseMigration {
     public void onPostMigrate() {
     }
 
+    private void addColumn(SQLiteDatabase database, Class model, String columnName,String type){
+        ModelAdapter myAdapter = FlowManager.getModelAdapter(model);
+        database.execSQL(String.format(ALTER_TABLE_ADD_COLUMN, myAdapter.getTableName(), columnName, type));
+
+    }
+
+    private void updateColumn(SQLiteDatabase database, Class model, String columnName,String value){
+        ModelAdapter myAdapter = FlowManager.getModelAdapter(model);
+        Log.d(TAG,String.format(UPDATE_COLUMN, myAdapter.getTableName(),columnName,value) );
+        database.execSQL(String.format(UPDATE_COLUMN, myAdapter.getTableName(),columnName,value) );
+    }
 }

@@ -38,27 +38,9 @@ public class AlarmPushReceiver extends BroadcastReceiver {
 
     public static final String TAG = ".AlarmPushReceiver";
 
-    private static AlarmPushReceiver instance;
-
     //TODO: period has to be parameterized
     private static final long SECONDS = 1000;
     private static boolean fail;
-
-    //the constructor should be public becouse is needed in a receiver class.
-    public AlarmPushReceiver(){
-    }
-
-    /**
-     * Singleton constructor
-     *
-     * @return
-     */
-    public static AlarmPushReceiver getInstance(){
-        if(instance==null){
-            instance=new AlarmPushReceiver();
-        }
-        return instance;
-    }
 
     public static void setFail(boolean fail) {
         AlarmPushReceiver.fail = fail;

@@ -27,8 +27,6 @@ import com.raizlabs.android.dbflow.sql.builder.Condition;
 import com.raizlabs.android.dbflow.sql.language.ColumnAlias;
 import com.raizlabs.android.dbflow.sql.language.Join;
 import com.raizlabs.android.dbflow.sql.language.Select;
-import com.raizlabs.android.dbflow.sql.language.Update;
-import com.raizlabs.android.dbflow.sql.language.Where;
 import com.raizlabs.android.dbflow.structure.BaseModel;
 
 import org.eyeseetea.malariacare.database.AppDatabase;
@@ -380,16 +378,6 @@ public class Survey extends BaseModel implements VisitableToSDK {
                             .eq(this.getId_survey())).queryList();
         }
         return surveySchedules;
-    }
-
-    /**
-     * Update the SurveySchedule to be set in a new survey, and could remove the old survey without lost that
-     * @param newSurvey to set the SurveSchedule
-     */
-    public void setSurveyScheduleToSurvey(Survey newSurvey){
-        Where update = new Update<>(SurveySchedule.class).set(Condition.column(SurveySchedule$Table.ID_SURVEY).eq(newSurvey.getId_survey()))
-                .where(Condition.column(SurveySchedule$Table.ID_SURVEY).is(id_survey));
-        update.queryClose();
     }
 
     /**

@@ -53,9 +53,6 @@ import org.hisp.dhis.android.sdk.persistence.models.DataElement;
 
 import java.io.IOException;
 
-import static org.eyeseetea.malariacare.database.migrations.MigrationUtils.addColumn;
-import static org.eyeseetea.malariacare.database.migrations.MigrationUtils.recreateTables;
-
 /**
  * Created by ignac on 30/11/2015.
  */
@@ -64,16 +61,41 @@ public class Migration1RestartDB extends BaseMigration {
 
     private final static String TAG=".Migration";
 
+    private final static Class APP_TABLES_TO_UPDATE[] = {
+            Value.class,
+            Score.class,
+            Survey.class,
+            OrgUnit.class,
+            OrgUnitLevel.class,
+            User.class,
+            QuestionOption.class,
+            Match.class,
+            QuestionRelation.class,
+            Question.class,
+            CompositeScore.class,
+            Option.class,
+            Answer.class,
+            Header.class,
+            Tab.class,
+            TabGroup.class,
+            Program.class
+    };
+
     private final static Class SDK_TABLES_TO_UPDATE[] = {
             Attribute.class,
             DataElement.class
     };
+
+    public static final String DROP_TABLE_IF_EXISTS = "DROP TABLE IF EXISTS ";
+
+    public static final String ALTER_TABLE_ADD_COLUMN = "ALTER TABLE %s ADD COLUMN %s %s";
 
     public Migration1RestartDB() {
         super();
     }
 
     public void onPreMigrate() {
+//        FlowManager.getDatabase(AppDatabase.NAME).reset(PreferencesState.getInstance().getContext());
     }
 
     @Override
@@ -86,6 +108,19 @@ public class Migration1RestartDB extends BaseMigration {
 
     @Override
     public void onPostMigrate() {
+        //release migration resources
     }
 
+    private void addColumn(SQLiteDatabase database, Class model, String columnName,String type){
+        ModelAdapter myAdapter = FlowManager.getModelAdapter(model);
+        database.execSQL(String.format(ALTER_TABLE_ADD_COLUMN, myAdapter.getTableName(),columnName,type) );
+    }
+
+    private void recreateTables(SQLiteDatabase database,Class[] tables){
+        for(int i=0;i<tables.length;i++){
+            ModelAdapter myAdapter = FlowManager.getModelAdapter(tables[i]);
+            database.execSQL(DROP_TABLE_IF_EXISTS + myAdapter.getTableName());
+            database.execSQL(myAdapter.getCreationQuery());
+        }
+    }
 }

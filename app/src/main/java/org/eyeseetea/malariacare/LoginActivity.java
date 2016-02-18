@@ -26,7 +26,6 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.util.Log;
 import android.widget.EditText;
 
 import com.squareup.otto.Subscribe;
@@ -46,7 +45,6 @@ import org.hisp.dhis.android.sdk.persistence.preferences.ResourceType;
  */
 public class LoginActivity extends org.hisp.dhis.android.sdk.ui.activities.LoginActivity implements LoaderCallbacks<Cursor> {
 
-    private static final String TAG="LoginActivity";
     /**
      * DHIS server URL
      */
@@ -64,7 +62,6 @@ public class LoginActivity extends org.hisp.dhis.android.sdk.ui.activities.Login
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Log.d(TAG, "onCreate");
         super.onCreate(savedInstanceState);
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         if (User.getLoggedUser() != null && !ProgressActivity.PULL_CANCEL &&  sharedPreferences.getBoolean(getApplicationContext().getResources().getString(R.string.pull_metadata),false)) {
@@ -148,18 +145,6 @@ public class LoginActivity extends org.hisp.dhis.android.sdk.ui.activities.Login
         editor.putString(getString(R.string.dhis_user), this.username);
         editor.putString(getString(R.string.dhis_password), this.password);
         editor.commit();
-    }
-
-    /**
-     * LoginActivity does NOT admin going backwads since it is always the first activity.
-     * Thus onBackPressed closes the app
-     */
-    @Override
-    public void onBackPressed(){
-        Intent intent = new Intent(Intent.ACTION_MAIN);
-        intent.addCategory(Intent.CATEGORY_HOME);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(intent);
     }
 
 }

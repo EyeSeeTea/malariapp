@@ -87,6 +87,7 @@ public class Session {
     }
 
     public static void setUser(User user) {
+        Log.d(TAG,"setUser: "+user);
         Session.user = user;
     }
 
@@ -118,15 +119,11 @@ public class Session {
         for (Survey survey : surveys) {
             survey.delete();
         }
-        if(user!=null){
-            user.delete();
-            user=null;
-        }
-        survey=null;
-        adapterUnsent=null;
-        if(serviceValues!=null){
-            serviceValues.clear();
-        }
+        Session.getUser().delete();
+        Session.setUser(null);
+        Session.setSurvey(null);
+        Session.setAdapterUnsent(null);
+        Session.serviceValues.clear();
     }
 
     /**
