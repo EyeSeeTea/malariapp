@@ -95,11 +95,6 @@ public class SDKTestUtils {
         onView(withId(org.hisp.dhis.android.sdk.R.id.login_button)).perform(click());
     }
 
-    public static void forceDisconnection() {
-        //then: wait for progressactivity + dialog + ok (to move to dashboard)
-        WifiManager wifiManager = (WifiManager)getActivityInstance().getSystemService(Context.WIFI_SERVICE);
-        wifiManager.setWifiEnabled(false);
-    }
     public static void waitForPull(int secs) {
         //then: wait for progressactivity + dialog + ok (to move to dashboard)
         IdlingResource idlingResource = new ElapsedTimeIdlingResource(secs * 1000);
@@ -233,27 +228,5 @@ public class SDKTestUtils {
         });
 
         return activity[0];
-    }
-
-    public static void setWifiEnabled(boolean state){
-        WifiManager wifiManager = (WifiManager)getActivityInstance().getSystemService(Context.WIFI_SERVICE);
-        wifiManager.setWifiEnabled(state);
-        //Force wait to wifi conection
-        try{
-            Thread.sleep(2*1000);
-        }catch(Exception ex){
-        }
-    }
-    public static boolean networkState(){
-        ConnectivityManager cm =
-                (ConnectivityManager) SDKTestUtils.getActivityInstance().getSystemService(Context.CONNECTIVITY_SERVICE);
-
-        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
-        boolean isConnected;
-        if(activeNetwork==null || (activeNetwork!=null && !activeNetwork.isConnectedOrConnecting()))
-            isConnected=false;
-        else
-            isConnected = true;
-        return isConnected;
     }
 }
