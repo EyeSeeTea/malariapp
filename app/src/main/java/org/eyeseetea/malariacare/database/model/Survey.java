@@ -699,6 +699,19 @@ public class Survey extends BaseModel implements VisitableToSDK {
     }
 
     /**
+     * Finds a survey by its ID
+     * @param id_survey
+     * @return
+     */
+    public static Survey findById(Long id_survey){
+        return new Select()
+                .from(Survey.class)
+                .where(Condition.column(Survey$Table.ID_SURVEY)
+                        .eq(id_survey))
+                .querySingle();
+    }
+
+    /**
      * Returns all surveys which status is 'planned' or 'in progress'
      * @return
      */
