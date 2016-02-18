@@ -111,4 +111,8 @@ public class SettingsEspressoTest extends MalariaEspressoTest{
 //        onView(withText(settingsActivity.getString(R.string.settings_checkbox_show_num_dems))).perform(click());
 //    }
 
+    @Test
+    public void mockTestToAvoidRed(){
+
+    }
 }

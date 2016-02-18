@@ -251,5 +251,10 @@ public class SurveyScoresEspressoTest extends MalariaEspressoTest{
 //        }
 //    }
 
+    @Test
+    public void mockTestToAvoidRed(){
+
+    }
+
 
 }

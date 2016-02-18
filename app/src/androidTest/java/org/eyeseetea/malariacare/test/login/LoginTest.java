@@ -100,6 +100,8 @@ public class LoginTest {
 
         intended(hasComponent(ProgressActivity.class.getName()));
 
+        //Waiting for pull to finish in order to clear the state of the app
+        waitForPull(15);
         Intents.release();
     }
 
