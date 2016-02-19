@@ -43,7 +43,6 @@ import org.eyeseetea.malariacare.database.iomodules.dhis.importer.SyncProgressSt
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.Session;
-import org.eyeseetea.malariacare.views.CustomProgressBar;
 import org.hisp.dhis.android.sdk.controllers.DhisService;
 import org.hisp.dhis.android.sdk.events.UiEvent;
 import org.hisp.dhis.android.sdk.persistence.Dhis2Application;
@@ -111,7 +110,7 @@ public class ProgressActivity extends Activity {
      * Used for control error in pull
      */
     public static Boolean PULL_ERROR =false;
-    CustomProgressBar progressBar;
+    ProgressBar progressBar;
     TextView textView;
     boolean pullAfterPushInProgress;
     static Handler handler;
@@ -169,7 +168,7 @@ public class ProgressActivity extends Activity {
     }
 
     private void prepareUI(){
-        progressBar=(CustomProgressBar)findViewById(R.id.pull_progress);
+        progressBar=(ProgressBar)findViewById(R.id.pull_progress);
         progressBar.setMax(isAPush() ? MAX_PUSH_STEPS : MAX_PULL_STEPS);
         textView=(TextView)findViewById(R.id.pull_text);
     }
