@@ -2,18 +2,14 @@ package org.eyeseetea.malariacare.test.pull;
 
 import android.support.test.espresso.Espresso;
 import android.support.test.espresso.NoActivityResumedException;
-import android.support.test.espresso.intent.Intents;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.util.Log;
 
-import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.LoginActivity;
-import org.eyeseetea.malariacare.ProgressActivity;
 import org.eyeseetea.malariacare.database.model.OrgUnit;
 import org.eyeseetea.malariacare.database.model.Program;
 import org.eyeseetea.malariacare.database.utils.PopulateDB;
-import org.eyeseetea.malariacare.test.utils.ActivityFinisher;
 import org.eyeseetea.malariacare.test.utils.SDKTestUtils;
 import org.hisp.dhis.android.sdk.persistence.models.Access;
 import org.hisp.dhis.android.sdk.persistence.models.OrganisationUnit;
@@ -21,7 +17,6 @@ import org.hisp.dhis.android.sdk.persistence.models.OrganisationUnitDataSet;
 import org.hisp.dhis.android.sdk.persistence.models.OrganisationUnitGroup;
 import org.hisp.dhis.android.sdk.persistence.models.ProgramAttributeValue;
 import org.hisp.dhis.android.sdk.utils.api.ProgramType;
-import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -62,7 +57,7 @@ public class PullOKTest {
     private List<String> goldenOrganisationUnitGroups;
 
 
-    private LoginActivity mReceiptCaptureActivity;
+    //private LoginActivity mReceiptCaptureActivity;
     @Rule
     public ActivityTestRule<LoginActivity> mActivityRule = new ActivityTestRule<>(
             LoginActivity.class);
@@ -76,6 +71,7 @@ public class PullOKTest {
     @Before
     public void setup(){
         PopulateDB.wipeDatabase();
+        SDKTestUtils.goToLogin();
     }
     @AfterClass
     public static void tearDown() throws Exception {
@@ -113,9 +109,9 @@ public class PullOKTest {
     public void pullWithPermissionDoesPull(){
 
         //GIVEN
-        login(HNQIS_DEV_STAGING, TEST_USERNAME_WITH_PERMISSION, TEST_PASSWORD_WITH_PERMISSION,60);
+        login(HNQIS_DEV_STAGING, TEST_USERNAME_WITH_PERMISSION, TEST_PASSWORD_WITH_PERMISSION);
 
-        waitForPull(20);
+        waitForPull(30);
 
         //WHEN
         //Test organisationUnit has been downloaded with the correct propierties.

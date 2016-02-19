@@ -19,14 +19,18 @@
 
 package org.eyeseetea.malariacare.test.push;
 
+import android.support.test.espresso.Espresso;
+import android.support.test.espresso.NoActivityResumedException;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
+import android.util.Log;
 
 import org.eyeseetea.malariacare.LoginActivity;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.utils.PopulateDB;
-import org.junit.After;
+import org.eyeseetea.malariacare.test.utils.SDKTestUtils;
+import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Rule;
@@ -34,8 +38,10 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import static android.support.test.espresso.Espresso.onView;
+import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.assertion.ViewAssertions.doesNotExist;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
+import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static junit.framework.Assert.assertTrue;
 import static org.eyeseetea.malariacare.test.utils.SDKTestUtils.HNQIS_DEV_STAGING;
 import static org.eyeseetea.malariacare.test.utils.SDKTestUtils.TEST_PASSWORD_NO_PERMISSION;
@@ -53,7 +59,8 @@ import static org.eyeseetea.malariacare.test.utils.SDKTestUtils.waitForPush;
 @RunWith(AndroidJUnit4.class)
 public class PushErrorTest {
 
-    private LoginActivity mReceiptCaptureActivity;
+    private static final String TAG="TestingPushError";
+    //private LoginActivity mReceiptCaptureActivity;
 
     @Rule
     public ActivityTestRule<LoginActivity> mActivityRule = new ActivityTestRule<>(
@@ -65,21 +72,40 @@ public class PushErrorTest {
     }
 
     @Before
-    public void setup()throws Exception {
+    public void setup(){
+        //mReceiptCaptureActivity = mActivityRule.getActivity();
         PopulateDB.wipeDatabase();
-        mReceiptCaptureActivity = mActivityRule.getActivity();
+        SDKTestUtils.goToLogin();
     }
 
-    @After
-    public void tearDown() throws Exception {
-        // Call finish() on all activities in @After to avoid exceptions in
-        // later calls to getActivity() in subsequent tests
-        mReceiptCaptureActivity.finish();
+    @AfterClass
+    public static void tearDown() throws Exception {
+        Log.d(TAG, "TEARDOWN");
+
+        goBackN();
+
+        // super.tearDown();
     }
+
+    private static void goBackN() {
+        final int N = 10; // how many times to hit back button
+        try {
+            for (int i = 0; i < N; i++) {
+                Espresso.pressBack();
+                try {
+                    onView(withText(android.R.string.ok)).perform(click());
+                } catch (Exception e) {
+                }
+            }
+        } catch (NoActivityResumedException e) {
+            Log.e(TAG, "Closed all activities", e);
+        }
+    }
+
     @Test
     public void pushWithOutPermissionsDoesNOTPush(){
-        login(HNQIS_DEV_STAGING, TEST_USERNAME_NO_PERMISSION, TEST_PASSWORD_NO_PERMISSION,60);
-        waitForPull(15);
+        login(HNQIS_DEV_STAGING, TEST_USERNAME_NO_PERMISSION, TEST_PASSWORD_NO_PERMISSION);
+        waitForPull(20);
         startSurvey(1, 1);
         fillSurvey(7, "No");
         Long idSurvey=markInProgressAsCompleted();

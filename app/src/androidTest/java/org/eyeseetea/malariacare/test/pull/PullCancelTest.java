@@ -7,7 +7,6 @@ import android.support.test.runner.AndroidJUnit4;
 import android.util.Log;
 
 import org.eyeseetea.malariacare.LoginActivity;
-import org.eyeseetea.malariacare.ProgressActivity;
 import org.eyeseetea.malariacare.database.utils.PopulateDB;
 import org.eyeseetea.malariacare.test.utils.SDKTestUtils;
 import org.junit.AfterClass;
@@ -16,8 +15,6 @@ import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
-import java.util.Collection;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
@@ -35,7 +32,7 @@ import static org.eyeseetea.malariacare.test.utils.SDKTestUtils.login;
 public class PullCancelTest {
 
     private static final String TAG="TestingCancelTest";
-    private LoginActivity mReceiptCaptureActivity;
+    //private LoginActivity mReceiptCaptureActivity;
 
 
     @Rule
@@ -50,6 +47,7 @@ public class PullCancelTest {
     @Before
     public void setup(){
         PopulateDB.wipeDatabase();
+        SDKTestUtils.goToLogin();
     }
     @AfterClass
     public static void tearDown() throws Exception {
@@ -79,7 +77,7 @@ public class PullCancelTest {
     public void pullCancelledReturnsLogin() {
 
         //GIVEN
-        login(HNQIS_DEV_STAGING, TEST_USERNAME_WITH_PERMISSION, TEST_PASSWORD_WITH_PERMISSION, 60);
+        login(HNQIS_DEV_STAGING, TEST_USERNAME_WITH_PERMISSION, TEST_PASSWORD_WITH_PERMISSION);
 
         //WHEN
         onView(withText(android.R.string.cancel)).perform(click());

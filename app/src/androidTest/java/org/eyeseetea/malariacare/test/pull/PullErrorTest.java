@@ -7,9 +7,10 @@ package org.eyeseetea.malariacare.test.pull;
         import android.util.Log;
 
         import org.eyeseetea.malariacare.LoginActivity;
+        import org.eyeseetea.malariacare.database.utils.PopulateDB;
         import org.eyeseetea.malariacare.test.utils.SDKTestUtils;
-        import org.junit.After;
         import org.junit.AfterClass;
+        import org.junit.Before;
         import org.junit.Rule;
         import org.junit.Test;
         import org.junit.runner.RunWith;
@@ -31,8 +32,12 @@ package org.eyeseetea.malariacare.test.pull;
 public class PullErrorTest {
 
     private static final String TAG="TestingPullError";
-    private LoginActivity mReceiptCaptureActivity;
+    //private LoginActivity mReceiptCaptureActivity;
 
+    @Before
+    public void setup(){
+        SDKTestUtils.goToLogin();
+    }
     @AfterClass
     public static void tearDown() throws Exception {
         Log.d(TAG, "TEARDOWN");
@@ -65,7 +70,7 @@ public class PullErrorTest {
     public void pullWithOutPermissionDoesNotPull() {
 
         //GIVEN
-        login(HNQIS_DEV_STAGING, TEST_USERNAME_NO_PERMISSION, TEST_PASSWORD_NO_PERMISSION, 60);
+        login(HNQIS_DEV_STAGING, TEST_USERNAME_NO_PERMISSION, TEST_PASSWORD_NO_PERMISSION);
         //WHEN
         waitForPull(20);
         //THEN

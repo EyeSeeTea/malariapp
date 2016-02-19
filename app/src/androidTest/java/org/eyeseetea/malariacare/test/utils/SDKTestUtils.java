@@ -36,6 +36,8 @@ import com.google.android.gms.fitness.data.DataSet;
 import com.raizlabs.android.dbflow.sql.builder.Condition;
 import com.raizlabs.android.dbflow.sql.language.Select;
 
+import org.eyeseetea.malariacare.LoginActivity;
+import org.eyeseetea.malariacare.ProgressActivity;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.model.OrgUnit;
 import org.eyeseetea.malariacare.database.model.OrgUnit$Table;
@@ -85,8 +87,8 @@ public class SDKTestUtils {
     public static final String UNABLE_TO_LOGIN = "Unable to log in due to an invalid username or password.";
 
 
-    public static void login(String server, String user, String password,int secs) {
-        IdlingPolicies.setIdlingResourceTimeout(secs, TimeUnit.SECONDS);
+    public static void login(String server, String user, String password) {
+        IdlingPolicies.setIdlingResourceTimeout(60, TimeUnit.SECONDS);
 
         //when: login
         onView(withId(org.hisp.dhis.android.sdk.R.id.server_url)).perform(replaceText(server));
@@ -116,8 +118,9 @@ public class SDKTestUtils {
     }
 
     public static void startSurvey(int idxOrgUnit, int idxProgram) {
+        IdlingPolicies.setIdlingResourceTimeout(60, TimeUnit.SECONDS);
         //when: click on assess tab + plus button
-        onView(withTagValue(Matchers.is((Object) "tab_assess"))).perform(click());
+        onView(withTagValue(Matchers.is((Object) getActivityInstance().getApplicationContext().getString(R.string.tab_tag_assess)))).perform(click());
         onView(withId(R.id.plusButton)).perform(click());
 
         //then: start survey 'test facility 1'+ 'family planning'+start
@@ -228,5 +231,30 @@ public class SDKTestUtils {
         });
 
         return activity[0];
+    }
+
+
+    public static void goToLogin(){
+        try{
+            if(LoginActivity.class.equals(SDKTestUtils.getActivityInstance().getClass())){
+                return;
+            }
+            else{
+                if(ProgressActivity.class.equals(SDKTestUtils.getActivityInstance().getClass())){
+                    try{
+                        onView(withText(android.R.string.cancel)).perform(click());
+                    }catch (Exception e){}
+
+                }
+                else{
+                    Espresso.pressBack();
+                    try {
+                        onView(withText(android.R.string.ok)).perform(click());
+                    } catch (Exception e) {
+                    }
+                }
+            }
+        } catch(Exception e){}
+        goToLogin();
     }
 }

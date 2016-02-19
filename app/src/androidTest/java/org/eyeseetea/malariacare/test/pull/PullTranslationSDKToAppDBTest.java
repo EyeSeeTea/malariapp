@@ -63,6 +63,7 @@ public class PullTranslationSDKToAppDBTest {
     @Before
     public void setup(){
         PopulateDB.wipeDatabase();
+        SDKTestUtils.goToLogin();
     }
     @AfterClass
     public static void tearDown() throws Exception {
@@ -92,7 +93,7 @@ public class PullTranslationSDKToAppDBTest {
 
         //GIVEN
 
-        login(HNQIS_DEV_STAGING, TEST_USERNAME_WITH_PERMISSION, TEST_PASSWORD_WITH_PERMISSION, 60);
+        login(HNQIS_DEV_STAGING, TEST_USERNAME_WITH_PERMISSION, TEST_PASSWORD_WITH_PERMISSION);
         waitForPull(30);
 
         //WHEN
