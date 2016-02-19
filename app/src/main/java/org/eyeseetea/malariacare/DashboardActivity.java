@@ -38,8 +38,10 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TabHost;
+import android.widget.TabWidget;
 import android.widget.TextView;
 
 import com.squareup.otto.Subscribe;
@@ -226,16 +228,25 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
 
     /**
      * Set tab in tabHost
-     * @param tab_plan is the name of the tab
+     * @param tabName is the name of the tab
      * @param layout is the id of the layout
      * @param image is the drawable with the tab icon image
      */
-    private void setTab(String tab_plan, int layout,  Drawable image) {
-        TabHost.TabSpec tab = tabHost.newTabSpec(tab_plan);
+    private void setTab(String tabName, int layout,  Drawable image) {
+        TabHost.TabSpec tab = tabHost.newTabSpec(tabName);
         tab.setContent(layout);
         tab.setIndicator("", image);
         tabHost.addTab(tab);
+        addTagToLastTab(tabName);
+    }
 
+    private void addTagToLastTab(String tabName){
+        TabWidget tabWidget=tabHost.getTabWidget();
+        int numTabs=tabWidget.getTabCount();
+        LinearLayout tabIndicator=(LinearLayout)tabWidget.getChildTabViewAt(numTabs - 1);
+
+        ImageView imageView = (ImageView)tabIndicator.getChildAt(0);
+        imageView.setTag(tabName);
     }
 
     public void initPlanned(){
