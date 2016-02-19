@@ -1,12 +1,19 @@
 package org.eyeseetea.malariacare.test.pull;
 
+import android.support.test.espresso.Espresso;
+import android.support.test.espresso.NoActivityResumedException;
+import android.support.test.espresso.intent.Intents;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
+import android.util.Log;
 
+import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.LoginActivity;
+import org.eyeseetea.malariacare.ProgressActivity;
 import org.eyeseetea.malariacare.database.model.OrgUnit;
 import org.eyeseetea.malariacare.database.model.Program;
 import org.eyeseetea.malariacare.database.utils.PopulateDB;
+import org.eyeseetea.malariacare.test.utils.ActivityFinisher;
 import org.eyeseetea.malariacare.test.utils.SDKTestUtils;
 import org.hisp.dhis.android.sdk.persistence.models.Access;
 import org.hisp.dhis.android.sdk.persistence.models.OrganisationUnit;
@@ -14,6 +21,8 @@ import org.hisp.dhis.android.sdk.persistence.models.OrganisationUnitDataSet;
 import org.hisp.dhis.android.sdk.persistence.models.OrganisationUnitGroup;
 import org.hisp.dhis.android.sdk.persistence.models.ProgramAttributeValue;
 import org.hisp.dhis.android.sdk.utils.api.ProgramType;
+import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Rule;
@@ -23,6 +32,11 @@ import org.junit.runner.RunWith;
 import java.util.ArrayList;
 import java.util.List;
 
+import static android.support.test.espresso.Espresso.onView;
+import static android.support.test.espresso.action.ViewActions.click;
+import static android.support.test.espresso.intent.Intents.intended;
+import static android.support.test.espresso.intent.matcher.IntentMatchers.hasComponent;
+import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static junit.framework.Assert.assertTrue;
 import static org.eyeseetea.malariacare.test.utils.SDKTestUtils.HNQIS_DEV_STAGING;
 import static org.eyeseetea.malariacare.test.utils.SDKTestUtils.TEST_PASSWORD_WITH_PERMISSION;
@@ -35,7 +49,7 @@ import static org.eyeseetea.malariacare.test.utils.SDKTestUtils.waitForPull;
  */
 @RunWith(AndroidJUnit4.class)
 public class PullOKTest {
-
+    private static final String TAG="TestingPullOk";
     private final String ATTRIBUTE_SUPERVISION_CODE="PSupervisor";
     private final String ATTRIBUTE_SUPERVISION_VALUE="Adrian Quintana";
     private final String ATTRIBUTE_SUPERVISION_ID="zG5T2x5Yjrx";
@@ -46,10 +60,13 @@ public class PullOKTest {
     private Program goldenProgram;
     private List<String> goldenDataSets;
     private List<String> goldenOrganisationUnitGroups;
-    
+
+
+    private LoginActivity mReceiptCaptureActivity;
     @Rule
     public ActivityTestRule<LoginActivity> mActivityRule = new ActivityTestRule<>(
             LoginActivity.class);
+
 
     @BeforeClass
     public static void setupClass(){
@@ -60,7 +77,30 @@ public class PullOKTest {
     public void setup(){
         PopulateDB.wipeDatabase();
     }
-    
+    @AfterClass
+    public static void tearDown() throws Exception {
+        Log.d(TAG, "TEARDOWN");
+
+        goBackN();
+
+        // super.tearDown();
+    }
+
+    private static void goBackN() {
+        final int N = 10; // how many times to hit back button
+        try {
+            for (int i = 0; i < N; i++) {
+                Espresso.pressBack();
+                try {
+                    onView(withText(android.R.string.ok)).perform(click());
+                } catch (Exception e) {
+                }
+            }
+        } catch (NoActivityResumedException e) {
+            Log.e(TAG, "Closed all activities", e);
+        }
+    }
+
     @Before
     public void populateTestModels(){
         createRealOrganisationUnit();

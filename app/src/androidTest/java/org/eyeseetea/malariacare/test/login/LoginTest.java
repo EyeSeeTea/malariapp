@@ -22,6 +22,7 @@ package org.eyeseetea.malariacare.test.login;
 import android.app.Instrumentation;
 import android.support.test.espresso.Espresso;
 import android.support.test.espresso.IdlingResource;
+import android.support.test.espresso.NoActivityResumedException;
 import android.support.test.espresso.intent.Intents;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
@@ -34,8 +35,11 @@ import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.utils.PopulateDB;
 import org.eyeseetea.malariacare.database.utils.Session;
+import org.eyeseetea.malariacare.test.utils.ActivityFinisher;
 import org.eyeseetea.malariacare.test.utils.ElapsedTimeIdlingResource;
 import org.eyeseetea.malariacare.test.utils.SDKTestUtils;
+import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Rule;
@@ -73,8 +77,9 @@ import static org.eyeseetea.malariacare.test.utils.SDKTestUtils.waitForPush;
 @RunWith(AndroidJUnit4.class)
 public class LoginTest {
 
-    private static final String TAG="PushOKTest";
+    private static final String TAG="TestingLogin";
 
+    private LoginActivity mReceiptCaptureActivity;
     @Rule
     public ActivityTestRule<LoginActivity> mActivityRule = new ActivityTestRule<>(
             LoginActivity.class);
@@ -85,8 +90,32 @@ public class LoginTest {
     }
 
     @Before
-    public void setup(){
-        PopulateDB.wipeDatabase();
+    public void setup()throws Exception {
+        mReceiptCaptureActivity = mActivityRule.getActivity();
+    }
+
+    @AfterClass
+    public static void tearDown() throws Exception {
+        Log.d(TAG, "TEARDOWN");
+
+        goBackN();
+
+       // super.tearDown();
+    }
+
+    private static void goBackN() {
+        final int N = 10; // how many times to hit back button
+        try {
+            for (int i = 0; i < N; i++) {
+                Espresso.pressBack();
+                try {
+                    onView(withText(android.R.string.ok)).perform(click());
+                } catch (Exception e) {
+                }
+            }
+        } catch (NoActivityResumedException e) {
+            Log.e(TAG, "Closed all activities", e);
+        }
     }
 
     @Test
@@ -104,8 +133,8 @@ public class LoginTest {
         waitForPull(20);
     }
 
-    @Test
-    public void loginWithBadCredentials(){
+//    @Test
+//    public void loginWithBadCredentials(){
 //        onView(withId(org.hisp.dhis.android.sdk.R.id.server_url)).perform(replaceText(SDKTestUtils.HNQIS_DEV_STAGING));
 //        onView(withId(org.hisp.dhis.android.sdk.R.id.username)).perform(replaceText(SDKTestUtils.TEST_USERNAME_WITH_PERMISSION));
 //        onView(withId(org.hisp.dhis.android.sdk.R.id.password)).perform(replaceText("bad"));
@@ -117,6 +146,6 @@ public class LoginTest {
 //        onView(withText(android.R.string.ok)).perform(click());
         //XXX The error dialog should be captured but it is not because the sdk customdialog blocks the main ui thread
         //onView(withText(SDKTestUtils.UNABLE_TO_LOGIN)).check(matches(isDisplayed()));
-    }
+//    }
 
 }

@@ -1,20 +1,17 @@
 package org.eyeseetea.malariacare.test.pull;
 
-import android.app.Activity;
-import android.app.Instrumentation;
-import android.support.test.InstrumentationRegistry;
 import android.support.test.espresso.Espresso;
-import android.support.test.espresso.IdlingResource;
+import android.support.test.espresso.NoActivityResumedException;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
-import android.support.test.runner.lifecycle.ActivityLifecycleMonitorRegistry;
-import android.support.test.runner.lifecycle.Stage;
+import android.util.Log;
 
 import org.eyeseetea.malariacare.LoginActivity;
 import org.eyeseetea.malariacare.ProgressActivity;
 import org.eyeseetea.malariacare.database.utils.PopulateDB;
-import org.eyeseetea.malariacare.test.utils.ElapsedTimeIdlingResource;
 import org.eyeseetea.malariacare.test.utils.SDKTestUtils;
+import org.junit.AfterClass;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
@@ -37,6 +34,10 @@ import static org.eyeseetea.malariacare.test.utils.SDKTestUtils.login;
 @RunWith(AndroidJUnit4.class)
 public class PullCancelTest {
 
+    private static final String TAG="TestingCancelTest";
+    private LoginActivity mReceiptCaptureActivity;
+
+
     @Rule
     public ActivityTestRule<LoginActivity> mActivityRule = new ActivityTestRule<>(
             LoginActivity.class);
@@ -46,11 +47,39 @@ public class PullCancelTest {
         PopulateDB.wipeDatabase();
     }
 
+    @Before
+    public void setup(){
+        PopulateDB.wipeDatabase();
+    }
+    @AfterClass
+    public static void tearDown() throws Exception {
+        Log.d(TAG, "TEARDOWN");
+
+        goBackN();
+
+        // super.tearDown();
+    }
+
+    private static void goBackN() {
+        final int N = 10; // how many times to hit back button
+        try {
+            for (int i = 0; i < N; i++) {
+                Espresso.pressBack();
+                try {
+                    onView(withText(android.R.string.ok)).perform(click());
+                } catch (Exception e) {
+                }
+            }
+        } catch (NoActivityResumedException e) {
+            Log.e(TAG, "Closed all activities", e);
+        }
+    }
+
     @Test
     public void pullCancelledReturnsLogin() {
 
         //GIVEN
-        login(HNQIS_DEV_STAGING,TEST_USERNAME_WITH_PERMISSION,TEST_PASSWORD_WITH_PERMISSION,10);
+        login(HNQIS_DEV_STAGING, TEST_USERNAME_WITH_PERMISSION, TEST_PASSWORD_WITH_PERMISSION, 60);
 
         //WHEN
         onView(withText(android.R.string.cancel)).perform(click());

@@ -28,6 +28,7 @@ import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.utils.PopulateDB;
 import org.eyeseetea.malariacare.database.utils.Session;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Rule;
@@ -56,6 +57,8 @@ public class PushOKTest {
 
     private static final String TAG="PushOKTest";
 
+    private LoginActivity mReceiptCaptureActivity;
+
     @Rule
     public ActivityTestRule<LoginActivity> mActivityRule = new ActivityTestRule<>(
             LoginActivity.class);
@@ -66,10 +69,17 @@ public class PushOKTest {
     }
 
     @Before
-    public void setup(){
+    public void setup()throws Exception {
         PopulateDB.wipeDatabase();
+        mReceiptCaptureActivity = mActivityRule.getActivity();
     }
 
+    @After
+    public void tearDown() throws Exception {
+        // Call finish() on all activities in @After to avoid exceptions in
+        // later calls to getActivity() in subsequent tests
+        mReceiptCaptureActivity.finish();
+    }
     @Test
     public void pushWithPermissionsDoesPush(){
         //XXX Change TEST_USER_WITH_PERMISSION credentials to a good ones to make this pass
