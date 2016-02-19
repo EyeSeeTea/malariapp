@@ -27,6 +27,7 @@ import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.EventExtended;
 import org.eyeseetea.malariacare.database.model.CompositeScore;
 import org.eyeseetea.malariacare.database.model.Survey;
+import org.eyeseetea.malariacare.database.model.User;
 import org.eyeseetea.malariacare.database.model.Value;
 import org.eyeseetea.malariacare.database.utils.LocationMemory;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
@@ -139,7 +140,7 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
         dataValue.setLocalEventId(currentEvent.getLocalId());
         dataValue.setEvent(currentEvent.getEvent());
         dataValue.setProvidedElsewhere(false);
-        dataValue.setStoredBy(Session.getUser().getName());
+        dataValue.setStoredBy(getSafeUsername());
         dataValue.setValue(Utils.round(ScoreRegister.getCompositeScore(compositeScore)));
         dataValue.save();
     }
@@ -151,7 +152,7 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
         dataValue.setLocalEventId(currentEvent.getLocalId());
         dataValue.setEvent(currentEvent.getEvent());
         dataValue.setProvidedElsewhere(false);
-        dataValue.setStoredBy(Session.getUser().getName());
+        dataValue.setStoredBy(getSafeUsername());
         if(value.getOption()!=null){
             dataValue.setValue(value.getOption().getCode());
         }else{
@@ -223,7 +224,7 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
         dataValue.setLocalEventId(currentEvent.getLocalId());
         dataValue.setEvent(currentEvent.getEvent());
         dataValue.setProvidedElsewhere(false);
-        dataValue.setStoredBy(Session.getUser().getName());
+        dataValue.setStoredBy(getSafeUsername());
         dataValue.setValue(value);
         dataValue.save();
     }
@@ -312,5 +313,17 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
             return true;
         }
         return importSummary.getImportCount().getImported()==0;
+    }
+
+    /**
+     * Returns the name of the username avoiding NPE
+     * @return
+     */
+    private String getSafeUsername(){
+        User user = Session.getUser();
+        if(user!=null){
+            return user.getName();
+        }
+        return "";
     }
 }

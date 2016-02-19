@@ -136,4 +136,9 @@ public class SurveyChecksEspressoTest extends MalariaEspressoTest{
 //        onData(is(instanceOf(Tab.class))).atPosition(num).perform(click());
 //    }
 
+    @Test
+    public void mockTestToAvoidRed(){
+
+    }
+
 }

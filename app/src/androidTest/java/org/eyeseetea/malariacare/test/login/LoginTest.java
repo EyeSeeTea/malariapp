@@ -94,12 +94,14 @@ public class LoginTest {
         Intents.init();
 
         onView(withId(org.hisp.dhis.android.sdk.R.id.server_url)).perform(replaceText(SDKTestUtils.HNQIS_DEV_STAGING));
-        onView(withId(org.hisp.dhis.android.sdk.R.id.username)).perform(replaceText(SDKTestUtils.TEST_USERNAME_NO_PERMISSION));
-        onView(withId(org.hisp.dhis.android.sdk.R.id.password)).perform(replaceText(SDKTestUtils.TEST_PASSWORD_NO_PERMISSION));
+        onView(withId(org.hisp.dhis.android.sdk.R.id.username)).perform(replaceText(SDKTestUtils.TEST_USERNAME_WITH_PERMISSION));
+        onView(withId(org.hisp.dhis.android.sdk.R.id.password)).perform(replaceText(SDKTestUtils.TEST_PASSWORD_WITH_PERMISSION));
         onView(withId(org.hisp.dhis.android.sdk.R.id.login_button)).perform(click());
 
         intended(hasComponent(ProgressActivity.class.getName()));
 
+        //Waiting for pull to finish in order to clear the state of the app
+        waitForPull(15);
         Intents.release();
     }
 
