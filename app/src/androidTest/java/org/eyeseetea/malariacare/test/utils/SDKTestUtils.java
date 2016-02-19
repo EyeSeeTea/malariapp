@@ -81,7 +81,6 @@ public class SDKTestUtils {
     public static final String TEST_USERNAME_WITH_PERMISSION = "testOK";
     public static final String TEST_PASSWORD_WITH_PERMISSION = "testP3rmission";
 
-
     public static final String MARK_AS_COMPLETED = "Mark as completed";
 
     public static final String UNABLE_TO_LOGIN = "Unable to log in due to an invalid username or password.";
