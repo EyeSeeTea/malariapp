@@ -2,8 +2,10 @@ package org.eyeseetea.malariacare.test.pull;
 
 import android.support.test.espresso.Espresso;
 import android.support.test.espresso.IdlingResource;
+import android.support.test.espresso.NoActivityResumedException;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
+import android.util.Log;
 
 import org.eyeseetea.malariacare.LoginActivity;
 import org.eyeseetea.malariacare.database.model.OrgUnit;
@@ -15,6 +17,7 @@ import org.hisp.dhis.android.sdk.controllers.metadata.MetaDataController;
 import org.hisp.dhis.android.sdk.persistence.models.OrganisationUnitAttributeValue;
 import org.hisp.dhis.android.sdk.persistence.models.ProgramAttributeValue;
 import org.hisp.dhis.android.sdk.utils.api.ProgramType;
+import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Rule;
@@ -38,7 +41,7 @@ import static org.eyeseetea.malariacare.test.utils.SDKTestUtils.waitForPull;
  */
 @RunWith(AndroidJUnit4.class)
 public class PullTranslationSDKToAppDBTest {
-
+    private static final String TAG="TestingTransaltion";
     private final String ATTRIBUTE_PRODUCTIVITY_CODE="OUProductivity";
 
     private final String ATTRIBUTE_SUPERVISION_CODE="PSupervisor";
@@ -61,7 +64,29 @@ public class PullTranslationSDKToAppDBTest {
     public void setup(){
         PopulateDB.wipeDatabase();
     }
+    @AfterClass
+    public static void tearDown() throws Exception {
+        Log.d(TAG, "TEARDOWN");
 
+        goBackN();
+
+        // super.tearDown();
+    }
+
+    private static void goBackN() {
+        final int N = 10; // how many times to hit back button
+        try {
+            for (int i = 0; i < N; i++) {
+                Espresso.pressBack();
+                try {
+                    onView(withText(android.R.string.ok)).perform(click());
+                } catch (Exception e) {
+                }
+            }
+        } catch (NoActivityResumedException e) {
+            Log.e(TAG, "Closed all activities", e);
+        }
+    }
     @Test
     public void pullTranslationSDKToAppDB(){
 
@@ -102,6 +127,8 @@ public class PullTranslationSDKToAppDBTest {
         }
 
     }
+
+
 
     private void testOrganisationUnitTranslation() {
         //Get all the organisation units saved in the sdk, and tests if is saved in our DB
