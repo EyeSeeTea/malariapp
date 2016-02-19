@@ -56,10 +56,12 @@ public class SDKTestUtils {
     public static final String TEST_USERNAME_NO_PERMISSION = "test";
     public static final String TEST_PASSWORD_NO_PERMISSION = "testN0permission";
 
-    public static final String TEST_USERNAME_WITH_PERMISSION = "iarrizabalaga";
-    public static final String TEST_PASSWORD_WITH_PERMISSION = "Arrizabalaga2015";
+    public static final String TEST_USERNAME_WITH_PERMISSION = "xxx";
+    public static final String TEST_PASSWORD_WITH_PERMISSION = "xxx";
 
     public static final String MARK_AS_COMPLETED = "Mark as completed";
+
+    public static final String UNABLE_TO_LOGIN = "Unable to log in due to an invalid username or password.";
 
 
     public static void login(String server, String user, String password) {
