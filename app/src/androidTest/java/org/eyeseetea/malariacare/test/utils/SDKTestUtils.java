@@ -39,6 +39,8 @@ import com.raizlabs.android.dbflow.sql.language.Select;
 import org.eyeseetea.malariacare.LoginActivity;
 import org.eyeseetea.malariacare.ProgressActivity;
 import org.eyeseetea.malariacare.R;
+import org.eyeseetea.malariacare.database.model.Option;
+import org.eyeseetea.malariacare.database.model.Option$Table;
 import org.eyeseetea.malariacare.database.model.OrgUnit;
 import org.eyeseetea.malariacare.database.model.OrgUnit$Table;
 import org.eyeseetea.malariacare.database.model.Program;
@@ -66,6 +68,8 @@ import static android.support.test.espresso.action.ViewActions.replaceText;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withTagValue;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
+import static org.hamcrest.Matchers.allOf;
+import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
 
@@ -117,14 +121,23 @@ public class SDKTestUtils {
     }
 
     public static void startSurvey(int idxOrgUnit, int idxProgram) {
-        IdlingPolicies.setIdlingResourceTimeout(60, TimeUnit.SECONDS);
         //when: click on assess tab + plus button
+        IdlingPolicies.setIdlingResourceTimeout(60, TimeUnit.SECONDS);
         onView(withTagValue(Matchers.is((Object) getActivityInstance().getApplicationContext().getString(R.string.tab_tag_assess)))).perform(click());
+
+        IdlingPolicies.setIdlingResourceTimeout(60, TimeUnit.SECONDS);
         onView(withId(R.id.plusButton)).perform(click());
 
         //then: start survey 'test facility 1'+ 'family planning'+start
+
+
         onView(withId(R.id.org_unit)).perform(click());
+        //Wait for service
+        IdlingResource idlingResource = new ElapsedTimeIdlingResource(5 * 1000);
+        Espresso.registerIdlingResources(idlingResource);
+
         onData(is(instanceOf(OrgUnit.class))).atPosition(idxOrgUnit).perform(click());
+        Espresso.unregisterIdlingResources(idlingResource);
 
         onView(withId(R.id.program)).perform(click());
         onData(is(instanceOf(Program.class))).atPosition(idxProgram).perform(click());
@@ -135,17 +148,28 @@ public class SDKTestUtils {
 
     public static void fillSurvey(int numQuestions, String optionValue) {
         //when: answer NO to every question
+        IdlingResource idlingResource = new ElapsedTimeIdlingResource(5 * 1000);
+        Espresso.registerIdlingResources(idlingResource);
+        onView(withTagValue(Matchers.is((Object) getActivityInstance().getApplicationContext().getString(R.string.tab_tag_assess)))).perform(click());
+
         for (int i = 0; i < numQuestions; i++) {
-            onData(is(instanceOf(Question.class)))
-                    .inAdapterView(withId(R.id.listView))
-                    .atPosition(i)
-                    .onChildView(withId(R.id.answer))
-                    .onChildView(withText(optionValue))
-                    .perform(click());
+            try {
+                onData(is(instanceOf(Question.class)))
+                        .inAdapterView(withId(R.id.listView))
+                        .atPosition(i)
+                        .onChildView(withId(R.id.answer))
+                        .onChildView(withText(optionValue))//.onChildView(withTagValue(allOf(Matchers.hasProperty("name", containsString(optionValue)))))
+                        .perform(click());
+
+
+            }catch (Exception e){}
         }
 
+        Espresso.unregisterIdlingResources(idlingResource);
+        IdlingPolicies.setIdlingResourceTimeout(60, TimeUnit.SECONDS);
         //then: back + confirm
         Espresso.pressBack();
+        IdlingPolicies.setIdlingResourceTimeout(60, TimeUnit.SECONDS);
         onView(withText(android.R.string.ok)).perform(click());
     }
 
@@ -162,6 +186,13 @@ public class SDKTestUtils {
         return getSurveyInProgress().getId_survey();
     }
 
+    public static Option getOption(int Survey, String value){
+        return new Select()
+                .from(Option.class)
+                .where(Condition.column(Option$Table.NAME)
+                        .eq(value))
+                .querySingle();
+    }
     private static Survey getSurveyInProgress(){
         return new Select()
                 .from(Survey.class)
