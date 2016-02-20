@@ -467,7 +467,7 @@ public class CreateSurveyFragment extends Fragment {
             OrgUnit selectedOrgUnit = (OrgUnit) ((Spinner)viewHolder.component).getItemAtPosition(pos);
             realOrgUnitView = ((Spinner) viewHolder.component);
 
-            if(selectedOrgUnit!=null) {
+            if(selectedOrgUnit!=null && selectedOrgUnit.getUid()!=null) {
                 filterPrograms(selectedOrgUnit);
                 if (selectedOrgUnit.getUid() != null && selectedOrgUnit.getChildren().isEmpty() && selectedOrgUnit.getOrgUnit() == null) {
                     //without parent without childs
