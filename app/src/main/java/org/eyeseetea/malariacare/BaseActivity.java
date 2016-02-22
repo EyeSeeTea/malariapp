@@ -23,10 +23,12 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBarActivity;
 import android.text.Html;
 import android.text.SpannableString;
@@ -43,6 +45,7 @@ import com.squareup.otto.Subscribe;
 
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.utils.LocationMemory;
+import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.layout.listeners.SurveyLocationListener;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
@@ -185,6 +188,7 @@ public abstract class BaseActivity extends ActionBarActivity {
                     public void onClick(DialogInterface arg0, int arg1) {
                         //Start logout
                         debugMessage("Logging out from sdk...");
+                        PreferencesState.getInstance().clearOrgUnitPreference();
                         DhisService.logOutUser(BaseActivity.this);
                     }
                 })
