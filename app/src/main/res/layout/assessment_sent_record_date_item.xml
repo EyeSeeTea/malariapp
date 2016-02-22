@@ -17,25 +17,28 @@
   ~  along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
   -->
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/dateContainer"
-    android:layout_width="0dp"
-    android:layout_height="fill_parent"
-    android:layout_gravity="center"
-    android:layout_weight="0.4"
-    android:gravity="center"
-    android:orientation="vertical">
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <org.eyeseetea.malariacare.views.CustomTextView
-        android:id="@+id/sentDate"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <LinearLayout
+        android:id="@+id/dateContainer"
+        android:layout_width="0dp"
+        android:layout_height="fill_parent"
         android:layout_gravity="center"
-        android:gravity="center_horizontal"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:textColor="@color/black"
-        android:textStyle="bold"
-        app:tDimension="@string/font_size_level1"
-        app:tFontName="@string/medium_font_name" />
-</LinearLayout>
+        android:layout_weight="0.4"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <org.eyeseetea.malariacare.views.CustomTextView
+            android:id="@+id/sentDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center_horizontal"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            app:tDimension="@string/font_size_level1"
+            app:tFontName="@string/medium_font_name" />
+    </LinearLayout>
+</merge>
