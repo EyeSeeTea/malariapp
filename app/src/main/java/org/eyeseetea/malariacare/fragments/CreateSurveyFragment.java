@@ -550,7 +550,7 @@ public class CreateSurveyFragment extends Fragment {
         List<Program> initProgram= new ArrayList<>();
         for(Program orgUnitProgram: selectedOrgUnit.getPrograms()){
             for(Program program:allProgramList ){
-                if(orgUnitProgram.equals(program))
+                if(orgUnitProgram!=null && orgUnitProgram.equals(program))
                     initProgram.add(orgUnitProgram);
             }
         }
