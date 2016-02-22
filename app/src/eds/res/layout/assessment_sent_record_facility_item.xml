@@ -17,39 +17,40 @@
   ~  along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
   -->
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/facilityDateContainer"
-    android:layout_width="0dp"
-    android:layout_height="fill_parent"
-    android:layout_gravity="center"
-    android:layout_weight="0.6"
-    android:orientation="vertical">
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="0dp"
+        android:layout_height="fill_parent"
+        android:id="@+id/facilityDateContainer"
+        android:layout_weight="0.6"
+        android:layout_gravity="center">
 
-    <org.eyeseetea.malariacare.views.CustomTextView
-        android:id="@+id/facility"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:layout_gravity="center_vertical"
-        android:layout_weight="0.5"
-        android:paddingLeft="5dip"
-        android:paddingRight="5dip"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:textColor="@color/black"
-        android:textStyle="bold"
-        app:tDimension="@string/font_size_level1"
-        app:tFontName="@string/medium_font_name" />
+        <org.eyeseetea.malariacare.views.CustomTextView
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="0.5"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:id="@+id/facility"
+            android:layout_gravity="center_vertical"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            android:paddingLeft="5dip"
+            android:paddingRight="5dip"
+            app:tDimension="@string/font_size_level1"
+            app:tFontName="@string/medium_font_name" />
 
-    <org.eyeseetea.malariacare.views.CustomTextView
-        android:id="@+id/survey_type"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:layout_gravity="center_vertical"
-        android:layout_weight="0.5"
-        android:paddingLeft="5dip"
-        android:paddingRight="5dip"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        app:tDimension="@string/font_size_level1"
-        app:tFontName="@string/medium_font_name" />
+        <org.eyeseetea.malariacare.views.CustomTextView
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="0.5"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:id="@+id/survey_type"
+            android:layout_gravity="center_vertical"
+            android:paddingLeft="5dip"
+            android:paddingRight="5dip"
+            app:tDimension="@string/font_size_level1"
+            app:tFontName="@string/medium_font_name" />
 
-</LinearLayout>
+    </LinearLayout></merge>
