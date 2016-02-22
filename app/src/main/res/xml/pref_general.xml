@@ -47,7 +47,7 @@
 
     <!-- NOTE: EditTextPreference accepts EditText attributes. -->
     <!-- NOTE: EditTextPreference's summary should be set to its value by the activity code. -->
-    <EditTextPreference
+    <org.eyeseetea.malariacare.views.ReadonlyPreference
         android:key="@string/dhis_url"
         android:title="@string/settings_text_dhis_server_url"
         android:defaultValue="@string/login_info_dhis_default_server_url"
@@ -56,7 +56,7 @@
         android:singleLine="true"
         android:maxLines="1" />
 
-    <EditTextPreference
+    <org.eyeseetea.malariacare.views.ReadonlyPreference
         android:key="@string/dhis_user"
         android:title="@string/settings_text_dhis_user"
         android:defaultValue="@string/empty_string"
@@ -65,12 +65,22 @@
         android:singleLine="true"
         android:maxLines="1" />
 
-    <EditTextPreference
+    <org.eyeseetea.malariacare.views.ReadonlyPreference
         android:key="@string/dhis_password"
         android:title="@string/settings_text_dhis_password"
         android:defaultValue="@string/empty_string"
         android:selectAllOnFocus="true"
         android:inputType="textPassword"
+        android:singleLine="true"
+        android:maxLines="1" />
+
+    <EditTextPreference
+        android:key="@string/dhis_max_items"
+        android:title="@string/settings_text_dhis_max_items"
+        android:defaultValue="200"
+        android:selectAllOnFocus="true"
+        android:inputType="number"
+        android:numeric="integer"
         android:singleLine="true"
         android:maxLines="1" />
 

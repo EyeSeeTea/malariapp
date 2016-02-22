@@ -106,6 +106,7 @@ public class PushService extends IntentService {
     }
 
     private void sendSDKPush(Survey survey) {
+        Log.d(TAG,"sendSDKPush: "+survey);
         PushClient pushClient = getPushClient(survey);
         //Push  data
         pushClient.pushSDK();

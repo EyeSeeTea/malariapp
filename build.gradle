@@ -36,13 +36,26 @@ allprojects {
 }
 
 ext {
-    // SDK version.
-    versionCode = 1
-    versionName = "1.0"
+    //App Version
+    versionCode = 17
+    versionName = "14.0"
 
-    // Compilation configuration.
+    // Sdk and tools
     minSdkVersion = 15
-    compileSdkVersion = 21
     targetSdkVersion = 21
-    buildToolsVersion = "21.0.1"
+    compileSdkVersion = 21
+    buildToolsVersion = '21.0.1'
+    supportLibraryVersion = '21.2.1'
+    gmsPlayVersion = '8.1.0'
+
+    // App dependencies versions    
+    guavaVersion = '18.0'
+    okhttpVersion = '2.2.0'
+    crashlyticsVersion = '2.5.2@aar'
+    opencsvVersion = '3.3'
+
+    //Testing dependencies
+    junitVersion = '4.12'
+    runnerVersion = '0.4.1'
+    espressoVersion = '2.2.1'
 }
