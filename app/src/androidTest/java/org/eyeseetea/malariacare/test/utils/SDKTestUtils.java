@@ -21,21 +21,15 @@ package org.eyeseetea.malariacare.test.utils;
 
 import android.app.Activity;
 import android.app.Instrumentation;
-import android.content.Context;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
-import android.net.wifi.WifiManager;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.espresso.Espresso;
 import android.support.test.espresso.IdlingPolicies;
 import android.support.test.espresso.IdlingResource;
-import android.support.test.espresso.NoActivityResumedException;
 import android.support.test.runner.lifecycle.ActivityLifecycleMonitorRegistry;
 import android.support.test.runner.lifecycle.Stage;
 import android.util.Log;
 import static android.support.test.espresso.Espresso.openActionBarOverflowOrOptionsMenu;
 
-import com.google.android.gms.fitness.data.DataSet;
 import com.raizlabs.android.dbflow.sql.builder.Condition;
 import com.raizlabs.android.dbflow.sql.language.Select;
 
@@ -43,16 +37,12 @@ import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.LoginActivity;
 import org.eyeseetea.malariacare.ProgressActivity;
 import org.eyeseetea.malariacare.R;
-import org.eyeseetea.malariacare.database.model.Option;
-import org.eyeseetea.malariacare.database.model.Option$Table;
 import org.eyeseetea.malariacare.database.model.OrgUnit;
 import org.eyeseetea.malariacare.database.model.OrgUnit$Table;
 import org.eyeseetea.malariacare.database.model.Program;
-import org.eyeseetea.malariacare.database.model.Program$Table;
 import org.eyeseetea.malariacare.database.model.Question;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.model.Survey$Table;
-import org.eyeseetea.malariacare.test.push.PushErrorTest;
 import org.eyeseetea.malariacare.utils.Constants;
 import org.hamcrest.Matchers;
 import org.hisp.dhis.android.sdk.persistence.models.OrganisationUnit;
@@ -73,8 +63,6 @@ import static android.support.test.espresso.action.ViewActions.replaceText;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withTagValue;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
-import static org.hamcrest.Matchers.allOf;
-import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
 
@@ -125,6 +113,12 @@ public class SDKTestUtils {
 
     public static Survey waitForPush(int seconds, Long idSurvey){
         //then: wait for pushservice
+        //Wait for push: For any reason Thread.sleep is necessary.
+        try{
+            Thread.sleep(seconds*1000);
+        }catch(Exception ex){
+        }
+
         IdlingResource idlingResource = new ElapsedTimeIdlingResource(seconds * 1000);
         Espresso.registerIdlingResources(idlingResource);
 
