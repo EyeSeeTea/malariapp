@@ -27,7 +27,6 @@ import android.util.Log;
 
 import org.eyeseetea.malariacare.LoginActivity;
 import org.eyeseetea.malariacare.R;
-import org.eyeseetea.malariacare.database.model.Option;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.utils.PopulateDB;
 import org.eyeseetea.malariacare.database.utils.Session;
@@ -45,6 +44,7 @@ import static android.support.test.espresso.assertion.ViewAssertions.doesNotExis
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static junit.framework.Assert.assertTrue;
+import static org.eyeseetea.malariacare.test.utils.SDKTestUtils.DEFAULT_WAIT_FOR_PULL;
 import static org.eyeseetea.malariacare.test.utils.SDKTestUtils.HNQIS_DEV_STAGING;
 import static org.eyeseetea.malariacare.test.utils.SDKTestUtils.TEST_PASSWORD_WITH_PERMISSION;
 import static org.eyeseetea.malariacare.test.utils.SDKTestUtils.TEST_USERNAME_WITH_PERMISSION;
@@ -69,45 +69,23 @@ public class PushOKTest {
     public ActivityTestRule<LoginActivity> mActivityRule = new ActivityTestRule<>(
             LoginActivity.class);
 
-    @BeforeClass
-    public static void setupClass(){
-        PopulateDB.wipeDatabase();
-    }
-
     @Before
     public void setup(){
-        PopulateDB.wipeDatabase();
+        //force init go to logging activity.
         SDKTestUtils.goToLogin();
+        //set the test limit( and throw exception if the time is exceded)
+        SDKTestUtils.setTestTimeoutSeconds(SDKTestUtils.DEFAULT_TEST_TIME_LIMIT);
     }
 
     @AfterClass
-    public static void tearDown() throws Exception {
-        Log.d(TAG, "TEARDOWN");
-
-        goBackN();
-
-        // super.tearDown();
-    }
-
-    private static void goBackN() {
-        final int N = 10; // how many times to hit back button
-        try {
-            for (int i = 0; i < N; i++) {
-                Espresso.pressBack();
-                try {
-                    onView(withText(android.R.string.ok)).perform(click());
-                } catch (Exception e) {
-                }
-            }
-        } catch (NoActivityResumedException e) {
-            Log.e(TAG, "Closed all activities", e);
-        }
+    public static void exitApp() throws Exception {
+        SDKTestUtils.exitApp();
     }
 
     @Test
     public void pushWithPermissionsDoesPush(){
         login(HNQIS_DEV_STAGING, TEST_USERNAME_WITH_PERMISSION, TEST_PASSWORD_WITH_PERMISSION);
-        waitForPull(20);
+        waitForPull(DEFAULT_WAIT_FOR_PULL);
         startSurvey(1, 1);
         fillSurvey(7, "No");
         Long idSurvey=markInProgressAsCompleted();

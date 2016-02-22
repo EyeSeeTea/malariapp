@@ -29,13 +29,17 @@ import android.support.test.InstrumentationRegistry;
 import android.support.test.espresso.Espresso;
 import android.support.test.espresso.IdlingPolicies;
 import android.support.test.espresso.IdlingResource;
+import android.support.test.espresso.NoActivityResumedException;
 import android.support.test.runner.lifecycle.ActivityLifecycleMonitorRegistry;
 import android.support.test.runner.lifecycle.Stage;
+import android.util.Log;
+import static android.support.test.espresso.Espresso.openActionBarOverflowOrOptionsMenu;
 
 import com.google.android.gms.fitness.data.DataSet;
 import com.raizlabs.android.dbflow.sql.builder.Condition;
 import com.raizlabs.android.dbflow.sql.language.Select;
 
+import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.LoginActivity;
 import org.eyeseetea.malariacare.ProgressActivity;
 import org.eyeseetea.malariacare.R;
@@ -48,6 +52,7 @@ import org.eyeseetea.malariacare.database.model.Program$Table;
 import org.eyeseetea.malariacare.database.model.Question;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.model.Survey$Table;
+import org.eyeseetea.malariacare.test.push.PushErrorTest;
 import org.eyeseetea.malariacare.utils.Constants;
 import org.hamcrest.Matchers;
 import org.hisp.dhis.android.sdk.persistence.models.OrganisationUnit;
@@ -78,6 +83,10 @@ import static org.hamcrest.Matchers.is;
  */
 public class SDKTestUtils {
 
+    private static final String TAG="TestingUtils";
+    public static final int DEFAULT_WAIT_FOR_PULL=29;
+    public static final int DEFAULT_TEST_TIME_LIMIT=180;
+
     public static final String HNQIS_DEV_STAGING = "https://hnqis-dev-staging.psi-mis.org";
     public static final String TEST_USERNAME_NO_PERMISSION = "testFAIL";
     public static final String TEST_PASSWORD_NO_PERMISSION = "testN0P3rmission";
@@ -89,10 +98,15 @@ public class SDKTestUtils {
 
     public static final String UNABLE_TO_LOGIN = "Unable to log in due to an invalid username or password.";
 
+    public static void setTestTimeoutSeconds(int seconds){
+        IdlingPolicies.setMasterPolicyTimeout(
+                seconds, TimeUnit.SECONDS);
+        IdlingPolicies.setIdlingResourceTimeout(
+                seconds, TimeUnit.SECONDS);
+    }
 
     public static void login(String server, String user, String password) {
-        IdlingPolicies.setIdlingResourceTimeout(60, TimeUnit.SECONDS);
-
+       // IdlingPolicies.setIdlingResourceTimeout(60, TimeUnit.SECONDS);
         //when: login
         onView(withId(org.hisp.dhis.android.sdk.R.id.server_url)).perform(replaceText(server));
         onView(withId(org.hisp.dhis.android.sdk.R.id.username)).perform(replaceText(user));
@@ -100,9 +114,9 @@ public class SDKTestUtils {
         onView(withId(org.hisp.dhis.android.sdk.R.id.login_button)).perform(click());
     }
 
-    public static void waitForPull(int secs) {
+    public static void waitForPull(int seconds) {
         //then: wait for progressactivity + dialog + ok (to move to dashboard)
-        IdlingResource idlingResource = new ElapsedTimeIdlingResource(secs * 1000);
+        IdlingResource idlingResource = new ElapsedTimeIdlingResource(seconds * 1000);
         Espresso.registerIdlingResources(idlingResource);
 
         onView(withText(android.R.string.ok)).perform(click());
@@ -131,13 +145,13 @@ public class SDKTestUtils {
         //then: start survey 'test facility 1'+ 'family planning'+start
 
 
-        onView(withId(R.id.org_unit)).perform(click());
-        //Wait for service
         IdlingResource idlingResource = new ElapsedTimeIdlingResource(5 * 1000);
         Espresso.registerIdlingResources(idlingResource);
+        onView(withId(R.id.org_unit)).perform(click());
+        //Wait for service
 
-        onData(is(instanceOf(OrgUnit.class))).atPosition(idxOrgUnit).perform(click());
         Espresso.unregisterIdlingResources(idlingResource);
+        onData(is(instanceOf(OrgUnit.class))).atPosition(idxOrgUnit).perform(click());
 
         onView(withId(R.id.program)).perform(click());
         onData(is(instanceOf(Program.class))).atPosition(idxProgram).perform(click());
@@ -263,28 +277,62 @@ public class SDKTestUtils {
         return activity[0];
     }
 
+    public static void exitApp(){
+        Class actualClass=null;
+        try {
+            actualClass = SDKTestUtils.getActivityInstance().getClass();
+        }catch(Exception e){
+        }
+        if(actualClass!=null  && !actualClass.equals(LoginActivity.class)) {
+            goToLogin();
+            Espresso.pressBack();
+        }
+        else{
+            Espresso.pressBack();
+        }
+    }
 
     public static void goToLogin(){
-        try{
-            if(LoginActivity.class.equals(SDKTestUtils.getActivityInstance().getClass())){
-                return;
-            }
-            else{
-                if(ProgressActivity.class.equals(SDKTestUtils.getActivityInstance().getClass())){
-                    try{
-                        onView(withText(android.R.string.cancel)).perform(click());
-                    }catch (Exception e){}
-
-                }
-                else{
-                    Espresso.pressBack();
-                    try {
-                        onView(withText(android.R.string.ok)).perform(click());
-                    } catch (Exception e) {
+        Class actualClass=null;
+        try {
+            actualClass = SDKTestUtils.getActivityInstance().getClass();
+        }catch(Exception e){
+        }
+        if(actualClass!=null  && !actualClass.equals(LoginActivity.class)) {
+            Log.d(TAG, actualClass+"");
+            try {
+                if (ProgressActivity.class.equals(actualClass)) {
+                        try {
+                            onView(withText(android.R.string.cancel)).perform(click());
+                        } catch (Exception e) {}
+                } else if(DashboardActivity.class.equals(actualClass)){
+                        try {
+                            clickLogout();
+                            onView(withText(android.R.string.ok)).perform(click());
+                        } catch (Exception e) {}
                     }
+            } catch (Exception e) {}
+            goToLogin();
+        }
+    }
+
+    public static void goBackN() {
+        final int N = 10; // how many times to hit back button
+        try {
+            for (int i = 0; i < N; i++) {
+                Espresso.pressBack();
+                try {
+                    onView(withText(android.R.string.ok)).perform(click());
+                } catch (Exception e) {
                 }
             }
-        } catch(Exception e){}
-        goToLogin();
+        } catch (NoActivityResumedException e) {
+            Log.e(TAG, "Closed all activities", e);
+        }
+    }
+
+    public static void clickLogout() {
+        openActionBarOverflowOrOptionsMenu(InstrumentationRegistry.getTargetContext());
+        onView(withText(R.string.settings_menu_logout)).perform(click());
     }
 }

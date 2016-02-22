@@ -33,6 +33,7 @@ import static android.support.test.espresso.intent.Intents.intended;
 import static android.support.test.espresso.intent.matcher.IntentMatchers.hasComponent;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static junit.framework.Assert.assertTrue;
+import static org.eyeseetea.malariacare.test.utils.SDKTestUtils.DEFAULT_WAIT_FOR_PULL;
 import static org.eyeseetea.malariacare.test.utils.SDKTestUtils.HNQIS_DEV_STAGING;
 import static org.eyeseetea.malariacare.test.utils.SDKTestUtils.TEST_PASSWORD_WITH_PERMISSION;
 import static org.eyeseetea.malariacare.test.utils.SDKTestUtils.TEST_USERNAME_WITH_PERMISSION;
@@ -62,42 +63,20 @@ public class PullOKTest {
     public ActivityTestRule<LoginActivity> mActivityRule = new ActivityTestRule<>(
             LoginActivity.class);
 
-
-    @BeforeClass
-    public static void setupClass(){
-        PopulateDB.wipeDatabase();
-    }
-
     @Before
     public void setup(){
-        PopulateDB.wipeDatabase();
+        //force init go to logging activity.
         SDKTestUtils.goToLogin();
+        //set the test limit( and throw exception if the time is exceded)
+        SDKTestUtils.setTestTimeoutSeconds(SDKTestUtils.DEFAULT_TEST_TIME_LIMIT);
+        populateTestModels();
     }
+
     @AfterClass
-    public static void tearDown() throws Exception {
-        Log.d(TAG, "TEARDOWN");
-
-        goBackN();
-
-        // super.tearDown();
+    public static void exitApp() throws Exception {
+        SDKTestUtils.exitApp();
     }
 
-    private static void goBackN() {
-        final int N = 10; // how many times to hit back button
-        try {
-            for (int i = 0; i < N; i++) {
-                Espresso.pressBack();
-                try {
-                    onView(withText(android.R.string.ok)).perform(click());
-                } catch (Exception e) {
-                }
-            }
-        } catch (NoActivityResumedException e) {
-            Log.e(TAG, "Closed all activities", e);
-        }
-    }
-
-    @Before
     public void populateTestModels(){
         createRealOrganisationUnit();
         createRealSdkProgram();
@@ -111,7 +90,7 @@ public class PullOKTest {
         //GIVEN
         login(HNQIS_DEV_STAGING, TEST_USERNAME_WITH_PERMISSION, TEST_PASSWORD_WITH_PERMISSION);
 
-        waitForPull(30);
+        waitForPull(DEFAULT_WAIT_FOR_PULL);
 
         //WHEN
         //Test organisationUnit has been downloaded with the correct propierties.

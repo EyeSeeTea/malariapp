@@ -39,38 +39,17 @@ public class PullCancelTest {
     public ActivityTestRule<LoginActivity> mActivityRule = new ActivityTestRule<>(
             LoginActivity.class);
 
-    @BeforeClass
-    public static void setupClass(){
-        PopulateDB.wipeDatabase();
-    }
-
     @Before
     public void setup(){
-        PopulateDB.wipeDatabase();
+        //force init go to logging activity.
         SDKTestUtils.goToLogin();
+        //set the test limit( and throw exception if the time is exceded)
+        SDKTestUtils.setTestTimeoutSeconds(SDKTestUtils.DEFAULT_TEST_TIME_LIMIT);
     }
+
     @AfterClass
-    public static void tearDown() throws Exception {
-        Log.d(TAG, "TEARDOWN");
-
-        goBackN();
-
-        // super.tearDown();
-    }
-
-    private static void goBackN() {
-        final int N = 10; // how many times to hit back button
-        try {
-            for (int i = 0; i < N; i++) {
-                Espresso.pressBack();
-                try {
-                    onView(withText(android.R.string.ok)).perform(click());
-                } catch (Exception e) {
-                }
-            }
-        } catch (NoActivityResumedException e) {
-            Log.e(TAG, "Closed all activities", e);
-        }
+    public static void exitApp() throws Exception {
+        SDKTestUtils.exitApp();
     }
 
     @Test

@@ -7,7 +7,6 @@ package org.eyeseetea.malariacare.test.pull;
         import android.util.Log;
 
         import org.eyeseetea.malariacare.LoginActivity;
-        import org.eyeseetea.malariacare.database.utils.PopulateDB;
         import org.eyeseetea.malariacare.test.utils.SDKTestUtils;
         import org.junit.AfterClass;
         import org.junit.Before;
@@ -19,6 +18,7 @@ package org.eyeseetea.malariacare.test.pull;
         import static android.support.test.espresso.action.ViewActions.click;
         import static android.support.test.espresso.matcher.ViewMatchers.withText;
         import static junit.framework.Assert.assertEquals;
+        import static org.eyeseetea.malariacare.test.utils.SDKTestUtils.DEFAULT_WAIT_FOR_PULL;
         import static org.eyeseetea.malariacare.test.utils.SDKTestUtils.HNQIS_DEV_STAGING;
         import static org.eyeseetea.malariacare.test.utils.SDKTestUtils.TEST_PASSWORD_NO_PERMISSION;
         import static org.eyeseetea.malariacare.test.utils.SDKTestUtils.TEST_USERNAME_NO_PERMISSION;
@@ -36,30 +36,15 @@ public class PullErrorTest {
 
     @Before
     public void setup(){
+        //force init go to logging activity.
         SDKTestUtils.goToLogin();
+        //set the test limit( and throw exception if the time is exceded)
+        SDKTestUtils.setTestTimeoutSeconds(SDKTestUtils.DEFAULT_TEST_TIME_LIMIT);
     }
+
     @AfterClass
-    public static void tearDown() throws Exception {
-        Log.d(TAG, "TEARDOWN");
-
-        goBackN();
-
-        // super.tearDown();
-    }
-
-    private static void goBackN() {
-        final int N = 10; // how many times to hit back button
-        try {
-            for (int i = 0; i < N; i++) {
-                Espresso.pressBack();
-                try {
-                    onView(withText(android.R.string.ok)).perform(click());
-                } catch (Exception e) {
-                }
-            }
-        } catch (NoActivityResumedException e) {
-            Log.e(TAG, "Closed all activities", e);
-        }
+    public static void exitApp() throws Exception {
+        SDKTestUtils.exitApp();
     }
 
     @Rule
@@ -72,7 +57,7 @@ public class PullErrorTest {
         //GIVEN
         login(HNQIS_DEV_STAGING, TEST_USERNAME_NO_PERMISSION, TEST_PASSWORD_NO_PERMISSION);
         //WHEN
-        waitForPull(20);
+        waitForPull(DEFAULT_WAIT_FOR_PULL);
         //THEN
         assertEquals(LoginActivity.class, SDKTestUtils.getActivityInstance().getClass());
     }
