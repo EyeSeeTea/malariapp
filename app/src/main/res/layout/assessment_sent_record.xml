@@ -25,60 +25,9 @@
     android:id="@+id/assessment_row"
     android:background="@drawable/cell_borders">
 
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="0dp"
-        android:layout_height="fill_parent"
-        android:id="@+id/facilityDateContainer"
-        android:layout_weight="0.6"
-        android:layout_gravity="center">
+    <include layout="@layout/assessment_sent_record_facility_item"/>
 
-        <org.eyeseetea.malariacare.views.CustomTextView
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:layout_weight="0.5"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:id="@+id/facility"
-            android:layout_gravity="center_vertical"
-            android:textStyle="bold"
-            android:textColor="@color/black"
-            app:tDimension="@string/font_size_level1"
-            app:tFontName="@string/medium_font_name" />
-
-        <org.eyeseetea.malariacare.views.CustomTextView
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:layout_weight="0.5"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:id="@+id/survey_type"
-            android:layout_gravity="center_vertical"
-            app:tDimension="@string/font_size_level1"
-            app:tFontName="@string/medium_font_name" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="0dp"
-        android:layout_height="fill_parent"
-        android:id="@+id/dateContainer"
-        android:layout_weight="0.4"
-        android:layout_gravity="center"
-        android:gravity="center">
-
-        <org.eyeseetea.malariacare.views.CustomTextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:id="@+id/sentDate"
-            android:layout_gravity="center"
-            android:gravity="center_horizontal"
-            android:textStyle="bold"
-            android:textColor="@color/black"
-            app:tDimension="@string/font_size_level1"
-            app:tFontName="@string/medium_font_name" />
-
-    </LinearLayout>
+    <include layout="@layout/assessment_sent_record_date_item"/>
 
     <LinearLayout
         android:orientation="horizontal"
