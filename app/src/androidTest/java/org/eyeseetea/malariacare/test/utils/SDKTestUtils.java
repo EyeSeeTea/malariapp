@@ -106,7 +106,6 @@ public class SDKTestUtils {
     }
 
     public static void login(String server, String user, String password) {
-       // IdlingPolicies.setIdlingResourceTimeout(60, TimeUnit.SECONDS);
         //when: login
         onView(withId(org.hisp.dhis.android.sdk.R.id.server_url)).perform(replaceText(server));
         onView(withId(org.hisp.dhis.android.sdk.R.id.username)).perform(replaceText(user));
@@ -124,33 +123,33 @@ public class SDKTestUtils {
         Espresso.unregisterIdlingResources(idlingResource);
     }
 
-    public static Survey waitForPush(int secs, Long idSurvey){
+    public static Survey waitForPush(int seconds, Long idSurvey){
         //then: wait for pushservice
-        try{
-            Thread.sleep(secs*1000);
-        }catch(Exception ex){
-        }
+        IdlingResource idlingResource = new ElapsedTimeIdlingResource(seconds * 1000);
+        Espresso.registerIdlingResources(idlingResource);
 
-        return Survey.findById(idSurvey);
+        Survey survey=Survey.findById(idSurvey);
+
+        Espresso.unregisterIdlingResources(idlingResource);
+        return survey;
     }
 
     public static void startSurvey(int idxOrgUnit, int idxProgram) {
         //when: click on assess tab + plus button
-        IdlingPolicies.setIdlingResourceTimeout(60, TimeUnit.SECONDS);
         onView(withTagValue(Matchers.is((Object) getActivityInstance().getApplicationContext().getString(R.string.tab_tag_assess)))).perform(click());
-
-        IdlingPolicies.setIdlingResourceTimeout(60, TimeUnit.SECONDS);
         onView(withId(R.id.plusButton)).perform(click());
 
         //then: start survey 'test facility 1'+ 'family planning'+start
 
 
+        //Wait for SurveyService loads the Orgunit and programs
         IdlingResource idlingResource = new ElapsedTimeIdlingResource(5 * 1000);
         Espresso.registerIdlingResources(idlingResource);
+
         onView(withId(R.id.org_unit)).perform(click());
-        //Wait for service
 
         Espresso.unregisterIdlingResources(idlingResource);
+
         onData(is(instanceOf(OrgUnit.class))).atPosition(idxOrgUnit).perform(click());
 
         onView(withId(R.id.program)).perform(click());
@@ -162,10 +161,11 @@ public class SDKTestUtils {
 
     public static void fillSurvey(int numQuestions, String optionValue) {
         //when: answer NO to every question
+        //Wait for fragment load data from SurveyService
         IdlingResource idlingResource = new ElapsedTimeIdlingResource(5 * 1000);
         Espresso.registerIdlingResources(idlingResource);
-        onView(withTagValue(Matchers.is((Object) getActivityInstance().getApplicationContext().getString(R.string.tab_tag_assess)))).perform(click());
 
+        onView(withTagValue(Matchers.is((Object) getActivityInstance().getApplicationContext().getString(R.string.tab_tag_assess)))).perform(click());
         for (int i = 0; i < numQuestions; i++) {
             try {
                 onData(is(instanceOf(Question.class)))
@@ -174,16 +174,13 @@ public class SDKTestUtils {
                         .onChildView(withId(R.id.answer))
                         .onChildView(withText(optionValue))//.onChildView(withTagValue(allOf(Matchers.hasProperty("name", containsString(optionValue)))))
                         .perform(click());
-
-
-            }catch (Exception e){}
+            } catch (Exception e){}
         }
 
         Espresso.unregisterIdlingResources(idlingResource);
-        IdlingPolicies.setIdlingResourceTimeout(60, TimeUnit.SECONDS);
+
         //then: back + confirm
         Espresso.pressBack();
-        IdlingPolicies.setIdlingResourceTimeout(60, TimeUnit.SECONDS);
         onView(withText(android.R.string.ok)).perform(click());
     }
 
@@ -193,6 +190,7 @@ public class SDKTestUtils {
         //when: Mark as completed
         onView(withId(R.id.score)).perform(click());
         onView(withText(MARK_AS_COMPLETED)).perform(click());
+
         return idSurvey;
     }
 
@@ -200,13 +198,6 @@ public class SDKTestUtils {
         return getSurveyInProgress().getId_survey();
     }
 
-    public static Option getOption(int Survey, String value){
-        return new Select()
-                .from(Option.class)
-                .where(Condition.column(Option$Table.NAME)
-                        .eq(value))
-                .querySingle();
-    }
     private static Survey getSurveyInProgress(){
         return new Select()
                 .from(Survey.class)
@@ -313,21 +304,6 @@ public class SDKTestUtils {
                     }
             } catch (Exception e) {}
             goToLogin();
-        }
-    }
-
-    public static void goBackN() {
-        final int N = 10; // how many times to hit back button
-        try {
-            for (int i = 0; i < N; i++) {
-                Espresso.pressBack();
-                try {
-                    onView(withText(android.R.string.ok)).perform(click());
-                } catch (Exception e) {
-                }
-            }
-        } catch (NoActivityResumedException e) {
-            Log.e(TAG, "Closed all activities", e);
         }
     }
 
