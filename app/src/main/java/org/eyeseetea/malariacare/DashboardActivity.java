@@ -112,6 +112,7 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
         unsentFragment.reloadData();
         initImprove();
         sentFragment.reloadData();
+        setActionbarAppName();
     }
 
     private void initEDS(Bundle savedInstanceState){
@@ -209,11 +210,16 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
     }
 
     public void setActionBarDashboard(){
-        String title="";
-        if(Session.getUser()!=null && Session.getUser().getName()!=null)
-            title=Session.getUser().getName().toUpperCase();
-        title=title+": "+currentTabName.toUpperCase();
-        setActionbarMultiTitle("",title,"");
+        if(PreferencesState.getInstance().isVerticalDashboard()){
+            setActionbarAppName();
+        }
+        else {
+            String title = "";
+            if (Session.getUser() != null && Session.getUser().getName() != null)
+                title = Session.getUser().getName().toUpperCase();
+            title = title + ": " + currentTabName.toUpperCase();
+            setActionbarMultiTitle("", title, "");
+        }
     }
 
     public void setActionBarTitleForSurvey(Survey survey){
@@ -229,16 +235,32 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
             subtitle=survey.getOrgUnit().getName();
         if(program.getName()!=null)
             subtitle2=program.getName();
+
         setActionbarMultiTitle(title, subtitle, subtitle2);
+    }
+
+
+    public void setActionbarAppName() {
+        android.support.v7.app.ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayShowCustomEnabled(true);
+        actionBar.setCustomView(R.layout.abc_action_bar_title_item);
+        actionBar.setSubtitle(null);
+        actionBar.setTitle(getResources().getString(R.string.app_name));
     }
 
     public void setActionbarMultiTitle(String title1, String title2,String title3) {
         android.support.v7.app.ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayShowCustomEnabled(true);
-        actionBar.setCustomView(R.layout.action_bar_three_title_layout);
-        ((TextView) findViewById(R.id.action_bar_multititle_title)).setText(title1);
-        ((TextView) findViewById(R.id.action_bar_multititle_subtitle)).setText(title2);
-        ((TextView) findViewById(R.id.action_bar_multititle_subtitle2)).setText(title3);
+        if(PreferencesState.getInstance().isVerticalDashboard()){
+            actionBar.setTitle(title2);
+            actionBar.setSubtitle(title3);
+        }
+        else {
+            actionBar.setCustomView(R.layout.action_bar_three_title_layout);
+            ((TextView) findViewById(R.id.action_bar_multititle_title)).setText(title1);
+            ((TextView) findViewById(R.id.action_bar_multititle_subtitle)).setText(title2);
+            ((TextView) findViewById(R.id.action_bar_multititle_subtitle2)).setText(title3);
+        }
     }
 
     /**
