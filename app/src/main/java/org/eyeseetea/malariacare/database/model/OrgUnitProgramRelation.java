@@ -57,12 +57,24 @@ public class OrgUnitProgramRelation extends BaseModel {
      */
     Program program;
 
+    /**
+     * Productivity of this relationship based on orgunit + program attributes
+     */
+    @Column
+    Integer productivity;
+
     public OrgUnitProgramRelation() {
     }
 
     public OrgUnitProgramRelation(OrgUnit orgUnit, Program program) {
         setOrgUnit(orgUnit);
         setProgram(program);
+        this.productivity = 0;
+    }
+
+    public OrgUnitProgramRelation(OrgUnit orgUnit, Program program, Integer productivity) {
+        this(orgUnit,program);
+        this.productivity=productivity;
     }
 
     public OrgUnit getOrgUnit() {
@@ -107,6 +119,46 @@ public class OrgUnitProgramRelation extends BaseModel {
         this.program = null;
     }
 
+    public Integer getProductivity() {
+        return productivity;
+    }
+
+    public void setProductivity(Integer productivity) {
+        this.productivity = productivity;
+    }
+
+    /**
+     * Helper method to get the productivity for a given survey.
+     * If its orgunit + program combination does NOT have a productivity value then returns 0
+     * @param survey
+     * @return
+     */
+    public static Integer getProductivity(Survey survey){
+        if(survey==null){
+            return 0;
+        }
+
+        OrgUnit orgUnit = survey.getOrgUnit();
+        if(orgUnit==null){
+            return 0;
+        }
+
+        Program program = survey.getProgram();
+        if(program==null){
+            return 0;
+        }
+
+        OrgUnitProgramRelation orgUnitProgramRelation = new Select().from(OrgUnitProgramRelation.class)
+                .where(Condition.column(OrgUnitProgramRelation$Table.ID_ORG_UNIT).eq(orgUnit.getId_org_unit()))
+                .and(Condition.column(OrgUnitProgramRelation$Table.ID_PROGRAM).eq(program.getId_program())).querySingle();
+
+        if(orgUnitProgramRelation==null){
+            return 0;
+        }
+
+        return orgUnitProgramRelation.getProductivity();
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -117,7 +169,9 @@ public class OrgUnitProgramRelation extends BaseModel {
         if (id_orgunit_program_relation != that.id_orgunit_program_relation) return false;
         if (id_org_unit != null ? !id_org_unit.equals(that.id_org_unit) : that.id_org_unit != null)
             return false;
-        return !(id_program != null ? !id_program.equals(that.id_program) : that.id_program != null);
+        if (id_program != null ? !id_program.equals(that.id_program) : that.id_program != null)
+            return false;
+        return !(productivity != null ? !productivity.equals(that.productivity) : that.productivity != null);
 
     }
 
@@ -126,6 +180,7 @@ public class OrgUnitProgramRelation extends BaseModel {
         int result = (int) (id_orgunit_program_relation ^ (id_orgunit_program_relation >>> 32));
         result = 31 * result + (id_org_unit != null ? id_org_unit.hashCode() : 0);
         result = 31 * result + (id_program != null ? id_program.hashCode() : 0);
+        result = 31 * result + (productivity != null ? productivity.hashCode() : 0);
         return result;
     }
 
@@ -135,6 +190,7 @@ public class OrgUnitProgramRelation extends BaseModel {
                 "id_orgunit_program_relation=" + id_orgunit_program_relation +
                 ", id_org_unit=" + id_org_unit +
                 ", id_program=" + id_program +
+                ", productivity=" + productivity +
                 '}';
     }
 }

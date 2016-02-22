@@ -19,11 +19,22 @@
 
 package org.eyeseetea.malariacare.database.iomodules.dhis.importer.models;
 
+import android.util.Log;
+
+import com.raizlabs.android.dbflow.sql.builder.Condition;
+import com.raizlabs.android.dbflow.sql.language.ColumnAlias;
+import com.raizlabs.android.dbflow.sql.language.Join;
 import com.raizlabs.android.dbflow.sql.language.Select;
 
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.IConvertFromSDKVisitor;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.VisitableFromSDK;
+import org.hisp.dhis.android.sdk.persistence.models.Attribute;
+import org.hisp.dhis.android.sdk.persistence.models.Attribute$Table;
+import org.hisp.dhis.android.sdk.persistence.models.OrganisationUnitAttributeValue;
+import org.hisp.dhis.android.sdk.persistence.models.OrganisationUnitAttributeValue$Table;
 import org.hisp.dhis.android.sdk.persistence.models.Program;
+import org.hisp.dhis.android.sdk.persistence.models.ProgramAttributeValue;
+import org.hisp.dhis.android.sdk.persistence.models.ProgramAttributeValue$Table;
 
 import java.util.List;
 
@@ -32,7 +43,22 @@ import java.util.List;
  */
 public class ProgramExtended implements VisitableFromSDK {
 
+    private static final String TAG = ".PRExtended";
+
+    /**
+     * Hardcoded 'code' of the attribute that holds the idx of productiviy in the orgunit array attribute
+     */
+    public static final String PROGRAM_PRODUCTIVITY_INDEX_ATTRIBUTE_CODE = "PPP";
+
+    /**
+     * Reference to sdk program
+     */
     Program program;
+
+    /**
+     * Reference to app program (useful to create relationships with orgunits)
+     */
+    org.eyeseetea.malariacare.database.model.Program appProgram;
 
     public ProgramExtended(){}
 
@@ -51,5 +77,36 @@ public class ProgramExtended implements VisitableFromSDK {
 
     public static List<Program> getAllPrograms(){
         return new Select().from(Program.class).queryList();
+    }
+
+    public void setAppProgram(org.eyeseetea.malariacare.database.model.Program appProgram) {
+        this.appProgram = appProgram;
+    }
+
+    public org.eyeseetea.malariacare.database.model.Program getAppProgram(){
+        return this.appProgram;
+    }
+
+    public Integer getProductivityIndex() {
+
+        ProgramAttributeValue programAttributeValue = new Select().from(ProgramAttributeValue.class).as("p")
+                .join(Attribute.class, Join.JoinType.LEFT).as("a")
+                .on(Condition.column(ColumnAlias.columnWithTable("p", ProgramAttributeValue$Table.ATTRIBUTEID))
+                        .eq(ColumnAlias.columnWithTable("a", Attribute$Table.ID)))
+                .where(Condition.column(ColumnAlias.columnWithTable("a", Attribute$Table.CODE))
+                        .eq(PROGRAM_PRODUCTIVITY_INDEX_ATTRIBUTE_CODE))
+                .and(Condition.column(ColumnAlias.columnWithTable("p", ProgramAttributeValue$Table.PROGRAM)).is(this.getProgram().getUid()))
+                .querySingle();
+
+        if(programAttributeValue==null){
+            return null;
+        }
+
+        try {
+            return Integer.parseInt(programAttributeValue.getValue());
+        }catch(Exception ex){
+            Log.e(TAG, String.format("getProductivityIndex(%s) -> %s", this.getProgram().getUid(), ex.getMessage()));
+            return null;
+        }
     }
 }

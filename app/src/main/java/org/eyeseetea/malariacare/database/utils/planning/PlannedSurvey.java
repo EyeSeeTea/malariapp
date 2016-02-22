@@ -80,7 +80,7 @@ public class PlannedSurvey implements PlannedItem {
         if(survey==null){
             return "";
         }
-        return survey.getOrgUnit().isLowProductivity()?LOW_PRODUCTIVITY:HIGH_PRODUCTIVITY;
+        return survey.isLowProductivity()?LOW_PRODUCTIVITY:HIGH_PRODUCTIVITY;
     }
 
     /**
