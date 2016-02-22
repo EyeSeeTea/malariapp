@@ -21,8 +21,6 @@ package org.eyeseetea.malariacare.database.iomodules.dhis.importer;
 
 import android.util.Log;
 
-import com.raizlabs.android.dbflow.structure.InternalAdapter;
-
 import org.eyeseetea.malariacare.ProgressActivity;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.DataElementExtended;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.DataValueExtended;
