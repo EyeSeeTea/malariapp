@@ -115,6 +115,7 @@
     <string name="feedback_info_failed">FAIL</string>
     <string name="feedback_info_not_answered">NA</string>
     <string name="feedback_info_no_feedback">No feedback</string>
+    <string name="feedback_info_conflict">Conflict</string>
 
 
     <!-- future -->

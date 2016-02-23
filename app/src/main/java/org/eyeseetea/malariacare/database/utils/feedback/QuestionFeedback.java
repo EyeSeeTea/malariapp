@@ -56,10 +56,16 @@ public class QuestionFeedback implements Feedback {
 
     @Override
     public boolean isPassed() {
-        if(this.value==null){
+        if(this.value==null || this.value.getConflict()){
             return false;
         }
         return this.value.getOption().getFactor()==1;
+    }
+
+    public boolean hasConflict(){
+        if(this.value!=null && this.value.getConflict())
+            return true;
+        return false;
     }
 
     /**
@@ -114,7 +120,9 @@ public class QuestionFeedback implements Feedback {
      */
     public int getGrade(){
         int msgId;
-        if(this.getOption()==null || this.getOption().isEmpty()){
+        if(value!=null && value.getConflict()){
+            msgId = R.string.feedback_info_conflict;
+        }else if(this.getOption()==null || this.getOption().isEmpty()){
             msgId = R.string.feedback_info_not_answered;
         }else {
             msgId = this.isPassed() ? R.string.feedback_info_passed : R.string.feedback_info_failed;
@@ -135,7 +143,7 @@ public class QuestionFeedback implements Feedback {
         if(this.getOption()==null || this.getOption().isEmpty()){
             textColor = R.color.amber;
         }else {
-            textColor=this.isPassed() ? R.color.green : R.color.red;
+            textColor=(this.isPassed() && value!=null && !this.value.getConflict())? R.color.green : R.color.red;
         }
         return textColor;
     }
