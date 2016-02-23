@@ -59,7 +59,6 @@ import org.eyeseetea.malariacare.fragments.DashboardUnsentFragment;
 import org.eyeseetea.malariacare.fragments.FeedbackFragment;
 import org.eyeseetea.malariacare.fragments.MonitorFragment;
 import org.eyeseetea.malariacare.fragments.SurveyFragment;
-import org.eyeseetea.malariacare.layout.Module;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.fragments.PlannedFragment;
 import org.eyeseetea.malariacare.receivers.AlarmPushReceiver;
@@ -76,7 +75,6 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
     private final static String TAG=".DDetailsActivity";
     private boolean reloadOnResume=true;
     TabHost tabHost;
-    List<Module> modules;
     PlannedFragment plannedFragment;
     MonitorFragment monitorFragment;
     DashboardUnsentFragment unsentFragment;
@@ -92,7 +90,6 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
     protected void onCreate(Bundle savedInstanceState) {
         Log.d(TAG, "onCreate");
         super.onCreate(savedInstanceState);
-        modules=new ArrayList();
         if(PreferencesState.getInstance().isVerticalDashboard())
             setContentView(R.layout.vertical_main);
         else
