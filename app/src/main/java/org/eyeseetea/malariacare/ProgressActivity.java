@@ -479,7 +479,6 @@ public class ProgressActivity extends Activity {
                 new Handler(Looper.getMainLooper()).post(new Runnable() {
                     @Override
                     public void run() {
-                        Log.d("entra", errorMessage);
                         String dialogTitle="",dialogMessage="";
                         if(title!=null)
                             dialogTitle=title;
