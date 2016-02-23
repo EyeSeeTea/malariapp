@@ -19,6 +19,7 @@
 
 package org.eyeseetea.malariacare.database.iomodules.dhis.exporter;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.location.Location;
 import android.util.Log;
@@ -27,6 +28,8 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.raizlabs.android.dbflow.sql.builder.Condition;
 import com.raizlabs.android.dbflow.sql.language.Select;
 
+import org.eyeseetea.malariacare.DashboardActivity;
+import org.eyeseetea.malariacare.ProgressActivity;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.EventExtended;
 import org.eyeseetea.malariacare.database.model.CompositeScore;
@@ -292,8 +295,6 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
             if(hasImportSummaryErrors(importSummary) || failedItem!=null){
                 //Some error happened -> move back to completed
                 if(failedItem!=null) {
-                    //fixme
-                    //show alert dialog
                     ImportSummary importSummary1=failedItem.getImportSummary();
                     List<String> failedUids=getFailedUidQuestion(failedItem.getErrorMessage());
                     for(String uid:failedUids) {
@@ -340,18 +341,18 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
      * @return
      */
     private List<String> getFailedUidQuestion(String responseData){
+        String message="";
         List<String> uid=new ArrayList<>();
         JSONArray jsonArrayResponse=null;
         JSONObject jsonObjectResponse= null;
         try {
             jsonObjectResponse = new JSONObject(responseData);
-            //String status=jsonResponse.getString("status");
+            //String status=jsonObjectResponse.getString("status");
 
-            //String httpStatusCode=jsonResponse.getString("httpStatusCode");
+            //String httpStatusCode=jsonObjectResponse.getString("httpStatusCode");
 
-            //String httpStatus=jsonResponse.getString("httpStatus");
-
-            //String message=jsonResponse.getString("message");
+            //String httpStatus=jsonObjectResponse.getString("httpStatus");
+            message=jsonObjectResponse.getString("message");
             jsonObjectResponse=new JSONObject(jsonObjectResponse.getString("response"));
             jsonArrayResponse=new JSONArray(jsonObjectResponse.getString("importSummaries"));
             try {
@@ -369,6 +370,8 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+        if(message!="")
+            DashboardActivity.showException(context.getString(R.string.error_message), message);
         return  uid;
     }
 
