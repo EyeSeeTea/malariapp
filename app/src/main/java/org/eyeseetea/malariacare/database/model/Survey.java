@@ -642,17 +642,35 @@ public class Survey extends BaseModel implements VisitableToSDK {
                 .orderBy(Survey$Table.ID_ORG_UNIT).queryList();
     }
     /**
-     * Returns all the surveys with status put to "Sent" or completed
+     * Returns all the surveys with status put to "Sent" or completed or Conflict
      * @return
      */
     public static List<Survey> getAllSentOrCompletedSurveys() {
         return new Select().from(Survey.class)
                 .where(Condition.column(Survey$Table.STATUS).eq(Constants.SURVEY_SENT))
                 .or(Condition.column(Survey$Table.STATUS).eq(Constants.SURVEY_COMPLETED))
+                .or(Condition.column(Survey$Table.STATUS).eq(Constants.SURVEY_CONFLICT))
                 .orderBy(Survey$Table.EVENTDATE)
                 .orderBy(Survey$Table.ID_ORG_UNIT).queryList();
     }
 
+    public void saveConflict(String uid){
+        for(Value value:getValues()){
+            if(value.getQuestion().getUid().equals(uid)){
+                value.setConflict(true);
+                value.save();
+            }
+        }
+    }
+
+    public boolean hasConflict(){
+        for(Value value:getValues()){
+            if(value.getConflict()){
+                return true;
+            }
+        }
+        return false;
+    }
 
     public void prepareSurveyCompletionDate() {
         if (!isSent()) {

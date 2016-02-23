@@ -23,6 +23,10 @@ import android.content.Context;
 import android.location.Location;
 import android.util.Log;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.raizlabs.android.dbflow.sql.builder.Condition;
+import com.raizlabs.android.dbflow.sql.language.Select;
+
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.EventExtended;
 import org.eyeseetea.malariacare.database.model.CompositeScore;
@@ -38,7 +42,12 @@ import org.eyeseetea.malariacare.utils.Constants;
 import org.eyeseetea.malariacare.utils.Utils;
 import org.hisp.dhis.android.sdk.persistence.models.DataValue;
 import org.hisp.dhis.android.sdk.persistence.models.Event;
+import org.hisp.dhis.android.sdk.persistence.models.FailedItem;
+import org.hisp.dhis.android.sdk.persistence.models.FailedItem$Table;
 import org.hisp.dhis.android.sdk.persistence.models.ImportSummary;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -115,18 +124,18 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
         updateSurvey(compositeScores);
 
         //Turn score values into dataValues
-        Log.d(TAG,"Creating datavalues from scores...");
+        Log.d(TAG, "Creating datavalues from scores...");
         for(CompositeScore compositeScore:compositeScores){
             compositeScore.accept(this);
         }
 
         //Turn question values into dataValues
-        Log.d(TAG,"Creating datavalues from questions...");
+        Log.d(TAG, "Creating datavalues from questions...");
         for(Value value:survey.getValues()){
             value.accept(this);
         }
 
-        Log.d(TAG,"Creating datavalues from other stuff...");
+        Log.d(TAG, "Creating datavalues from other stuff...");
         buildControlDataElements(survey);
 
         //Annotate both objects to update its state once the process is over
@@ -279,10 +288,24 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
             Survey iSurvey=surveys.get(i);
             Event iEvent=events.get(i);
             ImportSummary importSummary=importSummaryMap.get(iEvent.getLocalId());
-            if(hasImportSummaryErrors(importSummary)){
+            FailedItem failedItem= hasConflict(iEvent.getLocalId());
+            if(hasImportSummaryErrors(importSummary) || failedItem!=null){
                 //Some error happened -> move back to completed
-                iSurvey.setStatus(Constants.SURVEY_COMPLETED);
-                iSurvey.setEventUid(null);
+                if(failedItem!=null) {
+                    //fixme
+                    //show alert dialog
+                    ImportSummary importSummary1=failedItem.getImportSummary();
+                    List<String> failedUids=getFailedUidQuestion(failedItem.getErrorMessage());
+                    for(String uid:failedUids) {
+                        iSurvey.saveConflict(uid);
+                    }
+                    iSurvey.setStatus(Constants.SURVEY_CONFLICT);
+                    iSurvey.setEventUid(null);
+                }
+                else{
+                    iSurvey.setStatus(Constants.SURVEY_COMPLETED);
+                    iSurvey.setEventUid(null);
+                }
                 iSurvey.save();
 
                 //Generated event must be remove too
@@ -296,6 +319,57 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
                 iEvent.save();
             }
         }
+    }
+
+    /**
+     * Checks whether the given event contains errors in SDK FailedItem table or has been successful.
+     * If not return null, it is becouse this item had a conflict.
+     * @param localId
+     * @return
+     */
+    private FailedItem hasConflict(long localId){
+        return  new Select()
+                        .from(FailedItem.class)
+                        .where(Condition.column(FailedItem$Table.ITEMID)
+                                .is(localId)).querySingle();
+    }
+
+    /**
+     * Get dataelement fails from errormessage JSON.
+     * @param responseData
+     * @return
+     */
+    private List<String> getFailedUidQuestion(String responseData){
+        List<String> uid=new ArrayList<>();
+        JSONArray jsonArrayResponse=null;
+        JSONObject jsonObjectResponse= null;
+        try {
+            jsonObjectResponse = new JSONObject(responseData);
+            //String status=jsonResponse.getString("status");
+
+            //String httpStatusCode=jsonResponse.getString("httpStatusCode");
+
+            //String httpStatus=jsonResponse.getString("httpStatus");
+
+            //String message=jsonResponse.getString("message");
+            jsonObjectResponse=new JSONObject(jsonObjectResponse.getString("response"));
+            jsonArrayResponse=new JSONArray(jsonObjectResponse.getString("importSummaries"));
+            try {
+                jsonObjectResponse=new JSONObject(jsonArrayResponse.getString(0));
+                //conflicts
+                jsonArrayResponse=new JSONArray(jsonObjectResponse.getString("conflicts"));
+                //values
+                for(int i=0;i<jsonArrayResponse.length();i++) {
+                    jsonObjectResponse = new JSONObject(jsonArrayResponse.getString(i));
+                    uid.add(jsonObjectResponse.getString("object"));
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return  uid;
     }
 
     /**
