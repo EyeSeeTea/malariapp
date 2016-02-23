@@ -20,11 +20,14 @@
 package org.eyeseetea.malariacare.fragments;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ListFragment;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
@@ -38,6 +41,8 @@ import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 
+import org.eyeseetea.malariacare.DashboardActivity;
+import org.eyeseetea.malariacare.LoginActivity;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
@@ -46,8 +51,13 @@ import org.eyeseetea.malariacare.database.utils.SurveyAnsweredRatio;
 import org.eyeseetea.malariacare.database.utils.planning.SurveyPlanner;
 import org.eyeseetea.malariacare.layout.adapters.dashboard.AssessmentUnsentAdapter;
 import org.eyeseetea.malariacare.layout.adapters.dashboard.IDashboardAdapter;
+import org.eyeseetea.malariacare.layout.listeners.SwipeDismissListViewTouchListener;
+import org.eyeseetea.malariacare.network.PushClient;
+import org.eyeseetea.malariacare.network.PushResult;
 import org.eyeseetea.malariacare.receivers.AlarmPushReceiver;
 import org.eyeseetea.malariacare.services.SurveyService;
+import org.eyeseetea.malariacare.utils.Constants;
+import org.eyeseetea.malariacare.views.CustomTextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -110,7 +120,8 @@ public class DashboardUnsentFragment extends ListFragment {
         super.onActivityCreated(savedInstanceState);
         initAdapter();
         initListView();
-        registerForContextMenu(getListView());
+        if(!PreferencesState.getInstance().isVerticalDashboard())
+                registerForContextMenu(getListView());
     }
 
     @Override
@@ -263,11 +274,83 @@ public class DashboardUnsentFragment extends ListFragment {
         LayoutInflater inflater = LayoutInflater.from(getActivity());
         View header = inflater.inflate(this.adapter.getHeaderLayout(), null, false);
         View footer = inflater.inflate(this.adapter.getFooterLayout(), null, false);
+        if(PreferencesState.getInstance().isVerticalDashboard()) {
+            CustomTextView title = (CustomTextView) getActivity().findViewById(R.id.titleInProgress);
+            title.setText(adapter.getTitle());
+        }
         ListView listView = getListView();
         listView.addHeaderView(header);
         listView.addFooterView(footer);
         setListAdapter((BaseAdapter) adapter);
-        Session.listViewUnsent = listView;
+        if(!PreferencesState.getInstance().isVerticalDashboard())
+                Session.listViewUnsent = listView;
+        else{
+
+            // Create a ListView-specific touch listener. ListViews are given special treatment because
+            // by default they handle touches for their list items... i.e. they're in charge of drawing
+            // the pressed state (the list selector), handling list item clicks, etc.
+            SwipeDismissListViewTouchListener touchListener =
+                    new SwipeDismissListViewTouchListener(
+                            listView,
+                            new SwipeDismissListViewTouchListener.DismissCallbacks() {
+                                @Override
+                                public boolean canDismiss(int position) {
+                                    return position>0 && position<=surveys.size();
+                                }
+
+                                @Override
+                                public void onDismiss(ListView listView, int[] reverseSortedPositions) {
+                                    for (final int position : reverseSortedPositions) {
+                                        new AlertDialog.Builder(getActivity())
+                                                .setTitle(getActivity().getString(R.string.dialog_title_delete_survey))
+                                                .setMessage(getActivity().getString(R.string.dialog_info_delete_survey))
+                                                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                                                    public void onClick(DialogInterface arg0, int arg1) {
+                                                        ((Survey)adapter.getItem(position-1)).delete();
+                                                        //Reload data using service
+                                                        Intent surveysIntent=new Intent(getActivity(), SurveyService.class);
+                                                        surveysIntent.putExtra(SurveyService.SERVICE_METHOD, SurveyService.RELOAD_DASHBOARD_ACTION);
+                                                        getActivity().startService(surveysIntent);
+                                                    }
+                                                })
+                                                .setNegativeButton(android.R.string.no, null).create().show();
+                                    }
+
+                                }
+                            });
+            listView.setOnTouchListener(touchListener);
+            // Setting this scroll listener is required to ensure that during ListView scrolling,
+            // we don't look for swipes.
+            listView.setOnScrollListener(touchListener.makeScrollListener());
+
+            listView.setLongClickable(true);
+
+            listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+                @Override
+                public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
+
+
+                    new AlertDialog.Builder(getActivity())
+                            .setTitle("Pushing data")
+                            .setMessage("Are you sure? You can not undo this action")
+                            .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface arg0, int arg1) {
+                                    // We launch the login system, to authorize the push
+                                    Intent authorizePush = new Intent(getActivity(), LoginActivity.class);
+                                    authorizePush.putExtra("Action", Constants.AUTHORIZE_PUSH);
+                                    authorizePush.putExtra("Survey", position);
+                                    startActivityForResult(authorizePush, Constants.AUTHORIZE_PUSH);
+                                }
+                            })
+                            .setNegativeButton(android.R.string.no, null).create().show();
+
+
+                    return true;
+                }
+            });
+        }
+
+
     }
 
     @Override
@@ -334,6 +417,87 @@ public class DashboardUnsentFragment extends ListFragment {
         }
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data){
+        Log.d(TAG, "onActivityResult");
+        // This captures the return code sent by Login Activity, to know whether or not the user got the authorization
+        if(requestCode == Constants.AUTHORIZE_PUSH) {
+            if(resultCode == Activity.RESULT_OK) {
+
+                //Tell the activity NOT to reload on next resume since the push itself will do it
+                ((DashboardActivity)getActivity()).setReloadOnResume(false);
+
+                // In case authorization was ok, we launch push action
+                Bundle extras = data.getExtras();
+                int position = extras.getInt("Survey", 0);
+                String user = extras.getString("User");
+                String password = extras.getString("Password");
+                final Survey survey = (Survey) adapter.getItem(position - 1);
+                AsyncPush asyncPush = new AsyncPush(survey, user, password);
+                asyncPush.execute((Void) null);
+            } else {
+                // Otherwise we notify and continue
+                new AlertDialog.Builder(getActivity())
+                        .setTitle("Authorization failed")
+                        .setMessage("User or password introduced are wrong. Push aborted.")
+                        .setPositiveButton(android.R.string.ok, null)
+                        .setNegativeButton(android.R.string.no, null).create().show();
+            }
+        }
+    }
+
+
+    public class AsyncPush extends AsyncTask<Void, Integer, PushResult> {
+
+        private Survey survey;
+        private String user;
+        private String password;
+
+
+        public AsyncPush(Survey survey, String user, String password) {
+            this.survey = survey;
+            this.user = user;
+            this.password = password;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            //spinner
+            setListShown(false);
+        }
+
+        @Override
+        protected PushResult doInBackground(Void... params) {
+            PushClient pushClient=new PushClient(survey, getActivity(), user, password);
+            return pushClient.pushAPI();
+        }
+
+        @Override
+        protected void onPostExecute(PushResult pushResult) {
+            super.onPostExecute(pushResult);
+            showResponse(pushResult);
+        }
+
+        /**
+         * Shows the proper response message
+         * @param pushResult
+         */
+        private void showResponse(PushResult pushResult){
+            String msg="";
+            if(pushResult.isSuccessful()){
+                msg="Survey data pushed to server. Results: \n"+String.format("Imported: %s | Updated: %s | Ignored: %s",pushResult.getImported(),pushResult.getUpdated(),pushResult.getIgnored());
+            }else{
+                msg=pushResult.getException().getMessage();
+            }
+
+            new AlertDialog.Builder(getActivity())
+                    .setTitle(getActivity().getString(R.string.dialog_title_push_response))
+                    .setMessage(msg)
+                    .setNeutralButton(android.R.string.yes,null).create().show();
+
+        }
+    }
     /**
      * Inner private class that receives the result from the service
      */

@@ -34,4 +34,10 @@
     <string name="forward_order" translatable="false">d1At6VgPNA6</string>
     <string name="forward_order_value" translatable="false">9999</string>
 
+    <!--Different messages -->
+    <string name="create_info_ok">Start Assessment</string>
+    <string name="assessment_sent_title_header">Sent Assessment(s)</string>
+    <string name="dialog_info_push_empty_survey">Empty surveys cannot be pushed</string>
+    <string name="dialog_info_push_not_imported">Server was not able to import the data. Please, report to the server admin.</string>
+
 </resources>
