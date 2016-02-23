@@ -645,7 +645,7 @@ public class Survey extends BaseModel implements VisitableToSDK {
      * Returns all the surveys with status put to "Sent" or completed or Conflict
      * @return
      */
-    public static List<Survey> getAllSentOrCompletedSurveys() {
+    public static List<Survey> getAllSentCompletedOrConflictSurveys() {
         return new Select().from(Survey.class)
                 .where(Condition.column(Survey$Table.STATUS).eq(Constants.SURVEY_SENT))
                 .or(Condition.column(Survey$Table.STATUS).eq(Constants.SURVEY_COMPLETED))
