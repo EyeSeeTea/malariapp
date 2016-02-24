@@ -19,7 +19,8 @@
 
 package org.eyeseetea.malariacare.database.iomodules.dhis.importer.models;
 
-import com.raizlabs.android.dbflow.annotation.Column;
+import android.util.Log;
+
 import com.raizlabs.android.dbflow.sql.builder.Condition;
 import com.raizlabs.android.dbflow.sql.language.ColumnAlias;
 import com.raizlabs.android.dbflow.sql.language.Join;
@@ -32,6 +33,8 @@ import org.eyeseetea.malariacare.database.model.CompositeScore;
 import org.hisp.dhis.android.sdk.persistence.models.Attribute;
 import org.hisp.dhis.android.sdk.persistence.models.AttributeValue;
 import org.hisp.dhis.android.sdk.persistence.models.DataElement;
+import org.hisp.dhis.android.sdk.persistence.models.Option;
+import org.hisp.dhis.android.sdk.persistence.models.OptionSet;
 import org.hisp.dhis.android.sdk.persistence.models.Program;
 import org.hisp.dhis.android.sdk.persistence.models.Program$Table;
 import org.hisp.dhis.android.sdk.persistence.models.ProgramStage;
@@ -45,6 +48,8 @@ import org.hisp.dhis.android.sdk.persistence.models.ProgramStageSection$Table;
  * Created by arrizabalaga on 5/11/15.
  */
 public class DataElementExtended implements VisitableFromSDK {
+
+    private static final String TAG=".DataElementExtended";
 
     /**
      * Code of attribute dheader unique name
@@ -78,26 +83,46 @@ public class DataElementExtended implements VisitableFromSDK {
      * Code of attribute of Match type patern or child
      */
     public static final String ATTRIBUTE_MATCH_TYPE = "DEMatchType";
+
     /**
-     * Code of attribute of DETabName for header
+     * Code of attribute 19 DE Type  (Question, Control, Score)
      */
-    public static final String ATTRIBUTE_TAB_NAME = "DETabName";
+    public static final String ATTRIBUTE_ELEMENT_TYPE_CODE = "DEType";
+
     /**
-     * Code of attribute '20 Question Type'
+     * Code of Question option for attribute DEType
      */
-    public static final String ATTRIBUTE_QUESTION_TYPE_CODE = "DEQuesType";
+    public static String OPTION_ELEMENT_TYPE_QUESTION_CODE = null;
+
     /**
-     * Value to discard the COMPOSITE_SCORE
+     * Code of Control option for attribute DEType
      */
-    public static final String CONTROLDATAELEMENT_NAME = "CONTROL_DATAELEMENT";
+    public static String OPTION_ELEMENT_TYPE_CONTROL_CODE = null;
+
+    /**
+     * Code of Composite option for attribute DEType
+     */
+    public static String OPTION_ELEMENT_TYPE_SCORE_CODE = null;
+
     /**
      * Code of attribute 'Composite Score'
      */
     public static final String ATTRIBUTE_COMPOSITE_SCORE_CODE = "DECompositiveScore";
     /**
-     * Value to discard the dataelementcontrol
+     * Value to discard the dataelementcontrol composite
      */
-    public static final String COMPOSITE_SCORE_NAME = "COMPOSITE_SCORE";
+    public static final String OPTION_COMPOSITE_SCORE_NAME = "COMPOSITE_SCORE";
+
+    /**
+     * Value to discard the dataelementcontrol question
+     */
+    public static final String OPTION_QUESTION_NAME = "QUESTION";
+
+    /**
+     * Value to discard the dataelementcontrol control
+     */
+    public static final String OPTION_CONTROL_NAME = "CONTROL_DATAELEMENT";
+
     /**
      * Value parent
      */
@@ -106,22 +131,41 @@ public class DataElementExtended implements VisitableFromSDK {
      * Value child
      */
     public static final String CHILD = "CHILD";
-    /**
-     * Value compulsory
-     */
-    public static final String COMPULSORY = "Compulsory";
-
-
-    /**
-     * Code to identify control dataElements
-     */
-    private static String COMPOSITE_SCORE_CODE = "";
-    /**
-     * Code to identify composite scores
-     */
-    private static String CONTROL_DATAELEMENT_CODE = "";
 
     DataElement dataElement;
+
+    /**
+     * Reloads the codes for the options Question, Control, Score
+     */
+    public static void reloadDataElementTypeCodes(){
+        //Load code for each type
+        OptionSet deTypeOptionSet = OptionSetExtended.findOptionSetForDataElementType();
+        if(deTypeOptionSet==null){
+            Log.e(TAG,"No optionset with 'DB - DE Type', dataElements will not be loaded correctly");
+            return;
+        }
+        String optionSetUID=deTypeOptionSet.getUid();
+
+        //Reload codes for score, question and control
+        OPTION_ELEMENT_TYPE_QUESTION_CODE = loadDataElementTypeCode(optionSetUID,OPTION_QUESTION_NAME);
+        OPTION_ELEMENT_TYPE_CONTROL_CODE = loadDataElementTypeCode(optionSetUID,OPTION_CONTROL_NAME);
+        OPTION_ELEMENT_TYPE_SCORE_CODE = loadDataElementTypeCode(optionSetUID,OPTION_COMPOSITE_SCORE_NAME);
+    }
+
+    /**
+     * Returns the option code for a given optionSet and option name
+     * @param optionSetUID
+     * @param optionName
+     * @return
+     */
+    private static String loadDataElementTypeCode(String optionSetUID,String optionName){
+        Option option = OptionExtended.findOptionByOptionSetAndName(optionSetUID,optionName);
+        if(option==null){
+            Log.e(TAG,String.format("No option with '%s', dataElements will not be loaded correctly",optionName));
+            return null;
+        }
+        return option.getCode();
+    }
 
     public DataElementExtended(){}
 
@@ -153,40 +197,44 @@ public class DataElementExtended implements VisitableFromSDK {
         return null;
     }
 
+    /**
+     * Checks if this dataElement is a CompositeScore
+     * @return
+     */
     public boolean isCompositeScore() {
-        String typeQuestion = findAttributeValueByCode(ATTRIBUTE_QUESTION_TYPE_CODE);
-
-        if (typeQuestion == null) {
-            return false;
-        }
-
-        if (COMPOSITE_SCORE_CODE.equals("")) {
-            COMPOSITE_SCORE_CODE = OptionExtended.findOptionByName(COMPOSITE_SCORE_NAME).getCode();
-        }
-
-        return typeQuestion.equals(COMPOSITE_SCORE_CODE);
+        return isOfType(OPTION_ELEMENT_TYPE_SCORE_CODE);
     }
 
+    /**
+     * Checks if this dataElement is a CompositeScore
+     * @return
+     */
     public boolean isControlDataElement() {
-
-        String typeQuestion = findAttributeValueByCode(ATTRIBUTE_QUESTION_TYPE_CODE);
-
-        if (typeQuestion == null) {
-            return false;
-        }
-
-        if (CONTROL_DATAELEMENT_CODE.equals("")) {
-            CONTROL_DATAELEMENT_CODE = OptionExtended.findOptionByName(CONTROLDATAELEMENT_NAME).getCode();
-        }
-
-        return typeQuestion.equals(CONTROL_DATAELEMENT_CODE);
+        return isOfType(OPTION_ELEMENT_TYPE_CONTROL_CODE);
     }
 
+    /**
+     * Checks if this dataElement is a CompositeScore
+     * @return
+     */
     public boolean isQuestion() {
-        if (isControlDataElement()) {
+        return isOfType(OPTION_ELEMENT_TYPE_QUESTION_CODE);
+    }
+
+    /**
+     * Returns if this dataElement has an attribute with code 'DEType' whose value matches the given value
+     * @param optionElementTypeCode
+     * @return
+     */
+    private boolean isOfType(String optionElementTypeCode){
+        String typeElement = findAttributeValueByCode(ATTRIBUTE_ELEMENT_TYPE_CODE);
+
+        if(typeElement==null){
+            Log.w(TAG,String.format("DataElement '%s' type cannot be solved, no attribute for '%s'",dataElement.getCode(),ATTRIBUTE_ELEMENT_TYPE_CODE));
             return false;
         }
-        return !isCompositeScore();
+
+        return typeElement.equals(optionElementTypeCode);
     }
 
     /**
