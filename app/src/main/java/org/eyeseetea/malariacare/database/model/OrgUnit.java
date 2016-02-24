@@ -188,6 +188,21 @@ public class OrgUnit extends BaseModel {
         return programs;
     }
 
+    public OrgUnitProgramRelation getRelation(Program program){
+        return new Select().from(OrgUnitProgramRelation.class)
+                .where(Condition.column(OrgUnitProgramRelation$Table.ID_ORG_UNIT).eq(this.getId_org_unit()))
+                .and(Condition.column(OrgUnitProgramRelation$Table.ID_PROGRAM).eq(program.getId_program())).querySingle();
+    }
+
+    public Integer getProductivity(Program program){
+        if (getRelation(program) == null) return OrgUnitProgramRelation.DEFAULT_PRODUCTIVITY;
+        return getRelation(program).getProductivity();
+    }
+
+    public void setProductivity(Program program, Integer productivity){
+        getRelation(program).setProductivity(productivity);
+    }
+
     public static List<OrgUnit> getAllOrgUnit() {
         return new Select().all().from(OrgUnit.class).queryList();
     }

@@ -8,6 +8,7 @@ import android.util.Log;
 
 import org.eyeseetea.malariacare.LoginActivity;
 import org.eyeseetea.malariacare.database.model.OrgUnit;
+import org.eyeseetea.malariacare.database.model.OrgUnitProgramRelation;
 import org.eyeseetea.malariacare.database.model.Program;
 import org.eyeseetea.malariacare.database.utils.PopulateDB;
 import org.eyeseetea.malariacare.test.utils.SDKTestUtils;
@@ -34,6 +35,7 @@ import static android.support.test.espresso.intent.matcher.IntentMatchers.hasCom
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static junit.framework.Assert.assertTrue;
 import static org.eyeseetea.malariacare.test.utils.SDKTestUtils.DEFAULT_WAIT_FOR_PULL;
+import static org.eyeseetea.malariacare.test.utils.SDKTestUtils.HNQIS_DEV_CI;
 import static org.eyeseetea.malariacare.test.utils.SDKTestUtils.HNQIS_DEV_STAGING;
 import static org.eyeseetea.malariacare.test.utils.SDKTestUtils.TEST_PASSWORD_WITH_PERMISSION;
 import static org.eyeseetea.malariacare.test.utils.SDKTestUtils.TEST_USERNAME_WITH_PERMISSION;
@@ -54,6 +56,7 @@ public class PullOKTest {
     private OrgUnit goldenOrgUnit;
     private org.hisp.dhis.android.sdk.persistence.models.Program goldenSdkProgram;
     private Program goldenProgram;
+    private OrgUnitProgramRelation goldenOrgUnitProgramRelation;
     private List<String> goldenDataSets;
     private List<String> goldenOrganisationUnitGroups;
 
@@ -88,7 +91,7 @@ public class PullOKTest {
     public void pullWithPermissionDoesPull(){
 
         //GIVEN
-        login(HNQIS_DEV_STAGING, TEST_USERNAME_WITH_PERMISSION, TEST_PASSWORD_WITH_PERMISSION);
+        login(HNQIS_DEV_CI, TEST_USERNAME_WITH_PERMISSION, TEST_PASSWORD_WITH_PERMISSION);
 
         waitForPull(DEFAULT_WAIT_FOR_PULL);
 
@@ -124,7 +127,7 @@ public class PullOKTest {
         goldenOrganisationUnit.setLevel(8);
         goldenOrganisationUnit.setParent("spT8zFVQsvx");
         goldenOrganisationUnit.setUuid("68c66a34-806f-49d1-9593-ba5d399ce95e");
-        goldenOrganisationUnit.setLastUpdated("2016-01-29T17:47:13.909+0000");
+        goldenOrganisationUnit.setLastUpdated("2016-02-19T14:55:53.084+0000");
         goldenOrganisationUnit.setCreated("2015-08-06T12:25:04.675+0000");
         goldenOrganisationUnit.setName("KE - HNQIS SF pilot test facility 1");
         goldenOrganisationUnit.setUser("NjbJCa6JkQu");
@@ -180,8 +183,8 @@ public class PullOKTest {
         //Fixme the orgunitlevel is not pulled.
         //goldenOrgUnit.setOrgUnitLevel(new OrgUnitLevel("Zone"));
         goldenOrgUnit= new OrgUnit("QS7sK8XzdQc","KE - HNQIS SF pilot test facility 1",null,null);
-        goldenOrgUnit.setProductivity(10);
         goldenOrgUnit.addProgram(goldenProgram);
+        goldenOrgUnit.setProductivity(goldenProgram, 9);
     }
 
     private void testProgramAttribute(org.hisp.dhis.android.sdk.persistence.models.Program sdkProgram) {
@@ -191,7 +194,7 @@ public class PullOKTest {
             if (programAttributeValue.getAttribute().getCode().equals(ATTRIBUTE_SUPERVISION_CODE) && programAttributeValue.getAttribute().getUid().equals(ATTRIBUTE_SUPERVISION_ID)) {
                 if(programAttributeValue.getValue().equals(ATTRIBUTE_SUPERVISION_VALUE))
                     isProductivityCode=true;
-                //Fixme here we need check if the attribute of the program is translate to our app db. But at this moment is not converted from the sdk.
+                // TODO: here we need check if the attribute of the program is translate to our app db. But at this moment is not converted from the sdk.
             }
         }
         assertTrue(isProductivityCode);
@@ -206,7 +209,7 @@ public class PullOKTest {
     private void testOrgUnit(OrgUnit appOrgUnit) {
         assertTrue(goldenOrgUnit.getName().equals(appOrgUnit.getName()));
         assertTrue(goldenOrgUnit.getUid().equals(appOrgUnit.getUid()));
-        assertTrue(goldenOrgUnit.getProductivity().equals(appOrgUnit.getProductivity()));
+        assertTrue(goldenOrgUnit.getProductivity(goldenProgram).equals(appOrgUnit.getProductivity(goldenProgram)));
         //Fixme the orgunitlevel is not pulled.
         //assertTrue(goldenOrgUnit.getOrgUnitLevel().getName().equals(appOrgUnit.getOrgUnitLevel().getName()));
         assertTrue(goldenProgram.getUid().equals(appOrgUnit.getPrograms().get(0).getUid()));

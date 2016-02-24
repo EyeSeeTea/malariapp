@@ -19,6 +19,7 @@ package org.eyeseetea.malariacare.test.pull;
         import static android.support.test.espresso.matcher.ViewMatchers.withText;
         import static junit.framework.Assert.assertEquals;
         import static org.eyeseetea.malariacare.test.utils.SDKTestUtils.DEFAULT_WAIT_FOR_PULL;
+        import static org.eyeseetea.malariacare.test.utils.SDKTestUtils.HNQIS_DEV_CI;
         import static org.eyeseetea.malariacare.test.utils.SDKTestUtils.HNQIS_DEV_STAGING;
         import static org.eyeseetea.malariacare.test.utils.SDKTestUtils.TEST_PASSWORD_NO_PERMISSION;
         import static org.eyeseetea.malariacare.test.utils.SDKTestUtils.TEST_USERNAME_NO_PERMISSION;
@@ -55,7 +56,7 @@ public class PullErrorTest {
     public void pullWithOutPermissionDoesNotPull() {
 
         //GIVEN
-        login(HNQIS_DEV_STAGING, TEST_USERNAME_NO_PERMISSION, TEST_PASSWORD_NO_PERMISSION);
+        login(HNQIS_DEV_CI, TEST_USERNAME_NO_PERMISSION, TEST_PASSWORD_NO_PERMISSION);
         //WHEN
         waitForPull(DEFAULT_WAIT_FOR_PULL);
         //THEN
