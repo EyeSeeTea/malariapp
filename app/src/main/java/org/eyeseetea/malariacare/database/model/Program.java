@@ -126,10 +126,10 @@ public class Program extends BaseModel{
         return orgUnits;
     }
 
-    public void addOrgUnit(OrgUnit orgUnit){
+    public OrgUnitProgramRelation addOrgUnit(OrgUnit orgUnit){
         //Null -> nothing
         if(orgUnit==null){
-            return;
+            return null;
         }
 
         //Save a new relationship
@@ -138,6 +138,7 @@ public class Program extends BaseModel{
 
         //Clear cache to enable reloading
         orgUnits=null;
+        return orgUnitProgramRelation;
     }
 
     /**
