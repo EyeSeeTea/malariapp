@@ -154,11 +154,11 @@ public class PullOKTest {
         goldenSdkProgram.setName("KE HNQIS Family Planning");
         goldenSdkProgram.setDisplayName("KE HNQIS Family Planning");
         goldenSdkProgram.setCreated("2015-10-16T13:51:32.264+0000");
-        goldenSdkProgram.setLastUpdated("2016-02-03T19:58:35.161+0000");
+        goldenSdkProgram.setLastUpdated("2016-02-24T18:02:55.963+0000");
         //goldenSdkProgram.setAccess();//{"delete":false,"externalize":false,"manage":true,"read":true,"update":true,"write":true}
         goldenSdkProgram.setTrackedEntity(null);
         //goldenSdkProgram.setProgramType(new ProgramType("without_registration"));
-        goldenSdkProgram.setVersion(3);
+        goldenSdkProgram.setVersion(6);
         goldenSdkProgram.setEnrollmentDateLabel(null);
         goldenSdkProgram.setDescription(null);
         goldenSdkProgram.setOnlyEnrollOnce(false);
