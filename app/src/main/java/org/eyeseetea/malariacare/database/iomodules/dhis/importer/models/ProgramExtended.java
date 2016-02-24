@@ -30,8 +30,6 @@ import org.eyeseetea.malariacare.database.iomodules.dhis.importer.IConvertFromSD
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.VisitableFromSDK;
 import org.hisp.dhis.android.sdk.persistence.models.Attribute;
 import org.hisp.dhis.android.sdk.persistence.models.Attribute$Table;
-import org.hisp.dhis.android.sdk.persistence.models.OrganisationUnitAttributeValue;
-import org.hisp.dhis.android.sdk.persistence.models.OrganisationUnitAttributeValue$Table;
 import org.hisp.dhis.android.sdk.persistence.models.Program;
 import org.hisp.dhis.android.sdk.persistence.models.ProgramAttributeValue;
 import org.hisp.dhis.android.sdk.persistence.models.ProgramAttributeValue$Table;
@@ -48,7 +46,7 @@ public class ProgramExtended implements VisitableFromSDK {
     /**
      * Hardcoded 'code' of the attribute that holds the idx of productiviy in the orgunit array attribute
      */
-    public static final String PROGRAM_PRODUCTIVITY_INDEX_ATTRIBUTE_CODE = "PPP";
+    public static final String PROGRAM_PRODUCTIVITY_POSITION_ATTRIBUTE_CODE = "PPP";
 
     /**
      * Reference to sdk program
@@ -87,14 +85,14 @@ public class ProgramExtended implements VisitableFromSDK {
         return this.appProgram;
     }
 
-    public Integer getProductivityIndex() {
+    public Integer getProductivityPosition() {
 
         ProgramAttributeValue programAttributeValue = new Select().from(ProgramAttributeValue.class).as("p")
                 .join(Attribute.class, Join.JoinType.LEFT).as("a")
                 .on(Condition.column(ColumnAlias.columnWithTable("p", ProgramAttributeValue$Table.ATTRIBUTEID))
                         .eq(ColumnAlias.columnWithTable("a", Attribute$Table.ID)))
                 .where(Condition.column(ColumnAlias.columnWithTable("a", Attribute$Table.CODE))
-                        .eq(PROGRAM_PRODUCTIVITY_INDEX_ATTRIBUTE_CODE))
+                        .eq(PROGRAM_PRODUCTIVITY_POSITION_ATTRIBUTE_CODE))
                 .and(Condition.column(ColumnAlias.columnWithTable("p", ProgramAttributeValue$Table.PROGRAM)).is(this.getProgram().getUid()))
                 .querySingle();
 
@@ -105,7 +103,7 @@ public class ProgramExtended implements VisitableFromSDK {
         try {
             return Integer.parseInt(programAttributeValue.getValue());
         }catch(Exception ex){
-            Log.e(TAG, String.format("getProductivityIndex(%s) -> %s", this.getProgram().getUid(), ex.getMessage()));
+            Log.e(TAG, String.format("getProductivityPosition(%s) -> %s", this.getProgram().getUid(), ex.getMessage()));
             return null;
         }
     }

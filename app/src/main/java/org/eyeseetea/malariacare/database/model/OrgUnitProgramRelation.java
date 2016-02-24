@@ -37,6 +37,8 @@ import java.util.Date;
 @Table(databaseName = AppDatabase.NAME)
 public class OrgUnitProgramRelation extends BaseModel {
 
+    public static final int DEFAULT_PRODUCTIVITY = 0;
+
     @Column
     @PrimaryKey(autoincrement = true)
     long id_orgunit_program_relation;
@@ -69,7 +71,7 @@ public class OrgUnitProgramRelation extends BaseModel {
     public OrgUnitProgramRelation(OrgUnit orgUnit, Program program) {
         setOrgUnit(orgUnit);
         setProgram(program);
-        this.productivity = 0;
+        this.productivity = DEFAULT_PRODUCTIVITY;
     }
 
     public OrgUnitProgramRelation(OrgUnit orgUnit, Program program, Integer productivity) {
@@ -135,17 +137,17 @@ public class OrgUnitProgramRelation extends BaseModel {
      */
     public static Integer getProductivity(Survey survey){
         if(survey==null){
-            return 0;
+            return DEFAULT_PRODUCTIVITY;
         }
 
         OrgUnit orgUnit = survey.getOrgUnit();
         if(orgUnit==null){
-            return 0;
+            return DEFAULT_PRODUCTIVITY;
         }
 
         Program program = survey.getProgram();
         if(program==null){
-            return 0;
+            return DEFAULT_PRODUCTIVITY;
         }
 
         OrgUnitProgramRelation orgUnitProgramRelation = new Select().from(OrgUnitProgramRelation.class)
@@ -153,7 +155,7 @@ public class OrgUnitProgramRelation extends BaseModel {
                 .and(Condition.column(OrgUnitProgramRelation$Table.ID_PROGRAM).eq(program.getId_program())).querySingle();
 
         if(orgUnitProgramRelation==null){
-            return 0;
+            return DEFAULT_PRODUCTIVITY;
         }
 
         return orgUnitProgramRelation.getProductivity();

@@ -458,7 +458,7 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
         OrgUnitProgramRelation orgUnitProgramRelation=appProgram.addOrgUnit(appOrgUnit);
 
         //Add productivity to that relationship
-        Integer productivityIndex=sdkProgramExtended.getProductivityIndex();
+        Integer productivityIndex=sdkProgramExtended.getProductivityPosition();
         Integer orgUnitProgramRelationProductivity = sdkOrganisationUnitExtended.getProductivity(productivityIndex);
         orgUnitProgramRelation.setProductivity(orgUnitProgramRelationProductivity);
         orgUnitProgramRelation.save();
