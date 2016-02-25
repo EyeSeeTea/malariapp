@@ -112,8 +112,10 @@ public class PushConflictTest {
     @Test
     public void pushWithDataElementConflict(){
         //GIVEN
+        /*
         login(HNQIS_DEV_STAGING, TEST_USERNAME_WITH_PERMISSION, TEST_PASSWORD_WITH_PERMISSION);
-        waitForPull(40);
+        waitForPull(DEFAULT_WAIT_FOR_PULL);
+
         startSurvey(1, 2);
         fillSurvey(7, "Yes");
         Survey survey=Survey.findById(getSurveyId());
@@ -127,7 +129,6 @@ public class PushConflictTest {
         //Simulate the conflict dataelement
 
         //then: Survey is pushed (UID)
-        /*
         Log.d(TAG, "Session user ->" + Session.getUser());
         survey=waitForPush(20,survey.getId_survey());
 
