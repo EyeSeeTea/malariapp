@@ -43,6 +43,7 @@ import com.squareup.otto.Subscribe;
 
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.utils.LocationMemory;
+import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.layout.listeners.SurveyLocationListener;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
@@ -185,6 +186,7 @@ public abstract class BaseActivity extends ActionBarActivity {
                     public void onClick(DialogInterface arg0, int arg1) {
                         //Start logout
                         debugMessage("Logging out from sdk...");
+                        PreferencesState.getInstance().clearOrgUnitPreference();
                         DhisService.logOutUser(BaseActivity.this);
                     }
                 })

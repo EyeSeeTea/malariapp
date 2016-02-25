@@ -554,6 +554,7 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
     }
 
     private void pullMetadata(){
+        PreferencesState.getInstance().clearOrgUnitPreference();
         finishAndGo(ProgressActivity.class);
     }
 

@@ -467,7 +467,7 @@ public class CreateSurveyFragment extends Fragment {
             OrgUnit selectedOrgUnit = (OrgUnit) ((Spinner)viewHolder.component).getItemAtPosition(pos);
             realOrgUnitView = ((Spinner) viewHolder.component);
 
-            if(selectedOrgUnit!=null) {
+            if(selectedOrgUnit!=null && selectedOrgUnit.getUid()!=null) {
                 filterPrograms(selectedOrgUnit);
                 if (selectedOrgUnit.getUid() != null && selectedOrgUnit.getChildren().isEmpty() && selectedOrgUnit.getOrgUnit() == null) {
                     //without parent without childs
@@ -550,7 +550,7 @@ public class CreateSurveyFragment extends Fragment {
         List<Program> initProgram= new ArrayList<>();
         for(Program orgUnitProgram: selectedOrgUnit.getPrograms()){
             for(Program program:allProgramList ){
-                if(orgUnitProgram.equals(program))
+                if(orgUnitProgram!=null && orgUnitProgram.equals(program))
                     initProgram.add(orgUnitProgram);
             }
         }

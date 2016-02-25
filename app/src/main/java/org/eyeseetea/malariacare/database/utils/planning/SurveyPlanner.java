@@ -173,7 +173,7 @@ public class SurveyPlanner {
         }
 
         //Load main score
-        Log.d(TAG, String.format("finding scheduledDate for a survey with: eventDate: %s, score: %f , lowProductivity: %b", eventDate.toString(), survey.getMainScore(), survey.getOrgUnit().isLowProductivity()));
+        Log.d(TAG, String.format("finding scheduledDate for a survey with: eventDate: %s, score: %f , lowProductivity: %b", eventDate.toString(), survey.getMainScore(), survey.isLowProductivity()));
 
         //A -> 6 months
         if(survey.isTypeA()){
@@ -181,7 +181,7 @@ public class SurveyPlanner {
         }
 
         //BC + Low OrgUnit -> 4
-        if(survey.getOrgUnit().isLowProductivity()){
+        if(survey.isLowProductivity()){
             return getInXMonths(eventDate,TYPE_BC_LOW_NEXT_DATE);
         }
 

@@ -19,9 +19,15 @@
 
 package org.eyeseetea.malariacare.database.iomodules.dhis.importer.models;
 
+import com.raizlabs.android.dbflow.sql.builder.Condition;
+import com.raizlabs.android.dbflow.sql.language.Select;
+
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.IConvertFromSDKVisitor;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.VisitableFromSDK;
+import org.eyeseetea.malariacare.database.model.Option$Table;
+import org.hisp.dhis.android.sdk.persistence.models.Option;
 import org.hisp.dhis.android.sdk.persistence.models.OptionSet;
+import org.hisp.dhis.android.sdk.persistence.models.OptionSet$Table;
 
 /**
  * Created by arrizabalaga on 6/11/15.
@@ -29,6 +35,16 @@ import org.hisp.dhis.android.sdk.persistence.models.OptionSet;
 public class OptionSetExtended implements VisitableFromSDK {
 
     private final static String KEY_PREFFIX="@";
+
+    /**
+     * Code for optionset that holds options x each Type of Element
+     */
+    public final static String OPTION_SET_DATAELEMENT_TYPE_NAME="DB - DE Type";
+
+    /**
+     * Code for optionset that holds options x each Type of Question
+     */
+    public final static String OPTION_SET_QUESTION_TYPE_NAME="DB - Question Type";
 
     OptionSet optionSet;
 
@@ -55,5 +71,32 @@ public class OptionSetExtended implements VisitableFromSDK {
      */
     public static String getKeyWithOutput(String uid,int output){
         return uid+KEY_PREFFIX+output;
+    }
+
+
+    /**
+     * Some optionSets have a 'hardcoded' name such as 'DB - DE Type'. This method is a helper to recover the whole option with that name
+     * @param name
+     * @return
+     */
+    public static OptionSet findOptionSetByName(String name){
+        return new Select().from(OptionSet.class).where(Condition.column(OptionSet$Table.NAME).
+                is(name)).querySingle();
+    }
+
+    /**
+     * Returns the optionSet that holds info for 'DB - DE Type'.
+     * @return
+     */
+    public static OptionSet findOptionSetForDataElementType(){
+        return findOptionSetByName(OPTION_SET_DATAELEMENT_TYPE_NAME);
+    }
+
+    /**
+     * Returns the optionSet that holds info for 'DB - Question Type'.
+     * @return
+     */
+    public static OptionSet findOptionSetForQuestionType(){
+        return findOptionSetByName(OPTION_SET_QUESTION_TYPE_NAME);
     }
 }
