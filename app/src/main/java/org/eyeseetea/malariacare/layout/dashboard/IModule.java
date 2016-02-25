@@ -19,6 +19,7 @@
 
 package org.eyeseetea.malariacare.layout.dashboard;
 
+import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.app.ListFragment;
@@ -30,6 +31,8 @@ import android.graphics.drawable.Drawable;
 public interface IModule {
     void setLayout(int layout);
     int getLayout();
+    void setTabLayout(int tablayout);
+    int getTabLayout();
     void setAnimatorInRight(int animatorInRight);
     int getAnimatorInRight();
     void setAnimatorOutRight(int animatorOutRight);
@@ -53,4 +56,6 @@ public interface IModule {
     void setVisible(boolean visible);
     boolean isVisible();
     void reloadData();
+
+    void init(Activity activity);
 }

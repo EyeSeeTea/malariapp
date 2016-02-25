@@ -19,20 +19,22 @@
 
 package org.eyeseetea.malariacare.layout.dashboard;
 
+import com.fasterxml.jackson.databind.Module;
+
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by idelcano on 25/02/2016.
  */
-public class DashboardModules {
+public class Dashboard {
     private List<IModule> modules;
     public static int VERTICAL=0;
     public static int HORIZONTAL=1;
     private int style;
     private int layout;
 
-    public DashboardModules(int layout, int style){
+    public Dashboard(int layout, int style){
         this.layout=layout;
         this.style=style;
         modules=new ArrayList<>();
@@ -54,6 +56,14 @@ public class DashboardModules {
         else if(style==HORIZONTAL){
 
         }
+    }
+
+    public IModule getModuleByName(String name){
+        for(IModule module:modules){
+            if(module.getName().equals(name))
+                return module;
+        }
+        return null;
     }
 
     public List<IModule> getModules() {

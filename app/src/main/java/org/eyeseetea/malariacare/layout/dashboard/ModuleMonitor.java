@@ -19,6 +19,7 @@
 
 package org.eyeseetea.malariacare.layout.dashboard;
 
+import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.graphics.drawable.Drawable;
@@ -33,23 +34,45 @@ import org.eyeseetea.malariacare.fragments.MonitorFragment;
 public class ModuleMonitor  extends AModule {
     MonitorFragment monitorFragment;
 
+    public ModuleMonitor(boolean visible) {
+        this.layout=R.id.dashboard_charts_container;
+        this.tabLayout=R.id.tab_monitor_layout;
+        this.visible=visible;
+        createModule();
+    }
+
     public ModuleMonitor(int layout, boolean visible) {
         this.layout=layout;
+        this.visible=visible;
+        createModule();
+    }
+
+    public ModuleMonitor(int layout, int tabLayout, boolean visible) {
+        this.layout=layout;
+        this.tabLayout=tabLayout;
+        this.visible=visible;
+        createModule();
+    }
+
+
+    private void createModule() {
         this.icon= PreferencesState.getInstance().getContext().getResources().getDrawable(R.drawable.tab_monitor);
         this.name= PreferencesState.getInstance().getContext().getResources().getString(R.string.tab_tag_monitor);
         this.animatorInLeft= R.animator.anim_slide_in_left;
         this.animatorOutLeft= R.animator.anim_slide_out_left;
         this.animatorInRight=R.animator.anim_slide_in_right;
         this.animatorOutRight=R.animator.anim_slide_out_right;
-        this.fragmentTransactionLeft=fragmentTransactionLeft;
-        this.fragmentTransactionRight=fragmentTransactionRight;
-        this.visible=visible;
         monitorFragment = new MonitorFragment();
     }
 
     @Override
     public Fragment getFragment() {
         return monitorFragment;
+    }
+
+    @Override
+    public void init(Activity activity) {
+
     }
 
     @Override

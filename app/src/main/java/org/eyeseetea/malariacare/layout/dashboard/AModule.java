@@ -19,6 +19,7 @@
 
 package org.eyeseetea.malariacare.layout.dashboard;
 
+import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.app.ListFragment;
@@ -30,6 +31,7 @@ import android.graphics.drawable.Drawable;
 public abstract class AModule implements IModule {
 
     int layout;
+    int tabLayout;
     int animatorInRight;
     int animatorOutRight;
     int animatorInLeft;
@@ -50,6 +52,16 @@ public abstract class AModule implements IModule {
     @Override
     public void setLayout(int layout) {
         this.layout = layout;
+    }
+
+    @Override
+    public int getTabLayout() {
+        return tabLayout;
+    }
+
+    @Override
+    public void setTabLayout(int tabLayout) {
+        this.tabLayout = tabLayout;
     }
 
     @Override
@@ -160,4 +172,7 @@ public abstract class AModule implements IModule {
     public void setAnimatorOutLeft(int animatorOutLeft) {
         this.animatorOutLeft = animatorOutLeft;
     }
+
+    @Override
+    public abstract void init(Activity activity);
 }

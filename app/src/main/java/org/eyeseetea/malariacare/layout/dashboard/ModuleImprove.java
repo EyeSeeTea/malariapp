@@ -19,10 +19,14 @@
 
 package org.eyeseetea.malariacare.layout.dashboard;
 
+import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.graphics.drawable.Drawable;
+import android.view.View;
+import android.widget.LinearLayout;
 
+import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.fragments.DashboardSentFragment;
@@ -33,23 +37,49 @@ import org.eyeseetea.malariacare.fragments.DashboardSentFragment;
 public class ModuleImprove extends AModule {
     DashboardSentFragment dashboardSentFragment;
 
+    public ModuleImprove(boolean visible) {
+        this.layout=R.id.dashboard_completed_container;
+        this.tabLayout=R.id.tab_improve_layout;
+        this.visible=visible;
+        createModule();
+    }
+
     public ModuleImprove(int layout, boolean visible) {
         this.layout=layout;
+        this.visible=visible;
+        createModule();
+    }
+
+    public ModuleImprove(int layout, int tabLayout, boolean visible) {
+        this.layout=layout;
+        this.tabLayout=tabLayout;
+        this.visible=visible;
+        createModule();
+    }
+
+    private void createModule() {
         this.icon= PreferencesState.getInstance().getContext().getResources().getDrawable(R.drawable.tab_improve);
         this.name= PreferencesState.getInstance().getContext().getResources().getString(R.string.tab_tag_improve);
         this.animatorInLeft= R.animator.anim_slide_in_left;
         this.animatorOutLeft= R.animator.anim_slide_out_left;
         this.animatorInRight=R.animator.anim_slide_in_right;
         this.animatorOutRight=R.animator.anim_slide_out_right;
-        this.fragmentTransactionLeft=fragmentTransactionLeft;
-        this.fragmentTransactionRight=fragmentTransactionRight;
-        this.visible=visible;
         dashboardSentFragment = new DashboardSentFragment();
     }
 
     @Override
     public Fragment getFragment() {
         return dashboardSentFragment;
+    }
+
+    @Override
+    public void init(Activity activity) {
+        try {
+            LinearLayout filters = (LinearLayout) activity.findViewById(R.id.filters_sentSurveys);
+            filters.setVisibility(View.VISIBLE);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
     }
 
     @Override

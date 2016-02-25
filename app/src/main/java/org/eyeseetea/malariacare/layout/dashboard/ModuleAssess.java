@@ -19,6 +19,7 @@
 
 package org.eyeseetea.malariacare.layout.dashboard;
 
+import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.app.ListFragment;
@@ -34,17 +35,33 @@ import org.eyeseetea.malariacare.fragments.DashboardUnsentFragment;
 public class ModuleAssess extends AModule {
     DashboardUnsentFragment dashboardUnsentFragment;
 
+    public ModuleAssess( boolean visible) {
+        this.layout=R.id.dashboard_details_container;
+        this.tabLayout=R.id.tab_assess_layout;
+        this.visible=visible;
+        createModule();
+    }
+
     public ModuleAssess(int layout, boolean visible) {
         this.layout=layout;
+        this.visible=visible;
+        createModule();
+    }
+
+    public ModuleAssess(int layout, int tabLayout, boolean visible) {
+        this.layout=layout;
+        this.tabLayout=tabLayout;
+        this.visible=visible;
+        createModule();
+    }
+
+    private void createModule() {
         this.icon= PreferencesState.getInstance().getContext().getResources().getDrawable(R.drawable.tab_assess);
         this.name= PreferencesState.getInstance().getContext().getResources().getString(R.string.tab_tag_assess);
         this.animatorInLeft= R.animator.anim_slide_in_left;
         this.animatorOutLeft= R.animator.anim_slide_out_left;
         this.animatorInRight=R.animator.anim_slide_in_right;
         this.animatorOutRight=R.animator.anim_slide_out_right;
-        this.fragmentTransactionLeft=fragmentTransactionLeft;
-        this.fragmentTransactionRight=fragmentTransactionRight;
-        this.visible=visible;
         dashboardUnsentFragment = new DashboardUnsentFragment();
     }
 
@@ -55,6 +72,11 @@ public class ModuleAssess extends AModule {
     @Override
     public ListFragment getListFragment(){
         return dashboardUnsentFragment;
+    }
+
+    @Override
+    public void init(Activity activity) {
+
     }
 
     @Override

@@ -19,6 +19,7 @@
 
 package org.eyeseetea.malariacare.layout.dashboard;
 
+import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.graphics.drawable.Drawable;
@@ -33,23 +34,43 @@ import org.eyeseetea.malariacare.fragments.PlannedFragment;
 public class ModulePlan extends AModule {
     PlannedFragment plannedFragment;
 
+    public ModulePlan(boolean visible) {
+        this.layout=R.id.dashboard_planning_tab;
+        this.tabLayout=R.id.tab_plan_layout;
+        this.visible=visible;
+        createModule();
+    }
+    
     public ModulePlan(int layout, boolean visible) {
         this.layout=layout;
+        this.visible=visible;
+        createModule();
+    }
+
+    public ModulePlan(int layout, int tabLayout, boolean visible) {
+        this.layout=layout;
+        this.tabLayout=tabLayout;
+        createModule();
+    }
+
+    private void createModule(){
         this.icon= PreferencesState.getInstance().getContext().getResources().getDrawable(R.drawable.tab_plan);
         this.name= PreferencesState.getInstance().getContext().getResources().getString(R.string.tab_tag_plan);
         this.animatorInLeft= R.animator.anim_slide_in_left;
         this.animatorOutLeft= R.animator.anim_slide_out_left;
         this.animatorInRight=R.animator.anim_slide_in_right;
         this.animatorOutRight=R.animator.anim_slide_out_right;
-        this.fragmentTransactionLeft=fragmentTransactionLeft;
-        this.fragmentTransactionRight=fragmentTransactionRight;
-        this.visible=visible;
         plannedFragment = new PlannedFragment();
     }
 
     @Override
     public Fragment getFragment() {
         return plannedFragment;
+    }
+
+    @Override
+    public void init(Activity activity) {
+
     }
 
     @Override
