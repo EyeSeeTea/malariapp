@@ -1,16 +1,22 @@
 1;'General OTSS';1;1;0
-2;'Adherence';2;1;6
-3;'CCM, Observation 1';3;2;0
-4;'CCM, Observation 2';4;2;0
-5;'CCM, Observation 3';5;2;0
-6;'Preparing and Reading RDTs';6;3;0
-7;'Microscopy Facility Assessment';7;4;0
-8;'Preparation of Films';8;4;0
-9;'Staining of Films';9;4;0
-10;'Reading of Films';10;4;0
-11;'Slide Rechecking';11;4;7
-12;'Feedback and Action Plans';12;5;0
-13;'Composite Scores';13;1;2
-14;'Composite Scores';14;2;2
-15;'Composite Scores';15;3;2
-16;'Composite Scores';16;4;2
+2;'Adherence';3;1;6
+3;'CCM, Observation 1';1;2;0
+4;'CCM, Observation 2';2;2;0
+5;'CCM, Observation 3';3;2;0
+6;'RDT Assessment';1;3;0
+7;'Microscopy Facility Assessment';1;4;0
+8;'Preparation of Films';2;4;0
+9;'Staining of Films';3;4;0
+10;'Reading of Films';4;4;0
+11;'Slide Rechecking';5;4;7
+13;'Composite Scores';4;1;2
+14;'Composite Scores';4;2;2
+15;'RDT Observation 1';2;3;0
+16;'Composite Scores';6;4;2
+17;'General OTSS Feedback and Action Plan';2;1;0
+18;'Clinical Observations Feedback and Action Plan';5;2;0
+19;'RDT Observation 2';3;3;0
+20;'RDT Observation 3';4;3;0
+21;'Composite Scores';5;3;2
+22;'RDT Observations Feedback and Action Plan';6;3;0
+23;'Lab Feedback and Action Plan';7;4;0

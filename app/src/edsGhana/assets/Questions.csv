@@ -1,7 +1,7 @@
 2;'GHA-Gen OTSS-240';'GHA-Gen OTSS-HR_T-240-Are there OPD staff trained in malaria case management in the last two years?';;'Are there OPD staff trained in malaria case management in the last two years?';'RtPsUaQAGWm';240;10.00;10.00;2;85;;24
 3;'GHA-Gen OTSS-250';'GHA-Gen OTSS-HR_T-250-Number of clinical staff trained in case management in last 2 years';;'Number of clinical staff trained in case management in last 2 years';'FHlJdVaIE1o';250;0.00;0.00;2;10;2;
-4;'GHA-Gen OTSS-531';'GHA-Gen OTSS-HF Infra-531-Have you had any disruptions/problems with the water supply necessary for performing microscopy or dispensing medications lasting more than one day in the last 2 weeks?';;'Have you had any disruptions/problems with the water supply necessary for performing microscopy or dispensing medications lasting more than one day in the last 2 weeks?';'PSOBZDwHWAt';531;0.00;0.00;3;82;;24
-5;'GHA-Gen OTSS-550';'GHA-Gen OTSS-HF Infra-550-Has there been any problem with the power supply lasting more than one day in the last two weeks?';;'Has there been any problem with the power supply lasting more than one day in the last two weeks?';'Mef9L3GPzws';550;0.00;0.00;3;82;;24
+4;'GHA-Gen OTSS-531';'GHA-Gen OTSS-HF Infra-531-Have you had any disruptions/problems with the water supply necessary for performing microscopy or dispensing medications lasting more than one day in the last 2 weeks?';;'Have you had any disruptions/problems with the water supply necessary for performing microscopy or dispensing medications lasting more than one day in the last 2 weeks?';'PSOBZDwHWAt';531;1.00;1.00;3;82;;24
+5;'GHA-Gen OTSS-550';'GHA-Gen OTSS-HF Infra-550-Has there been any problem with the power supply lasting more than one day in the last two weeks?';;'Has there been any problem with the power supply lasting more than one day in the last two weeks?';'Mef9L3GPzws';550;1.00;1.00;3;82;;24
 6;'GHA-Gen OTSS-440';'GHA-Gen OTSS-HF Infra-440-AVAILABILITY OF HEALTH EDUCATION MATERIAL';;'AVAILABILITY OF HEALTH EDUCATION MATERIAL';'Qe2ECOnvXnn';440;0.00;0.00;3;8;;
 7;'GHA-Obj-100';'GHA-Obj-Obj-100-1. Review progress of last OTSS action plans';;'1. Review progress of last OTSS action plans';'rzD0CK9s3Ly';100;0.00;0.00;6;8;;
 9;'GHA-Obj-120';'GHA-Obj-Obj-120-2. Assess availability of health education materials and ACTs/SPs/LLIN';;'2. Assess availability of health education materials and ACTs/SPs/LLIN';'bFbzpUIZa4e';120;0.00;0.00;6;8;;
@@ -45,29 +45,29 @@
 51;'GHA-Gen OTSS-560';'GHA-Gen OTSS-St/Eq-560-STOCK-OUTS OF ANTIMALARIALS';;'STOCK-OUTS OF ANTIMALARIALS';'NiSu0bC6uCT';560;0.00;0.00;4;8;;
 60;'GHA-Gen OTSS-570';'GHA-Gen OTSS-St/Eq-570-Was there a stock out of any of the following for 7 consecutive days in the last 3 months?';;'Was there a stock out of any of the following for 7 consecutive days in the last 3 months?';'sO1fjvGVO2a';570;0.00;0.00;4;8;;
 61;'GHA-Gen OTSS-590';'GHA-Gen OTSS-St/Eq-590-Artemether-Lumefantrine';;'Artemether-Lumefantrine';'xiotItnS1lL';590;10.00;10.00;4;97;;24
-62;'GHA-Gen OTSS-580';'GHA-Gen OTSS-St/Eq-580-Artesunate-Amodiaquine';;'Artesunate-Amodiaquine';'JkoH9PMT1St';580;0.00;0.00;4;97;;24
-63;'GHA-Gen OTSS-600';'GHA-Gen OTSS-St/Eq-600-Dihydroartemisinin-piperaquine';;'Dihydroartemisinin-piperaquine';'RomBw9AlYzd';600;0.00;0.00;4;97;;24
-64;'GHA-Gen OTSS-620';'GHA-Gen OTSS-St/Eq-620-Artesunate injection';;'Artesunate injection';'tvgsc9QFVQ3';620;0.00;0.00;4;97;;24
-65;'GHA-Gen OTSS-610';'GHA-Gen OTSS-St/Eq-610-Rectal Artesunate';;'Rectal Artesunate';'T3IteOJJjdY';610;0.00;0.00;4;97;;24
-66;'GHA-Gen OTSS-630';'GHA-Gen OTSS-St/Eq-630-Artemether injection';;'Artemether injection';'tdsIEq1Estn';630;0.00;0.00;4;97;;24
-67;'GHA-Gen OTSS-640';'GHA-Gen OTSS-St/Eq-640-Quinine injection';;'Quinine injection';'oQysrMO01eP';640;0.00;0.00;4;97;;24
+62;'GHA-Gen OTSS-580';'GHA-Gen OTSS-St/Eq-580-Artesunate-Amodiaquine';;'Artesunate-Amodiaquine';'JkoH9PMT1St';580;1.00;1.00;4;97;;24
+63;'GHA-Gen OTSS-600';'GHA-Gen OTSS-St/Eq-600-Dihydroartemisinin-piperaquine';;'Dihydroartemisinin-piperaquine';'RomBw9AlYzd';600;1.00;1.00;4;97;;24
+64;'GHA-Gen OTSS-620';'GHA-Gen OTSS-St/Eq-620-Artesunate injection';;'Artesunate injection';'tvgsc9QFVQ3';620;1.00;1.00;4;97;;24
+65;'GHA-Gen OTSS-610';'GHA-Gen OTSS-St/Eq-610-Rectal Artesunate';;'Rectal Artesunate';'T3IteOJJjdY';610;1.00;1.00;4;97;;24
+66;'GHA-Gen OTSS-630';'GHA-Gen OTSS-St/Eq-630-Artemether injection';;'Artemether injection';'tdsIEq1Estn';630;1.00;1.00;4;97;;24
+67;'GHA-Gen OTSS-640';'GHA-Gen OTSS-St/Eq-640-Quinine injection';;'Quinine injection';'oQysrMO01eP';640;1.00;1.00;4;97;;24
 68;'GHA-Gen OTSS-690';'GHA-Gen OTSS-St/Eq-690-STOCK-OUTS OF OTHER ESSENTIAL DRUGS';;'STOCK-OUTS OF OTHER ESSENTIAL DRUGS';'ko16wuM1m3H';690;0.00;0.00;4;8;;
 77;'GHA-Gen OTSS-700';'GHA-Gen OTSS-St/Eq-700-Was there a stock out of any of the following for 7 consecutive days in the last 3 months?';;'Was there a stock out of any of the following for 7 consecutive days in the last 3 months?';'deXtBvp8dEa';700;0.00;0.00;4;8;;
 79;'GHA-Gen OTSS-720';'GHA-Gen OTSS-St/Eq-720-Paracetamol';;'Paracetamol';'tjBHhpdLo9q';720;2.00;2.00;4;97;;24
-80;'GHA-Gen OTSS-730';'GHA-Gen OTSS-St/Eq-730-ORS';;'ORS';'mY03ZYUUC5h';730;0.00;0.00;4;97;;24
-81;'GHA-Gen OTSS-740';'GHA-Gen OTSS-St/Eq-740-Zinc tablets';;'Zinc tablets';'nNufRp8puS2';740;0.00;0.00;4;97;;24
-82;'GHA-Gen OTSS-750';'GHA-Gen OTSS-St/Eq-750-Cotrimoxazole';;'Cotrimoxazole';'jzdt6NVMkiE';750;0.00;0.00;4;97;;24
-83;'GHA-Gen OTSS-760';'GHA-Gen OTSS-St/Eq-760-Amoxicillin';;'Amoxicillin';'qGWNGvcQcYV';760;0.00;0.00;4;97;;24
+80;'GHA-Gen OTSS-730';'GHA-Gen OTSS-St/Eq-730-ORS';;'ORS';'mY03ZYUUC5h';730;1.00;1.00;4;97;;24
+81;'GHA-Gen OTSS-740';'GHA-Gen OTSS-St/Eq-740-Zinc tablets';;'Zinc tablets';'nNufRp8puS2';740;1.00;1.00;4;97;;24
+82;'GHA-Gen OTSS-750';'GHA-Gen OTSS-St/Eq-750-Cotrimoxazole';;'Cotrimoxazole';'jzdt6NVMkiE';750;1.00;1.00;4;97;;24
+83;'GHA-Gen OTSS-760';'GHA-Gen OTSS-St/Eq-760-Amoxicillin';;'Amoxicillin';'qGWNGvcQcYV';760;1.00;1.00;4;97;;24
 85;'GHA-Gen OTSS-780';'GHA-Gen OTSS-St/Eq-780-ITEMS FOR EMERGENCY RESPONSE FOR SEVERE MALARIA';;'ITEMS FOR EMERGENCY RESPONSE FOR SEVERE MALARIA';'L9nTwd11J7O';780;0.00;0.00;4;8;;
 91;'GHA-Gen OTSS-790';'GHA-Gen OTSS-St/Eq-790-Was there a stock out of any of the following for 7 consecutive days in the last 3 months?';;'Was there a stock out of any of the following for 7 consecutive days in the last 3 months?';'ieEAaR0wlyL';790;0.00;0.00;4;8;;
-92;'GHA-Gen OTSS-800';'GHA-Gen OTSS-St/Eq-800-5% Glucose Solution';;'5% Glucose Solution';'IAcFIjNgXE6';800;0.00;0.00;4;97;;24
-93;'GHA-Gen OTSS-810';'GHA-Gen OTSS-St/Eq-810-10% Glucose Solution';;'10% Glucose Solution';'wJmVbilz44X';810;0.00;0.00;4;97;;24
-94;'GHA-Gen OTSS-820';'GHA-Gen OTSS-St/Eq-820-50% Glucose Solution';;'50% Glucose Solution';'qiv8Np0hqVC';820;0.00;0.00;4;97;;24
-95;'GHA-Gen OTSS-830';'GHA-Gen OTSS-St/Eq-830-Injectable Diazepam';;'Injectable Diazepam';'R9DnqigW597';830;0.00;0.00;4;97;;24
+92;'GHA-Gen OTSS-800';'GHA-Gen OTSS-St/Eq-800-5% Glucose Solution';;'5% Glucose Solution';'IAcFIjNgXE6';800;1.00;1.00;4;97;;24
+93;'GHA-Gen OTSS-810';'GHA-Gen OTSS-St/Eq-810-10% Glucose Solution';;'10% Glucose Solution';'wJmVbilz44X';810;1.00;1.00;4;97;;24
+94;'GHA-Gen OTSS-820';'GHA-Gen OTSS-St/Eq-820-50% Glucose Solution';;'50% Glucose Solution';'qiv8Np0hqVC';820;1.00;1.00;4;97;;24
+95;'GHA-Gen OTSS-830';'GHA-Gen OTSS-St/Eq-830-Injectable Diazepam';;'Injectable Diazepam';'R9DnqigW597';830;1.00;1.00;4;97;;24
 96;'GHA-Gen OTSS-840';'GHA-Gen OTSS-St/Eq-840-DIAGNOSTICS AND CLINICAL SUPPLIES';;'DIAGNOSTICS AND CLINICAL SUPPLIES';'qhtYRCNgIrA';840;0.00;0.00;4;8;;
 100;'GHA-Gen OTSS-850';'GHA-Gen OTSS-St/Eq-850-Was there a stock out of any of the following for 7 consecutive days in the last 3 months?';;'Was there a stock out of any of the following for 7 consecutive days in the last 3 months?';'cmKuBmTvaDU';850;0.00;0.00;4;8;;
-101;'GHA-Gen OTSS-860';'GHA-Gen OTSS-St/Eq-860-Rapid Diagnostic Test for Malaria (multi use buffer kits)';;'Rapid Diagnostic Test for Malaria (multi use buffer kits)';'rZPGM7p1iM9';860;10.00;10.00;4;82;;25
-102;'GHA-Gen OTSS-880';'GHA-Gen OTSS-St/Eq-880-Latex disposable gloves';;'Latex disposable gloves';'Qcqxfudu9pI';880;0.00;0.00;4;82;;24
+101;'GHA-Gen OTSS-860';'GHA-Gen OTSS-St/Eq-860-Rapid Diagnostic Test for Malaria (multi use buffer kits)';;'Rapid Diagnostic Test for Malaria (multi use buffer kits)';'rZPGM7p1iM9';860;5.00;5.00;4;82;;25
+102;'GHA-Gen OTSS-880';'GHA-Gen OTSS-St/Eq-880-Latex disposable gloves';;'Latex disposable gloves';'Qcqxfudu9pI';880;1.00;1.00;4;82;;24
 103;'GHA-Gen OTSS-890';'GHA-Gen OTSS-St/Eq-890-CLINICAL EQUIPMENT';;'CLINICAL EQUIPMENT';'REFCQIaXJqx';890;0.00;0.00;4;8;;
 104;'GHA-Gen OTSS-900';'GHA-Gen OTSS-St/Eq-900-For each item below, is there at least one that is present and functional at the facility?';;'For each item below, is there at least one that is present and functional at the facility?';'YUYTWH4K64L';900;0.00;0.00;4;8;;
 105;'GHA-Gen OTSS-910';'GHA-Gen OTSS-St/Eq-910-Timers';;'Timers';'gYlu3EqBS5b';910;1.00;1.00;4;42;;24
@@ -80,14 +80,14 @@
 112;'GHA-Gen OTSS-980';'GHA-Gen OTSS-St/Eq-980-Child weighing scales';;'Child weighing scales';'uDNpuJU6AAf';980;1.00;1.00;4;42;;24
 113;'GHA-Gen OTSS-990';'GHA-Gen OTSS-St/Eq-990-Infant weighing scales';;'Infant weighing scales';'GxHjsgswpPQ';990;1.00;1.00;4;42;;24
 114;'GHA-Gen OTSS-1000';'GHA-Gen OTSS-St/Eq-1000-Sphygmomanometer';;'Sphygmomanometer';'eF7pan6EVQ5';1000;0.00;0.00;4;42;;
-115;'GHA-Pharm Asst-130';'GHA-Pharm Asst-Pharm Asst-130-Are drugs stored on shelves and orderly?';;'Are drugs stored on shelves and orderly?';'qgXHs6gJKwA';130;0.00;0.00;56;85;;30
-116;'GHA-Pharm Asst-140';'GHA-Pharm Asst-Pharm Asst-140-Does the pharmacy have any expired drugs on their shelves?';;'Does the pharmacy have any expired drugs on their shelves?';'EFb9Qowa2zd';140;0.00;0.00;56;85;;30
-117;'GHA-Pharm Asst-150';'GHA-Pharm Asst-Pharm Asst-150-Are shelves appropriately labeled?';;'Are shelves appropriately labeled?';'dL7GRAzliR9';150;0.00;0.00;56;85;;30
-118;'GHA-Pharm Asst-160';'GHA-Pharm Asst-Pharm Asst-160-Do pharmacy staff have counting tray for dispensing drugs?';;'Do pharmacy staff have counting tray for dispensing drugs?';'aEmx3M75NRJ';160;0.00;0.00;56;85;;30
-119;'GHA-Pharm Obs-140';'GHA-Pharm Obs-Obs 1-140-Do pharmacy staff clearly and meaningfully write dosage on dispensed medication?';;'Do pharmacy staff clearly and meaningfully write dosage on dispensed medication?';'dxfNIX874G1';140;0.00;0.00;58;85;;32
-120;'GHA-Pharm Obs-150';'GHA-Pharm Obs-Obs 1-150-Do pharmacy staff explain to client how to take their medication?';;'Do pharmacy staff explain to client how to take their medication?';'QyFLrwzfyYn';150;0.00;0.00;58;85;;32
-121;'GHA-Pharm Obs-160';'GHA-Pharm Obs-Obs 1-160-Do pharmacy staff check if the patient has understood how to take the medication?';;'Do pharmacy staff check if the patient has understood how to take the medication?';'j2W4jk8CzJb';160;0.00;0.00;58;85;;32
-122;'GHA-Pharm Obs-170';'GHA-Pharm Obs-Obs 1-170-Do pharmacy staff advise patient potential side effect of medicine?';;'Do pharmacy staff advise patient potential side effect of medicine?';'AJYDYA9IHt5';170;0.00;0.00;58;85;;32
+115;'GHA-Pharm Asst-130';'GHA-Pharm Asst-Pharm Asst-130-Are drugs stored on shelves and orderly?';;'Are drugs stored on shelves and orderly?';'qgXHs6gJKwA';130;1.00;1.00;56;85;;30
+116;'GHA-Pharm Asst-140';'GHA-Pharm Asst-Pharm Asst-140-Does the pharmacy have any expired drugs on their shelves?';;'Does the pharmacy have any expired drugs on their shelves?';'EFb9Qowa2zd';140;1.00;1.00;56;85;;30
+117;'GHA-Pharm Asst-150';'GHA-Pharm Asst-Pharm Asst-150-Are shelves appropriately labeled?';;'Are shelves appropriately labeled?';'dL7GRAzliR9';150;1.00;1.00;56;85;;30
+118;'GHA-Pharm Asst-160';'GHA-Pharm Asst-Pharm Asst-160-Do pharmacy staff have counting tray for dispensing drugs?';;'Do pharmacy staff have counting tray for dispensing drugs?';'aEmx3M75NRJ';160;1.00;1.00;56;85;;30
+119;'GHA-Pharm Obs-140';'GHA-Pharm Obs-Obs 1-140-Do pharmacy staff clearly and meaningfully write dosage on dispensed medication?';;'Do pharmacy staff clearly and meaningfully write dosage on dispensed medication?';'dxfNIX874G1';140;1.00;1.00;58;85;;32
+120;'GHA-Pharm Obs-150';'GHA-Pharm Obs-Obs 1-150-Do pharmacy staff explain to client how to take their medication?';;'Do pharmacy staff explain to client how to take their medication?';'QyFLrwzfyYn';150;1.00;1.00;58;85;;32
+121;'GHA-Pharm Obs-160';'GHA-Pharm Obs-Obs 1-160-Do pharmacy staff check if the patient has understood how to take the medication?';;'Do pharmacy staff check if the patient has understood how to take the medication?';'j2W4jk8CzJb';160;1.00;1.00;58;85;;32
+122;'GHA-Pharm Obs-170';'GHA-Pharm Obs-Obs 1-170-Do pharmacy staff advise patient potential side effect of medicine?';;'Do pharmacy staff advise patient potential side effect of medicine?';'AJYDYA9IHt5';170;1.00;1.00;58;85;;32
 123;'GHA-Gen OTSS-1060';'GHA-Gen OTSS-St/Eq-1060-Comments:';;'Comments:';'OtmERuZoiJH';1060;0.00;0.00;4;13;;
 124;'GHA-CR Obs 1-100';'GHA-CR Obs 1-Obs 1-100-Observe 3 fever consultations (1 adult and 2 children)';;'Observe 3 fever consultations (1 adult and 2 children)';'VNYa72TWdax';100;0.00;0.00;7;8;;
 125;'GHA-CR Obs 1-110';'GHA-CR Obs 1-Obs 1-110-This should be the first of three observations';;'This should be the first of three observations';'JmQc6Yvdgcf';110;0.00;0.00;7;8;;
@@ -109,7 +109,7 @@
 142;'GHA-CR Obs 1-280';'GHA-CR Obs 1-Cl hist-280-Any other symptoms (ear pain, discharge from ear, skin rash, painful urination) and their period of onset asked?';;'Any other symptoms (ear pain, discharge from ear, skin rash, painful urination) and their period of onset asked?';'uUlzF2t2nw2';280;1.00;1.00;10;85;;36
 143;'GHA-CR Obs 1-290';'GHA-CR Obs 1-Cl hist-290-Whether treatment given before coming to the health facility (either at home or another health facility)?';;'Whether treatment given before coming to the health facility (either at home or another health facility)?';'WGs1glfi32M';290;1.00;1.00;10;85;;36
 145;'GHA-CR Obs 1-310';'GHA-CR Obs 1-Cl hist-310-Whether the patient received a malaria test with heel stick or finger prick in last 2 weeks?';;'Whether the patient received a malaria test with heel stick or finger prick in last 2 weeks?';'cVyvDmW2Smp';310;1.00;1.00;10;85;;36
-146;'GHA-CR Obs 1-320';'GHA-CR Obs 1-Signs Sev Mal-320-Does the health worker ask / check for signs of severe disease?';;'Does the health worker ask / check for signs of severe disease?';'gtDCqocAOWc';320;8.00;8.00;11;85;;36
+146;'GHA-CR Obs 1-320';'GHA-CR Obs 1-Signs Sev Mal-320-Does the health worker ask / check for signs of severe disease?';;'Does the health worker ask / check for signs of severe disease?';'gtDCqocAOWc';320;16.00;16.00;11;85;;36
 147;'GHA-CR Obs 1-330';'GHA-CR Obs 1-Signs Sev Mal-330-Does the health worker ask / check for:';;'Does the health worker ask / check for:';'gMt7eQcj8rn';330;0.00;0.00;11;8;;
 148;'GHA-CR Obs 1-340';'GHA-CR Obs 1-Signs Sev Mal-340-Change in behavior, alterred consciousness or coma';;'Change in behavior, alterred consciousness or coma';'MfvUdd0XD2r';340;0.00;0.00;11;85;;
 149;'GHA-CR Obs 1-350';'GHA-CR Obs 1-Signs Sev Mal-350-Convulsions';;'Convulsions';'ZNcM2lqtlMh';350;0.00;0.00;11;85;;
@@ -120,12 +120,12 @@
 154;'GHA-CR Obs 1-400';'GHA-CR Obs 1-Signs Sev Mal-400-Deep breathing/respiratory distress';;'Deep breathing/respiratory distress';'EAU8rm8geqi';400;0.00;0.00;11;85;;
 155;'GHA-CR Obs 1-410';'GHA-CR Obs 1-Signs Sev Mal-410-Jaundice (yellow eyes or skin)';;'Jaundice (yellow eyes or skin)';'AuVJubiNCZt';410;0.00;0.00;11;85;;
 156;'GHA-CR Obs 1-420';'GHA-CR Obs 1-Cl sev assess-420-Does the health worker ask / check for:';;'Does the health worker ask / check for:';'mmBGTNo1bPw';420;0.00;0.00;12;8;;
-157;'GHA-CR Obs 1-430';'GHA-CR Obs 1-Cl sev assess-430-Presence of anemia?';;'Presence of anemia?';'r4UJ0YyIzym';430;2.00;2.00;12;85;;36
+157;'GHA-CR Obs 1-430';'GHA-CR Obs 1-Cl sev assess-430-Presence of anemia?';;'Presence of anemia?';'r4UJ0YyIzym';430;1.00;1.00;12;85;;36
 158;'GHA-CR Obs 1-440';'GHA-CR Obs 1-Cl sev assess-440-If the patient is pregnant? (if female 15-49)';;'If the patient is pregnant? (if female 15-49)';'NCVNk8KW7Ys';440;1.00;1.00;12;86;;36
-159;'GHA-CR Obs 1-450';'GHA-CR Obs 1-Cl sev assess-450-Temperature taken?';;'Temperature taken?';'JdEucE9soUx';450;2.00;2.00;12;85;;36
-160;'GHA-CR Obs 1-460';'GHA-CR Obs 1-Cl sev assess-460-Fast breathing or chest in-drawing assessed?';;'Fast breathing or chest in-drawing assessed?';'R7nuRgVkJ7U';460;2.00;2.00;12;85;;36
-161;'GHA-CR Obs 1-470';'GHA-CR Obs 1-Cl sev assess-470-Pulse rate measured?';;'Pulse rate measured?';'TUKodCl9JGJ';470;2.00;2.00;12;85;;36
-162;'GHA-CR Obs 1-480';'GHA-CR Obs 1-Cl sev assess-480-Other signs of severe disease? including:';;'Other signs of severe disease? including:';'e0nFsLB41AO';480;2.00;2.00;12;85;;36
+159;'GHA-CR Obs 1-450';'GHA-CR Obs 1-Cl sev assess-450-Temperature taken?';;'Temperature taken?';'JdEucE9soUx';450;1.00;1.00;12;85;;36
+160;'GHA-CR Obs 1-460';'GHA-CR Obs 1-Cl sev assess-460-Fast breathing or chest in-drawing assessed?';;'Fast breathing or chest in-drawing assessed?';'R7nuRgVkJ7U';460;1.00;1.00;12;85;;36
+161;'GHA-CR Obs 1-470';'GHA-CR Obs 1-Cl sev assess-470-Pulse rate measured?';;'Pulse rate measured?';'TUKodCl9JGJ';470;1.00;1.00;12;85;;36
+162;'GHA-CR Obs 1-480';'GHA-CR Obs 1-Cl sev assess-480-Other signs of severe disease? including:';;'Other signs of severe disease? including:';'e0nFsLB41AO';480;1.00;1.00;12;85;;36
 163;'GHA-CR Obs 1-490';'GHA-CR Obs 1-Cl sev assess-490-Neck stiffness';;'Neck stiffness';'LyLcMoECDbv';490;0.00;0.00;12;85;;
 164;'GHA-CR Obs 1-500';'GHA-CR Obs 1-Cl sev assess-500-Severe Dehydration (sunken eyes, skin pinch goes back>2sec, drinks eagerly)';;'Severe Dehydration (sunken eyes, skin pinch goes back>2sec, drinks eagerly)';'o7nJHzR2fBH';500;0.00;0.00;12;85;;
 166;'GHA-CR Obs 1-520';'GHA-CR Obs 1-Cl sev assess-520-Papilledema on eye exam';;'Papilledema on eye exam';'iYDBciLzhyc';520;0.00;0.00;12;85;;
@@ -134,24 +134,24 @@
 169;'GHA-CR Obs 1-550';'GHA-CR Obs 1-Gen Ex-550-Does the health worker conduct a general physical exam, including:';;'Does the health worker conduct a general physical exam, including:';'KPZUU2ZZIr4';550;0.00;0.00;13;8;;
 171;'GHA-CR Obs 1-570';'GHA-CR Obs 1-Gen Ex-570-Neck exam';;'Neck exam';'sDlf7pX0WHm';570;1.00;1.00;13;85;;36
 172;'GHA-CR Obs 1-580';'GHA-CR Obs 1-Gen Ex-580-Lung exam';;'Lung exam';'tDr9fs6XsYC';580;1.00;1.00;13;85;;36
-173;'GHA-CR Obs 1-590';'GHA-CR Obs 1-Gen Ex-590-Heart exam';;'Heart exam';'fSZ0V5CPmJE';590;0.25;0.25;13;85;;36
+173;'GHA-CR Obs 1-590';'GHA-CR Obs 1-Gen Ex-590-Heart exam';;'Heart exam';'fSZ0V5CPmJE';590;1.00;1.00;13;85;;36
 174;'GHA-CR Obs 1-600';'GHA-CR Obs 1-Gen Ex-600-Abdominal exam';;'Abdominal exam';'nW08KqtRNyX';600;1.00;1.00;13;85;;36
-175;'GHA-CR Obs 1-610';'GHA-CR Obs 1-Gen Ex-610-Extremities exam';;'Extremities exam';'qwikugnKTIn';610;0.25;0.25;13;85;;36
-176;'GHA-CR Obs 1-620';'GHA-CR Obs 1-Gen Ex-620-Skin exam';;'Skin exam';'TnRIJzMQwDs';620;0.25;0.25;13;85;;36
+175;'GHA-CR Obs 1-610';'GHA-CR Obs 1-Gen Ex-610-Extremities exam';;'Extremities exam';'qwikugnKTIn';610;1.00;1.00;13;85;;36
+176;'GHA-CR Obs 1-620';'GHA-CR Obs 1-Gen Ex-620-Skin exam';;'Skin exam';'TnRIJzMQwDs';620;1.00;1.00;13;85;;36
 177;'GHA-CR Obs 1-630';'GHA-CR Obs 1-Gen Ex-630-Neurological exam';;'Neurological exam';'hoMXvaLOTSn';630;1.00;1.00;13;85;;36
 178;'GHA-CR Obs 1-640';'GHA-CR Obs 1-Diag-640-Does the health worker:';;'Does the health worker:';'QjVAzqZhZ1x';640;0.00;0.00;14;8;;
 179;'GHA-CR Obs 1-650';'GHA-CR Obs 1-Diag-650-Order/Conduct a malaria test?';;'Order/Conduct a malaria test?';'XuvKm0stbFJ';650;0.00;0.00;14;85;;
 181;'GHA-CR Obs 1-655';'GHA-CR Obs 1-Diag-655-What is the test result?';;'What is the test result?';'xES3Jm84D8P';655;0.00;0.00;14;40;179;
-182;'GHA-CR Obs 1-680';'GHA-CR Obs 1-Diag-680-Did health worker appropriately classify the illness according to disease diagnosis and severity?';;'Did health worker appropriately classify the illness according to disease diagnosis and severity?';'p2YBbmVKG4P';680;10.00;10.00;14;85;;36
+182;'GHA-CR Obs 1-680';'GHA-CR Obs 1-Diag-680-Did health worker appropriately classify the illness according to disease diagnosis and severity?';;'Did health worker appropriately classify the illness according to disease diagnosis and severity?';'p2YBbmVKG4P';680;16.00;16.00;14;85;;36
 184;'GHA-CR Obs 1-700';'GHA-CR Obs 1-Tx-700-Was an anti-malarial prescribed?';;'Was an anti-malarial prescribed?';'zOIIvXqyPbn';700;0.00;0.00;15;85;;
-185;'GHA-CR Obs 1-710';'GHA-CR Obs 1-Tx-710-Supervisor, should an anti-malarial have been prescribed?';;'Supervisor, should an anti-malarial have been prescribed?';'ZiZJGF9CU9M';710;10.00;10.00;15;85;;
-186;'GHA-CR Obs 1-705';'GHA-CR Obs 1-Tx-705-If prescribed, was the antimalarial prescribed according to national guidelines (correct drug, dosage, number of days)?';;'If prescribed, was the antimalarial prescribed according to national guidelines (correct drug, dosage, number of days)?';'DCXVWwhqD95';705;0.00;0.00;15;89;;36
+185;'GHA-CR Obs 1-710';'GHA-CR Obs 1-Tx-710-Supervisor, should an anti-malarial have been prescribed?';;'Supervisor, should an anti-malarial have been prescribed?';'ZiZJGF9CU9M';710;0.00;0.00;15;85;;
+186;'GHA-CR Obs 1-705';'GHA-CR Obs 1-Tx-705-If prescribed, was the antimalarial prescribed according to national guidelines (correct drug, dosage, number of days)?';;'If prescribed, was the antimalarial prescribed according to national guidelines (correct drug, dosage, number of days)?';'DCXVWwhqD95';705;16.00;16.00;15;89;;36
 189;'GHA-CR Obs 1-750';'GHA-CR Obs 1-Tx-750-Was the patient referred or admitted?';;'Was the patient referred or admitted?';'kdC89ulSbdI';750;0.00;0.00;15;85;;
 190;'GHA-CR Obs 1-760';'GHA-CR Obs 1-Tx-760-Was the patient treated as an outpatient (NOT referred or admitted)?';;'Was the patient treated as an outpatient (NOT referred or admitted)?';'jJt5eRGRva9';760;0.00;0.00;15;85;;
 191;'GHA-CR Obs 1-770';'GHA-CR Obs 1-Tx-770-For NON-referral and NON-admitted cases ONLY: Was caregiver/patient';;'For NON-referral and NON-admitted cases ONLY: Was caregiver/patient';'eN2nGbb5wLG';770;0.00;0.00;15;8;190;
-192;'GHA-CR Obs 1-780';'GHA-CR Obs 1-Tx-780-Informed on what is wrong with the patient?';;'Informed on what is wrong with the patient?';'hTFbjsyf9g1';780;2.00;2.00;15;85;190;36
-193;'GHA-CR Obs 1-790';'GHA-CR Obs 1-Tx-790-Advised on how to take the prescribed medications?';;'Advised on how to take the prescribed medications?';'fJlQv61Sbz0';790;2.00;2.00;15;85;190;36
-194;'GHA-CR Obs 1-800';'GHA-CR Obs 1-Tx-800-Advised on when to return for follow-up evaluation?';;'Advised on when to return for follow-up evaluation?';'jQFYxav8bNd';800;2.00;2.00;15;85;190;36
+192;'GHA-CR Obs 1-780';'GHA-CR Obs 1-Tx-780-Informed on what is wrong with the patient?';;'Informed on what is wrong with the patient?';'hTFbjsyf9g1';780;1.00;1.00;15;85;190;36
+193;'GHA-CR Obs 1-790';'GHA-CR Obs 1-Tx-790-Advised on how to take the prescribed medications?';;'Advised on how to take the prescribed medications?';'fJlQv61Sbz0';790;1.00;1.00;15;85;190;36
+194;'GHA-CR Obs 1-800';'GHA-CR Obs 1-Tx-800-Advised on when to return for follow-up evaluation?';;'Advised on when to return for follow-up evaluation?';'jQFYxav8bNd';800;1.00;1.00;15;85;190;36
 195;'GHA-CR Obs 1-810';'GHA-CR Obs 1-Tx-810-Advised on preventive measures?';;'Advised on preventive measures?';'uCEbBxKwi90';810;1.00;1.00;15;85;190;36
 196;'GHA-CR Obs 1-820';'GHA-CR Obs 1-Tx-820-Asked if they have any questions?';;'Asked if they have any questions?';'J3NSYHAyUzC';820;1.00;1.00;15;85;190;36
 197;'GHA-CR Obs 1-830';'GHA-CR Obs 1-Tx-830-For referral and admitted cases ONLY: Was caregiver/patient';;'For referral and admitted cases ONLY: Was caregiver/patient';'DBIlpnVI9BV';830;0.00;0.00;15;8;189;
@@ -174,7 +174,7 @@
 220;'GHA-CR Obs 2-280';'GHA-CR Obs 2-Cl hist-280-Any other symptoms (ear pain, discharge from ear, skin rash, painful urination) and their period of onset asked?';;'Any other symptoms (ear pain, discharge from ear, skin rash, painful urination) and their period of onset asked?';'Us2n7Zrv5lL';280;1.00;1.00;19;85;;37
 221;'GHA-CR Obs 2-290';'GHA-CR Obs 2-Cl hist-290-Whether treatment given before coming to the health facility (either at home or another health facility)?';;'Whether treatment given before coming to the health facility (either at home or another health facility)?';'Ugq22cg542X';290;1.00;1.00;19;85;;37
 223;'GHA-CR Obs 2-310';'GHA-CR Obs 2-Cl hist-310-Whether the patient received a malaria test with heel stick or finger prick in last 2 weeks?';;'Whether the patient received a malaria test with heel stick or finger prick in last 2 weeks?';'v0NsGci0F13';310;1.00;1.00;19;85;;37
-224;'GHA-CR Obs 2-320';'GHA-CR Obs 2-Signs Sev Mal-320-Does the health worker ask / check for signs of severe disease?';;'Does the health worker ask / check for signs of severe disease?';'JHztvTEyPk4';320;8.00;8.00;20;85;;37
+224;'GHA-CR Obs 2-320';'GHA-CR Obs 2-Signs Sev Mal-320-Does the health worker ask / check for signs of severe disease?';;'Does the health worker ask / check for signs of severe disease?';'JHztvTEyPk4';320;16.00;16.00;20;85;;37
 225;'GHA-CR Obs 2-330';'GHA-CR Obs 2-Signs Sev Mal-330-Does the health worker ask / check for:';;'Does the health worker ask / check for:';'UP2EnbdBwmo';330;0.00;0.00;20;8;;
 226;'GHA-CR Obs 2-340';'GHA-CR Obs 2-Signs Sev Mal-340-Change in behavior, alterred consciousness or coma';;'Change in behavior, alterred consciousness or coma';'BLKhWDPJbfh';340;0.00;0.00;20;85;;
 227;'GHA-CR Obs 2-350';'GHA-CR Obs 2-Signs Sev Mal-350-Convulsions';;'Convulsions';'JHhMuYaor6K';350;0.00;0.00;20;85;;
@@ -185,12 +185,12 @@
 232;'GHA-CR Obs 2-400';'GHA-CR Obs 2-Signs Sev Mal-400-Deep breathing/respiratory distress';;'Deep breathing/respiratory distress';'AUBpgHNQxEU';400;0.00;0.00;20;85;;
 233;'GHA-CR Obs 2-410';'GHA-CR Obs 2-Signs Sev Mal-410-Jaundice (yellow eyes or skin)';;'Jaundice (yellow eyes or skin)';'tkwBM9oSUZA';410;0.00;0.00;20;85;;
 234;'GHA-CR Obs 2-420';'GHA-CR Obs 2-Cl sev assess-420-Does the health worker ask / check for:';;'Does the health worker ask / check for:';'WIONsuC4HoB';420;0.00;0.00;21;8;;
-235;'GHA-CR Obs 2-430';'GHA-CR Obs 2-Cl sev assess-430-Presence of anemia?';;'Presence of anemia?';'Kq3O5c2fJTw';430;2.00;2.00;21;85;;37
+235;'GHA-CR Obs 2-430';'GHA-CR Obs 2-Cl sev assess-430-Presence of anemia?';;'Presence of anemia?';'Kq3O5c2fJTw';430;1.00;1.00;21;85;;37
 236;'GHA-CR Obs 2-440';'GHA-CR Obs 2-Cl sev assess-440-If the patient is pregnant? (if female 15-49)';;'If the patient is pregnant? (if female 15-49)';'ub6qNXNcFlF';440;1.00;1.00;21;86;;37
-237;'GHA-CR Obs 2-450';'GHA-CR Obs 2-Cl sev assess-450-Temperature taken?';;'Temperature taken?';'PSAihUGgQi2';450;2.00;2.00;21;85;;37
-238;'GHA-CR Obs 2-460';'GHA-CR Obs 2-Cl sev assess-460-Fast breathing or chest in-drawing assessed?';;'Fast breathing or chest in-drawing assessed?';'vWYhGj3tdqz';460;2.00;2.00;21;85;;37
-239;'GHA-CR Obs 2-470';'GHA-CR Obs 2-Cl sev assess-470-Pulse rate measured?';;'Pulse rate measured?';'ZfFw5V7QXQi';470;2.00;2.00;21;85;;37
-240;'GHA-CR Obs 2-480';'GHA-CR Obs 2-Cl sev assess-480-Other signs of severe disease? including:';;'Other signs of severe disease? including:';'QrWuAu5g9Zz';480;2.00;2.00;21;85;;37
+237;'GHA-CR Obs 2-450';'GHA-CR Obs 2-Cl sev assess-450-Temperature taken?';;'Temperature taken?';'PSAihUGgQi2';450;1.00;1.00;21;85;;37
+238;'GHA-CR Obs 2-460';'GHA-CR Obs 2-Cl sev assess-460-Fast breathing or chest in-drawing assessed?';;'Fast breathing or chest in-drawing assessed?';'vWYhGj3tdqz';460;1.00;1.00;21;85;;37
+239;'GHA-CR Obs 2-470';'GHA-CR Obs 2-Cl sev assess-470-Pulse rate measured?';;'Pulse rate measured?';'ZfFw5V7QXQi';470;1.00;1.00;21;85;;37
+240;'GHA-CR Obs 2-480';'GHA-CR Obs 2-Cl sev assess-480-Other signs of severe disease? including:';;'Other signs of severe disease? including:';'QrWuAu5g9Zz';480;1.00;1.00;21;85;;37
 241;'GHA-CR Obs 2-490';'GHA-CR Obs 2-Cl sev assess-490-Neck stiffness';;'Neck stiffness';'XuLIvyfEx8v';490;0.00;0.00;21;85;;
 242;'GHA-CR Obs 2-500';'GHA-CR Obs 2-Cl sev assess-500-Severe Dehydration (sunken eyes, skin pinch goes back>2sec, drinks eagerly)';;'Severe Dehydration (sunken eyes, skin pinch goes back>2sec, drinks eagerly)';'gIHHfOGZDTa';500;0.00;0.00;21;85;;
 244;'GHA-CR Obs 2-520';'GHA-CR Obs 2-Cl sev assess-520-Papilledema on eye exam';;'Papilledema on eye exam';'eiWzZjdrjPG';520;0.00;0.00;21;85;;
@@ -199,24 +199,24 @@
 247;'GHA-CR Obs 2-550';'GHA-CR Obs 2-Gen Ex-550-Does the health worker conduct a general physical exam, including:';;'Does the health worker conduct a general physical exam, including:';'fuAKrLn9XAb';550;0.00;0.00;22;8;;
 249;'GHA-CR Obs 2-570';'GHA-CR Obs 2-Gen Ex-570-Neck exam';;'Neck exam';'d2z4hHM95IW';570;1.00;1.00;22;85;;37
 250;'GHA-CR Obs 2-580';'GHA-CR Obs 2-Gen Ex-580-Lung exam';;'Lung exam';'N0WS7TEF0iW';580;1.00;1.00;22;85;;37
-251;'GHA-CR Obs 2-590';'GHA-CR Obs 2-Gen Ex-590-Heart exam';;'Heart exam';'i0fEPGnZnic';590;0.25;0.25;22;85;;37
+251;'GHA-CR Obs 2-590';'GHA-CR Obs 2-Gen Ex-590-Heart exam';;'Heart exam';'i0fEPGnZnic';590;1.00;1.00;22;85;;37
 252;'GHA-CR Obs 2-600';'GHA-CR Obs 2-Gen Ex-600-Abdominal exam';;'Abdominal exam';'AcBq00JT7Je';600;1.00;1.00;22;85;;37
-253;'GHA-CR Obs 2-610';'GHA-CR Obs 2-Gen Ex-610-Extremities exam';;'Extremities exam';'qHI7yPYeHDN';610;0.25;0.25;22;85;;37
-254;'GHA-CR Obs 2-620';'GHA-CR Obs 2-Gen Ex-620-Skin exam';;'Skin exam';'X0A1Lnx5Qgk';620;0.25;0.25;22;85;;37
+253;'GHA-CR Obs 2-610';'GHA-CR Obs 2-Gen Ex-610-Extremities exam';;'Extremities exam';'qHI7yPYeHDN';610;1.00;1.00;22;85;;37
+254;'GHA-CR Obs 2-620';'GHA-CR Obs 2-Gen Ex-620-Skin exam';;'Skin exam';'X0A1Lnx5Qgk';620;1.00;1.00;22;85;;37
 255;'GHA-CR Obs 2-630';'GHA-CR Obs 2-Gen Ex-630-Neurological exam';;'Neurological exam';'lqynTachw2W';630;1.00;1.00;22;85;;37
 256;'GHA-CR Obs 2-640';'GHA-CR Obs 2-Diag-640-Does the health worker:';;'Does the health worker:';'JChhdnlAYGI';640;0.00;0.00;23;8;;
 257;'GHA-CR Obs 2-650';'GHA-CR Obs 2-Diag-650-Order/Conduct a malaria test?';;'Order/Conduct a malaria test?';'ZShKeYQq4ZI';650;0.00;0.00;23;85;;
 259;'GHA-CR Obs 2-655';'GHA-CR Obs 2-Diag-655-What is the test result?';;'What is the test result?';'Z3T2P3MT87x';655;0.00;0.00;23;40;257;
-260;'GHA-CR Obs 2-680';'GHA-CR Obs 2-Diag-680-Did health worker appropriately classify the illness according to disease diagnosis and severity?';;'Did health worker appropriately classify the illness according to disease diagnosis and severity?';'jPBI4JvK6z6';680;10.00;10.00;23;85;;37
+260;'GHA-CR Obs 2-680';'GHA-CR Obs 2-Diag-680-Did health worker appropriately classify the illness according to disease diagnosis and severity?';;'Did health worker appropriately classify the illness according to disease diagnosis and severity?';'jPBI4JvK6z6';680;16.00;16.00;23;85;;37
 262;'GHA-CR Obs 2-700';'GHA-CR Obs 2-Tx-700-Was an anti-malarial prescribed?';;'Was an anti-malarial prescribed?';'AIv3QCYEqw5';700;0.00;0.00;24;85;;
-263;'GHA-CR Obs 2-710';'GHA-CR Obs 2-Tx-710-Supervisor, should an anti-malarial have been prescribed?';;'Supervisor, should an anti-malarial have been prescribed?';'II7N3PH8mXc';710;10.00;10.00;24;85;;
-264;'GHA-CR Obs 2-705';'GHA-CR Obs 2-Tx-705-If prescribed, was the antimalarial prescribed according to national guidelines (correct drug, dosage, number of days)?';;'If prescribed, was the antimalarial prescribed according to national guidelines (correct drug, dosage, number of days)?';'QFTO6ESRaRg';705;0.00;0.00;24;89;;37
+263;'GHA-CR Obs 2-710';'GHA-CR Obs 2-Tx-710-Supervisor, should an anti-malarial have been prescribed?';;'Supervisor, should an anti-malarial have been prescribed?';'II7N3PH8mXc';710;0.00;0.00;24;85;;
+264;'GHA-CR Obs 2-705';'GHA-CR Obs 2-Tx-705-If prescribed, was the antimalarial prescribed according to national guidelines (correct drug, dosage, number of days)?';;'If prescribed, was the antimalarial prescribed according to national guidelines (correct drug, dosage, number of days)?';'QFTO6ESRaRg';705;16.00;16.00;24;89;;37
 267;'GHA-CR Obs 2-750';'GHA-CR Obs 2-Tx-750-Was the patient referred or admitted?';;'Was the patient referred or admitted?';'pb3W9oVJz41';750;0.00;0.00;24;85;;
 268;'GHA-CR Obs 2-760';'GHA-CR Obs 2-Tx-760-Was the patient treated as an outpatient (NOT referred or admitted)?';;'Was the patient treated as an outpatient (NOT referred or admitted)?';'pgNBzCH97EZ';760;0.00;0.00;24;85;;
 269;'GHA-CR Obs 2-770';'GHA-CR Obs 2-Tx-770-For NON-referral and NON-admitted cases ONLY: Was caregiver/patient';;'For NON-referral and NON-admitted cases ONLY: Was caregiver/patient';'ZxdHUb26ALy';770;0.00;0.00;24;8;268;
-270;'GHA-CR Obs 2-780';'GHA-CR Obs 2-Tx-780-Informed on what is wrong with the patient?';;'Informed on what is wrong with the patient?';'NFqhCJko5J9';780;2.00;2.00;24;85;268;37
-271;'GHA-CR Obs 2-790';'GHA-CR Obs 2-Tx-790-Advised on how to take the prescribed medications?';;'Advised on how to take the prescribed medications?';'u1Jd65ajvuu';790;2.00;2.00;24;85;268;37
-272;'GHA-CR Obs 2-800';'GHA-CR Obs 2-Tx-800-Advised on when to return for follow-up evaluation?';;'Advised on when to return for follow-up evaluation?';'lDG1Cuo13fU';800;2.00;2.00;24;85;268;37
+270;'GHA-CR Obs 2-780';'GHA-CR Obs 2-Tx-780-Informed on what is wrong with the patient?';;'Informed on what is wrong with the patient?';'NFqhCJko5J9';780;1.00;1.00;24;85;268;37
+271;'GHA-CR Obs 2-790';'GHA-CR Obs 2-Tx-790-Advised on how to take the prescribed medications?';;'Advised on how to take the prescribed medications?';'u1Jd65ajvuu';790;1.00;1.00;24;85;268;37
+272;'GHA-CR Obs 2-800';'GHA-CR Obs 2-Tx-800-Advised on when to return for follow-up evaluation?';;'Advised on when to return for follow-up evaluation?';'lDG1Cuo13fU';800;1.00;1.00;24;85;268;37
 273;'GHA-CR Obs 2-810';'GHA-CR Obs 2-Tx-810-Advised on preventive measures?';;'Advised on preventive measures?';'sFrngLeS3ap';810;1.00;1.00;24;85;268;37
 274;'GHA-CR Obs 2-820';'GHA-CR Obs 2-Tx-820-Asked if they have any questions?';;'Asked if they have any questions?';'XCejyeghASs';820;1.00;1.00;24;85;268;37
 275;'GHA-CR Obs 2-830';'GHA-CR Obs 2-Tx-830-For referral and admitted cases ONLY: Was caregiver/patient';;'For referral and admitted cases ONLY: Was caregiver/patient';'aj7azXJkMJG';830;0.00;0.00;24;8;267;
@@ -239,7 +239,7 @@
 298;'GHA-CR Obs 3-280';'GHA-CR Obs 3-Cl hist-280-Any other symptoms (ear pain, discharge from ear, skin rash, painful urination) and their period of onset asked?';;'Any other symptoms (ear pain, discharge from ear, skin rash, painful urination) and their period of onset asked?';'SD3Gvh2XkAk';280;1.00;1.00;28;85;;38
 299;'GHA-CR Obs 3-290';'GHA-CR Obs 3-Cl hist-290-Whether treatment given before coming to the health facility (either at home or another health facility)?';;'Whether treatment given before coming to the health facility (either at home or another health facility)?';'EyCJZ55FeUc';290;1.00;1.00;28;85;;38
 301;'GHA-CR Obs 3-310';'GHA-CR Obs 3-Cl hist-310-Whether the patient received a malaria test with heel stick or finger prick in last 2 weeks?';;'Whether the patient received a malaria test with heel stick or finger prick in last 2 weeks?';'atDXk8ny0XY';310;1.00;1.00;28;85;;38
-302;'GHA-CR Obs 3-320';'GHA-CR Obs 3-Signs Sev Mal-320-Does the health worker ask / check for signs of severe disease?';;'Does the health worker ask / check for signs of severe disease?';'AHoO4Hra7JP';320;8.00;8.00;29;85;;38
+302;'GHA-CR Obs 3-320';'GHA-CR Obs 3-Signs Sev Mal-320-Does the health worker ask / check for signs of severe disease?';;'Does the health worker ask / check for signs of severe disease?';'AHoO4Hra7JP';320;16.00;16.00;29;85;;38
 303;'GHA-CR Obs 3-330';'GHA-CR Obs 3-Signs Sev Mal-330-Does the health worker ask / check for:';;'Does the health worker ask / check for:';'SWnWY2NWFeq';330;0.00;0.00;29;8;;
 304;'GHA-CR Obs 3-340';'GHA-CR Obs 3-Signs Sev Mal-340-Change in behavior, alterred consciousness or coma';;'Change in behavior, alterred consciousness or coma';'pA4FG0JUJR1';340;0.00;0.00;29;85;;
 305;'GHA-CR Obs 3-350';'GHA-CR Obs 3-Signs Sev Mal-350-Convulsions';;'Convulsions';'iTqSE95cMZr';350;0.00;0.00;29;85;;
@@ -250,12 +250,12 @@
 310;'GHA-CR Obs 3-400';'GHA-CR Obs 3-Signs Sev Mal-400-Deep breathing/respiratory distress';;'Deep breathing/respiratory distress';'mGQ0D5xj8jd';400;0.00;0.00;29;85;;
 311;'GHA-CR Obs 3-410';'GHA-CR Obs 3-Signs Sev Mal-410-Jaundice (yellow eyes or skin)';;'Jaundice (yellow eyes or skin)';'dTYmYzw7Qna';410;0.00;0.00;29;85;;
 312;'GHA-CR Obs 3-420';'GHA-CR Obs 3-Cl sev assess-420-Does the health worker ask / check for:';;'Does the health worker ask / check for:';'qkBBkcInnI3';420;0.00;0.00;30;8;;
-313;'GHA-CR Obs 3-430';'GHA-CR Obs 3-Cl sev assess-430-Presence of anemia?';;'Presence of anemia?';'KrDiwyWqozy';430;2.00;2.00;30;85;;38
+313;'GHA-CR Obs 3-430';'GHA-CR Obs 3-Cl sev assess-430-Presence of anemia?';;'Presence of anemia?';'KrDiwyWqozy';430;1.00;1.00;30;85;;38
 314;'GHA-CR Obs 3-440';'GHA-CR Obs 3-Cl sev assess-440-If the patient is pregnant? (if female 15-49)';;'If the patient is pregnant? (if female 15-49)';'QxrFPPkFbVR';440;1.00;1.00;30;86;;38
-315;'GHA-CR Obs 3-450';'GHA-CR Obs 3-Cl sev assess-450-Temperature taken?';;'Temperature taken?';'IauaoAzd5ih';450;2.00;2.00;30;85;;38
-316;'GHA-CR Obs 3-460';'GHA-CR Obs 3-Cl sev assess-460-Fast breathing or chest in-drawing assessed?';;'Fast breathing or chest in-drawing assessed?';'SldYO4rReAx';460;2.00;2.00;30;85;;38
-317;'GHA-CR Obs 3-470';'GHA-CR Obs 3-Cl sev assess-470-Pulse rate measured?';;'Pulse rate measured?';'jzLXEiEczpo';470;2.00;2.00;30;85;;38
-318;'GHA-CR Obs 3-480';'GHA-CR Obs 3-Cl sev assess-480-Other signs of severe disease? including:';;'Other signs of severe disease? including:';'Iq5QQZALeIS';480;2.00;2.00;30;85;;38
+315;'GHA-CR Obs 3-450';'GHA-CR Obs 3-Cl sev assess-450-Temperature taken?';;'Temperature taken?';'IauaoAzd5ih';450;1.00;1.00;30;85;;38
+316;'GHA-CR Obs 3-460';'GHA-CR Obs 3-Cl sev assess-460-Fast breathing or chest in-drawing assessed?';;'Fast breathing or chest in-drawing assessed?';'SldYO4rReAx';460;1.00;1.00;30;85;;38
+317;'GHA-CR Obs 3-470';'GHA-CR Obs 3-Cl sev assess-470-Pulse rate measured?';;'Pulse rate measured?';'jzLXEiEczpo';470;1.00;1.00;30;85;;38
+318;'GHA-CR Obs 3-480';'GHA-CR Obs 3-Cl sev assess-480-Other signs of severe disease? including:';;'Other signs of severe disease? including:';'Iq5QQZALeIS';480;1.00;1.00;30;85;;38
 319;'GHA-CR Obs 3-490';'GHA-CR Obs 3-Cl sev assess-490-Neck stiffness';;'Neck stiffness';'ytjlSkszBoO';490;0.00;0.00;30;85;;
 320;'GHA-CR Obs 3-500';'GHA-CR Obs 3-Cl sev assess-500-Severe Dehydration (sunken eyes, skin pinch goes back>2sec, drinks eagerly)';;'Severe Dehydration (sunken eyes, skin pinch goes back>2sec, drinks eagerly)';'Kxqw3dXCA95';500;0.00;0.00;30;85;;
 322;'GHA-CR Obs 3-520';'GHA-CR Obs 3-Cl sev assess-520-Papilledema on eye exam';;'Papilledema on eye exam';'P0Jlb2LfN4k';520;0.00;0.00;30;85;;
@@ -264,24 +264,24 @@
 325;'GHA-CR Obs 3-550';'GHA-CR Obs 3-Gen Ex-550-Does the health worker conduct a general physical exam, including:';;'Does the health worker conduct a general physical exam, including:';'ZEiz3EErcYR';550;0.00;0.00;31;8;;
 327;'GHA-CR Obs 3-570';'GHA-CR Obs 3-Gen Ex-570-Neck exam';;'Neck exam';'C4PPBHpg6cJ';570;1.00;1.00;31;85;;38
 328;'GHA-CR Obs 3-580';'GHA-CR Obs 3-Gen Ex-580-Lung exam';;'Lung exam';'bRzqwTQF9iI';580;1.00;1.00;31;85;;38
-329;'GHA-CR Obs 3-590';'GHA-CR Obs 3-Gen Ex-590-Heart exam';;'Heart exam';'HenYZQJKOjT';590;0.25;0.25;31;85;;38
+329;'GHA-CR Obs 3-590';'GHA-CR Obs 3-Gen Ex-590-Heart exam';;'Heart exam';'HenYZQJKOjT';590;1.00;1.00;31;85;;38
 330;'GHA-CR Obs 3-600';'GHA-CR Obs 3-Gen Ex-600-Abdominal exam';;'Abdominal exam';'XBcAIwUK8E7';600;1.00;1.00;31;85;;38
-331;'GHA-CR Obs 3-610';'GHA-CR Obs 3-Gen Ex-610-Extremities exam';;'Extremities exam';'CYbMOWP66Mg';610;0.25;0.25;31;85;;38
-332;'GHA-CR Obs 3-620';'GHA-CR Obs 3-Gen Ex-620-Skin exam';;'Skin exam';'KlrlRQTJBT0';620;0.25;0.25;31;85;;38
+331;'GHA-CR Obs 3-610';'GHA-CR Obs 3-Gen Ex-610-Extremities exam';;'Extremities exam';'CYbMOWP66Mg';610;1.00;1.00;31;85;;38
+332;'GHA-CR Obs 3-620';'GHA-CR Obs 3-Gen Ex-620-Skin exam';;'Skin exam';'KlrlRQTJBT0';620;1.00;1.00;31;85;;38
 333;'GHA-CR Obs 3-630';'GHA-CR Obs 3-Gen Ex-630-Neurological exam';;'Neurological exam';'MXnkWM5GYBR';630;1.00;1.00;31;85;;38
 334;'GHA-CR Obs 3-640';'GHA-CR Obs 3-Diag-640-Does the health worker:';;'Does the health worker:';'v6QguKU39uR';640;0.00;0.00;32;8;;
 335;'GHA-CR Obs 3-650';'GHA-CR Obs 3-Diag-650-Order/Conduct a malaria test?';;'Order/Conduct a malaria test?';'I1rgoygrEq2';650;0.00;0.00;32;85;;
 337;'GHA-CR Obs 3-655';'GHA-CR Obs 3-Diag-655-What is the test result?';;'What is the test result?';'kRYwMmzAvxA';655;0.00;0.00;32;40;335;
-338;'GHA-CR Obs 3-680';'GHA-CR Obs 3-Diag-680-Did health worker appropriately classify the illness according to disease diagnosis and severity?';;'Did health worker appropriately classify the illness according to disease diagnosis and severity?';'HqO84Jiv1VB';680;10.00;10.00;32;85;;38
+338;'GHA-CR Obs 3-680';'GHA-CR Obs 3-Diag-680-Did health worker appropriately classify the illness according to disease diagnosis and severity?';;'Did health worker appropriately classify the illness according to disease diagnosis and severity?';'HqO84Jiv1VB';680;16.00;16.00;32;85;;38
 340;'GHA-CR Obs 3-700';'GHA-CR Obs 3-Tx-700-Was an anti-malarial prescribed?';;'Was an anti-malarial prescribed?';'DiT9sKwLLoY';700;0.00;0.00;33;85;;
-341;'GHA-CR Obs 3-710';'GHA-CR Obs 3-Tx-710-Supervisor, should an anti-malarial have been prescribed?';;'Supervisor, should an anti-malarial have been prescribed?';'xQhK0m7UtFT';710;10.00;10.00;33;85;;
-342;'GHA-CR Obs 3-705';'GHA-CR Obs 3-Tx-705-If prescribed, was the antimalarial prescribed according to national guidelines (correct drug, dosage, number of days)?';;'If prescribed, was the antimalarial prescribed according to national guidelines (correct drug, dosage, number of days)?';'SzZbB5jmwpw';705;0.00;0.00;33;89;;38
+341;'GHA-CR Obs 3-710';'GHA-CR Obs 3-Tx-710-Supervisor, should an anti-malarial have been prescribed?';;'Supervisor, should an anti-malarial have been prescribed?';'xQhK0m7UtFT';710;0.00;0.00;33;85;;
+342;'GHA-CR Obs 3-705';'GHA-CR Obs 3-Tx-705-If prescribed, was the antimalarial prescribed according to national guidelines (correct drug, dosage, number of days)?';;'If prescribed, was the antimalarial prescribed according to national guidelines (correct drug, dosage, number of days)?';'SzZbB5jmwpw';705;16.00;16.00;33;89;;38
 345;'GHA-CR Obs 3-750';'GHA-CR Obs 3-Tx-750-Was the patient referred or admitted?';;'Was the patient referred or admitted?';'q6a0Vpj0v7f';750;0.00;0.00;33;85;;
 346;'GHA-CR Obs 3-760';'GHA-CR Obs 3-Tx-760-Was the patient treated as an outpatient (NOT referred or admitted)?';;'Was the patient treated as an outpatient (NOT referred or admitted)?';'wAWwdXbVwhA';760;0.00;0.00;33;85;;
 347;'GHA-CR Obs 3-770';'GHA-CR Obs 3-Tx-770-For NON-referral and NON-admitted cases ONLY: Was caregiver/patient';;'For NON-referral and NON-admitted cases ONLY: Was caregiver/patient';'VdN4CZkBoPw';770;0.00;0.00;33;8;346;
-348;'GHA-CR Obs 3-780';'GHA-CR Obs 3-Tx-780-Informed on what is wrong with the patient?';;'Informed on what is wrong with the patient?';'Dki3zFbh1qc';780;2.00;2.00;33;85;346;38
-349;'GHA-CR Obs 3-790';'GHA-CR Obs 3-Tx-790-Advised on how to take the prescribed medications?';;'Advised on how to take the prescribed medications?';'sgexyzhYhBE';790;2.00;2.00;33;85;346;38
-350;'GHA-CR Obs 3-800';'GHA-CR Obs 3-Tx-800-Advised on when to return for follow-up evaluation?';;'Advised on when to return for follow-up evaluation?';'IjumadmzZD5';800;2.00;2.00;33;85;346;38
+348;'GHA-CR Obs 3-780';'GHA-CR Obs 3-Tx-780-Informed on what is wrong with the patient?';;'Informed on what is wrong with the patient?';'Dki3zFbh1qc';780;1.00;1.00;33;85;346;38
+349;'GHA-CR Obs 3-790';'GHA-CR Obs 3-Tx-790-Advised on how to take the prescribed medications?';;'Advised on how to take the prescribed medications?';'sgexyzhYhBE';790;1.00;1.00;33;85;346;38
+350;'GHA-CR Obs 3-800';'GHA-CR Obs 3-Tx-800-Advised on when to return for follow-up evaluation?';;'Advised on when to return for follow-up evaluation?';'IjumadmzZD5';800;1.00;1.00;33;85;346;38
 351;'GHA-CR Obs 3-810';'GHA-CR Obs 3-Tx-810-Advised on preventive measures?';;'Advised on preventive measures?';'BVKb4Kbky9r';810;1.00;1.00;33;85;346;38
 352;'GHA-CR Obs 3-820';'GHA-CR Obs 3-Tx-820-Asked if they have any questions?';;'Asked if they have any questions?';'CSDyzaWyaf5';820;1.00;1.00;33;85;346;38
 353;'GHA-CR Obs 3-830';'GHA-CR Obs 3-Tx-830-For referral and admitted cases ONLY: Was caregiver/patient';;'For referral and admitted cases ONLY: Was caregiver/patient';'FhaTvV3HarK';830;0.00;0.00;33;8;345;
@@ -304,13 +304,13 @@
 370;'GHA-RDT obs 1-220';'GHA-RDT obs 1-Assess-220-Allow finger to dry before pricking finger?';;'Allow finger to dry before pricking finger?';'Bb8iMyvWoqj';220;1.00;1.00;36;85;;40
 371;'GHA-RDT obs 1-230';'GHA-RDT obs 1-Assess-230-Dispose of lancet in sharp bin immediately after pricking finger?';;'Dispose of lancet in sharp bin immediately after pricking finger?';'Pv68ZFoWt0p';230;1.00;1.00;36;85;;40
 372;'GHA-RDT obs 1-240';'GHA-RDT obs 1-Assess-240-Wipe off the first blood with clean cotton?';;'Wipe off the first blood with clean cotton?';'U6ByDEPxPeP';240;1.00;1.00;36;85;;40
-373;'GHA-RDT obs 1-250';'GHA-RDT obs 1-Assess-250-Collect the right amount of blood using inverted cup or capillary tube?';;'Collect the right amount of blood using inverted cup or capillary tube?';'nb8abaUtD1N';250;1.00;1.00;36;85;;40
-374;'GHA-RDT obs 1-260';'GHA-RDT obs 1-Assess-260-Put collected blood into the right well?';;'Put collected blood into the right well?';'yei4r5ovUA1';260;1.00;1.00;36;85;;40
+373;'GHA-RDT obs 1-250';'GHA-RDT obs 1-Assess-250-Collect the right amount of blood using inverted cup or capillary tube?';;'Collect the right amount of blood using inverted cup or capillary tube?';'nb8abaUtD1N';250;6.00;6.00;36;85;;40
+374;'GHA-RDT obs 1-260';'GHA-RDT obs 1-Assess-260-Put collected blood into the right well?';;'Put collected blood into the right well?';'yei4r5ovUA1';260;6.00;6.00;36;85;;40
 375;'GHA-RDT obs 1-270';'GHA-RDT obs 1-Assess-270-Dispose of the inverted cup or capillary tube in appropriate container immediately?';;'Dispose of the inverted cup or capillary tube in appropriate container immediately?';'Uo8Frinldj9';270;1.00;1.00;36;85;;40
-376;'GHA-RDT obs 1-280';'GHA-RDT obs 1-Assess-280-Put the right amount of drops of buffer in right well?';;'Put the right amount of drops of buffer in right well?';'vRdnnOzyccd';280;1.00;1.00;36;85;;40
-377;'GHA-RDT obs 1-290';'GHA-RDT obs 1-Assess-290-Wait for the correct time before reading results?';;'Wait for the correct time before reading results?';'vbvAGmvls3g';290;1.00;1.00;36;85;;40
-378;'GHA-RDT obs 1-300';'GHA-RDT obs 1-Assess-300-Read the test results correctly?';;'Read the test results correctly?';'pU4lgAoSQxZ';300;1.00;1.00;36;85;;40
-379;'GHA-RDT obs 1-310';'GHA-RDT obs 1-Assess-310-Record the test result correctly in lab register? (including patient age and sex)';;'Record the test result correctly in lab register? (including patient age and sex)';'lOZkXX4EzYp';310;2.00;2.00;36;85;;40
+376;'GHA-RDT obs 1-280';'GHA-RDT obs 1-Assess-280-Put the right amount of drops of buffer in right well?';;'Put the right amount of drops of buffer in right well?';'vRdnnOzyccd';280;6.00;6.00;36;85;;40
+377;'GHA-RDT obs 1-290';'GHA-RDT obs 1-Assess-290-Wait for the correct time before reading results?';;'Wait for the correct time before reading results?';'vbvAGmvls3g';290;6.00;6.00;36;85;;40
+378;'GHA-RDT obs 1-300';'GHA-RDT obs 1-Assess-300-Read the test results correctly?';;'Read the test results correctly?';'pU4lgAoSQxZ';300;6.00;6.00;36;85;;40
+379;'GHA-RDT obs 1-310';'GHA-RDT obs 1-Assess-310-Record the test result correctly in lab register? (including patient age and sex)';;'Record the test result correctly in lab register? (including patient age and sex)';'lOZkXX4EzYp';310;6.00;6.00;36;85;;40
 380;'GHA-RDT obs 1-320';'GHA-RDT obs 1-Assess-320-Dispose of gloves, wrappers, alcohol swabs etc. safely?';;'Dispose of gloves, wrappers, alcohol swabs etc. safely?';'K32WmaA5z1r';320;1.00;1.00;36;85;;40
 381;'GHA-RDT obs 1-330';'GHA-RDT obs 1-Assess-330-Comments';;'Comments';'p2IiutbaP9L';330;0.00;0.00;36;14;;
 383;'GHA-RDT obs 2-110';'GHA-RDT obs 2-HF Info-110-Facility type';;'Facility type';'ZdYvlB9NL9H';110;0.00;0.00;38;21;;
@@ -387,7 +387,7 @@
 548;'GHA-RDT obs 3-121';'GHA-RDT obs 3-HF Info-121-Is this health worker being observed for the first time at this OTSS visit?';;'Is this health worker being observed for the first time at this OTSS visit?';'evSLzXYtaOi';121;0.00;0.00;41;85;;
 549;'GHA-RDT obs 3-360';'GHA-RDT obs 3-Assess-360-END OF TAB';;'END OF TAB';'MmFnL1bC3qJ';360;0.00;0.00;42;8;;
 550;'GHA-Gen OTSS-120';'GHA-Gen OTSS-Sup Info-120-Cadre of Supervisor';;'Cadre of Supervisor';'auLkqIXzq7p';120;0.00;0.00;1;19;;
-551;'GHA-Gen OTSS-130';'GHA-Gen OTSS-Sup Info-130-Supervisor phone number';;'Supervisor phone number';'VvoNLlcl0Ib';130;0.00;0.00;1;13;;
+551;'GHA-Gen OTSS-130';'GHA-Gen OTSS-Sup Info-130-Supervisor phone number';;'Supervisor phone number';'VvoNLlcl0Ib';130;0.00;0.00;1;10;;
 552;'GHA-Gen OTSS-175';'GHA-Gen OTSS-HR_T-175-Physician/Medical Assistant';;'Physician/Medical Assistant';'Cg06TQETnnA';175;0.00;0.00;2;10;;
 553;'GHA-Gen OTSS-185';'GHA-Gen OTSS-HR_T-185-CHO/CHN';;'CHO/CHN';'H9PadD6LRUG';185;0.00;0.00;2;10;;
 554;'GHA-Gen OTSS-201';'GHA-Gen OTSS-HR_T-201-Biomedical Scientist';;'Biomedical Scientist';'yWSGPmkVygt';201;0.00;0.00;2;10;;
@@ -428,7 +428,7 @@
 587;'GHA-Gen OTSS Fdbk-360';'GHA-Gen OTSS Fdbk-GO_Fdbk_TV-360-END OF TAB';;'END OF TAB';'LuFQQMZ72Gm';360;0.00;0.00;55;8;;
 588;'GHA-Pharmacy Asst-100';'GHA-Pharmacy Asst-Sup Info-100-Name of Supervisor';;'Name of Supervisor';'yHF0FC9UYS4';100;0.00;0.00;62;13;;
 589;'GHA-Pharmacy Asst-110';'GHA-Pharmacy Asst-Sup Info-110-Cadre of Supervisor';;'Cadre of Supervisor';'w3aPrtjLZ6S';110;0.00;0.00;62;19;;
-590;'GHA-Pharmacy Asst-120';'GHA-Pharmacy Asst-Sup Info-120-Supervisor phone number';;'Supervisor phone number';'a20S5AsB7cJ';120;0.00;0.00;62;13;;
+590;'GHA-Pharmacy Asst-120';'GHA-Pharmacy Asst-Sup Info-120-Supervisor phone number';;'Supervisor phone number';'a20S5AsB7cJ';120;0.00;0.00;62;10;;
 591;'GHA-Pharm Asst-170';'GHA-Pharm Asst-Pharm Asst-170-Are there adverse drug reactions forms for documentation?';;'Are there adverse drug reactions forms for documentation?';'RVbvIt5NK3E';170;1.00;1.00;56;85;;30
 592;'GHA-Pharm Asst-180';'GHA-Pharm Asst-Pharm Asst-180-Are there sources  for  documentation on medicines administered?';;'Are there sources  for  documentation on medicines administered?';'sCuKNjSKq04';180;1.00;1.00;56;85;;30
 593;'GHA-Pharm Asst-190';'GHA-Pharm Asst-Pharm Asst-190-Are there monthly antimalaria report available for past 3 months?';;'Are there monthly antimalaria report available for past 3 months?';'xLok1tGV999';190;1.00;1.00;56;85;;30
@@ -496,7 +496,7 @@
 653;'GHA-Pharm Fdbk-370';'GHA-Pharm Fdbk-Pharm_Fdbk_TV-370-END OF TAB';;'END OF TAB';'xxlihU5meWS';370;0.00;0.00;70;8;;
 654;'GHA-CR Obs 1-10';'GHA-CR Obs 1-Sup Info-10-Name of Supervisor';;'Name of Supervisor';'pbiN6UHbOoO';10;0.00;0.00;71;13;;
 655;'GHA-CR Obs 1-20';'GHA-CR Obs 1-Sup Info-20-Cadre of Supervisor';;'Cadre of Supervisor';'Iao6amjdtEY';20;0.00;0.00;71;19;;
-656;'GHA-CR Obs 1-30';'GHA-CR Obs 1-Sup Info-30-Supervisor phone number';;'Supervisor phone number';'qN4XCqwQisz';30;0.00;0.00;71;13;;
+656;'GHA-CR Obs 1-30';'GHA-CR Obs 1-Sup Info-30-Supervisor phone number';;'Supervisor phone number';'qN4XCqwQisz';30;0.00;0.00;71;10;;
 657;'GHA-CR Obs 1-165';'GHA-CR Obs 1-HW Info-165-Has this provider received any on-the-job training on malaria case management in the past six months?';;'Has this provider received any on-the-job training on malaria case management in the past six months?';'fK8P2RNsVvg';165;0.00;0.00;8;85;;
 658;'GHA-CR Obs 1-255';'GHA-CR Obs 1-Cl hist-255-If yes, did clinician ask about duration and frequency of vomiting?';;'If yes, did clinician ask about duration and frequency of vomiting?';'q9NiKNS8w3D';255;1.00;1.00;10;85;139;36
 659;'GHA-CR Obs 1-281';'GHA-CR Obs 1-Cl hist-281-Whether patient was referred from another facility?';;'Whether patient was referred from another facility?';'ZQp5W9msBz0';281;1.00;1.00;10;85;;36
@@ -575,7 +575,7 @@
 731;'GHA-CR Obs Fdbk-410';'GHA-CR Obs Fdbk-CR_Fdbk_TV-410-END OF TAB';;'END OF TAB';'Lkc4jVSkle6';410;0.00;0.00;76;8;;
 732;'GHA-RDT obs 1-10';'GHA-RDT obs 1-Sup Info-10-Name of Supervisor';;'Name of Supervisor';'chb8HiBnzC7';10;0.00;0.00;77;13;;
 733;'GHA-RDT obs 1-20';'GHA-RDT obs 1-Sup Info-20-Cadre of Supervisor';;'Cadre of Supervisor';'RGDwr57fkuG';20;0.00;0.00;77;19;;
-734;'GHA-RDT obs 1-30';'GHA-RDT obs 1-Sup Info-30-Supervisor phone number';;'Supervisor phone number';'kzG9ontaqfk';30;0.00;0.00;77;13;;
+734;'GHA-RDT obs 1-30';'GHA-RDT obs 1-Sup Info-30-Supervisor phone number';;'Supervisor phone number';'kzG9ontaqfk';30;0.00;0.00;77;10;;
 735;'GHA-RDT obs 1-145';'GHA-RDT obs 1-HW Info-145-If other, specify';;'If other, specify';'SxIMceTYyTK';145;0.00;0.00;35;13;;
 736;'GHA-RDT obs 1-155';'GHA-RDT obs 1-Health Facility Information-155-Has this provider received any on-the-job training on malaria RDTs  in the past six months?';;'Has this provider received any on-the-job training on malaria RDTs  in the past six months?';'aFOATW1aZ3y';155;0.00;0.00;35;85;;
 737;'GHA-RDT obs 1-165';'GHA-RDT obs 1-Assess-165-Check if RDT package seal is unbroken and desiccant dry';;'Check if RDT package seal is unbroken and desiccant dry';'VdP3G5NsDUe';165;1.00;1.00;36;85;;40
@@ -635,7 +635,7 @@
 789;'GHA-RDT Obs Fdbk-430';'GHA-RDT Obs Fdbk-RDT_Fdbk_TV-430-END OF TAB';;'END OF TAB';'zoZPblZhjcv';430;0.00;0.00;92;8;;
 790;'GHA-Data Mgmt-100';'GHA-Data Mgmt-Sup Info-100-Name of Supervisor';;'Name of Supervisor';'GObqu6QaqON';100;0.00;0.00;78;13;;
 791;'GHA-Data Mgmt-110';'GHA-Data Mgmt-Sup Info-110-Cadre of Supervisor';;'Cadre of Supervisor';'zNy03HuWhoQ';110;0.00;0.00;78;19;;
-792;'GHA-Data Mgmt-120';'GHA-Data Mgmt-Sup Info-120-Supervisor phone number';;'Supervisor phone number';'riP5aZn582L';120;0.00;0.00;78;13;;
+792;'GHA-Data Mgmt-120';'GHA-Data Mgmt-Sup Info-120-Supervisor phone number';;'Supervisor phone number';'riP5aZn582L';120;0.00;0.00;78;10;;
 793;'GHA-Data Mgmt-130';'GHA-Data Mgmt-Fac Rec-130-What is the form of training received by the person in charge of data on malaria reporting tools';;'What is the form of training received by the person in charge of data on malaria reporting tools';'TW10fN3LUJL';130;0.00;0.00;79;8;;
 794;'GHA-Data Mgmt-140';'GHA-Data Mgmt-Fac Rec-140-If Trained, assess ability to use/explain the forms and tools. If not satisfied, take personnel through use of the forms. If not trained, coach staff on reporting tools';;'If Trained, assess ability to use/explain the forms and tools. If not satisfied, take personnel through use of the forms. If not trained, coach staff on reporting tools';'R3Hy84kUcvA';140;0.00;0.00;79;8;;
 795;'GHA-Data Mgmt-150';'GHA-Data Mgmt-Fac Rec-150-Workshop trained';;'Workshop trained';'xaG6yO6dJoF';150;0.00;0.00;79;85;;
