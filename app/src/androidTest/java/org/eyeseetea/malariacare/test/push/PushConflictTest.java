@@ -88,7 +88,7 @@ import static org.eyeseetea.malariacare.test.utils.SDKTestUtils.waitForPush;
 @RunWith(AndroidJUnit4.class)
 public class PushConflictTest {
 
-    private static final String TAG="PushOKTest";
+    private static final String TAG="PushConflictTest";
 
     // private LoginActivity mReceiptCaptureActivity;
 
