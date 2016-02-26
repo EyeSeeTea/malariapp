@@ -58,11 +58,11 @@ public class ModuleAssess extends AModule {
     private void createModule() {
         this.icon= PreferencesState.getInstance().getContext().getResources().getDrawable(R.drawable.tab_assess);
         this.name= PreferencesState.getInstance().getContext().getResources().getString(R.string.tab_tag_assess);
+        this.color= PreferencesState.getInstance().getContext().getResources().getColor(R.color.tab_yellow_assess);
         this.animatorInLeft= R.animator.anim_slide_in_left;
         this.animatorOutLeft= R.animator.anim_slide_out_left;
         this.animatorInRight=R.animator.anim_slide_in_right;
         this.animatorOutRight=R.animator.anim_slide_out_right;
-        dashboardUnsentFragment = new DashboardUnsentFragment();
     }
 
     @Override
@@ -70,12 +70,14 @@ public class ModuleAssess extends AModule {
         return null;
     }
     @Override
-    public ListFragment getListFragment(){
+    public ListFragment getListFragment()
+    {
         return dashboardUnsentFragment;
     }
 
     @Override
     public void init(Activity activity) {
+        dashboardUnsentFragment = new DashboardUnsentFragment();
 
     }
 

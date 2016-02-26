@@ -39,6 +39,7 @@ public abstract class AModule implements IModule {
     FragmentTransaction fragmentTransactionLeft;
     FragmentTransaction fragmentTransactionRight;
     Drawable icon;
+    int color;
     String name;
     Fragment fragment;
     ListFragment listFragment;
@@ -91,6 +92,16 @@ public abstract class AModule implements IModule {
     @Override
     public void setIcon(Drawable icon) {
         this.icon = icon;
+    }
+
+    @Override
+    public void setBackgroundColor(int color) {
+
+    }
+
+    @Override
+    public int getBackgroundColor() {
+        return color;
     }
 
     @Override

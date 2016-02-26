@@ -24,6 +24,7 @@ import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.graphics.drawable.Drawable;
 
+import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.fragments.PlannedFragment;
@@ -33,6 +34,7 @@ import org.eyeseetea.malariacare.fragments.PlannedFragment;
  */
 public class ModulePlan extends AModule {
     PlannedFragment plannedFragment;
+    int color;
 
     public ModulePlan(boolean visible) {
         this.layout=R.id.dashboard_planning_tab;
@@ -56,11 +58,11 @@ public class ModulePlan extends AModule {
     private void createModule(){
         this.icon= PreferencesState.getInstance().getContext().getResources().getDrawable(R.drawable.tab_plan);
         this.name= PreferencesState.getInstance().getContext().getResources().getString(R.string.tab_tag_plan);
+        this.color= PreferencesState.getInstance().getContext().getResources().getColor(R.color.tab_orange_plan);
         this.animatorInLeft= R.animator.anim_slide_in_left;
         this.animatorOutLeft= R.animator.anim_slide_out_left;
         this.animatorInRight=R.animator.anim_slide_in_right;
         this.animatorOutRight=R.animator.anim_slide_out_right;
-        plannedFragment = new PlannedFragment();
     }
 
     @Override
@@ -70,7 +72,7 @@ public class ModulePlan extends AModule {
 
     @Override
     public void init(Activity activity) {
-
+        plannedFragment = new PlannedFragment();
     }
 
     @Override

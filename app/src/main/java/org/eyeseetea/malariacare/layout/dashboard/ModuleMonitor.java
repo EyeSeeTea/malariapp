@@ -24,6 +24,7 @@ import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.graphics.drawable.Drawable;
 
+import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.fragments.MonitorFragment;
@@ -58,11 +59,11 @@ public class ModuleMonitor  extends AModule {
     private void createModule() {
         this.icon= PreferencesState.getInstance().getContext().getResources().getDrawable(R.drawable.tab_monitor);
         this.name= PreferencesState.getInstance().getContext().getResources().getString(R.string.tab_tag_monitor);
+        this.color= PreferencesState.getInstance().getContext().getResources().getColor(R.color.tab_green_monitor);
         this.animatorInLeft= R.animator.anim_slide_in_left;
         this.animatorOutLeft= R.animator.anim_slide_out_left;
         this.animatorInRight=R.animator.anim_slide_in_right;
         this.animatorOutRight=R.animator.anim_slide_out_right;
-        monitorFragment = new MonitorFragment();
     }
 
     @Override
@@ -72,11 +73,14 @@ public class ModuleMonitor  extends AModule {
 
     @Override
     public void init(Activity activity) {
-
+        int mStackLevel=0;
+        mStackLevel++;
+        if(monitorFragment==null)
+            monitorFragment = MonitorFragment.newInstance(mStackLevel);
     }
 
     @Override
     public void reloadData() {
-        monitorFragment.reloadMonitor();
+        monitorFragment.reloadSentSurveys();
     }
 }

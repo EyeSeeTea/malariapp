@@ -47,6 +47,8 @@ public interface IModule {
     FragmentTransaction getFragmentTransactionRight();
     void setIcon(Drawable icon);
     Drawable getIcon();
+    void setBackgroundColor(int color);
+    int getBackgroundColor();
     void setName(String name);
     String getName();
     void setFragment(Fragment fragment);

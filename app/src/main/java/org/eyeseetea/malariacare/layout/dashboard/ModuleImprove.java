@@ -22,6 +22,7 @@ package org.eyeseetea.malariacare.layout.dashboard;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
+import android.app.ListFragment;
 import android.graphics.drawable.Drawable;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -60,22 +61,24 @@ public class ModuleImprove extends AModule {
     private void createModule() {
         this.icon= PreferencesState.getInstance().getContext().getResources().getDrawable(R.drawable.tab_improve);
         this.name= PreferencesState.getInstance().getContext().getResources().getString(R.string.tab_tag_improve);
+        this.color= PreferencesState.getInstance().getContext().getResources().getColor(R.color.tab_blue_improve);
         this.animatorInLeft= R.animator.anim_slide_in_left;
         this.animatorOutLeft= R.animator.anim_slide_out_left;
         this.animatorInRight=R.animator.anim_slide_in_right;
         this.animatorOutRight=R.animator.anim_slide_out_right;
-        dashboardSentFragment = new DashboardSentFragment();
     }
 
     @Override
-    public Fragment getFragment() {
+    public ListFragment getListFragment() {
         return dashboardSentFragment;
     }
 
     @Override
     public void init(Activity activity) {
+        DashboardActivity dashboardActivity=(DashboardActivity)activity;
+        dashboardSentFragment = new DashboardSentFragment();
         try {
-            LinearLayout filters = (LinearLayout) activity.findViewById(R.id.filters_sentSurveys);
+            LinearLayout filters = (LinearLayout) dashboardActivity.findViewById(R.id.filters_sentSurveys);
             filters.setVisibility(View.VISIBLE);
         }catch(Exception e){
             e.printStackTrace();
