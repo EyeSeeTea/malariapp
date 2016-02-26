@@ -387,7 +387,7 @@
 548;'GHA-RDT obs 3-121';'GHA-RDT obs 3-HF Info-121-Is this health worker being observed for the first time at this OTSS visit?';;'Is this health worker being observed for the first time at this OTSS visit?';'evSLzXYtaOi';121;0.00;0.00;41;85;;
 549;'GHA-RDT obs 3-360';'GHA-RDT obs 3-Assess-360-END OF TAB';;'END OF TAB';'MmFnL1bC3qJ';360;0.00;0.00;42;8;;
 550;'GHA-Gen OTSS-120';'GHA-Gen OTSS-Sup Info-120-Cadre of Supervisor';;'Cadre of Supervisor';'auLkqIXzq7p';120;0.00;0.00;1;19;;
-551;'GHA-Gen OTSS-130';'GHA-Gen OTSS-Sup Info-130-Supervisor phone number';;'Supervisor phone number';'VvoNLlcl0Ib';130;0.00;0.00;1;10;;
+551;'GHA-Gen OTSS-130';'GHA-Gen OTSS-Sup Info-130-Supervisor phone number';;'Supervisor phone number';'VvoNLlcl0Ib';130;0.00;0.00;1;13;;
 552;'GHA-Gen OTSS-175';'GHA-Gen OTSS-HR_T-175-Physician/Medical Assistant';;'Physician/Medical Assistant';'Cg06TQETnnA';175;0.00;0.00;2;10;;
 553;'GHA-Gen OTSS-185';'GHA-Gen OTSS-HR_T-185-CHO/CHN';;'CHO/CHN';'H9PadD6LRUG';185;0.00;0.00;2;10;;
 554;'GHA-Gen OTSS-201';'GHA-Gen OTSS-HR_T-201-Biomedical Scientist';;'Biomedical Scientist';'yWSGPmkVygt';201;0.00;0.00;2;10;;
@@ -428,7 +428,7 @@
 587;'GHA-Gen OTSS Fdbk-360';'GHA-Gen OTSS Fdbk-GO_Fdbk_TV-360-END OF TAB';;'END OF TAB';'LuFQQMZ72Gm';360;0.00;0.00;55;8;;
 588;'GHA-Pharmacy Asst-100';'GHA-Pharmacy Asst-Sup Info-100-Name of Supervisor';;'Name of Supervisor';'yHF0FC9UYS4';100;0.00;0.00;62;13;;
 589;'GHA-Pharmacy Asst-110';'GHA-Pharmacy Asst-Sup Info-110-Cadre of Supervisor';;'Cadre of Supervisor';'w3aPrtjLZ6S';110;0.00;0.00;62;19;;
-590;'GHA-Pharmacy Asst-120';'GHA-Pharmacy Asst-Sup Info-120-Supervisor phone number';;'Supervisor phone number';'a20S5AsB7cJ';120;0.00;0.00;62;10;;
+590;'GHA-Pharmacy Asst-120';'GHA-Pharmacy Asst-Sup Info-120-Supervisor phone number';;'Supervisor phone number';'a20S5AsB7cJ';120;0.00;0.00;62;13;;
 591;'GHA-Pharm Asst-170';'GHA-Pharm Asst-Pharm Asst-170-Are there adverse drug reactions forms for documentation?';;'Are there adverse drug reactions forms for documentation?';'RVbvIt5NK3E';170;1.00;1.00;56;85;;30
 592;'GHA-Pharm Asst-180';'GHA-Pharm Asst-Pharm Asst-180-Are there sources  for  documentation on medicines administered?';;'Are there sources  for  documentation on medicines administered?';'sCuKNjSKq04';180;1.00;1.00;56;85;;30
 593;'GHA-Pharm Asst-190';'GHA-Pharm Asst-Pharm Asst-190-Are there monthly antimalaria report available for past 3 months?';;'Are there monthly antimalaria report available for past 3 months?';'xLok1tGV999';190;1.00;1.00;56;85;;30
@@ -496,7 +496,7 @@
 653;'GHA-Pharm Fdbk-370';'GHA-Pharm Fdbk-Pharm_Fdbk_TV-370-END OF TAB';;'END OF TAB';'xxlihU5meWS';370;0.00;0.00;70;8;;
 654;'GHA-CR Obs 1-10';'GHA-CR Obs 1-Sup Info-10-Name of Supervisor';;'Name of Supervisor';'pbiN6UHbOoO';10;0.00;0.00;71;13;;
 655;'GHA-CR Obs 1-20';'GHA-CR Obs 1-Sup Info-20-Cadre of Supervisor';;'Cadre of Supervisor';'Iao6amjdtEY';20;0.00;0.00;71;19;;
-656;'GHA-CR Obs 1-30';'GHA-CR Obs 1-Sup Info-30-Supervisor phone number';;'Supervisor phone number';'qN4XCqwQisz';30;0.00;0.00;71;10;;
+656;'GHA-CR Obs 1-30';'GHA-CR Obs 1-Sup Info-30-Supervisor phone number';;'Supervisor phone number';'qN4XCqwQisz';30;0.00;0.00;71;13;;
 657;'GHA-CR Obs 1-165';'GHA-CR Obs 1-HW Info-165-Has this provider received any on-the-job training on malaria case management in the past six months?';;'Has this provider received any on-the-job training on malaria case management in the past six months?';'fK8P2RNsVvg';165;0.00;0.00;8;85;;
 658;'GHA-CR Obs 1-255';'GHA-CR Obs 1-Cl hist-255-If yes, did clinician ask about duration and frequency of vomiting?';;'If yes, did clinician ask about duration and frequency of vomiting?';'q9NiKNS8w3D';255;1.00;1.00;10;85;139;36
 659;'GHA-CR Obs 1-281';'GHA-CR Obs 1-Cl hist-281-Whether patient was referred from another facility?';;'Whether patient was referred from another facility?';'ZQp5W9msBz0';281;1.00;1.00;10;85;;36
@@ -575,7 +575,7 @@
 731;'GHA-CR Obs Fdbk-410';'GHA-CR Obs Fdbk-CR_Fdbk_TV-410-END OF TAB';;'END OF TAB';'Lkc4jVSkle6';410;0.00;0.00;76;8;;
 732;'GHA-RDT obs 1-10';'GHA-RDT obs 1-Sup Info-10-Name of Supervisor';;'Name of Supervisor';'chb8HiBnzC7';10;0.00;0.00;77;13;;
 733;'GHA-RDT obs 1-20';'GHA-RDT obs 1-Sup Info-20-Cadre of Supervisor';;'Cadre of Supervisor';'RGDwr57fkuG';20;0.00;0.00;77;19;;
-734;'GHA-RDT obs 1-30';'GHA-RDT obs 1-Sup Info-30-Supervisor phone number';;'Supervisor phone number';'kzG9ontaqfk';30;0.00;0.00;77;10;;
+734;'GHA-RDT obs 1-30';'GHA-RDT obs 1-Sup Info-30-Supervisor phone number';;'Supervisor phone number';'kzG9ontaqfk';30;0.00;0.00;77;13;;
 735;'GHA-RDT obs 1-145';'GHA-RDT obs 1-HW Info-145-If other, specify';;'If other, specify';'SxIMceTYyTK';145;0.00;0.00;35;13;;
 736;'GHA-RDT obs 1-155';'GHA-RDT obs 1-Health Facility Information-155-Has this provider received any on-the-job training on malaria RDTs  in the past six months?';;'Has this provider received any on-the-job training on malaria RDTs  in the past six months?';'aFOATW1aZ3y';155;0.00;0.00;35;85;;
 737;'GHA-RDT obs 1-165';'GHA-RDT obs 1-Assess-165-Check if RDT package seal is unbroken and desiccant dry';;'Check if RDT package seal is unbroken and desiccant dry';'VdP3G5NsDUe';165;1.00;1.00;36;85;;40
@@ -635,7 +635,7 @@
 789;'GHA-RDT Obs Fdbk-430';'GHA-RDT Obs Fdbk-RDT_Fdbk_TV-430-END OF TAB';;'END OF TAB';'zoZPblZhjcv';430;0.00;0.00;92;8;;
 790;'GHA-Data Mgmt-100';'GHA-Data Mgmt-Sup Info-100-Name of Supervisor';;'Name of Supervisor';'GObqu6QaqON';100;0.00;0.00;78;13;;
 791;'GHA-Data Mgmt-110';'GHA-Data Mgmt-Sup Info-110-Cadre of Supervisor';;'Cadre of Supervisor';'zNy03HuWhoQ';110;0.00;0.00;78;19;;
-792;'GHA-Data Mgmt-120';'GHA-Data Mgmt-Sup Info-120-Supervisor phone number';;'Supervisor phone number';'riP5aZn582L';120;0.00;0.00;78;10;;
+792;'GHA-Data Mgmt-120';'GHA-Data Mgmt-Sup Info-120-Supervisor phone number';;'Supervisor phone number';'riP5aZn582L';120;0.00;0.00;78;13;;
 793;'GHA-Data Mgmt-130';'GHA-Data Mgmt-Fac Rec-130-What is the form of training received by the person in charge of data on malaria reporting tools';;'What is the form of training received by the person in charge of data on malaria reporting tools';'TW10fN3LUJL';130;0.00;0.00;79;8;;
 794;'GHA-Data Mgmt-140';'GHA-Data Mgmt-Fac Rec-140-If Trained, assess ability to use/explain the forms and tools. If not satisfied, take personnel through use of the forms. If not trained, coach staff on reporting tools';;'If Trained, assess ability to use/explain the forms and tools. If not satisfied, take personnel through use of the forms. If not trained, coach staff on reporting tools';'R3Hy84kUcvA';140;0.00;0.00;79;8;;
 795;'GHA-Data Mgmt-150';'GHA-Data Mgmt-Fac Rec-150-Workshop trained';;'Workshop trained';'xaG6yO6dJoF';150;0.00;0.00;79;85;;
