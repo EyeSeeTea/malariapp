@@ -56,7 +56,6 @@ import org.eyeseetea.malariacare.fragments.CreateSurveyFragment;
 import org.eyeseetea.malariacare.fragments.DashboardSentFragment;
 import org.eyeseetea.malariacare.fragments.DashboardUnsentFragment;
 import org.eyeseetea.malariacare.fragments.FeedbackFragment;
-import org.eyeseetea.malariacare.fragments.MonitorFragment;
 import org.eyeseetea.malariacare.fragments.SurveyFragment;
 import org.eyeseetea.malariacare.layout.dashboard.Dashboard;
 import org.eyeseetea.malariacare.layout.dashboard.IModule;
@@ -65,7 +64,6 @@ import org.eyeseetea.malariacare.layout.dashboard.ModuleImprove;
 import org.eyeseetea.malariacare.layout.dashboard.ModuleMonitor;
 import org.eyeseetea.malariacare.layout.dashboard.ModulePlan;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
-import org.eyeseetea.malariacare.fragments.PlannedFragment;
 import org.eyeseetea.malariacare.receivers.AlarmPushReceiver;
 import org.eyeseetea.malariacare.services.SurveyService;
 import org.hisp.dhis.android.sdk.events.UiEvent;
@@ -79,85 +77,82 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
     private final static String TAG=".DDetailsActivity";
     private boolean reloadOnResume=true;
     TabHost tabHost;
-    PlannedFragment plannedFragment;
-    MonitorFragment monitorFragment;
-    DashboardUnsentFragment unsentFragment;
-    DashboardSentFragment sentFragment;
+    //PlannedFragment plannedFragment;
+    //MonitorFragment monitorFragment;
+    //DashboardUnsentFragment unsentFragment;
+    //DashboardSentFragment sentFragment;
     CreateSurveyFragment createSurveyFragment;
     SurveyFragment surveyFragment;
     FeedbackFragment feedbackFragment;
     String currentTab="";
     String currentTabName="";
     boolean isMoveToLeft;
-    Dashboard dashboardModules;
+    Dashboard dashboard;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Log.d(TAG, "onCreate");
         super.onCreate(savedInstanceState);
-        if(PreferencesState.getInstance().isVerticalDashboard()){
-            dashboardModules=new Dashboard(R.layout.vertical_main, Dashboard.VERTICAL);
-            dashboardModules.addModule(new ModuleAssess(true));
-            dashboardModules.addModule(new ModuleImprove(true));
-        }
-        else{
-            dashboardModules=new Dashboard(R.layout.tab_dashboard, Dashboard.HORIZONTAL);
-            dashboardModules.addModule(new ModulePlan(!isPlanningTabHide()));
-            dashboardModules.addModule(new ModuleAssess(true));
-            dashboardModules.addModule(new ModuleImprove(true));
-            dashboardModules.addModule(new ModuleMonitor(true));
-        }
-
-        setContentView(dashboardModules.getLayout());
-
         try {
             initDataIfRequired();
             loadSessionIfRequired();
         } catch (IOException e){
             Log.e(".DashboardActivity", e.getMessage());
         }
+
+        if(PreferencesState.getInstance().isVerticalDashboard()){
+            dashboard =new Dashboard(R.layout.vertical_main, Dashboard.VERTICAL);
+            dashboard.addModule(new ModuleAssess(true));
+            dashboard.addModule(new ModuleImprove(true));
+        }
+        else{
+            dashboard =new Dashboard(R.layout.tab_dashboard, Dashboard.HORIZONTAL);
+            dashboard.addModule(new ModulePlan(!isPlanningTabHide()));
+            dashboard.addModule(new ModuleAssess(true));
+            dashboard.addModule(new ModuleImprove(true));
+            dashboard.addModule(new ModuleMonitor(true));
+        }
+        setContentView(dashboard.getLayout());
+
         if(PreferencesState.getInstance().isVerticalDashboard())
-            initEDS2();
+            initVertical();
         else
-            initHNQIS2(savedInstanceState);
+            initHorizontal(savedInstanceState);
 
         setActionBarDashboard();
         setAlarm();
     }
 
-    public void initEDS2(){
-        for(IModule module:dashboardModules.getModules()){
+    public void initVertical(){
+        for(IModule module: dashboard.getModules()){
             if(module.isVisible()) {
                 if (module.getFragment() == null)
-                    initModule(module.getTabLayout(), module.getListFragment());
+                    initModule(module.getLayout(), module.getListFragment());
                 else
-                    initModule(module.getTabLayout(), module.getFragment());
+                    initModule(module.getLayout(), module.getFragment());
                 module.reloadData();
             }
         }
         setActionBarDashboard();
     }
 
-    private void initHNQIS2(Bundle savedInstanceState){
-        for(IModule module:dashboardModules.getModules()){
+    private void initHorizontal(Bundle savedInstanceState){
+        for(IModule module: dashboard.getModules()){
             if(module.isVisible()) {
+                module.init(this);
                 if (module.getFragment() == null)
                     initModule(module.getLayout(), module.getListFragment());
                 else
                     initModule(module.getLayout(), module.getFragment());
-                module.init(this);
             }
         }
         initTabHost(savedInstanceState);
         /* set tabs in order */
-        for(IModule dashboardModule:dashboardModules.getModules()){
+        for(IModule dashboardModule: dashboard.getModules()){
             if(dashboardModule.isVisible()){
                 setTab(dashboardModule.getName(),dashboardModule.getTabLayout(), dashboardModule.getIcon());
             }
         }
-
-
-
         tabHost.setOnTabChangedListener(new TabHost.OnTabChangeListener() {
 
             @Override
@@ -177,43 +172,32 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
                     closeFeedbackFragment();
                 if (tabId.equalsIgnoreCase(getResources().getString(R.string.tab_tag_plan))) {
                     currentTabName = getString(R.string.plan);
-                    tabHost.getCurrentTabView().setBackgroundColor(getResources().getColor(R.color.tab_orange_plan));
+                    //reloadModule(getResources().getString(R.string.tab_tag_plan));
+                    reloadModuleData(getResources().getString(R.string.tab_tag_plan));
                     setActionBarDashboard();
-                    IModule module = dashboardModules.getModuleByName(getResources().getString(R.string.tab_tag_plan));
-                    if (module != null)
-                        module.reloadData();
 
                 } else if (tabId.equalsIgnoreCase(getResources().getString(R.string.tab_tag_assess))) {
                     currentTabName = getString(R.string.assess);
-                    tabHost.getCurrentTabView().setBackgroundColor(getResources().getColor(R.color.tab_yellow_assess));
                     if (isCreateSurveyFragmentActive() || isDashboardUnsentFragmentActive())
                         setActionBarDashboard();
                     if (isSurveyFragmentActive())
                         setActionBarTitleForSurvey(Session.getSurvey());
 
-                    IModule module = dashboardModules.getModuleByName(getResources().getString(R.string.tab_tag_assess));
-                    if (module != null)
-                        module.reloadData();
+                    reloadModuleData(getResources().getString(R.string.tab_tag_assess));
 
 
                 } else if (tabId.equalsIgnoreCase(getResources().getString(R.string.tab_tag_improve))) {
                     currentTabName = getString(R.string.improve);
-                    tabHost.getCurrentTabView().setBackgroundColor(getResources().getColor(R.color.tab_blue_improve));
                     if (!isFeedbackFragmentActive()) {
                         setActionBarDashboard();
-                        IModule module = dashboardModules.getModuleByName(getResources().getString(R.string.tab_tag_improve));
-                        if (module != null)
-                            module.reloadData();
+                        reloadModuleData(getResources().getString(R.string.tab_tag_improve));
                     }
 
                 } else if (tabId.equalsIgnoreCase(getResources().getString(R.string.tab_tag_monitor))) {
                     currentTabName = getString(R.string.monitor);
-                    tabHost.getCurrentTabView().setBackgroundColor(getResources().getColor(R.color.tab_green_monitor));
                     setActionBarDashboard();
-
-                    IModule module = dashboardModules.getModuleByName(getResources().getString(R.string.tab_tag_monitor));
-                    if (module != null)
-                        module.reloadData();
+                    reloadModuleData(getResources().getString(R.string.tab_tag_monitor));
+                    //reloadModule(getResources().getString(R.string.tab_tag_monitor));
                 }
             }
         });
@@ -231,25 +215,43 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
             tabHost.getTabWidget().getChildAt(0).setBackgroundColor(getResources().getColor(R.color.tab_yellow_assess));
             currentTabName=getString(R.string.assess);
         }
-
-    }
-    private void reloadEds(){
-        initAssess();
-        unsentFragment.reloadData();
-        initImprove();
-        sentFragment.reloadData();
-        setActionbarAppName();
     }
 
-    private void initEDS(Bundle savedInstanceState){
-        if(savedInstanceState==null) {
-            initAssess();
-            initImprove();
+    private void reloadModuleData(String name) {
+        IModule module = dashboard.getModuleByName(name);
+        tabHost.getCurrentTabView().setBackgroundColor(module.getBackgroundColor());
+        if (module != null) {
+            if(module.isVisible()) {
+                module.reloadData();
+            }
         }
-//        unsentFragment.reloadData();
-//        sentFragment.reloadSentSurveys();
-//        monitorFragment.reloadSentSurveys();
-//        setActionBarDashboard();
+    }
+    private void reloadModule(String name) {
+        IModule module = dashboard.getModuleByName(name);
+        tabHost.getCurrentTabView().setBackgroundColor(module.getBackgroundColor());
+        if (module != null) {
+            if(module.isVisible()) {
+                module.init(this);
+                if (module.getFragment() == null)
+                    initModule(module.getLayout(), module.getListFragment());
+                else
+                    initModule(module.getLayout(), module.getFragment());
+            }
+            module.reloadData();
+        }
+    }
+
+    private void reloadVertical(){
+        for(IModule module: dashboard.getModules()){
+            if(module.isVisible()) {
+                if (module.getFragment() == null)
+                    initModule(module.getLayout(), module.getListFragment());
+                else
+                    initModule(module.getLayout(), module.getFragment());
+                module.reloadData();
+            }
+        }
+        setActionbarAppName();
     }
 
     public boolean isPlanningTabHide(){
@@ -356,39 +358,16 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
         imageView.setTag(tabName);
     }
 
-    public void initPlanned(){
-        plannedFragment = new PlannedFragment();
-        plannedFragment.setArguments(getIntent().getExtras());
-        replaceListFragment(R.id.dashboard_planning_tab, plannedFragment);
-    }
-
     public void initModule(int layout,ListFragment fragment){
-        fragment = new DashboardUnsentFragment();
-        fragment.setArguments(getIntent().getExtras());
+        if(fragment==null)
+            fragment.setArguments(getIntent().getExtras());
         replaceListFragment(layout, fragment);
     }
 
     public void initModule(int layout,Fragment fragment){
-        fragment = new DashboardUnsentFragment();
-        fragment.setArguments(getIntent().getExtras());
+        if(fragment==null)
+            fragment.setArguments(getIntent().getExtras());
         replaceFragment(layout, fragment);
-    }
-    public void initAssess(){
-        unsentFragment = new DashboardUnsentFragment();
-        unsentFragment.setArguments(getIntent().getExtras());
-        replaceListFragment(R.id.dashboard_details_container, unsentFragment);
-    }
-
-    public void initImprove(){
-        sentFragment = new DashboardSentFragment();
-        sentFragment.setArguments(getIntent().getExtras());
-        replaceListFragment(R.id.dashboard_completed_container, sentFragment);
-        try {
-            LinearLayout filters = (LinearLayout) findViewById(R.id.filters_sentSurveys);
-            filters.setVisibility(View.VISIBLE);
-        }catch(Exception e){
-            e.printStackTrace();
-        }
     }
 
     private void initFeedback() {
@@ -430,24 +409,16 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
         setActionBarTitleForSurvey(Session.getSurvey());
     }
 
-    public void initMonitor(){
-        int mStackLevel=0;
-        mStackLevel++;
-        if(monitorFragment==null)
-            monitorFragment = MonitorFragment.newInstance(mStackLevel);
-        replaceFragment(R.id.dashboard_charts_container, monitorFragment);
-    }
-
 
     // Add the fragment to the activity, pushing this transaction
     // on to the back stack.
-    private void replaceFragment(int layout,  Fragment fragment) {
+    public void replaceFragment(int layout, Fragment fragment) {
         FragmentTransaction ft = getFragmentTransaction();
         ft.replace(layout, fragment);
         ft.commit();
     }
 
-    private void replaceListFragment(int layout,  ListFragment fragment) {
+    public void replaceListFragment(int layout,  ListFragment fragment) {
         try{
             //fix some visual problems
             View vg = findViewById (layout);
@@ -605,23 +576,22 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
     public void onBackPressed() {
         isMoveToLeft =true;
         if(isCreateSurveyFragmentActive() && PreferencesState.getInstance().isVerticalDashboard() ) {
-            reloadEds();
+            reloadVertical();
         }
         else if (isSurveyFragmentActive() && PreferencesState.getInstance().isVerticalDashboard() ) {
             Survey survey=Session.getSurvey();
             survey.updateSurveyStatus();
             ScoreRegister.clear();
             surveyFragment.unregisterReceiver();
-            reloadEds();
+            reloadVertical();
          } else if (isFeedbackFragmentActive() && PreferencesState.getInstance().isVerticalDashboard() ) {
             ScoreRegister.clear();
             feedbackFragment.unregisterReceiver();
             feedbackFragment.getView().setVisibility(View.GONE);
-            reloadEds();
+            reloadVertical();
            }
         else if(isCreateSurveyFragmentActive() && (currentTab==getResources().getString(R.string.tab_tag_assess)) ) {
-            initAssess();
-            unsentFragment.reloadData();
+            reloadFragment(getResources().getString(R.string.tab_tag_assess));
         } else if (isSurveyFragmentActive() && currentTab == getResources().getString(R.string.tab_tag_assess)) {
             onSurveyBackPressed();
         } else if (isFeedbackFragmentActive() && currentTab == getResources().getString(R.string.tab_tag_improve)) {
@@ -690,9 +660,24 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
         })
                 .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int arg1) {
-                        unsentFragment.reloadData();
+                        reloadFragment(getResources().getString(R.string.tab_tag_assess));
                     }
                 }).create().show();
+    }
+
+    //Reload the fragment
+    private void reloadFragment(String string) {
+        IModule module = dashboard.getModuleByName(string);
+        if (module.getFragment() != null) {
+            module.init(this);
+            initModule(module.getLayout(), module.getFragment());
+            module.reloadData();
+        }
+        if (module.getListFragment() != null) {
+            module.init(this);
+            initModule(module.getLayout(), module.getListFragment());
+            module.reloadData();
+        }
     }
 
     /**
@@ -732,8 +717,7 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
     public void closeSurveyFragment(){
         ScoreRegister.clear();
         surveyFragment.unregisterReceiver();
-        initAssess();
-        unsentFragment.reloadData();
+        reloadFragment(getResources().getString(R.string.tab_tag_assess));
         setActionBarDashboard();
     }
 
@@ -741,8 +725,7 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
         ScoreRegister.clear();
         feedbackFragment.unregisterReceiver();
         feedbackFragment.getView().setVisibility(View.GONE);
-        initImprove();
-        sentFragment.reloadData();
+        reloadFragment(getResources().getString(R.string.tab_tag_improve));
         setActionBarDashboard();
     }
 
@@ -761,8 +744,11 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
 
     private void hideImprove() {
         FragmentTransaction ft = getFragmentTransaction();
-        ft.hide(sentFragment);
-        ft.commit();
+        IModule module= dashboard.getModuleByName(getResources().getString(R.string.tab_tag_improve));
+        if(module.getListFragment()!=null) {
+            ft.hide(module.getListFragment());
+            ft.commit();
+        }
     }
 
 
@@ -853,7 +839,9 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
         }
         else{
             tabHost.setCurrentTabByTag(getResources().getString(R.string.tab_tag_improve));
-            sentFragment.getView().setVisibility(View.GONE);
+            IModule module= dashboard.getModuleByName(getResources().getString(R.string.tab_tag_improve));
+            if(module.getListFragment()!=null)
+                module.getListFragment().getView().setVisibility(View.GONE);
             initFeedback();
         }
 
