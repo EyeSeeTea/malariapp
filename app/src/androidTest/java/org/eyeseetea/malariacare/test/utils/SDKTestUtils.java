@@ -77,6 +77,7 @@ public class SDKTestUtils {
     public static final int DEFAULT_TEST_TIME_LIMIT=180;
 
     public static final String HNQIS_DEV_STAGING = "https://hnqis-dev-staging.psi-mis.org";
+    public static final String HNQIS_DEV_CI = "https://hnqis-dev-ci.psi-mis.org";
     public static final String TEST_USERNAME_NO_PERMISSION = "testFAIL";
     public static final String TEST_PASSWORD_NO_PERMISSION = "testN0P3rmission";
 

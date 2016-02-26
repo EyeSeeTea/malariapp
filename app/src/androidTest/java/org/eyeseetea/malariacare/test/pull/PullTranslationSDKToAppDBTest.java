@@ -31,6 +31,7 @@ import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static junit.framework.Assert.assertTrue;
 import static org.eyeseetea.malariacare.test.utils.SDKTestUtils.DEFAULT_WAIT_FOR_PULL;
+import static org.eyeseetea.malariacare.test.utils.SDKTestUtils.HNQIS_DEV_CI;
 import static org.eyeseetea.malariacare.test.utils.SDKTestUtils.HNQIS_DEV_STAGING;
 import static org.eyeseetea.malariacare.test.utils.SDKTestUtils.TEST_USERNAME_WITH_PERMISSION;
 import static org.eyeseetea.malariacare.test.utils.SDKTestUtils.TEST_PASSWORD_WITH_PERMISSION;
@@ -43,11 +44,13 @@ import static org.eyeseetea.malariacare.test.utils.SDKTestUtils.waitForPull;
 @RunWith(AndroidJUnit4.class)
 public class PullTranslationSDKToAppDBTest {
     private static final String TAG="TestingTransaltion";
-    private final String ATTRIBUTE_PRODUCTIVITY_CODE="OUProductivity";
+    private final String ATTRIBUTE_OU_PRODUCTIVITY_VALUES_CODE="OUPV";
+    private final String ATTRIBUTE_PROGRAM_PRODUCTIVITY_POSITION_CODE="PPP";
 
     private final String ATTRIBUTE_SUPERVISION_CODE="PSupervisor";
     private final String ATTRIBUTE_SUPERVISION_VALUE="Adrian Quintana";
-    private final String ATTRIBUTE_SUPERVISION_ID="zG5T2x5Yjrx";
+    private final String ATTRIBUTE_SUPERVISION_ID="vInmonKS0rP";
+    private final String ATTRIBUTE_OUPV_VALUE="0815789256346";
     private static List<OrgUnit> orgUnitList;
     private static List<Program> programList;
     private static List<org.hisp.dhis.android.sdk.persistence.models.OrganisationUnit> orgUnitSdkList;
@@ -74,7 +77,7 @@ public class PullTranslationSDKToAppDBTest {
 
         //GIVEN
 
-        login(HNQIS_DEV_STAGING, TEST_USERNAME_WITH_PERMISSION, TEST_PASSWORD_WITH_PERMISSION);
+        login(HNQIS_DEV_CI, TEST_USERNAME_WITH_PERMISSION, TEST_PASSWORD_WITH_PERMISSION);
         waitForPull(DEFAULT_WAIT_FOR_PULL);
 
         //WHEN
@@ -128,9 +131,10 @@ public class PullTranslationSDKToAppDBTest {
                         isOrgUnitName=true;
                     }
                     List<OrganisationUnitAttributeValue> attributeValues=organisationUnit.getAttributeValues();
+
                     for(OrganisationUnitAttributeValue organisationUnitAttributeValue:attributeValues) {
-                        if (organisationUnitAttributeValue.getAttribute().getCode().equals(ATTRIBUTE_PRODUCTIVITY_CODE))
-                            if (organisationUnitAttributeValue.getValue().equals(String.valueOf(orgUnit.getProductivity()))) {
+                        if (organisationUnitAttributeValue.getAttribute().getCode().equals(ATTRIBUTE_OU_PRODUCTIVITY_VALUES_CODE))
+                            if (organisationUnitAttributeValue.getValue().equals(ATTRIBUTE_OUPV_VALUE)) {
                                 isOrgUnitProductivity = true;
                             }
                     }
