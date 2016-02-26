@@ -77,10 +77,6 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
     private final static String TAG=".DDetailsActivity";
     private boolean reloadOnResume=true;
     TabHost tabHost;
-    //PlannedFragment plannedFragment;
-    //MonitorFragment monitorFragment;
-    //DashboardUnsentFragment unsentFragment;
-    //DashboardSentFragment sentFragment;
     CreateSurveyFragment createSurveyFragment;
     SurveyFragment surveyFragment;
     FeedbackFragment feedbackFragment;
@@ -126,6 +122,7 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
     public void initVertical(){
         for(IModule module: dashboard.getModules()){
             if(module.isVisible()) {
+                module.init(this);
                 if (module.getFragment() == null)
                     initModule(module.getLayout(), module.getListFragment());
                 else
@@ -244,6 +241,7 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
     private void reloadVertical(){
         for(IModule module: dashboard.getModules()){
             if(module.isVisible()) {
+                module.init(this);
                 if (module.getFragment() == null)
                     initModule(module.getLayout(), module.getListFragment());
                 else
