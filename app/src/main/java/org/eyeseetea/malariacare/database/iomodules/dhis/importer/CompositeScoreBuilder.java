@@ -121,22 +121,6 @@ public class CompositeScoreBuilder {
     }
 
     /**
-     * Checks whether a dataElement is a question or a compositescore
-     * @param dataElementExtended
-     * @return
-     */
-    public boolean isACompositeScore(DataElementExtended dataElementExtended){
-
-        String typeQuestion=dataElementExtended.findAttributeValueByCode(ATTRIBUTE_QUESTION_TYPE_CODE);
-
-        if(typeQuestion==null){
-            return false;
-        }
-
-        return typeQuestion.equals(COMPOSITE_SCORE_CODE);
-    }
-
-    /**
      * Finds the type of question for the given dataElementExtended
      * @param dataElementExtended
      * @return
@@ -153,8 +137,9 @@ public class CompositeScoreBuilder {
     }
 
     public String findHierarchicalCode(DataElementExtended dataElementExtended){
+
         //Not a composite -> done
-        if(!isACompositeScore(dataElementExtended)){
+        if(dataElementExtended==null || !dataElementExtended.isCompositeScore()){
             return null;
         }
 

@@ -109,6 +109,12 @@ public class Survey extends BaseModel implements VisitableToSDK {
      */
     Float mainScore;
 
+    /**
+     * Expected productivity for this survey according to its orgunit + program.
+     * Just a cached value from orgunitprogramproductivity
+     */
+    Integer productivity;
+
     public Survey() {
         //Set dates
         this.creationDate = new Date();
@@ -185,6 +191,17 @@ public class Survey extends BaseModel implements VisitableToSDK {
     public void setTabGroup(Long id_tab_group){
         this.id_tab_group = id_tab_group;
         this.tabGroup = null;
+    }
+
+    /**
+     * Returns the program from its tabgroup to avoid to much chaining while dealing with surveys
+     * @return
+     */
+    public Program getProgram() {
+        if(tabGroup==null){
+            return null;
+        }
+        return tabGroup.getProgram();
     }
 
     public User getUser() {
@@ -312,6 +329,27 @@ public class Survey extends BaseModel implements VisitableToSDK {
         return new Select()
                 .from(Score.class)
                 .where(Condition.column(Score$Table.ID_SURVEY).eq(this.getId_survey())).querySingle();
+    }
+
+    /**
+     * Returns the productivity for this survey according to its orgunit + program
+     * @return
+     */
+    public Integer getProductivity(){
+        if(productivity==null){
+            productivity = OrgUnitProgramRelation.getProductivity(this);
+        }
+        return productivity;
+    }
+
+    /**
+     * Returns if this survey has low productivity or not.
+     * [0..4]: Low
+     * [5..): Not Low
+     * @return
+     */
+    public boolean isLowProductivity(){
+        return getProductivity()<5;
     }
 
     @Override
@@ -842,4 +880,5 @@ public class Survey extends BaseModel implements VisitableToSDK {
                 ", eventuid="+eventuid+
                 '}';
     }
+
 }
