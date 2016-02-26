@@ -355,17 +355,13 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
             message=jsonObjectResponse.getString("message");
             jsonObjectResponse=new JSONObject(jsonObjectResponse.getString("response"));
             jsonArrayResponse=new JSONArray(jsonObjectResponse.getString("importSummaries"));
-            try {
-                jsonObjectResponse=new JSONObject(jsonArrayResponse.getString(0));
-                //conflicts
-                jsonArrayResponse=new JSONArray(jsonObjectResponse.getString("conflicts"));
-                //values
-                for(int i=0;i<jsonArrayResponse.length();i++) {
-                    jsonObjectResponse = new JSONObject(jsonArrayResponse.getString(i));
-                    uid.add(jsonObjectResponse.getString("object"));
-                }
-            } catch (JSONException e) {
-                e.printStackTrace();
+            jsonObjectResponse=new JSONObject(jsonArrayResponse.getString(0));
+            //conflicts
+            jsonArrayResponse=new JSONArray(jsonObjectResponse.getString("conflicts"));
+            //values
+            for(int i=0;i<jsonArrayResponse.length();i++) {
+                jsonObjectResponse = new JSONObject(jsonArrayResponse.getString(i));
+                uid.add(jsonObjectResponse.getString("object"));
             }
         } catch (JSONException e) {
             e.printStackTrace();
