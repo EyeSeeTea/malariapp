@@ -30,6 +30,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.text.Html;
@@ -84,11 +86,15 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
     String currentTab;
     String currentTabName;
     boolean isMoveToLeft;
+    static Handler handler;
+    static Activity dashboardActivity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Log.d(TAG, "onCreate");
         super.onCreate(savedInstanceState);
+        handler = new Handler(Looper.getMainLooper());
+        dashboardActivity=this;
         setContentView(R.layout.tab_dashboard);
         try {
             initDataIfRequired();
@@ -550,7 +556,7 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
                 .setTitle(R.string.survey_title_exit)
                 .setMessage(R.string.survey_info_exit).setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int arg1) {
-                Survey survey=Session.getSurvey();
+                Survey survey = Session.getSurvey();
                 survey.updateSurveyStatus();
                 closeSurveyFragment();
             }
@@ -733,5 +739,33 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
      */
     public void setAlarm() {
         AlarmPushReceiver.getInstance().setPushAlarm(this);
+    }
+
+
+
+    //Show dialog exception from class without activity.
+    public static void showException(final String title, final String errorMessage) {
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                // Run your task here
+                new Handler(Looper.getMainLooper()).post(new Runnable() {
+                    @Override
+                    public void run() {
+                        String dialogTitle = "", dialogMessage = "";
+                        if (title != null)
+                            dialogTitle = title;
+                        if (errorMessage != null)
+                            dialogMessage = errorMessage;
+                        new AlertDialog.Builder(dashboardActivity)
+                                .setCancelable(false)
+                                .setTitle(dialogTitle)
+                                .setMessage(dialogMessage)
+                                .setNeutralButton(android.R.string.ok, null)
+                                .create().show();
+                    }
+                });
+            }
+        }, 1000);
     }
 }

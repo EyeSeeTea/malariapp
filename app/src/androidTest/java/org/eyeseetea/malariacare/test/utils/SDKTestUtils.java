@@ -37,6 +37,7 @@ import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.LoginActivity;
 import org.eyeseetea.malariacare.ProgressActivity;
 import org.eyeseetea.malariacare.R;
+import org.eyeseetea.malariacare.SettingsActivity;
 import org.eyeseetea.malariacare.database.model.OrgUnit;
 import org.eyeseetea.malariacare.database.model.OrgUnit$Table;
 import org.eyeseetea.malariacare.database.model.Program;
@@ -189,7 +190,7 @@ public class SDKTestUtils {
         return idSurvey;
     }
 
-    private static Long getSurveyId(){
+    public static Long getSurveyId(){
         return getSurveyInProgress().getId_survey();
     }
 
@@ -297,7 +298,15 @@ public class SDKTestUtils {
                             onView(withText(android.R.string.ok)).perform(click());
                         } catch (Exception e) {}
                     }
+                else if(SettingsActivity.class.equals(actualClass)){
+                    Espresso.pressBack();
+                }
             } catch (Exception e) {}
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
             goToLogin();
         }
     }

@@ -40,7 +40,8 @@ public class Constants {
             SURVEY_IN_PROGRESS = 0,
             SURVEY_COMPLETED = 1,
             SURVEY_SENT = 2,
-            SURVEY_HIDE = 3;
+            SURVEY_HIDE = 3,
+            SURVEY_CONFLICT = 4;
 
     //############# OPERATION TYPE ##############
     public static final int OPERATION_TYPE_MATCH = 0,
