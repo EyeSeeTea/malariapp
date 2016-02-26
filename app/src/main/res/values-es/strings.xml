@@ -270,4 +270,5 @@
     <string name="filter_all_org_assessments_upper">TODAS LAS EVALUACIONES</string>
     <string name="dialog_content_dhis_preference_login">Cambiar el servidor implica volver a iniciar sesión. Se eliminarán todas las encuestas no enviadas. ¿Estás seguro de que quieres continuar?</string>
     <string name="settings_text_dhis_max_items">DHIS max encuestas descargadas</string>
+    <string name="feedback_info_conflict">Conflicto</string>
 </resources>
