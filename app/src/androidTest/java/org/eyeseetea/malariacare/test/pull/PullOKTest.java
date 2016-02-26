@@ -50,7 +50,7 @@ public class PullOKTest {
     private static final String TAG="TestingPullOk";
     private final String ATTRIBUTE_SUPERVISION_CODE="PSupervisor";
     private final String ATTRIBUTE_SUPERVISION_VALUE="Adrian Quintana";
-    private final String ATTRIBUTE_SUPERVISION_ID="zG5T2x5Yjrx";
+    private final String ATTRIBUTE_SUPERVISION_ID="vInmonKS0rP";
     private final String PROGRAM_PROGRAMTYPE="without_registration";
     private OrganisationUnit goldenOrganisationUnit;
     private OrgUnit goldenOrgUnit;
@@ -189,15 +189,15 @@ public class PullOKTest {
 
     private void testProgramAttribute(org.hisp.dhis.android.sdk.persistence.models.Program sdkProgram) {
         List<ProgramAttributeValue> attributeValues=sdkProgram.getAttributeValues();
-        boolean isProductivityCode=false;
+        boolean isSupervisionCode=false;
         for(ProgramAttributeValue programAttributeValue:attributeValues) {
             if (programAttributeValue.getAttribute().getCode().equals(ATTRIBUTE_SUPERVISION_CODE) && programAttributeValue.getAttribute().getUid().equals(ATTRIBUTE_SUPERVISION_ID)) {
                 if(programAttributeValue.getValue().equals(ATTRIBUTE_SUPERVISION_VALUE))
-                    isProductivityCode=true;
+                    isSupervisionCode=true;
                 // TODO: here we need check if the attribute of the program is translate to our app db. But at this moment is not converted from the sdk.
             }
         }
-        assertTrue(isProductivityCode);
+        assertTrue(isSupervisionCode);
     }
 
     private void testOrgUnitPrograms(org.hisp.dhis.android.sdk.persistence.models.Program sdkProgram) {
