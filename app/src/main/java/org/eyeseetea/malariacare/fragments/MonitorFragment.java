@@ -19,6 +19,7 @@
 
 package org.eyeseetea.malariacare.fragments;
 
+import android.app.Activity;
 import android.app.Fragment;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -61,7 +62,7 @@ public class MonitorFragment extends Fragment {
     protected IDashboardAdapter adapter;
     private static int index = 0;
     private WebView webView;
-    
+
     public MonitorFragment() {
         this.adapter = Session.getAdapterSent();
         this.surveys = new ArrayList();
@@ -150,10 +151,11 @@ public class MonitorFragment extends Fragment {
      */
     public void reloadSentSurveys() {
         HashMap<String,List> data= (HashMap<String,List>) Session.popServiceValue(SurveyService.ALL_MONITOR_DATA_ACTION);
-
-        surveysForGraphic = data.get(SurveyService.PREPARE_SURVEYS);
-        programs = data.get(SurveyService.PREPARE_PROGRAMS);
-        reloadSurveys(surveysForGraphic,programs);
+        if(data!=null) {
+            surveysForGraphic = data.get(SurveyService.PREPARE_SURVEYS);
+            programs = data.get(SurveyService.PREPARE_PROGRAMS);
+            reloadSurveys(surveysForGraphic, programs);
+        }
     }
 
     public void reloadSurveys(List<Survey> newListSurveys,List<Program> newListPrograms) {
@@ -202,7 +204,8 @@ public class MonitorFragment extends Fragment {
     }
 
     private WebView initMonitor() {
-        WebView webView = (WebView) getActivity().findViewById(R.id.dashboard_monitor);
+        Activity activity=getActivity();
+        WebView webView = (WebView) activity.findViewById(R.id.dashboard_monitor);
         //Init webView settings
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
             webView.getSettings().setAllowUniversalAccessFromFileURLs(true);
