@@ -1,89 +1,104 @@
 1;'HF Info';'Health Facility Information';1;1
-2;'HR_T';'Human Resources and Training';2;1
-3;'HF Infra';'Health Facility Infrastructure';3;1
-4;'Ph, St, Eq';'Pharmacy, Stocks & Equipment';4;1
-5;'Mal Diag';'Malaria Diagnostics';5;1
-6;'RDT Assess';'mRDT Assessment';6;1
-9;'HW Info';'Health Worker Information';2;3
-10;'Rec';'Reception';3;3
-11;'Signs Sev Dis';'Signs of severe disease';4;3
-12;'Cl sev assess';'Clinical severity assessment';5;3
-13;'Cl hist';'Taking a clinical history';6;3
-14;'Prior Dx Tx';'Prior Diagnosis and Treatment';7;3
-15;'Gen Ex';'General examination';8;3
-16;'Diag';'Clinically suspected diagnosis';9;3
-17;'Agr';'Agreement';10;3
-18;'Mal Test';'Malaria Test';11;3
-19;'Oth Test';'Other tests';12;3
-20;'Diag Test res';'Diagnostic test results';13;3
-21;'Tx';'Treatment';14;3
-22;'Com: Unc disease';'Communication: Uncomplicated disease';15;3
-23;'Com: Sev disease';'Communication: Severe disease';16;3
-24;'Sev dis';'Severe disease';17;3
-25;'HW Info';'Health Worker Information';2;4
-26;'Rec';'Reception';3;4
-27;'Signs Sev Dis';'Signs of severe disease';4;4
-28;'Cl sev assess';'Clinical severity assessment';5;4
-29;'Cl hist';'Taking a clinical history';6;4
-30;'Prior Dx Tx';'Prior Diagnosis and Treatment';7;4
-31;'Gen Ex';'Physical examination';8;4
-32;'Diag';'Clinically suspected diagnosis';9;4
-33;'Agr';'Agreement';10;4
-34;'Mal Test';'Malaria Test';11;4
-35;'Oth Test';'Other tests';12;4
-36;'Diag Test res';'Diagnostic test results';13;4
-37;'Tx';'Treatment';14;4
-38;'Com: Unc disease';'Communication: Uncomplicated disease';15;4
-39;'Com: Sev disease';'Communication: Severe disease';16;4
-40;'Sev dis';'Severe disease';17;4
-41;'HW Info';'Health Worker Information';2;5
-42;'Rec';'Reception';3;5
-43;'Signs Sev Dis';'Signs of severe disease';4;5
-44;'Cl sev assess';'Clinical severity assessment';5;5
-45;'Cl hist';'Taking a clinical history';6;5
-46;'Prior Dx Tx';'Prior Diagnosis and Treatment';7;5
-47;'Gen Ex';'General examination';8;5
-48;'Diag';'Clinically suspected diagnosis';9;5
-49;'Agr';'Agreement';10;5
-50;'Mal Test';'Malaria Test';11;5
-51;'Oth Test';'Other tests';12;5
-52;'Diag Test res';'Diagnostic test results';13;5
-53;'Tx';'Treatment';14;5
-54;'Com: Unc disease';'Communication: Uncomplicated disease';15;5
-55;'Com: Sev disease';'Communication: Severe disease';16;5
-56;'Sev dis';'Severe disease';17;5
-57;'Obs 1';'Observation 1';1;6
-58;'Obs 2';'Observation 2';2;6
-59;'Obs 3';'Observation 3';3;6
-60;'HSR_lab';'Human Resources - Laboratory Staff';1;7
-61;'Train_lab';'Training Overview - Laboratory';2;7
-62;'W&P supp';'Water and Power Supply';3;7
-63;'Stock_Mal Micro';'Stock-outs for Malaria Microscopy';4;7
-64;'Micro, parts, main';'Microscopes, Spare Parts, Maintenance';5;7
-65;'Lab equip';'Minor Laboratory Equipment';6;7
-66;'IQA';'Internal Quality Assurance (IQA)';7;7
-67;'EQA';'EQA - Malaria Microscopy';8;7
-68;'Mal timing';'Malaria Test Result Timing';9;7
-69;'Ref mat_micro';'Reference Material - Microscopy';10;7
-70;'Obs 1';'Observation 1';1;8
-71;'Obs 2';'Observation 2';2;8
-72;'Obs 3';'Observation 3';3;8
-73;'Obs 1';'Observation 1';1;9
-74;'Obs 2';'Observation 2';2;9
-75;'Obs 3';'Observation 3';3;9
-76;'Obs 1';'Observation 1';1;10
-77;'Obs 2';'Observation 2';2;10
-78;'Obs 3';'Observation 3';3;10
-79;'gap 1';'gap 1';2;12
-80;'gap 2';'gap 2';3;12
-81;'gap 3';'gap 3';4;12
-82;'AdherenceTable1';'AdherenceTable1';1;2
-83;'AdherenceTable2';'AdherenceTable2';2;2
-84;'IQEQA1';'IQEQA1';1;11
-85;'IQEQA2';'IQEQA2';2;11
-86;'IQEQA3';'IQEQA3';3;11
-87;'used mRDT assess';'Assessment of used mRDT devices';7;1
-88;'Obs1';'Observation 1';1;3
-89;'Obs2';'Observation 2';1;4
-90;'Obs3';'Observation 3';1;5
-92;'Feedback';'Feedback and Action';1;12
+2;'Sup Info';'Supervisor Information';2;1
+3;'HR_T';'Human Resources and Training';3;1
+4;'HF Infra';'Health Facility Infrastructure';4;1
+5;'Ph, St, Eq';'Pharmacy, Stocks & Equipment';5;1
+6;'Mal Diag';'Malaria Diagnostics';6;1
+10;'GO_Fdbk';'General OTSS Feedback and Action Plan';1;17
+11;'GO_Fdbk_LV';'General OTSS Gap Last Visit';2;17
+12;'GO_Fdbk_TV';'General OTSS Gap This Visit';3;17
+13;'GO_Mentoring';'General OTSS Mentoring';4;17
+14;'Sup Info';'Supervisor Information';1;3
+15;'HW Info';'Health Worker Information';2;3
+16;'ClinHistGen';'Clinical History: General';3;3
+17;'ClinHistSev';'Clinical History: Signs of Severe Malaria';4;3
+18;'PhysExam';'Physical Exam';5;3
+19;'Mal Test';'Malaria Test';6;3
+20;'Diag Test res';'Diagnostic test results';7;3
+21;'FinalDiag';'Final Diagnosis';8;3
+22;'Tx';'Treatment';9;3
+23;'Com: Unc disease';'Communication: Uncomplicated disease';10;3
+24;'Com: Sev disease';'Communication: Severe disease';11;3
+25;'Obs1';'Observation 1';12;3
+26;'HW Info';'Health Worker Information';1;4
+27;'ClinHistGen';'Clinical History: General';2;4
+28;'Signs Sev Dis';'Signs of severe disease';3;4
+29;'PhysExam';'Physical Exam';4;4
+30;'Mal Test';'Malaria Test';5;4
+31;'Diag Test res';'Diagnostic test results';6;4
+32;'FinalDiag';'Final Diagnosis';7;4
+33;'Tx';'Treatment';8;4
+34;'Com: Unc disease';'Communication: Uncomplicated disease';9;4
+35;'Com: Sev disease';'Communication: Severe disease';10;4
+36;'Obs2';'Observation 2';11;4
+37;'HW Info';'Health Worker Information';1;5
+38;'ClinHistGen';'Clinical History: General';2;5
+39;'ClinHistSev';'Clinical History: Signs of Severe Malaria';3;5
+40;'PhysExam';'Physical Exam';4;5
+41;'Mal Test';'Malaria Test';5;5
+42;'Diag Test res';'Diagnostic test results';6;5
+43;'FinalDiag';'Final Diagnosis';7;5
+44;'Tx';'Treatment';8;5
+45;'Com: Unc disease';'Communication: Uncomplicated disease';9;5
+46;'Com: Sev disease';'Communication: Severe disease';10;5
+47;'Obs3';'Observation 3';11;5
+48;'CO_Fdbk';'Clinical Observations Feedback and Action Plan';1;18
+49;'CO_Fdbk_LV';'Clinical Observations Gap Last Visit';2;18
+50;'CO_Fdbk_TV';'Clinical Observations Gap This Visit';3;18
+51;'CO_Mentoring';'Clinical Observation Mentoring';4;18
+52;'Sup Info';'Supervisor Information';1;6
+53;'RDT Assess';'mRDT Assessment';2;6
+54;'RDT Assess';'Assessment of used mRDT devices';3;6
+60;'HW Info';'Health Worker Information';1;15
+61;'RDT Prep';'RDT Preparation';2;15
+62;'Pt Prep';'Patient Preparation';3;15
+63;'Blood Collect';'Blood Collection & Application to RDT';4;15
+64;'Procedure';'RDT Procedure';5;15
+65;'Waste';'Waste Disposal';6;15
+66;'Obs 1';'Observation 1';7;15
+67;'HW Info';'Health Worker Information';1;19
+68;'RDT Prep';'RDT Preparation';2;19
+69;'Pt Prep';'Patient Preparation';3;19
+70;'Blood Collect';'Blood Collection & Application to RDT';4;19
+71;'Procedure';'RDT Procedure';5;19
+72;'Waste';'Waste Disposal';6;19
+73;'Obs 2';'Observation 2';7;19
+74;'HW Info';'Health Worker Information';1;20
+75;'RDT Prep';'RDT Preparation';2;20
+76;'Pt Prep';'Patient Preparation';3;20
+77;'Blood Collect';'Blood Collection & Application to RDT';4;20
+78;'Procedure';'RDT Procedure';5;20
+79;'Waste';'Waste Disposal';6;20
+80;'Obs 3';'Observation 3';7;20
+81;'RDT_Fdbk';'RDT Observations Feedback and Action Plan';1;22
+82;'RDT_Fdbk_LV';'RDT Observations Gap Last Visit';2;22
+83;'RDT_Fdbk_TV';'RDT Observation Gap This Visit';3;22
+84;'RDT_Mentor';'RDT Observation Mentoring';4;22
+85;'Sup Info';'Supervisor Information';1;7
+86;'HSR_lab';'Human Resources - Laboratory Staff';2;7
+87;'Train_lab';'Training Overview - Laboratory';3;7
+88;'Stock_Mal Micro';'Stock-outs for Malaria Microscopy';4;7
+89;'Micro, parts, main';'Microscopes, Spare Parts, Maintenance';5;7
+90;'Lab equip';'Minor Laboratory Equipment';6;7
+91;'IQA';'Internal Quality Assurance (IQA)';7;7
+92;'EQA';'EQA - Malaria Microscopy';8;7
+93;'Mal timing';'Malaria Test Result Timing';9;7
+94;'Ref mat_micro';'Reference Material - Microscopy';10;7
+95;'Obs 1';'Observation 1';1;8
+96;'Obs 2';'Observation 2';2;8
+97;'Obs 3';'Observation 3';3;8
+98;'Obs 1';'Observation 1';1;9
+99;'Obs 2';'Observation 2';2;9
+100;'Obs 3';'Observation 3';3;9
+101;'Obs 1';'Observation 1';1;10
+102;'Obs 2';'Observation 2';2;10
+103;'Obs 3';'Observation 3';3;10
+104;'Lab_Fdbk';'Lab Feedback and Action Plan';1;23
+105;'Lab_Fdbk_LV';'Lab Gap Last Visit';2;23
+106;'Lab_Fdbk_TV';'Lab Gap This Visit';3;23
+107;'Lab_Mentor';'Lab Mentoring';4;23
+108;'AdherenceTable1';'AdherenceTable1';1;2
+109;'AdherenceTable2';'AdherenceTable2';2;2
+110;'IQEQA1';'IQEQA1';1;11
+111;'IQEQA2';'IQEQA2';2;11
+112;'IQEQA3';'IQEQA3';3;11

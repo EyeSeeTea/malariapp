@@ -1,38 +1,30 @@
 1;'1';'Treatment Readiness';;'mEUXuU59q2w';1
-2;'2';'RDT Readiness';;'AoDKnxi30Sa';2
-3;'3';'Microscopy Readiness';;'DWbtqn4Lcdu';3
-4;'4';'Slide-Rechecking';;'N47HJiy1132';4
-5;'4.1';'Positive/Negative Test Result';4;'e4Dpri3h3Ph';5
-6;'4.2';'Speciation';4;'Bd0jBpPw68W';6
-7;'5';'Adherence';;'pJFc06KzuBJ';7
-8;'5.1';'Pharmacy/Clinical Register to Lab Result';7;'bUuUOl78Zil';8
-9;'5.2';'Lab Result to Pharmacy/Clinical Register';7;'KM5OQt3I18y';9
-10;'5.2.1';'Positive Test Result';9;'LMOy2lBAvnA';10
-11;'5.2.2';'Negative Test Result';9;'LPXuC9zQHHq';11
-12;'6';'Clinical Observation Overall';;'BTmRMis74l4';12
-13;'6.1';'Clinical Observation 1';12;'bhYPpQVKVrg';13
-14;'6.1.1';'Clinical Observation 1:  Case In-take';13;'T5Sf1VOyfxu';14
-15;'6.1.2';'Clinical Observation 1: Final Diagnosis & Treatment';13;'lNJ0IpIwHQb';15
-16;'6.2';'Clinical Observation 2';12;'CLbvVGwDFaD';16
-17;'6.2.1';'Clinical Observation 2:  Case In-take';16;'A9fwS4sv1lf';17
-18;'6.2.2';'Clinical Observation 2: Final Diagnosis & Treatment';16;'bgWgI51FO57';18
-19;'6.3';'Clinical Observation 3';12;'jZKeVBrXi4c';19
-20;'6.3.1';'Clinical Observation 3:  Case In-take';19;'dR7xVfzx6zB';20
-21;'6.3.2';'Clinical Observation 3: Final Diagnosis & Treatment';19;'Py8lIEzCO16';21
-22;'7';'RDT Observation';;'Cpqt8P65KLo';22
-23;'7.1';'RDT Observation 1';22;'dnoNYVw6s6I';23
-24;'7.2';'RDT Observation 2';22;'qwjSgrOHitc';24
-25;'7.3';'RDT Observation 3';22;'y35RzN2iVYP';25
-26;'8';'Microscopy Observation';;'bxQkorP0XYU';26
-27;'8.1';'Slide Preparation';26;'GOE1egkWSnZ';27
-28;'8.1.1';'Slide Preparation: Observation 1';27;'kIlFwKeJpE3';28
-29;'8.1.2';'Slide Preparation: Observation 2';27;'TH4jV1oBWWw';29
-30;'8.1.3';'Slide Preparation: Observation 3';27;'MMg2YUM1RmR';30
-31;'8.2';'Slide Staining';26;'MDzeGHtKnH3';31
-32;'8.2.1';'Slide Staining: Observation 1';31;'nsa5MvXTu7B';32
-33;'8.2.2';'Slide Staining: Observation 2';31;'BOkHzMxo9IX';33
-34;'8.2.3';'Slide Staining: Observation 3';31;'qhtH5DTnwNJ';34
-35;'8.3';'Slide Reading';26;'TvQxyGDVcma';35
-36;'8.3.1';'Slide Reading: Observation 1';35;'Gc46ospW50h';36
-37;'8.3.2';'Slide Reading: Observation 2';35;'HBfgmXrjdQF';37
-38;'8.3.3';'Slide Reading: Observation 3';35;'hDVqhFz8SsK';38
+2;'2';'RDT Readiness';;'AoDKnxi30Sa';9
+3;'3';'Microscopy Readiness';;'DWbtqn4Lcdu';14
+4;'4';'Slide-Rechecking';;'N47HJiy1132';15
+5;'4.1';'Positive/Negative Test Result';4;'e4Dpri3h3Ph';16
+6;'4.2';'Speciation';4;'Bd0jBpPw68W';17
+8;'5.1';'Pharmacy/Clinical Register to Lab Result';;'bUuUOl78Zil';2
+10;'5.2';'Positive Test Result';;'LMOy2lBAvnA';3
+11;'5.3';'Negative Test Result';;'LPXuC9zQHHq';4
+12;'6';'Clinical Observation Overall';;'BTmRMis74l4';5
+13;'6.1';'Clinical Observation 1';12;'bhYPpQVKVrg';6
+16;'6.2';'Clinical Observation 2';12;'CLbvVGwDFaD';7
+19;'6.3';'Clinical Observation 3';12;'jZKeVBrXi4c';8
+22;'7';'RDT Observation';;'Cpqt8P65KLo';10
+23;'7.1';'RDT Observation 1';22;'dnoNYVw6s6I';11
+24;'7.2';'RDT Observation 2';22;'qwjSgrOHitc';12
+25;'7.3';'RDT Observation 3';22;'y35RzN2iVYP';13
+26;'8';'Microscopy Observation';;'bxQkorP0XYU';18
+27;'8.1';'Slide Preparation';26;'GOE1egkWSnZ';19
+28;'8.1.1';'Slide Preparation: Observation 1';27;'kIlFwKeJpE3';20
+29;'8.1.2';'Slide Preparation: Observation 2';27;'TH4jV1oBWWw';21
+30;'8.1.3';'Slide Preparation: Observation 3';27;'MMg2YUM1RmR';22
+31;'8.2';'Slide Staining';26;'MDzeGHtKnH3';23
+32;'8.2.1';'Slide Staining: Observation 1';31;'nsa5MvXTu7B';24
+33;'8.2.2';'Slide Staining: Observation 2';31;'BOkHzMxo9IX';25
+34;'8.2.3';'Slide Staining: Observation 3';31;'qhtH5DTnwNJ';26
+35;'8.3';'Slide Reading';26;'TvQxyGDVcma';27
+36;'8.3.1';'Slide Reading: Observation 1';35;'Gc46ospW50h';28
+37;'8.3.2';'Slide Reading: Observation 2';35;'HBfgmXrjdQF';29
+38;'8.3.3';'Slide Reading: Observation 3';35;'hDVqhFz8SsK';30
