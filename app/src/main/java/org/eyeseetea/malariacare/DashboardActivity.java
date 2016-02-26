@@ -266,6 +266,7 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
     public void setActionbarVerticalSurvey(String title, String subtitle) {
         android.support.v7.app.ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayShowCustomEnabled(true);
+        actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setCustomView(R.layout.abc_action_bar_title_item);
         actionBar.setSubtitle(subtitle);
         actionBar.setTitle(title);
@@ -274,11 +275,16 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
     public void setActionbarAppName() {
         android.support.v7.app.ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayShowCustomEnabled(true);
+        actionBar.setDisplayHomeAsUpEnabled(false);
         actionBar.setCustomView(R.layout.abc_action_bar_title_item);
         actionBar.setSubtitle(null);
         actionBar.setTitle(getResources().getString(R.string.app_name));
     }
 
+    public void setActionbarBackbutton(){
+        android.support.v7.app.ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
+    }
     /**
      * Init the conteiner for all the tabs
      */
@@ -352,6 +358,7 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
 
     public void initCreateSurvey(int layout){
         if(PreferencesState.getInstance().isVerticalDashboard()) {
+            setActionbarBackbutton();
             CustomTextView senttitle = (CustomTextView) findViewById(R.id.titleCompleted);
             senttitle.setText("");
         }
