@@ -63,6 +63,7 @@ import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.fragments.PlannedFragment;
 import org.eyeseetea.malariacare.receivers.AlarmPushReceiver;
 import org.eyeseetea.malariacare.services.SurveyService;
+import org.eyeseetea.malariacare.views.CustomTextView;
 import org.hisp.dhis.android.sdk.events.UiEvent;
 
 import java.io.IOException;
@@ -350,6 +351,10 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
     }
 
     public void initCreateSurvey(int layout){
+        if(PreferencesState.getInstance().isVerticalDashboard()) {
+            CustomTextView senttitle = (CustomTextView) findViewById(R.id.titleCompleted);
+            senttitle.setText("");
+        }
         int mStackLevel=0;
         mStackLevel++;
 
