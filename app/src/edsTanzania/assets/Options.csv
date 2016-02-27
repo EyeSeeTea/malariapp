@@ -247,3 +247,5 @@
 339;'Not addressed';'Not addressed';0.00;104
 340;'Partially addressed';'Partially addressed';0.00;104
 341;'Completely Addressed';'Completely Addressed';0.00;104
+342;'Yes [1]';'Yes';1.00;105
+343;'No [0]';'No';0.00;105
