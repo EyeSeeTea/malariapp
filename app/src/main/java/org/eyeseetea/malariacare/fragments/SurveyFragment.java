@@ -42,15 +42,12 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 
-import com.raizlabs.android.dbflow.sql.language.Select;
-
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.model.CompositeScore;
 import org.eyeseetea.malariacare.database.model.Question;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.model.Tab;
 import org.eyeseetea.malariacare.database.utils.Session;
-import org.eyeseetea.malariacare.database.utils.SurveyAnsweredRatio;
 import org.eyeseetea.malariacare.layout.adapters.general.TabArrayAdapter;
 import org.eyeseetea.malariacare.layout.adapters.survey.AutoTabAdapter;
 import org.eyeseetea.malariacare.layout.adapters.survey.CompositeScoreAdapter;
@@ -240,6 +237,7 @@ public class SurveyFragment extends  Fragment {
             }
         });
 
+
         ImageButton nextButton = (ImageButton) llLayout.findViewById(R.id.next_tab);
         ImageButton previousButton = (ImageButton) llLayout.findViewById(R.id.previous_tab);
         nextButton.setOnClickListener(new View.OnClickListener() {
@@ -257,9 +255,14 @@ public class SurveyFragment extends  Fragment {
                 int position = currentTabPosition();
                 position--;
                 if (position >= 0)
-                setCurrentTab(position);
+                    setCurrentTab(position);
             }
         });
+
+        //Hide the -1 tab and the 1 tab if not exist
+        llLayout.findViewById(R.id.previous_tab).setVisibility(View.GONE);
+        if(spinner.getAdapter().getCount()==1)
+            llLayout.findViewById(R.id.next_tab).setVisibility(View.GONE);
     }
 
 
@@ -335,7 +338,20 @@ public class SurveyFragment extends  Fragment {
             UnfocusScrollListener unfocusScrollListener = new UnfocusScrollListener();
             mQuestions.setOnScrollListener(unfocusScrollListener);
             stopProgress();
+            checkArrows();
         }
+    }
+
+    private void checkArrows() {
+        int position=currentTabPosition();
+        if(position==0)
+            llLayout.findViewById(R.id.previous_tab).setVisibility(View.GONE);
+        else
+            llLayout.findViewById(R.id.previous_tab).setVisibility(View.VISIBLE);
+        if(position==spinner.getAdapter().getCount()-1)
+            llLayout.findViewById(R.id.next_tab).setVisibility(View.GONE);
+        else
+            llLayout.findViewById(R.id.next_tab).setVisibility(View.VISIBLE);
     }
 
     /**
