@@ -283,6 +283,8 @@ public class PlannedAdapter extends BaseAdapter {
         ImageButton actionButton = (ImageButton)rowLayout.findViewById(R.id.planning_survey_action);
         colorId=plannedSurvey.getPlannedHeader().getBackgroundColor();
         if(plannedSurvey.getSurvey().isInProgress()){
+            if(plannedSurvey.getSurvey().getStatus()!=Constants.SURVEY_PLANNED)
+                colorId=plannedSurvey.getPlannedHeader().getGaudyBackgroundColor();
             actionButton.setImageResource(R.drawable.ic_edit);
         }
         else{
