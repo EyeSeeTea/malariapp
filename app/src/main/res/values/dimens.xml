@@ -52,6 +52,8 @@
 
     <!-- spinner padding -->
     <dimen name="create_survey_spinner_padding">10dip</dimen>
+    <!-- title in createsurveyfragment marging-->
+    <dimen name="create_survey_title_top_marging">20dip</dimen>
     <!-- Float Button default -->
     <dimen name="float_button_def">24sp</dimen>
     <!-- Text Card default -->

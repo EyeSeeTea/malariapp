@@ -26,6 +26,9 @@
     android:layout_height="fill_parent"
     >
 
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/create_survey_title_top_marging" />
                 <LinearLayout
                     android:orientation="horizontal"
                     android:layout_width="match_parent"
