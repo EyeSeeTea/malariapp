@@ -149,7 +149,7 @@ public class PlannedHeader implements PlannedItem {
                 ctx.getString(R.string.dashboard_title_planned_quality_of_care),
                 ctx.getString(R.string.dashboard_title_planned_next_qa),
                 R.color.amber,
-                R.color.tab_yellow_assess,
+                R.color.planLighYellow,
                 R.color.gaudyYellow);
     }
 
@@ -165,7 +165,7 @@ public class PlannedHeader implements PlannedItem {
                 ctx.getString(R.string.dashboard_title_planned_quality_of_care),
                 ctx.getString(R.string.dashboard_title_planned_next_qa),
                 R.color.green,
-                R.color.lightGreen,
+                R.color.planLightGreen,
                 R.color.gaudyGreen);
     }
 
