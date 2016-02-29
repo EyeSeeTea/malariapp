@@ -84,16 +84,17 @@
                             android:spinnerMode="dropdown"
                             android:backgroundTintMode="add"
                             android:paddingLeft="2dip"
-                            android:paddingTop="2dip"
                             android:paddingRight="20dip"
-                            android:paddingBottom="2dip"
+                            android:paddingTop="@dimen/create_survey_spinner_padding"
+                            android:paddingBottom="@dimen/create_survey_spinner_padding"
                             android:background="@null"
                             android:gravity="right"/>
                         <ImageView
                             android:src="@drawable/arrow_assess"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:paddingBottom="2dip"
+                            android:paddingTop="@dimen/create_survey_spinner_padding"
+                            android:paddingBottom="@dimen/create_survey_spinner_padding"
                             android:paddingRight="20dip"
                             android:layout_alignParentBottom="true"
                             android:layout_alignParentRight="true"  />
@@ -147,9 +148,9 @@
                             android:spinnerMode="dropdown"
                             android:backgroundTintMode="add"
                             android:paddingLeft="2dip"
-                            android:paddingTop="2dip"
+                            android:paddingTop="@dimen/create_survey_spinner_padding"
+                            android:paddingBottom="@dimen/create_survey_spinner_padding"
                             android:paddingRight="20dip"
-                            android:paddingBottom="2dip"
                             android:background="@null"
                             android:gravity="right"
                             />
@@ -157,7 +158,8 @@
                             android:src="@drawable/arrow_assess"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:paddingBottom="2dip"
+                            android:paddingTop="@dimen/create_survey_spinner_padding"
+                            android:paddingBottom="@dimen/create_survey_spinner_padding"
                             android:paddingRight="20dip"
                             android:layout_alignParentBottom="true"
                             android:layout_alignParentRight="true"  />
@@ -204,16 +206,17 @@
                             android:id="@+id/tab_group"
                             android:spinnerMode="dropdown"
                             android:backgroundTintMode="add"
+                            android:paddingTop="@dimen/create_survey_spinner_padding"
+                            android:paddingBottom="@dimen/create_survey_spinner_padding"
                             android:paddingLeft="2dip"
-                            android:paddingTop="2dip"
                             android:paddingRight="20dip"
-                            android:paddingBottom="2dip"
                             android:background="@null"/>
                         <ImageView
                             android:src="@drawable/arrow_assess"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:paddingBottom="2dip"
+                            android:paddingTop="@dimen/create_survey_spinner_padding"
+                            android:paddingBottom="@dimen/create_survey_spinner_padding"
                             android:paddingRight="20dip"
                             android:layout_alignParentBottom="true"
                             android:layout_alignParentRight="true"  />

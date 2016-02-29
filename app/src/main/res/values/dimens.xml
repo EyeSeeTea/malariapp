@@ -50,6 +50,8 @@
     <dimen name="extra_large_text_size">34sp</dimen>
     <dimen name="extra_xlarge_text_size">36sp</dimen>
 
+    <!-- spinner padding -->
+    <dimen name="create_survey_spinner_padding">10dip</dimen>
     <!-- Float Button default -->
     <dimen name="float_button_def">24sp</dimen>
     <!-- Text Card default -->
