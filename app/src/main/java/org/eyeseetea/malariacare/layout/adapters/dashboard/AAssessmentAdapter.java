@@ -21,6 +21,8 @@ package org.eyeseetea.malariacare.layout.adapters.dashboard;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.text.Layout;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -96,7 +98,10 @@ public abstract class AAssessmentAdapter extends ADashboardAdapter implements ID
         if (!showNextFacilityName) {
             facilityName.setVisibility(View.GONE);
             facilityName.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, 0, 0f));
-            surveyType.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, 0, 1f));
+            LinearLayout.LayoutParams linearLayout=new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, 0, 1f);
+            int pixels =(int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,(float)getContext().getResources().getDimension(R.dimen.survey_row_marging),getContext().getResources().getDisplayMetrics());
+            linearLayout.setMargins(0, pixels, 0, pixels);
+            surveyType.setLayoutParams(linearLayout);
         } else {
             facilityName.setText(survey.getOrgUnit().getName());
             facilityName.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, 0, 0.5f));

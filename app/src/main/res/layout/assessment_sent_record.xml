@@ -87,7 +87,9 @@
         android:id="@+id/scoreContainer"
         android:layout_weight="0.4"
         android:layout_gravity="center"
-        android:gravity="center">
+        android:gravity="center"
+        android:layout_marginTop="@dimen/survey_row_marging"
+        android:layout_marginBottom="@dimen/survey_row_marging">
 
         <org.eyeseetea.malariacare.views.CustomTextView
             android:layout_width="wrap_content"
