@@ -42,15 +42,12 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 
-import com.raizlabs.android.dbflow.sql.language.Select;
-
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.model.CompositeScore;
 import org.eyeseetea.malariacare.database.model.Question;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.model.Tab;
 import org.eyeseetea.malariacare.database.utils.Session;
-import org.eyeseetea.malariacare.database.utils.SurveyAnsweredRatio;
 import org.eyeseetea.malariacare.layout.adapters.general.TabArrayAdapter;
 import org.eyeseetea.malariacare.layout.adapters.survey.AutoTabAdapter;
 import org.eyeseetea.malariacare.layout.adapters.survey.CompositeScoreAdapter;
@@ -230,6 +227,8 @@ public class SurveyFragment extends  Fragment {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 Log.d(TAG, "onItemSelected..");
                 final Tab selectedTab = (Tab) spinner.getSelectedItem();
+                llLayout.findViewById(R.id.previous_tab).setAlpha(0f);
+                llLayout.findViewById(R.id.next_tab).setAlpha(0f);
                 new AsyncChangeTab(selectedTab).execute((Void) null);
                 Log.d(TAG, "onItemSelected(" + Thread.currentThread().getId() + ")..DONE");
             }
@@ -239,6 +238,7 @@ public class SurveyFragment extends  Fragment {
 
             }
         });
+
 
         ImageButton nextButton = (ImageButton) llLayout.findViewById(R.id.next_tab);
         ImageButton previousButton = (ImageButton) llLayout.findViewById(R.id.previous_tab);
@@ -257,9 +257,10 @@ public class SurveyFragment extends  Fragment {
                 int position = currentTabPosition();
                 position--;
                 if (position >= 0)
-                setCurrentTab(position);
+                    setCurrentTab(position);
             }
         });
+
     }
 
 
@@ -335,7 +336,21 @@ public class SurveyFragment extends  Fragment {
             UnfocusScrollListener unfocusScrollListener = new UnfocusScrollListener();
             mQuestions.setOnScrollListener(unfocusScrollListener);
             stopProgress();
+            checkArrows();
         }
+    }
+
+    //Show and hide the arrows alpha=0f == transparent alpha 1f 100% visible
+    private void checkArrows() {
+        int position=currentTabPosition();
+        if(position==0)
+            llLayout.findViewById(R.id.previous_tab).setAlpha(0f);
+        else
+            llLayout.findViewById(R.id.previous_tab).setAlpha(1f);
+        if(position==spinner.getAdapter().getCount()-1)
+            llLayout.findViewById(R.id.next_tab).setAlpha(0f);
+        else
+            llLayout.findViewById(R.id.next_tab).setAlpha(1f);
     }
 
     /**

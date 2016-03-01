@@ -50,11 +50,11 @@ function showData(){
 }
 //Create the select options for select the program
 function createSelectProgram(){
-	var selectHtml='<select onchange="changeProgram()" id="changeProgram">';
+	var selectHtml='<select onchange="changeProgram()" id="changeProgram" ">';
 	var selected="";
 	if(selectedProgram==="AllAssessment")
 		selected="selected";
-	selectHtml+="<option "+selected+" value="+allAssessment+">"+"All Assessment"+"</option>";
+	selectHtml+="<option "+selected+" value="+allAssessment+">"+"ALL ASSESSMENTS"+"</option>";
 	selected="selected";
 	for(i=0;i<input.length;i++){
 		if(!(selectHtml.indexOf(input[i][3]) > -1) && !(input[i][3]=== undefined)){
@@ -63,7 +63,7 @@ function createSelectProgram(){
 		}
 		else
 			selected="";
-		selectHtml+="<option "+selected+" value="+input[i][3]+">"+input[i][2]+"</option>";
+		selectHtml+="<option "+selected+" value="+input[i][3]+">"+input[i][2].toUpperCase()+"</option>";
 		if(selected==="selected"){
 			selected="";
 		}

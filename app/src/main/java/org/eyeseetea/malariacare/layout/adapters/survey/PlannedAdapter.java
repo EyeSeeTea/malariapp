@@ -22,7 +22,6 @@ package org.eyeseetea.malariacare.layout.adapters.survey;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Context;
-import android.graphics.Typeface;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -80,6 +79,11 @@ public class PlannedAdapter extends BaseAdapter {
      * Number of items shown according to the selected section and filter
      */
     int numShown;
+
+    /**
+     * Item order in the block tab(init in the header tab).
+     */
+    int itemOrder;
 
     public PlannedAdapter(List<PlannedItem> items, Context context){
         this.items=items;
@@ -199,6 +203,7 @@ public class PlannedAdapter extends BaseAdapter {
         Log.d(TAG,"getView: "+position);
         PlannedItem plannedItem=(PlannedItem)getItem(position);
         if (plannedItem instanceof PlannedHeader){
+            itemOrder =0;
             return getViewByPlannedHeader((PlannedHeader) plannedItem, parent);
         }else{
             return getViewByPlannedSurvey(position, (PlannedSurvey) plannedItem, parent);
@@ -245,7 +250,7 @@ public class PlannedAdapter extends BaseAdapter {
     }
 
     private View getViewByPlannedSurvey(int position,final PlannedSurvey plannedSurvey, ViewGroup parent){
-
+        itemOrder++;
         LayoutInflater inflater=LayoutInflater.from(context);
         LinearLayout rowLayout = (LinearLayout)inflater.inflate(R.layout.planning_survey_row, parent, false);
 
@@ -275,7 +280,8 @@ public class PlannedAdapter extends BaseAdapter {
 
         //background color
         int colorId=plannedSurvey.getPlannedHeader().getSecondaryColor();
-        if(position==0 || position%2==0)
+        int fixposition= itemOrder -1;
+        if(fixposition==0 || fixposition%2==0)
             rowLayout.setBackgroundColor(PreferencesState.getInstance().getContext().getResources().getColor(R.color.white));
         else
             rowLayout.setBackgroundColor(PreferencesState.getInstance().getContext().getResources().getColor(colorId));
@@ -283,6 +289,8 @@ public class PlannedAdapter extends BaseAdapter {
         ImageButton actionButton = (ImageButton)rowLayout.findViewById(R.id.planning_survey_action);
         colorId=plannedSurvey.getPlannedHeader().getBackgroundColor();
         if(plannedSurvey.getSurvey().isInProgress()){
+            if(plannedSurvey.getSurvey().getStatus()!=Constants.SURVEY_PLANNED)
+                colorId=plannedSurvey.getPlannedHeader().getGaudyBackgroundColor();
             actionButton.setImageResource(R.drawable.ic_edit);
         }
         else{

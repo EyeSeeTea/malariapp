@@ -34,6 +34,12 @@
     <color name="tab_yellow_assess">#dce442</color>
     <color name="tab_green_monitor">#799900</color>
     <color name="tab_blue_improve">#00b3e3</color>
-    <color name="light_red">#e9a69a</color>
     <color name="appNameColor">#000000</color>
+    <color name="gaudyYellow">#bcd200</color>
+    <color name="gaudyGreen">#4c5722</color>
+    <color name="gaudyRed">#7c0407</color>
+    <color name="gaudyBlue">#0b5394</color>
+    <color name="light_red">#f8cdc6</color>
+    <color name="planLightGreen">#dbf67c</color>
+    <color name="planLighYellow">#f4f8ac</color>
 </resources>
