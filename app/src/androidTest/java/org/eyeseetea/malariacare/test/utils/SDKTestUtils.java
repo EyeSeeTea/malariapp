@@ -248,6 +248,10 @@ public class SDKTestUtils {
         return new Select().all().from(org.hisp.dhis.android.sdk.persistence.models.Program.class).queryList();
     }
 
+    public static List<org.hisp.dhis.android.sdk.persistence.models.Event> getAllSDKEvents() {
+        return new Select().all().from(org.hisp.dhis.android.sdk.persistence.models.Event.class).queryList();
+    }
+
     public static Activity getActivityInstance() {
         final Activity[] activity = new Activity[1];
         Instrumentation instrumentation = InstrumentationRegistry.getInstrumentation();
