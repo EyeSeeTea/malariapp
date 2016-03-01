@@ -190,14 +190,15 @@
                             android:background="@color/assess_grey">
                             <Spinner
                                 android:id="@+id/filter_program"
-                                android:layout_width="wrap_content"
-                                android:layout_weight="1"
+                                android:layout_width="0dp"
+                                android:layout_weight=".44"
                                 android:layout_height="wrap_content"
                                 android:background="@color/assess_grey"
                                 android:paddingTop="5dip"
                                 android:paddingBottom="5dip"/>
                             <ImageView
-                                android:layout_width="wrap_content"
+                                android:layout_width="0dp"
+                                android:layout_weight=".06"
                                 android:layout_height="wrap_content"
                                 android:src="@drawable/arrow_improve"
                                 android:paddingTop="5dip"
@@ -205,15 +206,16 @@
 
                             <Spinner
                                 android:id="@+id/filter_orgunit"
-                                android:layout_width="wrap_content"
-                                android:layout_weight="1"
+                                android:layout_width="0dp"
+                                android:layout_weight=".44"
                                 android:layout_height="wrap_content"
                                 android:background="@color/assess_grey"
                                 android:paddingTop="5dip"
                                 android:paddingBottom="5dip"
                                 />
                             <ImageView
-                                android:layout_width="wrap_content"
+                                android:layout_width="0dp"
+                                android:layout_weight=".06"
                                 android:gravity="right"
                                 android:layout_height="wrap_content"
                                 android:src="@drawable/arrow_improve"
