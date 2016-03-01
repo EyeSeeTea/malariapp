@@ -227,6 +227,8 @@ public class SurveyFragment extends  Fragment {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 Log.d(TAG, "onItemSelected..");
                 final Tab selectedTab = (Tab) spinner.getSelectedItem();
+                llLayout.findViewById(R.id.previous_tab).setAlpha(0f);
+                llLayout.findViewById(R.id.next_tab).setAlpha(0f);
                 new AsyncChangeTab(selectedTab).execute((Void) null);
                 Log.d(TAG, "onItemSelected(" + Thread.currentThread().getId() + ")..DONE");
             }
@@ -259,10 +261,6 @@ public class SurveyFragment extends  Fragment {
             }
         });
 
-        //Hide the -1 tab and the 1 tab if not exist
-        llLayout.findViewById(R.id.previous_tab).setVisibility(View.GONE);
-        if(spinner.getAdapter().getCount()==1)
-            llLayout.findViewById(R.id.next_tab).setVisibility(View.GONE);
     }
 
 
@@ -342,16 +340,17 @@ public class SurveyFragment extends  Fragment {
         }
     }
 
+    //Show and hide the arrows alpha=0f == transparent alpha 1f 100% visible
     private void checkArrows() {
         int position=currentTabPosition();
         if(position==0)
-            llLayout.findViewById(R.id.previous_tab).setVisibility(View.GONE);
+            llLayout.findViewById(R.id.previous_tab).setAlpha(0f);
         else
-            llLayout.findViewById(R.id.previous_tab).setVisibility(View.VISIBLE);
+            llLayout.findViewById(R.id.previous_tab).setAlpha(1f);
         if(position==spinner.getAdapter().getCount()-1)
-            llLayout.findViewById(R.id.next_tab).setVisibility(View.GONE);
+            llLayout.findViewById(R.id.next_tab).setAlpha(0f);
         else
-            llLayout.findViewById(R.id.next_tab).setVisibility(View.VISIBLE);
+            llLayout.findViewById(R.id.next_tab).setAlpha(1f);
     }
 
     /**

@@ -12,6 +12,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/previous_tab"
         android:background="@color/transparent"
+        android:alpha="0"
         android:src="@drawable/arrow_to_left"
         android:gravity="center_horizontal"
         android:layout_centerVertical="true"
@@ -41,6 +42,7 @@
         android:src="@drawable/arrow_to_right"
         android:background="@color/transparent"
         android:layout_alignParentRight="true"
+        android:alpha="0"
         android:gravity="center_horizontal"
         android:layout_centerVertical="true"
         />
