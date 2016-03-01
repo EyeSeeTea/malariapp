@@ -191,7 +191,7 @@
                             <Spinner
                                 android:id="@+id/filter_program"
                                 android:layout_width="0dp"
-                                android:layout_weight=".44"
+                                android:layout_weight=".43"
                                 android:layout_height="wrap_content"
                                 android:background="@color/assess_grey"
                                 android:paddingTop="5dip"
@@ -201,13 +201,28 @@
                                 android:layout_weight=".06"
                                 android:layout_height="wrap_content"
                                 android:src="@drawable/arrow_improve"
-                                android:paddingTop="5dip"
+                                android:paddingTop="15dip"
                                 android:paddingBottom="5dip"/>
 
+                            <org.eyeseetea.malariacare.views.CustomTextView
+                                android:textAppearance="?android:attr/textAppearanceLarge"
+                                android:layout_width="0dp"
+                                android:layout_weight=".2"
+                                android:layout_height="wrap_content"
+                                android:typeface="sans"
+                                android:textStyle="bold"
+                                android:gravity="center"
+                                android:paddingTop="@dimen/dashboard_planning_padding"
+                                android:paddingBottom="@dimen/dashboard_planning_padding"
+                                android:textColor="@color/white"
+                                android:text=" "
+                                app:tDimension="@string/font_size_level4"
+                                app:tFontName="@string/medium_font_name"
+                                />
                             <Spinner
                                 android:id="@+id/filter_orgunit"
                                 android:layout_width="0dp"
-                                android:layout_weight=".44"
+                                android:layout_weight=".43"
                                 android:layout_height="wrap_content"
                                 android:background="@color/assess_grey"
                                 android:paddingTop="5dip"
@@ -219,7 +234,7 @@
                                 android:gravity="right"
                                 android:layout_height="wrap_content"
                                 android:src="@drawable/arrow_improve"
-                                android:paddingTop="5dip"
+                                android:paddingTop="15dip"
                                 android:paddingBottom="5dip"/>
                         </LinearLayout>
                     </LinearLayout>
