@@ -134,7 +134,7 @@ public class PlannedHeader implements PlannedItem {
                 ctx.getString(R.string.dashboard_title_planned_next_qa),
                 R.color.red,
                 R.color.light_red,
-                R.color.gaudyRed);
+                R.color.gaudyYellow);
     }
 
     /**
@@ -166,7 +166,7 @@ public class PlannedHeader implements PlannedItem {
                 ctx.getString(R.string.dashboard_title_planned_next_qa),
                 R.color.green,
                 R.color.planLightGreen,
-                R.color.gaudyGreen);
+                R.color.gaudyYellow);
     }
 
     /**
@@ -182,7 +182,7 @@ public class PlannedHeader implements PlannedItem {
                 ctx.getString(R.string.dashboard_title_planned_next_qa),
                 R.color.scoreGrandson,
                 R.color.feedbackLightBlue,
-                R.color.gaudyBlue);
+                R.color.gaudyYellow);
     }
 
     @Override
