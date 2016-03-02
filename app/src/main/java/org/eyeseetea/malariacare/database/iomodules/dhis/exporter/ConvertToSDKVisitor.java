@@ -75,6 +75,7 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
     String mainScoreBUID;
     String mainScoreCUID;
     String forwardOrderUID;
+    String _push;
 
     /**
      * List of surveys that are going to be pushed
@@ -109,6 +110,7 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
         mainScoreBUID=context.getString(R.string.main_score_b);
         mainScoreCUID=context.getString(R.string.main_score_c);
         forwardOrderUID=context.getString(R.string.forward_order);
+        _push=context.getString(R.string._push);
         surveys = new ArrayList<>();
         events = new ArrayList<>();
     }
@@ -228,6 +230,9 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
 
         //Forward Order
         buildAndSaveDataValue(forwardOrderUID, context.getString(R.string.forward_order_value));
+
+        //_Push
+        buildAndSaveDataValue(_push, context.getString(R.string.forward_order_value));
     }
 
     private void buildAndSaveDataValue(String UID, String value){
