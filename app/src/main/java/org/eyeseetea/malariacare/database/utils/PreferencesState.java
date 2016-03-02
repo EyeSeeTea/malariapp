@@ -130,7 +130,7 @@ public class PreferencesState {
      */
     private int initMaxEvents(){
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(instance.getContext());
-        String maxValue=sharedPreferences.getString(instance.getContext().getString(R.string.dhis_max_items), "200");
+        String maxValue=sharedPreferences.getString(instance.getContext().getString(R.string.dhis_max_items), instance.getContext().getString(R.string.dhis_default_max_items));
         return Integer.valueOf(maxValue);
     }
 

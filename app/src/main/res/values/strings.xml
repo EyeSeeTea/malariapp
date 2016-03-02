@@ -288,6 +288,7 @@
     <item name="dhis_user" type="string" translatable="false">dhis_user</item>
     <item name="dhis_password" type="string" translatable="false">dhis_password</item>
     <item name="dhis_max_items" type="string" translatable="false">dhis_max_items</item>
+    <item name="dhis_default_max_items" type="string" translatable="false">30</item>
     <item name="location_required" type="string" translatable="false">location_required</item>
     <string name="dashboard_tip_pie_chart">Quality of care (based on last assessment)</string>
     <string name="dialog_pull_error">Error while trying to pull metadata from dhis server</string>
