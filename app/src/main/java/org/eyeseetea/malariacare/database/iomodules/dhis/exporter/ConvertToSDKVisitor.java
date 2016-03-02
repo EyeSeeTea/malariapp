@@ -19,17 +19,14 @@
 
 package org.eyeseetea.malariacare.database.iomodules.dhis.exporter;
 
-import android.app.AlertDialog;
 import android.content.Context;
 import android.location.Location;
 import android.util.Log;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import com.raizlabs.android.dbflow.sql.builder.Condition;
 import com.raizlabs.android.dbflow.sql.language.Select;
 
 import org.eyeseetea.malariacare.DashboardActivity;
-import org.eyeseetea.malariacare.ProgressActivity;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.EventExtended;
 import org.eyeseetea.malariacare.database.model.CompositeScore;
@@ -39,7 +36,6 @@ import org.eyeseetea.malariacare.database.model.Value;
 import org.eyeseetea.malariacare.database.utils.LocationMemory;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.Session;
-import org.eyeseetea.malariacare.database.utils.planning.SurveyPlanner;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.utils.Constants;
 import org.eyeseetea.malariacare.utils.Utils;
@@ -54,7 +50,6 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -75,7 +70,7 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
     String mainScoreBUID;
     String mainScoreCUID;
     String forwardOrderUID;
-    String _push;
+    String pushUID;
 
     /**
      * List of surveys that are going to be pushed
@@ -110,7 +105,7 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
         mainScoreBUID=context.getString(R.string.main_score_b);
         mainScoreCUID=context.getString(R.string.main_score_c);
         forwardOrderUID=context.getString(R.string.forward_order);
-        _push=context.getString(R.string._push);
+        pushUID =context.getString(R.string._push);
         surveys = new ArrayList<>();
         events = new ArrayList<>();
     }
@@ -232,7 +227,7 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
         buildAndSaveDataValue(forwardOrderUID, context.getString(R.string.forward_order_value));
 
         //_Push
-        buildAndSaveDataValue(_push, context.getString(R.string.forward_order_value));
+        buildAndSaveDataValue(pushUID, context.getString(R.string.forward_order_value));
     }
 
     private void buildAndSaveDataValue(String UID, String value){
