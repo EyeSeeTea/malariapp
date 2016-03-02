@@ -79,7 +79,9 @@ public class DataValueExtended implements VisitableFromSDK {
             String optionCleaned=extractValue(option.getCode());
             String valueCleaned=extractValue(dataValue.getValue());
             //Yes[1]==Yes || Yes==Yes || Yes==Yes[1]
-            if(option.getCode().equals(dataValue.getValue()) || optionCleaned.equals(dataValue.getValue()) || option.getCode().equals(valueCleaned)){
+//            if(option.getCode().equals(dataValue.getValue()) || optionCleaned.equals(dataValue.getValue()) || option.getCode().equals(valueCleaned)){
+            //Option code no longer will be 'Yes[1]' but a real code for the option
+            if(option.getCode().equals(dataValue.getValue())){
                 return option;
             }
         }
