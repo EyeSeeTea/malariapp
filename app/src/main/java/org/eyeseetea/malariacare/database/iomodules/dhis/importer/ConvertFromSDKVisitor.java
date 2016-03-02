@@ -236,7 +236,7 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
         appOption.setName(sdkOption.getName());
         appOption.setCode(sdkOption.getCode());
         appOption.setAnswer(appAnswer);
-        appOption.setFactor(DataValueExtended.extractFactor(sdkOption.getCode()));
+        appOption.setFactor(sdkOptionExtended.getFactor());
         appOption.save();
     }
 

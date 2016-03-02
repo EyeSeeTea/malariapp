@@ -19,19 +19,31 @@
 
 package org.eyeseetea.malariacare.database.iomodules.dhis.importer.models;
 
+import android.util.Log;
+
 import com.raizlabs.android.dbflow.sql.builder.Condition;
 import com.raizlabs.android.dbflow.sql.language.Select;
 
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.IConvertFromSDKVisitor;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.VisitableFromSDK;
 import org.eyeseetea.malariacare.database.model.Option$Table;
+import org.hisp.dhis.android.sdk.controllers.metadata.MetaDataController;
+import org.hisp.dhis.android.sdk.persistence.models.Attribute;
 import org.hisp.dhis.android.sdk.persistence.models.Option;
+import org.hisp.dhis.android.sdk.persistence.models.OptionAttributeValue;
 import org.hisp.dhis.android.sdk.persistence.models.OptionSet;
 
 /**
  * Created by arrizabalaga on 6/11/15.
  */
 public class OptionExtended implements VisitableFromSDK {
+
+    private static final String TAG=".OptionExtended";
+
+    /**
+     * Name of the attribute that holds the factor value for each option
+     */
+    private static final String ATTRIBUTE_OPTION_FACTOR_NAME="OF";
 
     Option option;
 
@@ -70,5 +82,35 @@ public class OptionExtended implements VisitableFromSDK {
         return new Select().from(Option.class).
                 where(Condition.column(org.hisp.dhis.android.sdk.persistence.models.Option$Table.NAME).is(name)).
                 and(Condition.column(org.hisp.dhis.android.sdk.persistence.models.Option$Table.OPTIONSET).is(optionSetUID)).querySingle();
+    }
+
+    /**
+     * Finds the factor for this option (via OptionFactor attribute)
+     * @return
+     */
+    public Float getFactor(){
+        for(OptionAttributeValue optionAttributeValue:option.getAttributeValues()){
+            Attribute attribute=optionAttributeValue.getAttribute();
+
+            //Not OptionFactor -> ignore
+            if(!ATTRIBUTE_OPTION_FACTOR_NAME.equals(attribute.getCode())){
+                continue;
+            }
+
+            //Turn string value into float
+            return parseFactorValue(optionAttributeValue.getValue());
+        }
+
+        //Should not happen
+        return 0f;
+    }
+
+    private Float parseFactorValue(String value){
+        try {
+            return Float.valueOf(value);
+        }catch(NumberFormatException ex){
+            Log.e(TAG, String.format("parseFactorValue: option: %s | value: %s", option.getCode(), value));
+            return 0f;
+        }
     }
 }
