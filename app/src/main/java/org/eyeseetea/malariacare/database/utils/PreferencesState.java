@@ -245,4 +245,13 @@ public class PreferencesState {
 
         return DashboardActivity.class;
     }
+
+
+    public void clearOrgUnitPreference() {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor editor =sharedPreferences.edit();
+        editor.putString(context.getResources().getString(R.string.default_orgUnits), "");
+        editor.putString(context.getResources().getString(R.string.default_orgUnit), "");
+        editor.commit();
+    }
 }

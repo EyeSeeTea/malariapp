@@ -21,6 +21,8 @@ package org.eyeseetea.malariacare.layout.adapters.dashboard;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.text.Layout;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -78,9 +80,15 @@ public abstract class AAssessmentAdapter extends ADashboardAdapter implements ID
             Date completionDate = survey.getCompletionDate();
             SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy");
             sentDate.setText(format.format(completionDate));
-            sentScore.setText(String.format("%.1f %%", survey.getMainScore()));
-            int colorId=LayoutUtils.trafficColor(survey.getMainScore());
-            sentScore.setTextColor(getContext().getResources().getColor(colorId));
+            if(survey.hasConflict()){
+                sentScore.setText((getContext().getResources().getString(R.string.feedback_info_conflict)).toUpperCase());
+                sentScore.setTextColor(getContext().getResources().getColor(R.color.darkRed));
+            }
+            else {
+                sentScore.setText(String.format("%.1f %%",survey.getMainScore()));
+                int colorId=LayoutUtils.trafficColor(survey.getMainScore());
+                sentScore.setTextColor(getContext().getResources().getColor(colorId));
+            }
         } else {
             //Status Cell
             ((CustomTextView) rowView.findViewById(R.id.score)).setText(getStatus(survey));
@@ -90,7 +98,10 @@ public abstract class AAssessmentAdapter extends ADashboardAdapter implements ID
         if (!showNextFacilityName) {
             facilityName.setVisibility(View.GONE);
             facilityName.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, 0, 0f));
-            surveyType.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, 0, 1f));
+            LinearLayout.LayoutParams linearLayout=new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, 0, 1f);
+            int pixels =(int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,(float)getContext().getResources().getDimension(R.dimen.survey_row_marging),getContext().getResources().getDisplayMetrics());
+            linearLayout.setMargins(0, pixels, 0, pixels);
+            surveyType.setLayoutParams(linearLayout);
         } else {
             facilityName.setText(survey.getOrgUnit().getName());
             facilityName.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, 0, 0.5f));

@@ -73,6 +73,18 @@ public class OptionExtended implements VisitableFromSDK {
     }
 
     /**
+     * Some options have a 'hardcoded' name such as 'COMPOSITE_SCORE'. This method is a helper to recover the whole option with that name belonging to a given optionSet
+     * @param optionSetUID
+     * @param name
+     * @return
+     */
+    public static Option findOptionByOptionSetAndName(String optionSetUID, String name){
+        return new Select().from(Option.class).
+                where(Condition.column(org.hisp.dhis.android.sdk.persistence.models.Option$Table.NAME).is(name)).
+                and(Condition.column(org.hisp.dhis.android.sdk.persistence.models.Option$Table.OPTIONSET).is(optionSetUID)).querySingle();
+    }
+
+    /**
      * Finds the factor for this option (via OptionFactor attribute)
      * @return
      */
@@ -101,6 +113,4 @@ public class OptionExtended implements VisitableFromSDK {
             return 0f;
         }
     }
-
-
 }

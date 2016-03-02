@@ -21,6 +21,8 @@ package org.eyeseetea.malariacare.layout.utils;
 
 import android.content.Context;
 import android.os.Build;
+import android.text.Html;
+import android.text.Spanned;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -197,7 +199,15 @@ public class AutoTabLayoutUtils {
 
         viewHolder.component = rowView.findViewById(R.id.answer);
         viewHolder.statement = (CustomTextView) rowView.findViewById(R.id.statement);
-        viewHolder.statement.setText(question.getForm_name());
+
+        if(question.getCompulsory()){
+            int red = PreferencesState.getInstance().getContext().getResources().getColor(R.color.darkRed);
+            String appNameColorString = String.format("%X", red).substring(2);
+            Spanned spannedQuestion= Html.fromHtml(String.format("<font color=\"#%s\"><b>", appNameColorString) + "*  " + "</b></font>" + question.getForm_name());
+            viewHolder.statement.setText(spannedQuestion);
+        }
+        else
+            viewHolder.statement.setText(question.getForm_name());
 
         return rowView;
     }

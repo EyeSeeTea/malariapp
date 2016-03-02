@@ -22,7 +22,6 @@ package org.eyeseetea.malariacare.database.iomodules.dhis.importer;
 import android.util.Log;
 
 import org.eyeseetea.malariacare.ProgressActivity;
-import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.DataElementExtended;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.DataValueExtended;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.EventExtended;
@@ -38,6 +37,7 @@ import org.eyeseetea.malariacare.database.model.Answer;
 import org.eyeseetea.malariacare.database.model.CompositeScore;
 import org.eyeseetea.malariacare.database.model.OrgUnit;
 import org.eyeseetea.malariacare.database.model.OrgUnitLevel;
+import org.eyeseetea.malariacare.database.model.OrgUnitProgramRelation;
 import org.eyeseetea.malariacare.database.model.Question;
 import org.eyeseetea.malariacare.database.model.Score;
 import org.eyeseetea.malariacare.database.model.Survey;
@@ -45,17 +45,14 @@ import org.eyeseetea.malariacare.database.model.Tab;
 import org.eyeseetea.malariacare.database.model.TabGroup;
 import org.eyeseetea.malariacare.database.model.User;
 import org.eyeseetea.malariacare.database.model.Value;
-import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.utils.Constants;
 import org.hisp.dhis.android.sdk.controllers.metadata.MetaDataController;
-import org.hisp.dhis.android.sdk.persistence.models.Attribute;
 import org.hisp.dhis.android.sdk.persistence.models.DataElement;
 import org.hisp.dhis.android.sdk.persistence.models.DataValue;
 import org.hisp.dhis.android.sdk.persistence.models.Event;
 import org.hisp.dhis.android.sdk.persistence.models.Option;
 import org.hisp.dhis.android.sdk.persistence.models.OptionSet;
 import org.hisp.dhis.android.sdk.persistence.models.OrganisationUnit;
-import org.hisp.dhis.android.sdk.persistence.models.OrganisationUnitAttributeValue;
 import org.hisp.dhis.android.sdk.persistence.models.OrganisationUnitLevel;
 import org.hisp.dhis.android.sdk.persistence.models.Program;
 import org.hisp.dhis.android.sdk.persistence.models.ProgramStage;
@@ -85,6 +82,9 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
         appMapObjects = new HashMap();
         compositeScoreBuilder = new CompositeScoreBuilder();
         questionBuilder = new QuestionBuilder();
+
+        //Reload static dataElement codes
+        DataElementExtended.reloadDataElementTypeCodes();
     }
 
     /**
@@ -167,16 +167,6 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
         appOrgUnit.setUid(organisationUnit.getId());
         //Set orgUnitLevel
         appOrgUnit.setOrgUnitLevel(appOrgUnitLevel);
-        //Set default productivity
-        appOrgUnit.setProductivity(0);
-        //if exist in the server set productivity
-        for(OrganisationUnitAttributeValue organisationUnitAttributeValue:organisationUnit.getAttributeValues())
-        {
-            Attribute attribute= MetaDataController.getAttribute(organisationUnitAttributeValue.getAttributeId());
-            if(attribute.getCode().equals(ATTRIBUTE_PRODUCTIVITY_CODE)) {
-                appOrgUnit.setProductivity(Integer.parseInt(organisationUnitAttributeValue.getValue()));
-            }
-        }
         //Since there is no guaranteed order in orgunits parent unit might not be yet converted or even pulled at all
         //Thus building hierarchy must be done in a second step
 
@@ -185,7 +175,8 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
         appMapObjects.put(organisationUnit.getId(), appOrgUnit);
 
         //Associate programs
-        buildOrgUnitProgramRelationships(appOrgUnit);
+        sdkOrganisationUnitExtended.setAppOrgUnit(appOrgUnit);
+        buildOrgUnitProgramRelation(sdkOrganisationUnitExtended);
     }
 
     /**
@@ -270,7 +261,7 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
     @Override
     public void visit(DataElementExtended sdkDataElementExtended) {
         Object questionOrCompositeScore;
-        if(compositeScoreBuilder.isACompositeScore(sdkDataElementExtended)){
+        if(sdkDataElementExtended.isCompositeScore()){
             questionOrCompositeScore=buildCompositeScore(sdkDataElementExtended);
         }else if(sdkDataElementExtended.isQuestion()){
             questionOrCompositeScore=buildQuestion(sdkDataElementExtended);
@@ -441,15 +432,39 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
     }
 
     /**
-     * Due to permissions programs 'belongs' to a given orgunit
+     * Due to permissions programs 'belongs' to a given orgunit and that relationship has a productivity
+     * @param sdkOrganisationUnitExtended Extended sdk orgUnit (used to cache array with values)
      */
-    public void buildOrgUnitProgramRelationships(OrgUnit appOrgUnit) {
-        Log.d(TAG, "buildOrgUnitProgramRelationships " + appOrgUnit.getName());
+    public void buildOrgUnitProgramRelation(OrganisationUnitExtended sdkOrganisationUnitExtended) {
+        OrgUnit appOrgUnit = sdkOrganisationUnitExtended.getAppOrgUnit();
+        Log.d(TAG, "buildOrgUnitProgramRelation " + appOrgUnit.getName());
         //Each assigned program
         for (org.hisp.dhis.android.sdk.persistence.models.Program program : MetaDataController.getProgramsForOrganisationUnit(appOrgUnit.getUid(), ProgramType.WITHOUT_REGISTRATION)) {
-            org.eyeseetea.malariacare.database.model.Program appProgram = (org.eyeseetea.malariacare.database.model.Program) appMapObjects.get(program.getUid());
-            appProgram.addOrgUnit(appOrgUnit);
+            ProgramExtended sdkProgramExtended = new ProgramExtended(program);
+            sdkProgramExtended.setAppProgram((org.eyeseetea.malariacare.database.model.Program) appMapObjects.get(program.getUid()));
+
+            addOrgUnitProgramRelation(sdkOrganisationUnitExtended,sdkProgramExtended);
         }
+    }
+
+    /**
+     * Updates the relationship between the given orgUnit and program according to their attribute values
+     * @param sdkOrganisationUnitExtended
+     * @param sdkProgramExtended
+     */
+    private void addOrgUnitProgramRelation(OrganisationUnitExtended sdkOrganisationUnitExtended, ProgramExtended sdkProgramExtended){
+        //Take app references
+        OrgUnit appOrgUnit=sdkOrganisationUnitExtended.getAppOrgUnit();
+        org.eyeseetea.malariacare.database.model.Program appProgram=sdkProgramExtended.getAppProgram();
+
+        //Add relationship
+        OrgUnitProgramRelation orgUnitProgramRelation=appProgram.addOrgUnit(appOrgUnit);
+
+        //Add productivity to that relationship
+        Integer productivityIndex=sdkProgramExtended.getProductivityPosition();
+        Integer orgUnitProgramRelationProductivity = sdkOrganisationUnitExtended.getProductivity(productivityIndex);
+        orgUnitProgramRelation.setProductivity(orgUnitProgramRelationProductivity);
+        orgUnitProgramRelation.save();
     }
 
     @Override
@@ -490,4 +505,5 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
         return true;
 
     }
+
 }

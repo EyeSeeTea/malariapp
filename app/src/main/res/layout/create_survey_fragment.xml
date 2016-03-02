@@ -84,16 +84,17 @@
                             android:spinnerMode="dropdown"
                             android:backgroundTintMode="add"
                             android:paddingLeft="2dip"
-                            android:paddingTop="2dip"
                             android:paddingRight="20dip"
-                            android:paddingBottom="2dip"
+                            android:paddingTop="@dimen/create_survey_spinner_padding"
+                            android:paddingBottom="@dimen/create_survey_spinner_padding"
                             android:background="@null"
                             android:gravity="right"/>
                         <ImageView
                             android:src="@drawable/arrow_assess"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:paddingBottom="2dip"
+                            android:paddingTop="@dimen/create_survey_spinner_padding"
+                            android:paddingBottom="@dimen/create_survey_spinner_padding"
                             android:paddingRight="20dip"
                             android:layout_alignParentBottom="true"
                             android:layout_alignParentRight="true"  />
@@ -108,6 +109,9 @@
                     android:id="@+id/org_unit_container_items">
                 </LinearLayout>
 
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/create_survey_title_top_marging" />
                 <LinearLayout
                     android:orientation="vertical"
                     android:layout_width="fill_parent"
@@ -147,9 +151,9 @@
                             android:spinnerMode="dropdown"
                             android:backgroundTintMode="add"
                             android:paddingLeft="2dip"
-                            android:paddingTop="2dip"
+                            android:paddingTop="@dimen/create_survey_spinner_padding"
+                            android:paddingBottom="@dimen/create_survey_spinner_padding"
                             android:paddingRight="20dip"
-                            android:paddingBottom="2dip"
                             android:background="@null"
                             android:gravity="right"
                             />
@@ -157,23 +161,24 @@
                             android:src="@drawable/arrow_assess"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:paddingBottom="2dip"
+                            android:paddingTop="@dimen/create_survey_spinner_padding"
+                            android:paddingBottom="@dimen/create_survey_spinner_padding"
                             android:paddingRight="20dip"
                             android:layout_alignParentBottom="true"
                             android:layout_alignParentRight="true"  />
                     </RelativeLayout>
                 </LinearLayout>
 
+
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/create_survey_title_top_marging" />
                 <LinearLayout
                     android:orientation="vertical"
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
                     android:id="@+id/tab_group_container"
                     android:visibility="gone">
-                    <Space
-                        android:layout_width="20px"
-                        android:layout_height="20px" />
-
                     <LinearLayout
                         android:orientation="horizontal"
                         android:layout_width="fill_parent"
@@ -204,16 +209,17 @@
                             android:id="@+id/tab_group"
                             android:spinnerMode="dropdown"
                             android:backgroundTintMode="add"
+                            android:paddingTop="@dimen/create_survey_spinner_padding"
+                            android:paddingBottom="@dimen/create_survey_spinner_padding"
                             android:paddingLeft="2dip"
-                            android:paddingTop="2dip"
                             android:paddingRight="20dip"
-                            android:paddingBottom="2dip"
                             android:background="@null"/>
                         <ImageView
                             android:src="@drawable/arrow_assess"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:paddingBottom="2dip"
+                            android:paddingTop="@dimen/create_survey_spinner_padding"
+                            android:paddingBottom="@dimen/create_survey_spinner_padding"
                             android:paddingRight="20dip"
                             android:layout_alignParentBottom="true"
                             android:layout_alignParentRight="true"  />

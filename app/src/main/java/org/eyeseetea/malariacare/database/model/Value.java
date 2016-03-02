@@ -48,6 +48,7 @@ public class Value extends BaseModel implements VisitableToSDK {
     /**
      * Reference to the question for this value (loaded lazily)
      */
+
     Question question;
 
     @Column
@@ -63,6 +64,21 @@ public class Value extends BaseModel implements VisitableToSDK {
      * Reference to the option of this value (loaded lazily)
      */
     Option option;
+    /**
+     * is conflict
+     */
+    @Column
+    Boolean conflict;
+
+    public Boolean getConflict() {
+        if(conflict==null)
+            return false;
+        return conflict;
+    }
+
+    public void setConflict(Boolean conflict) {
+        this.conflict = conflict;
+    }
 
     public Value() {
     }
@@ -223,6 +239,8 @@ public class Value extends BaseModel implements VisitableToSDK {
             return false;
         if (id_survey != null ? !id_survey.equals(value1.id_survey) : value1.id_survey != null)
             return false;
+        if (conflict != null ? !conflict.equals(value1.conflict) : value1.conflict != null)
+            return false;
         return !(id_option != null ? !id_option.equals(value1.id_option) : value1.id_option != null);
 
     }
@@ -234,6 +252,7 @@ public class Value extends BaseModel implements VisitableToSDK {
         result = 31 * result + (id_question != null ? id_question.hashCode() : 0);
         result = 31 * result + (id_survey != null ? id_survey.hashCode() : 0);
         result = 31 * result + (id_option != null ? id_option.hashCode() : 0);
+        result = 31 * result + (conflict != null ? conflict.hashCode() : 0);
         return result;
     }
 
@@ -245,6 +264,7 @@ public class Value extends BaseModel implements VisitableToSDK {
                 ", id_question=" + id_question +
                 ", id_survey=" + id_survey +
                 ", id_option=" + id_option +
+                ", conflict=" + conflict +
                 '}';
     }
 }

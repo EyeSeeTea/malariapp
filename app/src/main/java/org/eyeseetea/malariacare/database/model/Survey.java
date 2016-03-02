@@ -109,6 +109,12 @@ public class Survey extends BaseModel implements VisitableToSDK {
      */
     Float mainScore;
 
+    /**
+     * Expected productivity for this survey according to its orgunit + program.
+     * Just a cached value from orgunitprogramproductivity
+     */
+    Integer productivity;
+
     public Survey() {
         //Set dates
         this.creationDate = new Date();
@@ -185,6 +191,17 @@ public class Survey extends BaseModel implements VisitableToSDK {
     public void setTabGroup(Long id_tab_group){
         this.id_tab_group = id_tab_group;
         this.tabGroup = null;
+    }
+
+    /**
+     * Returns the program from its tabgroup to avoid to much chaining while dealing with surveys
+     * @return
+     */
+    public Program getProgram() {
+        if(tabGroup==null){
+            return null;
+        }
+        return tabGroup.getProgram();
     }
 
     public User getUser() {
@@ -312,6 +329,27 @@ public class Survey extends BaseModel implements VisitableToSDK {
         return new Select()
                 .from(Score.class)
                 .where(Condition.column(Score$Table.ID_SURVEY).eq(this.getId_survey())).querySingle();
+    }
+
+    /**
+     * Returns the productivity for this survey according to its orgunit + program
+     * @return
+     */
+    public Integer getProductivity(){
+        if(productivity==null){
+            productivity = OrgUnitProgramRelation.getProductivity(this);
+        }
+        return productivity;
+    }
+
+    /**
+     * Returns if this survey has low productivity or not.
+     * [0..4]: Low
+     * [5..): Not Low
+     * @return
+     */
+    public boolean isLowProductivity(){
+        return getProductivity()<5;
     }
 
     @Override
@@ -642,17 +680,35 @@ public class Survey extends BaseModel implements VisitableToSDK {
                 .orderBy(Survey$Table.ID_ORG_UNIT).queryList();
     }
     /**
-     * Returns all the surveys with status put to "Sent" or completed
+     * Returns all the surveys with status put to "Sent" or completed or Conflict
      * @return
      */
-    public static List<Survey> getAllSentOrCompletedSurveys() {
+    public static List<Survey> getAllSentCompletedOrConflictSurveys() {
         return new Select().from(Survey.class)
                 .where(Condition.column(Survey$Table.STATUS).eq(Constants.SURVEY_SENT))
                 .or(Condition.column(Survey$Table.STATUS).eq(Constants.SURVEY_COMPLETED))
+                .or(Condition.column(Survey$Table.STATUS).eq(Constants.SURVEY_CONFLICT))
                 .orderBy(Survey$Table.EVENTDATE)
                 .orderBy(Survey$Table.ID_ORG_UNIT).queryList();
     }
 
+    public void saveConflict(String uid){
+        for(Value value:getValues()){
+            if(value.getQuestion().getUid().equals(uid)){
+                value.setConflict(true);
+                value.save();
+            }
+        }
+    }
+
+    public boolean hasConflict(){
+        for(Value value:getValues()){
+            if(value.getConflict()){
+                return true;
+            }
+        }
+        return false;
+    }
 
     public void prepareSurveyCompletionDate() {
         if (!isSent()) {
@@ -824,4 +880,5 @@ public class Survey extends BaseModel implements VisitableToSDK {
                 ", eventuid="+eventuid+
                 '}';
     }
+
 }

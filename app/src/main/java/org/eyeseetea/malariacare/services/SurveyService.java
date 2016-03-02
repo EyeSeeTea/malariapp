@@ -72,7 +72,7 @@ public class SurveyService extends IntentService {
     /**
      * Name of 'list completed' action
      */
-    public static final String ALL_SENT_OR_COMPLETED_SURVEYS_ACTION ="org.eyeseetea.malariacare.services.SurveyService.ALL_SENT_OR_COMPLETED_SURVEYS_ACTION";
+    public static final String ALL_SENT_OR_COMPLETED_OR_CONFLICT_SURVEYS_ACTION ="org.eyeseetea.malariacare.services.SurveyService.ALL_SENT_OR_COMPLETED_OR_CONFLICT_SURVEYS_ACTION";
 
     /**
      * Name of 'reload' action which returns both lists (unsent, sent)
@@ -177,8 +177,8 @@ public class SurveyService extends IntentService {
             case ALL_IN_PROGRESS_SURVEYS_ACTION:
                 getAllInProgressSurveys();
                 break;
-            case ALL_SENT_OR_COMPLETED_SURVEYS_ACTION:
-                getAllSentOrCompletedSurveys();
+            case ALL_SENT_OR_COMPLETED_OR_CONFLICT_SURVEYS_ACTION:
+                getAllSentCompletedOrConflictSurveys();
                 break;
             case ALL_COMPLETED_SURVEYS_ACTION:
                 getAllCompletedSurveys();
@@ -305,7 +305,7 @@ public class SurveyService extends IntentService {
         List<Survey> completedUnsentSurveys=Survey.getAllCompletedUnsentSurveys();
         List<Survey> unsentSurveys=Survey.getAllInProgressSurveys();
         List<Survey> sentSurveys=Survey.getAllSentSurveys();
-        List<Survey> sentAndCompletedSurveys=Survey.getAllSentOrCompletedSurveys();
+        List<Survey> sentCompletedOrConflictSurveys=Survey.getAllSentCompletedOrConflictSurveys();
         for(Survey survey:unsentSurveys){
                 survey.getAnsweredQuestionRatio();
         }
@@ -328,7 +328,7 @@ public class SurveyService extends IntentService {
         Session.putServiceValue(ALL_MONITOR_DATA_ACTION,monitorMap);
         Session.putServiceValue(ALL_IN_PROGRESS_SURVEYS_ACTION, unsentSurveys);
         Session.putServiceValue(ALL_COMPLETED_SURVEYS_ACTION, completedUnsentSurveys);
-        Session.putServiceValue(ALL_SENT_OR_COMPLETED_SURVEYS_ACTION, sentAndCompletedSurveys);
+        Session.putServiceValue(ALL_SENT_OR_COMPLETED_OR_CONFLICT_SURVEYS_ACTION, sentCompletedOrConflictSurveys);
         Session.putServiceValue(PLANNED_SURVEYS_ACTION, PlannedItemBuilder.getInstance().buildPlannedItems());
         Session.putServiceValue(ALL_ORG_UNITS_AND_PROGRAMS_ACTION,orgUnitsAndPrograms);
         Session.putServiceValue(ALL_PROGRAMS_ACTION,Program.getAllPrograms());
@@ -340,7 +340,7 @@ public class SurveyService extends IntentService {
         LocalBroadcastManager.getInstance(this).sendBroadcast(new Intent(ALL_MONITOR_DATA_ACTION));
         LocalBroadcastManager.getInstance(this).sendBroadcast(new Intent(ALL_IN_PROGRESS_SURVEYS_ACTION));
         LocalBroadcastManager.getInstance(this).sendBroadcast(new Intent(ALL_COMPLETED_SURVEYS_ACTION));
-        LocalBroadcastManager.getInstance(this).sendBroadcast(new Intent(ALL_SENT_OR_COMPLETED_SURVEYS_ACTION));
+        LocalBroadcastManager.getInstance(this).sendBroadcast(new Intent(ALL_SENT_OR_COMPLETED_OR_CONFLICT_SURVEYS_ACTION));
         LocalBroadcastManager.getInstance(this).sendBroadcast(new Intent(PLANNED_SURVEYS_ACTION));
         LocalBroadcastManager.getInstance(this).sendBroadcast(new Intent(ALL_ORG_UNITS_AND_PROGRAMS_ACTION));
 
@@ -361,19 +361,19 @@ public class SurveyService extends IntentService {
     }
 
     /**
-     * Selects all sent surveys from database
+     * Selects all sent completed or conlfict surveys from database (for improve )
      */
-    private void getAllSentOrCompletedSurveys(){
-        Log.d(TAG,"getAllSentOrCompletedSurveys (Thread:"+Thread.currentThread().getId()+")");
+    private void getAllSentCompletedOrConflictSurveys(){
+        Log.d(TAG,"getAllSentCompletedOrConflictSurveys (Thread:"+Thread.currentThread().getId()+")");
 
         //Select surveys from sql
-        List<Survey> surveys = Survey.getAllSentOrCompletedSurveys();
+        List<Survey> surveys = Survey.getAllSentCompletedOrConflictSurveys();
 
         //Since intents does NOT admit NON serializable as values we use Session instead
-        Session.putServiceValue(ALL_SENT_OR_COMPLETED_SURVEYS_ACTION,surveys);
+        Session.putServiceValue(ALL_SENT_OR_COMPLETED_OR_CONFLICT_SURVEYS_ACTION,surveys);
 
         //Returning result to anyone listening
-        Intent resultIntent= new Intent(ALL_SENT_OR_COMPLETED_SURVEYS_ACTION);
+        Intent resultIntent= new Intent(ALL_SENT_OR_COMPLETED_OR_CONFLICT_SURVEYS_ACTION);
         LocalBroadcastManager.getInstance(this).sendBroadcast(resultIntent);
     }
 
