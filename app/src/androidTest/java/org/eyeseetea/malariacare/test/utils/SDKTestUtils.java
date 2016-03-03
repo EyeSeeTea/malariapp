@@ -85,6 +85,7 @@ public class SDKTestUtils {
     public static final String TEST_PASSWORD_WITH_PERMISSION = "testP3rmission";
 
     public static final String MARK_AS_COMPLETED = "Mark as completed";
+    public static final String DELETE_ACTION = "Delete";
 
     public static final String UNABLE_TO_LOGIN = "Unable to log in due to an invalid username or password.";
 
@@ -188,6 +189,29 @@ public class SDKTestUtils {
         onView(withText(MARK_AS_COMPLETED)).perform(click());
 
         return idSurvey;
+    }
+
+    public static Long clickDeleteAction(int response) {
+        Long idSurvey = getSurveyId();
+
+        //when: Click on delete
+        onView(withId(R.id.score)).perform(click());
+        onView(withText(DELETE_ACTION)).perform(click());
+
+        onView(withText(response)).perform(click());
+
+        return idSurvey;
+    }
+
+    public static boolean existSurvey(Long id){
+        boolean exist=false;
+        Survey survey=new Select()
+                .from(Survey.class)
+                .where(Condition.column(Survey$Table.ID_SURVEY)
+                        .eq(id))
+                .querySingle();
+        if(survey!=null){exist=true;}
+        return exist;
     }
 
     public static Long getSurveyId(){
