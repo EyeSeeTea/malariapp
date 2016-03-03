@@ -137,7 +137,7 @@ public class Session {
      * @param value
      */
     public static void putServiceValue(String key, Object value){
-        Log.i(TAG,"putServiceValue("+key+", "+value.toString()+")");
+        //Log.i(TAG,"putServiceValue("+key+", "+value.toString()+")");
         serviceValues.put(key,value);
     }
 
