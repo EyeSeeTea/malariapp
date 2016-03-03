@@ -155,7 +155,6 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
                     tabHost.getCurrentTabView().setBackgroundColor(getResources().getColor(R.color.tab_blue_improve));
                     if(!isFeedbackFragmentActive()){
                         setActionBarDashboard();
-                        sentFragment.reloadSentSurveys();
                     }
                 } else if (tabId.equalsIgnoreCase(getResources().getString(R.string.tab_tag_monitor))) {
                     currentTabName=getString(R.string.monitor);
