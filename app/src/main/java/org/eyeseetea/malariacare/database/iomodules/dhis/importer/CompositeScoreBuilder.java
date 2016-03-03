@@ -55,7 +55,7 @@ public class CompositeScoreBuilder {
     /**
      * Hierarquical code for any root compositeScore
      */
-    public static final String ROOT_NODE_CODE = "0";
+    public static final String ROOT_NODE_CODE = "1";
     /**
      * Value of option 'COMPOSITE_SCORE'
      */
