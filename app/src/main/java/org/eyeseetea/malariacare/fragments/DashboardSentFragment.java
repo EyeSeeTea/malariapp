@@ -423,8 +423,8 @@ public class DashboardSentFragment extends ListFragment {
                     filterSurvey(orgUnits, survey);
                 } else {
                     Survey surveyMapped = orgUnits.get(survey.getTabGroup().getProgram().getUid()+survey.getOrgUnit().getUid());
-                    //Log.d(TAG,"reloadSentSurveys check NPE \tsurveyMapped:"+surveyMapped+"\tsurvey:"+survey);
-                    //Log.d(TAG,"reloadSentSurveys check completionDate\tsurveyMapped:"+surveyMapped.getCompletionDate()+"\tsurvey:"+survey.getCompletionDate());
+                    Log.d(TAG,"reloadSentSurveys check NPE \tsurveyMapped:"+surveyMapped+"\tsurvey:"+survey);
+                    Log.d(TAG,"reloadSentSurveys check completionDate\tsurveyMapped:"+surveyMapped.getCompletionDate()+"\tsurvey:"+survey.getCompletionDate());
                     if (surveyMapped.getCompletionDate().before(survey.getCompletionDate())) {
                         orgUnits=filterSurvey(orgUnits, survey);
                     }
