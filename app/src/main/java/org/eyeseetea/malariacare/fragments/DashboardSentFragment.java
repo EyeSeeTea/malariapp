@@ -25,6 +25,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
@@ -81,6 +82,7 @@ public class DashboardSentFragment extends ListFragment {
     int orderBy=WITHOUT_ORDER;
     static boolean reverse=false;
     OnFeedbackSelectedListener mCallback;
+    boolean initFilers=false;
 
     public DashboardSentFragment() {
         this.adapter = Session.getAdapterSent();
@@ -150,7 +152,9 @@ public class DashboardSentFragment extends ListFragment {
         initAdapter();
         initListView();
     }
+
     private void initFilters() {
+        initFilers=true;
         filterSpinnerProgram = (Spinner) getActivity().findViewById(R.id.filter_program);
         List<Program> filterProgramList=programList;
         filterProgramList.add(0, new Program(getActivity().getString(R.string.filter_all_org_assessments_upper)));
@@ -174,7 +178,7 @@ public class DashboardSentFragment extends ListFragment {
                         reload=true;
                     }
                 }
-                if(reload)
+                if(reload && !initFilers)
                     reloadSentSurveys();
             }
 
@@ -205,7 +209,7 @@ public class DashboardSentFragment extends ListFragment {
                         reload = true;
                     }
                 }
-                if (reload)
+                if (reload && !initFilers)
                     reloadSentSurveys();
             }
 
@@ -214,6 +218,8 @@ public class DashboardSentFragment extends ListFragment {
 
             }
         });
+        initFilers=false;
+        reloadSentSurveys();
     }
     @Override
     public void onResume(){
@@ -483,6 +489,13 @@ public class DashboardSentFragment extends ListFragment {
         return orgUnits;
     }
 
+    public void showContainer(){
+        getActivity().findViewById(R.id.dashboard_completed_container).setVisibility(View.VISIBLE);
+    }
+    public void hideContainer(){
+        getActivity().findViewById(R.id.dashboard_completed_container).setVisibility(View.GONE);
+    }
+
     /**
      * Inner private class that receives the result from the service
      */
@@ -499,8 +512,36 @@ public class DashboardSentFragment extends ListFragment {
             }
             if(SurveyService.ALL_ORG_UNITS_AND_PROGRAMS_ACTION.equals(intent.getAction())){
                 getOrgUnitAndProgram();
-                initFilters();
+                new showContainer().execute("");
             }
+        }
+    }
+
+    private class showContainer extends AsyncTask<String, Void, String> {
+        @Override
+        protected String doInBackground(String... params) {
+            //sleep for wait the ontab change
+            try {
+                Thread.sleep(500);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            initFilters();
+            showContainer();
+        }
+
+        @Override
+        protected void onPreExecute() {
+            hideContainer();
+        }
+
+        @Override
+        protected void onProgressUpdate(Void... values) {
         }
     }
 }
