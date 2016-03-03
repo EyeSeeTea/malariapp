@@ -38,6 +38,9 @@ import org.eyeseetea.malariacare.LoginActivity;
 import org.eyeseetea.malariacare.ProgressActivity;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.SettingsActivity;
+import org.eyeseetea.malariacare.database.iomodules.dhis.importer.CompositeScoreBuilder;
+import org.eyeseetea.malariacare.database.model.CompositeScore;
+import org.eyeseetea.malariacare.database.model.CompositeScore$Table;
 import org.eyeseetea.malariacare.database.model.OrgUnit;
 import org.eyeseetea.malariacare.database.model.OrgUnit$Table;
 import org.eyeseetea.malariacare.database.model.Program;
@@ -238,6 +241,12 @@ public class SDKTestUtils {
                 .where(Condition.column(org.hisp.dhis.android.sdk.persistence.models.Program$Table.ID)
                         .eq(id))
                 .querySingle();
+    }
+
+    public static long countCompositeScoreByHierarchicalCode(String hierarchicalCode){
+        return new Select().count()
+                .from(CompositeScore.class)
+                .where(Condition.column(CompositeScore$Table.HIERARCHICAL_CODE).eq(hierarchicalCode)).count();
     }
 
     public static List<org.hisp.dhis.android.sdk.persistence.models.OrganisationUnit> getAllSDKOrganisationUnits() {

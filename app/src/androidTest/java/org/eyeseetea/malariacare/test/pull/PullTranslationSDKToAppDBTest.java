@@ -7,7 +7,13 @@ import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.util.Log;
 
+import com.raizlabs.android.dbflow.sql.builder.Condition;
+import com.raizlabs.android.dbflow.sql.language.Select;
+
 import org.eyeseetea.malariacare.LoginActivity;
+import org.eyeseetea.malariacare.database.iomodules.dhis.importer.CompositeScoreBuilder;
+import org.eyeseetea.malariacare.database.model.CompositeScore;
+import org.eyeseetea.malariacare.database.model.CompositeScore$Table;
 import org.eyeseetea.malariacare.database.model.OrgUnit;
 import org.eyeseetea.malariacare.database.model.Program;
 import org.eyeseetea.malariacare.database.utils.PopulateDB;
@@ -106,10 +112,15 @@ public class PullTranslationSDKToAppDBTest {
                     isProgramUid=true;
                 }
             }
+            int countMainScores=(int)SDKTestUtils.countCompositeScoreByHierarchicalCode(CompositeScoreBuilder.ROOT_NODE_CODE);
+
             //THEN
+            assertTrue("Checking the programs have root composite score"+programList.size()+" "+countMainScores,programList.size()==countMainScores);
             assertTrue("Checking program Supervisor Code",isProgramSupervisor);
             assertTrue("Checking program name",isProgramUid);
         }
+
+
 
     }
 
