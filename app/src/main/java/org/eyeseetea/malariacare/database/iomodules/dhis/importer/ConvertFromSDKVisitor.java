@@ -341,7 +341,7 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
             value.setValue(dataValue.getValue());
         }else{
         //Option -> extract value from code
-            value.setValue(sdkDataValueExtended.extractValue());
+            value.setValue(option.getName());
         }
         value.save();
     }
