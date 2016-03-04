@@ -186,6 +186,7 @@ public class SDKTestUtils {
         //when: Mark as completed
         onView(withId(R.id.score)).perform(click());
         onView(withText(MARK_AS_COMPLETED)).perform(click());
+        onView(withText(android.R.string.ok)).perform(click());
 
         return idSurvey;
     }
