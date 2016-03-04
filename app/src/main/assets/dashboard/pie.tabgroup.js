@@ -34,11 +34,11 @@ function pieXTabGroupChart(data){
     var myChart = new Chart(ctx).Doughnut(
         [{
             value: data.valueA,
-            color: "#adda19",
+            color: "#799900",
             label: "A (>80)"
         }, {
             value: data.valueB,
-            color: "#dbe444",
+            color: "#F3DA33",
             label: "B (50-80)"
         }, {
             value: data.valueC,
