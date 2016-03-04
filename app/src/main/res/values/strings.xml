@@ -278,7 +278,7 @@
     <string name="dialog_info_push_updated">Updated</string>
     <string name="dialog_info_push_ignored">Ignored</string>
     <string name="dialog_info_push_stats">Survey data pushed to server. Results:</string>
-
+    <string name="dialog_info_on_complete">"The survey %s has been marked as completed. You'll find it now in the Improve tab"</string>
 
     <!-- Preference variable names -->
     <item name="show_num_dems" type="string" translatable="false">show_num_dems</item>

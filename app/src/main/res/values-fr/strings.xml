@@ -200,6 +200,7 @@
         <item>@string/font_size_level4</item>
     </string-array>
 
+    <string name="dialog_info_on_complete">"L'enquête %s a été marquée comme terminée. Vous trouverez maintenant dans l'onglet Améliorer"</string>
     <string name="dashboard_info_sent">Envoyé</string>
     <string name="dialog_title_push_response">Réponse de charge</string>
     <string name="dialog_info_push_ok">Les données du sondage a été poussé avec succès au serveur DHIS</string>
