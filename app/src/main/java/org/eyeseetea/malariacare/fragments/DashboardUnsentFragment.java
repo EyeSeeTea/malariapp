@@ -153,6 +153,8 @@ public class DashboardUnsentFragment extends ListFragment {
         public void onSurveySelected(Survey survey);
 
         void dialogCompulsoryQuestionIncompleted();
+
+        void alertOnComplete(Survey survey);
     }
 
     @Override
@@ -186,6 +188,7 @@ public class DashboardUnsentFragment extends ListFragment {
                 if(surveyAnsweredRatio.getTotalCompulsory()>0) {
                     if(Float.valueOf(100 * surveyAnsweredRatio.getCompulsoryRatio()).intValue()>=100) {
                         survey.setCompleteSurveyState();
+                        mCallback.alertOnComplete(survey);
                         reloadData();
                     }
                     else{
@@ -193,8 +196,9 @@ public class DashboardUnsentFragment extends ListFragment {
                     }
                 }
                 else {
-                survey.setCompleteSurveyState();
-                reloadData();
+                    survey.setCompleteSurveyState();
+                    mCallback.alertOnComplete(survey);
+                    reloadData();
                 }
                 return true;
             case R.id.option_delete:
@@ -206,6 +210,11 @@ public class DashboardUnsentFragment extends ListFragment {
             default:
                 return super.onContextItemSelected(item);
         }
+    }
+
+    private void alertDialogOnComplete(Survey survey) {
+
+
     }
 
     public void reloadData(){
