@@ -212,11 +212,6 @@ public class DashboardUnsentFragment extends ListFragment {
         }
     }
 
-    private void alertDialogOnComplete(Survey survey) {
-
-
-    }
-
     public void reloadData(){
         //Reload data using service
         Intent surveysIntent=new Intent(PreferencesState.getInstance().getContext().getApplicationContext(), SurveyService.class);
