@@ -347,6 +347,6 @@
     <string name="dialog_content_dhis_preference_login">Changing the server needs to re-login. Every not-sent survey will be deleted. Are you sure you want to continue?</string>
 
     <!-- last commit info -->
-    <string name="lastcommit">Version hash:</string>
+    <string name="lastcommit">Version hash: %s</string>
 
 </resources>

@@ -273,6 +273,6 @@
     <string name="feedback_info_conflict">Conflicto</string>
 
     <!-- last commit info -->
-    <string name="lastcommit">Versión hash:</string>
+    <string name="lastcommit">Versión hash: %s</string>
 
 </resources>
