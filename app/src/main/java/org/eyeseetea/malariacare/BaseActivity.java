@@ -281,8 +281,6 @@ public abstract class BaseActivity extends ActionBarActivity {
         InputStream commit = getApplicationContext().getResources().openRawResource(lastCommit);
         String stringMessage=Utils.convertFromInputStreamToString(message).toString();
         String stringCommit=Utils.convertFromInputStreamToString(commit).toString();
-        stringCommit=stringCommit.replace("$Id: ","");
-        stringCommit=stringCommit.replace(" $", "");
         stringCommit=getString(R.string.lastcommit)+stringCommit;
         stringMessage=stringMessage.replace("$replace$",stringCommit);
         final SpannableString linkedMessage = new SpannableString(Html.fromHtml(stringMessage));
