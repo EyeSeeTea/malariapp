@@ -1,5 +1,7 @@
 <p><b>Sistema Electrónico de Datos (EDS)</b></p>
 
+<p><b>$replace$</b></p>
+
 <p>Esta aplicación es posible por la generosa aportación del pueblo norteamericano a través de la Agencia Internacional para el Desarrollo de los Estados Unidos (USAID). Ha sido desarrollada por MalariaCare, un partenariado de 5 años liderado por <a href="http://www.path.org/">PATH</a> y financiado por la <a href="http://www.usaid.gov/">Agencia Internacional para el Desarrollo de los Estados Unidos (USAID)</a> a través de la <a href="http://www.pmi.gov/">US President’s Malaria Initiative (PMI)</a>. El objetivo de MalariaCare es la realización de un diagnóstico de alta calidad escalable y los servicios de tratamiento de malaria y otras enfermedades febriles. Los contenidos son responsabilidad MalariaCare y no necesariamente reflejan el punto de vista de USAID o del gobierno de los Estados Unidos.</p>
 
 <p>Este software se publica bajo la Licencia Pública General de GNU (GPL). Para más información sobre esta licencia, por favor, visite la sección 'licencia' bajo el menú de 'configuración'.</p>

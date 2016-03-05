@@ -1,5 +1,7 @@
 <p><b>Sistema de Mejora de Calidad de la Red de Salud (HNQIS)</b></p>
 
+<p><b>$replace$</b></p>
+
 <p>Esta app ha sido desarrollada por PSI para el proyecto African Health markets for Equity (AHME). AHME es implementado por Marie Stopes International, con apoyo de la Fundación Bill & Melinda Gates.</p>
 
 <p>Esta aplicación es posible por la generosa aportación del pueblo norteamericano a través de la Agencia Internacional para el Desarrollo de los Estados Unidos (USAID). Los contenidos son responsabilidad de PSI y no necesariamente reflejan el punto de vista de USAID o del gobierno de los Estados Unidos. PSI reconoce a UNITAID por el apoyo brindado durante el desarrollo conceptual de la aplicación mediante la financiación del primer prototipo online de la apliación en el marco del Proyecto UNITAID Private Sector RDT.</p>

@@ -1,5 +1,7 @@
 <p><b>The Electronic Data System</b></p>
 
+<p><b>$replace$</b></p>
+
 <p>This application is made possible by the generous support of the American people through the United States Agency for International Development (USAID). It was developed by MalariaCare, a five-year partnership led by <a href="http://www.path.org/">PATH</a> and funded by the <a href="http://www.usaid.gov/">US Agency for International Development (USAID)</a> under the <a href="http://www.pmi.gov/">US President’s Malaria Initiative (PMI)</a>. MalariaCare aims to scale up high-quality diagnosis and treatment services for malaria and other febrile illnesses. The contents are the responsibility of MalariaCare and do not necessarily reflect the views of USAID or the United States Government.</p>
 
 <p>This software is released under the GNU General Public License. For more information about this license, please visit the ‘license’ section under the “settings” menu.</p>
