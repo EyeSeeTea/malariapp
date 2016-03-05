@@ -116,7 +116,7 @@ public abstract class BaseActivity extends ActionBarActivity {
                 break;
             case R.id.action_about:
                 debugMessage("User asked for about");
-                showAlertWithHtmlMessage(R.string.settings_menu_about, R.raw.about);
+                showAlertWithHtmlMessageAndLastCommit(R.string.settings_menu_about, R.raw.about, R.raw.commit);
                 break;
             case R.id.action_logout:
                 debugMessage("User asked for logout");
@@ -269,6 +269,26 @@ public abstract class BaseActivity extends ActionBarActivity {
         showAlert(titleId, linkedMessage);
     }
 
+    /**
+     * Replace in rawId the $replace$ expresion with the content on lastCommit and
+     * Shows an alert dialog with a big message inside based on a raw resource HTML formatted
+     * @param titleId Id of the title resource
+     * @param rawId Id of the raw text resource in HTML format
+     * @param lastCommit Id of the raw text resource with the commit
+     */
+    private void showAlertWithHtmlMessageAndLastCommit(int titleId, int rawId, int lastCommit){
+        InputStream message = getApplicationContext().getResources().openRawResource(rawId);
+        InputStream commit = getApplicationContext().getResources().openRawResource(lastCommit);
+        String stringMessage=Utils.convertFromInputStreamToString(message).toString();
+        String stringCommit=Utils.convertFromInputStreamToString(commit).toString();
+        stringCommit=stringCommit.replace("$Id: ","");
+        stringCommit=stringCommit.replace(" $", "");
+        stringCommit=getString(R.string.lastcommit)+stringCommit;
+        stringMessage=stringMessage.replace("$replace$",stringCommit);
+        final SpannableString linkedMessage = new SpannableString(Html.fromHtml(stringMessage));
+        Linkify.addLinks(linkedMessage, Linkify.ALL);
+        showAlert(titleId, linkedMessage);
+    }
     /**
      * Shows an alert dialog with a given string
      * @param titleId Id of the title resource

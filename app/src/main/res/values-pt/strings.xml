@@ -276,4 +276,8 @@
     <string name="dialog_content_dhis_preference_login">Alterar o servidor precisa re-login. Cada pesquisa não-enviados serão apagados. Você tem certeza que quer continuar?</string>
     <string name="settings_text_dhis_max_items">DHIS max carregado inquéritos</string>
     <string name="feedback_info_conflict">Conflito</string>
+
+    <!-- last commit info -->
+    <string name="lastcommit">Versão de hash: </string>
+
 </resources>

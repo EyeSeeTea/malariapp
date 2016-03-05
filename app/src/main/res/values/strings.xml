@@ -345,4 +345,8 @@
     <string name="filter_all_org_units_upper">ALL ORG UNITS</string>
     <string name="filter_all_org_assessments_upper">ALL ASSESSMENTS</string>
     <string name="dialog_content_dhis_preference_login">Changing the server needs to re-login. Every not-sent survey will be deleted. Are you sure you want to continue?</string>
+
+    <!-- last commit info -->
+    <string name="lastcommit">Version hash:</string>
+
 </resources>
