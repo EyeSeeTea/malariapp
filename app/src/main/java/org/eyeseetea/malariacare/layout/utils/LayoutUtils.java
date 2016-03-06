@@ -98,10 +98,12 @@ public class LayoutUtils {
         }
 
         if(score< Constants.MAX_AMBER){
-            return R.color.assess_yellow;
+            return R.color.amber;
+            //return R.color.assess_yellow;
         }
 
-        return R.color.lightGreen;
+        return R.color.tab_green_monitor;
+        //return R.color.lightGreen;
     }
 
 
