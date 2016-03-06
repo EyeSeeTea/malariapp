@@ -111,7 +111,7 @@
     <string name="feedback_show_only_failed">Show only failed questions</string>
     <string name="feedback_return">Return to all assessments</string>
     <string name="quality_of_care">Quality of Care (QoC) Score:</string>
-    <string name="feedback_info_passed">WIN</string>
+    <string name="feedback_info_passed">PASS</string>
     <string name="feedback_info_failed">FAIL</string>
     <string name="feedback_info_not_answered">NA</string>
     <string name="feedback_info_no_feedback">No feedback</string>
