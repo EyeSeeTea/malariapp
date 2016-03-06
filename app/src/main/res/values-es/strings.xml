@@ -201,6 +201,7 @@
         <item>@string/font_size_level4</item>
     </string-array>
 
+    <string name="dialog_info_on_complete">La encuesta %s se ha marcado como completada. Ahora la encontrará en la pestaña Mejora</string>
     <string name="dashboard_info_sent">Enviado</string>
     <string name="dialog_title_push_response">Respuesta carga</string>
     <string name="dialog_info_push_ok">Datos subidos correctamente al servidor DHIS</string>

@@ -599,6 +599,7 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
                     public void onClick(DialogInterface dialog, int arg1) {
                         Survey survey=Session.getSurvey();
                         survey.setCompleteSurveyState();
+                        alertOnComplete(survey);
                         closeSurveyFragment();
                     }
                 }).create().show();
@@ -728,6 +729,16 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
         new AlertDialog.Builder(this)
                 .setMessage(getApplicationContext().getResources().getString(R.string.dialog_incompleted_compulsory_survey))
                 .setPositiveButton(getApplicationContext().getString(R.string.accept), null)
+                .create().show();
+    }
+
+    @Override
+    public void alertOnComplete(Survey survey) {
+        new AlertDialog.Builder(this)
+                .setTitle(null)
+                .setMessage(String.format(getApplicationContext().getResources().getString(R.string.dialog_info_on_complete),survey.getProgram().getName()))
+                .setPositiveButton(android.R.string.ok, null)
+                .setCancelable(true)
                 .create().show();
     }
 
