@@ -82,7 +82,7 @@ public class DashboardSentFragment extends ListFragment {
     int orderBy=WITHOUT_ORDER;
     static boolean reverse=false;
     OnFeedbackSelectedListener mCallback;
-    boolean initFilers=false;
+    boolean initFilters =false;
 
     public DashboardSentFragment() {
         this.adapter = Session.getAdapterSent();
@@ -154,7 +154,7 @@ public class DashboardSentFragment extends ListFragment {
     }
 
     private void initFilters() {
-        initFilers=true;
+        initFilters =true;
         filterSpinnerProgram = (Spinner) getActivity().findViewById(R.id.filter_program);
         List<Program> filterProgramList=programList;
         filterProgramList.add(0, new Program(getActivity().getString(R.string.filter_all_org_assessments_upper)));
@@ -178,7 +178,7 @@ public class DashboardSentFragment extends ListFragment {
                         reload=true;
                     }
                 }
-                if(reload && !initFilers)
+                if(reload && !initFilters)
                     reloadSentSurveys();
             }
 
@@ -209,7 +209,7 @@ public class DashboardSentFragment extends ListFragment {
                         reload = true;
                     }
                 }
-                if (reload && !initFilers)
+                if (reload && !initFilters)
                     reloadSentSurveys();
             }
 
@@ -218,7 +218,7 @@ public class DashboardSentFragment extends ListFragment {
 
             }
         });
-        initFilers=false;
+        initFilters =false;
         reloadSentSurveys();
     }
     @Override
