@@ -20,9 +20,11 @@
 package org.eyeseetea.malariacare.fragments;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ListFragment;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
@@ -199,9 +201,18 @@ public class DashboardUnsentFragment extends ListFragment {
                 return true;
             case R.id.option_delete:
                 Log.d(TAG, "removing item pos=" + selectedPosition);
-                //this method create a new survey geting the getScheduledDate date of the oldsurvey, and remove it.
-                SurveyPlanner.getInstance().deleteSurveyAndBuildNext((Survey)adapter.getItem(selectedPosition-1));
-                reloadData();
+                new AlertDialog.Builder(getActivity())
+                        .setTitle(getActivity().getString(R.string.dialog_title_delete_survey))
+                        .setMessage(getActivity().getString(R.string.dialog_info_delete_survey))
+                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface arg0, int arg1) {
+                                //this method create a new survey geting the getScheduledDate date of the oldsurvey, and remove it.
+                                SurveyPlanner.getInstance().deleteSurveyAndBuildNext((Survey) adapter.getItem(selectedPosition - 1));
+                                reloadData();
+                            }
+                        })
+                        .setNegativeButton(android.R.string.no, null).create().show();
+
                 return true;
             default:
                 return super.onContextItemSelected(item);
