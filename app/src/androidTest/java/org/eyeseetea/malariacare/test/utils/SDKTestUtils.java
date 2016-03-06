@@ -203,7 +203,7 @@ public class SDKTestUtils {
         return idSurvey;
     }
 
-    public static boolean existSurvey(Long id){
+    public static boolean surveyExists(Long id){
         boolean exist=false;
         Survey survey=new Select()
                 .from(Survey.class)

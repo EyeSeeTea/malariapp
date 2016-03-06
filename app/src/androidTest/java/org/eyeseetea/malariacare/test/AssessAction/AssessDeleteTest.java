@@ -21,12 +21,9 @@ package org.eyeseetea.malariacare.test.AssessAction;
 
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
-import android.util.Log;
 
 import org.eyeseetea.malariacare.LoginActivity;
 import org.eyeseetea.malariacare.R;
-import org.eyeseetea.malariacare.database.model.Survey;
-import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.test.utils.SDKTestUtils;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -45,10 +42,8 @@ import static org.eyeseetea.malariacare.test.utils.SDKTestUtils.TEST_PASSWORD_WI
 import static org.eyeseetea.malariacare.test.utils.SDKTestUtils.TEST_USERNAME_WITH_PERMISSION;
 import static org.eyeseetea.malariacare.test.utils.SDKTestUtils.fillSurvey;
 import static org.eyeseetea.malariacare.test.utils.SDKTestUtils.login;
-import static org.eyeseetea.malariacare.test.utils.SDKTestUtils.markInProgressAsCompleted;
 import static org.eyeseetea.malariacare.test.utils.SDKTestUtils.startSurvey;
 import static org.eyeseetea.malariacare.test.utils.SDKTestUtils.waitForPull;
-import static org.eyeseetea.malariacare.test.utils.SDKTestUtils.waitForPush;
 
 /**
  * Created by idelcano on 03/03/2016.
@@ -91,13 +86,13 @@ public class AssessDeleteTest {
         Long idSurvey=SDKTestUtils.clickDeleteAction(android.R.string.no);
 
         //THEN
-        assertTrue("Survey not deleted",SDKTestUtils.existSurvey(idSurvey));
+        assertTrue("Survey not deleted",SDKTestUtils.surveyExists(idSurvey));
 
         //WHEN
         idSurvey=SDKTestUtils.clickDeleteAction(android.R.string.yes);
 
         //THEN
-        assertFalse("Survey not deleted", SDKTestUtils.existSurvey(idSurvey));
+        assertFalse("Survey not deleted", SDKTestUtils.surveyExists(idSurvey));
 
         onView(withId(R.id.score)).check(doesNotExist());
     }
