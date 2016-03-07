@@ -192,6 +192,7 @@ public class DashboardUnsentFragment extends ListFragment {
                         survey.setCompleteSurveyState();
                         mCallback.alertOnComplete(survey);
                         removeSurvey(survey);
+                        reloadToSend();
                     }
                     else{
                         mCallback.dialogCompulsoryQuestionIncompleted();
@@ -201,6 +202,7 @@ public class DashboardUnsentFragment extends ListFragment {
                     survey.setCompleteSurveyState();
                     mCallback.alertOnComplete(survey);
                     removeSurvey(survey);
+                    reloadToSend();
                 }
                 return true;
             case R.id.option_delete:
