@@ -171,15 +171,15 @@ public class DashboardSentFragment extends ListFragment {
                 if (program.getName().equals(getActivity().getString(R.string.filter_all_org_assessments_upper))) {
                     if (programFilter != getActivity().getString(R.string.filter_all_org_assessments_upper)) {
                         programFilter = getActivity().getString(R.string.filter_all_org_assessments_upper);
-                        reload = true;
+                        reload=true;
                     }
                 } else {
                     if (programFilter != program.getUid()) {
                         programFilter = program.getUid();
-                        reload = true;
+                        reload=true;
                     }
                 }
-                if (reload && !initFilters)
+                if(reload && !initFilters)
                     reloadSentSurveys();
             }
 
