@@ -25,6 +25,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
@@ -170,15 +171,15 @@ public class DashboardSentFragment extends ListFragment {
                 if (program.getName().equals(getActivity().getString(R.string.filter_all_org_assessments_upper))) {
                     if (programFilter != getActivity().getString(R.string.filter_all_org_assessments_upper)) {
                         programFilter = getActivity().getString(R.string.filter_all_org_assessments_upper);
-                        reload=true;
+                        reload = true;
                     }
                 } else {
                     if (programFilter != program.getUid()) {
                         programFilter = program.getUid();
-                        reload=true;
+                        reload = true;
                     }
                 }
-                if(reload && !initFilters)
+                if (reload && !initFilters)
                     reloadSentSurveys();
             }
 
@@ -189,8 +190,31 @@ public class DashboardSentFragment extends ListFragment {
         });
         filterSpinnerOrgUnit = (Spinner) getActivity().findViewById(R.id.filter_orgunit);
 
-        //orgUnitList.add(0, new OrgUnit(getActivity().getString(R.string.filter_all_org_units_upper)));
-        filterSpinnerOrgUnit.setAdapter(new FilterOrgUnitArrayAdapter(getActivity().getApplicationContext(), orgUnitList));
+        orgUnitList.add(0, new OrgUnit(getActivity().getString(R.string.filter_all_org_units_upper)));
+        filterSpinnerOrgUnit.setAdapter(new FilterOrgUnitArrayAdapter(getActivity().getApplicationContext(), orgUnitList) {
+            // Disable click item < all org units
+            @Override
+            public boolean isEnabled(int position) {
+                // TODO Auto-generated method stub
+                if (position == 0) {
+                    return false;
+                }
+                return true;
+            }
+
+            // Change color item all org  units
+            @Override
+            public View getDropDownView(int position, View convertView,
+                                        ViewGroup parent) {
+                // TODO Auto-generated method stub
+                View mView = super.getDropDownView(position, convertView, parent);
+                CustomTextView mTextView = (CustomTextView) mView;
+                if (position == 0) {
+                    mTextView.setTextColor(Color.GRAY);
+                }
+                return mView;
+            }
+        });
         filterSpinnerOrgUnit.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 
             @Override
@@ -218,6 +242,8 @@ public class DashboardSentFragment extends ListFragment {
 
             }
         });
+        //Select the first orgunit(for ignore all org unit)
+        filterSpinnerOrgUnit.setSelection(1);
         initFilters =false;
         reloadSentSurveys();
     }
