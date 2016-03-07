@@ -332,8 +332,6 @@ public class DashboardUnsentFragment extends ListFragment {
     public void reloadInProgressSurveys(){
         List<Survey> surveysInProgressFromService = (List<Survey>) Session.popServiceValue(SurveyService.ALL_IN_PROGRESS_SURVEYS_ACTION);
         reloadSurveys(surveysInProgressFromService);
-        //set alarm if is malariaapp question
-        reloadCompletedSurveys();
     }
 
     public void reloadCompletedSurveys(){
