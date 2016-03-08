@@ -194,7 +194,9 @@ public class MonitorFragment extends Fragment {
                 PieTabGroupBuilder.showPieTab(view);
                 FacilityTableBuilder.showFacilities(view);
 
+                //Set the colors of red/green/yellow pie and table
 
+                FacilityTableBuilder.setColor(webView);
             }
         });
         //Load html
