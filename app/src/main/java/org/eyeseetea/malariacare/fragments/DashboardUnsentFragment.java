@@ -45,7 +45,6 @@ import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.database.utils.SurveyAnsweredRatio;
 import org.eyeseetea.malariacare.database.utils.planning.SurveyPlanner;
 import org.eyeseetea.malariacare.layout.adapters.dashboard.AssessmentUnsentAdapter;
-import org.eyeseetea.malariacare.layout.adapters.dashboard.IDashboardAdapter;
 import org.eyeseetea.malariacare.receivers.AlarmPushReceiver;
 import org.eyeseetea.malariacare.services.SurveyService;
 
@@ -57,18 +56,15 @@ import java.util.List;
  */
 public class DashboardUnsentFragment extends ListFragment {
 
-
     public static final String TAG = ".DetailsFragment";
     private SurveyReceiver surveyReceiver;
     private List<Survey> surveys;
-    protected IDashboardAdapter adapter;
-    private static int index = 0;
+    protected AssessmentUnsentAdapter adapter;
     private static int selectedPosition=0;
     onSurveySelectedListener mCallback;
 
 
     public DashboardUnsentFragment(){
-        this.adapter = Session.getAdapterUnsent();
         this.surveys = new ArrayList();
     }
 
@@ -129,14 +125,7 @@ public class DashboardUnsentFragment extends ListFragment {
      * In a version with several adapters in dashboard (like in 'mock' branch) a new one like the one in session is created.
      */
     private void initAdapter(){
-        IDashboardAdapter adapterInSession = Session.getAdapterUnsent();
-        if(adapterInSession == null){
-            adapterInSession = new AssessmentUnsentAdapter(this.surveys,getActivity());
-        }else{
-            adapterInSession = adapterInSession.newInstance(this.surveys,getActivity());
-        }
-        this.adapter = adapterInSession;
-        Session.setAdapterUnsent(this.adapter);
+        this.adapter = new AssessmentUnsentAdapter(this.surveys,getActivity());
     }
 
     @Override
@@ -215,12 +204,6 @@ public class DashboardUnsentFragment extends ListFragment {
         PreferencesState.getInstance().getContext().getApplicationContext().startService(surveysIntent);
     }
 
-    public void reloadToSend(){
-        //Reload data using service
-        Intent surveysIntent=new Intent(getActivity(), SurveyService.class);
-        surveysIntent.putExtra(SurveyService.SERVICE_METHOD, SurveyService.ALL_COMPLETED_SURVEYS_ACTION);
-        getActivity().startService(surveysIntent);
-    }
     @Override
     public void onPause(){
         Log.d(TAG, "onPause");
@@ -266,8 +249,7 @@ public class DashboardUnsentFragment extends ListFragment {
         ListView listView = getListView();
         listView.addHeaderView(header);
         listView.addFooterView(footer);
-        setListAdapter((BaseAdapter) adapter);
-        Session.listViewUnsent = listView;
+        setListAdapter(adapter);
     }
 
     @Override

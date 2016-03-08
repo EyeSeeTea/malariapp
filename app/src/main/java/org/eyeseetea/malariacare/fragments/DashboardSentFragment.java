@@ -32,7 +32,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.Spinner;
 
@@ -43,7 +42,6 @@ import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.layout.adapters.dashboard.AssessmentSentAdapter;
-import org.eyeseetea.malariacare.layout.adapters.dashboard.IDashboardAdapter;
 import org.eyeseetea.malariacare.layout.adapters.filters.FilterOrgUnitArrayAdapter;
 import org.eyeseetea.malariacare.layout.adapters.filters.FilterProgramArrayAdapter;
 import org.eyeseetea.malariacare.services.SurveyService;
@@ -69,8 +67,7 @@ public class DashboardSentFragment extends ListFragment {
     private static int LAST_ORDER =WITHOUT_ORDER;
     private SurveyReceiver surveyReceiver;
     private List<Survey> surveys;
-    protected IDashboardAdapter adapter;
-    private static int index = 0;
+    protected AssessmentSentAdapter adapter;
     List<Survey> oneSurveyForOrgUnit;
     List<OrgUnit> orgUnitList;
     List <Program> programList;
@@ -83,7 +80,6 @@ public class DashboardSentFragment extends ListFragment {
     OnFeedbackSelectedListener mCallback;
 
     public DashboardSentFragment() {
-        this.adapter = Session.getAdapterSent();
         this.surveys = new ArrayList();
         oneSurveyForOrgUnit = new ArrayList<>();
     }
@@ -231,14 +227,7 @@ public class DashboardSentFragment extends ListFragment {
      * In a version with several adapters in dashboard (like in 'mock' branch) a new one like the one in session is created.
      */
     private void initAdapter(){
-        IDashboardAdapter adapterInSession = Session.getAdapterSent();
-        if(adapterInSession == null){
-            adapterInSession = new AssessmentSentAdapter(this.surveys, getActivity());
-        }else{
-            adapterInSession = adapterInSession.newInstance(this.surveys, getActivity());
-        }
-        this.adapter = adapterInSession;
-        Session.setAdapterSent(this.adapter);
+        this.adapter = new AssessmentSentAdapter(this.surveys, getActivity());
     }
 
     public void setScoreOrder()
@@ -325,8 +314,7 @@ public class DashboardSentFragment extends ListFragment {
         listView.setBackgroundColor(getResources().getColor(R.color.feedbackDarkBlue));
         listView.addHeaderView(header);
         listView.addFooterView(footer);
-        setListAdapter((BaseAdapter) adapter);
-        Session.listViewSent = listView;
+        setListAdapter(adapter);
     }
     
     //Adds the clicklistener to the header CustomTextView.
@@ -387,7 +375,6 @@ public class DashboardSentFragment extends ListFragment {
 
     public void reloadSurveys(List<Survey> newListSurveys) {
         Log.d(TAG, "reloadSurveys (Thread: " + Thread.currentThread().getId() + "): " + newListSurveys.size());
-        boolean hasSurveys = newListSurveys != null && newListSurveys.size() > 0;
         this.surveys.clear();
         this.surveys.addAll(newListSurveys);
         adapter.setItems(newListSurveys);

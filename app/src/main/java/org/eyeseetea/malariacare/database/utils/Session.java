@@ -27,7 +27,8 @@ import com.raizlabs.android.dbflow.structure.BaseModel;
 
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.model.User;
-import org.eyeseetea.malariacare.layout.adapters.dashboard.IDashboardAdapter;
+import org.eyeseetea.malariacare.layout.adapters.dashboard.AssessmentSentAdapter;
+import org.eyeseetea.malariacare.layout.adapters.dashboard.AssessmentUnsentAdapter;
 
 import java.util.HashMap;
 import java.util.List;
@@ -63,13 +64,6 @@ public class Session {
     private static Map<String,Object> serviceValues = new HashMap<>();
 
     /**
-     * Adapters that hold dashboard sent and unset surveys adapters
-     */
-    private static IDashboardAdapter adapterUnsent, adapterSent;
-
-    public static ListView listViewUnsent, listViewSent;
-
-    /**
      * Cache containing the list of ordered items that compounds each tab
      */
     private static Map<Long, List<? extends BaseModel>> tabsCache = new HashMap<>();
@@ -91,22 +85,6 @@ public class Session {
         Session.user = user;
     }
 
-    public static IDashboardAdapter getAdapterUnsent() {
-        return adapterUnsent;
-    }
-
-    public static void setAdapterUnsent(IDashboardAdapter adapterUnsent) {
-        Session.adapterUnsent = adapterUnsent;
-    }
-
-    public static IDashboardAdapter getAdapterSent() {
-        return adapterSent;
-    }
-
-    public static void setAdapterSent(IDashboardAdapter adapterSent) {
-        Session.adapterSent = adapterSent;
-    }
-
     public static Map<Long, List<? extends BaseModel>> getTabsCache() {
         return tabsCache;
     }
@@ -124,7 +102,6 @@ public class Session {
             user=null;
         }
         survey=null;
-        adapterUnsent=null;
         if(serviceValues!=null){
             serviceValues.clear();
         }

@@ -297,6 +297,14 @@ public class Survey extends BaseModel implements VisitableToSDK {
         return Constants.SURVEY_COMPLETED==this.status;
     }
 
+    /**
+     * Checks if the survey is completed but has has some conflicts
+     * @return
+     */
+    public boolean isInConflict(){
+        return Constants.SURVEY_CONFLICT==this.status;
+    }
+
     public Float getMainScore() {
         //The main score is only return from a query 1 time
         if(this.mainScore==null){

@@ -42,7 +42,6 @@ import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.database.utils.monitor.FacilityTableBuilder;
 import org.eyeseetea.malariacare.database.utils.monitor.PieTabGroupBuilder;
 import org.eyeseetea.malariacare.database.utils.monitor.SentSurveysBuilder;
-import org.eyeseetea.malariacare.layout.adapters.dashboard.IDashboardAdapter;
 import org.eyeseetea.malariacare.services.SurveyService;
 
 import java.util.ArrayList;
@@ -58,12 +57,10 @@ public class MonitorFragment extends Fragment {
     private SurveyReceiver surveyReceiver;
     private List<Survey> surveys;
     private List<Program> programs;
-    protected IDashboardAdapter adapter;
     private static int index = 0;
     private WebView webView;
     
     public MonitorFragment() {
-        this.adapter = Session.getAdapterSent();
         this.surveys = new ArrayList();
     }
 
