@@ -22,43 +22,63 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 */
 
+var green;
+var yellow;
+var red;
+
+function setGreen(color){
+    green=color["color"];
+    console.log(green);
+}
+
+function setYellow(color){
+    yellow=color["color"];
+    console.log(yellow);
+}
+
+function setRed(color){
+    red=color["color"];
+    console.log(red);
+}
 function pieXTabGroupChart(data){
 
     var canvasDOMId="tabgroupCanvas"+data.idTabGroup;
     var legendDOMId="tabgroupLegend"+data.idTabGroup;
     var titleDOMId="tabgroupTitle"+data.idTabGroup;
     var titleTableDOMId="tabgroupTip"+data.idTabGroup;
-
+    console.log(green);
+    console.log(yellow);
+    console.log(red);
     //Chart
-    var ctx = document.getElementById(canvasDOMId).getContext("2d");
-    var myChart = new Chart(ctx).Doughnut(
-        [{
-            value: data.valueA,
-            color: "#799900",
-            label: "A (>80)"
-        }, {
-            value: data.valueB,
-            color: "#F3DA33",
-            label: "B (50-80)"
-        }, {
-            value: data.valueC,
-            color: "#d1213c",
-            label: "C (<50)"
-        }],
-        {
-            segmentShowStroke: false,
-            animateRotate: false,
-            animateScale: false,
-            percentageInnerCutout: 50,
-            tooltipTemplate: "<%= value %>",
-            onAnimationComplete: function(){
-                this.showTooltip(this.segments, true);
-            },
-            tooltipEvents: [],
-            showTooltips: true            
-        }
-    );
 
+    var ctx = document.getElementById(canvasDOMId).getContext("2d");
+    var  myChart  = new Chart(ctx).Doughnut(
+                               [{
+                                   value: data.valueA,
+                                   color: green,
+                                   label: "A (>80)"
+                               }, {
+                                   value: data.valueB,
+                                   color: yellow,
+                                   label: "B (50-80)"
+                               }, {
+                                   value: data.valueC,
+                                   color: red,
+                                   label: "C (<50)"
+                               }],
+                               {
+                                   segmentShowStroke: false,
+                                   animateRotate: false,
+                                   animateScale: false,
+                                   percentageInnerCutout: 50,
+                                   tooltipTemplate: "<%= value %>",
+                                   onAnimationComplete: function(){
+                                       this.showTooltip(this.segments, true);
+                                   },
+                                   tooltipEvents: [],
+                                   showTooltips: true
+                               }
+                           );
     //Legend
     document.getElementById(legendDOMId).insertAdjacentHTML("beforeend",myChart.generateLegend());
 
@@ -108,7 +128,7 @@ function createSelectOrgUnit(){
 //event on click select/or to change the selected orgunit and reload.
 function changedOrgunit(){
 	selectedOrgUnit=="";
-	for(i=0;i<Object.keys(inputOrgUnit).length;i++){
+	for(var i=0;i<Object.keys(inputOrgUnit).length;i++){
 		if(inputOrgUnit[i].uidprogram==selectedProgram){
 			selectedOrgUnit=inputOrgUnit[i].uidorgunit;
 		}
@@ -147,7 +167,7 @@ function showDataPie(dataPie){
 			document.getElementById("pieChartContent").innerHTML=customTemplate;
 			//Draw chart on it
 			pieXTabGroupChart(dataPie);
-			
+
 }
 
 
