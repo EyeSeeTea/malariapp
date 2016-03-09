@@ -25,7 +25,6 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.text.Html;
 import android.text.Spanned;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -201,7 +200,7 @@ public class AutoTabLayoutUtils {
         viewHolder.component = rowView.findViewById(R.id.answer);
         viewHolder.statement = (CustomTextView) rowView.findViewById(R.id.statement);
 
-        //if a question is parent, it needs add the ProgressBar layout to be showed if the user loads the childs.
+        //if a question is parent, needs add the ProgressBar layout to be showed if the user loads the childs.
         if(question.hasChildren())
             viewHolder.progressBar = (ProgressBar) rowView.findViewById(R.id.radio_progress_bar);
         if(question.getCompulsory()){
@@ -418,17 +417,18 @@ public class AutoTabLayoutUtils {
     private static class ShowProgressWheel extends AsyncTask<Question, Void, Void> {
 
         boolean isRunning = true;
-        Question parent=null;
+        Question questionParent =null;
         View view;
+
+        //this needs be called to stop the Asyntask
         public void stop() {
             isRunning = false;
-            Log.d(TAG,"Finish progresbar");
         }
 
         @Override
         protected Void doInBackground(Question... params) {
-            parent=params[0];
-            Log.d(TAG, "Load progressbar");
+            questionParent =params[0];
+
             while(isRunning){
                 publishProgress();
                 try {
@@ -446,20 +446,17 @@ public class AutoTabLayoutUtils {
         @Override
         protected void onProgressUpdate(Void... params) {
             super.onProgressUpdate();
-            //if (AutoTabAdapter.mScrollState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE) {
-                // http://stackoverflow.com/questions/2123083/android-listview-refresh-single-row
-
-                int start = SurveyFragment.mQuestions.getFirstVisiblePosition();
-                for(int i=start, j=SurveyFragment.mQuestions.getLastVisiblePosition();i<=j;i++) {
-                    view = SurveyFragment.mQuestions.getChildAt(i - start);
-                    if(SurveyFragment.mQuestions.getItemAtPosition(i) instanceof Question){
-                        if(parent !=null && parent.getUid()==((Question)SurveyFragment.mQuestions.getItemAtPosition(i)).getUid()){
-                            progressbarView=view.findViewById(R.id.radio_progress_bar);
-                            progressbarView.setVisibility(View.VISIBLE);
-                        }
+            //Get the item from the listview and show the progressbar
+            int start = SurveyFragment.mQuestions.getFirstVisiblePosition();
+            for(int i=start, j=SurveyFragment.mQuestions.getLastVisiblePosition();i<=j;i++) {
+                view = SurveyFragment.mQuestions.getChildAt(i - start);
+                if(SurveyFragment.mQuestions.getItemAtPosition(i) instanceof Question){
+                    if(questionParent !=null && questionParent.getUid()==((Question)SurveyFragment.mQuestions.getItemAtPosition(i)).getUid()){
+                        progressbarView=view.findViewById(R.id.radio_progress_bar);
+                        progressbarView.setVisibility(View.VISIBLE);
                     }
                 }
-            //}
+            }
         }
 
         @Override
@@ -471,6 +468,7 @@ public class AutoTabLayoutUtils {
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
+            //hidden the progressbar
             if(progressbarView!=null)
                 progressbarView.findViewById(R.id.radio_progress_bar).setVisibility(View.GONE);
         }
