@@ -42,6 +42,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.TabHost;
 import android.widget.TabWidget;
 import android.widget.TextView;
@@ -279,6 +280,16 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
         }catch(Exception e){
             e.printStackTrace();
         }
+    }
+
+
+    //this make clickable spinner image arrows as part of the spinner
+    public void clickOrgUnitSpinner(View view){
+        ((Spinner) findViewById(R.id.filter_orgunit)).performClick();
+    }
+
+    public void clickProgramSpinner(View view){
+        ((Spinner) findViewById(R.id.filter_program)).performClick();
     }
 
     private void initFeedback() {
