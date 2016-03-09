@@ -72,6 +72,10 @@ import java.util.Set;
  * Created by ignac on 05/01/2016.
  */
 public class SurveyFragment extends  Fragment {
+    /**
+     * Actual Listview
+     */
+    public static ListView  mQuestions;
     private String TAG=".SurveyFragment";
     //FIXME Better than a bunch of 'ifs' worse than it should
     private static final int ORDER_PROFILE=2;
@@ -331,7 +335,7 @@ public class SurveyFragment extends  Fragment {
                     tab.getType() == Constants.TAB_COMPOSITE_SCORE) {
                 tabAdapter.initializeSubscore();
             }
-            ListView mQuestions = (ListView)  llLayout.findViewById(R.id.listView);
+            mQuestions = (ListView)  llLayout.findViewById(R.id.listView);
             mQuestions.setAdapter((BaseAdapter) tabAdapter);
             UnfocusScrollListener unfocusScrollListener = new UnfocusScrollListener();
             mQuestions.setOnScrollListener(unfocusScrollListener);

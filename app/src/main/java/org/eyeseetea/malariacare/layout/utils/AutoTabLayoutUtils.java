@@ -19,7 +19,9 @@
 
 package org.eyeseetea.malariacare.layout.utils;
 
+
 import android.content.Context;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.text.Html;
 import android.text.Spanned;
@@ -28,6 +30,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
@@ -37,16 +40,13 @@ import com.raizlabs.android.dbflow.structure.BaseModel;
 
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.model.Header;
-import org.eyeseetea.malariacare.database.model.Match;
 import org.eyeseetea.malariacare.database.model.Option;
 import org.eyeseetea.malariacare.database.model.Question;
-import org.eyeseetea.malariacare.database.model.QuestionOption;
-import org.eyeseetea.malariacare.database.model.QuestionRelation;
 import org.eyeseetea.malariacare.database.model.Survey;
-import org.eyeseetea.malariacare.database.model.Value;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.ReadWriteDB;
 import org.eyeseetea.malariacare.database.utils.Session;
+import org.eyeseetea.malariacare.fragments.SurveyFragment;
 import org.eyeseetea.malariacare.layout.adapters.general.OptionArrayAdapter;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.utils.Constants;
@@ -56,10 +56,8 @@ import org.eyeseetea.malariacare.views.CustomTextView;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by adrian on 15/08/15.
@@ -75,6 +73,9 @@ public class AutoTabLayoutUtils {
 
         // Main component in the row: Spinner, EditText or RadioGroup
         public View component;
+
+        // Progressbar showed if the item had childs in RadioGroup
+        public View progressBar;
 
         public CustomTextView num;
         public CustomTextView denum;
@@ -199,7 +200,8 @@ public class AutoTabLayoutUtils {
 
         viewHolder.component = rowView.findViewById(R.id.answer);
         viewHolder.statement = (CustomTextView) rowView.findViewById(R.id.statement);
-
+        if(question.hasChildren())
+            viewHolder.progressBar = (ProgressBar) rowView.findViewById(R.id.radio_progress_bar);
         if(question.getCompulsory()){
             int red = PreferencesState.getInstance().getContext().getResources().getColor(R.color.darkRed);
             String appNameColorString = String.format("%X", red).substring(2);
@@ -363,6 +365,7 @@ public class AutoTabLayoutUtils {
         Survey survey=Session.getSurvey();
         boolean visible;
 
+        ShowProgressWheel progressWheel= (ShowProgressWheel) new ShowProgressWheel().execute(question);
         for (Question child : children) {
             Header childHeader = child.getHeader();
             visible=!child.isHiddenBySurvey(survey);
@@ -387,6 +390,7 @@ public class AutoTabLayoutUtils {
             }
             cachedQuestion = question;
         }
+        progressWheel.stop();
     }
 
     public static void initScoreQuestion(Question question, float totalNum, float totalDenum) {
@@ -405,4 +409,68 @@ public class AutoTabLayoutUtils {
         }
 
     }
+
+
+
+    private static class ShowProgressWheel extends AsyncTask<Question, Void, Void> {
+
+        boolean isRunning = true;
+        Question parent=null;
+        View view;
+        public void stop() {
+            isRunning = false;
+            Log.d(TAG,"Finish progresbar");
+        }
+
+        @Override
+        protected Void doInBackground(Question... params) {
+            parent=params[0];
+            Log.d(TAG, "Load progressbar");
+            while(isRunning){
+                publishProgress();
+                try {
+                    Thread.sleep(500);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            return null;
+        }
+
+        View progressbarView = null;
+
+        @Override
+        protected void onProgressUpdate(Void... params) {
+            super.onProgressUpdate();
+            //if (AutoTabAdapter.mScrollState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE) {
+                // http://stackoverflow.com/questions/2123083/android-listview-refresh-single-row
+
+                int start = SurveyFragment.mQuestions.getFirstVisiblePosition();
+                for(int i=start, j=SurveyFragment.mQuestions.getLastVisiblePosition();i<=j;i++) {
+                    view = SurveyFragment.mQuestions.getChildAt(i - start);
+                    if(SurveyFragment.mQuestions.getItemAtPosition(i) instanceof Question){
+                        if(parent !=null && parent.getUid()==((Question)SurveyFragment.mQuestions.getItemAtPosition(i)).getUid()){
+                            progressbarView=view.findViewById(R.id.radio_progress_bar);
+                            progressbarView.setVisibility(View.VISIBLE);
+                        }
+                    }
+                }
+            //}
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            if(progressbarView!=null)
+                progressbarView.findViewById(R.id.radio_progress_bar).setVisibility(View.GONE);
+        }
+    }
+
 }
