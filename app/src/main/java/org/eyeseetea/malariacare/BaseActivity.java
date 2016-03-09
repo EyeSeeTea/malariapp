@@ -165,6 +165,22 @@ public abstract class BaseActivity extends ActionBarActivity {
     }
 
     @Override
+    public void onDestroy(){
+        try {
+            Dhis2Application.bus.unregister(this);
+        }catch(Exception e){}
+        super.onDestroy();
+    }
+
+    @Override
+    public void onRestart(){
+        try {
+            Dhis2Application.bus.register(this);
+        }catch(Exception e){}
+        super.onRestart();
+    }
+
+    @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
     }
