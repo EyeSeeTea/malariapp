@@ -63,6 +63,9 @@
     <dimen name="float_button_def">24sp</dimen>
     <!-- Text Card default -->
     <dimen name="text_card_def">24sp</dimen>
+    <!-- left padding for button in feedbackfragment !-->
+    <dimen name="margin_lateral_feedback_radiobutton">15dip</dimen>
+    <dimen name="margin_feedback_top_bottom_radiobutton">8dip</dimen>
 
 
 </resources>
