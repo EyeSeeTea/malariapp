@@ -191,7 +191,7 @@ public class DashboardUnsentFragment extends ListFragment {
                     if(Float.valueOf(100 * surveyAnsweredRatio.getCompulsoryRatio()).intValue()>=100) {
                         survey.setCompleteSurveyState();
                         mCallback.alertOnComplete(survey);
-                        removeSurvey(survey);
+                        removeSurveyFromAdapter(survey);
                         reloadToSend();
                     }
                     else{
@@ -201,7 +201,7 @@ public class DashboardUnsentFragment extends ListFragment {
                 else {
                     survey.setCompleteSurveyState();
                     mCallback.alertOnComplete(survey);
-                    removeSurvey(survey);
+                    removeSurveyFromAdapter(survey);
                     reloadToSend();
                 }
                 return true;
@@ -215,7 +215,7 @@ public class DashboardUnsentFragment extends ListFragment {
                                 //this method create a new survey geting the getScheduledDate date of the oldsurvey, and remove it.
                                 Survey survey=(Survey) adapter.getItem(selectedPosition - 1);
                                 SurveyPlanner.getInstance().deleteSurveyAndBuildNext(survey);
-                                removeSurvey(survey);
+                                removeSurveyFromAdapter(survey);
                             }
                         })
                         .setNegativeButton(android.R.string.no, null).create().show();
@@ -227,7 +227,7 @@ public class DashboardUnsentFragment extends ListFragment {
     }
 
     //Remove survey from the list and reload list.
-    private void removeSurvey(Survey survey) {
+    private void removeSurveyFromAdapter(Survey survey) {
         adapter.remove(survey);
         adapter.notifyDataSetChanged();
     }
