@@ -184,7 +184,7 @@ public static void showData(WebView webView){
 
         //First time no entry
         if (entrySentSurveysChart == null) {
-            entrySentSurveysChart = new EntrySentSurveysChart(EXPECTED_SENT_SURVEYS_PER_MONTH, survey.getCompletionDate(), program);
+            entrySentSurveysChart = new EntrySentSurveysChart(EXPECTED_SENT_SURVEYS_PER_MONTH, survey.getEventDate(), program);
             sentSurveysChartMap.put(month+program.getUid(), entrySentSurveysChart);}
         //Increment surveys for that month
         entrySentSurveysChart.incSent();
