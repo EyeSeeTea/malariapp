@@ -191,7 +191,8 @@ public class DashboardUnsentFragment extends ListFragment {
                     if(Float.valueOf(100 * surveyAnsweredRatio.getCompulsoryRatio()).intValue()>=100) {
                         survey.setCompleteSurveyState();
                         mCallback.alertOnComplete(survey);
-                        reloadData();
+                        removeSurveyFromAdapter(survey);
+                        reloadToSend();
                     }
                     else{
                         mCallback.dialogCompulsoryQuestionIncompleted();
@@ -200,7 +201,8 @@ public class DashboardUnsentFragment extends ListFragment {
                 else {
                     survey.setCompleteSurveyState();
                     mCallback.alertOnComplete(survey);
-                    reloadData();
+                    removeSurveyFromAdapter(survey);
+                    reloadToSend();
                 }
                 return true;
             case R.id.option_delete:
@@ -211,8 +213,9 @@ public class DashboardUnsentFragment extends ListFragment {
                         .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface arg0, int arg1) {
                                 //this method create a new survey geting the getScheduledDate date of the oldsurvey, and remove it.
-                                SurveyPlanner.getInstance().deleteSurveyAndBuildNext((Survey) adapter.getItem(selectedPosition - 1));
-                                reloadData();
+                                Survey survey=(Survey) adapter.getItem(selectedPosition - 1);
+                                SurveyPlanner.getInstance().deleteSurveyAndBuildNext(survey);
+                                removeSurveyFromAdapter(survey);
                             }
                         })
                         .setNegativeButton(android.R.string.no, null).create().show();
@@ -221,6 +224,12 @@ public class DashboardUnsentFragment extends ListFragment {
             default:
                 return super.onContextItemSelected(item);
         }
+    }
+
+    //Remove survey from the list and reload list.
+    private void removeSurveyFromAdapter(Survey survey) {
+        adapter.remove(survey);
+        adapter.notifyDataSetChanged();
     }
 
     public void reloadData(){
@@ -325,8 +334,6 @@ public class DashboardUnsentFragment extends ListFragment {
     public void reloadInProgressSurveys(){
         List<Survey> surveysInProgressFromService = (List<Survey>) Session.popServiceValue(SurveyService.ALL_IN_PROGRESS_SURVEYS_ACTION);
         reloadSurveys(surveysInProgressFromService);
-        //set alarm if is malariaapp question
-        reloadCompletedSurveys();
     }
 
     public void reloadCompletedSurveys(){
