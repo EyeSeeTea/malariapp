@@ -73,7 +73,7 @@ import java.util.Set;
  */
 public class SurveyFragment extends  Fragment {
     /**
-     * Actual Listview
+     * Actual Listview:accesed by asynctask to shows the progress wheel
      */
     public static ListView  mQuestions;
     private String TAG=".SurveyFragment";

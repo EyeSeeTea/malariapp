@@ -200,6 +200,8 @@ public class AutoTabLayoutUtils {
 
         viewHolder.component = rowView.findViewById(R.id.answer);
         viewHolder.statement = (CustomTextView) rowView.findViewById(R.id.statement);
+
+        //if a question is parent, it needs add the ProgressBar layout to be showed if the user loads the childs.
         if(question.hasChildren())
             viewHolder.progressBar = (ProgressBar) rowView.findViewById(R.id.radio_progress_bar);
         if(question.getCompulsory()){
@@ -365,6 +367,7 @@ public class AutoTabLayoutUtils {
         Survey survey=Session.getSurvey();
         boolean visible;
 
+        //this asynctask needs be cancel after the childs was reloaded.
         ShowProgressWheel progressWheel= (ShowProgressWheel) new ShowProgressWheel().execute(question);
         for (Question child : children) {
             Header childHeader = child.getHeader();
