@@ -19,7 +19,6 @@
 
 package org.eyeseetea.malariacare;
 
-import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Fragment;
@@ -75,6 +74,7 @@ import java.util.List;
 public class DashboardActivity extends BaseActivity implements DashboardUnsentFragment.onSurveySelectedListener,CreateSurveyFragment.OnCreatedSurveyListener,DashboardSentFragment.OnFeedbackSelectedListener {
 
     private final static String TAG=".DDetailsActivity";
+    public static boolean goFeedback;
     private boolean reloadOnResume=true;
     TabHost tabHost;
     PlannedFragment plannedFragment;
@@ -136,7 +136,7 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
                 //If change of tab from surveyFragment or FeedbackFragment they could be closed.
                 if(isSurveyFragmentActive())
                     onExitFromSurvey();
-                if(isFeedbackFragmentActive())
+                if(isFeedbackFragmentActive() && !goFeedback)
                     closeFeedbackFragment();
                 if (tabId.equalsIgnoreCase(getResources().getString(R.string.tab_tag_plan))) {
                     currentTabName=getString(R.string.plan);
@@ -150,11 +150,12 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
                         setActionBarDashboard();
                     if(isSurveyFragmentActive())
                         setActionBarTitleForSurvey(Session.getSurvey());
-                    unsentFragment.reloadData();
+                    if(!goFeedback)
+                        unsentFragment.reloadData();
                 } else if (tabId.equalsIgnoreCase(getResources().getString(R.string.tab_tag_improve))) {
                     currentTabName=getString(R.string.improve);
                     tabHost.getCurrentTabView().setBackgroundColor(getResources().getColor(R.color.tab_blue_improve));
-                    if(!isFeedbackFragmentActive()){
+                    if(!isFeedbackFragmentActive() && !goFeedback){
                         setActionBarDashboard();
                     }
                 } else if (tabId.equalsIgnoreCase(getResources().getString(R.string.tab_tag_monitor))) {
@@ -271,15 +272,19 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
         replaceListFragment(R.id.dashboard_details_container, unsentFragment);
     }
     public void initImprove(){
-        sentFragment = new DashboardSentFragment();
-        sentFragment.setArguments(getIntent().getExtras());
-        replaceListFragment(R.id.dashboard_completed_container, sentFragment);
-        try {
-            LinearLayout filters = (LinearLayout) findViewById(R.id.filters_sentSurveys);
-            filters.setVisibility(View.VISIBLE);
-        }catch(Exception e){
-            e.printStackTrace();
+        if(!goFeedback) {
+            sentFragment = new DashboardSentFragment();
+            sentFragment.setArguments(getIntent().getExtras());
+            replaceListFragment(R.id.dashboard_completed_container, sentFragment);
+            try {
+                LinearLayout filters = (LinearLayout) findViewById(R.id.filters_sentSurveys);
+                filters.setVisibility(View.VISIBLE);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
+
+
     }
 
 
@@ -328,6 +333,14 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
         if(surveyFragment==null)
             surveyFragment = SurveyFragment.newInstance(mStackLevel);
         replaceFragment(R.id.dashboard_details_container, surveyFragment);
+        setActionBarTitleForSurvey(Session.getSurvey());
+    }
+    public void initSurveyFeedback(){
+        int  mStackLevel=0;
+        mStackLevel++;
+        if(feedbackFragment==null)
+            feedbackFragment = FeedbackFragment.newInstance(mStackLevel);
+        replaceFragment(R.id.dashboard_completed_container, feedbackFragment);
         setActionBarTitleForSurvey(Session.getSurvey());
     }
 
@@ -729,6 +742,17 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
     }
 
     @Override
+    public void onFeedbackInSession() {
+        initFeedback();
+    }
+
+    private void openFeedbackSurvey(Survey survey) {
+        goFeedback=true;
+        Session.setSurvey(survey);
+        tabHost.setCurrentTabByTag(getResources().getString(R.string.tab_tag_improve));
+    }
+
+    @Override
     public void onSurveySelected(Survey survey) {
         //Put selected survey in session
         Session.setSurvey(survey);
@@ -744,11 +768,17 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
     }
 
     @Override
-    public void alertOnComplete(Survey survey) {
+    public void alertOnComplete(final Survey survey) {
         new AlertDialog.Builder(this)
                 .setTitle(null)
                 .setMessage(String.format(getApplicationContext().getResources().getString(R.string.dialog_info_on_complete),survey.getProgram().getName()))
-                .setPositiveButton(android.R.string.ok, null)
+                .setNeutralButton(android.R.string.ok, null)
+                .setPositiveButton((R.string.go_to_feedback), new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface arg0, int arg1) {
+                        //Move to feedbackfragment
+                        openFeedbackSurvey(survey);
+                    }
+                })
                 .setCancelable(true)
                 .create().show();
     }

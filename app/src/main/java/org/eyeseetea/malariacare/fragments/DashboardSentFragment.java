@@ -37,6 +37,7 @@ import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.Spinner;
 
+import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.model.OrgUnit;
 import org.eyeseetea.malariacare.database.model.Program;
@@ -105,6 +106,7 @@ public class DashboardSentFragment extends ListFragment {
     // Container Activity must implement this interface
     public interface OnFeedbackSelectedListener {
         public void onFeedbackSelected(Survey survey);
+        public void onFeedbackInSession();
     }
 
 
@@ -491,6 +493,8 @@ public class DashboardSentFragment extends ListFragment {
 
     public void showContainer(){
         getActivity().findViewById(R.id.dashboard_completed_container).setVisibility(View.VISIBLE);
+        if(DashboardActivity.goFeedback)
+            mCallback.onFeedbackInSession();
     }
     public void hideContainer(){
         getActivity().findViewById(R.id.dashboard_completed_container).setVisibility(View.GONE);
@@ -531,7 +535,9 @@ public class DashboardSentFragment extends ListFragment {
 
         @Override
         protected void onPostExecute(String result) {
-            initFilters();
+            if(!DashboardActivity.goFeedback) {
+                initFilters();
+            }
             showContainer();
         }
 
