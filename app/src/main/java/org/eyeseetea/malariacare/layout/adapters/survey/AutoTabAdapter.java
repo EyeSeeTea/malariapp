@@ -111,7 +111,9 @@ public class AutoTabAdapter extends ATabAdapter {
     @Override
     public void initializeSubscore() {
         initializeScoreViews();
+        setSubScoreVisibility();
         initializeDenum();
+        AutoTabLayoutUtils.updateScore(scoreHolder, totalNum, totalDenum, getContext());
     }
 
     /**
@@ -119,6 +121,19 @@ public class AutoTabAdapter extends ATabAdapter {
      */
     private void initializeScoreViews() {
         scoreHolder.score = (CustomTextView) ((Activity) getContext()).findViewById(R.id.score);
+        scoreHolder.totalDenum = (CustomTextView) ((Activity) getContext()).findViewById(R.id.totalDen);
+        scoreHolder.totalNum = (CustomTextView) ((Activity) getContext()).findViewById(R.id.totalNum);
+        scoreHolder.subtotalscore = (CustomTextView) ((Activity) getContext()).findViewById(R.id.subtotalScoreText);
+        scoreHolder.qualitativeScore = (CustomTextView) ((Activity) getContext()).findViewById(R.id.qualitativeScore);
+    }
+
+    /**
+     * set subscore bar visibility depending on the show/hide num/dems user settings
+     */
+    private void setSubScoreVisibility(){
+        ViewGroup subscoreBar = (ViewGroup) ((Activity)getContext()).findViewById(R.id.subscore_bar);
+        int visibility = (PreferencesState.getInstance().isShowNumDen()) ? View.VISIBLE : View.GONE;
+        subscoreBar.setVisibility(visibility);
     }
 
 

@@ -109,7 +109,11 @@ public class AutoTabLayoutUtils {
 
     //Store the views references for each view in the footer
     public static class ScoreHolder {
+        public CustomTextView subtotalscore;
         public CustomTextView score;
+        public CustomTextView totalNum;
+        public CustomTextView totalDenum;
+        public CustomTextView qualitativeScore;
     }
 
     /**
@@ -292,34 +296,60 @@ public class AutoTabLayoutUtils {
      * @param option the option that has been selected
      */
     public static boolean itemSelected(AutoTabLayoutUtils.ViewHolder viewHolder, AutoTabLayoutUtils.ScoreHolder scoreHolder, Question question, Option option, float totalNum, float totalDenum, Context context, LinkedHashMap<BaseModel, Boolean> elementInvisibility) {
+        boolean refreshTab = false;
+
         // Write option to DB
         ReadWriteDB.saveValuesDDL(question, option);
 
-        recalculateScores(viewHolder, question);
+        recalculateScores(viewHolder, question, totalNum, totalDenum);
 
         // If parent relation found, toggle Children Spinner Visibility
         // If question has question-option, refresh the tab
         if (question.hasChildren() || question.hasQuestionOption()){
             if (question.hasChildren())
                 toggleChildrenVisibility(question,elementInvisibility, totalNum, totalDenum);
-            return true;
+            refreshTab = true;
         }
 
-        return false;
+        updateScore(scoreHolder, totalNum, totalDenum, context);
+        return refreshTab;
     }
     /**
      * Recalculate num and denum of a quetsion, update them in cache vars and save the new num/denum in the score register associated with the question
      * @param viewHolder views cache
      * @param question question that change its values
      */
-    private static void recalculateScores(AutoTabLayoutUtils.ViewHolder viewHolder, Question question) {
+    private static void recalculateScores(AutoTabLayoutUtils.ViewHolder viewHolder, Question question, float totalNum, float totalDenum) {
         Float num = ScoreRegister.calcNum(question);
         Float denum = ScoreRegister.calcDenum(question);
 
         viewHolder.num.setText(num.toString());
         viewHolder.denum.setText(denum.toString());
 
+        List<Float> numdenum = ScoreRegister.getNumDenum(question);
+
+        if (numdenum != null) {
+            totalNum = totalNum - numdenum.get(0);
+            totalDenum = totalDenum - numdenum.get(1);
+        }
+
+        totalNum = totalNum + num;
+        totalDenum = totalDenum + denum;
+
         ScoreRegister.addRecord(question, num, denum);
+    }
+
+    public static void updateScore(ScoreHolder scoreHolder, float totalNum, float totalDenum, Context context) {
+        scoreHolder.totalNum.setText(Float.toString(totalNum));
+        scoreHolder.totalDenum.setText(Float.toString(totalDenum));
+        if (totalDenum != 0) {
+            Float score = 100 * (totalNum / totalDenum);
+            LayoutUtils.trafficLight(scoreHolder.score, score, scoreHolder.qualitativeScore);
+            scoreHolder.score.setText(Utils.round(100 * (totalNum / totalDenum)) + " % ");
+        }
+        if (totalDenum == 0 && totalNum == 0) {
+            scoreHolder.score.setText(context.getString(R.string.number_zero_percentage));
+        }
     }
 
     /**
