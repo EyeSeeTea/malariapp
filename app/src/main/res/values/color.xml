@@ -12,7 +12,7 @@
     <color name="navy_blue">#FF1F70C3</color>
     <color name="dark_navy_blue">#FF1D5288</color>
     <color name="light_grey">#FFE5E5E5</color>
-    <color name="parentColor">#EFF1D5</color>
+    <color name="parentColor">#d8dac1</color>
     <color name="textFieldColor">#BEBEBE</color>
     <color name="darkGrey">#565656</color>
     <color name="formFooter">#429470</color>
