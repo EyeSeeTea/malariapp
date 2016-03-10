@@ -29,7 +29,7 @@
 
     <!-- # dialogs -->
     <string name="dialog_title_delete_survey">Borrar evaluación</string>
-    <string name="dialog_info_delete_survey">¿Seguro que desea borrar la evaluación?</string>
+    <string name="dialog_info_delete_survey">¿Seguro que desea borrar la evaluación %s?</string>
     <string name="dialog_title_error">Error</string>
     <string name="dialog_error_denominator">Error, denominador = 0</string>
     <string name="dialog_title_missing_selection">Selección obligatoria</string>

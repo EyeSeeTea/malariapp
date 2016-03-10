@@ -29,7 +29,7 @@
 
     <!-- # dialogs -->
     <string name="dialog_title_delete_survey">Apagar inquérito</string>
-    <string name="dialog_info_delete_survey">Tem a certeza que quer apagar completamente este inquérito?</string>
+    <string name="dialog_info_delete_survey">Tem a certeza que quer apagar completamente la pesquisa %s ?</string>
     <string name="dialog_title_error">Erro</string>
     <string name="dialog_error_denominator">Erro, denominador = 0</string>
     <string name="dialog_title_missing_selection">Selecção em falta</string>
