@@ -28,6 +28,7 @@
     <string name="login_error_bad_credentials">El usuario/contraseña es incorrecto</string>
 
     <!-- # dialogs -->
+    <string name="go_to_feedback">Ir a feedback</string>
     <string name="dialog_title_delete_survey">Borrar evaluación</string>
     <string name="dialog_info_delete_survey">¿Seguro que desea borrar la evaluación?</string>
     <string name="dialog_title_error">Error</string>

@@ -28,6 +28,7 @@
     <string name="login_error_bad_credentials">O nome de utilizador/password estão incorrectos</string>
 
     <!-- # dialogs -->
+    <string name="go_to_feedback">Ir para comentários</string>
     <string name="dialog_title_delete_survey">Apagar inquérito</string>
     <string name="dialog_info_delete_survey">Tem a certeza que quer apagar completamente este inquérito?</string>
     <string name="dialog_title_error">Erro</string>
