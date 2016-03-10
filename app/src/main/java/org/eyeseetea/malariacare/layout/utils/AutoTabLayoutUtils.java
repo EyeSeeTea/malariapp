@@ -25,11 +25,14 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.text.Html;
 import android.text.Spanned;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
@@ -301,6 +304,14 @@ public class AutoTabLayoutUtils {
     public static boolean itemSelected(AutoTabLayoutUtils.ViewHolder viewHolder, AutoTabLayoutUtils.ScoreHolder scoreHolder, Question question, Option option, float totalNum, float totalDenum, Context context, LinkedHashMap<BaseModel, Boolean> elementInvisibility) {
         boolean refreshTab = false;
 
+        if (question.hasChildren()){
+            Log.d(TAG, "progressbar");
+            ShowProgressWheel progressWheel= new ShowProgressWheel(question);
+            progressWheel.execute();
+            refreshTab=true;
+            return refreshTab;
+        }
+        Log.d(TAG, "itemselected");
         // Write option to DB
         ReadWriteDB.saveValuesDDL(question, option);
 
@@ -309,13 +320,45 @@ public class AutoTabLayoutUtils {
         // If parent relation found, toggle Children Spinner Visibility
         // If question has question-option, refresh the tab
         if (question.hasChildren() || question.hasQuestionOption()){
-            if (question.hasChildren())
-                toggleChildrenVisibility(question,elementInvisibility, totalNum, totalDenum);
+            if (question.hasChildren()){
+                Log.d(TAG, "progressbar");
+                showProgressbar();
+
+                toggleChildrenVisibility(question, elementInvisibility, totalNum, totalDenum);
+
+                hideProgressbar();
+                Log.d(TAG, "progressbar end");
+            }
             refreshTab = true;
+            Log.d(TAG, "refresh=true");
         }
 
         updateScore(scoreHolder, totalNum, totalDenum, context);
         return refreshTab;
+    }
+
+    static View progressbarView = null;
+    public static void showProgressbar() {
+
+        boolean isRunning = true;
+        Question questionParent =null;
+        View view;
+        int start = SurveyFragment.mQuestions.getFirstVisiblePosition();
+        for(int i=start, j=SurveyFragment.mQuestions.getLastVisiblePosition();i<=j;i++) {
+            view = SurveyFragment.mQuestions.getChildAt(i - start);
+            if(SurveyFragment.mQuestions.getItemAtPosition(i) instanceof Question){
+                if(questionParent !=null && questionParent.getUid()==((Question)SurveyFragment.mQuestions.getItemAtPosition(i)).getUid()){
+                    progressbarView=view.findViewById(R.id.radio_progress_bar);
+                    progressbarView.setVisibility(View.VISIBLE);
+                }
+            }
+        }
+    }
+
+    public static void hideProgressbar() {
+
+        if(progressbarView!=null)
+            progressbarView.findViewById(R.id.radio_progress_bar).setVisibility(View.GONE);
     }
     /**
      * Recalculate num and denum of a quetsion, update them in cache vars and save the new num/denum in the score register associated with the question
@@ -367,7 +410,12 @@ public class AutoTabLayoutUtils {
         boolean visible;
 
         //this asynctask needs be cancel after the childs was reloaded.
-        ShowProgressWheel progressWheel= (ShowProgressWheel) new ShowProgressWheel().execute(question);
+
+        try {
+            Thread.sleep(1500);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         for (Question child : children) {
             Header childHeader = child.getHeader();
             visible=!child.isHiddenBySurvey(survey);
@@ -392,7 +440,6 @@ public class AutoTabLayoutUtils {
             }
             cachedQuestion = question;
         }
-        progressWheel.stop();
     }
 
     public static void initScoreQuestion(Question question, float totalNum, float totalDenum) {
@@ -419,6 +466,10 @@ public class AutoTabLayoutUtils {
         boolean isRunning = true;
         Question questionParent =null;
         View view;
+
+        public ShowProgressWheel(Question question) {
+            this.questionParent=question;
+        }
 
         //this needs be called to stop the Asyntask
         public void stop() {

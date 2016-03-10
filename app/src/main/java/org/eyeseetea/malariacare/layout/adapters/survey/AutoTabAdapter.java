@@ -21,13 +21,17 @@ package org.eyeseetea.malariacare.layout.adapters.survey;
 
 import android.app.Activity;
 import android.content.Context;
+import android.os.AsyncTask;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.TextWatcher;
+import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 
@@ -41,6 +45,7 @@ import org.eyeseetea.malariacare.database.model.Tab;
 import org.eyeseetea.malariacare.database.model.Value;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.ReadWriteDB;
+import org.eyeseetea.malariacare.fragments.SurveyFragment;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.layout.utils.AutoTabLayoutUtils;
 import org.eyeseetea.malariacare.utils.Constants;
@@ -232,6 +237,14 @@ public class AutoTabAdapter extends ATabAdapter {
                     AutoTabLayoutUtils.createRadioGroupComponent(question, viewHolder, LinearLayout.HORIZONTAL, getInflater(), getContext());
                     //Add Listener
                     ((RadioGroup) viewHolder.component).setOnCheckedChangeListener(new RadioGroupListener(question, viewHolder));
+                    if(question.hasChildren()) {
+                        RadioGroup radioGroup = ((RadioGroup) viewHolder.component);
+                        radioGroup.getChildAt(0).setOnTouchListener(new RadioButtonTocuhListener(question, viewHolder));
+                        radioGroup.getChildAt(1).setOnTouchListener(new RadioButtonTocuhListener(question, viewHolder));
+                    }
+                    else{
+                        ((RadioGroup) viewHolder.component).setOnCheckedChangeListener(new RadioGroupListener(question, viewHolder));
+                    }
                     break;
                 case Constants.RADIO_GROUP_VERTICAL:
                     rowView = AutoTabLayoutUtils.initialiseView(R.layout.radio, parent, question, viewHolder, position, getInflater());
@@ -386,6 +399,8 @@ public class AutoTabAdapter extends ATabAdapter {
 
         @Override
         public void onCheckedChanged(RadioGroup group, int checkedId) {
+
+            AutoTabLayoutUtils.showProgressbar();
             if(!group.isShown()){
                 return;
             }
@@ -397,7 +412,92 @@ public class AutoTabAdapter extends ATabAdapter {
             }
             if (AutoTabLayoutUtils.itemSelected(viewHolder, scoreHolder, question, option, totalNum, totalDenum, getContext(), elementInvisibility))
                 notifyDataSetChanged();
+
+            AutoTabLayoutUtils.hideProgressbar();
         }
     }
 
+    public class RadioButtonTocuhListener implements RadioButton.OnTouchListener {
+        private AutoTabLayoutUtils.ViewHolder viewHolder;
+        private Question question;
+
+        public RadioButtonTocuhListener(Question question, AutoTabLayoutUtils.ViewHolder viewHolder) {
+            this.question = question;
+            this.viewHolder = viewHolder;
+        }
+
+        @Override
+        public boolean onTouch(View v, MotionEvent event) {
+            Log.d(TAG, "touched!");
+
+            if(v.isShown() && event.getAction()== MotionEvent.ACTION_UP) {
+                //checks if the question has childrens and if they are visibles.
+                if (question.hasChildren()) {
+                }
+            }
+            return false;
+        }
+
+    }
+
+
+    private static class ShowProgressWheel extends AsyncTask<Question, Void, Void> {
+
+        boolean isRunning = true;
+        Question questionParent =null;
+        View view;
+
+        //this needs be called to stop the Asyntask
+        public void stop() {
+            isRunning = false;
+        }
+
+        @Override
+        protected Void doInBackground(Question... params) {
+            questionParent =params[0];
+
+            while(isRunning){
+                publishProgress();
+                try {
+                    Thread.sleep(1500);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            return null;
+        }
+
+        View progressbarView = null;
+
+        @Override
+        protected void onProgressUpdate(Void... params) {
+            super.onProgressUpdate();
+            //Get the item from the listview and show the progressbar
+            int start = SurveyFragment.mQuestions.getFirstVisiblePosition();
+            for(int i=start, j=SurveyFragment.mQuestions.getLastVisiblePosition();i<=j;i++) {
+                view = SurveyFragment.mQuestions.getChildAt(i - start);
+                if(SurveyFragment.mQuestions.getItemAtPosition(i) instanceof Question){
+                    if(questionParent !=null && questionParent.getUid()==((Question)SurveyFragment.mQuestions.getItemAtPosition(i)).getUid()){
+                        progressbarView=view.findViewById(R.id.radio_progress_bar);
+                        progressbarView.setVisibility(View.VISIBLE);
+                    }
+                }
+            }
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            //hidden the progressbar
+            if(progressbarView!=null)
+                progressbarView.findViewById(R.id.radio_progress_bar).setVisibility(View.GONE);
+        }
+    }
 }
