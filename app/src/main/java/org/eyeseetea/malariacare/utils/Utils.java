@@ -25,6 +25,7 @@ import org.eyeseetea.malariacare.database.model.CompositeScore;
 import org.eyeseetea.malariacare.database.model.Header;
 import org.eyeseetea.malariacare.database.model.Question;
 import org.eyeseetea.malariacare.database.model.Tab;
+import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.Session;
 
 import java.io.BufferedReader;
@@ -32,8 +33,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.math.BigDecimal;
+import java.text.DateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class Utils {
 
@@ -98,4 +102,13 @@ public class Utils {
         return stringBuilder;
     }
 
+
+    public static String formatDate(Date date){
+        if(date==null){
+            return "-";
+        }
+        Locale locale = PreferencesState.getInstance().getContext().getResources().getConfiguration().locale;
+        DateFormat dateFormatter = DateFormat.getDateInstance(DateFormat.DEFAULT, locale);
+        return dateFormatter.format(date);
+    }
 }
