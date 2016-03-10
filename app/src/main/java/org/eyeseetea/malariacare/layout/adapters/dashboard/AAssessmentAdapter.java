@@ -35,6 +35,7 @@ import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.model.TabGroup;
 import org.eyeseetea.malariacare.database.utils.SurveyAnsweredRatio;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
+import org.eyeseetea.malariacare.utils.Utils;
 import org.eyeseetea.malariacare.views.CustomTextView;
 
 import java.text.SimpleDateFormat;
@@ -80,6 +81,7 @@ public abstract class AAssessmentAdapter extends ADashboardAdapter implements ID
             Date completionDate = survey.getCompletionDate();
             SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy");
             sentDate.setText(format.format(completionDate));
+            sentDate.setText(Utils.formatDate(completionDate));
             if(survey.hasConflict()){
                 sentScore.setText((getContext().getResources().getString(R.string.feedback_info_conflict)).toUpperCase());
                 sentScore.setTextColor(getContext().getResources().getColor(R.color.darkRed));
