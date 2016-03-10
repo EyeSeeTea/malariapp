@@ -20,6 +20,7 @@
 package org.eyeseetea.malariacare.layout.adapters.survey;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.util.TypedValue;
@@ -155,6 +156,9 @@ public class FeedbackAdapter extends BaseAdapter {
         //Question label
         TextView textView=(TextView)rowLayout.findViewById(R.id.feedback_question_label);
         textView.setTextColor(PreferencesState.getInstance().getContext().getResources().getColor(R.color.darkGrey));
+        if(feedback.isLabel()){
+            textView.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
+        }
         textView.setText(feedback.getLabel());
 
         //Option label
