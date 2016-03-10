@@ -159,8 +159,14 @@ public class QuestionFeedback implements Feedback {
     }
 
 
+    /**
+     * Return if the question is a label
+     * @return
+     */
     public boolean isLabel(){
-        return (question.getOutput()== Constants.NO_ANSWER);
+        if(question.getAnswer().getName()!=null && question.getAnswer().getName().equals(Constants.LABEL))
+            return true;
+        return false;
     }
 
     @Override
