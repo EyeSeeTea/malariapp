@@ -19,7 +19,9 @@
 
 package org.eyeseetea.malariacare.layout.utils;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Build;
 import android.text.Html;
 import android.text.Spanned;
@@ -48,6 +50,7 @@ import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.ReadWriteDB;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.layout.adapters.general.OptionArrayAdapter;
+import org.eyeseetea.malariacare.layout.adapters.survey.AutoTabAdapter;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.utils.Constants;
 import org.eyeseetea.malariacare.utils.Utils;
@@ -105,6 +108,16 @@ public class AutoTabLayoutUtils {
             }
             return null;
         }
+    }
+
+    /**
+     * Static class just to get the answer about the children deletion inside a listener
+     */
+    public static class QuestionVisibility{
+        public static Question question;
+        public static LinkedHashMap<BaseModel, Boolean> elementInvisibility;
+        public static AutoTabAdapter adapter;
+        public static Option option;
     }
 
     //Store the views references for each view in the footer
@@ -281,12 +294,12 @@ public class AutoTabLayoutUtils {
         return Booleans.countTrue(Booleans.toArray(elementInvisibility.values()));
     }
 
-    public static boolean autoFillAnswer(AutoTabLayoutUtils.ViewHolder viewHolder, AutoTabLayoutUtils.ScoreHolder scoreHolder, Question question, float totalNum, float totalDenum, Context context, LinkedHashMap<BaseModel, Boolean> elementInvisibility) {
+    public static boolean autoFillAnswer(AutoTabLayoutUtils.ViewHolder viewHolder, AutoTabLayoutUtils.ScoreHolder scoreHolder, Question question, float totalNum, float totalDenum, Context context, LinkedHashMap<BaseModel, Boolean> elementInvisibility, AutoTabAdapter adapter) {
         //FIXME Yes|No are 'hardcoded' here by using options 0|1
         int option=question.isTriggered(Session.getSurvey())?0:1;
 
         //Select option according to trigger
-        return itemSelected(viewHolder, scoreHolder, question, question.getAnswer().getOptions().get(option), totalNum, totalDenum, context, elementInvisibility);
+        return itemSelected(viewHolder, scoreHolder, question, question.getAnswer().getOptions().get(option), totalNum, totalDenum, context, elementInvisibility, adapter);
     }
 
     /**
@@ -295,23 +308,38 @@ public class AutoTabLayoutUtils {
      * @param question the question that changes his value
      * @param option the option that has been selected
      */
-    public static boolean itemSelected(AutoTabLayoutUtils.ViewHolder viewHolder, AutoTabLayoutUtils.ScoreHolder scoreHolder, Question question, Option option, float totalNum, float totalDenum, Context context, LinkedHashMap<BaseModel, Boolean> elementInvisibility) {
+    public static boolean itemSelected(final AutoTabLayoutUtils.ViewHolder viewHolder, AutoTabLayoutUtils.ScoreHolder scoreHolder, Question question, Option option, float totalNum, float totalDenum, Context context, LinkedHashMap<BaseModel, Boolean> elementInvisibility, AutoTabAdapter adapter) {
         boolean refreshTab = false;
-
-        // Write option to DB
-        ReadWriteDB.saveValuesDDL(question, option);
-
-        recalculateScores(viewHolder, question, totalNum, totalDenum);
 
         // If parent relation found, toggle Children Spinner Visibility
         // If question has question-option, refresh the tab
         if (question.hasChildren() || question.hasQuestionOption()){
-            if (question.hasChildren())
-                toggleChildrenVisibility(question,elementInvisibility, totalNum, totalDenum);
+            if (question.hasChildren()) {
+                QuestionVisibility.question = question;
+                QuestionVisibility.elementInvisibility = elementInvisibility;
+                QuestionVisibility.adapter = adapter;
+                QuestionVisibility.option = option;
+                new AlertDialog.Builder(context)
+                        .setTitle(null)
+                        .setMessage(context.getString(R.string.dialog_deleting_children))
+                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface arg0, int arg1) {
+                                // Write option to DB
+                                ReadWriteDB.saveValuesDDL(QuestionVisibility.question, QuestionVisibility.option);
+                                recalculateScores(viewHolder, QuestionVisibility.question);
+                                toggleChildrenVisibility();
+                                QuestionVisibility.adapter.notifyDataSetChanged();
+                            }
+                        })
+                        .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+
+                            }
+                        }).create().show();
+            }
             refreshTab = true;
         }
 
-        updateScore(scoreHolder, totalNum, totalDenum, context);
         return refreshTab;
     }
     /**
@@ -319,45 +347,23 @@ public class AutoTabLayoutUtils {
      * @param viewHolder views cache
      * @param question question that change its values
      */
-    private static void recalculateScores(AutoTabLayoutUtils.ViewHolder viewHolder, Question question, float totalNum, float totalDenum) {
+    private static void recalculateScores(AutoTabLayoutUtils.ViewHolder viewHolder, Question question) {
         Float num = ScoreRegister.calcNum(question);
         Float denum = ScoreRegister.calcDenum(question);
 
         viewHolder.num.setText(num.toString());
         viewHolder.denum.setText(denum.toString());
 
-        List<Float> numdenum = ScoreRegister.getNumDenum(question);
-
-        if (numdenum != null) {
-            totalNum = totalNum - numdenum.get(0);
-            totalDenum = totalDenum - numdenum.get(1);
-        }
-
-        totalNum = totalNum + num;
-        totalDenum = totalDenum + denum;
-
         ScoreRegister.addRecord(question, num, denum);
-    }
-
-    public static void updateScore(ScoreHolder scoreHolder, float totalNum, float totalDenum, Context context) {
-        scoreHolder.totalNum.setText(Float.toString(totalNum));
-        scoreHolder.totalDenum.setText(Float.toString(totalDenum));
-        if (totalDenum != 0) {
-            Float score = 100 * (totalNum / totalDenum);
-            LayoutUtils.trafficLight(scoreHolder.score, score, scoreHolder.qualitativeScore);
-            scoreHolder.score.setText(Utils.round(100 * (totalNum / totalDenum)) + " % ");
-        }
-        if (totalDenum == 0 && totalNum == 0) {
-            scoreHolder.score.setText(context.getString(R.string.number_zero_percentage));
-        }
     }
 
     /**
      * Given a question, make visible or invisible their children. In case all children in a header
      * became invisible, that header is also hidden
-     * @param question the question whose children we want to show/hide
      */
-    private static void toggleChildrenVisibility(Question question, LinkedHashMap<BaseModel, Boolean> elementInvisibility, float totalNum, float totalDenum) {
+    private static void toggleChildrenVisibility() {
+        Question question = QuestionVisibility.question;
+        LinkedHashMap<BaseModel, Boolean> elementInvisibility = QuestionVisibility.elementInvisibility;
         List<Question> children = question.getChildren();
         Question cachedQuestion = null;
         Survey survey=Session.getSurvey();
@@ -370,9 +376,6 @@ public class AutoTabLayoutUtils {
             if (!visible) {
                 List<Float> numdenum = ScoreRegister.getNumDenum(child);
                 if (numdenum != null) {
-                    // update scores
-                    totalDenum = totalDenum - numdenum.get(1);
-                    totalNum = totalNum - numdenum.get(0);
                     ScoreRegister.deleteRecord(child);
                 }
                 ReadWriteDB.deleteValue(child); // when we hide a question, we remove its value
@@ -381,7 +384,6 @@ public class AutoTabLayoutUtils {
                     elementInvisibility.put(childHeader, AutoTabLayoutUtils.hideHeader(childHeader, elementInvisibility));
             } else {
                 Float denum = ScoreRegister.calcDenum(child);
-                totalDenum = totalDenum + denum;
                 ScoreRegister.addRecord(child, 0F, denum);
                 elementInvisibility.put(childHeader, false);
             }
