@@ -84,13 +84,13 @@ public class PushOKTest {
     public void pushWithPermissionsDoesPush(){
         login(HNQIS_DEV_CI, TEST_USERNAME_WITH_PERMISSION, TEST_PASSWORD_WITH_PERMISSION);
         waitForPull(DEFAULT_WAIT_FOR_PULL);
-        startSurvey(1, 1);
-        fillSurvey(7, "Yes");
+        startSurvey(SDKTestUtils.TEST_FACILITY_1_IDX, SDKTestUtils.TEST_FAMILY_PLANNING_IDX);
+        fillSurvey(7, "No");
         Long idSurvey=markInProgressAsCompleted();
 
         //then: Survey is pushed (UID)
         Log.d(TAG, "Session user ->"+ Session.getUser());
-        Survey survey=waitForPush(20,idSurvey);
+        Survey survey=waitForPush(25,idSurvey);
         assertTrue(survey.getEventUid()!=null);
 
         //then: Row is gone

@@ -88,6 +88,9 @@ public class SDKTestUtils {
     public static final String TEST_USERNAME_WITH_PERMISSION = "testOK";
     public static final String TEST_PASSWORD_WITH_PERMISSION = "testP3rmission";
 
+    public static final int TEST_FACILITY_1_IDX=1;
+    public static final int TEST_FAMILY_PLANNING_IDX=3;
+
     public static final String MARK_AS_COMPLETED = "Mark as completed";
     public static final String DELETE_ACTION = "Delete";
     public static final String EDIT_ACTION = "Edit";
@@ -300,7 +303,7 @@ public class SDKTestUtils {
         return getSurveyInProgress().getId_survey();
     }
 
-    private static Survey getSurveyInProgress(){
+    public static Survey getSurveyInProgress(){
         return new Select()
                 .from(Survey.class)
                 .where(Condition.column(Survey$Table.STATUS)
