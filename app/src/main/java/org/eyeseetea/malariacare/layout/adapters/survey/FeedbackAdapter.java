@@ -186,7 +186,7 @@ public class FeedbackAdapter extends BaseAdapter {
             @Override
             public void onClick(View v) {
                 QuestionFeedback questionFeedback=(QuestionFeedback)v.getTag();
-                if(questionFeedback==null || questionFeedback.isLabel()){
+                if(questionFeedback==null || questionFeedback.isLabel() || questionFeedback.getFeedback()==null){
                     return;
                 }
                 toggleFeedback((LinearLayout)v, questionFeedback.toggleFeedbackShown());
