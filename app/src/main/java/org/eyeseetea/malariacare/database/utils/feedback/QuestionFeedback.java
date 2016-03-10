@@ -22,6 +22,7 @@ package org.eyeseetea.malariacare.database.utils.feedback;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.model.Question;
 import org.eyeseetea.malariacare.database.model.Value;
+import org.eyeseetea.malariacare.utils.Constants;
 
 /**
  * Created by arrizabalaga on 14/09/15.
@@ -155,6 +156,11 @@ public class QuestionFeedback implements Feedback {
     public boolean hasGrade(){
         //Some points -> Some grade
         return this.question.getDenominator_w()!=0 || this.question.getNumerator_w()!=0;
+    }
+
+
+    public boolean isLabel(){
+        return (question.getOutput()== Constants.NO_ANSWER);
     }
 
     @Override
