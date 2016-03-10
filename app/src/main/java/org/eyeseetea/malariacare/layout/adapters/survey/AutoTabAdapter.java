@@ -132,8 +132,8 @@ public class AutoTabAdapter extends ATabAdapter {
      */
     private void setSubScoreVisibility(){
         ViewGroup subscoreBar = (ViewGroup) ((Activity)getContext()).findViewById(R.id.subscore_bar);
-        int visibility = (PreferencesState.getInstance().isShowNumDen()) ? View.VISIBLE : View.GONE;
-        subscoreBar.setVisibility(visibility);
+        //int visibility = (PreferencesState.getInstance().isShowNumDen()) ? View.VISIBLE : View.GONE;
+        subscoreBar.setVisibility(View.GONE);
     }
 
 
