@@ -107,8 +107,7 @@ public class QuestionFeedback implements Feedback {
         if(questionFeedback!=null && !questionFeedback.isEmpty()){
             return questionFeedback;
         }
-        String mockData="<p>No feedback available for this question.</p>";
-        return mockData;
+        return null;
     }
 
     /**
