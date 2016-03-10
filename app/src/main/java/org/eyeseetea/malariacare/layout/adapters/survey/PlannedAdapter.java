@@ -436,7 +436,7 @@ public class PlannedAdapter extends BaseAdapter {
         }
 
         private boolean validateFields(Date newDate,String comment){
-            return newDate!=null && comment!=null && comment.length()>0;
+            return newDate!=null;
         }
 
 
