@@ -70,6 +70,7 @@ import static org.eyeseetea.malariacare.test.utils.SDKTestUtils.waitForPush;
 public class PushErrorTest {
 
     private static final String TAG="TestingPushError";
+    public static final String NON_EXISTANT_PROGRAM_UID = "d6PHrjjljS1XX";
     //private LoginActivity mReceiptCaptureActivity;
 
     @Rule
@@ -94,12 +95,14 @@ public class PushErrorTest {
         //GIVEN
         login(HNQIS_DEV_CI, TEST_USERNAME_WITH_PERMISSION, TEST_PASSWORD_WITH_PERMISSION);
         waitForPull(DEFAULT_WAIT_FOR_PULL);
-        startSurvey(1, 1);
+        startSurvey(SDKTestUtils.TEST_FACILITY_1_IDX, SDKTestUtils.TEST_FAMILY_PLANNING_IDX);
         fillSurvey(7, "No");
-        createFalseOrgUnitAndProgram();
+
+        //Change program id so that pushing is not allowed
+        Survey surveyInProgress=SDKTestUtils.getSurveyInProgress();
+        mockFalseProgramForSurvey(surveyInProgress);
 
         //WHEN
-
         Long idSurvey=markInProgressAsCompleted();
 
         Survey survey=waitForPush(20,idSurvey);
@@ -112,19 +115,10 @@ public class PushErrorTest {
         onView(withId(R.id.score)).check(doesNotExist());
     }
 
-    private void createFalseOrgUnitAndProgram() {
-        //Create the Test Program and OrgUnit to compare with real data.
-        //Fixme the orgunitlevel is not pulled.
-        List<Program> programs= Program.getAllPrograms();
-        Program program= programs.get(0);
-        program.setUid("d6PHrjjljS1");
-        program.setName("KE - HNQIS SF false test");
-
-        List<OrgUnit> orgunits= OrgUnit.getAllOrgUnit();
-        OrgUnit orgUnit= orgunits.get(0);
-        orgUnit.addProgram(program);
+    private void mockFalseProgramForSurvey(Survey surveyInProgress) {
+        Program program = surveyInProgress.getProgram();
+        program.setUid(NON_EXISTANT_PROGRAM_UID);
         program.save();
-        orgUnit.save();
     }
 
 }
