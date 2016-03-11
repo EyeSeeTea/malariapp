@@ -75,7 +75,7 @@ public class OrgUnitProgramRelation extends BaseModel {
     }
 
     public OrgUnitProgramRelation(OrgUnit orgUnit, Program program, Integer productivity) {
-        this(orgUnit,program);
+        this(orgUnit, program);
         this.productivity=productivity;
     }
 

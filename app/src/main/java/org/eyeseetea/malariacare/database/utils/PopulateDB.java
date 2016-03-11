@@ -15,12 +15,14 @@ import org.eyeseetea.malariacare.database.model.Match;
 import org.eyeseetea.malariacare.database.model.Option;
 import org.eyeseetea.malariacare.database.model.OrgUnit;
 import org.eyeseetea.malariacare.database.model.OrgUnitLevel;
+import org.eyeseetea.malariacare.database.model.OrgUnitProgramRelation;
 import org.eyeseetea.malariacare.database.model.Program;
 import org.eyeseetea.malariacare.database.model.Question;
 import org.eyeseetea.malariacare.database.model.QuestionOption;
 import org.eyeseetea.malariacare.database.model.QuestionRelation;
 import org.eyeseetea.malariacare.database.model.Score;
 import org.eyeseetea.malariacare.database.model.Survey;
+import org.eyeseetea.malariacare.database.model.SurveySchedule;
 import org.eyeseetea.malariacare.database.model.Tab;
 import org.eyeseetea.malariacare.database.model.TabGroup;
 import org.eyeseetea.malariacare.database.model.User;
@@ -203,7 +205,9 @@ public class PopulateDB {
         Delete.tables(
                 Value.class,
                 Score.class,
+                SurveySchedule.class,
                 Survey.class,
+                OrgUnitProgramRelation.class,
                 OrgUnit.class,
                 OrgUnitLevel.class,
                 User.class,

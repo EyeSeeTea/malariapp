@@ -230,6 +230,10 @@ public class OrgUnit extends BaseModel {
         return new Select().from(OrgUnit.class).queryList();
     }
 
+    public static long count(){
+        return new Select().count().from(OrgUnit.class).count();
+    }
+
     public static OrgUnit getOrgUnit(String uid) {
             OrgUnit orgUnit = new Select()
                     .from(OrgUnit.class)

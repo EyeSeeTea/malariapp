@@ -22,6 +22,7 @@ package org.eyeseetea.malariacare.test.utils;
 import android.app.Activity;
 import android.app.Instrumentation;
 import android.support.test.InstrumentationRegistry;
+import android.support.test.espresso.DataInteraction;
 import android.support.test.espresso.Espresso;
 import android.support.test.espresso.IdlingPolicies;
 import android.support.test.espresso.IdlingResource;
@@ -61,6 +62,7 @@ import static android.support.test.espresso.Espresso.onData;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.replaceText;
+import static android.support.test.espresso.matcher.ViewMatchers.withChild;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withTagValue;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
@@ -85,6 +87,10 @@ public class SDKTestUtils {
     public static final String TEST_PASSWORD_WITH_PERMISSION = "testP3rmission";
 
     public static final int TEST_FACILITY_1_IDX=1;
+    public static final int TEST_FACILITY_2_IDX=2;
+
+    public static final int TEST_IMCI=1;
+    public static final int TEST_CERVICAL_CANCER=2;
     public static final int TEST_FAMILY_PLANNING_IDX=3;
 
     public static final String MARK_AS_COMPLETED = "Mark as completed";
@@ -133,6 +139,10 @@ public class SDKTestUtils {
         return survey;
     }
 
+    public static void goToSentSurveys(){
+        onView(withTagValue(Matchers.is((Object) getActivityInstance().getApplicationContext().getString(R.string.tab_tag_improve)))).perform(click());
+    }
+
     public static void startSurvey(int idxOrgUnit, int idxProgram) {
         //when: click on assess tab + plus button
         onView(withTagValue(Matchers.is((Object) getActivityInstance().getApplicationContext().getString(R.string.tab_tag_assess)))).perform(click());
@@ -179,6 +189,10 @@ public class SDKTestUtils {
         Espresso.unregisterIdlingResources(idlingResource);
 
         //then: back + confirm
+        exitSurvey();
+    }
+
+    public static void exitSurvey(){
         Espresso.pressBack();
         onView(withText(android.R.string.ok)).perform(click());
     }
@@ -321,5 +335,11 @@ public class SDKTestUtils {
     public static void clickLogout() {
         openActionBarOverflowOrOptionsMenu(InstrumentationRegistry.getTargetContext());
         onView(withText(R.string.settings_menu_logout)).perform(click());
+    }
+
+    public static DataInteraction selectRow(int i){
+        return onData(is(instanceOf(Survey.class)))
+                .inAdapterView(withChild(withId(R.id.assessment_row)))
+                .atPosition(i);
     }
 }

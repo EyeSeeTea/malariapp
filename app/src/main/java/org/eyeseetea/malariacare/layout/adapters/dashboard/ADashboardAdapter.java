@@ -172,7 +172,8 @@ public abstract class ADashboardAdapter extends BaseAdapter{
         }
 
         Survey previousSurvey = this.items.get(position-1);
-        return survey.getOrgUnit().getId_org_unit() != previousSurvey.getOrgUnit().getId_org_unit();
+        //Different orgUnits -> has to show
+        return !survey.getOrgUnit().getId_org_unit().equals(previousSurvey.getOrgUnit().getId_org_unit());
     }
 
     private View adjustRowPadding(ViewGroup parent) {
