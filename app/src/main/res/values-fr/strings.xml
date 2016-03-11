@@ -29,8 +29,8 @@
 
 
     <!-- # dialogs -->
-    <string name="dialog_title_delete_survey">Delete Survey</string>
-    <string name="dialog_info_delete_survey">Are you sure you want to completely delete this survey?</string>
+    <string name="dialog_title_delete_survey">Supprimer Survey.</string>
+    <string name="dialog_info_delete_survey">"Etes-vous sûr de vouloir supprimer complètement l'enquête: %s?"</string>
     <string name="dialog_title_error">Erreur</string>
     <string name="dialog_error_denominator">Erreur, denominateur = 0</string>
     <string name="dialog_title_missing_selection">selection manquant</string>
