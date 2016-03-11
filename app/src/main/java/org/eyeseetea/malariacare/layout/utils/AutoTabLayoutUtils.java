@@ -316,7 +316,7 @@ public class AutoTabLayoutUtils {
      * @param question the question that changes his value
      * @param option the option that has been selected
      */
-    public static boolean itemSelected(final AutoTabLayoutUtils.ViewHolder viewHolder, AutoTabLayoutUtils.ScoreHolder scoreHolder, Question question, Option option, float totalNum, float totalDenum, Context context, LinkedHashMap<BaseModel, Boolean> elementInvisibility, AutoTabAdapter adapter) {
+    public static boolean itemSelected(final AutoTabLayoutUtils.ViewHolder viewHolder, AutoTabLayoutUtils.ScoreHolder scoreHolder, Question question, Option option, float totalNum, float totalDenum, Context context, LinkedHashMap<BaseModel, Boolean> elementInvisibility, final AutoTabAdapter adapter) {
         boolean refreshTab = false;
 
         if (!question.hasChildren()) {
@@ -354,6 +354,7 @@ public class AutoTabLayoutUtils {
                 } else{
                     expandChildren(viewHolder);
                 }
+                viewHolder.progressBar.setVisibility(View.GONE);
             }
             refreshTab = true;
         }
@@ -433,72 +434,6 @@ public class AutoTabLayoutUtils {
             ScoreRegister.addRecord(question, num, denum);
         }
 
-    }
-
-
-
-    private static class ShowProgressWheel extends AsyncTask<Question, Void, Void> {
-
-        boolean isRunning = true;
-        Question questionParent =null;
-        View view;
-
-        public ShowProgressWheel(Question question) {
-            this.questionParent=question;
-        }
-
-        //this needs be called to stop the Asyntask
-        public void stop() {
-            isRunning = false;
-        }
-
-        @Override
-        protected Void doInBackground(Question... params) {
-            questionParent =params[0];
-
-            while(isRunning){
-                publishProgress();
-                try {
-                    Thread.sleep(500);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-
-            return null;
-        }
-
-        View progressbarView = null;
-
-        @Override
-        protected void onProgressUpdate(Void... params) {
-            super.onProgressUpdate();
-            //Get the item from the listview and show the progressbar
-            int start = SurveyFragment.mQuestions.getFirstVisiblePosition();
-            for(int i=start, j=SurveyFragment.mQuestions.getLastVisiblePosition();i<=j;i++) {
-                view = SurveyFragment.mQuestions.getChildAt(i - start);
-                if(SurveyFragment.mQuestions.getItemAtPosition(i) instanceof Question){
-                    if(questionParent !=null && questionParent.getUid()==((Question)SurveyFragment.mQuestions.getItemAtPosition(i)).getUid()){
-                        progressbarView=view.findViewById(R.id.radio_progress_bar);
-                        progressbarView.setVisibility(View.VISIBLE);
-                    }
-                }
-            }
-        }
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-
-        }
-
-        @Override
-        protected void onPostExecute(Void aVoid) {
-            super.onPostExecute(aVoid);
-            //hidden the progressbar
-            if(progressbarView!=null)
-                progressbarView.findViewById(R.id.radio_progress_bar).setVisibility(View.GONE);
-        }
     }
 
 }

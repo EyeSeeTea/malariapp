@@ -34,6 +34,7 @@ import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.raizlabs.android.dbflow.structure.BaseModel;
 
@@ -45,6 +46,7 @@ import org.eyeseetea.malariacare.database.model.Tab;
 import org.eyeseetea.malariacare.database.model.Value;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.ReadWriteDB;
+import org.eyeseetea.malariacare.fragments.SurveyFragment;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.layout.utils.AutoTabLayoutUtils;
 import org.eyeseetea.malariacare.utils.Constants;
@@ -232,7 +234,12 @@ public class AutoTabAdapter extends ATabAdapter {
                     AutoTabLayoutUtils.initialiseScorableComponent(rowView, viewHolder);
                     AutoTabLayoutUtils.createRadioGroupComponent(question, viewHolder, LinearLayout.HORIZONTAL, getInflater(), getContext());
                     //Add Listener
-                    ((RadioGroup) viewHolder.component).setOnCheckedChangeListener(new RadioGroupListener(question, viewHolder, this));
+                    RadioGroup radioGroup=((RadioGroup) viewHolder.component);
+                    radioGroup.setOnCheckedChangeListener(new RadioGroupListener(question, viewHolder, this));
+                    if(question.hasChildren()){
+                        radioGroup.getChildAt(0).setOnTouchListener(new RadioButtonTouchListener(question, viewHolder));
+                        radioGroup.getChildAt(1).setOnTouchListener(new RadioButtonTouchListener(question, viewHolder));
+                    }
                     break;
                 case Constants.RADIO_GROUP_VERTICAL:
                     rowView = AutoTabLayoutUtils.initialiseView(R.layout.radio, parent, question, viewHolder, position, getInflater());
@@ -377,6 +384,26 @@ public class AutoTabAdapter extends ATabAdapter {
         }
     }
 
+    public class RadioButtonTouchListener implements RadioButton.OnTouchListener {
+        private AutoTabLayoutUtils.ViewHolder viewHolder;
+        private Question question;
+
+        public RadioButtonTouchListener(Question question, AutoTabLayoutUtils.ViewHolder viewHolder) {
+            this.question = question;
+            this.viewHolder = viewHolder;
+        }
+
+        @Override
+        public boolean onTouch(View v, MotionEvent event) {
+            if(question.hasChildren()) {
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    viewHolder.progressBar.setVisibility(View.VISIBLE);
+                }
+            }
+            return false;
+        }
+    }
+
     public class RadioGroupListener implements RadioGroup.OnCheckedChangeListener {
         private AutoTabLayoutUtils.ViewHolder viewHolder;
         private Question question;
@@ -400,8 +427,7 @@ public class AutoTabAdapter extends ATabAdapter {
                 CustomRadioButton customRadioButton = this.viewHolder.findRadioButtonById(checkedId);
                 option = (Option) customRadioButton.getTag();
             }
-            if (AutoTabLayoutUtils.itemSelected(viewHolder, scoreHolder, question, option, totalNum, totalDenum, getContext(), elementInvisibility))
-                notifyDataSetChanged();
+            AutoTabLayoutUtils.itemSelected(viewHolder, scoreHolder, question, option, totalNum, totalDenum, getContext(), elementInvisibility, adapter);
         }
     }
 
