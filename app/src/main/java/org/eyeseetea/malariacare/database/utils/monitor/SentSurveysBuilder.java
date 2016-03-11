@@ -177,7 +177,7 @@ public static void showData(WebView webView){
      */
     private void build(Survey survey){
         //Get the month for the survey (key)
-        String month = EntrySentSurveysChart.getDateAsString(survey.getCompletionDate());
+        String month = EntrySentSurveysChart.getDateAsString(survey.getEventDate());
 
         //Get the entry for that month
         EntrySentSurveysChart entrySentSurveysChart = sentSurveysChartMap.get(month+program.getUid());
