@@ -311,6 +311,12 @@ public class AutoTabLayoutUtils {
     public static boolean itemSelected(final AutoTabLayoutUtils.ViewHolder viewHolder, AutoTabLayoutUtils.ScoreHolder scoreHolder, Question question, Option option, float totalNum, float totalDenum, Context context, LinkedHashMap<BaseModel, Boolean> elementInvisibility, AutoTabAdapter adapter) {
         boolean refreshTab = false;
 
+        if (!question.hasChildren()) {
+            // Write option to DB
+            ReadWriteDB.saveValuesDDL(question, option);
+            recalculateScores(viewHolder, question);
+        }
+
         // If parent relation found, toggle Children Spinner Visibility
         // If question has question-option, refresh the tab
         if (question.hasChildren() || question.hasQuestionOption()){
@@ -319,29 +325,42 @@ public class AutoTabLayoutUtils {
                 QuestionVisibility.elementInvisibility = elementInvisibility;
                 QuestionVisibility.adapter = adapter;
                 QuestionVisibility.option = option;
-                new AlertDialog.Builder(context)
-                        .setTitle(null)
-                        .setMessage(context.getString(R.string.dialog_deleting_children))
-                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface arg0, int arg1) {
-                                // Write option to DB
-                                ReadWriteDB.saveValuesDDL(QuestionVisibility.question, QuestionVisibility.option);
-                                recalculateScores(viewHolder, QuestionVisibility.question);
-                                toggleChildrenVisibility();
-                                QuestionVisibility.adapter.notifyDataSetChanged();
-                            }
-                        })
-                        .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-
-                            }
-                        }).create().show();
+                boolean notEmpty = false;
+                for (Question childQuestion: question.getChildren()){
+                    if (childQuestion.getValueBySession()!=null && childQuestion.getOutput()!=Constants.DROPDOWN_LIST_DISABLED) notEmpty = true;
+                }
+                if (notEmpty) {
+                    new AlertDialog.Builder(context)
+                            .setTitle(null)
+                            .setMessage(context.getString(R.string.dialog_deleting_children))
+                            .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface arg0, int arg1) {
+                                    expandChildren(viewHolder);
+                                }
+                            })
+                            .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    QuestionVisibility.adapter.notifyDataSetChanged();
+                                }
+                            }).create().show();
+                } else{
+                    expandChildren(viewHolder);
+                }
             }
             refreshTab = true;
         }
 
         return refreshTab;
     }
+
+    public static void expandChildren(ViewHolder viewHolder){
+        // Write option to DB
+        ReadWriteDB.saveValuesDDL(QuestionVisibility.question, QuestionVisibility.option);
+        recalculateScores(viewHolder, QuestionVisibility.question);
+        toggleChildrenVisibility();
+        QuestionVisibility.adapter.notifyDataSetChanged();
+    }
+
     /**
      * Recalculate num and denum of a quetsion, update them in cache vars and save the new num/denum in the score register associated with the question
      * @param viewHolder views cache
