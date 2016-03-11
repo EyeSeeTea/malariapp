@@ -45,7 +45,6 @@ import org.eyeseetea.malariacare.database.model.Tab;
 import org.eyeseetea.malariacare.database.model.Value;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.ReadWriteDB;
-import org.eyeseetea.malariacare.fragments.SurveyFragment;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.layout.utils.AutoTabLayoutUtils;
 import org.eyeseetea.malariacare.utils.Constants;
@@ -57,9 +56,7 @@ import org.eyeseetea.malariacare.views.filters.MinMaxInputFilter;
 import java.util.LinkedHashMap;
 import java.util.List;
 
-/**
- * Created by Jose on 21/04/2015.
- */
+
 public class AutoTabAdapter extends ATabAdapter {
 
     private final static String TAG=".AutoTabAdapter";
@@ -118,7 +115,6 @@ public class AutoTabAdapter extends ATabAdapter {
         initializeScoreViews();
         setSubScoreVisibility();
         initializeDenum();
-        AutoTabLayoutUtils.updateScore(scoreHolder, totalNum, totalDenum, getContext());
     }
 
     /**
@@ -224,34 +220,26 @@ public class AutoTabAdapter extends ATabAdapter {
                 case Constants.DROPDOWN_LIST:
                     rowView = AutoTabLayoutUtils.initialiseDropDown(position, parent, question, viewHolder, getInflater(), getContext());
                     // Initialise Listener
-                    ((Spinner) viewHolder.component).setOnItemSelectedListener(new SpinnerListener(false, question, viewHolder));
+                    ((Spinner) viewHolder.component).setOnItemSelectedListener(new SpinnerListener(false, question, viewHolder, this));
                     break;
                 case Constants.DROPDOWN_LIST_DISABLED:
                     rowView = AutoTabLayoutUtils.initialiseDropDown(position, parent, question, viewHolder, getInflater(), getContext());
                     // Initialise value depending on match question
-                    AutoTabLayoutUtils.autoFillAnswer(viewHolder, scoreHolder, question, totalNum, totalDenum, getContext(), elementInvisibility);
+                    AutoTabLayoutUtils.autoFillAnswer(viewHolder, scoreHolder, question, totalNum, totalDenum, getContext(), elementInvisibility, this);
                     break;
                 case Constants.RADIO_GROUP_HORIZONTAL:
                     rowView = AutoTabLayoutUtils.initialiseView(R.layout.radio, parent, question, viewHolder, position, getInflater());
                     AutoTabLayoutUtils.initialiseScorableComponent(rowView, viewHolder);
                     AutoTabLayoutUtils.createRadioGroupComponent(question, viewHolder, LinearLayout.HORIZONTAL, getInflater(), getContext());
                     //Add Listener
-                    ((RadioGroup) viewHolder.component).setOnCheckedChangeListener(new RadioGroupListener(question, viewHolder));
-                    if(question.hasChildren()) {
-                        RadioGroup radioGroup = ((RadioGroup) viewHolder.component);
-                        radioGroup.getChildAt(0).setOnTouchListener(new RadioButtonTocuhListener(question, viewHolder));
-                        radioGroup.getChildAt(1).setOnTouchListener(new RadioButtonTocuhListener(question, viewHolder));
-                    }
-                    else{
-                        ((RadioGroup) viewHolder.component).setOnCheckedChangeListener(new RadioGroupListener(question, viewHolder));
-                    }
+                    ((RadioGroup) viewHolder.component).setOnCheckedChangeListener(new RadioGroupListener(question, viewHolder, this));
                     break;
                 case Constants.RADIO_GROUP_VERTICAL:
                     rowView = AutoTabLayoutUtils.initialiseView(R.layout.radio, parent, question, viewHolder, position, getInflater());
                     AutoTabLayoutUtils.initialiseScorableComponent(rowView, viewHolder);
                     AutoTabLayoutUtils.createRadioGroupComponent(question, viewHolder, LinearLayout.VERTICAL, getInflater(), getContext());
                     //Add Listener
-                    ((RadioGroup) viewHolder.component).setOnCheckedChangeListener(new RadioGroupListener(question, viewHolder));
+                    ((RadioGroup) viewHolder.component).setOnCheckedChangeListener(new RadioGroupListener(question, viewHolder, this));
                     break;
 
                 default:
@@ -364,17 +352,19 @@ public class AutoTabAdapter extends ATabAdapter {
         private boolean viewCreated;
         private AutoTabLayoutUtils.ViewHolder viewHolder;
         private Question question;
+        private AutoTabAdapter adapter;
 
-        public SpinnerListener(boolean viewCreated, Question question, AutoTabLayoutUtils.ViewHolder viewHolder) {
+        public SpinnerListener(boolean viewCreated, Question question, AutoTabLayoutUtils.ViewHolder viewHolder, AutoTabAdapter adapter) {
             this.viewCreated = viewCreated;
             this.question = question;
             this.viewHolder = viewHolder;
+            this.adapter = adapter;
         }
 
         @Override
         public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
             if (viewCreated) {
-                if (AutoTabLayoutUtils.itemSelected(viewHolder, scoreHolder, question, (Option) ((Spinner) viewHolder.component).getItemAtPosition(pos), totalNum, totalDenum, getContext(), elementInvisibility))
+                if (AutoTabLayoutUtils.itemSelected(viewHolder, scoreHolder, question, (Option) ((Spinner) viewHolder.component).getItemAtPosition(pos), totalNum, totalDenum, getContext(), elementInvisibility, adapter))
                     notifyDataSetChanged();
             } else {
                 viewCreated = true;
@@ -390,17 +380,17 @@ public class AutoTabAdapter extends ATabAdapter {
     public class RadioGroupListener implements RadioGroup.OnCheckedChangeListener {
         private AutoTabLayoutUtils.ViewHolder viewHolder;
         private Question question;
+        private AutoTabAdapter adapter;
 
-        public RadioGroupListener(Question question, AutoTabLayoutUtils.ViewHolder viewHolder) {
+        public RadioGroupListener(Question question, AutoTabLayoutUtils.ViewHolder viewHolder, AutoTabAdapter adapter) {
             this.question = question;
             this.viewHolder = viewHolder;
+            this.adapter = adapter;
         }
 
 
         @Override
         public void onCheckedChanged(RadioGroup group, int checkedId) {
-
-            AutoTabLayoutUtils.showProgressbar();
             if(!group.isShown()){
                 return;
             }
@@ -412,92 +402,7 @@ public class AutoTabAdapter extends ATabAdapter {
             }
             if (AutoTabLayoutUtils.itemSelected(viewHolder, scoreHolder, question, option, totalNum, totalDenum, getContext(), elementInvisibility))
                 notifyDataSetChanged();
-
-            AutoTabLayoutUtils.hideProgressbar();
         }
     }
 
-    public class RadioButtonTocuhListener implements RadioButton.OnTouchListener {
-        private AutoTabLayoutUtils.ViewHolder viewHolder;
-        private Question question;
-
-        public RadioButtonTocuhListener(Question question, AutoTabLayoutUtils.ViewHolder viewHolder) {
-            this.question = question;
-            this.viewHolder = viewHolder;
-        }
-
-        @Override
-        public boolean onTouch(View v, MotionEvent event) {
-            Log.d(TAG, "touched!");
-
-            if(v.isShown() && event.getAction()== MotionEvent.ACTION_UP) {
-                //checks if the question has childrens and if they are visibles.
-                if (question.hasChildren()) {
-                }
-            }
-            return false;
-        }
-
-    }
-
-
-    private static class ShowProgressWheel extends AsyncTask<Question, Void, Void> {
-
-        boolean isRunning = true;
-        Question questionParent =null;
-        View view;
-
-        //this needs be called to stop the Asyntask
-        public void stop() {
-            isRunning = false;
-        }
-
-        @Override
-        protected Void doInBackground(Question... params) {
-            questionParent =params[0];
-
-            while(isRunning){
-                publishProgress();
-                try {
-                    Thread.sleep(1500);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-
-            return null;
-        }
-
-        View progressbarView = null;
-
-        @Override
-        protected void onProgressUpdate(Void... params) {
-            super.onProgressUpdate();
-            //Get the item from the listview and show the progressbar
-            int start = SurveyFragment.mQuestions.getFirstVisiblePosition();
-            for(int i=start, j=SurveyFragment.mQuestions.getLastVisiblePosition();i<=j;i++) {
-                view = SurveyFragment.mQuestions.getChildAt(i - start);
-                if(SurveyFragment.mQuestions.getItemAtPosition(i) instanceof Question){
-                    if(questionParent !=null && questionParent.getUid()==((Question)SurveyFragment.mQuestions.getItemAtPosition(i)).getUid()){
-                        progressbarView=view.findViewById(R.id.radio_progress_bar);
-                        progressbarView.setVisibility(View.VISIBLE);
-                    }
-                }
-            }
-        }
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-
-        }
-
-        @Override
-        protected void onPostExecute(Void aVoid) {
-            super.onPostExecute(aVoid);
-            //hidden the progressbar
-            if(progressbarView!=null)
-                progressbarView.findViewById(R.id.radio_progress_bar).setVisibility(View.GONE);
-        }
-    }
 }

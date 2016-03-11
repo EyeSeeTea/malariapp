@@ -29,7 +29,7 @@
 
     <!-- # dialogs -->
     <string name="dialog_title_delete_survey">Borrar evaluación</string>
-    <string name="dialog_info_delete_survey">¿Seguro que desea borrar la evaluación?</string>
+    <string name="dialog_info_delete_survey">¿Seguro que desea borrar la evaluación %s?</string>
     <string name="dialog_title_error">Error</string>
     <string name="dialog_error_denominator">Error, denominador = 0</string>
     <string name="dialog_title_missing_selection">Selección obligatoria</string>
@@ -272,4 +272,5 @@
     <string name="dialog_content_dhis_preference_login">Cambiar el servidor implica volver a iniciar sesión. Se eliminarán todas las encuestas no enviadas. ¿Estás seguro de que quieres continuar?</string>
     <string name="settings_text_dhis_max_items">DHIS max encuestas descargadas</string>
     <string name="feedback_info_conflict">Conflicto</string>
+    <string name="dialog_deleting_children">Esta acción borrará las preguntas que dependen de ésta. ¿realmente quieres continuar?</string>
 </resources>

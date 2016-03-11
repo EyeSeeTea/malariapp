@@ -47,6 +47,7 @@ import org.eyeseetea.malariacare.database.utils.planning.PlannedItemBuilder;
 import org.eyeseetea.malariacare.database.utils.planning.PlannedSurvey;
 import org.eyeseetea.malariacare.database.utils.planning.SurveyPlanner;
 import org.eyeseetea.malariacare.utils.Constants;
+import org.eyeseetea.malariacare.utils.Utils;
 
 import java.text.DateFormat;
 import java.util.Calendar;
@@ -200,7 +201,7 @@ public class PlannedAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        Log.d(TAG,"getView: "+position);
+        Log.d(TAG, "getView: " + position);
         PlannedItem plannedItem=(PlannedItem)getItem(position);
         if (plannedItem instanceof PlannedHeader){
             itemOrder =0;
@@ -275,7 +276,7 @@ public class PlannedAdapter extends BaseAdapter {
 
         //ScheduledDate
         textView=(TextView)rowLayout.findViewById(R.id.planning_survey_schedule_date);
-        textView.setText(formatScheduledDate(plannedSurvey.getNextAssesment()));
+        textView.setText(Utils.formatDate(plannedSurvey.getNextAssesment()));
         textView.setOnClickListener(new ScheduleListener(plannedSurvey.getSurvey()));
 
         //background color
@@ -312,15 +313,6 @@ public class PlannedAdapter extends BaseAdapter {
         }
         PlannedSurvey previousPlannedSurvey = (PlannedSurvey)plannedItem;
         return plannedSurvey.getOrgUnit().equals(previousPlannedSurvey.getOrgUnit());
-    }
-
-    private String formatScheduledDate(Date date){
-        if(date==null){
-            return "-";
-        }
-        Locale locale = context.getResources().getConfiguration().locale;
-        DateFormat dateFormatter = DateFormat.getDateInstance(DateFormat.DEFAULT, locale);
-        return dateFormatter.format(date);
     }
 
     /**
@@ -380,7 +372,7 @@ public class PlannedAdapter extends BaseAdapter {
 
             //Set current date
             final Button scheduleDatePickerButton=(Button)dialog.findViewById(R.id.planning_dialog_picker_button);
-            scheduleDatePickerButton.setText(formatScheduledDate(survey.getScheduledDate()));
+            scheduleDatePickerButton.setText(Utils.formatDate(survey.getScheduledDate()));
             //On Click open an specific DatePickerDialog
             scheduleDatePickerButton.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -397,7 +389,7 @@ public class PlannedAdapter extends BaseAdapter {
                             Calendar newCalendar = Calendar.getInstance();
                             newCalendar.set(year, monthOfYear, dayOfMonth);
                             newScheduledDate = newCalendar.getTime();
-                            scheduleDatePickerButton.setText(formatScheduledDate(newScheduledDate));
+                            scheduleDatePickerButton.setText(Utils.formatDate(newScheduledDate));
                         }
 
                     },calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH)).show();
