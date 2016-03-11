@@ -25,6 +25,7 @@ import android.support.test.InstrumentationRegistry;
 import android.support.test.espresso.Espresso;
 import android.support.test.espresso.IdlingPolicies;
 import android.support.test.espresso.IdlingResource;
+import android.support.test.espresso.ViewAssertion;
 import android.support.test.runner.lifecycle.ActivityLifecycleMonitorRegistry;
 import android.support.test.runner.lifecycle.Stage;
 import android.util.Log;
@@ -62,8 +63,11 @@ import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.replaceText;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
+import static android.support.test.espresso.matcher.ViewMatchers.withSpinnerText;
 import static android.support.test.espresso.matcher.ViewMatchers.withTagValue;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
+import static org.hamcrest.Matchers.contains;
+import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
 
@@ -72,9 +76,9 @@ import static org.hamcrest.Matchers.is;
  */
 public class SDKTestUtils {
 
-    private static final String TAG="TestingUtils";
-    public static final int DEFAULT_WAIT_FOR_PULL=29;
-    public static final int DEFAULT_TEST_TIME_LIMIT=180;
+    private static final String TAG = "TestingUtils";
+    public static final int DEFAULT_WAIT_FOR_PULL = 29;
+    public static final int DEFAULT_TEST_TIME_LIMIT = 180;
 
     public static final String HNQIS_DEV_STAGING = "https://hnqis-dev-staging.psi-mis.org";
     public static final String HNQIS_DEV_CI = "https://hnqis-dev-ci.psi-mis.org";
@@ -86,10 +90,12 @@ public class SDKTestUtils {
 
     public static final String MARK_AS_COMPLETED = "Mark as completed";
     public static final String DELETE_ACTION = "Delete";
+    public static final String EDIT_ACTION = "Edit";
+    
 
     public static final String UNABLE_TO_LOGIN = "Unable to log in due to an invalid username or password.";
 
-    public static void setTestTimeoutSeconds(int seconds){
+    public static void setTestTimeoutSeconds(int seconds) {
         IdlingPolicies.setMasterPolicyTimeout(
                 seconds, TimeUnit.SECONDS);
         IdlingPolicies.setIdlingResourceTimeout(
@@ -114,18 +120,18 @@ public class SDKTestUtils {
         Espresso.unregisterIdlingResources(idlingResource);
     }
 
-    public static Survey waitForPush(int seconds, Long idSurvey){
+    public static Survey waitForPush(int seconds, Long idSurvey) {
         //then: wait for pushservice
         //Wait for push: For any reason Thread.sleep is necessary.
-        try{
-            Thread.sleep(seconds*1000);
-        }catch(Exception ex){
+        try {
+            Thread.sleep(seconds * 1000);
+        } catch (Exception ex) {
         }
 
         IdlingResource idlingResource = new ElapsedTimeIdlingResource(seconds * 1000);
         Espresso.registerIdlingResources(idlingResource);
 
-        Survey survey=Survey.findById(idSurvey);
+        Survey survey = Survey.findById(idSurvey);
 
         Espresso.unregisterIdlingResources(idlingResource);
         return survey;
@@ -163,22 +169,62 @@ public class SDKTestUtils {
         Espresso.registerIdlingResources(idlingResource);
 
         onView(withTagValue(Matchers.is((Object) getActivityInstance().getApplicationContext().getString(R.string.tab_tag_assess)))).perform(click());
+
+        Espresso.unregisterIdlingResources(idlingResource);
         for (int i = 0; i < numQuestions; i++) {
             try {
+                idlingResource = new ElapsedTimeIdlingResource(1 * 1000);
+                Espresso.registerIdlingResources(idlingResource);
                 onData(is(instanceOf(Question.class)))
                         .inAdapterView(withId(R.id.listView))
                         .atPosition(i)
-                        .onChildView(withId(R.id.answer))
-                        .onChildView(withText(optionValue))//.onChildView(withTagValue(allOf(Matchers.hasProperty("name", containsString(optionValue)))))
+                        .onChildView(withId(R.id.answer)).onChildView(withText(optionValue))//.onChildView(withTagValue(allOf(Matchers.hasProperty("name", containsString(optionValue)))))
                         .perform(click());
-            } catch (Exception e){}
+                Espresso.unregisterIdlingResources(idlingResource);
+            } catch (Exception e) {
+            }
+
         }
+            //then: back + confirm
+            Espresso.pressBack();
+            idlingResource = new ElapsedTimeIdlingResource(1 * 1000);
+            Espresso.registerIdlingResources(idlingResource);
+            onView(withText(android.R.string.ok)).perform(click());
+            Espresso.unregisterIdlingResources(idlingResource);
+    }
 
+    public static void fillCompulsorySurvey(int numQuestions, String optionValue) {
+        //when: answer NO to every question
+        //Wait for fragment load data from SurveyService
+        IdlingResource idlingResource = new ElapsedTimeIdlingResource(5 * 1000);
+        Espresso.registerIdlingResources(idlingResource);
+
+        onView(withTagValue(Matchers.is((Object) getActivityInstance().getApplicationContext().getString(R.string.tab_tag_assess)))).perform(click());
+        for (int i = 0; i < numQuestions; i++) {
+            try {
+                idlingResource = new ElapsedTimeIdlingResource(1 * 1000);
+                Espresso.registerIdlingResources(idlingResource);
+                onData(is(instanceOf(Question.class)))
+                        .inAdapterView(withId(R.id.listView))
+                        .atPosition(i)
+                        .onChildView(withId(R.id.answer)).onChildView(withText(optionValue))//.onChildView(withTagValue(allOf(Matchers.hasProperty("name", containsString(optionValue)))))
+                        .perform(click());
+                Espresso.unregisterIdlingResources(idlingResource);
+            } catch (Exception e) {
+            }
+        }
         Espresso.unregisterIdlingResources(idlingResource);
+    }
 
-        //then: back + confirm
-        Espresso.pressBack();
-        onView(withText(android.R.string.ok)).perform(click());
+
+    public static Long editSurvey() {
+        Long idSurvey = getSurveyId();
+
+        //when: Mark as completed
+        onView(withId(R.id.score)).perform(click());
+        onView(withText(EDIT_ACTION)).perform(click());
+
+        return idSurvey;
     }
 
     public static Long markInProgressAsCompleted() {
@@ -188,6 +234,41 @@ public class SDKTestUtils {
         onView(withId(R.id.score)).perform(click());
         onView(withText(MARK_AS_COMPLETED)).perform(click());
         onView(withText(android.R.string.ok)).perform(click());
+
+        return idSurvey;
+    }
+
+    public static Long markCompleteAndGoFeedback() {
+        Long idSurvey = getSurveyId();
+
+        //when: Mark as completed
+        onView(withId(R.id.score)).perform(click());
+        onView(withText(MARK_AS_COMPLETED)).perform(click());
+        onView(withText(R.string.go_to_feedback)).perform(click());
+
+        return idSurvey;
+    }
+
+
+
+    public static Long markAsCompleteIncompleteCompulsory() {
+        Long idSurvey = getSurveyId();
+
+        //when: Mark as completed
+        onView(withId(R.id.score)).perform(click());
+        onView(withText(MARK_AS_COMPLETED)).perform(click());
+        onView(withText(R.string.accept)).perform(click());
+
+        return idSurvey;
+    }
+
+    public static Long markAsCompleteCompulsory() {
+        Long idSurvey = getSurveyId();
+
+        //when: Mark as completed
+        onView(withId(R.id.score)).perform(click());
+        onView(withText(MARK_AS_COMPLETED)).perform(click());
+        onView(withText(R.string.accept)).perform(click());
 
         return idSurvey;
     }
