@@ -279,7 +279,7 @@
     <string name="dialog_info_push_ignored">Ignored</string>
     <string name="dialog_info_push_stats">Survey data pushed to server. Results:</string>
     <string name="dialog_info_on_complete">"The survey %s has been marked as completed. You'll find it now in the Improve tab"</string>
-    <string name="dialog_deleting_children">You\'re about to delete the answer for questions that denpends on this one. Do you really want to continue?</string>
+    <string name="dialog_deleting_children">You\'re about to delete the answer for questions that depend on this one. Do you really want to continue?</string>
 
     <!-- Preference variable names -->
     <item name="show_num_dems" type="string" translatable="false">show_num_dems</item>
