@@ -99,7 +99,6 @@ function buildRowFacility(facility){
 
 function buildColorXScore(value){
 	if(value==null){
-		//return "";
 		return "<td class='novisible'  ><div class='circlerow' ><span class='centerspan'>";
 	}
 
