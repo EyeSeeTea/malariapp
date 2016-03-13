@@ -74,7 +74,7 @@ public class PieTabGroupBuilder {
         //Build entries
         List<PieTabGroupData> entries=build(surveys);
         //Inyect entries in view
-        inyectDataInChart(webView,entries);
+        injectDataInChart(webView, entries);
     }
 
     private List<PieTabGroupData> build(List<Survey> surveys) {
@@ -101,7 +101,7 @@ public class PieTabGroupBuilder {
         pieTabGroupData.incCounter(survey.getMainScore());
     }
 
-    private void inyectDataInChart(WebView webView, List<PieTabGroupData> entries) {
+    private void injectDataInChart(WebView webView, List<PieTabGroupData> entries) {
         //Build array JSON
         String json=buildJSONArray(entries);
 
