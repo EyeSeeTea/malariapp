@@ -312,10 +312,13 @@ public class SurveyFragment extends  Fragment {
 
             Log.d(TAG, "doInBackground("+Thread.currentThread().getId()+")..");
             View view=null;
-            if (tab.isGeneralScore()) {
-                showGeneralScores();
-            } else {
-                view=prepareTab(tab);
+            try {
+                if (tab.isGeneralScore()) {
+                    showGeneralScores();
+                } else {
+                    view=prepareTab(tab);
+                }
+            }catch (Exception e){
             }
             Log.d(TAG, "doInBackground(" + Thread.currentThread().getId() + ")..DONE");
             return view;
@@ -324,23 +327,24 @@ public class SurveyFragment extends  Fragment {
         @Override
         protected void onPostExecute(View viewContent) {
             super.onPostExecute(viewContent);
-
-            content.removeAllViews();
-            content.addView(viewContent);
-            ITabAdapter tabAdapter = tabAdaptersCache.findAdapter(tab);
-            if (    tab.getType() == Constants.TAB_AUTOMATIC ||
-                    tab.getType() == Constants.TAB_ADHERENCE    ||
-                    tab.getType() == Constants.TAB_IQATAB ||
-                    tab.getType() == Constants.TAB_REPORTING ||
-                    tab.getType() == Constants.TAB_COMPOSITE_SCORE) {
-                tabAdapter.initializeSubscore();
-            }
-            mQuestions = (ListView)  llLayout.findViewById(R.id.listView);
-            mQuestions.setAdapter((BaseAdapter) tabAdapter);
-            UnfocusScrollListener unfocusScrollListener = new UnfocusScrollListener();
-            mQuestions.setOnScrollListener(unfocusScrollListener);
-            stopProgress();
-            checkArrows();
+            try {
+                content.removeAllViews();
+                content.addView(viewContent);
+                ITabAdapter tabAdapter = tabAdaptersCache.findAdapter(tab);
+                if (tab.getType() == Constants.TAB_AUTOMATIC ||
+                        tab.getType() == Constants.TAB_ADHERENCE ||
+                        tab.getType() == Constants.TAB_IQATAB ||
+                        tab.getType() == Constants.TAB_REPORTING ||
+                        tab.getType() == Constants.TAB_COMPOSITE_SCORE) {
+                    tabAdapter.initializeSubscore();
+                }
+                ListView mQuestions = (ListView) llLayout.findViewById(R.id.listView);
+                mQuestions.setAdapter((BaseAdapter) tabAdapter);
+                UnfocusScrollListener unfocusScrollListener = new UnfocusScrollListener();
+                mQuestions.setOnScrollListener(unfocusScrollListener);
+                stopProgress();
+                checkArrows();
+            }catch (Exception e){};
         }
     }
 

@@ -29,8 +29,6 @@ import org.eyeseetea.malariacare.database.model.Survey;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -88,7 +86,7 @@ public class SentSurveysBuilder {
             //Take only 6 months from now
             List<EntrySentSurveysChart> entries = takeLast6Months();
             //Inyect entries in view
-            inyectDataInChart(webView, entries);
+            injectDataInChart(webView, entries);
         }
     }
 
@@ -132,9 +130,9 @@ public class SentSurveysBuilder {
      * @param webView Android webView where data is inyected
      * @param entries List of entries for the chart
      */
-    private void inyectDataInChart(WebView webView, List<EntrySentSurveysChart> entries){
+    private void injectDataInChart(WebView webView, List<EntrySentSurveysChart> entries){
         //Set chart title
-        inyectChartTitle(webView);
+        injectChartTitle(webView);
 
         //Add data to the chart
         for(EntrySentSurveysChart entry:entries){
@@ -151,7 +149,7 @@ public static void showData(WebView webView){
      * Updates the title of the sent chart according to current language
      * @param webView
      */
-    private void inyectChartTitle(WebView webView){
+    private void injectChartTitle(WebView webView){
         String updateChartJS=String.format(JAVASCRIPT_UPDATE_CHART,context.getString(R.string.dashboard_title_total_assessments));
         Log.d(TAG, updateChartJS);
         webView.loadUrl(updateChartJS);
@@ -177,7 +175,7 @@ public static void showData(WebView webView){
      */
     private void build(Survey survey){
         //Get the month for the survey (key)
-        String month = EntrySentSurveysChart.getDateAsString(survey.getCompletionDate());
+        String month = EntrySentSurveysChart.getDateAsString(survey.getEventDate());
 
         //Get the entry for that month
         EntrySentSurveysChart entrySentSurveysChart = sentSurveysChartMap.get(month+program.getUid());
