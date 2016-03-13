@@ -183,6 +183,9 @@ public class SurveyService extends IntentService {
             case ALL_COMPLETED_SURVEYS_ACTION:
                 getAllCompletedSurveys();
                 break;
+            case PLANNED_SURVEYS_ACTION:
+                reloadPlannedSurveys();
+                break;
             case RELOAD_DASHBOARD_ACTION:
                 reloadDashboard();
                 break;
@@ -206,6 +209,16 @@ public class SurveyService extends IntentService {
                 getAllPrograms();
                 break;
         }
+    }
+
+    private void reloadPlannedSurveys() {
+        Log.d(TAG, "reloadPlanningSurveys");
+        Session.putServiceValue(PLANNED_SURVEYS_ACTION, PlannedItemBuilder.getInstance().buildPlannedItems());
+        //Returning result to anyone listening
+
+        LocalBroadcastManager.getInstance(this).sendBroadcast(new Intent(PLANNED_SURVEYS_ACTION));
+
+
     }
 
     private void getAllCreateSurveyData() {

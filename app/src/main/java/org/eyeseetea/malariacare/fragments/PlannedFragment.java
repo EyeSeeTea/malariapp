@@ -41,6 +41,7 @@ import com.raizlabs.android.dbflow.sql.language.Select;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.model.Program;
 import org.eyeseetea.malariacare.database.model.Survey;
+import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.database.utils.planning.PlannedItem;
 import org.eyeseetea.malariacare.layout.adapters.filters.FilterProgramArrayAdapter;
@@ -178,6 +179,13 @@ public class PlannedFragment extends ListFragment {
     public void reloadPlannedItems(List<PlannedItem> plannedItemList) {
         adapter.reloadItems(plannedItemList);
         setListShown(true);
+    }
+
+    public void reloadData(){
+        //Reload data using service
+        Intent surveysIntent=new Intent(PreferencesState.getInstance().getContext().getApplicationContext(), SurveyService.class);
+        surveysIntent.putExtra(SurveyService.SERVICE_METHOD, SurveyService.PLANNED_SURVEYS_ACTION);
+        PreferencesState.getInstance().getContext().getApplicationContext().startService(surveysIntent);
     }
 
     /**

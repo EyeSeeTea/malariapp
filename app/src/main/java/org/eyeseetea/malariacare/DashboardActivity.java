@@ -142,7 +142,7 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
                     currentTabName=getString(R.string.plan);
                     tabHost.getCurrentTabView().setBackgroundColor(getResources().getColor(R.color.tab_orange_plan));
                     setActionBarDashboard();
-                    plannedFragment.reloadPlannedItems();
+                    plannedFragment.reloadData();
                 } else if (tabId.equalsIgnoreCase(getResources().getString(R.string.tab_tag_assess))) {
                     currentTabName=getString(R.string.assess);
                     tabHost.getCurrentTabView().setBackgroundColor(getResources().getColor(R.color.tab_yellow_assess));
