@@ -328,9 +328,9 @@ public class SurveyService extends IntentService {
         monitorMap.put(PREPARE_SURVEYS, sentSurveys);
         monitorMap.put(PREPARE_PROGRAMS, Program.getAllPrograms());
 
-        HashMap<String,List> orgUnitsAndPrograms=new HashMap<>();
-        orgUnitsAndPrograms.put(PREPARE_ORG_UNIT, orgUnitList);
-        orgUnitsAndPrograms.put(PREPARE_PROGRAMS, Program.getAllPrograms());
+        //HashMap<String,List> orgUnitsAndPrograms=new HashMap<>();
+        //orgUnitsAndPrograms.put(PREPARE_ORG_UNIT, orgUnitList);
+        //orgUnitsAndPrograms.put(PREPARE_PROGRAMS, Program.getAllPrograms());
 
         HashMap<String,List> orgCreateSurveyData=new HashMap<>();
         orgCreateSurveyData.put(PREPARE_ORG_UNIT, orgUnitListParents);
@@ -343,7 +343,7 @@ public class SurveyService extends IntentService {
         Session.putServiceValue(ALL_COMPLETED_SURVEYS_ACTION, completedUnsentSurveys);
         Session.putServiceValue(ALL_SENT_OR_COMPLETED_OR_CONFLICT_SURVEYS_ACTION, sentCompletedOrConflictSurveys);
         Session.putServiceValue(PLANNED_SURVEYS_ACTION, PlannedItemBuilder.getInstance().buildPlannedItems());
-        Session.putServiceValue(ALL_ORG_UNITS_AND_PROGRAMS_ACTION,orgUnitsAndPrograms);
+        //Session.putServiceValue(ALL_ORG_UNITS_AND_PROGRAMS_ACTION,orgUnitsAndPrograms);
         Session.putServiceValue(ALL_PROGRAMS_ACTION,Program.getAllPrograms());
 
         //Returning result to anyone listening
@@ -355,7 +355,7 @@ public class SurveyService extends IntentService {
         LocalBroadcastManager.getInstance(this).sendBroadcast(new Intent(ALL_COMPLETED_SURVEYS_ACTION));
         LocalBroadcastManager.getInstance(this).sendBroadcast(new Intent(ALL_SENT_OR_COMPLETED_OR_CONFLICT_SURVEYS_ACTION));
         LocalBroadcastManager.getInstance(this).sendBroadcast(new Intent(PLANNED_SURVEYS_ACTION));
-        LocalBroadcastManager.getInstance(this).sendBroadcast(new Intent(ALL_ORG_UNITS_AND_PROGRAMS_ACTION));
+        //LocalBroadcastManager.getInstance(this).sendBroadcast(new Intent(ALL_ORG_UNITS_AND_PROGRAMS_ACTION));
 
     }
 
