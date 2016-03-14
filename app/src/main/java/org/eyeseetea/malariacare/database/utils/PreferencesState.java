@@ -56,6 +56,8 @@ public class PreferencesState {
 
     private Boolean pullFromServer;
 
+    private Boolean verticalDashboard;
+
     /**
      * Map that holds the relationship between a scale and a set of dimensions
      */
@@ -112,7 +114,7 @@ public class PreferencesState {
      */
     private boolean initShowNumDen(){
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(instance.getContext());
-        return sharedPreferences.getBoolean(instance.getContext().getString(R.string.show_num_dems), false);
+        return sharedPreferences.getBoolean(instance.getContext().getString(R.string.show_num_dems),false);
     }
 
     /**
@@ -236,6 +238,17 @@ public class PreferencesState {
             pullFromServer = context.getResources().getBoolean(R.bool.pullFromServer);
         }
         return pullFromServer;
+    }
+
+    /**
+     * Tells if the application is Vertical or horizontall
+     * @return
+     */
+    public Boolean isVerticalDashboard() {
+        if(verticalDashboard==null){
+            verticalDashboard= context.getResources().getBoolean(R.bool.vertical);
+        }
+        return verticalDashboard;
     }
 
     public Class getMainActivity(){

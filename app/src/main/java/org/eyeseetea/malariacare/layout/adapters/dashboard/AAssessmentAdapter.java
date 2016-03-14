@@ -33,6 +33,7 @@ import com.raizlabs.android.dbflow.sql.language.Select;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.model.TabGroup;
+import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.SurveyAnsweredRatio;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 import org.eyeseetea.malariacare.utils.Utils;
@@ -57,7 +58,8 @@ public abstract class AAssessmentAdapter extends ADashboardAdapter implements ID
         this.headerLayout = R.layout.assessment_header;
         this.recordLayout = R.layout.assessment_record;
         this.footerLayout = R.layout.assessment_footer;
-        //this.title = context.getString(R.string.assessment_title_header);
+        if(PreferencesState.getInstance().isVerticalDashboard())
+            this.title = context.getString(R.string.assessment_title_header);
     }
 
     @Override
@@ -87,6 +89,7 @@ public abstract class AAssessmentAdapter extends ADashboardAdapter implements ID
                 sentScore.setTextColor(getContext().getResources().getColor(R.color.darkRed));
             }
             else {
+                // if(!PreferencesState.getInstance().isVerticalDashboard()){
                 sentScore.setText(String.format("%.1f %%",survey.getMainScore()));
                 int colorId=LayoutUtils.trafficColor(survey.getMainScore());
                 sentScore.setTextColor(getContext().getResources().getColor(colorId));
@@ -132,7 +135,7 @@ public abstract class AAssessmentAdapter extends ADashboardAdapter implements ID
     }
 
     private View setBackgroundWithBorder(int position, View rowView) {
-        if(items.get(position).isCompleted() || items.get(position).isSent()) {
+        if(!PreferencesState.getInstance().isVerticalDashboard() && (items.get(position).isCompleted() || items.get(position).isSent())) {
             rowView.setBackgroundResource(LayoutUtils.calculateBackgroundsImprove(this.backIndex));
         }
         else {
@@ -142,7 +145,7 @@ public abstract class AAssessmentAdapter extends ADashboardAdapter implements ID
     }
 
     private View setBackground(int position, View rowView) {
-        if(items.get(position).isCompleted() || items.get(position).isSent()) {
+        if(!PreferencesState.getInstance().isVerticalDashboard() && (items.get(position).isCompleted() || items.get(position).isSent())) {
             rowView.setBackgroundResource(LayoutUtils.calculateBackgroundsImprove(this.backIndex));
         }
         else {
@@ -166,13 +169,14 @@ public abstract class AAssessmentAdapter extends ADashboardAdapter implements ID
         if (surveyAnsweredRatio.isCompleted()) {
             return getContext().getString(R.string.dashboard_info_ready_to_upload);
         } else {
-            if(surveyAnsweredRatio.getTotalCompulsory()>0) {
-                int value=Float.valueOf(100 * surveyAnsweredRatio.getCompulsoryRatio()).intValue();
-                if(value>=100){
-                    return getContext().getString(R.string.dashboard_info_ready_to_upload);
+            if (!PreferencesState.getInstance().isVerticalDashboard()){
+                if (surveyAnsweredRatio.getTotalCompulsory() > 0) {
+                    int value = Float.valueOf(100 * surveyAnsweredRatio.getCompulsoryRatio()).intValue();
+                    if (value >= 100) {
+                        return getContext().getString(R.string.dashboard_info_ready_to_upload);
+                    } else
+                        return String.format("%d", value);
                 }
-                else
-                return String.format("%d", value);
             }
             return String.format("%d", Float.valueOf(100*surveyAnsweredRatio.getRatio()).intValue());
         }

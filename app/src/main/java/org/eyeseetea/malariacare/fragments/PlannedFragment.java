@@ -177,8 +177,9 @@ public class PlannedFragment extends ListFragment {
     }
 
     public void reloadPlannedItems(List<PlannedItem> plannedItemList) {
+        if(adapter!=null && plannedItemList!=null){
         adapter.reloadItems(plannedItemList);
-        setListShown(true);
+        setListShown(true);}
     }
 
     public void reloadData(){

@@ -47,6 +47,7 @@ import org.eyeseetea.malariacare.database.model.CompositeScore;
 import org.eyeseetea.malariacare.database.model.Question;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.model.Tab;
+import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.layout.adapters.general.TabArrayAdapter;
 import org.eyeseetea.malariacare.layout.adapters.survey.AutoTabAdapter;
@@ -238,8 +239,11 @@ public class SurveyFragment extends  Fragment {
 
             }
         });
+        if(!PreferencesState.getInstance().isVerticalDashboard())
+            tabPagination();
+    }
 
-
+    private void tabPagination() {
         ImageButton nextButton = (ImageButton) llLayout.findViewById(R.id.next_tab);
         ImageButton previousButton = (ImageButton) llLayout.findViewById(R.id.previous_tab);
         nextButton.setOnClickListener(new View.OnClickListener() {
