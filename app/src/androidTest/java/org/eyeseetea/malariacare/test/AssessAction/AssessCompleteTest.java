@@ -107,8 +107,8 @@ public class AssessCompleteTest {
         onView(withText(String.format("%.1f %%", survey.getMainScore()))).check(matches(isDisplayed()));
 
         if(survey.isCompleted())
-            onView(withText( "* " +survey.getProgram().getName()+"")).check(matches(isDisplayed()));
+            onView(withText( "* "  + survey.getTabGroup().getProgram().getName())).check(matches(isDisplayed()));
         else
-            onView(withText("- " + survey.getProgram().getName()+"")).check(matches(isDisplayed()));
+            onView(withText("- "   + survey.getTabGroup().getProgram().getName())).check(matches(isDisplayed()));
     }
 }
