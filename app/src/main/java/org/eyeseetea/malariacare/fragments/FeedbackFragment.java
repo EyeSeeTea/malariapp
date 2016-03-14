@@ -35,11 +35,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.ProgressBar;
-import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 
 
-import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.utils.Session;
@@ -97,7 +95,6 @@ public class FeedbackFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        DashboardActivity.goFeedback=false;
         FragmentActivity    faActivity  = (FragmentActivity)    super.getActivity();
         // Replace LinearLayout by the type of the root element of the layout you're trying to load
         llLayout = (RelativeLayout) inflater.inflate(R.layout.feedback, container, false);
