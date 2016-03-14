@@ -25,6 +25,7 @@ import android.support.test.InstrumentationRegistry;
 import android.support.test.espresso.Espresso;
 import android.support.test.espresso.IdlingPolicies;
 import android.support.test.espresso.IdlingResource;
+import android.support.test.espresso.NoActivityResumedException;
 import android.support.test.espresso.ViewAssertion;
 import android.support.test.runner.lifecycle.ActivityLifecycleMonitorRegistry;
 import android.support.test.runner.lifecycle.Stage;
@@ -77,7 +78,8 @@ import static org.hamcrest.Matchers.is;
 public class SDKTestUtils {
 
     private static final String TAG = "TestingUtils";
-    public static final int DEFAULT_WAIT_FOR_PULL = 29;
+    public static final int DEFAULT_WAIT_FOR_PULL = 40;
+    public static final int DEFAULT_WAIT_FOR_PUSH = 25;
     public static final int DEFAULT_TEST_TIME_LIMIT = 180;
 
     public static final String HNQIS_DEV_STAGING = "https://hnqis-dev-staging.psi-mis.org";
@@ -181,7 +183,7 @@ public class SDKTestUtils {
                 onData(is(instanceOf(Question.class)))
                         .inAdapterView(withId(R.id.listView))
                         .atPosition(i)
-                        .onChildView(withId(R.id.answer)).onChildView(withText(optionValue))//.onChildView(withTagValue(allOf(Matchers.hasProperty("name", containsString(optionValue)))))
+                        .onChildView(withId(R.id.answer)).onChildView(withText(optionValue))
                         .perform(click());
                 Espresso.unregisterIdlingResources(idlingResource);
             } catch (Exception e) {
@@ -210,7 +212,7 @@ public class SDKTestUtils {
                 onData(is(instanceOf(Question.class)))
                         .inAdapterView(withId(R.id.listView))
                         .atPosition(i)
-                        .onChildView(withId(R.id.answer)).onChildView(withText(optionValue))//.onChildView(withTagValue(allOf(Matchers.hasProperty("name", containsString(optionValue)))))
+                        .onChildView(withId(R.id.answer)).onChildView(withText(optionValue))
                         .perform(click());
                 Espresso.unregisterIdlingResources(idlingResource);
             } catch (Exception e) {
@@ -254,24 +256,12 @@ public class SDKTestUtils {
 
 
 
-    public static Long markAsCompleteIncompleteCompulsory() {
-        Long idSurvey = getSurveyId();
-
-        //when: Mark as completed
-        onView(withId(R.id.score)).perform(click());
-        onView(withText(MARK_AS_COMPLETED)).perform(click());
-        onView(withText(R.string.accept)).perform(click());
-
-        return idSurvey;
-    }
-
     public static Long markAsCompleteCompulsory() {
         Long idSurvey = getSurveyId();
 
         //when: Mark as completed
         onView(withId(R.id.score)).perform(click());
         onView(withText(MARK_AS_COMPLETED)).perform(click());
-        onView(withText(R.string.accept)).perform(click());
 
         return idSurvey;
     }
@@ -385,10 +375,15 @@ public class SDKTestUtils {
         }
         if(actualClass!=null  && !actualClass.equals(LoginActivity.class)) {
             goToLogin();
-            Espresso.pressBack();
-        }
-        else{
-            Espresso.pressBack();
+            try {
+                Espresso.pressBack();
+            } catch (NoActivityResumedException e) {
+            }
+        } else {
+            try {
+                Espresso.pressBack();
+            } catch (NoActivityResumedException e) {
+            }
         }
     }
 

@@ -25,12 +25,12 @@ import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.util.Log;
 
-import org.eyeseetea.malariacare.DashboardActivity;
+import com.raizlabs.android.dbflow.sql.language.Delete;
+
 import org.eyeseetea.malariacare.LoginActivity;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.utils.Session;
-import org.eyeseetea.malariacare.fragments.FeedbackFragment;
 import org.eyeseetea.malariacare.test.utils.ElapsedTimeIdlingResource;
 import org.eyeseetea.malariacare.test.utils.SDKTestUtils;
 import org.junit.After;
@@ -42,12 +42,9 @@ import org.junit.runner.RunWith;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
-import static android.support.test.espresso.assertion.ViewAssertions.doesNotExist;
+import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
-import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertFalse;
 import static junit.framework.Assert.assertTrue;
 import static org.eyeseetea.malariacare.test.utils.SDKTestUtils.DEFAULT_WAIT_FOR_PULL;
 import static org.eyeseetea.malariacare.test.utils.SDKTestUtils.HNQIS_DEV_CI;
@@ -61,106 +58,93 @@ import static org.eyeseetea.malariacare.test.utils.SDKTestUtils.waitForPull;
 import static org.eyeseetea.malariacare.test.utils.SDKTestUtils.waitForPush;
 
 /**
- * Created by idelcano on 11/03/2016.
+ * Created by idelcano on 14/03/2016.
  */
-
 @RunWith(AndroidJUnit4.class)
-public class AssessComplete {
+public class AssessCompulsoryTest {
 
-    private static final String TAG="AssessActionTest";
-
-    // private LoginActivity mReceiptCaptureActivity;
+    private static final String TAG = "AssessActionTest";
 
     @Rule
     public ActivityTestRule<LoginActivity> mActivityRule = new ActivityTestRule<>(
             LoginActivity.class);
 
     @Before
-    public void setup(){
+    public void setup() {
         //force init go to logging activity.
         SDKTestUtils.goToLogin();
         //set the test limit( and throw exception if the time is exceded)
         SDKTestUtils.setTestTimeoutSeconds(SDKTestUtils.DEFAULT_TEST_TIME_LIMIT);
     }
 
-    @After
+    @AfterClass
     public static void exitApp() throws Exception {
         SDKTestUtils.exitApp();
     }
 
-    @Test
-    public void assessCompleteAndGoFeedback(){
-        //GIVEN
-        login(HNQIS_DEV_CI, TEST_USERNAME_WITH_PERMISSION, TEST_PASSWORD_WITH_PERMISSION);
-        waitForPull(DEFAULT_WAIT_FOR_PULL);
-        startSurvey(1, 3);
-        fillSurvey(7, "Yes");
-
-        //WHEN
-        Long idSurvey=SDKTestUtils.markCompleteAndGoFeedback();
-
-        IdlingResource idlingResource = new ElapsedTimeIdlingResource(5 * 1000);
-        Espresso.registerIdlingResources(idlingResource);
-
-        //THEN
-        assertEquals(DashboardActivity.class, SDKTestUtils.getActivityInstance().getClass());//needs check if feedbackfragment is active
-
-        Espresso.unregisterIdlingResources(idlingResource);
-    }
-
-
-
-    @Test
-    public void assessCompleteCompulsoryIncomplete(){
-        //GIVEN
-        login(HNQIS_DEV_CI, TEST_USERNAME_WITH_PERMISSION, TEST_PASSWORD_WITH_PERMISSION);
-        waitForPull(DEFAULT_WAIT_FOR_PULL);
-        startSurvey(1, 1);
-        fillSurvey(12, "Yes");
-
-        //WHEN
-        Long idSurvey=SDKTestUtils.markAsCompleteIncompleteCompulsory();
-
-        Log.d(TAG, "Session user ->" + Session.getUser());
-        Survey survey = Survey.findById(idSurvey);
-
-        //THEN
-        assertTrue(survey.getEventUid() != null);
-
-        //then: Row is gone
-        onView(withId(R.id.score)).perform(click());
+    @After
+    public void deleteSurveys() throws Exception{
+        Delete.tables(Survey.class);
     }
 
     @Test
-    public void assessCompleteCompulsoryComplete(){
+    public void assessCompulsoryComplete() {
         //GIVEN
-        login(HNQIS_DEV_CI, TEST_USERNAME_WITH_PERMISSION, TEST_PASSWORD_WITH_PERMISSION);
-        waitForPull(DEFAULT_WAIT_FOR_PULL);
-        startSurvey(1, 1);
+        if(LoginActivity.class.equals(SDKTestUtils.getActivityInstance().getClass())) {
+            login(HNQIS_DEV_CI, TEST_USERNAME_WITH_PERMISSION, TEST_PASSWORD_WITH_PERMISSION);
+            waitForPull(DEFAULT_WAIT_FOR_PULL);
+        }
+        startSurvey(SDKTestUtils.TEST_FACILITY_1_IDX, SDKTestUtils.TEST_FACILITY_1_IDX);
         fillCompulsorySurvey(13, "Yes");
+
         //WHEN
         Espresso.pressBack();
+        //select continue later and go to assess
         onView(withText(R.string.dialog_continue_later_option)).perform(click());
+
         //THEN
-        assertEquals(DashboardActivity.class, SDKTestUtils.getActivityInstance().getClass());
+        onView(withText(R.string.dashboard_info_ready_to_upload)).check(matches(isDisplayed()));
+
 
         //WHEN
-        Long idSurvey=SDKTestUtils.editSurvey();
-
+        Long idSurvey = SDKTestUtils.editSurvey();
         IdlingResource idlingResource = new ElapsedTimeIdlingResource(5 * 1000);
         Espresso.registerIdlingResources(idlingResource);
         Espresso.pressBack();
         Espresso.unregisterIdlingResources(idlingResource);
-
-        onView(withText(R.string.dialog_question_complete_survey)).perform(click());
+        //select complete survey on exit
+        onView(withText(R.string.dialog_complete_option)).perform(click());
+        //confirm(are you sure?)
+        onView(withText(android.R.string.yes)).perform(click());
+        //info dialog
+        onView(withText(android.R.string.ok)).perform(click());
 
         //THEN
         //then: Survey is pushed (UID)
         Log.d(TAG, "Session user ->" + Session.getUser());
-        Survey survey=waitForPush(20,idSurvey);
-        assertTrue(survey.getEventUid() != null);
-
-        //then: Row is gone
-        onView(withId(R.id.score)).check(doesNotExist());
+        Survey survey = waitForPush(SDKTestUtils.DEFAULT_WAIT_FOR_PUSH, idSurvey);
+        assertTrue(survey.isCompleted() || survey.isSent());
     }
+
+
+    @Test
+    public void assessCompulsoryIncomplete() {
+        //GIVEN
+        if(LoginActivity.class.equals(SDKTestUtils.getActivityInstance().getClass())) {
+            login(HNQIS_DEV_CI, TEST_USERNAME_WITH_PERMISSION, TEST_PASSWORD_WITH_PERMISSION);
+            waitForPull(DEFAULT_WAIT_FOR_PULL);
+        }
+        startSurvey(SDKTestUtils.TEST_FACILITY_1_IDX, SDKTestUtils.TEST_FACILITY_1_IDX);
+        fillSurvey(12, "Yes");
+
+        //WHEN
+        Long idSurvey = SDKTestUtils.markAsCompleteCompulsory();
+        Log.d(TAG, "Session user ->" + Session.getUser());
+        Survey survey = Survey.findById(idSurvey);
+
+        //THEN
+        onView(withText(R.string.accept)).perform(click());
+        assertTrue(survey.isInProgress());
+    }
+
 }
