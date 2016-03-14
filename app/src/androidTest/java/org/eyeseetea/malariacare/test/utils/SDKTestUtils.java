@@ -403,8 +403,11 @@ public class SDKTestUtils {
             try {
                 if (ProgressActivity.class.equals(actualClass)) {
                         try {
+                            //Error dialog, or complete dialog
+                            onView(withText(android.R.string.ok)).perform(click());
+                        } catch (Exception e) {
                             onView(withText(android.R.string.cancel)).perform(click());
-                        } catch (Exception e) {}
+                        }
                 } else if(DashboardActivity.class.equals(actualClass)){
                         try {
                             clickLogout();
