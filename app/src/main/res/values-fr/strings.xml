@@ -30,8 +30,8 @@
 
     <!-- # dialogs -->
     <string name="go_to_feedback">Aller aux commentaires</string>
-    <string name="dialog_title_delete_survey">Delete Survey</string>
-    <string name="dialog_info_delete_survey">Are you sure you want to completely delete this survey?</string>
+    <string name="dialog_title_delete_survey">Supprimer Survey.</string>
+    <string name="dialog_info_delete_survey">"Etes-vous sûr de vouloir supprimer complètement l'enquête: %s?"</string>
     <string name="dialog_title_error">Erreur</string>
     <string name="dialog_error_denominator">Erreur, denominateur = 0</string>
     <string name="dialog_title_missing_selection">selection manquant</string>
@@ -273,4 +273,5 @@
     <string name="dialog_content_dhis_preference_login">Modification du serveur doit se reconnecter. Chaque enquête non envoyé sera supprimé. Es-tu sûr de vouloir continuer?</string>
     <string name="settings_text_dhis_max_items">DHIS max chargé des enquêtes</string>
     <string name="feedback_info_conflict">Conflit</string>
+    <string name="dialog_deleting_children">Vous êtes sur le point de supprimer la réponse aux questions qui dépend de celui-ci. Voulez-vous vraiment continuer?</string>
 </resources>
