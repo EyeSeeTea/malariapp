@@ -28,7 +28,7 @@ import java.util.List;
  * Created by idelcano on 25/02/2016.
  */
 public class Dashboard {
-    private List<IModule> modules;
+    private List<AModule> modules;
     public static int VERTICAL=0;
     public static int HORIZONTAL=1;
     private int style;
@@ -40,12 +40,12 @@ public class Dashboard {
         modules=new ArrayList<>();
     }
 
-    public  void addModule(IModule module){
+    public  void addModule(AModule module){
         modules.add(module);
     }
 
 
-    public  void removeModule(IModule module){
+    public  void removeModule(AModule module){
         modules.remove(module);
     }
 
@@ -58,15 +58,15 @@ public class Dashboard {
         }
     }
 
-    public IModule getModuleByName(String name){
-        for(IModule module:modules){
+    public AModule getModuleByName(String name){
+        for(AModule module:modules){
             if(module.getName().equals(name))
                 return module;
         }
         return null;
     }
 
-    public List<IModule> getModules() {
+    public List<AModule> getModules() {
         return modules;
     }
 

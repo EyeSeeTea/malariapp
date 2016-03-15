@@ -25,165 +25,94 @@ import android.app.FragmentTransaction;
 import android.app.ListFragment;
 import android.graphics.drawable.Drawable;
 
+import org.eyeseetea.malariacare.DashboardActivity;
+import org.eyeseetea.malariacare.fragments.IModuleFragment;
+
 /**
  * Created by idelcano on 25/02/2016.
  */
-public abstract class AModule implements IModule {
+public abstract class AModule{
 
+    DashboardActivity dashboardActivity;
     int layout;
     int tabLayout;
-    int animatorInRight;
-    int animatorOutRight;
-    int animatorInLeft;
-    int animatorOutLeft;
-    FragmentTransaction fragmentTransactionLeft;
-    FragmentTransaction fragmentTransactionRight;
     Drawable icon;
     int color;
     String name;
     Fragment fragment;
-    ListFragment listFragment;
     boolean visible;
 
-    @Override
     public int getLayout() {
         return layout;
     }
 
-    @Override
     public void setLayout(int layout) {
         this.layout = layout;
     }
 
-    @Override
     public int getTabLayout() {
         return tabLayout;
     }
 
-    @Override
+
     public void setTabLayout(int tabLayout) {
         this.tabLayout = tabLayout;
     }
 
-    @Override
-    public FragmentTransaction getFragmentTransactionLeft() {
-        return fragmentTransactionLeft;
-    }
 
-    @Override
-    public void setFragmentTransactionLeft(FragmentTransaction fragmentTransactionLeft) {
-        this.fragmentTransactionLeft = fragmentTransactionLeft;
-    }
-
-    public FragmentTransaction getFragmentTransactionRight() {
-        return fragmentTransactionRight;
-    }
-
-    @Override
-    public void setFragmentTransactionRight(FragmentTransaction fragmentTransactionRight) {
-        this.fragmentTransactionRight = fragmentTransactionRight;
-    }
-
-    @Override
     public Drawable getIcon() {
         return icon;
     }
 
-    @Override
+
     public void setIcon(Drawable icon) {
         this.icon = icon;
     }
 
-    @Override
-    public void setBackgroundColor(int color) {
 
+    public void setBackgroundColor(int color) {
+        this.color =color;
     }
 
-    @Override
+
     public int getBackgroundColor() {
         return color;
     }
 
-    @Override
+
     public String getName() {
         return name;
     }
 
-    @Override
     public void setName(String name) {
         this.name = name;
     }
 
-    @Override
     public Fragment getFragment() {
         return fragment;
     }
 
-    @Override
     public void setFragment(Fragment fragment) {
         this.fragment = fragment;
     }
 
-    @Override
-    public ListFragment getListFragment() {
-        return listFragment;
-    }
-
-    @Override
-    public void setListFragment(ListFragment listFragment) {
-        this.listFragment = listFragment;
-    }
-
-    @Override
     public boolean isVisible() {
         return visible;
     }
 
-    @Override
     public void setVisible(boolean visible) {
         this.visible = visible;
     }
 
-    @Override
-    public int getAnimatorInRight() {
-        return animatorInRight;
+    public void init(DashboardActivity activity){
+        this.dashboardActivity = activity;
     }
 
-    @Override
-    public void setAnimatorInRight(int animatorInRight) {
-        this.animatorInRight = animatorInRight;
-    }
+    public void reloadData(){
+        if(fragment==null){
+            return;
+        }
 
-    @Override
-    public int getAnimatorOutRight() {
-        return animatorOutRight;
+        ((IModuleFragment)fragment).reloadData();
     }
-
-    @Override
-    public void setAnimatorOutRight(int animatorOutRight) {
-        this.animatorOutRight = animatorOutRight;
-    }
-
-    @Override
-    public int getAnimatorInLeft() {
-        return animatorInLeft;
-    }
-
-    @Override
-    public void setAnimatorInLeft(int animatorInLeft) {
-        this.animatorInLeft = animatorInLeft;
-    }
-
-    @Override
-    public int getAnimatorOutLeft() {
-        return animatorOutLeft;
-    }
-
-    @Override
-    public void setAnimatorOutLeft(int animatorOutLeft) {
-        this.animatorOutLeft = animatorOutLeft;
-    }
-
-    @Override
-    public abstract void init(Activity activity);
 }

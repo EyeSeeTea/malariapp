@@ -32,22 +32,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.raizlabs.android.dbflow.sql.language.Select;
-
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.model.Program;
-import org.eyeseetea.malariacare.database.model.Survey;
-import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.database.utils.planning.PlannedItem;
 import org.eyeseetea.malariacare.layout.adapters.filters.FilterProgramArrayAdapter;
 import org.eyeseetea.malariacare.layout.adapters.survey.PlannedAdapter;
 import org.eyeseetea.malariacare.services.SurveyService;
-import org.eyeseetea.malariacare.utils.Constants;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,7 +49,7 @@ import java.util.List;
 /**
  * Created by ivan.arrizabalaga on 15/12/2015.
  */
-public class PlannedFragment extends ListFragment {
+public class PlannedFragment extends ListFragment implements IModuleFragment{
     public static final String TAG = ".PlannedFragment";
 
     private PlannedItemsReceiver plannedItemsReceiver;
@@ -172,7 +166,8 @@ public class PlannedFragment extends ListFragment {
         }
     }
 
-    public void reloadPlannedItems(){
+    @Override
+    public void reloadData(){
         reloadPlannedItems((List<PlannedItem>) Session.popServiceValue(SurveyService.PLANNED_SURVEYS_ACTION));
     }
 
@@ -180,13 +175,6 @@ public class PlannedFragment extends ListFragment {
         if(adapter!=null && plannedItemList!=null){
         adapter.reloadItems(plannedItemList);
         setListShown(true);}
-    }
-
-    public void reloadData(){
-        //Reload data using service
-        Intent surveysIntent=new Intent(PreferencesState.getInstance().getContext().getApplicationContext(), SurveyService.class);
-        surveysIntent.putExtra(SurveyService.SERVICE_METHOD, SurveyService.PLANNED_SURVEYS_ACTION);
-        PreferencesState.getInstance().getContext().getApplicationContext().startService(surveysIntent);
     }
 
     /**
@@ -205,7 +193,7 @@ public class PlannedFragment extends ListFragment {
                 prepareUI();
             }
             if (SurveyService.PLANNED_SURVEYS_ACTION.equals(intent.getAction())) {
-                reloadPlannedItems();
+                reloadData();
             }
         }
     }

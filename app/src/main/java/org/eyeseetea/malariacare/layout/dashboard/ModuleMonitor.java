@@ -21,8 +21,6 @@ package org.eyeseetea.malariacare.layout.dashboard;
 
 import android.app.Activity;
 import android.app.Fragment;
-import android.app.FragmentTransaction;
-import android.graphics.drawable.Drawable;
 
 import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.R;
@@ -33,7 +31,6 @@ import org.eyeseetea.malariacare.fragments.MonitorFragment;
  * Created by idelcano on 25/02/2016.
  */
 public class ModuleMonitor  extends AModule {
-    MonitorFragment monitorFragment;
 
     public ModuleMonitor(boolean visible) {
         this.layout=R.id.dashboard_charts_container;
@@ -60,27 +57,13 @@ public class ModuleMonitor  extends AModule {
         this.icon= PreferencesState.getInstance().getContext().getResources().getDrawable(R.drawable.tab_monitor);
         this.name= PreferencesState.getInstance().getContext().getResources().getString(R.string.tab_tag_monitor);
         this.color= PreferencesState.getInstance().getContext().getResources().getColor(R.color.tab_green_monitor);
-        this.animatorInLeft= R.animator.anim_slide_in_left;
-        this.animatorOutLeft= R.animator.anim_slide_out_left;
-        this.animatorInRight=R.animator.anim_slide_in_right;
-        this.animatorOutRight=R.animator.anim_slide_out_right;
     }
 
     @Override
-    public Fragment getFragment() {
-        return monitorFragment;
-    }
-
-    @Override
-    public void init(Activity activity) {
-        int mStackLevel=0;
-        mStackLevel++;
-        if(monitorFragment==null)
-            monitorFragment = MonitorFragment.newInstance(mStackLevel);
-    }
-
-    @Override
-    public void reloadData() {
-        monitorFragment.reloadSentSurveys();
+    public void init(DashboardActivity activity) {
+        super.init(activity);
+        if(fragment==null) {
+            fragment = MonitorFragment.newInstance(1);
+        }
     }
 }

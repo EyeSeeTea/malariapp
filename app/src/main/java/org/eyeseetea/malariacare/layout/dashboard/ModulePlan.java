@@ -21,8 +21,6 @@ package org.eyeseetea.malariacare.layout.dashboard;
 
 import android.app.Activity;
 import android.app.Fragment;
-import android.app.FragmentTransaction;
-import android.graphics.drawable.Drawable;
 
 import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.R;
@@ -33,7 +31,6 @@ import org.eyeseetea.malariacare.fragments.PlannedFragment;
  * Created by idelcano on 25/02/2016.
  */
 public class ModulePlan extends AModule {
-    PlannedFragment plannedFragment;
     int color;
 
     public ModulePlan(boolean visible) {
@@ -59,24 +56,12 @@ public class ModulePlan extends AModule {
         this.icon= PreferencesState.getInstance().getContext().getResources().getDrawable(R.drawable.tab_plan);
         this.name= PreferencesState.getInstance().getContext().getResources().getString(R.string.tab_tag_plan);
         this.color= PreferencesState.getInstance().getContext().getResources().getColor(R.color.tab_orange_plan);
-        this.animatorInLeft= R.animator.anim_slide_in_left;
-        this.animatorOutLeft= R.animator.anim_slide_out_left;
-        this.animatorInRight=R.animator.anim_slide_in_right;
-        this.animatorOutRight=R.animator.anim_slide_out_right;
     }
 
     @Override
-    public Fragment getFragment() {
-        return plannedFragment;
+    public void init(DashboardActivity activity) {
+        super.init(activity);
+        fragment= new PlannedFragment();
     }
 
-    @Override
-    public void init(Activity activity) {
-        plannedFragment = new PlannedFragment();
-    }
-
-    @Override
-    public void reloadData() {
-        plannedFragment.reloadPlannedItems();
-    }
 }

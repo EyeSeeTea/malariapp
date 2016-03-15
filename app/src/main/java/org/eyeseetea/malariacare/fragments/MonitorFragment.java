@@ -53,14 +53,13 @@ import java.util.List;
 /**
  * Created by ignac on 10/12/2015.
  */
-public class MonitorFragment extends Fragment {
+public class MonitorFragment extends Fragment implements IModuleFragment{
     List<Survey> surveysForGraphic;
     public static final String TAG = ".MonitorFragment";
     private SurveyReceiver surveyReceiver;
     private List<Survey> surveys;
     private List<Program> programs;
     protected IDashboardAdapter adapter;
-    private static int index = 0;
     private WebView webView;
 
     public MonitorFragment() {
@@ -149,7 +148,8 @@ public class MonitorFragment extends Fragment {
     /**
      * load and reload sent surveys
      */
-    public void reloadSentSurveys() {
+    @Override
+    public void reloadData() {
         HashMap<String,List> data= (HashMap<String,List>) Session.popServiceValue(SurveyService.ALL_MONITOR_DATA_ACTION);
         if(data!=null) {
             surveysForGraphic = data.get(SurveyService.PREPARE_SURVEYS);
@@ -247,7 +247,7 @@ public class MonitorFragment extends Fragment {
             Log.d(TAG, "onReceive");
             //Listening only intents from this method
             if (SurveyService.ALL_MONITOR_DATA_ACTION.equals(intent.getAction())) {
-                reloadSentSurveys();
+                reloadData();
             }
         }
     }

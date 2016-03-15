@@ -25,6 +25,7 @@ import android.app.FragmentTransaction;
 import android.app.ListFragment;
 import android.graphics.drawable.Drawable;
 
+import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.fragments.DashboardUnsentFragment;
@@ -33,7 +34,6 @@ import org.eyeseetea.malariacare.fragments.DashboardUnsentFragment;
  * Created by idelcano on 25/02/2016.
  */
 public class ModuleAssess extends AModule {
-    DashboardUnsentFragment dashboardUnsentFragment;
 
     public ModuleAssess( boolean visible) {
         this.layout=R.id.dashboard_details_container;
@@ -59,30 +59,12 @@ public class ModuleAssess extends AModule {
         this.icon= PreferencesState.getInstance().getContext().getResources().getDrawable(R.drawable.tab_assess);
         this.name= PreferencesState.getInstance().getContext().getResources().getString(R.string.tab_tag_assess);
         this.color= PreferencesState.getInstance().getContext().getResources().getColor(R.color.tab_yellow_assess);
-        this.animatorInLeft= R.animator.anim_slide_in_left;
-        this.animatorOutLeft= R.animator.anim_slide_out_left;
-        this.animatorInRight=R.animator.anim_slide_in_right;
-        this.animatorOutRight=R.animator.anim_slide_out_right;
     }
 
     @Override
-    public Fragment getFragment() {
-        return null;
-    }
-    @Override
-    public ListFragment getListFragment()
-    {
-        return dashboardUnsentFragment;
+    public void init(DashboardActivity activity) {
+        super.init(activity);
+        fragment = new DashboardUnsentFragment();
     }
 
-    @Override
-    public void init(Activity activity) {
-        dashboardUnsentFragment = new DashboardUnsentFragment();
-
-    }
-
-    @Override
-    public void reloadData() {
-        dashboardUnsentFragment.reloadData();
-    }
 }

@@ -19,6 +19,7 @@
   -->
 
 <TableRow xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:id="@+id/assessment_row"
@@ -27,5 +28,28 @@
     <include layout="@layout/assessment_sent_record_facility_item"/>
 
     <include layout="@layout/assessment_sent_record_date_item"/>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="0dp"
+        android:layout_height="fill_parent"
+        android:id="@+id/scoreContainer"
+        android:layout_weight="0.4"
+        android:layout_gravity="center"
+        android:gravity="center">
+
+        <org.eyeseetea.malariacare.views.CustomTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:id="@+id/score"
+            android:layout_gravity="center"
+            android:gravity="center_horizontal"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            app:tDimension="@string/font_size_level1"
+            app:tFontName="@string/medium_font_name" />
+
+    </LinearLayout>
 
 </TableRow>

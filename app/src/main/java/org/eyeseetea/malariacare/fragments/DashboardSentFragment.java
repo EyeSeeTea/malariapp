@@ -62,7 +62,7 @@ import java.util.List;
 /**
  * A placeholder fragment containing a simple view.
  */
-public class DashboardSentFragment extends ListFragment {
+public class DashboardSentFragment extends ListFragment implements IModuleFragment{
 
 
     public static final String TAG = ".CompletedFragment";
@@ -452,6 +452,7 @@ public class DashboardSentFragment extends ListFragment {
         setListShown(true);
     }
 
+    @Override
     public void reloadData(){
         //Reload data using service
         Intent surveysIntent=new Intent(PreferencesState.getInstance().getContext().getApplicationContext(), SurveyService.class);
