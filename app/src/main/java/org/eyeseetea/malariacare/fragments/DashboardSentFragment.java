@@ -409,8 +409,9 @@ public class DashboardSentFragment extends ListFragment {
         this.surveys.addAll(newListSurveys);
         adapter.setItems(newListSurveys);
         this.adapter.notifyDataSetChanged();
-        if(!getArguments().getBoolean("isMoveToFeedback",false))
+        try {
             setListShown(true);
+        }catch(IllegalStateException e){}
     }
 
     public void reloadData(){

@@ -293,6 +293,14 @@ public class SDKTestUtils {
         return getSurveyInProgress().getId_survey();
     }
 
+    public static Survey getSurveyById(long surveyId){
+        return new Select()
+                .from(Survey.class)
+                .where(Condition.column(Survey$Table.ID_SURVEY)
+                        .eq(surveyId))
+                .querySingle();
+    }
+
     public static Survey getSurveyInProgress(){
         return new Select()
                 .from(Survey.class)

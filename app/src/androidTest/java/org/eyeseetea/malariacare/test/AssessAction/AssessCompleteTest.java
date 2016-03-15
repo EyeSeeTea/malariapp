@@ -23,10 +23,12 @@ import android.support.test.espresso.Espresso;
 import android.support.test.espresso.IdlingResource;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
+import android.util.Log;
 
 import org.eyeseetea.malariacare.LoginActivity;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.model.Survey;
+import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.test.utils.ElapsedTimeIdlingResource;
 import org.eyeseetea.malariacare.test.utils.SDKTestUtils;
 import org.junit.After;
@@ -104,8 +106,12 @@ public class AssessCompleteTest {
         Espresso.unregisterIdlingResources(idlingResource);
 
         //THEN
-        onView(withText(String.format("%.1f %%", survey.getMainScore()))).check(matches(isDisplayed()));
 
+        idlingResource = new ElapsedTimeIdlingResource(5 * 1000);
+        Espresso.registerIdlingResources(idlingResource);
+        onView(withText(String.format("%.1f %%", survey.getMainScore()))).check(matches(isDisplayed()));
+        Espresso.unregisterIdlingResources(idlingResource);
+        survey=SDKTestUtils.getSurveyById(survey.getId_survey());
         if(survey.isCompleted())
             onView(withText( "* "  + survey.getTabGroup().getProgram().getName())).check(matches(isDisplayed()));
         else
