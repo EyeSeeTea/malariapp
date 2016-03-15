@@ -285,6 +285,8 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
         } catch (NullPointerException e) {
             e.printStackTrace();
         }
+        if(!isMoveToFeedback)
+            sentFragment.reloadData();
     }
 
 
@@ -334,14 +336,6 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
         if(surveyFragment==null)
             surveyFragment = SurveyFragment.newInstance(mStackLevel);
         replaceFragment(R.id.dashboard_details_container, surveyFragment);
-        setActionBarTitleForSurvey(Session.getSurvey());
-    }
-    public void initSurveyFeedback(){
-        int  mStackLevel=0;
-        mStackLevel++;
-        if(feedbackFragment==null)
-            feedbackFragment = FeedbackFragment.newInstance(mStackLevel);
-        replaceFragment(R.id.dashboard_completed_container, feedbackFragment);
         setActionBarTitleForSurvey(Session.getSurvey());
     }
 
@@ -644,7 +638,6 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
         feedbackFragment.unregisterReceiver();
         feedbackFragment.getView().setVisibility(View.GONE);
         initImprove();
-        sentFragment.reloadData();
         setActionBarDashboard();
     }
 
@@ -743,11 +736,15 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
         initFeedback();
     }
 
+    //Open the survey the feedbackfragment with the survey in session.
     @Override
     public void onFeedbackInSession() {
         initFeedback();
     }
 
+    /**
+     * Open a survey feedback fragment from mark on complete dialog.
+     */
     private void openFeedbackSurvey(Survey survey) {
         Session.setSurvey(survey);
         initImprove();

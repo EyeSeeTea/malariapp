@@ -387,7 +387,6 @@ public class DashboardSentFragment extends ListFragment {
             mCallback.onFeedbackInSession();
             showContainer();
         }
-        else
         if (surveyReceiver == null) {
             surveyReceiver = new SurveyReceiver();
             LocalBroadcastManager.getInstance(getActivity()).registerReceiver(surveyReceiver, new IntentFilter(SurveyService.ALL_SENT_OR_COMPLETED_OR_CONFLICT_SURVEYS_ACTION));
