@@ -172,19 +172,21 @@ public class DashboardSentFragment extends ListFragment {
                                            int position, long id) {
                     Program program = (Program) parent.getItemAtPosition(position);
                     boolean reload = false;
-                    if (program.getName().equals(getActivity().getString(R.string.filter_all_org_assessments_upper))) {
-                        if (programFilter != getActivity().getString(R.string.filter_all_org_assessments_upper)) {
-                            programFilter = getActivity().getString(R.string.filter_all_org_assessments_upper);
-                            reload = true;
+                    if(program!=null) {
+                        if (program.getName().equals(getActivity().getString(R.string.filter_all_org_assessments_upper))) {
+                            if (programFilter != getActivity().getString(R.string.filter_all_org_assessments_upper)) {
+                                programFilter = getActivity().getString(R.string.filter_all_org_assessments_upper);
+                                reload = true;
+                            }
+                        } else {
+                            if (programFilter != program.getUid()) {
+                                programFilter = program.getUid();
+                                reload = true;
+                            }
                         }
-                    } else {
-                        if (programFilter != program.getUid()) {
-                            programFilter = program.getUid();
-                            reload = true;
-                        }
+                        if (reload && !initFilters)
+                            reloadSentSurveys();
                     }
-                    if (reload && !initFilters)
-                        reloadSentSurveys();
                 }
 
                 @Override
@@ -203,20 +205,23 @@ public class DashboardSentFragment extends ListFragment {
                                            int position, long id) {
                     OrgUnit orgUnit = (OrgUnit) parent.getItemAtPosition(position);
                     boolean reload = false;
-                    if (orgUnit.getName().equals(getActivity().getString(R.string.filter_all_org_units_upper))) {
-                        if (orgUnitFilter != getActivity().getString(R.string.filter_all_org_units_upper)) {
-                            orgUnitFilter = getActivity().getString(R.string.filter_all_org_units_upper);
-                            reload = true;
+                    if(orgUnit!=null) {
+                        if (orgUnit.getName().equals(getActivity().getString(R.string.filter_all_org_units_upper))) {
+                            if (orgUnitFilter != getActivity().getString(R.string.filter_all_org_units_upper)) {
+                                orgUnitFilter = getActivity().getString(R.string.filter_all_org_units_upper);
+                                reload = true;
+                            }
+                        } else {
+                            if (orgUnitFilter != orgUnit.getUid()) {
+                                orgUnitFilter = orgUnit.getUid();
+                                reload = true;
+                            }
                         }
-                    } else {
-                        if (orgUnitFilter != orgUnit.getUid()) {
-                            orgUnitFilter = orgUnit.getUid();
-                            reload = true;
-                        }
+                        if (reload && !initFilters)
+                            reloadSentSurveys();
                     }
-                    if (reload && !initFilters)
-                        reloadSentSurveys();
                 }
+
 
                 @Override
                 public void onNothingSelected(AdapterView<?> arg0) {
@@ -439,8 +444,8 @@ public class DashboardSentFragment extends ListFragment {
                     } else {
                         Survey surveyMapped = orgUnits.get(survey.getTabGroup().getProgram().getUid() + survey.getOrgUnit().getUid());
                         Log.d(TAG, "reloadSentSurveys check NPE \tsurveyMapped:" + surveyMapped + "\tsurvey:" + survey);
-                        Log.d(TAG, "reloadSentSurveys check completionDate\tsurveyMapped:" + surveyMapped.getEventDate() + "\tsurvey:" + survey.getEventDate());
-                        if (surveyMapped.getEventDate().before(survey.getEventDate())) {
+                        if(surveyMapped.getCompletionDate()!=null && survey.getCompletionDate()!=null)
+                        if (surveyMapped.getCompletionDate().before(survey.getCompletionDate())) {
                             orgUnits = filterSurvey(orgUnits, survey);
                         }
                     }
