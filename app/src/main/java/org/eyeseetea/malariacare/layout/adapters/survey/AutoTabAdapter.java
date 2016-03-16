@@ -234,12 +234,7 @@ public class AutoTabAdapter extends ATabAdapter {
                     AutoTabLayoutUtils.initialiseScorableComponent(rowView, viewHolder);
                     AutoTabLayoutUtils.createRadioGroupComponent(question, viewHolder, LinearLayout.HORIZONTAL, getInflater(), getContext());
                     //Add Listener
-                    RadioGroup radioGroup=((RadioGroup) viewHolder.component);
-                    radioGroup.setOnCheckedChangeListener(new RadioGroupListener(question, viewHolder, this));
-                    if(question.hasChildren()){
-                        radioGroup.getChildAt(0).setOnTouchListener(new RadioButtonTouchListener(question, viewHolder));
-                        radioGroup.getChildAt(1).setOnTouchListener(new RadioButtonTouchListener(question, viewHolder));
-                    }
+                    ((RadioGroup) viewHolder.component).setOnCheckedChangeListener(new RadioGroupListener(question, viewHolder, this));
                     break;
                 case Constants.RADIO_GROUP_VERTICAL:
                     rowView = AutoTabLayoutUtils.initialiseView(R.layout.radio, parent, question, viewHolder, position, getInflater());

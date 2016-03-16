@@ -355,18 +355,22 @@ public class AutoTabLayoutUtils {
     }
 
     public static void expandChildren(ViewHolder viewHolder){
-        // Write option to DB
+        //this method need be executed in the ui thread
+        viewHolder.progressBar.setVisibility(View.VISIBLE);
         new toggleChildrenOperations().execute(viewHolder);
     }
 
+    //Loads
     private static class toggleChildrenOperations extends AsyncTask<ViewHolder, Void, Void> {
         ViewHolder viewHolder;
         @Override
         protected Void doInBackground(ViewHolder... params) {
             viewHolder=params[0];
+            //Write option to DB
             ReadWriteDB.saveValuesDDL(QuestionVisibility.question, QuestionVisibility.option);
             recalculateScores(viewHolder, QuestionVisibility.question);
             toggleChildrenVisibility();
+            //the notifidatasetchanged needs be launch in the ui Thread
             DashboardActivity.dashboardActivity.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
@@ -378,6 +382,7 @@ public class AutoTabLayoutUtils {
 
         @Override
         protected void onPostExecute(Void aVoid) {
+            //hide the progressbar
             viewHolder.progressBar.setVisibility(View.GONE);
         }
 
