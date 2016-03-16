@@ -22,10 +22,10 @@ package org.eyeseetea.malariacare.layout.utils;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.text.Html;
 import android.text.Spanned;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,33 +38,26 @@ import android.widget.Spinner;
 import com.google.common.primitives.Booleans;
 import com.raizlabs.android.dbflow.structure.BaseModel;
 
+import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.model.Header;
-import org.eyeseetea.malariacare.database.model.Match;
 import org.eyeseetea.malariacare.database.model.Option;
 import org.eyeseetea.malariacare.database.model.Question;
-import org.eyeseetea.malariacare.database.model.QuestionOption;
-import org.eyeseetea.malariacare.database.model.QuestionRelation;
 import org.eyeseetea.malariacare.database.model.Survey;
-import org.eyeseetea.malariacare.database.model.Value;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.ReadWriteDB;
 import org.eyeseetea.malariacare.database.utils.Session;
-import org.eyeseetea.malariacare.fragments.SurveyFragment;
 import org.eyeseetea.malariacare.layout.adapters.general.OptionArrayAdapter;
 import org.eyeseetea.malariacare.layout.adapters.survey.AutoTabAdapter;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.utils.Constants;
-import org.eyeseetea.malariacare.utils.Utils;
 import org.eyeseetea.malariacare.views.CustomRadioButton;
 import org.eyeseetea.malariacare.views.CustomTextView;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by adrian on 15/08/15.
@@ -354,7 +347,6 @@ public class AutoTabLayoutUtils {
                 } else{
                     expandChildren(viewHolder);
                 }
-                viewHolder.progressBar.setVisibility(View.GONE);
             }
             refreshTab = true;
         }
@@ -364,12 +356,39 @@ public class AutoTabLayoutUtils {
 
     public static void expandChildren(ViewHolder viewHolder){
         // Write option to DB
-        ReadWriteDB.saveValuesDDL(QuestionVisibility.question, QuestionVisibility.option);
-        recalculateScores(viewHolder, QuestionVisibility.question);
-        toggleChildrenVisibility();
-        QuestionVisibility.adapter.notifyDataSetChanged();
+        new toggleChildrenOperations().execute(viewHolder);
     }
 
+    private static class toggleChildrenOperations extends AsyncTask<ViewHolder, Void, Void> {
+        ViewHolder viewHolder;
+        @Override
+        protected Void doInBackground(ViewHolder... params) {
+            viewHolder=params[0];
+            ReadWriteDB.saveValuesDDL(QuestionVisibility.question, QuestionVisibility.option);
+            recalculateScores(viewHolder, QuestionVisibility.question);
+            toggleChildrenVisibility();
+            DashboardActivity.dashboardActivity.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    QuestionVisibility.adapter.notifyDataSetChanged();
+                }
+            });
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            viewHolder.progressBar.setVisibility(View.GONE);
+        }
+
+        @Override
+        protected void onPreExecute() {
+        }
+
+        @Override
+        protected void onProgressUpdate(Void... values) {
+        }
+    }
     /**
      * Recalculate num and denum of a quetsion, update them in cache vars and save the new num/denum in the score register associated with the question
      * @param viewHolder views cache
