@@ -74,7 +74,6 @@ import java.util.List;
 public class DashboardActivity extends BaseActivity implements DashboardUnsentFragment.onSurveySelectedListener,CreateSurveyFragment.OnCreatedSurveyListener,DashboardSentFragment.OnFeedbackSelectedListener {
 
     private final static String TAG=".DDetailsActivity";
-    public static boolean goFeedback;
     private boolean reloadOnResume=true;
     TabHost tabHost;
     PlannedFragment plannedFragment;
@@ -87,6 +86,7 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
     String currentTab;
     String currentTabName;
     boolean isMoveToLeft;
+    boolean isMoveToFeedback;
     static Handler handler;
     static Activity dashboardActivity;
 
@@ -136,7 +136,7 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
                 //If change of tab from surveyFragment or FeedbackFragment they could be closed.
                 if(isSurveyFragmentActive())
                     onExitFromSurvey();
-                if(isFeedbackFragmentActive() && !goFeedback)
+                if(isFeedbackFragmentActive() && !isMoveToFeedback)
                     closeFeedbackFragment();
                 if (tabId.equalsIgnoreCase(getResources().getString(R.string.tab_tag_plan))) {
                     currentTabName=getString(R.string.plan);
@@ -150,14 +150,15 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
                         setActionBarDashboard();
                     if(isSurveyFragmentActive())
                         setActionBarTitleForSurvey(Session.getSurvey());
-                    if(!goFeedback)
                         unsentFragment.reloadData();
                 } else if (tabId.equalsIgnoreCase(getResources().getString(R.string.tab_tag_improve))) {
                     currentTabName=getString(R.string.improve);
                     tabHost.getCurrentTabView().setBackgroundColor(getResources().getColor(R.color.tab_blue_improve));
-                    if(!isFeedbackFragmentActive() && !goFeedback){
+                    if(!isFeedbackFragmentActive() && !isMoveToFeedback){
                         setActionBarDashboard();
                     }
+                    if(!isMoveToFeedback)
+                        sentFragment.reloadData();
                 } else if (tabId.equalsIgnoreCase(getResources().getString(R.string.tab_tag_monitor))) {
                     currentTabName=getString(R.string.monitor);
                     tabHost.getCurrentTabView().setBackgroundColor(getResources().getColor(R.color.tab_green_monitor));
@@ -271,21 +272,23 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
         unsentFragment.setArguments(getIntent().getExtras());
         replaceListFragment(R.id.dashboard_details_container, unsentFragment);
     }
+
     public void initImprove(){
-        if(!goFeedback) {
-            sentFragment = new DashboardSentFragment();
-            sentFragment.setArguments(getIntent().getExtras());
-            replaceListFragment(R.id.dashboard_completed_container, sentFragment);
-            try {
-                LinearLayout filters = (LinearLayout) findViewById(R.id.filters_sentSurveys);
-                filters.setVisibility(View.VISIBLE);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+        sentFragment = new DashboardSentFragment();
+        Bundle bundle= new Bundle();
+        bundle.putBoolean("isMoveToFeedback", isMoveToFeedback);
+        sentFragment.setArguments(bundle);
+        replaceListFragment(R.id.dashboard_completed_container, sentFragment);
+        try {
+            LinearLayout filters = (LinearLayout) findViewById(R.id.filters_sentSurveys);
+            filters.setVisibility(View.VISIBLE);
+        } catch (NullPointerException e) {
+            e.printStackTrace();
         }
-
-
+        if(!isMoveToFeedback)
+            sentFragment.reloadData();
     }
+
 
 
     //this make clickable spinner image arrows as part of the spinner
@@ -333,14 +336,6 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
         if(surveyFragment==null)
             surveyFragment = SurveyFragment.newInstance(mStackLevel);
         replaceFragment(R.id.dashboard_details_container, surveyFragment);
-        setActionBarTitleForSurvey(Session.getSurvey());
-    }
-    public void initSurveyFeedback(){
-        int  mStackLevel=0;
-        mStackLevel++;
-        if(feedbackFragment==null)
-            feedbackFragment = FeedbackFragment.newInstance(mStackLevel);
-        replaceFragment(R.id.dashboard_completed_container, feedbackFragment);
         setActionBarTitleForSurvey(Session.getSurvey());
     }
 
@@ -638,11 +633,11 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
     }
 
     private void closeFeedbackFragment() {
+        isMoveToFeedback=false;
         ScoreRegister.clear();
         feedbackFragment.unregisterReceiver();
         feedbackFragment.getView().setVisibility(View.GONE);
         initImprove();
-        sentFragment.reloadData();
         setActionBarDashboard();
     }
 
@@ -741,14 +736,18 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
         initFeedback();
     }
 
+    //Open the survey the feedbackfragment with the survey in session.
     @Override
     public void onFeedbackInSession() {
         initFeedback();
     }
 
+    /**
+     * Open a survey feedback fragment from mark on complete dialog.
+     */
     private void openFeedbackSurvey(Survey survey) {
-        goFeedback=true;
         Session.setSurvey(survey);
+        initImprove();
         tabHost.setCurrentTabByTag(getResources().getString(R.string.tab_tag_improve));
     }
 
@@ -771,11 +770,12 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
     public void alertOnComplete(final Survey survey) {
         new AlertDialog.Builder(this)
                 .setTitle(null)
-                .setMessage(String.format(getApplicationContext().getResources().getString(R.string.dialog_info_on_complete),survey.getProgram().getName()))
+                .setMessage(String.format(getApplicationContext().getResources().getString(R.string.dialog_info_on_complete), survey.getProgram().getName()))
                 .setNeutralButton(android.R.string.ok, null)
                 .setPositiveButton((R.string.go_to_feedback), new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface arg0, int arg1) {
                         //Move to feedbackfragment
+                        isMoveToFeedback =true;
                         openFeedbackSurvey(survey);
                     }
                 })

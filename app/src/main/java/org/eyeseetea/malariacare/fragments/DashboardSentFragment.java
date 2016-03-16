@@ -151,77 +151,86 @@ public class DashboardSentFragment extends ListFragment {
         Log.d(TAG, "onActivityCreated");
         super.onActivityCreated(savedInstanceState);
 
+        hideContainer();
         initAdapter();
         initListView();
     }
 
+
     private void initFilters() {
-        initFilters =true;
-        filterSpinnerProgram = (Spinner) getActivity().findViewById(R.id.filter_program);
-        List<Program> filterProgramList=programList;
-        filterProgramList.add(0, new Program(getActivity().getString(R.string.filter_all_org_assessments_upper)));
+        if (getActivity().findViewById(R.id.filter_program) != null) {
+            initFilters = true;
+            filterSpinnerProgram = (Spinner) getActivity().findViewById(R.id.filter_program);
+            List<Program> filterProgramList = programList;
+            filterProgramList.add(0, new Program(getActivity().getString(R.string.filter_all_org_assessments_upper)));
 
-        filterSpinnerProgram.setAdapter(new FilterProgramArrayAdapter(this.getActivity().getApplicationContext(), filterProgramList));
-        filterSpinnerProgram.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            filterSpinnerProgram.setAdapter(new FilterProgramArrayAdapter(this.getActivity().getApplicationContext(), filterProgramList));
+            filterSpinnerProgram.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view,
-                                       int position, long id) {
-                Program program = (Program) parent.getItemAtPosition(position);
-                boolean reload = false;
-                if (program.getName().equals(getActivity().getString(R.string.filter_all_org_assessments_upper))) {
-                    if (programFilter != getActivity().getString(R.string.filter_all_org_assessments_upper)) {
-                        programFilter = getActivity().getString(R.string.filter_all_org_assessments_upper);
-                        reload=true;
-                    }
-                } else {
-                    if (programFilter != program.getUid()) {
-                        programFilter = program.getUid();
-                        reload=true;
-                    }
-                }
-                if(reload && !initFilters)
-                    reloadSentSurveys();
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> arg0) {
-
-            }
-        });
-        filterSpinnerOrgUnit = (Spinner) getActivity().findViewById(R.id.filter_orgunit);
-
-        //orgUnitList.add(0, new OrgUnit(getActivity().getString(R.string.filter_all_org_units_upper)));
-        filterSpinnerOrgUnit.setAdapter(new FilterOrgUnitArrayAdapter(getActivity().getApplicationContext(), orgUnitList));
-        filterSpinnerOrgUnit.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view,
-                                       int position, long id) {
-                OrgUnit orgUnit = (OrgUnit) parent.getItemAtPosition(position);
-                boolean reload = false;
-                if (orgUnit.getName().equals(getActivity().getString(R.string.filter_all_org_units_upper))) {
-                    if (orgUnitFilter != getActivity().getString(R.string.filter_all_org_units_upper)) {
-                        orgUnitFilter = getActivity().getString(R.string.filter_all_org_units_upper);
-                        reload = true;
-                    }
-                } else {
-                    if (orgUnitFilter != orgUnit.getUid()) {
-                        orgUnitFilter = orgUnit.getUid();
-                        reload = true;
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view,
+                                           int position, long id) {
+                    Program program = (Program) parent.getItemAtPosition(position);
+                    boolean reload = false;
+                    if(program!=null) {
+                        if (program.getName().equals(getActivity().getString(R.string.filter_all_org_assessments_upper))) {
+                            if (programFilter != getActivity().getString(R.string.filter_all_org_assessments_upper)) {
+                                programFilter = getActivity().getString(R.string.filter_all_org_assessments_upper);
+                                reload = true;
+                            }
+                        } else {
+                            if (programFilter != program.getUid()) {
+                                programFilter = program.getUid();
+                                reload = true;
+                            }
+                        }
+                        if (reload && !initFilters)
+                            reloadSentSurveys();
                     }
                 }
-                if (reload && !initFilters)
-                    reloadSentSurveys();
-            }
 
-            @Override
-            public void onNothingSelected(AdapterView<?> arg0) {
+                @Override
+                public void onNothingSelected(AdapterView<?> arg0) {
 
-            }
-        });
-        initFilters =false;
-        reloadSentSurveys();
+                }
+            });
+            filterSpinnerOrgUnit = (Spinner) getActivity().findViewById(R.id.filter_orgunit);
+
+            //orgUnitList.add(0, new OrgUnit(getActivity().getString(R.string.filter_all_org_units_upper)));
+            filterSpinnerOrgUnit.setAdapter(new FilterOrgUnitArrayAdapter(getActivity().getApplicationContext(), orgUnitList));
+            filterSpinnerOrgUnit.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view,
+                                           int position, long id) {
+                    OrgUnit orgUnit = (OrgUnit) parent.getItemAtPosition(position);
+                    boolean reload = false;
+                    if(orgUnit!=null) {
+                        if (orgUnit.getName().equals(getActivity().getString(R.string.filter_all_org_units_upper))) {
+                            if (orgUnitFilter != getActivity().getString(R.string.filter_all_org_units_upper)) {
+                                orgUnitFilter = getActivity().getString(R.string.filter_all_org_units_upper);
+                                reload = true;
+                            }
+                        } else {
+                            if (orgUnitFilter != orgUnit.getUid()) {
+                                orgUnitFilter = orgUnit.getUid();
+                                reload = true;
+                            }
+                        }
+                        if (reload && !initFilters)
+                            reloadSentSurveys();
+                    }
+                }
+
+
+                @Override
+                public void onNothingSelected(AdapterView<?> arg0) {
+
+                }
+            });
+            initFilters = false;
+            reloadSentSurveys();
+        }
     }
     @Override
     public void onResume(){
@@ -374,6 +383,10 @@ public class DashboardSentFragment extends ListFragment {
     private void registerSurveysReceiver() {
         Log.d(TAG, "registerSurveysReceiver");
 
+        if(getArguments().getBoolean("isMoveToFeedback",false)) {
+            mCallback.onFeedbackInSession();
+            showContainer();
+        }
         if (surveyReceiver == null) {
             surveyReceiver = new SurveyReceiver();
             LocalBroadcastManager.getInstance(getActivity()).registerReceiver(surveyReceiver, new IntentFilter(SurveyService.ALL_SENT_OR_COMPLETED_OR_CONFLICT_SURVEYS_ACTION));
@@ -400,13 +413,16 @@ public class DashboardSentFragment extends ListFragment {
         this.surveys.addAll(newListSurveys);
         adapter.setItems(newListSurveys);
         this.adapter.notifyDataSetChanged();
-        setListShown(true);
+        try {
+            setListShown(true);
+        }catch(IllegalStateException e){}
     }
 
     public void reloadData(){
         //Reload data using service
         Intent surveysIntent=new Intent(PreferencesState.getInstance().getContext().getApplicationContext(), SurveyService.class);
-        surveysIntent.putExtra(SurveyService.SERVICE_METHOD, SurveyService.RELOAD_DASHBOARD_ACTION);
+        surveysIntent.putExtra(SurveyService.SERVICE_METHOD, SurveyService.ALL_SENT_OR_COMPLETED_OR_CONFLICT_SURVEYS_ACTION);
+        surveysIntent.putExtra(SurveyService.SERVICE_METHOD, SurveyService.ALL_ORG_UNITS_AND_PROGRAMS_ACTION);
         PreferencesState.getInstance().getContext().getApplicationContext().startService(surveysIntent);
     }
 
@@ -414,68 +430,69 @@ public class DashboardSentFragment extends ListFragment {
      * filter the surveys for last survey in org unit, and set surveysForGraphic for the statistics
      */
     public void reloadSentSurveys() {
-        List<Survey> surveys = (List<Survey>) Session.popServiceValue(SurveyService.ALL_SENT_OR_COMPLETED_OR_CONFLICT_SURVEYS_ACTION);
-        HashMap<String, Survey> orgUnits;
-        orgUnits = new HashMap<>();
-        oneSurveyForOrgUnit = new ArrayList<>();
+        if(!getArguments().getBoolean("isMoveToFeedback",false)) {
+            List<Survey> surveys = (List<Survey>) Session.popServiceValue(SurveyService.ALL_SENT_OR_COMPLETED_OR_CONFLICT_SURVEYS_ACTION);
+            HashMap<String, Survey> orgUnits;
+            orgUnits = new HashMap<>();
+            oneSurveyForOrgUnit = new ArrayList<>();
 
-        for (Survey survey : surveys) {
-            if (survey.getOrgUnit() != null) {
-                if (!orgUnits.containsKey(survey.getTabGroup().getProgram().getUid()+survey.getOrgUnit().getUid())) {
-                    filterSurvey(orgUnits, survey);
-                } else {
-                    Survey surveyMapped = orgUnits.get(survey.getTabGroup().getProgram().getUid()+survey.getOrgUnit().getUid());
-                    Log.d(TAG,"reloadSentSurveys check NPE \tsurveyMapped:"+surveyMapped+"\tsurvey:"+survey);
-                    Log.d(TAG,"reloadSentSurveys check completionDate\tsurveyMapped:"+surveyMapped.getCompletionDate()+"\tsurvey:"+survey.getCompletionDate());
-                    if (surveyMapped.getCompletionDate().before(survey.getCompletionDate())) {
-                        orgUnits=filterSurvey(orgUnits, survey);
+            for (Survey survey : surveys) {
+                if (survey.getOrgUnit() != null) {
+                    if (!orgUnits.containsKey(survey.getTabGroup().getProgram().getUid() + survey.getOrgUnit().getUid())) {
+                        filterSurvey(orgUnits, survey);
+                    } else {
+                        Survey surveyMapped = orgUnits.get(survey.getTabGroup().getProgram().getUid() + survey.getOrgUnit().getUid());
+                        Log.d(TAG, "reloadSentSurveys check NPE \tsurveyMapped:" + surveyMapped + "\tsurvey:" + survey);
+                        if(surveyMapped.getCompletionDate()!=null && survey.getCompletionDate()!=null)
+                        if (surveyMapped.getCompletionDate().before(survey.getCompletionDate())) {
+                            orgUnits = filterSurvey(orgUnits, survey);
+                        }
                     }
                 }
             }
-        }
-        for (Survey survey : orgUnits.values()) {
-            oneSurveyForOrgUnit.add(survey);
-        }
-        //Order the surveys, and reverse if is needed, taking the last order from LAST_ORDER
-        if (orderBy != WITHOUT_ORDER) {
-            reverse=false;
-            if(orderBy==LAST_ORDER){
-                reverse=true;
+            for (Survey survey : orgUnits.values()) {
+                oneSurveyForOrgUnit.add(survey);
             }
-            Collections.sort(oneSurveyForOrgUnit, new Comparator<Survey>() {
-                public int compare(Survey survey1, Survey survey2) {
-                    int compare;
-                    switch (orderBy) {
-                        case FACILITY_ORDER:
-                            String surveyA = survey1.getOrgUnit().getName();
-                            String surveyB = survey2.getOrgUnit().getName();
-                            compare = surveyA.compareTo(surveyB);
-                            break;
-                        case DATE_ORDER:
-                            compare = survey1.getCompletionDate().compareTo(survey2.getCompletionDate());
-                            break;
-                        case SCORE_ORDER:
-                            compare = survey1.getMainScore().compareTo(survey2.getMainScore());
-                            break;
-                        default:
-                            compare = survey1.getMainScore().compareTo(survey2.getMainScore());
-                            break;
-                    }
-
-                    if (reverse) {
-                        return (compare * -1);
-                    }
-                    return compare;
+            //Order the surveys, and reverse if is needed, taking the last order from LAST_ORDER
+            if (orderBy != WITHOUT_ORDER) {
+                reverse = false;
+                if (orderBy == LAST_ORDER) {
+                    reverse = true;
                 }
-            });
+                Collections.sort(oneSurveyForOrgUnit, new Comparator<Survey>() {
+                    public int compare(Survey survey1, Survey survey2) {
+                        int compare;
+                        switch (orderBy) {
+                            case FACILITY_ORDER:
+                                String surveyA = survey1.getOrgUnit().getName();
+                                String surveyB = survey2.getOrgUnit().getName();
+                                compare = surveyA.compareTo(surveyB);
+                                break;
+                            case DATE_ORDER:
+                                compare = survey1.getCompletionDate().compareTo(survey2.getCompletionDate());
+                                break;
+                            case SCORE_ORDER:
+                                compare = survey1.getMainScore().compareTo(survey2.getMainScore());
+                                break;
+                            default:
+                                compare = survey1.getMainScore().compareTo(survey2.getMainScore());
+                                break;
+                        }
+
+                        if (reverse) {
+                            return (compare * -1);
+                        }
+                        return compare;
+                    }
+                });
+            }
+            if (reverse) {
+                LAST_ORDER = WITHOUT_ORDER;
+            } else {
+                LAST_ORDER = orderBy;
+            }
+            reloadSurveys(oneSurveyForOrgUnit);
         }
-        if (reverse) {
-            LAST_ORDER=WITHOUT_ORDER;
-        }
-        else{
-            LAST_ORDER=orderBy;
-        }
-        reloadSurveys(oneSurveyForOrgUnit);
     }
 
     public void getOrgUnitAndProgram(){
@@ -493,8 +510,6 @@ public class DashboardSentFragment extends ListFragment {
 
     public void showContainer(){
         getActivity().findViewById(R.id.dashboard_completed_container).setVisibility(View.VISIBLE);
-        if(DashboardActivity.goFeedback)
-            mCallback.onFeedbackInSession();
     }
     public void hideContainer(){
         getActivity().findViewById(R.id.dashboard_completed_container).setVisibility(View.GONE);
@@ -516,14 +531,14 @@ public class DashboardSentFragment extends ListFragment {
             }
             if(SurveyService.ALL_ORG_UNITS_AND_PROGRAMS_ACTION.equals(intent.getAction())){
                 getOrgUnitAndProgram();
-                new showContainer().execute("");
+                new showContainer().execute();
             }
         }
     }
 
-    private class showContainer extends AsyncTask<String, Void, String> {
+    private class showContainer extends AsyncTask<Void, Void, Void> {
         @Override
-        protected String doInBackground(String... params) {
+        protected Void doInBackground(Void... params) {
             //sleep for wait the ontab change
             try {
                 Thread.sleep(500);
@@ -534,16 +549,13 @@ public class DashboardSentFragment extends ListFragment {
         }
 
         @Override
-        protected void onPostExecute(String result) {
-            if(!DashboardActivity.goFeedback) {
-                initFilters();
-            }
+        protected void onPostExecute(Void result) {
+            initFilters();
             showContainer();
         }
 
         @Override
         protected void onPreExecute() {
-            hideContainer();
         }
 
         @Override

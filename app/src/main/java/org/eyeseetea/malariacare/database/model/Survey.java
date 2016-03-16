@@ -19,6 +19,8 @@
 
 package org.eyeseetea.malariacare.database.model;
 
+import android.util.Log;
+
 import com.raizlabs.android.dbflow.annotation.Column;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;
@@ -198,7 +200,7 @@ public class Survey extends BaseModel implements VisitableToSDK {
      * @return
      */
     public Program getProgram() {
-        if(tabGroup==null){
+        if(getTabGroup()==null){
             return null;
         }
         return tabGroup.getProgram();
