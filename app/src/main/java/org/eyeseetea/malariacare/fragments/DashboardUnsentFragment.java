@@ -177,16 +177,15 @@ public class DashboardUnsentFragment extends ListFragment {
     public boolean onContextItemSelected(MenuItem item) {
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
         Log.d(TAG, "id" + item.getItemId());
+        final Survey survey=(Survey)adapter.getItem(selectedPosition-1);
         switch (item.getItemId()) {
             case R.id.option_edit:
-                mCallback.onSurveySelected(surveys.get(selectedPosition-1));
+                mCallback.onSurveySelected(survey);
 
                 return true;
             case R.id.option_mark_completed:
-                Survey survey=(Survey)adapter.getItem(selectedPosition-1);
 
                 SurveyAnsweredRatio surveyAnsweredRatio=survey.getAnsweredQuestionRatio();
-
                 if(surveyAnsweredRatio.getTotalCompulsory()>0) {
                     if(Float.valueOf(100 * surveyAnsweredRatio.getCompulsoryRatio()).intValue()>=100) {
                         survey.setCompleteSurveyState();
@@ -209,11 +208,10 @@ public class DashboardUnsentFragment extends ListFragment {
                 Log.d(TAG, "removing item pos=" + selectedPosition);
                 new AlertDialog.Builder(getActivity())
                         .setTitle(getActivity().getString(R.string.dialog_title_delete_survey))
-                        .setMessage(getActivity().getString(R.string.dialog_info_delete_survey))
+                        .setMessage(String.format(getActivity().getString(R.string.dialog_info_delete_survey), survey.getProgram().getName()))
                         .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface arg0, int arg1) {
                                 //this method create a new survey geting the getScheduledDate date of the oldsurvey, and remove it.
-                                Survey survey=(Survey) adapter.getItem(selectedPosition - 1);
                                 SurveyPlanner.getInstance().deleteSurveyAndBuildNext(survey);
                                 removeSurveyFromAdapter(survey);
                             }

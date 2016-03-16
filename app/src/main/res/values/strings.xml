@@ -38,7 +38,7 @@
     <!-- # dialogs -->
     <string name="go_to_feedback">Go to feedback</string>
     <string name="dialog_title_delete_survey">Delete Survey</string>
-    <string name="dialog_info_delete_survey">Are you sure you want to completely delete this survey?</string>
+    <string name="dialog_info_delete_survey">Are you sure you want to completely delete the survey: %s?</string>
     <string name="dialog_title_error">Error</string>
     <string name="dialog_error_denominator">Error, denominator = 0</string>
     <string name="dialog_title_missing_selection">Missing selection</string>
@@ -280,6 +280,7 @@
     <string name="dialog_info_push_ignored">Ignored</string>
     <string name="dialog_info_push_stats">Survey data pushed to server. Results:</string>
     <string name="dialog_info_on_complete">"The survey %s has been marked as completed. You'll find it now in the Improve tab"</string>
+    <string name="dialog_deleting_children">You\'re about to delete the answer for questions that depend on this one. Do you really want to continue?</string>
 
     <!-- Preference variable names -->
     <item name="show_num_dems" type="string" translatable="false">show_num_dems</item>

@@ -89,7 +89,7 @@ function buildRowFacility(facility){
 	//value x month
 	for(var i=0;i<facility.values.length;i++){
 		var iValue=facility.values[i];
-row=row+""+buildColorXScore(iValue)+""+buildCellXScore(iValue)+"</span></div></td>";
+        row=row+""+buildColorXScore(iValue)+""+buildCellXScore(iValue)+"</span></div></td>";
 	
 	}
 	//end row
@@ -99,7 +99,7 @@ row=row+""+buildColorXScore(iValue)+""+buildCellXScore(iValue)+"</span></div></t
 
 function buildColorXScore(value){
 	if(value==null){
-		return "";
+		return "<td class='novisible'  ><div class='circlerow' ><span class='centerspan'>";
 	}
 
 	if(value<50){
