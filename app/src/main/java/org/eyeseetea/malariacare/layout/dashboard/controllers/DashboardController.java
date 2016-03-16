@@ -17,9 +17,7 @@
  *  along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.eyeseetea.malariacare.layout.dashboard;
-
-import com.fasterxml.jackson.databind.Module;
+package org.eyeseetea.malariacare.layout.dashboard.controllers;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,25 +25,25 @@ import java.util.List;
 /**
  * Created by idelcano on 25/02/2016.
  */
-public class Dashboard {
-    private List<AModule> modules;
+public class DashboardController {
+    private List<ModuleController> modules;
     public static int VERTICAL=0;
     public static int HORIZONTAL=1;
     private int style;
     private int layout;
 
-    public Dashboard(int layout, int style){
+    public DashboardController(int layout, int style){
         this.layout=layout;
         this.style=style;
         modules=new ArrayList<>();
     }
 
-    public  void addModule(AModule module){
+    public  void addModule(ModuleController module){
         modules.add(module);
     }
 
 
-    public  void removeModule(AModule module){
+    public  void removeModule(ModuleController module){
         modules.remove(module);
     }
 
@@ -58,15 +56,15 @@ public class Dashboard {
         }
     }
 
-    public AModule getModuleByName(String name){
-        for(AModule module:modules){
+    public ModuleController getModuleByName(String name){
+        for(ModuleController module:modules){
             if(module.getName().equals(name))
                 return module;
         }
         return null;
     }
 
-    public List<AModule> getModules() {
+    public List<ModuleController> getModules() {
         return modules;
     }
 

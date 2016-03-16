@@ -17,57 +17,48 @@
  *  along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.eyeseetea.malariacare.layout.dashboard;
-
-import android.view.View;
-import android.widget.LinearLayout;
+package org.eyeseetea.malariacare.layout.dashboard.controllers;
 
 import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
-import org.eyeseetea.malariacare.fragments.DashboardSentFragment;
+import org.eyeseetea.malariacare.fragments.PlannedFragment;
 
 /**
  * Created by idelcano on 25/02/2016.
  */
-public class ModuleImprove extends AModule {
+public class PlanModuleController extends ModuleController {
+    int color;
 
-    public ModuleImprove(boolean visible) {
-        this.layout=R.id.dashboard_completed_container;
-        this.tabLayout=R.id.tab_improve_layout;
+    public PlanModuleController(boolean visible) {
+        this.layout=R.id.dashboard_planning_tab;
+        this.tabLayout=R.id.tab_plan_layout;
         this.visible=visible;
         createModule();
     }
-
-    public ModuleImprove(int layout, boolean visible) {
+    
+    public PlanModuleController(int layout, boolean visible) {
         this.layout=layout;
         this.visible=visible;
         createModule();
     }
 
-    public ModuleImprove(int layout, int tabLayout, boolean visible) {
+    public PlanModuleController(int layout, int tabLayout, boolean visible) {
         this.layout=layout;
         this.tabLayout=tabLayout;
-        this.visible=visible;
         createModule();
     }
 
-    private void createModule() {
-        this.icon= PreferencesState.getInstance().getContext().getResources().getDrawable(R.drawable.tab_improve);
-        this.name= PreferencesState.getInstance().getContext().getResources().getString(R.string.tab_tag_improve);
-        this.color= PreferencesState.getInstance().getContext().getResources().getColor(R.color.tab_blue_improve);
+    private void createModule(){
+        this.icon= PreferencesState.getInstance().getContext().getResources().getDrawable(R.drawable.tab_plan);
+        this.name= PreferencesState.getInstance().getContext().getResources().getString(R.string.tab_tag_plan);
+        this.color= PreferencesState.getInstance().getContext().getResources().getColor(R.color.tab_orange_plan);
     }
-
 
     @Override
     public void init(DashboardActivity activity) {
         super.init(activity);
-        fragment = new DashboardSentFragment();
-        try {
-            LinearLayout filters = (LinearLayout) dashboardActivity.findViewById(R.id.filters_sentSurveys);
-            filters.setVisibility(View.VISIBLE);
-        }catch(Exception e){
-            e.printStackTrace();
-        }
+        fragment= new PlannedFragment();
     }
+
 }

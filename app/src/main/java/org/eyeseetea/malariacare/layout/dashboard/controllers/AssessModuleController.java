@@ -17,53 +17,48 @@
  *  along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.eyeseetea.malariacare.layout.dashboard;
-
-import android.app.Activity;
-import android.app.Fragment;
+package org.eyeseetea.malariacare.layout.dashboard.controllers;
 
 import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
-import org.eyeseetea.malariacare.fragments.MonitorFragment;
+import org.eyeseetea.malariacare.fragments.DashboardUnsentFragment;
 
 /**
  * Created by idelcano on 25/02/2016.
  */
-public class ModuleMonitor  extends AModule {
+public class AssessModuleController extends ModuleController {
 
-    public ModuleMonitor(boolean visible) {
-        this.layout=R.id.dashboard_charts_container;
-        this.tabLayout=R.id.tab_monitor_layout;
+    public AssessModuleController(boolean visible) {
+        this.layout=R.id.dashboard_details_container;
+        this.tabLayout=R.id.tab_assess_layout;
         this.visible=visible;
         createModule();
     }
 
-    public ModuleMonitor(int layout, boolean visible) {
+    public AssessModuleController(int layout, boolean visible) {
         this.layout=layout;
         this.visible=visible;
         createModule();
     }
 
-    public ModuleMonitor(int layout, int tabLayout, boolean visible) {
+    public AssessModuleController(int layout, int tabLayout, boolean visible) {
         this.layout=layout;
         this.tabLayout=tabLayout;
         this.visible=visible;
         createModule();
     }
 
-
     private void createModule() {
-        this.icon= PreferencesState.getInstance().getContext().getResources().getDrawable(R.drawable.tab_monitor);
-        this.name= PreferencesState.getInstance().getContext().getResources().getString(R.string.tab_tag_monitor);
-        this.color= PreferencesState.getInstance().getContext().getResources().getColor(R.color.tab_green_monitor);
+        this.icon= PreferencesState.getInstance().getContext().getResources().getDrawable(R.drawable.tab_assess);
+        this.name= PreferencesState.getInstance().getContext().getResources().getString(R.string.tab_tag_assess);
+        this.backgroundColor = PreferencesState.getInstance().getContext().getResources().getColor(R.color.tab_yellow_assess);
     }
 
     @Override
     public void init(DashboardActivity activity) {
         super.init(activity);
-        if(fragment==null) {
-            fragment = MonitorFragment.newInstance(1);
-        }
+        fragment = new DashboardUnsentFragment();
     }
+
 }

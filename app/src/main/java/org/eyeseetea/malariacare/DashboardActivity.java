@@ -41,7 +41,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.Spinner;
 import android.widget.TabHost;
 import android.widget.TabWidget;
 import android.widget.TextView;
@@ -60,12 +59,12 @@ import org.eyeseetea.malariacare.fragments.DashboardSentFragment;
 import org.eyeseetea.malariacare.fragments.DashboardUnsentFragment;
 import org.eyeseetea.malariacare.fragments.FeedbackFragment;
 import org.eyeseetea.malariacare.fragments.SurveyFragment;
-import org.eyeseetea.malariacare.layout.dashboard.AModule;
-import org.eyeseetea.malariacare.layout.dashboard.Dashboard;
-import org.eyeseetea.malariacare.layout.dashboard.ModuleAssess;
-import org.eyeseetea.malariacare.layout.dashboard.ModuleImprove;
-import org.eyeseetea.malariacare.layout.dashboard.ModuleMonitor;
-import org.eyeseetea.malariacare.layout.dashboard.ModulePlan;
+import org.eyeseetea.malariacare.layout.dashboard.controllers.DashboardController;
+import org.eyeseetea.malariacare.layout.dashboard.controllers.ModuleController;
+import org.eyeseetea.malariacare.layout.dashboard.controllers.AssessModuleController;
+import org.eyeseetea.malariacare.layout.dashboard.controllers.ImproveModuleController;
+import org.eyeseetea.malariacare.layout.dashboard.controllers.MonitorModuleController;
+import org.eyeseetea.malariacare.layout.dashboard.controllers.PlanModuleController;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.receivers.AlarmPushReceiver;
 import org.eyeseetea.malariacare.services.SurveyService;
@@ -87,7 +86,7 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
     String currentTab="";
     String currentTabName="";
     boolean isMoveToLeft;
-    Dashboard dashboard;
+    DashboardController dashboardController;
 
     static Handler handler;
     static Activity dashboardActivity;
@@ -107,18 +106,18 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
         }
 
         if(PreferencesState.getInstance().isVerticalDashboard()){
-            dashboard =new Dashboard(R.layout.vertical_main, Dashboard.VERTICAL);
-            dashboard.addModule(new ModuleAssess(true));
-            dashboard.addModule(new ModuleImprove(true));
+            dashboardController =new DashboardController(R.layout.vertical_main, DashboardController.VERTICAL);
+            dashboardController.addModule(new AssessModuleController(true));
+            dashboardController.addModule(new ImproveModuleController(true));
         }
         else{
-            dashboard =new Dashboard(R.layout.tab_dashboard, Dashboard.HORIZONTAL);
-            dashboard.addModule(new ModulePlan(!isPlanningTabHide()));
-            dashboard.addModule(new ModuleAssess(true));
-            dashboard.addModule(new ModuleImprove(true));
-            dashboard.addModule(new ModuleMonitor(true));
+            dashboardController =new DashboardController(R.layout.tab_dashboard, DashboardController.HORIZONTAL);
+            dashboardController.addModule(new PlanModuleController(!isPlanningTabHide()));
+            dashboardController.addModule(new AssessModuleController(true));
+            dashboardController.addModule(new ImproveModuleController(true));
+            dashboardController.addModule(new MonitorModuleController(true));
         }
-        setContentView(dashboard.getLayout());
+        setContentView(dashboardController.getLayout());
 
         if(PreferencesState.getInstance().isVerticalDashboard())
             initVertical();
@@ -130,7 +129,7 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
     }
 
     public void initVertical(){
-        for(AModule module: dashboard.getModules()){
+        for(ModuleController module: dashboardController.getModules()){
             if(!module.isVisible()) {
                 continue;
             }
@@ -142,7 +141,7 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
     }
 
     private void initHorizontal(Bundle savedInstanceState){
-        for(AModule module: dashboard.getModules()){
+        for(ModuleController module: dashboardController.getModules()){
             //skip invisible modules
             if(!module.isVisible()){
                 continue;
@@ -152,7 +151,7 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
         }
         initTabHost(savedInstanceState);
         /* set tabs in order */
-        for(AModule dashboardModule: dashboard.getModules()){
+        for(ModuleController dashboardModule: dashboardController.getModules()){
             if(dashboardModule.isVisible()){
                 setTab(dashboardModule.getName(),dashboardModule.getTabLayout(), dashboardModule.getIcon());
             }
@@ -221,7 +220,7 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
     }
 
     private void reloadModuleData(String name) {
-        AModule module = dashboard.getModuleByName(name);
+        ModuleController module = dashboardController.getModuleByName(name);
         tabHost.getCurrentTabView().setBackgroundColor(module.getBackgroundColor());
         if (module != null) {
             if(module.isVisible()) {
@@ -231,7 +230,7 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
     }
 
     private void reloadVertical(){
-        for(AModule module: dashboard.getModules()){
+        for(ModuleController module: dashboardController.getModules()){
             if(module.isVisible()) {
                 module.init(this);
                 initModule(module.getLayout(), module.getFragment());
@@ -653,7 +652,7 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
 
     //Reload the fragment
     private void reloadFragment(String string) {
-        AModule module = dashboard.getModuleByName(string);
+        ModuleController module = dashboardController.getModuleByName(string);
         if (module.getFragment() != null) {
             module.init(this);
             initModule(module.getLayout(), module.getFragment());
@@ -726,7 +725,7 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
 
     private void hideImprove() {
         FragmentTransaction ft = getFragmentTransaction();
-        AModule module= dashboard.getModuleByName(getResources().getString(R.string.tab_tag_improve));
+        ModuleController module= dashboardController.getModuleByName(getResources().getString(R.string.tab_tag_improve));
         if(module.getFragment()!=null) {
             ft.hide(module.getFragment());
             ft.commit();
@@ -821,7 +820,7 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
         }
         else{
             tabHost.setCurrentTabByTag(getResources().getString(R.string.tab_tag_improve));
-            AModule module= dashboard.getModuleByName(getResources().getString(R.string.tab_tag_improve));
+            ModuleController module= dashboardController.getModuleByName(getResources().getString(R.string.tab_tag_improve));
             if(module.getFragment()!=null) {
                 module.getFragment().getView().setVisibility(View.GONE);
             }

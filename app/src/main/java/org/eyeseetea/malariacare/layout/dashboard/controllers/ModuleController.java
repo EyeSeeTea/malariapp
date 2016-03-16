@@ -17,12 +17,9 @@
  *  along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.eyeseetea.malariacare.layout.dashboard;
+package org.eyeseetea.malariacare.layout.dashboard.controllers;
 
-import android.app.Activity;
 import android.app.Fragment;
-import android.app.FragmentTransaction;
-import android.app.ListFragment;
 import android.graphics.drawable.Drawable;
 
 import org.eyeseetea.malariacare.DashboardActivity;
@@ -31,13 +28,13 @@ import org.eyeseetea.malariacare.fragments.IModuleFragment;
 /**
  * Created by idelcano on 25/02/2016.
  */
-public abstract class AModule{
+public abstract class ModuleController {
 
     DashboardActivity dashboardActivity;
     int layout;
     int tabLayout;
     Drawable icon;
-    int color;
+    int backgroundColor;
     String name;
     Fragment fragment;
     boolean visible;
@@ -71,12 +68,12 @@ public abstract class AModule{
 
 
     public void setBackgroundColor(int color) {
-        this.color =color;
+        this.backgroundColor =color;
     }
 
 
     public int getBackgroundColor() {
-        return color;
+        return backgroundColor;
     }
 
 
