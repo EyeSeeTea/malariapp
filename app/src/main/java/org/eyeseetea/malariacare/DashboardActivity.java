@@ -136,7 +136,7 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
                 //If change of tab from surveyFragment or FeedbackFragment they could be closed.
                 if(isSurveyFragmentActive())
                     onExitFromSurvey();
-                if(isFeedbackFragmentActive() && !isMoveToFeedback)
+                if(isFeedbackFragmentActive() && !tabId.equalsIgnoreCase(getResources().getString(R.string.tab_tag_improve)))
                     closeFeedbackFragment();
                 if (tabId.equalsIgnoreCase(getResources().getString(R.string.tab_tag_plan))) {
                     currentTabName=getString(R.string.plan);
@@ -274,19 +274,18 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
     }
 
     public void initImprove(){
-        sentFragment = new DashboardSentFragment();
-        Bundle bundle= new Bundle();
-        bundle.putBoolean("isMoveToFeedback", isMoveToFeedback);
-        sentFragment.setArguments(bundle);
-        replaceListFragment(R.id.dashboard_completed_container, sentFragment);
-        try {
-            LinearLayout filters = (LinearLayout) findViewById(R.id.filters_sentSurveys);
-            filters.setVisibility(View.VISIBLE);
-        } catch (NullPointerException e) {
-            e.printStackTrace();
-        }
-        if(!isMoveToFeedback)
+        if(!isMoveToFeedback) {
+            sentFragment = new DashboardSentFragment();
+            sentFragment.setArguments(getIntent().getExtras());
+            replaceListFragment(R.id.dashboard_completed_container, sentFragment);
+            try {
+                LinearLayout filters = (LinearLayout) findViewById(R.id.filters_sentSurveys);
+                filters.setVisibility(View.VISIBLE);
+            }catch(NullPointerException e){
+                e.printStackTrace();
+            }
             sentFragment.reloadData();
+        }
     }
 
 
@@ -328,6 +327,12 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
     public void initSurveyFromPlanning(){
         tabHost.setCurrentTabByTag(getResources().getString(R.string.tab_tag_assess));
         initSurvey();
+    }
+
+    public void initSurveyFeedbackFromAssess(Survey survey){
+        Session.setSurvey(survey);
+        tabHost.setCurrentTabByTag(getResources().getString(R.string.tab_tag_improve));
+        initFeedback();
     }
 
     public void initSurvey(){
@@ -736,21 +741,6 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
         initFeedback();
     }
 
-    //Open the survey the feedbackfragment with the survey in session.
-    @Override
-    public void onFeedbackInSession() {
-        initFeedback();
-    }
-
-    /**
-     * Open a survey feedback fragment from mark on complete dialog.
-     */
-    private void openFeedbackSurvey(Survey survey) {
-        Session.setSurvey(survey);
-        initImprove();
-        tabHost.setCurrentTabByTag(getResources().getString(R.string.tab_tag_improve));
-    }
-
     @Override
     public void onSurveySelected(Survey survey) {
         //Put selected survey in session
@@ -776,7 +766,7 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
                     public void onClick(DialogInterface arg0, int arg1) {
                         //Move to feedbackfragment
                         isMoveToFeedback =true;
-                        openFeedbackSurvey(survey);
+                        initSurveyFeedbackFromAssess(survey);
                     }
                 })
                 .setCancelable(true)
