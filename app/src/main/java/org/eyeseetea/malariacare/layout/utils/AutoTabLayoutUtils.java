@@ -38,7 +38,6 @@ import android.widget.Spinner;
 import com.google.common.primitives.Booleans;
 import com.raizlabs.android.dbflow.structure.BaseModel;
 
-import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.model.Header;
 import org.eyeseetea.malariacare.database.model.Option;
@@ -47,6 +46,7 @@ import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.ReadWriteDB;
 import org.eyeseetea.malariacare.database.utils.Session;
+import org.eyeseetea.malariacare.fragments.SurveyFragment;
 import org.eyeseetea.malariacare.layout.adapters.general.OptionArrayAdapter;
 import org.eyeseetea.malariacare.layout.adapters.survey.AutoTabAdapter;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
@@ -354,7 +354,7 @@ public class AutoTabLayoutUtils {
         return refreshTab;
     }
 
-    public static void expandChildren(ViewHolder viewHolder){
+    public static void expandChildren(final ViewHolder viewHolder){
         //this method need be executed in the ui thread
         viewHolder.progressBar.setVisibility(View.VISIBLE);
         new toggleChildrenOperations().execute(viewHolder);
@@ -370,20 +370,20 @@ public class AutoTabLayoutUtils {
             ReadWriteDB.saveValuesDDL(QuestionVisibility.question, QuestionVisibility.option);
             recalculateScores(viewHolder, QuestionVisibility.question);
             toggleChildrenVisibility();
-            //the notifidatasetchanged needs be launch in the ui Thread
-            DashboardActivity.dashboardActivity.runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    QuestionVisibility.adapter.notifyDataSetChanged();
-                }
-            });
             return null;
         }
 
         @Override
         protected void onPostExecute(Void aVoid) {
-            //hide the progressbar
-            viewHolder.progressBar.setVisibility(View.GONE);
+            //this should be executed before the nofityDataSetChanged  in UI thread
+            SurveyFragment.mQuestions.post(new Runnable() {
+                @Override
+                public void run() {
+                    viewHolder.progressBar.setVisibility(View.GONE);
+                }
+            });
+            //reload list in UI thread
+            QuestionVisibility.adapter.notifyDataSetChanged();
         }
 
         @Override

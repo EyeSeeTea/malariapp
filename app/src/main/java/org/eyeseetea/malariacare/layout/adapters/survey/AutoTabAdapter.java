@@ -379,26 +379,6 @@ public class AutoTabAdapter extends ATabAdapter {
         }
     }
 
-    public class RadioButtonTouchListener implements RadioButton.OnTouchListener {
-        private AutoTabLayoutUtils.ViewHolder viewHolder;
-        private Question question;
-
-        public RadioButtonTouchListener(Question question, AutoTabLayoutUtils.ViewHolder viewHolder) {
-            this.question = question;
-            this.viewHolder = viewHolder;
-        }
-
-        @Override
-        public boolean onTouch(View v, MotionEvent event) {
-            if(question.hasChildren()) {
-                if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                    viewHolder.progressBar.setVisibility(View.VISIBLE);
-                }
-            }
-            return false;
-        }
-    }
-
     public class RadioGroupListener implements RadioGroup.OnCheckedChangeListener {
         private AutoTabLayoutUtils.ViewHolder viewHolder;
         private Question question;

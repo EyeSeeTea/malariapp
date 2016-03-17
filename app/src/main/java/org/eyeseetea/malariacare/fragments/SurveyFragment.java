@@ -338,7 +338,7 @@ public class SurveyFragment extends  Fragment {
                         tab.getType() == Constants.TAB_COMPOSITE_SCORE) {
                     tabAdapter.initializeSubscore();
                 }
-                ListView mQuestions = (ListView) llLayout.findViewById(R.id.listView);
+                mQuestions = (ListView) llLayout.findViewById(R.id.listView);
                 mQuestions.setAdapter((BaseAdapter) tabAdapter);
                 UnfocusScrollListener unfocusScrollListener = new UnfocusScrollListener();
                 mQuestions.setOnScrollListener(unfocusScrollListener);
