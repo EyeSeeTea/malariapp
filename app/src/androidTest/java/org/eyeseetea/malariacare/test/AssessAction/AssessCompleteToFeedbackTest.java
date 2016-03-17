@@ -55,7 +55,7 @@ import static org.eyeseetea.malariacare.test.utils.SDKTestUtils.waitForPull;
  */
 
 @RunWith(AndroidJUnit4.class)
-public class AssessCompleteTest {
+public class AssessCompleteToFeedbackTest {
 
     private static final String TAG="AssessActionTest";
 
