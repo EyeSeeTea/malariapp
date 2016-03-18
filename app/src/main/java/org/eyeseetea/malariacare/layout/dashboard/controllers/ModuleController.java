@@ -20,9 +20,13 @@
 package org.eyeseetea.malariacare.layout.dashboard.controllers;
 
 import android.app.Fragment;
+import android.app.FragmentTransaction;
+import android.app.ListFragment;
 import android.graphics.drawable.Drawable;
+import android.view.View;
 
 import org.eyeseetea.malariacare.DashboardActivity;
+import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.fragments.IModuleFragment;
 import org.eyeseetea.malariacare.layout.dashboard.config.ModuleSettings;
 
@@ -103,5 +107,33 @@ public abstract class ModuleController {
         }
 
         ((IModuleFragment)fragment).reloadData();
+    }
+
+    public void onCreate(DashboardActivity dashboardActivity){
+        if(!isVisible()){
+            return;
+        }
+        init(dashboardActivity);
+        replaceFragment(getLayout(),getFragment());
+    }
+
+    public void replaceFragment(int layout, Fragment fragment) {
+        if(fragment instanceof ListFragment){
+            try{
+                //fix some visual problems
+                View vg = dashboardActivity.findViewById(layout);
+                vg.invalidate();
+            }catch (Exception e){}
+        }
+
+        FragmentTransaction ft = getFragmentTransaction();
+        ft.replace(layout, fragment);
+        ft.commit();
+    }
+
+    public FragmentTransaction getFragmentTransaction() {
+        FragmentTransaction ft = dashboardActivity.getFragmentManager().beginTransaction();
+        ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+        return ft;
     }
 }
