@@ -38,31 +38,6 @@ public class PlanModuleController extends ModuleController {
         this.tabLayout=R.id.tab_plan_layout;
     }
 
-    public PlanModuleController(boolean visible) {
-        this.layout=R.id.dashboard_planning_tab;
-        this.tabLayout=R.id.tab_plan_layout;
-        this.visible=visible;
-        createModule();
-    }
-    
-    public PlanModuleController(int layout, boolean visible) {
-        this.layout=layout;
-        this.visible=visible;
-        createModule();
-    }
-
-    public PlanModuleController(int layout, int tabLayout, boolean visible) {
-        this.layout=layout;
-        this.tabLayout=tabLayout;
-        createModule();
-    }
-
-    private void createModule(){
-        this.icon= PreferencesState.getInstance().getContext().getResources().getDrawable(R.drawable.tab_plan);
-        this.name= PreferencesState.getInstance().getContext().getResources().getString(R.string.tab_tag_plan);
-        this.backgroundColor= PreferencesState.getInstance().getContext().getResources().getColor(R.color.tab_orange_plan);
-    }
-
     @Override
     public void init(DashboardActivity activity) {
         super.init(activity);

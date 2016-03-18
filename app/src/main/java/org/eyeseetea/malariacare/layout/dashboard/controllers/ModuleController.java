@@ -23,10 +23,18 @@ import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.app.ListFragment;
 import android.graphics.drawable.Drawable;
+import android.text.Html;
+import android.text.Spanned;
 import android.view.View;
+import android.widget.TextView;
 
 import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.R;
+import org.eyeseetea.malariacare.database.model.Program;
+import org.eyeseetea.malariacare.database.model.Survey;
+import org.eyeseetea.malariacare.database.model.User;
+import org.eyeseetea.malariacare.database.utils.PreferencesState;
+import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.fragments.IModuleFragment;
 import org.eyeseetea.malariacare.layout.dashboard.config.ModuleSettings;
 
@@ -45,11 +53,6 @@ public abstract class ModuleController {
      */
     ModuleSettings moduleSettings;
 
-
-    String name;
-    Drawable icon;
-    int backgroundColor;
-    int layout;
     int tabLayout;
 
     Fragment fragment;
@@ -71,6 +74,54 @@ public abstract class ModuleController {
         return dashboardActivity.getResources().getString(moduleSettings.getResName());
     }
 
+    public String getCapitalizeName(){
+        StringBuilder tabtemp = new StringBuilder(getTitle());
+        tabtemp.setCharAt(0, Character.toUpperCase(tabtemp.charAt(0)));
+        return tabtemp.toString();
+    }
+
+    public String getCurrentUsername(){
+        User user=Session.getUser();
+        if(user==null){
+            return "";
+        }
+        String userName=user.getName();
+        if(userName==null){
+            return "";
+        }
+        return userName;
+    }
+
+    public String getAppNameColorString(){
+        int appNameColor = dashboardActivity.getResources().getColor(R.color.appNameColor);
+        return String.format("%X", appNameColor).substring(2);
+    }
+
+    public String getAppName(){
+        return dashboardActivity.getResources().getString(R.string.app_name);
+    }
+
+    public String getTitle(){
+        return dashboardActivity.getResources().getString(moduleSettings.getResTitle());
+    }
+
+    public String getActionBarTitleBySurvey(Survey survey){
+        String title="";
+        if(survey.getOrgUnit().getName()!=null) {
+            title = survey.getOrgUnit().getName();
+        }
+        return title;
+    }
+
+    public String getActionBarSubTitleBySurvey(Survey survey){
+        String subtitle="";
+        Program program = survey.getTabGroup().getProgram();
+        if(program.getName()!=null) {
+            subtitle = program.getName();
+        }
+        return subtitle;
+    }
+
     public Drawable getIcon() {
         return dashboardActivity.getResources().getDrawable(moduleSettings.getResIcon());
     }
@@ -87,7 +138,6 @@ public abstract class ModuleController {
     public int getTabLayout() {
         return tabLayout;
     }
-
 
     public Fragment getFragment() {
         return fragment;
@@ -109,12 +159,87 @@ public abstract class ModuleController {
         ((IModuleFragment)fragment).reloadData();
     }
 
+    /**
+     * Inits the module (inside a responsability chain (dashboardActivity.onCreate -> dashboardController.onCreate -> here))
+     * @param dashboardActivity
+     */
     public void onCreate(DashboardActivity dashboardActivity){
         if(!isVisible()){
             return;
         }
         init(dashboardActivity);
-        replaceFragment(getLayout(),getFragment());
+        replaceFragment(getLayout(), getFragment());
+    }
+
+    /**
+     * Invoked whenever a tab loses its focus
+     */
+    public void onExitTab(){
+
+    }
+
+    /**
+     * Invoked whenever a tab gains focus
+     */
+    public void onTabChanged(){
+        reloadData();
+    }
+
+    public void setActionBarDashboard(){
+        if(PreferencesState.getInstance().isVerticalDashboard()){
+            setActionbarAppName();
+        }
+        else {
+            //Get Tab + User
+            String title=getCapitalizeName();
+            String user=getCurrentUsername();
+            String appNameColorString = getAppNameColorString();
+            String appName=getAppName();
+            Spanned spannedTitle= Html.fromHtml(String.format("<font color=\"#%s\"><b>%s</b></font> | %s", appNameColorString,appName,title));
+            setActionbarTitle(spannedTitle, user);
+        }
+    }
+
+    public void setActionBarTitleForSurvey(Survey survey){
+
+        String appNameColorString = getAppNameColorString();
+        String title=getActionBarTitleBySurvey(survey);
+        String subtitle=getActionBarSubTitleBySurvey(survey);
+
+        if(PreferencesState.getInstance().isVerticalDashboard()) {
+            setActionbarVerticalSurvey(title, subtitle);
+        }
+        else{
+            Spanned spannedTitle = Html.fromHtml(String.format("<font color=\"#%s\"><b>%s</b></font>", appNameColorString, title));
+            setActionbarTitle(spannedTitle, subtitle);
+        }
+    }
+
+    public void setActionbarVerticalSurvey(String title, String subtitle) {
+        android.support.v7.app.ActionBar actionBar = dashboardActivity.getSupportActionBar();
+        actionBar.setDisplayShowCustomEnabled(true);
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setCustomView(R.layout.abc_action_bar_title_item);
+        actionBar.setSubtitle(subtitle);
+        actionBar.setTitle(title);
+    }
+
+    public void setActionbarTitle(Spanned title, String subtitle) {
+        android.support.v7.app.ActionBar actionBar = dashboardActivity.getSupportActionBar();
+        actionBar.setDisplayShowCustomEnabled(true);
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setCustomView(R.layout.custom_action_bar);
+        ((TextView) dashboardActivity.findViewById(R.id.action_bar_multititle_title)).setText(title);
+        ((TextView) dashboardActivity.findViewById(R.id.action_bar_multititle_subtitle)).setText(subtitle);
+    }
+
+    public void setActionbarAppName() {
+        android.support.v7.app.ActionBar actionBar = dashboardActivity.getSupportActionBar();
+        actionBar.setDisplayShowCustomEnabled(true);
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setCustomView(R.layout.abc_action_bar_title_item);
+        actionBar.setSubtitle(null);
+        actionBar.setTitle(dashboardActivity.getResources().getString(R.string.app_name));
     }
 
     public void replaceFragment(int layout, Fragment fragment) {
@@ -135,5 +260,27 @@ public abstract class ModuleController {
         FragmentTransaction ft = dashboardActivity.getFragmentManager().beginTransaction();
         ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
         return ft;
+    }
+
+    /**
+     * Checks if the given container contains a fragment of the given class
+     * @param container
+     * @param fragmentClass
+     * @return
+     */
+    protected boolean isFragmentActive(int container, Class fragmentClass){
+        Fragment currentFragment = dashboardActivity.getFragmentManager ().findFragmentById(container);
+        if (fragmentClass.isInstance(currentFragment)) {
+            return true;
+        }
+        return false;
+    }
+
+    protected void reloadFragment() {
+        if (getFragment() != null) {
+            init(dashboardActivity);
+            replaceFragment(getLayout(), getFragment());
+            reloadData();
+        }
     }
 }

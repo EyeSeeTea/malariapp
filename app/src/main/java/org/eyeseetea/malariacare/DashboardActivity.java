@@ -251,18 +251,7 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
 
     @Override
     public void onFeedbackSelected(Survey survey) {
-        Session.setSurvey(survey);
-        if(PreferencesState.getInstance().isVerticalDashboard()){
-            dashboardController.initSurvey();
-        }
-        else{
-            tabHost.setCurrentTabByTag(getResources().getString(R.string.tab_tag_improve));
-            ModuleController module= dashboardController.getModuleByName(getResources().getString(R.string.tab_tag_improve));
-            if(module.getFragment()!=null) {
-                module.getFragment().getView().setVisibility(View.GONE);
-            }
-            dashboardController.initFeedback();
-        }
+        dashboardController.onFeedbackSelected(survey);
     }
 
     @Override
@@ -293,6 +282,10 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
     @Override
     public void onCreateSurvey() {
         dashboardController.initSurvey();
+    }
+
+    public void newSurvey(View view){
+        dashboardController.newSurvey();
     }
 
     /**

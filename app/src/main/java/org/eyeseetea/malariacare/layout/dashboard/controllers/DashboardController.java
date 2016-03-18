@@ -78,6 +78,21 @@ public class DashboardController {
      */
     private DashboardActivity dashboardActivity;
 
+    /**
+     * Reference to the tabhost
+     */
+    TabHost tabHost;
+
+    /**
+     * Name of the current tab (identifier)
+     */
+    String currentTab="";
+
+    /**
+     * Title of the current tab
+     */
+    String currentTabTitle ="";
+
 
     public DashboardController(DashboardSettings dashboardSettings){
         this.dashboardSettings = dashboardSettings;
@@ -96,10 +111,11 @@ public class DashboardController {
         modules.add(module);
     }
 
-    public  void removeModule(ModuleController module){
-        modules.remove(module);
-    }
-
+    /**
+     * Finds a module by its name
+     * @param name
+     * @return
+     */
     public ModuleController getModuleByName(String name){
         for(ModuleController module:modules){
             if(module.getName().equals(name))
@@ -112,6 +128,10 @@ public class DashboardController {
         return modules;
     }
 
+    /**
+     * Returns the moduleController for the first tab
+     * @return
+     */
     private ModuleController getFirstVisibleModule(){
         for(ModuleController module:modules){
             if(module.isVisible())
@@ -120,15 +140,28 @@ public class DashboardController {
         return null;
     }
 
+    /**
+     * Returns the module in charge of the currently selected tab
+     * @return
+     */
+    private ModuleController getCurrentModule(){
+        if(currentTab==null){
+            return null;
+        }
+        for(ModuleController module:modules){
+            if(module.getName().equals(currentTab))
+                return module;
+        }
+        return null;
+    }
+
     //XXX
 
-    TabHost tabHost;
+
     CreateSurveyFragment createSurveyFragment;
     SurveyFragment surveyFragment;
     FeedbackFragment feedbackFragment;
-    String currentTab="";
-    String currentTabName="";
-    boolean isMoveToLeft;
+
 
     public void onCreate(DashboardActivity dashboardActivity, Bundle savedInstanceState){
         this.dashboardActivity = dashboardActivity;
@@ -156,13 +189,79 @@ public class DashboardController {
         onCreateTabHost(savedInstanceState);
     }
 
-    private void reloadModuleData(String name) {
-        ModuleController module = getModuleByName(name);
-        tabHost.getCurrentTabView().setBackgroundColor(module.getBackgroundColor());
-        if (module != null) {
-            if(module.isVisible()) {
-                module.reloadData();
+    /**
+     * Init the container for all the tabs
+     */
+    private void onCreateTabHost(Bundle savedInstanceState) {
+        tabHost = (TabHost)dashboardActivity.findViewById(R.id.tabHost);
+        tabHost.setup();
+
+        //Add visible modules to tabhost
+        for(ModuleController moduleController: this.getModules()){
+            if(!moduleController.isVisible()) {
+                continue;
             }
+            addTab(moduleController);
+        }
+
+        ModuleController firstModuleController=getFirstVisibleModule();
+        tabHost.getTabWidget().getChildAt(0).setBackgroundColor(firstModuleController.getBackgroundColor());
+        currentTab = firstModuleController.getName();
+        currentTabTitle = firstModuleController.getTitle();
+
+        //Add tab listener
+        tabHost.setOnTabChangedListener(new TabHost.OnTabChangeListener() {
+            @Override
+            public void onTabChanged(String tabId) {
+                //References to previous and current modules
+                ModuleController currentModuleController = getCurrentModule();
+                ModuleController nextModuleController = getModuleByName(tabId);
+
+                //Reset tab colors
+                resetTabBackground();
+                tabHost.getCurrentTabView().setBackgroundColor(nextModuleController.getBackgroundColor());
+
+                //Update next Tab and title
+                currentTab = tabId;
+                currentTabTitle = nextModuleController.getTitle();
+
+                //Before leaving current tab
+                currentModuleController.onExitTab();
+                //Update action bar
+                nextModuleController.setActionBarDashboard();
+                //Preparing new tab
+                nextModuleController.onTabChanged();
+            }
+        });
+    }
+
+    /**
+     * Just to avoid trying to navigate back from the dashboard. There's no parent activity here
+     */
+    public void onBackPressed() {
+        if(isCreateSurveyFragmentActive() && PreferencesState.getInstance().isVerticalDashboard() ) {
+            reloadVertical();
+        }
+        else if (isSurveyFragmentActive() && PreferencesState.getInstance().isVerticalDashboard() ) {
+            Survey survey=Session.getSurvey();
+            survey.updateSurveyStatus();
+            ScoreRegister.clear();
+            surveyFragment.unregisterReceiver();
+            reloadVertical();
+        } else if (isFeedbackFragmentActive() && PreferencesState.getInstance().isVerticalDashboard() ) {
+            ScoreRegister.clear();
+            feedbackFragment.unregisterReceiver();
+            feedbackFragment.getView().setVisibility(View.GONE);
+            reloadVertical();
+        }
+        else if(isCreateSurveyFragmentActive() && (currentTab==dashboardActivity.getResources().getString(R.string.tab_tag_assess)) ) {
+            reloadFragment(dashboardActivity.getResources().getString(R.string.tab_tag_assess));
+        } else if (isSurveyFragmentActive() && currentTab == dashboardActivity.getResources().getString(R.string.tab_tag_assess)) {
+            onSurveyBackPressed();
+        } else if (isFeedbackFragmentActive() && currentTab == dashboardActivity.getResources().getString(R.string.tab_tag_improve)) {
+            closeFeedbackFragment();
+        } else {
+            confirmExitApp();
         }
     }
 
@@ -188,7 +287,7 @@ public class DashboardController {
                 user=Session.getUser().getName();
 
             //Capitalize tab name
-            StringBuilder tabtemp = new StringBuilder(currentTabName.toLowerCase());
+            StringBuilder tabtemp = new StringBuilder(currentTabTitle.toLowerCase());
             tabtemp.setCharAt(0, Character.toUpperCase(tabtemp.charAt(0)));
             title = tabtemp.toString();
             int appNameColor = dashboardActivity.getResources().getColor(R.color.appNameColor);
@@ -253,6 +352,11 @@ public class DashboardController {
         initSurvey();
     }
 
+    public void onFeedbackSelected(Survey survey) {
+        Session.setSurvey(survey);
+        initFeedback();
+    }
+
     public void initSurvey(){
         if(surveyFragment==null) {
             surveyFragment = SurveyFragment.newInstance(1);
@@ -277,83 +381,26 @@ public class DashboardController {
 
     public FragmentTransaction getFragmentTransaction() {
         FragmentTransaction ft = dashboardActivity.getFragmentManager().beginTransaction();
-        if(isMoveToLeft) {
-            isMoveToLeft =false;
-            ft.setCustomAnimations(R.animator.anim_slide_in_right, R.animator.anim_slide_out_right);
-        }
-        else
-            ft.setCustomAnimations(R.animator.anim_slide_in_left, R.animator.anim_slide_out_left);
         ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
         return ft;
     }
 
-    /**
-     * Init the container for all the tabs
-     */
-    private void onCreateTabHost(Bundle savedInstanceState) {
-        tabHost = (TabHost)dashboardActivity.findViewById(R.id.tabHost);
-        tabHost.setup();
-
-        //Add visible modules to tabhost
-        for(ModuleController dashboardModule: this.getModules()){
-            if(!dashboardModule.isVisible()) {
-                continue;
-            }
-            TabHost.TabSpec tab = tabHost.newTabSpec(dashboardModule.getName());
-            tab.setContent(dashboardModule.getTabLayout());
-            tab.setIndicator("", dashboardModule.getIcon());
-            tabHost.addTab(tab);
-            addTagToLastTab(dashboardModule.getName());
+    private void resetTabBackground(){
+        Resources resources = dashboardActivity.getResources();
+        for (int i = 0; i < tabHost.getTabWidget().getChildCount(); i++) {
+            tabHost.getTabWidget().getChildAt(i).setBackgroundColor(resources.getColor(R.color.transparent));
         }
+    }
 
-        ModuleController firstModuleController=getFirstVisibleModule();
-        tabHost.getTabWidget().getChildAt(0).setBackgroundColor(firstModuleController.getBackgroundColor());
-        currentTabName = firstModuleController.getName();
+    private void addTab(ModuleController moduleController){
+        String tabName=moduleController.getName();
+        //Add tab to tabhost
+        TabHost.TabSpec tab = tabHost.newTabSpec(tabName);
+        tab.setContent(moduleController.getTabLayout());
+        tab.setIndicator("", moduleController.getIcon());
+        tabHost.addTab(tab);
 
-        //Add tab listener
-        tabHost.setOnTabChangedListener(new TabHost.OnTabChangeListener() {
-
-            @Override
-            public void onTabChanged(String tabId) {
-                /** If current tab is android */
-                Resources resources =dashboardActivity.getResources();
-                //set the tabs background as transparent
-                for (int i = 0; i < tabHost.getTabWidget().getChildCount(); i++) {
-                    tabHost.getTabWidget().getChildAt(i).setBackgroundColor(resources.getColor(R.color.transparent));
-                }
-                currentTab = tabId;
-
-                //If change of tab from surveyFragment or FeedbackFragment they could be closed.
-                if (isSurveyFragmentActive())
-                    onExitFromSurvey();
-                if (isFeedbackFragmentActive())
-                    closeFeedbackFragment();
-                if (tabId.equalsIgnoreCase(resources.getString(R.string.tab_tag_plan))) {
-                    currentTabName = dashboardActivity.getString(R.string.plan);
-                    reloadModuleData(dashboardActivity.getResources().getString(R.string.tab_tag_plan));
-                    setActionBarDashboard();
-                } else if (tabId.equalsIgnoreCase(resources.getString(R.string.tab_tag_assess))) {
-                    currentTabName = dashboardActivity.getString(R.string.assess);
-                    if (isCreateSurveyFragmentActive() || isDashboardUnsentFragmentActive())
-                        setActionBarDashboard();
-                    if (isSurveyFragmentActive())
-                        setActionBarTitleForSurvey(Session.getSurvey());
-
-                    reloadModuleData(resources.getString(R.string.tab_tag_assess));
-                } else if (tabId.equalsIgnoreCase(resources.getString(R.string.tab_tag_improve))) {
-                    currentTabName = dashboardActivity.getString(R.string.improve);
-                    if (!isFeedbackFragmentActive()) {
-                        setActionBarDashboard();
-                        reloadModuleData(resources.getString(R.string.tab_tag_improve));
-                    }
-
-                } else if (tabId.equalsIgnoreCase(resources.getString(R.string.tab_tag_monitor))) {
-                    currentTabName = dashboardActivity.getString(R.string.monitor);
-                    setActionBarDashboard();
-                    reloadModuleData(resources.getString(R.string.tab_tag_monitor));
-                }
-            }
-        });
+        addTagToLastTab(tabName);
     }
 
     /**
@@ -401,20 +448,6 @@ public class DashboardController {
             return true;
         }
         return false;
-    }
-
-    /**
-     * Ask to send the survey or close the survey.
-     * It is called when the user change the tab
-     */
-    private void onExitFromSurvey(){
-        Survey survey = Session.getSurvey();
-        SurveyAnsweredRatio surveyAnsweredRatio = survey.reloadSurveyAnsweredRatio();
-        if (surveyAnsweredRatio.getCompulsoryAnswered() == surveyAnsweredRatio.getTotalCompulsory() && surveyAnsweredRatio.getTotalCompulsory() != 0) {
-            askToSendCompulsoryCompletedSurvey();
-
-        }
-        closeSurveyFragment();
     }
 
     /**
@@ -483,7 +516,7 @@ public class DashboardController {
     /**
      * Called when the user clicks the New Survey button
      */
-    public void newSurvey(View view) {
+    public void newSurvey() {
         if(PreferencesState.getInstance().isVerticalDashboard()) {
             hideImprove();
             initCreateSurvey(R.id.dashboard_details_container);
@@ -551,37 +584,6 @@ public class DashboardController {
                 .setPositiveButton(android.R.string.ok, null)
                 .setCancelable(true)
                 .create().show();
-    }
-
-    /**
-     * Just to avoid trying to navigate back from the dashboard. There's no parent activity here
-     */
-    public void onBackPressed() {
-        isMoveToLeft =true;
-        if(isCreateSurveyFragmentActive() && PreferencesState.getInstance().isVerticalDashboard() ) {
-            reloadVertical();
-        }
-        else if (isSurveyFragmentActive() && PreferencesState.getInstance().isVerticalDashboard() ) {
-            Survey survey=Session.getSurvey();
-            survey.updateSurveyStatus();
-            ScoreRegister.clear();
-            surveyFragment.unregisterReceiver();
-            reloadVertical();
-        } else if (isFeedbackFragmentActive() && PreferencesState.getInstance().isVerticalDashboard() ) {
-            ScoreRegister.clear();
-            feedbackFragment.unregisterReceiver();
-            feedbackFragment.getView().setVisibility(View.GONE);
-            reloadVertical();
-        }
-        else if(isCreateSurveyFragmentActive() && (currentTab==dashboardActivity.getResources().getString(R.string.tab_tag_assess)) ) {
-            reloadFragment(dashboardActivity.getResources().getString(R.string.tab_tag_assess));
-        } else if (isSurveyFragmentActive() && currentTab == dashboardActivity.getResources().getString(R.string.tab_tag_assess)) {
-            onSurveyBackPressed();
-        } else if (isFeedbackFragmentActive() && currentTab == dashboardActivity.getResources().getString(R.string.tab_tag_improve)) {
-            closeFeedbackFragment();
-        } else {
-            confirmExitApp();
-        }
     }
 
     /**

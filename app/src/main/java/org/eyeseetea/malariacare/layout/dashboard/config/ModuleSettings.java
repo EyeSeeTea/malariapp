@@ -38,6 +38,11 @@ public class ModuleSettings {
      * Key in the strings resources to get the String name of the module (Ex: R.string.tab_tag_assess -> 'tab_tag_assess')
      */
     String name;
+
+    /**
+     * Key in the strings resources to get the String title of the module (Ex: R.string.assess -> 'assess')
+     */
+    String title;
     /**
      * Key in the drawable resources to get the Drawable for the tabs (Ex: R.drawable.tab_assess -> 'tab_assess')
      */
@@ -59,6 +64,12 @@ public class ModuleSettings {
      * The int value of the name property under the generated R.strings class
      */
     int resName;
+
+    /**
+     * The int value of the title property under the generated R.strings class
+     */
+    int resTitle;
+
     /**
      *  The int value of the icon property under the generated R.drawable class
      */
@@ -87,6 +98,15 @@ public class ModuleSettings {
     public void setName(String name) {
         this.name = name;
         this.resName = resolve(R.string.class,name);
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+        this.resTitle = resolve(R.string.class,title);
     }
 
     public String getIcon() {
@@ -127,6 +147,10 @@ public class ModuleSettings {
 
     public int getResName() {
         return resName;
+    }
+
+    public int getResTitle() {
+        return resTitle;
     }
 
     public int getResIcon() {

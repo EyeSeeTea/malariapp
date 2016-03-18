@@ -35,38 +35,9 @@ public class MonitorModuleController extends ModuleController {
         this.tabLayout=R.id.tab_monitor_layout;
     }
 
-    public MonitorModuleController(boolean visible) {
-        this.layout=R.id.dashboard_charts_container;
-        this.tabLayout=R.id.tab_monitor_layout;
-        this.visible=visible;
-        createModule();
-    }
-
-    public MonitorModuleController(int layout, boolean visible) {
-        this.layout=layout;
-        this.visible=visible;
-        createModule();
-    }
-
-    public MonitorModuleController(int layout, int tabLayout, boolean visible) {
-        this.layout=layout;
-        this.tabLayout=tabLayout;
-        this.visible=visible;
-        createModule();
-    }
-
-
-    private void createModule() {
-        this.icon= PreferencesState.getInstance().getContext().getResources().getDrawable(R.drawable.tab_monitor);
-        this.name= PreferencesState.getInstance().getContext().getResources().getString(R.string.tab_tag_monitor);
-        this.backgroundColor = PreferencesState.getInstance().getContext().getResources().getColor(R.color.tab_green_monitor);
-    }
-
     @Override
     public void init(DashboardActivity activity) {
         super.init(activity);
-//        if(fragment==null) {
-            fragment = MonitorFragment.newInstance(1);
-//        }
+        fragment = MonitorFragment.newInstance(1);
     }
 }

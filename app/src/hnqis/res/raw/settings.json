@@ -8,24 +8,28 @@
     "layout":"tab_dashboard",
     "modules": [{
       "name": "tab_tag_plan",
+      "title": "plan",
       "icon": "tab_plan",
       "backgroundColor": "tab_orange_plan",
       "layout": "dashboard_planning_tab",
       "controller": "PlanModuleController"
     }, {
       "name": "tab_tag_assess",
+      "title": "assess",
       "icon": "tab_assess",
       "backgroundColor": "tab_yellow_assess",
       "layout": "dashboard_details_container",
       "controller": "AssessModuleController"
     },{
       "name": "tab_tag_improve",
+      "title": "improve",
       "icon": "tab_improve",
       "backgroundColor": "tab_blue_improve",
       "layout": "dashboard_completed_container",
       "controller": "ImproveModuleController"
     },{
       "name": "tab_tag_monitor",
+      "title": "monitor",
       "icon": "tab_monitor",
       "backgroundColor": "tab_green_monitor",
       "layout": "dashboard_charts_container",
