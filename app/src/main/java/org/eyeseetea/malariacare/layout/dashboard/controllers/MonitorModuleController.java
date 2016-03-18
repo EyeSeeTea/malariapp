@@ -23,11 +23,17 @@ import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.fragments.MonitorFragment;
+import org.eyeseetea.malariacare.layout.dashboard.config.ModuleSettings;
 
 /**
  * Created by idelcano on 25/02/2016.
  */
 public class MonitorModuleController extends ModuleController {
+
+    public MonitorModuleController(ModuleSettings moduleSettings){
+        super(moduleSettings);
+        this.tabLayout=R.id.tab_monitor_layout;
+    }
 
     public MonitorModuleController(boolean visible) {
         this.layout=R.id.dashboard_charts_container;
@@ -59,8 +65,8 @@ public class MonitorModuleController extends ModuleController {
     @Override
     public void init(DashboardActivity activity) {
         super.init(activity);
-        if(fragment==null) {
+//        if(fragment==null) {
             fragment = MonitorFragment.newInstance(1);
-        }
+//        }
     }
 }

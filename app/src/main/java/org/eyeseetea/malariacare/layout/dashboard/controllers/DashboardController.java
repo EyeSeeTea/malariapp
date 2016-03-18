@@ -19,6 +19,9 @@
 
 package org.eyeseetea.malariacare.layout.dashboard.controllers;
 
+import org.eyeseetea.malariacare.layout.dashboard.config.DashboardOrientation;
+import org.eyeseetea.malariacare.layout.dashboard.config.DashboardSettings;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,15 +30,25 @@ import java.util.List;
  */
 public class DashboardController {
     private List<ModuleController> modules;
-    public static int VERTICAL=0;
-    public static int HORIZONTAL=1;
-    private int style;
+    private DashboardSettings dashboardSettings;
+
+
+    private DashboardOrientation orientation;
     private int layout;
 
-    public DashboardController(int layout, int style){
+    public DashboardController(DashboardSettings dashboardSettings){
+        this.dashboardSettings = dashboardSettings;
+        this.modules = new ArrayList<>();
+    }
+
+    public DashboardController(int layout, DashboardOrientation orientation){
         this.layout=layout;
-        this.style=style;
+        this.orientation = orientation;
         modules=new ArrayList<>();
+    }
+
+    public DashboardOrientation getOrientation(){
+        return this.orientation;
     }
 
     public  void addModule(ModuleController module){
@@ -45,15 +58,6 @@ public class DashboardController {
 
     public  void removeModule(ModuleController module){
         modules.remove(module);
-    }
-
-    public void showModules(){
-        if(style==VERTICAL){
-
-        }
-        else if(style==HORIZONTAL){
-
-        }
     }
 
     public ModuleController getModuleByName(String name){
@@ -68,19 +72,8 @@ public class DashboardController {
         return modules;
     }
 
-    public int getStyle() {
-        return style;
-    }
-
-    public void setStyle(int style) {
-        this.style = style;
-    }
-
     public int getLayout() {
-        return layout;
+        return dashboardSettings.getResLayout();
     }
 
-    public void setLayout(int layout) {
-        this.layout = layout;
-    }
 }

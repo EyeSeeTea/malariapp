@@ -59,6 +59,8 @@ import org.eyeseetea.malariacare.fragments.DashboardSentFragment;
 import org.eyeseetea.malariacare.fragments.DashboardUnsentFragment;
 import org.eyeseetea.malariacare.fragments.FeedbackFragment;
 import org.eyeseetea.malariacare.fragments.SurveyFragment;
+import org.eyeseetea.malariacare.layout.dashboard.builder.AppSettingsBuilder;
+import org.eyeseetea.malariacare.layout.dashboard.config.DashboardOrientation;
 import org.eyeseetea.malariacare.layout.dashboard.controllers.DashboardController;
 import org.eyeseetea.malariacare.layout.dashboard.controllers.ModuleController;
 import org.eyeseetea.malariacare.layout.dashboard.controllers.AssessModuleController;
@@ -105,18 +107,7 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
             Log.e(".DashboardActivity", e.getMessage());
         }
 
-        if(PreferencesState.getInstance().isVerticalDashboard()){
-            dashboardController =new DashboardController(R.layout.vertical_main, DashboardController.VERTICAL);
-            dashboardController.addModule(new AssessModuleController(true));
-            dashboardController.addModule(new ImproveModuleController(true));
-        }
-        else{
-            dashboardController =new DashboardController(R.layout.tab_dashboard, DashboardController.HORIZONTAL);
-            dashboardController.addModule(new PlanModuleController(!isPlanningTabHide()));
-            dashboardController.addModule(new AssessModuleController(true));
-            dashboardController.addModule(new ImproveModuleController(true));
-            dashboardController.addModule(new MonitorModuleController(true));
-        }
+        dashboardController = AppSettingsBuilder.getInstance().getDashboardController();
         setContentView(dashboardController.getLayout());
 
         if(PreferencesState.getInstance().isVerticalDashboard())
@@ -209,7 +200,7 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
             tabHost.getTabWidget().getChildAt(i).setFocusable(false);
         }
         //set the initial selected tab background
-        if(!isPlanningTabHide()) {
+        if(!PreferencesState.getInstance().isHidePlanningTab()) {
             tabHost.getTabWidget().getChildAt(0).setBackgroundColor(getResources().getColor(R.color.tab_orange_plan));
             currentTabName=getString(R.string.plan);
         }
@@ -238,11 +229,6 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
             }
         }
         setActionbarAppName();
-    }
-
-    public boolean isPlanningTabHide(){
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        return sharedPreferences.getBoolean(getApplicationContext().getResources().getString(R.string.hide_planning_tab_key),false);
     }
 
     public void setActionBarDashboard(){
@@ -415,7 +401,7 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
     }
 
     @NonNull
-    private FragmentTransaction getFragmentTransaction() {
+    public FragmentTransaction getFragmentTransaction() {
         FragmentTransaction ft = getFragmentManager ().beginTransaction();
         if(isMoveToLeft) {
             isMoveToLeft =false;

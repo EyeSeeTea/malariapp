@@ -24,27 +24,60 @@ import android.graphics.drawable.Drawable;
 
 import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.fragments.IModuleFragment;
+import org.eyeseetea.malariacare.layout.dashboard.config.ModuleSettings;
 
 /**
  * Created by idelcano on 25/02/2016.
  */
 public abstract class ModuleController {
 
+    /**
+     * Reference that points to the dashboard activity to resolve context stuff
+     */
     DashboardActivity dashboardActivity;
-    int layout;
-    int tabLayout;
+
+    /**
+     * Reference to the module properties
+     */
+    ModuleSettings moduleSettings;
+
+
+    String name;
     Drawable icon;
     int backgroundColor;
-    String name;
+    int layout;
+    int tabLayout;
+
     Fragment fragment;
     boolean visible;
 
-    public int getLayout() {
-        return layout;
+    protected ModuleController(){
     }
 
-    public void setLayout(int layout) {
-        this.layout = layout;
+    public ModuleController(ModuleSettings moduleSettings){
+        this.visible = true;
+        this.moduleSettings = moduleSettings;
+    }
+
+    public void init(DashboardActivity activity){
+        this.dashboardActivity = activity;
+    }
+
+    public String getName() {
+        return dashboardActivity.getResources().getString(moduleSettings.getResName());
+    }
+
+    public Drawable getIcon() {
+        return dashboardActivity.getResources().getDrawable(moduleSettings.getResIcon());
+    }
+
+    public int getBackgroundColor() {
+        return dashboardActivity.getResources().getColor(moduleSettings.getResBackgroundColor());
+    }
+
+
+    public int getLayout() {
+        return moduleSettings.getResLayout();
     }
 
     public int getTabLayout() {
@@ -52,45 +85,8 @@ public abstract class ModuleController {
     }
 
 
-    public void setTabLayout(int tabLayout) {
-        this.tabLayout = tabLayout;
-    }
-
-
-    public Drawable getIcon() {
-        return icon;
-    }
-
-
-    public void setIcon(Drawable icon) {
-        this.icon = icon;
-    }
-
-
-    public void setBackgroundColor(int color) {
-        this.backgroundColor =color;
-    }
-
-
-    public int getBackgroundColor() {
-        return backgroundColor;
-    }
-
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public Fragment getFragment() {
         return fragment;
-    }
-
-    public void setFragment(Fragment fragment) {
-        this.fragment = fragment;
     }
 
     public boolean isVisible() {
@@ -99,10 +95,6 @@ public abstract class ModuleController {
 
     public void setVisible(boolean visible) {
         this.visible = visible;
-    }
-
-    public void init(DashboardActivity activity){
-        this.dashboardActivity = activity;
     }
 
     public void reloadData(){

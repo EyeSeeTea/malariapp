@@ -27,6 +27,9 @@ import android.util.Log;
 import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.ProgressActivity;
 import org.eyeseetea.malariacare.R;
+import org.eyeseetea.malariacare.layout.dashboard.builder.AppSettingsBuilder;
+import org.eyeseetea.malariacare.layout.dashboard.config.AppSettings;
+import org.eyeseetea.malariacare.layout.dashboard.config.DashboardOrientation;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -54,9 +57,15 @@ public class PreferencesState {
      */
     private boolean showNumDen;
 
+    /**
+     * Flag that determines if data must be pulled from server
+     */
     private Boolean pullFromServer;
 
-    private Boolean verticalDashboard;
+    /**
+     * Flag that determines if the planning tab must be hide or not
+     */
+    private Boolean hidePlanningTab;
 
     /**
      * Map that holds the relationship between a scale and a set of dimensions
@@ -91,6 +100,7 @@ public class PreferencesState {
         scale= initScale();
         showNumDen=initShowNumDen();
         locationRequired=initLocationRequired();
+        hidePlanningTab = initHidePlanningTab();
         maxEvents=initMaxEvents();
         Log.d(TAG,String.format("reloadPreferences: scale: %s | showNumDen: %b | locationRequired: %b | maxEvents: %d",scale,showNumDen,locationRequired,maxEvents));
     }
@@ -114,7 +124,7 @@ public class PreferencesState {
      */
     private boolean initShowNumDen(){
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(instance.getContext());
-        return sharedPreferences.getBoolean(instance.getContext().getString(R.string.show_num_dems),false);
+        return sharedPreferences.getBoolean(instance.getContext().getString(R.string.show_num_dems), false);
     }
 
     /**
@@ -124,6 +134,15 @@ public class PreferencesState {
     private boolean initLocationRequired(){
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(instance.getContext());
         return sharedPreferences.getBoolean(instance.getContext().getString(R.string.location_required), false);
+    }
+
+    /**
+     * Inits hidePlanningTab flag according to preferences
+     * @return
+     */
+    private boolean initHidePlanningTab(){
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(instance.getContext());
+        return sharedPreferences.getBoolean(instance.getContext().getString(R.string.hide_planning_tab_key), false);
     }
 
     /**
@@ -206,22 +225,14 @@ public class PreferencesState {
         return showNumDen;
     }
 
-    public void setShowNumDen(boolean value){
-        this.showNumDen=value;
-    }
-
     public boolean isLocationRequired(){return locationRequired;}
 
-    public void setLocationRequired(boolean value){
-        this.locationRequired=value;
+    public boolean isHidePlanningTab(){
+        return this.hidePlanningTab;
     }
 
     public int getMaxEvents(){
         return this.maxEvents;
-    }
-
-    public void setMaxEvents(int maxEvents){
-        this.maxEvents=maxEvents;
     }
 
     public Float getFontSize(String scale,String dimension){
@@ -245,10 +256,7 @@ public class PreferencesState {
      * @return
      */
     public Boolean isVerticalDashboard() {
-        if(verticalDashboard==null){
-            verticalDashboard= context.getResources().getBoolean(R.bool.vertical);
-        }
-        return verticalDashboard;
+        return DashboardOrientation.VERTICAL.equals(AppSettingsBuilder.getDashboardOrientation());
     }
 
     public Class getMainActivity(){

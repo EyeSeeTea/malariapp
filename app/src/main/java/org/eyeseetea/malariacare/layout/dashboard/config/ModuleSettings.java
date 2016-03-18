@@ -156,7 +156,6 @@ public class ModuleSettings {
             Field field = generatedAndroidClass.getField(attributeName);
             return field.getInt(null);
         }catch (Exception ex){
-//            Log.e(TAG, String.format("%s does NOT exist in %s", attributeName, generatedAndroidClass.getCanonicalName()));
             return 0;
         }
     }
@@ -170,7 +169,6 @@ public class ModuleSettings {
         try{
             return Class.forName(MODULE_CONTROLLERS_PACKAGE +className);
         }catch(Exception ex){
-//            Log.e(TAG,String.format("Class %s can NOT be resolved",className));
             return null;
         }
     }

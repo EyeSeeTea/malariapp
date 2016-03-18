@@ -23,11 +23,17 @@ import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.fragments.DashboardUnsentFragment;
+import org.eyeseetea.malariacare.layout.dashboard.config.ModuleSettings;
 
 /**
  * Created by idelcano on 25/02/2016.
  */
 public class AssessModuleController extends ModuleController {
+
+    public AssessModuleController(ModuleSettings moduleSettings){
+        super(moduleSettings);
+        this.tabLayout=R.id.tab_assess_layout;
+    }
 
     public AssessModuleController(boolean visible) {
         this.layout=R.id.dashboard_details_container;

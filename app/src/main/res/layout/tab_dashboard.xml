@@ -58,7 +58,7 @@
                     <include layout="@layout/tab_improve_layout"/>
 
                     <include layout="@layout/tab_monitor_layout"/>
-                            <!-- list view will be automatically added here by the list fragment -->
+
                 </FrameLayout>
              </RelativeLayout>
          </TabHost>

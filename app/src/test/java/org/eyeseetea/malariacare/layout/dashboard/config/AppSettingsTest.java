@@ -50,7 +50,7 @@ public class AppSettingsTest {
     /**
      * {"orientation":"%s","modules":%s}
      */
-    public static final String JSON_DASHBOARD_TEMPLATE = "{\"orientation\":\"%s\",\"modules\":[%s]}";
+    public static final String JSON_DASHBOARD_TEMPLATE = "{\"orientation\":\"%s\",\"layout\":\"%s\",\"modules\":[%s]}";
     /**
      * {"name":"%s","icon":"%s","backgroundColor":"%s","layout":"%s","controller":"%s"}
      */
@@ -62,9 +62,9 @@ public class AppSettingsTest {
         ObjectMapper mapper = new ObjectMapper();
         String expectedDatabaseUri="file://lalala";
         String jsonDatabase = String.format(JSON_DATABASE_TEMPLATE,"dhis",expectedDatabaseUri);
-        String jsonModule1 = String.format(JSON_MODULE_TEMPLATE,"tab_tag_assess","tab_assess","tab_yellow_assess","tab_assess_layout","AssessModuleController");
+        String jsonModule1 = String.format(JSON_MODULE_TEMPLATE,"tab_tag_assess","tab_assess","tab_yellow_assess","dashboard_details_container","AssessModuleController");
         String jsonModules =jsonModule1+","+jsonModule1;
-        String jsonDashboard = String.format(JSON_DASHBOARD_TEMPLATE,"vertical",jsonModules);
+        String jsonDashboard = String.format(JSON_DASHBOARD_TEMPLATE,"vertical","vertical_main",jsonModules);
         String jsonInString = String.format(JSON_APP_TEMPLATE,jsonDatabase,jsonDashboard);
 
         //WHEN
@@ -88,6 +88,7 @@ public class AppSettingsTest {
         DashboardSettings dashboardSettings = appSettings.getDashboardSettings();
         assertNotNull(dashboardSettings);
         assertEquals(DashboardOrientation.VERTICAL,dashboardSettings.getOrientation());
+        assertEquals(R.layout.vertical_main,dashboardSettings.getResLayout());
 
         //THEN modules is ok
         List<ModuleSettings> modules = dashboardSettings.getModules();
@@ -99,7 +100,7 @@ public class AppSettingsTest {
     public void parse_a_module(){
         //GIVEN
         ObjectMapper mapper = new ObjectMapper();
-        String jsonInString = String.format(JSON_MODULE_TEMPLATE,"tab_tag_assess","tab_assess","tab_yellow_assess","tab_assess_layout","AssessModuleController");
+        String jsonInString = String.format(JSON_MODULE_TEMPLATE,"tab_tag_assess","tab_assess","tab_yellow_assess","dashboard_details_container","AssessModuleController");
 
         //WHEN
         ModuleSettings moduleSettings=null;
@@ -137,7 +138,7 @@ public class AppSettingsTest {
         assertEquals(R.string.tab_tag_assess, moduleSettings.getResName());
         assertEquals(R.drawable.tab_assess,moduleSettings.getResIcon());
         assertEquals(R.color.tab_yellow_assess,moduleSettings.getResBackgroundColor());
-        assertEquals(R.id.tab_assess_layout,moduleSettings.getResLayout());
+        assertEquals(R.id.dashboard_details_container,moduleSettings.getResLayout());
         assertEquals(AssessModuleController.class, moduleSettings.getClassController());
     }
 }

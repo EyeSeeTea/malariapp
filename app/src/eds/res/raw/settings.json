@@ -1,0 +1,23 @@
+{
+  "database": {
+    "originType": "dhis",
+    "uri": "https://hnqis-dev-ci.psi-mis.org"
+  },
+  "dashboard": {
+    "orientation": "horizontal",
+    "modules": [{
+      "name": "tab_tag_assess",
+      "icon": "tab_assess",
+      "backgroundColor": "tab_yellow_assess",
+      "layout": "dashboard_details_container",
+      "controller": "AssessModuleController"
+    },{
+      "name": "tab_tag_improve",
+      "icon": "tab_improve",
+      "backgroundColor": "tab_blue_improve",
+      "layout": "dashboard_completed_container",
+      "controller": "ImproveModuleController"
+    }
+    ]
+  }
+}
