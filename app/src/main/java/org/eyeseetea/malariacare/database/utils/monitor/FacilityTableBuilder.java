@@ -23,8 +23,10 @@ import android.content.Context;
 import android.util.Log;
 import android.webkit.WebView;
 
+import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.model.TabGroup;
+import org.eyeseetea.malariacare.database.utils.PreferencesState;
 
 import java.util.HashMap;
 import java.util.List;
@@ -39,6 +41,9 @@ public class FacilityTableBuilder {
     public static final String JAVASCRIPT_UPDATE_TABLE = "javascript:buildTableFacilities(%d,%s)";
     private static final String TAG=".FacilityTableBuilder";
     public static final String JAVASCRIPT_SHOW = "javascript:renderPieCharts()";
+    public static final String JAVASCRIPT_SET_GREEN = "javascript:setGreen(%s)";
+    public static final String JAVASCRIPT_SET_YELLOW = "javascript:setYellow(%s)";
+    public static final String JAVASCRIPT_SET_RED = "javascript:setRed(%s)";
 
     /**
      * Required to inyect title according to current language
@@ -116,5 +121,28 @@ public class FacilityTableBuilder {
     public static void showFacilities(WebView webView) {
         Log.d(TAG, JAVASCRIPT_SHOW);
         webView.loadUrl(String.format(JAVASCRIPT_SHOW));
+    }
+    public static void setColor(WebView webView){
+        //noinspection ResourceType
+        String color=PreferencesState.getInstance().getContext().getResources().getString(R.color.lightGreen);
+        String injectColor=String.format(JAVASCRIPT_SET_GREEN,"{color:'"+getHtmlCodeColor(color)+"'}");
+        Log.d(TAG, injectColor);
+        webView.loadUrl(injectColor);
+        //noinspection ResourceType
+        color=PreferencesState.getInstance().getContext().getResources().getString(R.color.darkRed);
+        injectColor=String.format(JAVASCRIPT_SET_RED,"{color:'"+getHtmlCodeColor(color)+"'}");
+        Log.d(TAG, injectColor);
+        webView.loadUrl(injectColor);
+        //noinspection ResourceType
+        color=PreferencesState.getInstance().getContext().getResources().getString(R.color.assess_yellow);
+        injectColor = String.format(JAVASCRIPT_SET_YELLOW,"{color:'"+getHtmlCodeColor(color)+"'}");
+        Log.d(TAG,injectColor);
+        webView.loadUrl(injectColor);
+    }
+
+    private static String getHtmlCodeColor(String color) {
+        //remove the first two characters(about alpha color).
+        String colorRRGGBB="#"+color.substring(3,9);
+        return colorRRGGBB;
     }
 }

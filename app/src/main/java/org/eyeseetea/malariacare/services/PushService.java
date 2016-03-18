@@ -87,13 +87,11 @@ public class PushService extends IntentService {
         Log.d(TAG, "pushAllPendingSurveys (Thread:" + Thread.currentThread().getId() + ")");
 
         //Select surveys from sql
-        List<Survey> surveys = Survey.getAllUnsentUnplannedSurveys();
+        List<Survey> surveys = Survey.getAllCompletedSurveys();
 
         if(surveys!=null && !surveys.isEmpty()){
             for(Survey survey : surveys){
-                if(survey.isCompleted()){
                     sendPush(survey);
-                }
             }
         }
     }

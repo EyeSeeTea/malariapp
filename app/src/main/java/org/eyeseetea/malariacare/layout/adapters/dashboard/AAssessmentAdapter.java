@@ -35,6 +35,7 @@ import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.model.TabGroup;
 import org.eyeseetea.malariacare.database.utils.SurveyAnsweredRatio;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
+import org.eyeseetea.malariacare.utils.Utils;
 import org.eyeseetea.malariacare.views.CustomTextView;
 
 import java.text.SimpleDateFormat;
@@ -77,9 +78,10 @@ public abstract class AAssessmentAdapter extends ADashboardAdapter implements ID
 
 
         if (sentDate != null){
-            Date completionDate = survey.getCompletionDate();
+            Date eventDate = survey.getEventDate();
             SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy");
-            sentDate.setText(format.format(completionDate));
+            sentDate.setText(format.format(eventDate));
+            sentDate.setText(Utils.formatDate(eventDate));
             if(survey.hasConflict()){
                 sentScore.setText((getContext().getResources().getString(R.string.feedback_info_conflict)).toUpperCase());
                 sentScore.setTextColor(getContext().getResources().getColor(R.color.darkRed));
@@ -97,15 +99,8 @@ public abstract class AAssessmentAdapter extends ADashboardAdapter implements ID
         // show facility name (or not) and write survey type name
         if (!showNextFacilityName) {
             facilityName.setVisibility(View.GONE);
-            facilityName.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, 0, 0f));
-            LinearLayout.LayoutParams linearLayout=new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, 0, 1f);
-            int pixels =(int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,(float)getContext().getResources().getDimension(R.dimen.survey_row_marging),getContext().getResources().getDisplayMetrics());
-            linearLayout.setMargins(0, pixels, 0, pixels);
-            surveyType.setLayoutParams(linearLayout);
         } else {
             facilityName.setText(survey.getOrgUnit().getName());
-            facilityName.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, 0, 0.5f));
-            surveyType.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, 0, 0.5f));
         }
         String surveyDescription;
         if(survey.isCompleted())

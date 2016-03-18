@@ -29,7 +29,7 @@
 
     <!-- # dialogs -->
     <string name="dialog_title_delete_survey">Apagar inquérito</string>
-    <string name="dialog_info_delete_survey">Tem a certeza que quer apagar completamente este inquérito?</string>
+    <string name="dialog_info_delete_survey">Tem a certeza que quer apagar completamente la pesquisa %s ?</string>
     <string name="dialog_title_error">Erro</string>
     <string name="dialog_error_denominator">Erro, denominador = 0</string>
     <string name="dialog_title_missing_selection">Selecção em falta</string>
@@ -213,6 +213,7 @@
         <item>@string/font_size_level4</item>
     </string-array>
 
+    <string name="dialog_info_on_complete">A pesquisa %s foi marcada como concluída. Você vai encontrá-lo agora no separador Melhorar</string>
     <string name="dialog_title_push_response">Reposta</string>
     <string name="dialog_info_push_ok">Os dados da pesquisa foi enviado com sucesso para o servidor DHIS</string>
     <string name="dialog_info_push_bad_credentials">Bad credenciais para empurrar</string>
@@ -276,6 +277,7 @@
     <string name="dialog_content_dhis_preference_login">Alterar o servidor precisa re-login. Cada pesquisa não-enviados serão apagados. Você tem certeza que quer continuar?</string>
     <string name="settings_text_dhis_max_items">DHIS max carregado inquéritos</string>
     <string name="feedback_info_conflict">Conflito</string>
+    <string name="dialog_deleting_children">Você está prestes a excluir a resposta para as perguntas que depende este. Você realmente deseja continuar?</string>
 
     <!-- last commit info -->
     <string name="lastcommit">Versão de hash: %s</string>
