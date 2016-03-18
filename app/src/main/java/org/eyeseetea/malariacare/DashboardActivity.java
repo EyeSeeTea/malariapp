@@ -88,7 +88,7 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
     String currentTabName;
     boolean isMoveToLeft;
     static Handler handler;
-    public static Activity dashboardActivity;
+    static Activity dashboardActivity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
