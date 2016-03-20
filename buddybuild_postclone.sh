@@ -8,7 +8,7 @@ branch=`git rev-parse --abbrev-ref HEAD`
 echo $branch
 echo "git checkout"
 echo "file">>file
-git checkout -- file
+git checkout -- .
 
 
 
