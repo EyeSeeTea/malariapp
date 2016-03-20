@@ -7,7 +7,7 @@ echo "reload actual branch"
 branch=`git rev-parse --abbrev-ref HEAD`
 echo $branch
 echo "git checkout"
-git checkout $branch
+git checkout .
 
 
 
