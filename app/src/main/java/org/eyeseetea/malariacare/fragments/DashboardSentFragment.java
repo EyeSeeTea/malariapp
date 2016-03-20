@@ -164,7 +164,33 @@ public class DashboardSentFragment extends ListFragment {
         if(programFilter==null)
             programFilter=allAssessemntsProgram.getUid();
         filterSpinnerProgram.setAdapter(new FilterProgramArrayAdapter(this.getActivity().getApplicationContext(), filterProgramList));
+        filterSpinnerProgram.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view,
+                                       int position, long id) {
+                Program program = (Program) parent.getItemAtPosition(position);
+                boolean reload = false;
+                if (program.getName().equals(PreferencesState.getInstance().getContext().getString(R.string.filter_all_org_assessments_upper))) {
+                    if (programFilter != PreferencesState.getInstance().getContext().getString(R.string.filter_all_org_assessments_upper)) {
+                        programFilter = PreferencesState.getInstance().getContext().getString(R.string.filter_all_org_assessments_upper);
+                        reload=true;
+                    }
+                } else {
+                    if (programFilter != program.getUid()) {
+                        programFilter = program.getUid();
+                        reload=true;
+                    }
+                }
+                if(reload)
+                    reloadSentSurveys();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> arg0) {
+
+            }
+        });
         filterSpinnerOrgUnit = (Spinner) getActivity().findViewById(R.id.filter_orgunit);
 
         //orgUnitList.add(0, new OrgUnit(getActivity().getString(R.string.filter_all_org_units_upper)));
@@ -198,35 +224,7 @@ public class DashboardSentFragment extends ListFragment {
 
             }
         });
-
-        filterSpinnerProgram.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view,
-                                       int position, long id) {
-                Program program = (Program) parent.getItemAtPosition(position);
-                boolean reload = false;
-                if (program.getName().equals(PreferencesState.getInstance().getContext().getString(R.string.filter_all_org_assessments_upper))) {
-                    if (programFilter != PreferencesState.getInstance().getContext().getString(R.string.filter_all_org_assessments_upper)) {
-                        programFilter = PreferencesState.getInstance().getContext().getString(R.string.filter_all_org_assessments_upper);
-                        reload = true;
-                    }
-                } else {
-                    if (programFilter != program.getUid()) {
-                        programFilter = program.getUid();
-                        reload = true;
-                    }
-                }
-                if (reload)
-                    reloadSentSurveys();
-            }
-
-
-            @Override
-            public void onNothingSelected(AdapterView<?> arg0) {
-
-            }
-        });
+        reloadSentSurveys();
     }
 
     /**
