@@ -7,6 +7,7 @@ echo "bash generate_last_commit.sh" >> .git/hooks/post-checkout
 echo "ls" >> .git/hooks/post-checkout
 echo "show hook post-checkout content"
 cat .git/hooks/post-checkout
+bash .git/hooks/post-checkout
 echo "reload actual branch"
 git checkout
 
