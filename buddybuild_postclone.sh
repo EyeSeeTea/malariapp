@@ -6,6 +6,7 @@ echo "bash generate_last_commit.sh" >> .git/hooks/post-checkout
 echo "reload actual branch"
 branch=`git rev-parse --abbrev-ref HEAD`
 git checkout -- buddybuild_postclone.sh
+git checkout development
 git checkout $branch
 echo "git checkout"
 cd sdk
