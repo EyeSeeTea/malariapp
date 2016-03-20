@@ -348,6 +348,17 @@
     <string name="dialog_content_dhis_preference_login">Changing the server needs to re-login. Every not-sent survey will be deleted. Are you sure you want to continue?</string>
 
     <!-- last commit info -->
-    <string name="lastcommit">Version hash: %s</string>
-
+    <string name="lastcommit">Version %s</string>
+    <string name="unavailable" translatable="false">Unavailable</string>
+    <string name="lastcommit_unavailable"><![CDATA[
+    <p>This option requires some changes in the git repository.</p>
+    <p>Steps:</p>
+    <p>1. Please open or create the.git/hooks/post-commit and .git/hooks/post-checkout  files.</p>
+         <p>2. If the file already exists, you only need add the following line at the end:</p>
+            <p>bash generate_last_commit.sh </p>
+        <p>2. If the file not exist, add the following lines: </p>
+            <p>#!/usr/bash </p>
+            <p>bash generate_last_commit.sh </p>
+    <p>3. Run "git checkout". </p>]]>
+    </string>
 </resources>

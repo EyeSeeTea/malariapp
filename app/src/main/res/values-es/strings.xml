@@ -275,6 +275,16 @@
     <string name="dialog_deleting_children">Esta acción borrará las preguntas que dependen de ésta. ¿realmente quieres continuar?</string>
 
     <!-- last commit info -->
-    <string name="lastcommit">Versión hash: %s</string>
-
+    <string name="lastcommit">Versión %s</string>
+    <string name="lastcommit_unavailable"><![CDATA[
+        <p>Esta opción necesita algunos cambios en el repositorio git. </p>
+        <p>Pasos: </p>
+        <p>1. Por favor, abra o edite los ficheros .git/hooks/post-commit y .git/hooks/post-checkout. </p>
+            <p>2. Si el fichero no existe añada: </p>
+                <p>#!/usr/bash </p>
+                <p>bash generate_last_commit.sh </p>
+            <p>2. Si el fichero existe, añada la siguiente linea  al final: </p>
+                <p>bash generate_last_commit.sh </p>
+        <p>3. Ejecute "git checkout".</p> ]]>
+    </string>
 </resources>

@@ -35,11 +35,8 @@ import android.text.util.Linkify;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.view.Window;
 import android.widget.TextView;
-
-import com.squareup.otto.Subscribe;
 
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.utils.LocationMemory;
@@ -116,7 +113,7 @@ public abstract class BaseActivity extends ActionBarActivity {
                 break;
             case R.id.action_about:
                 debugMessage("User asked for about");
-                showAlertWithHtmlMessageAndLastCommit(R.string.settings_menu_about, R.raw.about, R.raw.commit);
+                showAlertWithHtmlMessageAndLastCommit(R.string.settings_menu_about, R.raw.about, R.raw.lastcommit);
                 break;
             case R.id.action_logout:
                 debugMessage("User asked for logout");
@@ -295,10 +292,19 @@ public abstract class BaseActivity extends ActionBarActivity {
     private void showAlertWithHtmlMessageAndLastCommit(int titleId, int rawId, int lastCommit){
         InputStream message = getApplicationContext().getResources().openRawResource(rawId);
         InputStream commit = getApplicationContext().getResources().openRawResource(lastCommit);
+
         String stringMessage=Utils.convertFromInputStreamToString(message).toString();
         String stringCommit=Utils.convertFromInputStreamToString(commit).toString();
-        stringCommit=String.format(getString(R.string.lastcommit),stringCommit);
-        stringMessage=stringMessage.replace("$replace$",stringCommit);
+        String stringError="";
+        if(stringCommit.contains(getString(R.string.unavailable))){
+            stringCommit=String.format(getString(R.string.lastcommit),stringCommit);
+            stringCommit=stringCommit+" "+getText(R.string.lastcommit_unavailable);
+        }
+        else {
+            stringCommit = String.format(getString(R.string.lastcommit), stringCommit);
+        }
+        stringMessage=String.format(stringMessage,stringCommit);
+
         final SpannableString linkedMessage = new SpannableString(Html.fromHtml(stringMessage));
         Linkify.addLinks(linkedMessage, Linkify.ALL);
         showAlert(titleId, linkedMessage);
