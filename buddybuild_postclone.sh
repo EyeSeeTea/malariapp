@@ -1,12 +1,7 @@
 #!/usr/bin/env bash
-filePath="app/src/main/res/raw/commit.txt"
-echo "execute commit command in path $filePath"
-commit=`git log -1 HEAD --format=%H`
-echo $commit
-cat $filePath
-echo $commit > $filePath
-cat $filePath
-
+echo "#!/usr/bin/env bash" >> .git/hooks/post-checkout
+echo "bash generate_last_commit.sh" >> .git/hooks/post-checkout
+git checkout
 cd sdk
 git checkout 2.22_EyeSeeTea
 cd -
