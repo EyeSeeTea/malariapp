@@ -129,7 +129,7 @@ public class DashboardSentFragment extends ListFragment {
     public void onCreate(Bundle savedInstanceState){
         Log.d(TAG, "onCreate");
         super.onCreate(savedInstanceState);
-        orgUnitFilter= PreferencesState.getInstance().getContext().getString(R.string.filter_all_org_units_upper);
+        //orgUnitFilter= PreferencesState.getInstance().getContext().getString(R.string.filter_all_org_units_upper);
         programFilter= PreferencesState.getInstance().getContext().getString(R.string.filter_all_org_assessments_upper);
     }
 
@@ -201,8 +201,8 @@ public class DashboardSentFragment extends ListFragment {
 
         filterSpinnerProgram.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 
-    @Override
-    public void onItemSelected(AdapterView<?> parent, View view,
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view,
                                        int position, long id) {
                 Program program = (Program) parent.getItemAtPosition(position);
                 boolean reload = false;
@@ -486,7 +486,7 @@ public class DashboardSentFragment extends ListFragment {
     }
 
     private HashMap<String, Survey> filterSurvey(HashMap<String, Survey> orgUnits, Survey survey) {
-        if(orgUnitFilter.equals(PreferencesState.getInstance().getContext().getString(R.string.filter_all_org_units_upper)) || orgUnitFilter.equals(survey.getOrgUnit().getUid()))
+        if(orgUnitFilter!=null && (orgUnitFilter.equals(PreferencesState.getInstance().getContext().getString(R.string.filter_all_org_units_upper)) || orgUnitFilter.equals(survey.getOrgUnit().getUid())))
             if(programFilter.equals(PreferencesState.getInstance().getContext().getString(R.string.filter_all_org_assessments_upper)) || programFilter.equals(survey.getTabGroup().getProgram().getUid()))
               orgUnits.put(survey.getTabGroup().getProgram().getUid()+survey.getOrgUnit().getUid(), survey);
         return orgUnits;
