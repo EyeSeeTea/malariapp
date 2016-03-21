@@ -19,6 +19,10 @@
 
 package org.eyeseetea.malariacare.utils;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+
 import com.raizlabs.android.dbflow.structure.BaseModel;
 
 import org.eyeseetea.malariacare.database.model.CompositeScore;
@@ -110,5 +114,19 @@ public class Utils {
         Locale locale = PreferencesState.getInstance().getContext().getResources().getConfiguration().locale;
         DateFormat dateFormatter = DateFormat.getDateInstance(DateFormat.DEFAULT, locale);
         return dateFormatter.format(date);
+    }
+
+
+    /**
+     * This method check if the Internet conexion is active
+     * @return return true if all is correct.
+     */
+    public static boolean isNetworkAvailable(){
+        ConnectivityManager cm =
+                (ConnectivityManager) PreferencesState.getInstance().getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+        if(netInfo==null)
+            return false;
+        return netInfo.isConnected();
     }
 }

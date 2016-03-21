@@ -156,7 +156,7 @@ public class PushController {
                     postProgress(context.getString(R.string.progress_push_updating_survey));
                     Log.d(TAG, "Updating pushed survey data...");
                     converter.saveSurveyStatus(getImportSummaryMap(result));
-                    Log.d(TAG, "PUSH process...OK");
+                    Log.d(TAG, "PUSH process...Finish");
                 }catch (Exception ex){
                     Log.e(TAG,"onSendDataFinished: "+ex.getLocalizedMessage());
                     postException(ex);

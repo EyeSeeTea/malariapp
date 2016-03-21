@@ -42,6 +42,7 @@ import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.receivers.AlarmPushReceiver;
 import org.eyeseetea.malariacare.services.SurveyService;
+import org.eyeseetea.malariacare.utils.Utils;
 import org.json.JSONObject;
 
 import java.io.IOException;
@@ -104,13 +105,13 @@ public class PushClient {
     }
 
     public void pushSDK() {
-        if (isNetworkAvailable()) {
+        if (Utils.isNetworkAvailable()) {
             malariaSdkPush();
         }
     }
 
     public PushResult pushAPI() {
-        if (isNetworkAvailable()) {
+        if (Utils.isNetworkAvailable()) {
                return malariaApiPush();
         }
         return new PushResult();
@@ -205,22 +206,6 @@ public class PushClient {
         Intent surveysIntent=new Intent(applicationContext, SurveyService.class);
         surveysIntent.putExtra(SurveyService.SERVICE_METHOD, SurveyService.RELOAD_DASHBOARD_ACTION);
         applicationContext.startService(surveysIntent);
-    }
-
-    /**
-     * This method check the org_unit not is invalid, and is not banned, and later check if the server is valid.
-     * @return return true if all is correct.
-     */
-    public boolean isNetworkAvailable(){
-        ConnectivityManager conMgr = (ConnectivityManager) applicationContext.getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo i = conMgr.getActiveNetworkInfo();
-        if (i == null)
-            return false;
-        if (!i.isConnected())
-            return false;
-        if (!i.isAvailable())
-            return false;
-        return true;
     }
 
     /**

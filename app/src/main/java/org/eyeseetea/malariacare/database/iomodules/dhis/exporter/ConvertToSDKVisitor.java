@@ -243,7 +243,6 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
      */
     private void updateSurvey(List<CompositeScore> compositeScores){
         currentSurvey.setMainScore(ScoreRegister.calculateMainScore(compositeScores));
-        currentSurvey.setStatus(Constants.SURVEY_SENT);
         currentSurvey.setCompletionDate(completionDate);
         currentSurvey.setEventUid(currentEvent.getUid());
     }
@@ -289,30 +288,32 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
             FailedItem failedItem= hasConflict(iEvent.getLocalId());
             if(hasImportSummaryErrors(importSummary) || failedItem!=null){
                 //Some error happened -> move back to completed
+                iSurvey.setStatus(Constants.SURVEY_COMPLETED);
+                iSurvey.setEventUid(null);
                 if(failedItem!=null) {
                     ImportSummary importSummary1=failedItem.getImportSummary();
                     List<String> failedUids=getFailedUidQuestion(failedItem.getErrorMessage());
                     for(String uid:failedUids) {
+                        Log.d(TAG, "PUSH process...Conflict in "+uid+" dataelement pushing survey: "+iSurvey.getId_survey());
                         iSurvey.saveConflict(uid);
+                        iSurvey.setStatus(Constants.SURVEY_CONFLICT);
                     }
-                    iSurvey.setStatus(Constants.SURVEY_CONFLICT);
-                    iSurvey.setEventUid(null);
-                }
-                else{
-                    iSurvey.setStatus(Constants.SURVEY_COMPLETED);
-                    iSurvey.setEventUid(null);
                 }
                 iSurvey.save();
 
                 //Generated event must be remove too
                 iEvent.delete();
+                Log.d(TAG, "PUSH process...Fail pushing survey: " + iSurvey.getId_survey());
             }else{
+                iSurvey.setStatus(Constants.SURVEY_SENT);
                 iSurvey.saveMainScore();
                 iSurvey.save();
 
                 //To avoid several pushes
                 iEvent.setFromServer(true);
                 iEvent.save();
+
+                Log.d(TAG, "PUSH process...OK. Survey and Event saved");
             }
         }
     }
