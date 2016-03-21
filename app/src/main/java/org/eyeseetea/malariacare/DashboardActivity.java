@@ -275,15 +275,16 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
 
     public void initImprove(){
         if(!isMoveToFeedback) {
-            sentFragment = new DashboardSentFragment();
-            sentFragment.setArguments(getIntent().getExtras());
-            replaceListFragment(R.id.dashboard_completed_container, sentFragment);
             try {
                 LinearLayout filters = (LinearLayout) findViewById(R.id.filters_sentSurveys);
                 filters.setVisibility(View.VISIBLE);
             }catch(NullPointerException e){
                 e.printStackTrace();
             }
+            sentFragment = new DashboardSentFragment();
+            sentFragment.setArguments(getIntent().getExtras());
+            sentFragment.registerSurveysReceiver();
+            replaceListFragment(R.id.dashboard_completed_container, sentFragment);
             sentFragment.reloadData();
         }
     }
@@ -332,6 +333,7 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
     public void initSurveyFeedbackFromAssess(Survey survey){
         Session.setSurvey(survey);
         tabHost.setCurrentTabByTag(getResources().getString(R.string.tab_tag_improve));
+        sentFragment.unregisterSurveysReceiver();
         initFeedback();
     }
 

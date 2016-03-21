@@ -90,7 +90,7 @@ public class PushOKTest {
 
         //then: Survey is pushed (UID)
         Log.d(TAG, "Session user ->"+ Session.getUser());
-        Survey survey=waitForPush(25,idSurvey);
+        Survey survey=waitForPush(SDKTestUtils.DEFAULT_WAIT_FOR_PUSH,idSurvey);
         assertTrue(survey.getEventUid()!=null);
 
         //then: Row is gone

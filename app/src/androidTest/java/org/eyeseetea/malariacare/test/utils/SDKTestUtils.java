@@ -79,7 +79,7 @@ public class SDKTestUtils {
 
     private static final String TAG = "TestingUtils";
     public static final int DEFAULT_WAIT_FOR_PULL = 40;
-    public static final int DEFAULT_WAIT_FOR_PUSH = 25;
+    public static final int DEFAULT_WAIT_FOR_PUSH = 40;
     public static final int DEFAULT_TEST_TIME_LIMIT = 180;
 
     public static final String HNQIS_DEV_STAGING = "https://hnqis-dev-staging.psi-mis.org";
@@ -127,11 +127,6 @@ public class SDKTestUtils {
 
     public static Survey waitForPush(int seconds, Long idSurvey) {
         //then: wait for pushservice
-        //Wait for push: For any reason Thread.sleep is necessary.
-        try {
-            Thread.sleep(seconds * 1000);
-        } catch (Exception ex) {
-        }
 
         IdlingResource idlingResource = new ElapsedTimeIdlingResource(seconds * 1000);
         Espresso.registerIdlingResources(idlingResource);
@@ -187,6 +182,7 @@ public class SDKTestUtils {
                         .perform(click());
                 Espresso.unregisterIdlingResources(idlingResource);
             } catch (Exception e) {
+                Log.e(TAG,"Exception selecting option value" + optionValue);
             }
 
         }
@@ -201,13 +197,11 @@ public class SDKTestUtils {
     public static void fillCompulsorySurvey(int numQuestions, String optionValue) {
         //when: answer NO to every question
         //Wait for fragment load data from SurveyService
-        IdlingResource idlingResource = new ElapsedTimeIdlingResource(5 * 1000);
-        Espresso.registerIdlingResources(idlingResource);
 
         onView(withTagValue(Matchers.is((Object) getActivityInstance().getApplicationContext().getString(R.string.tab_tag_assess)))).perform(click());
         for (int i = 0; i < numQuestions; i++) {
             try {
-                idlingResource = new ElapsedTimeIdlingResource(1 * 1000);
+                IdlingResource idlingResource = new ElapsedTimeIdlingResource(1 * 1000);
                 Espresso.registerIdlingResources(idlingResource);
                 onData(is(instanceOf(Question.class)))
                         .inAdapterView(withId(R.id.listView))
@@ -216,9 +210,9 @@ public class SDKTestUtils {
                         .perform(click());
                 Espresso.unregisterIdlingResources(idlingResource);
             } catch (Exception e) {
+                Log.e(TAG,"Exception selecting option value" + optionValue);
             }
         }
-        Espresso.unregisterIdlingResources(idlingResource);
     }
 
 
@@ -372,18 +366,19 @@ public class SDKTestUtils {
         try {
             actualClass = SDKTestUtils.getActivityInstance().getClass();
         }catch(Exception e){
+            Log.e(TAG,e.getMessage());
         }
         if(actualClass!=null  && !actualClass.equals(LoginActivity.class)) {
             goToLogin();
             try {
                 Espresso.pressBack();
             } catch (NoActivityResumedException e) {
-            }
+                Log.e(TAG,e.getMessage());}
         } else {
             try {
                 Espresso.pressBack();
             } catch (NoActivityResumedException e) {
-            }
+                Log.e(TAG, e.getMessage());}
         }
     }
 
@@ -392,28 +387,28 @@ public class SDKTestUtils {
         try {
             actualClass = SDKTestUtils.getActivityInstance().getClass();
         }catch(Exception e){
+            Log.e(TAG, "Error getting the activity instance.");
         }
         if(actualClass!=null  && !actualClass.equals(LoginActivity.class)) {
             Log.d(TAG, actualClass+"");
-            try {
-                if (ProgressActivity.class.equals(actualClass)) {
-                        try {
-                            //Error dialog, or complete dialog
-                            onView(withText(android.R.string.ok)).perform(click());
-                        } catch (Exception e) {
-                            onView(withText(android.R.string.cancel)).perform(click());
-                        }
-                } else if(DashboardActivity.class.equals(actualClass)){
-                        try {
-                            clickLogout();
-                            onView(withText(android.R.string.ok)).perform(click());
-                        } catch (Exception e) {}
-                    }
-                else if(SettingsActivity.class.equals(actualClass)){
-                    Espresso.pressBack();
+            if (ProgressActivity.class.equals(actualClass)) {
+                try {
+                    //Error dialog, or complete dialog
+                    onView(withText(android.R.string.ok)).perform(click());
+                } catch (Exception e) {
+                    Log.e(TAG, "ProgressActivity without error dialog.");
+                    onView(withText(android.R.string.cancel)).perform(click());
                 }
-            } catch (Exception e) {}
-            try {
+            } else if(DashboardActivity.class.equals(actualClass)){
+                try {
+                    clickLogout();
+                    onView(withText(android.R.string.ok)).perform(click());
+                } catch (Exception e) {
+                    Log.e(TAG, "Logout fails");}
+            }
+            else if(SettingsActivity.class.equals(actualClass)){
+                Espresso.pressBack();
+            }try {
                 Thread.sleep(1000);
             } catch (InterruptedException e) {
                 e.printStackTrace();

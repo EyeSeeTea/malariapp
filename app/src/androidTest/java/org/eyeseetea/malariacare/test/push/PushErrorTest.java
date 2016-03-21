@@ -105,7 +105,7 @@ public class PushErrorTest {
         //WHEN
         Long idSurvey=markInProgressAsCompleted();
 
-        Survey survey=waitForPush(20,idSurvey);
+        Survey survey=waitForPush(SDKTestUtils.DEFAULT_WAIT_FOR_PUSH,idSurvey);
 
         //THEN
         //then: Survey is NOT pushed (no UID)
