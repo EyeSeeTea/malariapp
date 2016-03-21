@@ -48,6 +48,7 @@ import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.model.Survey$Table;
 import org.eyeseetea.malariacare.utils.Constants;
 import org.hamcrest.Matchers;
+import org.hisp.dhis.android.sdk.persistence.models.Event;
 import org.hisp.dhis.android.sdk.persistence.models.OrganisationUnit;
 import org.hisp.dhis.android.sdk.persistence.models.OrganisationUnit$Table;
 import org.hisp.dhis.android.sdk.persistence.models.OrganisationUnitDataSet;
@@ -79,7 +80,7 @@ public class SDKTestUtils {
 
     private static final String TAG = "TestingUtils";
     public static final int DEFAULT_WAIT_FOR_PULL = 40;
-    public static final int DEFAULT_WAIT_FOR_PUSH = 40;
+    public static final int DEFAULT_WAIT_FOR_PUSH = 50;
     public static final int DEFAULT_TEST_TIME_LIMIT = 180;
 
     public static final String HNQIS_DEV_STAGING = "https://hnqis-dev-staging.psi-mis.org";
@@ -365,6 +366,11 @@ public class SDKTestUtils {
         return new Select().all().from(org.hisp.dhis.android.sdk.persistence.models.Event.class).queryList();
     }
 
+    public static long getEventCount(){
+        return new Select().count()
+                .from(Event.class)
+                .count();
+    }
     public static Activity getActivityInstance() {
         final Activity[] activity = new Activity[1];
         Instrumentation instrumentation = InstrumentationRegistry.getInstrumentation();
