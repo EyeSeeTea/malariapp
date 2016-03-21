@@ -29,6 +29,7 @@
 
 
     <!-- # dialogs -->
+    <string name="go_to_feedback">Aller aux commentaires</string>
     <string name="dialog_title_delete_survey">Supprimer Survey.</string>
     <string name="dialog_info_delete_survey">"Etes-vous sûr de vouloir supprimer complètement l'enquête: %s?"</string>
     <string name="dialog_title_error">Erreur</string>
