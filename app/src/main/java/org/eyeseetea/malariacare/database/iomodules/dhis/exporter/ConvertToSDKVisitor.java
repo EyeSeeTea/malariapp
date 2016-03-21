@@ -289,9 +289,9 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
             FailedItem failedItem= hasConflict(iEvent.getLocalId());
             if(hasImportSummaryErrors(importSummary) || failedItem!=null){
                 //Some error happened -> move back to completed
-                iSurvey.setStatus(Constants.SURVEY_COMPLETED);
-                iSurvey.setEventUid(null);
                 if(failedItem!=null) {
+                    iSurvey.setStatus(Constants.SURVEY_COMPLETED);
+                    iSurvey.setEventUid(null);
                     ImportSummary importSummary1=failedItem.getImportSummary();
                     List<String> failedUids=getFailedUidQuestion(failedItem.getErrorMessage());
                     for(String uid:failedUids) {
