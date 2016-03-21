@@ -266,8 +266,8 @@
 
 
     <!-- filters text -->
-    <string name="filter_all_org_units_upper">TOUTES LES UNITÉES D\'ORGANISATION</string>
-    <string name="filter_all_org_assessments_upper">"TOUTES LES ÉVALUATIONS"</string>
+    <string name="filter_all_org_units">toutes les unitées d\'organisation</string>
+    <string name="filter_all_org_assessments">"toutes les évaluations"</string>
     <string name="dialog_content_dhis_preference_login">Modification du serveur doit se reconnecter. Chaque enquête non envoyé sera supprimé. Es-tu sûr de vouloir continuer?</string>
     <string name="settings_text_dhis_max_items">DHIS max chargé des enquêtes</string>
     <string name="feedback_info_conflict">Conflit</string>

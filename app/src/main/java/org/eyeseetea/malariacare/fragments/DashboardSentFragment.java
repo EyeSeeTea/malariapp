@@ -130,8 +130,8 @@ public class DashboardSentFragment extends ListFragment {
     public void onCreate(Bundle savedInstanceState){
         Log.d(TAG, "onCreate");
         super.onCreate(savedInstanceState);
-        orgUnitFilter= getActivity().getString(R.string.filter_all_org_units_upper);
-        programFilter= getActivity().getString(R.string.filter_all_org_assessments_upper);
+        orgUnitFilter= getActivity().getString(R.string.filter_all_org_units).toUpperCase();
+        programFilter= getActivity().getString(R.string.filter_all_org_assessments).toUpperCase();
     }
 
     @Override
@@ -157,7 +157,7 @@ public class DashboardSentFragment extends ListFragment {
         initFilters =true;
         filterSpinnerProgram = (Spinner) getActivity().findViewById(R.id.filter_program);
         List<Program> filterProgramList=programList;
-        filterProgramList.add(0, new Program(getActivity().getString(R.string.filter_all_org_assessments_upper)));
+        filterProgramList.add(0, new Program(getActivity().getString(R.string.filter_all_org_assessments).toUpperCase()));
 
         filterSpinnerProgram.setAdapter(new FilterProgramArrayAdapter(this.getActivity().getApplicationContext(), filterProgramList));
         filterSpinnerProgram.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -167,9 +167,9 @@ public class DashboardSentFragment extends ListFragment {
                                        int position, long id) {
                 Program program = (Program) parent.getItemAtPosition(position);
                 boolean reload = false;
-                if (program.getName().equals(getActivity().getString(R.string.filter_all_org_assessments_upper))) {
-                    if (programFilter != getActivity().getString(R.string.filter_all_org_assessments_upper)) {
-                        programFilter = getActivity().getString(R.string.filter_all_org_assessments_upper);
+                if (program.getName().equals(getActivity().getString(R.string.filter_all_org_assessments).toUpperCase())) {
+                    if (programFilter != getActivity().getString(R.string.filter_all_org_assessments).toUpperCase()) {
+                        programFilter = getActivity().getString(R.string.filter_all_org_assessments).toUpperCase();
                         reload=true;
                     }
                 } else {
@@ -189,7 +189,7 @@ public class DashboardSentFragment extends ListFragment {
         });
         filterSpinnerOrgUnit = (Spinner) getActivity().findViewById(R.id.filter_orgunit);
 
-        //orgUnitList.add(0, new OrgUnit(getActivity().getString(R.string.filter_all_org_units_upper)));
+        //orgUnitList.add(0, new OrgUnit(getActivity().getString(R.string.filter_all_org_units).toUpperCase()));
         filterSpinnerOrgUnit.setAdapter(new FilterOrgUnitArrayAdapter(getActivity().getApplicationContext(), orgUnitList));
         filterSpinnerOrgUnit.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 
@@ -198,9 +198,9 @@ public class DashboardSentFragment extends ListFragment {
                                        int position, long id) {
                 OrgUnit orgUnit = (OrgUnit) parent.getItemAtPosition(position);
                 boolean reload = false;
-                if (orgUnit.getName().equals(getActivity().getString(R.string.filter_all_org_units_upper))) {
-                    if (orgUnitFilter != getActivity().getString(R.string.filter_all_org_units_upper)) {
-                        orgUnitFilter = getActivity().getString(R.string.filter_all_org_units_upper);
+                if (orgUnit.getName().equals(getActivity().getString(R.string.filter_all_org_units).toUpperCase())) {
+                    if (orgUnitFilter != getActivity().getString(R.string.filter_all_org_units).toUpperCase()) {
+                        orgUnitFilter = getActivity().getString(R.string.filter_all_org_units).toUpperCase();
                         reload = true;
                     }
                 } else {
@@ -483,8 +483,8 @@ public class DashboardSentFragment extends ListFragment {
     }
 
     private HashMap<String, Survey> filterSurvey(HashMap<String, Survey> orgUnits, Survey survey) {
-        if(orgUnitFilter.equals(getActivity().getString(R.string.filter_all_org_units_upper)) || orgUnitFilter.equals(survey.getOrgUnit().getUid()))
-            if(programFilter.equals(getActivity().getString(R.string.filter_all_org_assessments_upper)) || programFilter.equals(survey.getTabGroup().getProgram().getUid()))
+        if(orgUnitFilter.equals(getActivity().getString(R.string.filter_all_org_units).toUpperCase()) || orgUnitFilter.equals(survey.getOrgUnit().getUid()))
+            if(programFilter.equals(getActivity().getString(R.string.filter_all_org_assessments).toUpperCase()) || programFilter.equals(survey.getTabGroup().getProgram().getUid()))
               orgUnits.put(survey.getTabGroup().getProgram().getUid()+survey.getOrgUnit().getUid(), survey);
         return orgUnits;
     }

@@ -271,8 +271,8 @@
     <string name="monitor">Monitor</string>
 
     <!-- filters text -->
-    <string name="filter_all_org_units_upper">TODAS AS UNIDADES DE ORGANIZAÇÃO</string>
-    <string name="filter_all_org_assessments_upper">TODAS AS AVALIAÇÕES</string>
+    <string name="filter_all_org_units">todas as unidades de organização</string>
+    <string name="filter_all_org_assessments">todas as avaliações</string>
     <string name="dialog_content_dhis_preference_login">Alterar o servidor precisa re-login. Cada pesquisa não-enviados serão apagados. Você tem certeza que quer continuar?</string>
     <string name="settings_text_dhis_max_items">DHIS max carregado inquéritos</string>
     <string name="feedback_info_conflict">Conflito</string>
