@@ -26,6 +26,7 @@ import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.fragments.DashboardSentFragment;
+import org.eyeseetea.malariacare.fragments.DashboardUnsentFragment;
 import org.eyeseetea.malariacare.fragments.FeedbackFragment;
 import org.eyeseetea.malariacare.fragments.SurveyFragment;
 import org.eyeseetea.malariacare.layout.dashboard.config.ModuleSettings;
@@ -54,7 +55,7 @@ public class ImproveModuleController extends ModuleController {
     }
 
     public void onExitTab(){
-        if(!isFragmentActive(R.id.dashboard_completed_container, FeedbackFragment.class)){
+        if(!isFragmentActive(FeedbackFragment.class)){
             return;
         }
 
@@ -62,16 +63,34 @@ public class ImproveModuleController extends ModuleController {
     }
 
     public void onTabChanged(){
-        if(isFragmentActive(R.id.dashboard_completed_container, FeedbackFragment.class)){
+        if(isFragmentActive(FeedbackFragment.class)){
            return;
         }
         super.onTabChanged();
     }
 
+    public void onBackPressed() {
+        //List Sent surveys -> ask before leaving
+        if (isFragmentActive(DashboardSentFragment.class)) {
+            super.onBackPressed();
+            return;
+        }
+
+        closeFeedbackFragment();
+    }
+
     private void closeFeedbackFragment() {
+
+        //Clear feedback fragment
         ScoreRegister.clear();
         FeedbackFragment feedbackFragment = (FeedbackFragment) dashboardActivity.getFragmentManager ().findFragmentById(R.id.dashboard_completed_container);
         feedbackFragment.unregisterReceiver();
+        feedbackFragment.getView().setVisibility(View.GONE);
+
+        //Reload improve fragment
         reloadFragment();
+
+        //Update action bar title
+        super.setActionBarDashboard();
     }
 }

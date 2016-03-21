@@ -22,6 +22,8 @@ package org.eyeseetea.malariacare.layout.dashboard.controllers;
 import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.DialogInterface;
+import android.text.Html;
+import android.text.Spanned;
 
 import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.R;
@@ -29,10 +31,12 @@ import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.database.utils.SurveyAnsweredRatio;
+import org.eyeseetea.malariacare.fragments.CreateSurveyFragment;
 import org.eyeseetea.malariacare.fragments.DashboardUnsentFragment;
 import org.eyeseetea.malariacare.fragments.SurveyFragment;
 import org.eyeseetea.malariacare.layout.dashboard.config.ModuleSettings;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
+import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 
 /**
  * Created by idelcano on 25/02/2016.
@@ -56,7 +60,7 @@ public class AssessModuleController extends ModuleController {
      *  -
      */
     public void onExitTab(){
-        if(!isFragmentActive(R.id.dashboard_details_container, SurveyFragment.class)){
+        if(!isFragmentActive(SurveyFragment.class)){
             return;
         }
 
@@ -68,12 +72,74 @@ public class AssessModuleController extends ModuleController {
         closeSurveyFragment();
     }
 
+    public void onBackPressed(){
+        //List Unsent surveys -> ask before leaving
+        if(isFragmentActive(DashboardUnsentFragment.class)){
+            super.onBackPressed();
+            return;
+        }
+
+        //Creating survey -> nothing to do
+        if(isFragmentActive(CreateSurveyFragment.class)){
+            reloadFragment();
+            return;
+        }
+
+        //In a survey -> update status before leaving
+        onSurveyBackPressed();
+    }
+
+    /**
+     * It is called when the user press back in a surveyFragment
+     */
+    private void onSurveyBackPressed() {
+        Survey survey = Session.getSurvey();
+        SurveyAnsweredRatio surveyAnsweredRatio = survey.reloadSurveyAnsweredRatio();
+        //Completed or Mandatory ok -> ask to send
+        if (surveyAnsweredRatio.getCompulsoryAnswered() == surveyAnsweredRatio.getTotalCompulsory() && surveyAnsweredRatio.getTotalCompulsory() != 0) {
+            askToSendCompulsoryCompletedSurvey();
+            return;
+        }
+
+        //Confirm closing
+        askToCloseSurvey();
+    }
+
+    /**
+     * Secondary navigation levels required a full vertical reload (create, survey)
+     * @return
+     */
+    public boolean hasToReloadVertical(){
+        if(isFragmentActive(SurveyFragment.class)){
+            return true;
+        }
+
+        if(isFragmentActive(CreateSurveyFragment.class)){
+            return true;
+        }
+
+        return false;
+    }
+
     public void setActionBarDashboard(){
-        if(!isFragmentActive(R.id.dashboard_details_container, SurveyFragment.class)){
+        if(!isFragmentActive(SurveyFragment.class)){
             super.setActionBarDashboard();
             return;
         }
-        setActionBarTitleForSurvey(Session.getSurvey());
+
+        //In survey -> custom action bar
+        Survey survey = Session.getSurvey();
+        String appNameColorString = getAppNameColorString();
+        String title=getActionBarTitleBySurvey(survey);
+        String subtitle=getActionBarSubTitleBySurvey(survey);
+
+        if(PreferencesState.getInstance().isVerticalDashboard()) {
+            LayoutUtils.setActionbarVerticalSurvey(dashboardActivity, title, subtitle);
+        }
+        else{
+            Spanned spannedTitle = Html.fromHtml(String.format("<font color=\"#%s\"><b>%s</b></font>", appNameColorString, title));
+            LayoutUtils.setActionbarTitle(dashboardActivity, spannedTitle, subtitle);
+        }
     }
 
     /**
@@ -90,6 +156,26 @@ public class AssessModuleController extends ModuleController {
                 .setPositiveButton(R.string.dialog_continue_later_option, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int arg1) {
                         closeSurveyFragment();
+                    }
+                }).create().show();
+    }
+
+    /**
+     * This dialog is called when the user have a survey open, and close this survey, or when the user change of tab
+     */
+    private void askToCloseSurvey() {
+        new AlertDialog.Builder(dashboardActivity)
+                .setTitle(R.string.survey_title_exit)
+                .setMessage(R.string.survey_info_exit).setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int arg1) {
+                Survey survey = Session.getSurvey();
+                survey.updateSurveyStatus();
+                closeSurveyFragment();
+            }
+        })
+                .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int arg1) {
+                        //Closing survey cancel -> Nothing to do
                     }
                 }).create().show();
     }
@@ -113,10 +199,16 @@ public class AssessModuleController extends ModuleController {
     }
 
     private void closeSurveyFragment(){
+        //Clear survey fragment
         ScoreRegister.clear();
-        SurveyFragment surveyFragment = (SurveyFragment) dashboardActivity.getFragmentManager ().findFragmentById(R.id.dashboard_details_container);
+        SurveyFragment surveyFragment =  getSurveyFragment();
         surveyFragment.unregisterReceiver();
+
+        //Reload Assess fragment
         reloadFragment();
+
+        //Update action bar title
+        super.setActionBarDashboard();
     }
 
     private void alertOnComplete(Survey survey) {
@@ -126,5 +218,9 @@ public class AssessModuleController extends ModuleController {
                 .setPositiveButton(android.R.string.ok, null)
                 .setCancelable(true)
                 .create().show();
+    }
+
+    private SurveyFragment getSurveyFragment(){
+        return (SurveyFragment) dashboardActivity.getFragmentManager ().findFragmentById(R.id.dashboard_details_container);
     }
 }

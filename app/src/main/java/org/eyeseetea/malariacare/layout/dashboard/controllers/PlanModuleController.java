@@ -19,6 +19,9 @@
 
 package org.eyeseetea.malariacare.layout.dashboard.controllers;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
@@ -46,6 +49,13 @@ public class PlanModuleController extends ModuleController {
 
     public boolean isVisible(){
         return !PreferencesState.getInstance().isHidePlanningTab();
+    }
+
+    /**
+     * Going back from planning -> confirms closing
+     */
+    public void onBackPressed(){
+        super.onBackPressed();
     }
 
 }

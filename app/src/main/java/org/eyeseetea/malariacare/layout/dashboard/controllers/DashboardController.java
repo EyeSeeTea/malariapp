@@ -19,17 +19,13 @@
 
 package org.eyeseetea.malariacare.layout.dashboard.controllers;
 
-import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.app.ListFragment;
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.text.Html;
 import android.text.Spanned;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -43,14 +39,12 @@ import org.eyeseetea.malariacare.database.model.Program;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.Session;
-import org.eyeseetea.malariacare.database.utils.SurveyAnsweredRatio;
 import org.eyeseetea.malariacare.fragments.CreateSurveyFragment;
-import org.eyeseetea.malariacare.fragments.DashboardUnsentFragment;
 import org.eyeseetea.malariacare.fragments.FeedbackFragment;
 import org.eyeseetea.malariacare.fragments.SurveyFragment;
 import org.eyeseetea.malariacare.layout.dashboard.config.DashboardOrientation;
 import org.eyeseetea.malariacare.layout.dashboard.config.DashboardSettings;
-import org.eyeseetea.malariacare.layout.score.ScoreRegister;
+import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 import org.eyeseetea.malariacare.views.CustomTextView;
 
 import java.util.ArrayList;
@@ -171,7 +165,8 @@ public class DashboardController {
         }else {
             onCreateHorizontal(savedInstanceState);
         }
-        setActionBarDashboard();
+        //First module sets the dashboard actionBar
+        getFirstVisibleModule().setActionBarDashboard();
     }
 
     public void onCreateVertical(){
@@ -239,29 +234,12 @@ public class DashboardController {
      * Just to avoid trying to navigate back from the dashboard. There's no parent activity here
      */
     public void onBackPressed() {
-        if(isCreateSurveyFragmentActive() && PreferencesState.getInstance().isVerticalDashboard() ) {
+        ModuleController moduleController = getCurrentModule();
+
+        moduleController.onBackPressed();
+
+        if(DashboardOrientation.VERTICAL.equals(getOrientation()) && moduleController.hasToReloadVertical()){
             reloadVertical();
-        }
-        else if (isSurveyFragmentActive() && PreferencesState.getInstance().isVerticalDashboard() ) {
-            Survey survey=Session.getSurvey();
-            survey.updateSurveyStatus();
-            ScoreRegister.clear();
-            surveyFragment.unregisterReceiver();
-            reloadVertical();
-        } else if (isFeedbackFragmentActive() && PreferencesState.getInstance().isVerticalDashboard() ) {
-            ScoreRegister.clear();
-            feedbackFragment.unregisterReceiver();
-            feedbackFragment.getView().setVisibility(View.GONE);
-            reloadVertical();
-        }
-        else if(isCreateSurveyFragmentActive() && (currentTab==dashboardActivity.getResources().getString(R.string.tab_tag_assess)) ) {
-            reloadFragment(dashboardActivity.getResources().getString(R.string.tab_tag_assess));
-        } else if (isSurveyFragmentActive() && currentTab == dashboardActivity.getResources().getString(R.string.tab_tag_assess)) {
-            onSurveyBackPressed();
-        } else if (isFeedbackFragmentActive() && currentTab == dashboardActivity.getResources().getString(R.string.tab_tag_improve)) {
-            closeFeedbackFragment();
-        } else {
-            confirmExitApp();
         }
     }
 
@@ -273,74 +251,7 @@ public class DashboardController {
                 module.reloadData();
             }
         }
-        setActionbarAppName();
-    }
-
-    public void setActionBarDashboard(){
-        if(PreferencesState.getInstance().isVerticalDashboard()){
-            setActionbarAppName();
-        }
-        else {
-            String title="";
-            String user="";
-            if(Session.getUser()!=null && Session.getUser().getName()!=null)
-                user=Session.getUser().getName();
-
-            //Capitalize tab name
-            StringBuilder tabtemp = new StringBuilder(currentTabTitle.toLowerCase());
-            tabtemp.setCharAt(0, Character.toUpperCase(tabtemp.charAt(0)));
-            title = tabtemp.toString();
-            int appNameColor = dashboardActivity.getResources().getColor(R.color.appNameColor);
-            String appNameColorString = String.format("%X", appNameColor).substring(2);
-            Spanned spannedTitle= Html.fromHtml(String.format("<font color=\"#%s\"><b>", appNameColorString) + dashboardActivity.getResources().getString(R.string.app_name) + "</b></font> | " + title);
-            setActionbarTitle(spannedTitle, user);
-        }
-    }
-
-    public void setActionBarTitleForSurvey(Survey survey){
-        String title="";
-        String subtitle="";
-        int appNameColor = dashboardActivity.getResources().getColor(R.color.appNameColor);
-        String appNameColorString = String.format("%X", appNameColor).substring(2);
-        Program program = survey.getTabGroup().getProgram();
-        if(survey.getOrgUnit().getName()!=null)
-            title=survey.getOrgUnit().getName();
-        if(program.getName()!=null)
-            subtitle=program.getName();
-        if(PreferencesState.getInstance().isVerticalDashboard()) {
-            setActionbarVerticalSurvey(title, subtitle);
-        }
-        else{
-            Spanned spannedTitle = Html.fromHtml(String.format("<font color=\"#%s\"><b>", appNameColorString) + title + "</b></font>");
-            setActionbarTitle(spannedTitle, subtitle);
-        }
-    }
-
-    public void setActionbarVerticalSurvey(String title, String subtitle) {
-        android.support.v7.app.ActionBar actionBar = dashboardActivity.getSupportActionBar();
-        actionBar.setDisplayShowCustomEnabled(true);
-        actionBar.setDisplayHomeAsUpEnabled(true);
-        actionBar.setCustomView(R.layout.abc_action_bar_title_item);
-        actionBar.setSubtitle(subtitle);
-        actionBar.setTitle(title);
-    }
-
-    public void setActionbarTitle(Spanned title, String subtitle) {
-        android.support.v7.app.ActionBar actionBar = dashboardActivity.getSupportActionBar();
-        actionBar.setDisplayShowCustomEnabled(true);
-        actionBar.setDisplayHomeAsUpEnabled(true);
-        actionBar.setCustomView(R.layout.custom_action_bar);
-        ((TextView) dashboardActivity.findViewById(R.id.action_bar_multititle_title)).setText(title);
-        ((TextView) dashboardActivity.findViewById(R.id.action_bar_multititle_subtitle)).setText(subtitle);
-    }
-
-    public void setActionbarAppName() {
-        android.support.v7.app.ActionBar actionBar = dashboardActivity.getSupportActionBar();
-        actionBar.setDisplayShowCustomEnabled(true);
-        actionBar.setDisplayHomeAsUpEnabled(true);
-        actionBar.setCustomView(R.layout.abc_action_bar_title_item);
-        actionBar.setSubtitle(null);
-        actionBar.setTitle(dashboardActivity.getResources().getString(R.string.app_name));
+        getFirstVisibleModule().setActionBarDashboard();
     }
 
     public void initModule(int layout, Fragment fragment){
@@ -362,7 +273,7 @@ public class DashboardController {
             surveyFragment = SurveyFragment.newInstance(1);
         }
         replaceFragment(R.id.dashboard_details_container, surveyFragment);
-        setActionBarTitleForSurvey(Session.getSurvey());
+        LayoutUtils.setActionBarTitleForSurvey(dashboardActivity, Session.getSurvey());
     }
 
     public void replaceFragment(int layout, Fragment fragment) {
@@ -417,103 +328,6 @@ public class DashboardController {
     }
 
     /**
-     * Checks if a survey fragment is active
-     */
-    private boolean isSurveyFragmentActive() {
-        Fragment currentFragment = dashboardActivity.getFragmentManager ().findFragmentById(R.id.dashboard_details_container);
-        if (currentFragment instanceof SurveyFragment) {
-            return true;
-        }
-        return false;
-    }
-
-
-    /**
-     * Checks if a createsurveyfragment is active
-     */
-    private boolean isCreateSurveyFragmentActive() {
-        Fragment currentFragment = dashboardActivity.getFragmentManager().findFragmentById(R.id.dashboard_details_container);
-        if (currentFragment instanceof CreateSurveyFragment) {
-            return true;
-        }
-        return false;
-    }
-
-    /**
-     * Checks if a dashboardUnsentFragment is active
-     */
-    private boolean isDashboardUnsentFragmentActive() {
-        Fragment currentFragment = dashboardActivity.getFragmentManager().findFragmentById(R.id.dashboard_details_container);
-        if (currentFragment instanceof DashboardUnsentFragment) {
-            return true;
-        }
-        return false;
-    }
-
-    /**
-     * Checks if a feedbackfragment is active
-     */
-    private boolean isFeedbackFragmentActive() {
-        Fragment currentFragment = dashboardActivity.getFragmentManager().findFragmentById(R.id.dashboard_completed_container);
-        if (currentFragment instanceof FeedbackFragment) {
-            Log.v(TAG, "find the current fragment" + "Feedback");
-            return true;
-        }
-        return false;
-    }
-
-    /**
-     * This dialog is called when the user have a survey open, with compulsory questions completed, and close this survey, or when the user change of tab
-     */
-    private void askToSendCompulsoryCompletedSurvey() {
-        new AlertDialog.Builder(dashboardActivity)
-                .setMessage(R.string.dialog_question_complete_survey)
-                .setNegativeButton(R.string.dialog_complete_option, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int arg1) {
-                        confirmSendCompleteSurvey();
-                    }
-                })
-                .setPositiveButton(R.string.dialog_continue_later_option, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int arg1) {
-                        closeSurveyFragment();
-                    }
-                }).create().show();
-    }
-
-    /**
-     * This dialog is called to confirm before set a survey as complete
-     */
-    public void confirmSendCompleteSurvey() {
-        //if you select complete_option, this dialog will showed.
-        new AlertDialog.Builder(dashboardActivity)
-                .setMessage(R.string.dialog_are_you_sure_complete_survey)
-                .setNegativeButton(android.R.string.no, null)
-                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int arg1) {
-                        Survey survey=Session.getSurvey();
-                        survey.setCompleteSurveyState();
-                        alertOnComplete(survey);
-                        closeSurveyFragment();
-                    }
-                }).create().show();
-    }
-
-    public void closeSurveyFragment(){
-        ScoreRegister.clear();
-        surveyFragment.unregisterReceiver();
-        reloadFragment(dashboardActivity.getResources().getString(R.string.tab_tag_assess));
-        setActionBarDashboard();
-    }
-
-    private void closeFeedbackFragment() {
-        ScoreRegister.clear();
-        feedbackFragment.unregisterReceiver();
-        feedbackFragment.getView().setVisibility(View.GONE);
-        reloadFragment(dashboardActivity.getResources().getString(R.string.tab_tag_improve));
-        setActionBarDashboard();
-    }
-
-    /**
      * Called when the user clicks the New Survey button
      */
     public void newSurvey() {
@@ -537,7 +351,7 @@ public class DashboardController {
         // Add the fragment to the activity, pushing this transaction
         // on to the back stack.
         replaceFragment(R.id.dashboard_completed_container, feedbackFragment);
-        setActionBarTitleForSurvey(Session.getSurvey());
+        LayoutUtils.setActionBarTitleForSurvey(dashboardActivity,Session.getSurvey());
     }
 
     private void hideImprove() {
@@ -549,19 +363,9 @@ public class DashboardController {
         }
     }
 
-
-    private void reloadFragment(String string) {
-        ModuleController module = getModuleByName(string);
-        if (module.getFragment() != null) {
-            module.init(dashboardActivity);
-            initModule(module.getLayout(), module.getFragment());
-            module.reloadData();
-        }
-    }
-
     public void initCreateSurvey(int layout){
         if(PreferencesState.getInstance().isVerticalDashboard()) {
-            setActionbarBackbutton();
+            LayoutUtils.setActionBarBackButton(dashboardActivity);
             CustomTextView sentTitle = (CustomTextView) dashboardActivity.findViewById(R.id.titleCompleted);
             sentTitle.setText("");
         }
@@ -570,68 +374,6 @@ public class DashboardController {
             createSurveyFragment = CreateSurveyFragment.newInstance(1);
         }
         replaceFragment(layout, createSurveyFragment);
-    }
-
-    public void setActionbarBackbutton(){
-        android.support.v7.app.ActionBar actionBar = dashboardActivity.getSupportActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(true);
-    }
-
-    public void alertOnComplete(Survey survey) {
-        new AlertDialog.Builder(dashboardActivity)
-                .setTitle(null)
-                .setMessage(String.format(dashboardActivity.getResources().getString(R.string.dialog_info_on_complete),survey.getProgram().getName()))
-                .setPositiveButton(android.R.string.ok, null)
-                .setCancelable(true)
-                .create().show();
-    }
-
-    /**
-     * It is called when the user press back in a surveyFragment
-     */
-    private void onSurveyBackPressed() {
-        Survey survey = Session.getSurvey();
-        SurveyAnsweredRatio surveyAnsweredRatio = survey.reloadSurveyAnsweredRatio();
-        if (surveyAnsweredRatio.getCompulsoryAnswered() == surveyAnsweredRatio.getTotalCompulsory() && surveyAnsweredRatio.getTotalCompulsory() != 0) {
-            askToSendCompulsoryCompletedSurvey();
-
-        } else
-            askToCloseSurvey();
-    }
-
-    private void confirmExitApp() {
-        new AlertDialog.Builder(dashboardActivity)
-                .setTitle("Really Exit?")
-                .setMessage("Are you sure you want to exit the app?")
-                .setNegativeButton(android.R.string.no, null)
-                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-
-                    public void onClick(DialogInterface arg0, int arg1) {
-                        Intent intent = new Intent(Intent.ACTION_MAIN);
-                        intent.addCategory(Intent.CATEGORY_HOME);
-                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        dashboardActivity.startActivity(intent);
-                    }
-                }).create().show();
-    }
-    /**
-     * This dialog is called when the user have a survey open, and close this survey, or when the user change of tab
-     */
-    private void askToCloseSurvey() {
-        new AlertDialog.Builder(dashboardActivity)
-                .setTitle(R.string.survey_title_exit)
-                .setMessage(R.string.survey_info_exit).setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int arg1) {
-                Survey survey = Session.getSurvey();
-                survey.updateSurveyStatus();
-                closeSurveyFragment();
-            }
-        })
-                .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int arg1) {
-                        reloadFragment(dashboardActivity.getResources().getString(R.string.tab_tag_assess));
-                    }
-                }).create().show();
     }
 
 }

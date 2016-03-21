@@ -19,9 +19,12 @@
 
 package org.eyeseetea.malariacare.layout.dashboard.controllers;
 
+import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.app.ListFragment;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.text.Html;
 import android.text.Spanned;
@@ -37,6 +40,7 @@ import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.fragments.IModuleFragment;
 import org.eyeseetea.malariacare.layout.dashboard.config.ModuleSettings;
+import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 
 /**
  * Created by idelcano on 25/02/2016.
@@ -185,9 +189,37 @@ public abstract class ModuleController {
         reloadData();
     }
 
+    /**
+     * Invoked whenever back is pressed.
+     * Asks before leaving the app by default.
+     */
+    public void onBackPressed(){
+        new AlertDialog.Builder(dashboardActivity)
+                .setTitle("Really Exit?")
+                .setMessage("Are you sure you want to exit the app?")
+                .setNegativeButton(android.R.string.no, null)
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+
+                    public void onClick(DialogInterface arg0, int arg1) {
+                        Intent intent = new Intent(Intent.ACTION_MAIN);
+                        intent.addCategory(Intent.CATEGORY_HOME);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        dashboardActivity.startActivity(intent);
+                    }
+                }).create().show();
+    }
+
+    /**
+     * Tells if the back navigation requires a full vertical reload
+     * @return
+     */
+    public boolean hasToReloadVertical(){
+        return false;
+    }
+
     public void setActionBarDashboard(){
         if(PreferencesState.getInstance().isVerticalDashboard()){
-            setActionbarAppName();
+            LayoutUtils.setActionbarAppName(dashboardActivity);
         }
         else {
             //Get Tab + User
@@ -196,50 +228,8 @@ public abstract class ModuleController {
             String appNameColorString = getAppNameColorString();
             String appName=getAppName();
             Spanned spannedTitle= Html.fromHtml(String.format("<font color=\"#%s\"><b>%s</b></font> | %s", appNameColorString,appName,title));
-            setActionbarTitle(spannedTitle, user);
+            LayoutUtils.setActionbarTitle(dashboardActivity,spannedTitle, user);
         }
-    }
-
-    public void setActionBarTitleForSurvey(Survey survey){
-
-        String appNameColorString = getAppNameColorString();
-        String title=getActionBarTitleBySurvey(survey);
-        String subtitle=getActionBarSubTitleBySurvey(survey);
-
-        if(PreferencesState.getInstance().isVerticalDashboard()) {
-            setActionbarVerticalSurvey(title, subtitle);
-        }
-        else{
-            Spanned spannedTitle = Html.fromHtml(String.format("<font color=\"#%s\"><b>%s</b></font>", appNameColorString, title));
-            setActionbarTitle(spannedTitle, subtitle);
-        }
-    }
-
-    public void setActionbarVerticalSurvey(String title, String subtitle) {
-        android.support.v7.app.ActionBar actionBar = dashboardActivity.getSupportActionBar();
-        actionBar.setDisplayShowCustomEnabled(true);
-        actionBar.setDisplayHomeAsUpEnabled(true);
-        actionBar.setCustomView(R.layout.abc_action_bar_title_item);
-        actionBar.setSubtitle(subtitle);
-        actionBar.setTitle(title);
-    }
-
-    public void setActionbarTitle(Spanned title, String subtitle) {
-        android.support.v7.app.ActionBar actionBar = dashboardActivity.getSupportActionBar();
-        actionBar.setDisplayShowCustomEnabled(true);
-        actionBar.setDisplayHomeAsUpEnabled(true);
-        actionBar.setCustomView(R.layout.custom_action_bar);
-        ((TextView) dashboardActivity.findViewById(R.id.action_bar_multititle_title)).setText(title);
-        ((TextView) dashboardActivity.findViewById(R.id.action_bar_multititle_subtitle)).setText(subtitle);
-    }
-
-    public void setActionbarAppName() {
-        android.support.v7.app.ActionBar actionBar = dashboardActivity.getSupportActionBar();
-        actionBar.setDisplayShowCustomEnabled(true);
-        actionBar.setDisplayHomeAsUpEnabled(true);
-        actionBar.setCustomView(R.layout.abc_action_bar_title_item);
-        actionBar.setSubtitle(null);
-        actionBar.setTitle(dashboardActivity.getResources().getString(R.string.app_name));
     }
 
     public void replaceFragment(int layout, Fragment fragment) {
@@ -264,12 +254,11 @@ public abstract class ModuleController {
 
     /**
      * Checks if the given container contains a fragment of the given class
-     * @param container
      * @param fragmentClass
      * @return
      */
-    protected boolean isFragmentActive(int container, Class fragmentClass){
-        Fragment currentFragment = dashboardActivity.getFragmentManager ().findFragmentById(container);
+    protected boolean isFragmentActive(Class fragmentClass){
+        Fragment currentFragment = dashboardActivity.getFragmentManager ().findFragmentById(getLayout());
         if (fragmentClass.isInstance(currentFragment)) {
             return true;
         }
@@ -277,10 +266,14 @@ public abstract class ModuleController {
     }
 
     protected void reloadFragment() {
-        if (getFragment() != null) {
-            init(dashboardActivity);
-            replaceFragment(getLayout(), getFragment());
-            reloadData();
+        Fragment fragment = getFragment();
+        if(fragment==null){
+            return;
         }
+
+        init(dashboardActivity);
+        replaceFragment(getLayout(), getFragment());
+        reloadData();
     }
+
 }
