@@ -91,6 +91,10 @@ public class SDKTestUtils {
     public static final String TEST_PASSWORD_WITH_PERMISSION = "testP3rmission";
 
     public static final int TEST_FACILITY_1_IDX=1;
+    public static final int TEST_FACILITY_2_IDX=2;
+
+    public static final int TEST_IMCI=1;
+    public static final int TEST_CC=2;
     public static final int TEST_FAMILY_PLANNING_IDX=3;
 
     public static final String MARK_AS_COMPLETED = "Mark as completed";
@@ -248,6 +252,22 @@ public class SDKTestUtils {
         return idSurvey;
     }
 
+    public static Long markCompleteAndGoImprove() {
+        Long idSurvey = getSurveyId();
+
+        //when: Mark as completed
+        onView(withId(R.id.score)).perform(click());
+        onView(withText(MARK_AS_COMPLETED)).perform(click());
+        onView(withText(android.R.string.ok)).perform(click());
+
+        IdlingResource idlingResource = new ElapsedTimeIdlingResource(5 * 1000);
+        Espresso.registerIdlingResources(idlingResource);
+
+        onView(withTagValue(Matchers.is((Object) getActivityInstance().getApplicationContext().getString(R.string.tab_tag_improve)))).perform(click());
+
+        Espresso.unregisterIdlingResources(idlingResource);
+        return idSurvey;
+    }
 
 
     public static Long markAsCompleteCompulsory() {
