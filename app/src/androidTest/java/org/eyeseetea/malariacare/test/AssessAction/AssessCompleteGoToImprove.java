@@ -32,6 +32,7 @@ import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.test.utils.ElapsedTimeIdlingResource;
 import org.eyeseetea.malariacare.test.utils.SDKTestUtils;
+import org.eyeseetea.malariacare.utils.Utils;
 import org.hamcrest.Description;
 import org.hamcrest.Matchers;
 import org.junit.AfterClass;
@@ -39,6 +40,9 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import static android.support.test.espresso.Espresso.onData;
 import static android.support.test.espresso.Espresso.onView;
@@ -102,6 +106,7 @@ public class AssessCompleteGoToImprove {
         //randomResponseNumber is used to randomize the survey answers to obtain a different main score between tests.
         int randomResponseNumber=2 + (int)(Math.random() * 7);
         fillSurvey(randomResponseNumber, "Yes");
+        Date completionDate= Survey.findById(SDKTestUtils.getSurveyId()).getCompletionDate();
 
         //WHEN
         Long idSurvey=SDKTestUtils.markCompleteAndGoImprove();
@@ -112,18 +117,24 @@ public class AssessCompleteGoToImprove {
         IdlingResource idlingResource = new ElapsedTimeIdlingResource(5 * 1000);
         Espresso.registerIdlingResources(idlingResource);
         try {
+            onView(withText(String.valueOf(Utils.formatDate(completionDate)))).check(matches(isDisplayed()));
+        }catch(AmbiguousViewMatcherException e){
+            Log.i(TAG, "Multiple surveys have the same date " + Utils.formatDate(completionDate));
+        }
+        try {
             onView(withText(String.format("%.1f %%", survey.getMainScore()))).check(matches(isDisplayed()));
         }catch(AmbiguousViewMatcherException e){
-            Log.d(TAG, "Multiple surveys have the same score " + String.format("%.1f %%", survey.getMainScore()));
+            Log.i(TAG, "Multiple surveys have the same score " + String.format("%.1f %%", survey.getMainScore()));
         }
+
         //WHEN
         if(survey.isCompleted())
             onView(withText( "* "  + survey.getTabGroup().getProgram().getName())).check(matches(isDisplayed())).perform(click());
         else
             onView(withText("- "   + survey.getTabGroup().getProgram().getName())).check(matches(isDisplayed())).perform(click());
         Espresso.unregisterIdlingResources(idlingResource);
-        //THEN
 
+        //THEN
         idlingResource = new ElapsedTimeIdlingResource(5 * 1000);
         Espresso.registerIdlingResources(idlingResource);
         //check if is in feedback
