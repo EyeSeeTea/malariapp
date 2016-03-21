@@ -250,7 +250,7 @@ public class QuestionBuilder {
                         Question parentQuestion = mapQuestions.get(parentuid);
                         List<Option> options = parentQuestion.getAnswer().getOptions();
                         for (Option option : options) {
-                            if (option.getName().equals(PreferencesState.getInstance().getContext().getResources().getString(R.string.yes))) {
+                            if (option.getName().equals(PreferencesState.getInstance().getContext().getResources().getString(R.string.pull_option_yes_match))) {
                                 if(!isSaved) {
                                     //the questionRelation only created if have child with yes option
                                     questionRelation.save();
