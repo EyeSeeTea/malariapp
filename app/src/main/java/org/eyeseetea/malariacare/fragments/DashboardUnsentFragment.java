@@ -241,8 +241,6 @@ public class DashboardUnsentFragment extends ListFragment {
         //Reload data using service
         Intent surveysIntent=new Intent(getActivity(), SurveyService.class);
         surveysIntent.putExtra(SurveyService.SERVICE_METHOD, SurveyService.ALL_COMPLETED_SURVEYS_ACTION);
-        //Reload the dashboardsentfragment surveys too
-        surveysIntent.putExtra(SurveyService.SERVICE_METHOD, SurveyService.ALL_SENT_OR_COMPLETED_OR_CONFLICT_SURVEYS_ACTION);
         getActivity().startService(surveysIntent);
     }
     @Override

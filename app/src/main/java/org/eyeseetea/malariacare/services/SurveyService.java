@@ -398,6 +398,8 @@ public class SurveyService extends IntentService {
         //Returning result to anyone listening
         Intent resultIntent= new Intent(ALL_COMPLETED_SURVEYS_ACTION);
         LocalBroadcastManager.getInstance(this).sendBroadcast(resultIntent);
+
+        getAllSentCompletedOrConflictSurveys();
     }
 
     /**
