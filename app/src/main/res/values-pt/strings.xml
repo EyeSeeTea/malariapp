@@ -82,7 +82,6 @@
     <string name="assessment_info_delete">Apagar</string>
     <string name="assessment_title_header">Avaliação activa</string>
     <string name="assessment_sent_title_header">Avaliação anterior(es)</string>
-    <string name="all_assessment">Todas as avaliações</string>
 
     <!-- feedback -->
     <!-- XXX Should it be replaced by 'assessment_title_facility_date'?-->
