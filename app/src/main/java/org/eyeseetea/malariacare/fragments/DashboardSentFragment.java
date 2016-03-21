@@ -147,9 +147,7 @@ public class DashboardSentFragment extends ListFragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         Log.d(TAG, "onActivityCreated");
         super.onActivityCreated(savedInstanceState);
-
-        hideContainer();
-        //Loading...
+        //hide list
         if(isAdded())
             setListShown(false);
         initAdapter();
@@ -490,13 +488,6 @@ public class DashboardSentFragment extends ListFragment {
         return orgUnits;
     }
 
-    public void showContainer(){
-        getActivity().findViewById(R.id.dashboard_completed_container).setVisibility(View.VISIBLE);
-    }
-    public void hideContainer(){
-        getActivity().findViewById(R.id.dashboard_completed_container).setVisibility(View.GONE);
-    }
-
     /**
      * Inner private class that receives the result from the service
      */
@@ -533,7 +524,8 @@ public class DashboardSentFragment extends ListFragment {
         @Override
         protected void onPostExecute(Void result) {
             initFilters();
-            showContainer();
+            if(isAdded())
+                setListShown(true);
         }
 
         @Override
