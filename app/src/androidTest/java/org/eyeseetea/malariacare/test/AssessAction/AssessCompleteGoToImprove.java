@@ -104,7 +104,7 @@ public class AssessCompleteGoToImprove {
         waitForPull(DEFAULT_WAIT_FOR_PULL);
         startSurvey(SDKTestUtils.TEST_FACILITY_1_IDX, SDKTestUtils.TEST_CC);
         //randomResponseNumber is used to randomize the survey answers to obtain a different main score between tests.
-        int randomResponseNumber=2 + (int)(Math.random() * 7);
+        int randomResponseNumber=2 + (int)(Math.random() * 15);
         fillSurvey(randomResponseNumber, "Yes");
         Date completionDate= Survey.findById(SDKTestUtils.getSurveyId()).getCompletionDate();
 
