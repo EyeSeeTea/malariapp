@@ -347,7 +347,4 @@
     <string name="filter_all_org_units_upper">ALL ORG UNITS</string>
     <string name="filter_all_org_assessments_upper">ALL ASSESSMENTS</string>
     <string name="dialog_content_dhis_preference_login">Changing the server needs to re-login. Every not-sent survey will be deleted. Are you sure you want to continue?</string>
-
-    <!-- pull option match-->
-    <string name="pull_option_yes_match" translatable="false">Yes</string>
 </resources>

@@ -47,6 +47,10 @@ public class QuestionBuilder {
     private static final String TAG = ".QuestionBuilder";
 
     /**
+     * It is the factor needed in a option to create the questionRelation
+     * */
+    private final float MATCHFACTOR=1f;
+    /**
      * Mapping all the questions
      */
     static Map<String, Question> mapQuestions;
@@ -249,10 +253,10 @@ public class QuestionBuilder {
                         boolean isSaved=false;
                         Question parentQuestion = mapQuestions.get(parentuid);
                         List<Option> options = parentQuestion.getAnswer().getOptions();
-                        for (Option option : options) {
-                            if (option.getName().equals(PreferencesState.getInstance().getContext().getResources().getString(R.string.pull_option_yes_match))) {
+                        for (Option option : options)
+                        {
+                            if (option.getFactor()==MATCHFACTOR) {
                                 if(!isSaved) {
-                                    //the questionRelation only created if have child with yes option
                                     questionRelation.save();
                                     isSaved=true;
                                 }
