@@ -46,7 +46,6 @@ import java.util.List;
 public abstract class AAssessmentAdapter extends ADashboardAdapter implements IDashboardAdapter {
 
     protected int backIndex = 0;
-    protected boolean showNextFacilityName = true;
 
     public AAssessmentAdapter() { }
 
@@ -83,11 +82,11 @@ public abstract class AAssessmentAdapter extends ADashboardAdapter implements ID
             SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy");
             sentDate.setText(format.format(eventDate));
             sentDate.setText(Utils.formatDate(eventDate));
-            if(survey.hasConflict()){
+            if(survey.hasConflict() && sentScore!=null){
                 sentScore.setText((getContext().getResources().getString(R.string.feedback_info_conflict)).toUpperCase());
                 sentScore.setTextColor(getContext().getResources().getColor(R.color.darkRed));
             }
-            else {
+            else if(sentScore!=null){
                 // if(!PreferencesState.getInstance().isVerticalDashboard()){
                 sentScore.setText(String.format("%.1f %%",survey.getMainScore()));
                 int colorId=LayoutUtils.trafficColor(survey.getMainScore());
@@ -118,15 +117,12 @@ public abstract class AAssessmentAdapter extends ADashboardAdapter implements ID
             if (this.items.get(position+1).getOrgUnit().equals((this.items.get(position)).getOrgUnit())){
                 // show background without border and tell the system that next survey belongs to the same org unit, so its name doesn't need to be shown
                 rowView=setBackground(position+1,rowView);
-                this.showNextFacilityName = false;
             } else {
                 // show background with border and switch background for the next row
                 rowView=setBackgroundWithBorder(position + 1, rowView);
                 this.backIndex++;
-                this.showNextFacilityName = true;
             }
         }  else {
-            this.showNextFacilityName = true;
             //show background with border
             rowView=setBackgroundWithBorder(position, rowView);
         }
@@ -200,13 +196,7 @@ public abstract class AAssessmentAdapter extends ADashboardAdapter implements ID
 
     @Override
     public void notifyDataSetChanged(){
-        this.showNextFacilityName = true;
         super.notifyDataSetChanged();
     }
-
-    public void clearShowNextFacility(){
-        this.showNextFacilityName = true;
-    }
-
 
 }

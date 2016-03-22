@@ -85,6 +85,7 @@ public class DashboardController {
     }
 
     public  void addModule(ModuleController module){
+        module.setDashboardController(this);
         modules.add(module);
     }
 
@@ -212,10 +213,6 @@ public class DashboardController {
         ModuleController moduleController = getCurrentModule();
 
         moduleController.onBackPressed();
-
-        if(DashboardOrientation.VERTICAL.equals(getOrientation()) && moduleController.hasToReloadVertical()){
-            reloadVertical();
-        }
     }
 
     /**
@@ -223,8 +220,14 @@ public class DashboardController {
      * @param survey
      */
     public void onSurveySelected(Survey survey){
-        //Move into the assess tab
-        tabHost.setCurrentTabByTag(AssessModuleController.getSimpleName());
+
+        if(DashboardOrientation.VERTICAL.equals(getOrientation())){
+            //Mark currentTab (only necessary for vertical orientation)
+            currentTab = getModuleByName(AssessModuleController.getSimpleName()).getName();
+        }else{
+            //Move into the assess tab
+            tabHost.setCurrentTabByTag(AssessModuleController.getSimpleName());
+        }
 
         //This action belongs to the assess module
         AssessModuleController assessModuleController = (AssessModuleController)getModuleByName(AssessModuleController.getSimpleName());
@@ -248,6 +251,10 @@ public class DashboardController {
 
         //Vertical -> Hide improve module
         if(DashboardOrientation.VERTICAL.equals(getOrientation())){
+            //Mark currentTab (only necessary for vertical orientation)
+            currentTab = getModuleByName(AssessModuleController.getSimpleName()).getName();
+            hideAssessVerticalTitle();
+            hideImproveVerticalTitle();
             hideImprove();
         }
 
@@ -261,16 +268,27 @@ public class DashboardController {
      * @param survey
      */
     public void onFeedbackSelected(Survey survey) {
+
+        //Vertical -> Hide improve module
+        if(DashboardOrientation.VERTICAL.equals(getOrientation())){
+            //Mark currentTab (only necessary for vertical orientation)
+            currentTab = getModuleByName(ImproveModuleController.getSimpleName()).getName();
+            hideAssessVerticalTitle();
+            hideImproveVerticalTitle();
+            hideAssess();
+        }
+
         ImproveModuleController improveModuleController = (ImproveModuleController)getModuleByName(ImproveModuleController.getSimpleName());
         improveModuleController.onFeedbackSelected(survey);
     }
 
-    private void reloadVertical(){
+    public void reloadVertical(){
         for(ModuleController module: getModules()){
             if(!module.isVisible()){
                 continue;
             }
             module.init(dashboardActivity);
+            module.showVerticalTitle();
             module.replaceFragment(module.getLayout(),module.getFragment());
             module.reloadData();
 
@@ -307,16 +325,48 @@ public class DashboardController {
     }
 
     /**
+     * Vertical orientation requires to hide assess title when entering create, survey
+     */
+    private void hideAssessVerticalTitle(){
+        AssessModuleController assessModuleController = (AssessModuleController)getModuleByName(AssessModuleController.getSimpleName());
+        //No module -> nothing to hide
+        if(assessModuleController!=null){
+            assessModuleController.hideVerticalTitle();
+        }
+    }
+
+    /**
+     * Vertical orientation requires hidden improve fragment while creating a survey
+     */
+    private void hideAssess(){
+        AssessModuleController assessModuleController = (AssessModuleController)getModuleByName(AssessModuleController.getSimpleName());
+        //No module -> nothing to hide
+        if(assessModuleController!=null){
+            assessModuleController.hide();
+        }
+    }
+
+    /**
      * Vertical orientation requires hidden improve fragment while creating a survey
      */
     private void hideImprove(){
         ImproveModuleController improveModuleController = (ImproveModuleController)getModuleByName(ImproveModuleController.getSimpleName());
         //No module -> nothing to hide
-        if(improveModuleController==null){
+        if(improveModuleController!=null){
             improveModuleController.hide();
         }
     }
 
+    /**
+     * Vertical orientation requires to hide assess title when entering create, survey
+     */
+    private void hideImproveVerticalTitle(){
+        ImproveModuleController improveModuleController = (ImproveModuleController)getModuleByName(ImproveModuleController.getSimpleName());
+        //No module -> nothing to hide
+        if(improveModuleController!=null){
+            improveModuleController.hideVerticalTitle();
+        }
+    }
 
     /**
      * Reset tabs background color to transparent

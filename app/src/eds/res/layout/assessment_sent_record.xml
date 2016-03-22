@@ -26,8 +26,63 @@
     android:padding="5dp"
     android:background="@drawable/cell_borders">
 
-    <include layout="@layout/assessment_sent_record_facility_item"/>
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="0dp"
+        android:layout_height="fill_parent"
+        android:id="@+id/facilityDateContainer"
+        android:layout_weight="0.6"
+        android:layout_gravity="center">
 
-    <include layout="@layout/assessment_sent_record_date_item"/>
+        <org.eyeseetea.malariacare.views.CustomTextView
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="0.5"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:id="@+id/facility"
+            android:layout_gravity="center_vertical"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            android:paddingLeft="5dip"
+            android:paddingRight="5dip"
+            app:tDimension="@string/font_size_level1"
+            app:tFontName="@string/medium_font_name" />
+
+        <org.eyeseetea.malariacare.views.CustomTextView
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="0.5"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:id="@+id/survey_type"
+            android:layout_gravity="center_vertical"
+            android:paddingLeft="5dip"
+            android:paddingRight="5dip"
+            app:tDimension="@string/font_size_level1"
+            app:tFontName="@string/medium_font_name" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="0dp"
+        android:layout_height="fill_parent"
+        android:id="@+id/dateContainer"
+        android:layout_weight="0.4"
+        android:layout_gravity="center"
+        android:gravity="center">
+
+        <org.eyeseetea.malariacare.views.CustomTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:id="@+id/sentDate"
+            android:layout_gravity="center"
+            android:gravity="center_horizontal"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            app:tDimension="@string/font_size_level1"
+            app:tFontName="@string/medium_font_name" />
+
+    </LinearLayout>
 
 </TableRow>

@@ -576,7 +576,7 @@ public class DashboardSentFragment extends ListFragment implements IModuleFragme
 
         @Override
         protected void onPreExecute() {
-            hideContainer();
+//            hideContainer();
         }
 
         @Override

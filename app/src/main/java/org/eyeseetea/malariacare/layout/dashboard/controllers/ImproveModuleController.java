@@ -32,6 +32,7 @@ import org.eyeseetea.malariacare.fragments.DashboardSentFragment;
 import org.eyeseetea.malariacare.fragments.DashboardUnsentFragment;
 import org.eyeseetea.malariacare.fragments.FeedbackFragment;
 import org.eyeseetea.malariacare.fragments.SurveyFragment;
+import org.eyeseetea.malariacare.layout.dashboard.config.DashboardOrientation;
 import org.eyeseetea.malariacare.layout.dashboard.config.ModuleSettings;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
@@ -46,6 +47,7 @@ public class ImproveModuleController extends ModuleController {
     public ImproveModuleController(ModuleSettings moduleSettings){
         super(moduleSettings);
         this.tabLayout=R.id.tab_improve_layout;
+        this.idVerticalTitle = R.id.titleCompleted;
     }
 
 
@@ -105,20 +107,6 @@ public class ImproveModuleController extends ModuleController {
         LayoutUtils.setActionBarTitleForSurvey(dashboardActivity, Session.getSurvey());
     }
 
-    /**
-     * Hides this module (useful for vertical orientation)
-     */
-    public void hide(){
-
-        if(fragment==null){
-            return;
-        }
-
-        FragmentTransaction ft = getFragmentTransaction();
-        ft.hide(fragment);
-        ft.commit();
-    }
-
     private void closeFeedbackFragment() {
 
         //Clear feedback fragment
@@ -128,7 +116,11 @@ public class ImproveModuleController extends ModuleController {
         feedbackFragment.getView().setVisibility(View.GONE);
 
         //Reload improve fragment
-        reloadFragment();
+        if (DashboardOrientation.VERTICAL.equals(dashboardController.getOrientation())) {
+            dashboardController.reloadVertical();
+        }else{
+            reloadFragment();
+        }
 
         //Update action bar title
         super.setActionBarDashboard();

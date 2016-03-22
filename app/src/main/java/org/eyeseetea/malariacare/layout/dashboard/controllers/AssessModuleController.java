@@ -20,11 +20,10 @@
 package org.eyeseetea.malariacare.layout.dashboard.controllers;
 
 import android.app.AlertDialog;
-import android.app.Fragment;
-import android.app.FragmentTransaction;
 import android.content.DialogInterface;
 import android.text.Html;
 import android.text.Spanned;
+import android.view.View;
 
 import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.R;
@@ -36,6 +35,7 @@ import org.eyeseetea.malariacare.database.utils.planning.SurveyPlanner;
 import org.eyeseetea.malariacare.fragments.CreateSurveyFragment;
 import org.eyeseetea.malariacare.fragments.DashboardUnsentFragment;
 import org.eyeseetea.malariacare.fragments.SurveyFragment;
+import org.eyeseetea.malariacare.layout.dashboard.config.DashboardOrientation;
 import org.eyeseetea.malariacare.layout.dashboard.config.ModuleSettings;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
@@ -55,6 +55,7 @@ public class AssessModuleController extends ModuleController {
     public AssessModuleController(ModuleSettings moduleSettings){
         super(moduleSettings);
         this.tabLayout=R.id.tab_assess_layout;
+        this.idVerticalTitle = R.id.titleInProgress;
     }
 
     public static String getSimpleName(){
@@ -94,7 +95,13 @@ public class AssessModuleController extends ModuleController {
 
         //Creating survey -> nothing to do
         if(isFragmentActive(CreateSurveyFragment.class)){
-            reloadFragment();
+
+            //Vertical -> full reload
+            if (DashboardOrientation.VERTICAL.equals(dashboardController.getOrientation())) {
+                dashboardController.reloadVertical();
+            }else{
+                reloadFragment();
+            }
             return;
         }
 
@@ -167,22 +174,6 @@ public class AssessModuleController extends ModuleController {
         askToCloseSurvey();
     }
 
-    /**
-     * Secondary navigation levels required a full vertical reload (create, survey)
-     * @return
-     */
-    public boolean hasToReloadVertical(){
-        if(isFragmentActive(SurveyFragment.class)){
-            return true;
-        }
-
-        if(isFragmentActive(CreateSurveyFragment.class)){
-            return true;
-        }
-
-        return false;
-    }
-
     public void setActionBarDashboard(){
         if(!isFragmentActive(SurveyFragment.class)){
             super.setActionBarDashboard();
@@ -218,6 +209,9 @@ public class AssessModuleController extends ModuleController {
                 .setPositiveButton(R.string.dialog_continue_later_option, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int arg1) {
                         closeSurveyFragment();
+                        if (DashboardOrientation.VERTICAL.equals(dashboardController.getOrientation())) {
+                            dashboardController.reloadVertical();
+                        }
                     }
                 }).create().show();
     }
@@ -234,12 +228,11 @@ public class AssessModuleController extends ModuleController {
                 survey.updateSurveyStatus();
                 closeSurveyFragment();
             }
-        })
-                .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int arg1) {
-                        //Closing survey cancel -> Nothing to do
-                    }
-                }).create().show();
+        }).setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int arg1) {
+                //Closing survey cancel -> Nothing to do
+            }
+        }).create().show();
     }
 
     /**
@@ -256,18 +249,27 @@ public class AssessModuleController extends ModuleController {
                         survey.setCompleteSurveyState();
                         alertOnComplete(survey);
                         closeSurveyFragment();
+                        if(DashboardOrientation.VERTICAL.equals(dashboardController.getOrientation())){
+                            dashboardController.reloadVertical();
+                        }
                     }
                 }).create().show();
     }
 
     private void closeSurveyFragment(){
         //Clear survey fragment
-        ScoreRegister.clear();
         SurveyFragment surveyFragment =  getSurveyFragment();
         surveyFragment.unregisterReceiver();
 
         //Reload Assess fragment
-        reloadFragment();
+        if (DashboardOrientation.VERTICAL.equals(dashboardController.getOrientation())) {
+            dashboardController.reloadVertical();
+        }else{
+            reloadFragment();
+        }
+
+        //Reset score register
+//        ScoreRegister.clear();
 
         //Update action bar title
         super.setActionBarDashboard();
@@ -292,5 +294,6 @@ public class AssessModuleController extends ModuleController {
     private SurveyFragment getSurveyFragment(){
         return (SurveyFragment) dashboardActivity.getFragmentManager ().findFragmentById(R.id.dashboard_details_container);
     }
+
 
 }

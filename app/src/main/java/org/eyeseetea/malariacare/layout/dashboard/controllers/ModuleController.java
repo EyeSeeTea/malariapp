@@ -52,6 +52,13 @@ public abstract class ModuleController {
      */
     DashboardActivity dashboardActivity;
 
+    DashboardController dashboardController;
+
+    /**
+     * Reference to the vertical title (only assess, improve)
+     */
+    int idVerticalTitle;
+
     /**
      * Reference to the module properties
      */
@@ -63,6 +70,10 @@ public abstract class ModuleController {
     boolean visible;
 
     protected ModuleController(){
+    }
+
+    public void setDashboardController(DashboardController dashboardController){
+        this.dashboardController = dashboardController;
     }
 
     public ModuleController(ModuleSettings moduleSettings){
@@ -164,6 +175,28 @@ public abstract class ModuleController {
     }
 
     /**
+     * Hides part of this module (useful for vertical orientation)
+     */
+    public void hideVerticalTitle() {
+        if(idVerticalTitle==0){
+            return;
+        }
+        View activeAssessmentsLabel = dashboardActivity.findViewById(idVerticalTitle);
+        activeAssessmentsLabel.setVisibility(View.GONE);
+    }
+
+    /**
+     * Show the vertical title for this module (only vertical orientation)
+     */
+    public void showVerticalTitle(){
+        if(idVerticalTitle==0){
+            return;
+        }
+        View activeAssessmentsLabel = dashboardActivity.findViewById(idVerticalTitle);
+        activeAssessmentsLabel.setVisibility(View.VISIBLE);
+    }
+
+    /**
      * Inits the module (inside a responsability chain (dashboardActivity.onCreate -> dashboardController.onCreate -> here))
      * @param dashboardActivity
      */
@@ -207,14 +240,6 @@ public abstract class ModuleController {
                         dashboardActivity.startActivity(intent);
                     }
                 }).create().show();
-    }
-
-    /**
-     * Tells if the back navigation requires a full vertical reload
-     * @return
-     */
-    public boolean hasToReloadVertical(){
-        return false;
     }
 
     public void setActionBarDashboard(){
@@ -274,6 +299,20 @@ public abstract class ModuleController {
         init(dashboardActivity);
         replaceFragment(getLayout(), getFragment());
         reloadData();
+    }
+
+    /**
+     * Hides this module (useful for vertical orientation)
+     */
+    public void hide(){
+
+        if(fragment==null){
+            return;
+        }
+
+        FragmentTransaction ft = getFragmentTransaction();
+        ft.hide(fragment);
+        ft.commit();
     }
 
 }
