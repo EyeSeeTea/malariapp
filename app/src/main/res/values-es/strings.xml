@@ -281,10 +281,12 @@
         <p>Pasos: </p>
         <p>1. Por favor, abra o edite los ficheros .git/hooks/post-commit y .git/hooks/post-checkout. </p>
             <p>2. Si el fichero no existe añada: </p>
-                <p>#!/usr/bash </p>
-                <p>bash generate_last_commit.sh </p>
-            <p>2. Si el fichero existe, añada la siguiente linea  al final: </p>
-                <p>bash generate_last_commit.sh </p>
+                <p>#!/bin/sh </p>
+                <p>gitPath=$(git rev-parse --show-toplevel)</p>
+                <p>sh ${gitPath}/generate_last_commit.sh </p>
+            <p>2. Si el fichero existe, añada las siguientes lineas  al final: </p>
+                <p>gitPath=$(git rev-parse --show-toplevel)</p>
+                <p>sh ${gitPath}/generate_last_commit.sh </p>
         <p>3. Ejecute "git checkout".</p> ]]>
     </string>
 </resources>

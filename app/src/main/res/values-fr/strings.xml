@@ -278,16 +278,17 @@
     <string name="lastcommit">Version: %s</string>
 
     <string name="lastcommit_unavailable"><![CDATA["
-     <p>Cette option nécessite quelques changements dans le dépôt git. </p>
-     <p>Étapes: </p>
-     <p>1. S'il vous plaît ouvrir ou de créer les fichiers .git/hooks/post-commit et .git/hooks/post-checkout.</p>
-        <p>2. Si le fichier n'existe pas ajouter: </p>
-            <p>#!/usr/bash </p>
-            <p>bash generate_last_commit.sh </p>
-        <p>2.Si le fichier existe, ajoutez la ligne suivante à la fin: </p>
-            <p>bash generate_last_commit.sh </p>
-
-     <p>3. Exécuter "git checkout".</p>" ]]>
+        <p>Cette option nécessite quelques changements dans le dépôt git. </p>
+        <p>Étapes: </p>
+        <p>1. S'il vous plaît ouvrir ou de créer les fichiers .git/hooks/post-commit et .git/hooks/post-checkout.</p>
+           <p>2. Si le fichier n'existe pas ajouter: </p>
+               <p>#!/bin/sh </p>
+               <p>gitPath=$(git rev-parse --show-toplevel)</p>
+               <p>sh ${gitPath}/generate_last_commit.sh </p>
+           <p>2.Si le fichier existe, ajoutez les lignes suivantes à la fin: </p>
+               <p>gitPath=$(git rev-parse --show-toplevel)</p>
+               <p>sh ${gitPath}/generate_last_commit.sh </p>
+        <p>3. Exécuter "git checkout".</p>" ]]>
     </string>
 
 </resources>
