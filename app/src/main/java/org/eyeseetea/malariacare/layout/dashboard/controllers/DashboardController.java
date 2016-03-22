@@ -19,33 +19,18 @@
 
 package org.eyeseetea.malariacare.layout.dashboard.controllers;
 
-import android.app.Fragment;
-import android.app.FragmentTransaction;
-import android.app.ListFragment;
 import android.content.res.Resources;
 import android.os.Bundle;
-import android.text.Html;
-import android.text.Spanned;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TabHost;
 import android.widget.TabWidget;
-import android.widget.TextView;
 
 import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.R;
-import org.eyeseetea.malariacare.database.model.Program;
 import org.eyeseetea.malariacare.database.model.Survey;
-import org.eyeseetea.malariacare.database.utils.PreferencesState;
-import org.eyeseetea.malariacare.database.utils.Session;
-import org.eyeseetea.malariacare.fragments.CreateSurveyFragment;
-import org.eyeseetea.malariacare.fragments.FeedbackFragment;
-import org.eyeseetea.malariacare.fragments.SurveyFragment;
 import org.eyeseetea.malariacare.layout.dashboard.config.DashboardOrientation;
 import org.eyeseetea.malariacare.layout.dashboard.config.DashboardSettings;
-import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
-import org.eyeseetea.malariacare.views.CustomTextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,8 +40,6 @@ import java.util.List;
  * Created by idelcano on 25/02/2016.
  */
 public class DashboardController {
-
-    private static final String TAG = ".DashboardController";
     /**
      * List of modules that composed the dashboard
      */
@@ -149,14 +132,6 @@ public class DashboardController {
         return null;
     }
 
-    //XXX
-
-
-    CreateSurveyFragment createSurveyFragment;
-    SurveyFragment surveyFragment;
-    FeedbackFragment feedbackFragment;
-
-
     public void onCreate(DashboardActivity dashboardActivity, Bundle savedInstanceState){
         this.dashboardActivity = dashboardActivity;
 
@@ -243,66 +218,70 @@ public class DashboardController {
         }
     }
 
+    /**
+     * Starts or edits the given survey from the planning tab
+     * @param survey
+     */
+    public void onSurveySelected(Survey survey){
+        //Move into the assess tab
+        tabHost.setCurrentTabByTag(AssessModuleController.getSimpleName());
+
+        //This action belongs to the assess module
+        AssessModuleController assessModuleController = (AssessModuleController)getModuleByName(AssessModuleController.getSimpleName());
+        assessModuleController.onSurveySelected(survey);
+    }
+
+    /**
+     * Marks the given survey as selected
+     * @param survey
+     */
+    public void onMarkAsCompleted(Survey survey){
+        //This action belongs to the assess module
+        AssessModuleController assessModuleController = (AssessModuleController)getModuleByName(AssessModuleController.getSimpleName());
+        assessModuleController.onMarkAsCompleted(survey);
+    }
+
+    /**
+     * Called when the user clicks the New Survey button
+     */
+    public void onNewSurvey() {
+
+        //Vertical -> Hide improve module
+        if(DashboardOrientation.VERTICAL.equals(getOrientation())){
+            hideImprove();
+        }
+
+        //Replace new survey
+        AssessModuleController assessModuleController = (AssessModuleController)getModuleByName(AssessModuleController.getSimpleName());
+        assessModuleController.onNewSurvey();
+    }
+
+    /**
+     * Called when entering feedback for the given survey
+     * @param survey
+     */
+    public void onFeedbackSelected(Survey survey) {
+        ImproveModuleController improveModuleController = (ImproveModuleController)getModuleByName(ImproveModuleController.getSimpleName());
+        improveModuleController.onFeedbackSelected(survey);
+    }
+
     private void reloadVertical(){
         for(ModuleController module: getModules()){
-            if(module.isVisible()) {
-                module.init(dashboardActivity);
-                initModule(module.getLayout(), module.getFragment());
-                module.reloadData();
+            if(!module.isVisible()){
+                continue;
             }
+            module.init(dashboardActivity);
+            module.replaceFragment(module.getLayout(),module.getFragment());
+            module.reloadData();
+
         }
         getFirstVisibleModule().setActionBarDashboard();
     }
 
-    public void initModule(int layout, Fragment fragment){
-        replaceFragment(layout, fragment);
-    }
-
-    public void initSurveyFromPlanning(){
-        tabHost.setCurrentTabByTag(dashboardActivity.getResources().getString(R.string.tab_tag_assess));
-        initSurvey();
-    }
-
-    public void onFeedbackSelected(Survey survey) {
-        Session.setSurvey(survey);
-        initFeedback();
-    }
-
-    public void initSurvey(){
-        if(surveyFragment==null) {
-            surveyFragment = SurveyFragment.newInstance(1);
-        }
-        replaceFragment(R.id.dashboard_details_container, surveyFragment);
-        LayoutUtils.setActionBarTitleForSurvey(dashboardActivity, Session.getSurvey());
-    }
-
-    public void replaceFragment(int layout, Fragment fragment) {
-        if(fragment instanceof ListFragment){
-            try{
-                //fix some visual problems
-                View vg = dashboardActivity.findViewById(layout);
-                vg.invalidate();
-            }catch (Exception e){}
-        }
-
-        FragmentTransaction ft = getFragmentTransaction();
-        ft.replace(layout, fragment);
-        ft.commit();
-    }
-
-    public FragmentTransaction getFragmentTransaction() {
-        FragmentTransaction ft = dashboardActivity.getFragmentManager().beginTransaction();
-        ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-        return ft;
-    }
-
-    private void resetTabBackground(){
-        Resources resources = dashboardActivity.getResources();
-        for (int i = 0; i < tabHost.getTabWidget().getChildCount(); i++) {
-            tabHost.getTabWidget().getChildAt(i).setBackgroundColor(resources.getColor(R.color.transparent));
-        }
-    }
-
+    /**
+     * Adds the given module to the tabHost
+     * @param moduleController
+     */
     private void addTab(ModuleController moduleController){
         String tabName=moduleController.getName();
         //Add tab to tabhost
@@ -328,52 +307,24 @@ public class DashboardController {
     }
 
     /**
-     * Called when the user clicks the New Survey button
+     * Vertical orientation requires hidden improve fragment while creating a survey
      */
-    public void newSurvey() {
-        if(PreferencesState.getInstance().isVerticalDashboard()) {
-            hideImprove();
-            initCreateSurvey(R.id.dashboard_details_container);
-        }
-        else{
-            initCreateSurvey(R.id.dashboard_details_container);
+    private void hideImprove(){
+        ImproveModuleController improveModuleController = (ImproveModuleController)getModuleByName(ImproveModuleController.getSimpleName());
+        //No module -> nothing to hide
+        if(improveModuleController==null){
+            improveModuleController.hide();
         }
     }
 
-    public void initFeedback() {
-        try {
-            LinearLayout filters = (LinearLayout) dashboardActivity.findViewById(R.id.filters_sentSurveys);
-            filters.setVisibility(View.GONE);
-        }catch(Exception e){
-            e.printStackTrace();
-        }
-        feedbackFragment = FeedbackFragment.newInstance(1);
-        // Add the fragment to the activity, pushing this transaction
-        // on to the back stack.
-        replaceFragment(R.id.dashboard_completed_container, feedbackFragment);
-        LayoutUtils.setActionBarTitleForSurvey(dashboardActivity,Session.getSurvey());
-    }
 
-    private void hideImprove() {
-        FragmentTransaction ft = getFragmentTransaction();
-        ModuleController module= getModuleByName(dashboardActivity.getResources().getString(R.string.tab_tag_improve));
-        if(module.getFragment()!=null) {
-            ft.hide(module.getFragment());
-            ft.commit();
+    /**
+     * Reset tabs background color to transparent
+     */
+    private void resetTabBackground(){
+        Resources resources = dashboardActivity.getResources();
+        for (int i = 0; i < tabHost.getTabWidget().getChildCount(); i++) {
+            tabHost.getTabWidget().getChildAt(i).setBackgroundColor(resources.getColor(R.color.transparent));
         }
     }
-
-    public void initCreateSurvey(int layout){
-        if(PreferencesState.getInstance().isVerticalDashboard()) {
-            LayoutUtils.setActionBarBackButton(dashboardActivity);
-            CustomTextView sentTitle = (CustomTextView) dashboardActivity.findViewById(R.id.titleCompleted);
-            sentTitle.setText("");
-        }
-
-        if(createSurveyFragment==null) {
-            createSurveyFragment = CreateSurveyFragment.newInstance(1);
-        }
-        replaceFragment(layout, createSurveyFragment);
-    }
-
 }

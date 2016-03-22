@@ -47,7 +47,6 @@ public abstract class AAssessmentAdapter extends ADashboardAdapter implements ID
 
     protected int backIndex = 0;
     protected boolean showNextFacilityName = true;
-    protected boolean multipleTabGroups = new Select().count().from(TabGroup.class).count() != 1;
 
     public AAssessmentAdapter() { }
 
@@ -100,11 +99,12 @@ public abstract class AAssessmentAdapter extends ADashboardAdapter implements ID
         }
 
         // show facility name (or not) and write survey type name
-        if (!showNextFacilityName) {
-            facilityName.setVisibility(View.GONE);
-        } else {
+        if (hasToShowFacility(position,survey)) {
             facilityName.setText(survey.getOrgUnit().getName());
+        } else {
+            facilityName.setVisibility(View.GONE);
         }
+
         String surveyDescription;
         if(survey.isCompleted())
             surveyDescription = "* " + survey.getTabGroup().getProgram().getName();
@@ -132,6 +132,22 @@ public abstract class AAssessmentAdapter extends ADashboardAdapter implements ID
         }
 
         return rowView;
+    }
+
+    /**
+     * Determines whether to show facility or not according to:
+     *  - The previous survey belongs to the same one.
+     * @param position
+     * @param survey
+     * @return
+     */
+    private boolean hasToShowFacility(int position, Survey survey){
+        if(position==0){
+            return true;
+        }
+
+        Survey previousSurvey = this.items.get(position-1);
+        return !survey.getOrgUnit().getId_org_unit().equals(previousSurvey.getOrgUnit().getId_org_unit());
     }
 
     private View setBackgroundWithBorder(int position, View rowView) {

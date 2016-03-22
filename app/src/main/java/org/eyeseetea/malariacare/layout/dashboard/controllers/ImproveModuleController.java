@@ -19,27 +19,38 @@
 
 package org.eyeseetea.malariacare.layout.dashboard.controllers;
 
+import android.app.FragmentTransaction;
 import android.view.View;
 import android.widget.LinearLayout;
 
 import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.R;
+import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
+import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.fragments.DashboardSentFragment;
 import org.eyeseetea.malariacare.fragments.DashboardUnsentFragment;
 import org.eyeseetea.malariacare.fragments.FeedbackFragment;
 import org.eyeseetea.malariacare.fragments.SurveyFragment;
 import org.eyeseetea.malariacare.layout.dashboard.config.ModuleSettings;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
+import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 
 /**
  * Created by idelcano on 25/02/2016.
  */
 public class ImproveModuleController extends ModuleController {
 
+    FeedbackFragment feedbackFragment;
+
     public ImproveModuleController(ModuleSettings moduleSettings){
         super(moduleSettings);
         this.tabLayout=R.id.tab_improve_layout;
+    }
+
+
+    public static String getSimpleName(){
+        return ImproveModuleController.class.getSimpleName();
     }
 
     @Override
@@ -77,6 +88,35 @@ public class ImproveModuleController extends ModuleController {
         }
 
         closeFeedbackFragment();
+    }
+
+    public void onFeedbackSelected(Survey survey){
+        Session.setSurvey(survey);
+        try {
+            LinearLayout filters = (LinearLayout) dashboardActivity.findViewById(R.id.filters_sentSurveys);
+            filters.setVisibility(View.GONE);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        feedbackFragment = FeedbackFragment.newInstance(1);
+        // Add the fragment to the activity, pushing this transaction
+        // on to the back stack.
+        replaceFragment(R.id.dashboard_completed_container, feedbackFragment);
+        LayoutUtils.setActionBarTitleForSurvey(dashboardActivity, Session.getSurvey());
+    }
+
+    /**
+     * Hides this module (useful for vertical orientation)
+     */
+    public void hide(){
+
+        if(fragment==null){
+            return;
+        }
+
+        FragmentTransaction ft = getFragmentTransaction();
+        ft.hide(fragment);
+        ft.commit();
     }
 
     private void closeFeedbackFragment() {

@@ -54,7 +54,7 @@ public class AppSettingsTest {
     /**
      * {"name":"%s","icon":"%s","backgroundColor":"%s","layout":"%s","controller":"%s"}
      */
-    public static final String JSON_MODULE_TEMPLATE = "{\"name\":\"%s\",\"icon\":\"%s\",\"backgroundColor\":\"%s\",\"layout\":\"%s\",\"controller\":\"%s\"}";
+    public static final String JSON_MODULE_TEMPLATE = "{\"icon\":\"%s\",\"backgroundColor\":\"%s\",\"layout\":\"%s\",\"controller\":\"%s\"}";
 
     @Test
     public void parse_full_json(){
@@ -62,7 +62,7 @@ public class AppSettingsTest {
         ObjectMapper mapper = new ObjectMapper();
         String expectedDatabaseUri="file://lalala";
         String jsonDatabase = String.format(JSON_DATABASE_TEMPLATE,"dhis",expectedDatabaseUri);
-        String jsonModule1 = String.format(JSON_MODULE_TEMPLATE,"tab_tag_assess","tab_assess","tab_yellow_assess","dashboard_details_container","AssessModuleController");
+        String jsonModule1 = String.format(JSON_MODULE_TEMPLATE,"tab_assess","tab_yellow_assess","dashboard_details_container","AssessModuleController");
         String jsonModules =jsonModule1+","+jsonModule1;
         String jsonDashboard = String.format(JSON_DASHBOARD_TEMPLATE,"vertical","vertical_main",jsonModules);
         String jsonInString = String.format(JSON_APP_TEMPLATE,jsonDatabase,jsonDashboard);
@@ -100,7 +100,7 @@ public class AppSettingsTest {
     public void parse_a_module(){
         //GIVEN
         ObjectMapper mapper = new ObjectMapper();
-        String jsonInString = String.format(JSON_MODULE_TEMPLATE,"tab_tag_assess","tab_assess","tab_yellow_assess","dashboard_details_container","AssessModuleController");
+        String jsonInString = String.format(JSON_MODULE_TEMPLATE,"tab_assess","tab_yellow_assess","dashboard_details_container","AssessModuleController");
 
         //WHEN
         ModuleSettings moduleSettings=null;
@@ -135,7 +135,6 @@ public class AppSettingsTest {
 
     private void assertModuleSettings(ModuleSettings moduleSettings) {
         assertNotNull(moduleSettings);
-        assertEquals(R.string.tab_tag_assess, moduleSettings.getResName());
         assertEquals(R.drawable.tab_assess,moduleSettings.getResIcon());
         assertEquals(R.color.tab_yellow_assess,moduleSettings.getResBackgroundColor());
         assertEquals(R.id.dashboard_details_container,moduleSettings.getResLayout());

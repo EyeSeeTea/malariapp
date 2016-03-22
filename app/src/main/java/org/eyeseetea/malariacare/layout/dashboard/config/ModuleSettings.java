@@ -35,11 +35,6 @@ public class ModuleSettings {
     public static final String MODULE_CONTROLLERS_PACKAGE = "org.eyeseetea.malariacare.layout.dashboard.controllers.";
 
     /**
-     * Key in the strings resources to get the String name of the module (Ex: R.string.tab_tag_assess -> 'tab_tag_assess')
-     */
-    String name;
-
-    /**
      * Key in the strings resources to get the String title of the module (Ex: R.string.assess -> 'assess')
      */
     String title;
@@ -56,14 +51,10 @@ public class ModuleSettings {
      */
     String layout;
     /**
-     * Name of moduleController class that will be in charge of the behaviour of this module
+     * Name of moduleController class that will be in charge of the behaviour of this module.
+     * This property will be used as key name for the module
      */
     String controller;
-
-    /**
-     * The int value of the name property under the generated R.strings class
-     */
-    int resName;
 
     /**
      * The int value of the title property under the generated R.strings class
@@ -89,15 +80,6 @@ public class ModuleSettings {
 
     ModuleSettings(){
 
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-        this.resName = resolve(R.string.class,name);
     }
 
     public String getTitle() {
@@ -143,10 +125,6 @@ public class ModuleSettings {
     public void setController(String controller) {
         this.controller = controller;
         this.classController = resolveClass(controller);
-    }
-
-    public int getResName() {
-        return resName;
     }
 
     public int getResTitle() {

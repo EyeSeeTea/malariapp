@@ -39,6 +39,7 @@ import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.Spinner;
 
+import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.model.OrgUnit;
 import org.eyeseetea.malariacare.database.model.Program;
@@ -71,10 +72,10 @@ public class DashboardSentFragment extends ListFragment implements IModuleFragme
     private final static int DATE_ORDER =2;
     private final static int SCORE_ORDER =3;
     private static int LAST_ORDER =WITHOUT_ORDER;
+
     private SurveyReceiver surveyReceiver;
     private List<Survey> surveys;
     protected IDashboardAdapter adapter;
-    private static int index = 0;
     List<Survey> oneSurveyForOrgUnit;
     List<OrgUnit> orgUnitList;
     List <Program> programList;
@@ -84,7 +85,7 @@ public class DashboardSentFragment extends ListFragment implements IModuleFragme
     String programFilter;
     int orderBy=WITHOUT_ORDER;
     static boolean reverse=false;
-    OnFeedbackSelectedListener mCallback;
+    DashboardActivity dashboardActivity;
     boolean initFilters =false;
 
     public DashboardSentFragment() {
@@ -104,25 +105,10 @@ public class DashboardSentFragment extends ListFragment implements IModuleFragme
         return f;
     }
 
-
-    // Container Activity must implement this interface
-    public interface OnFeedbackSelectedListener {
-        public void onFeedbackSelected(Survey survey);
-    }
-
-
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-
-        // This makes sure that the container activity has implemented
-        // the callback interface. If not, it throws an exception
-        try {
-            mCallback = (OnFeedbackSelectedListener) activity;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString()
-                    + " must implement OnFeedbackSelectedListener");
-        }
+        dashboardActivity = (DashboardActivity) activity;
     }
 
     public int getShownIndex() {
@@ -272,14 +258,13 @@ public class DashboardSentFragment extends ListFragment implements IModuleFragme
         Log.d(TAG, "onListItemClick");
         super.onListItemClick(l, v, position, id);
 
-        //Discard clicks on header|footer (which is attended on newSurvey via super)
+        //Discard clicks on header|footer (which is attended on onNewSurvey via super)
         if(!isPositionASurvey(position)){
             return;
         }
 
         // call feedbackselected function(and it call surveyfragment)
-
-        mCallback.onFeedbackSelected(surveys.get(position - 1));
+        dashboardActivity.onFeedbackSelected(surveys.get(position - 1));
     }
 
     @Override

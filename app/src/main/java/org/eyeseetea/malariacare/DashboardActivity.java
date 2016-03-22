@@ -30,7 +30,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.TabHost;
 
 import com.squareup.otto.Subscribe;
 
@@ -42,10 +41,8 @@ import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.database.utils.SurveyAnsweredRatio;
 import org.eyeseetea.malariacare.fragments.CreateSurveyFragment;
 import org.eyeseetea.malariacare.fragments.DashboardSentFragment;
-import org.eyeseetea.malariacare.fragments.DashboardUnsentFragment;
 import org.eyeseetea.malariacare.layout.dashboard.builder.AppSettingsBuilder;
 import org.eyeseetea.malariacare.layout.dashboard.controllers.DashboardController;
-import org.eyeseetea.malariacare.layout.dashboard.controllers.ModuleController;
 import org.eyeseetea.malariacare.receivers.AlarmPushReceiver;
 import org.eyeseetea.malariacare.services.SurveyService;
 import org.hisp.dhis.android.sdk.events.UiEvent;
@@ -53,11 +50,10 @@ import org.hisp.dhis.android.sdk.events.UiEvent;
 import java.util.List;
 
 
-public class DashboardActivity extends BaseActivity implements DashboardUnsentFragment.onSurveySelectedListener,CreateSurveyFragment.OnCreatedSurveyListener,DashboardSentFragment.OnFeedbackSelectedListener {
+public class DashboardActivity extends BaseActivity{
 
     private final static String TAG=".DDetailsActivity";
     private boolean reloadOnResume=true;
-    TabHost tabHost;
     DashboardController dashboardController;
 
     static Handler handler;
@@ -83,10 +79,6 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
         dashboardController.onCreate(this,savedInstanceState);
 
         setAlarm();
-    }
-
-    public void initSurveyFromPlanning(){
-        dashboardController.initSurveyFromPlanning();
     }
 
     @Override
@@ -249,43 +241,45 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
         super.onLogoutFinished(uiEvent);
     }
 
-    @Override
+    /**
+     * Handler that starts or edits a given survey
+     * @param survey
+     */
+    public void onSurveySelected(Survey survey){
+        dashboardController.onSurveySelected(survey);
+    }
+
+    /**
+     * Handler that marks the given sucloseFeedbackFragmentrvey as completed.
+     * This includes a pair or corner cases
+     * @param survey
+     */
+    public void onMarkAsCompleted(Survey survey){
+        dashboardController.onMarkAsCompleted(survey);
+    }
+
+    /**
+     * Handler that enter into the feedback for the given survey
+     * @param survey
+     */
     public void onFeedbackSelected(Survey survey) {
         dashboardController.onFeedbackSelected(survey);
     }
 
-    @Override
-    public void onSurveySelected(Survey survey) {
-        //Put selected survey in session
-        Session.setSurvey(survey);
-        dashboardController.initSurvey();
+    /**
+     * A new survey starts to be edited
+     * @param survey
+     */
+    public void onCreateSurvey(Survey survey) {
+        dashboardController.onSurveySelected(survey);
     }
 
-    @Override
-    public void dialogCompulsoryQuestionIncompleted() {
-        new AlertDialog.Builder(this)
-                .setMessage(getApplicationContext().getResources().getString(R.string.dialog_incompleted_compulsory_survey))
-                .setPositiveButton(getApplicationContext().getString(R.string.accept), null)
-                .create().show();
-    }
-
-    @Override
-    public void alertOnComplete(Survey survey) {
-        new AlertDialog.Builder(this)
-                .setTitle(null)
-                .setMessage(String.format(getApplicationContext().getResources().getString(R.string.dialog_info_on_complete),survey.getProgram().getName()))
-                .setPositiveButton(android.R.string.ok, null)
-                .setCancelable(true)
-                .create().show();
-    }
-
-    @Override
-    public void onCreateSurvey() {
-        dashboardController.initSurvey();
-    }
-
-    public void newSurvey(View view){
-        dashboardController.newSurvey();
+    /**
+     * Moving into createSurvey fragment
+     * @param view
+     */
+    public void onNewSurvey(View view){
+        dashboardController.onNewSurvey();
     }
 
     /**

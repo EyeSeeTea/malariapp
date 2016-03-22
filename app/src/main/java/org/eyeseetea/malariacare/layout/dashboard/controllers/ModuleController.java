@@ -75,7 +75,7 @@ public abstract class ModuleController {
     }
 
     public String getName() {
-        return dashboardActivity.getResources().getString(moduleSettings.getResName());
+        return moduleSettings.getController();
     }
 
     public String getCapitalizeName(){
