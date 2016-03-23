@@ -352,7 +352,7 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
         if(dataValue.getDataElement().equals(PreferencesState.getInstance().getContext().getResources().getString(R.string.uploadDateUID))){
             try{
                 Date date = EventExtended.parseDate(dataValue.getValue());
-                survey.setCompletionDate(date);
+                survey.setUploadedDate(date);
                 survey.save();
                 //Annotate object in map
                 appMapObjects.put(dataValue.getEvent(), survey);
