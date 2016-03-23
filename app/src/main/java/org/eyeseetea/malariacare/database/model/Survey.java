@@ -710,9 +710,9 @@ public class Survey extends BaseModel implements VisitableToSDK {
         return false;
     }
 
-    public void prepareSurveyCompletionDate() {
+    public void prepareSurveyUploadedDate() {
         if (!isSent()) {
-            setCompletionDate(new Date());
+            setUploadedDate(new Date());
             save();
         }
     }
