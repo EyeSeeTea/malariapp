@@ -48,7 +48,7 @@ public class MigrationRenameEventDate extends BaseMigration {
 
     @Override
     public void migrate(SQLiteDatabase database) {
-        //We can't rename a column in sqlite. It is needed create a temporal table with the new column name.
+        //The column name can't be renamed in sqlite. It is needed create a temporal table with the new column name.
         ModelAdapter myAdapter = FlowManager.getModelAdapter(Survey.class);
 
         //Create temporal table
