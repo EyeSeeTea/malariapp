@@ -162,7 +162,7 @@ public class SurveyPlanner {
             return null;
         }
 
-        Date eventDate=survey.getUploadedDate();
+        Date eventDate=survey.getCompletionDate();
         if(eventDate==null){
             return null;
         }
