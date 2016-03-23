@@ -71,6 +71,10 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
     String mainScoreCUID;
     String forwardOrderUID;
 
+    String completionDateUID;
+    String creatingOnUID;
+    String updatedDateUID;
+    String updatedUserUid;
     /**
      * List of surveys that are going to be pushed
      */
@@ -104,6 +108,10 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
         mainScoreBUID=context.getString(R.string.main_score_b);
         mainScoreCUID=context.getString(R.string.main_score_c);
         forwardOrderUID=context.getString(R.string.forward_order);
+        completionDateUID=context.getString(R.string.completionDateUID);
+        creatingOnUID=context.getString(R.string.creatingOnUID);
+        updatedDateUID=context.getString(R.string.uploadDateUID);
+        updatedUserUid=context.getString(R.string.updatedUserUid);
         surveys = new ArrayList<>();
         events = new ArrayList<>();
     }
@@ -132,6 +140,10 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
         for(Value value:survey.getValues()){
             value.accept(this);
         }
+
+        Log.d(TAG,"Saving dates in control dataelements");
+        //FIXME
+        //buildDateControlDataElements(survey);
 
         Log.d(TAG, "Creating datavalues from other stuff...");
         buildControlDataElements(survey);
@@ -223,6 +235,25 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
 
         //Forward Order
         buildAndSaveDataValue(forwardOrderUID, context.getString(R.string.forward_order_value));
+    }
+
+    /**
+     * Builds several datavalues from the Dates of the survey
+     * @param survey
+     */
+    private void buildDateControlDataElements(Survey survey) {
+        //Created date
+        buildAndSaveDataValue(completionDateUID, Utils.formatDate(survey.getCompletionDate()));
+
+        //Finished date
+        buildAndSaveDataValue(creatingOnUID, Utils.formatDate(new Date()));
+
+        //Updated date
+        buildAndSaveDataValue(updatedDateUID, Utils.formatDate(survey.getEventDate()));
+
+        //Updated by user
+        buildAndSaveDataValue(updatedUserUid, Session.getUser().getUid());
+
     }
 
     private void buildAndSaveDataValue(String UID, String value){

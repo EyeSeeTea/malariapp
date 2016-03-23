@@ -34,4 +34,9 @@
     <string name="forward_order" translatable="false">d1At6VgPNA6</string>
     <string name="forward_order_value" translatable="false">9999</string>
 
+    <string name="completionDateUID" translatable="false"></string>
+    <string name="creatingOnUID" translatable="false"></string>
+    <string name="updatedDateUID" translatable="false"></string>
+    <string name="updatedUserUid" translatable="false"></string>
+
 </resources>
