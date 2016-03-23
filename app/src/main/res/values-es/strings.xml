@@ -274,4 +274,20 @@
     <string name="settings_text_dhis_max_items">DHIS max encuestas descargadas</string>
     <string name="feedback_info_conflict">Conflicto</string>
     <string name="dialog_deleting_children">Esta acción borrará las preguntas que dependen de ésta. ¿realmente quieres continuar?</string>
+
+    <!-- last commit info -->
+    <string name="lastcommit">Versión %s</string>
+    <string name="lastcommit_unavailable"><![CDATA[
+        <p>Esta opción necesita algunos cambios en el repositorio git. </p>
+        <p>Pasos: </p>
+        <p>1. Por favor, abra o edite los ficheros .git/hooks/post-commit y .git/hooks/post-checkout. </p>
+            <p>2. Si el fichero no existe añada: </p>
+                <p>#!/bin/sh </p>
+                <p>gitPath=$(git rev-parse --show-toplevel)</p>
+                <p>sh ${gitPath}/generate_last_commit.sh </p>
+            <p>2. Si el fichero existe, añada las siguientes lineas  al final: </p>
+                <p>gitPath=$(git rev-parse --show-toplevel)</p>
+                <p>sh ${gitPath}/generate_last_commit.sh </p>
+        <p>3. Ejecute "git checkout".</p> ]]>
+    </string>
 </resources>
