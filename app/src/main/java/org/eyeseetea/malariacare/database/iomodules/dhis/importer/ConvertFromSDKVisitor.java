@@ -299,7 +299,7 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
         //// FIXME: 23/03/2016 
         survey.setCreationDate(sdkEventExtended.getCreationDate());
         survey.setCompletionDate(sdkEventExtended.getCompletionDate());
-        survey.setEventDate(sdkEventExtended.getEventDate());
+        survey.setUploadedDate(sdkEventExtended.getEventDate());
         survey.setScheduledDate(sdkEventExtended.getScheduledDate());
         //Set fks
         survey.setOrgUnit(orgUnit);

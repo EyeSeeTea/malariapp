@@ -21,14 +21,9 @@ package org.eyeseetea.malariacare.database.utils.planning;
 
 import android.util.Log;
 
-import com.raizlabs.android.dbflow.sql.QueryBuilder;
-import com.raizlabs.android.dbflow.sql.builder.Condition;
-import com.raizlabs.android.dbflow.sql.language.Select;
-
 import org.eyeseetea.malariacare.database.model.OrgUnit;
 import org.eyeseetea.malariacare.database.model.Program;
 import org.eyeseetea.malariacare.database.model.Survey;
-import org.eyeseetea.malariacare.database.model.Survey$Table;
 import org.eyeseetea.malariacare.database.model.TabGroup;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.utils.Constants;
@@ -167,7 +162,7 @@ public class SurveyPlanner {
             return null;
         }
 
-        Date eventDate=survey.getEventDate();
+        Date eventDate=survey.getUploadedDate();
         if(eventDate==null){
             return null;
         }

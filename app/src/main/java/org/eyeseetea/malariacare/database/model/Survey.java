@@ -19,8 +19,6 @@
 
 package org.eyeseetea.malariacare.database.model;
 
-import android.util.Log;
-
 import com.raizlabs.android.dbflow.annotation.Column;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;
@@ -80,7 +78,7 @@ public class Survey extends BaseModel implements VisitableToSDK {
     Date completionDate;
 
     @Column
-    Date eventDate;
+    Date uploadedDate;
 
     @Column
     Date scheduledDate;
@@ -121,7 +119,7 @@ public class Survey extends BaseModel implements VisitableToSDK {
         //Set dates
         this.creationDate = new Date();
         this.completionDate = this.creationDate;
-        this.eventDate = new Date();
+        this.uploadedDate = new Date();
         this.scheduledDate = null;
     }
 
@@ -243,12 +241,12 @@ public class Survey extends BaseModel implements VisitableToSDK {
         this.completionDate=completionDate;
     }
 
-    public Date getEventDate() {
-        return eventDate;
+    public Date getUploadedDate() {
+        return uploadedDate;
     }
 
-    public void setEventDate(Date eventDate) {
-        this.eventDate = eventDate;
+    public void setUploadedDate(Date uploadedDate) {
+        this.uploadedDate = uploadedDate;
     }
 
     public Date getScheduledDate() {
@@ -565,7 +563,7 @@ public class Survey extends BaseModel implements VisitableToSDK {
                 .where(Condition.column(Survey$Table.ID_ORG_UNIT).eq(orgUnit.getId_org_unit()))
                 .and(Condition.column(Survey$Table.ID_TAB_GROUP).eq(tabGroup.getId_tab_group()))
                 .and(Condition.column(Survey$Table.STATUS).is(Constants.SURVEY_IN_PROGRESS))
-                .orderBy(Survey$Table.EVENTDATE)
+                .orderBy(Survey$Table.UPLOADEDDATE)
                 .orderBy(Survey$Table.ID_ORG_UNIT).querySingle();
     }
 
@@ -577,7 +575,7 @@ public class Survey extends BaseModel implements VisitableToSDK {
         return new Select().from(Survey.class)
                 .where(Condition.column(Survey$Table.STATUS).isNot(Constants.SURVEY_SENT))
                 .and(Condition.column(Survey$Table.STATUS).isNot(Constants.SURVEY_PLANNED))
-                .orderBy(Survey$Table.EVENTDATE)
+                .orderBy(Survey$Table.UPLOADEDDATE)
                 .orderBy(Survey$Table.ID_ORG_UNIT).queryList();
     }
 
@@ -590,7 +588,7 @@ public class Survey extends BaseModel implements VisitableToSDK {
         return new Select().from(Survey.class)
                 .where(Condition.column(Survey$Table.STATUS).isNot(Constants.SURVEY_SENT))
                 .limit(String.valueOf(limit))
-                .orderBy(Survey$Table.EVENTDATE)
+                .orderBy(Survey$Table.UPLOADEDDATE)
                 .orderBy(Survey$Table.ID_ORG_UNIT).queryList();
     }
 
@@ -601,7 +599,7 @@ public class Survey extends BaseModel implements VisitableToSDK {
     public static List<Survey> getAllSentSurveys() {
         return new Select().from(Survey.class)
                 .where(Condition.column(Survey$Table.STATUS).eq(Constants.SURVEY_SENT))
-                .orderBy(Survey$Table.EVENTDATE)
+                .orderBy(Survey$Table.UPLOADEDDATE)
                 .orderBy(Survey$Table.ID_ORG_UNIT).queryList();
     }
 
@@ -614,7 +612,7 @@ public class Survey extends BaseModel implements VisitableToSDK {
         return new Select().from(Survey.class)
                 .where(Condition.column(Survey$Table.STATUS).eq(Constants.SURVEY_SENT))
                 .limit(String.valueOf(limit))
-                .orderBy(Survey$Table.EVENTDATE)
+                .orderBy(Survey$Table.UPLOADEDDATE)
                 .orderBy(Survey$Table.ID_ORG_UNIT).queryList();
     }
 
@@ -625,7 +623,7 @@ public class Survey extends BaseModel implements VisitableToSDK {
     public static List<Survey> getAllCompletedSurveys() {
         return new Select().from(Survey.class)
                 .where(Condition.column(Survey$Table.STATUS).eq(Constants.SURVEY_COMPLETED))
-                .orderBy(Survey$Table.EVENTDATE)
+                .orderBy(Survey$Table.UPLOADEDDATE)
                 .orderBy(Survey$Table.ID_ORG_UNIT).queryList();
     }
 
@@ -638,7 +636,7 @@ public class Survey extends BaseModel implements VisitableToSDK {
         return new Select().from(Survey.class)
                 .where(Condition.column(Survey$Table.STATUS).eq(Constants.SURVEY_COMPLETED))
                 .limit(String.valueOf(limit))
-                .orderBy(Survey$Table.EVENTDATE)
+                .orderBy(Survey$Table.UPLOADEDDATE)
                 .orderBy(Survey$Table.ID_ORG_UNIT).queryList();
     }
 
@@ -652,7 +650,7 @@ public class Survey extends BaseModel implements VisitableToSDK {
         return new Select().from(Survey.class)
                 .where(Condition.column(Survey$Table.STATUS).eq(Constants.SURVEY_IN_PROGRESS))
                 .limit(String.valueOf(limit))
-                .orderBy(Survey$Table.EVENTDATE)
+                .orderBy(Survey$Table.UPLOADEDDATE)
                 .orderBy(Survey$Table.ID_ORG_UNIT).queryList();
     }
 
@@ -668,7 +666,7 @@ public class Survey extends BaseModel implements VisitableToSDK {
     public static List<Survey> getAllInProgressSurveys() {
         return new Select().from(Survey.class)
                 .where(Condition.column(Survey$Table.STATUS).is(Constants.SURVEY_IN_PROGRESS))
-                .orderBy(Survey$Table.EVENTDATE)
+                .orderBy(Survey$Table.UPLOADEDDATE)
                 .orderBy(Survey$Table.ID_ORG_UNIT).queryList();
     }
     /**
@@ -678,7 +676,7 @@ public class Survey extends BaseModel implements VisitableToSDK {
     public static List<Survey> getAllCompletedUnsentSurveys() {
         return new Select().from(Survey.class)
                 .where(Condition.column(Survey$Table.STATUS).is(Constants.SURVEY_COMPLETED))
-                .orderBy(Survey$Table.EVENTDATE)
+                .orderBy(Survey$Table.UPLOADEDDATE)
                 .orderBy(Survey$Table.ID_ORG_UNIT).queryList();
     }
     /**
@@ -690,7 +688,7 @@ public class Survey extends BaseModel implements VisitableToSDK {
                 .where(Condition.column(Survey$Table.STATUS).eq(Constants.SURVEY_SENT))
                 .or(Condition.column(Survey$Table.STATUS).eq(Constants.SURVEY_COMPLETED))
                 .or(Condition.column(Survey$Table.STATUS).eq(Constants.SURVEY_CONFLICT))
-                .orderBy(Survey$Table.EVENTDATE)
+                .orderBy(Survey$Table.UPLOADEDDATE)
                 .orderBy(Survey$Table.ID_ORG_UNIT).queryList();
     }
 
@@ -791,7 +789,7 @@ public class Survey extends BaseModel implements VisitableToSDK {
                 .from(Survey.class)
                 .where(Condition.column(Survey$Table.STATUS).eq(Constants.SURVEY_IN_PROGRESS))
                 .or(Condition.column(Survey$Table.STATUS).eq(Constants.SURVEY_SENT))
-                .orderBy(Survey$Table.EVENTDATE)
+                .orderBy(Survey$Table.UPLOADEDDATE)
                 .orderBy(Survey$Table.ID_ORG_UNIT)
                 .queryList();
     }
@@ -820,7 +818,7 @@ public class Survey extends BaseModel implements VisitableToSDK {
                 .from(Survey.class)
                 .where()
                 .groupBy(new QueryBuilder().appendQuotedArray(Survey$Table.ID_ORG_UNIT, Survey$Table.ID_TAB_GROUP))
-                .having(Condition.columnsWithFunction("max", "eventDate"))
+                .having(Condition.columnsWithFunction("max", "uploadedDate"))
                 .queryList();
     }
 
@@ -842,7 +840,7 @@ public class Survey extends BaseModel implements VisitableToSDK {
             return false;
         if (completionDate != null ? !completionDate.equals(survey.completionDate) : survey.completionDate != null)
             return false;
-        if (eventDate != null ? !eventDate.equals(survey.eventDate) : survey.eventDate != null)
+        if (uploadedDate != null ? !uploadedDate.equals(survey.uploadedDate) : survey.uploadedDate != null)
             return false;
         if (eventuid != null ? !eventuid.equals(survey.eventuid) : survey.eventuid != null)
             return false;
@@ -860,7 +858,7 @@ public class Survey extends BaseModel implements VisitableToSDK {
         result = 31 * result + (id_user != null ? id_user.hashCode() : 0);
         result = 31 * result + (creationDate != null ? creationDate.hashCode() : 0);
         result = 31 * result + (completionDate != null ? completionDate.hashCode() : 0);
-                result = 31 * result + (eventDate != null ? eventDate.hashCode() : 0);
+                result = 31 * result + (uploadedDate != null ? uploadedDate.hashCode() : 0);
         result = 31 * result + (eventuid != null ? eventuid.hashCode() : 0);
         result = 31 * result + (scheduledDate != null ? scheduledDate.hashCode() : 0);
         result = 31 * result + (status != null ? status.hashCode() : 0);
@@ -876,7 +874,7 @@ public class Survey extends BaseModel implements VisitableToSDK {
                 ", id_user=" + id_user +
                 ", creationDate=" + creationDate +
                 ", completionDate=" + completionDate +
-                ", eventDate=" + eventDate +
+                ", uploadedDate=" + uploadedDate +
                 ", scheduledDate=" + scheduledDate +
                 ", status=" + status +
                 ", eventuid="+eventuid+

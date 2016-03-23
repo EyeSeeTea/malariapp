@@ -205,13 +205,13 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
     private void updateEventDates() {
 
         //Sent date 'now' (this change will be saves after successful push)
-        currentSurvey.setEventDate(new Date());
+        currentSurvey.setUploadedDate(new Date());
 
         completionDate=currentSurvey.getCreationDate();
 
         // NOTE: do not try to set the event creation date. SDK will try to update the event in the next push instead of creating it and that will crash
         currentEvent.setLastUpdated(EventExtended.format(currentSurvey.getCompletionDate()));
-        currentEvent.setEventDate(EventExtended.format(currentSurvey.getEventDate()));
+        currentEvent.setEventDate(EventExtended.format(currentSurvey.getUploadedDate()));
         currentEvent.setDueDate(EventExtended.format(currentSurvey.getScheduledDate()));
     }
 
@@ -249,7 +249,7 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
         buildAndSaveDataValue(creatingOnUID, Utils.formatDate(new Date()));
 
         //Updated date
-        buildAndSaveDataValue(updatedDateUID, Utils.formatDate(survey.getEventDate()));
+        buildAndSaveDataValue(updatedDateUID, Utils.formatDate(survey.getUploadedDate()));
 
         //Updated by user
         buildAndSaveDataValue(updatedUserUid, Session.getUser().getUid());
