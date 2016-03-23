@@ -78,7 +78,7 @@ public abstract class AAssessmentAdapter extends ADashboardAdapter implements ID
 
 
         if (sentDate != null){
-            Date eventDate = survey.getEventDate();
+            Date eventDate = survey.getCompletionDate();
             SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy");
             sentDate.setText(format.format(eventDate));
             sentDate.setText(Utils.formatDate(eventDate));

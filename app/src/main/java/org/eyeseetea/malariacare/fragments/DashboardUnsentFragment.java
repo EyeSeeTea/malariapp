@@ -157,14 +157,6 @@ public class DashboardUnsentFragment extends ListFragment implements IModuleFrag
         }
     }
 
-    // Container Activity must implement this interface
-    public interface onSurveySelectedListener {
-
-        void dialogCompulsoryQuestionIncompleted();
-
-        void alertOnComplete(Survey survey);
-    }
-
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
@@ -361,8 +353,8 @@ public class DashboardUnsentFragment extends ListFragment implements IModuleFrag
 
         if(surveyReceiver==null){
             surveyReceiver=new SurveyReceiver();
-                LocalBroadcastManager.getInstance(getActivity()).registerReceiver(surveyReceiver, new IntentFilter(SurveyService.ALL_IN_PROGRESS_SURVEYS_ACTION));
-                LocalBroadcastManager.getInstance(getActivity()).registerReceiver(surveyReceiver, new IntentFilter(SurveyService.ALL_COMPLETED_SURVEYS_ACTION));
+            LocalBroadcastManager.getInstance(getActivity()).registerReceiver(surveyReceiver, new IntentFilter(SurveyService.ALL_IN_PROGRESS_SURVEYS_ACTION));
+            LocalBroadcastManager.getInstance(getActivity()).registerReceiver(surveyReceiver, new IntentFilter(SurveyService.ALL_COMPLETED_SURVEYS_ACTION));
         }
     }
 

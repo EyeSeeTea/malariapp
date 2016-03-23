@@ -55,7 +55,6 @@ public class DashboardActivity extends BaseActivity{
     private final static String TAG=".DDetailsActivity";
     private boolean reloadOnResume=true;
     DashboardController dashboardController;
-
     static Handler handler;
     static Activity dashboardActivity;
 
