@@ -338,12 +338,12 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
 
         if(dataValue.getDataElement().equals(PreferencesState.getInstance().getContext().getResources().getString(R.string.creatingOnUID))){
             try{
-                Timestamp timestamp = Utils.getTimestampFromDate(dataValue.getValue(), SDKDateFormat);
-                survey.setCreationDate(timestamp);
+                Date date = EventExtended.parseDate(dataValue.getValue());
+                survey.setCreationDate(date);
                 survey.save();
                 //Annotate object in map
                 appMapObjects.put(dataValue.getEvent(), survey);
-            }catch(Exception e){
+            }catch(ParseException e){
                 Log.d(TAG,"Error converting creation date from datavalue in survey: "+survey.getId_survey());
             }
             return;
@@ -351,12 +351,12 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
 
         if(dataValue.getDataElement().equals(PreferencesState.getInstance().getContext().getResources().getString(R.string.uploadDateUID))){
             try{
-                Timestamp timestamp = Utils.getTimestampFromDate(dataValue.getValue(), SDKDateFormat);
-                survey.setCompletionDate(timestamp);
+                Date date = EventExtended.parseDate(dataValue.getValue());
+                survey.setCompletionDate(date);
                 survey.save();
                 //Annotate object in map
                 appMapObjects.put(dataValue.getEvent(), survey);
-            }catch(Exception e){
+            }catch(ParseException e){
                 Log.d(TAG,"Error converting upload date from datavalue in survey:"+survey.getId_survey());
             }
             return;

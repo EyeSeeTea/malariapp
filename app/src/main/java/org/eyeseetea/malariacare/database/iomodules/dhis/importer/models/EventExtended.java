@@ -68,7 +68,13 @@ public class EventExtended implements VisitableFromSDK {
             return null;
         }
 
-        return parseDate(event.getCreated());
+        try {
+            return parseDate(event.getCreated());
+        }
+        catch (ParseException e){
+            Log.e(TAG,String.format("Event (%s) cannot parse date %s",event.getUid(),e.getLocalizedMessage()));
+            return null;
+        }
     }
 
     /**
@@ -80,7 +86,13 @@ public class EventExtended implements VisitableFromSDK {
             return null;
         }
 
-        return parseDate(event.getLastUpdated());
+        try {
+            return parseDate(event.getLastUpdated());
+        }
+        catch (ParseException e){
+            Log.e(TAG,String.format("Event (%s) cannot parse date %s",event.getUid(),e.getLocalizedMessage()));
+            return null;
+        }
     }
 
     /**
@@ -92,7 +104,13 @@ public class EventExtended implements VisitableFromSDK {
             return null;
         }
 
-        return parseDate(event.getEventDate());
+        try {
+            return parseDate(event.getEventDate());
+        }
+        catch (ParseException e){
+            Log.e(TAG,String.format("Event (%s) cannot parse date %s",event.getUid(),e.getLocalizedMessage()));
+            return null;
+        }
     }
 
     /**
@@ -104,21 +122,22 @@ public class EventExtended implements VisitableFromSDK {
             return null;
         }
 
-        return parseDate(event.getDueDate());
+        try {
+            return parseDate(event.getDueDate());
+        }
+        catch (ParseException e){
+            Log.e(TAG,String.format("Event (%s) cannot parse date %s",event.getUid(),e.getLocalizedMessage()));
+            return null;
+        }
     }
 
-    private Date parseDate(String dateAsString){
+    public static  Date parseDate(String dateAsString) throws  ParseException{
         if(dateAsString==null){
             return null;
         }
 
         SimpleDateFormat simpleDateFormat=new SimpleDateFormat(COMPLETION_DATE_FORMAT);
-        try {
             return simpleDateFormat.parse(dateAsString);
-        }catch (ParseException e){
-            Log.e(TAG,String.format("Event (%s) cannot parse date %s",event.getUid(),e.getLocalizedMessage()));
-            return null;
-        }
     }
 
     /**

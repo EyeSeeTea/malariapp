@@ -243,10 +243,10 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
      */
     private void buildDateControlDataElements(Survey survey) {
         //Created date
-        buildAndSaveDataValue(creatingOnUID, Utils.formatDate(survey.getCreationDate()));
+        buildAndSaveDataValue(creatingOnUID, EventExtended.format(survey.getCreationDate()));
 
         //Updated date
-        buildAndSaveDataValue(updatedDateUID, Utils.formatDate(survey.getUploadedDate()));
+        buildAndSaveDataValue(updatedDateUID, EventExtended.format(survey.getUploadedDate()));
 
         //Updated by user
         buildAndSaveDataValue(updatedUserUid, Session.getUser().getUid());

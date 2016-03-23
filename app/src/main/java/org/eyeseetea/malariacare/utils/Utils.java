@@ -19,8 +19,6 @@
 
 package org.eyeseetea.malariacare.utils;
 
-import android.support.annotation.NonNull;
-
 import com.raizlabs.android.dbflow.structure.BaseModel;
 
 import org.eyeseetea.malariacare.database.model.CompositeScore;
@@ -29,17 +27,13 @@ import org.eyeseetea.malariacare.database.model.Question;
 import org.eyeseetea.malariacare.database.model.Tab;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.Session;
-import org.hisp.dhis.android.sdk.persistence.models.DataValue;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.math.BigDecimal;
-import java.sql.Timestamp;
 import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -48,7 +42,6 @@ import java.util.Locale;
 public class Utils {
 
     static final int numberOfDecimals = 0; // Number of decimals outputs will have
-    public final static String COMPLETION_DATE_FORMAT="yyyy-MM-dd'T'HH:mm:ss.SSSZ";
 
     public static String round(float base, int decimalPlace){
         BigDecimal bd = new BigDecimal(Float.toString(base));
@@ -117,16 +110,5 @@ public class Utils {
         Locale locale = PreferencesState.getInstance().getContext().getResources().getConfiguration().locale;
         DateFormat dateFormatter = DateFormat.getDateInstance(DateFormat.DEFAULT, locale);
         return dateFormatter.format(date);
-    }
-
-    /**
-     * Turns a given date into a parseable Timestamp String according to sdk date format
-     * @param date
-     * @return
-     */
-    public static Timestamp getTimestampFromDate(String date,String format) throws ParseException {
-        SimpleDateFormat dateFormat = new SimpleDateFormat(format);
-        Date parsedDate = dateFormat.parse(date);
-        return new Timestamp(parsedDate.getTime());
     }
 }
