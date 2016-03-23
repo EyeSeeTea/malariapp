@@ -19,7 +19,6 @@
 
 package org.eyeseetea.malariacare.database.iomodules.dhis.importer;
 
-import android.support.annotation.NonNull;
 import android.util.Log;
 
 import org.eyeseetea.malariacare.ProgressActivity;
@@ -296,10 +295,11 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
         //Any survey that comes from the pull has been sent
         survey.setStatus(Constants.SURVEY_SENT);
         //Set dates
-        //// FIXME: 23/03/2016 
-        survey.setCreationDate(sdkEventExtended.getCreationDate());
-        survey.setCompletionDate(sdkEventExtended.getCompletionDate());
+        survey.setCompletionDate(sdkEventExtended.getEventDate());
+        //This prevent a null dates, but the CreationDation and UploadedDate need be setted in dataValue visitor.
+        survey.setCreationDate(sdkEventExtended.getEventDate());
         survey.setUploadedDate(sdkEventExtended.getEventDate());
+
         survey.setScheduledDate(sdkEventExtended.getScheduledDate());
         //Set fks
         survey.setOrgUnit(orgUnit);
@@ -315,7 +315,6 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
             DataValueExtended dataValueExtended=new DataValueExtended(dataValue);
             dataValueExtended.accept(this);
         }
-
     }
 
     @Override
@@ -333,18 +332,6 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
                 score.setUid(dataValue.getDataElement());
                 score.setSurvey(survey);
                 score.save();
-            }
-            return;
-        }
-        if(dataValue.getDataElement().equals(PreferencesState.getInstance().getContext().getResources().getString(R.string.completionDateUID))){
-            try{
-                Timestamp timestamp = Utils.getTimestampFromDate(dataValue.getValue(), SDKDateFormat);
-                survey.setCompletionDate(timestamp);
-                survey.save();
-                //Annotate object in map
-                appMapObjects.put(dataValue.getEvent(), survey);
-            }catch(Exception e){
-                Log.d(TAG,"Error converting completiondate from datavalue in survey:"+survey.getId_survey());
             }
             return;
         }
@@ -375,7 +362,7 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
             return;
         }
 
-        if(dataValue.getDataElement().equals(PreferencesState.getInstance().getContext().getResources().getString(R.string.completionDateUID))){
+        if(dataValue.getDataElement().equals(PreferencesState.getInstance().getContext().getResources().getString(R.string.updatedUserUid))){
             User user=User.getUser(dataValue.getValue());
             if(user==null) {
                 user = new User(dataValue.getValue(), dataValue.getValue());
