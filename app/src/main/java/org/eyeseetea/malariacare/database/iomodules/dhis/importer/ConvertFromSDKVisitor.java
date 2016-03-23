@@ -19,9 +19,11 @@
 
 package org.eyeseetea.malariacare.database.iomodules.dhis.importer;
 
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 import org.eyeseetea.malariacare.ProgressActivity;
+import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.DataElementExtended;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.DataValueExtended;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.EventExtended;
@@ -45,7 +47,9 @@ import org.eyeseetea.malariacare.database.model.Tab;
 import org.eyeseetea.malariacare.database.model.TabGroup;
 import org.eyeseetea.malariacare.database.model.User;
 import org.eyeseetea.malariacare.database.model.Value;
+import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.utils.Constants;
+import org.eyeseetea.malariacare.utils.Utils;
 import org.hisp.dhis.android.sdk.controllers.metadata.MetaDataController;
 import org.hisp.dhis.android.sdk.persistence.models.DataElement;
 import org.hisp.dhis.android.sdk.persistence.models.DataValue;
@@ -61,6 +65,10 @@ import org.hisp.dhis.android.sdk.persistence.models.ProgramStageSection;
 import org.hisp.dhis.android.sdk.persistence.models.UserAccount;
 import org.hisp.dhis.android.sdk.utils.api.ProgramType;
 
+import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -76,6 +84,7 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
     CompositeScoreBuilder compositeScoreBuilder;
     QuestionBuilder questionBuilder;
     private final String ATTRIBUTE_PRODUCTIVITY_CODE="OUProductivity";
+    private final String SDKDateFormat="yyyy-MM-dd'T'HH:mm:ss.SSSZ";
 
 
     public ConvertFromSDKVisitor(){
@@ -287,6 +296,7 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
         //Any survey that comes from the pull has been sent
         survey.setStatus(Constants.SURVEY_SENT);
         //Set dates
+        //// FIXME: 23/03/2016 
         survey.setCreationDate(sdkEventExtended.getCreationDate());
         survey.setCompletionDate(sdkEventExtended.getCompletionDate());
         survey.setEventDate(sdkEventExtended.getEventDate());
@@ -326,7 +336,57 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
             }
             return;
         }
+        if(dataValue.getDataElement().equals(PreferencesState.getInstance().getContext().getResources().getString(R.string.completionDateUID))){
+            try{
+                Timestamp timestamp = Utils.getTimestampFromDate(dataValue.getValue(), SDKDateFormat);
+                survey.setCompletionDate(timestamp);
+                survey.save();
+                //Annotate object in map
+                appMapObjects.put(dataValue.getEvent(), survey);
+            }catch(Exception e){
+                Log.d(TAG,"Error converting completiondate from datavalue in survey:"+survey.getId_survey());
+            }
+            return;
+        }
 
+        if(dataValue.getDataElement().equals(PreferencesState.getInstance().getContext().getResources().getString(R.string.creatingOnUID))){
+            try{
+                Timestamp timestamp = Utils.getTimestampFromDate(dataValue.getValue(), SDKDateFormat);
+                survey.setCreationDate(timestamp);
+                survey.save();
+                //Annotate object in map
+                appMapObjects.put(dataValue.getEvent(), survey);
+            }catch(Exception e){
+                Log.d(TAG,"Error converting creation date from datavalue in survey: "+survey.getId_survey());
+            }
+            return;
+        }
+
+        if(dataValue.getDataElement().equals(PreferencesState.getInstance().getContext().getResources().getString(R.string.uploadDateUID))){
+            try{
+                Timestamp timestamp = Utils.getTimestampFromDate(dataValue.getValue(), SDKDateFormat);
+                survey.setCompletionDate(timestamp);
+                survey.save();
+                //Annotate object in map
+                appMapObjects.put(dataValue.getEvent(), survey);
+            }catch(Exception e){
+                Log.d(TAG,"Error converting upload date from datavalue in survey:"+survey.getId_survey());
+            }
+            return;
+        }
+
+        if(dataValue.getDataElement().equals(PreferencesState.getInstance().getContext().getResources().getString(R.string.completionDateUID))){
+            User user=User.getUser(dataValue.getValue());
+            if(user==null) {
+                user = new User(dataValue.getValue(), dataValue.getValue());
+                user.save();
+            }
+            survey.setUser(user);
+            survey.save();
+            //Annotate object in map
+            appMapObjects.put(dataValue.getEvent(), survey);
+            return;
+        }
         //Datavalue is a value from a question
         Question question=(Question)appMapObjects.get(dataValue.getDataElement());
 
