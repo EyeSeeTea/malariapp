@@ -355,7 +355,7 @@
         <p>This option requires some changes in the git repository.</p>
         <p>Steps:</p>
         <p>1. Please open or create the.git/hooks/post-commit and .git/hooks/post-checkout  files.</p>
-            <p>2. If the file not exist, add the following lines: </p>
+            <p>2. If the file does not exist, add the following lines: </p>
                <p>#!/bin/sh </p>
                <p>gitPath=$(git rev-parse --show-toplevel)</p>
                <p>sh ${gitPath}/generate_last_commit.sh </p>
