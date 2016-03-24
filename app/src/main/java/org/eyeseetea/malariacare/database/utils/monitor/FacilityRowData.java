@@ -89,7 +89,7 @@ public class FacilityRowData {
      * @return
      */
     private int calculateIndex(Survey survey){
-        String keyMonth=KEY_MONTH_FORMATTER.format(survey.getUploadedDate());
+        String keyMonth=KEY_MONTH_FORMATTER.format(survey.getCompletionDate());
         Integer index=monthsIndex.get(keyMonth);
         if(index==null){
             return -1;
