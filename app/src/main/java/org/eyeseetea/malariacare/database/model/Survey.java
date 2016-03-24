@@ -536,8 +536,6 @@ public class Survey extends BaseModel implements VisitableToSDK {
         else if(surveyAnsweredRatio.getCompulsoryAnswered()==0){
             this.setStatus(Constants.SURVEY_IN_PROGRESS);
         }
-        //CompletionDate
-        this.setCompletionDate(new Date());
 
 
         //Saves new status & completionDate
@@ -726,6 +724,8 @@ public class Survey extends BaseModel implements VisitableToSDK {
 
     public void setCompleteSurveyState(){
         setStatus(Constants.SURVEY_COMPLETED);
+        //CompletionDate
+        this.setCompletionDate(new Date());
         saveScore();
         save();
         saveMainScore();
