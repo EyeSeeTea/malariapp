@@ -338,7 +338,7 @@ public abstract class BaseActivity extends ActionBarActivity {
 
         //set up text title
         TextView textTile = (TextView) dialog.findViewById(R.id.aboutTitle);
-        textTile.setText(BuildConfig.version);
+        textTile.setText(BuildConfig.VERSION_NAME);
         textTile.setGravity(Gravity.RIGHT);
 
         //set up image view
