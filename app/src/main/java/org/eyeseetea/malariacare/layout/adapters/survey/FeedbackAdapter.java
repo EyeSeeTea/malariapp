@@ -133,10 +133,10 @@ public class FeedbackAdapter extends BaseAdapter {
 
         //CompositeScore title
         textView=(TextView)rowLayout.findViewById(R.id.feedback_score_label);
-        if(feedback.getScore()< Constants.MAX_AMBER)
-            textView.setTextColor(PreferencesState.getInstance().getContext().getResources().getColor(R.color.amber));
-        else if(feedback.getScore()< Constants.MAX_RED)
+        if(feedback.getScore()< Constants.MAX_RED)
             textView.setTextColor(PreferencesState.getInstance().getContext().getResources().getColor(R.color.darkRed));
+        else if(feedback.getScore()< Constants.MAX_AMBER)
+            textView.setTextColor(PreferencesState.getInstance().getContext().getResources().getColor(R.color.amber));
         else
             textView.setTextColor(PreferencesState.getInstance().getContext().getResources().getColor(R.color.lightGreen));
         textView.setText(feedback.getPercentageAsString());
