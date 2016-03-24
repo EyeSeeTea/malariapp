@@ -37,6 +37,7 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -275,21 +276,6 @@ public abstract class BaseActivity extends ActionBarActivity {
     }
 
     /**
-     * Shows an alert dialog with a big message inside based on a raw resource HTML formatted
-     * @param titleId Id of the title resource
-     * @param rawId Id of the raw text resource in HTML format
-     */
-    private void showAlertWithHtmlMessage(int titleId, int rawId){
-        InputStream message = getApplicationContext().getResources().openRawResource(rawId);
-        String stringMessage=Utils.convertFromInputStreamToString(message).toString();
-        final SpannableString linkedMessage = new SpannableString(Html.fromHtml(stringMessage));
-        Linkify.addLinks(linkedMessage, Linkify.ALL);
-        if(BuildConfig.FLAVOR.equals("hnqis"))
-            showAboutAlert(titleId, linkedMessage);
-        else
-            showAlert(titleId,linkedMessage);
-    }
-    /**
      * Replace in rawId the $replace$ expresion with the content on lastCommit and
      * Shows an alert dialog with a big message inside based on a raw resource HTML formatted
      * @param titleId Id of the title resource
@@ -297,6 +283,22 @@ public abstract class BaseActivity extends ActionBarActivity {
      * @param lastCommit Id of the raw text resource with the commit
      */
     private void showAlertWithHtmlMessageAndLastCommit(int titleId, int rawId, int lastCommit){
+        String stringMessage = getMessageWithCommit(rawId, lastCommit);
+        final SpannableString linkedMessage = new SpannableString(Html.fromHtml(stringMessage));
+        Linkify.addLinks(linkedMessage, Linkify.EMAIL_ADDRESSES | Linkify.WEB_URLS);
+        //Fixme: the eds build have different dialog style.
+        if(BuildConfig.FLAVOR.equals("hnqis"))
+            showAboutAlert(titleId, linkedMessage);
+        else
+            showAlert(titleId, linkedMessage);
+    }
+
+    /**
+     * Merge the lastcommit into the raw file
+     * @param rawId Id of the raw text resource in HTML format
+     * @param lastCommit Id of the raw text resource with the commit
+     */
+    private String getMessageWithCommit(int rawId, int lastCommit) {
         InputStream message = getApplicationContext().getResources().openRawResource(rawId);
         InputStream commit = getApplicationContext().getResources().openRawResource(lastCommit);
 
@@ -311,11 +313,9 @@ public abstract class BaseActivity extends ActionBarActivity {
             stringCommit = String.format(getString(R.string.lastcommit), stringCommit);
         }
         stringMessage=String.format(stringMessage,stringCommit);
-
-        final SpannableString linkedMessage = new SpannableString(Html.fromHtml(stringMessage));
-        Linkify.addLinks(linkedMessage, Linkify.ALL);
-        showAlert(titleId, linkedMessage);
+        return stringMessage;
     }
+
     /**
      * Shows an alert dialog with a given string
      * @param titleId Id of the title resource
