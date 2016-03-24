@@ -34,18 +34,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="fill_parent">
 
-                    <org.eyeseetea.malariacare.views.CustomTextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:textAppearance="?android:attr/textAppearanceLarge"
-                        android:text="@string/create_info_organization_unit"
-                        android:textAllCaps="true"
-                        app:tDimension="@string/font_size_level4"
-                        app:tFontName="@string/medium_font_name"
-                        android:id="@+id/textView"
-                        android:background="@color/assess_grey"
-                        android:textColor="@color/White"
-                        android:gravity="center" />
+                    <include layout="@layout/create_survey_org_unit_item_customtext"/>
                 </LinearLayout>
 
                 <RelativeLayout
@@ -53,28 +42,7 @@
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
                     android:background="@drawable/background_textfield">
-
-                    <Spinner
-                        android:dropDownWidth="match_parent"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/org_unit_item_spinner"
-                        android:spinnerMode="dropdown"
-                        android:backgroundTintMode="add"
-                        android:paddingTop="@dimen/create_survey_spinner_padding"
-                        android:paddingBottom="@dimen/create_survey_spinner_padding"
-                        android:paddingLeft="2dip"
-                        android:paddingRight="20dip"
-                        android:background="@null"/>
-                    <ImageView
-                        android:src="@drawable/arrow_assess"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:paddingTop="@dimen/create_survey_spinner_padding"
-                        android:paddingBottom="@dimen/create_survey_spinner_padding"
-                        android:paddingRight="20dip"
-                        android:layout_alignParentBottom="true"
-                        android:layout_alignParentRight="true"  />
+                    <include layout="@layout/create_survey_org_unit_spinner"/>
                 </RelativeLayout>
     </LinearLayout>
 

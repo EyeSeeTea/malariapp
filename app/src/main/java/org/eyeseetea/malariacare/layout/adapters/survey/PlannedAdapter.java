@@ -40,20 +40,16 @@ import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.model.Program;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
-import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.database.utils.planning.PlannedHeader;
 import org.eyeseetea.malariacare.database.utils.planning.PlannedItem;
 import org.eyeseetea.malariacare.database.utils.planning.PlannedItemBuilder;
 import org.eyeseetea.malariacare.database.utils.planning.PlannedSurvey;
-import org.eyeseetea.malariacare.database.utils.planning.SurveyPlanner;
 import org.eyeseetea.malariacare.utils.Constants;
 import org.eyeseetea.malariacare.utils.Utils;
 
-import java.text.DateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 /**
  * Created by arrizabalaga on 14/09/15.
@@ -329,15 +325,16 @@ public class PlannedAdapter extends BaseAdapter {
         @Override
         public void onClick(View v) {
             DashboardActivity activity = ((DashboardActivity) context);
-            if(survey.getStatus()==Constants.SURVEY_PLANNED){
-                survey=SurveyPlanner.getInstance().startSurvey(survey);
-            }
-
-            Session.setSurvey(survey);
-            activity.prepareLocationListener(survey);
-            //FIXME
-
-            activity.initSurveyFromPlanning();
+            activity.onSurveySelected(survey);
+//            if(survey.getStatus()==Constants.SURVEY_PLANNED){
+//                survey=SurveyPlanner.getInstance().startSurvey(survey);
+//            }
+//
+//            Session.setSurvey(survey);
+//            activity.prepareLocationListener(survey);
+//            //FIXME
+//
+//            activity.initSurveyFromPlanning();
         }
     }
 

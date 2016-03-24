@@ -20,9 +20,11 @@
 package org.eyeseetea.malariacare.fragments;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ListFragment;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.AsyncTask;
@@ -37,6 +39,7 @@ import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.Spinner;
 
+import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.model.OrgUnit;
 import org.eyeseetea.malariacare.database.model.Program;
@@ -47,6 +50,7 @@ import org.eyeseetea.malariacare.layout.adapters.dashboard.AssessmentSentAdapter
 import org.eyeseetea.malariacare.layout.adapters.dashboard.IDashboardAdapter;
 import org.eyeseetea.malariacare.layout.adapters.filters.FilterOrgUnitArrayAdapter;
 import org.eyeseetea.malariacare.layout.adapters.filters.FilterProgramArrayAdapter;
+import org.eyeseetea.malariacare.layout.listeners.SwipeDismissListViewTouchListener;
 import org.eyeseetea.malariacare.services.SurveyService;
 import org.eyeseetea.malariacare.views.CustomTextView;
 
@@ -59,7 +63,7 @@ import java.util.List;
 /**
  * A placeholder fragment containing a simple view.
  */
-public class DashboardSentFragment extends ListFragment {
+public class DashboardSentFragment extends ListFragment implements IModuleFragment{
 
 
     public static final String TAG = ".CompletedFragment";
@@ -68,10 +72,10 @@ public class DashboardSentFragment extends ListFragment {
     private final static int DATE_ORDER =2;
     private final static int SCORE_ORDER =3;
     private static int LAST_ORDER =WITHOUT_ORDER;
+
     private SurveyReceiver surveyReceiver;
     private List<Survey> surveys;
     protected IDashboardAdapter adapter;
-    private static int index = 0;
     List<Survey> oneSurveyForOrgUnit;
     List<OrgUnit> orgUnitList;
     List <Program> programList;
@@ -81,7 +85,7 @@ public class DashboardSentFragment extends ListFragment {
     String programFilter;
     int orderBy=WITHOUT_ORDER;
     static boolean reverse=false;
-    OnFeedbackSelectedListener mCallback;
+    DashboardActivity dashboardActivity;
 
     public DashboardSentFragment() {
         this.adapter = Session.getAdapterSent();
@@ -100,36 +104,17 @@ public class DashboardSentFragment extends ListFragment {
         return f;
     }
 
-
-    // Container Activity must implement this interface
-    public interface OnFeedbackSelectedListener {
-        public void onFeedbackSelected(Survey survey);
-    }
-
-
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-
-        // This makes sure that the container activity has implemented
-        // the callback interface. If not, it throws an exception
-        try {
-            mCallback = (OnFeedbackSelectedListener) activity;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString()
-                    + " must implement OnFeedbackSelectedListener");
-        }
-    }
-
-    public int getShownIndex() {
-        return getArguments().getInt("index", 0);
+        dashboardActivity = (DashboardActivity) activity;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState){
         Log.d(TAG, "onCreate");
         super.onCreate(savedInstanceState);
-        //orgUnitFilter= PreferencesState.getInstance().getContext().getString(R.string.filter_all_org_units_upper);
+        orgUnitFilter= PreferencesState.getInstance().getContext().getString(R.string.filter_all_org_units_upper);
         programFilter= PreferencesState.getInstance().getContext().getString(R.string.filter_all_org_assessments_upper);
     }
 
@@ -147,13 +132,18 @@ public class DashboardSentFragment extends ListFragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         Log.d(TAG, "onActivityCreated");
         super.onActivityCreated(savedInstanceState);
-
-        hideContainer();
-        //Loading...
-        if(isAdded())
-            setListShown(false);
         initAdapter();
         initListView();
+    }
+
+    @Override
+    public void onResume(){
+        Log.d(TAG, "onResume");
+        //Loading...
+        setListShown(false);
+        //Listen for data
+        registerSurveysReceiver();
+        super.onResume();
     }
 
     private void initFilters() {
@@ -265,14 +255,13 @@ public class DashboardSentFragment extends ListFragment {
         Log.d(TAG, "onListItemClick");
         super.onListItemClick(l, v, position, id);
 
-        //Discard clicks on header|footer (which is attended on newSurvey via super)
+        //Discard clicks on header|footer (which is attended on onNewSurvey via super)
         if(!isPositionASurvey(position)){
             return;
         }
 
         // call feedbackselected function(and it call surveyfragment)
-
-        mCallback.onFeedbackSelected(surveys.get(position - 1));
+        dashboardActivity.onFeedbackSelected(surveys.get(position - 1));
     }
 
     @Override
@@ -319,16 +308,64 @@ public class DashboardSentFragment extends ListFragment {
      * Initializes the listview component, adding a listener for swiping right
      */
     private void initListView(){
-        LayoutInflater inflater = LayoutInflater.from(PreferencesState.getInstance().getContext().getApplicationContext());
-        View header = inflater.inflate(this.adapter.getHeaderLayout(), null, false);
+        LayoutInflater inflater = LayoutInflater.from(getActivity());
+        View header = inflater.inflate(this.adapter.getHeaderLayout(),null,false);
         View footer = inflater.inflate(this.adapter.getFooterLayout(), null, false);
-        header=initFilterOrder(header);
+        if(!PreferencesState.getInstance().isVerticalDashboard())
+            header=initFilterOrder(header);
+        else
+        {
+            CustomTextView title = (CustomTextView) getActivity().findViewById(R.id.titleCompleted);
+            title.setText(adapter.getTitle());
+        }
         ListView listView = getListView();
-        listView.setBackgroundColor(getResources().getColor(R.color.feedbackDarkBlue));
+        if(!PreferencesState.getInstance().isVerticalDashboard())
+            listView.setBackgroundColor(getResources().getColor(R.color.feedbackDarkBlue));
         listView.addHeaderView(header);
         listView.addFooterView(footer);
         setListAdapter((BaseAdapter) adapter);
-        Session.listViewSent = listView;
+        if(!PreferencesState.getInstance().isVerticalDashboard())
+            Session.listViewSent = listView;
+        else{
+
+            // Create a ListView-specific touch listener. ListViews are given special treatment because
+            // by default they handle touches for their list items... i.e. they're in charge of drawing
+            // the pressed state (the list selector), handling list item clicks, etc.
+            SwipeDismissListViewTouchListener touchListener =
+                    new SwipeDismissListViewTouchListener(
+                            listView,
+                            new SwipeDismissListViewTouchListener.DismissCallbacks() {
+                                @Override
+                                public boolean canDismiss(int position) {
+                                    return position>0 && position<=surveys.size();
+                                }
+
+                                @Override
+                                public void onDismiss(ListView listView, int[] reverseSortedPositions) {
+                                    for (final int position : reverseSortedPositions) {
+                                        new AlertDialog.Builder(getActivity())
+                                                .setTitle(getActivity().getString(R.string.dialog_title_delete_survey))
+                                                .setMessage(getActivity().getString(R.string.dialog_info_delete_survey))
+                                                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                                                    public void onClick(DialogInterface arg0, int arg1) {
+                                                        ((Survey)adapter.getItem(position-1)).delete();
+                                                        Intent surveysIntent=new Intent(getActivity(), SurveyService.class);
+                                                        surveysIntent.putExtra(SurveyService.SERVICE_METHOD, SurveyService.RELOAD_DASHBOARD_ACTION);
+                                                        getActivity().startService(surveysIntent);
+                                                    }
+                                                })
+                                                .setNegativeButton(android.R.string.no, null).create().show();
+                                    }
+
+                                }
+                            });
+            listView.setOnTouchListener(touchListener);
+            // Setting this scroll listener is required to ensure that during ListView scrolling,
+            // we don't look for swipes.
+            listView.setOnScrollListener(touchListener.makeScrollListener());
+
+            Session.listViewSent = listView;
+        }
     }
 
     //Adds the clicklistener to the header CustomTextView.
@@ -375,7 +412,6 @@ public class DashboardSentFragment extends ListFragment {
         }
     }
 
-
     /**
      * Unregisters the survey receiver.
      * It really important to do this, otherwise each receiver will invoke its code.
@@ -402,6 +438,7 @@ public class DashboardSentFragment extends ListFragment {
         }
     }
 
+    @Override
     public void reloadData(){
         //Reload data using service
         Intent surveysIntent=new Intent(PreferencesState.getInstance().getContext().getApplicationContext(), SurveyService.class);
@@ -493,9 +530,6 @@ public class DashboardSentFragment extends ListFragment {
     public void showContainer(){
         getActivity().findViewById(R.id.dashboard_completed_container).setVisibility(View.VISIBLE);
     }
-    public void hideContainer(){
-        getActivity().findViewById(R.id.dashboard_completed_container).setVisibility(View.GONE);
-    }
 
     /**
      * Inner private class that receives the result from the service
@@ -532,8 +566,10 @@ public class DashboardSentFragment extends ListFragment {
 
         @Override
         protected void onPostExecute(Void result) {
-            initFilters();
-            showContainer();
+            if(!PreferencesState.getInstance().isVerticalDashboard()){
+                initFilters();    
+                showContainer();
+            } 
         }
 
         @Override

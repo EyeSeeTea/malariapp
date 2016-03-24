@@ -46,6 +46,7 @@ import org.eyeseetea.malariacare.database.model.Program;
 import org.eyeseetea.malariacare.database.model.Question;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.model.Survey$Table;
+import org.eyeseetea.malariacare.layout.dashboard.controllers.AssessModuleController;
 import org.eyeseetea.malariacare.utils.Constants;
 import org.hamcrest.Matchers;
 import org.hisp.dhis.android.sdk.persistence.models.OrganisationUnit;
@@ -139,7 +140,7 @@ public class SDKTestUtils {
 
     public static void startSurvey(int idxOrgUnit, int idxProgram) {
         //when: click on assess tab + plus button
-        onView(withTagValue(Matchers.is((Object) getActivityInstance().getApplicationContext().getString(R.string.tab_tag_assess)))).perform(click());
+        onView(withTagValue(Matchers.is((Object) AssessModuleController.getSimpleName()))).perform(click());
         onView(withId(R.id.plusButton)).perform(click());
 
         //then: start survey 'test facility 1'+ 'family planning'+start
@@ -168,9 +169,9 @@ public class SDKTestUtils {
         IdlingResource idlingResource = new ElapsedTimeIdlingResource(5 * 1000);
         Espresso.registerIdlingResources(idlingResource);
 
-        onView(withTagValue(Matchers.is((Object) getActivityInstance().getApplicationContext().getString(R.string.tab_tag_assess)))).perform(click());
+        onView(withTagValue(Matchers.is((Object) AssessModuleController.getSimpleName()))).perform(click());
+		Espresso.unregisterIdlingResources(idlingResource);
 
-        Espresso.unregisterIdlingResources(idlingResource);
         for (int i = 0; i < numQuestions; i++) {
             try {
                 idlingResource = new ElapsedTimeIdlingResource(1 * 1000);
