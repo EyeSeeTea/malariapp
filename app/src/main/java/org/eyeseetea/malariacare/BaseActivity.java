@@ -280,7 +280,7 @@ public abstract class BaseActivity extends ActionBarActivity {
      * @param titleId Id of the title resource
      * @param rawId Id of the raw text resource in HTML format
      */
-    private void showAlertWithHtmlMessageAndLastCommit(int titleId, int rawId, int lastCommit){
+    private void showAlertWithHtmlMessageAndLastCommit(int titleId, int rawId){
         String stringMessage = getMessageWithCommit(rawId);
         final SpannableString linkedMessage = new SpannableString(Html.fromHtml(stringMessage));
         Linkify.addLinks(linkedMessage, Linkify.EMAIL_ADDRESSES | Linkify.WEB_URLS);
