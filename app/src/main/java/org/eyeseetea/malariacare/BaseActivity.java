@@ -342,7 +342,7 @@ public abstract class BaseActivity extends ActionBarActivity {
         textTile.setGravity(Gravity.RIGHT);
 
         //set up image view
-        ImageView img = (ImageView) dialog.findViewById(R.id.aboutimage);
+        ImageView img = (ImageView) dialog.findViewById(R.id.aboutImage);
         img.setImageResource(R.drawable.psi);
 
         //set up text title
@@ -350,7 +350,7 @@ public abstract class BaseActivity extends ActionBarActivity {
         textContent.setMovementMethod(LinkMovementMethod.getInstance());
         textContent.setText(text);
         //set up button
-        Button button = (Button) dialog.findViewById(R.id.aboutokbutton);
+        Button button = (Button) dialog.findViewById(R.id.aboutButton);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
