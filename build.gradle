@@ -39,6 +39,8 @@ ext {
     //App Version
     versionCode = 17
     versionName = "14.0"
+    HNQISversion = '"HNQIS 1.0.N"'
+    EDSversion = '" "'
 
     // Sdk and tools
     minSdkVersion = 15
