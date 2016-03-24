@@ -20,6 +20,7 @@
 package org.eyeseetea.malariacare;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -33,9 +34,13 @@ import android.text.SpannableString;
 import android.text.method.LinkMovementMethod;
 import android.text.util.Linkify;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.Window;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.eyeseetea.malariacare.database.model.Survey;
@@ -275,20 +280,22 @@ public abstract class BaseActivity extends ActionBarActivity {
      * @param titleId Id of the title resource
      * @param rawId Id of the raw text resource in HTML format
      */
-    private void showAlertWithHtmlMessage(int titleId, int rawId){
-        InputStream message = getApplicationContext().getResources().openRawResource(rawId);
-        final SpannableString linkedMessage = new SpannableString(Html.fromHtml(Utils.convertFromInputStreamToString(message).toString()));
-        Linkify.addLinks(linkedMessage, Linkify.ALL);
-        showAlert(titleId, linkedMessage);
+    private void showAlertWithHtmlMessageAndLastCommit(int titleId, int rawId, int lastCommit){
+        String stringMessage = getMessageWithCommit(rawId);
+        final SpannableString linkedMessage = new SpannableString(Html.fromHtml(stringMessage));
+        Linkify.addLinks(linkedMessage, Linkify.EMAIL_ADDRESSES | Linkify.WEB_URLS);
+        //Fixme: the eds build have different dialog style.
+        if(BuildConfig.FLAVOR.equals("hnqis"))
+            showAboutAlert(titleId, linkedMessage);
+        else
+            showAlert(titleId, linkedMessage);
     }
 
     /**
-     * Replace in rawId the $replace$ expresion with the content on lastCommit and
-     * Shows an alert dialog with a big message inside based on a raw resource HTML formatted
-     * @param titleId Id of the title resource
+     * Merge the lastcommit into the raw file
      * @param rawId Id of the raw text resource in HTML format
      */
-    private void showAlertWithHtmlMessageAndLastCommit(int titleId, int rawId){
+    private String getMessageWithCommit(int rawId) {
         InputStream message = getApplicationContext().getResources().openRawResource(rawId);
         String stringCommit;
         //Check if lastcommit.txt file exist, and if not exist show as unavailable.
@@ -308,11 +315,9 @@ public abstract class BaseActivity extends ActionBarActivity {
             stringCommit = String.format(getString(R.string.lastcommit), stringCommit);
         }
         stringMessage=String.format(stringMessage,stringCommit);
-
-        final SpannableString linkedMessage = new SpannableString(Html.fromHtml(stringMessage));
-        Linkify.addLinks(linkedMessage, Linkify.ALL);
-        showAlert(titleId, linkedMessage);
+        return stringMessage;
     }
+
     /**
      * Shows an alert dialog with a given string
      * @param titleId Id of the title resource
@@ -327,6 +332,36 @@ public abstract class BaseActivity extends ActionBarActivity {
         ((TextView)dialog.findViewById(android.R.id.message)).setMovementMethod(LinkMovementMethod.getInstance());
     }
 
+    private void showAboutAlert(int titleId, CharSequence text){
+        final Dialog dialog = new Dialog(BaseActivity.this);
+        dialog.setContentView(R.layout.dialog_about);
+        dialog.setTitle(titleId);
+        dialog.setCancelable(true);
+
+        //set up text title
+        TextView textTile = (TextView) dialog.findViewById(R.id.aboutTitle);
+        textTile.setText(BuildConfig.VERSION_NAME);
+        textTile.setGravity(Gravity.RIGHT);
+
+        //set up image view
+        ImageView img = (ImageView) dialog.findViewById(R.id.aboutImage);
+        img.setImageResource(R.drawable.psi);
+
+        //set up text title
+        TextView textContent = (TextView) dialog.findViewById(R.id.aboutMessage);
+        textContent.setMovementMethod(LinkMovementMethod.getInstance());
+        textContent.setText(text);
+        //set up button
+        Button button = (Button) dialog.findViewById(R.id.aboutButton);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+               dialog.dismiss();
+            }
+        });
+        //now that the dialog is set up, it's time to show it
+        dialog.show();
+    }
     /**
      * Logs a debug message using current activity SimpleName as tag. Ex:
      *   SurveyActivity => ".SurveyActivity"

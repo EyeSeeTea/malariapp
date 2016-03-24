@@ -39,7 +39,7 @@ ext {
     //App Version
     versionCode = 17
     versionName = "14.0"
-
+    
     // Sdk and tools
     minSdkVersion = 15
     targetSdkVersion = 21

@@ -1,36 +1,39 @@
-<p><b>The Health Network Quality Improvement System (HNQIS)</b></p>
+<p>PSI’s Health Network Quality Improvement System (HNQIS)</p>
 
-<p><b>%s</b></p>
+<p>%s</p>
 
-<p>This app was developed by PSI for the African Health markets for Equity project (AHME). AHME is implemented by Marie Stopes International, with support from the Bill & Melinda Gates Foundation.</p>
+<p>Este aplicativo foi desenvolvido pela Population Services International (PSI) para sustentar a melhoria das redes privadas do sector de cuidados de saúde de qualidade. Este aplicativo foi desenvolvido com o apoio da Fundação Bill & Melinda Gates e grandes doadores anônimos. </ P>
 
-<p>This Application is made possible by the generous support of the American People through the United States Agency for International Development (USAID). The contents are the responsibility of PSI and do not necessarily reflect the views of USAID or the United States Government. PSI acknowledges UNITAID for the support provided during the conceptual development of this Application by funding the first online prototype of the Application within the UNITAID Private Sector RDT Project.</p>
+<p>Este software é liberado sob a licença GNU General Public v3.0. Para mais informações sobre esta licença, por favor, visite a seção 'licença' no menu de configurações do aplicativo. </ P>
 
-<p>This software is released under the GNU General Public License. For more information about this license, please visit the ‘license’ section in the application’s settings menu.</p>
+<p>Para mais informações sobre esta aplicação, por favor escreva para <a href="mailto:mis@psi.org"> mis@psi.org </a> </ p>
 
-<p>For more information about this application, please write to <a href="mailto:mis@psi.org">mis@psi.org</a></p>
+<p>Organizações que contribuem </ p>
 
-<p><b><u>Contributing Organizations</u></b></p>
+<p>Population Services International </ p>
 
-<p><b><i>Population Services International</i></b></p>
+<p>Desenvolvimento conceitual chumbo e implementação </ p>
 
-<p><i>Conceptual development and implementation</i></p>
+<p>PSI torna mais fácil para as pessoas no mundo em desenvolvimento para levar uma vida mais saudável e planejar as famílias que desejam pela comercialização de produtos e serviços acessíveis </ p>
 
-<p>PSI makes it easier for people in the developing world to lead healthier lives and plan the families they desire by marketing affordable products and services</p>
+<p><a href="http://www.psi.org"> www.psi.org </a> </ p>
 
-<p><a href="http://www.psi.org">www.psi.org</a></p>
+<p>EyeSeeTea LTD </ p>
 
-<p><b><i>EyeSeeTea LTD</i></b></p>
+<p>O desenvolvimento Android </ p>
 
-<p><i>Liderazgo del desarrollo técnico.</i></p>
+<p>EyeSeeTea LTD é uma empresa com sede em Londres dedicada à: <br/>
+- <br/> Desenvolvimento de software ONG
+- Desenvolvimento das TIC & <br/> implantação
+- A análise dos dados e representação <br/> </ p>
 
-<p>EyeSeeTea LTD es una empresa establecida en Londres dedicada a:<br/>
-- El desarrollo de software para ONG<br/>
-- El desarrollo y despliegue de infraestructuras TIC<br/>
-- El análisis de datos y su representación<br/></p>
 
-<p><a href="http://www.eyeseetea.com">www.eyeseetea.com</a></p>
+<p><a href="http://www.eyeseetea.com"> www.eyeseetea.com </a> </ p>
 
-<p><b><i>KnowTechTure</i></b></p>
+<p>KnowTechTure (KTT) </ p>
 
-<p><i>Desarrollo conceptual y técnico</i></p>
+<p>Coordenação Desenvolvimento </ p>
+
+<p>KTT especializada em arquitetura DHIS, desenvolvimento personalizado e implantação. </ P>
+
+<p><a href="http://www.KnowTechTure.com"> http://www.KnowTechTure.com </a> </ p>
