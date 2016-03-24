@@ -71,7 +71,8 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
     String mainScoreCUID;
     String forwardOrderUID;
 
-    String creatingOnUID;
+    String createdOnUID;
+    String createdByUID;
     String updatedDateUID;
     String updatedUserUid;
     /**
@@ -108,9 +109,10 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
         mainScoreCUID=context.getString(R.string.main_score_c);
         forwardOrderUID=context.getString(R.string.forward_order);
 
-        creatingOnUID=context.getString(R.string.creatingOnUID);
-        updatedDateUID=context.getString(R.string.uploadDateUID);
-        updatedUserUid=context.getString(R.string.updatedUserUid);
+        createdOnUID =context.getString(R.string.createdOnUID);
+        createdByUID =context.getString(R.string.createdByUid);
+        updatedDateUID=context.getString(R.string.uploadedDateUID);
+        updatedUserUid=context.getString(R.string.createdByUid);
         surveys = new ArrayList<>();
         events = new ArrayList<>();
     }
@@ -243,14 +245,16 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
      */
     private void buildDateControlDataElements(Survey survey) {
         //Created date
-        buildAndSaveDataValue(creatingOnUID, EventExtended.format(survey.getCreationDate()));
+        buildAndSaveDataValue(createdOnUID, EventExtended.formatSimpleDate(survey.getCreationDate()));
 
         //Updated date
-        buildAndSaveDataValue(updatedDateUID, EventExtended.format(survey.getUploadedDate()));
+        buildAndSaveDataValue(updatedDateUID, EventExtended.formatSimpleDate(survey.getUploadedDate()));
 
         //Updated by user
         buildAndSaveDataValue(updatedUserUid, Session.getUser().getUid());
 
+        //Updated by user
+        buildAndSaveDataValue(createdByUID, Session.getUser().getUid());
     }
 
     private void buildAndSaveDataValue(String UID, String value){

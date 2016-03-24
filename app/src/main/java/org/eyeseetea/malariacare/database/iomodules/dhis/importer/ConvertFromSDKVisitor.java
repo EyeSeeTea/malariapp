@@ -48,7 +48,6 @@ import org.eyeseetea.malariacare.database.model.User;
 import org.eyeseetea.malariacare.database.model.Value;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.utils.Constants;
-import org.eyeseetea.malariacare.utils.Utils;
 import org.hisp.dhis.android.sdk.controllers.metadata.MetaDataController;
 import org.hisp.dhis.android.sdk.persistence.models.DataElement;
 import org.hisp.dhis.android.sdk.persistence.models.DataValue;
@@ -64,9 +63,7 @@ import org.hisp.dhis.android.sdk.persistence.models.ProgramStageSection;
 import org.hisp.dhis.android.sdk.persistence.models.UserAccount;
 import org.hisp.dhis.android.sdk.utils.api.ProgramType;
 
-import java.sql.Timestamp;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -336,7 +333,7 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
             return;
         }
 
-        if(dataValue.getDataElement().equals(PreferencesState.getInstance().getContext().getResources().getString(R.string.creatingOnUID))){
+        if(dataValue.getDataElement().equals(PreferencesState.getInstance().getContext().getResources().getString(R.string.createdOnUID))){
             try{
                 Date date = EventExtended.parseDate(dataValue.getValue());
                 survey.setCreationDate(date);
@@ -349,7 +346,7 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
             return;
         }
 
-        if(dataValue.getDataElement().equals(PreferencesState.getInstance().getContext().getResources().getString(R.string.uploadDateUID))){
+        if(dataValue.getDataElement().equals(PreferencesState.getInstance().getContext().getResources().getString(R.string.uploadedDateUID))){
             try{
                 Date date = EventExtended.parseDate(dataValue.getValue());
                 survey.setUploadedDate(date);
@@ -362,7 +359,7 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
             return;
         }
 
-        if(dataValue.getDataElement().equals(PreferencesState.getInstance().getContext().getResources().getString(R.string.updatedUserUid))){
+        if(dataValue.getDataElement().equals(PreferencesState.getInstance().getContext().getResources().getString(R.string.createdByUid))){
             User user=User.getUser(dataValue.getValue());
             if(user==null) {
                 user = new User(dataValue.getValue(), dataValue.getValue());

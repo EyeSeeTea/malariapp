@@ -41,6 +41,7 @@ public class EventExtended implements VisitableFromSDK {
 
     private final static String TAG=".EventExtended";
     private final static String COMPLETION_DATE_FORMAT="yyyy-MM-dd'T'HH:mm:ss.SSSZ";
+    private final static String SIMPLE_DATE_FORMAT="yyyy-MM-dd";
 
     Event event;
 
@@ -150,6 +151,19 @@ public class EventExtended implements VisitableFromSDK {
             return null;
         }
         SimpleDateFormat simpleDateFormat=new SimpleDateFormat(COMPLETION_DATE_FORMAT);
+        return simpleDateFormat.format(date);
+    }
+
+    /**
+     * Turns a given date into a parseable String according to sdk date format
+     * @param date
+     * @return
+     */
+    public static String formatSimpleDate(Date date){
+        if(date==null){
+            return null;
+        }
+        SimpleDateFormat simpleDateFormat=new SimpleDateFormat(SIMPLE_DATE_FORMAT);
         return simpleDateFormat.format(date);
     }
 
