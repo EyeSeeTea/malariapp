@@ -200,6 +200,7 @@
         <item>Grande</item>
         <item>Muito Grande</item>
     </string-array>
+    <string name="server_url">Servidor DHIS2</string>
     <string name="settings_text_dhis_server_url">URL do servidor SISD</string>
     <string name="pref_header_general">Geral</string>
     <string name="settings_text_dhis_password">Senha DHIS</string>

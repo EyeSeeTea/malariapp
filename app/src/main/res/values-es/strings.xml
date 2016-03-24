@@ -188,6 +188,7 @@
         <item>Grande</item>
         <item>Extra grande</item>
     </string-array>
+    <string name="server_url">Servidor DHIS2</string>
     <string name="settings_text_dhis_server_url">URL de servidor DHIS</string>
     <string name="settings_text_dhis_password">Contraseña DHIS</string>
     <string name="pref_header_general">General</string>
