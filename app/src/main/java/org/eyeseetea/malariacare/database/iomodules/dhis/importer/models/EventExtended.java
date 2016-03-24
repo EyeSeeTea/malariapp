@@ -40,8 +40,8 @@ import java.util.Date;
 public class EventExtended implements VisitableFromSDK {
 
     private final static String TAG=".EventExtended";
-    private final static String COMPLETION_DATE_FORMAT="yyyy-MM-dd'T'HH:mm:ss.SSSZ";
-    private final static String SIMPLE_DATE_FORMAT="yyyy-MM-dd";
+    public final static String COMPLETION_DATE_FORMAT="yyyy-MM-dd'T'HH:mm:ss.SSSZ";
+    public final static String SIMPLE_DATE_FORMAT="yyyy-MM-dd";
 
     Event event;
 
@@ -70,7 +70,7 @@ public class EventExtended implements VisitableFromSDK {
         }
 
         try {
-            return parseDate(event.getCreated());
+            return parseDate(event.getCreated(),COMPLETION_DATE_FORMAT);
         }
         catch (ParseException e){
             Log.e(TAG,String.format("Event (%s) cannot parse date %s",event.getUid(),e.getLocalizedMessage()));
@@ -88,7 +88,7 @@ public class EventExtended implements VisitableFromSDK {
         }
 
         try {
-            return parseDate(event.getLastUpdated());
+            return parseDate(event.getLastUpdated(),COMPLETION_DATE_FORMAT);
         }
         catch (ParseException e){
             Log.e(TAG,String.format("Event (%s) cannot parse date %s",event.getUid(),e.getLocalizedMessage()));
@@ -106,7 +106,7 @@ public class EventExtended implements VisitableFromSDK {
         }
 
         try {
-            return parseDate(event.getEventDate());
+            return parseDate(event.getEventDate(),COMPLETION_DATE_FORMAT);
         }
         catch (ParseException e){
             Log.e(TAG,String.format("Event (%s) cannot parse date %s",event.getUid(),e.getLocalizedMessage()));
@@ -124,7 +124,7 @@ public class EventExtended implements VisitableFromSDK {
         }
 
         try {
-            return parseDate(event.getDueDate());
+            return parseDate(event.getDueDate(),COMPLETION_DATE_FORMAT);
         }
         catch (ParseException e){
             Log.e(TAG,String.format("Event (%s) cannot parse date %s",event.getUid(),e.getLocalizedMessage()));
@@ -132,13 +132,13 @@ public class EventExtended implements VisitableFromSDK {
         }
     }
 
-    public static  Date parseDate(String dateAsString) throws  ParseException{
+    public static  Date parseDate(String dateAsString,String format) throws  ParseException{
         if(dateAsString==null){
             return null;
         }
 
-        SimpleDateFormat simpleDateFormat=new SimpleDateFormat(COMPLETION_DATE_FORMAT);
-            return simpleDateFormat.parse(dateAsString);
+        SimpleDateFormat simpleDateFormat=new SimpleDateFormat(format);
+        return simpleDateFormat.parse(dateAsString);
     }
 
     /**
@@ -146,24 +146,11 @@ public class EventExtended implements VisitableFromSDK {
      * @param date
      * @return
      */
-    public static String format(Date date){
+    public static String format(Date date, String format){
         if(date==null){
             return null;
         }
-        SimpleDateFormat simpleDateFormat=new SimpleDateFormat(COMPLETION_DATE_FORMAT);
-        return simpleDateFormat.format(date);
-    }
-
-    /**
-     * Turns a given date into a parseable String according to sdk date format
-     * @param date
-     * @return
-     */
-    public static String formatSimpleDate(Date date){
-        if(date==null){
-            return null;
-        }
-        SimpleDateFormat simpleDateFormat=new SimpleDateFormat(SIMPLE_DATE_FORMAT);
+        SimpleDateFormat simpleDateFormat=new SimpleDateFormat(format);
         return simpleDateFormat.format(date);
     }
 
