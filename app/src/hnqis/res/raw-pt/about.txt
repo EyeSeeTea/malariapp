@@ -1,38 +1,38 @@
 
-<p><b>PSI’s Health Network Quality Improvement System (HNQIS)</b></p>
+<p>PSI’s Health Network Quality Improvement System (HNQIS)</p>
 
-<p>This app was developed by Population Services International (PSI) for sustaining quality improvement of private health care sector networks. This app was developed with support from the Bill & Melinda Gates Foundation and large anonymous donors.</p>
+<p>Este aplicativo foi desenvolvido pela Population Services International (PSI) para sustentar a melhoria das redes privadas do sector de cuidados de saúde de qualidade. Este aplicativo foi desenvolvido com o apoio da Fundação Bill & Melinda Gates e grandes doadores anônimos. </ P>
 
+<p>Este software é liberado sob a licença GNU General Public v3.0. Para mais informações sobre esta licença, por favor, visite a seção 'licença' no menu de configurações do aplicativo. </ P>
 
+<p>Para mais informações sobre esta aplicação, por favor escreva para <a href="mailto:mis@psi.org"> mis@psi.org </a> </ p>
 
-<p>This software is released under the GNU General Public License v3.0. For more information about this license, please visit the ‘License’ section in the application’s settings menu. </p>
+<p>Organizações que contribuem </ p>
 
-<p>For more information about this application, please write to <a href="mailto:mis@psi.org">mis@psi.org</a></p>
+<p>Population Services International </ p>
 
-<p><b><u>Contributing Organizations</u></b></p>
+<p>Desenvolvimento conceitual chumbo e implementação </ p>
 
-<p><i>Population Services International</i></p>
+<p>PSI torna mais fácil para as pessoas no mundo em desenvolvimento para levar uma vida mais saudável e planejar as famílias que desejam pela comercialização de produtos e serviços acessíveis </ p>
 
-<p><b><i>Lead conceptual development and implementation</i></b></p>
+<p><a href="http://www.psi.org"> www.psi.org </a> </ p>
 
-<p>PSI makes it easier for people in the developing world to lead healthier lives and plan the families they desire by marketing affordable products and services</p>
+<p>EyeSeeTea LTD </ p>
 
-<p><a href="http://www.psi.org">www.psi.org</a></p>
+<p>O desenvolvimento Android </ p>
 
-<p><i>EyeSeeTea LTD</i></p>
-
-<p><b><i>Lead technical development</i></b></p>
-
-<p>EyeSeeTea LTD is a London-based company dedicated to:<br/>
-- NGO software development <br/>
-- ICT development & deployment<br/>
-- Data analysis and representation<br/></p>
+<p>EyeSeeTea LTD é uma empresa com sede em Londres dedicada à: <br/>
+- <br/> Desenvolvimento de software ONG
+- Desenvolvimento das TIC & <br/> implantação
+- A análise dos dados e representação <br/> </ p>
 
 
-<p><a href="http://www.eyeseetea.com">www.eyeseetea.com</a></p>
+<p><a href="http://www.eyeseetea.com"> www.eyeseetea.com </a> </ p>
 
-<p><i>KnowTechTure</i></p>
+<p>KnowTechTure (KTT) </ p>
 
-<p><i>Specialist in DHIS architecture, custom development and deployment.</i></p>
+<p>Coordenação Desenvolvimento </ p>
 
-<p><a href="http://www.KnowTechTure.com">http://www.KnowTechTure.com</a></p>
+<p>KTT especializada em arquitetura DHIS, desenvolvimento personalizado e implantação. </ P>
+
+<p><a href="http://www.KnowTechTure.com"> http://www.KnowTechTure.com </a> </ p>

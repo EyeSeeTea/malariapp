@@ -1,29 +1,28 @@
 
-<p><b>PSI’s Health Network Quality Improvement System (HNQIS)</b></p>
+<p>PSI’s Health Network Quality Improvement System (HNQIS)</p>
 
 <p>This app was developed by Population Services International (PSI) for sustaining quality improvement of private health care sector networks. This app was developed with support from the Bill & Melinda Gates Foundation and large anonymous donors.</p>
-
-
 
 <p>This software is released under the GNU General Public License v3.0. For more information about this license, please visit the ‘License’ section in the application’s settings menu. </p>
 
 <p>For more information about this application, please write to <a href="mailto:mis@psi.org">mis@psi.org</a></p>
 
-<p><b><u>Contributing Organizations</u></b></p>
+<p>Contributing Organizations</p>
 
-<p><i>Population Services International</i></p>
+<p>Population Services International</p>
 
-<p><b><i>Lead conceptual development and implementation</i></b></p>
+<p>Lead conceptual development and implementation</p>
 
 <p>PSI makes it easier for people in the developing world to lead healthier lives and plan the families they desire by marketing affordable products and services</p>
 
 <p><a href="http://www.psi.org">www.psi.org</a></p>
 
-<p><i>EyeSeeTea LTD</i></p>
+<p>EyeSeeTea LTD</p>
 
-<p><b><i>Lead technical development</i></b></p>
+<p>Android development</p>
 
 <p>EyeSeeTea LTD is a London-based company dedicated to:<br/>
+
 - NGO software development <br/>
 - ICT development & deployment<br/>
 - Data analysis and representation<br/></p>
@@ -31,8 +30,10 @@
 
 <p><a href="http://www.eyeseetea.com">www.eyeseetea.com</a></p>
 
-<p><i>KnowTechTure</i></p>
+<p>KnowTechTure(KTT)</p>
 
-<p><i>Specialist in DHIS architecture, custom development and deployment.</i></p>
+<p>Development coordination</p>
+
+<p>KTT specialises in DHIS architecture, custom development and deployment.</p>
 
 <p><a href="http://www.KnowTechTure.com">http://www.KnowTechTure.com</a></p>
