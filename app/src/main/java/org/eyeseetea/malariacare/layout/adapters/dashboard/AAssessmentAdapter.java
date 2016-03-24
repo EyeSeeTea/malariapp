@@ -96,10 +96,8 @@ public abstract class AAssessmentAdapter extends ADashboardAdapter implements ID
             ((CustomTextView) rowView.findViewById(R.id.score)).setText(getStatus(survey));
         }
 
-        //Hide all the facility name, waiting for other way to draw the facility names.
-        showNextFacilityName=false;
         // show facility name (or not) and write survey type name
-        if (!showNextFacilityName) {
+        if (position!=0) {
             facilityName.setVisibility(View.GONE);
         } else {
             facilityName.setText(survey.getOrgUnit().getName());
