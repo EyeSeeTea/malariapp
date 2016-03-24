@@ -78,7 +78,6 @@
     <string name="assessment_title_state">État</string>
     <string name="assessment_info_delete">Effacer</string>
     <string name="assessment_title_header">Evaluation(s) active(s)</string>
-    <string name="all_assessment">"toutes les évaluations"</string>
 
     <!-- feedback -->
     <!-- XXX Should it be replaced by 'assessment_title_facility_date'?-->
@@ -268,10 +267,28 @@
 
 
     <!-- filters text -->
-    <string name="filter_all_org_units_upper">TOUTES LES UNITÉES D\'ORGANISATION</string>
-    <string name="filter_all_org_assessments_upper">TOUTES LES SONDAGES</string>
+    <string name="filter_all_org_units">toutes les unitées d\'organisation</string>
+    <string name="filter_all_org_assessments">"toutes les évaluations"</string>
     <string name="dialog_content_dhis_preference_login">Modification du serveur doit se reconnecter. Chaque enquête non envoyé sera supprimé. Es-tu sûr de vouloir continuer?</string>
     <string name="settings_text_dhis_max_items">DHIS max chargé des enquêtes</string>
     <string name="feedback_info_conflict">Conflit</string>
     <string name="dialog_deleting_children">Vous êtes sur le point de supprimer la réponse aux questions qui dépend de celui-ci. Voulez-vous vraiment continuer?</string>
+
+    <!-- last commit info -->
+    <string name="lastcommit">Version: %s</string>
+
+    <string name="lastcommit_unavailable"><![CDATA["
+        <p>Cette option nécessite quelques changements dans le dépôt git. </p>
+        <p>Étapes: </p>
+        <p>1. S'il vous plaît ouvrir ou de créer les fichiers .git/hooks/post-commit et .git/hooks/post-checkout.</p>
+           <p>2. Si le fichier n'existe pas ajouter: </p>
+               <p>#!/bin/sh </p>
+               <p>gitPath=$(git rev-parse --show-toplevel)</p>
+               <p>sh ${gitPath}/generate_last_commit.sh </p>
+           <p>2.Si le fichier existe, ajoutez les lignes suivantes à la fin: </p>
+               <p>gitPath=$(git rev-parse --show-toplevel)</p>
+               <p>sh ${gitPath}/generate_last_commit.sh </p>
+        <p>3. Exécuter "git checkout".</p>" ]]>
+    </string>
+
 </resources>

@@ -22,45 +22,46 @@
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="wrap_content"
     android:layout_height="match_parent"
-    android:padding="@dimen/abc_dialog_padding_material"
+    android:padding="@dimen/abc_dialog_list_padding_vertical_material"
     android:orientation="vertical">
     <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="false"
-        android:layout_above="@+id/aboutokbutton"
-        android:layout_alignLeft="@+id/aboutokbutton">
+        android:layout_above="@+id/aboutButton"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
         <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="@dimen/abc_dialog_padding_material"
             android:orientation="vertical">
-    <TextView
-        android:id="@+id/aboutTitle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="right"
-        android:layout_gravity="right"/>
-        <ImageView
-            android:id="@+id/aboutimage"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="@dimen/abc_dialog_padding_material"
-            android:gravity="left" />
-            <TextView
-                android:id="@+id/aboutMessage"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="left"/>
+                <TextView
+                    android:id="@+id/aboutTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="right"
+                    android:layout_gravity="right"/>
+                <ImageView
+                    android:id="@+id/aboutImage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/abc_dialog_padding_material"
+                    android:gravity="left" />
+                <TextView
+                    android:id="@+id/aboutMessage"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="left"/>
         </LinearLayout>
     </ScrollView>
-        <Button android:id="@+id/aboutokbutton"
+        <Button android:id="@+id/aboutButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/transparent"
             android:color="@color/dialog_button_text"
-            android:gravity="left"
+            android:gravity="center_vertical|center_horizontal"
             android:text="@string/ok"
             android:textColor="@color/dialog_button_text"
             android:layout_alignParentBottom="true"  />

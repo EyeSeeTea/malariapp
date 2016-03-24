@@ -78,7 +78,6 @@
     <string name="assessment_title_state">Estado</string>
     <string name="assessment_info_delete">Eliminar</string>
     <string name="assessment_title_header">Evaluación(es) Activa(s)</string>
-    <string name="all_assessment">Todas las evaluaciones</string>
 
     <!-- feedback -->
     <!-- XXX Should it be replaced by 'assessment_title_facility_date'?-->
@@ -268,10 +267,26 @@
 
 
     <!-- filters text -->
-    <string name="filter_all_org_units_upper">TODAS LAS UNIDADES ORGANIZATIVAS</string>
-    <string name="filter_all_org_assessments_upper">TODAS LAS EVALUACIONES</string>
+    <string name="filter_all_org_units">todas las unidades organizativas</string>
+    <string name="filter_all_org_assessments">todas las evaluaciones</string>
     <string name="dialog_content_dhis_preference_login">Cambiar el servidor implica volver a iniciar sesión. Se eliminarán todas las encuestas no enviadas. ¿Estás seguro de que quieres continuar?</string>
     <string name="settings_text_dhis_max_items">DHIS max encuestas descargadas</string>
     <string name="feedback_info_conflict">Conflicto</string>
     <string name="dialog_deleting_children">Esta acción borrará las preguntas que dependen de ésta. ¿realmente quieres continuar?</string>
+
+    <!-- last commit info -->
+    <string name="lastcommit">Versión %s</string>
+    <string name="lastcommit_unavailable"><![CDATA[
+        <p>Esta opción necesita algunos cambios en el repositorio git. </p>
+        <p>Pasos: </p>
+        <p>1. Por favor, abra o edite los ficheros .git/hooks/post-commit y .git/hooks/post-checkout. </p>
+            <p>2. Si el fichero no existe añada: </p>
+                <p>#!/bin/sh </p>
+                <p>gitPath=$(git rev-parse --show-toplevel)</p>
+                <p>sh ${gitPath}/generate_last_commit.sh </p>
+            <p>2. Si el fichero existe, añada las siguientes lineas  al final: </p>
+                <p>gitPath=$(git rev-parse --show-toplevel)</p>
+                <p>sh ${gitPath}/generate_last_commit.sh </p>
+        <p>3. Ejecute "git checkout".</p> ]]>
+    </string>
 </resources>
