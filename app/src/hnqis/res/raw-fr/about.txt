@@ -1,4 +1,4 @@
-<p><b>The Health Network Quality Improvement System (HNQIS)</b></p>
+<p>PSI’s Health Network Quality Improvement System (HNQIS)</p>
 
 <p><b>%s</b></p>
 
