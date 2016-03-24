@@ -257,7 +257,7 @@ public class SurveyService extends IntentService {
     private void getAllMonitorData() {
         Log.d(TAG,"getAllMonitorData (Thread:"+Thread.currentThread().getId()+")");
         List<Program> programList=Program.getAllPrograms();
-        List<Survey> sentSurveys=Survey.getAllSentSurveys();
+        List<Survey> sentSurveys=Survey.getAllSentCompletedOrConflictSurveys();
 
         HashMap<String,List> monitorMap=new HashMap<>();
         monitorMap.put(PREPARE_SURVEYS, sentSurveys);
@@ -314,7 +314,6 @@ public class SurveyService extends IntentService {
         List<OrgUnit> orgUnitList=OrgUnit.getAllOrgUnit();
         List<Survey> completedUnsentSurveys=Survey.getAllCompletedUnsentSurveys();
         List<Survey> unsentSurveys=Survey.getAllInProgressSurveys();
-        List<Survey> sentSurveys=Survey.getAllSentSurveys();
         List<Survey> sentCompletedOrConflictSurveys=Survey.getAllSentCompletedOrConflictSurveys();
         for(Survey survey:unsentSurveys){
                 survey.getAnsweredQuestionRatio();
@@ -322,7 +321,7 @@ public class SurveyService extends IntentService {
 
         //Since intents does NOT admit NON serializable as values we use Session instead
         HashMap<String,List> monitorMap=new HashMap<>();
-        monitorMap.put(PREPARE_SURVEYS, sentSurveys);
+        monitorMap.put(PREPARE_SURVEYS, sentCompletedOrConflictSurveys);
         monitorMap.put(PREPARE_PROGRAMS, Program.getAllPrograms());
 
         HashMap<String,List> orgCreateSurveyData=new HashMap<>();
