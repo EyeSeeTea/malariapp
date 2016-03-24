@@ -11,7 +11,7 @@
 
 <p>Population Services International </ p>
 
-<p>développement conceptuel principal et la mise en œuvre </ p>
+<p>Développement conceptuel principal et la mise en œuvre </ p>
 
 <p>PSI rend plus facile pour les gens dans le monde en développement à mener des vies plus saines et de planifier les familles qu'ils désirent par la commercialisation des produits et des services abordables </ p>
 
@@ -19,7 +19,7 @@
 
 <p>EyeSeeTea LTD </ p>
 
-<p>développement Android </ p>
+<p>Développement Android </ p>
 
 <p>EyeSeeTea LTD est une société basée à Londres, dédiée à: <br/>
 - <br/> De développement logiciel ONG
@@ -31,7 +31,7 @@
 
 <p>KnowTechTure (KTT) </ p>
 
-<p>coordination de développement </ p>
+<p>Coordination de développement </ p>
 
 <p>KTT se spécialise dans l'architecture DHIS, développement personnalisé et le déploiement. </ P>
 
