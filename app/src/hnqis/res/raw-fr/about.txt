@@ -1,5 +1,6 @@
+<p><b>The Health Network Quality Improvement System (HNQIS)</b></p>
 
-<p>PSI’s Health Network Quality Improvement System (HNQIS)</p>
+<p><b>%s</b></p>
 
 <p>Cette application a été développée par Population Services International (PSI) pour soutenir l'amélioration de la qualité des réseaux privés du secteur des soins de santé. Cette application a été développée avec le soutien de la Fondation Bill & Melinda Gates et de grands donateurs anonymes. </ P>
 
