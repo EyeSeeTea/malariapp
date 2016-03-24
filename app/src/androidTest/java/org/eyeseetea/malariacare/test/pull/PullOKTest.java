@@ -212,7 +212,7 @@ public class PullOKTest {
         assertTrue(goldenOrgUnit.getProductivity(goldenProgram).equals(appOrgUnit.getProductivity(goldenProgram)));
         //Fixme the orgunitlevel is not pulled.
         //assertTrue(goldenOrgUnit.getOrgUnitLevel().getName().equals(appOrgUnit.getOrgUnitLevel().getName()));
-        assertTrue(goldenProgram.getUid().equals(appOrgUnit.getPrograms().get(0).getUid()));
+        assertTrue(orgUnitProgramsIncludeGolden(appOrgUnit.getPrograms()));
     }
 
     private void testSdkProgram(org.hisp.dhis.android.sdk.persistence.models.Program sdkProgram) {
@@ -297,6 +297,19 @@ public class PullOKTest {
         testOrganisationUnitGroups(sdkOrganisationUnit);
 
         testOrganisationUnitDataSets(sdkOrganisationUnit);
+    }
+
+    private boolean orgUnitProgramsIncludeGolden(List<Program> programs){
+        if(programs==null || goldenProgram==null){
+            return false;
+        }
+        String goldenProgramUID=goldenProgram.getUid();
+        for(Program program:programs){
+            if(program.getUid()!=null && program.getUid().equals(goldenProgramUID)){
+                return true;
+            }
+        }
+        return false;
     }
 
 }

@@ -36,6 +36,7 @@
     <string name="login_info_dhis_default_server_url" translatable="false">https://malariacare.psi.org</string>
 
     <!-- # dialogs -->
+    <string name="go_to_feedback">Go to feedback</string>
     <string name="dialog_title_delete_survey">Delete Survey</string>
     <string name="dialog_info_delete_survey">Are you sure you want to completely delete the survey: %s?</string>
     <string name="dialog_title_error">Error</string>
@@ -345,4 +346,21 @@
     <string name="filter_all_org_units">all org units</string>
     <string name="filter_all_org_assessments">all assessments</string>
     <string name="dialog_content_dhis_preference_login">Changing the server needs to re-login. Every not-sent survey will be deleted. Are you sure you want to continue?</string>
+
+    <!-- last commit info -->
+    <string name="lastcommit">Version %s</string>
+    <string name="unavailable" translatable="false">Unavailable</string>
+    <string name="lastcommit_unavailable"><![CDATA[
+        <p>This option requires some changes in the git repository.</p>
+        <p>Steps:</p>
+        <p>1. Please open or create the.git/hooks/post-commit and .git/hooks/post-checkout  files.</p>
+            <p>2. If the file does not exist, add the following lines: </p>
+               <p>#!/bin/sh </p>
+               <p>gitPath=$(git rev-parse --show-toplevel)</p>
+               <p>sh ${gitPath}/generate_last_commit.sh </p>
+            <p>2. If the file already exists, you only need add the following lines at the end:</p>
+               <p>gitPath=$(git rev-parse --show-toplevel)</p>
+               <p>sh ${gitPath}/generate_last_commit.sh </p>
+        <p>3. Run "git checkout". </p>]]>
+    </string>
 </resources>

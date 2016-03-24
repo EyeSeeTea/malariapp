@@ -1,34 +1,38 @@
-<p><b>Sistema de Mejora de Calidad de la Red de Salud (HNQIS)</b></p>
+<p>PSI’s Health Network Quality Improvement System (HNQIS)</p>
 
-<p>Esta app ha sido desarrollada por PSI para el proyecto African Health markets for Equity (AHME). AHME es implementado por Marie Stopes International, con apoyo de la Fundación Bill & Melinda Gates.</p>
+<p>%s</p>
 
-<p>Esta aplicación es posible por la generosa aportación del pueblo norteamericano a través de la Agencia Internacional para el Desarrollo de los Estados Unidos (USAID). Los contenidos son responsabilidad de PSI y no necesariamente reflejan el punto de vista de USAID o del gobierno de los Estados Unidos. PSI reconoce a UNITAID por el apoyo brindado durante el desarrollo conceptual de la aplicación mediante la financiación del primer prototipo online de la apliación en el marco del Proyecto UNITAID Private Sector RDT.</p>
+<p>Esta app ha sido desarrollada por Population Services International (PSI) para mejorar la calidad sostenible de redes del sector salud privado. Esta aplicación fue desarrollada con el apoyo de la Bill & Melinda Gates Foundation y grandes donantes anónimos.</p>
 
 <p>Este software se publica bajo la Licencia Pública General de GNU (GPL). Para más información sobre esta licencia, por favor, visite la sección 'licencia' bajo el menú de 'configuración'.</p>
 
 <p>Para más información, por favor, contáctenos en <a href="mailto:mis@psi.org">mis@psi.org</a></p>
 
-<p><b><u>Organizaciones participantes</u></b></p>
+<p>Organizaciones participantes</p>
 
-<p><b><i>Population Services International</i></b></p>
+<p>Population Services International</p>
 
-<p><i>Desarrollo de contenidos, desarrollo conceptual e implementación</i></p>
+<p>Líder de desarrollo conceptual e implementación</p>
 
-<p>PSI hace más fácil para la población de países en desarrollo llevar una vida saludable y la planificación que deseen mediante la venta de productos y servicios adaptados a las posibilidades locales.</p>
+<p>PSI hace más fácil para la población de países en desarrollo llevar una vida saludable y la planificación familiar que deseen mediante la venta de productos y servicios.</p>
 
-<p><a href="http://www.psi.org">www.psi.org/a></p>
+<p><a href="http://www.psi.org">www.psi.org</a></p>
 
-<p><b><i>EyeSeeTea LTD</i></b></p>
+<p>EyeSeeTea LTD</p>
 
-<p><i>Lead technical development</i></p>
+<p>Desarrollo android.</p>
 
-<p>EyeSeeTea LTD is a London-based company dedicated to:<br/>
-- NGO software development<br/>
-- ICT development & deployment<br/>
-- Data analysis and representation<br/></p>
+<p>EyeSeeTea LTD es una empresa establecida en Londres dedicada a:<br/>
+- Desarrollo de software para ONG<br/>
+- Desarrollo y despliegue de infraestructuras TIC<br/>
+- Análisis de datos y su representación<br/></p>
 
 <p><a href="http://www.eyeseetea.com">http://eyeseetea.com</a></p>
 
-<p><b><i>KnowTechTure</i></b></p>
+<p>KnowTechTure(KTT)</p>
 
-<p><i>Conceptual and technical development</i></p>
+<p>Coordinador de desarrollo</p>
+
+<p>KTT se especializa en arquitectura DHIS, desarrollo y despliegue a medida.</p>
+
+<p><a href="http://www.KnowTechTure.com">http://www.KnowTechTure.com</a></p>

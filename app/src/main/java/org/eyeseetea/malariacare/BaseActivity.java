@@ -20,6 +20,7 @@
 package org.eyeseetea.malariacare;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -33,13 +34,14 @@ import android.text.SpannableString;
 import android.text.method.LinkMovementMethod;
 import android.text.util.Linkify;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
-
-import com.squareup.otto.Subscribe;
 
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.utils.LocationMemory;
@@ -116,7 +118,7 @@ public abstract class BaseActivity extends ActionBarActivity {
                 break;
             case R.id.action_about:
                 debugMessage("User asked for about");
-                showAlertWithHtmlMessage(R.string.settings_menu_about, R.raw.about);
+                showAlertWithHtmlMessageAndLastCommit(R.string.settings_menu_about, R.raw.about, R.raw.lastcommit);
                 break;
             case R.id.action_logout:
                 debugMessage("User asked for logout");
@@ -274,15 +276,44 @@ public abstract class BaseActivity extends ActionBarActivity {
     }
 
     /**
+     * Replace in rawId the $replace$ expresion with the content on lastCommit and
      * Shows an alert dialog with a big message inside based on a raw resource HTML formatted
      * @param titleId Id of the title resource
      * @param rawId Id of the raw text resource in HTML format
+     * @param lastCommit Id of the raw text resource with the commit
      */
-    private void showAlertWithHtmlMessage(int titleId, int rawId){
+    private void showAlertWithHtmlMessageAndLastCommit(int titleId, int rawId, int lastCommit){
+        String stringMessage = getMessageWithCommit(rawId, lastCommit);
+        final SpannableString linkedMessage = new SpannableString(Html.fromHtml(stringMessage));
+        Linkify.addLinks(linkedMessage, Linkify.EMAIL_ADDRESSES | Linkify.WEB_URLS);
+        //Fixme: the eds build have different dialog style.
+        if(BuildConfig.FLAVOR.equals("hnqis"))
+            showAboutAlert(titleId, linkedMessage);
+        else
+            showAlert(titleId, linkedMessage);
+    }
+
+    /**
+     * Merge the lastcommit into the raw file
+     * @param rawId Id of the raw text resource in HTML format
+     * @param lastCommit Id of the raw text resource with the commit
+     */
+    private String getMessageWithCommit(int rawId, int lastCommit) {
         InputStream message = getApplicationContext().getResources().openRawResource(rawId);
-        final SpannableString linkedMessage = new SpannableString(Html.fromHtml(Utils.convertFromInputStreamToString(message).toString()));
-        Linkify.addLinks(linkedMessage, Linkify.ALL);
-        showAlert(titleId, linkedMessage);
+        InputStream commit = getApplicationContext().getResources().openRawResource(lastCommit);
+
+        String stringMessage=Utils.convertFromInputStreamToString(message).toString();
+        String stringCommit=Utils.convertFromInputStreamToString(commit).toString();
+        String stringError="";
+        if(stringCommit.contains(getString(R.string.unavailable))){
+            stringCommit=String.format(getString(R.string.lastcommit),stringCommit);
+            stringCommit=stringCommit+" "+getText(R.string.lastcommit_unavailable);
+        }
+        else {
+            stringCommit = String.format(getString(R.string.lastcommit), stringCommit);
+        }
+        stringMessage=String.format(stringMessage,stringCommit);
+        return stringMessage;
     }
 
     /**
@@ -299,6 +330,36 @@ public abstract class BaseActivity extends ActionBarActivity {
         ((TextView)dialog.findViewById(android.R.id.message)).setMovementMethod(LinkMovementMethod.getInstance());
     }
 
+    private void showAboutAlert(int titleId, CharSequence text){
+        final Dialog dialog = new Dialog(BaseActivity.this);
+        dialog.setContentView(R.layout.dialog_about);
+        dialog.setTitle(titleId);
+        dialog.setCancelable(true);
+
+        //set up text title
+        TextView textTile = (TextView) dialog.findViewById(R.id.aboutTitle);
+        textTile.setText(BuildConfig.VERSION_NAME);
+        textTile.setGravity(Gravity.RIGHT);
+
+        //set up image view
+        ImageView img = (ImageView) dialog.findViewById(R.id.aboutImage);
+        img.setImageResource(R.drawable.psi);
+
+        //set up text title
+        TextView textContent = (TextView) dialog.findViewById(R.id.aboutMessage);
+        textContent.setMovementMethod(LinkMovementMethod.getInstance());
+        textContent.setText(text);
+        //set up button
+        Button button = (Button) dialog.findViewById(R.id.aboutButton);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+               dialog.dismiss();
+            }
+        });
+        //now that the dialog is set up, it's time to show it
+        dialog.show();
+    }
     /**
      * Logs a debug message using current activity SimpleName as tag. Ex:
      *   SurveyActivity => ".SurveyActivity"

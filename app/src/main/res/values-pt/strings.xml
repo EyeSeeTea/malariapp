@@ -28,6 +28,7 @@
     <string name="login_error_bad_credentials">O nome de utilizador/password estão incorrectos</string>
 
     <!-- # dialogs -->
+    <string name="go_to_feedback">Ir para comentários</string>
     <string name="dialog_title_delete_survey">Apagar inquérito</string>
     <string name="dialog_info_delete_survey">Tem a certeza que quer apagar completamente la pesquisa %s ?</string>
     <string name="dialog_title_error">Erro</string>
@@ -277,4 +278,21 @@
     <string name="settings_text_dhis_max_items">DHIS max carregado inquéritos</string>
     <string name="feedback_info_conflict">Conflito</string>
     <string name="dialog_deleting_children">Você está prestes a excluir a resposta para as perguntas que depende este. Você realmente deseja continuar?</string>
+
+    <!-- last commit info -->
+    <string name="lastcommit">Versão: %s</string>
+    <string name="lastcommit_unavailable"><![CDATA[
+        <p>Esta opção requer algumas mudanças no repositório git. </p>
+        <p>Passos: </p>
+        <p>1. Por favor, abrir ou criar arquivos .git/hooks/post-commit e .git/hooks/post-checkout. </p>
+           <p>2. Se o arquivo não existir add:  </p>
+               <p>#!/bin/sh </p>
+               <p>gitPath=$(git rev-parse --show-toplevel)</p>
+               <p>sh ${gitPath}/generate_last_commit.sh </p>
+           <p>2. Se o arquivo existir, adicione as seguintes linhas no final:  </p>
+               <p>gitPath=$(git rev-parse --show-toplevel)</p>
+               <p>sh ${gitPath}/generate_last_commit.sh </p>
+        <p>3. Execute "git checkout".</p> ]]>
+    </string>
+
 </resources>
