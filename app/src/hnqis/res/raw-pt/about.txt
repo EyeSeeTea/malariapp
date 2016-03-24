@@ -1,34 +1,38 @@
-<p><b>The Health Network Quality Improvement System (HNQIS)</b></p>
 
-<p>This app was developed by PSI for the African Health markets for Equity project (AHME). AHME is implemented by Marie Stopes International, with support from the Bill & Melinda Gates Foundation.</p>
+<p><b>PSI’s Health Network Quality Improvement System (HNQIS)</b></p>
 
-<p>This Application is made possible by the generous support of the American People through the United States Agency for International Development (USAID). The contents are the responsibility of PSI and do not necessarily reflect the views of USAID or the United States Government. PSI acknowledges UNITAID for the support provided during the conceptual development of this Application by funding the first online prototype of the Application within the UNITAID Private Sector RDT Project.</p>
+<p>This app was developed by Population Services International (PSI) for sustaining quality improvement of private health care sector networks. This app was developed with support from the Bill & Melinda Gates Foundation and large anonymous donors.</p>
 
-<p>This software is released under the GNU General Public License. For more information about this license, please visit the ‘license’ section in the application’s settings menu.</p>
+
+
+<p>This software is released under the GNU General Public License v3.0. For more information about this license, please visit the ‘License’ section in the application’s settings menu. </p>
 
 <p>For more information about this application, please write to <a href="mailto:mis@psi.org">mis@psi.org</a></p>
 
 <p><b><u>Contributing Organizations</u></b></p>
 
-<p><b><i>Population Services International</i></b></p>
+<p><i>Population Services International</i></p>
 
-<p><i>Conceptual development and implementation</i></p>
+<p><b><i>Lead conceptual development and implementation</i></b></p>
 
 <p>PSI makes it easier for people in the developing world to lead healthier lives and plan the families they desire by marketing affordable products and services</p>
 
 <p><a href="http://www.psi.org">www.psi.org</a></p>
 
-<p><b><i>EyeSeeTea LTD</i></b></p>
+<p><i>EyeSeeTea LTD</i></p>
 
-<p><i>Liderazgo del desarrollo técnico.</i></p>
+<p><b><i>Lead technical development</i></b></p>
 
-<p>EyeSeeTea LTD es una empresa establecida en Londres dedicada a:<br/>
-- El desarrollo de software para ONG<br/>
-- El desarrollo y despliegue de infraestructuras TIC<br/>
-- El análisis de datos y su representación<br/></p>
+<p>EyeSeeTea LTD is a London-based company dedicated to:<br/>
+- NGO software development <br/>
+- ICT development & deployment<br/>
+- Data analysis and representation<br/></p>
+
 
 <p><a href="http://www.eyeseetea.com">www.eyeseetea.com</a></p>
 
-<p><b><i>KnowTechTure</i></b></p>
+<p><i>KnowTechTure</i></p>
 
-<p><i>Desarrollo conceptual y técnico</i></p>
+<p><i>Specialist in DHIS architecture, custom development and deployment.</i></p>
+
+<p><a href="http://www.KnowTechTure.com">http://www.KnowTechTure.com</a></p>
