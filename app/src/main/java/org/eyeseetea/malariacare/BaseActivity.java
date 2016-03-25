@@ -118,7 +118,7 @@ public abstract class BaseActivity extends ActionBarActivity {
                 break;
             case R.id.action_about:
                 debugMessage("User asked for about");
-                showAlertWithHtmlMessageAndLastCommit(R.string.settings_menu_about, R.raw.about, R.raw.lastcommit);
+                showAlertWithHtmlMessageAndLastCommit(R.string.settings_menu_about, R.raw.about);
                 break;
             case R.id.action_logout:
                 debugMessage("User asked for logout");
@@ -276,14 +276,12 @@ public abstract class BaseActivity extends ActionBarActivity {
     }
 
     /**
-     * Replace in rawId the $replace$ expresion with the content on lastCommit and
      * Shows an alert dialog with a big message inside based on a raw resource HTML formatted
      * @param titleId Id of the title resource
      * @param rawId Id of the raw text resource in HTML format
-     * @param lastCommit Id of the raw text resource with the commit
      */
-    private void showAlertWithHtmlMessageAndLastCommit(int titleId, int rawId, int lastCommit){
-        String stringMessage = getMessageWithCommit(rawId, lastCommit);
+    private void showAlertWithHtmlMessageAndLastCommit(int titleId, int rawId){
+        String stringMessage = getMessageWithCommit(rawId);
         final SpannableString linkedMessage = new SpannableString(Html.fromHtml(stringMessage));
         Linkify.addLinks(linkedMessage, Linkify.EMAIL_ADDRESSES | Linkify.WEB_URLS);
         //Fixme: the eds build have different dialog style.
@@ -296,15 +294,19 @@ public abstract class BaseActivity extends ActionBarActivity {
     /**
      * Merge the lastcommit into the raw file
      * @param rawId Id of the raw text resource in HTML format
-     * @param lastCommit Id of the raw text resource with the commit
      */
-    private String getMessageWithCommit(int rawId, int lastCommit) {
+    private String getMessageWithCommit(int rawId) {
         InputStream message = getApplicationContext().getResources().openRawResource(rawId);
-        InputStream commit = getApplicationContext().getResources().openRawResource(lastCommit);
-
+        String stringCommit;
+        //Check if lastcommit.txt file exist, and if not exist show as unavailable.
+        int layoutId = getApplicationContext().getResources().getIdentifier("lastcommit", "raw", getApplicationContext().getPackageName());
+        if (layoutId == 0){
+            stringCommit=getString(R.string.unavailable);
+        } else {
+            InputStream commit = getApplicationContext().getResources().openRawResource( layoutId);
+            stringCommit=Utils.convertFromInputStreamToString(commit).toString();
+        }
         String stringMessage=Utils.convertFromInputStreamToString(message).toString();
-        String stringCommit=Utils.convertFromInputStreamToString(commit).toString();
-        String stringError="";
         if(stringCommit.contains(getString(R.string.unavailable))){
             stringCommit=String.format(getString(R.string.lastcommit),stringCommit);
             stringCommit=stringCommit+" "+getText(R.string.lastcommit_unavailable);
