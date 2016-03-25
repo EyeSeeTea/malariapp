@@ -68,7 +68,7 @@
 
                 <org.eyeseetea.malariacare.views.CustomAutoCompleteTextView
                     android:id="@+id/dhis_url" android:layout_width="match_parent"
-                    android:layout_height="wrap_content" android:hint="@string/login_info_dhis_default_server_url"
+                    android:layout_height="wrap_content" android:hint="@string/server_url"
                     android:inputType="textUri" android:maxLines="1"
                     android:singleLine="true"
                     app:tDimension="@string/font_size_level1"

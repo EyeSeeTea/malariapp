@@ -89,7 +89,7 @@ public class AssessCompulsoryTest {
             login(HNQIS_DEV_CI, TEST_USERNAME_WITH_PERMISSION, TEST_PASSWORD_WITH_PERMISSION);
             waitForPull(DEFAULT_WAIT_FOR_PULL);
         }
-        startSurvey(SDKTestUtils.TEST_FACILITY_1_IDX, SDKTestUtils.TEST_FACILITY_1_IDX);
+        startSurvey(SDKTestUtils.TEST_FACILITY_1_IDX, SDKTestUtils.TEST_IMCI);
         fillCompulsorySurvey(13, "Yes");
 
         //WHEN
