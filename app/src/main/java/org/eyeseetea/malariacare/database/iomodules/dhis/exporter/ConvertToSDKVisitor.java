@@ -212,9 +212,9 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
 
         // NOTE: do not try to set the event creation date. SDK will try to update the event in the next push instead of creating it and that will crash
         currentEvent.setEventDate(EventExtended.format(currentSurvey.getCompletionDate(), EventExtended.COMPLETION_DATE_FORMAT));
-        currentEvent.setDueDate(EventExtended.format(currentSurvey.getScheduledDate(),EventExtended.COMPLETION_DATE_FORMAT));
+        currentEvent.setDueDate(EventExtended.format(currentSurvey.getScheduledDate(), EventExtended.COMPLETION_DATE_FORMAT));
         //Not used
-        currentEvent.setLastUpdated(EventExtended.format(currentSurvey.getUploadedDate(),EventExtended.COMPLETION_DATE_FORMAT));
+        currentEvent.setLastUpdated(EventExtended.format(currentSurvey.getUploadedDate(), EventExtended.COMPLETION_DATE_FORMAT));
         }
 
     /**
@@ -244,16 +244,21 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
      * @param survey
      */
     private void buildDateControlDataElements(Survey survey) {
+        //It Checks if the dataelement exists, before build and save the datavalue
         //Created date
-        buildAndSaveDataValue(createdOnUID, EventExtended.format(survey.getCreationDate(), EventExtended.SIMPLE_DATE_FORMAT));
+        if(!createdByUID.equals(""))
+            buildAndSaveDataValue(createdOnUID, EventExtended.format(survey.getCreationDate(), EventExtended.SIMPLE_DATE_FORMAT));
 
         //Updated date
+        if(!updatedDateUID.equals(""))
         buildAndSaveDataValue(updatedDateUID, EventExtended.format(survey.getUploadedDate(), EventExtended.SIMPLE_DATE_FORMAT));
 
         //Updated by user
+        if(!updatedUserUid.equals(""))
         buildAndSaveDataValue(updatedUserUid, Session.getUser().getUid());
 
         //Updated by user
+        if(!createdByUID.equals(""))
         buildAndSaveDataValue(createdByUID, Session.getUser().getUid());
     }
 
