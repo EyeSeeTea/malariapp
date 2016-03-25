@@ -27,6 +27,7 @@ import org.eyeseetea.malariacare.database.model.Question;
 import org.eyeseetea.malariacare.database.model.Tab;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.Session;
+import org.eyeseetea.malariacare.layout.utils.QuestionRow;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -36,6 +37,7 @@ import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 
@@ -68,7 +70,7 @@ public class Utils {
         return result;
     }
 
-    public static List<? extends BaseModel> preloadTabItems(Tab tab){
+    public static List preloadTabItems(Tab tab){
         List<? extends BaseModel> items = Session.getTabsCache().get(tab.getId_tab());
 
         if (tab.isCompositeScore())
@@ -83,7 +85,44 @@ public class Utils {
             }
             Session.getTabsCache().put(tab.getId_tab(), items);
         }
-        return items;
+
+        return compressTabItems(items);
+    }
+
+    /**
+     * Turns a list of headers, questions into a list of headers, questions and questionRows.
+     * @param items
+     * @return
+     */
+    public static List compressTabItems(List items){
+        List<Object> compressedItems = new ArrayList<>();
+        Iterator<Object> iterator = items.iterator();
+        QuestionRow lastRow=null;
+        while(iterator.hasNext()){
+            Object item = iterator.next();
+
+            //Header
+            if(item instanceof Header){
+                compressedItems.add(item);
+                continue;
+            }
+
+            //Normal question
+            if(item instanceof Question && !((Question)item).belongsToCustomTab()){
+                compressedItems.add(item);
+                continue;
+            }
+
+            //Custom tabs questions/titles
+            Question question = (Question) item;
+            //Question that belongs to a customtab
+            if(question.isCustomTabNewRow()){
+                lastRow = new QuestionRow();
+                compressedItems.add(lastRow);
+            }
+            lastRow.addQuestion(question);
+        }
+        return compressedItems;
     }
 
     public static StringBuilder convertFromInputStreamToString(InputStream inputStream){

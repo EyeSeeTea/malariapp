@@ -44,7 +44,7 @@ public abstract class ATabAdapter extends BaseAdapter implements  ITabAdapter{
     private final Context context;
 
     //List of Headers and Questions. Each position contains an object to be showed in the listview
-    private List<? extends BaseModel> items;
+    private List items;
 
 
     public ATabAdapter(Tab tab, Context context, int id_layout){
@@ -115,5 +115,5 @@ public abstract class ATabAdapter extends BaseAdapter implements  ITabAdapter{
         return this.tab;
     }
 
-    public List<? extends BaseModel> getItems(){ return this.items; }
+    public List getItems(){ return this.items; }
 }

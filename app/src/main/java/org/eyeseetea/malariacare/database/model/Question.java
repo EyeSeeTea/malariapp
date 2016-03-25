@@ -101,6 +101,12 @@ public class Question extends BaseModel {
     @Column
     Long id_composite_score;
 
+    @Column
+    Integer row;
+
+    @Column
+    Integer column;
+
     /**
      * Reference to associated compositeScore for this question (loaded lazily)
      */
@@ -131,7 +137,7 @@ public class Question extends BaseModel {
     public Question() {
     }
 
-    public Question(String code, String de_name, String short_name, String form_name, String uid, Integer order_pos, Float numerator_w, Float denominator_w, String feedback, Integer output,Header header, Answer answer, Question question, CompositeScore compositeScore,Boolean compulsory) {
+    public Question(String code, String de_name, String short_name, String form_name, String uid, Integer order_pos, Float numerator_w, Float denominator_w, String feedback, Integer output,Header header, Answer answer, Question question, CompositeScore compositeScore,Boolean compulsory,Integer row, Integer column) {
         this.code = code;
         this.de_name = de_name;
         this.short_name = short_name;
@@ -144,6 +150,8 @@ public class Question extends BaseModel {
         this.output = output;
         this.parent = null;
         this.compulsory=compulsory;
+        this.row = row;
+        this.column = column;
 
         this.setHeader(header);
         this.setAnswer(answer);
@@ -237,6 +245,22 @@ public class Question extends BaseModel {
 
     public Boolean getCompulsory() {
         return compulsory;
+    }
+
+    public void setRow(Integer row){
+        this.row = row;
+    }
+
+    public Integer getRow(){
+        return this.row;
+    }
+
+    public void setColumn(Integer column){
+        this.column = column;
+    }
+
+    public Integer getColumn(){
+        return this.column;
     }
 
     public Header getHeader() {
@@ -495,10 +519,28 @@ public class Question extends BaseModel {
     }
 
 
-    /*Returns true if the question belongs to a Custom Tab*/
+    /**
+     * Returns true if the question belongs to a Custom Tab
+     * */
     public boolean belongsToCustomTab() {
+        return this.row!=null || this.column!=null;
+//        return getHeader().getTab().isACustomTab();
+    }
 
-        return getHeader().getTab().isACustomTab();
+    /**
+     * Returns true if this question is a title of a custom Tab table
+     * @return
+     */
+    public boolean isCustomTabTableHeader(){
+        return this.row!=null && this.row==0;
+    }
+
+    /**
+     * Returns true if this question starts a new row
+     * @return
+     */
+    public boolean isCustomTabNewRow(){
+        return this.column!=null && this.column==1;
     }
 
     /**

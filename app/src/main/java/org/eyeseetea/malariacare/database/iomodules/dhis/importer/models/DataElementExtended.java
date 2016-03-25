@@ -31,6 +31,7 @@ import org.eyeseetea.malariacare.database.iomodules.dhis.importer.IConvertFromSD
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.VisitableFromSDK;
 import org.eyeseetea.malariacare.database.model.CompositeScore;
 import org.hisp.dhis.android.sdk.persistence.models.Attribute;
+import org.hisp.dhis.android.sdk.persistence.models.Attribute$Table;
 import org.hisp.dhis.android.sdk.persistence.models.AttributeValue;
 import org.hisp.dhis.android.sdk.persistence.models.DataElement;
 import org.hisp.dhis.android.sdk.persistence.models.Option;
@@ -88,6 +89,16 @@ public class DataElementExtended implements VisitableFromSDK {
      * Code of attribute 19 DE Type  (Question, Control, Score)
      */
     public static final String ATTRIBUTE_ELEMENT_TYPE_CODE = "DEType";
+
+    /**
+     * Code the attribute Row (for customTabs)
+     */
+    public static final String ATTRIBUTE_ROW = "DERow";
+
+    /**
+     * Code the attribute Column (for customTabs)
+     */
+    public static final String ATTRIBUTE_COLUMN = "DEColumn";
 
     /**
      * Code of Question option for attribute DEType
@@ -258,13 +269,20 @@ public class DataElementExtended implements VisitableFromSDK {
      * @return
      */
     public  String findAttributeValueByCode(String code){
-
-        //Find the right attribute
-        Attribute attribute = AttributeExtended.findAttributeByCode(code);
-        //No such attribute -> done
-        if(attribute==null){
-            return null;
+        Attribute attribute;
+        //TODO remove after server data solution
+        if("DEQuesType".equals(code)){
+            attribute = new Select().from(Attribute.class).where(Condition.column(Attribute$Table.ID).
+                    is("RkNBKHl7FcO")).querySingle();
+        }else{
+            //Find the right attribute
+            attribute = AttributeExtended.findAttributeByCode(code);
+            //No such attribute -> done
+            if(attribute==null){
+                return null;
+            }
         }
+
 
         //Find its value for the given dataelement
         AttributeValue attributeValue=findAttributeValue(attribute);
@@ -369,7 +387,7 @@ public class DataElementExtended implements VisitableFromSDK {
         ProgramStageSection programSS = new Select().from(ProgramStageSection.class).as("pss")
                 .join(ProgramStageDataElement.class, Join.JoinType.LEFT).as("psd")
                 .on(Condition.column(ColumnAlias.columnWithTable("psd", ProgramStageDataElement$Table.PROGRAMSTAGESECTION))
-                                .eq(ColumnAlias.columnWithTable("pss", ProgramStageSection$Table.ID)))
+                        .eq(ColumnAlias.columnWithTable("pss", ProgramStageSection$Table.ID)))
                 .where(Condition.column(ColumnAlias.columnWithTable("psd", ProgramStageDataElement$Table.DATAELEMENT)).eq(dataElementUID))
                 .querySingle();
         if (programSS == null) {
@@ -406,6 +424,24 @@ public class DataElementExtended implements VisitableFromSDK {
             return denominator;
         }
         return 0.0f;
+    }
+
+    public Integer findRow() {
+        String value = getValue(ATTRIBUTE_ROW);
+        if (value != null) {
+            int row = Integer.valueOf(value);
+            return row;
+        }
+        return null;
+    }
+
+    public Integer findColumn() {
+        String value = getValue(ATTRIBUTE_COLUMN);
+        if (value != null) {
+            int row = Integer.valueOf(value);
+            return row;
+        }
+        return null;
     }
 
     public CompositeScore findCompositeScore() {

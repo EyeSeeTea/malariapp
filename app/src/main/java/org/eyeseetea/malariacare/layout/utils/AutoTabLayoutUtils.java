@@ -115,7 +115,7 @@ public class AutoTabLayoutUtils {
      */
     public static class QuestionVisibility{
         public static Question question;
-        public static LinkedHashMap<BaseModel, Boolean> elementInvisibility;
+        public static LinkedHashMap<Object, Boolean> elementInvisibility;
         public static AutoTabAdapter adapter;
         public static Option option;
     }
@@ -160,13 +160,28 @@ public class AutoTabLayoutUtils {
     }
 
     /**
+     * A question row is hidden if the first question is hidden
+     * @param questionRow
+     * @return
+     */
+    public static boolean isHidden(QuestionRow questionRow){
+        if(questionRow==null || questionRow.sizeColumns()==0){
+            return true;
+        }
+
+        Question question = questionRow.getFirstQuestion();
+
+        return isHidden(question);
+    }
+
+    /**
      * Given a desired position (that means, the position shown in the screen) of an element, get the
      * real position (that means, the position in the stored items list taking into account the hidden
      * elements)
      * @param position
      * @return the real position in the elements list
      */
-    public static int getRealPosition(int position, LinkedHashMap<BaseModel, Boolean> elementInvisibility, List<? extends BaseModel> items){
+    public static int getRealPosition(int position, LinkedHashMap<Object, Boolean> elementInvisibility, List<? extends BaseModel> items){
         int hElements = getHiddenCountUpTo(position, elementInvisibility);
         int diff = 0;
 
@@ -182,7 +197,7 @@ public class AutoTabLayoutUtils {
      * @param position
      * @return number of elements hidden (true in elementInvisibility Map)
      */
-    private static int getHiddenCountUpTo(int position, LinkedHashMap<BaseModel, Boolean> elementInvisibility) {
+    private static int getHiddenCountUpTo(int position, LinkedHashMap<Object, Boolean> elementInvisibility) {
         boolean [] upper = Arrays.copyOfRange(Booleans.toArray(elementInvisibility.values()), 0, position + 1);
         int hiddens = Booleans.countTrue(upper);
         return hiddens;
@@ -275,7 +290,7 @@ public class AutoTabLayoutUtils {
      * @param header header that
      * @return true if every header question is hidden, false otherwise
      */
-    public static boolean hideHeader(Header header, LinkedHashMap<BaseModel, Boolean> elementInvisibility) {
+    public static boolean hideHeader(Header header, LinkedHashMap<Object, Boolean> elementInvisibility) {
         // look in every question to see if every question is hidden. In case one cuestion is not hidden, we return false
         for (Question question : header.getQuestions()) {
             if (!elementInvisibility.get(question)) {
@@ -289,12 +304,12 @@ public class AutoTabLayoutUtils {
      * Get the number of elements that are hidden
      * @return number of elements hidden (true in elementInvisibility Map)
      */
-    public static int getHiddenCount(LinkedHashMap<BaseModel, Boolean> elementInvisibility) {
+    public static int getHiddenCount(LinkedHashMap<Object, Boolean> elementInvisibility) {
         // using Guava library and its Booleans utility class
         return Booleans.countTrue(Booleans.toArray(elementInvisibility.values()));
     }
 
-    public static boolean autoFillAnswer(AutoTabLayoutUtils.ViewHolder viewHolder, AutoTabLayoutUtils.ScoreHolder scoreHolder, Question question, float totalNum, float totalDenum, Context context, LinkedHashMap<BaseModel, Boolean> elementInvisibility, AutoTabAdapter adapter) {
+    public static boolean autoFillAnswer(AutoTabLayoutUtils.ViewHolder viewHolder, AutoTabLayoutUtils.ScoreHolder scoreHolder, Question question, float totalNum, float totalDenum, Context context, LinkedHashMap<Object, Boolean> elementInvisibility, AutoTabAdapter adapter) {
         //FIXME Yes|No are 'hardcoded' here by using options 0|1
         int option=question.isTriggered(Session.getSurvey())?0:1;
 
@@ -308,7 +323,7 @@ public class AutoTabLayoutUtils {
      * @param question the question that changes his value
      * @param option the option that has been selected
      */
-    public static boolean itemSelected(final AutoTabLayoutUtils.ViewHolder viewHolder, AutoTabLayoutUtils.ScoreHolder scoreHolder, Question question, Option option, float totalNum, float totalDenum, Context context, LinkedHashMap<BaseModel, Boolean> elementInvisibility, AutoTabAdapter adapter) {
+    public static boolean itemSelected(final AutoTabLayoutUtils.ViewHolder viewHolder, AutoTabLayoutUtils.ScoreHolder scoreHolder, Question question, Option option, float totalNum, float totalDenum, Context context, LinkedHashMap<Object, Boolean> elementInvisibility, AutoTabAdapter adapter) {
         boolean refreshTab = false;
 
         if (!question.hasChildren()) {
@@ -382,7 +397,7 @@ public class AutoTabLayoutUtils {
      */
     private static void toggleChildrenVisibility() {
         Question question = QuestionVisibility.question;
-        LinkedHashMap<BaseModel, Boolean> elementInvisibility = QuestionVisibility.elementInvisibility;
+        LinkedHashMap<Object, Boolean> elementInvisibility = QuestionVisibility.elementInvisibility;
         List<Question> children = question.getChildren();
         Question cachedQuestion = null;
         Survey survey=Session.getSurvey();
@@ -424,6 +439,11 @@ public class AutoTabLayoutUtils {
 
             ScoreRegister.addRecord(question, num, denum);
         }
+    }
 
+    public static void initScoreQuestion(QuestionRow questionRow, float totalNum, float totalDenum){
+        for(Question question: questionRow.getQuestions()){
+            initScoreQuestion(question,totalNum,totalDenum);
+        }
     }
 }

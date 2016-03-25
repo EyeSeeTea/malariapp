@@ -27,9 +27,12 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
+import android.widget.TableLayout;
+import android.widget.TextView;
 
 import com.raizlabs.android.dbflow.structure.BaseModel;
 
@@ -43,6 +46,7 @@ import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.ReadWriteDB;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.layout.utils.AutoTabLayoutUtils;
+import org.eyeseetea.malariacare.layout.utils.QuestionRow;
 import org.eyeseetea.malariacare.utils.Constants;
 import org.eyeseetea.malariacare.views.CustomEditText;
 import org.eyeseetea.malariacare.views.CustomRadioButton;
@@ -64,7 +68,7 @@ public class AutoTabAdapter extends ATabAdapter {
 
     // The length of this arrays is the same that the items list. Each position indicates if the item
     // on this position is hidden (true) or visible (false)
-    private final LinkedHashMap<BaseModel, Boolean> elementInvisibility = new LinkedHashMap<>();
+    private final LinkedHashMap<Object, Boolean> elementInvisibility = new LinkedHashMap<>();
 
     public AutoTabAdapter(Tab tab, Context context) {
         this(tab, context, R.layout.form_with_score);
@@ -76,19 +80,65 @@ public class AutoTabAdapter extends ATabAdapter {
         // Initialize the elementInvisibility HashMap by reading all questions and headers and decide
         // whether or not they must be visible
         for (int i = 0; i < getItems().size(); i++) {
-            BaseModel item = getItems().get(i);
-            if (item instanceof Header)
-                elementInvisibility.put(item, true);
+            Object item = getItems().get(i);
+            //Header are visible by default
+            if (item instanceof Header) {
+                initHeaderVisibility((Header)item);
+            }
+
+            //Question might be visible or not (according to parent values)
             if (item instanceof Question) {
-                boolean hidden = AutoTabLayoutUtils.isHidden((Question) item);
-                elementInvisibility.put(item, hidden);
-                if (!(hidden)) AutoTabLayoutUtils.initScoreQuestion((Question) item, totalNum, totalDenum);
-                else ScoreRegister.addRecord((Question) item, 0F, ScoreRegister.calcDenum((Question) item));
-                Header header = ((Question) item).getHeader();
-                boolean headerVisibility = elementInvisibility.get(header);
-                elementInvisibility.put(header, headerVisibility && elementInvisibility.get(item));
+                boolean visible = initQuestionVisibility((Question)item);
+                if (visible){
+                    AutoTabLayoutUtils.initScoreQuestion((Question) item, totalNum, totalDenum);
+                }else{
+                    ScoreRegister.addRecord((Question) item, 0F, ScoreRegister.calcDenum((Question) item));
+                }
+                updateHeaderVisibilityByQuestion((Question)item);
+            }
+            //QuestionRow visibility equals first Question
+            if (item instanceof QuestionRow){
+                boolean visible = initQuestionRowVisibility((QuestionRow) item);
+                if (visible){
+                    AutoTabLayoutUtils.initScoreQuestion((QuestionRow) item, totalNum, totalDenum);
+                }else{
+                    ScoreRegister.addQuestionRowRecords((QuestionRow) item);
+                }
+                updateHeaderVisibilityByQuestionRow((QuestionRow)item);
             }
         }
+    }
+
+    private boolean initHeaderVisibility(Header header){
+        boolean visible=true;
+        elementInvisibility.put(header, visible);
+        return visible;
+    }
+
+    private void updateHeaderVisibilityByQuestion(Question question){
+        Header header = question.getHeader();
+        boolean headerVisibility = elementInvisibility.get(header);
+        elementInvisibility.put(header, headerVisibility && elementInvisibility.get(question));
+    }
+
+    private void updateHeaderVisibilityByQuestionRow(QuestionRow questionRow){
+        Question firstQuestion=questionRow.getFirstQuestion();
+        Header header = firstQuestion.getHeader();
+        boolean headerVisibility = elementInvisibility.get(header);
+        elementInvisibility.put(header, headerVisibility && elementInvisibility.get(questionRow));
+
+    }
+
+    private boolean initQuestionVisibility(Question question){
+        boolean visible = !AutoTabLayoutUtils.isHidden(question);
+        elementInvisibility.put(question, visible);
+        return visible;
+    }
+
+    private boolean initQuestionRowVisibility(QuestionRow questionRow){
+        boolean visible = !AutoTabLayoutUtils.isHidden(questionRow);
+        elementInvisibility.put(questionRow,visible);
+        return  visible;
     }
 
     /**
@@ -252,14 +302,60 @@ public class AutoTabAdapter extends ATabAdapter {
                 AutoTabLayoutUtils.updateReadOnly(viewHolder.component, getReadOnly());
             }
 
-        } else {
+        } else if(item instanceof Header){
             rowView = getInflater().inflate(R.layout.headers, parent, false);
             viewHolder.statement = (CustomTextView) rowView.findViewById(R.id.headerName);
             viewHolder.statement.setText(((Header) item).getName());
-
+        }else{
+            QuestionRow questionRow = (QuestionRow)item;
+            rowView = getInflater().inflate(R.layout.question_row,parent,false);
+            if(questionRow.isCustomTabTableHeader()){
+                getViewTableHeader((LinearLayout)rowView,questionRow);
+            }else{
+                getViewTableContent((LinearLayout)rowView,questionRow);
+            }
         }
 
         return rowView;
+    }
+
+    private View getViewTableHeader(LinearLayout row, QuestionRow questionRow){
+        row.setWeightSum(1f);
+        float columnWeight=questionRow.sizeColumns()/1f;
+        for(Question question:questionRow.getQuestions()){
+            addTextViewToRow(row,question,columnWeight);
+        }
+        return row;
+    }
+
+    private View getViewTableContent(LinearLayout row,QuestionRow questionRow){
+        row.setWeightSum(1f);
+        float columnWeight=questionRow.sizeColumns()/1f;
+        for(Question question:questionRow.getQuestions()){
+            if(Constants.NO_ANSWER==question.getOutput()){
+                addTextViewToRow(row,question,columnWeight);
+            }else{
+                addEditViewToRow(row,question,columnWeight);
+            }
+        }
+        return row;
+    }
+
+    private void addTextViewToRow(LinearLayout rowLayout, Question question, float columnWeight){
+        //TODO Styling required...
+        TextView textView = new TextView(getContext());
+        textView.setText(question.getForm_name());
+        textView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT, columnWeight));
+        rowLayout.addView(textView);
+    }
+
+    private void addEditViewToRow(LinearLayout rowLayout, Question question, float columnWeight){
+        //TODO Add the right widget, style, setvalues, readonly, ...
+        EditText editText = new EditText(getContext());
+        editText.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT, columnWeight));
+        rowLayout.addView(editText);
     }
 
     public void setValues(AutoTabLayoutUtils.ViewHolder viewHolder, Question question) {

@@ -363,6 +363,8 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
         appQuestion.setOrder_pos(dataElementExtended.findOrder());
         appQuestion.setNumerator_w(dataElementExtended.findNumerator());
         appQuestion.setDenominator_w(dataElementExtended.findDenominator());
+        appQuestion.setRow(dataElementExtended.findRow());
+        appQuestion.setColumn(dataElementExtended.findColumn());
         appQuestion.setOutput(compositeScoreBuilder.findAnswerOutput(dataElementExtended));
 
         //Label does not have an optionset

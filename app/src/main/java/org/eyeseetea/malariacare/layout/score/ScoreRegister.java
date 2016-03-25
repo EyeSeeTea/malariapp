@@ -27,6 +27,7 @@ import org.eyeseetea.malariacare.database.model.Question;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.model.Tab;
 import org.eyeseetea.malariacare.database.utils.Session;
+import org.eyeseetea.malariacare.layout.utils.QuestionRow;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -68,6 +69,13 @@ public class ScoreRegister {
             compositeScoreMap.get(question.getCompositeScore()).addRecord(question, num, den);
         }
         tabScoreMap.get(question.getHeader().getTab()).addRecord(question, num, den);
+    }
+
+    public static void addQuestionRowRecords(QuestionRow questionRow){
+        for(Question question:questionRow.getQuestions()){
+            ScoreRegister.addRecord(question, 0F, ScoreRegister.calcDenum(question));
+        }
+
     }
 
     public static void deleteRecord(Question question){
