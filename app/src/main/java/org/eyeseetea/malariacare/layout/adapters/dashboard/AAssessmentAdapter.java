@@ -97,7 +97,7 @@ public abstract class AAssessmentAdapter extends ADashboardAdapter implements ID
         }
 
         // show facility name (or not) and write survey type name
-        if (position!=0) {
+        if (!showNextFacilityName) {
             facilityName.setVisibility(View.GONE);
         } else {
             facilityName.setText(survey.getOrgUnit().getName());
