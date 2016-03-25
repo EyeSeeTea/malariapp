@@ -28,8 +28,10 @@ import android.content.Intent;
 import android.util.Log;
 
 import org.eyeseetea.malariacare.R;
+import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.services.PushService;
 import org.eyeseetea.malariacare.services.SurveyService;
+import org.eyeseetea.malariacare.utils.Utils;
 
 /**
  * Created by rhardjono on 20/09/2015.
@@ -76,21 +78,25 @@ public class AlarmPushReceiver extends BroadcastReceiver {
 
     public void setPushAlarm(Context context) {
         Log.d(TAG, "setPushAlarm");
-        long pushPeriod;
-        if(fail) {
-            pushPeriod= Long.parseLong(context.getString(R.string.PUSH_FAILED_PERIOD));
+        if (!Utils.isNetworkAvailable()){
+            cancelPushAlarm(PreferencesState.getInstance().getContext());
         }
-        else{
-            pushPeriod= Long.parseLong(context.getString(R.string.PUSH_PERIOD));
-        }
-        AlarmManager am = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-        Intent intent = new Intent(context, AlarmPushReceiver.class);
-        //Note FLAG_UPDATE_CURRENT
-        PendingIntent pi = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-        am.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), pushPeriod * SECONDS, pi);
+        else {
+            long pushPeriod;
+            if(fail) {
+                pushPeriod= Long.parseLong(context.getString(R.string.PUSH_FAILED_PERIOD));
+            } else{
+                pushPeriod= Long.parseLong(context.getString(R.string.PUSH_PERIOD));
+            }
+            AlarmManager am = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+            Intent intent = new Intent(context, AlarmPushReceiver.class);
+            //Note FLAG_UPDATE_CURRENT
+            PendingIntent pi = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+            am.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), pushPeriod * SECONDS, pi);
 
-        //others modes:
-        //am.setInexactRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), AlarmManager.INTERVAL_FIFTEEN_MINUTES, pi);
+            //others modes:
+            //am.setInexactRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), AlarmManager.INTERVAL_FIFTEEN_MINUTES, pi);
+        }
     }
 
     public void cancelPushAlarm(Context context) {
