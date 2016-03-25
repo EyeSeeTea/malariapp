@@ -415,6 +415,10 @@ public class DashboardSentFragment extends ListFragment {
      */
     public void reloadSentSurveys() {
         List<Survey> surveys = (List<Survey>) Session.popServiceValue(SurveyService.ALL_SENT_OR_COMPLETED_OR_CONFLICT_SURVEYS_ACTION);
+
+        // To prevent from reloading too fast, before service has finished its job
+        if (surveys == null) return;
+
         HashMap<String, Survey> orgUnits;
         orgUnits = new HashMap<>();
         oneSurveyForOrgUnit = new ArrayList<>();
