@@ -56,7 +56,7 @@
     <!-- spinner padding -->
     <dimen name="create_survey_spinner_padding">2dip</dimen>
     <!-- survey row padding -->
-    <dimen name="survey_row_marging">10dip</dimen>
+    <dimen name="survey_row_marging">14dip</dimen>
     <!-- title in createsurveyfragment marging-->
     <dimen name="create_survey_title_top_marging">20dip</dimen>
     <!-- Float Button default -->
