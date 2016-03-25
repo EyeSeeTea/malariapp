@@ -34,5 +34,9 @@
     <string name="forward_order" translatable="false">FEkGksxhOpH</string>
     <string name="forward_order_value" translatable="false">9999</string>
 
+    <string name="createdOnUID" translatable="false">rcAkFQFYknk</string>
+    <string name="createdByUid" translatable="false">i7oLpl4D08u</string>
+    <string name="uploadedDateUID" translatable="false">B6afQk2qZTL</string>
+    <string name="uploadedByUID" translatable="false">UzOOxp9OlSb</string>
 
 </resources>

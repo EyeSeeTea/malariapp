@@ -128,4 +128,10 @@ public class User extends BaseModel {
                 ", name='" + name + '\'' +
                 '}';
     }
+
+    public static User getUser(String value) {
+        return new Select()
+                .from(User.class)
+                .where(Condition.column(Score$Table.UID).eq(value)).querySingle();
+    }
 }

@@ -144,7 +144,7 @@ public class PushClient {
         try{
             //TODO: This should be removed once DHIS bug is solved
             //Map<String, JSONObject> controlData = prepareControlData();
-            survey.prepareSurveyCompletionDate();
+            survey.prepareSurveyUploadedDate();
             JSONObject data = PushUtils.getInstance().prepareMetadata(survey);
             //TODO: This should be removed once DHIS bug is solved
             //data = PushUtilsElements(data, controlData.get(""));

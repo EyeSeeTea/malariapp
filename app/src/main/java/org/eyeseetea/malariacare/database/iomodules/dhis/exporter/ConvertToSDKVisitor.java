@@ -71,6 +71,10 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
     String mainScoreCUID;
     String forwardOrderUID;
 
+    String createdOnUID;
+    String createdByUID;
+    String updatedDateUID;
+    String updatedUserUid;
     /**
      * List of surveys that are going to be pushed
      */
@@ -95,7 +99,7 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
     /**
      * Timestamp that captures the moment when the survey is converted right before being sent
      */
-    Date completionDate;
+    Date uploadedDate;
 
     ConvertToSDKVisitor(Context context){
         this.context=context;
@@ -104,6 +108,11 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
         mainScoreBUID=context.getString(R.string.main_score_b);
         mainScoreCUID=context.getString(R.string.main_score_c);
         forwardOrderUID=context.getString(R.string.forward_order);
+
+        createdOnUID =context.getString(R.string.createdOnUID);
+        createdByUID =context.getString(R.string.createdByUid);
+        updatedDateUID=context.getString(R.string.uploadedDateUID);
+        updatedUserUid=context.getString(R.string.createdByUid);
         surveys = new ArrayList<>();
         events = new ArrayList<>();
     }
@@ -132,6 +141,10 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
         for(Value value:survey.getValues()){
             value.accept(this);
         }
+
+        Log.d(TAG,"Saving dates in control dataelements");
+
+        buildDateControlDataElements(survey);
 
         Log.d(TAG, "Creating datavalues from other stuff...");
         buildControlDataElements(survey);
@@ -193,15 +206,16 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
     private void updateEventDates() {
 
         //Sent date 'now' (this change will be saves after successful push)
-        currentSurvey.setEventDate(new Date());
+        currentSurvey.setUploadedDate(new Date());
 
-        completionDate=currentSurvey.getCreationDate();
+        uploadedDate =currentSurvey.getUploadedDate();
 
         // NOTE: do not try to set the event creation date. SDK will try to update the event in the next push instead of creating it and that will crash
-        currentEvent.setLastUpdated(EventExtended.format(currentSurvey.getCompletionDate()));
-        currentEvent.setEventDate(EventExtended.format(currentSurvey.getEventDate()));
-        currentEvent.setDueDate(EventExtended.format(currentSurvey.getScheduledDate()));
-    }
+        currentEvent.setEventDate(EventExtended.format(currentSurvey.getCompletionDate(), EventExtended.COMPLETION_DATE_FORMAT));
+        currentEvent.setDueDate(EventExtended.format(currentSurvey.getScheduledDate(),EventExtended.COMPLETION_DATE_FORMAT));
+        //Not used
+        currentEvent.setLastUpdated(EventExtended.format(currentSurvey.getUploadedDate(),EventExtended.COMPLETION_DATE_FORMAT));
+        }
 
     /**
      * Builds several datavalues from the mainScore of the survey
@@ -225,6 +239,24 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
         buildAndSaveDataValue(forwardOrderUID, context.getString(R.string.forward_order_value));
     }
 
+    /**
+     * Builds several datavalues from the Dates of the survey
+     * @param survey
+     */
+    private void buildDateControlDataElements(Survey survey) {
+        //Created date
+        buildAndSaveDataValue(createdOnUID, EventExtended.format(survey.getCreationDate(), EventExtended.SIMPLE_DATE_FORMAT));
+
+        //Updated date
+        buildAndSaveDataValue(updatedDateUID, EventExtended.format(survey.getUploadedDate(), EventExtended.SIMPLE_DATE_FORMAT));
+
+        //Updated by user
+        buildAndSaveDataValue(updatedUserUid, Session.getUser().getUid());
+
+        //Updated by user
+        buildAndSaveDataValue(createdByUID, Session.getUser().getUid());
+    }
+
     private void buildAndSaveDataValue(String UID, String value){
         DataValue dataValue=new DataValue();
         dataValue.setDataElement(UID);
@@ -244,7 +276,7 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
     private void updateSurvey(List<CompositeScore> compositeScores){
         currentSurvey.setMainScore(ScoreRegister.calculateMainScore(compositeScores));
         currentSurvey.setStatus(Constants.SURVEY_SENT);
-        currentSurvey.setCompletionDate(completionDate);
+        currentSurvey.setUploadedDate(uploadedDate);
         currentSurvey.setEventUid(currentEvent.getUid());
     }
 
