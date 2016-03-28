@@ -296,4 +296,8 @@
         <p>3. Execute "git checkout".</p> ]]>
     </string>
 
+    <!-- Create or patch -->
+    <string name="create">crio</string>
+    <string name="patch">remendo</string>
+    <string name="create_or_patch">Você quer criar ou corrigir o levantamento com datas %s ?</string>
 </resources>
