@@ -335,7 +335,7 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
 
         if(dataValue.getDataElement().equals(PreferencesState.getInstance().getContext().getResources().getString(R.string.createdOnUID))){
             try{
-                Date date = EventExtended.parseDate(dataValue.getValue(),EventExtended.SIMPLE_DATE_FORMAT);
+                Date date = EventExtended.parseDate(dataValue.getValue(),EventExtended.AMERICAN_DATE_FORMAT);
                 survey.setCreationDate(date);
                 survey.save();
                 //Annotate object in map
@@ -348,7 +348,7 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
 
         if(dataValue.getDataElement().equals(PreferencesState.getInstance().getContext().getResources().getString(R.string.uploadedDateUID))){
             try{
-                Date date = EventExtended.parseDate(dataValue.getValue(),EventExtended.SIMPLE_DATE_FORMAT);
+                Date date = EventExtended.parseDate(dataValue.getValue(),EventExtended.AMERICAN_DATE_FORMAT);
                 survey.setUploadedDate(date);
                 survey.save();
                 //Annotate object in map

@@ -326,10 +326,6 @@
     <string name="option_mark_completed">Mark as completed</string>
     <string name="option_delete">Delete</string>
 
-    <!-- async push -->
-    <string name="PUSH_PERIOD" translatable="false">10</string>
-    <string name="PUSH_FAILED_PERIOD" translatable="false">300</string>
-
     <!-- tab tags -->
     <string name="tab_tag_plan" translatable="false">tab_plan</string>
     <string name="tab_tag_assess" translatable="false">tab_assess</string>
@@ -350,7 +346,7 @@
 
     <!-- last commit info -->
     <string name="lastcommit">Version %s</string>
-    <string name="unavailable" translatable="false">Unavailable</string>
+    <string name="unavailable">Unavailable</string>
     <string name="lastcommit_unavailable"><![CDATA[
         <p>This option requires some changes in the git repository.</p>
         <p>Steps:</p>
