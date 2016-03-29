@@ -248,10 +248,10 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
         uploadedDate =currentSurvey.getUploadedDate();
 
         // NOTE: do not try to set the event creation date. SDK will try to update the event in the next push instead of creating it and that will crash
-        currentEvent.setEventDate(EventExtended.format(currentSurvey.getCompletionDate(), EventExtended.COMPLETION_DATE_FORMAT));
-        currentEvent.setDueDate(EventExtended.format(currentSurvey.getScheduledDate(),EventExtended.COMPLETION_DATE_FORMAT));
+        currentEvent.setEventDate(EventExtended.format(currentSurvey.getCompletionDate(), EventExtended.DHIS2_DATE_FORMAT));
+        currentEvent.setDueDate(EventExtended.format(currentSurvey.getScheduledDate(),EventExtended.DHIS2_DATE_FORMAT));
         //Not used
-        currentEvent.setLastUpdated(EventExtended.format(currentSurvey.getUploadedDate(),EventExtended.COMPLETION_DATE_FORMAT));
+        currentEvent.setLastUpdated(EventExtended.format(currentSurvey.getUploadedDate(),EventExtended.DHIS2_DATE_FORMAT));
         }
 
     /**
@@ -282,10 +282,10 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
      */
     private void buildDateControlDataElements(Survey survey) {
         //Created date
-        buildAndSaveDataValue(createdOnUID, EventExtended.format(survey.getCreationDate(), EventExtended.SIMPLE_DATE_FORMAT));
+        buildAndSaveDataValue(createdOnUID, EventExtended.format(survey.getCreationDate(), EventExtended.AMERICAN_DATE_FORMAT));
 
         //Updated date
-        buildAndSaveDataValue(updatedDateUID, EventExtended.format(survey.getUploadedDate(), EventExtended.SIMPLE_DATE_FORMAT));
+        buildAndSaveDataValue(updatedDateUID, EventExtended.format(survey.getUploadedDate(), EventExtended.AMERICAN_DATE_FORMAT));
 
         //Updated by user
         buildAndSaveDataValue(updatedUserUid, Session.getUser().getUid());

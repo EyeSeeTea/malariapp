@@ -50,6 +50,7 @@ import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.layout.listeners.SurveyLocationListener;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 import org.eyeseetea.malariacare.utils.Utils;
+import org.eyeseetea.malariacare.utils.VariantSpecificUtils;
 import org.hisp.dhis.android.sdk.controllers.DhisService;
 import org.hisp.dhis.android.sdk.events.UiEvent;
 import org.hisp.dhis.android.sdk.persistence.Dhis2Application;
@@ -272,7 +273,7 @@ public abstract class BaseActivity extends ActionBarActivity {
      */
     private void showAlertWithMessage(int titleId, int rawId){
         InputStream message = getApplicationContext().getResources().openRawResource(rawId);
-        showAlert(titleId, Utils.convertFromInputStreamToString(message).toString());
+        VariantSpecificUtils.showAlert(titleId, Utils.convertFromInputStreamToString(message).toString(), BaseActivity.this);
     }
 
     /**
@@ -284,11 +285,8 @@ public abstract class BaseActivity extends ActionBarActivity {
         String stringMessage = getMessageWithCommit(rawId);
         final SpannableString linkedMessage = new SpannableString(Html.fromHtml(stringMessage));
         Linkify.addLinks(linkedMessage, Linkify.EMAIL_ADDRESSES | Linkify.WEB_URLS);
-        //Fixme: the eds build have different dialog style.
-        if(BuildConfig.FLAVOR.equals("hnqis"))
-            showAboutAlert(titleId, linkedMessage);
-        else
-            showAlert(titleId, linkedMessage);
+
+        VariantSpecificUtils.showAlert(titleId, linkedMessage, BaseActivity.this);
     }
 
     /**
@@ -318,50 +316,6 @@ public abstract class BaseActivity extends ActionBarActivity {
         return stringMessage;
     }
 
-    /**
-     * Shows an alert dialog with a given string
-     * @param titleId Id of the title resource
-     * @param text String of the message
-     */
-    private void showAlert(int titleId, CharSequence text){
-        final AlertDialog dialog = new AlertDialog.Builder(this)
-                .setTitle(getApplicationContext().getString(titleId))
-                .setMessage(text)
-                .setNeutralButton(android.R.string.ok, null).create();
-        dialog.show();
-        ((TextView)dialog.findViewById(android.R.id.message)).setMovementMethod(LinkMovementMethod.getInstance());
-    }
-
-    private void showAboutAlert(int titleId, CharSequence text){
-        final Dialog dialog = new Dialog(BaseActivity.this);
-        dialog.setContentView(R.layout.dialog_about);
-        dialog.setTitle(titleId);
-        dialog.setCancelable(true);
-
-        //set up text title
-        TextView textTile = (TextView) dialog.findViewById(R.id.aboutTitle);
-        textTile.setText(BuildConfig.VERSION_NAME);
-        textTile.setGravity(Gravity.RIGHT);
-
-        //set up image view
-        ImageView img = (ImageView) dialog.findViewById(R.id.aboutImage);
-        img.setImageResource(R.drawable.psi);
-
-        //set up text title
-        TextView textContent = (TextView) dialog.findViewById(R.id.aboutMessage);
-        textContent.setMovementMethod(LinkMovementMethod.getInstance());
-        textContent.setText(text);
-        //set up button
-        Button button = (Button) dialog.findViewById(R.id.aboutButton);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-               dialog.dismiss();
-            }
-        });
-        //now that the dialog is set up, it's time to show it
-        dialog.show();
-    }
     /**
      * Logs a debug message using current activity SimpleName as tag. Ex:
      *   SurveyActivity => ".SurveyActivity"

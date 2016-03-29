@@ -29,14 +29,11 @@ import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.SyncProgressStatus;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.EventExtended;
 import org.eyeseetea.malariacare.database.model.Survey;
-import org.eyeseetea.malariacare.database.utils.planning.SurveyPlanner;
 import org.hisp.dhis.android.sdk.controllers.DhisService;
 import org.hisp.dhis.android.sdk.job.NetworkJob;
 import org.hisp.dhis.android.sdk.network.ResponseHolder;
 import org.hisp.dhis.android.sdk.persistence.Dhis2Application;
 import org.hisp.dhis.android.sdk.persistence.models.ImportSummary;
-import org.hisp.dhis.android.sdk.persistence.models.Event;
-import org.hisp.dhis.android.sdk.persistence.preferences.ResourceType;
 
 
 import java.util.HashMap;
@@ -210,7 +207,7 @@ public class PushController {
         for(Survey survey:surveys){
             for(int i=0;i<converter.events.size();i++){
                 if(survey.getEventUid().equals(converter.events.get(i).getUid())) {
-                    converter.events.get(i).setCreated(EventExtended.format(survey.getCompletionDate(),EventExtended.COMPLETION_DATE_FORMAT));
+                    converter.events.get(i).setCreated(EventExtended.format(survey.getCompletionDate(),EventExtended.DHIS2_DATE_FORMAT));
                 }
             }
         }
