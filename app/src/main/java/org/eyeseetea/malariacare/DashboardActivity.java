@@ -46,15 +46,22 @@ import android.widget.TabHost;
 import android.widget.TabWidget;
 import android.widget.TextView;
 
+import com.raizlabs.android.dbflow.sql.builder.Condition;
+import com.raizlabs.android.dbflow.sql.language.Select;
 import com.squareup.otto.Subscribe;
 
 
+import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.EventExtended;
+import org.eyeseetea.malariacare.database.model.OrgUnit;
 import org.eyeseetea.malariacare.database.model.Program;
 import org.eyeseetea.malariacare.database.model.Survey;
+import org.eyeseetea.malariacare.database.model.Survey$Table;
+import org.eyeseetea.malariacare.database.model.TabGroup;
 import org.eyeseetea.malariacare.database.model.User;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.database.utils.SurveyAnsweredRatio;
+import org.eyeseetea.malariacare.database.utils.planning.SurveyPlanner;
 import org.eyeseetea.malariacare.fragments.CreateSurveyFragment;
 import org.eyeseetea.malariacare.fragments.DashboardSentFragment;
 import org.eyeseetea.malariacare.fragments.DashboardUnsentFragment;
@@ -65,7 +72,9 @@ import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.fragments.PlannedFragment;
 import org.eyeseetea.malariacare.receivers.AlarmPushReceiver;
 import org.eyeseetea.malariacare.services.SurveyService;
+import org.eyeseetea.malariacare.utils.Constants;
 import org.hisp.dhis.android.sdk.events.UiEvent;
+import org.hisp.dhis.android.sdk.persistence.models.Constant;
 
 import java.io.IOException;
 import java.util.List;
@@ -108,7 +117,7 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
                 initPlanned();
             initAssess();
             initImprove();
-            initMonitor();
+            //initMonitor();
         }
         initTabHost(savedInstanceState);
         /* set tabs in order */
@@ -163,7 +172,7 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
                     currentTabName=getString(R.string.monitor);
                     tabHost.getCurrentTabView().setBackgroundColor(getResources().getColor(R.color.tab_green_monitor));
                     setActionBarDashboard();
-                    monitorFragment.reloadData();
+                    //monitorFragment.reloadData();
                 }
             }
         });
@@ -776,7 +785,50 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
     }
 
     @Override
-    public void onCreateSurvey() {
+    public void onCreateSurvey(final OrgUnit orgUnit,final TabGroup tabGroup) {
+        Survey survey = new Select().from(Survey.class)
+                .where(Condition.column(Survey$Table.ID_ORG_UNIT).eq(orgUnit.getId_org_unit()))
+                .and(Condition.column(Survey$Table.ID_TAB_GROUP).eq(tabGroup.getId_tab_group()))
+                .and(Condition.column(Survey$Table.STATUS).is(Constants.SURVEY_COMPLETED))
+                .or(Condition.column(Survey$Table.STATUS).is(Constants.SURVEY_SENT))
+                .or(Condition.column(Survey$Table.STATUS).is(Constants.SURVEY_CONFLICT))
+                .orderBy(false,Survey$Table.COMPLETIONDATE).querySingle();
+        new AlertDialog.Builder(this)
+                .setTitle(null)
+                .setMessage(String.format(getApplicationContext().getResources().getString(R.string.create_or_patch), EventExtended.format(survey.getCompletionDate(), EventExtended.COMPLETION_DATE_FORMAT))+survey.getEventUid())
+                .setPositiveButton((R.string.create), new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface arg0, int arg1) {
+                        createNewSurvey(orgUnit, tabGroup);
+                    }
+                })
+                .setNeutralButton((R.string.patch), new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface arg0, int arg1) {
+                        patchSurvey(orgUnit, tabGroup);
+                    }
+                })
+                .setNegativeButton((R.string.cancel), null)
+                .setCancelable(true)
+                .create().show();
+    }
+    public void patchSurvey(OrgUnit orgUnit, TabGroup tabGroup){
+        Survey survey = new Select().from(Survey.class)
+                .where(Condition.column(Survey$Table.ID_ORG_UNIT).eq(orgUnit.getId_org_unit()))
+                .and(Condition.column(Survey$Table.ID_TAB_GROUP).eq(tabGroup.getId_tab_group()))
+                .and(Condition.column(Survey$Table.STATUS).is(Constants.SURVEY_COMPLETED))
+                .or(Condition.column(Survey$Table.STATUS).is(Constants.SURVEY_SENT))
+                .or(Condition.column(Survey$Table.STATUS).is(Constants.SURVEY_CONFLICT))
+                .orderBy(false, Survey$Table.COMPLETIONDATE).querySingle();
+        //Survey survey=SurveyPlanner.getInstance().startSurvey(orgUnit, tabGroup)
+        survey.setStatus(Constants.SURVEY_IN_PROGRESS);
+        Session.setSurvey(survey);
+        prepareLocationListener(survey);
+        initSurvey();
+
+    }
+    public void createNewSurvey(OrgUnit orgUnit, TabGroup tabGroup){
+        Survey survey=SurveyPlanner.getInstance().startSurvey(orgUnit,tabGroup);
+        Session.setSurvey(survey);
+        prepareLocationListener(survey);
         initSurvey();
     }
 
