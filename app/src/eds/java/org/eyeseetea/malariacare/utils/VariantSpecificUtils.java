@@ -46,4 +46,31 @@ public class VariantSpecificUtils{
         dialog.show();
         ((TextView)dialog.findViewById(android.R.id.message)).setMovementMethod(LinkMovementMethod.getInstance());
     }
+
+    public static void createNewSurvey(final OrgUnit orgUnit, final TabGroup tabGroup) {
+        final DashboardActivity activity = ((DashboardActivity) DashboardActivity.dashboardActivity);
+        Survey survey = new Select().from(Survey.class)
+                .where(Condition.column(Survey$Table.ID_ORG_UNIT).eq(orgUnit.getId_org_unit()))
+                .and(Condition.column(Survey$Table.ID_TAB_GROUP).eq(tabGroup.getId_tab_group()))
+                .and(Condition.column(Survey$Table.STATUS).is(Constants.SURVEY_COMPLETED))
+                .or(Condition.column(Survey$Table.STATUS).is(Constants.SURVEY_SENT))
+                .or(Condition.column(Survey$Table.STATUS).is(Constants.SURVEY_CONFLICT))
+                .orderBy(false,Survey$Table.COMPLETIONDATE).querySingle();
+        new AlertDialog.Builder(DashboardActivity.dashboardActivity)
+                .setTitle(null)
+                .setMessage(String.format(PreferencesState.getInstance().getContext().getResources().getString(R.string.create_or_patch), EventExtended.format(survey.getCompletionDate(), EventExtended.DHIS2_DATE_FORMAT ))+survey.getEventUid())
+                .setPositiveButton((R.string.create), new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface arg0, int arg1) {
+                        activity.createNewSurvey(orgUnit, tabGroup);
+                    }
+                })
+                .setNeutralButton((R.string.patch), new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface arg0, int arg1) {
+                        activity.patchSurvey(orgUnit, tabGroup);
+                    }
+                })
+                .setNegativeButton((R.string.cancel), null)
+                .setCancelable(true)
+                .create().show();
+    }
 }

@@ -19,8 +19,10 @@
 
 package org.eyeseetea.malariacare.utils;
 
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.text.method.LinkMovementMethod;
 import android.view.Gravity;
 import android.view.View;
@@ -28,9 +30,19 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.raizlabs.android.dbflow.sql.builder.Condition;
+import com.raizlabs.android.dbflow.sql.language.Select;
+
 import org.eyeseetea.malariacare.BaseActivity;
 import org.eyeseetea.malariacare.BuildConfig;
+import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.R;
+import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.EventExtended;
+import org.eyeseetea.malariacare.database.model.OrgUnit;
+import org.eyeseetea.malariacare.database.model.Survey;
+import org.eyeseetea.malariacare.database.model.Survey$Table;
+import org.eyeseetea.malariacare.database.model.TabGroup;
+import org.eyeseetea.malariacare.database.utils.PreferencesState;
 
 /**
  * Created by nacho on 28/03/16.
@@ -66,5 +78,10 @@ public class VariantSpecificUtils{
         });
         //now that the dialog is set up, it's time to show it
         dialog.show();
+    }
+
+    public void createNewSurvey(final OrgUnit orgUnit, final TabGroup tabGroup) {
+        final DashboardActivity activity = ((DashboardActivity) DashboardActivity.dashboardActivity);
+        activity.createNewSurvey(orgUnit, tabGroup);
     }
 }

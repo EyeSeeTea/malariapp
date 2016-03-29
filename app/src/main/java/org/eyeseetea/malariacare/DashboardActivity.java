@@ -73,6 +73,7 @@ import org.eyeseetea.malariacare.fragments.PlannedFragment;
 import org.eyeseetea.malariacare.receivers.AlarmPushReceiver;
 import org.eyeseetea.malariacare.services.SurveyService;
 import org.eyeseetea.malariacare.utils.Constants;
+import org.eyeseetea.malariacare.utils.VariantSpecificUtils;
 import org.hisp.dhis.android.sdk.events.UiEvent;
 import org.hisp.dhis.android.sdk.persistence.models.Constant;
 
@@ -97,7 +98,7 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
     boolean isMoveToLeft;
     boolean isMoveToFeedback;
     static Handler handler;
-    static Activity dashboardActivity;
+    public static Activity dashboardActivity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -786,29 +787,8 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
 
     @Override
     public void onCreateSurvey(final OrgUnit orgUnit,final TabGroup tabGroup) {
-        Survey survey = new Select().from(Survey.class)
-                .where(Condition.column(Survey$Table.ID_ORG_UNIT).eq(orgUnit.getId_org_unit()))
-                .and(Condition.column(Survey$Table.ID_TAB_GROUP).eq(tabGroup.getId_tab_group()))
-                .and(Condition.column(Survey$Table.STATUS).is(Constants.SURVEY_COMPLETED))
-                .or(Condition.column(Survey$Table.STATUS).is(Constants.SURVEY_SENT))
-                .or(Condition.column(Survey$Table.STATUS).is(Constants.SURVEY_CONFLICT))
-                .orderBy(false,Survey$Table.COMPLETIONDATE).querySingle();
-        new AlertDialog.Builder(this)
-                .setTitle(null)
-                .setMessage(String.format(getApplicationContext().getResources().getString(R.string.create_or_patch), EventExtended.format(survey.getCompletionDate(), EventExtended.COMPLETION_DATE_FORMAT))+survey.getEventUid())
-                .setPositiveButton((R.string.create), new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface arg0, int arg1) {
-                        createNewSurvey(orgUnit, tabGroup);
-                    }
-                })
-                .setNeutralButton((R.string.patch), new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface arg0, int arg1) {
-                        patchSurvey(orgUnit, tabGroup);
-                    }
-                })
-                .setNegativeButton((R.string.cancel), null)
-                .setCancelable(true)
-                .create().show();
+        VariantSpecificUtils v = new VariantSpecificUtils();
+        v.createNewSurvey(orgUnit,tabGroup);
     }
     public void patchSurvey(OrgUnit orgUnit, TabGroup tabGroup){
         Survey survey = new Select().from(Survey.class)
