@@ -41,6 +41,7 @@ import org.eyeseetea.malariacare.utils.Constants;
 import org.eyeseetea.malariacare.utils.Utils;
 import org.hisp.dhis.android.sdk.persistence.models.DataValue;
 import org.hisp.dhis.android.sdk.persistence.models.Event;
+import org.hisp.dhis.android.sdk.persistence.models.Event$Table;
 import org.hisp.dhis.android.sdk.persistence.models.FailedItem;
 import org.hisp.dhis.android.sdk.persistence.models.FailedItem$Table;
 import org.hisp.dhis.android.sdk.persistence.models.ImportSummary;
@@ -123,7 +124,27 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
         this.currentSurvey=survey;
 
         Log.d(TAG,String.format("Creating event for survey (%d) ...",survey.getId_survey()));
-        this.currentEvent=buildEvent();
+
+        //if the event exist in the survey, it will be patched, else, created.
+        if(survey.getEventUid()!=null) {
+            this.currentEvent = getEvent(survey.getEventUid());
+            Log.d(TAG, "recovering event:"+survey.getEventUid());
+            //this.currentEvent.setCreated(EventExtended.format(survey.getCreationDate(),EventExtended.COMPLETION_DATE_FORMAT));
+            if (currentEvent != null) {
+                //set from server as false is necesary to upload the event
+                currentSurvey.setUploadedDate(new Date());
+                uploadedDate = currentSurvey.getUploadedDate();
+                currentEvent.setFromServer(false);
+                currentEvent.save();
+            } else {
+                Log.d(TAG, "Recovering Event:"+survey.getEventUid()+" not exist");
+                this.currentEvent = buildEvent();
+            }
+        }
+        else
+            this.currentEvent = buildEvent();
+        Log.d(TAG,currentEvent.toString());
+
 
         //Calculates scores and update survey
         Log.d(TAG,"Registering scores...");
@@ -137,9 +158,17 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
         }
 
         //Turn question values into dataValues
-        Log.d(TAG, "Creating datavalues from questions...");
+        Log.d(TAG, "Creating datavalues from questions... Values"+survey.getValues().size());
+
+
         for(Value value:survey.getValues()){
-            value.accept(this);
+            if(value.getQuestion()!=null) {
+                value.accept(this);
+                Log.d(TAG, "Value saved: " + value);
+            }
+            else{
+                Log.d(TAG, "Value with null question: " + value);
+            }
         }
 
         Log.d(TAG,"Saving dates in control dataelements");
@@ -180,7 +209,15 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
         }
         dataValue.save();
     }
-
+    /**
+     * Get event form a survey if exists.
+     * @return
+     */
+    private Event getEvent(String eventuid)throws Exception{
+        currentEvent= new Select().from(Event.class)
+                .where(Condition.column(Event$Table.EVENT).eq(eventuid)).querySingle();
+        return currentEvent;
+    }
     /**
      * Builds an event from a survey
      * @return
@@ -188,7 +225,7 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
     private Event buildEvent()throws Exception{
         currentEvent=new Event();
 
-        currentEvent.setStatus(Event.STATUS_COMPLETED);
+        //currentEvent.setStatus(Event.STATUS_COMPLETED);
         currentEvent.setFromServer(false);
         currentEvent.setOrganisationUnitId(currentSurvey.getOrgUnit().getUid());
         currentEvent.setProgramId(currentSurvey.getTabGroup().getProgram().getUid());
