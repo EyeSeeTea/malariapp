@@ -277,7 +277,7 @@
 
     <!-- last commit info -->
     <string name="lastcommit">Version: %s</string>
-
+    <string name="unavailable">Indisponible</string>
     <string name="lastcommit_unavailable"><![CDATA["
         <p>Cette option nécessite quelques changements dans le dépôt git. </p>
         <p>Étapes: </p>
