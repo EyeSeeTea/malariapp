@@ -39,6 +39,8 @@ import org.eyeseetea.malariacare.database.utils.SurveyAnsweredRatioCache;
 import org.eyeseetea.malariacare.database.utils.planning.SurveyPlanner;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.utils.Constants;
+import org.hisp.dhis.android.sdk.persistence.models.Event;
+import org.hisp.dhis.android.sdk.persistence.models.Event$Table;
 
 import java.util.Date;
 import java.util.List;
@@ -822,6 +824,41 @@ public class Survey extends BaseModel implements VisitableToSDK {
                 .queryList();
     }
 
+
+    public static Survey getLastSurvey(OrgUnit orgUnit, TabGroup tabGroup) {
+        List<Survey> surveys = getAllSentCompletedOrConflictSurveys();
+        Survey lastSurvey = null;
+        for(Survey survey:surveys){
+            if(survey.getOrgUnit().getId_org_unit()==orgUnit.getId_org_unit() && survey.getTabGroup().getId_tab_group()==tabGroup.getId_tab_group()) {
+                if (lastSurvey == null)
+                    lastSurvey = survey;
+                else if(lastSurvey.getCompletionDate().before(survey.getCompletionDate()))
+                        lastSurvey = survey;
+            }
+        }
+        return lastSurvey;
+    }
+
+
+
+    /**
+     * Get event from a survey if exists.
+     * @return
+     */
+    public static Event getEvent(String eventuid){
+        Event event= new Select().from(Event.class)
+                .where(Condition.column(Event$Table.EVENT).eq(eventuid)).querySingle();
+        return event;
+    }
+    /**
+     * Get event from a survey local id if exist
+     * @return
+     */
+    public static Event getEventFromLocalId(Long surveyid){
+        Event event= new Select().from(Event.class)
+                .where(Condition.column(Event$Table.LOCALID).eq(String.valueOf(surveyid))).querySingle();
+        return event;
+    }
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
