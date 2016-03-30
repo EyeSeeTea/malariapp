@@ -126,15 +126,22 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
         Log.d(TAG,String.format("Creating event for survey (%d) ...",survey.getId_survey()));
 
         //if the event exist in the survey, it will be patched, else, created.
+        Log.d(TAG,String.format("Creating event for survey (%s) ...",survey.toString()));
         if(survey.getEventUid()!=null) {
-            this.currentEvent = getEvent(survey.getEventUid());
+            this.currentEvent = Survey.getEvent(survey.getEventUid());
             Log.d(TAG, "recovering event:"+survey.getEventUid());
             //this.currentEvent.setCreated(EventExtended.format(survey.getCreationDate(),EventExtended.COMPLETION_DATE_FORMAT));
+            if(currentEvent==null){
+                this.currentEvent = Survey.getEventFromLocalId(survey.getId_survey());
+                Log.d(TAG, "recovering event from localID:"+survey.getEventUid());
+            }
             if (currentEvent != null) {
-                //set from server as false is necesary to upload the event
-                currentSurvey.setUploadedDate(new Date());
                 uploadedDate = currentSurvey.getUploadedDate();
+                updateEventDates();
+                //set from server as false is necesary to upload the event
                 currentEvent.setFromServer(false);
+                currentEvent.setStatus(Event.STATUS_COMPLETED);
+
                 currentEvent.save();
             } else {
                 Log.d(TAG, "Recovering Event:"+survey.getEventUid()+" not exist");
@@ -209,15 +216,7 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
         }
         dataValue.save();
     }
-    /**
-     * Get event form a survey if exists.
-     * @return
-     */
-    private Event getEvent(String eventuid)throws Exception{
-        currentEvent= new Select().from(Event.class)
-                .where(Condition.column(Event$Table.EVENT).eq(eventuid)).querySingle();
-        return currentEvent;
-    }
+
     /**
      * Builds an event from a survey
      * @return
@@ -225,7 +224,7 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
     private Event buildEvent()throws Exception{
         currentEvent=new Event();
 
-        //currentEvent.setStatus(Event.STATUS_COMPLETED);
+        currentEvent.setStatus(Event.STATUS_COMPLETED);
         currentEvent.setFromServer(false);
         currentEvent.setOrganisationUnitId(currentSurvey.getOrgUnit().getUid());
         currentEvent.setProgramId(currentSurvey.getTabGroup().getProgram().getUid());
@@ -248,10 +247,11 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
         uploadedDate =currentSurvey.getUploadedDate();
 
         // NOTE: do not try to set the event creation date. SDK will try to update the event in the next push instead of creating it and that will crash
-        currentEvent.setEventDate(EventExtended.format(currentSurvey.getCompletionDate(), EventExtended.DHIS2_DATE_FORMAT));
-        currentEvent.setDueDate(EventExtended.format(currentSurvey.getScheduledDate(),EventExtended.DHIS2_DATE_FORMAT));
+        String date=EventExtended.format(currentSurvey.getCompletionDate(), EventExtended.DHIS2_DATE_FORMAT);
+        currentEvent.setEventDate(date);
+        currentEvent.setDueDate(EventExtended.format(currentSurvey.getScheduledDate(), EventExtended.DHIS2_DATE_FORMAT));
         //Not used
-        currentEvent.setLastUpdated(EventExtended.format(currentSurvey.getUploadedDate(),EventExtended.DHIS2_DATE_FORMAT));
+        currentEvent.setLastUpdated(EventExtended.format(currentSurvey.getUploadedDate(), EventExtended.DHIS2_DATE_FORMAT));
         }
 
     /**
@@ -357,6 +357,7 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
             ImportSummary importSummary=importSummaryMap.get(iEvent.getLocalId());
             FailedItem failedItem= hasConflict(iEvent.getLocalId());
             if(hasImportSummaryErrors(importSummary) || failedItem!=null){
+                Log.d(TAG, importSummary.toString());
                 //Some error happened -> move back to completed
                 if(failedItem!=null) {
                     iSurvey.setStatus(Constants.SURVEY_COMPLETED);
@@ -371,21 +372,31 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
                 }
                 iSurvey.save();
 
-                //Generated event must be remove too
-                iEvent.delete();
-                Log.d(TAG, "PUSH process...Fail pushing survey: " + iSurvey.getId_survey());
+                //Generated event must be remove too (or saved in a modify import summary)
+                if(iSurvey.getStatus()!=Constants.SURVEY_CONFLICT && importSummary.getStatus().equals("SUCCESS")) {
+                    saveSurveyFromImportSummary(iSurvey, iEvent);
+                    Log.d(TAG, "PUSH process...Survey uploaded: " + iSurvey.getId_survey());
+                }
+                else{
+                    Log.d(TAG, "PUSH process...Fail pushing survey: " + iSurvey.getId_survey());
+                    iEvent.delete();
+                }
             }else{
-                iSurvey.setStatus(Constants.SURVEY_SENT);
-                iSurvey.saveMainScore();
-                iSurvey.save();
-
-                //To avoid several pushes
-                iEvent.setFromServer(true);
-                iEvent.save();
-
-                Log.d(TAG, "PUSH process...OK. Survey and Event saved");
+                saveSurveyFromImportSummary(iSurvey, iEvent);
             }
         }
+    }
+
+    private void saveSurveyFromImportSummary(Survey iSurvey, Event iEvent) {
+        iSurvey.setStatus(Constants.SURVEY_SENT);
+        iSurvey.saveMainScore();
+        iSurvey.save();
+
+        //To avoid several pushes
+        iEvent.setFromServer(true);
+        iEvent.save();
+
+        Log.d(TAG, "PUSH process...OK. Survey and Event saved");
     }
 
     /**
