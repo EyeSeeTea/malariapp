@@ -791,13 +791,7 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
         v.createNewSurvey(orgUnit,tabGroup);
     }
     public void patchSurvey(OrgUnit orgUnit, TabGroup tabGroup){
-        Survey survey = new Select().from(Survey.class)
-                .where(Condition.column(Survey$Table.ID_ORG_UNIT).eq(orgUnit.getId_org_unit()))
-                .and(Condition.column(Survey$Table.ID_TAB_GROUP).eq(tabGroup.getId_tab_group()))
-                .and(Condition.column(Survey$Table.STATUS).is(Constants.SURVEY_COMPLETED))
-                .or(Condition.column(Survey$Table.STATUS).is(Constants.SURVEY_SENT))
-                .or(Condition.column(Survey$Table.STATUS).is(Constants.SURVEY_CONFLICT))
-                .orderBy(false, Survey$Table.COMPLETIONDATE).querySingle();
+        Survey survey = Survey.getLastSurvey(orgUnit, tabGroup);
         //Survey survey=SurveyPlanner.getInstance().startSurvey(orgUnit, tabGroup)
         survey.setStatus(Constants.SURVEY_IN_PROGRESS);
         Session.setSurvey(survey);
