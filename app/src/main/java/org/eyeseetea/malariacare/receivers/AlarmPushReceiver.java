@@ -28,8 +28,10 @@ import android.content.Intent;
 import android.util.Log;
 
 import org.eyeseetea.malariacare.R;
+import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.services.PushService;
 import org.eyeseetea.malariacare.services.SurveyService;
+import org.eyeseetea.malariacare.utils.Utils;
 
 /**
  * Created by rhardjono on 20/09/2015.
@@ -43,6 +45,8 @@ public class AlarmPushReceiver extends BroadcastReceiver {
     //TODO: period has to be parameterized
     private static final long SECONDS = 1000;
     private static boolean fail;
+    private static final long PUSH_FAIL_PERIOD = 300L;
+    private static final long PUSH_SUCCESS_PERIOD = 10L;
 
     //the constructor should be public becouse is needed in a receiver class.
     public AlarmPushReceiver(){
@@ -76,21 +80,17 @@ public class AlarmPushReceiver extends BroadcastReceiver {
 
     public void setPushAlarm(Context context) {
         Log.d(TAG, "setPushAlarm");
-        long pushPeriod;
-        if(fail) {
-            pushPeriod= Long.parseLong(context.getString(R.string.PUSH_FAILED_PERIOD));
+        if (!Utils.isNetworkAvailable()){
+            cancelPushAlarm(PreferencesState.getInstance().getContext());
         }
-        else{
-            pushPeriod= Long.parseLong(context.getString(R.string.PUSH_PERIOD));
+        else {
+            long pushPeriod = (fail) ? PUSH_FAIL_PERIOD : PUSH_SUCCESS_PERIOD;
+            AlarmManager am = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+            Intent intent = new Intent(context, AlarmPushReceiver.class);
+            //Note FLAG_UPDATE_CURRENT
+            PendingIntent pi = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+            am.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), pushPeriod * SECONDS, pi);
         }
-        AlarmManager am = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-        Intent intent = new Intent(context, AlarmPushReceiver.class);
-        //Note FLAG_UPDATE_CURRENT
-        PendingIntent pi = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-        am.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), pushPeriod * SECONDS, pi);
-
-        //others modes:
-        //am.setInexactRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), AlarmManager.INTERVAL_FIFTEEN_MINUTES, pi);
     }
 
     public void cancelPushAlarm(Context context) {

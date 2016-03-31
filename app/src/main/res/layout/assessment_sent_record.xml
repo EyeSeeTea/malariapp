@@ -30,7 +30,9 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:id="@+id/facilityDateContainer"
-        android:layout_gravity="center">
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/survey_row_marging"
+        android:layout_marginBottom="@dimen/survey_row_marging">
 
         <org.eyeseetea.malariacare.views.CustomTextView
             android:layout_width="fill_parent"

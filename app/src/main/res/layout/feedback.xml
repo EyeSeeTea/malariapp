@@ -105,12 +105,13 @@
 
     <org.eyeseetea.malariacare.views.CustomTextView
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_weight="0.5"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:id="@+id/feedback_total_score"
         android:layout_gravity="left|center_vertical"
         android:gravity="center_horizontal"
+        android:textSize="@dimen/large_xsmall_text_size"
         android:textStyle="bold"
         android:textColor="@color/black"
         app:tDimension="@string/font_size_level1"

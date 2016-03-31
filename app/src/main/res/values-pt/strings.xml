@@ -83,7 +83,6 @@
     <string name="assessment_info_delete">Apagar</string>
     <string name="assessment_title_header">Avaliação activa</string>
     <string name="assessment_sent_title_header">Avaliação anterior(es)</string>
-    <string name="all_assessment">Todas as avaliações</string>
 
     <!-- feedback -->
     <!-- XXX Should it be replaced by 'assessment_title_facility_date'?-->
@@ -200,6 +199,7 @@
         <item>Grande</item>
         <item>Muito Grande</item>
     </string-array>
+    <string name="server_url">Servidor DHIS2</string>
     <string name="settings_text_dhis_server_url">URL do servidor SISD</string>
     <string name="pref_header_general">Geral</string>
     <string name="settings_text_dhis_password">Senha DHIS</string>
@@ -273,8 +273,8 @@
     <string name="monitor">Monitor</string>
 
     <!-- filters text -->
-    <string name="filter_all_org_units_upper">TODAS AS UNIDADES DE ORGANIZAÇÃO</string>
-    <string name="filter_all_org_assessments_upper">TODAS AS AVALIAÇÕES</string>
+    <string name="filter_all_org_units">todas as unidades de organização</string>
+    <string name="filter_all_org_assessments">todas as avaliações</string>
     <string name="dialog_content_dhis_preference_login">Alterar o servidor precisa re-login. Cada pesquisa não-enviados serão apagados. Você tem certeza que quer continuar?</string>
     <string name="settings_text_dhis_max_items">DHIS max carregado inquéritos</string>
     <string name="feedback_info_conflict">Conflito</string>
@@ -282,6 +282,7 @@
 
     <!-- last commit info -->
     <string name="lastcommit">Versão: %s</string>
+    <string name="unavailable">indisponível</string>
     <string name="lastcommit_unavailable"><![CDATA[
         <p>Esta opção requer algumas mudanças no repositório git. </p>
         <p>Passos: </p>

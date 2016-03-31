@@ -21,11 +21,6 @@ package org.eyeseetea.malariacare.database.iomodules.dhis.importer.models;
 
 import android.util.Log;
 
-import com.raizlabs.android.dbflow.sql.builder.Condition;
-import com.raizlabs.android.dbflow.sql.language.ColumnAlias;
-import com.raizlabs.android.dbflow.sql.language.Join;
-import com.raizlabs.android.dbflow.sql.language.Select;
-
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.IConvertFromSDKVisitor;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.VisitableFromSDK;
 import org.hisp.dhis.android.sdk.persistence.models.Event;
@@ -40,7 +35,8 @@ import java.util.Date;
 public class EventExtended implements VisitableFromSDK {
 
     private final static String TAG=".EventExtended";
-    private final static String COMPLETION_DATE_FORMAT="yyyy-MM-dd'T'HH:mm:ss.SSSZ";
+    public final static String DHIS2_DATE_FORMAT ="yyyy-MM-dd'T'HH:mm:ss.SSSZ";
+    public final static String AMERICAN_DATE_FORMAT ="yyyy-MM-dd";
 
     Event event;
 
@@ -68,7 +64,13 @@ public class EventExtended implements VisitableFromSDK {
             return null;
         }
 
-        return parseDate(event.getCreated());
+        try {
+            return parseDate(event.getCreated(), DHIS2_DATE_FORMAT);
+        }
+        catch (ParseException e){
+            Log.e(TAG,String.format("Event (%s) cannot parse date %s",event.getUid(),e.getLocalizedMessage()));
+            return null;
+        }
     }
 
     /**
@@ -80,7 +82,13 @@ public class EventExtended implements VisitableFromSDK {
             return null;
         }
 
-        return parseDate(event.getLastUpdated());
+        try {
+            return parseDate(event.getLastUpdated(), DHIS2_DATE_FORMAT);
+        }
+        catch (ParseException e){
+            Log.e(TAG,String.format("Event (%s) cannot parse date %s",event.getUid(),e.getLocalizedMessage()));
+            return null;
+        }
     }
 
     /**
@@ -92,7 +100,13 @@ public class EventExtended implements VisitableFromSDK {
             return null;
         }
 
-        return parseDate(event.getEventDate());
+        try {
+            return parseDate(event.getEventDate(), DHIS2_DATE_FORMAT);
+        }
+        catch (ParseException e){
+            Log.e(TAG,String.format("Event (%s) cannot parse date %s",event.getUid(),e.getLocalizedMessage()));
+            return null;
+        }
     }
 
     /**
@@ -104,21 +118,22 @@ public class EventExtended implements VisitableFromSDK {
             return null;
         }
 
-        return parseDate(event.getDueDate());
+        try {
+            return parseDate(event.getDueDate(), DHIS2_DATE_FORMAT);
+        }
+        catch (ParseException e){
+            Log.e(TAG,String.format("Event (%s) cannot parse date %s",event.getUid(),e.getLocalizedMessage()));
+            return null;
+        }
     }
 
-    private Date parseDate(String dateAsString){
+    public static  Date parseDate(String dateAsString,String format) throws  ParseException{
         if(dateAsString==null){
             return null;
         }
 
-        SimpleDateFormat simpleDateFormat=new SimpleDateFormat(COMPLETION_DATE_FORMAT);
-        try {
-            return simpleDateFormat.parse(dateAsString);
-        }catch (ParseException e){
-            Log.e(TAG,String.format("Event (%s) cannot parse date %s",event.getUid(),e.getLocalizedMessage()));
-            return null;
-        }
+        SimpleDateFormat simpleDateFormat=new SimpleDateFormat(format);
+        return simpleDateFormat.parse(dateAsString);
     }
 
     /**
@@ -126,11 +141,11 @@ public class EventExtended implements VisitableFromSDK {
      * @param date
      * @return
      */
-    public static String format(Date date){
+    public static String format(Date date, String format){
         if(date==null){
             return null;
         }
-        SimpleDateFormat simpleDateFormat=new SimpleDateFormat(COMPLETION_DATE_FORMAT);
+        SimpleDateFormat simpleDateFormat=new SimpleDateFormat(format);
         return simpleDateFormat.format(date);
     }
 

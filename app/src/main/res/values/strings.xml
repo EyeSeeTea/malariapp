@@ -103,7 +103,6 @@
     <string name="assessment_info_delete">Delete</string>
     <string name="assessment_title_header">Active Assessment(s)</string>
     <string name="assessment_sent_title_header">Previous Assessment(s)</string>
-    <string name="all_assessment">All Assessment</string>
 
     <!-- feedback -->
     <!-- XXX Should it be replaced by 'assessment_title_facility_date'?-->
@@ -237,6 +236,7 @@
         <item>Large</item>
         <item>Extra large</item>
     </string-array>
+    <string name="server_url">DHIS2 server</string>
     <string name="settings_text_dhis_server_url">DHIS Server URL</string>
     <string name="settings_text_dhis_user">DHIS user</string>
     <string name="settings_text_dhis_password">DHIS password</string>
@@ -326,10 +326,6 @@
     <string name="option_mark_completed">Mark as completed</string>
     <string name="option_delete">Delete</string>
 
-    <!-- async push -->
-    <string name="PUSH_PERIOD" translatable="false">10</string>
-    <string name="PUSH_FAILED_PERIOD" translatable="false">300</string>
-
     <!-- tab tags -->
     <string name="tab_tag_plan" translatable="false">tab_plan</string>
     <string name="tab_tag_assess" translatable="false">tab_assess</string>
@@ -344,13 +340,13 @@
     <string name="monitor">Monitor</string>
 
     <!-- filters text -->
-    <string name="filter_all_org_units_upper">ALL ORG UNITS</string>
-    <string name="filter_all_org_assessments_upper">ALL ASSESSMENTS</string>
+    <string name="filter_all_org_units">all org units</string>
+    <string name="filter_all_org_assessments">all assessments</string>
     <string name="dialog_content_dhis_preference_login">Changing the server needs to re-login. Every not-sent survey will be deleted. Are you sure you want to continue?</string>
 
     <!-- last commit info -->
     <string name="lastcommit">Version %s</string>
-    <string name="unavailable" translatable="false">Unavailable</string>
+    <string name="unavailable">Unavailable</string>
     <string name="lastcommit_unavailable"><![CDATA[
         <p>This option requires some changes in the git repository.</p>
         <p>Steps:</p>

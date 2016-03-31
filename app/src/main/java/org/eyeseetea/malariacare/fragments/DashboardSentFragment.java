@@ -129,8 +129,8 @@ public class DashboardSentFragment extends ListFragment {
     public void onCreate(Bundle savedInstanceState){
         Log.d(TAG, "onCreate");
         super.onCreate(savedInstanceState);
-        //orgUnitFilter= PreferencesState.getInstance().getContext().getString(R.string.filter_all_org_units_upper);
-        programFilter= PreferencesState.getInstance().getContext().getString(R.string.filter_all_org_assessments_upper);
+        //orgUnitFilter= PreferencesState.getInstance().getContext().getString(R.string.filter_all_org_units).toUpperCase();
+        programFilter= PreferencesState.getInstance().getContext().getString(R.string.filter_all_org_assessments).toUpperCase();
     }
 
     @Override
@@ -147,9 +147,7 @@ public class DashboardSentFragment extends ListFragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         Log.d(TAG, "onActivityCreated");
         super.onActivityCreated(savedInstanceState);
-
-        hideContainer();
-        //Loading...
+        //hide list
         if(isAdded())
             setListShown(false);
         initAdapter();
@@ -159,7 +157,7 @@ public class DashboardSentFragment extends ListFragment {
     private void initFilters() {
         filterSpinnerProgram = (Spinner) getActivity().findViewById(R.id.filter_program);
         List<Program> filterProgramList=programList;
-        Program allAssessemntsProgram=new Program(getActivity().getString(R.string.filter_all_org_assessments_upper),getActivity().getString(R.string.filter_all_org_assessments_upper));
+        Program allAssessemntsProgram=new Program(getActivity().getString(R.string.filter_all_org_assessments).toUpperCase(),getActivity().getString(R.string.filter_all_org_assessments).toUpperCase());
         filterProgramList.add(0, allAssessemntsProgram);
         if(programFilter==null)
             programFilter=allAssessemntsProgram.getUid();
@@ -171,9 +169,9 @@ public class DashboardSentFragment extends ListFragment {
                                        int position, long id) {
                 Program program = (Program) parent.getItemAtPosition(position);
                 boolean reload = false;
-                if (program.getName().equals(PreferencesState.getInstance().getContext().getString(R.string.filter_all_org_assessments_upper))) {
-                    if (programFilter != PreferencesState.getInstance().getContext().getString(R.string.filter_all_org_assessments_upper)) {
-                        programFilter = PreferencesState.getInstance().getContext().getString(R.string.filter_all_org_assessments_upper);
+                if (program.getName().equals(PreferencesState.getInstance().getContext().getString(R.string.filter_all_org_assessments).toUpperCase())) {
+                    if (programFilter != PreferencesState.getInstance().getContext().getString(R.string.filter_all_org_assessments).toUpperCase()) {
+                        programFilter = PreferencesState.getInstance().getContext().getString(R.string.filter_all_org_assessments).toUpperCase();
                         reload=true;
                     }
                 } else {
@@ -193,7 +191,7 @@ public class DashboardSentFragment extends ListFragment {
         });
         filterSpinnerOrgUnit = (Spinner) getActivity().findViewById(R.id.filter_orgunit);
 
-        //orgUnitList.add(0, new OrgUnit(getActivity().getString(R.string.filter_all_org_units_upper)));
+        //orgUnitList.add(0, new OrgUnit(getActivity().getString(R.string.filter_all_org_units).toUpperCase()));
         filterSpinnerOrgUnit.setAdapter(new FilterOrgUnitArrayAdapter(getActivity().getApplicationContext(), orgUnitList));
         if(orgUnitFilter==null)
             orgUnitFilter=orgUnitList.get(0).getUid();
@@ -204,9 +202,9 @@ public class DashboardSentFragment extends ListFragment {
                                        int position, long id) {
                 OrgUnit orgUnit = (OrgUnit) parent.getItemAtPosition(position);
                 boolean reload = false;
-                if(orgUnit.getName().equals(PreferencesState.getInstance().getContext().getString(R.string.filter_all_org_units_upper))) {
-                    if (orgUnitFilter != PreferencesState.getInstance().getContext().getString(R.string.filter_all_org_units_upper)) {
-                        orgUnitFilter = PreferencesState.getInstance().getContext().getString(R.string.filter_all_org_units_upper);
+                if(orgUnit.getName().equals(PreferencesState.getInstance().getContext().getString(R.string.filter_all_org_units).toUpperCase())) {
+                    if (orgUnitFilter != PreferencesState.getInstance().getContext().getString(R.string.filter_all_org_units).toUpperCase()) {
+                        orgUnitFilter = PreferencesState.getInstance().getContext().getString(R.string.filter_all_org_units).toUpperCase();
                         reload = true;
                     }
                 } else {
@@ -415,6 +413,10 @@ public class DashboardSentFragment extends ListFragment {
      */
     public void reloadSentSurveys() {
         List<Survey> surveys = (List<Survey>) Session.popServiceValue(SurveyService.ALL_SENT_OR_COMPLETED_OR_CONFLICT_SURVEYS_ACTION);
+
+        // To prevent from reloading too fast, before service has finished its job
+        if (surveys == null) return;
+
         HashMap<String, Survey> orgUnits;
         orgUnits = new HashMap<>();
         oneSurveyForOrgUnit = new ArrayList<>();
@@ -484,17 +486,10 @@ public class DashboardSentFragment extends ListFragment {
     }
 
     private HashMap<String, Survey> filterSurvey(HashMap<String, Survey> orgUnits, Survey survey) {
-        if(orgUnitFilter!=null && (orgUnitFilter.equals(PreferencesState.getInstance().getContext().getString(R.string.filter_all_org_units_upper)) || orgUnitFilter.equals(survey.getOrgUnit().getUid())))
-            if(programFilter.equals(PreferencesState.getInstance().getContext().getString(R.string.filter_all_org_assessments_upper)) || programFilter.equals(survey.getTabGroup().getProgram().getUid()))
+        if(orgUnitFilter!=null && (orgUnitFilter.equals(PreferencesState.getInstance().getContext().getString(R.string.filter_all_org_units).toUpperCase()) || orgUnitFilter.equals(survey.getOrgUnit().getUid())))
+            if(programFilter.equals(PreferencesState.getInstance().getContext().getString(R.string.filter_all_org_assessments).toUpperCase()) || programFilter.equals(survey.getTabGroup().getProgram().getUid()))
               orgUnits.put(survey.getTabGroup().getProgram().getUid()+survey.getOrgUnit().getUid(), survey);
         return orgUnits;
-    }
-
-    public void showContainer(){
-        getActivity().findViewById(R.id.dashboard_completed_container).setVisibility(View.VISIBLE);
-    }
-    public void hideContainer(){
-        getActivity().findViewById(R.id.dashboard_completed_container).setVisibility(View.GONE);
     }
 
     /**
@@ -533,7 +528,8 @@ public class DashboardSentFragment extends ListFragment {
         @Override
         protected void onPostExecute(Void result) {
             initFilters();
-            showContainer();
+            if(isAdded())
+                setListShown(true);
         }
 
         @Override

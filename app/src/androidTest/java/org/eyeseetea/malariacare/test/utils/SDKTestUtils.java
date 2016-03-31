@@ -48,6 +48,7 @@ import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.model.Survey$Table;
 import org.eyeseetea.malariacare.utils.Constants;
 import org.hamcrest.Matchers;
+import org.hisp.dhis.android.sdk.persistence.models.Event;
 import org.hisp.dhis.android.sdk.persistence.models.OrganisationUnit;
 import org.hisp.dhis.android.sdk.persistence.models.OrganisationUnit$Table;
 import org.hisp.dhis.android.sdk.persistence.models.OrganisationUnitDataSet;
@@ -79,7 +80,7 @@ public class SDKTestUtils {
 
     private static final String TAG = "TestingUtils";
     public static final int DEFAULT_WAIT_FOR_PULL = 40;
-    public static final int DEFAULT_WAIT_FOR_PUSH = 40;
+    public static final int DEFAULT_WAIT_FOR_PUSH = 50;
     public static final int DEFAULT_TEST_TIME_LIMIT = 180;
 
     public static final String HNQIS_DEV_STAGING = "https://hnqis-dev-staging.psi-mis.org";
@@ -91,6 +92,10 @@ public class SDKTestUtils {
     public static final String TEST_PASSWORD_WITH_PERMISSION = "testP3rmission";
 
     public static final int TEST_FACILITY_1_IDX=1;
+    public static final int TEST_FACILITY_2_IDX=2;
+
+    public static final int TEST_IMCI=1;
+    public static final int TEST_CC=2;
     public static final int TEST_FAMILY_PLANNING_IDX=3;
 
     public static final String MARK_AS_COMPLETED = "Mark as completed";
@@ -248,6 +253,22 @@ public class SDKTestUtils {
         return idSurvey;
     }
 
+    public static Long markCompleteAndGoImprove() {
+        Long idSurvey = getSurveyId();
+
+        //when: Mark as completed
+        onView(withId(R.id.score)).perform(click());
+        onView(withText(MARK_AS_COMPLETED)).perform(click());
+        onView(withText(android.R.string.ok)).perform(click());
+
+        IdlingResource idlingResource = new ElapsedTimeIdlingResource(5 * 1000);
+        Espresso.registerIdlingResources(idlingResource);
+
+        onView(withTagValue(Matchers.is((Object) getActivityInstance().getApplicationContext().getString(R.string.tab_tag_improve)))).perform(click());
+
+        Espresso.unregisterIdlingResources(idlingResource);
+        return idSurvey;
+    }
 
 
     public static Long markAsCompleteCompulsory() {
@@ -345,6 +366,11 @@ public class SDKTestUtils {
         return new Select().all().from(org.hisp.dhis.android.sdk.persistence.models.Event.class).queryList();
     }
 
+    public static long getEventCount(){
+        return new Select().count()
+                .from(Event.class)
+                .count();
+    }
     public static Activity getActivityInstance() {
         final Activity[] activity = new Activity[1];
         Instrumentation instrumentation = InstrumentationRegistry.getInstrumentation();

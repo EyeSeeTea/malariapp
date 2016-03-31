@@ -78,7 +78,6 @@
     <string name="assessment_title_state">Estado</string>
     <string name="assessment_info_delete">Eliminar</string>
     <string name="assessment_title_header">Evaluación(es) Activa(s)</string>
-    <string name="all_assessment">Todas las evaluaciones</string>
 
     <!-- feedback -->
     <!-- XXX Should it be replaced by 'assessment_title_facility_date'?-->
@@ -188,6 +187,7 @@
         <item>Grande</item>
         <item>Extra grande</item>
     </string-array>
+    <string name="server_url">Servidor DHIS2</string>
     <string name="settings_text_dhis_server_url">URL de servidor DHIS</string>
     <string name="settings_text_dhis_password">Contraseña DHIS</string>
     <string name="pref_header_general">General</string>
@@ -268,8 +268,8 @@
 
 
     <!-- filters text -->
-    <string name="filter_all_org_units_upper">TODAS LAS UNIDADES ORGANIZATIVAS</string>
-    <string name="filter_all_org_assessments_upper">TODAS LAS EVALUACIONES</string>
+    <string name="filter_all_org_units">todas las unidades organizativas</string>
+    <string name="filter_all_org_assessments">todas las evaluaciones</string>
     <string name="dialog_content_dhis_preference_login">Cambiar el servidor implica volver a iniciar sesión. Se eliminarán todas las encuestas no enviadas. ¿Estás seguro de que quieres continuar?</string>
     <string name="settings_text_dhis_max_items">DHIS max encuestas descargadas</string>
     <string name="feedback_info_conflict">Conflicto</string>
@@ -277,6 +277,7 @@
 
     <!-- last commit info -->
     <string name="lastcommit">Versión %s</string>
+    <string name="unavailable">No disponible</string>
     <string name="lastcommit_unavailable"><![CDATA[
         <p>Esta opción necesita algunos cambios en el repositorio git. </p>
         <p>Pasos: </p>
