@@ -27,6 +27,9 @@ import android.net.NetworkInfo;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
+import com.raizlabs.android.dbflow.sql.QueryBuilder;
+import com.raizlabs.android.dbflow.sql.builder.Condition;
+import com.raizlabs.android.dbflow.sql.language.Select;
 import com.squareup.okhttp.Authenticator;
 import com.squareup.okhttp.Credentials;
 import com.squareup.okhttp.MediaType;
@@ -37,17 +40,25 @@ import com.squareup.okhttp.Response;
 
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.iomodules.dhis.exporter.PushController;
+import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.EventExtended;
+import org.eyeseetea.malariacare.database.model.OrgUnit;
+import org.eyeseetea.malariacare.database.model.Program;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.receivers.AlarmPushReceiver;
 import org.eyeseetea.malariacare.services.SurveyService;
 import org.eyeseetea.malariacare.utils.Utils;
+import org.hisp.dhis.android.sdk.persistence.models.Event;
+import org.hisp.dhis.android.sdk.persistence.models.Event$Table;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.IOException;
 import java.net.Proxy;
+import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -92,7 +103,15 @@ public class PushClient {
         Log.d(TAG,"User: "+this.user+" Program: "+DHIS_UID_PROGRAM+" OrgUnit:"+DHIS_ORG_NAME+"OrgUnitUid:"+DHIS_ORG_UID+"Survey:"+survey.getId_survey());
     }
 
+    public PushClient(Context applicationContext, String user, String password) {
+        this.applicationContext = applicationContext;
+        this.user = user;
+        this.password = password;
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(applicationContext);
+        DHIS_SERVER =sharedPreferences.getString(applicationContext.getResources().getString(R.string.dhis_url),"");
+    }
     private boolean launchPush(Survey survey) {
+        //fixme the survey is saved in session. But in other places too.
         Session.setSurvey(survey);
         //Pushing selected survey via sdk
         List<Survey> surveys = new ArrayList<>();
@@ -169,6 +188,84 @@ public class PushClient {
             updateDashboard();
         }
         return  pushResult;
+    }
+
+    public Event getLastEvent(OrgUnit orgUnit,Program program){
+        Event lastEvent=new Select().from(Event.class)
+                .where(Condition.column(Event$Table.PROGRAMID).eq(program.getUid()))
+                .and(Condition.column(Event$Table.ORGANISATIONUNITID).eq(orgUnit.getUid()))
+                .groupBy(new QueryBuilder().appendQuotedArray(Event$Table.PROGRAMID, Event$Table.ORGANISATIONUNITID))
+                .having(Condition.columnsWithFunction("max", "lastUpdated")).querySingle();
+        Date lastLocalDate = null;
+        try {
+            lastLocalDate= EventExtended.parseDate(lastEvent.getLastUpdated(),EventExtended.DHIS2_DATE_FORMAT);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        if(lastLocalDate!=null) {
+            String data = PushUtils.getInstance().prepareLastEventData(orgUnit.getUid(), program.getUid(), lastLocalDate);
+            try {
+                JSONObject lastEventsList= getData(data);
+                String eventuid="";
+                Date lastDate=null;
+                JSONArray jsonArrayResponse=new JSONArray(lastEventsList.getString("events"));
+                for(int i=0;i<jsonArrayResponse.length();i++) {
+                    JSONObject event = new JSONObject(jsonArrayResponse.getString(i));
+                    if(eventuid.equals("")){
+                        eventuid=event.getString("event");
+                        lastDate=EventExtended.parseDate(event.getString("lastUpdated"),EventExtended.DHIS2_DATE_FORMAT);
+                    }
+                    else if(lastDate.after(lastDate=EventExtended.parseDate(event.getString("lastUpdated"),EventExtended.DHIS2_DATE_FORMAT))){
+                        eventuid=event.getString("event");
+                        lastDate=EventExtended.parseDate(event.getString("lastUpdated"), EventExtended.DHIS2_DATE_FORMAT);
+                    }
+                }
+                return pullEvent(eventuid,lastLocalDate);
+            } catch (Exception e) {
+                e.printStackTrace();
+                Log.d(TAG,"Error getting the data "+ data);
+                return null;
+            }
+        }
+        return null;
+        //https://hnqis-dev-ci.psi-mis.org/api/events?orgUnit=QS7sK8XzdQc&program=wK0958s1bdj&startDate=2016-1-01&fields=[event,eventDate]&order=eventDate:desc
+    }
+
+    private Event pullEvent(String eventuid, Date lastUpdated) {
+        Event localEvent= new Select().from(Event.class).where(Condition.column(Event$Table.ID).eq(eventuid)).querySingle();
+        if(localEvent==null && localEvent.getLastUpdated().equals(EventExtended.format(lastUpdated,EventExtended.DHIS2_DATE_FORMAT)))
+
+        Log.d(TAG,"we need donwload event" +eventuid);
+                return null;
+    }
+
+    /**
+     * Pushes data to DHIS Server
+     * @param data
+     */
+    private JSONObject getData(String data)throws Exception {
+        Response response = null;
+
+        final String DHIS_URL = getDhisURL()+DHIS_PUSH_API+data;
+
+        OkHttpClient client = UnsafeOkHttpsClientFactory.getUnsafeOkHttpClient();
+
+        BasicAuthenticator basicAuthenticator = new BasicAuthenticator();
+        client.setAuthenticator(basicAuthenticator);
+
+        Log.d(TAG, "Url" + DHIS_URL + "");
+        Request request = new Request.Builder()
+                .header(basicAuthenticator.AUTHORIZATION_HEADER, basicAuthenticator.getCredentials())
+                .url(DHIS_URL)
+                .get()
+                .build();
+
+        response = client.newCall(request).execute();
+        if (!response.isSuccessful()) {
+            Log.e(TAG, "getData (" + response.code() + "): " + response.body().string());
+            throw new IOException(response.message());
+        }
+        return  parseResponse(response.body().string());
     }
 
     /**

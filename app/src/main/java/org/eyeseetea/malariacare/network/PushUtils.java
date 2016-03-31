@@ -35,6 +35,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -57,6 +58,8 @@ public class PushUtils {
     private static String TAG_DATAELEMENT = "dataElement";
     private static String TAG_VALUE = "value";
 
+    private static String TAG_STARTDATE = "startDate";
+
     /**
      * Singleton reference
      */
@@ -75,6 +78,25 @@ public class PushUtils {
         return instance;
     }
 
+    /**
+     * Adds metadata info to json object to get the last events
+     *
+     * @return JSONObject with program, orgunit and lastDate
+     * @throws Exception
+     */
+    public String prepareLastEventData(String orgUnit, String program, Date lastDate) {
+        String query="";
+        query="?"+query+TAG_PROGRAM+"="+program;
+
+        query=query+"&"+TAG_ORG_UNIT+"="+orgUnit;
+
+        query=query+"&"+TAG_STARTDATE+"="+android.text.format.DateFormat.format("yyyy-MM-dd", lastDate);
+
+        query=query+"&fields=[event,lastUpdated]"+"&skipPaging=true";
+        Log.d(TAG, "prepareLastEventData: " + query);
+
+        return query;
+    }
     /**
      * Adds metadata info to json object
      *
