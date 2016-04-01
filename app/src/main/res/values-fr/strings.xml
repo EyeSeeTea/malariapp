@@ -296,4 +296,6 @@
     <string name="create">"créer"</string>
     <string name="patch">"pièce"</string>
     <string name="create_or_patch">"Voulez-vous créer ou patcher l'enquête avec les dates %s ?"</string>
+    <string name="loading_last_surveys">"Dernière enquête de chargement..."</string>
+
 </resources>
