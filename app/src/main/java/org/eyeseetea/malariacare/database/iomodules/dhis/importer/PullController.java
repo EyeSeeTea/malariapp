@@ -73,7 +73,7 @@ import java.util.Map;
  */
 public class PullController {
     private final String TAG = ".PullController";
-    private final int NUMBER_OF_MONTHS=6;
+    public static final int NUMBER_OF_MONTHS=6;
 
     private final static Class MANDATORY_METADATA_TABLES[] = {
             org.hisp.dhis.android.sdk.persistence.models.Attribute.class,
