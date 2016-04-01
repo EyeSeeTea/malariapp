@@ -39,9 +39,11 @@ import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.utils.Constants;
 import org.eyeseetea.malariacare.utils.Utils;
+import org.hisp.dhis.android.sdk.controllers.tracker.PutEventType;
+import org.hisp.dhis.android.sdk.controllers.tracker.TrackerController;
 import org.hisp.dhis.android.sdk.persistence.models.DataValue;
+import org.hisp.dhis.android.sdk.persistence.models.DataValue$Table;
 import org.hisp.dhis.android.sdk.persistence.models.Event;
-import org.hisp.dhis.android.sdk.persistence.models.Event$Table;
 import org.hisp.dhis.android.sdk.persistence.models.FailedItem;
 import org.hisp.dhis.android.sdk.persistence.models.FailedItem$Table;
 import org.hisp.dhis.android.sdk.persistence.models.ImportSummary;
@@ -102,6 +104,11 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
      */
     Date uploadedDate;
 
+    /**
+     * Used to control if the actual survey/event is new or update
+     */
+    boolean uploadEvent;
+
     ConvertToSDKVisitor(Context context){
         this.context=context;
         mainScoreUID=context.getString(R.string.main_score);
@@ -127,17 +134,20 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
 
         //if the event exist in the survey, it will be patched, else, created.
         Log.d(TAG,String.format("Creating event for survey (%s) ...",survey.toString()));
+        uploadEvent=false;
         if(survey.getEventUid()!=null) {
             this.currentEvent = Survey.getEvent(survey.getEventUid());
             Log.d(TAG, "recovering event:"+survey.getEventUid());
             //this.currentEvent.setCreated(EventExtended.format(survey.getCreationDate(),EventExtended.COMPLETION_DATE_FORMAT));
             if(currentEvent==null){
                 this.currentEvent = Survey.getEventFromLocalId(survey.getId_survey());
+                uploadEvent=true;
                 Log.d(TAG, "recovering event from localID:"+survey.getEventUid());
             }
             if (currentEvent != null) {
+                TrackerController.setUploadEvent(PutEventType.UPDATE);
+                uploadEvent=true;
                 uploadedDate = currentSurvey.getUploadedDate();
-                updateEventDates();
                 //set from server as false is necesary to upload the event
                 currentEvent.setFromServer(false);
                 currentEvent.setStatus(Event.STATUS_COMPLETED);
@@ -167,17 +177,35 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
         //Turn question values into dataValues
         Log.d(TAG, "Creating datavalues from questions... Values"+survey.getValues().size());
 
-
-        for(Value value:survey.getValues()){
-            if(value.getQuestion()!=null) {
-                value.accept(this);
-                Log.d(TAG, "Value saved: " + value);
+        if(uploadEvent){
+            //Remove all dataValues
+            List<DataValue> dataValues = new Select().from(DataValue.class)
+                    .where(Condition.column(DataValue$Table.EVENT).eq(currentEvent.getEvent()))
+                    .queryList();
+            if(dataValues!=null) {
+                for (int i=dataValues.size()-1;i>=0;i--) {
+                    DataValue dataValue= dataValues.get(i);
+                    dataValue.delete();
+                    dataValues.remove(i);
+                }
             }
-            else{
-                Log.d(TAG, "Value with null question: " + value);
-            }
+            currentEvent.setDataValues(null);
         }
 
+
+        for(Value value : survey.getValues()) {
+            if(uploadEvent) {
+                if (value.getUploadedDate().after(currentSurvey.getUploadedDate())) {
+                    value.accept(this);
+                    Log.d(TAG, "Value saved: " + value);
+                }
+            }
+            else
+                    value.accept(this);
+        }
+
+        //Update all the dates after checks the new values
+        updateEventDates();
         Log.d(TAG,"Saving dates in control dataelements");
 
         buildDateControlDataElements(survey);
@@ -222,7 +250,7 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
      * @return
      */
     private Event buildEvent()throws Exception{
-        currentEvent=new Event();
+        currentEvent =new Event();
 
         currentEvent.setStatus(Event.STATUS_COMPLETED);
         currentEvent.setFromServer(false);
@@ -230,7 +258,7 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
         currentEvent.setProgramId(currentSurvey.getTabGroup().getProgram().getUid());
         currentEvent.setProgramStageId(currentSurvey.getTabGroup().getUid());
         updateEventLocation();
-        updateEventDates();
+        //updateEventDates();
         Log.d(TAG, "Saving event " + currentEvent.toString());
         currentEvent.save();
         return currentEvent;
