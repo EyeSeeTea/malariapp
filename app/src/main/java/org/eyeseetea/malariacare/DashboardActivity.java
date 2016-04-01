@@ -46,16 +46,12 @@ import android.widget.TabHost;
 import android.widget.TabWidget;
 import android.widget.TextView;
 
-import com.raizlabs.android.dbflow.sql.builder.Condition;
-import com.raizlabs.android.dbflow.sql.language.Select;
 import com.squareup.otto.Subscribe;
 
 
-import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.EventExtended;
 import org.eyeseetea.malariacare.database.model.OrgUnit;
 import org.eyeseetea.malariacare.database.model.Program;
 import org.eyeseetea.malariacare.database.model.Survey;
-import org.eyeseetea.malariacare.database.model.Survey$Table;
 import org.eyeseetea.malariacare.database.model.TabGroup;
 import org.eyeseetea.malariacare.database.model.User;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
@@ -75,7 +71,6 @@ import org.eyeseetea.malariacare.services.SurveyService;
 import org.eyeseetea.malariacare.utils.Constants;
 import org.eyeseetea.malariacare.utils.VariantSpecificUtils;
 import org.hisp.dhis.android.sdk.events.UiEvent;
-import org.hisp.dhis.android.sdk.persistence.models.Constant;
 
 import java.io.IOException;
 import java.util.List;
@@ -118,7 +113,7 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
                 initPlanned();
             initAssess();
             initImprove();
-            //initMonitor();
+            initMonitor();
         }
         initTabHost(savedInstanceState);
         /* set tabs in order */
@@ -173,7 +168,7 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
                     currentTabName=getString(R.string.monitor);
                     tabHost.getCurrentTabView().setBackgroundColor(getResources().getColor(R.color.tab_green_monitor));
                     setActionBarDashboard();
-                    //monitorFragment.reloadData();
+                    monitorFragment.reloadData();
                 }
             }
         });
@@ -787,12 +782,11 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
 
     @Override
     public void onCreateSurvey(final OrgUnit orgUnit,final TabGroup tabGroup) {
-        VariantSpecificUtils v = new VariantSpecificUtils();
-        v.createNewSurvey(orgUnit,tabGroup);
+        VariantSpecificUtils variantSpecificUtils = new VariantSpecificUtils();
+        variantSpecificUtils.createNewSurvey(orgUnit,tabGroup);
     }
     public void patchSurvey(OrgUnit orgUnit, TabGroup tabGroup){
         Survey survey = Survey.getLastSurvey(orgUnit, tabGroup);
-        //Survey survey=SurveyPlanner.getInstance().startSurvey(orgUnit, tabGroup)
         survey.setStatus(Constants.SURVEY_IN_PROGRESS);
         Session.setSurvey(survey);
         prepareLocationListener(survey);
