@@ -74,7 +74,7 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
     String createdOnUID;
     String createdByUID;
     String updatedDateUID;
-    String updatedUserUid;
+    String updatedUserUID;
     /**
      * List of surveys that are going to be pushed
      */
@@ -112,7 +112,7 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
         createdOnUID =context.getString(R.string.createdOnUID);
         createdByUID =context.getString(R.string.createdByUid);
         updatedDateUID=context.getString(R.string.uploadedDateUID);
-        updatedUserUid=context.getString(R.string.createdByUid);
+        updatedUserUID =context.getString(R.string.createdByUid);
         surveys = new ArrayList<>();
         events = new ArrayList<>();
     }
@@ -142,11 +142,7 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
             value.accept(this);
         }
 
-        Log.d(TAG,"Saving dates in control dataelements");
-
-        buildDateControlDataElements(survey);
-
-        Log.d(TAG, "Creating datavalues from other stuff...");
+        Log.d(TAG,"Saving control dataelements");
         buildControlDataElements(survey);
 
         //Annotate both objects to update its state once the process is over
@@ -223,6 +219,23 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
      */
     private void buildControlDataElements(Survey survey) {
 
+        //It Checks if the dataelement exists, before build and save the datavalue
+        //Created date
+        if(!createdByUID.equals(""))
+            buildAndSaveDataValue(createdOnUID, EventExtended.format(survey.getCreationDate(), EventExtended.AMERICAN_DATE_FORMAT));
+
+        //Updated date
+        if(!updatedDateUID.equals(""))
+            buildAndSaveDataValue(updatedDateUID, EventExtended.format(survey.getUploadedDate(), EventExtended.AMERICAN_DATE_FORMAT));
+
+        //Updated by user
+        if(!updatedUserUID.equals(""))
+            buildAndSaveDataValue(updatedUserUID, Session.getUser().getUid());
+
+        //Updated by user
+        if(!createdByUID.equals(""))
+            buildAndSaveDataValue(createdByUID, Session.getUser().getUid());
+
         //MainScoreUID
         buildAndSaveDataValue(mainScoreUID, survey.getType());
 
@@ -237,24 +250,6 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
 
         //Forward Order
         buildAndSaveDataValue(forwardOrderUID, context.getString(R.string.forward_order_value));
-    }
-
-    /**
-     * Builds several datavalues from the Dates of the survey
-     * @param survey
-     */
-    private void buildDateControlDataElements(Survey survey) {
-        //Created date
-        buildAndSaveDataValue(createdOnUID, EventExtended.format(survey.getCreationDate(), EventExtended.AMERICAN_DATE_FORMAT));
-
-        //Updated date
-        buildAndSaveDataValue(updatedDateUID, EventExtended.format(survey.getUploadedDate(), EventExtended.AMERICAN_DATE_FORMAT));
-
-        //Updated by user
-        buildAndSaveDataValue(updatedUserUid, Session.getUser().getUid());
-
-        //Updated by user
-        buildAndSaveDataValue(createdByUID, Session.getUser().getUid());
     }
 
     private void buildAndSaveDataValue(String UID, String value){

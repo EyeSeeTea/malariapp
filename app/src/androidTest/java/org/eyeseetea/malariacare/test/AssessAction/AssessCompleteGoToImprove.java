@@ -106,11 +106,11 @@ public class AssessCompleteGoToImprove {
         //randomResponseNumber is used to randomize the survey answers to obtain a different main score between tests.
         int randomResponseNumber=2 + (int)(Math.random() * 15);
         fillSurvey(randomResponseNumber, "Yes");
-        Date completionDate= Survey.findById(SDKTestUtils.getSurveyId()).getCompletionDate();
 
         //WHEN
         Long idSurvey=SDKTestUtils.markCompleteAndGoImprove();
-        final Survey survey = Survey.findById(idSurvey);
+        Survey survey = Survey.findById(idSurvey);
+        Date completionDate= survey.getCompletionDate();
 
 
         //THEN
