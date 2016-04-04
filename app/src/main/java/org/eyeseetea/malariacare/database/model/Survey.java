@@ -839,6 +839,13 @@ public class Survey extends BaseModel implements VisitableToSDK {
         return lastSurvey;
     }
 
+    public static Survey getLastSurvey(Long id_org_unit, Long id_tab_group) {
+        return  new Select().from(Survey.class)
+                .where(Condition.column(Survey$Table.ID_TAB_GROUP).eq(id_tab_group))
+                .and(Condition.column(Survey$Table.ID_ORG_UNIT).eq(id_org_unit))
+                .groupBy(new QueryBuilder().appendQuotedArray(Survey$Table.ID_TAB_GROUP, Survey$Table.ID_ORG_UNIT))
+                .having(Condition.columnsWithFunction("max", "completionDate")).querySingle();
+    }
 
 
     /**

@@ -86,6 +86,7 @@ public class ModifySurveyTest {
         int modifcatedOptions = 7;
         //The first is "Real/Simulation" and it is not saved
         int expectedOptions = 6;
+        long numberOfEvents = 1;
         String eventUid="";
         startSurvey(SDKTestUtils.TEST_FACILITY_1_IDX, SDKTestUtils.TEST_CC);
 
@@ -101,7 +102,6 @@ public class ModifySurveyTest {
         Espresso.unregisterIdlingResources(idlingResource);
 
 
-        long eventCount = SDKTestUtils.getEventCount();
         fillSurvey(17, "Yes");
         Long idSurvey=markInProgressAsCompleted();
 
@@ -111,7 +111,7 @@ public class ModifySurveyTest {
         eventUid=survey.getEventUid();
         //then: Survey is pushed (UID)
         assertTrue(survey.getEventUid() != null);
-        assertTrue(eventCount + 1 == SDKTestUtils.getEventCount());
+        assertTrue(numberOfEvents == SDKTestUtils.getEventCount());
 
         //WHEN
         startSurvey(SDKTestUtils.TEST_FACILITY_1_IDX, SDKTestUtils.TEST_CC);
@@ -129,7 +129,7 @@ public class ModifySurveyTest {
 
         //THEN
         assertTrue(survey.getEventUid() != null);
-        idlingResource = new ElapsedTimeIdlingResource(SDKTestUtils.DEFAULT_WAIT_FOR_PUSH * 10000);
+        idlingResource = new ElapsedTimeIdlingResource(SDKTestUtils.DEFAULT_WAIT_FOR_PUSH * 0000);
         Espresso.registerIdlingResources(idlingResource);
         assertTrue(survey.getEventUid().equals(eventUid));
         Espresso.unregisterIdlingResources(idlingResource);
@@ -141,12 +141,14 @@ public class ModifySurveyTest {
                 }
             }
             assertTrue(modificatedValues == expectedOptions);
+            assertTrue(numberOfEvents-1 == SDKTestUtils.getEventCount());
         }
         else if (survey.isSent()){
             Event event=SDKTestUtils.getEvent(survey.getEventUid());
             assertTrue(event.getDataValues().size() == expectedOptions);
+            assertTrue(numberOfEvents == SDKTestUtils.getEventCount());
         }
 
-        assertTrue(eventCount + 1 == SDKTestUtils.getEventCount());
+
     }
 }

@@ -27,12 +27,13 @@ import android.util.Log;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.EventExtended;
 import org.eyeseetea.malariacare.database.model.OrgUnit;
-import org.eyeseetea.malariacare.database.model.Program;
-import org.hisp.dhis.android.sdk.persistence.models.Event;
+import org.eyeseetea.malariacare.database.model.Survey;
+import org.eyeseetea.malariacare.database.model.TabGroup;
+import org.eyeseetea.malariacare.database.utils.PreferencesState;
+import org.eyeseetea.malariacare.receivers.AlarmPushReceiver;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.text.ParseException;
 import java.util.Date;
 
 /**
@@ -56,20 +57,15 @@ public class PullClient {
         networkUtils.setPassword(sharedPreferences.getString(applicationContext.getString(R.string.dhis_password), ""));
     }
 
-    public EventInfo getLastEventUid(OrgUnit orgUnit, Program program){
+    public EventInfo getLastEventUid(OrgUnit orgUnit, TabGroup tabGroup){
         EventInfo eventInfo = null;
         String lastEventUid;
         Date lastUpdatedEventDate;
-        Event lastEvent=EventExtended.getLastEvent(orgUnit.getId_org_unit(),program.getUid(),DATE_FIELD);
-        Date lastLocalDate = null;
-        try {
-            lastLocalDate= EventExtended.parseDate(lastEvent.getLastUpdated(), EventExtended.DHIS2_DATE_FORMAT);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+        Survey lastSurvey= Survey.getLastSurvey(orgUnit.getId_org_unit(), tabGroup.getId_tab_group());
+        Date lastLocalDate = lastSurvey.getUploadedDate();
         if(lastLocalDate!=null) {
             //https://hnqis-dev-ci.psi-mis.org/api/events?orgUnit=QS7sK8XzdQc&program=wK0958s1bdj&startDate=2016-1-01&fields=[event,eventDate]
-            String data = QueryFormatterUtils.getInstance().prepareLastEventData(orgUnit.getUid(), program.getUid(), lastLocalDate);
+            String data = QueryFormatterUtils.getInstance().prepareLastEventData(orgUnit.getUid(), tabGroup.getProgram().getUid(), lastLocalDate);
             try {
                 JSONObject lastEventsList= networkUtils.getData(data);
                 String eventuid="";
@@ -81,7 +77,7 @@ public class PullClient {
                         eventuid=event.getString("event");
                         lastDate=EventExtended.parseDate(event.getString(DATE_FIELD),EventExtended.DHIS2_DATE_FORMAT);
                     }
-                    else if(lastDate.before(EventExtended.parseDate(event.getString(DATE_FIELD),EventExtended.DHIS2_DATE_FORMAT))){
+                    else if(!event.getString(DATE_FIELD).equals("") && lastDate.before(EventExtended.parseDate(event.getString(DATE_FIELD),EventExtended.DHIS2_DATE_FORMAT))){
                         eventuid=event.getString("event");
                         lastDate=EventExtended.parseDate(event.getString(DATE_FIELD), EventExtended.DHIS2_DATE_FORMAT);
                     }
@@ -90,8 +86,8 @@ public class PullClient {
                 lastUpdatedEventDate=lastDate;
                 //If not have new events, it set the last event.
                 if(lastEventUid.equals("")){
-                    lastEventUid=lastEvent.getUid();
-                    lastUpdatedEventDate=EventExtended.parseDate(lastEvent.getEventDate(), EventExtended.DHIS2_DATE_FORMAT);
+                    lastEventUid=lastSurvey.getEventUid();
+                    lastUpdatedEventDate=lastSurvey.getCompletionDate();
                 }
                 eventInfo= new EventInfo(lastEventUid,lastUpdatedEventDate);
                 //Create fake event to can path event not pulled.

@@ -87,7 +87,7 @@ public class VariantSpecificUtils {
         protected Void doInBackground(ComboOrgUnitTabGroup... params) {
             comboOrgUnitTabGroup=params[0];
             PullClient pullClient = new PullClient((DashboardActivity) DashboardActivity.dashboardActivity);
-            eventInfo = pullClient.getLastEventUid(comboOrgUnitTabGroup.getOrgUnit(), comboOrgUnitTabGroup.getTabGroup().getProgram());
+            eventInfo = pullClient.getLastEventUid(comboOrgUnitTabGroup.getOrgUnit(), comboOrgUnitTabGroup.getTabGroup());
             return null;
         }
 

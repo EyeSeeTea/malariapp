@@ -94,7 +94,7 @@ public class QueryFormatterUtils {
 
         query=query+"&"+TAG_STARTDATE+"="+android.text.format.DateFormat.format(EventExtended.AMERICAN_DATE_FORMAT, lastDate);
 
-        query=query+"&fields=["+TAG_EVENT+","+PullClient.DATE_FIELD+"]"+"&skipPaging=true";
+        query=query+"&fields=["+TAG_EVENT+","+PullClient.DATE_FIELD +"]"+"&skipPaging=true";
         Log.d(TAG, "prepareLastEventData: " + query);
 
         return query;

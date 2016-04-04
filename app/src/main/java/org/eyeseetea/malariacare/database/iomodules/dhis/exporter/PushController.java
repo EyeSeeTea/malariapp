@@ -118,7 +118,6 @@ public class PushController {
             postProgress(context.getString(R.string.progress_push_preparing_survey));
             Log.d(TAG, "Preparing survey for pushing...");
 
-            //Fixme delete event/datavalue tables
             PopulateDB.wipeSDKData();
 
             convertToSDK(surveys);

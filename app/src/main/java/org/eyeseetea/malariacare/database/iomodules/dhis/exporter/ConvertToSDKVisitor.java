@@ -189,7 +189,7 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
     private Event forceLastSurvey(Survey survey) {
         //download last survey uid
         PullClient pullClient = new PullClient((DashboardActivity) DashboardActivity.dashboardActivity);
-        PullClient.EventInfo eventInfo = pullClient.getLastEventUid(survey.getOrgUnit(), survey.getProgram());
+        PullClient.EventInfo eventInfo = pullClient.getLastEventUid(survey.getOrgUnit(), survey.getTabGroup());
         if(!survey.getEventUid().equals(eventInfo.getEventUid())){
             survey.setEventUid(eventInfo.getEventUid());
         }
