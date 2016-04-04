@@ -283,7 +283,7 @@ public class Value extends BaseModel implements VisitableToSDK {
                 ", id_question=" + id_question +
                 ", id_survey=" + id_survey +
                 ", id_option=" + id_option +
-                ", id_option=" + uploadedDate.toString() +
+                ", uploadedDate=" + uploadedDate.toString() +
                 ", conflict=" + conflict +
                 '}';
     }
