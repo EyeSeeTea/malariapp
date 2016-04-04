@@ -73,21 +73,21 @@ public class VariantSpecificUtils {
         dialog.show();
     }
 
-    public static OrgUnit orgUnit;
-    public static TabGroup tabGroup;
-
-
-    public void createNewSurvey(final OrgUnit orgUnit, final TabGroup tabGroup) {
-        this.orgUnit=orgUnit;
-        this.tabGroup=tabGroup;LoadLastEvent loadLastEvent= new LoadLastEvent();
-        loadLastEvent.execute();
+    public void createNewSurvey(OrgUnit orgUnit, TabGroup tabGroup) {
+        ComboOrgUnitTabGroup comboOrgUnitTabGroup=new ComboOrgUnitTabGroup(orgUnit,tabGroup);
+        LoadLastEvent loadLastEvent= new LoadLastEvent();
+        loadLastEvent.execute(comboOrgUnitTabGroup);
     }
 
-    private class LoadLastEvent extends AsyncTask<Void, Void, Void> {
+    private class LoadLastEvent extends AsyncTask<ComboOrgUnitTabGroup, Void, Void> {
+        ComboOrgUnitTabGroup comboOrgUnitTabGroup;
+        PullClient.EventInfo eventInfo;
+
         @Override
-        protected Void doInBackground(Void... params) {
+        protected Void doInBackground(ComboOrgUnitTabGroup... params) {
+            comboOrgUnitTabGroup=params[0];
             PullClient pullClient = new PullClient((DashboardActivity) DashboardActivity.dashboardActivity);
-            pullClient.getLastEventUid(orgUnit, tabGroup.getProgram());
+            eventInfo = pullClient.getLastEventUid(comboOrgUnitTabGroup.getOrgUnit(), comboOrgUnitTabGroup.getTabGroup().getProgram());
             return null;
         }
 
@@ -95,7 +95,7 @@ public class VariantSpecificUtils {
         protected void onPostExecute(Void result) {
             super.onPostExecute(result);
             // Dismiss the progress dialog
-            askCreateOrModify();
+            askCreateOrModify(comboOrgUnitTabGroup, eventInfo);
             if (progressDialog.isShowing()) {
                 progressDialog.dismiss();
             }
@@ -116,24 +116,50 @@ public class VariantSpecificUtils {
         }
     }
 
-    private void askCreateOrModify(){
+    private void askCreateOrModify(final ComboOrgUnitTabGroup comboOrgUnitTabGroup, final PullClient.EventInfo eventInfo){
         new AlertDialog.Builder(DashboardActivity.dashboardActivity)
                 .setTitle("")
-                .setMessage(String.format(PreferencesState.getInstance().getContext().getResources().getString(R.string.create_or_modify), EventExtended.format(PullClient.lastUpdatedEventDate, EventExtended.DHIS2_DATE_FORMAT ))+PullClient.lastEventUid)
+                .setMessage(String.format(PreferencesState.getInstance().getContext().getResources().getString(R.string.create_or_modify), EventExtended.format(eventInfo.getEventDate(), EventExtended.DHIS2_DATE_FORMAT )))
                 .setPositiveButton((R.string.create), new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface arg0, int arg1) {
                         DashboardActivity activity= (DashboardActivity)DashboardActivity.dashboardActivity;
-                        activity.createNewSurvey(orgUnit, tabGroup);
+                        activity.createNewSurvey(comboOrgUnitTabGroup.getOrgUnit(),comboOrgUnitTabGroup.getTabGroup());
                     }
                 })
                 .setNeutralButton((R.string.modify), new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface arg0, int arg1) {
                         DashboardActivity activity= (DashboardActivity)DashboardActivity.dashboardActivity;
-                        activity.modifySurvey(orgUnit, tabGroup);
+                        activity.modifySurvey(comboOrgUnitTabGroup.getOrgUnit(),comboOrgUnitTabGroup.getTabGroup(), eventInfo);
                     }
                 })
                 .setNegativeButton((R.string.cancel), null)
                 .setCancelable(true)
                 .create().show();
+    }
+
+    public class ComboOrgUnitTabGroup{
+        OrgUnit orgUnit;
+        TabGroup tabGroup;
+
+        public ComboOrgUnitTabGroup(OrgUnit orgUnit, TabGroup tabGroup) {
+            this.orgUnit = orgUnit;
+            this.tabGroup = tabGroup;
+        }
+
+        public OrgUnit getOrgUnit() {
+            return orgUnit;
+        }
+
+        public void setOrgUnit(OrgUnit orgUnit) {
+            this.orgUnit = orgUnit;
+        }
+
+        public TabGroup getTabGroup() {
+            return tabGroup;
+        }
+
+        public void setTabGroup(TabGroup tabGroup) {
+            this.tabGroup = tabGroup;
+        }
     }
 }
