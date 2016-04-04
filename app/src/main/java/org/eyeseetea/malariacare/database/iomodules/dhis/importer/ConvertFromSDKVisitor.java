@@ -387,6 +387,7 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
         //Option -> extract value from code
             value.setValue(option.getName());
         }
+        value.setUploadedDate(new Date());
         value.save();
     }
 
