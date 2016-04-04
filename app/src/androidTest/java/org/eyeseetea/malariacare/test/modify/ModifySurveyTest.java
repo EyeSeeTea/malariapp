@@ -55,9 +55,7 @@ import static org.eyeseetea.malariacare.test.utils.SDKTestUtils.waitForPush;
 @RunWith(AndroidJUnit4.class)
 public class ModifySurveyTest {
 
-    private static final String TAG="PushOKTest";
-
-    // private LoginActivity mReceiptCaptureActivity;
+    private static final String TAG="ModifySurveyTest";
 
     @Rule
     public ActivityTestRule<LoginActivity> mActivityRule = new ActivityTestRule<>(
@@ -66,7 +64,7 @@ public class ModifySurveyTest {
     @Before
     public void setup(){
         //force init go to logging activity.
-        //SDKTestUtils.goToLogin();
+        SDKTestUtils.goToLogin();
         //set the test limit( and throw exception if the time is exceded)
         SDKTestUtils.setTestTimeoutSeconds(SDKTestUtils.DEFAULT_TEST_TIME_LIMIT*2);
     }
