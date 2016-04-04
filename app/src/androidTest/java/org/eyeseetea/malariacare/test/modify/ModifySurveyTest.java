@@ -53,7 +53,7 @@ import static org.eyeseetea.malariacare.test.utils.SDKTestUtils.TEST_USERNAME_WI
 import static org.eyeseetea.malariacare.test.utils.SDKTestUtils.fillSurvey;
 import static org.eyeseetea.malariacare.test.utils.SDKTestUtils.login;
 import static org.eyeseetea.malariacare.test.utils.SDKTestUtils.markInProgressAsCompleted;
-import static org.eyeseetea.malariacare.test.utils.SDKTestUtils.startSurvey;
+import static org.eyeseetea.malariacare.test.utils.SDKTestUtils.selectStartSurvey;
 import static org.eyeseetea.malariacare.test.utils.SDKTestUtils.waitForPull;
 import static org.eyeseetea.malariacare.test.utils.SDKTestUtils.waitForPush;
 
@@ -94,7 +94,7 @@ public class ModifySurveyTest {
             int expectedOptions = 6;
             long numberOfEvents = 1;
             String eventUid = "";
-            startSurvey(SDKTestUtils.TEST_FACILITY_1_IDX, SDKTestUtils.TEST_CC);
+            selectStartSurvey(SDKTestUtils.TEST_FACILITY_1_IDX, SDKTestUtils.TEST_CC);
 
             IdlingResource idlingResource = new ElapsedTimeIdlingResource(SDKTestUtils.DEFAULT_WAIT_FOR_PUSH * 500);
             Espresso.registerIdlingResources(idlingResource);
@@ -120,7 +120,7 @@ public class ModifySurveyTest {
             assertTrue(numberOfEvents == SDKTestUtils.getEventCount());
 
             //WHEN
-            SDKTestUtils.selectStartSurvey(SDKTestUtils.TEST_FACILITY_1_IDX, SDKTestUtils.TEST_CC);
+            selectStartSurvey(SDKTestUtils.TEST_FACILITY_1_IDX, SDKTestUtils.TEST_CC);
 
             idlingResource = new ElapsedTimeIdlingResource(SDKTestUtils.DEFAULT_WAIT_FOR_PUSH * 1000);
 

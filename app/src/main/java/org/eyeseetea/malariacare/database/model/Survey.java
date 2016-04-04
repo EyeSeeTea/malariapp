@@ -39,6 +39,7 @@ import org.eyeseetea.malariacare.database.utils.SurveyAnsweredRatioCache;
 import org.eyeseetea.malariacare.database.utils.planning.SurveyPlanner;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.utils.Constants;
+import org.hisp.dhis.android.sdk.persistence.models.Constant;
 import org.hisp.dhis.android.sdk.persistence.models.Event;
 import org.hisp.dhis.android.sdk.persistence.models.Event$Table;
 
@@ -297,6 +298,11 @@ public class Survey extends BaseModel implements VisitableToSDK {
      */
     public boolean isCompleted(){
         return Constants.SURVEY_COMPLETED==this.status;
+    }
+
+
+    public boolean isConflict() {
+        return Constants.SURVEY_CONFLICT==this.status;
     }
 
     public Float getMainScore() {
@@ -924,5 +930,4 @@ public class Survey extends BaseModel implements VisitableToSDK {
                 ", eventuid="+eventuid+
                 '}';
     }
-
 }
