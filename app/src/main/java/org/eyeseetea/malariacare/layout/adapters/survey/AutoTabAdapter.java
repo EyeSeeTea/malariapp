@@ -24,6 +24,7 @@ import android.content.Context;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -297,6 +298,10 @@ public class AutoTabAdapter extends ATabAdapter {
                     break;
                 }
                 if (value != null) {
+                    if(value.getOption()==null){
+                        Log.d(TAG, "Error loading value survey:" + value.getSurvey().getId_survey()+" Value:"+value.toString());
+                        break;
+                    }
                     ((CustomRadioButton) viewHolder.component.findViewWithTag(value.getOption())).setChecked(true);
 
                     viewHolder.num.setText(Float.toString(numdenumradiobutton.get(0)));
