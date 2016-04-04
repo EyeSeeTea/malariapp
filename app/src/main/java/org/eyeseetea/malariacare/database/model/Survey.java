@@ -845,7 +845,7 @@ public class Survey extends BaseModel implements VisitableToSDK {
      * Get event from a survey if exists.
      * @return
      */
-    public static Event getEvent(String eventuid){
+    public Event getEvent(){
         Event event= new Select().from(Event.class)
                 .where(Condition.column(Event$Table.EVENT).eq(eventuid)).querySingle();
         return event;
@@ -854,9 +854,9 @@ public class Survey extends BaseModel implements VisitableToSDK {
      * Get event from a survey local id if exist
      * @return
      */
-    public static Event getEventFromLocalId(Long surveyid){
+    public Event getEventFromLocalId(){
         Event event= new Select().from(Event.class)
-                .where(Condition.column(Event$Table.LOCALID).eq(String.valueOf(surveyid))).querySingle();
+                .where(Condition.column(Event$Table.LOCALID).eq(String.valueOf(id_survey))).querySingle();
         return event;
     }
     @Override

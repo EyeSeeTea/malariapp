@@ -21,22 +21,14 @@ package org.eyeseetea.malariacare.network;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.os.AsyncTask;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
-import com.raizlabs.android.dbflow.sql.QueryBuilder;
-import com.raizlabs.android.dbflow.sql.builder.Condition;
-import com.raizlabs.android.dbflow.sql.language.Select;
-
-import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.EventExtended;
 import org.eyeseetea.malariacare.database.model.OrgUnit;
 import org.eyeseetea.malariacare.database.model.Program;
-import org.eyeseetea.malariacare.database.model.Survey;
 import org.hisp.dhis.android.sdk.persistence.models.Event;
-import org.hisp.dhis.android.sdk.persistence.models.Event$Table;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -52,9 +44,8 @@ public class PullClient {
 
     Context applicationContext;
     NetworkUtils networkUtils;
-    public static String lastEventUid;
-    public static Date lastUpdatedEventDate;
     public static final String DATE_FIELD ="eventDate";
+    public static final String EVENTS_FIELD ="events";
 
     public PullClient(Context applicationContext) {
         this.applicationContext = applicationContext;
@@ -65,12 +56,11 @@ public class PullClient {
         networkUtils.setPassword(sharedPreferences.getString(applicationContext.getString(R.string.dhis_password), ""));
     }
 
-    public void getLastEventUid(OrgUnit orgUnit, Program program){
-        Event lastEvent=new Select().from(Event.class)
-                .where(Condition.column(Event$Table.PROGRAMID).eq(program.getUid()))
-                .and(Condition.column(Event$Table.ORGANISATIONUNITID).eq(orgUnit.getUid()))
-                .groupBy(new QueryBuilder().appendQuotedArray(Event$Table.PROGRAMID, Event$Table.ORGANISATIONUNITID))
-                .having(Condition.columnsWithFunction("max", DATE_FIELD)).querySingle();
+    public EventInfo getLastEventUid(OrgUnit orgUnit, Program program){
+        EventInfo eventInfo = null;
+        String lastEventUid;
+        Date lastUpdatedEventDate;
+        Event lastEvent=EventExtended.getLastEvent(orgUnit.getId_org_unit(),program.getUid(),DATE_FIELD);
         Date lastLocalDate = null;
         try {
             lastLocalDate= EventExtended.parseDate(lastEvent.getLastUpdated(), EventExtended.DHIS2_DATE_FORMAT);
@@ -84,7 +74,7 @@ public class PullClient {
                 JSONObject lastEventsList= networkUtils.getData(data);
                 String eventuid="";
                 Date lastDate=null;
-                JSONArray jsonArrayResponse=new JSONArray(lastEventsList.getString("events"));
+                JSONArray jsonArrayResponse=new JSONArray(lastEventsList.getString(EVENTS_FIELD));
                 for(int i=0;i<jsonArrayResponse.length();i++) {
                     JSONObject event = new JSONObject(jsonArrayResponse.getString(i));
                     if(eventuid.equals("")){
@@ -103,11 +93,37 @@ public class PullClient {
                     lastEventUid=lastEvent.getUid();
                     lastUpdatedEventDate=EventExtended.parseDate(lastEvent.getEventDate(), EventExtended.DHIS2_DATE_FORMAT);
                 }
+                eventInfo= new EventInfo(lastEventUid,lastUpdatedEventDate);
                 //Create fake event to can path event not pulled.
             } catch (Exception e) {
                 e.printStackTrace();
                 Log.d(TAG, "Error getting the data " + data);
             }
+        }
+        return eventInfo;
+    }
+    public class EventInfo {
+        String eventUid;
+        Date eventDate;
+        public EventInfo(String eventUid,Date eventDate){
+            this.eventUid=eventUid;
+            this.eventDate=eventDate;
+        }
+
+        public String getEventUid() {
+            return eventUid;
+        }
+
+        public void setEventUid(String eventUid) {
+            this.eventUid = eventUid;
+        }
+
+        public Date getEventDate() {
+            return eventDate;
+        }
+
+        public void setEventDate(Date eventDate) {
+            this.eventDate = eventDate;
         }
     }
 

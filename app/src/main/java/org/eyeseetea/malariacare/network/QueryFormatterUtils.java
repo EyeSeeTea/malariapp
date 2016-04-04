@@ -49,6 +49,7 @@ public class QueryFormatterUtils {
     private static String TAG_PROGRAM = "program";
     private static String TAG_ORG_UNIT = "orgUnit";
     private static String TAG_EVENTDATE = "eventDate";
+    private static String TAG_EVENT = "event";
     private static String TAG_STATUS = "status";
     private static String TAG_STOREDBY = "storedBy";
     private static String TAG_COORDINATE = "coordinate";
@@ -93,7 +94,7 @@ public class QueryFormatterUtils {
 
         query=query+"&"+TAG_STARTDATE+"="+android.text.format.DateFormat.format(EventExtended.AMERICAN_DATE_FORMAT, lastDate);
 
-        query=query+"&fields=[event,"+PullClient.DATE_FIELD+"]"+"&skipPaging=true";
+        query=query+"&fields=["+TAG_EVENT+","+PullClient.DATE_FIELD+"]"+"&skipPaging=true";
         Log.d(TAG, "prepareLastEventData: " + query);
 
         return query;
