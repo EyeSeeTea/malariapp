@@ -23,28 +23,18 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.SharedPreferences;
 import android.os.AsyncTask;
-import android.preference.PreferenceManager;
-import android.support.annotation.NonNull;
 import android.text.method.LinkMovementMethod;
 import android.view.Gravity;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import com.raizlabs.android.dbflow.sql.builder.Condition;
-import com.raizlabs.android.dbflow.sql.language.Select;
 
 import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.R;
 
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.EventExtended;
 import org.eyeseetea.malariacare.database.model.OrgUnit;
-import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.model.TabGroup;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
-import org.eyeseetea.malariacare.network.PushClient;
-import org.hisp.dhis.android.sdk.persistence.models.Event;
 
 
 /**
@@ -82,7 +72,7 @@ public class VariantSpecificUtils {
         //now that the dialog is set up, it's time to show it
         dialog.show();
     }
-    
+
     public static OrgUnit orgUnit;
     public static TabGroup tabGroup;
 
@@ -112,17 +102,17 @@ public class VariantSpecificUtils {
             // Dismiss the progress dialog
             new AlertDialog.Builder(DashboardActivity.dashboardActivity)
                     .setTitle("")
-                    .setMessage(String.format(PreferencesState.getInstance().getContext().getResources().getString(R.string.create_or_patch), EventExtended.format(PullClient.lastUpdatedEventDate, EventExtended.DHIS2_DATE_FORMAT ))+PullClient.lastEventUid)
+                    .setMessage(String.format(PreferencesState.getInstance().getContext().getResources().getString(R.string.create_or_modify), EventExtended.format(PullClient.lastUpdatedEventDate, EventExtended.DHIS2_DATE_FORMAT ))+PullClient.lastEventUid)
                     .setPositiveButton((R.string.create), new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface arg0, int arg1) {
                             DashboardActivity activity= (DashboardActivity)DashboardActivity.dashboardActivity;
                             activity.createNewSurvey(orgUnit, tabGroup);
                         }
                     })
-                    .setNeutralButton((R.string.patch), new DialogInterface.OnClickListener() {
+                    .setNeutralButton((R.string.modify), new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface arg0, int arg1) {
                             DashboardActivity activity= (DashboardActivity)DashboardActivity.dashboardActivity;
-                            activity.patchSurvey(orgUnit, tabGroup);
+                            activity.modifySurvey(orgUnit, tabGroup);
                         }
                     })
                     .setNegativeButton((R.string.cancel), null)

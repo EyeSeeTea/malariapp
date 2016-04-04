@@ -788,7 +788,7 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
         VariantSpecificUtils variantSpecificUtils = new VariantSpecificUtils();
         variantSpecificUtils.createNewSurvey(orgUnit,tabGroup);
     }
-    public void patchSurvey(OrgUnit orgUnit, TabGroup tabGroup){
+    public void modifySurvey(OrgUnit orgUnit, TabGroup tabGroup){
         Survey survey = Survey.getLastSurvey(orgUnit, tabGroup);
         if(!survey.getEventUid().equals(PullClient.lastEventUid)){
             survey=SurveyPlanner.getInstance().startSurvey(orgUnit,tabGroup);

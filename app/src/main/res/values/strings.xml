@@ -364,8 +364,8 @@
 
     <!-- Create or patch -->
     <string name="create">create</string>
-    <string name="patch">patch</string>
-    <string name="create_or_patch">Do you want create or patch the survey with date %s ?</string>
+    <string name="modify">modify</string>
+    <string name="create_or_modify">Do you want create or modify the survey with date %s ?</string>
     <string name="loading_last_surveys">Loading last survey...</string>
 
 </resources>

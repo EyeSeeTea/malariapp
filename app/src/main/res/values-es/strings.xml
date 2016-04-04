@@ -295,7 +295,7 @@
 
     <!-- Create or patch -->
     <string name="create">crear</string>
-    <string name="patch">modificar</string>
-    <string name="create_or_patch">¿Desea crear o modificar la encuesta con fecha %s?</string>
+    <string name="modify">modificar</string>
+    <string name="create_or_modify">¿Desea crear o modificar la encuesta con fecha %s?</string>
     <string name="loading_last_surveys">Cargando última encuesta...</string>
 </resources>
