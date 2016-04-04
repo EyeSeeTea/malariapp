@@ -363,8 +363,8 @@
 
 
     <!-- Create or patch -->
-    <string name="create">create</string>
-    <string name="modify">modify</string>
+    <string name="create">Create</string>
+    <string name="modify">Modify</string>
     <string name="create_or_modify">Do you want create or modify the survey with date %s ?</string>
     <string name="loading_last_surveys">Loading last survey...</string>
 
