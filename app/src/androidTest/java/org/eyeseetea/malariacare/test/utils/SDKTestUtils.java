@@ -26,6 +26,7 @@ import android.support.test.espresso.Espresso;
 import android.support.test.espresso.IdlingPolicies;
 import android.support.test.espresso.IdlingResource;
 import android.support.test.espresso.NoActivityResumedException;
+import android.support.test.espresso.NoMatchingViewException;
 import android.support.test.espresso.ViewAssertion;
 import android.support.test.runner.lifecycle.ActivityLifecycleMonitorRegistry;
 import android.support.test.runner.lifecycle.Stage;
@@ -49,6 +50,7 @@ import org.eyeseetea.malariacare.database.model.Survey$Table;
 import org.eyeseetea.malariacare.utils.Constants;
 import org.hamcrest.Matchers;
 import org.hisp.dhis.android.sdk.persistence.models.Event;
+import org.hisp.dhis.android.sdk.persistence.models.Event$Table;
 import org.hisp.dhis.android.sdk.persistence.models.OrganisationUnit;
 import org.hisp.dhis.android.sdk.persistence.models.OrganisationUnit$Table;
 import org.hisp.dhis.android.sdk.persistence.models.OrganisationUnitDataSet;
@@ -101,7 +103,7 @@ public class SDKTestUtils {
     public static final String MARK_AS_COMPLETED = "Mark as completed";
     public static final String DELETE_ACTION = "Delete";
     public static final String EDIT_ACTION = "Edit";
-    
+
 
     public static final String UNABLE_TO_LOGIN = "Unable to log in due to an invalid username or password.";
 
@@ -147,7 +149,7 @@ public class SDKTestUtils {
         onView(withTagValue(Matchers.is((Object) getActivityInstance().getApplicationContext().getString(R.string.tab_tag_assess)))).perform(click());
         onView(withId(R.id.plusButton)).perform(click());
 
-        //then: start survey 'test facility 1'+ 'family planning'+start
+        //then: start survey 'idxOrgUnit'+ 'idxProgram'+start
 
 
         //Wait for SurveyService loads the Orgunit and programs
@@ -185,9 +187,11 @@ public class SDKTestUtils {
                         .atPosition(i)
                         .onChildView(withId(R.id.answer)).onChildView(withText(optionValue))
                         .perform(click());
+            } catch (NoMatchingViewException e) {
+                Log.e(TAG,"Exception selecting option value " + optionValue);
+            }
+            finally{
                 Espresso.unregisterIdlingResources(idlingResource);
-            } catch (Exception e) {
-                Log.e(TAG,"Exception selecting option value" + optionValue);
             }
 
         }
@@ -202,20 +206,22 @@ public class SDKTestUtils {
     public static void fillCompulsorySurvey(int numQuestions, String optionValue) {
         //when: answer NO to every question
         //Wait for fragment load data from SurveyService
-
+        IdlingResource idlingResource=null;
         onView(withTagValue(Matchers.is((Object) getActivityInstance().getApplicationContext().getString(R.string.tab_tag_assess)))).perform(click());
         for (int i = 0; i < numQuestions; i++) {
             try {
-                IdlingResource idlingResource = new ElapsedTimeIdlingResource(1 * 1000);
+                idlingResource = new ElapsedTimeIdlingResource(1 * 1000);
                 Espresso.registerIdlingResources(idlingResource);
                 onData(is(instanceOf(Question.class)))
                         .inAdapterView(withId(R.id.listView))
                         .atPosition(i)
                         .onChildView(withId(R.id.answer)).onChildView(withText(optionValue))
                         .perform(click());
+            } catch (NoMatchingViewException e) {
+                Log.e(TAG,"Exception selecting option value " + optionValue);
+            }
+            finally {
                 Espresso.unregisterIdlingResources(idlingResource);
-            } catch (Exception e) {
-                Log.e(TAG,"Exception selecting option value" + optionValue);
             }
         }
     }
@@ -371,6 +377,14 @@ public class SDKTestUtils {
                 .from(Event.class)
                 .count();
     }
+
+    public static Event getEvent(String eventUid){
+        return new Select()
+                .from(Event.class)
+                .where(Condition.column(Event$Table.ID).eq(eventUid))
+                .querySingle();
+    }
+
     public static Activity getActivityInstance() {
         final Activity[] activity = new Activity[1];
         Instrumentation instrumentation = InstrumentationRegistry.getInstrumentation();
