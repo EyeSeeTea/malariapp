@@ -82,41 +82,26 @@ public class VariantSpecificUtils {
         //now that the dialog is set up, it's time to show it
         dialog.show();
     }
-
-
+    
     public static OrgUnit orgUnit;
     public static TabGroup tabGroup;
-    public static DashboardActivity activity;
 
 
     public void createNewSurvey(final OrgUnit orgUnit, final TabGroup tabGroup) {
-        this.orgUnit = orgUnit;
-        this.tabGroup = tabGroup;
-        activity = ((DashboardActivity) DashboardActivity.dashboardActivity);
+        this.orgUnit=orgUnit;
+        this.tabGroup=tabGroup;
         askCreateOrModify();
-        //reloadAllEvents();
     }
 
     private void askCreateOrModify() {
-        RefreshEvents refreshEvents = new RefreshEvents();
-        refreshEvents.execute(DashboardActivity.dashboardActivity);
+        LoadLastEvent loadLastEvent= new LoadLastEvent();
+        loadLastEvent.execute();
     }
 
-    private PullClient getPullClient(Context context) {
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-        String user = sharedPreferences.getString(context.getString(R.string.dhis_user), "");
-        String password = sharedPreferences.getString(context.getString(R.string.dhis_password), "");
-        return new PullClient(context, user, password);
-    }
-
-    private class RefreshEvents extends AsyncTask<Context, Void, Void> {
+    private class LoadLastEvent extends AsyncTask<Void, Void, Void> {
         @Override
-        protected Void doInBackground(Context... params) {
-            //sleep for wait the ontab change
-            //PullController.refreshEvents(PreferencesState.getInstance().getContext());
-
-            PullClient pullClient = getPullClient(DashboardActivity.dashboardActivity);
-            //Push  data
+        protected Void doInBackground(Void... params) {
+            PullClient pullClient = new PullClient((DashboardActivity) DashboardActivity.dashboardActivity);
             pullClient.getLastEventUid(orgUnit, tabGroup.getProgram());
             return null;
         }
@@ -125,16 +110,18 @@ public class VariantSpecificUtils {
         protected void onPostExecute(Void result) {
             super.onPostExecute(result);
             // Dismiss the progress dialog
-            new AlertDialog.Builder(activity)
+            new AlertDialog.Builder(DashboardActivity.dashboardActivity)
                     .setTitle("")
-                    .setMessage(String.format(PreferencesState.getInstance().getContext().getResources().getString(R.string.create_or_patch), EventExtended.format(PullClient.lastUpdatedEventDate, EventExtended.DHIS2_DATE_FORMAT)) + PullClient.lastEventUid)
+                    .setMessage(String.format(PreferencesState.getInstance().getContext().getResources().getString(R.string.create_or_patch), EventExtended.format(PullClient.lastUpdatedEventDate, EventExtended.DHIS2_DATE_FORMAT ))+PullClient.lastEventUid)
                     .setPositiveButton((R.string.create), new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface arg0, int arg1) {
+                            DashboardActivity activity= (DashboardActivity)DashboardActivity.dashboardActivity;
                             activity.createNewSurvey(orgUnit, tabGroup);
                         }
                     })
                     .setNeutralButton((R.string.patch), new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface arg0, int arg1) {
+                            DashboardActivity activity= (DashboardActivity)DashboardActivity.dashboardActivity;
                             activity.patchSurvey(orgUnit, tabGroup);
                         }
                     })
@@ -145,9 +132,7 @@ public class VariantSpecificUtils {
                 progressDialog.dismiss();
             }
         }
-
         ProgressDialog progressDialog;
-
         @Override
         protected void onPreExecute() {
 
