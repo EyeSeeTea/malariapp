@@ -19,6 +19,7 @@
 
 package org.eyeseetea.malariacare.layout.adapters.survey;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Context;
 import android.text.Editable;
@@ -343,18 +344,18 @@ public class AutoTabAdapter extends ATabAdapter {
 
     private void addTextViewToRow(LinearLayout rowLayout, Question question, float columnWeight){
         //TODO Styling required...
-        TextView textView = new TextView(getContext());
+        rowLayout.setWeightSum(columnWeight);
+        CustomTextView textView = new CustomTextView(getContext());
         textView.setText(question.getForm_name());
-        textView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT, columnWeight));
+        textView.setLayoutParams(new LinearLayout.LayoutParams(0,  LinearLayout.LayoutParams.MATCH_PARENT, 1.0f));
         rowLayout.addView(textView);
     }
 
     private void addEditViewToRow(LinearLayout rowLayout, Question question, float columnWeight){
         //TODO Add the right widget, style, setvalues, readonly, ...
-        EditText editText = new EditText(getContext());
-        editText.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT, columnWeight));
+        rowLayout.setWeightSum(columnWeight);
+        CustomEditText editText = new CustomEditText(getContext());
+        editText.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1.0f));
         rowLayout.addView(editText);
     }
 
