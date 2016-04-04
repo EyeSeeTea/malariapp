@@ -22,14 +22,15 @@ package org.eyeseetea.malariacare.layout.utils;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.text.Html;
 import android.text.Spanned;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
@@ -39,30 +40,24 @@ import com.raizlabs.android.dbflow.structure.BaseModel;
 
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.model.Header;
-import org.eyeseetea.malariacare.database.model.Match;
 import org.eyeseetea.malariacare.database.model.Option;
 import org.eyeseetea.malariacare.database.model.Question;
-import org.eyeseetea.malariacare.database.model.QuestionOption;
-import org.eyeseetea.malariacare.database.model.QuestionRelation;
 import org.eyeseetea.malariacare.database.model.Survey;
-import org.eyeseetea.malariacare.database.model.Value;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.ReadWriteDB;
 import org.eyeseetea.malariacare.database.utils.Session;
+import org.eyeseetea.malariacare.fragments.SurveyFragment;
 import org.eyeseetea.malariacare.layout.adapters.general.OptionArrayAdapter;
 import org.eyeseetea.malariacare.layout.adapters.survey.AutoTabAdapter;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.utils.Constants;
-import org.eyeseetea.malariacare.utils.Utils;
 import org.eyeseetea.malariacare.views.CustomRadioButton;
 import org.eyeseetea.malariacare.views.CustomTextView;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by adrian on 15/08/15.
@@ -78,6 +73,9 @@ public class AutoTabLayoutUtils {
 
         // Main component in the row: Spinner, EditText or RadioGroup
         public View component;
+
+        // Progressbar showed if the item had childs in RadioGroup
+        public View progressBar;
 
         public CustomTextView num;
         public CustomTextView denum;
@@ -213,6 +211,9 @@ public class AutoTabLayoutUtils {
         viewHolder.component = rowView.findViewById(R.id.answer);
         viewHolder.statement = (CustomTextView) rowView.findViewById(R.id.statement);
 
+        //if a question is parent, needs add the ProgressBar layout to be showed if the user loads the childs.
+        if(question.hasChildren())
+            viewHolder.progressBar = (ProgressBar) rowView.findViewById(R.id.radio_progress_bar);
         if(question.getCompulsory()){
             int red = PreferencesState.getInstance().getContext().getResources().getColor(R.color.darkRed);
             String appNameColorString = String.format("%X", red).substring(2);
@@ -308,7 +309,7 @@ public class AutoTabLayoutUtils {
      * @param question the question that changes his value
      * @param option the option that has been selected
      */
-    public static boolean itemSelected(final AutoTabLayoutUtils.ViewHolder viewHolder, AutoTabLayoutUtils.ScoreHolder scoreHolder, Question question, Option option, float totalNum, float totalDenum, Context context, LinkedHashMap<BaseModel, Boolean> elementInvisibility, AutoTabAdapter adapter) {
+    public static boolean itemSelected(final AutoTabLayoutUtils.ViewHolder viewHolder, AutoTabLayoutUtils.ScoreHolder scoreHolder, Question question, Option option, float totalNum, float totalDenum, Context context, LinkedHashMap<BaseModel, Boolean> elementInvisibility, final AutoTabAdapter adapter) {
         boolean refreshTab = false;
 
         if (!question.hasChildren()) {
@@ -353,14 +354,46 @@ public class AutoTabLayoutUtils {
         return refreshTab;
     }
 
-    public static void expandChildren(ViewHolder viewHolder){
-        // Write option to DB
-        ReadWriteDB.saveValuesDDL(QuestionVisibility.question, QuestionVisibility.option);
-        recalculateScores(viewHolder, QuestionVisibility.question);
-        toggleChildrenVisibility();
-        QuestionVisibility.adapter.notifyDataSetChanged();
+    public static void expandChildren(final ViewHolder viewHolder){
+        //this method need be executed in the ui thread
+        viewHolder.progressBar.setVisibility(View.VISIBLE);
+        new toggleChildrenOperations().execute(viewHolder);
     }
 
+    //Loads
+    private static class toggleChildrenOperations extends AsyncTask<ViewHolder, Void, Void> {
+        ViewHolder viewHolder;
+        @Override
+        protected Void doInBackground(ViewHolder... params) {
+            viewHolder=params[0];
+            //Write option to DB
+            ReadWriteDB.saveValuesDDL(QuestionVisibility.question, QuestionVisibility.option);
+            recalculateScores(viewHolder, QuestionVisibility.question);
+            toggleChildrenVisibility();
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            //this should be executed before the nofityDataSetChanged  in UI thread
+            SurveyFragment.mQuestions.post(new Runnable() {
+                @Override
+                public void run() {
+                    viewHolder.progressBar.setVisibility(View.GONE);
+                }
+            });
+            //reload list in UI thread
+            QuestionVisibility.adapter.notifyDataSetChanged();
+        }
+
+        @Override
+        protected void onPreExecute() {
+        }
+
+        @Override
+        protected void onProgressUpdate(Void... values) {
+        }
+    }
     /**
      * Recalculate num and denum of a quetsion, update them in cache vars and save the new num/denum in the score register associated with the question
      * @param viewHolder views cache
@@ -426,4 +459,5 @@ public class AutoTabLayoutUtils {
         }
 
     }
+
 }

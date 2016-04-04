@@ -224,7 +224,12 @@ public class AutoTabAdapter extends ATabAdapter {
                     AutoTabLayoutUtils.autoFillAnswer(viewHolder, scoreHolder, question, totalNum, totalDenum, getContext(), elementInvisibility, this);
                     break;
                 case Constants.RADIO_GROUP_HORIZONTAL:
-                    rowView = AutoTabLayoutUtils.initialiseView(R.layout.radio, parent, question, viewHolder, position, getInflater());
+                    int layout;
+                    if(question.hasChildren())
+                        layout=R.layout.radio_parent;
+                    else
+                        layout=R.layout.radio;
+                    rowView = AutoTabLayoutUtils.initialiseView(layout, parent, question, viewHolder, position, getInflater());
                     AutoTabLayoutUtils.initialiseScorableComponent(rowView, viewHolder);
                     AutoTabLayoutUtils.createRadioGroupComponent(question, viewHolder, LinearLayout.HORIZONTAL, getInflater(), getContext());
                     //Add Listener
