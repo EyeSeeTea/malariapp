@@ -41,8 +41,8 @@ import java.util.List;
 /**
  * Created by ignac on 21/12/2015.
  */
-public class PushUtils {
-    private static final String TAG = ".PushUtils";
+public class QueryFormatterUtils {
+    private static final String TAG = ".QueryFormatterUtils";
     private static String COMPLETED = "COMPLETED";
 
     private static String TAG_PROGRAM = "program";
@@ -63,17 +63,17 @@ public class PushUtils {
     /**
      * Singleton reference
      */
-    private static PushUtils instance;
+    private static QueryFormatterUtils instance;
 
     static Context applicationContext;
 
-    public PushUtils(Context applicationContext) {
+    public QueryFormatterUtils(Context applicationContext) {
         this.applicationContext = applicationContext;
     }
 
-    public static PushUtils getInstance() {
+    public static QueryFormatterUtils getInstance() {
         if (instance == null) {
-            instance = new PushUtils(PreferencesState.getInstance().getContext());
+            instance = new QueryFormatterUtils(PreferencesState.getInstance().getContext());
         }
         return instance;
     }

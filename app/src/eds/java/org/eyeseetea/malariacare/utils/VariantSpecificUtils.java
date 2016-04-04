@@ -46,63 +46,78 @@ import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.network.PushClient;
 import org.hisp.dhis.android.sdk.persistence.models.Event;
 
+
 /**
  * Created by nacho on 28/03/16.
  */
-public class VariantSpecificUtils{
+public class VariantSpecificUtils {
 
-    public static void showAlert(int titleId, CharSequence text, Context context){
-        final AlertDialog dialog = new AlertDialog.Builder(context)
-                .setTitle(context.getString(titleId))
-                .setMessage(text)
-                .setNeutralButton(android.R.string.ok, null).create();
+    public static void showAlert(int titleId, CharSequence text, Context context) {
+        final Dialog dialog = new Dialog(context);
+        dialog.setContentView(R.layout.dialog_about);
+        dialog.setTitle(titleId);
+        dialog.setCancelable(true);
+
+        //set up text title
+        TextView textTile = (TextView) dialog.findViewById(R.id.aboutTitle);
+        textTile.setText(BuildConfig.VERSION_NAME);
+        textTile.setGravity(Gravity.RIGHT);
+
+        //set up image view
+        ImageView img = (ImageView) dialog.findViewById(R.id.aboutImage);
+        img.setImageResource(R.drawable.psi);
+
+        //set up text title
+        TextView textContent = (TextView) dialog.findViewById(R.id.aboutMessage);
+        textContent.setMovementMethod(LinkMovementMethod.getInstance());
+        textContent.setText(text);
+        //set up button
+        Button button = (Button) dialog.findViewById(R.id.aboutButton);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+        //now that the dialog is set up, it's time to show it
         dialog.show();
-        ((TextView)dialog.findViewById(android.R.id.message)).setMovementMethod(LinkMovementMethod.getInstance());
     }
+
 
     public static OrgUnit orgUnit;
     public static TabGroup tabGroup;
     public static DashboardActivity activity;
+
+
     public void createNewSurvey(final OrgUnit orgUnit, final TabGroup tabGroup) {
-        this.orgUnit=orgUnit;
-        this.tabGroup=tabGroup;
+        this.orgUnit = orgUnit;
+        this.tabGroup = tabGroup;
         activity = ((DashboardActivity) DashboardActivity.dashboardActivity);
         askCreateOrModify();
         //reloadAllEvents();
     }
 
     private void askCreateOrModify() {
-
-        RefreshEvents refreshEvents= new RefreshEvents();
+        RefreshEvents refreshEvents = new RefreshEvents();
         refreshEvents.execute(DashboardActivity.dashboardActivity);
     }
 
-    private PushClient getPushClient(Context context){
+    private PullClient getPullClient(Context context) {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-        String user=sharedPreferences.getString(context.getString(R.string.dhis_user), "");
-        String password=sharedPreferences.getString(context.getString(R.string.dhis_password), "");
-        return new PushClient(context, user,password);
+        String user = sharedPreferences.getString(context.getString(R.string.dhis_user), "");
+        String password = sharedPreferences.getString(context.getString(R.string.dhis_password), "");
+        return new PullClient(context, user, password);
     }
-    @NonNull
-    private DashboardActivity reloadAllEvents() {
-        //activity.createNewSurvey(orgUnit, tabGroup);
-        RefreshEvents refreshEvents=new RefreshEvents();
-        refreshEvents.execute(activity.getApplicationContext());
-        return activity;
-    }
-
 
     private class RefreshEvents extends AsyncTask<Context, Void, Void> {
-        Survey survey;
         @Override
         protected Void doInBackground(Context... params) {
             //sleep for wait the ontab change
             //PullController.refreshEvents(PreferencesState.getInstance().getContext());
 
-            PushClient pushClient = getPushClient(DashboardActivity.dashboardActivity);
+            PullClient pullClient = getPullClient(DashboardActivity.dashboardActivity);
             //Push  data
-            Event lastEvent=pushClient.getLastEvent(orgUnit, tabGroup.getProgram());
-            survey=Survey.getLastSurvey(orgUnit, tabGroup);
+            pullClient.getLastEventUid(orgUnit, tabGroup.getProgram());
             return null;
         }
 
@@ -112,7 +127,7 @@ public class VariantSpecificUtils{
             // Dismiss the progress dialog
             new AlertDialog.Builder(activity)
                     .setTitle("")
-                    .setMessage(String.format(PreferencesState.getInstance().getContext().getResources().getString(R.string.create_or_patch), EventExtended.format(survey.getCompletionDate(), EventExtended.DHIS2_DATE_FORMAT ))+survey.getEventUid())
+                    .setMessage(String.format(PreferencesState.getInstance().getContext().getResources().getString(R.string.create_or_patch), EventExtended.format(PullClient.lastUpdatedEventDate, EventExtended.DHIS2_DATE_FORMAT)) + PullClient.lastEventUid)
                     .setPositiveButton((R.string.create), new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface arg0, int arg1) {
                             activity.createNewSurvey(orgUnit, tabGroup);
@@ -130,9 +145,12 @@ public class VariantSpecificUtils{
                 progressDialog.dismiss();
             }
         }
+
         ProgressDialog progressDialog;
+
         @Override
         protected void onPreExecute() {
+
             progressDialog = new ProgressDialog(DashboardActivity.dashboardActivity);
             progressDialog.setMessage(PreferencesState.getInstance().getContext().getResources().getString(R.string.loading_last_surveys));
             progressDialog.setCancelable(false);
