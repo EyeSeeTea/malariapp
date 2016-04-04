@@ -49,6 +49,7 @@ import android.widget.TextView;
 import com.squareup.otto.Subscribe;
 
 
+import org.eyeseetea.malariacare.database.iomodules.dhis.exporter.ConvertToSDKVisitor;
 import org.eyeseetea.malariacare.database.model.OrgUnit;
 import org.eyeseetea.malariacare.database.model.Program;
 import org.eyeseetea.malariacare.database.model.Survey;
@@ -66,6 +67,7 @@ import org.eyeseetea.malariacare.fragments.MonitorFragment;
 import org.eyeseetea.malariacare.fragments.SurveyFragment;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.fragments.PlannedFragment;
+import org.eyeseetea.malariacare.network.PullClient;
 import org.eyeseetea.malariacare.receivers.AlarmPushReceiver;
 import org.eyeseetea.malariacare.services.SurveyService;
 import org.eyeseetea.malariacare.utils.Constants;
@@ -628,7 +630,7 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
                 .setNegativeButton(android.R.string.no, null)
                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int arg1) {
-                        Survey survey=Session.getSurvey();
+                        Survey survey = Session.getSurvey();
                         survey.setCompleteSurveyState();
                         alertOnComplete(survey);
                         closeSurveyFragment();
@@ -787,11 +789,17 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
     }
     public void patchSurvey(OrgUnit orgUnit, TabGroup tabGroup){
         Survey survey = Survey.getLastSurvey(orgUnit, tabGroup);
+        if(!survey.getEventUid().equals(PullClient.lastEventUid)){
+            survey=SurveyPlanner.getInstance().startSurvey(orgUnit,tabGroup);
+            survey.setEventUid(PullClient.lastEventUid);
+            survey.setCompletionDate(PullClient.lastUpdatedEventDate);
+            //If the event not exist, need a fake event to upgrate the server datavalues.
+            ConvertToSDKVisitor.buildFakeEvent(survey.getOrgUnit(),survey.getTabGroup());
+        }
         survey.setStatus(Constants.SURVEY_IN_PROGRESS);
         Session.setSurvey(survey);
         prepareLocationListener(survey);
         initSurvey();
-
     }
     public void createNewSurvey(OrgUnit orgUnit, TabGroup tabGroup){
         Survey survey=SurveyPlanner.getInstance().startSurvey(orgUnit,tabGroup);
