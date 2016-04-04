@@ -40,6 +40,7 @@ import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 
+import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.model.OrgUnit;
 import org.eyeseetea.malariacare.database.model.OrgUnitLevel;
@@ -105,9 +106,8 @@ public class CreateSurveyFragment extends Fragment {
 
     private LayoutInflater lInflater;
     LinearLayout llLayout;
-    private SurveyLocationListener locationListener;
 
-    OnCreatedSurveyListener mCallback;
+    DashboardActivity dashboardActivity;
 
     public CreateSurveyFragment() {
     }
@@ -121,11 +121,6 @@ public class CreateSurveyFragment extends Fragment {
         f.setArguments(args);
 
         return f;
-    }
-
-
-    public int getShownIndex() {
-        return getArguments().getInt("index", 0);
     }
 
     @Override
@@ -180,8 +175,7 @@ public class CreateSurveyFragment extends Fragment {
             public void onClick(View v) {
                 //If the survey is validate, it send the order of create survey fragment from this fragment to the activity.
                 if(validateForm()) {
-                    createSurvey();
-                    mCallback.onCreateSurvey();
+                    dashboardActivity.onCreateSurvey(createSurvey());
                 }
             }
         });
@@ -269,24 +263,10 @@ public class CreateSurveyFragment extends Fragment {
     }
 
 
-    // Container Activity must implement this interface
-    public interface OnCreatedSurveyListener {
-        public void onCreateSurvey();
-    }
-
-
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-
-        // This makes sure that the container activity has implemented
-        // the callback interface. If not, it throws an exception
-        try {
-            mCallback = (OnCreatedSurveyListener) activity;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString()
-                    + " must implement OnCreatedSurveyListener");
-        }
+        dashboardActivity = (DashboardActivity) activity;
     }
 
     @Override
@@ -365,20 +345,14 @@ public class CreateSurveyFragment extends Fragment {
      * Called when the user clicks the Send button
      * Gets the survey with the SURVEY_PLANNED state and set the createdate, user, SURVEY_IN_PROGRESS, and reset main score, and save the survey in session
      */
-    public void createSurvey() {
+    public Survey createSurvey() {
         Log.i(".CreateSurveyActivity", "Saving survey and saving in session");
 
-        // Read Selected Items
+        //Get selected orgUnit
         OrgUnit orgUnit = (OrgUnit) realOrgUnitView.getSelectedItem();
-        //Read Tab Group
+
+        //Get selected tabGroup
         TabGroup tabGroup = (TabGroup) tabGroupView.getSelectedItem();
-
-        // Put new survey in session
-        Survey survey = SurveyPlanner.getInstance().startSurvey(orgUnit,tabGroup);
-        Session.setSurvey(survey);
-
-        //Look for coordinates
-        prepareLocationListener(survey);
 
         //save the lastSelectedOrgUnit and the list of orgUnits
         saveOrgUnit();
@@ -387,26 +361,9 @@ public class CreateSurveyFragment extends Fragment {
         if(!lastOrgUnits.contains(orgUnit.getUid())) {
             saveOrgUnitList(TOKEN);
         }
-    }
 
-    private void prepareLocationListener(Survey survey) {
-
-
-        locationListener = new SurveyLocationListener(survey.getId_survey());
-        LocationManager locationManager = (LocationManager) LocationMemory.getContext().getSystemService(Context.LOCATION_SERVICE);
-        if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-            Log.d(TAG, "requestLocationUpdates via GPS");
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
-        }
-
-        if (locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
-            Log.d(TAG, "requestLocationUpdates via NETWORK");
-            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
-        } else {
-            Location lastLocation = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-            Log.d(TAG, "location not available via GPS|NETWORK, last know: " + lastLocation);
-            locationListener.saveLocation(lastLocation);
-        }
+        //Start right survey
+        return SurveyPlanner.getInstance().startSurvey(orgUnit,tabGroup);
     }
 
     private class ProgramSpinnerListener implements AdapterView.OnItemSelectedListener {

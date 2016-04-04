@@ -390,8 +390,9 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        if(message!="")
+        if(message!=""){
             DashboardActivity.showException(context.getString(R.string.error_message), message);
+        }
         return  uid;
     }
 

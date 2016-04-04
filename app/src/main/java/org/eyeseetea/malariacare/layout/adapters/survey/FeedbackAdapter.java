@@ -121,6 +121,7 @@ public class FeedbackAdapter extends BaseAdapter {
         //CompositeScore title
         TextView textView=(TextView)rowLayout.findViewById(R.id.feedback_label);
         String pattern="^[0-9]+[.][0-9]+.*"; // the format "1.1" for the second level header
+        if(!PreferencesState.getInstance().isVerticalDashboard())
         if(feedback.getLabel().matches(pattern)) {
             textView.setTextColor(PreferencesState.getInstance().getContext().getResources().getColor(R.color.darkGrey));
             //Calculate the size of the second header, with the pixels size between question label and header label.
@@ -133,12 +134,14 @@ public class FeedbackAdapter extends BaseAdapter {
 
         //CompositeScore title
         textView=(TextView)rowLayout.findViewById(R.id.feedback_score_label);
-        if(feedback.getScore()< Constants.MAX_RED)
-            textView.setTextColor(PreferencesState.getInstance().getContext().getResources().getColor(R.color.darkRed));
-        else if(feedback.getScore()< Constants.MAX_AMBER)
-            textView.setTextColor(PreferencesState.getInstance().getContext().getResources().getColor(R.color.amber));
-        else
-            textView.setTextColor(PreferencesState.getInstance().getContext().getResources().getColor(R.color.lightGreen));
+        if(!PreferencesState.getInstance().isVerticalDashboard()) {
+            if (feedback.getScore() < Constants.MAX_AMBER)
+                textView.setTextColor(PreferencesState.getInstance().getContext().getResources().getColor(R.color.amber));
+            else if (feedback.getScore() < Constants.MAX_RED)
+                textView.setTextColor(PreferencesState.getInstance().getContext().getResources().getColor(R.color.darkRed));
+            else
+                textView.setTextColor(PreferencesState.getInstance().getContext().getResources().getColor(R.color.lightGreen));
+        }
         textView.setText(feedback.getPercentageAsString());
 
         return rowLayout;
@@ -155,7 +158,9 @@ public class FeedbackAdapter extends BaseAdapter {
 
         //Question label
         TextView textView=(TextView)rowLayout.findViewById(R.id.feedback_question_label);
-        textView.setTextColor(PreferencesState.getInstance().getContext().getResources().getColor(R.color.darkGrey));
+        if(!PreferencesState.getInstance().isVerticalDashboard()){
+            textView.setTextColor(PreferencesState.getInstance().getContext().getResources().getColor(R.color.darkGrey));
+        }
         if(feedback.isLabel()){
             textView.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
         }
@@ -163,7 +168,8 @@ public class FeedbackAdapter extends BaseAdapter {
 
         //Option label
         textView=(TextView)rowLayout.findViewById(R.id.feedback_option_label);
-        textView.setTextColor(PreferencesState.getInstance().getContext().getResources().getColor(R.color.darkGrey));
+        if(!PreferencesState.getInstance().isVerticalDashboard())
+            textView.setTextColor(PreferencesState.getInstance().getContext().getResources().getColor(R.color.darkGrey));
         textView.setText(feedback.getOption());
 
         //Score label
