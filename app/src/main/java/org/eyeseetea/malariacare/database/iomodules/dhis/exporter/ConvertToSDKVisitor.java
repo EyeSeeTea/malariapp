@@ -30,17 +30,19 @@ import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.EventExtended;
 import org.eyeseetea.malariacare.database.model.CompositeScore;
+import org.eyeseetea.malariacare.database.model.OrgUnit;
 import org.eyeseetea.malariacare.database.model.Survey;
+import org.eyeseetea.malariacare.database.model.TabGroup;
 import org.eyeseetea.malariacare.database.model.User;
 import org.eyeseetea.malariacare.database.model.Value;
 import org.eyeseetea.malariacare.database.utils.LocationMemory;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
+import org.eyeseetea.malariacare.network.PullClient;
 import org.eyeseetea.malariacare.utils.Constants;
 import org.eyeseetea.malariacare.utils.Utils;
-import org.hisp.dhis.android.sdk.controllers.tracker.PutEventType;
-import org.hisp.dhis.android.sdk.controllers.tracker.TrackerController;
+
 import org.hisp.dhis.android.sdk.persistence.models.DataValue;
 import org.hisp.dhis.android.sdk.persistence.models.DataValue$Table;
 import org.hisp.dhis.android.sdk.persistence.models.Event;
@@ -107,7 +109,13 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
     /**
      * Used to control if the actual survey/event is new or update
      */
-    boolean uploadEvent;
+    boolean upgradeEvent;
+
+    /**
+     * Used to control if the actual survey/event is new or update
+     */
+    boolean skippedEvent;
+
 
     ConvertToSDKVisitor(Context context){
         this.context=context;
@@ -127,41 +135,20 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
 
     @Override
     public void visit(Survey survey) throws Exception{
+        upgradeEvent =false;
+
         //Turn survey into an event
         this.currentSurvey=survey;
-
         Log.d(TAG,String.format("Creating event for survey (%d) ...",survey.getId_survey()));
+        Log.d(TAG,String.format("Creating event for survey (%s) ...", survey.toString()));
 
         //if the event exist in the survey, it will be patched, else, created.
-        Log.d(TAG,String.format("Creating event for survey (%s) ...",survey.toString()));
-        uploadEvent=false;
         if(survey.getEventUid()!=null) {
-            this.currentEvent = Survey.getEvent(survey.getEventUid());
-            Log.d(TAG, "recovering event:"+survey.getEventUid());
-            //this.currentEvent.setCreated(EventExtended.format(survey.getCreationDate(),EventExtended.COMPLETION_DATE_FORMAT));
-            if(currentEvent==null){
-                this.currentEvent = Survey.getEventFromLocalId(survey.getId_survey());
-                uploadEvent=true;
-                Log.d(TAG, "recovering event from localID:"+survey.getEventUid());
-            }
-            if (currentEvent != null) {
-                TrackerController.setUploadEvent(PutEventType.UPDATE);
-                uploadEvent=true;
-                uploadedDate = currentSurvey.getUploadedDate();
-                //set from server as false is necesary to upload the event
-                currentEvent.setFromServer(false);
-                currentEvent.setStatus(Event.STATUS_COMPLETED);
-
-                currentEvent.save();
-            } else {
-                Log.d(TAG, "Recovering Event:"+survey.getEventUid()+" not exist");
-                this.currentEvent = buildEvent();
-            }
+            buildUpgradeEvent(survey);
         }
         else
             this.currentEvent = buildEvent();
         Log.d(TAG,currentEvent.toString());
-
 
         //Calculates scores and update survey
         Log.d(TAG,"Registering scores...");
@@ -177,7 +164,7 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
         //Turn question values into dataValues
         Log.d(TAG, "Creating datavalues from questions... Values"+survey.getValues().size());
 
-        if(uploadEvent){
+        if(upgradeEvent){
             //Remove all dataValues
             List<DataValue> dataValues = new Select().from(DataValue.class)
                     .where(Condition.column(DataValue$Table.EVENT).eq(currentEvent.getEvent()))
@@ -194,7 +181,7 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
 
 
         for(Value value : survey.getValues()) {
-            if(uploadEvent) {
+            if(upgradeEvent) {
                 if (value.getUploadedDate().after(currentSurvey.getUploadedDate())) {
                     value.accept(this);
                     Log.d(TAG, "Value saved: " + value);
@@ -231,6 +218,12 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
 
     @Override
     public void visit(Value value) {
+        if(upgradeEvent){
+            if(value.getQuestion()==null) {
+                //The controlDataelements values don't have question. It should be ignored  in a upload event.
+                return;
+            }
+        }
         DataValue dataValue=new DataValue();
         dataValue.setDataElement(value.getQuestion().getUid());
         dataValue.setLocalEventId(currentEvent.getLocalId());
@@ -251,7 +244,6 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
      */
     private Event buildEvent()throws Exception{
         currentEvent =new Event();
-
         currentEvent.setStatus(Event.STATUS_COMPLETED);
         currentEvent.setFromServer(false);
         currentEvent.setOrganisationUnitId(currentSurvey.getOrgUnit().getUid());
@@ -262,6 +254,54 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
         Log.d(TAG, "Saving event " + currentEvent.toString());
         currentEvent.save();
         return currentEvent;
+    }
+
+    /**
+     * Builds an fake event only to send the new DataValues.
+     * @return
+     */
+    public static Event buildFakeEvent(OrgUnit orgUnit, TabGroup tabGroup) {
+        //a false event was created to path the event datavalues
+        Log.d(TAG, "Recovering Event:"+PullClient.lastEventUid+" not exist");
+        Log.d(TAG, "Creating fake event to upgrade one event in the server");
+        Event event = new Event();
+        event.setUid(PullClient.lastEventUid);
+        event.setLastUpdated(EventExtended.format(PullClient.lastUpdatedEventDate, EventExtended.DHIS2_DATE_FORMAT));
+        event.setEventDate(EventExtended.format(PullClient.lastUpdatedEventDate, EventExtended.DHIS2_DATE_FORMAT));
+        event.setOrganisationUnitId(orgUnit.getUid());
+        event.setProgramId(tabGroup.getProgram().getUid());
+        event.setProgramStageId(tabGroup.getUid());
+        event.save();
+        return event;
+    }
+
+    /**
+     * Builds or modify a event to be upgraded.
+     * @return
+     */
+    private void buildUpgradeEvent(Survey survey) {
+        upgradeEvent =true;
+        Log.d(TAG, "Recovering event from eventUID:" + survey.getEventUid());
+        this.currentEvent = Survey.getEvent(survey.getEventUid());
+
+        if(currentEvent==null){
+            Log.d(TAG, "Recovering event from localID:"+survey.getEventUid());
+            this.currentEvent = Survey.getEventFromLocalId(survey.getId_survey());
+        }
+
+        if(currentEvent != null){
+            currentEvent.setCreated(null);
+            upgradeEvent =true;
+            uploadedDate = currentSurvey.getUploadedDate();
+            //set from server as false is necesary to upload the event
+            currentEvent.setFromServer(false);
+            currentEvent.setStatus(Event.STATUS_COMPLETED);
+            currentEvent.save();
+        }
+        else
+        {
+            Log.d(TAG, "Error Recovering Event:"+survey.getEventUid()+" not exist");
+        }
     }
 
     /**

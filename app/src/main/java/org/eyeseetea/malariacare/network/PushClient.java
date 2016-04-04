@@ -209,7 +209,7 @@ public class PushClient {
                 String eventuid="";
                 Date lastDate=null;
                 JSONArray jsonArrayResponse=new JSONArray(lastEventsList.getString("events"));
-                for(int i=0;i<jsonArrayResponse.length();i++) {
+                for(int i=0;i<=jsonArrayResponse.length();i++) {
                     JSONObject event = new JSONObject(jsonArrayResponse.getString(i));
                     if(eventuid.equals("")){
                         eventuid=event.getString("event");
@@ -233,7 +233,11 @@ public class PushClient {
 
     private Event pullEvent(String eventuid, Date lastUpdated) {
         Event localEvent= new Select().from(Event.class).where(Condition.column(Event$Table.ID).eq(eventuid)).querySingle();
-        if(localEvent==null && localEvent.getLastUpdated().equals(EventExtended.format(lastUpdated,EventExtended.DHIS2_DATE_FORMAT)))
+        if(localEvent==null || localEvent.getLastUpdated().equals(EventExtended.format(lastUpdated,EventExtended.DHIS2_DATE_FORMAT)))
+            //a false event was created to path the event datavalues
+        //Event event=new Event();
+
+
 
         Log.d(TAG,"we need donwload event" +eventuid);
                 return null;
