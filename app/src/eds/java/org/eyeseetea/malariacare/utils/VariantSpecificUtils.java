@@ -79,12 +79,7 @@ public class VariantSpecificUtils {
 
     public void createNewSurvey(final OrgUnit orgUnit, final TabGroup tabGroup) {
         this.orgUnit=orgUnit;
-        this.tabGroup=tabGroup;
-        askCreateOrModify();
-    }
-
-    private void askCreateOrModify() {
-        LoadLastEvent loadLastEvent= new LoadLastEvent();
+        this.tabGroup=tabGroup;LoadLastEvent loadLastEvent= new LoadLastEvent();
         loadLastEvent.execute();
     }
 
@@ -100,24 +95,7 @@ public class VariantSpecificUtils {
         protected void onPostExecute(Void result) {
             super.onPostExecute(result);
             // Dismiss the progress dialog
-            new AlertDialog.Builder(DashboardActivity.dashboardActivity)
-                    .setTitle("")
-                    .setMessage(String.format(PreferencesState.getInstance().getContext().getResources().getString(R.string.create_or_modify), EventExtended.format(PullClient.lastUpdatedEventDate, EventExtended.DHIS2_DATE_FORMAT ))+PullClient.lastEventUid)
-                    .setPositiveButton((R.string.create), new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface arg0, int arg1) {
-                            DashboardActivity activity= (DashboardActivity)DashboardActivity.dashboardActivity;
-                            activity.createNewSurvey(orgUnit, tabGroup);
-                        }
-                    })
-                    .setNeutralButton((R.string.modify), new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface arg0, int arg1) {
-                            DashboardActivity activity= (DashboardActivity)DashboardActivity.dashboardActivity;
-                            activity.modifySurvey(orgUnit, tabGroup);
-                        }
-                    })
-                    .setNegativeButton((R.string.cancel), null)
-                    .setCancelable(true)
-                    .create().show();
+            askCreateOrModify();
             if (progressDialog.isShowing()) {
                 progressDialog.dismiss();
             }
@@ -136,5 +114,26 @@ public class VariantSpecificUtils {
         protected void onProgressUpdate(Void... values) {
             super.onProgressUpdate(values);
         }
+    }
+
+    private void askCreateOrModify(){
+        new AlertDialog.Builder(DashboardActivity.dashboardActivity)
+                .setTitle("")
+                .setMessage(String.format(PreferencesState.getInstance().getContext().getResources().getString(R.string.create_or_modify), EventExtended.format(PullClient.lastUpdatedEventDate, EventExtended.DHIS2_DATE_FORMAT ))+PullClient.lastEventUid)
+                .setPositiveButton((R.string.create), new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface arg0, int arg1) {
+                        DashboardActivity activity= (DashboardActivity)DashboardActivity.dashboardActivity;
+                        activity.createNewSurvey(orgUnit, tabGroup);
+                    }
+                })
+                .setNeutralButton((R.string.modify), new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface arg0, int arg1) {
+                        DashboardActivity activity= (DashboardActivity)DashboardActivity.dashboardActivity;
+                        activity.modifySurvey(orgUnit, tabGroup);
+                    }
+                })
+                .setNegativeButton((R.string.cancel), null)
+                .setCancelable(true)
+                .create().show();
     }
 }
