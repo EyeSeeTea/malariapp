@@ -21,6 +21,7 @@ package org.eyeseetea.malariacare.network;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
@@ -28,10 +29,12 @@ import com.raizlabs.android.dbflow.sql.QueryBuilder;
 import com.raizlabs.android.dbflow.sql.builder.Condition;
 import com.raizlabs.android.dbflow.sql.language.Select;
 
+import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.EventExtended;
 import org.eyeseetea.malariacare.database.model.OrgUnit;
 import org.eyeseetea.malariacare.database.model.Program;
+import org.eyeseetea.malariacare.database.model.Survey;
 import org.hisp.dhis.android.sdk.persistence.models.Event;
 import org.hisp.dhis.android.sdk.persistence.models.Event$Table;
 import org.json.JSONArray;
@@ -53,13 +56,13 @@ public class PullClient {
     public static Date lastUpdatedEventDate;
     public static final String DATE_FIELD ="eventDate";
 
-    public PullClient(Context applicationContext, String user, String password) {
+    public PullClient(Context applicationContext) {
         this.applicationContext = applicationContext;
         networkUtils=new NetworkUtils(applicationContext);
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(applicationContext);
         networkUtils.setDhisServer(sharedPreferences.getString(applicationContext.getResources().getString(R.string.dhis_url), ""));
-        networkUtils.setUser(user);
-        networkUtils.setPassword(password);
+        networkUtils.setUser(sharedPreferences.getString(applicationContext.getString(R.string.dhis_user), ""));
+        networkUtils.setPassword(sharedPreferences.getString(applicationContext.getString(R.string.dhis_password), ""));
     }
 
     public void getLastEventUid(OrgUnit orgUnit, Program program){
