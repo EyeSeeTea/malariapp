@@ -24,6 +24,7 @@ import android.location.Location;
 import android.util.Log;
 
 import org.eyeseetea.malariacare.R;
+import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.EventExtended;
 import org.eyeseetea.malariacare.database.model.CompositeScore;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.model.Value;
@@ -90,9 +91,9 @@ public class QueryFormatterUtils {
 
         query=query+"&"+TAG_ORG_UNIT+"="+orgUnit;
 
-        query=query+"&"+TAG_STARTDATE+"="+android.text.format.DateFormat.format("yyyy-MM-dd", lastDate);
+        query=query+"&"+TAG_STARTDATE+"="+android.text.format.DateFormat.format(EventExtended.AMERICAN_DATE_FORMAT, lastDate);
 
-        query=query+"&fields=[event,lastUpdated]"+"&skipPaging=true";
+        query=query+"&fields=[event,"+PullClient.DATE_FIELD+"]"+"&skipPaging=true";
         Log.d(TAG, "prepareLastEventData: " + query);
 
         return query;

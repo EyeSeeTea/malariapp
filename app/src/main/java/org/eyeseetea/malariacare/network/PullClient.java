@@ -46,11 +46,12 @@ import java.util.Date;
 public class PullClient {
 
     private static final String TAG=".PullClient";
+
     Context applicationContext;
     NetworkUtils networkUtils;
     public static String lastEventUid;
     public static Date lastUpdatedEventDate;
-    private final String DATE_FIELD="eventDate";
+    public static final String DATE_FIELD ="eventDate";
 
     public PullClient(Context applicationContext, String user, String password) {
         this.applicationContext = applicationContext;
