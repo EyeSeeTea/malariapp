@@ -137,6 +137,8 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
     public void visit(Survey survey) throws Exception{
         upgradeEvent =false;
 
+        uploadedDate =new Date();
+
         //Turn survey into an event
         this.currentSurvey=survey;
         Log.d(TAG,String.format("Creating event for survey (%d) ...",survey.getId_survey()));
@@ -204,6 +206,16 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
         annotateSurveyAndEvent();
     }
 
+    private void forceLastSurvey(Survey survey) {
+        //download last survey uid
+        PullClient pullClient = new PullClient((DashboardActivity) DashboardActivity.dashboardActivity);
+        pullClient.getLastEventUid(survey.getOrgUnit(), survey.getProgram());
+        if(!survey.getEventUid().equals(PullClient.lastEventUid)){
+            survey.setEventUid(PullClient.lastEventUid);
+            buildFakeEvent(survey.getOrgUnit(),survey.getTabGroup());
+        }
+    }
+
     @Override
     public void visit(CompositeScore compositeScore) {
         DataValue dataValue=new DataValue();
@@ -221,6 +233,9 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
         if(upgradeEvent){
             if(value.getQuestion()==null) {
                 //The controlDataelements values don't have question. It should be ignored  in a upload event.
+                return;
+            }
+            if(value.getOption()==null){
                 return;
             }
         }
@@ -280,6 +295,9 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
      * @return
      */
     private void buildUpgradeEvent(Survey survey) {
+        //Checks if the survey have the last event for the orgUnit/program and if is not the last event fix it.
+        forceLastSurvey(survey);
+
         upgradeEvent =true;
         Log.d(TAG, "Recovering event from eventUID:" + survey.getEventUid());
         this.currentEvent = Survey.getEvent(survey.getEventUid());
@@ -310,9 +328,7 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
     private void updateEventDates() {
 
         //Sent date 'now' (this change will be saves after successful push)
-        currentSurvey.setUploadedDate(new Date());
-
-        uploadedDate =currentSurvey.getUploadedDate();
+        currentSurvey.setUploadedDate(uploadedDate);
 
         // NOTE: do not try to set the event creation date. SDK will try to update the event in the next push instead of creating it and that will crash
         String date=EventExtended.format(currentSurvey.getCompletionDate(), EventExtended.DHIS2_DATE_FORMAT);
