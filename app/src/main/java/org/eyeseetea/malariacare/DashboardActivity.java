@@ -75,6 +75,7 @@ import org.eyeseetea.malariacare.utils.VariantSpecificUtils;
 import org.hisp.dhis.android.sdk.events.UiEvent;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.List;
 
 
@@ -796,6 +797,8 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
             //If the event not exist, need a fake event to upgrate the server datavalues.
             ConvertToSDKVisitor.buildFakeEvent(survey.getOrgUnit(),survey.getTabGroup());
         }
+        //Upgrade the uploaded date
+        survey.setUploadedDate(new Date());
         survey.setStatus(Constants.SURVEY_IN_PROGRESS);
         Session.setSurvey(survey);
         prepareLocationListener(survey);
