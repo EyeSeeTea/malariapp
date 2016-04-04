@@ -109,7 +109,7 @@ public class PushErrorTest {
 
         //THEN
         //then: Survey is NOT pushed (no UID)
-        assertTrue(survey.getEventUid() == null);
+        assertTrue("Survey not pushed"+survey.toString(),survey.getEventUid() == null);
 
         //then: Row is gone
         onView(withId(R.id.score)).check(doesNotExist());

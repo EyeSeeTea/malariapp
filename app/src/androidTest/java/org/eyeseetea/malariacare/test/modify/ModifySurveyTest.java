@@ -30,8 +30,10 @@ import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.model.Value;
 import org.eyeseetea.malariacare.database.utils.Session;
+import org.eyeseetea.malariacare.hnqispull.test.BuildConfig;
 import org.eyeseetea.malariacare.test.utils.ElapsedTimeIdlingResource;
 import org.eyeseetea.malariacare.test.utils.SDKTestUtils;
+import org.eyeseetea.malariacare.utils.VariantSpecificUtils;
 import org.hisp.dhis.android.sdk.persistence.models.Event;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -44,9 +46,15 @@ import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static junit.framework.Assert.assertTrue;
+import static org.eyeseetea.malariacare.test.utils.SDKTestUtils.DEFAULT_WAIT_FOR_PULL;
+import static org.eyeseetea.malariacare.test.utils.SDKTestUtils.HNQIS_DEV_CI;
+import static org.eyeseetea.malariacare.test.utils.SDKTestUtils.TEST_PASSWORD_WITH_PERMISSION;
+import static org.eyeseetea.malariacare.test.utils.SDKTestUtils.TEST_USERNAME_WITH_PERMISSION;
 import static org.eyeseetea.malariacare.test.utils.SDKTestUtils.fillSurvey;
+import static org.eyeseetea.malariacare.test.utils.SDKTestUtils.login;
 import static org.eyeseetea.malariacare.test.utils.SDKTestUtils.markInProgressAsCompleted;
 import static org.eyeseetea.malariacare.test.utils.SDKTestUtils.startSurvey;
+import static org.eyeseetea.malariacare.test.utils.SDKTestUtils.waitForPull;
 import static org.eyeseetea.malariacare.test.utils.SDKTestUtils.waitForPush;
 
 /**
@@ -75,78 +83,76 @@ public class ModifySurveyTest {
     }
 
     @Test
-    public void pushAndPathSurveyTest(){
+    public void pushAndModifySurveyTest(){
         //Given
-        //if eds
-        //if(BuildConfig.FLAVOR=="eds") {}
-        //login(HNQIS_DEV_CI, TEST_USERNAME_WITH_PERMISSION, TEST_PASSWORD_WITH_PERMISSION);
-        //waitForPull(DEFAULT_WAIT_FOR_PULL);
-        int modifcatedOptions = 7;
-        //The first is "Real/Simulation" and it is not saved
-        int expectedOptions = 6;
-        long numberOfEvents = 1;
-        String eventUid="";
-        startSurvey(SDKTestUtils.TEST_FACILITY_1_IDX, SDKTestUtils.TEST_CC);
+        //Fixme
+        if(BuildConfig.FLAVOR=="eds") {
+            login(HNQIS_DEV_CI, TEST_USERNAME_WITH_PERMISSION, TEST_PASSWORD_WITH_PERMISSION);
+            waitForPull(DEFAULT_WAIT_FOR_PULL);
+            int modifcatedOptions = 7;
+            //The first is "Real/Simulation" and it is not saved
+            int expectedOptions = 6;
+            long numberOfEvents = 1;
+            String eventUid = "";
+            startSurvey(SDKTestUtils.TEST_FACILITY_1_IDX, SDKTestUtils.TEST_CC);
 
-        IdlingResource idlingResource = new ElapsedTimeIdlingResource(SDKTestUtils.DEFAULT_WAIT_FOR_PUSH * 500);
-        Espresso.registerIdlingResources(idlingResource);
-        onView(withText(R.string.cancel)).perform(click());
-        onView(withId(R.id.create_form_button)).perform(click());
-        Espresso.unregisterIdlingResources(idlingResource);
+            IdlingResource idlingResource = new ElapsedTimeIdlingResource(SDKTestUtils.DEFAULT_WAIT_FOR_PUSH * 500);
+            Espresso.registerIdlingResources(idlingResource);
+            onView(withText(R.string.cancel)).perform(click());
+            onView(withId(R.id.create_form_button)).perform(click());
+            Espresso.unregisterIdlingResources(idlingResource);
 
-        idlingResource = new ElapsedTimeIdlingResource(SDKTestUtils.DEFAULT_WAIT_FOR_PUSH * 500);
-        Espresso.registerIdlingResources(idlingResource);
-        onView(withText(R.string.create)).perform(click());
-        Espresso.unregisterIdlingResources(idlingResource);
+            idlingResource = new ElapsedTimeIdlingResource(SDKTestUtils.DEFAULT_WAIT_FOR_PUSH * 500);
+            Espresso.registerIdlingResources(idlingResource);
+            onView(withText(R.string.create)).perform(click());
+            Espresso.unregisterIdlingResources(idlingResource);
 
 
-        fillSurvey(17, "Yes");
-        Long idSurvey=markInProgressAsCompleted();
+            fillSurvey(17, "Yes");
+            Long idSurvey = markInProgressAsCompleted();
 
-        //When
-        Log.d(TAG, "Session user ->" + Session.getUser());
-        Survey survey=waitForPush(SDKTestUtils.DEFAULT_WAIT_FOR_PUSH * 1000, idSurvey);
-        eventUid=survey.getEventUid();
-        //then: Survey is pushed (UID)
-        assertTrue(survey.getEventUid() != null);
-        assertTrue(numberOfEvents == SDKTestUtils.getEventCount());
-
-        //WHEN
-        startSurvey(SDKTestUtils.TEST_FACILITY_1_IDX, SDKTestUtils.TEST_CC);
-
-        idlingResource = new ElapsedTimeIdlingResource(SDKTestUtils.DEFAULT_WAIT_FOR_PUSH * 1000);
-
-        Espresso.registerIdlingResources(idlingResource);
-        onView(withText(R.string.modify)).perform(click());
-        Espresso.unregisterIdlingResources(idlingResource);
-
-        fillSurvey(modifcatedOptions, "No");
-
-        idSurvey=markInProgressAsCompleted();
-        survey=waitForPush(SDKTestUtils.DEFAULT_WAIT_FOR_PUSH * 1000, idSurvey);
-
-        //THEN
-        assertTrue(survey.getEventUid() != null);
-        idlingResource = new ElapsedTimeIdlingResource(SDKTestUtils.DEFAULT_WAIT_FOR_PUSH * 0000);
-        Espresso.registerIdlingResources(idlingResource);
-        assertTrue(survey.getEventUid().equals(eventUid));
-        Espresso.unregisterIdlingResources(idlingResource);
-        if(survey.isCompleted()) {
-            int modificatedValues = 0;
-            for (Value value : survey.getValues()) {
-                if (value.getUploadedDate().after(survey.getUploadedDate())) {
-                    modificatedValues++;
-                }
-            }
-            assertTrue(modificatedValues == expectedOptions);
-            assertTrue(numberOfEvents-1 == SDKTestUtils.getEventCount());
-        }
-        else if (survey.isSent()){
-            Event event=SDKTestUtils.getEvent(survey.getEventUid());
-            assertTrue(event.getDataValues().size() == expectedOptions);
+            //When
+            Log.d(TAG, "Session user ->" + Session.getUser());
+            Survey survey = waitForPush(SDKTestUtils.DEFAULT_WAIT_FOR_PUSH * 1000, idSurvey);
+            eventUid = survey.getEventUid();
+            //then: Survey is pushed (UID)
+            assertTrue(survey.getEventUid() != null);
             assertTrue(numberOfEvents == SDKTestUtils.getEventCount());
+
+            //WHEN
+            SDKTestUtils.selectStartSurvey(SDKTestUtils.TEST_FACILITY_1_IDX, SDKTestUtils.TEST_CC);
+
+            idlingResource = new ElapsedTimeIdlingResource(SDKTestUtils.DEFAULT_WAIT_FOR_PUSH * 1000);
+
+            Espresso.registerIdlingResources(idlingResource);
+            onView(withText(R.string.modify)).perform(click());
+            Espresso.unregisterIdlingResources(idlingResource);
+
+            fillSurvey(modifcatedOptions, "No");
+
+            idSurvey = markInProgressAsCompleted();
+            survey = waitForPush(SDKTestUtils.DEFAULT_WAIT_FOR_PUSH * 1000, idSurvey);
+
+            //THEN
+            assertTrue(survey.getEventUid() != null);
+            idlingResource = new ElapsedTimeIdlingResource(SDKTestUtils.DEFAULT_WAIT_FOR_PUSH * 0000);
+            Espresso.registerIdlingResources(idlingResource);
+            assertTrue(survey.getEventUid().equals(eventUid));
+            Espresso.unregisterIdlingResources(idlingResource);
+            if (survey.isCompleted()) {
+                int modificatedValues = 0;
+                for (Value value : survey.getValues()) {
+                    if (value.getUploadedDate().after(survey.getUploadedDate())) {
+                        modificatedValues++;
+                    }
+                }
+                assertTrue(modificatedValues == expectedOptions);
+                assertTrue(numberOfEvents - 1 == SDKTestUtils.getEventCount());
+            } else if (survey.isSent()) {
+                Event event = SDKTestUtils.getEvent(survey.getEventUid());
+                assertTrue(event.getDataValues().size() == expectedOptions);
+                assertTrue(numberOfEvents == SDKTestUtils.getEventCount());
+            }
         }
-
-
     }
 }

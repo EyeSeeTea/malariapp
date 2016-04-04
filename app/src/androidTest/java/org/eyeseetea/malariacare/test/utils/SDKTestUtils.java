@@ -36,6 +36,7 @@ import static android.support.test.espresso.Espresso.openActionBarOverflowOrOpti
 import com.raizlabs.android.dbflow.sql.builder.Condition;
 import com.raizlabs.android.dbflow.sql.language.Select;
 
+import org.eyeseetea.malariacare.BuildConfig;
 import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.LoginActivity;
 import org.eyeseetea.malariacare.ProgressActivity;
@@ -124,7 +125,7 @@ public class SDKTestUtils {
 
     public static void waitForPull(int seconds) {
         //then: wait for progressactivity + dialog + ok (to move to dashboard)
-        IdlingResource idlingResource = new ElapsedTimeIdlingResource(seconds * 1000);
+        IdlingResource idlingResource = new ElapsedTimeIdlingResource(seconds * 2000);
         Espresso.registerIdlingResources(idlingResource);
 
         onView(withText(android.R.string.ok)).perform(click());
@@ -144,7 +145,22 @@ public class SDKTestUtils {
         return survey;
     }
 
+    public static void selectStartSurvey(int idxOrgUnit, int idxProgram) {
+        selectSurvey(idxOrgUnit, idxProgram);
+
+    }
     public static void startSurvey(int idxOrgUnit, int idxProgram) {
+        selectSurvey(idxOrgUnit, idxProgram);
+
+        //Fixme
+        try{
+            onView(withText(R.string.create)).perform(click());
+        }catch (NoMatchingViewException e){
+            Log.d(TAG,"Create option is not working in hnqis");
+        }
+    }
+
+    private static void selectSurvey(int idxOrgUnit, int idxProgram) {
         //when: click on assess tab + plus button
         onView(withTagValue(Matchers.is((Object) getActivityInstance().getApplicationContext().getString(R.string.tab_tag_assess)))).perform(click());
         onView(withId(R.id.plusButton)).perform(click());
@@ -164,9 +180,7 @@ public class SDKTestUtils {
 
         onView(withId(R.id.program)).perform(click());
         onData(is(instanceOf(Program.class))).atPosition(idxProgram).perform(click());
-
         onView(withId(R.id.create_form_button)).perform(click());
-
     }
 
     public static void fillSurvey(int numQuestions, String optionValue) {

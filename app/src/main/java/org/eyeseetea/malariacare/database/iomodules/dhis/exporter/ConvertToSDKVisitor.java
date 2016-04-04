@@ -106,11 +106,6 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
      */
     boolean updateEvent;
 
-    /**
-     * Used to control if the actual survey/event is new or update
-     */
-    boolean skippedEvent;
-
 
     ConvertToSDKVisitor(Context context){
         this.context=context;
@@ -247,7 +242,6 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
         currentEvent.setProgramId(currentSurvey.getTabGroup().getProgram().getUid());
         currentEvent.setProgramStageId(currentSurvey.getTabGroup().getUid());
         updateEventLocation();
-        //updateEventDates();
         Log.d(TAG, "Saving event " + currentEvent.toString());
         currentEvent.save();
         return currentEvent;
@@ -283,6 +277,9 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
         if(currentEvent != null){
             currentEvent.setCreated(null);
             uploadedDate = currentSurvey.getUploadedDate();
+            String date=EventExtended.format(currentSurvey.getCompletionDate(), EventExtended.DHIS2_DATE_FORMAT);
+            currentEvent.setEventDate(date);
+            currentEvent.setLastUpdated(EventExtended.format(currentSurvey.getUploadedDate(), EventExtended.DHIS2_DATE_FORMAT));
             //It's necesary, Set"from server" as false to upload the event
             currentEvent.setFromServer(false);
             currentEvent.setStatus(Event.STATUS_COMPLETED);
@@ -305,6 +302,7 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
         currentEvent.setDueDate(EventExtended.format(currentSurvey.getScheduledDate(), EventExtended.DHIS2_DATE_FORMAT));
         //Not used
         currentEvent.setLastUpdated(EventExtended.format(currentSurvey.getUploadedDate(), EventExtended.DHIS2_DATE_FORMAT));
+        currentEvent.save();
         }
 
     /**
