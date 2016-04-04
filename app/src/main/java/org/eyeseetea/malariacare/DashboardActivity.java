@@ -783,19 +783,26 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
                 .create().show();
     }
 
+    /**
+     * Create new survey from CreateSurveyFragment
+     */
     @Override
     public void onCreateSurvey(final OrgUnit orgUnit,final TabGroup tabGroup) {
         VariantSpecificUtils variantSpecificUtils = new VariantSpecificUtils();
         variantSpecificUtils.createNewSurvey(orgUnit,tabGroup);
     }
-    public void modifySurvey(OrgUnit orgUnit, TabGroup tabGroup){
+
+    /**
+     * Modify survey from CreateSurveyFragment
+     */
+    public void modifySurvey(OrgUnit orgUnit, TabGroup tabGroup, PullClient.EventInfo eventInfo){
         Survey survey = Survey.getLastSurvey(orgUnit, tabGroup);
-        if(!survey.getEventUid().equals(PullClient.lastEventUid)){
+        if(!survey.getEventUid().equals(eventInfo.getEventUid())){
             survey=SurveyPlanner.getInstance().startSurvey(orgUnit,tabGroup);
-            survey.setEventUid(PullClient.lastEventUid);
-            survey.setCompletionDate(PullClient.lastUpdatedEventDate);
+            survey.setEventUid(eventInfo.getEventUid());
+            survey.setCompletionDate(eventInfo.getEventDate());
             //If the event not exist, need a fake event to upgrate the server datavalues.
-            ConvertToSDKVisitor.buildFakeEvent(survey.getOrgUnit(),survey.getTabGroup());
+            ConvertToSDKVisitor.buildFakeEvent(survey.getOrgUnit(),survey.getTabGroup(), eventInfo);
         }
         //Upgrade the uploaded date
         survey.setUploadedDate(new Date());
@@ -804,6 +811,10 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
         prepareLocationListener(survey);
         initSurvey();
     }
+
+    /**
+     * Create new survey from VariantSpecificUtils
+     */
     public void createNewSurvey(OrgUnit orgUnit, TabGroup tabGroup){
         Survey survey=SurveyPlanner.getInstance().startSurvey(orgUnit,tabGroup);
         Session.setSurvey(survey);
