@@ -25,7 +25,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.text.method.LinkMovementMethod;
-import android.view.Gravity;
 import android.widget.TextView;
 
 import org.eyeseetea.malariacare.DashboardActivity;
@@ -35,43 +34,23 @@ import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.EventEx
 import org.eyeseetea.malariacare.database.model.OrgUnit;
 import org.eyeseetea.malariacare.database.model.TabGroup;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
+import org.eyeseetea.malariacare.network.PullClient;
 
 
 /**
  * Created by nacho on 28/03/16.
  */
-public class VariantSpecificUtils {
+public class VariantSpecificUtils{
 
-    public static void showAlert(int titleId, CharSequence text, Context context) {
-        final Dialog dialog = new Dialog(context);
-        dialog.setContentView(R.layout.dialog_about);
-        dialog.setTitle(titleId);
-        dialog.setCancelable(true);
-
-        //set up text title
-        TextView textTile = (TextView) dialog.findViewById(R.id.aboutTitle);
-        textTile.setText(BuildConfig.VERSION_NAME);
-        textTile.setGravity(Gravity.RIGHT);
-
-        //set up image view
-        ImageView img = (ImageView) dialog.findViewById(R.id.aboutImage);
-        img.setImageResource(R.drawable.psi);
-
-        //set up text title
-        TextView textContent = (TextView) dialog.findViewById(R.id.aboutMessage);
-        textContent.setMovementMethod(LinkMovementMethod.getInstance());
-        textContent.setText(text);
-        //set up button
-        Button button = (Button) dialog.findViewById(R.id.aboutButton);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-            }
-        });
-        //now that the dialog is set up, it's time to show it
+    public static void showAlert(int titleId, CharSequence text, Context context){
+        final AlertDialog dialog = new AlertDialog.Builder(context)
+                .setTitle(context.getString(titleId))
+                .setMessage(text)
+                .setNeutralButton(android.R.string.ok, null).create();
         dialog.show();
+        ((TextView)dialog.findViewById(android.R.id.message)).setMovementMethod(LinkMovementMethod.getInstance());
     }
+
 
     public void createNewSurvey(OrgUnit orgUnit, TabGroup tabGroup) {
         ComboOrgUnitTabGroup comboOrgUnitTabGroup=new ComboOrgUnitTabGroup(orgUnit,tabGroup);
