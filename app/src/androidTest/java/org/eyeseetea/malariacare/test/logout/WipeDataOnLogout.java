@@ -105,20 +105,4 @@ public class WipeDataOnLogout {
 
         Intents.release();
     }
-
-//    @Test
-//    public void loginWithBadCredentials(){
-//        onView(withId(org.hisp.dhis.android.sdk.R.id.server_url)).perform(replaceText(SDKTestUtils.HNQIS_DEV_STAGING));
-//        onView(withId(org.hisp.dhis.android.sdk.R.id.username)).perform(replaceText(SDKTestUtils.TEST_USERNAME_WITH_PERMISSION));
-//        onView(withId(org.hisp.dhis.android.sdk.R.id.password)).perform(replaceText("bad"));
-//        Log.d(TAG, "loginWithBadCredentials before click");
-//        onView(withId(org.hisp.dhis.android.sdk.R.id.login_button)).perform(click());
-//
-//        Log.d(TAG, "loginWithBadCredentials checking popup");
-
-//        onView(withText(android.R.string.ok)).perform(click());
-    //XXX The error dialog should be captured but it is not because the sdk customdialog blocks the main ui thread
-    //onView(withText(SDKTestUtils.UNABLE_TO_LOGIN)).check(matches(isDisplayed()));
-//    }
-
 }
