@@ -23,12 +23,16 @@ import android.support.test.espresso.Espresso;
 import android.support.test.espresso.IdlingResource;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
+import android.util.Log;
 
 import org.eyeseetea.malariacare.LoginActivity;
 import org.eyeseetea.malariacare.R;
+import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
+import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.test.utils.ElapsedTimeIdlingResource;
 import org.eyeseetea.malariacare.test.utils.SDKTestUtils;
+import org.eyeseetea.malariacare.utils.Constants;
 import org.hamcrest.Matchers;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -38,10 +42,12 @@ import org.junit.runner.RunWith;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
+import static android.support.test.espresso.assertion.ViewAssertions.doesNotExist;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withTagValue;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
-import static org.eyeseetea.malariacare.test.utils.SDKTestUtils.getActivityInstance;
+import static junit.framework.Assert.assertTrue;
+import static org.eyeseetea.malariacare.test.utils.SDKTestUtils.*;
 
 /**
  * Created by idelcano on 24/02/16.
@@ -60,9 +66,8 @@ public class PushConflictTest {
     @Before
     public void setup(){
         //force init go to logging activity.
-        SDKTestUtils.goToLogin();
         //set the test limit( and throw exception if the time is exceded)
-        SDKTestUtils.setTestTimeoutSeconds(SDKTestUtils.DEFAULT_TEST_TIME_LIMIT);
+        SDKTestUtils.setTestTimeoutSeconds(SDKTestUtils.DEFAULT_TEST_TIME_LIMIT*10);
     }
 
     @AfterClass
@@ -73,9 +78,6 @@ public class PushConflictTest {
     @Test
     public void pushWithDataElementConflict(){
         //GIVEN
-        /*
-        login(HNQIS_DEV_STAGING, TEST_USERNAME_WITH_PERMISSION, TEST_PASSWORD_WITH_PERMISSION);
-        waitForPull(DEFAULT_WAIT_FOR_PULL);
 
         startSurvey(1, 2);
         fillSurvey(7, "Yes");
@@ -103,8 +105,9 @@ public class PushConflictTest {
         assertTrue(survey.getEventUid() == null);
 
         assertTrue(survey.getStatus() == Constants.SURVEY_CONFLICT);
-        */
     }
+
+
 
 
     public static void checkConflict() {

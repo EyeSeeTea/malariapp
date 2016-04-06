@@ -46,8 +46,10 @@ import org.eyeseetea.malariacare.database.model.Program;
 import org.eyeseetea.malariacare.database.model.Question;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.model.Survey$Table;
+import org.eyeseetea.malariacare.database.model.Value;
 import org.eyeseetea.malariacare.utils.Constants;
 import org.hamcrest.Matchers;
+import org.hisp.dhis.android.sdk.persistence.models.DataValue;
 import org.hisp.dhis.android.sdk.persistence.models.Event;
 import org.hisp.dhis.android.sdk.persistence.models.OrganisationUnit;
 import org.hisp.dhis.android.sdk.persistence.models.OrganisationUnit$Table;
@@ -371,6 +373,25 @@ public class SDKTestUtils {
                 .from(Event.class)
                 .count();
     }
+
+    public static long getDataValueCount(){
+        return new Select().count()
+                .from(DataValue.class)
+                .count();
+    }
+
+    public static long getSurveyCount(){
+        return new Select().count()
+                .from(Survey.class)
+                .count();
+    }
+
+    public static long getValueCount(){
+        return new Select().count()
+                .from(Value.class)
+                .count();
+    }
+
     public static Activity getActivityInstance() {
         final Activity[] activity = new Activity[1];
         Instrumentation instrumentation = InstrumentationRegistry.getInstrumentation();
