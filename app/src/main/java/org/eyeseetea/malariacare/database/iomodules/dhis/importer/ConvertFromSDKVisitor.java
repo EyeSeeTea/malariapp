@@ -69,6 +69,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
 
 public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
 
@@ -278,11 +279,6 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
             questionOrCompositeScore=buildControlDataElement(sdkDataElementExtended);
         } else {
             Log.d(TAG, "Error" + sdkDataElementExtended.getDataElement().toString());
-            //Fixme set the controldataelements in the program, or edit sdk
-            if(appMapObjects.containsKey(sdkDataElementExtended.getDataElement().getUid()))
-                return;
-            questionOrCompositeScore=buildControlDataElement(sdkDataElementExtended);
-            sdkDataElementExtended.isControlDataElement();
             return;
         }
         appMapObjects.put(sdkDataElementExtended.getDataElement().getUid(), questionOrCompositeScore);
@@ -382,15 +378,20 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
             appMapObjects.put(dataValue.getEvent(), survey);
             return;
         }
-        //Datavalue is a value from a question
-        Question question=(Question)appMapObjects.get(dataValue.getDataElement());
 
         Value value=new Value();
-        value.setQuestion(question);
-        value.setSurvey(survey);
+        //Datavalue is a value from a question
+        org.eyeseetea.malariacare.database.model.Option option = null;
+        try{
+            Question question=(Question)appMapObjects.get(dataValue.getDataElement());
+            value.setQuestion(question);
+            option=sdkDataValueExtended.findOptionByQuestion(question);
+            value.setOption(option);
+        }catch (ClassCastException e){
+            Log.d(TAG,"Ignoring controlDataelement in DataValue converting");
+        }
 
-        org.eyeseetea.malariacare.database.model.Option option=sdkDataValueExtended.findOptionByQuestion(question);
-        value.setOption(option);
+        value.setSurvey(survey);
         //No option -> text question (straight value)
         if(option==null){
             value.setValue(dataValue.getValue());
