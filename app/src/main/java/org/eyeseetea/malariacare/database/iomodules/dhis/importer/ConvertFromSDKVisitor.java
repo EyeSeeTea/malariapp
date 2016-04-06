@@ -267,6 +267,8 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
     @Override
     public void visit(DataElementExtended sdkDataElementExtended) {
         Object questionOrCompositeScore;
+        if(appMapObjects.containsKey(sdkDataElementExtended.getDataElement().getUid()))
+            return;
         if(sdkDataElementExtended.isCompositeScore()){
             questionOrCompositeScore=buildCompositeScore(sdkDataElementExtended);
         }else if(sdkDataElementExtended.isQuestion()){
@@ -275,6 +277,12 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
         }else if (sdkDataElementExtended.isControlDataElement()) {
             questionOrCompositeScore=buildControlDataElement(sdkDataElementExtended);
         } else {
+            Log.d(TAG, "Error" + sdkDataElementExtended.getDataElement().toString());
+            //Fixme set the controldataelements in the program, or edit sdk
+            if(appMapObjects.containsKey(sdkDataElementExtended.getDataElement().getUid()))
+                return;
+            questionOrCompositeScore=buildControlDataElement(sdkDataElementExtended);
+            sdkDataElementExtended.isControlDataElement();
             return;
         }
         appMapObjects.put(sdkDataElementExtended.getDataElement().getUid(), questionOrCompositeScore);
