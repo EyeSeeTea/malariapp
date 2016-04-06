@@ -264,7 +264,7 @@ public class AutoTabAdapter extends ATabAdapter {
         if(questionRow.isCustomTabTableHeader()){
             getViewTableHeader((LinearLayout) rowView, questionRow);
         }else{
-            getViewTableContent(position,(LinearLayout)rowView,questionRow, viewHolder);
+            getViewTableContent((LinearLayout)rowView,questionRow, viewHolder);
             rowView.setBackgroundResource(LayoutUtils.calculateBackgrounds(position));
         }
         return  rowView;
@@ -349,17 +349,19 @@ public class AutoTabAdapter extends ATabAdapter {
         return row;
     }
 
-    private View getViewTableContent(int position,LinearLayout row,QuestionRow questionRow, AutoTabLayoutUtils.ViewHolder viewHolder){
+    private View getViewTableContent(LinearLayout row,QuestionRow questionRow, AutoTabLayoutUtils.ViewHolder viewHolder){
         row.setWeightSum(1f);
         float columnWeight=questionRow.sizeColumns()/1f;
         for(Question question:questionRow.getQuestions()){
             CustomEditText customEditText;
+            Spinner spinner;
             //Create view for columm
             switch (question.getOutput()){
                 case Constants.NO_ANSWER:
                     addTextViewToRow(row,question,columnWeight);
                     viewHolder.addColumnComponent(null);
                     break;
+                case Constants.DATE:
                 case Constants.LONG_TEXT:
                 case Constants.SHORT_TEXT:
                     customEditText= addEditViewToRow(row,question,columnWeight);
@@ -372,10 +374,27 @@ public class AutoTabAdapter extends ATabAdapter {
                     customEditText.addTextChangedListener(new TextViewListener(false, question));
                     viewHolder.addColumnComponent(customEditText);
                     break;
+                case Constants.POSITIVE_INT:
+                    customEditText= addEditIntViewToRow(row, question, columnWeight);
+                    customEditText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(Constants.MAX_INT_CHARS), new MinMaxInputFilter(1, null)});
+                    customEditText.addTextChangedListener(new TextViewListener(false, question));
+                    viewHolder.addColumnComponent(customEditText);
+                    break;
                 case Constants.DROPDOWN_LIST:
-                    Spinner spinner = addSpinnerViewToRow(row,question,columnWeight);
+                    spinner = addSpinnerViewToRow(row,question,columnWeight);
                     spinner.setOnItemSelectedListener(new SpinnerListener(false, question, new AutoTabLayoutUtils.ViewHolder(spinner), this));
                     viewHolder.addColumnComponent(spinner);
+                    break;
+                case Constants.DROPDOWN_LIST_DISABLED:
+                    spinner = addSpinnerViewToRow(row,question,columnWeight);
+                    spinner.setOnItemSelectedListener(new SpinnerListener(false, question, new AutoTabLayoutUtils.ViewHolder(spinner), this));
+                    AutoTabLayoutUtils.autoFillAnswer(new AutoTabLayoutUtils.ViewHolder(spinner), scoreHolder, question, totalNum, totalDenum, getContext(), elementInvisibility, this);
+                    viewHolder.addColumnComponent(spinner);
+                    break;
+                case Constants.RADIO_GROUP_HORIZONTAL:
+                case Constants.RADIO_GROUP_VERTICAL:
+                    RadioGroup radioGroup = addRadioGroupViewToRow(row,question,columnWeight);
+                    radioGroup.setOnCheckedChangeListener(new RadioGroupListener(question, new AutoTabLayoutUtils.ViewHolder(radioGroup), this));
                     break;
             }
         }
@@ -408,6 +427,7 @@ public class AutoTabAdapter extends ATabAdapter {
         rowLayout.setWeightSum(columnWeight);
         CustomEditText editText = new CustomEditText(getContext());
         editText.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1.0f));
+
         rowLayout.addView(editText);
         return editText;
     }
@@ -434,6 +454,18 @@ public class AutoTabAdapter extends ATabAdapter {
         optionList.add(0, new Option(Constants.DEFAULT_SELECT_OPTION));
         spinner.setAdapter(new OptionArrayAdapter(getContext(), optionList));
         return spinner;
+    }
+
+    private RadioGroup addRadioGroupViewToRow (LinearLayout rowLayout, Question question, float columnWeight) {
+        rowLayout.setWeightSum(columnWeight);
+        RadioGroup radioGroup = new RadioGroup(getContext());
+        radioGroup.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1.0f));
+        rowLayout.addView(radioGroup);
+
+        int radioGroupOrientation=question.getOutput()==Constants.RADIO_GROUP_VERTICAL?LinearLayout.VERTICAL:LinearLayout.HORIZONTAL;
+        AutoTabLayoutUtils.createRadioGroupComponent(question, new AutoTabLayoutUtils.ViewHolder(radioGroup), radioGroupOrientation, getInflater(), getContext());
+
+        return radioGroup;
     }
 
     public void setValues(AutoTabLayoutUtils.ViewHolder viewHolder, QuestionRow questionRow) {
