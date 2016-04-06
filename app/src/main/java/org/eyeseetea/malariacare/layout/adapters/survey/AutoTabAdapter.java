@@ -52,6 +52,7 @@ import org.eyeseetea.malariacare.database.utils.ReadWriteDB;
 import org.eyeseetea.malariacare.layout.adapters.general.OptionArrayAdapter;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.layout.utils.AutoTabLayoutUtils;
+import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 import org.eyeseetea.malariacare.layout.utils.QuestionRow;
 import org.eyeseetea.malariacare.utils.Constants;
 import org.eyeseetea.malariacare.views.CustomEditText;
@@ -248,7 +249,7 @@ public class AutoTabAdapter extends ATabAdapter {
             viewHolder.statement.setText(((Header) item).getName());
         }else{
             QuestionRow questionRow = (QuestionRow)item;
-            rowView = getRowView(parent,questionRow,viewHolder);
+            rowView = getRowView(position,parent,questionRow,viewHolder);
             //Put current values in components
             setValues(viewHolder,questionRow);
             //Disable components whenever required
@@ -258,12 +259,13 @@ public class AutoTabAdapter extends ATabAdapter {
         return rowView;
     }
 
-    private View getRowView(ViewGroup parent,QuestionRow questionRow, AutoTabLayoutUtils.ViewHolder viewHolder){
+    private View getRowView(int position,ViewGroup parent,QuestionRow questionRow, AutoTabLayoutUtils.ViewHolder viewHolder){
         View rowView = getInflater().inflate(R.layout.question_row,parent,false);
         if(questionRow.isCustomTabTableHeader()){
             getViewTableHeader((LinearLayout) rowView, questionRow);
         }else{
-            getViewTableContent((LinearLayout)rowView,questionRow, viewHolder);
+            getViewTableContent(position,(LinearLayout)rowView,questionRow, viewHolder);
+            rowView.setBackgroundResource(LayoutUtils.calculateBackgrounds(position));
         }
         return  rowView;
     }
@@ -347,7 +349,7 @@ public class AutoTabAdapter extends ATabAdapter {
         return row;
     }
 
-    private View getViewTableContent(LinearLayout row,QuestionRow questionRow, AutoTabLayoutUtils.ViewHolder viewHolder){
+    private View getViewTableContent(int position,LinearLayout row,QuestionRow questionRow, AutoTabLayoutUtils.ViewHolder viewHolder){
         row.setWeightSum(1f);
         float columnWeight=questionRow.sizeColumns()/1f;
         for(Question question:questionRow.getQuestions()){
