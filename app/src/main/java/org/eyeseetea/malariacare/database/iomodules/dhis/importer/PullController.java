@@ -373,6 +373,14 @@ public class PullController {
                 dataElementExtended.accept(converter);
             }
         }
+        //Fixme, remove if the controldataelements should be placed in the program
+        //The control dataelements are not in a program.
+        List<DataElement> allDataElements=MetaDataController.getDataElements();
+        for(DataElement dataElement:allDataElements) {
+            if (!ProgressActivity.PULL_IS_ACTIVE) return;
+            DataElementExtended dataElementExtended = new DataElementExtended(dataElement);
+            dataElementExtended.accept(converter);
+        }
 
         if (!ProgressActivity.PULL_IS_ACTIVE) return;
         Log.i(TAG, "Building relationships...");
