@@ -36,6 +36,7 @@ import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.Program
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.UserAccountExtended;
 import org.eyeseetea.malariacare.database.model.Answer;
 import org.eyeseetea.malariacare.database.model.CompositeScore;
+import org.eyeseetea.malariacare.database.model.ControlDataElement;
 import org.eyeseetea.malariacare.database.model.OrgUnit;
 import org.eyeseetea.malariacare.database.model.OrgUnitLevel;
 import org.eyeseetea.malariacare.database.model.OrgUnitProgramRelation;
@@ -271,7 +272,9 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
         }else if(sdkDataElementExtended.isQuestion()){
             questionOrCompositeScore=buildQuestion(sdkDataElementExtended);
             //Question type is annotated in 'answer' from an attribute of the question
-        }else{
+        }else if (sdkDataElementExtended.isControlDataElement()) {
+            questionOrCompositeScore=buildControlDataElement(sdkDataElementExtended);
+        } else {
             return;
         }
         appMapObjects.put(sdkDataElementExtended.getDataElement().getUid(), questionOrCompositeScore);
@@ -473,6 +476,22 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
 
         compositeScoreBuilder.add(compositeScore);
         return compositeScore;
+    }
+
+
+
+    private ControlDataElement buildControlDataElement(DataElementExtended sdkDataElementExtended) {
+        DataElement dataElement=sdkDataElementExtended.getDataElement();
+        ControlDataElement controlDataElement = new ControlDataElement();
+        controlDataElement.setUid(dataElement.getUid());
+        controlDataElement.setCode(dataElement.getCode());
+        controlDataElement.setName(dataElement.getDisplayName());
+        controlDataElement.setValueType(dataElement.getValueType().name());
+
+        //Parent score and Order can only be set once every score in saved
+        controlDataElement.save();
+        return controlDataElement;
+
     }
 
     /**
