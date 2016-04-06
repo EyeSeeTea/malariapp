@@ -26,17 +26,5 @@
     <!-- default server url -->
     <string name="login_info_dhis_default_server_url" translatable="false"></string>
 
-    <!-- Control Data Elements -->
-    <string name="main_score" translatable="false">ggrkfoq6nxA</string>
-    <string name="main_score_a" translatable="false">TgCWRlUXbca</string>
-    <string name="main_score_b" translatable="false">zckZqXOQRHT</string>
-    <string name="main_score_c" translatable="false">DBUwlPCO0Hd</string>
-    <string name="forward_order" translatable="false">FEkGksxhOpH</string>
-    <string name="forward_order_value" translatable="false">9999</string>
-
-    <string name="createdOnUID" translatable="false">rcAkFQFYknk</string>
-    <string name="createdByUid" translatable="false">i7oLpl4D08u</string>
-    <string name="uploadedDateUID" translatable="false">B6afQk2qZTL</string>
-    <string name="uploadedByUID" translatable="false">UzOOxp9OlSb</string>
 
 </resources>
