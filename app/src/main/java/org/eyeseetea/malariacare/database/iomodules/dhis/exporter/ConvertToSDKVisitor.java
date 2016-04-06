@@ -30,6 +30,7 @@ import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.EventExtended;
 import org.eyeseetea.malariacare.database.model.CompositeScore;
+import org.eyeseetea.malariacare.database.model.ControlDataElement;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.model.User;
 import org.eyeseetea.malariacare.database.model.Value;
@@ -103,16 +104,16 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
 
     ConvertToSDKVisitor(Context context){
         this.context=context;
-        mainScoreUID=context.getString(R.string.main_score);
-        mainScoreAUID=context.getString(R.string.main_score_a);
-        mainScoreBUID=context.getString(R.string.main_score_b);
-        mainScoreCUID=context.getString(R.string.main_score_c);
-        forwardOrderUID=context.getString(R.string.forward_order);
+        mainScoreUID= ControlDataElement.findControlDataElementUid(context.getString(R.string.main_score));
+        mainScoreAUID=ControlDataElement.findControlDataElementUid(context.getString(R.string.main_score_a));
+        mainScoreBUID=ControlDataElement.findControlDataElementUid(context.getString(R.string.main_score_b));
+        mainScoreCUID=ControlDataElement.findControlDataElementUid(context.getString(R.string.main_score_c));
+        forwardOrderUID=ControlDataElement.findControlDataElementUid(context.getString(R.string.forward_order));
 
-        createdOnUID =context.getString(R.string.createdOnUID);
-        createdByUID =context.getString(R.string.createdByUid);
-        updatedDateUID=context.getString(R.string.uploadedDateUID);
-        updatedUserUID =context.getString(R.string.createdByUid);
+        createdOnUID =ControlDataElement.findControlDataElementUid(context.getString(R.string.createdOnUID));
+        createdByUID =ControlDataElement.findControlDataElementUid(context.getString(R.string.createdByUid));
+        updatedDateUID=ControlDataElement.findControlDataElementUid(context.getString(R.string.uploadedDateUID));
+        updatedUserUID =ControlDataElement.findControlDataElementUid(context.getString(R.string.createdByUid));
         surveys = new ArrayList<>();
         events = new ArrayList<>();
     }
