@@ -224,6 +224,9 @@ public class DashboardController {
         if(DashboardOrientation.VERTICAL.equals(getOrientation())){
             //Mark currentTab (only necessary for vertical orientation)
             currentTab = getModuleByName(AssessModuleController.getSimpleName()).getName();
+            hideAssessVerticalTitle();
+            hideImproveVerticalTitle();
+            hideImprove();
         }else{
             //Move into the assess tab
             tabHost.setCurrentTabByTag(AssessModuleController.getSimpleName());

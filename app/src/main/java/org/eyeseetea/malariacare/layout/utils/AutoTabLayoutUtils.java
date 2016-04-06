@@ -54,6 +54,7 @@ import org.eyeseetea.malariacare.layout.adapters.survey.AutoTabAdapter;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.utils.Constants;
 import org.eyeseetea.malariacare.utils.Utils;
+import org.eyeseetea.malariacare.views.CustomEditText;
 import org.eyeseetea.malariacare.views.CustomRadioButton;
 import org.eyeseetea.malariacare.views.CustomTextView;
 
@@ -79,9 +80,31 @@ public class AutoTabLayoutUtils {
         // Main component in the row: Spinner, EditText or RadioGroup
         public View component;
 
+        private List<View> columnComponents;
+
         public CustomTextView num;
         public CustomTextView denum;
-        public int type;
+
+        public ViewHolder(){
+            columnComponents = new ArrayList<>();
+        }
+
+        public ViewHolder(View component){
+            this();
+            this.component=component;
+        }
+
+        public void addColumnComponent(View component){
+            this.columnComponents.add(component);
+        }
+
+        public View getColumnComponent(int position){
+            if(position > (this.columnComponents.size()-1)){
+                return null;
+            }
+
+            return this.columnComponents.get(position);
+        }
 
         /**
          * Fixes a bug in older apis where a RadioGroup cannot find its children by id
@@ -108,6 +131,46 @@ public class AutoTabLayoutUtils {
             }
             return null;
         }
+
+
+        public void setText(String text){
+            if(component==null || !(component instanceof CustomEditText)){
+                return;
+            }
+
+            ((CustomEditText)component).setText(text);
+        }
+
+        public void setNumText(String text){
+            if(num==null){
+                return;
+            }
+
+            num.setText(text);
+        }
+
+        public void setDenumText(String text){
+            if(denum==null){
+                return;
+            }
+            denum.setText(text);
+        }
+
+        public void setSpinnerSelection(int position){
+            if(component==null || !(component instanceof Spinner)){
+                return;
+            }
+
+            ((Spinner) component).setSelection(position);
+        }
+
+        public void setRadioChecked(Option option){
+            if(component==null || !(component instanceof CustomRadioButton)){
+                return;
+            }
+            ((CustomRadioButton) component.findViewWithTag(option)).setChecked(true);
+        }
+
     }
 
     /**
@@ -129,24 +192,41 @@ public class AutoTabLayoutUtils {
         public CustomTextView qualitativeScore;
     }
 
+    public static void updateReadOnly(ViewHolder viewHolder,QuestionRow questionRow, boolean readonly){
+        if(viewHolder==null || questionRow==null){
+            return;
+        }
+
+        for(int i=0;i<questionRow.sizeColumns();i++){
+            View component = viewHolder.getColumnComponent(i);
+            Question question = questionRow.getQuestions().get(i);
+
+            updateReadOnly(component,question,readonly);
+        }
+    }
+
     /**
      * Enables/Disables input view according to the state of the survey.
      * Sent surveys cannot be modified.
      *
      * @param view
      */
-    public static void updateReadOnly(View view, boolean readOnly) {
-        if (view == null) {
+    public static void updateReadOnly(View view, Question question, boolean readonly) {
+        if (view == null || question==null) {
             return;
+        }
+
+        if(question.getOutput()==Constants.DROPDOWN_LIST_DISABLED){
+            readonly=true;
         }
 
         if (view instanceof RadioGroup) {
             RadioGroup radioGroup = (RadioGroup) view;
             for (int i = 0; i < radioGroup.getChildCount(); i++) {
-                radioGroup.getChildAt(i).setEnabled(!readOnly);
+                radioGroup.getChildAt(i).setEnabled(!readonly);
             }
         } else {
-            view.setEnabled(!readOnly);
+            view.setEnabled(!readonly);
         }
     }
 
@@ -388,8 +468,8 @@ public class AutoTabLayoutUtils {
         Float num = ScoreRegister.calcNum(question);
         Float denum = ScoreRegister.calcDenum(question);
 
-        viewHolder.num.setText(num.toString());
-        viewHolder.denum.setText(denum.toString());
+        viewHolder.setNumText(num.toString());
+        viewHolder.setDenumText(denum.toString());
 
         ScoreRegister.addRecord(question, num, denum);
     }

@@ -59,11 +59,12 @@
                 android:id="@+id/answer"
                 android:spinnerMode="dropdown"
                 android:backgroundTintMode="add"
+                android:backgroundTint="@color/headerColor"
                 android:paddingLeft="2dip"
                 android:paddingTop="2dip"
                 android:paddingRight="20dip"
                 android:paddingBottom="2dip"
-                android:backgroundTint="@color/headerColor"
+
                 android:gravity="right" />
         </LinearLayout>
 

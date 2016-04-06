@@ -22,11 +22,15 @@ package org.eyeseetea.malariacare.layout.adapters.survey;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Context;
+import android.content.res.ColorStateList;
+import android.graphics.PorterDuff;
+import android.os.Build;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.TextWatcher;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -45,6 +49,7 @@ import org.eyeseetea.malariacare.database.model.Tab;
 import org.eyeseetea.malariacare.database.model.Value;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.ReadWriteDB;
+import org.eyeseetea.malariacare.layout.adapters.general.OptionArrayAdapter;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.layout.utils.AutoTabLayoutUtils;
 import org.eyeseetea.malariacare.layout.utils.QuestionRow;
@@ -54,6 +59,7 @@ import org.eyeseetea.malariacare.views.CustomRadioButton;
 import org.eyeseetea.malariacare.views.CustomTextView;
 import org.eyeseetea.malariacare.views.filters.MinMaxInputFilter;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 
@@ -234,11 +240,7 @@ public class AutoTabAdapter extends ATabAdapter {
             setValues(viewHolder, question);
 
             //Disables component if survey has already been sent (except match spinner that are always disabled)
-            if(question.getOutput()==Constants.DROPDOWN_LIST_DISABLED){
-                AutoTabLayoutUtils.updateReadOnly(viewHolder.component, true);
-            }else{
-                AutoTabLayoutUtils.updateReadOnly(viewHolder.component, getReadOnly());
-            }
+            AutoTabLayoutUtils.updateReadOnly(viewHolder.component, question, getReadOnly());
 
         } else if(item instanceof Header){
             rowView = getInflater().inflate(R.layout.headers, parent, false);
@@ -246,15 +248,24 @@ public class AutoTabAdapter extends ATabAdapter {
             viewHolder.statement.setText(((Header) item).getName());
         }else{
             QuestionRow questionRow = (QuestionRow)item;
-            rowView = getInflater().inflate(R.layout.question_row,parent,false);
-            if(questionRow.isCustomTabTableHeader()){
-                getViewTableHeader((LinearLayout)rowView,questionRow);
-            }else{
-                getViewTableContent((LinearLayout)rowView,questionRow);
-            }
+            rowView = getRowView(parent,questionRow,viewHolder);
+            //Put current values in components
+            setValues(viewHolder,questionRow);
+            //Disable components whenever required
+            AutoTabLayoutUtils.updateReadOnly(viewHolder,questionRow,getReadOnly());
         }
 
         return rowView;
+    }
+
+    private View getRowView(ViewGroup parent,QuestionRow questionRow, AutoTabLayoutUtils.ViewHolder viewHolder){
+        View rowView = getInflater().inflate(R.layout.question_row,parent,false);
+        if(questionRow.isCustomTabTableHeader()){
+            getViewTableHeader((LinearLayout) rowView, questionRow);
+        }else{
+            getViewTableContent((LinearLayout)rowView,questionRow, viewHolder);
+        }
+        return  rowView;
     }
 
     private View getView(int position, ViewGroup parent, View rowView, Question question, AutoTabLayoutUtils.ViewHolder viewHolder) {
@@ -336,22 +347,40 @@ public class AutoTabAdapter extends ATabAdapter {
         return row;
     }
 
-    private View getViewTableContent(LinearLayout row,QuestionRow questionRow){
+    private View getViewTableContent(LinearLayout row,QuestionRow questionRow, AutoTabLayoutUtils.ViewHolder viewHolder){
         row.setWeightSum(1f);
         float columnWeight=questionRow.sizeColumns()/1f;
         for(Question question:questionRow.getQuestions()){
-            if(Constants.NO_ANSWER==question.getOutput()){
-                addTextViewToRow(row,question,columnWeight);//calculate_background(row)
-            }else /*if (Constants.LONG_TEXT==question.getOutput())*/{
-
-                addEditViewToRow(row,question,columnWeight);
+            CustomEditText customEditText;
+            //Create view for columm
+            switch (question.getOutput()){
+                case Constants.NO_ANSWER:
+                    addTextViewToRow(row,question,columnWeight);
+                    viewHolder.addColumnComponent(null);
+                    break;
+                case Constants.LONG_TEXT:
+                case Constants.SHORT_TEXT:
+                    customEditText= addEditViewToRow(row,question,columnWeight);
+                    customEditText.addTextChangedListener(new TextViewListener(false, question));
+                    viewHolder.addColumnComponent(customEditText);
+                    break;
+                case Constants.INT:
+                    customEditText= addEditIntViewToRow(row, question, columnWeight);
+                    customEditText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(Constants.MAX_INT_CHARS)});
+                    customEditText.addTextChangedListener(new TextViewListener(false, question));
+                    viewHolder.addColumnComponent(customEditText);
+                    break;
+                case Constants.DROPDOWN_LIST:
+                    Spinner spinner = addSpinnerViewToRow(row,question,columnWeight);
+                    spinner.setOnItemSelectedListener(new SpinnerListener(false, question, new AutoTabLayoutUtils.ViewHolder(spinner), this));
+                    viewHolder.addColumnComponent(spinner);
+                    break;
             }
         }
         return row;
     }
 
     private void addTextViewToRow(LinearLayout rowLayout, Question question, float columnWeight, Integer background, Integer fontColor, String fontName, String fontDimension){
-        //TODO Styling required...
         rowLayout.setWeightSum(columnWeight);
         CustomTextView textView = new CustomTextView(getContext());
         textView.setText(question.getForm_name());
@@ -372,15 +401,58 @@ public class AutoTabAdapter extends ATabAdapter {
         addTextViewToRow(rowLayout, question, columnWeight, null, null, null, null);
     }
 
-    private void addEditViewToRow(LinearLayout rowLayout, Question question, float columnWeight){
+    private CustomEditText addEditViewToRow(LinearLayout rowLayout, Question question, float columnWeight){
         //TODO Add the right widget, style, setvalues, readonly, ...
         rowLayout.setWeightSum(columnWeight);
         CustomEditText editText = new CustomEditText(getContext());
         editText.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1.0f));
         rowLayout.addView(editText);
+        return editText;
+    }
+
+    private CustomEditText addEditIntViewToRow(LinearLayout rowLayout, Question question, float columnWeight){
+        CustomEditText customEditText=addEditViewToRow(rowLayout,question,columnWeight);
+        customEditText.setInputType(EditorInfo.TYPE_CLASS_NUMBER);
+        return customEditText;
+    }
+
+    private Spinner addSpinnerViewToRow (LinearLayout rowLayout, Question question, float columnWeight) {
+        rowLayout.setWeightSum(columnWeight);
+        Spinner spinner = new Spinner(getContext(), Spinner.MODE_DROPDOWN);
+        spinner.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1.0f));
+        if(Build.VERSION.SDK_INT >=Build.VERSION_CODES.LOLLIPOP){
+            spinner.setBackgroundTintMode(PorterDuff.Mode.ADD);
+            spinner.setBackgroundTintList(ColorStateList.valueOf(getContext().getResources().getColor(R.color.headerColor)));
+        }
+        //this colors de arrow
+//        spinner.getBackground().setColorFilter(getContext().getResources().getColor(R.color.headerColor), PorterDuff.Mode.SRC_ATOP);
+
+        rowLayout.addView(spinner);
+        List<Option> optionList = new ArrayList<>(question.getAnswer().getOptions());
+        optionList.add(0, new Option(Constants.DEFAULT_SELECT_OPTION));
+        spinner.setAdapter(new OptionArrayAdapter(getContext(), optionList));
+        return spinner;
+    }
+
+    public void setValues(AutoTabLayoutUtils.ViewHolder viewHolder, QuestionRow questionRow) {
+        for(int i=0;i<questionRow.sizeColumns();i++){
+            View component = viewHolder.getColumnComponent(i);
+            Question question = questionRow.getQuestions().get(i);
+            setValues(component,question);
+        }
+    }
+
+    public void setValues(View component, Question question){
+        if(component==null || question==null){
+            return;
+        }
+        setValues(new AutoTabLayoutUtils.ViewHolder(component),question);
     }
 
     public void setValues(AutoTabLayoutUtils.ViewHolder viewHolder, Question question) {
+        if(viewHolder==null || question==null){
+            return;
+        }
 
         switch (question.getOutput()) {
             case Constants.DATE:
@@ -388,21 +460,19 @@ public class AutoTabAdapter extends ATabAdapter {
             case Constants.INT:
             case Constants.LONG_TEXT:
             case Constants.POSITIVE_INT:
-                ((CustomEditText) viewHolder.component).setText(ReadWriteDB.readValueQuestion(question));
+                viewHolder.setText(ReadWriteDB.readValueQuestion(question));
                 break;
             case Constants.DROPDOWN_LIST:
             case Constants.DROPDOWN_LIST_DISABLED:
-
-                ((Spinner) viewHolder.component).setSelection(ReadWriteDB.readPositionOption(question));
-
+                viewHolder.setSpinnerSelection(ReadWriteDB.readPositionOption(question));
                 List<Float> numdenum = ScoreRegister.getNumDenum(question);
                 if (numdenum != null) {
-                    viewHolder.num.setText(Float.toString(numdenum.get(0)));
-                    viewHolder.denum.setText(Float.toString(numdenum.get(1)));
+                    viewHolder.setNumText(Float.toString(numdenum.get(0)));
+                    viewHolder.setDenumText(Float.toString(numdenum.get(1)));
                 } else {
-                    viewHolder.num.setText(getContext().getString(R.string.number_zero));
-                    viewHolder.denum.setText(Float.toString(ScoreRegister.calcDenum(question)));
-                    ((Spinner) viewHolder.component).setSelection(0);
+                    viewHolder.setNumText(getContext().getString(R.string.number_zero));
+                    viewHolder.setDenumText(Float.toString(ScoreRegister.calcDenum(question)));
+                    viewHolder.setSpinnerSelection(0);
                 }
 
                 break;
@@ -415,13 +485,12 @@ public class AutoTabAdapter extends ATabAdapter {
                     break;
                 }
                 if (value != null) {
-                    ((CustomRadioButton) viewHolder.component.findViewWithTag(value.getOption())).setChecked(true);
-
-                    viewHolder.num.setText(Float.toString(numdenumradiobutton.get(0)));
-                    viewHolder.denum.setText(Float.toString(numdenumradiobutton.get(1)));
+                    viewHolder.setRadioChecked(value.getOption());
+                    viewHolder.setNumText(Float.toString(numdenumradiobutton.get(0)));
+                    viewHolder.setDenumText(Float.toString(numdenumradiobutton.get(1)));
                 } else {
-                    viewHolder.num.setText(getContext().getString(R.string.number_zero));
-                    viewHolder.denum.setText(Float.toString(ScoreRegister.calcDenum(question)));
+                    viewHolder.setNumText(getContext().getString(R.string.number_zero));
+                    viewHolder.setDenumText(Float.toString(ScoreRegister.calcDenum(question)));
                 }
                 break;
             default:

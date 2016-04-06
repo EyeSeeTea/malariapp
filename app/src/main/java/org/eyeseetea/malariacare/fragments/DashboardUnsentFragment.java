@@ -118,8 +118,7 @@ public class DashboardUnsentFragment extends ListFragment implements IModuleFrag
         super.onActivityCreated(savedInstanceState);
         initAdapter();
         initListView();
-        if(!PreferencesState.getInstance().isVerticalDashboard())
-                registerForContextMenu(getListView());
+        registerForContextMenu(getListView());
     }
 
     @Override
@@ -266,76 +265,6 @@ public class DashboardUnsentFragment extends ListFragment implements IModuleFrag
         listView.addHeaderView(header);
         listView.addFooterView(footer);
         setListAdapter((BaseAdapter) adapter);
-        if(!PreferencesState.getInstance().isVerticalDashboard())
-                Session.listViewUnsent = listView;
-        else{
-
-            // Create a ListView-specific touch listener. ListViews are given special treatment because
-            // by default they handle touches for their list items... i.e. they're in charge of drawing
-            // the pressed state (the list selector), handling list item clicks, etc.
-            SwipeDismissListViewTouchListener touchListener =
-                    new SwipeDismissListViewTouchListener(
-                            listView,
-                            new SwipeDismissListViewTouchListener.DismissCallbacks() {
-                                @Override
-                                public boolean canDismiss(int position) {
-                                    return position>0 && position<=surveys.size();
-                                }
-
-                                @Override
-                                public void onDismiss(ListView listView, int[] reverseSortedPositions) {
-                                    for (final int position : reverseSortedPositions) {
-                                        final Survey survey = ((Survey)adapter.getItem(position-1));
-                                        new AlertDialog.Builder(getActivity())
-                                                .setTitle(getActivity().getString(R.string.dialog_title_delete_survey))
-                                                .setMessage(String.format(getActivity().getString(R.string.dialog_info_delete_survey), survey.getProgram().getName()))
-                                                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                                                    public void onClick(DialogInterface arg0, int arg1) {
-                                                        survey.delete();
-                                                        //Reload data using service
-                                                        Intent surveysIntent=new Intent(getActivity(), SurveyService.class);
-                                                        surveysIntent.putExtra(SurveyService.SERVICE_METHOD, SurveyService.RELOAD_DASHBOARD_ACTION);
-                                                        getActivity().startService(surveysIntent);
-                                                    }
-                                                })
-                                                .setNegativeButton(android.R.string.no, null).create().show();
-                                    }
-
-                                }
-                            });
-            listView.setOnTouchListener(touchListener);
-            // Setting this scroll listener is required to ensure that during ListView scrolling,
-            // we don't look for swipes.
-            listView.setOnScrollListener(touchListener.makeScrollListener());
-
-            listView.setLongClickable(true);
-
-            listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-                @Override
-                public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
-
-
-                    new AlertDialog.Builder(getActivity())
-                            .setTitle("Pushing data")
-                            .setMessage("Are you sure? You can not undo this action")
-                            .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface arg0, int arg1) {
-                                    // We launch the login system, to authorize the push
-                                    Intent authorizePush = new Intent(getActivity(), LoginActivity.class);
-                                    authorizePush.putExtra("Action", Constants.AUTHORIZE_PUSH);
-                                    authorizePush.putExtra("Survey", position);
-                                    startActivityForResult(authorizePush, Constants.AUTHORIZE_PUSH);
-                                }
-                            })
-                            .setNegativeButton(android.R.string.no, null).create().show();
-
-
-                    return true;
-                }
-            });
-        }
-
-
     }
 
     @Override
