@@ -393,8 +393,8 @@ public class AutoTabAdapter extends ATabAdapter {
         if (fontColor != null) textView.setTextColor(fontColor);
         if (fontName != null) textView.setmFontName(fontName);
         if (fontDimension != null) textView.setmDimension(fontDimension);
-        if (PreferencesState.getInstance().getScale() == getContext().getString(R.string.font_size_system))
-            textView.setTextSize(getContext().getResources().getDimension(R.dimen.medium_small_text_size));
+        if (PreferencesState.getInstance().getScale().equals(getContext().getString(R.string.font_size_system)))
+            textView.setTextSize(getContext().getResources().getDimension(R.dimen.small_medium_text_size));
         else
             textView.setTextSize(PreferencesState.getInstance().getFontSize(PreferencesState.getInstance().getScale(), textView.getmDimension()));
     }
