@@ -22,7 +22,6 @@ package org.eyeseetea.malariacare.database.iomodules.dhis.importer;
 import android.content.Context;
 import android.util.Log;
 
-import com.fasterxml.jackson.databind.deser.Deserializers;
 import com.raizlabs.android.dbflow.sql.language.Select;
 import com.squareup.otto.Subscribe;
 
