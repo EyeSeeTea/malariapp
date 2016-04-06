@@ -22,6 +22,7 @@ package org.eyeseetea.malariacare.database.iomodules.dhis.importer;
 import android.content.Context;
 import android.util.Log;
 
+import com.fasterxml.jackson.databind.deser.Deserializers;
 import com.raizlabs.android.dbflow.sql.language.Select;
 import com.squareup.otto.Subscribe;
 
@@ -153,6 +154,8 @@ public class PullController {
             TrackerController.setMaxEvents(PreferencesState.getInstance().getMaxEvents());
             MetaDataController.clearMetaDataLoadedFlags();
             MetaDataController.wipe();
+            PopulateDB.wipeSDKData();
+            PopulateDB.wipeDatabase();
             //Pull new metadata
             postProgress(context.getString(R.string.progress_pull_downloading));
             try {
