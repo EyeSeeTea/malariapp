@@ -104,13 +104,6 @@ public class DashboardSentFragment extends ListFragment implements IModuleFragme
         return f;
     }
 
-
-    // Container Activity must implement this interface
-    public interface OnFeedbackSelectedListener {
-        public void onFeedbackSelected(Survey survey);
-    }
-
-
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
@@ -121,8 +114,8 @@ public class DashboardSentFragment extends ListFragment implements IModuleFragme
     public void onCreate(Bundle savedInstanceState){
         Log.d(TAG, "onCreate");
         super.onCreate(savedInstanceState);
-        orgUnitFilter= PreferencesState.getInstance().getContext().getString(R.string.filter_all_org_units);
-        programFilter= PreferencesState.getInstance().getContext().getString(R.string.filter_all_org_assessments);
+        orgUnitFilter= PreferencesState.getInstance().getContext().getString(R.string.filter_all_org_units).toUpperCase();
+        programFilter= PreferencesState.getInstance().getContext().getString(R.string.filter_all_org_assessments).toUpperCase();
     }
 
     @Override
@@ -140,10 +133,10 @@ public class DashboardSentFragment extends ListFragment implements IModuleFragme
         Log.d(TAG, "onActivityCreated");
         super.onActivityCreated(savedInstanceState);
 
-        hideContainer();
-        //Loading...
-        if(isAdded())
-            setListShown(false);
+//        hideContainer();
+//        //Loading...
+//        if(isAdded())
+//            setListShown(false);
         initAdapter();
         initListView();
     }
@@ -438,7 +431,6 @@ public class DashboardSentFragment extends ListFragment implements IModuleFragme
 
     public void reloadSurveys(List<Survey> newListSurveys) {
         Log.d(TAG, "reloadSurveys (Thread: " + Thread.currentThread().getId() + "): " + newListSurveys.size());
-        boolean hasSurveys = newListSurveys != null && newListSurveys.size() > 0;
         this.surveys.clear();
         this.surveys.addAll(newListSurveys);
         adapter.setItems(newListSurveys);

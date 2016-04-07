@@ -297,7 +297,7 @@ public class AutoTabLayoutUtils {
         return rowView;
     }
 
-    public static View initialiseView(int resource, ViewGroup parent, Question question, ViewHolder viewHolder, int position, LayoutInflater lInflater, boolean table) {
+    public static View initialiseView(int resource, ViewGroup parent, Question question, ViewHolder viewHolder, int position, LayoutInflater lInflater) {
         View rowView = lInflater.inflate(resource, parent, false);
         if (question.hasChildren())
             rowView.setBackgroundResource(R.drawable.background_parent);
@@ -317,10 +317,6 @@ public class AutoTabLayoutUtils {
             viewHolder.statement.setText(question.getForm_name());
 
         return rowView;
-    }
-
-    public static View initialiseView(int resource, ViewGroup parent, Question question, ViewHolder viewHolder, int position, LayoutInflater lInflater) {
-        return initialiseView(resource, parent, question, viewHolder, position, lInflater, false);
     }
 
     public static void initialiseScorableComponent(View rowView, ViewHolder viewHolder) {
