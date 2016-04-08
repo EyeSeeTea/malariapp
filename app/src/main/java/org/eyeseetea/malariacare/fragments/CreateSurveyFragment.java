@@ -454,7 +454,7 @@ public class CreateSurveyFragment extends Fragment {
             List<OrgUnit> orgUnitList = selectedOrgUnit.getChildren();
 
             //if click for hidden levels
-            if(lastClickedOrgUnit!=null && lastClickedOrgUnit.getOrgUnitLevel().getId_org_unit_level()>selectedOrgUnit.getOrgUnitLevel().getId_org_unit_level())
+            if(lastClickedOrgUnit!=null && lastClickedOrgUnit.getOrgUnitLevel()!=null && lastClickedOrgUnit.getOrgUnitLevel().getId_org_unit_level()>selectedOrgUnit.getOrgUnitLevel().getId_org_unit_level())
                 refreshPrograms(selectedOrgUnit);
 
             //If click in real org unit
