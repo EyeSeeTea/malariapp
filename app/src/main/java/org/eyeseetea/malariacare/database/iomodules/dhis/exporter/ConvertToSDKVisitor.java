@@ -333,6 +333,7 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
                 iEvent.delete();
                 Log.d(TAG, "PUSH process...Fail pushing survey: " + iSurvey.getId_survey());
             }else{
+                PushController.getInstance().saveCreationDateInSDK(surveys);
                 iSurvey.setStatus(Constants.SURVEY_SENT);
                 iSurvey.saveMainScore();
                 iSurvey.save();
