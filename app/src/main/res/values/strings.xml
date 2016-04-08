@@ -360,4 +360,12 @@
                <p>sh ${gitPath}/generate_last_commit.sh </p>
         <p>3. Run "git checkout". </p>]]>
     </string>
+
+
+    <!-- Create or patch -->
+    <string name="create">Create</string>
+    <string name="modify">Modify</string>
+    <string name="create_or_modify">Do you want create or modify the survey with date %s ?</string>
+    <string name="loading_last_surveys">Loading last survey...</string>
+
 </resources>

@@ -181,7 +181,6 @@ public class CreateSurveyFragment extends Fragment {
                 //If the survey is validate, it send the order of create survey fragment from this fragment to the activity.
                 if(validateForm()) {
                     createSurvey();
-                    mCallback.onCreateSurvey();
                 }
             }
         });
@@ -271,7 +270,7 @@ public class CreateSurveyFragment extends Fragment {
 
     // Container Activity must implement this interface
     public interface OnCreatedSurveyListener {
-        public void onCreateSurvey();
+        public void onCreateSurvey(OrgUnit orgUnit, TabGroup tabGroup);
     }
 
 
@@ -374,11 +373,6 @@ public class CreateSurveyFragment extends Fragment {
         TabGroup tabGroup = (TabGroup) tabGroupView.getSelectedItem();
 
         // Put new survey in session
-        Survey survey = SurveyPlanner.getInstance().startSurvey(orgUnit,tabGroup);
-        Session.setSurvey(survey);
-
-        //Look for coordinates
-        prepareLocationListener(survey);
 
         //save the lastSelectedOrgUnit and the list of orgUnits
         saveOrgUnit();
@@ -387,26 +381,9 @@ public class CreateSurveyFragment extends Fragment {
         if(!lastOrgUnits.contains(orgUnit.getUid())) {
             saveOrgUnitList(TOKEN);
         }
-    }
-
-    private void prepareLocationListener(Survey survey) {
 
 
-        locationListener = new SurveyLocationListener(survey.getId_survey());
-        LocationManager locationManager = (LocationManager) LocationMemory.getContext().getSystemService(Context.LOCATION_SERVICE);
-        if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-            Log.d(TAG, "requestLocationUpdates via GPS");
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
-        }
-
-        if (locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
-            Log.d(TAG, "requestLocationUpdates via NETWORK");
-            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
-        } else {
-            Location lastLocation = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-            Log.d(TAG, "location not available via GPS|NETWORK, last know: " + lastLocation);
-            locationListener.saveLocation(lastLocation);
-        }
+        mCallback.onCreateSurvey(orgUnit,tabGroup);
     }
 
     private class ProgramSpinnerListener implements AdapterView.OnItemSelectedListener {

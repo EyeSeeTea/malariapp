@@ -24,6 +24,7 @@ import android.location.Location;
 import android.util.Log;
 
 import org.eyeseetea.malariacare.R;
+import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.EventExtended;
 import org.eyeseetea.malariacare.database.model.CompositeScore;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.model.Value;
@@ -35,18 +36,20 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Date;
 import java.util.List;
 
 /**
  * Created by ignac on 21/12/2015.
  */
-public class PushUtils {
-    private static final String TAG = ".PushUtils";
+public class QueryFormatterUtils {
+    private static final String TAG = ".QueryFormatterUtils";
     private static String COMPLETED = "COMPLETED";
 
     private static String TAG_PROGRAM = "program";
     private static String TAG_ORG_UNIT = "orgUnit";
     private static String TAG_EVENTDATE = "eventDate";
+    private static String TAG_EVENT = "event";
     private static String TAG_STATUS = "status";
     private static String TAG_STOREDBY = "storedBy";
     private static String TAG_COORDINATE = "coordinate";
@@ -57,24 +60,45 @@ public class PushUtils {
     private static String TAG_DATAELEMENT = "dataElement";
     private static String TAG_VALUE = "value";
 
+    private static String TAG_STARTDATE = "startDate";
+
     /**
      * Singleton reference
      */
-    private static PushUtils instance;
+    private static QueryFormatterUtils instance;
 
     static Context applicationContext;
 
-    public PushUtils(Context applicationContext) {
+    public QueryFormatterUtils(Context applicationContext) {
         this.applicationContext = applicationContext;
     }
 
-    public static PushUtils getInstance() {
+    public static QueryFormatterUtils getInstance() {
         if (instance == null) {
-            instance = new PushUtils(PreferencesState.getInstance().getContext());
+            instance = new QueryFormatterUtils(PreferencesState.getInstance().getContext());
         }
         return instance;
     }
 
+    /**
+     * Adds metadata info to json object to get the last events
+     *
+     * @return JSONObject with program, orgunit and lastDate
+     * @throws Exception
+     */
+    public String prepareLastEventData(String orgUnit, String program, Date lastDate) {
+        String query="";
+        query="?"+query+TAG_PROGRAM+"="+program;
+
+        query=query+"&"+TAG_ORG_UNIT+"="+orgUnit;
+
+        query=query+"&"+TAG_STARTDATE+"="+android.text.format.DateFormat.format(EventExtended.AMERICAN_DATE_FORMAT, lastDate);
+
+        query=query+"&fields=["+TAG_EVENT+","+PullClient.DATE_FIELD +"]"+"&skipPaging=true";
+        Log.d(TAG, "prepareLastEventData: " + query);
+
+        return query;
+    }
     /**
      * Adds metadata info to json object
      *

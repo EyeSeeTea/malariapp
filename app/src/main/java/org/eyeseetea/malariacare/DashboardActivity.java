@@ -49,12 +49,16 @@ import android.widget.TextView;
 import com.squareup.otto.Subscribe;
 
 
+import org.eyeseetea.malariacare.database.iomodules.dhis.exporter.ConvertToSDKVisitor;
+import org.eyeseetea.malariacare.database.model.OrgUnit;
 import org.eyeseetea.malariacare.database.model.Program;
 import org.eyeseetea.malariacare.database.model.Survey;
+import org.eyeseetea.malariacare.database.model.TabGroup;
 import org.eyeseetea.malariacare.database.model.User;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.database.utils.SurveyAnsweredRatio;
+import org.eyeseetea.malariacare.database.utils.planning.SurveyPlanner;
 import org.eyeseetea.malariacare.fragments.CreateSurveyFragment;
 import org.eyeseetea.malariacare.fragments.DashboardSentFragment;
 import org.eyeseetea.malariacare.fragments.DashboardUnsentFragment;
@@ -63,11 +67,15 @@ import org.eyeseetea.malariacare.fragments.MonitorFragment;
 import org.eyeseetea.malariacare.fragments.SurveyFragment;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.fragments.PlannedFragment;
+import org.eyeseetea.malariacare.network.PullClient;
 import org.eyeseetea.malariacare.receivers.AlarmPushReceiver;
 import org.eyeseetea.malariacare.services.SurveyService;
+import org.eyeseetea.malariacare.utils.Constants;
+import org.eyeseetea.malariacare.utils.VariantSpecificUtils;
 import org.hisp.dhis.android.sdk.events.UiEvent;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.List;
 
 
@@ -88,7 +96,7 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
     boolean isMoveToLeft;
     boolean isMoveToFeedback;
     static Handler handler;
-    static Activity dashboardActivity;
+    public static Activity dashboardActivity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -623,7 +631,7 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
                 .setNegativeButton(android.R.string.no, null)
                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int arg1) {
-                        Survey survey=Session.getSurvey();
+                        Survey survey = Session.getSurvey();
                         survey.setCompleteSurveyState();
                         alertOnComplete(survey);
                         closeSurveyFragment();
@@ -775,8 +783,42 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
                 .create().show();
     }
 
+    /**
+     * Create new survey from CreateSurveyFragment
+     */
     @Override
-    public void onCreateSurvey() {
+    public void onCreateSurvey(final OrgUnit orgUnit,final TabGroup tabGroup) {
+        VariantSpecificUtils variantSpecificUtils = new VariantSpecificUtils();
+        variantSpecificUtils.createNewSurvey(orgUnit,tabGroup);
+    }
+
+    /**
+     * Modify survey from CreateSurveyFragment
+     */
+    public void modifySurvey(OrgUnit orgUnit, TabGroup tabGroup, PullClient.EventInfo eventInfo){
+        Survey survey = Survey.getLastSurvey(orgUnit, tabGroup);
+        if(!survey.getEventUid().equals(eventInfo.getEventUid())){
+            survey=SurveyPlanner.getInstance().startSurvey(orgUnit,tabGroup);
+            survey.setEventUid(eventInfo.getEventUid());
+            survey.setCompletionDate(eventInfo.getEventDate());
+            //If the event not exist, need a fake event to upgrate the server datavalues.
+            ConvertToSDKVisitor.buildFakeEvent(survey.getOrgUnit(),survey.getTabGroup(), eventInfo);
+        }
+        //Upgrade the uploaded date
+        survey.setUploadedDate(new Date());
+        survey.setStatus(Constants.SURVEY_IN_PROGRESS);
+        Session.setSurvey(survey);
+        prepareLocationListener(survey);
+        initSurvey();
+    }
+
+    /**
+     * Create new survey from VariantSpecificUtils
+     */
+    public void createNewSurvey(OrgUnit orgUnit, TabGroup tabGroup){
+        Survey survey=SurveyPlanner.getInstance().startSurvey(orgUnit,tabGroup);
+        Session.setSurvey(survey);
+        prepareLocationListener(survey);
         initSurvey();
     }
 

@@ -26,6 +26,7 @@ import android.support.test.espresso.Espresso;
 import android.support.test.espresso.IdlingPolicies;
 import android.support.test.espresso.IdlingResource;
 import android.support.test.espresso.NoActivityResumedException;
+import android.support.test.espresso.NoMatchingViewException;
 import android.support.test.espresso.ViewAssertion;
 import android.support.test.runner.lifecycle.ActivityLifecycleMonitorRegistry;
 import android.support.test.runner.lifecycle.Stage;
@@ -35,6 +36,7 @@ import static android.support.test.espresso.Espresso.openActionBarOverflowOrOpti
 import com.raizlabs.android.dbflow.sql.builder.Condition;
 import com.raizlabs.android.dbflow.sql.language.Select;
 
+import org.eyeseetea.malariacare.BuildConfig;
 import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.LoginActivity;
 import org.eyeseetea.malariacare.ProgressActivity;
@@ -49,6 +51,7 @@ import org.eyeseetea.malariacare.database.model.Survey$Table;
 import org.eyeseetea.malariacare.utils.Constants;
 import org.hamcrest.Matchers;
 import org.hisp.dhis.android.sdk.persistence.models.Event;
+import org.hisp.dhis.android.sdk.persistence.models.Event$Table;
 import org.hisp.dhis.android.sdk.persistence.models.OrganisationUnit;
 import org.hisp.dhis.android.sdk.persistence.models.OrganisationUnit$Table;
 import org.hisp.dhis.android.sdk.persistence.models.OrganisationUnitDataSet;
@@ -101,7 +104,7 @@ public class SDKTestUtils {
     public static final String MARK_AS_COMPLETED = "Mark as completed";
     public static final String DELETE_ACTION = "Delete";
     public static final String EDIT_ACTION = "Edit";
-    
+
 
     public static final String UNABLE_TO_LOGIN = "Unable to log in due to an invalid username or password.";
 
@@ -122,7 +125,7 @@ public class SDKTestUtils {
 
     public static void waitForPull(int seconds) {
         //then: wait for progressactivity + dialog + ok (to move to dashboard)
-        IdlingResource idlingResource = new ElapsedTimeIdlingResource(seconds * 1000);
+        IdlingResource idlingResource = new ElapsedTimeIdlingResource(seconds * 2000);
         Espresso.registerIdlingResources(idlingResource);
 
         onView(withText(android.R.string.ok)).perform(click());
@@ -142,12 +145,27 @@ public class SDKTestUtils {
         return survey;
     }
 
+    public static void selectStartSurvey(int idxOrgUnit, int idxProgram) {
+        selectSurvey(idxOrgUnit, idxProgram);
+
+    }
     public static void startSurvey(int idxOrgUnit, int idxProgram) {
+        selectSurvey(idxOrgUnit, idxProgram);
+
+        //Fixme
+        try{
+            onView(withText(R.string.create)).perform(click());
+        }catch (NoMatchingViewException e){
+            Log.d(TAG,"Create option is not working in hnqis");
+        }
+    }
+
+    private static void selectSurvey(int idxOrgUnit, int idxProgram) {
         //when: click on assess tab + plus button
         onView(withTagValue(Matchers.is((Object) getActivityInstance().getApplicationContext().getString(R.string.tab_tag_assess)))).perform(click());
         onView(withId(R.id.plusButton)).perform(click());
 
-        //then: start survey 'test facility 1'+ 'family planning'+start
+        //then: start survey 'idxOrgUnit'+ 'idxProgram'+start
 
 
         //Wait for SurveyService loads the Orgunit and programs
@@ -162,9 +180,7 @@ public class SDKTestUtils {
 
         onView(withId(R.id.program)).perform(click());
         onData(is(instanceOf(Program.class))).atPosition(idxProgram).perform(click());
-
         onView(withId(R.id.create_form_button)).perform(click());
-
     }
 
     public static void fillSurvey(int numQuestions, String optionValue) {
@@ -185,9 +201,11 @@ public class SDKTestUtils {
                         .atPosition(i)
                         .onChildView(withId(R.id.answer)).onChildView(withText(optionValue))
                         .perform(click());
+            } catch (NoMatchingViewException e) {
+                Log.e(TAG,"Exception selecting option value " + optionValue);
+            }
+            finally{
                 Espresso.unregisterIdlingResources(idlingResource);
-            } catch (Exception e) {
-                Log.e(TAG,"Exception selecting option value" + optionValue);
             }
 
         }
@@ -202,20 +220,22 @@ public class SDKTestUtils {
     public static void fillCompulsorySurvey(int numQuestions, String optionValue) {
         //when: answer NO to every question
         //Wait for fragment load data from SurveyService
-
+        IdlingResource idlingResource=null;
         onView(withTagValue(Matchers.is((Object) getActivityInstance().getApplicationContext().getString(R.string.tab_tag_assess)))).perform(click());
         for (int i = 0; i < numQuestions; i++) {
             try {
-                IdlingResource idlingResource = new ElapsedTimeIdlingResource(1 * 1000);
+                idlingResource = new ElapsedTimeIdlingResource(1 * 1000);
                 Espresso.registerIdlingResources(idlingResource);
                 onData(is(instanceOf(Question.class)))
                         .inAdapterView(withId(R.id.listView))
                         .atPosition(i)
                         .onChildView(withId(R.id.answer)).onChildView(withText(optionValue))
                         .perform(click());
+            } catch (NoMatchingViewException e) {
+                Log.e(TAG,"Exception selecting option value " + optionValue);
+            }
+            finally {
                 Espresso.unregisterIdlingResources(idlingResource);
-            } catch (Exception e) {
-                Log.e(TAG,"Exception selecting option value" + optionValue);
             }
         }
     }
@@ -371,6 +391,14 @@ public class SDKTestUtils {
                 .from(Event.class)
                 .count();
     }
+
+    public static Event getEvent(String eventUid){
+        return new Select()
+                .from(Event.class)
+                .where(Condition.column(Event$Table.ID).eq(eventUid))
+                .querySingle();
+    }
+
     public static Activity getActivityInstance() {
         final Activity[] activity = new Activity[1];
         Instrumentation instrumentation = InstrumentationRegistry.getInstrumentation();
