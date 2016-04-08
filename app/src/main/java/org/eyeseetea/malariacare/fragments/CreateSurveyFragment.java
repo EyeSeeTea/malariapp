@@ -104,6 +104,8 @@ public class CreateSurveyFragment extends Fragment {
     private OrgUnit lastSelectedOrgUnit;
     private String lastOrgUnits = TOKEN;
 
+    private OrgUnit lastClickedOrgUnit;
+
     private LayoutInflater lInflater;
     LinearLayout llLayout;
 
@@ -188,27 +190,33 @@ public class CreateSurveyFragment extends Fragment {
 
         //Populate Organization Unit DDL
         ViewHolder viewHolder = new ViewHolder();
-        orgUnitList.add(0, orgUnitDefaultOption);
+        List <OrgUnit> orgUnitListFirstLevel=new ArrayList<>();
+        for(OrgUnit orgUnit:orgUnitList){
+            if(orgUnitList.get(0).getOrgUnitLevel()==orgUnit.getOrgUnitLevel()) {
+                orgUnitListFirstLevel.add(orgUnit);
+            }
+        }
+        orgUnitListFirstLevel.add(0, orgUnitDefaultOption);
         viewHolder.component = llLayout.findViewById(R.id.org_unit);
         orgUnitView = (Spinner) viewHolder.component;
-        orgUnitView.setTag(orgUnitList.get(1).getOrgUnitLevel());
-        orgUnitView.setAdapter(new OrgUnitArrayAdapter( getActivity(), orgUnitList));
+        orgUnitView.setTag(orgUnitListFirstLevel.get(1).getOrgUnitLevel());
+        orgUnitView.setAdapter(new OrgUnitArrayAdapter( getActivity(), orgUnitListFirstLevel));
         orgUnitView.setOnItemSelectedListener(new OrgUnitSpinnerListener(viewHolder));
 
         View childView = llLayout.findViewById(R.id.org_unit_container);
         CustomTextView childViewTextView = (CustomTextView) childView.findViewById(R.id.textView2);
-        childViewTextView.setText(orgUnitList.get(1).getOrgUnitLevel().getName());
+        childViewTextView.setText(orgUnitListFirstLevel.get(1).getOrgUnitLevel().getName());
 
 
         //Put in org unit hierarchy map
         orgUnitHierarchyView = new LinkedHashMap<>();
-        orgUnitHierarchyView.put(orgUnitList.get(1).getOrgUnitLevel(), childView);
+        orgUnitHierarchyView.put(orgUnitListFirstLevel.get(1).getOrgUnitLevel(), childView);
 
         //Prepare Organization Unit Item DDL
         orgUnitContainerItems = llLayout.findViewById(R.id.org_unit_container_items);
 
         for (OrgUnitLevel orgUnitLevel : orgUnitLevelList) {
-            if (!orgUnitLevel.equals(orgUnitList.get(1).getOrgUnitLevel())) {
+            if (!orgUnitLevel.equals(orgUnitListFirstLevel.get(1).getOrgUnitLevel())) {
                 childView = lInflater.inflate(R.layout.create_survey_org_unit_item_fragment, (LinearLayout) orgUnitContainerItems, false);
                 childViewTextView = (CustomTextView) childView.findViewById(R.id.textView);
                 childViewTextView.setText(orgUnitLevel.getName());
@@ -260,6 +268,7 @@ public class CreateSurveyFragment extends Fragment {
         }
         else if(lastSelectedOrgUnit !=null)
             orgUnitView.setSelection(getIndex(orgUnitView, lastSelectedOrgUnit.getName()));
+        lastClickedOrgUnit=(OrgUnit) orgUnitView.getSelectedItem();
     }
 
 
@@ -302,9 +311,10 @@ public class CreateSurveyFragment extends Fragment {
 
     private boolean isEverythingFilled() {
         try {
-            boolean isEverythingFilled = (!realOrgUnitView.getSelectedItem().equals(orgUnitDefaultOption) && !programView.getSelectedItem().equals(programDefaultOption));
+            boolean isEverythingFilled = (!programView.getSelectedItem().equals(programDefaultOption));
+            boolean isProgramInOrgUnit=lastClickedOrgUnit.getPrograms().contains((Program)programView.getSelectedItem());
             boolean isTabGroupFilled = !tabGroupView.getSelectedItem().equals(tabGroupDefaultOption);
-            return isEverythingFilled && isTabGroupFilled;
+            return isEverythingFilled && isTabGroupFilled && isProgramInOrgUnit;
         }catch(NullPointerException ex){
             return false;
         }
@@ -312,7 +322,7 @@ public class CreateSurveyFragment extends Fragment {
 
     private boolean doesSurveyInProgressExist() {
         // Read Selected Items
-        OrgUnit orgUnit = (OrgUnit) realOrgUnitView.getSelectedItem();
+        OrgUnit orgUnit = lastClickedOrgUnit;
         TabGroup tabGroup = (TabGroup) tabGroupView.getSelectedItem();
         Survey survey = Survey.getInProgressSurveys(orgUnit, tabGroup);
         return (survey != null);
@@ -324,7 +334,7 @@ public class CreateSurveyFragment extends Fragment {
                     .setTitle( getActivity().getApplicationContext().getString(R.string.dialog_title_missing_selection))
                     .setMessage( getActivity().getApplicationContext().getString(R.string.dialog_content_missing_selection))
                     .setPositiveButton(android.R.string.ok, null).create().show();
-        } else if ((((OrgUnit) realOrgUnitView.getSelectedItem()).getChildren() != null && ((OrgUnit) realOrgUnitView.getSelectedItem()).getChildren().size() > 0)) {
+        } else if (!lastClickedOrgUnit.getPrograms().contains((Program) programView.getSelectedItem())) {
             new AlertDialog.Builder( getActivity())
                     .setTitle(getActivity().getApplicationContext().getString(R.string.dialog_title_incorrect_org_unit))
                     .setMessage(getActivity().getApplicationContext().getString(R.string.dialog_content_incorrect_org_unit))
@@ -349,7 +359,7 @@ public class CreateSurveyFragment extends Fragment {
         Log.i(".CreateSurveyActivity", "Saving survey and saving in session");
 
         //Get selected orgUnit
-        OrgUnit orgUnit = (OrgUnit) realOrgUnitView.getSelectedItem();
+        OrgUnit orgUnit = lastClickedOrgUnit;
 
         //Get selected tabGroup
         TabGroup tabGroup = (TabGroup) tabGroupView.getSelectedItem();
@@ -422,10 +432,10 @@ public class CreateSurveyFragment extends Fragment {
         public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
 
             OrgUnit selectedOrgUnit = (OrgUnit) ((Spinner)viewHolder.component).getItemAtPosition(pos);
+
             realOrgUnitView = ((Spinner) viewHolder.component);
 
             if(selectedOrgUnit!=null && selectedOrgUnit.getUid()!=null) {
-                filterPrograms(selectedOrgUnit);
                 if (selectedOrgUnit.getUid() != null && selectedOrgUnit.getChildren().isEmpty() && selectedOrgUnit.getOrgUnit() == null) {
                     //without parent without childs
                     lastSelectedOrgUnit = selectedOrgUnit;
@@ -446,52 +456,81 @@ public class CreateSurveyFragment extends Fragment {
             // Populate child view. If it exists in org unit map, grab it; otherwise inflate it
             List<OrgUnit> orgUnitList = selectedOrgUnit.getChildren();
 
+            //if click for hidden levels
+            if(lastClickedOrgUnit!=null && lastClickedOrgUnit.getOrgUnitLevel().getId_org_unit_level()>selectedOrgUnit.getOrgUnitLevel().getId_org_unit_level())
+                filterPrograms(selectedOrgUnit);
+
+            //If click in real org unit
+            if(selectedOrgUnit!=null && selectedOrgUnit.getUid()!=null) {
+                filterPrograms(selectedOrgUnit);
+                lastClickedOrgUnit=selectedOrgUnit;
+            }
+
             // If there are children create spinner or populate it otherwise hide existing one
             if (orgUnitList.size() > 0){
-                View childView = orgUnitHierarchyView.get(orgUnitList.get(0).getOrgUnitLevel());
-                ViewHolder subViewHolder = new ViewHolder();
-                subViewHolder.component = childView.findViewById(R.id.org_unit_item_spinner);
+                View childView;
+                if(orgUnitList.get(0).getUid()!=null){
+                    childView= orgUnitHierarchyView.get(orgUnitList.get(0).getOrgUnitLevel());
+                }
+                else {
+                    childView = orgUnitHierarchyView.get(orgUnitList.get(1).getOrgUnitLevel());
+                }
+                if(childView==null || childView.findViewById(R.id.org_unit_item_spinner)==null) {
+                    hideChild(false);
+                }
+                else {
+                    ViewHolder subViewHolder = new ViewHolder();
+                    subViewHolder.component = childView.findViewById(R.id.org_unit_item_spinner);
 
-                //Show tab group select and populate tab group spinner
-                orgUnitList.add(0, orgUnitDefaultOption);
-                Spinner spinner=((Spinner) subViewHolder.component);
-                spinner.setAdapter(new OrgUnitArrayAdapter(getActivity(), orgUnitList));
-                spinner.setOnItemSelectedListener(new OrgUnitSpinnerListener(subViewHolder));
+                    //Show tab group select and populate tab group spinner
+                    if(orgUnitList.get(0).getUid()!=null){
+                        orgUnitDefaultOption.setOrgUnitLevel(selectedOrgUnit.getOrgUnitLevel());
+                        orgUnitList.add(0, orgUnitDefaultOption);
+                    }
+                    Spinner spinner = ((Spinner) subViewHolder.component);
+                    spinner.setAdapter(new OrgUnitArrayAdapter(getActivity(), orgUnitList));
+                    spinner.setSelection(0,false);
+                    spinner.setOnItemSelectedListener(new OrgUnitSpinnerListener(subViewHolder));
 
-                //If the orgUnit had OrgUnit levels, it should be load one - to -one.
-                //Select the saved orgUnitTree. It gets the first orgUnit(by uid), and remove it from templistorgunits (the next loop gets the next).
-                if(!orgUnitStorage.equals("")){
-                    String[] list= orgUnitStorage.split(TOKEN);
-                    for(int i=0;i<list.length;i++){
-                        if(!list[i].equals("") && !list[i].equals(TOKEN)) {
-                            try {
-                                spinner.setSelection(getIndex(spinner, OrgUnit.getOrgUnit(list[i]).getName()));
-                            } catch (Exception e) {
+                    //If the orgUnit had OrgUnit levels, it should be load one - to -one.
+                    //Select the saved orgUnitTree. It gets the first orgUnit(by uid), and remove it from templistorgunits (the next loop gets the next).
+                    if (!orgUnitStorage.equals("")) {
+                        String[] list = orgUnitStorage.split(TOKEN);
+                        for (int i = 0; i < list.length; i++) {
+                            if (!list[i].equals("") && !list[i].equals(TOKEN)) {
+                                try {
+                                    spinner.setSelection(getIndex(spinner, OrgUnit.getOrgUnit(list[i]).getName()),false);
+                                } catch (Exception e) {
+                                }
+                                orgUnitStorage = orgUnitStorage.replaceFirst(TOKEN, "");
+                                orgUnitStorage = removeLastOrgUnits(orgUnitStorage, list[i]);
+                                break;
                             }
-                            orgUnitStorage = orgUnitStorage.replaceFirst(TOKEN,"");
-                            orgUnitStorage = removeLastOrgUnits(orgUnitStorage, list[i]);
-                            break;
                         }
                     }
-                }
 
-                //Hide org unit selector
-                childView.setVisibility(View.VISIBLE);
+                    //Hide org unit selector
+                    childView.setVisibility(View.VISIBLE);
+                }
             } else {
-                //If there is not any children, iterate over the org units spinners and hide non needed
-                //FIXME This code is horrible. We need a more elegant way
-                Boolean setInvisible = false;
-                for (Map.Entry<OrgUnitLevel, View> entry : orgUnitHierarchyView.entrySet()) {
-                    if (setInvisible) {
-                        View childView = entry.getValue();
-                        // Select single tab group
-                        ((Spinner) childView.findViewById(R.id.org_unit_item_spinner)).setSelection(0, true);
-                        // Hide tab group tab selector
-                        childView.setVisibility(View.GONE);
-                    }
-                    if (entry.getKey().equals((viewHolder.component).getTag())) {
-                        setInvisible = true;
-                    }
+                hideChild(false);
+            }
+        }
+
+        private void hideChild(boolean click) {
+            //If there is not any children, iterate over the org units spinners and hide non needed
+            //FIXME This code is horrible. We need a more elegant way
+            Boolean setInvisible = false;
+            for (Map.Entry<OrgUnitLevel, View> entry : orgUnitHierarchyView.entrySet()) {
+                if (setInvisible) {
+                    View childView = entry.getValue();
+                    // Select single tab group
+                    ((Spinner) childView.findViewById(R.id.org_unit_item_spinner)).setSelection(0, click);
+                    // Hide tab group tab selector
+                    childView.setVisibility(View.GONE);
+                }
+                if (entry.getKey().equals((viewHolder.component).getTag())) {
+                    setInvisible = true;
                 }
             }
         }
