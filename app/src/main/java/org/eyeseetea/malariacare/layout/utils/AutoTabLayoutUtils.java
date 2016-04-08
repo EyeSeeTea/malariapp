@@ -23,6 +23,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Build;
+import android.provider.MediaStore;
 import android.text.Html;
 import android.text.Spanned;
 import android.util.Log;
@@ -165,7 +166,7 @@ public class AutoTabLayoutUtils {
         }
 
         public void setRadioChecked(Option option){
-            if(component==null || !(component instanceof CustomRadioButton)){
+            if(component==null || !(component instanceof RadioGroup)){
                 return;
             }
             ((CustomRadioButton) component.findViewWithTag(option)).setChecked(true);
