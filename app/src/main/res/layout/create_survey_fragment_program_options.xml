@@ -24,7 +24,8 @@
         android:orientation="vertical"
         android:layout_width="fill_parent"
         android:background="@color/assess_grey"
-        android:layout_height="fill_parent">
+        android:layout_height="fill_parent"
+        android:id="@+id/select_survey_view">
 
         <LinearLayout
             android:orientation="horizontal"

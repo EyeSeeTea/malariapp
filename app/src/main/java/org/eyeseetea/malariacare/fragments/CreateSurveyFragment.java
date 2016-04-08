@@ -27,8 +27,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
-import android.location.Location;
-import android.location.LocationManager;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.content.LocalBroadcastManager;
@@ -39,6 +37,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.R;
@@ -47,14 +46,12 @@ import org.eyeseetea.malariacare.database.model.OrgUnitLevel;
 import org.eyeseetea.malariacare.database.model.Program;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.model.TabGroup;
-import org.eyeseetea.malariacare.database.utils.LocationMemory;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.database.utils.planning.SurveyPlanner;
 import org.eyeseetea.malariacare.layout.adapters.general.OrgUnitArrayAdapter;
 import org.eyeseetea.malariacare.layout.adapters.general.ProgramArrayAdapter;
 import org.eyeseetea.malariacare.layout.adapters.general.TabGroupArrayAdapter;
-import org.eyeseetea.malariacare.layout.listeners.SurveyLocationListener;
 import org.eyeseetea.malariacare.services.SurveyService;
 import org.eyeseetea.malariacare.utils.Constants;
 import org.eyeseetea.malariacare.views.CustomButton;
@@ -458,11 +455,11 @@ public class CreateSurveyFragment extends Fragment {
 
             //if click for hidden levels
             if(lastClickedOrgUnit!=null && lastClickedOrgUnit.getOrgUnitLevel().getId_org_unit_level()>selectedOrgUnit.getOrgUnitLevel().getId_org_unit_level())
-                filterPrograms(selectedOrgUnit);
+                refreshPrograms(selectedOrgUnit);
 
             //If click in real org unit
             if(selectedOrgUnit!=null && selectedOrgUnit.getUid()!=null) {
-                filterPrograms(selectedOrgUnit);
+                refreshPrograms(selectedOrgUnit);
                 lastClickedOrgUnit=selectedOrgUnit;
             }
 
@@ -540,8 +537,22 @@ public class CreateSurveyFragment extends Fragment {
 
         }
     }
+
+
     //filter programs by orgUnit
-    private void filterPrograms(OrgUnit selectedOrgUnit) {
+    private void refreshPrograms(OrgUnit selectedOrgUnit) {
+        if(filterPrograms(selectedOrgUnit).size()<=1){
+            View view = llLayout.findViewById(R.id.select_survey_view);
+            view.setVisibility(View.GONE);
+        }
+        else{
+            View view = llLayout.findViewById(R.id.select_survey_view);
+            view.setVisibility(View.VISIBLE);
+        }
+    }
+
+    //filter programs by orgUnit
+    private List<Program> filterPrograms(OrgUnit selectedOrgUnit) {
 
         List<Program> initProgram= new ArrayList<>();
         for(Program orgUnitProgram: selectedOrgUnit.getPrograms()){
@@ -552,8 +563,9 @@ public class CreateSurveyFragment extends Fragment {
         }
         initProgram.add(0, programDefaultOption);
         programView = (Spinner)  llLayout.findViewById(R.id.program);
-        programView.setAdapter(new ProgramArrayAdapter( getActivity(), initProgram));
+        programView.setAdapter(new ProgramArrayAdapter(getActivity(), initProgram));
         programView.setOnItemSelectedListener(new ProgramSpinnerListener());
+        return initProgram;
     }
 
     private void saveOrgUnitList(String list){
