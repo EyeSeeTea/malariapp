@@ -37,7 +37,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
-import android.widget.TextView;
 
 import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.R;
@@ -81,7 +80,6 @@ public class CreateSurveyFragment extends Fragment {
     }
 
     private LinkedHashMap<OrgUnitLevel, View> orgUnitHierarchyView;
-    private Spinner realOrgUnitView;
 
     private SurveyReceiver surveyReceiver;
 
@@ -98,10 +96,7 @@ public class CreateSurveyFragment extends Fragment {
     private Program programDefaultOption;
     private TabGroup tabGroupDefaultOption;
 
-    private OrgUnit lastSelectedOrgUnit;
-    private String lastOrgUnits = TOKEN;
-
-    private OrgUnit lastClickedOrgUnit;
+    private OrgUnitHierarchy orgUnitHierarchy;
 
     private LayoutInflater lInflater;
     LinearLayout llLayout;
@@ -168,6 +163,7 @@ public class CreateSurveyFragment extends Fragment {
     }
 
     public void create(){
+        orgUnitHierarchy= new OrgUnitHierarchy();
         CustomButton createButton = (CustomButton) llLayout.findViewById(R.id.create_form_button);
         createButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -227,7 +223,6 @@ public class CreateSurveyFragment extends Fragment {
             }
         }
 
-
         //Populate Program View DDL
         //get all the programs from a DB query only one time.
         List<Program> initProgram=new ArrayList<>();
@@ -239,33 +234,13 @@ public class CreateSurveyFragment extends Fragment {
         //Create Tab Group View DDL. Not populated and not visible.
         tabGroupContainer =  llLayout.findViewById(R.id.tab_group_container);
         tabGroupView = (Spinner)  llLayout.findViewById(R.id.tab_group);
-
-        //init the lastOrgUnits
-        lastOrgUnits= TOKEN;
-
-        //get the lastSelectedOrgUnit
-        setDefaultOrgUnit();
-
-        //get the list of org units for be pulled in the spinner.
-        orgUnitStorage =getListOrgUnits();
-
-        // If the list is empty(with TOKEN), The list is overwritte by the lastSelectedOrgUnit(for saved orgunits without tree).
-        // In the first time, the application not have lastSelectedOrgUnit, it only need be saved if exist.
-        if(orgUnitStorage.startsWith(TOKEN))
-            if(lastSelectedOrgUnit !=null)
-                orgUnitStorage = lastSelectedOrgUnit.getUid();
+        //set the first orgUnit saved
+        orgUnitStorage =orgUnitHierarchy.getSavedUidsList().split(TOKEN)[0];
 
         //Load the root lastorgUnit/firstOrgUnit(if we have orgUnitLevels).
         if(!orgUnitStorage.equals("")){
-            String[] list= orgUnitStorage.split(TOKEN);
-            if(list.length>0){
-                orgUnitView.setSelection(getIndex(orgUnitView, OrgUnit.getOrgUnit(list[0]).getName()));
-                orgUnitStorage = removeLastOrgUnits(orgUnitStorage, list[0] + TOKEN);
-            }
+            orgUnitView.setSelection(getIndex(orgUnitView, OrgUnit.getOrgUnit(orgUnitStorage).getName()));
         }
-        else if(lastSelectedOrgUnit !=null)
-            orgUnitView.setSelection(getIndex(orgUnitView, lastSelectedOrgUnit.getName()));
-        lastClickedOrgUnit=(OrgUnit) orgUnitView.getSelectedItem();
     }
 
 
@@ -309,7 +284,7 @@ public class CreateSurveyFragment extends Fragment {
     private boolean isEverythingFilled() {
         try {
             boolean isEverythingFilled = (!programView.getSelectedItem().equals(programDefaultOption));
-            boolean isProgramInOrgUnit=lastClickedOrgUnit.getPrograms().contains((Program)programView.getSelectedItem());
+            boolean isProgramInOrgUnit=orgUnitHierarchy.getLastSelected().getPrograms().contains((Program)programView.getSelectedItem());
             boolean isTabGroupFilled = !tabGroupView.getSelectedItem().equals(tabGroupDefaultOption);
             return isEverythingFilled && isTabGroupFilled && isProgramInOrgUnit;
         }catch(NullPointerException ex){
@@ -319,7 +294,7 @@ public class CreateSurveyFragment extends Fragment {
 
     private boolean doesSurveyInProgressExist() {
         // Read Selected Items
-        OrgUnit orgUnit = lastClickedOrgUnit;
+        OrgUnit orgUnit = orgUnitHierarchy.getLastSelected();
         TabGroup tabGroup = (TabGroup) tabGroupView.getSelectedItem();
         Survey survey = Survey.getInProgressSurveys(orgUnit, tabGroup);
         return (survey != null);
@@ -331,7 +306,7 @@ public class CreateSurveyFragment extends Fragment {
                     .setTitle( getActivity().getApplicationContext().getString(R.string.dialog_title_missing_selection))
                     .setMessage( getActivity().getApplicationContext().getString(R.string.dialog_content_missing_selection))
                     .setPositiveButton(android.R.string.ok, null).create().show();
-        } else if (!lastClickedOrgUnit.getPrograms().contains((Program) programView.getSelectedItem())) {
+        } else if (!orgUnitHierarchy.getLastSelected().getPrograms().contains((Program) programView.getSelectedItem())) {
             new AlertDialog.Builder( getActivity())
                     .setTitle(getActivity().getApplicationContext().getString(R.string.dialog_title_incorrect_org_unit))
                     .setMessage(getActivity().getApplicationContext().getString(R.string.dialog_content_incorrect_org_unit))
@@ -356,18 +331,13 @@ public class CreateSurveyFragment extends Fragment {
         Log.i(".CreateSurveyActivity", "Saving survey and saving in session");
 
         //Get selected orgUnit
-        OrgUnit orgUnit = lastClickedOrgUnit;
+        OrgUnit orgUnit = orgUnitHierarchy.getLastSelected();
 
         //Get selected tabGroup
         TabGroup tabGroup = (TabGroup) tabGroupView.getSelectedItem();
 
-        //save the lastSelectedOrgUnit and the list of orgUnits
-        saveOrgUnit();
-        //if the list not cointain the selected orgUnit(if it is root withoutchilds)
-        // set the list of orgUnitsLevels to "SEPARECHAR"
-        if(!lastOrgUnits.contains(orgUnit.getUid())) {
-            saveOrgUnitList(TOKEN);
-        }
+        //save  the list of orgUnits
+        orgUnitHierarchy.saveSelectionInPreferences();
 
         //Start right survey
         return SurveyPlanner.getInstance().startSurvey(orgUnit,tabGroup);
@@ -428,40 +398,20 @@ public class CreateSurveyFragment extends Fragment {
         @Override
         public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
 
-            OrgUnit selectedOrgUnit = (OrgUnit) ((Spinner)viewHolder.component).getItemAtPosition(pos);
+            OrgUnit selectedOrgUnit = (OrgUnit) ((Spinner)viewHolder.component).getItemAtPosition(1);
+            OrgUnitLevel selectedOrgUnitLevel=selectedOrgUnit.getOrgUnitLevel();
+            selectedOrgUnit = (OrgUnit) ((Spinner)viewHolder.component).getItemAtPosition(pos);
 
-            realOrgUnitView = ((Spinner) viewHolder.component);
+            if(selectedOrgUnit.getUid()==null)
+                selectedOrgUnit.setOrgUnitLevel(selectedOrgUnitLevel);
 
-            if(selectedOrgUnit!=null && selectedOrgUnit.getUid()!=null) {
-                if (selectedOrgUnit.getUid() != null && selectedOrgUnit.getChildren().isEmpty() && selectedOrgUnit.getOrgUnit() == null) {
-                    //without parent without childs
-                    lastSelectedOrgUnit = selectedOrgUnit;
-                    lastOrgUnits = TOKEN;
-                } else if (selectedOrgUnit.getOrgUnit() == null && selectedOrgUnit.getUid() != null) {
-                    //parent
-                    lastSelectedOrgUnit = selectedOrgUnit;
-                    lastOrgUnits = selectedOrgUnit.getUid();
-                } else if (selectedOrgUnit.getUid() != null) {
-                    //it is a child
-                    if (lastOrgUnits == null) {
-                        lastOrgUnits = selectedOrgUnit.getUid();
-                    } else if (!lastOrgUnits.contains(selectedOrgUnit.getUid())) {
-                        lastOrgUnits = lastOrgUnits + TOKEN + selectedOrgUnit.getUid();
-                    }
-                }
-            }
+
             // Populate child view. If it exists in org unit map, grab it; otherwise inflate it
             List<OrgUnit> orgUnitList = selectedOrgUnit.getChildren();
 
-            //if click for hidden levels
-            if(lastClickedOrgUnit!=null && lastClickedOrgUnit.getOrgUnitLevel()!=null && lastClickedOrgUnit.getOrgUnitLevel().getId_org_unit_level()>selectedOrgUnit.getOrgUnitLevel().getId_org_unit_level())
-                refreshPrograms(selectedOrgUnit);
-
-            //If click in real org unit
-            if(selectedOrgUnit!=null && selectedOrgUnit.getUid()!=null) {
-                refreshPrograms(selectedOrgUnit);
-                lastClickedOrgUnit=selectedOrgUnit;
-            }
+            orgUnitHierarchy.addOrgUnit(selectedOrgUnit);
+            if(orgUnitHierarchy.getLastSelected()!=null)
+                refreshPrograms(orgUnitHierarchy.getLastSelected());
 
             // If there are children create spinner or populate it otherwise hide existing one
             if (orgUnitList.size() > 0){
@@ -481,32 +431,37 @@ public class CreateSurveyFragment extends Fragment {
 
                     //Show tab group select and populate tab group spinner
                     if(orgUnitList.get(0).getUid()!=null){
-                        orgUnitDefaultOption.setOrgUnitLevel(selectedOrgUnit.getOrgUnitLevel());
+                        orgUnitDefaultOption.setOrgUnitLevel(orgUnitList.get(0).getOrgUnitLevel());
                         orgUnitList.add(0, orgUnitDefaultOption);
                     }
                     Spinner spinner = ((Spinner) subViewHolder.component);
                     spinner.setAdapter(new OrgUnitArrayAdapter(getActivity(), orgUnitList));
-                    spinner.setSelection(0,false);
                     spinner.setOnItemSelectedListener(new OrgUnitSpinnerListener(subViewHolder));
 
-                    //If the orgUnit had OrgUnit levels, it should be load one - to -one.
-                    //Select the saved orgUnitTree. It gets the first orgUnit(by uid), and remove it from templistorgunits (the next loop gets the next).
+                    //Loads the saved org units and remove the list when the last was selected
+                    orgUnitStorage=orgUnitHierarchy.getSavedUidsList();
                     if (!orgUnitStorage.equals("")) {
                         String[] list = orgUnitStorage.split(TOKEN);
+                        String activeUid="";
                         for (int i = 0; i < list.length; i++) {
                             if (!list[i].equals("") && !list[i].equals(TOKEN)) {
                                 try {
-                                    spinner.setSelection(getIndex(spinner, OrgUnit.getOrgUnit(list[i]).getName()),false);
+                                    OrgUnit selectOrgUnit=OrgUnit.getOrgUnit(list[i]);
+                                    int index=getIndex(spinner, selectOrgUnit.getName());
+                                    if(index!=0) {
+                                        activeUid=selectOrgUnit.getUid();
+                                        spinner.setSelection(index, true);
+                                    }
                                 } catch (Exception e) {
                                 }
-                                orgUnitStorage = orgUnitStorage.replaceFirst(TOKEN, "");
-                                orgUnitStorage = removeLastOrgUnits(orgUnitStorage, list[i]);
-                                break;
                             }
                         }
+                        if(!activeUid.equals("")){
+                            orgUnitHierarchy.removeUid(activeUid);
+                        }
+                        Log.d(TAG,orgUnitHierarchy.savedUidsList);
                     }
 
-                    //Hide org unit selector
                     childView.setVisibility(View.VISIBLE);
                 }
             } else {
@@ -537,8 +492,6 @@ public class CreateSurveyFragment extends Fragment {
 
         }
     }
-
-
     //filter programs by orgUnit
     private void refreshPrograms(OrgUnit selectedOrgUnit) {
         if(filterPrograms(selectedOrgUnit).size()<=1){
@@ -563,7 +516,7 @@ public class CreateSurveyFragment extends Fragment {
         }
         initProgram.add(0, programDefaultOption);
         programView = (Spinner)  llLayout.findViewById(R.id.program);
-        programView.setAdapter(new ProgramArrayAdapter(getActivity(), initProgram));
+        programView.setAdapter(new ProgramArrayAdapter( getActivity(), initProgram));
         programView.setOnItemSelectedListener(new ProgramSpinnerListener());
         return initProgram;
     }
@@ -572,42 +525,6 @@ public class CreateSurveyFragment extends Fragment {
         SharedPreferences.Editor editor = getEditor();
         editor.putString(getString(R.string.default_orgUnits), list);
         editor.commit();
-    }
-
-    /**
-     * Saves the orgUnit/Program/TabGroup
-     */
-    private void saveOrgUnit(){
-        SharedPreferences.Editor editor = getEditor();
-        if(lastSelectedOrgUnit !=null) {
-            editor.putString(getString(R.string.default_orgUnit), this.lastSelectedOrgUnit.getUid());
-        }
-        editor.commit();
-        changeOrgUnitList();
-    }
-
-    private void changeOrgUnitList() {
-        //if the lastorgUnits is "" o Separechar is not saved in sharedpreferences.
-        if (!lastOrgUnits.equals("") && !lastOrgUnits.equals(TOKEN)) {
-            lastOrgUnits=lastOrgUnits+ TOKEN + lastSelectedOrgUnit.getUid();
-            //remove the repeat root.
-            lastOrgUnits=lastOrgUnits.replace(lastSelectedOrgUnit.getUid()+ TOKEN + lastSelectedOrgUnit.getUid(), lastSelectedOrgUnit.getUid());
-            saveOrgUnitList(lastOrgUnits);
-        }
-    }
-
-    //Remove the populate orgUnit in order.(the snippers always get the first position).
-    private String removeLastOrgUnits(String list,String orgUnit){
-        if(!orgUnit.equals("") && !orgUnit.equals(TOKEN)) {
-            list = list.replace(orgUnit, "");
-        }
-        return list;
-    }
-
-    //Get the default orgUnit/program/tab
-    private void setDefaultOrgUnit() {
-        SharedPreferences sharedPreferences = getSharedPreferences();
-        this.lastSelectedOrgUnit = OrgUnit.getOrgUnit(sharedPreferences.getString(getActivity().getApplicationContext().getResources().getString(R.string.default_orgUnit), ""));
     }
 
     //Get the default orgUnitLevels
@@ -668,4 +585,70 @@ public class CreateSurveyFragment extends Fragment {
         }
     }
 
+    public class OrgUnitHierarchy {
+
+        //Used to control the active selectedHierarchy
+        List<OrgUnit> selectedHierarchy;
+
+        //Used to restore the saved org unit list in preferences
+        String savedUidsList;
+
+        public OrgUnitHierarchy() {
+            selectedHierarchy = new ArrayList<OrgUnit>();
+            //get and set the lastOrgUnit list from Preferences
+            setLastOrgUnitStringList();
+        }
+
+        public String getSavedUidsList(){
+            return savedUidsList;
+        }
+
+        //Add the last valid org unit and remove the unselected levels
+        public void addOrgUnit(OrgUnit orgUnit) {
+            for (int i = selectedHierarchy.size()-1; i > 0; i--) {
+                //Remove the next levels from the active org unit selected list.
+                    if (selectedHierarchy.get(i).getOrgUnitLevel().getId_org_unit_level() >= orgUnit.getOrgUnitLevel().getId_org_unit_level())
+                        selectedHierarchy.remove(i);
+            }
+            //Save only the real org unit
+            if(orgUnit.getUid()!=null)
+                selectedHierarchy.add(orgUnit);
+        }
+
+        //If the uid is the last uid, the list was removed
+        public void removeUid(String uid){
+            if(!savedUidsList.contains(uid+TOKEN))
+                savedUidsList ="";
+        }
+
+        //Saved the selectedHierarchy list in the preferences
+        public String saveSelectionInPreferences() {
+            String orgUnitList = "";
+            for (OrgUnit orgUnit : selectedHierarchy) {
+                orgUnitList += orgUnit.getUid() + TOKEN;
+            }
+            orgUnitList=orgUnitList.substring(0,orgUnitList.lastIndexOf(TOKEN));
+
+            saveOrgUnitList(orgUnitList);
+            return orgUnitList;
+        }
+
+        public void setLastOrgUnitStringList(){
+            savedUidsList =getListOrgUnits();
+        }
+
+        //Return the first uid and remove from the list.
+        public String getAndRemoveOrderedOrgUnitUid() {
+            String[] list= savedUidsList.split(TOKEN);
+            savedUidsList = savedUidsList.replace(list[0] + TOKEN, "");
+            return list[0];
+        }
+
+        public OrgUnit getLastSelected() {
+            if(selectedHierarchy.size()>0)
+                return selectedHierarchy.get(selectedHierarchy.size()-1);
+            else
+                return null;
+        }
+    }
 }
