@@ -151,6 +151,7 @@ public class DashboardController {
             //XXX Really needed?
             module.reloadData();
         }
+        currentTab = getFirstVisibleModule().getName();
     }
 
     private void onCreateHorizontal(Bundle savedInstanceState){

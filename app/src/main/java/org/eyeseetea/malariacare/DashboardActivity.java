@@ -21,55 +21,29 @@ package org.eyeseetea.malariacare;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.Fragment;
-import android.app.FragmentTransaction;
-import android.app.ListFragment;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.preference.PreferenceManager;
-import android.support.annotation.NonNull;
-import android.text.Html;
-import android.text.Spanned;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.Spinner;
-import android.widget.TabHost;
-import android.widget.TabWidget;
-import android.widget.TextView;
 
 import com.squareup.otto.Subscribe;
 
-
-import org.eyeseetea.malariacare.database.model.Program;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.model.User;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.database.utils.SurveyAnsweredRatio;
-import org.eyeseetea.malariacare.fragments.CreateSurveyFragment;
-import org.eyeseetea.malariacare.fragments.DashboardSentFragment;
-import org.eyeseetea.malariacare.fragments.DashboardUnsentFragment;
-import org.eyeseetea.malariacare.fragments.FeedbackFragment;
-import org.eyeseetea.malariacare.fragments.MonitorFragment;
-import org.eyeseetea.malariacare.fragments.SurveyFragment;
 import org.eyeseetea.malariacare.layout.dashboard.builder.AppSettingsBuilder;
 import org.eyeseetea.malariacare.layout.dashboard.controllers.DashboardController;
-import org.eyeseetea.malariacare.layout.score.ScoreRegister;
-import org.eyeseetea.malariacare.fragments.PlannedFragment;
 import org.eyeseetea.malariacare.receivers.AlarmPushReceiver;
 import org.eyeseetea.malariacare.services.SurveyService;
 import org.hisp.dhis.android.sdk.events.UiEvent;
 
-import java.io.IOException;
 import java.util.List;
 
 
@@ -310,8 +284,6 @@ public class DashboardActivity extends BaseActivity{
     public void setAlarm() {
         AlarmPushReceiver.getInstance().setPushAlarm(this);
     }
-
-
 
     //Show dialog exception from class without activity.
     public static void showException(final String title, final String errorMessage) {

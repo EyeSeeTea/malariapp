@@ -12,7 +12,8 @@ public class Constants {
             NO_ANSWER = 7,
             RADIO_GROUP_HORIZONTAL = 8,
             RADIO_GROUP_VERTICAL = 9,
-            DROPDOWN_LIST_DISABLED = 10;
+            DROPDOWN_LIST_DISABLED = 10,
+            SWITCH_BUTTON=12;
 
 
     public static final String DEFAULT_SELECT_OPTION = "";
