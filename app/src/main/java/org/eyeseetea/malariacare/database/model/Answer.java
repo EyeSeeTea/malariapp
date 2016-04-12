@@ -101,22 +101,6 @@ public class Answer extends BaseModel{
         return questions;
     }
 
-    /**
-     * Find option according to a bool value.
-     * It only works for yes/no question where yes.factor=1 | no.factor=0
-     * @param isChecked
-     * @return
-     */
-    public Option findOption(boolean isChecked){
-        float expectedFactor=isChecked?1f:0f;
-        for(Option option:this.getOptions()){
-            if(option.getFactor()==expectedFactor){
-                return option;
-            }
-        }
-        return null;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
