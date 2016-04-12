@@ -19,8 +19,6 @@
 
 package org.eyeseetea.malariacare.database.model;
 
-import android.util.Log;
-
 import com.raizlabs.android.dbflow.annotation.Column;
 import com.raizlabs.android.dbflow.annotation.OneToMany;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
@@ -411,9 +409,6 @@ public class Question extends BaseModel {
         if (this.children == null) {
 
             //No matches no children
-            if (getId_question() == 74){
-                Log.d("Question", "testing");
-            }
             List<Match> matches = getMatches();
             if (matches.size() == 0) {
                 this.children = new ArrayList<>();
@@ -524,7 +519,6 @@ public class Question extends BaseModel {
      * */
     public boolean belongsToCustomTab() {
         return this.row!=null || this.column!=null;
-//        return getHeader().getTab().isACustomTab();
     }
 
     /**
