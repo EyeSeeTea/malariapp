@@ -126,6 +126,11 @@ public class SurveyPlanner {
     public Survey startSurvey(OrgUnit orgUnit,TabGroup tabGroup){
         //Find planned survey
         Survey survey = Survey.findByOrgUnitAndTabGroup(orgUnit,tabGroup);
+        if(survey==null){
+            survey = new Survey();
+            survey.setTabGroup(tabGroup);
+            survey.setOrgUnit(orgUnit.getId_org_unit());
+        }
         return startSurvey(survey);
     }
 
