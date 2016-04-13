@@ -690,6 +690,12 @@ public class Survey extends BaseModel implements VisitableToSDK {
                 .orderBy(Survey$Table.ID_ORG_UNIT).queryList();
     }
 
+    public static long count(){
+        return new Select().count()
+                .from(Survey.class)
+                .count();
+    }
+
     public void saveConflict(String uid){
         for(Value value:getValues()){
             if(value.getQuestion().getUid().equals(uid)){
@@ -767,6 +773,10 @@ public class Survey extends BaseModel implements VisitableToSDK {
                 .querySingle();
     }
 
+    public static boolean exists(Long id_survey){
+        return findById(id_survey)!=null;
+    }
+
     /**
      * Returns all surveys which status is 'planned' or 'in progress'
      * @return
@@ -820,6 +830,14 @@ public class Survey extends BaseModel implements VisitableToSDK {
                 .groupBy(new QueryBuilder().appendQuotedArray(Survey$Table.ID_ORG_UNIT, Survey$Table.ID_TAB_GROUP))
                 .having(Condition.columnsWithFunction("max", "completionDate"))
                 .queryList();
+    }
+
+    public static Survey getSurveyInProgress(){
+        return new Select()
+                .from(Survey.class)
+                .where(Condition.column(Survey$Table.STATUS)
+                        .eq(Constants.SURVEY_IN_PROGRESS))
+                .querySingle();
     }
 
     @Override

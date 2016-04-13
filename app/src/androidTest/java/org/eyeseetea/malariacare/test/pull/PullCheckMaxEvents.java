@@ -25,6 +25,7 @@ package org.eyeseetea.malariacare.test.pull;
         import org.eyeseetea.malariacare.LoginActivity;
         import org.eyeseetea.malariacare.database.iomodules.dhis.importer.PullController;
         import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.EventExtended;
+        import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.ProgramExtended;
         import org.eyeseetea.malariacare.database.model.OrgUnit;
         import org.eyeseetea.malariacare.database.model.OrgUnitProgramRelation;
         import org.eyeseetea.malariacare.database.model.Program;
@@ -96,9 +97,7 @@ public class PullCheckMaxEvents {
 
         //THEN: Each combination of program/orgunit has less events than the max
 
-        List<org.hisp.dhis.android.sdk.persistence.models.OrganisationUnit> organisationUnits=SDKTestUtils.getAllSDKOrganisationUnits();
-        List<org.hisp.dhis.android.sdk.persistence.models.Program> programs=SDKTestUtils.getAllSDKPrograms();
-        List<org.hisp.dhis.android.sdk.persistence.models.Event> events=SDKTestUtils.getAllSDKEvents();
+        List<org.hisp.dhis.android.sdk.persistence.models.Event> events = EventExtended.getAllEvents();
 
         Map<String,Integer> mapNumEventsXPair= new HashMap<>();
         for(Event event:events){

@@ -25,6 +25,10 @@ import android.support.test.runner.AndroidJUnit4;
 
 import org.eyeseetea.malariacare.LoginActivity;
 import org.eyeseetea.malariacare.ProgressActivity;
+import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.DataValueExtended;
+import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.EventExtended;
+import org.eyeseetea.malariacare.database.model.Survey;
+import org.eyeseetea.malariacare.database.model.Value;
 import org.eyeseetea.malariacare.database.utils.PopulateDB;
 import org.eyeseetea.malariacare.test.utils.SDKTestUtils;
 import org.junit.AfterClass;
@@ -95,13 +99,13 @@ public class WipeDataOnLogout {
         //Then
 
         //Removed sdk data
-        assertTrue(SDKTestUtils.getEventCount() == 0);
-        assertTrue(SDKTestUtils.getDataValueCount() == 0);
+        assertTrue(EventExtended.count() == 0);
+        assertTrue(DataValueExtended.count() == 0);
 
 
         //removed app data
-        assertTrue(SDKTestUtils.getSurveyCount() == 0);
-        assertTrue(SDKTestUtils.getValueCount() == 0);
+        assertTrue(Survey.count() == 0);
+        assertTrue(Value.count() == 0);
 
         Intents.release();
     }
