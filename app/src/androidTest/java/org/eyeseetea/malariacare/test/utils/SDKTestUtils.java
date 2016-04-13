@@ -26,31 +26,35 @@ import android.support.test.espresso.Espresso;
 import android.support.test.espresso.IdlingPolicies;
 import android.support.test.espresso.IdlingResource;
 import android.support.test.espresso.NoActivityResumedException;
+<<<<<<< HEAD
 import android.support.test.espresso.NoMatchingViewException;
 import android.support.test.espresso.ViewAssertion;
+=======
+>>>>>>> custom_tabs
 import android.support.test.runner.lifecycle.ActivityLifecycleMonitorRegistry;
 import android.support.test.runner.lifecycle.Stage;
 import android.util.Log;
 import static android.support.test.espresso.Espresso.openActionBarOverflowOrOptionsMenu;
 
+<<<<<<< HEAD
 import com.raizlabs.android.dbflow.sql.builder.Condition;
 import com.raizlabs.android.dbflow.sql.language.Select;
 
 import org.eyeseetea.malariacare.BuildConfig;
+=======
+>>>>>>> custom_tabs
 import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.LoginActivity;
 import org.eyeseetea.malariacare.ProgressActivity;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.SettingsActivity;
 import org.eyeseetea.malariacare.database.model.OrgUnit;
-import org.eyeseetea.malariacare.database.model.OrgUnit$Table;
 import org.eyeseetea.malariacare.database.model.Program;
 import org.eyeseetea.malariacare.database.model.Question;
 import org.eyeseetea.malariacare.database.model.Survey;
-import org.eyeseetea.malariacare.database.model.Survey$Table;
 import org.eyeseetea.malariacare.layout.dashboard.controllers.AssessModuleController;
-import org.eyeseetea.malariacare.utils.Constants;
 import org.hamcrest.Matchers;
+<<<<<<< HEAD
 import org.hisp.dhis.android.sdk.persistence.models.Event;
 import org.hisp.dhis.android.sdk.persistence.models.Event$Table;
 import org.hisp.dhis.android.sdk.persistence.models.OrganisationUnit;
@@ -59,9 +63,10 @@ import org.hisp.dhis.android.sdk.persistence.models.OrganisationUnitDataSet;
 import org.hisp.dhis.android.sdk.persistence.models.OrganisationUnitDataSet$Table;
 import org.hisp.dhis.android.sdk.persistence.models.OrganisationUnitGroup;
 import org.hisp.dhis.android.sdk.persistence.models.OrganisationUnitGroup$Table;
+=======
+>>>>>>> custom_tabs
 
 import java.util.Collection;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import static android.support.test.espresso.Espresso.onData;
@@ -69,11 +74,8 @@ import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.replaceText;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
-import static android.support.test.espresso.matcher.ViewMatchers.withSpinnerText;
 import static android.support.test.espresso.matcher.ViewMatchers.withTagValue;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
-import static org.hamcrest.Matchers.contains;
-import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
 
@@ -314,71 +316,11 @@ public class SDKTestUtils {
         return idSurvey;
     }
 
-    public static boolean surveyExists(Long id){
-        boolean exist=false;
-        Survey survey=new Select()
-                .from(Survey.class)
-                .where(Condition.column(Survey$Table.ID_SURVEY)
-                        .eq(id))
-                .querySingle();
-        if(survey!=null){exist=true;}
-        return exist;
-    }
-
     public static Long getSurveyId(){
-        return getSurveyInProgress().getId_survey();
+        return Survey.getSurveyInProgress().getId_survey();
     }
 
-    public static Survey getSurveyInProgress(){
-        return new Select()
-                .from(Survey.class)
-                .where(Condition.column(Survey$Table.STATUS)
-                        .eq(Constants.SURVEY_IN_PROGRESS))
-                .querySingle();
-    }
-    public static  OrgUnit getOrgUnit(String id){
-        return new Select()
-                .from(OrgUnit.class)
-                .where(Condition.column(OrgUnit$Table.UID)
-                        .eq(id))
-                .querySingle();
-    }
-    public static OrganisationUnit getOrganisationUnit(String id){
-        return new Select()
-                .from(OrganisationUnit.class)
-                .where(Condition.column(OrganisationUnit$Table.ID)
-                        .eq(id))
-                .querySingle();
-    }
-
-    public static List<OrganisationUnitGroup> getOrganisationUnitGroups(String id){
-        return new Select()
-                .from(OrganisationUnitGroup.class)
-                .where(Condition.column(OrganisationUnitGroup$Table.ORGANISATIONUNITID)
-                        .eq(id))
-                .queryList();
-    }
-
-    public static List<OrganisationUnitDataSet> getOrganisationUnitDataSets(String id){
-        return new Select()
-                .from(OrganisationUnitDataSet.class)
-                .where(Condition.column(OrganisationUnitDataSet$Table.ORGANISATIONUNITID)
-                        .eq(id))
-                .queryList();
-    }
-
-    public static org.hisp.dhis.android.sdk.persistence.models.Program getSDKProgram(String id){
-        return new Select()
-                .from(org.hisp.dhis.android.sdk.persistence.models.Program.class)
-                .where(Condition.column(org.hisp.dhis.android.sdk.persistence.models.Program$Table.ID)
-                        .eq(id))
-                .querySingle();
-    }
-
-    public static List<org.hisp.dhis.android.sdk.persistence.models.OrganisationUnit> getAllSDKOrganisationUnits() {
-        return new Select().all().from(org.hisp.dhis.android.sdk.persistence.models.OrganisationUnit.class).queryList();
-    }
-
+<<<<<<< HEAD
     public static List<org.hisp.dhis.android.sdk.persistence.models.Program> getAllSDKPrograms() {
         return new Select().all().from(org.hisp.dhis.android.sdk.persistence.models.Program.class).queryList();
     }
@@ -400,6 +342,8 @@ public class SDKTestUtils {
                 .querySingle();
     }
 
+=======
+>>>>>>> custom_tabs
     public static Activity getActivityInstance() {
         final Activity[] activity = new Activity[1];
         Instrumentation instrumentation = InstrumentationRegistry.getInstrumentation();

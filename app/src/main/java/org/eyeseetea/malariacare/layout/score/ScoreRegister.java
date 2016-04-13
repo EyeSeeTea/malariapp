@@ -86,6 +86,11 @@ public class ScoreRegister {
 
     private static List<Float> getRecursiveScore(CompositeScore cScore, List<Float> result) {
 
+        //Protect from wrong server data
+        if (compositeScoreMap.get(cScore)==null) {
+            return Arrays.asList(0f,0f);
+        }
+
         //Sum its own records
         result=compositeScoreMap.get(cScore).calculateNumDenTotal(result);
 

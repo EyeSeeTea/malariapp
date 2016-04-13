@@ -159,6 +159,8 @@ public class PullController {
 
             MetaDataController.clearMetaDataLoadedFlags();
             MetaDataController.wipe();
+            PopulateDB.wipeSDKData();
+            PopulateDB.wipeDatabase();
             //Pull new metadata
             postProgress(context.getString(R.string.progress_pull_downloading));
             try {

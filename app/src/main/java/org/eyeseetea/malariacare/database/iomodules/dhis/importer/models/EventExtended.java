@@ -197,4 +197,14 @@ public class EventExtended implements VisitableFromSDK {
                 .groupBy(new QueryBuilder().appendQuotedArray(Event$Table.PROGRAMID, Event$Table.ORGANISATIONUNITID))
                 .having(Condition.columnsWithFunction("max", dateField)).querySingle();
     }
+    public static long count(){
+        return new Select().count()
+                .from(Event.class)
+                .count();
+    }
+
+    public static List<Event> getAllEvents() {
+        return new Select().all().from(org.hisp.dhis.android.sdk.persistence.models.Event.class).queryList();
+    }
+
 }

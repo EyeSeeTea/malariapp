@@ -7,6 +7,8 @@ import android.support.test.runner.AndroidJUnit4;
 import android.util.Log;
 
 import org.eyeseetea.malariacare.LoginActivity;
+import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.OrganisationUnitExtended;
+import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.ProgramExtended;
 import org.eyeseetea.malariacare.database.model.OrgUnit;
 import org.eyeseetea.malariacare.database.model.OrgUnitProgramRelation;
 import org.eyeseetea.malariacare.database.model.Program;
@@ -97,11 +99,11 @@ public class PullOKTest {
 
         //WHEN
         //Test organisationUnit has been downloaded with the correct propierties.
-        OrganisationUnit sdkOrganisationUnit=SDKTestUtils.getOrganisationUnit(goldenOrganisationUnit.getId());
+        OrganisationUnit sdkOrganisationUnit=OrganisationUnitExtended.getOrganisationUnit(goldenOrganisationUnit.getId());
         //Test orgUnit in app DB has been saved with the correct propierties.
-        OrgUnit appOrgUnit=SDKTestUtils.getOrgUnit(goldenOrgUnit.getUid());
+        OrgUnit appOrgUnit=OrgUnit.getOrgUnit(goldenOrgUnit.getUid());
         //Test program (in sdk) has been downloaded with the correct propierties.
-        org.hisp.dhis.android.sdk.persistence.models.Program sdkProgram=SDKTestUtils.getSDKProgram(goldenProgram.getUid());
+        org.hisp.dhis.android.sdk.persistence.models.Program sdkProgram= ProgramExtended.getProgram(goldenProgram.getUid());
 
         //THEN
         testSdkOrganisationUnit(sdkOrganisationUnit);
@@ -257,7 +259,7 @@ public class PullOKTest {
     private void testOrganisationUnitDataSets(OrganisationUnit sdkOrganisationUnit) {
         for(String organisationUnitDataSetUid: goldenDataSets) {
             boolean isInSdk=false;
-            for (OrganisationUnitDataSet organisationUnitDataSetsSdk : SDKTestUtils.getOrganisationUnitDataSets(sdkOrganisationUnit.getId())) {
+            for (OrganisationUnitDataSet organisationUnitDataSetsSdk : OrganisationUnitExtended.getOrganisationUnitDataSets(sdkOrganisationUnit.getId())) {
                 if(organisationUnitDataSetsSdk.getDataSetId().equals(organisationUnitDataSetUid))
                     isInSdk=true;
             }
@@ -268,7 +270,7 @@ public class PullOKTest {
     private void testOrganisationUnitGroups(OrganisationUnit sdkOrganisationUnit) {
         for(String organisationUnitGroupsUid: goldenOrganisationUnitGroups) {
             boolean isInSdk=false;
-            for (OrganisationUnitGroup organisationUnitGroupsSdk : SDKTestUtils.getOrganisationUnitGroups(sdkOrganisationUnit.getId())) {
+            for (OrganisationUnitGroup organisationUnitGroupsSdk : OrganisationUnitExtended.getOrganisationUnitGroups(sdkOrganisationUnit.getId())) {
                 if(organisationUnitGroupsSdk.getOrganisationUnitGroupId().equals(organisationUnitGroupsUid))
                     isInSdk=true;
             }

@@ -235,6 +235,13 @@ public class Value extends BaseModel implements VisitableToSDK {
                 .where(Condition.column(Question$Table.COMPULSORY).eq(true))
                 .and((Condition.column(Value$Table.ID_SURVEY).eq(survey.getId_survey()))).count();
     }
+
+    public static long count(){
+        return new Select().count()
+                .from(Value.class)
+                .count();
+    }
+
     @Override
     public void accept(IConvertToSDKVisitor IConvertToSDKVisitor) {
         IConvertToSDKVisitor.visit(this);
