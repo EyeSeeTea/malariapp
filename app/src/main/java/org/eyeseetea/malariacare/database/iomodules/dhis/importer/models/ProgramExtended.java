@@ -31,6 +31,7 @@ import org.eyeseetea.malariacare.database.iomodules.dhis.importer.VisitableFromS
 import org.hisp.dhis.android.sdk.persistence.models.Attribute;
 import org.hisp.dhis.android.sdk.persistence.models.Attribute$Table;
 import org.hisp.dhis.android.sdk.persistence.models.Program;
+import org.hisp.dhis.android.sdk.persistence.models.Program$Table;
 import org.hisp.dhis.android.sdk.persistence.models.ProgramAttributeValue;
 import org.hisp.dhis.android.sdk.persistence.models.ProgramAttributeValue$Table;
 
@@ -73,10 +74,6 @@ public class ProgramExtended implements VisitableFromSDK {
         return this.program;
     }
 
-    public static List<Program> getAllPrograms(){
-        return new Select().from(Program.class).queryList();
-    }
-
     public void setAppProgram(org.eyeseetea.malariacare.database.model.Program appProgram) {
         this.appProgram = appProgram;
     }
@@ -106,5 +103,14 @@ public class ProgramExtended implements VisitableFromSDK {
             Log.e(TAG, String.format("getProductivityPosition(%s) -> %s", this.getProgram().getUid(), ex.getMessage()));
             return null;
         }
+    }
+
+    public static List<Program> getAllPrograms(){
+        return new Select().from(Program.class).queryList();
+    }
+
+    public static Program getProgram(String id){
+        return new Select()
+                .from(Program.class).where(Condition.column(Program$Table.ID).eq(id)).querySingle();
     }
 }

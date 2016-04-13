@@ -21,6 +21,8 @@ package org.eyeseetea.malariacare.database.iomodules.dhis.importer.models;
 
 import android.util.Log;
 
+import com.raizlabs.android.dbflow.sql.language.Select;
+
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.IConvertFromSDKVisitor;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.VisitableFromSDK;
 import org.eyeseetea.malariacare.database.model.Answer;
@@ -145,5 +147,11 @@ public class DataValueExtended implements VisitableFromSDK {
         String factorStr=matcher.group(1);
 
         return Float.parseFloat(factorStr);
+    }
+
+    public static long count(){
+        return new Select().count()
+                .from(DataValue.class)
+                .count();
     }
 }

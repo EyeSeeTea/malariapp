@@ -27,6 +27,7 @@ import android.util.Log;
 
 import org.eyeseetea.malariacare.LoginActivity;
 import org.eyeseetea.malariacare.R;
+import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.EventExtended;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.test.utils.ElapsedTimeIdlingResource;
@@ -84,7 +85,7 @@ public class PushOKTest {
         login(HNQIS_DEV_CI, TEST_USERNAME_WITH_PERMISSION, TEST_PASSWORD_WITH_PERMISSION);
         waitForPull(DEFAULT_WAIT_FOR_PULL);
         startSurvey(SDKTestUtils.TEST_FACILITY_1_IDX, SDKTestUtils.TEST_FAMILY_PLANNING_IDX);
-        long eventCount = SDKTestUtils.getEventCount();
+        long eventCount = EventExtended.count();
         fillSurvey(7, "No");
         Long idSurvey=markInProgressAsCompleted();
 
@@ -100,7 +101,7 @@ public class PushOKTest {
         Espresso.unregisterIdlingResources(idlingResource);
 
         assertTrue(survey.getEventUid()!=null);
-        assertTrue(eventCount +1 == SDKTestUtils.getEventCount());
+        assertTrue(eventCount +1 == EventExtended.count());
 
         //then: Row is gone
         onView(withId(R.id.score)).check(doesNotExist());
