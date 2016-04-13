@@ -292,4 +292,10 @@
         <p>3. Exécuter "git checkout".</p>" ]]>
     </string>
 
+    <!-- Create or patch -->
+    <string name="create">"Créer"</string>
+    <string name="modify">Modifier</string>
+    <string name="create_or_modify">"Voulez-vous créer ou modifier l'enquête avec les dates %s ?"</string>
+    <string name="loading_last_surveys">"Dernière enquête de chargement..."</string>
+
 </resources>

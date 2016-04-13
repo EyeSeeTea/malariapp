@@ -8,6 +8,8 @@ import android.support.test.runner.AndroidJUnit4;
 import android.util.Log;
 
 import org.eyeseetea.malariacare.LoginActivity;
+import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.OrganisationUnitExtended;
+import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.ProgramExtended;
 import org.eyeseetea.malariacare.database.model.OrgUnit;
 import org.eyeseetea.malariacare.database.model.Program;
 import org.eyeseetea.malariacare.database.utils.PopulateDB;
@@ -183,8 +185,8 @@ public class PullTranslationSDKToAppDBTest {
 
         programList = Program.getAllPrograms();
 
-        orgUnitSdkList= SDKTestUtils.getAllSDKOrganisationUnits();
-        programsSdkList= SDKTestUtils.getAllSDKPrograms();
+        orgUnitSdkList= OrganisationUnitExtended.getAllOrganisationUnits();
+        programsSdkList= ProgramExtended.getAllPrograms();
 
         Espresso.unregisterIdlingResources(idlingResource);
     }

@@ -10,6 +10,7 @@ import com.raizlabs.android.dbflow.structure.BaseModel;
 
 import org.eyeseetea.malariacare.database.model.Answer;
 import org.eyeseetea.malariacare.database.model.CompositeScore;
+import org.eyeseetea.malariacare.database.model.ControlDataElement;
 import org.eyeseetea.malariacare.database.model.Header;
 import org.eyeseetea.malariacare.database.model.Match;
 import org.eyeseetea.malariacare.database.model.Option;
@@ -27,6 +28,9 @@ import org.eyeseetea.malariacare.database.model.Tab;
 import org.eyeseetea.malariacare.database.model.TabGroup;
 import org.eyeseetea.malariacare.database.model.User;
 import org.eyeseetea.malariacare.database.model.Value;
+import org.hisp.dhis.android.sdk.persistence.models.DataValue;
+import org.hisp.dhis.android.sdk.persistence.models.Event;
+import org.hisp.dhis.android.sdk.persistence.models.FailedItem;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -221,10 +225,21 @@ public class PopulateDB {
                 Header.class,
                 Tab.class,
                 TabGroup.class,
-                Program.class
+                Program.class,
+                ControlDataElement.class
         );
     }
 
+    /**
+     * Deletes all data from the sdk database
+     */
+    public static void wipeSDKData() {
+        Delete.tables(
+                Event.class,
+                DataValue.class,
+                FailedItem.class
+        );
+    }
     protected static void saveItem(Map items, BaseModel model, Integer pk){
         items.put(pk,model);
         model.save();

@@ -27,6 +27,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.content.LocalBroadcastManager;
@@ -45,12 +47,14 @@ import org.eyeseetea.malariacare.database.model.OrgUnitLevel;
 import org.eyeseetea.malariacare.database.model.Program;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.model.TabGroup;
+import org.eyeseetea.malariacare.database.utils.LocationMemory;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.database.utils.planning.SurveyPlanner;
 import org.eyeseetea.malariacare.layout.adapters.general.OrgUnitArrayAdapter;
 import org.eyeseetea.malariacare.layout.adapters.general.ProgramArrayAdapter;
 import org.eyeseetea.malariacare.layout.adapters.general.TabGroupArrayAdapter;
+import org.eyeseetea.malariacare.layout.listeners.SurveyLocationListener;
 import org.eyeseetea.malariacare.services.SurveyService;
 import org.eyeseetea.malariacare.utils.Constants;
 import org.eyeseetea.malariacare.views.CustomButton;
@@ -170,7 +174,7 @@ public class CreateSurveyFragment extends Fragment {
             public void onClick(View v) {
                 //If the survey is validate, it send the order of create survey fragment from this fragment to the activity.
                 if(validateForm()) {
-                    dashboardActivity.onCreateSurvey(createSurvey());
+                    createSurvey();
                 }
             }
         });
@@ -327,7 +331,7 @@ public class CreateSurveyFragment extends Fragment {
      * Called when the user clicks the Send button
      * Gets the survey with the SURVEY_PLANNED state and set the createdate, user, SURVEY_IN_PROGRESS, and reset main score, and save the survey in session
      */
-    public Survey createSurvey() {
+    public void createSurvey() {
         Log.i(".CreateSurveyActivity", "Saving survey and saving in session");
 
         //Get selected orgUnit
@@ -339,8 +343,7 @@ public class CreateSurveyFragment extends Fragment {
         //save  the list of orgUnits
         orgUnitHierarchy.saveSelectionInPreferences();
 
-        //Start right survey
-        return SurveyPlanner.getInstance().startSurvey(orgUnit,tabGroup);
+        dashboardActivity.onCreateSurvey(orgUnit,tabGroup);
     }
 
     private class ProgramSpinnerListener implements AdapterView.OnItemSelectedListener {

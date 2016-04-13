@@ -25,6 +25,7 @@ import org.eyeseetea.malariacare.database.model.Value;
 import org.eyeseetea.malariacare.utils.Constants;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -79,6 +80,7 @@ public class ReadWriteDB {
             } else {
                 value.setOption(option);
                 value.setValue(option.getName());
+                value.setUpload_date(new Date());
                 value.update();
             }
         } else {
