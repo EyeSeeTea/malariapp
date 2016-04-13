@@ -42,7 +42,6 @@ import android.widget.Spinner;
 import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.model.OrgUnit;
-import org.eyeseetea.malariacare.database.model.Program;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.model.TabGroup;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
@@ -415,7 +414,7 @@ public class DashboardSentFragment extends ListFragment implements IModuleFragme
         if (surveyReceiver == null) {
             surveyReceiver = new SurveyReceiver();
             LocalBroadcastManager.getInstance(PreferencesState.getInstance().getContext()).registerReceiver(surveyReceiver, new IntentFilter(SurveyService.ALL_SENT_OR_COMPLETED_OR_CONFLICT_SURVEYS_ACTION));
-            LocalBroadcastManager.getInstance(PreferencesState.getInstance().getContext()).registerReceiver(surveyReceiver, new IntentFilter(SurveyService.ALL_ORG_UNITS_AND_PROGRAMS_ACTION));
+            LocalBroadcastManager.getInstance(PreferencesState.getInstance().getContext()).registerReceiver(surveyReceiver, new IntentFilter(SurveyService.ALL_ORG_UNITS_AND_TABGROUP_ACTION));
         }
     }
 
@@ -449,7 +448,7 @@ public class DashboardSentFragment extends ListFragment implements IModuleFragme
         //Reload data using service
         Intent surveysIntent=new Intent(PreferencesState.getInstance().getContext().getApplicationContext(), SurveyService.class);
         surveysIntent.putExtra(SurveyService.SERVICE_METHOD, SurveyService.ALL_SENT_OR_COMPLETED_OR_CONFLICT_SURVEYS_ACTION);
-        surveysIntent.putExtra(SurveyService.SERVICE_METHOD, SurveyService.ALL_ORG_UNITS_AND_PROGRAMS_ACTION);
+        surveysIntent.putExtra(SurveyService.SERVICE_METHOD, SurveyService.ALL_ORG_UNITS_AND_TABGROUP_ACTION);
         PreferencesState.getInstance().getContext().getApplicationContext().startService(surveysIntent);
     }
 
@@ -524,10 +523,10 @@ public class DashboardSentFragment extends ListFragment implements IModuleFragme
         reloadSurveys(oneSurveyForOrgUnit);
     }
 
-    public void getOrgUnitAndProgram(){
-        HashMap<String,List> data=(HashMap) Session.popServiceValue(SurveyService.ALL_ORG_UNITS_AND_PROGRAMS_ACTION);
+    public void getOrgUnitAndTabGroup(){
+        HashMap<String,List> data=(HashMap) Session.popServiceValue(SurveyService.ALL_ORG_UNITS_AND_TABGROUP_ACTION);
         orgUnitList=data.get(SurveyService.PREPARE_ORG_UNIT);
-        tabgroupList =data.get(SurveyService.PREPARE_PROGRAMS);
+        tabgroupList =data.get(SurveyService.PREPARE_TABGROUPS);
     }
 
     private HashMap<String, Survey> filterSurvey(HashMap<String, Survey> orgUnits, Survey survey) {
@@ -558,8 +557,8 @@ public class DashboardSentFragment extends ListFragment implements IModuleFragme
             if (SurveyService.ALL_SENT_OR_COMPLETED_OR_CONFLICT_SURVEYS_ACTION.equals(intent.getAction())) {
                 reloadSentSurveys();
             }
-            if(SurveyService.ALL_ORG_UNITS_AND_PROGRAMS_ACTION.equals(intent.getAction())){
-                getOrgUnitAndProgram();
+            if(SurveyService.ALL_ORG_UNITS_AND_TABGROUP_ACTION.equals(intent.getAction())){
+                getOrgUnitAndTabGroup();
                 new showContainer().execute();
             }
         }
