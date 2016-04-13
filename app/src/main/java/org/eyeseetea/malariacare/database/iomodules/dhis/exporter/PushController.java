@@ -126,7 +126,6 @@ public class PushController {
             postProgress(context.getString(R.string.progress_push_posting_survey));
             Log.d(TAG, "Pushing survey data to server...");
             DhisService.sendEventChanges();
-            saveCreationDateInSDK(surveys);
         }catch (Exception ex) {
             Log.e(TAG, "push: " + ex.getLocalizedMessage());
             unregister();
@@ -205,7 +204,7 @@ public class PushController {
         return responseHolder.getItem();
     }
 
-    private void saveCreationDateInSDK(List<Survey> surveys) {
+    public void saveCreationDateInSDK(List<Survey> surveys) {
         Log.d(TAG,"Saving complete date");
         //TODO is necesary check if the event was successfully uploaded before do this. It will be doing in sdk 2.21
         for(Survey survey:surveys){
