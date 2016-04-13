@@ -21,6 +21,8 @@ package org.eyeseetea.malariacare.database.iomodules.dhis.importer.models;
 
 import android.util.Log;
 
+import com.raizlabs.android.dbflow.sql.language.Select;
+
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.IConvertFromSDKVisitor;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.VisitableFromSDK;
 import org.hisp.dhis.android.sdk.persistence.models.Event;
@@ -28,6 +30,7 @@ import org.hisp.dhis.android.sdk.persistence.models.Event;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by arrizabalaga on 5/11/15.
@@ -147,6 +150,16 @@ public class EventExtended implements VisitableFromSDK {
         }
         SimpleDateFormat simpleDateFormat=new SimpleDateFormat(format);
         return simpleDateFormat.format(date);
+    }
+
+    public static long count(){
+        return new Select().count()
+                .from(Event.class)
+                .count();
+    }
+
+    public static List<Event> getAllEvents() {
+        return new Select().all().from(org.hisp.dhis.android.sdk.persistence.models.Event.class).queryList();
     }
 
 }

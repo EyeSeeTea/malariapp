@@ -79,10 +79,6 @@ public class ProgramExtended implements VisitableFromSDK {
         return this.program;
     }
 
-    public static List<Program> getAllPrograms(){
-        return new Select().from(Program.class).queryList();
-    }
-
     public void setAppProgram(org.eyeseetea.malariacare.database.model.Program appProgram) {
         this.appProgram = appProgram;
     }
@@ -114,20 +110,29 @@ public class ProgramExtended implements VisitableFromSDK {
         }
     }
 
-    public static Program getProgramByDataElement(String dataElementUid){
-        Program program=null;
-        List<Program> programs=getAllPrograms();
-        for(Program program1:programs){
-            for(ProgramStage programStage:program1.getProgramStages()){
-                for(ProgramStageSection programStageSection:programStage.getProgramStageSections()){
-                   for(ProgramStageDataElement programStageDataElement:programStageSection.getProgramStageDataElements()){
-                       if(programStageDataElement.getDataElement().getUid().equals(dataElementUid)){
-                           return program1;
-                       }
-                   }
+    public static Program getProgramByDataElement(String dataElementUid) {
+        Program program = null;
+        List<Program> programs = getAllPrograms();
+        for (Program program1 : programs) {
+            for (ProgramStage programStage : program1.getProgramStages()) {
+                for (ProgramStageSection programStageSection : programStage.getProgramStageSections()) {
+                    for (ProgramStageDataElement programStageDataElement : programStageSection.getProgramStageDataElements()) {
+                        if (programStageDataElement.getDataElement().getUid().equals(dataElementUid)) {
+                            return program1;
+                        }
+                    }
                 }
             }
         }
         return program;
+    }
+    
+    public static List<Program> getAllPrograms(){
+        return new Select().from(Program.class).queryList();
+    }
+
+    public static Program getProgram(String id){
+        return new Select()
+                .from(Program.class).where(Condition.column(Program$Table.ID).eq(id)).querySingle();
     }
 }

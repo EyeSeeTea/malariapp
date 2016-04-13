@@ -46,8 +46,13 @@ import org.hisp.dhis.android.sdk.persistence.models.Attribute;
 import org.hisp.dhis.android.sdk.persistence.models.Attribute$Table;
 import org.hisp.dhis.android.sdk.persistence.models.AttributeValue;
 import org.hisp.dhis.android.sdk.persistence.models.OrganisationUnit;
+import org.hisp.dhis.android.sdk.persistence.models.OrganisationUnit$Table;
 import org.hisp.dhis.android.sdk.persistence.models.OrganisationUnitAttributeValue;
 import org.hisp.dhis.android.sdk.persistence.models.OrganisationUnitAttributeValue$Table;
+import org.hisp.dhis.android.sdk.persistence.models.OrganisationUnitDataSet;
+import org.hisp.dhis.android.sdk.persistence.models.OrganisationUnitDataSet$Table;
+import org.hisp.dhis.android.sdk.persistence.models.OrganisationUnitGroup;
+import org.hisp.dhis.android.sdk.persistence.models.OrganisationUnitGroup$Table;
 import org.hisp.dhis.android.sdk.persistence.models.ProgramStageSection;
 
 import java.util.List;
@@ -164,5 +169,48 @@ public class OrganisationUnitExtended implements VisitableFromSDK {
      */
     public OrgUnit getAppOrgUnit() {
         return appOrgUnit;
+    }
+
+    public static List<OrganisationUnit> getAllOrganisationUnits() {
+        return new Select().all().from(OrganisationUnit.class).queryList();
+    }
+
+    /**
+     * Get all the OU DataSets given a OU id
+     * @param id
+     * @return
+     */
+    public static List<OrganisationUnitDataSet> getOrganisationUnitDataSets(String id){
+        return new Select()
+                .from(OrganisationUnitDataSet.class)
+                .where(Condition.column(OrganisationUnitDataSet$Table.ORGANISATIONUNITID)
+                        .eq(id))
+                .queryList();
+    }
+
+    /**
+     * Get all the OU groups given a OU id
+     * @param id
+     * @return
+     */
+    public static List<OrganisationUnitGroup> getOrganisationUnitGroups(String id){
+        return new Select()
+                .from(OrganisationUnitGroup.class)
+                .where(Condition.column(OrganisationUnitGroup$Table.ORGANISATIONUNITID)
+                        .eq(id))
+                .queryList();
+    }
+
+    /**
+     * Get an OU given its id
+     * @param id
+     * @return
+     */
+    public static OrganisationUnit getOrganisationUnit(String id){
+        return new Select()
+                .from(OrganisationUnit.class)
+                .where(Condition.column(OrganisationUnit$Table.ID)
+                        .eq(id))
+                .querySingle();
     }
 }

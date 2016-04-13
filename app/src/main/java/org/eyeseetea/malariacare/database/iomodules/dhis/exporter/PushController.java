@@ -29,6 +29,7 @@ import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.SyncProgressStatus;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.EventExtended;
 import org.eyeseetea.malariacare.database.model.Survey;
+import org.eyeseetea.malariacare.database.utils.PopulateDB;
 import org.hisp.dhis.android.sdk.controllers.DhisService;
 import org.hisp.dhis.android.sdk.job.NetworkJob;
 import org.hisp.dhis.android.sdk.network.ResponseHolder;
@@ -116,13 +117,15 @@ public class PushController {
             //Converts app data into sdk events
             postProgress(context.getString(R.string.progress_push_preparing_survey));
             Log.d(TAG, "Preparing survey for pushing...");
+
+            PopulateDB.wipeSDKData();
+
             convertToSDK(surveys);
 
             //Asks sdk to push localdata
             postProgress(context.getString(R.string.progress_push_posting_survey));
             Log.d(TAG, "Pushing survey data to server...");
             DhisService.sendEventChanges();
-            saveCreationDateInSDK(surveys);
         }catch (Exception ex) {
             Log.e(TAG, "push: " + ex.getLocalizedMessage());
             unregister();
@@ -201,7 +204,7 @@ public class PushController {
         return responseHolder.getItem();
     }
 
-    private void saveCreationDateInSDK(List<Survey> surveys) {
+    public void saveCreationDateInSDK(List<Survey> surveys) {
         Log.d(TAG,"Saving complete date");
         //TODO is necesary check if the event was successfully uploaded before do this. It will be doing in sdk 2.21
         for(Survey survey:surveys){

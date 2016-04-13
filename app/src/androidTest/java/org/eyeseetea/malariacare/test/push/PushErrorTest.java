@@ -99,7 +99,7 @@ public class PushErrorTest {
         fillSurvey(7, "No");
 
         //Change program id so that pushing is not allowed
-        Survey surveyInProgress=SDKTestUtils.getSurveyInProgress();
+        Survey surveyInProgress=Survey.getSurveyInProgress();
         mockFalseProgramForSurvey(surveyInProgress);
 
         //WHEN
