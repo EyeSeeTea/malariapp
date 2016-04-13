@@ -122,16 +122,6 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
     public void visit(ProgramStageExtended sdkProgramStageExtended) {
         //Build tabgroup
         ProgramStage programStage=sdkProgramStageExtended.getProgramStage();
-        org.eyeseetea.malariacare.database.model.Program appProgram=(org.eyeseetea.malariacare.database.model.Program)appMapObjects.get(programStage.getProgram().getUid());
-        TabGroup appTabGroup = new TabGroup();
-        //FIXME TabGroup has no UID right now
-        appTabGroup.setName(programStage.getDisplayName());
-        appTabGroup.setProgram(appProgram);
-        appTabGroup.setUid(programStage.getUid());
-        appTabGroup.save();
-
-        //Annotate built tabgroup
-        appMapObjects.put(programStage.getUid(), appTabGroup);
 
         //Visit children
         for(ProgramStageSection pss:programStage.getProgramStageSections()){
@@ -193,13 +183,11 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
         //Build Tab
 
         ProgramStageSection programStageSection=sdkProgramStageSectionExtended.getProgramStageSection();
-        org.eyeseetea.malariacare.database.model.TabGroup appTabGroup=(org.eyeseetea.malariacare.database.model.TabGroup)appMapObjects.get(programStageSection.getProgramStage());
         Tab appTab = new Tab();
         //FIXME TabGroup has no UID right now
         appTab.setName(programStageSection.getDisplayName());
         appTab.setType(Constants.TAB_AUTOMATIC);
         appTab.setOrder_pos(programStageSection.getSortOrder());
-        appTab.setTabGroup(appTabGroup);
         appTab.save();
         //Annotate build tab
         appMapObjects.put(appTab.getClass() + appTab.getName(), appTab);
@@ -286,7 +274,9 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
     public void visit(EventExtended sdkEventExtended) {
         Event event=sdkEventExtended.getEvent();
         OrgUnit orgUnit =(OrgUnit)appMapObjects.get(event.getOrganisationUnitId());
-        TabGroup tabGroup=(TabGroup)appMapObjects.get(event.getProgramStageId());
+        Tab tab = new Tab();
+        tab=(Tab)appMapObjects.get(tab.getClass()+tab.getName());
+        TabGroup tabGroup=tab.getTabGroup();
 
         Survey survey=new Survey();
         //Any survey that comes from the pull has been sent
