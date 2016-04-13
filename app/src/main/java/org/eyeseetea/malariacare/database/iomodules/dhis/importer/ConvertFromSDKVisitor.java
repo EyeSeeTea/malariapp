@@ -69,7 +69,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ExecutionException;
 
 public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
 
@@ -340,7 +339,7 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
             return;
         }
 
-        if(dataValue.getDataElement().equals(PreferencesState.getInstance().getContext().getResources().getString(R.string.createdOnUID))){
+        if(dataValue.getDataElement().equals(PreferencesState.getInstance().getContext().getResources().getString(R.string.created_on_code))){
             try{
                 Date date = EventExtended.parseDate(dataValue.getValue(),EventExtended.AMERICAN_DATE_FORMAT);
                 survey.setCreationDate(date);
@@ -353,7 +352,7 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
             return;
         }
 
-        if(dataValue.getDataElement().equals(PreferencesState.getInstance().getContext().getResources().getString(R.string.uploadedDateUID))){
+        if(dataValue.getDataElement().equals(PreferencesState.getInstance().getContext().getResources().getString(R.string.upload_date_code))){
             try{
                 Date date = EventExtended.parseDate(dataValue.getValue(),EventExtended.AMERICAN_DATE_FORMAT);
                 survey.setUploadedDate(date);
@@ -366,7 +365,7 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
             return;
         }
 
-        if(dataValue.getDataElement().equals(PreferencesState.getInstance().getContext().getResources().getString(R.string.createdByUid))){
+        if(dataValue.getDataElement().equals(PreferencesState.getInstance().getContext().getResources().getString(R.string.created_by_code))){
             User user=User.getUser(dataValue.getValue());
             if(user==null) {
                 user = new User(dataValue.getValue(), dataValue.getValue());

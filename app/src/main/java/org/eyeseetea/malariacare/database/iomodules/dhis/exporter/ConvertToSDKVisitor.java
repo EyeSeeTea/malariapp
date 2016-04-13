@@ -105,16 +105,16 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
     ConvertToSDKVisitor(Context context){
         this.context=context;
         // FIXME: We should create a visitor to translate the ControlDataElement class
-        mainScoreCode = ControlDataElement.findControlDataElementUid(context.getString(R.string.main_score));
-        mainScoreACode = ControlDataElement.findControlDataElementUid(context.getString(R.string.main_score_a));
-        mainScoreBCode = ControlDataElement.findControlDataElementUid(context.getString(R.string.main_score_b));
-        mainScoreCCode = ControlDataElement.findControlDataElementUid(context.getString(R.string.main_score_c));
-        forwardOrderCode = ControlDataElement.findControlDataElementUid(context.getString(R.string.forward_order));
+        mainScoreCode = ControlDataElement.findControlDataElementUid(context.getString(R.string.main_score_code));
+        mainScoreACode = ControlDataElement.findControlDataElementUid(context.getString(R.string.main_score_a_code));
+        mainScoreBCode = ControlDataElement.findControlDataElementUid(context.getString(R.string.main_score_b_code));
+        mainScoreCCode = ControlDataElement.findControlDataElementUid(context.getString(R.string.main_score_c_code));
+        forwardOrderCode = ControlDataElement.findControlDataElementUid(context.getString(R.string.forward_order_code));
 
-        createdOnCode = ControlDataElement.findControlDataElementUid(context.getString(R.string.createdOnUID));
-        createdByCode = ControlDataElement.findControlDataElementUid(context.getString(R.string.createdByUid));
-        updatedDateCode =ControlDataElement.findControlDataElementUid(context.getString(R.string.uploadedDateUID));
-        updatedUserCode = ControlDataElement.findControlDataElementUid(context.getString(R.string.createdByUid));
+        createdOnCode = ControlDataElement.findControlDataElementUid(context.getString(R.string.created_on_code));
+        createdByCode = ControlDataElement.findControlDataElementUid(context.getString(R.string.created_by_code));
+        updatedDateCode =ControlDataElement.findControlDataElementUid(context.getString(R.string.upload_date_code));
+        updatedUserCode = ControlDataElement.findControlDataElementUid(context.getString(R.string.created_by_code));
         surveys = new ArrayList<>();
         events = new ArrayList<>();
     }
