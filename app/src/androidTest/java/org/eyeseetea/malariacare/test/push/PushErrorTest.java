@@ -99,17 +99,19 @@ public class PushErrorTest {
         fillSurvey(7, "No");
 
         //Change program id so that pushing is not allowed
-        Survey surveyInProgress=SDKTestUtils.getSurveyInProgress();
+        Survey surveyInProgress=Survey.getSurveyInProgress();
         mockFalseProgramForSurvey(surveyInProgress);
 
         //WHEN
         Long idSurvey=markInProgressAsCompleted();
 
-        Survey survey=waitForPush(SDKTestUtils.DEFAULT_WAIT_FOR_PUSH,idSurvey);
+        Survey survey=waitForPush(SDKTestUtils.DEFAULT_WAIT_FOR_PUSH*1000,idSurvey);
 
         //THEN
         //then: Survey is NOT pushed (no UID)
-        assertTrue(survey.getEventUid() == null);
+        assertTrue("Survey not pushed"+survey.toString(),!survey.isSent());
+        assertTrue("Survey not pushed"+survey.toString(),survey.getUploadedDate()==null);
+        assertTrue("Survey not pushed"+survey.toString(),survey.isConflict());
 
         //then: Row is gone
         onView(withId(R.id.score)).check(doesNotExist());

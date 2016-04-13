@@ -175,7 +175,7 @@ public class CreateSurveyFragment extends Fragment {
             public void onClick(View v) {
                 //If the survey is validate, it send the order of create survey fragment from this fragment to the activity.
                 if(validateForm()) {
-                    dashboardActivity.onCreateSurvey(createSurvey());
+                    createSurvey();
                 }
             }
         });
@@ -345,13 +345,12 @@ public class CreateSurveyFragment extends Fragment {
      * Called when the user clicks the Send button
      * Gets the survey with the SURVEY_PLANNED state and set the createdate, user, SURVEY_IN_PROGRESS, and reset main score, and save the survey in session
      */
-    public Survey createSurvey() {
+    public void createSurvey() {
         Log.i(".CreateSurveyActivity", "Saving survey and saving in session");
 
-        //Get selected orgUnit
+        // Read Selected Items
         OrgUnit orgUnit = (OrgUnit) realOrgUnitView.getSelectedItem();
-
-        //Get selected tabGroup
+        //Read Tab Group
         TabGroup tabGroup = (TabGroup) tabGroupView.getSelectedItem();
 
         //save the lastSelectedOrgUnit and the list of orgUnits
@@ -362,8 +361,7 @@ public class CreateSurveyFragment extends Fragment {
             saveOrgUnitList(TOKEN);
         }
 
-        //Start right survey
-        return SurveyPlanner.getInstance().startSurvey(orgUnit,tabGroup);
+        dashboardActivity.onCreateSurvey(orgUnit,tabGroup);
     }
 
     private class ProgramSpinnerListener implements AdapterView.OnItemSelectedListener {

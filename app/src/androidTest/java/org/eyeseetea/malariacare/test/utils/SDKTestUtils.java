@@ -26,7 +26,7 @@ import android.support.test.espresso.Espresso;
 import android.support.test.espresso.IdlingPolicies;
 import android.support.test.espresso.IdlingResource;
 import android.support.test.espresso.NoActivityResumedException;
-import android.support.test.espresso.ViewAssertion;
+import android.support.test.espresso.NoMatchingViewException;
 import android.support.test.runner.lifecycle.ActivityLifecycleMonitorRegistry;
 import android.support.test.runner.lifecycle.Stage;
 import android.util.Log;
@@ -41,21 +41,13 @@ import org.eyeseetea.malariacare.ProgressActivity;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.SettingsActivity;
 import org.eyeseetea.malariacare.database.model.OrgUnit;
-import org.eyeseetea.malariacare.database.model.OrgUnit$Table;
 import org.eyeseetea.malariacare.database.model.Program;
 import org.eyeseetea.malariacare.database.model.Question;
 import org.eyeseetea.malariacare.database.model.Survey;
-import org.eyeseetea.malariacare.database.model.Survey$Table;
 import org.eyeseetea.malariacare.layout.dashboard.controllers.AssessModuleController;
-import org.eyeseetea.malariacare.utils.Constants;
 import org.hamcrest.Matchers;
 import org.hisp.dhis.android.sdk.persistence.models.Event;
-import org.hisp.dhis.android.sdk.persistence.models.OrganisationUnit;
-import org.hisp.dhis.android.sdk.persistence.models.OrganisationUnit$Table;
-import org.hisp.dhis.android.sdk.persistence.models.OrganisationUnitDataSet;
-import org.hisp.dhis.android.sdk.persistence.models.OrganisationUnitDataSet$Table;
-import org.hisp.dhis.android.sdk.persistence.models.OrganisationUnitGroup;
-import org.hisp.dhis.android.sdk.persistence.models.OrganisationUnitGroup$Table;
+import org.hisp.dhis.android.sdk.persistence.models.Event$Table;
 
 import java.util.Collection;
 import java.util.List;
@@ -66,11 +58,8 @@ import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.replaceText;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
-import static android.support.test.espresso.matcher.ViewMatchers.withSpinnerText;
 import static android.support.test.espresso.matcher.ViewMatchers.withTagValue;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
-import static org.hamcrest.Matchers.contains;
-import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
 
@@ -102,7 +91,7 @@ public class SDKTestUtils {
     public static final String MARK_AS_COMPLETED = "Mark as completed";
     public static final String DELETE_ACTION = "Delete";
     public static final String EDIT_ACTION = "Edit";
-    
+
 
     public static final String UNABLE_TO_LOGIN = "Unable to log in due to an invalid username or password.";
 
@@ -143,12 +132,27 @@ public class SDKTestUtils {
         return survey;
     }
 
+    public static void selectStartSurvey(int idxOrgUnit, int idxProgram) {
+        selectSurvey(idxOrgUnit, idxProgram);
+
+    }
     public static void startSurvey(int idxOrgUnit, int idxProgram) {
+        selectSurvey(idxOrgUnit, idxProgram);
+
+        //Fixme
+        try{
+            onView(withText(R.string.create)).perform(click());
+        }catch (NoMatchingViewException e){
+            Log.d(TAG,"Create option is not working in hnqis");
+        }
+    }
+
+    private static void selectSurvey(int idxOrgUnit, int idxProgram) {
         //when: click on assess tab + plus button
         onView(withTagValue(Matchers.is((Object) AssessModuleController.getSimpleName()))).perform(click());
         onView(withId(R.id.plusButton)).perform(click());
 
-        //then: start survey 'test facility 1'+ 'family planning'+start
+        //then: start survey 'idxOrgUnit'+ 'idxProgram'+start
 
 
         //Wait for SurveyService loads the Orgunit and programs
@@ -163,9 +167,7 @@ public class SDKTestUtils {
 
         onView(withId(R.id.program)).perform(click());
         onData(is(instanceOf(Program.class))).atPosition(idxProgram).perform(click());
-
         onView(withId(R.id.create_form_button)).perform(click());
-
     }
 
     public static void fillSurvey(int numQuestions, String optionValue) {
@@ -186,9 +188,11 @@ public class SDKTestUtils {
                         .atPosition(i)
                         .onChildView(withId(R.id.answer)).onChildView(withText(optionValue))
                         .perform(click());
+            } catch (NoMatchingViewException e) {
+                Log.e(TAG,"Exception selecting option value " + optionValue);
+            }
+            finally{
                 Espresso.unregisterIdlingResources(idlingResource);
-            } catch (Exception e) {
-                Log.e(TAG,"Exception selecting option value" + optionValue);
             }
 
         }
@@ -203,20 +207,22 @@ public class SDKTestUtils {
     public static void fillCompulsorySurvey(int numQuestions, String optionValue) {
         //when: answer NO to every question
         //Wait for fragment load data from SurveyService
-
+        IdlingResource idlingResource=null;
         onView(withTagValue(Matchers.is((Object) getActivityInstance().getApplicationContext().getString(R.string.tab_tag_assess)))).perform(click());
         for (int i = 0; i < numQuestions; i++) {
             try {
-                IdlingResource idlingResource = new ElapsedTimeIdlingResource(1 * 1000);
+                idlingResource = new ElapsedTimeIdlingResource(1 * 1000);
                 Espresso.registerIdlingResources(idlingResource);
                 onData(is(instanceOf(Question.class)))
                         .inAdapterView(withId(R.id.listView))
                         .atPosition(i)
                         .onChildView(withId(R.id.answer)).onChildView(withText(optionValue))
                         .perform(click());
+            } catch (NoMatchingViewException e) {
+                Log.e(TAG,"Exception selecting option value " + optionValue);
+            }
+            finally {
                 Espresso.unregisterIdlingResources(idlingResource);
-            } catch (Exception e) {
-                Log.e(TAG,"Exception selecting option value" + optionValue);
             }
         }
     }
@@ -294,84 +300,10 @@ public class SDKTestUtils {
         return idSurvey;
     }
 
-    public static boolean surveyExists(Long id){
-        boolean exist=false;
-        Survey survey=new Select()
-                .from(Survey.class)
-                .where(Condition.column(Survey$Table.ID_SURVEY)
-                        .eq(id))
-                .querySingle();
-        if(survey!=null){exist=true;}
-        return exist;
-    }
-
     public static Long getSurveyId(){
-        return getSurveyInProgress().getId_survey();
+        return Survey.getSurveyInProgress().getId_survey();
     }
 
-    public static Survey getSurveyInProgress(){
-        return new Select()
-                .from(Survey.class)
-                .where(Condition.column(Survey$Table.STATUS)
-                        .eq(Constants.SURVEY_IN_PROGRESS))
-                .querySingle();
-    }
-    public static  OrgUnit getOrgUnit(String id){
-        return new Select()
-                .from(OrgUnit.class)
-                .where(Condition.column(OrgUnit$Table.UID)
-                        .eq(id))
-                .querySingle();
-    }
-    public static OrganisationUnit getOrganisationUnit(String id){
-        return new Select()
-                .from(OrganisationUnit.class)
-                .where(Condition.column(OrganisationUnit$Table.ID)
-                        .eq(id))
-                .querySingle();
-    }
-
-    public static List<OrganisationUnitGroup> getOrganisationUnitGroups(String id){
-        return new Select()
-                .from(OrganisationUnitGroup.class)
-                .where(Condition.column(OrganisationUnitGroup$Table.ORGANISATIONUNITID)
-                        .eq(id))
-                .queryList();
-    }
-
-    public static List<OrganisationUnitDataSet> getOrganisationUnitDataSets(String id){
-        return new Select()
-                .from(OrganisationUnitDataSet.class)
-                .where(Condition.column(OrganisationUnitDataSet$Table.ORGANISATIONUNITID)
-                        .eq(id))
-                .queryList();
-    }
-
-    public static org.hisp.dhis.android.sdk.persistence.models.Program getSDKProgram(String id){
-        return new Select()
-                .from(org.hisp.dhis.android.sdk.persistence.models.Program.class)
-                .where(Condition.column(org.hisp.dhis.android.sdk.persistence.models.Program$Table.ID)
-                        .eq(id))
-                .querySingle();
-    }
-
-    public static List<org.hisp.dhis.android.sdk.persistence.models.OrganisationUnit> getAllSDKOrganisationUnits() {
-        return new Select().all().from(org.hisp.dhis.android.sdk.persistence.models.OrganisationUnit.class).queryList();
-    }
-
-    public static List<org.hisp.dhis.android.sdk.persistence.models.Program> getAllSDKPrograms() {
-        return new Select().all().from(org.hisp.dhis.android.sdk.persistence.models.Program.class).queryList();
-    }
-
-    public static List<org.hisp.dhis.android.sdk.persistence.models.Event> getAllSDKEvents() {
-        return new Select().all().from(org.hisp.dhis.android.sdk.persistence.models.Event.class).queryList();
-    }
-
-    public static long getEventCount(){
-        return new Select().count()
-                .from(Event.class)
-                .count();
-    }
     public static Activity getActivityInstance() {
         final Activity[] activity = new Activity[1];
         Instrumentation instrumentation = InstrumentationRegistry.getInstrumentation();

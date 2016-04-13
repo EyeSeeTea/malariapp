@@ -45,6 +45,7 @@ import android.widget.TextView;
 
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.utils.LocationMemory;
+import org.eyeseetea.malariacare.database.utils.PopulateDB;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.layout.listeners.SurveyLocationListener;
@@ -212,6 +213,12 @@ public abstract class BaseActivity extends ActionBarActivity {
                 .setNegativeButton(android.R.string.no, null).create().show();
     }
 
+    public void wipeData(){
+        PopulateDB.wipeDatabase();
+        PopulateDB.wipeSDKData();
+    };
+
+
     /**
      * Asks for location (required while starting to edit a survey)
      * @param survey
@@ -241,6 +248,7 @@ public abstract class BaseActivity extends ActionBarActivity {
             return;
         }
         debugMessage("Logging out from sdk...OK");
+        wipeData();
         Session.logout();
         finishAndGo(LoginActivity.class);
     }

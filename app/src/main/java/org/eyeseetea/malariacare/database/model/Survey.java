@@ -39,6 +39,9 @@ import org.eyeseetea.malariacare.database.utils.SurveyAnsweredRatioCache;
 import org.eyeseetea.malariacare.database.utils.planning.SurveyPlanner;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.utils.Constants;
+import org.hisp.dhis.android.sdk.persistence.models.Constant;
+import org.hisp.dhis.android.sdk.persistence.models.Event;
+import org.hisp.dhis.android.sdk.persistence.models.Event$Table;
 
 import java.util.Date;
 import java.util.List;
@@ -295,6 +298,11 @@ public class Survey extends BaseModel implements VisitableToSDK {
      */
     public boolean isCompleted(){
         return Constants.SURVEY_COMPLETED==this.status;
+    }
+
+
+    public boolean isConflict() {
+        return Constants.SURVEY_CONFLICT==this.status;
     }
 
     public Float getMainScore() {
@@ -690,6 +698,12 @@ public class Survey extends BaseModel implements VisitableToSDK {
                 .orderBy(Survey$Table.ID_ORG_UNIT).queryList();
     }
 
+    public static long count(){
+        return new Select().count()
+                .from(Survey.class)
+                .count();
+    }
+
     public void saveConflict(String uid){
         for(Value value:getValues()){
             if(value.getQuestion().getUid().equals(uid)){
@@ -767,6 +781,10 @@ public class Survey extends BaseModel implements VisitableToSDK {
                 .querySingle();
     }
 
+    public static boolean exists(Long id_survey){
+        return findById(id_survey)!=null;
+    }
+
     /**
      * Returns all surveys which status is 'planned' or 'in progress'
      * @return
@@ -822,6 +840,56 @@ public class Survey extends BaseModel implements VisitableToSDK {
                 .queryList();
     }
 
+
+    public static Survey getLastSurvey(OrgUnit orgUnit, TabGroup tabGroup) {
+        List<Survey> surveys = getAllSentCompletedOrConflictSurveys();
+        Survey lastSurvey = null;
+        for(Survey survey:surveys){
+            if(survey.getOrgUnit().getId_org_unit()==orgUnit.getId_org_unit() && survey.getTabGroup().getId_tab_group()==tabGroup.getId_tab_group()) {
+                if (lastSurvey == null)
+                    lastSurvey = survey;
+                else if(lastSurvey.getCompletionDate().before(survey.getCompletionDate()))
+                        lastSurvey = survey;
+            }
+        }
+        return lastSurvey;
+    }
+
+    public static Survey getLastSurvey(Long id_org_unit, Long id_tab_group) {
+        return  new Select().from(Survey.class)
+                .where(Condition.column(Survey$Table.ID_TAB_GROUP).eq(id_tab_group))
+                .and(Condition.column(Survey$Table.ID_ORG_UNIT).eq(id_org_unit))
+                .groupBy(new QueryBuilder().appendQuotedArray(Survey$Table.ID_TAB_GROUP, Survey$Table.ID_ORG_UNIT))
+                .having(Condition.columnsWithFunction("max", "completionDate")).querySingle();
+    }
+
+
+    /**
+     * Get event from a survey if exists.
+     * @return
+     */
+    public Event getEvent(){
+        Event event= new Select().from(Event.class)
+                .where(Condition.column(Event$Table.EVENT).eq(eventuid)).querySingle();
+        return event;
+    }
+    /**
+     * Get event from a survey local id if exist
+     * @return
+     */
+    public Event getEventFromLocalId(){
+        Event event= new Select().from(Event.class)
+                .where(Condition.column(Event$Table.LOCALID).eq(String.valueOf(id_survey))).querySingle();
+        return event;
+    }
+    public static Survey getSurveyInProgress(){
+        return new Select()
+                .from(Survey.class)
+                .where(Condition.column(Survey$Table.STATUS)
+                        .eq(Constants.SURVEY_IN_PROGRESS))
+                .querySingle();
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -874,11 +942,10 @@ public class Survey extends BaseModel implements VisitableToSDK {
                 ", id_user=" + id_user +
                 ", creationDate=" + creationDate +
                 ", completionDate=" + completionDate +
-                ", uploadedDate=" + uploadedDate +
+                ", upload_date=" + uploadedDate +
                 ", scheduledDate=" + scheduledDate +
                 ", status=" + status +
                 ", eventuid="+eventuid+
                 '}';
     }
-
 }
