@@ -176,9 +176,6 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
 
         //Update all the dates after checks the new values
         updateEventDates();
-        Log.d(TAG,"Saving dates in control dataelements");
-
-        buildDateControlDataElements(survey);
 
         Log.d(TAG, "Creating datavalues from other stuff...");
         buildControlDataElements(survey);
