@@ -361,13 +361,18 @@
         <p>3. Run "git checkout". </p>]]>
     </string>
 
+    <!-- Create or patch -->
+    <string name="create">Create</string>
+    <string name="modify">Modify</string>
+    <string name="create_or_modify">Do you want create or modify the survey with date %s ?</string>
+    <string name="loading_last_surveys">Loading last survey...</string>
+
     <!-- Control Data Elements -->
     <string name="main_score_code" translatable="false">_Overall Class</string>
     <string name="main_score_a_code" translatable="false">_Overall Class A</string>
     <string name="main_score_b_code" translatable="false">_Overall Class B</string>
 
     <string name="main_score_c_code" translatable="false">_Overall Class C</string>
-
     <string name="forward_order_code" translatable="false">_FWR-sort</string>
     <string name="forward_order_value" translatable="false">9999</string>
 
