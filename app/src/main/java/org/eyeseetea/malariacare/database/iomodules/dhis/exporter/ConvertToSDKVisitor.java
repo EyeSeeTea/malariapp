@@ -70,16 +70,16 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
      */
     Context context;
 
-    String mainScoreUID;
-    String mainScoreAUID;
-    String mainScoreBUID;
-    String mainScoreCUID;
-    String forwardOrderUID;
+    String mainScoreCode;
+    String mainScoreACode;
+    String mainScoreBCode;
+    String mainScoreCCode;
+    String forwardOrderCode;
 
-    String createdOnUID;
-    String createdByUID;
-    String updatedDateUID;
-    String updatedUserUid;
+    String createdOnCode;
+    String createdByCode;
+    String updatedDateCode;
+    String updatedUserCode;
     /**
      * List of surveys that are going to be pushed
      */
@@ -114,16 +114,17 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
 
     ConvertToSDKVisitor(Context context){
         this.context=context;
-        mainScoreUID=context.getString(R.string.main_score);
-        mainScoreAUID=context.getString(R.string.main_score_a);
-        mainScoreBUID=context.getString(R.string.main_score_b);
-        mainScoreCUID=context.getString(R.string.main_score_c);
-        forwardOrderUID=context.getString(R.string.forward_order);
+        // FIXME: We should create a visitor to translate the ControlDataElement class
+        mainScoreCode = ControlDataElement.findControlDataElementUid(context.getString(R.string.main_score_code));
+        mainScoreACode = ControlDataElement.findControlDataElementUid(context.getString(R.string.main_score_a_code));
+        mainScoreBCode = ControlDataElement.findControlDataElementUid(context.getString(R.string.main_score_b_code));
+        mainScoreCCode = ControlDataElement.findControlDataElementUid(context.getString(R.string.main_score_c_code));
+        forwardOrderCode = ControlDataElement.findControlDataElementUid(context.getString(R.string.forward_order_code));
 
-        createdOnUID =context.getString(R.string.createdOnUID);
-        createdByUID =context.getString(R.string.createdByUid);
-        updatedDateUID=context.getString(R.string.uploadedDateUID);
-        updatedUserUid=context.getString(R.string.createdByUid);
+        createdOnCode = ControlDataElement.findControlDataElementUid(context.getString(R.string.created_on_code));
+        createdByCode = ControlDataElement.findControlDataElementUid(context.getString(R.string.created_by_code));
+        updatedDateCode =ControlDataElement.findControlDataElementUid(context.getString(R.string.upload_date_code));
+        updatedUserCode = ControlDataElement.findControlDataElementUid(context.getString(R.string.created_by_code));
         surveys = new ArrayList<>();
         events = new ArrayList<>();
     }
@@ -144,7 +145,7 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
             buildUpgradeEvent(survey);
         }
         else
-            this.currentEvent = buildEvent();
+            this.currentEvent=buildEvent();
         Log.d(TAG,currentEvent.toString());
 
         //Calculates scores and update survey
@@ -162,9 +163,9 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
         Log.d(TAG, "Creating datavalues from questions... Values"+survey.getValues().size());
 
 
-        for(Value value : survey.getValues()) {
+        for(Value value:survey.getValues()) {
             if(updateEvent) {
-                if (value.getUploadedDate().after(currentSurvey.getUploadedDate())) {
+                if (value.getUpload_date().after(currentSurvey.getUploadedDate())) {
                     value.accept(this);
                     Log.d(TAG, "Value saved: " + value);
                 }
@@ -240,7 +241,7 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
      * @return
      */
     private Event buildEvent()throws Exception{
-        currentEvent =new Event();
+        currentEvent=new Event();
         currentEvent.setStatus(Event.STATUS_COMPLETED);
         currentEvent.setFromServer(false);
         currentEvent.setOrganisationUnitId(currentSurvey.getOrgUnit().getUid());
@@ -316,38 +317,38 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
      */
     private void buildControlDataElements(Survey survey) {
 
-        //MainScoreUID
-        buildAndSaveDataValue(mainScoreUID, survey.getType());
-
-        //MainScore A
-        buildAndSaveDataValue(mainScoreAUID, survey.isTypeA() ? "true" : "false");
-
-        //MainScore B
-        buildAndSaveDataValue(mainScoreBUID, survey.isTypeB() ? "true" : "false");
-
-        //MainScoreC
-        buildAndSaveDataValue(mainScoreCUID, survey.isTypeC() ? "true" : "false");
-
-        //Forward Order
-        buildAndSaveDataValue(forwardOrderUID, context.getString(R.string.forward_order_value));
-    }
-
-    /**
-     * Builds several datavalues from the Dates of the survey
-     * @param survey
-     */
-    private void buildDateControlDataElements(Survey survey) {
+        //It Checks if the dataelement exists, before build and save the datavalue
         //Created date
-        buildAndSaveDataValue(createdOnUID, EventExtended.format(survey.getCreationDate(), EventExtended.AMERICAN_DATE_FORMAT));
+        if(createdOnCode!=null && !createdByCode.equals(""))
+            buildAndSaveDataValue(createdOnCode, EventExtended.format(survey.getCreationDate(), EventExtended.AMERICAN_DATE_FORMAT));
 
         //Updated date
-        buildAndSaveDataValue(updatedDateUID, EventExtended.format(uploadedDate, EventExtended.AMERICAN_DATE_FORMAT));
+        if(updatedDateCode!=null && !updatedDateCode.equals(""))
+            buildAndSaveDataValue(updatedDateCode, EventExtended.format(survey.getUploadedDate(), EventExtended.AMERICAN_DATE_FORMAT));
 
         //Updated by user
-        buildAndSaveDataValue(updatedUserUid, Session.getUser().getUid());
+        if(updatedUserCode!=null && !updatedUserCode.equals(""))
+            buildAndSaveDataValue(updatedUserCode, Session.getUser().getUid());
 
         //Updated by user
-        buildAndSaveDataValue(createdByUID, Session.getUser().getUid());
+        if(createdByCode!=null && !createdByCode.equals(""))
+            buildAndSaveDataValue(createdByCode, Session.getUser().getUid());
+
+        //MainScoreUID
+        if(mainScoreCode!=null)
+            buildAndSaveDataValue(mainScoreCode, survey.getType());
+
+        if(mainScoreACode!=null)
+            buildAndSaveDataValue(mainScoreACode, survey.isTypeA() ? "true" : "false");
+
+        if(mainScoreBCode!=null)
+            buildAndSaveDataValue(mainScoreBCode, survey.isTypeB() ? "true" : "false");
+
+        if(mainScoreCCode!=null)
+            buildAndSaveDataValue(mainScoreCCode, survey.isTypeC() ? "true" : "false");
+
+        if(forwardOrderCode!=null)
+            buildAndSaveDataValue(forwardOrderCode, context.getString(R.string.forward_order_value));
     }
 
     private void buildAndSaveDataValue(String UID, String value){
