@@ -36,9 +36,9 @@ import org.eyeseetea.malariacare.database.model.Survey;
  * Created by idelcano on 23/03/2016.
  */
 @Migration(version =9, databaseName = AppDatabase.NAME)
-public class MigrationRenameDate extends BaseMigration {
+public class MigrationRenameTables extends BaseMigration {
 
-    public MigrationRenameDate() {
+    public MigrationRenameTables() {
         super();
     }
 
