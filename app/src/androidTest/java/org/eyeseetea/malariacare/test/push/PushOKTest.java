@@ -103,7 +103,7 @@ public class PushOKTest {
 
         assertTrue(survey.getEventUid()!=null);
 
-        assertTrue(numberOfEvents == SDKTestUtils.getEventCount());
+        assertTrue(numberOfEvents == EventExtended.count());
         assertTrue(eventCount +1 == EventExtended.count());
 
         //then: Row is gone

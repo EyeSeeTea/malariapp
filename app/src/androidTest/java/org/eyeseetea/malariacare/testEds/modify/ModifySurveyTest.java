@@ -27,6 +27,7 @@ import android.util.Log;
 
 import org.eyeseetea.malariacare.LoginActivity;
 import org.eyeseetea.malariacare.R;
+import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.EventExtended;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.model.Value;
 import org.eyeseetea.malariacare.database.utils.Session;
@@ -112,7 +113,7 @@ public class ModifySurveyTest {
         eventUid = survey.getEventUid();
         //then: Survey is pushed (UID)
         assertTrue(survey.getEventUid() != null);
-        assertTrue(numberOfEvents == SDKTestUtils.getEventCount());
+        assertTrue(numberOfEvents == EventExtended.count());
 
         //WHEN
         selectStartSurvey(SDKTestUtils.TEST_FACILITY_1_IDX, SDKTestUtils.TEST_CC);
@@ -142,11 +143,11 @@ public class ModifySurveyTest {
                 }
             }
             assertTrue(modificatedValues == expectedOptions);
-            assertTrue(numberOfEvents - 1 == SDKTestUtils.getEventCount());
+            assertTrue(numberOfEvents - 1 == EventExtended.count());
         } else if (survey.isSent()) {
-            Event event = SDKTestUtils.getEvent(survey.getEventUid());
+            Event event = EventExtended.getEvent(survey.getEventUid());
             assertTrue(event.getDataValues().size() == expectedOptions);
-            assertTrue(numberOfEvents == SDKTestUtils.getEventCount());
+            assertTrue(numberOfEvents == EventExtended.count());
         }
     }
 }

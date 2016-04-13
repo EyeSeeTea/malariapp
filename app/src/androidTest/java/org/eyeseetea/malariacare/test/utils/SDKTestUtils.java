@@ -27,7 +27,6 @@ import android.support.test.espresso.IdlingPolicies;
 import android.support.test.espresso.IdlingResource;
 import android.support.test.espresso.NoActivityResumedException;
 import android.support.test.espresso.NoMatchingViewException;
-import android.support.test.espresso.ViewAssertion;
 import android.support.test.runner.lifecycle.ActivityLifecycleMonitorRegistry;
 import android.support.test.runner.lifecycle.Stage;
 import android.util.Log;
@@ -36,7 +35,6 @@ import static android.support.test.espresso.Espresso.openActionBarOverflowOrOpti
 import com.raizlabs.android.dbflow.sql.builder.Condition;
 import com.raizlabs.android.dbflow.sql.language.Select;
 
-import org.eyeseetea.malariacare.BuildConfig;
 import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.LoginActivity;
 import org.eyeseetea.malariacare.ProgressActivity;
@@ -50,12 +48,6 @@ import org.eyeseetea.malariacare.layout.dashboard.controllers.AssessModuleContro
 import org.hamcrest.Matchers;
 import org.hisp.dhis.android.sdk.persistence.models.Event;
 import org.hisp.dhis.android.sdk.persistence.models.Event$Table;
-import org.hisp.dhis.android.sdk.persistence.models.OrganisationUnit;
-import org.hisp.dhis.android.sdk.persistence.models.OrganisationUnit$Table;
-import org.hisp.dhis.android.sdk.persistence.models.OrganisationUnitDataSet;
-import org.hisp.dhis.android.sdk.persistence.models.OrganisationUnitDataSet$Table;
-import org.hisp.dhis.android.sdk.persistence.models.OrganisationUnitGroup;
-import org.hisp.dhis.android.sdk.persistence.models.OrganisationUnitGroup$Table;
 
 import java.util.Collection;
 import java.util.List;
@@ -310,27 +302,6 @@ public class SDKTestUtils {
 
     public static Long getSurveyId(){
         return Survey.getSurveyInProgress().getId_survey();
-    }
-
-    public static List<org.hisp.dhis.android.sdk.persistence.models.Program> getAllSDKPrograms() {
-        return new Select().all().from(org.hisp.dhis.android.sdk.persistence.models.Program.class).queryList();
-    }
-
-    public static List<Event> getAllSDKEvents() {
-        return new Select().all().from(org.hisp.dhis.android.sdk.persistence.models.Event.class).queryList();
-    }
-
-    public static long getEventCount(){
-        return new Select().count()
-                .from(Event.class)
-                .count();
-    }
-
-    public static Event getEvent(String eventUid){
-        return new Select()
-                .from(Event.class)
-                .where(Condition.column(Event$Table.ID).eq(eventUid))
-                .querySingle();
     }
 
     public static Activity getActivityInstance() {

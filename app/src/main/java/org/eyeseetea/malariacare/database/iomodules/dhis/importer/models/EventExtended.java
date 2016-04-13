@@ -207,4 +207,11 @@ public class EventExtended implements VisitableFromSDK {
         return new Select().all().from(org.hisp.dhis.android.sdk.persistence.models.Event.class).queryList();
     }
 
+    public static Event getEvent(String eventUid){
+        return new Select()
+                .from(Event.class)
+                .where(Condition.column(Event$Table.ID).eq(eventUid))
+                .querySingle();
+    }
+
 }
