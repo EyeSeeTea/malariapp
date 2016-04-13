@@ -85,11 +85,8 @@ public class PushOKTest {
         login(HNQIS_DEV_CI, TEST_USERNAME_WITH_PERMISSION, TEST_PASSWORD_WITH_PERMISSION);
         waitForPull(DEFAULT_WAIT_FOR_PULL);
         startSurvey(SDKTestUtils.TEST_FACILITY_1_IDX, SDKTestUtils.TEST_FAMILY_PLANNING_IDX);
-<<<<<<< HEAD
         long numberOfEvents = 1;
-=======
         long eventCount = EventExtended.count();
->>>>>>> custom_tabs
         fillSurvey(7, "No");
         Long idSurvey=markInProgressAsCompleted();
 
@@ -105,11 +102,9 @@ public class PushOKTest {
         Espresso.unregisterIdlingResources(idlingResource);
 
         assertTrue(survey.getEventUid()!=null);
-<<<<<<< HEAD
+
         assertTrue(numberOfEvents == SDKTestUtils.getEventCount());
-=======
         assertTrue(eventCount +1 == EventExtended.count());
->>>>>>> custom_tabs
 
         //then: Row is gone
         onView(withId(R.id.score)).check(doesNotExist());
