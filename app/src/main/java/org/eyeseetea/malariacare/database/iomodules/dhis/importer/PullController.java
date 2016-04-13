@@ -60,6 +60,7 @@ import org.hisp.dhis.android.sdk.utils.log.LogMessage;
 import org.hisp.dhis.android.sdk.utils.log.SdkLogger;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -72,6 +73,7 @@ import java.util.Map;
  */
 public class PullController {
     private final String TAG = ".PullController";
+    public static final int NUMBER_OF_MONTHS=6;
 
     private final static Class MANDATORY_METADATA_TABLES[] = {
             org.hisp.dhis.android.sdk.persistence.models.Attribute.class,
@@ -151,6 +153,10 @@ public class PullController {
             enableMetaDataFlags();
             //Delete previous metadata
             TrackerController.setMaxEvents(PreferencesState.getInstance().getMaxEvents());
+            Calendar month = Calendar.getInstance();
+            month.add(Calendar.MONTH, -NUMBER_OF_MONTHS);
+            TrackerController.setStartDate(EventExtended.format(month.getTime(),EventExtended.AMERICAN_DATE_FORMAT));
+
             MetaDataController.clearMetaDataLoadedFlags();
             MetaDataController.wipe();
             PopulateDB.wipeSDKData();

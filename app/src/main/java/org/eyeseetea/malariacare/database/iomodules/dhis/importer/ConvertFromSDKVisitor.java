@@ -36,6 +36,7 @@ import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.Program
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.UserAccountExtended;
 import org.eyeseetea.malariacare.database.model.Answer;
 import org.eyeseetea.malariacare.database.model.CompositeScore;
+import org.eyeseetea.malariacare.database.model.ControlDataElement;
 import org.eyeseetea.malariacare.database.model.OrgUnit;
 import org.eyeseetea.malariacare.database.model.OrgUnitLevel;
 import org.eyeseetea.malariacare.database.model.OrgUnitProgramRelation;
@@ -266,12 +267,17 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
     @Override
     public void visit(DataElementExtended sdkDataElementExtended) {
         Object questionOrCompositeScore;
+        if(appMapObjects.containsKey(sdkDataElementExtended.getDataElement().getUid()))
+            return;
         if(sdkDataElementExtended.isCompositeScore()){
             questionOrCompositeScore=buildCompositeScore(sdkDataElementExtended);
         }else if(sdkDataElementExtended.isQuestion()){
             questionOrCompositeScore=buildQuestion(sdkDataElementExtended);
             //Question type is annotated in 'answer' from an attribute of the question
-        }else{
+        }else if (sdkDataElementExtended.isControlDataElement()) {
+            questionOrCompositeScore=buildControlDataElement(sdkDataElementExtended);
+        } else {
+            Log.d(TAG, "Error" + sdkDataElementExtended.getDataElement().toString());
             return;
         }
         appMapObjects.put(sdkDataElementExtended.getDataElement().getUid(), questionOrCompositeScore);
@@ -333,7 +339,7 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
             return;
         }
 
-        if(dataValue.getDataElement().equals(PreferencesState.getInstance().getContext().getResources().getString(R.string.createdOnUID))){
+        if(dataValue.getDataElement().equals(PreferencesState.getInstance().getContext().getResources().getString(R.string.created_on_code))){
             try{
                 Date date = EventExtended.parseDate(dataValue.getValue(),EventExtended.AMERICAN_DATE_FORMAT);
                 survey.setCreationDate(date);
@@ -346,7 +352,7 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
             return;
         }
 
-        if(dataValue.getDataElement().equals(PreferencesState.getInstance().getContext().getResources().getString(R.string.uploadedDateUID))){
+        if(dataValue.getDataElement().equals(PreferencesState.getInstance().getContext().getResources().getString(R.string.upload_date_code))){
             try{
                 Date date = EventExtended.parseDate(dataValue.getValue(),EventExtended.AMERICAN_DATE_FORMAT);
                 survey.setUploadedDate(date);
@@ -359,7 +365,7 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
             return;
         }
 
-        if(dataValue.getDataElement().equals(PreferencesState.getInstance().getContext().getResources().getString(R.string.createdByUid))){
+        if(dataValue.getDataElement().equals(PreferencesState.getInstance().getContext().getResources().getString(R.string.created_by_code))){
             User user=User.getUser(dataValue.getValue());
             if(user==null) {
                 user = new User(dataValue.getValue(), dataValue.getValue());
@@ -371,15 +377,20 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
             appMapObjects.put(dataValue.getEvent(), survey);
             return;
         }
-        //Datavalue is a value from a question
-        Question question=(Question)appMapObjects.get(dataValue.getDataElement());
 
         Value value=new Value();
-        value.setQuestion(question);
-        value.setSurvey(survey);
+        //Datavalue is a value from a question
+        org.eyeseetea.malariacare.database.model.Option option = null;
+        try{
+            Question question=(Question)appMapObjects.get(dataValue.getDataElement());
+            value.setQuestion(question);
+            option=sdkDataValueExtended.findOptionByQuestion(question);
+            value.setOption(option);
+        }catch (ClassCastException e){
+            Log.d(TAG,"Ignoring controlDataelement in DataValue converting");
+        }
 
-        org.eyeseetea.malariacare.database.model.Option option=sdkDataValueExtended.findOptionByQuestion(question);
-        value.setOption(option);
+        value.setSurvey(survey);
         //No option -> text question (straight value)
         if(option==null){
             value.setValue(dataValue.getValue());
@@ -473,6 +484,22 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
 
         compositeScoreBuilder.add(compositeScore);
         return compositeScore;
+    }
+
+
+
+    private ControlDataElement buildControlDataElement(DataElementExtended sdkDataElementExtended) {
+        DataElement dataElement=sdkDataElementExtended.getDataElement();
+        ControlDataElement controlDataElement = new ControlDataElement();
+        controlDataElement.setUid(dataElement.getUid());
+        controlDataElement.setCode(dataElement.getCode());
+        controlDataElement.setName(dataElement.getDisplayName());
+        controlDataElement.setValueType(dataElement.getValueType().name());
+
+        //Parent score and Order can only be set once every score in saved
+        controlDataElement.save();
+        return controlDataElement;
+
     }
 
     /**

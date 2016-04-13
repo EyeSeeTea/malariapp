@@ -10,6 +10,7 @@ import com.raizlabs.android.dbflow.structure.BaseModel;
 
 import org.eyeseetea.malariacare.database.model.Answer;
 import org.eyeseetea.malariacare.database.model.CompositeScore;
+import org.eyeseetea.malariacare.database.model.ControlDataElement;
 import org.eyeseetea.malariacare.database.model.Header;
 import org.eyeseetea.malariacare.database.model.Match;
 import org.eyeseetea.malariacare.database.model.Option;
@@ -224,7 +225,8 @@ public class PopulateDB {
                 Header.class,
                 Tab.class,
                 TabGroup.class,
-                Program.class
+                Program.class,
+                ControlDataElement.class
         );
     }
 
