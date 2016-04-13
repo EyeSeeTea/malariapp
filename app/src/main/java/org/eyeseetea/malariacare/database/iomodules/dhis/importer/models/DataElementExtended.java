@@ -56,6 +56,11 @@ public class DataElementExtended implements VisitableFromSDK {
      * Code of attribute dheader unique name
      */
     public static final String ATTRIBUTE_HEADER_NAME = "DEHeader";
+
+    /**
+     * Code of attribute dheader unique name
+     */
+    public static final String ATTRIBUTE_TABGROUP_NAME = "DETabGroup";
     /**
      * Code of attribute order int
      */
