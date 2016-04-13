@@ -135,56 +135,10 @@ public class QuestionBuilder {
     public Header saveHeader(DataElementExtended dataElementExtended) {
         Header header = null;
         String attributeHeaderValue = dataElementExtended.getValue(DataElementExtended.ATTRIBUTE_HEADER_NAME);
-        String attributeTabGroupValue = dataElementExtended.getValue(DataElementExtended.ATTRIBUTE_TABGROUP_NAME);
         if (attributeHeaderValue != null) {
             Tab questionTab;
-            TabGroup questionTabGroup;
+            questionTab=saveTabGroup(dataElementExtended);
             String tabUid = dataElementExtended.findProgramStageSectionUIDByDataElementUID(dataElementExtended.getDataElement().getUid());
-            String tabGroupUid = dataElementExtended.findAttributeValuefromDataElementCode(DataElementExtended.ATTRIBUTE_TABGROUP_NAME,dataElementExtended.getDataElement()).getAttributeId();
-
-            if(ConvertFromSDKVisitor.appMapObjects.containsKey(tabUid)) {
-                questionTab = (Tab) ConvertFromSDKVisitor.appMapObjects.get(tabUid);
-                if(mapHeader.containsKey(tabUid+attributeHeaderValue)){
-                        if(!mapHeader.get(tabUid+attributeHeaderValue).getTab().getName().equals(questionTab.getName()))
-                            Log.d("Bug","Header with other tab"+header.getName()+" othertab "+questionTab.getName()+ "uid" + dataElementExtended.getDataElement().getUid());
-                }
-            }
-            else
-            questionTab=null;
-
-            if(ConvertFromSDKVisitor.appMapObjects.containsKey(tabGroupUid+attributeTabGroupValue)) {
-                questionTabGroup = (TabGroup) ConvertFromSDKVisitor.appMapObjects.get(tabGroupUid+attributeTabGroupValue);
-                if(mapTabGroup.containsKey(tabGroupUid+attributeTabGroupValue)){
-                    if(!mapTabGroup.get(tabGroupUid + attributeTabGroupValue).getName().equals(questionTabGroup.getName()))
-                        Log.d("Bug","Header with other tab"+header.getName()+"tab"+questionTab.getName()+" othertab "+questionTabGroup.getName()+ "uid" + dataElementExtended.getDataElement().getUid());
-                }
-            }
-            else
-                questionTabGroup=null;
-
-
-            if(!mapTabGroup.containsKey(tabGroupUid+attributeTabGroupValue)) {
-                TabGroup tabGroup=new TabGroup();
-                tabGroup.setName(attributeTabGroupValue);
-                Log.d(TAG, "Creating new tab from: " +dataElementExtended.getDataElement().getUid());
-                String dataelementUid=dataElementExtended.getDataElement().getUid();
-                org.hisp.dhis.android.sdk.persistence.models.Program programSdk=ProgramExtended.getProgramByDataElement(dataelementUid);
-                Log.d(TAG, "With programUID: " + programSdk.getUid());
-
-                Program program =Program.getProgram(programSdk.getUid());
-
-                Log.d(TAG, "With local programUId " + program.getUid());
-                tabGroup.setProgram(program.getId_program());
-                tabGroup.save();
-                questionTab.setTabGroup(tabGroup);
-                questionTab.save();
-                mapTabGroup.put(tabGroupUid + attributeTabGroupValue, tabGroup);
-            }
-            else{
-                questionTabGroup=mapTabGroup.get(tabGroupUid+attributeTabGroupValue);
-                questionTab.setTabGroup(questionTabGroup);
-                questionTab.save();
-            }
 
             if(!mapHeader.containsKey(tabUid+attributeHeaderValue)) {
                 header = new Header();
@@ -200,10 +154,6 @@ public class QuestionBuilder {
                 header=mapHeader.get(tabUid+attributeHeaderValue);
             }
             if(questionTab==null) {
-                header=null;
-            }
-
-            if(questionTabGroup==null){
                 header=null;
             }
 
@@ -357,5 +307,51 @@ public class QuestionBuilder {
                 questionRelation.createMatchFromQuestions(children);
             }
         }
+    }
+
+    public static Tab saveTabGroup(DataElementExtended sdkDataElementExtended) {
+        TabGroup questionTabGroup;
+        String attributeTabGroupValue = sdkDataElementExtended.getValue(DataElementExtended.ATTRIBUTE_TABGROUP_NAME);
+        String tabUid = sdkDataElementExtended.findProgramStageSectionUIDByDataElementUID(sdkDataElementExtended.getDataElement().getUid());
+        String tabGroupUid = sdkDataElementExtended.findAttributeValuefromDataElementCode(DataElementExtended.ATTRIBUTE_TABGROUP_NAME,sdkDataElementExtended.getDataElement()).getAttributeId();
+
+
+        String attributeHeaderValue = sdkDataElementExtended.getValue(DataElementExtended.ATTRIBUTE_HEADER_NAME);
+        Tab questionTab;
+        if(ConvertFromSDKVisitor.appMapObjects.containsKey(tabUid)) {
+            questionTab = (Tab) ConvertFromSDKVisitor.appMapObjects.get(tabUid);
+        }
+        else
+            questionTab=null;
+
+        if(ConvertFromSDKVisitor.appMapObjects.containsKey(tabGroupUid+attributeTabGroupValue)) {
+            questionTabGroup = (TabGroup) ConvertFromSDKVisitor.appMapObjects.get(tabGroupUid+attributeTabGroupValue);
+        }
+        else
+            questionTabGroup=null;
+
+        if(!mapTabGroup.containsKey(tabGroupUid+attributeTabGroupValue)) {
+            TabGroup tabGroup=new TabGroup();
+            tabGroup.setName(attributeTabGroupValue);
+            Log.d(TAG, "Creating new tab from: " +sdkDataElementExtended.getDataElement().getUid());
+            String dataelementUid=sdkDataElementExtended.getDataElement().getUid();
+            org.hisp.dhis.android.sdk.persistence.models.Program programSdk= ProgramExtended.getProgramByDataElement(dataelementUid);
+            Log.d(TAG, "With programUID: " + programSdk.getUid());
+
+            Program program =Program.getProgram(programSdk.getUid());
+
+            Log.d(TAG, "With local programUId " + program.getUid());
+            tabGroup.setProgram(program.getId_program());
+            tabGroup.save();
+            questionTab.setTabGroup(tabGroup);
+            questionTab.save();
+            mapTabGroup.put(tabGroupUid + attributeTabGroupValue, tabGroup);
+        }
+        else{
+            questionTabGroup=mapTabGroup.get(tabGroupUid+attributeTabGroupValue);
+            questionTab.setTabGroup(questionTabGroup);
+            questionTab.save();
+        }
+        return questionTab;
     }
 }
