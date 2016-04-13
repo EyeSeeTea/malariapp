@@ -168,7 +168,10 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
         //create the orgUnit
         org.eyeseetea.malariacare.database.model.OrgUnit appOrgUnit= new org.eyeseetea.malariacare.database.model.OrgUnit();
         //Set name
-        appOrgUnit.setName(organisationUnit.getLabel());
+        if(organisationUnit.getLabel()==null)
+            appOrgUnit.setName(organisationUnit.getName());
+        else
+            appOrgUnit.setName(organisationUnit.getLabel());
         //Set uid
         appOrgUnit.setUid(organisationUnit.getId());
         //Set orgUnitLevel
@@ -558,6 +561,22 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
 
             OrgUnit appOrgUnit = (OrgUnit)appMapObjects.get(organisationUnit.getId());
             String parentUID=organisationUnit.getParent();
+            //FIXME: review this algorithm
+            if(parentUID==null) {
+                //path format=/VaXGMQY18R2/TyoXRBeZ12K/TeqzAowss4n/Doa9u6qkSO3/qeENMD3x6y7
+                //path[0] is ""
+                //path [1] is the last parent "VaXGMQY18R2"
+                String path = organisationUnit.getPath();
+                String[] pathUids = path.split("/");
+                if (pathUids.length > 2 && !pathUids[1].equals(organisationUnit.getId())) {
+                    for (int i = 2; i < pathUids.length; i++) {
+                        if (pathUids[i].equals(organisationUnit.getId())) {
+                            parentUID = pathUids[i - 1];
+                            Log.d(TAG, organisationUnit.getId() + " parent " + parentUID);
+                        }
+                    }
+                }
+            }
             //No parent nothing to do
             if(parentUID==null){
                 Log.i(TAG,String.format("%s is a root orgUnit",appOrgUnit.getName()));
@@ -573,7 +592,7 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
                 continue;
             }
 
-            appOrgUnit.setOrgUnit(appOrgUnit.getId_org_unit());
+            appOrgUnit.setOrgUnit(parentOrgUnit.getId_org_unit());
             appOrgUnit.save();
         }
         return true;

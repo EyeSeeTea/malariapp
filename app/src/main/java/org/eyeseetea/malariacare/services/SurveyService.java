@@ -24,6 +24,7 @@ import android.content.Intent;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
+import com.raizlabs.android.dbflow.annotation.Column;
 import com.raizlabs.android.dbflow.sql.builder.Condition;
 import com.raizlabs.android.dbflow.sql.language.Select;
 
@@ -219,8 +220,8 @@ public class SurveyService extends IntentService {
     }
 
     private void getAllCreateSurveyData() {
-        Log.d(TAG,"getAllCreateSurveyData (Thread:"+Thread.currentThread().getId()+")");
-        List<OrgUnit> orgUnitList = new Select().all().from(OrgUnit.class).where(Condition.column(OrgUnit$Table.ID_PARENT).isNull()).queryList();
+        Log.d(TAG, "getAllCreateSurveyData (Thread:" + Thread.currentThread().getId() + ")");
+        List<OrgUnit> orgUnitList = new Select().all().from(OrgUnit.class).orderBy(true, "id_org_unit_level").queryList();
         List<OrgUnitLevel> orgUnitLevelList = new Select().all().from(OrgUnitLevel.class).queryList();
         List<Program> programList = Program.list();
 
