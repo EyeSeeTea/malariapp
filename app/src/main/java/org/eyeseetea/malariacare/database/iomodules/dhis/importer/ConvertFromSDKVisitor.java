@@ -533,6 +533,7 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
 
             OrgUnit appOrgUnit = (OrgUnit)appMapObjects.get(organisationUnit.getId());
             String parentUID=organisationUnit.getParent();
+            //FIXME: review this algorithm
             if(parentUID==null) {
                 //path format=/VaXGMQY18R2/TyoXRBeZ12K/TeqzAowss4n/Doa9u6qkSO3/qeENMD3x6y7
                 //path[0] is ""
