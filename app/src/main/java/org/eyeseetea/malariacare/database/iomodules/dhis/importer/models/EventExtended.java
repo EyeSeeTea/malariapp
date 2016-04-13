@@ -21,11 +21,18 @@ package org.eyeseetea.malariacare.database.iomodules.dhis.importer.models;
 
 import android.util.Log;
 
+import com.raizlabs.android.dbflow.sql.QueryBuilder;
+import com.raizlabs.android.dbflow.sql.builder.Condition;
 import com.raizlabs.android.dbflow.sql.language.Select;
 
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.IConvertFromSDKVisitor;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.VisitableFromSDK;
+import org.hisp.dhis.android.sdk.persistence.models.DataValue;
+import org.hisp.dhis.android.sdk.persistence.models.DataValue$Table;
 import org.hisp.dhis.android.sdk.persistence.models.Event;
+import org.hisp.dhis.android.sdk.persistence.models.Event$Table;
+import org.hisp.dhis.android.sdk.persistence.models.FailedItem;
+import org.hisp.dhis.android.sdk.persistence.models.FailedItem$Table;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -152,6 +159,44 @@ public class EventExtended implements VisitableFromSDK {
         return simpleDateFormat.format(date);
     }
 
+
+    /**
+     * Checks whether the given event contains errors in SDK FailedItem table or has been successful.
+     * If not return null, it is becouse this item had a conflict.
+     * @param localId
+     * @return
+     */
+    public static FailedItem hasConflict(long localId){
+        return  new Select()
+                .from(FailedItem.class)
+                .where(Condition.column(FailedItem$Table.ITEMID)
+                        .is(localId)).querySingle();
+    }
+
+    public Event removeDataValues() {
+        //Remove all dataValues
+        List<DataValue> dataValues = new Select().from(DataValue.class)
+                .where(Condition.column(DataValue$Table.EVENT).eq(event.getUid()))
+                .queryList();
+        if(dataValues!=null) {
+            for (int i=dataValues.size()-1;i>=0;i--) {
+                DataValue dataValue= dataValues.get(i);
+                dataValue.delete();
+                dataValues.remove(i);
+            }
+        }
+        event.setDataValues(null);
+        event.save();
+        return event;
+    }
+
+    public static Event getLastEvent(Long id_org_unit, String programUid, String dateField) {
+        return  new Select().from(Event.class)
+                .where(Condition.column(Event$Table.PROGRAMID).eq(programUid))
+                .and(Condition.column(Event$Table.ORGANISATIONUNITID).eq(id_org_unit))
+                .groupBy(new QueryBuilder().appendQuotedArray(Event$Table.PROGRAMID, Event$Table.ORGANISATIONUNITID))
+                .having(Condition.columnsWithFunction("max", dateField)).querySingle();
+    }
     public static long count(){
         return new Select().count()
                 .from(Event.class)
@@ -160,6 +205,13 @@ public class EventExtended implements VisitableFromSDK {
 
     public static List<Event> getAllEvents() {
         return new Select().all().from(org.hisp.dhis.android.sdk.persistence.models.Event.class).queryList();
+    }
+
+    public static Event getEvent(String eventUid){
+        return new Select()
+                .from(Event.class)
+                .where(Condition.column(Event$Table.ID).eq(eventUid))
+                .querySingle();
     }
 
 }
