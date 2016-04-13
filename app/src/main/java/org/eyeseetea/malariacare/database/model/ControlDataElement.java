@@ -27,11 +27,9 @@ import com.raizlabs.android.dbflow.sql.language.Select;
 import com.raizlabs.android.dbflow.structure.BaseModel;
 
 import org.eyeseetea.malariacare.database.AppDatabase;
+import org.eyeseetea.malariacare.database.iomodules.dhis.exporter.IConvertToSDKVisitor;
+import org.eyeseetea.malariacare.database.iomodules.dhis.exporter.VisitableToSDK;
 import org.eyeseetea.malariacare.database.utils.Session;
-
-/**
- * Created by idelcano on 05/04/2016.
- */
 
 @Table(databaseName = AppDatabase.NAME)
 public class ControlDataElement extends BaseModel {
@@ -103,6 +101,22 @@ public class ControlDataElement extends BaseModel {
         this.valueType = valueType;
     }
 
+    public static ControlDataElement findControlDataElementByCode(String code){
+        return new Select().from(ControlDataElement.class).where(Condition.column(ControlDataElement$Table.CODE).eq(code)).querySingle();
+    }
+
+    public static ControlDataElement findControlDataElementByName(String code){
+        return new Select().from(ControlDataElement.class).where(Condition.column(ControlDataElement$Table.NAME).eq(code)).querySingle();
+    }
+
+    public static String findControlDataElementUid(String code){
+        ControlDataElement controlDataElement=findControlDataElementByCode(code);
+        if(controlDataElement==null){
+            controlDataElement=findControlDataElementByName(code);
+        }
+        return controlDataElement.getUid();
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -137,21 +151,5 @@ public class ControlDataElement extends BaseModel {
                 ", uid='" + uid + '\'' +
                 ", valueType=" + valueType +
                 '}';
-    }
-
-    public static ControlDataElement findControlDataElementByCode(String code){
-        return new Select().from(ControlDataElement.class).where(Condition.column(ControlDataElement$Table.CODE).eq(code)).querySingle();
-    }
-
-    public static ControlDataElement findControlDataElementByName(String code){
-        return new Select().from(ControlDataElement.class).where(Condition.column(ControlDataElement$Table.NAME).eq(code)).querySingle();
-    }
-
-    public static String findControlDataElementUid(String code){
-        ControlDataElement controlDataElement=findControlDataElementByCode(code);
-        if(controlDataElement==null){
-            controlDataElement=findControlDataElementByName(code);
-        }
-        return controlDataElement.getUid();
     }
 }
