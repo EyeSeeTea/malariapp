@@ -137,7 +137,7 @@ public class ModifySurveyTest {
         if (survey.isCompleted()) {
             int modificatedValues = 0;
             for (Value value : survey.getValues()) {
-                if (value.getUploadedDate().after(survey.getUploadedDate())) {
+                if (value.getUpload_date().after(survey.getUploadedDate())) {
                     modificatedValues++;
                 }
             }
