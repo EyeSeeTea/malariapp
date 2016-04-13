@@ -30,7 +30,7 @@ import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.EventExtended;
 import org.eyeseetea.malariacare.database.model.CompositeScore;
-import org.eyeseetea.malariacare.database.model.ControlDataElement;
+import org.eyeseetea.malariacare.database.model.ServerMetadata;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.model.User;
 import org.eyeseetea.malariacare.database.model.Value;
@@ -104,17 +104,17 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
 
     ConvertToSDKVisitor(Context context){
         this.context=context;
-        // FIXME: We should create a visitor to translate the ControlDataElement class
-        mainScoreCode = ControlDataElement.findControlDataElementUid(context.getString(R.string.main_score_code));
-        mainScoreACode = ControlDataElement.findControlDataElementUid(context.getString(R.string.main_score_a_code));
-        mainScoreBCode = ControlDataElement.findControlDataElementUid(context.getString(R.string.main_score_b_code));
-        mainScoreCCode = ControlDataElement.findControlDataElementUid(context.getString(R.string.main_score_c_code));
-        forwardOrderCode = ControlDataElement.findControlDataElementUid(context.getString(R.string.forward_order_code));
+        // FIXME: We should create a visitor to translate the ServerMetadata class
+        mainScoreCode = ServerMetadata.findControlDataElementUid(context.getString(R.string.main_score_code));
+        mainScoreACode = ServerMetadata.findControlDataElementUid(context.getString(R.string.main_score_a_code));
+        mainScoreBCode = ServerMetadata.findControlDataElementUid(context.getString(R.string.main_score_b_code));
+        mainScoreCCode = ServerMetadata.findControlDataElementUid(context.getString(R.string.main_score_c_code));
+        forwardOrderCode = ServerMetadata.findControlDataElementUid(context.getString(R.string.forward_order_code));
 
-        createdOnCode = ControlDataElement.findControlDataElementUid(context.getString(R.string.created_on_code));
-        createdByCode = ControlDataElement.findControlDataElementUid(context.getString(R.string.created_by_code));
-        updatedDateCode =ControlDataElement.findControlDataElementUid(context.getString(R.string.upload_date_code));
-        updatedUserCode = ControlDataElement.findControlDataElementUid(context.getString(R.string.created_by_code));
+        createdOnCode = ServerMetadata.findControlDataElementUid(context.getString(R.string.created_on_code));
+        createdByCode = ServerMetadata.findControlDataElementUid(context.getString(R.string.created_by_code));
+        updatedDateCode = ServerMetadata.findControlDataElementUid(context.getString(R.string.upload_date_code));
+        updatedUserCode = ServerMetadata.findControlDataElementUid(context.getString(R.string.created_by_code));
         surveys = new ArrayList<>();
         events = new ArrayList<>();
     }
@@ -144,7 +144,7 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
             value.accept(this);
         }
 
-        Log.d(TAG,"Saving control dataelements");
+        Log.d(TAG, "Saving control dataelements");
         buildControlDataElements(survey);
 
         //Annotate both objects to update its state once the process is over
@@ -204,15 +204,15 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
     private void updateEventDates() {
 
         //Sent date 'now' (this change will be saves after successful push)
-        currentSurvey.setUploadedDate(new Date());
+        currentSurvey.setUpload_date(new Date());
 
-        uploadedDate =currentSurvey.getUploadedDate();
+        uploadedDate =currentSurvey.getUpload_date();
 
         // NOTE: do not try to set the event creation date. SDK will try to update the event in the next push instead of creating it and that will crash
-        currentEvent.setEventDate(EventExtended.format(currentSurvey.getCompletionDate(), EventExtended.DHIS2_DATE_FORMAT));
-        currentEvent.setDueDate(EventExtended.format(currentSurvey.getScheduledDate(),EventExtended.DHIS2_DATE_FORMAT));
+        currentEvent.setEventDate(EventExtended.format(currentSurvey.getCompletion_date(), EventExtended.DHIS2_DATE_FORMAT));
+        currentEvent.setDueDate(EventExtended.format(currentSurvey.getSchedule_date(), EventExtended.DHIS2_DATE_FORMAT));
         //Not used
-        currentEvent.setLastUpdated(EventExtended.format(currentSurvey.getUploadedDate(),EventExtended.DHIS2_DATE_FORMAT));
+        currentEvent.setLastUpdated(EventExtended.format(currentSurvey.getUpload_date(), EventExtended.DHIS2_DATE_FORMAT));
         }
 
     /**
@@ -224,11 +224,11 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
         //It Checks if the dataelement exists, before build and save the datavalue
         //Created date
         if(createdOnCode!=null && !createdByCode.equals(""))
-            buildAndSaveDataValue(createdOnCode, EventExtended.format(survey.getCreationDate(), EventExtended.AMERICAN_DATE_FORMAT));
+            buildAndSaveDataValue(createdOnCode, EventExtended.format(survey.getCreation_date(), EventExtended.AMERICAN_DATE_FORMAT));
 
         //Updated date
         if(updatedDateCode!=null && !updatedDateCode.equals(""))
-            buildAndSaveDataValue(updatedDateCode, EventExtended.format(survey.getUploadedDate(), EventExtended.AMERICAN_DATE_FORMAT));
+            buildAndSaveDataValue(updatedDateCode, EventExtended.format(survey.getUpload_date(), EventExtended.AMERICAN_DATE_FORMAT));
 
         //Updated by user
         if(updatedUserCode!=null && !updatedUserCode.equals(""))
@@ -274,7 +274,7 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
     private void updateSurvey(List<CompositeScore> compositeScores){
         currentSurvey.setMainScore(ScoreRegister.calculateMainScore(compositeScores));
         currentSurvey.setStatus(Constants.SURVEY_SENT);
-        currentSurvey.setUploadedDate(uploadedDate);
+        currentSurvey.setUpload_date(uploadedDate);
         currentSurvey.setEventUid(currentEvent.getUid());
     }
 

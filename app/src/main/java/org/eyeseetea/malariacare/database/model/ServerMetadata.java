@@ -29,12 +29,9 @@ import com.raizlabs.android.dbflow.sql.language.Select;
 import com.raizlabs.android.dbflow.structure.BaseModel;
 
 import org.eyeseetea.malariacare.database.AppDatabase;
-import org.eyeseetea.malariacare.database.iomodules.dhis.exporter.IConvertToSDKVisitor;
-import org.eyeseetea.malariacare.database.iomodules.dhis.exporter.VisitableToSDK;
-import org.eyeseetea.malariacare.database.utils.Session;
 
 @Table(databaseName = AppDatabase.NAME)
-public class ControlDataElement extends BaseModel {
+public class ServerMetadata extends BaseModel {
 
     @Column
     @PrimaryKey(autoincrement = true)
@@ -50,17 +47,17 @@ public class ControlDataElement extends BaseModel {
     String uid;
 
     @Column
-    String valueType;
+    String value_type;
 
-    public ControlDataElement() {
+    public ServerMetadata() {
     }
 
-    public ControlDataElement(long id_control_dataelement, String name, String code, String valueType, String uid) {
+    public ServerMetadata(long id_control_dataelement, String name, String code, String valueType, String uid) {
         this.id_control_dataelement = id_control_dataelement;
         this.name = name;
         this.code = code;
         this.uid = uid;
-        this.valueType = valueType;
+        this.value_type = valueType;
     }
 
     public long getId_control_dataelement() {
@@ -95,29 +92,29 @@ public class ControlDataElement extends BaseModel {
         this.uid = uid;
     }
 
-    public String getValueType() {
-        return valueType;
+    public String getValue_type() {
+        return value_type;
     }
 
-    public void setValueType(String valueType) {
-        this.valueType = valueType;
+    public void setValue_type(String value_type) {
+        this.value_type = value_type;
     }
 
-    public static ControlDataElement findControlDataElementByCode(String code){
-        return new Select().from(ControlDataElement.class).where(Condition.column(ControlDataElement$Table.CODE).eq(code)).querySingle();
+    public static ServerMetadata findControlDataElementByCode(String code){
+        return new Select().from(ServerMetadata.class).where(Condition.column(ServerMetadata$Table.CODE).eq(code)).querySingle();
     }
 
-    public static ControlDataElement findControlDataElementByName(String code){
-        return new Select().from(ControlDataElement.class).where(Condition.column(ControlDataElement$Table.NAME).eq(code)).querySingle();
+    public static ServerMetadata findControlDataElementByName(String code){
+        return new Select().from(ServerMetadata.class).where(Condition.column(ServerMetadata$Table.NAME).eq(code)).querySingle();
     }
 
     public static String findControlDataElementUid(String code){
-        ControlDataElement controlDataElement=findControlDataElementByCode(code);
+        ServerMetadata controlDataElement=findControlDataElementByCode(code);
         if(controlDataElement==null){
             controlDataElement=findControlDataElementByName(code);
         }
         if(controlDataElement==null){
-            Log.d(".ControlDataElement", String.format("WARNING: Control DE with code %s not found, ignoring", code));
+            Log.d(".ServerMetadata", String.format("WARNING: Control DE with code %s not found, ignoring", code));
             return null;
         }
         return controlDataElement.getUid();
@@ -128,13 +125,13 @@ public class ControlDataElement extends BaseModel {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        ControlDataElement that = (ControlDataElement) o;
+        ServerMetadata that = (ServerMetadata) o;
 
         if (id_control_dataelement != that.id_control_dataelement) return false;
         if (name != null ? !name.equals(that.name) : that.name != null) return false;
         if (code != null ? !code.equals(that.code) : that.code != null) return false;
         if (uid != null ? !uid.equals(that.uid) : that.uid != null) return false;
-        return !(valueType != null ? !valueType.equals(that.valueType) : that.valueType != null);
+        return !(value_type != null ? !value_type.equals(that.value_type) : that.value_type != null);
 
     }
 
@@ -143,19 +140,19 @@ public class ControlDataElement extends BaseModel {
         int result = (int) (id_control_dataelement ^ (id_control_dataelement >>> 32));
         result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (code != null ? code.hashCode() : 0);
-        result = 31 * result + (valueType != null ? valueType.hashCode() : 0);
+        result = 31 * result + (value_type != null ? value_type.hashCode() : 0);
         result = 31 * result + (uid != null ? uid.hashCode() : 0);
         return result;
     }
 
     @Override
     public String toString() {
-        return "ControlDataElement{" +
+        return "ServerMetadata{" +
                 "id_control_dataelement=" + id_control_dataelement +
                 ", name='" + name + '\'' +
                 ", code='" + code + '\'' +
                 ", uid='" + uid + '\'' +
-                ", valueType=" + valueType +
+                ", value_type=" + value_type +
                 '}';
     }
 }

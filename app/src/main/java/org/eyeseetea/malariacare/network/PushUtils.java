@@ -86,7 +86,7 @@ public class PushUtils {
         JSONObject object = new JSONObject();
         object.put(TAG_PROGRAM, survey.getTabGroup().getProgram().getUid());
         object.put(TAG_ORG_UNIT, survey.getOrgUnit().getUid());
-        object.put(TAG_EVENTDATE, android.text.format.DateFormat.format("yyyy-MM-dd", survey.getCompletionDate()));
+        object.put(TAG_EVENTDATE, android.text.format.DateFormat.format("yyyy-MM-dd", survey.getCompletion_date()));
         object.put(TAG_STATUS, COMPLETED);
         object.put(TAG_STOREDBY, survey.getUser().getName());
 

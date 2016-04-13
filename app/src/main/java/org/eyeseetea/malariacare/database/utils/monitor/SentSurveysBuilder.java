@@ -175,14 +175,14 @@ public static void showData(WebView webView){
      */
     private void build(Survey survey){
         //Get the month for the survey (key)
-        String month = EntrySentSurveysChart.getDateAsString(survey.getCompletionDate());
+        String month = EntrySentSurveysChart.getDateAsString(survey.getCompletion_date());
 
         //Get the entry for that month
         EntrySentSurveysChart entrySentSurveysChart = sentSurveysChartMap.get(month+program.getUid());
 
         //First time no entry
         if (entrySentSurveysChart == null) {
-            entrySentSurveysChart = new EntrySentSurveysChart(EXPECTED_SENT_SURVEYS_PER_MONTH, survey.getCompletionDate(), program);
+            entrySentSurveysChart = new EntrySentSurveysChart(EXPECTED_SENT_SURVEYS_PER_MONTH, survey.getCompletion_date(), program);
             sentSurveysChartMap.put(month+program.getUid(), entrySentSurveysChart);}
         //Increment surveys for that month
         entrySentSurveysChart.incSent();

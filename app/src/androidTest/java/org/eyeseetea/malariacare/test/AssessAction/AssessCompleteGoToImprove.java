@@ -22,7 +22,6 @@ package org.eyeseetea.malariacare.test.AssessAction;
 import android.support.test.espresso.AmbiguousViewMatcherException;
 import android.support.test.espresso.Espresso;
 import android.support.test.espresso.IdlingResource;
-import android.support.test.espresso.matcher.BoundedMatcher;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.util.Log;
@@ -33,28 +32,21 @@ import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.test.utils.ElapsedTimeIdlingResource;
 import org.eyeseetea.malariacare.test.utils.SDKTestUtils;
 import org.eyeseetea.malariacare.utils.Utils;
-import org.hamcrest.Description;
-import org.hamcrest.Matchers;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import static android.support.test.espresso.Espresso.onData;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
-import static android.support.test.espresso.matcher.ViewMatchers.hasContentDescription;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
-import static android.support.test.espresso.matcher.ViewMatchers.withChild;
 import static android.support.test.espresso.matcher.ViewMatchers.withContentDescription;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withTagKey;
-import static android.support.test.espresso.matcher.ViewMatchers.withTagValue;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.eyeseetea.malariacare.test.utils.SDKTestUtils.DEFAULT_WAIT_FOR_PULL;
 import static org.eyeseetea.malariacare.test.utils.SDKTestUtils.HNQIS_DEV_CI;
@@ -66,9 +58,6 @@ import static org.eyeseetea.malariacare.test.utils.SDKTestUtils.startSurvey;
 import static org.eyeseetea.malariacare.test.utils.SDKTestUtils.waitForPull;
 import static org.hamcrest.CoreMatchers.allOf;
 import static org.hamcrest.Matchers.anything;
-import static org.hamcrest.Matchers.comparesEqualTo;
-import static org.hamcrest.Matchers.containsString;
-import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.core.AllOf.allOf;
 
@@ -110,7 +99,7 @@ public class AssessCompleteGoToImprove {
         //WHEN
         Long idSurvey=SDKTestUtils.markCompleteAndGoImprove();
         Survey survey = Survey.findById(idSurvey);
-        Date completionDate= survey.getCompletionDate();
+        Date completionDate= survey.getCompletion_date();
 
 
         //THEN

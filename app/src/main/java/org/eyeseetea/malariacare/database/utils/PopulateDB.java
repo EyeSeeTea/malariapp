@@ -4,13 +4,12 @@ import android.content.res.AssetManager;
 import android.util.Log;
 
 import com.opencsv.CSVReader;
-import com.raizlabs.android.dbflow.runtime.TransactionManager;
 import com.raizlabs.android.dbflow.sql.language.Delete;
 import com.raizlabs.android.dbflow.structure.BaseModel;
 
 import org.eyeseetea.malariacare.database.model.Answer;
 import org.eyeseetea.malariacare.database.model.CompositeScore;
-import org.eyeseetea.malariacare.database.model.ControlDataElement;
+import org.eyeseetea.malariacare.database.model.ServerMetadata;
 import org.eyeseetea.malariacare.database.model.Header;
 import org.eyeseetea.malariacare.database.model.Match;
 import org.eyeseetea.malariacare.database.model.Option;
@@ -226,7 +225,7 @@ public class PopulateDB {
                 Tab.class,
                 TabGroup.class,
                 Program.class,
-                ControlDataElement.class
+                ServerMetadata.class
         );
     }
 

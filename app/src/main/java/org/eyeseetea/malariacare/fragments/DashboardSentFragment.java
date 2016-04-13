@@ -471,7 +471,7 @@ public class DashboardSentFragment extends ListFragment implements IModuleFragme
                 } else {
                     Survey surveyMapped = orgUnits.get(survey.getTabGroup().getProgram().getUid()+survey.getOrgUnit().getUid());
                     Log.d(TAG,"reloadSentSurveys check NPE \tsurveyMapped:"+surveyMapped+"\tsurvey:"+survey);
-                    if((surveyMapped.getCompletionDate()!=null && survey.getCompletionDate()!=null) && surveyMapped.getCompletionDate().before(survey.getCompletionDate())) {
+                    if((surveyMapped.getCompletion_date()!=null && survey.getCompletion_date()!=null) && surveyMapped.getCompletion_date().before(survey.getCompletion_date())) {
                         orgUnits=filterSurvey(orgUnits, survey);
                     }
                 }
@@ -496,7 +496,7 @@ public class DashboardSentFragment extends ListFragment implements IModuleFragme
                             compare = surveyA.compareTo(surveyB);
                             break;
                         case DATE_ORDER:
-                            compare = survey1.getCompletionDate().compareTo(survey2.getCompletionDate());
+                            compare = survey1.getCompletion_date().compareTo(survey2.getCompletion_date());
                             break;
                         case SCORE_ORDER:
                             compare = survey1.getMainScore().compareTo(survey2.getMainScore());

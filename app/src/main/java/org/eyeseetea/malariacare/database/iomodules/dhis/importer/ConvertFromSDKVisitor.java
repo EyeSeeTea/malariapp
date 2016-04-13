@@ -36,7 +36,8 @@ import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.Program
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.UserAccountExtended;
 import org.eyeseetea.malariacare.database.model.Answer;
 import org.eyeseetea.malariacare.database.model.CompositeScore;
-import org.eyeseetea.malariacare.database.model.ControlDataElement;
+import org.eyeseetea.malariacare.database.model.Header;
+import org.eyeseetea.malariacare.database.model.ServerMetadata;
 import org.eyeseetea.malariacare.database.model.OrgUnit;
 import org.eyeseetea.malariacare.database.model.OrgUnitLevel;
 import org.eyeseetea.malariacare.database.model.OrgUnitProgramRelation;
@@ -298,12 +299,12 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
         //Any survey that comes from the pull has been sent
         survey.setStatus(Constants.SURVEY_SENT);
         //Set dates
-        survey.setCompletionDate(sdkEventExtended.getEventDate());
+        survey.setCompletion_date(sdkEventExtended.getEventDate());
         //This prevent a null dates, but the CreationDation and UploadedDate need be setted in dataValue visitor.
-        survey.setCreationDate(sdkEventExtended.getEventDate());
-        survey.setUploadedDate(sdkEventExtended.getEventDate());
+        survey.setCreation_date(sdkEventExtended.getEventDate());
+        survey.setUpload_date(sdkEventExtended.getEventDate());
 
-        survey.setScheduledDate(sdkEventExtended.getScheduledDate());
+        survey.setSchedule_date(sdkEventExtended.getScheduledDate());
         //Set fks
         survey.setOrgUnit(orgUnit);
         survey.setTabGroup(tabGroup);
@@ -342,7 +343,7 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
         if(dataValue.getDataElement().equals(PreferencesState.getInstance().getContext().getResources().getString(R.string.created_on_code))){
             try{
                 Date date = EventExtended.parseDate(dataValue.getValue(),EventExtended.AMERICAN_DATE_FORMAT);
-                survey.setCreationDate(date);
+                survey.setCreation_date(date);
                 survey.save();
                 //Annotate object in map
                 appMapObjects.put(dataValue.getEvent(), survey);
@@ -355,7 +356,7 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
         if(dataValue.getDataElement().equals(PreferencesState.getInstance().getContext().getResources().getString(R.string.upload_date_code))){
             try{
                 Date date = EventExtended.parseDate(dataValue.getValue(),EventExtended.AMERICAN_DATE_FORMAT);
-                survey.setUploadedDate(date);
+                survey.setUpload_date(date);
                 survey.save();
                 //Annotate object in map
                 appMapObjects.put(dataValue.getEvent(), survey);
@@ -490,13 +491,13 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
 
 
 
-    private ControlDataElement buildControlDataElement(DataElementExtended sdkDataElementExtended) {
+    private ServerMetadata buildControlDataElement(DataElementExtended sdkDataElementExtended) {
         DataElement dataElement=sdkDataElementExtended.getDataElement();
-        ControlDataElement controlDataElement = new ControlDataElement();
+        ServerMetadata controlDataElement = new ServerMetadata();
         controlDataElement.setUid(dataElement.getUid());
         controlDataElement.setCode(dataElement.getCode());
         controlDataElement.setName(dataElement.getDisplayName());
-        controlDataElement.setValueType(dataElement.getValueType().name());
+        controlDataElement.setValue_type(dataElement.getValueType().name());
 
         //Parent score and Order can only be set once every score in saved
         controlDataElement.save();

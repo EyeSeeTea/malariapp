@@ -72,16 +72,16 @@ public class Survey extends BaseModel implements VisitableToSDK {
     User user;
 
     @Column
-    Date creationDate;
+    Date creation_date;
 
     @Column
-    Date completionDate;
+    Date completion_date;
 
     @Column
-    Date uploadedDate;
+    Date upload_date;
 
     @Column
-    Date scheduledDate;
+    Date schedule_date;
 
     @Column
     Integer status;
@@ -117,10 +117,10 @@ public class Survey extends BaseModel implements VisitableToSDK {
 
     public Survey() {
         //Set dates
-        this.creationDate = new Date();
-        this.completionDate = null;
-        this.uploadedDate = null;
-        this.scheduledDate = null;
+        this.creation_date = new Date();
+        this.completion_date = null;
+        this.upload_date = null;
+        this.schedule_date = null;
     }
 
     public Survey(OrgUnit orgUnit, TabGroup tabGroup, User user) {
@@ -225,36 +225,36 @@ public class Survey extends BaseModel implements VisitableToSDK {
         this.user = null;
     }
 
-    public Date getCreationDate() {
-        return creationDate;
+    public Date getCreation_date() {
+        return creation_date;
     }
 
-    public void setCreationDate(Date creationDate) {
-        this.creationDate = creationDate;
+    public void setCreation_date(Date creation_date) {
+        this.creation_date = creation_date;
     }
 
-    public Date getCompletionDate(){
-        return completionDate;
+    public Date getCompletion_date(){
+        return completion_date;
     }
 
-    public void setCompletionDate(Date completionDate){
-        this.completionDate=completionDate;
+    public void setCompletion_date(Date completion_date){
+        this.completion_date = completion_date;
     }
 
-    public Date getUploadedDate() {
-        return uploadedDate;
+    public Date getUpload_date() {
+        return upload_date;
     }
 
-    public void setUploadedDate(Date uploadedDate) {
-        this.uploadedDate = uploadedDate;
+    public void setUpload_date(Date upload_date) {
+        this.upload_date = upload_date;
     }
 
-    public Date getScheduledDate() {
-        return scheduledDate;
+    public Date getSchedule_date() {
+        return schedule_date;
     }
 
-    public void setScheduledDate(Date scheduledDate) {
-        this.scheduledDate = scheduledDate;
+    public void setSchedule_date(Date schedule_date) {
+        this.schedule_date = schedule_date;
     }
 
     public Integer getStatus() {
@@ -538,7 +538,7 @@ public class Survey extends BaseModel implements VisitableToSDK {
         }
 
 
-        //Saves new status & completionDate
+        //Saves new status & completion_date
         this.save();
     }
 
@@ -561,7 +561,7 @@ public class Survey extends BaseModel implements VisitableToSDK {
                 .where(Condition.column(Survey$Table.ID_ORG_UNIT).eq(orgUnit.getId_org_unit()))
                 .and(Condition.column(Survey$Table.ID_TAB_GROUP).eq(tabGroup.getId_tab_group()))
                 .and(Condition.column(Survey$Table.STATUS).is(Constants.SURVEY_IN_PROGRESS))
-                .orderBy(Survey$Table.COMPLETIONDATE)
+                .orderBy(Survey$Table.COMPLETION_DATE)
                 .orderBy(Survey$Table.ID_ORG_UNIT).querySingle();
     }
 
@@ -573,7 +573,7 @@ public class Survey extends BaseModel implements VisitableToSDK {
         return new Select().from(Survey.class)
                 .where(Condition.column(Survey$Table.STATUS).isNot(Constants.SURVEY_SENT))
                 .and(Condition.column(Survey$Table.STATUS).isNot(Constants.SURVEY_PLANNED))
-                .orderBy(Survey$Table.COMPLETIONDATE)
+                .orderBy(Survey$Table.COMPLETION_DATE)
                 .orderBy(Survey$Table.ID_ORG_UNIT).queryList();
     }
 
@@ -586,7 +586,7 @@ public class Survey extends BaseModel implements VisitableToSDK {
         return new Select().from(Survey.class)
                 .where(Condition.column(Survey$Table.STATUS).isNot(Constants.SURVEY_SENT))
                 .limit(String.valueOf(limit))
-                .orderBy(Survey$Table.COMPLETIONDATE)
+                .orderBy(Survey$Table.COMPLETION_DATE)
                 .orderBy(Survey$Table.ID_ORG_UNIT).queryList();
     }
 
@@ -597,7 +597,7 @@ public class Survey extends BaseModel implements VisitableToSDK {
     public static List<Survey> getAllSentSurveys() {
         return new Select().from(Survey.class)
                 .where(Condition.column(Survey$Table.STATUS).eq(Constants.SURVEY_SENT))
-                .orderBy(Survey$Table.COMPLETIONDATE)
+                .orderBy(Survey$Table.COMPLETION_DATE)
                 .orderBy(Survey$Table.ID_ORG_UNIT).queryList();
     }
 
@@ -610,7 +610,7 @@ public class Survey extends BaseModel implements VisitableToSDK {
         return new Select().from(Survey.class)
                 .where(Condition.column(Survey$Table.STATUS).eq(Constants.SURVEY_SENT))
                 .limit(String.valueOf(limit))
-                .orderBy(Survey$Table.COMPLETIONDATE)
+                .orderBy(Survey$Table.COMPLETION_DATE)
                 .orderBy(Survey$Table.ID_ORG_UNIT).queryList();
     }
 
@@ -621,7 +621,7 @@ public class Survey extends BaseModel implements VisitableToSDK {
     public static List<Survey> getAllCompletedSurveys() {
         return new Select().from(Survey.class)
                 .where(Condition.column(Survey$Table.STATUS).eq(Constants.SURVEY_COMPLETED))
-                .orderBy(Survey$Table.COMPLETIONDATE)
+                .orderBy(Survey$Table.COMPLETION_DATE)
                 .orderBy(Survey$Table.ID_ORG_UNIT).queryList();
     }
 
@@ -634,7 +634,7 @@ public class Survey extends BaseModel implements VisitableToSDK {
         return new Select().from(Survey.class)
                 .where(Condition.column(Survey$Table.STATUS).eq(Constants.SURVEY_COMPLETED))
                 .limit(String.valueOf(limit))
-                .orderBy(Survey$Table.COMPLETIONDATE)
+                .orderBy(Survey$Table.COMPLETION_DATE)
                 .orderBy(Survey$Table.ID_ORG_UNIT).queryList();
     }
 
@@ -648,7 +648,7 @@ public class Survey extends BaseModel implements VisitableToSDK {
         return new Select().from(Survey.class)
                 .where(Condition.column(Survey$Table.STATUS).eq(Constants.SURVEY_IN_PROGRESS))
                 .limit(String.valueOf(limit))
-                .orderBy(Survey$Table.UPLOADEDDATE)
+                .orderBy(Survey$Table.UPLOAD_DATE)
                 .orderBy(Survey$Table.ID_ORG_UNIT).queryList();
     }
 
@@ -664,7 +664,7 @@ public class Survey extends BaseModel implements VisitableToSDK {
     public static List<Survey> getAllInProgressSurveys() {
         return new Select().from(Survey.class)
                 .where(Condition.column(Survey$Table.STATUS).is(Constants.SURVEY_IN_PROGRESS))
-                .orderBy(Survey$Table.COMPLETIONDATE)
+                .orderBy(Survey$Table.COMPLETION_DATE)
                 .orderBy(Survey$Table.ID_ORG_UNIT).queryList();
     }
     /**
@@ -674,7 +674,7 @@ public class Survey extends BaseModel implements VisitableToSDK {
     public static List<Survey> getAllCompletedUnsentSurveys() {
         return new Select().from(Survey.class)
                 .where(Condition.column(Survey$Table.STATUS).is(Constants.SURVEY_COMPLETED))
-                .orderBy(Survey$Table.COMPLETIONDATE)
+                .orderBy(Survey$Table.COMPLETION_DATE)
                 .orderBy(Survey$Table.ID_ORG_UNIT).queryList();
     }
     /**
@@ -686,7 +686,7 @@ public class Survey extends BaseModel implements VisitableToSDK {
                 .where(Condition.column(Survey$Table.STATUS).eq(Constants.SURVEY_SENT))
                 .or(Condition.column(Survey$Table.STATUS).eq(Constants.SURVEY_COMPLETED))
                 .or(Condition.column(Survey$Table.STATUS).eq(Constants.SURVEY_CONFLICT))
-                .orderBy(Survey$Table.COMPLETIONDATE)
+                .orderBy(Survey$Table.COMPLETION_DATE)
                 .orderBy(Survey$Table.ID_ORG_UNIT).queryList();
     }
 
@@ -716,7 +716,7 @@ public class Survey extends BaseModel implements VisitableToSDK {
 
     public void prepareSurveyUploadedDate() {
         if (!isSent()) {
-            setUploadedDate(new Date());
+            setUpload_date(new Date());
             save();
         }
     }
@@ -731,7 +731,7 @@ public class Survey extends BaseModel implements VisitableToSDK {
     public void setCompleteSurveyState(){
         setStatus(Constants.SURVEY_COMPLETED);
         //CompletionDate
-        this.setCompletionDate(new Date());
+        this.setCompletion_date(new Date());
         saveScore();
         save();
         saveMainScore();
@@ -746,7 +746,7 @@ public class Survey extends BaseModel implements VisitableToSDK {
      */
     public void reschedule(Date newScheduledDate, String comment) {
         //Take currentDate
-        Date currentScheduleDate=this.getScheduledDate();
+        Date currentScheduleDate=this.getSchedule_date();
 
         //Add a history
         SurveySchedule previousSchedule=new SurveySchedule(this,currentScheduleDate,comment);
@@ -756,7 +756,7 @@ public class Survey extends BaseModel implements VisitableToSDK {
         surveySchedules=null;
 
         //Move scheduledate and save
-        this.scheduledDate=newScheduledDate;
+        this.schedule_date =newScheduledDate;
         this.save();
     }
 
@@ -786,7 +786,7 @@ public class Survey extends BaseModel implements VisitableToSDK {
                 .from(Survey.class)
                 .where(Condition.column(Survey$Table.STATUS).eq(Constants.SURVEY_PLANNED))
                 .or(Condition.column(Survey$Table.STATUS).eq(Constants.SURVEY_IN_PROGRESS))
-                .orderBy(true, Survey$Table.SCHEDULEDDATE)
+                .orderBy(true, Survey$Table.SCHEDULE_DATE)
                 .queryList();
     }
 
@@ -799,7 +799,7 @@ public class Survey extends BaseModel implements VisitableToSDK {
                 .from(Survey.class)
                 .where(Condition.column(Survey$Table.STATUS).eq(Constants.SURVEY_IN_PROGRESS))
                 .or(Condition.column(Survey$Table.STATUS).eq(Constants.SURVEY_SENT))
-                .orderBy(Survey$Table.COMPLETIONDATE)
+                .orderBy(Survey$Table.COMPLETION_DATE)
                 .orderBy(Survey$Table.ID_ORG_UNIT)
                 .queryList();
     }
@@ -828,7 +828,7 @@ public class Survey extends BaseModel implements VisitableToSDK {
                 .from(Survey.class)
                 .where()
                 .groupBy(new QueryBuilder().appendQuotedArray(Survey$Table.ID_ORG_UNIT, Survey$Table.ID_TAB_GROUP))
-                .having(Condition.columnsWithFunction("max", "completionDate"))
+                .having(Condition.columnsWithFunction("max", "completion_date"))
                 .queryList();
     }
 
@@ -854,15 +854,15 @@ public class Survey extends BaseModel implements VisitableToSDK {
             return false;
         if (id_user != null ? !id_user.equals(survey.id_user) : survey.id_user != null)
             return false;
-        if (creationDate != null ? !creationDate.equals(survey.creationDate) : survey.creationDate != null)
+        if (creation_date != null ? !creation_date.equals(survey.creation_date) : survey.creation_date != null)
             return false;
-        if (completionDate != null ? !completionDate.equals(survey.completionDate) : survey.completionDate != null)
+        if (completion_date != null ? !completion_date.equals(survey.completion_date) : survey.completion_date != null)
             return false;
-        if (uploadedDate != null ? !uploadedDate.equals(survey.uploadedDate) : survey.uploadedDate != null)
+        if (upload_date != null ? !upload_date.equals(survey.upload_date) : survey.upload_date != null)
             return false;
         if (eventuid != null ? !eventuid.equals(survey.eventuid) : survey.eventuid != null)
             return false;
-        if (scheduledDate != null ? !scheduledDate.equals(survey.scheduledDate) : survey.scheduledDate != null)
+        if (schedule_date != null ? !schedule_date.equals(survey.schedule_date) : survey.schedule_date != null)
             return false;
         return !(status != null ? !status.equals(survey.status) : survey.status != null);
 
@@ -874,11 +874,11 @@ public class Survey extends BaseModel implements VisitableToSDK {
         result = 31 * result + (id_tab_group != null ? id_tab_group.hashCode() : 0);
         result = 31 * result + (id_org_unit != null ? id_org_unit.hashCode() : 0);
         result = 31 * result + (id_user != null ? id_user.hashCode() : 0);
-        result = 31 * result + (creationDate != null ? creationDate.hashCode() : 0);
-        result = 31 * result + (completionDate != null ? completionDate.hashCode() : 0);
-                result = 31 * result + (uploadedDate != null ? uploadedDate.hashCode() : 0);
+        result = 31 * result + (creation_date != null ? creation_date.hashCode() : 0);
+        result = 31 * result + (completion_date != null ? completion_date.hashCode() : 0);
+                result = 31 * result + (upload_date != null ? upload_date.hashCode() : 0);
         result = 31 * result + (eventuid != null ? eventuid.hashCode() : 0);
-        result = 31 * result + (scheduledDate != null ? scheduledDate.hashCode() : 0);
+        result = 31 * result + (schedule_date != null ? schedule_date.hashCode() : 0);
         result = 31 * result + (status != null ? status.hashCode() : 0);
         return result;
     }
@@ -890,10 +890,10 @@ public class Survey extends BaseModel implements VisitableToSDK {
                 ", id_tab_group=" + id_tab_group +
                 ", id_org_unit=" + id_org_unit +
                 ", id_user=" + id_user +
-                ", creationDate=" + creationDate +
-                ", completionDate=" + completionDate +
-                ", uploadedDate=" + uploadedDate +
-                ", scheduledDate=" + scheduledDate +
+                ", creation_date=" + creation_date +
+                ", completion_date=" + completion_date +
+                ", upload_date=" + upload_date +
+                ", schedule_date=" + schedule_date +
                 ", status=" + status +
                 ", eventuid="+eventuid+
                 '}';
