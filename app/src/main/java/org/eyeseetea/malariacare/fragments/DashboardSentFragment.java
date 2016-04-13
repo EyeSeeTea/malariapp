@@ -465,7 +465,7 @@ public class DashboardSentFragment extends ListFragment implements IModuleFragme
         oneSurveyForOrgUnit = new ArrayList<>();
 
         for (Survey survey : surveys) {
-            if (survey.getOrgUnit() != null) {
+            if (survey.getOrgUnit() != null && survey.getTabGroup()!=null && survey.getTabGroup().getProgram()!=null) {
                 if (!orgUnits.containsKey(survey.getTabGroup().getProgram().getUid()+survey.getOrgUnit().getUid())) {
                     filterSurvey(orgUnits, survey);
                 } else {
