@@ -881,4 +881,12 @@ public class Survey extends BaseModel implements VisitableToSDK {
                 '}';
     }
 
+    public static TabGroup getFirstTabGroup(String programUid) {
+        TabGroup tabGroup = new Select()
+                .from(TabGroup.class)
+                .where(Condition.column(TabGroup$Table.ID_PROGRAM)
+                        .is(programUid)).querySingle();
+    return tabGroup;
+
+    }
 }
