@@ -360,4 +360,19 @@
                <p>sh ${gitPath}/generate_last_commit.sh </p>
         <p>3. Run "git checkout". </p>]]>
     </string>
+
+    <!-- Control Data Elements -->
+    <string name="main_score_code" translatable="false">_Overall Class</string>
+    <string name="main_score_a_code" translatable="false">_Overall Class A</string>
+    <string name="main_score_b_code" translatable="false">_Overall Class B</string>
+
+    <string name="main_score_c_code" translatable="false">_Overall Class C</string>
+
+    <string name="forward_order_code" translatable="false">_FWR-sort</string>
+    <string name="forward_order_value" translatable="false">9999</string>
+
+    <string name="created_on_code" translatable="false">_CreatedOn</string>
+    <string name="created_by_code" translatable="false">_CreatedBy</string>
+    <string name="upload_date_code" translatable="false">_UploadedOn</string>
+    <string name="uploaded_by_code" translatable="false">_UploadedBy</string>
 </resources>
