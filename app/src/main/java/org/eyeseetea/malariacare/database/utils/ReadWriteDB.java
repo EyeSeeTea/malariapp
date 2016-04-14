@@ -99,6 +99,7 @@ public class ReadWriteDB {
         } else {
             value.setOption((Long)null);
             value.setValue(answer);
+            value.setUpload_date(new Date());
             value.update();
         }
     }
