@@ -33,6 +33,7 @@ import org.hisp.dhis.android.sdk.persistence.models.Event;
 import org.hisp.dhis.android.sdk.persistence.models.Event$Table;
 import org.hisp.dhis.android.sdk.persistence.models.FailedItem;
 import org.hisp.dhis.android.sdk.persistence.models.FailedItem$Table;
+import org.hisp.dhis.android.sdk.utils.support.DateUtils;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -73,32 +74,19 @@ public class EventExtended implements VisitableFromSDK {
         if(event==null){
             return null;
         }
-
-        try {
-            return parseDate(event.getCreated(), DHIS2_DATE_FORMAT);
-        }
-        catch (ParseException e){
-            Log.e(TAG,String.format("Event (%s) cannot parse date %s",event.getUid(),e.getLocalizedMessage()));
-            return null;
-        }
+        return DateUtils.parseDate(event.getCreated());
     }
 
     /**
      * Returns the survey.completionDate associated with this event (lastUpdated field)
      * @return
      */
-    public Date getCompletionDate(){
+    public Date getLastUpdated(){
         if(event==null){
             return null;
         }
 
-        try {
-            return parseDate(event.getLastUpdated(), DHIS2_DATE_FORMAT);
-        }
-        catch (ParseException e){
-            Log.e(TAG,String.format("Event (%s) cannot parse date %s",event.getUid(),e.getLocalizedMessage()));
-            return null;
-        }
+        return DateUtils.parseDate(event.getLastUpdated());
     }
 
     /**
@@ -110,31 +98,19 @@ public class EventExtended implements VisitableFromSDK {
             return null;
         }
 
-        try {
-            return parseDate(event.getEventDate(), DHIS2_DATE_FORMAT);
-        }
-        catch (ParseException e){
-            Log.e(TAG,String.format("Event (%s) cannot parse date %s",event.getUid(),e.getLocalizedMessage()));
-            return null;
-        }
+        return DateUtils.parseDate(event.getEventDate());
     }
 
     /**
      * Returns the survey.eventDate associated with this event (dueDate field)
      * @return
      */
-    public Date getScheduledDate(){
+    public Date getDueDate(){
         if(event==null){
             return null;
         }
 
-        try {
-            return parseDate(event.getDueDate(), DHIS2_DATE_FORMAT);
-        }
-        catch (ParseException e){
-            Log.e(TAG,String.format("Event (%s) cannot parse date %s",event.getUid(),e.getLocalizedMessage()));
-            return null;
-        }
+        return DateUtils.parseDate(event.getDueDate());
     }
 
     public static  Date parseDate(String dateAsString,String format) throws  ParseException{
