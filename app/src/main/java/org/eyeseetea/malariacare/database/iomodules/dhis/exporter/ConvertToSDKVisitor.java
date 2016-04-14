@@ -23,15 +23,12 @@ import android.content.Context;
 import android.location.Location;
 import android.util.Log;
 
-import com.raizlabs.android.dbflow.sql.builder.Condition;
-import com.raizlabs.android.dbflow.sql.language.Select;
-
 import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.EventExtended;
 import org.eyeseetea.malariacare.database.model.CompositeScore;
-import org.eyeseetea.malariacare.database.model.ControlDataElement;
 import org.eyeseetea.malariacare.database.model.OrgUnit;
+import org.eyeseetea.malariacare.database.model.ServerMetadata;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.model.TabGroup;
 import org.eyeseetea.malariacare.database.model.User;
@@ -43,11 +40,9 @@ import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.network.PullClient;
 import org.eyeseetea.malariacare.utils.Constants;
 import org.eyeseetea.malariacare.utils.Utils;
-
 import org.hisp.dhis.android.sdk.persistence.models.DataValue;
 import org.hisp.dhis.android.sdk.persistence.models.Event;
 import org.hisp.dhis.android.sdk.persistence.models.FailedItem;
-import org.hisp.dhis.android.sdk.persistence.models.FailedItem$Table;
 import org.hisp.dhis.android.sdk.persistence.models.ImportSummary;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -114,17 +109,17 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
 
     ConvertToSDKVisitor(Context context){
         this.context=context;
-        // FIXME: We should create a visitor to translate the ControlDataElement class
-        mainScoreCode = ControlDataElement.findControlDataElementUid(context.getString(R.string.main_score_code));
-        mainScoreACode = ControlDataElement.findControlDataElementUid(context.getString(R.string.main_score_a_code));
-        mainScoreBCode = ControlDataElement.findControlDataElementUid(context.getString(R.string.main_score_b_code));
-        mainScoreCCode = ControlDataElement.findControlDataElementUid(context.getString(R.string.main_score_c_code));
-        forwardOrderCode = ControlDataElement.findControlDataElementUid(context.getString(R.string.forward_order_code));
+        // FIXME: We should create a visitor to translate the ServerMetadata class
+        mainScoreCode = ServerMetadata.findControlDataElementUid(context.getString(R.string.main_score_code));
+        mainScoreACode = ServerMetadata.findControlDataElementUid(context.getString(R.string.main_score_a_code));
+        mainScoreBCode = ServerMetadata.findControlDataElementUid(context.getString(R.string.main_score_b_code));
+        mainScoreCCode = ServerMetadata.findControlDataElementUid(context.getString(R.string.main_score_c_code));
+        forwardOrderCode = ServerMetadata.findControlDataElementUid(context.getString(R.string.forward_order_code));
 
-        createdOnCode = ControlDataElement.findControlDataElementUid(context.getString(R.string.created_on_code));
-        createdByCode = ControlDataElement.findControlDataElementUid(context.getString(R.string.created_by_code));
-        updatedDateCode =ControlDataElement.findControlDataElementUid(context.getString(R.string.upload_date_code));
-        updatedUserCode = ControlDataElement.findControlDataElementUid(context.getString(R.string.created_by_code));
+        createdOnCode = ServerMetadata.findControlDataElementUid(context.getString(R.string.created_on_code));
+        createdByCode = ServerMetadata.findControlDataElementUid(context.getString(R.string.created_by_code));
+        updatedDateCode = ServerMetadata.findControlDataElementUid(context.getString(R.string.upload_date_code));
+        updatedUserCode = ServerMetadata.findControlDataElementUid(context.getString(R.string.created_by_code));
         surveys = new ArrayList<>();
         events = new ArrayList<>();
     }
@@ -137,6 +132,7 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
 
         //Turn survey into an event
         this.currentSurvey=survey;
+
         Log.d(TAG,String.format("Creating event for survey (%d) ...",survey.getId_survey()));
         Log.d(TAG,String.format("Creating event for survey (%s) ...", survey.toString()));
 
@@ -165,7 +161,7 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
 
         for(Value value:survey.getValues()) {
             if(updateEvent) {
-                if (value.getUpload_date().after(currentSurvey.getUploadedDate())) {
+                if (value.getUploadDate().after(currentSurvey.getUploadDate())) {
                     value.accept(this);
                     Log.d(TAG, "Value saved: " + value);
                 }
@@ -215,9 +211,6 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
                 //The controlDataelements values don't have question. It should be ignored  in a upload event.
                 return;
             }
-            if(value.getOption()==null){
-                return;
-            }
         }
         DataValue dataValue=new DataValue();
         dataValue.setDataElement(value.getQuestion().getUid());
@@ -237,8 +230,9 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
      * Builds an event from a survey
      * @return
      */
-    private Event buildEvent()throws Exception{
+    private Event buildEvent() throws Exception{
         currentEvent=new Event();
+
         currentEvent.setStatus(Event.STATUS_COMPLETED);
         currentEvent.setFromServer(false);
         currentEvent.setOrganisationUnitId(currentSurvey.getOrgUnit().getUid());
@@ -279,10 +273,10 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
 
         if(currentEvent != null){
             currentEvent.setCreated(null);
-            uploadedDate = currentSurvey.getUploadedDate();
+            uploadedDate = currentSurvey.getUploadDate();
             String date=EventExtended.format(currentSurvey.getCompletionDate(), EventExtended.DHIS2_DATE_FORMAT);
             currentEvent.setEventDate(date);
-            currentEvent.setLastUpdated(EventExtended.format(currentSurvey.getUploadedDate(), EventExtended.DHIS2_DATE_FORMAT));
+            currentEvent.setLastUpdated(EventExtended.format(currentSurvey.getUploadDate(), EventExtended.DHIS2_DATE_FORMAT));
             //It's necesary, Set"from server" as false to upload the event
             currentEvent.setFromServer(false);
             currentEvent.setStatus(Event.STATUS_COMPLETED);
@@ -302,9 +296,9 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
         // NOTE: do not try to set the event creation date. SDK will try to update the event in the next push instead of creating it and that will crash
         String date=EventExtended.format(currentSurvey.getCompletionDate(), EventExtended.DHIS2_DATE_FORMAT);
         currentEvent.setEventDate(date);
-        currentEvent.setDueDate(EventExtended.format(currentSurvey.getScheduledDate(), EventExtended.DHIS2_DATE_FORMAT));
+        currentEvent.setDueDate(EventExtended.format(currentSurvey.getScheduleDate(), EventExtended.DHIS2_DATE_FORMAT));
         //Not used
-        currentEvent.setLastUpdated(EventExtended.format(currentSurvey.getUploadedDate(), EventExtended.DHIS2_DATE_FORMAT));
+        currentEvent.setLastUpdated(EventExtended.format(currentSurvey.getUploadDate(), EventExtended.DHIS2_DATE_FORMAT));
         currentEvent.save();
         }
 
@@ -321,7 +315,7 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
 
         //Updated date
         if(updatedDateCode!=null && !updatedDateCode.equals(""))
-            buildAndSaveDataValue(updatedDateCode, EventExtended.format(survey.getUploadedDate(), EventExtended.AMERICAN_DATE_FORMAT));
+            buildAndSaveDataValue(updatedDateCode, EventExtended.format(survey.getUploadDate(), EventExtended.AMERICAN_DATE_FORMAT));
 
         //Updated by user
         if(updatedUserCode!=null && !updatedUserCode.equals(""))
@@ -443,7 +437,7 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
 
     private void saveSurveyFromImportSummary(Survey iSurvey, Event iEvent) {
         iSurvey.setStatus(Constants.SURVEY_SENT);
-        iSurvey.setUploadedDate(uploadedDate);
+        iSurvey.setUploadDate(uploadedDate);
         iSurvey.saveMainScore();
         iSurvey.save();
 

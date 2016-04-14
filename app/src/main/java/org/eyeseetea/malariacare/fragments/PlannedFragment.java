@@ -77,7 +77,7 @@ public class PlannedFragment extends ListFragment implements IModuleFragment{
     public void onCreate(Bundle savedInstanceState){
         Log.d(TAG, "onCreate");
         super.onCreate(savedInstanceState);
-        programDefaultOption = new Program(getResources().getString(R.string.all_assessment).toUpperCase());
+        programDefaultOption = new Program(getResources().getString(R.string.filter_all_org_assessments).toUpperCase());
     }
 
     @Override
@@ -109,8 +109,8 @@ public class PlannedFragment extends ListFragment implements IModuleFragment{
         programSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                Spinner spinner=((Spinner) parent);
-                Program selectedProgram=position==0?null:(Program)spinner.getItemAtPosition(position);
+                Spinner spinner = ((Spinner) parent);
+                Program selectedProgram = position == 0 ? null : (Program) spinner.getItemAtPosition(position);
                 ((TextView) parent.getChildAt(0)).setTextColor(Color.WHITE);
                 adapter.applyFilter(selectedProgram);
             }

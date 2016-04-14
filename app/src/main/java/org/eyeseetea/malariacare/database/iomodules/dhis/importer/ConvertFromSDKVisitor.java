@@ -36,7 +36,8 @@ import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.Program
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.UserAccountExtended;
 import org.eyeseetea.malariacare.database.model.Answer;
 import org.eyeseetea.malariacare.database.model.CompositeScore;
-import org.eyeseetea.malariacare.database.model.ControlDataElement;
+import org.eyeseetea.malariacare.database.model.Header;
+import org.eyeseetea.malariacare.database.model.ServerMetadata;
 import org.eyeseetea.malariacare.database.model.OrgUnit;
 import org.eyeseetea.malariacare.database.model.OrgUnitLevel;
 import org.eyeseetea.malariacare.database.model.OrgUnitProgramRelation;
@@ -123,16 +124,6 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
     public void visit(ProgramStageExtended sdkProgramStageExtended) {
         //Build tabgroup
         ProgramStage programStage=sdkProgramStageExtended.getProgramStage();
-        org.eyeseetea.malariacare.database.model.Program appProgram=(org.eyeseetea.malariacare.database.model.Program)appMapObjects.get(programStage.getProgram().getUid());
-        TabGroup appTabGroup = new TabGroup();
-        //FIXME TabGroup has no UID right now
-        appTabGroup.setName(programStage.getDisplayName());
-        appTabGroup.setProgram(appProgram);
-        appTabGroup.setUid(programStage.getUid());
-        appTabGroup.save();
-
-        //Annotate built tabgroup
-        appMapObjects.put(programStage.getUid(), appTabGroup);
 
         //Visit children
         for(ProgramStageSection pss:programStage.getProgramStageSections()){
@@ -168,7 +159,10 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
         //create the orgUnit
         org.eyeseetea.malariacare.database.model.OrgUnit appOrgUnit= new org.eyeseetea.malariacare.database.model.OrgUnit();
         //Set name
-        appOrgUnit.setName(organisationUnit.getLabel());
+        if(organisationUnit.getLabel()==null)
+            appOrgUnit.setName(organisationUnit.getName());
+        else
+            appOrgUnit.setName(organisationUnit.getLabel());
         //Set uid
         appOrgUnit.setUid(organisationUnit.getId());
         //Set orgUnitLevel
@@ -194,13 +188,11 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
         //Build Tab
 
         ProgramStageSection programStageSection=sdkProgramStageSectionExtended.getProgramStageSection();
-        org.eyeseetea.malariacare.database.model.TabGroup appTabGroup=(org.eyeseetea.malariacare.database.model.TabGroup)appMapObjects.get(programStageSection.getProgramStage());
         Tab appTab = new Tab();
         //FIXME TabGroup has no UID right now
         appTab.setName(programStageSection.getDisplayName());
         appTab.setType(Constants.TAB_AUTOMATIC);
         appTab.setOrder_pos(programStageSection.getSortOrder());
-        appTab.setTabGroup(appTabGroup);
         appTab.save();
         //Annotate build tab
         appMapObjects.put(appTab.getClass() + appTab.getName(), appTab);
@@ -292,7 +284,6 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
     public void visit(EventExtended sdkEventExtended) {
         Event event=sdkEventExtended.getEvent();
         OrgUnit orgUnit =(OrgUnit)appMapObjects.get(event.getOrganisationUnitId());
-        TabGroup tabGroup=(TabGroup)appMapObjects.get(event.getProgramStageId());
 
         Survey survey=new Survey();
         //Any survey that comes from the pull has been sent
@@ -301,12 +292,11 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
         survey.setCompletionDate(sdkEventExtended.getEventDate());
         //This prevent a null dates, but the CreationDation and UploadedDate need be setted in dataValue visitor.
         survey.setCreationDate(sdkEventExtended.getEventDate());
-        survey.setUploadedDate(sdkEventExtended.getEventDate());
+        survey.setUploadDate(sdkEventExtended.getEventDate());
 
-        survey.setScheduledDate(sdkEventExtended.getScheduledDate());
+        survey.setScheduleDate(sdkEventExtended.getScheduledDate());
         //Set fks
         survey.setOrgUnit(orgUnit);
-        survey.setTabGroup(tabGroup);
         survey.setEventUid(event.getUid());
         survey.save();
 
@@ -318,6 +308,43 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
             DataValueExtended dataValueExtended=new DataValueExtended(dataValue);
             dataValueExtended.accept(this);
         }
+
+        //Get tabgroup from values
+        for (Value value : survey.getValues()) {
+            try {
+                Question question = value.getQuestion();
+                Log.d(TAG, "Adding survey tabgroup: question " + question.getUid());
+                Header header = question.getHeader();
+                Log.d(TAG,"Adding survey tabgroup: header "+question.getHeader().getName());
+                Tab tab = header.getTab();
+                Log.d(TAG,"Adding survey tabgroup: tab "+header.getTab().getName());
+                TabGroup tabGroup = tab.getTabGroup();
+                if(tabGroup!=null) {
+                    Log.d(TAG, "Adding survey tabgroup: tabgrouponame" + tabGroup.getName());
+                    survey.setTabGroup(tabGroup.getId_tab_group());
+                    break;
+                }
+            } catch (NullPointerException e) {
+                Log.d(TAG,"null"+value.toString());
+                e.printStackTrace();
+            }
+        }
+
+        if(survey.getTabGroup()==null){
+            try {
+                TabGroup tabGroup = Survey.getFirstTabGroup(event.getProgramId());
+                Log.d(TAG, "first tabgroup " + tabGroup.getName());
+                survey.setTabGroup(tabGroup.getId_tab_group());
+            }catch (NullPointerException e) {
+                Log.d(TAG,"null"+event.toString());
+                e.printStackTrace();
+            }
+        }
+
+        survey.save();
+
+        //Annotate object in map
+        appMapObjects.put(event.getUid(), survey);
     }
 
     @Override
@@ -355,7 +382,7 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
         if(dataValue.getDataElement().equals(PreferencesState.getInstance().getContext().getResources().getString(R.string.upload_date_code))){
             try{
                 Date date = EventExtended.parseDate(dataValue.getValue(),EventExtended.AMERICAN_DATE_FORMAT);
-                survey.setUploadedDate(date);
+                survey.setUploadDate(date);
                 survey.save();
                 //Annotate object in map
                 appMapObjects.put(dataValue.getEvent(), survey);
@@ -398,7 +425,7 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
         //Option -> extract value from code
             value.setValue(option.getName());
         }
-        value.setUpload_date(new Date());
+        value.setUploadDate(new Date());
         value.save();
     }
 
@@ -486,14 +513,17 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
         compositeScore.save();
 
         compositeScoreBuilder.add(compositeScore);
+
+        QuestionBuilder.saveTabGroup(sdkDataElementExtended);
+
         return compositeScore;
     }
 
 
 
-    private ControlDataElement buildControlDataElement(DataElementExtended sdkDataElementExtended) {
+    private ServerMetadata buildControlDataElement(DataElementExtended sdkDataElementExtended) {
         DataElement dataElement=sdkDataElementExtended.getDataElement();
-        ControlDataElement controlDataElement = new ControlDataElement();
+        ServerMetadata controlDataElement = new ServerMetadata();
         controlDataElement.setUid(dataElement.getUid());
         controlDataElement.setCode(dataElement.getCode());
         controlDataElement.setName(dataElement.getDisplayName());
@@ -558,6 +588,22 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
 
             OrgUnit appOrgUnit = (OrgUnit)appMapObjects.get(organisationUnit.getId());
             String parentUID=organisationUnit.getParent();
+            //FIXME: review this algorithm
+            if(parentUID==null) {
+                //path format=/VaXGMQY18R2/TyoXRBeZ12K/TeqzAowss4n/Doa9u6qkSO3/qeENMD3x6y7
+                //path[0] is ""
+                //path [1] is the last parent "VaXGMQY18R2"
+                String path = organisationUnit.getPath();
+                String[] pathUids = path.split("/");
+                if (pathUids.length > 2 && !pathUids[1].equals(organisationUnit.getId())) {
+                    for (int i = 2; i < pathUids.length; i++) {
+                        if (pathUids[i].equals(organisationUnit.getId())) {
+                            parentUID = pathUids[i - 1];
+                            Log.d(TAG, organisationUnit.getId() + " parent " + parentUID);
+                        }
+                    }
+                }
+            }
             //No parent nothing to do
             if(parentUID==null){
                 Log.i(TAG,String.format("%s is a root orgUnit",appOrgUnit.getName()));
@@ -573,7 +619,7 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
                 continue;
             }
 
-            appOrgUnit.setOrgUnit(appOrgUnit.getId_org_unit());
+            appOrgUnit.setOrgUnit(parentOrgUnit.getId_org_unit());
             appOrgUnit.save();
         }
         return true;

@@ -98,7 +98,7 @@ public class PlannedSurvey implements PlannedItem {
         if(survey==null){
             return null;
         }
-        return survey.getScheduledDate();
+        return survey.getScheduleDate();
     }
 
     public Survey getSurvey(){

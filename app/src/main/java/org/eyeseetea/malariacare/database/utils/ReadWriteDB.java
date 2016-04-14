@@ -80,7 +80,7 @@ public class ReadWriteDB {
             } else {
                 value.setOption(option);
                 value.setValue(option.getName());
-                value.setUpload_date(new Date());
+                value.setUploadDate(new Date());
                 value.update();
             }
         } else {
@@ -99,6 +99,7 @@ public class ReadWriteDB {
         } else {
             value.setOption((Long)null);
             value.setValue(answer);
+            value.setUploadDate(new Date());
             value.update();
         }
     }

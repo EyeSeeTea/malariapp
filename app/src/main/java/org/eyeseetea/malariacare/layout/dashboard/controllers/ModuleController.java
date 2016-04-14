@@ -132,7 +132,7 @@ public abstract class ModuleController {
         String subtitle="";
         Program program = survey.getTabGroup().getProgram();
         if(program.getName()!=null) {
-            subtitle = program.getName();
+            subtitle = program.getName()+":"+survey.getTabGroup().getName();
         }
         return subtitle;
     }

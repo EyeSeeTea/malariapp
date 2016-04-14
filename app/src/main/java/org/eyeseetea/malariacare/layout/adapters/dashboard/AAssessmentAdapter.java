@@ -20,26 +20,18 @@
 package org.eyeseetea.malariacare.layout.adapters.dashboard;
 
 import android.content.Context;
-import android.graphics.Color;
-import android.text.Layout;
-import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
-
-import com.raizlabs.android.dbflow.sql.language.Select;
 
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.model.Survey;
-import org.eyeseetea.malariacare.database.model.TabGroup;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.SurveyAnsweredRatio;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 import org.eyeseetea.malariacare.utils.Utils;
 import org.eyeseetea.malariacare.views.CustomTextView;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -104,9 +96,9 @@ public abstract class AAssessmentAdapter extends ADashboardAdapter implements ID
 
         String surveyDescription;
         if(survey.isCompleted())
-            surveyDescription = "* " + survey.getTabGroup().getProgram().getName();
+            surveyDescription = "* " + survey.getTabGroup().getProgram().getName()+":"+survey.getTabGroup().getName();
         else
-            surveyDescription = "- " + survey.getTabGroup().getProgram().getName();
+            surveyDescription = "- " + survey.getTabGroup().getProgram().getName()+":"+survey.getTabGroup().getName();
         surveyType.setText(surveyDescription);
 
         // check whether the following item belongs to the same org unit (to group the data related

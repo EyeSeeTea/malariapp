@@ -298,7 +298,7 @@ public class DashboardActivity extends BaseActivity{
             ConvertToSDKVisitor.buildFakeEvent(survey.getOrgUnit(), survey.getTabGroup(), eventInfo);
         }
         //Upgrade the uploaded date
-        survey.setUploadedDate(new Date());
+        survey.setUploadDate(new Date());
         survey.setStatus(Constants.SURVEY_IN_PROGRESS);
         Session.setSurvey(survey);
         prepareLocationListener(survey);
