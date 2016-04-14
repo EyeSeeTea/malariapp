@@ -19,7 +19,6 @@
   -->
 
 <resources>
-  <string name="all_assessment">"toutes les évaluations"</string>
   <string name="send">Envoyer</string>
   <string name="create_info_ok">Commencer</string>
   <string name="assessment_sent_title_header">Evaluation(s) Envoyée(s)</string>
