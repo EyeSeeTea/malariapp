@@ -183,11 +183,11 @@ public class Value extends BaseModel implements VisitableToSDK {
         this.conflict = conflict;
     }
 
-    public Date getUpload_date() {
+    public Date getUploadDate() {
         return upload_date;
     }
 
-    public void setUpload_date(Date upload_date) {
+    public void setUploadDate(Date upload_date) {
         this.upload_date = upload_date;
     }
 

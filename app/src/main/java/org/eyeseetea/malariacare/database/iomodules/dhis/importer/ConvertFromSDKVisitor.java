@@ -37,7 +37,7 @@ import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.UserAcc
 import org.eyeseetea.malariacare.database.model.Answer;
 import org.eyeseetea.malariacare.database.model.CompositeScore;
 import org.eyeseetea.malariacare.database.model.Header;
-import org.eyeseetea.malariacare.database.model.ControlDataElement;
+import org.eyeseetea.malariacare.database.model.ServerMetadata;
 import org.eyeseetea.malariacare.database.model.OrgUnit;
 import org.eyeseetea.malariacare.database.model.OrgUnitLevel;
 import org.eyeseetea.malariacare.database.model.OrgUnitProgramRelation;
@@ -292,9 +292,9 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
         survey.setCompletionDate(sdkEventExtended.getEventDate());
         //This prevent a null dates, but the CreationDation and UploadedDate need be setted in dataValue visitor.
         survey.setCreationDate(sdkEventExtended.getEventDate());
-        survey.setUploadedDate(sdkEventExtended.getEventDate());
+        survey.setUploadDate(sdkEventExtended.getEventDate());
 
-        survey.setScheduledDate(sdkEventExtended.getScheduledDate());
+        survey.setScheduleDate(sdkEventExtended.getScheduledDate());
         //Set fks
         survey.setOrgUnit(orgUnit);
         survey.setEventUid(event.getUid());
@@ -382,7 +382,7 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
         if(dataValue.getDataElement().equals(PreferencesState.getInstance().getContext().getResources().getString(R.string.upload_date_code))){
             try{
                 Date date = EventExtended.parseDate(dataValue.getValue(),EventExtended.AMERICAN_DATE_FORMAT);
-                survey.setUploadedDate(date);
+                survey.setUploadDate(date);
                 survey.save();
                 //Annotate object in map
                 appMapObjects.put(dataValue.getEvent(), survey);
@@ -425,7 +425,7 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
         //Option -> extract value from code
             value.setValue(option.getName());
         }
-        value.setUpload_date(new Date());
+        value.setUploadDate(new Date());
         value.save();
     }
 
@@ -521,9 +521,9 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
 
 
 
-    private ControlDataElement buildControlDataElement(DataElementExtended sdkDataElementExtended) {
+    private ServerMetadata buildControlDataElement(DataElementExtended sdkDataElementExtended) {
         DataElement dataElement=sdkDataElementExtended.getDataElement();
-        ControlDataElement controlDataElement = new ControlDataElement();
+        ServerMetadata controlDataElement = new ServerMetadata();
         controlDataElement.setUid(dataElement.getUid());
         controlDataElement.setCode(dataElement.getCode());
         controlDataElement.setName(dataElement.getDisplayName());

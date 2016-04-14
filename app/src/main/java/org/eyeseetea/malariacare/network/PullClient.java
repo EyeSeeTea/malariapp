@@ -62,7 +62,7 @@ public class PullClient {
         String lastEventUid;
         Date lastUpdatedEventDate;
         Survey lastSurvey= Survey.getLastSurvey(orgUnit.getId_org_unit(), tabGroup.getId_tab_group());
-        Date lastLocalDate = lastSurvey.getUploadedDate();
+        Date lastLocalDate = lastSurvey.getUploadDate();
         if(lastLocalDate!=null) {
             //https://hnqis-dev-ci.psi-mis.org/api/events?orgUnit=QS7sK8XzdQc&program=wK0958s1bdj&startDate=2016-1-01&fields=[event,eventDate]
             String data = QueryFormatterUtils.getInstance().prepareLastEventData(orgUnit.getUid(), tabGroup.getProgram().getUid(), lastLocalDate);

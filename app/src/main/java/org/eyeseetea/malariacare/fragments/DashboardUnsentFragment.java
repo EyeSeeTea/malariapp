@@ -181,7 +181,7 @@ public class DashboardUnsentFragment extends ListFragment implements IModuleFrag
                         .setMessage(String.format(getActivity().getString(R.string.dialog_info_delete_survey), survey.getProgram().getName()))
                         .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface arg0, int arg1) {
-                                //this method create a new survey geting the getScheduledDate date of the oldsurvey, and remove it.
+                                //this method create a new survey geting the getScheduleDate date of the oldsurvey, and remove it.
                                 SurveyPlanner.getInstance().deleteSurveyAndBuildNext(survey);
                                 removeSurveyFromAdapter(survey);
                             }

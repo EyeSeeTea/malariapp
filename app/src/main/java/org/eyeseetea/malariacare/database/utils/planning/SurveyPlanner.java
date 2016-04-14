@@ -84,7 +84,7 @@ public class SurveyPlanner {
         newSurvey.setUser(oldSurvey.getUser());
 
         newSurvey.setTabGroup(oldSurvey.getTabGroup());
-        newSurvey.setScheduledDate(oldSurvey.getScheduledDate());
+        newSurvey.setScheduleDate(oldSurvey.getScheduleDate());
         newSurvey.setMainScore(oldSurvey.getMainScore());
         oldSurvey.setSurveyScheduleToSurvey(newSurvey);
         newSurvey.save();
@@ -108,7 +108,7 @@ public class SurveyPlanner {
         plannedSurvey.setUser(Session.getUser());
         plannedSurvey.setTabGroup(survey.getTabGroup());
         plannedSurvey.setMainScore(survey.getMainScore());
-        plannedSurvey.setScheduledDate(findScheduledDateBySurvey(survey));
+        plannedSurvey.setScheduleDate(findScheduledDateBySurvey(survey));
         plannedSurvey.save();
 
         //Save last main score
