@@ -358,7 +358,7 @@ public class CreateSurveyFragment extends Fragment {
             //remove null tabgrouplist
             if (tabGroupList.size() > 1) {
                 for (int i = tabGroupList.size() - 1; i >= 0; i--) {
-                    if (tabGroupList.get(i).getUid() == null) {
+                    if (tabGroupList.get(i).getName() == null) {
                         tabGroupList.remove(i);
                     }
                 }

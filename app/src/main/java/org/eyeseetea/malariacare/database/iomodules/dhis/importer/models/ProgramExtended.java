@@ -34,6 +34,11 @@ import org.hisp.dhis.android.sdk.persistence.models.Program;
 import org.hisp.dhis.android.sdk.persistence.models.Program$Table;
 import org.hisp.dhis.android.sdk.persistence.models.ProgramAttributeValue;
 import org.hisp.dhis.android.sdk.persistence.models.ProgramAttributeValue$Table;
+import org.hisp.dhis.android.sdk.persistence.models.ProgramStage;
+import org.hisp.dhis.android.sdk.persistence.models.ProgramStage$Table;
+import org.hisp.dhis.android.sdk.persistence.models.ProgramStageDataElement;
+import org.hisp.dhis.android.sdk.persistence.models.ProgramStageDataElement$Table;
+import org.hisp.dhis.android.sdk.persistence.models.ProgramStageSection;
 
 import java.util.List;
 
@@ -105,6 +110,23 @@ public class ProgramExtended implements VisitableFromSDK {
         }
     }
 
+    public static Program getProgramByDataElement(String dataElementUid) {
+        Program program = null;
+        List<Program> programs = getAllPrograms();
+        for (Program program1 : programs) {
+            for (ProgramStage programStage : program1.getProgramStages()) {
+                for (ProgramStageSection programStageSection : programStage.getProgramStageSections()) {
+                    for (ProgramStageDataElement programStageDataElement : programStageSection.getProgramStageDataElements()) {
+                        if (programStageDataElement.getDataElement().getUid().equals(dataElementUid)) {
+                            return program1;
+                        }
+                    }
+                }
+            }
+        }
+        return program;
+    }
+    
     public static List<Program> getAllPrograms(){
         return new Select().from(Program.class).queryList();
     }

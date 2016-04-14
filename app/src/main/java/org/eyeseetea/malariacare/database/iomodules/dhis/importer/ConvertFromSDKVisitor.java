@@ -36,6 +36,7 @@ import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.Program
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.UserAccountExtended;
 import org.eyeseetea.malariacare.database.model.Answer;
 import org.eyeseetea.malariacare.database.model.CompositeScore;
+import org.eyeseetea.malariacare.database.model.Header;
 import org.eyeseetea.malariacare.database.model.ControlDataElement;
 import org.eyeseetea.malariacare.database.model.OrgUnit;
 import org.eyeseetea.malariacare.database.model.OrgUnitLevel;
@@ -123,16 +124,6 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
     public void visit(ProgramStageExtended sdkProgramStageExtended) {
         //Build tabgroup
         ProgramStage programStage=sdkProgramStageExtended.getProgramStage();
-        org.eyeseetea.malariacare.database.model.Program appProgram=(org.eyeseetea.malariacare.database.model.Program)appMapObjects.get(programStage.getProgram().getUid());
-        TabGroup appTabGroup = new TabGroup();
-        //FIXME TabGroup has no UID right now
-        appTabGroup.setName(programStage.getDisplayName());
-        appTabGroup.setProgram(appProgram);
-        appTabGroup.setUid(programStage.getUid());
-        appTabGroup.save();
-
-        //Annotate built tabgroup
-        appMapObjects.put(programStage.getUid(), appTabGroup);
 
         //Visit children
         for(ProgramStageSection pss:programStage.getProgramStageSections()){
@@ -197,13 +188,11 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
         //Build Tab
 
         ProgramStageSection programStageSection=sdkProgramStageSectionExtended.getProgramStageSection();
-        org.eyeseetea.malariacare.database.model.TabGroup appTabGroup=(org.eyeseetea.malariacare.database.model.TabGroup)appMapObjects.get(programStageSection.getProgramStage());
         Tab appTab = new Tab();
         //FIXME TabGroup has no UID right now
         appTab.setName(programStageSection.getDisplayName());
         appTab.setType(Constants.TAB_AUTOMATIC);
         appTab.setOrder_pos(programStageSection.getSortOrder());
-        appTab.setTabGroup(appTabGroup);
         appTab.save();
         //Annotate build tab
         appMapObjects.put(appTab.getClass() + appTab.getName(), appTab);
@@ -295,7 +284,6 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
     public void visit(EventExtended sdkEventExtended) {
         Event event=sdkEventExtended.getEvent();
         OrgUnit orgUnit =(OrgUnit)appMapObjects.get(event.getOrganisationUnitId());
-        TabGroup tabGroup=(TabGroup)appMapObjects.get(event.getProgramStageId());
 
         Survey survey=new Survey();
         //Any survey that comes from the pull has been sent
@@ -309,7 +297,6 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
         survey.setScheduledDate(sdkEventExtended.getScheduledDate());
         //Set fks
         survey.setOrgUnit(orgUnit);
-        survey.setTabGroup(tabGroup);
         survey.setEventUid(event.getUid());
         survey.save();
 
@@ -321,6 +308,43 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
             DataValueExtended dataValueExtended=new DataValueExtended(dataValue);
             dataValueExtended.accept(this);
         }
+
+        //Get tabgroup from values
+        for (Value value : survey.getValues()) {
+            try {
+                Question question = value.getQuestion();
+                Log.d(TAG, "Adding survey tabgroup: question " + question.getUid());
+                Header header = question.getHeader();
+                Log.d(TAG,"Adding survey tabgroup: header "+question.getHeader().getName());
+                Tab tab = header.getTab();
+                Log.d(TAG,"Adding survey tabgroup: tab "+header.getTab().getName());
+                TabGroup tabGroup = tab.getTabGroup();
+                if(tabGroup!=null) {
+                    Log.d(TAG, "Adding survey tabgroup: tabgrouponame" + tabGroup.getName());
+                    survey.setTabGroup(tabGroup.getId_tab_group());
+                    break;
+                }
+            } catch (NullPointerException e) {
+                Log.d(TAG,"null"+value.toString());
+                e.printStackTrace();
+            }
+        }
+
+        if(survey.getTabGroup()==null){
+            try {
+                TabGroup tabGroup = Survey.getFirstTabGroup(event.getProgramId());
+                Log.d(TAG, "first tabgroup " + tabGroup.getName());
+                survey.setTabGroup(tabGroup.getId_tab_group());
+            }catch (NullPointerException e) {
+                Log.d(TAG,"null"+event.toString());
+                e.printStackTrace();
+            }
+        }
+
+        survey.save();
+
+        //Annotate object in map
+        appMapObjects.put(event.getUid(), survey);
     }
 
     @Override
@@ -489,6 +513,9 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
         compositeScore.save();
 
         compositeScoreBuilder.add(compositeScore);
+
+        QuestionBuilder.saveTabGroup(sdkDataElementExtended);
+
         return compositeScore;
     }
 

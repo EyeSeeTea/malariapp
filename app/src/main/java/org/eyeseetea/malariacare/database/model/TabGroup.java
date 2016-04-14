@@ -187,4 +187,7 @@ public class TabGroup extends BaseModel {
                 '}';
     }
 
+    public static List<TabGroup> getAllTabgroup() {
+        return new Select().all().from(TabGroup.class).queryList();
+    }
 }

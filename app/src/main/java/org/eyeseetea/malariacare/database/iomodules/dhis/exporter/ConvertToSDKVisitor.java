@@ -215,9 +215,6 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
                 //The controlDataelements values don't have question. It should be ignored  in a upload event.
                 return;
             }
-            if(value.getOption()==null){
-                return;
-            }
         }
         DataValue dataValue=new DataValue();
         dataValue.setDataElement(value.getQuestion().getUid());

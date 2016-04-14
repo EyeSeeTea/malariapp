@@ -23,16 +23,23 @@ import android.util.Log;
 
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.DataElementExtended;
+import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.ProgramExtended;
+import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.ProgramStageExtended;
+import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.ProgramStageSectionExtended;
 import org.eyeseetea.malariacare.database.model.CompositeScore;
 import org.eyeseetea.malariacare.database.model.Header;;
 import org.eyeseetea.malariacare.database.model.Match;
 import org.eyeseetea.malariacare.database.model.Option;
+import org.eyeseetea.malariacare.database.model.Program;
 import org.eyeseetea.malariacare.database.model.Question;
 import org.eyeseetea.malariacare.database.model.QuestionOption;
 import org.eyeseetea.malariacare.database.model.QuestionRelation;
 import org.eyeseetea.malariacare.database.model.Tab;
+import org.eyeseetea.malariacare.database.model.TabGroup;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
+import org.hisp.dhis.android.sdk.controllers.metadata.MetaDataController;
 import org.hisp.dhis.android.sdk.persistence.models.DataElement;
+import org.hisp.dhis.android.sdk.persistence.models.ProgramStageDataElement;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -89,6 +96,10 @@ public class QuestionBuilder {
     static Map<String, Header> mapHeader;
 
     /**
+     * Mapping headers(it is needed for not duplicate data)
+     */
+    static Map<String, TabGroup> mapTabGroup;
+    /**
      * It is needed in the header order.
      */
     private int header_order = 0;
@@ -96,6 +107,7 @@ public class QuestionBuilder {
     QuestionBuilder() {
         mapQuestions = new HashMap<>();
         mapHeader = new HashMap<>();
+        mapTabGroup = new HashMap<>();
         mapType = new HashMap<>();
         mapLevel = new HashMap<>();
         mapParent = new HashMap<>();
@@ -125,16 +137,8 @@ public class QuestionBuilder {
         String attributeHeaderValue = dataElementExtended.getValue(DataElementExtended.ATTRIBUTE_HEADER_NAME);
         if (attributeHeaderValue != null) {
             Tab questionTab;
+            questionTab=saveTabGroup(dataElementExtended);
             String tabUid = dataElementExtended.findProgramStageSectionUIDByDataElementUID(dataElementExtended.getDataElement().getUid());
-            if(ConvertFromSDKVisitor.appMapObjects.containsKey(tabUid)) {
-                questionTab = (Tab) ConvertFromSDKVisitor.appMapObjects.get(tabUid);
-                if(mapHeader.containsKey(tabUid+attributeHeaderValue)){
-                        if(!mapHeader.get(tabUid+attributeHeaderValue).getTab().getName().equals(questionTab.getName()))
-                            Log.d("Bug","Header with other tab"+header.getName()+" othertab "+questionTab.getName()+ "uid" + dataElementExtended.getDataElement().getUid());
-                }
-            }
-            else
-            questionTab=null;
 
             if(!mapHeader.containsKey(tabUid+attributeHeaderValue)) {
                 header = new Header();
@@ -152,7 +156,6 @@ public class QuestionBuilder {
             if(questionTab==null) {
                 header=null;
             }
-
 
 
         }
@@ -304,5 +307,51 @@ public class QuestionBuilder {
                 questionRelation.createMatchFromQuestions(children);
             }
         }
+    }
+
+    public static Tab saveTabGroup(DataElementExtended sdkDataElementExtended) {
+        TabGroup questionTabGroup;
+        String attributeTabGroupValue = sdkDataElementExtended.getValue(DataElementExtended.ATTRIBUTE_TABGROUP_NAME);
+        String tabUid = sdkDataElementExtended.findProgramStageSectionUIDByDataElementUID(sdkDataElementExtended.getDataElement().getUid());
+        String tabGroupUid = sdkDataElementExtended.findAttributeValuefromDataElementCode(DataElementExtended.ATTRIBUTE_TABGROUP_NAME,sdkDataElementExtended.getDataElement()).getAttributeId();
+
+
+        String attributeHeaderValue = sdkDataElementExtended.getValue(DataElementExtended.ATTRIBUTE_HEADER_NAME);
+        Tab questionTab;
+        if(ConvertFromSDKVisitor.appMapObjects.containsKey(tabUid)) {
+            questionTab = (Tab) ConvertFromSDKVisitor.appMapObjects.get(tabUid);
+        }
+        else
+            questionTab=null;
+
+        if(ConvertFromSDKVisitor.appMapObjects.containsKey(tabGroupUid+attributeTabGroupValue)) {
+            questionTabGroup = (TabGroup) ConvertFromSDKVisitor.appMapObjects.get(tabGroupUid+attributeTabGroupValue);
+        }
+        else
+            questionTabGroup=null;
+
+        if(!mapTabGroup.containsKey(tabGroupUid+attributeTabGroupValue)) {
+            TabGroup tabGroup=new TabGroup();
+            tabGroup.setName(attributeTabGroupValue);
+            Log.d(TAG, "Creating new tab from: " +sdkDataElementExtended.getDataElement().getUid());
+            String dataelementUid=sdkDataElementExtended.getDataElement().getUid();
+            org.hisp.dhis.android.sdk.persistence.models.Program programSdk= ProgramExtended.getProgramByDataElement(dataelementUid);
+            Log.d(TAG, "With programUID: " + programSdk.getUid());
+
+            Program program =Program.getProgram(programSdk.getUid());
+
+            Log.d(TAG, "With local programUId " + program.getUid());
+            tabGroup.setProgram(program.getId_program());
+            tabGroup.save();
+            questionTab.setTabGroup(tabGroup);
+            questionTab.save();
+            mapTabGroup.put(tabGroupUid + attributeTabGroupValue, tabGroup);
+        }
+        else{
+            questionTabGroup=mapTabGroup.get(tabGroupUid+attributeTabGroupValue);
+            questionTab.setTabGroup(questionTabGroup);
+            questionTab.save();
+        }
+        return questionTab;
     }
 }

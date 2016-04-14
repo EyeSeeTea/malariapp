@@ -845,7 +845,7 @@ public class Survey extends BaseModel implements VisitableToSDK {
         List<Survey> surveys = getAllSentCompletedOrConflictSurveys();
         Survey lastSurvey = null;
         for(Survey survey:surveys){
-            if(survey.getOrgUnit().getId_org_unit()==orgUnit.getId_org_unit() && survey.getTabGroup().getId_tab_group()==tabGroup.getId_tab_group()) {
+            if(survey.getOrgUnit().getId_org_unit()==orgUnit.getId_org_unit() &&  survey.getTabGroup()!=null && survey.getTabGroup().getId_tab_group()==tabGroup.getId_tab_group()) {
                 if (lastSurvey == null)
                     lastSurvey = survey;
                 else if(lastSurvey.getCompletionDate().before(survey.getCompletionDate()))
@@ -888,6 +888,15 @@ public class Survey extends BaseModel implements VisitableToSDK {
                 .where(Condition.column(Survey$Table.STATUS)
                         .eq(Constants.SURVEY_IN_PROGRESS))
                 .querySingle();
+    }
+
+    public static TabGroup getFirstTabGroup(String programUid) {
+        TabGroup tabGroup = new Select()
+                .from(TabGroup.class)
+                .where(Condition.column(TabGroup$Table.ID_PROGRAM)
+                        .is(programUid)).querySingle();
+    return tabGroup;
+
     }
 
     @Override
