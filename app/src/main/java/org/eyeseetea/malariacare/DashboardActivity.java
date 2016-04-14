@@ -33,17 +33,25 @@ import android.view.View;
 
 import com.squareup.otto.Subscribe;
 
+import org.eyeseetea.malariacare.database.iomodules.dhis.exporter.ConvertToSDKVisitor;
+import org.eyeseetea.malariacare.database.model.OrgUnit;
 import org.eyeseetea.malariacare.database.model.Survey;
+import org.eyeseetea.malariacare.database.model.TabGroup;
 import org.eyeseetea.malariacare.database.model.User;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.database.utils.SurveyAnsweredRatio;
+import org.eyeseetea.malariacare.database.utils.planning.SurveyPlanner;
 import org.eyeseetea.malariacare.layout.dashboard.builder.AppSettingsBuilder;
 import org.eyeseetea.malariacare.layout.dashboard.controllers.DashboardController;
+import org.eyeseetea.malariacare.network.PullClient;
 import org.eyeseetea.malariacare.receivers.AlarmPushReceiver;
 import org.eyeseetea.malariacare.services.SurveyService;
+import org.eyeseetea.malariacare.utils.Constants;
+import org.eyeseetea.malariacare.utils.VariantSpecificUtils;
 import org.hisp.dhis.android.sdk.events.UiEvent;
 
+import java.util.Date;
 import java.util.List;
 
 
@@ -53,7 +61,7 @@ public class DashboardActivity extends BaseActivity{
     private boolean reloadOnResume=true;
     DashboardController dashboardController;
     static Handler handler;
-    static Activity dashboardActivity;
+    public static Activity dashboardActivity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -276,6 +284,43 @@ public class DashboardActivity extends BaseActivity{
      */
     public void onNewSurvey(View view){
         dashboardController.onNewSurvey();
+    }
+    /**
+     * Modify survey from CreateSurveyFragment
+     */
+    public void modifySurvey(OrgUnit orgUnit, TabGroup tabGroup, PullClient.EventInfo eventInfo){
+        Survey survey = Survey.getLastSurvey(orgUnit, tabGroup);
+        if(!survey.getEventUid().equals(eventInfo.getEventUid())){
+            survey= SurveyPlanner.getInstance().startSurvey(orgUnit,tabGroup);
+            survey.setEventUid(eventInfo.getEventUid());
+            survey.setCompletionDate(eventInfo.getEventDate());
+            //If the event not exist, need a fake event to upgrate the server datavalues.
+            ConvertToSDKVisitor.buildFakeEvent(survey.getOrgUnit(), survey.getTabGroup(), eventInfo);
+        }
+        //Upgrade the uploaded date
+        survey.setUploadedDate(new Date());
+        survey.setStatus(Constants.SURVEY_IN_PROGRESS);
+        Session.setSurvey(survey);
+        prepareLocationListener(survey);
+        dashboardController.onSurveySelected(survey);
+    }
+
+    /**
+     * Create new survey from CreateSurveyFragment
+     */
+    public void onCreateSurvey(final OrgUnit orgUnit,final TabGroup tabGroup) {
+        VariantSpecificUtils variantSpecificUtils = new VariantSpecificUtils();
+        variantSpecificUtils.createNewSurvey(orgUnit, tabGroup);
+    }
+
+    /**
+     * Create new survey from VariantSpecificUtils
+     */
+    public void createNewSurvey(OrgUnit orgUnit, TabGroup tabGroup){
+        Survey survey=SurveyPlanner.getInstance().startSurvey(orgUnit,tabGroup);
+        Session.setSurvey(survey);
+        prepareLocationListener(survey);
+        dashboardController.onSurveySelected(survey);
     }
 
     /**
