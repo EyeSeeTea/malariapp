@@ -83,6 +83,8 @@ public class Session {
     }
 
     public static User getUser() {
+        if(user==null)
+            user=User.getLoggedUser();
         return user;
     }
 

@@ -139,7 +139,7 @@ public class LayoutUtils {
             title = survey.getOrgUnit().getName();
         }
         if(program.getName()!=null) {
-            subtitle = program.getName();
+            subtitle = program.getName()+":"+survey.getTabGroup().getName();
         }
         if(PreferencesState.getInstance().isVerticalDashboard()) {
             setActionbarVerticalSurvey(dashboardActivity,title, subtitle);

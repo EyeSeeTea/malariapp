@@ -24,6 +24,7 @@ import android.content.Intent;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
+import com.raizlabs.android.dbflow.annotation.Column;
 import com.raizlabs.android.dbflow.sql.builder.Condition;
 import com.raizlabs.android.dbflow.sql.language.Select;
 
@@ -34,6 +35,7 @@ import org.eyeseetea.malariacare.database.model.OrgUnitLevel;
 import org.eyeseetea.malariacare.database.model.Program;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.model.Tab;
+import org.eyeseetea.malariacare.database.model.TabGroup;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.database.utils.feedback.Feedback;
 import org.eyeseetea.malariacare.database.utils.feedback.FeedbackBuilder;
@@ -97,7 +99,7 @@ public class SurveyService extends IntentService {
     /**
      * Name of 'All filter sentfragment' action
      */
-    public static final String ALL_ORG_UNITS_AND_PROGRAMS_ACTION ="org.eyeseetea.malariacare.services.SurveyService.ALL_ORG_UNITS_AND_PROGRAMS_ACTION";
+    public static final String ALL_ORG_UNITS_AND_TABGROUP_ACTION ="org.eyeseetea.malariacare.services.SurveyService.ALL_ORG_UNITS_AND_TABGROUP_ACTION";
     /**
      * Name of 'All create survey data' action
      */
@@ -124,6 +126,10 @@ public class SurveyService extends IntentService {
      * Key of programs entry in shared session
      */
     public static final String PREPARE_PROGRAMS ="org.eyeseetea.malariacare.services.SurveyService.PREPARE_PROGRAMS";
+    /**
+     * Key of programs entry in shared session
+     */
+    public static final String PREPARE_TABGROUPS ="org.eyeseetea.malariacare.services.SurveyService.PREPARE_TABGROUPS";
     /**
      * Key of surveys entry in shared session
      */
@@ -199,7 +205,7 @@ public class SurveyService extends IntentService {
             case ALL_MONITOR_DATA_ACTION:
                 getAllMonitorData();
                 break;
-            case ALL_ORG_UNITS_AND_PROGRAMS_ACTION:
+            case ALL_ORG_UNITS_AND_TABGROUP_ACTION:
                 getAllOrgUnitsAndPrograms();
                 break;
             case ALL_CREATE_SURVEY_DATA_ACTION:
@@ -219,8 +225,8 @@ public class SurveyService extends IntentService {
     }
 
     private void getAllCreateSurveyData() {
-        Log.d(TAG,"getAllCreateSurveyData (Thread:"+Thread.currentThread().getId()+")");
-        List<OrgUnit> orgUnitList = new Select().all().from(OrgUnit.class).where(Condition.column(OrgUnit$Table.ID_PARENT).isNull()).queryList();
+        Log.d(TAG, "getAllCreateSurveyData (Thread:" + Thread.currentThread().getId() + ")");
+        List<OrgUnit> orgUnitList = new Select().all().from(OrgUnit.class).orderBy(true, "id_org_unit_level").queryList();
         List<OrgUnitLevel> orgUnitLevelList = new Select().all().from(OrgUnitLevel.class).queryList();
         List<Program> programList = Program.list();
 
@@ -240,16 +246,16 @@ public class SurveyService extends IntentService {
     private void getAllOrgUnitsAndPrograms() {
         Log.d(TAG,"getAllOrgUnitAndPrograms (Thread:"+Thread.currentThread().getId()+")");
         List<OrgUnit> orgUnitList=OrgUnit.getAllOrgUnit();
-        List<Program> programList=Program.getAllPrograms();
+        List<TabGroup> tabGroupList=TabGroup.getAllTabgroup();
 
         HashMap<String,List> orgUnitsAndPrograms=new HashMap<>();
         orgUnitsAndPrograms.put(PREPARE_ORG_UNIT, orgUnitList);
-        orgUnitsAndPrograms.put(PREPARE_PROGRAMS, programList);
+        orgUnitsAndPrograms.put(PREPARE_TABGROUPS, tabGroupList);
         //Since intents does NOT admit NON serializable as values we use Session instead
-        Session.putServiceValue(ALL_ORG_UNITS_AND_PROGRAMS_ACTION, orgUnitsAndPrograms);
+        Session.putServiceValue(ALL_ORG_UNITS_AND_TABGROUP_ACTION, orgUnitsAndPrograms);
 
         //Returning result to anyone listening
-        Intent resultIntent= new Intent(ALL_ORG_UNITS_AND_PROGRAMS_ACTION);
+        Intent resultIntent= new Intent(ALL_ORG_UNITS_AND_TABGROUP_ACTION);
         LocalBroadcastManager.getInstance(this).sendBroadcast(resultIntent);
 
     }

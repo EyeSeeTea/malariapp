@@ -70,7 +70,7 @@ public abstract class AAssessmentAdapter extends ADashboardAdapter implements ID
 
 
         if (sentDate != null){
-            Date eventDate = survey.getCompletion_date();
+            Date eventDate = survey.getCompletionDate();
             sentDate.setText(Utils.formatDate(eventDate));
             if(survey.hasConflict() && sentScore!=null){
                 sentScore.setText((getContext().getResources().getString(R.string.feedback_info_conflict)).toUpperCase());
@@ -96,9 +96,9 @@ public abstract class AAssessmentAdapter extends ADashboardAdapter implements ID
 
         String surveyDescription;
         if(survey.isCompleted())
-            surveyDescription = "* " + survey.getTabGroup().getProgram().getName();
+            surveyDescription = "* " + survey.getTabGroup().getProgram().getName()+":"+survey.getTabGroup().getName();
         else
-            surveyDescription = "- " + survey.getTabGroup().getProgram().getName();
+            surveyDescription = "- " + survey.getTabGroup().getProgram().getName()+":"+survey.getTabGroup().getName();
         surveyType.setText(surveyDescription);
 
         // check whether the following item belongs to the same org unit (to group the data related

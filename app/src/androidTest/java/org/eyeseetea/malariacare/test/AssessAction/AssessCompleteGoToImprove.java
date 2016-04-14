@@ -99,7 +99,7 @@ public class AssessCompleteGoToImprove {
         //WHEN
         Long idSurvey=SDKTestUtils.markCompleteAndGoImprove();
         Survey survey = Survey.findById(idSurvey);
-        Date completionDate= survey.getCompletion_date();
+        Date completionDate= survey.getCompletionDate();
 
 
         //THEN

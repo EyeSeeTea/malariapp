@@ -35,7 +35,9 @@ import org.hisp.dhis.android.sdk.persistence.models.Program$Table;
 import org.hisp.dhis.android.sdk.persistence.models.ProgramAttributeValue;
 import org.hisp.dhis.android.sdk.persistence.models.ProgramAttributeValue$Table;
 import org.hisp.dhis.android.sdk.persistence.models.ProgramStage;
+import org.hisp.dhis.android.sdk.persistence.models.ProgramStage$Table;
 import org.hisp.dhis.android.sdk.persistence.models.ProgramStageDataElement;
+import org.hisp.dhis.android.sdk.persistence.models.ProgramStageDataElement$Table;
 import org.hisp.dhis.android.sdk.persistence.models.ProgramStageSection;
 
 import java.util.List;
@@ -124,7 +126,7 @@ public class ProgramExtended implements VisitableFromSDK {
         }
         return program;
     }
-
+    
     public static List<Program> getAllPrograms(){
         return new Select().from(Program.class).queryList();
     }

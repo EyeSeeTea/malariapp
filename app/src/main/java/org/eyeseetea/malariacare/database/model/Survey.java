@@ -39,6 +39,8 @@ import org.eyeseetea.malariacare.database.utils.SurveyAnsweredRatioCache;
 import org.eyeseetea.malariacare.database.utils.planning.SurveyPlanner;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.utils.Constants;
+import org.hisp.dhis.android.sdk.persistence.models.Event;
+import org.hisp.dhis.android.sdk.persistence.models.Event$Table;
 
 import java.util.Date;
 import java.util.List;
@@ -225,35 +227,35 @@ public class Survey extends BaseModel implements VisitableToSDK {
         this.user = null;
     }
 
-    public Date getCreation_date() {
+    public Date getCreationDate() {
         return creation_date;
     }
 
-    public void setCreation_date(Date creation_date) {
+    public void setCreationDate(Date creation_date) {
         this.creation_date = creation_date;
     }
 
-    public Date getCompletion_date(){
+    public Date getCompletionDate(){
         return completion_date;
     }
 
-    public void setCompletion_date(Date completion_date){
+    public void setCompletionDate(Date completion_date){
         this.completion_date = completion_date;
     }
 
-    public Date getUpload_date() {
+    public Date getUploadDate() {
         return upload_date;
     }
 
-    public void setUpload_date(Date upload_date) {
+    public void setUploadDate(Date upload_date) {
         this.upload_date = upload_date;
     }
 
-    public Date getSchedule_date() {
+    public Date getScheduleDate() {
         return schedule_date;
     }
 
-    public void setSchedule_date(Date schedule_date) {
+    public void setScheduleDate(Date schedule_date) {
         this.schedule_date = schedule_date;
     }
 
@@ -295,6 +297,11 @@ public class Survey extends BaseModel implements VisitableToSDK {
      */
     public boolean isCompleted(){
         return Constants.SURVEY_COMPLETED==this.status;
+    }
+
+
+    public boolean isConflict() {
+        return Constants.SURVEY_CONFLICT==this.status;
     }
 
     public Float getMainScore() {
@@ -716,7 +723,7 @@ public class Survey extends BaseModel implements VisitableToSDK {
 
     public void prepareSurveyUploadedDate() {
         if (!isSent()) {
-            setUpload_date(new Date());
+            setUploadDate(new Date());
             save();
         }
     }
@@ -731,7 +738,7 @@ public class Survey extends BaseModel implements VisitableToSDK {
     public void setCompleteSurveyState(){
         setStatus(Constants.SURVEY_COMPLETED);
         //CompletionDate
-        this.setCompletion_date(new Date());
+        this.setCompletionDate(new Date());
         saveScore();
         save();
         saveMainScore();
@@ -746,7 +753,7 @@ public class Survey extends BaseModel implements VisitableToSDK {
      */
     public void reschedule(Date newScheduledDate, String comment) {
         //Take currentDate
-        Date currentScheduleDate=this.getSchedule_date();
+        Date currentScheduleDate=this.getScheduleDate();
 
         //Add a history
         SurveySchedule previousSchedule=new SurveySchedule(this,currentScheduleDate,comment);
@@ -832,12 +839,63 @@ public class Survey extends BaseModel implements VisitableToSDK {
                 .queryList();
     }
 
+
+    public static Survey getLastSurvey(OrgUnit orgUnit, TabGroup tabGroup) {
+        List<Survey> surveys = getAllSentCompletedOrConflictSurveys();
+        Survey lastSurvey = null;
+        for(Survey survey:surveys){
+            if(survey.getOrgUnit().getId_org_unit()==orgUnit.getId_org_unit() &&  survey.getTabGroup()!=null && survey.getTabGroup().getId_tab_group()==tabGroup.getId_tab_group()) {
+                if (lastSurvey == null)
+                    lastSurvey = survey;
+                else if(lastSurvey.getCompletionDate().before(survey.getCompletionDate()))
+                        lastSurvey = survey;
+            }
+        }
+        return lastSurvey;
+    }
+
+    public static Survey getLastSurvey(Long id_org_unit, Long id_tab_group) {
+        return  new Select().from(Survey.class)
+                .where(Condition.column(Survey$Table.ID_TAB_GROUP).eq(id_tab_group))
+                .and(Condition.column(Survey$Table.ID_ORG_UNIT).eq(id_org_unit))
+                .groupBy(new QueryBuilder().appendQuotedArray(Survey$Table.ID_TAB_GROUP, Survey$Table.ID_ORG_UNIT))
+                .having(Condition.columnsWithFunction("max", "completion_date")).querySingle();
+    }
+
+
+    /**
+     * Get event from a survey if exists.
+     * @return
+     */
+    public Event getEvent(){
+        Event event= new Select().from(Event.class)
+                .where(Condition.column(Event$Table.EVENT).eq(eventuid)).querySingle();
+        return event;
+    }
+    /**
+     * Get event from a survey local id if exist
+     * @return
+     */
+    public Event getEventFromLocalId(){
+        Event event= new Select().from(Event.class)
+                .where(Condition.column(Event$Table.LOCALID).eq(String.valueOf(id_survey))).querySingle();
+        return event;
+    }
     public static Survey getSurveyInProgress(){
         return new Select()
                 .from(Survey.class)
                 .where(Condition.column(Survey$Table.STATUS)
                         .eq(Constants.SURVEY_IN_PROGRESS))
                 .querySingle();
+    }
+
+    public static TabGroup getFirstTabGroup(String programUid) {
+        TabGroup tabGroup = new Select()
+                .from(TabGroup.class)
+                .where(Condition.column(TabGroup$Table.ID_PROGRAM)
+                        .is(programUid)).querySingle();
+    return tabGroup;
+
     }
 
     @Override
@@ -898,5 +956,4 @@ public class Survey extends BaseModel implements VisitableToSDK {
                 ", eventuid="+eventuid+
                 '}';
     }
-
 }

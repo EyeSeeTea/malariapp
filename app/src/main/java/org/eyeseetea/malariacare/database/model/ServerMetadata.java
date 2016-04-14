@@ -92,11 +92,11 @@ public class ServerMetadata extends BaseModel {
         this.uid = uid;
     }
 
-    public String getValue_type() {
+    public String getValueType() {
         return value_type;
     }
 
-    public void setValue_type(String value_type) {
+    public void setValueType(String value_type) {
         this.value_type = value_type;
     }
 

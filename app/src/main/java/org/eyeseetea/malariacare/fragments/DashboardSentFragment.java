@@ -42,14 +42,14 @@ import android.widget.Spinner;
 import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.model.OrgUnit;
-import org.eyeseetea.malariacare.database.model.Program;
 import org.eyeseetea.malariacare.database.model.Survey;
+import org.eyeseetea.malariacare.database.model.TabGroup;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.layout.adapters.dashboard.AssessmentSentAdapter;
 import org.eyeseetea.malariacare.layout.adapters.dashboard.IDashboardAdapter;
 import org.eyeseetea.malariacare.layout.adapters.filters.FilterOrgUnitArrayAdapter;
-import org.eyeseetea.malariacare.layout.adapters.filters.FilterProgramArrayAdapter;
+import org.eyeseetea.malariacare.layout.adapters.filters.FilterTabGroupArrayAdapter;
 import org.eyeseetea.malariacare.layout.listeners.SwipeDismissListViewTouchListener;
 import org.eyeseetea.malariacare.services.SurveyService;
 import org.eyeseetea.malariacare.views.CustomTextView;
@@ -78,11 +78,11 @@ public class DashboardSentFragment extends ListFragment implements IModuleFragme
     protected IDashboardAdapter adapter;
     List<Survey> oneSurveyForOrgUnit;
     List<OrgUnit> orgUnitList;
-    List <Program> programList;
+    List <TabGroup> tabgroupList;
     Spinner filterSpinnerOrgUnit;
-    Spinner filterSpinnerProgram;
+    Spinner filterSpinnerTabgroup;
     String orgUnitFilter;
-    String programFilter;
+    String tabgroupFilter;
     int orderBy=WITHOUT_ORDER;
     static boolean reverse=false;
     DashboardActivity dashboardActivity;
@@ -115,7 +115,7 @@ public class DashboardSentFragment extends ListFragment implements IModuleFragme
         Log.d(TAG, "onCreate");
         super.onCreate(savedInstanceState);
         orgUnitFilter= PreferencesState.getInstance().getContext().getString(R.string.filter_all_org_units).toUpperCase();
-        programFilter= PreferencesState.getInstance().getContext().getString(R.string.filter_all_org_assessments).toUpperCase();
+        tabgroupFilter = PreferencesState.getInstance().getContext().getString(R.string.filter_all_org_assessments).toUpperCase();
     }
 
     @Override
@@ -152,32 +152,33 @@ public class DashboardSentFragment extends ListFragment implements IModuleFragme
     }
 
     private void initFilters() {
-        filterSpinnerProgram = (Spinner) getActivity().findViewById(R.id.filter_program);
-        List<Program> filterProgramList=programList;
-        Program allAssessemntsProgram=new Program(getActivity().getString(R.string.filter_all_org_assessments).toUpperCase(),getActivity().getString(R.string.filter_all_org_assessments).toUpperCase());
-        filterProgramList.add(0, allAssessemntsProgram);
-        if(programFilter==null)
-            programFilter=allAssessemntsProgram.getUid();
-        filterSpinnerProgram.setAdapter(new FilterProgramArrayAdapter(this.getActivity().getApplicationContext(), filterProgramList));
-        filterSpinnerProgram.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        filterSpinnerTabgroup = (Spinner) getActivity().findViewById(R.id.filter_program);
+        List<TabGroup> filterTabgroupList= tabgroupList;
+        TabGroup allAssessemntsTabGroup=new TabGroup();
+        allAssessemntsTabGroup.setName(getActivity().getString(R.string.filter_all_org_assessments).toUpperCase());
+        filterTabgroupList.add(0, allAssessemntsTabGroup);
+        if(tabgroupFilter ==null)
+            tabgroupFilter =allAssessemntsTabGroup.getName();
+        filterSpinnerTabgroup.setAdapter(new FilterTabGroupArrayAdapter(this.getActivity().getApplicationContext(), filterTabgroupList));
+        filterSpinnerTabgroup.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 
             @Override
             public void onItemSelected(AdapterView<?> parent, View view,
                                        int position, long id) {
-                Program program = (Program) parent.getItemAtPosition(position);
+                TabGroup tabgroup = (TabGroup) parent.getItemAtPosition(position);
                 boolean reload = false;
-                if (program.getName().equals(PreferencesState.getInstance().getContext().getString(R.string.filter_all_org_assessments).toUpperCase())) {
-                    if (programFilter != PreferencesState.getInstance().getContext().getString(R.string.filter_all_org_assessments).toUpperCase()) {
-                        programFilter = PreferencesState.getInstance().getContext().getString(R.string.filter_all_org_assessments).toUpperCase();
-                        reload=true;
+                if (tabgroup.getName().equals(PreferencesState.getInstance().getContext().getString(R.string.filter_all_org_assessments).toUpperCase())) {
+                    if (tabgroupFilter != PreferencesState.getInstance().getContext().getString(R.string.filter_all_org_assessments).toUpperCase()) {
+                        tabgroupFilter = PreferencesState.getInstance().getContext().getString(R.string.filter_all_org_assessments).toUpperCase();
+                        reload = true;
                     }
                 } else {
-                    if (programFilter != program.getUid()) {
-                        programFilter = program.getUid();
-                        reload=true;
+                    if (tabgroupFilter != tabgroup.getName()) {
+                        tabgroupFilter = tabgroup.getName();
+                        reload = true;
                     }
                 }
-                if(reload)
+                if (reload)
                     reloadSentSurveys();
             }
 
@@ -413,7 +414,7 @@ public class DashboardSentFragment extends ListFragment implements IModuleFragme
         if (surveyReceiver == null) {
             surveyReceiver = new SurveyReceiver();
             LocalBroadcastManager.getInstance(PreferencesState.getInstance().getContext()).registerReceiver(surveyReceiver, new IntentFilter(SurveyService.ALL_SENT_OR_COMPLETED_OR_CONFLICT_SURVEYS_ACTION));
-            LocalBroadcastManager.getInstance(PreferencesState.getInstance().getContext()).registerReceiver(surveyReceiver, new IntentFilter(SurveyService.ALL_ORG_UNITS_AND_PROGRAMS_ACTION));
+            LocalBroadcastManager.getInstance(PreferencesState.getInstance().getContext()).registerReceiver(surveyReceiver, new IntentFilter(SurveyService.ALL_ORG_UNITS_AND_TABGROUP_ACTION));
         }
     }
 
@@ -447,7 +448,7 @@ public class DashboardSentFragment extends ListFragment implements IModuleFragme
         //Reload data using service
         Intent surveysIntent=new Intent(PreferencesState.getInstance().getContext().getApplicationContext(), SurveyService.class);
         surveysIntent.putExtra(SurveyService.SERVICE_METHOD, SurveyService.ALL_SENT_OR_COMPLETED_OR_CONFLICT_SURVEYS_ACTION);
-        surveysIntent.putExtra(SurveyService.SERVICE_METHOD, SurveyService.ALL_ORG_UNITS_AND_PROGRAMS_ACTION);
+        surveysIntent.putExtra(SurveyService.SERVICE_METHOD, SurveyService.ALL_ORG_UNITS_AND_TABGROUP_ACTION);
         PreferencesState.getInstance().getContext().getApplicationContext().startService(surveysIntent);
     }
 
@@ -465,13 +466,13 @@ public class DashboardSentFragment extends ListFragment implements IModuleFragme
         oneSurveyForOrgUnit = new ArrayList<>();
 
         for (Survey survey : surveys) {
-            if (survey.getOrgUnit() != null) {
-                if (!orgUnits.containsKey(survey.getTabGroup().getProgram().getUid()+survey.getOrgUnit().getUid())) {
+            if (survey.getOrgUnit() != null && survey.getTabGroup()!=null && survey.getTabGroup()!=null) {
+                if (!orgUnits.containsKey(survey.getTabGroup().getName()+survey.getOrgUnit().getUid())) {
                     filterSurvey(orgUnits, survey);
                 } else {
-                    Survey surveyMapped = orgUnits.get(survey.getTabGroup().getProgram().getUid()+survey.getOrgUnit().getUid());
+                    Survey surveyMapped = orgUnits.get(survey.getTabGroup().getName()+survey.getOrgUnit().getUid());
                     Log.d(TAG,"reloadSentSurveys check NPE \tsurveyMapped:"+surveyMapped+"\tsurvey:"+survey);
-                    if((surveyMapped.getCompletion_date()!=null && survey.getCompletion_date()!=null) && surveyMapped.getCompletion_date().before(survey.getCompletion_date())) {
+                    if((surveyMapped.getCompletionDate()!=null && survey.getCompletionDate()!=null) && surveyMapped.getCompletionDate().before(survey.getCompletionDate())) {
                         orgUnits=filterSurvey(orgUnits, survey);
                     }
                 }
@@ -496,7 +497,7 @@ public class DashboardSentFragment extends ListFragment implements IModuleFragme
                             compare = surveyA.compareTo(surveyB);
                             break;
                         case DATE_ORDER:
-                            compare = survey1.getCompletion_date().compareTo(survey2.getCompletion_date());
+                            compare = survey1.getCompletionDate().compareTo(survey2.getCompletionDate());
                             break;
                         case SCORE_ORDER:
                             compare = survey1.getMainScore().compareTo(survey2.getMainScore());
@@ -522,16 +523,16 @@ public class DashboardSentFragment extends ListFragment implements IModuleFragme
         reloadSurveys(oneSurveyForOrgUnit);
     }
 
-    public void getOrgUnitAndProgram(){
-        HashMap<String,List> data=(HashMap) Session.popServiceValue(SurveyService.ALL_ORG_UNITS_AND_PROGRAMS_ACTION);
+    public void getOrgUnitAndTabGroup(){
+        HashMap<String,List> data=(HashMap) Session.popServiceValue(SurveyService.ALL_ORG_UNITS_AND_TABGROUP_ACTION);
         orgUnitList=data.get(SurveyService.PREPARE_ORG_UNIT);
-        programList=data.get(SurveyService.PREPARE_PROGRAMS);
+        tabgroupList =data.get(SurveyService.PREPARE_TABGROUPS);
     }
 
     private HashMap<String, Survey> filterSurvey(HashMap<String, Survey> orgUnits, Survey survey) {
         if(orgUnitFilter!=null && (orgUnitFilter.equals(PreferencesState.getInstance().getContext().getString(R.string.filter_all_org_units).toUpperCase()) || orgUnitFilter.equals(survey.getOrgUnit().getUid())))
-            if(programFilter.equals(PreferencesState.getInstance().getContext().getString(R.string.filter_all_org_assessments).toUpperCase()) || programFilter.equals(survey.getTabGroup().getProgram().getUid()))
-              orgUnits.put(survey.getTabGroup().getProgram().getUid()+survey.getOrgUnit().getUid(), survey);
+            if(tabgroupFilter.equals(PreferencesState.getInstance().getContext().getString(R.string.filter_all_org_assessments).toUpperCase()) || tabgroupFilter.equals(survey.getTabGroup().getName()))
+              orgUnits.put(survey.getTabGroup().getName()+survey.getOrgUnit().getUid(), survey);
         return orgUnits;
     }
 
@@ -556,8 +557,8 @@ public class DashboardSentFragment extends ListFragment implements IModuleFragme
             if (SurveyService.ALL_SENT_OR_COMPLETED_OR_CONFLICT_SURVEYS_ACTION.equals(intent.getAction())) {
                 reloadSentSurveys();
             }
-            if(SurveyService.ALL_ORG_UNITS_AND_PROGRAMS_ACTION.equals(intent.getAction())){
-                getOrgUnitAndProgram();
+            if(SurveyService.ALL_ORG_UNITS_AND_TABGROUP_ACTION.equals(intent.getAction())){
+                getOrgUnitAndTabGroup();
                 new showContainer().execute();
             }
         }

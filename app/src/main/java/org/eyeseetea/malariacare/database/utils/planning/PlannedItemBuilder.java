@@ -20,6 +20,7 @@
 package org.eyeseetea.malariacare.database.utils.planning;
 
 import android.content.Context;
+import android.util.Log;
 
 import org.eyeseetea.malariacare.database.model.OrgUnit;
 import org.eyeseetea.malariacare.database.model.Program;
@@ -178,7 +179,7 @@ public class PlannedItemBuilder {
      * @return
      */
     private boolean processAsNever(Survey survey){
-        Date scheduledDate = survey.getSchedule_date();
+        Date scheduledDate = survey.getScheduleDate();
         Date today = new Date();
 
         //No Scheduled
@@ -197,7 +198,7 @@ public class PlannedItemBuilder {
      * @return
      */
     private boolean processAsOverdue(Survey survey){
-        Date scheduledDate = survey.getSchedule_date();
+        Date scheduledDate = survey.getScheduleDate();
         Date today = new Date();
 
         //scheduledDate<today
@@ -216,7 +217,7 @@ public class PlannedItemBuilder {
      * @return
      */
     private boolean processAsNext30(Survey survey){
-        Date scheduledDate = survey.getSchedule_date();
+        Date scheduledDate = survey.getScheduleDate();
         Date today = new Date();
         Date today30 = getIn30Days(today);
 
@@ -235,8 +236,13 @@ public class PlannedItemBuilder {
      * @param survey
      */
     private void annotateSurvey(Survey survey){
-        String key= getSurveyKey(survey.getOrgUnit(), survey.getTabGroup().getProgram());
-        surveyMap.put(key,survey);
+        if(survey.getTabGroup()!=null) {
+            String key= getSurveyKey(survey.getOrgUnit(), survey.getTabGroup().getProgram());
+            surveyMap.put(key,survey);
+        }
+        else{
+            Log.d(TAG, "Error tabgroup null in surevy id: " + survey.getId_survey());
+        }
     }
 
     /**

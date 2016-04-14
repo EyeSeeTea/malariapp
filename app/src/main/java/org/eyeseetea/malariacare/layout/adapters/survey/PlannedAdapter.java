@@ -369,15 +369,15 @@ public class PlannedAdapter extends BaseAdapter {
 
             //Set current date
             final Button scheduleDatePickerButton=(Button)dialog.findViewById(R.id.planning_dialog_picker_button);
-            scheduleDatePickerButton.setText(Utils.formatDate(survey.getSchedule_date()));
+            scheduleDatePickerButton.setText(Utils.formatDate(survey.getScheduleDate()));
             //On Click open an specific DatePickerDialog
             scheduleDatePickerButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     //Init secondary datepicker with current date
                     Calendar calendar = Calendar.getInstance();
-                    if(survey.getSchedule_date()!=null){
-                        calendar.setTime(survey.getSchedule_date());
+                    if(survey.getScheduleDate()!=null){
+                        calendar.setTime(survey.getScheduleDate());
                     }
                     //Show datepickerdialog -> updates newScheduledDate and button
                     new DatePickerDialog(PlannedAdapter.this.context, new DatePickerDialog.OnDateSetListener() {

@@ -19,18 +19,26 @@
 
 package org.eyeseetea.malariacare.utils;
 
+import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.os.AsyncTask;
 import android.text.method.LinkMovementMethod;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import org.eyeseetea.malariacare.BaseActivity;
 import org.eyeseetea.malariacare.BuildConfig;
+import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.R;
+import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.EventExtended;
+import org.eyeseetea.malariacare.database.model.OrgUnit;
+import org.eyeseetea.malariacare.database.model.TabGroup;
+import org.eyeseetea.malariacare.database.utils.PreferencesState;
+import org.eyeseetea.malariacare.network.PullClient;
 
 /**
  * Created by nacho on 28/03/16.
@@ -66,5 +74,10 @@ public class VariantSpecificUtils{
         });
         //now that the dialog is set up, it's time to show it
         dialog.show();
+    }
+
+    public void createNewSurvey(final OrgUnit orgUnit, final TabGroup tabGroup) {
+        final DashboardActivity activity = ((DashboardActivity) DashboardActivity.dashboardActivity);
+        activity.createNewSurvey(orgUnit, tabGroup);
     }
 }

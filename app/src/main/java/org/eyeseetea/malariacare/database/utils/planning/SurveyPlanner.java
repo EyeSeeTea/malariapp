@@ -84,7 +84,7 @@ public class SurveyPlanner {
         newSurvey.setUser(oldSurvey.getUser());
 
         newSurvey.setTabGroup(oldSurvey.getTabGroup());
-        newSurvey.setSchedule_date(oldSurvey.getSchedule_date());
+        newSurvey.setScheduleDate(oldSurvey.getScheduleDate());
         newSurvey.setMainScore(oldSurvey.getMainScore());
         oldSurvey.setSurveyScheduleToSurvey(newSurvey);
         newSurvey.save();
@@ -108,7 +108,7 @@ public class SurveyPlanner {
         plannedSurvey.setUser(Session.getUser());
         plannedSurvey.setTabGroup(survey.getTabGroup());
         plannedSurvey.setMainScore(survey.getMainScore());
-        plannedSurvey.setSchedule_date(findScheduledDateBySurvey(survey));
+        plannedSurvey.setScheduleDate(findScheduledDateBySurvey(survey));
         plannedSurvey.save();
 
         //Save last main score
@@ -126,6 +126,11 @@ public class SurveyPlanner {
     public Survey startSurvey(OrgUnit orgUnit,TabGroup tabGroup){
         //Find planned survey
         Survey survey = Survey.findByOrgUnitAndTabGroup(orgUnit,tabGroup);
+        if(survey==null){
+            survey = new Survey();
+            survey.setTabGroup(tabGroup);
+            survey.setOrgUnit(orgUnit.getId_org_unit());
+        }
         return startSurvey(survey);
     }
 
@@ -135,7 +140,7 @@ public class SurveyPlanner {
      * @return
      */
     public Survey startSurvey(Survey survey){
-        survey.setCreation_date(new Date());
+        survey.setCreationDate(new Date());
         survey.setStatus(Constants.SURVEY_IN_PROGRESS);
         survey.setUser(Session.getUser());
         survey.save();
@@ -162,7 +167,7 @@ public class SurveyPlanner {
             return null;
         }
 
-        Date eventDate=survey.getCompletion_date();
+        Date eventDate=survey.getCompletionDate();
         if(eventDate==null){
             return null;
         }

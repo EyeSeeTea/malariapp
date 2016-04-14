@@ -210,7 +210,7 @@ public class PushController {
         for(Survey survey:surveys){
             for(int i=0;i<converter.events.size();i++){
                 if(survey.getEventUid().equals(converter.events.get(i).getUid())) {
-                    converter.events.get(i).setCreated(EventExtended.format(survey.getCompletion_date(),EventExtended.DHIS2_DATE_FORMAT));
+                    converter.events.get(i).setCreated(EventExtended.format(survey.getCompletionDate(),EventExtended.DHIS2_DATE_FORMAT));
                 }
             }
         }
