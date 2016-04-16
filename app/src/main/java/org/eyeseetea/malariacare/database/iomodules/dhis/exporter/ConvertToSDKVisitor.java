@@ -180,10 +180,17 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
         annotateSurveyAndEvent();
     }
 
-    private Event forceLastSurvey(Survey survey) {
+    private Event forceLastSurvey(Survey survey) throws Exception {
         //download last survey uid
         PullClient pullClient = new PullClient((DashboardActivity) DashboardActivity.dashboardActivity);
         PullClient.EventInfo eventInfo = pullClient.getLastEventUid(survey.getOrgUnit(), survey.getTabGroup());
+        if(eventInfo.getEventUid()==PreferencesState.getInstance().getContext().getString(R.string.no_previous_event_fakeuid)){
+            //First event
+            Log.d(TAG,"first event");
+            Event newEvent=buildEvent();
+            survey.setEventUid(newEvent.getEvent());
+            return newEvent;
+        }
         if(!survey.getEventUid().equals(eventInfo.getEventUid())){
             survey.setEventUid(eventInfo.getEventUid());
         }
@@ -267,7 +274,7 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
      * Builds or modify a event to be upgraded.
      * @return
      */
-    private void buildUpgradeEvent(Survey survey) {
+    private void buildUpgradeEvent(Survey survey) throws Exception{
         updateEvent =true;
         currentEvent = forceLastSurvey(survey);
 
@@ -284,7 +291,8 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
         }
         else
         {
-            Log.d(TAG, "Error Creating/Recovering Event:"+survey.getEventUid()+" not exist");
+            Log.d(TAG, "First event. No new events in the sever, creating new buildEvent...");
+            currentEvent=buildEvent();
         }
     }
 

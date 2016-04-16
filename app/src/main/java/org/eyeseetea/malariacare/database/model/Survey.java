@@ -844,10 +844,10 @@ public class Survey extends BaseModel implements VisitableToSDK {
         List<Survey> surveys = getAllSentCompletedOrConflictSurveys();
         Survey lastSurvey = null;
         for(Survey survey:surveys){
-            if(survey.getOrgUnit().getId_org_unit()==orgUnit.getId_org_unit() &&  survey.getTabGroup()!=null && survey.getTabGroup().getId_tab_group()==tabGroup.getId_tab_group()) {
+            if(survey.getOrgUnit().getId_org_unit()==orgUnit.getId_org_unit() &&  survey.getTabGroup()!=null && survey.getTabGroup().getProgram().getId_program()==tabGroup.getProgram().getId_program()) {
                 if (lastSurvey == null)
                     lastSurvey = survey;
-                else if(lastSurvey.getCompletionDate().before(survey.getCompletionDate()))
+                else if(lastSurvey.getCompletionDate()!=null && lastSurvey.getCompletionDate().before(survey.getCompletionDate()))
                         lastSurvey = survey;
             }
         }
@@ -859,6 +859,18 @@ public class Survey extends BaseModel implements VisitableToSDK {
                 .where(Condition.column(Survey$Table.ID_TAB_GROUP).eq(id_tab_group))
                 .and(Condition.column(Survey$Table.ID_ORG_UNIT).eq(id_org_unit))
                 .groupBy(new QueryBuilder().appendQuotedArray(Survey$Table.ID_TAB_GROUP, Survey$Table.ID_ORG_UNIT))
+                .having(Condition.columnsWithFunction("max", "completion_date")).querySingle();
+    }
+
+
+    public static Survey getLastSurvey(Long id_org_unit, Program program){
+        return new Select().from(Survey.class).as("s")
+                .join(TabGroup.class, Join.JoinType.LEFT).as("tg")
+                .on(Condition.column(ColumnAlias.columnWithTable("s", Survey$Table.ID_TAB_GROUP))
+                        .eq(ColumnAlias.columnWithTable("tg", TabGroup$Table.ID_TAB_GROUP)))
+                .where(Condition.column(TabGroup$Table.ID_PROGRAM).eq(program.getId_program()))
+                .and(Condition.column(Survey$Table.ID_ORG_UNIT).eq(id_org_unit))
+                .groupBy(new QueryBuilder().appendQuotedArray(TabGroup$Table.ID_PROGRAM, Survey$Table.ID_ORG_UNIT))
                 .having(Condition.columnsWithFunction("max", "completion_date")).querySingle();
     }
 
