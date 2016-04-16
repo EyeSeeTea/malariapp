@@ -333,6 +333,11 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
         if(survey.getTabGroup()==null){
             try {
                 TabGroup tabGroup = Survey.getFirstTabGroup(event.getProgramId());
+                if(tabGroup==null){
+                    org.eyeseetea.malariacare.database.model.Program program=org.eyeseetea.malariacare.database.model.Program.getProgram(event.getProgramId());
+                    tabGroup = new TabGroup(program.getUid(),program);
+                    tabGroup.save();
+                }
                 Log.d(TAG, "first tabgroup " + tabGroup.getName());
                 survey.setTabGroup(tabGroup.getId_tab_group());
             }catch (NullPointerException e) {
@@ -340,7 +345,9 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
                 e.printStackTrace();
             }
         }
+        if(survey.getTabGroup()==null){
 
+        }
         survey.save();
 
         //Annotate object in map
