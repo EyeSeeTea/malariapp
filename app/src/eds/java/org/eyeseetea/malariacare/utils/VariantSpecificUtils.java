@@ -96,9 +96,16 @@ public class VariantSpecificUtils{
     }
 
     private void askCreateOrModify(final ComboOrgUnitTabGroup comboOrgUnitTabGroup, final PullClient.EventInfo eventInfo){
+        String dialogMessage="";
+        if(eventInfo==null || eventInfo.getEventUid().equals(PreferencesState.getInstance().getContext().getResources().getString(R.string.no_previous_event_fakeuid))){
+            dialogMessage=PreferencesState.getInstance().getContext().getResources().getString(R.string.no_previous_event_info);
+        }
+        else{
+            dialogMessage=String.format(PreferencesState.getInstance().getContext().getResources().getString(R.string.create_or_modify), EventExtended.format(eventInfo.getEventDate(), EventExtended.DHIS2_DATE_FORMAT ));
+        }
         new AlertDialog.Builder(DashboardActivity.dashboardActivity)
                 .setTitle("")
-                .setMessage(String.format(PreferencesState.getInstance().getContext().getResources().getString(R.string.create_or_modify), EventExtended.format(eventInfo.getEventDate(), EventExtended.DHIS2_DATE_FORMAT )))
+                .setMessage(dialogMessage)
                 .setPositiveButton((R.string.create), new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface arg0, int arg1) {
                         DashboardActivity activity= (DashboardActivity)DashboardActivity.dashboardActivity;
