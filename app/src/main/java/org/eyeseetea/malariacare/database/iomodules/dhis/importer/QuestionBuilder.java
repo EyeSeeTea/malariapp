@@ -155,8 +155,16 @@ public class QuestionBuilder {
             }
             if(questionTab==null) {
                 header=null;
+                return header;
             }
 
+            if(questionTab.getTabGroup()==null){
+                Program program=Program.getProgram(DataElementExtended.findProgramUIDByDataElementUID(dataElementExtended.getDataElement().getUid()));
+                TabGroup tabGroup = new TabGroup(program.getName(),program);
+                tabGroup.save();
+                questionTab.setTabGroup(tabGroup);
+                questionTab.save();
+            }
 
         }
         return header;
@@ -313,8 +321,12 @@ public class QuestionBuilder {
         TabGroup questionTabGroup;
         String attributeTabGroupValue = sdkDataElementExtended.getValue(DataElementExtended.ATTRIBUTE_TABGROUP_NAME);
         String tabUid = sdkDataElementExtended.findProgramStageSectionUIDByDataElementUID(sdkDataElementExtended.getDataElement().getUid());
-        String tabGroupUid = sdkDataElementExtended.findAttributeValuefromDataElementCode(DataElementExtended.ATTRIBUTE_TABGROUP_NAME,sdkDataElementExtended.getDataElement()).getAttributeId();
-
+        String tabGroupUid=TabGroup.class.getName()+"";
+        try {
+            tabGroupUid = sdkDataElementExtended.findAttributeValuefromDataElementCode(DataElementExtended.ATTRIBUTE_TABGROUP_NAME, sdkDataElementExtended.getDataElement()).getAttributeId();
+        }catch (NullPointerException e){
+            e.printStackTrace();
+        }
 
         String attributeHeaderValue = sdkDataElementExtended.getValue(DataElementExtended.ATTRIBUTE_HEADER_NAME);
         Tab questionTab;
@@ -324,34 +336,58 @@ public class QuestionBuilder {
         else
             questionTab=null;
 
-        if(ConvertFromSDKVisitor.appMapObjects.containsKey(tabGroupUid+attributeTabGroupValue)) {
+        if(attributeTabGroupValue!=null && ConvertFromSDKVisitor.appMapObjects.containsKey(tabGroupUid+attributeTabGroupValue)) {
             questionTabGroup = (TabGroup) ConvertFromSDKVisitor.appMapObjects.get(tabGroupUid+attributeTabGroupValue);
         }
         else
             questionTabGroup=null;
 
-        if(!mapTabGroup.containsKey(tabGroupUid+attributeTabGroupValue)) {
-            TabGroup tabGroup=new TabGroup();
-            tabGroup.setName(attributeTabGroupValue);
+        if(attributeTabGroupValue==null){
             Log.d(TAG, "Creating new tab from: " +sdkDataElementExtended.getDataElement().getUid());
             String dataelementUid=sdkDataElementExtended.getDataElement().getUid();
             org.hisp.dhis.android.sdk.persistence.models.Program programSdk= ProgramExtended.getProgramByDataElement(dataelementUid);
+            Program program =Program.getProgram(programSdk.getUid());
             Log.d(TAG, "With programUID: " + programSdk.getUid());
 
-            Program program =Program.getProgram(programSdk.getUid());
+        if(mapTabGroup.containsKey(tabGroupUid+programSdk.getUid())){
+            questionTabGroup=mapTabGroup.get(tabGroupUid+programSdk.getUid());
+            questionTab.setTabGroup(questionTabGroup);
+            questionTab.save();
+        }
+        else {
+            TabGroup tabGroup = new TabGroup();
+            tabGroup.setName(program.getName());
 
             Log.d(TAG, "With local programUId " + program.getUid());
             tabGroup.setProgram(program.getId_program());
             tabGroup.save();
             questionTab.setTabGroup(tabGroup);
             questionTab.save();
-            mapTabGroup.put(tabGroupUid + attributeTabGroupValue, tabGroup);
+            mapTabGroup.put(tabGroupUid + programSdk.getUid(), tabGroup);
         }
-        else{
-            questionTabGroup=mapTabGroup.get(tabGroupUid+attributeTabGroupValue);
-            questionTab.setTabGroup(questionTabGroup);
-            questionTab.save();
         }
+        else if(!mapTabGroup.containsKey(tabGroupUid+attributeTabGroupValue)) {
+                TabGroup tabGroup=new TabGroup();
+                tabGroup.setName(attributeTabGroupValue);
+                Log.d(TAG, "Creating new tab from: " +sdkDataElementExtended.getDataElement().getUid());
+                String dataelementUid=sdkDataElementExtended.getDataElement().getUid();
+                org.hisp.dhis.android.sdk.persistence.models.Program programSdk= ProgramExtended.getProgramByDataElement(dataelementUid);
+                Log.d(TAG, "With programUID: " + programSdk.getUid());
+
+                Program program =Program.getProgram(programSdk.getUid());
+
+                Log.d(TAG, "With local programUId " + program.getUid());
+                tabGroup.setProgram(program.getId_program());
+                tabGroup.save();
+                questionTab.setTabGroup(tabGroup);
+                questionTab.save();
+                mapTabGroup.put(tabGroupUid + attributeTabGroupValue, tabGroup);
+            }
+            else{
+                questionTabGroup=mapTabGroup.get(tabGroupUid+attributeTabGroupValue);
+                questionTab.setTabGroup(questionTabGroup);
+                questionTab.save();
+            }
         return questionTab;
     }
 }

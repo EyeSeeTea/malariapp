@@ -378,6 +378,7 @@ public class PullController {
             for (DataElement dataElement : sortDataElements) {
                 if (!ProgressActivity.PULL_IS_ACTIVE) return;
                 DataElementExtended dataElementExtended = new DataElementExtended(dataElement);
+                Log.i(TAG,"Converting "+dataElementExtended.getDataElement().getUid());
                 dataElementExtended.accept(converter);
             }
         }

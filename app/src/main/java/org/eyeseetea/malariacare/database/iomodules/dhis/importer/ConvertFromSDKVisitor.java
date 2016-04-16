@@ -335,7 +335,7 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
                 TabGroup tabGroup = Survey.getFirstTabGroup(event.getProgramId());
                 if(tabGroup==null){
                     org.eyeseetea.malariacare.database.model.Program program=org.eyeseetea.malariacare.database.model.Program.getProgram(event.getProgramId());
-                    tabGroup = new TabGroup(program.getUid(),program);
+                    tabGroup = new TabGroup(program.getName(),program);
                     tabGroup.save();
                 }
                 Log.d(TAG, "first tabgroup " + tabGroup.getName());
@@ -346,7 +346,7 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
             }
         }
         if(survey.getTabGroup()==null){
-
+            Log.d(TAG,"TabgroupError"+event.toString());
         }
         survey.save();
 
