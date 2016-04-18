@@ -325,8 +325,7 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
                     break;
                 }
             } catch (NullPointerException e) {
-                Log.d(TAG,"null"+value.toString());
-                e.printStackTrace();
+                Log.d(TAG, "This value don't have question/header/tab/tabgroup. Value:"+value.getValue()+" Event Survey: "+survey.getEventUid());
             }
         }
 
@@ -338,15 +337,14 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
                     tabGroup = new TabGroup(program.getName(),program);
                     tabGroup.save();
                 }
-                Log.d(TAG, "first tabgroup " + tabGroup.getName());
                 survey.setTabGroup(tabGroup.getId_tab_group());
+                Log.d(TAG, "The fake "+tabGroup.getName()+" tabgroup was saved as survey tabgroup");
             }catch (NullPointerException e) {
-                Log.d(TAG,"null"+event.toString());
-                e.printStackTrace();
+                Log.d(TAG, "Error saving fake tabgroup at Event Survey: "+survey.getEventUid());
             }
         }
         if(survey.getTabGroup()==null){
-            Log.d(TAG,"TabgroupError"+event.toString());
+            Log.d(TAG,"The tabgroup wasn't saved at the event:"+event.getUid());
         }
         survey.save();
 

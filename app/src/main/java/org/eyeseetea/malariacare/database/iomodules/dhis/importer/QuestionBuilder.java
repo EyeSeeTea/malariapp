@@ -325,7 +325,7 @@ public class QuestionBuilder {
         try {
             tabGroupUid = sdkDataElementExtended.findAttributeValuefromDataElementCode(DataElementExtended.ATTRIBUTE_TABGROUP_NAME, sdkDataElementExtended.getDataElement()).getAttributeId();
         }catch (NullPointerException e){
-            e.printStackTrace();
+            Log.d(TAG, "This dataelement don't have Tabgroup attribute "+sdkDataElementExtended.getDataElement().getUid());
         }
 
         String attributeHeaderValue = sdkDataElementExtended.getValue(DataElementExtended.ATTRIBUTE_HEADER_NAME);
