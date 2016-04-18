@@ -81,6 +81,7 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
      */
     CompositeScoreBuilder compositeScoreBuilder;
     QuestionBuilder questionBuilder;
+    TabGroupBuilder tabGroupBuilder;
     private final String ATTRIBUTE_PRODUCTIVITY_CODE="OUProductivity";
     private final String SDKDateFormat="yyyy-MM-dd'T'HH:mm:ss.SSSZ";
 
@@ -89,6 +90,7 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
         appMapObjects = new HashMap();
         compositeScoreBuilder = new CompositeScoreBuilder();
         questionBuilder = new QuestionBuilder();
+        tabGroupBuilder = new TabGroupBuilder();
 
         //Reload static dataElement codes
         DataElementExtended.reloadDataElementTypeCodes();
@@ -308,43 +310,10 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
             DataValueExtended dataValueExtended=new DataValueExtended(dataValue);
             dataValueExtended.accept(this);
         }
-
-        //Get tabgroup from values
-        for (Value value : survey.getValues()) {
-            try {
-                Question question = value.getQuestion();
-                Log.d(TAG, "Adding survey tabgroup: question " + question.getUid());
-                Header header = question.getHeader();
-                Log.d(TAG,"Adding survey tabgroup: header "+question.getHeader().getName());
-                Tab tab = header.getTab();
-                Log.d(TAG,"Adding survey tabgroup: tab "+header.getTab().getName());
-                TabGroup tabGroup = tab.getTabGroup();
-                if(tabGroup!=null) {
-                    Log.d(TAG, "Adding survey tabgroup: tabgrouponame" + tabGroup.getName());
-                    survey.setTabGroup(tabGroup.getId_tab_group());
-                    break;
-                }
-            } catch (NullPointerException e) {
-                Log.d(TAG, "This value don't have question/header/tab/tabgroup. Value:"+value.getValue()+" Event Survey: "+survey.getEventUid());
-            }
-        }
-
-        if(survey.getTabGroup()==null){
-            try {
-                TabGroup tabGroup = Survey.getFirstTabGroup(event.getProgramId());
-                if(tabGroup==null){
-                    org.eyeseetea.malariacare.database.model.Program program=org.eyeseetea.malariacare.database.model.Program.getProgram(event.getProgramId());
-                    tabGroup = new TabGroup(program.getName(),program);
-                    tabGroup.save();
-                }
-                survey.setTabGroup(tabGroup.getId_tab_group());
-                Log.d(TAG, "The fake "+tabGroup.getName()+" tabgroup was saved as survey tabgroup");
-            }catch (NullPointerException e) {
-                Log.d(TAG, "Error saving fake tabgroup at Event Survey: "+survey.getEventUid());
-            }
-        }
-        if(survey.getTabGroup()==null){
-            Log.d(TAG,"The tabgroup wasn't saved at the event:"+event.getUid());
+        try {
+            tabGroupBuilder.saveSurveyTabGroup(survey);
+        }catch (NullPointerException e){
+            e.printStackTrace();
         }
         survey.save();
 
@@ -466,7 +435,7 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
 
         ProgramStageDataElement programStageDataElement = DataElementExtended.findProgramStageDataElementByDataElementUID(dataElement.getUid());
         appQuestion.setCompulsory(programStageDataElement.getCompulsory());
-        appQuestion.setHeader(questionBuilder.saveHeader(dataElementExtended));
+        appQuestion.setHeader(questionBuilder.saveHeader(dataElementExtended,tabGroupBuilder));
         questionBuilder.registerParentChildRelations(dataElementExtended);
         appQuestion.save();
         questionBuilder.add(appQuestion);
@@ -519,7 +488,7 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
 
         compositeScoreBuilder.add(compositeScore);
 
-        QuestionBuilder.saveTabGroup(sdkDataElementExtended);
+        tabGroupBuilder.saveTabGroup(sdkDataElementExtended);
 
         return compositeScore;
     }

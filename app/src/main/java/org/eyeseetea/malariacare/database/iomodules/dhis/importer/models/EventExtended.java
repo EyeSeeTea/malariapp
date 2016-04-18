@@ -210,7 +210,7 @@ public class EventExtended implements VisitableFromSDK {
     public static Event getEvent(String eventUid){
         return new Select()
                 .from(Event.class)
-                .where(Condition.column(Event$Table.ID).eq(eventUid))
+                .where(Condition.column(Event$Table.EVENT).eq(eventUid))
                 .querySingle();
     }
 
