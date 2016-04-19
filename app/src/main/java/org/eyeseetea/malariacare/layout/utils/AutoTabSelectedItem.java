@@ -36,7 +36,7 @@ public class AutoTabSelectedItem {
     private AutoTabInVisibilityState inVisibilityState;
     private Question question;
     private Option option;
-    private AutoTabLayoutUtils.ViewHolder viewHolder;
+    private AutoTabViewHolder viewHolder;
 
     /**
      * Public constructor that gets the info that remains the same between different 'click' events
@@ -56,7 +56,7 @@ public class AutoTabSelectedItem {
      * @param viewHolder
      * @return
      */
-    public AutoTabSelectedItem buildSelectedItem(Question question, Option option, AutoTabLayoutUtils.ViewHolder viewHolder){
+    public AutoTabSelectedItem buildSelectedItem(Question question, Option option, AutoTabViewHolder viewHolder){
         AutoTabSelectedItem autoTabSelectedItem = new AutoTabSelectedItem(autoTabAdapter,inVisibilityState);
         autoTabSelectedItem.question = question;
         autoTabSelectedItem.option = option;
@@ -76,7 +76,7 @@ public class AutoTabSelectedItem {
         return option;
     }
 
-    public AutoTabLayoutUtils.ViewHolder getViewHolder() {
+    public AutoTabViewHolder getViewHolder() {
         return viewHolder;
     }
 

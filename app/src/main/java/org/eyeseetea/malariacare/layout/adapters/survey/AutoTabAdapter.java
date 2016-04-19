@@ -50,6 +50,7 @@ import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.layout.utils.AutoTabInVisibilityState;
 import org.eyeseetea.malariacare.layout.utils.AutoTabLayoutUtils;
 import org.eyeseetea.malariacare.layout.utils.AutoTabSelectedItem;
+import org.eyeseetea.malariacare.layout.utils.AutoTabViewHolder;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 import org.eyeseetea.malariacare.layout.utils.QuestionRow;
 import org.eyeseetea.malariacare.utils.Constants;
@@ -203,7 +204,7 @@ public class AutoTabAdapter extends ATabAdapter {
 
         final Object item = getItem(position);
         Question question;
-        AutoTabLayoutUtils.ViewHolder viewHolder = new AutoTabLayoutUtils.ViewHolder();
+        AutoTabViewHolder viewHolder = new AutoTabViewHolder();
 
         if (item instanceof Question) {
             question = (Question) item;
@@ -231,7 +232,7 @@ public class AutoTabAdapter extends ATabAdapter {
         return rowView;
     }
 
-    private View getRowView(int position,ViewGroup parent,QuestionRow questionRow, AutoTabLayoutUtils.ViewHolder viewHolder){
+    private View getRowView(int position,ViewGroup parent,QuestionRow questionRow, AutoTabViewHolder viewHolder){
         View rowView = getInflater().inflate(R.layout.question_row,parent,false);
         if(questionRow.isCustomTabTableHeader()){
             getViewTableHeader((LinearLayout) rowView, questionRow);
@@ -242,7 +243,7 @@ public class AutoTabAdapter extends ATabAdapter {
         return  rowView;
     }
 
-    private View getView(int position, ViewGroup parent, View rowView, Question question, AutoTabLayoutUtils.ViewHolder viewHolder) {
+    private View getView(int position, ViewGroup parent, View rowView, Question question, AutoTabViewHolder viewHolder) {
         //FIXME This should be moved into its own class (Ex: ViewHolderFactory.getView(item))
         switch (question.getOutput()) {
 
@@ -324,7 +325,7 @@ public class AutoTabAdapter extends ATabAdapter {
         return row;
     }
 
-    private View getViewTableContent(LinearLayout row,QuestionRow questionRow, AutoTabLayoutUtils.ViewHolder viewHolder){
+    private View getViewTableContent(LinearLayout row,QuestionRow questionRow, AutoTabViewHolder viewHolder){
         row.setWeightSum(1f);
         float columnWeight=questionRow.sizeColumns()/1f;
         for(Question question:questionRow.getQuestions()){
@@ -357,19 +358,19 @@ public class AutoTabAdapter extends ATabAdapter {
                     break;
                 case Constants.DROPDOWN_LIST:
                     spinner = addSpinnerViewToRow(row,question,columnWeight);
-                    spinner.setOnItemSelectedListener(new SpinnerListener(question, new AutoTabLayoutUtils.ViewHolder(spinner)));
+                    spinner.setOnItemSelectedListener(new SpinnerListener(question, new AutoTabViewHolder(spinner)));
                     viewHolder.addColumnComponent(spinner);
                     break;
                 case Constants.DROPDOWN_LIST_DISABLED:
                     spinner = addSpinnerViewToRow(row,question,columnWeight);
-                    spinner.setOnItemSelectedListener(new SpinnerListener(question, new AutoTabLayoutUtils.ViewHolder(spinner)));
-                    AutoTabLayoutUtils.autoFillAnswer(new AutoTabLayoutUtils.ViewHolder(spinner), question, getContext(), inVisibilityState, this);
+                    spinner.setOnItemSelectedListener(new SpinnerListener(question, new AutoTabViewHolder(spinner)));
+                    AutoTabLayoutUtils.autoFillAnswer(new AutoTabViewHolder(spinner), question, getContext(), inVisibilityState, this);
                     viewHolder.addColumnComponent(spinner);
                     break;
                 case Constants.RADIO_GROUP_HORIZONTAL:
                 case Constants.RADIO_GROUP_VERTICAL:
                     RadioGroup radioGroup = addRadioGroupViewToRow(row,question,columnWeight);
-                    radioGroup.setOnCheckedChangeListener(new RadioGroupListener(question, new AutoTabLayoutUtils.ViewHolder(radioGroup)));
+                    radioGroup.setOnCheckedChangeListener(new RadioGroupListener(question, new AutoTabViewHolder(radioGroup)));
                     viewHolder.addColumnComponent(radioGroup);
                     break;
                 case Constants.SWITCH_BUTTON:
@@ -443,7 +444,7 @@ public class AutoTabAdapter extends ATabAdapter {
         rowLayout.addView(radioGroup);
 
         int radioGroupOrientation=question.getOutput()==Constants.RADIO_GROUP_VERTICAL?LinearLayout.VERTICAL:LinearLayout.HORIZONTAL;
-        AutoTabLayoutUtils.createRadioGroupComponent(question, new AutoTabLayoutUtils.ViewHolder(radioGroup), radioGroupOrientation, getInflater(), getContext());
+        AutoTabLayoutUtils.createRadioGroupComponent(question, new AutoTabViewHolder(radioGroup), radioGroupOrientation, getInflater(), getContext());
 
         return radioGroup;
     }
@@ -455,7 +456,7 @@ public class AutoTabAdapter extends ATabAdapter {
         return switchButton;
     }
 
-    public void setValues(AutoTabLayoutUtils.ViewHolder viewHolder, QuestionRow questionRow) {
+    public void setValues(AutoTabViewHolder viewHolder, QuestionRow questionRow) {
         for(int i=0;i<questionRow.sizeColumns();i++){
             View component = viewHolder.getColumnComponent(i);
             Question question = questionRow.getQuestions().get(i);
@@ -467,10 +468,10 @@ public class AutoTabAdapter extends ATabAdapter {
         if(component==null || question==null){
             return;
         }
-        setValues(new AutoTabLayoutUtils.ViewHolder(component),question);
+        setValues(new AutoTabViewHolder(component),question);
     }
 
-    public void setValues(AutoTabLayoutUtils.ViewHolder viewHolder, Question question) {
+    public void setValues(AutoTabViewHolder viewHolder, Question question) {
         if(viewHolder==null || question==null){
             return;
         }
@@ -591,10 +592,10 @@ public class AutoTabAdapter extends ATabAdapter {
     private class SpinnerListener implements AdapterView.OnItemSelectedListener {
 
         private boolean viewCreated;
-        private AutoTabLayoutUtils.ViewHolder viewHolder;
+        private AutoTabViewHolder viewHolder;
         private Question question;
 
-        public SpinnerListener(Question question, AutoTabLayoutUtils.ViewHolder viewHolder) {
+        public SpinnerListener(Question question, AutoTabViewHolder viewHolder) {
             this.viewCreated = false;
             this.question = question;
             this.viewHolder = viewHolder;
@@ -619,10 +620,10 @@ public class AutoTabAdapter extends ATabAdapter {
     }
 
     public class RadioGroupListener implements RadioGroup.OnCheckedChangeListener {
-        private AutoTabLayoutUtils.ViewHolder viewHolder;
+        private AutoTabViewHolder viewHolder;
         private Question question;
 
-        public RadioGroupListener(Question question, AutoTabLayoutUtils.ViewHolder viewHolder) {
+        public RadioGroupListener(Question question, AutoTabViewHolder viewHolder) {
             this.question = question;
             this.viewHolder = viewHolder;
         }
@@ -645,10 +646,10 @@ public class AutoTabAdapter extends ATabAdapter {
 
     public class SwitchButtonListener implements CompoundButton.OnCheckedChangeListener{
 
-        private AutoTabLayoutUtils.ViewHolder viewHolder;
+        private AutoTabViewHolder viewHolder;
         private Question question;
 
-        public SwitchButtonListener(Question question, AutoTabLayoutUtils.ViewHolder viewHolder) {
+        public SwitchButtonListener(Question question, AutoTabViewHolder viewHolder) {
             this.question = question;
             this.viewHolder = viewHolder;
         }
