@@ -422,7 +422,7 @@ public class Question extends BaseModel {
             }
 
             //Select question from questionrelation where operator=1 and id_match in (..)
-            return new Select().from(Question.class).as("q")
+            this.children=new Select().from(Question.class).as("q")
                     //Question + QuestioRelation
                     .join(QuestionRelation.class, Join.JoinType.LEFT).as("qr")
                     .on(Condition.column(ColumnAlias.columnWithTable("q", Question$Table.ID_QUESTION))
