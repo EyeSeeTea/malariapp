@@ -21,6 +21,10 @@ package org.eyeseetea.malariacare.layout.utils;
 
 import org.eyeseetea.malariacare.database.model.Header;
 import org.eyeseetea.malariacare.database.model.Question;
+import org.eyeseetea.malariacare.database.model.Survey;
+import org.eyeseetea.malariacare.database.utils.ReadWriteDB;
+import org.eyeseetea.malariacare.database.utils.Session;
+import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -82,6 +86,11 @@ public class AutoTabInVisibilityState {
         elementInvisibility.put(header, headerVisibility && elementInvisibility.get(questionRow));
     }
 
+    /**
+     * Updates header visibility according to current visibility of its questions.
+     * @param header
+     * @return true: Visible | false: Invisible
+     */
     public void updateHeaderVisibility(Header header){
         elementInvisibility.put(header, hasToHideHeader(header));
     }
@@ -117,6 +126,47 @@ public class AutoTabInVisibilityState {
             }
         }
         return true;
+    }
+
+    /**
+     * Given a question, make visible or invisible their children. In case all children in a header
+     * became invisible, that header is also hidden
+     */
+    public void toggleChildrenVisibility(AutoTabSelectedItem autoTabSelectedItem) {
+        Question question = autoTabSelectedItem.getQuestion();
+
+        List<Question> children = question.getChildren();
+        Survey survey= Session.getSurvey();
+        boolean visible;
+
+        for (Question childQuestion : children) {
+            Header childHeader = childQuestion.getHeader();
+            visible=!childQuestion.isHiddenBySurvey(survey);
+            this.updateVisibility(childQuestion,visible);
+
+            //Show child -> Show header, Update scores
+            if(visible){
+                Float denum = ScoreRegister.calcDenum(childQuestion);
+                ScoreRegister.addRecord(childQuestion, 0F, denum);
+                this.setInvisible(childHeader,false);
+                continue;
+            }
+
+            //Hide child ...
+            //-> Remove value
+            ReadWriteDB.deleteValue(childQuestion);
+
+            //-> Remove score
+            if (ScoreRegister.getNumDenum(childQuestion) != null) {
+                ScoreRegister.deleteRecord(childQuestion);
+            }
+            //-> Check header visibility (no header,done)
+            if(childHeader==null){
+                continue;
+            }
+            //-> Check header visibility
+            this.updateHeaderVisibility(childHeader);
+        }
     }
 
 }

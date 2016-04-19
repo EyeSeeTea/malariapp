@@ -182,16 +182,6 @@ public class AutoTabLayoutUtils {
         }
     }
 
-    /**
-     * Static class just to get the answer about the children deletion inside a listener
-     */
-    public static class QuestionVisibility{
-        public static Question question;
-        public static AutoTabInVisibilityState inVisibilityState;
-        public static AutoTabAdapter adapter;
-        public static Option option;
-    }
-
     //Store the views references for each view in the footer
     public static class ScoreHolder {
         public CustomTextView subtotalscore;
@@ -382,60 +372,59 @@ public class AutoTabLayoutUtils {
         return Booleans.countTrue(Booleans.toArray(elementInvisibility.values()));
     }
 
-    public static boolean autoFillAnswer(AutoTabLayoutUtils.ViewHolder viewHolder, AutoTabLayoutUtils.ScoreHolder scoreHolder, Question question, float totalNum, float totalDenum, Context context, AutoTabInVisibilityState inVisibilityState, AutoTabAdapter adapter) {
+    public static void autoFillAnswer(AutoTabLayoutUtils.ViewHolder viewHolder, Question question, Context context, AutoTabInVisibilityState inVisibilityState, AutoTabAdapter adapter) {
         //FIXME Yes|No are 'hardcoded' here by using options 0|1
-        int option=question.isTriggered(Session.getSurvey())?0:1;
+        int optionPosition=question.isTriggered(Session.getSurvey())?0:1;
 
-        //Select option according to trigger
-        return itemSelected(viewHolder, scoreHolder, question, question.getAnswer().getOptions().get(option), totalNum, totalDenum, context, inVisibilityState, adapter);
+        //Build selected item
+        Option option=question.getAnswer().getOptions().get(optionPosition);
+        AutoTabSelectedItem autoTabSelectedItem = new AutoTabSelectedItem(adapter,inVisibilityState).buildSelectedItem(question,option,viewHolder);
+
+        //Select that item to force related switch
+        itemSelected(autoTabSelectedItem);
     }
 
     /**
      * Do the logic after a DDL option change
-     * @param viewHolder private class that acts like a cache to quickly access the different views
-     * @param question the question that changes his value
-     * @param option the option that has been selected
+     * @param autoTabSelectedItem
      */
-    public static boolean itemSelected(final AutoTabLayoutUtils.ViewHolder viewHolder, AutoTabLayoutUtils.ScoreHolder scoreHolder, Question question, Option option, float totalNum, float totalDenum, Context context, AutoTabInVisibilityState inVisibilityState, final AutoTabAdapter adapter) {
-        boolean refreshTab = false;
+    public static void itemSelected(final AutoTabSelectedItem autoTabSelectedItem) {
 
+        Question question = autoTabSelectedItem.getQuestion();
+        Option option = autoTabSelectedItem.getOption();
+        Context context = autoTabSelectedItem.getContext();
+        final ViewHolder viewHolder = autoTabSelectedItem.getViewHolder();
+
+        //No children -> Save, check scores, done.
         if (!question.hasChildren()) {
             // Write option to DB
             ReadWriteDB.saveValuesDDL(question, option);
             recalculateScores(viewHolder, question);
+            return;
         }
 
-        // If parent relation found, toggle Children Spinner Visibility
-        // If question has question-option, refresh the tab
-        if (question.hasChildren() || question.hasQuestionOption()){
-            if (question.hasChildren()) {
-                QuestionVisibility.question = question;
-                QuestionVisibility.inVisibilityState = inVisibilityState;
-                QuestionVisibility.adapter = adapter;
-                QuestionVisibility.option = option;
+        //Children -> Save, Expand|Collapse, Notify, ..
 
-                if (isRemovingValuesFromChildren(question)) {
-                    new AlertDialog.Builder(context)
-                            .setTitle(null)
-                            .setMessage(context.getString(R.string.dialog_deleting_children))
-                            .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface arg0, int arg1) {
-                                    saveAndExpandChildren(viewHolder);
-                                }
-                            })
-                            .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int which) {
-                                    adapter.notifyDataSetChanged();
-                                }
-                            }).create().show();
-                } else{
-                    saveAndExpandChildren(viewHolder);
-                }
-            }
-            refreshTab = true;
+        //No children answers will be deleted -> Save, Expand|Collapse
+        if (!isRemovingValuesFromChildren(question)) {
+            saveAndExpandChildren(autoTabSelectedItem);
+            return;
         }
 
-        return refreshTab;
+        //Children answers will be deleted -> Confirm -> Save, Expand|Collapse
+        new AlertDialog.Builder(context)
+                .setTitle(null)
+                .setMessage(context.getString(R.string.dialog_deleting_children))
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface arg0, int arg1) {
+                        saveAndExpandChildren(autoTabSelectedItem);
+                    }
+                })
+                .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        autoTabSelectedItem.notifyDataSetChanged();
+                    }
+                }).create().show();
     }
 
     /**
@@ -452,12 +441,15 @@ public class AutoTabLayoutUtils {
         return false;
     }
 
-    public static void saveAndExpandChildren(ViewHolder viewHolder){
-        // Write option to DB
-        ReadWriteDB.saveValuesDDL(QuestionVisibility.question, QuestionVisibility.option);
-        recalculateScores(viewHolder, QuestionVisibility.question);
-        toggleChildrenVisibility();
-        QuestionVisibility.adapter.notifyDataSetChanged();
+    public static void saveAndExpandChildren(AutoTabSelectedItem autoTabSelectedItem){
+        //Save value
+        ReadWriteDB.saveValuesDDL(autoTabSelectedItem.getQuestion(), autoTabSelectedItem.getOption());
+        //Recalculate score
+        recalculateScores(autoTabSelectedItem.getViewHolder(), autoTabSelectedItem.getQuestion());
+        //Toggle children
+        autoTabSelectedItem.toggleChildrenVisibility();
+        //Notify adapter
+        autoTabSelectedItem.notifyDataSetChanged();
     }
 
     /**
@@ -475,40 +467,46 @@ public class AutoTabLayoutUtils {
         ScoreRegister.addRecord(question, num, denum);
     }
 
-    /**
-     * Given a question, make visible or invisible their children. In case all children in a header
-     * became invisible, that header is also hidden
-     */
-    private static void toggleChildrenVisibility() {
-        Question question = QuestionVisibility.question;
-        AutoTabInVisibilityState inVisibilityState = QuestionVisibility.inVisibilityState;
-        List<Question> children = question.getChildren();
-        Question cachedQuestion = null;
-        Survey survey=Session.getSurvey();
-        boolean visible;
-
-        for (Question childQuestion : children) {
-            Header childHeader = childQuestion.getHeader();
-            visible=!childQuestion.isHiddenBySurvey(survey);
-            inVisibilityState.updateVisibility(childQuestion,visible);
-            if (!visible) {
-                List<Float> numdenum = ScoreRegister.getNumDenum(childQuestion);
-                if (numdenum != null) {
-                    ScoreRegister.deleteRecord(childQuestion);
-                }
-                ReadWriteDB.deleteValue(childQuestion); // when we hide a question, we remove its value
-                // little cache to avoid double checking same
-                if(cachedQuestion == null || (cachedQuestion.getHeader().getId_header() != childQuestion.getHeader().getId_header())) {
-                    inVisibilityState.updateHeaderVisibility(childHeader);
-                }
-            } else {
-                Float denum = ScoreRegister.calcDenum(childQuestion);
-                ScoreRegister.addRecord(childQuestion, 0F, denum);
-                inVisibilityState.setInvisible(childHeader,false);
-            }
-            cachedQuestion = question;
-        }
-    }
+//    /**
+//     * Given a question, make visible or invisible their children. In case all children in a header
+//     * became invisible, that header is also hidden
+//     */
+//    private static void toggleChildrenVisibility(AutoTabSelectedItem autoTabSelectedItem) {
+//        Question question = autoTabSelectedItem.getQuestion();
+//        AutoTabInVisibilityState inVisibilityState = autoTabSelectedItem.getInVisibilityState();
+//        List<Question> children = question.getChildren();
+//        Long idLastHeader = null;
+//        Survey survey=Session.getSurvey();
+//        boolean visible;
+//
+//        for (Question childQuestion : children) {
+//            Header childHeader = childQuestion.getHeader();
+//            visible=!childQuestion.isHiddenBySurvey(survey);
+//            inVisibilityState.updateVisibility(childQuestion,visible);
+//
+//            //Show child -> Show header, Update scores
+//            if(visible){
+//                Float denum = ScoreRegister.calcDenum(childQuestion);
+//                ScoreRegister.addRecord(childQuestion, 0F, denum);
+//                inVisibilityState.setInvisible(childHeader,false);
+//                continue;
+//            }
+//
+//            //Hide child ...
+//            //-> Remove value
+//            ReadWriteDB.deleteValue(childQuestion);
+//
+//            //-> Remove score
+//            if (ScoreRegister.getNumDenum(childQuestion) != null) {
+//                ScoreRegister.deleteRecord(childQuestion);
+//            }
+//            //-> Check header visibility
+//            if(childHeader!=null &&(idLastHeader== null || !idLastHeader.equals(childHeader.getId_header()))){
+//                idLastHeader = childHeader.getId_header();
+//                inVisibilityState.updateHeaderVisibility(childHeader);
+//            }
+//        }
+//    }
 
     public static void initScoreQuestion(Question question) {
 
