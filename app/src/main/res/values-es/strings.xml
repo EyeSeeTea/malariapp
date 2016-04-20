@@ -298,4 +298,8 @@
     <string name="modify">Modificar</string>
     <string name="create_or_modify">¿Desea crear o modificar la encuesta con fecha %s?</string>
     <string name="loading_last_surveys">Cargando última encuesta...</string>
+
+    <!-- Last survey -->
+    <string name="no_previous_event_info">Sin eventos anteriores disponibles</string>
+
 </resources>

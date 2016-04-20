@@ -70,10 +70,16 @@ public class DashboardController {
      */
     String currentTabTitle ="";
 
+    /**
+     * Flag that tells if moving forwards or backwards
+     */
+    boolean navigatingBackwards;
+
 
     public DashboardController(DashboardSettings dashboardSettings){
         this.dashboardSettings = dashboardSettings;
         this.modules = new ArrayList<>();
+        this.navigatingBackwards =false;
     }
 
     public DashboardOrientation getOrientation(){
@@ -87,6 +93,14 @@ public class DashboardController {
     public  void addModule(ModuleController module){
         module.setDashboardController(this);
         modules.add(module);
+    }
+
+    public boolean isNavigatingBackwards(){
+        return this.navigatingBackwards;
+    }
+
+    public void setNavigatingBackwards(boolean backwards){
+        this.navigatingBackwards=backwards;
     }
 
     /**
@@ -211,9 +225,10 @@ public class DashboardController {
      * Just to avoid trying to navigate back from the dashboard. There's no parent activity here
      */
     public void onBackPressed() {
+        navigatingBackwards =true;
         ModuleController moduleController = getCurrentModule();
-
         moduleController.onBackPressed();
+        navigatingBackwards =false;
     }
 
     /**

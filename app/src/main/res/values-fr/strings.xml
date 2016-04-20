@@ -298,4 +298,7 @@
     <string name="create_or_modify">"Voulez-vous créer ou modifier l'enquête avec les dates %s ?"</string>
     <string name="loading_last_surveys">"Dernière enquête de chargement..."</string>
 
+    <!-- Last survey -->
+    <string name="no_previous_event_info">"Aucun événement précédent disponible"</string>
+
 </resources>

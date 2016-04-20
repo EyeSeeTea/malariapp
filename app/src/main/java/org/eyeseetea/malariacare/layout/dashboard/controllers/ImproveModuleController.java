@@ -19,19 +19,15 @@
 
 package org.eyeseetea.malariacare.layout.dashboard.controllers;
 
-import android.app.FragmentTransaction;
 import android.view.View;
 import android.widget.LinearLayout;
 
 import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.model.Survey;
-import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.fragments.DashboardSentFragment;
-import org.eyeseetea.malariacare.fragments.DashboardUnsentFragment;
 import org.eyeseetea.malariacare.fragments.FeedbackFragment;
-import org.eyeseetea.malariacare.fragments.SurveyFragment;
 import org.eyeseetea.malariacare.layout.dashboard.config.DashboardOrientation;
 import org.eyeseetea.malariacare.layout.dashboard.config.ModuleSettings;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
