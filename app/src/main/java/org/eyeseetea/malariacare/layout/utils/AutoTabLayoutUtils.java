@@ -22,7 +22,6 @@ package org.eyeseetea.malariacare.layout.utils;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.os.Build;
 import android.text.Html;
 import android.text.Spanned;
 import android.view.LayoutInflater;
@@ -32,16 +31,13 @@ import android.widget.LinearLayout;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
-import android.widget.Switch;
 
 import com.google.common.primitives.Booleans;
 import com.raizlabs.android.dbflow.structure.BaseModel;
 
 import org.eyeseetea.malariacare.R;
-import org.eyeseetea.malariacare.database.model.Header;
 import org.eyeseetea.malariacare.database.model.Option;
 import org.eyeseetea.malariacare.database.model.Question;
-import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.ReadWriteDB;
 import org.eyeseetea.malariacare.database.utils.Session;
@@ -49,7 +45,6 @@ import org.eyeseetea.malariacare.layout.adapters.general.OptionArrayAdapter;
 import org.eyeseetea.malariacare.layout.adapters.survey.AutoTabAdapter;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.utils.Constants;
-import org.eyeseetea.malariacare.views.CustomEditText;
 import org.eyeseetea.malariacare.views.CustomRadioButton;
 import org.eyeseetea.malariacare.views.CustomTextView;
 
@@ -65,133 +60,6 @@ public class AutoTabLayoutUtils {
 
     private static final String TAG = ".ATLayoutUtils";
 
-    //Store the Views references for each row (to avoid many calls to getViewById)
-    public static class ViewHolder {
-        //Label
-        public CustomTextView statement;
-
-        // Main component in the row: Spinner, EditText or RadioGroup
-        public View component;
-
-        private List<View> columnComponents;
-
-        public CustomTextView num;
-        public CustomTextView denum;
-
-        public ViewHolder(){
-            columnComponents = new ArrayList<>();
-        }
-
-        public ViewHolder(View component){
-            this();
-            this.component=component;
-        }
-
-        public void addColumnComponent(View component){
-            this.columnComponents.add(component);
-        }
-
-        public View getColumnComponent(int position){
-            if(position > (this.columnComponents.size()-1)){
-                return null;
-            }
-
-            return this.columnComponents.get(position);
-        }
-
-        /**
-         * Fixes a bug in older apis where a RadioGroup cannot find its children by id
-         * @param id
-         * @return
-         */
-        public CustomRadioButton findRadioButtonById(int id){
-            //No component -> done
-            if (component==null || ! (component instanceof RadioGroup)){
-                return null;
-            }
-
-            //Modern api -> delegate in its method
-            if(Build.VERSION.SDK_INT > Build.VERSION_CODES.JELLY_BEAN){
-                return (CustomRadioButton)component.findViewById(id);
-            }
-
-            //Find button manually
-            for(int i=0;i<((RadioGroup) component).getChildCount();i++){
-                View button=((RadioGroup) component).getChildAt(i);
-                if(button.getId()==id){
-                    return (CustomRadioButton) button;
-                }
-            }
-            return null;
-        }
-
-
-        public void setText(String text){
-            if(component==null || !(component instanceof CustomEditText)){
-                return;
-            }
-
-            ((CustomEditText)component).setText(text);
-        }
-
-        public void setNumText(String text){
-            if(num==null){
-                return;
-            }
-
-            num.setText(text);
-        }
-
-        public void setDenumText(String text){
-            if(denum==null){
-                return;
-            }
-            denum.setText(text);
-        }
-
-        public void setSpinnerSelection(int position){
-            if(component==null || !(component instanceof Spinner)){
-                return;
-            }
-
-            ((Spinner) component).setSelection(position);
-        }
-
-        public void setRadioChecked(Option option){
-            if(component==null || !(component instanceof RadioGroup)){
-                return;
-            }
-            ((CustomRadioButton) component.findViewWithTag(option)).setChecked(true);
-        }
-
-        public void setSwitchOption(Option option) {
-            if(component==null || !(component instanceof Switch)){
-                return;
-            }
-
-            boolean isChecked=false;
-            String switchText ="";
-            if(option!=null){
-                isChecked = Boolean.valueOf(option.getCode());
-                switchText = option.getName();
-            }
-
-            Switch switchButton = (Switch)component;
-            switchButton.setChecked(isChecked);
-            switchButton.setText(switchText);
-        }
-    }
-
-    /**
-     * Static class just to get the answer about the children deletion inside a listener
-     */
-    public static class QuestionVisibility{
-        public static Question question;
-        public static AutoTabInVisibilityState inVisibilityState;
-        public static AutoTabAdapter adapter;
-        public static Option option;
-    }
-
     //Store the views references for each view in the footer
     public static class ScoreHolder {
         public CustomTextView subtotalscore;
@@ -201,7 +69,7 @@ public class AutoTabLayoutUtils {
         public CustomTextView qualitativeScore;
     }
 
-    public static void updateReadOnly(ViewHolder viewHolder,QuestionRow questionRow, boolean readonly){
+    public static void updateReadOnly(AutoTabViewHolder viewHolder, QuestionRow questionRow, boolean readonly){
         if(viewHolder==null || questionRow==null){
             return;
         }
@@ -239,60 +107,7 @@ public class AutoTabLayoutUtils {
         }
     }
 
-    /**
-     * Checks if given question should be hidden according to the current survey or not.
-     * @param question
-     * @return
-     */
-    public static boolean isHidden(Question question) {
-        return question.isHiddenBySurvey(Session.getSurvey());
-    }
-
-    /**
-     * A question row is hidden if the first question is hidden
-     * @param questionRow
-     * @return
-     */
-    public static boolean isHidden(QuestionRow questionRow){
-        if(questionRow==null || questionRow.sizeColumns()==0){
-            return true;
-        }
-
-        Question question = questionRow.getFirstQuestion();
-
-        return isHidden(question);
-    }
-
-    /**
-     * Given a desired position (that means, the position shown in the screen) of an element, get the
-     * real position (that means, the position in the stored items list taking into account the hidden
-     * elements)
-     * @param position
-     * @return the real position in the elements list
-     */
-    public static int getRealPosition(int position, LinkedHashMap<Object, Boolean> elementInvisibility, List<? extends BaseModel> items){
-        int hElements = getHiddenCountUpTo(position, elementInvisibility);
-        int diff = 0;
-
-        for (int i = 0; i < hElements; i++) {
-            diff++;
-            if (elementInvisibility.get(items.get(position + diff))) i--;
-        }
-        return (position + diff);
-    }
-
-    /**
-     * Get the number of elements that are hidden until a given position
-     * @param position
-     * @return number of elements hidden (true in elementInvisibility Map)
-     */
-    private static int getHiddenCountUpTo(int position, LinkedHashMap<Object, Boolean> elementInvisibility) {
-        boolean [] upper = Arrays.copyOfRange(Booleans.toArray(elementInvisibility.values()), 0, position + 1);
-        int hiddens = Booleans.countTrue(upper);
-        return hiddens;
-    }
-
-    public static View initialiseDropDown(int position, ViewGroup parent, Question question, ViewHolder viewHolder, LayoutInflater lInflater, Context context) {
+    public static View initialiseDropDown(int position, ViewGroup parent, Question question, AutoTabViewHolder viewHolder, LayoutInflater lInflater, Context context) {
         View rowView;
         rowView = initialiseView(R.layout.ddl, parent, question, viewHolder, position, lInflater);
 
@@ -306,7 +121,7 @@ public class AutoTabLayoutUtils {
         return rowView;
     }
 
-    public static View initialiseView(int resource, ViewGroup parent, Question question, ViewHolder viewHolder, int position, LayoutInflater lInflater) {
+    public static View initialiseView(int resource, ViewGroup parent, Question question, AutoTabViewHolder viewHolder, int position, LayoutInflater lInflater) {
         View rowView = lInflater.inflate(resource, parent, false);
         if (question.hasChildren())
             rowView.setBackgroundResource(R.drawable.background_parent);
@@ -328,7 +143,7 @@ public class AutoTabLayoutUtils {
         return rowView;
     }
 
-    public static void initialiseScorableComponent(View rowView, ViewHolder viewHolder) {
+    public static void initialiseScorableComponent(View rowView, AutoTabViewHolder viewHolder) {
         // In case the option is selected, we will need to show num/dems
         viewHolder.num = (CustomTextView) rowView.findViewById(R.id.num);
         viewHolder.denum = (CustomTextView) rowView.findViewById(R.id.den);
@@ -336,7 +151,7 @@ public class AutoTabLayoutUtils {
         configureViewByPreference(viewHolder);
     }
 
-    public static void createRadioGroupComponent(Question question, ViewHolder viewHolder, int orientation, LayoutInflater lInflater, Context context) {
+    public static void createRadioGroupComponent(Question question, AutoTabViewHolder viewHolder, int orientation, LayoutInflater lInflater, Context context) {
         ((RadioGroup) viewHolder.component).setOrientation(orientation);
 
         for (Option option : question.getAnswer().getOptions()) {
@@ -352,7 +167,7 @@ public class AutoTabLayoutUtils {
      *
      * @param viewHolder view that holds the component to be more efficient
      */
-    private static void configureViewByPreference(AutoTabLayoutUtils.ViewHolder viewHolder) {
+    private static void configureViewByPreference(AutoTabViewHolder viewHolder) {
         int visibility = View.GONE;
         float statementWeight = 0.65f;
         float componentWeight = 0.35f;
@@ -373,69 +188,59 @@ public class AutoTabLayoutUtils {
         ((RelativeLayout) viewHolder.denum.getParent()).setLayoutParams(new LinearLayout.LayoutParams(0, RelativeLayout.LayoutParams.WRAP_CONTENT, numDenWeight));
     }
 
-    /**
-     * Get the number of elements that are hidden
-     * @return number of elements hidden (true in elementInvisibility Map)
-     */
-    public static int getHiddenCount(LinkedHashMap<Object, Boolean> elementInvisibility) {
-        // using Guava library and its Booleans utility class
-        return Booleans.countTrue(Booleans.toArray(elementInvisibility.values()));
-    }
-
-    public static boolean autoFillAnswer(AutoTabLayoutUtils.ViewHolder viewHolder, AutoTabLayoutUtils.ScoreHolder scoreHolder, Question question, float totalNum, float totalDenum, Context context, AutoTabInVisibilityState inVisibilityState, AutoTabAdapter adapter) {
+    public static void autoFillAnswer(AutoTabViewHolder viewHolder, Question question, Context context, AutoTabInVisibilityState inVisibilityState, AutoTabAdapter adapter) {
         //FIXME Yes|No are 'hardcoded' here by using options 0|1
-        int option=question.isTriggered(Session.getSurvey())?0:1;
+        int optionPosition=question.isTriggered(Session.getSurvey())?0:1;
 
-        //Select option according to trigger
-        return itemSelected(viewHolder, scoreHolder, question, question.getAnswer().getOptions().get(option), totalNum, totalDenum, context, inVisibilityState, adapter);
+        //Build selected item
+        Option option=question.getAnswer().getOptions().get(optionPosition);
+        AutoTabSelectedItem autoTabSelectedItem = new AutoTabSelectedItem(adapter,inVisibilityState).buildSelectedItem(question,option,viewHolder);
+
+        //Select that item to force related switch
+        itemSelected(autoTabSelectedItem);
     }
 
     /**
      * Do the logic after a DDL option change
-     * @param viewHolder private class that acts like a cache to quickly access the different views
-     * @param question the question that changes his value
-     * @param option the option that has been selected
+     * @param autoTabSelectedItem
      */
-    public static boolean itemSelected(final AutoTabLayoutUtils.ViewHolder viewHolder, AutoTabLayoutUtils.ScoreHolder scoreHolder, Question question, Option option, float totalNum, float totalDenum, Context context, AutoTabInVisibilityState inVisibilityState, final AutoTabAdapter adapter) {
-        boolean refreshTab = false;
+    public static void itemSelected(final AutoTabSelectedItem autoTabSelectedItem) {
 
+        Question question = autoTabSelectedItem.getQuestion();
+        Option option = autoTabSelectedItem.getOption();
+        Context context = autoTabSelectedItem.getContext();
+        final AutoTabViewHolder viewHolder = autoTabSelectedItem.getViewHolder();
+
+        //No children -> Save, check scores, done.
         if (!question.hasChildren()) {
             // Write option to DB
             ReadWriteDB.saveValuesDDL(question, option);
             recalculateScores(viewHolder, question);
+            return;
         }
 
-        // If parent relation found, toggle Children Spinner Visibility
-        // If question has question-option, refresh the tab
-        if (question.hasChildren() || question.hasQuestionOption()){
-            if (question.hasChildren()) {
-                QuestionVisibility.question = question;
-                QuestionVisibility.inVisibilityState = inVisibilityState;
-                QuestionVisibility.adapter = adapter;
-                QuestionVisibility.option = option;
+        //Children -> Save, Expand|Collapse, Notify, ..
 
-                if (isRemovingValuesFromChildren(question)) {
-                    new AlertDialog.Builder(context)
-                            .setTitle(null)
-                            .setMessage(context.getString(R.string.dialog_deleting_children))
-                            .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface arg0, int arg1) {
-                                    saveAndExpandChildren(viewHolder);
-                                }
-                            })
-                            .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int which) {
-                                    adapter.notifyDataSetChanged();
-                                }
-                            }).create().show();
-                } else{
-                    saveAndExpandChildren(viewHolder);
-                }
-            }
-            refreshTab = true;
+        //No children answers will be deleted -> Save, Expand|Collapse
+        if (!isRemovingValuesFromChildren(question)) {
+            saveAndExpandChildren(autoTabSelectedItem);
+            return;
         }
 
-        return refreshTab;
+        //Children answers will be deleted -> Confirm -> Save, Expand|Collapse
+        new AlertDialog.Builder(context)
+                .setTitle(null)
+                .setMessage(context.getString(R.string.dialog_deleting_children))
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface arg0, int arg1) {
+                        saveAndExpandChildren(autoTabSelectedItem);
+                    }
+                })
+                .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        autoTabSelectedItem.notifyDataSetChanged();
+                    }
+                }).create().show();
     }
 
     /**
@@ -452,12 +257,15 @@ public class AutoTabLayoutUtils {
         return false;
     }
 
-    public static void saveAndExpandChildren(ViewHolder viewHolder){
-        // Write option to DB
-        ReadWriteDB.saveValuesDDL(QuestionVisibility.question, QuestionVisibility.option);
-        recalculateScores(viewHolder, QuestionVisibility.question);
-        toggleChildrenVisibility();
-        QuestionVisibility.adapter.notifyDataSetChanged();
+    public static void saveAndExpandChildren(AutoTabSelectedItem autoTabSelectedItem){
+        //Save value
+        ReadWriteDB.saveValuesDDL(autoTabSelectedItem.getQuestion(), autoTabSelectedItem.getOption());
+        //Recalculate score
+        recalculateScores(autoTabSelectedItem.getViewHolder(), autoTabSelectedItem.getQuestion());
+        //Toggle children
+        autoTabSelectedItem.toggleChildrenVisibility();
+        //Notify adapter
+        autoTabSelectedItem.notifyDataSetChanged();
     }
 
     /**
@@ -465,7 +273,7 @@ public class AutoTabLayoutUtils {
      * @param viewHolder views cache
      * @param question question that change its values
      */
-    private static void recalculateScores(AutoTabLayoutUtils.ViewHolder viewHolder, Question question) {
+    private static void recalculateScores(AutoTabViewHolder viewHolder, Question question) {
         Float num = ScoreRegister.calcNum(question);
         Float denum = ScoreRegister.calcDenum(question);
 
@@ -473,41 +281,6 @@ public class AutoTabLayoutUtils {
         viewHolder.setDenumText(denum.toString());
 
         ScoreRegister.addRecord(question, num, denum);
-    }
-
-    /**
-     * Given a question, make visible or invisible their children. In case all children in a header
-     * became invisible, that header is also hidden
-     */
-    private static void toggleChildrenVisibility() {
-        Question question = QuestionVisibility.question;
-        AutoTabInVisibilityState inVisibilityState = QuestionVisibility.inVisibilityState;
-        List<Question> children = question.getChildren();
-        Question cachedQuestion = null;
-        Survey survey=Session.getSurvey();
-        boolean visible;
-
-        for (Question childQuestion : children) {
-            Header childHeader = childQuestion.getHeader();
-            visible=!childQuestion.isHiddenBySurvey(survey);
-            inVisibilityState.updateVisibility(childQuestion,visible);
-            if (!visible) {
-                List<Float> numdenum = ScoreRegister.getNumDenum(childQuestion);
-                if (numdenum != null) {
-                    ScoreRegister.deleteRecord(childQuestion);
-                }
-                ReadWriteDB.deleteValue(childQuestion); // when we hide a question, we remove its value
-                // little cache to avoid double checking same
-                if(cachedQuestion == null || (cachedQuestion.getHeader().getId_header() != childQuestion.getHeader().getId_header())) {
-                    inVisibilityState.updateHeaderVisibility(childHeader);
-                }
-            } else {
-                Float denum = ScoreRegister.calcDenum(childQuestion);
-                ScoreRegister.addRecord(childQuestion, 0F, denum);
-                inVisibilityState.setInvisible(childHeader,false);
-            }
-            cachedQuestion = question;
-        }
     }
 
     public static void initScoreQuestion(Question question) {

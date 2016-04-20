@@ -19,9 +19,17 @@
 
 package org.eyeseetea.malariacare.layout.utils;
 
+import com.google.common.primitives.Booleans;
+import com.raizlabs.android.dbflow.structure.BaseModel;
+
 import org.eyeseetea.malariacare.database.model.Header;
 import org.eyeseetea.malariacare.database.model.Question;
+import org.eyeseetea.malariacare.database.model.Survey;
+import org.eyeseetea.malariacare.database.utils.ReadWriteDB;
+import org.eyeseetea.malariacare.database.utils.Session;
+import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -47,18 +55,42 @@ public class AutoTabInVisibilityState {
     }
 
     public boolean initVisibility(Question question){
-        boolean hidden = AutoTabLayoutUtils.isHidden(question);
+        boolean hidden = isHidden(question);
         elementInvisibility.put(question, hidden);
         return !hidden;
     }
 
     public boolean initVisibility(QuestionRow questionRow){
-        boolean hidden = AutoTabLayoutUtils.isHidden(questionRow);
+        boolean hidden = isHidden(questionRow);
         elementInvisibility.put(questionRow,hidden);
         for(Question question:questionRow.getQuestions()){
             rowsMap.put(question.getId_question(),questionRow);
         }
         return  !hidden;
+    }
+
+    /**
+     * Checks if given question should be hidden according to the current survey or not.
+     * @param question
+     * @return
+     */
+    public boolean isHidden(Question question) {
+        return question.isHiddenBySurvey(Session.getSurvey());
+    }
+
+    /**
+     * A question row is hidden if the first question is hidden
+     * @param questionRow
+     * @return
+     */
+    public boolean isHidden(QuestionRow questionRow){
+        if(questionRow==null || questionRow.sizeColumns()==0){
+            return true;
+        }
+
+        Question question = questionRow.getFirstQuestion();
+
+        return isHidden(question);
     }
 
     public void setInvisible(Object key, Boolean invisible){
@@ -82,6 +114,11 @@ public class AutoTabInVisibilityState {
         elementInvisibility.put(header, headerVisibility && elementInvisibility.get(questionRow));
     }
 
+    /**
+     * Updates header visibility according to current visibility of its questions.
+     * @param header
+     * @return true: Visible | false: Invisible
+     */
     public void updateHeaderVisibility(Header header){
         elementInvisibility.put(header, hasToHideHeader(header));
     }
@@ -95,13 +132,71 @@ public class AutoTabInVisibilityState {
     }
 
     public int countInvisible(){
-        return AutoTabLayoutUtils.getHiddenCount(elementInvisibility);
+        return Booleans.countTrue(Booleans.toArray(elementInvisibility.values()));
     }
 
     public int getRealPosition(int position,List items){
-        return AutoTabLayoutUtils.getRealPosition(position, elementInvisibility, items);
+        int hElements = getHiddenCountUpTo(position);
+        int diff = 0;
+
+        for (int i = 0; i < hElements; i++) {
+            diff++;
+            if (elementInvisibility.get(items.get(position + diff))) i--;
+        }
+        return (position + diff);
     }
 
+    /**
+     * Given a question, make visible or invisible their children. In case all children in a header
+     * became invisible, that header is also hidden
+     */
+    public void toggleChildrenVisibility(AutoTabSelectedItem autoTabSelectedItem) {
+        Question question = autoTabSelectedItem.getQuestion();
+
+        List<Question> children = question.getChildren();
+        Survey survey= Session.getSurvey();
+        boolean visible;
+
+        for (Question childQuestion : children) {
+            Header childHeader = childQuestion.getHeader();
+            visible=!childQuestion.isHiddenBySurvey(survey);
+            this.updateVisibility(childQuestion,visible);
+
+            //Show child -> Show header, Update scores
+            if(visible){
+                Float denum = ScoreRegister.calcDenum(childQuestion);
+                ScoreRegister.addRecord(childQuestion, 0F, denum);
+                this.setInvisible(childHeader,false);
+                continue;
+            }
+
+            //Hide child ...
+            //-> Remove value
+            ReadWriteDB.deleteValue(childQuestion);
+
+            //-> Remove score
+            if (ScoreRegister.getNumDenum(childQuestion) != null) {
+                ScoreRegister.deleteRecord(childQuestion);
+            }
+            //-> Check header visibility (no header,done)
+            if(childHeader==null){
+                continue;
+            }
+            //-> Check header visibility
+            this.updateHeaderVisibility(childHeader);
+        }
+    }
+
+
+    /**
+     * Get the number of elements that are hidden until a given position
+     * @param position
+     * @return number of elements hidden (true in elementInvisibility Map)
+     */
+    private int getHiddenCountUpTo(int position) {
+        boolean [] upper = Arrays.copyOfRange(Booleans.toArray(elementInvisibility.values()), 0, position + 1);
+        return Booleans.countTrue(upper);
+    }
     /**
      * Decide whether we need or not to hide this header (if every question inside is hidden)
      * @param header header that
@@ -118,5 +213,4 @@ public class AutoTabInVisibilityState {
         }
         return true;
     }
-
 }
