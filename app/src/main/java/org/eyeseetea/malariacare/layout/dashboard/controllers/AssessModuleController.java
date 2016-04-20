@@ -23,7 +23,6 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.text.Html;
 import android.text.Spanned;
-import android.view.View;
 
 import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.R;
@@ -37,7 +36,6 @@ import org.eyeseetea.malariacare.fragments.DashboardUnsentFragment;
 import org.eyeseetea.malariacare.fragments.SurveyFragment;
 import org.eyeseetea.malariacare.layout.dashboard.config.DashboardOrientation;
 import org.eyeseetea.malariacare.layout.dashboard.config.ModuleSettings;
-import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 import org.eyeseetea.malariacare.utils.Constants;
 import org.eyeseetea.malariacare.views.CustomTextView;
@@ -208,10 +206,12 @@ public class AssessModuleController extends ModuleController {
                 })
                 .setPositiveButton(R.string.dialog_continue_later_option, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int arg1) {
+                        dashboardController.setNavigatingBackwards(true);
                         closeSurveyFragment();
                         if (DashboardOrientation.VERTICAL.equals(dashboardController.getOrientation())) {
                             dashboardController.reloadVertical();
                         }
+                        dashboardController.setNavigatingBackwards(false);
                     }
                 }).create().show();
     }
@@ -226,7 +226,9 @@ public class AssessModuleController extends ModuleController {
             public void onClick(DialogInterface dialog, int arg1) {
                 Survey survey = Session.getSurvey();
                 survey.updateSurveyStatus();
+                dashboardController.setNavigatingBackwards(true);
                 closeSurveyFragment();
+                dashboardController.setNavigatingBackwards(false);
             }
         }).setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int arg1) {
@@ -248,10 +250,12 @@ public class AssessModuleController extends ModuleController {
                         Survey survey = Session.getSurvey();
                         survey.setCompleteSurveyState();
                         alertOnComplete(survey);
+                        dashboardController.setNavigatingBackwards(true);
                         closeSurveyFragment();
                         if(DashboardOrientation.VERTICAL.equals(dashboardController.getOrientation())){
                             dashboardController.reloadVertical();
                         }
+                        dashboardController.setNavigatingBackwards(false);
                     }
                 }).create().show();
     }

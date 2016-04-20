@@ -107,7 +107,7 @@ public abstract class ModuleController {
         return userName;
     }
 
-    public String getAppNameColorString(){
+    public String getAppNameColorString() {
         int appNameColor = dashboardActivity.getResources().getColor(R.color.appNameColor);
         return String.format("%X", appNameColor).substring(2);
     }
@@ -273,6 +273,11 @@ public abstract class ModuleController {
 
     public FragmentTransaction getFragmentTransaction() {
         FragmentTransaction ft = dashboardActivity.getFragmentManager().beginTransaction();
+        if(dashboardController.isNavigatingBackwards()) {
+            ft.setCustomAnimations(R.animator.anim_slide_in_right, R.animator.anim_slide_out_right);
+        }else {
+            ft.setCustomAnimations(R.animator.anim_slide_in_left, R.animator.anim_slide_out_left);
+        }
         ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
         return ft;
     }
