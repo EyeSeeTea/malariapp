@@ -30,6 +30,7 @@ import org.eyeseetea.malariacare.database.model.Value;
 import org.hisp.dhis.android.sdk.persistence.models.DataValue;
 import org.hisp.dhis.android.sdk.persistence.models.Event;
 import org.hisp.dhis.android.sdk.persistence.models.FailedItem;
+import org.hisp.dhis.android.sdk.persistence.preferences.DateTimeManager;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -238,6 +239,8 @@ public class PopulateDB {
                 DataValue.class,
                 FailedItem.class
         );
+        DateTimeManager.getInstance().delete();
+        Log.d(TAG,"Delete sdk db");
     }
     protected static void saveItem(Map items, BaseModel model, Integer pk){
         items.put(pk,model);
