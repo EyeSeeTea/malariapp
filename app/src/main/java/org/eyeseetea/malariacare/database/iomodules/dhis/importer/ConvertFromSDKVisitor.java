@@ -81,6 +81,7 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
      */
     CompositeScoreBuilder compositeScoreBuilder;
     QuestionBuilder questionBuilder;
+    TabGroupBuilder tabGroupBuilder;
     private final String ATTRIBUTE_PRODUCTIVITY_CODE="OUProductivity";
     private final String SDKDateFormat="yyyy-MM-dd'T'HH:mm:ss.SSSZ";
 
@@ -89,6 +90,7 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
         appMapObjects = new HashMap();
         compositeScoreBuilder = new CompositeScoreBuilder();
         questionBuilder = new QuestionBuilder();
+        tabGroupBuilder = new TabGroupBuilder();
 
         //Reload static dataElement codes
         DataElementExtended.reloadDataElementTypeCodes();
@@ -309,39 +311,11 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
             DataValueExtended dataValueExtended=new DataValueExtended(dataValue);
             dataValueExtended.accept(this);
         }
-
-        //Get tabgroup from values
-        for (Value value : survey.getValues()) {
-            try {
-                Question question = value.getQuestion();
-                Log.d(TAG, "Adding survey tabgroup: question " + question.getUid());
-                Header header = question.getHeader();
-                Log.d(TAG,"Adding survey tabgroup: header "+question.getHeader().getName());
-                Tab tab = header.getTab();
-                Log.d(TAG,"Adding survey tabgroup: tab "+header.getTab().getName());
-                TabGroup tabGroup = tab.getTabGroup();
-                if(tabGroup!=null) {
-                    Log.d(TAG, "Adding survey tabgroup: tabgrouponame" + tabGroup.getName());
-                    survey.setTabGroup(tabGroup.getId_tab_group());
-                    break;
-                }
-            } catch (NullPointerException e) {
-                Log.d(TAG,"null"+value.toString());
-                e.printStackTrace();
-            }
+        try {
+            tabGroupBuilder.saveSurveyTabGroup(survey);
+        }catch (NullPointerException e){
+            e.printStackTrace();
         }
-
-        if(survey.getTabGroup()==null){
-            try {
-                TabGroup tabGroup = Survey.getFirstTabGroup(event.getProgramId());
-                Log.d(TAG, "first tabgroup " + tabGroup.getName());
-                survey.setTabGroup(tabGroup.getId_tab_group());
-            }catch (NullPointerException e) {
-                Log.d(TAG,"null"+event.toString());
-                e.printStackTrace();
-            }
-        }
-
         survey.save();
 
         //Annotate object in map
@@ -462,7 +436,7 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
 
         ProgramStageDataElement programStageDataElement = DataElementExtended.findProgramStageDataElementByDataElementUID(dataElement.getUid());
         appQuestion.setCompulsory(programStageDataElement.getCompulsory());
-        appQuestion.setHeader(questionBuilder.saveHeader(dataElementExtended));
+        appQuestion.setHeader(questionBuilder.saveHeader(dataElementExtended,tabGroupBuilder));
         questionBuilder.registerParentChildRelations(dataElementExtended);
         appQuestion.save();
         questionBuilder.add(appQuestion);
@@ -515,7 +489,7 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
 
         compositeScoreBuilder.add(compositeScore);
 
-        QuestionBuilder.saveTabGroup(sdkDataElementExtended);
+        tabGroupBuilder.saveTabGroup(sdkDataElementExtended);
 
         return compositeScore;
     }

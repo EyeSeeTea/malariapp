@@ -34,8 +34,10 @@ import org.eyeseetea.malariacare.database.model.Program;
 import org.eyeseetea.malariacare.database.model.Question;
 import org.eyeseetea.malariacare.database.model.QuestionOption;
 import org.eyeseetea.malariacare.database.model.QuestionRelation;
+import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.model.Tab;
 import org.eyeseetea.malariacare.database.model.TabGroup;
+import org.eyeseetea.malariacare.database.model.Value;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.hisp.dhis.android.sdk.controllers.metadata.MetaDataController;
 import org.hisp.dhis.android.sdk.persistence.models.DataElement;
@@ -132,12 +134,12 @@ public class QuestionBuilder {
      * @param dataElementExtended
      * @return question header
      */
-    public Header saveHeader(DataElementExtended dataElementExtended) {
+    public Header saveHeader(DataElementExtended dataElementExtended,TabGroupBuilder tabGroupBuilder) {
         Header header = null;
         String attributeHeaderValue = dataElementExtended.getValue(DataElementExtended.ATTRIBUTE_HEADER_NAME);
         if (attributeHeaderValue != null) {
             Tab questionTab;
-            questionTab=saveTabGroup(dataElementExtended);
+            questionTab=tabGroupBuilder.saveTabGroup(dataElementExtended);
             String tabUid = dataElementExtended.findProgramStageSectionUIDByDataElementUID(dataElementExtended.getDataElement().getUid());
 
             if(!mapHeader.containsKey(tabUid+attributeHeaderValue)) {
@@ -155,8 +157,8 @@ public class QuestionBuilder {
             }
             if(questionTab==null) {
                 header=null;
+                return header;
             }
-
 
         }
         return header;
@@ -309,49 +311,4 @@ public class QuestionBuilder {
         }
     }
 
-    public static Tab saveTabGroup(DataElementExtended sdkDataElementExtended) {
-        TabGroup questionTabGroup;
-        String attributeTabGroupValue = sdkDataElementExtended.getValue(DataElementExtended.ATTRIBUTE_TABGROUP_NAME);
-        String tabUid = sdkDataElementExtended.findProgramStageSectionUIDByDataElementUID(sdkDataElementExtended.getDataElement().getUid());
-        String tabGroupUid = sdkDataElementExtended.findAttributeValuefromDataElementCode(DataElementExtended.ATTRIBUTE_TABGROUP_NAME,sdkDataElementExtended.getDataElement()).getAttributeId();
-
-
-        String attributeHeaderValue = sdkDataElementExtended.getValue(DataElementExtended.ATTRIBUTE_HEADER_NAME);
-        Tab questionTab;
-        if(ConvertFromSDKVisitor.appMapObjects.containsKey(tabUid)) {
-            questionTab = (Tab) ConvertFromSDKVisitor.appMapObjects.get(tabUid);
-        }
-        else
-            questionTab=null;
-
-        if(ConvertFromSDKVisitor.appMapObjects.containsKey(tabGroupUid+attributeTabGroupValue)) {
-            questionTabGroup = (TabGroup) ConvertFromSDKVisitor.appMapObjects.get(tabGroupUid+attributeTabGroupValue);
-        }
-        else
-            questionTabGroup=null;
-
-        if(!mapTabGroup.containsKey(tabGroupUid+attributeTabGroupValue)) {
-            TabGroup tabGroup=new TabGroup();
-            tabGroup.setName(attributeTabGroupValue);
-            Log.d(TAG, "Creating new tab from: " +sdkDataElementExtended.getDataElement().getUid());
-            String dataelementUid=sdkDataElementExtended.getDataElement().getUid();
-            org.hisp.dhis.android.sdk.persistence.models.Program programSdk= ProgramExtended.getProgramByDataElement(dataelementUid);
-            Log.d(TAG, "With programUID: " + programSdk.getUid());
-
-            Program program =Program.getProgram(programSdk.getUid());
-
-            Log.d(TAG, "With local programUId " + program.getUid());
-            tabGroup.setProgram(program.getId_program());
-            tabGroup.save();
-            questionTab.setTabGroup(tabGroup);
-            questionTab.save();
-            mapTabGroup.put(tabGroupUid + attributeTabGroupValue, tabGroup);
-        }
-        else{
-            questionTabGroup=mapTabGroup.get(tabGroupUid+attributeTabGroupValue);
-            questionTab.setTabGroup(questionTabGroup);
-            questionTab.save();
-        }
-        return questionTab;
-    }
 }

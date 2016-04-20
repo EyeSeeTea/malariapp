@@ -901,13 +901,12 @@ public class Survey extends BaseModel implements VisitableToSDK {
                 .querySingle();
     }
 
-    public static TabGroup getFirstTabGroup(String programUid) {
+    public static TabGroup getFirstTabGroup(String programId) {
         TabGroup tabGroup = new Select()
                 .from(TabGroup.class)
                 .where(Condition.column(TabGroup$Table.ID_PROGRAM)
-                        .is(programUid)).querySingle();
+                        .is(programId)).querySingle();
     return tabGroup;
-
     }
 
     @Override
