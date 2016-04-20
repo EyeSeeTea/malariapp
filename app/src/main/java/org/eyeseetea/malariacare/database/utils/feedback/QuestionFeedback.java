@@ -20,6 +20,7 @@
 package org.eyeseetea.malariacare.database.utils.feedback;
 
 import org.eyeseetea.malariacare.R;
+import org.eyeseetea.malariacare.database.model.Option;
 import org.eyeseetea.malariacare.database.model.Question;
 import org.eyeseetea.malariacare.database.model.Value;
 import org.eyeseetea.malariacare.utils.Constants;
@@ -60,7 +61,11 @@ public class QuestionFeedback implements Feedback {
         if(this.value==null || this.value.getConflict()){
             return false;
         }
-        return this.value.getOption().getFactor()==1;
+        Option option=this.value.getOption();
+        if(option==null){
+            return false;
+        }
+        return option.getFactor()==1;
     }
 
     public boolean hasConflict(){
