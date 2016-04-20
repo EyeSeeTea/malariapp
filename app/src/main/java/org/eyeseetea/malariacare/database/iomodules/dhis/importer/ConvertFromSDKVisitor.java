@@ -290,11 +290,11 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
         survey.setStatus(Constants.SURVEY_SENT);
         //Set dates
         survey.setCompletionDate(sdkEventExtended.getEventDate());
-        //This prevent a null dates, but the CreationDation and UploadedDate need be setted in dataValue visitor.
         survey.setCreationDate(sdkEventExtended.getEventDate());
         survey.setUploadDate(sdkEventExtended.getEventDate());
+        //Scheduled date == Due date
+        survey.setScheduleDate(sdkEventExtended.getDueDate());
 
-        survey.setScheduleDate(sdkEventExtended.getScheduledDate());
         //Set fks
         survey.setOrgUnit(orgUnit);
         survey.setEventUid(event.getUid());
