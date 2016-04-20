@@ -288,13 +288,14 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
         Survey survey=new Survey();
         //Any survey that comes from the pull has been sent
         survey.setStatus(Constants.SURVEY_SENT);
-        //Set dates
+        //Completiondate == Event date
         survey.setCompletionDate(sdkEventExtended.getEventDate());
+
+        //Set dates( to prevent a null value, all take the getEventDate date before datavalue visitor)
         survey.setCreationDate(sdkEventExtended.getEventDate());
         survey.setUploadDate(sdkEventExtended.getEventDate());
         //Scheduled date == Due date
         survey.setScheduleDate(sdkEventExtended.getDueDate());
-
         //Set fks
         survey.setOrgUnit(orgUnit);
         survey.setEventUid(event.getUid());

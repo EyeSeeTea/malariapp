@@ -61,40 +61,48 @@ public class PullClient {
         EventInfo eventInfo = null;
         String lastEventUid;
         Date lastUpdatedEventDate;
-        Survey lastSurvey= Survey.getLastSurvey(orgUnit.getId_org_unit(), tabGroup.getId_tab_group());
-        Date lastLocalDate = lastSurvey.getUploadDate();
-        if(lastLocalDate!=null) {
-            //https://hnqis-dev-ci.psi-mis.org/api/events?orgUnit=QS7sK8XzdQc&program=wK0958s1bdj&startDate=2016-1-01&fields=[event,eventDate]
-            String data = QueryFormatterUtils.getInstance().prepareLastEventData(orgUnit.getUid(), tabGroup.getProgram().getUid(), lastLocalDate);
-            try {
-                JSONObject lastEventsList= networkUtils.getData(data);
-                String eventuid="";
-                Date lastDate=null;
-                JSONArray jsonArrayResponse=new JSONArray(lastEventsList.getString(EVENTS_FIELD));
-                for(int i=0;i<jsonArrayResponse.length();i++) {
-                    JSONObject event = new JSONObject(jsonArrayResponse.getString(i));
-                    if(eventuid.equals("")){
-                        eventuid=event.getString("event");
-                        lastDate=EventExtended.parseDate(event.getString(DATE_FIELD),EventExtended.DHIS2_DATE_FORMAT);
-                    }
-                    else if(!event.getString(DATE_FIELD).equals("") && lastDate.before(EventExtended.parseDate(event.getString(DATE_FIELD),EventExtended.DHIS2_DATE_FORMAT))){
-                        eventuid=event.getString("event");
-                        lastDate=EventExtended.parseDate(event.getString(DATE_FIELD), EventExtended.DHIS2_DATE_FORMAT);
-                    }
-                }
-                lastEventUid=eventuid;
-                lastUpdatedEventDate=lastDate;
-                //If not have new events, it set the last event.
-                if(lastEventUid.equals("")){
-                    lastEventUid=lastSurvey.getEventUid();
-                    lastUpdatedEventDate=lastSurvey.getCompletionDate();
-                }
-                eventInfo= new EventInfo(lastEventUid,lastUpdatedEventDate);
-                //Create fake event to can path event not pulled.
-            } catch (Exception e) {
-                e.printStackTrace();
-                Log.d(TAG, "Error getting the data " + data);
+        Survey lastSurvey= Survey.getLastSurvey(orgUnit.getId_org_unit(), tabGroup.getProgram());
+        if(lastSurvey!=null) {
+            Date lastLocalDate = lastSurvey.getUploadDate();
+            if(lastLocalDate==null) {
+                //if is the first survey, its needed search in the server with the creation date
+                lastLocalDate = lastSurvey.getCreationDate();
             }
+            if (lastLocalDate != null) {
+                //https://hnqis-dev-ci.psi-mis.org/api/events?orgUnit=QS7sK8XzdQc&program=wK0958s1bdj&startDate=2016-1-01&fields=[event,eventDate]
+                String data = QueryFormatterUtils.getInstance().prepareLastEventData(orgUnit.getUid(), tabGroup.getProgram().getUid(), lastLocalDate);
+                try {
+                    JSONObject lastEventsList = networkUtils.getData(data);
+                    String eventuid = "";
+                    Date lastDate = null;
+                    JSONArray jsonArrayResponse = new JSONArray(lastEventsList.getString(EVENTS_FIELD));
+                    for (int i = 0; i < jsonArrayResponse.length(); i++) {
+                        JSONObject event = new JSONObject(jsonArrayResponse.getString(i));
+                        if (eventuid.equals("")) {
+                            eventuid = event.getString("event");
+                            lastDate = EventExtended.parseDate(event.getString(DATE_FIELD), EventExtended.DHIS2_DATE_FORMAT);
+                        } else if (!event.getString(DATE_FIELD).equals("") && lastDate.before(EventExtended.parseDate(event.getString(DATE_FIELD), EventExtended.DHIS2_DATE_FORMAT))) {
+                            eventuid = event.getString("event");
+                            lastDate = EventExtended.parseDate(event.getString(DATE_FIELD), EventExtended.DHIS2_DATE_FORMAT);
+                        }
+                    }
+                    lastEventUid = eventuid;
+                    lastUpdatedEventDate = lastDate;
+                    //If not have new events, it set the last event.
+                    if (lastEventUid.equals("")) {
+                        lastEventUid = lastSurvey.getEventUid();
+                        lastUpdatedEventDate = lastSurvey.getCompletionDate();
+                    }
+                    eventInfo = new EventInfo(lastEventUid, lastUpdatedEventDate);
+                    //Create fake event to can path event not pulled.
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    Log.d(TAG, "Error reading the lastevent server json " + data);
+                }
+            }
+        }
+        if(lastSurvey==null || lastSurvey.getUploadDate()==null){
+            eventInfo = new EventInfo(PreferencesState.getInstance().getContext().getResources().getString(R.string.no_previous_event_fakeuid), new Date());
         }
         return eventInfo;
     }

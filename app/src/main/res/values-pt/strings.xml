@@ -302,4 +302,9 @@
     <string name="modify">Modificar</string>
     <string name="create_or_modify">Você quer criar ou modificar o levantamento com datas %s ?</string>
     <string name="loading_last_surveys">Carregar a última pesquisa...</string>
+
+    <!-- Last survey -->
+    <string name="no_previous_event_info">No evento anterior disponíveis</string>
+
+
 </resources>

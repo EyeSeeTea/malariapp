@@ -110,7 +110,7 @@ public class PushErrorTest {
         //THEN
         //then: Survey is NOT pushed (no UID)
         assertTrue("Survey not pushed"+survey.toString(),!survey.isSent());
-        assertTrue("Survey not pushed"+survey.toString(),survey.getUploadedDate()==null);
+        assertTrue("Survey not pushed"+survey.toString(),survey.getUploadDate()==null);
         assertTrue("Survey not pushed"+survey.toString(),survey.isConflict());
 
         //then: Row is gone
