@@ -42,6 +42,7 @@ import org.eyeseetea.malariacare.utils.Constants;
 import org.hisp.dhis.android.sdk.persistence.models.Event;
 import org.hisp.dhis.android.sdk.persistence.models.Event$Table;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -413,6 +414,12 @@ public class Survey extends BaseModel implements VisitableToSDK {
         return values;
     }
 
+    public void addValue(Value value){
+        if(values==null){
+            values=new ArrayList<>();
+        }
+        values.add(value);
+    }
     /**
      * Returns the list of previous schedules for this survey
      * @return

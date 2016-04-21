@@ -78,7 +78,7 @@ public class Utils {
         List<? extends BaseModel> items = Session.getTabsCache().get(tab.getId_tab());
 
         if (tab.isCompositeScore())
-            items = CompositeScore.listByTabGroup(Session.getSurvey().getTabGroup());
+            items = CompositeScore.listByTabGroup(Session.getSurvey().getTabGroup(),null);
 
         else{
 

@@ -37,6 +37,8 @@ import org.eyeseetea.malariacare.utils.Constants;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 
@@ -331,6 +333,9 @@ public class Question extends BaseModel {
         this.question = null;
     }
 
+    public void setParent(boolean parent) {
+        this.parent=parent;
+    }
     public CompositeScore getCompositeScore() {
         if(compositeScore ==null){
             if(id_composite_score==null) return null;
@@ -473,10 +478,22 @@ public class Question extends BaseModel {
         if (survey == null) {
             return null;
         }
-        List<Value> returnValues = new Select().from(Value.class)
-                .indexedBy("Value_id_survey")
-                .where(Condition.column(Value$Table.ID_QUESTION).eq(this.getId_question()))
-                .and(Condition.column(Value$Table.ID_SURVEY).eq(survey.getId_survey())).queryList();
+        List<Value> returnValues= new ArrayList<>();
+        for(Value value:survey.getValues()){
+            if(getId_question()==value.getQuestion().getId_question()) {
+                if (values == null)
+                    values = new ArrayList<>();
+                values.add(value);
+            }
+        }
+        if(values==null){
+            return null;
+        }
+        returnValues=values;
+        //List<Value> returnValues = new Select().from(Value.class)
+        // .indexedBy("Value_id_survey")
+        // .where(Condition.column(Value$Table.ID_QUESTION).eq(this.getId_question()))
+        // .and(Condition.column(Value$Table.ID_SURVEY).eq(survey.getId_survey())).queryList();
 
         if (returnValues.size() == 0) {
             return null;
@@ -734,7 +751,7 @@ public class Question extends BaseModel {
      * @param tabGroup
      * @return
      */
-    public static List<Question> listByTabGroup(TabGroup tabGroup) {
+    public static List<Question> listByTabGroup(TabGroup tabGroup, List<Question> questions) {
         if (tabGroup == null || tabGroup.getId_tab_group() == null) {
             return new ArrayList();
         }
@@ -742,21 +759,68 @@ public class Question extends BaseModel {
 
         //return Question.findWithQuery(Question.class, LIST_ALL_BY_PROGRAM, program.getId().toString());
 
+        if(questions!=null) {
+            List<Question> listedQuestion = new ArrayList<>();
+            for (Question question : questions) {
+                if (question.getHeader().getTab().getTabGroup().getId_tab_group().equals(tabGroup.getId_tab_group())) {
+                    listedQuestion.add(question);
+                }
+            }
+            if(listedQuestion!=null)
+                Collections.sort(listedQuestion, new Comparator() {
 
-        return new Select().all().from(Question.class).as("q")
-                .join(Header.class, Join.JoinType.LEFT).as("h")
-                .on(Condition.column(ColumnAlias.columnWithTable("q", Question$Table.ID_HEADER))
-                        .eq(ColumnAlias.columnWithTable("h", Header$Table.ID_HEADER)))
-                .join(Tab.class, Join.JoinType.LEFT).as("t")
-                .on(Condition.column(ColumnAlias.columnWithTable("h", Header$Table.ID_TAB))
-                        .eq(ColumnAlias.columnWithTable("t", Tab$Table.ID_TAB)))
-                .join(TabGroup.class, Join.JoinType.LEFT).as("tg")
-                .on(Condition.column(ColumnAlias.columnWithTable("t", Tab$Table.ID_TAB_GROUP))
-                        .eq(ColumnAlias.columnWithTable("tg", TabGroup$Table.ID_TAB_GROUP)))
-                .where(Condition.column(ColumnAlias.columnWithTable("tg", TabGroup$Table.ID_TAB_GROUP))
-                        .eq(tabGroup.getId_tab_group()))
-                .orderBy(Tab$Table.ORDER_POS)
-                .orderBy(Question$Table.ORDER_POS).queryList();
+                    @Override
+                    public int compare(Object o1, Object o2) {
+
+                        Question cs1 = (Question) o1;
+                        Question cs2 = (Question) o2;
+                        if(o2==null)
+                            return 1;
+                        if(cs1==null)
+                            return -1;
+                        if(cs1==cs2)
+                            return 0;
+
+                        return new Integer(cs1.getHeader().getTab().getOrder_pos().compareTo(new Integer(cs2.getHeader().getTab().getOrder_pos())));
+                    }
+                });
+
+            Collections.sort(listedQuestion, new Comparator() {
+
+                @Override
+                public int compare(Object o1, Object o2) {
+
+                    Question cs1 = (Question) o1;
+                    Question cs2 = (Question) o2;
+                    if(o2==null)
+                        return 1;
+                    if(cs1==null)
+                        return -1;
+                    if(cs1==cs2)
+                        return 0;
+
+                    return new Integer(cs1.getOrder_pos().compareTo(new Integer(cs2.getOrder_pos())));
+                }
+            });
+            return listedQuestion;
+        }
+        else {
+
+            return new Select().all().from(Question.class).as("q")
+                    .join(Header.class, Join.JoinType.LEFT).as("h")
+                    .on(Condition.column(ColumnAlias.columnWithTable("q", Question$Table.ID_HEADER))
+                            .eq(ColumnAlias.columnWithTable("h", Header$Table.ID_HEADER)))
+                    .join(Tab.class, Join.JoinType.LEFT).as("t")
+                    .on(Condition.column(ColumnAlias.columnWithTable("h", Header$Table.ID_TAB))
+                            .eq(ColumnAlias.columnWithTable("t", Tab$Table.ID_TAB)))
+                    .join(TabGroup.class, Join.JoinType.LEFT).as("tg")
+                    .on(Condition.column(ColumnAlias.columnWithTable("t", Tab$Table.ID_TAB_GROUP))
+                            .eq(ColumnAlias.columnWithTable("tg", TabGroup$Table.ID_TAB_GROUP)))
+                    .where(Condition.column(ColumnAlias.columnWithTable("tg", TabGroup$Table.ID_TAB_GROUP))
+                            .eq(tabGroup.getId_tab_group()))
+                    .orderBy(Tab$Table.ORDER_POS)
+                    .orderBy(Question$Table.ORDER_POS).queryList();
+        }
 
     }
 
@@ -877,5 +941,9 @@ public class Question extends BaseModel {
                 ", id_parent=" + id_parent +
                 ", id_composite_score=" + id_composite_score +
                 '}';
+    }
+
+    public void resetValues() {
+        values=null;
     }
 }

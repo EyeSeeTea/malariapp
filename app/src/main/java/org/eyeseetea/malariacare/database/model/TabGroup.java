@@ -36,6 +36,7 @@ import org.eyeseetea.malariacare.database.iomodules.dhis.exporter.IConvertToSDKV
 import org.eyeseetea.malariacare.database.iomodules.dhis.exporter.VisitableToSDK;
 import org.eyeseetea.malariacare.database.utils.Session;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Table(databaseName = AppDatabase.NAME)
@@ -134,6 +135,12 @@ public class TabGroup extends BaseModel {
                     .orderBy(Tab$Table.ORDER_POS).queryList();
         }
         return tabs;
+    }
+
+    public void addTab(Tab tab){
+        if(tabs==null)
+            tabs=new ArrayList<>();
+        tabs.add(tab);
     }
 
     public List<Survey> getSurveys(){

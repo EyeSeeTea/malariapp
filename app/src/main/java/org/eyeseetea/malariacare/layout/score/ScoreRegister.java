@@ -233,12 +233,35 @@ public class ScoreRegister {
         ScoreRegister.registerTabScores(tabs);
 
         //Register scores for composites
-        List<CompositeScore> compositeScoreList=CompositeScore.listByTabGroup(survey.getTabGroup());
+        List<CompositeScore> compositeScoreList=CompositeScore.listByTabGroup(survey.getTabGroup(),null);
         ScoreRegister.registerCompositeScores(compositeScoreList);
 
         //Initialize scores x question
-        ScoreRegister.initScoresForQuestions(Question.listByTabGroup(survey.getTabGroup()),survey);
+        ScoreRegister.initScoresForQuestions(Question.listByTabGroup(survey.getTabGroup(),null),survey);
         
+        return compositeScoreList;
+    }
+
+    /**
+     * Cleans, prepares, calculates and returns all the scores info for the given survey
+     * @param survey
+     * @return
+     */
+    public static List<CompositeScore> loadCompositeScoresFromMemory(Survey survey, List<Question> questions){
+        //Cleans score
+        ScoreRegister.clear();
+
+        //Register scores for tabs
+        List<Tab> tabs=survey.getTabGroup().getTabs();
+        ScoreRegister.registerTabScores(tabs);
+
+        //Register scores for composites
+        List<CompositeScore> compositeScoreList=CompositeScore.listByTabGroup(survey.getTabGroup(),questions);
+        ScoreRegister.registerCompositeScores(compositeScoreList);
+
+        //Initialize scores x question
+        ScoreRegister.initScoresForQuestions(Question.listByTabGroup(survey.getTabGroup(),questions),survey);
+
         return compositeScoreList;
     }
 
@@ -256,7 +279,7 @@ public class ScoreRegister {
     }
 
 
-    public static float calculateMainScore(Survey survey){
+    public static float calculateMainScore(Survey survey, List<Question> questions){
         //Prepare all scores
         List<CompositeScore> scores = loadCompositeScores(survey);
 
