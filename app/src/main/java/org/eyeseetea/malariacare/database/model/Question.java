@@ -29,6 +29,7 @@ import com.raizlabs.android.dbflow.sql.language.ColumnAlias;
 import com.raizlabs.android.dbflow.sql.language.Join;
 import com.raizlabs.android.dbflow.sql.language.Select;
 import com.raizlabs.android.dbflow.structure.BaseModel;
+import com.raizlabs.android.dbflow.structure.InvalidDBConfiguration;
 
 import org.eyeseetea.malariacare.database.AppDatabase;
 import org.eyeseetea.malariacare.database.utils.Session;
@@ -479,21 +480,26 @@ public class Question extends BaseModel {
             return null;
         }
         List<Value> returnValues= new ArrayList<>();
-        for(Value value:survey.getValues()){
-            if(getId_question()==value.getQuestion().getId_question()) {
-                if (values == null)
-                    values = new ArrayList<>();
-                values.add(value);
+        try {
+            returnValues = new Select().from(Value.class)
+                    .indexedBy("Value_id_survey")
+                    .where(Condition.column(Value$Table.ID_QUESTION).eq(this.getId_question()))
+                    .and(Condition.column(Value$Table.ID_SURVEY).eq(survey.getId_survey())).queryList();
+        }catch (InvalidDBConfiguration e){
+            //This is needed to prevent a test crash when the ScoreRegister search the ValuesBySurvey
+            for(Value value:survey.getValues()){
+                if(getId_question()==value.getQuestion().getId_question()) {
+                    if (values == null)
+                        values = new ArrayList<>();
+                    values.add(value);
+                }
             }
+            if(values==null){
+                return null;
+            }
+            returnValues=values;
         }
-        if(values==null){
-            return null;
-        }
-        returnValues=values;
-        //List<Value> returnValues = new Select().from(Value.class)
-        // .indexedBy("Value_id_survey")
-        // .where(Condition.column(Value$Table.ID_QUESTION).eq(this.getId_question()))
-        // .and(Condition.column(Value$Table.ID_SURVEY).eq(survey.getId_survey())).queryList();
+
 
         if (returnValues.size() == 0) {
             return null;
