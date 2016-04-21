@@ -33,8 +33,6 @@ import android.view.View;
 
 import com.squareup.otto.Subscribe;
 
-import org.eyeseetea.malariacare.database.iomodules.dhis.exporter.ConvertToSDKVisitor;
-import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.EventExtended;
 import org.eyeseetea.malariacare.database.model.OrgUnit;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.model.TabGroup;
@@ -291,10 +289,10 @@ public class DashboardActivity extends BaseActivity{
      * If the survey will be modify, it should have a eventuid. In the convert to sdk a new fake event will be created
      */
     public void modifySurvey(OrgUnit orgUnit, TabGroup tabGroup, PullClient.EventInfo eventInfo){
-        Survey survey = Survey.getLastSurvey(orgUnit, tabGroup);
+        Survey survey = Survey.findSurveyWith(orgUnit, tabGroup, eventInfo.getEventUid());
+        //Survey in server BUT not local
         if(survey==null){
             survey= SurveyPlanner.getInstance().startSurvey(orgUnit,tabGroup);
-            //if the event not is fake app event set the real event info in the survey:
         }
         if(!eventInfo.getEventUid().equals(PreferencesState.getInstance().getContext().getResources().getString(R.string.no_previous_event_fakeuid))){
             survey.setCompletionDate(eventInfo.getEventDate());
