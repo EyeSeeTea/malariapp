@@ -43,7 +43,7 @@ import org.eyeseetea.malariacare.database.utils.SurveyAnsweredRatio;
 import org.eyeseetea.malariacare.database.utils.planning.SurveyPlanner;
 import org.eyeseetea.malariacare.layout.dashboard.builder.AppSettingsBuilder;
 import org.eyeseetea.malariacare.layout.dashboard.controllers.DashboardController;
-import org.eyeseetea.malariacare.network.PullClient;
+import org.eyeseetea.malariacare.network.EventInfo;
 import org.eyeseetea.malariacare.receivers.AlarmPushReceiver;
 import org.eyeseetea.malariacare.services.SurveyService;
 import org.eyeseetea.malariacare.utils.Constants;
@@ -288,13 +288,13 @@ public class DashboardActivity extends BaseActivity{
      * Modify survey from CreateSurveyFragment
      * If the survey will be modify, it should have a eventuid. In the convert to sdk a new fake event will be created
      */
-    public void modifySurvey(OrgUnit orgUnit, TabGroup tabGroup, PullClient.EventInfo eventInfo){
+    public void modifySurvey(OrgUnit orgUnit, TabGroup tabGroup, EventInfo eventInfo){
         Survey survey = Survey.findSurveyWith(orgUnit, tabGroup, eventInfo.getEventUid());
         //Survey in server BUT not local
         if(survey==null){
             survey= SurveyPlanner.getInstance().startSurvey(orgUnit,tabGroup);
         }
-        if(!eventInfo.getEventUid().equals(PreferencesState.getInstance().getContext().getResources().getString(R.string.no_previous_event_fakeuid))){
+        if(eventInfo.isEventFound()){
             survey.setCompletionDate(eventInfo.getEventDate());
         }
         survey.setEventUid(eventInfo.getEventUid());

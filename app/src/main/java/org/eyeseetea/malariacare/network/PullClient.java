@@ -30,7 +30,6 @@ import org.eyeseetea.malariacare.database.model.OrgUnit;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.model.TabGroup;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
-import org.eyeseetea.malariacare.receivers.AlarmPushReceiver;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -102,33 +101,9 @@ public class PullClient {
             }
         }
         if(lastSurvey==null || lastSurvey.getUploadDate()==null){
-            eventInfo = new EventInfo(PreferencesState.getInstance().getContext().getResources().getString(R.string.no_previous_event_fakeuid), new Date());
+            return EventInfo.noEventFound();
         }
         return eventInfo;
-    }
-    public class EventInfo {
-        String eventUid;
-        Date eventDate;
-        public EventInfo(String eventUid,Date eventDate){
-            this.eventUid=eventUid;
-            this.eventDate=eventDate;
-        }
-
-        public String getEventUid() {
-            return eventUid;
-        }
-
-        public void setEventUid(String eventUid) {
-            this.eventUid = eventUid;
-        }
-
-        public Date getEventDate() {
-            return eventDate;
-        }
-
-        public void setEventDate(Date eventDate) {
-            this.eventDate = eventDate;
-        }
     }
 
 }

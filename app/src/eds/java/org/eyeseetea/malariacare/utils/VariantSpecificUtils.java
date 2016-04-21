@@ -34,6 +34,7 @@ import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.EventEx
 import org.eyeseetea.malariacare.database.model.OrgUnit;
 import org.eyeseetea.malariacare.database.model.TabGroup;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
+import org.eyeseetea.malariacare.network.EventInfo;
 import org.eyeseetea.malariacare.network.PullClient;
 
 
@@ -60,7 +61,7 @@ public class VariantSpecificUtils{
 
     private class LoadLastEvent extends AsyncTask<ComboOrgUnitTabGroup, Void, Void> {
         ComboOrgUnitTabGroup comboOrgUnitTabGroup;
-        PullClient.EventInfo eventInfo;
+        EventInfo eventInfo;
 
         @Override
         protected Void doInBackground(ComboOrgUnitTabGroup... params) {
@@ -95,9 +96,9 @@ public class VariantSpecificUtils{
         }
     }
 
-    private void askCreateOrModify(final ComboOrgUnitTabGroup comboOrgUnitTabGroup, final PullClient.EventInfo eventInfo){
+    private void askCreateOrModify(final ComboOrgUnitTabGroup comboOrgUnitTabGroup, final EventInfo eventInfo){
         String dialogMessage="";
-        if(eventInfo==null || eventInfo.getEventUid().equals(PreferencesState.getInstance().getContext().getResources().getString(R.string.no_previous_event_fakeuid))){
+        if(eventInfo==null || !eventInfo.isEventFound()){
             dialogMessage=PreferencesState.getInstance().getContext().getResources().getString(R.string.no_previous_event_info);
         }
         else{

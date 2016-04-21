@@ -383,7 +383,6 @@
 
 
     <!-- Last survey -->
-    <string name="no_previous_event_fakeuid" translatable="false">no_new_survey</string>
     <string name="no_previous_event_info">No previous event available</string>
 
 </resources>

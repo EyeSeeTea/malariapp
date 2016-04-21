@@ -37,6 +37,7 @@ import org.eyeseetea.malariacare.database.utils.LocationMemory;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
+import org.eyeseetea.malariacare.network.EventInfo;
 import org.eyeseetea.malariacare.network.PullClient;
 import org.eyeseetea.malariacare.utils.Constants;
 import org.eyeseetea.malariacare.utils.Utils;
@@ -183,8 +184,8 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
     private Event forceLastSurvey(Survey survey) throws Exception {
         //download last survey uid
         PullClient pullClient = new PullClient((DashboardActivity) DashboardActivity.dashboardActivity);
-        PullClient.EventInfo eventInfo = pullClient.getLastEventUid(survey.getOrgUnit(), survey.getTabGroup());
-        if(eventInfo.getEventUid()==PreferencesState.getInstance().getContext().getString(R.string.no_previous_event_fakeuid)){
+        EventInfo eventInfo = pullClient.getLastEventUid(survey.getOrgUnit(), survey.getTabGroup());
+        if(!eventInfo.isEventFound()){
             //First event
             Log.d(TAG,"first event");
             Event newEvent=buildEvent();
@@ -255,7 +256,7 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
      * Builds an fake event only to send the new DataValues.
      * @return
      */
-    public static Event buildFakeEvent(OrgUnit orgUnit, TabGroup tabGroup, PullClient.EventInfo eventInfo) {
+    public static Event buildFakeEvent(OrgUnit orgUnit, TabGroup tabGroup, EventInfo eventInfo) {
         //a false event was created to path the event datavalues
         Log.d(TAG, "Recovering Event:" + eventInfo.getEventUid() + " not exist");
         Log.d(TAG, "Creating fake event to upgrade one event in the server");
