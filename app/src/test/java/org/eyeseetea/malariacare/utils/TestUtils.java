@@ -192,7 +192,7 @@ public class TestUtils {
             for(int d=1;d<compositeScores.size();d++){
                 if(compositeScores.get(i).getComposite_score()!=null){
                     if(compositeScores.get(i).getComposite_score().equals(compositeScores.get(d))) {
-                        if(compositeScores.get(d).getComposite_score()==null || (compositeScores.get(d).getComposite_score()!=null && (compositeScores.get(d).compositeScoreChildren==null || !compositeScores.get(d).getCompositeScoreChildren().contains(compositeScores.get(i)))))
+                        if(compositeScores.get(d).getComposite_score()==null || (compositeScores.get(d).getComposite_score()!=null && (compositeScores.get(d).compositeScoreChildren==null || !compositeScores.get(d).compositeScoreChildren.contains(compositeScores.get(i)))))
                             compositeScores.get(d).addCompositeScoreChild(compositeScores.get(i));
                     }
                 }

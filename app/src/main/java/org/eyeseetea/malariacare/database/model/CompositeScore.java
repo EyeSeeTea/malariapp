@@ -173,7 +173,7 @@ public class CompositeScore extends BaseModel implements VisitableToSDK {
                         .orderBy(CompositeScore$Table.ORDER_POS)
                         .queryList();
             }catch (InvalidDBConfiguration e){
-                System.out.println(this.getUid()+" "+this.getId_composite_score()+"not have childrens");
+                //This is needed to prevent a test crash when the composite Score don't have children. 
             }
         }
         return this.compositeScoreChildren;
