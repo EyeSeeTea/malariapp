@@ -17,6 +17,9 @@ repositories {
 }
 
 android {
+    testOptions {
+        unitTests.returnDefaultValues = true
+    }
     signingConfigs {
         config {}
     }
@@ -111,6 +114,8 @@ dependencies {
     // Unit testing dependencies
     testCompile "junit:junit:$rootProject.junitVersion"
 
+    // Optional -- Mockito framework
+    testCompile "org.mockito:mockito-core:1.+"
     // Instrumented tests dependencies
     // Android Testing Support Library's runner and rules
     
