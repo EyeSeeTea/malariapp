@@ -102,10 +102,10 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
      */
     Date uploadedDate;
 
-    /**
-     * Used to control if the actual survey/event is new or update
-     */
-    boolean updateEvent;
+//    /**
+//     * Used to control if the actual survey/event is new or update
+//     */
+//    boolean updateEvent;
 
 
     ConvertToSDKVisitor(Context context){
@@ -127,22 +127,26 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
 
     @Override
     public void visit(Survey survey) throws Exception{
-        updateEvent =false;
-
+//        updateEvent =false;
         uploadedDate =new Date();
+        boolean isAModification = survey.isAModification();
 
         //Turn survey into an event
         this.currentSurvey=survey;
 
         Log.d(TAG,String.format("Creating event for survey (%d) ...",survey.getId_survey()));
-        Log.d(TAG,String.format("Creating event for survey (%s) ...", survey.toString()));
 
         //if the event exist in the survey, it will be patched, else, created.
-        if(survey.getEventUid()!=null) {
-            buildUpgradeEvent(survey);
+//        if(survey.getEventUid()!=null) {
+//            buildUpgradeEvent(survey);
+//        }
+//        else
+//            this.currentEvent=buildEvent();
+        this.currentEvent=buildEvent();
+        if(isAModification){
+            this.currentEvent.setEvent(survey.getEventUid());
+            this.currentEvent.setCreated(EventExtended.formatLong(survey.getCreationDate()));
         }
-        else
-            this.currentEvent=buildEvent();
         Log.d(TAG,currentEvent.toString());
 
         //Calculates scores and update survey
@@ -158,17 +162,13 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
 
         //Turn question values into dataValues
         Log.d(TAG, "Creating datavalues from questions... Values"+survey.getValues().size());
-
-
         for(Value value:survey.getValues()) {
-            if(updateEvent) {
-                if (value.getUploadDate().after(currentSurvey.getUploadDate())) {
-                    value.accept(this);
-                    Log.d(TAG, "Value saved: " + value);
-                }
+            //in a modification an old value is skipped
+            if(isAModification && value.getUploadDate().before(currentSurvey.getUploadDate())){
+                continue;
             }
-            else
-                    value.accept(this);
+            //value -> datavalue
+            value.accept(this);
         }
 
         //Update all the dates after checks the new values
@@ -181,24 +181,24 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
         annotateSurveyAndEvent();
     }
 
-    private Event forceLastSurvey(Survey survey) throws Exception {
-        //download last survey uid
-        PullClient pullClient = new PullClient((DashboardActivity) DashboardActivity.dashboardActivity);
-        EventInfo eventInfo = pullClient.getLastEventUid(survey.getOrgUnit(), survey.getTabGroup());
-        if(!eventInfo.isEventFound()){
-            //First event
-            Log.d(TAG,"first event");
-            Event newEvent=buildEvent();
-            survey.setEventUid(newEvent.getEvent());
-            return newEvent;
-        }
-        if(!survey.getEventUid().equals(eventInfo.getEventUid())){
-            survey.setEventUid(eventInfo.getEventUid());
-        }
-        if(survey.getEvent()==null)
-            return buildFakeEvent(survey.getOrgUnit(),survey.getTabGroup(), eventInfo);
-        return survey.getEvent();
-    }
+//    private Event forceLastSurvey(Survey survey) throws Exception {
+//        //download last survey uid
+//        PullClient pullClient = new PullClient((DashboardActivity) DashboardActivity.dashboardActivity);
+//        EventInfo eventInfo = pullClient.getLastEventUid(survey.getOrgUnit(), survey.getTabGroup());
+//        if(!eventInfo.isEventFound()){
+//            //First event
+//            Log.d(TAG,"first event");
+//            Event newEvent=buildEvent();
+//            survey.setEventUid(newEvent.getEvent());
+//            return newEvent;
+//        }
+//        if(!survey.getEventUid().equals(eventInfo.getEventUid())){
+//            survey.setEventUid(eventInfo.getEventUid());
+//        }
+//        if(survey.getEvent()==null)
+//            return buildFakeEvent(survey.getOrgUnit(),survey.getTabGroup(), eventInfo);
+//        return survey.getEvent();
+//    }
 
     @Override
     public void visit(CompositeScore compositeScore) {
@@ -214,12 +214,12 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
 
     @Override
     public void visit(Value value) {
-        if(updateEvent){
-            if(value.getQuestion()==null) {
-                //The controlDataelements values don't have question. It should be ignored  in a upload event.
-                return;
-            }
-        }
+//        if(updateEvent){
+//            if(value.getQuestion()==null) {
+//                //The controlDataelements values don't have question. It should be ignored  in a upload event.
+//                return;
+//            }
+//        }
         DataValue dataValue=new DataValue();
         dataValue.setDataElement(value.getQuestion().getUid());
         dataValue.setLocalEventId(currentEvent.getLocalId());
@@ -252,50 +252,50 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
         return currentEvent;
     }
 
-    /**
-     * Builds an fake event only to send the new DataValues.
-     * @return
-     */
-    public static Event buildFakeEvent(OrgUnit orgUnit, TabGroup tabGroup, EventInfo eventInfo) {
-        //a false event was created to path the event datavalues
-        Log.d(TAG, "Recovering Event:" + eventInfo.getEventUid() + " not exist");
-        Log.d(TAG, "Creating fake event to upgrade one event in the server");
-        Event event = new Event();
-        event.setUid(eventInfo.getEventUid());
-        event.setLastUpdated(EventExtended.format(eventInfo.getEventDate(), EventExtended.DHIS2_DATE_FORMAT));
-        event.setEventDate(EventExtended.format(eventInfo.getEventDate(), EventExtended.DHIS2_DATE_FORMAT));
-        event.setOrganisationUnitId(orgUnit.getUid());
-        event.setProgramId(tabGroup.getProgram().getUid());
-        event.setProgramStageId(tabGroup.getUid());
-        event.save();
-        return event;
-    }
+//    /**
+//     * Builds an fake event only to send the new DataValues.
+//     * @return
+//     */
+//    public static Event buildFakeEvent(OrgUnit orgUnit, TabGroup tabGroup, EventInfo eventInfo) {
+//        //a false event was created to path the event datavalues
+//        Log.d(TAG, "Recovering Event:" + eventInfo.getEventUid() + " not exist");
+//        Log.d(TAG, "Creating fake event to upgrade one event in the server");
+//        Event event = new Event();
+//        event.setUid(eventInfo.getEventUid());
+//        event.setLastUpdated(EventExtended.format(eventInfo.getEventDate(), EventExtended.DHIS2_DATE_FORMAT));
+//        event.setEventDate(EventExtended.format(eventInfo.getEventDate(), EventExtended.DHIS2_DATE_FORMAT));
+//        event.setOrganisationUnitId(orgUnit.getUid());
+//        event.setProgramId(tabGroup.getProgram().getUid());
+//        event.setProgramStageId(tabGroup.getUid());
+//        event.save();
+//        return event;
+//    }
 
-    /**
-     * Builds or modify a event to be upgraded.
-     * @return
-     */
-    private void buildUpgradeEvent(Survey survey) throws Exception{
-        updateEvent =true;
-        currentEvent = forceLastSurvey(survey);
-
-        if(currentEvent != null){
-            currentEvent.setCreated(null);
-            uploadedDate = currentSurvey.getUploadDate();
-            String date=EventExtended.format(currentSurvey.getCompletionDate(), EventExtended.DHIS2_DATE_FORMAT);
-            currentEvent.setEventDate(date);
-            currentEvent.setLastUpdated(EventExtended.format(currentSurvey.getUploadDate(), EventExtended.DHIS2_DATE_FORMAT));
-            //It's necesary, Set"from server" as false to upload the event
-            currentEvent.setFromServer(false);
-            currentEvent.setStatus(Event.STATUS_COMPLETED);
-            currentEvent.save();
-        }
-        else
-        {
-            Log.d(TAG, "First event. No new events in the sever, creating new buildEvent...");
-            currentEvent=buildEvent();
-        }
-    }
+//    /**
+//     * Builds or modify a event to be upgraded.
+//     * @return
+//     */
+//    private void buildUpgradeEvent(Survey survey) throws Exception{
+//        updateEvent =true;
+//        currentEvent = forceLastSurvey(survey);
+//
+//        if(currentEvent != null){
+//            currentEvent.setCreated(null);
+//            uploadedDate = currentSurvey.getUploadDate();
+//            String date=EventExtended.format(currentSurvey.getCompletionDate(), EventExtended.DHIS2_DATE_FORMAT);
+//            currentEvent.setEventDate(date);
+//            currentEvent.setLastUpdated(EventExtended.format(currentSurvey.getUploadDate(), EventExtended.DHIS2_DATE_FORMAT));
+//            //It's necesary, Set"from server" as false to upload the event
+//            currentEvent.setFromServer(false);
+//            currentEvent.setStatus(Event.STATUS_COMPLETED);
+//            currentEvent.save();
+//        }
+//        else
+//        {
+//            Log.d(TAG, "First event. No new events in the sever, creating new buildEvent...");
+//            currentEvent=buildEvent();
+//        }
+//    }
 
     /**
      * Fulfills the dates of the event

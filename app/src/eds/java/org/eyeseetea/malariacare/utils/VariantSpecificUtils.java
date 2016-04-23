@@ -30,12 +30,11 @@ import android.widget.TextView;
 import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.R;
 
-import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.EventExtended;
 import org.eyeseetea.malariacare.database.model.OrgUnit;
 import org.eyeseetea.malariacare.database.model.TabGroup;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
-import org.eyeseetea.malariacare.network.EventInfo;
 import org.eyeseetea.malariacare.network.PullClient;
+import org.hisp.dhis.android.sdk.persistence.models.Event;
 
 
 /**
@@ -59,26 +58,32 @@ public class VariantSpecificUtils{
         loadLastEvent.execute(comboOrgUnitTabGroup);
     }
 
-    private class LoadLastEvent extends AsyncTask<ComboOrgUnitTabGroup, Void, Void> {
+    private class LoadLastEvent extends AsyncTask<ComboOrgUnitTabGroup, Void, Event> {
         ComboOrgUnitTabGroup comboOrgUnitTabGroup;
-        EventInfo eventInfo;
 
         @Override
-        protected Void doInBackground(ComboOrgUnitTabGroup... params) {
+        protected Event doInBackground(ComboOrgUnitTabGroup... params) {
             comboOrgUnitTabGroup=params[0];
             PullClient pullClient = new PullClient(DashboardActivity.dashboardActivity);
-            eventInfo = pullClient.getLastEventUid(comboOrgUnitTabGroup.getOrgUnit(), comboOrgUnitTabGroup.getTabGroup());
-            return null;
+            return pullClient.getLastEventInServerWith(comboOrgUnitTabGroup.getOrgUnit(), comboOrgUnitTabGroup.getTabGroup());
         }
 
         @Override
-        protected void onPostExecute(Void result) {
-            super.onPostExecute(result);
+        protected void onPostExecute(Event lastEventInServer) {
+            super.onPostExecute(lastEventInServer);
             // Dismiss the progress dialog
-            askCreateOrModify(comboOrgUnitTabGroup, eventInfo);
             if (progressDialog.isShowing()) {
                 progressDialog.dismiss();
             }
+
+            //Preference ask to modify or create
+            if(PreferencesState.getInstance().isAskModifyOrCreate()){
+                askCreateOrModify(comboOrgUnitTabGroup, lastEventInServer);
+            }else{
+                ((DashboardActivity)DashboardActivity.dashboardActivity).modifySurvey(comboOrgUnitTabGroup.getOrgUnit(),comboOrgUnitTabGroup.getTabGroup(), lastEventInServer);
+            }
+
+
         }
         ProgressDialog progressDialog;
         @Override
@@ -96,27 +101,25 @@ public class VariantSpecificUtils{
         }
     }
 
-    private void askCreateOrModify(final ComboOrgUnitTabGroup comboOrgUnitTabGroup, final EventInfo eventInfo){
-        String dialogMessage="";
-        if(eventInfo==null || !eventInfo.isEventFound()){
+    private void askCreateOrModify(final ComboOrgUnitTabGroup comboOrgUnitTabGroup, final Event lastEventInServer){
+        String dialogMessage;
+        if(lastEventInServer==null){
             dialogMessage=PreferencesState.getInstance().getContext().getResources().getString(R.string.no_previous_event_info);
+        }else{
+            dialogMessage=String.format(PreferencesState.getInstance().getContext().getResources().getString(R.string.create_or_modify), lastEventInServer.getEventDate());
         }
-        else{
-            dialogMessage=String.format(PreferencesState.getInstance().getContext().getResources().getString(R.string.create_or_modify), EventExtended.format(eventInfo.getEventDate(), EventExtended.DHIS2_DATE_FORMAT ));
-        }
+        final DashboardActivity activity= (DashboardActivity)DashboardActivity.dashboardActivity;
         new AlertDialog.Builder(DashboardActivity.dashboardActivity)
                 .setTitle("")
                 .setMessage(dialogMessage)
                 .setPositiveButton((R.string.create), new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface arg0, int arg1) {
-                        DashboardActivity activity= (DashboardActivity)DashboardActivity.dashboardActivity;
                         activity.createNewSurvey(comboOrgUnitTabGroup.getOrgUnit(),comboOrgUnitTabGroup.getTabGroup());
                     }
                 })
                 .setNeutralButton((R.string.modify), new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface arg0, int arg1) {
-                        DashboardActivity activity= (DashboardActivity)DashboardActivity.dashboardActivity;
-                        activity.modifySurvey(comboOrgUnitTabGroup.getOrgUnit(),comboOrgUnitTabGroup.getTabGroup(), eventInfo);
+                        activity.modifySurvey(comboOrgUnitTabGroup.getOrgUnit(),comboOrgUnitTabGroup.getTabGroup(), lastEventInServer);
                     }
                 })
                 .setNegativeButton((R.string.cancel), null)

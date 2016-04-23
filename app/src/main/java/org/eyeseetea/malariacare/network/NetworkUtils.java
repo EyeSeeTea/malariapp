@@ -24,6 +24,8 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.squareup.okhttp.Authenticator;
 import com.squareup.okhttp.Credentials;
 import com.squareup.okhttp.MediaType;
@@ -141,6 +143,16 @@ public class NetworkUtils {
             throw new IOException(response.message());
         }
         return  parseResponse(response.body().string());
+    }
+
+    public JsonNode toJsonNode(JSONObject jsonObject){
+        ObjectMapper objectMapper = new ObjectMapper();
+        String jsonString = jsonObject.toString();
+        try {
+            return objectMapper.readValue(jsonString, JsonNode.class);
+        }catch(Exception ex){
+            return null;
+        }
     }
 
     /**

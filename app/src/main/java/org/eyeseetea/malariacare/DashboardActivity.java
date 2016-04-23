@@ -33,6 +33,7 @@ import android.view.View;
 
 import com.squareup.otto.Subscribe;
 
+import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.EventExtended;
 import org.eyeseetea.malariacare.database.model.OrgUnit;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.model.TabGroup;
@@ -43,12 +44,13 @@ import org.eyeseetea.malariacare.database.utils.SurveyAnsweredRatio;
 import org.eyeseetea.malariacare.database.utils.planning.SurveyPlanner;
 import org.eyeseetea.malariacare.layout.dashboard.builder.AppSettingsBuilder;
 import org.eyeseetea.malariacare.layout.dashboard.controllers.DashboardController;
-import org.eyeseetea.malariacare.network.EventInfo;
+import org.eyeseetea.malariacare.network.PullClient;
 import org.eyeseetea.malariacare.receivers.AlarmPushReceiver;
 import org.eyeseetea.malariacare.services.SurveyService;
 import org.eyeseetea.malariacare.utils.Constants;
 import org.eyeseetea.malariacare.utils.VariantSpecificUtils;
 import org.hisp.dhis.android.sdk.events.UiEvent;
+import org.hisp.dhis.android.sdk.persistence.models.Event;
 
 import java.util.Date;
 import java.util.List;
@@ -270,14 +272,6 @@ public class DashboardActivity extends BaseActivity{
     }
 
     /**
-     * A new survey starts to be edited
-     * @param survey
-     */
-    public void onCreateSurvey(Survey survey) {
-        dashboardController.onSurveySelected(survey);
-    }
-
-    /**
      * Moving into createSurvey fragment
      * @param view
      */
@@ -288,16 +282,23 @@ public class DashboardActivity extends BaseActivity{
      * Modify survey from CreateSurveyFragment
      * If the survey will be modify, it should have a eventuid. In the convert to sdk a new fake event will be created
      */
-    public void modifySurvey(OrgUnit orgUnit, TabGroup tabGroup, EventInfo eventInfo){
-        Survey survey = Survey.findSurveyWith(orgUnit, tabGroup, eventInfo.getEventUid());
+    public void modifySurvey(OrgUnit orgUnit, TabGroup tabGroup, Event lastEventInServer){
+        //Looking for that survey in local
+        Survey survey = Survey.findSurveyWith(orgUnit, tabGroup, lastEventInServer);
         //Survey in server BUT not local
         if(survey==null){
             survey= SurveyPlanner.getInstance().startSurvey(orgUnit,tabGroup);
         }
-        if(eventInfo.isEventFound()){
-            survey.setCompletionDate(eventInfo.getEventDate());
+        if(lastEventInServer!=null){
+            survey.setEventUid(lastEventInServer.getEvent());
+            EventExtended lastEventExtended = new EventExtended(lastEventInServer);
+            survey.setCreationDate(lastEventExtended.getCreationDate());
+            survey.setCompletionDate(lastEventExtended.getEventDate());
+        }else{
+            //Mark the survey as a modify attempt for pushing accordingly
+            survey.setEventUid(PullClient.NO_EVENT_FOUND);
         }
-        survey.setEventUid(eventInfo.getEventUid());
+
         //Upgrade the uploaded date
         survey.setUploadDate(new Date());
         survey.setStatus(Constants.SURVEY_IN_PROGRESS);

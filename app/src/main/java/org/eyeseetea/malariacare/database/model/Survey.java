@@ -841,14 +841,18 @@ public class Survey extends BaseModel implements VisitableToSDK {
     }
 
 
-    public static Survey findSurveyWith(OrgUnit orgUnit, TabGroup tabGroup,String eventuid) {
+    public static Survey findSurveyWith(OrgUnit orgUnit, TabGroup tabGroup,Event lastEventInServer) {
+
+        if(lastEventInServer==null){
+            return null;
+        }
         return new Select().from(Survey.class)
                 .where(Condition.column(Survey$Table.STATUS).isNot(Constants.SURVEY_PLANNED))
                 .and(Condition.column(Survey$Table.STATUS).isNot(Constants.SURVEY_IN_PROGRESS))
                 .and(Condition.column(Survey$Table.STATUS).isNot(Constants.SURVEY_HIDE))
                 .and(Condition.column(Survey$Table.ID_TAB_GROUP).eq(tabGroup.getId_tab_group()))
                 .and(Condition.column(Survey$Table.ID_ORG_UNIT).eq(orgUnit.getId_org_unit()))
-                .and(Condition.column(Survey$Table.EVENTUID).eq(eventuid))
+                .and(Condition.column(Survey$Table.EVENTUID).eq(lastEventInServer.getEvent()))
                 .orderBy(false,Survey$Table.COMPLETION_DATE)
                 .querySingle();
     }
@@ -873,6 +877,13 @@ public class Survey extends BaseModel implements VisitableToSDK {
                 .having(Condition.columnsWithFunction("max", "completion_date")).querySingle();
     }
 
+    /**
+     * A survey in progress with a uid is a modification (patch) of a previously pushed survey
+     * @return
+     */
+    public boolean isAModification(){
+        return Constants.SURVEY_IN_PROGRESS==this.status && this.eventuid!=null && this.eventuid.length()>0;
+    }
 
     /**
      * Get event from a survey if exists.
