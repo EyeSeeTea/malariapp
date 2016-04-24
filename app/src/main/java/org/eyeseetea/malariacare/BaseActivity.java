@@ -276,7 +276,7 @@ public abstract class BaseActivity extends ActionBarActivity {
      */
     private void showAlertWithMessage(int titleId, int rawId){
         InputStream message = getApplicationContext().getResources().openRawResource(rawId);
-        Utils.showAlert(titleId, AUtils.convertFromInputStreamToString(message).toString(), BaseActivity.this);
+        new Utils().showAlert(titleId, AUtils.convertFromInputStreamToString(message).toString(), BaseActivity.this);
     }
 
     /**
@@ -289,7 +289,7 @@ public abstract class BaseActivity extends ActionBarActivity {
         final SpannableString linkedMessage = new SpannableString(Html.fromHtml(stringMessage));
         Linkify.addLinks(linkedMessage, Linkify.EMAIL_ADDRESSES | Linkify.WEB_URLS);
 
-        Utils.showAlert(titleId, linkedMessage, BaseActivity.this);
+        new Utils().showAlert(titleId, linkedMessage, BaseActivity.this);
     }
 
     /**
