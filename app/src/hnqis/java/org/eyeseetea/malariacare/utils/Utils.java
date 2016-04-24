@@ -43,9 +43,10 @@ import org.eyeseetea.malariacare.network.PullClient;
 /**
  * Created by nacho on 28/03/16.
  */
-public class VariantSpecificUtils{
+public class Utils extends AUtils {
 
-    public static void showAlert(int titleId, CharSequence text, Context context){
+    @Override
+    public void showAlert(int titleId, CharSequence text, Context context){
         final Dialog dialog = new Dialog(context);
         dialog.setContentView(R.layout.dialog_about);
         dialog.setTitle(titleId);
@@ -76,6 +77,7 @@ public class VariantSpecificUtils{
         dialog.show();
     }
 
+    @Override
     public void createNewSurvey(final OrgUnit orgUnit, final TabGroup tabGroup) {
         final DashboardActivity activity = ((DashboardActivity) DashboardActivity.dashboardActivity);
         activity.createNewSurvey(orgUnit, tabGroup);

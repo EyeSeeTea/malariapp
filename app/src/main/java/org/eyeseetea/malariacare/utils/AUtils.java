@@ -19,19 +19,29 @@
 
 package org.eyeseetea.malariacare.utils;
 
+import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.AsyncTask;
 
 import com.raizlabs.android.dbflow.structure.BaseModel;
 
+import org.eyeseetea.malariacare.DashboardActivity;
+import org.eyeseetea.malariacare.R;
+import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.EventExtended;
 import org.eyeseetea.malariacare.database.model.CompositeScore;
 import org.eyeseetea.malariacare.database.model.Header;
+import org.eyeseetea.malariacare.database.model.OrgUnit;
 import org.eyeseetea.malariacare.database.model.Question;
 import org.eyeseetea.malariacare.database.model.Tab;
+import org.eyeseetea.malariacare.database.model.TabGroup;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.layout.utils.QuestionRow;
+import org.eyeseetea.malariacare.network.PullClient;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -45,7 +55,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 
-public class Utils {
+public abstract class AUtils {
 
     static final int numberOfDecimals = 0; // Number of decimals outputs will have
 
@@ -57,7 +67,7 @@ public class Utils {
     }
 
     public static String round(float base){
-        return round(base, Utils.numberOfDecimals);
+        return round(base, AUtils.numberOfDecimals);
     }
 
     public static List<BaseModel> convertTabToArrayCustom(Tab tab) {
@@ -168,4 +178,101 @@ public class Utils {
             return false;
         return netInfo.isConnected();
     }
+
+    public abstract void showAlert(int titleId, CharSequence text, Context context);
+
+    public abstract void createNewSurvey(OrgUnit orgUnit, TabGroup tabGroup);
+    
+
+    protected class LoadLastEvent extends AsyncTask<ComboOrgUnitTabGroup, Void, Void> {
+        ComboOrgUnitTabGroup comboOrgUnitTabGroup;
+        PullClient.EventInfo eventInfo;
+
+        @Override
+        protected Void doInBackground(ComboOrgUnitTabGroup... params) {
+            comboOrgUnitTabGroup=params[0];
+            PullClient pullClient = new PullClient((DashboardActivity) DashboardActivity.dashboardActivity);
+            eventInfo = pullClient.getLastEventUid(comboOrgUnitTabGroup.getOrgUnit(), comboOrgUnitTabGroup.getTabGroup());
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void result) {
+            super.onPostExecute(result);
+            // Dismiss the progress dialog
+            askCreateOrModify(comboOrgUnitTabGroup, eventInfo);
+            if (progressDialog.isShowing()) {
+                progressDialog.dismiss();
+            }
+        }
+        ProgressDialog progressDialog;
+        @Override
+        protected void onPreExecute() {
+
+            progressDialog = new ProgressDialog(DashboardActivity.dashboardActivity);
+            progressDialog.setMessage(PreferencesState.getInstance().getContext().getResources().getString(R.string.loading_last_surveys));
+            progressDialog.setCancelable(false);
+            progressDialog.show();
+        }
+
+        @Override
+        protected void onProgressUpdate(Void... values) {
+            super.onProgressUpdate(values);
+        }
+    }
+
+    private void askCreateOrModify(final ComboOrgUnitTabGroup comboOrgUnitTabGroup, final PullClient.EventInfo eventInfo){
+        String dialogMessage="";
+        if(eventInfo==null || eventInfo.getEventUid().equals(PreferencesState.getInstance().getContext().getResources().getString(R.string.no_previous_event_fakeuid))){
+            dialogMessage=PreferencesState.getInstance().getContext().getResources().getString(R.string.no_previous_event_info);
+        }
+        else{
+            dialogMessage=String.format(PreferencesState.getInstance().getContext().getResources().getString(R.string.create_or_modify), EventExtended.format(eventInfo.getEventDate(), EventExtended.DHIS2_DATE_FORMAT ));
+        }
+        new AlertDialog.Builder(DashboardActivity.dashboardActivity)
+                .setTitle("")
+                .setMessage(dialogMessage)
+                .setPositiveButton((R.string.create), new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface arg0, int arg1) {
+                        DashboardActivity activity= (DashboardActivity)DashboardActivity.dashboardActivity;
+                        activity.createNewSurvey(comboOrgUnitTabGroup.getOrgUnit(),comboOrgUnitTabGroup.getTabGroup());
+                    }
+                })
+                .setNeutralButton((R.string.modify), new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface arg0, int arg1) {
+                        DashboardActivity activity= (DashboardActivity)DashboardActivity.dashboardActivity;
+                        activity.modifySurvey(comboOrgUnitTabGroup.getOrgUnit(),comboOrgUnitTabGroup.getTabGroup(), eventInfo);
+                    }
+                })
+                .setNegativeButton((R.string.cancel), null)
+                .setCancelable(true)
+                .create().show();
+    }
+
+    public class ComboOrgUnitTabGroup{
+        OrgUnit orgUnit;
+        TabGroup tabGroup;
+
+        public ComboOrgUnitTabGroup(OrgUnit orgUnit, TabGroup tabGroup) {
+            this.orgUnit = orgUnit;
+            this.tabGroup = tabGroup;
+        }
+
+        public OrgUnit getOrgUnit() {
+            return orgUnit;
+        }
+
+        public void setOrgUnit(OrgUnit orgUnit) {
+            this.orgUnit = orgUnit;
+        }
+
+        public TabGroup getTabGroup() {
+            return tabGroup;
+        }
+
+        public void setTabGroup(TabGroup tabGroup) {
+            this.tabGroup = tabGroup;
+        }
+    }
+
 }

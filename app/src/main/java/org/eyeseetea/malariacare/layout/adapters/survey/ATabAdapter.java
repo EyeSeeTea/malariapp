@@ -23,18 +23,11 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.widget.BaseAdapter;
 
-import com.raizlabs.android.dbflow.structure.BaseModel;
-
-import org.eyeseetea.malariacare.database.model.Question;
 import org.eyeseetea.malariacare.database.model.Tab;
 import org.eyeseetea.malariacare.database.utils.Session;
-import org.eyeseetea.malariacare.utils.Utils;
+import org.eyeseetea.malariacare.utils.AUtils;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public abstract class ATabAdapter extends BaseAdapter implements  ITabAdapter{
 
@@ -51,7 +44,7 @@ public abstract class ATabAdapter extends BaseAdapter implements  ITabAdapter{
         this.context = context;
         this.tab = tab;
         this.lInflater = LayoutInflater.from(context);
-        this.items = Utils.preloadTabItems(tab);
+        this.items = AUtils.preloadTabItems(tab);
         this.id_layout = id_layout;
     }
 
