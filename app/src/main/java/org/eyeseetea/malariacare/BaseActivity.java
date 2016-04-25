@@ -20,7 +20,6 @@
 package org.eyeseetea.malariacare;
 
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -31,17 +30,11 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.text.Html;
 import android.text.SpannableString;
-import android.text.method.LinkMovementMethod;
 import android.text.util.Linkify;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.view.Window;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.utils.LocationMemory;
@@ -50,8 +43,8 @@ import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.layout.listeners.SurveyLocationListener;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
+import org.eyeseetea.malariacare.utils.AUtils;
 import org.eyeseetea.malariacare.utils.Utils;
-import org.eyeseetea.malariacare.utils.VariantSpecificUtils;
 import org.hisp.dhis.android.sdk.controllers.DhisService;
 import org.hisp.dhis.android.sdk.events.UiEvent;
 import org.hisp.dhis.android.sdk.persistence.Dhis2Application;
@@ -116,11 +109,23 @@ public abstract class BaseActivity extends ActionBarActivity {
                 break;
             case R.id.action_license:
                 debugMessage("User asked for license");
-                showAlertWithMessage(R.string.settings_menu_licence, R.raw.gpl);
+                new Utils().showAlertWithMessage(R.string.settings_menu_licence, R.raw.gpl, BaseActivity.this);
                 break;
             case R.id.action_about:
                 debugMessage("User asked for about");
-                showAlertWithHtmlMessageAndLastCommit(R.string.settings_menu_about, R.raw.about);
+                new Utils().showAlertWithHtmlMessageAndLastCommit(R.string.settings_menu_about, R.raw.about, BaseActivity.this);
+                break;
+            case R.id.action_copyright:
+                debugMessage("User asked for copyright");
+                new Utils().showAlertWithMessage(R.string.settings_menu_copyright, R.raw.copyright, BaseActivity.this);
+                break;
+            case R.id.action_licenses:
+                debugMessage("User asked for software licenses");
+                new Utils().showAlertWithHtmlMessage(R.string.settings_menu_licenses, R.raw.licenses, BaseActivity.this);
+                break;
+            case R.id.action_eula:
+                debugMessage("User asked for EULA");
+                new Utils().showAlertWithHtmlMessage(R.string.settings_menu_eula, R.raw.eula, BaseActivity.this);
                 break;
             case R.id.action_logout:
                 debugMessage("User asked for logout");
@@ -274,55 +279,7 @@ public abstract class BaseActivity extends ActionBarActivity {
 
 
 
-    /**
-     * Shows an alert dialog with a big message inside based on a raw resource
-     * @param titleId Id of the title resource
-     * @param rawId Id of the raw text resource
-     */
-    private void showAlertWithMessage(int titleId, int rawId){
-        InputStream message = getApplicationContext().getResources().openRawResource(rawId);
-        VariantSpecificUtils.showAlert(titleId, Utils.convertFromInputStreamToString(message).toString(), BaseActivity.this);
-    }
 
-    /**
-     * Shows an alert dialog with a big message inside based on a raw resource HTML formatted
-     * @param titleId Id of the title resource
-     * @param rawId Id of the raw text resource in HTML format
-     */
-    private void showAlertWithHtmlMessageAndLastCommit(int titleId, int rawId){
-        String stringMessage = getMessageWithCommit(rawId);
-        final SpannableString linkedMessage = new SpannableString(Html.fromHtml(stringMessage));
-        Linkify.addLinks(linkedMessage, Linkify.EMAIL_ADDRESSES | Linkify.WEB_URLS);
-
-        VariantSpecificUtils.showAlert(titleId, linkedMessage, BaseActivity.this);
-    }
-
-    /**
-     * Merge the lastcommit into the raw file
-     * @param rawId Id of the raw text resource in HTML format
-     */
-    private String getMessageWithCommit(int rawId) {
-        InputStream message = getApplicationContext().getResources().openRawResource(rawId);
-        String stringCommit;
-        //Check if lastcommit.txt file exist, and if not exist show as unavailable.
-        int layoutId = getApplicationContext().getResources().getIdentifier("lastcommit", "raw", getApplicationContext().getPackageName());
-        if (layoutId == 0){
-            stringCommit=getString(R.string.unavailable);
-        } else {
-            InputStream commit = getApplicationContext().getResources().openRawResource( layoutId);
-            stringCommit=Utils.convertFromInputStreamToString(commit).toString();
-        }
-        String stringMessage=Utils.convertFromInputStreamToString(message).toString();
-        if(stringCommit.contains(getString(R.string.unavailable))){
-            stringCommit=String.format(getString(R.string.lastcommit),stringCommit);
-            stringCommit=stringCommit+" "+getText(R.string.lastcommit_unavailable);
-        }
-        else {
-            stringCommit = String.format(getString(R.string.lastcommit), stringCommit);
-        }
-        stringMessage=String.format(stringMessage,stringCommit);
-        return stringMessage;
-    }
 
     /**
      * Logs a debug message using current activity SimpleName as tag. Ex:

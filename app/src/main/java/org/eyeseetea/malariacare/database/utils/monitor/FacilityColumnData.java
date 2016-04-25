@@ -20,7 +20,7 @@
 package org.eyeseetea.malariacare.database.utils.monitor;
 
 import org.eyeseetea.malariacare.database.model.Survey;
-import org.eyeseetea.malariacare.utils.Utils;
+import org.eyeseetea.malariacare.utils.AUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,7 +51,7 @@ public class FacilityColumnData {
         if(!hasSurveys()){
             return "null";
         }
-        return Utils.round(getValue());
+        return AUtils.round(getValue());
     }
 
     /**

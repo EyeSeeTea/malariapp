@@ -33,8 +33,6 @@ import android.view.View;
 
 import com.squareup.otto.Subscribe;
 
-import org.eyeseetea.malariacare.database.iomodules.dhis.exporter.ConvertToSDKVisitor;
-import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.EventExtended;
 import org.eyeseetea.malariacare.database.model.OrgUnit;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.model.TabGroup;
@@ -49,7 +47,7 @@ import org.eyeseetea.malariacare.network.PullClient;
 import org.eyeseetea.malariacare.receivers.AlarmPushReceiver;
 import org.eyeseetea.malariacare.services.SurveyService;
 import org.eyeseetea.malariacare.utils.Constants;
-import org.eyeseetea.malariacare.utils.VariantSpecificUtils;
+import org.eyeseetea.malariacare.utils.Utils;
 import org.hisp.dhis.android.sdk.events.UiEvent;
 
 import java.util.Date;
@@ -312,8 +310,8 @@ public class DashboardActivity extends BaseActivity{
      * Create new survey from CreateSurveyFragment
      */
     public void onCreateSurvey(final OrgUnit orgUnit,final TabGroup tabGroup) {
-        VariantSpecificUtils variantSpecificUtils = new VariantSpecificUtils();
-        variantSpecificUtils.createNewSurvey(orgUnit, tabGroup);
+        Utils utils = new Utils();
+        utils.createNewSurvey(orgUnit, tabGroup);
     }
 
     /**

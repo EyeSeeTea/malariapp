@@ -24,7 +24,6 @@ import android.content.Intent;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
-import com.raizlabs.android.dbflow.annotation.Column;
 import com.raizlabs.android.dbflow.sql.builder.Condition;
 import com.raizlabs.android.dbflow.sql.language.Select;
 
@@ -41,7 +40,7 @@ import org.eyeseetea.malariacare.database.utils.feedback.Feedback;
 import org.eyeseetea.malariacare.database.utils.feedback.FeedbackBuilder;
 import org.eyeseetea.malariacare.database.utils.planning.PlannedItemBuilder;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
-import org.eyeseetea.malariacare.utils.Utils;
+import org.eyeseetea.malariacare.utils.AUtils;
 
 import java.util.HashMap;
 import java.util.List;
@@ -309,7 +308,7 @@ public class SurveyService extends IntentService {
     private void preLoadTabItems(Long tabID){
         Tab tab = Tab.findById(tabID);
         if (tab !=null) {
-            Utils.preloadTabItems(tab);
+            AUtils.preloadTabItems(tab);
         }
     }
 

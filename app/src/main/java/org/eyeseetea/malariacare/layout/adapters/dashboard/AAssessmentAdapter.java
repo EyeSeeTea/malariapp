@@ -29,7 +29,7 @@ import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.SurveyAnsweredRatio;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
-import org.eyeseetea.malariacare.utils.Utils;
+import org.eyeseetea.malariacare.utils.AUtils;
 import org.eyeseetea.malariacare.views.CustomTextView;
 
 import java.util.Date;
@@ -71,7 +71,7 @@ public abstract class AAssessmentAdapter extends ADashboardAdapter implements ID
 
         if (sentDate != null){
             Date eventDate = survey.getCompletionDate();
-            sentDate.setText(Utils.formatDate(eventDate));
+            sentDate.setText(AUtils.formatDate(eventDate));
             if(survey.hasConflict() && sentScore!=null){
                 sentScore.setText((getContext().getResources().getString(R.string.feedback_info_conflict)).toUpperCase());
                 sentScore.setTextColor(getContext().getResources().getColor(R.color.darkRed));
