@@ -20,6 +20,7 @@
 package org.eyeseetea.malariacare.utils;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -30,15 +31,20 @@ import android.text.Html;
 import android.text.SpannableString;
 import android.text.method.LinkMovementMethod;
 import android.text.util.Linkify;
+import android.view.Gravity;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.raizlabs.android.dbflow.structure.BaseModel;
 
+import org.eyeseetea.malariacare.BuildConfig;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.model.CompositeScore;
 import org.eyeseetea.malariacare.database.model.Header;
 import org.eyeseetea.malariacare.database.model.Question;
-import org.eyeseetea.malariacare.database.model.Tab;
+import org.eyeseetea.malariacare.database.model.Tab;;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.Session;
 
@@ -50,7 +56,6 @@ import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 
@@ -155,7 +160,7 @@ public abstract class AUtils {
         final SpannableString linkedMessage = new SpannableString(Html.fromHtml(stringMessage));
         Linkify.addLinks(linkedMessage, Linkify.EMAIL_ADDRESSES | Linkify.WEB_URLS);
 
-        new Utils().showAlert(titleId, linkedMessage, context);
+        new Utils().showAlertWithLogoAndVersion(titleId, linkedMessage, context);
     }
 
     /**
@@ -165,7 +170,7 @@ public abstract class AUtils {
      */
     public void showAlertWithMessage(int titleId, int rawId, Context context){
         InputStream message = context.getResources().openRawResource(rawId);
-        new Utils().showAlert(titleId, AUtils.convertFromInputStreamToString(message).toString(), context);
+        new Utils().showAlertWithLogoAndVersion(titleId, AUtils.convertFromInputStreamToString(message).toString(), context);
     }
 
     /**
@@ -178,7 +183,7 @@ public abstract class AUtils {
         final SpannableString linkedMessage = new SpannableString(Html.fromHtml(stringMessage));
         Linkify.addLinks(linkedMessage, Linkify.EMAIL_ADDRESSES | Linkify.WEB_URLS);
 
-        new Utils().showAlert(titleId, linkedMessage, context);
+        new Utils().showAlertWithLogoAndVersion(titleId, linkedMessage, context);
     }
 
     /**
@@ -208,6 +213,45 @@ public abstract class AUtils {
         return stringMessage;
     }
 
-    public abstract void showAlert(int titleId, CharSequence text, Context context);
+    public void showAlert(int titleId, CharSequence text, Context context){
+        final AlertDialog dialog = new AlertDialog.Builder(context)
+                .setTitle(context.getString(titleId))
+                .setMessage(text)
+                .setNeutralButton(android.R.string.ok, null).create();
+        dialog.show();
+        ((TextView)dialog.findViewById(android.R.id.message)).setMovementMethod(LinkMovementMethod.getInstance());
+    }
+
+    public void showAlertWithLogoAndVersion(int titleId, CharSequence text, Context context){
+        final Dialog dialog = new Dialog(context);
+        dialog.setContentView(R.layout.dialog_about);
+        dialog.setTitle(titleId);
+        dialog.setCancelable(true);
+
+        //set up text title
+        TextView textTile = (TextView) dialog.findViewById(R.id.aboutTitle);
+        textTile.setText(BuildConfig.VERSION_NAME);
+        textTile.setGravity(Gravity.RIGHT);
+
+        //set up image view
+        ImageView img = (ImageView) dialog.findViewById(R.id.aboutImage);
+        img.setImageResource(R.drawable.psi);
+
+        //set up text title
+        TextView textContent = (TextView) dialog.findViewById(R.id.aboutMessage);
+        textContent.setMovementMethod(LinkMovementMethod.getInstance());
+        textContent.setText(text);
+        //set up button
+        Button button = (Button) dialog.findViewById(R.id.aboutButton);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+        //now that the dialog is set up, it's time to show it
+        dialog.show();
+    }
+
 
 }
