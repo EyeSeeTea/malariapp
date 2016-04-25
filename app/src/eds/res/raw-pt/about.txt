@@ -1,54 +1,54 @@
-<p><b>The Electronic Data System</b></p>
+<p> <b> O Sistema Eletrônico de Dados </b> </p>
 
-<p><b>Build %s</b></p>
+<p> <b> Build %s </b> </p>
 
-<p>This Software Application (“App”) was developed by Population Services International (PSI) in collaboration with Program for Appropriate Technology in Health (PATH) to improve use of the on-site training and supportive supervision (OTSS) approach, in which MalariaCare supports government supervisors at the national, regional, and local levels to visit health facilities and observe malaria diagnosis and treatment practices, identify any gaps, and guide improvement.</p>
+<p> Este software ( "PDA") foi desenvolvido pela Population Services International (PSI), em colaboração com o Programa para Tecnologia Apropriada em Saúde (PATH) para melhorar o uso da formação no local e abordagem a supervisão de apoio (OTSS), em que MalariaCare suporta supervisores governamentais nos níveis nacionais, regionais e locais para visitar as instalações de saúde e observar as práticas de diagnóstico e tratamento da malária, identificar eventuais lacunas e orientar a melhoria. </p>
 
-<p>This App is made possible by the generous support of the American People through the United States Agency for International Development (USAID). The contents are the responsibility of PSI and do not necessarily reflect the views of USAID or the United States Government.</p>
+<p> Este App é possível graças ao generoso apoio do povo americano através da Agência dos Estados Unidos para o Desenvolvimento Internacional (USAID). Os conteúdos são da responsabilidade do PSI e não refletem necessariamente as opiniões da USAID ou do Governo dos Estados Unidos. </ P>
 
-<p>For more information about this application, please write to mis@psi.org</p>
+<p> Para mais informações sobre esta aplicação, por favor escreva para mis@psi.org </p>
 
-<p><b><u>Contributing organizations</u></b></p>
+<p> <b> <u> organizações que contribuem </u> </b> </p>
 
-<p><b><i>Population Services International</i></b></p>
+<p> <b> <i> Population Services International </i> </b> </p>
 
-<p><i>Lead conceptual development and implementation</i></p>
+<p> <i> desenvolvimento conceitual chumbo e implementação </i> </p>
 
-<p>PSI is a nonprofit global health organization that makes it easier for people in the developing world to lead healthier lives and plan the families they desire by marketing affordable products and services</p>
+<p> PSI é uma organização mundial de saúde sem fins lucrativos que torna mais fácil para as pessoas no mundo em desenvolvimento para levar uma vida mais saudável e planejar as famílias que desejam por comercialização de produtos e serviços acessíveis </p>
 
-<p><a href="http://www.psi.org">www.psi.org</a></p>
+<p> <a href="http://www.psi.org"> www.psi.org </a> </p>
 
-<p><b><i>EyeSeeTea LTD</i></b></p>
+<p> <b> <i> EyeSeeTea LTD </i> </b> </p>
 
-<p><i>Lead technical development</i></p>
+<p> <i> desenvolvimento técnico chumbo </i> </p>
 
-<p>EyeSeeTea LTD is a London-based company dedicated to:<br/>
-- NGO software development<br/>
-- ICT development & deployment<br/>
-- Data analysis and representation<br/></p>
+<p> EyeSeeTea LTD é uma empresa com sede em Londres dedicada à: <br/>
+- <br/> Desenvolvimento de software ONG
+- Desenvolvimento das TIC & <br/> implantação
+- A análise dos dados e representação <br/> </p>
 
-<p><a href="http://www.eyeseetea.com">www.eyeseetea.com</a></p>
+<p> <a href="http://www.eyeseetea.com"> www.eyeseetea.com </a> </p>
 
-<p><b><i>MalariaCare Consortium</i></b></p>
+<p> <b> <i> MalariaCare Consortium </i> </b> </p>
 
-<p><i>Lead content development</i></p>
+<p> <i> desenvolvimento de conteúdo de chumbo </i> </p>
 
-<p>MalariaCare is a five-year partnership funded by the US Agency for International Development (USAID) under the US President’s Malaria Initiative (PMI), with the goal of scaling up high-quality diagnosis and case management services for malaria and other febrile (fever-causing) illnesses.</p>
+<p> MalariaCare é uma parceria de cinco anos financiado pela Agência dos Estados Unidos para o Desenvolvimento Internacional (USAID), sob a Malária Iniciativa do Presidente dos EUA (PMI), com o objetivo de expandir os serviços de diagnóstico e gestão de casos de alta qualidade para a malária e outras febril (febre-causando) doenças. </p>
 
-<p><a href="https://malariacare.org">https://malariacare.org/</a></p>
+<p> <a href="https://malariacare.org"> https://malariacare.org/ </a> </p>
 
-<p><b><i>PATH</i></b></p>
+<p> <b> <i> PATH </i> </b> </p>
 
-<p><i>Co-lead, content & conceptual development and implementation</i></p>
+<p> <i> Co-chumbo, conteúdo e desenvolvimento conceitual e implementação </i> </p>
 
-<p>An international nonprofit organization, we save lives and improve health, especially among women and children. </p>
+<p> Uma organização internacional sem fins lucrativos, nós salvar vidas e melhorar a saúde, especialmente entre mulheres e crianças. </ P>
 
-<p><a href="http://www.path.org">www.path.org</a></p>
+<p> <a href="http://www.path.org"> www.path.org </a> </p>
 
-<p><b><i>KnowTechTure (KTT)</i></b></p>
+<p> <b> <i> KnowTechTure (KTT) </i> </b> </p>
 
-<p><i>Development contribution</i></p>
+<p> <i> contribuição Desenvolvimento </i> </p>
 
-<p>KTT specializes in DHIS architecture, custom development and deployment.</p>
+<p> KTT especializada em arquitetura DHIS, desenvolvimento personalizado e implantação. </ P>
 
-<p><a href="http://www.knowtechture.com">www.knowtechture.com</a></p>
+<p> <a href="http://www.knowtechture.com"> www.knowtechture.com </a> </p>

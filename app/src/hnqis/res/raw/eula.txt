@@ -1,6 +1,6 @@
 <p><b>End-User License Agreement (“Agreement”)</b></p>
 <p>Last updated:  4.21.2016</p>
-<p>Please read this End-User License Agreement (“Agreement”) carefully before clicking the “I Agree” button, downloading or using the Electronic Data System (EDS), the “Application”.</p>
+<p>Please read this End-User License Agreement (“Agreement”) carefully before clicking the “I Agree” button, downloading or using the Health Network Quality Improvement System (HNQIS), the “Application”.</p>
 <p>By clicking the “I Agree” button, downloading or using the Application, you are agreeing to be bound by the terms and conditions of this Agreement.</p>
 <p>If you do not agree to the terms of this Agreement, do not click on the “I Agree” button and do not download or use the Application</p>
 <p><b>License</b></p>

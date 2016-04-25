@@ -1,6 +1,6 @@
 Copyright Notice
 
-The Electronic Data System (EDS) is intended to improve use of the on-site training and supportive supervision (OTSS) approach, in which MalariaCare supports government supervisors at the national, regional, and local levels to visit health facilities and observe malaria diagnosis and treatment practices, identify any gaps, and guide improvement. MalariaCare is a five-year partnership funded by the US Agency for International Development (USAID) under the US President’s Malaria Initiative (PMI), with the goal of scaling up high-quality diagnosis and case management services for malaria and other febrile (fever-causing) illnesses. Copyright ©2016 Population Services International (PSI).
+The Health Network Quality Improvement System (HNQIS) is a system designed to support the improvement of the quality of services delivered by different PSI health networks, including Social Franchises, pharmacies and drug sellers. The system is focused on assessing, improving practices, planning and monitoring the performance of network providers. Copyright ©2016 Population Services International (PSI).
 
 This application is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
 
@@ -10,7 +10,7 @@ You should have received a copy of the GNU General Public License along with thi
 
 For more information about this application, please write to mis@psi.org or to:
 
-    Population Services International
+	Population Services International
 	Attn: Global Business Systems (GBS) department
 	1120 19th Street, NW, Suite 600
 	Washington, DC  20036
