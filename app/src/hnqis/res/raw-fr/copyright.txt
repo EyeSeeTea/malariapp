@@ -1,0 +1,16 @@
+Copyright
+
+Le Système électronique de données (EDS) est destiné à améliorer l'utilisation de la formation sur place et supervision de soutien (FAÉO), dans laquelle MalariaCare soutient les superviseurs du gouvernement aux niveaux national, régional et local à visiter les établissements de santé et d'observer le diagnostic du paludisme et les pratiques de traitement, d'identifier les lacunes, et de guider l'amélioration. MalariaCare est un partenariat de cinq ans financé par l'Agence américaine pour le développement international (USAID) dans le cadre du paludisme Initiative du Président des États-Unis (PMI), dans le but d'élargir les services de diagnostic et de gestion des cas de haute qualité pour le paludisme et d'autres maladies. Copyright © 2016 Population Services International (PSI).
+
+Cette application est un logiciel libre: vous pouvez le redistribuer et / ou le modifier selon les termes de la GNU General Public License telle que publiée par la Free Software Foundation, soit la version 3 de la licence, ou (à votre choix) toute version ultérieure.
+
+Cette application est distribué dans l'espoir qu'il sera utile, mais SANS AUCUNE GARANTIE; sans même la garantie implicite de COMMERCIALISATION ou D'ADAPTATION À UN USAGE PARTICULIER. Voir la GNU General Public License pour plus de détails.
+
+Vous devriez avoir reçu une copie de la Licence Publique Générale GNU avec cette application. Sinon, voir http://www.gnu.org/licenses/gpl-3.0.html.
+
+Pour plus d'informations sur cette application, s'il vous plaît écrivez à mis@psi.org~~V ou à:
+
+    Population Services International
+    Attn: Systèmes Global Business (GBS) département
+    1120 19th Street, NW, Suite 600
+    Washington, DC 20036

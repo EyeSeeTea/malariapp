@@ -45,7 +45,6 @@ import org.eyeseetea.malariacare.database.utils.PopulateDB;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.utils.AUtils;
-import org.eyeseetea.malariacare.utils.Utils;
 import org.hisp.dhis.android.sdk.job.NetworkJob;
 import org.hisp.dhis.android.sdk.persistence.Dhis2Application;
 import org.hisp.dhis.android.sdk.persistence.preferences.ResourceType;
@@ -122,10 +121,7 @@ public class LoginActivity extends org.hisp.dhis.android.sdk.ui.activities.Login
                 .setNeutralButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-                        SharedPreferences.Editor editor = sharedPreferences.edit();
-                        editor.putBoolean(getString(R.string.eula_accepted), true);
-                        editor.commit();
+                        rememberEulaAccepted(context);
                         loginToDhis(serverUrl,username,password);
                     }
                 })
@@ -135,13 +131,24 @@ public class LoginActivity extends org.hisp.dhis.android.sdk.ui.activities.Login
     }
 
     /**
+     * Save a preference to remember that EULA was already accepted
+     * @param context
+     */
+    public void rememberEulaAccepted(Context context){
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putBoolean(getString(R.string.eula_accepted), true);
+        editor.commit();
+    }
+
+    /**
      * User SDK function to login
      * @param serverUrl
      * @param username
      * @param password
      */
     public void loginToDhis(String serverUrl, String username, String password){
-        //Delegate real login attempt to parent
+        //Delegate real login attempt to parent in sdk
         super.login(serverUrl, username, password);
     }
 
