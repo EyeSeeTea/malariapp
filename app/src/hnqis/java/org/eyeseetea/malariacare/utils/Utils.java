@@ -46,38 +46,6 @@ import org.eyeseetea.malariacare.network.PullClient;
 public class Utils extends AUtils {
 
     @Override
-    public void showAlert(int titleId, CharSequence text, Context context){
-        final Dialog dialog = new Dialog(context);
-        dialog.setContentView(R.layout.dialog_about);
-        dialog.setTitle(titleId);
-        dialog.setCancelable(true);
-
-        //set up text title
-        TextView textTile = (TextView) dialog.findViewById(R.id.aboutTitle);
-        textTile.setText(BuildConfig.VERSION_NAME);
-        textTile.setGravity(Gravity.RIGHT);
-
-        //set up image view
-        ImageView img = (ImageView) dialog.findViewById(R.id.aboutImage);
-        img.setImageResource(R.drawable.psi);
-
-        //set up text title
-        TextView textContent = (TextView) dialog.findViewById(R.id.aboutMessage);
-        textContent.setMovementMethod(LinkMovementMethod.getInstance());
-        textContent.setText(text);
-        //set up button
-        Button button = (Button) dialog.findViewById(R.id.aboutButton);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-            }
-        });
-        //now that the dialog is set up, it's time to show it
-        dialog.show();
-    }
-
-    @Override
     public void createNewSurvey(final OrgUnit orgUnit, final TabGroup tabGroup) {
         final DashboardActivity activity = ((DashboardActivity) DashboardActivity.dashboardActivity);
         activity.createNewSurvey(orgUnit, tabGroup);
