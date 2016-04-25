@@ -26,6 +26,11 @@ import android.content.DialogInterface;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
+import android.text.Html;
+import android.text.SpannableString;
+import android.text.method.LinkMovementMethod;
+import android.text.util.Linkify;
+import android.widget.TextView;
 
 import com.raizlabs.android.dbflow.structure.BaseModel;
 
@@ -177,6 +182,70 @@ public abstract class AUtils {
         if(netInfo==null)
             return false;
         return netInfo.isConnected();
+    }
+
+    /**
+     * Shows an alert dialog with a big message inside based on a raw resource HTML formatted
+     * @param titleId Id of the title resource
+     * @param rawId Id of the raw text resource in HTML format
+     */
+    public void showAlertWithHtmlMessage(int titleId, int rawId, Context context){
+        InputStream message = context.getResources().openRawResource(rawId);
+        String stringMessage = AUtils.convertFromInputStreamToString(message).toString();
+        final SpannableString linkedMessage = new SpannableString(Html.fromHtml(stringMessage));
+        Linkify.addLinks(linkedMessage, Linkify.EMAIL_ADDRESSES | Linkify.WEB_URLS);
+
+        new Utils().showAlert(titleId, linkedMessage, context);
+    }
+
+    /**
+     * Shows an alert dialog with a big message inside based on a raw resource
+     * @param titleId Id of the title resource
+     * @param rawId Id of the raw text resource
+     */
+    public void showAlertWithMessage(int titleId, int rawId, Context context){
+        InputStream message = context.getResources().openRawResource(rawId);
+        new Utils().showAlert(titleId, AUtils.convertFromInputStreamToString(message).toString(), context);
+    }
+
+    /**
+     * Shows an alert dialog with a big message inside based on a raw resource HTML formatted
+     * @param titleId Id of the title resource
+     * @param rawId Id of the raw text resource in HTML format
+     */
+    public void showAlertWithHtmlMessageAndLastCommit(int titleId, int rawId, Context context){
+        String stringMessage = getMessageWithCommit(rawId, context);
+        final SpannableString linkedMessage = new SpannableString(Html.fromHtml(stringMessage));
+        Linkify.addLinks(linkedMessage, Linkify.EMAIL_ADDRESSES | Linkify.WEB_URLS);
+
+        new Utils().showAlert(titleId, linkedMessage, context);
+    }
+
+    /**
+     * Merge the lastcommit into the raw file
+     * @param rawId Id of the raw text resource in HTML format
+     */
+    public String getMessageWithCommit(int rawId, Context context) {
+        InputStream message = context.getResources().openRawResource(rawId);
+        String stringCommit;
+        //Check if lastcommit.txt file exist, and if not exist show as unavailable.
+        int layoutId = context.getResources().getIdentifier("lastcommit", "raw", context.getPackageName());
+        if (layoutId == 0){
+            stringCommit=context.getString(R.string.unavailable);
+        } else {
+            InputStream commit = context.getResources().openRawResource( layoutId);
+            stringCommit= AUtils.convertFromInputStreamToString(commit).toString();
+        }
+        String stringMessage= AUtils.convertFromInputStreamToString(message).toString();
+        if(stringCommit.contains(context.getString(R.string.unavailable))){
+            stringCommit=String.format(context.getString(R.string.lastcommit),stringCommit);
+            stringCommit=stringCommit+" "+context.getText(R.string.lastcommit_unavailable);
+        }
+        else {
+            stringCommit = String.format(context.getString(R.string.lastcommit), stringCommit);
+        }
+        stringMessage=String.format(stringMessage,stringCommit);
+        return stringMessage;
     }
 
     public abstract void showAlert(int titleId, CharSequence text, Context context);

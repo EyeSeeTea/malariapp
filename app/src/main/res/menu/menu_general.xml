@@ -24,8 +24,16 @@
         android:orderInCategory="102"/>
     <item android:id="@+id/action_about" android:title="@string/settings_menu_about"
         android:orderInCategory="103"/>
-    <item android:id="@+id/action_legal" android:title="@string/settings_menu_legal"
-        android:orderInCategory="104"/>
+    <item android:title="@string/settings_menu_legal" android:orderInCategory="104">
+        <menu>
+            <item android:id="@+id/action_copyright" android:title="@string/settings_menu_copyright"
+                android:orderInCategory="104" />
+            <item android:id="@+id/action_licenses" android:title="@string/settings_menu_licenses"
+                android:orderInCategory="105" />
+            <item android:id="@+id/action_eula" android:title="@string/settings_menu_eula"
+                android:orderInCategory="106" />
+        </menu>
+    </item>
     <item android:id="@+id/action_logout" android:title="@string/settings_menu_logout"
-        android:orderInCategory="105"/>
+        android:orderInCategory="107"/>
 </menu>

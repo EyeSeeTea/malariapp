@@ -17,6 +17,9 @@
     <!-- settings -->
     <string name="settings_menu_about">Acerca de</string>
     <string name="settings_menu_legal">Legal</string>
+    <string name="settings_menu_copyright">Copyright</string>
+    <string name="settings_menu_licenses">Licencias de software</string>
+    <string name="settings_menu_eula">EULA</string>
     <string name="settings_menu_configuration">Configuración</string>
     <string name="settings_menu_licence">Licencia</string>
     <string name="settings_menu_update">Actualizar preguntas (DHIS)</string>
