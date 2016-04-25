@@ -8,7 +8,7 @@ Cette application est distribué dans l'espoir qu'il sera utile, mais SANS AUCUN
 
 Vous devriez avoir reçu une copie de la Licence Publique Générale GNU avec cette application. Sinon, voir http://www.gnu.org/licenses/gpl-3.0.html.
 
-Pour plus d'informations sur cette application, s'il vous plaît écrivez à mis@psi.org~~V ou à:
+Pour plus d'informations sur cette application, s'il vous plaît écrivez à mis@psi.org ou à:
 
     Population Services International
     Attn: Systèmes Global Business (GBS) département
