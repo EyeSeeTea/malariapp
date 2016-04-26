@@ -48,7 +48,7 @@ import org.eyeseetea.malariacare.network.PullClient;
 import org.eyeseetea.malariacare.receivers.AlarmPushReceiver;
 import org.eyeseetea.malariacare.services.SurveyService;
 import org.eyeseetea.malariacare.utils.Constants;
-import org.eyeseetea.malariacare.utils.VariantSpecificUtils;
+import org.eyeseetea.malariacare.utils.Utils;
 import org.hisp.dhis.android.sdk.events.UiEvent;
 import org.hisp.dhis.android.sdk.persistence.models.Event;
 
@@ -311,8 +311,8 @@ public class DashboardActivity extends BaseActivity{
      * Create new survey from CreateSurveyFragment
      */
     public void onCreateSurvey(final OrgUnit orgUnit,final TabGroup tabGroup) {
-        VariantSpecificUtils variantSpecificUtils = new VariantSpecificUtils();
-        variantSpecificUtils.createNewSurvey(orgUnit, tabGroup);
+        Utils utils = new Utils();
+        utils.createNewSurvey(orgUnit, tabGroup);
     }
 
     /**

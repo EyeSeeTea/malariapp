@@ -1,46 +1,54 @@
-<p><b>Sistema Electrónico de Datos (EDS)</b></p>
+<p> <b> El Sistema Electrónico de Datos </b> </p>
 
-<p><b>%s</b></p>
+<p> <b> Build %s </b> </p>
 
-<p>Esta aplicación es posible por la generosa aportación del pueblo norteamericano a través de la Agencia Internacional para el Desarrollo de los Estados Unidos (USAID). Ha sido desarrollada por MalariaCare, un partenariado de 5 años liderado por <a href="http://www.path.org/">PATH</a> y financiado por la <a href="http://www.usaid.gov/">Agencia Internacional para el Desarrollo de los Estados Unidos (USAID)</a> a través de la <a href="http://www.pmi.gov/">US President’s Malaria Initiative (PMI)</a>. El objetivo de MalariaCare es la realización de un diagnóstico de alta calidad escalable y los servicios de tratamiento de malaria y otras enfermedades febriles. Los contenidos son responsabilidad MalariaCare y no necesariamente reflejan el punto de vista de USAID o del gobierno de los Estados Unidos.</p>
+<p> Esta aplicación de software ( "App") fue desarrollado por Population Services International (PSI) en colaboración con el Programa de Tecnología Apropiada en Salud (PATH) para mejorar el uso de la formación in situ y el enfoque de supervisión de apoyo (OTSS), en MalariaCare la que soporta los supervisores gubernamentales a nivel nacional, regional y local para visitar los centros de salud y observar las prácticas de diagnóstico y tratamiento de la malaria, identificar las lagunas, y guiar la mejora. </p>
 
-<p>Este software se publica bajo la Licencia Pública General de GNU (GPL). Para más información sobre esta licencia, por favor, visite la sección 'licencia' bajo el menú de 'configuración'.</p>
+<p> Esta aplicación es posible gracias al generoso apoyo del pueblo estadounidense a través de la Agencia de los Estados Unidos para el Desarrollo Internacional (USAID). Los contenidos son responsabilidad de los ISP y no reflejan necesariamente los puntos de vista de USAID o del Gobierno de los Estados Unidos. </ P>
 
-<p>Para más información, por favor, contáctenos en mis@psi.org</p>
+<p> Para obtener más información acerca de esta aplicación, puede escribir a mis@psi.org </p>
 
-<p><b><u>Organizaciones participantes</u></b></p>
+<p> <b> <u> Organizaciones colaboradoras </u> </b> </p>
 
-<p><b>Socios de MalariaCare:</b></p>
+<p> <b> <i> Servicios Internacionales de Población </i> </b> </p>
 
-<p><b><i>Population Services International</i></b></p>
+<p> <i> desarrollo conceptual de plomo y la aplicación </i> </p>
 
-<p><i>Desarrollo de contenidos, desarrollo conceptual e implementación</i></p>
+<p> La ISP es una organización de salud mundial sin fines de lucro que hace que sea más fácil para las personas en el mundo en desarrollo a llevar una vida más saludable y planificar las familias que desean mediante la comercialización de productos y servicios a precios asequibles </p>
 
-<p>PSI hace más fácil para la población de países en desarrollo llevar una vida saludable y la planificación que deseen mediante la venta de productos y servicios adaptados a las posibilidades locales.</p>
+<p> <a href="http://www.psi.org"> www.psi.org </a> </p>
 
-<p><a href="http://www.psi.org">www.psi.org</a></p>
+<p> <b> <i> EyeSeeTea LTD </i> </b> </p>
 
-<p><b><i>PATH</i></b></p>
+<p> <i> desarrollo técnico de plomo </i> </p>
 
-<p><i>Desarrollo de contenidos, desarrollo conceptual e implementación</i></p>
+<p> EyeSeeTea LTD es una empresa con sede en Londres dedicada a: <br/>
+- <br/> ONG de desarrollo de software
+- Desarrollo de las TIC y el despliegue <br/>
+- Análisis de los datos y la representación <br/> </p>
 
-<p>PATH acelera la innovación mediante cinco plataformas (vacunas, medicinas, diagnósticos, dispositivos y sistemas y servicios de innovación) que aprovechan su visión empresarial, científica y saber-hacer en salud pública, así como su pasión por la igualdad sanitaria. Mediante la movilización de sus socios alrededor del mundo, PATH lleva la innovación a una escala superior, trabajando en múltiples países, principalmente en África y Asia, para abordar sus mayores necesidades sanitarias</p>
+<p> <a href="http://www.eyeseetea.com"> www.eyeseetea.com </a> </p>
 
-<p><a href="http://www.path.org">www.path.org</a></p>
+<p> <b> <i> MalariaCare Consorcio </i> </b> </p>
 
-<p><b>Socios desarrolladores de software:</b></p>
+<p> <i> Desarrollo de Contenido de plomo </i> </p>
 
-<p><b><i>EyeSeeTea LTD</i></b></p>
+<p> MalariaCare es una sociedad de cinco años financiado por la Agencia de Estados Unidos para el Desarrollo Internacional (USAID) bajo la Malaria Iniciativa del Presidente de los Estados Unidos (PMI), con el objetivo de ampliar los servicios de diagnóstico y manejo de casos de alta calidad para la malaria y otras febril (causantes de la fiebre) enfermedades. </p>
 
-<p><i>Liderazgo del desarrollo técnico.</i></p>
+<p> <a href="https://malariacare.org"> https://malariacare.org/ </a> </p>
 
-<p>EyeSeeTea LTD es una empresa establecida en Londres dedicada a:<br/>
-- El desarrollo de software para ONG<br/>
-- El desarrollo y despliegue de infraestructuras TIC<br/>
-- El análisis de datos y su representación<br/></p>
+<p> <b> <i> ruta </ ​​i> </b> </p>
 
-<p><a href="http://www.eyeseetea.com">www.eyeseetea.com</a></p>
+<p> <i> Co-dirección, el contenido y el desarrollo conceptual y la aplicación </i> </p>
 
-<p><b><i>KnowTechTure</i></b></p>
+<p> Una organización internacional no lucrativa, que salvan vidas y mejoran la salud, especialmente entre las mujeres y los niños. </ P>
 
-<p><i>Desarrollo conceptual y técnico</i></p>
+<p> <a href="http://www.path.org"> www.path.org </a> </p>
+
+<p> <b> <i> KnowTechTure (KTT) </i> </b> </p>
+
+<p> <i> aportación de Desarrollo </i> </p>
+
+<p> KTT se especializa en la arquitectura DHIS, desarrollo personalizado y la implementación. </ P>
+
+<p> <a href="http://www.knowtechture.com"> www.knowtechture.com </a> </p>

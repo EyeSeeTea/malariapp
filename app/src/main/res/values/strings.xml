@@ -23,6 +23,10 @@
 
     <!-- settings -->
     <string name="settings_menu_about">About</string>
+    <string name="settings_menu_legal">Legal</string>
+    <string name="settings_menu_copyright">Copyright</string>
+    <string name="settings_menu_licenses">Software licenses</string>
+    <string name="settings_menu_eula">EULA</string>
     <string name="settings_menu_configuration">Settings</string>
     <string name="settings_menu_licence">License</string>
     <string name="settings_menu_update">Update questions (DHIS)</string>
@@ -287,6 +291,7 @@
     <item name="show_num_dems" type="string" translatable="false">show_num_dems</item>
     <item name="customize_fonts" type="string" translatable="false">customize_fonts</item>
     <item name="font_sizes" type="string" translatable="false">font_sizes</item>
+    <item name="eula_accepted" type="string" translatable="false">eula_accepted</item>
     <item name="dhis_url" type="string" translatable="false">dhis_url</item>
     <item name="dhis_user" type="string" translatable="false">dhis_user</item>
     <item name="dhis_password" type="string" translatable="false">dhis_password</item>

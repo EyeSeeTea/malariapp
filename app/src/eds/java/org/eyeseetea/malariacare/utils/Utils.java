@@ -30,6 +30,7 @@ import android.widget.TextView;
 import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.R;
 
+import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.EventExtended;
 import org.eyeseetea.malariacare.database.model.OrgUnit;
 import org.eyeseetea.malariacare.database.model.TabGroup;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
@@ -40,18 +41,9 @@ import org.hisp.dhis.android.sdk.persistence.models.Event;
 /**
  * Created by nacho on 28/03/16.
  */
-public class VariantSpecificUtils{
+public class Utils extends AUtils {
 
-    public static void showAlert(int titleId, CharSequence text, Context context){
-        final AlertDialog dialog = new AlertDialog.Builder(context)
-                .setTitle(context.getString(titleId))
-                .setMessage(text)
-                .setNeutralButton(android.R.string.ok, null).create();
-        dialog.show();
-        ((TextView)dialog.findViewById(android.R.id.message)).setMovementMethod(LinkMovementMethod.getInstance());
-    }
-
-
+    @Override
     public void createNewSurvey(OrgUnit orgUnit, TabGroup tabGroup) {
         ComboOrgUnitTabGroup comboOrgUnitTabGroup=new ComboOrgUnitTabGroup(orgUnit,tabGroup);
         LoadLastEvent loadLastEvent= new LoadLastEvent();

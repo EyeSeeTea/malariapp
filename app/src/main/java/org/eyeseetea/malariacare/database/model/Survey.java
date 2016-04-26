@@ -882,7 +882,7 @@ public class Survey extends BaseModel implements VisitableToSDK {
      * @return
      */
     public boolean isAModification(){
-        return Constants.SURVEY_IN_PROGRESS==this.status && this.eventuid!=null && this.eventuid.length()>0;
+        return this.eventuid!=null && this.eventuid.length()>0;
     }
 
     /**

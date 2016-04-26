@@ -1,38 +1,42 @@
-<p>PSI’s Health Network Quality Improvement System (HNQIS)</p>
+<p> <b> Sistema de Calidad PSI Red de Salud de Mejoras (HNQIS) </b> </p>
 
-<p>%s</p>
+<p> <b> Build %s </b> </p>
 
-<p>Esta app ha sido desarrollada por Population Services International (PSI) para mejorar la calidad sostenible de redes del sector salud privado. Esta aplicación fue desarrollada con el apoyo de la Bill & Melinda Gates Foundation y grandes donantes anónimos.</p>
+<p> Esta aplicación de software ( "App") fue desarrollado por Population Services International (PSI) para sostener la mejora de la calidad de las redes del sector privado para el cuidado de la salud. Esta aplicación fue desarrollada con el apoyo de: <br/>
+El Departamento de Desarrollo Internacional (DFID) (Gran Bretaña); y <br/>
+El Ministro de Comercio Exterior y Cooperación para el Desarrollo (Países Bajos) </p>
 
-<p>Este software se publica bajo la Licencia Pública General de GNU (GPL). Para más información sobre esta licencia, por favor, visite la sección 'licencia' bajo el menú de 'configuración'.</p>
+<p> Esta aplicación también es posible gracias al generoso apoyo del pueblo estadounidense a través de la Agencia de los Estados Unidos para el Desarrollo Internacional (USAID). Los contenidos son responsabilidad de los ISP y no reflejan necesariamente los puntos de vista de USAID o del Gobierno de los Estados Unidos. </ P>
 
-<p>Para más información, por favor, contáctenos en <a href="mailto:mis@psi.org">mis@psi.org</a></p>
+<p> Además, esta aplicación contiene ciertas modificaciones para una aplicación de software preparado en colaboración con el Programa de Tecnología Apropiada en Salud (PATH), y por lo tanto los puntos de vista expresados ​​en este documento no reflejan necesariamente los puntos de vista de PATH. </ P>
 
-<p>Organizaciones participantes</p>
+<p> Para obtener más información acerca de esta aplicación, puede escribir a mis@psi.org </p>
 
-<p>Population Services International</p>
+<p> <b> <u> Organizaciones colaboradoras </u> </b> </p>
 
-<p>Líder de desarrollo conceptual e implementación</p>
+<p> <b> <i> Servicios Internacionales de Población </i> </b> </p>
 
-<p>PSI hace más fácil para la población de países en desarrollo llevar una vida saludable y la planificación familiar que deseen mediante la venta de productos y servicios.</p>
+<p> <i> desarrollo conceptual de plomo y la aplicación </i> </p>
 
-<p><a href="http://www.psi.org">www.psi.org</a></p>
+<p> La ISP es una organización de salud mundial sin fines de lucro que hace que sea más fácil para las personas en el mundo en desarrollo a llevar una vida más saludable y planificar las familias que desean mediante la comercialización de productos y servicios a precios asequibles </p>
 
-<p>EyeSeeTea LTD</p>
+<p> <a href="http://www.psi.org"> www.psi.org </a> </p>
 
-<p>Desarrollo android.</p>
+<p> <b> <i> EyeSeeTea LTD </i> </b> </p>
 
-<p>EyeSeeTea LTD es una empresa establecida en Londres dedicada a:<br/>
-- Desarrollo de software para ONG<br/>
-- Desarrollo y despliegue de infraestructuras TIC<br/>
-- Análisis de datos y su representación<br/></p>
+<p> <i> desarrollo de Android </i> </p>
 
-<p><a href="http://www.eyeseetea.com">http://eyeseetea.com</a></p>
+<p> EyeSeeTea LTD es una empresa con sede en Londres dedicada a: <br/>
+- <br/> ONG de desarrollo de software
+- Desarrollo de las TIC y el despliegue <br/>
+- Análisis de los datos y la representación <br/> </p>
 
-<p>KnowTechTure(KTT)</p>
+<p> <a href="http://www.eyeseetea.com"> www.eyeseetea.com </a> </p>
 
-<p>Coordinador de desarrollo</p>
+<p> <b> <i> KnowTechTure (KTT) </i> </b> </p>
 
-<p>KTT se especializa en arquitectura DHIS, desarrollo y despliegue a medida.</p>
+<p> <i> Coordinación de Desarrollo </i> </p>
 
-<p><a href="http://www.KnowTechTure.com">http://www.KnowTechTure.com</a></p>
+<p> KTT se especializa en la arquitectura DHIS, desarrollo personalizado y la implementación. </ P>
+
+<p> <a href="http://www.knowtechture.com"> www.knowtechture.com </a> </p>
