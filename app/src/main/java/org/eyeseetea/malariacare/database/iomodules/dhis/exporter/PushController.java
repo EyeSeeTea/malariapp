@@ -141,6 +141,7 @@ public class PushController {
         new Thread(){
             @Override
             public void run(){
+                boolean success=true;
                 try {
                     if (result == null) {
                         Log.e(TAG, "onSendDataFinished with null");
@@ -159,10 +160,11 @@ public class PushController {
                     converter.saveSurveyStatus(getImportSummaryMap(result));
                     Log.d(TAG, "PUSH process...Finish");
                 }catch (Exception ex){
+                    success=false;
                     Log.e(TAG,"onSendDataFinished: "+ex.getLocalizedMessage());
                     postException(ex);
                 }finally {
-                    postFinish();
+                    postFinish(success);
                     unregister();
                 }
             }
@@ -218,7 +220,7 @@ public class PushController {
      * @param ex
      */
     private void postException(Exception ex){
-        AlarmPushReceiver.isDone();
+        AlarmPushReceiver.isDoneFail();
         ex.printStackTrace();
         Dhis2Application.getEventBus().post(new SyncProgressStatus(ex));
     }
@@ -226,9 +228,13 @@ public class PushController {
     /**
      * Notifies that the push is over
      */
-    private void postFinish(){
+    private void postFinish(boolean success){
         try {
-            AlarmPushReceiver.isDone();
+            if(success){
+                AlarmPushReceiver.isDoneSuccess();
+            }else{
+                AlarmPushReceiver.isDoneFail();
+            }
             Dhis2Application.getEventBus().post(new SyncProgressStatus());
         }
         catch(Exception e){

@@ -62,14 +62,15 @@ public class PullClient {
         networkUtils.setPassword(sharedPreferences.getString(applicationContext.getString(R.string.dhis_password), ""));
     }
 
+    /**
+     * Find the last survey in the server for that orgunit and program (given a tabgroup) in the last month from now.
+     *
+     * @param orgUnit
+     * @param tabGroup
+     * @return
+     */
     public Event getLastEventInServerWith(OrgUnit orgUnit, TabGroup tabGroup){
         Event  lastEventInServer=null;
-        Survey lastLocalSurvey = Survey.getLastSurvey(orgUnit.getId_org_unit(),tabGroup.getProgram());
-        //No local reference to find in server from a given date
-        if(lastLocalSurvey==null){
-            return null;
-        }
-
         Date oneMonthAgo = getOneMonthAgo();
 
         //Lets for a last event with that orgunit/tabgroup

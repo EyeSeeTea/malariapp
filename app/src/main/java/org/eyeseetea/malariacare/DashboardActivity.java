@@ -21,6 +21,7 @@ package org.eyeseetea.malariacare;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -83,7 +84,8 @@ public class DashboardActivity extends BaseActivity{
         //delegate modules initialization
         dashboardController.onCreate(this,savedInstanceState);
 
-        setAlarm();
+        //inits autopush alarm
+        AlarmPushReceiver.getInstance().setPushAlarm(this);
     }
 
     @Override
@@ -198,9 +200,13 @@ public class DashboardActivity extends BaseActivity{
             reloadOnResume=true;
             return;
         }
-        Intent surveysIntent=new Intent(this, SurveyService.class);
+        reloadDashboard();
+    }
+
+    public static void reloadDashboard(){
+        Intent surveysIntent=new Intent(dashboardActivity, SurveyService.class);
         surveysIntent.putExtra(SurveyService.SERVICE_METHOD, SurveyService.RELOAD_DASHBOARD_ACTION);
-        this.startService(surveysIntent);
+        dashboardActivity.startService(surveysIntent);
     }
 
     /**
@@ -323,13 +329,6 @@ public class DashboardActivity extends BaseActivity{
         Session.setSurvey(survey);
         prepareLocationListener(survey);
         dashboardController.onSurveySelected(survey);
-    }
-
-    /**
-     * The alarm is always set in applicatin init.
-     */
-    public void setAlarm() {
-        AlarmPushReceiver.getInstance().setPushAlarm(this);
     }
 
     //Show dialog exception from class without activity.

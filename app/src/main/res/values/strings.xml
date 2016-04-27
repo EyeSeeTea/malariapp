@@ -384,7 +384,7 @@
 
     <string name="created_on_code" translatable="false">_CreatedOn</string>
     <string name="created_by_code" translatable="false">_CreatedBy</string>
-    <string name="upload_date_code" translatable="false">_UploadedOn</string>
+    <string name="upload_on_code" translatable="false">_UploadedOn</string>
     <string name="uploaded_by_code" translatable="false">_UploadedBy</string>
 
 

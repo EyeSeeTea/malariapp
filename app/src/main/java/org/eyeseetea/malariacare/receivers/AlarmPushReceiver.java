@@ -27,6 +27,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
+import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.services.PushService;
 import org.eyeseetea.malariacare.services.SurveyService;
@@ -69,11 +70,23 @@ public class AlarmPushReceiver extends BroadcastReceiver {
         AlarmPushReceiver.fail = fail;
     }
 
+
+    public static void isDoneSuccess(){
+        Log.i(TAG,"isDoneSuccess");
+        setFail(false);
+        isDone();
+        DashboardActivity.reloadDashboard();
+    }
+
+    public static void isDoneFail(){
+        Log.i(TAG,"isDoneFail");
+        setFail(true);
+        isDone();
+    }
     /**
      * Notifies the alarm that the push attempt is finished
      */
     public static void isDone(){
-        Log.i(TAG,"isDone");
         AlarmPushReceiver.inProgress=false;
     }
 

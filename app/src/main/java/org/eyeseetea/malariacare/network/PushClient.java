@@ -25,6 +25,7 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
+import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.iomodules.dhis.exporter.PushController;
 import org.eyeseetea.malariacare.database.model.Survey;
@@ -77,10 +78,12 @@ public class PushClient {
     }
 
     public void pushSDK() {
+        //No network -> Done
         if (!AUtils.isNetworkAvailable()) {
             AlarmPushReceiver.isDone();
         }
-        malariaSdkPush();
+        //Push via sdk
+        PushController.getInstance().push(PreferencesState.getInstance().getContext(), surveys);
     }
 
     public PushResult pushAPI() {
@@ -88,16 +91,6 @@ public class PushClient {
                return malariaApiPush();
         }
         return new PushResult();
-    }
-
-    public void malariaSdkPush() {
-        //FIXME This is not ok since pushing is ASYNC
-        if(PushController.getInstance().push(PreferencesState.getInstance().getContext(), surveys)){
-            AlarmPushReceiver.setFail(false);
-        }else{
-            AlarmPushReceiver.setFail(true);
-        }
-        updateDashboard();
     }
 
     public PushResult malariaApiPush() {
@@ -127,18 +120,9 @@ public class PushClient {
         }
         finally {
             //Success or not the dashboard must be reloaded
-            updateDashboard();
+            DashboardActivity.reloadDashboard();
         }
         return  pushResult;
-    }
-
-
-
-    public void updateDashboard(){
-        //Reload data using service
-        Intent surveysIntent=new Intent(applicationContext, SurveyService.class);
-        surveysIntent.putExtra(SurveyService.SERVICE_METHOD, SurveyService.RELOAD_DASHBOARD_ACTION);
-        applicationContext.startService(surveysIntent);
     }
 
 }

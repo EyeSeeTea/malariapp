@@ -124,8 +124,8 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
 
         createdOnCode = ServerMetadata.findControlDataElementUid(context.getString(R.string.created_on_code));
         createdByCode = ServerMetadata.findControlDataElementUid(context.getString(R.string.created_by_code));
-        updatedDateCode = ServerMetadata.findControlDataElementUid(context.getString(R.string.upload_date_code));
-        updatedUserCode = ServerMetadata.findControlDataElementUid(context.getString(R.string.created_by_code));
+        updatedDateCode = ServerMetadata.findControlDataElementUid(context.getString(R.string.upload_on_code));
+        updatedUserCode = ServerMetadata.findControlDataElementUid(context.getString(R.string.uploaded_by_code));
         surveys = new ArrayList<>();
         events = new HashMap<>();
         originalSurveysUIDs = new HashMap<>();
@@ -288,13 +288,15 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
     private void updateEventDates() {
 
         // NOTE: do not try to set the event creation date. SDK will try to update the event in the next push instead of creating it and that will crash
-        String date=EventExtended.format(currentSurvey.getCompletionDate(), EventExtended.DHIS2_DATE_FORMAT);
+        String date=EventExtended.format(currentSurvey.getCompletionDate(), EventExtended.DHIS2_GMT_DATE_FORMAT);
         if(!isAModification && (currentEvent.getEventDate()==null || currentEvent.getEventDate().isEmpty())) {
             currentEvent.setEventDate(date);
         }
-        currentEvent.setDueDate(EventExtended.format(currentSurvey.getScheduleDate(), EventExtended.DHIS2_DATE_FORMAT));
+        //If new will be null | if modification needs null since POST will update just new values
+        currentEvent.setCreated(null);
+        currentEvent.setDueDate(EventExtended.format(currentSurvey.getScheduleDate(), EventExtended.DHIS2_GMT_DATE_FORMAT));
         //Not used
-        currentEvent.setLastUpdated(EventExtended.format(currentSurvey.getUploadDate(), EventExtended.DHIS2_DATE_FORMAT));
+        currentEvent.setLastUpdated(EventExtended.format(currentSurvey.getUploadDate(), EventExtended.DHIS2_GMT_DATE_FORMAT));
         currentEvent.save();
     }
 
@@ -415,7 +417,7 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
      */
     private void annotateSurveyAndEvent() {
         surveys.add(currentSurvey);
-        currentEvent.setLastUpdated(EventExtended.format(uploadedDate, EventExtended.DHIS2_DATE_FORMAT));
+        currentEvent.setLastUpdated(EventExtended.format(uploadedDate, EventExtended.DHIS2_GMT_DATE_FORMAT));
         events.put(currentSurvey.getId_survey(),currentEvent);
         Log.d(TAG, String.format("%d surveys converted so far", surveys.size()));
     }
@@ -436,20 +438,23 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
                 continue;
             }
 
+            if(importSummary==null){
+                rollbackSurvey(iSurvey);
+            }
+
             //Errors
             Log.d(TAG, importSummary.toString());
             //Some error happened -> move back to completed
             if(failedItem!=null) {
-                iSurvey.setStatus(Constants.SURVEY_COMPLETED);
-                iSurvey.setEventUid(originalSurveysUIDs.get(iSurvey.getId_survey()));
+                rollbackSurvey(iSurvey);
                 List<String> failedUids=getFailedUidQuestion(failedItem.getErrorMessage());
                 for(String uid:failedUids) {
                     Log.d(TAG, "PUSH process...Conflict in "+uid+" dataelement pushing survey: "+iSurvey.getId_survey());
                     iSurvey.saveConflict(uid);
                     iSurvey.setStatus(Constants.SURVEY_CONFLICT);
                 }
+                iSurvey.save();
             }
-            iSurvey.save();
 
             //XXX Whats this?
             if(iSurvey.getStatus()!=Constants.SURVEY_CONFLICT && ImportSummary.SUCCESS.equals(importSummary.getStatus())) {
@@ -458,6 +463,12 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
             }
 
         }
+    }
+
+    private void rollbackSurvey(Survey survey){
+        survey.setStatus(Constants.SURVEY_COMPLETED);
+        survey.setEventUid(originalSurveysUIDs.get(survey.getId_survey()));
+        survey.save();
     }
 
     private void saveSurveyFromImportSummary(Survey iSurvey) {

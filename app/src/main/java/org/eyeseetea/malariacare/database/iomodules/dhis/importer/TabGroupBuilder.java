@@ -125,26 +125,15 @@ public class TabGroupBuilder {
         TabGroup questionTabGroup;
         String attributeTabGroupValue = sdkDataElementExtended.getValue(DataElementExtended.ATTRIBUTE_TABGROUP_NAME);
         String tabUid = sdkDataElementExtended.findProgramStageSectionUIDByDataElementUID(sdkDataElementExtended.getDataElement().getUid());
-        String tabGroupUid=TabGroup.class.getName()+"";
+        String tabGroupUid=TabGroup.class.getName();
         try {
             tabGroupUid = sdkDataElementExtended.findAttributeValuefromDataElementCode(DataElementExtended.ATTRIBUTE_TABGROUP_NAME, sdkDataElementExtended.getDataElement()).getAttributeId();
         }catch (NullPointerException e){
             Log.d(TAG, "The dataelement(header) "+sdkDataElementExtended.getDataElement().getUid()+" don't have Tabgroup attribute.");
         }
 
-        String attributeHeaderValue = sdkDataElementExtended.getValue(DataElementExtended.ATTRIBUTE_HEADER_NAME);
-        Tab questionTab;
-        if(ConvertFromSDKVisitor.appMapObjects.containsKey(tabUid)) {
-            questionTab = (Tab) ConvertFromSDKVisitor.appMapObjects.get(tabUid);
-        }
-        else
-            questionTab=null;
+        Tab questionTab = (Tab) ConvertFromSDKVisitor.appMapObjects.get(tabUid);
 
-        if(attributeTabGroupValue!=null && ConvertFromSDKVisitor.appMapObjects.containsKey(tabGroupUid+attributeTabGroupValue)) {
-            questionTabGroup = (TabGroup) ConvertFromSDKVisitor.appMapObjects.get(tabGroupUid+attributeTabGroupValue);
-        }
-        else
-            questionTabGroup=null;
 
         if(attributeTabGroupValue==null){
             Log.d(TAG, "Creating new tabgroup from dataelement: " +sdkDataElementExtended.getDataElement().getUid());
