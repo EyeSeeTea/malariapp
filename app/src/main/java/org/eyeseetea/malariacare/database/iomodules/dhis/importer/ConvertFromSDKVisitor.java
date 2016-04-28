@@ -82,9 +82,6 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
     CompositeScoreBuilder compositeScoreBuilder;
     QuestionBuilder questionBuilder;
     TabGroupBuilder tabGroupBuilder;
-    private final String ATTRIBUTE_PRODUCTIVITY_CODE="OUProductivity";
-    private final String SDKDateFormat="yyyy-MM-dd'T'HH:mm:ss.SSSZ";
-
 
     public ConvertFromSDKVisitor(){
         appMapObjects = new HashMap();
@@ -301,106 +298,88 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
         //Set fks
         survey.setOrgUnit(orgUnit);
         survey.setEventUid(event.getUid());
-        survey.save();
 
         //Annotate object in map
-        appMapObjects.put(event.getUid(), survey);
+        EventToSurveyBuilder eventToSurveyBuilder=new EventToSurveyBuilder(survey);
+        appMapObjects.put(event.getUid(), eventToSurveyBuilder);
 
         //Visit its values
         for(DataValue dataValue:event.getDataValues()){
             DataValueExtended dataValueExtended=new DataValueExtended(dataValue);
             dataValueExtended.accept(this);
         }
-        try {
-            tabGroupBuilder.saveSurveyTabGroup(survey);
-        }catch (NullPointerException e){
-            e.printStackTrace();
-        }
-        survey.save();
-
-        //Annotate object in map
-        appMapObjects.put(event.getUid(), survey);
+        //Once all the values are processed save common data across created surveys
+        eventToSurveyBuilder.saveCommonData();
     }
 
     @Override
     public void visit(DataValueExtended sdkDataValueExtended) {
 
         DataValue dataValue=sdkDataValueExtended.getDataValue();
-        Survey survey=(Survey)appMapObjects.get(dataValue.getEvent());
-        //Data value is a value from compositeScore
+        EventToSurveyBuilder eventToSurveyBuilder =(EventToSurveyBuilder) appMapObjects.get(dataValue.getEvent());
+
+        //General common data (mainscore, createdby, createdon, uploadedon..)
+
+        //-> mainScore
         if(appMapObjects.get(dataValue.getDataElement()) instanceof CompositeScore){
-            //CHeck if it is a root score -> score
             CompositeScore compositeScore = (CompositeScore)appMapObjects.get(dataValue.getDataElement());
-            if(CompositeScoreBuilder.ROOT_NODE_CODE.equals(compositeScore.getHierarchical_code())){
-                Score score = new Score();
-                score.setScore(Float.parseFloat(dataValue.getValue()));
-                score.setUid(dataValue.getDataElement());
-                score.setSurvey(survey);
-                score.save();
-            }
+            //Only mainScores are annotated
+            eventToSurveyBuilder.setMainScore(compositeScore,dataValue);
+            Log.i(TAG,String.format("Event %s with mainScore %s",eventToSurveyBuilder.getEventUid(),dataValue.getValue()));
             return;
         }
 
+        //-> createdOn
         if(dataValue.getDataElement().equals(PreferencesState.getInstance().getContext().getResources().getString(R.string.created_on_code))){
-            try{
-                Date date = EventExtended.parseDate(dataValue.getValue(),EventExtended.AMERICAN_DATE_FORMAT);
-                survey.setCreationDate(date);
-                survey.save();
-                //Annotate object in map
-                appMapObjects.put(dataValue.getEvent(), survey);
-            }catch(ParseException e){
-                Log.d(TAG,"Error converting creation date from datavalue in survey: "+survey.getId_survey());
-            }
+            eventToSurveyBuilder.setCreatedOn(dataValue);
+            Log.i(TAG,String.format("Event %s created on %s",eventToSurveyBuilder.getEventUid(),dataValue.getValue()));
             return;
         }
 
+        //-> uploadedOn
         if(dataValue.getDataElement().equals(PreferencesState.getInstance().getContext().getResources().getString(R.string.upload_on_code))){
-            try{
-                Date date = EventExtended.parseDate(dataValue.getValue(),EventExtended.AMERICAN_DATE_FORMAT);
-                survey.setUploadDate(date);
-                survey.save();
-                //Annotate object in map
-                appMapObjects.put(dataValue.getEvent(), survey);
-            }catch(ParseException e){
-                Log.d(TAG,"Error converting upload date from datavalue in survey:"+survey.getId_survey());
-            }
+            eventToSurveyBuilder.setUploadedOn(dataValue);
+            Log.i(TAG,String.format("Event %s uploaded on %s",eventToSurveyBuilder.getEventUid(),dataValue.getValue()));
             return;
         }
 
+        //-> createdBy (updatedBy is ignored)
         if(dataValue.getDataElement().equals(PreferencesState.getInstance().getContext().getResources().getString(R.string.created_by_code))){
-            User user=User.getUser(dataValue.getValue());
-            if(user==null) {
-                user = new User(dataValue.getValue(), dataValue.getValue());
-                user.save();
-            }
-            survey.setUser(user);
-            survey.save();
-            //Annotate object in map
-            appMapObjects.put(dataValue.getEvent(), survey);
+            eventToSurveyBuilder.setCreatedBy(dataValue);
+            Log.i(TAG,String.format("Event %s created by %s",eventToSurveyBuilder.getEventUid(),dataValue.getValue()));
             return;
         }
 
-        Value value=new Value();
-        //Datavalue is a value from a question
-        org.eyeseetea.malariacare.database.model.Option option = null;
-        try{
-            Question question=(Question)appMapObjects.get(dataValue.getDataElement());
-            value.setQuestion(question);
-            option=sdkDataValueExtended.findOptionByQuestion(question);
-            value.setOption(option);
-        }catch (ClassCastException e){
-            Log.d(TAG,"Ignoring controlDataelement in DataValue converting");
+        //Get associated question
+        Question question=eventToSurveyBuilder.getQuestionFromDataValue(appMapObjects,dataValue);
+        //->controlDataElement -> ignore
+        if(question==null){
+            return;
         }
 
-        value.setSurvey(survey);
+        //Only real values get here
+
+        //Find tabgroup from dataValue
+        TabGroup tabgroup = tabGroupBuilder.findTabgroupFromQuestion(question);
+        //No tabgroup -> ignore
+        if(tabgroup==null){
+            Log.i(TAG,String.format("Ignoring value [%s] for question [%s] with unknown tabgroup",dataValue.getValue(),question.getForm_name()));
+            return;
+        }
+
+        Survey surveyForTabGroup=eventToSurveyBuilder.addSurveyForTabGroup(tabgroup);
+        Value value=new Value();
+        value.setUploadDate(eventToSurveyBuilder.getSafeUploadedOn());
+        value.setSurvey(surveyForTabGroup);
+        value.setQuestion(question);
+        org.eyeseetea.malariacare.database.model.Option option=sdkDataValueExtended.findOptionByQuestion(question);
         //No option -> text question (straight value)
         if(option==null){
             value.setValue(dataValue.getValue());
         }else{
-        //Option -> extract value from code
+            value.setOption(option);
             value.setValue(option.getName());
         }
-        value.setUploadDate(new Date());
         value.save();
     }
 

@@ -121,6 +121,14 @@ public class EventExtended implements VisitableFromSDK {
         return simpleDateFormat.parse(dateAsString);
     }
 
+    public static Date parseShortDate(String dateAsString){
+        try{
+            return parseDate(dateAsString,AMERICAN_DATE_FORMAT);
+        }catch(ParseException ex){
+            return null;
+        }
+    }
+
     public static  Date parseLongDate(String dateAsString) throws  ParseException{
         return parseDate(dateAsString, DHIS2_GMT_DATE_FORMAT);
     }

@@ -51,74 +51,27 @@ public class TabGroupBuilder {
         mapTabGroup = new HashMap<>();
     }
 
-    public static void saveSurveyTabGroup(Survey survey){
-        //Get tabgroup from values
-        Log.d(TAG,"Building tabgroup for event survey "+survey.getEventUid());
-        for (Value value : survey.getValues()) {
-            Question question = value.getQuestion();
-            if(question==null){
-                Log.d(TAG, "This value don't have question. Value:"+value.getValue()+" Event Survey: "+survey.getEventUid());
-                continue;
-            }
-            Log.d(TAG, "Adding survey tabgroup: question " + question.getUid());
-            Header header = question.getHeader();
-            if(header==null){
-                Log.d(TAG, "This value don't have header. Value:"+value.getValue()+" Event Survey: "+survey.getEventUid());
-                continue;
-            }
-            Log.d(TAG,"Adding survey tabgroup: header "+question.getHeader().getName());
-            Tab tab = header.getTab();
-            if(tab==null){
-                Log.d(TAG, "This value don't have tab. Value:"+value.getValue()+" Event Survey: "+survey.getEventUid());
-                continue;
-            }
-            Log.d(TAG,"Adding survey tabgroup: tab "+header.getTab().getName());
-            TabGroup tabGroup = tab.getTabGroup();
-            if(tabGroup!=null) {
-                Log.d(TAG, "Adding survey tabgroup: tabgrouponame" + tabGroup.getName());
-                survey.setTabGroup(tabGroup.getId_tab_group());
-                survey.save();
-                break;
-            }
-            if(tabGroup==null){
-                Log.d(TAG, "This value don't have tabgroup. Value:"+value.getValue()+" Event Survey: "+survey.getEventUid());
-            }
+    /**
+     * Finds the right Tabgroup according to the question (question ->header ->tab ->tabgroup)
+     * @param question
+     * @return
+     */
+    public TabGroup findTabgroupFromQuestion(Question question){
+        //No question -> done
+        if(question==null){
+            return null;
         }
-        //IF the survey value don't have tabgroup
-        TabGroup questionTabGroup=null;
-        if(survey.getTabGroup()==null){
-            String tabGroupUid=TabGroup.class.getName()+"";
-            Log.d(TAG,"mapTabgroups"+tabGroupUid + "  -  " +mapTabGroup.toString());
-            Event event=survey.getEvent();
-            String programSdkUid= event.getProgramId();
-            if(mapTabGroup.containsKey(tabGroupUid+programSdkUid)){
-                questionTabGroup=mapTabGroup.get(tabGroupUid+programSdkUid);
-                Log.d(TAG,"existe"+questionTabGroup.toString());
-                Log.d(TAG,"existe"+questionTabGroup.getId_tab_group());
-            }
-            else {
-                Log.d(TAG,"no existe");
-                questionTabGroup = Survey.getFirstTabGroup(programSdkUid);
-                org.eyeseetea.malariacare.database.model.Program program=org.eyeseetea.malariacare.database.model.Program.getProgram(programSdkUid);
-                if(questionTabGroup==null){
-                    questionTabGroup = new TabGroup(program.getName(),program);
-                    questionTabGroup.save();
-                    Log.d(TAG,"created" + questionTabGroup.toString() );
-                }
-            }
-            if(questionTabGroup!=null) {
-                survey.setTabGroup(questionTabGroup.getId_tab_group());
-                survey.save();
-                mapTabGroup.put(tabGroupUid + survey.getProgram().getUid(), questionTabGroup);
-                Log.d(TAG, "The fake " + questionTabGroup.getName() + " tabgroup was saved as survey tabgroup");
-            }
-            else{
-                Log.d(TAG,"Error: The tabgroup wasn't saved at the survey:"+survey.getId_survey());
-            }
+
+        Header header = question.getHeader();
+        if(header==null){
+            return null;
         }
-        if(survey.getTabGroup()==null){
-            Log.d(TAG,"Error: The survey don't have tabgroup :"+survey.getId_survey());
+
+        Tab tab = header.getTab();
+        if(tab==null){
+            return null;
         }
+        return tab.getTabGroup();
     }
 
     public static Tab saveTabGroup(DataElementExtended sdkDataElementExtended) {
