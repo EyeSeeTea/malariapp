@@ -59,7 +59,7 @@ public class AlarmPushReceiver extends BroadcastReceiver {
      *
      * @return
      */
-    public static synchronized AlarmPushReceiver getInstance(){
+    public static AlarmPushReceiver getInstance(){
         if(instance==null){
             instance=new AlarmPushReceiver();
         }
