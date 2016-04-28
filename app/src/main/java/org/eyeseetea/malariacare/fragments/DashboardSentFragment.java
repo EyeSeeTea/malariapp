@@ -348,13 +348,16 @@ public class DashboardSentFragment extends ListFragment implements IModuleFragme
 
                                 @Override
                                 public void onDismiss(ListView listView, int[] reverseSortedPositions) {
+
                                     for (final int position : reverseSortedPositions) {
+                                        final Survey selectedSurvey=((Survey)adapter.getItem(position-1));
+
                                         new AlertDialog.Builder(getActivity())
                                                 .setTitle(getActivity().getString(R.string.dialog_title_delete_survey))
-                                                .setMessage(getActivity().getString(R.string.dialog_info_delete_survey))
+                                                .setMessage(String.format(getActivity().getString(R.string.dialog_info_delete_survey),selectedSurvey.getFullName()))
                                                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                                                     public void onClick(DialogInterface arg0, int arg1) {
-                                                        ((Survey)adapter.getItem(position-1)).delete();
+                                                        selectedSurvey.delete();
                                                         Intent surveysIntent=new Intent(getActivity(), SurveyService.class);
                                                         surveysIntent.putExtra(SurveyService.SERVICE_METHOD, SurveyService.RELOAD_DASHBOARD_ACTION);
                                                         getActivity().startService(surveysIntent);

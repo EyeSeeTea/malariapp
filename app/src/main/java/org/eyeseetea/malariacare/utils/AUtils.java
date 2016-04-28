@@ -338,9 +338,8 @@ public abstract class AUtils {
         String dialogMessage="";
         if(eventInfo==null || eventInfo.getEventUid().equals(PreferencesState.getInstance().getContext().getResources().getString(R.string.no_previous_event_fakeuid))){
             dialogMessage=PreferencesState.getInstance().getContext().getResources().getString(R.string.no_previous_event_info);
-        }
-        else{
-            dialogMessage=String.format(PreferencesState.getInstance().getContext().getResources().getString(R.string.create_or_modify), EventExtended.format(eventInfo.getEventDate(), EventExtended.DHIS2_DATE_FORMAT ));
+        }else{
+            dialogMessage=String.format(PreferencesState.getInstance().getContext().getResources().getString(R.string.create_or_modify), formatDate(eventInfo.getEventDate()));
         }
         new AlertDialog.Builder(DashboardActivity.dashboardActivity)
                 .setTitle("")
