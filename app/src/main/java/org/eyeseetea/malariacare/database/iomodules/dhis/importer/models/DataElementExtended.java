@@ -106,6 +106,16 @@ public class DataElementExtended implements VisitableFromSDK {
     public static final String ATTRIBUTE_COLUMN = "DEColumn";
 
     /**
+     * Code the attribute Video
+     */
+    public static final String ATTRIBUTE_VIDEO = "DEVideo";
+
+    /**
+     * Code the attribute Image
+     */
+    public static final String ATTRIBUTE_IMAGE = "DEImage";
+
+    /**
      * Code of Question option for attribute DEType
      */
     public static String OPTION_ELEMENT_TYPE_QUESTION_CODE = null;

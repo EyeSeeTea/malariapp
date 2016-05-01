@@ -30,6 +30,7 @@ import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.Program
 import org.eyeseetea.malariacare.database.model.CompositeScore;
 import org.eyeseetea.malariacare.database.model.Header;;
 import org.eyeseetea.malariacare.database.model.Match;
+import org.eyeseetea.malariacare.database.model.Media;
 import org.eyeseetea.malariacare.database.model.Option;
 import org.eyeseetea.malariacare.database.model.Program;
 import org.eyeseetea.malariacare.database.model.Question;
@@ -182,6 +183,34 @@ public class QuestionBuilder {
 
         mapHeader.put(keyHeader, header);
         return header;
+    }
+
+    /**
+     * Create a Media object in the DB for each media attribute found  for a given question DE
+     * @param dataElementExtended
+     * @param question
+     * @return
+     */
+    public Media attachMedia(DataElementExtended dataElementExtended, Question question){
+        Media media = null;
+
+        // Map to identify the different media types with their attribute codes
+        Map<Integer, String> mediaTypeCode = new HashMap();
+        mediaTypeCode.put(Media.MEDIA_TYPE_IMAGE, DataElementExtended.ATTRIBUTE_IMAGE);
+        mediaTypeCode.put(Media.MEDIA_TYPE_VIDEO, DataElementExtended.ATTRIBUTE_VIDEO);
+
+        // Loop on every media type to attach any possible media type for the DE
+        for (Integer mediaType: mediaTypeCode.keySet()) {
+            String attributeMediaValue = dataElementExtended.getValue(mediaTypeCode.get(mediaType));
+            if (attributeMediaValue != null) {
+                media = new Media();
+                media.setMedia_type(mediaType);
+                media.setResource_url(attributeMediaValue);
+                media.setQuestion(question);
+                media.save();
+            }
+        }
+        return media;
     }
 
     /**
