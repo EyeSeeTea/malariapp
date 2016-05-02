@@ -28,6 +28,8 @@ import com.raizlabs.android.dbflow.structure.BaseModel;
 
 import org.eyeseetea.malariacare.database.AppDatabase;
 
+import java.util.List;
+
 @Table(databaseName = AppDatabase.NAME)
 public class Media extends BaseModel{
 
@@ -73,20 +75,24 @@ public class Media extends BaseModel{
         return question;
     }
 
-    public int getMedia_type() {
+    public int getMediaType() {
         return media_type;
     }
 
-    public void setMedia_type(int media_type) {
+    public void setMediaType(int media_type) {
         this.media_type = media_type;
     }
 
-    public String getResource_url() {
+    public String getResourceUrl() {
         return resource_url;
     }
 
-    public void setResource_url(String resource_url) {
+    public void setResourceUrl(String resource_url) {
         this.resource_url = resource_url;
+    }
+
+    public static List<Media> getAllMedia() {
+        return new Select().all().from(Media.class).queryList();
     }
 
     public void setQuestion(Question question){
@@ -107,8 +113,8 @@ public class Media extends BaseModel{
         Media media = (Media) o;
 
         if (id_media != media.id_media) return false;
-        if (getMedia_type() != media.getMedia_type()) return false;
-        if (getResource_url() != null ? !getResource_url().equals(media.getResource_url()) : media.getResource_url() != null)
+        if (getMediaType() != media.getMediaType()) return false;
+        if (getResourceUrl() != null ? !getResourceUrl().equals(media.getResourceUrl()) : media.getResourceUrl() != null)
             return false;
         return id_question.equals(media.id_question);
 
@@ -117,8 +123,8 @@ public class Media extends BaseModel{
     @Override
     public int hashCode() {
         int result = (int) (id_media ^ (id_media >>> 32));
-        result = 31 * result + getMedia_type();
-        result = 31 * result + (getResource_url() != null ? getResource_url().hashCode() : 0);
+        result = 31 * result + getMediaType();
+        result = 31 * result + (getResourceUrl() != null ? getResourceUrl().hashCode() : 0);
         result = 31 * result + id_question.hashCode();
         return result;
     }

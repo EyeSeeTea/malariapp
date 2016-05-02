@@ -24,26 +24,17 @@ import android.util.Log;
 
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.DataElementExtended;
-import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.ProgramExtended;
-import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.ProgramStageExtended;
-import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.ProgramStageSectionExtended;
 import org.eyeseetea.malariacare.database.model.CompositeScore;
 import org.eyeseetea.malariacare.database.model.Header;;
 import org.eyeseetea.malariacare.database.model.Match;
 import org.eyeseetea.malariacare.database.model.Media;
 import org.eyeseetea.malariacare.database.model.Option;
-import org.eyeseetea.malariacare.database.model.Program;
 import org.eyeseetea.malariacare.database.model.Question;
 import org.eyeseetea.malariacare.database.model.QuestionOption;
 import org.eyeseetea.malariacare.database.model.QuestionRelation;
-import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.model.Tab;
 import org.eyeseetea.malariacare.database.model.TabGroup;
-import org.eyeseetea.malariacare.database.model.Value;
-import org.eyeseetea.malariacare.database.utils.PreferencesState;
-import org.hisp.dhis.android.sdk.controllers.metadata.MetaDataController;
 import org.hisp.dhis.android.sdk.persistence.models.DataElement;
-import org.hisp.dhis.android.sdk.persistence.models.ProgramStageDataElement;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -204,8 +195,8 @@ public class QuestionBuilder {
             String attributeMediaValue = dataElementExtended.getValue(mediaTypeCode.get(mediaType));
             if (attributeMediaValue != null) {
                 media = new Media();
-                media.setMedia_type(mediaType);
-                media.setResource_url(attributeMediaValue);
+                media.setMediaType(mediaType);
+                media.setResourceUrl(attributeMediaValue);
                 media.setQuestion(question);
                 media.save();
             }
