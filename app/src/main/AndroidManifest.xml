@@ -5,6 +5,7 @@
     android:versionCode="1"
     android:versionName="1.0" >
 
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
@@ -33,6 +34,9 @@
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:windowSoftInputMode="adjustPan"
             android:label="@string/app_name" >
+            <meta-data
+                android:name="com.google.android.apps.drive.APP_ID"
+                android:value="id=AIzaSyA-n9KfDc0WzSwgYrGKm-a2l_E_OByyArw" />
         </activity>
 
         <service

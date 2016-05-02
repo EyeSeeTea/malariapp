@@ -72,6 +72,11 @@ public abstract class BaseActivity extends ActionBarActivity implements
      */
     protected static final int NEXT_AVAILABLE_REQUEST_CODE = 2;
 
+    /**
+     * Next available request code.
+     */
+    protected static final int REQUEST_CODE_OPENER = NEXT_AVAILABLE_REQUEST_CODE;
+
     private SurveyLocationListener locationListener;
 
     @Override
@@ -83,19 +88,19 @@ public abstract class BaseActivity extends ActionBarActivity implements
         super.onCreate(savedInstanceState);
         initView(savedInstanceState);
 
+        //Drive API stuff
         DriveUtils driveUtils = DriveUtils.getInstance(this);
-        GoogleApiClient mGoogleApiClient = null;
+        GoogleApiClient mGoogleApiClient;
         if (driveUtils.getGoogleApiClient() == null) {
             mGoogleApiClient = new GoogleApiClient.Builder(this)
                     .addApi(Drive.API)
                     .addScope(Drive.SCOPE_FILE)
-                    .addScope(Drive.SCOPE_APPFOLDER) // required for App Folder sample
                     .addConnectionCallbacks(this)
                     .addOnConnectionFailedListener(this)
                     .build();
             driveUtils.setGoogleApiClient(mGoogleApiClient);
         }
-        mGoogleApiClient.connect();
+        driveUtils.getGoogleApiClient().connect();
     }
 
     /**
