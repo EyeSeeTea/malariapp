@@ -27,11 +27,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
-import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.services.PushService;
 import org.eyeseetea.malariacare.services.SurveyService;
-import org.eyeseetea.malariacare.utils.Utils;
+import org.eyeseetea.malariacare.utils.AUtils;
 
 /**
  * Created by rhardjono on 20/09/2015.
@@ -80,7 +79,7 @@ public class AlarmPushReceiver extends BroadcastReceiver {
 
     public void setPushAlarm(Context context) {
         Log.d(TAG, "setPushAlarm");
-        if (!Utils.isNetworkAvailable()){
+        if (!AUtils.isNetworkAvailable()){
             cancelPushAlarm(PreferencesState.getInstance().getContext());
         }
         else {

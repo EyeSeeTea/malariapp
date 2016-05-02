@@ -39,7 +39,7 @@ import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.utils.Constants;
-import org.eyeseetea.malariacare.utils.Utils;
+import org.eyeseetea.malariacare.utils.AUtils;
 import org.hisp.dhis.android.sdk.persistence.models.DataValue;
 import org.hisp.dhis.android.sdk.persistence.models.Event;
 import org.hisp.dhis.android.sdk.persistence.models.FailedItem;
@@ -159,7 +159,7 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
         dataValue.setEvent(currentEvent.getEvent());
         dataValue.setProvidedElsewhere(false);
         dataValue.setStoredBy(getSafeUsername());
-        dataValue.setValue(Utils.round(ScoreRegister.getCompositeScore(compositeScore)));
+        dataValue.setValue(AUtils.round(ScoreRegister.getCompositeScore(compositeScore)));
         dataValue.save();
     }
 

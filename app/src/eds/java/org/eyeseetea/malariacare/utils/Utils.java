@@ -20,30 +20,33 @@
 package org.eyeseetea.malariacare.utils;
 
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.Context;
 import android.text.method.LinkMovementMethod;
-import android.view.Gravity;
-import android.view.View;
-import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
 
-import org.eyeseetea.malariacare.BaseActivity;
-import org.eyeseetea.malariacare.BuildConfig;
-import org.eyeseetea.malariacare.R;
+import org.eyeseetea.malariacare.database.model.OrgUnit;
+import org.eyeseetea.malariacare.database.model.TabGroup;
+
 
 /**
  * Created by nacho on 28/03/16.
  */
-public class VariantSpecificUtils{
+public class Utils extends AUtils {
 
-    public static void showAlert(int titleId, CharSequence text, Context context){
+    @Override
+    public void showAlert(int titleId, CharSequence text, Context context){
         final AlertDialog dialog = new AlertDialog.Builder(context)
                 .setTitle(context.getString(titleId))
                 .setMessage(text)
                 .setNeutralButton(android.R.string.ok, null).create();
         dialog.show();
         ((TextView)dialog.findViewById(android.R.id.message)).setMovementMethod(LinkMovementMethod.getInstance());
+    }
+
+    @Override
+    public void createNewSurvey(OrgUnit orgUnit, TabGroup tabGroup) {
+        ComboOrgUnitTabGroup comboOrgUnitTabGroup=new ComboOrgUnitTabGroup(orgUnit,tabGroup);
+        LoadLastEvent loadLastEvent= new LoadLastEvent();
+        loadLastEvent.execute(comboOrgUnitTabGroup);
     }
 }

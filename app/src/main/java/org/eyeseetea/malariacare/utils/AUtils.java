@@ -43,7 +43,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-public class Utils {
+public abstract class AUtils {
 
     static final int numberOfDecimals = 0; // Number of decimals outputs will have
 
@@ -55,7 +55,7 @@ public class Utils {
     }
 
     public static String round(float base){
-        return round(base, Utils.numberOfDecimals);
+        return round(base, AUtils.numberOfDecimals);
     }
 
     public static List<BaseModel> convertTabToArrayCustom(Tab tab) {
@@ -72,7 +72,7 @@ public class Utils {
         return result;
     }
 
-    public static List<? extends BaseModel> preloadTabItems(Tab tab){
+    public static List preloadTabItems(Tab tab){
         List<? extends BaseModel> items = Session.getTabsCache().get(tab.getId_tab());
 
         if (tab.isCompositeScore())
@@ -129,4 +129,7 @@ public class Utils {
             return false;
         return netInfo.isConnected();
     }
+
+    public abstract void showAlert(int titleId, CharSequence text, Context context);
+
 }

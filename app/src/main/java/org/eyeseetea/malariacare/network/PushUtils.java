@@ -30,7 +30,7 @@ import org.eyeseetea.malariacare.database.model.Value;
 import org.eyeseetea.malariacare.database.utils.LocationMemory;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
-import org.eyeseetea.malariacare.utils.Utils;
+import org.eyeseetea.malariacare.utils.AUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -223,7 +223,7 @@ public class PushUtils {
     private JSONObject prepareValue(CompositeScore compositeScore) throws Exception {
         JSONObject elementObject = new JSONObject();
         elementObject.put(TAG_DATAELEMENT, compositeScore.getUid());
-        elementObject.put(TAG_VALUE, Utils.round(ScoreRegister.getCompositeScore(compositeScore)));
+        elementObject.put(TAG_VALUE, AUtils.round(ScoreRegister.getCompositeScore(compositeScore)));
         return elementObject;
     }
 

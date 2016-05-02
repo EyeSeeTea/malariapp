@@ -16,6 +16,7 @@
 
     <!-- settings -->
     <string name="settings_menu_about">A propos de cette app</string>
+    <string name="settings_menu_legal">Légal</string>
     <string name="settings_menu_configuration">Paramètres</string>
     <string name="settings_menu_licence">License</string>
     <string name="settings_menu_update">Mise à jour des questions (DHIS)</string>

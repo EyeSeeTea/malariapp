@@ -20,7 +20,6 @@
 package org.eyeseetea.malariacare;
 
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -31,17 +30,11 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.text.Html;
 import android.text.SpannableString;
-import android.text.method.LinkMovementMethod;
 import android.text.util.Linkify;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.view.Window;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.utils.LocationMemory;
@@ -50,8 +43,8 @@ import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.layout.listeners.SurveyLocationListener;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
+import org.eyeseetea.malariacare.utils.AUtils;
 import org.eyeseetea.malariacare.utils.Utils;
-import org.eyeseetea.malariacare.utils.VariantSpecificUtils;
 import org.hisp.dhis.android.sdk.controllers.DhisService;
 import org.hisp.dhis.android.sdk.events.UiEvent;
 import org.hisp.dhis.android.sdk.persistence.Dhis2Application;
@@ -121,6 +114,8 @@ public abstract class BaseActivity extends ActionBarActivity {
             case R.id.action_about:
                 debugMessage("User asked for about");
                 showAlertWithHtmlMessageAndLastCommit(R.string.settings_menu_about, R.raw.about);
+                break;
+            case R.id.action_legal:
                 break;
             case R.id.action_logout:
                 debugMessage("User asked for logout");
@@ -281,7 +276,7 @@ public abstract class BaseActivity extends ActionBarActivity {
      */
     private void showAlertWithMessage(int titleId, int rawId){
         InputStream message = getApplicationContext().getResources().openRawResource(rawId);
-        VariantSpecificUtils.showAlert(titleId, Utils.convertFromInputStreamToString(message).toString(), BaseActivity.this);
+        new Utils().showAlert(titleId, AUtils.convertFromInputStreamToString(message).toString(), BaseActivity.this);
     }
 
     /**
@@ -294,7 +289,7 @@ public abstract class BaseActivity extends ActionBarActivity {
         final SpannableString linkedMessage = new SpannableString(Html.fromHtml(stringMessage));
         Linkify.addLinks(linkedMessage, Linkify.EMAIL_ADDRESSES | Linkify.WEB_URLS);
 
-        VariantSpecificUtils.showAlert(titleId, linkedMessage, BaseActivity.this);
+        new Utils().showAlert(titleId, linkedMessage, BaseActivity.this);
     }
 
     /**
@@ -310,9 +305,9 @@ public abstract class BaseActivity extends ActionBarActivity {
             stringCommit=getString(R.string.unavailable);
         } else {
             InputStream commit = getApplicationContext().getResources().openRawResource( layoutId);
-            stringCommit=Utils.convertFromInputStreamToString(commit).toString();
+            stringCommit= AUtils.convertFromInputStreamToString(commit).toString();
         }
-        String stringMessage=Utils.convertFromInputStreamToString(message).toString();
+        String stringMessage= AUtils.convertFromInputStreamToString(message).toString();
         if(stringCommit.contains(getString(R.string.unavailable))){
             stringCommit=String.format(getString(R.string.lastcommit),stringCommit);
             stringCommit=stringCommit+" "+getText(R.string.lastcommit_unavailable);

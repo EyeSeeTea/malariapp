@@ -16,6 +16,7 @@
 
     <!-- settings -->
     <string name="settings_menu_about">Acerca de</string>
+    <string name="settings_menu_legal">Legal</string>
     <string name="settings_menu_configuration">Configuración</string>
     <string name="settings_menu_licence">Licencia</string>
     <string name="settings_menu_update">Actualizar preguntas (DHIS)</string>

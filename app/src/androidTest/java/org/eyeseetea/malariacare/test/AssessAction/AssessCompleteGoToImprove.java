@@ -22,7 +22,6 @@ package org.eyeseetea.malariacare.test.AssessAction;
 import android.support.test.espresso.AmbiguousViewMatcherException;
 import android.support.test.espresso.Espresso;
 import android.support.test.espresso.IdlingResource;
-import android.support.test.espresso.matcher.BoundedMatcher;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.util.Log;
@@ -32,7 +31,7 @@ import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.test.utils.ElapsedTimeIdlingResource;
 import org.eyeseetea.malariacare.test.utils.SDKTestUtils;
-import org.eyeseetea.malariacare.utils.Utils;
+import org.eyeseetea.malariacare.utils.AUtils;
 import org.hamcrest.Description;
 import org.hamcrest.Matchers;
 import org.junit.AfterClass;
@@ -117,9 +116,9 @@ public class AssessCompleteGoToImprove {
         IdlingResource idlingResource = new ElapsedTimeIdlingResource(5 * 1000);
         Espresso.registerIdlingResources(idlingResource);
         try {
-            onView(withText(String.valueOf(Utils.formatDate(completionDate)))).check(matches(isDisplayed()));
+            onView(withText(String.valueOf(AUtils.formatDate(completionDate)))).check(matches(isDisplayed()));
         }catch(AmbiguousViewMatcherException e){
-            Log.i(TAG, "Multiple surveys have the same date " + Utils.formatDate(completionDate));
+            Log.i(TAG, "Multiple surveys have the same date " + AUtils.formatDate(completionDate));
         }
         try {
             onView(withText(String.format("%.1f %%", survey.getMainScore()))).check(matches(isDisplayed()));
