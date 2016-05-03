@@ -1,7 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright (c) 2015.
+  ~ Copyright (c) 2016.
   ~
-  ~ This file is part of Health Network QIS App.
+  ~ This file is part of QA App.
   ~
   ~  Health Network QIS App is free software: you can redistribute it and/or modify
   ~  it under the terms of the GNU General Public License as published by
@@ -17,9 +18,9 @@
   ~  along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
   -->
 
-<org.eyeseetea.malariacare.views.CustomTextView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto" android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    app:tScale="@string/textcard_default_scale"
-    app:tDimension="@string/textcard_default_dimension"
-    app:tFontName="@string/normal_font" />
+<resources>
+  <string name="create_info_ok">Criar avaliação</string>
+  <string name="assessment_sent_title_header">Avaliação enviado</string>
+  <string name="dialog_info_push_bad_credentials">Bad credenciais</string>
+  <string name="dialog_info_push_empty_survey">Inquéritos vazias não podem ser empurrados</string>
+</resources>

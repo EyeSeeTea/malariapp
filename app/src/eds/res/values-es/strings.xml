@@ -1,14 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright (c) 2015.
+  ~ Copyright (c) 2016.
   ~
-  ~ This file is part of Facility QA Tool App.
+  ~ This file is part of QA App.
   ~
-  ~  Facility QA Tool App is free software: you can redistribute it and/or modify
+  ~  Health Network QIS App is free software: you can redistribute it and/or modify
   ~  it under the terms of the GNU General Public License as published by
   ~  the Free Software Foundation, either version 3 of the License, or
   ~  (at your option) any later version.
   ~
-  ~  Facility QA Tool App is distributed in the hope that it will be useful,
+  ~  Health Network QIS App is distributed in the hope that it will be useful,
   ~  but WITHOUT ANY WARRANTY; without even the implied warranty of
   ~  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   ~  GNU General Public License for more details.
@@ -17,8 +18,8 @@
   ~  along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
   -->
 
-<menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    tools:context="org.eyeseetea.malariacare.CreateSurveyActivity">
-</menu>
+<resources>
+    <string name="create_info_ok">Empezar Evaluación</string>
+    <string name="assessment_sent_title_header">Evaluación(es) Enviada(s)</string>
+    <string name="dialog_info_push_empty_survey">Una evaluación vacia no pueden ser enviadas</string>
+</resources>
