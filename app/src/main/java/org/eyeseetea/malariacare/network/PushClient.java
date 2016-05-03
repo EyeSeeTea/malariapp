@@ -42,7 +42,7 @@ import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.receivers.AlarmPushReceiver;
 import org.eyeseetea.malariacare.services.SurveyService;
-import org.eyeseetea.malariacare.utils.Utils;
+import org.eyeseetea.malariacare.utils.AUtils;
 import org.json.JSONObject;
 
 import java.io.IOException;
@@ -105,13 +105,13 @@ public class PushClient {
     }
 
     public void pushSDK() {
-        if (Utils.isNetworkAvailable()) {
+        if (AUtils.isNetworkAvailable()) {
             malariaSdkPush();
         }
     }
 
     public PushResult pushAPI() {
-        if (Utils.isNetworkAvailable()) {
+        if (AUtils.isNetworkAvailable()) {
                return malariaApiPush();
         }
         return new PushResult();

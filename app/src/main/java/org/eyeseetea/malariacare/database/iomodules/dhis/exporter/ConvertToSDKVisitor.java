@@ -31,14 +31,18 @@ import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.EventExtended;
 import org.eyeseetea.malariacare.database.model.CompositeScore;
 import org.eyeseetea.malariacare.database.model.ControlDataElement;
+import org.eyeseetea.malariacare.database.model.OrgUnitProgramRelation;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.model.User;
 import org.eyeseetea.malariacare.database.model.Value;
 import org.eyeseetea.malariacare.database.utils.LocationMemory;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.Session;
+import org.eyeseetea.malariacare.database.utils.metadata.PhoneMetaData;
+import org.eyeseetea.malariacare.database.utils.planning.SurveyPlanner;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.utils.Constants;
+import org.eyeseetea.malariacare.utils.AUtils;
 import org.eyeseetea.malariacare.utils.Utils;
 import org.hisp.dhis.android.sdk.persistence.models.DataValue;
 import org.hisp.dhis.android.sdk.persistence.models.Event;
@@ -71,6 +75,9 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
     String mainScoreBCode;
     String mainScoreCCode;
     String forwardOrderCode;
+    String pushDeviceCode;
+    String overallProductivityCode;
+    String nextAssessmentCode;
 
     String createdOnCode;
     String createdByCode;
@@ -110,6 +117,9 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
         mainScoreBCode = ControlDataElement.findControlDataElementUid(context.getString(R.string.main_score_b_code));
         mainScoreCCode = ControlDataElement.findControlDataElementUid(context.getString(R.string.main_score_c_code));
         forwardOrderCode = ControlDataElement.findControlDataElementUid(context.getString(R.string.forward_order_code));
+        pushDeviceCode = ControlDataElement.findControlDataElementUid(context.getString(R.string.push_device_code));
+        overallProductivityCode = ControlDataElement.findControlDataElementUid(context.getString(R.string.overall_productivity_code));
+        nextAssessmentCode = ControlDataElement.findControlDataElementUid(context.getString(R.string.next_assessment_code));
 
         createdOnCode = ControlDataElement.findControlDataElementUid(context.getString(R.string.created_on_code));
         createdByCode = ControlDataElement.findControlDataElementUid(context.getString(R.string.created_by_code));
@@ -159,7 +169,7 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
         dataValue.setEvent(currentEvent.getEvent());
         dataValue.setProvidedElsewhere(false);
         dataValue.setStoredBy(getSafeUsername());
-        dataValue.setValue(Utils.round(ScoreRegister.getCompositeScore(compositeScore)));
+        dataValue.setValue(AUtils.round(ScoreRegister.getCompositeScore(compositeScore)));
         dataValue.save();
     }
 
@@ -252,6 +262,15 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
 
         //Forward Order
         buildAndSaveDataValue(forwardOrderCode, context.getString(R.string.forward_order_value));
+
+        //Push Device
+        buildAndSaveDataValue(pushDeviceCode, Session.getPhoneMetaData().getPhone_metaData() + "###" + new Utils().getCommitHash(context));
+
+        //Overall productivity
+        buildAndSaveDataValue(overallProductivityCode, Integer.toString(OrgUnitProgramRelation.getProductivity(survey)));
+
+        //Next assessment
+        buildAndSaveDataValue(nextAssessmentCode, EventExtended.format(SurveyPlanner.getInstance().findScheduledDateBySurvey(survey), EventExtended.AMERICAN_DATE_FORMAT));
     }
 
     private void buildAndSaveDataValue(String UID, String value){

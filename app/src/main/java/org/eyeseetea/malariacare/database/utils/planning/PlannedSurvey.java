@@ -21,7 +21,7 @@ package org.eyeseetea.malariacare.database.utils.planning;
 
 import org.eyeseetea.malariacare.database.model.Program;
 import org.eyeseetea.malariacare.database.model.Survey;
-import org.eyeseetea.malariacare.utils.Utils;
+import org.eyeseetea.malariacare.utils.AUtils;
 
 import java.util.Date;
 
@@ -91,7 +91,7 @@ public class PlannedSurvey implements PlannedItem {
         if(survey==null){
             return NO_QUALITY_OF_CARE;
         }
-        return Utils.round(survey.getMainScore());
+        return AUtils.round(survey.getMainScore());
     }
 
     public Date getNextAssesment(){

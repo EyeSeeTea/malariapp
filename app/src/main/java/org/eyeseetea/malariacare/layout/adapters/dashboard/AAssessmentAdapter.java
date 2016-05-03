@@ -129,6 +129,22 @@ public abstract class AAssessmentAdapter extends ADashboardAdapter implements ID
         return rowView;
     }
 
+    /**
+     * Determines whether to show facility or not according to:
+     *  - The previous survey belongs to the same one.
+     * @param position
+     * @param survey
+     * @return
+     */
+    private boolean hasToShowFacility(int position, Survey survey){
+        if(position==0){
+            return true;
+        }
+
+        Survey previousSurvey = this.items.get(position-1);
+        return !survey.getOrgUnit().getId_org_unit().equals(previousSurvey.getOrgUnit().getId_org_unit());
+    }
+
     private View setBackgroundWithBorder(int position, View rowView) {
         if(items.get(position).isCompleted() || items.get(position).isSent()) {
             rowView.setBackgroundResource(LayoutUtils.calculateBackgroundsImprove(this.backIndex));

@@ -59,7 +59,7 @@ import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 import org.eyeseetea.malariacare.services.SurveyService;
 import org.eyeseetea.malariacare.utils.Constants;
-import org.eyeseetea.malariacare.utils.Utils;
+import org.eyeseetea.malariacare.utils.AUtils;
 import org.eyeseetea.malariacare.views.CustomTextView;
 
 import java.util.ArrayList;
@@ -427,7 +427,7 @@ public class SurveyFragment extends  Fragment {
         int viewId=IDS_SCORES_IN_GENERAL_TAB[tab.getOrder_pos()];
         if(viewId!=0) {
             CustomTextView customTextView =((CustomTextView) llLayout.findViewById(viewId));
-            customTextView.setText(Utils.round(score));
+            customTextView.setText(AUtils.round(score));
             LayoutUtils.trafficLight(customTextView, score, null);
         }
     }
@@ -483,7 +483,7 @@ public class SurveyFragment extends  Fragment {
     }
 
     private void updateAvgInGeneralScores(int viewId, Float score){
-        ((CustomTextView) llLayout.findViewById(viewId)).setText(Utils.round(score));
+        ((CustomTextView) llLayout.findViewById(viewId)).setText(AUtils.round(score));
         LayoutUtils.trafficLight(llLayout.findViewById(viewId), score, null);
     }
 
