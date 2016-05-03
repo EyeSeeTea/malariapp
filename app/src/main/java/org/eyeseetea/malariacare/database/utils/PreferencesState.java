@@ -223,6 +223,7 @@ public class PreferencesState {
     }
 
     public Float getFontSize(String scale,String dimension){
+        if (scaleDimensionsMap.get(scale)==null) return context.getResources().getDimension(R.dimen.small_large_text_size);
         return scaleDimensionsMap.get(scale).get(dimension);
     }
 
