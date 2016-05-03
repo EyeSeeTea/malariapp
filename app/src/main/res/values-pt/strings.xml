@@ -12,7 +12,6 @@
     <string name="fair">Suficiente</string>
     <string name="poor">Insuficiente</string>
     <string name="lorem_ipsum">Lorem ipsum dolor sit amet</string>
-    <string name="send">Enviar</string>
 
     <!-- settings -->
     <string name="settings_menu_about">Acerca de</string>
@@ -22,30 +21,17 @@
     <string name="settings_menu_eula">EULA</string>
     <string name="settings_menu_configuration">Definições</string>
     <string name="settings_menu_licence">Licença</string>
-    <string name="settings_menu_update">Actualizar questões (SISD) Sistemas de Informação de Saúde Distrital</string>
     <string name="settings_menu_logout">Logout</string>
-
-    <!-- login -->
-    <string name="login_info_username">Utilizador</string>
-    <string name="login_info_password">Password</string>
-    <string name="login_info_sign_in">Iniciar Sessão</string>
-    <string name="login_error_bad_credentials">O nome de utilizador/password estão incorrectos</string>
 
     <!-- # dialogs -->
     <string name="go_to_feedback">Ir para comentários</string>
     <string name="dialog_title_delete_survey">Apagar inquérito</string>
     <string name="dialog_info_delete_survey">Tem a certeza que quer apagar completamente la pesquisa %s ?</string>
-    <string name="dialog_title_error">Erro</string>
-    <string name="dialog_error_denominator">Erro, denominador = 0</string>
     <string name="dialog_title_missing_selection">Selecção em falta</string>
     <string name="dialog_content_missing_selection">Por favor seleccione Unid. Org. e Inquérito</string>
     <string name="dialog_title_existing_survey">Inquérito existente</string>
     <string name="dialog_content_existing_survey">Já existe um formato não enviado no sistema para essa Unid. Org.Inquérito</string>
     <string name="dialog_content_logout_confirmation">Se sair do sistema, todos os dados nao enviados serao apagados Ainda quer sair?</string>
-    <string name="dialog_title_send_preview">Envie Preview de ouro</string>
-    <string name="dialog_content_send_preview">Você quer enviar?</string>
-    <string name="dialog_title_push_data">empurrando dados</string>
-    <string name="dialog_content_push_data">Tem certeza de que deseja enviar isso?</string>
     <string name="dialog_button_preview_feedback">Ver feedback</string>
     <string name="dialog_question_complete_survey">Todas as questões obrigatórias foram concluídos. Você quer fazer o levantamento mais abrangente?</string>
     <string name="dialog_continue_later_option">Adiar</string>
@@ -60,38 +46,24 @@
 
     <!-- dashboard -->
     <string name="dashboard_info_feedback">Feedback</string>
-    <string name="dashboard_info_active_assessments">Avaliações activas</string>
-    <string name="dashboard_info_new_assessment">Nova avaliação</string>
-    <string name="dashboard_info_future_assessments">Avaliações futuras</string>
-    <string name="dashboard_info_performance">Desempenho baseado nos objectivos fixados</string>
-    <string name="dashboard_info_analytics">Análises</string>
-    <string name="dashboard_button_new_survey">Novo Inquérito</string>
-    <string name="dashboard_button_see_all">Ver todos(as)</string>
     <string name="dashboard_info_ready_to_upload">Pronto para carregar</string>
     <string name="dashboard_info_sent">Enviei</string>
     <string name="dashboard_title_total_assessments">"Número total de avaliações realizadas"</string>
-    <string name="dashboard_title_table_facilities">"Qualidade dos cuidados (últimos 6 meses)"</string>
 
     <!-- create -->
     <string name="create_info_ok">Criar</string>
     <string name="create_info_organization_unit">Unidade da Organização – Unid. Org.</string>
     <string name="create_info_survey">Inquérito</string>
-    <string name="create_info_zone">Zona</string>
 
     <!-- assessment -->
     <string name="assessment_title_facility_date">Unidade de Saúde/Inquérito</string>
     <string name="assessment_title_state">% completo</string>
-    <string name="assessment_sent_title_state">Estado</string>
     <string name="assessment_sent_date">Data de conclusao</string>
     <string name="assessment_sent_score">Ponto</string>
-    <string name="assessment_info_delete">Apagar</string>
     <string name="assessment_title_header">Avaliação activa</string>
     <string name="assessment_sent_title_header">Avaliação anterior(es)</string>
 
     <!-- feedback -->
-    <!-- XXX Should it be replaced by 'assessment_title_facility_date'?-->
-    <string name="feedback_title_organization_unit_date">Unid. Org.Data</string>
-    <string name="feedback_title_header">Feedback</string>
     <string name="feedback_show_only_failed">"Mostrar só falhou perguntas"</string>
     <string name="feedback_return">Voltar para todas as avaliações</string>
     <string name="quality_of_care">Qualidade da Assistência (QoC) Pontuação:</string>
@@ -100,33 +72,9 @@
     <string name="feedback_info_not_answered">"Não respondeu"</string>
     <string name="feedback_info_no_feedback">Sem feedback</string>
 
-
-
-    <!-- future -->
-    <string name="future_title_facility">Unidade de Saúde</string>
-    <string name="future_title_previous_date">Data prevista para avaliação</string>
-    <string name="future_title_due_date">Data devida</string>
-    <string name="future_title_action">Acção</string>
-    <string name="future_title_header">Avaliações futuras</string>
-
-    <!-- performance -->
-    <string name="performance_title_period">Período</string>
-    <string name="performance_title_target">Objectivo</string>
-    <string name="performance_title_completed">Realizado</string>
-    <string name="performance_title_achievement">Resultados</string>
-    <string name="performance_title_header">Desempenho baseado nos objectivos fixados</string>
-
-    <!-- analytics -->
-    <string name="analytics_title_period">Período</string>
-    <string name="analytics_title_target">Objectivo</string>
-    <string name="analytics_title_completed">Realizado</string>
-    <string name="analytics_title_achievement">Resultados</string>
-    <string name="analytics_title_header">Análises</string>
-
     <!-- survey -->
     <string name="survey_title_exit">"Really Exit?"</string>
     <string name="survey_info_exit">"Tem a certeza que quer sair?"</string>
-    <string name="survey_info_select_tab">Seleccione Tab: </string>
 
     <!--widget-->
     <string name="widget_info_empty_statement">Problema</string>
@@ -145,7 +93,6 @@
 5 pacientes que receberam um resultado microscópico positivo para malária
 5 pacientes que receberam um resultado microscópico negativo para malária\nPasso 2: Localize a ID do paciente de 1) no Registo de Farmácia e anote se receberam ACT na coluna “ACT receitada” marcando S ou N. Para Unidades de Saúde sem microscopia marque a caixa N/A"
 </string>
-    <string name="adherence_info_pharmacy_register">Registo de Farmacia</string>
     <string name="adherence_title_gender">Género</string>
     <string name="adherence_title_age">Idade (anos)</string>
     <string name="adherence_title_test_results">Resultados do teste</string>
@@ -161,14 +108,12 @@
     <string name="iqatab_info_parasites">Parasitas/mL</string>
     <string name="iqatab_info_species">Espécies</string>
     <string name="iqatab_info_labstaff">Pessoal de Laboratório</string>
-    <string name="iqatab_info_results">Os resultados abaixo são auto calculado</string>
 
     <!-- reporting -->
     <string name="reporting_info_reporting">Relatórios</string>
     <string name="reporting_info_results">Resultados</string>
     <string name="reporting_info_register">Registo</string>
     <string name="reporting_info_monthly">Relatório/mensal</string>
-    <string name="iqatab_info_supervisor_matches">O supervisor está de acordo com o pessoal de laboratório?</string>
     <string name="iqatab_info_note">Nota : Revisão de Lâminas deve ser realizada na unidade de saúde durante OTSS na presença do pessoal do laboratório facilidade. As lâminas não deve ser removido a partir da instalação para este propósito.</string>
 
     <!-- score -->
@@ -183,7 +128,6 @@
     <string name="score_info_case1">Caso 1</string>
     <string name="score_info_case2">Caso 2</string>
     <string name="score_info_case3">Caso 3</string>
-    <string name="score_info_case4">Caso 4</string>
 
     <!-- composite score -->
     <string name="compscore_title_score_percentage">Ponto (%)</string>
@@ -220,9 +164,7 @@
 
     <string name="dialog_info_on_complete">A pesquisa %s foi marcada como concluída. Você vai encontrá-lo agora no separador Melhorar</string>
     <string name="dialog_title_push_response">Reposta</string>
-    <string name="dialog_info_push_ok">Os dados da pesquisa foi enviado com sucesso para o servidor DHIS</string>
     <string name="dialog_info_push_bad_credentials">Bad credenciais para empurrar</string>
-    <string name="dialog_error_push_no_location">Localização indisponíveis</string>
     <string name="dialog_error_push_no_location_and_required">Nenhum local disponível e é um campo obrigatório</string>
     <string name="dialog_error_push_uids">UIDs incorretas encontradas no impulso</string>
     <string name="dialog_title_incorrect_org_unit">Org Unit errado</string>
@@ -247,7 +189,6 @@
     <string name="progress_pull_questions">Carregando perguntas (isso pode levar alguns minutos) ...</string>
     <string name="progress_pull_surveys">Carregando inquéritos ...</string>
     <string name="progress_pull_done">Feito</string>
-    <string name="dialog_push_error">Erro ao tentar enviar dados para dhis servidor</string>
     <string name="progress_push_posting_survey">Empurrando dados do inquérito ao servidor ...</string>
     <string name="progress_push_preparing_survey">Preparando pesquisa para empurrar ...</string>
     <string name="progress_push_updating_survey">Atualização empurrou dados da pesquisa ...</string>
@@ -267,7 +208,6 @@
     <string name="option_edit">Editar</string>
     <string name="option_mark_completed">Marcar como concluída</string>
     <string name="option_delete">Excluir</string>
-    <string name="dialog_info_push_confirm">Você tem certeza? Você não pode desfazer esta ação</string>
 
     <string name="hide_planning_tab_title" >Ocultar guia planejamento</string>
     <string name="hide_planning_tab_summary" >Marque esta caixa para ocultar a guia de planejamento</string>
