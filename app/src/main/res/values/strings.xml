@@ -377,6 +377,7 @@
     <string name="forward_order_value" translatable="false">9999</string>
     <string name="push_device_code" translatable="false">_PushDevice</string>
     <string name="overall_productivity_code" translatable="false">_OverallProductivity</string>
+    <string name="next_assessment_code" translatable="false">_NextAssessmentDate</string>
 
     <string name="created_on_code" translatable="false">_CreatedOn</string>
     <string name="created_by_code" translatable="false">_CreatedBy</string>

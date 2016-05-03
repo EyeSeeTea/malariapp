@@ -157,7 +157,7 @@ public class SurveyPlanner {
 
     }
 
-    private Date findScheduledDateBySurvey(Survey survey) {
+    public Date findScheduledDateBySurvey(Survey survey) {
         if(survey==null){
             return null;
         }

@@ -39,6 +39,7 @@ import org.eyeseetea.malariacare.database.utils.LocationMemory;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.database.utils.metadata.PhoneMetaData;
+import org.eyeseetea.malariacare.database.utils.planning.SurveyPlanner;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.utils.Constants;
 import org.eyeseetea.malariacare.utils.AUtils;
@@ -76,6 +77,7 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
     String forwardOrderCode;
     String pushDeviceCode;
     String overallProductivityCode;
+    String nextAssessmentCode;
 
     String createdOnCode;
     String createdByCode;
@@ -117,6 +119,7 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
         forwardOrderCode = ControlDataElement.findControlDataElementUid(context.getString(R.string.forward_order_code));
         pushDeviceCode = ControlDataElement.findControlDataElementUid(context.getString(R.string.push_device_code));
         overallProductivityCode = ControlDataElement.findControlDataElementUid(context.getString(R.string.overall_productivity_code));
+        nextAssessmentCode = ControlDataElement.findControlDataElementUid(context.getString(R.string.next_assessment_code));
 
         createdOnCode = ControlDataElement.findControlDataElementUid(context.getString(R.string.created_on_code));
         createdByCode = ControlDataElement.findControlDataElementUid(context.getString(R.string.created_by_code));
@@ -265,6 +268,9 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
 
         //Overall productivity
         buildAndSaveDataValue(overallProductivityCode, Integer.toString(OrgUnitProgramRelation.getProductivity(survey)));
+
+        //Next assessment
+        buildAndSaveDataValue(nextAssessmentCode, EventExtended.format(SurveyPlanner.getInstance().findScheduledDateBySurvey(survey), EventExtended.AMERICAN_DATE_FORMAT));
     }
 
     private void buildAndSaveDataValue(String UID, String value){
