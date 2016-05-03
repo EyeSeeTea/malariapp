@@ -24,6 +24,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.support.multidex.MultiDex;
+import android.telephony.TelephonyManager;
 
 import com.crashlytics.android.Crashlytics;
 import com.raizlabs.android.dbflow.config.FlowManager;
@@ -40,11 +41,13 @@ import org.eyeseetea.malariacare.database.model.Value;
 import org.eyeseetea.malariacare.database.model.Value$Table;
 import org.eyeseetea.malariacare.database.utils.LocationMemory;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
+import org.eyeseetea.malariacare.database.utils.metadata.PhoneMetaData;
 import org.hisp.dhis.android.sdk.persistence.Dhis2Application;
 import org.hisp.dhis.android.sdk.persistence.models.ProgramStage;
 import org.hisp.dhis.android.sdk.persistence.models.ProgramStage$Table;
 import org.hisp.dhis.android.sdk.persistence.models.ProgramStageDataElement;
 import org.hisp.dhis.android.sdk.persistence.models.ProgramStageDataElement$Table;
+import org.eyeseetea.malariacare.database.utils.Session;
 
 import io.fabric.sdk.android.Fabric;
 
@@ -59,6 +62,11 @@ public class EyeSeeTeaApplication extends Dhis2Application  {
         Fabric.with(this, new Crashlytics());
         PreferencesState.getInstance().init(getApplicationContext());
         LocationMemory.getInstance().init(getApplicationContext());
+
+        //Set the Phone metadata
+        PhoneMetaData phoneMetaData=this.getPhoneMetadata();
+        Session.setPhoneMetaData(phoneMetaData);
+
         FlowManager.init(this, "_EyeSeeTeaDB");
         // Create indexes to accelerate the DB selects and avoid SQlite errors
         createDBIndexes();
@@ -82,6 +90,18 @@ public class EyeSeeTeaApplication extends Dhis2Application  {
             return LoginActivity.class;
         }
 
+    }
+
+    PhoneMetaData getPhoneMetadata(){
+        PhoneMetaData phoneMetaData=new PhoneMetaData();
+        TelephonyManager phoneManagerMetaData=(TelephonyManager)getSystemService(Context.TELEPHONY_SERVICE);
+        String imei = phoneManagerMetaData.getDeviceId();
+        String phone = phoneManagerMetaData.getLine1Number();
+        String serial = phoneManagerMetaData.getSimSerialNumber();
+        phoneMetaData.setImei(imei);
+        phoneMetaData.setPhone_number(phone);
+        phoneMetaData.setPhone_serial(serial);
+        return phoneMetaData;
     }
 
     private void createDBIndexes(){

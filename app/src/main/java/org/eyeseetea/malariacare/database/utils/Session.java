@@ -27,6 +27,7 @@ import com.raizlabs.android.dbflow.structure.BaseModel;
 
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.model.User;
+import org.eyeseetea.malariacare.database.utils.metadata.PhoneMetaData;
 import org.eyeseetea.malariacare.layout.adapters.dashboard.IDashboardAdapter;
 
 import java.util.HashMap;
@@ -111,6 +112,12 @@ public class Session {
         return tabsCache;
     }
 
+
+    /**
+     * The current phone metadata
+     */
+    private static PhoneMetaData phoneMetaData;
+
     /**
      * Closes the current session when the user logs out
      */
@@ -165,6 +172,12 @@ public class Session {
 
     public static void setLocation(Location location) {
         Session.location = location;
+    }
+
+    public static PhoneMetaData getPhoneMetaData(){return phoneMetaData;}
+
+    public static void setPhoneMetaData(PhoneMetaData phoneMetaData) {
+        Session.phoneMetaData = phoneMetaData;
     }
 
 }

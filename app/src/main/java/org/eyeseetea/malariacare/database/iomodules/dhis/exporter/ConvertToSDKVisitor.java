@@ -37,6 +37,7 @@ import org.eyeseetea.malariacare.database.model.Value;
 import org.eyeseetea.malariacare.database.utils.LocationMemory;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.Session;
+import org.eyeseetea.malariacare.database.utils.metadata.PhoneMetaData;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.utils.Constants;
 import org.eyeseetea.malariacare.utils.AUtils;
@@ -71,6 +72,7 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
     String mainScoreBCode;
     String mainScoreCCode;
     String forwardOrderCode;
+    String pushDeviceCode;
 
     String createdOnCode;
     String createdByCode;
@@ -110,6 +112,7 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
         mainScoreBCode = ControlDataElement.findControlDataElementUid(context.getString(R.string.main_score_b_code));
         mainScoreCCode = ControlDataElement.findControlDataElementUid(context.getString(R.string.main_score_c_code));
         forwardOrderCode = ControlDataElement.findControlDataElementUid(context.getString(R.string.forward_order_code));
+        pushDeviceCode = ControlDataElement.findControlDataElementUid(context.getString(R.string.push_device_code));
 
         createdOnCode = ControlDataElement.findControlDataElementUid(context.getString(R.string.created_on_code));
         createdByCode = ControlDataElement.findControlDataElementUid(context.getString(R.string.created_by_code));
@@ -252,6 +255,9 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
 
         //Forward Order
         buildAndSaveDataValue(forwardOrderCode, context.getString(R.string.forward_order_value));
+
+        //Push Device
+        buildAndSaveDataValue(pushDeviceCode, Session.getPhoneMetaData().getPhone_metaData());
     }
 
     private void buildAndSaveDataValue(String UID, String value){
