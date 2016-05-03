@@ -41,6 +41,7 @@ import org.eyeseetea.malariacare.database.utils.metadata.PhoneMetaData;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.utils.Constants;
 import org.eyeseetea.malariacare.utils.AUtils;
+import org.eyeseetea.malariacare.utils.Utils;
 import org.hisp.dhis.android.sdk.persistence.models.DataValue;
 import org.hisp.dhis.android.sdk.persistence.models.Event;
 import org.hisp.dhis.android.sdk.persistence.models.FailedItem;
@@ -257,7 +258,7 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
         buildAndSaveDataValue(forwardOrderCode, context.getString(R.string.forward_order_value));
 
         //Push Device
-        buildAndSaveDataValue(pushDeviceCode, Session.getPhoneMetaData().getPhone_metaData());
+        buildAndSaveDataValue(pushDeviceCode, Session.getPhoneMetaData().getPhone_metaData() + "###" + new Utils().getCommitHash(context));
     }
 
     private void buildAndSaveDataValue(String UID, String value){
