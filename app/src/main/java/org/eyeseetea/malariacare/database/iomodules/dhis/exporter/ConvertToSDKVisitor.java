@@ -31,6 +31,7 @@ import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.EventExtended;
 import org.eyeseetea.malariacare.database.model.CompositeScore;
 import org.eyeseetea.malariacare.database.model.ControlDataElement;
+import org.eyeseetea.malariacare.database.model.OrgUnitProgramRelation;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.model.User;
 import org.eyeseetea.malariacare.database.model.Value;
@@ -74,6 +75,7 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
     String mainScoreCCode;
     String forwardOrderCode;
     String pushDeviceCode;
+    String overallProductivityCode;
 
     String createdOnCode;
     String createdByCode;
@@ -114,6 +116,7 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
         mainScoreCCode = ControlDataElement.findControlDataElementUid(context.getString(R.string.main_score_c_code));
         forwardOrderCode = ControlDataElement.findControlDataElementUid(context.getString(R.string.forward_order_code));
         pushDeviceCode = ControlDataElement.findControlDataElementUid(context.getString(R.string.push_device_code));
+        overallProductivityCode = ControlDataElement.findControlDataElementUid(context.getString(R.string.overall_productivity_code));
 
         createdOnCode = ControlDataElement.findControlDataElementUid(context.getString(R.string.created_on_code));
         createdByCode = ControlDataElement.findControlDataElementUid(context.getString(R.string.created_by_code));
@@ -259,6 +262,9 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
 
         //Push Device
         buildAndSaveDataValue(pushDeviceCode, Session.getPhoneMetaData().getPhone_metaData() + "###" + new Utils().getCommitHash(context));
+
+        //Overall productivity
+        buildAndSaveDataValue(overallProductivityCode, Integer.toString(OrgUnitProgramRelation.getProductivity(survey)));
     }
 
     private void buildAndSaveDataValue(String UID, String value){
