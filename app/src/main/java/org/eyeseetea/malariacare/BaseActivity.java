@@ -107,10 +107,6 @@ public abstract class BaseActivity extends ActionBarActivity {
                 debugMessage("User asked for settings");
                 goSettings();
                 break;
-            case R.id.action_license:
-                debugMessage("User asked for license");
-                new Utils().showAlertWithMessage(R.string.settings_menu_licence, R.raw.gpl, BaseActivity.this);
-                break;
             case R.id.action_about:
                 debugMessage("User asked for about");
                 new Utils().showAlertWithHtmlMessageAndLastCommit(R.string.settings_menu_about, R.raw.about, BaseActivity.this);
