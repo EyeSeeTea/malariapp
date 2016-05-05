@@ -240,5 +240,6 @@
                <p>sh ${gitPath}/generate_last_commit.sh </p>
         <p>3. Execute "git checkout".</p> ]]>
     </string>
+    <string name="no_previous_event_info">No evento anterior disponíveis</string>
 
 </resources>
