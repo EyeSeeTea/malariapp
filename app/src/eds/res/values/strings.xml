@@ -19,11 +19,7 @@
   -->
 
 <resources>
-
-    <!-- # general -->
-    <string name="app_name" translatable="false">EDS</string>
-
-    <!-- default server url -->
-    <string name="login_info_dhis_default_server_url" translatable="false">https://eds.psi-mis.org</string>
-
+    <string name="create_info_ok">Start Assessment</string>
+    <string name="assessment_sent_title_header">Sent Assessment(s)</string>
+    <string name="dialog_info_push_empty_survey">Empty surveys cannot be pushed</string>
 </resources>

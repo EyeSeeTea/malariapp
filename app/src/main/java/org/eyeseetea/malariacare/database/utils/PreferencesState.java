@@ -233,10 +233,7 @@ public class PreferencesState {
      * @return
      */
     public Boolean getPullFromServer() {
-        if(pullFromServer==null){
-            pullFromServer = context.getResources().getBoolean(R.bool.pullFromServer);
-        }
-        return pullFromServer;
+        return true;
     }
 
     public Class getMainActivity(){

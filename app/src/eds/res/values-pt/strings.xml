@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright (c) 2015.
+  ~ Copyright (c) 2016.
   ~
   ~ This file is part of QA App.
   ~
@@ -18,6 +18,9 @@
   ~  along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
   -->
 
-<shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="oval" >
-    <solid android:color="@color/amber" />
-</shape>
+<resources>
+  <string name="create_info_ok">Criar avaliação</string>
+  <string name="assessment_sent_title_header">Avaliação enviado</string>
+  <string name="dialog_info_push_bad_credentials">Bad credenciais</string>
+  <string name="dialog_info_push_empty_survey">Inquéritos vazias não podem ser empurrados</string>
+</resources>
