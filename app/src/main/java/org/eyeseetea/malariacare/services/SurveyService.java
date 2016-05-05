@@ -39,7 +39,7 @@ import org.eyeseetea.malariacare.database.utils.feedback.Feedback;
 import org.eyeseetea.malariacare.database.utils.feedback.FeedbackBuilder;
 import org.eyeseetea.malariacare.database.utils.planning.PlannedItemBuilder;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
-import org.eyeseetea.malariacare.utils.AUtils;
+import org.eyeseetea.malariacare.utils.Utils;
 
 import java.util.HashMap;
 import java.util.List;
@@ -219,8 +219,9 @@ public class SurveyService extends IntentService {
     }
 
     private void getAllCreateSurveyData() {
+        //android.os.Debug.waitForDebugger();
         Log.d(TAG,"getAllCreateSurveyData (Thread:"+Thread.currentThread().getId()+")");
-        List<OrgUnit> orgUnitList = new Select().all().from(OrgUnit.class).where(Condition.column(OrgUnit$Table.ID_PARENT).isNull()).queryList();
+        List<OrgUnit> orgUnitList = new Select().from(OrgUnit.class).where(Condition.column(OrgUnit$Table.ID_PARENT).isNull()).queryList();
         List<OrgUnitLevel> orgUnitLevelList = new Select().all().from(OrgUnitLevel.class).queryList();
         List<Program> programList = Program.list();
 
@@ -303,7 +304,7 @@ public class SurveyService extends IntentService {
     private void preLoadTabItems(Long tabID){
         Tab tab = Tab.findById(tabID);
         if (tab !=null) {
-            AUtils.preloadTabItems(tab);
+            Utils.preloadTabItems(tab);
         }
     }
 
