@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <!-- # general -->
     <string name="yes">Sim</string>
     <string name="no">Não</string>
     <string name="cancel">Cancelar</string>
@@ -13,7 +12,6 @@
     <string name="poor">Insuficiente</string>
     <string name="lorem_ipsum">Lorem ipsum dolor sit amet</string>
 
-    <!-- settings -->
     <string name="settings_menu_about">Acerca de</string>
     <string name="settings_menu_legal">Legal</string>
     <string name="settings_menu_copyright">Copyright</string>
@@ -23,7 +21,6 @@
     <string name="settings_menu_licence">Licença</string>
     <string name="settings_menu_logout">Logout</string>
 
-    <!-- # dialogs -->
     <string name="go_to_feedback">Ir para comentários</string>
     <string name="dialog_title_delete_survey">Apagar inquérito</string>
     <string name="dialog_info_delete_survey">Tem a certeza que quer apagar completamente la pesquisa %s ?</string>
@@ -40,22 +37,19 @@
     <string name="dialog_incompleted_compulsory_survey">Este inquérito não podem ser enviados ainda. Por favor, responda pelo menos todas as questões obrigatórias</string>
     <string name="dialog_incompleted_compulsory_pulling">Metadados de atualização exigem excluir ou completar os seus dados não enviados. Por favor, responda pelo menos todas as questões obrigatórias</string>
     <string name="dialog_sent_survey_on_refresh_metadata">Metadados de atualização irá apagar seus dados não enviados. Você tem %s pesquisas não enviadas. Você empurrá-los antes de atualização?</string>  
-    <!-- Toast -->
+
     <string name="cancellingPull">O processo é interrompido em poucos segundos</string>
 
 
-    <!-- dashboard -->
     <string name="dashboard_info_feedback">Feedback</string>
     <string name="dashboard_info_ready_to_upload">Pronto para carregar</string>
     <string name="dashboard_info_sent">Enviei</string>
     <string name="dashboard_title_total_assessments">"Número total de avaliações realizadas"</string>
 
-    <!-- create -->
     <string name="create_info_ok">Criar</string>
     <string name="create_info_organization_unit">Unidade da Organização – Unid. Org.</string>
     <string name="create_info_survey">Inquérito</string>
 
-    <!-- assessment -->
     <string name="assessment_title_facility_date">Unidade de Saúde/Inquérito</string>
     <string name="assessment_title_state">% completo</string>
     <string name="assessment_sent_date">Data de conclusao</string>
@@ -63,7 +57,6 @@
     <string name="assessment_title_header">Avaliação activa</string>
     <string name="assessment_sent_title_header">Avaliação anterior(es)</string>
 
-    <!-- feedback -->
     <string name="feedback_show_only_failed">"Mostrar só falhou perguntas"</string>
     <string name="feedback_return">Voltar para todas as avaliações</string>
     <string name="quality_of_care">Qualidade da Assistência (QoC) Pontuação:</string>
@@ -72,18 +65,14 @@
     <string name="feedback_info_not_answered">"Não respondeu"</string>
     <string name="feedback_info_no_feedback">Sem feedback</string>
 
-    <!-- survey -->
     <string name="survey_title_exit">"Really Exit?"</string>
     <string name="survey_info_exit">"Tem a certeza que quer sair?"</string>
 
-    <!--widget-->
     <string name="widget_info_empty_statement">Problema</string>
 
-    <!-- custom -->
     <string name="custom_title_tallies">Folhas de controlo: Somar e dar entrada dos totais dos seguintes indicadores dos registos na coluna A. Na coluna B indique os números totais da folha de relatório mensal</string>
     <string name="custom_info_tallies">Folhas de Controlo do mês de</string>
 
-    <!-- adherence -->
     <string name="adherence_info_switchquestion">Existem registos farmacêuticos para TCA dispensada?</string>
     <string name="adherence_title_explanation">Avaliação do Provedor de adesão aos Resultados de teste de diagnóstico da malária</string>
     <string name="adherence_title_explanation_content">Passo 1: Anote os Nºs. de ID de 20 pacientes receitados com ACT, encontrados no Registo de Farmácia ou Registos Clínicos\nPasso 2: Localize a Identidade do paciente de 1) nos Registos Clínicos ou de Laboratório, e anote os resultados dos seus testes na coluna apropriada</string>
@@ -103,20 +92,17 @@
     <string name="adherence_info_microscopy_positive">Microscopia positiva</string>
     <string name="adherence_info_microscopy_negative">Microscopia negativa</string>
 
-    <!-- iqa eqa -->
     <string name="iqatab_info_supervisor">Supervisor</string>
     <string name="iqatab_info_parasites">Parasitas/mL</string>
     <string name="iqatab_info_species">Espécies</string>
     <string name="iqatab_info_labstaff">Pessoal de Laboratório</string>
 
-    <!-- reporting -->
     <string name="reporting_info_reporting">Relatórios</string>
     <string name="reporting_info_results">Resultados</string>
     <string name="reporting_info_register">Registo</string>
     <string name="reporting_info_monthly">Relatório/mensal</string>
     <string name="iqatab_info_note">Nota : Revisão de Lâminas deve ser realizada na unidade de saúde durante OTSS na presença do pessoal do laboratório facilidade. As lâminas não deve ser removido a partir da instalação para este propósito.</string>
 
-    <!-- score -->
     <string name="score_title_clinical_fever">Avaliação clínica/febre</string>
     <string name="score_title_rdt">TDR</string>
     <string name="score_title_avg">AVG Grupos de Doentes de Ambulatório (GDA)</string>
@@ -129,10 +115,8 @@
     <string name="score_info_case2">Caso 2</string>
     <string name="score_info_case3">Caso 3</string>
 
-    <!-- composite score -->
     <string name="compscore_title_score_percentage">Ponto (%)</string>
 
-    <!-- settings -->
     <string name="title_activity_settings">Definições</string>
     <string name="settings_checkbox_show_num_dems">Mostrar numerador/denominador</string>
     <string name="settings_checkbox_description_show_num_dems">Quando activadas, as questões do inquérito mostram os seus numeradores e denominadores, usados para calcular resultados do inquérito</string>
@@ -216,7 +200,6 @@
     <string name="improve">Melhorar</string>
     <string name="monitor">Monitor</string>
 
-    <!-- filters text -->
     <string name="filter_all_org_units">todas as unidades de organização</string>
     <string name="filter_all_org_assessments">todas as avaliações</string>
     <string name="dialog_content_dhis_preference_login">Alterar o servidor precisa re-login. Cada pesquisa não-enviados serão apagados. Você tem certeza que quer continuar?</string>
@@ -224,7 +207,6 @@
     <string name="feedback_info_conflict">Conflito</string>
     <string name="dialog_deleting_children">Você está prestes a excluir a resposta para as perguntas que depende este. Você realmente deseja continuar?</string>
 
-    <!-- last commit info -->
     <string name="lastcommit">Versão: %s</string>
     <string name="unavailable">indisponível</string>
     <string name="lastcommit_unavailable"><![CDATA[

@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <!-- # general -->
     <string name="yes">Oui</string>
     <string name="no">Non</string>
     <string name="cancel">Annuler</string>
@@ -13,7 +12,6 @@
     <string name="poor">Pauvre</string>
     <string name="lorem_ipsum">Lorem ipsum dolor sit amet</string>
 
-    <!-- settings -->
     <string name="settings_menu_about">A propos de cette app</string>
     <string name="settings_menu_legal">Légal</string>
     <string name="settings_menu_copyright">Copyright</string>
@@ -23,7 +21,6 @@
     <string name="settings_menu_licence">License</string>
     <string name="settings_menu_logout">Se deconnecter</string>
 
-    <!-- # dialogs -->
     <string name="go_to_feedback">Aller aux commentaires</string>
     <string name="dialog_title_delete_survey">Supprimer Survey.</string>
     <string name="dialog_info_delete_survey">"Etes-vous sûr de vouloir supprimer complètement l'enquête: %s?"</string>
@@ -40,25 +37,21 @@
     <string name="dialog_incompleted_compulsory_survey">"Cette enquête ne peut pas encore envoyé. S'il vous plaît répondre à au moins toutes les questions obligatoires"</string>
     <string name="dialog_incompleted_compulsory_pulling">"Métadonnées nécessite rafraîchissement supprimer ou compléter vos données non envoyés. S'il vous plaît répondre à au moins toutes les questions obligatoires"</string>
     <string name="dialog_sent_survey_on_refresh_metadata">"Métadonnées rafraîchissement supprimer vos données non transmises. Vous avez %s enquêtes non envoyés. Avez-vous de les pousser avant rafraîchissement?"</string>
-    <!-- Toast -->
+
     <string name="cancellingPull">Le processus est arrêté en quelques secondes</string>
 
-    <!-- dashboard -->
     <string name="dashboard_info_feedback">Feedback</string>
     <string name="dashboard_info_ready_to_upload">Prête pour envoyer</string>
     <string name="dashboard_title_total_assessments">"Nombre total d'évaluations réalisées"</string>
 
-    <!-- create -->
     <string name="create_info_ok">Commencer</string>
     <string name="create_info_organization_unit">Unité d\'organisation</string>
     <string name="create_info_survey">Enquête</string>
 
-    <!-- assessment -->
     <string name="assessment_title_facility_date">Centre de santé / Date</string>
     <string name="assessment_title_state">État</string>
     <string name="assessment_title_header">Evaluation(s) active(s)</string>
 
-    <!-- feedback -->
     <string name="feedback_show_only_failed">"Afficher seulement échoué aux questions"</string>
     <string name="feedback_return">Retour à toutes les évaluations</string>
     <string name="quality_of_care">Qualité des soins (QoC) Score:</string>
@@ -67,18 +60,14 @@
     <string name="feedback_info_not_answered">"Pas répondu"</string>
     <string name="feedback_info_no_feedback">Aucun commentaire</string>
 
-    <!-- survey -->
     <string name="survey_title_exit">"Vraiment quitter?"</string>
     <string name="survey_info_exit">"Êtes-vous sûr de vouloir quitter?"</string>
 
-    <!-- widget -->
     <string name="widget_info_empty_statement">Question statement</string>
 
-    <!-- custom -->
     <string name="custom_title_tallies">TALLIES - Add up and enter the totals for the following indicators from the registers in column A.  In column B enter the total numbers from the monthly reporting sheet</string>
     <string name="custom_info_tallies">TALLIES for the Month of</string>
 
-    <!-- adherence -->
     <string name="adherence_info_switchquestion">Est-ce que les enregistrements du pharmacie sont du ACTs livrés ?</string>
     <string name="adherence_title_explanation">Evaluation of Provider Adherence to Malaria Diagnostic Test Results</string>
     <string name="adherence_title_explanation_content">Step 1. Record below the patient ID numbers of 20 patients prescribed ACTs from the Pharmacy Register.\nStep 2. Locate the patient IDs from Step 1 in the Laboratory and/or Clinical Registers and record their test result in the appropriate column.</string>
@@ -93,19 +82,16 @@
     <string name="adherence_info_microscopy_positive">Microscopie Positif</string>
     <string name="adherence_info_microscopy_negative">Microscopie Negatif</string>
 
-    <!-- iqa eqa -->
     <string name="iqatab_info_supervisor">Supervisor</string>
     <string name="iqatab_info_parasites">Parasites/uL</string>
     <string name="iqatab_info_species">Species</string>
     <string name="iqatab_info_labstaff">Lab Staff</string>
 
-    <!-- reporting -->
     <string name="reporting_info_reporting">Notification</string>
     <string name="reporting_info_results">Resultats</string>
     <string name="reporting_info_register">Enregistrement</string>
     <string name="reporting_info_monthly">Notification \nMensuel</string>
 
-    <!-- score -->
     <string name="score_title_clinical_fever">Clinical\nfever\nevaluation</string>
     <string name="score_title_rdt">RDT</string>
     <string name="score_title_avg">Moyenne</string>
@@ -118,10 +104,8 @@
     <string name="score_info_case2">Cas 2</string>
     <string name="score_info_case3">Cas 3</string>
 
-    <!-- composite score -->
     <string name="compscore_title_score_percentage">Score (%)</string>
 
-    <!-- settings -->
     <string name="title_activity_settings">Parametres</string>
     <string name="settings_checkbox_show_num_dems">Montrer num/dems</string>
     <string name="settings_checkbox_description_show_num_dems">S\'il est actif, les questions du formulaire montrent ses numerateurs et denominateurs, usés pour calculer la ponctuation de l\'enquêtte</string>
@@ -211,7 +195,6 @@
     <string name="monitor">Monitorisation</string>
 
 
-    <!-- filters text -->
     <string name="filter_all_org_units">toutes les unitées d\'organisation</string>
     <string name="filter_all_org_assessments">"toutes les évaluations"</string>
     <string name="dialog_content_dhis_preference_login">Modification du serveur doit se reconnecter. Chaque enquête non envoyé sera supprimé. Es-tu sûr de vouloir continuer?</string>
@@ -219,7 +202,6 @@
     <string name="feedback_info_conflict">Conflit</string>
     <string name="dialog_deleting_children">Vous êtes sur le point de supprimer la réponse aux questions qui dépend de celui-ci. Voulez-vous vraiment continuer?</string>
 
-    <!-- last commit info -->
     <string name="lastcommit">Version: %s</string>
     <string name="unavailable">Indisponible</string>
     <string name="lastcommit_unavailable"><![CDATA["
