@@ -564,6 +564,10 @@ public class Survey extends BaseModel implements VisitableToSDK {
      * @return
      */
     public static Survey getInProgressSurveys(OrgUnit orgUnit, TabGroup tabGroup) {
+        if(orgUnit==null || tabGroup==null){
+            return null;
+        }
+
         return new Select().from(Survey.class)
                 .where(Condition.column(Survey$Table.ID_ORG_UNIT).eq(orgUnit.getId_org_unit()))
                 .and(Condition.column(Survey$Table.ID_TAB_GROUP).eq(tabGroup.getId_tab_group()))

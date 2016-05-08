@@ -88,8 +88,6 @@ public class CreateSurveyFragment extends Fragment {
     private SurveyReceiver surveyReceiver;
 
     private Spinner programView;
-    private View tabGroupContainer;
-    private Spinner tabGroupView;
 
     //Loaded one time from service
     List<Program> allProgramList;
@@ -233,11 +231,7 @@ public class CreateSurveyFragment extends Fragment {
         initProgram.add(0, programDefaultOption);
         programView = (Spinner)  llLayout.findViewById(R.id.program);
         programView.setAdapter(new ProgramArrayAdapter( getActivity(), initProgram));
-        programView.setOnItemSelectedListener(new ProgramSpinnerListener());
 
-        //Create Tab Group View DDL. Not populated and not visible.
-        tabGroupContainer =  llLayout.findViewById(R.id.tab_group_container);
-        tabGroupView = (Spinner)  llLayout.findViewById(R.id.tab_group);
         //set the first orgUnit saved
         orgUnitStorage =orgUnitHierarchy.getSavedUidsList().split(TOKEN)[0];
 
@@ -289,8 +283,7 @@ public class CreateSurveyFragment extends Fragment {
         try {
             boolean isEverythingFilled = (!programView.getSelectedItem().equals(programDefaultOption));
             boolean isProgramInOrgUnit=orgUnitHierarchy.getLastSelected().getPrograms().contains((Program)programView.getSelectedItem());
-            boolean isTabGroupFilled = !tabGroupView.getSelectedItem().equals(tabGroupDefaultOption);
-            return isEverythingFilled && isTabGroupFilled && isProgramInOrgUnit;
+            return isEverythingFilled && isProgramInOrgUnit;
         }catch(NullPointerException ex){
             return false;
         }
@@ -299,8 +292,9 @@ public class CreateSurveyFragment extends Fragment {
     private boolean doesSurveyInProgressExist() {
         // Read Selected Items
         OrgUnit orgUnit = orgUnitHierarchy.getLastSelected();
-        TabGroup tabGroup = (TabGroup) tabGroupView.getSelectedItem();
-        Survey survey = Survey.getInProgressSurveys(orgUnit, tabGroup);
+        Program program = (Program) programView.getSelectedItem();
+
+        Survey survey = Survey.getInProgressSurveys(orgUnit, program.getTabGroup());
         return (survey != null);
     }
 
@@ -338,56 +332,12 @@ public class CreateSurveyFragment extends Fragment {
         OrgUnit orgUnit = orgUnitHierarchy.getLastSelected();
 
         //Get selected tabGroup
-        TabGroup tabGroup = (TabGroup) tabGroupView.getSelectedItem();
+        Program program = (Program)programView.getSelectedItem();
 
         //save  the list of orgUnits
         orgUnitHierarchy.saveSelectionInPreferences();
 
-        dashboardActivity.onCreateSurvey(orgUnit,tabGroup);
-    }
-
-    private class ProgramSpinnerListener implements AdapterView.OnItemSelectedListener {
-
-        public ProgramSpinnerListener() {
-        }
-
-        @Override
-        public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
-            Program selectedProgram = (Program) programView.getSelectedItem();
-            List<TabGroup> tabGroupList = selectedProgram.getTabGroups();
-            //remove null tabgrouplist
-            if (tabGroupList.size() > 1) {
-                for (int i = tabGroupList.size() - 1; i >= 0; i--) {
-                    if (tabGroupList.get(i).getName() == null) {
-                        tabGroupList.remove(i);
-                    }
-                }
-            }
-            if (tabGroupList.size() > 1){
-                // Populate tab group spinner
-                tabGroupList.add(0, tabGroupDefaultOption);
-                tabGroupView.setAdapter(new TabGroupArrayAdapter( getActivity().getApplicationContext(), tabGroupList));
-                //Show tab group select
-                tabGroupContainer.setVisibility(View.VISIBLE);
-            }
-            else{
-                if (tabGroupList.size() == 1){
-                    tabGroupList.add(0, tabGroupDefaultOption);
-                    tabGroupView.setAdapter(new TabGroupArrayAdapter( getActivity().getApplicationContext(), tabGroupList));
-                    tabGroupView.setSelection(1);
-                } else {
-                    // Select single tab group
-                    tabGroupView.setSelection(0);
-                }
-                //Hide tab group selector
-               tabGroupContainer.setVisibility(View.GONE);
-            }
-        }
-
-        @Override
-        public void onNothingSelected(AdapterView<?> parent) {
-
-        }
+        dashboardActivity.onCreateSurvey(orgUnit,program.getTabGroup());
     }
 
     private class OrgUnitSpinnerListener implements AdapterView.OnItemSelectedListener {
@@ -520,7 +470,6 @@ public class CreateSurveyFragment extends Fragment {
         initProgram.add(0, programDefaultOption);
         programView = (Spinner)  llLayout.findViewById(R.id.program);
         programView.setAdapter(new ProgramArrayAdapter( getActivity(), initProgram));
-        programView.setOnItemSelectedListener(new ProgramSpinnerListener());
         return initProgram;
     }
 

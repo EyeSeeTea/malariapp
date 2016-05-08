@@ -19,6 +19,7 @@
 
 package org.eyeseetea.malariacare.database.iomodules.dhis.importer;
 
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 import org.eyeseetea.malariacare.R;
@@ -134,33 +135,52 @@ public class QuestionBuilder {
      * @param dataElementExtended
      * @return question header
      */
-    public Header saveHeader(DataElementExtended dataElementExtended,TabGroupBuilder tabGroupBuilder) {
-        Header header = null;
-        String attributeHeaderValue = dataElementExtended.getValue(DataElementExtended.ATTRIBUTE_HEADER_NAME);
-        if (attributeHeaderValue != null) {
-            Tab questionTab;
-            questionTab=tabGroupBuilder.saveTabGroup(dataElementExtended);
-            String tabUid = dataElementExtended.findProgramStageSectionUIDByDataElementUID(dataElementExtended.getDataElement().getUid());
-
-            if(!mapHeader.containsKey(tabUid+attributeHeaderValue)) {
-                header = new Header();
-                header.setName(attributeHeaderValue);
-                header.setShort_name(attributeHeaderValue);
-                header.setOrder_pos(header_order);
-                header_order++;
-                header.setTab(questionTab);
-                header.save();
-                mapHeader.put(tabUid+header.getName(), header);
-            }
-            else{
-                header=mapHeader.get(tabUid+attributeHeaderValue);
-            }
-            if(questionTab==null) {
-                header=null;
-                return header;
-            }
-
+    public Header findOrSaveHeader(DataElementExtended dataElementExtended, Map<String,Object> appMapObjects) {
+        Header header;
+        String attributeHeaderName = dataElementExtended.getValue(DataElementExtended.ATTRIBUTE_HEADER_NAME);
+        //No header attribute no header
+        if(attributeHeaderName==null){
+            return null;
         }
+
+        //Find tabUID
+        String tabUid = dataElementExtended.findProgramStageSectionUIDByDataElementUID(dataElementExtended.getDataElement().getUid());
+        //No tab no header
+        if(tabUid==null){
+            return null;
+        }
+        //Unique key to index header
+        String keyHeader=tabUid+attributeHeaderName;
+        header = mapHeader.get(keyHeader);
+        //Already built -> return
+        if(header!=null){
+            return header;
+        }
+
+        Tab tab = (Tab)appMapObjects.get(tabUid);
+        //No tab-> something wrong
+        if(tab==null){
+            return null;
+        }
+
+        //First time
+        header = buildHeader(attributeHeaderName, tab, tabUid);
+        return header;
+    }
+
+    @NonNull
+    private Header buildHeader(String attributeHeaderValue, Tab tab, String tabUID) {
+        String keyHeader=tabUID+attributeHeaderValue;
+        Header header;
+        header = new Header();
+        header.setName(attributeHeaderValue);
+        header.setShort_name(attributeHeaderValue);
+        header.setOrder_pos(header_order);
+        header_order++;
+        header.setTab(tab);
+        header.save();
+
+        mapHeader.put(keyHeader, header);
         return header;
     }
 
