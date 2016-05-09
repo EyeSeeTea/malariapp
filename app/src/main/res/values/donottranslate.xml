@@ -57,7 +57,8 @@
         <string name="tab_tag_improve" translatable="false">tab_improve</string>
         <string name="tab_tag_monitor" translatable="false">tab_monitor</string>
         <string name="hide_planning_tab_key" translatable="false">tab_hide</string>
-        <string name="main_score_code" translatable="false">_Overall Class</string>
+        <string name="overall_score_code" translatable="false">_Overall Score</string>
+        <string name="main_score_class_code" translatable="false">_Overall Class</string>
         <string name="main_score_a_code" translatable="false">_Overall Class A</string>
         <string name="main_score_b_code" translatable="false">_Overall Class B</string>
         <string name="main_score_c_code" translatable="false">_Overall Class C</string>

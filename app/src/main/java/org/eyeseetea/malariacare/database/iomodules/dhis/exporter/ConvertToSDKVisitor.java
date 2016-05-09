@@ -69,6 +69,7 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
      */
     Context context;
 
+    String overallScoreCode;
     String mainScoreClassCode;
     String mainScoreACode;
     String mainScoreBCode;
@@ -111,7 +112,8 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
     ConvertToSDKVisitor(Context context){
         this.context=context;
         // FIXME: We should create a visitor to translate the ControlDataElement class
-        mainScoreClassCode = ControlDataElement.findControlDataElementUid(context.getString(R.string.main_score_code));
+        overallScoreCode = ControlDataElement.findControlDataElementUid(context.getString(R.string.overall_score_code));
+        mainScoreClassCode = ControlDataElement.findControlDataElementUid(context.getString(R.string.main_score_class_code));
         mainScoreACode = ControlDataElement.findControlDataElementUid(context.getString(R.string.main_score_a_code));
         mainScoreBCode = ControlDataElement.findControlDataElementUid(context.getString(R.string.main_score_b_code));
         mainScoreCCode = ControlDataElement.findControlDataElementUid(context.getString(R.string.main_score_c_code));
@@ -241,6 +243,10 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
         //Updated by user
         if(!uploadedByCode.equals(""))
             buildAndSaveDataValue(uploadedByCode, Session.getUser().getUid());
+
+
+        //Overall score
+        buildAndSaveDataValue(overallScoreCode, survey.getMainScore().toString());
 
         //MainScoreUID
         buildAndSaveDataValue(mainScoreClassCode, survey.getType());
