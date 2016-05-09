@@ -38,7 +38,6 @@ import org.eyeseetea.malariacare.database.model.Value;
 import org.eyeseetea.malariacare.database.utils.LocationMemory;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.Session;
-import org.eyeseetea.malariacare.database.utils.metadata.PhoneMetaData;
 import org.eyeseetea.malariacare.database.utils.planning.SurveyPlanner;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.utils.Constants;
@@ -70,7 +69,7 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
      */
     Context context;
 
-    String mainScoreCode;
+    String mainScoreClassCode;
     String mainScoreACode;
     String mainScoreBCode;
     String mainScoreCCode;
@@ -81,8 +80,8 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
 
     String createdOnCode;
     String createdByCode;
-    String updatedDateCode;
-    String updatedUserCode;
+    String uploadedOnCode;
+    String uploadedByCode;
     /**
      * List of surveys that are going to be pushed
      */
@@ -112,7 +111,7 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
     ConvertToSDKVisitor(Context context){
         this.context=context;
         // FIXME: We should create a visitor to translate the ControlDataElement class
-        mainScoreCode = ControlDataElement.findControlDataElementUid(context.getString(R.string.main_score_code));
+        mainScoreClassCode = ControlDataElement.findControlDataElementUid(context.getString(R.string.main_score_code));
         mainScoreACode = ControlDataElement.findControlDataElementUid(context.getString(R.string.main_score_a_code));
         mainScoreBCode = ControlDataElement.findControlDataElementUid(context.getString(R.string.main_score_b_code));
         mainScoreCCode = ControlDataElement.findControlDataElementUid(context.getString(R.string.main_score_c_code));
@@ -122,9 +121,8 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
         nextAssessmentCode = ControlDataElement.findControlDataElementUid(context.getString(R.string.next_assessment_code));
 
         createdOnCode = ControlDataElement.findControlDataElementUid(context.getString(R.string.created_on_code));
-        createdByCode = ControlDataElement.findControlDataElementUid(context.getString(R.string.created_by_code));
-        updatedDateCode =ControlDataElement.findControlDataElementUid(context.getString(R.string.upload_date_code));
-        updatedUserCode = ControlDataElement.findControlDataElementUid(context.getString(R.string.created_by_code));
+        uploadedOnCode =ControlDataElement.findControlDataElementUid(context.getString(R.string.upload_date_code));
+        uploadedByCode = ControlDataElement.findControlDataElementUid(context.getString(R.string.uploaded_by_code));
         surveys = new ArrayList<>();
         events = new ArrayList<>();
     }
@@ -233,23 +231,19 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
 
         //It Checks if the dataelement exists, before build and save the datavalue
         //Created date
-        if(!createdByCode.equals(""))
+        if(!createdOnCode.equals(""))
             buildAndSaveDataValue(createdOnCode, EventExtended.format(survey.getCreationDate(), EventExtended.AMERICAN_DATE_FORMAT));
 
         //Updated date
-        if(!updatedDateCode.equals(""))
-            buildAndSaveDataValue(updatedDateCode, EventExtended.format(survey.getUploadedDate(), EventExtended.AMERICAN_DATE_FORMAT));
+        if(!uploadedOnCode.equals(""))
+            buildAndSaveDataValue(uploadedOnCode, EventExtended.format(survey.getUploadedDate(), EventExtended.AMERICAN_DATE_FORMAT));
 
         //Updated by user
-        if(!updatedUserCode.equals(""))
-            buildAndSaveDataValue(updatedUserCode, Session.getUser().getUid());
-
-        //Updated by user
-        if(!createdByCode.equals(""))
-            buildAndSaveDataValue(createdByCode, Session.getUser().getUid());
+        if(!uploadedByCode.equals(""))
+            buildAndSaveDataValue(uploadedByCode, Session.getUser().getUid());
 
         //MainScoreUID
-        buildAndSaveDataValue(mainScoreCode, survey.getType());
+        buildAndSaveDataValue(mainScoreClassCode, survey.getType());
 
         //MainScore A
         buildAndSaveDataValue(mainScoreACode, survey.isTypeA() ? "true" : "false");
