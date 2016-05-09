@@ -246,31 +246,40 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
 
 
         //Overall score
-        buildAndSaveDataValue(overallScoreCode, survey.getMainScore().toString());
+        if(!overallScoreCode.equals(""))
+            buildAndSaveDataValue(overallScoreCode, survey.getMainScore().toString());
 
         //MainScoreUID
-        buildAndSaveDataValue(mainScoreClassCode, survey.getType());
+        if(!mainScoreClassCode.equals(""))
+            buildAndSaveDataValue(mainScoreClassCode, survey.getType());
 
         //MainScore A
-        buildAndSaveDataValue(mainScoreACode, survey.isTypeA() ? "true" : "false");
+        if(!mainScoreACode.equals(""))
+            buildAndSaveDataValue(mainScoreACode, survey.isTypeA() ? "true" : "false");
 
         //MainScore B
-        buildAndSaveDataValue(mainScoreBCode, survey.isTypeB() ? "true" : "false");
+        if(!mainScoreBCode.equals(""))
+            buildAndSaveDataValue(mainScoreBCode, survey.isTypeB() ? "true" : "false");
 
         //MainScoreC
-        buildAndSaveDataValue(mainScoreCCode, survey.isTypeC() ? "true" : "false");
+        if(!mainScoreCCode.equals(""))
+            buildAndSaveDataValue(mainScoreCCode, survey.isTypeC() ? "true" : "false");
 
         //Forward Order
-        buildAndSaveDataValue(forwardOrderCode, context.getString(R.string.forward_order_value));
+        if(!forwardOrderCode.equals(""))
+            buildAndSaveDataValue(forwardOrderCode, context.getString(R.string.forward_order_value));
 
         //Push Device
-        buildAndSaveDataValue(pushDeviceCode, Session.getPhoneMetaData().getPhone_metaData() + "###" + new Utils().getCommitHash(context));
+        if(!pushDeviceCode.equals(""))
+            buildAndSaveDataValue(pushDeviceCode, Session.getPhoneMetaData().getPhone_metaData() + "###" + new Utils().getCommitHash(context));
 
         //Overall productivity
-        buildAndSaveDataValue(overallProductivityCode, Integer.toString(OrgUnitProgramRelation.getProductivity(survey)));
+        if(!overallProductivityCode.equals(""))
+            buildAndSaveDataValue(overallProductivityCode, Integer.toString(OrgUnitProgramRelation.getProductivity(survey)));
 
         //Next assessment
-        buildAndSaveDataValue(nextAssessmentCode, EventExtended.format(SurveyPlanner.getInstance().findScheduledDateBySurvey(survey), EventExtended.AMERICAN_DATE_FORMAT));
+        if(!nextAssessmentCode.equals(""))
+            buildAndSaveDataValue(nextAssessmentCode, EventExtended.format(SurveyPlanner.getInstance().findScheduledDateBySurvey(survey), EventExtended.AMERICAN_DATE_FORMAT));
     }
 
     private void buildAndSaveDataValue(String UID, String value){
