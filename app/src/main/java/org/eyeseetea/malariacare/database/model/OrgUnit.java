@@ -26,6 +26,8 @@ import com.raizlabs.android.dbflow.annotation.OneToMany;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;
 import com.raizlabs.android.dbflow.sql.builder.Condition;
+import com.raizlabs.android.dbflow.sql.language.ColumnAlias;
+import com.raizlabs.android.dbflow.sql.language.Join;
 import com.raizlabs.android.dbflow.sql.language.Select;
 import com.raizlabs.android.dbflow.structure.BaseModel;
 
@@ -175,15 +177,19 @@ public class OrgUnit extends BaseModel {
         return surveys;
     }
 
+    /**
+     * List of programs related to this orgunit order by name
+     * @return
+     */
     public List<Program> getPrograms(){
         if(programs==null){
-            List<OrgUnitProgramRelation> orgUnitProgramRelations = new Select().from(OrgUnitProgramRelation.class)
-                    .where(Condition.column(OrgUnitProgramRelation$Table.ID_ORG_UNIT).eq(this.getId_org_unit()))
+            this.programs=new Select().from(Program.class).as("p")
+                    .join(OrgUnitProgramRelation.class, Join.JoinType.LEFT).as("oup")
+                    .on(Condition.column(ColumnAlias.columnWithTable("p",Program$Table.ID_PROGRAM))
+                            .eq(ColumnAlias.columnWithTable("oup",OrgUnitProgramRelation$Table.ID_PROGRAM))
+                    ).where(Condition.column(OrgUnitProgramRelation$Table.ID_ORG_UNIT).eq(this.getId_org_unit()))
+                    .orderBy(true,Program$Table.NAME)
                     .queryList();
-            this.programs= new ArrayList<>();
-            for(OrgUnitProgramRelation programRelation:orgUnitProgramRelations){
-                programs.add(programRelation.getProgram());
-            }
         }
         return programs;
     }
