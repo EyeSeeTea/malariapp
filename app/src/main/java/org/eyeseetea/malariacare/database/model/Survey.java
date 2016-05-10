@@ -919,6 +919,15 @@ public class Survey extends BaseModel implements VisitableToSDK {
     return tabGroup;
     }
 
+    public String getFullName(){
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append(this.getOrgUnit().getName());
+        stringBuilder.append(", ");
+        stringBuilder.append(this.getProgram().getName());
+        stringBuilder.append(", ");
+        stringBuilder.append(this.getTabGroup().getName());
+        return stringBuilder.toString();
+    }
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

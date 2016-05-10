@@ -296,4 +296,95 @@ public abstract class AUtils {
 
     public abstract void createNewSurvey(OrgUnit orgUnit, TabGroup tabGroup);
     
+
+    protected class LoadLastEvent extends AsyncTask<ComboOrgUnitTabGroup, Void, Void> {
+        ComboOrgUnitTabGroup comboOrgUnitTabGroup;
+        PullClient.EventInfo eventInfo;
+
+        @Override
+        protected Void doInBackground(ComboOrgUnitTabGroup... params) {
+            comboOrgUnitTabGroup=params[0];
+            PullClient pullClient = new PullClient((DashboardActivity) DashboardActivity.dashboardActivity);
+            eventInfo = pullClient.getLastEventUid(comboOrgUnitTabGroup.getOrgUnit(), comboOrgUnitTabGroup.getTabGroup());
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void result) {
+            super.onPostExecute(result);
+            // Dismiss the progress dialog
+            askCreateOrModify(comboOrgUnitTabGroup, eventInfo);
+            if (progressDialog.isShowing()) {
+                progressDialog.dismiss();
+            }
+        }
+        ProgressDialog progressDialog;
+        @Override
+        protected void onPreExecute() {
+
+            progressDialog = new ProgressDialog(DashboardActivity.dashboardActivity);
+            progressDialog.setMessage(PreferencesState.getInstance().getContext().getResources().getString(R.string.loading_last_surveys));
+            progressDialog.setCancelable(false);
+            progressDialog.show();
+        }
+
+        @Override
+        protected void onProgressUpdate(Void... values) {
+            super.onProgressUpdate(values);
+        }
+    }
+
+    private void askCreateOrModify(final ComboOrgUnitTabGroup comboOrgUnitTabGroup, final PullClient.EventInfo eventInfo){
+        String dialogMessage="";
+        if(eventInfo==null || eventInfo.getEventUid().equals(PreferencesState.getInstance().getContext().getResources().getString(R.string.no_previous_event_fakeuid))){
+            dialogMessage=PreferencesState.getInstance().getContext().getResources().getString(R.string.no_previous_event_info);
+        }else{
+            dialogMessage=String.format(PreferencesState.getInstance().getContext().getResources().getString(R.string.create_or_modify), formatDate(eventInfo.getEventDate()));
+        }
+        new AlertDialog.Builder(DashboardActivity.dashboardActivity)
+                .setTitle("")
+                .setMessage(dialogMessage)
+                .setPositiveButton((R.string.create), new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface arg0, int arg1) {
+                        DashboardActivity activity= (DashboardActivity)DashboardActivity.dashboardActivity;
+                        activity.createNewSurvey(comboOrgUnitTabGroup.getOrgUnit(),comboOrgUnitTabGroup.getTabGroup());
+                    }
+                })
+                .setNeutralButton((R.string.modify), new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface arg0, int arg1) {
+                        DashboardActivity activity= (DashboardActivity)DashboardActivity.dashboardActivity;
+                        activity.modifySurvey(comboOrgUnitTabGroup.getOrgUnit(),comboOrgUnitTabGroup.getTabGroup(), eventInfo);
+                    }
+                })
+                .setNegativeButton((R.string.cancel), null)
+                .setCancelable(true)
+                .create().show();
+    }
+
+    public class ComboOrgUnitTabGroup{
+        OrgUnit orgUnit;
+        TabGroup tabGroup;
+
+        public ComboOrgUnitTabGroup(OrgUnit orgUnit, TabGroup tabGroup) {
+            this.orgUnit = orgUnit;
+            this.tabGroup = tabGroup;
+        }
+
+        public OrgUnit getOrgUnit() {
+            return orgUnit;
+        }
+
+        public void setOrgUnit(OrgUnit orgUnit) {
+            this.orgUnit = orgUnit;
+        }
+
+        public TabGroup getTabGroup() {
+            return tabGroup;
+        }
+
+        public void setTabGroup(TabGroup tabGroup) {
+            this.tabGroup = tabGroup;
+        }
+    }
+
 }

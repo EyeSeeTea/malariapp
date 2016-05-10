@@ -35,7 +35,7 @@
     <!-- # dialogs -->
     <string name="go_to_feedback">Aller aux commentaires</string>
     <string name="dialog_title_delete_survey">Supprimer Survey.</string>
-    <string name="dialog_info_delete_survey">"Etes-vous sûr de vouloir supprimer complètement l'enquête: %s?"</string>
+    <string name="dialog_info_delete_survey">"Etes-vous sûr de vouloir supprimer complètement l\'enquête %s?"</string>
     <string name="dialog_title_error">Erreur</string>
     <string name="dialog_error_denominator">Erreur, denominateur = 0</string>
     <string name="dialog_title_missing_selection">selection manquant</string>
@@ -299,7 +299,7 @@
     <!-- Create or patch -->
     <string name="create">"Créer"</string>
     <string name="modify">Modifier</string>
-    <string name="create_or_modify">"Voulez-vous créer ou modifier l'enquête avec les dates %s ?"</string>
+    <string name="create_or_modify">"Voulez-vous créer une nouvelle évaluation ou de modifier la dernière évaluation, les dates[%s]?"</string>
     <string name="loading_last_surveys">"Dernière enquête de chargement..."</string>
 
     <!-- Last survey -->
