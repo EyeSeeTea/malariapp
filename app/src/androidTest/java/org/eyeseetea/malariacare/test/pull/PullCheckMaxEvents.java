@@ -25,15 +25,10 @@ package org.eyeseetea.malariacare.test.pull;
         import org.eyeseetea.malariacare.LoginActivity;
         import org.eyeseetea.malariacare.database.iomodules.dhis.importer.PullController;
         import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.EventExtended;
-        import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.ProgramExtended;
-        import org.eyeseetea.malariacare.database.model.OrgUnit;
-        import org.eyeseetea.malariacare.database.model.OrgUnitProgramRelation;
-        import org.eyeseetea.malariacare.database.model.Program;
         import org.eyeseetea.malariacare.database.utils.PreferencesState;
         import org.eyeseetea.malariacare.test.utils.SDKTestUtils;
         import org.hisp.dhis.android.sdk.controllers.tracker.TrackerController;
         import org.hisp.dhis.android.sdk.persistence.models.Event;
-        import org.hisp.dhis.android.sdk.persistence.models.OrganisationUnit;
         import org.junit.AfterClass;
         import org.junit.Before;
         import org.junit.Rule;
@@ -102,7 +97,7 @@ public class PullCheckMaxEvents {
         Map<String,Integer> mapNumEventsXPair= new HashMap<>();
         for(Event event:events){
             try {
-                Date eventDate=EventExtended.parseDate(event.getEventDate(),EventExtended.DHIS2_DATE_FORMAT);
+                Date eventDate=EventExtended.parseDate(event.getEventDate(),EventExtended.DHIS2_GMT_DATE_FORMAT);
                 //Then event date is after than the start month date
                 assertTrue(eventDate.after(month.getTime()));
             } catch (ParseException e) {

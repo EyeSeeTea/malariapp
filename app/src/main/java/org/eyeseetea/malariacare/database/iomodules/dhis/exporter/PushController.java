@@ -30,6 +30,7 @@ import org.eyeseetea.malariacare.database.iomodules.dhis.importer.SyncProgressSt
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.EventExtended;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.utils.PopulateDB;
+import org.eyeseetea.malariacare.receivers.AlarmPushReceiver;
 import org.hisp.dhis.android.sdk.controllers.DhisService;
 import org.hisp.dhis.android.sdk.job.NetworkJob;
 import org.hisp.dhis.android.sdk.network.ResponseHolder;
@@ -140,6 +141,7 @@ public class PushController {
         new Thread(){
             @Override
             public void run(){
+                boolean success=true;
                 try {
                     if (result == null) {
                         Log.e(TAG, "onSendDataFinished with null");
@@ -158,10 +160,11 @@ public class PushController {
                     converter.saveSurveyStatus(getImportSummaryMap(result));
                     Log.d(TAG, "PUSH process...Finish");
                 }catch (Exception ex){
+                    success=false;
                     Log.e(TAG,"onSendDataFinished: "+ex.getLocalizedMessage());
                     postException(ex);
                 }finally {
-                    postFinish();
+                    postFinish(success);
                     unregister();
                 }
             }
@@ -204,17 +207,6 @@ public class PushController {
         return responseHolder.getItem();
     }
 
-    public void saveCreationDateInSDK(List<Survey> surveys) {
-        Log.d(TAG,"Saving complete date");
-        //TODO is necesary check if the event was successfully uploaded before do this. It will be doing in sdk 2.21
-        for(Survey survey:surveys){
-            for(int i=0;i<converter.events.size();i++){
-                if(survey.getEventUid().equals(converter.events.get(i).getUid())) {
-                    converter.events.get(i).setCreated(EventExtended.format(survey.getCompletionDate(),EventExtended.DHIS2_DATE_FORMAT));
-                }
-            }
-        }
-    }
     /**
      * Notifies a progress into the bus (the caller activity will be listening)
      * @param msg
@@ -228,15 +220,21 @@ public class PushController {
      * @param ex
      */
     private void postException(Exception ex){
+        AlarmPushReceiver.isDoneFail();
         ex.printStackTrace();
         Dhis2Application.getEventBus().post(new SyncProgressStatus(ex));
     }
 
     /**
-     * Notifies that the pull is over
+     * Notifies that the push is over
      */
-    private void postFinish(){
+    private void postFinish(boolean success){
         try {
+            if(success){
+                AlarmPushReceiver.isDoneSuccess();
+            }else{
+                AlarmPushReceiver.isDoneFail();
+            }
             Dhis2Application.getEventBus().post(new SyncProgressStatus());
         }
         catch(Exception e){

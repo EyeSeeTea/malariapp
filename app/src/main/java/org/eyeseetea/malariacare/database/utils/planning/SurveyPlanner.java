@@ -140,7 +140,9 @@ public class SurveyPlanner {
      * @return
      */
     public Survey startSurvey(Survey survey){
-        survey.setCreationDate(new Date());
+        Date now=new Date();
+        survey.setCreationDate(now);
+        survey.setUploadDate(now);
         survey.setStatus(Constants.SURVEY_IN_PROGRESS);
         survey.setUser(Session.getUser());
         survey.save();
