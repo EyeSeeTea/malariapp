@@ -287,6 +287,7 @@
     <string name="dialog_deleting_children">You\'re about to delete the answer for questions that depend on this one. Do you really want to continue?</string>
 
     <!-- Preference variable names -->
+    <item name="ask_modify_or_create" type="string" translatable="false">ask_modify_or_create</item>
     <item name="show_num_dems" type="string" translatable="false">show_num_dems</item>
     <item name="customize_fonts" type="string" translatable="false">customize_fonts</item>
     <item name="font_sizes" type="string" translatable="false">font_sizes</item>
@@ -383,12 +384,13 @@
 
     <string name="created_on_code" translatable="false">_CreatedOn</string>
     <string name="created_by_code" translatable="false">_CreatedBy</string>
-    <string name="upload_date_code" translatable="false">_UploadedOn</string>
+    <string name="upload_on_code" translatable="false">_UploadedOn</string>
     <string name="uploaded_by_code" translatable="false">_UploadedBy</string>
 
 
     <!-- Last survey -->
-    <string name="no_previous_event_fakeuid" translatable="false">no_new_survey</string>
     <string name="no_previous_event_info">No previous event available</string>
+    <string name="settings_checkbox_ask_modify_or_create">Ask to modify or create new survey?</string>
+    <string name="settings_checkbox_description_ask_modify_or_create">When activated, the user will choose between modifying last survey or creating a new one</string>
 
 </resources>

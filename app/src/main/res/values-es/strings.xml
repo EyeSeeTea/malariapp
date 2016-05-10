@@ -305,5 +305,7 @@
 
     <!-- Last survey -->
     <string name="no_previous_event_info">Sin eventos anteriores disponibles</string>
+    <string name="settings_checkbox_ask_modify_or_create">Pregunta para modificar o crear nueva encuesta?</string>
+    <string name="settings_checkbox_description_ask_modify_or_create">Cuando se activa, el usuario deberá elegir entre modificar la última encuesta o crear una nueva</string>
 
 </resources>

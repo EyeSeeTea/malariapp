@@ -19,8 +19,6 @@
 
 package org.eyeseetea.malariacare.database.iomodules.dhis.importer.models;
 
-import android.util.Log;
-
 import com.raizlabs.android.dbflow.sql.QueryBuilder;
 import com.raizlabs.android.dbflow.sql.builder.Condition;
 import com.raizlabs.android.dbflow.sql.language.Select;
@@ -46,7 +44,8 @@ import java.util.List;
 public class EventExtended implements VisitableFromSDK {
 
     private final static String TAG=".EventExtended";
-    public final static String DHIS2_DATE_FORMAT ="yyyy-MM-dd'T'HH:mm:ss.SSSZ";
+    public final static String DHIS2_GMT_DATE_FORMAT ="yyyy-MM-dd'T'HH:mm:ss.SSSZ";
+    public final static String DHIS2_LONG_DATE_FORMAT="yyyy-MM-dd HH:mm:ss";
     public final static String AMERICAN_DATE_FORMAT ="yyyy-MM-dd";
 
     Event event;
@@ -120,6 +119,26 @@ public class EventExtended implements VisitableFromSDK {
 
         SimpleDateFormat simpleDateFormat=new SimpleDateFormat(format);
         return simpleDateFormat.parse(dateAsString);
+    }
+
+    public static Date parseShortDate(String dateAsString){
+        try{
+            return parseDate(dateAsString,AMERICAN_DATE_FORMAT);
+        }catch(ParseException ex){
+            return null;
+        }
+    }
+
+    public static  Date parseLongDate(String dateAsString) throws  ParseException{
+        return parseDate(dateAsString, DHIS2_GMT_DATE_FORMAT);
+    }
+
+    public static String formatLong(Date date){
+        return format(date, DHIS2_GMT_DATE_FORMAT);
+    }
+
+    public static String formatShort(Date date){
+        return format(date,AMERICAN_DATE_FORMAT);
     }
 
     /**
